@@ -32,7 +32,7 @@
         <property name="password" value="s[caaers.datasource.password]"/>
     </bean>
 
-    <bean id="tracker" class="gov.nih.nci.cabig.caaers2adeers.track.Tracker">
+    <bean id="integrationLogDao" class="gov.nih.nci.cabig.caaers2adeers.track.IntegrationLogDao">
        <property name="hibernateTemplate" ref="hibernateTemplate" />
     </bean>
     <bean id="headerGeneratorProcessor" class="gov.nih.nci.cabig.caaers2adeers.exchnage.HeaderGeneratorProcessor"/>

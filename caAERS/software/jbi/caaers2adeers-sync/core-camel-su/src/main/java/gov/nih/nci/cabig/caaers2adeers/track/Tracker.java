@@ -1,50 +1,63 @@
 package gov.nih.nci.cabig.caaers2adeers.track;
 
+import gov.nih.nci.cabig.caaers2adeers.exchnage.ExchangePreProcessor;
 import gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage;
 
 import java.util.Map;
 
-import gov.nih.nci.cabig.caaers2adeers.exchnage.ExchangePreProcessor;
 import org.apache.camel.Exchange;
+import org.apache.camel.Processor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.orm.hibernate3.HibernateTemplate;
 
-/**
- * Will record the status of each step in the database
- */
-public class Tracker{
+public class Tracker implements Processor{
 	
-    public static final String TRACKER_STAGE_NAME_HEADER = "c2a_tracker_stage_name";
-    public static final String TRACKER_NOTES_HEADER = "c2a_tracker_notes";
-    
-    protected static final Log log = LogFactory.getLog(Tracker.class);
+	protected static final Log log = LogFactory.getLog(Tracker.class);
 	
-	private HibernateTemplate hibernateTemplate;
-
-	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
-		this.hibernateTemplate = hibernateTemplate;
+	// entity type
+ 	private String entity;
+ 	
+ 	// operation name
+ 	private String operation;
+ 	
+ 	// progress made by synch request
+ 	private Stage stage;
+ 	
+ 	// details 
+ 	private String notes;
+ 	
+	public Tracker(Stage stage, String entity, String operation, String notes) {
+		super();
+		this.entity = entity;
+		this.operation = operation;
+		this.stage = stage;
+		this.notes = notes;
+	}
+	
+	public Tracker(Stage stage, String notes) {
+		this(stage, null, null, notes);
+	}
+	
+	public Tracker(Stage stage) {
+		this(stage, null, null, null);
 	}
 
-	public void record(Exchange exchange) throws Exception {
-		IntegrationLog integrationLog = getInstance(exchange);
-		hibernateTemplate.save(integrationLog);
-	}
-	
-	private static IntegrationLog getInstance(Exchange exchange){
+	public void process(Exchange exchange) throws Exception {
 		//set the properties in the exchange
         Map<String,Object> properties = exchange.getProperties();
+        properties.put(IntegrationLogDao.TRACKER_STAGE_NAME_HEADER, stage.name());
+        if(entity == null){
+        	entity = properties.get(ExchangePreProcessor.ENTITY_NAME)+"";
+        }
+        if(operation == null){
+        	operation = properties.get(ExchangePreProcessor.OPERATION_NAME)+"";
+        }
         String coorelationId = properties.get(ExchangePreProcessor.CORRELATION_ID)+"";
-		Stage stage = Stage.valueOf(properties.get(TRACKER_STAGE_NAME_HEADER)+"");
-		String entity = properties.get(ExchangePreProcessor.ENTITY_NAME)+"";
-		String operationName = properties.get(ExchangePreProcessor.OPERATION_NAME)+"";
-		String notes = properties.get(TRACKER_NOTES_HEADER) == null ? null : properties.get(TRACKER_NOTES_HEADER)+"";
-        log.debug("creating new instance of IntegrationLog with [" + coorelationId+", " + stage+", " + entity+", " + operationName+", " + notes + "]");
-        if(coorelationId == null || stage == null || entity == null || operationName == null){
+        if(coorelationId == null || stage == null || entity == null || operation == null){
         	throw new RuntimeException("Cannot log in database. Required fields are missing");
         }
-        IntegrationLog integrationLog = new IntegrationLog(coorelationId, stage, entity, operationName, notes);
-		return integrationLog;
+        log.debug("logging with tracker");
+        IntegrationLogDao integrationLogDao = (IntegrationLogDao)exchange.getContext().getRegistry().lookup("integrationLogDao");
+        integrationLogDao.record(coorelationId, stage, entity, operation, notes);
 	}
-	
 }

@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers2adeers;
 
 import gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage;
-import gov.nih.nci.cabig.caaers2adeers.track.TrackerPreProcessor;
+import gov.nih.nci.cabig.caaers2adeers.track.Tracker;
 
 
 public class ToCaaersWebserviceRouteBuilder {
@@ -38,7 +38,7 @@ public class ToCaaersWebserviceRouteBuilder {
 		//content based router
 		routeBuilder.from("direct:caaersWSRequestSink")
 		.to("log:caaers.caaers-request?showHeaders=true")
-		.process(new TrackerPreProcessor(Stage.ROUTED_TO_CAAERS_SINK)).to("bean:tracker?method=record")
+		.process(new Tracker(Stage.ROUTED_TO_CAAERS_SINK))
 		.choice()
 			.when().xpath(xpathPredicate("agent", "getAgentsLOV")).to("direct:caaers-agent-async")
 			.when().xpath(xpathPredicate("asael", "getASAEL")).to("direct:caaers-asael-async")

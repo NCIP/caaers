@@ -2,7 +2,7 @@ package gov.nih.nci.cabig.caaers2adeers;
 
 import gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage;
 
-import gov.nih.nci.cabig.caaers2adeers.track.TrackerPreProcessor;
+import gov.nih.nci.cabig.caaers2adeers.track.Tracker;
 import org.apache.camel.ExchangePattern;
 import org.apache.camel.builder.RouteBuilder;
 
@@ -81,9 +81,9 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
         
     	from("jbi:service:http://schema.integration.caaers.cabig.nci.nih.gov/common/generic-processor-sink")
 		.processRef("exchangePreProcessor")
-		.process(new TrackerPreProcessor(Stage.REQUEST_RECEIVED)).to("bean:tracker?method=record")
+		.process(new Tracker(Stage.REQUEST_RECEIVED))
 		.to("xslt:xslt/adeers/request/soap_env_filter.xsl")
-		.process(new TrackerPreProcessor(Stage.ROUTED_TO_ADEERS_SINK)).to("bean:tracker?method=record")
+		.process(new Tracker(Stage.ROUTED_TO_ADEERS_SINK))
 		.choice()
                 .when(header("c2a_sync_mode").isEqualTo("sync"))
                 	.to("log:after-soap_filter-and-before-sync")
@@ -105,19 +105,19 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
     	
     	//need to process caAERS results
 		from("direct:caAERSResponseSink")
-                .process(new TrackerPreProcessor(Stage.CAAERS_WS_OUT_TRANSFORMATION)).to("bean:tracker?method=record")
+                .process(new Tracker(Stage.CAAERS_WS_OUT_TRANSFORMATION))
                 .to("log:caaers.direct-caAERSResponseSink")
                 .to("direct:outputSink");
 
 
         //BELOW 2 routes are the final sinks of messages.
         from("direct:outputSink")
-                .process(new TrackerPreProcessor(Stage.REQUEST_COMPLETION)).to("bean:tracker?method=record")
+                .process(new TrackerPreProcessor(Stage.REQUEST_COMPLETION))
                 .to("log:from-outputSink?showAll=true");
-
+    	
 		//invalid requests
         from("direct:morgue")
-        		.process(new TrackerPreProcessor(Stage.REQUST_PROCESSING_ERROR)).to("bean:tracker?method=record")
+        		.process(new Tracker(Stage.REQUST_PROCESSING_ERROR))
                 .to("log:fromMorgue?showAll=true")
                 .to("xslt:xslt/caaers/response/unknown.xsl")
                 .to("log:after-unknown")
