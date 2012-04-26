@@ -100,12 +100,21 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
     	from("direct:adEERSResponseSink")
                 .to("log:caaers.synch-comp?showHeaders=true")
                 .choice()
-                    .when(header("c2a_sync_mode").isEqualTo("sync")).to("direct:caAERSSynchronousRequestSink")
-                    .otherwise().to("direct:caAERSAsynchronousRequestSink");
+                    .when(header("c2a_sync_mode").isEqualTo("sync")).to("direct:caaersWSRequestSink")
+                    .otherwise().to("direct:caaersClientRequestSink");
     	
     	//need to process caAERS results
-		from("direct:caAERSResponseSink").process(new TrackerPreProcessor(Stage.CAAERS_WS_OUT_TRANSFORMATION)).to("bean:tracker?method=record").to("log:caaers.direct-caAERSResponseSink");
-    	
+		from("direct:caAERSResponseSink")
+                .process(new TrackerPreProcessor(Stage.CAAERS_WS_OUT_TRANSFORMATION)).to("bean:tracker?method=record")
+                .to("log:caaers.direct-caAERSResponseSink")
+                .to("direct:outputSink");
+
+
+        //BELOW 2 routes are the final sinks of messages.
+        from("direct:outputSink")
+                .process(new TrackerPreProcessor(Stage.REQUEST_COMPLETION)).to("bean:tracker?method=record")
+                .to("log:from-outputSink?showAll=true");
+
 		//invalid requests
         from("direct:morgue")
         		.process(new TrackerPreProcessor(Stage.REQUST_PROCESSING_ERROR)).to("bean:tracker?method=record")

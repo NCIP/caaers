@@ -36,7 +36,7 @@ public class ToCaaersWebserviceRouteBuilder {
 	
 	public void configure(){
 		//content based router
-		routeBuilder.from("direct:caAERSAsynchronousRequestSink")
+		routeBuilder.from("direct:caaersWSRequestSink")
 		.to("log:caaers.caaers-request?showHeaders=true")
 		.process(new TrackerPreProcessor(Stage.ROUTED_TO_CAAERS_SINK)).to("bean:tracker?method=record")
 		.choice()

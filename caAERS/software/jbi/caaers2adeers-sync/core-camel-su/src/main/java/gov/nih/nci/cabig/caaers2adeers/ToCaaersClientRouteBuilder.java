@@ -30,7 +30,7 @@ public class ToCaaersClientRouteBuilder {
 
     public void configure(){
         //content based router
-        routeBuilder.from("direct:caAERSSynchronousRequestSink")
+        routeBuilder.from("direct:caaersClientRequestSink")
                 .to("log:caaers.caaers-sync-request?showHeaders=true")
                 .process(new TrackerPreProcessor(Stage.ROUTED_TO_CAAERS_SINK)).to("bean:tracker?method=record")
                 .choice()
