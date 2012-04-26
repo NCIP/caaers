@@ -11,6 +11,7 @@ import gov.nih.nci.cabig.caaers.integration.schema.common.ActiveInactiveStatusTy
 import gov.nih.nci.cabig.caaers.integration.schema.common.AgentType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.EntityProcessingOutcomeType;
+import org.dbunit.operation.DatabaseOperation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +45,7 @@ public class ASAELServiceImplTest extends DaoTestCase {
         asaelType.getAsaelAgent().get(0).getExpectedAECtcTerm().get(0).setCtepTerm("Ear pain");
         asaelType.getAsaelAgent().get(0).getExpectedAECtcTerm().get(0).setCategory("Category - 01");
         asaelType.getAsaelAgent().get(0).getExpectedAECtcTerm().get(0).setCtcVersion("3");
+        asaelType.getAsaelAgent().get(0).getExpectedAECtcTerm().get(0).setOtherToxicity("SOME OTHER TOXICITY TEXT");
 
         Study s = studyDao.getById(-2);
         assertEquals(2, s.getExpectedAECtcTerms().size());
