@@ -15,5 +15,5 @@ import javax.jws.WebService;
 public interface ASAELService {
 
     @WebMethod
-    public CaaersServiceResponse createOrUpdateASAEL(@WebParam(name = "asael", targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/common") ASAELType inputMessage);
+    public CaaersServiceResponse createOrUpdateASAEL(@WebParam(name = "asael", targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/common") Asael inputMessage);
 }

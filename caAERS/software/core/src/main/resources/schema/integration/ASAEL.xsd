@@ -7,14 +7,13 @@
 
     <xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" schemaLocation="caAERSCommonTypes.xsd"/>
 
-    <xs:element name="asael" type="ASAELType" />
-    <xs:complexType name="ASAELType">
-        <xs:sequence>
-            <xs:element ref="asaelAgent" maxOccurs="unbounded"/>
-        </xs:sequence>
-    </xs:complexType>
-
-    <xs:element name="asaelAgent" type="ASAELAgentType" />
+    <xs:element name="Asael">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="asaelAgent" maxOccurs="unbounded" type="ASAELAgentType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
     <xs:complexType name="ASAELAgentType">
         <xs:sequence>
             <xs:element ref="cct:agent" minOccurs="1" maxOccurs="1" />

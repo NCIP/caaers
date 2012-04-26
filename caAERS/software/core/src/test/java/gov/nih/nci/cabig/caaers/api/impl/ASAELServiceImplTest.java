@@ -1,17 +1,16 @@
 package gov.nih.nci.cabig.caaers.api.impl;
 
-import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.integration.schema.asael.ASAELAgentType;
-import gov.nih.nci.cabig.caaers.integration.schema.asael.ASAELType;
+import gov.nih.nci.cabig.caaers.integration.schema.asael.Asael;
 import gov.nih.nci.cabig.caaers.integration.schema.asael.ExpectedAECtcTermType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ActiveInactiveStatusType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.AgentType;
+import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.EntityProcessingOutcomeType;
-import org.dbunit.operation.DatabaseOperation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,15 +23,17 @@ public class ASAELServiceImplTest extends DaoTestCase {
 
     StudyDao studyDao;
     ASAELServiceImpl asaelServiceImpl;
-    ASAELType asaelType;
+    Asael asaelType;
 
     public void testNotFoundAgent() {
-        List<EntityProcessingOutcomeType> l = asaelServiceImpl.execute(asaelType);
+        CaaersServiceResponse csr = Helper.createResponse();
+        asaelServiceImpl.execute(csr, asaelType);
+        List<EntityProcessingOutcomeType> l = csr.getServiceResponse().getEntityProcessingOutcomes().getEntityProcessingOutcome();
         assertNotNull(l);
         assertEquals(2, l.size());
-        assertEquals("gov.nih.nci.cabig.caaers.domain.Agent", l.get(0).getKlassName());
+        assertEquals("gov.nih.nci.cabig.caaers.domain.AgentSpecificTerm", l.get(0).getKlassName());
         assertEquals("725280", l.get(0).getBusinessIdentifier().substring(0, 6));
-        assertEquals("Agent not found.", l.get(0).getMessage().get(0));
+        assertTrue(l.get(0).getMessage().get(0).contains("Unable to find Agent by NSC :725280"));
     }
 
     public void testAddOneTerm() throws Exception {
@@ -46,11 +47,12 @@ public class ASAELServiceImplTest extends DaoTestCase {
 
         Study s = studyDao.getById(-2);
         assertEquals(2, s.getExpectedAECtcTerms().size());
-
-        List<EntityProcessingOutcomeType> l = asaelServiceImpl.execute(asaelType);
+        CaaersServiceResponse csr = Helper.createResponse();
+        asaelServiceImpl.execute(csr, asaelType);
+        List<EntityProcessingOutcomeType> l = csr.getServiceResponse().getEntityProcessingOutcomes().getEntityProcessingOutcome();
 
         assertEquals(1, l.size());
-        assertEquals("", l.get(0).getMessage().get(0));
+        assertEquals("To the agent (nsc990) the expected term : Ear pain got added", l.get(0).getMessage().get(0));
 
         assertEquals(3, s.getExpectedAECtcTerms().size());
     }
@@ -68,10 +70,12 @@ public class ASAELServiceImplTest extends DaoTestCase {
         Study s = studyDao.getById(-2);
         assertEquals(2, s.getExpectedAECtcTerms().size());
 
-        List<EntityProcessingOutcomeType> l = asaelServiceImpl.execute(asaelType);
+        CaaersServiceResponse csr = Helper.createResponse();
+        asaelServiceImpl.execute(csr, asaelType);
+        List<EntityProcessingOutcomeType> l = csr.getServiceResponse().getEntityProcessingOutcomes().getEntityProcessingOutcome();
 
         assertEquals(1, l.size());
-        assertEquals("", l.get(0).getMessage().get(0));
+        assertEquals("Removed from agent (nsc990) expected term : Nausea", l.get(0).getMessage().get(0));
         assertEquals(1, s.getExpectedAECtcTerms().size());
     }
 
@@ -80,7 +84,7 @@ public class ASAELServiceImplTest extends DaoTestCase {
         super.setUp();
         studyDao = (StudyDao)applicationContext.getBean("studyDao");
         asaelServiceImpl = (ASAELServiceImpl)applicationContext.getBean("asaelServiceImpl");
-        asaelType = new ASAELType();
+        asaelType = new Asael();
         asaelType.setAsaelAgent(new ArrayList<ASAELAgentType>(2));
         asaelType.getAsaelAgent().add(createASAELAgentType());
         asaelType.getAsaelAgent().add(createASAELAgentType());
@@ -121,10 +125,5 @@ public class ASAELServiceImplTest extends DaoTestCase {
         return a;
     }
 
-/*
-    @Override
-    protected DatabaseOperation getTearDownOperation() throws Exception {
-        return DatabaseOperation.REFRESH;
-    }
-*/
+
 }

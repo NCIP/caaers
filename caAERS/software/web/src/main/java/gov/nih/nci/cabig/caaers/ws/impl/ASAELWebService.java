@@ -21,8 +21,7 @@ public class ASAELWebService implements ASAELService {
     private ASAELServiceImpl s;
 
     @WebMethod
-    public CaaersServiceResponse createOrUpdateASAEL(@WebParam(name = "asael",
-            targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/common") ASAELType asael) {
+    public CaaersServiceResponse createOrUpdateASAEL(Asael asael) {
         return s.createOrUpdateASAEL(asael);
     }
 

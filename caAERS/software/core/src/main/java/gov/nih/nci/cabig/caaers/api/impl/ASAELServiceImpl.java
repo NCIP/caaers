@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.api.impl;
 
+import gov.nih.nci.cabig.caaers.api.ProcessingOutcome;
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.dao.AgentSpecificTermDao;
 import gov.nih.nci.cabig.caaers.dao.StudyAgentDao;
@@ -12,7 +13,7 @@ import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.repository.TerminologyRepository;
 import gov.nih.nci.cabig.caaers.integration.schema.asael.ASAELAgentType;
-import gov.nih.nci.cabig.caaers.integration.schema.asael.ASAELType;
+import gov.nih.nci.cabig.caaers.integration.schema.asael.Asael;
 import gov.nih.nci.cabig.caaers.integration.schema.asael.ExpectedAECtcTermType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ActiveInactiveStatusType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.AgentType;
@@ -29,21 +30,19 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 
 /**
  * @author Ion C. Olaru
  *         Date: 4/3/12 -10:03 AM
  */
-public class ASAELServiceImpl implements ApplicationContextAware {
+public class ASAELServiceImpl {
 
     private static Log log = LogFactory.getLog(ASAELServiceImpl.class);
 
-    private ApplicationContext applicationContext;
     private AgentDao agentDao;
     private TerminologyRepository terminologyRepository;
     private AgentSpecificTermDao agentSpecificTermDao;
@@ -51,16 +50,10 @@ public class ASAELServiceImpl implements ApplicationContextAware {
     private AgentSpecificAdverseEventListService asaelService;
     private StudyDao studyDao;
 
-    // CACHES
-    Map<String, CtcCategory> ctcCategories = new HashMap<String, CtcCategory>();
 
-    public CaaersServiceResponse createOrUpdateASAEL(ASAELType asael) {
-        CaaersServiceResponse csr = new CaaersServiceResponse();
-        csr.setServiceResponse(new ServiceResponse());
-        csr.getServiceResponse().setEntityProcessingOutcomes(new EntityProcessingOutcomes());
-        csr.getServiceResponse().setStatus(Status.PROCESSED);
-        List<EntityProcessingOutcomeType> errors = execute(asael);
-        csr.getServiceResponse().getEntityProcessingOutcomes().setEntityProcessingOutcome(errors);
+    public CaaersServiceResponse createOrUpdateASAEL(Asael asael) {
+        CaaersServiceResponse csr = Helper.createResponse();
+        execute(csr, asael);
         return csr;
     }
 
@@ -74,11 +67,8 @@ public class ASAELServiceImpl implements ApplicationContextAware {
         return e;
     }
 
-    public List<EntityProcessingOutcomeType> execute(ASAELType asael) {
-
-        List<EntityProcessingOutcomeType> errors = new ArrayList<EntityProcessingOutcomeType>();
-
-        if (asael.getAsaelAgent() == null || asael.getAsaelAgent() == null || asael.getAsaelAgent().size() == 0) return errors;
+    public void execute(CaaersServiceResponse csr, Asael asael) {
+        if (CollectionUtils.isEmpty(asael.getAsaelAgent())) return;
 
         for (ASAELAgentType asaelAgent : asael.getAsaelAgent()) {
             AgentType agentType = asaelAgent.getAgent();
@@ -88,7 +78,8 @@ public class ASAELServiceImpl implements ApplicationContextAware {
             Agent a = loadPersistentAgent(agentType.getNscNumber());
             if (a == null) {
                 log.warn(String.format("Agent not found: %s", agentType.getNscNumber()));
-                errors.add(populateError(Agent.class.getCanonicalName(), agentType.getNscNumber(), "Agent not found."));
+                ProcessingOutcome outcome = Helper.createOutcome(AgentSpecificTerm.class, agentType.getNscNumber(), true, "Unable to find Agent by NSC :" + agentType.getNscNumber()) ;
+                Helper.populateProcessingOutcome(csr, outcome);
                 continue;
             }
 
@@ -106,14 +97,17 @@ public class ASAELServiceImpl implements ApplicationContextAware {
                 if (tt.getStatus().equals(ActiveInactiveStatusType.INACTIVE)) {
                     it.remove();
                     removeAgentSpecificTerm(agentTerms, tt);
-                    errors.add(populateError(CtcTerm.class.getCanonicalName(), tt.getCtepTerm(), ""));
+                    ProcessingOutcome outcome = Helper.createOutcome(AgentSpecificTerm.class, tt.getCtepTerm(), false, "Removed from agent (" + agentType.getNscNumber() + ") expected term : " + tt.getCtepTerm() );
+                    Helper.populateProcessingOutcome(csr, outcome);
                 } else if (isOnAgent(agentTerms, tt)) {
                     log.debug(String.format("TERM %s is already on the agent", tt.getCtepTerm()));
                     it.remove();
+                    ProcessingOutcome outcome = Helper.createOutcome(AgentSpecificTerm.class, tt.getCtepTerm(), false, "Agent (" + agentType.getNscNumber() + ") already have expected term : " + tt.getCtepTerm() );
+                    Helper.populateProcessingOutcome(csr, outcome);
                 }
             }
 
-            List<CtcTerm> ctcTerms = loadCtcTerms(asaelAgent.getExpectedAECtcTerm(), errors);
+            List<CtcTerm> ctcTerms = loadCtcTerms(asaelAgent.getExpectedAECtcTerm(), csr);
             log.debug("LOADED SIZE: " + ctcTerms.size());
             log.debug("AGENT TERMS SIZE: " + agentTerms.size());
 
@@ -126,16 +120,20 @@ public class ASAELServiceImpl implements ApplicationContextAware {
 
                 try {
                     agentSpecificTermDao.save(asaelTerm);
-                    errors.add(populateError(CtcTerm.class.getCanonicalName(), asaelTerm.getFullName(), ""));
+                    ProcessingOutcome outcome = Helper.createOutcome(AgentSpecificTerm.class, asaelTerm.getFullName(), false, "To the agent (" + agentType.getNscNumber() + ") the expected term : " + asaelTerm.getFullName() + " got added");
+                    Helper.populateProcessingOutcome(csr, outcome);
                     log.debug(String.format("NEW TERM ADDED: %s, %d", asaelTerm.getFullName(), asaelTerm.getId()));
                     syncStudies(asaelTerm, AgentSpecificTerm.EXPTECTED_AE_ADDED);
                 } catch (Exception e) {
-                    errors.add(populateError(CtcTerm.class.getCanonicalName(), asaelTerm.getFullName(), e.getStackTrace().toString()));
+                    log.error("Exception occured while adding asael ", e);
+                    ProcessingOutcome outcome = Helper.createOutcome(AgentSpecificTerm.class, asaelTerm.getFullName(), true, "Unable to add to the agent (" + agentType.getNscNumber() + ") the expected term : " + t );
+                    Helper.populateProcessingOutcome(csr, outcome);
+
                 }
             }
         }
 
-        return errors;
+
     }
 
     private boolean isSameTerm(String t1Term, String t1Version, String t2Term, String t2Version) {
@@ -183,22 +181,23 @@ public class ASAELServiceImpl implements ApplicationContextAware {
         return null;
     }
 
-    private List<CtcTerm> loadCtcTerms(List<ExpectedAECtcTermType> xmlCtcTerms, List<EntityProcessingOutcomeType> errors) {
+    private List<CtcTerm> loadCtcTerms(List<ExpectedAECtcTermType> xmlCtcTerms, CaaersServiceResponse csr) {
         List<CtcTerm> ctcTerms = new ArrayList<CtcTerm>();
 
         for (ExpectedAECtcTermType ctcTermType : xmlCtcTerms) {
-            String category_with_a_meaning_name_as_biju_likes_it_to_be_easy_to_read = ctcTermType.getCategory();
-            Integer version_this_one_should_be_readable_as_well = Integer.parseInt(ctcTermType.getCtcVersion());
-            String term_I_could_not_find_a_better_name_for_this_one_SORRY = ctcTermType.getCtepTerm();
-            CtcTerm term = loadTerm(category_with_a_meaning_name_as_biju_likes_it_to_be_easy_to_read, version_this_one_should_be_readable_as_well, term_I_could_not_find_a_better_name_for_this_one_SORRY);
+            String category = ctcTermType.getCategory();
+            Integer version = Integer.parseInt(ctcTermType.getCtcVersion());
+            String term = ctcTermType.getCtepTerm();
+            CtcTerm ctcTerm = loadTerm(category, version, term);
 
             if (term == null) {
-                log.warn(String.format("No term found with ctcCategory: %s, ctcVersion: %s, term: %s", category_with_a_meaning_name_as_biju_likes_it_to_be_easy_to_read, version_this_one_should_be_readable_as_well, term_I_could_not_find_a_better_name_for_this_one_SORRY));
-                errors.add(populateError(CtcTerm.class.getCanonicalName(), term_I_could_not_find_a_better_name_for_this_one_SORRY, String.format("No term found with ctcCategory: %s, ctcVersion: %s, term: %s", category_with_a_meaning_name_as_biju_likes_it_to_be_easy_to_read, version_this_one_should_be_readable_as_well, term_I_could_not_find_a_better_name_for_this_one_SORRY)));
+                log.warn(String.format("No term found with ctcCategory: %s, ctcVersion: %s, term: %s", category, version, term));
+                ProcessingOutcome outcome = Helper.createOutcome(CtcTerm.class, term, true, String.format("No term found with ctcCategory: %s, ctcVersion: %s, term: %s", category, version, term)) ;
+                Helper.populateProcessingOutcome(csr, outcome);
                 continue;
             }
 
-            ctcTerms.add(term);
+            ctcTerms.add(ctcTerm);
         }
 
         return ctcTerms;
@@ -208,10 +207,6 @@ public class ASAELServiceImpl implements ApplicationContextAware {
         Agent a = agentDao.getByNscNumber(nscNumber);
         if (a != null) agentDao.initialize(a.getAgentSpecificTerms());
         return a;
-    }
-
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
     }
 
     public AgentDao getAgentDao() {
