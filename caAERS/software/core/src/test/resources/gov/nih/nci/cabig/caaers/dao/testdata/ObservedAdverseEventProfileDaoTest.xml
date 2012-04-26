@@ -66,10 +66,10 @@
     <study_interventions_exp_aes />
     <ta_expected_ae_intervention />
     
-    <observed_ae_profiles id="-1" version="0" expected_frequency="10.0" observed_frequency="15.0" total_no_ofae="60" observed_no_ofae="40"
+    <observed_ae_profiles id="-1" version="0" expected_frequency="10.0" observed_frequency="15.0" total_no_ofae="60" total_no_of_registrations="40"
     	standard_deviation="2.3" p_value="0.23" observed_significance=".10" notification_status="2" grade="0" treatment_assignment_id="-3" term_id="3012"/>
     	
-    <observed_ae_profiles id="-2" version="0" expected_frequency="10.0" observed_frequency="15.0" total_no_ofae="60" observed_no_ofae="40"
+    <observed_ae_profiles id="-2" version="0" expected_frequency="10.0" observed_frequency="15.0" total_no_ofae="60" total_no_of_registrations="40"
     	standard_deviation="2.3" p_value="0.23" observed_significance=".10" notification_status="2" grade="0" treatment_assignment_id="-4" term_id="3010"/>
 
 </dataset>
