@@ -86,15 +86,12 @@ public class Tracker implements Processor{
 		IntegrationLog integrationLog = new IntegrationLog(coorelationId, stage, entity, operation, notes);
         IntegrationLogDao integrationLogDao = (IntegrationLogDao)exchange.getContext().getRegistry().lookup("integrationLogDao");
         if(caputureLogDetails){
-//        	Node node = XPathBuilder.xpath("//com:ServiceResponse").namespace("com", "http://schema.integration.caaers.cabig.nci.nih.gov/common").nodeResult().evaluate(exchange, Node.class);
-//        	NodeList childNodes = node.getChildNodes();
-//        	for(int i=0 ; i<childNodes.getLength() ; i++){
-//        		Node child = childNodes.item(i);
-//        		if(child.getNodeName().equals("entityProcessingOutcomes")){
-//        		}
-//        	}
         	NodeList nodes = XPathBuilder.xpath("//com:entityProcessingOutcomes").namespace("com", "http://schema.integration.caaers.cabig.nci.nih.gov/common").nodeResult().evaluate(exchange, NodeList.class);
         	if(nodes != null){
+        		String status = XPathBuilder.xpath("//status").evaluate(exchange, String.class);
+        		if (!StringUtils.isBlank(status)){
+        			integrationLog.setNotes(status);
+        		}
 	        	for(int i=0 ; i<nodes.getLength() ; i++){
 	        		Node outcome = nodes.item(i);
 	        		if(!StringUtils.isBlank(outcome.getLocalName()) && outcome.getLocalName().equals("entityProcessingOutcome")){
@@ -116,10 +113,6 @@ public class Tracker implements Processor{
 	        		}
 	        	}
         	}
-        	XPathBuilder.xpath("//com:ServiceResponse/@responsecode").namespace("com", "http://schema.integration.caaers.cabig.nci.nih.gov/common").evaluate(exchange, String.class);
-        	XPathBuilder.xpath("//ServiceResponse/@responsecode").evaluate(exchange, String.class);
-        	XPathBuilder.xpath("//ServiceResponse").evaluate(exchange, String.class);
-        	exchange.getIn().getBody(String.class);
         }
         
         integrationLogDao.save(integrationLog);
