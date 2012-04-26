@@ -407,6 +407,12 @@ public class TreatmentAssignment extends AbstractMutableRetireableDomainObject i
     	}
     	return null;
     }
-    
+
+    @Transient
+    public String getHashKey() {
+        String key = getCtepDbIdentifier();
+        if (StringUtils.isEmpty(key)) key = getCode();
+        return key;
+    }
 
 }

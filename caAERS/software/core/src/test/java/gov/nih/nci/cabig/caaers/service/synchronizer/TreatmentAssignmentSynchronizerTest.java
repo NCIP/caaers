@@ -120,7 +120,9 @@ public class TreatmentAssignmentSynchronizerTest extends AbstractTestCase{
 		assertEquals("a2", dbStudy.getTreatmentAssignments().get(1).getComments()); //should be same
 		assertEquals(new Integer(3), dbStudy.getTreatmentAssignments().get(1).getDoseLevelOrder()); //should be modified
 		assertEquals("a2", dbStudy.getTreatmentAssignments().get(1).getCode());
-		
+		assertNull(dbStudy.getTreatmentAssignments().get(1).getCtepDbIdentifier());
+		assertEquals("a2", dbStudy.getTreatmentAssignments().get(1).getHashKey());
+
 	}
 	
 	
@@ -201,5 +203,54 @@ public class TreatmentAssignmentSynchronizerTest extends AbstractTestCase{
 		assertEquals(new Integer(2), dbStudy.getTreatmentAssignments().get(1).getDoseLevelOrder()); 
 		assertEquals("a2", dbStudy.getTreatmentAssignments().get(1).getCode());
 		
+	}
+
+	/**
+	 * Will test addition by CtepDbIdentifier
+	 */
+	public void testMigrate_AddByCtepDbIdentifier(){
+		TreatmentAssignment ta = Fixtures.createTreatmentAssignment("a1");
+
+		ta = Fixtures.createTreatmentAssignment("a1");
+		ta.setDescription("a1");
+		ta.setComments("a1");
+		ta.setDoseLevelOrder(1);
+		ta.setCtepDbIdentifier("ctep1");
+        ta.setRetiredIndicator(false);
+		xmlStudy.addTreatmentAssignment(ta);
+
+		ta = Fixtures.createTreatmentAssignment("a2");
+		ta.setDescription("a2");
+		ta.setComments("a2");
+		ta.setDoseLevelOrder(2);
+        ta.setCtepDbIdentifier("ctep2");
+        ta.setRetiredIndicator(false);
+		xmlStudy.addTreatmentAssignment(ta);
+
+        TreatmentAssignment dbTa = Fixtures.createTreatmentAssignment("db_ta_01");
+        dbTa.setCtepDbIdentifier("ctep1");
+        dbStudy.getTreatmentAssignments().add(dbTa);
+
+		treatmentAssignmentSynchronizer.migrate(dbStudy, xmlStudy, outcome);
+
+		//assert #
+		assertEquals(2, dbStudy.getTreatmentAssignments().size());
+
+
+		//check a1
+		assertFalse(dbStudy.getTreatmentAssignments().get(0).isRetired());
+		assertEquals(new Integer(1), dbStudy.getTreatmentAssignments().get(0).getDoseLevelOrder());
+		assertEquals("db_ta_01", dbStudy.getTreatmentAssignments().get(0).getCode());
+		assertEquals("a1", dbStudy.getTreatmentAssignments().get(0).getComments());
+		assertEquals("ctep1", dbStudy.getTreatmentAssignments().get(0).getCtepDbIdentifier());
+
+		//check a2
+		assertFalse(dbStudy.getTreatmentAssignments().get(1).isRetired());
+		assertEquals("a2", dbStudy.getTreatmentAssignments().get(1).getDescription());
+		assertEquals("a2", dbStudy.getTreatmentAssignments().get(1).getComments());
+		assertEquals(new Integer(2), dbStudy.getTreatmentAssignments().get(1).getDoseLevelOrder());
+		assertEquals("a2", dbStudy.getTreatmentAssignments().get(1).getCode());
+        assertEquals("ctep2", dbStudy.getTreatmentAssignments().get(1).getCtepDbIdentifier());
+
 	}
 }

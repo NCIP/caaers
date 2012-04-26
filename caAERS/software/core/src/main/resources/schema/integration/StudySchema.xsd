@@ -309,7 +309,8 @@
         <xs:complexContent>
             <xs:extension base="cct:MutableDomainObjectType">
                 <xs:sequence>
-                    <xs:element name="code" type="cct:CustomStringType"/>
+                    <xs:element name="ctepDbIdentifier" type="xs:string" minOccurs="0" />
+                    <xs:element name="code" type="cct:CustomStringType" minOccurs="0"/>
                     <xs:element name="doseLevelOrder" type="cct:CustomStringType" minOccurs="0"/>
                     <xs:element name="description" type="cct:CustomStringType"/>
                     <xs:element name="comments" type="cct:CustomStringType" minOccurs="0"/>

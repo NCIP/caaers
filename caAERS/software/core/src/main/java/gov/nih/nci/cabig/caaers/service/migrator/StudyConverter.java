@@ -24,6 +24,7 @@ import java.util.List;
  * to a Domain Object Study Type as required by StudyMigrator.
  * @author Monish Dombla
  * @author Biju Joseph (added start/end dates)
+ * @author Ion C. Olaru
  *
  */
 public class StudyConverter {
@@ -788,6 +789,7 @@ public class StudyConverter {
 					if(treatmentAssignmentType.getDoseLevelOrder() != null){
 						treatmentAssignment.setDoseLevelOrder(Integer.parseInt(treatmentAssignmentType.getDoseLevelOrder()));
 					}
+                    treatmentAssignment.setCtepDbIdentifier(treatmentAssignmentType.getCtepDbIdentifier());
 					treatmentAssignment.setDescription(treatmentAssignmentType.getDescription());
 					treatmentAssignment.setComments(treatmentAssignmentType.getComments());
 					treatmentAssignmentList.add(treatmentAssignment);
@@ -807,14 +809,13 @@ public class StudyConverter {
                 List<TreatmentAssignmentType> treatmentAssignmentsTypeList = new ArrayList<TreatmentAssignmentType>();
                 ts.setTreatmentAssignment(treatmentAssignmentsTypeList);
 
-                TreatmentAssignment treatmentAssignment = null;
-
                 for (TreatmentAssignment ta : list) {
                     TreatmentAssignmentType tat = new TreatmentAssignmentType();
                     tat.setCode(ta.getCode());
                     if (ta.getDoseLevelOrder() != null) tat.setDoseLevelOrder(ta.getDoseLevelOrder().toString());
                     tat.setDescription(ta.getDescription());
                     tat.setComments(ta.getComments());
+                    tat.setCtepDbIdentifier(ta.getCtepDbIdentifier());
                     treatmentAssignmentsTypeList.add(tat);
                 }
 
