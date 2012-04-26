@@ -4236,6 +4236,79 @@ xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-s
          </stud:studies>
       </stud:updateStudy>
    </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/study/StudyProcessorInterface/updateStudy"/><con:wsrmConfig version="1.2"/></con:call><con:call name="UpdateOrCreateStudyDevice"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://10.10.10.198:8443/caaers/services/StudyService</con:endpoint><con:request><![CDATA[<soapenv:Envelope
+        xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+        xmlns:stud="http://schema.integration.caaers.cabig.nci.nih.gov/study"
+        xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+    <soapenv:Header>
+        <wsse:Security>
+            <wsse:UsernameToken>
+                <wsse:Username>SYSTEM_ADMIN</wsse:Username>
+                <wsse:Password>Hello-12</wsse:Password>
+            </wsse:UsernameToken>
+        </wsse:Security>
+    </soapenv:Header>
+    <soapenv:Body>
+        <stud:updateStudy>
+            <!--Optional:-->
+            <stud:studies>
+                <!-- STUDY START -->
+                <stud:study>
+                    <shortTitle>TestRules14</shortTitle>
+                    <phaseCode>Phase I Trial</phaseCode>
+                    <otherMeddra>MedDRA v10</otherMeddra>
+                    <studyPurpose>Treatment</studyPurpose>
+                    <aeTermUnique>true</aeTermUnique>
+                    <stud:aeTerminology><stud:ctcVersion><name>4</name></stud:ctcVersion></stud:aeTerminology>
+                    <stud:diseaseTerminology><diseaseCodeTerm>CTEP</diseaseCodeTerm></stud:diseaseTerminology>
+                    
+                    <fundingSponsor>
+                        <organizationAssignedIdentifier><value>12345A</value></organizationAssignedIdentifier>
+                        <stud:studyFundingSponsor>
+                            <stud:organization>
+                                <name>Cancer Therapy Evaluation Program</name>
+                                <nciInstituteCode>CTEP</nciInstituteCode>
+                            </stud:organization>
+                        </stud:studyFundingSponsor>
+                    </fundingSponsor>
+                    <coordinatingCenter>
+                        <organizationAssignedIdentifier>
+                            <value>12345A</value>
+                        </organizationAssignedIdentifier>
+                        <stud:studyCoordinatingCenter>
+                            <stud:organization>
+                                <name>Cancer Therapy Evaluation Program</name>
+                                <nciInstituteCode>CTEP</nciInstituteCode>
+                            </stud:organization>
+                        </stud:studyCoordinatingCenter>
+                    </coordinatingCenter>
+                    <studyOrganizations>
+                        <stud:studySite>
+                            <stud:organization>
+                                <name>Howard University Hospital</name>
+                                <nciInstituteCode>DC006</nciInstituteCode>
+                            </stud:organization>
+                        </stud:studySite>
+                    </studyOrganizations>
+
+
+        <studyDevices>
+            <stud:studyDevice>
+                <stud:device>
+                    <commonName>Device-B</commonName>
+                    <brandName>Brand-B2</brandName>
+                    <type>DeviceType-B2</type>
+		    <ctepDbIdentifier>1141</ctepDbIdentifier>
+                </stud:device>
+            </stud:studyDevice>
+        </studyDevices>
+
+
+                </stud:study>
+                <!-- STUDY END -->
+            </stud:studies>
+        </stud:updateStudy>
+    </soapenv:Body>
 </soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/study/StudyProcessorInterface/updateStudy"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="ResearchStaffServiceSoapBinding" type="wsdl" bindingName="{http://schema.integration.caaers.cabig.nci.nih.gov/researchstaff}ResearchStaffServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="https://localhost:8443/caaers/services/ResearchStaffMigratorService?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="https://localhost:8443/caaers/services/ResearchStaffMigratorService?wsdl"><con:part><con:url>https://localhost:8443/caaers/services/ResearchStaffMigratorService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="ResearchStaffService" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/researchstaff" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/researchstaff" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <wsdl:types>
     <xs:schema elementFormDefault="unqualified" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:xs="http://www.w3.org/2001/XMLSchema">
