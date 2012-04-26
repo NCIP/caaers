@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<con:soapui-project name="caAERSSoapUITestSuite" soapui-version="4.0.0" abortOnError="false" runType="SEQUENTIAL" resourceRoot="" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="AdverseEventManagementServiceSoapBinding" type="wsdl" bindingName="{http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent}AdverseEventManagementServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="https://localhost:8443/caaers/services/AdverseEventManagementService?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="https://localhost:8443/caaers/services/AdverseEventManagementService?wsdl"><con:part><con:url>https://localhost:8443/caaers/services/AdverseEventManagementService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="AdverseEventManagementService" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<con:soapui-project name="caAERSSoapUITestSuite" soapui-version="4.0.1" abortOnError="false" runType="SEQUENTIAL" resourceRoot="" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="AdverseEventManagementServiceSoapBinding" type="wsdl" bindingName="{http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent}AdverseEventManagementServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="https://localhost:8443/caaers/services/AdverseEventManagementService?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="https://localhost:8443/caaers/services/AdverseEventManagementService?wsdl"><con:part><con:url>https://localhost:8443/caaers/services/AdverseEventManagementService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="AdverseEventManagementService" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <wsdl:types>
     <xs:schema elementFormDefault="unqualified" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:xs="http://www.w3.org/2001/XMLSchema">
       <xs:complexType name="DomainObjectType">
@@ -3961,430 +3961,127 @@ xmlns:stud="http://schema.integration.caaers.cabig.nci.nih.gov/study">
          </stud:Studies>
       </stud:createStudy>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/study/StudyProcessorInterface/createStudy"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="" name="updateStudy" bindingOperationName="updateStudy" type="Request-Response" outputName="updateStudyResponse" inputName="updateStudy" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://localhost:8443/caaers/services/StudyService</con:endpoint><con:request><![CDATA[<soapenv:Envelope 
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/study/StudyProcessorInterface/createStudy"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="" name="updateStudy" bindingOperationName="updateStudy" type="Request-Response" outputName="updateStudyResponse" inputName="updateStudy" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="update_organization_name"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://localhost:8443/caaers/services/StudyService</con:endpoint><con:request><![CDATA[<soapenv:Envelope 
 xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" 
-xmlns:stud="http://schema.integration.caaers.cabig.nci.nih.gov/study">
-   <soapenv:Header/>
+xmlns:stud="http://schema.integration.caaers.cabig.nci.nih.gov/study"
+xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+	<soapenv:Header>
+		<wsse:Security>
+			<wsse:UsernameToken>
+				<wsse:Username>SYSTEM_ADMIN</wsse:Username>
+				<wsse:Password>Hello-12</wsse:Password>
+			</wsse:UsernameToken>
+		</wsse:Security>
+	</soapenv:Header>
    <soapenv:Body>
       <stud:updateStudy>
          <!--Optional:-->
-         <stud:Studies>
-            <!--1 or more repetitions:-->
-            <stud:study id="?" version="?">
-               <shortTitle>?</shortTitle>
-               <!--Optional:-->
-               <longTitle>?</longTitle>
-               <!--Optional:-->
-               <precis>?</precis>
-               <!--Optional:-->
-               <description>?</description>
-               <phaseCode>?</phaseCode>
-               <!--Optional:-->
-               <status>?</status>
-               <!--Optional:-->
-               <multiInstitutionIndicator>?</multiInstitutionIndicator>
-               <!--Optional:-->
-               <adeersReporting>?</adeersReporting>
-               <!--Optional:-->
-               <otherMeddra>?</otherMeddra>
-               <!--Optional:-->
-               <studyPurpose>?</studyPurpose>
-               <!--Optional:-->
-               <aeTermUnique>?</aeTermUnique>
-               <stud:aeTerminology>
-                  <!--Optional:-->
-                  <stud:ctcVersion id="?" version="?">
-                     <name>?</name>
-                  </stud:ctcVersion>
-                  <!--Optional:-->
-                  <stud:meddraVersion id="?" version="?">
-                     <name>?</name>
-                  </stud:meddraVersion>
-               </stud:aeTerminology>
-               <stud:diseaseTerminology>
-                  <diseaseCodeTerm>?</diseaseCodeTerm>
-               </stud:diseaseTerminology>
-               <!--Optional:-->
-               <design>?</design>
-               <!--Optional:-->
-               <drugAdministrationTherapyType>?</drugAdministrationTherapyType>
-               <!--Optional:-->
-               <deviceTherapyType>?</deviceTherapyType>
-               <!--Optional:-->
-               <radiationTherapyType>?</radiationTherapyType>
-               <!--Optional:-->
-               <surgeryTherapyType>?</surgeryTherapyType>
-               <!--Optional:-->
-               <behavioralTherapyType>?</behavioralTherapyType>
-               <!--Optional:-->
-               <biologicalTherapyType>?</biologicalTherapyType>
-               <!--Optional:-->
-               <geneticTherapyType>?</geneticTherapyType>
-               <!--Optional:-->
-               <dietarySupplementTherapyType>?</dietarySupplementTherapyType>
-               <!--Optional:-->
-               <otherTherapyType>?</otherTherapyType>
-               <!--Optional:-->
-               <reportTypeCaaersXML>?</reportTypeCaaersXML>
-               <!--Optional:-->
-               <reportTypeAdeersPDF>?</reportTypeAdeersPDF>
-               <!--Optional:-->
-               <reportTypeMedwatchPDF>?</reportTypeMedwatchPDF>
-               <!--Optional:-->
-               <reportTypeDCPSAEForm>?</reportTypeDCPSAEForm>
-               <!--Optional:-->
-               <reportTypeCIOMSForm>?</reportTypeCIOMSForm>
-               <!--Optional:-->
-               <reportTypeCIOMSAEForm>?</reportTypeCIOMSAEForm>
-               <fundingSponsor>
-                  <organizationAssignedIdentifier id="?" version="?">
-                     <value>?</value>
-                  </organizationAssignedIdentifier>
-                  <stud:studyFundingSponsor id="?" version="?">
-                     <stud:organization id="?" version="?">
-                        <!--Optional:-->
-                        <descriptionText>?</descriptionText>
-                        <name>?</name>
-                        <nciInstituteCode>?</nciInstituteCode>
-                        <!--Optional:-->
-                        <city>?</city>
-                        <!--Optional:-->
-                        <state>?</state>
-                        <!--Optional:-->
-                        <country>?</country>
-                        <!--Optional:-->
-                        <status>?</status>
-                        <!--Optional:-->
-                        <mergedOrganization/>
-                     </stud:organization>
-                     <!--Optional:-->
-                     <studyInvestigators>
-                        <!--1 or more repetitions:-->
-                        <stud:studyInvestigator id="?" version="?">
-                           <roleCode>?</roleCode>
-                           <!--Optional:-->
-                           <startDate>?</startDate>
-                           <!--Optional:-->
-                           <endDate>?</endDate>
-                           <stud:siteInvestigator id="?" version="?">
-                              <stud:investigator id="?" version="?">
-                                 <firstName>?</firstName>
-                                 <lastName>?</lastName>
-                                 <!--Optional:-->
-                                 <nciIdentifier>?</nciIdentifier>
-                              </stud:investigator>
-                           </stud:siteInvestigator>
-                        </stud:studyInvestigator>
-                     </studyInvestigators>
-                     <!--Optional:-->
-                     <studyPersonnels>
-                        <!--1 or more repetitions:-->
-                        <stud:studyPersonnel id="?" version="?">
-                           <roleCode>?</roleCode>
-                           <!--Optional:-->
-                           <startDate>?</startDate>
-                           <!--Optional:-->
-                           <endDate>?</endDate>
-                           <stud:researchStaff id="?" version="?">
-                              <firstName>?</firstName>
-                              <lastName>?</lastName>
-                              <!--Optional:-->
-                              <nciIdentifier>?</nciIdentifier>
-                           </stud:researchStaff>
-                        </stud:studyPersonnel>
-                     </studyPersonnels>
-                  </stud:studyFundingSponsor>
-               </fundingSponsor>
-               <coordinatingCenter>
-                  <organizationAssignedIdentifier id="?" version="?">
-                     <value>?</value>
-                  </organizationAssignedIdentifier>
-                  <stud:studyCoordinatingCenter id="?" version="?">
-                     <stud:organization id="?" version="?">
-                        <!--Optional:-->
-                        <descriptionText>?</descriptionText>
-                        <name>?</name>
-                        <nciInstituteCode>?</nciInstituteCode>
-                        <!--Optional:-->
-                        <city>?</city>
-                        <!--Optional:-->
-                        <state>?</state>
-                        <!--Optional:-->
-                        <country>?</country>
-                        <!--Optional:-->
-                        <status>?</status>
-                        <!--Optional:-->
-                        <mergedOrganization/>
-                     </stud:organization>
-                     <!--Optional:-->
-                     <studyInvestigators>
-                        <!--1 or more repetitions:-->
-                        <stud:studyInvestigator id="?" version="?">
-                           <roleCode>?</roleCode>
-                           <!--Optional:-->
-                           <startDate>?</startDate>
-                           <!--Optional:-->
-                           <endDate>?</endDate>
-                           <stud:siteInvestigator id="?" version="?">
-                              <stud:investigator id="?" version="?">
-                                 <firstName>?</firstName>
-                                 <lastName>?</lastName>
-                                 <!--Optional:-->
-                                 <nciIdentifier>?</nciIdentifier>
-                              </stud:investigator>
-                           </stud:siteInvestigator>
-                        </stud:studyInvestigator>
-                     </studyInvestigators>
-                     <!--Optional:-->
-                     <studyPersonnels>
-                        <!--1 or more repetitions:-->
-                        <stud:studyPersonnel id="?" version="?">
-                           <roleCode>?</roleCode>
-                           <!--Optional:-->
-                           <startDate>?</startDate>
-                           <!--Optional:-->
-                           <endDate>?</endDate>
-                           <stud:researchStaff id="?" version="?">
-                              <firstName>?</firstName>
-                              <lastName>?</lastName>
-                              <!--Optional:-->
-                              <nciIdentifier>?</nciIdentifier>
-                           </stud:researchStaff>
-                        </stud:studyPersonnel>
-                     </studyPersonnels>
-                  </stud:studyCoordinatingCenter>
-               </coordinatingCenter>
-               <studyOrganizations>
-                  <!--1 or more repetitions:-->
-                  <stud:studySite id="?" version="?">
-                     <stud:organization id="?" version="?">
-                        <!--Optional:-->
-                        <descriptionText>?</descriptionText>
-                        <name>?</name>
-                        <nciInstituteCode>?</nciInstituteCode>
-                        <!--Optional:-->
-                        <city>?</city>
-                        <!--Optional:-->
-                        <state>?</state>
-                        <!--Optional:-->
-                        <country>?</country>
-                        <!--Optional:-->
-                        <status>?</status>
-                        <!--Optional:-->
-                        <mergedOrganization/>
-                     </stud:organization>
-                     <!--Optional:-->
-                     <startDate>?</startDate>
-                     <!--Optional:-->
-                     <endDate>?</endDate>
-                     <!--Optional:-->
-                     <studyInvestigators>
-                        <!--1 or more repetitions:-->
-                        <stud:studyInvestigator id="?" version="?">
-                           <roleCode>?</roleCode>
-                           <!--Optional:-->
-                           <startDate>?</startDate>
-                           <!--Optional:-->
-                           <endDate>?</endDate>
-                           <stud:siteInvestigator id="?" version="?">
-                              <stud:investigator id="?" version="?">
-                                 <firstName>?</firstName>
-                                 <lastName>?</lastName>
-                                 <!--Optional:-->
-                                 <nciIdentifier>?</nciIdentifier>
-                              </stud:investigator>
-                           </stud:siteInvestigator>
-                        </stud:studyInvestigator>
-                     </studyInvestigators>
-                     <!--Optional:-->
-                     <studyPersonnels>
-                        <!--1 or more repetitions:-->
-                        <stud:studyPersonnel id="?" version="?">
-                           <roleCode>?</roleCode>
-                           <!--Optional:-->
-                           <startDate>?</startDate>
-                           <!--Optional:-->
-                           <endDate>?</endDate>
-                           <stud:researchStaff id="?" version="?">
-                              <firstName>?</firstName>
-                              <lastName>?</lastName>
-                              <!--Optional:-->
-                              <nciIdentifier>?</nciIdentifier>
-                           </stud:researchStaff>
-                        </stud:studyPersonnel>
-                     </studyPersonnels>
-                  </stud:studySite>
-               </studyOrganizations>
-               <!--Optional:-->
-               <identifiers>
-                  <!--Zero or more repetitions:-->
-                  <stud:organizationAssignedIdentifier id="?" version="?">
-                     <type>?</type>
-                     <value>?</value>
-                     <primaryIndicator>?</primaryIndicator>
-                     <stud:organization id="?" version="?">
-                        <!--Optional:-->
-                        <descriptionText>?</descriptionText>
-                        <name>?</name>
-                        <nciInstituteCode>?</nciInstituteCode>
-                        <!--Optional:-->
-                        <city>?</city>
-                        <!--Optional:-->
-                        <state>?</state>
-                        <!--Optional:-->
-                        <country>?</country>
-                        <!--Optional:-->
-                        <status>?</status>
-                        <!--Optional:-->
-                        <mergedOrganization/>
-                     </stud:organization>
-                  </stud:organizationAssignedIdentifier>
-                  <!--Zero or more repetitions:-->
-                  <stud:systemAssignedIdentifier id="?" version="?">
-                     <type>?</type>
-                     <value>?</value>
-                     <primaryIndicator>?</primaryIndicator>
-                     <systemName>?</systemName>
-                  </stud:systemAssignedIdentifier>
-               </identifiers>
-               <!--Optional:-->
-               <treatmentAssignments>
-                  <!--1 or more repetitions:-->
-                  <stud:treatmentAssignment id="?" version="?">
-                     <code>?</code>
-                     <!--Optional:-->
-                     <doseLevelOrder>?</doseLevelOrder>
-                     <description>?</description>
-                     <!--Optional:-->
-                     <comments>?</comments>
-                  </stud:treatmentAssignment>
-               </treatmentAssignments>
-               <!--Optional:-->
-               <studyAgents>
-                  <!--1 or more repetitions:-->
-                  <stud:studyAgent id="?" version="?">
-                     <!--Optional:-->
-                     <stud:agent id="?" version="?">
-                        <!--Optional:-->
-                        <name>?</name>
-                        <!--Optional:-->
-                        <nscNumber>?</nscNumber>
-                     </stud:agent>
-                     <!--Optional:-->
-                     <otherAgent>?</otherAgent>
-                     <!--Optional:-->
-                     <indType>?</indType>
-                     <!--Optional:-->
-                     <partOfLeadIND>?</partOfLeadIND>
-                     <!--Optional:-->
-                     <studyAgentINDAssociations>
-                        <stud:studyAgentINDAssociation id="?" version="?">
-                           <stud:investigationalNewDrug id="?" version="?">
-                              <indNumber>?</indNumber>
-                           </stud:investigationalNewDrug>
-                        </stud:studyAgentINDAssociation>
-                     </studyAgentINDAssociations>
-                  </stud:studyAgent>
-               </studyAgents>
-               <!--Optional:-->
-               <ctepStudyDiseases>
-                  <!--1 or more repetitions:-->
-                  <stud:ctepStudyDisease id="?" version="?">
-                     <stud:diseaseTerm id="?" version="?">
-                        <!--Optional:-->
-                        <term>?</term>
-                        <!--Optional:-->
-                        <meddraCode>?</meddraCode>
-                     </stud:diseaseTerm>
-                     <leadDisease>?</leadDisease>
-                  </stud:ctepStudyDisease>
-               </ctepStudyDiseases>
-               <!--Optional:-->
-               <meddraStudyDiseases>
-                  <!--1 or more repetitions:-->
-                  <stud:meddraStudyDisease id="?" version="?">
-                     <meddraCode>?</meddraCode>
-                  </stud:meddraStudyDisease>
-               </meddraStudyDiseases>
-               <!--Optional:-->
-               <evaluationPeriods>
-                  <!--1 or more repetitions:-->
-                  <stud:evaluationPeriod id="?" version="?">
-                     <name>?</name>
-                     <!--Optional:-->
-                     <descriptionText>?</descriptionText>
-                     <epochOrder>?</epochOrder>
-                     <!--Optional:-->
-                     <solicitedAdverseEvents>
-                        <!--1 or more repetitions:-->
-                        <stud:solicitedAdverseEvent id="?" version="?">
-                           <!--Optional:-->
-                           <name>?</name>
-                           <!--Optional:-->
-                           <ctepCode>?</ctepCode>
-                           <!--Optional:-->
-                           <meddraCode>?</meddraCode>
-                           <!--Optional:-->
-                           <otherMeddraCode>?</otherMeddraCode>
-                        </stud:solicitedAdverseEvent>
-                     </solicitedAdverseEvents>
-                  </stud:evaluationPeriod>
-               </evaluationPeriods>
-               <!--Optional:-->
-               <studyDevices>
-                  <!--Zero or more repetitions:-->
-                  <stud:studyDevice id="?" version="?">
-                     <!--Optional:-->
-                     <studyTherapyType>?</studyTherapyType>
-                     <!--Optional:-->
-                     <stud:device id="?" version="?">
-                        <!--Optional:-->
-                        <commonName>?</commonName>
-                        <!--Optional:-->
-                        <brandName>?</brandName>
-                        <!--Optional:-->
-                        <type>?</type>
-                        <!--Optional:-->
-                        <status>?</status>
-                     </stud:device>
-                     <!--Optional:-->
-                     <otherBrandName>?</otherBrandName>
-                     <!--Optional:-->
-                     <otherCommonName>?</otherCommonName>
-                     <!--Optional:-->
-                     <otherDeviceType>?</otherDeviceType>
-                     <!--Optional:-->
-                     <catalogNumber>?</catalogNumber>
-                     <!--Optional:-->
-                     <manufacturerName>?</manufacturerName>
-                     <!--Optional:-->
-                     <manufacturerCity>?</manufacturerCity>
-                     <!--Optional:-->
-                     <manufacturerState>?</manufacturerState>
-                     <!--Optional:-->
-                     <modelNumber>?</modelNumber>
-                  </stud:studyDevice>
-               </studyDevices>
-               <!--Optional:-->
-               <expectedAECtcTerms>
-                  <!--1 or more repetitions:-->
-                  <stud:expectedAECtcTerm id="?" version="?">
-                     <!--Optional:-->
-                     <ctepCode>?</ctepCode>
-                     <!--Optional:-->
-                     <otherMeddraCode>?</otherMeddraCode>
-                  </stud:expectedAECtcTerm>
-               </expectedAECtcTerms>
-               <!--Optional:-->
-               <expectedAEMeddraTerms>
-                  <!--1 or more repetitions:-->
-                  <stud:expectedAEMeddraTerm id="?" version="?">
-                     <!--Optional:-->
-                     <meddraCode>?</meddraCode>
-                  </stud:expectedAEMeddraTerm>
-               </expectedAEMeddraTerms>
-            </stud:study>
-         </stud:Studies>
+         <stud:studies>
+
+<!-- STUDY START -->
+    <stud:study>
+        <shortTitle>TestRules14</shortTitle>
+        <phaseCode>Phase I Trial</phaseCode>
+        <otherMeddra>MedDRA v10</otherMeddra>
+        <studyPurpose>Treatment</studyPurpose>
+        <aeTermUnique>true</aeTermUnique>
+        <stud:aeTerminology>
+            <stud:ctcVersion>
+                <name>4</name>
+            </stud:ctcVersion>
+        </stud:aeTerminology>
+        <stud:diseaseTerminology>
+            <diseaseCodeTerm>CTEP</diseaseCodeTerm>
+        </stud:diseaseTerminology>
+        <fundingSponsor>
+            <organizationAssignedIdentifier>
+                <value>12345A</value>
+            </organizationAssignedIdentifier>
+            <stud:studyFundingSponsor>
+                <stud:organization>
+                    <name>Cancer Therapy Evaluation Program</name>
+                    <nciInstituteCode>CTEP</nciInstituteCode>
+                </stud:organization>
+                <studyInvestigators>
+                    <stud:studyInvestigator>
+                        <roleCode>PI</roleCode>
+                        <startDate>2009-05-06</startDate>
+                        <stud:siteInvestigator>
+                            <stud:investigator>
+                                <firstName>Silvio</firstName>
+                                <lastName>Berlusconi</lastName>
+                            </stud:investigator>
+                        </stud:siteInvestigator>
+                    </stud:studyInvestigator>
+                </studyInvestigators>
+                <studyPersonnels>
+                    <stud:studyPersonnel>
+                        <roleCode>ae_rule_and_report_manager</roleCode>
+                        <startDate>2008-01-01</startDate>
+                        <stud:researchStaff>
+                            <firstName>biju76</firstName>
+                            <lastName>Jank3</lastName>
+                        </stud:researchStaff>
+                    </stud:studyPersonnel>
+                </studyPersonnels>
+            </stud:studyFundingSponsor>
+        </fundingSponsor>
+        <coordinatingCenter>
+            <organizationAssignedIdentifier>
+                <value>12345A</value>
+            </organizationAssignedIdentifier>
+            <stud:studyCoordinatingCenter>
+                <stud:organization>
+                    <name>Cancer Therapy Evaluation Program</name>
+                    <nciInstituteCode>CTEP</nciInstituteCode>
+                </stud:organization>
+            </stud:studyCoordinatingCenter>
+        </coordinatingCenter>
+        <studyOrganizations>
+            <stud:studySite>
+                <stud:organization>
+                    <name>Howard University Hospital</name>
+                    <nciInstituteCode>DC006</nciInstituteCode>
+                </stud:organization>
+            </stud:studySite>
+        </studyOrganizations>
+        <identifiers/>
+        <treatmentAssignments />
+        <studyAgents />
+        <evaluationPeriods >
+            <stud:evaluationPeriod>
+                <name>Baseline</name>
+                <epochOrder>0</epochOrder>
+            </stud:evaluationPeriod>
+            <stud:evaluationPeriod>
+                <name>Treatment</name>
+                <epochOrder>1</epochOrder>
+                <solicitedAdverseEvents>
+                    <stud:solicitedAdverseEvent>
+                        <ctepCode>10000081</ctepCode>
+                    </stud:solicitedAdverseEvent>
+                    <stud:solicitedAdverseEvent>
+                        <ctepCode>10019211</ctepCode>
+                    </stud:solicitedAdverseEvent>
+                    <stud:solicitedAdverseEvent>
+                        <ctepCode>10049737</ctepCode>
+                    </stud:solicitedAdverseEvent>
+                </solicitedAdverseEvents>
+            </stud:evaluationPeriod>
+            <stud:evaluationPeriod>
+                <name>Post-treatment</name>
+                <epochOrder>2</epochOrder>
+                <solicitedAdverseEvents>
+                    <stud:solicitedAdverseEvent>
+                        <ctepCode>10000081</ctepCode>
+                    </stud:solicitedAdverseEvent>
+                </solicitedAdverseEvents>
+            </stud:evaluationPeriod>
+        </evaluationPeriods>
+
+    </stud:study>
+<!-- STUDY END -->
+         </stud:studies>
       </stud:updateStudy>
    </soapenv:Body>
 </soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/study/StudyProcessorInterface/updateStudy"/><con:wsrmConfig version="1.2"/></con:call><con:call name="valid_request"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://localhost:8443/caaers/services/StudyService</con:endpoint><con:request><![CDATA[<soapenv:Envelope 
@@ -4402,7 +4099,7 @@ xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-s
    <soapenv:Body>
       <stud:updateStudy>
          <!--Optional:-->
-         <stud:Studies>
+         <stud:studies>
 <!-- STUDY START -->
     <stud:study>
         <shortTitle>TestRules14</shortTitle>
@@ -4600,7 +4297,7 @@ xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-s
     </stud:study>
 
 <!-- STUDY END -->
-         </stud:Studies>
+         </stud:studies>
       </stud:updateStudy>
    </soapenv:Body>
 </soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/study/StudyProcessorInterface/updateStudy"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="ResearchStaffServiceSoapBinding" type="wsdl" bindingName="{http://schema.integration.caaers.cabig.nci.nih.gov/researchstaff}ResearchStaffServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="https://localhost:8443/caaers/services/ResearchStaffMigratorService?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="https://localhost:8443/caaers/services/ResearchStaffMigratorService?wsdl"><con:part><con:url>https://localhost:8443/caaers/services/ResearchStaffMigratorService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="ResearchStaffService" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/researchstaff" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/researchstaff" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
