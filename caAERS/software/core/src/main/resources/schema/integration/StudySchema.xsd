@@ -64,7 +64,7 @@
                     <xs:element name="studyOrganizations">
                         <xs:complexType>
                             <xs:sequence>
-                                <xs:element ref="studySite" maxOccurs="unbounded"/>
+                                <xs:element ref="studySite" minOccurs="0" maxOccurs="unbounded"/>
                             </xs:sequence>
                         </xs:complexType>
                     </xs:element>
