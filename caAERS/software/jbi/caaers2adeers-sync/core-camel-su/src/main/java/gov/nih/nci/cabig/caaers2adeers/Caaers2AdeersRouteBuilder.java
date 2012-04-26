@@ -112,7 +112,7 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
 
         //BELOW 2 routes are the final sinks of messages.
         from("direct:outputSink")
-                .process(new TrackerPreProcessor(Stage.REQUEST_COMPLETION))
+                .process(new Tracker(Stage.REQUEST_COMPLETION))
                 .to("log:from-outputSink?showAll=true");
     	
 		//invalid requests
