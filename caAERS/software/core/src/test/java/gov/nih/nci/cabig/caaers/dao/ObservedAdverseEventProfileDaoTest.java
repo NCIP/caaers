@@ -31,11 +31,11 @@ public class ObservedAdverseEventProfileDaoTest extends DaoTestCase<ObservedAdve
         assertEquals(Grade.NORMAL, loaded.getGrade());
         assertEquals(NotificationStatus.NOTIFY, loaded.getNotificationStatus());
         assertEquals(new Double(15.0), loaded.getObservedFrequency());
-        assertEquals(40, loaded.getObservedNoOfAE().intValue());
+        assertEquals(20, loaded.getObservedNoOfAE().intValue());
         assertEquals(new Double(.10), loaded.getObservedSignificance());
         assertEquals(new Double(0.23), loaded.getpValue());
         assertEquals(new Double(2.3), loaded.getStandardDeviation());
-        assertEquals(60, loaded.getTotalNoOfRegistrations().intValue());
+        assertEquals(40, loaded.getTotalNoOfRegistrations().intValue());
         assertEquals(-3, loaded.getTreatmentAssignment().getId().intValue());
         assertEquals(3012, loaded.getCtcTerm().getId().intValue());
     }
