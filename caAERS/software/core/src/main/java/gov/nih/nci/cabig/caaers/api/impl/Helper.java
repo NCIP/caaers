@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.api.impl;
 
 import gov.nih.nci.cabig.caaers.api.ProcessingOutcome;
 import gov.nih.nci.cabig.caaers.integration.schema.common.*;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +71,7 @@ public class Helper {
             serviceRespons.setEntityProcessingOutcomes(entityProcessingOutcomes);
         }
         EntityProcessingOutcomeType entityProcessingOutcomeType = createProcessingOutcomeType(true, "NA",
-                businessId, caaersId, corelationId, messages);
+                StringUtils.isEmpty(businessId) ? "UNKNOWN" : businessId, caaersId, corelationId, messages);
         entityProcessingOutcomes.getEntityProcessingOutcome().add(entityProcessingOutcomeType);
 
         return response;
