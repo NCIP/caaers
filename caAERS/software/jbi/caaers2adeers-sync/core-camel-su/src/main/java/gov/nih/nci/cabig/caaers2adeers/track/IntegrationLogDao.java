@@ -1,7 +1,6 @@
 package gov.nih.nci.cabig.caaers2adeers.track;
 
 import gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.orm.hibernate3.HibernateTemplate;

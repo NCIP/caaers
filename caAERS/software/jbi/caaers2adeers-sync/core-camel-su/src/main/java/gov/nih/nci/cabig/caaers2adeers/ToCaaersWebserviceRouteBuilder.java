@@ -1,8 +1,6 @@
 package gov.nih.nci.cabig.caaers2adeers;
 
-import gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage;
-import gov.nih.nci.cabig.caaers2adeers.track.Tracker;
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.*;
+import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.ROUTED_TO_CAAERS_SINK;
 import static gov.nih.nci.cabig.caaers2adeers.track.Tracker.track;
 
 public class ToCaaersWebserviceRouteBuilder {

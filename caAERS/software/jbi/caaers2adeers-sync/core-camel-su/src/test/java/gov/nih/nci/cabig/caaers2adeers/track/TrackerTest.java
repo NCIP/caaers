@@ -8,6 +8,6 @@ import static gov.nih.nci.cabig.caaers2adeers.track.Tracker.track;
  */
 public class TrackerTest extends TestCase {
     public void testTrack() throws Exception {
-         assertNotNull(track(IntegrationLog.Stage.ADEERS_WS_IN_TRANSFORMATION, "test"));
+         assertNotNull(track(ADEERS_WS_IN_TRANSFORMATION, "test"));
     }
 }

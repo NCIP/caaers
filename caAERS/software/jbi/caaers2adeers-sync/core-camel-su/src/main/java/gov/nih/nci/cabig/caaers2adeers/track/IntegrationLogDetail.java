@@ -2,20 +2,10 @@ package gov.nih.nci.cabig.caaers2adeers.track;
 
 
 import gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage;
-
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Version;
-
-import gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name="integration_log_details")

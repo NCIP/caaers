@@ -2,7 +2,6 @@ package gov.nih.nci.cabig.caaers2adeers;
 
 import org.apache.camel.*;
 import org.apache.camel.impl.DefaultCamelContext;
-import org.apache.camel.impl.DefaultExchange;
 import org.apache.camel.spi.Synchronization;
 import org.apache.camel.spi.UnitOfWork;
 

@@ -1,10 +1,8 @@
 package gov.nih.nci.cabig.caaers2adeers;
 
-import gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage;
-
-import gov.nih.nci.cabig.caaers2adeers.track.Tracker;
 import org.apache.camel.ExchangePattern;
 import org.apache.camel.builder.RouteBuilder;
+
 import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.*;
 import static gov.nih.nci.cabig.caaers2adeers.track.Tracker.track;
 

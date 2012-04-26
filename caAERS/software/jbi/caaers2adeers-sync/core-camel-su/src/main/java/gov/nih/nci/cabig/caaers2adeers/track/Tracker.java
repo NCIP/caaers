@@ -2,13 +2,12 @@ package gov.nih.nci.cabig.caaers2adeers.track;
 
 import gov.nih.nci.cabig.caaers2adeers.exchnage.ExchangePreProcessor;
 import gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage;
-
-import java.util.Map;
-
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import java.util.Map;
 
 public class Tracker implements Processor{
 	
