@@ -42,6 +42,13 @@ public class Tracker implements Processor{
 		this(stage, null, null, null);
 	}
 
+    public static Tracker track(Stage stage, String notes){
+        return new Tracker(stage, notes);
+    }
+    public static Tracker track(Stage stage){
+        return new Tracker(stage);
+    }
+
 	public void process(Exchange exchange) throws Exception {
 		//set the properties in the exchange
         Map<String,Object> properties = exchange.getProperties();

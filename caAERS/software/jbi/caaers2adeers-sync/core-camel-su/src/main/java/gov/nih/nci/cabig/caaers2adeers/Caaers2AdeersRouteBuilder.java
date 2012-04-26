@@ -5,6 +5,8 @@ import gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage;
 import gov.nih.nci.cabig.caaers2adeers.track.Tracker;
 import org.apache.camel.ExchangePattern;
 import org.apache.camel.builder.RouteBuilder;
+import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.*;
+import static gov.nih.nci.cabig.caaers2adeers.track.Tracker.track;
 
 /**
  * The basic flow can be classified into 3, a) towards adEERS b) towards caAERS c) towards SynchComponent.
@@ -58,32 +60,13 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
 
         onException(Throwable.class).to("direct:morgue");
 
-        //webservice request
-        //from("")
-        // .setHeader(C2A_SYNC_HEADER, xpath("/payload/request/operation/@mode = 'sync'"))
-        // .to("direct:adEERSRequestSink");
-        
-      //just for testing.. 
-//    	from("timer://tutorial?fixedRate=true&delay=5000&period=300000")
-//    		.setBody(constant(MockMessageGenerator.getAgentsRequest()))
-////        	.processRef("exchangePreProcessor")
-////    		.setBody(constant(MockMessageGenerator.getStudyDetails("CALGB-90802")))
-//            .to("log:SENDING===MESSAGE===============")
-//    		.to("direct:adEERSRequestSink");
-
-    	//just for testing.. 
-//    	from("timer://tutorial?fixedRate=true&delay=10000&period=300000")
-//        	.processRef("exchangePreProcessor")
-//    		.setBody(constant(getMessage()))
-//    		.to("direct:adEERSRequestSink");
-        
         //just for testing generic webservice
         
     	from("jbi:service:http://schema.integration.caaers.cabig.nci.nih.gov/common/generic-processor-sink")
 		.processRef("exchangePreProcessor")
-		.process(new Tracker(Stage.REQUEST_RECEIVED))
+		.process(track(REQUEST_RECEIVED))
 		.to("xslt:xslt/adeers/request/soap_env_filter.xsl")
-		.process(new Tracker(Stage.ROUTED_TO_ADEERS_SINK))
+		.process(track(ROUTED_TO_ADEERS_SINK))
 		.choice()
                 .when(header("c2a_sync_mode").isEqualTo("sync"))
                 	.to("log:after-soap_filter-and-before-sync")
@@ -100,24 +83,29 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
     	from("direct:adEERSResponseSink")
                 .to("log:caaers.synch-comp?showHeaders=true")
                 .choice()
-                    .when(header("c2a_sync_mode").isEqualTo("sync")).to("direct:caaersWSRequestSink")
-                    .otherwise().to("direct:caaersClientRequestSink");
+                    .when().xpath("not(//operation/data/child::*/child::*)")
+                        .process(track(NO_DATA_AVAILABLE))
+                        .to("direct:outputSink")
+                    .when(header("c2a_sync_mode").isEqualTo("sync"))
+                        .to("direct:caaersWSRequestSink")
+                    .otherwise()
+                        .to("direct:caaersClientRequestSink");
     	
     	//need to process caAERS results
 		from("direct:caAERSResponseSink")
-                .process(new Tracker(Stage.CAAERS_WS_OUT_TRANSFORMATION))
+                .process(track(CAAERS_WS_OUT_TRANSFORMATION))
                 .to("log:caaers.direct-caAERSResponseSink")
                 .to("direct:outputSink");
 
 
         //BELOW 2 routes are the final sinks of messages.
         from("direct:outputSink")
-                .process(new Tracker(Stage.REQUEST_COMPLETION))
+                .process(track(REQUEST_COMPLETION))
                 .to("log:from-outputSink?showAll=true");
     	
 		//invalid requests
         from("direct:morgue")
-        		.process(new Tracker(Stage.REQUST_PROCESSING_ERROR))
+        		.process(track(REQUST_PROCESSING_ERROR))
                 .to("log:fromMorgue?showAll=true")
                 .to("xslt:xslt/caaers/response/unknown.xsl")
                 .to("log:after-unknown")

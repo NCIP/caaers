@@ -2,7 +2,8 @@ package gov.nih.nci.cabig.caaers2adeers;
 
 import gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage;
 import gov.nih.nci.cabig.caaers2adeers.track.Tracker;
-
+import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.*;
+import static gov.nih.nci.cabig.caaers2adeers.track.Tracker.track;
 
 public class ToAdeersRouteBuilder {
 	
@@ -31,7 +32,7 @@ public class ToAdeersRouteBuilder {
 //            .processRef("exchangePreProcessor")
             .processRef("headerGeneratorProcessor")
     		.to("log:caaers.to-adeers")
-    		.process(new Tracker(Stage.ROUTED_TO_ADEERS_WS_INVOCATION_CHANNEL))
+    		.process(track(ROUTED_TO_ADEERS_WS_INVOCATION_CHANNEL))
     		.choice()
     			.when().xpath(xpathPredicate("agent", "getAgentsLOV")).to("direct:adeers-agent-lov")
     			.when().xpath(xpathPredicate("asael", "getASAEL")).to("direct:adeers-asael-lov")

@@ -138,6 +138,7 @@ public class IntegrationLog{
         CAAERS_WS_OUT_TRANSFORMATION(70, "caAERS Webservice response transformation") ,
 
         REQUST_PROCESSING_ERROR(900, "Error while processing request"),
+        NO_DATA_AVAILABLE(998, "No data available"),
         REQUEST_COMPLETION(999, "Message processing complete")
 
         ;
