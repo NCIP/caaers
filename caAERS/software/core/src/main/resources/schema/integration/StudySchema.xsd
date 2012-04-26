@@ -347,10 +347,10 @@
     <xs:complexType name="AgentType">
         <xs:complexContent>
             <xs:extension base="cct:MutableDomainObjectType">
-                <xs:choice>
-                    <xs:element name="name" type="cct:CustomStringType"/>
-                    <xs:element name="nscNumber" type="xs:string"/>
-                </xs:choice>
+                <xs:sequence>
+                    <xs:element name="nscNumber" type="xs:string" minOccurs="0" />
+                    <xs:element name="name" type="cct:CustomStringType" minOccurs="0" />
+                </xs:sequence>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
@@ -409,10 +409,10 @@
     <xs:complexType name="DiseaseTermType">
         <xs:complexContent>
             <xs:extension base="cct:MutableDomainObjectType">
-                <xs:choice>
-                    <xs:element name="term" type="cct:CustomStringType"/>
-                    <xs:element name="meddraCode" type="cct:CustomStringType"/>
-                </xs:choice>
+                <xs:sequence>
+                    <xs:element name="term" type="cct:CustomStringType" minOccurs="0"/>
+                    <xs:element name="meddraCode" type="cct:CustomStringType" minOccurs="0"/>
+                </xs:sequence>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
@@ -603,11 +603,7 @@
     <xs:element name="studyIntervention" type="StudyInterventionType"/>
     <xs:complexType name="StudyInterventionType">
         <xs:complexContent>
-            <xs:extension base="cct:MutableDomainObjectType">
-                <xs:sequence>
-                    <xs:element name="studyTherapyType" type="xs:string" minOccurs="0"/>
-                </xs:sequence>
-            </xs:extension>
+            <xs:extension base="cct:MutableDomainObjectType" />
         </xs:complexContent>
     </xs:complexType>
 
