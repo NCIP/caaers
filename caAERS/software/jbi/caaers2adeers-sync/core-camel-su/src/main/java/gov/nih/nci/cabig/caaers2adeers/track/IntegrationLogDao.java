@@ -46,7 +46,7 @@ public class IntegrationLogDao{
 					break;
 				}
 			}
-			returnMap.put(entityOperation, new SimpleDateFormat("yyyy-MM-ddTHH:mm:ss").format(date));
+			returnMap.put(entityOperation, new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(date));
 		}
 		return returnMap;
 	}
