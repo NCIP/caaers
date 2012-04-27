@@ -104,7 +104,14 @@
           <version>${cxfBCVersion}</version>
           <scope>test</scope>
       </dependency>
-
+      <dependency>
+          <groupId>org.apache.servicemix</groupId>
+          <artifactId>servicemix-quartz</artifactId>
+          <classifier>installer</classifier>
+          <type>zip</type>
+          <version>${camelVersion}</version>
+          <scope>test</scope>
+      </dependency>
 	  <dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-annotations</artifactId>
