@@ -10,7 +10,7 @@
     <xs:element name="Devices">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="device" type="cct:DeviceType" maxOccurs="unbounded" />
+                <xs:element name="device" type="cct:DeviceType" minOccurs="0" maxOccurs="unbounded" />
             </xs:sequence>
         </xs:complexType>
     </xs:element>
