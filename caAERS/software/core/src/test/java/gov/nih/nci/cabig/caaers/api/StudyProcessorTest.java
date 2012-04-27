@@ -496,7 +496,7 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
     	 assertNotNull(study);
 
     	 CaaersServiceResponse response =  createStudy("studydata/CreateStudyTest_4.xml");
-    	 assertEquals("0", response.getServiceResponse().getResponsecode());
+    	 assertEquals("1", response.getServiceResponse().getResponsecode());
     	 
     	//make sure it got created
     	 study = studyDao.getByShortTitle("A Strange Study");
