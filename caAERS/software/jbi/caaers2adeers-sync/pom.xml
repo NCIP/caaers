@@ -8,6 +8,7 @@
   <name>caAERS to AdEERS Integration</name>
   <url>http://servicemix.apache.org</url>
     <properties>
+        <camelQuartzVersion>2.2.0</camelQuartzVersion>
         <camelVersion>2010.01</camelVersion>
         <cxfBCVersion>2010.01</cxfBCVersion>
         <smLibVersion>2010.01</smLibVersion>

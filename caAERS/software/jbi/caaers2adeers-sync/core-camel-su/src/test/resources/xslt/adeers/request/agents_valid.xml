@@ -1,7 +1,7 @@
 <payload>
     <system>adeers</system>
     <request>
-        <entity>agent</entity>
+        <entity>asael</entity>
         <operation mode="sync" name="getAgentsLOV">
             <criteria>
                 <criterion name="createdDate">2001-10-26T21:32:52</criterion>
