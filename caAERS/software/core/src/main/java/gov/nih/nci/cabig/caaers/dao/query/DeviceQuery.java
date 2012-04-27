@@ -2,6 +2,10 @@ package gov.nih.nci.cabig.caaers.dao.query;
 
 import org.apache.commons.lang.StringUtils;
 
+/**
+ *
+ * @author Ion C. Olaru
+ */
 public class DeviceQuery extends AbstractQuery {
 
     public final static String COMMON_NAME = "common_name";
@@ -21,14 +25,15 @@ public class DeviceQuery extends AbstractQuery {
         }
     }
 
-    public void filterByCtepDbIdentifier(String ctepDbIdentifier){
-       if(StringUtils.isEmpty(ctepDbIdentifier)){
-           andWhere("d.ctepDbIdentifier is NULL OR d.ctepDbIdentifier = ''");
-       } else {
-           andWhere("d.ctepDbIdentifier = :dbId");
-           setParameter("dbId", ctepDbIdentifier);
-       }
+    public void filterByCtepDbIdentifier(String ctepDbIdentifier) {
+        if (StringUtils.isEmpty(ctepDbIdentifier)) {
+            andWhere("d.ctepDbIdentifier is NULL OR d.ctepDbIdentifier = ''");
+        } else {
+            andWhere("d.ctepDbIdentifier = :dbId");
+            setParameter("dbId", ctepDbIdentifier);
+        }
     }
+
     public void filterByCommonName(String commonName) {
         if (StringUtils.isBlank(commonName)) {
             andWhere("d.commonName IS NULL OR d.commonName = ''");

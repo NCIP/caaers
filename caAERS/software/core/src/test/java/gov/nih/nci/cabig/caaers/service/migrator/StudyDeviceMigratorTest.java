@@ -74,7 +74,7 @@ public class StudyDeviceMigratorTest extends DaoTestCase {
         //
         Device d = new Device();
         d.setCommonName("Common name 01");
-        d.setBrandName("B");
+        d.setBrandName("Brand name 01");
         d.setType("T");
 
         sd.setStudy(dbStudy);
@@ -88,8 +88,8 @@ public class StudyDeviceMigratorTest extends DaoTestCase {
         assertEquals(3, dbStudy.getStudyDevices().size());
         Device loadedDevice = deviceDao.getById(-1);
         assertEquals("T", loadedDevice.getType());
-        assertEquals("B", loadedDevice.getBrandName());
-        assertEquals("Common name 01, B, T", loadedDevice.getDisplayName());
+        assertEquals("Brand name 01", loadedDevice.getBrandName());
+        assertEquals("Common name 01, Brand name 01, T", loadedDevice.getDisplayName());
         assertEquals(-1, loadedDevice.getId().intValue());
 
     }

@@ -1,24 +1,8 @@
 <dataset>
 
-    <devices
-            id="-1"
-            common_name="Device-01 common name"
-            brand_name="Device-01 brand name"
-            device_type="Type A"
-            />
-
-    <devices
-            id="-2"
-            common_name="Device-02 common name"
-            brand_name="Device-02 brand name"
-            device_type="Type A"
-            />
-
-    <devices
-            id="-3"
-            common_name="Device-03 common name"
-            brand_name="Device-03 brand name"
-            device_type="Device-03 type C"
-            />
+    <devices id="-4" ctep_db_identifier="ctepId-A" common_name="ABC" brand_name="DEF" device_type="GHI" />
+    <devices id="-1" common_name="Device-01 common name" brand_name="Device-01 brand name" device_type="Type A" />
+    <devices id="-2" common_name="Device-02 common name" brand_name="Device-02 brand name" device_type="Type A" />
+    <devices id="-3" common_name="Device-03 common name" brand_name="Device-03 brand name" device_type="Device-03 type C" />
 
 </dataset>

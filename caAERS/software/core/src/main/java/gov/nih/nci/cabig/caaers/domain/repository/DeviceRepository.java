@@ -12,7 +12,6 @@ import java.util.List;
  
 /**
  * The Class DeviceRepository.
- *
  * @author Ion C. Olaru
  */
 @Transactional(readOnly = true)
@@ -107,6 +106,19 @@ public class DeviceRepository {
     public List<Device> getByCommonName(String commonName) {
         DeviceQuery dq = new DeviceQuery();
         dq.filterByCommonName(commonName);
+        return (List<Device>)deviceDao.search(dq);
+    }
+
+    public List<Device> getByCommonNameAndBrandName(String commonName, String brandName) {
+        DeviceQuery dq = new DeviceQuery();
+        dq.filterByCommonName(commonName);
+        dq.filterByBrandName(brandName);
+        return (List<Device>)deviceDao.search(dq);
+    }
+
+    public List<Device> getByCtepDbIdentifier(String id) {
+        DeviceQuery dq = new DeviceQuery();
+        dq.filterByCtepDbIdentifier(id);
         return (List<Device>)deviceDao.search(dq);
     }
 

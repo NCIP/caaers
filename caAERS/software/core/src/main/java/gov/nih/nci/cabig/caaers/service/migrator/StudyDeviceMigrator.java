@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyDevice;
 import gov.nih.nci.cabig.caaers.domain.repository.DeviceRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -31,7 +32,15 @@ public class StudyDeviceMigrator implements Migrator<Study> {
             StudyDevice newStudyDevice = new StudyDevice();
             Device d  = null;
             if (sd.getDevice() != null) {
-                List<Device> ld = deviceRepository.getByCommonName(sd.getDevice().getCommonName());
+
+                List<Device> ld;
+
+                if (StringUtils.isNotBlank(sd.getDevice().getCtepDbIdentifier())) {
+                    ld = deviceRepository.getByCtepDbIdentifier(sd.getDevice().getCtepDbIdentifier());
+                } else {
+                    ld = deviceRepository.getByCommonNameAndBrandName(sd.getDevice().getCommonName(),sd.getDevice().getBrandName());
+                }
+
                 if (ld.size() > 0) {
                     d = ld.get(0);
                     deviceMigrator.migrate(sd.getDevice(), d, null);
