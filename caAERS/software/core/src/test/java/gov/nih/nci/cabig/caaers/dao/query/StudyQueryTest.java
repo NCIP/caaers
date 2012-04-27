@@ -229,7 +229,7 @@ public class StudyQueryTest extends TestCase{
     public void testFilterByShortTitleAndIdentifiers() {
         StudyQuery q = new StudyQuery();
         q.filterByShortTitleOrIdentifiers("abc");
-        assertEquals("select  distinct s from Study s join s.identifiers as identifier WHERE lower(s.shortTitle) LIKE :shortTitle OR lower(identifier.value) LIKE :identifierValue", q.getQueryString());
+        assertEquals("select  distinct s from Study s left outer join s.identifiers as identifier WHERE lower(s.shortTitle) LIKE :shortTitle OR lower(identifier.value) LIKE :identifierValue", q.getQueryString());
     }
 
 }
