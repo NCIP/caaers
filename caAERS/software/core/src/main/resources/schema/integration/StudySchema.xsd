@@ -90,7 +90,7 @@
                     <xs:element name="studyAgents" minOccurs="0">
                         <xs:complexType>
                             <xs:sequence>
-                                <xs:element ref="studyAgent" maxOccurs="unbounded"/>
+                                <xs:element ref="studyAgent" minOccurs="0" maxOccurs="unbounded"/>
                             </xs:sequence>
                         </xs:complexType>
                     </xs:element>
