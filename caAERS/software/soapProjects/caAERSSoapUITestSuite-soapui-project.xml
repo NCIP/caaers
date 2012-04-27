@@ -4282,22 +4282,13 @@ xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-s
                             </stud:organization>
                         </stud:studyCoordinatingCenter>
                     </coordinatingCenter>
-                    <studyOrganizations>
-                        <stud:studySite>
-                            <stud:organization>
-                                <name>Howard University Hospital</name>
-                                <nciInstituteCode>DC006</nciInstituteCode>
-                            </stud:organization>
-                        </stud:studySite>
-                    </studyOrganizations>
-
 
         <studyDevices>
             <stud:studyDevice>
                 <stud:device>
-                    <commonName>Device-B</commonName>
-                    <brandName>Brand-B2</brandName>
-                    <type>DeviceType-B2</type>
+                    <commonName>Device-B-9</commonName>
+                    <brandName>Brand-B-9</brandName>
+                    <type>DeviceType-B2-9</type>
 		    <ctepDbIdentifier>1141</ctepDbIdentifier>
                 </stud:device>
             </stud:studyDevice>
@@ -5601,7 +5592,7 @@ xmlns:com="http://schema.integration.caaers.cabig.nci.nih.gov/common"
       <soap:address location="https://dev.semanticbits.com/caaers/services/DevicesService"/>
     </wsdl:port>
   </wsdl:service>
-</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>https://localhost:8443/caaers/services/DevicesService</con:endpoint><con:endpoint>https://dev.semanticbits.com/caaers/services/DevicesService</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="createOrUpdateDevices" bindingOperationName="createOrUpdateDevices" type="Request-Response" outputName="createOrUpdateDevicesResponse" inputName="createOrUpdateDevices" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="create_devices" outgoingWss="caaers"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://dev.semanticbits.com/caaers/services/DevicesService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" 
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>https://localhost:8443/caaers/services/DevicesService</con:endpoint><con:endpoint>https://10.10.10.198:8443/caaers/services/DevicesService</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="createOrUpdateDevices" bindingOperationName="createOrUpdateDevices" type="Request-Response" outputName="createOrUpdateDevicesResponse" inputName="createOrUpdateDevices" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="create_devices" outgoingWss="caaers"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://10.10.10.198:8443/caaers/services/DevicesService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" 
 xmlns:com="http://schema.integration.caaers.cabig.nci.nih.gov/common" 
 xmlns:dev="http://schema.integration.caaers.cabig.nci.nih.gov/device">
    <soapenv:Header/>
@@ -5627,7 +5618,7 @@ xmlns:dev="http://schema.integration.caaers.cabig.nci.nih.gov/device">
          </dev:Devices>
       </com:createOrUpdateDevices>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/common/DevicesServiceInterface/createOrUpdateDevices"/><con:wsrmConfig version="1.2"/></con:call><con:call name="adeers_devices" outgoingWss="caaers"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://dev.semanticbits.com/caaers/services/DevicesService</con:endpoint><con:request><![CDATA[<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"><soapenv:Body><com:createOrUpdateDevices xmlns:com="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:dev="http://schema.integration.caaers.cabig.nci.nih.gov/device"><dev:Devices>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/common/DevicesServiceInterface/createOrUpdateDevices"/><con:wsrmConfig version="1.2"/></con:call><con:call name="adeers_devices" outgoingWss="caaers"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://10.10.10.198:8443/caaers/services/DevicesService</con:endpoint><con:request><![CDATA[<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"><soapenv:Body><com:createOrUpdateDevices xmlns:com="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:dev="http://schema.integration.caaers.cabig.nci.nih.gov/device"><dev:Devices>
         <device><commonName>.</commonName><brandName>none</brandName><type/><ctepDbIdentifier>1</ctepDbIdentifier><status>Active</status></device>
         <device><commonName>Iressa</commonName><brandName>ZD1839</brandName><type/><ctepDbIdentifier>2</ctepDbIdentifier><status>Active</status></device>
         <device><commonName>Gore Tex #10 biliary stent</commonName><brandName/><type/><ctepDbIdentifier>3</ctepDbIdentifier><status>Active</status></device>
@@ -5824,12 +5815,14 @@ xmlns:dev="http://schema.integration.caaers.cabig.nci.nih.gov/device">
         <device><commonName>TACE</commonName><brandName/><type>Image Guided Intervention (IGI) Device</type><ctepDbIdentifier>797</ctepDbIdentifier><status>Active</status></device>
         <device><commonName>MRI-DTI</commonName><brandName/><type>Imaging Device</type><ctepDbIdentifier>983</ctepDbIdentifier><status>Active</status></device>
         <device><commonName>Bioimpedance Measurement</commonName><brandName>L-Dex UB500</brandName><type>Other Device</type><ctepDbIdentifier>1141</ctepDbIdentifier><status>Active</status></device>
-    </dev:Devices></com:createOrUpdateDevices></soapenv:Body></soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/common/DevicesServiceInterface/createOrUpdateDevices"/><con:wsrmConfig version="1.2"/></con:call><con:call name="adeers_empty_device" outgoingWss="caaers"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://dev.semanticbits.com/caaers/services/DevicesService</con:endpoint><con:request><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"><soapenv:Body><com:createOrUpdateDevices xmlns:com="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:dev="http://schema.integration.caaers.cabig.nci.nih.gov/device">
+    </dev:Devices></com:createOrUpdateDevices></soapenv:Body></soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/common/DevicesServiceInterface/createOrUpdateDevices"/><con:wsrmConfig version="1.2"/></con:call><con:call name="adeers_empty_device" outgoingWss="caaers"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://10.10.10.198:8443/caaers/services/DevicesService</con:endpoint><con:request><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+<soapenv:Body>
+<com:createOrUpdateDevices xmlns:com="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:dev="http://schema.integration.caaers.cabig.nci.nih.gov/device">
 <dev:Devices/>
 </com:createOrUpdateDevices>
 </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/common/DevicesServiceInterface/createOrUpdateDevices"/><con:wsrmConfig version="1.2"/></con:call><con:call name="another_request" outgoingWss="caaers"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://dev.semanticbits.com/caaers/services/DevicesService</con:endpoint><con:request><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/common/DevicesServiceInterface/createOrUpdateDevices"/><con:wsrmConfig version="1.2"/></con:call><con:call name="another_request" outgoingWss="caaers"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://10.10.10.198:8443/caaers/services/DevicesService</con:endpoint><con:request><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
 <soapenv:Body>
 <com:createOrUpdateDevices xmlns:com="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:dev="http://schema.integration.caaers.cabig.nci.nih.gov/device">
