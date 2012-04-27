@@ -182,6 +182,7 @@ public class DateUtilsTest extends TestCase {
              String d = DateUtils.formatDateForWS(DateUtils.today());
              assertTrue(d.startsWith(new SimpleDateFormat("yyyy-MM-dd").format(new Date())));
         }catch (Exception e){
+            e.printStackTrace();
             fail("should not throw error");
         }
     }

@@ -18,7 +18,7 @@ import java.util.GregorianCalendar;
 public class DateUtils {
 
     public static final String DATE_PATTERN= "MM/dd/yyyy";
-    public static final String WS_DATE_PATTERN= "yyyy-MM-ddTHH:mm:ss";
+    public static final String WS_DATE_PATTERN= "yyyy-MM-dd'T'HH:mm:ss";
 
 	/**
 	 * Checks whether the given d, is greater than or equal to startDate and less than or equal to endDate.
