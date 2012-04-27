@@ -9,6 +9,6 @@ public class PreExistingConditionQueryTest extends TestCase {
     public void testFilterByMeddraCode() throws Exception {
         PreExistingConditionQuery q = new PreExistingConditionQuery();
         q.filterByMeddraCode("99");
-        assertEquals("SELECT p FROM PreExistingCondition p WHERE p.meddraCode = :mc", q.getQueryString());
+        assertEquals("select p from PreExistingCondition p WHERE p.meddraLltCode = :mc", q.getQueryString());
     }
 }
