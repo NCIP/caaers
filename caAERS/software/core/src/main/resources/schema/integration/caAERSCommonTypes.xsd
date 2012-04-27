@@ -145,15 +145,15 @@
         <xs:complexContent>
             <xs:extension base="MutableDomainObjectType">
                 <xs:sequence>
-                    <xs:element name="descriptionText" type="CustomStringType" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="descriptionText" type="xs:string" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="name" type="CustomStringType" minOccurs="1" maxOccurs="1"/>
                     <xs:element name="nciInstituteCode" type="CustomStringType" minOccurs="1" maxOccurs="1"/>
-                    <xs:element name="city" type="CustomStringType" minOccurs="0" maxOccurs="1"/>
-                    <xs:element name="state" type="CustomStringType" minOccurs="0" maxOccurs="1"/>
-                    <xs:element name="country" type="CustomStringType" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="city" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="state" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="country" type="xs:string" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="status" type="ActiveInactiveStatusType" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="mergedOrganization" type="OrganizationType" minOccurs="0" maxOccurs="1"/>
-                    <xs:element name="type" type="CustomStringType" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="type" type="xs:string" minOccurs="0" maxOccurs="1"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
