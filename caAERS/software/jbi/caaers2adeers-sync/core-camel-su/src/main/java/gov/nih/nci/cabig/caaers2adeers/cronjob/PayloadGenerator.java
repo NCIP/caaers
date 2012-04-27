@@ -1,12 +1,14 @@
 package gov.nih.nci.cabig.caaers2adeers.cronjob;
 
+import org.apache.commons.lang.RandomStringUtils;
+
 
 public class PayloadGenerator {
 
 
 	public  String getRequest(String system, String entity, String operationName, String mode, String date) {
 
-        return "<payload>" +
+        return "<payload correlationId=\""+RandomStringUtils.randomAlphanumeric(10)+"\">" +
                 "<system>"+system+"</system>" +
                 "<request>" +
                 "<entity>"+entity+"</entity>" +

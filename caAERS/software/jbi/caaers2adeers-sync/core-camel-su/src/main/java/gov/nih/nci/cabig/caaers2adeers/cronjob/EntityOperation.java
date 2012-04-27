@@ -2,7 +2,11 @@ package gov.nih.nci.cabig.caaers2adeers.cronjob;
 
 public enum EntityOperation{
     AGENT("agent", "getAgentsLOV", "0+0+1+*+*+?"),
-
+    ORGANIZATION("organization", "getOrganizationsLOV", "0+5+1+*+*+?"),
+    DEVICE("device", "getDevicesLOV", "0+10+1+*+*+?"),
+    PRIOR_THERAPY("priortherapy", "getTherapiesLOV", "0+15+1+*+*+?"),
+    ASAEL("asael", "getASAEL", "0+20+1+*+*+?"),
+    PRE_EXISTING_CONDITION("preexistingcondition", "getPreExistingConditionsLOV", "0+25+1+*+*+?"),
     ;
     private String qualifiedName;
     private String operationName;

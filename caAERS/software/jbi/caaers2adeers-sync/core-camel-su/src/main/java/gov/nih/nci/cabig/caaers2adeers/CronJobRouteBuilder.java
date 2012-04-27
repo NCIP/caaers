@@ -33,7 +33,7 @@ public class CronJobRouteBuilder implements InitializingBean {
     public void configure(Caaers2AdeersRouteBuilder routeBuilder){
     	Map<EntityOperation, String> entityMap = integrationLogDao.findLastRequestCompletedDatetime();
     	for(EntityOperation entityOperation : entityMap.keySet()){
-	        routeBuilder.from("quartz://groupName/timerName/?cron="+cronExpressions.get(entityOperation))
+	        routeBuilder.from("quartz://caaersSync/"+entityOperation.toString()+"_timer/?cron="+cronExpressions.get(entityOperation))
 	                .setBody(routeBuilder.constant(payloadGenerator.getRequest("adeers", entityOperation.getQualifiedName(), 
 	                		entityOperation.getOperationName(), entityOperation.getMode(), entityMap.get(entityOperation))))
 	                .to("direct:adEERSRequestSink");
