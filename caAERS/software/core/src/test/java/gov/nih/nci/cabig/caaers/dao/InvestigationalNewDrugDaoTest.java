@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.dao;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_STUDY;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
+import gov.nih.nci.cabig.caaers.dao.query.HQLQuery;
 import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.InvestigatorHeldIND;
@@ -115,5 +116,13 @@ public class InvestigationalNewDrugDaoTest extends DaoTestCase<InvestigationalNe
     	assertNotNull(indList);
     	assertEquals(6,indList.size());
     }
-    
+
+    public void testGetByIndNumberAndHolderName() {
+        List<InvestigationalNewDrug> inds = getDao().findByNumberAndHolderName("-881", "New Site");
+        assertEquals(1, inds.size());
+        assertEquals(-881, inds.get(0).getId().longValue());
+        assertEquals(-771, inds.get(0).getINDHolder().getId().longValue());
+
+    }
+
 }

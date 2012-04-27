@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.dao;
 
+import gov.nih.nci.cabig.caaers.dao.query.HQLQuery;
 import gov.nih.nci.cabig.caaers.domain.INDHolder;
 import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
@@ -89,6 +90,20 @@ public class InvestigationalNewDrugDao extends GridIdentifiableDao<Investigation
     public List<InvestigationalNewDrug> findByIds(String[] ids) {
         return getHibernateTemplate().findByNamedParam(FIND_BY_IND_ID_QUERY, new String[] { "indNo" }, new String[] { "%" + ids[0] + "%" });
 
+    }
+
+    /**
+     * Find INDs by its number and holder name
+     * @param number indNumber
+     * @param holderName - IND Holder name
+     * @return list of found INDs
+     */
+    public List<InvestigationalNewDrug> findByNumberAndHolderName(String number, String holderName) {
+        HQLQuery q = new HQLQuery("SELECT holder.investigationalNewDrug FROM gov.nih.nci.cabig.caaers.domain.OrganizationHeldIND holder");
+        q.join("holder.investigationalNewDrug as ind");
+        q.leftJoin("holder.organization as org");
+        q.andWhere("org.name = :name and str(ind.indNumber) = :indNumber");
+        return getHibernateTemplate().findByNamedParam(q.getQueryString(), new String[] {"name", "indNumber"}, new String[] {holderName, number});
     }
 
     /**
