@@ -824,77 +824,78 @@ public class StudyConverter {
 
     }
 
-	private void populateStudyAgents(gov.nih.nci.cabig.caaers.integration.schema.study.Study studyDto, Study study) throws Exception{
+    private void populateStudyAgents(gov.nih.nci.cabig.caaers.integration.schema.study.Study studyDto, Study study) throws Exception {
 
-		gov.nih.nci.cabig.caaers.integration.schema.study.Study.StudyAgents studyAgents = studyDto.getStudyAgents();
-		if(studyAgents != null){
-			List<StudyAgentType> studyAgentTypeList = studyAgents.getStudyAgent();
-			List<StudyAgent> studyAgentList = study.getStudyAgents();
-			if(studyAgentTypeList != null && !studyAgentTypeList.isEmpty()){
-				StudyAgent studyAgent = null;
-				Agent agent = null;
-				for(StudyAgentType studyAgentType : studyAgentTypeList){
-					studyAgent = new StudyAgent();
-					agent = new Agent();
-					studyAgent.setAgent(agent);
-					if(studyAgentType.getOtherAgent() != null){
-						studyAgent.setOtherAgent(studyAgentType.getOtherAgent());
-					}else{
+        gov.nih.nci.cabig.caaers.integration.schema.study.Study.StudyAgents studyAgents = studyDto.getStudyAgents();
+        if (studyAgents != null) {
+            List<StudyAgentType> studyAgentTypeList = studyAgents.getStudyAgent();
+            List<StudyAgent> studyAgentList = study.getStudyAgents();
+            if (studyAgentTypeList != null && !studyAgentTypeList.isEmpty()) {
+                StudyAgent studyAgent = null;
+                Agent agent = null;
+                for (StudyAgentType studyAgentType : studyAgentTypeList) {
+                    studyAgent = new StudyAgent();
+                    agent = new Agent();
+                    studyAgent.setAgent(agent);
+                    if (studyAgentType.getOtherAgent() != null) {
+                        studyAgent.setOtherAgent(studyAgentType.getOtherAgent());
+                    } else {
 
-						if(studyAgentType.getAgent().getNscNumber() != null){
+                        if (studyAgentType.getAgent().getNscNumber() != null) {
 
-							studyAgent.getAgent().setNscNumber(studyAgentType.getAgent().getNscNumber());
-						}
+                            studyAgent.getAgent().setNscNumber(studyAgentType.getAgent().getNscNumber());
+                        }
 
-						if(studyAgentType.getAgent().getName() != null){
-							studyAgent.getAgent().setName(studyAgentType.getAgent().getName());
-						}
+                        if (studyAgentType.getAgent().getName() != null) {
+                            studyAgent.getAgent().setName(studyAgentType.getAgent().getName());
+                        }
 
-					}
+                    }
 
-					if(IndType.CTEP_IND.equals(studyAgentType.getIndType())){
-						studyAgent.setIndType(INDType.CTEP_IND);
-					}
-					if(IndType.DCP_IND.equals(studyAgentType.getIndType())){
-						studyAgent.setIndType(INDType.DCP_IND);
-					}
-					if(IndType.IND_EXEMPT.equals(studyAgentType.getIndType())){
-						studyAgent.setIndType(INDType.IND_EXEMPT);
-					}
-					if(IndType.NA.equals(studyAgentType.getIndType())){
-						studyAgent.setIndType(INDType.NA);
-					}
-					if(IndType.NA_COMMERCIAL.equals(studyAgentType.getIndType())){
-						studyAgent.setIndType(INDType.NA_COMMERCIAL);
-					}
-					if(IndType.OTHER.equals(studyAgentType.getIndType())){
-						studyAgent.setIndType(INDType.OTHER);
-					}
-					studyAgent.setPartOfLeadIND(studyAgentType.isPartOfLeadIND());
+                    if (IndType.CTEP_IND.equals(studyAgentType.getIndType())) {
+                        studyAgent.setIndType(INDType.CTEP_IND);
+                    }
+                    if (IndType.DCP_IND.equals(studyAgentType.getIndType())) {
+                        studyAgent.setIndType(INDType.DCP_IND);
+                    }
+                    if (IndType.IND_EXEMPT.equals(studyAgentType.getIndType())) {
+                        studyAgent.setIndType(INDType.IND_EXEMPT);
+                    }
+                    if (IndType.NA.equals(studyAgentType.getIndType())) {
+                        studyAgent.setIndType(INDType.NA);
+                    }
+                    if (IndType.NA_COMMERCIAL.equals(studyAgentType.getIndType())) {
+                        studyAgent.setIndType(INDType.NA_COMMERCIAL);
+                    }
+                    if (IndType.OTHER.equals(studyAgentType.getIndType())) {
+                        studyAgent.setIndType(INDType.OTHER);
+                    }
+                    studyAgent.setPartOfLeadIND(studyAgentType.isPartOfLeadIND());
 
-					StudyAgentINDAssociation studyAgentINDAssociation = new StudyAgentINDAssociation();
-					InvestigationalNewDrug investigationalNewDrug = new InvestigationalNewDrug();
-					StudyAgentType.StudyAgentINDAssociations studyAgentINDAssociations = studyAgentType.getStudyAgentINDAssociations();
-					if(studyAgentINDAssociations != null){
-						StudyAgentINDAssociationType studyAgentINDAssociationType = studyAgentINDAssociations.getStudyAgentINDAssociation();
-						if(studyAgentINDAssociationType != null){
-							InvestigationalNewDrugType investigationalNewDrugType = studyAgentINDAssociationType.getInvestigationalNewDrug();
-							if(investigationalNewDrugType != null){
-								investigationalNewDrug.setIndNumber(investigationalNewDrugType.getIndNumber().intValue());
-								studyAgentINDAssociation.setInvestigationalNewDrug(investigationalNewDrug);
-								studyAgent.getStudyAgentINDAssociations().add(studyAgentINDAssociation);
-							}
-						}
-					}
-					studyAgentList.add(studyAgent);
-				}
-				study.setStudyAgents(studyAgentList);
-			}
-		}
+                    StudyAgentINDAssociation studyAgentINDAssociation = new StudyAgentINDAssociation();
+                    InvestigationalNewDrug investigationalNewDrug = new InvestigationalNewDrug();
+                    StudyAgentType.StudyAgentINDAssociations studyAgentINDAssociations = studyAgentType.getStudyAgentINDAssociations();
+                    if (studyAgentINDAssociations != null) {
+                        StudyAgentINDAssociationType studyAgentINDAssociationType = studyAgentINDAssociations.getStudyAgentINDAssociation();
+                        if (studyAgentINDAssociationType != null) {
+                            InvestigationalNewDrugType investigationalNewDrugType = studyAgentINDAssociationType.getInvestigationalNewDrug();
+                            if (investigationalNewDrugType != null) {
+                                investigationalNewDrug.setIndNumber(investigationalNewDrugType.getIndNumber().intValue());
+                                investigationalNewDrug.setHolderName(investigationalNewDrugType.getHolderName());
+                                studyAgentINDAssociation.setInvestigationalNewDrug(investigationalNewDrug);
+                                studyAgent.getStudyAgentINDAssociations().add(studyAgentINDAssociation);
+                            }
+                        }
+                    }
+                    studyAgentList.add(studyAgent);
+                }
+                study.setStudyAgents(studyAgentList);
+            }
+        }
 
-	}
+    }
 
-	private void populateStudyAgentsDomain2Dto(gov.nih.nci.cabig.caaers.integration.schema.study.Study studyDto, Study study) throws Exception{
+    private void populateStudyAgentsDomain2Dto(gov.nih.nci.cabig.caaers.integration.schema.study.Study studyDto, Study study) throws Exception {
 
         List<StudyAgent> agents = study.getStudyAgents();
 
@@ -931,6 +932,7 @@ public class StudyConverter {
                         InvestigationalNewDrugType idt = new InvestigationalNewDrugType();
                         sat.getStudyAgentINDAssociations().getStudyAgentINDAssociation().setInvestigationalNewDrug(idt);
                         idt.setIndNumber(new BigInteger((as.get(0).getInvestigationalNewDrug().getIndNumber().toString())));
+                        idt.setHolderName(as.get(0).getInvestigationalNewDrug().getHolderName());
                     }
                 }
 
@@ -939,10 +941,9 @@ public class StudyConverter {
 
             studyDto.setStudyAgents(agentsDto);
         }
-
     }
 
-	private void populateStudyDiseases(gov.nih.nci.cabig.caaers.integration.schema.study.Study studyDto, Study study) throws Exception{
+    private void populateStudyDiseases(gov.nih.nci.cabig.caaers.integration.schema.study.Study studyDto, Study study) throws Exception{
 
 		gov.nih.nci.cabig.caaers.integration.schema.study.Study.CtepStudyDiseases ctepStudyDiseases = studyDto.getCtepStudyDiseases();
 		if(ctepStudyDiseases != null){

@@ -1,13 +1,9 @@
 package gov.nih.nci.cabig.caaers.service.migrator;
 
+import com.aparzev.util.CollectionUtils;
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao;
-import gov.nih.nci.cabig.caaers.domain.Agent;
-import gov.nih.nci.cabig.caaers.domain.INDType;
-import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyAgent;
-import gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 
 import java.util.List;
@@ -73,6 +69,39 @@ public class StudyAgentMigrator implements Migrator<gov.nih.nci.cabig.caaers.dom
 				target.setPartOfLeadIND(studyAgent.getPartOfLeadIND());
 			}
 */
+
+            // Building IND by number and holder
+            if (target.getIndType() == INDType.OTHER || target.getIndType() == INDType.NA_COMMERCIAL) {
+
+                for (StudyAgentINDAssociation indAssociation : studyAgent.getStudyAgentINDAssociations()) {
+                    String indNumber = indAssociation.getInvestigationalNewDrug().getIndNumber().toString();
+                    String holderName = indAssociation.getInvestigationalNewDrug().getHolderName();
+                    List<InvestigationalNewDrug> inds = investigationalNewDrugDao.findByNumberAndHolderName(indNumber, holderName);
+
+                    InvestigationalNewDrug _ind = null;
+
+                    if (CollectionUtils.isNotEmpty(inds)) {
+                        _ind = inds.get(0);
+                    } else {
+                        // Create New
+                        _ind = new InvestigationalNewDrug();
+
+                        // ToDo get this from DB by its name
+                        Organization o = null;
+
+                        OrganizationHeldIND _indHolder = new OrganizationHeldIND();
+                        _indHolder.setOrganization(o);
+                        _indHolder.setInvestigationalNewDrug(_ind);
+                        _ind.setINDHolder(_indHolder);
+                        _ind.setIndNumber(Integer.getInteger(indNumber));
+                    }
+
+                    indAssociation.setInvestigationalNewDrug(_ind);
+                    target.addStudyAgentINDAssociation(indAssociation);
+
+                }
+            }
+
 
 			if (target.getIndType() == INDType.DCP_IND) {
 				// Ok so we have to provide the id here , well i can't see a different way to do this , defenitly ugly
