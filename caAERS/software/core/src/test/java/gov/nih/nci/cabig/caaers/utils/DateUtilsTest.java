@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.utils;
 import gov.nih.nci.cabig.caaers.domain.DateValue;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -172,6 +173,16 @@ public class DateUtilsTest extends TestCase {
             DateUtils.parseDate("09/09/2009", "MM-dd-yyyy");
         } catch (ParseException e) {
 
+        }
+    }
+
+
+    public void testFormatDateForWs(){
+        try{
+             String d = DateUtils.formatDateForWS(DateUtils.today());
+             assertTrue(d.startsWith(new SimpleDateFormat("yyyy-MM-dd").format(new Date())));
+        }catch (Exception e){
+            fail("should not throw error");
         }
     }
 }
