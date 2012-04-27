@@ -1143,6 +1143,7 @@ public class StudyConverter {
                 sd.getDevice().setBrandName(sdt.getDevice().getBrandName());
                 sd.getDevice().setCommonName(sdt.getDevice().getCommonName());
                 sd.getDevice().setType(sdt.getDevice().getType());
+                sd.getDevice().setCtepDbIdentifier(sdt.getDevice().getCtepDbIdentifier());
             } else {
                 sd.setOtherBrandName(sdt.getOtherBrandName());
                 sd.setOtherCommonName(sdt.getOtherCommonName());
@@ -1216,6 +1217,7 @@ public class StudyConverter {
                 sdt.getDevice().setBrandName(sd.getDevice().getBrandName());
                 sdt.getDevice().setCommonName(sd.getDevice().getCommonName());
                 sdt.getDevice().setType(sd.getDevice().getType());
+                sdt.getDevice().setCtepDbIdentifier(sd.getDevice().getCtepDbIdentifier());
             } else {
                 sdt.setOtherBrandName(sd.getOtherBrandName());
                 sdt.setOtherCommonName(sd.getOtherCommonName());
