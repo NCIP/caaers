@@ -4,7 +4,24 @@ package gov.nih.nci.cabig.caaers2adeers.cronjob;
 public class PayloadGenerator {
 
 
-    public  String getAgentsRequest() {
+	public  String getRequest(String system, String entity, String operationName, String mode, String date) {
+
+        return "<payload>" +
+                "<system>"+system+"</system>" +
+                "<request>" +
+                "<entity>"+entity+"</entity>" +
+                "<operation mode=\""+mode+"\" name=\""+operationName+"\">" +
+                "<criteria>" +
+                "<criterion  name=\"createdDate\">"+date+"</criterion>" +
+                "<criterion name=\"lastUpdatedDate\">"+date+"</criterion>" +
+                "</criteria>" +
+                "</operation>" +
+                "</request>" +
+                "</payload>";
+    }
+
+	
+	public  String getAgentsRequest() {
 
         return "<payload>" +
                 "<system>adeers</system>" +

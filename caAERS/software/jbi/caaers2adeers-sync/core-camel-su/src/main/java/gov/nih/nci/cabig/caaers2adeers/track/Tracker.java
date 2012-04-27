@@ -67,7 +67,6 @@ public class Tracker implements Processor{
 	public void process(Exchange exchange) throws Exception {
 		//set the properties in the exchange
         Map<String,Object> properties = exchange.getProperties();
-        properties.put(IntegrationLogDao.TRACKER_STAGE_NAME_HEADER, stage.name());
         if(entity == null){
         	entity = properties.get(ExchangePreProcessor.ENTITY_NAME)+"";
         }

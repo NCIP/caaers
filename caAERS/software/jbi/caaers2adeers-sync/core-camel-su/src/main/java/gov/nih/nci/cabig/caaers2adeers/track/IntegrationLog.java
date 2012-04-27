@@ -124,6 +124,23 @@ public class IntegrationLog{
         this.version = version;
     }
 	
+	@OneToMany(mappedBy = "integrationLog", fetch = FetchType.LAZY)
+    @Cascade(value = {CascadeType.ALL})
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
+	public List<IntegrationLogDetail> getIntegrationLogDetails() {
+		return integrationLogDetails;
+	}
+
+	public void setIntegrationLogDetails(
+			List<IntegrationLogDetail> integrationLogDetails) {
+		this.integrationLogDetails = integrationLogDetails;
+	}
+	
+	public void addIntegrationLogDetail(IntegrationLogDetail integrationLogDetail){
+		integrationLogDetail.setIntegrationLog(this);
+		getIntegrationLogDetails().add(integrationLogDetail);
+	}
+	
 	public static enum Stage{
         REQUEST_RECEIVED(5, "Message Received"),
         ROUTED_TO_ADEERS_REQUEST_SINK(10, "Message Routed to AdEERS Request Sink Channel"),
@@ -162,22 +179,5 @@ public class IntegrationLog{
             return stageName;
         }
     }
-
-	@OneToMany(mappedBy = "integrationLog", fetch = FetchType.LAZY)
-    @Cascade(value = {CascadeType.ALL})
-    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
-	public List<IntegrationLogDetail> getIntegrationLogDetails() {
-		return integrationLogDetails;
-	}
-
-	public void setIntegrationLogDetails(
-			List<IntegrationLogDetail> integrationLogDetails) {
-		this.integrationLogDetails = integrationLogDetails;
-	}
 	
-	public void addIntegrationLogDetail(IntegrationLogDetail integrationLogDetail){
-		integrationLogDetail.setIntegrationLog(this);
-		getIntegrationLogDetails().add(integrationLogDetail);
-	}
-
 }
