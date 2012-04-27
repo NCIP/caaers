@@ -14,9 +14,9 @@ public class PreExistingConditionMigratorTest extends TestCase {
         PreExistingCondition p2 = Fixtures.createPreExistingCondition("a", "z", "b", "c");
         migrator.migrate(p1, p2, null);
         assertEquals("p", p2.getText());
-        assertEquals("c", p2.getMeddraHlgt());
-        assertEquals("b", p2.getMeddraLlt());
-        assertEquals("z", p2.getMeddraLltCode());
+        assertEquals("body", p2.getMeddraHlgt());
+        assertEquals("Head", p2.getMeddraLlt());
+        assertEquals("111", p2.getMeddraLltCode());
         assertNotNull(p2.getLastSynchedDate());
 
     }
