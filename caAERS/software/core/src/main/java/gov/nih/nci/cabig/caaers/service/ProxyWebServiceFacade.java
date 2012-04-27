@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.service;
 
 import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.ws.client.core.WebServiceTemplate;
@@ -22,54 +23,39 @@ import org.springframework.ws.client.core.WebServiceTemplate;
 
 public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
 
-	public static final String SYNC_ORG_SYSTEM_NAME="";
-	public static final String SYNC_ORG_ENTITY_NAME="";
-	public static final String SYNC_ORG_OPERATION_NAME="";
+	public static final String SYNC_ORG_ENTITY_NAME="organization";
+	public static final String SYNC_ORG_OPERATION_NAME="getOrganizationsLOV";
 	public static final boolean SYNC_ORG_OPERATION_MODE=false;
-	public static final String SYNC_ORG_CRITERIA=""; //e.g "createdAt:12-02-12,updatedAt:01-02-12"
-	
-	public static final String SYNC_AGENT_SYSTEM_NAME="adeers";
+
 	public static final String SYNC_AGENT_ENTITY_NAME="agent";
 	public static final String SYNC_AGENT_OPERATION_NAME="getAgentsLOV";
 	public static final boolean SYNC_AGENT_OPERATION_MODE=false;
-	public static final String SYNC_AGENT_CRITERIA="createdDate:12-02-2002"; //e.g "createdAt:12-02-12,updatedAt:01-02-12"
-	
-	public static final String SYNC_DEVICE_SYSTEM_NAME="";
-	public static final String SYNC_DEVICE_ENTITY_NAME="";
-	public static final String SYNC_DEVICE_OPERATION_NAME="";
+
+	public static final String SYNC_DEVICE_ENTITY_NAME="device";
+	public static final String SYNC_DEVICE_OPERATION_NAME="getDevicesLOV";
 	public static final boolean SYNC_DEVICE_OPERATION_MODE=false;
-	public static final String SYNC_DEVICE_CRITERIA=""; //e.g "createdAt:12-02-12,updatedAt:01-02-12"
-	
-	public static final String SYNC_PRIOR_THERAPY_SYSTEM_NAME="";
-	public static final String SYNC_PRIOR_THERAPY_ENTITY_NAME="";
-	public static final String SYNC_PRIOR_THERAPY_OPERATION_NAME="";
+
+	public static final String SYNC_PRIOR_THERAPY_ENTITY_NAME="priortherapy";
+	public static final String SYNC_PRIOR_THERAPY_OPERATION_NAME="getTherapiesLOV";
 	public static final boolean SYNC_PRIOR_THERAPY_OPERATION_MODE=false;
-	public static final String SYNC_PRIOR_THERAPY_CRITERIA=""; //e.g "createdAt:12-02-12,updatedAt:01-02-12"
-	
-	public static final String SYNC_ASAEL_SYSTEM_NAME="";
-	public static final String SYNC_ASAEL_ENTITY_NAME="";
-	public static final String SYNC_ASAEL_OPERATION_NAME="";
+
+	public static final String SYNC_ASAEL_ENTITY_NAME="asael";
+	public static final String SYNC_ASAEL_OPERATION_NAME="getASAEL";
 	public static final boolean SYNC_ASAEL_OPERATION_MODE=false;
-	public static final String SYNC_ASAEL_CRITERIA=""; //e.g "createdAt:12-02-12,updatedAt:01-02-12"
-	
-	public static final String SYNC_PRE_EXISTING_COND_SYSTEM_NAME="";
-	public static final String SYNC_PRE_EXISTING_COND_ENTITY_NAME="";
-	public static final String SYNC_PRE_EXISTING_COND_OPERATION_NAME="";
+
+	public static final String SYNC_PRE_EXISTING_COND_ENTITY_NAME="preexistingcondition";
+	public static final String SYNC_PRE_EXISTING_COND_OPERATION_NAME="getPreExistingConditionsLOV";
 	public static final boolean SYNC_PRE_EXISTING_COND_OPERATION_MODE=false;
-	public static final String SYNC_PRE_EXISTING_COND_CRITERIA=""; //e.g "createdAt:12-02-12,updatedAt:01-02-12"
-	
-	public static final String GET_STUDY_SYSTEM_NAME="";
-	public static final String GET_STUDY_ENTITY_NAME="";
-	public static final String GET_STUDY_OPERATION_NAME="";
+
+	public static final String GET_STUDY_ENTITY_NAME="study";
+	public static final String GET_STUDY_OPERATION_NAME="getStudyDetails";
 	public static final boolean GET_STUDY_OPERATION_MODE=false;
-	public static final String GET_STUDY_CRITERIA=""; //e.g "createdAt:12-02-12,updatedAt:01-02-12"
-	
+
 	public static final String SEARCH_STUDY_SYSTEM_NAME="";
 	public static final String SEARCH_STUDY_ENTITY_NAME="";
 	public static final String SEARCH_STUDY_OPERATION_NAME="";
 	public static final boolean SEARCH_STUDY_OPERATION_MODE=true;
-	public static final String SEARCH_sTUDY_CRITERIA=""; //e.g "createdAt:12-02-12,updatedAt:01-02-12"
-	
+
     private WebServiceTemplate webServiceTemplate;
 
     public void setDefaultUri(String defaultUri) {
@@ -85,9 +71,9 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
     }
     
     // send to the configured default URI
-    public String send(String system, String entity, String operationName, boolean sync, Map<String, String> criteria) {
+    public String send(String entity, String operationName, boolean sync, Map<String, String> criteria) {
     	String corelationId = RandomStringUtils.randomAlphanumeric(10);
-        String message = buildMessage(corelationId, system, entity, operationName, sync?"sync":"async", criteria);
+        String message = buildMessage(corelationId, "adeers", entity, operationName, sync?"sync":"async", criteria);
         String result = simpleSendAndReceive(message);
         System.out.println(result);
         return corelationId;
@@ -120,40 +106,38 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
 	
 	private static Map<String, String> buildCriteriaMap(String criteria){
 		Map<String, String> criteriaMap = new HashMap<String, String>();
-		if(!StringUtils.isBlank(criteria)){
-			for(String criterion: criteria.split(",")){
-				criteriaMap.put(criterion.split(":")[0], criterion.split(":")[1]);
-			}
-		}
+        String since = DateUtils.formatDateForWS(DateUtils.yesterday());
+        criteriaMap.put("createdDate", since);
+        criteriaMap.put("lastUpdatedDate", since);
 		return criteriaMap;
 	}
 
 	public String syncOrganizations() {
-		return send(SYNC_ORG_SYSTEM_NAME, SYNC_ORG_ENTITY_NAME, SYNC_ORG_OPERATION_NAME, SYNC_ORG_OPERATION_MODE, buildCriteriaMap(SYNC_ORG_CRITERIA));
+		return send(SYNC_ORG_ENTITY_NAME, SYNC_ORG_OPERATION_NAME, SYNC_ORG_OPERATION_MODE, buildCriteriaMap(null));
 	}
 
 	public String syncAgents() {
-		return send(SYNC_ORG_SYSTEM_NAME, SYNC_AGENT_ENTITY_NAME, SYNC_AGENT_OPERATION_NAME, SYNC_AGENT_OPERATION_MODE, buildCriteriaMap(SYNC_AGENT_CRITERIA));
+		return send(SYNC_AGENT_ENTITY_NAME, SYNC_AGENT_OPERATION_NAME, SYNC_AGENT_OPERATION_MODE,buildCriteriaMap(null));
 	}
 
 	public String syncDevices() {
-		return send(SYNC_DEVICE_SYSTEM_NAME, SYNC_DEVICE_ENTITY_NAME, SYNC_DEVICE_OPERATION_NAME, SYNC_DEVICE_OPERATION_MODE, buildCriteriaMap(SYNC_DEVICE_CRITERIA));
+		return send(SYNC_DEVICE_ENTITY_NAME, SYNC_DEVICE_OPERATION_NAME, SYNC_DEVICE_OPERATION_MODE, buildCriteriaMap(null));
 	}
 
 	public String syncPriorTherapyLOV() {
-		return send(SYNC_PRIOR_THERAPY_SYSTEM_NAME, SYNC_PRIOR_THERAPY_ENTITY_NAME, SYNC_PRIOR_THERAPY_OPERATION_NAME, SYNC_PRIOR_THERAPY_OPERATION_MODE, buildCriteriaMap(SYNC_PRIOR_THERAPY_CRITERIA));
+		return send(SYNC_PRIOR_THERAPY_ENTITY_NAME, SYNC_PRIOR_THERAPY_OPERATION_NAME, SYNC_PRIOR_THERAPY_OPERATION_MODE, buildCriteriaMap(null));
 	}
 
 	public String syncPreExistingConditionLOV() {
-		return send(SYNC_PRE_EXISTING_COND_SYSTEM_NAME, SYNC_PRE_EXISTING_COND_ENTITY_NAME, SYNC_PRE_EXISTING_COND_OPERATION_NAME, SYNC_PRE_EXISTING_COND_OPERATION_MODE, buildCriteriaMap(SYNC_PRE_EXISTING_COND_CRITERIA));
+		return send(SYNC_PRE_EXISTING_COND_ENTITY_NAME, SYNC_PRE_EXISTING_COND_OPERATION_NAME, SYNC_PRE_EXISTING_COND_OPERATION_MODE, buildCriteriaMap(null));
 	}
 
 	public String syncASAEL() {
-		return send(SYNC_ASAEL_SYSTEM_NAME, SYNC_ASAEL_ENTITY_NAME, SYNC_ASAEL_OPERATION_NAME, SYNC_ASAEL_OPERATION_MODE, buildCriteriaMap(SYNC_ASAEL_CRITERIA));
+		return send( SYNC_ASAEL_ENTITY_NAME, SYNC_ASAEL_OPERATION_NAME, SYNC_ASAEL_OPERATION_MODE, buildCriteriaMap(null));
 	}
 
 	public String getStudy() {
-		return send(GET_STUDY_SYSTEM_NAME, GET_STUDY_ENTITY_NAME, GET_STUDY_OPERATION_NAME, GET_STUDY_OPERATION_MODE, buildCriteriaMap(GET_STUDY_CRITERIA));
+		return send(GET_STUDY_ENTITY_NAME, GET_STUDY_OPERATION_NAME, GET_STUDY_OPERATION_MODE, buildCriteriaMap(null));
 	}
 
 	public String syncStudies() {

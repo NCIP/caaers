@@ -18,6 +18,7 @@ import java.util.GregorianCalendar;
 public class DateUtils {
 
     public static final String DATE_PATTERN= "MM/dd/yyyy";
+    public static final String WS_DATE_PATTERN= "yyyy-MM-ddTHH:mm:ss";
 
 	/**
 	 * Checks whether the given d, is greater than or equal to startDate and less than or equal to endDate.
@@ -107,10 +108,15 @@ public class DateUtils {
     	if(t1 < t2) return -1;
     	return 0;
     }
-    
     public static String formatDate(Date d){
+        return formatDate(d, DATE_PATTERN);
+    }
+    public static String formatDateForWS(Date d){
+        return formatDate(d, WS_DATE_PATTERN);
+    }
+    public static String formatDate(Date d, String pattern){
         //BJ: date formats are not thread safe. 
-    	return new SimpleDateFormat(DATE_PATTERN).format(d);
+    	return new SimpleDateFormat(pattern).format(d);
     }
 
     public static Date parseDate(String strDate) throws ParseException{
@@ -241,4 +247,5 @@ public class DateUtils {
         if (d.isNull() || d.isEmpty()) return true;
         return isValidDate(d.toString());
     }
+
 }
