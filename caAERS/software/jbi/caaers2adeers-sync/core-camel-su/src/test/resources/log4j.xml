@@ -39,6 +39,13 @@
     <logger name="gov.nih.nci.cabig">
         <level value="DEBUG"/>
     </logger>
+    <!--<logger name="gov.nih.nci.cabig.caaers2adeers.exchnage">-->
+        <!--<level value="ERROR"/>-->
+    <!--</logger>-->
+
+    <!--<logger name="org.apache.servicemix.jbi.messaging">-->
+        <!--<level value="ERROR"/>-->
+    <!--</logger>-->
 
     <root>
         <level value="DEBUG"/>

@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
-    <soapenv:Header/>
-    <soapenv:Body>
-        <ser:getDevicesLOV xmlns:ser="http://services.ctep.nci.nih.gov/">
-            <DevicesLOVCriteria>
-                <createdDate>2001-10-26T21:32:52</createdDate>
-                <lastUpdatedDate>2001-10-26T21:32:52</lastUpdatedDate>
-            </DevicesLOVCriteria>
-        </ser:getDevicesLOV>
-    </soapenv:Body>
-</soapenv:Envelope>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap:Body>
+        <ns2:getOrganizationsLOVResponse xmlns:ns2="http://services.ctep.nci.nih.gov/">
+            <Organizations xmlns="">
+                <organization createdDate="10-08-1999 23:02:56" updatedDate="08-18-2000 09:48:20" xmlns="">
+                    <address xmlns="">
+                        <street xmlns="">Avenida Cordoba</street>
+                        <street2 xmlns=""></street2>
+                        <city xmlns="">Buenos Aires</city>
+                        <state xmlns=""></state>
+                        <country xmlns="">Argentina</country>
+                        <zip xmlns="">1045</zip>
+                    </address>
+                    <ctepId xmlns="">02003</ctepId>
+                    <organizationName xmlns="">Hospitales Privado Guemes</organizationName>
+                    <organizationType xmlns="">ITN</organizationType>
+                    <status xmlns="">Active</status>
+                </organization>
+            </Organizations>
+        </ns2:getOrganizationsLOVResponse>
+    </soap:Body>
+</soap:Envelope>

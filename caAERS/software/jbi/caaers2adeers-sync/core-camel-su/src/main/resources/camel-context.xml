@@ -104,7 +104,7 @@
     <bean id="toCaaersClientRouteBuilder" class="gov.nih.nci.cabig.caaers2adeers.ToCaaersClientRouteBuilder"/>
     <bean id="toCaaersWebserviceRouteBuilder" class="gov.nih.nci.cabig.caaers2adeers.ToCaaersWebserviceRouteBuilder"/>
     <bean id="cronJobRouteBuilder" class="gov.nih.nci.cabig.caaers2adeers.CronJobRouteBuilder">
-        <!--<property name="agentLovCronExpression"><value>0+0/5+*+*+*+?</value></property>-->
+        <!--<property name="agentLovCronExpression"><value>s[agentLovCronExpression]</value></property>-->
     </bean>
     <bean id="payloadGenerator" class="gov.nih.nci.cabig.caaers2adeers.cronjob.PayloadGenerator" />
 </beans>

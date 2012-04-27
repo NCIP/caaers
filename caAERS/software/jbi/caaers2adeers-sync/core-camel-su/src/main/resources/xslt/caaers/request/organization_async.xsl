@@ -18,18 +18,18 @@
   
   <xsl:template match="organization">
         <com:organization>
-            <xsl:if test="address/street">
+            <xsl:if test="address/street != ''">
                 <descriptionText><xsl:value-of select="address/street" /></descriptionText>
             </xsl:if>
             <name><xsl:value-of select="organizationName" /></name>
             <nciInstituteCode><xsl:value-of select="ctepId" /></nciInstituteCode>
-            <xsl:if test="address/city">
-                <city><xsl:value-of select="address/city" /></city>
+            <xsl:if test="address/city != ''">
+                <city><xsl:value-of select="address/city"/></city>
             </xsl:if>
-            <xsl:if test="address/state">
-                <state><xsl:value-of select="address/state" /></state>
+            <xsl:if test="address/state !=''">
+                <state><xsl:value-of select="address/state"/></state>
             </xsl:if>
-            <xsl:if test="address/country">
+            <xsl:if test="address/country !=''">
                 <country><xsl:value-of select="address/country" /></country>
             </xsl:if>
             <status><xsl:value-of select="status" /></status>
