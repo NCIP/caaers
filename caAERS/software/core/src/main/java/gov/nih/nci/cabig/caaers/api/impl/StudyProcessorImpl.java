@@ -148,9 +148,11 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 		orgs.add(studyDto.getFundingSponsor().getStudyFundingSponsor().getOrganization());		
 		gov.nih.nci.cabig.caaers.integration.schema.study.Study.StudyOrganizations so = studyDto.getStudyOrganizations();
 
-        for (StudySiteType sst: so.getStudySite()) {
-			orgs.add(sst.getOrganization());
-		}
+        if (so != null) {
+            for (StudySiteType sst: so.getStudySite()) {
+                orgs.add(sst.getOrganization());
+            }
+        }
 
         // ToDo Code that persists the new organization should be moved to StudyOrganizationMigrator class
 		for (OrganizationType org:orgs) {
