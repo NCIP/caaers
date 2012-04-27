@@ -1,10 +1,10 @@
 package gov.nih.nci.cabig.caaers2adeers.cronjob;
 
 
-public class MockMessageGenerator {
+public class PayloadGenerator {
 
 
-    public static String getAgentsRequest() {
+    public  String getAgentsRequest() {
 
         return "<payload>" +
                 "<system>adeers</system>" +
@@ -20,7 +20,7 @@ public class MockMessageGenerator {
                 "</payload>";
     }
 
-    public static String getStudySearchRequest() {
+    public  String getStudySearchRequest() {
 
         return "<payload>" +
                 "<system>adeers</system>" +
@@ -38,7 +38,7 @@ public class MockMessageGenerator {
     }
 
 
-    public static String getStudyDetails(String nciDocumentNumber) {
+    public  String getStudyDetails(String nciDocumentNumber) {
 
         return "<payload>" +
                 "<system>adeers</system>" +

@@ -2,10 +2,12 @@ package gov.nih.nci.cabig.caaers2adeers;
 
 import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.*;
 import static gov.nih.nci.cabig.caaers2adeers.track.Tracker.track;
+
 import gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage;
 
 import org.apache.camel.ExchangePattern;
 import org.apache.camel.builder.RouteBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * The basic flow can be classified into 3, a) towards adEERS b) towards caAERS c) towards SynchComponent.
@@ -22,7 +24,16 @@ import org.apache.camel.builder.RouteBuilder;
  *   [caAERSResponseSink] => [db-persistense]
  */
 public class Caaers2AdeersRouteBuilder extends RouteBuilder {
-    
+
+    @Autowired
+    private CronJobRouteBuilder cronJobRouteBuilder;
+    @Autowired
+    private ToAdeersRouteBuilder toAdeersRouteBuilder;
+    @Autowired
+    private ToCaaersClientRouteBuilder toCaaersClientRouteBuilder;
+    @Autowired
+    private ToCaaersWebserviceRouteBuilder toCaaersWebserviceRouteBuilder;
+
 	/**
 	 * Will create a route that calls a webservice with before-call and after-call transformations
 	 * @param fromSink - the channel through which the input arrives. 
@@ -62,7 +73,7 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
     }
 	
     public void configure() {
-
+        
         onException(Throwable.class).to("direct:morgue");
 
         //just for testing generic webservice
@@ -72,17 +83,26 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
 		.process(track(REQUEST_RECEIVED))
 		.to("xslt:xslt/adeers/request/soap_env_filter.xsl")
 		.process(track(ROUTED_TO_ADEERS_REQUEST_SINK))
-		.choice()
-                .when(header("c2a_sync_mode").isEqualTo("sync"))
-                	.to("log:after-soap_filter-and-before-sync")
-                	.to("direct:adEERSRequestSink")
-                .otherwise()
-                	.to("log:after-soap_filter-and-before-async")
-                	.multicast(new UseFirstAggregationStrategy()).parallelProcessing().to("xslt:xslt/caaers/response/async_success_response.xsl", "direct:adEERSRequestSink");
-			
-    	new ToAdeersRouteBuilder(this).configure();
-    	new ToCaaersWebserviceRouteBuilder(this).configure();
-    	new ToCaaersClientRouteBuilder(this).configure();
+        .to("direct:adEERSRequestSink");
+
+        //NEED to introduce a QUEUE of similar...
+
+//		.choice()
+//                .when(header("c2a_sync_mode").isEqualTo("sync"))
+//                	.to("log:after-soap_filter-and-before-sync")
+//                	.to("direct:adEERSRequestSink")
+//                .otherwise()
+//                	.to("log:after-soap_filter-and-before-async")
+//                	.multicast(new UseFirstAggregationStrategy()).parallelProcessing().to("xslt:xslt/caaers/response/async_success_response.xsl", "direct:adEERSRequestSink");
+
+        //configure all the Quartz cron jobs
+        cronJobRouteBuilder.configure(this);
+        //configure routes towards adeers
+    	toAdeersRouteBuilder.configure(this);
+        //configure route towards caAERS Webservices
+    	toCaaersWebserviceRouteBuilder.configure(this);
+        //configure routes towards caAERS client
+    	toCaaersClientRouteBuilder.configure(this);
 
     	//need to process AdEERS results, may be the SyncComponent...  
     	from("direct:adEERSResponseSink")
@@ -91,7 +111,7 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
                     .when().xpath("not(//operation/data/child::*/child::*)")
                         .process(track(NO_DATA_AVAILABLE))
                         .to("direct:outputSink")
-                    .when(header("c2a_sync_mode").isEqualTo("sync"))
+                    .when(header("c2a_sync_mode").isEqualTo("async"))
                     	.process(track(ROUTED_TO_CAAERS_REQUEST_SINK))
                         .to("direct:caaersWSRequestSink")
                     .otherwise()

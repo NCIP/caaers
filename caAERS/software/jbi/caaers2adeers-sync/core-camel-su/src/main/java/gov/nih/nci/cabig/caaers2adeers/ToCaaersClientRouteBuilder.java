@@ -12,9 +12,6 @@ public class ToCaaersClientRouteBuilder {
 
     private Caaers2AdeersRouteBuilder routeBuilder;
 
-    public ToCaaersClientRouteBuilder(Caaers2AdeersRouteBuilder routeBuilder) {
-        this.routeBuilder = routeBuilder;
-    }
 
     private String xpathPredicate(String entity, String operation){
 
@@ -27,7 +24,9 @@ public class ToCaaersClientRouteBuilder {
                 .append("/payload/response/entity = '").append(entity).append("'").toString();
     }
 
-    public void configure(){
+    public void configure(Caaers2AdeersRouteBuilder rb){
+        this.routeBuilder = rb;
+
         //content based router
         routeBuilder.from("direct:caaersClientRequestSink")
                 .to("log:caaers.caaers-sync-request?showHeaders=true")

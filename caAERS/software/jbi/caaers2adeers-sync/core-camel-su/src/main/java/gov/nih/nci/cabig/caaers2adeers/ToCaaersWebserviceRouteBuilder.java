@@ -17,11 +17,7 @@ public class ToCaaersWebserviceRouteBuilder {
 	private String responseXSLBase = "xslt/caaers/response/";
 	
 	private Caaers2AdeersRouteBuilder routeBuilder;
-	
-	public ToCaaersWebserviceRouteBuilder(Caaers2AdeersRouteBuilder routeBuilder) {
-		this.routeBuilder = routeBuilder;
-	}
-    
+
     private String xpathPredicate(String entity, String operation){
         
         return new StringBuilder("/payload/response/operation/data ")
@@ -33,7 +29,9 @@ public class ToCaaersWebserviceRouteBuilder {
                 .append("/payload/response/entity = '").append(entity).append("'").toString();
     }
 	
-	public void configure(){
+	public void configure(Caaers2AdeersRouteBuilder rb){
+        this.routeBuilder = rb;
+
 		//content based router
 		routeBuilder.from("direct:caaersWSRequestSink")
 		.to("log:caaers.caaers-request?showHeaders=true")

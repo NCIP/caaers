@@ -13,17 +13,15 @@ public class ToAdeersRouteBuilder {
 	
 	private Caaers2AdeersRouteBuilder routeBuilder;
 
-	public ToAdeersRouteBuilder(Caaers2AdeersRouteBuilder routeBuilder){
-		this.routeBuilder = routeBuilder;
-	}
-	
+
     private String xpathPredicate(String entity, String operation){
         return new StringBuilder("/payload/request/entity/text() = '").append(entity).append("' ")
                 .append(" and ")
                 .append("/payload/request/operation/@name = '").append(operation).append("' ")
                 .toString();
     }
-	public void configure(){
+	public void configure(Caaers2AdeersRouteBuilder rb){
+         this.routeBuilder = rb;
 
 		//BASE - Content based Router
 		routeBuilder.from("direct:adEERSRequestSink")

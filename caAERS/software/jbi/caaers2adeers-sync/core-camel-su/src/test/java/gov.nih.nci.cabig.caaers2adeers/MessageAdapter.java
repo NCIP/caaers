@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers2adeers;
 
-import gov.nih.nci.cabig.caaers2adeers.cronjob.MockMessageGenerator;
+import gov.nih.nci.cabig.caaers2adeers.cronjob.PayloadGenerator;
 import org.apache.camel.impl.DefaultMessage;
 
 import java.util.LinkedHashMap;
@@ -30,6 +30,6 @@ public class MessageAdapter extends DefaultMessage{
 
     @Override
     public Object getBody() {
-        return MockMessageGenerator.getStudySearchRequest();
+        return new PayloadGenerator().getStudySearchRequest();
     }
 }
