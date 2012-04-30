@@ -4355,13 +4355,13 @@ xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-s
                 <stud:agent>
                     <name>CISplatin</name>
                 </stud:agent>
-                <indType>CTEP_IND</indType>
+                <indType>OTHER</indType>
                 <partOfLeadIND>true</partOfLeadIND>
                 <studyAgentINDAssociations>
                     <stud:studyAgentINDAssociation>
                         <stud:investigationalNewDrug>
                             <indNumber>1000001</indNumber>
-                            <holderName>SOME_NAME</holderName>
+                            <holderName>default</holderName>
                         </stud:investigationalNewDrug>
                     </stud:studyAgentINDAssociation>
                 </studyAgentINDAssociations>
