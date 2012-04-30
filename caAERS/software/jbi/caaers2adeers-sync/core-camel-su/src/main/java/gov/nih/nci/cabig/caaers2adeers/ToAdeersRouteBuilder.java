@@ -25,16 +25,14 @@ public class ToAdeersRouteBuilder {
 
 		//BASE - Content based Router
 		routeBuilder.from("direct:adEERSRequestSink")
-//            .processRef("exchangePreProcessor")
-            .processRef("headerGeneratorProcessor")
     		.to("log:caaers.to-adeers")
     		.process(track(ROUTED_TO_ADEERS_WS_INVOCATION_CHANNEL))
     		.choice()
     			.when().xpath(xpathPredicate("agent", "getAgentsLOV")).to("direct:adeers-agent-lov")
     			.when().xpath(xpathPredicate("asael", "getASAEL")).to("direct:adeers-asael-lov")
     			.when().xpath(xpathPredicate("device", "getDevicesLOV")).to("direct:adeers-device-lov")
-    			.when().xpath(xpathPredicate("device", "getPreExistingConditionsLOV")).to("direct:adeers-condition-lov")
-    			.when().xpath(xpathPredicate("device", "getTherapiesLOV")).to("direct:adeers-therapy-lov")
+    			.when().xpath(xpathPredicate("preexistingcondition", "getPreExistingConditionsLOV")).to("direct:adeers-condition-lov")
+    			.when().xpath(xpathPredicate("priortherapy", "getTherapiesLOV")).to("direct:adeers-therapy-lov")
     			.when().xpath(xpathPredicate("organization", "getOrganizationsLOV")).to("direct:adeers-organization-lov")
                 .when().xpath(xpathPredicate("study", "getStudyDetails")).to("direct:adeers-study-details")
     			.when().xpath(xpathPredicate("study", "searchStudy")).to("direct:adeers-study-search")
@@ -44,7 +42,7 @@ public class ToAdeersRouteBuilder {
     	configureLovWSCallRoute("direct:adeers-agent-lov", "agent_lov.xsl",  "getAgentsLOV");
 
     	//LOV - ASAEL
-    	configureLovWSCallRoute("direct:adeers-asael-lov", "asael_lov.xsl", "getAsaelLOV");
+    	configureLovWSCallRoute("direct:adeers-asael-lov", "asael_lov.xsl", "getASAEL");
 
     	//LOV - Device
     	configureLovWSCallRoute("direct:adeers-device-lov", "device_lov.xsl", "getDevicesLOV");

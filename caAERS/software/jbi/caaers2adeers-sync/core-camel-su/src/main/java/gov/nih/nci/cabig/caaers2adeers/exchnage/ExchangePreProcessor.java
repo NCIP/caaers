@@ -60,6 +60,7 @@ public class ExchangePreProcessor implements Processor {
         	correlationId = System.currentTimeMillis()+"";
         }
         properties.put(CORRELATION_ID, correlationId);
+
         if(log.isDebugEnabled()) log.debug("Exchange properties :" + String.valueOf(properties));
 
     }

@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers2adeers;
 
+import gov.nih.nci.cabig.caaers2adeers.cronjob.EntityOperation;
 import gov.nih.nci.cabig.caaers2adeers.cronjob.PayloadGenerator;
 import org.apache.camel.impl.DefaultMessage;
 
@@ -30,6 +31,6 @@ public class MessageAdapter extends DefaultMessage{
 
     @Override
     public Object getBody() {
-        return new PayloadGenerator().getStudySearchRequest();
+        return new PayloadGenerator().getRequest(EntityOperation.PRIOR_THERAPY);
     }
 }

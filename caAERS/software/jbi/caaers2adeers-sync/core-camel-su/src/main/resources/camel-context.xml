@@ -96,7 +96,9 @@
             <ref bean="sessionFactory"/>
         </property>
     </bean>
-
+     <bean id="fileTracker" class="gov.nih.nci.cabig.caaers2adeers.track.FileTracker">
+         <property name="folder" value="s[payload.log.dir]" />
+     </bean>
 
     <!--=================Route Builders & Cron Jobs Payload related ====================-->
 
@@ -106,10 +108,12 @@
     <bean id="cronJobRouteBuilder" class="gov.nih.nci.cabig.caaers2adeers.CronJobRouteBuilder">
     	<property name="cronExpressions">
     		<map>
-    			<entry>
-    				<key><value>AGENT</value></key>
-    				<value>s[agentLovCronExpression]</value>
-    			</entry>
+    			<entry><key><value>AGENT</value></key><value>s[agentLovCronExpression]</value></entry>
+    			<entry><key><value>ASAEL</value></key><value>s[asaelLovCronExpression]</value></entry>
+    			<entry><key><value>DEVICE</value></key><value>s[deviceLovCronExpression]</value></entry>
+    			<entry><key><value>PRIOR_THERAPY</value></key><value>s[priorTherapyLovCronExpression]</value></entry>
+    			<entry><key><value>PRE_EXISTING_CONDITION</value></key><value>s[preExistingConditionLovCronExpression]</value></entry>
+    			<entry><key><value>ORGANIZATION</value></key><value>s[organizationLovCronExpression]</value></entry>
     		</map>
     	</property>
     </bean>

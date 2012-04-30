@@ -31,24 +31,19 @@ public class IntegrationLogDao{
 		hibernateTemplate.save(integrationLog);
 	}
 	
-	public Map<EntityOperation, String> findLastRequestCompletedDatetime(){
-		Map<EntityOperation, String> returnMap = new HashMap<EntityOperation, String>();
-		String query = "select entity, max(loggedOn) from IntegrationLog where stage=:stage group by entity";
-		List<Object[]> result = hibernateTemplate.findByNamedParam(query, "stage", Stage.REQUEST_COMPLETION);
-		for(EntityOperation entityOperation : EntityOperation.values()){
-			Date date = new GregorianCalendar(1900, 01,01).getTime();;
-			for(Object[] values : result){
-				String entity = (String)values[0];
-				if(entity.equals(entityOperation.getQualifiedName())){
-					if(values[1] != null){
-						date = (Date)values[1];
-					}
-					break;
-				}
-			}
-			returnMap.put(entityOperation, new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(date));
-		}
-		return returnMap;
+	public String findLastRequestCompletedDatetime(final String entity){
+
+        String date = "1900-01-01T01:01:10";
+		String query = "select max(loggedOn) from IntegrationLog where stage=:stage and entity =:entity";
+
+		List<Object> result = hibernateTemplate.findByNamedParam(query,
+                new String[]{"stage", "entity"} , new Object[]{Stage.REQUEST_COMPLETION, entity});
+
+        if(result == null || result.isEmpty()) return date;
+
+        if(result.get(0) == null) return date;
+        return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format((Date)result.get(0));
+        
 	}
 	
 }

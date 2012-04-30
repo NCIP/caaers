@@ -103,7 +103,7 @@ public class Tracker implements Processor{
 		            		if(!StringUtils.isBlank(childLocalName) && childLocalName.equals("businessIdentifier")){
 		            			businessIdentifier = child.getFirstChild().getNodeValue();
 		            		}else if(!StringUtils.isBlank(childLocalName) && childLocalName.equals("message")){
-		            			outcomeMsg = child.getFirstChild().getNodeValue();
+		            			outcomeMsg = child.getFirstChild() != null ? child.getFirstChild().getNodeValue() : null ;
 		            		}
 		        		}
 		        		if(businessIdentifier != null){
@@ -117,4 +117,6 @@ public class Tracker implements Processor{
         integrationLogDao.save(integrationLog);
         
 	}
+    
+    
 }

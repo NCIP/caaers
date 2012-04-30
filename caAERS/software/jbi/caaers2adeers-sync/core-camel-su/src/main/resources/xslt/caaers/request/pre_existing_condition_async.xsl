@@ -18,8 +18,8 @@
   <xsl:template match="existingConditions">
         <com:preExistingCondition>
             <text><xsl:value-of select="conditionName"/></text>
-            <meddraLltCode><xsl:value-of select="medraCode" /></meddraLltCode>
-            <meddraLlt><xsl:value-of select="description" /></meddraLlt>
+            <meddraLltCode><xsl:value-of select="medDRACode" /></meddraLltCode>
+            <meddraLlt><xsl:value-of select="categoryDescription" /></meddraLlt>
         </com:preExistingCondition>
   </xsl:template>
 

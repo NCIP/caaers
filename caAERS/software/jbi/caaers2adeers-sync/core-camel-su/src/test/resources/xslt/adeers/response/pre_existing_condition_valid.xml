@@ -1,21 +1,238 @@
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://services.ctep.nci.nih.gov/">
-    <soapenv:Header/>
-    <soapenv:Body>
-        <ser:getPreExistingConditionsLOVResponse>
-            <PreExistingConditions>
-                <existingConditions>
-                    <categoryDBCode>111</categoryDBCode>
-                    <conditionName>Solid Tumor</conditionName>
-                    <description>Hello</description>
-                    <medraCode>11111</medraCode>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap:Body>
+        <ns2:getPreExistingConditionsLOVResponse xmlns:ns2="http://services.ctep.nci.nih.gov/">
+            <PreExistingConditions xmlns="">
+                <existingConditions createdDate="10-14-1999 09:19:45" updatedDate="05-24-2011 02:19:02" xmlns="">
+                    <categoryDBCode xmlns="">1</categoryDBCode>
+                    <categoryDescription xmlns="">Anaemias non-haemolytic and marrow depression</categoryDescription>
+                    <conditionName xmlns="">Anemia</conditionName>
+                    <medDRACode xmlns="">10002034</medDRACode>
                 </existingConditions>
-                <existingConditions>
-                    <categoryDBCode>112</categoryDBCode>
-                    <conditionName>Nausea</conditionName>
-                    <description>Hai</description>
-                    <medraCode>11112</medraCode>
+                <existingConditions createdDate="10-14-1999 09:19:45" updatedDate="06-30-2006 18:18:04" xmlns="">
+                    <categoryDBCode xmlns="">2</categoryDBCode>
+                    <categoryDescription xmlns="">Cardiac arrhythmias</categoryDescription>
+                    <conditionName xmlns="">Arrhythmia</conditionName>
+                    <medDRACode xmlns="">10003119</medDRACode>
+                </existingConditions>
+                <existingConditions createdDate="10-14-1999 09:19:46" updatedDate="06-30-2006 18:18:04" xmlns="">
+                    <categoryDBCode xmlns="">3</categoryDBCode>
+                    <categoryDescription xmlns="">Endocrine and glandular disorders NEC</categoryDescription>
+                    <conditionName xmlns="">Endocrine disorders</conditionName>
+                    <medDRACode xmlns="">10014695</medDRACode>
+                </existingConditions>
+                <existingConditions createdDate="10-14-1999 09:19:46" updatedDate="06-30-2006 18:18:04" xmlns="">
+                    <categoryDBCode xmlns="">4</categoryDBCode>
+                    <categoryDescription xmlns="">Gastrointestinal inflammatory conditions</categoryDescription>
+                    <conditionName xmlns="">Inflammatory bowel disease</conditionName>
+                    <medDRACode xmlns="">10021972</medDRACode>
+                </existingConditions>
+                <existingConditions createdDate="10-14-1999 09:19:46" updatedDate="06-30-2006 18:18:04" xmlns="">
+                    <categoryDBCode xmlns="">5</categoryDBCode>
+                    <categoryDescription xmlns="">Exocrine pancreas conditions</categoryDescription>
+                    <conditionName xmlns="">Pancreatitis</conditionName>
+                    <medDRACode xmlns="">10033645</medDRACode>
+                </existingConditions>
+                <existingConditions createdDate="10-14-1999 09:19:46" updatedDate="06-30-2006 18:18:03" xmlns="">
+                    <categoryDBCode xmlns="">6</categoryDBCode>
+                    <categoryDescription xmlns="">Autoimmune disorders</categoryDescription>
+                    <conditionName xmlns="">Autoimmune disorder</conditionName>
+                    <medDRACode xmlns="">10003815</medDRACode>
+                </existingConditions>
+                <existingConditions createdDate="10-14-1999 09:19:46" updatedDate="06-30-2006 18:18:04" xmlns="">
+                    <categoryDBCode xmlns="">7</categoryDBCode>
+                    <categoryDescription xmlns="">Bacterial infectious disorders</categoryDescription>
+                    <conditionName xmlns="">Bacterial infection</conditionName>
+                    <medDRACode xmlns="">10060945</medDRACode>
+                </existingConditions>
+                <existingConditions createdDate="10-14-1999 09:19:46" updatedDate="06-30-2006 18:18:04" xmlns="">
+                    <categoryDBCode xmlns="">8</categoryDBCode>
+                    <categoryDescription xmlns="">Joint disorders</categoryDescription>
+                    <conditionName xmlns="">Osteoarthritis</conditionName>
+                    <medDRACode xmlns="">10031161</medDRACode>
+                </existingConditions>
+                <existingConditions createdDate="10-14-1999 09:19:46" updatedDate="06-30-2006 18:18:04" xmlns="">
+                    <categoryDBCode xmlns="">8</categoryDBCode>
+                    <categoryDescription xmlns="">Joint disorders</categoryDescription>
+                    <conditionName xmlns="">Rheumatoid arthritis</conditionName>
+                    <medDRACode xmlns="">10039073</medDRACode>
+                </existingConditions>
+                <existingConditions createdDate="10-14-1999 09:19:46" updatedDate="06-30-2006 18:18:04" xmlns="">
+                    <categoryDBCode xmlns="">11</categoryDBCode>
+                    <categoryDescription xmlns="">Electrolyte and fluid balance conditions</categoryDescription>
+                    <conditionName xmlns="">Electrolyte depletion</conditionName>
+                    <medDRACode xmlns="">10014415</medDRACode>
+                </existingConditions>
+                <existingConditions createdDate="10-14-1999 09:19:46" updatedDate="06-30-2006 18:18:04" xmlns="">
+                    <categoryDBCode xmlns="">12</categoryDBCode>
+                    <categoryDescription xmlns="">Bronchial disorders (excl neoplasms)</categoryDescription>
+                    <conditionName xmlns="">Chronic obstructive airways disease</conditionName>
+                    <medDRACode xmlns="">10009026</medDRACode>
+                </existingConditions>
+                <existingConditions createdDate="10-14-1999 09:19:46" updatedDate="06-30-2006 18:18:04" xmlns="">
+                    <categoryDBCode xmlns="">12</categoryDBCode>
+                    <categoryDescription xmlns="">Bronchial disorders (excl neoplasms)</categoryDescription>
+                    <conditionName xmlns="">Asthma</conditionName>
+                    <medDRACode xmlns="">10003553</medDRACode>
+                </existingConditions>
+                <existingConditions createdDate="10-14-1999 09:19:46" updatedDate="06-30-2006 18:18:04" xmlns="">
+                    <categoryDBCode xmlns="">12</categoryDBCode>
+                    <categoryDescription xmlns="">Bronchial disorders (excl neoplasms)</categoryDescription>
+                    <conditionName xmlns="">Bronchospasm</conditionName>
+                    <medDRACode xmlns="">10006482</medDRACode>
+                </existingConditions>
+                <existingConditions createdDate="10-14-1999 09:19:46" updatedDate="06-30-2006 18:18:04" xmlns="">
+                    <categoryDBCode xmlns="">13</categoryDBCode>
+                    <categoryDescription xmlns="">Epidermal and dermal conditions</categoryDescription>
+                    <conditionName xmlns="">Eczema</conditionName>
+                    <medDRACode xmlns="">10014184</medDRACode>
+                </existingConditions>
+                <existingConditions createdDate="10-14-1999 09:19:46" updatedDate="06-30-2006 18:18:04" xmlns="">
+                    <categoryDBCode xmlns="">13</categoryDBCode>
+                    <categoryDescription xmlns="">Epidermal and dermal conditions</categoryDescription>
+                    <conditionName xmlns="">Skin disorder</conditionName>
+                    <medDRACode xmlns="">10040831</medDRACode>
+                </existingConditions>
+                <existingConditions createdDate="10-14-1999 09:19:45" updatedDate="06-30-2006 18:18:04" xmlns="">
+                    <categoryDBCode xmlns="">16</categoryDBCode>
+                    <categoryDescription xmlns="">Embolism and thrombosis</categoryDescription>
+                    <conditionName xmlns="">Thrombotic disorder</conditionName>
+                    <medDRACode xmlns="">10043607</medDRACode>
+                </existingConditions>
+                <existingConditions createdDate="10-14-1999 09:19:45" updatedDate="06-30-2006 18:18:04" xmlns="">
+                    <categoryDBCode xmlns="">17</categoryDBCode>
+                    <categoryDescription xmlns="">Platelet disorders</categoryDescription>
+                    <conditionName xmlns="">Thrombocytopenia</conditionName>
+                    <medDRACode xmlns="">10043554</medDRACode>
+                </existingConditions>
+                <existingConditions createdDate="10-14-1999 09:19:45" updatedDate="06-30-2006 18:18:04" xmlns="">
+                    <categoryDBCode xmlns="">18</categoryDBCode>
+                    <categoryDescription xmlns="">Coronary artery disorders</categoryDescription>
+                    <conditionName xmlns="">Coronary artery disease</conditionName>
+                    <medDRACode xmlns="">10011078</medDRACode>
+                </existingConditions>
+                <existingConditions createdDate="10-14-1999 09:19:45" updatedDate="06-30-2006 18:18:04" xmlns="">
+                    <categoryDBCode xmlns="">19</categoryDBCode>
+                    <categoryDescription xmlns="">Heart failures</categoryDescription>
+                    <conditionName xmlns="">Cardiac failure congestive</conditionName>
+                    <medDRACode xmlns="">10007559</medDRACode>
+                </existingConditions>
+                <existingConditions createdDate="10-14-1999 09:19:46" updatedDate="06-30-2006 18:18:04" xmlns="">
+                    <categoryDBCode xmlns="">21</categoryDBCode>
+                    <categoryDescription xmlns="">Myocardial disorders</categoryDescription>
+                    <conditionName xmlns="">Prior anthracycline</conditionName>
+                    <medDRACode xmlns="">10011837</medDRACode>
+                </existingConditions>
+                <existingConditions createdDate="10-14-1999 09:19:46" updatedDate="06-30-2006 18:18:04" xmlns="">
+                    <categoryDBCode xmlns="">22</categoryDBCode>
+                    <categoryDescription xmlns="">Glucose metabolism disorders (incl diabetes mellitus)
+                    </categoryDescription>
+                    <conditionName xmlns="">Diabetes mellitus</conditionName>
+                    <medDRACode xmlns="">10012601</medDRACode>
+                </existingConditions>
+                <existingConditions createdDate="10-14-1999 09:19:46" updatedDate="06-30-2006 18:18:05" xmlns="">
+                    <categoryDBCode xmlns="">23</categoryDBCode>
+                    <categoryDescription xmlns="">Thyroid gland disorders</categoryDescription>
+                    <conditionName xmlns="">Thyroid disorder</conditionName>
+                    <medDRACode xmlns="">10043709</medDRACode>
+                </existingConditions>
+                <existingConditions createdDate="10-14-1999 09:19:46" updatedDate="06-30-2006 18:18:04" xmlns="">
+                    <categoryDBCode xmlns="">24</categoryDBCode>
+                    <categoryDescription xmlns="">Gastrointestinal ulceration and perforation</categoryDescription>
+                    <conditionName xmlns="">Peptic ulcer</conditionName>
+                    <medDRACode xmlns="">10034341</medDRACode>
+                </existingConditions>
+                <existingConditions createdDate="10-14-1999 09:19:46" updatedDate="06-30-2006 18:18:05" xmlns="">
+                    <categoryDBCode xmlns="">25</categoryDBCode>
+                    <categoryDescription xmlns="">Hepatic and hepatobiliary disorders</categoryDescription>
+                    <conditionName xmlns="">Hepatitis</conditionName>
+                    <medDRACode xmlns="">10019717</medDRACode>
+                </existingConditions>
+                <existingConditions createdDate="10-14-1999 09:19:46" updatedDate="06-30-2006 18:18:04" xmlns="">
+                    <categoryDBCode xmlns="">25</categoryDBCode>
+                    <categoryDescription xmlns="">Hepatic and hepatobiliary disorders</categoryDescription>
+                    <conditionName xmlns="">Hepatocellular damage</conditionName>
+                    <medDRACode xmlns="">10019831</medDRACode>
+                </existingConditions>
+                <existingConditions createdDate="10-14-1999 09:19:46" updatedDate="06-30-2006 18:18:04" xmlns="">
+                    <categoryDBCode xmlns="">25</categoryDBCode>
+                    <categoryDescription xmlns="">Hepatic and hepatobiliary disorders</categoryDescription>
+                    <conditionName xmlns="">Hepatic disorder</conditionName>
+                    <medDRACode xmlns="">10024670</medDRACode>
+                </existingConditions>
+                <existingConditions createdDate="10-14-1999 09:19:46" updatedDate="06-30-2006 18:18:05" xmlns="">
+                    <categoryDBCode xmlns="">27</categoryDBCode>
+                    <categoryDescription xmlns="">Viral infectious disorders</categoryDescription>
+                    <conditionName xmlns="">HIV infection</conditionName>
+                    <medDRACode xmlns="">10020161</medDRACode>
+                </existingConditions>
+                <existingConditions createdDate="10-14-1999 09:19:46" updatedDate="06-30-2006 18:18:05" xmlns="">
+                    <categoryDBCode xmlns="">27</categoryDBCode>
+                    <categoryDescription xmlns="">Viral infectious disorders</categoryDescription>
+                    <conditionName xmlns="">Viral infection</conditionName>
+                    <medDRACode xmlns="">10047461</medDRACode>
+                </existingConditions>
+                <existingConditions createdDate="10-14-1999 09:19:46" updatedDate="06-30-2006 18:18:04" xmlns="">
+                    <categoryDBCode xmlns="">28</categoryDBCode>
+                    <categoryDescription xmlns="">Fungal infectious disorders</categoryDescription>
+                    <conditionName xmlns="">Fungal infection</conditionName>
+                    <medDRACode xmlns="">10017533</medDRACode>
+                </existingConditions>
+                <existingConditions createdDate="10-14-1999 09:19:46" updatedDate="06-30-2006 18:18:04" xmlns="">
+                    <categoryDBCode xmlns="">29</categoryDBCode>
+                    <categoryDescription xmlns="">Peripheral neuropathies</categoryDescription>
+                    <conditionName xmlns="">Peripheral neuropathy</conditionName>
+                    <medDRACode xmlns="">10029331</medDRACode>
+                </existingConditions>
+                <existingConditions createdDate="10-14-1999 09:19:46" updatedDate="06-30-2006 18:18:05" xmlns="">
+                    <categoryDBCode xmlns="">30</categoryDBCode>
+                    <categoryDescription xmlns="">Seizures (incl subtypes)</categoryDescription>
+                    <conditionName xmlns="">Convulsions</conditionName>
+                    <medDRACode xmlns="">10010914</medDRACode>
+                </existingConditions>
+                <existingConditions createdDate="10-14-1999 09:19:46" updatedDate="06-30-2006 18:18:05" xmlns="">
+                    <categoryDBCode xmlns="">31</categoryDBCode>
+                    <categoryDescription xmlns="">Renal disorders (excl nephropathies)</categoryDescription>
+                    <conditionName xmlns="">Renal impairment</conditionName>
+                    <medDRACode xmlns="">10062237</medDRACode>
+                </existingConditions>
+                <existingConditions createdDate="10-14-1999 09:19:46" updatedDate="06-30-2006 18:18:04" xmlns="">
+                    <categoryDBCode xmlns="">32</categoryDBCode>
+                    <categoryDescription xmlns="">Lifestyle issues</categoryDescription>
+                    <conditionName xmlns="">Cigarette smoker</conditionName>
+                    <medDRACode xmlns="">10009180</medDRACode>
+                </existingConditions>
+                <existingConditions createdDate="10-14-1999 09:19:45" updatedDate="06-30-2006 18:18:05" xmlns="">
+                    <categoryDBCode xmlns="">33</categoryDBCode>
+                    <categoryDescription xmlns="">Coagulopathies and bleeding diatheses (excl thrombocytopenic)
+                    </categoryDescription>
+                    <conditionName xmlns="">Coagulation disorder</conditionName>
+                    <medDRACode xmlns="">10009731</medDRACode>
+                </existingConditions>
+                <existingConditions createdDate="10-14-1999 09:19:46" updatedDate="06-30-2006 18:18:05" xmlns="">
+                    <categoryDBCode xmlns="">34</categoryDBCode>
+                    <categoryDescription xmlns="">Central nervous system vascular disorders</categoryDescription>
+                    <conditionName xmlns="">Cerebrovascular accident</conditionName>
+                    <medDRACode xmlns="">10008190</medDRACode>
+                </existingConditions>
+                <existingConditions createdDate="10-14-1999 09:19:46" updatedDate="06-30-2006 18:18:05" xmlns="">
+                    <categoryDBCode xmlns="">35</categoryDBCode>
+                    <categoryDescription xmlns="">Vascular therapeutic procedures</categoryDescription>
+                    <conditionName xmlns="">Central line management</conditionName>
+                    <medDRACode xmlns="">10007934</medDRACode>
+                </existingConditions>
+                <existingConditions createdDate="10-14-1999 09:19:46" updatedDate="06-30-2006 18:18:05" xmlns="">
+                    <categoryDBCode xmlns="">36</categoryDBCode>
+                    <categoryDescription xmlns="">Vascular hypertensive disorders</categoryDescription>
+                    <conditionName xmlns="">Hypertension</conditionName>
+                    <medDRACode xmlns="">10020772</medDRACode>
+                </existingConditions>
+                <existingConditions createdDate="10-14-1999 09:19:46" updatedDate="06-30-2006 18:18:05" xmlns="">
+                    <categoryDBCode xmlns="">37</categoryDBCode>
+                    <categoryDescription xmlns="">General signs and symptoms NEC</categoryDescription>
+                    <conditionName xmlns="">Pre-existing disease</conditionName>
+                    <medDRACode xmlns="">10056486</medDRACode>
                 </existingConditions>
             </PreExistingConditions>
-        </ser:getPreExistingConditionsLOVResponse>
-    </soapenv:Body>
-</soapenv:Envelope>
+        </ns2:getPreExistingConditionsLOVResponse>
+    </soap:Body>
+</soap:Envelope>

@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers2adeers;
 import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.*;
 import static gov.nih.nci.cabig.caaers2adeers.track.Tracker.track;
 
+import gov.nih.nci.cabig.caaers2adeers.track.FileTracker;
 import gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage;
 
 import org.apache.camel.ExchangePattern;
@@ -33,6 +34,8 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
     private ToCaaersClientRouteBuilder toCaaersClientRouteBuilder;
     @Autowired
     private ToCaaersWebserviceRouteBuilder toCaaersWebserviceRouteBuilder;
+    @Autowired
+    private FileTracker fileTracker;
 
 	/**
 	 * Will create a route that calls a webservice with before-call and after-call transformations
@@ -45,17 +48,16 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
 	public void configureWSCallRoute(String fromSink, String requestXSL, String serviceURI,  String responseXSL, String toSink, 
 			Stage xslInStage, Stage serviceInvocationStage, Stage serviceCompletionStage, Stage xslOutStage, Stage toSinkStage){
 		from(fromSink)
-        .to("log:caaers.beforeRequestXSL?showHeaders=true")
         .process(track(xslInStage))
 		.to("xslt:" + requestXSL)
-        .to("log:caaers.afterRequestXSL?showHeaders=true")
         .process(track(serviceInvocationStage))
+        .to(fileTracker.fileURI(serviceInvocationStage))
         .to(ExchangePattern.InOut, serviceURI).processRef("headerGeneratorProcessor")
-        .to("log:caaers.beforeResponseXSL?showAll=true")
+        .to(fileTracker.fileURI(serviceCompletionStage))
         .process(track(serviceCompletionStage, true))
         .process(track(xslOutStage))
 		.to("xslt:" + responseXSL)
-        .to("log:caaers.afterResponseXSL?showHeaders=true")
+        .to("log:caaers.afterWSCallResponseXSL?showHeaders=true")
         .process(track(toSinkStage))
 		.to(toSink);
 	}
@@ -67,23 +69,24 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
      */
     public void configureTransformationRoute(String fromSink, String xslFile){
         from(fromSink)
-                .to("log:caaers.beforeSyncXSL?showHeaders=true")
                 .to("xslt:" + xslFile)
-                .to("log:caaers.afterSyncXSL?showHeaders=true");
+                .to("log:caaers.afterWSCallResponseXSL?showHeaders=true");
     }
 	
     public void configure() {
         
-        onException(Throwable.class).to("direct:morgue");
+        onException(Throwable.class)
+                .to("direct:morgue");
 
         //just for testing generic webservice
         
     	from("jbi:service:http://schema.integration.caaers.cabig.nci.nih.gov/common/generic-processor-sink")
-		.processRef("exchangePreProcessor")
-		.process(track(REQUEST_RECEIVED))
-		.to("xslt:xslt/adeers/request/soap_env_filter.xsl")
-		.process(track(ROUTED_TO_ADEERS_REQUEST_SINK))
-        .to("direct:adEERSRequestSink");
+            .processRef("exchangePreProcessor").processRef("headerGeneratorProcessor")
+                .process(track(REQUEST_RECEIVED))
+                .to(fileTracker.fileURI(REQUEST_RECEIVED))
+            .to("xslt:xslt/adeers/request/soap_env_filter.xsl")
+                .process(track(ROUTED_TO_ADEERS_REQUEST_SINK))
+            .to("direct:adEERSRequestSink");
 
         //NEED to introduce a QUEUE of similar...
 
@@ -120,23 +123,21 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
     	
     	//need to process caAERS results
 		from("direct:caAERSResponseSink")
-//                .process(track(CAAERS_WS_OUT_TRANSFORMATION))
-                .to("log:caaers.direct-caAERSResponseSink")
                 .to("direct:outputSink");
 
 
         //BELOW 2 routes are the final sinks of messages.
         from("direct:outputSink")
+                .to("log:from-outputSink?showAll=true")
                 .process(track(REQUEST_COMPLETION))
-                .to("log:from-outputSink?showAll=true");
-    	
+                .to(fileTracker.fileURI(REQUEST_COMPLETION)) ;
+
 		//invalid requests
         from("direct:morgue")
+                .to("log:caaers.invalid?showAll=true&level=WARN")
         		.process(track(REQUST_PROCESSING_ERROR))
-                .to("log:fromMorgue?showAll=true")
                 .to("xslt:xslt/caaers/response/unknown.xsl")
-                .to("log:after-unknown")
-                .to("log:caaers.invalid?showAll=true&level=WARN");
+                .to(fileTracker.fileURI(REQUST_PROCESSING_ERROR)) ;
 
     }
 

@@ -1,18 +1,34 @@
 package gov.nih.nci.cabig.caaers2adeers.cronjob;
 
-import org.apache.commons.lang.RandomStringUtils;
+import gov.nih.nci.cabig.caaers2adeers.track.IntegrationLogDao;
+import org.apache.camel.Exchange;
+import org.apache.camel.Processor;
+import org.springframework.beans.factory.annotation.Autowired;
 
+public class PayloadGenerator implements Processor {
 
-public class PayloadGenerator {
+    @Autowired
+    IntegrationLogDao integrationLogDao;
 
+    public void process(Exchange exchange) throws Exception {
+        String message = exchange.getIn().getBody(String.class);
+        for(EntityOperation op : EntityOperation.values()){
+            String input = "<m>" + op.name() +  "</m>";
+            if(input.equals(message)) {
+                exchange.getIn().setBody(getRequest(op),String.class);
+            }
+        }
+    }
 
-	public  String getRequest(String system, String entity, String operationName, String mode, String date) {
+	public  String getRequest(EntityOperation entityOperation) {
 
-        return "<payload correlationId=\""+RandomStringUtils.randomAlphanumeric(10)+"\">" +
-                "<system>"+system+"</system>" +
+        String date = integrationLogDao.findLastRequestCompletedDatetime(entityOperation.getQualifiedName());
+
+        return "<payload>" +
+                "<system>adeers</system>" +
                 "<request>" +
-                "<entity>"+entity+"</entity>" +
-                "<operation mode=\""+mode+"\" name=\""+operationName+"\">" +
+                "<entity>"+entityOperation.getQualifiedName()+"</entity>" +
+                "<operation mode=\""+entityOperation.getMode()+"\" name=\""+entityOperation.getOperationName()+"\">" +
                 "<criteria>" +
                 "<criterion  name=\"createdDate\">"+date+"</criterion>" +
                 "<criterion name=\"lastUpdatedDate\">"+date+"</criterion>" +
@@ -22,55 +38,5 @@ public class PayloadGenerator {
                 "</payload>";
     }
 
-	
-	public  String getAgentsRequest() {
 
-        return "<payload>" +
-                "<system>adeers</system>" +
-                "<request>" +
-                "<entity>agent</entity>" +
-                "<operation mode=\"async\" name=\"getAgentsLOV\">" +
-                "<criteria>" +
-                "<criterion  name=\"createdDate\">04-10-2001 14:17:38</criterion>" +
-                "<criterion name=\"lastUpdatedDate\">04-10-2001 14:17:38</criterion>" +
-                "</criteria>" +
-                "</operation>" +
-                "</request>" +
-                "</payload>";
-    }
-
-    public  String getStudySearchRequest() {
-
-        return "<payload>" +
-                "<system>adeers</system>" +
-                "<request>" +
-                "<entity>study</entity>" +
-                "<operation mode=\"sync\" name=\"searchStudy\">" +
-                "<criteria>" +
-                "<criterion  name=\"documentTitle\">Adjuvant Chemotherapy</criterion>" +
-                "<criterion  name=\"createdDate\">04-10-2001 14:17:38</criterion>" +
-                "<criterion name=\"lastUpdatedDate\">04-10-2001 14:17:38</criterion>" +
-                "</criteria>" +
-                "</operation>" +
-                "</request>" +
-                "</payload>";
-    }
-
-
-    public  String getStudyDetails(String nciDocumentNumber) {
-
-        return "<payload>" +
-                "<system>adeers</system>" +
-                "<request>" +
-                "<entity>study</entity>" +
-                "<operation mode=\"sync\" name=\"getStudyDetails\">" +
-                "<criteria>" +
-                "<criterion  name=\"nciDocumentNumber\">" +  nciDocumentNumber + "</criterion>" +
-                "<criterion  name=\"createdDate\">04-10-2001 14:17:38</criterion>" +
-                "<criterion name=\"lastUpdatedDate\">04-10-2001 14:17:38</criterion>" +
-                "</criteria>" +
-                "</operation>" +
-                "</request>" +
-                "</payload>";
-    }
 }

@@ -2,12 +2,18 @@ package gov.nih.nci.cabig.caaers2adeers;
 
 import gov.nih.nci.cabig.caaers2adeers.cronjob.EntityOperation;
 import gov.nih.nci.cabig.caaers2adeers.cronjob.PayloadGenerator;
+import gov.nih.nci.cabig.caaers2adeers.track.FileTracker;
 import gov.nih.nci.cabig.caaers2adeers.track.IntegrationLogDao;
 
 import java.util.Map;
 
+import org.apache.camel.Exchange;
+import org.apache.camel.Processor;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.REQUEST_RECEIVED;
+import static gov.nih.nci.cabig.caaers2adeers.track.Tracker.track;
 
 /**
  * @author Biju Joseph
@@ -15,11 +21,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class CronJobRouteBuilder implements InitializingBean {
 
     @Autowired
-    PayloadGenerator payloadGenerator;
-    
-    @Autowired
-    IntegrationLogDao integrationLogDao;
-    
+    private FileTracker fileTracker;
+
+
     Map<EntityOperation, String> cronExpressions;
 
     public void afterPropertiesSet() throws Exception {
@@ -31,12 +35,15 @@ public class CronJobRouteBuilder implements InitializingBean {
     }
 
     public void configure(Caaers2AdeersRouteBuilder routeBuilder){
-    	Map<EntityOperation, String> entityMap = integrationLogDao.findLastRequestCompletedDatetime();
-    	for(EntityOperation entityOperation : entityMap.keySet()){
-	        routeBuilder.from("quartz://caaersSync/"+entityOperation.toString()+"_timer/?cron="+cronExpressions.get(entityOperation))
-	                .setBody(routeBuilder.constant(payloadGenerator.getRequest("adeers", entityOperation.getQualifiedName(), 
-	                		entityOperation.getOperationName(), entityOperation.getMode(), entityMap.get(entityOperation))))
-	                .to("direct:adEERSRequestSink");
+    	for(EntityOperation entityOperation : EntityOperation.values()){
+
+	        routeBuilder.from("quartz://c2a/" + entityOperation.getQualifiedName() + "/?cron="+cronExpressions.get(entityOperation))
+	                .setBody(routeBuilder.constant("<m>"+ entityOperation.name() + "</m>") )
+                    .processRef("payloadGenerator")
+                    .processRef("exchangePreProcessor").processRef("headerGeneratorProcessor")
+                    .process(track(REQUEST_RECEIVED))
+                    .to(fileTracker.fileURI(REQUEST_RECEIVED))
+                    .to("direct:adEERSRequestSink");
     	}
     }
 

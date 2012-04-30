@@ -264,9 +264,9 @@
 <xs:extension base="tns:abstractDTO">
 <xs:sequence>
 <xs:element name="categoryDBCode" type="xs:string" minOccurs="0"/>
+<xs:element name="categoryDescription" type="xs:string" minOccurs="0"/>
 <xs:element name="conditionName" type="xs:string" minOccurs="0"/>
-<xs:element name="description" type="xs:string" minOccurs="0"/>
-<xs:element name="medraCode" type="xs:string" minOccurs="0"/>
+<xs:element name="medDRACode" type="xs:string" minOccurs="0"/>
 </xs:sequence>
 </xs:extension>
 </xs:complexContent>
