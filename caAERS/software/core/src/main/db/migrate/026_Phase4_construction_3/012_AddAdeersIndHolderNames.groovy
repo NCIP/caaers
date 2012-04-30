@@ -9,7 +9,7 @@ class PopulateAdeersIndHolderNames extends edu.northwestern.bioinformatics.berin
     }
 
     void down() {
-        execute("DELETE FROM organizations WHERE id IN (-101, -102, -103, -105)")
+        execute("DELETE FROM organizations WHERE id IN (-101, -102, -103, -104, -105)")
     }
 
 }
