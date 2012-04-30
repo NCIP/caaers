@@ -1,8 +1,15 @@
 <lookup>
     <phases>
+        <phase><code>0</code><value>Phase 0 Trial</value></phase>
         <phase><code>I</code><value>Phase I Trial</value></phase>
+        <phase><code>I/II</code><value>Phase I/II Trial</value></phase>
         <phase><code>II</code><value>Phase II Trial</value></phase>
+        <phase><code>II/III</code><value>Phase II/III Trial</value></phase>
         <phase><code>III</code><value>Phase III Trial</value></phase>
+        <phase><code>IV</code><value>Phase IV Trial</value></phase>
+        <phase><code>Pilot</code><value>Pilot</value></phase>
+        <phase><code>Null</code><value>Null</value></phase>
+        <phase><code>Other</code><value>Other</value></phase>
     </phases>
     <statuses>
          <status><code>Active</code><value>Active - Trial is open to accrual</value></status>

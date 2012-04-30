@@ -97,7 +97,7 @@
         </property>
     </bean>
      <bean id="fileTracker" class="gov.nih.nci.cabig.caaers2adeers.track.FileTracker">
-         <property name="folder" value="s[payload.log.dir]" />
+         <property name="folder" value="s[payloadDir]" />
      </bean>
 
     <!--=================Route Builders & Cron Jobs Payload related ====================-->
