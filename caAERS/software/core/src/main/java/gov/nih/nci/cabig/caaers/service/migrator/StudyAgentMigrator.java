@@ -80,19 +80,19 @@ public class StudyAgentMigrator implements Migrator<gov.nih.nci.cabig.caaers.dom
                     String holderName = indAssociation.getInvestigationalNewDrug().getHolderName();
                     List<InvestigationalNewDrug> inds = investigationalNewDrugDao.findByNumberAndHolderName(indNumber, holderName);
 
-                    InvestigationalNewDrug _ind = null;
+                    InvestigationalNewDrug _ind;
 
                     if (CollectionUtils.isNotEmpty(inds)) {
                         _ind = inds.get(0);
                     } else {
                         // Create New
                         _ind = new InvestigationalNewDrug();
+                        _ind.setIndNumber(Integer.parseInt(indNumber));
                         Organization o = organizationDao.getByName(holderName);
                         OrganizationHeldIND _indHolder = new OrganizationHeldIND();
                         _indHolder.setOrganization(o);
                         _indHolder.setInvestigationalNewDrug(_ind);
                         _ind.setINDHolder(_indHolder);
-                        _ind.setIndNumber(Integer.getInteger(indNumber));
                     }
 
                     indAssociation.setInvestigationalNewDrug(_ind);
