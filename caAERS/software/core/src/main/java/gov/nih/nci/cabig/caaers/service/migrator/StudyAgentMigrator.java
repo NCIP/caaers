@@ -132,6 +132,7 @@ public class StudyAgentMigrator implements Migrator<gov.nih.nci.cabig.caaers.dom
 				}
 			}
 
+/*
 			if (target.getIndType() == INDType.OTHER) {
 
 				for (StudyAgentINDAssociation indAssociation : studyAgent.getStudyAgentINDAssociations()) {
@@ -148,6 +149,7 @@ public class StudyAgentMigrator implements Migrator<gov.nih.nci.cabig.caaers.dom
 					}
 				}
 			}
+*/
 
 			destination.addStudyAgent(target);
 			// TODO: ADD error handling with user interaction
