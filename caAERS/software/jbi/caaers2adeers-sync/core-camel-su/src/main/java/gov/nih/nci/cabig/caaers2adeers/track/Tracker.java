@@ -18,12 +18,6 @@ public class Tracker implements Processor{
 	
 	protected static final Log log = LogFactory.getLog(Tracker.class);
 	
-	// entity type
- 	private String entity;
- 	
- 	// operation name
- 	private String operation;
- 	
  	// progress made by synch request
  	private Stage stage;
  	
@@ -32,10 +26,8 @@ public class Tracker implements Processor{
  	
  	boolean caputureLogDetails = false; 
  	
-	public Tracker(Stage stage, String entity, String operation, String notes, boolean caputureLogDetails) {
+	public Tracker(Stage stage, String notes, boolean caputureLogDetails) {
 		super();
-		this.entity = entity;
-		this.operation = operation;
 		this.stage = stage;
 		this.notes = notes;
 		this.caputureLogDetails = caputureLogDetails;
@@ -45,12 +37,8 @@ public class Tracker implements Processor{
 //		this(stage, null, null, notes, caputureLogDetails);
 //	}
 	
-	public static Tracker track(Stage stage, String entity, String operation, String notes, boolean caputureLogDetails) {
-		return new Tracker(stage, entity, operation, notes, caputureLogDetails);
-	}
-	
 	public static Tracker track(Stage stage, String notes, boolean caputureLogDetails){
-        return track(stage, null, null, notes, caputureLogDetails);
+		return new Tracker(stage, notes, caputureLogDetails);
     }
 	
 	public static Tracker track(Stage stage, boolean caputureLogDetails){
@@ -67,12 +55,8 @@ public class Tracker implements Processor{
 	public void process(Exchange exchange) throws Exception {
 		//set the properties in the exchange
         Map<String,Object> properties = exchange.getProperties();
-        if(entity == null){
-        	entity = properties.get(ExchangePreProcessor.ENTITY_NAME)+"";
-        }
-        if(operation == null){
-        	operation = properties.get(ExchangePreProcessor.OPERATION_NAME)+"";
-        }
+        String entity = properties.get(ExchangePreProcessor.ENTITY_NAME)+"";
+        String operation = properties.get(ExchangePreProcessor.OPERATION_NAME)+"";
         String coorelationId = properties.get(ExchangePreProcessor.CORRELATION_ID)+"";
         if(coorelationId == null || stage == null || entity == null || operation == null){
         	throw new RuntimeException("Cannot log in database. Required fields are missing");
