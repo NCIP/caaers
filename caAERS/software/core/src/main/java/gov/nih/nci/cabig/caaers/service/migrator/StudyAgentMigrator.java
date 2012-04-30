@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.service.migrator;
 import com.aparzev.util.CollectionUtils;
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao;
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 
@@ -13,6 +14,7 @@ public class StudyAgentMigrator implements Migrator<gov.nih.nci.cabig.caaers.dom
 	private AgentDao agentDao;
 	private InvestigationalNewDrugDao investigationalNewDrugDao;
 	private AgentMigrator agentMigrator;
+	private OrganizationDao organizationDao;
 
 	/**
 	 * Will migrate StudyAgent from source to destination study.
@@ -85,10 +87,7 @@ public class StudyAgentMigrator implements Migrator<gov.nih.nci.cabig.caaers.dom
                     } else {
                         // Create New
                         _ind = new InvestigationalNewDrug();
-
-                        // ToDo get this from DB by its name
-                        Organization o = null;
-
+                        Organization o = organizationDao.getByName(holderName);
                         OrganizationHeldIND _indHolder = new OrganizationHeldIND();
                         _indHolder.setOrganization(o);
                         _indHolder.setInvestigationalNewDrug(_ind);
@@ -170,5 +169,13 @@ public class StudyAgentMigrator implements Migrator<gov.nih.nci.cabig.caaers.dom
 
     public void setAgentMigrator(AgentMigrator agentMigrator) {
         this.agentMigrator = agentMigrator;
+    }
+
+    public OrganizationDao getOrganizationDao() {
+        return organizationDao;
+    }
+
+    public void setOrganizationDao(OrganizationDao organizationDao) {
+        this.organizationDao = organizationDao;
     }
 }
