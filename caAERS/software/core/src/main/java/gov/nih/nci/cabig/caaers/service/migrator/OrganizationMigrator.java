@@ -3,6 +3,8 @@ package gov.nih.nci.cabig.caaers.service.migrator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 
+import java.util.Date;
+
 public class OrganizationMigrator implements Migrator<Organization>{
 
 	public void migrate(Organization src, Organization dest, DomainObjectImportOutcome<Organization> outcome) {
@@ -14,5 +16,6 @@ public class OrganizationMigrator implements Migrator<Organization>{
 		dest.setCountry(src.getCountry());
 		dest.setState(src.getState());
 		dest.setType(src.getType());
+        dest.setLastSynchedDate(new Date());
 	}
 }
