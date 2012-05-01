@@ -24,11 +24,7 @@ import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.Status;
 import gov.nih.nci.cabig.caaers.service.AgentSpecificAdverseEventListService;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
@@ -115,7 +111,7 @@ public class ASAELServiceImpl {
             for (AgentSpecificCtcTerm _asaelTerm : asaelCtcTerms) {
                 _asaelTerm.setAgent(a);
                 _asaelTerm.setExpected(Boolean.TRUE);
-
+                _asaelTerm.setLastSynchedDate(new Date());
                 try {
                     agentSpecificTermDao.save(_asaelTerm);
                     ProcessingOutcome outcome = Helper.createOutcome(AgentSpecificTerm.class, _asaelTerm.getFullName(), false, "To the agent (" + agentType.getNscNumber() + ") the expected term : " + _asaelTerm.getFullName() + " got added");
