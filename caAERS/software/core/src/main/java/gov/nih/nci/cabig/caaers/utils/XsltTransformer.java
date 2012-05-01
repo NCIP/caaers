@@ -18,6 +18,10 @@ import org.apache.fop.apps.FopFactory;
 import org.apache.fop.apps.FormattingResults;
 import org.apache.fop.apps.MimeConstants;
 import org.apache.fop.apps.PageSequenceResults;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
+
 import java.util.*;
 
 public class XsltTransformer {
@@ -31,24 +35,28 @@ public class XsltTransformer {
      * @throws Exception
      */
     public String toText(String inXml, String xsltFile) throws Exception {
-        InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(
-                xsltFile);
+        Resource[] resources = getResources(xsltFile);
+        if(resources != null && resources.length > 0){
+            InputStream stream =  resources[0].getInputStream();
 
-		Source xmlSource = new StreamSource(new ByteArrayInputStream(inXml.getBytes()));
-		// File xslt = new File(xsltFile);
-		
-		Source xsltSource = new StreamSource(stream);
-		
-		StringWriter outStr = new StringWriter();
-		StreamResult result = new StreamResult(outStr);
-		
-		// the factory pattern supports different XSLT processors
-		TransformerFactory transFact = TransformerFactory.newInstance();
-		Transformer trans = transFact.newTransformer(xsltSource);
-		
-		trans.transform(xmlSource, result);// transform(xmlSource, new StreamResult(System.out));
-		
-		return outStr.toString();
+            Source xmlSource = new StreamSource(new ByteArrayInputStream(inXml.getBytes()));
+            // File xslt = new File(xsltFile);
+
+            Source xsltSource = new StreamSource(stream);
+
+            StringWriter outStr = new StringWriter();
+            StreamResult result = new StreamResult(outStr);
+
+            // the factory pattern supports different XSLT processors
+            TransformerFactory transFact = TransformerFactory.newInstance();
+            Transformer trans = transFact.newTransformer(xsltSource);
+
+            trans.transform(xmlSource, result);// transform(xmlSource, new StreamResult(System.out));
+
+            return outStr.toString();
+        }
+
+        return "";
     	
     }
     /**
@@ -213,6 +221,12 @@ public class XsltTransformer {
         return outStr.toString();
 
         // FO to PDF
+    }
+
+    private static Resource[] getResources(String pattern) throws IOException {
+        ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+        Resource[] resources = resolver.getResources(pattern);
+        return resources;
     }
 
 }
