@@ -70,7 +70,7 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
     public void configureTransformationRoute(String fromSink, String xslFile){
         from(fromSink)
                 .to("xslt:" + xslFile)
-                .to("log:caaers.afterWSCallResponseXSL?showHeaders=true");
+                .to("direct:outputSink");
     }
 	
     public void configure() {

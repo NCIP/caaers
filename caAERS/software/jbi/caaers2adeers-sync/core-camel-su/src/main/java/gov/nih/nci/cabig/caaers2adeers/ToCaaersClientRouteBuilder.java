@@ -30,7 +30,7 @@ public class ToCaaersClientRouteBuilder {
         //content based router
         routeBuilder.from("direct:caaersClientRequestSink")
                 .to("log:caaers.caaers-sync-request?showHeaders=true")
-                .process(track(ROUTED_TO_CAAERS_WS_INVOCATION_CHANNEL))
+                .process(track(CAAERS_WS_OUT_TRANSFORMATION))
                 .choice()
                 .when().xpath(xpathPredicate("study", "searchStudy")).to("direct:caaers-study-search-sync")
                 .otherwise().to("direct:morgue");

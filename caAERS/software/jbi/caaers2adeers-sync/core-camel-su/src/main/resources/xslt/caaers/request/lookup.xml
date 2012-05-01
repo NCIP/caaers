@@ -34,4 +34,11 @@
         <yesno><code>Yes</code><value>true</value></yesno>
         <yesno><code>No</code><value>false</value></yesno>
     </yesnos>
+    <interventions>
+        <intervention><code>Radiation Therapy</code><value>RADIATION</value></intervention>
+        <intervention><code>Surgery</code><value>SURGERY</value></intervention>
+        <intervention><code>Gene Transfer</code><value>OTHER</value></intervention>
+        <intervention><code>Image Directed Local Therapy</code><value>OTHER</value></intervention>
+        <intervention><code>Hematopoietic Stem Cell Transplantation</code><value>OTHER</value></intervention>
+    </interventions>
 </lookup>
