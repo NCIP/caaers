@@ -23,7 +23,7 @@ public class FileTracker implements InitializingBean {
                 +"/"
                 + c.get(Calendar.DAY_OF_MONTH)  ;
 
-        return "file://"+ folder +"/?fileName=" + subFolder + "/${in.header.c2a_correlation_id}/"+ s.name() + ".xml";
+        return "file://"+ folder +"/?fileName=" + subFolder + "/${in.header.c2a_entity}/${in.header.c2a_correlation_id}/"+ s.name() + ".xml";
     }
 
     public void setFolder(String folder) {
