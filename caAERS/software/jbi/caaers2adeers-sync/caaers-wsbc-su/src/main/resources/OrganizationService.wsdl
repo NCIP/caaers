@@ -1,4 +1,9 @@
-<?xml version="1.0" ?><wsdl:definitions name="OrganizationManagementWebService" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<?xml version="1.0" ?><wsdl:definitions name="OrganizationManagementWebService"
+                                        targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common"
+                                        xmlns:ns1="http://schemas.xmlsoap.org/soap/http"
+                                        xmlns:http-conf="http://cxf.apache.org/transports/http/configuration"
+                                        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/common"
+                                        xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <wsdl:types>
 <xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:ns0="http://schema.integration.caaers.cabig.nci.nih.gov/organization" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 <xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/organization"></xs:import>
@@ -659,6 +664,9 @@
   <wsdl:service name="OrganizationManagementWebService">
     <wsdl:port binding="tns:OrganizationManagementWebServiceSoapBinding" name="OrganizationManagementWebServiceImplPort">
       <soap:address location="https://dev.semanticbits.com/caaers/services/OrganizationService"></soap:address>
+        <http-conf:client ReceiveTimeout="300000"/>
+        <http-conf:client ConnectionTimeout="400000"/>
+        <http-conf:client CacheControl="no-cache" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>
