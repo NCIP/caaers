@@ -178,6 +178,8 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
                 criteriaMap.put("nciDocumentNumber", searchText);
 
                 String xmlSearchResult = send(SEARCH_STUDY_ENTITY_NAME, SEARCH_STUDY_OPERATION_NAME, true, criteriaMap);
+                if(log.isDebugEnabled()) log.debug("xmlSearchResult : for (" + searchText + ") :" + xmlSearchResult );
+
                 String xmlStudies = xsltTransformer.toText(xmlSearchResult, "xslt/c2a_generic_response.xslt");
 
                 Studies studies = (Studies) unmarshaller.unmarshal(new StringReader(xmlStudies));
