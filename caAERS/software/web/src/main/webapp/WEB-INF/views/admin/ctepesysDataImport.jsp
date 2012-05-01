@@ -1,7 +1,38 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp"%>
-
+<tags:dwrJavascriptLink objects="ctepDataInitialization"/>
 <html>
 <head>
+
+<style type="text/css">
+        input.autocomplete {
+            width: 450px;
+            font-style: normal;
+            background-color: #CCE6FF;
+        }
+
+        input.pending-search {
+            width: 450px;
+            color: gray;
+            font-style: italic;
+            background-color: #CCE6FF;
+        }
+        
+        #criteria-div{
+          
+        }
+		.selection {
+			display:none;
+			background:#dbe9ff;
+			border:1px solid #6e8bb8;
+			color:#2a4876;
+			font-style:italic;
+			width:449px;
+			margin-top:5px;
+			margin-bottom:15px;
+			padding:3px;
+		}
+    </style>
+    
 <title>CTEP Data Import</title>
 	<!-- Required CSS -->
 	<link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/2.9.0/build/progressbar/assets/skins/sam/progressbar.css">
@@ -49,84 +80,71 @@
 
 }
 	
-	
-	var progressBar = new YAHOO.widget.ProgressBar();
-	
 	var myColumnDefs = [{key:"name", label:"Name", sortable:true, resizeable:true, minWidth:200, maxWidth:350},
 						{key:"status", label:"Status", sortable:true, resizeable:true, minWidth:300, maxWidth:350},
 						{key:"select", label:"Select", sortable:true, resizeable:true, minWidth:100, maxWidth:100}];
 	
 	var myFields = [{key:'name', parser:"string"},{key:'status', parser:"string"},{key:'select', parser:"string"}];
 	
-	var fillerData =  [{name:'CTCAE',status:'last updated 04/15/12 - 00:00',select: '<input type="checkbox" name="cTCAEChecked" value="checkbox1"/>'},
-						{name:'Devices',status:'last updated 04/15/12 - 00:01',select:'<input type="checkbox" name="devicesChecked" value="devicesChecked" />'},
-						{name:'Pre-Existing Conditions',status:' <div> <img class="indicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator"/> </div>',select:'<input type="checkbox" name="conditionChecked" value="conditionChecked" checked="checked"/>'},
-						{name:'Therapies',status:'update in progress <div id="progressBarId4"> </div>',select:'<input type="checkbox" name="therapiesChecked" value="therapiesChecked" checked="checked"/>'},
-						{name:'Agent Dose Units of Measure',status:'update in progress <div id="progressBarId5"> </div>',select:'<input type="checkbox" name="agentDoseUOMChecked" value="agentDoseUOMChecked" checked="checked"/>'},
-						{name:'Lob',status:'last updated 04/15/12 - 00:02',select:'<input type="checkbox" name="lobChecked" value="lobChecked"/>'},
-						{name:'Agents',status:'update in progress <div id="progressBarId7"> </div>',select:'<input type="checkbox" name="agentsChecked" value="agentsChecked" checked="checked"/>'},
-						{name:'ASAEL',status:'update in progress <div id="progressBarId8" </div>',select:'<input type="checkbox" name="aSAELChecked" value="aSAELChecked" checked="checked"/>'},
-						{name:'Organizations',status:'last updated 04/15/12 - 00:03',select:'<input type="checkbox" name="organizationsChecked" value="organizationsChecked"/>'}];
+	var fillerData =  [{name:'CTCAE',status:'last updated - ${empty command.ctcaeLastUpdated ? "never":command.ctcaeLastUpdated}  <div> <img class="indicator" id="ctcaeIndicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator"/> </div> </div>',select: '<input type="checkbox" name="ctcaeChecked" id="ctcaeChecked" value="ctcaeChecked"/>'},
+						{name:'Devices',status:'last updated - ${empty command.devicesLastUpdated ? "never":command.devicesLastUpdated} <div> <img class="indicator" id="deviceIndicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator"/> </div> </div>',select:'<input type="checkbox" name="deviceChecked" id="deviceChecked" value="deviceChecked" />'},
+						{name:'Pre-Existing Conditions',status:'last updated - ${empty command.preExistingConditionsLastUpdated ? "never":command.preExistingConditionsLastUpdated} <div> <img class="indicator" id="conditionIndicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator"/> </div>',select:'<input type="checkbox" name="conditionChecked" id="conditionChecked" value="conditionChecked" />'},
+						{name:'Therapies',status:'last updated - ${empty command.therapiesLastUpdated ? "never":command.therapiesLastUpdated} <div> <img class="indicator" id="therapyIndicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator"/> </div>',select:'<input type="checkbox" name="therapyChecked" id="therapyChecked" value="therapyChecked" />'},
+						{name:'Agent Dose Units of Measure',status:'last updated - ${empty command.agentDoseMeasureLastUpdated ? "never":command.agentDoseMeasureLastUpdated} <div> <img class="indicator" id="agentDUOMIndicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator"/> </div>',select:'<input type="checkbox" name="agentDUOMChecked" id="agentDUOMChecked" value="agentDUOMChecked" />'},
+						{name:'Lab',status:'last updated - ${empty command.labLastUpdated ? "never":command.labLastUpdated}  <div> <img class="indicator" id="labIndicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator"/> </div> </div>',select:'<input type="checkbox" name="labChecked" id="labChecked" value="labChecked"/>'},
+						{name:'Agents',status:'last updated - ${empty command.agentsLastUpdated ? "never":command.agentsLastUpdated} <div> <img class="indicator" id="agentIndicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator"/> </div> </div>',select:'<input type="checkbox" name="agentsChecked" id="agentChecked" value="agentChecked" />'},
+						{name:'ASAEL',status:'last updated - ${empty command.asaelLastUpdated ? "never":command.asaelLastUpdated}  <div> <img class="indicator" id="asaelIndicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator"/> </div>',select:'<input type="checkbox" name="asaelChecked" id="asaelChecked" value="asaelChecked" />'},
+						{name:'Organizations',status:'last updated - ${empty command.organizationsLastUpdated ? "never":command.organizationsLastUpdated} <div> <img class="indicator" id="organizationIndicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator"/> </div> </div>',select:'<input type="checkbox" name="organizationChecked" id="organizationChecked" value="organizationsChecked"/>'}];
 
 	function displayCTEPLOVInitializeTable() {
 	   initializeYUITableNoPagination("tableDiv",fillerData, myColumnDefs, myFields);
 	}
 	
-		var myAnim = new YAHOO.util.Anim('test', {
-   			width: {
-        	to: 400 
-   		 } 
-		}, 5, YAHOO.util.Easing.easeOut);
+	 function showPopupMessage(){
+		var d = $('synchMessage');
+		Dialog.alert(d.innerHTML, {className: "alphacube", width:300, okLabel: "Close" });
+	}
 	
 	Event.observe(window, "load", function() {
 		displayCTEPLOVInitializeTable();
-		var progressBar3 = new YAHOO.widget.ProgressBar({
-		    minValue: 10,
-		    maxValue: 90,
-		    value: 75,
-		    height: 20,
-		    width: 100
-		}).render("progressBarId3");
-		
-			
-		var progressBar4 = new YAHOO.widget.ProgressBar({
-		    minValue: 10,
-		    maxValue: 90,
-		    value: 85,
-		    height: 20,
-		    width: 100
-		}).render("progressBarId4");
-		
-			
-		var progressBar5 = new YAHOO.widget.ProgressBar({
-		    minValue: 10,
-		    maxValue: 90,
-		    value: 65,
-		    height: 20,
-		    width: 100
-		}).render("progressBarId5");
-		
-			
-		var progressBar7 = new YAHOO.widget.ProgressBar({
-		    minValue: 10,
-		    maxValue: 90,
-		    value: 50,
-		    height: 20,
-		    width: 100
-		}).render("progressBarId7");
-		
-			
-		var progressBar8= new YAHOO.widget.ProgressBar({
-		    minValue: 10,
-		    maxValue: 90,
-		    value: 35,
-		    height: 20,
-		    width: 100
-		}).render("progressBarId8");
 	});
 	
 	function spinAjaxIndicator(){
-		$('indicator').className='';
+		$$("form .indicator").each(function(e){
+											if( e.id == 'ctcaeIndicator' && $('ctcaeChecked').checked == true) {
+													e.className='arbitrary';
+											}	else if(e.id == 'deviceIndicator' && $('deviceChecked').checked == true) {
+													e.className='arbitrary';
+											}	else if(e.id == 'conditionIndicator' && $('conditionChecked').checked == true) {
+													e.className='arbitrary';
+											}	else if(e.id == 'therapyIndicator' && $('therapyChecked').checked == true) {
+													e.className='arbitrary';
+											}	else if(e.id == 'agentDUOMIndicator' && $('agentDUOMChecked').checked == true) {
+													e.className='arbitrary';
+											}	else if(e.id == 'labIndicator' && $('labChecked').checked == true) {
+													e.className='arbitrary';
+											}	else if(e.id == 'agentIndicator' && $('agentChecked').checked == true) {
+													e.className='arbitrary';
+											}	else if(e.id == 'asaelIndicator' && $('asaelChecked').checked == true) {
+												 	e.className='arbitrary';
+											}	else if(e.id == 'ctcaeIndicator' && $('ctcaeChecked').checked == true) {
+												 	e.className='arbitrary';
+											}	else if(e.id == 'organizationIndicator' && $('organizationChecked').checked == true) {
+												 	e.className='arbitrary';
+											}	
+									}
+			
+			
+			);
+		ctepDataInitialization.importCTEPData($('ctcaeChecked').checked, $('deviceChecked').checked, $('conditionChecked').checked, $('therapyChecked').checked, 
+				$('agentDUOMChecked').checked,false, $('agentChecked').checked,	$('asaelChecked').checked, $('organizationChecked').checked, ajaxCallBack);
+				document.getElementById("importButton").setAttribute("disabled", "disabled");
+				showPopupMessage();
+	}
+	
+	function ajaxCallBack() {
+	    $$("form .arbitrary").each(function(e){e.className='indicator';	});
+	    document.getElementById("importButton").removeAttribute("disabled")
 	}
 	
 </script>
@@ -163,5 +181,12 @@
 		</chrome:division>
 	</form:form>
 </chrome:box>
+
+<div id="synchMessage" style="display:none; padding: 15px;">
+		<div style="font-size: 10pt; padding-top: 20px; padding-bottom: 20px; padding-left: 5px; padding-right: 5px">
+			<div class="label">Synching data with CTEP. Please come back in 10 minutes</div> <div class="value">
+		</div>
+</div>
+
 </body>
 </html>

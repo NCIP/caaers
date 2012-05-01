@@ -186,39 +186,22 @@ color:#0033FF;
 	
 	function showAndHideFields(){
 		
-		if ($('actions').value == 'businessId') {
-			$('businessIdDiv').show();
-			$('datesDiv').hide();
-			$('synchStatusDiv').hide();
-			$('outcomeDiv').hide();
-			$('entityDiv').hide();
-		} else if ($('actions').value == 'daterange') {
-			$('businessIdDiv').hide();
+		if ($('actions').value == 'daterange') {
+			$('serviceDiv').hide();
 			$('datesDiv').show();
-			$('synchStatusDiv').hide();
-			$('outcomeDiv').hide();
-			$('entityDiv').hide();
-		} else if ($('actions').value == 'entity') {
-			$('businessIdDiv').hide();
+			$('statusDiv').hide();
+		} else if ($('actions').value == 'service') {
+			$('serviceDiv').show();
 			$('datesDiv').hide();
-			$('synchStatusDiv').hide();
-			$('outcomeDiv').hide();
-			$('entityDiv').show();	
-		}else if ($('actions').value == 'synchStatus') {
-			$('businessIdDiv').hide();
+			$('statusDiv').hide();
+		}else if ($('actions').value == 'status') {
 			$('datesDiv').hide();
-			$('synchStatusDiv').show();
-			$('outcomeDiv').hide();
-			$('entityDiv').hide();
-		} else if ($('actions').value == 'outcome') {
-			$('businessIdDiv').hide();
-			$('datesDiv').hide();
-			$('synchStatusDiv').hide();
-			$('outcomeDiv').show();
-			$('entityDiv').hide();
+			$('serviceDiv').hide();
+			$('statusDiv').show();
 		} 
-
 	}
+	
+	
 	
 </script>
 </head>
@@ -260,32 +243,22 @@ color:#0033FF;
             				<tags:button color="blue" type="submit" value="Find" size="small" icon="search"/>
             			</td>
             		</tr>
-            		<tr id="entityDiv" style="display:none">
+            		<tr id="serviceDiv" style="display:none">
             			<td>
 	            				<tags:renderRow field="${fieldGroups.main.fields[1]}"/>
             			</td>
             		</tr>
-            		<tr id="outcomeDiv" style="display:none">
+            		<tr id="statusDiv" style="display:none">
             			<td>
 	            				<tags:renderRow field="${fieldGroups.main.fields[2]}"/>
-            			</td>
-            		</tr>  
-            		<tr id="synchStatusDiv" style="display:none">
-            			<td>
-	            				<tags:renderRow field="${fieldGroups.main.fields[3]}"/>
             			</td>
             		</tr>            		
             		<tr id="datesDiv" style="display:none">
             			<td>
+	            				<tags:renderRow field="${fieldGroups.main.fields[3]}"/>
 	            				<tags:renderRow field="${fieldGroups.main.fields[4]}"/>
-	            				<tags:renderRow field="${fieldGroups.main.fields[5]}"/>
             			</td>
             		</tr> 
-            		<tr id="businessIdDiv" style="display:none">
-            			<td>
-	            				<tags:renderRow field="${fieldGroups.main.fields[6]}"/>
-            			</td>
-            		</tr>
              </table>	
 
         </div>
@@ -309,12 +282,10 @@ color:#0033FF;
 					<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tableRegion">
 					    <thead>
 					      <tr align="center" class="label">
-					      	<td width="15%" class="tableHeader">Date</td>
-					        <td width="10%" class="tableHeader">Entity</td>
-					         <td width="15%" class="tableHeader">Business Id</td>
-					        <td width="20%" class="tableHeader">Synch Status</td>
-					        <td width="4%" class="tableHeader">Outcome</td>
-					        <td width="20%" class="tableHeader">Notes</td>
+					      	<td width="15%" class="tableHeader">Timestamp</td>
+					        <td width="10%" class="tableHeader">Service</td>
+					         <td width="15%" class="tableHeader">Status</td>
+					        <td width="20%" class="tableHeader">More Information</td>
 					      </tr>
 					    </thead>
 					    <c:forEach items="${command.searchResultsDTO.filteredResults}" var="integrationLogDetail" varStatus="rpStatus">

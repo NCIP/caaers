@@ -18,14 +18,14 @@ public class IntegrationLogDetailDaoTest extends DaoNoSecurityTestCase<Integrati
 	
 	public void testGetByEntity() throws Exception {
 		IntegrationLogDetailQuery query = new IntegrationLogDetailQuery();
-		query.filterByEntity("Organization");
-		List<IntegrationLogDetail> queriedIntLogDetails = dao.searchIntegrationLogDetail(query);
+		query.filterBySynchStatus(SynchStatus.REQUEST_RECEIVED);
+		List<IntegrationLogDetail> queriedIntLogDetails = dao.searchIntegrationLogDetails(query);
 		assertEquals(1,queriedIntLogDetails.size());
 		assertEquals(5,queriedIntLogDetails.get(0).getSynchStatus().getCode().intValue());
 		
 		// test case insensitivity
-		query.filterByEntity("organization");
-		queriedIntLogDetails = dao.searchIntegrationLogDetail(query);
+		query.filterByBusinessId("-1");
+		queriedIntLogDetails = dao.searchIntegrationLogDetails(query);
 		assertEquals(1,queriedIntLogDetails.size());
 	}
 	
@@ -33,45 +33,47 @@ public class IntegrationLogDetailDaoTest extends DaoNoSecurityTestCase<Integrati
 	public void testSaveIntegrationDetailLog() throws Exception {
 		IntegrationLogDetail intDetailLog = new IntegrationLogDetail();
 		intDetailLog.setBusinessId("2");
-		intDetailLog.setSynchStatus(SynchStatus.CAAERS_WS_INVOCATION);
+		intDetailLog.setSynchStatus(SynchStatus.CAAERS_WS_INVOCATION_INITIATED);
 		intDetailLog.setOutcome("success");
 		
 		IntegrationLogQuery intLogquery = new IntegrationLogQuery();
 		intLogquery.filterByEntity("Organization");
-		List<IntegrationLog> queriedLogs = integrationLogDao.searchIntegrationLog(intLogquery);
+		List<IntegrationLog> queriedLogs = integrationLogDao.searchIntegrationLogs(intLogquery);
 		
-		intDetailLog.setIntegrationLog(queriedLogs.get(0));
+		queriedLogs.get(0).getIntegrationLogDetails().add(intDetailLog);
+		assertEquals(1,queriedLogs.get(0).getIntegrationLogDetails().size());
 		
-		dao.save(intDetailLog);
+		
+		integrationLogDao.save(queriedLogs.get(0));
 		
 		interruptSession();
 		
-		IntegrationLogDetailQuery query = new IntegrationLogDetailQuery();
-		query.filterByEntity("Organization");
-		query.filterByOperation("createOrUpdate");
-		List<IntegrationLogDetail> queriedIntLogDetails = dao.searchIntegrationLogDetail(query);
-		assertEquals(2,queriedIntLogDetails.size());
-		assertEquals(65,queriedIntLogDetails.get(0).getSynchStatus().getCode().intValue());
+		IntegrationLogQuery query = new IntegrationLogQuery();
+		query.filterByCorrelationId("-1");
+		List<IntegrationLog> queriedIntLogs = integrationLogDao.searchIntegrationLogs(query);
+		
+		assertEquals(2,queriedIntLogs.get(0).getIntegrationLogDetails().size());
+		assertEquals(65,queriedIntLogs.get(0).getSynchStatus().getCode().intValue());
 	}
 	
 	public void testQueryByDate() throws Exception {
-		IntegrationLogDetailQuery query1 = new IntegrationLogDetailQuery();
+		IntegrationLogQuery query1 = new IntegrationLogQuery();
 		Date queryDate1 = DateUtils.parseDate("04/23/2012");
 		query1.filterByLoggedOn(queryDate1, "<");
-		List<IntegrationLogDetail> queriedIntLogDetails = dao.searchIntegrationLogDetail(query1);
-		assertEquals(6,queriedIntLogDetails.size());
+		List<IntegrationLog> queriedIntLogs = integrationLogDao.searchIntegrationLogs(query1);
+		assertEquals(6,queriedIntLogs.size());
 		
-		IntegrationLogDetailQuery query2 = new IntegrationLogDetailQuery();
+		IntegrationLogQuery query2 = new IntegrationLogQuery();
 		Date queryDate2 = DateUtils.parseDate("04/22/2012");
 		query2.filterByLoggedOn(queryDate2, "<");
-		queriedIntLogDetails = dao.searchIntegrationLogDetail(query2);
-		assertEquals(3,queriedIntLogDetails.size());
+		queriedIntLogs = integrationLogDao.searchIntegrationLogs(query2);
+		assertEquals(3,queriedIntLogs.size());
 		
-		IntegrationLogDetailQuery query3 = new IntegrationLogDetailQuery();
+		IntegrationLogQuery query3 = new IntegrationLogQuery();
 		Date queryDate3 = DateUtils.parseDate("04/22/2012");
 		query3.filterByLoggedOn(queryDate3, "<=");
-		queriedIntLogDetails = dao.searchIntegrationLogDetail(query3);
-		assertEquals(6,queriedIntLogDetails.size());
+		queriedIntLogs = integrationLogDao.searchIntegrationLogs(query3);
+		assertEquals(6,queriedIntLogs.size());
 	}
 
 }

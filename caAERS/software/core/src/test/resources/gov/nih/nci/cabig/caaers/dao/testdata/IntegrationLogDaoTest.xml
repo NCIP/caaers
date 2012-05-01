@@ -15,4 +15,10 @@
 	 entity="Study" 	operation="getStudies"/>
 	 <integration_logs id="1007" version="0"  logged_on="2012-04-21" correlation_id="-8" synch_status="CAAERS_WS_IN_TRANSFORMATION" notes="caAERS Webservice request transformation"
 	 entity="Study" 	operation="getStudies"/>
+	 <integration_logs id="1008" version="0"  logged_on="2012-04-26" correlation_id="-9" synch_status="REQUEST_RECEIVED" notes="caAERS sent request to Servicemix"
+	 entity="Organization" 	operation="mergeOrganization"/>
+	  <integration_logs id="1009" version="0"  logged_on="2012-04-27" correlation_id="-9" synch_status="REQUEST_RECEIVED" notes="caAERS sent request to Servicemix"
+	 entity="Organization" 	operation="mergeOrganization"/>
+	  <integration_logs id="1010" version="0"  logged_on="2012-04-25" correlation_id="-9" synch_status="REQUEST_RECEIVED" notes="caAERS sent request to Servicemix"
+	 entity="Organization" 	operation="mergeOrganization"/>
 </dataset>

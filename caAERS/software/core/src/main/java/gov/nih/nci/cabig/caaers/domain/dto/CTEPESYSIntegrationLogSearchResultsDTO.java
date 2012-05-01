@@ -1,47 +1,47 @@
 package gov.nih.nci.cabig.caaers.domain.dto;
 
-import gov.nih.nci.cabig.caaers.domain.IntegrationLogDetail;
+import gov.nih.nci.cabig.caaers.domain.IntegrationLog;
 
 import java.util.ArrayList;
 import java.util.List;
 
  
 /**
- * The Class IntegrationLogDetailSearchResultsDTO.
+ * The Class IntegrationLogSearchResultsDTO.
  */
 public class CTEPESYSIntegrationLogSearchResultsDTO {
 	
 	/** The result dto. */
-	List<IntegrationLogDetail> results = new ArrayList<IntegrationLogDetail>();
+	List<IntegrationLog> results = new ArrayList<IntegrationLog>();
 	
 	/** The filtered result dto. */
-	List<IntegrationLogDetail> filteredResults = new ArrayList<IntegrationLogDetail>();
+	List<IntegrationLog> filteredResults = new ArrayList<IntegrationLog>();
 	
 	/**
 	 * Instantiates a new report version search results dto.
 	 *
 	 * @param list the list
 	 */
-	public CTEPESYSIntegrationLogSearchResultsDTO (List<IntegrationLogDetail> list) {		
+	public CTEPESYSIntegrationLogSearchResultsDTO (List<IntegrationLog> list) {		
 		populateResults(list);
 	}
 	
-	public List<IntegrationLogDetail> getResults() {
+	public List<IntegrationLog> getResults() {
 		if(results == null){
-			return new ArrayList<IntegrationLogDetail>();
+			return new ArrayList<IntegrationLog>();
 		}
 		return results;
 	}
 
-	public void setResults(List<IntegrationLogDetail> results) {
+	public void setResults(List<IntegrationLog> results) {
 		this.results = results;
 	}
 
-	public List<IntegrationLogDetail> getFilteredResults() {
+	public List<IntegrationLog> getFilteredResults() {
 		return filteredResults;
 	}
 
-	public void setFilteredResults(List<IntegrationLogDetail> filteredResults) {
+	public void setFilteredResults(List<IntegrationLog> filteredResults) {
 		this.filteredResults = filteredResults;
 	}
 
@@ -50,8 +50,8 @@ public class CTEPESYSIntegrationLogSearchResultsDTO {
 	 *
 	 * @param list the list
 	 */
-	public void populateResults(List<IntegrationLogDetail> list) {
-		for(IntegrationLogDetail rv : list){
+	public void populateResults(List<IntegrationLog> list) {
+		for(IntegrationLog rv : list){
 			addResult(rv);
 		}
 	}
@@ -64,9 +64,9 @@ public class CTEPESYSIntegrationLogSearchResultsDTO {
 	 */
 	public void filterResult(int startIndex, int endIndex) {
 		int i = 0;
-		filteredResults = new ArrayList<IntegrationLogDetail>();
+		filteredResults = new ArrayList<IntegrationLog>();
 		
-			for(IntegrationLogDetail result : results){
+			for(IntegrationLog result : results){
 				if(i >= startIndex && i <= endIndex){
 					addFilteredResult(result);
 				}
@@ -85,11 +85,11 @@ public class CTEPESYSIntegrationLogSearchResultsDTO {
 	}
 
 	
-	public void addResult(IntegrationLogDetail logDetail){
+	public void addResult(IntegrationLog logDetail){
 		getResults().add(logDetail);
 	}
 	
-	public void addFilteredResult(IntegrationLogDetail filteredLogDetail){
+	public void addFilteredResult(IntegrationLog filteredLogDetail){
 		getFilteredResults().add(filteredLogDetail);
 	}
 }

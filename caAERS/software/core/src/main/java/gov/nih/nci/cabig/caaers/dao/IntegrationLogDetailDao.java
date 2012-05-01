@@ -47,37 +47,22 @@ public class IntegrationLogDetailDao extends GridIdentifiableDao<IntegrationLogD
      * @return The list of integration logs.
      */
     @SuppressWarnings("unchecked")
-    public List<IntegrationLogDetail> searchIntegrationLogDetail(final IntegrationLogDetailQuery query, int firstrow, int maxrows) {
+    public List<IntegrationLogDetail> searchIntegrationLogDetails(final IntegrationLogDetailQuery query, int firstrow, int maxrows) {
         String queryString = query.getQueryString();
         log.debug(">>> " + queryString.toString());
         return (List<IntegrationLogDetail>) super.search(query, firstrow, maxrows);
     }
     
-    public List<IntegrationLogDetail> searchIntegrationLogDetail(final IntegrationLogDetailQuery query) {
+    public List<IntegrationLogDetail> searchIntegrationLogDetails(final IntegrationLogDetailQuery query) {
         String queryString = query.getQueryString();
         log.debug(">>> " + queryString.toString());
         return (List<IntegrationLogDetail>) super.search(query);
     }
     
-    public List<IntegrationLogDetail> searchIntegrationDetailLogsInLastGivenNumberOfDays(int days){
-    	Date today = new Date();
-    	Calendar cal = Calendar.getInstance();
-    	cal.setTime(today);
-    	cal.set(Calendar.DATE, cal.get(Calendar.DATE)-days);
-    	IntegrationLogDetailQuery query = new IntegrationLogDetailQuery();
-    	query.filterByLoggedOn(cal.getTime(), ">");
-    	return searchIntegrationLogDetail(query);
-    }
-    
     public List<IntegrationLogDetail> searchIntegrationDetailLogsForFailed(){
     	IntegrationLogDetailQuery query = new IntegrationLogDetailQuery();
     	query.filterByOutcome("failure");
-    	return searchIntegrationLogDetail(query);
+    	return searchIntegrationLogDetails(query);
     }
     
-    public List<IntegrationLogDetail> searchIntegrationDetailLogsForDateRange(Date startDate, Date endDate){
-    	IntegrationLogDetailQuery query = new IntegrationLogDetailQuery();
-    	query.filterByLoggedOnStartDateAndEndDate(startDate, endDate);
-    	return searchIntegrationLogDetail(query);
-    }
 }

@@ -2,13 +2,19 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -35,8 +41,22 @@ public class IntegrationLog extends AbstractMutableDomainObject{
 	// details 
 	private String notes;
 	
+	private List<IntegrationLogDetail> integrationLogDetails = new ArrayList<IntegrationLogDetail>();
+	
 	public String getNotes() {
 		return notes;
+	}
+
+	@OneToMany
+	@JoinColumn(name="log_id")
+	@Cascade({CascadeType.PERSIST})
+	public List<IntegrationLogDetail> getIntegrationLogDetails() {
+		return integrationLogDetails;
+	}
+
+	public void setIntegrationLogDetails(
+			List<IntegrationLogDetail> integrationLogDetails) {
+		this.integrationLogDetails = integrationLogDetails;
 	}
 
 	public void setNotes(String notes) {

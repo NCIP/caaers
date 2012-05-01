@@ -48,6 +48,10 @@
         <create creator="spring" javascript="search">
             <param name="beanName" value="searchAjaxFacade"/>
         </create>
+        
+        <create creator="spring" javascript="ctepDataInitialization">
+            <param name="beanName" value="ctepDataInitializationAjaxFacade"/>
+        </create>
 
         <create creator="spring" javascript="authorRule">
             <param name="beanName" value="ruleAjaxFacade"/>

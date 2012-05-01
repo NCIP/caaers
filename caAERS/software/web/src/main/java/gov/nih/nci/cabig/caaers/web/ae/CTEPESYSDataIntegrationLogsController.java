@@ -1,9 +1,9 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.dao.IntegrationLogDetailDao;
-import gov.nih.nci.cabig.caaers.dao.query.IntegrationLogDetailQuery;
+import gov.nih.nci.cabig.caaers.dao.IntegrationLogDao;
+import gov.nih.nci.cabig.caaers.dao.query.IntegrationLogQuery;
+import gov.nih.nci.cabig.caaers.domain.IntegrationLog;
 import gov.nih.nci.cabig.caaers.domain.IntegrationLogDetail;
-import gov.nih.nci.cabig.caaers.domain.SynchStatus;
 import gov.nih.nci.cabig.caaers.domain.dto.CTEPESYSIntegrationLogSearchResultsDTO;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
@@ -32,15 +32,10 @@ import org.springframework.web.servlet.mvc.SimpleFormController;
 
 public class CTEPESYSDataIntegrationLogsController extends SimpleFormController {
 	
-	private IntegrationLogDetailDao integrationLogDetailDao;
+	private IntegrationLogDao integrationLogDao;
 	
-    public IntegrationLogDetailDao getIntegrationLogDetailDao() {
-		return integrationLogDetailDao;
-	}
-
-	public void setIntegrationLogDetailDao(
-			IntegrationLogDetailDao integrationLogDetailDao) {
-		this.integrationLogDetailDao = integrationLogDetailDao;
+	public void setIntegrationLogDao(IntegrationLogDao integrationLogDao) {
+		this.integrationLogDao = integrationLogDao;
 	}
 
 	private static final String PAGINATION_ACTION = "paginationAction";
@@ -49,9 +44,9 @@ public class CTEPESYSDataIntegrationLogsController extends SimpleFormController 
     
     private InputFieldGroupMap fieldMap;
     
-    private Map<Object, Object> synchStatusMap = new LinkedHashMap<Object, Object>();
+    private Map<Object, Object> statusMap = new LinkedHashMap<Object, Object>();
     
-    private Map<Object, Object> entityMap = new LinkedHashMap<Object, Object>();
+    private Map<Object, Object> serviceMap = new LinkedHashMap<Object, Object>();
     
 	
 	public CTEPESYSDataIntegrationLogsController() {
@@ -62,19 +57,27 @@ public class CTEPESYSDataIntegrationLogsController extends SimpleFormController 
         setSuccessView("admin/ctepesys_integration_logs");
         
         
-        synchStatusMap.put("", "Please select");
-        for (SynchStatus synchStatusType : SynchStatus.values()) {
-        	synchStatusMap.put(synchStatusType.name(), synchStatusType.getStageName());
-        }
+        statusMap.put("", "Please select");
+        statusMap.put("Success", "Success");
+        statusMap.put("In Progress", "In Progress");
+        statusMap.put("Failure", "Failure");
         
-        entityMap.put("", "Please select");
-        entityMap.put("Organization", "Organization");
-        entityMap.put("ASAEL", "ASAEL");
-        entityMap.put("Agent", "Agent");
-        entityMap.put("Device", "Device");
-        entityMap.put("Pre-Existing Condition", "Pre-Existing Condition");
-        entityMap.put("PriorTherapy", "PriorTherapy");
-        entityMap.put("Study", "Study");
+        serviceMap.put("", "Please select");
+        serviceMap.put("SearchStudy", "SearchStudy");
+        serviceMap.put("GetStudyDetails", "GetStudyDetails");
+        serviceMap.put("GetStudyDiseases", "GetStudyDiseases");
+        serviceMap.put("GetStudyTreatmentAssignments", "GetStudyTreatmentAssignments");
+        serviceMap.put("GetStudyAgents", "GetStudyAgents");
+        serviceMap.put("GetStudyOrganizations", "GetStudyOrganizations");
+        serviceMap.put("GetASAEL", "GetASAEL");
+        serviceMap.put("GetOrganizationLOV", "GetOrganizationLOV");
+        serviceMap.put("GetAgentsLOV", "GetAgentsLOV");
+        serviceMap.put("GetCTCAELOV", "GetCTCAELOV");
+        serviceMap.put("GetDeviceLOV", "GetDeviceLOV");
+        serviceMap.put("GetPre-ExistingConditionsLOV", "GetPre-ExistingConditionsLOV");
+        serviceMap.put("GetTherapiesLOV", "GetTherapiesLOV");
+        serviceMap.put("GetAgentDoseUOMLOV", "GetAgentDoseUOMLOV");
+        serviceMap.put("GetLabLOV", "GetLabLOV");
         
         fieldMap = new InputFieldGroupMap();
         InputFieldGroup fieldGroup = new DefaultInputFieldGroup("main");
@@ -84,41 +87,30 @@ public class CTEPESYSDataIntegrationLogsController extends SimpleFormController 
         fieldGroup.getFields().add(attributionField);
         
         //1
-        InputField entityField = InputFieldFactory.createSelectField("entity", "Entity", true, entityMap);
+        InputField entityField = InputFieldFactory.createSelectField("service", "Service", true, serviceMap);
         fieldGroup.getFields().add(entityField);
         
         //2
-        InputField outcomeField = InputFieldFactory.createBooleanSelectField("outcome", "Outcome",true);
-        fieldGroup.getFields().add(outcomeField);
-        
-        //3
-        InputField synchStatusField = InputFieldFactory.createSelectField("synchStatus", "Synch Status", true, synchStatusMap);
+        InputField synchStatusField = InputFieldFactory.createSelectField("status", "Status", true, statusMap);
         fieldGroup.getFields().add(synchStatusField);
         
-        //4
+        //3
         InputField startDateField = InputFieldFactory.createPastDateField("startDate", "From", false);
         fieldGroup.getFields().add(startDateField);
         
-        //5
+        //4
         InputField endDateField = InputFieldFactory.createPastDateField("endDate", "To", false);
         fieldGroup.getFields().add(endDateField);
-        
-      //6
-        InputField businessIdField = InputFieldFactory.createTextField("businessId", "Business Id", true);
-        fieldGroup.getFields().add(businessIdField);
-        
         
         fieldMap.addInputFieldGroup(fieldGroup);
 	}
 	
 	protected Map<Object, Object> createFilterOptions() {
         Map<Object, Object> filterOptions = new LinkedHashMap<Object, Object>();
-        filterOptions.put("week", "Entities synched in last 7 days");
-        filterOptions.put("entity", "Entity");
-        filterOptions.put("outcome", "Outcome");
-        filterOptions.put("synchStatus", "Synch Status");
+        filterOptions.put("week", "Data synched in last 7 days");
+        filterOptions.put("service", "Service");
+        filterOptions.put("status", "Status");
         filterOptions.put("daterange", "Date Range");
-        filterOptions.put("businessId", "Business Id");
         return filterOptions;
     }
 
@@ -127,7 +119,7 @@ public class CTEPESYSDataIntegrationLogsController extends SimpleFormController 
     	CTEPESYSDataIntegrationLogsCommand cmd =  new CTEPESYSDataIntegrationLogsCommand();
     	
     	if (!isFormSubmission(request)) {
-    		List<IntegrationLogDetail> rvs = integrationLogDetailDao.searchIntegrationDetailLogsInLastGivenNumberOfDays(7);
+    		List<IntegrationLog> rvs = integrationLogDao.searchIntegrationLogsInLastGivenNumberOfDays(7);
     		CTEPESYSIntegrationLogSearchResultsDTO searchResultsDTO = new CTEPESYSIntegrationLogSearchResultsDTO(rvs);
     		searchResultsDTO.setFilteredResults(searchResultsDTO.getResults());
     		cmd.setSearchResultsDTO(searchResultsDTO);
@@ -163,34 +155,24 @@ public class CTEPESYSDataIntegrationLogsController extends SimpleFormController 
     protected ModelAndView onSubmit(HttpServletRequest request,HttpServletResponse response, Object command, BindException errors)	throws Exception {
     	CTEPESYSDataIntegrationLogsCommand cmd = (CTEPESYSDataIntegrationLogsCommand)command;
 
-        	if (cmd.getActions().equals("failed")){
-        		List<IntegrationLogDetail> rvs = integrationLogDetailDao.searchIntegrationDetailLogsForFailed();
-        		CTEPESYSIntegrationLogSearchResultsDTO searchResults = new CTEPESYSIntegrationLogSearchResultsDTO(rvs);
-        		cmd.setSearchResultsDTO(searchResults);              
-        	} else if (cmd.getActions().equals("week")) {
-        		List<IntegrationLogDetail> rvs = integrationLogDetailDao.searchIntegrationDetailLogsInLastGivenNumberOfDays(7);
+        	if (cmd.getActions().equals("week")) {
+        		List<IntegrationLog> rvs = integrationLogDao.searchIntegrationLogsInLastGivenNumberOfDays(7);
         		CTEPESYSIntegrationLogSearchResultsDTO searchResults = new CTEPESYSIntegrationLogSearchResultsDTO(rvs);
         		cmd.setSearchResultsDTO(searchResults);          		
         	} else if (cmd.getActions().equals("daterange")) {
-        		List<IntegrationLogDetail> rvs = integrationLogDetailDao.searchIntegrationDetailLogsForDateRange(cmd.getStartDate(),cmd.getEndDate());
+        		List<IntegrationLog> rvs = integrationLogDao.searchIntegrationLogsForDateRange(cmd.getStartDate(),cmd.getEndDate());
         		CTEPESYSIntegrationLogSearchResultsDTO searchResults = new CTEPESYSIntegrationLogSearchResultsDTO(rvs);
         		cmd.setSearchResultsDTO(searchResults);          		
-        	} else if (cmd.getActions().equals("businessId")) {
-        		IntegrationLogDetailQuery query = new IntegrationLogDetailQuery();
-        		query.filterByBusinessId(cmd.getBusinessId());
-        		List<IntegrationLogDetail> rvs = integrationLogDetailDao.searchIntegrationLogDetail(query);
-        		CTEPESYSIntegrationLogSearchResultsDTO searchResults = new CTEPESYSIntegrationLogSearchResultsDTO(rvs);
-        		cmd.setSearchResultsDTO(searchResults);       		
-        	} else if (cmd.getActions().equals("synchStatus")) {
-        		IntegrationLogDetailQuery query = new IntegrationLogDetailQuery();
-        		query.filterBySynchStatus(cmd.getSynchStatus());
-        		List<IntegrationLogDetail> rvs = integrationLogDetailDao.searchIntegrationLogDetail(query);
+        	} else if (cmd.getActions().equals("status")) {
+        		IntegrationLogQuery query = new IntegrationLogQuery();
+        		query.filterBySynchStatus(cmd.getStatus());
+        		List<IntegrationLog> rvs = integrationLogDao.searchIntegrationLogs(query);
         		CTEPESYSIntegrationLogSearchResultsDTO searchResults = new CTEPESYSIntegrationLogSearchResultsDTO(rvs);
         		cmd.setSearchResultsDTO(searchResults);          		
-        	}else if (cmd.getActions().equals("entity")) {
-        		IntegrationLogDetailQuery query = new IntegrationLogDetailQuery();
-        		query.filterByEntity(cmd.getEntity());
-        		List<IntegrationLogDetail> rvs = integrationLogDetailDao.searchIntegrationLogDetail(query);
+        	}else if (cmd.getActions().equals("service")) {
+        		IntegrationLogQuery query = new IntegrationLogQuery();
+        		query.filterByEntity(cmd.getService());
+        		List<IntegrationLog> rvs = integrationLogDao.searchIntegrationLogs(query);
         		CTEPESYSIntegrationLogSearchResultsDTO searchResults = new CTEPESYSIntegrationLogSearchResultsDTO(rvs);
         		cmd.setSearchResultsDTO(searchResults);      		
         	}

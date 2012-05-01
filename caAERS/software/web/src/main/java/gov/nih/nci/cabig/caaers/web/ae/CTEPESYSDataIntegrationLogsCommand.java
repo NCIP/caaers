@@ -1,58 +1,36 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.domain.IntegrationLogDetail;
-import gov.nih.nci.cabig.caaers.domain.SynchStatus;
 import gov.nih.nci.cabig.caaers.domain.dto.CTEPESYSIntegrationLogSearchResultsDTO;
 
 import java.util.Date;
-import java.util.List;
 
 public class CTEPESYSDataIntegrationLogsCommand {
 	
 	private CTEPESYSIntegrationLogSearchResultsDTO searchResultsDTO;
 	
+	private String service;
+	
 	private Date startDate;
 	
 	private Date endDate;
 	
-	private String businessId;
+	private String status;
 	
-	private SynchStatus synchStatus;
-	
-	private String entity;
-	
-	private String outcome;
-	
-	public String getEntity() {
-		return entity;
+
+	public String getService() {
+		return service;
 	}
 
-	public String getBusinessId() {
-		return businessId;
+	public void setService(String service) {
+		this.service = service;
 	}
 
-	public void setBusinessId(String businessId) {
-		this.businessId = businessId;
+	public String getStatus() {
+		return status;
 	}
 
-	public SynchStatus getSynchStatus() {
-		return synchStatus;
-	}
-
-	public void setSynchStatus(SynchStatus synchStatus) {
-		this.synchStatus = synchStatus;
-	}
-
-	public void setEntity(String entity) {
-		this.entity = entity;
-	}
-
-	public String getOutcome() {
-		return outcome;
-	}
-
-	public void setOutcome(String outcome) {
-		this.outcome = outcome;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	private String actions;

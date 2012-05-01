@@ -5,8 +5,6 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -20,13 +18,20 @@ public class IntegrationLogDetail extends AbstractMutableDomainObject{
 	// business Id of the entity
 	private String businessId;
 	
-	// reference to the integration log
-	private IntegrationLog integrationLog;
-	
+	public boolean isFailed() {
+		return failed;
+	}
+
+	public void setFailed(boolean failed) {
+		this.failed = failed;
+	}
+
 	// error details 
 	private String outcome;
 	
 	private SynchStatus synchStatus;
+	
+	private boolean failed;
 	
 	@Enumerated(EnumType.STRING)
 	public SynchStatus getSynchStatus() {
@@ -51,16 +56,6 @@ public class IntegrationLogDetail extends AbstractMutableDomainObject{
 
 	public void setBusinessId(String businessId) {
 		this.businessId = businessId;
-	}
-
-	@ManyToOne
-	@JoinColumn(name="log_id",nullable=false)
-	public IntegrationLog getIntegrationLog() {
-		return integrationLog;
-	}
-
-	public void setIntegrationLog(IntegrationLog integrationLog) {
-		this.integrationLog = integrationLog;
 	}
 
 }

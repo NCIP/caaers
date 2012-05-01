@@ -1,94 +1,45 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.dao.report.ReportVersionDao;
-import gov.nih.nci.cabig.caaers.domain.dto.ReportVersionSearchResultsDTO;
-import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
+import gov.nih.nci.cabig.caaers.dao.IntegrationLogDao;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputField;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
-import gov.nih.nci.security.util.StringUtilities;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
-import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
 public class CTEPESYSDataImportController extends SimpleFormController {
 	
-	private ReportVersionDao reportVersionDao;
+	private IntegrationLogDao integrationLogDao;
 	
-    private static final String PAGINATION_ACTION = "paginationAction";
-    
-    private static final String CURRENT_PAGE_NUMBER = "currentPageNumber";
-    
-    private InputFieldGroupMap fieldMap;
-    
 	
 	public CTEPESYSDataImportController() {
-		setCommandClass(TrackReportsCommand.class);
+		setCommandClass(CTEPDataInitializationCommand.class);
 		
 		setBindOnNewForm(true);
 		setFormView("admin/ctepesysDataImport");
         setSuccessView("admin/ctepesysDataImport");
         
-        fieldMap = new InputFieldGroupMap();
-        InputFieldGroup fieldGroup = new DefaultInputFieldGroup("main");
-
-        //0
-        InputField attributionField = InputFieldFactory.createSelectField("actions", "Filter on ", false, createFilterOptions());
-        fieldGroup.getFields().add(attributionField);
-        //1
-        InputField reportIdField = InputFieldFactory.createNumberField("reportId", "Report ID ", false);
-        fieldGroup.getFields().add(reportIdField);
-        
-        //2
-        InputField startDateField = InputFieldFactory.createPastDateField("startDate", "From ", false);
-        fieldGroup.getFields().add(startDateField);
-        
-        //3
-        InputField endDateField = InputFieldFactory.createPastDateField("endDate", "To ", false);
-        fieldGroup.getFields().add(endDateField);
-        
-        fieldMap.addInputFieldGroup(fieldGroup);
 	}
 	
-	protected Map<Object, Object> createFilterOptions() {
-        Map<Object, Object> filterOptions = new LinkedHashMap<Object, Object>();
-        filterOptions.put("month", "Reports submitted in last 30 days");
-        filterOptions.put("none", "All Reports");
-        filterOptions.put("failed", "Failed Reports");
-        filterOptions.put("report", "Report ID");
-        filterOptions.put("daterange", "Date Range");
-        return filterOptions;
-    }
-
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
-    	TrackReportsCommand cmd =  new TrackReportsCommand();
-    	
-    	if (!isFormSubmission(request)) {
-    		//cmd.setReportVersions(reportVersionDao.getAllWithTracking());
-    		List<ReportVersion> rvs = reportVersionDao.getAllSubmittedReportsInLastGivenNumberOfDays(30);
-    		ReportVersionSearchResultsDTO searchResultsDTO = new ReportVersionSearchResultsDTO(rvs);
-    		searchResultsDTO.setFilteredResultDto(searchResultsDTO.getResultDto());
-    		cmd.setSearchResultsDTO(searchResultsDTO);
-    	}
+    	CTEPDataInitializationCommand cmd =  new CTEPDataInitializationCommand();
+    	cmd.setAgentsLastUpdated(integrationLogDao.getLastUpdatedTime("agent", "getAgentsLOV"));
+    	cmd.setDevicesLastUpdated(integrationLogDao.getLastUpdatedTime("device", "getDevicesLOV"));
+    	cmd.setOrganizationsLastUpdated(integrationLogDao.getLastUpdatedTime("organization", "getOrganizationsLOV"));
+    	cmd.setAsaelLastUpdated(integrationLogDao.getLastUpdatedTime("asael", "getASAEL"));
+    	cmd.setAgentDoseMeasureLastUpdated(integrationLogDao.getLastUpdatedTime("aduom", "getAgentDoseUOMLOV"));
+    	cmd.setLabLastUpdated(integrationLogDao.getLastUpdatedTime("lab", "getLabLOV"));
+    	cmd.setPreExistingConditionsLastUpdated(integrationLogDao.getLastUpdatedTime("preexistingcondition", "getPreExistingConditionsLOV"));
+    	cmd.setTherapiesLastUpdated(integrationLogDao.getLastUpdatedTime("priortherapy", "getTherapiesLOV"));
     	
     	return cmd;
     }
@@ -102,165 +53,24 @@ public class CTEPESYSDataImportController extends SimpleFormController {
 	}
 
     
-    /**
-     * It is a form submission, if participant, or study is available 
-     */
-    @Override
-    @SuppressWarnings("unchecked")
-    protected boolean isFormSubmission(HttpServletRequest request) {
-
-    	Set<String> paramNames = request.getParameterMap().keySet();
-    	boolean hasActions = paramNames.contains("actions");
-    	String paginationAction = (String)findInRequest(request, PAGINATION_ACTION);
-    	
-    	return hasActions || paginationAction != null;
-    }
-    
-    @Override
-    protected ModelAndView onSubmit(HttpServletRequest request,HttpServletResponse response, Object command, BindException errors)	throws Exception {
-    	TrackReportsCommand trackReportsCommand = (TrackReportsCommand)command;
-    	//ModelAndView modelAndView = super.processFormSubmission(request, response, command, errors);
-    	
-    		//String actions = request.getParameter("actions");
-
-        	if(trackReportsCommand.getActions() == null || trackReportsCommand.getActions().equals("none")){
-        		List<ReportVersion> rvs = reportVersionDao.getAllWithTracking();
-        		ReportVersionSearchResultsDTO searchResultsDTO = new ReportVersionSearchResultsDTO(rvs);
-        		trackReportsCommand.setSearchResultsDTO(searchResultsDTO);
-        	} else if (trackReportsCommand.getActions().equals("failed")){
-                //cmd.setReportVersions(reportVersionDao.getAllFailedReportsWithTracking());
-        		List<ReportVersion> rvs = reportVersionDao.getAllFailedReportsWithTracking();
-        		ReportVersionSearchResultsDTO searchResultsDTO = new ReportVersionSearchResultsDTO(rvs);
-        		trackReportsCommand.setSearchResultsDTO(searchResultsDTO);                
-        	} else if (trackReportsCommand.getActions().equals("month")) {
-        		//cmd.setReportVersions(reportVersionDao.getAllSubmittedReportsInLastGivenNumberOfDays(30));
-        		List<ReportVersion> rvs = reportVersionDao.getAllSubmittedReportsInLastGivenNumberOfDays(30);
-        		ReportVersionSearchResultsDTO searchResultsDTO = new ReportVersionSearchResultsDTO(rvs);
-        		trackReportsCommand.setSearchResultsDTO(searchResultsDTO);         		
-        	} else if (trackReportsCommand.getActions().equals("report")) {
-        		Integer reportId = trackReportsCommand.getReportId();
-        		List<ReportVersion> rvs = new ArrayList<ReportVersion>();
-        		if (reportId != null) {
-        			ReportVersion rv = reportVersionDao.getById(reportId);
-        			if (rv != null) {
-        				rvs.add(rv);
-        			}
-        		} else {
-        			errors.rejectValue("reportId", "ADM_IND_001", "reportId must not be empty");
-        		}
-        		//cmd.setReportVersions(rvs);
-        		ReportVersionSearchResultsDTO searchResultsDTO = new ReportVersionSearchResultsDTO(rvs);
-        		trackReportsCommand.setSearchResultsDTO(searchResultsDTO);          		
-        	} else if (trackReportsCommand.getActions().equals("daterange")) {
-        		List<ReportVersion> rvs = reportVersionDao.getAllSubmittedReportsByDateRange(trackReportsCommand.getStartDate(),trackReportsCommand.getEndDate());
-        		ReportVersionSearchResultsDTO searchResultsDTO = new ReportVersionSearchResultsDTO(rvs);
-        		trackReportsCommand.setSearchResultsDTO(searchResultsDTO);            		
-        	}
-        	request.getSession().setAttribute(getFormSessionAttributeName(), trackReportsCommand);
-        	Map map = this.referenceData(request, command, errors);
-            map.putAll(errors.getModel());
-        	ModelAndView modelAndView = new ModelAndView(getSuccessView(), map);
-        	processPagination(request, trackReportsCommand, modelAndView);
-        	    		
-    		//modelAndView.getModel().put("actions", actions);
-    		//modelAndView.getModel().put("reportId", reportId);
-
-    	return modelAndView;
-    }
-    
-    private void processPagination(HttpServletRequest request, TrackReportsCommand cmd, ModelAndView modelAndView) {
-    	processPaginationSubmission(request, cmd, modelAndView);
-    	String numberOfResultsPerPage = (String) findInRequest(request, "numberOfResultsPerPage");
-		if(StringUtilities.isBlank(numberOfResultsPerPage))
-			modelAndView.getModel().put("numberOfResultsPerPage", 15);
-		else
-			modelAndView.getModel().put("numberOfResultsPerPage", Integer.parseInt(numberOfResultsPerPage));
-		
-		Integer currentPageNumber = (Integer) request.getSession().getAttribute(CURRENT_PAGE_NUMBER);
-		
-    	if(currentPageNumber == null)
-    		currentPageNumber = 1;
-    	
-		if(currentPageNumber.equals(1))
-			modelAndView.getModel().put("isFirstPage", true);
-		else
-			modelAndView.getModel().put("isFirstPage", false);
-		if(isLastPage(request, cmd))
-			modelAndView.getModel().put("isLastPage", true);
-		else
-			modelAndView.getModel().put("isLastPage", false);
-
-    }
-    
-    protected void processPaginationSubmission(HttpServletRequest request, TrackReportsCommand command, ModelAndView modelAndView){
-    	String action = (String) findInRequest(request, PAGINATION_ACTION);
-    	String numberOfResultsPerPage = (String) findInRequest(request, "numberOfResultsPerPage");
-    	Integer currPageNumber = (Integer)request.getSession().getAttribute(CURRENT_PAGE_NUMBER);
-    	if (StringUtilities.isBlank(numberOfResultsPerPage)) {
-    		numberOfResultsPerPage = "15";
-    	}
-    	if (StringUtilities.isBlank(action)) {
-    		action = "firstPage";
-    	}    	
-    	if(currPageNumber == null)
-    		currPageNumber = 1;
-    	Integer newPageNumber = 0;
-    	if(action.equals("nextPage")){
-    		newPageNumber = ++currPageNumber;
-    	}else if(action.equals("prevPage")){
-    		newPageNumber = --currPageNumber;
-    	}else if(action.equals("lastPage")){
-    		Float newPageNumberFloat = command.getSearchResultsDTO().getResultCount() / Float.parseFloat(numberOfResultsPerPage);
-    		newPageNumber = newPageNumberFloat.intValue();
-    		if(command.getSearchResultsDTO().getResultCount() % Integer.parseInt(numberOfResultsPerPage) > 0)
-    			newPageNumber++;
-    	}else if(action.equals("firstPage") || action.equals("numberOfResultsPerPage")){
-    		newPageNumber = 1;
-    	}
-    	
-    	
-    	Integer startIndex = (newPageNumber - 1) * Integer.parseInt(numberOfResultsPerPage);
-		Integer endIndex = newPageNumber * Integer.parseInt(numberOfResultsPerPage) - 1;
-		if(endIndex > command.getSearchResultsDTO().getResultCount())
-			endIndex = command.getSearchResultsDTO().getResultCount() - 1;
-		command.getSearchResultsDTO().filterResult(startIndex, endIndex);
-		request.getSession().setAttribute(CURRENT_PAGE_NUMBER, newPageNumber);
-		modelAndView.getModel().put("totalResults", command.getSearchResultsDTO().getResultCount());
-		modelAndView.getModel().put("startIndex", startIndex + 1);
-		modelAndView.getModel().put("endIndex", endIndex + 1);
-    }
-    
-    protected boolean isLastPage(HttpServletRequest request, TrackReportsCommand command){
-    	String action = (String) findInRequest(request, PAGINATION_ACTION);
-    	if(action != null && action.equals("lastPage"))
-    		return true;
-    	String numberOfResultsPerPage = (String) findInRequest(request, "numberOfResultsPerPage");
-    	Integer currentPageNumber = (Integer)request.getSession().getAttribute(CURRENT_PAGE_NUMBER);
-    	
-    	if (StringUtilities.isBlank(numberOfResultsPerPage)) {
-    		numberOfResultsPerPage = "15";
-    	}
-    	if (StringUtilities.isBlank(action)) {
-    		action = "firstPage";
-    	}    	
-    	if(currentPageNumber == null) {
-    		currentPageNumber = 1;
-    	}
-    	
-    	if(currentPageNumber * Integer.parseInt(numberOfResultsPerPage) > command.getSearchResultsDTO().getResultCount())
-    		return true;
-    	
-    	return false;
-    }
-    
-    @SuppressWarnings("unchecked")
     @Override
     protected Map referenceData(final HttpServletRequest request, final Object command,
                     final Errors errors) throws Exception {
 
+    	CTEPDataInitializationCommand cmd = (CTEPDataInitializationCommand) command;
         Map<Object, Object> refDataMap = new LinkedHashMap<Object, Object>();
-        refDataMap.put("fieldGroups", fieldMap);
-
+        
+        Map<String,Boolean> itemsChecked = new LinkedHashMap<String, Boolean>();
+        itemsChecked.put(CTEPDataInitializationCommand.ADUOM, cmd.isCtcaeChecked());
+        itemsChecked.put(CTEPDataInitializationCommand.AGENTS, cmd.isAgentsChecked());
+        itemsChecked.put(CTEPDataInitializationCommand.ASAEL, cmd.isAsaelChecked());
+        itemsChecked.put(CTEPDataInitializationCommand.CTCAE, cmd.isCtcaeChecked());
+        itemsChecked.put(CTEPDataInitializationCommand.DEVICES, cmd.isDevicesChecked());
+        itemsChecked.put(CTEPDataInitializationCommand.LAB, cmd.isLabChecked());
+        itemsChecked.put(CTEPDataInitializationCommand.ORGANIZATIONS, cmd.isOrganizationsChecked());
+        itemsChecked.put(CTEPDataInitializationCommand.PRE_EXISTING_CONDITIONS, cmd.isPreExistingConditinosChecked());
+        itemsChecked.put(CTEPDataInitializationCommand.THERAPIES, cmd.isTherapiesChecked());
+        
         return refDataMap;
 
     }
@@ -278,20 +88,9 @@ public class CTEPESYSDataImportController extends SimpleFormController {
         return attr;
     }
     
-    
-    private boolean checkServiceMixStatus(){
-    	//TODO
-    	return true;
-    }
 
-    private boolean checkSMTPStatus(){
-    	//TODO
-    	return true;
-    }
-
-
-	public void setReportVersionDao(ReportVersionDao reportVersionDao) {
-		this.reportVersionDao = reportVersionDao;
+	public void setIntegrationLogDao(IntegrationLogDao integrationLogDao) {
+		this.integrationLogDao = integrationLogDao;
 	}
 
 }

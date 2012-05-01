@@ -9,6 +9,7 @@ import org.springframework.ws.client.core.WebServiceTemplate;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.StringReader;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -106,7 +107,12 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
 	
 	private static Map<String, String> buildCriteriaMap(String criteria){
 		Map<String, String> criteriaMap = new HashMap<String, String>();
-        String since = DateUtils.formatDateForWS(DateUtils.yesterday());
+        String since = "";
+		try {
+			since = DateUtils.formatDateForWS(DateUtils.parseDate("01/01/1990"));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
         criteriaMap.put("createdDate", since);
         criteriaMap.put("lastUpdatedDate", since);
 		return criteriaMap;
