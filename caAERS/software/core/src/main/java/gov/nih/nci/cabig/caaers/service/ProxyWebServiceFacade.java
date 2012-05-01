@@ -1,14 +1,26 @@
 package gov.nih.nci.cabig.caaers.service;
 
+import gov.nih.nci.cabig.caaers.CaaersConfigurationException;
 import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.integration.schema.study.*;
+import gov.nih.nci.cabig.caaers.service.migrator.StudyConverter;
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
+import gov.nih.nci.cabig.caaers.utils.XsltTransformer;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.ws.client.core.WebServiceTemplate;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,48 +28,51 @@ import java.util.List;
 import java.util.Map;
 
 
-import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.ws.client.core.WebServiceTemplate;
-
-
-
 public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
+
+    protected final Log log = LogFactory.getLog(getClass());
 
 	public static final String SYNC_ORG_ENTITY_NAME="organization";
 	public static final String SYNC_ORG_OPERATION_NAME="getOrganizationsLOV";
-	public static final boolean SYNC_ORG_OPERATION_MODE=false;
 
 	public static final String SYNC_AGENT_ENTITY_NAME="agent";
 	public static final String SYNC_AGENT_OPERATION_NAME="getAgentsLOV";
-	public static final boolean SYNC_AGENT_OPERATION_MODE=false;
 
 	public static final String SYNC_DEVICE_ENTITY_NAME="device";
 	public static final String SYNC_DEVICE_OPERATION_NAME="getDevicesLOV";
-	public static final boolean SYNC_DEVICE_OPERATION_MODE=false;
 
 	public static final String SYNC_PRIOR_THERAPY_ENTITY_NAME="priortherapy";
 	public static final String SYNC_PRIOR_THERAPY_OPERATION_NAME="getTherapiesLOV";
-	public static final boolean SYNC_PRIOR_THERAPY_OPERATION_MODE=false;
 
 	public static final String SYNC_ASAEL_ENTITY_NAME="asael";
 	public static final String SYNC_ASAEL_OPERATION_NAME="getASAEL";
-	public static final boolean SYNC_ASAEL_OPERATION_MODE=false;
 
 	public static final String SYNC_PRE_EXISTING_COND_ENTITY_NAME="preexistingcondition";
 	public static final String SYNC_PRE_EXISTING_COND_OPERATION_NAME="getPreExistingConditionsLOV";
-	public static final boolean SYNC_PRE_EXISTING_COND_OPERATION_MODE=false;
 
 	public static final String GET_STUDY_ENTITY_NAME="study";
 	public static final String GET_STUDY_OPERATION_NAME="getStudyDetails";
-	public static final boolean GET_STUDY_OPERATION_MODE=false;
 
-	public static final String SEARCH_STUDY_SYSTEM_NAME="";
-	public static final String SEARCH_STUDY_ENTITY_NAME="";
-	public static final String SEARCH_STUDY_OPERATION_NAME="";
-	public static final boolean SEARCH_STUDY_OPERATION_MODE=true;
+	public static final String SEARCH_STUDY_ENTITY_NAME="study";
+	public static final String SEARCH_STUDY_OPERATION_NAME="searchStudy";
 
     private WebServiceTemplate webServiceTemplate;
+    private StudyConverter studyConverter;
+    private Configuration configuration;
+
+    private JAXBContext jaxbContext = null;
+    private Unmarshaller unmarshaller = null;
+    private XsltTransformer xsltTransformer;
+    
+    public ProxyWebServiceFacade() {
+       try{
+           jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.integration.schema.study");
+           unmarshaller = jaxbContext.createUnmarshaller();
+           xsltTransformer = new XsltTransformer();
+       } catch (JAXBException jb){
+           throw new CaaersConfigurationException("Unable to create proxy webservice : " + jb.getMessage() , jb);
+       }
+    }
 
     public void setDefaultUri(String defaultUri) {
         webServiceTemplate.setDefaultUri(defaultUri);
@@ -66,7 +81,9 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
     // send to the configured default URI
     public String simpleSendAndReceive(String message) {
         StreamSource source = new StreamSource(new StringReader(message));
-        StreamResult result = new StreamResult(System.out);
+        StringWriter sw = new StringWriter();
+        StreamResult result = new StreamResult(sw);
+        webServiceTemplate.setDefaultUri(configuration.get(Configuration.ESB_WS_URL));
         webServiceTemplate.sendSourceAndReceiveToResult(source, result);
         return result.toString();
     }
@@ -83,8 +100,16 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
 	public void setWebServiceTemplate(WebServiceTemplate webServiceTemplate) {
 		this.webServiceTemplate = webServiceTemplate;
 	}
-	
-	private static String buildMessage(String corelationId, String system, String entity, String operationName, String operationMode, Map<String, String> criteria) {
+
+    public void setStudyConverter(StudyConverter studyConverter) {
+        this.studyConverter = studyConverter;
+    }
+
+    public void setConfiguration(Configuration configuration) {
+        this.configuration = configuration;
+    }
+
+    private static String buildMessage(String corelationId, String system, String entity, String operationName, String operationMode, Map<String, String> criteria) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<gen:GenericRequest xmlns:gen=\"http://webservice.caaers.cabig.nci.nih.gov/GenericProcessor/\">");
 		sb.append("<payload correlationId=\""+corelationId+"\">");
@@ -119,39 +144,68 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
 	}
 
 	public String syncOrganizations() {
-		return send(SYNC_ORG_ENTITY_NAME, SYNC_ORG_OPERATION_NAME, SYNC_ORG_OPERATION_MODE, buildCriteriaMap(null));
+		return send(SYNC_ORG_ENTITY_NAME, SYNC_ORG_OPERATION_NAME, false, buildCriteriaMap(null));
 	}
 
 	public String syncAgents() {
-		return send(SYNC_AGENT_ENTITY_NAME, SYNC_AGENT_OPERATION_NAME, SYNC_AGENT_OPERATION_MODE,buildCriteriaMap(null));
+		return send(SYNC_AGENT_ENTITY_NAME, SYNC_AGENT_OPERATION_NAME, false,buildCriteriaMap(null));
 	}
 
 	public String syncDevices() {
-		return send(SYNC_DEVICE_ENTITY_NAME, SYNC_DEVICE_OPERATION_NAME, SYNC_DEVICE_OPERATION_MODE, buildCriteriaMap(null));
+		return send(SYNC_DEVICE_ENTITY_NAME, SYNC_DEVICE_OPERATION_NAME, false, buildCriteriaMap(null));
 	}
 
 	public String syncPriorTherapyLOV() {
-		return send(SYNC_PRIOR_THERAPY_ENTITY_NAME, SYNC_PRIOR_THERAPY_OPERATION_NAME, SYNC_PRIOR_THERAPY_OPERATION_MODE, buildCriteriaMap(null));
+		return send(SYNC_PRIOR_THERAPY_ENTITY_NAME, SYNC_PRIOR_THERAPY_OPERATION_NAME, false, buildCriteriaMap(null));
 	}
 
 	public String syncPreExistingConditionLOV() {
-		return send(SYNC_PRE_EXISTING_COND_ENTITY_NAME, SYNC_PRE_EXISTING_COND_OPERATION_NAME, SYNC_PRE_EXISTING_COND_OPERATION_MODE, buildCriteriaMap(null));
+		return send(SYNC_PRE_EXISTING_COND_ENTITY_NAME, SYNC_PRE_EXISTING_COND_OPERATION_NAME, false, buildCriteriaMap(null));
 	}
 
 	public String syncASAEL() {
-		return send( SYNC_ASAEL_ENTITY_NAME, SYNC_ASAEL_OPERATION_NAME, SYNC_ASAEL_OPERATION_MODE, buildCriteriaMap(null));
+		return send( SYNC_ASAEL_ENTITY_NAME, SYNC_ASAEL_OPERATION_NAME, false, buildCriteriaMap(null));
 	}
 
-	public String getStudy() {
-		return send(GET_STUDY_ENTITY_NAME, GET_STUDY_OPERATION_NAME, GET_STUDY_OPERATION_MODE, buildCriteriaMap(null));
+    public List<Study> searchStudies(String searchText) {
+        List<Study> studyList =  new ArrayList<Study>();
+        if(StringUtils.isNotEmpty(searchText)){
+            try{
+
+                //invoke the webservice
+                Map<String, String> criteriaMap = new HashMap<String, String>();
+                criteriaMap.put("documentTitle", searchText);
+                criteriaMap.put("nciDocumentNumber", searchText);
+
+                String xmlSearchResult = send(SEARCH_STUDY_ENTITY_NAME, SEARCH_STUDY_OPERATION_NAME, true, criteriaMap);
+                String xmlStudies = xsltTransformer.toText(xmlSearchResult, "xslt/c2a_generic_response.xslt");
+
+                Studies studies = (Studies) unmarshaller.unmarshal(new StringReader(xmlStudies));
+                for(gov.nih.nci.cabig.caaers.integration.schema.study.Study dtoStudy : studies.getStudy()){
+                    Study domainStudy = new LocalStudy();
+                    studyConverter.convertStudyDtoToStudyDomain(dtoStudy, domainStudy);
+                    studyList.add(domainStudy);
+                }
+            }catch (Exception e){
+                log.error("Error occured while invoking ServiceMix Study Search : " + e.getMessage(), e);
+                log.info("Returning empty study list : unable to search in adeers");
+            }
+        }
+
+        return studyList;
+
+    }
+
+
+
+    public String getStudy() {
+		return send(GET_STUDY_ENTITY_NAME, GET_STUDY_OPERATION_NAME, false, buildCriteriaMap(null));
 	}
 
 	public String syncStudies() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-    // ToDo This methos should be implemented to use ServiceMix
 
     /**
      *
@@ -194,32 +248,5 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
         return s;
     }
 
-    // ToDo This methos should be implemented to get Studies from adERRS
-	public List<Study> searchStudies(String searchText) {
-
-        System.out.println(">>> WS Facade Searching by: " + searchText);
-
-        List<Study> studies = new ArrayList<Study>();
-
-        studies.add(createStudy("Short Title - 01"));
-        studies.add(createStudy("Short Title - 02"));
-
-        studies.get(0).setStatus("UPDATE");
-        studies.get(0).setId(90);
-
-        studies.get(0).getIdentifiers().get(0).setValue("ABC-01");
-        studies.get(0).setId(90);
-
-        studies.get(1).getIdentifiers().get(0).setValue("ABC-99");
-
-        // Simulating response wait from ServiceMix :P
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-
-        }
-
-        return studies;
-	}
-	
+    
 }

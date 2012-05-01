@@ -66,6 +66,8 @@
 	
 	<bean id="proxyWebServiceFacade" class="gov.nih.nci.cabig.caaers.service.ProxyWebServiceFacade">
 		<property name="webServiceTemplate" ref="webServiceTemplate"/>
+		<property name="studyConverter" ref="studyConverter"/>
+        <property name="configuration" ref="configuration" />
 	</bean>
 
 </beans>
