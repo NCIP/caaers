@@ -32,6 +32,7 @@
                     <xs:element name="phaseCode" type="StudyPhaseType" />
                     <xs:element name="status" type="StatusType" minOccurs="0"/>
                     <xs:element name="multiInstitutionIndicator" type="xs:boolean" minOccurs="0"/>
+                    <xs:element name="verbatimFirst" type="xs:boolean" minOccurs="0"/>
                     <xs:element name="adeersReporting" type="xs:boolean" minOccurs="0"/>
                     <xs:element name="otherMeddra" type="xs:string" minOccurs="0"/>
                     <xs:element name="studyPurpose" type="xs:string" minOccurs="0"/>
@@ -40,23 +41,6 @@
 
                     <xs:element ref="diseaseTerminology"/>
                     <xs:element name="design" type="DesignCodeType" minOccurs="0"/>
-                    
-                    <xs:element name="drugAdministrationTherapyType" type="xs:boolean"  minOccurs="0" maxOccurs="1"/>
-                    <xs:element name="deviceTherapyType" type="xs:boolean"  minOccurs="0" maxOccurs="1"/>
-                    <xs:element name="radiationTherapyType" type="xs:boolean"  minOccurs="0" maxOccurs="1"/>
-                    <xs:element name="surgeryTherapyType" type="xs:boolean"  minOccurs="0" maxOccurs="1"/>
-                    <xs:element name="behavioralTherapyType" type="xs:boolean"  minOccurs="0" maxOccurs="1"/>
-                    <xs:element name="biologicalTherapyType" type="xs:boolean"  minOccurs="0" maxOccurs="1"/>
-                    <xs:element name="geneticTherapyType" type="xs:boolean"  minOccurs="0" maxOccurs="1"/>
-                    <xs:element name="dietarySupplementTherapyType" type="xs:boolean"  minOccurs="0" maxOccurs="1"/>
-                    <xs:element name="otherTherapyType" type="xs:boolean"  minOccurs="0" maxOccurs="1"/>
-
-                    <xs:element name="reportTypeCaaersXML" type="xs:boolean"  minOccurs="0" maxOccurs="1"/>
-                    <xs:element name="reportTypeAdeersPDF" type="xs:boolean"  minOccurs="0" maxOccurs="1"/>
-                    <xs:element name="reportTypeMedwatchPDF" type="xs:boolean"  minOccurs="0" maxOccurs="1"/>
-                    <xs:element name="reportTypeDCPSAEForm" type="xs:boolean"  minOccurs="0" maxOccurs="1"/>
-                    <xs:element name="reportTypeCIOMSForm" type="xs:boolean"  minOccurs="0" maxOccurs="1"/>
-                    <xs:element name="reportTypeCIOMSAEForm" type="xs:boolean"  minOccurs="0" maxOccurs="1"/>
 
                     <xs:element name="fundingSponsor" type="FundingSponsorType" />
                     <xs:element name="coordinatingCenter" type="CoordinatingCenterType"/>
@@ -95,6 +79,23 @@
                         </xs:complexType>
                     </xs:element>
 
+                    <xs:element name="studyDevices" minOccurs="0" maxOccurs="1">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element ref="studyDevice" minOccurs="0" maxOccurs="unbounded"/>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+
+                    <xs:element name="otherInterventions" minOccurs="0" maxOccurs="1">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element ref="otherIntervention" minOccurs="0" maxOccurs="unbounded"/>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+
+
                     <xs:choice minOccurs="0">
 	                    <xs:element name="ctepStudyDiseases">
 	                        <xs:complexType>
@@ -117,14 +118,6 @@
                         <xs:complexType>
                             <xs:sequence>
                                 <xs:element ref="evaluationPeriod" maxOccurs="unbounded"/>
-                            </xs:sequence>
-                        </xs:complexType>
-                    </xs:element>
-					
-                    <xs:element name="studyDevices" minOccurs="0" maxOccurs="1">
-                        <xs:complexType>
-                            <xs:sequence>
-                                <xs:element ref="studyDevice" minOccurs="0" maxOccurs="unbounded"/>
                             </xs:sequence>
                         </xs:complexType>
                     </xs:element>
@@ -331,7 +324,7 @@
                     </xs:choice>
                     <xs:element type="IndType" name="indType" minOccurs="0"/>
                     <xs:element type="xs:boolean" name="partOfLeadIND" minOccurs="0" />
-                    <xs:element name="studyAgentINDAssociations" minOccurs="0">
+                    <xs:element name="studyAgentINDAssociations" minOccurs="0" maxOccurs="1">
                         <xs:complexType>
                             <xs:sequence>
                                 <xs:element ref="studyAgentINDAssociation"/>
@@ -585,7 +578,7 @@
     <xs:element name="studyDevice" type="StudyDeviceType"/>
     <xs:complexType name="StudyDeviceType">
         <xs:complexContent>
-            <xs:extension base="StudyInterventionType">
+            <xs:extension base="cct:MutableDomainObjectType">
                 <xs:sequence>
                     <xs:element ref="device" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="otherBrandName" type="xs:string" minOccurs="0"/>
@@ -596,34 +589,71 @@
                     <xs:element name="manufacturerCity" type="xs:string" minOccurs="0"/>
                     <xs:element name="manufacturerState" type="xs:string" minOccurs="0"/>
                     <xs:element name="modelNumber" type="xs:string" minOccurs="0"/>
+                    <xs:element name="studyDeviceINDAssociations" minOccurs="0" maxOccurs="1">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element ref="studyDeviceINDAssociation"/>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
 
-    <xs:element name="studyIntervention" type="StudyInterventionType"/>
-    <xs:complexType name="StudyInterventionType">
+
+    <xs:element name="studyDeviceINDAssociation" type="StudyDeviceINDAssociationType"/>
+    <xs:complexType name="StudyDeviceINDAssociationType">
         <xs:complexContent>
-            <xs:extension base="cct:MutableDomainObjectType" />
+            <xs:extension base="cct:MutableDomainObjectType">
+                <xs:sequence>
+                    <xs:element ref="investigationalNewDrug"/>
+                </xs:sequence>
+            </xs:extension>
         </xs:complexContent>
     </xs:complexType>
 
     <!-- END - DEVICE RELATED CHANGES -->
+    <xs:element name="otherIntervention" type="StudyInterventionType"/>
+    <xs:complexType name="StudyInterventionType">
+        <xs:complexContent>
+            <xs:extension base="cct:MutableDomainObjectType">
+                <xs:sequence>
+                    <xs:element name="interventionType" type="OtherInterventionType" minOccurs="1"/>
+                    <xs:element name="name" type="xs:string" minOccurs="1"/>
+                    <xs:element name="description" type="xs:string" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+
 
     <!-- FIXED Types  -->
-    
+    <xs:simpleType name="OtherInterventionType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="RADIATION"/>
+            <xs:enumeration value="SURGERY"/>
+            <xs:enumeration value="BEHAVIORAL"/>
+            <xs:enumeration value="BIOLOGICAL_VACCINE"/>
+            <xs:enumeration value="GENETIC"/>
+            <xs:enumeration value="DIETARY_SUPPLEMENT"/>
+            <xs:enumeration value="OTHER"/>
+        </xs:restriction>
+    </xs:simpleType>
     <xs:simpleType name="StudyPhaseType">
         <xs:restriction base="xs:string">
+            <xs:enumeration value="Phase 0 Trial"/>
             <xs:enumeration value="Phase I Trial"/>
             <xs:enumeration value="Phase I/II Trial"/>
-            <xs:enumeration value="Phase II/III Trial"/>
             <xs:enumeration value="Phase II Trial"/>
+            <xs:enumeration value="Phase II/III Trial"/>
             <xs:enumeration value="Phase III Trial"/>
             <xs:enumeration value="Phase IV Trial"/>
-            <xs:enumeration value="Phase 0 Trial"/>
             <xs:enumeration value="Pilot"/>
             <xs:enumeration value="N/A"/>
             <xs:enumeration value="Other"/>
+            <xs:enumeration value="Null"/>
         </xs:restriction>
     </xs:simpleType> 
 

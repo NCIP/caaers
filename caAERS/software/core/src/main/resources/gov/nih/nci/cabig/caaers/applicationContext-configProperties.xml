@@ -1667,13 +1667,33 @@
 
                 <entry key="studyPurposeRefData">
                     <list>
-                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Treatment" /><property name="desc" value="Treatment" /></bean>
-                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Prevention" /><property name="desc" value="Prevention" /></bean>
-                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Diagnostic" /><property name="desc" value="Diagnostic" /></bean>
-                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Early Detection" /><property name="desc" value="Early Detection" /></bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Supportive Care" /><property name="desc" value="Supportive Care" /></bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Age Related" /><property name="desc" value="Age Related" /></bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Quality of Life" /><property name="desc" value="Quality of Life" /></bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Drug Sensitivity" /><property name="desc" value="Drug Sensitivity" /></bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Epidemiology" /><property name="desc" value="Epidemiology" /></bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Early Detection" /><property name="desc" value="Early Detection" /></bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Laboratory Correlation" /><property name="desc" value="Laboratory Correlation" /></bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Tissue Banking" /><property name="desc" value="Tissue Banking" /></bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Marker Study" /><property name="desc" value="Marker Study" /></bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Tumor Marker" /><property name="desc" value="Tumor Marker" /></bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Screening" /><property name="desc" value="Screening" /></bean>
-                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Epidemiologic" /><property name="desc" value="Epidemiologic" /></bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Registry" /><property name="desc" value="Registry" /></bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Treatment" /><property name="desc" value="Treatment" /></bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Economic" /><property name="desc" value="Economic" /></bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Imaging" /><property name="desc" value="Imaging" /></bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Cancer Control" /><property name="desc" value="Cancer Control" /></bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Statistical Methodology" /><property name="desc" value="Statistical Methodology" /></bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Race Related" /><property name="desc" value="Race Related" /></bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Symptom Amelioration" /><property name="desc" value="Symptom Amelioration" /></bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Prevention" /><property name="desc" value="Prevention" /></bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Sentinel Node Biopsy" /><property name="desc" value="Sentinel Node Biopsy" /></bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Pathology" /><property name="desc" value="Pathology" /></bean>
+
+
+
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Epidemiology" /><property name="desc" value="Epidemiology" /></bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Diagnostic" /><property name="desc" value="Diagnostic" /></bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Observational" /><property name="desc" value="Observational" /></bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Outcome" /><property name="desc" value="Outcome" /></bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Ancillary" /><property name="desc" value="Ancillary" /></bean>
