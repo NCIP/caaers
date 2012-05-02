@@ -86,7 +86,8 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
         String wsURI = configuration.get(Configuration.ESB_WS_URL);
         if(wsURI != null) webServiceTemplate.setDefaultUri(wsURI);
         webServiceTemplate.sendSourceAndReceiveToResult(source, result);
-        return result.toString();
+
+        return sw.toString();
     }
     
     // send to the configured default URI
@@ -180,7 +181,7 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
                 String correlationId = RandomStringUtils.randomAlphanumeric(10);
                 String message = buildMessage(correlationId, "adeers", SEARCH_STUDY_ENTITY_NAME, SEARCH_STUDY_OPERATION_NAME, "sync", criteriaMap);
                 String xmlSearchResult = simpleSendAndReceive(message);
-                if(log.isErrorEnabled()) log.error("xmlSearchResult : for (" + searchText + ") :" + xmlSearchResult );
+                if(log.isDebugEnabled()) log.debug("xmlSearchResult : for (" + searchText + ") :" + xmlSearchResult );
 
                 String xmlStudies = xsltTransformer.toText(xmlSearchResult, "xslt/c2a_generic_response.xslt");
 
