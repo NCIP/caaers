@@ -2,12 +2,14 @@
                 xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
                 xmlns:ser="http://services.ctep.nci.nih.gov/">
     <xsl:include href="adeers_response_common.xsl"/>
+    <xsl:param name="c2a_operation" />
     <xsl:template match="/">
         <xsl:apply-templates />
     </xsl:template>
     <xsl:template match="soapenv:Body">
         <entity>study</entity>
-        <operation name="getStudyDetails">
+        <operation>
+            <xsl:attribute name="name"><xsl:value-of select="$c2a_operation"/></xsl:attribute>
             <xsl:apply-templates />
         </operation>
     </xsl:template>

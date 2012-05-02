@@ -34,7 +34,8 @@ public class ToAdeersRouteBuilder {
     			.when().xpath(xpathPredicate("preexistingcondition", "getPreExistingConditionsLOV")).to("direct:adeers-condition-lov")
     			.when().xpath(xpathPredicate("priortherapy", "getTherapiesLOV")).to("direct:adeers-therapy-lov")
     			.when().xpath(xpathPredicate("organization", "getOrganizationsLOV")).to("direct:adeers-organization-lov")
-                .when().xpath(xpathPredicate("study", "getStudyDetails")).to("direct:adeers-study-details")
+                .when().xpath(xpathPredicate("study", "createStudy")).to("direct:adeers-study-details")
+                .when().xpath(xpathPredicate("study", "updateStudy")).to("direct:adeers-study-details")
     			.when().xpath(xpathPredicate("study", "searchStudy")).to("direct:adeers-study-search")
     			.otherwise().to("direct:morgue");
 		

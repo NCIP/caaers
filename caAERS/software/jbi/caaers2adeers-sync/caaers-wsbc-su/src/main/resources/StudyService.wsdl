@@ -143,15 +143,15 @@
         <xs:complexContent>
             <xs:extension base="MutableDomainObjectType">
                 <xs:sequence>
-                    <xs:element maxOccurs="1" minOccurs="0" name="descriptionText" type="CustomStringType"></xs:element>
+                    <xs:element maxOccurs="1" minOccurs="0" name="descriptionText" type="xs:string"></xs:element>
                     <xs:element maxOccurs="1" minOccurs="1" name="name" type="CustomStringType"></xs:element>
                     <xs:element maxOccurs="1" minOccurs="1" name="nciInstituteCode" type="CustomStringType"></xs:element>
-                    <xs:element maxOccurs="1" minOccurs="0" name="city" type="CustomStringType"></xs:element>
-                    <xs:element maxOccurs="1" minOccurs="0" name="state" type="CustomStringType"></xs:element>
-                    <xs:element maxOccurs="1" minOccurs="0" name="country" type="CustomStringType"></xs:element>
+                    <xs:element maxOccurs="1" minOccurs="0" name="city" type="xs:string"></xs:element>
+                    <xs:element maxOccurs="1" minOccurs="0" name="state" type="xs:string"></xs:element>
+                    <xs:element maxOccurs="1" minOccurs="0" name="country" type="xs:string"></xs:element>
                     <xs:element maxOccurs="1" minOccurs="0" name="status" type="ActiveInactiveStatusType"></xs:element>
                     <xs:element maxOccurs="1" minOccurs="0" name="mergedOrganization" type="OrganizationType"></xs:element>
-                    <xs:element maxOccurs="1" minOccurs="0" name="type" type="CustomStringType"></xs:element>
+                    <xs:element maxOccurs="1" minOccurs="0" name="type" type="xs:string"></xs:element>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -659,10 +659,10 @@
 <xs:element minOccurs="0" name="reportTypeCIOMSAEForm" type="xs:boolean"></xs:element>
 <xs:element name="fundingSponsor" type="FundingSponsorType"></xs:element>
 <xs:element name="coordinatingCenter" type="CoordinatingCenterType"></xs:element>
-<xs:element name="studyOrganizations">
+<xs:element minOccurs="0" name="studyOrganizations">
 <xs:complexType>
 <xs:sequence>
-<xs:element maxOccurs="unbounded" ref="studySite"></xs:element>
+<xs:element maxOccurs="unbounded" minOccurs="0" ref="studySite"></xs:element>
 </xs:sequence>
 </xs:complexType>
 </xs:element>
@@ -684,7 +684,7 @@
 <xs:element minOccurs="0" name="studyAgents">
 <xs:complexType>
 <xs:sequence>
-<xs:element maxOccurs="unbounded" ref="studyAgent"></xs:element>
+<xs:element maxOccurs="unbounded" minOccurs="0" ref="studyAgent"></xs:element>
 </xs:sequence>
 </xs:complexType>
 </xs:element>
@@ -878,7 +878,8 @@
 <xs:complexContent>
 <xs:extension base="cct:MutableDomainObjectType">
 <xs:sequence>
-<xs:element name="code" type="cct:CustomStringType"></xs:element>
+<xs:element minOccurs="0" name="ctepDbIdentifier" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="code" type="cct:CustomStringType"></xs:element>
 <xs:element minOccurs="0" name="doseLevelOrder" type="cct:CustomStringType"></xs:element>
 <xs:element name="description" type="cct:CustomStringType"></xs:element>
 <xs:element minOccurs="0" name="comments" type="cct:CustomStringType"></xs:element>
@@ -912,10 +913,10 @@
 <xs:complexType name="AgentType">
 <xs:complexContent>
 <xs:extension base="cct:MutableDomainObjectType">
-<xs:choice>
-<xs:element name="name" type="cct:CustomStringType"></xs:element>
-<xs:element name="nscNumber" type="xs:string"></xs:element>
-</xs:choice>
+<xs:sequence>
+<xs:element minOccurs="0" name="nscNumber" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="name" type="cct:CustomStringType"></xs:element>
+</xs:sequence>
 </xs:extension>
 </xs:complexContent>
 </xs:complexType>
@@ -935,6 +936,7 @@
 <xs:extension base="cct:MutableDomainObjectType">
 <xs:sequence>
 <xs:element name="indNumber" type="xs:integer"></xs:element>
+<xs:element minOccurs="0" name="holderName" type="xs:string"></xs:element>
 </xs:sequence>
 </xs:extension>
 </xs:complexContent>
@@ -964,10 +966,10 @@
 <xs:complexType name="DiseaseTermType">
 <xs:complexContent>
 <xs:extension base="cct:MutableDomainObjectType">
-<xs:choice>
-<xs:element name="term" type="cct:CustomStringType"></xs:element>
-<xs:element name="meddraCode" type="cct:CustomStringType"></xs:element>
-</xs:choice>
+<xs:sequence>
+<xs:element minOccurs="0" name="term" type="cct:CustomStringType"></xs:element>
+<xs:element minOccurs="0" name="meddraCode" type="cct:CustomStringType"></xs:element>
+</xs:sequence>
 </xs:extension>
 </xs:complexContent>
 </xs:complexType>
@@ -1132,11 +1134,7 @@
 <xs:element name="studyIntervention" type="StudyInterventionType"></xs:element>
 <xs:complexType name="StudyInterventionType">
 <xs:complexContent>
-<xs:extension base="cct:MutableDomainObjectType">
-<xs:sequence>
-<xs:element minOccurs="0" name="studyTherapyType" type="xs:string"></xs:element>
-</xs:sequence>
-</xs:extension>
+<xs:extension base="cct:MutableDomainObjectType"></xs:extension>
 </xs:complexContent>
 </xs:complexType>
 <xs:simpleType name="StudyPhaseType">
@@ -1295,7 +1293,7 @@
   </wsdl:binding>
   <wsdl:service name="StudyService">
     <wsdl:port binding="tns:StudyServiceSoapBinding" name="StudyManagementWebServicePort">
-      <soap:address location="https://dev.semanticbits.com/caaers/services/StudyService"></soap:address>
+      <soap:address location="https://dev.semanticbits.com/caaers/services//StudyService"></soap:address>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

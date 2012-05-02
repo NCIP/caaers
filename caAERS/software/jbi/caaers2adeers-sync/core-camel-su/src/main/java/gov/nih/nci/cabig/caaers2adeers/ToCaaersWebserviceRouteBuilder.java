@@ -43,7 +43,8 @@ public class ToCaaersWebserviceRouteBuilder {
 			.when().xpath(xpathPredicate("device", "getDevicesLOV")).to("direct:caaers-device-async")
 			.when().xpath(xpathPredicate("preexistingcondition", "getPreExistingConditionsLOV")).to("direct:caaers-condition-async")
 			.when().xpath(xpathPredicate("priortherapy", "getTherapiesLOV")).to("direct:caaers-therapy-async")
-			.when().xpath(xpathPredicate("study", "getStudyDetails")).to("direct:caaers-studydetails-async")
+			.when().xpath(xpathPredicate("study", "createStudy")).to("direct:caaers-studydetailsCreate-async")
+			.when().xpath(xpathPredicate("study", "updateStudy")).to("direct:caaers-studydetailsUpdate-async")
 			.otherwise().to("direct:morgue");
 		
 		//caAERS - createOrUpdateAgents
@@ -65,7 +66,8 @@ public class ToCaaersWebserviceRouteBuilder {
         configureWSCallRoute("direct:caaers-therapy-async", "prior_therapy_async.xsl", caAERSPriorTherapyServiceJBIURL + "createOrUpdatePriorTherapy" );
 
         //caAERS - getStudyDetails
-        configureWSCallRoute("direct:caaers-studydetails-async", "study_details_async.xsl", caAERSStudyServiceJBIURL + "createStudy" );
+        configureWSCallRoute("direct:caaers-studydetailsCreate-async", "study_details_async.xsl", caAERSStudyServiceJBIURL + "createStudy" );
+        configureWSCallRoute("direct:caaers-studydetailsUpdate-async", "study_details_async.xsl", caAERSStudyServiceJBIURL + "updateStudy" );
 
 	}
 	

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?><payload xmlns:ser="http://services.ctep.nci.nih.gov/" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"><system>adeers</system><response>
     <entity>study</entity><operation name="getStudyDetails">
-    <data><StudyDetails>
+    <data> <StudyDetails>
         <ctcVersion>4.0</ctcVersion>
         <currentStatus>Active</currentStatus>
         <currentStatusDate>2009-05-15</currentStatusDate>
         <localDocumentNumber>CALGB-40603</localDocumentNumber>
         <monitoringMethod>CDUS - Complete</monitoringMethod>
         <nciDocumentNum>CALGB-40603</nciDocumentNum>
-        <participantionType>Group</participantionType>
+        <participationType>Group</participationType>
         <phase>II</phase>
         <primaryStudyType>Treatment</primaryStudyType>
         <sponsorOrganization>CTEP</sponsorOrganization>
@@ -26,7 +26,13 @@
                     <nscNumber>673089</nscNumber>
                     <agentName>Paclitaxel (Taxol)</agentName>
                     <agentStatus>Active</agentStatus>
-                    <inds/>
+                    <inds>
+                        <ind lead="yes">
+                            <indHolder>CTEP</indHolder>
+                            <indNumber>1</indNumber>
+                        </ind>
+                    </inds>
+
                 </agent>
                 <commercialInvestigational>Commercial</commercialInvestigational>
             </studyAgent>
@@ -115,7 +121,7 @@
                     <firstname>William</firstname>
                     <middlename>Marshall</middlename>
                     <lastname>Sikov</lastname>
-                    <email>gov.nih.nci.ctep.domain.ContactDetail@1a5c08fe</email>
+                    <email>wsikov@lifespan.org.x</email>
                     <investigatorStatus>Active</investigatorStatus>
                 </principalInvestigator>
             </studyOrganization>
@@ -151,7 +157,6 @@
                     Paclitaxel:  80 mg/m2 IV over 1 hr on day 1 of wks 1-12
                     Doxorubicin:  60 mg/m2/ IV over 5-10 min on day 1 of wks 13, 15, 17 and 19
                     Cyclophosphamide:  600 mg/m2 IV over 5-30 min on day 1 of wks 13, 15, 17 and 19</description>
-                <status>Active</status>
             </studyTreatmentAssignment>
             <studyTreatmentAssignment updatedDate="02-10-2009 16:06:50" createdDate="03-03-2008 16:40:26">
                 <tacDbId>16165</tacDbId>
@@ -161,7 +166,6 @@
                     Bevacizumab:  10 mg/kg over 30-90 min on day 1 of wks 1, 3, 5, 7, 9, 11, 13, 15 and 17
                     Doxorubicin:  60 mg/m2/ IV over 5-10 min on day 1 of wks 13, 15, 17 and 19
                     Cyclophosphamide:  600 mg/m2 IV over 5-30 min on day 1 of wks 13, 15, 17 and 19</description>
-                <status>Active</status>
             </studyTreatmentAssignment>
             <studyTreatmentAssignment updatedDate="02-10-2009 16:09:35" createdDate="03-03-2008 16:52:52">
                 <tacDbId>16166</tacDbId>
@@ -171,7 +175,6 @@
                     Carboplatin:  AUC 6 IV over 30 min on day 1 of wks 1, 4, 7 and 10
                     Doxorubicin:  60 mg/m2/ IV over 5-10 min on day 1 of wks 13, 15, 17 and 19
                     Cyclophosphamide:  600 mg/m2 IV over 5-30 min on day 1 of wks 13, 15, 17 and 19</description>
-                <status>Active</status>
             </studyTreatmentAssignment>
             <studyTreatmentAssignment updatedDate="02-10-2009 16:12:39" createdDate="03-03-2008 16:54:23">
                 <tacDbId>16167</tacDbId>
@@ -182,13 +185,11 @@
                     Bevacizumab:  10 mg/kg over 30-90 min on day 1 of wks 1, 3, 5, 7, 9, 11, 13, 15 and 17
                     Doxorubicin:  60 mg/m2/ IV over 5-10 min on day 1 of  wks 13, 15, 17 and 19
                     Cyclophosphamide:  600 mg/m2 IV over 5-30 min on day 1 of wks 13, 15, 17 and 19</description>
-                <status>Active</status>
             </studyTreatmentAssignment>
             <studyTreatmentAssignment updatedDate="02-06-2009 15:49:39" createdDate="03-04-2008 12:55:16">
                 <tacDbId>16170</tacDbId>
                 <code>SURG</code>
                 <description>Surgery</description>
-                <status>Active</status>
             </studyTreatmentAssignment>
             <studyTreatmentAssignment updatedDate="02-23-2009 13:00:42" createdDate="02-23-2009 12:55:11">
                 <tacDbId>16742</tacDbId>
@@ -196,10 +197,10 @@
                 <description>Ipsilateral remaining breast or chest wall RT:  5000 cGy in 2 Gy fractions or  5040 cGy in 1.8 Gy fractions
                     Intact breast RT:  1000-1600 cGy in 180-200 Gy fractions
                     Supraclavicular field RT:  4500-5040 cGy in 1.8-2 Gy fractions</description>
-                <status>Active</status>
             </studyTreatmentAssignment>
         </studyTreatmentAssignments>
         <title>Randomized Phase II 2 x 2 Factorial Trial of the Addition of Carboplatin +/- Bevacizumab to Neoadjuvant Weekly Paclitaxel Followed by Dose-Dense AC in Hormone Receptor-Poor/HER2-Negative Resectable Breast Cancer</title>
-    </StudyDetails></data>
+    </StudyDetails>
+</data>
 </operation>
 </response></payload>

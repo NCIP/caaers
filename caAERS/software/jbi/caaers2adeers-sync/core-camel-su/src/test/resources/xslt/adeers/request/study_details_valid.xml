@@ -1,12 +1,10 @@
-<payload>
-    <system>adeers</system>
-    <request>
-        <entity>study</entity>
-        <operation mode="sync" name="getStudyDetails">
-            <criteria>
-                <criterion name="nciDocumentNumber">CALGB-90802</criterion>
-                <criterion name="createdDate">04-10-2001 14:17:38</criterion>
-                <criterion name="lastUpdatedDate">04-10-2001 14:17:38</criterion>
+<payload xmlns="">
+    <system xmlns="">adeers</system>
+    <request xmlns="">
+        <entity xmlns="">study</entity>
+        <operation mode="async" name="updateStudy" xmlns="">
+            <criteria xmlns="">
+                <criterion name="nciDocumentNumber" xmlns="">CALGB-7331</criterion>
             </criteria>
         </operation>
     </request>

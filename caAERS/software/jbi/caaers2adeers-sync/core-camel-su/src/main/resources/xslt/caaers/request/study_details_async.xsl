@@ -4,13 +4,22 @@
         xmlns:stud="http://schema.integration.caaers.cabig.nci.nih.gov/study"
         version='1.0'>
     <xsl:include href="caaers_request_common.xsl" />
+    <xsl:param name="c2a_operation"  />
     <xsl:output method="xml" indent="yes" />
     <xsl:variable name="map" select="document('lookup.xml')"/>
 
     <xsl:template match="data">
-        <stud:updateStudy>
-            <xsl:apply-templates select="StudyDetails" />
-        </stud:updateStudy>
+        <xsl:if test="$c2a_operation = 'createStudy'">
+            <stud:createStudy>
+                <xsl:apply-templates select="StudyDetails" />
+            </stud:createStudy>
+        </xsl:if>
+        <xsl:if test="$c2a_operation != 'createStudy'">
+            <stud:updateStudy>
+                <xsl:apply-templates select="StudyDetails" />
+            </stud:updateStudy>
+        </xsl:if>
+
     </xsl:template>
 
     <xsl:template match="StudyDetails">
@@ -21,10 +30,7 @@
                 <phaseCode>
                     <xsl:call-template name="lookup"><xsl:with-param name="_map" select="$map//phases" /><xsl:with-param name="_code" select="$_phase" /></xsl:call-template>
                 </phaseCode>
-                <xsl:variable name="_status" select="currentStatus"></xsl:variable>
-                <status>
-                    <xsl:call-template name="lookup"><xsl:with-param name="_map" select="$map//statuses" /><xsl:with-param name="_code" select="$_status" /></xsl:call-template>
-                </status>
+                <verbatimFirst>true</verbatimFirst>
                 <adeersReporting>true</adeersReporting>
                 <studyPurpose>
                     <xsl:variable name="_purpose" select="primaryStudyType"></xsl:variable>
@@ -54,10 +60,13 @@
                     </stud:studyFundingSponsor>
                 </fundingSponsor>
                 <xsl:apply-templates select="studyOrganizations/studyOrganization[@role = 'Document to Lead Organization']" mode="cc" />
+                <xsl:apply-templates select="nciDocumentNum" mode="sys" />
                 <xsl:apply-templates select="studyTreatmentAssignments" />
                 <xsl:apply-templates select="studyAgents" />
-                <xsl:apply-templates select="studyDiseases" />
                 <xsl:apply-templates select="studyDevices" />
+                <xsl:apply-templates select="studyTherapies" />
+                <xsl:apply-templates select="studyDiseases" />
+
             </stud:study>
         </stud:studies>
     </xsl:template>
@@ -69,7 +78,7 @@
                 </organizationAssignedIdentifier>
                 <stud:studyCoordinatingCenter>
                     <xsl:apply-templates select="organization" />
-                    <xsl:apply-templates select="principalInvestigator" />
+                    <studyInvestigators/>
                     <studyPersonnels />
                 </stud:studyCoordinatingCenter>
             </coordinatingCenter>
@@ -123,6 +132,7 @@
     <xsl:template match="studyTreatmentAssignment">
         <xsl:if test="status/text() = 'Active'">
             <stud:treatmentAssignment>
+                <ctepDbIdentifier><xsl:value-of select="tacDbId" /></ctepDbIdentifier>
                 <code><xsl:value-of select="code" /></code>
                 <description><xsl:value-of select="description" /></description>
             </stud:treatmentAssignment>
@@ -136,7 +146,7 @@
     <xsl:template match="studyDisease">
         <stud:ctepStudyDisease>
             <stud:diseaseTerm>
-                <!--<term><xsl:value-of select="diseaseName" /></term>-->
+                <term><xsl:value-of select="diseaseName" /></term>
                 <meddraCode><xsl:value-of select="reportingMedDRA" /></meddraCode>
             </stud:diseaseTerm>
             <xsl:variable name="_leadDisYesNo" select="@lead" />
@@ -154,13 +164,15 @@
         <xsl:if test="agent/agentStatus/text() = 'Active'">
             <stud:studyAgent>
                 <xsl:apply-templates select="agent"/>
-                <xsl:variable name="_indType" select="commercialInvestigational" />
-                <indType> 
-                    <xsl:call-template name="lookup"><xsl:with-param name="_map" select="$map//indtypes" /><xsl:with-param name="_code" select="$_indType" /></xsl:call-template>
+                <indType>
+                    <xsl:call-template name="lookup"><xsl:with-param name="_map" select="$map//indtypes" /><xsl:with-param name="_code" select="commercialInvestigational" /></xsl:call-template>
                 </indType>
-                <xsl:variable name="_leadIndYesNo" select="@lead" />
+                <xsl:variable name="_partOfLead" select="inds//ind/@lead = 'yes'"  />
                 <partOfLeadIND>
-                    <xsl:call-template name="lookup"><xsl:with-param name="_map" select="$map//yesnos" /><xsl:with-param name="_code" select="$_leadIndYesNo" /></xsl:call-template>
+                    <xsl:if test="$_partOfLead != ''">
+                        true
+                    </xsl:if>
+                    <xsl:call-template name="lookup"><xsl:with-param name="_map" select="$map//yesnos" /><xsl:with-param name="_code" select="_partOfLead" /></xsl:call-template>
                 </partOfLeadIND>
                 <xsl:apply-templates select="inds" />
             </stud:studyAgent>
@@ -168,8 +180,8 @@
     </xsl:template>
     <xsl:template match="agent" >
         <stud:agent>
-            <!--<name><xsl:value-of select="agentName"/></name>-->
             <nscNumber><xsl:value-of select="nscNumber"/></nscNumber>
+            <name><xsl:value-of select="agentName"/></name>
         </stud:agent>
     </xsl:template>
     <xsl:template match="inds">
@@ -181,6 +193,7 @@
         <stud:studyAgentINDAssociation>
             <stud:investigationalNewDrug>
                 <indNumber><xsl:value-of select="indNumber" /></indNumber>
+                <holderName><xsl:value-of select="indHolder" /></holderName>
             </stud:investigationalNewDrug>
         </stud:studyAgentINDAssociation>
     </xsl:template>
@@ -199,12 +212,52 @@
             <stud:device>
                 <commonName><xsl:value-of select="commonName" /></commonName>
                 <brandName><xsl:value-of select="brandName" /></brandName>
-                <type><xsl:value-of select="parent::node()/commercialInvestigational" /></type>
+                <type><xsl:value-of select="category" /></type>
+                <ctepDbIdentifier><xsl:value-of select="deviceDbId" /></ctepDbIdentifier>
                 <status><xsl:value-of select="status" /></status>
+                <xsl:if test="ideNumber">
+                    <studyDeviceINDAssociations>
+                        <stud:studyDeviceINDAssociation>
+                            <stud:investigationalNewDrug>
+                                <indNumber><xsl:value-of select="ideNumber" /></indNumber>
+                                <holderName>CTEP</holderName>
+                            </stud:investigationalNewDrug>
+                        </stud:studyDeviceINDAssociation>
+                    </studyDeviceINDAssociations>
+                </xsl:if>
             </stud:device>
         </stud:studyDevice>
     </xsl:template>
-    
+    <xsl:template match="nciDocumentNum" mode="sys">
+        <identifiers>
+            <stud:systemAssignedIdentifier>
+                <type>Other</type>
+                <value><xsl:value-of select="." /></value>
+                <primaryIndicator>false</primaryIndicator>
+                <systemName>CTEP-ESYS</systemName>
+            </stud:systemAssignedIdentifier>
+        </identifiers>
+    </xsl:template>
+    <xsl:template match="studyTherapies">
+        <otherInterventions>
+            <xsl:apply-templates select="therapy" />
+        </otherInterventions>
+    </xsl:template>
+
+    <xsl:template match="therapy">
+        <xsl:if test="preferredTerm/text() = 'Surgery'
+                or preferredTerm/text() = 'Radiation'
+                or preferredTerm/text() = 'Gene Transfer'
+                or preferredTerm/text() = 'Image Directed Local Therapy'
+                or preferredTerm/text() = 'Hematopoietic Stem Cell Transplantation'">
+                <otherIntervention>
+                    <interventionType><xsl:call-template name="lookup"><xsl:with-param name="_map" select="$map//phases" /><xsl:with-param name="_code" select="preferredTerm" /></xsl:call-template></interventionType>
+                    <name><xsl:value-of select="preferredTerm" /></name>
+            </otherIntervention>
+            </xsl:if>
+
+    </xsl:template>
+
     <xsl:template name="lookup">
         <xsl:param name="_map" />
         <xsl:param name="_code" />

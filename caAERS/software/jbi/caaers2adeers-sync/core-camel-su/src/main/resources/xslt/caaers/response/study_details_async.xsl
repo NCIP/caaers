@@ -8,13 +8,19 @@
     </xsl:template>
     <xsl:template match="soapenv:Body">
         <entity>study</entity>
-        <operation name="createStudyResponse">
-            <xsl:apply-templates  />
-        </operation>
+        <xsl:apply-templates  />
     </xsl:template>
 
     <xsl:template match="stud:createStudyResponse">
+        <operation name="createStudyResponse">
         <xsl:apply-templates />
+        </operation>
+    </xsl:template>
+
+    <xsl:template match="stud:updateStudyResponse">
+        <operation name="updateStudyResponse">
+            <xsl:apply-templates />
+        </operation>
     </xsl:template>
 
 </xsl:stylesheet>

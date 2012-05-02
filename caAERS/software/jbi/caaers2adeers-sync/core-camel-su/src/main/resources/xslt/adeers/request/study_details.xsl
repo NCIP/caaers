@@ -4,7 +4,13 @@
         xmlns:ser="http://services.ctep.nci.nih.gov/"
         version='1.0'>
     <xsl:include href="adeers_req_common.xsl"  />
-    <xsl:template match="operation[@name='getStudyDetails']/criteria">
+    <xsl:template match="operation[@name='createStudy']">
+         <xsl:apply-templates select="criteria" />
+    </xsl:template>
+    <xsl:template match="operation[@name='updateStudy']">
+        <xsl:apply-templates select="criteria" />
+    </xsl:template>
+    <xsl:template match="criteria">
         <ser:getStudyDetails>
             <StudyCriteria>
                 <xsl:if test="criterion[@name = 'createdDate']">
