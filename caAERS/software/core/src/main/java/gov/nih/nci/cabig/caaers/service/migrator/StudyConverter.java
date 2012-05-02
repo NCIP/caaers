@@ -78,7 +78,7 @@ public class StudyConverter {
 		try {
 			//Populate Study Instance attributes
 			study.setShortTitle(studyDto.getShortTitle());
-			study.setPhaseCode(studyDto.getPhaseCode().value());
+			if(studyDto.getPhaseCode() != null) study.setPhaseCode(studyDto.getPhaseCode().value());
             study.setStudyPurpose(studyDto.getStudyPurpose());
 
 			if (! "".equals(studyDto.getOtherMeddra()) && studyDto.getOtherMeddra() != null) {

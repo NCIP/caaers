@@ -181,7 +181,7 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
                 String correlationId = RandomStringUtils.randomAlphanumeric(10);
                 String message = buildMessage(correlationId, "adeers", SEARCH_STUDY_ENTITY_NAME, SEARCH_STUDY_OPERATION_NAME, "sync", criteriaMap);
                 String xmlSearchResult = simpleSendAndReceive(message);
-                if(log.isDebugEnabled()) log.debug("xmlSearchResult : for (" + searchText + ") :" + xmlSearchResult );
+                if(log.isDebugEnabled()) log.debug("xmlSearchResult : for (" + searchText + ") :" + xmlSearchResult);
 
                 String xmlStudies = xsltTransformer.toText(xmlSearchResult, "xslt/c2a_generic_response.xslt");
 
@@ -189,6 +189,12 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
                 for(gov.nih.nci.cabig.caaers.integration.schema.study.Study dtoStudy : studies.getStudy()){
                     Study domainStudy = new LocalStudy();
                     studyConverter.convertStudyDtoToStudyDomain(dtoStudy, domainStudy);
+                    //the following extra steps are need for the UI to get a valid Study structure.
+                    domainStudy.addStudyFundingSponsor(domainStudy.getFundingSponsor().getStudyFundingSponsor());
+                    OrganizationAssignedIdentifier identifier = domainStudy.getFundingSponsor().getOrganizationAssignedIdentifier();
+                    identifier.setOrganization(domainStudy.getFundingSponsor().getStudyFundingSponsor().getOrganization());
+                    domainStudy.addIdentifier(identifier);
+
                     studyList.add(domainStudy);
                 }
             }catch (Exception e){

@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.service;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -13,9 +14,17 @@ import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.xml.transform.Source;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPathFactory;
 
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.service.migrator.StudyConverter;
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
+import gov.nih.nci.cabig.ctms.tools.configuration.ConfigurationProperty;
 import org.apache.commons.lang.RandomStringUtils;
+import org.easymock.EasyMock;
 import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.soap.saaj.SaajSoapMessageFactory;
 import org.springframework.ws.transport.http.CommonsHttpMessageSender;
@@ -24,6 +33,7 @@ import org.xml.sax.InputSource;
 public class ProxyWebServiceFacadeUnitTest extends AbstractTestCase {
 
 	private ProxyWebServiceFacade proxyWebServiceFacade;
+    WebServiceTemplate webServiceTemplate;
 
 	// private StudyParticipantAssignmentDao studyParticipantAssignmentDao;
 
@@ -40,6 +50,52 @@ public class ProxyWebServiceFacadeUnitTest extends AbstractTestCase {
 				.setDefaultUri("http://localhost:8196/GenericProcessorService");
 		
 	}
+
+    public void testSearchStudy(){
+        proxyWebServiceFacade = new ProxyWebServiceFacade(){
+            @Override
+            public String simpleSendAndReceive(String message) {
+                return mockSearchStudyResponse();
+            }
+        };
+        proxyWebServiceFacade.setStudyConverter(new StudyConverter());
+
+        List<Study> studyList = proxyWebServiceFacade.searchStudies("5876")  ;
+        assertEquals(1, studyList.size());
+        Study s = studyList.get(0);
+        assertEquals("Phase II Trial of Flavopiridol and Cisplatin in Advanced Epithelial Ovarian and Primary Peritoneal Carcinomas", s.getShortTitle());
+        assertEquals(1, s.getStudyOrganizations().size());
+        assertEquals("CTEP", s.getStudyFundingSponsors().get(0).getOrganization().getNciInstituteCode());
+    }
+    
+    private String mockSearchStudyResponse(){
+        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "<payload xmlns:stud=\"http://schema.integration.caaers.cabig.nci.nih.gov/study\">\n" +
+                "    <system>caaers</system>\n" +
+                "    <response>\n" +
+                "        <operation name=\"searchStudy\">\n" +
+                "            <data>\n" +
+                "                <stud:studies>\n" +
+                "                    <stud:study>\n" +
+                "                        <shortTitle>Phase II Trial of Flavopiridol and Cisplatin in Advanced Epithelial Ovarian and Primary Peritoneal Carcinomas</shortTitle>\n" +
+                "                        <fundingSponsor>\n" +
+                "                            <organizationAssignedIdentifier>\n" +
+                "                                <value>5876</value>\n" +
+                "                            </organizationAssignedIdentifier>\n" +
+                "                            <stud:studyFundingSponsor>\n" +
+                "                                <stud:organization>\n" +
+                "                                    <name>Cancer Therapy Evaluation Program</name>\n" +
+                "                                    <nciInstituteCode>CTEP</nciInstituteCode>\n" +
+                "                                </stud:organization>\n" +
+                "                            </stud:studyFundingSponsor>\n" +
+                "                        </fundingSponsor>\n" +
+                "                    </stud:study>\n" +
+                "                </stud:studies>\n" +
+                "            </data>\n" +
+                "        </operation>\n" +
+                "    </response>\n" +
+                "</payload>";
+    }
 
 //	public void testSimpleSendAndReceive() throws Exception {
 //		StringBuffer sb = new StringBuffer();
