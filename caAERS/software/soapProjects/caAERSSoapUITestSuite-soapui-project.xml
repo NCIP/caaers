@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<con:soapui-project name="caAERSSoapUITestSuite" soapui-version="4.0.1" abortOnError="false" runType="SEQUENTIAL" resourceRoot="" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="AdverseEventManagementServiceSoapBinding" type="wsdl" bindingName="{http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent}AdverseEventManagementServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="https://localhost:8443/caaers/services/AdverseEventManagementService?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="https://localhost:8443/caaers/services/AdverseEventManagementService?wsdl"><con:part><con:url>https://localhost:8443/caaers/services/AdverseEventManagementService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="AdverseEventManagementService" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<con:soapui-project name="caAERSSoapUITestSuite" soapui-version="4.0.0" abortOnError="false" runType="SEQUENTIAL" resourceRoot="" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="AdverseEventManagementServiceSoapBinding" type="wsdl" bindingName="{http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent}AdverseEventManagementServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="https://localhost:8443/caaers/services/AdverseEventManagementService?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="https://localhost:8443/caaers/services/AdverseEventManagementService?wsdl"><con:part><con:url>https://localhost:8443/caaers/services/AdverseEventManagementService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="AdverseEventManagementService" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <wsdl:types>
     <xs:schema elementFormDefault="unqualified" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:xs="http://www.w3.org/2001/XMLSchema">
       <xs:complexType name="DomainObjectType">
@@ -888,7 +888,7 @@
          </adv:AdverseEventsInputMessage>
       </adv:createAdverseEvent>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent/AdverseEventManagementServiceInterface/createAdverseEvent"/></con:call></con:operation><con:operation isOneWay="false" action="" name="createOrUpdateAdverseEvent" bindingOperationName="createOrUpdateAdverseEvent" type="Request-Response" outputName="createOrUpdateAdverseEventResponse" inputName="createOrUpdateAdverseEvent" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>https://localhost:8443/caaers/services/AdverseEventManagementService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:adv="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent">
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent/AdverseEventManagementServiceInterface/createAdverseEvent"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="" name="createOrUpdateAdverseEvent" bindingOperationName="createOrUpdateAdverseEvent" type="Request-Response" outputName="createOrUpdateAdverseEventResponse" inputName="createOrUpdateAdverseEvent" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>https://localhost:8443/caaers/services/AdverseEventManagementService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:adv="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent">
    <soapenv:Header/>
    <soapenv:Body>
       <adv:createOrUpdateAdverseEvent>
@@ -963,7 +963,7 @@
          </adv:AdverseEventsInputMessage>
       </adv:createOrUpdateAdverseEvent>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent/AdverseEventManagementServiceInterface/createOrUpdateAdverseEvent"/></con:call></con:operation><con:operation isOneWay="false" action="" name="deleteAdverseEvent" bindingOperationName="deleteAdverseEvent" type="Request-Response" outputName="deleteAdverseEventResponse" inputName="deleteAdverseEvent" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>https://localhost:8443/caaers/services/AdverseEventManagementService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:adv="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent">
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent/AdverseEventManagementServiceInterface/createOrUpdateAdverseEvent"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="" name="deleteAdverseEvent" bindingOperationName="deleteAdverseEvent" type="Request-Response" outputName="deleteAdverseEventResponse" inputName="deleteAdverseEvent" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>https://localhost:8443/caaers/services/AdverseEventManagementService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:adv="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent">
    <soapenv:Header/>
    <soapenv:Body>
       <adv:deleteAdverseEvent>
@@ -1624,7 +1624,7 @@
       <soap:address location="https://localhost:8443/caaers/services/AgentService"/>
     </wsdl:port>
   </wsdl:service>
-</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>https://localhost:8443/caaers/services/AgentService</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="createOrUpdateAgent" bindingOperationName="createOrUpdateAgent" type="Request-Response" outputName="createOrUpdateAgentResponse" inputName="createOrUpdateAgent" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="valid_request"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://localhost:8443/caaers/services/AgentService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://schema.integration.caaers.cabig.nci.nih.gov/common">
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>https://dev.semanticbits.com/caaers/services/AgentService</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="createOrUpdateAgent" bindingOperationName="createOrUpdateAgent" type="Request-Response" outputName="createOrUpdateAgentResponse" inputName="createOrUpdateAgent" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="valid_request" outgoingWss="caaers"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://dev.semanticbits.com/caaers/services/AgentService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://schema.integration.caaers.cabig.nci.nih.gov/common">
 
 	<soapenv:Header xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
 		<wsse:Security>
@@ -114666,6 +114666,57 @@ xmlns:dev="http://schema.integration.caaers.cabig.nci.nih.gov/device">
                   </criteria>
                </operation>
             </request>
+         </payload>
+      </gen:GenericRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://webservice.caaers.cabig.nci.nih.gov/GenericProcessor/Process"/><con:wsrmConfig version="1.2"/></con:call><con:call name="search_study"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8196/GenericProcessorService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:gen="http://webservice.caaers.cabig.nci.nih.gov/GenericProcessor/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <gen:GenericRequest>
+         <payload>
+	    <system>adeers</system>
+            <request>
+            <entity>study</entity>
+            <operation mode="sync" name="searchStudy">
+            <criteria>
+                <criterion name="documentTitle">Flav</criterion>
+            </criteria>
+          </operation>
+	  </request>
+         </payload>
+      </gen:GenericRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://webservice.caaers.cabig.nci.nih.gov/GenericProcessor/Process"/><con:wsrmConfig version="1.2"/></con:call><con:call name="study_details_update"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8196/GenericProcessorService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:gen="http://webservice.caaers.cabig.nci.nih.gov/GenericProcessor/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <gen:GenericRequest>
+         <payload>
+	    <system>adeers</system>
+            <request>
+            <entity>study</entity>
+            <operation mode="async" name="updateStudy">
+            <criteria>
+                <criterion name="nciDocumentNumber">5876</criterion>
+            </criteria>
+          </operation>
+	  </request>
+         </payload>
+      </gen:GenericRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://webservice.caaers.cabig.nci.nih.gov/GenericProcessor/Process"/><con:wsrmConfig version="1.2"/></con:call><con:call name="study_details_create"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8196/GenericProcessorService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:gen="http://webservice.caaers.cabig.nci.nih.gov/GenericProcessor/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <gen:GenericRequest>
+         <payload>
+	    <system>adeers</system>
+            <request>
+            <entity>study</entity>
+            <operation mode="async" name="updateStudy">
+            <criteria>
+                <criterion name="nciDocumentNumber">5876</criterion>
+            </criteria>
+          </operation>
+	  </request>
          </payload>
       </gen:GenericRequest>
    </soapenv:Body>
