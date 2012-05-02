@@ -66,6 +66,8 @@ public class ProxyWebServiceFacadeUnitTest extends AbstractTestCase {
         assertEquals("Phase II Trial of Flavopiridol and Cisplatin in Advanced Epithelial Ovarian and Primary Peritoneal Carcinomas", s.getShortTitle());
         assertEquals(1, s.getStudyOrganizations().size());
         assertEquals("CTEP", s.getStudyFundingSponsors().get(0).getOrganization().getNciInstituteCode());
+        assertNotNull(s.getFundingSponsorIdentifier());
+        assertEquals("5876",s.getFundingSponsorIdentifierValue());
     }
     
     private String mockSearchStudyResponse(){

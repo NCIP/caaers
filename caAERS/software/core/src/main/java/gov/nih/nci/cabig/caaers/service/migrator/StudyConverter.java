@@ -496,6 +496,7 @@ public class StudyConverter {
 				fundingSponsor = new FundingSponsor();
 				OrganizationAssignedIdentifier organizationAssignedIdentifier = new OrganizationAssignedIdentifier();
 				organizationAssignedIdentifier.setValue(studyDto.getFundingSponsor().getOrganizationAssignedIdentifier().getValue());
+                organizationAssignedIdentifier.setType(OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE);
 				fundingSponsor.setOrganizationAssignedIdentifier(organizationAssignedIdentifier);
 			}
 			if(studyDto.getFundingSponsor().getStudyFundingSponsor() != null){
