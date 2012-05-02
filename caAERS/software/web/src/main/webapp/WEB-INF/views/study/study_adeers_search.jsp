@@ -58,7 +58,7 @@
 
         <c:if test="${fn:length(studies) > 0}">
 
-            <h2>Found Studies in AdEERS</h2>
+            <h2>Found Studies...</h2>
 
             <div id="studiesTableDiv"></div>
 
