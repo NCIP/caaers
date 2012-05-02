@@ -40,6 +40,7 @@ public class ToCaaersWebserviceRouteBuilder {
 			.when().xpath(xpathPredicate("agent", "getAgentsLOV")).to("direct:caaers-agent-async")
 			.when().xpath(xpathPredicate("asael", "getASAEL")).to("direct:caaers-asael-async")
 			.when().xpath(xpathPredicate("organization", "getOrganizationsLOV")).to("direct:caaers-organization-async")
+			.when().xpath(xpathPredicate("mergedorganization", "getMergedOrganization")).to("direct:caaers-merged-organization-async")
 			.when().xpath(xpathPredicate("device", "getDevicesLOV")).to("direct:caaers-device-async")
 			.when().xpath(xpathPredicate("preexistingcondition", "getPreExistingConditionsLOV")).to("direct:caaers-condition-async")
 			.when().xpath(xpathPredicate("priortherapy", "getTherapiesLOV")).to("direct:caaers-therapy-async")
@@ -55,6 +56,9 @@ public class ToCaaersWebserviceRouteBuilder {
 
         //caAERS - createOrUpdateOrganization
         configureWSCallRoute("direct:caaers-organization-async", "organization_async.xsl", caAERSOrganizationServiceJBIURL + "createOrUpdateOrganization" );
+        
+      //caAERS - mergeOrganization
+        configureWSCallRoute("direct:caaers-merged-organization-async", "merged_organization_async.xsl", caAERSOrganizationServiceJBIURL + "mergeOrganization" );
 
         //caAERS - createOrUpdateDevices
         configureWSCallRoute("direct:caaers-device-async", "device_async.xsl", caAERSDeviceServiceJBIURL + "createOrUpdateDevices" );
