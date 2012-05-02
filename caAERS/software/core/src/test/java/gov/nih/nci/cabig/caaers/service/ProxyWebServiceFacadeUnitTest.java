@@ -33,7 +33,9 @@ import org.xml.sax.InputSource;
 public class ProxyWebServiceFacadeUnitTest extends AbstractTestCase {
 
 	private ProxyWebServiceFacade proxyWebServiceFacade;
-    WebServiceTemplate webServiceTemplate;
+    private WebServiceTemplate webServiceTemplate;
+    private Configuration configuration;
+    
 
 	// private StudyParticipantAssignmentDao studyParticipantAssignmentDao;
 
@@ -43,8 +45,10 @@ public class ProxyWebServiceFacadeUnitTest extends AbstractTestCase {
 		proxyWebServiceFacade = new ProxyWebServiceFacade();
 		SaajSoapMessageFactory saajSoapMessageFactory = new SaajSoapMessageFactory();
 		saajSoapMessageFactory.afterPropertiesSet();
-		WebServiceTemplate webServiceTemplate = new WebServiceTemplate(saajSoapMessageFactory);
+		webServiceTemplate = new WebServiceTemplate(saajSoapMessageFactory);
 		webServiceTemplate.setMessageSender(new CommonsHttpMessageSender());
+		configuration = registerMockFor(Configuration.class);
+		proxyWebServiceFacade.setConfiguration(configuration);
 		proxyWebServiceFacade.setWebServiceTemplate(webServiceTemplate);
 		proxyWebServiceFacade
 				.setDefaultUri("http://localhost:8196/GenericProcessorService");
@@ -123,38 +127,45 @@ public class ProxyWebServiceFacadeUnitTest extends AbstractTestCase {
 //		System.out.println(proxyWebServiceFacade.syncAgents());
 //	}
 	
-//	public void testConcurrency() throws Exception{
-//		ExecutorService executor = Executors.newFixedThreadPool(10);
-//		List<Future<String>> list = new ArrayList<Future<String>>();
-//		List<String> correlationIDs = new ArrayList<String>();
-//		for (EntityOperation entityOperation : EntityOperation.values()) {
-//			String correlationId = RandomStringUtils.randomAlphanumeric(10);
-//			correlationIDs.add(correlationId);
-//			System.out.println(entityOperation+" - "+correlationId);
-//			Callable<String> worker = new ProxyWebServiceCallable(correlationId, entityOperation.getQualifiedName(), entityOperation.getOperationName(), proxyWebServiceFacade);
-//			Future<String> submit = executor.submit(worker);
-//			list.add(submit);
-//		}
-//		//System.out.println(list.size());
-//		// Now retrieve the result
-//		for (int i=0 ; i<list.size() ; i++) {
-//			try {
-//				Matcher m = Pattern.compile("coorelationId=\"(.*)\"><system").matcher(list.get(i).get());
-//				String correlationId="";
-//				try {
-//					correlationId = m.group(1);
-//				} catch (Exception e) {
-//					System.out.println("no correlation id found");
-//				}
-//				System.out.println("\n[expected, actual] - ["+correlationIDs.get(i)+", "+correlationId+"]");
-//			} catch (InterruptedException e) {
-//				e.printStackTrace();
-//			} catch (ExecutionException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//		executor.shutdown();
-//	}
+	public void testConcurrency() throws Exception{
+		EasyMock.expect(configuration.get(Configuration.ESB_WS_URL)).andReturn("http://localhost:8196/GenericProcessorService").anyTimes();
+		replayMocks();
+		ExecutorService executor = Executors.newFixedThreadPool(10);
+		List<Future<String>> list = new ArrayList<Future<String>>();
+		List<String> correlationIDs = new ArrayList<String>();
+		int NUM_OF_LOOPS = 10;
+		for(int i = 0 ; i<NUM_OF_LOOPS ; i++){
+			for (EntityOperation entityOperation : EntityOperation.values()) {
+				String correlationId = RandomStringUtils.randomAlphanumeric(10);
+				correlationIDs.add(correlationId);
+				System.out.println(entityOperation+" - "+correlationId);
+				Callable<String> worker = new ProxyWebServiceCallable(correlationId, entityOperation.getQualifiedName(), entityOperation.getOperationName(), proxyWebServiceFacade);
+				Future<String> submit = executor.submit(worker);
+				list.add(submit);
+			}
+			Thread.sleep(10000);
+		}
+		//System.out.println(list.size());
+		// Now retrieve the result
+		for (int i=0 ; i<list.size() ; i++) {
+			try {
+				Matcher m = Pattern.compile("coorelationId=\"(.*)\"><system").matcher(list.get(i).get());
+				String correlationId="";
+				try {
+					correlationId = m.group(1);
+				} catch (Exception e) {
+					System.out.println("no correlation id found");
+				}
+				System.out.println("\n[expected, actual] - ["+correlationIDs.get(i)+", "+correlationId+"]");
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+			}
+		}
+		executor.shutdown();
+		verifyMocks();
+	}
 	
 	public class ProxyWebServiceCallable implements Callable<String>{
 		
