@@ -6,15 +6,27 @@
 <script language="JavaScript">
 
     var _ajaxIndicatorHtml= '<img height="13px" width="13px" src="<c:url value="/images/indicator.gif" />" alt="activity indicator" width="20px" height="20px"/>';
+    var popupDiv;
 
     function submitSearch() {
         jQuery("#searchForm").submit();
     }
 
+    function showPopup() {
+        popupDiv = new Window({className:"alphacube", width:300, height:100, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
+        popupDiv.setContent('please_wait');
+        popupDiv.showCenter(true);
+        popupDiv.show();
+    }
+
     function doUpdate(id, _index, operation) {
         jQuery('#studyLink' + _index).html(_ajaxIndicatorHtml);
+        showPopup();
         createStudy.syncStudyWithAdEERS(id, operation, function(_resultId) {
-            jQuery('#studyLink' + _index).html(_resultId);
+            var text = "Updated";
+            if (operation == "CREATE") text = "Imported";
+            jQuery('#studyLink' + _index).html("<b>" + text + "</b>");
+            popupDiv.close();
         });
     }
 
@@ -28,7 +40,7 @@
 
 </script>
 
-<chrome:box title="Search AdEERS Studies" autopad="true">
+<chrome:box title="Search CTEP Studies" autopad="true">
 
     <p><tags:instructions code="study.adEERSsearch.top"/></p>
     <form:form name="searchForm" id="searchForm" method="post">
@@ -70,8 +82,7 @@
 
             var studiesColumnDefs = [
                 {key:"fsid", label:"Identifier", sortable:true, resizeable:true, minWidth:100},
-                {key:"shortTitle", label:"Short title", sortable:true, resizeable:true, minWidth:300},
-                {key:"longTitle", label:"Long title", sortable:true, resizeable:true, minWidth:500},
+                {key:"shortTitle", label:"Title", sortable:true, resizeable:true, minWidth:700},
                 {key:"action", label:"Action", sortable:true, resizeable:true, minWidth:100, formatter:actionFormatter}
             ];
 
@@ -100,6 +111,18 @@
         </script>
 
         </c:if>
-
+        <c:if test="${fn:length(studies) == 0}">
+            <div class="row">
+                <div class="label"></div>
+                <div class="value"><caaers:message code="dashboard.noResults" /></div>
+            </div>
+        </c:if>
     </form:form>
+
+    <div id="please_wait" style="display: none;">
+        <h3>Please wait...</h3>
+        <br><br>
+        <div>The study is getting processed.</div>
+    </div>
+
 </chrome:box>
