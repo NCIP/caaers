@@ -1,17 +1,18 @@
 package gov.nih.nci.cabig.caaers2adeers.track;
 
-import gov.nih.nci.cabig.caaers2adeers.cronjob.EntityOperation;
 import gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage;
 
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.HibernateException;
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;
+import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
 /**
@@ -44,6 +45,17 @@ public class IntegrationLogDao{
         if(result.get(0) == null) return date;
         return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format((Date)result.get(0));
         
+	}
+	
+	public List findInactiveOrganizationCTEPIds(){
+		return hibernateTemplate.executeFind(new HibernateCallback() {
+			
+			public List doInHibernate(Session session) throws HibernateException,
+					SQLException {
+				SQLQuery sqlQuery= session.createSQLQuery("Select nci_institute_code from organizations where retired_indicator='1' and merged_org_id is null");
+				return sqlQuery.list();
+			}
+		});
 	}
 	
 }

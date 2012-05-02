@@ -140,6 +140,7 @@
     			<entry><key><value>PRIOR_THERAPY</value></key><value>s[priorTherapyLovCronExpression]</value></entry>
     			<entry><key><value>PRE_EXISTING_CONDITION</value></key><value>s[preExistingConditionLovCronExpression]</value></entry>
     			<entry><key><value>ORGANIZATION</value></key><value>s[organizationLovCronExpression]</value></entry>
+    			<entry><key><value>MERGED_ORGANIZATION</value></key><value>s[mergedOrganizationCronExpression]</value></entry>
     		</map>
     	</property>
     </bean>
