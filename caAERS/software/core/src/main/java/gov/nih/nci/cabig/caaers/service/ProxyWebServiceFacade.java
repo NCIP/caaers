@@ -83,7 +83,8 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
         StreamSource source = new StreamSource(new StringReader(message));
         StringWriter sw = new StringWriter();
         StreamResult result = new StreamResult(sw);
-        webServiceTemplate.setDefaultUri(configuration.get(Configuration.ESB_WS_URL));
+        String wsURI = configuration.get(Configuration.ESB_WS_URL);
+        if(wsURI != null) webServiceTemplate.setDefaultUri(wsURI);
         webServiceTemplate.sendSourceAndReceiveToResult(source, result);
         return result.toString();
     }
@@ -93,7 +94,6 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
     	String corelationId = RandomStringUtils.randomAlphanumeric(10);
         String message = buildMessage(corelationId, "adeers", entity, operationName, sync?"sync":"async", criteria);
         String result = simpleSendAndReceive(message);
-        System.out.println(result);
         return corelationId;
     }
 
@@ -177,7 +177,9 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
                 criteriaMap.put("documentTitle", searchText);
                 criteriaMap.put("nciDocumentNumber", searchText);
 
-                String xmlSearchResult = send(SEARCH_STUDY_ENTITY_NAME, SEARCH_STUDY_OPERATION_NAME, true, criteriaMap);
+                String correlationId = RandomStringUtils.randomAlphanumeric(10);
+                String message = buildMessage(correlationId, "adeers", SEARCH_STUDY_ENTITY_NAME, SEARCH_STUDY_OPERATION_NAME, "sync", criteriaMap);
+                String xmlSearchResult = simpleSendAndReceive(message);
                 if(log.isDebugEnabled()) log.debug("xmlSearchResult : for (" + searchText + ") :" + xmlSearchResult );
 
                 String xmlStudies = xsltTransformer.toText(xmlSearchResult, "xslt/c2a_generic_response.xslt");
@@ -190,7 +192,7 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
                 }
             }catch (Exception e){
                 log.error("Error occured while invoking ServiceMix Study Search : " + e.getMessage(), e);
-                log.info("Returning empty study list : unable to search in adeers");
+                log.info("Returning empty study list : unable to search in adeers for (" + searchText + ") :");
             }
         }
 
