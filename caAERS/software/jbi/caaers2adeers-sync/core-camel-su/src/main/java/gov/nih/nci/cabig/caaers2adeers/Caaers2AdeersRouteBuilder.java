@@ -3,6 +3,8 @@ package gov.nih.nci.cabig.caaers2adeers;
 import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.*;
 import static gov.nih.nci.cabig.caaers2adeers.track.Tracker.track;
 
+import javax.xml.transform.dom.DOMSource;
+
 import gov.nih.nci.cabig.caaers2adeers.track.FileTracker;
 import gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage;
 
@@ -87,6 +89,18 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
             .to("xslt:xslt/adeers/request/soap_env_filter.xsl")
                 .process(track(ROUTED_TO_ADEERS_REQUEST_SINK))
             .to("direct:adEERSRequestSink");
+    	
+//    	from("cxf:bean:genericProcessor")
+//    		.to("log:fromCXFBean?showHeaders=true")
+//    		.convertBodyTo(DOMSource.class)
+//    		.to("log:fromCXFBeanAfterConvert?showHeaders=true")
+//	        .processRef("exchangePreProcessor").processRef("headerGeneratorProcessor")
+//	            .process(track(REQUEST_RECEIVED))
+//	            .to(fileTracker.fileURI(REQUEST_RECEIVED))
+//	        .to("xslt:xslt/adeers/request/soap_env_filter.xsl")
+//	            .process(track(ROUTED_TO_ADEERS_REQUEST_SINK))
+//	            .to("log:fromCXFBeanAfterXSL?showHeaders=true")
+//	        .to("direct:adEERSRequestSink").onException(Throwable.class).to("direct:morgue");
 
         //NEED to introduce a QUEUE of similar...
 
