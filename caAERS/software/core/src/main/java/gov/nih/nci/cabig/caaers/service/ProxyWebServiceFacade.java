@@ -50,8 +50,11 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
 	public static final String SYNC_PRE_EXISTING_COND_ENTITY_NAME="preexistingcondition";
 	public static final String SYNC_PRE_EXISTING_COND_OPERATION_NAME="getPreExistingConditionsLOV";
 
-	public static final String GET_STUDY_ENTITY_NAME="study";
-	public static final String GET_STUDY_OPERATION_NAME="getStudyDetails";
+	public static final String CREATE_STUDY_ENTITY_NAME="study";
+	public static final String CREATE_STUDY_OPERATION_NAME="createStudy";
+
+	public static final String UPDATE_STUDY_ENTITY_NAME="study";
+	public static final String UPDATE_STUDY_OPERATION_NAME="updateStudy";
 
 	public static final String SEARCH_STUDY_ENTITY_NAME="study";
 	public static final String SEARCH_STUDY_OPERATION_NAME="searchStudy";
@@ -206,13 +209,6 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
         return studyList;
 
     }
-
-
-
-    public String getStudy() {
-		return send(GET_STUDY_ENTITY_NAME, GET_STUDY_OPERATION_NAME, false, buildCriteriaMap(null));
-	}
-
 	public String syncStudies() {
 		// TODO Auto-generated method stub
 		return null;
@@ -225,39 +221,30 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
      * @return
      */
 	public String syncStudy(String id, String createOrUpdate) {
-        System.out.println("Synchronizing: " + id + ", " + createOrUpdate);
-        // Simulating response wait from ServiceMix :P
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
+        
+        if(StringUtils.isNotEmpty(id)){
+            try{
 
+                //invoke the webservice
+                Map<String, String> criteriaMap = new HashMap<String, String>();
+                criteriaMap.put("nciDocumentNumber", id);
+
+                String correlationId = RandomStringUtils.randomAlphanumeric(10);
+                String operationName = StringUtils.equals("CREATE", createOrUpdate) ? CREATE_STUDY_OPERATION_NAME : UPDATE_STUDY_OPERATION_NAME;
+
+                String message = buildMessage(correlationId, "adeers", "study", operationName, "async", criteriaMap);
+                String xmlStudyDetails = simpleSendAndReceive(message);
+                if(log.isDebugEnabled()) log.debug("result for getStudyDetails : for (" + id + ") :" + xmlStudyDetails);
+
+
+            }catch (Exception e){
+                log.error("Error occured while invoking ServiceMix Study Details : " + e.getMessage(), e);
+            }
         }
 
-        return createOrUpdate + "-91";
+        return null;
 	}
 
-    // ToDo This should be removed after the implementation of gov.nih.nci.cabig.caaers.service.ProxyWebServiceFacade.searchStudies
-    private static Study createStudy(final String shortTitle) {
-        Study s = new LocalStudy();
-        s.setShortTitle(shortTitle);
-        s.setLongTitle(shortTitle);
-
-        OrganizationAssignedIdentifier i = new OrganizationAssignedIdentifier();
-        i.setType(OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE);
-        i.setValue("ABC-01");
-        s.addIdentifier(i);
-
-        Organization o = new LocalOrganization();
-        o.setNciInstituteCode("CTEP");
-        StudyFundingSponsor so = new StudyFundingSponsor();
-        so.setOrganization(o);
-        so.setStudy(s);
-
-        i.setOrganization(o);
-        s.addStudyFundingSponsor(so);
-
-        return s;
-    }
 
     
 }

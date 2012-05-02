@@ -47,14 +47,7 @@ public interface AdeersIntegrationFacade {
      * @return the correlation Id
      */
     String syncASAEL();
-    
-    /**
-     * Will get Study details from AdEERS.
-     * @return the correlation Id
-     */
-    
-    String getStudy();
-    
+
     /**
      * Will sync caAERS studies with AdEERS studies.
      * @return the correlation Id
