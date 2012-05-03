@@ -254,6 +254,7 @@ default-lazy-init="true">
 	<bean id="studyAgentsSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.StudyAgentsSynchronizer"/>
 	<bean id="studyEvaluationPeriodsSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.StudyEvaluationPeriodsSynchronizer"/>
 	<bean id="studyDeviceSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.StudyDeviceSynchronizer"/>
+	<bean id="studyInterventionSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.StudyInterventionSynchronizer"/>
 
 	<bean id="studySynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.StudySynchronizer">
 		<property name="children">
@@ -268,6 +269,7 @@ default-lazy-init="true">
 				<ref bean="studyEvaluationPeriodsSynchronizer"/>
 				<ref bean="studyEvaluationPeriodsSynchronizer"/>
 				<ref bean="studyDeviceSynchronizer"/>
+				<ref bean="studyInterventionSynchronizer"/>
 			</list>
 		</property>
 	</bean>
