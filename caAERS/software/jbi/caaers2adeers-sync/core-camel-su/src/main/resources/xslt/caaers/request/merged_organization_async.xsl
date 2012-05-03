@@ -17,7 +17,7 @@
                 <name><xsl:value-of select="name" /></name>
             </xsl:if>
             <xsl:if test="ctepId != ''">
-                <nciInstituteCode><xsl:value-of select="nctepIdame" /></nciInstituteCode>
+                <nciInstituteCode><xsl:value-of select="ctepId" /></nciInstituteCode>
             </xsl:if>
             <mergedOrganization>
 				<xsl:if test="mergedTo/address/street != ''">
