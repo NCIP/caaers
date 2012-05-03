@@ -116,13 +116,11 @@
         </treatmentAssignments>
     </xsl:template>
     <xsl:template match="studyTreatmentAssignment">
-        <xsl:if test="status/text() = 'Active'">
-            <stud:treatmentAssignment>
-                <ctepDbIdentifier><xsl:value-of select="tacDbId" /></ctepDbIdentifier>
-                <code><xsl:value-of select="code" /></code>
-                <description><xsl:value-of select="description" /></description>
-            </stud:treatmentAssignment>
-        </xsl:if>
+        <stud:treatmentAssignment>
+            <ctepDbIdentifier><xsl:value-of select="tacDbId" /></ctepDbIdentifier>
+            <code><xsl:value-of select="code" /></code>
+            <description><xsl:value-of select="description" /></description>
+        </stud:treatmentAssignment>
     </xsl:template>
     <xsl:template match="studyDiseases">
         <ctepStudyDiseases>
