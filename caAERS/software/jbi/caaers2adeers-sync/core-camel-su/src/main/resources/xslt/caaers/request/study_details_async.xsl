@@ -78,8 +78,6 @@
                 </organizationAssignedIdentifier>
                 <stud:studyCoordinatingCenter>
                     <xsl:apply-templates select="organization" />
-                    <studyInvestigators/>
-                    <studyPersonnels />
                 </stud:studyCoordinatingCenter>
             </coordinatingCenter>
         </xsl:if>
@@ -110,18 +108,6 @@
     </xsl:template>
     <xsl:template match="principalInvestigator">
         <xsl:if test="investigatorStatus/text() = 'Active'">
-            <studyInvestigators>
-                <stud:studyInvestigator>
-                    <roleCode>PI</roleCode>
-                    <stud:siteInvestigator>
-                        <stud:investigator>
-                            <firstName><xsl:value-of select="firstname"/></firstName>
-                            <lastName><xsl:value-of select="lastname" /></lastName>
-                            <nciIdentifier><xsl:value-of select="@ctepInvestigatorId"/></nciIdentifier>
-                        </stud:investigator>
-                    </stud:siteInvestigator>
-                </stud:studyInvestigator>
-            </studyInvestigators>
         </xsl:if>
     </xsl:template>
     <xsl:template match="studyTreatmentAssignments">
@@ -169,10 +155,7 @@
                 </indType>
                 <xsl:variable name="_partOfLead" select="inds//ind/@lead = 'yes'"  />
                 <partOfLeadIND>
-                    <xsl:if test="$_partOfLead != ''">
-                        true
-                    </xsl:if>
-                    <xsl:call-template name="lookup"><xsl:with-param name="_map" select="$map//yesnos" /><xsl:with-param name="_code" select="_partOfLead" /></xsl:call-template>
+                    false
                 </partOfLeadIND>
                 <xsl:apply-templates select="inds" />
             </stud:studyAgent>

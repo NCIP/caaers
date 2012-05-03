@@ -1,6 +1,15 @@
-<?xml version="1.0" ?><wsdl:definitions name="StudyService" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/study" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/study" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<?xml version="1.0" ?>
+<wsdl:definitions name="StudyService" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/study"
+                  xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/study"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                  xmlns:http-conf="http://cxf.apache.org/transports/http/configuration">
   <wsdl:types>
-<xs:schema elementFormDefault="unqualified" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema elementFormDefault="unqualified"
+           targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common"
+           xmlns:http-conf="http://cxf.apache.org/transports/http/configuration"
+           xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/common"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
     <xs:complexType name="DomainObjectType">
         <xs:attribute name="id" type="xs:integer"></xs:attribute>
@@ -635,6 +644,7 @@
 <xs:element name="phaseCode" type="StudyPhaseType"></xs:element>
 <xs:element minOccurs="0" name="status" type="StatusType"></xs:element>
 <xs:element minOccurs="0" name="multiInstitutionIndicator" type="xs:boolean"></xs:element>
+<xs:element minOccurs="0" name="verbatimFirst" type="xs:boolean"></xs:element>
 <xs:element minOccurs="0" name="adeersReporting" type="xs:boolean"></xs:element>
 <xs:element minOccurs="0" name="otherMeddra" type="xs:string"></xs:element>
 <xs:element minOccurs="0" name="studyPurpose" type="xs:string"></xs:element>
@@ -642,21 +652,6 @@
 <xs:element ref="aeTerminology"></xs:element>
 <xs:element ref="diseaseTerminology"></xs:element>
 <xs:element minOccurs="0" name="design" type="DesignCodeType"></xs:element>
-<xs:element minOccurs="0" name="drugAdministrationTherapyType" type="xs:boolean"></xs:element>
-<xs:element minOccurs="0" name="deviceTherapyType" type="xs:boolean"></xs:element>
-<xs:element minOccurs="0" name="radiationTherapyType" type="xs:boolean"></xs:element>
-<xs:element minOccurs="0" name="surgeryTherapyType" type="xs:boolean"></xs:element>
-<xs:element minOccurs="0" name="behavioralTherapyType" type="xs:boolean"></xs:element>
-<xs:element minOccurs="0" name="biologicalTherapyType" type="xs:boolean"></xs:element>
-<xs:element minOccurs="0" name="geneticTherapyType" type="xs:boolean"></xs:element>
-<xs:element minOccurs="0" name="dietarySupplementTherapyType" type="xs:boolean"></xs:element>
-<xs:element minOccurs="0" name="otherTherapyType" type="xs:boolean"></xs:element>
-<xs:element minOccurs="0" name="reportTypeCaaersXML" type="xs:boolean"></xs:element>
-<xs:element minOccurs="0" name="reportTypeAdeersPDF" type="xs:boolean"></xs:element>
-<xs:element minOccurs="0" name="reportTypeMedwatchPDF" type="xs:boolean"></xs:element>
-<xs:element minOccurs="0" name="reportTypeDCPSAEForm" type="xs:boolean"></xs:element>
-<xs:element minOccurs="0" name="reportTypeCIOMSForm" type="xs:boolean"></xs:element>
-<xs:element minOccurs="0" name="reportTypeCIOMSAEForm" type="xs:boolean"></xs:element>
 <xs:element name="fundingSponsor" type="FundingSponsorType"></xs:element>
 <xs:element name="coordinatingCenter" type="CoordinatingCenterType"></xs:element>
 <xs:element minOccurs="0" name="studyOrganizations">
@@ -688,6 +683,20 @@
 </xs:sequence>
 </xs:complexType>
 </xs:element>
+<xs:element minOccurs="0" name="studyDevices">
+<xs:complexType>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" ref="studyDevice"></xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element minOccurs="0" name="otherInterventions">
+<xs:complexType>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" ref="otherIntervention"></xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
 <xs:choice minOccurs="0">
 <xs:element name="ctepStudyDiseases">
 <xs:complexType>
@@ -708,13 +717,6 @@
 <xs:complexType>
 <xs:sequence>
 <xs:element maxOccurs="unbounded" ref="evaluationPeriod"></xs:element>
-</xs:sequence>
-</xs:complexType>
-</xs:element>
-<xs:element minOccurs="0" name="studyDevices">
-<xs:complexType>
-<xs:sequence>
-<xs:element maxOccurs="unbounded" minOccurs="0" ref="studyDevice"></xs:element>
 </xs:sequence>
 </xs:complexType>
 </xs:element>
@@ -1116,7 +1118,7 @@
 <xs:element name="studyDevice" type="StudyDeviceType"></xs:element>
 <xs:complexType name="StudyDeviceType">
 <xs:complexContent>
-<xs:extension base="StudyInterventionType">
+<xs:extension base="cct:MutableDomainObjectType">
 <xs:sequence>
 <xs:element minOccurs="0" ref="device"></xs:element>
 <xs:element minOccurs="0" name="otherBrandName" type="xs:string"></xs:element>
@@ -1127,28 +1129,63 @@
 <xs:element minOccurs="0" name="manufacturerCity" type="xs:string"></xs:element>
 <xs:element minOccurs="0" name="manufacturerState" type="xs:string"></xs:element>
 <xs:element minOccurs="0" name="modelNumber" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="studyDeviceINDAssociations">
+<xs:complexType>
+<xs:sequence>
+<xs:element ref="studyDeviceINDAssociation"></xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
 </xs:sequence>
 </xs:extension>
 </xs:complexContent>
 </xs:complexType>
-<xs:element name="studyIntervention" type="StudyInterventionType"></xs:element>
-<xs:complexType name="StudyInterventionType">
+<xs:element name="studyDeviceINDAssociation" type="StudyDeviceINDAssociationType"></xs:element>
+<xs:complexType name="StudyDeviceINDAssociationType">
 <xs:complexContent>
-<xs:extension base="cct:MutableDomainObjectType"></xs:extension>
+<xs:extension base="cct:MutableDomainObjectType">
+<xs:sequence>
+<xs:element ref="investigationalNewDrug"></xs:element>
+</xs:sequence>
+</xs:extension>
 </xs:complexContent>
 </xs:complexType>
+<xs:element name="otherIntervention" type="StudyInterventionType"></xs:element>
+<xs:complexType name="StudyInterventionType">
+<xs:complexContent>
+<xs:extension base="cct:MutableDomainObjectType">
+<xs:sequence>
+<xs:element name="interventionType" type="OtherInterventionType"></xs:element>
+<xs:element name="name" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="description" type="xs:string"></xs:element>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:simpleType name="OtherInterventionType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="RADIATION"></xs:enumeration>
+<xs:enumeration value="SURGERY"></xs:enumeration>
+<xs:enumeration value="BEHAVIORAL"></xs:enumeration>
+<xs:enumeration value="BIOLOGICAL_VACCINE"></xs:enumeration>
+<xs:enumeration value="GENETIC"></xs:enumeration>
+<xs:enumeration value="DIETARY_SUPPLEMENT"></xs:enumeration>
+<xs:enumeration value="OTHER"></xs:enumeration>
+</xs:restriction>
+</xs:simpleType>
 <xs:simpleType name="StudyPhaseType">
 <xs:restriction base="xs:string">
+<xs:enumeration value="Phase 0 Trial"></xs:enumeration>
 <xs:enumeration value="Phase I Trial"></xs:enumeration>
 <xs:enumeration value="Phase I/II Trial"></xs:enumeration>
-<xs:enumeration value="Phase II/III Trial"></xs:enumeration>
 <xs:enumeration value="Phase II Trial"></xs:enumeration>
+<xs:enumeration value="Phase II/III Trial"></xs:enumeration>
 <xs:enumeration value="Phase III Trial"></xs:enumeration>
 <xs:enumeration value="Phase IV Trial"></xs:enumeration>
-<xs:enumeration value="Phase 0 Trial"></xs:enumeration>
 <xs:enumeration value="Pilot"></xs:enumeration>
 <xs:enumeration value="N/A"></xs:enumeration>
 <xs:enumeration value="Other"></xs:enumeration>
+<xs:enumeration value="Null"></xs:enumeration>
 </xs:restriction>
 </xs:simpleType>
 <xs:simpleType name="StatusType">
@@ -1170,6 +1207,7 @@
 <xs:enumeration value="Protocol Authority Identifier"></xs:enumeration>
 <xs:enumeration value="Coordinating Center Identifier"></xs:enumeration>
 <xs:enumeration value="NCI Assigned Identifier"></xs:enumeration>
+<xs:enumeration value="Other"></xs:enumeration>
 </xs:restriction>
 </xs:simpleType>
 <xs:simpleType name="StudyCtcVersionType">
@@ -1294,6 +1332,9 @@
   <wsdl:service name="StudyService">
     <wsdl:port binding="tns:StudyServiceSoapBinding" name="StudyManagementWebServicePort">
       <soap:address location="https://dev.semanticbits.com/caaers/services//StudyService"></soap:address>
+        <http-conf:client ReceiveTimeout="300000"/>
+        <http-conf:client ConnectionTimeout="400000"/>
+        <http-conf:client CacheControl="no-cache" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>
