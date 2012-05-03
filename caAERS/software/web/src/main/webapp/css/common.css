@@ -1053,6 +1053,21 @@ a.export-button img {
 	background:#DBE9FF none repeat scroll 0 0;
 	border:1px solid #6E8BB8;
 }
+.yui-dt-expandablerow-trigger a { 
+	    display:block; 
+	    padding:20px 5px 0; 
+	    cursor:pointer; 
+	} 
+	.yui-dt-expanded .yui-dt-expandablerow-trigger a{ 
+	    background:url(../images/table/arrow_open.png) 0 6px no-repeat; 
+	} 
+	.yui-dt-expandablerow-trigger a, .yui-dt-collapsed .yui-dt-expandablerow-trigger a { 
+	    background:url(../images/table/arrow_closed.png) 0 4px no-repeat; 
+	} 
+	.yui-dt-expanded .yui-dt-expandablerow-trigger.spinner a { 
+	    background:url(../images/table/spinner.gif) 0 4px no-repeat; 
+	    padding-right: 10px; 
+	}
 
 /*
 #inside-box {width: 469px; height:auto; float: left; margin: 20px 20px 0 0}

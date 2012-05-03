@@ -18,14 +18,14 @@ public class IntegrationLogDaoTest extends DaoNoSecurityTestCase<IntegrationLogD
 		IntegrationLogQuery query = new IntegrationLogQuery();
 		query.filterByEntity("Organization");
 		List<IntegrationLog> queriedLogs = dao.searchIntegrationLogs(query);
-		assertEquals(4,queriedLogs.size());
+		assertEquals(5,queriedLogs.size());
 		assertEquals("createOrUpdate",queriedLogs.get(0).getOperation());
 		assertEquals(5,queriedLogs.get(0).getSynchStatus().getCode().intValue());
 		
 		// test case insensitivity
 		query.filterByEntity("organization");
 		queriedLogs = dao.searchIntegrationLogs(query);
-		assertEquals(4,queriedLogs.size());
+		assertEquals(5,queriedLogs.size());
 	}
 	
 	
@@ -74,9 +74,19 @@ public class IntegrationLogDaoTest extends DaoNoSecurityTestCase<IntegrationLogD
 		assertNotNull(date);
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
-		assertEquals(27,cal.get(Calendar.DATE));
 		assertEquals(4,cal.get(Calendar.MONTH) +1);
 		assertEquals(2012,cal.get(Calendar.YEAR));
 	}
-
+	
+	
+	public void testQueryByStatus() throws Exception{
+		IntegrationLogQuery query = new IntegrationLogQuery();
+		query.filterByFailed();
+		List<IntegrationLog> intlogs = getDao().searchIntegrationLogs(query);
+		assertNotNull(intlogs);
+		assertEquals(1,intlogs.size());
+		assertEquals("mergeOrganization",intlogs.get(0).getOperation());
+		assertEquals("-10",intlogs.get(0).getCorrelationId());
+	}
+	
 }

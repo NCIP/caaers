@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.dao.query;
 
 import gov.nih.nci.cabig.caaers.domain.SynchStatus;
+import gov.nih.nci.security.util.StringUtilities;
 
 import java.util.Date;
 
@@ -39,21 +40,24 @@ public class IntegrationLogQuery extends AbstractQuery {
     }
 
     public void filterByEntity(final String value) {
-        String searchString = "%" + value.toLowerCase() + "%";
-        andWhere("lower(entity) LIKE :" + ENTITY);
-        setParameter(ENTITY, searchString);
+    	if(!StringUtilities.isBlank(value)) {
+	        String searchString = "%" + value.toLowerCase() + "%";
+	        andWhere("lower(entity) LIKE :" + ENTITY);
+	        setParameter(ENTITY, searchString);
+    	}
     }
 
-    public void filterBySynchStatus(final String value) {
-        String searchString = "%" + value.toLowerCase() + "%";
-        andWhere("lower(synchStatus) LIKE :" + SYNCH_STATUS);
-        setParameter(SYNCH_STATUS, searchString);
+    public void filterBySynchStatus(final SynchStatus synchStatus) {
+        andWhere("synchStatus LIKE :" + SYNCH_STATUS);
+        setParameter(SYNCH_STATUS, synchStatus);
     }
     
     public void filterByOperation(final String value) {
-        String searchString = "%" + value.toLowerCase() + "%";
-        andWhere("lower(operation) LIKE :" + OPERATION);
-        setParameter(OPERATION, searchString);
+    	if(!StringUtilities.isBlank(value)) {
+	        String searchString = "%" + value.toLowerCase() + "%";
+	        andWhere("lower(operation) LIKE :" + OPERATION);
+	        setParameter(OPERATION, searchString);
+    	}
     }
     
     public void filterByLoggedOn(Date loggedOn, String operator) {
@@ -62,14 +66,28 @@ public class IntegrationLogQuery extends AbstractQuery {
     }
     
     public void filterByLoggedOnStartDateAndEndDate(Date startDate, Date endDate) {
-    	andWhere("loggedOn >= " + " :START_DATE");
+    	if(startDate != null){
+    		andWhere("loggedOn >= " + " :START_DATE");
     		setParameter("START_DATE", startDate);
-		andWhere("loggedOn <= " + " :END_DATE");
-		setParameter("END_DATE", endDate);
+    	}
+    	
+    	if(endDate != null){
+    		andWhere("loggedOn <= " + " :END_DATE");
+    		setParameter("END_DATE", endDate);
+    	}
     }
     
-    public void filterByStatus(boolean failed){
-    	filterBySynchStatus(SynchStatus.REQUST_PROCESSING_ERROR.getName());
+    public void filterByFailed(){
+    	excludeHavingSynchStatus(SynchStatus.REQUEST_COMPLETION);
+    }
+    
+    public void filterBySuccess(){
+    	filterBySynchStatus(SynchStatus.REQUEST_COMPLETION);
+    }
+    
+    public void excludeHavingSynchStatus(final SynchStatus synchStatus) {
+        andWhere("synchStatus != :" + SYNCH_STATUS);
+        setParameter(SYNCH_STATUS, synchStatus);
     }
     
 }

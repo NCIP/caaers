@@ -112,7 +112,7 @@ th.yui-dt-hidden .yui-dt-resizer {
     text-align: center;
 }
 .yui-skin-sam .yui-dt th {
-    background: #D8D8DA url(../../../../assets/skins/sam/sprite.png) repeat-x 0 0
+    background: #D8D8DA url(../images/table/sprite.png) repeat-x 0 0
 }
 .yui-skin-sam .yui-dt th,
 .yui-skin-sam .yui-dt th a {
@@ -182,7 +182,7 @@ th.yui-dt-hidden .yui-dt-resizer {
 }
 .yui-skin-sam th.yui-dt-asc,
 .yui-skin-sam th.yui-dt-desc {
-    background: url(../../../../assets/skins/sam/sprite.png) repeat-x 0 -100px
+    background: url(../images/table/sprite.png) repeat-x 0 -100px
 }
 .yui-skin-sam th.yui-dt-sortable .yui-dt-label {
     margin-right: 10px
@@ -230,24 +230,24 @@ tbody .yui-dt-editable {
     text-align: right;
 }
 .yui-dt-editor .yui-dt-button button {
-    background: url(../../../../assets/skins/sam/sprite.png) repeat-x 0 0;
+    background: url(../images/table/sprite.png) repeat-x 0 0;
     border: 1px solid #999;
     width: 4em;
     height: 1.8em;
     margin-left: 6px;
 }
 .yui-dt-editor .yui-dt-button button.yui-dt-default {
-    background: url(../../../../assets/skins/sam/sprite.png) repeat-x 0 -1400px;
+    background: url(../images/table/sprite.png) repeat-x 0 -1400px;
     background-color: #5584E0;
     border: 1px solid #304369;
     color: #FFF;
 }
 .yui-dt-editor .yui-dt-button button:hover {
-    background: url(../../../../assets/skins/sam/sprite.png) repeat-x 0 -1300px;
+    background: url(../images/table/sprite.png) repeat-x 0 -1300px;
     color: #000;
 }
 .yui-dt-editor .yui-dt-button button:active {
-    background: url(../../../../assets/skins/sam/sprite.png) repeat-x 0 -1700px;
+    background: url(../images/table/sprite.png) repeat-x 0 -1700px;
     color: #000;
 }
 .yui-skin-sam tr.yui-dt-even {

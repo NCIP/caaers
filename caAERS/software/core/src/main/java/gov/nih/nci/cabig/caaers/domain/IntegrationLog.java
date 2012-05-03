@@ -12,6 +12,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -104,6 +105,13 @@ public class IntegrationLog extends AbstractMutableDomainObject{
 	public void setSynchStatus(SynchStatus synchStatus) {
 		this.synchStatus = synchStatus;
 	}
-
+	
+	@Transient
+	public String getIfSuccess(){
+		if(synchStatus == SynchStatus.REQUST_PROCESSING_ERROR){
+			return "Failed";
+		}
+		return "Success";
+	}
 
 }

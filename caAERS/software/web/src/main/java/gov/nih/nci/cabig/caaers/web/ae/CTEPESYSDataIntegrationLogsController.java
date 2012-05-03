@@ -59,8 +59,8 @@ public class CTEPESYSDataIntegrationLogsController extends SimpleFormController 
         
         statusMap.put("", "Please select");
         statusMap.put("Success", "Success");
-        statusMap.put("In Progress", "In Progress");
-        statusMap.put("Failure", "Failure");
+   //     statusMap.put("In Progress", "In Progress");
+        statusMap.put("Failed", "Failed");
         
         serviceMap.put("", "Please select");
         serviceMap.put("SearchStudy", "SearchStudy");
@@ -87,11 +87,11 @@ public class CTEPESYSDataIntegrationLogsController extends SimpleFormController 
         fieldGroup.getFields().add(attributionField);
         
         //1
-        InputField entityField = InputFieldFactory.createSelectField("service", "Service", true, serviceMap);
+        InputField entityField = InputFieldFactory.createSelectField("service", "Service", false, serviceMap);
         fieldGroup.getFields().add(entityField);
         
         //2
-        InputField synchStatusField = InputFieldFactory.createSelectField("status", "Status", true, statusMap);
+        InputField synchStatusField = InputFieldFactory.createSelectField("status", "Status", false, statusMap);
         fieldGroup.getFields().add(synchStatusField);
         
         //3
@@ -165,7 +165,8 @@ public class CTEPESYSDataIntegrationLogsController extends SimpleFormController 
         		cmd.setSearchResultsDTO(searchResults);          		
         	} else if (cmd.getActions().equals("status")) {
         		IntegrationLogQuery query = new IntegrationLogQuery();
-        		query.filterBySynchStatus(cmd.getStatus());
+        		if(cmd.getStatus().equalsIgnoreCase("Failed"))
+        		query.filterByFailed();
         		List<IntegrationLog> rvs = integrationLogDao.searchIntegrationLogs(query);
         		CTEPESYSIntegrationLogSearchResultsDTO searchResults = new CTEPESYSIntegrationLogSearchResultsDTO(rvs);
         		cmd.setSearchResultsDTO(searchResults);          		
