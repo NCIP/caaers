@@ -16,19 +16,6 @@ import java.util.Set;
 public class StudyInterventionMigrator implements Migrator<Study> {
 
     public void migrate(Study src, Study dest, DomainObjectImportOutcome<Study> studyDomainObjectImportOutcome) {
-        List<OtherIntervention> otherInterventions = src.getOtherInterventions();
-        if (CollectionUtils.isEmpty(otherInterventions)) return;
-        Set<String> destInterventionsSet = new HashSet<String>();
-
-        for (OtherIntervention otherIntervention : dest.getOtherInterventions()) {
-            destInterventionsSet.add(otherIntervention.getHashKey());
-        }
-
-        for (OtherIntervention otherIntervention : otherInterventions) {
-            if (destInterventionsSet.add(otherIntervention.getHashKey())) {
-                dest.getOtherInterventions().add(otherIntervention);
-            }
-        }
     }
 
 }
