@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<ns2:ReportDefinitions xmlns:ns2="http://reportdefinition.caaers.cabig.nci.nih.gov">
+<ns2:ReportDefinitions xmlns:ns2="http://schema.integration.caaers.cabig.nci.nih.gov/reportdefinition">
     <ns2:reportDefinition>
         <name>TEST CTEP 24 Hour SAE Notification</name>
         <label>NCI AdEERS 24 Hour SAE Notification</label>

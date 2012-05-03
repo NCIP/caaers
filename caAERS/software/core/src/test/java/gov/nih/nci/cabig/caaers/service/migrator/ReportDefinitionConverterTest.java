@@ -30,7 +30,7 @@ public class ReportDefinitionConverterTest extends CaaersDbTestCase{
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.reportdefinition");
+		jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.integration.schema.reportdefinition");
 		unmarshaller = jaxbContext.createUnmarshaller();
 		reportDefinitionConverter = (ReportDefinitionConverter)getDeployedApplicationContext().getBean("reportDefinitionConverter");
 	}
