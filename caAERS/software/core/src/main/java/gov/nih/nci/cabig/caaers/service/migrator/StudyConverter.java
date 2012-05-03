@@ -14,6 +14,7 @@ import gov.nih.nci.cabig.caaers.integration.schema.study.*;
 import gov.nih.nci.cabig.caaers.integration.schema.study.StudyDeviceType.*;
 import gov.nih.nci.cabig.caaers.integration.schema.study.StudyDeviceType.StudyDeviceINDAssociations;
 import gov.nih.nci.cabig.caaers.integration.schema.study.StudyDeviceINDAssociationType;
+import org.apache.commons.collections.CollectionUtils;
 
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -1169,7 +1170,12 @@ public class StudyConverter {
                     String ideHolder = ideType.getHolderName();
                     BigInteger ideNumber = ideType.getIndNumber();
                     if(ideNumber != null){
-
+                       InvestigationalNewDrug ind = new InvestigationalNewDrug();
+                        ind.setHolderName(ideHolder);
+                        ind.setIndNumber(ideNumber.intValue());
+                        StudyDeviceINDAssociation studyDeviceINDAssociation = new StudyDeviceINDAssociation();
+                        studyDeviceINDAssociation.setInvestigationalNewDrug(ind);
+                       sd.getStudyDeviceINDAssociations().add(studyDeviceINDAssociation);
                     }
 
                 }
@@ -1250,6 +1256,24 @@ public class StudyConverter {
             sdt.setModelNumber(sd.getModelNumber());
 
             studyDevices.getStudyDevice().add(sdt);
+            List<StudyDeviceINDAssociation> studyDeviceINDAssociations = sd.getStudyDeviceINDAssociations();
+            if(CollectionUtils.isNotEmpty(studyDeviceINDAssociations)){
+                StudyDeviceINDAssociations associationTypes = new StudyDeviceINDAssociations();
+                sdt.setStudyDeviceINDAssociations(associationTypes);
+                for(StudyDeviceINDAssociation sdINDAssociation : studyDeviceINDAssociations){
+                    InvestigationalNewDrug ind = sdINDAssociation.getInvestigationalNewDrug();
+                    if(ind != null){
+                        StudyDeviceINDAssociationType associationType = new StudyDeviceINDAssociationType();
+                        InvestigationalNewDrugType indType = new InvestigationalNewDrugType();
+                        associationType.setInvestigationalNewDrug(indType);
+                        associationTypes.setStudyDeviceINDAssociation(associationType);
+
+                        indType.setHolderName(ind.getHolderName());
+                        indType.setIndNumber(BigInteger.valueOf(ind.getIndNumber()));
+                    }
+                    
+                }
+            }
         }
 
         studyDto.setStudyDevices(studyDevices);

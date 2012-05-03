@@ -102,6 +102,10 @@ public class StudyConverterTest extends AbstractTestCase {
 		studyInvestigatorList.add(inv);
 		studyInvestigators.setStudyInvestigator(studyInvestigatorList);
 		sitesType.setStudyInvestigators(studyInvestigators);
+
+        gov.nih.nci.cabig.caaers.integration.schema.study.Study.StudyDevices studyDevices = new gov.nih.nci.cabig.caaers.integration.schema.study.Study.StudyDevices();
+        studyDevices.getStudyDevice().add(Fixtures.createStudyDeviceType());
+        studyDto.setStudyDevices(studyDevices);
 		
 		// now test--------
 		 Study study = new LocalStudy();
@@ -133,9 +137,13 @@ public class StudyConverterTest extends AbstractTestCase {
 		 assertEquals(0, DateUtils.compareDate(si.getStartDate(), now.toGregorianCalendar().getTime()));
 		 assertEquals("avc",si.getSiteInvestigator().getInvestigator().getFirstName());
 		 assertSame(site, si.getStudyOrganization());
-		 
+        
+         assertNotNull(study.getStudyDevices());
+         assertNotNull(study.getStudyDevices().get(0));
+         assertNotNull(study.getStudyDevices().get(0).getStudyDeviceINDAssociations());
+         assertNotNull(study.getStudyDevices().get(0).getStudyDeviceINDAssociations().get(0));
+
 	}
-	
 	
 	public void testConvertStudyDtoToStudyDomain_StudySite_empty_end_date(){
 		StudySiteType sitesType  = new StudySiteType();
@@ -152,6 +160,31 @@ public class StudyConverterTest extends AbstractTestCase {
 		 
 		 assertEquals(0, DateUtils.compareDate(now.toGregorianCalendar().getTime(), study.getStudySites().get(0).getStartDate()));
 	}
+    
+    public void testConvertStudyDtoToStudyDomain_WithStudyDeviceIDE() throws Exception{
+        Study s = Fixtures.createStudy("test");
+        s.setPhaseCode("Phase I Trial");
+        s.setAeTerminology(new AeTerminology());
+        s.getAeTerminology().setCtcVersion(new Ctc());
+        s.getAeTerminology().getCtcVersion().setId(3);
+        s.setDiseaseTerminology(new DiseaseTerminology());
+        s.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.OTHER);
+        s.addStudyDevice(Fixtures.createStudyDevice());
+        Studies studies = converter.convertStudyDomainToStudyDto(s);
+        assertNotNull(studies);
+        assertNotNull(studies.getStudy());
+        assertNotNull(studies.getStudy().get(0));
+        gov.nih.nci.cabig.caaers.integration.schema.study.Study studyDto = studies.getStudy().get(0);
+        assertNotNull(studyDto.getStudyDevices());
+        assertNotNull(studyDto.getStudyDevices().getStudyDevice().get(0));
+        assertNotNull(studyDto.getStudyDevices().getStudyDevice().get(0).getStudyDeviceINDAssociations());
+        assertNotNull(studyDto.getStudyDevices().getStudyDevice().get(0).getStudyDeviceINDAssociations().getStudyDeviceINDAssociation());
+        assertNotNull(studyDto.getStudyDevices().getStudyDevice().get(0).getStudyDeviceINDAssociations().getStudyDeviceINDAssociation().getInvestigationalNewDrug());
+        assertNotNull(studyDto.getStudyDevices().getStudyDevice().get(0).getStudyDeviceINDAssociations().getStudyDeviceINDAssociation().getInvestigationalNewDrug().getHolderName());
+        assertEquals("CTEP", studyDto.getStudyDevices().getStudyDevice().get(0).getStudyDeviceINDAssociations().getStudyDeviceINDAssociation().getInvestigationalNewDrug().getHolderName());
+        assertEquals("1", studyDto.getStudyDevices().getStudyDevice().get(0).getStudyDeviceINDAssociations().getStudyDeviceINDAssociation().getInvestigationalNewDrug().getIndNumber().toString());
+
+    }
 
     public void testStudyDiseaseMeddra() throws Exception {
 

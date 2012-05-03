@@ -18,12 +18,17 @@ import gov.nih.nci.cabig.caaers.integration.schema.common.ActiveInactiveStatusTy
 import gov.nih.nci.cabig.caaers.integration.schema.common.DeviceType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.PreExistingConditionType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.PriorTherapyType;
+import gov.nih.nci.cabig.caaers.integration.schema.study.InvestigationalNewDrugType;
+import gov.nih.nci.cabig.caaers.integration.schema.study.StudyAgentType;
+import gov.nih.nci.cabig.caaers.integration.schema.study.StudyDeviceINDAssociationType;
+import gov.nih.nci.cabig.caaers.integration.schema.study.StudyDeviceType;
 import gov.nih.nci.cabig.caaers.rules.common.RuleLevel;
 import gov.nih.nci.cabig.caaers.rules.common.RuleType;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -829,11 +834,17 @@ public class Fixtures {
       sd.setManufacturerName("ma");
       sd.setManufacturerState("va");
       sd.setModelNumber("999");
-      
+      ArrayList<StudyDeviceINDAssociation> l = new ArrayList<StudyDeviceINDAssociation>();
+      StudyDeviceINDAssociation sinda = new StudyDeviceINDAssociation();
+      l.add(sinda);
+      INDHolder holder = createOrganizationINDHolder(createOrganization("CTEP"));
+      sinda.setInvestigationalNewDrug(createInvestigationalNewDrug(holder,  "1"));
+      sd.setStudyDeviceINDAssociations(l);
       sd.setDevice(d);
       return sd;
   }
     
+  
   public static OtherIntervention createOtherIntervention(Integer id, String name, StudyTherapyType  therapy){
       OtherIntervention oi = new OtherIntervention();
       oi.setName(name);
@@ -939,5 +950,31 @@ public class Fixtures {
         d.setCtepDbIdentifier(ctepId);
         d.setStatus(ActiveInactiveStatusType.ACTIVE);
         return d;
+    }
+
+
+    public static StudyDeviceType createStudyDeviceType(){
+        StudyDeviceType t = new StudyDeviceType();
+        t.setDevice(createDeviceType("cn", "bn", "dt", "1"));
+        t.setStudyDeviceINDAssociations(new StudyDeviceType.StudyDeviceINDAssociations());
+        t.getStudyDeviceINDAssociations().setStudyDeviceINDAssociation(createStudyDeviceINDAssociationType());
+        return t;
+    }
+
+    public static StudyDeviceINDAssociationType createStudyDeviceINDAssociationType(){
+        StudyDeviceINDAssociationType t = new StudyDeviceINDAssociationType();
+        t.setInvestigationalNewDrug( createInvestigationalNewDrugType() );
+        return t;
+    }
+
+    public static InvestigationalNewDrugType createInvestigationalNewDrugType(){
+       return createInvestigationalNewDrugType("test", BigInteger.ONE);
+    }
+
+    public static InvestigationalNewDrugType createInvestigationalNewDrugType(String holder, BigInteger i){
+        InvestigationalNewDrugType t = new InvestigationalNewDrugType();
+        t.setHolderName(holder);
+        t.setIndNumber(i);
+        return t;
     }
 }

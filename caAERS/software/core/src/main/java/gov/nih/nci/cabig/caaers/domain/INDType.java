@@ -19,9 +19,7 @@ public enum INDType implements CodedEnum<Integer> {
     /** The OTHER. */
     OTHER(2, "Other IND Holder"),
     /** The CTE p_ ind. */
-    CTEP_IND(1, "CTEP IND"),
-    /** for devices */
-    IDE(6,"IDE");
+    CTEP_IND(1, "CTEP IND");
 
     /** The code. */
     private int code;
