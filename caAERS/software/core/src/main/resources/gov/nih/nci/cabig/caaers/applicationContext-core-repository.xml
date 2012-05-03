@@ -28,6 +28,7 @@
         <property name="workflowConfigDao" ref="workflowConfigDao" />
         <property name="investigationalNewDrugDao" ref="investigationalNewDrugDao" />
         <property name="caaersSecurityFacade" ref="caaersSecurityFacade"/>
+        <property name="adeersIntegrationFacade" ref="proxyWebServiceFacade"/>
         <property name="eventFactory" ref="eventFactory"  />
     </bean>
 

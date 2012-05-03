@@ -42,11 +42,9 @@ import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.resolver.CoppaConstants;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import gov.nih.nci.cabig.caaers.service.AdeersIntegrationFacade;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -67,7 +65,9 @@ public class StudyRepository {
 	
 	/** The log. */
 	private static Log log = LogFactory.getLog(StudyRepository.class);
-	
+
+    private AdeersIntegrationFacade adeersIntegrationFacade;
+    
     /** The study dao. */
     private StudyDao studyDao;
     
@@ -105,23 +105,41 @@ public class StudyRepository {
     /** The Constant INSTITUTE_CODE. */
     private static final String INSTITUTE_CODE = "NCI";
 
+    
+    public List<Study> searchInAdEERS(String text){
+        List<Study> adEERSStudies = adeersIntegrationFacade.searchStudies(text);
+        List<Study> caaersStudies = getAllStudiesByShortTitleOrIdentifiers(text);
+        if(CollectionUtils.isEmpty(adEERSStudies)) return new ArrayList<Study>(); //empty list
+        if(CollectionUtils.isEmpty(caaersStudies)) return adEERSStudies;
 
-    /**
-     * Search the study.
-     *
-     * @param query the query
-     * @param type the type
-     * @param text the text
-     * @param searchInCOPPA the search in coppa
-     * @return the list
-     */
-/*
-    @Transactional(readOnly = false)
-    public List<Study> search(StudyQuery query,String type, String text){
-      return search(query, type, text);
+        HashMap<String, Study> studyIndexMap = new HashMap<String, Study>();
+        
+        for(Study s : adEERSStudies){
+            s.setStatus("IMPORT");
+            studyIndexMap.put(getStudyKey(s), s); //index adEERS studies
+        }
+        
+        for(Study s : caaersStudies){
+           Study adEERSStudy = studyIndexMap.get(getStudyKey(s));
+           if(adEERSStudy != null){
+               adEERSStudy.setId(s.getId());  //set the ID to differentiate it.
+               adEERSStudy.setStatus("UPDATE");
+           }
+        }
+
+        return adEERSStudies;
     }
-*/
 
+    private String getStudyKey(Study s) {
+        String key = "";
+        OrganizationAssignedIdentifier i = s.getFundingSponsorIdentifier();
+        if (i != null) {
+            key = i.getOrganization().getNciInstituteCode() + ":" + i.getValue();
+        } else {
+            key = s.getShortTitle();
+        }
+        return key;
+    }
     /**
      * Search the study 
      * @param query
@@ -750,5 +768,13 @@ public class StudyRepository {
      */
     public void setEventFactory(EventFactory eventFactory) {
         this.eventFactory = eventFactory;
+    }
+
+    public AdeersIntegrationFacade getAdeersIntegrationFacade() {
+        return adeersIntegrationFacade;
+    }
+
+    public void setAdeersIntegrationFacade(AdeersIntegrationFacade adeersIntegrationFacade) {
+        this.adeersIntegrationFacade = adeersIntegrationFacade;
     }
 }

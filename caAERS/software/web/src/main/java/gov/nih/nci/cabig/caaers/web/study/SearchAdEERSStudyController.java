@@ -27,8 +27,6 @@ public class SearchAdEERSStudyController extends SimpleFormController {
     private StudyRepository studyRepository;
     private ListValues listValues;
     private ConfigProperty configurationProperty;
-    AdeersIntegrationFacade adeersIntegrationFacade;
-    private StudyServiceImpl studyServiceImpl;
 
     public SearchAdEERSStudyController() {
         setCommandClass(SearchCommand.class);
@@ -57,14 +55,7 @@ public class SearchAdEERSStudyController extends SimpleFormController {
         if (StringUtils.isEmpty(c.getSearchText())) {
             errors.reject("", Messages.get("ERR_searchStudyCharacters"));
         } else {
-            List<Study> studies = adeersIntegrationFacade.searchStudies(c.getSearchText());
-            List<Study> caaersStudies = studyRepository.getAllStudiesByShortTitleOrIdentifiers(c.getSearchText());
-
-            System.out.println("Found in adEERS: " + studies.size());
-            System.out.println("Found in caAERS: " + caaersStudies.size());
-
-            studyServiceImpl.searchAdEERSStudiesInCaAERS(studies, caaersStudies);
-
+            List<Study> studies = studyRepository.searchInAdEERS(c.getSearchText()) ;
             map.put("studies", studies);
         }
 
@@ -90,19 +81,4 @@ public class SearchAdEERSStudyController extends SimpleFormController {
 
     }
 
-    public AdeersIntegrationFacade getAdeersIntegrationFacade() {
-        return adeersIntegrationFacade;
-    }
-
-    public void setAdeersIntegrationFacade(AdeersIntegrationFacade adeersIntegrationFacade) {
-        this.adeersIntegrationFacade = adeersIntegrationFacade;
-    }
-
-    public StudyServiceImpl getStudyServiceImpl() {
-        return studyServiceImpl;
-    }
-
-    public void setStudyServiceImpl(StudyServiceImpl studyServiceImpl) {
-        this.studyServiceImpl = studyServiceImpl;
-    }
 }

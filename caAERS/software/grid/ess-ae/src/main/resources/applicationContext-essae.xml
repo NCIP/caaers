@@ -49,8 +49,7 @@
 		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-acegi-security.xml" />	
 	<import
 		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-configProperties.xml" />	
-	<import
-		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-api.xml" />
+
 	<import
 		resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-auditing.xml" />
 	<import
