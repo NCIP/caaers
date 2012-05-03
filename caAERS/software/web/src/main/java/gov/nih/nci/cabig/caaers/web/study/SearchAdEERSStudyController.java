@@ -1,7 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
-import gov.nih.nci.cabig.caaers.api.impl.DefaultStudyService;
-import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.api.impl.StudyServiceImpl;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.service.AdeersIntegrationFacade;
@@ -9,14 +8,9 @@ import gov.nih.nci.cabig.caaers.tools.Messages;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.ListValues;
 import org.apache.commons.lang.StringUtils;
-import org.extremecomponents.table.context.Context;
-import org.extremecomponents.table.context.HttpServletRequestContext;
-import org.extremecomponents.table.core.TableModel;
-import org.extremecomponents.table.core.TableModelImpl;
 
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.validation.BindException;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
@@ -34,7 +28,7 @@ public class SearchAdEERSStudyController extends SimpleFormController {
     private ListValues listValues;
     private ConfigProperty configurationProperty;
     AdeersIntegrationFacade adeersIntegrationFacade;
-    private DefaultStudyService defaultStudyService;
+    private StudyServiceImpl studyServiceImpl;
 
     public SearchAdEERSStudyController() {
         setCommandClass(SearchCommand.class);
@@ -69,7 +63,7 @@ public class SearchAdEERSStudyController extends SimpleFormController {
             System.out.println("Found in adEERS: " + studies.size());
             System.out.println("Found in caAERS: " + caaersStudies.size());
 
-            defaultStudyService.searchAdEERSStudiesInCaAERS(studies, caaersStudies);
+            studyServiceImpl.searchAdEERSStudiesInCaAERS(studies, caaersStudies);
 
             map.put("studies", studies);
         }
@@ -104,11 +98,11 @@ public class SearchAdEERSStudyController extends SimpleFormController {
         this.adeersIntegrationFacade = adeersIntegrationFacade;
     }
 
-    public DefaultStudyService getDefaultStudyService() {
-        return defaultStudyService;
+    public StudyServiceImpl getStudyServiceImpl() {
+        return studyServiceImpl;
     }
 
-    public void setDefaultStudyService(DefaultStudyService defaultStudyService) {
-        this.defaultStudyService = defaultStudyService;
+    public void setStudyServiceImpl(StudyServiceImpl studyServiceImpl) {
+        this.studyServiceImpl = studyServiceImpl;
     }
 }

@@ -35,7 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 // TODO: need refactoring.
 @Transactional
-public class DefaultStudyService implements StudyService {
+public class StudyServiceImpl implements StudyService {
 
     private ParticipantDao participantDao;
 
