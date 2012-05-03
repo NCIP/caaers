@@ -199,7 +199,7 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
             studyImportOutcome = new DomainObjectImportOutcome<Study>();
             logger.error("StudyDto to StudyDomain Conversion Failed ", caEX);
             studyImportOutcome.addErrorMessage("StudyDto to StudyDomain Conversion Failed ", DomainObjectImportOutcome.Severity.ERROR);
-            Helper.populateError(caaersServiceResponse, "", "StudyDto to StudyDomain Conversion Failed");
+            Helper.populateError(caaersServiceResponse, "WS_GEN_000", "StudyDto to StudyDomain Conversion Failed");
         }
 
         if(studyImportOutcome == null){
@@ -216,11 +216,11 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 					try {
 						studyRepository.synchronizeStudyPersonnel(studyImportOutcome.getImportedDomainObject());
 						studyRepository.save(studyImportOutcome.getImportedDomainObject());
-                        Helper.populateError(caaersServiceResponse, "", "Study with Short Title  \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle() + "\" Created in caAERS");
+                        Helper.populateError(caaersServiceResponse, "WS_GEN_000", "Study with Short Title  \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle() + "\" Created in caAERS");
 						logger.info("Study Created");
 						eventFactory.publishEntityModifiedEvent(new LocalStudy(), false);
 					} catch (Exception e) {
-                        Helper.populateError(caaersServiceResponse, "", "Study Creation Failed " +  e.getMessage());
+                        Helper.populateError(caaersServiceResponse, "WS_GEN_000", "Study Creation Failed " +  e.getMessage());
 						e.printStackTrace();
 					}
 					
@@ -228,7 +228,7 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 					for(String errMsg : errors){
 		        		studyImportOutcome.addErrorMessage(errMsg, Severity.ERROR);
 		        	}
-                    Helper.populateError(caaersServiceResponse, "", "Study with Short Title \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle() + "\" could not be created in caAERS");
+                    Helper.populateError(caaersServiceResponse, "WS_GEN_000", "Study with Short Title \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle() + "\" could not be created in caAERS");
 					List<String> messages = new ArrayList<String>();
 					for(Message message : studyImportOutcome.getMessages()){
 						messages.add(message.getMessage());
@@ -270,7 +270,7 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
             studyImportOutcome = new DomainObjectImportOutcome<Study>();
             logger.error("StudyDto to StudyDomain Conversion Failed ", caEX);
             studyImportOutcome.addErrorMessage("StudyDto to StudyDomain Conversion Failed ", DomainObjectImportOutcome.Severity.ERROR);
-            Helper.populateError(caaersServiceResponse, "", "StudyDto to StudyDomain Conversion Failed");
+            Helper.populateError(caaersServiceResponse, "WS_GEN_000", "StudyDto to StudyDomain Conversion Failed");
             return caaersServiceResponse;
         }
 
@@ -300,16 +300,16 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 						
 					}else{
 						String errorDescription = messageSource.getMessage("WS_STU_001", new Object[]{anotherStudy.getShortTitle(), studyImportOutcome.getImportedDomainObject().getShortTitle()}, "Another study is using the identifier provided", Locale.getDefault());
-                        Helper.populateError(caaersServiceResponse, "", errorDescription);
+                        Helper.populateError(caaersServiceResponse, "WS_GEN_000", errorDescription);
 						studyImportOutcome.addErrorMessage(errorDescription, DomainObjectImportOutcome.Severity.ERROR);
 					}
 					
 				}else{
-                    Helper.populateError(caaersServiceResponse, "", "Study with Short Title  \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle() + "\" does not exist in caAERS");
+                    Helper.populateError(caaersServiceResponse, "WS_GEN_000", "Study with Short Title  \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle() + "\" does not exist in caAERS");
 					studyImportOutcome.addErrorMessage("Study with Short Title  \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle() + "\" does not exist in caAERS" , DomainObjectImportOutcome.Severity.ERROR);
 				}
 			}else {
-                Helper.populateError(caaersServiceResponse, "", "Study with Short Title \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle() + "\" could not be updated in caAERS");
+                Helper.populateError(caaersServiceResponse, "WS_GEN_000", "Study with Short Title \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle() + "\" could not be updated in caAERS");
 				List<String> messages = new ArrayList<String>();
 				for(Message message : studyImportOutcome.getMessages()){
 					messages.add(message.getMessage());

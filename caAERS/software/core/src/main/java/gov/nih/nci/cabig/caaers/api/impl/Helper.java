@@ -48,6 +48,7 @@ public class Helper {
         WsError error = new WsError();
         error.setErrorCode(errorCode);
         error.setErrorDesc(description);
+        error.setException(description);
         serviceResponse.getWsError().add(error);
         return response;
     }
