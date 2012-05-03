@@ -88,4 +88,11 @@ public abstract class StudyIntervention extends AbstractMutableRetireableDomainO
     
     @Transient
     public abstract String getInterventionName();
+
+    @Transient
+    public String getHashKey() {
+        String key = getStudyTherapyType().getName() + getInterventionName();
+        return key;
+    }
+
 }
