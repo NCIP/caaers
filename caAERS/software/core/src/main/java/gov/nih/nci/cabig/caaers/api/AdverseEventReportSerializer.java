@@ -798,7 +798,12 @@ public class AdverseEventReportSerializer {
 		    	}
 		    	studySite.setStudy(s);
 		    	//studySite.setOrganization(ss.getOrganization());
-		    	studySite.setOrganization(getOrganization(ss.getOrganization()));
+                if(ss.getOrganization().isRetired() && ss.getOrganization().getMergedOrganization() != null){
+                    studySite.setOrganization(getOrganization(ss.getOrganization().getMergedOrganization()));
+                } else{
+                    studySite.setOrganization(getOrganization(ss.getOrganization()));
+                }
+		    	
 		    	
 		    	studySite.setStudyInvestigators(ss.getStudyInvestigators());
 	    	} catch (Exception e) {

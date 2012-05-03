@@ -40,8 +40,28 @@ public class AdverseEventReportSerializerTest extends AbstractTestCase {
 		String serializedXML = serializer.serialize(aeReport, null);
 		assertNotNull(serializedXML);
 	}
-	
-	/**
+
+
+    /**
+     * Tests the serialize of a full blown report
+     * @throws Exception
+     */
+    public void testSerializationWithMerge() throws Exception {
+        String xmlFileName = "expedited_report_caaers_complete.xml";
+        ExpeditedAdverseEventReport aeReport = generateExpeditedReport(xmlFileName);
+        aeReport.getStudySite().getOrganization().retire();
+        aeReport.getStudySite().getOrganization().setName("junkOrg");
+        aeReport.getStudySite().getOrganization().setNciInstituteCode("junkOrg");
+        aeReport.getStudySite().getOrganization().setMergedOrganization(Fixtures.createOrganization("MyOrg", "MyOrg"));
+        String serializedXML = serializer.serialize(aeReport, null);
+        assertNotNull(serializedXML);
+        assertFalse(serializedXML.contains("junkOrg"));
+        assertTrue(serializedXML.contains("MyOrg"));
+
+    }
+
+
+    /**
 	 * Runs the serialize in parallel... (30 threads), fails the test when there is an exception. 
 	 * @throws Exception
 	 */
