@@ -563,4 +563,68 @@ public class StudyConverterTest extends AbstractTestCase {
         
     }
 
+    public void testConvertOtherInterventionsDomainToDTO() {
+
+    }
+
+    public void testConvertOtherInterventionsDTOToDomain() {
+        studyDto.setOtherInterventions(new gov.nih.nci.cabig.caaers.integration.schema.study.Study.OtherInterventions());
+        studyDto.getOtherInterventions().setOtherIntervention(new ArrayList<StudyInterventionType>());
+
+        StudyInterventionType sit1 = new StudyInterventionType();
+        sit1.setDescription("D1");
+        sit1.setName("N1");
+        sit1.setInterventionType(OtherInterventionType.GENETIC);
+        studyDto.getOtherInterventions().getOtherIntervention().add(sit1);
+
+        StudyInterventionType sit2 = new StudyInterventionType();
+        sit2.setDescription("D2");
+        sit2.setName("N2");
+        sit2.setInterventionType(OtherInterventionType.BEHAVIORAL);
+        studyDto.getOtherInterventions().getOtherIntervention().add(sit2);
+
+        StudyInterventionType sit3 = new StudyInterventionType();
+        sit3.setDescription("D3");
+        sit3.setName("N3");
+        sit3.setInterventionType(OtherInterventionType.BIOLOGICAL_VACCINE);
+        studyDto.getOtherInterventions().getOtherIntervention().add(sit3);
+
+        StudyInterventionType sit4 = new StudyInterventionType();
+        sit4.setDescription("D4");
+        sit4.setName("N4");
+        sit4.setInterventionType(OtherInterventionType.DIETARY_SUPPLEMENT);
+        studyDto.getOtherInterventions().getOtherIntervention().add(sit4);
+
+        StudyInterventionType sit5 = new StudyInterventionType();
+        sit5.setDescription("D5");
+        sit5.setName("N5");
+        sit5.setInterventionType(OtherInterventionType.OTHER);
+        studyDto.getOtherInterventions().getOtherIntervention().add(sit5);
+
+        StudyInterventionType sit6 = new StudyInterventionType();
+        sit6.setDescription("D6");
+        sit6.setName("N6");
+        sit6.setInterventionType(OtherInterventionType.RADIATION);
+        studyDto.getOtherInterventions().getOtherIntervention().add(sit6);
+
+        StudyInterventionType sit7 = new StudyInterventionType();
+        sit7.setDescription("D7");
+        sit7.setName("N7");
+        sit7.setInterventionType(OtherInterventionType.SURGERY);
+        studyDto.getOtherInterventions().getOtherIntervention().add(sit7);
+
+        Study s = new LocalStudy();
+
+        converter.convertStudyDtoToStudyDomain(studyDto, s);
+
+        assertEquals(7, s.getOtherInterventions().size());
+        assertEquals("GENETIC", s.getOtherInterventions().get(0).getStudyTherapyType().getName());
+        assertEquals("D1", s.getOtherInterventions().get(0).getDescription());
+        assertEquals("N1", s.getOtherInterventions().get(0).getName());
+
+        assertEquals("RADIATION", s.getOtherInterventions().get(5).getStudyTherapyType().getName());
+        assertEquals("D6", s.getOtherInterventions().get(5).getDescription());
+        assertEquals("N6", s.getOtherInterventions().get(5).getName());
+
+    }
 }

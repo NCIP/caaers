@@ -62,6 +62,8 @@ public class StudyConverter {
             populateStudyEvaluationPeriodsDomain2Dto(studyDto, study);
             populateStudyExpectedAEsDomain2Dto(studyDto, study);
             populateStudyDevicesDomain2Dto(studyDto, study);
+            convertStudyOtherInterventions(study, studyDto);
+
             gov.nih.nci.cabig.caaers.integration.schema.study.Studies studies = objectFactory.createStudies();
             studies.getStudy().add(studyDto);
 
@@ -104,6 +106,7 @@ public class StudyConverter {
 			populateStudyEvaluationPeriods(studyDto, study);
 			populateStudyExpectedAEs(studyDto, study);
             populateStudyDevices(studyDto, study);
+            convertStudyOtherInterventions(studyDto, study);
 
 		}catch(Exception e){
 			throw new CaaersSystemException("Exception while StudyDto Conversion",e);
@@ -1312,6 +1315,49 @@ public class StudyConverter {
             }
             if (terms.getExpectedAEMeddraTerm().size() > 0) studyDto.setExpectedAEMeddraTerms(terms);
 
+        }
+    }
+
+    /**
+     * Convert the Intervention lisy of an XML Study into an analogue list for a domain Study
+     * @param xmlStudy source xmlStudy
+     * @param study destination domainStudy
+     * @throws Exception
+     */
+    private void convertStudyOtherInterventions(gov.nih.nci.cabig.caaers.integration.schema.study.Study xmlStudy, Study study) throws Exception {
+        List<OtherIntervention> otherInterventions = new ArrayList<OtherIntervention>();
+        study.setOtherInterventions(otherInterventions);
+
+        if (xmlStudy.getOtherInterventions() == null || CollectionUtils.isEmpty(xmlStudy.getOtherInterventions().getOtherIntervention())) return;
+
+        for (gov.nih.nci.cabig.caaers.integration.schema.study.StudyInterventionType oi : xmlStudy.getOtherInterventions().getOtherIntervention()) {
+            OtherIntervention si = new OtherIntervention();
+            si.setStudyTherapyType(StudyTherapyType.valueOf(oi.getInterventionType().value()));
+            si.setName(oi.getName());
+            si.setDescription(oi.getDescription());
+            otherInterventions.add(si);
+        }
+    }
+
+    /**
+     * Convert the Intervention lisy of a domain Study into an analogue list for an XML Study
+     * @param study source domainStudy
+     * @param xmlStudy destination xmlStudy
+     * @throws Exception
+     */
+    private void convertStudyOtherInterventions(Study study, gov.nih.nci.cabig.caaers.integration.schema.study.Study xmlStudy) throws Exception {
+
+        xmlStudy.setOtherInterventions(new gov.nih.nci.cabig.caaers.integration.schema.study.Study.OtherInterventions());
+        xmlStudy.getOtherInterventions().setOtherIntervention(new ArrayList<StudyInterventionType>());
+
+        if (CollectionUtils.isEmpty(study.getOtherInterventions())) return;
+
+        for (OtherIntervention oi : study.getOtherInterventions()) {
+            gov.nih.nci.cabig.caaers.integration.schema.study.StudyInterventionType siType = new gov.nih.nci.cabig.caaers.integration.schema.study.StudyInterventionType();
+            siType.setInterventionType(OtherInterventionType.fromValue(oi.getStudyTherapyType().getName()));
+            siType.setDescription(oi.getDescription());
+            siType.setName(oi.getName());
+            xmlStudy.getOtherInterventions().getOtherIntervention().add(siType);
         }
     }
 

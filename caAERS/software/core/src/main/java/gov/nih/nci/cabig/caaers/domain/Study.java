@@ -687,8 +687,9 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     public void setOtherInterventionsInternal(final List<OtherIntervention> otherInterventions) {
         lazyListHelper.setInternalList(OtherIntervention.class, otherInterventions);
     }
+
     public void setOtherInterventions(final List<OtherIntervention> otherInterventions) {
-        setOtherInterventions(otherInterventions);
+        setOtherInterventionsInternal(otherInterventions);
     }
 
 
