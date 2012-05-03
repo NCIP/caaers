@@ -242,7 +242,7 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
             }
         }
 
-        return null;
+        return "test";
 	}
 
 

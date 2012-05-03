@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.*;
@@ -9,6 +10,7 @@ import org.hibernate.annotations.Parameter;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.List;
 
 
 /**
@@ -20,6 +22,9 @@ import javax.persistence.Table;
 @Table(name = "study_devices")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_study_devices_id") })
 public class StudyDevice extends StudyIntervention {
+
+    /** The lazy list helper. */
+    private LazyListHelper lazyListHelper;
 
     /** The device. */
     private Device device;
@@ -63,6 +68,9 @@ public class StudyDevice extends StudyIntervention {
      */
     public StudyDevice(Device device){
         this.device = device;
+        lazyListHelper = new LazyListHelper();
+        lazyListHelper.add(StudyDeviceINDAssociation.class, new StudyDeviceChildInstantiateFactory<StudyDeviceINDAssociation>(this,StudyDeviceINDAssociation.class));
+
     }
 
 
@@ -331,6 +339,51 @@ public class StudyDevice extends StudyIntervention {
     public void setDevice(Device device) {
         this.device = device;
     }
+
+
+
+    /**
+     * Gets the study agent ind associations internal.
+     *
+     * @return the study agent ind associations internal
+     */
+    @OneToMany(mappedBy = "studyDevice", fetch = FetchType.LAZY, orphanRemoval = true)
+    @Cascade({ CascadeType.ALL })
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
+    public List<StudyDeviceINDAssociation> getStudyDeviceINDAssociationsInternal() {
+        return lazyListHelper.getInternalList(StudyDeviceINDAssociation.class);
+    }
+
+    /**
+     * Sets the study agent ind associations internal.
+     *
+     * @param StudyDeviceINDAssociations the new study agent ind associations internal
+     */
+    public void setStudyDeviceINDAssociationsInternal(List<StudyDeviceINDAssociation> StudyDeviceINDAssociations) {
+        lazyListHelper.setInternalList(StudyDeviceINDAssociation.class, StudyDeviceINDAssociations);
+    }
+
+    /**
+     * Gets the study agent ind associations.
+     *
+     * @return the study agent ind associations
+     */
+    @Transient
+    public List<StudyDeviceINDAssociation> getStudyDeviceINDAssociations() {
+        return lazyListHelper.getLazyList(StudyDeviceINDAssociation.class);
+    }
+
+    /**
+     * Sets the study agent ind associations.
+     *
+     * @param StudyDeviceINDAssociations the new study agent ind associations
+     */
+    @Transient
+    public void setStudyDeviceINDAssociations(
+            List<StudyDeviceINDAssociation> StudyDeviceINDAssociations) {
+        setStudyDeviceINDAssociationsInternal(StudyDeviceINDAssociations);
+    }
+
 
     /* (non-Javadoc)
      * @see gov.nih.nci.cabig.caaers.domain.StudyIntervention#equals(java.lang.Object)

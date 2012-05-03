@@ -49,8 +49,8 @@ public class InvestigationalNewDrug extends AbstractMutableDomainObject {
     /** The i nd holder. */
     private INDHolder iNDHolder;
 
-    /** The study agent ind associations. */
-    private List<StudyAgentINDAssociation> studyAgentINDAssociations;
+//    /** The study agent ind associations. */
+//    private List<StudyAgentINDAssociation> studyAgentINDAssociations;
 
     /** The holder name. */
     private transient String holderName;
@@ -94,26 +94,26 @@ public class InvestigationalNewDrug extends AbstractMutableDomainObject {
         holderName = holder.getName();
     }
 
-    /**
-     * Gets the study agent ind associations.
-     *
-     * @return the study agent ind associations
-     */
-    @OneToMany(mappedBy = "investigationalNewDrug", orphanRemoval = true)
-    @Cascade( { CascadeType.DELETE  })
-    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
-    public List<StudyAgentINDAssociation> getStudyAgentINDAssociations() {
-        return studyAgentINDAssociations;
-    }
-
-    /**
-     * Sets the study agent ind associations.
-     *
-     * @param studyAgentINDAssociations the new study agent ind associations
-     */
-    public void setStudyAgentINDAssociations(List<StudyAgentINDAssociation> studyAgentINDAssociations) {
-        this.studyAgentINDAssociations = studyAgentINDAssociations;
-    }
+//    /**
+//     * Gets the study agent ind associations.
+//     *
+//     * @return the study agent ind associations
+//     */
+//    @OneToMany(mappedBy = "investigationalNewDrug", orphanRemoval = true)
+//    @Cascade( { CascadeType.DELETE  })
+//    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
+//    public List<StudyAgentINDAssociation> getStudyAgentINDAssociations() {
+//        return studyAgentINDAssociations;
+//    }
+//
+//    /**
+//     * Sets the study agent ind associations.
+//     *
+//     * @param studyAgentINDAssociations the new study agent ind associations
+//     */
+//    public void setStudyAgentINDAssociations(List<StudyAgentINDAssociation> studyAgentINDAssociations) {
+//        this.studyAgentINDAssociations = studyAgentINDAssociations;
+//    }
 
     /**
      * Gets the holder name.

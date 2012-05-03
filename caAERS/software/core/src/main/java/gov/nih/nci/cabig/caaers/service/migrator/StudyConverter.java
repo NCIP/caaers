@@ -11,6 +11,9 @@ import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.PersonnelRoleCodeType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.RoleCodeType;
 import gov.nih.nci.cabig.caaers.integration.schema.study.*;
+import gov.nih.nci.cabig.caaers.integration.schema.study.StudyDeviceType.*;
+import gov.nih.nci.cabig.caaers.integration.schema.study.StudyDeviceType.StudyDeviceINDAssociations;
+import gov.nih.nci.cabig.caaers.integration.schema.study.StudyDeviceINDAssociationType;
 
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -1157,6 +1160,21 @@ public class StudyConverter {
             sd.setManufacturerState(sdt.getManufacturerState());
             sd.setModelNumber(sdt.getModelNumber());
 
+            //add IDEs
+            StudyDeviceINDAssociations ideAssociations = sdt.getStudyDeviceINDAssociations(); 
+            if( ideAssociations != null){
+                StudyDeviceINDAssociationType ideAssociationType =  ideAssociations.getStudyDeviceINDAssociation();
+                if(ideAssociationType != null){
+                    InvestigationalNewDrugType ideType = ideAssociationType.getInvestigationalNewDrug();
+                    String ideHolder = ideType.getHolderName();
+                    BigInteger ideNumber = ideType.getIndNumber();
+                    if(ideNumber != null){
+
+                    }
+
+                }
+            }
+            
             l.add(sd);
         }
 
