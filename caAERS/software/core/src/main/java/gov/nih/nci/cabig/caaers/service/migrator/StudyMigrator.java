@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.service.migrator;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -17,5 +18,6 @@ public class StudyMigrator extends CompositeMigrator<Study> {
         dest.setShortTitle(StringUtils.isNotEmpty(src.getShortTitle()) ? src.getShortTitle() : "NA");
         dest.setPhaseCode(src.getPhaseCode());
         dest.setStudyPurpose(src.getStudyPurpose());
+        dest.setLastSynchedDate(new Date());
 	}
 }

@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.api.impl;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.api.AbstractImportService;
+import gov.nih.nci.cabig.caaers.api.ProcessingOutcome;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.domain.*;
@@ -208,20 +209,31 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 			Study dbStudy = checkDuplicateStudy(studyImportOutcome.getImportedDomainObject());
 			if(dbStudy != null){
 				studyImportOutcome.addErrorMessage(study.getClass().getSimpleName() + " identifier already exists. ", Severity.ERROR);
-                Helper.populateError(caaersServiceResponse, "WS_STU_001", messageSource.getMessage("WS_STU_001", new Object[]{dbStudy.getShortTitle(), studyImportOutcome.getImportedDomainObject().getShortTitle()}, "Another study is using the identifier provided", Locale.getDefault()));
+                Helper.populateError(caaersServiceResponse, "WS_STU_001", messageSource.getMessage("WS_STU_001", new Object[]{dbStudy.getShortTitle(),
+                        studyImportOutcome.getImportedDomainObject().getShortTitle()}, "Another study is using the identifier provided", Locale.getDefault()));
 			}else{
 				
 				List<String> errors = domainObjectValidator.validate(studyImportOutcome.getImportedDomainObject());
 				if(studyImportOutcome.isSavable() && errors.size() == 0){
 					try {
-						studyRepository.synchronizeStudyPersonnel(studyImportOutcome.getImportedDomainObject());
-						studyRepository.save(studyImportOutcome.getImportedDomainObject());
-                        Helper.populateError(caaersServiceResponse, "WS_GEN_000", "Study with Short Title  \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle() + "\" Created in caAERS");
+                        Study theStudy =  studyImportOutcome.getImportedDomainObject();
+						studyRepository.synchronizeStudyPersonnel(theStudy);
+						studyRepository.save(theStudy);
+
+                        ProcessingOutcome processingOutcome = Helper.createOutcome(Study.class, theStudy.getFundingSponsorIdentifierValue(),
+                                String.valueOf(theStudy.getId()), false,"Study with Short Title  \""
+                                +  theStudy.getShortTitle()
+                                + "\" Created in caAERS" ) ;
+                        Helper.populateProcessingOutcome(caaersServiceResponse, processingOutcome);
+                        Helper.populateMessage(caaersServiceResponse, "Study with Short Title  \""
+                                +  theStudy.getShortTitle()
+                                + "\" Created in caAERS");
+
 						logger.info("Study Created");
-						eventFactory.publishEntityModifiedEvent(new LocalStudy(), false);
+						eventFactory.publishEntityModifiedEvent(theStudy, false);
 					} catch (Exception e) {
                         Helper.populateError(caaersServiceResponse, "WS_GEN_000", "Study Creation Failed " +  e.getMessage());
-						e.printStackTrace();
+						logger.error("Error processing study : " + e.getMessage(), e);
 					}
 					
 				}else{
@@ -279,45 +291,64 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 			List<String> errors = domainObjectValidator.validate(studyImportOutcome.getImportedDomainObject());
 			if(studyImportOutcome.isSavable() && errors.size() == 0){
 				Study dbStudy = fetchStudy(studyImportOutcome.getImportedDomainObject());
-				if(dbStudy != null){
-					studySynchronizer.migrate(dbStudy, studyImportOutcome.getImportedDomainObject(), studyImportOutcome);
-					studyImportOutcome.setImportedDomainObject(dbStudy);
-					
-					//check if another study exist?
-					Study anotherStudy = checkDuplicateStudy(studyImportOutcome.getImportedDomainObject());
-					if(anotherStudy == null){
 
-						try {
-							studyRepository.synchronizeStudyPersonnel(studyImportOutcome.getImportedDomainObject());
-							studyRepository.save(studyImportOutcome.getImportedDomainObject());
-						} catch (Exception e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-                        Helper.populateMessage(caaersServiceResponse, "Study with Short Title  \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle() + "\" updated in caAERS");
-                        caaersServiceResponse.getServiceResponse().getResponsecode();
-						logger.info("Study Updated");
-						
-					}else{
-						String errorDescription = messageSource.getMessage("WS_STU_001", new Object[]{anotherStudy.getShortTitle(), studyImportOutcome.getImportedDomainObject().getShortTitle()}, "Another study is using the identifier provided", Locale.getDefault());
-                        Helper.populateError(caaersServiceResponse, "WS_GEN_000", errorDescription);
-						studyImportOutcome.addErrorMessage(errorDescription, DomainObjectImportOutcome.Severity.ERROR);
-					}
-					
-				}else{
-                    Helper.populateError(caaersServiceResponse, "WS_GEN_000", "Study with Short Title  \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle() + "\" does not exist in caAERS");
-					studyImportOutcome.addErrorMessage("Study with Short Title  \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle() + "\" does not exist in caAERS" , DomainObjectImportOutcome.Severity.ERROR);
-				}
+                if(dbStudy == null){
+                    Helper.populateError(caaersServiceResponse, "WS_GEN_000", "Study with Short Title  \""
+                            +  studyImportOutcome.getImportedDomainObject().getShortTitle()
+                            + "\" does not exist in caAERS");
+                    studyImportOutcome.addErrorMessage("Study with Short Title  \""
+                            +  studyImportOutcome.getImportedDomainObject().getShortTitle()
+                            + "\" does not exist in caAERS" , DomainObjectImportOutcome.Severity.ERROR);
+                    return caaersServiceResponse;
+                }
+
+                studySynchronizer.migrate(dbStudy, studyImportOutcome.getImportedDomainObject(), studyImportOutcome);
+                studyImportOutcome.setImportedDomainObject(dbStudy);
+
+                //check if another study exist?
+                Study anotherStudy = checkDuplicateStudy(studyImportOutcome.getImportedDomainObject());
+                if(anotherStudy != null){
+                    String errorDescription = messageSource.getMessage("WS_STU_001", new Object[]{anotherStudy.getShortTitle(),
+                            studyImportOutcome.getImportedDomainObject().getShortTitle()},
+                            "Another study is using the identifier provided", Locale.getDefault());
+                    Helper.populateError(caaersServiceResponse, "WS_GEN_000", errorDescription);
+                    studyImportOutcome.addErrorMessage(errorDescription, DomainObjectImportOutcome.Severity.ERROR);
+                    return caaersServiceResponse;
+                }
+                try {
+                    Study theStudy =  studyImportOutcome.getImportedDomainObject();
+                    studyRepository.synchronizeStudyPersonnel(theStudy);
+                    studyRepository.save(theStudy);
+                    ProcessingOutcome processingOutcome = Helper.createOutcome(Study.class, theStudy.getFundingSponsorIdentifierValue(), 
+                            String.valueOf(theStudy.getId()), false,"Study with Short Title  \""
+                            +  studyImportOutcome.getImportedDomainObject().getShortTitle()
+                            + "\" updated in caAERS" ) ;
+                    Helper.populateProcessingOutcome(caaersServiceResponse, processingOutcome);
+                    Helper.populateMessage(caaersServiceResponse, "Study with Short Title  \""
+                            +  studyImportOutcome.getImportedDomainObject().getShortTitle()
+                            + "\" updated in caAERS");
+                    caaersServiceResponse.getServiceResponse().getResponsecode();
+                    logger.info("Study Updated");
+                } catch (Exception e) {
+                    logger.error("Error while saving the study :" + e.getMessage(), e);
+                    Helper.populateError(caaersServiceResponse, "WS_GEN_000", "Cannot process study : " + e.getMessage());
+                }
+
+
 			}else {
-                Helper.populateError(caaersServiceResponse, "WS_GEN_000", "Study with Short Title \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle() + "\" could not be updated in caAERS");
-				List<String> messages = new ArrayList<String>();
+
+                List<String> messages = new ArrayList<String>();
 				for(Message message : studyImportOutcome.getMessages()){
 					messages.add(message.getMessage());
 				}
 				for(String errMsg : errors){
 					messages.add(errMsg);
 	        	}
-			}
+                Helper.populateError(caaersServiceResponse, "WS_GEN_000", "Study with Short Title \""
+                        +  studyImportOutcome.getImportedDomainObject().getShortTitle()
+                        + "\" could not be updated in caAERS. " + messages.toString());
+
+            }
 		}
 
 		logger.info("Leaving updateStudy() in StudyProcessor");

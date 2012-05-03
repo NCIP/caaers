@@ -8,6 +8,8 @@ public class ProcessingOutcome {
 	
 	// type of the entity
 	private String klassName;
+    
+    private String caaersDBId;
 	
 	public String getKlassName() {
 		return klassName;
@@ -52,4 +54,11 @@ public class ProcessingOutcome {
 		this.businessId = businessId;
 	}
 
+    public String getCaaersDBId() {
+        return caaersDBId;
+    }
+
+    public void setCaaersDBId(String caaersDBId) {
+        this.caaersDBId = caaersDBId;
+    }
 }

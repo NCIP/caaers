@@ -81,7 +81,7 @@ public class Helper {
     
     public static CaaersServiceResponse populateProcessingOutcome(CaaersServiceResponse response, ProcessingOutcome outcome){
         EntityProcessingOutcomeType entityProcessingOutcomeType = createProcessingOutcomeType(outcome.isFailed(), outcome.getKlassName(),
-                outcome.getBusinessId(), null, null, outcome.getMessages());
+                outcome.getBusinessId(), outcome.getCaaersDBId(), null, outcome.getMessages());
         response.getServiceResponse().getEntityProcessingOutcomes().getEntityProcessingOutcome().add(entityProcessingOutcomeType);
         if(outcome.isFailed()) {
             response.getServiceResponse().setStatus(Status.PARTIALLY_PROCESSED);
@@ -93,10 +93,15 @@ public class Helper {
     }
 
     public static ProcessingOutcome createOutcome(Class<?> c, String businessId,  boolean failed , String... notes){
+        return createOutcome(c, businessId, null, failed, notes);
+    }
+
+    public static ProcessingOutcome createOutcome(Class<?> c, String businessId, String caaersId ,boolean failed , String... notes){
         ProcessingOutcome outcome = new ProcessingOutcome();
         outcome.setBusinessId(businessId);
         outcome.setKlassName(c.getName());
         outcome.setFailed(failed);
+        outcome.setCaaersDBId(caaersId);
         for(String n : notes) outcome.getMessages().add(n);
         return outcome;
     }
