@@ -240,7 +240,7 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 					for(String errMsg : errors){
 		        		studyImportOutcome.addErrorMessage(errMsg, Severity.ERROR);
 		        	}
-                    Helper.populateError(caaersServiceResponse, "WS_GEN_000", "Study with Short Title \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle() + "\" could not be created in caAERS");
+
 					List<String> messages = new ArrayList<String>();
 					for(Message message : studyImportOutcome.getMessages()){
 						messages.add(message.getMessage());
@@ -248,6 +248,11 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 					for(String errMsg : errors){
 						messages.add(errMsg);
 		        	}
+
+                    Helper.populateError(caaersServiceResponse, "WS_GEN_000", "Study with Short Title \""
+                            +  studyImportOutcome.getImportedDomainObject().getShortTitle()
+                            + "\" could not be created in caAERS. "
+                            + messages.toString());
 				}
 			}
 			
