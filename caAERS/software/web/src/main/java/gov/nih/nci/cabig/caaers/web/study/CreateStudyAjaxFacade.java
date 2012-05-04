@@ -878,7 +878,7 @@ public class CreateStudyAjaxFacade {
      * @param createOrUpdate It takes values if "CREATE" or "UPDATE
      * @return
      */
-    public AjaxOutput syncStudyWithAdEERS(String studyIdentifier, String createOrUpdate) {
+    public AjaxOutput syncStudyWithAdEERS(String studyIdentifier, String nciInstituteCode, String createOrUpdate) {
         AjaxOutput out = new AjaxOutput();
 
         try {
@@ -886,7 +886,7 @@ public class CreateStudyAjaxFacade {
             id.setType(OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE);
             id.setValue(studyIdentifier);
             Organization org = new LocalOrganization();
-            org.setNciInstituteCode(""); //populate me ??
+            org.setNciInstituteCode(nciInstituteCode); //populate me ??
             id.setOrganization(org);
             String _result = proxyWebServiceFacade.syncStudy(id, createOrUpdate);
             Integer.parseInt(_result);
