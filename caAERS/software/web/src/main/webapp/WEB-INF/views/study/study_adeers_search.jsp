@@ -23,6 +23,12 @@
         jQuery('#studyLink' + _index).html(_ajaxIndicatorHtml);
         showPopup();
         createStudy.syncStudyWithAdEERS(id, nciCode ,operation, function(_resultId) {
+
+            alert(_resultId);
+            alert(_resultId.error);
+            alert(_resultId.errorMessage);
+            alert(_resultId.objectContent);
+
             var text = "Updated";
             if (operation == "CREATE") text = "Imported";
             jQuery('#studyLink' + _index).html("<b>" + text + "</b>");
