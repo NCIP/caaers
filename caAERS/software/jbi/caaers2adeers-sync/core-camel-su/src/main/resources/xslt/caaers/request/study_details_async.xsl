@@ -74,7 +74,13 @@
         <xsl:if test="status/text() = 'Active'">
             <coordinatingCenter>
                 <organizationAssignedIdentifier>
-                    <value><xsl:value-of select="localDocumentNumber"/></value>
+                    <xsl:variable name="ccIdVal" select="localDocumentNumber" />
+                    <xsl:if test="$ccIdVal != ''">
+                        <value><xsl:value-of select="$ccIdVal"/></value>
+                    </xsl:if>
+                    <xsl:if test="$ccIdVal = ''">
+                        <value><xsl:value-of select="parent::*/parent::*/nciDocumentNum"/></value>
+                    </xsl:if>
                 </organizationAssignedIdentifier>
                 <stud:studyCoordinatingCenter>
                     <xsl:apply-templates select="organization" />
