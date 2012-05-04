@@ -136,6 +136,7 @@
                     <p:studyAgentINDAssociation>
                         <p:investigationalNewDrug>
                             <indNumber>222</indNumber>
+                            <holderName>Company</holderName>
                         </p:investigationalNewDrug>
                     </p:studyAgentINDAssociation>
                 </studyAgentINDAssociations>
@@ -150,6 +151,7 @@
                     <p:studyAgentINDAssociation>
                         <p:investigationalNewDrug>
                             <indNumber>111</indNumber>
+                            <holderName>Company</holderName>
                         </p:investigationalNewDrug>
                     </p:studyAgentINDAssociation>
                 </studyAgentINDAssociations>
