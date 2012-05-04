@@ -19,19 +19,25 @@
         popupDiv.show();
     }
 
+    function showError() {
+        popupDiv = new Window({className:"alphacube", width:300, height:100, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:true, minimizable:false, maximizable:false});
+        popupDiv.setContent('error_page');
+        popupDiv.showCenter(true);
+        popupDiv.show();
+    }
+
     function doUpdate(id, _index, nciCode, operation) {
         jQuery('#studyLink' + _index).html(_ajaxIndicatorHtml);
         showPopup();
         createStudy.syncStudyWithAdEERS(id, nciCode ,operation, function(_resultId) {
+            popupDiv.close();
 
             if (_resultId.error) {
-                popupDiv.setContent('error_page');
-                popupDiv.options.closable = true;
+                showError();
             } else {
                 var text = "Updated";
                 if (operation == "CREATE") text = "Imported";
                 jQuery('#studyLink' + _index).html("<b>" + text + "</b>");
-                popupDiv.close();
             }
 
         });
