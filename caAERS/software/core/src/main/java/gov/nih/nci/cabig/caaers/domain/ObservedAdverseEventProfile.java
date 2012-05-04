@@ -20,6 +20,8 @@ import org.hibernate.annotations.Type;
 @Table(name = "observed_ae_profiles")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_observed_ae_profiles") })
 public class ObservedAdverseEventProfile extends AbstractMutableDomainObject {
+	
+	public static final double NULL_ZERO_VALUE=0.00000001;
     
     public ObservedAdverseEventProfile() {
 		super();
@@ -175,13 +177,17 @@ public class ObservedAdverseEventProfile extends AbstractMutableDomainObject {
 		if(totalNoOfRegistrations == null || totalNoOfRegistrations == 0){
 			throw new IllegalStateException("totalNoOfRegistrations cannot be null or 0.");
 		}
+		double effectiveExpectedFrequency = expectedFrequency;
+		if(expectedFrequency == null || expectedFrequency == 0.0){
+			effectiveExpectedFrequency = NULL_ZERO_VALUE;
+		}
 		if(observedNoOfAE == null){
 			observedNoOfAE = 0;
 		}
 		// Calculate observed frequency, observed signification, pValue, standard deviation
 		observedFrequency = ((double)observedNoOfAE/(double)totalNoOfRegistrations)*100;
 		double x = observedFrequency/100;
-		double M = expectedFrequency/100;
+		double M = effectiveExpectedFrequency/100;
 		standardDeviation = Math.sqrt(M*(1-M)/totalNoOfRegistrations);
 		observedSignificance = (x-M)/standardDeviation;
 		try {
