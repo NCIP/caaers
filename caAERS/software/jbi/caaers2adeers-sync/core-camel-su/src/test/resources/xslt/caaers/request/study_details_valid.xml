@@ -109,7 +109,7 @@
         </studyDiseases>
         <studyOrganizations>
             <studyOrganization role="Document to Lead Organization" updatedDate="04-15-2010 11:29:16" createdDate="03-03-2008 15:27:35">
-                <localDocumentNumber>CALGB-40603</localDocumentNumber>
+                <localDocumentNumber />
                 <organization>
                     <ctepId>CALGB</ctepId>
                     <organizationName>Cancer and Leukemia Group B</organizationName>
