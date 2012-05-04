@@ -878,9 +878,17 @@ public class CreateStudyAjaxFacade {
      * @param createOrUpdate It takes values if "CREATE" or "UPDATE
      * @return
      */
-    public String syncStudyWithAdEERS(String studyIdentifier, String createOrUpdate) {
+    public AjaxOutput syncStudyWithAdEERS(String studyIdentifier, String createOrUpdate) {
+        AjaxOutput out = new AjaxOutput();
         String _result = proxyWebServiceFacade.syncStudy(studyIdentifier, createOrUpdate);
-        return _result;
+        try {
+            Integer.parseInt(_result);
+            out.setObjectContent(_result);
+        } catch (NumberFormatException e) {
+            out.setError(true);
+            out.setErrorMessage("Error");
+        }
+        return out;
     }
 
     public List<Device> fetchDevicesByText(String text) {
