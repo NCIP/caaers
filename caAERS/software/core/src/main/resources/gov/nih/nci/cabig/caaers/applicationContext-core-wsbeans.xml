@@ -68,6 +68,7 @@
 		<property name="webServiceTemplate" ref="webServiceTemplate"/>
 		<property name="studyConverter" ref="studyConverter"/>
         <property name="configuration" ref="configuration" />
+        <property name="studyDao" ref="studyDao" />
 	</bean>
 
 </beans>
