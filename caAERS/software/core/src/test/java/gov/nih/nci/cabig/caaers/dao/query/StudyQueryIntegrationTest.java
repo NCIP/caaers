@@ -83,6 +83,7 @@ public class StudyQueryIntegrationTest extends CaaersDbNoSecurityTestCase {
 	    	query.joinIdentifier();
 	    	
 	    	Organization org = Fixtures.createOrganization("test", -1003);
+            org.setNciInstituteCode(null);
 	    	OrganizationAssignedIdentifier id = Fixtures.createOrganizationAssignedIdentifier("1138-42", org);
 	    	id.setType(id.COORDINATING_CENTER_IDENTIFIER_TYPE);
 	    	id.setPrimaryIndicator(true);
