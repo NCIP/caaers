@@ -14,6 +14,7 @@ public class IntegrationLogDetail{
 	
 	private Integer id;
     private Integer version;
+    private boolean failed;
 
     @Id @GeneratedValue(generator = "id-generator")
     public Integer getId() {
@@ -85,5 +86,13 @@ public class IntegrationLogDetail{
  	public void setIntegrationLog(IntegrationLog integrationLog) {
  		this.integrationLog = integrationLog;
  	}
+ 	
+	public boolean isFailed() {
+		return failed;
+	}
+
+	public void setFailed(boolean failed) {
+		this.failed = failed;
+	}
 
 }
