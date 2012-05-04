@@ -489,23 +489,23 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
      * @throws Exception
      */
     public void testStudyUpdate_AddingDuplicateIdentifiers() throws Exception{
-    	 createStudy("studydata/CreateStudyTest.xml");
+    	 createStudy("studydata/CreateStudyTest.xml");       //STEP 1
     	 
     	 //make sure it got created
     	 Study study = studyDao.getByShortTitle("Study PCS");
     	 assertNotNull(study);
 
-    	 CaaersServiceResponse response =  createStudy("studydata/CreateStudyTest_4.xml");
+    	 CaaersServiceResponse response =  createStudy("studydata/CreateStudyTest_4.xml");    //STEP 2
     	 assertEquals("1", response.getServiceResponse().getResponsecode());
     	 
     	//make sure it got created
     	 study = studyDao.getByShortTitle("A Strange Study");
-    	 assertNotNull(study);
+    	 assertNull(study); //should not create dup study
     	 
-         studies = (gov.nih.nci.cabig.caaers.integration.schema.study.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdate_SameIdentifiers.xml"));
-
+         //try to update the same study (created in  STEP 1)
+        studies = (gov.nih.nci.cabig.caaers.integration.schema.study.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdate_SameIdentifiers.xml"));
          response = studyProcessor.updateStudy(studies);
-         assertEquals("1", response.getServiceResponse().getResponsecode());
+         assertEquals("0", response.getServiceResponse().getResponsecode());
     }
 
     private CaaersServiceResponse createStudy(String studyXmlLocation) throws Exception {

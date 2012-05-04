@@ -18,11 +18,11 @@
             <diseaseCodeTerm>CTEP</diseaseCodeTerm>
         </p:diseaseTerminology>
         <design>BLIND</design>
-        <drugAdministrationTherapyType>false</drugAdministrationTherapyType>
-        <deviceTherapyType>false</deviceTherapyType>
-        <radiationTherapyType>false</radiationTherapyType>
-        <surgeryTherapyType>false</surgeryTherapyType>
-        <behavioralTherapyType>false</behavioralTherapyType>
+        <drugAdministrationTherapyType>true</drugAdministrationTherapyType>
+        <deviceTherapyType>true</deviceTherapyType>
+        <radiationTherapyType>true</radiationTherapyType>
+        <surgeryTherapyType>true</surgeryTherapyType>
+        <behavioralTherapyType>true</behavioralTherapyType>
         <fundingSponsor>
             <organizationAssignedIdentifier>
                 <value>CTEP001</value>
@@ -79,7 +79,7 @@
                 <studyPersonnels>
                     <p:studyPersonnel>
                         <roleCode>subject_manager</roleCode>
-                       <startDate>2002-02-02</startDate>
+                        <startDate>2002-02-02</startDate>
                         <p:researchStaff>
                             <firstName>Mike</firstName>
                             <lastName>Conway</lastName>
@@ -108,40 +108,30 @@
             </p:studySite>
         </studyOrganizations>
 
+        <identifiers>
+            <p:organizationAssignedIdentifier>
+                <type>Site Identifier</type>
+                <value>123</value>
+                <primaryIndicator>true</primaryIndicator>
+                <p:organization>
+                    <name>Division of Cancer Prevention</name>
+                    <nciInstituteCode>DCP</nciInstituteCode>
+                </p:organization>
+            </p:organizationAssignedIdentifier>
+        </identifiers>
 
-       <identifiers>
-       	  <p:organizationAssignedIdentifier>
-             <type>Site Identifier</type>
-             <value>123</value>
-             <primaryIndicator>true</primaryIndicator>
-             <p:organization>
-                 <name>Division of Cancer Prevention</name>
-                 <nciInstituteCode>DCP</nciInstituteCode>
-             </p:organization>
-          </p:organizationAssignedIdentifier>
-       	  <p:organizationAssignedIdentifier>
-             <type>Site Identifier</type>
-             <value>444</value>
-             <primaryIndicator>true</primaryIndicator>
-             <p:organization>
-                 <name>Cancer and Leukemia Group B</name>
-                 <nciInstituteCode>CALGB</nciInstituteCode>
-             </p:organization>
-          </p:organizationAssignedIdentifier>		  
-      </identifiers>
-	  
         <treatmentAssignments>
             <p:treatmentAssignment>
                 <code>theCode1</code>
                 <doseLevelOrder>1</doseLevelOrder>
-                <description>Updateddescription1</description>
-                <comments>UpdatedComments1</comments>
+                <description>description1</description>
+                <comments>Comments1</comments>
             </p:treatmentAssignment>
             <p:treatmentAssignment>
                 <code>theCode3</code>
                 <doseLevelOrder>2</doseLevelOrder>
-                <description>Updateddescription3</description>
-                <comments>UpdatedComments3</comments>
+                <description>description3</description>
+                <comments>Comments3</comments>
             </p:treatmentAssignment>
         </treatmentAssignments>
         <studyAgents>
@@ -155,12 +145,13 @@
                     <p:studyAgentINDAssociation>
                         <p:investigationalNewDrug>
                             <indNumber>222</indNumber>
-                            <holderName>Company</holderName>
+                            <holderName>CTEP</holderName>
                         </p:investigationalNewDrug>
                     </p:studyAgentINDAssociation>
                 </studyAgentINDAssociations>
             </p:studyAgent>
         </studyAgents>
+
         <ctepStudyDiseases>
             <p:ctepStudyDisease>
                 <p:diseaseTerm>

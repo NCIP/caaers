@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-Will have same identifiers as that in CaaersStudyTest.xml
--->
 <p:studies xmlns:p="http://schema.integration.caaers.cabig.nci.nih.gov/study">
     <p:study>
         <shortTitle>A Strange Study</shortTitle>
@@ -28,7 +25,7 @@ Will have same identifiers as that in CaaersStudyTest.xml
         <behavioralTherapyType>true</behavioralTherapyType>
         <fundingSponsor>
             <organizationAssignedIdentifier>
-                <value>CTEP002</value>
+                <value>CTEP001</value>
             </organizationAssignedIdentifier>
             <p:studyFundingSponsor>
                 <p:organization>
@@ -39,11 +36,11 @@ Will have same identifiers as that in CaaersStudyTest.xml
         </fundingSponsor>
         <coordinatingCenter>
             <organizationAssignedIdentifier>
-                <value>WFCCC003</value>
+                <value>WFCCC001</value>
             </organizationAssignedIdentifier>
             <p:studyCoordinatingCenter>
                 <p:organization>
-                    <name>Johns Hopkins University</name>
+                    <name>Cancer and Leukemia Group B</name>
                     <nciInstituteCode></nciInstituteCode>
                 </p:organization>
             </p:studyCoordinatingCenter>
@@ -56,8 +53,39 @@ Will have same identifiers as that in CaaersStudyTest.xml
                 </p:organization>
                 <startDate>2002-02-02</startDate>
                 <studyInvestigators>
+                    <p:studyInvestigator>
+                        <roleCode>SPI</roleCode>
+                        <startDate>2002-02-02</startDate>
+                        <p:siteInvestigator>
+                            <p:investigator>
+                                <firstName>Gerry</firstName>
+                                <lastName>Elbridge</lastName>
+                                <nciIdentifier></nciIdentifier>
+                            </p:investigator>
+                        </p:siteInvestigator>
+                    </p:studyInvestigator>
+                    <p:studyInvestigator>
+                        <roleCode>SI</roleCode>
+                        <startDate>2002-02-02</startDate>
+                        <p:siteInvestigator>
+                            <p:investigator>
+                                <firstName>George</firstName>
+                                <lastName>Clinton</lastName>
+                                <nciIdentifier></nciIdentifier>
+                            </p:investigator>
+                        </p:siteInvestigator>
+                    </p:studyInvestigator>
                 </studyInvestigators>
                 <studyPersonnels>
+                    <p:studyPersonnel>
+                        <roleCode>subject_manager</roleCode>
+                        <startDate>2002-02-02</startDate>
+                        <p:researchStaff>
+                            <firstName>Mike</firstName>
+                            <lastName>Conway</lastName>
+                            <nciIdentifier></nciIdentifier>
+                        </p:researchStaff>
+                    </p:studyPersonnel>
                 </studyPersonnels>
             </p:studySite>
             <p:studySite>
@@ -65,11 +93,11 @@ Will have same identifiers as that in CaaersStudyTest.xml
                     <name>Johns Hopkins University</name>
                     <nciInstituteCode></nciInstituteCode>
                 </p:organization>
-                 <startDate>2002-02-02</startDate>
+                <startDate>2002-02-02</startDate>
                 <studyPersonnels>
                     <p:studyPersonnel>
                         <roleCode>subject_manager</roleCode>
-                          <startDate>2002-02-02</startDate>
+                        <startDate>2002-02-02</startDate>
                         <p:researchStaff>
                             <firstName>Allan</firstName>
                             <lastName>Border</lastName>
@@ -80,18 +108,17 @@ Will have same identifiers as that in CaaersStudyTest.xml
             </p:studySite>
         </studyOrganizations>
 
-
-       <identifiers>
-       	<p:organizationAssignedIdentifier>
-             <type>Site Identifier</type>
-             <value>444</value>
-             <primaryIndicator>true</primaryIndicator>
-             <p:organization>
-                 <name>Cancer and Leukemia Group B</name>
-                 <nciInstituteCode>CALGB</nciInstituteCode>
-             </p:organization>
-          </p:organizationAssignedIdentifier>
-      </identifiers>
+        <identifiers>
+            <p:organizationAssignedIdentifier>
+                <type>Site Identifier</type>
+                <value>123</value>
+                <primaryIndicator>true</primaryIndicator>
+                <p:organization>
+                    <name>Division of Cancer Prevention</name>
+                    <nciInstituteCode>DCP</nciInstituteCode>
+                </p:organization>
+            </p:organizationAssignedIdentifier>
+        </identifiers>
 
         <treatmentAssignments>
             <p:treatmentAssignment>
@@ -118,7 +145,7 @@ Will have same identifiers as that in CaaersStudyTest.xml
                     <p:studyAgentINDAssociation>
                         <p:investigationalNewDrug>
                             <indNumber>222</indNumber>
-                            <holderName>Company</holderName>
+                            <holderName>CTEP</holderName>
                         </p:investigationalNewDrug>
                     </p:studyAgentINDAssociation>
                 </studyAgentINDAssociations>
