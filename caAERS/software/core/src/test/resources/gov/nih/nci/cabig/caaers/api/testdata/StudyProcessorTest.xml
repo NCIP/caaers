@@ -6,6 +6,7 @@
         name="Cancer Therapy Evaluation Program"
         nci_institute_code="CTEP"
         grid_id="gridSite_1"/>
+
         
     <ORGANIZATIONS
         id="-1002"
@@ -24,8 +25,17 @@
     name="Division of Cancer Prevention"
     nci_institute_code="DCP"
     grid_id="gridSite_4"/>
-    
-    
+
+    <ORGANIZATIONS
+            id="-101"
+            name="Company"
+            nci_institute_code="ADEERS-101"
+            grid_id="ADEERS-101"/>
+    <ORGANIZATIONS
+            id="-103"
+            name="CTEP"
+            nci_institute_code="ADEERS-103"
+            grid_id="ADEERS-103"/>
     <!-- Cancer Therapy Evaluation Program -->
     <RESEARCH_STAFFS
     	id="-2001"
@@ -230,13 +240,13 @@
 	<IND_HOLDERS 
 		id="-9001"
 		dtype="ORG" 
-		org_id="-1001"
+		org_id="-103"
 		drug_id="-8001" />
    	
    	<IND_HOLDERS
    		 id="-9002"
    		 dtype="ORG"
-   		 org_id="-1001"
+   		 org_id="-103"
    		 drug_id="-8002" />
    	
    	<CTC_VERSIONS
@@ -270,8 +280,9 @@
    	<ctc_terms />
    	<ctc_grades />
    	<studies />
-    <investigational_new_drugs />
-    <ind_holders />
+    <study_index />
+
+
 <!--	<research_staffs />-->
 	<disease_terminologies/>
 	<epochs/>

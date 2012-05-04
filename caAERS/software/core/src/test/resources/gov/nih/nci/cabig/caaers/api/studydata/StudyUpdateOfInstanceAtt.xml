@@ -136,7 +136,7 @@
                     <p:studyAgentINDAssociation>
                         <p:investigationalNewDrug>
                             <indNumber>222</indNumber>
-                            <holderName>Company</holderName>
+                            <holderName>CTEP</holderName>
                         </p:investigationalNewDrug>
                     </p:studyAgentINDAssociation>
                 </studyAgentINDAssociations>
