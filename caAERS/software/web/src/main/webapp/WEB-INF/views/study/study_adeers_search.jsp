@@ -24,10 +24,9 @@
         showPopup();
         createStudy.syncStudyWithAdEERS(id, nciCode ,operation, function(_resultId) {
 
-            alert(_resultId);
-            alert(_resultId.error);
-            alert(_resultId.errorMessage);
-            alert(_resultId.objectContent);
+            if (_resultId.error) {
+                alert(_resultId.errorMessage);
+            }
 
             var text = "Updated";
             if (operation == "CREATE") text = "Imported";
