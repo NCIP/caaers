@@ -145,7 +145,7 @@
                     <p:studyAgentINDAssociation>
                         <p:investigationalNewDrug>
                             <indNumber>222</indNumber>
-                            <holderName>CTEP</holderName>
+                            <holderName>Cancer Therapy Evaluation Program</holderName>
                         </p:investigationalNewDrug>
                     </p:studyAgentINDAssociation>
                 </studyAgentINDAssociations>
