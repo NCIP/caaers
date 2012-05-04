@@ -19,10 +19,10 @@
         popupDiv.show();
     }
 
-    function doUpdate(id, _index, operation) {
+    function doUpdate(id, _index, nciCode, operation) {
         jQuery('#studyLink' + _index).html(_ajaxIndicatorHtml);
         showPopup();
-        createStudy.syncStudyWithAdEERS(id, operation, function(_resultId) {
+        createStudy.syncStudyWithAdEERS(id, nciCode ,operation, function(_resultId) {
             var text = "Updated";
             if (operation == "CREATE") text = "Imported";
             jQuery('#studyLink' + _index).html("<b>" + text + "</b>");
@@ -30,12 +30,12 @@
         });
     }
 
-    function updateStudy(id, _index) {
-        doUpdate(id, _index, "UPDATE");
+    function updateStudy(id, _index, nciCode) {
+        doUpdate(id, _index, nciCode, "UPDATE");
     }
 
-    function importStudy(id, _index) {
-        doUpdate(id, _index, "CREATE");
+    function importStudy(id, _index, nciCode) {
+        doUpdate(id, _index, nciCode, "CREATE");
     }
 
 </script>
@@ -72,12 +72,13 @@
                 var action = oRecord.getData("action");
                 var id = oRecord.getData("id");
                 var fsid = oRecord.getData("fsid");
+                var ncic = oRecord.getData("ncic");
                 var st = oRecord.getData("shortTitle");
 
                 if (action == "UPDATE")
-                    elCell.innerHTML = "<span id='studyLink" + _index + "'><a href='#' onclick='updateStudy(\"" + fsid +"\", " + _index + ")'>Update</a></span>";
+                    elCell.innerHTML = "<span id='studyLink" + _index + "'><a href='#' onclick='updateStudy(\"" + fsid +"\", " + _index + ", " + ncic + ")'>Update</a></span>";
                 else
-                    elCell.innerHTML = "<span id='studyLink" + _index + "'><a href='#' onclick='importStudy(\"" + fsid +"\", "+ _index + ")' id='studyLink" + _index + "'>Import</a></span>";
+                    elCell.innerHTML = "<span id='studyLink" + _index + "'><a href='#' onclick='importStudy(\"" + fsid +"\", "+ _index + ", " + ncic  + ")' id='studyLink" + _index + "'>Import</a></span>";
             };
 
             var studiesColumnDefs = [
@@ -99,6 +100,7 @@
                     {
                         "id":"${s.fundingSponsorIdentifierValue}",
                         "fsid":"${s.fundingSponsorIdentifierValue}",
+                        "ncic":"${s.fundingSponsorIdentifier.organization.nciInstituteCode}",
                         "shortTitle":"${s.shortTitle}",
                         "longTitle":"${s.longTitle}",
                         "action":"${s.status}"
