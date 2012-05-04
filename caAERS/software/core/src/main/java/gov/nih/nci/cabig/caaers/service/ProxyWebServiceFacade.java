@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.service;
 
 import gov.nih.nci.cabig.caaers.CaaersConfigurationException;
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.integration.schema.study.*;
@@ -210,7 +211,7 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
 
     }
 	public String syncStudies() {
-		// TODO Auto-generated method stub
+		if(true) throw new CaaersSystemException("gov.nih.nci.cabig.caaers.service.ProxyWebServiceFacade.syncStudies : Not implemented");
 		return null;
 	}
 
@@ -221,7 +222,8 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
      * @return
      */
 	public String syncStudy(String id, String createOrUpdate) {
-        
+       
+        String retVal = "STU_002";
         if(StringUtils.isNotEmpty(id)){
             try{
 
@@ -235,14 +237,16 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
                 String message = buildMessage(correlationId, "adeers", "study", operationName, "async", criteriaMap);
                 String xmlStudyDetails = simpleSendAndReceive(message);
                 if(log.isDebugEnabled()) log.debug("result for getStudyDetails : for (" + id + ") :" + xmlStudyDetails);
-
-
+                String studyDbId = xsltTransformer.toText(xmlStudyDetails, "xslt/c2a_generic_response.xslt");
+                studyDbId = StringUtils.trim(studyDbId);
+                if(log.isInfoEnabled()) log.info("Got study details : Study DB ID :" + studyDbId);
+                retVal = studyDbId;
             }catch (Exception e){
                 log.error("Error occured while invoking ServiceMix Study Details : " + e.getMessage(), e);
             }
         }
 
-        return "test";
+        return retVal;
 	}
 
 
