@@ -121,7 +121,7 @@
         </script>
 
         </c:if>
-        <c:if test="${fn:length(studies) == 0}">
+        <c:if test="${fn:length(studies) == 0 && pageContext.request.method eq 'POST'}">
             <div class="row">
                 <div class="label"></div>
                 <div class="value"><caaers:message code="dashboard.noResults" /></div>
