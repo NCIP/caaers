@@ -34,6 +34,7 @@
 
             if (_resultId.error) {
                 showError();
+                jQuery('#studyLink' + _index).html("<b>Error</b>");
             } else {
                 var text = "Updated";
                 if (operation == "CREATE") text = "Imported";
