@@ -81,6 +81,7 @@ public class Tracker implements Processor{
 		        		NodeList children = outcome.getChildNodes();
 		        		String businessIdentifier = null;
 		        		String outcomeMsg = null;
+		        		boolean failed = false;
 		        		for(int j=0 ; j<children.getLength() ; j++){
 		            		Node child = children.item(j);
 		            		String childLocalName = child.getLocalName();
@@ -88,10 +89,12 @@ public class Tracker implements Processor{
 		            			businessIdentifier = child.getFirstChild().getNodeValue();
 		            		}else if(!StringUtils.isBlank(childLocalName) && childLocalName.equals("message")){
 		            			outcomeMsg = child.getFirstChild() != null ? child.getFirstChild().getNodeValue() : null ;
+		            		}else if(!StringUtils.isBlank(childLocalName) && childLocalName.equals("failed")){
+		            			failed = new Boolean(child.getFirstChild() != null ? child.getFirstChild().getNodeValue() : "false");
 		            		}
 		        		}
 		        		if(businessIdentifier != null){
-		        			integrationLog.addIntegrationLogDetail(new IntegrationLogDetail(businessIdentifier, outcomeMsg));
+		        			integrationLog.addIntegrationLogDetail(new IntegrationLogDetail(businessIdentifier, outcomeMsg, failed));
 		        		}
 	        		}
 	        	}

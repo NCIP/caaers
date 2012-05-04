@@ -45,10 +45,11 @@ public class IntegrationLogDetail{
  	
  	private Stage stage;
  	
- 	public IntegrationLogDetail(String businessId, String outcome) {
+ 	public IntegrationLogDetail(String businessId, String outcome, boolean failed) {
 		super();
 		this.businessId = businessId;
 		this.outcome = outcome;
+		this.failed = failed;
 	}
 
 	@Enumerated(EnumType.STRING)
