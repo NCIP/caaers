@@ -27,7 +27,7 @@ public class IntegrationLogQuery extends AbstractQuery {
     
     public IntegrationLogQuery() {
         super(queryString);
-        orderBy("il.id");
+        orderBy("il.loggedOn desc");
     }
     
     public void joinIntegrationLogDetail() {
@@ -77,11 +77,11 @@ public class IntegrationLogQuery extends AbstractQuery {
     	}
     }
     
-    public void filterByFailed(){
+    public void filterByIncomplete(){
     	excludeHavingSynchStatus(SynchStatus.REQUEST_COMPLETION);
     }
     
-    public void filterBySuccess(){
+    public void filterByComplete(){
     	filterBySynchStatus(SynchStatus.REQUEST_COMPLETION);
     }
     

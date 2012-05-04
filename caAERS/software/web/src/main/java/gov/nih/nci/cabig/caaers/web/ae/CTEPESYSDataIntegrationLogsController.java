@@ -166,7 +166,7 @@ public class CTEPESYSDataIntegrationLogsController extends SimpleFormController 
         	} else if (cmd.getActions().equals("status")) {
         		IntegrationLogQuery query = new IntegrationLogQuery();
         		if(cmd.getStatus().equalsIgnoreCase("Failed"))
-        		query.filterByFailed();
+        		query.filterByIncomplete();
         		List<IntegrationLog> rvs = integrationLogDao.searchIntegrationLogs(query);
         		CTEPESYSIntegrationLogSearchResultsDTO searchResults = new CTEPESYSIntegrationLogSearchResultsDTO(rvs);
         		cmd.setSearchResultsDTO(searchResults);          		

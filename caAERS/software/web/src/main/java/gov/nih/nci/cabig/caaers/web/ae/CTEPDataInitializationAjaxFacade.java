@@ -57,23 +57,16 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
         
         query.filterByLoggedOnStartDateAndEndDate(startDate, endDate);
         
-        if (!StringUtilities.isBlank(status)) {
-        	if(status.equalsIgnoreCase("Failed")){
-        		query.filterByFailed();
-        	} else if(status.equalsIgnoreCase("Success")){
-        		query.filterBySuccess();
-        	}
-    	}
-        
         if (!StringUtilities.isBlank("service")) {
         	String entity = extractEntity(service);
         	String operation = extractOperation(service);
     		query.filterByEntity(entity);
     		query.filterByOperation(operation);
         }
-        
-        
+        // get all results that match service, start date and end date. Then do post filtering based on status
         results = integrationLogDao.searchIntegrationLogs(query);
+        
+        // group results by correlation id 
         Map<String,List<IntegrationLog>> map = groupIntegrationLogsBasedOnCorrelationId(results);
         
         Iterator<Entry<String, List<IntegrationLog>>> mapIterator = map.entrySet().iterator();
@@ -83,19 +76,34 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
         	ajaxIntLog.setLoggedOn(getEarliestLogTime(entry.getValue()));
         	ajaxIntLog.setOverallStatus(determineIfOverallStatusIsFailed(entry.getValue()));
         	ajaxIntLog.setService(getServiceNameFromEntityAndOperation(entry.getValue().get(0).getEntity(), entry.getValue().get(0).getOperation()));
+        	
         	for(IntegrationLog intLog:entry.getValue()){
-        		if (!intLog.getIfSuccess().equalsIgnoreCase("Success") && !StringUtilities.isBlank(intLog.getNotes())) {
-        			ajaxIntLog.getSteps().put(intLog.getSynchStatus().getName(),intLog.getIfSuccess() + " " + intLog.getNotes());
-        		} else {
         			ajaxIntLog.getSteps().put(intLog.getSynchStatus().getName(),intLog.getIfSuccess());
-        		}
-        		
         	}
         	
-        	filteredResults.add(ajaxIntLog);
+        	if(StringUtilities.isBlank(status)) {
+        		filteredResults.add(ajaxIntLog);
+        	} else  if(status.equalsIgnoreCase("Failed") && isIncomplete(entry.getValue())) {
+        		// if incomplete ones are wanted the status should be incomplete
+        		filteredResults.add(ajaxIntLog);
+        	} else  if(status.equalsIgnoreCase("Success") && !isIncomplete(entry.getValue())) {
+        		// if complete ones are wanted the status should be complete. It should also check integration log details for instance level issues
+        		filteredResults.add(ajaxIntLog);
+        	} 
         }
         
         return filteredResults;
+    }
+    
+    // if SynchStatus.REQUEST_COMPLETION is not present the messages with this correlation id are incomplete
+    public boolean isIncomplete(List<IntegrationLog> integrationLogs){
+    	for(IntegrationLog intLog : integrationLogs){
+    		if(intLog.getSynchStatus() == SynchStatus.REQUEST_COMPLETION){
+    			return false;
+    		}
+    	}
+    	
+    	return true;
     }
     
     public Map<String,List<IntegrationLog>> groupIntegrationLogsBasedOnCorrelationId(List<IntegrationLog> integreationLogs){
@@ -127,14 +135,14 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
     }
     
     public String determineIfOverallStatusIsFailed(List<IntegrationLog> integrationLogs){
-    	
+    	String outcome = "Failed";
     	for(IntegrationLog log:integrationLogs){
-    		if(log.getSynchStatus() == SynchStatus.REQUST_PROCESSING_ERROR){
-    			return "Failed";
+    		if(log.getSynchStatus() == SynchStatus.REQUEST_COMPLETION){
+    			outcome = "Success";
     		}
     	}
     	
-    	return "Success";
+    	return outcome;
     }
     
     

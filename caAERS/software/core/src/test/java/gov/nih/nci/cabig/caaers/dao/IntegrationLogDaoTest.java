@@ -81,7 +81,7 @@ public class IntegrationLogDaoTest extends DaoNoSecurityTestCase<IntegrationLogD
 	
 	public void testQueryByStatus() throws Exception{
 		IntegrationLogQuery query = new IntegrationLogQuery();
-		query.filterByFailed();
+		query.filterByIncomplete();
 		List<IntegrationLog> intlogs = getDao().searchIntegrationLogs(query);
 		assertNotNull(intlogs);
 		assertEquals(1,intlogs.size());
