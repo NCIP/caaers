@@ -202,9 +202,11 @@ public class SafetyMonitoringServiceImpl implements SafetyMonitoringService {
 		}
 		
 		private void setupObservedAEs(){
-			List<ObservedAdverseEventProfile> observedProfiles = observedAdverseEventProfileDao.getByTACs(getTACs());
-			for(ObservedAdverseEventProfile observedProfile: observedProfiles){
-				observedAEProfileMap.put(key(observedProfile), observedProfile);
+			if(getTACs().length > 0){
+				List<ObservedAdverseEventProfile> observedProfiles = observedAdverseEventProfileDao.getByTACs(getTACs());
+				for(ObservedAdverseEventProfile observedProfile: observedProfiles){
+					observedAEProfileMap.put(key(observedProfile), observedProfile);
+				}
 			}
 		}
 		
