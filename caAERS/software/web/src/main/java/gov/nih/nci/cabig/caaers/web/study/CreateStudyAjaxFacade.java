@@ -880,8 +880,15 @@ public class CreateStudyAjaxFacade {
      */
     public AjaxOutput syncStudyWithAdEERS(String studyIdentifier, String createOrUpdate) {
         AjaxOutput out = new AjaxOutput();
-        String _result = proxyWebServiceFacade.syncStudy(studyIdentifier, createOrUpdate);
+
         try {
+            OrganizationAssignedIdentifier id = new OrganizationAssignedIdentifier();
+            id.setType(OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE);
+            id.setValue(studyIdentifier);
+            Organization org = new LocalOrganization();
+            org.setNciInstituteCode(""); //populate me ??
+            id.setOrganization(org);
+            String _result = proxyWebServiceFacade.syncStudy(id, createOrUpdate);
             Integer.parseInt(_result);
             out.setObjectContent(_result);
         } catch (NumberFormatException e) {

@@ -16,9 +16,22 @@ import junit.framework.TestCase;
 public class DateUtilsTest extends TestCase {
 
 	protected void setUp() throws Exception {
-		super.setUp();
-	}
+        super.setUp();
+    }
 
+    public void testDifferenceInMinutes(){
+        
+        Calendar c = Calendar.getInstance();
+        Date d1 = c.getTime();
+        
+        c.add(Calendar.MINUTE, 10);
+        Date d2 = c.getTime();
+        
+        assertEquals(0, DateUtils.differenceInMinutes(d1, d1));
+        assertEquals(10, DateUtils.differenceInMinutes(d2, d1));
+        assertEquals(-10, DateUtils.differenceInMinutes(d1, d2));
+        assertEquals(Long.MAX_VALUE, DateUtils.differenceInMinutes(d1, null));
+    }
 	public void testCompareDate() {
 		Calendar cal = GregorianCalendar.getInstance();
 		cal.set(2002, Calendar.FEBRUARY, 12);

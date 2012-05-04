@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.service;
 
+import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
 
 import java.util.List;
@@ -59,7 +60,7 @@ public interface AdeersIntegrationFacade {
      * @param identifier Funding Sponsor identifier value
      * @return DB Identifier
      */
-    String syncStudy(String identifier, String createOrUpdate);
+    String syncStudy(Identifier id, String createOrUpdate);
 
     /**
      * Search AdEERS studies by ShortTitle or Identifier value

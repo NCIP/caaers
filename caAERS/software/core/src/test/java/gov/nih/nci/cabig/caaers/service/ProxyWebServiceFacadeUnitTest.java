@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -18,7 +19,11 @@ import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPathFactory;
 
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
+import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.service.migrator.StudyConverter;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
@@ -35,6 +40,7 @@ public class ProxyWebServiceFacadeUnitTest extends AbstractTestCase {
 	private ProxyWebServiceFacade proxyWebServiceFacade;
     private WebServiceTemplate webServiceTemplate;
     private Configuration configuration;
+    private StudyDao studyDao;
     
 
 	// private StudyParticipantAssignmentDao studyParticipantAssignmentDao;
@@ -48,6 +54,7 @@ public class ProxyWebServiceFacadeUnitTest extends AbstractTestCase {
 		webServiceTemplate = new WebServiceTemplate(saajSoapMessageFactory);
 		webServiceTemplate.setMessageSender(new CommonsHttpMessageSender());
 		configuration = registerMockFor(Configuration.class);
+        studyDao = registerDaoMockFor(StudyDao.class);
 		proxyWebServiceFacade.setConfiguration(configuration);
 		proxyWebServiceFacade.setWebServiceTemplate(webServiceTemplate);
 		proxyWebServiceFacade
@@ -74,6 +81,91 @@ public class ProxyWebServiceFacadeUnitTest extends AbstractTestCase {
         assertEquals("5876",s.getFundingSponsorIdentifierValue());
     }
     
+    public void testSyncStudyNoAdEERSCallNeeded(){
+        proxyWebServiceFacade = new ProxyWebServiceFacade(){
+            @Override
+            public String simpleSendAndReceive(String message) {
+                return mockStudyDetailsResponse();
+            }
+        };
+        
+        proxyWebServiceFacade.setConfiguration(configuration);
+        final List<Study> studyList = new ArrayList<Study>();
+        Study s1 = Fixtures.createStudy("test");
+        s1.setId(99);
+        s1.setLastSynchedDate(new Date());
+        studyList.add(s1);
+        proxyWebServiceFacade.setStudyDao(new StudyDao(){
+            @Override
+            public List<? extends Object> search(StudyQuery query) {
+                return studyList;
+            }
+        });
+        
+        EasyMock.expect(configuration.get(Configuration.STUDY_SYNC_DELAY)).andReturn(10).anyTimes();
+        replayMocks();
+        
+        Identifier id = Fixtures.createOrganizationAssignedIdentifier("test",  Fixtures.createOrganization("test"));
+        String retVal = proxyWebServiceFacade.syncStudy(id, "UPDATE");
+        assertEquals("99", retVal);
+        verifyMocks(); 
+    }
+    public void testSyncStudyError(){
+        proxyWebServiceFacade = new ProxyWebServiceFacade(){
+            @Override
+            public String simpleSendAndReceive(String message) {
+                return mockStudyDetailsResponse();
+            }
+        };
+
+        proxyWebServiceFacade.setConfiguration(configuration);
+
+        proxyWebServiceFacade.setStudyDao(new StudyDao(){
+            @Override
+            public List<? extends Object> search(StudyQuery query) {
+                return null;
+            }
+        });
+
+        EasyMock.expect(configuration.get(Configuration.STUDY_SYNC_DELAY)).andReturn(null).anyTimes();
+        replayMocks();
+
+        Identifier id = Fixtures.createOrganizationAssignedIdentifier("test",  Fixtures.createOrganization("test"));
+        String retVal = proxyWebServiceFacade.syncStudy(id, "UPDATE");
+        assertEquals("STU_002", retVal);
+        verifyMocks();
+    }
+    public void testSyncStudyValid(){
+        proxyWebServiceFacade = new ProxyWebServiceFacade(){
+            @Override
+            public String simpleSendAndReceive(String message) {
+                return mockStudyDetailsResponse();
+            }
+        };
+
+        proxyWebServiceFacade.setConfiguration(configuration);
+        final List<Study> studyList = new ArrayList<Study>();
+        Study s1 = Fixtures.createStudy("test");
+        s1.setId(99);
+        s1.setLastSynchedDate(new Date());
+        studyList.add(s1);
+        proxyWebServiceFacade.setStudyDao(new StudyDao(){
+            @Override
+            public List<? extends Object> search(StudyQuery query) {
+                return studyList;
+            }
+        });
+
+        EasyMock.expect(configuration.get(Configuration.STUDY_SYNC_DELAY)).andReturn(null).anyTimes();
+        replayMocks();
+
+        Identifier id = Fixtures.createOrganizationAssignedIdentifier("test",  Fixtures.createOrganization("test"));
+        String retVal = proxyWebServiceFacade.syncStudy(id, "UPDATE");
+        assertEquals("1", retVal);
+        verifyMocks();
+    }
+
+
     private String mockSearchStudyResponse(){
         return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<payload xmlns:stud=\"http://schema.integration.caaers.cabig.nci.nih.gov/study\">\n" +
@@ -102,7 +194,31 @@ public class ProxyWebServiceFacadeUnitTest extends AbstractTestCase {
                 "    </response>\n" +
                 "</payload>";
     }
-
+    private String mockStudyDetailsResponse(){
+        return "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
+                "   <soap:Body>\n" +
+                "      <payload correlationId=\"1336138727601\" xmlns:com=\"http://schema.integration.caaers.cabig.nci.nih.gov/common\" xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" +
+                "         <system>caaers</system>\n" +
+                "         <response>\n" +
+                "            <entity xmlns:stud=\"http://schema.integration.caaers.cabig.nci.nih.gov/study\">study</entity>\n" +
+                "            <operation name=\"updateStudyResponse\" xmlns:stud=\"http://schema.integration.caaers.cabig.nci.nih.gov/study\">\n" +
+                "               <status>Processed</status>\n" +
+                "               <data>\n" +
+                "                  <ns3:entityProcessingOutcome xmlns:ns1=\"http://schema.integration.caaers.cabig.nci.nih.gov/study\" xmlns:ns3=\"http://schema.integration.caaers.cabig.nci.nih.gov/common\" xmlns:ns4=\"http://schema.integration.caaers.cabig.nci.nih.gov/investigator\" xmlns:ns5=\"http://schema.integration.caaers.cabig.nci.nih.gov/researchstaff\" xmlns:ns6=\"http://schema.integration.caaers.cabig.nci.nih.gov/participant\">\n" +
+                "                     <klassName>gov.nih.nci.cabig.caaers.domain.Study</klassName>\n" +
+                "                     <businessIdentifier>N027D</businessIdentifier>\n" +
+                "                     <message>Study with Short Title  \"A Phase I Study of CCI-779 and Temozolomide in Combination with Radiation Therapy in Glioblastoma Multiforme\" updated in caAERS</message>\n" +
+                "                     <dataBaseId>1</dataBaseId>\n" +
+                "                     <failed>false</failed>\n" +
+                "                  </ns3:entityProcessingOutcome>\n" +
+                "               </data>\n" +
+                "            </operation>\n" +
+                "         </response>\n" +
+                "      </payload>\n" +
+                "   </soap:Body>\n" +
+                "</soap:Envelope>";
+    }
+    
 //	public void testSimpleSendAndReceive() throws Exception {
 //		StringBuffer sb = new StringBuffer();
 //		sb.append("<gen:GenericRequest xmlns:gen=\"http://webservice.caaers.cabig.nci.nih.gov/GenericProcessor/\">");

@@ -20,6 +20,18 @@ public class DateUtils {
     public static final String DATE_PATTERN= "MM/dd/yyyy";
     public static final String WS_DATE_PATTERN= "yyyy-MM-dd'T'HH:mm:ss";
 
+    /**
+     * Will return the difference in minutes between the two dates
+     * @param d1
+     * @param d2
+     * @return
+     */
+    public static long differenceInMinutes(Date d1, Date d2){
+         if(d1 == null  || d2 == null) return Long.MAX_VALUE;
+         long  l1 = d1.getTime();
+         long l2 = d2.getTime();
+         return ( l1 - l2) / (1000 * 60);
+    }
 	/**
 	 * Checks whether the given d, is greater than or equal to startDate and less than or equal to endDate.
 	 * @param d, cannot be null

@@ -70,6 +70,7 @@
             <admin:oneConfigEntry entry="${command.conf['pscBaseUrl'].property}"/>
             <admin:oneConfigEntry entry="${command.conf['esbUrl'].property}"/>
             <admin:oneConfigEntry entry="${command.conf['esbWSUrl'].property}"/>
+            <admin:oneConfigEntry entry="${command.conf['studySyncDelay'].property}"/>
             <admin:oneConfigEntry entry="${command.conf['caExchangeNonGridUrl'].property}"/>
             <admin:oneConfigEntry entry="${command.conf['caExchangeUrl'].property}"/>
             <admin:oneConfigEntry entry="${command.conf['caExchangeNonGridUserName'].property}"/>

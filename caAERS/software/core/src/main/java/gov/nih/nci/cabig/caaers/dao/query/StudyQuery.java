@@ -1,10 +1,6 @@
 package gov.nih.nci.cabig.caaers.dao.query;
 
-import gov.nih.nci.cabig.caaers.domain.Identifier;
-import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
-import gov.nih.nci.cabig.caaers.domain.Term;
+import gov.nih.nci.cabig.caaers.domain.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -266,8 +262,15 @@ public class StudyQuery extends AbstractQuery {
     	
     	if(identifier instanceof OrganizationAssignedIdentifier){
     		//organization
-    		andWhere("identifier.organization.id = :" + STUDY_IDENTIFIER_ORGANIZATION );
-    		setParameter(STUDY_IDENTIFIER_ORGANIZATION, ( (OrganizationAssignedIdentifier) identifier).getOrganization().getId());
+            Organization org =  ((OrganizationAssignedIdentifier) identifier).getOrganization();
+            if(org.getNciInstituteCode() != null){
+                andWhere("identifier.organization.nciInstituteCode = :orgNCICode" );
+                setParameter("orgNCICode", org.getNciInstituteCode());
+            }else{
+                andWhere("identifier.organization.id = :" + STUDY_IDENTIFIER_ORGANIZATION );
+                setParameter(STUDY_IDENTIFIER_ORGANIZATION, org.getId());
+            }
+
     	}else {
     		//system
     		andWhere("lower(identifier.systemName) = :" + STUDY_IDENTIFIER_SYSTEM);

@@ -2,6 +2,8 @@ package gov.nih.nci.cabig.caaers.service;
 
 import gov.nih.nci.cabig.caaers.CaaersConfigurationException;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.integration.schema.study.*;
@@ -9,6 +11,7 @@ import gov.nih.nci.cabig.caaers.service.migrator.StudyConverter;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.utils.XsltTransformer;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -23,10 +26,7 @@ import javax.xml.transform.stream.StreamSource;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
@@ -63,7 +63,8 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
     private WebServiceTemplate webServiceTemplate;
     private StudyConverter studyConverter;
     private Configuration configuration;
-
+    private StudyDao studyDao;
+    
     private JAXBContext jaxbContext = null;
     private Unmarshaller unmarshaller = null;
     private XsltTransformer xsltTransformer;
@@ -112,6 +113,10 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
 
     public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
+    }
+
+    public void setStudyDao(StudyDao studyDao) {
+        this.studyDao = studyDao;
     }
 
     private static String buildMessage(String corelationId, String system, String entity, String operationName, String operationMode, Map<String, String> criteria) {
@@ -221,29 +226,49 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
      * @param createOrUpdate CREATE or UPDATE
      * @return
      */
-	public String syncStudy(String id, String createOrUpdate) {
-       
+	public String syncStudy(Identifier id, String createOrUpdate) {
         String retVal = "STU_002";
-        if(StringUtils.isNotEmpty(id)){
-            try{
+        String operationName = StringUtils.equals("CREATE", createOrUpdate) ? CREATE_STUDY_OPERATION_NAME : UPDATE_STUDY_OPERATION_NAME;
 
-                //invoke the webservice
-                Map<String, String> criteriaMap = new HashMap<String, String>();
-                criteriaMap.put("nciDocumentNumber", id);
-
-                String correlationId = RandomStringUtils.randomAlphanumeric(10);
-                String operationName = StringUtils.equals("CREATE", createOrUpdate) ? CREATE_STUDY_OPERATION_NAME : UPDATE_STUDY_OPERATION_NAME;
-
-                String message = buildMessage(correlationId, "adeers", "study", operationName, "async", criteriaMap);
-                String xmlStudyDetails = simpleSendAndReceive(message);
-                if(log.isDebugEnabled()) log.debug("result for getStudyDetails : for (" + id + ") :" + xmlStudyDetails);
-                String studyDbId = xsltTransformer.toText(xmlStudyDetails, "xslt/c2a_generic_response.xslt");
-                studyDbId = StringUtils.trim(studyDbId);
-                if(log.isInfoEnabled()) log.info("Got study details : Study DB ID :" + studyDbId);
-                retVal = studyDbId;
-            }catch (Exception e){
-                log.error("Error occured while invoking ServiceMix Study Details : " + e.getMessage(), e);
+        //Do not update study if it was last within an hour
+        if(operationName.equals(UPDATE_STUDY_OPERATION_NAME)){
+           //load the study from DB.
+            StudyQuery query = new StudyQuery();
+            query.filterByIdentifier(id);
+            List<Study> studies = (List<Study>)studyDao.search(query);
+            if(CollectionUtils.isEmpty(studies)){
+                log.error("Cannot syncStudy  : Operation is UPDATE, but unable to find the study in caAERS");
+                return retVal; //we cannot process
             }
+            
+            Study study = studies.get(0);
+            Date lastSyncedOn = study.getLastSynchedDate();
+            long diff = DateUtils.differenceInMinutes(DateUtils.today(), lastSyncedOn);
+            Integer allowedDuration = configuration.get(Configuration.STUDY_SYNC_DELAY);
+            allowedDuration = allowedDuration == null ? 0 : allowedDuration;
+            if(diff < allowedDuration){
+                log.info("Ignoring the Sync Study request, as it was last updated on " + String.valueOf( lastSyncedOn));
+                return study.getId().toString();
+            }
+        }
+
+        try{
+
+            //invoke the webservice
+            Map<String, String> criteriaMap = new HashMap<String, String>();
+            criteriaMap.put("nciDocumentNumber", id.getValue());
+
+            String correlationId = RandomStringUtils.randomAlphanumeric(10);
+
+            String message = buildMessage(correlationId, "adeers", "study", operationName, "async", criteriaMap);
+            String xmlStudyDetails = simpleSendAndReceive(message);
+            if(log.isDebugEnabled()) log.debug("result for getStudyDetails : for (" + id + ") :" + xmlStudyDetails);
+            String studyDbId = xsltTransformer.toText(xmlStudyDetails, "xslt/c2a_generic_response.xslt");
+            studyDbId = StringUtils.trim(studyDbId);
+            if(log.isInfoEnabled()) log.info("Got study details : Study DB ID :" + studyDbId);
+            retVal = studyDbId;
+        }catch (Exception e){
+            log.error("Error occurred while invoking ServiceMix Study Details : " + e.getMessage(), e);
         }
 
         return retVal;

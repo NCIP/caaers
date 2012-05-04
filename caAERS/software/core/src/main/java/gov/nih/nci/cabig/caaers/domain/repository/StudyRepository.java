@@ -653,7 +653,6 @@ public class StudyRepository {
     }
 
     public List<Study> getAllStudiesByShortTitleOrIdentifiers(String text) {
-        System.out.println(">>> Searching by: " + text);
         StudyQuery q  = new StudyQuery();
         q.filterByShortTitleOrIdentifiers(text);
         List<Study> foundStudies = find(q);

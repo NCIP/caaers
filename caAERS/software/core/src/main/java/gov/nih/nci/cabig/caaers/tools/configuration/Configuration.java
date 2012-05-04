@@ -36,6 +36,7 @@ public class Configuration extends DatabaseBackedConfiguration implements Initia
     public static final ConfigurationProperty<String> CAAERS_HELP_URL = PROPERTIES.add(new DefaultConfigurationProperty.Text("caaersBaseHelpUrl"));
     public static final ConfigurationProperty<Boolean> ENABLE_WORKFLOW = PROPERTIES.add(new DefaultConfigurationProperty.Bool("enableWorkflow"));
     public static final ConfigurationProperty<Boolean> UNIDENTIFIED_MODE = PROPERTIES.add(new DefaultConfigurationProperty.Bool("unidentifiedMode"));
+    public static final ConfigurationProperty<Integer> STUDY_SYNC_DELAY = PROPERTIES.add(new DefaultConfigurationProperty.Int("studySyncDelay"));
     public static final ConfigurationProperty<String> AUTO_COMPLETER_DELAY = PROPERTIES.add(new DefaultConfigurationProperty.Text("autoCompleterDelay"));
     public static final ConfigurationProperty<String> AUTO_COMPLETER_CHARS = PROPERTIES.add(new DefaultConfigurationProperty.Text("autoCompleterChars"));
     public static final ConfigurationProperty<String> HTTP_SESSION_TIMEOUT_WARNING = PROPERTIES.add(new DefaultConfigurationProperty.Text("httpSessionWarning"));
@@ -43,7 +44,8 @@ public class Configuration extends DatabaseBackedConfiguration implements Initia
     public static final ConfigurationProperty<Integer> PA_SEARCH_LIMIT = PROPERTIES.add(new DefaultConfigurationProperty.Int("paLimit"));
     public static final ConfigurationProperty<Integer> PO_SEARCH_LIMIT = PROPERTIES.add(new DefaultConfigurationProperty.Int("poLimit"));
     public static final ConfigurationProperty<Boolean> SYNCHRONOUS_EVENTS = PROPERTIES.add(new DefaultConfigurationProperty.Bool("synchronousSpringEvents"));
-    
+
+
     public ConfigurationProperties getProperties() {
         return PROPERTIES;
     }
