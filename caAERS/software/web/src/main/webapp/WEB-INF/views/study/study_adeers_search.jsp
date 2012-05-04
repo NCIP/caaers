@@ -76,9 +76,9 @@
                 var st = oRecord.getData("shortTitle");
 
                 if (action == "UPDATE")
-                    elCell.innerHTML = "<span id='studyLink" + _index + "'><a href='#' onclick='updateStudy(\"" + fsid +"\", " + _index + ", " + ncic + ")'>Update</a></span>";
+                    elCell.innerHTML = "<span id='studyLink" + _index + "'><a href='#' onclick='updateStudy(\"" + fsid +"\", " + _index + ", \"" + ncic + "\")'>Update</a></span>";
                 else
-                    elCell.innerHTML = "<span id='studyLink" + _index + "'><a href='#' onclick='importStudy(\"" + fsid +"\", "+ _index + ", " + ncic  + ")' id='studyLink" + _index + "'>Import</a></span>";
+                    elCell.innerHTML = "<span id='studyLink" + _index + "'><a href='#' onclick='importStudy(\"" + fsid +"\", "+ _index + ", \"" + ncic  + "\")' id='studyLink" + _index + "'>Import</a></span>";
             };
 
             var studiesColumnDefs = [
@@ -90,6 +90,7 @@
             var studiesFields = [
                 {key:'id', parser:"string"},
                 {key:'fsid', parser:"string"},
+                {key:'ncic', parser:"string"},
                 {key:'shortTitle', parser:"string"},
                 {key:'longTitle', parser:"string"},
                 {key:'action', parser:"string"}
