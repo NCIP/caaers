@@ -25,13 +25,15 @@
         createStudy.syncStudyWithAdEERS(id, nciCode ,operation, function(_resultId) {
 
             if (_resultId.error) {
-                alert(_resultId.errorMessage);
+                popupDiv.setContent('error_page');
+                popupDiv.options.closable = true;
+            } else {
+                var text = "Updated";
+                if (operation == "CREATE") text = "Imported";
+                jQuery('#studyLink' + _index).html("<b>" + text + "</b>");
+                popupDiv.close();
             }
 
-            var text = "Updated";
-            if (operation == "CREATE") text = "Imported";
-            jQuery('#studyLink' + _index).html("<b>" + text + "</b>");
-            popupDiv.close();
         });
     }
 
@@ -131,6 +133,10 @@
         <h3>Please wait...</h3>
         <br><br>
         <div>The study is getting processed.</div>
+    </div>
+
+    <div id="error_page" style="display: none;">
+        <div>There was an error while processing the study...</div>
     </div>
 
 </chrome:box>
