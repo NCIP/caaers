@@ -20,7 +20,6 @@ import org.springframework.context.ApplicationEvent;
 public class StudyModificationEventListener extends AbstractEventListener {
     private StudyRepository studyRepository;
     private CaaersSecurityFacade caaersSecurityFacade;
-    
 
     @Override
     public boolean isSupported(ApplicationEvent event) {
@@ -29,6 +28,7 @@ public class StudyModificationEventListener extends AbstractEventListener {
 
     @Override
     public void preProcess(ApplicationEvent event) {
+        log.debug("Entering gov.nih.nci.cabig.caaers.web.listener.StudyModificationEventListener.preProcess: " + event.toString());
         StudyModificationEvent studyEvent = (StudyModificationEvent) event;
         Study study = (Study) studyEvent.getSource();
 
@@ -42,6 +42,7 @@ public class StudyModificationEventListener extends AbstractEventListener {
         for(String loginName : loginNames){
             caaersSecurityFacade.clearUserCache(loginName);
         }
+        log.debug("Exiting gov.nih.nci.cabig.caaers.web.listener.StudyModificationEventListener.preProcess: " + event.toString());
     }
 
     /**

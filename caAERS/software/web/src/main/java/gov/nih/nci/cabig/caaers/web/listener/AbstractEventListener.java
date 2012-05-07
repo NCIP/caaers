@@ -18,7 +18,7 @@ import org.springframework.context.ApplicationListener;
 public abstract class AbstractEventListener   implements ApplicationListener {
     private FilteredDataLoader filteredDataLoader;
 
-    private static final Log log = LogFactory.getLog(AbstractEventListener.class);
+    protected static final Log log = LogFactory.getLog(AbstractEventListener.class);
 
     public void preProcess(ApplicationEvent event){
         //dummy
