@@ -8,6 +8,18 @@
     var _ajaxIndicatorHtml= '<img height="13px" width="13px" src="<c:url value="/images/indicator.gif" />" alt="activity indicator" width="20px" height="20px"/>';
     var popupDiv;
 
+    <%--ToDo  THIS METHOS HAS TO BE MOVED TO A COMMON PLACE FO RREUSE --%>
+    function showFlashMessage(text) {
+        jQuery("#autoRemoveElementMesage").html(text);
+        jQuery("#autoRemoveElement").show();
+        hideFlashMessage.delay(3);
+    }
+
+<%--ToDo  THIS METHOS HAS TO BE MOVED TO A COMMON PLACE FO RREUSE --%>
+    function hideFlashMessage() {
+        jQuery("#autoRemoveElement").fadeOut('slow', function() {});
+    }
+
     function submitSearch() {
         popupDiv = new Window({className:"alphacube", width:300, height:100, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
         popupDiv.setContent("search_submit");
@@ -43,6 +55,7 @@
                 var text = "Updated";
                 if (operation == "CREATE") text = "Imported";
                 jQuery('#studyLink' + _index).html("<b>" + text + "</b>");
+                showFlashMessage("Study successfully updated.");
             }
 
         });
@@ -59,6 +72,12 @@
 </script>
 
 <chrome:box title="Search CTEP Studies" autopad="true">
+
+    <div id="autoRemoveElement" style="display: none;">
+        <div id="flash-message" class="info">
+            <img src= "<chrome:imageUrl name="../check.png"/>" />&nbsp;<span id="autoRemoveElementMesage" />
+        </div>
+    </div>
 
     <p><tags:instructions code="study.adEERSsearch.top"/></p>
     <form:form name="searchForm" id="searchForm" method="post">
