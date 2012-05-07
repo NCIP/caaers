@@ -73,80 +73,79 @@
             <div class="label">Search</div>
             <div class="value"><form:input path="searchText" />&nbsp;<tags:button color="blue" type="button" value="Search" size="small" icon="search" onclick="submitSearch();"/></div>
         </div>
-
-        <c:if test="${fn:length(studies) > 0}">
-
-            <h2>Found studies</h2>
-
-            <div id="studiesTableDiv"></div>
-
-        <script language="JavaScript">
-
-
-            var actionFormatter = function(elCell, oRecord, oColumn, oData) {
-
-
-                var _index = this.getRecordIndex(oRecord);
-                var action = oRecord.getData("action");
-                var id = oRecord.getData("id");
-                var fsid = oRecord.getData("fsid");
-                var ncic = oRecord.getData("ncic");
-                var st = oRecord.getData("shortTitle");
-
-                if (action == "UPDATE")
-                    elCell.innerHTML = "<span id='studyLink" + _index + "'><a href='#' onclick='updateStudy(\"" + fsid +"\", " + _index + ", \"" + ncic + "\")'>Update</a></span>";
-                else
-                    elCell.innerHTML = "<span id='studyLink" + _index + "'><a href='#' onclick='importStudy(\"" + fsid +"\", "+ _index + ", \"" + ncic  + "\")' id='studyLink" + _index + "'>Import</a></span>";
-            };
-
-            var studiesColumnDefs = [
-                {key:"fsid", label:"Identifier", sortable:true, resizeable:true, minWidth:100},
-                {key:"shortTitle", label:"Title", sortable:true, resizeable:true, minWidth:700},
-                {key:"action", label:"Action", sortable:true, resizeable:true, minWidth:100, formatter:actionFormatter}
-            ];
-
-            var studiesFields = [
-                {key:'id', parser:"string"},
-                {key:'fsid', parser:"string"},
-                {key:'ncic', parser:"string"},
-                {key:'shortTitle', parser:"string"},
-                {key:'longTitle', parser:"string"},
-                {key:'action', parser:"string"}
-            ];
-
-            studiesJSONResult = [
-                <c:forEach items="${studies}" var="s">
-                    {
-                        "id":"${s.fundingSponsorIdentifierValue}",
-                        "fsid":"${s.fundingSponsorIdentifierValue}",
-                        "ncic":"${s.fundingSponsorIdentifier.organization.nciInstituteCode}",
-                        "shortTitle":"${s.shortTitle}",
-                        "longTitle":"${s.longTitle}",
-                        "action":"${s.status}"
-                    },
-                </c:forEach>
-            ];
-
-            initializeYUITable("studiesTableDiv", studiesJSONResult, studiesColumnDefs, studiesFields);
-
-        </script>
-
-        </c:if>
-        <c:if test="${fn:length(studies) == 0 && pageContext.request.method eq 'POST'}">
-            <div class="row">
-                <div class="label"></div>
-                <div class="value"><caaers:message code="dashboard.noResults" /></div>
-            </div>
-        </c:if>
     </form:form>
 
-    <div id="please_wait" style="display: none;">
-        <h3><caaers:message code="please.wait" /></h3>
-        <br><br>
-        <div><caaers:message code="LBL_study.in.process" /></div>
-    </div>
+</chrome:box>
 
-    <div id="error_page" style="display: none;"><div><caaers:message code="LBL_study.process.error" /></div></div>
-    <div id="search_submit" style="display: none;"><h3><caaers:message code="please.wait" /></h3><br><br><div>Searching...</div></div>
+<c:if test="${pageContext.request.method eq 'POST'}">
+<chrome:box title="Results">
+    <c:if test="${fn:length(studies) > 0}">
+
+        <div id="studiesTableDiv"></div>
+
+    <script language="JavaScript">
+
+
+        var actionFormatter = function(elCell, oRecord, oColumn, oData) {
+
+
+            var _index = this.getRecordIndex(oRecord);
+            var action = oRecord.getData("action");
+            var id = oRecord.getData("id");
+            var fsid = oRecord.getData("fsid");
+            var ncic = oRecord.getData("ncic");
+            var st = oRecord.getData("shortTitle");
+
+            if (action == "UPDATE")
+                elCell.innerHTML = "<span id='studyLink" + _index + "'><a href='#' onclick='updateStudy(\"" + fsid +"\", " + _index + ", \"" + ncic + "\")'>Update</a></span>";
+            else
+                elCell.innerHTML = "<span id='studyLink" + _index + "'><a href='#' onclick='importStudy(\"" + fsid +"\", "+ _index + ", \"" + ncic  + "\")' id='studyLink" + _index + "'>Import</a></span>";
+        };
+
+        var studiesColumnDefs = [
+            {key:"fsid", label:"Identifier", sortable:true, resizeable:true, minWidth:100},
+            {key:"shortTitle", label:"Title", sortable:true, resizeable:true, minWidth:700},
+            {key:"action", label:"Action", sortable:true, resizeable:true, minWidth:100, formatter:actionFormatter}
+        ];
+
+        var studiesFields = [
+            {key:'id', parser:"string"},
+            {key:'fsid', parser:"string"},
+            {key:'ncic', parser:"string"},
+            {key:'shortTitle', parser:"string"},
+            {key:'longTitle', parser:"string"},
+            {key:'action', parser:"string"}
+        ];
+
+        studiesJSONResult = [
+            <c:forEach items="${studies}" var="s">
+                {
+                    "id":"${s.fundingSponsorIdentifierValue}",
+                    "fsid":"${s.fundingSponsorIdentifierValue}",
+                    "ncic":"${s.fundingSponsorIdentifier.organization.nciInstituteCode}",
+                    "shortTitle":"${s.shortTitle}",
+                    "longTitle":"${s.longTitle}",
+                    "action":"${s.status}"
+                },
+            </c:forEach>
+        ];
+
+        initializeYUITable("studiesTableDiv", studiesJSONResult, studiesColumnDefs, studiesFields);
+
+    </script>
+
+    </c:if>
+
+    <c:if test="${fn:length(studies) == 0}"><caaers:message code="dashboard.noResults" /></c:if>
 
 </chrome:box>
+</c:if>
+
+<!--POPUPS-->
+<div id="please_wait" style="display: none;">
+    <h3><caaers:message code="please.wait" /></h3>
+    <br><br>
+    <div><caaers:message code="LBL_study.in.process" /></div>
+</div>
+<div id="error_page" style="display: none;"><div><caaers:message code="LBL_study.process.error" /></div></div>
+<div id="search_submit" style="display: none;"><h3><caaers:message code="please.wait" /></h3><br><br><div>Searching...</div></div>
