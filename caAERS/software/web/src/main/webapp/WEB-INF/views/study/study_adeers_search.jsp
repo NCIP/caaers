@@ -9,10 +9,10 @@
     var popupDiv;
 
     function submitSearch() {
-        var searchPopup = new Window({className:"alphacube", width:300, height:100, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
-        searchPopup.setContent("search_submit");
-        searchPopup.showCenter(true);
-        searchPopup.show();
+        popupDiv = new Window({className:"alphacube", width:300, height:100, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
+        popupDiv.setContent("search_submit");
+        popupDiv.showCenter(true);
+        popupDiv.show();
         jQuery("#searchForm").submit();
     }
 
@@ -141,12 +141,12 @@
     </form:form>
 
     <div id="please_wait" style="display: none;">
-        <h3>Please wait...</h3>
+        <h3><caaers:message code="please.wait" /></h3>
         <br><br>
-        <div>The study is getting processed.</div>
+        <div><caaers:message code="LBL_study.in.process" /></div>
     </div>
 
-    <div id="error_page" style="display: none;"><div>There was an error while processing the study...</div></div>
-    <div id="search_submit" style="display: none;"><h3>Please wait...</h3><br><br><div>Searching...</div></div>
+    <div id="error_page" style="display: none;"><div><caaers:message code="LBL_study.process.error" /></div></div>
+    <div id="search_submit" style="display: none;"><h3><caaers:message code="please.wait" /></h3><br><br><div>Searching...</div></div>
 
 </chrome:box>
