@@ -172,6 +172,9 @@
 
 
 <chrome:box title="CTEP Data Import">
+
+    <p><tags:instructions code="LBL_ctep.data.import.instructions"/></p>
+
 	<form:form name="ctepDataForm"id="assembler">
 	     <chrome:division id="single-fields">
 	        <div id="tableDiv">
