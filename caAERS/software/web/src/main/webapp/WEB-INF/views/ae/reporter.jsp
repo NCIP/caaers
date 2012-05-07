@@ -3,7 +3,7 @@
 <html>
 <head>
     <title>${tab.longTitle}</title>
-    <tags:dwrJavascriptLink objects="createAE,routingAndReview"/>
+    <tags:dwrJavascriptLink objects="createAE,routingAndReview,createStudy"/>
 	<tags:slider renderComments="${command.associatedToWorkflow }" renderAlerts="${command.associatedToLabAlerts}" reports="${command.selectedReportsAssociatedToWorkflow}" 
 		display="${(command.associatedToWorkflow or command.associatedToLabAlerts) ? '' : 'none'}" workflowType="report">
     	<jsp:attribute name="labs">
@@ -219,5 +219,6 @@
 		<ae:reportingContext allReportDefinitions="${command.applicableReportDefinitions}" selectedReportDefinitions="${command.selectedReportDefinitions}" />
     </jsp:attribute>
 </tags:tabForm>
+<ae:syncStudyDialog />
 </body>
 </html>
