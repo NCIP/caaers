@@ -171,6 +171,12 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
     
     public String extractEntity(String serviceName){
     	
+    	if(serviceName.equalsIgnoreCase("GetStudyDiseases")) return "study";
+    	if(serviceName.equalsIgnoreCase("GetStudyTreatmentAssignments")) return "treatmentAssignment";
+    	if(serviceName.equalsIgnoreCase("GetStudyAgents")) return "studyAgent";
+    	if(serviceName.equalsIgnoreCase("GetStudyOrganizations")) return "studyOrganization";
+    	if(serviceName.equalsIgnoreCase("GetCTCAELOV")) return "ctcae";
+    	if(serviceName.equalsIgnoreCase("GetAgentDoseUOMLOV")) return "agentDose";
     	if(serviceName.equalsIgnoreCase("GetOrganizationLOV")) return "organization";
     	if(serviceName.equalsIgnoreCase("GetASAEL")) return "asael";
     	if(serviceName.equalsIgnoreCase("GetDeviceLOV")) return "device	";
@@ -186,6 +192,12 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
     
     public String extractOperation(String serviceName){
     	
+    	if(serviceName.equalsIgnoreCase("GetStudyDiseases")) return "getStudyDiseases";
+    	if(serviceName.equalsIgnoreCase("GetStudyTreatmentAssignments")) return "getStudyTreatmentAssignments";
+    	if(serviceName.equalsIgnoreCase("GetStudyAgents")) return "getStudyAgents";
+    	if(serviceName.equalsIgnoreCase("GetStudyOrganizations")) return "getStudyOrganizations";
+    	if(serviceName.equalsIgnoreCase("GetCTCAELOV")) return "getCTCAELOV";
+    	if(serviceName.equalsIgnoreCase("GetAgentDoseUOMLOV")) return "getAgentDoseUOMLOV";
     	if(serviceName.equalsIgnoreCase("GetOrganizationLOV")) return "getOrganizationsLOV";
     	if(serviceName.equalsIgnoreCase("GetASAEL")) return "getASAEL";
     	if(serviceName.equalsIgnoreCase("GetDeviceLOV")) return "getDevicesLOV";

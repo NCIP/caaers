@@ -32,13 +32,13 @@
 <script type="text/javascript">
 
 	function ajaxCallBack(jsonResult) {
-	    $('indicator').className = 'indicator';
+	  	$$("form .arbitrary").each(function(e){e.className='indicator';	});
 	    $('integrationLogsBox').style.display="block";
 	    showLogsYUITable(jsonResult);
 	}
 	
 	 function buildTable() {
-  		$('indicator').show();
+	 	$$("form .indicator").each(function(e){e.className='arbitrary';	});
   		
   		// check if start date is valid
 		var startDateParts = ($('startDate').value).split("/");
@@ -63,7 +63,6 @@
 		}
 		
         ctepDataInitialization.searchIntegrationLogs(startDateParam, endDateParam, $('status').value, $('service').value,ajaxCallBack);
-        $('indicator').hide();
     }
     
     
@@ -247,7 +246,7 @@
         			<td></td>
             		<td>
             				<tags:button color="blue" type="button" value="Find" size="small" icon="search" onclick="buildTable();"/>
-            				<img src="<c:url value="/images/alphacube/progress.gif" />" style="display:none;" id="indicator"></td>
+            				<img class="indicator" src="<c:url value="/images/alphacube/progress.gif" />" id="indicator"></td>
             		</td>
             	</tr>
          </table>	
