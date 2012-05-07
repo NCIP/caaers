@@ -103,9 +103,9 @@
 			str += (i % 2 == 0) ? '<tr class="alt">' : '<tr>';
 			str += '<td>' + key + '</td>';
 			if(objArray[key] == 'Success'){
-				str += '<td style="color:green">' + objArray[key] + '</td>';
+				str += '<td> <img src="/caaers/images/chrome/../check.png"> </td>';
 			} else {
-				str += '<td style="color:red">' + objArray[key] + '</td>';
+				str += '<td> <img src="/caaers/images/chrome/../checkno.gif"> </td>';
 			}
 		    str += '</tr>';
 			i = i +1;
@@ -263,7 +263,7 @@
 <script>
     Event.observe(window, "load", function() {
     	var date = new Date();
-    	var milliSecInWeek = date.getTime()-1000*3600*24*7;
+    	var milliSecInWeek = date.getTime()-1000*3600*24*1;
     	date.setTime(milliSecInWeek);
     	$('indicator').show();
         ctepDataInitialization.searchIntegrationLogs(date, null, null, null,ajaxCallBack);

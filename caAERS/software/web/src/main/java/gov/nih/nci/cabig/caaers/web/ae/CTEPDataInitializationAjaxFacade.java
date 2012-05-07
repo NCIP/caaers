@@ -21,10 +21,14 @@ import java.util.Map.Entry;
 
 import com.semanticbits.coppasimulator.util.StringUtilities;
 
+
 public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
 	private ProxyWebServiceFacade proxyWebServiceFacade;
 	private IntegrationLogDao integrationLogDao;
-	 private static Class<?>[] CONTROLLERS = {CTEPESYSDataImportController.class};
+	private static Class<?>[] CONTROLLERS = {CTEPESYSDataImportController.class};
+	
+	private static final String htmlSuccessString = "<font color='#008000'>Success</font>";
+	private static final String htmlFailureString = "<font color='#D94444'>Failed</font>";
 
 	public void setProxyWebServiceFacade(
 			ProxyWebServiceFacade proxyWebServiceFacade) {
@@ -146,16 +150,16 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
     }
     
     public String determineIfOverallStatusIsFailed(List<IntegrationLog> integrationLogs){
-    	String outcome = "Failed";
+    	String outcome = htmlFailureString;
     	for(IntegrationLog log:integrationLogs){
     		if(log.getSynchStatus() == SynchStatus.REQUEST_COMPLETION){
-    			outcome = "Success";
+    			outcome = htmlSuccessString;
     		}
     		// if one of the integration log detail has failed, mark the overall outcome as failed
     		if(log.getIntegrationLogDetails().size()> 0){
     			for(IntegrationLogDetail intLogDetail : log.getIntegrationLogDetails()){
     				if(intLogDetail.isFailed()) {
-    					return "Failed";
+    					return htmlSuccessString;
     				}
     			}
     		}
