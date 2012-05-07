@@ -143,9 +143,9 @@
 
 <!--POPUPS-->
 <div id="please_wait" style="display: none;">
-    <h3><caaers:message code="please.wait" /></h3>
+    <h3><caaers:message code="LBL_please.wait" /></h3>
     <br><br>
     <div><caaers:message code="LBL_study.in.process" /></div>
 </div>
 <div id="error_page" style="display: none;"><div><caaers:message code="LBL_study.process.error" /></div></div>
-<div id="search_submit" style="display: none;"><h3><caaers:message code="please.wait" /></h3><br><br><div>Searching...</div></div>
+<div id="search_submit" style="display: none;"><h3><caaers:message code="LBL_please.wait" /></h3><br><br><div>Searching...</div></div>
