@@ -53,9 +53,13 @@
                 jQuery('#studyLink' + _index).html("<b>Error</b>");
             } else {
                 var text = "Updated";
-                if (operation == "CREATE") text = "Imported";
+                var flashText = "<caaers:message code="LBL_study.updated" />";
+                if (operation == "CREATE") {
+                    text = "Imported";
+                    flashText = "<caaers:message code="LBL_study.imported" />";
+                }
                 jQuery('#studyLink' + _index).html("<b>" + text + "</b>");
-                showFlashMessage("Study successfully updated.");
+                showFlashMessage(flashText);
             }
 
         });
