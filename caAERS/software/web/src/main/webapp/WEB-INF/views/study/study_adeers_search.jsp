@@ -9,6 +9,8 @@
     var popupDiv;
 
     function submitSearch() {
+        popupDiv = new Window({className:"alphacube", width:300, height:100, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
+        popupDiv.setContent("search_submit");
         jQuery("#searchForm").submit();
     }
 
@@ -142,8 +144,7 @@
         <div>The study is getting processed.</div>
     </div>
 
-    <div id="error_page" style="display: none;">
-        <div>There was an error while processing the study...</div>
-    </div>
+    <div id="error_page" style="display: none;"><div>There was an error while processing the study...</div></div>
+    <div id="search_submit" style="display: none;"><div>Searching...</div></div>
 
 </chrome:box>
