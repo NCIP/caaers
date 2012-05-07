@@ -145,6 +145,7 @@
 	function ajaxCallBack() {
 	    $$("form .arbitrary").each(function(e){e.className='indicator';	});
 	    document.getElementById("importButton").removeAttribute("disabled")
+	    document.forms["ctepDataForm"].submit();
 	}
 	
 </script>
@@ -171,7 +172,7 @@
 
 
 <chrome:box title="CTEP Data Import">
-	<form:form id="assembler">
+	<form:form name="ctepDataForm"id="assembler">
 	     <chrome:division id="single-fields">
 	        <div id="tableDiv">
 			</div>
