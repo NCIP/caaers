@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
+import gov.nih.nci.cabig.caaers.service.AdeersIntegrationFacade;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 import gov.nih.nci.cabig.caaers.web.validation.validator.WebControllerValidator;
@@ -40,6 +41,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
 	private static final String ACTION_PARAMETER = "action";
 
     private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
+    private AdeersIntegrationFacade adeersIntegrationFacade;
 
     public EditAdverseEventController() {
         setCommandClass(EditExpeditedAdverseEventCommand.class);
@@ -89,7 +91,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
             ExpeditedAdverseEventReport aeReport = expeditedAdverseEventReportDao.getById(reportId);
             command.setAeReport(aeReport);
         }
-    	
+
         return command;
     }
     
@@ -253,7 +255,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         if(aeReport.getId() == null){
         	//present status. 
         	for(AdverseEvent ae : aeReport.getAdverseEvents()){
-                if (ae.getGrade() == null) return;
+                if (ae.getGrade() == null) continue;
         		if(ae.getGrade().equals(Grade.DEATH)){
         			aeReport.getResponseDescription().setPresentStatus(PostAdverseEventStatus.DEAD);
         			break;
@@ -268,7 +270,14 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         
         //will pre determine the display/render-ability of fields 
         command.updateFieldMandatoryness();
-      
+
+
+
+        //call the adeers facade to sync the study.
+        if(adeersIntegrationFacade != null){
+            adeersIntegrationFacade.syncStudy(command.getAeReport().getStudy().getFundingSponsorIdentifier(),"UPDATE");
+        }
+
     }
 
     /**
