@@ -33,6 +33,7 @@
 
 	function ajaxCallBack(jsonResult) {
 	    $('indicator').className = 'indicator';
+	    $('integrationLogsBox').style.display="block";
 	    showLogsYUITable(jsonResult);
 	}
 	
@@ -254,21 +255,11 @@
     
 </chrome:box>
 
-<chrome:box title="Integration Logs">
+<chrome:box title="Integration Logs" id="integrationLogsBox" style="display:none">
 	<div id="expandableDiv"></div>
 </chrome:box>
 
 </form:form>
-
-<script>
-    Event.observe(window, "load", function() {
-    	var date = new Date();
-    	var milliSecInWeek = date.getTime()-1000*3600*24*1;
-    	date.setTime(milliSecInWeek);
-    	$('indicator').show();
-        ctepDataInitialization.searchIntegrationLogs(date, null, null, null,ajaxCallBack);
-    })
-</script>
 
 </body>
 </html>

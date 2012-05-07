@@ -145,7 +145,7 @@
 	function ajaxCallBack() {
 	    $$("form .arbitrary").each(function(e){e.className='indicator';	});
 	    document.getElementById("importButton").removeAttribute("disabled")
-	    document.forms["ctepDataForm"].submit();
+	    setTimeout(function() {document.forms["ctepDataForm"].submit();},3000);
 	}
 	
 </script>
