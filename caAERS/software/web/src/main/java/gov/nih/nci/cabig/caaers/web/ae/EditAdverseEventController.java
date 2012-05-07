@@ -41,7 +41,6 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
 	private static final String ACTION_PARAMETER = "action";
 
     private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
-    private AdeersIntegrationFacade adeersIntegrationFacade;
 
     public EditAdverseEventController() {
         setCommandClass(EditExpeditedAdverseEventCommand.class);
@@ -271,13 +270,6 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         //will pre determine the display/render-ability of fields 
         command.updateFieldMandatoryness();
 
-
-
-        //call the adeers facade to sync the study.
-        if(adeersIntegrationFacade != null){
-            adeersIntegrationFacade.syncStudy(command.getAeReport().getStudy().getFundingSponsorIdentifier(),"UPDATE");
-        }
-
     }
 
     /**
@@ -413,7 +405,4 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     	return adverseEventReportingPeriodDao;
     }
 
-    public void setAdeersIntegrationFacade(AdeersIntegrationFacade adeersIntegrationFacade) {
-        this.adeersIntegrationFacade = adeersIntegrationFacade;
-    }
 }
