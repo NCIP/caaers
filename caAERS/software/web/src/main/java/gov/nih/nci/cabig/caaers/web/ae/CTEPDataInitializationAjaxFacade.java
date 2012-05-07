@@ -80,7 +80,6 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
         	
         	// need to sort the grouped integration logs by id to display the synch status in work flow order
         	Collections.sort(entry.getValue(), new Comparator<IntegrationLog>() {
-				@Override
 				public int compare(IntegrationLog o1, IntegrationLog o2) {
 					return o1.getId().compareTo(o2.getId());
 				}
