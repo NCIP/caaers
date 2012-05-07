@@ -269,6 +269,7 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
             retVal = studyDbId;
         }catch (Exception e){
             log.error("Error occurred while invoking ServiceMix Study Details : " + e.getMessage(), e);
+            retVal += e.getMessage();
         }
 
         return retVal;

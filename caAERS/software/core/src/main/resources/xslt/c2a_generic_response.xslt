@@ -4,6 +4,7 @@
     <xsl:output indent="no" omit-xml-declaration="yes"/>
     <xsl:template match="/">
         <xsl:apply-templates select="//operation/data" />
+        <xsl:apply-templates select="//response/operation/errors/error" />
     </xsl:template>
     <xsl:template match="data">
        <xsl:apply-templates select="stud:studies" />
@@ -14,5 +15,8 @@
     </xsl:template>
     <xsl:template match="com:entityProcessingOutcome">
         <xsl:value-of select="dataBaseId" />
+    </xsl:template>
+    <xsl:template match="error">
+        <xsl:value-of select="." />
     </xsl:template>
 </xsl:stylesheet>
