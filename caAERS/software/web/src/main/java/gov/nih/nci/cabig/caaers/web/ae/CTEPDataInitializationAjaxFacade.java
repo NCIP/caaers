@@ -1,17 +1,20 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import edu.emory.mathcs.backport.java.util.Collections;
 import gov.nih.nci.cabig.caaers.dao.IntegrationLogDao;
 import gov.nih.nci.cabig.caaers.dao.query.IntegrationLogQuery;
 import gov.nih.nci.cabig.caaers.domain.IntegrationLog;
+import gov.nih.nci.cabig.caaers.domain.IntegrationLogDetail;
 import gov.nih.nci.cabig.caaers.domain.SynchStatus;
 import gov.nih.nci.cabig.caaers.domain.ajax.IntegrationLogAjaxableDomainObect;
 import gov.nih.nci.cabig.caaers.service.ProxyWebServiceFacade;
 import gov.nih.nci.cabig.caaers.web.AbstractAjaxFacade;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -57,7 +60,7 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
         
         query.filterByLoggedOnStartDateAndEndDate(startDate, endDate);
         
-        if (!StringUtilities.isBlank("service")) {
+        if (!StringUtilities.isBlank(service)) {
         	String entity = extractEntity(service);
         	String operation = extractOperation(service);
     		query.filterByEntity(entity);
@@ -74,6 +77,15 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
         	Map.Entry<String, List<IntegrationLog>> entry = (Map.Entry<String, List<IntegrationLog>>)mapIterator.next();
         	IntegrationLogAjaxableDomainObect ajaxIntLog = new IntegrationLogAjaxableDomainObect();
         	ajaxIntLog.setLoggedOn(getEarliestLogTime(entry.getValue()));
+        	
+        	// need to sort the grouped integration logs by id to display the synch status in work flow order
+        	Collections.sort(entry.getValue(), new Comparator<IntegrationLog>() {
+				@Override
+				public int compare(IntegrationLog o1, IntegrationLog o2) {
+					return o1.getId().compareTo(o2.getId());
+				}
+			});
+        
         	ajaxIntLog.setOverallStatus(determineIfOverallStatusIsFailed(entry.getValue()));
         	ajaxIntLog.setService(getServiceNameFromEntityAndOperation(entry.getValue().get(0).getEntity(), entry.getValue().get(0).getOperation()));
         	
@@ -108,7 +120,7 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
     
     public Map<String,List<IntegrationLog>> groupIntegrationLogsBasedOnCorrelationId(List<IntegrationLog> integreationLogs){
     	
-    	Map<String,List<IntegrationLog>> map = new HashMap<String,List<IntegrationLog>>();
+    	Map<String,List<IntegrationLog>> map = new LinkedHashMap<String,List<IntegrationLog>>();
 		for(IntegrationLog intlog:integreationLogs){
 			if(!map.keySet().contains(intlog.getCorrelationId())){
 				map.put(intlog.getCorrelationId(), new ArrayList<IntegrationLog>());
@@ -139,6 +151,14 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
     	for(IntegrationLog log:integrationLogs){
     		if(log.getSynchStatus() == SynchStatus.REQUEST_COMPLETION){
     			outcome = "Success";
+    		}
+    		// if one of the integration log detail has failed, mark the overall outcome as failed
+    		if(log.getIntegrationLogDetails().size()> 0){
+    			for(IntegrationLogDetail intLogDetail : log.getIntegrationLogDetails()){
+    				if(intLogDetail.isFailed()) {
+    					return "Failed";
+    				}
+    			}
     		}
     	}
     	

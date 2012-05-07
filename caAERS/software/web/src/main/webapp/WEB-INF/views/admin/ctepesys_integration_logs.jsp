@@ -169,7 +169,7 @@
 	                    { 
 	                        key:"overallStatus", 
 	                        label:"Status", 
-	                        width : '400px'  
+	                        width : '400px'
 	                    }, 
 	                    { 
 	                        key:"notes", 
@@ -262,7 +262,11 @@
 
 <script>
     Event.observe(window, "load", function() {
-        buildTable();
+    	var date = new Date();
+    	var milliSecInWeek = date.getTime()-1000*3600*24*7;
+    	date.setTime(milliSecInWeek);
+    	$('indicator').show();
+        ctepDataInitialization.searchIntegrationLogs(date, null, null, null,ajaxCallBack);
     })
 </script>
 

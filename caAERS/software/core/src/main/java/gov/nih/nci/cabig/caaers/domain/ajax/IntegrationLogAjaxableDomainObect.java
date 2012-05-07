@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain.ajax;
 
 import java.util.Date;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class IntegrationLogAjaxableDomainObect {
@@ -9,7 +9,7 @@ public class IntegrationLogAjaxableDomainObect {
 	private Date loggedOn;
 	private String service;
 	private String overallStatus;
-	private Map<String,String> steps = new HashMap<String,String>();
+	private Map<String,String> steps = new LinkedHashMap<String,String>();
 	
 	public Date getLoggedOn() {
 		return loggedOn;
