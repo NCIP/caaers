@@ -117,9 +117,12 @@
         </xsl:if>
     </xsl:template>
     <xsl:template match="studyTreatmentAssignments">
-        <treatmentAssignments>
-            <xsl:apply-templates select="studyTreatmentAssignment" />
-        </treatmentAssignments>
+        <xsl:if test="count(child::*) &gt; 0">
+            <treatmentAssignments>
+                <xsl:apply-templates select="studyTreatmentAssignment" />
+            </treatmentAssignments>
+        </xsl:if>
+
     </xsl:template>
     <xsl:template match="studyTreatmentAssignment">
         <stud:treatmentAssignment>
