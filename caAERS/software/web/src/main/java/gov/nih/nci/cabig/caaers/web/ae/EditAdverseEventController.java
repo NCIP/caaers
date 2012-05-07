@@ -412,5 +412,8 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     public AdverseEventReportingPeriodDao getAdverseEventReportingPeriodDao(){
     	return adverseEventReportingPeriodDao;
     }
-  
+
+    public void setAdeersIntegrationFacade(AdeersIntegrationFacade adeersIntegrationFacade) {
+        this.adeersIntegrationFacade = adeersIntegrationFacade;
+    }
 }
