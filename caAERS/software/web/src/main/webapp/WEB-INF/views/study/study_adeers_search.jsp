@@ -52,13 +52,17 @@
                 showError();
                 jQuery('#studyLink' + _index).html("<b>Error</b>");
             } else {
+                var _dbId = _resultId.objectContent;
                 var text = "Updated";
                 var flashText = "<caaers:message code="LBL_study.updated" />";
                 if (operation == "CREATE") {
                     text = "Imported";
                     flashText = "<caaers:message code="LBL_study.imported" />";
                 }
-                jQuery('#studyLink' + _index).html("<b>" + text + "</b>");
+//                jQuery('#studyLink' + _index).html("<b>" + text + "</b>");
+                var _s = "<a onmouseover='showMenuOptions(#{index}, \"#{action}\", \"#{fsid}\", \"#{ncic}\", \"#{studyId}\")' id='_study#{index}' class='submitterButton submitter fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all'>Actions<span class='ui-icon ui-icon-triangle-1-s'></span></a>";
+                _s = _s.interpolate({index:_index, action:"UPDATE", fsid:id, ncic:nciCode, studyId:_dbId})
+                jQuery('#studyLink' + _index).html(_s);
                 showFlashMessage(flashText);
             }
 
