@@ -108,6 +108,8 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     // cache for ruleable fields
     List<String> ruleableFields = null;
 
+    private boolean studyOutOfSync = true;
+
     public AbstractExpeditedAdverseEventInputCommand(){
     		aeReport = new ExpeditedAdverseEventReport();
     }
@@ -458,6 +460,14 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
         return result;
     }
 
+    public boolean isStudyOutOfSync(){
+        return studyOutOfSync;
+    }
+    
+    public void setStudyOutOfSync(boolean sync) {
+        this.studyOutOfSync = sync;
+    }
+    
     public Map<Object, Object> getStudyDiseasesOptions(DiseaseCodeTerm diseaseCodingTerm){
         if (studyDiseasesMap == null) {
             if (diseaseCodingTerm.equals(DiseaseCodeTerm.MEDDRA)) {

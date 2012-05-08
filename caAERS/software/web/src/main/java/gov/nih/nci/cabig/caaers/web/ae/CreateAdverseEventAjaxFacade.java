@@ -22,6 +22,7 @@ import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
+import gov.nih.nci.cabig.caaers.service.AdeersIntegrationFacade;
 import gov.nih.nci.cabig.caaers.service.InteroperationService;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
@@ -104,7 +105,7 @@ public class CreateAdverseEventAjaxFacade {
 	private InvestigatorDao investigatorDao;
     private OtherInterventionDao otherInterventionDao;
     private StudyDeviceDao studyDeviceDao;
-
+    private AdeersIntegrationFacade proxyWebServiceFacade;
 
     public Class<?>[] controllers() {
         return CONTROLLERS;
@@ -1205,6 +1206,38 @@ public class CreateAdverseEventAjaxFacade {
         }
         return output;
     }
+
+    /**
+     *
+     * @param studyIdentifier Study Funding Sponsor Identifier
+     * @param createOrUpdate It takes values if "CREATE" or "UPDATE
+     * @return
+     */
+    public AjaxOutput syncStudyWithAdEERS(String studyIdentifier, String nciInstituteCode, String createOrUpdate) {
+        AjaxOutput out = new AjaxOutput();
+        String _result = "";
+
+        try {
+            OrganizationAssignedIdentifier id = new OrganizationAssignedIdentifier();
+            id.setType(OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE);
+            id.setValue(studyIdentifier);
+            Organization org = new LocalOrganization();
+            org.setNciInstituteCode(nciInstituteCode); //populate me ??
+            id.setOrganization(org);
+            _result = proxyWebServiceFacade.syncStudy(id, createOrUpdate);
+            Integer.parseInt(_result);
+            out.setObjectContent(_result);
+        } catch (NumberFormatException e) {
+            out.setError(true);
+            out.setErrorMessage(_result);
+        }
+
+        Object cmd = extractCommand();
+        ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) cmd;
+        command.setStudyOutOfSync(false);
+        return out;
+    }
+
     
     protected String getUserId(){
 		WebContext webContext = getWebContext();
@@ -1462,5 +1495,10 @@ public class CreateAdverseEventAjaxFacade {
 
     public void setStudyDeviceDao(StudyDeviceDao studyDeviceDao) {
         this.studyDeviceDao = studyDeviceDao;
+    }
+
+    @Required
+    public void setProxyWebServiceFacade(AdeersIntegrationFacade proxyWebServiceFacade) {
+        this.proxyWebServiceFacade = proxyWebServiceFacade;
     }
 }

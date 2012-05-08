@@ -61,7 +61,9 @@ public interface ExpeditedAdverseEventInputCommand extends AdverseEventInputComm
     boolean isSectionMandatory(ExpeditedReportSection section);
 
     boolean shouldValidateAttributions();
-    
+
+    boolean isStudyOutOfSync();
+    void setStudyOutOfSync(boolean sync);
     /**
      * Pre-initalize the mandatory lazy added fields in mandatory sections. (This is a biz-rule)
      */

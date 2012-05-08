@@ -317,5 +317,6 @@
 		</div>    
 	</jsp:attribute>
 </tags:tabForm>
+<ae:syncStudyDialog />
 </body>
 </html>

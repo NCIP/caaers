@@ -3,7 +3,7 @@
 <html>
 <head>
     <title>${tab.longTitle}</title>
-    <tags:dwrJavascriptLink objects="createAE,routingAndReview,createStudy"/>
+    <tags:dwrJavascriptLink objects="createAE,routingAndReview"/>
 	<tags:slider renderComments="${command.associatedToWorkflow }" renderAlerts="${command.associatedToLabAlerts}" reports="${command.selectedReportsAssociatedToWorkflow}" 
 		display="${(command.associatedToWorkflow or command.associatedToLabAlerts) ? '' : 'none'}" workflowType="report">
     	<jsp:attribute name="labs">
