@@ -8,14 +8,14 @@
     var _ajaxIndicatorHtml= '<img height="13px" width="13px" src="<c:url value="/images/indicator.gif" />" alt="activity indicator" width="20px" height="20px"/>';
     var popupDiv;
 
-    <%--ToDo  THIS METHOS HAS TO BE MOVED TO A COMMON PLACE FO RREUSE --%>
+    <%--ToDo  THIS METHOS HAS TO BE MOVED TO A COMMON PLACE FOR REUSE --%>
     function showFlashMessage(text) {
         jQuery("#autoRemoveElementMesage").html(text);
         jQuery("#autoRemoveElement").show();
         hideFlashMessage.delay(3);
     }
 
-<%--ToDo  THIS METHOS HAS TO BE MOVED TO A COMMON PLACE FO RREUSE --%>
+    <%--ToDo  THIS METHOS HAS TO BE MOVED TO A COMMON PLACE FOR REUSE --%>
     function hideFlashMessage() {
         jQuery("#autoRemoveElement").fadeOut('slow', function() {});
     }
@@ -65,12 +65,18 @@
         });
     }
 
+/*
     function updateStudy(id, _index, nciCode) {
         doUpdate(id, _index, nciCode, "UPDATE");
     }
 
     function importStudy(id, _index, nciCode) {
         doUpdate(id, _index, nciCode, "CREATE");
+    }
+*/
+
+    function editStudy(id) {
+        window.location = "<c:url value="/pages/study/edit?studyId=" />" + id;
     }
 
 </script>
@@ -108,10 +114,37 @@
 
     <script language="JavaScript">
 
+        function showMenuOptions(strId, _action, _fsid, _ncic, _studyId) {
+            var _items = "<li>ERROR</li>";
+            var onClickString = "javascript:doUpdate(\"#{id}\", \"#{index}\", \"#{nciCode}\", \"#{operation}\")";
+
+            if (_action == "UPDATE") {
+                _items = "<li><a class='submitter-blue' href='#' onclick='" + onClickString.interpolate({id:_fsid, index:strId, nciCode:_ncic, operation:_action}) + "'>Synchronize study with CTEP-ESYS</a></li>";
+                _items += "<li><a class='submitter-blue' href='#' onclick='javascript:editStudy(" + _studyId + ")'>Edit Study in caAERS</a></li>";
+            } else {
+                _items = "<li><a class='submitter-blue' href='#' onclick='" + onClickString.interpolate({id:_fsid, index:strId, nciCode:_ncic, operation:_action}) + "'>Import Study</a></li>";
+            }
+
+            var html = "<div><ul style='font-family:tahoma;'>" + _items + "</ul></div>";
+//            var html = html.interpolate({strId:strId, rt:rt, un:un});
+            jQuery('#_study' + strId).menu({
+                    content: html,
+                    maxHeight: 180,
+                    width: 230,
+                    positionOpts: {
+                        directionV: 'down',
+                        posX: 'left',
+                        posY: 'bottom',
+                        offsetX: 0,
+                        offsetY: 0
+                    },
+                    showSpeed: 300
+                });
+        }
+
+        var actionsRow = "<span id='studyLink#{index}'><a onmouseover='showMenuOptions(#{index}, \"#{action}\", \"#{fsid}\", \"#{ncic}\", \"#{studyId}\")' id='_study#{index}' class='submitterButton submitter fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all'>Actions<span class='ui-icon ui-icon-triangle-1-s'></span></a></span>";
 
         var actionFormatter = function(elCell, oRecord, oColumn, oData) {
-
-
             var _index = this.getRecordIndex(oRecord);
             var action = oRecord.getData("action");
             var id = oRecord.getData("id");
@@ -119,16 +152,19 @@
             var ncic = oRecord.getData("ncic");
             var st = oRecord.getData("shortTitle");
 
-            if (action == "UPDATE")
-                elCell.innerHTML = "<span id='studyLink" + _index + "'><a href='#' onclick='updateStudy(\"" + fsid +"\", " + _index + ", \"" + ncic + "\")'>Update</a></span>";
-            else
-                elCell.innerHTML = "<span id='studyLink" + _index + "'><a href='#' onclick='importStudy(\"" + fsid +"\", "+ _index + ", \"" + ncic  + "\")' id='studyLink" + _index + "'>Import</a></span>";
+            if (action == "UPDATE") {
+                elCell.innerHTML = actionsRow.interpolate({index:_index, action:"UPDATE", fsid:fsid, ncic:ncic, studyId:id});
+                // elCell.innerHTML = "<span id='studyLink" + _index + "'><a href='#' onclick='updateStudy(\"" + fsid +"\", " + _index + ", \"" + ncic + "\")'>Update</a></span>";
+            } else {
+                elCell.innerHTML = actionsRow.interpolate({index:_index, action:"CREATE", fsid:fsid, ncic:ncic, studyId:id});
+                // elCell.innerHTML = "<span id='studyLink" + _index + "'><a href='#' onclick='importStudy(\"" + fsid +"\", "+ _index + ", \"" + ncic  + "\")' id='studyLink" + _index + "'>Import</a></span>";
+            }
         };
 
         var studiesColumnDefs = [
             {key:"fsid", label:"Identifier", sortable:true, resizeable:true, minWidth:100},
             {key:"shortTitle", label:"Title", sortable:true, resizeable:true, minWidth:700},
-            {key:"action", label:"Action", sortable:true, resizeable:true, minWidth:100, formatter:actionFormatter}
+            {key:"action", label:"&nbsp;", sortable:true, resizeable:true, minWidth:100, formatter:actionFormatter}
         ];
 
         var studiesFields = [
@@ -143,7 +179,7 @@
         studiesJSONResult = [
             <c:forEach items="${studies}" var="s">
                 {
-                    "id":"${s.fundingSponsorIdentifierValue}",
+                    "id":"${s.id}",
                     "fsid":"${s.fundingSponsorIdentifierValue}",
                     "ncic":"${s.fundingSponsorIdentifier.organization.nciInstituteCode}",
                     "shortTitle":"${s.shortTitle}",
