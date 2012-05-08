@@ -965,7 +965,7 @@
 
 	</target>
 	<target name="finished" description="clean up">
-		<delete dir="${temp.dir}" />
+		<delete dir="${temp.dir}" includeemptydirs="true"  failonerror="false" />
 		<echo message="System set up is complete " />
 	</target>
 </project>
