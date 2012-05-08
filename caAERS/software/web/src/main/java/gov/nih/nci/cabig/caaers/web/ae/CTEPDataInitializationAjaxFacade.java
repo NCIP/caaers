@@ -179,7 +179,7 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
     	if(serviceName.equalsIgnoreCase("GetAgentDoseUOMLOV")) return "agentDose";
     	if(serviceName.equalsIgnoreCase("GetOrganizationLOV")) return "organization";
     	if(serviceName.equalsIgnoreCase("GetASAEL")) return "asael";
-    	if(serviceName.equalsIgnoreCase("GetDeviceLOV")) return "device	";
+    	if(serviceName.equalsIgnoreCase("GetDeviceLOV")) return "device";
     	if(serviceName.equalsIgnoreCase("GetPre-ExistingConditionsLOV")) return "preexistingcondition";
     	if(serviceName.equalsIgnoreCase("GetTherapiesLOV")) return "priortherapy";
     	if(serviceName.equalsIgnoreCase("GetAgentsLOV")) return "agent";
