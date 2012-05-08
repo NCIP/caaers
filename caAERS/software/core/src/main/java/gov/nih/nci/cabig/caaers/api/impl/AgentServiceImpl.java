@@ -49,33 +49,31 @@ public class AgentServiceImpl implements AgentService{
 	
 	@Transactional(readOnly=false)
 	public ProcessingOutcome createOrUpdateAgent(Agent agent) {
-		ProcessingOutcome errorMessage = new ProcessingOutcome();
-		errorMessage.setBusinessId(agent.getNscNumber());
-		errorMessage.setKlassName(Agent.class.getName());
+		ProcessingOutcome processingOutcome = new ProcessingOutcome();
+		processingOutcome.setBusinessId(agent.getNscNumber());
+        processingOutcome.setKlassName(Agent.class.getName());
 		try {
 			Agent dbAgent = agentDao.getByNscNumber(agent.getNscNumber());
 			// check if db agent with same nsc number exists
 			if(dbAgent !=null) {
-				logger.info("found db Agent with NSC Number:" + agent.getNscNumber());
-				// compare with db agent to see if any property changed. Update only it necessary
-				if(agent.compareTo(dbAgent) != 0){
-					logger.info("updating db Agent with NSC Number:" + agent.getNscNumber() + " with remote Agent");
-					agentMigrator.migrate(agent, dbAgent, null);
-					agentRepository.saveAgent(dbAgent);
-					} 
+                logger.info("updating db Agent with NSC Number:" + agent.getNscNumber() + " with remote Agent");
+                agentMigrator.migrate(agent, dbAgent, null);
+                agentRepository.saveAgent(dbAgent);
+                processingOutcome.setCaaersDBId(String.valueOf(dbAgent.getId()));
 			} else {
 				// db agent doesn't exist. Create a new agent.
 				logger.info("didn't find db Agent with NSC Number:" + agent.getNscNumber() + ". Creating new Agent");
 				Agent newAgent = new Agent();
 				agentMigrator.migrate(agent, newAgent, null);
 				agentRepository.saveAgent(newAgent);
-			}
+                processingOutcome.setCaaersDBId(String.valueOf(newAgent.getId()));
+            }
 		} catch (Exception e) {
-			errorMessage.addMessage(e.getMessage());
+			processingOutcome.addMessage(String.valueOf(e.getMessage()));
 			logger.error(e.getMessage());
 		}
 		
-		return errorMessage;
+		return processingOutcome;
 	}
 
 
