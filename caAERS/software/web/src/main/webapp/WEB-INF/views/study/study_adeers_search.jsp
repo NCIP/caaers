@@ -20,12 +20,16 @@
         jQuery("#autoRemoveElement").fadeOut('slow', function() {});
     }
 
+    function doSearch() {
+        jQuery("#searchForm").submit();
+    }
+
     function submitSearch() {
         popupDiv = new Window({className:"alphacube", width:300, height:100, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
         popupDiv.setContent("search_submit");
         popupDiv.showCenter(true);
         popupDiv.show();
-        jQuery("#searchForm").submit();
+        doSearch.delay(1);
     }
 
     function showPopup() {
