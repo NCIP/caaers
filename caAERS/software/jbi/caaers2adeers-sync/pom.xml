@@ -19,7 +19,7 @@
     <module>core-camel-su</module>
     <module>adeers-wsbc-su</module>
     <module>caaers-wsbc-su</module>
-    <module>caaers-adders-sa</module>
+    <module>caaers-adeers-sync-sa</module>
   </modules>
 
 

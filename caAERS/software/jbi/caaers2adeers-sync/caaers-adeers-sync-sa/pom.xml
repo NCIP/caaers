@@ -8,7 +8,7 @@
     <version>2.5-M4</version>
   </parent>
   <groupId>gov.nih.nci.cabig.caaers2adeers</groupId>
-  <artifactId>caaers-adders-sa</artifactId>
+  <artifactId>caaers-adeers-sync-sa</artifactId>
   <version>${c2aVersion}</version>
   <packaging>jbi-service-assembly</packaging>
   <name>Apache ServiceMix::Service Assembly</name>
