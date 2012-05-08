@@ -66,7 +66,7 @@ public class DataBaseConfigurationPageRenderer extends SwingPageRenderer {
 		
 		File lib = new File(resources,"lib");
 		File oracle_jar = new File(lib,"ojdbc14-10.2.0.2.0.jar");
-		File postgres_jar = new File(lib,"postgresql-8.2-504.jdbc3.jar");
+		File postgres_jar = new File(lib,"postgresql-jar-9.0-801.jdbc4.jar");
 		
 		
 		ClassPathModifier.addFile(oracle_jar);
