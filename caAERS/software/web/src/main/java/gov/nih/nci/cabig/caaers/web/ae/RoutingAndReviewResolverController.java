@@ -61,7 +61,7 @@ public class RoutingAndReviewResolverController extends AbstractController{
         String reviewAndSubmit =  request.getParameter("ras");
         String redirectUrl ="edit?aeReport=" + aeReportId + "&report=" + reportId;
         if(StringUtils.isNotEmpty(reviewAndSubmit)){
-            redirectUrl = redirectUrl + "&_page=9&_target10=10";
+            redirectUrl = redirectUrl + "&_page=10&action=reportSubmission";
         }
 		
 		// Check if the course for which the report is created is active.
