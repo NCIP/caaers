@@ -41,7 +41,7 @@ public class IntegrationLogDetailDaoTest extends DaoNoSecurityTestCase<Integrati
 		List<IntegrationLog> queriedLogs = integrationLogDao.searchIntegrationLogs(intLogquery);
 		
 		queriedLogs.get(0).getIntegrationLogDetails().add(intDetailLog);
-		assertEquals(1,queriedLogs.get(0).getIntegrationLogDetails().size());
+		assertEquals(2,queriedLogs.get(0).getIntegrationLogDetails().size());
 		
 		
 		integrationLogDao.save(queriedLogs.get(0));
