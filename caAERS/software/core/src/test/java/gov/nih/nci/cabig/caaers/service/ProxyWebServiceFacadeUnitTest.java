@@ -2,8 +2,10 @@ package gov.nih.nci.cabig.caaers.service;
 
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 
+import java.beans.PropertyDescriptor;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.xml.namespace.QName;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPathFactory;
@@ -29,6 +32,10 @@ import gov.nih.nci.cabig.caaers.service.migrator.StudyConverter;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.ctms.tools.configuration.ConfigurationProperty;
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.interceptor.LoggingInInterceptor;
+import org.apache.cxf.interceptor.LoggingOutInterceptor;
+import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;
 import org.easymock.EasyMock;
 import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.soap.saaj.SaajSoapMessageFactory;
@@ -219,25 +226,25 @@ public class ProxyWebServiceFacadeUnitTest extends AbstractTestCase {
                 "</soap:Envelope>";
     }
     
-//	public void testSimpleSendAndReceive() throws Exception {
-//		StringBuffer sb = new StringBuffer();
-//		sb.append("<gen:GenericRequest xmlns:gen=\"http://webservice.caaers.cabig.nci.nih.gov/GenericProcessor/\">");
-//		sb.append("<payload correlationId=\"KRUTTIK_02\">");
-//		sb.append("<system>adeers</system>");
-//		sb.append("<request>");
-//		sb.append("<!--Optional:-->");
-//		sb.append("<entity>agent</entity>");
-//		sb.append("<operation name=\"getAgentsLOV\" mode=\"async\">");
-//		sb.append("<criteria>");
-//		sb.append("<!--1 or more repetitions:-->");
-//		sb.append("<criterion name=\"createdDate\">12-02-2002</criterion>");
-//		sb.append("</criteria>");
-//		sb.append("</operation>");
-//		sb.append("</request>");
-//		sb.append("</payload>");
-//		sb.append("</gen:GenericRequest>");
-//		System.out.println(proxyWebServiceFacade.simpleSendAndReceive(sb.toString()));
-//	}
+	public void testSimpleSendAndReceive() throws Exception {
+		StringBuffer sb = new StringBuffer();
+		sb.append("<gen:GenericRequest xmlns:gen=\"http://webservice.caaers.cabig.nci.nih.gov/GenericProcessor/\">");
+		sb.append("<payload correlationId=\"KRUTTIK_02\">");
+		sb.append("<system>adeers</system>");
+		sb.append("<request>");
+		sb.append("<!--Optional:-->");
+		sb.append("<entity>agent</entity>");
+		sb.append("<operation name=\"getAgentsLOV\" mode=\"async\">");
+		sb.append("<criteria>");
+		sb.append("<!--1 or more repetitions:-->");
+		sb.append("<criterion name=\"createdDate\">05-08-2012</criterion>");
+		sb.append("</criteria>");
+		sb.append("</operation>");
+		sb.append("</request>");
+		sb.append("</payload>");
+		sb.append("</gen:GenericRequest>");
+		System.out.println(proxyWebServiceFacade.simpleSendAndReceive(sb.toString()));
+	}
 //	
 //	public void testSyncAgents() throws Exception{
 //		System.out.println(proxyWebServiceFacade.syncAgents());
@@ -249,7 +256,7 @@ public class ProxyWebServiceFacadeUnitTest extends AbstractTestCase {
 		ExecutorService executor = Executors.newFixedThreadPool(10);
 		List<Future<String>> list = new ArrayList<Future<String>>();
 		List<String> correlationIDs = new ArrayList<String>();
-		int NUM_OF_LOOPS = 10;
+		int NUM_OF_LOOPS = 0;
 		for(int i = 0 ; i<NUM_OF_LOOPS ; i++){
 			for (EntityOperation entityOperation : EntityOperation.values()) {
 				String correlationId = RandomStringUtils.randomAlphanumeric(10);
@@ -282,6 +289,64 @@ public class ProxyWebServiceFacadeUnitTest extends AbstractTestCase {
 		executor.shutdown();
 		verifyMocks();
 	}
+	
+//	private static final String tns = "http://webservice.caaers.cabig.nci.nih.gov/GenericProcessor/";
+//
+//	private static final QName SERVICE_NAME = new QName(tns, "GenericProcessor");
+//	private static final QName OP_NAME = new QName(tns, "Process");
+//	
+//	private static final String packageName="gov.nih.nci.cabig.caaers.webservice.genericprocessor";
+//	private static final String genericRequestClassName="GenericRequest";
+//	private static final String payloadClassName="GenericRequest$Payload";
+//	private static final String requestClassName="Request";
+//	private static final String operationClassName="Request$Operation";
+//	private static final String criteriaClassName="Request$Operation$Criteria";
+//	private static final String criterionClassName="Request$Operation$Criteria$Criterion";
+//	
+//	private static final String wsdlURLStr = "http://localhost:8196/GenericProcessorService?wsdl";
+////	private static final String wsdlURLStr = "http://10.10.10.41:8196/GenericProcessorService?wsdl";
+//
+//	public void testDynaClient() throws Exception{
+//		URL wsdlURL = new URL(wsdlURLStr);
+//		System.out.println(wsdlURL.toExternalForm());
+//
+//		JaxWsDynamicClientFactory factory = JaxWsDynamicClientFactory
+//				.newInstance();
+//		Client client = factory.createClient(wsdlURL.toExternalForm(),
+//				SERVICE_NAME);
+//		client.getInInterceptors().add(new LoggingInInterceptor());
+//		client.getOutInterceptors().add(new LoggingOutInterceptor());
+//		
+//		Object genericRequest = Thread.currentThread().getContextClassLoader().loadClass(packageName+"."+genericRequestClassName).newInstance();
+//		Object payload = Thread.currentThread().getContextClassLoader().loadClass(packageName+"."+payloadClassName).newInstance();
+//		Object request = Thread.currentThread().getContextClassLoader().loadClass(packageName+"."+requestClassName).newInstance();
+//		Object operation = Thread.currentThread().getContextClassLoader().loadClass(packageName+"."+operationClassName).newInstance();
+//		Object criteria = Thread.currentThread().getContextClassLoader().loadClass(packageName+"."+criteriaClassName).newInstance();
+//		Object criterion = Thread.currentThread().getContextClassLoader().loadClass(packageName+"."+criterionClassName).newInstance();
+//		
+//		new PropertyDescriptor("payload", genericRequest.getClass()).getWriteMethod().invoke(genericRequest, payload);
+//		new PropertyDescriptor("request", payload.getClass()).getWriteMethod().invoke(payload, request);
+//		new PropertyDescriptor("operation", request.getClass()).getWriteMethod().invoke(request, operation);
+//		new PropertyDescriptor("criteria", operation.getClass()).getWriteMethod().invoke(operation, criteria);
+//		List criterions = (List)criteria.getClass().getMethod("getCriterions").invoke(criteria);
+//		criterions.add(criterion);
+//		
+//		String coorelationId = RandomStringUtils.randomAlphabetic(5);
+//		new PropertyDescriptor("correlationId", payload.getClass()).getWriteMethod().invoke(payload, coorelationId);
+//		new PropertyDescriptor("system", payload.getClass()).getWriteMethod().invoke(payload, "adeers");
+//		new PropertyDescriptor("entity", request.getClass()).getWriteMethod().invoke(request, "agent");
+//		new PropertyDescriptor("name", operation.getClass()).getWriteMethod().invoke(operation, "getAgentsLOV");
+//		new PropertyDescriptor("mode", operation.getClass()).getWriteMethod().invoke(operation, "async");
+//		new PropertyDescriptor("name", criterion.getClass()).getWriteMethod().invoke(criterion, "createdDate");
+//		new PropertyDescriptor("value", criterion.getClass()).getWriteMethod().invoke(criterion, "12-02-2011");
+//		
+//		System.out.println("Invoking client with coorrelation id- "+coorelationId);
+//		Object[] res = client.invoke(OP_NAME, genericRequest);
+//		System.out.println("Client invocation complete ");
+//		for(Object returnObj : res){
+//			System.out.println(returnObj.getClass());
+//		}
+//	}
 	
 	public class ProxyWebServiceCallable implements Callable<String>{
 		
