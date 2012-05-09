@@ -205,7 +205,7 @@ color:#0033FF;
                     }
                 });
             } else if (action == 'submit') {
-                var url = '<c:url value="/pages/ae/submitReport?from=list" />' + '&aeReport=' + aeReportId + '&reportId=' + reportId;
+                var url = '<c:url value="/pages/ae/reviewResolver?from=list&ras=t&viewOnly=true" />' + '&aeReport=' + aeReportId + '&reportId=' + reportId;
                 window.location = url;
             } else if (action == 'amend') {
                 var url = '<c:url value="/pages/ae/edit"/>' + '?aeReport=' + aeReportId + '&report=' + reportId + '&action=amendReport';

@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 import org.springframework.web.servlet.view.RedirectView;
@@ -57,7 +58,11 @@ public class RoutingAndReviewResolverController extends AbstractController{
 	private ModelAndView handleAeReportRequest(HttpServletRequest request, HttpServletResponse response,String aeReportId){
 		ExpeditedAdverseEventReport aeReport = expeditedAdverseEventReportDao.getById(Integer.parseInt(aeReportId));
 		String reportId = request.getParameter("report");
-		String redirectUrl ="edit?aeReport=" + aeReportId + "&report=" + reportId;;
+        String reviewAndSubmit =  request.getParameter("ras");
+        String redirectUrl ="edit?aeReport=" + aeReportId + "&report=" + reportId;
+        if(StringUtils.isNotEmpty(reviewAndSubmit)){
+            redirectUrl = redirectUrl + "&_page=10&_target10=10";
+        }
 		
 		// Check if the course for which the report is created is active.
 		// If the course is inactive (isRetired) then the user will be directed to the routing and review page.
