@@ -49,7 +49,7 @@ public class IntegrationLog extends AbstractMutableDomainObject{
 	}
 
 	@OneToMany
-	@JoinColumn(name="log_id")
+	@JoinColumn(name="log_id" , nullable =  false)
 	@Cascade({CascadeType.PERSIST, CascadeType.SAVE_UPDATE})
 	public List<IntegrationLogDetail> getIntegrationLogDetails() {
 		return integrationLogDetails;
