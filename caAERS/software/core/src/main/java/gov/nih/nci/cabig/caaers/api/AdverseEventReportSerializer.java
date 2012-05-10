@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.ParticipantHistory.Measure;
 import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
+import gov.nih.nci.cabig.caaers.domain.meddra.PreferredTerm;
 import gov.nih.nci.cabig.caaers.domain.report.*;
 import gov.nih.nci.cabig.caaers.utils.CaaersSerializerUtil;
 import gov.nih.nci.cabig.caaers.utils.XmlMarshaller;
@@ -911,14 +912,17 @@ public class AdverseEventReportSerializer {
                 adverseEvent.setBiologicalInterventionAttributions(ae.getBiologicalInterventionAttributions());
                 adverseEvent.setGeneticInterventionAttributions(ae.getGeneticInterventionAttributions());
                 adverseEvent.setDietarySupplementInterventionAttributions(ae.getDietarySupplementInterventionAttributions());
-	
-	
-				if (ae.getAdverseEventTerm().getClass().getName().equals("gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm")) {
-					adverseEvent.setAdverseEventMeddraLowLevelTerm(ae.getAdverseEventMeddraLowLevelTerm());
-				} else {
-					adverseEvent.getAdverseEventCtcTerm().setCtcTerm(getCtcTerm(ae.getAdverseEventCtcTerm().getCtcTerm()));
-				}
-				adverseEvent.setLowLevelTerm(ae.getLowLevelTerm());
+
+                AbstractAdverseEventTerm aeTerm = ae.getAdverseEventTerm();
+                
+                if(aeTerm instanceof  AdverseEventMeddraLowLevelTerm){
+
+                    adverseEvent.getAdverseEventMeddraLowLevelTerm().setLowLevelTerm(getLowLevelTerm(ae.getAdverseEventMeddraLowLevelTerm().getLowLevelTerm()));
+                } else {
+                    adverseEvent.getAdverseEventCtcTerm().setCtcTerm(getCtcTerm(ae.getAdverseEventCtcTerm().getCtcTerm()));
+                }
+
+				adverseEvent.setLowLevelTerm(getLowLevelTerm(ae.getLowLevelTerm()));
 	
 				
 		    	adverseEvent.setHospitalization(ae.getHospitalization());
@@ -958,19 +962,52 @@ public class AdverseEventReportSerializer {
 	     */
 	    private CtcTerm getCtcTerm(CtcTerm ctcTerm){
 	    	CtcTerm term = new CtcTerm();
-	    	term.setId(ctcTerm.getId());
-	    	term.setTerm(ctcTerm.getTerm());
-	    	term.setCtepTerm(ctcTerm.getCtepTerm());
-	    	term.setCtepCode(ctcTerm.getCtepCode());
-	    	term.setSelect(ctcTerm.getSelect());
-	    	term.setOtherRequired(ctcTerm.isOtherRequired());
-	    	CtcCategory category = new CtcCategory();
-	    	category.setId(ctcTerm.getCategory().getId());
-	    	category.setName(ctcTerm.getCategory().getName());
-	    	term.setCategory(category);
-	    	
+            CtcCategory category = new CtcCategory();
+            term.setCategory(category);
+            if(ctcTerm != null){
+                term.setId(ctcTerm.getId());
+                term.setTerm(ctcTerm.getTerm());
+                term.setCtepTerm(ctcTerm.getCtepTerm());
+                term.setCtepCode(ctcTerm.getCtepCode());
+                term.setSelect(ctcTerm.getSelect());
+                term.setOtherRequired(ctcTerm.isOtherRequired());
+
+                category.setId(ctcTerm.getCategory().getId());
+                category.setName(ctcTerm.getCategory().getName());
+            }
 	    	return term;
 	    }
+    
+        private LowLevelTerm getLowLevelTerm(LowLevelTerm llt){
+           LowLevelTerm term = new LowLevelTerm();
+           if(llt != null){
+               term.setMeddraCode(llt.getMeddraCode());
+               term.setPreferredTerm(getPreferredTerm(llt.getPreferredTerm()));
+               term.setMeddraVersion(getMeddraVersion(llt.getMeddraVersion()));
+           }
+           return term;
+        }
+    
+        private PreferredTerm getPreferredTerm(PreferredTerm pt){
+            PreferredTerm term = new PreferredTerm();
+            if(pt != null){
+                term.setMeddraCode(pt.getMeddraCode());
+                term.setMeddraTerm(pt.getMeddraTerm());
+                term.setHighLevelTerms(pt.getHighLevelTerms());
+                term.setMeddraVersion(getMeddraVersion(pt.getMeddraVersion()));
+            }
+            return term;
+            
+        }
+    
+        private MeddraVersion getMeddraVersion(MeddraVersion mv){
+            MeddraVersion v = new MeddraVersion();
+            if(mv != null){
+                v.setName(mv.getName());
+                v.setId(mv.getId());
+            }
+            return v;
+        }
 
 	    private OtherCauseAttribution getOtherCauseAttribution(OtherCauseAttribution oca) throws Exception {
 	    	OtherCauseAttribution otherCauseAttribution = new OtherCauseAttribution();
