@@ -35,7 +35,7 @@
 
     <!--sa archive -->
     <property name="ctms-caaers.sa.build.dir" value="${build.dir}/assembly"/>
-    <property name="ctms-caaers.sa.archive" value="ctms-caaers-sa-2.5-M4.zip"/>
+    <property name="ctms-caaers.sa.archive" value="ctms-caaers-sa-2.5-M5-SNAPSHOT.zip"/>
 
     <property name="src.resources.dir" value="src/main/resources"/>
     <property name="src.java.dir" value="src/main/java"/>
@@ -79,7 +79,7 @@
         <copy todir="${jms.comp.build.dir}">
             <fileset dir="ctms-caaers-jms-su/${src.resources.dir}"/>
         </copy>
-        <zip destfile="${su.build.dir}/ctms-caaers-jms-su-2.5-M4.zip">
+        <zip destfile="${su.build.dir}/ctms-caaers-jms-su-2.5-M5-SNAPSHOT.zip">
             <fileset dir="${jms.comp.build.dir}"/>
         </zip>
     </target>
