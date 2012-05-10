@@ -53,7 +53,7 @@ public class IntegrationLogDetailDaoTest extends DaoNoSecurityTestCase<Integrati
 		List<IntegrationLog> queriedIntLogs = integrationLogDao.searchIntegrationLogs(query);
 		
 		assertEquals(2,queriedIntLogs.get(0).getIntegrationLogDetails().size());
-		assertEquals(65,queriedIntLogs.get(0).getSynchStatus().getCode().intValue());
+
 	}
 	
 	public void testQueryByDate() throws Exception {
