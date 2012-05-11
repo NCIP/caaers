@@ -246,6 +246,15 @@ public class AdeersSubmissionWorkflowTest extends BaseCaller {
 		//assert status
 		assertEquals("Cannot amend as there exists another amendment that is still in Pending state", aeReportJobInfo3.getJobExceptions()[0].getDescription().toString().trim());
 	}
+
+    public void testSubmitOrWithdraw_10Day() throws  Exception{
+        String a10DayXML = getString("a_10Day.xml");
+        assertNotNull(a10DayXML);
+        AdeersWebServiceImpl impl = new AdeersWebServiceImpl();
+        String response = impl.callWebService(a10DayXML);
+        assertNotNull(response);
+        System.out.println(response);
+    }
 	
 	private String getString(String fileName) throws Exception {
 		String filePath = "caaers-adeers-webservice-su/src/test/resources/webservice/adeers/";

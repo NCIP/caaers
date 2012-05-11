@@ -43,7 +43,7 @@ public class AdeersWebServiceImpl implements AdeersWebService {
 		//String clientAbsoluteTrustStore = System.getProperty("user.home") + fileSeparator + clientTrustStore;
 
 		log.info("Key Store PATH " + adeersKeyStore);
-		System.setProperty("javax.net.ssl.trustStore", adeersKeyStore);
+//		System.setProperty("javax.net.ssl.trustStore", adeersKeyStore);
 		AEReportXMLServiceSoapBindingStub binding;
         try {
             binding = (AEReportXMLServiceSoapBindingStub)   new AEReportXMLService_ServiceLocator(url).getAEReportXMLService();
@@ -52,7 +52,7 @@ public class AdeersWebServiceImpl implements AdeersWebService {
             if(jre.getLinkedCause()!=null)
                 jre.getLinkedCause().printStackTrace();
             log.error("caAERS-adEERS-Service-Assembly caught JAX-RPC ServiceException :", jre);
-            throw new junit.framework.AssertionFailedError("JAX-RPC ServiceException caught: " + jre);
+            throw new RuntimeException("Unable to communicate to Adeers report submission webservice", jre);
         }
         // Time out after a minute
         binding.setTimeout(60000);
@@ -64,23 +64,26 @@ public class AdeersWebServiceImpl implements AdeersWebService {
         if (serviceContext.withdraw) {
         	log.info("Withdraw to adEERS...");
         	Source attachment = new StreamSource(reader,"");
-        	log.info("MESSAGE TO ADEERS : " + aeReport);
+        	log.info("MESSAGE TO ADEERS : ======================================================\n" + aeReport + "\n===================================================");
 	        //call the web service  - withdraw method..              
 	        binding.withdrawAEReport( attachment);
 	        reponseStr = binding._getCall().getMessageContext().getResponseMessage().getSOAPPartAsString();
+            log.info("Actual Response Received from adEERS: ======================================================\n" + reponseStr + "\n===================================================");
 	        //attach the id to the returned message
 	        reponseStr=reponseStr.replaceAll("</ns1:AEReportCancelInfo>","<CAEERS_AEREPORT_ID>"+serviceContext.caaersAeReportId+"</CAEERS_AEREPORT_ID><REPORT_ID>"+serviceContext.reportId+"</REPORT_ID><SUBMITTER_EMAIL>"+serviceContext.submitterEmail+"</SUBMITTER_EMAIL></ns1:AEReportCancelInfo>");
-	        log.info("Response Received from adEERS");
+	        log.info("Processed Response Received from adEERS: ======================================================\n" + reponseStr + "\n===================================================");
         } else {
 	        log.info("Submitting to adEERS...");
 	        Source attachment = new StreamSource(reader,"");
 	        //call the web service    - submit method ..   
-	        log.info("MESSAGE TO ADEERS : " + aeReport);
+            log.info("MESSAGE TO ADEERS : ======================================================\n" + aeReport + "\n===================================================");
 	        binding.submitAEDataXMLAsAttachment(ReportingMode.SYNCHRONOUS, attachment);
 	        reponseStr = binding._getCall().getMessageContext().getResponseMessage().getSOAPPartAsString();
-	        //attach the id to the returned message
+            log.info("Actual Response Received from adEERS: ======================================================\n" + reponseStr + "\n===================================================");
+
+            //attach the id to the returned message
 	        reponseStr=reponseStr.replaceAll("</ns1:AEReportJobInfo>","<CAEERS_AEREPORT_ID>"+serviceContext.caaersAeReportId+"</CAEERS_AEREPORT_ID><REPORT_ID>"+serviceContext.reportId+"</REPORT_ID><SUBMITTER_EMAIL>"+serviceContext.submitterEmail+"</SUBMITTER_EMAIL></ns1:AEReportJobInfo>");
-	        log.info("Response Received from adEERS");
+            log.info("Processed Response Received from adEERS: ======================================================\n" + reponseStr + "\n===================================================");
         }
         return reponseStr;
 		

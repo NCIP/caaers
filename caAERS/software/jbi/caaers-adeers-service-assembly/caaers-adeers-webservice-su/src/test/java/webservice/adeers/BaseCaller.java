@@ -18,9 +18,9 @@ import javax.xml.transform.stream.StreamSource;
 import junit.framework.TestCase;
 
 public abstract class BaseCaller extends TestCase{
-	private String adeersWebServiceAddress = "https://capps-ctep.nci.nih.gov/adeersws10gbeta/services/AEReportXMLService";
-   	private String adeersUserName = "ADEERSBETA";
-   	private String adeersPassword = "testadeers1#";
+	private String adeersWebServiceAddress = "https://betapps-ctep.nci.nih.gov/adeerswsbeta/services/AEReportXMLService";
+   	private String adeersUserName = "iaminternal";
+   	private String adeersPassword = "ecmwsdev_1";
 	private String caaersAdeersXslt = "caaers-adeers-xslt-su/src/main/resources/adeers-transformer.xsl";
 	private String trustStore = "caaers-adeers-webservice-su/src/main/resources/caAERs-AdEERS";
 	
