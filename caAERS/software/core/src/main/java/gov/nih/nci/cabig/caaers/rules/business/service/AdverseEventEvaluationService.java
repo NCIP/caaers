@@ -10,6 +10,8 @@ import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryField;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
+import gov.nih.nci.cabig.caaers.rules.common.RuleLevel;
+import gov.nih.nci.cabig.caaers.rules.common.RuleType;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
 import java.util.Collection;
@@ -88,4 +90,13 @@ public interface AdverseEventEvaluationService {
      */
     SafetyRuleEvaluationResultDTO evaluateSafetySignallingRules(ObservedAdverseEventProfile observedAEProfile);
 
+    /**
+     * Will fetch the current bind URL for the rule.
+     * @param ruleType
+     * @param level
+     * @param orgId
+     * @param studyId
+     * @return
+     */
+    String fetchBindURI(RuleType ruleType, RuleLevel level, Integer orgId, Integer studyId);
 }

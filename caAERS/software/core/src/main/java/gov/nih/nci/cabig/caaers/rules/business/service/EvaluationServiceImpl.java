@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.domain.dto.SafetyRuleEvaluationResultDTO;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.*;
 import gov.nih.nci.cabig.caaers.rules.common.CaaersRuleUtil;
+import gov.nih.nci.cabig.caaers.rules.common.RuleType;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 import org.apache.commons.collections15.Closure;
@@ -524,14 +525,21 @@ public class EvaluationServiceImpl implements EvaluationService {
         
         final HashMap<String, Mandatory> rulesDecisionCache = new HashMap<String, Mandatory>();
         if(log.isDebugEnabled()) log.debug("Non Self referenced rule evaluation");
+        final String fieldRulesBindURL = adverseEventEvaluationService.fetchBindURI(RuleType.FIELD_LEVEL_RULES, null, null, null);
+        if(StringUtils.isEmpty(fieldRulesBindURL)){
+            log.warn("No active field level rules found, so ignoring rule based mandatoryness evaluation");
+        }
         CollectionUtils.forAllDo(rd.getNonSelfReferencedRuleBasedMandatoryFields(), new Closure<ReportMandatoryFieldDefinition>(){
             public void execute(ReportMandatoryFieldDefinition mfd) {
                String ruleName = mfd.getRuleName();
                String path = mfd.getFieldPath();
                Mandatory m = rulesDecisionCache.get(ruleName);
+               if(StringUtils.isEmpty(fieldRulesBindURL)) {
+                   log.info(mfd.getFieldPath() + " marking it as optional, as there is no field rules found");
+                   m = Mandatory.OPTIONAL;
+               }
                if(m == null){
-                   String decision = adverseEventEvaluationService.evaluateFieldLevelRules(mfd.getRuleBindURL(),
-                       ruleName, inputObjects);
+                   String decision = adverseEventEvaluationService.evaluateFieldLevelRules(fieldRulesBindURL, ruleName, inputObjects);
                    if(log.isDebugEnabled()) log.debug("rules decision : " + decision);
                    m = translateRulesMandatorynessResult(decision);
                    rulesDecisionCache.put(ruleName, m);
@@ -556,7 +564,12 @@ public class EvaluationServiceImpl implements EvaluationService {
                     }else {
                         inputObjects.add(o);
                     }
-                    String decision = adverseEventEvaluationService.evaluateFieldLevelRules(mfd.getRuleBindURL(), mfd.getRuleName(), inputObjects);
+                    String decision = null;
+                    if(StringUtils.isEmpty(fieldRulesBindURL)) {
+                        log.info(mfd.getFieldPath() + " marking it as optional, as there is no field rules found");
+                    }else {
+                        decision = adverseEventEvaluationService.evaluateFieldLevelRules(fieldRulesBindURL, mfd.getRuleName(), inputObjects);
+                    }
                     if(log.isDebugEnabled()) log.debug("rules decision : " + decision);
                     Mandatory m = translateRulesMandatorynessResult(decision);
                     if(log.isDebugEnabled()) log.debug( mfd.getFieldPath() + " -->" + m.getName());
