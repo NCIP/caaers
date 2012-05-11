@@ -16,6 +16,10 @@ public class DeviceQuery extends AbstractQuery {
         super("SELECT d FROM Device d");
     }
 
+    public void filterByRetiredStatus(Boolean status) {
+        super.filterByRetiredStatus("d", status);
+    }
+
     public void filterByType(String type) {
         if (StringUtils.isBlank(type)) {
             andWhere("d.type IS NULL OR d.type = ''");

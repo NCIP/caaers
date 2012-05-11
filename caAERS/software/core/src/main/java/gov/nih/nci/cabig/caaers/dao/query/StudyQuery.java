@@ -54,6 +54,10 @@ public class StudyQuery extends AbstractQuery {
         dateFormat = new SimpleDateFormat("MM/dd/yyyy");
     }
 
+    public void filterByRetiredStatus(Boolean status) {
+        super.filterByRetiredStatus(STUDY_ALIAS, status);
+    }
+
     public void joinIdentifier() {
         join(STUDY_ALIAS+".identifiers as identifier");
     }
