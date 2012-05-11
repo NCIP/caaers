@@ -8,4 +8,10 @@ import org.quartz.CronTrigger;
  */
 @SuppressWarnings("serial")
 public class SafetySignallingReportTrigger extends CronTrigger{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8662304169493501783L;
+	
 }
