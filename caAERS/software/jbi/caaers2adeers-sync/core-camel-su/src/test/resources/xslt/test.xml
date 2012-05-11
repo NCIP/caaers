@@ -1,139 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
-    <soapenv:Body>
-        <stud:updateStudy xmlns:stud="http://schema.integration.caaers.cabig.nci.nih.gov/study">
-            <stud:studies>
-                <stud:study>
-                    <shortTitle>Randomized Phase II 2 x 2 Factorial Trial of the Addition of Carboplatin +/- Bevacizumab
-                        to Neoadjuvant Weekly Paclitaxel Followed by Dose-Dense AC in Hormone
-                        Receptor-Poor/HER2-Negative Resectable Breast Cancer
-                    </shortTitle>
-                    <phaseCode>Phase II Trial</phaseCode>
-                    <status>Active - Trial is open to accrual</status>
-                    <adeersReporting>true</adeersReporting>
-                    <studyPurpose>Treatment</studyPurpose>
-                    <aeTermUnique>true</aeTermUnique>
-                    <stud:aeTerminology>
-                        <stud:ctcVersion>
-                            <name>4</name>
-                        </stud:ctcVersion>
-                    </stud:aeTerminology>
-                    <stud:diseaseTerminology>
-                        <diseaseCodeTerm>CTEP</diseaseCodeTerm>
-                    </stud:diseaseTerminology>
-                    <fundingSponsor>
-                        <organizationAssignedIdentifier>
-                            <value>CALGB-40603</value>
-                        </organizationAssignedIdentifier>
-                        <stud:studyFundingSponsor>
-                            <stud:organization>
-                                <name>Cancer Therapy Evaluation Program</name>
-                                <nciInstituteCode>CTEP</nciInstituteCode>
-                            </stud:organization>
-                        </stud:studyFundingSponsor>
-                    </fundingSponsor>
-                    <coordinatingCenter>
-                        <organizationAssignedIdentifier>
-                            <value>CALGB-40603</value>
-                        </organizationAssignedIdentifier>
-                        <stud:studyCoordinatingCenter>
-                            <stud:organization>
-                                <name>Cancer and Leukemia Group B</name>
-                                <nciInstituteCode>CALGB</nciInstituteCode>
-                                <type>CGP</type>
-                            </stud:organization>
-                            <studyInvestigators>
-                                <stud:studyInvestigator>
-                                    <roleCode>PI</roleCode>
-                                    <stud:siteInvestigator>
-                                        <stud:investigator>
-                                            <firstName>William</firstName>
-                                            <lastName>Sikov</lastName>
-                                            <nciIdentifier>1777</nciIdentifier>
-                                        </stud:investigator>
-                                    </stud:siteInvestigator>
-                                </stud:studyInvestigator>
-                            </studyInvestigators>
-                            <studyPersonnels/>
-                        </stud:studyCoordinatingCenter>
-                    </coordinatingCenter>
-                    <treatmentAssignments/>
-                    <studyAgents>
-                        <stud:studyAgent>
-                            <stud:agent>
-                                <nscNumber>704865</nscNumber>
-                            </stud:agent>
-                            <indType>OTHER</indType>
-                            <partOfLeadIND>true</partOfLeadIND>
-                        </stud:studyAgent>
-                        <stud:studyAgent>
-                            <stud:agent>
-                                <nscNumber>673089</nscNumber>
-                            </stud:agent>
-                            <indType>NA_COMMERCIAL</indType>
-                            <partOfLeadIND>false</partOfLeadIND>
-                        </stud:studyAgent>
-                        <stud:studyAgent>
-                            <stud:agent>
-                                <nscNumber>241240</nscNumber>
-                            </stud:agent>
-                            <indType>NA_COMMERCIAL</indType>
-                            <partOfLeadIND>false</partOfLeadIND>
-                        </stud:studyAgent>
-                        <stud:studyAgent>
-                            <stud:agent>
-                                <nscNumber>123127</nscNumber>
-                            </stud:agent>
-                            <indType>NA_COMMERCIAL</indType>
-                            <partOfLeadIND>false</partOfLeadIND>
-                        </stud:studyAgent>
-                        <stud:studyAgent>
-                            <stud:agent>
-                                <nscNumber>26271</nscNumber>
-                            </stud:agent>
-                            <indType>NA_COMMERCIAL</indType>
-                            <partOfLeadIND>false</partOfLeadIND>
-                        </stud:studyAgent>
-                        <stud:studyAgent>
-                            <stud:agent>
-                                <nscNumber>614629</nscNumber>
-                            </stud:agent>
-                            <indType>NA_COMMERCIAL</indType>
-                            <partOfLeadIND>false</partOfLeadIND>
-                        </stud:studyAgent>
-                        <stud:studyAgent>
-                            <stud:agent>
-                                <nscNumber>725961</nscNumber>
-                            </stud:agent>
-                            <indType>NA_COMMERCIAL</indType>
-                            <partOfLeadIND>false</partOfLeadIND>
-                        </stud:studyAgent>
-                        <stud:studyAgent>
-                            <stud:agent>
-                                <nscNumber>34521</nscNumber>
-                            </stud:agent>
-                            <indType>NA_COMMERCIAL</indType>
-                            <partOfLeadIND>false</partOfLeadIND>
-                        </stud:studyAgent>
-                        <stud:studyAgent>
-                            <stud:agent>
-                                <nscNumber>613795</nscNumber>
-                            </stud:agent>
-                            <indType>NA_COMMERCIAL</indType>
-                            <partOfLeadIND>false</partOfLeadIND>
-                        </stud:studyAgent>
-                    </studyAgents>
-                    <ctepStudyDiseases>
-                        <stud:ctepStudyDisease>
-                            <stud:diseaseTerm>
-                                <meddraCode>10006190</meddraCode>
-                            </stud:diseaseTerm>
-                            <leadDisease>true</leadDisease>
-                        </stud:ctepStudyDisease>
-                    </ctepStudyDiseases>
-                    <studyDevices/>
-                </stud:study>
-            </stud:studies>
-        </stud:updateStudy>
-    </soapenv:Body>
-</soapenv:Envelope>
+<payload xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+         xmlns:com="http://schema.integration.caaers.cabig.nci.nih.gov/common"
+         correlationId="roNHiUCOkJ">
+    <system>caaers</system>
+    <response>
+        <entity xmlns:stud="http://schema.integration.caaers.cabig.nci.nih.gov/study">study</entity>
+        <operation xmlns:stud="http://schema.integration.caaers.cabig.nci.nih.gov/study" name="createStudyResponse">
+            <status>error</status>
+            <errors>
+                <error>WS_STU_001 : Another study with short title "Phase III Double-Blind, Placebo-Controlled
+                    Randomized
+                    Comparison of Creatine for Cancer-Associated Weight Loss" is using same identifier, so cannot
+                    process
+                    "Phase III Double-Blind, Placebo-Controlled Randomized Comparison of Creatine for Cancer-Associated
+                    Weight Loss" : Another study with short title "Phase III Double-Blind, Placebo-Controlled Randomized
+                    Comparison of Creatine for Cancer-Associated Weight Loss" is using same identifier, so cannot
+                    process
+                    "Phase III Double-Blind, Placebo-Controlled Randomized Comparison of Creatine for Cancer-Associated
+                    Weight Loss"
+                </error>
+            </errors>
+            <status>Failed to Process</status>
+            <data/>
+        </operation>
+    </response>
+</payload>

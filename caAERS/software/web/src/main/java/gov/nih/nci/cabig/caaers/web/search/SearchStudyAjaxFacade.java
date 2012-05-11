@@ -351,6 +351,8 @@ public class SearchStudyAjaxFacade extends AbstractAjaxFacade {
 
         }
 
+        organizationQuery.filterByRetiredStatus(false);
+
         try {
             organizations = organizationRepository.searchOrganization(organizationQuery);
         }

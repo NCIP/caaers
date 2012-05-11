@@ -14,6 +14,10 @@ public class OrganizationQuery extends AbstractQuery {
         orderBy("o.name");
     }
 
+    public void filterByRetiredStatus(Boolean status) {
+        super.filterByRetiredStatus("o", status);
+    }
+
     public void filterByOrganizationName(final String name) {
         String searchString = "%" + name.toLowerCase() + "%";
         andWhere("lower(o.name) LIKE :" + ORGANIZATION_NAME);

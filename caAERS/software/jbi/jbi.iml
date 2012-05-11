@@ -13,7 +13,7 @@
       <sourceFolder url="file://$MODULE_DIR$/caaers-adeers-service-assembly/caaers-adeers-webservice-su/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/caaers-adeers-service-assembly/caaers-adeers-webservice-su/src/test/resources" isTestSource="false" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="1.6" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Lib-1" level="project" />
     <orderEntry type="library" name="Out" level="project" />
