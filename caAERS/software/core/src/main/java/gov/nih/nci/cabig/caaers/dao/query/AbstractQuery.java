@@ -337,8 +337,12 @@ public abstract class AbstractQuery {
     public void filterByParticipantDOB(String dateString , String operator) throws Exception {
     	andWhere(createDateQuery("p.dateOfBirth", dateString, operator));
     }
-    
-    
+
+    public void filterByRetiredStatus(String alias, Boolean status) {
+        andWhere(alias + ".retiredIndicator = :value");
+        setParameter("value", status.booleanValue());
+    }
+
 	public  String createDateQuery(String fullAttributeName, String dateString, String predicate) throws Exception {
 		Date dateValue = null;
 		try {
