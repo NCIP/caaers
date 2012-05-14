@@ -191,7 +191,7 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
 	  * @see gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository#restrictBySubnames(java.lang.String[])
 	  */
 	 public List<Organization> restrictBySubnames(final String[] subnames) {
-         return restrictBySubnames(subnames, false);
+         return restrictBySubnames(subnames, false, true);
     }
 
  	/* (non-Javadoc)
@@ -205,7 +205,7 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
 
          if(studyId != null) 
              query.filterByStudyId(studyId);
-         
+
          List<StudyOrganization> organizations = (List<StudyOrganization>)organizationDao.search(query);
          return organizations;
     }
@@ -213,11 +213,12 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
  	/* (non-Javadoc)
 	  * @see gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository#restrictBySubnames(java.lang.String[], boolean)
 	  */
-	 public List<Organization> restrictBySubnames(final String[] subnames, boolean skipFiltering) {
+	 public List<Organization> restrictBySubnames(final String[] subnames, boolean skipFiltering, boolean filterByRetired) {
  		String text = subnames[0];
     	OrganizationQuery query = new OrganizationQuery();
     	query.filterByOrganizationNameOrNciCode(text);
         query.setFiltered(skipFiltering);
+        if (filterByRetired) query.filterByRetiredStatus(false);
 
         List<Organization> localOrganizations;
  		localOrganizations = organizationDao.getBySubnames(query);
