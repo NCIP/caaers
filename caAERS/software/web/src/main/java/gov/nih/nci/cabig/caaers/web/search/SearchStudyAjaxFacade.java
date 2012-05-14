@@ -572,10 +572,17 @@ public class SearchStudyAjaxFacade extends AbstractAjaxFacade {
         return ObjectTools.reduceAll(agents, "id", "name", "nscNumber", "retiredIndicator");
     }
 
+    /**
+     * This method is invoked from admin page to Search all Devices
+     * @param parameterMap
+     * @param text
+     * @param request
+     * @return
+     */
     public List<Device> getDevices(final Map parameterMap, final String text, final HttpServletRequest request) {
         List<Device> devices = new ArrayList<Device>();
         if (text != null) {
-            devices = deviceRepository.getByMatchText(text);
+            devices = deviceRepository.getByMatchText(text, false);
         }
         return ObjectTools.reduceAll(devices, "id", "commonName", "brandName", "type", "retiredIndicator");
     }

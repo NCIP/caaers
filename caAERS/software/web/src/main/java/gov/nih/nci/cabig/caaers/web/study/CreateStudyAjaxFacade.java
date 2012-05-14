@@ -899,8 +899,13 @@ public class CreateStudyAjaxFacade {
         return out;
     }
 
+    /**
+     * This method is invioked from Study flow, Interventions page, Devices autocompleter
+     * @param text
+     * @return
+     */
     public List<Device> fetchDevicesByText(String text) {
-        List<Device> l = deviceRepository.getByMatchText(text);
+        List<Device> l = deviceRepository.getByMatchText(text, true);
         l = RankBasedSorterUtils.sort(l , text, new Serializer<Device>(){
             public String serialize(Device object) {
                 return object.getDisplayName();

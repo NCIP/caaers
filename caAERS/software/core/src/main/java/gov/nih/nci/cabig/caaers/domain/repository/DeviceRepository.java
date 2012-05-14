@@ -87,14 +87,15 @@ public class DeviceRepository {
     }
 
     /**
-     * Gets the by match text.
-     *
-     * @param text the text
+     * Rerturns Devices by match text
+     * @param text the text to search by
+     * @oaram activeOnly the result will return only active Devices if true
      * @return the by match text
      */
-    public List<Device> getByMatchText(String text) {
+    public List<Device> getByMatchText(String text, boolean activeOnly) {
         DeviceQuery dq = new DeviceQuery();
         dq.filterByMatchText(text);
+        if (activeOnly) dq.filterByRetiredStatus(false);
         return (List<Device>)deviceDao.search(dq);
     }
 
