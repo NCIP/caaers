@@ -2,7 +2,9 @@ package gov.nih.nci.cabig.caaers.domain.repository;
 
 import static org.easymock.EasyMock.expect;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
+import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
+import gov.nih.nci.cabig.caaers.dao.query.AgentQuery;
 import gov.nih.nci.cabig.caaers.domain.Agent;
 
 import java.util.ArrayList;
@@ -12,108 +14,44 @@ import org.easymock.classextension.EasyMock;
 
 /**
  * This is the repository test class for managing agents
- * @author Moni
+ * @author Ion C. Olaru
+ *         - Refactored to use DBUnit instead of EasyMocks
  *
  */
-public class AgentRepositoryImplTest extends AbstractTestCase {
+public class AgentRepositoryImplTest extends DaoTestCase {
 
-	AgentRepositoryImpl repositoryImpl;
-	AgentDao agentDao;
+	AgentRepository agentRepository = (AgentRepository)getDeployedApplicationContext().getBean("agentRepository");
 	
 	protected void setUp() throws Exception {
 		super.setUp();
-		repositoryImpl = new AgentRepositoryImpl();
-		agentDao = registerDaoMockFor(AgentDao.class);
-		repositoryImpl.setAgentDao(agentDao);
 	}
 	
-	public void test_GetAgentByName() {
-		Agent agentReturned = null;
-		List<Agent> agentList = new ArrayList<Agent>();
-		Agent agent = new Agent();
-    	agent.setDescription("abcd");
-    	agent.setName("abcd");
-    	agent.setNscNumber("1234");
-    	agentList.add(agent);
-    	
-    	expect(agentDao.getByName((String)EasyMock.anyObject())).andReturn(agent).anyTimes();
-    	replayMocks();
-    	agentReturned = repositoryImpl.getAgentByName("abcd");
-    	verifyMocks();
+	public void testGetAgentByName() {
+		Agent agentReturned;
+    	agentReturned = agentRepository.getAgentByName("agent-01");
 		assertNotNull(agentReturned);
-		assertEquals("abcd", agentReturned.getName());
+		assertEquals("agent-01", agentReturned.getName());
+		assertEquals("001", agentReturned.getNscNumber());
 	}
-	
-	public void test_GetAgentByNscNumber(){
-		Agent agentReturned = null;
-		List<Agent> agentList = new ArrayList<Agent>();
-		Agent agent = new Agent();
-    	agent.setDescription("abcd");
-    	agent.setName("abcd");
-    	agent.setNscNumber("1234");
-    	agentList.add(agent);
-    	
-    	expect(agentDao.getByNscNumber((String)EasyMock.anyObject())).andReturn(agent).anyTimes();
-    	replayMocks();
-    	agentReturned = repositoryImpl.getAgentByNscNumber("1234");
-    	verifyMocks();
-		assertNotNull(agentReturned);
-		assertEquals("1234", agentReturned.getNscNumber());
-	}
-	
-	public void test_GetAgentsBySubnames(){
-		List<Agent> agentListReturned = null;
-		List<Agent> agentList = new ArrayList<Agent>();
-		Agent agent = new Agent();
-    	agent.setDescription("abcd");
-    	agent.setName("abcd");
-    	agent.setNscNumber("1234");
-    	agentList.add(agent);
-    	
-    	expect(agentDao.getBySubnames((String[])EasyMock.anyObject())).andReturn(agentList).anyTimes();
-    	replayMocks();
-    	agentListReturned = repositoryImpl.getAgentsBySubnames(new String[] { "abcd" });
-    	verifyMocks();
-		assertNotNull(agentListReturned);
-		assertEquals(1, agentListReturned.size());
-		assertEquals("abcd", agentListReturned.get(0).getName());
-	}
-	
-	public void test_GetAllAgents(){
-		List<Agent> agentListReturned = null;
-		List<Agent> agentList = new ArrayList<Agent>();
-		Agent agent = new Agent();
-    	agent.setDescription("abcd");
-    	agent.setName("abcd");
-    	agent.setNscNumber("1234");
-    	agentList.add(agent);
-    	Agent agent1 = new Agent();
-    	agent.setDescription("xyzs");
-    	agent.setName("weqer");
-    	agent.setNscNumber("654321");
-    	agentList.add(agent1);
-    	
-    	expect(agentDao.getAll()).andReturn(agentList).anyTimes();
-    	
-		replayMocks();
-		agentListReturned = repositoryImpl.getAllAgents();
-		verifyMocks();
-		assertNotNull(agentListReturned);
-		assertEquals(2, agentListReturned.size());
-    	
-	}
-	
-	public void test_SaveAgent(){
-		
-		Agent agent = new Agent();
-    	agent.setDescription("abcd");
-    	agent.setName("abcd");
-    	agent.setNscNumber("1234");
 
-    	agentDao.save((Agent)EasyMock.anyObject());
-		
-		replayMocks();
-		repositoryImpl.saveAgent(agent);
-		verifyMocks();
+	public void testGetAgentByNSC() {
+		Agent agentReturned;
+    	agentReturned = agentRepository.getAgentByNscNumber("002");
+		assertNotNull(agentReturned);
+		assertEquals("agent-02", agentReturned.getName());
+		assertEquals("002", agentReturned.getNscNumber());
 	}
+
+	public void testGetAllAgents() {
+		List<Agent> agents = agentRepository.getAllAgents();
+		assertNotNull(agents);
+		assertEquals(3, agents.size());
+	}
+
+	public void testGetByNameFilterByRetired() {
+		List<Agent> agents = agentRepository.getAgentsByNameAndNsc("01", "001", true);
+		assertNotNull(agents);
+		assertEquals(1, agents.size());
+	}
+
 }

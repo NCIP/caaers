@@ -6,10 +6,13 @@ package gov.nih.nci.cabig.caaers.domain.repository;
  */
 
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
+import gov.nih.nci.cabig.caaers.dao.query.AgentQuery;
 import gov.nih.nci.cabig.caaers.domain.Agent;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import gov.nih.nci.cabig.caaers.domain.Study;
 import org.springframework.transaction.annotation.Transactional;
 
  
@@ -71,6 +74,29 @@ public class AgentRepositoryImpl implements AgentRepository {
 		return agentDao.getAll();
 	}
 
+	public List<Agent> search(AgentQuery q) {
+		return (List<Agent>)agentDao.search(q);
+	}
+
+    public List<Agent> getAgentsByNameAndNsc(String name, String nsc, boolean filterByRetired) {
+        List<Agent> agents;
+        AgentQuery q = new AgentQuery();
+        q.filterByName(name);
+        q.filterByNSC(nsc);
+        if (filterByRetired) q.filterByRetiredStatus(false);
+        agents = search(q);
+        return agents;
+    }
+
+    public List<Agent> getAgentsByNameOrNsc(String name, String nsc, boolean filterByRetired) {
+        List<Agent> agents;
+        AgentQuery q = new AgentQuery();
+        q.filterByNameOrNSC(name, nsc);
+        if (filterByRetired) q.filterByRetiredStatus(false);
+        agents = search(q);
+        return agents;
+    }
+
 	/**
 	 * This method saves the given agent.
 	 *
@@ -89,4 +115,6 @@ public class AgentRepositoryImpl implements AgentRepository {
 	public void setAgentDao(AgentDao agentDao) {
 		this.agentDao = agentDao;
 	}
+
+
 }

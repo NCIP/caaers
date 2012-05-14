@@ -566,9 +566,7 @@ public class SearchStudyAjaxFacade extends AbstractAjaxFacade {
 
     public List<Agent> getAgentsTable(final Map parameterMap, final String text, final String nsc, final HttpServletRequest request) {
         List<Agent> agents = new ArrayList<Agent>();
-        if (text != null) {
-            agents = agentRepository.getAgentsBySubnames(new String[]{text, nsc});
-        }
+        agents = agentRepository.getAgentsByNameAndNsc(text, nsc, false);
         return ObjectTools.reduceAll(agents, "id", "name", "nscNumber", "retiredIndicator");
     }
 

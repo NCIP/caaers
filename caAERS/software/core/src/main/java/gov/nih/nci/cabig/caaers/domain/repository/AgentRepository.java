@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
+import gov.nih.nci.cabig.caaers.dao.query.AgentQuery;
 import gov.nih.nci.cabig.caaers.domain.Agent;
 
 import java.util.List;
@@ -51,7 +52,11 @@ public interface AgentRepository {
 	 * @return the agent by nsc number
 	 */
 	public Agent getAgentByNscNumber(String nscNumber);
-	
+
+	public List<Agent> getAgentsByNameAndNsc(String name, String nsc, boolean filterByRetired);
+
+    public List<Agent> getAgentsByNameOrNsc(String name, String nsc, boolean filterByRetired);
+
 	/**
 	 * This method saves the given agent.
 	 *
@@ -59,4 +64,5 @@ public interface AgentRepository {
 	 */
 	public void saveAgent(Agent agent);
 
+    public List<Agent> search(AgentQuery q);
 }

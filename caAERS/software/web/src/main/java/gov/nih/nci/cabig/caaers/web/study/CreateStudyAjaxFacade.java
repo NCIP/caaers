@@ -55,6 +55,7 @@ public class CreateStudyAjaxFacade {
     }
     
     private AgentDao agentDao;
+    private AgentRepository agentRepository;
     private DeviceRepository deviceRepository;
     private DiseaseCategoryDao diseaseCategoryDao;
     private DiseaseTermDao diseaseTermDao;
@@ -183,8 +184,8 @@ public class CreateStudyAjaxFacade {
      * Retrieves Agents for the autocompleter through AJAX
      * */
     public List<Agent> matchAgents(final String text) {
-        List<Agent> agents = agentDao.getBySubnames(extractSubnames(text));
-        agents = RankBasedSorterUtils.sort(agents , text, new Serializer<Agent>(){
+        List<Agent> agents = agentRepository.getAgentsByNameOrNsc(text, text, true);
+        agents = RankBasedSorterUtils.sort(agents, text, new Serializer<Agent>() {
             public String serialize(Agent object) {
                 return object.getDisplayName();
             }
@@ -936,5 +937,13 @@ public class CreateStudyAjaxFacade {
 
     public void setProxyWebServiceFacade(AdeersIntegrationFacade proxyWebServiceFacade) {
         this.proxyWebServiceFacade = proxyWebServiceFacade;
+    }
+
+    public AgentRepository getAgentRepository() {
+        return agentRepository;
+    }
+
+    public void setAgentRepository(AgentRepository agentRepository) {
+        this.agentRepository = agentRepository;
     }
 }

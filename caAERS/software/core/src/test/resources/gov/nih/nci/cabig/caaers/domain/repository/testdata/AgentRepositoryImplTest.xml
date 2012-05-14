@@ -1,0 +1,7 @@
+<dataset>
+
+    <agents name="agent-01" nsc="001" retired_indicator="false" />
+    <agents name="agent-02" nsc="002" retired_indicator="true" />
+    <agents name="agent-03" nsc="003" retired_indicator="false" />
+
+</dataset>
