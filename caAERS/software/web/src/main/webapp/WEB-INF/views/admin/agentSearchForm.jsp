@@ -46,13 +46,15 @@ var linkFormatter = function(elCell, oRecord, oColumn, oData) {
 
 var myColumnDefs = [
     {key:"name",             label:"Name",          sortable:true,      resizeable:true, formatter: linkFormatter},
-    {key:"nscNumber",        label:"NSC",           sortable:true,      resizeable:true, minWidth:200, maxWidth:200}
+    {key:"nscNumber",        label:"NSC",           sortable:true,      resizeable:true, minWidth:200, maxWidth:200},
+    {key:"retiredIndicator",        label:"Retired",           sortable:true,      resizeable:true, minWidth:200, maxWidth:200, formatter: retireFormatter}
 ];
 
 var myFields = [
     {key:'id',           parser:"integer"},
     {key:'name',         parser:"string"},
-    {key:'nscNumber',    parser:"string"}
+    {key:'nscNumber',    parser:"string"},
+    {key:'retiredIndicator',    parser:"string"}
 ];
 </script>
 

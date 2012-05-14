@@ -351,8 +351,6 @@ public class SearchStudyAjaxFacade extends AbstractAjaxFacade {
 
         }
 
-        organizationQuery.filterByRetiredStatus(false);
-
         try {
             organizations = organizationRepository.searchOrganization(organizationQuery);
         }
@@ -528,6 +526,7 @@ public class SearchStudyAjaxFacade extends AbstractAjaxFacade {
             lo.setName(o.getName());
             lo.setNciInstituteCode(o.getNciInstituteCode());
             lo.setExternalId(o.getExternalId() != null ? o.getExternalId().trim() : "");
+            lo.setRetiredIndicator(o.getRetiredIndicator());
             rs.add(lo);
         }
         return rs;
@@ -570,7 +569,7 @@ public class SearchStudyAjaxFacade extends AbstractAjaxFacade {
         if (text != null) {
             agents = agentRepository.getAgentsBySubnames(new String[]{text, nsc});
         }
-        return ObjectTools.reduceAll(agents, "id", "name", "nscNumber");
+        return ObjectTools.reduceAll(agents, "id", "name", "nscNumber", "retiredIndicator");
     }
 
     public List<Device> getDevices(final Map parameterMap, final String text, final HttpServletRequest request) {
@@ -578,7 +577,7 @@ public class SearchStudyAjaxFacade extends AbstractAjaxFacade {
         if (text != null) {
             devices = deviceRepository.getByMatchText(text);
         }
-        return ObjectTools.reduceAll(devices, "id", "commonName", "brandName", "type");
+        return ObjectTools.reduceAll(devices, "id", "commonName", "brandName", "type", "retiredIndicator");
     }
 
     public List<UserAjaxableDomainObject> getResearchStaffTable(final Map parameterMap, final String type, final String text, final HttpServletRequest request) {

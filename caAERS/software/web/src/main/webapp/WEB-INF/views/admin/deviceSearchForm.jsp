@@ -31,16 +31,18 @@ var linkFormatter = function(elCell, oRecord, oColumn, oData) {
 };
 
 var myColumnDefs = [
-    {key:"commonName",             label:"commonName",          sortable:true,      resizeable:true, formatter: linkFormatter},
-    {key:"brandName",              label:"brandName",           sortable:true,      resizeable:true},
-    {key:"type",                   label:"type",                sortable:true,      resizeable:true}
+    {key:"commonName",             label:"Common Name",          sortable:true,      resizeable:true, formatter: linkFormatter},
+    {key:"brandName",              label:"Brand Name",           sortable:true,      resizeable:true},
+    {key:"type",                   label:"Type",                sortable:true,      resizeable:true},
+    {key:"retiredIndicator",                label:"Retired",                sortable:true,      resizeable:true, formatter: retireFormatter}
 ];
 
 var myFields = [
     {key:'id',              parser:"integer"},
     {key:'commonName',      parser:"string"},
     {key:'brandName',       parser:"string"},
-    {key:'type',            parser:"string"}
+    {key:'type',            parser:"string"},
+    {key:'retiredIndicator',         parser:"string"}
 ];
 </script>
 

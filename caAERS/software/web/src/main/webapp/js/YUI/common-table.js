@@ -41,3 +41,12 @@ function initializeYUITable(tableId, responseData, columnDefs, fields) {
     }
 
 }
+
+var retireFormatter = function(elCell, oRecord, oColumn, oData) {
+        var retired = oRecord.getData("retiredIndicator");
+        if (retired == 'true') {
+            elCell.innerHTML = "<span style='color:red; font-size: 7pt; font-weight: bold; font-family: tahoma;'>INACTIVE</span>";
+        } else {
+            elCell.innerHTML = "";
+        }
+};

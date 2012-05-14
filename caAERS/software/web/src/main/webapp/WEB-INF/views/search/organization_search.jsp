@@ -53,16 +53,18 @@ var linkFormatter = function(elCell, oRecord, oColumn, oData) {
 };
 
 var myColumnDefs = [
-    {key:"externalId",        label:"",              sortable:true,      resizeable:true, formatter: linkFormatterWithNCI, maxWidth:20, minWidth:20},
+    {key:"externalId",              label:"&nbsp;",              sortable:true,      resizeable:true, formatter: linkFormatterWithNCI, maxWidth:20, minWidth:20},
     {key:"name",                    label:"Name",                          sortable:true,      resizeable:true, formatter: linkFormatter},
-    {key:"nciInstituteCode",        label:"Assigned Identifier",           sortable:true,      resizeable:true, minWidth:200, maxWidth:200}
+    {key:"nciInstituteCode",        label:"Assigned Identifier",           sortable:true,      resizeable:true, minWidth:200, maxWidth:200},
+    {key:"retiredIndicator",        label:"Retired",           sortable:true,      resizeable:true, minWidth:200, maxWidth:200, formatter: retireFormatter}
 ];
 
 var myFields = [
     {key:'id',                  parser:"integer"},
     {key:'name',                parser:"string"},
     {key:'nciInstituteCode',    parser:"string"},
-    {key:'externalId',    parser:"string"}
+    {key:'externalId',          parser:"string"},
+    {key:'retiredIndicator',    parser:"string"}
 ];
 
 </script>
