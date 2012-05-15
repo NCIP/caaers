@@ -32,7 +32,7 @@
         <asa:expectedAECtcTerm>
             <ctepTerm><xsl:value-of select="aeTerm"/></ctepTerm>
             <category><xsl:value-of select="category"/></category>
-            <xsl:variable name="_ctcVer" select="ctcVersion" />
+            <xsl:variable name="_ctcVer" select="ctcAEVersion" />
             <ctcVersion>
                 <xsl:call-template name="lookup"><xsl:with-param name="_map" select="$map//ctcversions" /><xsl:with-param name="_code" select="$_ctcVer" /></xsl:call-template>
             </ctcVersion>
