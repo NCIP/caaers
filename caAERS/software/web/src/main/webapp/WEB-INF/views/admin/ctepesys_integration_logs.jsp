@@ -53,7 +53,7 @@
 		
 		// check if end date is valid
 		var endDateParts = ($('endDate').value).split("/");
-		var endDateParam = new Date(endDateParts[2],endDateParts[0]-1, endDateParts[1]);
+		var endDateParam = new Date(endDateParts[2],endDateParts[0]-1, endDateParts[1],23,59,59);
 		if ( Object.prototype.toString.call(endDateParam) === "[object Date]" ){
 			if (isNaN( endDateParam.getTime())) { 
     			endDateParam = null; // date is not valid
