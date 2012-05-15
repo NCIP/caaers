@@ -9,7 +9,6 @@ import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
-import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ResponseDataType;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.AssignmentType;
@@ -45,7 +44,6 @@ public class ParticipantServiceImpl extends AbstractImportService implements Mes
     private ParticipantConverter participantConverter;
     private ParticipantSynchronizer participantSynchronizer;
     private DomainObjectValidator domainObjectValidator;
-    private EventFactory eventFactory;
 
     
 	/**
@@ -169,8 +167,7 @@ public class ParticipantServiceImpl extends AbstractImportService implements Mes
     		List<String> errors = domainObjectValidator.validate(participantImportOutcome.getImportedDomainObject());
         	if(participantImportOutcome.isSavable() && errors.size() == 0){
         		participantDao.save(participantImportOutcome.getImportedDomainObject());
-        		// fire event to rebuild CSM index ..
-        		eventFactory.publishEntityModifiedEvent(new Participant(), false);
+
         		caaersServiceResponse.getServiceResponse().setResponsecode("0");
         		sb.append("  Created in caAERS");
         		caaersServiceResponse.getServiceResponse().setMessage(sb.toString());
@@ -455,7 +452,5 @@ public class ParticipantServiceImpl extends AbstractImportService implements Mes
 	public void setStudyDao(StudyDao studyDao) {
 		this.studyDao = studyDao;
 	}
-    public void setEventFactory(EventFactory eventFactory) {
-        this.eventFactory = eventFactory;
-    }
+
 }

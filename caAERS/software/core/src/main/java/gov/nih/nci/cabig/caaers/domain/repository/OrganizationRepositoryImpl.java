@@ -11,7 +11,6 @@ import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
-import gov.nih.nci.cabig.caaers.event.EventFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -45,8 +44,6 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
     /** The coppa mode for auto completers. */
     private boolean coppaModeForAutoCompleters;
     
-    /** The event factory. */
-    private EventFactory eventFactory;
 
     /* (non-Javadoc)
      * @see gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository#createOrUpdate(gov.nih.nci.cabig.caaers.domain.Organization)
@@ -69,7 +66,6 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
      */
     public void create(Organization site) throws CaaersSystemException {
     	organizationDao.save(site);
-    	eventFactory.publishEntityModifiedEvent(new LocalOrganization(), false);
     }
     
     /**
@@ -306,12 +302,5 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
 		organizationDao.evict(org);		
 	}
 
-	/**
-	 * Sets the event factory.
-	 *
-	 * @param eventFactory the new event factory
-	 */
-	public void setEventFactory(EventFactory eventFactory) {
-		this.eventFactory = eventFactory;
-	}
+
 }

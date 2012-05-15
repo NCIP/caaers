@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.integration.schema.study.*;
 import gov.nih.nci.cabig.caaers.service.migrator.StudyConverter;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
@@ -14,6 +15,7 @@ import gov.nih.nci.cabig.caaers.utils.XsltTransformer;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.ws.client.core.WebServiceTemplate;
@@ -60,6 +62,7 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
 	public static final String SEARCH_STUDY_ENTITY_NAME="study";
 	public static final String SEARCH_STUDY_OPERATION_NAME="searchStudy";
 
+    private EventFactory eventFactory;
     private WebServiceTemplate webServiceTemplate;
     private StudyConverter studyConverter;
     private Configuration configuration;
@@ -117,6 +120,10 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
 
     public void setStudyDao(StudyDao studyDao) {
         this.studyDao = studyDao;
+    }
+
+    public void setEventFactory(EventFactory eventFactory) {
+        this.eventFactory = eventFactory;
     }
 
     private static String buildMessage(String corelationId, String system, String entity, String operationName, String operationMode, Map<String, String> criteria) {
@@ -267,6 +274,14 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
             studyDbId = StringUtils.trim(studyDbId);
             if(log.isInfoEnabled()) log.info("Got study details : Study DB ID :" + studyDbId);
             retVal = studyDbId;
+
+            //fire the entity modification event  - only for createStudy operation
+            if(StringUtils.equals(operationName, CREATE_STUDY_OPERATION_NAME)){
+                Study study = new LocalStudy();
+                if(NumberUtils.isNumber(studyDbId))study.setId(NumberUtils.toInt(studyDbId));
+                if(eventFactory != null) eventFactory.publishEntityModifiedEvent(study, false);
+            }
+            
         }catch (Exception e){
             log.error("Error occurred while invoking ServiceMix Study Details : " + e.getMessage(), e);
             retVal += e.getMessage();

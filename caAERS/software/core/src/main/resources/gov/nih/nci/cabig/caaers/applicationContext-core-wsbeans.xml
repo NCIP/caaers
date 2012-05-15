@@ -29,7 +29,6 @@
         <property name="domainObjectValidator" ref="domainObjectValidator" />
         <property name="studySearchableAjaxableDomainObjectRepository" ref="studySearchableAjaxableDomainObjectRepository" />
         <property name="organizationRepository" ref="organizationRepository" />
-        <property name="eventFactory" ref="eventFactory" />
         <property name="organizationManagementServiceImpl" ref="organizationManagementService" />
         <property name="organizationConverter" ref="organizationConverter" />
     </bean>
@@ -43,7 +42,7 @@
         <property name="studyDao" ref="studyDao" />
         <property name="studySearchableAjaxableDomainObjectRepository" ref="studySearchableAjaxableDomainObjectRepository" />
         <property name="organizationRepository" ref="organizationRepository" />
-        <property name="eventFactory" ref="eventFactory" />
+
     </bean>
 
     <bean id="adverseEventManagementServiceImpl" autowire="byType" class="gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl"/>
@@ -69,6 +68,7 @@
 		<property name="studyConverter" ref="studyConverter"/>
         <property name="configuration" ref="configuration" />
         <property name="studyDao" ref="studyDao" />
+        <property name="eventFactory" ref="eventFactory" />
 	</bean>
 
 </beans>

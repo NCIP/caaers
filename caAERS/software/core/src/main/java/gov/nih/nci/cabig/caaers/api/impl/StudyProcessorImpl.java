@@ -7,7 +7,6 @@ import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
-import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
@@ -57,7 +56,6 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 	private ApplicationContext applicationContext;
 	private DomainObjectValidator domainObjectValidator;
 	private MessageSource messageSource;
-	private EventFactory eventFactory;
     private OrganizationManagementServiceImpl oms;
     private OrganizationConverter organizationConverter;
 
@@ -230,7 +228,6 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
                                 + "\" Created in caAERS");
 
 						logger.info("Study Created");
-						eventFactory.publishEntityModifiedEvent(theStudy, false);
 					} catch (Exception e) {
                         Helper.populateError(caaersServiceResponse, "WS_GEN_000", "Study Creation Failed " +  e.getMessage());
 						logger.error("Error processing study : " + e.getMessage(), e);
@@ -418,10 +415,6 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 
 	public void setStudyRepository(StudyRepository studyRepository) {
 		this.studyRepository = studyRepository;
-	}
-
-	public void setEventFactory(EventFactory eventFactory) {
-		this.eventFactory = eventFactory;
 	}
 
     public OrganizationManagementServiceImpl getOrganizationManagementServiceImpl() {
