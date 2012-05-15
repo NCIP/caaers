@@ -12,7 +12,7 @@
     function showFlashMessage(text) {
         jQuery("#autoRemoveElementMesage").html(text);
         jQuery("#autoRemoveElement").show();
-        hideFlashMessage.delay(3);
+        hideFlashMessage.delay(5);
     }
 
     <%--ToDo  THIS METHOS HAS TO BE MOVED TO A COMMON PLACE FOR REUSE --%>
@@ -24,7 +24,17 @@
         jQuery("#searchForm").submit();
     }
 
+    function validateInputText() {
+        if (jQuery.trim(jQuery("#searchText").val()) == "") {
+            jQuery("#flashErrors").show();
+            return false;
+        }
+        jQuery("#flashErrors").hide();
+        return true;
+    }
+
     function submitSearch() {
+        if (!validateInputText()) return;
         popupDiv = new Window({className:"alphacube", width:300, height:100, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
         popupDiv.setContent("search_submit");
         popupDiv.showCenter(true);
@@ -90,6 +100,11 @@
 </script>
 
 <chrome:box title="Search CTEP Studies" autopad="true">
+
+
+    <div class="errors" id="flashErrors" style="display: none;">
+        <span id="command.errors">Please enter some search criteria.</span>
+    </div>
 
     <div id="autoRemoveElement" style="display: none;">
         <div id="flash-message" class="info">
