@@ -166,7 +166,7 @@ public class Agent extends AbstractMutableRetireableDomainObject implements Seri
     }
 
     @OneToMany(mappedBy = "agent", fetch = FetchType.LAZY)
-    @Cascade({ CascadeType.LOCK })
+    @Cascade({ CascadeType.LOCK, CascadeType.SAVE_UPDATE })
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     //@Transient
 	public List<AgentSpecificTerm> getAgentSpecificTerms() {
