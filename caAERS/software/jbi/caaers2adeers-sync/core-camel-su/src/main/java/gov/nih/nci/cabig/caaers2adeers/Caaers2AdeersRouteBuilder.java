@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage;
 
 import org.apache.camel.ExchangePattern;
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.builder.xml.Namespaces;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -76,6 +77,7 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
     }
 	
     public void configure() {
+        Namespaces ns = new Namespaces("soap",  "http://schemas.xmlsoap.org/soap/envelope/");
         
         onException(Throwable.class)
                 .to("direct:morgue");
@@ -90,27 +92,6 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
                 .process(track(ROUTED_TO_ADEERS_REQUEST_SINK))
             .to("direct:adEERSRequestSink");
     	
-//    	from("cxf:bean:genericProcessor")
-//    		.to("log:fromCXFBean?showHeaders=true")
-//    		.convertBodyTo(DOMSource.class)
-//    		.to("log:fromCXFBeanAfterConvert?showHeaders=true")
-//	        .processRef("exchangePreProcessor").processRef("headerGeneratorProcessor")
-//	            .process(track(REQUEST_RECEIVED))
-//	            .to(fileTracker.fileURI(REQUEST_RECEIVED))
-//	        .to("xslt:xslt/adeers/request/soap_env_filter.xsl")
-//	            .process(track(ROUTED_TO_ADEERS_REQUEST_SINK))
-//	            .to("log:fromCXFBeanAfterXSL?showHeaders=true")
-//	        .to("direct:adEERSRequestSink").onException(Throwable.class).to("direct:morgue");
-
-        //NEED to introduce a QUEUE of similar...
-
-//		.choice()
-//                .when(header("c2a_sync_mode").isEqualTo("sync"))
-//                	.to("log:after-soap_filter-and-before-sync")
-//                	.to("direct:adEERSRequestSink")
-//                .otherwise()
-//                	.to("log:after-soap_filter-and-before-async")
-//                	.multicast(new UseFirstAggregationStrategy()).parallelProcessing().to("xslt:xslt/caaers/response/async_success_response.xsl", "direct:adEERSRequestSink");
 
         //configure all the Quartz cron jobs
         cronJobRouteBuilder.configure(this);
@@ -126,7 +107,7 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
                 .to("log:caaers.synch-comp?showHeaders=true")
                 .choice()
                     .when().xpath("not(//operation/data/child::*/child::*)")
-                        .process(track(NO_DATA_AVAILABLE))
+                        .process(track(NO_DATA_AVAILABLE, "Processed"))
                         .to("direct:outputSink")
                     .when(header("c2a_sync_mode").isEqualTo("async"))
                     	.process(track(ROUTED_TO_CAAERS_REQUEST_SINK))
@@ -137,7 +118,11 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
     	
     	//need to process caAERS results
 		from("direct:caAERSResponseSink")
-                .to("direct:outputSink");
+                .choice()
+                    .when().xpath("//soap:Fault", ns)
+                        .to("direct:morgue")
+                    .otherwise()
+                        .to("direct:outputSink");
 
 
         //BELOW 2 routes are the final sinks of messages.
@@ -149,7 +134,7 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
 		//invalid requests
         from("direct:morgue")
                 .to("log:caaers.invalid?showAll=true&level=WARN")
-        		.process(track(REQUST_PROCESSING_ERROR))
+        		.process(track(REQUST_PROCESSING_ERROR, "Error"))
                 .to("xslt:xslt/caaers/response/unknown.xsl")
                 .to(fileTracker.fileURI(REQUST_PROCESSING_ERROR)) ;
 
