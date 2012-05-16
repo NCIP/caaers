@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.domain.PriorTherapyAgent;
 import gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition;
 import gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
+import gov.nih.nci.cabig.caaers.domain.repository.PriorTherapyRepository;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.web.fields.CompositeField;
@@ -52,7 +53,6 @@ public class PatientDetailsTab extends AeTab {
 	private static final Log log = LogFactory.getLog(PatientDetailsTab.class);
 	
 	private ConfigProperty configurationProperty;
-    private PriorTherapyDao priorTherapyDao;
     private PreExistingConditionDao preExistingConditionDao;
     //static options of dropdowns are cached at Tab level. 
     Map<Object,Object> priorTherapyOptions;
@@ -71,7 +71,8 @@ public class PatientDetailsTab extends AeTab {
 	private static final String CONCOMITANT_MEDICATION = "concomitantMedication";
 	
     Map<String, String> methodNameMap = new HashMap<String, String>();
-	
+    private PriorTherapyRepository priorTherapyRepository;
+
     public PatientDetailsTab() {
         super("Patient Details", ExpeditedReportSection.MEDICAL_INFO_SECTION.getDisplayName(), "ae/patientDetails");
        /* addHelpKeyExclusion("baselinePerformanceStatus");*/
@@ -625,14 +626,14 @@ public class PatientDetailsTab extends AeTab {
      * @return
      */
     private Map<Object, Object> initializePriorTherapyOptions() {
-    	if(priorTherapyOptions == null){
-    		this.priorTherapyOptions = WebUtils.collectOptions(priorTherapyDao.getAllExcludingNoPriorTherapy(),"id", "text","Please select");
+        List<PriorTherapy> priorTherapyList = priorTherapyRepository.getAll(true, true);
+        if (priorTherapyOptions == null) {
+            this.priorTherapyOptions = WebUtils.collectOptions(priorTherapyList, "id", "text", "Please select");
             log.debug("Prior Therapies Found: " + this.priorTherapyOptions.size());
         }
         return priorTherapyOptions;
     }
-    
-    
+
     /**
      * Will initialize the pre-existing condition options.
      * @return
@@ -658,16 +659,15 @@ public class PatientDetailsTab extends AeTab {
     	}
     	return baselinePerformanceOptions;
     }
-    
-  
-    
-    ///OBJECT METHODS
-    public PriorTherapyDao getPriorTherapyDao() {
-		return priorTherapyDao;
-	}
-    public void setPriorTherapyDao(PriorTherapyDao priorTherapyDao) {
-		this.priorTherapyDao = priorTherapyDao;
-	}
+
+    public PriorTherapyRepository getPriorTherapyRepository() {
+        return priorTherapyRepository;
+    }
+
+    public void setPriorTherapyRepository(PriorTherapyRepository priorTherapyRepository) {
+        this.priorTherapyRepository = priorTherapyRepository;
+    }
+
     public PreExistingConditionDao getPreExistingConditionDao() {
 		return preExistingConditionDao;
 	}
