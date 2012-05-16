@@ -623,11 +623,14 @@
         <a name="anchorPriorTherapy"/>
         <tags:indicator id="priorTherapy-indicator" />
         <div id="anchorPriorTherapy">
-            
+
             <c:forEach items="${command.aeReport.saeReportPriorTherapies}" varStatus="status">
-              <c:set var="newIndex" value="${size - (status.index + 1)}" />
-              <c:set var="ptherapy" value="${command.aeReport.saeReportPriorTherapies[newIndex]}" />
-              <ae:onePriorTherapy index="${newIndex}" priorTherapy="${ptherapy}" collapsed="true" showNoPriorTherapy="${(size eq 1 and newIndex eq 0) and (empty ptherapy.priorTherapy or empty ptherapy.priorTherapy.text or ptherapy.priorTherapy.id eq _priorTherapy_nopriortherapy_id)}" />
+                <c:set var="newIndex" value="${size - (status.index + 1)}"/>
+                <c:set var="ptherapy" value="${command.aeReport.saeReportPriorTherapies[newIndex]}"/>
+                <c:if test="${!ptherapy.priorTherapy.retiredIndicator}">
+                    <ae:onePriorTherapy index="${newIndex}" priorTherapy="${ptherapy}" collapsed="true"
+                                        showNoPriorTherapy="${(size eq 1 and newIndex eq 0) and (empty ptherapy.priorTherapy or empty ptherapy.priorTherapy.text or ptherapy.priorTherapy.id eq _priorTherapy_nopriortherapy_id)}"/>
+                </c:if>
             </c:forEach>
         </div>
     </div>
