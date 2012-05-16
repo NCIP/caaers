@@ -1,0 +1,6 @@
+<dataset>
+    <prior_therapies id="-1" therapy_text="No Prior therapy" retired_indicator="false" />
+    <prior_therapies id="-2" therapy_text="T2" retired_indicator="false" />
+    <prior_therapies id="-3" therapy_text="T3" retired_indicator="true" />
+    <prior_therapies id="-4" therapy_text="T4" retired_indicator="true" />
+</dataset>
