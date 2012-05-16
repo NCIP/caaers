@@ -537,11 +537,15 @@ public class Fixtures {
     	sp.setStartDate(DateUtils.yesterday());
     	return sp;
     }
-    
+   
+    public static Agent createAgent(String name){
+        Agent agent = new Agent();
+        agent.setDescription("abcd");
+        agent.setName(name);
+        return agent;
+    }
     public static Agent createAgent(String name, List<StudyAgent> studyAgents){
-    	Agent agent = new Agent();
-    	agent.setDescription("abcd");
-    	agent.setName(name);
+    	Agent agent = createAgent(name);
     	for(StudyAgent sa : studyAgents) sa.setAgent(agent);
     	return agent;
     }

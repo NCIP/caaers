@@ -27,8 +27,7 @@ public class ASAELServiceImplTest extends DaoTestCase {
     Asael asaelType;
 
     public void testNotFoundAgent() {
-        CaaersServiceResponse csr = Helper.createResponse();
-        asaelServiceImpl.execute(csr, asaelType);
+        CaaersServiceResponse csr  = asaelServiceImpl.createOrUpdateASAEL(  asaelType);
         List<EntityProcessingOutcomeType> l = csr.getServiceResponse().getEntityProcessingOutcomes().getEntityProcessingOutcome();
         assertNotNull(l);
         assertEquals(2, l.size());
@@ -49,8 +48,7 @@ public class ASAELServiceImplTest extends DaoTestCase {
 
         Study s = studyDao.getById(-2);
         assertEquals(2, s.getExpectedAECtcTerms().size());
-        CaaersServiceResponse csr = Helper.createResponse();
-        asaelServiceImpl.execute(csr, asaelType);
+        CaaersServiceResponse csr = asaelServiceImpl.createOrUpdateASAEL( asaelType);
         List<EntityProcessingOutcomeType> l = csr.getServiceResponse().getEntityProcessingOutcomes().getEntityProcessingOutcome();
 
         assertEquals(1, l.size());
@@ -72,8 +70,7 @@ public class ASAELServiceImplTest extends DaoTestCase {
         Study s = studyDao.getById(-2);
         assertEquals(2, s.getExpectedAECtcTerms().size());
 
-        CaaersServiceResponse csr = Helper.createResponse();
-        asaelServiceImpl.execute(csr, asaelType);
+        CaaersServiceResponse csr = asaelServiceImpl.createOrUpdateASAEL( asaelType);
         List<EntityProcessingOutcomeType> l = csr.getServiceResponse().getEntityProcessingOutcomes().getEntityProcessingOutcome();
 
         assertEquals(1, l.size());

@@ -89,7 +89,12 @@ public class AgentCommand {
 			public String getFullName() {
 				return null;
 			}
-		};
+
+            @Override
+            public boolean isOfSameTerm(String termName, String termCategory, String terminologyVersion, String otherToxicity, String otherMeddra) {
+                return false;
+            }
+        };
 		
 		snapshot.setExpected(agentSpecificTerm.isExpected());
 		snapshot.setExpectednessFrequency(agentSpecificTerm.getExpectednessFrequency());

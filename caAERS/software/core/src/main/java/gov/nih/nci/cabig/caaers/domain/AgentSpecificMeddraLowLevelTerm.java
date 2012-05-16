@@ -27,7 +27,7 @@ public class AgentSpecificMeddraLowLevelTerm extends AgentSpecificTerm<LowLevelT
      * @see gov.nih.nci.cabig.caaers.domain.AgentSpecificTerm#getTerm()
      */
     @ManyToOne
-    @JoinColumn(name = "term_id")
+    @JoinColumn(name = "term_id", nullable = false)
     @Override
     public LowLevelTerm getTerm() {
         return super.getTerm();
@@ -69,4 +69,9 @@ public class AgentSpecificMeddraLowLevelTerm extends AgentSpecificTerm<LowLevelT
         return false;
     }
 
+    @Override
+    public boolean isOfSameTerm(String termName, String termCategory, String terminologyVersion, String otherToxicity, String otherMeddra) {
+        if(true) throw new UnsupportedOperationException("Not implemented");
+        return false;
+    }
 }

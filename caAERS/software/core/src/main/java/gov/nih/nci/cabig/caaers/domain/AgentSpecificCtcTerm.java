@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
@@ -23,7 +24,7 @@ public class AgentSpecificCtcTerm extends AgentSpecificTerm<CtcTerm> {
      * @see gov.nih.nci.cabig.caaers.domain.AgentSpecificTerm#getTerm()
      */
     @OneToOne
-    @JoinColumn(name = "term_id")
+    @JoinColumn(name = "term_id", nullable = false)
     @Override
     public CtcTerm getTerm() {
         return super.getTerm();
@@ -106,4 +107,25 @@ public class AgentSpecificCtcTerm extends AgentSpecificTerm<CtcTerm> {
         this.otherMeddraTerm = otherMeddraTerm;
     }
 
+    @Override
+    public boolean isOfSameTerm(String termName, String termCategory, String terminologyVersion, String otherToxicity, String otherMeddra) {
+        
+        //is term matching ?
+        boolean termMatching = StringUtils.equals(getTerm().getTerm(), termName) ||  StringUtils.equals(getTerm().getCtepTerm(), termName);
+        if(StringUtils.isNotEmpty(termName) && !termMatching) return false;
+        
+        //is category matching ?
+        if(StringUtils.isNotEmpty(termCategory) && !StringUtils.equals(getTerm().getCategory().getName() , termCategory)) return false;
+        
+        //is terminology version matching ?
+        if(StringUtils.isNotEmpty(terminologyVersion) && !StringUtils.equals(getTerm().getCategory().getCtc().getId().toString(), terminologyVersion)) return false;
+        
+        //is otherToxicity matching ?
+        if(StringUtils.isNotEmpty(otherToxicity) && !StringUtils.equals(getOtherToxicity(), otherToxicity)) return false;
+
+        //is other Meddra matching ?
+        if(StringUtils.isNotEmpty(otherMeddra) && !StringUtils.equals(getOtherMeddraTerm().getTerm(), otherMeddra)) return false;
+
+        return true;
+    }
 }

@@ -37,8 +37,6 @@ public class AgentSpecificAdverseEventListServiceTest extends CaaersDbTestCase {
         agentSpecificTermDao = (AgentSpecificTermDao)getDeployedApplicationContext().getBean("agentSpecificTermDao");
 
         service = new AgentSpecificAdverseEventListServiceImpl();
-        service.setAgentDao(agentDao);
-        service.setStudyDao(studyDao);
         service.setAgentSpecificTermDao(agentSpecificTermDao);
     }
     

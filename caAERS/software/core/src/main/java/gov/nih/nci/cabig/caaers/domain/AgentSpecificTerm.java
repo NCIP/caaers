@@ -63,6 +63,8 @@ public abstract class AgentSpecificTerm<T extends DomainObject> extends Abstract
     
     private Date lastSynchedDate;
     
+    private String operation;
+    
     public Date getLastSynchedDate() {
 		return lastSynchedDate;
 	}
@@ -113,6 +115,19 @@ public abstract class AgentSpecificTerm<T extends DomainObject> extends Abstract
     public void setTerm(T term) {
         this.term = term;
     }
+
+    /**
+     * Will return true if it is the same term. 
+     * @param termName
+     * @param termCategory
+     * @param terminologyVersion
+     * @param otherToxicity
+     * @param otherMeddra
+     * @return
+     */
+    public abstract boolean isOfSameTerm(String termName,
+                                                 String termCategory, String terminologyVersion,
+                                                 String otherToxicity, String otherMeddra);
 
     /**
      * Checks if is other required.
@@ -241,4 +256,18 @@ public abstract class AgentSpecificTerm<T extends DomainObject> extends Abstract
 	public void setExpected(boolean expected) {
 		this.expected = expected;
 	}
+
+    /**
+     * Used for syncing study agents.
+     * @return
+     */
+    @Transient
+    public String getOperationPerformed(){
+       return operation;
+    }
+
+    public void setOperationPerformed(String op){
+        this.operation = op;
+    }
+    
 }

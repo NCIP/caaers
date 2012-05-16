@@ -2,38 +2,31 @@ package gov.nih.nci.cabig.caaers.api.impl;
 
 import gov.nih.nci.cabig.caaers.api.ProcessingOutcome;
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
-import gov.nih.nci.cabig.caaers.dao.AgentSpecificTermDao;
 import gov.nih.nci.cabig.caaers.dao.StudyAgentDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.domain.Agent;
-import gov.nih.nci.cabig.caaers.domain.AgentSpecificCtcTerm;
-import gov.nih.nci.cabig.caaers.domain.AgentSpecificTerm;
-import gov.nih.nci.cabig.caaers.domain.CtcCategory;
-import gov.nih.nci.cabig.caaers.domain.CtcTerm;
-import gov.nih.nci.cabig.caaers.domain.StudyAgent;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.repository.TerminologyRepository;
 import gov.nih.nci.cabig.caaers.integration.schema.asael.ASAELAgentType;
 import gov.nih.nci.cabig.caaers.integration.schema.asael.Asael;
 import gov.nih.nci.cabig.caaers.integration.schema.asael.ExpectedAECtcTermType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ActiveInactiveStatusType;
-import gov.nih.nci.cabig.caaers.integration.schema.common.AgentType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
-import gov.nih.nci.cabig.caaers.integration.schema.common.EntityProcessingOutcomeType;
-import gov.nih.nci.cabig.caaers.integration.schema.common.EntityProcessingOutcomes;
-import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
-import gov.nih.nci.cabig.caaers.integration.schema.common.Status;
 import gov.nih.nci.cabig.caaers.service.AgentSpecificAdverseEventListService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.util.*;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.BeansException;
-
 /**
+ * Responsibilities :
+ *   1. Should retain existing terms.
+ *   2. All inactive terms has to be removed
+ *   3. All active terms (new ones) must be added.
+ *   4. Ignore and continue if there is any error.
+ *
  * @author Ion C. Olaru
  *         Date: 4/3/12 -10:03 AM
+ * @author Biju Joseph (Refactored)
  */
 public class ASAELServiceImpl {
 
@@ -41,7 +34,6 @@ public class ASAELServiceImpl {
 
     private AgentDao agentDao;
     private TerminologyRepository terminologyRepository;
-    private AgentSpecificTermDao agentSpecificTermDao;
     private StudyAgentDao studyAgentDao;
     private AgentSpecificAdverseEventListService asaelService;
     private StudyDao studyDao;
@@ -49,120 +41,115 @@ public class ASAELServiceImpl {
 
     public CaaersServiceResponse createOrUpdateASAEL(Asael asael) {
         CaaersServiceResponse csr = Helper.createResponse();
-        execute(csr, asael);
+        for (ASAELAgentType asaelAgentType : asael.getAsaelAgent()) {
+            try{
+                createOrUpdate(csr, asaelAgentType);
+            }catch (Exception e){
+                log.error("Asael loading error", e);
+                Helper.populateError(csr, "WS_GEN_000" , "Unable to process ASAEL (" + asaelAgentType.getAgent().getNscNumber() + ") " +  e.getMessage());
+            }
+        }
         return csr;
     }
+    
+    
+    public void createOrUpdate(CaaersServiceResponse csr,ASAELAgentType asaelAgentType) throws  Exception{
+        String nscNumber = asaelAgentType.getAgent().getNscNumber();
+        Agent agent = getAgentDao().getByNscNumber(nscNumber);
+        if(agent == null) {
+            log.warn(String.format("Agent not found: %s", nscNumber));
+            ProcessingOutcome outcome = Helper.createOutcome(AgentSpecificTerm.class, nscNumber, true, "Unable to find Agent by NSC :" + nscNumber) ;
+            Helper.populateProcessingOutcome(csr, outcome);
+            return;
+        }
+        
+        List<AgentSpecificTerm> processedTermsList =  new ArrayList<AgentSpecificTerm>();
+        for(ExpectedAECtcTermType termType : asaelAgentType.getExpectedAECtcTerm()) {
+            AgentSpecificTerm agentSpecificTerm = addOrRemoveExpectedTerm(csr, agent, termType);  
+            if(agentSpecificTerm != null){
+                processedTermsList.add(agentSpecificTerm);
+            }
+        }
 
-
-    private EntityProcessingOutcomeType populateError(String cn, String bi, String message) {
-        EntityProcessingOutcomeType e = new EntityProcessingOutcomeType();
-        e.setBusinessIdentifier(bi);
-        e.setKlassName(cn);
-        e.setMessage(new ArrayList<String>(1));
-        e.getMessage().add(message);
-        return e;
+        agentDao.save(agent);
+        syncStudies(agent , processedTermsList);
+        
     }
 
-    public void execute(CaaersServiceResponse csr, Asael asael) {
-        if (CollectionUtils.isEmpty(asael.getAsaelAgent())) return;
-
-        for (ASAELAgentType asaelAgent : asael.getAsaelAgent()) {
-            AgentType agentType = asaelAgent.getAgent();
-            if (agentType == null) continue;
-
-            // get the persistent Agent
-            Agent a = loadPersistentAgent(agentType.getNscNumber());
-            if (a == null) {
-                log.warn(String.format("Agent not found: %s", agentType.getNscNumber()));
-                ProcessingOutcome outcome = Helper.createOutcome(AgentSpecificTerm.class, agentType.getNscNumber(), true, "Unable to find Agent by NSC :" + agentType.getNscNumber()) ;
+    /**
+     * Will do the following
+     *   a. New active terms will be added
+     *   b. Existing terms will be updated
+     *   c. Inactive terms will be removed.
+     *
+     * @param csr
+     * @param agent
+     * @param termType
+     */
+    private AgentSpecificTerm addOrRemoveExpectedTerm(CaaersServiceResponse csr, Agent agent,  ExpectedAECtcTermType termType) throws Exception{
+       AgentSpecificTerm existingAgentTerm = agent.findTerm(termType.getCtepTerm(), termType.getCategory(), termType.getCtcVersion(), termType.getOtherToxicity(), null);
+       boolean isInactive = termType.getStatus() == ActiveInactiveStatusType.INACTIVE;
+        if(existingAgentTerm == null){
+           if(isInactive) return null;
+           //create new
+           CtcTerm ctcTerm = loadTerm(termType.getCategory(),Integer.parseInt(termType.getCtcVersion()), termType.getCtepTerm());
+           if(ctcTerm == null){
+               ProcessingOutcome outcome = Helper.createOutcome(AgentSpecificTerm.class, termType.getCtepTerm(),
+                       true, "Term not found. So, unable to add to agent (" + agent.getNscNumber() + ") expected term : " + termType.getCtepTerm() );
+               Helper.populateProcessingOutcome(csr, outcome); 
+               return null;
+           }
+            
+            AgentSpecificCtcTerm agentSpecificCtcTerm = new AgentSpecificCtcTerm();
+            agentSpecificCtcTerm.setTerm(ctcTerm);
+            agentSpecificCtcTerm.setLastSynchedDate(new Date());
+            agentSpecificCtcTerm.setExpected(true);
+            agentSpecificCtcTerm.setOtherToxicity(termType.getOtherToxicity());
+            agent.addAgentSpecificTerm(agentSpecificCtcTerm);
+            
+            ProcessingOutcome outcome = Helper.createOutcome(AgentSpecificTerm.class, termType.getCtepTerm(),
+                    false, "Added to add to agent (" + agent.getNscNumber() + ") expected term : " + termType.getCtepTerm() );
+            Helper.populateProcessingOutcome(csr, outcome);
+            agentSpecificCtcTerm.setOperationPerformed(AgentSpecificTerm.EXPTECTED_AE_ADDED);
+            return agentSpecificCtcTerm;
+            
+       }else{
+            
+            if(isInactive){
+                agent.removeAgentSpecificTerm(existingAgentTerm);
+                ProcessingOutcome outcome = Helper.createOutcome(AgentSpecificTerm.class, termType.getCtepTerm(),
+                        false, "Removed from agent (" + agent.getNscNumber() + ") expected term : " + termType.getCtepTerm() );
                 Helper.populateProcessingOutcome(csr, outcome);
-                continue;
+                existingAgentTerm.setOperationPerformed(AgentSpecificTerm.EXPTECTED_AE_DELETED);
+                return existingAgentTerm;
             }
+            existingAgentTerm.setLastSynchedDate(new Date());
+            existingAgentTerm.setOtherToxicity(termType.getOtherToxicity());
+            existingAgentTerm.setExpected(true);
+            ProcessingOutcome outcome = Helper.createOutcome(AgentSpecificTerm.class, termType.getCtepTerm(),
+                    false, "Updated on Agent (" + agent.getNscNumber() + ") expected term : " + termType.getCtepTerm() );
+            Helper.populateProcessingOutcome(csr, outcome);
+            existingAgentTerm.setOperationPerformed(AgentSpecificTerm.EXPTECTED_AE_UPDATED);
+            return  existingAgentTerm;
+       }
 
-            // Existing agent's expected terms collection
-            List<AgentSpecificTerm> agentTerms = a.getAgentSpecificTerms();
-            log.debug("AGENT TERMS SIZE: " + agentTerms.size());
+    }
 
-            // Build the collection of Terms from XML data types
+    private void syncStudies(Agent agent, List<AgentSpecificTerm> terms){
+        if(terms.isEmpty()) return;
 
-            // process the Inactive ones and remove from the list
-            log.debug("PASSED SIZE: " + asaelAgent.getExpectedAECtcTerm().size());
-            Iterator<ExpectedAECtcTermType> it = asaelAgent.getExpectedAECtcTerm().iterator();
-            while (it.hasNext()) {
-                ExpectedAECtcTermType tt = it.next();
-                if (tt.getStatus().equals(ActiveInactiveStatusType.INACTIVE)) {
-                    it.remove();
-                    removeAgentSpecificTerm(agentTerms, tt);
-                    ProcessingOutcome outcome = Helper.createOutcome(AgentSpecificTerm.class, tt.getCtepTerm(), false, "Removed from agent (" + agentType.getNscNumber() + ") expected term : " + tt.getCtepTerm() );
-                    Helper.populateProcessingOutcome(csr, outcome);
-                } else if (isOnAgent(agentTerms, tt)) {
-                    log.debug(String.format("TERM %s is already on the agent", tt.getCtepTerm()));
-                    it.remove();
-                    ProcessingOutcome outcome = Helper.createOutcome(AgentSpecificTerm.class, tt.getCtepTerm(), false, "Agent (" + agentType.getNscNumber() + ") already have expected term : " + tt.getCtepTerm() );
-                    Helper.populateProcessingOutcome(csr, outcome);
-                }
-            }
-
-            List<AgentSpecificCtcTerm> asaelCtcTerms = loadCtcTerms(asaelAgent.getExpectedAECtcTerm(), csr);
-            log.debug("LOADED SIZE: " + asaelCtcTerms.size());
-            log.debug("AGENT TERMS SIZE: " + agentTerms.size());
-
-            // Add the new terms to agent
-            for (AgentSpecificCtcTerm _asaelTerm : asaelCtcTerms) {
-                _asaelTerm.setAgent(a);
-                _asaelTerm.setExpected(Boolean.TRUE);
-                _asaelTerm.setLastSynchedDate(new Date());
-                try {
-                    agentSpecificTermDao.save(_asaelTerm);
-                    ProcessingOutcome outcome = Helper.createOutcome(AgentSpecificTerm.class, _asaelTerm.getFullName(), false, "To the agent (" + agentType.getNscNumber() + ") the expected term : " + _asaelTerm.getFullName() + " got added");
-                    Helper.populateProcessingOutcome(csr, outcome);
-                    log.debug(String.format("NEW TERM ADDED: %s, %d", _asaelTerm.getFullName(), _asaelTerm.getId()));
-                    syncStudies(_asaelTerm, AgentSpecificTerm.EXPTECTED_AE_ADDED);
-                } catch (Exception e) {
-                    log.error("Exception occured while adding asael ", e);
-                    ProcessingOutcome outcome = Helper.createOutcome(AgentSpecificTerm.class, _asaelTerm.getFullName(), true, "Unable to add to the agent (" + agentType.getNscNumber() + ") the expected term : " + _asaelTerm.getTerm());
-                    Helper.populateProcessingOutcome(csr, outcome);
-                }
+        List<StudyAgent> studyAgents = getStudyAgentDao().getByAgentID(agent.getId());
+        Map<Integer, Study> studyMap = new HashMap<Integer, Study>();
+        for(StudyAgent sa : studyAgents){
+            studyMap.put(sa.getStudy().getId(), sa.getStudy()); //for saving the study
+            for(AgentSpecificTerm t : terms){
+                asaelService.synchronizeStudyWithAgentTerm(sa, t, t.getOperationPerformed());
             }
         }
 
-
-    }
-
-    private boolean isSameTerm(String t1Term, String t1Version, String t2Term, String t2Version) {
-        return (t1Term.equals(t2Term) && t1Version.equals(t2Version));
-    }
-
-    private boolean isOnAgent(List<AgentSpecificTerm> ts, ExpectedAECtcTermType tt) {
-        Iterator<AgentSpecificTerm> it = ts.iterator();
-        while (it.hasNext()) {
-            AgentSpecificCtcTerm at = (AgentSpecificCtcTerm)it.next();
-            if (isSameTerm(at.getTerm().getTerm(), String.valueOf(at.getTerm().getCategory().getCtc().getId()), tt.getCtepTerm(), tt.getCtcVersion())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void removeAgentSpecificTerm(List<AgentSpecificTerm> ts, ExpectedAECtcTermType tt) {
-        Iterator<AgentSpecificTerm> it = ts.iterator();
-        while (it.hasNext()) {
-            AgentSpecificCtcTerm at = (AgentSpecificCtcTerm)it.next();
-            if (isSameTerm(at.getTerm().getTerm(), String.valueOf(at.getTerm().getCategory().getCtc().getId()), tt.getCtepTerm(), tt.getCtcVersion())) {
-                it.remove();
-                agentSpecificTermDao.delete(at);
-                syncStudies(at, AgentSpecificTerm.EXPTECTED_AE_DELETED);
-            }
-        }
-    }
-
-    private void syncStudies(AgentSpecificTerm t, String action) {
-        List<StudyAgent> l = getStudyAgentDao().getByAgentID(t.getAgent().getId());
-        log.debug(String.format("FOUND %s studies.", l.size()));
-        for (StudyAgent s : l) {
-            asaelService.synchronizeStudyWithAgentTerm(s, t, action);
-            studyDao.merge(s.getStudy());
-            studyDao.updateStudyForServiceUseOnly(s.getStudy());
+        //save the studies
+        for(Study s : studyMap.values()){
+            studyDao.updateStudyForServiceUseOnly(s);
         }
     }
 
@@ -174,47 +161,6 @@ public class ASAELServiceImpl {
         return null;
     }
 
-    /**
-     * Loads the list of CtcTerms, each element is wrapped in a AgentSpecificCtcTerm
-     * to be able to store the AgentSpecificCtcTerm related properties
-     * Populated properties are
-     * gov.nih.nci.cabig.caaers.domain.AgentSpecificTerm#term and
-     * gov.nih.nci.cabig.caaers.domain.AgentSpecificTerm#otherToxicity
-     * @param xmlCtcTerms XML AgentSpecificCtcTerm
-     * @param csr Place to store errors and messages
-     * @return
-     */
-    private List<AgentSpecificCtcTerm> loadCtcTerms(List<ExpectedAECtcTermType> xmlCtcTerms, CaaersServiceResponse csr) {
-        List<AgentSpecificCtcTerm> ctcTerms = new ArrayList<AgentSpecificCtcTerm>();
-
-        for (ExpectedAECtcTermType ctcTermType : xmlCtcTerms) {
-            String _category = ctcTermType.getCategory();
-            Integer _version = Integer.parseInt(ctcTermType.getCtcVersion());
-            String _term = ctcTermType.getCtepTerm();
-            CtcTerm _ctcTerm = loadTerm(_category, _version, _term);
-
-            if (_term == null) {
-                log.warn(String.format("No term found with ctcCategory: %s, ctcVersion: %s, term: %s", _category, _version, _term));
-                ProcessingOutcome outcome = Helper.createOutcome(CtcTerm.class, _term, true, String.format("No term found with ctcCategory: %s, ctcVersion: %s, term: %s", _category, _version, _term)) ;
-                Helper.populateProcessingOutcome(csr, outcome);
-                continue;
-            }
-
-            AgentSpecificCtcTerm _asaelTerm = new AgentSpecificCtcTerm();
-            _asaelTerm.setTerm(_ctcTerm);
-            _asaelTerm.setOtherToxicity(ctcTermType.getOtherToxicity());
-
-            ctcTerms.add(_asaelTerm);
-        }
-
-        return ctcTerms;
-    }
-
-    private Agent loadPersistentAgent(String nscNumber) {
-        Agent a = agentDao.getByNscNumber(nscNumber);
-        if (a != null) agentDao.initialize(a.getAgentSpecificTerms());
-        return a;
-    }
 
     public AgentDao getAgentDao() {
         return agentDao;
@@ -232,13 +178,6 @@ public class ASAELServiceImpl {
         this.terminologyRepository = terminologyRepository;
     }
 
-    public AgentSpecificTermDao getAgentSpecificTermDao() {
-        return agentSpecificTermDao;
-    }
-
-    public void setAgentSpecificTermDao(AgentSpecificTermDao agentSpecificTermDao) {
-        this.agentSpecificTermDao = agentSpecificTermDao;
-    }
 
     public StudyAgentDao getStudyAgentDao() {
         return studyAgentDao;

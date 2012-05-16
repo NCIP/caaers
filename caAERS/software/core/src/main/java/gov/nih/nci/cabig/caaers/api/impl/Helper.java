@@ -41,7 +41,8 @@ public class Helper {
     }
 
 
-    public static CaaersServiceResponse populateError(CaaersServiceResponse response, String errorCode, String description){
+    public static CaaersServiceResponse populateError(CaaersServiceResponse response, String errorCode, String desc){
+        String description = desc == null ? "Processing failure" : desc;
         ServiceResponse serviceResponse = response.getServiceResponse();
         serviceResponse.setStatus(Status.FAILED_TO_PROCESS);
         serviceResponse.setResponsecode("1");

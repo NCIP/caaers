@@ -6,7 +6,9 @@ import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
+import org.apache.commons.lang.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,14 +19,13 @@ import java.util.List;
 public class AgentSpecificAdverseEventListServiceImpl implements AgentSpecificAdverseEventListService {
 
     private AgentSpecificTermDao agentSpecificTermDao;
-    private StudyDao studyDao;
-    private AgentDao agentDao;
+
 
     /**
      * Get the list of Terms associated with the given agent
      * @param agentID - ID of the agent to get the terms for
      * @return List
-     * 
+     *
      * */
     public List<AgentSpecificTerm> getListByAgent(Integer agentID) {
         return agentSpecificTermDao.getByAgentID(agentID);
@@ -63,7 +64,6 @@ public class AgentSpecificAdverseEventListServiceImpl implements AgentSpecificAd
      * Synchronize this ASAE term with the Study Expected AE list
      * Get the term associated with the agent and add this to the list of
      * the Expected AE Terms of the Study when Study has this agent
-     * @param s - Study
      * @param at - Agent Specific AE Term
      * @partam deleted - if true, synchronization is being done for a just deleted ASAE term, otherwise for addition 
      *
@@ -127,6 +127,7 @@ public class AgentSpecificAdverseEventListServiceImpl implements AgentSpecificAd
     	return false;
     }
 
+
     public AgentSpecificTermDao getAgentSpecificTermDao() {
         return agentSpecificTermDao;
     }
@@ -135,19 +136,4 @@ public class AgentSpecificAdverseEventListServiceImpl implements AgentSpecificAd
         this.agentSpecificTermDao = agentSpecificTermDao;
     }
 
-    public StudyDao getStudyDao() {
-        return studyDao;
-    }
-
-    public void setStudyDao(StudyDao studyDao) {
-        this.studyDao = studyDao;
-    }
-
-    public AgentDao getAgentDao() {
-        return agentDao;
-    }
-
-    public void setAgentDao(AgentDao agentDao) {
-        this.agentDao = agentDao;
-    }
 }

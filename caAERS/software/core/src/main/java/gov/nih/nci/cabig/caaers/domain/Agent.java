@@ -206,4 +206,22 @@ public class Agent extends AbstractMutableRetireableDomainObject implements Seri
 		}
 		return 0;
 	}
+    
+    public AgentSpecificTerm  findTerm(String termName, String termCategory, String terminologyVersion, String otherToxicity, String otherMeddra)  {
+        for(AgentSpecificTerm t : getAgentSpecificTerms()){
+            if(t.isOfSameTerm(termName, termCategory, terminologyVersion, otherToxicity, otherMeddra)) return t;
+        }
+        return null;
+    }
+
+    public boolean removeAgentSpecificTerm(AgentSpecificTerm term){
+        if(term == null) return false;
+        return getAgentSpecificTerms().remove(term);
+    }
+
+    public boolean addAgentSpecificTerm(AgentSpecificTerm term){
+        if(term == null) return false;
+        term.setAgent(this);
+        return getAgentSpecificTerms().add(term);
+    }
 }
