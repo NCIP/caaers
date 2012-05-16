@@ -52,6 +52,7 @@
 	    <constructor-arg ref="messageFactory"/>
 	    <property name="messageSender">
 	        <bean class="org.springframework.ws.transport.http.CommonsHttpMessageSender">
+                <property name="readTimeout" value="300000" />
 	            <!-- <property name="credentials">
 	                <bean class="org.apache.commons.httpclient.UsernamePasswordCredentials">
 	                    <constructor-arg value="john"/>
