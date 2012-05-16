@@ -15,6 +15,10 @@ public class PriorTherapyQuery extends AbstractQuery {
         setParameter("mc", meddraCode);
     }
 
+    public void filterOutNoPriorTherapy() {
+        andWhere("lower(p.text) != 'no prior therapy'");
+    }
+
     public void filterByRetiredStatus(Boolean status) {
         super.filterByRetiredStatus("p", status);
     }

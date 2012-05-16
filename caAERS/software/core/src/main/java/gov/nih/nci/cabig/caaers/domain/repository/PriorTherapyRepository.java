@@ -16,7 +16,7 @@ public class PriorTherapyRepository {
 
     public List<PriorTherapy> getAll(boolean excludeNoPriorTherapy, boolean activeOnly) {
         PriorTherapyQuery q = new PriorTherapyQuery();
-        if (excludeNoPriorTherapy) q.andWhere("lower(pt.text) != 'no prior therapy'");
+        if (excludeNoPriorTherapy) q.filterOutNoPriorTherapy();
         if (activeOnly) q.filterByRetiredStatus(false);
         return (List<PriorTherapy>)priorTherapyDao.search(q);
     }
