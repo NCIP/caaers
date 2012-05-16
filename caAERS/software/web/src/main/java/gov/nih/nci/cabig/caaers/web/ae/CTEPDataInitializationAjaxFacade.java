@@ -159,7 +159,7 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
     		if(log.getIntegrationLogDetails().size()> 0){
     			for(IntegrationLogDetail intLogDetail : log.getIntegrationLogDetails()){
     				if(intLogDetail.isFailed()) {
-    					return htmlSuccessString;
+    					return htmlFailureString;
     				}
     			}
     		}
