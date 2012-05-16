@@ -54,10 +54,7 @@ public class PatientDetailsTab extends AeTab {
 	
 	private ConfigProperty configurationProperty;
     private PreExistingConditionDao preExistingConditionDao;
-    //static options of dropdowns are cached at Tab level. 
-    Map<Object,Object> priorTherapyOptions;
-    Map<Object,Object> priorTherapyOptionWithNoPriorTherapy;
-    
+
     Map<Object, Object> preExistingConditionOptions;
     Map<Object, Object> baselinePerformanceOptions;
 	
@@ -627,11 +624,7 @@ public class PatientDetailsTab extends AeTab {
      */
     private Map<Object, Object> initializePriorTherapyOptions() {
         List<PriorTherapy> priorTherapyList = priorTherapyRepository.getAll(true, true);
-        if (priorTherapyOptions == null) {
-            this.priorTherapyOptions = WebUtils.collectOptions(priorTherapyList, "id", "text", "Please select");
-            log.debug("Prior Therapies Found: " + this.priorTherapyOptions.size());
-        }
-        return priorTherapyOptions;
+        return WebUtils.collectOptions(priorTherapyList, "id", "text", "Please select");
     }
 
     /**
