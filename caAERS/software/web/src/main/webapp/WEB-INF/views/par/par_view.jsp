@@ -272,6 +272,7 @@
                                 <th><tags:message key="therapy.agents" /></th>
                             </tr>
                             <c:forEach items="${assignment.priorTherapies}" var="pt" varStatus="status">
+                                <c:if test="${!pt.priorTherapy.retiredIndicator}">
                             <tr>
                                 <td valign="top">${pt.priorTherapy.text}</td>
                                 <td valign="top">${pt.other}</td>
@@ -285,6 +286,7 @@
                                     </c:if>
                                 </td>
                             </tr>
+                                </c:if>
                             </c:forEach>
                         </table>
                         </c:if>
