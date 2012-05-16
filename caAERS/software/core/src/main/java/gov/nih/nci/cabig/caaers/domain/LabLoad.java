@@ -42,18 +42,8 @@ public class LabLoad extends AbstractMutableDomainObject {
     
     /** The assignment. */
     private StudyParticipantAssignment assignment;
-    
-    private Date lastSynchedDate;
 
     // //// BEAN PROPERTIES
-
-    public Date getLastSynchedDate() {
-		return lastSynchedDate;
-	}
-
-	public void setLastSynchedDate(Date lastSynchedDate) {
-		this.lastSynchedDate = lastSynchedDate;
-	}
 
 	/**
      * Gets the units.
