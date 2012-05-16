@@ -487,10 +487,12 @@
                             <c:forEach items="${command.assignment.priorTherapies}" varStatus="status">
                                 <c:set var="newIndex" value="${size - (status.index + 1)}" />
                                 <c:set var="ptherapy" value="${command.assignment.priorTherapies[newIndex]}" />
-                                <par:onePriorTherapy index="${newIndex}" 
-	                                priorTherapy="${ptherapy}" 
-	                                collapsed="true" 
-	                                showNoPriorTherapy="${(size eq 1 and newIndex eq 0) and (empty ptherapy.priorTherapy or empty ptherapy.priorTherapy.text or ptherapy.priorTherapy.id eq _priorTherapy_nopriortherapy_id)}"/>
+                                <c:if test="${!ptherapy.priorTherapy.retiredIndicator}">
+                                    <par:onePriorTherapy index="${newIndex}"
+                                        priorTherapy="${ptherapy}"
+                                        collapsed="true"
+                                        showNoPriorTherapy="${(size eq 1 and newIndex eq 0) and (empty ptherapy.priorTherapy or empty ptherapy.priorTherapy.text or ptherapy.priorTherapy.id eq _priorTherapy_nopriortherapy_id)}"/>
+                                </c:if>
                             </c:forEach>
                         </div>
             </div>

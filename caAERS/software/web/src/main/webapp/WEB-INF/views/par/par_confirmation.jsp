@@ -268,19 +268,21 @@
                                         <th><tags:message key="therapy.agents" /></th>
                                     </tr>
                                     <c:forEach items="${assignment.priorTherapies}" var="pt" varStatus="status">
-                                    <tr>
-                                        <td valign="top">${pt.priorTherapy.text}</td>
-                                        <td valign="top">${pt.other}</td>
-                                        <td valign="top"><tags:validDate date="${pt.startDate}" /></td>
-                                        <td valign="top"><tags:validDate date="${pt.endDate}" /></td>
-                                        <td valign="top">
-                                            <c:if test="${fn:length(pt.priorTherapyAgents) > 0}">
-                                                <c:forEach items="${pt.priorTherapyAgents}" var="pta" varStatus="status">
-                                                    ${pta.name}<br />
-                                                </c:forEach>
-                                            </c:if>
-                                        </td>
-                                    </tr>
+                                    <c:if test="${!pt.priorTherapy.retiredIndicator}">
+                                        <tr>
+                                            <td valign="top">${pt.priorTherapy.text}</td>
+                                            <td valign="top">${pt.other}</td>
+                                            <td valign="top"><tags:validDate date="${pt.startDate}" /></td>
+                                            <td valign="top"><tags:validDate date="${pt.endDate}" /></td>
+                                            <td valign="top">
+                                                <c:if test="${fn:length(pt.priorTherapyAgents) > 0}">
+                                                    <c:forEach items="${pt.priorTherapyAgents}" var="pta" varStatus="status">
+                                                        ${pta.name}<br />
+                                                    </c:forEach>
+                                                </c:if>
+                                            </td>
+                                        </tr>
+                                    </c:if>
                                     </c:forEach>
                                 </table>
                                 </c:if>
