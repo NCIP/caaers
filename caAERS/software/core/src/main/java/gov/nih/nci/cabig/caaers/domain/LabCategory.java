@@ -1,8 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import gov.nih.nci.cabig.ctms.domain.AbstractImmutableDomainObject;
-import org.hibernate.annotations.Fetch;
-
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -10,6 +8,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
  
 /**
@@ -18,13 +23,15 @@ import javax.persistence.OrderBy;
  * @author Krikor Krumlian
  */
 @Entity
-public class LabCategory extends AbstractImmutableDomainObject {
+@Table(name = "lab_categories")
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "lab_categories_id_seq") })
+public class LabCategory extends AbstractMutableRetireableDomainObject {
     
     /** The name. */
     private String name;
 
     /** The terms. */
-    private List<LabTerm> terms;
+    private List<LabTerm> terms = new ArrayList<LabTerm>();
 
     /** The lab version. */
     private LabVersion labVersion;
@@ -75,6 +82,7 @@ public class LabCategory extends AbstractImmutableDomainObject {
      * @return the terms
      */
     @OneToMany(mappedBy = "category")
+    @Cascade(value = {CascadeType.ALL})
     @OrderBy
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     // by ID for consistency
@@ -89,5 +97,10 @@ public class LabCategory extends AbstractImmutableDomainObject {
      */
     public void setTerms(List<LabTerm> terms) {
         this.terms = terms;
+    }
+    
+    public void addTerm(LabTerm term){
+    	term.setCategory(this);
+    	getTerms().add(term);
     }
 }

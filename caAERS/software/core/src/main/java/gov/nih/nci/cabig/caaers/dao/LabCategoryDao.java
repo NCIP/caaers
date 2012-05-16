@@ -2,8 +2,10 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.domain.LabCategory;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Query;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +34,12 @@ public class LabCategoryDao extends CaaersDao<LabCategory> {
     @SuppressWarnings("unchecked")
     public List<LabCategory> getAll() {
         return getHibernateTemplate().find("from LabCategory");
+    }
+    
+    // return unique element as name is unique across lab categories
+    public LabCategory getByName(String name) {
+    	Query query = getSessionFactory().getCurrentSession().createQuery("from LabCategory where name like :name");
+    	return (LabCategory) query.setParameter("name", name).uniqueResult();
     }
 
 }

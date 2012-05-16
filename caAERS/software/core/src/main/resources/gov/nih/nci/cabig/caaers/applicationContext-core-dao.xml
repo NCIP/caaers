@@ -569,6 +569,7 @@ This applicationContext contains the definition of the DAOs
     </bean>
     <bean id="labTermDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.LabTermDao"/>
     <bean id="labCategoryDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.LabCategoryDao"/>
+    <bean id="labVersionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.LabVersionDao"/>
     <bean id="interventionSiteDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.InterventionSiteDao"/>
 
 

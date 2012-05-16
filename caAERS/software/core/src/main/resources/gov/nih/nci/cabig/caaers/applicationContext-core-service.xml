@@ -24,6 +24,11 @@ default-lazy-init="true">
 		<property name="agentMigrator" ref="agentMigrator"/>
 	</bean>
 	
+	<bean id="labService" class="gov.nih.nci.cabig.caaers.api.impl.LabServiceImpl">
+		<property name="labCategoryDao" ref="labCategoryDao"/>
+		<property name="labMigrator" ref="labMigrator"/>
+	</bean>
+	
 	<bean id="priorTherapyManagementService" class="gov.nih.nci.cabig.caaers.api.impl.PriorTherapyManagementServiceImpl">
 		<property name="priorTherapyDao" ref="priorTherapyDao"/>
         <property name="priorTherapyConverter" ref="priorTherapyConverter"   />
@@ -238,6 +243,10 @@ default-lazy-init="true">
 	<bean id="deviceMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.DeviceMigrator"/>
 	<bean id="priorTherapyMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.PriorTherapyMigrator"/>
     <bean id="preExistingConditionMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.PreExistingConditionMigrator"/>
+    <bean id="labMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.LabMigrator">
+    	<property name="labVersionDao" ref="labVersionDao"></property>
+    	<property name="labTermDao" ref="labTermDao"></property>
+    </bean>
 
 	<bean id="studyConverter" class="gov.nih.nci.cabig.caaers.service.migrator.StudyConverter">
 		<property name="ctcTermDao" ref="ctcTermDao"/>
@@ -291,6 +300,8 @@ default-lazy-init="true">
 	<bean id="organizationConverter" class="gov.nih.nci.cabig.caaers.service.migrator.OrganizationConverter"/>
 	
 	<bean id="agentConverter" class="gov.nih.nci.cabig.caaers.service.migrator.AgentConverter"/>
+	
+	<bean id="labConverter" class="gov.nih.nci.cabig.caaers.service.migrator.LabConverter"/>
 
 	<bean id="studyParticipantAssignmentSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.StudyParticipantAssignmentSynchronizer"/>
 	

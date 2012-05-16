@@ -4,6 +4,10 @@ import gov.nih.nci.cabig.ctms.domain.AbstractImmutableDomainObject;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
  
 /**
@@ -12,7 +16,9 @@ import javax.persistence.ManyToOne;
  * @author Krikor Krumlian
  */
 @Entity
-public class LabTerm extends AbstractImmutableDomainObject {
+@Table(name = "lab_terms")
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "lab_terms_id_seq") })
+public class LabTerm extends AbstractMutableRetireableDomainObject {
     
     /** The term. */
     private String term;

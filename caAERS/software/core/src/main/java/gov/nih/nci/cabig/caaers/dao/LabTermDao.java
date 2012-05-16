@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.hibernate.Query;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -92,5 +93,4 @@ public class LabTermDao extends CaaersDao<LabTerm> {
     public List<LabTerm> getAll() {
         return findAll("o.term");
     }
-
 }

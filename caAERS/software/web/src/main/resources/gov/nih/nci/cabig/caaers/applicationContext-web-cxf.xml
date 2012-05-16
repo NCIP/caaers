@@ -214,6 +214,25 @@
         </jaxws:schemaLocations>
     </jaxws:endpoint>
     
+     <bean id="labManagementWebServiceBean"  class="gov.nih.nci.cabig.caaers.ws.impl.LabManagementWebServiceImpl">
+        <property name="labService" ref="labService" />
+    </bean>
+    <jaxws:endpoint
+            id="labWebService"
+            implementor="#labManagementWebServiceBean"
+            address="/LabService">
+        <jaxws:properties>
+			<entry key="schema-validation-enabled" value="true" />
+		</jaxws:properties>
+        <jaxws:inInterceptors>
+            <ref bean="WSS4JInInterceptor" />
+            <ref bean="wsAuditInfoInterceptor" />
+        </jaxws:inInterceptors>
+        <jaxws:schemaLocations>
+            <jaxws:schemaLocation>/schema/integration/caAERSCommonTypes.xsd</jaxws:schemaLocation>
+        </jaxws:schemaLocations>
+    </jaxws:endpoint>
+    
     <bean id="preExistingConditionManagementWebServiceBean"  class="gov.nih.nci.cabig.caaers.ws.impl.PreExistingConditionManagementWebServiceImpl">
         <property name="preExistingConditionLOVService" ref="preExistingConditionLOVService"/>
     </bean>
