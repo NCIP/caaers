@@ -11,11 +11,11 @@ import java.util.Date;
  */
 public class PreExistingConditionMigrator implements Migrator<PreExistingCondition>  {
     public void migrate(PreExistingCondition src, PreExistingCondition dest, DomainObjectImportOutcome<PreExistingCondition> preExistingConditionDomainObjectImportOutcome) {
-
         dest.setMeddraHlgt(src.getMeddraHlgt());
         dest.setMeddraLlt(src.getMeddraLlt());
         dest.setMeddraLltCode(src.getMeddraLltCode());
         dest.setText(src.getText());
         dest.setLastSynchedDate(new Date());
+        dest.setRetiredIndicator(src.getRetiredIndicator());
     }
 }

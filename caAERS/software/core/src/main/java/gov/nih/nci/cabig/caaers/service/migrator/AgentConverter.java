@@ -15,9 +15,9 @@ public class AgentConverter{
         a.setName(at.getName());
         a.setNscNumber(at.getNscNumber());
         a.setDescription(at.getDescriptionText());
-        if(at.getStatus() != null){
-			a.setRetiredIndicator(at.getStatus().equals(ActiveInactiveStatusType.ACTIVE) ? false:true);
-		}
+        if (at.getStatus() != null) {
+            a.setRetiredIndicator(at.getStatus() == ActiveInactiveStatusType.INACTIVE);
+        }
         return a;
     }
 
@@ -26,6 +26,7 @@ public class AgentConverter{
         at.setName(a.getName());
         at.setNscNumber(a.getNscNumber());
         at.setDescriptionText(a.getDescription());
+        at.setStatus(a.getRetiredIndicator() ? ActiveInactiveStatusType.INACTIVE : ActiveInactiveStatusType.ACTIVE);
         return at;
     }
 

@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.service.migrator;
 
 import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
+import gov.nih.nci.cabig.caaers.integration.schema.common.ActiveInactiveStatusType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.PriorTherapyType;
 
 /**
@@ -14,6 +15,9 @@ public class PriorTherapyConverter {
         priorTherapy.setMeddraTerm(priorTherapyType.getMeddraTerm());
         priorTherapy.setText(priorTherapyType.getText());
         priorTherapy.setTherapyType(priorTherapyType.getTherapyType());
+        if (priorTherapyType.getStatus() != null) {
+			priorTherapy.setRetiredIndicator(priorTherapyType.getStatus() == ActiveInactiveStatusType.INACTIVE);
+		}
         return priorTherapy;
     }
     
@@ -23,6 +27,7 @@ public class PriorTherapyConverter {
         priorTherapyType.setMeddraTerm(priorTherapy.getMeddraTerm());
         priorTherapyType.setText(priorTherapy.getText());
         priorTherapyType.setTherapyType(priorTherapy.getTherapyType());
+        priorTherapyType.setStatus(priorTherapy.getRetiredIndicator() ? ActiveInactiveStatusType.INACTIVE : ActiveInactiveStatusType.ACTIVE);
         return priorTherapyType;
     }
 }

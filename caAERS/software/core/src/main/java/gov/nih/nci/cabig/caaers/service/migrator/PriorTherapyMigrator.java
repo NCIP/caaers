@@ -16,5 +16,6 @@ public class PriorTherapyMigrator implements Migrator<PriorTherapy> {
         dest.setMeddraTerm(src.getMeddraTerm());
         dest.setText(src.getText());
         dest.setTherapyType(src.getTherapyType());
+        dest.setRetiredIndicator(src.getRetiredIndicator());
     }
 }
