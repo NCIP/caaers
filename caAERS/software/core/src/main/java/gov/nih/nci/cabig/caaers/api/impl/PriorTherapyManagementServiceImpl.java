@@ -61,7 +61,8 @@ public class PriorTherapyManagementServiceImpl implements PriorTherapyManagement
 
         return response;
     }
-    
+
+    // ToDo this method has to be moved to PriorTherapyRepository
     public PriorTherapy fetchPriorTherapy(PriorTherapyQuery priorTherapyQuery){
         List<PriorTherapy> list = (List<PriorTherapy>) priorTherapyDao.search(priorTherapyQuery);
         return CollectionUtils.isEmpty(list) ? null : list.get(0);

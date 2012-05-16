@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.participant;
 import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
 import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
 import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.repository.PriorTherapyRepository;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.web.fields.*;
@@ -37,7 +38,7 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
     private static final Log log = LogFactory.getLog(SubjectMedHistoryTab.class);
     Map<String, String> methodNameMap = new HashMap<String, String>();
 
-    private PriorTherapyDao priorTherapyDao;
+    private PriorTherapyRepository priorTherapyRepository;
     private PreExistingConditionDao preExistingConditionDao;
     private ConfigProperty configurationProperty;
     
@@ -332,8 +333,9 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
      * @return
      */
     private Map<Object, Object> initializePriorTherapyOptions() {
+        List<PriorTherapy> priorTherapyList = priorTherapyRepository.getAll(true, true);
     	if(priorTherapyOptions == null){
-    		this.priorTherapyOptions = WebUtils.collectOptions(priorTherapyDao.getAllExcludingNoPriorTherapy(),"id", "text","Please select");
+    		this.priorTherapyOptions = WebUtils.collectOptions(priorTherapyList, "id", "text","Please select");
             log.debug("Prior Therapies Found: " + this.priorTherapyOptions.size());
         }
         return priorTherapyOptions;
@@ -379,15 +381,14 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
     protected boolean methodInvocationRequest(HttpServletRequest request) {
     	return org.springframework.web.util.WebUtils.hasSubmitParameter(request, "currentItem") && org.springframework.web.util.WebUtils.hasSubmitParameter(request, "task");
     }
-    
-    //OBJECT METHODS
-    public PriorTherapyDao getPriorTherapyDao() {
-		return priorTherapyDao;
-	}
 
-    public void setPriorTherapyDao(PriorTherapyDao priorTherapyDao) {
-		this.priorTherapyDao = priorTherapyDao;
-	}
+    public PriorTherapyRepository getPriorTherapyRepository() {
+        return priorTherapyRepository;
+    }
+
+    public void setPriorTherapyRepository(PriorTherapyRepository priorTherapyRepository) {
+        this.priorTherapyRepository = priorTherapyRepository;
+    }
 
     public PreExistingConditionDao getPreExistingConditionDao() {
 		return preExistingConditionDao;

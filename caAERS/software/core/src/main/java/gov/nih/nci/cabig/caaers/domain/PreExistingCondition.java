@@ -21,7 +21,7 @@ import org.hibernate.annotations.Parameter;
 @Entity
 @Table(name = "pre_existing_conditions")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_pre_existing_conditions_id") })
-public class PreExistingCondition extends AbstractMutableDomainObject {
+public class PreExistingCondition extends AbstractMutableRetireableDomainObject {
     
     /** The text. */
     private String text;

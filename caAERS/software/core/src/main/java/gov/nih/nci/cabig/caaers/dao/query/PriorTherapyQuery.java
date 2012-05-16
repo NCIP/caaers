@@ -14,4 +14,9 @@ public class PriorTherapyQuery extends AbstractQuery {
         andWhere("p.meddraCode = :mc");
         setParameter("mc", meddraCode);
     }
+
+    public void filterByRetiredStatus(Boolean status) {
+        super.filterByRetiredStatus("p", status);
+    }
+
 }

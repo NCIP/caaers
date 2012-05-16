@@ -21,7 +21,7 @@ import org.hibernate.annotations.Parameter;
 @Entity
 @Table(name = "prior_therapies")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_prior_therapies_id") })
-public class PriorTherapy extends AbstractMutableDomainObject {
+public class PriorTherapy extends AbstractMutableRetireableDomainObject {
 	
 	//id of surgery prior therapy
 	/** The SURGERY. */

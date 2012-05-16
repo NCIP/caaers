@@ -111,6 +111,10 @@
         <property name="deviceDao" ref="deviceDao"></property>
     </bean>
 
+    <bean id="priorTherapyRepository" class="gov.nih.nci.cabig.caaers.domain.repository.PriorTherapyRepository">
+        <property name="priorTherapyDao" ref="priorTherapyDao"></property>
+    </bean>
+
 	<bean id="userRepository" class="gov.nih.nci.cabig.caaers.domain.repository.UserRepositoryImpl"
           lazy-init="true" autowire="byType">
         <property name="authenticationMode" ref="authenticationMode"/>
