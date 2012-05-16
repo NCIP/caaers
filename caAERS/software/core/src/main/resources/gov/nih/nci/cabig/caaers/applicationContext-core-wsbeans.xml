@@ -60,7 +60,7 @@
 	            </property> -->
 	        </bean>
 	    </property>
-	    <property name="defaultUri" value="http://localhost:8196/GenericProcessorService"/>
+	    <property name="defaultUri" value="https://localhost:8196/GenericProcessorService"/>
 	</bean>
 	
 	<bean id="proxyWebServiceFacade" class="gov.nih.nci.cabig.caaers.service.ProxyWebServiceFacade">
