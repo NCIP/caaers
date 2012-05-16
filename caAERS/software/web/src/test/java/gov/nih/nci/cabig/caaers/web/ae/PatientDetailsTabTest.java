@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite;
 import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
 import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition;
+import gov.nih.nci.cabig.caaers.domain.repository.PriorTherapyRepository;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
@@ -67,12 +68,12 @@ public class PatientDetailsTabTest extends AeTabTestCase {
                 return new ArrayList<PreExistingCondition>();
             }
         });
-		pdt.setPriorTherapyDao(new PriorTherapyDao(){
-			@Override
-			public List<PriorTherapy> getAllExcludingNoPriorTherapy() {
-				return new ArrayList<PriorTherapy>();
-			}
-		});
+		pdt.setPriorTherapyRepository(new PriorTherapyRepository() {
+            @Override
+            public List<PriorTherapy> getAll(boolean excludeNoPriorTherapy, boolean activeOnly) {
+                return new ArrayList<PriorTherapy>();
+            }
+        });
         return pdt;
 	}
     
