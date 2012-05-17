@@ -101,7 +101,8 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
     		searchResults = getResearchStaffTable(searchCriteriaMap);
     		searchResults.addAll(getInvestigatorTable(searchCriteriaMap));
 
-            if (StringUtils.isNotEmpty(name) || StringUtils.isEmpty(userName)) {
+            // at least one of [name, userName] is provided
+            if (StringUtils.isNotEmpty(name) | StringUtils.isNotEmpty(userName)) {
                 for (UserAjaxableDomainObject uado : searchResults) {
                     if (StringUtils.isNotEmpty(uado.getUserName()) && !resultsMap.containsKey(uado.getUserName())) {
                         resultsMap.put(uado.getUserName(), uado);
