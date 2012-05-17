@@ -242,7 +242,7 @@ public class DiseaseHistory extends AbstractExpeditedReportSingleChild {
      * @return the metastatic disease sites internal
      */
     @OneToMany (orphanRemoval = true)
-    @JoinColumn(name = "disease_history_id")
+    @JoinColumn(name = "disease_history_id", nullable = false)
     @Cascade(value = {CascadeType.ALL})
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<MetastaticDiseaseSite> getMetastaticDiseaseSitesInternal() {

@@ -87,45 +87,27 @@ public class MetastaticDiseaseSite extends AbstractMutableDomainObject {
     }
     
     ///OBJECT METHODS
-    /* (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
+
+
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        final MetastaticDiseaseSite other = (MetastaticDiseaseSite) obj;
-        if (codedSite == null) {
-            if (other.codedSite != null)
-                return false;
-        } else if (!codedSite.equals(other.codedSite))
-            return false;
-        if (otherSite == null) {
-            if (other.otherSite != null)
-                return false;
-        } else if (!otherSite.equals(other.otherSite))
-            return false;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof MetastaticDiseaseSite)) return false;
+
+        MetastaticDiseaseSite that = (MetastaticDiseaseSite) o;
+
+        if (codedSite != null ? !codedSite.equals(that.codedSite) : that.codedSite != null) return false;
+        if (otherSite != null ? !otherSite.equals(that.otherSite) : that.otherSite != null) return false;
+
         return true;
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result
-                + ((codedSite == null) ? 0 : codedSite.hashCode());
-        result = prime * result
-                + ((otherSite == null) ? 0 : otherSite.hashCode());
+        int result = otherSite != null ? otherSite.hashCode() : 0;
+        result = 31 * result + (codedSite != null ? codedSite.hashCode() : 0);
         return result;
     }
-
 
     /**
      * Creates the report metastatic disease site.

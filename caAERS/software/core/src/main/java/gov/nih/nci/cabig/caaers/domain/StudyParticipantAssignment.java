@@ -610,6 +610,8 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
      */
     private void syncrhonizePriorTherapies(final List<SAEReportPriorTherapy> saeReportPriorTherapies) {
         for (SAEReportPriorTherapy saeReportPriorTherapy : saeReportPriorTherapies) {
+            if(saeReportPriorTherapy.getPriorTherapy().isRetired() ) continue;
+
             StudyParticipantPriorTherapy spaPT = containsPriorTherapy(saeReportPriorTherapy);
 
             if (spaPT == null) {
@@ -733,6 +735,8 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     private void syncrhonizePreExistingCondition(final List<SAEReportPreExistingCondition> saeReportPreExistingConditions) {
 
         for (SAEReportPreExistingCondition saeReportPreExistingCondition : saeReportPreExistingConditions) {
+            if(saeReportPreExistingCondition.getPreExistingCondition().isRetired()) continue;
+
             if (!containsPreExistingCondition(saeReportPreExistingCondition)) {
                 StudyParticipantPreExistingCondition studyParticipantPreExistingCondition = StudyParticipantPreExistingCondition.createAssignmentPreExistingCondition(saeReportPreExistingCondition);
                 addPreExistingCondition(studyParticipantPreExistingCondition);
