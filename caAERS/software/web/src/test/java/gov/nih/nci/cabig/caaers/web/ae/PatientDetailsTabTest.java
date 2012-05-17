@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite;
 import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
 import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition;
+import gov.nih.nci.cabig.caaers.domain.repository.PreExistingConditionRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.PriorTherapyRepository;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
@@ -39,7 +40,7 @@ public class PatientDetailsTabTest extends AeTabTestCase {
 
     @Override
     protected void setUp() throws Exception {
-        // TODO: this makes me stupider for having done it
+        // TODO: this makes me stupider for hfdaoaving done it
         configurationProperty = new ConfigProperty();
         configurationProperty.setMap(new HashMap<String, List<Lov>>());
         configurationProperty.getMap().put("bpsRefData", createMirroredLov("0 = zero", "1 = one", "2 = two"));
@@ -62,9 +63,9 @@ public class PatientDetailsTabTest extends AeTabTestCase {
 		PatientDetailsTab pdt =  new PatientDetailsTab();
 		pdt.setConfigurationProperty(configurationProperty);
         EasyMock.expect(evaluationService.validateReportingBusinessRules(command.getAeReport(), pdt.section())).andReturn(new ValidationErrors()).anyTimes();
-		pdt.setPreExistingConditionDao(new PreExistingConditionDao() {
+		pdt.setPreExistingConditionRepository(new PreExistingConditionRepository() {
             @Override
-            public List<PreExistingCondition> getAll() {
+            public List<PreExistingCondition> getAll(boolean activeOnly) {
                 return new ArrayList<PreExistingCondition>();
             }
         });

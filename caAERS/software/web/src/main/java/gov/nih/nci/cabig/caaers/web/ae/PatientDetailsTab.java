@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.domain.PriorTherapyAgent;
 import gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition;
 import gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
+import gov.nih.nci.cabig.caaers.domain.repository.PreExistingConditionRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.PriorTherapyRepository;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
@@ -53,9 +54,6 @@ public class PatientDetailsTab extends AeTab {
 	private static final Log log = LogFactory.getLog(PatientDetailsTab.class);
 	
 	private ConfigProperty configurationProperty;
-    private PreExistingConditionDao preExistingConditionDao;
-
-    Map<Object, Object> preExistingConditionOptions;
     Map<Object, Object> baselinePerformanceOptions;
 	
 	//the below static variables corresponds to the field group names
@@ -69,6 +67,7 @@ public class PatientDetailsTab extends AeTab {
 	
     Map<String, String> methodNameMap = new HashMap<String, String>();
     private PriorTherapyRepository priorTherapyRepository;
+    private PreExistingConditionRepository preExistingConditionRepository;
 
     public PatientDetailsTab() {
         super("Patient Details", ExpeditedReportSection.MEDICAL_INFO_SECTION.getDisplayName(), "ae/patientDetails");
@@ -631,17 +630,16 @@ public class PatientDetailsTab extends AeTab {
      * Will initialize the pre-existing condition options.
      * @return
      */
-    private Map<Object, Object> initializePreExistingConditionOptions(){
-    	if(preExistingConditionOptions == null){
-    		 List<PreExistingCondition> list = preExistingConditionDao.getAll();
-    	        if (list != null) {
-    	        	preExistingConditionOptions = new LinkedHashMap<Object, Object>();
-    	        	preExistingConditionOptions.put(" ", " Please select                                    .");
-    	        	preExistingConditionOptions.putAll(WebUtils.collectOptions(list, "id", "text", "Other, specify"));
-    	        }
-    	}
-    	return preExistingConditionOptions;
+    private Map<Object, Object> initializePreExistingConditionOptions() {
+        Map<Object, Object> preExistingConditionOptions = new LinkedHashMap<Object, Object>();
+        List<PreExistingCondition> list = preExistingConditionRepository.getAll(true);
+        if (list != null) {
+            preExistingConditionOptions.put(" ", " Please select                                    .");
+            preExistingConditionOptions.putAll(WebUtils.collectOptions(list, "id", "text", "Other, specify"));
+        }
+        return preExistingConditionOptions;
     }
+
     /**
      * Will return the options for baseline performance
      * @return
@@ -661,17 +659,19 @@ public class PatientDetailsTab extends AeTab {
         this.priorTherapyRepository = priorTherapyRepository;
     }
 
-    public PreExistingConditionDao getPreExistingConditionDao() {
-		return preExistingConditionDao;
-	}
-    public void setPreExistingConditionDao(
-			PreExistingConditionDao preExistingConditionDao) {
-		this.preExistingConditionDao = preExistingConditionDao;
-	}
     public void setConfigurationProperty(ConfigProperty configurationProperty) {
 		this.configurationProperty = configurationProperty;
 	}
+
     public ConfigProperty getConfigurationProperty() {
 		return configurationProperty;
 	}
+
+    public PreExistingConditionRepository getPreExistingConditionRepository() {
+        return preExistingConditionRepository;
+    }
+
+    public void setPreExistingConditionRepository(PreExistingConditionRepository preExistingConditionRepository) {
+        this.preExistingConditionRepository = preExistingConditionRepository;
+    }
 }

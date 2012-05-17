@@ -434,7 +434,9 @@
                     <c:forEach items="${command.assignment.preExistingConditions}" varStatus="status">
                         <c:set var="newIndex" value="${size - (status.index + 1)}" />
                         <c:set var="pCond" value="${command.assignment.preExistingConditions[newIndex]}" />
-                        <par:onePreExistingCondition index="${newIndex}" preExistingCondition="${pCond.preExistingCondition}" otherValue="${pCond.other}"/>
+                        <c:if test="${!pCond.preExistingCondition.retiredIndicator}">
+                            <par:onePreExistingCondition index="${newIndex}" preExistingCondition="${pCond.preExistingCondition}" otherValue="${pCond.other}"/>
+                        </c:if>
                     </c:forEach>
                 </div>
             </div>

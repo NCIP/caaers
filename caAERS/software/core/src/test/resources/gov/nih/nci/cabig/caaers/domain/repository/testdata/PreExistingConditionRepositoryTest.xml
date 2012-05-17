@@ -1,0 +1,6 @@
+<dataset>
+    <pre_existing_conditions id="-1" condition_text="Text-01" retired_indicator="false" />
+    <pre_existing_conditions id="-2" condition_text="Text-02" retired_indicator="false" />
+    <pre_existing_conditions id="-3" condition_text="Text-03" retired_indicator="true" />
+    <pre_existing_conditions id="-4" condition_text="Text-04" retired_indicator="true" />
+</dataset>

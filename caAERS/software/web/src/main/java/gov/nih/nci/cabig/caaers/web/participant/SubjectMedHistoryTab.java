@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.participant;
 import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
 import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
 import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.repository.PreExistingConditionRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.PriorTherapyRepository;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
@@ -39,7 +40,7 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
     Map<String, String> methodNameMap = new HashMap<String, String>();
 
     private PriorTherapyRepository priorTherapyRepository;
-    private PreExistingConditionDao preExistingConditionDao;
+    private PreExistingConditionRepository preExistingConditionRepository;
     private ConfigProperty configurationProperty;
     
     
@@ -345,17 +346,16 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
      * Will initialize the pre-existing condition options.
      * @return
      */
-    private Map<Object, Object> initializePreExistingConditionOptions(){
-    	if(preExistingConditionOptions == null){
-    		 List<PreExistingCondition> list = preExistingConditionDao.getAll();
-    	        if (list != null) {
-    	        	preExistingConditionOptions = new LinkedHashMap<Object, Object>();
-    	        	preExistingConditionOptions.put(" ", " Please select                                    .");
-    	        	preExistingConditionOptions.putAll(WebUtils.collectOptions(list, "id", "text", "Other, specify"));
-    	        }
-    	}
-    	return preExistingConditionOptions;
+    private Map<Object, Object> initializePreExistingConditionOptions() {
+        Map<Object, Object> preExistingConditionOptions = new LinkedHashMap<Object, Object>();
+        List<PreExistingCondition> list = preExistingConditionRepository.getAll(true);
+        if (list != null) {
+            preExistingConditionOptions.put(" ", " Please select                                    .");
+            preExistingConditionOptions.putAll(WebUtils.collectOptions(list, "id", "text", "Other, specify"));
+        }
+        return preExistingConditionOptions;
     }
+
     /**
      * Will return the options for baseline performance
      * @return
@@ -390,13 +390,13 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
         this.priorTherapyRepository = priorTherapyRepository;
     }
 
-    public PreExistingConditionDao getPreExistingConditionDao() {
-		return preExistingConditionDao;
-	}
-    
-    public void setPreExistingConditionDao(PreExistingConditionDao preExistingConditionDao) {
-		this.preExistingConditionDao = preExistingConditionDao;
-	}
+    public PreExistingConditionRepository getPreExistingConditionRepository() {
+        return preExistingConditionRepository;
+    }
+
+    public void setPreExistingConditionRepository(PreExistingConditionRepository preExistingConditionRepository) {
+        this.preExistingConditionRepository = preExistingConditionRepository;
+    }
 
     public void setConfigurationProperty(ConfigProperty configurationProperty) {
 		this.configurationProperty = configurationProperty;

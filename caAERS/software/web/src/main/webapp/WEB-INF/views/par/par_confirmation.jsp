@@ -210,9 +210,11 @@
                                     </c:if>
 
                                     <c:forEach items="${assignment.preExistingConditions}" var="pc" varStatus="status">
-                                        <c:if test="${not empty pc.preExistingCondition}">${pc.preExistingCondition.text}</c:if>
-                                        <c:if test="${empty pc.preExistingCondition}">${pc.other}</c:if>
-                                        <br/>
+                                        <c:if test="${!pc.preExistingCondition.retiredIndicator}">
+                                            <c:if test="${not empty pc.preExistingCondition}">${pc.preExistingCondition.text}</c:if>
+                                            <c:if test="${empty pc.preExistingCondition}">${pc.other}</c:if>
+                                            <br/>
+                                        </c:if>
                                     </c:forEach>
                             </td>
                         </tr>
