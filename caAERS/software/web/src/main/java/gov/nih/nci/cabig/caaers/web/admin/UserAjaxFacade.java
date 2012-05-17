@@ -101,22 +101,21 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
     		searchResults = getResearchStaffTable(searchCriteriaMap);
     		searchResults.addAll(getInvestigatorTable(searchCriteriaMap));
 
-            // at least one of [name, userName] is provided
-            if (StringUtils.isNotEmpty(name) | StringUtils.isNotEmpty(userName)) {
-                for (UserAjaxableDomainObject uado : searchResults) {
-                    if (StringUtils.isNotEmpty(uado.getUserName()) && !resultsMap.containsKey(uado.getUserName())) {
-                        resultsMap.put(uado.getUserName(), uado);
-                    }
-                }
-                List<UserAjaxableDomainObject> csmResults = getUserTable(searchCriteriaMap);
-                for (UserAjaxableDomainObject uado : csmResults) {
-                    if (resultsMap.containsKey(uado.getUserName())) {
-                        //Do not add it to searchResults
-                    } else {
-                        searchResults.add(uado);
-                    }
+            for (UserAjaxableDomainObject uado : searchResults) {
+                if (StringUtils.isNotEmpty(uado.getUserName()) && !resultsMap.containsKey(uado.getUserName())) {
+                    resultsMap.put(uado.getUserName(), uado);
                 }
             }
+
+            List<UserAjaxableDomainObject> csmResults = getUserTable(searchCriteriaMap);
+            for (UserAjaxableDomainObject uado : csmResults) {
+                if (resultsMap.containsKey(uado.getUserName())) {
+                    //Do not add it to searchResults
+                } else {
+                    searchResults.add(uado);
+                }
+            }
+
             return searchResults;
     	}
     }
