@@ -215,6 +215,9 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
     
     // currently gets the service name entirely from operation name
     private String getServiceNameFromEntityAndOperation(String entity, String operation){
+    	if(operation.equalsIgnoreCase("updateStudy")){
+    		return "GetStudyDetails";
+    	}
     	StringBuffer serviceName = new StringBuffer(Character.toString((Character.toUpperCase(operation.charAt(0)))));
     	serviceName.append(operation.substring(1));
     	return serviceName.toString();
