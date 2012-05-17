@@ -937,6 +937,19 @@ function showCoppaSearchDisclaimer(){
 	}
 }
 //-------------------------------------------------------------------------------------------------------------------
+/**
+ * Interpolate property for Strings
+ * Example:     var template = "The *{speed} *{color} fox jumps over the lazy *{animal}.";
+ *              alert(template.interpol({"speed":"fast", "color":"black", "animal":"horse"}));
+ * @param valueMap interpolation parameter map
+ */
+String.prototype.interpol = function (valueMap) {
+    return this.replace(/\*\{([^}]+)\}/g, function (p, v) {
+        return valueMap[v];
+    });
+};
+
+//-------------------------------------------------------------------------------------------------------------------
 function hideCoppaSearchDisclaimer(){
 	try{
 		$('coppa-search-disclaimer').hide();
