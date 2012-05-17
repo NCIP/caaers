@@ -300,92 +300,84 @@
              * row that has been collapsed by a non user action
              * @return {Boolean} successful
             **/
-            expandRow : function( record_id, restore ){
+             expandRow : function( record_id, restore ){
 
                 var state = this._getRecordState( record_id );
 
-                if (state.expanded && !restore) {
-                    return false;
-                }
+                if( !state.expanded || restore ){
 
-                var row_data = this.getRecord( record_id );
-                if (!row_data) {
-                    return false;
-                }
+                    var row_data          = this.getRecord( record_id ),
+                        row               = this.getRow( row_data ),
+                        new_row           = document.createElement('tr'),
+                        column_length     = this.getFirstTrEl().childNodes.length,
+                        expanded_data     = row_data.getData(),
+                        expanded_content  = null,
+                        template          = this.rowExpansionTemplate,
+                        next_sibling      = Dom.getNextSibling( row );
 
-                var row = this.getTrEl( row_data );
-                if (!row || Dom.hasClass(this.getNextTrEl(row), CLASS_EXPANSION)) {
-                    return false;
-                }
+                    //Construct expanded row body
+                    new_row.className = CLASS_EXPANSION;
+                    var new_column = document.createElement( 'td' );
+                    new_column.colSpan = column_length;
 
-                var new_row           = document.createElement('tr'),
-                    column_length     = this.getFirstTrEl().childNodes.length,
-                    expanded_data     = row_data.getData(),
-                    expanded_content  = null,
-                    template          = this.rowExpansionTemplate,
-                    next_sibling      = Dom.getNextSibling( row );
+                    new_column.innerHTML = '<div class="'+ CLASS_LINER +'"></div>';
+                    new_row.appendChild( new_column );
 
-                //Construct expanded row body
-                new_row.className = CLASS_EXPANSION;
-                var new_column = document.createElement( 'td' );
-                new_column.colSpan = column_length;
+                    var liner_element = new_row.firstChild.firstChild;
 
-                new_column.innerHTML = '<div class="'+ CLASS_LINER +'"></div>';
-                new_row.appendChild( new_column );
+                    if( YAHOO.lang.isString( template ) ){
 
-                var liner_element = new_row.firstChild.firstChild;
+                        liner_element.innerHTML = YAHOO.lang.substitute( 
+                            template, 
+                            expanded_data
+                        );
 
-                if( YAHOO.lang.isString( template ) ){
+                    } else if( YAHOO.lang.isFunction( template ) ) {
 
-                    liner_element.innerHTML = YAHOO.lang.substitute( 
-                        template, 
-                        expanded_data
-                    );
+                        template( {
+                            row_element : new_row,
+                            liner_element : liner_element,
+                            data : row_data, 
+                            state : state 
+                        } );
 
-                } else if( YAHOO.lang.isFunction( template ) ) {
+                    } else {
 
-                    template( {
-                        row_element : new_row,
-                        liner_element : liner_element,
-                        data : row_data, 
-                        state : state 
-                    } );
-
-                } else {
-
-                    return false;
-
-                }
-
-                //Insert new row
-                newRow = Dom.insertAfter( new_row, row );
-
-                if (newRow.innerHTML.length) {
-
-                    this._setRecordState( record_id, 'expanded', true );
-
-                    if( !restore ){
-
-                        this.a_rowExpansions.push( this.getRecord( record_id ).getId() );
+                        return false;
 
                     }
 
-                    Dom.removeClass( row, CLASS_COLLAPSED );
-                    Dom.addClass( row, CLASS_EXPANDED );
+                    //Insert new row
+                    newRow = Dom.insertAfter( new_row, row );
 
-                    //Fire custom event
-                    this.fireEvent( "rowExpandEvent", { record_id : row_data.getId() } );
+                    if (newRow.innerHTML.length) {
 
-                    return true;
+                        this._setRecordState( record_id, 'expanded', true );
 
-                } else {
+                        if( !restore ){
 
-                    return false;
+                            this.a_rowExpansions.push( this.getRecord( record_id ).getId() );
 
-                } 
+                        }
+
+                        Dom.removeClass( row, CLASS_COLLAPSED );
+                        Dom.addClass( row, CLASS_EXPANDED );
+
+                        //Fire custom event
+                        this.fireEvent( "rowExpandEvent", { record_id : row_data.getId() } );
+
+                        return true;
+
+                    } else {
+
+                        return false;
+
+                    } 
+
+                }
 
             },
-
+            
             /**
              * Sets the expansion state of a row to collapsed
              * @method collapseRow
@@ -401,7 +393,7 @@
                 if( state && state.expanded ){
 
                     var next_sibling = Dom.getNextSibling( row ),
-                        hash_index   = indexOf( this.a_rowExpansions, this.getRecord(record_id).getId() );
+                        hash_index   = indexOf( this.a_rowExpansions, record_id );
 
                     if( Dom.hasClass( next_sibling, CLASS_EXPANSION ) ) {
 
