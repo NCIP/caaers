@@ -1,7 +1,7 @@
 /**** GENERAL TAG STYLE OVERRIDES */
 
 body {
-     background: url("../../images/blue/bg.png") repeat-y scroll center center #02307F;
+     background: url("../images/blue/bg.png") repeat-y scroll center center #02307F;
      color: #333333;
      font-family: "Lucida Grande", Arial, Helvetica, sans-serifsans-serif;
      font-size: 10pt;
@@ -12,7 +12,7 @@ body {
 }
 
 .wide-header {
-     background: url("../../images/blue/wide_header_bg.png") no-repeat scroll center center transparent;
+     background: url("../images/blue/wide_header_bg.png") no-repeat scroll center center transparent;
      height: 130px;
      left: 0;
      margin: 0;
@@ -42,7 +42,7 @@ body {
 }
 
 .workflow-tabs2 {
-     background: url("../../images/blue/thirdlevelnav_grey_gradient.png") repeat-x scroll center top #616161;
+     background: url("../images/blue/thirdlevelnav_grey_gradient.png") repeat-x scroll center top #616161;
      border-bottom: 1px solid #0D0D0D;
      border-top: 1px solid #C9C9C9;
      font-size: 13px;
@@ -73,7 +73,7 @@ body {
 }
 
 #thirdlevelnav div {
-     background-image: url("../../images/blue/thirdlevelarrow_grey.png");
+     background-image: url("../images/blue/thirdlevelarrow_grey.png");
      background-position: right center;
      background-repeat: no-repeat;
      margin: 2px 0;
@@ -205,7 +205,7 @@ a:hover {
 }
 
 a#logo {
-     background-image: url("../../images/blue/caAERSlogo.png");
+     background-image: url("../images/blue/caAERSlogo.png");
      height: 100px;
      position: absolute;
      text-indent: -9999px;
@@ -430,7 +430,7 @@ ul.tabs li {
 }
 
 #taskbar {
-     background: url("../../images/blue/taskbar_BG.png") repeat-x scroll center top transparent;
+     background: url("../images/blue/taskbar_BG.png") repeat-x scroll center top transparent;
      color: #FFFFFF;
      font-family: "Lucida Grande", sans-serif;
      font-size: 14px;
@@ -477,14 +477,14 @@ ul.tabs li {
 }
 
 #taskbar li.gt4 a:hover {
-     background: url("../../images/blue/purple_hover.png") no-repeat scroll right top transparent;
+     background: url("../images/blue/purple_hover.png") no-repeat scroll right top transparent;
      border-left: 1px solid #67437E;
      color: #FFFFFF;
      margin-left: 0;
 }
 
 #taskbar li.gt4 a:active {
-     background: url("../../images/blue/selected_bg.png") no-repeat scroll 0 0 transparent;
+     background: url("../images/blue/selected_bg.png") no-repeat scroll 0 0 transparent;
      color: #EEDEF8;
 }
 
@@ -494,14 +494,14 @@ ul.tabs li {
 }
 
 #taskbar li.lte4 a:hover {
-     background: url("../../images/blue/purple_hover.png") no-repeat scroll right center transparent;
+     background: url("../images/blue/purple_hover.png") no-repeat scroll right center transparent;
      border-left: 1px solid #67437E;
      color: #FFFFFF;
      margin-left: 0;
 }
 
 #taskbar li.lte4 a:active {
-     background: url("../../images/blue/selected_bg.png") repeat scroll 0 0 transparent;
+     background: url("../images/blue/selected_bg.png") repeat scroll 0 0 transparent;
      color: #EEDEF8;
 }
 
@@ -510,13 +510,13 @@ ul.tabs li {
 }
 
 #taskbar .lte4 a.selected, #taskbar .lte4 a.selected:hover, #taskbar .lte4 a.selected:active {
-     background: url("../../images/blue/selected_bg.png") no-repeat scroll right center transparent;
+     background: url("../images/blue/selected_bg.png") no-repeat scroll right center transparent;
      border-left: 1px solid #67437E;
      margin-left: 0;
 }
 
 #taskbar .gt4 a.selected, #taskbar .gt4 a.selected:hover, #taskbar .gt4 a.selected:active {
-     background: url("../../images/blue/selected_bg.png") no-repeat scroll right center transparent;
+     background: url("../images/blue/selected_bg.png") no-repeat scroll right center transparent;
      border-left: 1px solid #67437E;
      margin-left: 0;
 }
@@ -546,7 +546,7 @@ ul.tabs li {
 }
 
 #flash-message.info {
-     background: url("../../images/blue/flash-message_bg.png") repeat-x scroll center top #A5CE87;
+     background: url("../images/blue/flash-message_bg.png") repeat-x scroll center top #A5CE87;
      border: 1px solid #A5CE87;
      border-radius: 8px 8px 8px 8px;
      color: #486F2C;
@@ -564,7 +564,7 @@ ul.tabs li {
 }
 
 #flash-message.warning {
-     background: url("../../images/warning-message_bg.jpg") repeat-x scroll center top #FFFFC3;
+     background: url("../images/warning-message_bg.jpg") repeat-x scroll center top #FFFFC3;
      border: 1px solid #F1F19C;
      border-radius: 8px 8px 8px 8px;
      color: #585827;
@@ -600,14 +600,14 @@ ul.tabs li {
 }
 
 .green-means-go {
-     background: url("../../images/blue/green_gradient.png") repeat-x scroll center top #6AF06A;
+     background: url("../images/blue/green_gradient.png") repeat-x scroll center top #6AF06A;
      border: 2px solid #888888;
      margin: 0 4px 15px;
      padding: 20px;
 }
 
 .red-means-stop {
-     background: url("../../images/blue/red_gradient.png") repeat-x scroll center top #FE8C8C;
+     background: url("../images/blue/red_gradient.png") repeat-x scroll center top #FE8C8C;
      border: 2px solid #888888;
      margin: 0 4px 15px;
      padding: 20px;
@@ -643,7 +643,7 @@ ul.tabs li {
 /* Each pane will contain one or more "boxes" */
 .box {
      background-color: #FFFFFF;
-     background-image: url("../../images/blue/box_bg.jpg");
+     background-image: url("../images/blue/box_bg.jpg");
      background-repeat: repeat-x;
      margin-bottom: 12px;
 }
@@ -672,26 +672,26 @@ h2.title {
 }
 
 .box .header .background-L {
-     background: url("../../images/blue/box_header_bg_l.jpg") no-repeat scroll left top transparent;
+     background: url("../images/blue/box_header_bg_l.jpg") no-repeat scroll left top transparent;
 }
 
 .box .header .background-R {
-     background: url("../../images/blue/box_header_bg_r.jpg") no-repeat scroll right top transparent;
+     background: url("../images/blue/box_header_bg_r.jpg") no-repeat scroll right top transparent;
 }
 
 .border-T {
 }
 
 .border-L {
-     background: url("../../images/blue/box_l.png") repeat-y scroll left center transparent;
+     background: url("../images/blue/box_l.png") repeat-y scroll left center transparent;
 }
 
 .border-R {
-     background: url("../../images/blue/box_r.png") repeat-y scroll right center transparent;
+     background: url("../images/blue/box_r.png") repeat-y scroll right center transparent;
 }
 
 .border-B {
-     background: url("../../images/blue/box_bottom.png") repeat-x scroll center bottom transparent;
+     background: url("../images/blue/box_bottom.png") repeat-x scroll center bottom transparent;
 }
 
 .border-TL {
@@ -701,11 +701,11 @@ h2.title {
 }
 
 .border-BL {
-     background: url("../../images/blue/box_bl.png") no-repeat scroll left bottom transparent;
+     background: url("../images/blue/box_bl.png") no-repeat scroll left bottom transparent;
 }
 
 .border-BR {
-     background: url("../../images/blue/box_br.png") no-repeat scroll right bottom transparent;
+     background: url("../images/blue/box_br.png") no-repeat scroll right bottom transparent;
 }
 
 .box .interior {
@@ -737,7 +737,7 @@ h2.title {
 
 .box ul.inner.tabs {
     /* this overspecific selector is necessary for IE */
-     background: url("../../images/chrome/inner-tab_BG.gif") no-repeat scroll right top transparent;
+     background: url("../images/chrome/inner-tab_BG.gif") no-repeat scroll right top transparent;
      font-size: 0.9em;
      height: 20px;
      margin: 0 0 0 7px;
@@ -745,20 +745,20 @@ h2.title {
 }
 
 .box ul.inner.tabs li {
-     background: url("../../images/chrome/inner-tab_L.gif") no-repeat scroll left top transparent;
+     background: url("../images/chrome/inner-tab_L.gif") no-repeat scroll left top transparent;
 }
 
 .box ul.inner.tabs li.selected {
-     background-image: url("../../images/chrome/inner-tab_L_s.gif");
+     background-image: url("../images/chrome/inner-tab_L_s.gif");
 }
 
 .box ul.inner.tabs li div {
-     background: url("../../images/chrome/inner-tab_R.gif") no-repeat scroll right top transparent;
+     background: url("../images/chrome/inner-tab_R.gif") no-repeat scroll right top transparent;
      padding: 0 20px;
 }
 
 .box ul.inner.tabs li.selected div {
-     background-image: url("../../images/chrome/inner-tab_R_s.gif");
+     background-image: url("../images/chrome/inner-tab_R_s.gif");
 }
 
 .box ul.inner.tabs a {
@@ -821,7 +821,7 @@ span.phone-number {
 }
 
 div.errors {
-     background: url("../../images/error-message_bg.jpg") repeat-x scroll center top #F7DEE4;
+     background: url("../images/error-message_bg.jpg") repeat-x scroll center top #F7DEE4;
      border: 1px solid #F6DEE4;
      border-radius: 8px 8px 8px 8px;
      color: #CC0033;
@@ -843,7 +843,7 @@ ul.errors {
 }
 
 ul.errors li {
-     list-style-image: url("../../images/error.png");
+     list-style-image: url("../images/error.png");
      margin: 0 0.8em;
      padding: 0;
 }
@@ -971,7 +971,7 @@ table.tablecontent {
 }
 
 .tablecontent th {
-     background: url("../../images/table/tablecontent_header.jpg") repeat-x scroll center center transparent;
+     background: url("../images/table/tablecontent_header.jpg") repeat-x scroll center center transparent;
      border: 1px solid #ACACAC;
      padding: 3px 7px;
      text-shadow: 0 1px white;
@@ -1176,7 +1176,7 @@ td.create img, td.edit img, td.ammend img, td.withdraw img {
 }
 
 a.export-button {
-     background-image: url("../../images/blue/export-button-bg.png");
+     background-image: url("../images/blue/export-button-bg.png");
      background-repeat: repeat-x;
      border: 1px solid #ADADAD;
      border-radius: 3px 3px 3px 3px;
