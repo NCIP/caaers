@@ -230,6 +230,7 @@
                       targetService="caaers:generic-processor-sink"
                       busCfg="caXchangeConf/security/cxf-caaers-config.xml">
         <cxfbc:inInterceptors>
+        	<bean class="gov.nih.nci.cabig.caaers2adeers.RemoveJbiJAASInterceptor"/>
             <ref local="wss4jInInterceptor" />
         </cxfbc:inInterceptors>
 		<!--<cxfbc:inInterceptors>-->
