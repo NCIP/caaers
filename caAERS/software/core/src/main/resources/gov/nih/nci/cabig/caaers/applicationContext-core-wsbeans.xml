@@ -53,12 +53,6 @@
 	    <property name="messageSender">
 	        <bean class="org.springframework.ws.transport.http.CommonsHttpMessageSender">
                 <property name="readTimeout" value="300000" />
-	            <!-- <property name="credentials">
-	                <bean class="org.apache.commons.httpclient.UsernamePasswordCredentials">
-	                    <constructor-arg value="john"/>
-	                    <constructor-arg value="secret"/>
-	                </bean>
-	            </property> -->
 	        </bean>
 	    </property>
 	    <property name="defaultUri" value="https://localhost:8196/GenericProcessorService"/>
@@ -70,6 +64,8 @@
         <property name="configuration" ref="configuration" />
         <property name="studyDao" ref="studyDao" />
         <property name="eventFactory" ref="eventFactory" />
+        <property name="wsUserName" value="mayo-super-user" />
+        <property name="wsPassword" value="Hello-12" />
 	</bean>
 
 </beans>

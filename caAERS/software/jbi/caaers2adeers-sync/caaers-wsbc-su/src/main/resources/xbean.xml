@@ -56,6 +56,20 @@
             </map>
         </constructor-arg>
     </bean>
+    
+    <bean id="wss4jInInterceptor" class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
+        <constructor-arg>
+            <map>
+                <entry key="action" value="UsernameToken"/>
+                <entry key="user" value="s[CAAERS_WS_USERNAME]"/>
+                <entry key="passwordType" value="PasswordText"/>
+                <entry key="Type" value="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText"/>
+                <entry key="passwordCallbackRef">
+                    <ref local="caaersWSPasswordCallback" />
+                </entry>
+            </map>
+        </constructor-arg>
+    </bean>
 
    <!-- ================== Agents Webservice Provider ==================================-->
     <cxfbc:provider interfaceName="caaers:AgentManagementServiceInterface"  service="caaers:AgentManagementWebService"
@@ -215,6 +229,9 @@
                       locationURI="s[GENERIC_PROCESSOR_WS_BINDING_URL]"
                       targetService="caaers:generic-processor-sink"
                       busCfg="caXchangeConf/security/cxf-caaers-config.xml">
+        <cxfbc:inInterceptors>
+            <ref local="wss4jInInterceptor" />
+        </cxfbc:inInterceptors>
 		<!--<cxfbc:inInterceptors>-->
 		  <!--<bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>-->
 		<!--</cxfbc:inInterceptors>-->

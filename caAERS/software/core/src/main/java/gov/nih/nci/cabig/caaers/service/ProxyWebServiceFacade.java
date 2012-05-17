@@ -4,31 +4,48 @@ import gov.nih.nci.cabig.caaers.CaaersConfigurationException;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.LocalStudy;
+import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.event.EventFactory;
-import gov.nih.nci.cabig.caaers.integration.schema.study.*;
+import gov.nih.nci.cabig.caaers.integration.schema.study.Studies;
 import gov.nih.nci.cabig.caaers.service.migrator.StudyConverter;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.utils.XsltTransformer;
+
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.ws.WebServiceMessage;
+import org.springframework.ws.client.core.WebServiceMessageCallback;
 import org.springframework.ws.client.core.WebServiceTemplate;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.text.ParseException;
-import java.util.*;
+import org.springframework.ws.soap.SoapHeader;
+import org.springframework.ws.soap.SoapMessage;
+import org.springframework.xml.transform.StringSource;
 
 
 public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
@@ -72,6 +89,9 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
     private Unmarshaller unmarshaller = null;
     private XsltTransformer xsltTransformer;
     
+    private String wsUserName;
+    private String wsPassword;
+    
     public ProxyWebServiceFacade() {
        try{
            jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.integration.schema.study");
@@ -93,7 +113,31 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
         StreamResult result = new StreamResult(sw);
         String wsURI = configuration.get(Configuration.ESB_WS_URL);
         if(wsURI != null) webServiceTemplate.setDefaultUri(wsURI);
-        webServiceTemplate.sendSourceAndReceiveToResult(source, result);
+        webServiceTemplate.sendSourceAndReceiveToResult(source, new WebServiceMessageCallback() {
+			
+			public void doWithMessage(WebServiceMessage message) throws IOException,
+					TransformerException {
+				SoapMessage soapMessage = (SoapMessage) message;
+			    
+			    StringBuffer sbHeader = new StringBuffer();
+			    sbHeader.append("<wsse:Security xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" ")
+			    	.append("xmlns:wsse=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd\">")
+			        .append("<wsse:UsernameToken wsu:Id=\"UsernameToken-2765109\" xmlns:wsu=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd\">")
+			        .append("<wsse:Username>")
+			        .append(wsUserName)
+			        .append("</wsse:Username>")
+			        .append("<wsse:Password Type=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText\">")
+			        .append(wsPassword)
+			        .append("</wsse:Password>")
+			        .append("</wsse:UsernameToken>")
+			    	.append("</wsse:Security> ");
+			    
+			    StringSource headerSource = new StringSource(sbHeader.toString());
+			    SoapHeader soapHeader = ((SoapMessage) message).getSoapHeader();
+			    Transformer transformer = TransformerFactory.newInstance().newTransformer();
+                transformer.transform(headerSource, soapHeader.getResult());
+			}
+		} ,result);
 
         return sw.toString();
     }
@@ -288,6 +332,14 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
         }
 
         return retVal;
+	}
+
+	public void setWsUserName(String wsUserName) {
+		this.wsUserName = wsUserName;
+	}
+
+	public void setWsPassword(String wsPassword) {
+		this.wsPassword = wsPassword;
 	}
 
 
