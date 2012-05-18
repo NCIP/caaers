@@ -62,8 +62,12 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
         wrappedReport = new BeanWrapperImpl(report);
         assignment = new StudyParticipantAssignment();
         assignment.addConcomitantMedication(new StudyParticipantConcomitantMedication());
-        assignment.addPriorTherapy(new StudyParticipantPriorTherapy());
-        assignment.addPreExistingCondition(new StudyParticipantPreExistingCondition());
+        StudyParticipantPriorTherapy spt = new StudyParticipantPriorTherapy();
+        spt.setPriorTherapy(Fixtures.createPriorTherapy("hello"));
+        assignment.addPriorTherapy(spt);
+        StudyParticipantPreExistingCondition spc = new StudyParticipantPreExistingCondition();
+        spc.setPreExistingCondition(Fixtures.createPreExistingCondition("n", "n", "n", "n"));
+        assignment.addPreExistingCondition(spc);
         StudyParticipantDiseaseHistory studyParticipantDiseaseHistory = new StudyParticipantDiseaseHistory();
         studyParticipantDiseaseHistory.addMetastaticDiseaseSite(new StudyParticipantMetastaticDiseaseSite());
         assignment.setDiseaseHistory(studyParticipantDiseaseHistory);

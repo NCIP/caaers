@@ -937,6 +937,13 @@ public class Fixtures {
 	  return exp;
   }
     
+    public static PriorTherapy createPriorTherapy(String therapy){
+        PriorTherapy pt = new PriorTherapy();
+        pt.setRetiredIndicator(false);
+        pt.setText(therapy);
+        return pt;
+    }
+    
     public static PriorTherapyType createPriorTherapyType(String meddraCode, String text, String meddraTerm){
         PriorTherapyType xmlTherapy = new PriorTherapyType();
         xmlTherapy.setMeddraCode(meddraCode);
