@@ -5,7 +5,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <title>${tab.longTitle}</title>
   
-  <tags:dwrJavascriptLink objects="createStudy, createAE"/>
+  <tags:dwrJavascriptLink objects="createStudy,createAE"/>
 
   <script type="text/javascript">
 
