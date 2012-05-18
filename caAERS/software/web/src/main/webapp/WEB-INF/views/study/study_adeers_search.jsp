@@ -7,6 +7,10 @@
     div.yui-dt-liner a:hover  {
         color: white;
     }
+
+    .submitterButton {
+        width: 140px;
+    }
 </style>
 <script language="JavaScript">
 
