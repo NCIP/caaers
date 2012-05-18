@@ -74,7 +74,7 @@
 
             if (_resultId.error) {
                 showError(_resultId.errorMessage);
-                jQuery('#studyLink' + _index).html("<b>Error</b>");
+//                jQuery('#studyLink' + _index).html("<b>Error</b>");
             } else {
                 var _dbId = _resultId.objectContent;
                 var text = "Updated";
