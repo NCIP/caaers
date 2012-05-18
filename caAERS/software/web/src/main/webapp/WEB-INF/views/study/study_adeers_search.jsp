@@ -20,6 +20,10 @@
         jQuery("#autoRemoveElement").fadeOut('slow', function() {});
     }
 
+    function hideFlashErrorMessage() {
+        jQuery("#flashErrors").fadeOut('slow', function() {});
+    }
+
     function doSearch() {
         jQuery("#searchForm").submit();
     }
@@ -50,11 +54,16 @@
     }
 
     function showError(_errorMessage) {
+        jQuery('#command.errors').html(_errorMessage);
+        jQuery('#flashErrors').show();
+        hideFlashErrorMessage.delay(5);
+/*
         popupDiv = new Window({className:"alphacube", width:300, height:100, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:true, minimizable:false, maximizable:false});
         jQuery('#_errorMessage').html("Some Error goes here: " + _errorMessage);
         popupDiv.setContent('error_page');
         popupDiv.showCenter(true);
         popupDiv.show();
+*/
     }
 
     function doUpdate(id, _index, nciCode, operation) {
@@ -223,7 +232,7 @@
 
 </chrome:box>
 </c:if>
-
+<%--<input type="button" onclick="doUpdate(1, 1, 'NCI', 'IMPORT')" value="HIT IT...">--%>
 <!--POPUPS-->
 <div id="please_wait" style="display: none;">
     <h3><caaers:message code="LBL_please.wait" /></h3>
