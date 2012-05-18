@@ -91,11 +91,19 @@ public class OrganizationManagementServiceImpl implements OrganizationManagement
 
 	public List<ProcessingOutcome> createOrUpdateOrganizations(List<Organization> organizations) {
 		List<ProcessingOutcome> outcomes = new ArrayList<ProcessingOutcome>();
+        int flushSize = 1000;
+        int i = 0;
 		for (Organization organization:organizations) {
             outcomes.add(createOrUpdateOrganization(organization));
-            organizationDao.flush();
-            organizationDao.clearSession();
+            if(i > flushSize){
+                i = 0;
+                organizationDao.flush();
+                organizationDao.clearSession();
+            }
+            i++;
 		}
+        organizationDao.flush();
+        organizationDao.clearSession();
 		return outcomes;
 	}
 
