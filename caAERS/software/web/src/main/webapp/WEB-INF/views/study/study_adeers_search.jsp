@@ -40,9 +40,7 @@
     function submitSearch() {
         if (!validateInputText()) return;
         popupDiv = new Window({className:"alphacube", width:500, height:150, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
-//        popupDiv.setContent("search_submit");
-        popupDiv.setContent("autoRemoveElement");
-        jQuery('#autoRemoveElementMesage').html(jQuery('#search_submit').html());
+        popupDiv.setContent("search_submit");
         popupDiv.showCenter(true);
         popupDiv.show();
         doSearch.delay(1);
@@ -50,8 +48,7 @@
 
     function showPopup() {
         popupDiv = new Window({className:"alphacube", width:500, height:150, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
-        popupDiv.setContent("autoRemoveElement");
-        jQuery('#autoRemoveElementMesage').html(jQuery('#please_wait').html());
+        popupDiv.setContent("please_wait");
         popupDiv.showCenter(true);
         popupDiv.show();
     }
@@ -237,10 +234,10 @@
 </c:if>
 <%--<input type="button" onclick="doUpdate(1, 1, 'NCI', 'IMPORT')" value="HIT IT...">--%>
 <!--POPUPS-->
-<div id="please_wait" style="display: none;">
+<div id="please_wait" style="display: none;" class="flash-message info" >
     <h3><caaers:message code="LBL_please.wait" /></h3>
     <br><br>
     <div><caaers:message code="LBL_study.in.process" /></div>
 </div>
 <div id="error_page" style="display: none;"><div><caaers:message code="LBL_study.process.error" /></div><br><span id="_errorMessage">.</span></div>
-<div id="search_submit" style="display: none;"><h3><caaers:message code="LBL_please.wait" /></h3><br><br><div><caaers:message code="LBL_study.searching" /></div></div>
+<div id="search_submit" class="flash-message info" style="display: none;"><h3><caaers:message code="LBL_please.wait" /></h3><br><br><div><caaers:message code="LBL_study.searching" /></div></div>

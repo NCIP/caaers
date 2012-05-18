@@ -529,7 +529,7 @@ ul.tabs li {
      position: relative;
 }
 
-#flash-message {
+#flash-message, .flash-message {
      -moz-border-bottom-colors: none;
      -moz-border-image: none;
      -moz-border-left-colors: none;
@@ -545,7 +545,7 @@ ul.tabs li {
      width: 75%;
 }
 
-#flash-message.info {
+#flash-message.info, .flash-message.info {
      background: url("../images/blue/flash-message_bg.png") repeat-x scroll center top #A5CE87;
      border: 1px solid #A5CE87;
      border-radius: 8px 8px 8px 8px;
@@ -553,7 +553,7 @@ ul.tabs li {
      text-shadow: 0 1px white;
 }
 
-#flash-message.info img {
+#flash-message.info img, .flash-message.info img {
      margin-right: 15px;
      vertical-align: middle;
 }
