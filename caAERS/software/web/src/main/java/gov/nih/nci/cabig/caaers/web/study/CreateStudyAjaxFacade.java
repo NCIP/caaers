@@ -891,6 +891,7 @@ public class CreateStudyAjaxFacade {
             org.setNciInstituteCode(nciInstituteCode); //populate me ??
             id.setOrganization(org);
             _result = proxyWebServiceFacade.syncStudy(id, createOrUpdate);
+            System.out.println(_result);
             Integer.parseInt(_result);
             out.setObjectContent(_result);
         } catch (NumberFormatException e) {
