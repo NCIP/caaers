@@ -4,7 +4,7 @@
 <title>Search AdEERS Studies</title>
 
 <style>
-    .fg-button.submitter hover {
+    div.yui-dt-liner a:hover  {
         color: white;
     }
 </style>
