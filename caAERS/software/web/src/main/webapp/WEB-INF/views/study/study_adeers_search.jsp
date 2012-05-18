@@ -3,6 +3,11 @@
 
 <title>Search AdEERS Studies</title>
 
+<style>
+    .fg-button.submitter hover {
+        color: white;
+    }
+</style>
 <script language="JavaScript">
 
     var _ajaxIndicatorHtml= '<img height="13px" width="13px" src="<c:url value="/images/indicator.gif" />" alt="activity indicator" width="20px" height="20px"/>';
@@ -67,7 +72,7 @@
     }
 
     function doUpdate(id, _index, nciCode, operation) {
-        jQuery('#studyLink' + _index).html(_ajaxIndicatorHtml);
+//        jQuery('#studyLink' + _index).html(_ajaxIndicatorHtml);
         showPopup();
         createStudy.syncStudyWithAdEERS(id, nciCode ,operation, function(_resultId) {
             popupDiv.close();
