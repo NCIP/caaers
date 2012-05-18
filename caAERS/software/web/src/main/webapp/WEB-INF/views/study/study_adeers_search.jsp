@@ -54,9 +54,9 @@
     }
 
     function showError(_errorMessage) {
-        jQuery('#command.errors').html(_errorMessage);
+        jQuery('#command_errors').html(_errorMessage);
         jQuery('#flashErrors').show();
-        hideFlashErrorMessage.delay(5);
+        hideFlashErrorMessage.delay(10);
 /*
         popupDiv = new Window({className:"alphacube", width:300, height:100, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:true, minimizable:false, maximizable:false});
         jQuery('#_errorMessage').html("Some Error goes here: " + _errorMessage);
@@ -113,7 +113,7 @@
 
 
     <div class="errors" id="flashErrors" style="display: none;">
-        <span id="command.errors">Please enter some search criteria.</span>
+        <span id="command_errors">Please enter some search criteria.</span>
     </div>
 
     <div id="autoRemoveElement" style="display: none;">
