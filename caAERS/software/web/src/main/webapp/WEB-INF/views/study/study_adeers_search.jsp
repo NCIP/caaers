@@ -39,16 +39,19 @@
 
     function submitSearch() {
         if (!validateInputText()) return;
-        popupDiv = new Window({className:"alphacube", width:300, height:100, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
-        popupDiv.setContent("search_submit");
+        popupDiv = new Window({className:"alphacube", width:500, height:150, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
+//        popupDiv.setContent("search_submit");
+        popupDiv.setContent("autoRemoveElement");
+        jQuery('#autoRemoveElementMesage').html(jQuery('#search_submit').html());
         popupDiv.showCenter(true);
         popupDiv.show();
         doSearch.delay(1);
     }
 
     function showPopup() {
-        popupDiv = new Window({className:"alphacube", width:300, height:100, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
-        popupDiv.setContent('please_wait');
+        popupDiv = new Window({className:"alphacube", width:500, height:150, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
+        popupDiv.setContent("autoRemoveElement");
+        jQuery('#autoRemoveElementMesage').html(jQuery('#please_wait').html());
         popupDiv.showCenter(true);
         popupDiv.show();
     }
