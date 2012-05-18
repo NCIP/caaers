@@ -181,6 +181,7 @@
         }
 
         var actionsRow = "<span id='studyLink#{index}'><a onmouseover='showMenuOptions(#{index}, \"#{action}\", \"#{fsid}\", \"#{ncic}\", \"#{studyId}\")' id='_study#{index}' class='submitterButton submitter fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all'>Actions<span class='ui-icon ui-icon-triangle-1-s'></span></a></span>";
+        var actionsRowOneItem = "<span id='studyLink#{index}'><a onclick='doUpdate(\"#{fsid}\", \"#{index}\", \"#{ncic}\", \"CREATE\")' id='_study#{index}' class='submitterButton submitter fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all'>Actions<span class='ui-icon ui-icon-triangle-1-s'></span></a></span>";
 
         var actionFormatter = function(elCell, oRecord, oColumn, oData) {
             var _index = this.getRecordIndex(oRecord);
@@ -194,7 +195,7 @@
                 elCell.innerHTML = actionsRow.interpolate({index:_index, action:"UPDATE", fsid:fsid, ncic:ncic, studyId:id});
                 // elCell.innerHTML = "<span id='studyLink" + _index + "'><a href='#' onclick='updateStudy(\"" + fsid +"\", " + _index + ", \"" + ncic + "\")'>Update</a></span>";
             } else {
-                elCell.innerHTML = actionsRow.interpolate({index:_index, action:"CREATE", fsid:fsid, ncic:ncic, studyId:id});
+                elCell.innerHTML = actionsRowOneItem.interpolate({index:_index, action:"CREATE", fsid:fsid, ncic:ncic, studyId:id});
                 // elCell.innerHTML = "<span id='studyLink" + _index + "'><a href='#' onclick='importStudy(\"" + fsid +"\", "+ _index + ", \"" + ncic  + "\")' id='studyLink" + _index + "'>Import</a></span>";
             }
         };
