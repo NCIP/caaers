@@ -71,7 +71,7 @@
                 var flashText = "<caaers:message code="LBL_study.updated" />";
                 if (operation == "CREATE") {
                     text = "Imported";
-                    flashText = "<caaers:message code="LBL_study.imported" />";
+                    flashText = "<caaers:message code="LBL_study.created" />";
                 }
 //                jQuery('#studyLink' + _index).html("<b>" + text + "</b>");
                 var _s = "<a onmouseover='showMenuOptions(#{index}, \"#{action}\", \"#{fsid}\", \"#{ncic}\", \"#{studyId}\")' id='_study#{index}' class='submitterButton submitter fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all'>Actions<span class='ui-icon ui-icon-triangle-1-s'></span></a>";
