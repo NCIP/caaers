@@ -49,8 +49,9 @@
         popupDiv.show();
     }
 
-    function showError() {
+    function showError(_errorMessage) {
         popupDiv = new Window({className:"alphacube", width:300, height:100, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:true, minimizable:false, maximizable:false});
+        jQuery('#_errorMessage').html("Some Error goes here: " + _errorMessage);
         popupDiv.setContent('error_page');
         popupDiv.showCenter(true);
         popupDiv.show();
@@ -63,7 +64,7 @@
             popupDiv.close();
 
             if (_resultId.error) {
-                showError();
+                showError(_resultId.errorMessage);
                 jQuery('#studyLink' + _index).html("<b>Error</b>");
             } else {
                 var _dbId = _resultId.objectContent;
@@ -229,5 +230,5 @@
     <br><br>
     <div><caaers:message code="LBL_study.in.process" /></div>
 </div>
-<div id="error_page" style="display: none;"><div><caaers:message code="LBL_study.process.error" /></div></div>
+<div id="error_page" style="display: none;"><div><caaers:message code="LBL_study.process.error" /></div><br><span id="_errorMessage">.</span></div>
 <div id="search_submit" style="display: none;"><h3><caaers:message code="LBL_please.wait" /></h3><br><br><div><caaers:message code="LBL_study.searching" /></div></div>
