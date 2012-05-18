@@ -39,7 +39,7 @@
 
     function submitSearch() {
         if (!validateInputText()) return;
-        popupDiv = new Window({className:"alphacube", width:500, height:100, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
+        popupDiv = new Window({className:"alphacube", width:500, height:125, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
         popupDiv.setContent("search_submit");
         popupDiv.showCenter(true);
         popupDiv.show();
@@ -47,7 +47,7 @@
     }
 
     function showPopup() {
-        popupDiv = new Window({className:"alphacube", width:500, height:100, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
+        popupDiv = new Window({className:"alphacube", width:500, height:125, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
         popupDiv.setContent("please_wait");
         popupDiv.showCenter(true);
         popupDiv.show();
