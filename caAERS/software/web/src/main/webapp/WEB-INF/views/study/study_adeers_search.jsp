@@ -6,12 +6,9 @@
 <style>
     div.yui-dt-liner a:hover  {
         color: white;
+        width: 120px;
     }
 
-    a.submitterButton {
-        width: 140px;
-        font-size: 20px;
-    }
 </style>
 <script language="JavaScript">
 
