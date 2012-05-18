@@ -53,6 +53,8 @@ function logOutOKClicked(url){
         onSuccess: function(transport) {
         }
     });
+
+    resetLogoutTimer();
 }
 
 
