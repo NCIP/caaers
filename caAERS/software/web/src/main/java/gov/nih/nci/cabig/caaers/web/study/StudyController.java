@@ -163,9 +163,9 @@ public abstract class StudyController<C extends StudyCommand> extends AutomaticS
             return true;
         }
 
-        //save an Ajax request when we are adding an epoch.
+        //save an Ajax request when we are adding/editing an epoch.
         String asyncMethodName = String.valueOf(findInRequest(request, "_asyncMethodName"));
-        if(asyncReqParamPresent && "addEpoch".equals(asyncMethodName))  {
+        if(asyncReqParamPresent && ( "addEpoch".equals(asyncMethodName) ||  "doInPlaceEdit".equals(asyncMethodName) ) )  {
             return true;
         }
 
