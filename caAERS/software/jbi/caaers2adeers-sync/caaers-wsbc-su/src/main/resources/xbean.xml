@@ -91,8 +91,8 @@
 		  <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
 		</cxfbc:outFaultInterceptors>
 	</cxfbc:provider>
-
-    <!-- ================== Agents Dose UOM Webservice Provider ==================================-->
+	
+	   <!-- ================== Agents Dose UOM Webservice Provider ==================================-->
     <cxfbc:provider interfaceName="caaers:ConfigPropertiesWebServiceInterface"  service="caaers:ConfigPropertiesWebService"
                     endpoint="ConfigPropertiesWebServiceImplPort"
                     wsdl="classpath:AgentService.wsdl"
@@ -112,6 +112,7 @@
             <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
         </cxfbc:outFaultInterceptors>
     </cxfbc:provider>
+
     <!-- ================== ASAEL Webservice Provider ==================================-->
     <cxfbc:provider interfaceName="caaers:ASAELServiceInterface"  service="caaers:ASAELService"
                     endpoint="ASAELWebServicePort"
@@ -183,6 +184,28 @@
                     service="caaers:PreExistingConditionManagementWebService"
                     endpoint="PreExistingConditionManagementWebServiceImplPort"
                     wsdl="classpath:PreExistingConditionLOVService.wsdl"
+                    locationURI="s[PRE_CONDITION_WS_BINDING_URL]" useJBIWrapper="false"
+                    useSOAPEnvelope="true" schemaValidationEnabled="true">
+        <cxfbc:inInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+        </cxfbc:inInterceptors>
+        <cxfbc:outInterceptors>
+            <ref local="wss4jOutInterceptor" />
+            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+        </cxfbc:outInterceptors>
+        <cxfbc:inFaultInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+        </cxfbc:inFaultInterceptors>
+        <cxfbc:outFaultInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+        </cxfbc:outFaultInterceptors>
+    </cxfbc:provider>
+    
+     <!-- ================== Labs Webservice Provider ==================================-->
+    <cxfbc:provider interfaceName="caaers:LabServiceInterface"
+                    service="caaers:LabManagementWebService"
+                    endpoint="LabManagementWebServiceImplPort"
+                    wsdl="classpath:LabService.wsdl"
                     locationURI="s[PRE_CONDITION_WS_BINDING_URL]" useJBIWrapper="false"
                     useSOAPEnvelope="true" schemaValidationEnabled="true">
         <cxfbc:inInterceptors>
