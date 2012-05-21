@@ -112,17 +112,19 @@
                 win.close();
             }
 
-            function doActivate(personId, userName, action) {
+            function doActivate(personId, rt, userName, action) {
                 user.activateUser(personId, userName, action, function (_result) {
                     win = new Window({className:"alphacube", width:400, height:80, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
                     win.setContent("success");
                     win.showCenter(true);
                     win.show();
+                    jQuery('#_span' + personId).html(actionsRow.interpolate({id:personId, rt:rt, un:userName, active:(action == 'Active' ? "Inactive" : "Active")}));
                     hideWin.delay(2);
                 })
             }
 
             function showMenuOptions(strId, rt, un, active) {
+//                alert(strId + "," + rt + "," + un +  "," + active);
                 var html_start = "<div><ul style='font-family:tahoma;'>";
                 var html_end = "</ul></div>";
                 var _editAction = "<li><a class='submitter-blue' href='#' onclick='javascript:doEdit(#{strId}, \"#{rt}\", \"#{un}\")'>Edit</a></li>";
@@ -130,7 +132,7 @@
                 if (active == "Active") {
                     _action = "Deactivate"
                 }
-                var _activateAction = "<li><a class='submitter-blue' href='#' onclick='javascript:doActivate(#{strId}, \"#{un}\", \"#{active}\")'>" + _action + "</a></li>";
+                var _activateAction = "<li><a class='submitter-blue' href='#' onclick='javascript:doActivate(#{strId}, \"#{rt}\", \"#{un}\", \"#{active}\")'>" + _action + "</a></li>";
                 var html = html_start + _editAction + (un != "" ? _activateAction : "") + html_end;
                 var html = html.interpolate({strId:strId, rt:rt, un:un, active:active});
                 jQuery('#personnelActions' + strId).menu({
@@ -154,7 +156,7 @@
                 var _rt = oRecord.getData("recordType");
                 var _un = oRecord.getData("userName");
                 var _active = oRecord.getData("active");
-		        elCell.innerHTML = actionsRow.interpolate({id:_id, rt:_rt, un:_un, active:_active});
+		        elCell.innerHTML = "<span id='_span" + _id + "'>" + actionsRow.interpolate({id:_id, rt:_rt, un:_un, active:_active}) + "</span>";
 			};
 
 			var fullNameFormatter = function(elCell, oRecord, oColumn, oData) {
