@@ -5,6 +5,7 @@ public enum EntityOperation{
     AGENT_UOM("agentDoseUOM", "getAgentDoseUOMLOV", "0+0+1+*+*+?"),
     ASAEL("asael", "getASAEL", "0+0+1+*+*+?"),
     DEVICE("device", "getDevicesLOV", "0+0+1+*+*+?"),
+    LAB("lab", "getLabsLOV", "0+0+1+*+*+?"),
     PRIOR_THERAPY("priortherapy", "getTherapiesLOV", "0+0+1+*+*+?"),
     PRE_EXISTING_CONDITION("preexistingcondition", "getPreExistingConditionsLOV", "0+0+1+*+*+?"),
     ORGANIZATION("organization", "getOrganizationsLOV", "0+0+1+*+*+?"),

@@ -34,6 +34,7 @@ public class ToAdeersRouteBuilder {
     			.when().xpath(xpathPredicate("device", "getDevicesLOV")).to("direct:adeers-device-lov")
     			.when().xpath(xpathPredicate("preexistingcondition", "getPreExistingConditionsLOV")).to("direct:adeers-condition-lov")
     			.when().xpath(xpathPredicate("priortherapy", "getTherapiesLOV")).to("direct:adeers-therapy-lov")
+    			.when().xpath(xpathPredicate("lab", "getLabsLOV")).to("direct:adeers-lab-lov")
     			.when().xpath(xpathPredicate("organization", "getOrganizationsLOV")).to("direct:adeers-organization-lov")
     			.when().xpath(xpathPredicate("mergedorganization", "getMergedOrganization")).to("direct:adeers-merged-organization-lov")
                 .when().xpath(xpathPredicate("study", "createStudy")).to("direct:adeers-study-details")
@@ -44,9 +45,9 @@ public class ToAdeersRouteBuilder {
 		//LOV - Agents
     	configureLovWSCallRoute("direct:adeers-agent-lov", "agent_lov.xsl",  "getAgentsLOV");
 
-        //LOV - Agents Dose UOM
+    	//LOV - Agents Dose UOM
     	configureLovWSCallRoute("direct:adeers-doseUOM-lov", "doseuom_lov.xsl",  "getAgentDoseUOMLOV");
-
+    	
     	//LOV - ASAEL
     	configureLovWSCallRoute("direct:adeers-asael-lov", "asael_lov.xsl", "getASAEL");
 
@@ -58,6 +59,9 @@ public class ToAdeersRouteBuilder {
 
     	//LOV - PriorTherapy
     	configureLovWSCallRoute("direct:adeers-therapy-lov", "prior_therapy_lov.xsl", "getTherapiesLOV");
+    	
+    	//LOV - Lab
+    	configureLovWSCallRoute("direct:adeers-lab-lov", "lab_lov.xsl", "getLabsLOV");
 
         //LOV - Organization
         configureLovWSCallRoute("direct:adeers-organization-lov", "organization_lov.xsl",  "getOrganizationsLOV");
