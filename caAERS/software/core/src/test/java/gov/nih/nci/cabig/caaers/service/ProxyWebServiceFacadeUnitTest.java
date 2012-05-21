@@ -22,6 +22,7 @@ import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPathFactory;
 
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
@@ -68,6 +69,26 @@ public class ProxyWebServiceFacadeUnitTest extends AbstractTestCase {
 				.setDefaultUri("http://localhost:8196/GenericProcessorService");
 		
 	}
+
+    public void testSearchStudyThrowingException(){
+        proxyWebServiceFacade = new ProxyWebServiceFacade(){
+            @Override
+            public String simpleSendAndReceive(String message) {
+                if(true) throw new RuntimeException("No method");
+                return mockSearchStudyResponse();
+            }
+        };
+        proxyWebServiceFacade.setStudyConverter(new StudyConverter());
+
+        try{
+            List<Study> studyList = proxyWebServiceFacade.searchStudies("5876")  ;
+            fail("Must throw caaers exception");
+        }catch(CaaersSystemException e){
+           assertEquals("Unable to import study : No method", e.getMessage());
+        }
+        
+        
+    }
 
     public void testSearchStudy(){
         proxyWebServiceFacade = new ProxyWebServiceFacade(){

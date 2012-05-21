@@ -260,6 +260,7 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
             }catch (Exception e){
                 log.error("Error occured while invoking ServiceMix Study Search : " + e.getMessage(), e);
                 log.info("Returning empty study list : unable to search in adeers for (" + searchText + ") :");
+                throw new CaaersSystemException("Unable to import study : " + e.getMessage(), e);
             }
         }
 
