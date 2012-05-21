@@ -88,11 +88,15 @@ public class IntegrationLogDaoTest extends DaoNoSecurityTestCase<IntegrationLogD
 	}
 	
 	public void testFilterByOperations() throws Exception{
+		Date startDate = DateUtils.parseDate("04/21/2012");
+		Date endDate = DateUtils.parseDate("04/26/2012");
+		
 		IntegrationLogQuery query = new IntegrationLogQuery();
 		query.filterByOperation("mergeOrganization", "getStudies");
+		query.filterByLoggedOnStartDateAndEndDate(startDate, endDate);
 		List<IntegrationLog> intlogs = getDao().searchIntegrationLogs(query);
 		assertNotNull(intlogs);
-		assertEquals(7,intlogs.size());
+		assertEquals(5,intlogs.size());
 		
 		IntegrationLogQuery query1 = new IntegrationLogQuery();
 		query1.filterByOperation("mergeOrganization");
@@ -114,9 +118,12 @@ public class IntegrationLogDaoTest extends DaoNoSecurityTestCase<IntegrationLogD
 		
 		IntegrationLogQuery query5 = new IntegrationLogQuery();
 		query5.filterByOperation("mergeOrganization", "createOrUpdate");
+		startDate = DateUtils.parseDate("04/23/2012");
+		endDate = DateUtils.parseDate("04/27/2012");
+		query5.filterByLoggedOnStartDateAndEndDate(startDate, endDate);
 		intlogs = getDao().searchIntegrationLogs(query5);
 		assertNotNull(intlogs);
-		assertEquals(6,intlogs.size());
+		assertEquals(5,intlogs.size());
 
 	}
 	

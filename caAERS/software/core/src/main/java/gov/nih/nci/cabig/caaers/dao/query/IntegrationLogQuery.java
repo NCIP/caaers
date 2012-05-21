@@ -48,7 +48,7 @@ public class IntegrationLogQuery extends AbstractQuery {
     	if(!StringUtilities.isBlank(operation1) && !StringUtilities.isBlank(operation2) ) {
 	        String searchString1 = "%" + operation1.toLowerCase() + "%";
 	        String searchString2 = "%" + operation2.toLowerCase() + "%";
-	        andWhere("lower(operation) LIKE :operation1 or lower(operation) LIKE :operation2" );
+	        andWhere("(lower(operation) LIKE :operation1 or lower(operation) LIKE :operation2)" );
 	        setParameter("operation1", searchString1);
 	        setParameter("operation2", searchString2);
     	}
