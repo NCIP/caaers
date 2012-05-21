@@ -13,7 +13,7 @@
                         <tr class="taskTitleRow">
                             <th width="60%">Title</th>
                             <th width="25%">Status</th>
-                            <th width="15%">Actions</th>
+                            <th width="15%">&nbsp;</th>
                         </tr>
                          <c:forEach var ="study" items="${studyList}" varStatus = "loopStatus">
                          	<tr class="${loopStatus.index % 2 == 0 ? 'alt' : ''}">
@@ -45,7 +45,7 @@
         _el.menu({
                 content: html,
                 maxHeight: 180,
-                width: 230,
+                width: 180,
                 positionOpts: {
                     directionV: 'down',
                     posX: 'left',
