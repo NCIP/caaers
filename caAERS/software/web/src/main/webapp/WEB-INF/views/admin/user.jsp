@@ -168,13 +168,17 @@
 						if($('roleMembershipHelper['+index+'].allSiteAccess').checked){
 							nSiteSummary = 'All Sites';
 						}else{
-							nSiteSummary = 'Sites('+sitesCount[index]+')';
+                            var _c = sitesCount[index];
+                            if (_c == 0) _c = "none";
+							nSiteSummary = 'Sites('+ _c +')';
 						}
 						if($('roleMembershipHelper['+index+'].allStudyAccess')){
 							if($('roleMembershipHelper['+index+'].allStudyAccess').checked){
 								nStudySummary = ' | All Studies';
 							}else{
-								nStudySummary = ' | Studies('+studiesCount[index]+')';
+                                var _c = studiesCount[index];
+                                if (_c == 0) _c = "none";
+								nStudySummary = ' | Studies(' + _c + ')';
 							}
 						}
 						nRoleSummary = nSiteSummary+nStudySummary+selectedImg;
