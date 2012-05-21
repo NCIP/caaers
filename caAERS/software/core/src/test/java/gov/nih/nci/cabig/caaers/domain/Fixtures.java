@@ -14,10 +14,8 @@ import gov.nih.nci.cabig.caaers.domain.workflow.ReportReviewComment;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment;
 import gov.nih.nci.cabig.caaers.domain.workflow.TaskConfig;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
-import gov.nih.nci.cabig.caaers.integration.schema.common.ActiveInactiveStatusType;
-import gov.nih.nci.cabig.caaers.integration.schema.common.DeviceType;
-import gov.nih.nci.cabig.caaers.integration.schema.common.PreExistingConditionType;
-import gov.nih.nci.cabig.caaers.integration.schema.common.PriorTherapyType;
+import gov.nih.nci.cabig.caaers.integration.schema.common.*;
+import gov.nih.nci.cabig.caaers.integration.schema.common.ConfigPropertyType;
 import gov.nih.nci.cabig.caaers.integration.schema.study.InvestigationalNewDrugType;
 import gov.nih.nci.cabig.caaers.integration.schema.study.StudyAgentType;
 import gov.nih.nci.cabig.caaers.integration.schema.study.StudyDeviceINDAssociationType;
@@ -986,6 +984,20 @@ public class Fixtures {
         InvestigationalNewDrugType t = new InvestigationalNewDrugType();
         t.setHolderName(holder);
         t.setIndNumber(i);
+        return t;
+    }
+
+    public static ConfigProperties createConfigProperties(){
+        ConfigProperties p =  new ConfigProperties();
+        p.setName("AGENT_UOM");
+        p.getConfigProperty().add(Fixtures.createConfigPropertyType("c"));
+        return p;
+    }
+    
+    public static  ConfigPropertyType createConfigPropertyType(String code){
+        ConfigPropertyType t = new ConfigPropertyType();
+        t.setCode(code);
+        t.setName(code);
         return t;
     }
 }

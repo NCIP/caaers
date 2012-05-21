@@ -26,6 +26,8 @@ public enum ConfigPropertyType implements CodedEnum<Integer>, Serializable {
 	
 	/** The REPOR t_ rol e_ type. */
 	REPORT_ROLE_TYPE(4, "Expedited Adverse Event Reporting Roles"),
+
+    AGENT_UOM(5, "Agent Unit Of Measure"),
 	
 	/** The UNKNOWN. */
 	UNKNOWN(100,"Unknown");

@@ -70,7 +70,8 @@ public class CTEPESYSDataIntegrationLogsController extends SimpleFormController 
         serviceMap.put("GetAgentDoseUOMLOV", "GetAgentDoseUOMLOV");
         serviceMap.put("GetLabLOV", "GetLabLOV");
         serviceMap.put("GetMergedOrganization", "GetMergedOrganization");
-        
+        serviceMap.put("GetAgentDoseUOMLOV", "GetAgentDoseUOMLOV");
+
         fieldMap = new InputFieldGroupMap();
         InputFieldGroup fieldGroup = new DefaultInputFieldGroup("main");
 

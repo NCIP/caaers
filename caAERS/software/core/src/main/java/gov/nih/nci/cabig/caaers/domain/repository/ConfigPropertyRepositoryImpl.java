@@ -31,6 +31,15 @@ public class ConfigPropertyRepositoryImpl implements ConfigPropertyRepository {
         return cpDao.getByType(cpType);
     }
 
+    public void saveOrUpdate(ConfigProperty configProperty){
+        cpDao.save(configProperty);
+    }
+    
+    public void removeAll(ConfigPropertyType cpType){
+        List<ConfigProperty> c = cpDao.getByType(cpType);
+        if(c !=null && !c.isEmpty())cpDao.removeAll(c);
+    }
+
     //-----------------------------------------------------------------------------------------------------------------
     
     /**

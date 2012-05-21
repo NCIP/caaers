@@ -67,6 +67,9 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
 	public static final String SYNC_ASAEL_ENTITY_NAME="asael";
 	public static final String SYNC_ASAEL_OPERATION_NAME="getASAEL";
 
+    public static final String SYNC_DOSE_UOM_ENTITY_NAME="agentDoseUOM";
+    public static final String SYNC_DOSE_UOM_OPERATION_NAME="getAgentDoseUOMLOV";
+
 	public static final String SYNC_PRE_EXISTING_COND_ENTITY_NAME="preexistingcondition";
 	public static final String SYNC_PRE_EXISTING_COND_OPERATION_NAME="getPreExistingConditionsLOV";
 
@@ -227,6 +230,10 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
 	public String syncASAEL() {
 		return send( SYNC_ASAEL_ENTITY_NAME, SYNC_ASAEL_OPERATION_NAME, false, buildCriteriaMap(null));
 	}
+
+    public String syncAgentUOM() {
+        return send( SYNC_DOSE_UOM_ENTITY_NAME, SYNC_DOSE_UOM_OPERATION_NAME, false, buildCriteriaMap(null));
+    }
 
     public List<Study> searchStudies(String searchText) {
         List<Study> studyList =  new ArrayList<Study>();

@@ -58,5 +58,27 @@ public class ConfigPropertyDaoTest extends DaoTestCase<ConfigPropertyDao> {
 			
 		}
 	}
+    
+    public void testRemoveAll(){
+        {
+           for(int i = 1 ; i < 5 ; i++){
+               ConfigProperty cp = Fixtures.createConfigProperty("test" + i);
+               cp.setConfigType(ConfigPropertyType.UNKNOWN);
+               getDao().save(cp);  
+           }
+            
+        }
+        interruptSession();
+        {
+            List<ConfigProperty> l = getDao().getByType(ConfigPropertyType.UNKNOWN);
+            assertFalse(l.isEmpty());
+            getDao().removeAll(l);
+        }
+        interruptSession();
+        {
+            List<ConfigProperty> l = getDao().getByType(ConfigPropertyType.UNKNOWN);
+            assertTrue(l.isEmpty());
+        }
+    }
 
 }

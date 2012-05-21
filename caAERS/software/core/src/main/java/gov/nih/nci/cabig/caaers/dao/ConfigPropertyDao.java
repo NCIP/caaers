@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.dao;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.transaction.annotation.Propagation;
@@ -60,4 +61,8 @@ public class ConfigPropertyDao extends CaaersDao<ConfigProperty>{
 	public List<ConfigProperty> getAll(){
 		return (List<ConfigProperty>) getHibernateTemplate().find("from ConfigProperty cp");
 	}
+
+    public void removeAll(Collection<ConfigProperty> c){
+        getHibernateTemplate().deleteAll(c);
+    }
 }

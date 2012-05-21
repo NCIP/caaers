@@ -49,7 +49,8 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
 		if(agentsChecked) proxyWebServiceFacade.syncAgents();
 		if(asaelChecked) proxyWebServiceFacade.syncASAEL();
 		if(organizationsChecked) proxyWebServiceFacade.syncOrganizations();
-		
+		if(agentDoseMeasureChecked) proxyWebServiceFacade.syncAgentUOM();
+
 		return 1;
 
 	}
@@ -191,7 +192,8 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
     	if(serviceName.equalsIgnoreCase("SearchStudy")) return "study";
     	if(serviceName.equalsIgnoreCase("GetStudyDetails")) return "study";
     	if(serviceName.equalsIgnoreCase("GetMergedOrganization")) return "organization";
-    	
+    	if(serviceName.equalsIgnoreCase("GetAgentDoseUOMLOV")) return "agentDoseUOM";
+
         return null;
     }
     
@@ -213,7 +215,8 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
     	if(serviceName.equalsIgnoreCase("SearchStudy")) return "searchStudy";
     	if(serviceName.equalsIgnoreCase("GetStudyDetails")) return "updateStudy";
     	if(serviceName.equalsIgnoreCase("GetMergedOrganization")) return "getMergedOrganization";
-    	
+    	if(serviceName.equalsIgnoreCase("GetAgentDoseUOMLOV")) return "getAgentDoseUOMLOV";
+
         return null;
     }
     

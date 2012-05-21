@@ -28,4 +28,8 @@ public interface ConfigPropertyRepository {
      * @return the by type
      */
     public List<ConfigProperty> getByType(ConfigPropertyType cpType);
+
+    public void saveOrUpdate(ConfigProperty configProperty);
+
+    public void removeAll(ConfigPropertyType cpType);
 }

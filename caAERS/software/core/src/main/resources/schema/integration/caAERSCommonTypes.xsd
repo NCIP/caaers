@@ -560,6 +560,23 @@
           </xs:enumeration>
 	    </xs:restriction>
   	</xs:simpleType>
+
+    <xs:element name="ConfigProperties">
+       <xs:complexType>
+         <xs:sequence>
+             <xs:element name="name" type="CustomStringType" />
+             <xs:element name="ConfigProperty" type="ConfigPropertyType" minOccurs="1" maxOccurs="unbounded"/>
+         </xs:sequence>
+       </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="ConfigPropertyType">
+        <xs:sequence>
+            <xs:element name="code" type="CustomStringType" minOccurs="1"/>
+            <xs:element name="name" type="xs:string" minOccurs="1"/>
+            <xs:element name="description" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
 	
 	<xs:complexType name="WsError">
 		<xs:sequence>

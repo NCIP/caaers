@@ -9,7 +9,9 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
- 
+
+import java.util.Date;
+
 
 /**
  * Represents a config property (which is a look up value).
@@ -32,6 +34,15 @@ public class ConfigProperty extends AbstractMutableDomainObject{
 	
 	/** The config type. */
 	private ConfigPropertyType configType;
+    private Date lastSynchedDate;
+
+    public Date getLastSynchedDate() {
+        return lastSynchedDate;
+    }
+
+    public void setLastSynchedDate(Date lastSynchedDate) {
+        this.lastSynchedDate = lastSynchedDate;
+    }
 	
 	/**
 	 * Gets the code.
