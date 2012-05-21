@@ -55,7 +55,7 @@ public class ExportReportDefinitionController extends AbstractCommandController{
 			String fileName = reportDefinitions.getReportDefinition().get(0).getName();
 			fileName = RuleUtil.getStringWithoutSpaces(fileName);
 			StringWriter sw = new StringWriter();
-			JAXBContext jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.reportdefinition");
+			JAXBContext jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.integration.schema.reportdefinition");
 	    	Marshaller marshaller = jaxbContext.createMarshaller();
 	    	marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true) ;
 	    	marshaller.marshal(reportDefinitions, sw);

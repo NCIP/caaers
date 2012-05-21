@@ -56,7 +56,7 @@ public class ListNotificationController extends SimpleFormController {
         }
     	
     	ReportDefinitions reportDefinitions = null;
-    	JAXBContext jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.reportdefinition");
+    	JAXBContext jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.integration.schema.reportdefinition");
     	Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
     	reportDefinitions = (ReportDefinitions)unmarshaller.unmarshal(command.getRuleSetFile1().getInputStream());
     	String reportDefName = reportDefinitions.getReportDefinition().get(0).getName();
