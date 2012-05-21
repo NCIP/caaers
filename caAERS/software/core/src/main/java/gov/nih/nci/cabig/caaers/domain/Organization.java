@@ -21,6 +21,7 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Fetch;
@@ -467,6 +468,17 @@ public abstract class Organization extends AbstractMutableRetireableDomainObject
 		this.externalOrganizations = externalOrganizations;
 	}
     
+    public boolean basicAttributesSame(Organization o){
+        if(!StringUtils.equals(name, o.name)) return  false;
+        if(!StringUtils.equals(descriptionText, o.descriptionText)) return  false;
+        if(!StringUtils.equals(nciInstituteCode, o.nciInstituteCode)) return  false;
+        if(!StringUtils.equals(type, o.type)) return  false;
+        if(!StringUtils.equals(city, o.city)) return  false;
+        if(!StringUtils.equals(country, o.country)) return  false;
+        if(!StringUtils.equals(state, o.state)) return  false;
+        if(!StringUtils.equals(String.valueOf(retiredIndicator), String.valueOf(o.retiredIndicator))) return  false;
+        return true;
+    }
 
     /* (non-Javadoc)
      * @see java.lang.Object#equals(java.lang.Object)

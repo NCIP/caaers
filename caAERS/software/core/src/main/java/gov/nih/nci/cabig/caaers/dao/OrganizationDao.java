@@ -75,6 +75,10 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
         return null;
     }
 
+    public void saveAll(List<Organization> organizations){
+        getHibernateTemplate().saveOrUpdateAll(organizations);
+    }
+
     /**
      * Get the list of all organizations.
      * 

@@ -93,54 +93,54 @@ public class OrganizationManagementServiceImpl implements OrganizationManagement
 
 	public List<ProcessingOutcome> createOrUpdateOrganizations(List<Organization> organizations) {
         long start = System.currentTimeMillis();
+        long now = System.currentTimeMillis();
         
         List<ProcessingOutcome> outcomes = new ArrayList<ProcessingOutcome>();
 
-        List<Organization> allOrgs = new ArrayList<Organization>();
-        allOrgs.addAll(organizationDao.getAll());
+        List<Organization> allOrgs = organizationDao.getAll();
         if(logger.isInfoEnabled()) {
-            logger.info("Time taken by  createOrUpdateOrganizations to load all orgs : " + ( ( System.currentTimeMillis() - start)/1000) + " seconds" );
+            logger.info("Time taken by createOrUpdateOrganizations to query all orgs : " + ( ( System.currentTimeMillis() - now)/1000) + " seconds" );
         }
+        now = System.currentTimeMillis();
         Map<String, Organization> orgMap = new HashMap<String, Organization>(allOrgs.size());
         for(Organization o: allOrgs){
             orgMap.put(o.getNciInstituteCode(), o);
         }
-        
-        for(Organization o : organizations){
-           Organization dbOrganization = orgMap.get(o.getNciInstituteCode());
-           if(dbOrganization == null){
-               dbOrganization = new LocalOrganization(); 
-           }
-           organizationMigrator.migrate(o, dbOrganization, null);
+        if(logger.isInfoEnabled()) {
+            logger.info("Time taken by  createOrUpdateOrganizations to load all orgs :(" + allOrgs.size() + ") " + ( ( System.currentTimeMillis() - now)/1000) + " seconds" );
         }
-        
-        long afterMigrate = System.currentTimeMillis();
-
-        int i = 0;
-        int flushSize = 1000;
-        for(Organization organization : allOrgs){
-           organizationDao.save(organization);
-           ProcessingOutcome outcome =  Helper.createOutcome(Organization.class, organization.getNciInstituteCode(), false,
-                    "Organization with NCI Code : " +
-                    organization.getNciInstituteCode() + ", id : " + organization.getId() + " modified/created" );
-
-           outcomes.add(outcome);
-
-           if(i > flushSize){
-               organizationDao.flush();
-               organizationDao.clearSession();
-               i = 0;
+        ArrayList<Organization> newOrgs = new ArrayList<Organization>();
+        now = System.currentTimeMillis();
+        for(Organization organization : organizations){
+           Organization dbOrganization = orgMap.get(organization.getNciInstituteCode());
+           if(dbOrganization != null){
+               if(dbOrganization.basicAttributesSame(organization)) {
+                   ProcessingOutcome outcome =  Helper.createOutcome(Organization.class, dbOrganization.getNciInstituteCode(), false,
+                           "Organization with NCI Code : " + dbOrganization.getNciInstituteCode() + ", id : " + dbOrganization.getId() + " left unchanged" );
+                   outcomes.add(outcome);
+                   continue;
+               }
+           }else{
+               dbOrganization = new LocalOrganization();
            }
-           i++;
+           organizationMigrator.migrate(organization, dbOrganization, null);
+           newOrgs.add(dbOrganization);
+        }
+        if(logger.isInfoEnabled()) {
+            logger.info("Time taken by  createOrUpdateOrganizations to migrate : (" + newOrgs.size() + ") "  + ( ( System.currentTimeMillis() - now)/1000) + " seconds" );
+        }
+        now = System.currentTimeMillis();
+        organizationDao.saveAll(newOrgs);
+        for(Organization o : newOrgs){
+            ProcessingOutcome outcome =  Helper.createOutcome(Organization.class, o.getNciInstituteCode(), false,
+                    "Organization with NCI Code : " + o.getNciInstituteCode() + ", id : " + o.getId() + " modified/created" );
+            outcomes.add(outcome);
         }
 
-        organizationDao.flush();
-        organizationDao.clearSession();
-        
         long end = System.currentTimeMillis();
         
         if(logger.isInfoEnabled()) {
-            logger.info("Time taken by  createOrUpdateOrganizations : to save all orgs " + ( ( end - afterMigrate)/1000) + " seconds" );
+            logger.info("Time taken by  createOrUpdateOrganizations : to save all orgs " + ( ( end - now)/1000) + " seconds" );
             logger.info("Total Time taken by  createOrUpdateOrganizations : " + ( ( end - start)/1000) + " seconds" );
         }
         
