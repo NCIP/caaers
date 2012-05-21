@@ -8,18 +8,18 @@
     </jsp:attribute>
   	<jsp:body>
   		<form action = "dummy">
-                <div id="myStudies" class="<c:if test="${fn:length(studyList) > 6}">scrollerTask</c:if>"">
+                <div id="myStudies" class="<c:if test="${fn:length(studyList) > 6}">scrollerTask</c:if>">
                     <table border="0" cellpadding="0" cellspacing="0" class="dashboard_table" width="100%">
                         <tr class="taskTitleRow">
-                            <th>Study Id
-                            <th width="50%">Title
-                            <th>Status
+                            <th width="60%">Title</th>
+                            <th width="25%">Status</th>
+                            <th width="15%">Actions</th>
                         </tr>
                          <c:forEach var ="study" items="${studyList}" varStatus = "loopStatus">
                          	<tr class="${loopStatus.index % 2 == 0 ? 'alt' : ''}">
-                         		<td><a href="<c:url value="/pages/study/edit?studyId=${study.id}" />">${study.primaryIdentifier}</a></td>
-                         		<td><c:out value="${study.shortTitle}" escapeXml="true" /> </td>
-                         		<td><c:out value="${study.status}" escapeXml="true" /> </td>
+                         		<td><a href="<c:url value="/pages/study/edit?studyId=${study.id}" />">${study.primaryIdentifier}</a>&nbsp;<span title="<c:out value="${study.shortTitle}" escapeXml="true" />"><c:out value="${fn:substring(study.shortTitle, 0, 100)}" escapeXml="true" />...</span></td>
+                         		<td><c:out value="${study.status}" escapeXml="true" /></td>
+                         		<td><a onmouseover='showDashboardStudiesMenuOptions("${study.primaryIdentifier}")' id='_d_study_${study.primaryIdentifier}' class='submitterButton submitter fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all' style="color:white; font-family: Arial; font-size: 13px;">Actions<span class='ui-icon ui-icon-triangle-1-s'></span></a></td>
                            </tr>
                          </c:forEach>
                         <c:if test="${fn:length(studyList) == 0}">
@@ -34,6 +34,29 @@
 </c:if>
 
 <script>
+    function showDashboardStudiesMenuOptions(_ssi) {
+        var _el = jQuery("#_d_study_" + _ssi);
+        var html = "<div><ul style='font-family:tahoma;'>" +
+                "<li><a class='submitter-blue' href='#'>Edit study details</a></li>" +
+                "<li><a class='submitter-blue' href='#'>Add Study Site</a></li>" +
+                "<li><a class='submitter-blue' href='#'>Register Subject</a></li>" +
+                "<li><a class='submitter-blue' href='#'>Synchronize with CTEP</a></li>" +
+                "</ul></div>";
+        _el.menu({
+                content: html,
+                maxHeight: 180,
+                width: 230,
+                positionOpts: {
+                    directionV: 'down',
+                    posX: 'left',
+                    posY: 'bottom',
+                    offsetX: 0,
+                    offsetY: 0
+                },
+                showSpeed: 300
+            });
+}
+
     function loadAllStudies() {
         jQuery("#_loadAllStudies-indicator").removeClass('indicator');
         jQuery.ajax({
