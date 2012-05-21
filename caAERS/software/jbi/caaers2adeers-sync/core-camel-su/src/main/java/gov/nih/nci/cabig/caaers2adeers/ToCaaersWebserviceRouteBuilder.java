@@ -6,7 +6,7 @@ import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.*;
 public class ToCaaersWebserviceRouteBuilder {
 
 	private String caAERSAgentServiceJBIURL = "jbi:service:http://schema.integration.caaers.cabig.nci.nih.gov/common/AgentManagementWebService?operation={http://schema.integration.caaers.cabig.nci.nih.gov/common}";
-	private String caAERSAgentDoseUOMServiceJBIURL = "jbi:service:http://schema.integration.caaers.cabig.nci.nih.gov/common/AgentManagementWebService?operation={http://schema.integration.caaers.cabig.nci.nih.gov/common}";
+	private String caAERSAgentDoseUOMServiceJBIURL = "jbi:service:http://schema.integration.caaers.cabig.nci.nih.gov/common/ConfigPropertiesWebService?operation={http://schema.integration.caaers.cabig.nci.nih.gov/common}";
 	private String caAERSASAELServiceJBIURL = "jbi:service:http://schema.integration.caaers.cabig.nci.nih.gov/common/ASAELService?operation={http://schema.integration.caaers.cabig.nci.nih.gov/common}";
 	private String caAERSDeviceServiceJBIURL = "jbi:service:http://schema.integration.caaers.cabig.nci.nih.gov/common/DevicesService?operation={http://schema.integration.caaers.cabig.nci.nih.gov/common}";
 	private String caAERSOrganizationServiceJBIURL = "jbi:service:http://schema.integration.caaers.cabig.nci.nih.gov/common/OrganizationManagementWebService?operation={http://schema.integration.caaers.cabig.nci.nih.gov/common}";
@@ -54,7 +54,7 @@ public class ToCaaersWebserviceRouteBuilder {
 		configureWSCallRoute("direct:caaers-agent-async", "agent_async.xsl", caAERSAgentServiceJBIURL + "createOrUpdateAgent" );
 
 		//caAERS - createOrUpdateConfigProperties
-		configureWSCallRoute("direct:caaers-doseUOM-async", "doseuom_async.xsl", caAERSAgentServiceJBIURL + "createOrUpdateConfigProperties" );
+		configureWSCallRoute("direct:caaers-doseUOM-async", "doseuom_async.xsl", caAERSAgentDoseUOMServiceJBIURL + "createOrUpdateConfigProperties" );
 
 		//caAERS - createOrUpdateASAEL
 		configureWSCallRoute("direct:caaers-asael-async", "asael_async.xsl", caAERSASAELServiceJBIURL + "createOrUpdateASAEL" );
