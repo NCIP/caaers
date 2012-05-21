@@ -36,6 +36,7 @@
             <ctcVersion>
                 <xsl:call-template name="lookup"><xsl:with-param name="_map" select="$map//ctcversions" /><xsl:with-param name="_code" select="$_ctcVer" /></xsl:call-template>
             </ctcVersion>
+            <otherToxicity><xsl:value-of select="otherToxicityComment" /></otherToxicity>
             <status><xsl:value-of select="status"/></status>
         </asa:expectedAECtcTerm>
 
