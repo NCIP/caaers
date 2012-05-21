@@ -39,8 +39,16 @@
             });
 
             function doSearch() {
-                buildTable('assembler');
-                $('bigSearch').show();
+                var _name = jQuery.trim(jQuery('#propName').val());
+                var _identifier = jQuery.trim(jQuery('#propPi').val());
+                var _organization = jQuery.trim(jQuery('#organization').val());
+                var _userName = jQuery.trim(jQuery('#propUn').val());
+                if (_name == "" && _identifier == "" && _organization == "" && _userName == "") {
+                    showFlashErrorMessage(3);
+                } else {
+                    buildTable('assembler');
+                    $('bigSearch').show();
+                }
             }
 
 			function buildTable(form) {
@@ -209,6 +217,11 @@
     		
     		<div class="content">
     			<tags:instructions code="personUserSearchInstructions" />
+
+                <div class="errors" id="flashErrors" style="display: none;">
+                    <span id="command_errors"><caaers:message code="ERR_enter.search.criteria" /></span>
+                </div>
+
     			<form:form name="searchForm" id="searchForm" method="post">
     				<caaers:message code="user.search.criteriaSection" var="criteriaSectionTitle"/>
     				<chrome:box title="Search Criteria" cssClass="mpaired" autopad="false">

@@ -949,6 +949,15 @@ String.prototype.interpol = function (valueMap) {
     });
 };
 
+function showFlashErrorMessage(fadeAwaySeconds) {
+    jQuery('#flashErrors').show();
+    hideFlashErrorMessage.delay(fadeAwaySeconds);
+}
+
+function hideFlashErrorMessage() {
+    jQuery("#flashErrors").fadeOut('slow', function() {});
+}
+
 //-------------------------------------------------------------------------------------------------------------------
 function hideCoppaSearchDisclaimer(){
 	try{
