@@ -87,4 +87,37 @@ public class IntegrationLogDaoTest extends DaoNoSecurityTestCase<IntegrationLogD
 
 	}
 	
+	public void testFilterByOperations() throws Exception{
+		IntegrationLogQuery query = new IntegrationLogQuery();
+		query.filterByOperation("mergeOrganization", "getStudies");
+		List<IntegrationLog> intlogs = getDao().searchIntegrationLogs(query);
+		assertNotNull(intlogs);
+		assertEquals(7,intlogs.size());
+		
+		IntegrationLogQuery query1 = new IntegrationLogQuery();
+		query1.filterByOperation("mergeOrganization");
+		intlogs = getDao().searchIntegrationLogs(query1);
+		assertNotNull(intlogs);
+		assertEquals(4,intlogs.size());
+		
+		IntegrationLogQuery query2 = new IntegrationLogQuery();
+		query2.filterByOperation("getStudies");
+		intlogs = getDao().searchIntegrationLogs(query2);
+		assertNotNull(intlogs);
+		assertEquals(3,intlogs.size());
+		
+		IntegrationLogQuery query4 = new IntegrationLogQuery();
+		query4.filterByOperation("importDevice", "createOrUpdate");
+		intlogs = getDao().searchIntegrationLogs(query4);
+		assertNotNull(intlogs);
+		assertEquals(5,intlogs.size());
+		
+		IntegrationLogQuery query5 = new IntegrationLogQuery();
+		query5.filterByOperation("mergeOrganization", "createOrUpdate");
+		intlogs = getDao().searchIntegrationLogs(query5);
+		assertNotNull(intlogs);
+		assertEquals(6,intlogs.size());
+
+	}
+	
 }

@@ -65,10 +65,14 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
         query.filterByLoggedOnStartDateAndEndDate(startDate, endDate);
         
         if (!StringUtilities.isBlank(service)) {
-        	String entity = extractEntity(service);
-        	String operation = extractOperation(service);
-    		query.filterByEntity(entity);
-    		query.filterByOperation(operation);
+        		String entity = extractEntity(service);
+        		query.filterByEntity(entity);
+	        	if(service.equalsIgnoreCase("GetStudyDetails")) {
+	        		query.filterByOperation("updateStudy","createStudy");
+	        	} else {
+		        	String operation = extractOperation(service);
+		    		query.filterByOperation(operation);
+	        	}
         }
         // get all results that match service, start date and end date. Then do post filtering based on status
         results = integrationLogDao.searchIntegrationLogs(query);
@@ -215,7 +219,7 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
     
     // currently gets the service name entirely from operation name
     private String getServiceNameFromEntityAndOperation(String entity, String operation){
-    	if(operation.equalsIgnoreCase("updateStudy")){
+    	if(operation.equalsIgnoreCase("updateStudy") || operation.equalsIgnoreCase("createStudy")){
     		return "GetStudyDetails";
     	}
     	StringBuffer serviceName = new StringBuffer(Character.toString((Character.toUpperCase(operation.charAt(0)))));

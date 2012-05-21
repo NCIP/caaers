@@ -44,6 +44,16 @@ public class IntegrationLogQuery extends AbstractQuery {
     	}
     }
     
+    public void filterByOperation(final String operation1, final String operation2) {
+    	if(!StringUtilities.isBlank(operation1) && !StringUtilities.isBlank(operation2) ) {
+	        String searchString1 = "%" + operation1.toLowerCase() + "%";
+	        String searchString2 = "%" + operation2.toLowerCase() + "%";
+	        andWhere("lower(operation) LIKE :operation1 or lower(operation) LIKE :operation2" );
+	        setParameter("operation1", searchString1);
+	        setParameter("operation2", searchString2);
+    	}
+    }
+    
     public void filterByLoggedOn(Date loggedOn, String operator) {
     	andWhere("loggedOn "+operator+" :lgdon");
     		setParameter("lgdon", loggedOn);
