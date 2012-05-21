@@ -131,7 +131,7 @@
                     _action = "Deactivate"
                 }
                 var _activateAction = "<li><a class='submitter-blue' href='#' onclick='javascript:doActivate(#{strId}, \"#{un}\", \"#{active}\")'>" + _action + "</a></li>";
-                var html = html_start + _editAction + _activateAction + html_end;
+                var html = html_start + _editAction + (un != "" ? _activateAction : "") + html_end;
                 var html = html.interpolate({strId:strId, rt:rt, un:un, active:active});
                 jQuery('#personnelActions' + strId).menu({
                         content: html,
