@@ -3,6 +3,10 @@
 	<head>
 
         <style>
+            div.yui-dt-liner a:hover  {
+                color: white;
+            }
+
             .yui-dt table {
                 width: 100%;
             }
@@ -31,7 +35,7 @@
 		<script language="JavaScript">
 
             jQuery(document).ready(function() {
-                doSearch();
+//                doSearch();
             });
 
             function doSearch() {
@@ -103,9 +107,32 @@
                 window.location = url;
             }
 
-            function showMenuOptions(strId, rt, un) {
-                var html = "<div><ul style='font-family:tahoma;'><li><a class='submitter-blue' href='#' onclick='javascript:doEdit(#{strId}, \"#{rt}\", \"#{un}\")'>Edit</a></li></ul></div>";
-                var html = html.interpolate({strId:strId, rt:rt, un:un});
+            var win;
+            function hideWin() {
+                win.close();
+            }
+
+            function doActivate(personId, userName, action) {
+                user.activateUser(personId, userName, action, function (_result) {
+                    win = new Window({className:"alphacube", width:400, height:80, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
+                    win.setContent("success");
+                    win.showCenter(true);
+                    win.show();
+                    hideWin.delay(2);
+                })
+            }
+
+            function showMenuOptions(strId, rt, un, active) {
+                var html_start = "<div><ul style='font-family:tahoma;'>";
+                var html_end = "</ul></div>";
+                var _editAction = "<li><a class='submitter-blue' href='#' onclick='javascript:doEdit(#{strId}, \"#{rt}\", \"#{un}\")'>Edit</a></li>";
+                var _action = "Activate";
+                if (active == "Active") {
+                    _action = "Deactivate"
+                }
+                var _activateAction = "<li><a class='submitter-blue' href='#' onclick='javascript:doActivate(#{strId}, \"#{un}\", \"#{active}\")'>" + _action + "</a></li>";
+                var html = html_start + _editAction + _activateAction + html_end;
+                var html = html.interpolate({strId:strId, rt:rt, un:un, active:active});
                 jQuery('#personnelActions' + strId).menu({
                         content: html,
                         maxHeight: 180,
@@ -120,18 +147,25 @@
                     });
             }
 
-            var actionsRow = "<a onmouseover='showMenuOptions(#{id}, \"#{rt}\", \"#{un}\")' id='personnelActions#{id}' class='submitterButton submitter fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all'>Actions<span class='ui-icon ui-icon-triangle-1-s'></span></a>";
+            var actionsRow = "<a onmouseover='showMenuOptions(#{id}, \"#{rt}\", \"#{un}\", \"#{active}\")' id='personnelActions#{id}' class='submitterButton submitter fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all'>Actions<span class='ui-icon ui-icon-triangle-1-s'></span></a>";
 
 			var actionsFormatter = function(elCell, oRecord, oColumn, oData) {
                 var _id = oRecord.getData("id");
                 var _rt = oRecord.getData("recordType");
                 var _un = oRecord.getData("userName");
-		        elCell.innerHTML = actionsRow.interpolate({id:_id, rt:_rt, un:_un});
+                var _active = oRecord.getData("active");
+		        elCell.innerHTML = actionsRow.interpolate({id:_id, rt:_rt, un:_un, active:_active});
+			};
+
+			var fullNameFormatter = function(elCell, oRecord, oColumn, oData) {
+                var _firstName = oRecord.getData("firstName");
+                var _lastName = oRecord.getData("lastName");
+		        elCell.innerHTML = _firstName + '&nbsp;' + _lastName;
 			};
 
 			var myColumnDefs = [
 				{key:"externalId",      label:"&nbsp;",              	  sortable:true,      resizeable:true, formatter: linkFormatterWithNCI, maxWidth:20, minWidth:20},
-                {key:"firstName",       label:"Name",    	      sortable:true,      resizeable:true},
+                {key:"firstName",       label:"Name",    	      sortable:true,      resizeable:true, formatter:fullNameFormatter},
                 {key:"number",          label:"Person identifier",sortable:true,      resizeable:true},
                 {key:"organization",    label:"Organization(s)",  sortable:false,     resizeable:true},
                 {key:"userName",        label:"Username",    	  sortable:true,      resizeable:true},
@@ -148,7 +182,8 @@
                 {key:'emailAddress',   	parser:"string"},
                 {key:'recordType',   	parser:"string"},
                 {key:'id',           	parser:"integer"},
-                {key:'externalId',   	parser:"string"}
+                {key:'externalId',   	parser:"string"},
+                {key:'active',   	    parser:"string"}
             ];
 			
 		</script>
@@ -261,5 +296,8 @@
 
     		</div>
 		</div>
+
+        <div id="success" class="flash-message info" style="display: none;"><img src= "<chrome:imageUrl name="../check.png"/>" />&nbsp;<caaers:message code="LBL_user.updated" /></div>
+
 	</body>
 </html>

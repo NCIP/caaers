@@ -465,4 +465,12 @@ public abstract class ResearchStaff extends Person {
 		}
 	}
 
+    @Transient
+    public void setActive(boolean _active) {
+        if (getSiteResearchStaffs() == null) return;
+        for (SiteResearchStaff srs : this.getSiteResearchStaffs()) {
+            if (!_active) srs.setEndDate(new Date()); else srs.setEndDate(null);
+        }
+    }
+
 }

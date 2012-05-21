@@ -388,7 +388,26 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
         User user = command.getUser();
         getUserRepository().unlockUser(user);
     }
-    
+
+    public boolean activateUser(int personId, String userName, String action) {
+        try {
+            Person person = personRepository.getById(personId);
+            if (person != null && person instanceof ResearchStaff) {
+                ResearchStaff rs = (ResearchStaff)person;
+                rs.setActive(!action.equals("Active"));
+                personRepository.save(person);
+            }
+            if (person != null && person instanceof Investigator) {
+                Investigator inv = (Investigator)person;
+                inv.setActive(!action.equals("Active"));
+                personRepository.save(inv);
+            }
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
 	public UserRepository getUserRepository() {
 		return userRepository;
 	}

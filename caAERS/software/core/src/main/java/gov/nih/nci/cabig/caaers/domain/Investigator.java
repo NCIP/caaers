@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import org.hibernate.annotations.Parameter;
 import javax.persistence.Table;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
  
@@ -427,4 +428,12 @@ public abstract class Investigator extends Person {
 			return siteInvestigator;
 		}
     }
+
+    @Transient
+     public void setActive(boolean _active) {
+         if (getSiteInvestigators() == null) return;
+         for (SiteInvestigator srs : this.getSiteInvestigators()) {
+             if (!_active) srs.setEndDate(new Date()); else srs.setEndDate(null);
+         }
+     }
 }
