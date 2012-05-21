@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers2adeers.cronjob;
 
 public enum EntityOperation{
     AGENT("agent", "getAgentsLOV", "0+0+1+*+*+?"),
+    AGENT_UOM("agentDoseUOM", "getAgentDoseUOMLOV", "0+0+1+*+*+?"),
     ASAEL("asael", "getASAEL", "0+0+1+*+*+?"),
     DEVICE("device", "getDevicesLOV", "0+0+1+*+*+?"),
     PRIOR_THERAPY("priortherapy", "getTherapiesLOV", "0+0+1+*+*+?"),

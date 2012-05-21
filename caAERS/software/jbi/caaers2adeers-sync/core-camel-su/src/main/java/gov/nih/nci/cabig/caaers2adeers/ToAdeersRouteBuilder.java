@@ -30,6 +30,7 @@ public class ToAdeersRouteBuilder {
     		.choice()
     			.when().xpath(xpathPredicate("agent", "getAgentsLOV")).to("direct:adeers-agent-lov")
     			.when().xpath(xpathPredicate("asael", "getASAEL")).to("direct:adeers-asael-lov")
+    			.when().xpath(xpathPredicate("agentDoseUOM", "getAgentDoseUOMLOV")).to("direct:adeers-doseUOM-lov")
     			.when().xpath(xpathPredicate("device", "getDevicesLOV")).to("direct:adeers-device-lov")
     			.when().xpath(xpathPredicate("preexistingcondition", "getPreExistingConditionsLOV")).to("direct:adeers-condition-lov")
     			.when().xpath(xpathPredicate("priortherapy", "getTherapiesLOV")).to("direct:adeers-therapy-lov")
@@ -42,6 +43,9 @@ public class ToAdeersRouteBuilder {
 		
 		//LOV - Agents
     	configureLovWSCallRoute("direct:adeers-agent-lov", "agent_lov.xsl",  "getAgentsLOV");
+
+        //LOV - Agents Dose UOM
+    	configureLovWSCallRoute("direct:adeers-doseUOM-lov", "doseuom_lov.xsl",  "getAgentDoseUOMLOV");
 
     	//LOV - ASAEL
     	configureLovWSCallRoute("direct:adeers-asael-lov", "asael_lov.xsl", "getASAEL");
