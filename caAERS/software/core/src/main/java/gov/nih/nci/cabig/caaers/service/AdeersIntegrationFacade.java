@@ -57,10 +57,10 @@ public interface AdeersIntegrationFacade {
 
     /**
      *
-     * @param identifier Funding Sponsor identifier value
+     * @param id Funding Sponsor identifier value
      * @return DB Identifier
      */
-    String syncStudy(Identifier id, String createOrUpdate);
+    String syncStudy(Identifier id, String createOrUpdate, boolean force);
 
     /**
      * Search AdEERS studies by ShortTitle or Identifier value

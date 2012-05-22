@@ -292,7 +292,7 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
      * @param createOrUpdate CREATE or UPDATE
      * @return
      */
-	public String syncStudy(Identifier id, String createOrUpdate) {
+	public String syncStudy(Identifier id, String createOrUpdate, boolean force) {
         String retVal = "STU_002";
         String operationName = StringUtils.equals("CREATE", createOrUpdate) ? CREATE_STUDY_OPERATION_NAME : UPDATE_STUDY_OPERATION_NAME;
 
@@ -306,15 +306,17 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
                 log.error("Cannot syncStudy  : Operation is UPDATE, but unable to find the study in caAERS");
                 return retVal; //we cannot process
             }
-            
-            Study study = studies.get(0);
-            Date lastSyncedOn = study.getLastSynchedDate();
-            long diff = DateUtils.differenceInMinutes(DateUtils.today(), lastSyncedOn);
-            Integer allowedDuration = configuration.get(Configuration.STUDY_SYNC_DELAY);
-            allowedDuration = allowedDuration == null ? 0 : allowedDuration;
-            if(diff < allowedDuration){
-                log.info("Ignoring the Sync Study request, as it was last updated on " + String.valueOf( lastSyncedOn));
-                return study.getId().toString();
+            if(!force){
+
+                Study study = studies.get(0);
+                Date lastSyncedOn = study.getLastSynchedDate();
+                long diff = DateUtils.differenceInMinutes(DateUtils.today(), lastSyncedOn);
+                Integer allowedDuration = configuration.get(Configuration.STUDY_SYNC_DELAY);
+                allowedDuration = allowedDuration == null ? 0 : allowedDuration;
+                if(diff < allowedDuration){
+                    log.info("Ignoring the Sync Study request, as it was last updated on " + String.valueOf( lastSyncedOn));
+                    return study.getId().toString();
+                }
             }
         }
 

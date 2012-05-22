@@ -134,7 +134,7 @@ public class ProxyWebServiceFacadeUnitTest extends AbstractTestCase {
         replayMocks();
         
         Identifier id = Fixtures.createOrganizationAssignedIdentifier("test",  Fixtures.createOrganization("test"));
-        String retVal = proxyWebServiceFacade.syncStudy(id, "UPDATE");
+        String retVal = proxyWebServiceFacade.syncStudy(id, "UPDATE", false);
         assertEquals("99", retVal);
         verifyMocks(); 
     }
@@ -159,7 +159,7 @@ public class ProxyWebServiceFacadeUnitTest extends AbstractTestCase {
         replayMocks();
 
         Identifier id = Fixtures.createOrganizationAssignedIdentifier("test",  Fixtures.createOrganization("test"));
-        String retVal = proxyWebServiceFacade.syncStudy(id, "UPDATE");
+        String retVal = proxyWebServiceFacade.syncStudy(id, "UPDATE", false);
         assertEquals("STU_002", retVal);
         verifyMocks();
     }
@@ -188,7 +188,7 @@ public class ProxyWebServiceFacadeUnitTest extends AbstractTestCase {
         replayMocks();
 
         Identifier id = Fixtures.createOrganizationAssignedIdentifier("test",  Fixtures.createOrganization("test"));
-        String retVal = proxyWebServiceFacade.syncStudy(id, "UPDATE");
+        String retVal = proxyWebServiceFacade.syncStudy(id, "UPDATE", false);
         assertEquals("1", retVal);
         verifyMocks();
     }

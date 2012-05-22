@@ -890,7 +890,7 @@ public class CreateStudyAjaxFacade {
             Organization org = new LocalOrganization();
             org.setNciInstituteCode(nciInstituteCode); //populate me ??
             id.setOrganization(org);
-            _result = proxyWebServiceFacade.syncStudy(id, createOrUpdate);
+            _result = proxyWebServiceFacade.syncStudy(id, createOrUpdate, true);
             System.out.println(_result);
             Integer.parseInt(_result);
             out.setObjectContent(_result);

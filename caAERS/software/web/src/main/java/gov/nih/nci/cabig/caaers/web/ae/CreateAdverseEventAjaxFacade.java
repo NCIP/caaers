@@ -1224,7 +1224,7 @@ public class CreateAdverseEventAjaxFacade {
             Organization org = new LocalOrganization();
             org.setNciInstituteCode(nciInstituteCode); //populate me ??
             id.setOrganization(org);
-            _result = proxyWebServiceFacade.syncStudy(id, createOrUpdate);
+            _result = proxyWebServiceFacade.syncStudy(id, createOrUpdate, false);
             Integer.parseInt(_result);
             out.setObjectContent(_result);
         } catch (NumberFormatException e) {
