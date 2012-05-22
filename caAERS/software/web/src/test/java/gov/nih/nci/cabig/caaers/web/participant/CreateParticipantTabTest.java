@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.participant;
 
+import gov.nih.nci.cabig.caaers.CaaersContextLoader;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationFromStudySiteQuery;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
@@ -10,6 +11,7 @@ import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl;
 import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
 import gov.nih.nci.cabig.caaers.security.SecurityUtilsTest;
 import gov.nih.nci.cabig.caaers.web.utils.ConfigPropertyHelper;
+import org.springframework.context.ApplicationContext;
 import org.springframework.validation.FieldError;
 
 import java.util.ArrayList;
@@ -348,4 +350,7 @@ public class CreateParticipantTabTest extends AbstractTabTestCase<CreateParticip
     }
 
 
+    public synchronized ApplicationContext getDeployedApplicationContext() {
+        return CaaersContextLoader.getApplicationContext();
+    }
 }

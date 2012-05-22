@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web;
 
 import edu.nwu.bioinformatics.commons.DateUtils;
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
 import gov.nih.nci.cabig.ctms.lang.StaticNowFactory;
 
@@ -23,7 +24,7 @@ import org.springframework.mock.web.MockServletContext;
  * @author Rhett Sutphin
  */
 /* TODO: much of this class is shared with PSC. Refactor into a shared library. */
-public abstract class WebTestCase extends AbstractNoSecurityTestCase {
+public abstract class WebTestCase extends AbstractTestCase {
     protected static final Timestamp NOW = DateUtils.createTimestamp(2004, Calendar.MARCH, 27);
 
     protected MockHttpServletRequest request;
@@ -51,8 +52,7 @@ public abstract class WebTestCase extends AbstractNoSecurityTestCase {
         
         pageContext = new MockPageContext(servletContext, request, response);
 
-        getDeployedApplicationContext().getBean("caaersSecurityFacade");  //initialize the actual bean
-
+        switchToSuperUser();
         SecurityTestUtils.switchToCaaersSecurityFacadeMock(null);
     }
     

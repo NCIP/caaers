@@ -1,10 +1,12 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
+import gov.nih.nci.cabig.caaers.CaaersContextLoader;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.web.DwrFacadeTestCase;
 import gov.nih.nci.cabig.ctms.audit.dao.AuditHistoryRepository;
 import gov.nih.nci.cabig.ctms.audit.domain.DataAuditEvent;
+import org.springframework.context.ApplicationContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,5 +88,9 @@ public class AdverseEventHistoryAjaxFacadeTest extends DwrFacadeTestCase {
 //        String table = adverseEventHistoryAjaxFacade.getAdeverseEventHistory(new HashMap(), new MockHttpServletRequest(), "1");
 //        verifyMocks();
 
+    }
+
+    public synchronized ApplicationContext getDeployedApplicationContext() {
+        return CaaersContextLoader.getApplicationContext();
     }
 }

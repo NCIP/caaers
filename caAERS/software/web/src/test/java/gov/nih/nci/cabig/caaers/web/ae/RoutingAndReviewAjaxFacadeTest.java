@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import gov.nih.nci.cabig.caaers.CaaersContextLoader;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
@@ -10,6 +11,7 @@ import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl;
 import gov.nih.nci.cabig.caaers.web.DwrFacadeTestCase;
 import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
 import gov.nih.nci.cabig.caaers.web.validation.validator.AdverseEventReportingPeriodValidator;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.MessageSource;
 import org.springframework.validation.Errors;
 
@@ -105,4 +107,8 @@ public class RoutingAndReviewAjaxFacadeTest extends DwrFacadeTestCase{
 		verifyMocks();
 		assertEquals("Incorrect number of studySiteAjaxableDomainObjects", 2, list.size());
 	}
+
+    public synchronized ApplicationContext getDeployedApplicationContext() {
+        return CaaersContextLoader.getApplicationContext();
+    }
 }

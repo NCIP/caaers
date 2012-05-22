@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.participant;
 
+import gov.nih.nci.cabig.caaers.CaaersContextLoader;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
 import gov.nih.nci.cabig.caaers.domain.*;
@@ -7,6 +8,7 @@ import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl;
 import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
 import gov.nih.nci.cabig.caaers.web.utils.ConfigPropertyHelper;
 import org.easymock.EasyMock;
+import org.springframework.context.ApplicationContext;
 
 import java.util.Map;
 
@@ -25,7 +27,6 @@ public class EditParticipantTabTest extends AbstractTabTestCase<EditParticipantT
         super.setUp();
         ConfigPropertyHelper.putParticipantIdentifiersType(configProperty);
         command.setStudy(new LocalStudy());
-        // studySiteDao = (StudySiteDao)getDeployedApplicationContext().getBean("studySiteDao");
         studySiteDao = registerMockFor(StudySiteDao.class);
         tab = createTab();
     }
@@ -41,7 +42,6 @@ public class EditParticipantTabTest extends AbstractTabTestCase<EditParticipantT
         tab = new EditParticipantTab();
         tab.setListValues(listValues);
         tab.setConfigurationProperty(configProperty);
-        tab.setParticipantDao((ParticipantDao)getDeployedApplicationContext().getBean("participantDao"));
         tab.setStudySiteDao(studySiteDao);
         return tab;
     }
@@ -87,4 +87,6 @@ public class EditParticipantTabTest extends AbstractTabTestCase<EditParticipantT
         verifyMocks();
         assertEquals(0, errors.getErrorCount());
     }
+
+
 }

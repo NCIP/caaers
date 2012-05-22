@@ -7,6 +7,7 @@ import static gov.nih.nci.cabig.caaers.web.utils.WebUtils.collectOptions;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
+import gov.nih.nci.cabig.caaers.domain.repository.ConfigPropertyRepository;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.fields.*;
 import gov.nih.nci.cabig.caaers.web.fields.validators.DecimalValidator;
@@ -39,6 +40,8 @@ public class StudyInterventionsTab extends AeTab {
 
     Map<String, String> methodNameMap = new HashMap<String, String>();
     private ConfigProperty configurationProperty;
+    ConfigPropertyRepository configPropertyRepository;
+
     private static final String STUDY_INTERVENTION_SURGERY = "surgery";
     private static final String STUDY_INTERVENTION_DEVICE = "device";
     private static final String STUDY_INTERVENTION_RADIATION = "radiation";
@@ -153,7 +156,7 @@ public class StudyInterventionsTab extends AeTab {
         InputField totalDoseField = InputFieldFactory.createTextField("dose.amount", "Total dose administered this course", 
         		FieldValidator.SIGN_VALIDATOR, FieldValidator.createPatternBasedValidator("[0-9]{1,14}([.][0-9]{1,6})?", "DECIMAL"));
 
-        InputField totalUOMField = InputFieldFactory.createSelectField("dose.units","Unit of measure", false, WebUtils.sortMapByKey(WebUtils.collectOptions(configurationProperty.getMap().get("agentDoseUMORefData"),"code", "desc", "Please select"), true));
+        InputField totalUOMField = InputFieldFactory.createSelectField("dose.units","Unit of measure", false, WebUtils.sortMapByKey(WebUtils.collectOptions(configPropertyRepository.getByType(ConfigPropertyType.AGENT_UOM),"code", "name", "Please select"), true));
         CompositeField adminDelayField = new CompositeField(null, new DefaultInputFieldGroup(null,"Administration delay").addField(InputFieldFactory.createTextField("administrationDelayAmount", "", false)).addField(InputFieldFactory.createSelectField("administrationDelayUnits", "", false,WebUtils.collectOptions(Arrays.asList(DelayUnits.values()), null, "displayName"))));
         InputField commentsField = InputFieldFactory.createTextArea("comments", "Comments", false);
         InputFieldAttributes.setColumns(commentsField, 70);
@@ -705,7 +708,15 @@ public class StudyInterventionsTab extends AeTab {
     public void setExpeditedAdverseEventReportDao(ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao) {
         this.expeditedAdverseEventReportDao = expeditedAdverseEventReportDao;
     }
-    
+
+    public ConfigPropertyRepository getConfigPropertyRepository() {
+        return configPropertyRepository;
+    }
+
+    public void setConfigPropertyRepository(ConfigPropertyRepository configPropertyRepository) {
+        this.configPropertyRepository = configPropertyRepository;
+    }
+
     @Override
     public boolean hasEmptyMandatoryFields(ExpeditedAdverseEventInputCommand command, HttpServletRequest request) {
     	boolean hasEmptyFields =  super.hasEmptyMandatoryFields(command, request);

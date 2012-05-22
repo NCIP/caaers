@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.user;
 
+import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicyService;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 
@@ -14,10 +15,13 @@ public class ChangePasswordControllerTest extends WebTestCase {
 	ChangePasswordController controller;
 	 protected Errors errors;
 	 ChangePasswordCommand command;
+    PasswordPolicyService passwordPolicyService;
 	 
 	protected void setUp() throws Exception {
 		super.setUp();
 		controller = new ChangePasswordController();
+        passwordPolicyService = registerMockFor(PasswordPolicyService.class);
+        controller.setPasswordPolicyService(passwordPolicyService);
 		command = (ChangePasswordCommand) controller.formBackingObject(request);
 		
 		errors = new BindException(command, "command");

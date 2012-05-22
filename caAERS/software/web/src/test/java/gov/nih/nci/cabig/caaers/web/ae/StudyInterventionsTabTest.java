@@ -8,10 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
-import gov.nih.nci.cabig.caaers.domain.CourseAgent;
-import gov.nih.nci.cabig.caaers.domain.Fixtures;
-import gov.nih.nci.cabig.caaers.domain.RadiationIntervention;
-import gov.nih.nci.cabig.caaers.domain.StudyAgent;
+import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.repository.ConfigPropertyRepository;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
@@ -25,6 +23,7 @@ import org.easymock.classextension.EasyMock;
 @CaaersUseCases( { CREATE_EXPEDITED_REPORT })
 public class StudyInterventionsTabTest  extends AeTabTestCase {
 	ConfigProperty configurationProperty;
+    ConfigPropertyRepository cpRepository;
 	HashMap<String, List<Lov>> map;
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -32,19 +31,26 @@ public class StudyInterventionsTabTest  extends AeTabTestCase {
 	
 	@Override
 	protected AeTab createTab() {
-		
+		cpRepository = registerMockFor(ConfigPropertyRepository.class);
 		configurationProperty = registerMockFor(ConfigProperty.class);
 		map = new HashMap<String, List<Lov>>();
 		map.put("radiationDoseUMORefData", new ArrayList<Lov>());
 		map.put("radiationAdjustmentRefData", new ArrayList<Lov>());
-		map.put("agentDoseUMORefData", new ArrayList<Lov>());
 		map.put("stateRefData", new ArrayList<Lov>());
 		
 		StudyInterventionsTab tab = new StudyInterventionsTab();
 		tab.setExpeditedAdverseEventReportDao(expeditedReportDao);
 		tab.setConfigurationProperty(configurationProperty);
+        tab.setConfigPropertyRepository(cpRepository);
+
+        List<gov.nih.nci.cabig.caaers.domain.ConfigProperty> cpList = new ArrayList<gov.nih.nci.cabig.caaers.domain.ConfigProperty>();
+        cpList.add(Fixtures.createConfigProperty("bp"));
+        
+        
+		EasyMock.expect(cpRepository.getByType(ConfigPropertyType.AGENT_UOM)).andReturn(cpList).anyTimes();
 		EasyMock.expect(configurationProperty.getMap()).andReturn(map).anyTimes();
 		EasyMock.expect(evaluationService.validateReportingBusinessRules(command.getAeReport(), tab.section())).andReturn(new ValidationErrors()).anyTimes();
+
 		return tab;
 	}
 	
