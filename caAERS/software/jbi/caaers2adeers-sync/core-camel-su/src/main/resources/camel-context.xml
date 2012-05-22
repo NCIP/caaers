@@ -138,6 +138,7 @@
     			<entry><key><value>AGENT_UOM</value></key><value>s[agentDoseLovCronExpression]</value></entry>
     			<entry><key><value>ASAEL</value></key><value>s[asaelLovCronExpression]</value></entry>
     			<entry><key><value>DEVICE</value></key><value>s[deviceLovCronExpression]</value></entry>
+    			<entry><key><value>LAB</value></key><value>s[labLovCronExpression]</value></entry>
     			<entry><key><value>PRIOR_THERAPY</value></key><value>s[priorTherapyLovCronExpression]</value></entry>
     			<entry><key><value>PRE_EXISTING_CONDITION</value></key><value>s[preExistingConditionLovCronExpression]</value></entry>
     			<entry><key><value>ORGANIZATION</value></key><value>s[organizationLovCronExpression]</value></entry>
