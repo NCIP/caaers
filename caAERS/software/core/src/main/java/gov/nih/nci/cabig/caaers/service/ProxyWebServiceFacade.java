@@ -60,6 +60,9 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
 
 	public static final String SYNC_DEVICE_ENTITY_NAME="device";
 	public static final String SYNC_DEVICE_OPERATION_NAME="getDevicesLOV";
+	
+	public static final String SYNC_LAB_ENTITY_NAME="lab";
+	public static final String SYNC_LAB_OPERATION_NAME="getLabsLOV";
 
 	public static final String SYNC_PRIOR_THERAPY_ENTITY_NAME="priortherapy";
 	public static final String SYNC_PRIOR_THERAPY_OPERATION_NAME="getTherapiesLOV";
@@ -217,6 +220,10 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
 
 	public String syncDevices() {
 		return send(SYNC_DEVICE_ENTITY_NAME, SYNC_DEVICE_OPERATION_NAME, false, buildCriteriaMap(null));
+	}
+	
+	public String syncLabs() {
+		return send(SYNC_LAB_ENTITY_NAME, SYNC_LAB_OPERATION_NAME, false, buildCriteriaMap(null));
 	}
 
 	public String syncPriorTherapyLOV() {

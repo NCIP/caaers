@@ -67,5 +67,12 @@ public interface AdeersIntegrationFacade {
      * @return list of caAERS domain studies
      */
     List<Study> searchStudies(String searchText);
+    
+    /**
+     * Will sync caAERS Labs with AdEERS Labs.
+     * @return the correlation Id
+     */
+    String syncLabs();
+
    
 }

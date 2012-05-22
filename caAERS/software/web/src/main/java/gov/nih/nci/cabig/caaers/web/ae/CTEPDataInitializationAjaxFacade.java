@@ -40,7 +40,7 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
 	}
 
 	public int importCTEPData(boolean ctcaeChecked, boolean devicesChecked, boolean preExistingConditionsChecked, 
-			boolean therapiesChecked, boolean agentDoseMeasureChecked, boolean lobChecked,
+			boolean therapiesChecked, boolean agentDoseMeasureChecked, boolean labChecked,
 			boolean agentsChecked, boolean asaelChecked, boolean organizationsChecked) {
 		
 		if(devicesChecked) proxyWebServiceFacade.syncDevices();
@@ -50,6 +50,7 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
 		if(asaelChecked) proxyWebServiceFacade.syncASAEL();
 		if(organizationsChecked) proxyWebServiceFacade.syncOrganizations();
 		if(agentDoseMeasureChecked) proxyWebServiceFacade.syncAgentUOM();
+		if(labChecked)proxyWebServiceFacade.syncLabs();
 
 		return 1;
 
