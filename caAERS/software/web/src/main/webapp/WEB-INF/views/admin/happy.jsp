@@ -42,115 +42,86 @@
     </script>
 </head>
 <body>
-
-
-     <div class="workflow-tabs2">
-  <ul id="" class="tabs autoclear">
-    <li id="thirdlevelnav" class="tab"><div>
-        <a href="ctepesysDataImport">CTEP-ESYS Data Import</a>
-    </div></li>
-     <li id="thirdlevelnav" class="tab"><div>
-        <a href="trackReports">Report Submission Logs</a>
-    </div></li>
-    <li id="thirdlevelnav" class="tab"><div>
-        <a href="ctepesysDataIntegrationLogs">CTEP-ESYS Data Integration Logs</a>
-    </div></li>
-    <li id="thirdlevelnav" class="tab selected"><div>
-        <a href="#">System Status</a>
-    </div></li>
-  </ul>
-</div>
-
-
-
- 		
-<chrome:box title="caAERS Diagnostics">
 <chrome:division title="Configuration">
-   <div class="row">
-        	<div class="leftpanel">
-        		<div class="row">
-                	<div class="label">PSC URL </div>
-                	<div class="value">${command.pscUrl}</div>
-            	</div>
-
-           		<div class="row">
-                	<div class="label">LabViewer URL</div>
-                	<div class="value">${command.labViewerUrl} </div>
-            	</div>
-
-            	<div class="row">
-                	<div class="label">caXchange URL</div>
-                	<div class="value">${command.caExchangeUrl}</div>
-            	</div>            	
+    <div class="row">
+        <div class="leftpanel">
+            <div class="row">
+                <div class="label">PSC URL </div>
+                <div class="value">${command.pscUrl}</div>
             </div>
-	  </div>
-  </chrome:division>
-  <chrome:division title="Email Configuration">
 
-	      <div class="row">
-      
-        	<div class="leftpanel">
-        		<div class="row">
-                	<div class="label">SMTP Host</div>
-                	<div class="value">${command.smtpHost}</div>
-            	</div>
-           		<div class="row">
-                	<div class="label">SMTP Port</div>
-                	<div class="value">${command.smtpPort}</div>
-            	</div>
-            	
-			<c:if test="${command.smtpTestResult}">
-				<div class="row">
-                	<div class="label">Test Connection</div>
-                	<div class="pass">Pass</div>
-            	</div> 
-			</c:if>
+            <div class="row">
+                <div class="label">LabViewer URL</div>
+                <div class="value">${command.labViewerUrl} </div>
+            </div>
+
+            <div class="row">
+                <div class="label">caXchange URL</div>
+                <div class="value">${command.caExchangeUrl}</div>
+            </div>
+        </div>
+    </div>
+</chrome:division>
+<chrome:division title="Email Configuration">
+
+    <div class="row">
+
+        <div class="leftpanel">
+            <div class="row">
+                <div class="label">SMTP Host</div>
+                <div class="value">${command.smtpHost}</div>
+            </div>
+            <div class="row">
+                <div class="label">SMTP Port</div>
+                <div class="value">${command.smtpPort}</div>
+            </div>
+
+            <c:if test="${command.smtpTestResult}">
+                <div class="row">
+                    <div class="label">Test Connection</div>
+                    <div class="pass">Pass</div>
+                </div>
+            </c:if>
             <c:if test="${not command.smtpTestResult}">
-				<div class="row">
-                	<div class="label">Test Connection</div>
-                	<div class="fail">Fail</div>
-            	</div> 
-            	<div class="row">
-                	<div class="label">StackTrace</div>
-                	<div class="error">${command.smtpError}</div>
-            	</div> 
-			</c:if>	
-           	
-            </div>
-	  </div>
-  </chrome:division>
+                <div class="row">
+                    <div class="label">Test Connection</div>
+                    <div class="fail">Fail</div>
+                </div>
+                <div class="row">
+                    <div class="label">StackTrace</div>
+                    <div class="error">${command.smtpError}</div>
+                </div>
+            </c:if>
 
+        </div>
+    </div>
+</chrome:division>
 <chrome:division title="ServiceMix Configuration">
-   <div class="row">
-      
-        	<div class="leftpanel">
+    <div class="row">
 
-         		<div class="row">
-                	<div class="label">ServiceMix URL</div>
-                	<div class="value">${command.serviceMixUrl}</div>
-            	</div>
-            	           	
-			<c:if test="${command.serviceMixUp}">
-				<div class="row">
-                	<div class="label">ServiceMix Status</div>
-                	<div class="pass">Active</div>
-            	</div> 
-			</c:if>
-			
-            <c:if test="${not command.serviceMixUp}">
-				<div class="row">
-                	<div class="label">ServiceMix Status</div>
-                	<div class="fail">InActive</div>
-            	</div> 
-			</c:if>	
-           	
+        <div class="leftpanel">
+
+            <div class="row">
+                <div class="label">ServiceMix URL</div>
+                <div class="value">${command.serviceMixUrl}</div>
             </div>
-	  </div>
-  </chrome:division>
-  </chrome:box>
-  <div class="content buttons autoclear"/>
-</div>
 
+            <c:if test="${command.serviceMixUp}">
+                <div class="row">
+                    <div class="label">ServiceMix Status</div>
+                    <div class="pass">Active</div>
+                </div>
+            </c:if>
 
+            <c:if test="${not command.serviceMixUp}">
+                <div class="row">
+                    <div class="label">ServiceMix Status</div>
+                    <div class="fail">InActive</div>
+                </div>
+            </c:if>
+
+        </div>
+    </div>
+</chrome:division>
 </body>
 </html>

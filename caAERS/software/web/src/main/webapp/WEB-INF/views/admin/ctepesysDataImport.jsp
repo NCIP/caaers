@@ -164,9 +164,6 @@
     <li id="thirdlevelnav" class="tab"><div>
         <a href="ctepesysDataIntegrationLogs">CTEP-ESYS Data Integration Logs</a>
     </div></li>
-    <li id="thirdlevelnav" class="tab"><div>
-        <a href="happy">System Status</a>
-    </div></li>
   </ul>
 </div>
 

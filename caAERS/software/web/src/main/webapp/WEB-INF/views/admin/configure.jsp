@@ -15,6 +15,11 @@
     </style>
 </head>
 <body>
+<script>
+    jQuery(function() {
+        jQuery( "#ctabs" ).tabs();
+    });
+</script>
 	<div class="tabpane">
 	    <div class="workflow-tabs2">
     	    <ul id="" class="tabs autoclear">
@@ -57,50 +62,60 @@
         <chrome:box title="Configure caAERS" autopad="true">
             <p><tags:instructions code="configurecaares" /></p>
             <c:if test="${param.updated}"><p class="updated">Settings saved</p></c:if>
-		<csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.tools.configuration.Configuration:UPDATE">
-        	<div class="row">
-            	<div class="label"><caaers:message code="reloadLabels" text="Reload labels"/></div>
-            	<div class="value" id="reloadedLabels"><input type="button" onclick="reloadLabels()" value="<caaers:message code="reloadLabels" text="Reload labels"/>"></div>
-        	</div>
-        </csmauthz:accesscontrol>
 
+            <div id="ctabs">
+                <ul>
+                    <li><a href="#tabs-1">General</a></li>
+                    <li><a href="#tabs-2">AdEERS Integration</a></li>
+                    <li><a href="#tabs-3">CCTS Integration</a></li>
+                    <li><a href="#tabs-4">Email</a></li>
+                    <li><a href="happy?subview=1">System Status</a></li>
+                </ul>
+                <div id="tabs-1">
 
-
-            <admin:oneConfigEntry entry="${command.conf['labViewerBaseUrl'].property}"/>
-            <admin:oneConfigEntry entry="${command.conf['pscBaseUrl'].property}"/>
-            <admin:oneConfigEntry entry="${command.conf['esbUrl'].property}"/>
-            <admin:oneConfigEntry entry="${command.conf['esbWSUrl'].property}"/>
-            <admin:oneConfigEntry entry="${command.conf['studySyncDelay'].property}"/>
-            <admin:oneConfigEntry entry="${command.conf['caExchangeNonGridUrl'].property}"/>
-            <admin:oneConfigEntry entry="${command.conf['caExchangeUrl'].property}"/>
-            <admin:oneConfigEntry entry="${command.conf['caExchangeNonGridUserName'].property}"/>
-            <admin:oneConfigEntry entry="${command.conf['caExchangeNonGridPassword'].property}"/>
-
-
-            <admin:oneConfigEntry entry="${command.conf['paLimit'].property}"/>
-            <admin:oneConfigEntry entry="${command.conf['poLimit'].property}"/>
-            <admin:oneConfigEntry entry="${command.conf['autoCompleterChars'].property}"/>
-            <admin:oneConfigEntry entry="${command.conf['autoCompleterDelay'].property}"/>
-            <admin:oneConfigEntry entry="${command.conf['caaersBaseHelpUrl'].property}"/>
-            <admin:oneConfigEntry entry="${command.conf['caaersBaseUrl'].property}"/>
-            <admin:oneConfigEntry entry="${command.conf['enableWorkflow'].property}"/>
-            <admin:oneConfigEntry entry="${command.conf['httpSessionWarning'].property}"/>
-            <admin:oneConfigEntry entry="${command.conf['httpSessionWarningWait'].property}"/>
-            <admin:oneConfigEntry entry="${command.conf['unidentifiedMode'].property}"/>
-            <admin:oneConfigEntry entry="${command.conf['synchronousSpringEvents'].property}"/>
-            <admin:oneConfigEntry entry="${command.conf['showDebugInformation'].property}"/>
-
-
-            <admin:oneConfigEntry entry="${command.conf['smtpAddress'].property}"/>
-            <admin:oneConfigEntry entry="${command.conf['smtpPort'].property}"/>
-            <admin:oneConfigEntry entry="${command.conf['smtpTimeout'].property}"/>
-            <admin:oneConfigEntry entry="${command.conf['smtpProtocol'].property}" options="${command.emailProtocols}"/>
-            <admin:oneConfigEntry entry="${command.conf['smtpSSLEnabled'].property}"/>
-            <admin:oneConfigEntry entry="${command.conf['smtpUser'].property}"/>
-            <admin:oneConfigEntry entry="${command.conf['smtpPassword'].property}"/>
-            <admin:oneConfigEntry entry="${command.conf['systemFromEmail'].property}"/>
-
-
+                    <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.tools.configuration.Configuration:UPDATE">
+                        <div class="row">
+                            <div class="label"><caaers:message code="reloadLabels" text="Reload labels"/></div>
+                            <div class="value" id="reloadedLabels"><input type="button" onclick="reloadLabels()" value="<caaers:message code="reloadLabels" text="Reload labels"/>"></div>
+                        </div>
+                    </csmauthz:accesscontrol>
+                    <admin:oneConfigEntry entry="${command.conf['autoCompleterChars'].property}"/>
+                    <admin:oneConfigEntry entry="${command.conf['autoCompleterDelay'].property}"/>
+                    <admin:oneConfigEntry entry="${command.conf['caaersBaseHelpUrl'].property}"/>
+                    <admin:oneConfigEntry entry="${command.conf['caaersBaseUrl'].property}"/>
+                    <admin:oneConfigEntry entry="${command.conf['enableWorkflow'].property}"/>
+                    <admin:oneConfigEntry entry="${command.conf['httpSessionWarning'].property}"/>
+                    <admin:oneConfigEntry entry="${command.conf['httpSessionWarningWait'].property}"/>
+                    <admin:oneConfigEntry entry="${command.conf['unidentifiedMode'].property}"/>
+                    <admin:oneConfigEntry entry="${command.conf['synchronousSpringEvents'].property}"/>
+                    <admin:oneConfigEntry entry="${command.conf['showDebugInformation'].property}"/>
+                </div>
+                <div id="tabs-2">
+                    <admin:oneConfigEntry entry="${command.conf['esbUrl'].property}"/>
+                    <admin:oneConfigEntry entry="${command.conf['esbWSUrl'].property}"/>
+                    <admin:oneConfigEntry entry="${command.conf['studySyncDelay'].property}"/>
+                </div>
+                <div id="tabs-3">
+                    <admin:oneConfigEntry entry="${command.conf['paLimit'].property}"/>
+                    <admin:oneConfigEntry entry="${command.conf['poLimit'].property}"/>
+                    <admin:oneConfigEntry entry="${command.conf['labViewerBaseUrl'].property}"/>
+                    <admin:oneConfigEntry entry="${command.conf['pscBaseUrl'].property}"/>
+                    <admin:oneConfigEntry entry="${command.conf['caExchangeNonGridUrl'].property}"/>
+                    <admin:oneConfigEntry entry="${command.conf['caExchangeUrl'].property}"/>
+                    <admin:oneConfigEntry entry="${command.conf['caExchangeNonGridUserName'].property}"/>
+                    <admin:oneConfigEntry entry="${command.conf['caExchangeNonGridPassword'].property}"/>
+                </div>
+                <div id="tabs-4">
+                    <admin:oneConfigEntry entry="${command.conf['smtpAddress'].property}"/>
+                    <admin:oneConfigEntry entry="${command.conf['smtpPort'].property}"/>
+                    <admin:oneConfigEntry entry="${command.conf['smtpTimeout'].property}"/>
+                    <admin:oneConfigEntry entry="${command.conf['smtpProtocol'].property}" options="${command.emailProtocols}"/>
+                    <admin:oneConfigEntry entry="${command.conf['smtpSSLEnabled'].property}"/>
+                    <admin:oneConfigEntry entry="${command.conf['smtpUser'].property}"/>
+                    <admin:oneConfigEntry entry="${command.conf['smtpPassword'].property}"/>
+                    <admin:oneConfigEntry entry="${command.conf['systemFromEmail'].property}"/>
+                </div>
+            </div>
 
         </chrome:box>
 
