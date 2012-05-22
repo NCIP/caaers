@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
+import gov.nih.nci.cabig.caaers.CaaersContextLoader;
 import gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSessionFactory;
 import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRole;
 
@@ -13,9 +14,17 @@ import java.util.List;
  */
 public class UserCommandTest extends AbstractTestCase {
 
-	private UserCommand command = new UserCommand();
-	
-	public void testGetAllGlobalRoles(){
+	private UserCommand command;
+
+    @Override
+    protected void setUp() throws Exception {
+        CaaersContextLoader.getApplicationContext().getBean("Messages");  //initialize messages
+        super.setUp();
+        switchToSuperUser();
+        command = new UserCommand();
+    }
+
+    public void testGetAllGlobalRoles(){
 		
 		List<SuiteRole> globalRoles = command.getAllGlobalRoles();
 
