@@ -2,11 +2,14 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import edu.emory.mathcs.backport.java.util.Collections;
 import gov.nih.nci.cabig.caaers.dao.IntegrationLogDao;
+import gov.nih.nci.cabig.caaers.dao.IntegrationLogDetailDao;
+import gov.nih.nci.cabig.caaers.dao.query.IntegrationLogDetailQuery;
 import gov.nih.nci.cabig.caaers.dao.query.IntegrationLogQuery;
 import gov.nih.nci.cabig.caaers.domain.IntegrationLog;
 import gov.nih.nci.cabig.caaers.domain.IntegrationLogDetail;
 import gov.nih.nci.cabig.caaers.domain.SynchStatus;
 import gov.nih.nci.cabig.caaers.domain.ajax.IntegrationLogAjaxableDomainObect;
+import gov.nih.nci.cabig.caaers.integration.schema.common.Status;
 import gov.nih.nci.cabig.caaers.service.ProxyWebServiceFacade;
 import gov.nih.nci.cabig.caaers.web.AbstractAjaxFacade;
 
@@ -19,12 +22,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.semanticbits.coppasimulator.util.StringUtilities;
 
 
 public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
 	private ProxyWebServiceFacade proxyWebServiceFacade;
+	public void setIntegrationLogDetailDao(
+			IntegrationLogDetailDao integrationLogDetailDao) {
+		this.integrationLogDetailDao = integrationLogDetailDao;
+	}
+
 	private IntegrationLogDao integrationLogDao;
+	private IntegrationLogDetailDao integrationLogDetailDao;
 	private static Class<?>[] CONTROLLERS = {CTEPESYSDataImportController.class};
 	
 	private static final String htmlSuccessString = "<font color='#008000'>Success</font>";
@@ -95,7 +106,7 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
 				}
 			});
         
-        	ajaxIntLog.setOverallStatus(determineIfOverallStatusIsFailed(entry.getValue()));
+        	ajaxIntLog.setOverallStatus(getIfIncompleteOrFailed(entry.getValue())?htmlFailureString:htmlSuccessString);
         	ajaxIntLog.setService(getServiceNameFromEntityAndOperation(entry.getValue().get(0).getEntity(), entry.getValue().get(0).getOperation()));
         	
         	for(IntegrationLog intLog:entry.getValue()){
@@ -104,11 +115,9 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
         	
         	if(StringUtilities.isBlank(status)) {
         		filteredResults.add(ajaxIntLog);
-        	} else  if(status.equalsIgnoreCase("Failed") && isIncomplete(entry.getValue())) {
-        		// if incomplete ones are wanted the status should be incomplete
+        	} else  if(status.equalsIgnoreCase("Failed") && getIfIncompleteOrFailed(entry.getValue())) {
         		filteredResults.add(ajaxIntLog);
-        	} else  if(status.equalsIgnoreCase("Success") && !isIncomplete(entry.getValue())) {
-        		// if complete ones are wanted the status should be complete. It should also check integration log details for instance level issues
+        	} else  if(status.equalsIgnoreCase("Success") && !getIfIncompleteOrFailed(entry.getValue())) {
         		filteredResults.add(ajaxIntLog);
         	} 
         }
@@ -116,15 +125,15 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
         return filteredResults;
     }
     
-    // if SynchStatus.REQUEST_COMPLETION is not present the messages with this correlation id are incomplete
-    public boolean isIncomplete(List<IntegrationLog> integrationLogs){
-    	for(IntegrationLog intLog : integrationLogs){
-    		if(intLog.getSynchStatus() == SynchStatus.REQUEST_COMPLETION){
-    			return false;
-    		}
-    	}
-    	
-    	return true;
+ // get integration log details based on correlation id
+    public  List<IntegrationLogDetail> getIntegrationLogDetailsBasedOnCorrelationId(String correlationId) {
+
+    	List<IntegrationLogDetail> integrationLogDetails = new ArrayList<IntegrationLogDetail>();
+    	IntegrationLogDetailQuery query = new IntegrationLogDetailQuery();
+    	query.filterByCorrelationId(correlationId);
+    	integrationLogDetails = integrationLogDetailDao.searchIntegrationLogDetails(query);
+        
+        return integrationLogDetails;
     }
     
     public Map<String,List<IntegrationLog>> groupIntegrationLogsBasedOnCorrelationId(List<IntegrationLog> integreationLogs){
@@ -155,25 +164,21 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
     	return firstLogTime;
     }
     
-    public String determineIfOverallStatusIsFailed(List<IntegrationLog> integrationLogs){
-    	String outcome = htmlFailureString;
-    	for(IntegrationLog log:integrationLogs){
-    		if(log.getSynchStatus() == SynchStatus.REQUEST_COMPLETION){
-    			outcome = htmlSuccessString;
-    		}
-    		// if one of the integration log detail has failed, mark the overall outcome as failed
-    		if(log.getIntegrationLogDetails().size()> 0){
-    			for(IntegrationLogDetail intLogDetail : log.getIntegrationLogDetails()){
-    				if(intLogDetail.isFailed()) {
-    					return htmlFailureString;
-    				}
-    			}
+    
+    // if SynchStatus.REQUEST_COMPLETION is not present or partially processed is present in the notes, the messages with this correlation id are incomplete/failed
+    public boolean getIfIncompleteOrFailed(List<IntegrationLog> integrationLogs){
+    	boolean failed = true;
+    	for(IntegrationLog intLog : integrationLogs){
+    		// if it is partially processed, it is considered to be incomplete
+    		if(!StringUtils.isBlank(intLog.getNotes()) && intLog.getNotes().contains(Status.PARTIALLY_PROCESSED.value()))
+    			return true;
+    		if(intLog.getSynchStatus() == SynchStatus.REQUEST_COMPLETION){
+    			failed = false;
     		}
     	}
     	
-    	return outcome;
+    	return failed;
     }
-    
     
     public String extractEntity(String serviceName){
     	
