@@ -25,8 +25,8 @@ public class ConfigPropertyRepositoryImplTest extends CaaersNoSecurityTestCase {
             impl.saveOrUpdate(cp);
         }
 
-        assertEquals(4, impl.getByType(ConfigPropertyType.UNKNOWN));
+        assertEquals(4, impl.getByType(ConfigPropertyType.UNKNOWN).size());
         impl.removeAll(ConfigPropertyType.UNKNOWN);
-        assertEquals(0, impl.getByType(ConfigPropertyType.UNKNOWN));
+        assertEquals(0, impl.getByType(ConfigPropertyType.UNKNOWN).size());
     }
 }
