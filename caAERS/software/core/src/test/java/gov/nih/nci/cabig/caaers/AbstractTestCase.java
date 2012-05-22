@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -34,7 +35,9 @@ public abstract class AbstractTestCase extends CoreTestCase {
     
 
     ////// MOCK REGISTRATION AND HANDLING
-
+    public void switchToSuperUser(){
+        SecurityTestUtils.switchToSuperuser();
+    }
     public <T> T registerMockFor(Class<T> forClass) {
         return registered(EasyMock.createMock(forClass));
     }
