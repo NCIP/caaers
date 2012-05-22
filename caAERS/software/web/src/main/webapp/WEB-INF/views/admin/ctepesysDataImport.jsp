@@ -185,7 +185,7 @@
 
 <div id="synchMessage" style="display:none; padding: 15px;">
 		<div style="font-size: 10pt; padding-top: 20px; padding-bottom: 20px; padding-left: 5px; padding-right: 5px">
-			<div class="label">Synching data with CTEP. Please come back in 10 minutes</div> <div class="value">
+			<div class="label"><caaers:message code="LBL_CTEP_DataSynch_Message" /></div> <div class="value">
 		</div>
 </div>
 
