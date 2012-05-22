@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?><payload xmlns:ser="http://services.ctep.nci.nih.gov/" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"><system>adeers</system><response>
+    <entity>lab</entity><operation name="getLabsLOV">
+    <data><LabCategories>
+            <labCategory updatedDate="06-18-1999 14:00:39" createdDate="06-18-1999 10:45:56">
+               <category>Chemistry</category>
+               <lab>
+                  <defaultUOM>g/dL</defaultUOM>
+                  <labName>Albumin - blood</labName>
+               </lab>
+               <lab>
+                  <defaultUOM>U/L</defaultUOM>
+                  <labName>Alkaline phosphates NOS</labName>
+               </lab>
+               <lab>
+                  <defaultUOM>U/L</defaultUOM>
+                  <labName>Amylase - blood</labName>
+               </lab>
+               <lab>
+                  <defaultUOM>mg/dL</defaultUOM>
+                  <labName>Bilirubin direct - blood</labName>
+               </lab>
+               <lab>
+                  <defaultUOM>mg/dL</defaultUOM>
+                  <labName>Bilirubin total - blood</labName>
+               </lab>
+               <lab>
+                  <defaultUOM>mg/dL</defaultUOM>
+                  <labName>Blood Urea Nitrogen (BUN)</labName>
+               </lab>
+               <lab>
+                  <defaultUOM>mg/dL</defaultUOM>
+                  <labName>Calcium - blood (Ca)</labName>
+               </lab>
+               <lab>
+                  <defaultUOM>mEq/L</defaultUOM>
+                  <labName>Carbon dioxide - blood (CO2)</labName>
+               </lab>
+               <lab>
+                  <defaultUOM>mEq/L</defaultUOM>
+                  <labName>Chloride - blood</labName>
+               </lab>
+               <lab>
+                  <defaultUOM>U/L</defaultUOM>
+                  <labName>Cholesterol - blood</labName>
+               </lab>
+               <lab>
+                  <defaultUOM>U/L</defaultUOM>
+                  <labName>Creatine phosphokinase - blood (CK)</labName>
+               </lab>
+               <lab>
+                  <defaultUOM>mg/dL</defaultUOM>
+                  <labName>Creatinine - serum (Cr)</labName>
+               </lab>
+               <lab>
+                  <defaultUOM>mL/Min/1.73m2</defaultUOM>
+                  <labName>Creatinine clearance (CrCl)</labName>
+               </lab>
+               <lab>
+                  <defaultUOM>mg/dL</defaultUOM>
+                  <labName>Glucose - blood</labName>
+               </lab>
+               <lab>
+                  <defaultUOM>U/L</defaultUOM>
+                  <labName>Glutamic-oxaloacetic transferase (AST, SGOT)</labName>
+               </lab>
+               <lab>
+                  <defaultUOM>U/L</defaultUOM>
+                  <labName>Glutamic-pyruvate transferase (ALT, SGPT)</labName>
+               </lab>
+               <lab>
+                  <defaultUOM>U/L</defaultUOM>
+                  <labName>Lactate dehydrogenase - blood (LDH)</labName>
+               </lab>
+               <lab>
+                  <defaultUOM>U/L</defaultUOM>
+                  <labName>Lipase</labName>
+               </lab>
+               <lab>
+                  <defaultUOM>mEq/L</defaultUOM>
+                  <labName>Magnesium - blood (Mg)</labName>
+               </lab>
+               <lab>
+                  <defaultUOM>mg/dL</defaultUOM>
+                  <labName>Phosphorus</labName>
+               </lab>
+               <lab>
+                  <defaultUOM>mEq/L</defaultUOM>
+                  <labName>Potassium - blood (K)</labName>
+               </lab>
+               <lab>
+                  <defaultUOM>g/L</defaultUOM>
+                  <labName>Protein NOS (Total)</labName>
+               </lab>
+               <lab>
+                  <defaultUOM>mEq/L</defaultUOM>
+                  <labName>Sodium - blood</labName>
+               </lab>
+               <lab>
+                  <defaultUOM>mg/dL</defaultUOM>
+                  <labName>Triglycerides</labName>
+               </lab>
+               <lab>
+                  <defaultUOM>n/a</defaultUOM>
+                  <labName>Urine analysis</labName>
+               </lab>
+            </labCategory>
+            <labCategory updatedDate="06-18-1999 14:00:39" createdDate="06-18-1999 10:47:14">
+               <category>Coagulation</category>
+               <lab>
+                  <defaultUOM>seconds</defaultUOM>
+                  <labName>Activated partial thromboplastin time (APTT)</labName>
+               </lab>
+               <lab>
+                  <defaultUOM>ug/mL</defaultUOM>
+                  <labName>Fibrin D-dimer</labName>
+               </lab>
+               <lab>
+                  <defaultUOM>ug/mL</defaultUOM>
+                  <labName>Fibrin degradation products (FDP)</labName>
+               </lab>
+               <lab>
+                  <defaultUOM>mg/dL</defaultUOM>
+                  <labName>Fibrinogen - blood</labName>
+               </lab>
+               <lab>
+                  <defaultUOM>number</defaultUOM>
+                  <labName>International normalised ratio (INR)</labName>
+               </lab>
+               <lab>
+                  <defaultUOM>seconds</defaultUOM>
+                  <labName>Prothrombin time (PT)</labName>
+               </lab>
+            </labCategory>
+            <labCategory updatedDate="11-01-1999 15:16:12" createdDate="06-18-1999 10:47:45">
+               <category>Hematologic</category>
+               <lab>
+                  <defaultUOM></defaultUOM>
+                  <labName>ANC</labName>
+               </lab>
+               <lab>
+                  <defaultUOM>1000/uL</defaultUOM>
+                  <labName>Blood neutrophils (ANC)</labName>
+               </lab>
+               <lab>
+                  <defaultUOM>%</defaultUOM>
+                  <labName>Hematocrit (Hct)</labName>
+               </lab>
+               <lab>
+                  <defaultUOM>g/dL</defaultUOM>
+                  <labName>Hemoglobin (Hb)</labName>
+               </lab>
+               <lab>
+                  <defaultUOM>%</defaultUOM>
+                  <labName>Hemoglobin (fetal)</labName>
+               </lab>
+               <lab>
+                  <defaultUOM>1000/mm3</defaultUOM>
+                  <labName>Platelet count (PLT)</labName>
+               </lab>
+               <lab>
+                  <defaultUOM>1000/mm3</defaultUOM>
+                  <labName>White blood cell count (WBC)</labName>
+               </lab>
+            </labCategory>
+            <labCategory updatedDate="06-18-1999 14:00:39" createdDate="06-18-1999 10:49:54">
+               <category>Microbiology</category>
+               <lab>
+                  <defaultUOM></defaultUOM>
+                  <labName>Bacterial infection NOS</labName>
+               </lab>
+               <lab>
+                  <defaultUOM></defaultUOM>
+                  <labName>Fungal infection NOS</labName>
+               </lab>
+               <lab>
+                  <defaultUOM></defaultUOM>
+                  <labName>Viral infection NOS</labName>
+               </lab>
+            </labCategory>
+            <labCategory updatedDate="11-29-2005 09:07:31" createdDate="06-18-1999 10:50:21">
+               <category>Respiratory</category>
+               <lab>
+                  <defaultUOM>mEq/L</defaultUOM>
+                  <labName>Blood bicarbonate</labName>
+               </lab>
+               <lab>
+                  <defaultUOM>mmHg</defaultUOM>
+                  <labName>Blood carbon dioxide</labName>
+               </lab>
+               <lab>
+                  <defaultUOM>%</defaultUOM>
+                  <labName>Oxygen saturation</labName>
+               </lab>
+               <lab>
+                  <defaultUOM>number</defaultUOM>
+                  <labName>pH NOS</labName>
+               </lab>
+               <lab>
+                  <defaultUOM>mmHg</defaultUOM>
+                  <labName>pO2</labName>
+               </lab>
+            </labCategory>
+            <labCategory updatedDate="" createdDate="11-26-2003 14:48:10">
+               <category>Bone Marrow Biopsy</category>
+               <lab>
+                  <defaultUOM>%</defaultUOM>
+                  <labName>Bone Marrow Cellularity</labName>
+               </lab>
+               <lab>
+                  <defaultUOM>%</defaultUOM>
+                  <labName>Bone Marrow blasts</labName>
+               </lab>
+               <lab>
+                  <defaultUOM>%</defaultUOM>
+                  <labName>Peripheral Blasts count</labName>
+               </lab>
+            </labCategory>
+         </LabCategories></data>
+</operation>
+</response></payload>
