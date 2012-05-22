@@ -5,9 +5,8 @@ import static gov.nih.nci.cabig.caaers.domain.Fixtures.createStudyAgent;
 import static gov.nih.nci.cabig.caaers.domain.Fixtures.setId;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
-import gov.nih.nci.cabig.caaers.domain.CourseAgent;
-import gov.nih.nci.cabig.caaers.domain.DelayUnits;
-import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
+import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.repository.ConfigPropertyRepository;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
@@ -18,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.easymock.classextension.EasyMock;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -25,9 +25,11 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @CaaersUseCases( { CREATE_EXPEDITED_REPORT })
 public class InterventionsTabTest extends AeTabTestCase {
+    ConfigPropertyRepository cpRepository;
     @Override
     protected StudyInterventionsTab createTab() {
         ConfigProperty configProperty = new ConfigProperty();
+        cpRepository = registerMockFor(ConfigPropertyRepository.class);
         Map<String, List<Lov>> map = new HashMap<String, List<Lov>>();
         map.put("radiationDoseUMORefData", new ArrayList<Lov>());
         map.put("radiationAdjustmentRefData", new ArrayList<Lov>());
@@ -35,11 +37,20 @@ public class InterventionsTabTest extends AeTabTestCase {
         configProperty.setMap(map);
         StudyInterventionsTab tab = new StudyInterventionsTab();
         tab.setConfigurationProperty(configProperty);
+        tab.setConfigPropertyRepository(cpRepository);
+
+        List<gov.nih.nci.cabig.caaers.domain.ConfigProperty> cpList = new ArrayList<gov.nih.nci.cabig.caaers.domain.ConfigProperty>();
+        cpList.add(Fixtures.createConfigProperty("bp"));
+
+
+        EasyMock.expect(cpRepository.getByType(ConfigPropertyType.AGENT_UOM)).andReturn(cpList).anyTimes();
+
         return tab;
     }
 
     @SuppressWarnings( { "unchecked" })
     public void testDelayUnitsInField() throws Exception {
+        replayMocks();
         InputField delayComposite = getFieldGroup("courseAgent0").getFields().get(6);
 
         Map<Object, Object> actualOptions = getActualSelectFieldOptions((List<InputField>) delayComposite.getAttributes().get(InputField.SUBFIELDS), "aeReport.treatmentInformation.courseAgents[0].administrationDelayUnits");
@@ -57,6 +68,7 @@ public class InterventionsTabTest extends AeTabTestCase {
     }
 
     public void testCourseAgentFields() throws Exception {
+        replayMocks();
         assertFieldProperties(
                         "courseAgent2",
                         "aeReport.treatmentInformation.courseAgents[2].studyAgent",
@@ -73,6 +85,7 @@ public class InterventionsTabTest extends AeTabTestCase {
     }
 
     public void testTotalDoseAdministered() throws Exception {
+        replayMocks();
         InputField totalDoseField = getFieldGroup("courseAgent0").getFields().get(3);
         assertEquals("Wrong field name, it should be 'Total dose administered this course'", "aeReport.treatmentInformation.courseAgents[0].dose.amount", totalDoseField.getPropertyName());
         totalDoseField = getFieldGroup("courseAgent0").getFields().get(4);
@@ -81,6 +94,7 @@ public class InterventionsTabTest extends AeTabTestCase {
 
     @SuppressWarnings( { "unchecked" })
     public void testAdminDelaySubfields() throws Exception {
+        replayMocks();
         InputField delayField = getFieldGroup("courseAgent7").getFields().get(6); // admindelay
         List<InputField> subfields = (List<InputField>) delayField.getAttributes().get(InputField.SUBFIELDS);
         assertNotNull("Dose isn't a composite field", subfields);
@@ -90,6 +104,7 @@ public class InterventionsTabTest extends AeTabTestCase {
     }
 
     public void testStudyAgentsOptionsInField() throws Exception {
+        replayMocks();
         command.getStudy().addStudyAgent(setId(166, createStudyAgent("Agent 1")));
         command.getStudy().addStudyAgent(setId(267, createStudyAgent("Agent 2")));
         InputFieldGroup group = getFieldGroup("courseAgent0");
@@ -100,6 +115,7 @@ public class InterventionsTabTest extends AeTabTestCase {
     }
 
     public void testRadiationFieldProperties() throws Exception {
+        replayMocks();
         assertFieldProperties("radiationIntervention6",
                         "aeReport.radiationInterventions[6].administration",
                         "aeReport.radiationInterventions[6].dosage",
@@ -112,6 +128,7 @@ public class InterventionsTabTest extends AeTabTestCase {
     }
 
     public void testSurgeryFieldProperties() throws Exception {
+        replayMocks();
         assertFieldProperties("surgeryIntervention7",
                         "aeReport.surgeryInterventions[7].treatmentArm",
                         "aeReport.surgeryInterventions[7].description",
