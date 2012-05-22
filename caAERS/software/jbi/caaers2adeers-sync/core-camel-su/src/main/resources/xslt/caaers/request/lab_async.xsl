@@ -11,7 +11,7 @@
 
   <xsl:template match="LabCategories">
 	 <com:labCategories>
-	 	<xsl:apply-templates  />
+	 	<xsl:apply-templates select="labCategory"  />
 	 </com:labCategories>
   </xsl:template>
   
@@ -19,7 +19,7 @@
 	 <com:labCategory>
 	 	<category><xsl:value-of select="category"/></category>
 	 	<com:labs>
-	 		<xsl:apply-templates />
+	 		<xsl:apply-templates select="lab" />
 	 	</com:labs>
 	 </com:labCategory>
   </xsl:template>
