@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.List;
 /**
  * @author Saurabh Agrawal
  */
-public class StudyParticipantAssignmentTest extends AbstractNoSecurityTestCase {
+public class StudyParticipantAssignmentTest extends AbstractTestCase {
 
     private StudyParticipantAssignment assignment;
 
@@ -21,6 +22,7 @@ public class StudyParticipantAssignmentTest extends AbstractNoSecurityTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+        switchToSuperUser();
         createAssignment();
         report = new ExpeditedAdverseEventReport();
         AdverseEventReportingPeriod period = new AdverseEventReportingPeriod();
@@ -116,15 +118,14 @@ public class StudyParticipantAssignmentTest extends AbstractNoSecurityTestCase {
         report.getStudy().setDiseaseTerminology(new DiseaseTerminology());
         report.getStudy().getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
         report.getDiseaseHistory().setCtepStudyDisease(new CtepStudyDisease());
-
-        report.addSaeReportPreExistingCondition(new SAEReportPreExistingCondition());
+        report.addSaeReportPreExistingCondition(Fixtures.createSAEReportPreExistingCondition("test") );
         assignment.synchronizeMedicalHistoryFromReportToAssignment(report);
         assertEquals("must copy the pre existing condition", 1, assignment.getPreExistingConditions().size());
 
         createAssignment();
         assignment.setDiseaseHistory(new StudyParticipantDiseaseHistory());
         
-        SAEReportPreExistingCondition reportPreExistingCondition = new SAEReportPreExistingCondition();
+        SAEReportPreExistingCondition reportPreExistingCondition = Fixtures.createSAEReportPreExistingCondition("test");
         reportPreExistingCondition.setId(1);
         report.addSaeReportPreExistingCondition(reportPreExistingCondition);
         assignment.synchronizeMedicalHistoryFromReportToAssignment(report);

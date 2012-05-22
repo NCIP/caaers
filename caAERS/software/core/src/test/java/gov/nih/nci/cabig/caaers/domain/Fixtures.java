@@ -869,7 +869,9 @@ public class Fixtures {
   }
 
   public static PreExistingCondition createPreExistingCondtion(String name){
-      return new PreExistingCondition(name);
+      PreExistingCondition pec = new PreExistingCondition(name)   ;
+      pec.setRetiredIndicator(false);
+      return pec ;
   }
     
   public static PreExistingCondition createPreExistingCondition(String name, String lltCode, String llt, String hlgt )  {
