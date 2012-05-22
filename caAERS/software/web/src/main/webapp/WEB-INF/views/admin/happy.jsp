@@ -121,7 +121,7 @@
             </c:if>
             <c:if test="${not command.logFolderValid}">
                 <div class="row">
-                    <div class="label">Data sync log location : ${command.logFolder}</div>
+                    <div class="label">Data sync log location : ${empty command.logFolder ? 'NOT FILLED YET' : command.logFolder  }</div>
                     <div class="fail">
                         InActive<br>
                             ${command.logFolderException}
