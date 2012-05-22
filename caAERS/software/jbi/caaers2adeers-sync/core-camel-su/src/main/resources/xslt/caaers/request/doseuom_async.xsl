@@ -17,11 +17,11 @@
   </xsl:template>
   
   <xsl:template match="agentDoseUOM">
-        <com:ConfigProperty>
+        <ConfigProperty>
             <code><xsl:value-of select="unitOfMeasure"/></code>
             <name><xsl:value-of select="unitOfMeasure"/></name>
             <description><xsl:value-of select="unitOfMeasure"/></description>
-        </com:ConfigProperty>
+        </ConfigProperty>
   </xsl:template>
 
 </xsl:stylesheet>
