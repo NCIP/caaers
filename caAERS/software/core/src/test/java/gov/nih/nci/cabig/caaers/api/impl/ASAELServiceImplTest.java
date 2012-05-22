@@ -64,7 +64,7 @@ public class ASAELServiceImplTest extends DaoTestCase {
         asaelType.getAsaelAgent().get(0).getExpectedAECtcTerm().remove(0);
         asaelType.getAsaelAgent().get(0).getExpectedAECtcTerm().get(0).setCtepTerm("Nausea");
         asaelType.getAsaelAgent().get(0).getExpectedAECtcTerm().get(0).setStatus(ActiveInactiveStatusType.INACTIVE);
-        asaelType.getAsaelAgent().get(0).getExpectedAECtcTerm().get(0).setCategory("Category - 01");
+        asaelType.getAsaelAgent().get(0).getExpectedAECtcTerm().get(0).setCategory("auditory/ear");
         asaelType.getAsaelAgent().get(0).getExpectedAECtcTerm().get(0).setCtcVersion("3");
 
         Study s = studyDao.getById(-2);
