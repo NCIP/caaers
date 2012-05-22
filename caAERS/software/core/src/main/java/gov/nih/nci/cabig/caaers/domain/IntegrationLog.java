@@ -6,13 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -48,8 +42,7 @@ public class IntegrationLog extends AbstractMutableDomainObject{
 		return notes;
 	}
 
-	@OneToMany
-	@JoinColumn(name="log_id" , nullable =  false)
+	@OneToMany (mappedBy = "integrationLog", fetch = FetchType.LAZY)
 	@Cascade({CascadeType.PERSIST, CascadeType.SAVE_UPDATE})
 	public List<IntegrationLogDetail> getIntegrationLogDetails() {
 		return integrationLogDetails;
@@ -59,6 +52,13 @@ public class IntegrationLog extends AbstractMutableDomainObject{
 			List<IntegrationLogDetail> integrationLogDetails) {
 		this.integrationLogDetails = integrationLogDetails;
 	}
+
+    public void addIntegrationLogDetails(IntegrationLogDetail logDetails){
+        if(logDetails != null){
+            logDetails.setIntegrationLog(this);
+        }
+        integrationLogDetails.add(logDetails);
+    }
 
 	public void setNotes(String notes) {
 		this.notes = notes;

@@ -2,10 +2,7 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -14,7 +11,9 @@ import org.hibernate.annotations.Parameter;
 @Table(name="integration_log_details")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_integration_log_details_id") })
 public class IntegrationLogDetail extends AbstractMutableDomainObject{
-	
+
+    IntegrationLog integrationLog;
+
 	// business Id of the entity
 	private String businessId;
 	
@@ -58,4 +57,13 @@ public class IntegrationLogDetail extends AbstractMutableDomainObject{
 		this.businessId = businessId;
 	}
 
+    @ManyToOne
+    @JoinColumn(name = "log_id",nullable = false)
+    public IntegrationLog getIntegrationLog() {
+        return integrationLog;
+    }
+
+    public void setIntegrationLog(IntegrationLog integrationLog) {
+        this.integrationLog = integrationLog;
+    }
 }
