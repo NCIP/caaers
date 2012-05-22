@@ -75,5 +75,19 @@ public class IntegrationLogDetailDaoTest extends DaoNoSecurityTestCase<Integrati
 		queriedIntLogs = integrationLogDao.searchIntegrationLogs(query3);
 		assertEquals(6,queriedIntLogs.size());
 	}
+	
+	public void testByCorrelationId() throws Exception{
+		IntegrationLogDetailQuery query1 = new IntegrationLogDetailQuery();
+		query1.filterByCorrelationId("-8");
+		List<IntegrationLogDetail> queriedIntLogDetails = dao.searchIntegrationLogDetails(query1);
+		assertEquals(1,queriedIntLogDetails.size());
+		assertEquals(SynchStatus.CAAERS_WS_IN_TRANSFORMATION,queriedIntLogDetails.get(0).getSynchStatus());
+		assertEquals("failure",queriedIntLogDetails.get(0).getOutcome());
+		
+		IntegrationLogDetailQuery query2 = new IntegrationLogDetailQuery();
+		query2.filterByCorrelationId("-4");
+		queriedIntLogDetails = dao.searchIntegrationLogDetails(query2);
+		assertEquals(2,queriedIntLogDetails.size());
+	}
 
 }

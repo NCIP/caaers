@@ -2,20 +2,17 @@ package gov.nih.nci.cabig.caaers.dao.query;
 
 import gov.nih.nci.cabig.caaers.domain.SynchStatus;
 
-import java.util.Date;
-
 public class IntegrationLogDetailQuery extends AbstractQuery {
 
     private static final String queryString = "SELECT distinct ild from IntegrationLogDetail ild ";
-
+    
+    public void joinIntegrationLog(){
+    	join("ild.integrationLog il");
+    }
 
     public IntegrationLogDetailQuery() {
         super(queryString);
         orderBy("ild.id");
-    }
-    
-    public void joinIntegrationLogDetails() {
-    	join("ild.integrationLog il");
     }
     
     public void filterByBusinessId(final String value) {
@@ -32,6 +29,13 @@ public class IntegrationLogDetailQuery extends AbstractQuery {
     public void filterBySynchStatus(final SynchStatus value) {
         andWhere("synchStatus = :ss");
         setParameter("ss", value);
+    }
+    
+    public void filterByCorrelationId(final String value){
+    	joinIntegrationLog();
+    	String searchString = "%" + value.toLowerCase() + "%";
+    	andWhere("lower(il.correlationId) LIKE :cid" );
+    	setParameter("cid", searchString);
     }
     
 }
