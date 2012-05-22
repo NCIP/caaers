@@ -47,8 +47,13 @@ public class SelectStudyForParticipantTab <T extends ParticipantInputCommand> ex
     public Map<String, Object> referenceData(HttpServletRequest request, T command) {
         Map<String, Object> refdata = super.referenceData(request, command);
         int studyId = 0;
-        if (StringUtils.isNotEmpty(request.getParameter("studyId")))
-            studyId = Integer.parseInt(request.getParameter("studyId"));
+
+        try {
+            if (StringUtils.isNotEmpty(request.getParameter("studyId")))
+                studyId = Integer.parseInt(request.getParameter("studyId"));
+        } catch (NumberFormatException e) {
+            // do not need to process this exception, just ignore the studyId value
+        }
 
         if (StringUtils.isEmpty(command.getSearchText()) && studyId > 0) {
             Study s = studyRepository.getById(studyId);
