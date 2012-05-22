@@ -11,7 +11,7 @@
 <title>Search for a Study</title>
 <style>
     .yui-dt table { width: 100%; }
-
+    #yui-dt0-th-primarySponsorCode-liner {width: 120px;}
 </style>
 
 <script>
@@ -71,6 +71,23 @@
         $('indicator').className='indicator'
         initializeYUITable("tableDiv", jsonResult, myColumnDefs, myFields);
         hideCoppaSearchDisclaimer();
+
+        var value = jQuery('input:radio[name=study]:checked').val();
+        if (isNaN(value)) {
+            var _value = "<c:out value="${command.searchText}"/>";
+            var _el = jQuery('#_study' + _value);
+            if (_el) {
+                _el.attr('checked', 'checked');
+                var _studyId = jQuery(_el).val();
+                _elStudyIdText = jQuery('input:text[name=study]');
+                jQuery(_elStudyIdText).val(_studyId);
+                if (jQuery("#ids")) {
+                    jQuery("#ids").show();
+                }
+            }
+        } else {
+        }
+
     }
 
     var linkFormatter = function(elCell, oRecord, oColumn, oData) {
@@ -79,6 +96,7 @@
 
     var radioFormatter = function(elCell, oRecord, oColumn, oData) {
         var _id = oRecord.getData("id");
+        var _piv = oRecord.getData("primaryIdentifierValue");
         var _checked = "";
         <c:if test="${not empty command.study.id}">
             if (${command.study.id} == _id) {
@@ -86,7 +104,7 @@
                 if ($("ids")) $("ids").show();    
             }
         </c:if>
-        elCell.innerHTML = "<input type='radio' " + _checked + " value='" + _id + "' name='study' onclick='$(\"command\").study.value = " + _id + "; if ($(\"ids\")) $(\"ids\").show();'>&nbsp;&nbsp;" + oData;
+        elCell.innerHTML = "<input id='_study" + _piv + "' type='radio' " + _checked + " value='" + _id + "' name='study' onclick='$(\"command\").study.value = " + _id + "; if ($(\"ids\")) $(\"ids\").show();'>&nbsp;&nbsp;" + oData;
     };
 
     var myColumnDefs = [
@@ -197,9 +215,9 @@
 <%--STANDARD FORM --%>
 
 <script>
-    Event.observe(window, "load", function() {
+    jQuery(document).ready(function() {
         buildTable('assembler', false);
-    })
+    });
 </script>
 
 

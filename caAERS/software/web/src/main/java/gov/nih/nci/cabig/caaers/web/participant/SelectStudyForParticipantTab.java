@@ -44,18 +44,27 @@ public class SelectStudyForParticipantTab <T extends ParticipantInputCommand> ex
     private ListValues listValues;
 
     @Override
+    public Map<String, Object> referenceData(HttpServletRequest request, T command) {
+        Map<String, Object> refdata = super.referenceData(request, command);
+        int studyId = 0;
+        if (StringUtils.isNotEmpty(request.getParameter("studyId")))
+            studyId = Integer.parseInt(request.getParameter("studyId"));
+
+        if (StringUtils.isEmpty(command.getSearchText()) && studyId > 0) {
+            Study s = studyRepository.getById(studyId);
+            if (s != null) {
+                command.setSearchText(s.getPrimaryIdentifier().getValue());
+                command.setSearchType("idtf");
+            }
+        }
+
+        return refdata;
+    }
+
+    @Override
     public Map<String, Object> referenceData(T command) {
         Map<String, Object> refdata = super.referenceData(command);
         refdata.put("searchType", listValues.getStudySearchType());
-
-
-        // get the StudySites to filterby 
-
-/*
-        // Search START
-        // Search END
-*/
-
         return refdata;
     }
 
