@@ -23,4 +23,10 @@
 	 entity="Organization" 	operation="mergeOrganization"/>
 	  <integration_logs id="1011" version="0"  logged_on="2012-04-28" correlation_id="-10" synch_status="REQUST_PROCESSING_ERROR" notes="Request processing failed"
 	 entity="Organization" 	operation="mergeOrganization"/>
+	  <integration_logs id="1012" version="0" logged_on="2012-05-21" correlation_id="-11" synch_status="REQUEST_COMPLETION" notes="Request processing failed"
+	 entity="Lab" 	operation="getLabsLov"/>
+	  <integration_logs id="1013" version="0" logged_on="2012-05-22" correlation_id="-12" synch_status="REQUEST_RECEIVED" notes="Request processing failed"
+	 entity="Lab" 	operation="getLabsLov"/>
+	  <integration_logs id="1014" version="0" logged_on="2012-05-22" correlation_id="-12" synch_status="REQUEST_COMPLETION" notes="Request processing failed"
+	 entity="Lab" 	operation="getLabsLov"/>
 </dataset>

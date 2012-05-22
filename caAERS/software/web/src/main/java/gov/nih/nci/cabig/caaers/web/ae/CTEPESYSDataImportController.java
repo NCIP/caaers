@@ -32,14 +32,14 @@ public class CTEPESYSDataImportController extends SimpleFormController {
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
     	CTEPDataInitializationCommand cmd =  new CTEPDataInitializationCommand();
-    	cmd.setAgentsLastUpdated(integrationLogDao.getLastUpdatedTime("agent", "getAgentsLOV"));
-    	cmd.setDevicesLastUpdated(integrationLogDao.getLastUpdatedTime("device", "getDevicesLOV"));
-    	cmd.setOrganizationsLastUpdated(integrationLogDao.getLastUpdatedTime("organization", "getOrganizationsLOV"));
-    	cmd.setAsaelLastUpdated(integrationLogDao.getLastUpdatedTime("asael", "getASAEL"));
-    	cmd.setAgentDoseMeasureLastUpdated(integrationLogDao.getLastUpdatedTime("aduom", "getAgentDoseUOMLOV"));
-    	cmd.setLabLastUpdated(integrationLogDao.getLastUpdatedTime("lab", "getLabsLOV"));
-    	cmd.setPreExistingConditionsLastUpdated(integrationLogDao.getLastUpdatedTime("preexistingcondition", "getPreExistingConditionsLOV"));
-    	cmd.setTherapiesLastUpdated(integrationLogDao.getLastUpdatedTime("priortherapy", "getTherapiesLOV"));
+    	cmd.setAgentsLastUpdated(integrationLogDao.getLastSuccessfullyUpdatedTime("agent", "getAgentsLOV"));
+    	cmd.setDevicesLastUpdated(integrationLogDao.getLastSuccessfullyUpdatedTime("device", "getDevicesLOV"));
+    	cmd.setOrganizationsLastUpdated(integrationLogDao.getLastSuccessfullyUpdatedTime("organization", "getOrganizationsLOV"));
+    	cmd.setAsaelLastUpdated(integrationLogDao.getLastSuccessfullyUpdatedTime("asael", "getASAEL"));
+    	cmd.setAgentDoseMeasureLastUpdated(integrationLogDao.getLastSuccessfullyUpdatedTime("aduom", "getAgentDoseUOMLOV"));
+    	cmd.setLabLastUpdated(integrationLogDao.getLastSuccessfullyUpdatedTime("lab", "getLabsLOV"));
+    	cmd.setPreExistingConditionsLastUpdated(integrationLogDao.getLastSuccessfullyUpdatedTime("preexistingcondition", "getPreExistingConditionsLOV"));
+    	cmd.setTherapiesLastUpdated(integrationLogDao.getLastSuccessfullyUpdatedTime("priortherapy", "getTherapiesLOV"));
     	
     	return cmd;
     }

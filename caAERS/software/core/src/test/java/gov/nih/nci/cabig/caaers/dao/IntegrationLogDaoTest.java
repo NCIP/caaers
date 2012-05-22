@@ -77,13 +77,23 @@ public class IntegrationLogDaoTest extends DaoNoSecurityTestCase<IntegrationLogD
 		assertEquals(2012,cal.get(Calendar.YEAR));
 	}
 	
+	public void testLastSuccessfullyUpdated() throws Exception{
+		Date date = getDao().getLastSuccessfullyUpdatedTime("Lab", "getLabsLov");
+		assertNotNull(date);
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		assertEquals(22,cal.get(Calendar.DAY_OF_MONTH));
+		assertEquals(5,cal.get(Calendar.MONTH) +1);
+		assertEquals(2012,cal.get(Calendar.YEAR));
+	}
+	
 	
 	public void testQueryByStatus() throws Exception{
 		IntegrationLogQuery query = new IntegrationLogQuery();
 		query.filterByIncomplete();
 		List<IntegrationLog> intlogs = getDao().searchIntegrationLogs(query);
 		assertNotNull(intlogs);
-		assertEquals(12,intlogs.size());
+		assertEquals(13,intlogs.size());
 
 	}
 	

@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.dao.query.IntegrationLogQuery;
 import gov.nih.nci.cabig.caaers.domain.IntegrationLog;
+import gov.nih.nci.cabig.caaers.domain.SynchStatus;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
 import java.util.Calendar;
@@ -80,6 +81,16 @@ public class IntegrationLogDao extends GridIdentifiableDao<IntegrationLog> imple
     	org.hibernate.Query query = getSession().createQuery(queryString);
     	query.setParameter("entity", entity);
     	query.setParameter("operation", opertion);
+    	return (Date) query.uniqueResult();
+    }
+    
+    public Date getLastSuccessfullyUpdatedTime(final String entity, final String opertion){
+    	String queryString = "select max(il.loggedOn) from IntegrationLog il where il.entity like :entity and il.operation like :operation" +
+    			" and synchStatus LIKE :REQUEST_COMPLETE";
+    	org.hibernate.Query query = getSession().createQuery(queryString);
+    	query.setParameter("entity", entity);
+    	query.setParameter("operation", opertion);
+    	query.setParameter("REQUEST_COMPLETE", SynchStatus.REQUEST_COMPLETION);
     	return (Date) query.uniqueResult();
     }
     
