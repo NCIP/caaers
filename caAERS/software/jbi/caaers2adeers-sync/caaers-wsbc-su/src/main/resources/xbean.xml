@@ -95,7 +95,7 @@
 	   <!-- ================== Agents Dose UOM Webservice Provider ==================================-->
     <cxfbc:provider interfaceName="caaers:ConfigPropertiesWebServiceInterface"  service="caaers:ConfigPropertiesWebService"
                     endpoint="ConfigPropertiesWebServiceImplPort"
-                    wsdl="classpath:AgentService.wsdl"
+                    wsdl="classpath:ConfigPropertyService.wsdl"
                     locationURI="s[AGENT_DOSE_UOM_WS_BINDING_URL]" useJBIWrapper="false"
                     useSOAPEnvelope="true" schemaValidationEnabled="true">
         <cxfbc:inInterceptors>

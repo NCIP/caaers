@@ -648,7 +648,7 @@
   </wsdl:binding>
   <wsdl:service name="ConfigPropertiesWebService">
     <wsdl:port binding="tns:ConfigPropertiesWebServiceSoapBinding" name="ConfigPropertiesWebServiceImplPort">
-      <soap:address location="https://localhost:8443/caaers/services/ConfigPropertyService"></soap:address>
+      <soap:address location="https://dev.semanticbits.com/caaers/services/ConfigPropertyService"></soap:address>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>
