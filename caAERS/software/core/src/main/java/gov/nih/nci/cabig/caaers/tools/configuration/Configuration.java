@@ -20,6 +20,7 @@ public class Configuration extends DatabaseBackedConfiguration implements Initia
     public static final ConfigurationProperty<String> LABVIEWER_BASE_URL = PROPERTIES.add(new DefaultConfigurationProperty.Text("labViewerBaseUrl"));
     public static final ConfigurationProperty<String> ESB_URL = PROPERTIES.add(new DefaultConfigurationProperty.Text("esbUrl"));
     public static final ConfigurationProperty<String> ESB_WS_URL = PROPERTIES.add(new DefaultConfigurationProperty.Text("esbWSUrl"));
+    public static final ConfigurationProperty<String> ESB_LOG_LOCATION = PROPERTIES.add(new DefaultConfigurationProperty.Text("esbLogLocation"));
     public static final ConfigurationProperty<String> CAEXCHANGE_URL = PROPERTIES.add(new DefaultConfigurationProperty.Text("caExchangeUrl"));
     public static final ConfigurationProperty<String> CAEXCHANGE_NONGRID_URL = PROPERTIES.add(new DefaultConfigurationProperty.Text("caExchangeNonGridUrl"));
     public static final ConfigurationProperty<String> CAEXCHANGE_NONGRID_USERNAME = PROPERTIES.add(new DefaultConfigurationProperty.Text("caExchangeNonGridUserName"));

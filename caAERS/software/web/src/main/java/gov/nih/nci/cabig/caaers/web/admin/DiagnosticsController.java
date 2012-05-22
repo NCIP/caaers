@@ -13,6 +13,8 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
+import java.io.File;
+
 public class DiagnosticsController extends SimpleFormController{
 	
 	private Configuration configuration;

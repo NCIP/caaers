@@ -119,6 +119,15 @@
                     <div class="fail">InActive</div>
                 </div>
             </c:if>
+            <c:if test="${not command.logFolderValid}">
+                <div class="row">
+                    <div class="label">Data sync log location : ${command.logFolder}</div>
+                    <div class="fail">
+                        InActive<br>
+                            ${command.logFolderException}
+                    </div>
+                </div>
+            </c:if>
 
         </div>
     </div>

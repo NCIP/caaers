@@ -2,6 +2,8 @@ package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 
+import java.io.File;
+
 
 public class DiagnosticsCommand extends ConfigurationCommand{
 	
@@ -91,5 +93,31 @@ public class DiagnosticsCommand extends ConfigurationCommand{
 		serviceMixUrl = super.configuration.get(Configuration.ESB_URL);
 		return serviceMixUrl;
 	}
-	
+
+    public String getLogFolder(){
+        return configuration.get(Configuration.ESB_LOG_LOCATION);
+    }
+    
+    public boolean isLogFolderValid(){
+
+        try{
+            File f = new File(getLogFolder());
+            return f.exists();
+        }catch (Exception ignore){
+
+        }
+        return false;
+
+    }
+    public String getLogFolderException(){
+
+        try{
+            File f = new File(getLogFolder());
+        }catch (Exception e){
+             return e.getMessage();
+        }
+        return "";
+
+    }
+    
 }
