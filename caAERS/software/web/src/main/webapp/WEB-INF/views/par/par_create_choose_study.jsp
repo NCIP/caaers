@@ -12,6 +12,7 @@
 <style>
     .yui-dt table { width: 100%; }
     #yui-dt0-th-primarySponsorCode-liner {width: 120px;}
+    #yui-dt0-th-shortTitle-liner {width: 260px;}
 </style>
 
 <script>
