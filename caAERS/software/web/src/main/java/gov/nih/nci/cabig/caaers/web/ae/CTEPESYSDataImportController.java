@@ -37,7 +37,7 @@ public class CTEPESYSDataImportController extends SimpleFormController {
     	cmd.setOrganizationsLastUpdated(integrationLogDao.getLastUpdatedTime("organization", "getOrganizationsLOV"));
     	cmd.setAsaelLastUpdated(integrationLogDao.getLastUpdatedTime("asael", "getASAEL"));
     	cmd.setAgentDoseMeasureLastUpdated(integrationLogDao.getLastUpdatedTime("aduom", "getAgentDoseUOMLOV"));
-    	cmd.setLabLastUpdated(integrationLogDao.getLastUpdatedTime("lab", "getLabLOV"));
+    	cmd.setLabLastUpdated(integrationLogDao.getLastUpdatedTime("lab", "getLabsLOV"));
     	cmd.setPreExistingConditionsLastUpdated(integrationLogDao.getLastUpdatedTime("preexistingcondition", "getPreExistingConditionsLOV"));
     	cmd.setTherapiesLastUpdated(integrationLogDao.getLastUpdatedTime("priortherapy", "getTherapiesLOV"));
     	
