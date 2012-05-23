@@ -47,7 +47,7 @@
     }
 
     function addStudySite(_id) {
-        window.location = "<c:url value="/pages/study/edit?studyId=" />" + _id;
+        window.location = "<c:url value="/pages/study/edit?studyId=" />" + _id + "&tab=SitesTab";
     }
 
     function doRegisterSubject(_id) {
@@ -85,7 +85,7 @@
                 },
                 showSpeed: 300
             });
-}
+    }
 
     function loadAllStudies() {
         jQuery("#_loadAllStudies-indicator").removeClass('indicator');

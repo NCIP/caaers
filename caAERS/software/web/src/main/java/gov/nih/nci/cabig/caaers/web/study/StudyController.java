@@ -12,12 +12,10 @@ import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 import gov.nih.nci.cabig.caaers.web.validation.validator.WebControllerValidator;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.web.ListValues;
+import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
-import java.util.Date;
-import java.util.Map;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -192,8 +190,21 @@ public abstract class StudyController<C extends StudyCommand> extends AutomaticS
         StudyCommand cmd = (StudyCommand) oCommand;
         Study study = cmd.getStudy();
 
-        boolean showSummary = false;
+        // When requests has ?t=AgentTab it will jump to the needed tab in the flow.
+        /*
+        if (request.getParameter("t") != null) {
+            String tabName = request.getParameter("t");
+            Flow<C> flow = (Flow)refData.get("flow");
+            Map tabsHash = new HashMap();
+            for (Tab t : flow.getTabs()) {
+                tabsHash.put(t.getClass().getSimpleName(), t);
+            }
+            Tab desiredTab = (Tab)tabsHash.get(tabName);
+            if (desiredTab != null) refData.put("tab", desiredTab);
+        }
+        */
 
+        boolean showSummary = false;
         if (isSummaryEnabled()) {
             List<ListValues> summary = new ArrayList<ListValues>();
             if (study.getShortTitle() != null) {
