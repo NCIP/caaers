@@ -38,7 +38,7 @@
     <br><br>
     <div><caaers:message code="LBL_study.in.process" /></div>
 </div>
-
+<div id="error_page" style="display: none;" class="flash-message error" ><div><caaers:message code="LBL_study.process.error" /></div><br><span id="_errorMessage">.</span></div>
 
 <script>
 
@@ -55,26 +55,13 @@
     }
 
     function doUpdate(_id, _nciCode) {
-/*
-        jQuery("#_ssi").html("<br>" + _id + ":" + _nciCode);
-        showTimerPopup("_message", 2);
-*/
-
         var mp = showMessagePopup("please_wait");
-
         createStudy.syncStudyWithAdEERS(_id, _nciCode, "UPDATE", function(_resultId) {
             mp.close();
-
             if (_resultId.error) {
-//                showError(_resultId.errorMessage);
-//                alert(_resultId.errorMessage);
-                showTimerPopup(jQuery("<div>ERROR</div>"), 3);
-            } else {
-                showTimerPopup(jQuery("<div>Hello</div>"), 3);
+                showTimerPopup("error_page", 3);
             }
-
         })
-
     }
 
     function showDashboardStudiesMenuOptions(_ssi, _id, _nciCode) {
