@@ -93,6 +93,8 @@
                 <div id="tabs-2">
                     <admin:oneConfigEntry entry="${command.conf['esbUrl'].property}"/>
                     <admin:oneConfigEntry entry="${command.conf['esbWSUrl'].property}"/>
+                    <admin:oneConfigEntry entry="${command.conf['wsUsername'].property}"/>
+                    <admin:oneConfigEntry entry="${command.conf['wsPassword'].property}"/>
                     <admin:oneConfigEntry entry="${command.conf['esbLogLocation'].property}"/>
                     <admin:oneConfigEntry entry="${command.conf['studySyncDelay'].property}"/>
                 </div>
