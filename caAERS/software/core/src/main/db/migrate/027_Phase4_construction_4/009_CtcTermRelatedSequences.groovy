@@ -23,7 +23,7 @@ class TreatmentAssignmentStudyInterventionSeq extends edu.northwestern.bioinform
 		execute("update ctc_versions set name='3.0' where id=3")
 		execute("update ctc_versions set name='4.0' where id=4")
 		
-		execute("ALTER TABLE ctc_terms DROP CONSTRAINT uk_ctc_grade_term");
+		execute("ALTER TABLE ctc_grades DROP CONSTRAINT uk_ctc_grade_term");
 		
 		addColumn("ctc_versions", "grid_id", "string")
 		addColumn("ctc_versions", "version", "integer", nullable: false, defaultValue: 0)
