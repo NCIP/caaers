@@ -294,7 +294,7 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
 
             String correlationId = RandomStringUtils.randomAlphanumeric(10);
 
-            String message = buildMessage(correlationId, "adeers", "study", CREATE_STUDY_OPERATION_NAME, "async", criteriaMap);
+            String message = buildMessage(correlationId, "adeers", "study", operationName, "async", criteriaMap);
             String xmlStudyDetails = simpleSendAndReceive(message);
             if(log.isDebugEnabled()) log.debug("result for getStudyDetails : for (" + sponsorIdentifierValue + ") :" + xmlStudyDetails);
             String studyDbId = xsltTransformer.toText(xmlStudyDetails, "xslt/c2a_generic_response.xslt");
