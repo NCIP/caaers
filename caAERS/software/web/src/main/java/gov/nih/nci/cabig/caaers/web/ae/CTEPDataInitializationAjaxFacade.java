@@ -194,7 +194,7 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
     	if(serviceName.equalsIgnoreCase("GetPre-ExistingConditionsLOV")) return "preexistingcondition";
     	if(serviceName.equalsIgnoreCase("GetTherapiesLOV")) return "priortherapy";
     	if(serviceName.equalsIgnoreCase("GetAgentsLOV")) return "agent";
-    	if(serviceName.equalsIgnoreCase("GetLabLOV")) return "lab";
+    	if(serviceName.equalsIgnoreCase("GetLabsLOV")) return "lab";
     	if(serviceName.equalsIgnoreCase("SearchStudy")) return "study";
     	if(serviceName.equalsIgnoreCase("GetStudyDetails")) return "study";
     	if(serviceName.equalsIgnoreCase("GetMergedOrganization")) return "organization";
@@ -217,7 +217,7 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
     	if(serviceName.equalsIgnoreCase("GetPre-ExistingConditionsLOV")) return "getPreExistingConditionsLOV";
     	if(serviceName.equalsIgnoreCase("GetTherapiesLOV")) return "getTherapiesLOV";
     	if(serviceName.equalsIgnoreCase("GetAgentsLOV")) return "getAgentsLOV";
-    	if(serviceName.equalsIgnoreCase("GetLabLOV")) return "getLabLOV";
+    	if(serviceName.equalsIgnoreCase("GetLabsLOV")) return "getLabsLOV";
     	if(serviceName.equalsIgnoreCase("SearchStudy")) return "searchStudy";
     	if(serviceName.equalsIgnoreCase("GetStudyDetails")) return "updateStudy";
     	if(serviceName.equalsIgnoreCase("GetMergedOrganization")) return "getMergedOrganization";
