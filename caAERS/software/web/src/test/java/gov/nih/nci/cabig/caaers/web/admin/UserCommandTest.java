@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.CaaersContextLoader;
+import gov.nih.nci.cabig.caaers.tools.Messages;
 import gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSessionFactory;
 import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRole;
 
@@ -18,7 +19,7 @@ public class UserCommandTest extends AbstractTestCase {
 
     @Override
     protected void setUp() throws Exception {
-        CaaersContextLoader.getApplicationContext().getBean("Messages");  //initialize messages
+        CaaersContextLoader.getApplicationContext().getBean(Messages.class);  //initialize messages
         super.setUp();
         switchToSuperUser();
         command = new UserCommand();
