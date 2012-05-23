@@ -204,18 +204,19 @@
                 <brandName><xsl:value-of select="brandName" /></brandName>
                 <type><xsl:value-of select="category" /></type>
                 <ctepDbIdentifier><xsl:value-of select="deviceDbId" /></ctepDbIdentifier>
-                <status><xsl:value-of select="status" /></status>
-                <xsl:if test="ideNumber">
+                <xsl:if test="status"><status><xsl:value-of select="status" /></status></xsl:if>
+            </stud:device>
+                <xsl:if test="ideNumber/text() and ideHolder/text()">
                     <studyDeviceINDAssociations>
                         <stud:studyDeviceINDAssociation>
                             <stud:investigationalNewDrug>
                                 <indNumber><xsl:value-of select="ideNumber" /></indNumber>
-                                <holderName>CTEP</holderName>
+                                <holderName><xsl:value-of select="ideHolder" /></holderName>
                             </stud:investigationalNewDrug>
                         </stud:studyDeviceINDAssociation>
                     </studyDeviceINDAssociations>
                 </xsl:if>
-            </stud:device>
+
         </stud:studyDevice>
     </xsl:template>
     <xsl:template match="nciDocumentNum" mode="sys">
