@@ -11,6 +11,8 @@ import java.util.Locale;
  *         Bean that holds a refereence to MessageSource
  *         which can be easily accessed statically from anywhere in the code
  */
+
+//BJ is this a bad way of using spring.
 public class Messages {
 
     MessageSource messageSource;

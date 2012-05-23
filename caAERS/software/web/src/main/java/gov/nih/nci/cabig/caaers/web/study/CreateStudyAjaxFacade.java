@@ -18,6 +18,7 @@ import gov.nih.nci.cabig.caaers.utils.ranking.RankBasedSorterUtils;
 import gov.nih.nci.cabig.caaers.utils.ranking.Serializer;
 import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
 import gov.nih.nci.cabig.caaers.web.dwr.IndexChange;
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.directwebremoting.WebContext;
@@ -876,28 +877,33 @@ public class CreateStudyAjaxFacade {
     /**
      *
      * @param studyIdentifier Study Funding Sponsor Identifier
-     * @param createOrUpdate It takes values if "CREATE" or "UPDATE
+     * @param studyId the database id of the study
      * @return
      */
-    public AjaxOutput syncStudyWithAdEERS(String studyIdentifier, String nciInstituteCode, String createOrUpdate) {
+    public AjaxOutput syncStudyWithAdEERS(String studyIdentifier, Integer studyId) {
         AjaxOutput out = new AjaxOutput();
         String _result = "";
+        try{
 
-        try {
-            OrganizationAssignedIdentifier id = new OrganizationAssignedIdentifier();
-            id.setType(OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE);
-            id.setValue(studyIdentifier);
-            Organization org = new LocalOrganization();
-            org.setNciInstituteCode(nciInstituteCode); //populate me ??
-            id.setOrganization(org);
-            _result = proxyWebServiceFacade.syncStudy(id, createOrUpdate, true);
-            System.out.println(_result);
-            Integer.parseInt(_result);
-            out.setObjectContent(_result);
-        } catch (NumberFormatException e) {
+            if(studyId != null){
+                _result = proxyWebServiceFacade.updateStudy(studyId, true);
+            }  else{
+                _result = proxyWebServiceFacade.importStudy(studyIdentifier);
+            } 
+
+        }catch (Exception e){
+            log.warn("error while synchronizing study ",e);
+            out.setError(true);
+            out.setErrorMessage("Study sync failed :" + e.getMessage());
+        }
+
+        if(!NumberUtils.isNumber(_result)){
             out.setError(true);
             out.setErrorMessage(_result);
+        }  else{
+            out.setObjectContent(_result);
         }
+
         return out;
     }
 

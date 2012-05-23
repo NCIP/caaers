@@ -286,72 +286,58 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
 		return null;
 	}
 
-    /**
-     *
-     * @param id
-     * @param createOrUpdate CREATE or UPDATE
-     * @return
-     */
-	public String syncStudy(Identifier id, String createOrUpdate, boolean force) {
-        String retVal = "STU_002";
-        String operationName = StringUtils.equals("CREATE", createOrUpdate) ? CREATE_STUDY_OPERATION_NAME : UPDATE_STUDY_OPERATION_NAME;
-
-        //Do not update study if it was last within an hour
-        if(operationName.equals(UPDATE_STUDY_OPERATION_NAME)){
-           //load the study from DB.
-            StudyQuery query = new StudyQuery();
-            query.filterByIdentifier(id);
-            List<Study> studies = (List<Study>)studyDao.search(query);
-            if(CollectionUtils.isEmpty(studies)){
-                log.error("Cannot syncStudy  : Operation is UPDATE, but unable to find the study in caAERS");
-                return retVal; //we cannot process
-            }
-            if(!force){
-
-                Study study = studies.get(0);
-                Date lastSyncedOn = study.getLastSynchedDate();
-                long diff = DateUtils.differenceInMinutes(DateUtils.today(), lastSyncedOn);
-                Integer allowedDuration = configuration.get(Configuration.STUDY_SYNC_DELAY);
-                allowedDuration = allowedDuration == null ? 0 : allowedDuration;
-                if(diff < allowedDuration){
-                    log.info("Ignoring the Sync Study request, as it was last updated on " + String.valueOf( lastSyncedOn));
-                    return study.getId().toString();
-                }
-            }
-        }
-
+    private String syncStudy(String operationName, String sponsorIdentifierValue){
         try{
-
             //invoke the webservice
             Map<String, String> criteriaMap = new HashMap<String, String>();
-            criteriaMap.put("nciDocumentNumber", id.getValue());
+            criteriaMap.put("nciDocumentNumber", sponsorIdentifierValue);
 
             String correlationId = RandomStringUtils.randomAlphanumeric(10);
 
-            String message = buildMessage(correlationId, "adeers", "study", operationName, "async", criteriaMap);
+            String message = buildMessage(correlationId, "adeers", "study", CREATE_STUDY_OPERATION_NAME, "async", criteriaMap);
             String xmlStudyDetails = simpleSendAndReceive(message);
-            if(log.isDebugEnabled()) log.debug("result for getStudyDetails : for (" + id + ") :" + xmlStudyDetails);
+            if(log.isDebugEnabled()) log.debug("result for getStudyDetails : for (" + sponsorIdentifierValue + ") :" + xmlStudyDetails);
             String studyDbId = xsltTransformer.toText(xmlStudyDetails, "xslt/c2a_generic_response.xslt");
             studyDbId = StringUtils.trim(studyDbId);
             if(log.isInfoEnabled()) log.info("Got study details : Study DB ID :" + studyDbId);
-            retVal = studyDbId;
-
-            //fire the entity modification event  - only for createStudy operation
-            if(StringUtils.equals(operationName, CREATE_STUDY_OPERATION_NAME)){
-                Study study = new LocalStudy();
-                if(NumberUtils.isNumber(studyDbId))study.setId(NumberUtils.toInt(studyDbId));
-                if(eventFactory != null) eventFactory.publishEntityModifiedEvent(study, false);
-            }
-            
+            return studyDbId;
         }catch (Exception e){
             log.error("Error occurred while invoking ServiceMix Study Details : " + e.getMessage(), e);
-            retVal += e.getMessage();
+            return "Import study failed:" +  e.getMessage();
         }
 
-        return retVal;
-	}
+    }
 
-	public void setWsUserName(String wsUserName) {
+    public String importStudy(String sponsorIdentifierValue) {
+
+        String studyDbId = syncStudy(CREATE_STUDY_OPERATION_NAME, sponsorIdentifierValue);
+        Study study = new LocalStudy();
+        if(NumberUtils.isNumber(studyDbId)){
+            study.setId(NumberUtils.toInt(studyDbId));
+            if(eventFactory != null) eventFactory.publishEntityModifiedEvent(study, false);
+        }
+        return studyDbId;
+
+       
+    }
+
+    public String updateStudy(Integer id, boolean force) {
+        Study study = studyDao.getById(id);
+        if(study == null) return "Unable to find the study (" + id + ")";
+        if(!force){
+            Date lastSyncedOn = study.getLastSynchedDate();
+            long diff = DateUtils.differenceInMinutes(DateUtils.today(), lastSyncedOn);
+            Integer allowedDuration = configuration.get(Configuration.STUDY_SYNC_DELAY);
+            allowedDuration = allowedDuration == null ? 0 : allowedDuration;
+            if(diff < allowedDuration){
+                log.info("Ignoring the Sync Study request, as it was last updated on " + String.valueOf( lastSyncedOn));
+                return String.valueOf(study.getId());
+            }
+        }
+        return syncStudy(UPDATE_STUDY_OPERATION_NAME, study.getFundingSponsorIdentifierValue());
+    }
+
+    public void setWsUserName(String wsUserName) {
 		this.wsUserName = wsUserName;
 	}
 

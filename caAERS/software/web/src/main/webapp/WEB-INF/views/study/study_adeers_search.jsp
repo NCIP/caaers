@@ -71,10 +71,10 @@
 */
     }
 
-    function doUpdate(id, _index, nciCode, operation) {
+    function doUpdate(id, _index, nciCode, operation, studyDbId) {
 //        jQuery('#studyLink' + _index).html(_ajaxIndicatorHtml);
         showPopup();
-        createStudy.syncStudyWithAdEERS(id, nciCode ,operation, function(_resultId) {
+        createStudy.syncStudyWithAdEERS(id, studyDbId, function(_resultId) {
             popupDiv.close();
 
             if (_resultId.error) {
@@ -98,15 +98,6 @@
         });
     }
 
-/*
-    function updateStudy(id, _index, nciCode) {
-        doUpdate(id, _index, nciCode, "UPDATE");
-    }
-
-    function importStudy(id, _index, nciCode) {
-        doUpdate(id, _index, nciCode, "CREATE");
-    }
-*/
 
     function editStudy(id) {
         window.location = "<c:url value="/pages/study/edit?studyId=" />" + id;
@@ -154,13 +145,13 @@
 
         function showMenuOptions(strId, _action, _fsid, _ncic, _studyId) {
             var _items = "<li>ERROR</li>";
-            var onClickString = "javascript:doUpdate(\"#{id}\", \"#{index}\", \"#{nciCode}\", \"#{operation}\")";
+            var onClickString = "javascript:doUpdate(\"#{id}\", \"#{index}\", \"#{nciCode}\", \"#{operation}\", #{studyId})";
 
             if (_action == "UPDATE") {
-                _items = "<li><a class='submitter-blue' href='#' onclick='" + onClickString.interpolate({id:_fsid, index:strId, nciCode:_ncic, operation:_action}) + "'>Synchronize study with CTEP-ESYS</a></li>";
+                _items = "<li><a class='submitter-blue' href='#' onclick='" + onClickString.interpolate({id:_fsid, index:strId, nciCode:_ncic, operation:_action, studyId: _studyId}) + "'>Synchronize study with CTEP-ESYS</a></li>";
                 _items += "<li><a class='submitter-blue' href='#' onclick='javascript:editStudy(" + _studyId + ")'>Edit Study in caAERS</a></li>";
             } else {
-                _items = "<li><a class='submitter-blue' href='#' onclick='" + onClickString.interpolate({id:_fsid, index:strId, nciCode:_ncic, operation:_action}) + "'>Import Study</a></li>";
+                _items = "<li><a class='submitter-blue' href='#' onclick='" + onClickString.interpolate({id:_fsid, index:strId, nciCode:_ncic, operation:_action,studyId: _studyId}) + "'>Import Study</a></li>";
             }
 
             var html = "<div><ul style='font-family:tahoma;'>" + _items + "</ul></div>";
@@ -238,7 +229,6 @@
 
 </chrome:box>
 </c:if>
-<%--<input type="button" onclick="doUpdate(1, 1, 'NCI', 'IMPORT')" value="HIT IT...">--%>
 <!--POPUPS-->
 <div id="please_wait" style="display: none;" class="flash-message info" >
     <h3><img src= "<chrome:imageUrl name="../check.png"/>" />&nbsp;<caaers:message code="LBL_please.wait" /></h3>

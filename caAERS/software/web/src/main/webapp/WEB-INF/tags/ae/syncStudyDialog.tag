@@ -12,12 +12,11 @@
     </div>
     <script type="text/javascript">
 
-        var studyIdentifierValue = '${command.aeReport.study.fundingSponsorIdentifierValue}';
-        var sponsorNCICode = '${command.aeReport.study.primarySponsorCode}';
+        var studyDbIdVal = ${empty command.aeReport.study.id ? 0 : command.aeReport.study.id};
         Event.observe(window, "load", function(){
             Dialog.info($('divStudySync').innerHTML, {className: "alphacube", width:600, title:'<img height="13px" width="13px" src="<c:url value="/images/indicator.gif" />" alt="activity indicator" width="20px" height="20px"/> '});
             //
-            createAE.syncStudyWithAdEERS(studyIdentifierValue, sponsorNCICode ,"UPDATE", function(_resultId) {
+            createAE.syncStudyWithAdEERS(studyDbIdVal, function(_resultId) {
                 Dialog.closeInfo();
             });
 

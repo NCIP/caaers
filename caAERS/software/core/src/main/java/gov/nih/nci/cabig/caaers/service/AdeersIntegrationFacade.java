@@ -55,12 +55,21 @@ public interface AdeersIntegrationFacade {
      */
     String syncStudies();
 
+
     /**
-     *
-     * @param id Funding Sponsor identifier value
-     * @return DB Identifier
+     * Will Import a new study into caAERS from Adeers.
+     * @param sponsorIdentifierValue
+     * @return
      */
-    String syncStudy(Identifier id, String createOrUpdate, boolean force);
+    String importStudy(String sponsorIdentifierValue);
+
+    /**
+     * Will update the study defition with the study definition from Adeers
+     * @param id
+     * @param force
+     * @return
+     */
+    String updateStudy(Integer id, boolean  force);
 
     /**
      * Search AdEERS studies by ShortTitle or Identifier value

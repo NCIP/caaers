@@ -74,7 +74,7 @@ public class ProxyWebServiceFacadeUnitTest extends AbstractTestCase {
         proxyWebServiceFacade = new ProxyWebServiceFacade(){
             @Override
             public String simpleSendAndReceive(String message) {
-                if(true) throw new RuntimeException("No method");
+                if(true) throw new RuntimeException("Unable to import study :No method");
                 return mockSearchStudyResponse();
             }
         };
@@ -84,7 +84,7 @@ public class ProxyWebServiceFacadeUnitTest extends AbstractTestCase {
             List<Study> studyList = proxyWebServiceFacade.searchStudies("5876")  ;
             fail("Must throw caaers exception");
         }catch(CaaersSystemException e){
-           assertEquals("Unable to import study : No method", e.getMessage());
+           assertContains( e.getMessage(),"Unable to import study :No method");
         }
         
         
@@ -96,6 +96,7 @@ public class ProxyWebServiceFacadeUnitTest extends AbstractTestCase {
             public String simpleSendAndReceive(String message) {
                 return mockSearchStudyResponse();
             }
+
         };
         proxyWebServiceFacade.setStudyConverter(new StudyConverter());
 
@@ -123,18 +124,13 @@ public class ProxyWebServiceFacadeUnitTest extends AbstractTestCase {
         s1.setId(99);
         s1.setLastSynchedDate(new Date());
         studyList.add(s1);
-        proxyWebServiceFacade.setStudyDao(new StudyDao(){
-            @Override
-            public List<? extends Object> search(StudyQuery query) {
-                return studyList;
-            }
-        });
+        proxyWebServiceFacade.setStudyDao(studyDao);
         
+        EasyMock.expect(studyDao.getById(1)).andReturn(s1).anyTimes();
         EasyMock.expect(configuration.get(Configuration.STUDY_SYNC_DELAY)).andReturn(10).anyTimes();
         replayMocks();
         
-        Identifier id = Fixtures.createOrganizationAssignedIdentifier("test",  Fixtures.createOrganization("test"));
-        String retVal = proxyWebServiceFacade.syncStudy(id, "UPDATE", false);
+        String retVal = proxyWebServiceFacade.updateStudy(1, false);
         assertEquals("99", retVal);
         verifyMocks(); 
     }
@@ -148,19 +144,13 @@ public class ProxyWebServiceFacadeUnitTest extends AbstractTestCase {
 
         proxyWebServiceFacade.setConfiguration(configuration);
 
-        proxyWebServiceFacade.setStudyDao(new StudyDao(){
-            @Override
-            public List<? extends Object> search(StudyQuery query) {
-                return null;
-            }
-        });
-
+        proxyWebServiceFacade.setStudyDao(studyDao);
+        EasyMock.expect(studyDao.getById(1)).andReturn(null).anyTimes();
         EasyMock.expect(configuration.get(Configuration.STUDY_SYNC_DELAY)).andReturn(null).anyTimes();
         replayMocks();
 
-        Identifier id = Fixtures.createOrganizationAssignedIdentifier("test",  Fixtures.createOrganization("test"));
-        String retVal = proxyWebServiceFacade.syncStudy(id, "UPDATE", false);
-        assertEquals("STU_002", retVal);
+        String retVal = proxyWebServiceFacade.updateStudy(1, false);
+        assertEquals("Unable to find the study (1)", retVal);
         verifyMocks();
     }
     public void testSyncStudyValid(){
@@ -177,19 +167,14 @@ public class ProxyWebServiceFacadeUnitTest extends AbstractTestCase {
         s1.setId(99);
         s1.setLastSynchedDate(new Date());
         studyList.add(s1);
-        proxyWebServiceFacade.setStudyDao(new StudyDao(){
-            @Override
-            public List<? extends Object> search(StudyQuery query) {
-                return studyList;
-            }
-        });
 
+        proxyWebServiceFacade.setStudyDao(studyDao);
+        EasyMock.expect(studyDao.getById(1)).andReturn(s1).anyTimes();
         EasyMock.expect(configuration.get(Configuration.STUDY_SYNC_DELAY)).andReturn(null).anyTimes();
         replayMocks();
 
-        Identifier id = Fixtures.createOrganizationAssignedIdentifier("test",  Fixtures.createOrganization("test"));
-        String retVal = proxyWebServiceFacade.syncStudy(id, "UPDATE", false);
-        assertEquals("1", retVal);
+        String retVal = proxyWebServiceFacade.updateStudy(1, false);
+        assertContains("1", retVal);
         verifyMocks();
     }
 

@@ -28,6 +28,7 @@ import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepositoryImpl;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
+import gov.nih.nci.cabig.caaers.service.AdeersIntegrationFacade;
 import gov.nih.nci.cabig.caaers.service.InteroperationService;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
@@ -81,6 +82,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
     private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
     
     private ReportRepository reportRepository;
+    AdeersIntegrationFacade proxyWebserviceFacade;
 
     @Override
     protected void setUp() throws Exception {
@@ -100,6 +102,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         adverseEventRoutingAndReviewRepository = registerMockFor(AdverseEventRoutingAndReviewRepositoryImpl.class);
         reportRepository = registerMockFor(ReportRepository.class);
         researchStaffDao = registerMockFor(ResearchStaffDao.class);
+        proxyWebserviceFacade = registerMockFor(AdeersIntegrationFacade.class);
 
         facade = new CreateAdverseEventAjaxFacade();
         facade.setParticipantDao(participantDao);
@@ -113,6 +116,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         facade.setExpeditedReportTree(new ExpeditedReportTree());
         facade.setReportRepository(reportRepository);
         facade.setResearchStaffDao(researchStaffDao);
+        facade.setProxyWebServiceFacade(proxyWebserviceFacade);
 
         ConfigProperty configProperty = new ConfigProperty();
         Map<String, List<Lov>> map = new HashMap<String, List<Lov>>();
@@ -659,6 +663,16 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
 
         replayMocks();
         assertEquals("The HTML", facade.addAdverseEventWithTermsMeddra( 1, 12, aeTermId));
+        verifyMocks();
+    }
+
+    public void testSyncStudyWithAdEERS(){
+        expect(proxyWebserviceFacade.updateStudy(1, false)).andReturn("Failed").anyTimes();
+        createAeCommandAndExpectInSession();
+        replayMocks();
+        AjaxOutput out = facade.syncStudyWithAdEERS(1);
+        assertTrue(out.getError());
+        assertEquals("Failed", out.getErrorMessage());
         verifyMocks();
     }
 

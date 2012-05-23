@@ -46,6 +46,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.acegisecurity.context.SecurityContext;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.directwebremoting.WebContext;
@@ -1209,28 +1210,27 @@ public class CreateAdverseEventAjaxFacade {
 
     /**
      *
-     * @param studyIdentifier Study Funding Sponsor Identifier
-     * @param createOrUpdate It takes values if "CREATE" or "UPDATE
+     * @param id Study databse id
      * @return
      */
-    public AjaxOutput syncStudyWithAdEERS(String studyIdentifier, String nciInstituteCode, String createOrUpdate) {
+    public AjaxOutput syncStudyWithAdEERS(Integer id) {
         AjaxOutput out = new AjaxOutput();
         String _result = "";
 
-        try {
-            OrganizationAssignedIdentifier id = new OrganizationAssignedIdentifier();
-            id.setType(OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE);
-            id.setValue(studyIdentifier);
-            Organization org = new LocalOrganization();
-            org.setNciInstituteCode(nciInstituteCode); //populate me ??
-            id.setOrganization(org);
-            _result = proxyWebServiceFacade.syncStudy(id, createOrUpdate, false);
-            Integer.parseInt(_result);
-            out.setObjectContent(_result);
-        } catch (NumberFormatException e) {
+        try{
+            _result = proxyWebServiceFacade.updateStudy(id, false);
+        }catch (Exception e){
+            out.setError(true);
+            out.setErrorMessage(e.getMessage());
+        }
+
+        if(!NumberUtils.isNumber(_result)){
             out.setError(true);
             out.setErrorMessage(_result);
+        }  else{
+            out.setObjectContent(_result);
         }
+        
 
         Object cmd = extractCommand();
         ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) cmd;
