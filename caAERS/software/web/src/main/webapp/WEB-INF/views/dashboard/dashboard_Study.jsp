@@ -19,7 +19,7 @@
                          <c:forEach var ="study" items="${studyList}" varStatus = "loopStatus">
                          	<tr class="${loopStatus.index % 2 == 0 ? 'alt' : ''}">
                          		<td><a href="<c:url value="/pages/study/edit?studyId=${study.id}" />">${study.primaryIdentifier}</a>&nbsp;<span title="<c:out value="${study.shortTitle}" escapeXml="true" />"><c:out value="${fn:substring(study.shortTitle, 0, 100)}" escapeXml="true" />...</span></td>
-                         		<td><c:out value="${study.status}" escapeXml="true" /></td>
+                         		<td><c:out value="${study.dataEntryStatus ? 'Complete' : 'In progress'}" escapeXml="true" /></td>
                          		<td><a onmouseover='showDashboardStudiesMenuOptions("${study.fundingSponsorIdentifierValue}", "${study.id}")' id='_d_study_${study.primaryIdentifier}' class='submitterButton submitter fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all' style="color:white; font-family: Arial; font-size: 13px;">Actions<span class='ui-icon ui-icon-triangle-1-s'></span></a></td>
                            </tr>
                          </c:forEach>
