@@ -24,7 +24,7 @@
     <study_devices id="-2000" study_id="-2" device_id="-2002" />
     <other_interventions id="-3000" study_id="-2" study_therapy_type="2" />
 
-    <ctc_versions id="3" name="CTCAE v3.0" />
+    <ctc_versions id="3" name="3.0" />
     <meddra_versions id="4" name="MEDDRA v9" />
     <CTC_CATEGORIES id="302" name="auditory/ear" version_id="3" />
     <CTC_TERMS id="3012" category_id="302" term="Tinnitus1" ctep_term="Tinnitus1" ctep_code="10043882" other_required="0" />

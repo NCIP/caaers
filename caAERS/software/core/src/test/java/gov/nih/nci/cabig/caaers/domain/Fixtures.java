@@ -282,7 +282,9 @@ public class Fixtures {
 
     public static AeTerminology createCtcV3Terminology(final Study s) {
         AeTerminology t = s.getAeTerminology();
-        Ctc v3 = setId(3, new Ctc());
+        Ctc v3 = new Ctc();
+        v3.setId(3);
+        v3.setName("3.0");
         v3.setName(4 + "");
         t.setTerm(Term.CTC);
         t.setCtcVersion(v3);
@@ -323,7 +325,9 @@ public class Fixtures {
     }
 
     public static Ctc createCtcaeV3() {
-        Ctc v3 = setId(3, new Ctc());
+        Ctc v3 = new Ctc();
+        v3.setName("3.0");
+        v3.setId(3);
         // this is only partial, of course
         v3.setCategories(new ArrayList<CtcCategory>());
         v3.getCategories().add(createCtcCategory(v3, "ALLERGY/IMMUNOLOGY"));

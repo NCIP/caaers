@@ -27,7 +27,7 @@
     	researchstaff_id="-1000"/>    
 
     <!-- ========================== CTC related information ===============================-->
-    <ctc_versions id="3" name="CTCAE v3.0"/>
+    <ctc_versions id="3" name="3.0"/>
     <ctc_categories id="301" name="allergy/immunology"
                     version_id="3"/>
     <ctc_categories id="302" name="auditory/ear" version_id="3"/>

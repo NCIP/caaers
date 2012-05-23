@@ -1,8 +1,8 @@
 
 <dataset>
 
-    <ctc_versions id="3" name="CTCAE v3.0" />
-    <ctc_versions id="4" name="CTCAE v4.0" />
+    <ctc_versions id="3" name="3.0" />
+    <ctc_versions id="4" name="4.0" />
     <meddra_versions id="10" name="medDRA v10" />
 
     <agents id="-990" name="Agent-01" description="Agent-01" nsc="760"/>

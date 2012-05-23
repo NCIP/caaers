@@ -5,7 +5,7 @@
     <ORGANIZATIONS id="-1" name="New Site" grid_id="gridSite" nci_institute_code="NCI"/>
 
     <!-- ========================== CTC related information ===============================-->
-    <ctc_versions id="3" name="CTCAE v3.0"/>
+    <ctc_versions id="3" name="3.0"/>
     <ctc_categories id="301" name="allergy/immunology"
                     version_id="3"/>
     <ctc_categories id="302" name="auditory/ear" version_id="3"/>

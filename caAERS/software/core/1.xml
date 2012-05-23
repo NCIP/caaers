@@ -100,7 +100,7 @@
                 <status>Active - Trial is open to accrual</status>
                 <Ctc>
                     <id>3</id>
-                    <name>CTCAE v3.0</name>
+                    <name>3.0</name>
                 </Ctc>
                 <Identifier>
                     <type>Protocol Authority Identifier</type>

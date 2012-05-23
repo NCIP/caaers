@@ -130,11 +130,11 @@
 
     <ctc_versions
             id="3"
-            name="CTCAE v3.0"
+            name="3.0"
             />
     <meddra_versions
             id="4"
-            name="CTCAE v3.0"
+            name="3.0"
             />
     <agents id="-990" name="abcd" description="biju" nsc="123"/>
     <agents id="-991" name="abcd" description="biju2" nsc="1223"/>

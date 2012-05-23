@@ -1,23 +1,140 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-    <soap:Body>
-        <ns2:getOrganizationsLOVResponse xmlns:ns2="http://services.ctep.nci.nih.gov/">
-            <Organizations xmlns="">
-                <organization createdDate="10-08-1999 23:02:56" updatedDate="08-18-2000 09:48:20" xmlns="">
-                    <address xmlns="">
-                        <street xmlns="">Avenida Cordoba</street>
-                        <street2 xmlns=""></street2>
-                        <city xmlns="">Buenos Aires</city>
-                        <state xmlns=""></state>
-                        <country xmlns="">Argentina</country>
-                        <zip xmlns="">1045</zip>
-                    </address>
-                    <ctepId xmlns="">02003</ctepId>
-                    <organizationName xmlns="">Hospitales Privado Guemes</organizationName>
-                    <organizationType xmlns="">ITN</organizationType>
-                    <status xmlns="">Active</status>
-                </organization>
-            </Organizations>
-        </ns2:getOrganizationsLOVResponse>
-    </soap:Body>
-</soap:Envelope>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+    <soapenv:Body>
+        <stud:createStudy xmlns:stud="http://schema.integration.caaers.cabig.nci.nih.gov/study">
+            <stud:studies>
+                <stud:study>
+                    <shortTitle>A Randomized Phase III Trial of Paclitaxel Versus Paclitaxel Plus Bevacizumab (rhuMAb VEGF) as First-Line Therapy for Locally Recurrent or Metastatic Breast Cancer</shortTitle>
+                    <phaseCode>Phase III Trial</phaseCode>
+                    <verbatimFirst>true</verbatimFirst>
+                    <adeersReporting>true</adeersReporting>
+                    <studyPurpose>Treatment</studyPurpose>
+                    <aeTermUnique>true</aeTermUnique>
+                    <stud:aeTerminology>
+                        <stud:ctcVersion>
+                            <name>4</name>
+                        </stud:ctcVersion>
+                    </stud:aeTerminology>
+                    <stud:diseaseTerminology>
+                        <diseaseCodeTerm>CTEP</diseaseCodeTerm>
+                    </stud:diseaseTerminology>
+                    <fundingSponsor>
+                        <organizationAssignedIdentifier>
+                            <value>E2100</value>
+                        </organizationAssignedIdentifier>
+                        <stud:studyFundingSponsor>
+                            <stud:organization>
+                                <name>Cancer Therapy Evaluation Program</name>
+                                <nciInstituteCode>CTEP</nciInstituteCode>
+                            </stud:organization>
+                        </stud:studyFundingSponsor>
+                    </fundingSponsor>
+                    <coordinatingCenter>
+                        <organizationAssignedIdentifier>
+                            <value>E2100</value>
+                        </organizationAssignedIdentifier>
+                        <stud:studyCoordinatingCenter>
+                            <stud:organization>
+                                <name>Eastern Cooperative Oncology Group</name>
+                                <nciInstituteCode>ECOG</nciInstituteCode>
+                                <type>CGP</type>
+                            </stud:organization>
+                        </stud:studyCoordinatingCenter>
+                    </coordinatingCenter>
+                    <identifiers>
+                        <stud:systemAssignedIdentifier>
+                            <type>Other</type>
+                            <value>E2100</value>
+                            <primaryIndicator>false</primaryIndicator>
+                            <systemName>CTEP-ESYS</systemName>
+                        </stud:systemAssignedIdentifier>
+                    </identifiers>
+                    <treatmentAssignments>
+                        <stud:treatmentAssignment>
+                            <ctepDbIdentifier>11935</ctepDbIdentifier>
+                            <code>ARMA1</code>
+                            <description>ARM A (Cycle = 28 days): AD 6: patients enrolled after 1/12/04:
+
+                                Paclitaxel 90 mg/m2 IV over 1hr on day 1qw x 3
+                                Bevacizumab 10 mg/kg IV over 30-90 min on days 1&amp;15 q28d
+                                NOTE: Pts who discontinue paclitaxel may continue bevacizumab.
+                                Treatment may continue until disease progression or toxicity.</description>
+                        </stud:treatmentAssignment>
+                        <stud:treatmentAssignment>
+                            <ctepDbIdentifier>11936</ctepDbIdentifier>
+                            <code>ARMB1</code>
+                            <description>ARM B (Cycle = 28 days): for pts enrolling after AD6, 1/12/04:
+
+                                Paclitaxel 90 mg/m2 IV over 1hr on day 1qw x 3.
+                                NOTE: Treatment may continue until disease progression or toxicity.</description>
+                        </stud:treatmentAssignment>
+                        <stud:treatmentAssignment>
+                            <ctepDbIdentifier>8242</ctepDbIdentifier>
+                            <code>ARM A</code>
+                            <description>ARM A (Cycle = 28 days):
+                                Paclitaxel 90 mg/m2 IV over 1hr on day 1qw x 3, for 18 cycles.
+                                Bevacizumab 10 mg/kg IV over 30-90 min on days 1&amp;15 q28d, for 18 cycles.</description>
+                        </stud:treatmentAssignment>
+                        <stud:treatmentAssignment>
+                            <ctepDbIdentifier>8243</ctepDbIdentifier>
+                            <code>ARM B</code>
+                            <description>ARM B (Cycle = 28 days):
+                                Paclitaxel 90 mg/m2 IV over 1hr on day 1qw x 3, for 18 cycles.</description>
+                        </stud:treatmentAssignment>
+                    </treatmentAssignments>
+                    <studyAgents>
+                        <stud:studyAgent>
+                            <stud:agent>
+                                <nscNumber>673089</nscNumber>
+                                <name>Paclitaxel (Taxol)</name>
+                            </stud:agent>
+                            <indType>NA_COMMERCIAL</indType>
+                            <partOfLeadIND>
+                                false
+                            </partOfLeadIND>
+                        </stud:studyAgent>
+                        <stud:studyAgent>
+                            <stud:agent>
+                                <nscNumber>704865</nscNumber>
+                                <name>Bevacizumab (rhuMAb VEGF)</name>
+                            </stud:agent>
+                            <indType>OTHER</indType>
+                            <partOfLeadIND>
+                                false
+                            </partOfLeadIND>
+                        </stud:studyAgent>
+                    </studyAgents>
+                    <studyDevices>
+                        <stud:studyDevice>
+                            <stud:device>
+                                <commonName>Infusaport</commonName>
+                                <brandName>Bardport</brandName>
+                                <type/>
+                                <ctepDbIdentifier>106</ctepDbIdentifier>
+                                <status/>
+                                <studyDeviceINDAssociations>
+                                    <stud:studyDeviceINDAssociation>
+                                        <stud:investigationalNewDrug>
+                                            <indNumber/>
+                                            <holderName>CTEP</holderName>
+                                        </stud:investigationalNewDrug>
+                                    </stud:studyDeviceINDAssociation>
+                                </studyDeviceINDAssociations>
+                            </stud:device>
+                        </stud:studyDevice>
+                    </studyDevices>
+                    <otherInterventions/>
+                    <ctepStudyDiseases>
+                        <stud:ctepStudyDisease>
+                            <stud:diseaseTerm>
+                                <term>Invasive breast carcinoma</term>
+                                <meddraCode>10006190</meddraCode>
+                            </stud:diseaseTerm>
+                            <leadDisease>true</leadDisease>
+                        </stud:ctepStudyDisease>
+                    </ctepStudyDiseases>
+                </stud:study>
+            </stud:studies>
+        </stud:createStudy>
+    </soapenv:Body>
+</soapenv:Envelope>

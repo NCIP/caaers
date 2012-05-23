@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<payload>
+    <system>adeers</system>
+    <response>
+        <entity>study</entity>
+        <operation name="getStudyDetails">
+            <data>
+                <StudyDetails xmlns="">
+                    <ctcVersion>4.0</ctcVersion>
+                    <currentStatus>Closed to Accrual</currentStatus>
+                    <currentStatusDate>2004-05-26</currentStatusDate>
+                    <localDocumentNumber>E2100</localDocumentNumber>
+                    <monitoringMethod>CDUS - Abbreviated</monitoringMethod>
+                    <nciDocumentNum>E2100</nciDocumentNum>
+                    <participationType>Intergroup</participationType>
+                    <phase>III</phase>
+                    <primaryStudyType>Treatment</primaryStudyType>
+                    <sponsorOrganization>CTEP</sponsorOrganization>
+                    <studyAgents>
+                        <studyAgent createdDate="04-24-2001 10:46:19" lead="No" updatedDate="06-05-2006 08:46:03">
+                            <agent>
+                                <nscNumber>673089</nscNumber>
+                                <agentName>Paclitaxel (Taxol)</agentName>
+                                <agentStatus>Active</agentStatus>
+                                <inds>
+                                    <ind lead="Yes">
+                                        <indHolder>CTEP</indHolder>
+                                        <indNumber>7921</indNumber>
+                                    </ind>
+                                </inds>
+                            </agent>
+                            <commercialInvestigational>Commercial</commercialInvestigational>
+                        </studyAgent>
+                        <studyAgent createdDate="04-24-2001 10:46:19" lead="Yes" updatedDate="08-12-2010 09:33:33">
+                            <agent>
+                                <nscNumber>704865</nscNumber>
+                                <agentName>Bevacizumab (rhuMAb VEGF)</agentName>
+                                <agentStatus>Active</agentStatus>
+                                <inds>
+                                    <ind lead="Yes">
+                                        <indHolder>CTEP</indHolder>
+                                        <indNumber>7921</indNumber>
+                                    </ind>
+                                </inds>
+                            </agent>
+                            <commercialInvestigational>Investigational</commercialInvestigational>
+                        </studyAgent>
+                    </studyAgents>
+                    <studyDevices>
+                        <studyDevice createdDate="09-22-2008 21:05:03" updatedDate="09-22-2008 21:24:05">
+                            <commercialInvestigational>Commercial</commercialInvestigational>
+                            <device>
+                                <brandName>Bardport</brandName>
+                                <category xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+                                <commonName>Infusaport</commonName>
+                                <deviceDbId>106</deviceDbId>
+                                <ideHolder>xy</ideHolder>
+                                <ideNumber>111</ideNumber>
+                            </device>
+                            <lead>No</lead>
+                            <status>Active</status>
+                        </studyDevice>
+                    </studyDevices>
+                    <studyDiseases>
+                        <studyDisease createdDate="04-27-2001 08:40:06" lead="Yes" updatedDate="12-29-2004 17:36:23">
+                            <diseaseName>Invasive breast carcinoma</diseaseName>
+                            <reportingMedDRA>10006190</reportingMedDRA>
+                        </studyDisease>
+                    </studyDiseases>
+                    <studyOrganizations>
+                        <studyOrganization createdDate="04-24-2001 09:15:31" role="Document to Lead Organization"
+                                           updatedDate="04-24-2001 09:15:35">
+                            <localDocumentNumber>E2100</localDocumentNumber>
+                            <organization>
+                                <ctepId>ECOG</ctepId>
+                                <organizationName>Eastern Cooperative Oncology Group</organizationName>
+                                <organizationType>CGP</organizationType>
+                            </organization>
+                            <status>Active</status>
+                            <principalInvestigator ctepInvestigatorId="26309">
+                                <firstname>Kathy</firstname>
+                                <middlename>Durham</middlename>
+                                <lastname>Miller</lastname>
+                                <email>kathmill@iupui.edu.x</email>
+                                <principalInvestigatorStatus>Active</principalInvestigatorStatus>
+                            </principalInvestigator>
+                        </studyOrganization>
+                        <studyOrganization createdDate="11-01-2002 14:12:21" role="Document to Participant Organization"
+                                           updatedDate="03-11-2003 14:54:31">
+                            <localDocumentNumber xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+                            <organization>
+                                <ctepId>NCCTG</ctepId>
+                                <organizationName>North Central Cancer Treatment Group</organizationName>
+                                <organizationType>CGP</organizationType>
+                            </organization>
+                            <status>Inactive</status>
+                        </studyOrganization>
+                        <studyOrganization createdDate="11-01-2002 14:12:21" role="Document to Participant Organization"
+                                           updatedDate="03-11-2003 14:54:38">
+                            <localDocumentNumber xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+                            <organization>
+                                <ctepId>NCIC</ctepId>
+                                <organizationName>National Cancer Institute of Canada Clinical Trials Group
+                                </organizationName>
+                                <organizationType>CGP</organizationType>
+                            </organization>
+                            <status>Inactive</status>
+                        </studyOrganization>
+                        <studyOrganization createdDate="11-01-2002 14:12:21" role="Document to Participant Organization"
+                                           updatedDate="03-11-2003 14:54:19">
+                            <localDocumentNumber xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+                            <organization>
+                                <ctepId>NSABP</ctepId>
+                                <organizationName>National Surgical Adjuvant Breast and Bowel Project</organizationName>
+                                <organizationType>CGP</organizationType>
+                            </organization>
+                            <status>Inactive</status>
+                        </studyOrganization>
+                        <studyOrganization createdDate="04-23-2002 09:59:45" role="Document to Participant Organization"
+                                           updatedDate="">
+                            <localDocumentNumber xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+                            <organization>
+                                <ctepId>EPP</ctepId>
+                                <organizationName>Expanded Participation Project</organizationName>
+                                <organizationType>NWK</organizationType>
+                            </organization>
+                            <status>Active</status>
+                        </studyOrganization>
+                        <studyOrganization createdDate="10-19-2001 11:42:53" role="Document to Participant Organization"
+                                           updatedDate="">
+                            <localDocumentNumber xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+                            <organization>
+                                <ctepId>CTSU</ctepId>
+                                <organizationName>Cancer Trials Support Unit</organizationName>
+                                <organizationType>CGP</organizationType>
+                            </organization>
+                            <status>Active</status>
+                        </studyOrganization>
+                    </studyOrganizations>
+                    <studyTherapies>
+                        <therapy createdDate="04-26-2001 17:19:56" updatedDate="06-06-2006 15:18:21">
+                            <ctepName>Drug and/or Immunotherapy</ctepName>
+                            <medDRACode>90003006</medDRACode>
+                            <preferredTerm xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+                        </therapy>
+                    </studyTherapies>
+                    <studyTreatmentAssignments>
+                        <studyTreatmentAssignment createdDate="01-12-2004 11:11:57" updatedDate="01-27-2004 13:13:48">
+                            <tacDbId>11935</tacDbId>
+                            <code>ARMA1</code>
+                            <description>ARM A (Cycle = 28 days): AD 6: patients enrolled after 1/12/04:
+
+                                Paclitaxel 90 mg/m2 IV over 1hr on day 1qw x 3
+                                Bevacizumab 10 mg/kg IV over 30-90 min on days 1&amp;15 q28d
+                                NOTE: Pts who discontinue paclitaxel may continue bevacizumab.
+                                Treatment may continue until disease progression or toxicity.
+                            </description>
+                        </studyTreatmentAssignment>
+                        <studyTreatmentAssignment createdDate="01-12-2004 11:13:43" updatedDate="01-27-2004 13:13:51">
+                            <tacDbId>11936</tacDbId>
+                            <code>ARMB1</code>
+                            <description>ARM B (Cycle = 28 days): for pts enrolling after AD6, 1/12/04:
+
+                                Paclitaxel 90 mg/m2 IV over 1hr on day 1qw x 3.
+                                NOTE: Treatment may continue until disease progression or toxicity.
+                            </description>
+                        </studyTreatmentAssignment>
+                        <studyTreatmentAssignment createdDate="10-15-2001 14:18:58" updatedDate="05-13-2003 14:14:22">
+                            <tacDbId>8242</tacDbId>
+                            <code>ARM A</code>
+                            <description>ARM A (Cycle = 28 days):
+                                Paclitaxel 90 mg/m2 IV over 1hr on day 1qw x 3, for 18 cycles.
+                                Bevacizumab 10 mg/kg IV over 30-90 min on days 1&amp;15 q28d, for 18 cycles.
+                            </description>
+                        </studyTreatmentAssignment>
+                        <studyTreatmentAssignment createdDate="10-15-2001 14:26:55" updatedDate="01-12-2004 11:27:53">
+                            <tacDbId>8243</tacDbId>
+                            <code>ARM B</code>
+                            <description>ARM B (Cycle = 28 days):
+                                Paclitaxel 90 mg/m2 IV over 1hr on day 1qw x 3, for 18 cycles.
+                            </description>
+                        </studyTreatmentAssignment>
+                    </studyTreatmentAssignments>
+                    <title>A Randomized Phase III Trial of Paclitaxel Versus Paclitaxel Plus Bevacizumab (rhuMAb VEGF)
+                        as First-Line Therapy for Locally Recurrent or Metastatic Breast Cancer
+                    </title>
+                </StudyDetails>
+            </data>
+        </operation>
+    </response>
+</payload>

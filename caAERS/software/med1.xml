@@ -164,7 +164,7 @@
                 <status>Active - Trial is open to accrual</status>
                 <Ctc>
                     <id>4</id>
-                    <name>CTCAE v4.0</name>
+                    <name>4.0</name>
                 </Ctc>
                 <Identifier>
                     <type>Protocol Authority Identifier</type>

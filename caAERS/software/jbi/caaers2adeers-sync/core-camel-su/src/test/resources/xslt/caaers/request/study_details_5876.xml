@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<payload>
+    <system>adeers</system>
+    <response>
+        <entity>study</entity>
+        <operation name="getStudyDetails">
+            <data>
+                <StudyDetails xmlns="">
+                    <ctcVersion>4.0</ctcVersion>
+                    <currentStatus>Active</currentStatus>
+                    <currentStatusDate>2010-04-01</currentStatusDate>
+                    <localDocumentNumber>MC0261</localDocumentNumber>
+                    <monitoringMethod>CDUS - Complete</monitoringMethod>
+                    <nciDocumentNum>5876</nciDocumentNum>
+                    <participationType>Multi-Center</participationType>
+                    <phase>II</phase>
+                    <primaryStudyType>Treatment</primaryStudyType>
+                    <sponsorOrganization>CTEP</sponsorOrganization>
+                    <studyAgents>
+                        <studyAgent createdDate="09-29-2003 11:18:53" lead="Yes" updatedDate="04-01-2010 13:38:23">
+                            <agent>
+                                <nscNumber>649890</nscNumber>
+                                <agentName>Alvocidib (flavopiridol)</agentName>
+                                <agentStatus>Active</agentStatus>
+                                <inds/>
+                            </agent>
+                            <commercialInvestigational>Investigational</commercialInvestigational>
+                        </studyAgent>
+                        <studyAgent createdDate="09-29-2003 11:18:53" lead="No" updatedDate="11-08-2006 15:20:53">
+                            <agent>
+                                <nscNumber>119875</nscNumber>
+                                <agentName>CISplatin</agentName>
+                                <agentStatus>Active</agentStatus>
+                                <inds/>
+                            </agent>
+                            <commercialInvestigational>Commercial</commercialInvestigational>
+                        </studyAgent>
+                    </studyAgents>
+                    <studyDevices/>
+                    <studyDiseases>
+                        <studyDisease createdDate="09-29-2003 11:19:44" lead="Yes" updatedDate="12-29-2004 17:36:24">
+                            <diseaseName>Ovarian epithelial cancer</diseaseName>
+                            <reportingMedDRA>10033159</reportingMedDRA>
+                        </studyDisease>
+                        <studyDisease createdDate="11-08-2006 15:18:54" lead="No" updatedDate="">
+                            <diseaseName>Primary peritoneal carcinoma</diseaseName>
+                            <reportingMedDRA>10026669</reportingMedDRA>
+                        </studyDisease>
+                    </studyDiseases>
+                    <studyOrganizations>
+                        <studyOrganization createdDate="09-29-2003 08:38:50" role="Document to Lead Organization"
+                                           updatedDate="09-29-2003 08:59:30">
+                            <localDocumentNumber>MC0261</localDocumentNumber>
+                            <organization>
+                                <ctepId>MPC</ctepId>
+                                <organizationName>Mayo Phase 2 Consortium</organizationName>
+                                <organizationType>CSM</organizationType>
+                            </organization>
+                            <status>Inactive</status>
+                            <principalInvestigator>
+                                <middlename xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+                                <email xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+                            </principalInvestigator>
+                        </studyOrganization>
+                        <studyOrganization createdDate="09-29-2003 08:59:55" role="Document to Lead Organization"
+                                           updatedDate="01-12-2009 09:19:16">
+                            <localDocumentNumber xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+                            <organization>
+                                <ctepId>MN026</ctepId>
+                                <organizationName>Mayo Clinic Rochester</organizationName>
+                                <organizationType>CCR</organizationType>
+                            </organization>
+                            <status>Active</status>
+                            <principalInvestigator ctepInvestigatorId="26017">
+                                <firstname>Keith</firstname>
+                                <middlename>Christopher</middlename>
+                                <lastname>Bible</lastname>
+                                <email>bible.keith@mayo.edu.x</email>
+                                <principalInvestigatorStatus>Active</principalInvestigatorStatus>
+                            </principalInvestigator>
+                        </studyOrganization>
+                        <studyOrganization createdDate="10-06-2003 12:58:18" role="Document to Participant Organization"
+                                           updatedDate="">
+                            <localDocumentNumber xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+                            <organization>
+                                <ctepId>DC006</ctepId>
+                                <organizationName>Howard University Hospital</organizationName>
+                                <organizationType>ITN</organizationType>
+                            </organization>
+                            <status>Active</status>
+                        </studyOrganization>
+                        <studyOrganization createdDate="10-06-2003 13:00:36" role="Document to Participant Organization"
+                                           updatedDate="02-27-2004 13:18:30">
+                            <localDocumentNumber xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+                            <organization>
+                                <ctepId>FL080</ctepId>
+                                <organizationName>Mayo Clinic Jacksonville</organizationName>
+                                <organizationType>ITN</organizationType>
+                            </organization>
+                            <status>Active</status>
+                        </studyOrganization>
+                        <studyOrganization createdDate="10-06-2003 12:59:32" role="Document to Participant Organization"
+                                           updatedDate="07-11-2008 14:29:27">
+                            <localDocumentNumber xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+                            <organization>
+                                <ctepId>MD017</ctepId>
+                                <organizationName>Johns Hopkins University</organizationName>
+                                <organizationType>CCR</organizationType>
+                            </organization>
+                            <status>Active</status>
+                        </studyOrganization>
+                        <studyOrganization createdDate="01-09-2009 15:56:37" role="Document to Participant Organization"
+                                           updatedDate="01-12-2009 09:19:02">
+                            <localDocumentNumber xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+                            <organization>
+                                <ctepId>NCCTG</ctepId>
+                                <organizationName>North Central Cancer Treatment Group</organizationName>
+                                <organizationType>CGP</organizationType>
+                            </organization>
+                            <status>Active</status>
+                        </studyOrganization>
+                        <studyOrganization createdDate="10-06-2003 13:06:54" role="Document to Participant Organization"
+                                           updatedDate="">
+                            <localDocumentNumber xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+                            <organization>
+                                <ctepId>WI020</ctepId>
+                                <organizationName>University of Wisconsin Hospital and Clinics</organizationName>
+                                <organizationType>CCR</organizationType>
+                            </organization>
+                            <status>Active</status>
+                        </studyOrganization>
+                        <studyOrganization createdDate="07-11-2008 16:17:52" role="Document to Participant Organization"
+                                           updatedDate="">
+                            <localDocumentNumber xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+                            <organization>
+                                <ctepId>WI116</ctepId>
+                                <organizationName>Green Bay Oncology at Saint Vincent Hospital</organizationName>
+                                <organizationType>ITN</organizationType>
+                            </organization>
+                            <status>Active</status>
+                        </studyOrganization>
+                        <studyOrganization createdDate="12-17-2007 14:17:36" role="Document to Participant Organization"
+                                           updatedDate="07-17-2008 09:55:30">
+                            <localDocumentNumber xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+                            <organization>
+                                <ctepId>MN043</ctepId>
+                                <organizationName>Metro-Minnesota CCOP</organizationName>
+                                <organizationType>ITN</organizationType>
+                            </organization>
+                            <status>Active</status>
+                        </studyOrganization>
+                        <studyOrganization createdDate="10-06-2003 13:07:26" role="Document to Participant Organization"
+                                           updatedDate="08-27-2004 09:43:52">
+                            <localDocumentNumber xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+                            <organization>
+                                <ctepId>MO011</ctepId>
+                                <organizationName>Washington University School of Medicine</organizationName>
+                                <organizationType>ITN</organizationType>
+                            </organization>
+                            <status>Active</status>
+                        </studyOrganization>
+                        <studyOrganization createdDate="10-06-2003 13:06:10" role="Document to Participant Organization"
+                                           updatedDate="08-29-2004 15:36:10">
+                            <localDocumentNumber xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+                            <organization>
+                                <ctepId>MI020</ctepId>
+                                <organizationName>Wayne State University</organizationName>
+                                <organizationType>CCR</organizationType>
+                            </organization>
+                            <status>Active</status>
+                        </studyOrganization>
+                        <studyOrganization createdDate="10-06-2003 13:05:15" role="Document to Participant Organization"
+                                           updatedDate="05-15-2007 16:21:58">
+                            <localDocumentNumber xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+                            <organization>
+                                <ctepId>AZ020</ctepId>
+                                <organizationName>Mayo Clinic Scottsdale-Phoenix</organizationName>
+                                <organizationType>ITN</organizationType>
+                            </organization>
+                            <status>Active</status>
+                        </studyOrganization>
+                    </studyOrganizations>
+                    <studyTherapies>
+                        <therapy createdDate="09-29-2003 11:20:21" updatedDate="03-13-2007 11:10:10">
+                            <ctepName>Drug and/or Immunotherapy</ctepName>
+                            <medDRACode>90003006</medDRACode>
+                            <preferredTerm xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+                        </therapy>
+                    </studyTherapies>
+                    <studyTreatmentAssignments>
+                        <studyTreatmentAssignment createdDate="09-29-2003 12:30:43" updatedDate="03-02-2004 15:20:26">
+                            <tacDbId>11451</tacDbId>
+                            <code>A</code>
+                            <description>(Cycle= 3 Weeks):
+                                Cisplatin 60 mg/m2 IV on day 1
+                                Flavopiridol 100 mg/m2 CIV over 24 hours on day 1
+                            </description>
+                        </studyTreatmentAssignment>
+                    </studyTreatmentAssignments>
+                    <title>Phase II Trial of Flavopiridol and Cisplatin in Advanced Epithelial Ovarian and Primary
+                        Peritoneal Carcinomas
+                    </title>
+                </StudyDetails>
+            </data>
+        </operation>
+    </response>
+</payload>

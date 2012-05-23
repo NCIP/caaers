@@ -1,27 +1,425 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<payload xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
-         xmlns:com="http://schema.integration.caaers.cabig.nci.nih.gov/common"
-         correlationId="roNHiUCOkJ">
-    <system>caaers</system>
-    <response>
-        <entity xmlns:stud="http://schema.integration.caaers.cabig.nci.nih.gov/study">study</entity>
-        <operation xmlns:stud="http://schema.integration.caaers.cabig.nci.nih.gov/study" name="createStudyResponse">
-            <status>error</status>
-            <errors>
-                <error>WS_STU_001 : Another study with short title "Phase III Double-Blind, Placebo-Controlled
-                    Randomized
-                    Comparison of Creatine for Cancer-Associated Weight Loss" is using same identifier, so cannot
-                    process
-                    "Phase III Double-Blind, Placebo-Controlled Randomized Comparison of Creatine for Cancer-Associated
-                    Weight Loss" : Another study with short title "Phase III Double-Blind, Placebo-Controlled Randomized
-                    Comparison of Creatine for Cancer-Associated Weight Loss" is using same identifier, so cannot
-                    process
-                    "Phase III Double-Blind, Placebo-Controlled Randomized Comparison of Creatine for Cancer-Associated
-                    Weight Loss"
-                </error>
-            </errors>
-            <status>Failed to Process</status>
-            <data/>
-        </operation>
-    </response>
-</payload>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:stud="http://schema.integration.caaers.cabig.nci.nih.gov/study">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <stud:createStudy>
+            <!--Optional:-->
+            <stud:studies>
+                <!--1 or more repetitions:-->
+                <stud:study id="?" version="?">
+                    <shortTitle>?</shortTitle>
+                    <!--Optional:-->
+                    <longTitle>?</longTitle>
+                    <!--Optional:-->
+                    <precis>?</precis>
+                    <!--Optional:-->
+                    <description>?</description>
+                    <phaseCode>?</phaseCode>
+                    <!--Optional:-->
+                    <status>?</status>
+                    <!--Optional:-->
+                    <multiInstitutionIndicator>?</multiInstitutionIndicator>
+                    <!--Optional:-->
+                    <verbatimFirst>?</verbatimFirst>
+                    <!--Optional:-->
+                    <adeersReporting>?</adeersReporting>
+                    <!--Optional:-->
+                    <otherMeddra>?</otherMeddra>
+                    <!--Optional:-->
+                    <studyPurpose>?</studyPurpose>
+                    <!--Optional:-->
+                    <aeTermUnique>?</aeTermUnique>
+                    <stud:aeTerminology>
+                        <!--You have a CHOICE of the next 2 items at this level-->
+                        <stud:ctcVersion id="?" version="?">
+                            <name>?</name>
+                        </stud:ctcVersion>
+                        <stud:meddraVersion id="?" version="?">
+                            <name>?</name>
+                        </stud:meddraVersion>
+                    </stud:aeTerminology>
+                    <stud:diseaseTerminology>
+                        <diseaseCodeTerm>?</diseaseCodeTerm>
+                    </stud:diseaseTerminology>
+                    <!--Optional:-->
+                    <design>?</design>
+                    <fundingSponsor>
+                        <organizationAssignedIdentifier id="?" version="?">
+                            <value>?</value>
+                        </organizationAssignedIdentifier>
+                        <stud:studyFundingSponsor id="?" version="?">
+                            <stud:organization id="?" version="?">
+                                <!--Optional:-->
+                                <descriptionText>?</descriptionText>
+                                <name>?</name>
+                                <nciInstituteCode>?</nciInstituteCode>
+                                <!--Optional:-->
+                                <city>?</city>
+                                <!--Optional:-->
+                                <state>?</state>
+                                <!--Optional:-->
+                                <country>?</country>
+                                <!--Optional:-->
+                                <status>?</status>
+                                <!--Optional:-->
+                                <mergedOrganization/>
+                                <!--Optional:-->
+                                <type>?</type>
+                            </stud:organization>
+                            <!--Optional:-->
+                            <studyInvestigators>
+                                <!--1 or more repetitions:-->
+                                <stud:studyInvestigator id="?" version="?">
+                                    <roleCode>?</roleCode>
+                                    <!--Optional:-->
+                                    <startDate>?</startDate>
+                                    <!--Optional:-->
+                                    <endDate>?</endDate>
+                                    <stud:siteInvestigator id="?" version="?">
+                                        <stud:investigator id="?" version="?">
+                                            <firstName>?</firstName>
+                                            <lastName>?</lastName>
+                                            <!--Optional:-->
+                                            <nciIdentifier>?</nciIdentifier>
+                                        </stud:investigator>
+                                    </stud:siteInvestigator>
+                                </stud:studyInvestigator>
+                            </studyInvestigators>
+                            <!--Optional:-->
+                            <studyPersonnels>
+                                <!--1 or more repetitions:-->
+                                <stud:studyPersonnel id="?" version="?">
+                                    <roleCode>?</roleCode>
+                                    <!--Optional:-->
+                                    <startDate>?</startDate>
+                                    <!--Optional:-->
+                                    <endDate>?</endDate>
+                                    <stud:researchStaff id="?" version="?">
+                                        <firstName>?</firstName>
+                                        <lastName>?</lastName>
+                                        <!--Optional:-->
+                                        <nciIdentifier>?</nciIdentifier>
+                                    </stud:researchStaff>
+                                </stud:studyPersonnel>
+                            </studyPersonnels>
+                        </stud:studyFundingSponsor>
+                    </fundingSponsor>
+                    <coordinatingCenter>
+                        <organizationAssignedIdentifier id="?" version="?">
+                            <value>?</value>
+                        </organizationAssignedIdentifier>
+                        <stud:studyCoordinatingCenter id="?" version="?">
+                            <stud:organization id="?" version="?">
+                                <!--Optional:-->
+                                <descriptionText>?</descriptionText>
+                                <name>?</name>
+                                <nciInstituteCode>?</nciInstituteCode>
+                                <!--Optional:-->
+                                <city>?</city>
+                                <!--Optional:-->
+                                <state>?</state>
+                                <!--Optional:-->
+                                <country>?</country>
+                                <!--Optional:-->
+                                <status>?</status>
+                                <!--Optional:-->
+                                <mergedOrganization/>
+                                <!--Optional:-->
+                                <type>?</type>
+                            </stud:organization>
+                            <!--Optional:-->
+                            <studyInvestigators>
+                                <!--1 or more repetitions:-->
+                                <stud:studyInvestigator id="?" version="?">
+                                    <roleCode>?</roleCode>
+                                    <!--Optional:-->
+                                    <startDate>?</startDate>
+                                    <!--Optional:-->
+                                    <endDate>?</endDate>
+                                    <stud:siteInvestigator id="?" version="?">
+                                        <stud:investigator id="?" version="?">
+                                            <firstName>?</firstName>
+                                            <lastName>?</lastName>
+                                            <!--Optional:-->
+                                            <nciIdentifier>?</nciIdentifier>
+                                        </stud:investigator>
+                                    </stud:siteInvestigator>
+                                </stud:studyInvestigator>
+                            </studyInvestigators>
+                            <!--Optional:-->
+                            <studyPersonnels>
+                                <!--1 or more repetitions:-->
+                                <stud:studyPersonnel id="?" version="?">
+                                    <roleCode>?</roleCode>
+                                    <!--Optional:-->
+                                    <startDate>?</startDate>
+                                    <!--Optional:-->
+                                    <endDate>?</endDate>
+                                    <stud:researchStaff id="?" version="?">
+                                        <firstName>?</firstName>
+                                        <lastName>?</lastName>
+                                        <!--Optional:-->
+                                        <nciIdentifier>?</nciIdentifier>
+                                    </stud:researchStaff>
+                                </stud:studyPersonnel>
+                            </studyPersonnels>
+                        </stud:studyCoordinatingCenter>
+                    </coordinatingCenter>
+                    <!--Optional:-->
+                    <studyOrganizations>
+                        <!--Zero or more repetitions:-->
+                        <stud:studySite id="?" version="?">
+                            <stud:organization id="?" version="?">
+                                <!--Optional:-->
+                                <descriptionText>?</descriptionText>
+                                <name>?</name>
+                                <nciInstituteCode>?</nciInstituteCode>
+                                <!--Optional:-->
+                                <city>?</city>
+                                <!--Optional:-->
+                                <state>?</state>
+                                <!--Optional:-->
+                                <country>?</country>
+                                <!--Optional:-->
+                                <status>?</status>
+                                <!--Optional:-->
+                                <mergedOrganization/>
+                                <!--Optional:-->
+                                <type>?</type>
+                            </stud:organization>
+                            <!--Optional:-->
+                            <startDate>?</startDate>
+                            <!--Optional:-->
+                            <endDate>?</endDate>
+                            <!--Optional:-->
+                            <studyInvestigators>
+                                <!--1 or more repetitions:-->
+                                <stud:studyInvestigator id="?" version="?">
+                                    <roleCode>?</roleCode>
+                                    <!--Optional:-->
+                                    <startDate>?</startDate>
+                                    <!--Optional:-->
+                                    <endDate>?</endDate>
+                                    <stud:siteInvestigator id="?" version="?">
+                                        <stud:investigator id="?" version="?">
+                                            <firstName>?</firstName>
+                                            <lastName>?</lastName>
+                                            <!--Optional:-->
+                                            <nciIdentifier>?</nciIdentifier>
+                                        </stud:investigator>
+                                    </stud:siteInvestigator>
+                                </stud:studyInvestigator>
+                            </studyInvestigators>
+                            <!--Optional:-->
+                            <studyPersonnels>
+                                <!--1 or more repetitions:-->
+                                <stud:studyPersonnel id="?" version="?">
+                                    <roleCode>?</roleCode>
+                                    <!--Optional:-->
+                                    <startDate>?</startDate>
+                                    <!--Optional:-->
+                                    <endDate>?</endDate>
+                                    <stud:researchStaff id="?" version="?">
+                                        <firstName>?</firstName>
+                                        <lastName>?</lastName>
+                                        <!--Optional:-->
+                                        <nciIdentifier>?</nciIdentifier>
+                                    </stud:researchStaff>
+                                </stud:studyPersonnel>
+                            </studyPersonnels>
+                        </stud:studySite>
+                    </studyOrganizations>
+                    <!--Optional:-->
+                    <identifiers>
+                        <!--Zero or more repetitions:-->
+                        <stud:organizationAssignedIdentifier id="?" version="?">
+                            <type>?</type>
+                            <value>?</value>
+                            <primaryIndicator>?</primaryIndicator>
+                            <stud:organization id="?" version="?">
+                                <!--Optional:-->
+                                <descriptionText>?</descriptionText>
+                                <name>?</name>
+                                <nciInstituteCode>?</nciInstituteCode>
+                                <!--Optional:-->
+                                <city>?</city>
+                                <!--Optional:-->
+                                <state>?</state>
+                                <!--Optional:-->
+                                <country>?</country>
+                                <!--Optional:-->
+                                <status>?</status>
+                                <!--Optional:-->
+                                <mergedOrganization/>
+                                <!--Optional:-->
+                                <type>?</type>
+                            </stud:organization>
+                        </stud:organizationAssignedIdentifier>
+                        <!--Zero or more repetitions:-->
+                        <stud:systemAssignedIdentifier id="?" version="?">
+                            <type>?</type>
+                            <value>?</value>
+                            <primaryIndicator>?</primaryIndicator>
+                            <systemName>?</systemName>
+                        </stud:systemAssignedIdentifier>
+                    </identifiers>
+                    <!--Optional:-->
+                    <treatmentAssignments>
+                        <!--1 or more repetitions:-->
+                        <stud:treatmentAssignment id="?" version="?">
+                            <!--Optional:-->
+                            <ctepDbIdentifier>?</ctepDbIdentifier>
+                            <!--Optional:-->
+                            <code>?</code>
+                            <!--Optional:-->
+                            <doseLevelOrder>?</doseLevelOrder>
+                            <description>?</description>
+                            <!--Optional:-->
+                            <comments>?</comments>
+                        </stud:treatmentAssignment>
+                    </treatmentAssignments>
+                    <!--Optional:-->
+                    <studyAgents>
+                        <!--Zero or more repetitions:-->
+                        <stud:studyAgent id="?" version="?">
+                            <!--You have a CHOICE of the next 2 items at this level-->
+                            <stud:agent id="?" version="?">
+                                <!--Optional:-->
+                                <nscNumber>?</nscNumber>
+                                <!--Optional:-->
+                                <name>?</name>
+                            </stud:agent>
+                            <otherAgent>?</otherAgent>
+                            <!--Optional:-->
+                            <indType>?</indType>
+                            <!--Optional:-->
+                            <partOfLeadIND>?</partOfLeadIND>
+                            <!--Optional:-->
+                            <studyAgentINDAssociations>
+                                <stud:studyAgentINDAssociation id="?" version="?">
+                                    <stud:investigationalNewDrug id="?" version="?">
+                                        <indNumber>?</indNumber>
+                                        <!--Optional:-->
+                                        <holderName>?</holderName>
+                                    </stud:investigationalNewDrug>
+                                </stud:studyAgentINDAssociation>
+                            </studyAgentINDAssociations>
+                        </stud:studyAgent>
+                    </studyAgents>
+                    <!--Optional:-->
+                    <studyDevices>
+                        <!--Zero or more repetitions:-->
+                        <stud:studyDevice id="?" version="?">
+                            <!--Optional:-->
+                            <stud:device id="?" version="?">
+                                <commonName>?</commonName>
+                                <brandName>?</brandName>
+                                <!--Optional:-->
+                                <type>?</type>
+                                <!--Optional:-->
+                                <ctepDbIdentifier>?</ctepDbIdentifier>
+                                <!--Optional:-->
+                                <status>?</status>
+                            </stud:device>
+                            <!--Optional:-->
+                            <otherBrandName>?</otherBrandName>
+                            <!--Optional:-->
+                            <otherCommonName>?</otherCommonName>
+                            <!--Optional:-->
+                            <otherDeviceType>?</otherDeviceType>
+                            <!--Optional:-->
+                            <catalogNumber>?</catalogNumber>
+                            <!--Optional:-->
+                            <manufacturerName>?</manufacturerName>
+                            <!--Optional:-->
+                            <manufacturerCity>?</manufacturerCity>
+                            <!--Optional:-->
+                            <manufacturerState>?</manufacturerState>
+                            <!--Optional:-->
+                            <modelNumber>?</modelNumber>
+                            <!--Optional:-->
+                            <studyDeviceINDAssociations>
+                                <stud:studyDeviceINDAssociation id="?" version="?">
+                                    <stud:investigationalNewDrug id="?" version="?">
+                                        <indNumber>?</indNumber>
+                                        <!--Optional:-->
+                                        <holderName>?</holderName>
+                                    </stud:investigationalNewDrug>
+                                </stud:studyDeviceINDAssociation>
+                            </studyDeviceINDAssociations>
+                        </stud:studyDevice>
+                    </studyDevices>
+                    <!--Optional:-->
+                    <otherInterventions>
+                        <!--Zero or more repetitions:-->
+                        <stud:otherIntervention id="?" version="?">
+                            <interventionType>?</interventionType>
+                            <name>?</name>
+                            <!--Optional:-->
+                            <description>?</description>
+                        </stud:otherIntervention>
+                    </otherInterventions>
+                    <!--You have a CHOICE of the next 2 items at this level-->
+                    <ctepStudyDiseases>
+                        <!--1 or more repetitions:-->
+                        <stud:ctepStudyDisease id="?" version="?">
+                            <stud:diseaseTerm id="?" version="?">
+                                <!--Optional:-->
+                                <term>?</term>
+                                <!--Optional:-->
+                                <meddraCode>?</meddraCode>
+                            </stud:diseaseTerm>
+                            <leadDisease>?</leadDisease>
+                        </stud:ctepStudyDisease>
+                    </ctepStudyDiseases>
+                    <meddraStudyDiseases>
+                        <!--1 or more repetitions:-->
+                        <stud:meddraStudyDisease id="?" version="?">
+                            <meddraCode>?</meddraCode>
+                        </stud:meddraStudyDisease>
+                    </meddraStudyDiseases>
+                    <!--Optional:-->
+                    <evaluationPeriods>
+                        <!--1 or more repetitions:-->
+                        <stud:evaluationPeriod id="?" version="?">
+                            <name>?</name>
+                            <!--Optional:-->
+                            <descriptionText>?</descriptionText>
+                            <epochOrder>?</epochOrder>
+                            <!--Optional:-->
+                            <solicitedAdverseEvents>
+                                <!--1 or more repetitions:-->
+                                <stud:solicitedAdverseEvent id="?" version="?">
+                                    <!--Optional:-->
+                                    <name>?</name>
+                                    <!--Optional:-->
+                                    <ctepCode>?</ctepCode>
+                                    <!--Optional:-->
+                                    <meddraCode>?</meddraCode>
+                                    <!--Optional:-->
+                                    <otherMeddraCode>?</otherMeddraCode>
+                                </stud:solicitedAdverseEvent>
+                            </solicitedAdverseEvents>
+                        </stud:evaluationPeriod>
+                    </evaluationPeriods>
+                    <!--You have a CHOICE of the next 2 items at this level-->
+                    <expectedAECtcTerms>
+                        <!--1 or more repetitions:-->
+                        <stud:expectedAECtcTerm id="?" version="?">
+                            <!--Optional:-->
+                            <ctepCode>?</ctepCode>
+                            <!--Optional:-->
+                            <otherMeddraCode>?</otherMeddraCode>
+                        </stud:expectedAECtcTerm>
+                    </expectedAECtcTerms>
+                    <expectedAEMeddraTerms>
+                        <!--1 or more repetitions:-->
+                        <stud:expectedAEMeddraTerm id="?" version="?">
+                            <!--Optional:-->
+                            <meddraCode>?</meddraCode>
+                        </stud:expectedAEMeddraTerm>
+                    </expectedAEMeddraTerms>
+                </stud:study>
+            </stud:studies>
+        </stud:createStudy>
+    </soapenv:Body>
+</soapenv:Envelope>

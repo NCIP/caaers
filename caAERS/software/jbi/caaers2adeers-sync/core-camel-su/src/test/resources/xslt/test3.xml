@@ -1,207 +1,136 @@
-<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
-    <S:Body>
-        <ns2:getStudyDetailsResponse xmlns:ns2="http://services.ctep.nci.nih.gov/">
-            <StudyDetails>
-                <ctcVersion>4.0</ctcVersion>
-                <currentStatus>Active</currentStatus>
-                <currentStatusDate>2009-05-15</currentStatusDate>
-                <localDocumentNumber>CALGB-40603</localDocumentNumber>
-                <monitoringMethod>CDUS - Complete</monitoringMethod>
-                <nciDocumentNum>CALGB-40603</nciDocumentNum>
-                <participantionType>Group</participantionType>
-                <phase>II</phase>
-                <primaryStudyType>Treatment</primaryStudyType>
-                <sponsorOrganization>CTEP</sponsorOrganization>
-                <studyAgents>
-                    <studyAgent lead="Yes" updatedDate="08-04-2010 10:58:19" createdDate="03-03-2008 15:56:57">
-                        <agent>
-                            <nscNumber>704865</nscNumber>
-                            <agentName>Bevacizumab (rhuMAb VEGF)</agentName>
-                            <agentStatus>Active</agentStatus>
-                            <inds/>
-                        </agent>
-                        <commercialInvestigational>Investigational</commercialInvestigational>
-                    </studyAgent>
-                    <studyAgent lead="No" updatedDate="03-11-2009 13:15:30" createdDate="03-03-2008 15:58:49">
-                        <agent>
-                            <nscNumber>673089</nscNumber>
-                            <agentName>Paclitaxel (Taxol)</agentName>
-                            <agentStatus>Active</agentStatus>
-                            <inds/>
-                        </agent>
-                        <commercialInvestigational>Commercial</commercialInvestigational>
-                    </studyAgent>
-                    <studyAgent lead="No" updatedDate="03-11-2009 14:52:03" createdDate="03-03-2008 16:00:45">
-                        <agent>
-                            <nscNumber>241240</nscNumber>
-                            <agentName>CARBOplatin</agentName>
-                            <agentStatus>Active</agentStatus>
-                            <inds/>
-                        </agent>
-                        <commercialInvestigational>Commercial</commercialInvestigational>
-                    </studyAgent>
-                    <studyAgent lead="No" updatedDate="03-11-2009 13:15:30" createdDate="03-03-2008 16:01:13">
-                        <agent>
-                            <nscNumber>123127</nscNumber>
-                            <agentName>Doxorubicin hydrochloride</agentName>
-                            <agentStatus>Active</agentStatus>
-                            <inds/>
-                        </agent>
-                        <commercialInvestigational>Commercial</commercialInvestigational>
-                    </studyAgent>
-                    <studyAgent lead="No" updatedDate="03-11-2009 13:15:30" createdDate="03-03-2008 16:01:44">
-                        <agent>
-                            <nscNumber>26271</nscNumber>
-                            <agentName>Cyclophosphamide</agentName>
-                            <agentStatus>Active</agentStatus>
-                            <inds/>
-                        </agent>
-                        <commercialInvestigational>Commercial</commercialInvestigational>
-                    </studyAgent>
-                    <studyAgent lead="No" updatedDate="" createdDate="03-12-2009 16:05:30">
-                        <agent>
-                            <nscNumber>614629</nscNumber>
-                            <agentName>G-CSF (filgrastim, Amgen)</agentName>
-                            <agentStatus>Active</agentStatus>
-                            <inds/>
-                        </agent>
-                        <commercialInvestigational>Commercial</commercialInvestigational>
-                    </studyAgent>
-                    <studyAgent lead="No" updatedDate="" createdDate="03-12-2009 16:05:30">
-                        <agent>
-                            <nscNumber>725961</nscNumber>
-                            <agentName>Pegfilgrastim (Neulasta)</agentName>
-                            <agentStatus>Active</agentStatus>
-                            <inds/>
-                        </agent>
-                        <commercialInvestigational>Commercial</commercialInvestigational>
-                    </studyAgent>
-                    <studyAgent lead="No" updatedDate="" createdDate="03-12-2009 16:05:30">
-                        <agent>
-                            <nscNumber>34521</nscNumber>
-                            <agentName>Dexamethasone</agentName>
-                            <agentStatus>Active</agentStatus>
-                            <inds/>
-                        </agent>
-                        <commercialInvestigational>Commercial</commercialInvestigational>
-                    </studyAgent>
-                    <studyAgent lead="No" updatedDate="" createdDate="03-12-2009 16:09:20">
-                        <agent>
-                            <nscNumber>613795</nscNumber>
-                            <agentName>GM-CSF (sargramostim, Leukine)</agentName>
-                            <agentStatus>Active</agentStatus>
-                            <inds/>
-                        </agent>
-                        <commercialInvestigational>Commercial</commercialInvestigational>
-                    </studyAgent>
-                </studyAgents>
-                <studyDevices/>
-                <studyDiseases>
-                    <studyDisease lead="Yes" updatedDate="" createdDate="03-11-2009 14:37:55">
-                        <diseaseName>Invasive breast carcinoma</diseaseName>
-                        <reportingMedDRA>10006190</reportingMedDRA>
-                    </studyDisease>
-                </studyDiseases>
-                <studyOrganizations>
-                    <studyOrganization role="Document to Lead Organization" updatedDate="04-15-2010 11:29:16" createdDate="03-03-2008 15:27:35">
-                        <localDocumentNumber>CALGB-40603</localDocumentNumber>
-                        <organization>
-                            <ctepId>CALGB</ctepId>
-                            <organizationName>Cancer and Leukemia Group B</organizationName>
-                            <organizationType>CGP</organizationType>
-                        </organization>
-                        <status>Active</status>
-                        <statusDate>03-03-2008 00:00:00</statusDate>
-                        <principalInvestigator ctepInvestigatorId="1777">
-                            <firstname>William</firstname>
-                            <middlename>Marshall</middlename>
-                            <lastname>Sikov</lastname>
-                            <email>gov.nih.nci.ctep.domain.ContactDetail@1a5c08fe</email>
-                            <investigatorStatus>Active</investigatorStatus>
-                        </principalInvestigator>
-                    </studyOrganization>
-                    <studyOrganization role="Document to Participant Organization" updatedDate="04-15-2010 11:29:14" createdDate="03-07-2008 10:53:20">
-                        <organization>
-                            <ctepId>CTSU</ctepId>
-                            <organizationName>Cancer Trials Support Unit</organizationName>
-                            <organizationType>CGP</organizationType>
-                        </organization>
-                        <status>Active</status>
-                        <statusDate>04-15-2010 00:00:00</statusDate>
-                    </studyOrganization>
-                </studyOrganizations>
-                <studyTherapies>
-                    <therapy updatedDate="11-30-2009 12:07:12" createdDate="03-03-2008 16:06:17">
-                        <ctepName>Drug and/or Immunotherapy</ctepName>
-                        <medDRACode>90003006</medDRACode>
-                    </therapy>
-                    <therapy preferredTerm="Surgery" updatedDate="03-11-2009 15:47:14" createdDate="03-03-2008 16:13:52">
-                        <ctepName>Surgery</ctepName>
-                        <medDRACode>10042609</medDRACode>
-                    </therapy>
-                    <therapy preferredTerm="Radiation Therapy" updatedDate="03-11-2009 15:47:14" createdDate="03-03-2008 16:13:52">
-                        <ctepName>Radiation Therapy</ctepName>
-                        <medDRACode>10037770</medDRACode>
-                    </therapy>
-                </studyTherapies>
-                <studyTreatmentAssignments>
-                    <studyTreatmentAssignment updatedDate="02-10-2009 16:03:32" createdDate="03-03-2008 16:40:26">
-                        <tacDbId>16164</tacDbId>
-                        <code>ARM1</code>
-                        <description>Cycle = 19 weeks:
-                            Paclitaxel:  80 mg/m2 IV over 1 hr on day 1 of wks 1-12
-                            Doxorubicin:  60 mg/m2/ IV over 5-10 min on day 1 of wks 13, 15, 17 and 19
-                            Cyclophosphamide:  600 mg/m2 IV over 5-30 min on day 1 of wks 13, 15, 17 and 19</description>
-                        <status>Active</status>
-                    </studyTreatmentAssignment>
-                    <studyTreatmentAssignment updatedDate="02-10-2009 16:06:50" createdDate="03-03-2008 16:40:26">
-                        <tacDbId>16165</tacDbId>
-                        <code>ARM2</code>
-                        <description>Cycle = 19 weeks:
-                            Paclitaxel:  80 mg/m2 IV over 1 hr on day 1 of  wks 1-12
-                            Bevacizumab:  10 mg/kg over 30-90 min on day 1 of wks 1, 3, 5, 7, 9, 11, 13, 15 and 17
-                            Doxorubicin:  60 mg/m2/ IV over 5-10 min on day 1 of wks 13, 15, 17 and 19
-                            Cyclophosphamide:  600 mg/m2 IV over 5-30 min on day 1 of wks 13, 15, 17 and 19</description>
-                        <status>Active</status>
-                    </studyTreatmentAssignment>
-                    <studyTreatmentAssignment updatedDate="02-10-2009 16:09:35" createdDate="03-03-2008 16:52:52">
-                        <tacDbId>16166</tacDbId>
-                        <code>ARM3</code>
-                        <description>Cycle = 19 weeks:
-                            Paclitaxel:  80 mg/m2 IV over 1 hr on day 1 of wks 1-12
-                            Carboplatin:  AUC 6 IV over 30 min on day 1 of wks 1, 4, 7 and 10
-                            Doxorubicin:  60 mg/m2/ IV over 5-10 min on day 1 of wks 13, 15, 17 and 19
-                            Cyclophosphamide:  600 mg/m2 IV over 5-30 min on day 1 of wks 13, 15, 17 and 19</description>
-                        <status>Active</status>
-                    </studyTreatmentAssignment>
-                    <studyTreatmentAssignment updatedDate="02-10-2009 16:12:39" createdDate="03-03-2008 16:54:23">
-                        <tacDbId>16167</tacDbId>
-                        <code>ARM4</code>
-                        <description>Cycle = 19 weeks:
-                            Paclitaxel:  80 mg/m2 IV over 1 hr on day 1 of wks 1-12
-                            Carboplatin:  AUC 6 IV over 30 min on day 1 of wks 1, 4, 7 and 10
-                            Bevacizumab:  10 mg/kg over 30-90 min on day 1 of wks 1, 3, 5, 7, 9, 11, 13, 15 and 17
-                            Doxorubicin:  60 mg/m2/ IV over 5-10 min on day 1 of  wks 13, 15, 17 and 19
-                            Cyclophosphamide:  600 mg/m2 IV over 5-30 min on day 1 of wks 13, 15, 17 and 19</description>
-                        <status>Active</status>
-                    </studyTreatmentAssignment>
-                    <studyTreatmentAssignment updatedDate="02-06-2009 15:49:39" createdDate="03-04-2008 12:55:16">
-                        <tacDbId>16170</tacDbId>
-                        <code>SURG</code>
-                        <description>Surgery</description>
-                        <status>Active</status>
-                    </studyTreatmentAssignment>
-                    <studyTreatmentAssignment updatedDate="02-23-2009 13:00:42" createdDate="02-23-2009 12:55:11">
-                        <tacDbId>16742</tacDbId>
-                        <code>RADIATION</code>
-                        <description>Ipsilateral remaining breast or chest wall RT:  5000 cGy in 2 Gy fractions or  5040 cGy in 1.8 Gy fractions
-                            Intact breast RT:  1000-1600 cGy in 180-200 Gy fractions
-                            Supraclavicular field RT:  4500-5040 cGy in 1.8-2 Gy fractions</description>
-                        <status>Active</status>
-                    </studyTreatmentAssignment>
-                </studyTreatmentAssignments>
-                <title>Randomized Phase II 2 x 2 Factorial Trial of the Addition of Carboplatin +/- Bevacizumab to Neoadjuvant Weekly Paclitaxel Followed by Dose-Dense AC in Hormone Receptor-Poor/HER2-Negative Resectable Breast Cancer</title>
-            </StudyDetails>
-        </ns2:getStudyDetailsResponse>
-    </S:Body>
-</S:Envelope>
+<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+    <soapenv:Body>
+        <stud:createStudy xmlns:stud="http://schema.integration.caaers.cabig.nci.nih.gov/study">
+            <stud:studies>
+                <stud:study>
+                    <shortTitle>A Randomized Phase III Trial of Paclitaxel Versus Paclitaxel Plus Bevacizumab (rhuMAb VEGF)
+                        as First-Line Therapy for Locally Recurrent or Metastatic Breast Cancer
+                    </shortTitle>
+                    <phaseCode>Phase III Trial</phaseCode>
+                    <verbatimFirst>true</verbatimFirst>
+                    <adeersReporting>true</adeersReporting>
+                    <studyPurpose>Treatment</studyPurpose>
+                    <aeTermUnique>true</aeTermUnique>
+                    <stud:aeTerminology>
+                        <stud:ctcVersion>
+                            <name>4</name>
+                        </stud:ctcVersion>
+                    </stud:aeTerminology>
+                    <stud:diseaseTerminology>
+                        <diseaseCodeTerm>CTEP</diseaseCodeTerm>
+                    </stud:diseaseTerminology>
+                    <fundingSponsor>
+                        <organizationAssignedIdentifier>
+                            <value>E2100</value>
+                        </organizationAssignedIdentifier>
+                        <stud:studyFundingSponsor>
+                            <stud:organization>
+                                <name>Cancer Therapy Evaluation Program</name>
+                                <nciInstituteCode>CTEP</nciInstituteCode>
+                            </stud:organization>
+                        </stud:studyFundingSponsor>
+                    </fundingSponsor>
+                    <coordinatingCenter>
+                        <organizationAssignedIdentifier>
+                            <value>E2100</value>
+                        </organizationAssignedIdentifier>
+                        <stud:studyCoordinatingCenter>
+                            <stud:organization>
+                                <name>Eastern Cooperative Oncology Group</name>
+                                <nciInstituteCode>ECOG</nciInstituteCode>
+                                <type>CGP</type>
+                            </stud:organization>
+                        </stud:studyCoordinatingCenter>
+                    </coordinatingCenter>
+                    <identifiers>
+                        <stud:systemAssignedIdentifier>
+                            <type>Other</type>
+                            <value>E2100</value>
+                            <primaryIndicator>false</primaryIndicator>
+                            <systemName>CTEP-ESYS</systemName>
+                        </stud:systemAssignedIdentifier>
+                    </identifiers>
+                    <treatmentAssignments>
+                        <stud:treatmentAssignment>
+                            <ctepDbIdentifier>11935</ctepDbIdentifier>
+                            <code>ARMA1</code>
+                            <description>ARM A (Cycle = 28 days): AD 6: patients enrolled after 1/12/04:
+
+                                Paclitaxel 90 mg/m2 IV over 1hr on day 1qw x 3
+                                Bevacizumab 10 mg/kg IV over 30-90 min on days 1&amp;15 q28d
+                                NOTE: Pts who discontinue paclitaxel may continue bevacizumab.
+                                Treatment may continue until disease progression or toxicity.
+                            </description>
+                        </stud:treatmentAssignment>
+                        <stud:treatmentAssignment>
+                            <ctepDbIdentifier>11936</ctepDbIdentifier>
+                            <code>ARMB1</code>
+                            <description>ARM B (Cycle = 28 days): for pts enrolling after AD6, 1/12/04:
+
+                                Paclitaxel 90 mg/m2 IV over 1hr on day 1qw x 3.
+                                NOTE: Treatment may continue until disease progression or toxicity.
+                            </description>
+                        </stud:treatmentAssignment>
+                        <stud:treatmentAssignment>
+                            <ctepDbIdentifier>8242</ctepDbIdentifier>
+                            <code>ARM A</code>
+                            <description>ARM A (Cycle = 28 days):
+                                Paclitaxel 90 mg/m2 IV over 1hr on day 1qw x 3, for 18 cycles.
+                                Bevacizumab 10 mg/kg IV over 30-90 min on days 1&amp;15 q28d, for 18 cycles.
+                            </description>
+                        </stud:treatmentAssignment>
+                        <stud:treatmentAssignment>
+                            <ctepDbIdentifier>8243</ctepDbIdentifier>
+                            <code>ARM B</code>
+                            <description>ARM B (Cycle = 28 days):
+                                Paclitaxel 90 mg/m2 IV over 1hr on day 1qw x 3, for 18 cycles.
+                            </description>
+                        </stud:treatmentAssignment>
+                    </treatmentAssignments>
+                    <studyAgents>
+                        <stud:studyAgent>
+                            <stud:agent>
+                                <nscNumber>673089</nscNumber>
+                                <name>Paclitaxel (Taxol)</name>
+                            </stud:agent>
+                            <indType>NA_COMMERCIAL</indType>
+                            <partOfLeadIND>
+                                false
+                            </partOfLeadIND>
+                        </stud:studyAgent>
+                        <stud:studyAgent>
+                            <stud:agent>
+                                <nscNumber>704865</nscNumber>
+                                <name>Bevacizumab (rhuMAb VEGF)</name>
+                            </stud:agent>
+                            <indType>OTHER</indType>
+                            <partOfLeadIND>
+                                false
+                            </partOfLeadIND>
+                        </stud:studyAgent>
+                    </studyAgents>
+                    <studyDevices>
+                        <stud:studyDevice>
+                            <stud:device>
+                                <commonName>Infusaport</commonName>
+                                <brandName>Bardport</brandName>
+                                <type/>
+                                <ctepDbIdentifier>106</ctepDbIdentifier>
+                            </stud:device>
+                        </stud:studyDevice>
+                    </studyDevices>
+                    <otherInterventions/>
+                    <ctepStudyDiseases>
+                        <stud:ctepStudyDisease>
+                            <stud:diseaseTerm>
+                                <term>Invasive breast carcinoma</term>
+                                <meddraCode>10006190</meddraCode>
+                            </stud:diseaseTerm>
+                            <leadDisease>true</leadDisease>
+                        </stud:ctepStudyDisease>
+                    </ctepStudyDiseases>
+                </stud:study>
+            </stud:studies>
+        </stud:createStudy>
+    </soapenv:Body>
+</soapenv:Envelope>

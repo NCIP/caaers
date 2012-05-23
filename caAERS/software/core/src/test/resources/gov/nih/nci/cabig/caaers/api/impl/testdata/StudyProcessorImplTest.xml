@@ -1,7 +1,7 @@
 
 <dataset>
 
-    <ctc_versions id="3" name="CTCAE v3.0" />
+    <ctc_versions id="3" name="3.0" />
     <meddra_versions id="9" name="MedDRA v9.0" />
 
     <CTC_CATEGORIES id="302" name="auditory/ear" version_id="3" />
