@@ -949,6 +949,18 @@ String.prototype.interpol = function (valueMap) {
     });
 };
 
+function _hideTimerPopup(popupElement) {
+    popupElement.close();
+}
+
+function showTimerPopup(_elementId, _secondsToKeep) {
+    var popupDiv = new Window({className:"alphacube", width:500, height:125, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
+    popupDiv.setContent(_elementId);
+    popupDiv.showCenter(true);
+    popupDiv.show();
+    setTimeout(function() {_hideTimerPopup(popupDiv)}, _secondsToKeep * 1000);
+}
+
 function showFlashErrorMessage(fadeAwaySeconds) {
     jQuery('#flashErrors').show();
     hideFlashErrorMessage.delay(fadeAwaySeconds);
