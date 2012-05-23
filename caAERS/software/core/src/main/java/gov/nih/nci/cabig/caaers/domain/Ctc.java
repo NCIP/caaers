@@ -1,7 +1,8 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import gov.nih.nci.cabig.ctms.domain.AbstractImmutableDomainObject;
+import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -12,6 +13,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
  
 /**
@@ -21,7 +24,8 @@ import org.hibernate.annotations.Fetch;
  */
 @Entity
 @Table(name = "ctc_versions")
-public class Ctc extends AbstractImmutableDomainObject {
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_ctc_versions_id")})
+public class Ctc extends AbstractMutableDomainObject {
     
 	/** The CT c_ v2. */
 	public static int CTC_V2 = 2;
@@ -36,7 +40,7 @@ public class Ctc extends AbstractImmutableDomainObject {
     private String name;
     
     /** The categories. */
-    private List<CtcCategory> categories;
+    private List<CtcCategory> categories= new ArrayList<CtcCategory>();
 
     // //// BEAN PROPERTIES
 
@@ -66,7 +70,7 @@ public class Ctc extends AbstractImmutableDomainObject {
     @OneToMany(mappedBy = "ctc")
     @OrderBy
     // by ID for consistency
-    @Cascade(value = { CascadeType.LOCK })
+    @Cascade(value = { CascadeType.ALL })
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public List<CtcCategory> getCategories() {
         return categories;
@@ -79,5 +83,10 @@ public class Ctc extends AbstractImmutableDomainObject {
      */
     public void setCategories(List<CtcCategory> categories) {
         this.categories = categories;
+    }
+    
+    public void addCtcCategory(CtcCategory ctcCategory){
+    	ctcCategory.setCtc(this);
+    	getCategories().add(ctcCategory);
     }
 }

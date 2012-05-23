@@ -437,6 +437,7 @@ default-lazy-init="true">
     <bean id="adverseEventReportingPeriodService" class="gov.nih.nci.cabig.caaers.service.AdverseEventReportingPeriodService" />
     <bean id="asaelServiceImpl" class="gov.nih.nci.cabig.caaers.api.impl.ASAELServiceImpl" autowire="byType" />
     <bean id="devicesServiceImpl" class="gov.nih.nci.cabig.caaers.api.impl.DevicesServiceImpl" autowire="byType" />
+    <bean id="ctcService" class="gov.nih.nci.cabig.caaers.api.impl.CtcServiceImpl" autowire="byType" />
     <bean id="configPropertyServiceImpl" class="gov.nih.nci.cabig.caaers.api.impl.ConfigPropertyServiceImpl" autowire="byType" />
 
     <bean id="safetyMonitoringService" class="gov.nih.nci.cabig.caaers.service.SafetyMonitoringServiceImpl" autowire="byType" />

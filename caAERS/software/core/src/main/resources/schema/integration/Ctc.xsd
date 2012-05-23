@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/ctc"
+           xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/ctc"
+    xmlns:cct="http://schema.integration.caaers.cabig.nci.nih.gov/common"
+    elementFormDefault="unqualified">
+
+    <xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" schemaLocation="caAERSCommonTypes.xsd"/>
+    
+    <xs:element name="Ctcs">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="ctc" type="CtcVersionType" minOccurs="1" maxOccurs="unbounded" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="CtcVersionType">
+        <xs:complexContent>
+            <xs:extension base="cct:MutableDomainObjectType">
+                <xs:sequence>
+                    <xs:element name="name" type="xs:string"/>
+                    <xs:element name="ctcCategory" type="CtcCategoryType" maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
+    <xs:complexType name="CtcCategoryType">
+        <xs:complexContent>
+            <xs:extension base="cct:MutableDomainObjectType">
+                <xs:sequence>
+                    <xs:element name="name" type="xs:string"/>
+                    <xs:element name="ctcTerm" type="CtcTermType" minOccurs="0" maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
+    <xs:complexType name="CtcTermType">
+        <xs:complexContent>
+            <xs:extension base="cct:MutableDomainObjectType">
+                <xs:sequence>
+                    <xs:element name="ctepCode" type="xs:string"/>
+                    <xs:element name="ctepTerm" type="xs:string"/>
+                    <xs:element name="term" type="xs:string"/>
+                    <xs:element name="selectAE" type="xs:string" minOccurs="0"/>
+                    <xs:element name="definition" type="xs:string" minOccurs="0"/>
+                    <xs:element name="otherRequired" type="xs:boolean" minOccurs="0"/>
+                    <xs:element name="ctcGrade" type="CtcGradeType" minOccurs="0" maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
+    <xs:complexType name="CtcGradeType">
+        <xs:complexContent>
+            <xs:extension base="cct:MutableDomainObjectType">
+                <xs:sequence>
+                    <xs:element name="text" type="xs:string"/>
+                    <xs:element name="grade" type="GradeType"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
+    <xs:simpleType name="GradeType">
+        <xs:restriction base="xs:int">
+            <xs:enumeration value="0"/>
+            <xs:enumeration value="1"/>
+            <xs:enumeration value="2"/>
+            <xs:enumeration value="3"/>
+            <xs:enumeration value="4"/>
+            <xs:enumeration value="5"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+</xs:schema>

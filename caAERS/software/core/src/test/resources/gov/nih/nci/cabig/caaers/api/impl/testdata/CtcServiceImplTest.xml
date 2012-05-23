@@ -1,0 +1,8 @@
+<dataset>
+	
+	<ctc_versions id="-1000" name="ctc1" />
+	<ctc_categories id="-1000" name="ctccategory1" version_id="-1000"/>
+	<ctc_terms id="-1000" term="Test ctep term" category_id="-1000" ctep_term="Test ctep term" ctep_code="ctepcode1" other_required="1"/>
+	<ctc_grades id="-1000" term_id="-1000" grade_code="5" grade_text="grade"/>
+
+</dataset>

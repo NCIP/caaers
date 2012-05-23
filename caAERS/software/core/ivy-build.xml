@@ -163,6 +163,7 @@
             	<include name="Organization.xsd"/>
                 <include name="ASAEL.xsd"/>
                 <include name="Device.xsd"/>
+            	<include name="Ctc.xsd"/>
             </schema>
             <produces dir="${generated.src.dir}" includes="**/schema/integration/**/*.java"/>
 

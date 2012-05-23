@@ -1,12 +1,15 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import gov.nih.nci.cabig.ctms.domain.AbstractImmutableDomainObject;
+import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 
  
@@ -16,7 +19,8 @@ import org.hibernate.annotations.Type;
  * @author Rhett Sutphin
  */
 @Entity
-public class CtcGrade extends AbstractImmutableDomainObject implements CodedGrade {
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_ctc_grades_id")})
+public class CtcGrade extends AbstractMutableDomainObject implements CodedGrade {
 
     /** The grade. */
     private Grade grade;
@@ -73,6 +77,7 @@ public class CtcGrade extends AbstractImmutableDomainObject implements CodedGrad
      * @return the term
      */
     @ManyToOne
+    @JoinColumn(nullable=false)
     public CtcTerm getTerm() {
         return term;
     }

@@ -1,19 +1,27 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import gov.nih.nci.cabig.ctms.domain.AbstractImmutableDomainObject;
+import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Transient;
 
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
  
 /**
@@ -23,7 +31,8 @@ import org.hibernate.annotations.*;
  */
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE )
-public class CtcTerm extends AbstractImmutableDomainObject {
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_ctc_terms_id")})
+public class CtcTerm extends AbstractMutableDomainObject {
 
     /** The term. */
     private String term;
@@ -44,7 +53,7 @@ public class CtcTerm extends AbstractImmutableDomainObject {
     private boolean otherRequired;
     
     /** The contextual grades. */
-    private List<CtcGrade> contextualGrades;
+    private List<CtcGrade> contextualGrades = new ArrayList<CtcGrade>();
     
     /** The definition. */
     private String definition;
@@ -176,6 +185,7 @@ public class CtcTerm extends AbstractImmutableDomainObject {
      * @return the category
      */
     @ManyToOne
+    @JoinColumn(nullable=false)
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     public CtcCategory getCategory() {
         return category;
@@ -213,7 +223,7 @@ public class CtcTerm extends AbstractImmutableDomainObject {
      *
      * @return the contextual grades
      */
-    @OneToMany(mappedBy = "term")
+    @OneToMany(mappedBy = "term", orphanRemoval= true)
     @Cascade(value={CascadeType.ALL})
     @OrderBy("grade")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -260,5 +270,9 @@ public class CtcTerm extends AbstractImmutableDomainObject {
 				+ otherRequired + ", definition=" + definition + "]";
 	}
     
+	public void addCtcGrade(CtcGrade ctcGrade){
+		ctcGrade.setTerm(this);
+		getContextualGrades().add(ctcGrade);
+	}
     
 }

@@ -1,10 +1,8 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import gov.nih.nci.cabig.ctms.domain.AbstractImmutableDomainObject;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Fetch;
+import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -13,6 +11,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
  
 /**
  * This class represents the CtcCategory domain object associated with the Adverse event report.
@@ -20,8 +26,9 @@ import javax.persistence.OrderBy;
  * @author Rhett Sutphin
  */
 @Entity
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_ctc_categories_id")})
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class CtcCategory extends AbstractImmutableDomainObject {
+public class CtcCategory extends AbstractMutableDomainObject {
 
     /** The name. */
     private String name;
@@ -30,7 +37,7 @@ public class CtcCategory extends AbstractImmutableDomainObject {
     private Ctc ctc;
     
     /** The terms. */
-    private List<CtcTerm> terms;
+    private List<CtcTerm> terms = new ArrayList<CtcTerm>();
 
     // //// BEAN PROPERTIES
 
@@ -58,7 +65,7 @@ public class CtcCategory extends AbstractImmutableDomainObject {
      * @return the ctc
      */
     @ManyToOne
-    @JoinColumn(name = "version_id")
+    @JoinColumn(name = "version_id", nullable = false)
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     public Ctc getCtc() {
         return ctc;
@@ -80,6 +87,7 @@ public class CtcCategory extends AbstractImmutableDomainObject {
      */
     @OneToMany(mappedBy = "category")
     @OrderBy
+    @Cascade(value = { CascadeType.ALL })
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     // by ID for consistency
     public List<CtcTerm> getTerms() {
@@ -93,5 +101,10 @@ public class CtcCategory extends AbstractImmutableDomainObject {
      */
     public void setTerms(List<CtcTerm> terms) {
         this.terms = terms;
+    }
+    
+    public void addCtcTerm(CtcTerm ctcTerm){
+    	ctcTerm.setCategory(this);
+    	getTerms().add(ctcTerm);
     }
 }
