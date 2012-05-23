@@ -40,6 +40,11 @@
 </div>
 <div id="error_page" style="display: none;" class="flash-message error" ><div><caaers:message code="LBL_study.process.error" /></div><br><span id="_errorMessage">.</span></div>
 
+<form action="<c:url value="/pages/study/edit" />" name="_formStudy" method="post" id="_formStudy">
+    <input type="hidden" name="" id="_studyTarget" />
+    <input type="hidden" name="_page" value="0" id="_page" />
+</form>
+
 <script>
 
     function doEdit(_id) {
@@ -47,7 +52,9 @@
     }
 
     function addStudySite(_id) {
-        window.location = "<c:url value="/pages/study/edit?studyId=" />" + _id + "&tab=SitesTab";
+        jQuery("#_formStudy").attr("action", "<c:url value="/pages/study/edit?studyId=" />" + _id);
+        jQuery("#_studyTarget").attr("name", "_target7");
+        jQuery("#_formStudy").submit();
     }
 
     function doRegisterSubject(_id) {
