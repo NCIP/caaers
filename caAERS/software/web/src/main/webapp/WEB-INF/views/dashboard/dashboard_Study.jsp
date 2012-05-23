@@ -20,7 +20,7 @@
                          	<tr class="${loopStatus.index % 2 == 0 ? 'alt' : ''}">
                          		<td><a href="<c:url value="/pages/study/edit?studyId=${study.id}" />">${study.primaryIdentifier}</a>&nbsp;<span title="<c:out value="${study.shortTitle}" escapeXml="true" />"><c:out value="${fn:substring(study.shortTitle, 0, 100)}" escapeXml="true" />...</span></td>
                          		<td><c:out value="${study.status}" escapeXml="true" /></td>
-                         		<td><a onmouseover='showDashboardStudiesMenuOptions("${study.primaryIdentifier}", "${study.id}", "${study.fundingSponsorIdentifier.organization.nciInstituteCode}")' id='_d_study_${study.primaryIdentifier}' class='submitterButton submitter fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all' style="color:white; font-family: Arial; font-size: 13px;">Actions<span class='ui-icon ui-icon-triangle-1-s'></span></a></td>
+                         		<td><a onmouseover='showDashboardStudiesMenuOptions("${study.fundingSponsorIdentifierValue}", "${study.id}")' id='_d_study_${study.primaryIdentifier}' class='submitterButton submitter fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all' style="color:white; font-family: Arial; font-size: 13px;">Actions<span class='ui-icon ui-icon-triangle-1-s'></span></a></td>
                            </tr>
                          </c:forEach>
                         <c:if test="${fn:length(studyList) == 0}">
@@ -54,9 +54,9 @@
         window.location = "<c:url value="/pages/participant/create?studyId=" />" + _id;
     }
 
-    function doUpdate(_id, _nciCode) {
+    function doUpdate(_sfsId, _id) {
         var mp = showMessagePopup("please_wait");
-        createStudy.syncStudyWithAdEERS(_id, _nciCode, "UPDATE", function(_resultId) {
+        createStudy.syncStudyWithAdEERS(_sfsId, _id, function(_resultId) {
             mp.close();
             if (_resultId.error) {
                 showTimerPopup("error_page", 3);
@@ -64,13 +64,13 @@
         })
     }
 
-    function showDashboardStudiesMenuOptions(_ssi, _id, _nciCode) {
+    function showDashboardStudiesMenuOptions(_ssi, _id) {
         var _el = jQuery("#_d_study_" + _ssi);
         var html = "<div><ul style='font-family:tahoma;'>" +
                 "<li><a class='submitter-blue' href='#' onclick='doEdit(\"" + _id + "\")'>Edit study details</a></li>" +
                 "<li><a class='submitter-blue' href='#' onclick='addStudySite(\"" + _id + "\")'>Add Study Site</a></li>" +
                 "<li><a class='submitter-blue' href='#' onclick='doRegisterSubject(\"" + _id + "\")'>Register Subject</a></li>" +
-                "<li><a class='submitter-blue' href='#' onclick='doUpdate(\"" + _ssi + "\", \"" + _nciCode + "\")'>Synchronize with CTEP</a></li>" +
+                "<li><a class='submitter-blue' href='#' onclick='doUpdate(\"" + _ssi + "\", \"" + _id + "\")'>Synchronize with CTEP</a></li>" +
                 "</ul></div>";
         _el.menu({
                 content: html,
