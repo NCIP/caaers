@@ -190,20 +190,6 @@ public abstract class StudyController<C extends StudyCommand> extends AutomaticS
         StudyCommand cmd = (StudyCommand) oCommand;
         Study study = cmd.getStudy();
 
-        // When requests has ?t=AgentTab it will jump to the needed tab in the flow.
-        /*
-        if (request.getParameter("t") != null) {
-            String tabName = request.getParameter("t");
-            Flow<C> flow = (Flow)refData.get("flow");
-            Map tabsHash = new HashMap();
-            for (Tab t : flow.getTabs()) {
-                tabsHash.put(t.getClass().getSimpleName(), t);
-            }
-            Tab desiredTab = (Tab)tabsHash.get(tabName);
-            if (desiredTab != null) refData.put("tab", desiredTab);
-        }
-        */
-
         boolean showSummary = false;
         if (isSummaryEnabled()) {
             List<ListValues> summary = new ArrayList<ListValues>();
