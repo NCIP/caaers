@@ -45,12 +45,12 @@ public class CaaersLoggingAspect {
         if(logger == null || !logger.isInfoEnabled()) return call.proceed();
 
 
-        boolean debugEnabled = logger.isDebugEnabled();
+        boolean traceEnabled = logger.isTraceEnabled();
 
         String userName = "" ;
 
 
-        if(debugEnabled){
+        if(traceEnabled){
           userName =  "[" + getUserLoginName() + "] - ";
           log(logger, true, call, null, 0, userName);
         }
@@ -66,7 +66,7 @@ public class CaaersLoggingAspect {
             logger.info(userName + "More than 500ms [ " + call.toShortString() + " executionTime : " +  executionTime + "]");
         }
 
-        if(debugEnabled){
+        if(traceEnabled){
         	log(logger, false, call, point, executionTime, userName);
         }
         
@@ -91,7 +91,7 @@ public class CaaersLoggingAspect {
 
                 }
 
-                logger.debug(sb.toString());
+                logger.trace(sb.toString());
 
            }catch(Exception e) {
 
