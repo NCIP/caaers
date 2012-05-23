@@ -1,11 +1,20 @@
 package gov.nih.nci.cabig.caaers.api.impl;
 
 import gov.nih.nci.cabig.caaers.api.ProcessingOutcome;
-import gov.nih.nci.cabig.caaers.integration.schema.common.*;
-import org.apache.commons.lang.StringUtils;
+import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.common.EntityProcessingOutcomeType;
+import gov.nih.nci.cabig.caaers.integration.schema.common.EntityProcessingOutcomes;
+import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.common.Status;
+import gov.nih.nci.cabig.caaers.integration.schema.common.WsError;
+import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
+import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Message;
+import gov.nih.nci.cabig.ctms.domain.MutableDomainObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
  * @author Biju Joseph
@@ -105,5 +114,14 @@ public class Helper {
         outcome.setCaaersDBId(caaersId);
         for(String n : notes) outcome.getMessages().add(n);
         return outcome;
+    }
+    
+    public static String concatenateMessagesFromOutcome(DomainObjectImportOutcome<? extends MutableDomainObject> outcome){
+    	StringBuffer sb = new StringBuffer();
+    	for(Message msg:outcome.getMessages()){
+    		sb.append(msg);
+    		sb.append(",");
+    	}
+    	return sb.toString();
     }
 }

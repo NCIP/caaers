@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.api.LabService;
 import gov.nih.nci.cabig.caaers.api.ProcessingOutcome;
 import gov.nih.nci.cabig.caaers.dao.LabCategoryDao;
 import gov.nih.nci.cabig.caaers.domain.LabCategory;
+import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.migrator.LabMigrator;
 
 import java.util.ArrayList;
@@ -40,31 +41,30 @@ public class LabServiceImpl implements LabService{
 	
 	@Transactional(readOnly=false)
 	public ProcessingOutcome createOrUpdateLab(LabCategory labCategory) {
-		ProcessingOutcome processingOutcome = new ProcessingOutcome();
-		processingOutcome.setBusinessId(labCategory.getName());
-        processingOutcome.setKlassName(LabCategory.class.getName());
 		try {
 			LabCategory dbLabCategory = labCategoryDao.getByName(labCategory.getName());
 			// check if db category with same name exists
+			DomainObjectImportOutcome<LabCategory> outcome = new DomainObjectImportOutcome<LabCategory>(); 
 			if(dbLabCategory !=null) {
                 logger.info("updating db Category with Name:" + labCategory.getName() + " with remote Category");
-                labMigrator.migrate(labCategory, dbLabCategory, null);
+                labMigrator.migrate(labCategory, dbLabCategory,outcome);
                 labCategoryDao.save(dbLabCategory);
-                processingOutcome.setCaaersDBId(String.valueOf(dbLabCategory.getId()));
+                return Helper.createOutcome(LabCategory.class, labCategory.getName(), false, "Lab Category with name : " +
+    					labCategory.getName() + ", id : " + labCategory.getId() + " is updated. " + Helper.concatenateMessagesFromOutcome(outcome));
 			} else {
 				// db category doesn't exist. Create a new category.
 				logger.info("didn't find db Category with Name:" + labCategory.getName() + ". Creating new Category");
 				LabCategory newLabCategory = new LabCategory();
-				labMigrator.migrate(labCategory, newLabCategory, null);
+				labMigrator.migrate(labCategory, newLabCategory, outcome);
 				labCategoryDao.save(newLabCategory);
-                processingOutcome.setCaaersDBId(String.valueOf(newLabCategory.getId()));
+				return Helper.createOutcome(LabCategory.class, labCategory.getName(), false, "Lab Category with name : " +
+						labCategory.getName() + ", id : " + labCategory.getId() + " is created. " +  Helper.concatenateMessagesFromOutcome(outcome) );
             }
+			
 		} catch (Exception e) {
-			processingOutcome.addMessage(String.valueOf(e.getMessage()));
-			logger.error(e.getMessage());
+			logger.error(e);
+            return Helper.createOutcome(LabCategory.class, labCategory.getName(), true, e.getMessage());
 		}
-		
-		return processingOutcome;
 	}
 
 

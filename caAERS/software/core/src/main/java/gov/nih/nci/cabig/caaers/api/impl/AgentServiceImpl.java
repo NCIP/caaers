@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.api.AgentService;
 import gov.nih.nci.cabig.caaers.api.ProcessingOutcome;
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.domain.Agent;
+import gov.nih.nci.cabig.caaers.domain.LabCategory;
 import gov.nih.nci.cabig.caaers.domain.repository.AgentRepository;
 import gov.nih.nci.cabig.caaers.service.migrator.AgentMigrator;
 
@@ -49,9 +50,6 @@ public class AgentServiceImpl implements AgentService{
 	
 	@Transactional(readOnly=false)
 	public ProcessingOutcome createOrUpdateAgent(Agent agent) {
-		ProcessingOutcome processingOutcome = new ProcessingOutcome();
-		processingOutcome.setBusinessId(agent.getNscNumber());
-        processingOutcome.setKlassName(Agent.class.getName());
 		try {
 			Agent dbAgent = agentDao.getByNscNumber(agent.getNscNumber());
 			// check if db agent with same nsc number exists
@@ -59,22 +57,20 @@ public class AgentServiceImpl implements AgentService{
                 logger.info("updating db Agent with NSC Number:" + agent.getNscNumber() + " with remote Agent");
                 agentMigrator.migrate(agent, dbAgent, null);
                 agentRepository.saveAgent(dbAgent);
-                processingOutcome.setCaaersDBId(String.valueOf(dbAgent.getId()));
+                return Helper.createOutcome(Agent.class, agent.getNscNumber(), false, "Agent with NSC number : " +
+                		agent.getNscNumber() + ", id : " + dbAgent.getId() + " is updated");
 			} else {
 				// db agent doesn't exist. Create a new agent.
 				logger.info("didn't find db Agent with NSC Number:" + agent.getNscNumber() + ". Creating new Agent");
 				Agent newAgent = new Agent();
 				agentMigrator.migrate(agent, newAgent, null);
 				agentRepository.saveAgent(newAgent);
-                processingOutcome.setCaaersDBId(String.valueOf(newAgent.getId()));
+                return Helper.createOutcome(Agent.class, agent.getNscNumber(), false, "Agent with NSC number : " +
+                		agent.getNscNumber() + ", id : " + newAgent.getId() + " is created");
             }
 		} catch (Exception e) {
-			processingOutcome.addMessage(String.valueOf(e.getMessage()));
-			logger.error(e.getMessage());
+			logger.error(e);
+            return Helper.createOutcome(LabCategory.class, agent.getNscNumber(), true, e.getMessage());
 		}
-		
-		return processingOutcome;
 	}
-
-
 }

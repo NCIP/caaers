@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.dao.LabVersionDao;
 import gov.nih.nci.cabig.caaers.domain.LabCategory;
 import gov.nih.nci.cabig.caaers.domain.LabTerm;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
+import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Message;
 
 import java.util.List;
 
@@ -42,6 +43,7 @@ public class LabMigrator implements Migrator<LabCategory>{
 				}
 				// migrate lab term, set retired indicator etc
 				migrate(labTerm,dbTerm,null);
+				outcome.getMessages().add(new Message("Created/updated lab term :" + labTerm.getTerm(),null));
 				// if term doesn't exist add it
 				if(dbTerm.getId() == null){
 					dest.addTerm(dbTerm);
@@ -55,6 +57,7 @@ public class LabMigrator implements Migrator<LabCategory>{
 				LabTerm newLabTerm = new LabTerm();
 				migrate(labTerm,newLabTerm,null);
 				dest.addTerm(newLabTerm);
+				outcome.getMessages().add(new Message("Created/updated lab term :" + labTerm.getTerm(),null));
 			}
 		}
 	}
