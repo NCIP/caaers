@@ -68,7 +68,7 @@ public class CTEPESYSDataIntegrationLogsController extends SimpleFormController 
         serviceMap.put("GetPre-ExistingConditionsLOV", "GetPre-ExistingConditionsLOV");
         serviceMap.put("GetTherapiesLOV", "GetTherapiesLOV");
         serviceMap.put("GetAgentDoseUOMLOV", "GetAgentDoseUOMLOV");
-        serviceMap.put("GetLabLOV", "GetLabLOV");
+        serviceMap.put("GetLabsLOV", "GetLabsLOV");
         serviceMap.put("GetMergedOrganization", "GetMergedOrganization");
         serviceMap.put("GetAgentDoseUOMLOV", "GetAgentDoseUOMLOV");
 
