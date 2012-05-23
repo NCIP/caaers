@@ -1,4 +1,5 @@
 <%@include file="/WEB-INF/views/taglibs.jsp" %>
+<tags:dwrJavascriptLink objects="createStudy"/>
 
 <c:if test="${not empty roles.study_creator or not empty roles.study_qa_manager or not empty roles.supplemental_study_information_manager or not empty roles.study_team_administrator or not empty roles.study_site_participation_administrator}">
 
@@ -19,7 +20,7 @@
                          	<tr class="${loopStatus.index % 2 == 0 ? 'alt' : ''}">
                          		<td><a href="<c:url value="/pages/study/edit?studyId=${study.id}" />">${study.primaryIdentifier}</a>&nbsp;<span title="<c:out value="${study.shortTitle}" escapeXml="true" />"><c:out value="${fn:substring(study.shortTitle, 0, 100)}" escapeXml="true" />...</span></td>
                          		<td><c:out value="${study.status}" escapeXml="true" /></td>
-                         		<td><a onmouseover='showDashboardStudiesMenuOptions("${study.primaryIdentifier}", "${study.id}")' id='_d_study_${study.primaryIdentifier}' class='submitterButton submitter fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all' style="color:white; font-family: Arial; font-size: 13px;">Actions<span class='ui-icon ui-icon-triangle-1-s'></span></a></td>
+                         		<td><a onmouseover='showDashboardStudiesMenuOptions("${study.primaryIdentifier}", "${study.id}", "${study.fundingSponsorIdentifier.organization.nciInstituteCode}")' id='_d_study_${study.primaryIdentifier}' class='submitterButton submitter fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all' style="color:white; font-family: Arial; font-size: 13px;">Actions<span class='ui-icon ui-icon-triangle-1-s'></span></a></td>
                            </tr>
                          </c:forEach>
                         <c:if test="${fn:length(studyList) == 0}">
@@ -32,6 +33,12 @@
    </chrome:boxIPhone>
 
 </c:if>
+<div id="please_wait" style="display: none;" class="flash-message info" >
+    <h3><img src= "<chrome:imageUrl name="../check.png"/>" />&nbsp;<caaers:message code="LBL_please.wait" /></h3>
+    <br><br>
+    <div><caaers:message code="LBL_study.in.process" /></div>
+</div>
+
 
 <script>
 
@@ -47,13 +54,36 @@
         window.location = "<c:url value="/pages/participant/create?studyId=" />" + _id;
     }
 
-    function showDashboardStudiesMenuOptions(_ssi, _id) {
+    function doUpdate(_id, _nciCode) {
+/*
+        jQuery("#_ssi").html("<br>" + _id + ":" + _nciCode);
+        showTimerPopup("_message", 2);
+*/
+
+        var mp = showMessagePopup("please_wait");
+
+        createStudy.syncStudyWithAdEERS(_id, _nciCode, "UPDATE", function(_resultId) {
+            mp.close();
+
+            if (_resultId.error) {
+//                showError(_resultId.errorMessage);
+//                alert(_resultId.errorMessage);
+                showTimerPopup(jQuery("<div>ERROR</div>"), 3);
+            } else {
+                showTimerPopup(jQuery("<div>Hello</div>"), 3);
+            }
+
+        })
+
+    }
+
+    function showDashboardStudiesMenuOptions(_ssi, _id, _nciCode) {
         var _el = jQuery("#_d_study_" + _ssi);
         var html = "<div><ul style='font-family:tahoma;'>" +
                 "<li><a class='submitter-blue' href='#' onclick='doEdit(\"" + _id + "\")'>Edit study details</a></li>" +
                 "<li><a class='submitter-blue' href='#' onclick='addStudySite(\"" + _id + "\")'>Add Study Site</a></li>" +
                 "<li><a class='submitter-blue' href='#' onclick='doRegisterSubject(\"" + _id + "\")'>Register Subject</a></li>" +
-                "<li><a class='submitter-blue' href='#'>Synchronize with CTEP</a></li>" +
+                "<li><a class='submitter-blue' href='#' onclick='doUpdate(\"" + _ssi + "\", \"" + _nciCode + "\")'>Synchronize with CTEP</a></li>" +
                 "</ul></div>";
         _el.menu({
                 content: html,
