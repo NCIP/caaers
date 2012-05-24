@@ -9,6 +9,7 @@ public class ToCaaersWebserviceRouteBuilder {
 	private String caAERSAgentDoseUOMServiceJBIURL = "jbi:service:http://schema.integration.caaers.cabig.nci.nih.gov/common/ConfigPropertiesWebService?operation={http://schema.integration.caaers.cabig.nci.nih.gov/common}";
 	private String caAERSASAELServiceJBIURL = "jbi:service:http://schema.integration.caaers.cabig.nci.nih.gov/common/ASAELService?operation={http://schema.integration.caaers.cabig.nci.nih.gov/common}";
 	private String caAERSDeviceServiceJBIURL = "jbi:service:http://schema.integration.caaers.cabig.nci.nih.gov/common/DevicesService?operation={http://schema.integration.caaers.cabig.nci.nih.gov/common}";
+	private String caAERSCtcServiceJBIURL = "jbi:service:http://schema.integration.caaers.cabig.nci.nih.gov/common/CtcsService?operation={http://schema.integration.caaers.cabig.nci.nih.gov/common}";
 	private String caAERSLabServiceJBIURL = "jbi:service:http://schema.integration.caaers.cabig.nci.nih.gov/common/LabManagementWebService?operation={http://schema.integration.caaers.cabig.nci.nih.gov/common}";
 	private String caAERSOrganizationServiceJBIURL = "jbi:service:http://schema.integration.caaers.cabig.nci.nih.gov/common/OrganizationManagementWebService?operation={http://schema.integration.caaers.cabig.nci.nih.gov/common}";
 	private String caAERSAgentPreExistingConditionServiceJBIURL = "jbi:service:http://schema.integration.caaers.cabig.nci.nih.gov/common/PreExistingConditionManagementWebService?operation={http://schema.integration.caaers.cabig.nci.nih.gov/common}";
@@ -45,6 +46,7 @@ public class ToCaaersWebserviceRouteBuilder {
 			.when().xpath(xpathPredicate("organization", "getOrganizationsLOV")).to("direct:caaers-organization-async")
 			.when().xpath(xpathPredicate("mergedorganization", "getMergedOrganization")).to("direct:caaers-merged-organization-async")
 			.when().xpath(xpathPredicate("device", "getDevicesLOV")).to("direct:caaers-device-async")
+			.when().xpath(xpathPredicate("ctcae", "getCTCAELOV")).to("direct:caaers-ctc-async")
 			.when().xpath(xpathPredicate("lab", "getLabsLOV")).to("direct:caaers-lab-async")
 			.when().xpath(xpathPredicate("preexistingcondition", "getPreExistingConditionsLOV")).to("direct:caaers-condition-async")
 			.when().xpath(xpathPredicate("priortherapy", "getTherapiesLOV")).to("direct:caaers-therapy-async")
@@ -69,6 +71,9 @@ public class ToCaaersWebserviceRouteBuilder {
 
         //caAERS - createOrUpdateDevices
         configureWSCallRoute("direct:caaers-device-async", "device_async.xsl", caAERSDeviceServiceJBIURL + "createOrUpdateDevices" );
+        
+      //caAERS - createOrUpdateCtcs
+        configureWSCallRoute("direct:caaers-ctc-async", "ctc_async.xsl", caAERSCtcServiceJBIURL + "createOrUpdateCtcs" );
         
         //caAERS - createOrUpdateLabs
         configureWSCallRoute("direct:caaers-lab-async", "lab_async.xsl", caAERSLabServiceJBIURL + "createOrUpdateLabs" );

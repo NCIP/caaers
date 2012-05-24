@@ -155,6 +155,27 @@
             <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
         </cxfbc:outFaultInterceptors>
     </cxfbc:provider>
+    
+    <!-- ================== Ctc Webservice Provider ==================================-->
+    <cxfbc:provider interfaceName="caaers:CtcsServiceInterface"  service="caaers:CtcsService"
+                    endpoint="CtcsWebServicePort"
+                    wsdl="classpath:CtcsService.wsdl"
+                    locationURI="s[CTC_WS_BINDING_URL]" useJBIWrapper="false"
+                    useSOAPEnvelope="true" schemaValidationEnabled="true">
+        <cxfbc:inInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+        </cxfbc:inInterceptors>
+        <cxfbc:outInterceptors>
+            <ref local="wss4jOutInterceptor" />
+            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+        </cxfbc:outInterceptors>
+        <cxfbc:inFaultInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+        </cxfbc:inFaultInterceptors>
+        <cxfbc:outFaultInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+        </cxfbc:outFaultInterceptors>
+    </cxfbc:provider>
 
 
     <!-- ================== Organization Webservice Provider ==================================-->

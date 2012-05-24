@@ -10,6 +10,7 @@ public enum EntityOperation{
     PRE_EXISTING_CONDITION("preexistingcondition", "getPreExistingConditionsLOV", "0+0+1+*+*+?"),
     ORGANIZATION("organization", "getOrganizationsLOV", "0+0+1+*+*+?"),
     MERGED_ORGANIZATION("mergedorganization", "getMergedOrganization", "0+0+1+*+*+?"),
+    CTCAE("ctcae", "getCTCAELOV", "0+0+1+*+*+?"),
 
     ;
     private String qualifiedName;
