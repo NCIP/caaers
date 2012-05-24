@@ -66,6 +66,12 @@
 
 <script language="javascript">
 
+    jQuery(document).ready(function() {
+        <c:if test="${!empty param.tabName}">
+            goToPage("${param.tabName}");
+        </c:if>
+    });
+
     var tabsHash = new Hash();
     <c:forEach items="${flow.tabs}" var="atab" varStatus="status">
     <csmauthz:accesscontrol domainObject="${atab}" authorizationCheckName="tabAuthorizationCheck">
@@ -74,6 +80,7 @@
     </c:forEach>
 
     function goToPage(s) {
+        jQuery("#command").attr("action", "<c:url value="/pages/study/edit?studyId=${param.studyId}" />");
         $('_target').name = '_target' + tabsHash.get(s);
         $('command').submit();
     }

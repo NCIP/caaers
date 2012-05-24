@@ -36,8 +36,6 @@
 
         	<!--  JSP-API-* should be excluded -->
         	<exclude org="jspapi" module="jsp-api"  />
-            <exclude org="javax.servlet" module="jsp-api"  />
-        	<exclude org="javax.servlet" module="servlet-api" conf="publish,default,dist,distGrid" />
             <exclude org="cglib" module="cglib" conf="*" />
             <exclude org="net.sf.hibernate" />
             <exclude org="hibernate" />
