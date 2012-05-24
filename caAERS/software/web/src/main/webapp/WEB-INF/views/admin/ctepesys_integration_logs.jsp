@@ -31,9 +31,40 @@
 
 <script type="text/javascript">
 
+	function initializeYUITableNoPagination(tableId, responseData, columnDefs, fields) {
+	    YAHOO.example.CellSelection = new function() {
+	        var columDefs = columnDefs.clone();
+	        var tableFields = fields.clone();
+	
+	        var activeDataSource = new YAHOO.util.DataSource(responseData);
+	        var rowFormatter = function(elTr, oRecord) {
+		        return true;
+		    };
+	        activeDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+	        activeDataSource.responseSchema = {
+	            fields: tableFields
+	        };
+	
+	        var myConfigs = {
+	            draggableColumns : false,
+	            width: "100%",
+	            formatRow : rowFormatter
+	        };
+	
+	        this.activeDataTable = new YAHOO.widget.DataTable(tableId, columDefs, activeDataSource, myConfigs);
+	        this.activeDataTable.subscribe("rowMouseoverEvent", this.activeDataTable.onEventHighlightRow);
+	        this.activeDataTable.subscribe("rowMouseoutEvent", this.activeDataTable.onEventUnhighlightRow);
+	    }
+	}
+	
+        
 	function ajaxCallBack(jsonResult) {
 	  	$$("form .arbitrary").each(function(e){e.className='indicator';	});
 	    $('integrationLogsBox').style.display="block";
+	    correlationArray = [];
+	    for(i=0 ; i < jsonResult.length; i++) {
+	    	correlationArray.push(jsonResult[i].correlationId);
+	    }
 	    showLogsYUITable(jsonResult);
 	}
 	
@@ -114,6 +145,27 @@
 	    str += '</table>';
 	    return str
 	}
+	
+	 function showPopupMessage(row_id){
+		ctepDataInitialization.getIntegrationLogDetailsBasedOnCorrelationId(correlationArray[row_id], ajaxCallBackForDetails);
+	 }
+	 
+	 function ajaxCallBackForDetails(jsonResult) {
+	 	var d = $('synchMessage');
+	  	displayLogDetailsTable(jsonResult);
+	  	Dialog.alert(d.innerHTML, {className: "alphacube", height:500, width:500, okLabel: "Close" });
+	}
+	
+	var myColumnDefsForDetails = [{key:"entity", label:"Entity", resizeable:true, minWidth:200, maxWidth:350},
+							{key:"businessId", label:"BusinessId", sortable:true, resizeable:true, minWidth:200, maxWidth:350},
+						{key:"failed", label:"Failed", sortable:true, resizeable:true, minWidth:300, maxWidth:350},
+						{key:"outcome", label:"Notes", sortable:true, resizeable:true, minWidth:100, maxWidth:100}];
+	
+	var myFieldsForDetails = [{key:'entity', parser:"string"},{key:'businessId', parser:"string"},{key:'failed', parser:"string"},{key:'outcome', parser:"string"}];
+	
+	function displayLogDetailsTable(data) {
+	   initializeYUITableNoPagination("tableDiv",data, myColumnDefsForDetails, myFieldsForDetails);
+	}
     
       /* Modify as needed */ 
 	 
@@ -133,19 +185,17 @@
 	        	return true;
 	    	  };
 	    	  
-	    	   var myDataSourceSteps = new 
-	            YAHOO.util.DataSource(responseData); 
-	            myDataSourceSteps.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
-	            myDataSourceSteps.responseSchema = { 
-	                fields: ["loggedOn"] 
-	            }; 
-	    	  
 	        var myDataSource = new 
 	            YAHOO.util.DataSource(responseData); 
 	            myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 	            myDataSource.responseSchema = { 
 	                fields: ["steps", "loggedOn","service","overallStatus","notes"] 
 	            }; 
+	            
+	        var actionFormatter = function(elCell, oRecord, oColumn, oData) {
+	        	var row_number = oRecord._nCount;
+	             elCell.innerHTML = '<A  HREF="javascript:showPopupMessage(' + row_number + ')";>View Details</A>';
+	         }
 	            
 	        var myDataTable = new YAHOO.widget.RowExpansionDataTable( 
 	                "expandableDiv", 
@@ -174,6 +224,7 @@
 	                    { 
 	                        key:"notes", 
 	                        label:"More Info", 
+	                        formatter:actionFormatter,
 	                        width : '400px'
 	                    }  
 	                ], 
@@ -256,6 +307,11 @@
 </chrome:box>
 
 </form:form>
+
+<div id="synchMessage" style="display:none; padding: 15px;">
+		<div id="tableDiv">
+		</div>
+</div>
 
 </body>
 </html>

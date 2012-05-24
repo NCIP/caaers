@@ -6,6 +6,20 @@ import java.util.Map;
 
 public class IntegrationLogAjaxableDomainObect {
 	
+	private String entity;
+	private String correlationId;
+	public String getCorrelationId() {
+		return correlationId;
+	}
+	public void setCorrelationId(String correlationId) {
+		this.correlationId = correlationId;
+	}
+	public String getEntity() {
+		return entity;
+	}
+	public void setEntity(String entity) {
+		this.entity = entity;
+	}
 	private Date loggedOn;
 	private String service;
 	private String overallStatus;
