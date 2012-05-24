@@ -20,7 +20,7 @@
                          	<tr class="${loopStatus.index % 2 == 0 ? 'alt' : ''}">
                          		<td><a href="<c:url value="/pages/study/edit?studyId=${study.id}" />">${study.primaryIdentifier}</a>&nbsp;<span title="<c:out value="${study.shortTitle}" escapeXml="true" />"><c:out value="${fn:substring(study.shortTitle, 0, 100)}" escapeXml="true" />...</span></td>
                          		<td><c:out value="${study.dataEntryStatus ? 'Complete' : 'In progress'}" escapeXml="true" /></td>
-                         		<td><a onmouseover='showDashboardStudiesMenuOptions("${study.fundingSponsorIdentifierValue}", "${study.id}")' id='_d_study_${study.primaryIdentifier}' class='submitterButton submitter fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all' style="color:white; font-family: Arial; font-size: 13px;">Actions<span class='ui-icon ui-icon-triangle-1-s'></span></a></td>
+                         		<td><a onmouseover='showDashboardStudiesMenuOptions("${study.fundingSponsorIdentifierValue}", "${study.id}", ${study.dataEntryStatus})' id='_d_study_${study.primaryIdentifier}' class='submitterButton submitter fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all' style="color:white; font-family: Arial; font-size: 13px;">Actions<span class='ui-icon ui-icon-triangle-1-s'></span></a></td>
                            </tr>
                          </c:forEach>
                         <c:if test="${fn:length(studyList) == 0}">
@@ -51,9 +51,48 @@
         window.location = "<c:url value="/pages/study/edit?studyId=" />" + _id;
     }
 
-    function addStudySite(_id) {
+    function getTabsHash(_studyIsComplete, _tabName) {
+        var tabsHash = new Hash();
+        var n = 0;
+        var role_supplemental_study_information_manager = ${!empty roles.supplemental_study_information_manager};
+        var role_study_qa_manager = ${!empty roles.study_qa_manager};
+        var role_study_creator = ${!empty roles.study_creator};
+        var role_study_site_participation_administrator = ${!empty roles.study_site_participation_administrator};
+        var role_study_team_administrator = ${!empty roles.study_team_administrator};
+
+        tabsHash.set('EmptyStudyTab', n++);
+
+        if (role_supplemental_study_information_manager || (!_studyIsComplete && role_study_creator) || (_studyIsComplete && role_study_qa_manager)) {
+            tabsHash.set('DetailsTab', n++);
+        }
+
+        if (role_supplemental_study_information_manager) {
+            tabsHash.set('AgentsTab', n++);
+            tabsHash.set('TreatmentAssignmentTab', n++);
+            tabsHash.set('DiseaseTab', n++);
+            tabsHash.set('SolicitedAdverseEventTab', n++);
+            tabsHash.set('ExpectedAEsTab', n++);
+        }
+
+        if (role_study_site_participation_administrator) {
+            tabsHash.set('SitesTab', n++);
+        }
+
+        if (role_study_team_administrator) {
+            tabsHash.set('InvestigatorsTab', n++);
+            tabsHash.set('PersonnelTab', n++);
+        }
+
+        if (role_supplemental_study_information_manager) {
+            tabsHash.set('IdentifiersTab', n++);
+        }
+
+        return tabsHash.get(_tabName);
+    }
+
+    function addStudySite(_id, _complete) {
         jQuery("#_formStudy").attr("action", "<c:url value="/pages/study/edit?studyId=" />" + _id);
-        jQuery("#_studyTarget").attr("name", "_target7");
+        jQuery("#_studyTarget").attr("name", "_target" + getTabsHash(_complete, "SitesTab"));
         jQuery("#_formStudy").submit();
     }
 
@@ -71,11 +110,11 @@
         })
     }
 
-    function showDashboardStudiesMenuOptions(_ssi, _id) {
+    function showDashboardStudiesMenuOptions(_ssi, _id, _complete) {
         var _el = jQuery("#_d_study_" + _ssi);
         var html = "<div><ul style='font-family:tahoma;'>" +
-                "<li><a class='submitter-blue' href='#' onclick='doEdit(\"" + _id + "\")'>Edit study details</a></li>" +
-                "<li><a class='submitter-blue' href='#' onclick='addStudySite(\"" + _id + "\")'>Add Study Site</a></li>" +
+                "<li><a class='submitter-blue' href='#' onclick='doEdit(\"" + _id + "\")'>Edit study details (" + _complete + ")</a></li>" +
+                "<li><a class='submitter-blue' href='#' onclick='addStudySite(\"" + _id + "\", " + _complete + ")'>Add Study Site</a></li>" +
                 "<li><a class='submitter-blue' href='#' onclick='doRegisterSubject(\"" + _id + "\")'>Register Subject</a></li>" +
                 "<li><a class='submitter-blue' href='#' onclick='doUpdate(\"" + _ssi + "\", \"" + _id + "\")'>Synchronize with CTEP</a></li>" +
                 "</ul></div>";
