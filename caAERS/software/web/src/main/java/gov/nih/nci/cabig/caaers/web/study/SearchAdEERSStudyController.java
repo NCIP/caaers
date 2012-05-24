@@ -55,7 +55,7 @@ public class SearchAdEERSStudyController extends SimpleFormController {
         if (StringUtils.isEmpty(c.getSearchText())) {
             errors.reject("", Messages.get("ERR_searchStudyCharacters"));
         } else {
-            List<Study> studies = null;
+            List<Study> studies = new ArrayList<Study>();
             try {
                 studies = studyRepository.searchInAdEERS(c.getSearchText());
             } catch (Exception e) {
