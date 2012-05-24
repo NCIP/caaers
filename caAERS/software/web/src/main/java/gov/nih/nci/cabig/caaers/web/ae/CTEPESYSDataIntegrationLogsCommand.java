@@ -16,6 +16,15 @@ public class CTEPESYSDataIntegrationLogsCommand {
 	
 	private String status;
 	
+	private boolean esbLogsLocationExists = false;
+	
+	public boolean isEsbLogsLocationExists() {
+		return esbLogsLocationExists;
+	}
+
+	public void setEsbLogsLocationExists(boolean esbLogsLocationExists) {
+		this.esbLogsLocationExists = esbLogsLocationExists;
+	}
 
 	public String getService() {
 		return service;

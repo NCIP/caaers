@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.domain.IntegrationLog;
 import gov.nih.nci.cabig.caaers.domain.IntegrationLogDetail;
 import gov.nih.nci.cabig.caaers.domain.SynchStatus;
 import gov.nih.nci.cabig.caaers.domain.ajax.IntegrationLogAjaxableDomainObect;
+import gov.nih.nci.cabig.caaers.domain.ajax.IntegrationLogDetailAjaxableDomainObect;
 import gov.nih.nci.cabig.caaers.integration.schema.common.Status;
 import gov.nih.nci.cabig.caaers.service.ProxyWebServiceFacade;
 import gov.nih.nci.cabig.caaers.web.AbstractAjaxFacade;
@@ -97,6 +98,8 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
         while(mapIterator.hasNext()){
         	Map.Entry<String, List<IntegrationLog>> entry = (Map.Entry<String, List<IntegrationLog>>)mapIterator.next();
         	IntegrationLogAjaxableDomainObect ajaxIntLog = new IntegrationLogAjaxableDomainObect();
+        	ajaxIntLog.setEntity(entry.getValue().get(0).getEntity());
+        	ajaxIntLog.setCorrelationId(entry.getValue().get(0).getCorrelationId());
         	ajaxIntLog.setLoggedOn(getEarliestLogTime(entry.getValue()));
         	
         	// need to sort the grouped integration logs by id to display the synch status in work flow order
@@ -126,14 +129,24 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
     }
     
  // get integration log details based on correlation id
-    public  List<IntegrationLogDetail> getIntegrationLogDetailsBasedOnCorrelationId(String correlationId) {
+    public  List<IntegrationLogDetailAjaxableDomainObect> getIntegrationLogDetailsBasedOnCorrelationId(String correlationId) {
 
     	List<IntegrationLogDetail> integrationLogDetails = new ArrayList<IntegrationLogDetail>();
     	IntegrationLogDetailQuery query = new IntegrationLogDetailQuery();
     	query.filterByCorrelationId(correlationId);
     	integrationLogDetails = integrationLogDetailDao.searchIntegrationLogDetails(query);
+    	
+    	List<IntegrationLogDetailAjaxableDomainObect> integrationLogDetailsDTO = new ArrayList<IntegrationLogDetailAjaxableDomainObect>();
+    	for(IntegrationLogDetail ild : integrationLogDetails){
+    		IntegrationLogDetailAjaxableDomainObect ildDTO = new IntegrationLogDetailAjaxableDomainObect();
+    		ildDTO.setBusinessId(ild.getBusinessId());
+    		ildDTO.setEntity(ild.getIntegrationLog().getEntity());
+    		ildDTO.setFailed(ild.isFailed());
+    		ildDTO.setOutcome(ild.getOutcome());
+    		integrationLogDetailsDTO.add(ildDTO);
+    	}
         
-        return integrationLogDetails;
+        return integrationLogDetailsDTO;
     }
     
     public Map<String,List<IntegrationLog>> groupIntegrationLogsBasedOnCorrelationId(List<IntegrationLog> integreationLogs){

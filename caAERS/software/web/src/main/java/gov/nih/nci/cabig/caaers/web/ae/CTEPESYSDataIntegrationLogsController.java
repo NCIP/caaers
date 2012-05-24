@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.dao.IntegrationLogDao;
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
@@ -16,6 +17,7 @@ import java.util.Set;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
@@ -39,7 +41,18 @@ public class CTEPESYSDataIntegrationLogsController extends SimpleFormController 
     
     private Map<Object, Object> serviceMap = new LinkedHashMap<Object, Object>();
     
-	
+    private Configuration configuration;
+    
+  	
+    @Required
+    public Configuration getConfiguration() {
+        return configuration;
+    }
+
+    public void setConfiguration(Configuration configuration) {
+        this.configuration = configuration;
+    }
+
 	public CTEPESYSDataIntegrationLogsController() {
 		setCommandClass(CTEPESYSDataIntegrationLogsCommand.class);
 		
@@ -110,6 +123,9 @@ public class CTEPESYSDataIntegrationLogsController extends SimpleFormController 
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
     	CTEPESYSDataIntegrationLogsCommand cmd =  new CTEPESYSDataIntegrationLogsCommand();
+    	if(configuration.get(Configuration.ESB_LOG_LOCATION) != null ){
+    		cmd.setEsbLogsLocationExists(true);
+    	}
     	
     	return cmd;
     }
