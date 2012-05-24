@@ -245,11 +245,14 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 					for(String errMsg : errors){
 						messages.add(errMsg);
 		        	}
+					
+					String msg = "Study with Short Title \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle()+ "\" could not be created in caAERS. "
+                            + messages.toString();
 
-                    Helper.populateError(caaersServiceResponse, "WS_GEN_000", "Study with Short Title \""
-                            +  studyImportOutcome.getImportedDomainObject().getShortTitle()
-                            + "\" could not be created in caAERS. "
-                            + messages.toString());
+                    Helper.populateError(caaersServiceResponse, "WS_GEN_000", msg);
+                    
+                    Helper.populateProcessingOutcome(caaersServiceResponse, Helper.createOutcome(Study.class, 
+                    		studyImportOutcome.getImportedDomainObject().getFundingSponsorIdentifierValue(), true, msg ));
 				}
 			}
 			
