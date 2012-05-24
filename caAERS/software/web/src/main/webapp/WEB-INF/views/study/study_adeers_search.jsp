@@ -212,8 +212,8 @@
                     "id":"${s.id}",
                     "fsid":"${s.fundingSponsorIdentifierValue}",
                     "ncic":"${s.fundingSponsorIdentifier.organization.nciInstituteCode}",
-                    "shortTitle":"${s.shortTitle}",
-                    "longTitle":"${s.longTitle}",
+                    "shortTitle":"<c:out value="${s.shortTitle}" escapeXml="true" />",
+                    "longTitle":"<c:out value="${s.longTitle}" escapeXml="true" />",
                     "action":"${s.status}"
                 },
             </c:forEach>
