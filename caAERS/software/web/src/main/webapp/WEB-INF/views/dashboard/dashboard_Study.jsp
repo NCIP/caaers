@@ -119,7 +119,7 @@
     function showDashboardStudiesMenuOptions(_ssi, _id, _complete) {
         var _el = jQuery("#_d_study_" + _ssi);
         var html = "<div><ul style='font-family:tahoma;'>" +
-                "<li><a class='submitter-blue' href='#' onclick='doEdit(\"" + _id + "\")'>Edit study details (" + _complete + ")</a></li>" +
+                "<li><a class='submitter-blue' href='#' onclick='doEdit(\"" + _id + "\")'>Edit study details</a></li>" +
                 "<li><a class='submitter-blue' href='#' onclick='addStudySite(\"" + _id + "\", " + _complete + ")'>Add Study Site</a></li>" +
                 "<li><a class='submitter-blue' href='#' onclick='doRegisterSubject(\"" + _id + "\")'>Register Subject</a></li>" +
                 "<li><a class='submitter-blue' href='#' onclick='doUpdate(\"" + _ssi + "\", \"" + _id + "\")'>Synchronize with CTEP</a></li>" +
