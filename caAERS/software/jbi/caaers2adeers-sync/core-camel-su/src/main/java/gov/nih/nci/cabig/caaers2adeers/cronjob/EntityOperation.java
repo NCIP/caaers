@@ -16,17 +16,19 @@ public enum EntityOperation{
     private String qualifiedName;
     private String operationName;
     private Boolean async = true;
+    private Boolean useDefaultDate = true;
     private String cronJobExpression;
 
-     private EntityOperation(String qualifiedName, String operationName, String cronJobExpression, boolean async) {
+     private EntityOperation(String qualifiedName, String operationName, String cronJobExpression, boolean async, boolean useDefaultDate) {
         this.qualifiedName = qualifiedName;
         this.operationName = operationName;
         this.cronJobExpression = cronJobExpression;
         this.async = async;
+        this.useDefaultDate = useDefaultDate;
     }
      
      private EntityOperation(String qualifiedName, String operationName, String cronJobExpression) {
-         this(qualifiedName, operationName, cronJobExpression , true);
+         this(qualifiedName, operationName, cronJobExpression , true, false);
      }
 
 	public String getQualifiedName() {
@@ -63,6 +65,14 @@ public enum EntityOperation{
 
 	public void setCronJobExpression(String cronJobExpression) {
 		this.cronJobExpression = cronJobExpression;
+	}
+
+	public Boolean getUseDefaultDate() {
+		return useDefaultDate;
+	}
+
+	public void setUseDefaultDate(Boolean useDefaultDate) {
+		this.useDefaultDate = useDefaultDate;
 	}
 
 }

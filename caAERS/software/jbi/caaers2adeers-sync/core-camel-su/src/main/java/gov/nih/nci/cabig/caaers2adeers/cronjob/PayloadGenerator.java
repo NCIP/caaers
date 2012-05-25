@@ -2,6 +2,8 @@ package gov.nih.nci.cabig.caaers2adeers.cronjob;
 
 import gov.nih.nci.cabig.caaers2adeers.track.IntegrationLogDao;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.camel.Exchange;
@@ -31,7 +33,12 @@ public class PayloadGenerator implements Processor {
 				payloads.append(getPayloadForMergedOrg(entityOperation.getQualifiedName(), entityOperation.getOperationName(), entityOperation.getMode(), nciCode));
 			}
 		}else{
-			String date = integrationLogDao.findLastRequestCompletedDatetime(entityOperation.getQualifiedName());
+			String date = null;
+			if(entityOperation.getUseDefaultDate()){
+				date = IntegrationLogDao.DATE;
+			}else{
+				date = integrationLogDao.findLastRequestCompletedDatetime(entityOperation.getQualifiedName());
+			}
 			payloads.append(getPayloadForDate(entityOperation.getQualifiedName(), entityOperation.getOperationName(), entityOperation.getMode(), date));
 		}
 		payloads.append("</payloads>");

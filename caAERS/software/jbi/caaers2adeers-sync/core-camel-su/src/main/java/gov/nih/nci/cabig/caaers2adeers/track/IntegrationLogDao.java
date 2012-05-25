@@ -21,6 +21,8 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 public class IntegrationLogDao{
 	
     protected static final Log log = LogFactory.getLog(IntegrationLogDao.class);
+    
+    public static final String DATE = "1900-01-01T01:01:10";
 	
 	private HibernateTemplate hibernateTemplate;
 
@@ -34,15 +36,14 @@ public class IntegrationLogDao{
 	
 	public String findLastRequestCompletedDatetime(final String entity){
 
-        String date = "1900-01-01T01:01:10";
 		String query = "select max(loggedOn) from IntegrationLog where stage=:stage and entity =:entity";
 
 		List<Object> result = hibernateTemplate.findByNamedParam(query,
                 new String[]{"stage", "entity"} , new Object[]{Stage.REQUEST_COMPLETION, entity});
 
-        if(result == null || result.isEmpty()) return date;
+        if(result == null || result.isEmpty()) return DATE;
 
-        if(result.get(0) == null) return date;
+        if(result.get(0) == null) return DATE;
         return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format((Date)result.get(0));
         
 	}
