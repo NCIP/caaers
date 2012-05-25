@@ -89,7 +89,7 @@
                     flashText = "<caaers:message code="LBL_study.created" />";
                 }
 //                jQuery('#studyLink' + _index).html("<b>" + text + "</b>");
-                var _s = "<a onmouseover='showMenuOptions(#{index}, \"#{action}\", \"#{fsid}\", \"#{ncic}\", \"#{studyId}\")' id='_study#{index}' class='submitterButton submitter fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all'>Actions<span class='ui-icon ui-icon-triangle-1-s'></span></a>";
+                var _s = "<img src='<c:url value="/images/orange-actions.gif" />' border='0' onmouseover='showMenuOptions(#{index}, \"#{action}\", \"#{fsid}\", \"#{ncic}\", \"#{studyId}\")' id='_study#{index}'>";
                 _s = _s.interpolate({index:_index, action:"UPDATE", fsid:id, ncic:nciCode, studyId:_dbId})
                 jQuery('#studyLink' + _index).html(_s);
                 showFlashMessage(flashText);
@@ -172,7 +172,7 @@
         }
 
         var actionsRow = "<span id='studyLink#{index}'><img src='<c:url value="/images/orange-actions.gif" />' border='0' onmouseover='showMenuOptions(#{index}, \"#{action}\", \"#{fsid}\", \"#{ncic}\", \"#{studyId}\")' id='_study#{index}' style='cursor: pointer;'></span>";
-        var actionsRowOneItem = "<span id='studyLink#{index}'><img src='<c:url value="/images/orange-actions.gif" />' border='0' onclick='doUpdate(\"#{fsid}\", \"#{index}\", \"#{ncic}\", \"CREATE\")' id='_study#{index}' style='cursor: pointer;'></span>";
+        var actionsRowOneItem = "<span id='studyLink#{index}'><img src='<c:url value="/images/orange-import.gif" />' border='0' onclick='doUpdate(\"#{fsid}\", \"#{index}\", \"#{ncic}\", \"CREATE\")' id='_study#{index}' style='cursor: pointer;'></span>";
 
         var actionFormatter = function(elCell, oRecord, oColumn, oData) {
             var _index = this.getRecordIndex(oRecord);
