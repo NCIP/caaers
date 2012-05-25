@@ -5,12 +5,31 @@ import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.createSelect
 import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.createTextField;
 import static gov.nih.nci.cabig.caaers.web.utils.WebUtils.collectOptions;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.AgentAdjustment;
+import gov.nih.nci.cabig.caaers.domain.Availability;
+import gov.nih.nci.cabig.caaers.domain.BehavioralIntervention;
+import gov.nih.nci.cabig.caaers.domain.BiologicalIntervention;
+import gov.nih.nci.cabig.caaers.domain.ConfigPropertyType;
+import gov.nih.nci.cabig.caaers.domain.CourseAgent;
+import gov.nih.nci.cabig.caaers.domain.DelayUnits;
+import gov.nih.nci.cabig.caaers.domain.DeviceOperator;
+import gov.nih.nci.cabig.caaers.domain.DietarySupplementIntervention;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReportChild;
+import gov.nih.nci.cabig.caaers.domain.GeneticIntervention;
+import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
+import gov.nih.nci.cabig.caaers.domain.OtherAEIntervention;
+import gov.nih.nci.cabig.caaers.domain.RadiationAdministration;
+import gov.nih.nci.cabig.caaers.domain.RadiationIntervention;
+import gov.nih.nci.cabig.caaers.domain.ReprocessedDevice;
+import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
-import gov.nih.nci.cabig.caaers.domain.repository.ConfigPropertyRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.ConfigPropertyRepositoryImpl;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
-import gov.nih.nci.cabig.caaers.web.fields.*;
-import gov.nih.nci.cabig.caaers.web.fields.validators.DecimalValidator;
+import gov.nih.nci.cabig.caaers.web.fields.CompositeField;
+import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.InputField;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
@@ -26,7 +45,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -40,7 +58,7 @@ public class StudyInterventionsTab extends AeTab {
 
     Map<String, String> methodNameMap = new HashMap<String, String>();
     private ConfigProperty configurationProperty;
-    ConfigPropertyRepository configPropertyRepository;
+    ConfigPropertyRepositoryImpl configPropertyRepositoryImpl;
 
     private static final String STUDY_INTERVENTION_SURGERY = "surgery";
     private static final String STUDY_INTERVENTION_DEVICE = "device";
@@ -156,7 +174,7 @@ public class StudyInterventionsTab extends AeTab {
         InputField totalDoseField = InputFieldFactory.createTextField("dose.amount", "Total dose administered this course", 
         		FieldValidator.SIGN_VALIDATOR, FieldValidator.createPatternBasedValidator("[0-9]{1,14}([.][0-9]{1,6})?", "DECIMAL"));
 
-        InputField totalUOMField = InputFieldFactory.createSelectField("dose.units","Unit of measure", false, WebUtils.sortMapByKey(WebUtils.collectOptions(configPropertyRepository.getByType(ConfigPropertyType.AGENT_UOM),"code", "name", "Please select"), true));
+        InputField totalUOMField = InputFieldFactory.createSelectField("dose.units","Unit of measure", false, WebUtils.sortMapByKey(WebUtils.collectOptions(configPropertyRepositoryImpl.getByType(ConfigPropertyType.AGENT_UOM),"code", "name", "Please select"), true));
         CompositeField adminDelayField = new CompositeField(null, new DefaultInputFieldGroup(null,"Administration delay").addField(InputFieldFactory.createTextField("administrationDelayAmount", "", false)).addField(InputFieldFactory.createSelectField("administrationDelayUnits", "", false,WebUtils.collectOptions(Arrays.asList(DelayUnits.values()), null, "displayName"))));
         InputField commentsField = InputFieldFactory.createTextArea("comments", "Comments", false);
         InputFieldAttributes.setColumns(commentsField, 70);
@@ -709,14 +727,6 @@ public class StudyInterventionsTab extends AeTab {
         this.expeditedAdverseEventReportDao = expeditedAdverseEventReportDao;
     }
 
-    public ConfigPropertyRepository getConfigPropertyRepository() {
-        return configPropertyRepository;
-    }
-
-    public void setConfigPropertyRepository(ConfigPropertyRepository configPropertyRepository) {
-        this.configPropertyRepository = configPropertyRepository;
-    }
-
     @Override
     public boolean hasEmptyMandatoryFields(ExpeditedAdverseEventInputCommand command, HttpServletRequest request) {
     	boolean hasEmptyFields =  super.hasEmptyMandatoryFields(command, request);
@@ -727,5 +737,14 @@ public class StudyInterventionsTab extends AeTab {
     	
     	return hasEmptyFields || !hasAtleastAnIntervention;
     }
+
+	public ConfigPropertyRepositoryImpl getConfigPropertyRepositoryImpl() {
+		return configPropertyRepositoryImpl;
+	}
+
+	public void setConfigPropertyRepositoryImpl(
+			ConfigPropertyRepositoryImpl configPropertyRepositoryImpl) {
+		this.configPropertyRepositoryImpl = configPropertyRepositoryImpl;
+	}
 
 }
