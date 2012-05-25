@@ -75,6 +75,9 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
 
 	public static final String SEARCH_STUDY_ENTITY_NAME="study";
 	public static final String SEARCH_STUDY_OPERATION_NAME="searchStudy";
+	
+	public static final String SYNC_CTCAE_ENTITY_NAME="ctcae";
+	public static final String SYNC_CTCAE_OPERATION_NAME="getCTCAELOV";
 
     private EventFactory eventFactory;
     private WebServiceTemplate webServiceTemplate;
@@ -230,6 +233,10 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
     public String syncAgentUOM() {
         return send( SYNC_DOSE_UOM_ENTITY_NAME, SYNC_DOSE_UOM_OPERATION_NAME, false, buildCriteriaMap(null));
     }
+    
+	public String syncCTCAE() {
+		 return send( SYNC_CTCAE_ENTITY_NAME, SYNC_CTCAE_OPERATION_NAME, false, buildCriteriaMap(null));
+	}
 
     public List<Study> searchStudies(String searchText) {
         List<Study> studyList =  new ArrayList<Study>();
@@ -325,8 +332,5 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
         }
         return syncStudy(UPDATE_STUDY_OPERATION_NAME, study.getFundingSponsorIdentifierValue());
     }
-
-
-
     
 }

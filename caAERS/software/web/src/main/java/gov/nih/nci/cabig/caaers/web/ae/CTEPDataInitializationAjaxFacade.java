@@ -57,6 +57,11 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
 		
 		StringBuffer sb = new StringBuffer();
 		String correlationId;
+		
+		if(ctcaeChecked){
+			correlationId = proxyWebServiceFacade.syncCTCAE();
+			generateSynchMessage(sb, correlationId, "CTCAE");
+		}
 		if(devicesChecked) {
 			correlationId = proxyWebServiceFacade.syncDevices();
 			generateSynchMessage(sb, correlationId, "Devices");
@@ -109,7 +114,6 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
 			sb.append("</font>");
 		}
 		
-		sb.append("\n");
 	}
 	
 	// display integration logs

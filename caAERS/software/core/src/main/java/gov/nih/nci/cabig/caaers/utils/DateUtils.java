@@ -17,7 +17,7 @@ public class DateUtils {
 
     public static final String DATE_PATTERN= "MM/dd/yyyy";
     public static final String WS_DATE_PATTERN= "yyyy-MM-dd'T'HH:mm:ss";
-    public static final String DATE_PATTERN_WITH_TZ= "EEE MMM dd yyyy h:mm:ss a zzzz";
+    public static final String DATE_PATTERN_WITH_TZ= "EEE MMM dd yyyy h:mm:ss a z";
     
     /**
      * Will return the difference in minutes between the two dates

@@ -83,5 +83,10 @@ public interface AdeersIntegrationFacade {
      */
     String syncLabs();
 
+    /**
+     * Will sync caAERS ctcae with AdEERS ctcae.
+     * @return the correlation Id
+     */
+    String syncCTCAE();
    
 }
