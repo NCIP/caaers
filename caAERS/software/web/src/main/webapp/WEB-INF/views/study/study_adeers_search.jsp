@@ -60,16 +60,16 @@
     }
 
     function showError(_errorMessage) {
+/*
         jQuery('#command_errors').html(_errorMessage);
         jQuery('#flashErrors').show();
         hideFlashErrorMessage.delay(10);
-/*
+*/
         popupDiv = new Window({className:"alphacube", width:300, height:100, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:true, minimizable:false, maximizable:false});
-        jQuery('#_errorMessage').html("Some Error goes here: " + _errorMessage);
+        jQuery('#_errorMessage').html(_errorMessage);
         popupDiv.setContent('error_page');
         popupDiv.showCenter(true);
         popupDiv.show();
-*/
     }
 
     function doUpdate(id, _index, nciCode, operation, studyDbId) {
