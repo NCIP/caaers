@@ -236,5 +236,5 @@
     <br><br>
     <div><caaers:message code="LBL_study.in.process" /></div>
 </div>
-<div id="error_page" style="display: none;"><div><caaers:message code="LBL_study.process.error" /></div><br><span id="_errorMessage">.</span></div>
+<div id="error_page" class="flash-message error" style="display: none;"><div><caaers:message code="LBL_study.process.error" /></div><br><span id="_errorMessage">.</span></div>
 <div id="search_submit" class="flash-message info" style="display: none;"><h3><img src= "<chrome:imageUrl name="../check.png"/>" />&nbsp;<caaers:message code="LBL_please.wait" /></h3><br><br><div><caaers:message code="LBL_study.searching" /></div></div>
