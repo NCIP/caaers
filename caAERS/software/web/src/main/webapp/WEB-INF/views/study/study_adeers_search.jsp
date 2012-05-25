@@ -65,7 +65,7 @@
         jQuery('#flashErrors').show();
         hideFlashErrorMessage.delay(10);
 */
-        popupDiv = new Window({className:"alphacube", width:300, height:100, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:true, minimizable:false, maximizable:false});
+        popupDiv = new Window({className:"alphacube", width:500, height:120, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:true, minimizable:false, maximizable:false});
         jQuery('#_errorMessage').html(_errorMessage);
         popupDiv.setContent('error_page');
         popupDiv.showCenter(true);
