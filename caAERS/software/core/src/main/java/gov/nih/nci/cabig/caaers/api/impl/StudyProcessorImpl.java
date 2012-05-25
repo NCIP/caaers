@@ -249,6 +249,8 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 					String msg = "Study with Short Title \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle()+ "\" could not be created in caAERS. "
                             + messages.toString();
 
+                    msg = msg.replaceAll(">", "&gt;");
+
                     Helper.populateError(caaersServiceResponse, "WS_GEN_000", msg);
                     
                     Helper.populateProcessingOutcome(caaersServiceResponse, Helper.createOutcome(Study.class, 
