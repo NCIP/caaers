@@ -336,7 +336,10 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
                     logger.info("Study Updated");
                 } catch (Exception e) {
                     logger.error("Error while saving the study :" + e.getMessage(), e);
-                    Helper.populateError(caaersServiceResponse, "WS_GEN_000", "Cannot process study : " + e.getMessage());
+                    String msg = "Cannot process study : " + e.getMessage();
+                    Helper.populateError(caaersServiceResponse, "WS_GEN_000", msg);
+                    Helper.populateProcessingOutcome(caaersServiceResponse, Helper.createOutcome(Study.class,
+                                        		studyImportOutcome.getImportedDomainObject().getFundingSponsorIdentifierValue(), true, msg));
                 }
 
 
