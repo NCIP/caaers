@@ -253,6 +253,7 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
                     
                     Helper.populateProcessingOutcome(caaersServiceResponse, Helper.createOutcome(Study.class, 
                     		studyImportOutcome.getImportedDomainObject().getFundingSponsorIdentifierValue(), true, msg ));
+                    logger.debug(">>> ERR:" + msg);
 				}
 			}
 			
