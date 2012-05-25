@@ -199,4 +199,15 @@ public class DateUtilsTest extends TestCase {
             fail("should not throw error");
         }
     }
+    
+    public void testDateFormatWithTimeZone(){
+    	try {
+    		Date now = new Date();
+    		String d = DateUtils.formatDate(now, DateUtils.DATE_PATTERN_WITH_TZ);
+    		System.out.println(d);
+    	}catch (Exception e){
+    		e.printStackTrace();
+    		fail("should not throw error");
+    	}
+    }
 }

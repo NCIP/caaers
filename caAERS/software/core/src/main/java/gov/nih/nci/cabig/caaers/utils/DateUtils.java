@@ -1,16 +1,14 @@
 package gov.nih.nci.cabig.caaers.utils;
 
 import gov.nih.nci.cabig.caaers.domain.DateValue;
-import org.apache.commons.lang.StringUtils;
-import sun.util.calendar.Gregorian;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
  * @author Ion C. Olaru
@@ -19,7 +17,8 @@ public class DateUtils {
 
     public static final String DATE_PATTERN= "MM/dd/yyyy";
     public static final String WS_DATE_PATTERN= "yyyy-MM-dd'T'HH:mm:ss";
-
+    public static final String DATE_PATTERN_WITH_TZ= "EEE MMM dd yyyy h:mm:ss a zzzz";
+    
     /**
      * Will return the difference in minutes between the two dates
      * @param d1

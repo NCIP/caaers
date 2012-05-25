@@ -51,21 +51,65 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
 		this.integrationLogDao = integrationLogDao;
 	}
 
-	public int importCTEPData(boolean ctcaeChecked, boolean devicesChecked, boolean preExistingConditionsChecked, 
+	public String importCTEPData(boolean ctcaeChecked, boolean devicesChecked, boolean preExistingConditionsChecked, 
 			boolean therapiesChecked, boolean agentDoseMeasureChecked, boolean labChecked,
 			boolean agentsChecked, boolean asaelChecked, boolean organizationsChecked) {
 		
-		if(devicesChecked) proxyWebServiceFacade.syncDevices();
-		if(preExistingConditionsChecked) proxyWebServiceFacade.syncPreExistingConditionLOV();
-		if(therapiesChecked) proxyWebServiceFacade.syncPriorTherapyLOV();
-		if(agentsChecked) proxyWebServiceFacade.syncAgents();
-		if(asaelChecked) proxyWebServiceFacade.syncASAEL();
-		if(organizationsChecked) proxyWebServiceFacade.syncOrganizations();
-		if(agentDoseMeasureChecked) proxyWebServiceFacade.syncAgentUOM();
-		if(labChecked)proxyWebServiceFacade.syncLabs();
+		StringBuffer sb = new StringBuffer();
+		String correlationId;
+		if(devicesChecked) {
+			correlationId = proxyWebServiceFacade.syncDevices();
+			generateSynchMessage(sb, correlationId, "Devices");
+		}
+		if(preExistingConditionsChecked) {
+			correlationId = proxyWebServiceFacade.syncPreExistingConditionLOV();
+			generateSynchMessage(sb, correlationId, "PreExisting Conditions");
+		}
+		if(therapiesChecked){
+			correlationId = proxyWebServiceFacade.syncPriorTherapyLOV();
+			generateSynchMessage(sb, correlationId, "Therapies");
+		}
+		if(agentsChecked) {
+			correlationId = proxyWebServiceFacade.syncAgents();
+			generateSynchMessage(sb, correlationId, "Agents");
+		}
+		if(asaelChecked){
+			correlationId = proxyWebServiceFacade.syncASAEL();
+			generateSynchMessage(sb, correlationId, "ASAEL");
+		}
+		if(organizationsChecked) {
+			correlationId = proxyWebServiceFacade.syncOrganizations();
+			generateSynchMessage(sb, correlationId, "Organizations");
+		}
+		if(agentDoseMeasureChecked) {
+			correlationId = proxyWebServiceFacade.syncAgentUOM();
+			generateSynchMessage(sb, correlationId, "Agent Dose UOM");
+		}
+		if(labChecked){
+			correlationId = proxyWebServiceFacade.syncLabs();
+			generateSynchMessage(sb, correlationId, "Labs");
+		}
+		
+		return sb.toString();
 
-		return 1;
-
+	}
+	
+	public void generateSynchMessage(StringBuffer sb, String correlationId, String entity){
+		IntegrationLogQuery query = new IntegrationLogQuery();
+		query.filterByComplete();
+		query.filterByCorrelationId(correlationId);
+		
+		if (integrationLogDao.searchIntegrationLogs(query).size() > 0){
+			sb.append("<font color='#008000'>");
+			sb.append(entity + " synch succeeded");
+			sb.append("</font>");
+		}else {
+			sb.append("<font color='#D94444'>");
+			sb.append(entity + " synch failed");
+			sb.append("</font>");
+		}
+		
+		sb.append("\n");
 	}
 	
 	// display integration logs

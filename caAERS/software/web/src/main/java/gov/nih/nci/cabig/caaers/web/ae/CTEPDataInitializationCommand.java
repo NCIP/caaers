@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
+
 import java.util.Date;
 
 
@@ -39,6 +41,14 @@ public class CTEPDataInitializationCommand {
 	public Date getCtcaeLastUpdated() {
 		return ctcaeLastUpdated;
 	}
+	
+	public String getCtcaeLastUpdatedStr() {
+		String ctcaeLastUpdatedStr = "";
+		if(ctcaeLastUpdated != null){
+			ctcaeLastUpdatedStr = DateUtils.formatDate(ctcaeLastUpdated, DateUtils.DATE_PATTERN_WITH_TZ);
+		}
+		return ctcaeLastUpdatedStr;
+	}
 
 
 	public void setCtcaeLastUpdated(Date ctcaeLastUpdated) {
@@ -49,6 +59,14 @@ public class CTEPDataInitializationCommand {
 	public Date getDevicesLastUpdated() {
 		return devicesLastUpdated;
 	}
+	
+	public String getDevicesLastUpdatedStr() {
+		String devicesLastUpdatedStr = "";
+		if(devicesLastUpdated != null){
+			devicesLastUpdatedStr = DateUtils.formatDate(devicesLastUpdated, DateUtils.DATE_PATTERN_WITH_TZ);
+		}
+		return devicesLastUpdatedStr;
+	}
 
 
 	public void setDevicesLastUpdated(Date devicesLastUpdated) {
@@ -58,6 +76,14 @@ public class CTEPDataInitializationCommand {
 
 	public Date getPreExistingConditionsLastUpdated() {
 		return preExistingConditionsLastUpdated;
+	}
+	
+	public String getPreExistingConditionsLastUpdatedStr() {
+		String preExistingConditionsLastUpdatedStr = "";
+		if(preExistingConditionsLastUpdated != null){
+			preExistingConditionsLastUpdatedStr = DateUtils.formatDate(preExistingConditionsLastUpdated, DateUtils.DATE_PATTERN_WITH_TZ);
+		}
+		return preExistingConditionsLastUpdatedStr;
 	}
 
 
@@ -70,6 +96,14 @@ public class CTEPDataInitializationCommand {
 	public Date getTherapiesLastUpdated() {
 		return therapiesLastUpdated;
 	}
+	
+	public String getTherapiesLastUpdatedStr() {
+		String therapiesLastUpdatedStr = "";
+		if(therapiesLastUpdated != null){
+			therapiesLastUpdatedStr = DateUtils.formatDate(therapiesLastUpdated, DateUtils.DATE_PATTERN_WITH_TZ);
+		}
+		return therapiesLastUpdatedStr;
+	}
 
 
 	public void setTherapiesLastUpdated(Date therapiesLastUpdated) {
@@ -79,6 +113,14 @@ public class CTEPDataInitializationCommand {
 
 	public Date getAgentDoseMeasureLastUpdated() {
 		return agentDoseMeasureLastUpdated;
+	}
+	
+	public String getAgentDoseMeasureLastUpdatedStr() {
+		String agentDoseMeasureLastUpdatedStr = "";
+		if(agentDoseMeasureLastUpdated != null){
+			agentDoseMeasureLastUpdatedStr = DateUtils.formatDate(agentDoseMeasureLastUpdated, DateUtils.DATE_PATTERN_WITH_TZ);
+		}
+		return agentDoseMeasureLastUpdatedStr;
 	}
 
 
@@ -90,6 +132,14 @@ public class CTEPDataInitializationCommand {
 	public Date getAgentsLastUpdated() {
 		return agentsLastUpdated;
 	}
+	
+	public String getAgentsLastUpdatedStr() {
+		String agentsLastUpdatedStr = "";
+		if(agentsLastUpdated != null){
+			agentsLastUpdatedStr = DateUtils.formatDate(agentsLastUpdated, DateUtils.DATE_PATTERN_WITH_TZ);
+		}
+		return agentsLastUpdatedStr;
+	}
 
 
 	public void setAgentsLastUpdated(Date agentsLastUpdated) {
@@ -100,6 +150,14 @@ public class CTEPDataInitializationCommand {
 	public Date getAsaelLastUpdated() {
 		return asaelLastUpdated;
 	}
+	
+	public String getAsaelLastUpdatedStr() {
+		String asaelLastUpdatedStr = "";
+		if(asaelLastUpdated != null){
+			asaelLastUpdatedStr = DateUtils.formatDate(asaelLastUpdated, DateUtils.DATE_PATTERN_WITH_TZ);
+		}
+		return asaelLastUpdatedStr;
+	}
 
 
 	public void setAsaelLastUpdated(Date asaelLastUpdated) {
@@ -109,6 +167,14 @@ public class CTEPDataInitializationCommand {
 
 	public Date getOrganizationsLastUpdated() {
 		return organizationsLastUpdated;
+	}
+	
+	public String getOrganizationsLastUpdatedStr() {
+		String organizationsLastUpdatedStr = "";
+		if(organizationsLastUpdated != null){
+			organizationsLastUpdatedStr = DateUtils.formatDate(organizationsLastUpdated, DateUtils.DATE_PATTERN_WITH_TZ);
+		}
+		return organizationsLastUpdatedStr;
 	}
 
 
@@ -194,6 +260,14 @@ public class CTEPDataInitializationCommand {
 
 	public Date getLabLastUpdated() {
 		return labLastUpdated;
+	}
+	
+	public String getLabLastUpdatedStr() {
+		String labLastUpdatedStr = "";
+		if(labLastUpdated != null){
+			labLastUpdatedStr = DateUtils.formatDate(labLastUpdated, DateUtils.DATE_PATTERN_WITH_TZ);
+		}
+		return labLastUpdatedStr;
 	}
 
 
