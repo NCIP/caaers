@@ -52,35 +52,36 @@
     }
 
     function showPopup() {
-        popupDiv = new Window({className:"alphacube", width:500, height:125, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:true, minimizable:false, maximizable:false});
+        popupDiv = new Window({className:"alphacube", width:500, height:125, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
         popupDiv.setContent("please_wait");
         popupDiv.showCenter(true);
         popupDiv.show();
         return popupDiv;
     }
 
-    function showError(p, _errorMessage) {
-/*
+    function showError(_errorMessage) {
         jQuery('#command_errors').html(_errorMessage);
         jQuery('#flashErrors').show();
         hideFlashErrorMessage.delay(10);
+/*
+        popupDiv = new Window({className:"alphacube", width:300, height:100, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:true, minimizable:false, maximizable:false});
+        jQuery('#_errorMessage').html("Some Error goes here: " + _errorMessage);
+        popupDiv.setContent('error_page');
+        popupDiv.showCenter(true);
+        popupDiv.show();
 */
-//        new Window({className:"alphacube", width:300, height:100, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:true, minimizable:false, maximizable:false});
-        jQuery('#_errorMessage').html(_errorMessage);
-        p.setContent('error_page');
     }
 
     function doUpdate(id, _index, nciCode, operation, studyDbId) {
 //        jQuery('#studyLink' + _index).html(_ajaxIndicatorHtml);
-        var p = showPopup();
+        p = showPopup();
         createStudy.syncStudyWithAdEERS(id, studyDbId, function(_resultId) {
+            popupDiv.close();
 
             if (_resultId.error) {
-                showError(p, _resultId.errorMessage);
+                showError(_resultId.errorMessage);
 //                jQuery('#studyLink' + _index).html("<b>Error</b>");
             } else {
-                popupDiv.close();
-
                 var _dbId = _resultId.objectContent;
                 var text = "Updated";
                 var flashText = "<caaers:message code="LBL_study.updated" />";
