@@ -171,8 +171,8 @@
                 });
         }
 
-        var actionsRow = "<span id='studyLink#{index}'><a onmouseover='showMenuOptions(#{index}, \"#{action}\", \"#{fsid}\", \"#{ncic}\", \"#{studyId}\")' id='_study#{index}' class='submitterButton submitter fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all'>Actions<span class='ui-icon ui-icon-triangle-1-s'></span></a></span>";
-        var actionsRowOneItem = "<span id='studyLink#{index}'><a onclick='doUpdate(\"#{fsid}\", \"#{index}\", \"#{ncic}\", \"CREATE\")' id='_study#{index}' class='submitterButton submitter fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all'>Import<span class='ui-icon ui-icon-triangle-1-s' style='display:none;'></span></a></span>";
+        var actionsRow = "<span id='studyLink#{index}'><img src='<c:url value="/images/orange-actions.gif" />' border='0' onmouseover='showMenuOptions(#{index}, \"#{action}\", \"#{fsid}\", \"#{ncic}\", \"#{studyId}\")' id='_study#{index}' style='cursor: pointer;'></span>";
+        var actionsRowOneItem = "<span id='studyLink#{index}'><img src='<c:url value="/images/orange-actions.gif" />' border='0' onclick='doUpdate(\"#{fsid}\", \"#{index}\", \"#{ncic}\", \"CREATE\")' id='_study#{index}' style='cursor: pointer;'></span>";
 
         var actionFormatter = function(elCell, oRecord, oColumn, oData) {
             var _index = this.getRecordIndex(oRecord);
