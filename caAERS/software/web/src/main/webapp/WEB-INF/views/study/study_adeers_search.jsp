@@ -89,7 +89,7 @@
                     flashText = "<caaers:message code="LBL_study.created" />";
                 }
 //                jQuery('#studyLink' + _index).html("<b>" + text + "</b>");
-                var _s = "<img src='<c:url value="/images/orange-actions.gif" />' border='0' onmouseover='showMenuOptions(#{index}, \"#{action}\", \"#{fsid}\", \"#{ncic}\", \"#{studyId}\")' id='_study#{index}'>";
+                var _s = "<img src='<c:url value="/images/orange-actions.gif" />' border='0' onmouseover='showMenuOptions(#{index}, \"#{action}\", \"#{fsid}\", \"#{ncic}\", \"#{studyId}\")' id='_study#{index}' style='cursor:pointer;'>";
                 _s = _s.interpolate({index:_index, action:"UPDATE", fsid:id, ncic:nciCode, studyId:_dbId})
                 jQuery('#studyLink' + _index).html(_s);
                 showFlashMessage(flashText);
