@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.repository.ConfigPropertyRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.ConfigPropertyRepositoryImpl;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
@@ -25,11 +26,11 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @CaaersUseCases( { CREATE_EXPEDITED_REPORT })
 public class InterventionsTabTest extends AeTabTestCase {
-    ConfigPropertyRepository cpRepository;
+	ConfigPropertyRepositoryImpl cpRepository;
     @Override
     protected StudyInterventionsTab createTab() {
         ConfigProperty configProperty = new ConfigProperty();
-        cpRepository = registerMockFor(ConfigPropertyRepository.class);
+        cpRepository = registerMockFor(ConfigPropertyRepositoryImpl.class);
         Map<String, List<Lov>> map = new HashMap<String, List<Lov>>();
         map.put("radiationDoseUMORefData", new ArrayList<Lov>());
         map.put("radiationAdjustmentRefData", new ArrayList<Lov>());
@@ -37,7 +38,7 @@ public class InterventionsTabTest extends AeTabTestCase {
         configProperty.setMap(map);
         StudyInterventionsTab tab = new StudyInterventionsTab();
         tab.setConfigurationProperty(configProperty);
-        tab.setConfigPropertyRepository(cpRepository);
+        tab.setConfigPropertyRepositoryImpl(cpRepository);
 
         List<gov.nih.nci.cabig.caaers.domain.ConfigProperty> cpList = new ArrayList<gov.nih.nci.cabig.caaers.domain.ConfigProperty>();
         cpList.add(Fixtures.createConfigProperty("bp"));
