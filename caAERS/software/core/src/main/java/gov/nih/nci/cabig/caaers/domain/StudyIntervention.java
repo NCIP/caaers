@@ -27,7 +27,7 @@ public abstract class StudyIntervention extends AbstractMutableRetireableDomainO
      * @see gov.nih.nci.cabig.caaers.domain.StudyChild#getStudy()
      */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "study_id")
+    @JoinColumn(name = "study_id", nullable = false)
     @Cascade(value = {CascadeType.EVICT})
     public Study getStudy() {
         return study;
