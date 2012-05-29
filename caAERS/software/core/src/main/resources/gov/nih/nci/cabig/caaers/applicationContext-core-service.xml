@@ -202,6 +202,7 @@ default-lazy-init="true">
 	</bean>
 
 	<bean id="studyDeviceMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.StudyDeviceMigrator" autowire="byType" />
+	<bean id="studyInterventionMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.StudyInterventionMigrator" autowire="byType" />
 
 	<bean id="studyMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.StudyMigrator">
 		<property name="children">
@@ -218,6 +219,7 @@ default-lazy-init="true">
 				<ref bean="studyEvaluationPeriodsMigrator" />
 				<ref bean="studyExpectedAEMigrator" />
 				<ref bean="studyDeviceMigrator" />
+				<ref bean="studyInterventionMigrator" />
 			</list>
 		</property>
 	</bean>

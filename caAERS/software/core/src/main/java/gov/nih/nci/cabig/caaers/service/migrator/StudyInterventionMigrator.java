@@ -16,6 +16,8 @@ import java.util.Set;
 public class StudyInterventionMigrator implements Migrator<Study> {
 
     public void migrate(Study src, Study dest, DomainObjectImportOutcome<Study> studyDomainObjectImportOutcome) {
+        if(src.getOtherInterventions() == null || src.getOtherInterventions().isEmpty()) return;
+        dest.getOtherInterventions().addAll(src.getOtherInterventions());
     }
 
 }
