@@ -25,7 +25,7 @@ public class ToAdeersRouteBuilder {
 
 		//BASE - Content based Router
 		routeBuilder.from("direct:adEERSRequestSink")
-    		.to("log:caaers.to-adeers")
+    		.to("log:gov.nih.nci.cabig.caaers2adeers.to-adeers?level=TRACE")
     		.process(track(ROUTED_TO_ADEERS_WS_INVOCATION_CHANNEL))
     		.choice()
     			.when().xpath(xpathPredicate("agent", "getAgentsLOV")).to("direct:adeers-agent-lov")

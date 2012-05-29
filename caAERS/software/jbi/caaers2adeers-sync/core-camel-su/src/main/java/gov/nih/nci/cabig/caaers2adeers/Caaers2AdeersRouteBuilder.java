@@ -60,7 +60,7 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
         .process(track(serviceCompletionStage, true))
         .process(track(xslOutStage))
 		.to("xslt:" + responseXSL)
-        .to("log:caaers.afterWSCallResponseXSL?showHeaders=true")
+        .to("log:gov.nih.nci.cabig.caaers2adeers.afterWSCallResponseXSL?showHeaders=true&level=TRACE&showException=true&showStackTrace=true")
         .process(track(toSinkStage))
 		.to(toSink);
 	}
@@ -94,7 +94,7 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
     	
 
         //configure all the Quartz cron jobs
-//        cronJobRouteBuilder.configure(this);
+        cronJobRouteBuilder.configure(this);
         //configure routes towards adeers
     	toAdeersRouteBuilder.configure(this);
         //configure route towards caAERS Webservices
@@ -104,7 +104,7 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
 
     	//need to process AdEERS results, may be the SyncComponent...  
     	from("direct:adEERSResponseSink")
-                .to("log:caaers.synch-comp?showHeaders=true")
+                .to("log:gov.nih.nci.cabig.caaers2adeers.synch-comp?showHeaders=true&level=TRACE&showException=true&showStackTrace=true")
                 .choice()
                     .when().xpath("not(//operation/data/child::*/child::*)")
                         .process(track(NO_DATA_AVAILABLE, "Processed"))
@@ -127,13 +127,13 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
 
         //BELOW 2 routes are the final sinks of messages.
         from("direct:outputSink")
-                .to("log:from-outputSink?showAll=true")
+                .to("log:gov.nih.nci.cabig.caaers2adeers.from-outputSink?showAll=true&level=TRACE&showException=true&showStackTrace=true")
                 .process(track(REQUEST_COMPLETION))
                 .to(fileTracker.fileURI(REQUEST_COMPLETION)) ;
 
 		//invalid requests
         from("direct:morgue")
-                .to("log:caaers.invalid?showAll=true&level=WARN")
+                .to("log:gov.nih.nci.cabig.caaers2adeers.invalid?showAll=true&level=WARN&showException=true&showStackTrace=true")
         		.process(track(REQUST_PROCESSING_ERROR, "Error"))
                 .to("xslt:xslt/caaers/response/unknown.xsl")
                 .to(fileTracker.fileURI(REQUST_PROCESSING_ERROR)) ;

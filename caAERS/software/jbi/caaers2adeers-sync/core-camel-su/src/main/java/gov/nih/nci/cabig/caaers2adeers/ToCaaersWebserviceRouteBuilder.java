@@ -37,7 +37,7 @@ public class ToCaaersWebserviceRouteBuilder {
 
 		//content based router
 		routeBuilder.from("direct:caaersWSRequestSink")
-		.to("log:caaers.caaers-ws-request?showHeaders=true")
+		.to("log:gov.nih.nci.cabig.caaers2adeers.caaers-ws-request?showHeaders=true&level=TRACE")
 		.process(track(ROUTED_TO_CAAERS_WS_INVOCATION_CHANNEL))
 		.choice()
 			.when().xpath(xpathPredicate("agent", "getAgentsLOV")).to("direct:caaers-agent-async")

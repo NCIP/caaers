@@ -58,7 +58,7 @@ public class CronJobRouteBuilder implements InitializingBean {
 						public void process(Exchange exchange) throws Exception {
 							System.gc();
 						}
-					}).to("log:"+new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(new Date())+"gc run complete");
+					}).to("log:gov.nih.nci.cabig.caaers2adeers."+new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(new Date())+"gc_run_complete?level=TRACE");
     }
 
 	public void setCronExpressions(Map<EntityOperation, String> cronExpressions) {
