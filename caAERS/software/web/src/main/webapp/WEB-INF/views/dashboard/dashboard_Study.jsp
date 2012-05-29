@@ -13,8 +13,8 @@
                     <table border="0" cellpadding="0" cellspacing="0" class="dashboard_table" width="100%">
                         <tr class="taskTitleRow">
                             <th width="60%">Title</th>
-                            <th width="25%">Status</th>
-                            <th width="15%">&nbsp;</th>
+                            <th width="23%">Status</th>
+                            <th width="80px">&nbsp;</th>
                         </tr>
                          <c:forEach var ="study" items="${studyList}" varStatus = "loopStatus">
                          	<tr class="${loopStatus.index % 2 == 0 ? 'alt' : ''}">
