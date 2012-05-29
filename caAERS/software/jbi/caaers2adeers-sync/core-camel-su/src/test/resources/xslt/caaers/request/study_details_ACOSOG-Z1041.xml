@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<payload>
+    <system>adeers</system>
+    <response>
+        <entity>study</entity>
+        <operation name="getStudyDetails">
+            <data>
+                <StudyDetails xmlns="">
+                    <ctcVersion>4.0</ctcVersion>
+                    <currentStatus>Active</currentStatus>
+                    <currentStatusDate>2007-07-02</currentStatusDate>
+                    <localDocumentNumber>Z1041</localDocumentNumber>
+                    <monitoringMethod>CDUS - Abbreviated</monitoringMethod>
+                    <nciDocumentNum>ACOSOG-Z1041</nciDocumentNum>
+                    <participationType>Group</participationType>
+                    <phase>III</phase>
+                    <primaryStudyType>Treatment</primaryStudyType>
+                    <sponsorOrganization>CTEP</sponsorOrganization>
+                    <studyAgents>
+                        <studyAgent createdDate="09-29-2005 08:22:12" lead="No" updatedDate="07-09-2007 11:32:10">
+                            <agent>
+                                <nscNumber>26271</nscNumber>
+                                <agentName>Cyclophosphamide</agentName>
+                                <agentStatus>Active</agentStatus>
+                                <inds>
+                                    <ind lead="Yes">
+                                        <indHolder>CTEP</indHolder>
+                                        <indNumber>6667</indNumber>
+                                    </ind>
+                                </inds>
+                            </agent>
+                            <commercialInvestigational>Commercial</commercialInvestigational>
+                        </studyAgent>
+                        <studyAgent createdDate="09-29-2005 08:22:12" lead="No" updatedDate="07-09-2007 11:32:19">
+                            <agent>
+                                <nscNumber>256942</nscNumber>
+                                <agentName>Epirubicin (Ellence)</agentName>
+                                <agentStatus>Active</agentStatus>
+                                <inds>
+                                    <ind lead="Yes">
+                                        <indHolder>CTEP</indHolder>
+                                        <indNumber>6667</indNumber>
+                                    </ind>
+                                </inds>
+                            </agent>
+                            <commercialInvestigational>Commercial</commercialInvestigational>
+                        </studyAgent>
+                        <studyAgent createdDate="09-29-2005 08:22:12" lead="No" updatedDate="07-09-2007 11:32:01">
+                            <agent>
+                                <nscNumber>19893</nscNumber>
+                                <agentName>5-Fluorouracil (5-FU)</agentName>
+                                <agentStatus>Active</agentStatus>
+                                <inds>
+                                    <ind lead="Yes">
+                                        <indHolder>CTEP</indHolder>
+                                        <indNumber>6667</indNumber>
+                                    </ind>
+                                </inds>
+                            </agent>
+                            <commercialInvestigational>Commercial</commercialInvestigational>
+                        </studyAgent>
+                        <studyAgent createdDate="09-29-2005 08:22:13" lead="No" updatedDate="07-09-2007 11:32:31">
+                            <agent>
+                                <nscNumber>673089</nscNumber>
+                                <agentName>Paclitaxel (Taxol)</agentName>
+                                <agentStatus>Active</agentStatus>
+                                <inds>
+                                    <ind lead="Yes">
+                                        <indHolder>CTEP</indHolder>
+                                        <indNumber>6667</indNumber>
+                                    </ind>
+                                </inds>
+                            </agent>
+                            <commercialInvestigational>Commercial</commercialInvestigational>
+                        </studyAgent>
+                        <studyAgent createdDate="09-29-2005 08:22:13" lead="Yes" updatedDate="05-12-2010 12:18:53">
+                            <agent>
+                                <nscNumber>688097</nscNumber>
+                                <agentName>Trastuzumab (Herceptin)</agentName>
+                                <agentStatus>Active</agentStatus>
+                                <inds>
+                                    <ind lead="Yes">
+                                        <indHolder>CTEP</indHolder>
+                                        <indNumber>6667</indNumber>
+                                    </ind>
+                                </inds>
+                            </agent>
+                            <commercialInvestigational>Investigational</commercialInvestigational>
+                        </studyAgent>
+                    </studyAgents>
+                    <studyDevices/>
+                    <studyDiseases>
+                        <studyDisease createdDate="09-29-2005 08:24:51" lead="Yes" updatedDate="">
+                            <diseaseName>Invasive breast carcinoma</diseaseName>
+                            <reportingMedDRA>10006190</reportingMedDRA>
+                        </studyDisease>
+                    </studyDiseases>
+                    <studyOrganizations>
+                        <studyOrganization createdDate="09-29-2005 08:18:22" role="Document to Lead Organization"
+                                           updatedDate="05-26-2006 15:49:08">
+                            <localDocumentNumber xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+                            <organization>
+                                <ctepId>ACOSOG</ctepId>
+                                <organizationName>American College of Surgeons Oncology Trials Group</organizationName>
+                                <organizationType>CGP</organizationType>
+                            </organization>
+                            <status>Active</status>
+                            <principalInvestigator ctepInvestigatorId="10610">
+                                <firstname>Aman</firstname>
+                                <middlename>U.</middlename>
+                                <lastname>Buzdar</lastname>
+                                <email>abuzdar@mdanderson.org.x</email>
+                                <principalInvestigatorStatus>Active</principalInvestigatorStatus>
+                            </principalInvestigator>
+                        </studyOrganization>
+                        <studyOrganization createdDate="09-28-2005 15:58:09" role="Document to Participant Organization"
+                                           updatedDate="04-04-2007 12:55:09">
+                            <localDocumentNumber>NSABP-B-41</localDocumentNumber>
+                            <organization>
+                                <ctepId>NSABP</ctepId>
+                                <organizationName>National Surgical Adjuvant Breast and Bowel Project</organizationName>
+                                <organizationType>CGP</organizationType>
+                            </organization>
+                            <status>Inactive</status>
+                        </studyOrganization>
+                        <studyOrganization createdDate="03-03-2008 10:47:36" role="Document to Participant Organization"
+                                           updatedDate="">
+                            <localDocumentNumber xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+                            <organization>
+                                <ctepId>CTSU</ctepId>
+                                <organizationName>Cancer Trials Support Unit</organizationName>
+                                <organizationType>CGP</organizationType>
+                            </organization>
+                            <status>Active</status>
+                        </studyOrganization>
+                    </studyOrganizations>
+                    <studyTherapies>
+                        <therapy createdDate="09-29-2005 08:25:11" updatedDate="07-11-2007 16:17:14">
+                            <ctepName>Drug and/or Immunotherapy</ctepName>
+                            <medDRACode>90003006</medDRACode>
+                            <preferredTerm xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+                        </therapy>
+                        <therapy createdDate="09-29-2005 08:25:11" updatedDate="07-11-2007 16:12:21">
+                            <ctepName>Surgery</ctepName>
+                            <medDRACode>10042609</medDRACode>
+                            <preferredTerm>Surgery</preferredTerm>
+                        </therapy>
+                    </studyTherapies>
+                    <studyTreatmentAssignments>
+                        <studyTreatmentAssignment createdDate="09-29-2005 09:56:30" updatedDate="10-01-2009 16:08:51">
+                            <tacDbId>14250</tacDbId>
+                            <code>ARM 1</code>
+                            <description>Chemotherapy Regimen - (FEC)
+                                Cycle = 21 days: (Max = 4 cycles)
+                                5-FU: 500mg/m2 IVP on day 1
+                                Epirubicin: 75mg/m2 IV over 15 min on day 1
+                                Cyclophosphamide: 500mg/m2 IV over 30 min on day 1
+
+                                21 days after last dose of FEC:
+                                Cycle = 12 weeks:
+                                Paclitaxel: 80mg/m2 IV over 60 min weekly
+                                Trastuzumab: 4mg/kg IV over 90 min week 1, then 2mg/kg IV over 30 min for remaining 11
+                                weeks
+
+                                3-4 wks after last preop dose of Trastuzumab, begin
+                                Cycle = 3 weeks:
+                                Trastuzumab: 6mg/kg IV over 60 min
+                                (Continue until 52 wks from first preop dose reached)
+                            </description>
+                        </studyTreatmentAssignment>
+                        <studyTreatmentAssignment createdDate="09-29-2005 10:03:08" updatedDate="10-01-2009 16:08:41">
+                            <tacDbId>14251</tacDbId>
+                            <code>ARM 2</code>
+                            <description>Chemotherapy Regimen - (FEC)
+                                Cycle = 12 weeks:
+                                Paclitaxel: 80mg/m2 IV over 60 min weekly
+                                Trastuzumab: 4mg/kg IV over 90 min week 1, then 2mg/kg IV over 30 min during subsequent
+                                12 weeks
+
+                                14 days after last dose Paclitaxel, begin FEC + Trastuzumab -
+                                Cycle = 21 days: (Max = 4 cycles)
+                                5-FU: 500mg/m2 IVP on day 1
+                                Epirubicin: 75mg/m2 IV over 15 min on day 1
+                                Cyclophosphamide: 500mg/m2 IV over 30 min on day 1
+                                Trastuzumab: 2mg/kg IV over 30 min weekly x 12 weeks.
+
+                                3-4 weeks after last preop dose of Trastuzumab, begin
+                                Cycle = 3 weeks:
+                                Trastuzumab: 6mg/kg IV over 60 min
+                                (Continue until 52 wks from first preop dose)
+                            </description>
+                        </studyTreatmentAssignment>
+                    </studyTreatmentAssignments>
+                    <title>A Randomized Phase III Trial Comparing a Neoadjuvant Regimen of FEC-75 Followed by Paclitaxel
+                        Plus Trastuzumab with a Neoadjuvant Regimen of Paclitaxel Plus Trastuzumab Followed by FEC-75
+                        Plus Trastuzumab in Patients with HER-2 Positive Operable Breast Cancer
+                    </title>
+                </StudyDetails>
+            </data>
+        </operation>
+    </response>
+</payload>

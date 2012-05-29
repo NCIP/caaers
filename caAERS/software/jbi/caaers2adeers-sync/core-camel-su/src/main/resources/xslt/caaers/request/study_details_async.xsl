@@ -241,10 +241,10 @@
                 or preferredTerm/text() = 'Gene Transfer'
                 or preferredTerm/text() = 'Image Directed Local Therapy'
                 or preferredTerm/text() = 'Hematopoietic Stem Cell Transplantation'">
-                <otherIntervention>
-                    <interventionType><xsl:call-template name="lookup"><xsl:with-param name="_map" select="$map//phases" /><xsl:with-param name="_code" select="preferredTerm" /></xsl:call-template></interventionType>
+                <stud:otherIntervention>
+                    <interventionType><xsl:call-template name="lookup"><xsl:with-param name="_map" select="$map//interventions" /><xsl:with-param name="_code" select="preferredTerm" /></xsl:call-template></interventionType>
                     <name><xsl:value-of select="preferredTerm" /></name>
-            </otherIntervention>
+            </stud:otherIntervention>
             </xsl:if>
 
     </xsl:template>
