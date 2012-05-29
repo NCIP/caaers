@@ -23,7 +23,7 @@
                                 <td><a href="<c:url value="/pages/participant/edit?participantId=${subject.id}"/>"><c:out value="${subject.firstName}" escapeXml="true" /></a></td>
                                 <td><a href="<c:url value="/pages/participant/edit?participantId=${subject.id}"/>"><c:out value="${subject.lastName}" escapeXml="true" /></a></td>
                                 <td>${fn:length(subject.assignments)}</td>
-                                <td><img src="<c:url value="/images/orange-actions.gif" />" border="0" onmouseover='showDashboardSubjectsMenuOptions("${subject.id}")' id='_d_subject_${subject.id}' style="cursor: pointer;"></td>
+                                <td align="RIGHT"><img src="<c:url value="/images/orange-actions.gif" />" border="0" onmouseover='showDashboardSubjectsMenuOptions("${subject.id}")' id='_d_subject_${subject.id}' style="cursor: pointer;"></td>
                            </tr>
                            <c:if test="${fn:length(subject.assignments) > 0}">
                                <c:forEach var="assignment" items="${subject.assignments}" varStatus="i">
