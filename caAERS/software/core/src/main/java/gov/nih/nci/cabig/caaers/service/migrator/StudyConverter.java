@@ -967,10 +967,9 @@ public class StudyConverter {
 					ctepStudyDisease.setLeadDisease(ctepStudyDiseaseType.isLeadDisease());
 					if(ctepStudyDiseaseType.getDiseaseTerm().getTerm() != null){
 						ctepStudyDisease.getDiseaseTerm().setTerm(ctepStudyDiseaseType.getDiseaseTerm().getTerm());
-					}else{
-						if(ctepStudyDiseaseType.getDiseaseTerm().getMeddraCode() != null){
-							ctepStudyDisease.getDiseaseTerm().setMeddraCode(ctepStudyDiseaseType.getDiseaseTerm().getMeddraCode());
-						}
+					}
+					if(ctepStudyDiseaseType.getDiseaseTerm().getMeddraCode() != null){
+						ctepStudyDisease.getDiseaseTerm().setMeddraCode(ctepStudyDiseaseType.getDiseaseTerm().getMeddraCode());
 					}
 					ctepStudyDiseaseList.add(ctepStudyDisease);
 				}

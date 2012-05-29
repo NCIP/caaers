@@ -35,13 +35,15 @@ public class StudyDiseaseMigrator implements Migrator<gov.nih.nci.cabig.caaers.d
                     CtepStudyDisease destinationCtepStudyDisease = new CtepStudyDisease();
                     DiseaseTerm diseaseTerm = null;
                     String term = null;
-                    if (ctepStudyDisease.getTerm() != null && ctepStudyDisease.getTerm().getTerm() != null) {
-                        term = ctepStudyDisease.getTerm().getTerm();
-                        diseaseTerm = diseaseTermDao.getByTermName(ctepStudyDisease.getTerm().getTerm());
-                    }
-                    if (ctepStudyDisease.getTerm() != null && diseaseTerm == null && ctepStudyDisease.getTerm().getMedraCode() != null) {
+                  
+                    if (ctepStudyDisease.getTerm() != null && ctepStudyDisease.getTerm().getMedraCode() != null) {
                         term = ctepStudyDisease.getTerm().getMedraCode();
                         diseaseTerm = diseaseTermDao.getByMeddra(ctepStudyDisease.getTerm().getMedraCode());
+                    }
+                    
+                    if (ctepStudyDisease.getTerm() != null && diseaseTerm == null && ctepStudyDisease.getTerm().getTerm() != null) {
+                        term = ctepStudyDisease.getTerm().getTerm();
+                        diseaseTerm = diseaseTermDao.getByTermName(ctepStudyDisease.getTerm().getTerm());
                     }
 
                     outcome.ifNullObject(diseaseTerm, DomainObjectImportOutcome.Severity.ERROR, "The selected disease Term " + term + " is not Valid ");
