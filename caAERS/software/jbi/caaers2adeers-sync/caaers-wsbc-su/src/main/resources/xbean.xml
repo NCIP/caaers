@@ -76,7 +76,7 @@
                     endpoint="AgentManagementWebServiceImplPort"
 			wsdl="classpath:AgentService.wsdl" 
 			locationURI="s[AGENT_WS_BINDING_URL]" useJBIWrapper="false"
-            useSOAPEnvelope="true" schemaValidationEnabled="true">
+            useSOAPEnvelope="true" schemaValidationEnabled="false">
 		<cxfbc:inInterceptors>
 		  <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
 		</cxfbc:inInterceptors>
@@ -97,7 +97,7 @@
                     endpoint="ConfigPropertiesWebServiceImplPort"
                     wsdl="classpath:ConfigPropertyService.wsdl"
                     locationURI="s[AGENT_DOSE_UOM_WS_BINDING_URL]" useJBIWrapper="false"
-                    useSOAPEnvelope="true" schemaValidationEnabled="true">
+                    useSOAPEnvelope="true" schemaValidationEnabled="false">
         <cxfbc:inInterceptors>
             <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
         </cxfbc:inInterceptors>
@@ -118,7 +118,7 @@
                     endpoint="ASAELWebServicePort"
                     wsdl="classpath:ASAELService.wsdl"
                     locationURI="s[ASAEL_WS_BINDING_URL]" useJBIWrapper="false"
-                    useSOAPEnvelope="true" schemaValidationEnabled="true">
+                    useSOAPEnvelope="true" schemaValidationEnabled="false">
         <cxfbc:inInterceptors>
             <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
         </cxfbc:inInterceptors>
@@ -140,7 +140,7 @@
                     endpoint="DevicesWebServicePort"
                     wsdl="classpath:DevicesService.wsdl"
                     locationURI="s[DEVICE_WS_BINDING_URL]" useJBIWrapper="false"
-                    useSOAPEnvelope="true" schemaValidationEnabled="true">
+                    useSOAPEnvelope="true" schemaValidationEnabled="false">
         <cxfbc:inInterceptors>
             <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
         </cxfbc:inInterceptors>
@@ -161,7 +161,7 @@
                     endpoint="CtcsWebServicePort"
                     wsdl="classpath:CtcsService.wsdl"
                     locationURI="s[CTC_WS_BINDING_URL]" useJBIWrapper="false"
-                    useSOAPEnvelope="true" schemaValidationEnabled="true">
+                    useSOAPEnvelope="true" schemaValidationEnabled="false">
         <cxfbc:inInterceptors>
             <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
         </cxfbc:inInterceptors>
@@ -184,7 +184,7 @@
                     endpoint="OrganizationManagementWebServiceImplPort"
                     wsdl="classpath:OrganizationService.wsdl"
                     locationURI="s[ORGANIZATION_WS_BINDING_URL]" useJBIWrapper="false"
-                    useSOAPEnvelope="true" schemaValidationEnabled="true">
+                    useSOAPEnvelope="true" schemaValidationEnabled="false">
         <cxfbc:inInterceptors>
             <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
         </cxfbc:inInterceptors>
@@ -206,7 +206,7 @@
                     endpoint="PreExistingConditionManagementWebServiceImplPort"
                     wsdl="classpath:PreExistingConditionLOVService.wsdl"
                     locationURI="s[PRE_CONDITION_WS_BINDING_URL]" useJBIWrapper="false"
-                    useSOAPEnvelope="true" schemaValidationEnabled="true">
+                    useSOAPEnvelope="true" schemaValidationEnabled="false">
         <cxfbc:inInterceptors>
             <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
         </cxfbc:inInterceptors>
@@ -228,7 +228,7 @@
                     endpoint="LabManagementWebServiceImplPort"
                     wsdl="classpath:LabService.wsdl"
                     locationURI="s[LAB_WS_BINDING_URL]" useJBIWrapper="false"
-                    useSOAPEnvelope="true" schemaValidationEnabled="true">
+                    useSOAPEnvelope="true" schemaValidationEnabled="false">
         <cxfbc:inInterceptors>
             <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
         </cxfbc:inInterceptors>
@@ -249,7 +249,7 @@
                     endpoint="PriorTherapyManagementWebServiceImplPort"
                     wsdl="classpath:PriorTherapyLOVService.wsdl"
                     locationURI="s[PRIOR_THERAPY_WS_BINDING_URL]" useJBIWrapper="false"
-                    useSOAPEnvelope="true" schemaValidationEnabled="true">
+                    useSOAPEnvelope="true" schemaValidationEnabled="false">
         <cxfbc:inInterceptors>
             <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
         </cxfbc:inInterceptors>
@@ -270,7 +270,7 @@
                     endpoint="StudyManagementWebServicePort"
                     wsdl="classpath:StudyService.wsdl"
                     locationURI="s[STUDY_WS_BINDING_URL]" useJBIWrapper="false"
-                    useSOAPEnvelope="true" schemaValidationEnabled="true">
+                    useSOAPEnvelope="true" schemaValidationEnabled="false">
         <cxfbc:inInterceptors>
             <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
         </cxfbc:inInterceptors>

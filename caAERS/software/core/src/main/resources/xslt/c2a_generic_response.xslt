@@ -4,7 +4,7 @@
     <xsl:output indent="no" omit-xml-declaration="yes"/>
     <xsl:template match="/">
         <xsl:apply-templates select="//operation/data" />
-        <xsl:apply-templates select="//response/operation/errors/error" />
+        <xsl:apply-templates select="//response/errors/error" />
     </xsl:template>
     <xsl:template match="data">
        <xsl:apply-templates select="stud:studies" />
