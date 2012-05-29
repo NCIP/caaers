@@ -248,11 +248,13 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 					
 					String msg = "Study with Short Title \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle()+ "\" could not be created in caAERS. "
                             + messages.toString();
+                            
+                    String messageWithoutShortTitle = "Study could not be created in caAERS because "  +messages.toString();
 
                     Helper.populateError(caaersServiceResponse, "WS_GEN_000", msg);
                     
                     Helper.populateProcessingOutcome(caaersServiceResponse, Helper.createOutcome(Study.class, 
-                    		studyImportOutcome.getImportedDomainObject().getFundingSponsorIdentifierValue(), true, msg ));
+                    		studyImportOutcome.getImportedDomainObject().getFundingSponsorIdentifierValue(), true, messageWithoutShortTitle ));
                     logger.debug(">>> ERR:" + msg);
 				}
 			}
