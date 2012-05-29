@@ -287,6 +287,7 @@ public class Fixtures {
         v3.setName("3.0");
         v3.setName(4 + "");
         t.setTerm(Term.CTC);
+        t.setGridId("444444aaaa444");
         t.setCtcVersion(v3);
         return t;
     }
@@ -309,6 +310,7 @@ public class Fixtures {
     
     public static CtcTerm createCtcTerm(final String ctepTerm, final String ctepCode){
     	CtcTerm cTerm = new CtcTerm();
+        cTerm.setGridId("aaabbb8889a");
     	cTerm.setCtepTerm(ctepTerm);
     	cTerm.setTerm(ctepTerm);
     	cTerm.setCtepCode(ctepCode);
@@ -328,6 +330,7 @@ public class Fixtures {
         Ctc v3 = new Ctc();
         v3.setName("3.0");
         v3.setId(3);
+        v3.setGridId("aaabbb3332");
         // this is only partial, of course
         v3.setCategories(new ArrayList<CtcCategory>());
         v3.getCategories().add(createCtcCategory(v3, "ALLERGY/IMMUNOLOGY"));
@@ -345,6 +348,7 @@ public class Fixtures {
 
     private static CtcCategory createCtcCategory(final Ctc ctc, final String name) {
         CtcCategory category = new CtcCategory();
+        category.setGridId("aaa555aaa");
         category.setName(name);
         category.setCtc(ctc);
         return category;
@@ -615,6 +619,7 @@ public class Fixtures {
     
     public static AdverseEvent createAdverseEvent(int id, Grade grade){
     	CtcTerm ctcTerm = Fixtures.createCtcTerm("abcd", "123");
+        ctcTerm.setGridId("aaaabbb444aaa");
 		AdverseEvent ae = new AdverseEvent();
 		ae.setId(id);
 		ae.setGrade(grade);
