@@ -27,7 +27,7 @@ public class StudyInterventionSynchronizer implements Migrator<Study> {
 
         for (OtherIntervention otherIntervention : otherInterventions) {
             if (destInterventionsSet.add(otherIntervention.getHashKey())) {
-                dest.getOtherInterventions().add(otherIntervention);
+                dest.addOtherIntervention(otherIntervention);
             }
         }
     }
