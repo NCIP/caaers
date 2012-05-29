@@ -20,7 +20,7 @@
                          	<tr class="${loopStatus.index % 2 == 0 ? 'alt' : ''}">
                          		<td><a href="<c:url value="/pages/study/edit?studyId=${study.id}" />">${study.primaryIdentifier}</a>&nbsp;<span title="<c:out value="${study.shortTitle}" escapeXml="true" />"><c:out value="${fn:substring(study.shortTitle, 0, 100)}" escapeXml="true" />...</span></td>
                          		<td><c:out value="${study.dataEntryStatus ? 'Complete' : 'In progress'}" escapeXml="true" /></td>
-                                <td align="RIGHT"><img src="<c:url value="/images/orange-actions.gif" />" border="0" onmouseover='showDashboardStudiesMenuOptions("${study.fundingSponsorIdentifierValue}", "${study.id}", ${not empty study.dataEntryStatus ? study.dataEntryStatus : false})' id='_d_study_${study.primaryIdentifier}' style="cursor: pointer;"></td>
+                                <td align="RIGHT"><img src="<c:url value="/images/orange-actions.gif" />" border="0" onmouseover='showDashboardStudiesMenuOptions("${study.fundingSponsorIdentifierValue}", "${study.id}", ${not empty study.dataEntryStatus ? study.dataEntryStatus : false})' id='_d_study_${study.primaryIdentifier}' style="cursor: pointer;  margin-right: 15px;""></td>
                            </tr>
                          </c:forEach>
                         <c:if test="${fn:length(studyList) == 0}">
