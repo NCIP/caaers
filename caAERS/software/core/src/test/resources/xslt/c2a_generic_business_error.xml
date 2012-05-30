@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<payload xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+         xmlns:com="http://schema.integration.caaers.cabig.nci.nih.gov/common" correlationId="wEXTlvCd3H5fUhr">
+    <system>caaers</system>
+    <response>
+        <entity xmlns:stud="http://schema.integration.caaers.cabig.nci.nih.gov/study">study</entity>
+        <status>error</status>
+        <errors>
+            <error>soap:Client : Unmarshalling Error: cvc-complex-type.2.4.b: The content of element
+                'studyAgentINDAssociations' is not complete. One of
+                '{"http://schema.integration.caaers.cabig.nci.nih.gov/study":studyAgentINDAssociation}' is expected.
+            </error>
+        </errors>
+    </response>
+</payload>

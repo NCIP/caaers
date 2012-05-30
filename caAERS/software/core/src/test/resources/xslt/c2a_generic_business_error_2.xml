@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<payload xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+         xmlns:com="http://schema.integration.caaers.cabig.nci.nih.gov/common" correlationId="l0HcpQHyJ0Jy3L0">
+    <system>caaers</system>
+    <response>
+        <entity xmlns:stud="http://schema.integration.caaers.cabig.nci.nih.gov/study">study</entity>
+        <operation xmlns:stud="http://schema.integration.caaers.cabig.nci.nih.gov/study" name="createStudyResponse">
+            <status>error</status>
+            <errors>
+                <error>WS_STU_001 : Another study "ACRIN-6657" is using an identifier associated with the "ACRIN-6657",
+                    so cannot process." : Another study "ACRIN-6657" is using an identifier associated with the
+                    "ACRIN-6657", so cannot process."
+                </error>
+            </errors>
+            <status>Failed to Process</status>
+            <data/>
+        </operation>
+    </response>
+</payload>
