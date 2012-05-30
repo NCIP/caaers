@@ -24,6 +24,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.semanticbits.coppasimulator.util.StringUtilities;
 
@@ -35,6 +37,7 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
 		this.integrationLogDetailDao = integrationLogDetailDao;
 	}
 
+	private static Log logger = LogFactory.getLog(CTEPDataInitializationAjaxFacade.class);
 	private IntegrationLogDao integrationLogDao;
 	private IntegrationLogDetailDao integrationLogDetailDao;
 	private static Class<?>[] CONTROLLERS = {CTEPESYSDataImportController.class};
@@ -56,64 +59,103 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
 			boolean agentsChecked, boolean asaelChecked, boolean organizationsChecked) {
 		
 		StringBuffer sb = new StringBuffer();
-		String correlationId;
 		
 		if(ctcaeChecked){
-			correlationId = proxyWebServiceFacade.syncCTCAE();
-			generateSynchMessage(sb, correlationId, "CTCAE");
+			try {
+				proxyWebServiceFacade.syncCTCAE();
+				appendSynchSuccessMessage(sb, "CTCAE");
+			} catch (Exception e) {
+				appendSynchFailureMessage(sb, "CTCAE");
+				logger.error(e);
+			}
 		}
 		if(devicesChecked) {
-			correlationId = proxyWebServiceFacade.syncDevices();
-			generateSynchMessage(sb, correlationId, "Devices");
+			try {
+				proxyWebServiceFacade.syncDevices();
+				appendSynchSuccessMessage(sb, "Devices");
+			} catch (Exception e) {
+				appendSynchFailureMessage(sb, "Devices");
+				logger.error(e);
+			}
 		}
 		if(preExistingConditionsChecked) {
-			correlationId = proxyWebServiceFacade.syncPreExistingConditionLOV();
-			generateSynchMessage(sb, correlationId, "PreExisting Conditions");
+			try {
+				proxyWebServiceFacade.syncPreExistingConditionLOV();
+				appendSynchSuccessMessage(sb, "PreExisting Conditions");
+			} catch (Exception e) {
+				appendSynchFailureMessage(sb, "PreExisting Conditions");
+				logger.error(e);
+			}
 		}
 		if(therapiesChecked){
-			correlationId = proxyWebServiceFacade.syncPriorTherapyLOV();
-			generateSynchMessage(sb, correlationId, "Therapies");
+			try {
+				proxyWebServiceFacade.syncPriorTherapyLOV();
+				appendSynchSuccessMessage(sb, "Therapies");
+			} catch (Exception e) {
+				appendSynchFailureMessage(sb, "Therapies");
+				logger.error(e);
+			}
 		}
 		if(agentsChecked) {
-			correlationId = proxyWebServiceFacade.syncAgents();
-			generateSynchMessage(sb, correlationId, "Agents");
+			try {
+				proxyWebServiceFacade.syncAgents();
+				appendSynchSuccessMessage(sb, "Agents");
+			} catch (Exception e) {
+				appendSynchFailureMessage(sb, "Agents");
+				logger.error(e);
+			}
 		}
 		if(asaelChecked){
-			correlationId = proxyWebServiceFacade.syncASAEL();
-			generateSynchMessage(sb, correlationId, "ASAEL");
+			try {
+				proxyWebServiceFacade.syncASAEL();
+				appendSynchSuccessMessage(sb, "ASAEL");
+			} catch (Exception e) {
+				appendSynchFailureMessage(sb, "ASAEL");
+				logger.error(e);
+			}
 		}
 		if(organizationsChecked) {
-			correlationId = proxyWebServiceFacade.syncOrganizations();
-			generateSynchMessage(sb, correlationId, "Organizations");
+			try {
+				proxyWebServiceFacade.syncOrganizations();
+				appendSynchSuccessMessage(sb, "Organizations");
+			} catch (Exception e) {
+				appendSynchFailureMessage(sb, "Organizations");
+				logger.error(e);
+			}
 		}
 		if(agentDoseMeasureChecked) {
-			correlationId = proxyWebServiceFacade.syncAgentUOM();
-			generateSynchMessage(sb, correlationId, "Agent Dose UOM");
+			try {
+				proxyWebServiceFacade.syncAgentUOM();
+				appendSynchSuccessMessage(sb, "Agent Dose UOM");
+			} catch (Exception e) {
+				appendSynchFailureMessage(sb, "Agent Dose UOM");
+				logger.error(e);
+			}
 		}
 		if(labChecked){
-			correlationId = proxyWebServiceFacade.syncLabs();
-			generateSynchMessage(sb, correlationId, "Labs");
+			try {
+				proxyWebServiceFacade.syncLabs();
+				appendSynchSuccessMessage(sb, "Labs");
+			} catch (Exception e) {
+				appendSynchFailureMessage(sb, "Labs");
+				logger.error(e);
+			}
 		}
 		
 		return sb.toString();
 
 	}
 	
-	public void generateSynchMessage(StringBuffer sb, String correlationId, String entity){
-		IntegrationLogQuery query = new IntegrationLogQuery();
-		query.filterByComplete();
-		query.filterByCorrelationId(correlationId);
+	public void appendSynchSuccessMessage(StringBuffer sb, String entity){
+		sb.append("<font color='#008000'>");
+		sb.append(entity + " synch succeeded. ");
+		sb.append("</font>");
+	}
 		
-		if (integrationLogDao.searchIntegrationLogs(query).size() > 0){
-			sb.append("<font color='#008000'>");
-			sb.append(entity + " synch succeeded");
-			sb.append("</font>");
-		}else {
+	public void appendSynchFailureMessage(StringBuffer sb, String entity){
 			sb.append("<font color='#D94444'>");
-			sb.append(entity + " synch failed");
+			sb.append(entity + " synch failed. ");
 			sb.append("</font>");
-		}
-		
 	}
 	
 	// display integration logs
@@ -231,7 +273,8 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
     	boolean failed = true;
     	for(IntegrationLog intLog : integrationLogs){
     		// if it is partially processed, it is considered to be incomplete
-    		if(!StringUtils.isBlank(intLog.getNotes()) && intLog.getNotes().contains(Status.PARTIALLY_PROCESSED.value()))
+    		if(!StringUtils.isBlank(intLog.getNotes()) && (intLog.getNotes().contains(Status.PARTIALLY_PROCESSED.value()) || 
+    				intLog.getNotes().contains(Status.FAILED_TO_PROCESS.value())))
     			return true;
     		if(intLog.getSynchStatus() == SynchStatus.REQUEST_COMPLETION){
     			failed = false;
