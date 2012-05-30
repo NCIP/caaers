@@ -6,12 +6,17 @@ import gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.util.List;
 
 public class StudyAgentMigrator implements Migrator<gov.nih.nci.cabig.caaers.domain.Study> {
-	
-	private AgentDao agentDao;
+
+    protected final Log log = LogFactory.getLog(StudyAgentMigrator.class);
+
+    private AgentDao agentDao;
 	private InvestigationalNewDrugDao investigationalNewDrugDao;
 	private AgentMigrator agentMigrator;
 	private OrganizationDao organizationDao;
@@ -76,10 +81,10 @@ public class StudyAgentMigrator implements Migrator<gov.nih.nci.cabig.caaers.dom
             if (target.getIndType() == INDType.OTHER || target.getIndType() == INDType.NA_COMMERCIAL) {
 
                 for (StudyAgentINDAssociation indAssociation : studyAgent.getStudyAgentINDAssociations()) {
-                    String indNumber = indAssociation.getInvestigationalNewDrug().getIndNumber().toString();
+                    Integer indNumber = indAssociation.getInvestigationalNewDrug().getIndNumber();
                     String holderName = indAssociation.getInvestigationalNewDrug().getHolderName();
-                    List<InvestigationalNewDrug> inds = investigationalNewDrugDao.findByNumberAndHolderName(indNumber, holderName);
-
+                    
+                    List<InvestigationalNewDrug> inds = investigationalNewDrugDao.findByNumberAndHolderName(String.valueOf(indNumber), holderName);;
                     InvestigationalNewDrug _ind;
 
                     if (CollectionUtils.isNotEmpty(inds)) {
@@ -87,12 +92,16 @@ public class StudyAgentMigrator implements Migrator<gov.nih.nci.cabig.caaers.dom
                     } else {
                         // Create New
                         _ind = new InvestigationalNewDrug();
-                        _ind.setIndNumber(Integer.parseInt(indNumber));
-                        Organization o = organizationDao.getByName(holderName);
-                        OrganizationHeldIND _indHolder = new OrganizationHeldIND();
-                        _indHolder.setOrganization(o);
-                        _indHolder.setInvestigationalNewDrug(_ind);
-                        _ind.setINDHolder(_indHolder);
+                        _ind.setIndNumber(indNumber);
+                        if(StringUtils.isNotEmpty(holderName)){
+                            Organization o = organizationDao.getByName(holderName);
+                            OrganizationHeldIND _indHolder = new OrganizationHeldIND();
+                            _indHolder.setOrganization(o);
+                            _indHolder.setInvestigationalNewDrug(_ind);
+                            _ind.setINDHolder(_indHolder);
+                        }
+                        
+
                         investigationalNewDrugDao.save(_ind);
                     }
 
