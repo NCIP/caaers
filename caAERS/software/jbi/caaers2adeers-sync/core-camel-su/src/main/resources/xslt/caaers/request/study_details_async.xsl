@@ -237,7 +237,7 @@
 
     <xsl:template match="therapy">
         <xsl:if test="preferredTerm/text() = 'Surgery'
-                or preferredTerm/text() = 'Radiation'
+                or preferredTerm/text() = 'Radiation Therapy'
                 or preferredTerm/text() = 'Gene Transfer'
                 or preferredTerm/text() = 'Image Directed Local Therapy'
                 or preferredTerm/text() = 'Hematopoietic Stem Cell Transplantation'">
