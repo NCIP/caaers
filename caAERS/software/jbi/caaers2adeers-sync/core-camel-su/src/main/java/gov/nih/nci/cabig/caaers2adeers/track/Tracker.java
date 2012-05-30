@@ -20,6 +20,8 @@ import org.w3c.dom.NodeList;
 public class Tracker implements Processor{
 	
 	protected static final Log log = LogFactory.getLog(Tracker.class);
+	public static final String SOAP_FAULT_STATUS= "error";
+	public static final String CAAERS_RESPONSE_ERROR= "error";
 	
  	// progress made by synch request
  	private Stage stage;
@@ -78,6 +80,21 @@ public class Tracker implements Processor{
 
         IntegrationLogDao integrationLogDao = (IntegrationLogDao)exchange.getContext().getRegistry().lookup("integrationLogDao");
         if(caputureLogDetails){
+        	//Check for soap fault
+        	String faultString = XPathBuilder.xpath("//faultstring").evaluate(exchange, String.class);
+        	if(!StringUtils.isBlank(faultString)){
+        		integrationLog.setNotes(SOAP_FAULT_STATUS);
+        		integrationLog.addIntegrationLogDetail(new IntegrationLogDetail(null, faultString, true));
+        	}
+        	
+        	//check for caaers error message in response
+        	String errorString = XPathBuilder.xpath("//error").evaluate(exchange, String.class);
+        	if(!StringUtils.isBlank(errorString)){
+        		integrationLog.setNotes(CAAERS_RESPONSE_ERROR);
+        		integrationLog.addIntegrationLogDetail(new IntegrationLogDetail(null, errorString, true));
+        	}
+        	
+        	//check for 'com:entityProcessingOutcomes'
         	NodeList nodes = XPathBuilder.xpath("//com:entityProcessingOutcomes")
                     .namespace("com", "http://schema.integration.caaers.cabig.nci.nih.gov/common")
                     .nodeResult()
