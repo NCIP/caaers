@@ -20,8 +20,8 @@ import org.w3c.dom.NodeList;
 public class Tracker implements Processor{
 	
 	protected static final Log log = LogFactory.getLog(Tracker.class);
-	public static final String SOAP_FAULT_STATUS= "error";
-	public static final String CAAERS_RESPONSE_ERROR= "error";
+	public static final String SOAP_FAULT_STATUS= "FAILED_TO_PROCESS";
+	public static final String CAAERS_RESPONSE_ERROR= "FAILED_TO_PROCESS";
 	
  	// progress made by synch request
  	private Stage stage;
