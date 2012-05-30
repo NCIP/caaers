@@ -103,16 +103,13 @@ public class StudyOrganizationMigrator implements Migrator<Study>{
 		
 		StudyFundingSponsor studySponsor = sponsor.getStudyFundingSponsor();
 		Organization organization = null;
-		if(studySponsor.getOrganization().getNciInstituteCode() != null && studySponsor.getOrganization().getNciInstituteCode().length() > 0){
+		if(StringUtils.isNotEmpty(studySponsor.getOrganization().getNciInstituteCode())){
 			String nciInstituteCode = studySponsor.getOrganization().getNciInstituteCode();
 	        organization = fetchOrganization(nciInstituteCode);
 		}else{
 			String orgName = studySponsor.getOrganization().getName();
 			organization = organizationDao.getByName(orgName);
 		}
-
-        organizationMigrator.migrate(studySponsor.getOrganization(), organization, null);
-        organizationDao.save(organization);
 
         outcome.ifNullObject(organization, DomainObjectImportOutcome.Severity.ERROR, "The organization specified in fundingSponsor is invalid");
 		studySponsor.setOrganization(organization);
