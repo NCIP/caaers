@@ -12,7 +12,7 @@
                     <table border="0" cellpadding="0" cellspacing="0" class="dashboard_table" width="100%">
                         <tr class="taskTitleRow">
                             <th>Name</th>
-                            <th>Identifiers</th>
+                            <th>Study details</th>
                             <th width="80px">&nbsp;</th>
                         </tr>
                         <c:set var="_i" value="0" />
@@ -28,9 +28,11 @@
                                             </a>
                                         </td>
                                         <td>
-                                            <span style="color:black;">Study primary identifier:</span>&nbsp;<b><c:out value="${assignment.studySite.study.primaryIdentifier}" escapeXml="true"/></b>
+                                            <span style="color:black;">Study:</span>&nbsp;<span title="${assignment.studySite.study.shortTitle}"><c:out value="${fn:substring(assignment.studySite.study.shortTitle, 0, 60)}" escapeXml="true"/>...</span>
                                             <br>
-                                            <span style="color:black;">Study subject identifier:</span>&nbsp;<b><c:out value="${assignment.studySubjectIdentifier}" escapeXml="true"/></b>
+                                            <span style="color:black;">Study primary identifier:</span>&nbsp;<c:out value="${assignment.studySite.study.primaryIdentifier}" escapeXml="true"/>
+                                            <br>
+                                            <span style="color:black;">Study subject identifier:</span>&nbsp;<c:out value="${assignment.studySubjectIdentifier}" escapeXml="true"/>
                                         </td>
                                         <td align="RIGHT">
                                             <img src="<c:url value="/images/orange-actions.gif" />"
