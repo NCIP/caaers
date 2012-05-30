@@ -1,12 +1,15 @@
-<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
     <soapenv:Body>
-        <stud:updateStudy xmlns:stud="http://schema.integration.caaers.cabig.nci.nih.gov/study">
+        <stud:createStudy xmlns:stud="http://schema.integration.caaers.cabig.nci.nih.gov/study">
             <stud:studies>
                 <stud:study>
-                    <shortTitle>Phase II Trial of Flavopiridol and Cisplatin in Advanced Epithelial Ovarian and Primary
-                        Peritoneal Carcinomas
+                    <shortTitle>A Randomized Phase III Trial Comparing a Neoadjuvant Regimen of FEC-75 Followed by
+                        Paclitaxel
+                        Plus Trastuzumab with a Neoadjuvant Regimen of Paclitaxel Plus Trastuzumab Followed by FEC-75
+                        Plus Trastuzumab in Patients with HER-2 Positive Operable Breast Cancer
                     </shortTitle>
-                    <phaseCode>Phase II Trial</phaseCode>
+                    <phaseCode>Phase III Trial</phaseCode>
                     <verbatimFirst>true</verbatimFirst>
                     <adeersReporting>true</adeersReporting>
                     <studyPurpose>Treatment</studyPurpose>
@@ -21,7 +24,7 @@
                     </stud:diseaseTerminology>
                     <fundingSponsor>
                         <organizationAssignedIdentifier>
-                            <value>5876</value>
+                            <value>ACOSOG-Z1041</value>
                         </organizationAssignedIdentifier>
                         <stud:studyFundingSponsor>
                             <stud:organization>
@@ -32,76 +35,169 @@
                     </fundingSponsor>
                     <coordinatingCenter>
                         <organizationAssignedIdentifier>
-                            <value>5876</value>
+                            <value>ACOSOG-Z1041</value>
                         </organizationAssignedIdentifier>
                         <stud:studyCoordinatingCenter>
                             <stud:organization>
-                                <name>Mayo Clinic Rochester</name>
-                                <nciInstituteCode>MN026</nciInstituteCode>
-                                <type>CCR</type>
+                                <name>American College of Surgeons Oncology Trials Group</name>
+                                <nciInstituteCode>ACOSOG</nciInstituteCode>
+                                <type>CGP</type>
                             </stud:organization>
                         </stud:studyCoordinatingCenter>
                     </coordinatingCenter>
                     <identifiers>
                         <stud:systemAssignedIdentifier>
                             <type>Other</type>
-                            <value>5876</value>
+                            <value>ACOSOG-Z1041</value>
                             <primaryIndicator>false</primaryIndicator>
                             <systemName>CTEP-ESYS</systemName>
                         </stud:systemAssignedIdentifier>
                     </identifiers>
                     <treatmentAssignments>
                         <stud:treatmentAssignment>
-                            <ctepDbIdentifier>11451</ctepDbIdentifier>
-                            <code>A</code>
-                            <description>(Cycle= 3 Weeks):
-                                Cisplatin 60 mg/m2 IV on day 1
-                                Flavopiridol 100 mg/m2 CIV over 24 hours on day 1
+                            <ctepDbIdentifier>14250</ctepDbIdentifier>
+                            <code>ARM 1</code>
+                            <description>Chemotherapy Regimen - (FEC)
+                                Cycle = 21 days: (Max = 4 cycles)
+                                5-FU: 500mg/m2 IVP on day 1
+                                Epirubicin: 75mg/m2 IV over 15 min on day 1
+                                Cyclophosphamide: 500mg/m2 IV over 30 min on day 1
+
+                                21 days after last dose of FEC:
+                                Cycle = 12 weeks:
+                                Paclitaxel: 80mg/m2 IV over 60 min weekly
+                                Trastuzumab: 4mg/kg IV over 90 min week 1, then 2mg/kg IV over 30 min for remaining 11
+                                weeks
+
+                                3-4 wks after last preop dose of Trastuzumab, begin
+                                Cycle = 3 weeks:
+                                Trastuzumab: 6mg/kg IV over 60 min
+                                (Continue until 52 wks from first preop dose reached)
+                            </description>
+                        </stud:treatmentAssignment>
+                        <stud:treatmentAssignment>
+                            <ctepDbIdentifier>14251</ctepDbIdentifier>
+                            <code>ARM 2</code>
+                            <description>Chemotherapy Regimen - (FEC)
+                                Cycle = 12 weeks:
+                                Paclitaxel: 80mg/m2 IV over 60 min weekly
+                                Trastuzumab: 4mg/kg IV over 90 min week 1, then 2mg/kg IV over 30 min during subsequent
+                                12 weeks
+
+                                14 days after last dose Paclitaxel, begin FEC + Trastuzumab -
+                                Cycle = 21 days: (Max = 4 cycles)
+                                5-FU: 500mg/m2 IVP on day 1
+                                Epirubicin: 75mg/m2 IV over 15 min on day 1
+                                Cyclophosphamide: 500mg/m2 IV over 30 min on day 1
+                                Trastuzumab: 2mg/kg IV over 30 min weekly x 12 weeks.
+
+                                3-4 weeks after last preop dose of Trastuzumab, begin
+                                Cycle = 3 weeks:
+                                Trastuzumab: 6mg/kg IV over 60 min
+                                (Continue until 52 wks from first preop dose)
                             </description>
                         </stud:treatmentAssignment>
                     </treatmentAssignments>
                     <studyAgents>
                         <stud:studyAgent>
                             <stud:agent>
-                                <nscNumber>649890</nscNumber>
-                                <name>Alvocidib (flavopiridol)</name>
+                                <nscNumber>26271</nscNumber>
+                                <name>Cyclophosphamide</name>
                             </stud:agent>
-                            <indType>OTHER</indType>
-                            <partOfLeadIND>
-                                false
-                            </partOfLeadIND>
+                            <indType>NA_COMMERCIAL</indType>
+                            <partOfLeadIND>true</partOfLeadIND>
+                            <studyAgentINDAssociations>
+                                <stud:studyAgentINDAssociation>
+                                    <stud:investigationalNewDrug>
+                                        <indNumber>6667</indNumber>
+                                        <holderName>CTEP</holderName>
+                                    </stud:investigationalNewDrug>
+                                </stud:studyAgentINDAssociation>
+                            </studyAgentINDAssociations>
                         </stud:studyAgent>
                         <stud:studyAgent>
                             <stud:agent>
-                                <nscNumber>119875</nscNumber>
-                                <name>CISplatin</name>
+                                <nscNumber>256942</nscNumber>
+                                <name>Epirubicin (Ellence)</name>
                             </stud:agent>
                             <indType>NA_COMMERCIAL</indType>
-                            <partOfLeadIND>
-                                false
-                            </partOfLeadIND>
+                            <partOfLeadIND>true</partOfLeadIND>
+                            <studyAgentINDAssociations>
+                                <stud:studyAgentINDAssociation>
+                                    <stud:investigationalNewDrug>
+                                        <indNumber>6667</indNumber>
+                                        <holderName>CTEP</holderName>
+                                    </stud:investigationalNewDrug>
+                                </stud:studyAgentINDAssociation>
+                            </studyAgentINDAssociations>
+                        </stud:studyAgent>
+                        <stud:studyAgent>
+                            <stud:agent>
+                                <nscNumber>19893</nscNumber>
+                                <name>5-Fluorouracil (5-FU)</name>
+                            </stud:agent>
+                            <indType>NA_COMMERCIAL</indType>
+                            <partOfLeadIND>true</partOfLeadIND>
+                            <studyAgentINDAssociations>
+                                <stud:studyAgentINDAssociation>
+                                    <stud:investigationalNewDrug>
+                                        <indNumber>6667</indNumber>
+                                        <holderName>CTEP</holderName>
+                                    </stud:investigationalNewDrug>
+                                </stud:studyAgentINDAssociation>
+                            </studyAgentINDAssociations>
+                        </stud:studyAgent>
+                        <stud:studyAgent>
+                            <stud:agent>
+                                <nscNumber>673089</nscNumber>
+                                <name>Paclitaxel (Taxol)</name>
+                            </stud:agent>
+                            <indType>NA_COMMERCIAL</indType>
+                            <partOfLeadIND>true</partOfLeadIND>
+                            <studyAgentINDAssociations>
+                                <stud:studyAgentINDAssociation>
+                                    <stud:investigationalNewDrug>
+                                        <indNumber>6667</indNumber>
+                                        <holderName>CTEP</holderName>
+                                    </stud:investigationalNewDrug>
+                                </stud:studyAgentINDAssociation>
+                            </studyAgentINDAssociations>
+                        </stud:studyAgent>
+                        <stud:studyAgent>
+                            <stud:agent>
+                                <nscNumber>688097</nscNumber>
+                                <name>Trastuzumab (Herceptin)</name>
+                            </stud:agent>
+                            <indType>OTHER</indType>
+                            <partOfLeadIND>true</partOfLeadIND>
+                            <studyAgentINDAssociations>
+                                <stud:studyAgentINDAssociation>
+                                    <stud:investigationalNewDrug>
+                                        <indNumber>6667</indNumber>
+                                        <holderName>CTEP</holderName>
+                                    </stud:investigationalNewDrug>
+                                </stud:studyAgentINDAssociation>
+                            </studyAgentINDAssociations>
                         </stud:studyAgent>
                     </studyAgents>
                     <studyDevices/>
-                    <otherInterventions/>
+                    <otherInterventions>
+                        <stud:otherIntervention>
+                            <interventionType>SURGERY</interventionType>
+                            <name>Surgery</name>
+                        </stud:otherIntervention>
+                    </otherInterventions>
                     <ctepStudyDiseases>
                         <stud:ctepStudyDisease>
                             <stud:diseaseTerm>
-                                <term>Ovarian epithelial cancer</term>
-                                <meddraCode>10033159</meddraCode>
+                                <term>Invasive breast carcinoma</term>
+                                <meddraCode>10006190</meddraCode>
                             </stud:diseaseTerm>
                             <leadDisease>true</leadDisease>
-                        </stud:ctepStudyDisease>
-                        <stud:ctepStudyDisease>
-                            <stud:diseaseTerm>
-                                <term>Primary peritoneal carcinoma</term>
-                                <meddraCode>10026669</meddraCode>
-                            </stud:diseaseTerm>
-                            <leadDisease>false</leadDisease>
                         </stud:ctepStudyDisease>
                     </ctepStudyDiseases>
                 </stud:study>
             </stud:studies>
-        </stud:updateStudy>
+        </stud:createStudy>
     </soapenv:Body>
 </soapenv:Envelope>

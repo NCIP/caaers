@@ -155,24 +155,22 @@
     </xsl:template>
     <xsl:template match="studyAgent">
         <xsl:if test="agent/agentStatus/text() = 'Active'">
-            <stud:studyAgent>
-                <xsl:apply-templates select="agent"/>
-                <indType>
-                    <xsl:call-template name="lookup"><xsl:with-param name="_map" select="$map//indtypes" /><xsl:with-param name="_code" select="commercialInvestigational" /></xsl:call-template>
-                </indType>
-                <xsl:variable name="_partOfLead" select="inds//ind/@lead = 'yes'"  />
-                <partOfLeadIND>
-                    false
-                </partOfLeadIND>
-                <xsl:apply-templates select="inds" />
-            </stud:studyAgent>
+            <xsl:apply-templates select="agent"/>
         </xsl:if>
     </xsl:template>
     <xsl:template match="agent" >
-        <stud:agent>
-            <nscNumber><xsl:value-of select="nscNumber"/></nscNumber>
-            <name><xsl:value-of select="agentName"/></name>
-        </stud:agent>
+        <stud:studyAgent>
+            <stud:agent>
+                <nscNumber><xsl:value-of select="nscNumber"/></nscNumber>
+                <name><xsl:value-of select="agentName"/></name>
+            </stud:agent>
+            <indType>
+                <xsl:call-template name="lookup"><xsl:with-param name="_map" select="$map//indtypes" /><xsl:with-param name="_code" select="parent::node()/commercialInvestigational" /></xsl:call-template>
+            </indType>
+            <xsl:variable name="_partOfLead" select="inds//ind/@lead = 'Yes'"  />
+            <partOfLeadIND><xsl:value-of select="$_partOfLead" /></partOfLeadIND>
+            <xsl:apply-templates select="inds" />
+        </stud:studyAgent>
     </xsl:template>
     <xsl:template match="inds">
         <studyAgentINDAssociations>

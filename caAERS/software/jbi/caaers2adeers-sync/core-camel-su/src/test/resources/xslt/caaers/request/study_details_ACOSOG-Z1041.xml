@@ -37,7 +37,7 @@
                                 <agentName>Epirubicin (Ellence)</agentName>
                                 <agentStatus>Active</agentStatus>
                                 <inds>
-                                    <ind lead="Yes">
+                                    <ind lead="No">
                                         <indHolder>CTEP</indHolder>
                                         <indNumber>6667</indNumber>
                                     </ind>
