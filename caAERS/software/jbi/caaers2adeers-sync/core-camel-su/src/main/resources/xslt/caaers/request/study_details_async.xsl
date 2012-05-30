@@ -54,7 +54,7 @@
                     </organizationAssignedIdentifier>
                     <stud:studyFundingSponsor>
                         <stud:organization>
-                            <name>Cancer Therapy Evaluation Program</name>
+                            <name><xsl:value-of select="sponsorOrganization" /></name>
                             <nciInstituteCode><xsl:value-of select="sponsorOrganization" /></nciInstituteCode>
                         </stud:organization>
                     </stud:studyFundingSponsor>
