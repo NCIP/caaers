@@ -1,4 +1,4 @@
-package gov.nih.nci.cabig.caaers.web.ae;
+package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.dao.IntegrationLogDao;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;

@@ -442,9 +442,9 @@
   <bean name="/ae/generateExpeditedfPdf" id="generateExpeditedPdfController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.GenerateExpeditedPdfController"/>
 
   <bean name="/admin/configure" id="configurationController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.ConfigurationController"/>
-  <bean name="/admin/ctepesysDataImport" id="cTEPESYSDataImportController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.CTEPESYSDataImportController"/>
+  <bean name="/admin/ctepesysDataImport" id="cTEPESYSDataImportController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.CTEPESYSDataImportController"/>
   <bean name="/admin/trackReports" id="trackReportsController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.TrackReportsController"/>
-  <bean name="/admin/ctepesysDataIntegrationLogs" id="ctepesysDataIntegrationLogsController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.CTEPESYSDataIntegrationLogsController"/>
+  <bean name="/admin/ctepesysDataIntegrationLogs" id="ctepesysDataIntegrationLogsController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.CTEPESYSDataIntegrationLogsController"/>
   <bean name="/admin/happy" id="diagnosticsController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.DiagnosticsController">
 	<property name="caaersJavaMailSender" ref="mailer"/>
 	<property name="messageBroadcastService" ref="messageBroadcaster" />

@@ -1,4 +1,4 @@
-package gov.nih.nci.cabig.caaers.web.ae;
+package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.dao.IntegrationLogDao;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
@@ -40,7 +40,7 @@ public class CTEPESYSDataImportController extends SimpleFormController {
     	cmd.setLabLastUpdated(integrationLogDao.getLastSuccessfullyUpdatedTime("lab", "getLabsLOV"));
     	cmd.setPreExistingConditionsLastUpdated(integrationLogDao.getLastSuccessfullyUpdatedTime("preexistingcondition", "getPreExistingConditionsLOV"));
     	cmd.setTherapiesLastUpdated(integrationLogDao.getLastSuccessfullyUpdatedTime("priortherapy", "getTherapiesLOV"));
-    	cmd.setCtcaeLastUpdated(integrationLogDao.getLastSuccessfullyUpdatedTime("ctcae", "getCTCAELOV"));
+    	
     	return cmd;
     }
     
