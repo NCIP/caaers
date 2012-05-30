@@ -12,7 +12,7 @@
                     <table border="0" cellpadding="0" cellspacing="0" class="dashboard_table" width="100%">
                         <tr class="taskTitleRow">
                             <th>Full name</th>
-                            <th>Study Id</th>
+                            <th>Study ID</th>
                             <th>Study Subject Identifier</th>
                             <th width="80px">&nbsp;</th>
                         </tr>

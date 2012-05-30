@@ -12,15 +12,21 @@
                 <div id="myStudies" class="<c:if test="${fn:length(studyList) > 6}">scrollerTask</c:if>">
                     <table border="0" cellpadding="0" cellspacing="0" class="dashboard_table" width="100%">
                         <tr class="taskTitleRow">
-                            <th width="60%">Title</th>
-                            <th width="23%">Status</th>
+                            <th width="20%">Study ID</th>
+                            <th>Title</th>
                             <th width="80px">&nbsp;</th>
                         </tr>
                          <c:forEach var ="study" items="${studyList}" varStatus = "loopStatus">
                          	<tr class="${loopStatus.index % 2 == 0 ? 'alt' : ''}">
-                         		<td><a href="<c:url value="/pages/study/edit?studyId=${study.id}" />">${study.primaryIdentifier}</a>&nbsp;<span title="<c:out value="${study.shortTitle}" escapeXml="true" />"><c:out value="${fn:substring(study.shortTitle, 0, 100)}" escapeXml="true" />...</span></td>
-                         		<td><c:out value="${study.dataEntryStatus ? 'Complete' : 'In progress'}" escapeXml="true" /></td>
-                                <td align="RIGHT"><img src="<c:url value="/images/orange-actions.gif" />" border="0" onmouseover='showDashboardStudiesMenuOptions("${study.fundingSponsorIdentifierValue}", "${study.id}", ${not empty study.dataEntryStatus ? study.dataEntryStatus : false})' id='_d_study_${study.primaryIdentifier}' style="cursor: pointer;  margin-right: 15px;""></td>
+                         		<td>${study.primaryIdentifier}</td>
+                                <td><span title="<c:out value="${study.shortTitle}" escapeXml="true" />"><tags:substring s="${study.shortTitle}" l="100" /></span></td>
+                                <td align="RIGHT">
+                                    <img src="<c:url value="/images/orange-actions.gif" />"
+                                         border="0"
+                                         onmouseover='showDashboardStudiesMenuOptions(this, "${study.fundingSponsorIdentifierValue}", "${study.id}", ${not empty study.dataEntryStatus ? study.dataEntryStatus : false})'
+                                         id='_d_study_${study.primaryIdentifier}'
+                                         style="cursor: pointer;
+                                         margin-right: 15px;"></td>
                            </tr>
                          </c:forEach>
                         <c:if test="${fn:length(studyList) == 0}">
@@ -116,15 +122,14 @@
         })
     }
 
-    function showDashboardStudiesMenuOptions(_ssi, _id, _complete) {
-        var _el = jQuery("#_d_study_" + _ssi);
+    function showDashboardStudiesMenuOptions(_element, _ssi, _id, _complete) {
         var html = "<div><ul style='font-family:tahoma;'>" +
                 "<li><a class='submitter-blue' href='#' onclick='doEdit(\"" + _id + "\")'>Edit study details</a></li>" +
                 "<li><a class='submitter-blue' href='#' onclick='addStudySite(\"" + _id + "\", " + _complete + ")'>Add Study Site</a></li>" +
                 "<li><a class='submitter-blue' href='#' onclick='doRegisterSubject(\"" + _id + "\")'>Register Subject</a></li>" +
                 "<li><a class='submitter-blue' href='#' onclick='doUpdate(\"" + _ssi + "\", \"" + _id + "\")'>Synchronize with CTEP</a></li>" +
                 "</ul></div>";
-        _el.menu({
+        jQuery(_element).menu({
                 content: html,
                 maxHeight: 180,
                 width: 180,
