@@ -11,8 +11,9 @@
                 <div id="subjects" class="<c:if test="${fn:length(subjectList) > 10}">scrollerTask</c:if>">
                     <table border="0" cellpadding="0" cellspacing="0" class="dashboard_table" width="100%">
                         <tr class="taskTitleRow">
-                            <th>Name</th>
-                            <th>Study details</th>
+                            <th>Full name</th>
+                            <th>Study Id</th>
+                            <th>Study Subject Identifier</th>
                             <th width="80px">&nbsp;</th>
                         </tr>
                         <c:set var="_i" value="0" />
@@ -27,17 +28,7 @@
                                                 <c:out value="${subject.lastName}" escapeXml="true"/>
                                             </a>
                                         </td>
-                                        <td>
-                                            <span title="${assignment.studySite.study.shortTitle}">
-<%--
-                                                <span style="color:black;">Study:</span>&nbsp;<c:out value="${fn:substring(assignment.studySite.study.shortTitle, 0, 60)}" escapeXml="true"/>...
-                                                <br>
---%>
-                                                <span style="color:black;">Study primary identifier:</span>&nbsp;<c:out value="${assignment.studySite.study.primaryIdentifier}" escapeXml="true"/>
-                                                <br>
-                                                <span style="color:black;">Study subject identifier:</span>&nbsp;<c:out value="${assignment.studySubjectIdentifier}" escapeXml="true"/>
-                                            </span>
-                                        </td>
+                                        <td><span title="${assignment.studySite.study.shortTitle}"><c:out value="${assignment.studySite.study.primaryIdentifier}" escapeXml="true"/></span><td><span title="${assignment.studySite.study.shortTitle}"><c:out value="${assignment.studySubjectIdentifier}" escapeXml="true"/></span></td>
                                         <td align="RIGHT">
                                             <img src="<c:url value="/images/orange-actions.gif" />"
                                                  border="0"
@@ -66,8 +57,8 @@
         document.location = "<c:url value="/pages/ae/captureRoutine?" />" + "studyId=" + _studyId + "&subjectId=" + _subjectId;
     }
 
-    function editMedicalHistory(_studyId, _subjectId) {
-        document.location = "<c:url value="/pages/participant/edit?" />" + "participantId=" + _subjectId;
+    function editMedicalHistory(_studyId, _subjectId, _assignmentId) {
+        document.location = "<c:url value="/pages/participant/edit?" />" + "participantId=" + _subjectId + "&assignmentId=" + _assignmentId + "&tabName=EditSubjectMedHistoryTab";
     }
 
     function editSubjectDetails(_studyId, _subjectId) {
@@ -82,7 +73,7 @@
         var _el = jQuery("#_d_assignment_" + _assignmentId);
         var html = "<div><ul style='font-family:tahoma;'>" +
                 "<li><a class='submitter-blue' href='#' onclick='editSubjectDetails(" +_studyId + ", " + _subjectId + ")'>Edit Subject Details</a></li>" +
-                "<li><a class='submitter-blue' href='#' onclick='editMedicalHistory(" +_studyId + ", " + _subjectId + ")'>Edit Medical History</a></li>" +
+                "<li><a class='submitter-blue' href='#' onclick='editMedicalHistory(" +_studyId + ", " + _subjectId + ", " + _assignmentId + ")'>Edit Medical History</a></li>" +
                 "<li><a class='submitter-blue' href='#' onclick='enterAdverseEvents(" +_studyId + ", " + _subjectId + ")'>Enter Adverse Events</a></li>" +
                 "<li><a class='submitter-blue' href='#' onclick='assignToStudy(" +_studyId + ", " + _subjectId + ")'>Assign to Study</a></li>" +
                 "</ul></div>";

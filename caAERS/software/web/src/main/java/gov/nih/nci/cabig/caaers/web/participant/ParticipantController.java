@@ -1,14 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.participant;
 
-import gov.nih.nci.cabig.caaers.dao.AbstractStudyDiseaseDao;
-import gov.nih.nci.cabig.caaers.dao.AnatomicSiteDao;
-import gov.nih.nci.cabig.caaers.dao.ChemoAgentDao;
-import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
-import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
-import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
-import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
-import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
+import gov.nih.nci.cabig.caaers.dao.*;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.repository.ParticipantRepository;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
@@ -55,6 +47,7 @@ public abstract class ParticipantController<C extends ParticipantInputCommand> e
     protected ChemoAgentDao chemoAgentDao;
     protected StudyDao studyDao;
     private Configuration configuration;
+    private StudySiteDao studySiteDao;
 
     public ParticipantController() {
         setCommandClass(ParticipantInputCommand.class);
@@ -238,5 +231,13 @@ public abstract class ParticipantController<C extends ParticipantInputCommand> e
 
     public void setParticipantRepository(ParticipantRepository participantRepository) {
         this.participantRepository = participantRepository;
+    }
+
+    public StudySiteDao getStudySiteDao() {
+        return studySiteDao;
+    }
+
+    public void setStudySiteDao(StudySiteDao studySiteDao) {
+        this.studySiteDao = studySiteDao;
     }
 }

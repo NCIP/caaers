@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.study.StudyCommand;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 import gov.nih.nci.cabig.ctms.web.chrome.Task;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
@@ -48,6 +49,16 @@ public class EditParticipantController<T extends ParticipantInputCommand> extend
         request.getSession().removeAttribute(getReplacedCommandSessionAttributeName(request));
 
         Participant participant = participantRepository.getParticipantById(Integer.parseInt(request.getParameter("participantId")));
+        StudyParticipantAssignment assignment = null;
+        Integer assignmentId = null;
+        try {
+            assignmentId = WebUtils.getIntParameter(request, "assignmentId");
+        } catch (Exception e) {
+        }
+
+        if (assignmentId != null) {
+            assignment = assignmentDao.getById(assignmentId);
+        }
 
         EditParticipantCommand cmd = new EditParticipantCommand(participant);
         cmd.setUnidentifiedMode(getUnidentifiedMode());
@@ -64,6 +75,13 @@ public class EditParticipantController<T extends ParticipantInputCommand> extend
 
         if (participant.getAssignments().size() > 0)
             cmd.setOrganization(participant.getAssignments().get(0).getStudySite().getOrganization());
+
+        if (assignment != null) {
+            StudySite site = getStudySiteDao().getById(assignment.getStudySite().getId());
+            cmd.setAssignment(assignment);
+            cmd.setStudy(site.getStudy());
+            cmd.refreshStudyDiseases();
+        }
 
         return cmd;
 

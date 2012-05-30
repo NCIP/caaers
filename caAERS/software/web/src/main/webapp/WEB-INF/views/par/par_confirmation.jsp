@@ -18,6 +18,30 @@
 </style>
 </head>
 <body>
+
+<script>
+    jQuery(document).ready(function() {
+        <c:if test="${!empty param.tabName}">
+            goToPage("${param.tabName}");
+        </c:if>
+    });
+
+    var tabsHash = new Hash();
+    <c:forEach items="${flow.tabs}" var="atab" varStatus="status">
+    <csmauthz:accesscontrol domainObject="${atab}" authorizationCheckName="tabAuthorizationCheck">
+        tabsHash.set('${atab.class.simpleName}','${atab.number}');
+    </csmauthz:accesscontrol>
+    </c:forEach>
+
+    function goToPage(s) {
+        var tabN = tabsHash.get(s);
+        jQuery("#command").attr("action", "<c:url value="/pages/participant/edit?participantId=${param.participantId}" />");
+        jQuery('#_target').attr("name", '_target' + tabN);
+        jQuery('#command').submit();
+    }
+
+</script>
+
 <p><tags:instructions code="instruction_subject_enter.review"/></p>
 
 <c:set var="_title">
