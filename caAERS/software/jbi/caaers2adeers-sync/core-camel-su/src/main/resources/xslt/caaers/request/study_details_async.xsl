@@ -173,9 +173,11 @@
         </stud:studyAgent>
     </xsl:template>
     <xsl:template match="inds">
-        <studyAgentINDAssociations>
-            <xsl:apply-templates select="ind"  />
-        </studyAgentINDAssociations>
+        <xsl:if test="ind">
+            <studyAgentINDAssociations>
+                <xsl:apply-templates select="ind"  />
+            </studyAgentINDAssociations>
+        </xsl:if>
     </xsl:template>
     <xsl:template match="ind">
         <stud:studyAgentINDAssociation>

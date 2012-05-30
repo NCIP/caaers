@@ -14,7 +14,7 @@
     </xsl:template>
     <xsl:template match="wsError">
         <error>
-            <xsl:value-of select="errorCode"/>  :  <xsl:value-of select="errorDesc"/>  :  <xsl:value-of select="exception"/>
+            <xsl:value-of select="errorCode"/> : <xsl:value-of select="errorDesc"/>
         </error>
     </xsl:template>
     <xsl:template match="com:entityProcessingOutcome">

@@ -1,76 +1,19 @@
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-    <soap:Body>
-        <ns2:getStudyDetailsResponse xmlns:ns2="http://services.ctep.nci.nih.gov/">
-            <StudyDetails xmlns="">
-                <ctcVersion>4.0</ctcVersion>
-                <currentStatus>Complete</currentStatus>
-                <currentStatusDate>1992-12-07</currentStatusDate>
-                <localDocumentNumber>85-C-197</localDocumentNumber>
-                <monitoringMethod>ADU</monitoringMethod>
-                <nciDocumentNum>T85-0283</nciDocumentNum>
-                <participationType>Clinical Center</participationType>
-                <phase>I</phase>
-                <primaryStudyType>Treatment</primaryStudyType>
-                <sponsorOrganization></sponsorOrganization>
-                <studyAgents>
-                    <studyAgent createdDate="07-17-1999 16:02:36" lead="Yes" updatedDate="02-11-2003 17:58:19">
-                        <agent>
-                            <nscNumber>603062</nscNumber>
-                            <agentName>Porfimer sodium (Photofrin)</agentName>
-                            <agentStatus>Active</agentStatus>
-                            <inds>
-                                <ind lead="No">
-                                    <indHolder>CTEP</indHolder>
-                                    <indNumber>27637</indNumber>
-                                </ind>
-                            </inds>
-                        </agent>
-                        <commercialInvestigational>Investigational</commercialInvestigational>
-                    </studyAgent>
-                </studyAgents>
-                <studyDevices/>
-                <studyDiseases>
-                    <studyDisease createdDate="07-17-1999 15:52:33" lead="Yes" updatedDate="12-29-2004 17:36:13">
-                        <diseaseName>Solid tumor, NOS</diseaseName>
-                        <reportingMedDRA>10029000</reportingMedDRA>
-                    </studyDisease>
-                </studyDiseases>
-                <studyOrganizations>
-                    <studyOrganization createdDate="12-18-1998 18:09:42" role="Document to Lead Organization"
-                                       updatedDate="01-04-2001 17:16:05">
-                        <localDocumentNumber>85-C-197</localDocumentNumber>
-                        <organization>
-                            <ctepId>NCIROB</ctepId>
-                            <organizationName>National Cancer Institute Radiation Oncology Branch</organizationName>
-                            <organizationType>CLC</organizationType>
-                        </organization>
-                        <status>Active</status>
-                        <principalInvestigator ctepInvestigatorId="21836">
-                            <firstname>Paul</firstname>
-                            <middlename xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
-                            <lastname>Okunieff</lastname>
-                            <email/>
-                            <principalInvestigatorStatus>Active</principalInvestigatorStatus>
-                        </principalInvestigator>
-                    </studyOrganization>
-                </studyOrganizations>
-                <studyTherapies>
-                    <therapy createdDate="10-20-1999 12:59:26" updatedDate="">
-                        <ctepName>Radiation Therapy</ctepName>
-                        <medDRACode>10037770</medDRACode>
-                        <preferredTerm>Radiation Therapy</preferredTerm>
-                    </therapy>
-                    <therapy createdDate="11-23-1999 11:42:43" updatedDate="">
-                        <ctepName>Therapy (NOS)</ctepName>
-                        <medDRACode>90003012</medDRACode>
-                        <preferredTerm xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
-                    </therapy>
-                </studyTherapies>
-                <studyTreatmentAssignments/>
-                <title>Phase I study of photodynamic therapy with laser light and Photofrin II for surface
-                    Malignancies
-                </title>
-            </StudyDetails>
-        </ns2:getStudyDetailsResponse>
-    </soap:Body>
-</soap:Envelope>
+<?xml version="1.0" encoding="UTF-8"?>
+<payload xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+         xmlns:com="http://schema.integration.caaers.cabig.nci.nih.gov/common" correlationId="l0HcpQHyJ0Jy3L0">
+    <system>caaers</system>
+    <response>
+        <entity xmlns:stud="http://schema.integration.caaers.cabig.nci.nih.gov/study">study</entity>
+        <operation xmlns:stud="http://schema.integration.caaers.cabig.nci.nih.gov/study" name="createStudyResponse">
+            <status>error</status>
+            <errors>
+                <error>WS_STU_001 : Another study "ACRIN-6657" is using an identifier associated with the "ACRIN-6657",
+                    so cannot process." : Another study "ACRIN-6657" is using an identifier associated with the
+                    "ACRIN-6657", so cannot process."
+                </error>
+            </errors>
+            <status>Failed to Process</status>
+            <data/>
+        </operation>
+    </response>
+</payload>

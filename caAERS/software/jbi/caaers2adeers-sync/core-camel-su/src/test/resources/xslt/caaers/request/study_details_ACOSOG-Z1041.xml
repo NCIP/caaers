@@ -23,10 +23,6 @@
                                 <agentName>Cyclophosphamide</agentName>
                                 <agentStatus>Active</agentStatus>
                                 <inds>
-                                    <ind lead="Yes">
-                                        <indHolder>CTEP</indHolder>
-                                        <indNumber>6667</indNumber>
-                                    </ind>
                                 </inds>
                             </agent>
                             <commercialInvestigational>Commercial</commercialInvestigational>
