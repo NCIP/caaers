@@ -22,12 +22,7 @@
                                 <c:forEach var="assignment" items="${subject.assignments}" varStatus="j">
                                     <c:set var="_i" value="${_i + 1}"/>
                                     <tr class="${_i % 2 == 0 ? 'alt' : ''}">
-                                        <td>
-                                            <a href="<c:url value="/pages/participant/edit?participantId=${subject.id}"/>">
-                                                <c:out value="${subject.firstName}" escapeXml="true"/>&nbsp;
-                                                <c:out value="${subject.lastName}" escapeXml="true"/>
-                                            </a>
-                                        </td>
+                                        <td><c:out value="${subject.firstName}" escapeXml="true"/>&nbsp;<c:out value="${subject.lastName}" escapeXml="true"/></td>
                                         <td><span title="${assignment.studySite.study.shortTitle}"><c:out value="${assignment.studySite.study.primaryIdentifier}" escapeXml="true"/></span><td><span title="${assignment.studySite.study.shortTitle}"><c:out value="${assignment.studySubjectIdentifier}" escapeXml="true"/></span></td>
                                         <td align="RIGHT">
                                             <img src="<c:url value="/images/orange-actions.gif" />"
