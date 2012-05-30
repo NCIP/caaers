@@ -56,7 +56,7 @@ public class CtcServiceImplTest extends DaoTestCase {
 		assertEquals(Grade.DEATH.getDisplayName(), processingOutcome.getBusinessIdentifier());
 		assertEquals(CtcGrade.class.getName(), processingOutcome.getKlassName());
 		assertFalse(processingOutcome.isFailed());
-		assertEquals("Added", processingOutcome.getMessage().get(0));
+		assertEquals("Updated", processingOutcome.getMessage().get(0));
 		processingOutcome = processingOutcomes.get(4);
 		assertEquals("ctepcode2", processingOutcome.getBusinessIdentifier());
 		assertEquals(CtcTerm.class.getName(), processingOutcome.getKlassName());

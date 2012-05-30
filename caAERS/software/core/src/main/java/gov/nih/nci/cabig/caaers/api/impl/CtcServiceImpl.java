@@ -29,7 +29,12 @@ public class CtcServiceImpl implements CtcService{
 		CaaersServiceResponse response = Helper.createResponse();
 		List<ProcessingOutcome> processingOutcomes = new ArrayList<ProcessingOutcome>();
 		for(CtcVersionType ctcVersionType : ctcs.getCtc()){
-			processingOutcomes.addAll(createOrUpdateCtc(ctcConverter.convert(ctcVersionType)));
+			try {
+				processingOutcomes.addAll(createOrUpdateCtc(ctcConverter.convert(ctcVersionType)));
+			} catch (Exception e) {
+				logger.error(e);
+				Helper.populateError(response, "WS_GEN_000", e.getMessage());
+			}
 		}
 		for(ProcessingOutcome processingOutcome : processingOutcomes){
 			Helper.populateProcessingOutcome(response, processingOutcome);
@@ -91,6 +96,7 @@ public class CtcServiceImpl implements CtcService{
         		found = true;
         		message = "Updated";
         		processingOutcomes.addAll(updateTerms(existingCategory, category.getTerms()));
+        		break;
         	}
         }
         //New category
@@ -102,7 +108,7 @@ public class CtcServiceImpl implements CtcService{
         	processingOutcomes.addAll(updateTerms(ctcCategory, category.getTerms()));
         }
 		try {
-			ctcDao.merge(ctc);
+			ctcDao.save(ctc);
 		} catch (Exception e) {
 			for(ProcessingOutcome processingOutcomeTerm : processingOutcomes){
 				processingOutcomeTerm.setFailed(true);
@@ -142,7 +148,7 @@ public class CtcServiceImpl implements CtcService{
 					existingTerm.setOtherRequired(isOtherRequired(inputTerm.getCtepTerm()));
 					existingTerm.setTerm(inputTerm.getTerm());
 					processingOutcomes.addAll(updateCtcGrades(existingTerm, inputTerm.getContextualGrades()));
-					
+					break;
 				}
 			}
 			if(!found){
@@ -162,27 +168,30 @@ public class CtcServiceImpl implements CtcService{
 	
 	private List<ProcessingOutcome> updateCtcGrades(CtcTerm ctcTerm, List<CtcGrade> grades){
 		List<ProcessingOutcome> processingOutcomes = new ArrayList<ProcessingOutcome>();
-		if(grades.size()>0){
-			List<CtcGrade> validGrades = new ArrayList<CtcGrade>();
-			for(CtcGrade ctcGrade : grades){
-				ProcessingOutcome processingOutcome = new ProcessingOutcome();
-				processingOutcome.setKlassName(CtcGrade.class.getName());
-				processingOutcomes.add(processingOutcome);
-				if(ctcGrade.getGrade() == null || StringUtils.isBlank(ctcGrade.getText())){
-					processingOutcome.setBusinessId("NA");
-					processingOutcome.addMessage("Ctc grade or grade description cannot be blank");
-					processingOutcome.setFailed(true);
-				}else{
-					processingOutcome.setBusinessId(ctcGrade.getGrade().getDisplayName());
-					processingOutcome.addMessage("Added");
-					validGrades.add(ctcGrade);
+		for(CtcGrade ctcGrade : grades){
+			ProcessingOutcome processingOutcome = new ProcessingOutcome();
+			processingOutcome.setKlassName(CtcGrade.class.getName());
+			processingOutcomes.add(processingOutcome);
+			if(ctcGrade.getGrade() == null || StringUtils.isBlank(ctcGrade.getText())){
+				processingOutcome.setBusinessId("NA");
+				processingOutcome.addMessage("Ctc grade or grade description cannot be blank");
+				processingOutcome.setFailed(true);
+				continue;
+			}
+			boolean found = false;
+			processingOutcome.setBusinessId(ctcGrade.getGrade().getDisplayName());
+			for(CtcGrade existingGrade : ctcTerm.getContextualGrades()){
+				if(existingGrade.getGrade() == ctcGrade.getGrade()){
+					processingOutcome.addMessage("Updated");
+					found = true;
+					existingGrade.setText(ctcGrade.getText());
+					break;
 				}
 			}
-			if(validGrades.size()>0){
-				ctcTerm.getContextualGrades().clear();
-				for(CtcGrade ctcGrade : validGrades){
-					ctcTerm.addCtcGrade(ctcGrade);
-				}
+			if(!found){
+				//New term
+				processingOutcome.addMessage("Added");
+				ctcTerm.addCtcGrade(ctcGrade);
 			}
 		}
 		return processingOutcomes;
