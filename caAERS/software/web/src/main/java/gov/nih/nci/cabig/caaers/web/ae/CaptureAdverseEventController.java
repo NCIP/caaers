@@ -254,30 +254,34 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 		CaptureAdverseEventInputCommand cmd = new CaptureAdverseEventInputCommand(adverseEventReportingPeriodDao,assignmentDao, evaluationService, reportDefinitionDao, studyDao, expeditedAdverseEventReportDao);
 
 		cmd.setWorkflowEnabled(configuration.get(Configuration.ENABLE_WORKFLOW));
-		
-		if(findInRequest(request, "study") == null){
 
-			//restore the values from session if they are available. 
-			HttpSession session = request.getSession();
+        if (findInRequest(request, "study") == null) {
 
-			Integer studyId = (Integer) session.getAttribute(SELECTED_STUDY_ID);
-			if(studyId != null){
-				cmd.setStudy(studyDao.getById(studyId));
-			}
-			
-			Integer subjectId = (Integer) session.getAttribute(SELECTED_PARTICIPANT_ID);
-			if(subjectId != null){
-				cmd.setParticipant(participantDao.getById(subjectId));
-			}
-			
-			Integer courseId = (Integer) session.getAttribute(SELECTED_COURSE_ID);
-			if(courseId != null){
-				cmd.setAdverseEventReportingPeriod(adverseEventReportingPeriodDao.getById(courseId));
-			}
+            //restore the values from request or session if they are available.
+            HttpSession session = request.getSession();
 
-		}
-				
-		return cmd;
+            Integer studyId = null;
+            Integer subjectId = null;
+            Integer courseId;
+
+            try {
+                studyId = WebUtils.getIntParameter(request, "studyId");
+                subjectId = WebUtils.getIntParameter(request, "subjectId");
+            } catch (NumberFormatException e) {
+            }
+
+            if (studyId == null) studyId = (Integer)session.getAttribute(SELECTED_STUDY_ID);
+            if (subjectId == null) subjectId = (Integer)session.getAttribute(SELECTED_PARTICIPANT_ID);
+
+            if (studyId != null) cmd.setStudy(studyDao.getById(studyId));
+            if (subjectId != null) cmd.setParticipant(participantDao.getById(subjectId));
+
+            courseId = (Integer)session.getAttribute(SELECTED_COURSE_ID);
+            if (courseId != null) cmd.setAdverseEventReportingPeriod(adverseEventReportingPeriodDao.getById(courseId));
+
+        }
+
+        return cmd;
 	}
 	
 	@Override
