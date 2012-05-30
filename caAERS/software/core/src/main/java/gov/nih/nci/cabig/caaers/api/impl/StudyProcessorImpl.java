@@ -207,8 +207,10 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 			Study dbStudy = checkDuplicateStudy(studyImportOutcome.getImportedDomainObject());
 			if(dbStudy != null){
 				studyImportOutcome.addErrorMessage(study.getClass().getSimpleName() + " identifier already exists. ", Severity.ERROR);
-                Helper.populateError(caaersServiceResponse, "WS_STU_001", messageSource.getMessage("WS_STU_001", new Object[]{dbStudy.getShortTitle(),
-                        studyImportOutcome.getImportedDomainObject().getShortTitle()}, "Another study is using the identifier provided", Locale.getDefault()));
+                Helper.populateError(caaersServiceResponse, "WS_STU_001",
+                        messageSource.getMessage("WS_STU_001",
+                                new Object[]{dbStudy.getPrimaryIdentifierValue(),studyImportOutcome.getImportedDomainObject().getPrimaryIdentifierValue()},
+                                "Another study is using the identifier provided", Locale.getDefault()));
 			}else{
 				
 				List<String> errors = domainObjectValidator.validate(studyImportOutcome.getImportedDomainObject());
@@ -219,12 +221,12 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 						studyRepository.save(theStudy);
 
                         ProcessingOutcome processingOutcome = Helper.createOutcome(Study.class, theStudy.getFundingSponsorIdentifierValue(),
-                                String.valueOf(theStudy.getId()), false,"Study with Short Title  \""
-                                +  theStudy.getShortTitle()
+                                String.valueOf(theStudy.getId()), false,"Study \""
+                                +  theStudy.getPrimaryIdentifierValue()
                                 + "\" Created in caAERS" ) ;
                         Helper.populateProcessingOutcome(caaersServiceResponse, processingOutcome);
                         Helper.populateMessage(caaersServiceResponse, "Study with Short Title  \""
-                                +  theStudy.getShortTitle()
+                                +  theStudy.getPrimaryIdentifierValue()
                                 + "\" Created in caAERS");
 
 						logger.info("Study Created");
@@ -246,15 +248,13 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 						messages.add(errMsg);
 		        	}
 					
-					String msg = "Study with Short Title \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle()+ "\" could not be created in caAERS. "
+					String msg = "Study \"" +  studyImportOutcome.getImportedDomainObject().getPrimaryIdentifierValue() + "\" could not be created in caAERS. "
                             + messages.toString();
                             
-                    String messageWithoutShortTitle = "Study could not be created in caAERS because "  +messages.toString();
-
                     Helper.populateError(caaersServiceResponse, "WS_GEN_000", msg);
                     
                     Helper.populateProcessingOutcome(caaersServiceResponse, Helper.createOutcome(Study.class, 
-                    		studyImportOutcome.getImportedDomainObject().getFundingSponsorIdentifierValue(), true, messageWithoutShortTitle ));
+                    		studyImportOutcome.getImportedDomainObject().getFundingSponsorIdentifierValue(), true, msg ));
                     logger.debug(">>> ERR:" + msg);
 				}
 			}
@@ -301,11 +301,11 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 				Study dbStudy = fetchStudy(studyImportOutcome.getImportedDomainObject());
 
                 if(dbStudy == null){
-                    Helper.populateError(caaersServiceResponse, "WS_GEN_000", "Study with Short Title  \""
-                            +  studyImportOutcome.getImportedDomainObject().getShortTitle()
+                    Helper.populateError(caaersServiceResponse, "WS_GEN_000", "Study \""
+                            +  studyImportOutcome.getImportedDomainObject().getPrimaryIdentifierValue()
                             + "\" does not exist in caAERS");
-                    studyImportOutcome.addErrorMessage("Study with Short Title  \""
-                            +  studyImportOutcome.getImportedDomainObject().getShortTitle()
+                    studyImportOutcome.addErrorMessage("Study \""
+                            +  studyImportOutcome.getImportedDomainObject().getPrimaryIdentifierValue()
                             + "\" does not exist in caAERS" , DomainObjectImportOutcome.Severity.ERROR);
                     return caaersServiceResponse;
                 }
@@ -316,8 +316,8 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
                 //check if another study exist?
                 Study anotherStudy = checkDuplicateStudy(studyImportOutcome.getImportedDomainObject());
                 if(anotherStudy != null){
-                    String errorDescription = messageSource.getMessage("WS_STU_001", new Object[]{anotherStudy.getShortTitle(),
-                            studyImportOutcome.getImportedDomainObject().getShortTitle()},
+                    String errorDescription = messageSource.getMessage("WS_STU_001", new Object[]{anotherStudy.getPrimaryIdentifierValue(),
+                            studyImportOutcome.getImportedDomainObject().getPrimaryIdentifierValue()},
                             "Another study is using the identifier provided", Locale.getDefault());
                     Helper.populateError(caaersServiceResponse, "WS_GEN_000", errorDescription);
                     studyImportOutcome.addErrorMessage(errorDescription, DomainObjectImportOutcome.Severity.ERROR);
@@ -328,12 +328,12 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
                     studyRepository.synchronizeStudyPersonnel(theStudy);
                     studyRepository.save(theStudy);
                     ProcessingOutcome processingOutcome = Helper.createOutcome(Study.class, theStudy.getFundingSponsorIdentifierValue(), 
-                            String.valueOf(theStudy.getId()), false,"Study with Short Title  \""
-                            +  studyImportOutcome.getImportedDomainObject().getShortTitle()
+                            String.valueOf(theStudy.getId()), false,"Study \""
+                            +  studyImportOutcome.getImportedDomainObject().getPrimaryIdentifierValue()
                             + "\" updated in caAERS" ) ;
                     Helper.populateProcessingOutcome(caaersServiceResponse, processingOutcome);
-                    Helper.populateMessage(caaersServiceResponse, "Study with Short Title  \""
-                            +  studyImportOutcome.getImportedDomainObject().getShortTitle()
+                    Helper.populateMessage(caaersServiceResponse, "Study \""
+                            +  studyImportOutcome.getImportedDomainObject().getPrimaryIdentifierValue()
                             + "\" updated in caAERS");
                     caaersServiceResponse.getServiceResponse().getResponsecode();
                     logger.info("Study Updated");
@@ -355,8 +355,8 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 				for(String errMsg : errors){
 					messages.add(errMsg);
 	        	}
-                Helper.populateError(caaersServiceResponse, "WS_GEN_000", "Study with Short Title \""
-                        +  studyImportOutcome.getImportedDomainObject().getShortTitle()
+                Helper.populateError(caaersServiceResponse, "WS_GEN_000", "Study \""
+                        +  studyImportOutcome.getImportedDomainObject().getPrimaryIdentifierValue()
                         + "\" could not be updated in caAERS. " + messages.toString());
 
             }
