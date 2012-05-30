@@ -231,7 +231,8 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
     	boolean failed = true;
     	for(IntegrationLog intLog : integrationLogs){
     		// if it is partially processed, it is considered to be incomplete
-    		if(!StringUtils.isBlank(intLog.getNotes()) && intLog.getNotes().contains(Status.PARTIALLY_PROCESSED.value()))
+    		if(!StringUtils.isBlank(intLog.getNotes()) && (intLog.getNotes().contains(Status.PARTIALLY_PROCESSED.value()) || 
+    				intLog.getNotes().contains(Status.FAILED_TO_PROCESS.value())))
     			return true;
     		if(intLog.getSynchStatus() == SynchStatus.REQUEST_COMPLETION){
     			failed = false;
