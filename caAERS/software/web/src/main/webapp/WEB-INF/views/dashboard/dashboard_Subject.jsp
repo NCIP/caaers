@@ -11,34 +11,39 @@
                 <div id="subjects" class="<c:if test="${fn:length(subjectList) > 10}">scrollerTask</c:if>">
                     <table border="0" cellpadding="0" cellspacing="0" class="dashboard_table" width="100%">
                         <tr class="taskTitleRow">
-                            <%--<th>Primary Id--%>
-                            <th>First Name
-                            <th>Last Name
-                            <th>Assignments
-                            <th width="80px">
+                            <th>Name</th>
+                            <th>Identifiers</th>
+                            <th width="80px">&nbsp;</th>
                         </tr>
-                         <c:forEach var ="subject" items="${subjectList}" varStatus = "loopStatus">
-                         	<tr class="${loopStatus.index % 2 == 0 ? 'alt' : ''}">
-                                <%--<td><a href="<c:url value="/pages/participant/edit?participantId=${subject.id}"/>">${subject.assignments[0].studySubjectIdentifier}</a></td>--%>
-                                <td><a href="<c:url value="/pages/participant/edit?participantId=${subject.id}"/>"><c:out value="${subject.firstName}" escapeXml="true" /></a></td>
-                                <td><a href="<c:url value="/pages/participant/edit?participantId=${subject.id}"/>"><c:out value="${subject.lastName}" escapeXml="true" /></a></td>
-                                <td>${fn:length(subject.assignments)}</td>
-                                <td align="RIGHT"><img src="<c:url value="/images/orange-actions.gif" />" border="0" onmouseover='showDashboardSubjectsMenuOptions("${subject.id}")' id='_d_subject_${subject.id}' style="cursor: pointer; margin-right: 15px;"></td>
-                           </tr>
-                           <c:if test="${fn:length(subject.assignments) > 0}">
-                               <c:forEach var="assignment" items="${subject.assignments}" varStatus="i">
-                                <tr style="background-color: #fff;">
-                                    <td align="RIGHT">assignment #${i.index + 1}</td>
-                                    <td colspan="2">
-                                        <span style="color:black;"><b>Study Primary Identifier:</b></span>&nbsp;<c:out value="${assignment.studySite.study.primaryIdentifier}" escapeXml="true" />
-                                        <br>
-                                        <span style="color:black;"><b>Study Subject Identifier:</b></span>&nbsp;<c:out value="${assignment.studySubjectIdentifier}" escapeXml="true" />
-                                    </td>
-                                    <td align="RIGHT"><img src="<c:url value="/images/orange-actions.gif" />" border="0" onmouseover='showDashboardSubjectsAssignmentsMenuOptions(${subject.id}, ${assignment.studySite.study.id}, ${assignment.id})' id='_d_assignment_${assignment.id}' style="cursor: pointer; margin-right: 15px;""></td>
-                                </tr>
+                        <c:set var="_i" value="0" />
+                        <c:forEach var="subject" items="${subjectList}" varStatus="i">
+                            <c:if test="${fn:length(subject.assignments) > 0}">
+                                <c:forEach var="assignment" items="${subject.assignments}" varStatus="j">
+                                    <c:set var="_i" value="${_i + 1}"/>
+                                    <tr class="${_i % 2 == 0 ? 'alt' : ''}">
+                                        <td>
+                                            <a href="<c:url value="/pages/participant/edit?participantId=${subject.id}"/>">
+                                                <c:out value="${subject.firstName}" escapeXml="true"/>&nbsp;
+                                                <c:out value="${subject.lastName}" escapeXml="true"/>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <span style="color:black;">Study primary identifier:</span>&nbsp;<b><c:out value="${assignment.studySite.study.primaryIdentifier}" escapeXml="true"/></b>
+                                            <br>
+                                            <span style="color:black;">Study subject identifier:</span>&nbsp;<b><c:out value="${assignment.studySubjectIdentifier}" escapeXml="true"/></b>
+                                        </td>
+                                        <td align="RIGHT">
+                                            <img src="<c:url value="/images/orange-actions.gif" />"
+                                                 border="0"
+                                                 onmouseover='showDashboardSubjectsAssignmentsMenuOptions(${subject.id}, ${assignment.studySite.study.id}, ${assignment.id})'
+                                                 id='_d_assignment_${assignment.id}'
+                                                 style="cursor: pointer;
+                                                 margin-right: 15px;">
+                                        </td>
+                                    </tr>
                                 </c:forEach>
-                           </c:if>
-                         </c:forEach>
+                            </c:if>
+                        </c:forEach>
                         <c:if test="${fn:length(subjectList) == 0}">
                             <tr><td colspan="5"><caaers:message code="dashboard.noResults" /></td></tr>
                         </c:if>
@@ -51,37 +56,29 @@
 
 <script>
 
-    function doSubject() {
+    function enterAdverseEvents(_studyId, _subjectId) {
+        document.location = "<c:url value="/pages/ae/captureRoutine?" />" + "studyId=" + _studyId + "&subjectId=" + _subjectId;
     }
 
-    function showDashboardSubjectsMenuOptions(_id) {
-        var _el = jQuery("#_d_subject_" + _id);
-        var html = "<div><ul style='font-family:tahoma;'>" +
-                "<li><a class='submitter-blue' href='#' onclick='doSubject()'>Edit Subject Details</a></li>" +
-//                "<li><a class='submitter-blue' href='#' onclick='doSubject()'>Edit Medical History</a></li>" +
-//                "<li><a class='submitter-blue' href='#' onclick='doSubject()'>Enter Adverse Events</a></li>" +
-                "<li><a class='submitter-blue' href='#' onclick='doSubject()'>Assign to Study</a></li>" +
-                "</ul></div>";
-        _el.menu({
-                content: html,
-                maxHeight: 180,
-                width: 180,
-                positionOpts: {
-                    directionV: 'down',
-                    posX: 'left',
-                    posY: 'bottom',
-                    offsetX: 0,
-                    offsetY: 0
-                },
-                showSpeed: 300
-            });
+    function editMedicalHistory(_studyId, _subjectId) {
+        document.location = "<c:url value="/pages/participant/edit?" />" + "participantId=" + _subjectId;
+    }
+
+    function editSubjectDetails(_studyId, _subjectId) {
+        document.location = "<c:url value="/pages/participant/edit?" />" + "participantId=" + _subjectId;
+    }
+
+    function assignToStudy(_studyId, _subjectId) {
+        document.location = "<c:url value="/pages/participant/assignParticipant?" />" + "participantId=" + _subjectId;
     }
 
     function showDashboardSubjectsAssignmentsMenuOptions(_subjectId, _studyId, _assignmentId) {
         var _el = jQuery("#_d_assignment_" + _assignmentId);
         var html = "<div><ul style='font-family:tahoma;'>" +
-                "<li><a class='submitter-blue' href='#' onclick='doSubject()'>Edit Medical History</a></li>" +
-                "<li><a class='submitter-blue' href='#' onclick='doSubject()'>Enter Adverse Events</a></li>" +
+                "<li><a class='submitter-blue' href='#' onclick='editSubjectDetails(" +_studyId + ", " + _subjectId + ")'>Edit Subject Details</a></li>" +
+                "<li><a class='submitter-blue' href='#' onclick='editMedicalHistory(" +_studyId + ", " + _subjectId + ")'>Edit Medical History</a></li>" +
+                "<li><a class='submitter-blue' href='#' onclick='enterAdverseEvents(" +_studyId + ", " + _subjectId + ")'>Enter Adverse Events</a></li>" +
+                "<li><a class='submitter-blue' href='#' onclick='assignToStudy(" +_studyId + ", " + _subjectId + ")'>Assign to Study</a></li>" +
                 "</ul></div>";
         _el.menu({
                 content: html,

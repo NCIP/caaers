@@ -201,7 +201,7 @@
 
     .dashboard_table tr.alt td {
         color: #3a3a3a;
-        background-color: #f2f9ff;
+        background-color: #e2e9ff;
     }
 
     a.quickLink, a.quickLink:visited {
