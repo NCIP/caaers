@@ -28,11 +28,15 @@
                                             </a>
                                         </td>
                                         <td>
-                                            <span style="color:black;">Study:</span>&nbsp;<span title="${assignment.studySite.study.shortTitle}"><c:out value="${fn:substring(assignment.studySite.study.shortTitle, 0, 60)}" escapeXml="true"/>...</span>
-                                            <br>
-                                            <span style="color:black;">Study primary identifier:</span>&nbsp;<c:out value="${assignment.studySite.study.primaryIdentifier}" escapeXml="true"/>
-                                            <br>
-                                            <span style="color:black;">Study subject identifier:</span>&nbsp;<c:out value="${assignment.studySubjectIdentifier}" escapeXml="true"/>
+                                            <span title="${assignment.studySite.study.shortTitle}">
+<%--
+                                                <span style="color:black;">Study:</span>&nbsp;<c:out value="${fn:substring(assignment.studySite.study.shortTitle, 0, 60)}" escapeXml="true"/>...
+                                                <br>
+--%>
+                                                <span style="color:black;">Study primary identifier:</span>&nbsp;<c:out value="${assignment.studySite.study.primaryIdentifier}" escapeXml="true"/>
+                                                <br>
+                                                <span style="color:black;">Study subject identifier:</span>&nbsp;<c:out value="${assignment.studySubjectIdentifier}" escapeXml="true"/>
+                                            </span>
                                         </td>
                                         <td align="RIGHT">
                                             <img src="<c:url value="/images/orange-actions.gif" />"
