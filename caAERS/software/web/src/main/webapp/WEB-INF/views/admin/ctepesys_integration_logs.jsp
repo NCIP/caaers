@@ -30,7 +30,7 @@
 </style>
 
 <script type="text/javascript">
-
+    var correlationArray = [];
 	function initializeYUITableNoPagination(tableId, responseData, columnDefs, fields) {
 	    YAHOO.example.CellSelection = new function() {
 	        var columDefs = columnDefs.clone();
@@ -194,7 +194,7 @@
 	            
 	        var actionFormatter = function(elCell, oRecord, oColumn, oData) {
 	        	var row_number = oRecord._nCount;
-	             elCell.innerHTML = '<A  HREF="javascript:showPopupMessage(' + row_number + ')";>View Details</A>';
+	             elCell.innerHTML = '<A  HREF="javascript:showPopupMessage(' + row_number + ')";>View Details</A> || <a href="logdownload?cstr=' + correlationArray[row_number]+ '&dstr=05-31-2012">Messages</a>';
 	         }
 	            
 	        var myDataTable = new YAHOO.widget.RowExpansionDataTable( 
