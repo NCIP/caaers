@@ -106,6 +106,8 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
     	from("direct:adEERSResponseSink")
                 .to("log:gov.nih.nci.cabig.caaers2adeers.synch-comp?showHeaders=true&level=TRACE&showException=true&showStackTrace=true")
                 .choice()
+                    .when().xpath("//operation/errors/error")
+                        .to("direct:morgue")
                     .when().xpath("not(//operation/data/child::*/child::*)")
                         .process(track(NO_DATA_AVAILABLE, "Processed"))
                         .to("direct:outputSink")
@@ -119,6 +121,8 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
     	//need to process caAERS results
 		from("direct:caAERSResponseSink")
                 .choice()
+                    .when().xpath("//operation/errors/error")
+                        .to("direct:morgue")
                     .when().xpath("//soap:Fault", ns)
                         .to("direct:morgue")
                     .otherwise()
