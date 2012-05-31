@@ -19,10 +19,10 @@ public class CaaersWsseValidationPasswordCallback implements CallbackHandler {
 		org.apache.ws.security.WSPasswordCallback pc = (org.apache.ws.security.WSPasswordCallback) callbacks[0];
 		if (equals(pc.getIdentifier(), caaersWSUser)) {
 			if (!equals(pc.getPassword(), caaersWSPassword)) {
-				throw new IOException("invalid password");
+				throw new IOException("invalid password- ["+pc.getPassword()+"]");
 			}
 		}else{
-			throw new IOException("invalid username");
+			throw new IOException("invalid username- ["+pc.getIdentifier()+"]");
 		}
 	}
 
