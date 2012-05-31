@@ -119,8 +119,9 @@ public class Helper {
     public static String concatenateMessagesFromOutcome(DomainObjectImportOutcome<? extends MutableDomainObject> outcome){
     	StringBuffer sb = new StringBuffer();
     	for(Message msg:outcome.getMessages()){
-    		sb.append(msg);
-    		sb.append(",");
+    		sb.append(msg.getMessage());
+    		sb.append(";");
+    		sb.append("\n");
     	}
     	return sb.toString();
     }

@@ -50,7 +50,7 @@ public class LabServiceImpl implements LabService{
                 labMigrator.migrate(labCategory, dbLabCategory,outcome);
                 labCategoryDao.save(dbLabCategory);
                 return Helper.createOutcome(LabCategory.class, labCategory.getName(), false, "Lab Category with name : " +
-    					labCategory.getName() + ", id : " + labCategory.getId() + " is updated. " + Helper.concatenateMessagesFromOutcome(outcome));
+    					labCategory.getName() + " is updated. " + Helper.concatenateMessagesFromOutcome(outcome));
 			} else {
 				// db category doesn't exist. Create a new category.
 				logger.info("didn't find db Category with Name:" + labCategory.getName() + ". Creating new Category");
@@ -58,7 +58,7 @@ public class LabServiceImpl implements LabService{
 				labMigrator.migrate(labCategory, newLabCategory, outcome);
 				labCategoryDao.save(newLabCategory);
 				return Helper.createOutcome(LabCategory.class, labCategory.getName(), false, "Lab Category with name : " +
-						labCategory.getName() + ", id : " + labCategory.getId() + " is created. " +  Helper.concatenateMessagesFromOutcome(outcome) );
+						labCategory.getName() + " is created. " +  Helper.concatenateMessagesFromOutcome(outcome) );
             }
 			
 		} catch (Exception e) {
