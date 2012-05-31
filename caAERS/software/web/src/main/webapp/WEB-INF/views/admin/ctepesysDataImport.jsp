@@ -81,20 +81,21 @@
 }
 	
 	var myColumnDefs = [{key:"name", label:"Name", sortable:true, resizeable:true, minWidth:200, maxWidth:350},
-						{key:"status", label:"Status", sortable:true, resizeable:true, minWidth:300, maxWidth:350},
+						{key:"lastSuccessfulUpdate", label:"Last Successful Import", sortable:true, resizeable:true, minWidth:300, maxWidth:350},
+						{key:"lastAttemptedUpdate", label:"Last Attempted Import", sortable:true, resizeable:true, minWidth:300, maxWidth:350},
 						{key:"select", label:"Select", sortable:true, resizeable:true, minWidth:100, maxWidth:100}];
 	
-	var myFields = [{key:'name', parser:"string"},{key:'status', parser:"string"},{key:'select', parser:"string"}];
+	var myFields = [{key:'name', parser:"string"},{key:'lastSuccessfulUpdate', parser:"string"},{key:'lastAttemptedUpdate', parser:"string"},{key:'select', parser:"string"}];
 	
-	var fillerData =  [{name:'CTCAE',status:'last updated - ${empty command.ctcaeLastUpdated ? "never":command.ctcaeLastUpdatedStr}  <div> <img class="indicator" id="ctcaeIndicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator"/> </div> </div>',select: '<input type="checkbox" name="ctcaeChecked" id="ctcaeChecked" value="ctcaeChecked"/>'},
-						{name:'Devices',status:'last updated - ${empty command.devicesLastUpdated ? "never":command.devicesLastUpdatedStr} <div> <img class="indicator" id="deviceIndicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator"/> </div> </div>',select:'<input type="checkbox" name="deviceChecked" id="deviceChecked" value="deviceChecked" />'},
-						{name:'Pre-Existing Conditions',status:'last updated - ${empty command.preExistingConditionsLastUpdated ? "never":command.preExistingConditionsLastUpdatedStr} <div> <img class="indicator" id="conditionIndicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator"/> </div>',select:'<input type="checkbox" name="conditionChecked" id="conditionChecked" value="conditionChecked" />'},
-						{name:'Therapies',status:'last updated - ${empty command.therapiesLastUpdated ? "never":command.therapiesLastUpdatedStr} <div> <img class="indicator" id="therapyIndicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator"/> </div>',select:'<input type="checkbox" name="therapyChecked" id="therapyChecked" value="therapyChecked" />'},
-						{name:'Agent Dose Units of Measure',status:'last updated - ${empty command.agentDoseMeasureLastUpdated ? "never":command.agentDoseMeasureLastUpdatedStr} <div> <img class="indicator" id="agentDUOMIndicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator"/> </div>',select:'<input type="checkbox" name="agentDUOMChecked" id="agentDUOMChecked" value="agentDUOMChecked" />'},
-						{name:'Lab',status:'last updated - ${empty command.labLastUpdated ? "never":command.labLastUpdatedStr}  <div> <img class="indicator" id="labIndicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator"/> </div> </div>',select:'<input type="checkbox" name="labChecked" id="labChecked" value="labChecked"/>'},
-						{name:'Agents',status:'last updated - ${empty command.agentsLastUpdated ? "never":command.agentsLastUpdatedStr} <div> <img class="indicator" id="agentIndicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator"/> </div> </div>',select:'<input type="checkbox" name="agentsChecked" id="agentChecked" value="agentChecked" />'},
-						{name:'ASAEL',status:'last updated - ${empty command.asaelLastUpdated ? "never":command.asaelLastUpdatedStr}  <div> <img class="indicator" id="asaelIndicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator"/> </div>',select:'<input type="checkbox" name="asaelChecked" id="asaelChecked" value="asaelChecked" />'},
-						{name:'Organizations',status:'last updated - ${empty command.organizationsLastUpdated ? "never":command.organizationsLastUpdatedStr} <div> <img class="indicator" id="organizationIndicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator"/> </div> </div>',select:'<input type="checkbox" name="organizationChecked" id="organizationChecked" value="organizationsChecked"/>'}];
+	var fillerData =  [{name:'CTCAE',lastSuccessfulUpdate:'${empty command.ctcaeLastSuccessfullyUpdated ? "never":command.ctcaeLastSuccessfullyUpdatedStr}',lastAttemptedUpdate:'${empty command.ctcaeLastUpdated ? "never":command.ctcaeLastUpdatedStr}  <div> <img class="indicator" id="ctcaeIndicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator"/> </div> </div>',select: '<input type="checkbox" name="ctcaeChecked" id="ctcaeChecked" value="ctcaeChecked"/>'},
+						{name:'Devices',lastSuccessfulUpdate:'${empty command.devicesLastSuccessfullyUpdated ? "never":command.devicesLastSuccessfullyUpdatedStr}',lastAttemptedUpdate:'${empty command.devicesLastUpdated ? "never":command.devicesLastUpdatedStr} <div> <img class="indicator" id="deviceIndicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator"/> </div> </div>',select:'<input type="checkbox" name="deviceChecked" id="deviceChecked" value="deviceChecked" />'},
+						{name:'Pre-Existing Conditions',lastSuccessfulUpdate:'${empty command.preExistingConditionsLastSuccessfullyUpdated ? "never":command.preExistingConditionsLastSuccessfullyUpdatedStr}',lastAttemptedUpdate:'${empty command.preExistingConditionsLastUpdated ? "never":command.preExistingConditionsLastUpdatedStr} <div> <img class="indicator" id="conditionIndicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator"/> </div>',select:'<input type="checkbox" name="conditionChecked" id="conditionChecked" value="conditionChecked" />'},
+						{name:'Therapies',lastSuccessfulUpdate:'${empty command.therapiesLastSuccessfullyUpdated ? "never":command.therapiesLastSuccessfullyUpdatedStr}',lastAttemptedUpdate:'${empty command.therapiesLastUpdated ? "never":command.therapiesLastUpdatedStr} <div> <img class="indicator" id="therapyIndicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator"/> </div>',select:'<input type="checkbox" name="therapyChecked" id="therapyChecked" value="therapyChecked" />'},
+						{name:'Agent Dose Units of Measure',lastSuccessfulUpdate:'${empty command.agentDoseMeasureLastSuccessfullyUpdated ? "never":command.agentDoseMeasureLastSuccessfullyUpdatedStr}',lastAttemptedUpdate:'${empty command.agentDoseMeasureLastUpdated ? "never":command.agentDoseMeasureLastUpdatedStr} <div> <img class="indicator" id="agentDUOMIndicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator"/> </div>',select:'<input type="checkbox" name="agentDUOMChecked" id="agentDUOMChecked" value="agentDUOMChecked" />'},
+						{name:'Lab',lastSuccessfulUpdate:'${empty command.labLastSuccessfullyUpdated ? "never":command.labLastSuccessfullyUpdatedStr}',lastAttemptedUpdate:'${empty command.labLastUpdated ? "never":command.labLastUpdatedStr}  <div> <img class="indicator" id="labIndicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator"/> </div> </div>',select:'<input type="checkbox" name="labChecked" id="labChecked" value="labChecked"/>'},
+						{name:'Agents',lastSuccessfulUpdate:'${empty command.agentsLastSuccessfullyUpdated ? "never":command.agentsLastSuccessfullyUpdatedStr}',lastAttemptedUpdate:'${empty command.agentsLastUpdated ? "never":command.agentsLastUpdatedStr} <div> <img class="indicator" id="agentIndicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator"/> </div> </div>',select:'<input type="checkbox" name="agentsChecked" id="agentChecked" value="agentChecked" />'},
+						{name:'ASAEL',lastSuccessfulUpdate:'${empty command.asaelLastSuccessfullyUpdated ? "never":command.asaelLastSuccessfullyUpdatedStr}',lastAttemptedUpdate:'${empty command.asaelLastUpdated ? "never":command.asaelLastUpdatedStr}  <div> <img class="indicator" id="asaelIndicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator"/> </div>',select:'<input type="checkbox" name="asaelChecked" id="asaelChecked" value="asaelChecked" />'},
+						{name:'Organizations',lastSuccessfulUpdate:'${empty command.organizationsLastSuccessfullyUpdated ? "never":command.organizationsLastSuccessfullyUpdatedStr}',lastAttemptedUpdate:'${empty command.organizationsLastUpdated ? "never":command.organizationsLastUpdatedStr} <div> <img class="indicator" id="organizationIndicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator"/> </div> </div>',select:'<input type="checkbox" name="organizationChecked" id="organizationChecked" value="organizationsChecked"/>'}];
 
 	function displayCTEPLOVInitializeTable() {
 	   initializeYUITableNoPagination("tableDiv",fillerData, myColumnDefs, myFields);
@@ -137,16 +138,16 @@
 			
 			);
 		showPopupMessage();
-		ctepDataInitialization.importCTEPData($('ctcaeChecked').checked, $('deviceChecked').checked, $('conditionChecked').checked, $('therapyChecked').checked, 
+		setTimeout(function() {ctepDataInitialization.importCTEPData($('ctcaeChecked').checked, $('deviceChecked').checked, $('conditionChecked').checked, $('therapyChecked').checked, 
 				$('agentDUOMChecked').checked,$('labChecked').checked, $('agentChecked').checked,	$('asaelChecked').checked, $('organizationChecked').checked, ajaxCallBack);
-				document.getElementById("importButton").setAttribute("disabled", "disabled");
+				document.getElementById("importButton").setAttribute("disabled", "disabled");},2000);
 				
 	}
 	
 	function ajaxCallBack(jsonResult) {
 	    $$("form .arbitrary").each(function(e){e.className='indicator';	});
 	    document.getElementById("importButton").removeAttribute("disabled");
-	    setTimeout(function() {document.forms["ctepDataForm"].submit();},3000);
+	    document.forms["ctepDataForm"].submit();
 	    showFlashMessage(jsonResult);
 	    
 	}

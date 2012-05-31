@@ -32,15 +32,28 @@ public class CTEPESYSDataImportController extends SimpleFormController {
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
     	CTEPDataInitializationCommand cmd =  new CTEPDataInitializationCommand();
-    	cmd.setAgentsLastUpdated(integrationLogDao.getLastSuccessfullyUpdatedTime("agent", "getAgentsLOV"));
-    	cmd.setDevicesLastUpdated(integrationLogDao.getLastSuccessfullyUpdatedTime("device", "getDevicesLOV"));
-    	cmd.setOrganizationsLastUpdated(integrationLogDao.getLastSuccessfullyUpdatedTime("organization", "getOrganizationsLOV"));
-    	cmd.setAsaelLastUpdated(integrationLogDao.getLastSuccessfullyUpdatedTime("asael", "getASAEL"));
-    	cmd.setAgentDoseMeasureLastUpdated(integrationLogDao.getLastSuccessfullyUpdatedTime("agentDoseUOM", "getAgentDoseUOMLOV"));
-    	cmd.setLabLastUpdated(integrationLogDao.getLastSuccessfullyUpdatedTime("lab", "getLabsLOV"));
-    	cmd.setPreExistingConditionsLastUpdated(integrationLogDao.getLastSuccessfullyUpdatedTime("preexistingcondition", "getPreExistingConditionsLOV"));
-    	cmd.setTherapiesLastUpdated(integrationLogDao.getLastSuccessfullyUpdatedTime("priortherapy", "getTherapiesLOV"));
-    	cmd.setCtcaeLastUpdated(integrationLogDao.getLastSuccessfullyUpdatedTime("ctcae", "getCTCAELOV"));
+    	
+    	
+    	cmd.setAgentsLastUpdated(integrationLogDao.getLastUpdatedTime("agent", "getAgentsLOV"));
+    	cmd.setDevicesLastUpdated(integrationLogDao.getLastUpdatedTime("device", "getDevicesLOV"));
+    	cmd.setOrganizationsLastUpdated(integrationLogDao.getLastUpdatedTime("organization", "getOrganizationsLOV"));
+    	cmd.setAsaelLastUpdated(integrationLogDao.getLastUpdatedTime("asael", "getASAEL"));
+    	cmd.setAgentDoseMeasureLastUpdated(integrationLogDao.getLastUpdatedTime("agentDoseUOM", "getAgentDoseUOMLOV"));
+    	cmd.setLabLastUpdated(integrationLogDao.getLastUpdatedTime("lab", "getLabsLOV"));
+    	cmd.setPreExistingConditionsLastUpdated(integrationLogDao.getLastUpdatedTime("preexistingcondition", "getPreExistingConditionsLOV"));
+    	cmd.setTherapiesLastUpdated(integrationLogDao.getLastUpdatedTime("priortherapy", "getTherapiesLOV"));
+    	cmd.setCtcaeLastUpdated(integrationLogDao.getLastUpdatedTime("ctcae", "getCTCAELOV"));
+    	
+    	
+    	cmd.setAgentsLastSuccessfullyUpdated(integrationLogDao.getLastSuccessfullyUpdatedTime("agent", "getAgentsLOV"));
+    	cmd.setDevicesLastSuccessfullyUpdated(integrationLogDao.getLastSuccessfullyUpdatedTime("device", "getDevicesLOV"));
+    	cmd.setOrganizationsLastSuccessfullyUpdated(integrationLogDao.getLastSuccessfullyUpdatedTime("organization", "getOrganizationsLOV"));
+    	cmd.setAsaelLastSuccessfullyUpdated(integrationLogDao.getLastSuccessfullyUpdatedTime("asael", "getASAEL"));
+    	cmd.setAgentDoseMeasureLastSuccessfullyUpdated(integrationLogDao.getLastSuccessfullyUpdatedTime("agentDoseUOM", "getAgentDoseUOMLOV"));
+    	cmd.setLabLastSuccessfullyUpdated(integrationLogDao.getLastSuccessfullyUpdatedTime("lab", "getLabsLOV"));
+    	cmd.setPreExistingConditionsLastSuccessfullyUpdated(integrationLogDao.getLastSuccessfullyUpdatedTime("preexistingcondition", "getPreExistingConditionsLOV"));
+    	cmd.setTherapiesLastSuccessfullyUpdated(integrationLogDao.getLastSuccessfullyUpdatedTime("priortherapy", "getTherapiesLOV"));
+    	cmd.setCtcaeLastSuccessfullyUpdated(integrationLogDao.getLastSuccessfullyUpdatedTime("ctcae", "getCTCAELOV"));
     	
     	return cmd;
     }

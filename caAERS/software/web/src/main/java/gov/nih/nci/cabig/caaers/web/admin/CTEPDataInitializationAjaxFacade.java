@@ -59,6 +59,7 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
 			boolean agentsChecked, boolean asaelChecked, boolean organizationsChecked) {
 		
 		StringBuffer sb = new StringBuffer();
+		sb.append("<table>");
 		
 		if(ctcaeChecked){
 			try {
@@ -142,20 +143,26 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
 			}
 		}
 		
+		sb.append("</table>");
+		
 		return sb.toString();
 
 	}
 	
 	public void appendSynchSuccessMessage(StringBuffer sb, String entity){
+		sb.append("<tr><td>");
 		sb.append("<font color='#008000'>");
-		sb.append(entity + " synch succeeded. ");
+		sb.append(entity + " import succeeded");
 		sb.append("</font>");
+		sb.append("</td></tr>");
 	}
 		
 	public void appendSynchFailureMessage(StringBuffer sb, String entity){
-			sb.append("<font color='#D94444'>");
-			sb.append(entity + " synch failed. ");
-			sb.append("</font>");
+		sb.append("<tr><td>");
+		sb.append("<font color='#D94444'>");
+		sb.append(entity + " import failed");
+		sb.append("</font>");
+		sb.append("</td></tr>");
 	}
 	
 	// display integration logs

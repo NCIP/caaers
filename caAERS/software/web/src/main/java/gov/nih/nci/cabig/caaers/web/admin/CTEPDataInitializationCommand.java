@@ -28,7 +28,97 @@ public class CTEPDataInitializationCommand {
 	private boolean organizationsChecked = false;
 	
 	
+	
+	private Date ctcaeLastSuccessfullyUpdated;
+	private Date devicesLastSuccessfullyUpdated;
+	private Date preExistingConditionsLastSuccessfullyUpdated;
+	private Date therapiesLastSuccessfullyUpdated;
+	private Date agentDoseMeasureLastSuccessfullyUpdated;
+	private Date labLastSuccessfullyUpdated;
+	private Date agentsLastSuccessfullyUpdated;
+	private Date asaelLastSuccessfullyUpdated;
+	private Date organizationsLastSuccessfullyUpdated;
+	
+	
 	private Date ctcaeLastUpdated;
+	public Date getCtcaeLastSuccessfullyUpdated() {
+		return ctcaeLastSuccessfullyUpdated;
+	}
+
+	public void setCtcaeLastSuccessfullyUpdated(Date ctcaeLastSuccessfullyUpdated) {
+		this.ctcaeLastSuccessfullyUpdated = ctcaeLastSuccessfullyUpdated;
+	}
+
+	public Date getDevicesLastSuccessfullyUpdated() {
+		return devicesLastSuccessfullyUpdated;
+	}
+
+	public void setDevicesLastSuccessfullyUpdated(
+			Date devicesLastSuccessfullyUpdated) {
+		this.devicesLastSuccessfullyUpdated = devicesLastSuccessfullyUpdated;
+	}
+
+	public Date getPreExistingConditionsLastSuccessfullyUpdated() {
+		return preExistingConditionsLastSuccessfullyUpdated;
+	}
+
+	public void setPreExistingConditionsLastSuccessfullyUpdated(
+			Date preExistingConditionsLastSuccessfullyUpdated) {
+		this.preExistingConditionsLastSuccessfullyUpdated = preExistingConditionsLastSuccessfullyUpdated;
+	}
+
+	public Date getTherapiesLastSuccessfullyUpdated() {
+		return therapiesLastSuccessfullyUpdated;
+	}
+
+	public void setTherapiesLastSuccessfullyUpdated(
+			Date therapiesLastSuccessfullyUpdated) {
+		this.therapiesLastSuccessfullyUpdated = therapiesLastSuccessfullyUpdated;
+	}
+
+	public Date getAgentDoseMeasureLastSuccessfullyUpdated() {
+		return agentDoseMeasureLastSuccessfullyUpdated;
+	}
+
+	public void setAgentDoseMeasureLastSuccessfullyUpdated(
+			Date agentDoseMeasureLastSuccessfullyUpdated) {
+		this.agentDoseMeasureLastSuccessfullyUpdated = agentDoseMeasureLastSuccessfullyUpdated;
+	}
+
+	public Date getLabLastSuccessfullyUpdated() {
+		return labLastSuccessfullyUpdated;
+	}
+
+	public void setLabLastSuccessfullyUpdated(Date labLastSuccessfullyUpdated) {
+		this.labLastSuccessfullyUpdated = labLastSuccessfullyUpdated;
+	}
+
+	public Date getAgentsLastSuccessfullyUpdated() {
+		return agentsLastSuccessfullyUpdated;
+	}
+
+	public void setAgentsLastSuccessfullyUpdated(Date agentsLastSuccessfullyUpdated) {
+		this.agentsLastSuccessfullyUpdated = agentsLastSuccessfullyUpdated;
+	}
+
+	public Date getAsaelLastSuccessfullyUpdated() {
+		return asaelLastSuccessfullyUpdated;
+	}
+
+	public void setAsaelLastSuccessfullyUpdated(Date asaelLastSuccessfullyUpdated) {
+		this.asaelLastSuccessfullyUpdated = asaelLastSuccessfullyUpdated;
+	}
+
+	public Date getOrganizationsLastSuccessfullyUpdated() {
+		return organizationsLastSuccessfullyUpdated;
+	}
+
+	public void setOrganizationsLastSuccessfullyUpdated(
+			Date organizationsLastSuccessfullyUpdated) {
+		this.organizationsLastSuccessfullyUpdated = organizationsLastSuccessfullyUpdated;
+	}
+
+
 	private Date devicesLastUpdated;
 	private Date preExistingConditionsLastUpdated;
 	private Date therapiesLastUpdated;
@@ -49,6 +139,14 @@ public class CTEPDataInitializationCommand {
 		}
 		return ctcaeLastUpdatedStr;
 	}
+	
+	public String getCtcaeLastSuccessfullyUpdatedStr() {
+		String ctcaeLastSuccessfullyUpdatedStr = "";
+		if(ctcaeLastSuccessfullyUpdated != null){
+			ctcaeLastSuccessfullyUpdatedStr = DateUtils.formatDate(ctcaeLastSuccessfullyUpdated, DateUtils.DATE_PATTERN_WITH_TZ);
+		}
+		return ctcaeLastSuccessfullyUpdatedStr;
+	}
 
 
 	public void setCtcaeLastUpdated(Date ctcaeLastUpdated) {
@@ -58,6 +156,14 @@ public class CTEPDataInitializationCommand {
 
 	public Date getDevicesLastUpdated() {
 		return devicesLastUpdated;
+	}
+	
+	public String getDevicesLastSuccessfullyUpdatedStr() {
+		String devicesLastSuccessfullyUpdatedStr = "";
+		if(devicesLastSuccessfullyUpdated != null){
+			devicesLastSuccessfullyUpdatedStr = DateUtils.formatDate(devicesLastSuccessfullyUpdated, DateUtils.DATE_PATTERN_WITH_TZ);
+		}
+		return devicesLastSuccessfullyUpdatedStr;
 	}
 	
 	public String getDevicesLastUpdatedStr() {
@@ -85,6 +191,14 @@ public class CTEPDataInitializationCommand {
 		}
 		return preExistingConditionsLastUpdatedStr;
 	}
+	
+	public String getPreExistingConditionsLastSuccessfullyUpdatedStr() {
+		String preExistingConditionsLastSuccessfullyUpdatedStr = "";
+		if(preExistingConditionsLastSuccessfullyUpdated != null){
+			preExistingConditionsLastSuccessfullyUpdatedStr = DateUtils.formatDate(preExistingConditionsLastSuccessfullyUpdated, DateUtils.DATE_PATTERN_WITH_TZ);
+		}
+		return preExistingConditionsLastSuccessfullyUpdatedStr;
+	}
 
 
 	public void setPreExistingConditionsLastUpdated(
@@ -104,6 +218,15 @@ public class CTEPDataInitializationCommand {
 		}
 		return therapiesLastUpdatedStr;
 	}
+	
+	
+	public String getTherapiesLastSuccessfullyUpdatedStr() {
+		String therapiesLastSuccessfullyUpdatedStr = "";
+		if(therapiesLastSuccessfullyUpdated != null){
+			therapiesLastSuccessfullyUpdatedStr = DateUtils.formatDate(therapiesLastSuccessfullyUpdated, DateUtils.DATE_PATTERN_WITH_TZ);
+		}
+		return therapiesLastSuccessfullyUpdatedStr;
+	}
 
 
 	public void setTherapiesLastUpdated(Date therapiesLastUpdated) {
@@ -121,6 +244,14 @@ public class CTEPDataInitializationCommand {
 			agentDoseMeasureLastUpdatedStr = DateUtils.formatDate(agentDoseMeasureLastUpdated, DateUtils.DATE_PATTERN_WITH_TZ);
 		}
 		return agentDoseMeasureLastUpdatedStr;
+	}
+	
+	public String getAgentDoseMeasureLastSuccessfullyUpdatedStr() {
+		String agentDoseMeasureLastSuccessfullyUpdatedStr = "";
+		if(agentDoseMeasureLastSuccessfullyUpdated != null){
+			agentDoseMeasureLastSuccessfullyUpdatedStr = DateUtils.formatDate(agentDoseMeasureLastSuccessfullyUpdated, DateUtils.DATE_PATTERN_WITH_TZ);
+		}
+		return agentDoseMeasureLastSuccessfullyUpdatedStr;
 	}
 
 
@@ -140,6 +271,14 @@ public class CTEPDataInitializationCommand {
 		}
 		return agentsLastUpdatedStr;
 	}
+	
+	public String getAgentsLastSuccessfullyUpdatedStr() {
+		String agentsLastSuccessfullyUpdatedStr = "";
+		if(agentsLastSuccessfullyUpdated != null){
+			agentsLastSuccessfullyUpdatedStr = DateUtils.formatDate(agentsLastSuccessfullyUpdated, DateUtils.DATE_PATTERN_WITH_TZ);
+		}
+		return agentsLastSuccessfullyUpdatedStr;
+	}
 
 
 	public void setAgentsLastUpdated(Date agentsLastUpdated) {
@@ -158,6 +297,14 @@ public class CTEPDataInitializationCommand {
 		}
 		return asaelLastUpdatedStr;
 	}
+	
+	public String getAsaelLastSuccessfullyUpdatedStr() {
+		String asaelLastSuccessfullyUpdatedStr = "";
+		if(asaelLastSuccessfullyUpdated != null){
+			asaelLastSuccessfullyUpdatedStr = DateUtils.formatDate(asaelLastSuccessfullyUpdated, DateUtils.DATE_PATTERN_WITH_TZ);
+		}
+		return asaelLastSuccessfullyUpdatedStr;
+	}
 
 
 	public void setAsaelLastUpdated(Date asaelLastUpdated) {
@@ -175,6 +322,14 @@ public class CTEPDataInitializationCommand {
 			organizationsLastUpdatedStr = DateUtils.formatDate(organizationsLastUpdated, DateUtils.DATE_PATTERN_WITH_TZ);
 		}
 		return organizationsLastUpdatedStr;
+	}
+	
+	public String getOrganizationsLastSuccessfullyUpdatedStr() {
+		String organizationsLastSuccessfullyUpdatedStr = "";
+		if(organizationsLastSuccessfullyUpdated != null){
+			organizationsLastSuccessfullyUpdatedStr = DateUtils.formatDate(organizationsLastSuccessfullyUpdated, DateUtils.DATE_PATTERN_WITH_TZ);
+		}
+		return organizationsLastSuccessfullyUpdatedStr;
 	}
 
 
@@ -268,6 +423,14 @@ public class CTEPDataInitializationCommand {
 			labLastUpdatedStr = DateUtils.formatDate(labLastUpdated, DateUtils.DATE_PATTERN_WITH_TZ);
 		}
 		return labLastUpdatedStr;
+	}
+	
+	public String getLabLastSuccessfullyUpdatedStr() {
+		String labLastSuccessfullyUpdatedStr = "";
+		if(labLastSuccessfullyUpdated != null){
+			labLastSuccessfullyUpdatedStr = DateUtils.formatDate(labLastSuccessfullyUpdated, DateUtils.DATE_PATTERN_WITH_TZ);
+		}
+		return labLastSuccessfullyUpdatedStr;
 	}
 
 
