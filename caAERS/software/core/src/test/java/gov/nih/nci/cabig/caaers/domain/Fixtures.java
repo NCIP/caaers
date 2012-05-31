@@ -285,7 +285,6 @@ public class Fixtures {
         Ctc v3 = new Ctc();
         v3.setId(3);
         v3.setName("3.0");
-        v3.setName(4 + "");
         t.setTerm(Term.CTC);
         t.setGridId("444444aaaa444");
         t.setCtcVersion(v3);

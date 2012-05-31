@@ -6,6 +6,7 @@ import static gov.nih.nci.cabig.caaers.CaaersUseCase.IMPORT_STUDIES;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.STUDY_ABSTRACTION;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
@@ -41,6 +42,9 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
     private OrganizationDao sitedao = (OrganizationDao) getApplicationContext().getBean("organizationDao");
     private AgentDao agentDao = (AgentDao) getApplicationContext().getBean("agentDao");
     private InvestigationalNewDrugDao indDao = (InvestigationalNewDrugDao) getApplicationContext().getBean("investigationalNewDrugDao");
+    private CtcDao ctcDao = (CtcDao) getApplicationContext().getBean("ctcDao");
+    private CtcTermDao ctcTermDao = (CtcTermDao) getApplicationContext().getBean("ctcTermDao");
+    private LowLevelTermDao lowLevelTermDao = (LowLevelTermDao) getDeployedApplicationContext().getBean("lowLevelTermDao");
 
     public void testGet() throws Exception {
         Study loaded = getDao().getById(-2);
@@ -62,7 +66,9 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
             Study newStudy = new LocalStudy();
             newStudy.setShortTitle("Short Title Inserted");
             newStudy.setLongTitle("Long Title Inserted");
-            newStudy.setAeTerminology(Fixtures.createCtcV3Terminology(newStudy));
+            AeTerminology aeT = Fixtures.createCtcV3Terminology(newStudy);
+            aeT.setCtcVersion(ctcDao.getByName("3.0"));
+            newStudy.setAeTerminology(aeT);
             newStudy.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
             newStudy.setMultiInstitutionIndicator(Boolean.FALSE);
             newStudy.setAdeersReporting(Boolean.TRUE);
@@ -329,7 +335,9 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
             study.setTargetAccrualNumber(150);
             // study.setType("Type");
             study.setMultiInstitutionIndicator(true);
-            study.setAeTerminology(Fixtures.createCtcV3Terminology(study));
+            AeTerminology aeT = Fixtures.createCtcV3Terminology(study);
+            aeT.setCtcVersion(ctcDao.getByName("3.0"));
+            study.setAeTerminology(aeT);
             study.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
             study.setAdeersReporting(Boolean.TRUE);
 
@@ -377,7 +385,9 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
             study.setTargetAccrualNumber(150);
             // study.setType("Type");
             study.setMultiInstitutionIndicator(true);
-            study.setAeTerminology(Fixtures.createCtcV3Terminology(study));
+            AeTerminology aeT = Fixtures.createCtcV3Terminology(study);
+            aeT.setCtcVersion(ctcDao.getByName("3.0"));
+            study.setAeTerminology(aeT);
             study.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
             study.setAdeersReporting(Boolean.TRUE);
 
@@ -427,7 +437,9 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
             study.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
             // study.setType("Type");
             study.setMultiInstitutionIndicator(true);
-            study.setAeTerminology(Fixtures.createCtcV3Terminology(study));
+            AeTerminology aeT = Fixtures.createCtcV3Terminology(study);
+            aeT.setCtcVersion(ctcDao.getByName("3.0"));
+            study.setAeTerminology(aeT);
             study.setAdeersReporting(Boolean.TRUE);
             // study.setCtcVersion(ctc);
 
@@ -485,7 +497,9 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
             study.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
             // study.setType("Type");
             study.setMultiInstitutionIndicator(true);
-            study.setAeTerminology(Fixtures.createCtcV3Terminology(study));
+            AeTerminology aeT = Fixtures.createCtcV3Terminology(study);
+            aeT.setCtcVersion(ctcDao.getByName("3.0"));
+            study.setAeTerminology(aeT);
             study.setAdeersReporting(Boolean.TRUE);
             // study.setCtcVersion(ctc);
 
@@ -549,7 +563,9 @@ assertTrue(true);
             Study newStudy = new LocalStudy();
             newStudy.setShortTitle("Short Title Inserted");
             newStudy.setLongTitle("Long Title Inserted");
-            newStudy.setAeTerminology(Fixtures.createCtcV3Terminology(newStudy));
+            AeTerminology aeT = Fixtures.createCtcV3Terminology(newStudy);
+            aeT.setCtcVersion(ctcDao.getByName("3.0"));
+            newStudy.setAeTerminology(aeT);
             newStudy.setMultiInstitutionIndicator(Boolean.FALSE);
             newStudy.setAdeersReporting(Boolean.TRUE);
             // study agent
@@ -604,7 +620,9 @@ assertTrue(true);
             Study newStudy = new LocalStudy();
             newStudy.setShortTitle("Short Title Inserted");
             newStudy.setLongTitle("Long Title Inserted");
-            newStudy.setAeTerminology(Fixtures.createCtcV3Terminology(newStudy));
+            AeTerminology aeT = Fixtures.createCtcV3Terminology(newStudy);
+            aeT.setCtcVersion(ctcDao.getByName("3.0"));
+            newStudy.setAeTerminology(aeT);
             newStudy.setMultiInstitutionIndicator(Boolean.FALSE);
             newStudy.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
             newStudy.setAdeersReporting(Boolean.TRUE);
@@ -679,7 +697,9 @@ assertTrue(true);
         Study newStudy = new LocalStudy();
         newStudy.setShortTitle("Short Title Inserted");
         newStudy.setLongTitle("Long Title Inserted");
-        newStudy.setAeTerminology(Fixtures.createCtcV3Terminology(newStudy));
+        AeTerminology aeT = Fixtures.createCtcV3Terminology(newStudy);
+        aeT.setCtcVersion(ctcDao.getByName("3.0"));
+        newStudy.setAeTerminology(aeT);
         newStudy.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
         newStudy.setMultiInstitutionIndicator(Boolean.FALSE);
         newStudy.setLoadStatus(LoadStatus.INPROGRESS.getCode());
@@ -728,7 +748,9 @@ assertTrue(true);
             Study newStudy = Fixtures.createStudy("Arun Study 1");
             newStudy.setShortTitle("ARUN Short Title Inserted");
             newStudy.setLongTitle("ARUN Long Title Inserted");
-            newStudy.setAeTerminology(Fixtures.createCtcV3Terminology(newStudy));
+            AeTerminology aeT = Fixtures.createCtcV3Terminology(newStudy);
+            aeT.setCtcVersion(ctcDao.getByName("3.0"));
+            newStudy.setAeTerminology(aeT);
             newStudy.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
             newStudy.setMultiInstitutionIndicator(Boolean.FALSE);
             newStudy.setLoadStatus(LoadStatus.INPROGRESS.getCode());
@@ -750,24 +772,21 @@ assertTrue(true);
 
 
             SolicitedAdverseEvent sae11 = new SolicitedAdverseEvent();
-            CtcTerm ctcterm = new CtcTerm();
-            ctcterm.setId(-5);
+            CtcTerm ctcterm = ctcTermDao.getById(3012);
             sae11.setCtcterm(ctcterm);
 
             SolicitedAdverseEvent sae12 = new SolicitedAdverseEvent();
 
-            LowLevelTerm llt = new LowLevelTerm();
-            llt.setId(-7);
+            LowLevelTerm llt = lowLevelTermDao.getById(-11);
+
             sae12.setLowLevelTerm(llt);
 
             SolicitedAdverseEvent sae31 = new SolicitedAdverseEvent();
-            CtcTerm ctcterm2 = new CtcTerm();
-            ctcterm2.setId(-51);
+            CtcTerm ctcterm2 = ctcTermDao.getById(3010) ;
             sae31.setCtcterm(ctcterm2);
 
             SolicitedAdverseEvent sae32 = new SolicitedAdverseEvent();
-            LowLevelTerm llt2 = new LowLevelTerm();
-            llt2.setId(-71);
+            LowLevelTerm llt2 = lowLevelTermDao.getById(-11);
             sae32.setLowLevelTerm(llt2);
 
             List<SolicitedAdverseEvent> listOfSAE1 = new LinkedList<SolicitedAdverseEvent>();
