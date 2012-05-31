@@ -55,6 +55,7 @@ public class ReportVersionDTO implements Serializable {
     protected Date periodStartDate;
 
     protected Integer assignmentID;
+    protected String studyPrimaryIdentifier;
 
     /**
      * Instantiates a new report version dto.
@@ -72,7 +73,7 @@ public class ReportVersionDTO implements Serializable {
      * @param ssName the ss name
      * @param ssCode the ss code
      */
-    public ReportVersionDTO(ReportVersion rv, String rdLabel, String subjectFirstName, String subjectLastName, String studyShortTitle, String subjectPrimaryIdentifier, Integer aeReportID, Integer reportID, Integer periodCycle, Date periodStartDate, String ssName, String ssCode, Integer assignmentID) {
+    public ReportVersionDTO(ReportVersion rv, String rdLabel, String subjectFirstName, String subjectLastName, String studyShortTitle, String subjectPrimaryIdentifier, Integer aeReportID, Integer reportID, Integer periodCycle, Date periodStartDate, String ssName, String ssCode, Integer assignmentID, String studyPrimaryIdentifier) {
         this.rv = rv;
         this.reportName = rdLabel;
         this.subjectFirstName = subjectFirstName;
@@ -86,6 +87,7 @@ public class ReportVersionDTO implements Serializable {
         this.studySiteName = ssName;
         this.studySiteCode = ssCode;
         this.assignmentID = assignmentID;
+        this.studyPrimaryIdentifier = studyPrimaryIdentifier;
     }
 
     /**
@@ -220,5 +222,13 @@ public class ReportVersionDTO implements Serializable {
 
     public void setAssignmentID(Integer assignmentID) {
         this.assignmentID = assignmentID;
+    }
+
+    public String getStudyPrimaryIdentifier() {
+        return studyPrimaryIdentifier;
+    }
+
+    public void setStudyPrimaryIdentifier(String studyPrimaryIdentifier) {
+        this.studyPrimaryIdentifier = studyPrimaryIdentifier;
     }
 }

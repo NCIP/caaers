@@ -254,19 +254,17 @@
                 <c:set var="_s" value="${rvDTO.rv.reportStatus}" />
 
                 <td>&nbsp;<a <c:if test="${_s eq 'COMPLETED' or _s eq 'WITHDRAWN'}"></c:if> onmouseover="showToolTip($('_Description${rvDTO.rv.id}').innerHTML, '');" onmouseout="tt_Hide();" <c:if test="${_s ne 'COMPLETED' and _s ne 'WITHDRAWN'}">href="<c:url value="/pages/ae/edit?rvID=${rvDTO.rv.id}&aeReport=${rvDTO.aeReportID}&report=${rvDTO.reportID}" />"</c:if><c:if test="${_s eq 'COMPLETED' or _s eq 'WITHDRAWN'}">href="<c:url value="/pages/ae/list?assignment=${rvDTO.assignmentID}" />"</c:if> >${rvDTO.reportName}</a></td>
+                <td width="130px">${rvDTO.studyPrimaryIdentifier}<br>${rvDTO.subjectPrimaryIdentifier}</td>
                 <%--<td>${rvDTO.rv.reportStatus}</td>--%>
                 <c:choose>
                     <c:when test="${_s eq 'PENDING' or _s eq 'INPROCESS' or _s eq 'FAILED'}">
-                        <td><i>Due on:</i></td>
-                        <td><span style="color:#e74f4f"><tags:formatDate value="${rvDTO.rv.dueOn}" /></span></td>
+                        <td><i>Due on:</i><br><span style="color:#e74f4f"><tags:formatDate value="${rvDTO.rv.dueOn}" /></span></td>
                     </c:when>
                     <c:when test="${_s eq 'WITHDRAWN' or _s eq 'REPLACED'}">
-                        <td><i>Withdrawn on:</i></td>
-                        <td><span style="color:#2e83bb;"><tags:formatDate value="${rvDTO.rv.withdrawnOn}" /></span></td>
+                        <td><i>Withdrawn on:</i><br><span style="color:#2e83bb;"><tags:formatDate value="${rvDTO.rv.withdrawnOn}" /></span></td>
                     </c:when>
                     <c:when test="${_s eq 'COMPLETED' or _s eq 'AMENDED'}">
-                        <td><i>Submited on:</i></td>
-                        <td><span style="color:#66a811;"><tags:formatDate value="${rvDTO.rv.submittedOn}" /></span></td>
+                        <td><i>Submited on:</i><br><span style="color:#66a811;"><tags:formatDate value="${rvDTO.rv.submittedOn}" /></span></td>
                     </c:when>
                 </c:choose>
 <%--

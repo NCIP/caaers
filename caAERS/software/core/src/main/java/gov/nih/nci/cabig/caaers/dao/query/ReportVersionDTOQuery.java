@@ -10,7 +10,7 @@ import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 public class ReportVersionDTOQuery extends AbstractQuery {
 
     public ReportVersionDTOQuery() {
-        super("select new gov.nih.nci.cabig.caaers.domain.report.ReportVersionDTO(rv, rd.label, subject.firstName, subject.lastName, study.shortTitle, identifier.value, aer.id, report.id, period.cycleNumber, period.startDate, site.name, site.nciInstituteCode, assignment.id) from ExpeditedAdverseEventReport aer");
+        super("select new gov.nih.nci.cabig.caaers.domain.report.ReportVersionDTO(rv, rd.label, subject.firstName, subject.lastName, study.shortTitle, identifier.value, aer.id, report.id, period.cycleNumber, period.startDate, site.name, site.nciInstituteCode, assignment.id, studyIdentifier.value) from ExpeditedAdverseEventReport aer");
         join("aer.reports as report");
         join("report.reportVersions as rv");
         join("report.reportDefinition as rd");
@@ -23,6 +23,7 @@ public class ReportVersionDTOQuery extends AbstractQuery {
         join("assignment.studySite as ss");
         join("ss.organization as site");
         join("ss.study as study");
+        leftJoin("study.identifiers as studyIdentifier with studyIdentifier.primaryIndicator = :primaryIndicator");
 //        andWhere("identifier.primaryIndicator = :primaryIndicator");
         setParameter("primaryIndicator", Boolean.TRUE);
     }
