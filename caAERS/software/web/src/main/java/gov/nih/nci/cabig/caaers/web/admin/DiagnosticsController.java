@@ -8,6 +8,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 
+import gov.nih.nci.cabig.caaers.web.listener.EventMonitor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -21,6 +22,7 @@ public class DiagnosticsController extends SimpleFormController{
 	protected CaaersJavaMailSender caaersJavaMailSender;
 	protected final Log log = LogFactory.getLog(getClass());
 	protected CaaersAdeersMessageBroadcastServiceImpl messageBroadcastService;
+    protected EventMonitor eventMonitor;
 	
     public DiagnosticsController() {
     	setCommandClass(DiagnosticsCommand.class);
@@ -32,6 +34,7 @@ public class DiagnosticsController extends SimpleFormController{
     	DiagnosticsCommand diagnosticsCommand =  new DiagnosticsCommand(configuration);
     	diagnosticsCommand.setSmtpTestResult(testSmtp(diagnosticsCommand));
     	diagnosticsCommand.setServiceMixUp(testServiceMix());
+        diagnosticsCommand.setEvents(eventMonitor.getAllEvents());
     	return diagnosticsCommand;
     }
 
@@ -76,6 +79,9 @@ public class DiagnosticsController extends SimpleFormController{
 	public void setMessageBroadcastService(
 			CaaersAdeersMessageBroadcastServiceImpl messageBroadcastService) {
 		this.messageBroadcastService = messageBroadcastService;
-	}	
-	
+	}
+
+    public void setEventMonitor(EventMonitor eventMonitor) {
+        this.eventMonitor = eventMonitor;
+    }
 }

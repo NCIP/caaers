@@ -96,6 +96,7 @@
         </div>
     </div>
 </chrome:division>
+
 <chrome:division title="ServiceMix Configuration">
     <div class="row">
 
@@ -131,6 +132,14 @@
 
         </div>
     </div>
+</chrome:division>
+<chrome:division title="Events">
+    <c:forEach var="e" items="${command.events}">
+        <div class="row">
+            <div>${e}</div>
+        </div>
+    </c:forEach>
+
 </chrome:division>
 </body>
 </html>

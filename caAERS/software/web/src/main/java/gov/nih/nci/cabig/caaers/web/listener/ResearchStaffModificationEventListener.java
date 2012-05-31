@@ -21,6 +21,7 @@ public class ResearchStaffModificationEventListener extends AbstractEventListene
     
     @Override
     public void preProcess(ApplicationEvent event){
+        super.preProcess(event);
     	ResearchStaff rs = (ResearchStaff)event.getSource();
     	String userName = rs.getLoginId();
         if(StringUtils.isNotBlank(userName)){

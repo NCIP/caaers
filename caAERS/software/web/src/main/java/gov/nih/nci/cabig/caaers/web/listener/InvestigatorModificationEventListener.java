@@ -21,6 +21,7 @@ public class InvestigatorModificationEventListener extends AbstractEventListener
     
     @Override
     public void preProcess(ApplicationEvent event){
+        super.preProcess(event);
     	Investigator inv = (Investigator)event.getSource();
     	String userName = inv.getLoginId();
         if(StringUtils.isNotBlank(userName)){

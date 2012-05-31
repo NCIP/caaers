@@ -9,7 +9,7 @@ if(!AE.DWR_ERROR_HANDLER_REGISTERED){
 	//register dwr error handler. 
 	dwr.engine.setErrorHandler(handleDWRError);
 	dwr.engine.setOrdered(true);
-    dwr.engine.setTimeout(500000);
+    dwr.engine.setTimeout(1200000);
 	//dwr.engine.setPreHook(showDWRLoadingIndicator);
 	//dwr.engine.setPostHook(hideDWRLoadingIndicator);
 	AE.DWR_ERROR_HANDLER_REGISTERED=true;

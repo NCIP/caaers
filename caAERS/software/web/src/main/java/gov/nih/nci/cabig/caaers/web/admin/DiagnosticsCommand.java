@@ -1,8 +1,11 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
+import gov.nih.nci.cabig.caaers.web.listener.Event;
 
 import java.io.File;
+import java.util.Collection;
+import java.util.List;
 
 
 public class DiagnosticsCommand extends ConfigurationCommand{
@@ -18,6 +21,7 @@ public class DiagnosticsCommand extends ConfigurationCommand{
 	private String smtpError;
 	private boolean serviceMixUp;
 	private String serviceMixUrl;
+    private Collection<Event> events;
 	
 	
 	public DiagnosticsCommand(Configuration configuration){
@@ -97,7 +101,15 @@ public class DiagnosticsCommand extends ConfigurationCommand{
     public String getLogFolder(){
         return configuration.get(Configuration.ESB_LOG_LOCATION);
     }
-    
+
+    public Collection<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(Collection<Event> events) {
+        this.events = events;
+    }
+
     public boolean isLogFolderValid(){
 
         try{

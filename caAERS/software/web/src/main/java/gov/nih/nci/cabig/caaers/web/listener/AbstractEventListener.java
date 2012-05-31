@@ -17,15 +17,24 @@ import org.springframework.context.ApplicationListener;
  */
 public abstract class AbstractEventListener   implements ApplicationListener {
     private FilteredDataLoader filteredDataLoader;
+    protected EventMonitor eventMonitor;
+    protected String correlationId;
 
     protected static final Log log = LogFactory.getLog(AbstractEventListener.class);
 
     public void preProcess(ApplicationEvent event){
-        //dummy
+        if(eventMonitor !=  null){
+            if(event instanceof AuthenticationSuccessEvent) {
+                correlationId = eventMonitor.addEvent(SecurityUtils.getUserLoginName(), "AUTHENTICATION");
+            } else if (event instanceof EntityModificationEvent){
+                String eventType = ((EntityModificationEvent) event).getEventType().name();
+                correlationId = eventMonitor.addEvent(SecurityUtils.getUserLoginName(), eventType);
+            }
+        }
     }
 
     public void postProcess(ApplicationEvent event){
-        //dummy
+        if(eventMonitor != null && correlationId != null) eventMonitor.markCompletion(correlationId);
     }
     /**
      * Capture AuthenticationSuccessEvent event . THis is the entry point to get the data from DB and cache.
@@ -61,4 +70,11 @@ public abstract class AbstractEventListener   implements ApplicationListener {
         this.filteredDataLoader = filteredDataLoader;
     }
 
+    public EventMonitor getEventMonitor() {
+        return eventMonitor;
+    }
+
+    public void setEventMonitor(EventMonitor eventMonitor) {
+        this.eventMonitor = eventMonitor;
+    }
 }

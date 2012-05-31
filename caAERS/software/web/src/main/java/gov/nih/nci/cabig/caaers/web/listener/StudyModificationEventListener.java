@@ -28,6 +28,7 @@ public class StudyModificationEventListener extends AbstractEventListener {
 
     @Override
     public void preProcess(ApplicationEvent event) {
+        super.preProcess(event);
         log.debug("Entering gov.nih.nci.cabig.caaers.web.listener.StudyModificationEventListener.preProcess: " + event.toString());
         StudyModificationEvent studyEvent = (StudyModificationEvent) event;
         Study study = (Study) studyEvent.getSource();

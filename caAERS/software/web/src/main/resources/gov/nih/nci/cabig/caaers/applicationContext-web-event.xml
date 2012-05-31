@@ -16,43 +16,56 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
 	<bean id="authenticationSuccessListener" class="gov.nih.nci.cabig.caaers.web.listener.AuthenticationSuccessListener">
 		<property name="filteredDataLoader" ref="fullIndexDataLoader"/>
+        <property name="eventMonitor" ref="eventMonitor" />
 	</bean>
 
     <bean id="organizationModificationEventListener" class="gov.nih.nci.cabig.caaers.web.listener.OrganizationModificationEventListener">
         <property name="filteredDataLoader" ref="organizationIndexDataLoader" />
         <property name="caaersSecurityFacade" ref="caaersSecurityFacade"/>
+        <property name="eventMonitor" ref="eventMonitor" />
     </bean>
     
     <bean id="studyModificationEventListener" class="gov.nih.nci.cabig.caaers.web.listener.StudyModificationEventListener">
         <property name="filteredDataLoader" ref="studyIndexDataLoader" />
         <property name="studyRepository" ref="studyRepository" />
         <property name="caaersSecurityFacade" ref="caaersSecurityFacade"/>
+        <property name="eventMonitor" ref="eventMonitor" />
     </bean>
 
     <bean id="subjectModificationEventListener" class="gov.nih.nci.cabig.caaers.web.listener.SubjectModificationEventListener">
         <property name="filteredDataLoader" ref="subjectIndexDataLoader" />
+        <property name="eventMonitor" ref="eventMonitor" />
     </bean>
 
     <bean id="researchStaffModificationEventListener" class="gov.nih.nci.cabig.caaers.web.listener.ResearchStaffModificationEventListener">
         <property name="filteredDataLoader" ref="researchStaffIndexDataLoader" />
         <property name="caaersSecurityFacade" ref="caaersSecurityFacade"/>
+        <property name="eventMonitor" ref="eventMonitor" />
     </bean>
 
     <bean id="investigatorModificationEventListener" class="gov.nih.nci.cabig.caaers.web.listener.InvestigatorModificationEventListener">
         <property name="filteredDataLoader" ref="investigatorIndexDataLoader" />
         <property name="caaersSecurityFacade" ref="caaersSecurityFacade"/>
+        <property name="eventMonitor" ref="eventMonitor" />
     </bean>
 
     <bean id="courseModificationEventListener" class="gov.nih.nci.cabig.caaers.web.listener.CourseModificationEventListener">
         <property name="filteredDataLoader" ref="courseIndexDataLoader" />
+        <property name="eventMonitor" ref="eventMonitor" />
     </bean>
 
     <bean id="expeditedReportModificationEventListener" class="gov.nih.nci.cabig.caaers.web.listener.ExpeditedReportModificationEventListener">
         <property name="filteredDataLoader" ref="expeditedReportIndexDataLoader" />
+        <property name="eventMonitor" ref="eventMonitor" />
     </bean>
     
     <bean id="reportModificationEventListener" class="gov.nih.nci.cabig.caaers.web.listener.ReportModificationEventListener">
         <property name="filteredDataLoader" ref="reportIndexDataLoader" />
+        <property name="eventMonitor" ref="eventMonitor" />
+    </bean>
+
+    <bean id="eventMonitor" class="gov.nih.nci.cabig.caaers.web.listener.EventMonitor">
+
     </bean>
 
 </beans>
