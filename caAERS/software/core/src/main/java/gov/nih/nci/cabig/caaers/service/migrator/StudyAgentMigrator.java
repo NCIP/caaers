@@ -94,7 +94,10 @@ public class StudyAgentMigrator implements Migrator<gov.nih.nci.cabig.caaers.dom
                         _ind = new InvestigationalNewDrug();
                         _ind.setIndNumber(indNumber);
                         if(StringUtils.isNotEmpty(holderName)){
-                            Organization o = organizationDao.getByName(holderName);
+                            Organization o =  organizationDao.getByNCIcode(holderName);
+                            if(o == null){
+                                o = organizationDao.getByName(holderName);
+                            }
                             OrganizationHeldIND _indHolder = new OrganizationHeldIND();
                             _indHolder.setOrganization(o);
                             _indHolder.setInvestigationalNewDrug(_ind);
