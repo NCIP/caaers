@@ -11,8 +11,6 @@
 
 <style>
     .yui-dt table { width: 100%; }
-    
-    
 </style>
     
 <title>Search Subjects</title>
@@ -46,16 +44,17 @@ function ajaxCallBack(jsonResult) {
     hideCoppaSearchDisclaimer();
 }
 
-var linkFormatter = function(elCell, oRecord, oColumn, oData) {
-        var _id = oRecord.getData("id");
-        elCell.innerHTML = "<a href='edit?participantId=" + _id + "'>" + oData + "</a>";
+var nameFormatter = function(elCell, oRecord, oColumn, oData) {
+    var _id = oRecord.getData("id");
+    var _fname = oRecord.getData("firstName");
+    var _lname = oRecord.getData("lastName");
+    elCell.innerHTML = _fname + "&nbsp;" + _lname;
 };
 
 var myColumnDefs = [
-    {key:"firstName", label:"First Name", sortable:true, resizeable:true, formatter: linkFormatter},
-    {key:"lastName", label:"Last Name", sortable:true, resizeable:true, formatter: linkFormatter},
-    {key:"primaryIdentifierValue", label:"Primary ID", sortable:true, resizeable:true, formatter: linkFormatter},
-    {key:"studySubjectIdentifiersCSV", label:"Study Subject Identifiers", sortable:true, resizeable:true, formatter: linkFormatter}
+    {key:"fullName", label:"Full name", sortable:true, resizeable:true, formatter: nameFormatter},
+    {key:"primaryIdentifierValue", label:"Primary ID", sortable:true, resizeable:true},
+    {key:"studySubjectIdentifiersCSV", label:"Study Subject Identifiers", sortable:true, resizeable:true}
 ];
 
 var myFields = [
