@@ -4,6 +4,7 @@ import edu.nwu.bioinformatics.commons.CollectionUtils;
 import gov.nih.nci.cabig.caaers.domain.AbstractMutableRetireableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
+import gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
 
@@ -44,6 +45,13 @@ public class StudyAgentsSynchronizer  implements Migrator<gov.nih.nci.cabig.caae
 			
 			//existing one - so update if necessary
 			//BJ : the original code did not do anything, so nothing to update. 
+			//Update the StudyAgents as it can change between Adders Sync
+			sa.setIndType(xmlStudyAgent.getIndType());
+			sa.setPartOfLeadIND(xmlStudyAgent.getPartOfLeadIND());
+			sa.getStudyAgentINDAssociations().clear();
+			for(StudyAgentINDAssociation ass : xmlStudyAgent.getStudyAgentINDAssociations()){
+				sa.addStudyAgentINDAssociation(ass);
+			}
 		}
 		
 		//now soft delete, all the ones not present in XML Study
