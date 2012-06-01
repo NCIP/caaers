@@ -42,6 +42,7 @@ version: 2.7.0
     zoom: 1
 }
 
+
 th.yui-dt-resizeable .yui-dt-resizerliner .yui-dt-liner {
     position: relative;
     background: #3882c1 url(../images/table/yui-datatable_header.jpg) repeat-x top;

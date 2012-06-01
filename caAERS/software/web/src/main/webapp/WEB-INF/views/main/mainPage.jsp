@@ -116,7 +116,7 @@
     .b-TR {}
     .b-BL { background: url(../images/iphone2/box_bl.png) no-repeat bottom left; }
     .b-BR { background: url(../images/iphone2/box_br.png) no-repeat bottom right; }
-    .boxIPhone .header h2 { text-shadow:0 -2px 1px #053E6F;text-align: left; padding: 4px 0 0px 20px; font: 20px Lucida Sans Unicode, Lucida Grande, sans-serif; color: #fff;}
+    .boxIPhone .header h2 { text-shadow:0 -1px #053E6F;text-align: left; padding: 0px 0 0px 20px; font: 20px Lucida Sans Unicode, Lucida Grande, sans-serif; color: #fff;}
 
     .boxIPhone .interior {
         margin: 0px 0px 0px 0px;
@@ -180,6 +180,11 @@
     .dashboard_table a:hover {
         color: #8b6fe8;
         border-bottom: 1px solid #8b6fe8;
+    }
+
+    .dashboard_table a.submitterButton:hover {
+        color: #8b6fe8;
+        border-bottom: 1px solid #BC7004;
     }
 
     .dashboard_table a:active {

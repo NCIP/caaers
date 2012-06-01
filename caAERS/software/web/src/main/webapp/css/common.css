@@ -5,7 +5,7 @@ body {
      color: #333333;
      font-family: "Lucida Grande", Arial, Helvetica, sans-serifsans-serif;
      font-size: 10pt;
-     letter-spacing: -0.25px;
+
      margin: 0;
      padding: 0;
      text-align: center;
@@ -42,9 +42,16 @@ body {
 }
 
 .workflow-tabs2 {
-     background: url("../images/blue/thirdlevelnav_grey_gradient.png") repeat-x scroll center top #616161;
-     border-bottom: 1px solid #0D0D0D;
-     border-top: 1px solid #C9C9C9;
+    background: #f7f7f7;
+    background: -moz-linear-gradient(top, #f7f7f7 0%, #d6d6d6 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f7f7f7), color-stop(100%, #d6d6d6));
+    background: -webkit-linear-gradient(top, #f7f7f7 0%, #d6d6d6 100%);
+    background: -o-linear-gradient(top, #f7f7f7 0%, #d6d6d6 100%);
+    background: -ms-linear-gradient(top, #f7f7f7 0%, #d6d6d6 100%);
+    background: linear-gradient(top, #f7f7f7 0%, #d6d6d6 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#f7f7f7', endColorstr = '#d6d6d6', GradientType = 0);
+     border-bottom: 1px solid #999999;
+     border-top: 1px solid #FFFFFF;
      font-size: 13px;
      left: -18px;
      padding: 5px 15px;
@@ -69,7 +76,7 @@ body {
 
 #thirdlevelnav {
      font-size: 13px;
-     margin: 3px 5px;
+     margin: 3px 2px;
 }
 
 #thirdlevelnav div {
@@ -242,7 +249,7 @@ a#logout {
      font-size: 12px;
      font-weight: normal;
      margin-right: 0;
-     padding: 2px 9px;
+     padding: 3px 10px;
      position: absolute;
      right: -1px;
      text-align: center;
@@ -299,9 +306,9 @@ a#help {
      font-size: 12px;
      font-weight: normal;
      margin-right: 0;
-     padding: 2px 10px;
+     padding: 3px 10px;
      position: absolute;
-     right: 60px;
+     right: 58px;
      text-align: center;
      text-decoration: none;
      text-shadow: 0 -1px #3A3A3A;
@@ -416,17 +423,16 @@ ul.tabs {
 }
 
 ul.tabs li {
-     display: block;
-     float: left;
+     display: inline-block;
      font-size: 14px;
      list-style-type: none;
      padding: 0;
 }
 
 #sections {
-     left: 235px;
+     right: 0px;
      position: absolute;
-     top: 59px;
+     top: 66px;
 }
 
 #taskbar {
@@ -546,12 +552,21 @@ ul.tabs li {
 }
 
 #flash-message.info, .flash-message.info {
-     background: url("../images/blue/flash-message_bg.png") repeat-x scroll center top #A5CE87;
-     border: 1px solid #A5CE87;
+    background: #f1ffc4;
+    background: -moz-linear-gradient(top,  #f1ffc4 0%, #d8eaad 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f1ffc4), color-stop(100%,#d8eaad));
+    background: -webkit-linear-gradient(top,  #f1ffc4 0%,#d8eaad 100%);
+    background: -o-linear-gradient(top,  #f1ffc4 0%,#d8eaad 100%);
+    background: -ms-linear-gradient(top,  #f1ffc4 0%,#d8eaad 100%);
+    background: linear-gradient(top,  #f1ffc4 0%,#d8eaad 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f1ffc4', endColorstr='#d8eaad',GradientType=0 );
+
+     border: 1px solid #D8EAAD;
      border-radius: 8px 8px 8px 8px;
      color: #486F2C;
      text-shadow: 0 1px white;
 }
+.flash-message.info h3 {color: #486F2C;}
 
 #flash-message.info img, .flash-message.info img {
      margin-right: 15px;

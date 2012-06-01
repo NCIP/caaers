@@ -12,7 +12,7 @@
 	color: #FFFFFF;
 	vertical-align: middle;
 	z-index: 1;
-    text-shadow: 0 -1px 1px #053E6F;
+    text-shadow: 0 -1px #053E6F;
     font-family:"Lucida Sans Unicode","Lucida Grande",sans-serif;
 }
 #floatingTaskbar ul {
