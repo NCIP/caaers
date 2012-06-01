@@ -16,8 +16,8 @@
         <tr id="ssi-table-head" class="ssi-table-head">
             <th width="55%" class="tableHeader"><tags:requiredIndicator/>Investigator</th>
             <th width="20%" class="tableHeader"><tags:requiredIndicator/>Role</th>
-            <th width="20%" class="tableHeader"><tags:requiredIndicator/>Status</th>
-            <th width="5%" class="tableHeader"><caaers:message code="table.action" /></th>
+            <th width="100px" class="tableHeader"><tags:requiredIndicator/>Status</th>
+            <th width="100px" class="tableHeader"><caaers:message code="table.action" /></th>
         </tr>
 
         <c:forEach var="si" items="${command.study.activeStudyOrganizations[index].studyInvestigators}" varStatus="status">

@@ -39,7 +39,7 @@
     <td style="border-right:none;">
         <c:set var="_invStatusField" value="${fieldGroups[mainGroup].fields[2]}"/>
         <c:set var="isActive"><jsp:attribute name="value"><caaers:value path="${_invStatusField.propertyName}"/></jsp:attribute></c:set>
-        <c:if test="${si.id == null}">Pending</c:if>
+        <c:if test="${si.id == null}">&nbsp;</c:if>
         <c:if test="${si.id != null}">
             <c:if test="${isActive}">Active</c:if>
             <c:if test="${!isActive}">Inactive</c:if>

@@ -8,6 +8,9 @@
             width: 12em;
             text-align: right;
         }
+        input.autocomplete {
+            width:300px;
+        }
     </style>
 
     <tags:dwrJavascriptLink objects="createStudy"/>
@@ -146,26 +149,29 @@
 
 		</div>
 	    </td>
-      	<td valign="top" width="35%">
-                <chrome:division title="Assigned Investigators" style="margin:5px;">
-                        <c:forEach var="studySite" varStatus="status" items="${command.study.activeStudyOrganizations}">
-                                 <csmauthz:accesscontrol var="_isATeamAdmin" domainObject="${studySite.organization}" authorizationCheckName="siteAuthorizationCheck" hasPrivileges="study_team_administrator" />
-                                 <div class="" style="font-size: 11px;">
-                                     <c:choose>
-                                         <c:when test="${_isATeamAdmin || _canModifyTheCC || _canModifyTheFS}">
-                                             <a style="cursor:pointer;" href="javascript:chooseSitesfromSummary(${status.index});" title="click here to edit investigator assigned to study">${studySite.organization.name}</a>
-                                         </c:when>
-                                         <c:otherwise>${studySite.organization.name}</c:otherwise>
-                                     </c:choose>
-                                     <b>(${fn:length(studySite.studyInvestigators)})</b>
-                                 </div>
-                         </c:forEach>
-                        <div>
-                           <img src="<c:url value="/images/chrome/spacer.gif" />" width="1" height="150" />
-                        </div>
-                </chrome:division>
-		</td>
 	  </tr>
+     <tr>
+         <td valign="top" width="35%">
+                  <chrome:division title="Assigned Investigators" style="margin:5px;">
+                          <c:forEach var="studySite" varStatus="status" items="${command.study.activeStudyOrganizations}">
+                                   <csmauthz:accesscontrol var="_isATeamAdmin" domainObject="${studySite.organization}" authorizationCheckName="siteAuthorizationCheck" hasPrivileges="study_team_administrator" />
+                                   <div class="" style="font-size: 11px;">
+                                       <c:choose>
+                                           <c:when test="${_isATeamAdmin || _canModifyTheCC || _canModifyTheFS}">
+                                               <a style="cursor:pointer;" href="javascript:chooseSitesfromSummary(${status.index});" title="click here to edit investigator assigned to study">${studySite.organization.name}</a>
+                                           </c:when>
+                                           <c:otherwise>${studySite.organization.name}</c:otherwise>
+                                       </c:choose>
+                                       <b>(${fn:length(studySite.studyInvestigators)})</b>
+                                   </div>
+                           </c:forEach>
+                          <div>
+                             <img src="<c:url value="/images/chrome/spacer.gif" />" width="1" height="150" />
+                          </div>
+                  </chrome:division>
+  		</td>
+
+     </tr>
 	</table>
  </jsp:attribute>	
 

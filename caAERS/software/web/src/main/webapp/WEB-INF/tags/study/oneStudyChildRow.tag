@@ -27,7 +27,7 @@
                     <tags:renderInputs field="${field}" disabled="${identifiers and (index lt 2) and (fstatus.index ne 4)}"/>
                 </c:if>
                 <c:if test="${fstatus.index == 2 && !identifiers}">
-                    <c:if test="${isNew}">Pending</c:if>
+                    <c:if test="${isNew}">&nbsp;</c:if>
                     <c:if test="${!isNew}">Inactive</c:if>
                 </c:if>
             </td>

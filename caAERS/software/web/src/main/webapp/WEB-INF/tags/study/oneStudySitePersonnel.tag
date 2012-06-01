@@ -12,10 +12,10 @@
 	<tags:instructions code="study.study_personnel.staff" />
 	<table width="100%" class="tablecontent" valign="middle" id="ssi-table-row-TABLE" style="display:${fn:length(command.study.activeStudyOrganizations[index].studyPersonnels) lt 1 ? 'none' : 'inline;'};">
 	  <tr id="ssi-table-head" class="ssi-table-head">
-		<th width="55%" class="tableHeader"><tags:requiredIndicator />Research Staff</th>
-		<th width="20%" class="tableHeader"><tags:requiredIndicator />Role</th>
-		<th width="20%" class="tableHeader"><tags:requiredIndicator />Status</th>
-		<th width="5%" class="tableHeader"><caaers:message code="table.action" /></th>
+		<th class="tableHeader"><tags:requiredIndicator />Research Staff</th>
+		<th class="tableHeader"><tags:requiredIndicator />Role</th>
+		<th width="100px" class="tableHeader"><tags:requiredIndicator />Status</th>
+		<th width="100px" class="tableHeader"><caaers:message code="table.action" /></th>
  	  </tr>
  	   
 	  <c:forEach var="sp" items="${command.study.activeStudyOrganizations[index].studyPersonnels}" varStatus="status">

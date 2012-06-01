@@ -5,6 +5,13 @@
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>${tab.longTitle}</title>
 
+<style>
+    input.checkBoxes {
+        padding: 2px;
+        margin: 2px;
+    }
+</style>
+
 <script src="<c:url value="/js/ui/ajaxCRUD.js"/>"></script>
 <script language="JavaScript" type="text/JavaScript">
 
