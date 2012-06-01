@@ -136,7 +136,7 @@
 <chrome:division title="Events">
     <c:forEach var="e" items="${command.events}">
         <div class="row">
-            <div>${e}</div>
+            <div>(${e.name} , ${e.threadName})[${e.displayName}]</div>
         </div>
     </c:forEach>
 

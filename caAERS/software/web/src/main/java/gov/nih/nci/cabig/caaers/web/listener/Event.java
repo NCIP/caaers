@@ -21,6 +21,19 @@ public class Event{
                 ", time: '" + runningTime() + '\'' +
                 '}';
     }
+    
+    public String getDisplayName(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("Event [ ");
+        sb.append("name : ").append(name).append(",");
+        sb.append("threadName : ").append(threadName).append(",");
+        sb.append("entity : ").append(eventType).append(",");
+        if(createOn != null) sb.append("createdON : ").append(DateUtils.formatDate(createOn, DateUtils.WS_DATE_PATTERN)).append(",");
+        if(completedOn != null) sb.append("completedOn : ").append(DateUtils.formatDate(completedOn, DateUtils.WS_DATE_PATTERN)).append(",");
+        sb.append("time : ").append(runningTime());
+        sb.append("]");
+        return sb.toString() ;
+    }
 
     public String runningTime(){
         if(completedOn == null) return "running";

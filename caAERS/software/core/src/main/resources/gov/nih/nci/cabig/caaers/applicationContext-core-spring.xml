@@ -72,7 +72,7 @@
   <bean id="eventMulticasterFactoryBean" class="gov.nih.nci.cabig.caaers.tools.spring.EventMulticasterFactoryBean">
     <property name="simpleApplicationEventMulticaster" ref="applicationEventMulticaster" />
     <property name="taskExecutor">
-       <bean class="org.springframework.scheduling.timer.TimerTaskExecutor"/>  
+       <bean class="org.springframework.core.task.SimpleAsyncTaskExecutor"/>
     </property>
   </bean>
   

@@ -15,6 +15,7 @@ import gov.nih.nci.cabig.caaers.integration.schema.study.StudyDeviceType.*;
 import gov.nih.nci.cabig.caaers.integration.schema.study.StudyDeviceType.StudyDeviceINDAssociations;
 import gov.nih.nci.cabig.caaers.integration.schema.study.StudyDeviceINDAssociationType;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -832,75 +833,58 @@ public class StudyConverter {
 
     }
 
+    private INDType convertINDType(IndType indType){
+        if(indType == IndType.CTEP_IND) return INDType.CTEP_IND;
+        if(indType == IndType.DCP_IND) return INDType.DCP_IND;
+        if(indType == IndType.OTHER) return INDType.OTHER;
+        if(indType == IndType.IND_EXEMPT) return INDType.IND_EXEMPT;
+        if(indType == IndType.NA) return INDType.NA;
+        if(indType == IndType.NA_COMMERCIAL) return INDType.NA_COMMERCIAL;
+        return null;
+    }
+    
+    private void populateIND(StudyAgentType.StudyAgentINDAssociations associations, StudyAgent sa){
+        StudyAgentINDAssociationType assType = associations.getStudyAgentINDAssociation();
+        if(assType == null) return;
+        InvestigationalNewDrugType indType = assType.getInvestigationalNewDrug();
+        if(indType == null) return;
+        if(indType.getIndNumber() == null && indType.getHolderName() == null) return;
+        
+        StudyAgentINDAssociation saAssociation = new StudyAgentINDAssociation();
+        InvestigationalNewDrug ind = new InvestigationalNewDrug();
+        saAssociation.setInvestigationalNewDrug(ind);       
+        if(indType.getIndNumber() != null) ind.setIndNumber(indType.getIndNumber().intValue());
+        if(StringUtils.isNotEmpty(indType.getHolderName())) ind.setHolderName(indType.getHolderName());
+        sa.addStudyAgentINDAssociation(saAssociation);
+    }
+    
+    private void populateStudyAgent(StudyAgentType saType, Study study){
+        StudyAgent sa = new StudyAgent();
+        Agent agent = new Agent();
+        sa.setAgent(agent);
+        sa.setOtherAgent(saType.getOtherAgent());
+        sa.setIndType(convertINDType(saType.getIndType()));
+        sa.setPartOfLeadIND(saType.isPartOfLeadIND());
+
+        if(saType.getAgent() != null){
+            agent.setName(saType.getAgent().getName());
+            agent.setNscNumber(saType.getAgent().getNscNumber());
+        }
+
+        if(saType.getStudyAgentINDAssociations() != null){
+               populateIND(saType.getStudyAgentINDAssociations(), sa);
+        }
+        
+        study.addStudyAgent(sa);
+    }
+    
     private void populateStudyAgents(gov.nih.nci.cabig.caaers.integration.schema.study.Study studyDto, Study study) throws Exception {
 
         gov.nih.nci.cabig.caaers.integration.schema.study.Study.StudyAgents studyAgents = studyDto.getStudyAgents();
-        if (studyAgents != null) {
-            List<StudyAgentType> studyAgentTypeList = studyAgents.getStudyAgent();
-            List<StudyAgent> studyAgentList = study.getStudyAgents();
-            if (studyAgentTypeList != null && !studyAgentTypeList.isEmpty()) {
-                StudyAgent studyAgent = null;
-                Agent agent = null;
-                for (StudyAgentType studyAgentType : studyAgentTypeList) {
-                    studyAgent = new StudyAgent();
-                    agent = new Agent();
-                    studyAgent.setAgent(agent);
-                    if (studyAgentType.getOtherAgent() != null) {
-                        studyAgent.setOtherAgent(studyAgentType.getOtherAgent());
-                    } else {
-
-                        if (studyAgentType.getAgent().getNscNumber() != null) {
-
-                            studyAgent.getAgent().setNscNumber(studyAgentType.getAgent().getNscNumber());
-                        }
-
-                        if (studyAgentType.getAgent().getName() != null) {
-                            studyAgent.getAgent().setName(studyAgentType.getAgent().getName());
-                        }
-
-                    }
-
-                    if (IndType.CTEP_IND.equals(studyAgentType.getIndType())) {
-                        studyAgent.setIndType(INDType.CTEP_IND);
-                    }
-                    if (IndType.DCP_IND.equals(studyAgentType.getIndType())) {
-                        studyAgent.setIndType(INDType.DCP_IND);
-                    }
-                    if (IndType.IND_EXEMPT.equals(studyAgentType.getIndType())) {
-                        studyAgent.setIndType(INDType.IND_EXEMPT);
-                    }
-                    if (IndType.NA.equals(studyAgentType.getIndType())) {
-                        studyAgent.setIndType(INDType.NA);
-                    }
-                    if (IndType.NA_COMMERCIAL.equals(studyAgentType.getIndType())) {
-                        studyAgent.setIndType(INDType.NA_COMMERCIAL);
-                    }
-                    if (IndType.OTHER.equals(studyAgentType.getIndType())) {
-                        studyAgent.setIndType(INDType.OTHER);
-                    }
-                    studyAgent.setPartOfLeadIND(studyAgentType.isPartOfLeadIND());
-
-
-
-                    StudyAgentType.StudyAgentINDAssociations studyAgentINDAssociations = studyAgentType.getStudyAgentINDAssociations();
-                    if (studyAgentINDAssociations != null) {
-                        StudyAgentINDAssociationType studyAgentINDAssociationType = studyAgentINDAssociations.getStudyAgentINDAssociation();
-                        if (studyAgentINDAssociationType != null) {
-                            InvestigationalNewDrugType investigationalNewDrugType = studyAgentINDAssociationType.getInvestigationalNewDrug();
-                            if (investigationalNewDrugType != null) {
-                                InvestigationalNewDrug investigationalNewDrug = new InvestigationalNewDrug();
-                                investigationalNewDrug.setIndNumber(investigationalNewDrugType.getIndNumber().intValue());
-                                investigationalNewDrug.setHolderName(investigationalNewDrugType.getHolderName());
-                                StudyAgentINDAssociation studyAgentINDAssociation = new StudyAgentINDAssociation();
-                                studyAgentINDAssociation.setInvestigationalNewDrug(investigationalNewDrug);
-                                studyAgent.getStudyAgentINDAssociations().add(studyAgentINDAssociation);
-                            }
-                        }
-                    }
-                    studyAgentList.add(studyAgent);
-                }
-                study.setStudyAgents(studyAgentList);
-            }
+        if(studyAgents == null) return ;
+        if(studyAgents.getStudyAgent().isEmpty()) return;
+        for(StudyAgentType studyAgentType : studyAgents.getStudyAgent()){
+            populateStudyAgent(studyAgentType, study);
         }
 
     }
