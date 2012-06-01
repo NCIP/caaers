@@ -26,15 +26,6 @@ import org.hibernate.annotations.Parameter;
 @Table(name = "ctc_versions")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_ctc_versions_id")})
 public class Ctc extends AbstractMutableDomainObject {
-    
-	/** The CT c_ v2. */
-	public static int CTC_V2 = 2;
-	
-	/** The CT c_ v3. */
-	public static int CTC_V3 = 3;
-	
-	/** The CT c_ v4. */
-	public static int CTC_V4 = 4;
 
     /** The name. */
     private String name;

@@ -135,8 +135,8 @@ public class CtcTermDao extends CaaersDao<CtcTerm> {
     * Get the Entity Ctc Term By Category name, ctcaeVersion & termName
     * 
     * */
-    public List<CtcTerm> getCtcTerm(String categoryName, Integer ctcaeVersion, String termName) {
-        return getHibernateTemplate().find("from CtcTerm t where t.term = ? and t.category.name = ? and t.category.ctc.id = ?", new Object[] {termName, categoryName, ctcaeVersion});
+    public List<CtcTerm> getCtcTerm(String categoryName, String ctcVersionName, String termName) {
+        return getHibernateTemplate().find("from CtcTerm t where t.term = ? and t.category.name = ? and t.category.ctc.name = ?", new Object[] {termName, categoryName, ctcVersionName});
     }
     
     public CtcTerm getByCtepCodeandVersion(String ctepCode , Ctc ctc) {

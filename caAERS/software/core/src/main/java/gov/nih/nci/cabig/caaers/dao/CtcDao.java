@@ -41,7 +41,12 @@ public class CtcDao extends CaaersDao<Ctc> {
      * @return
      */
     public Ctc getCtcV2() {
-        return getById(Ctc.CTC_V2);
+        return getByName("2.0");
+    }
+
+    @Override
+    public Ctc getById(int id) {
+        return super.getById(id);    //To change body of overridden methods use File | Settings | File Templates.
     }
 
     /**
@@ -49,7 +54,7 @@ public class CtcDao extends CaaersDao<Ctc> {
       * @return
      */
     public Ctc getCtcaeV3() {
-        return getById(Ctc.CTC_V3);
+        return getByName("3.0");
     }
 
     /**

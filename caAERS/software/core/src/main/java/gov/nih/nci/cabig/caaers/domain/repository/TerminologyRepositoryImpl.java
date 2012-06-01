@@ -34,8 +34,8 @@ public class TerminologyRepositoryImpl implements TerminologyRepository {
     /* (non-Javadoc)
      * @see gov.nih.nci.cabig.caaers.domain.repository.TerminologyRepository#getCtcTerm(java.lang.String, java.lang.Integer, java.lang.String)
      */
-    public List<CtcTerm> getCtcTerm(String categoryName, Integer ctcaeVersion, String termName) {
-        return getCtcTermDao().getCtcTerm(categoryName, ctcaeVersion, termName);
+    public List<CtcTerm> getCtcTerm(String categoryName, String ctcVersionName, String termName) {
+        return getCtcTermDao().getCtcTerm(categoryName, ctcVersionName, termName);
     }
 
     /**

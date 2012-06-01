@@ -150,7 +150,7 @@ public class AgentSpecificTermsImporter {
         //
         String nsc = "";
         String ctcae_category = "";
-        int ctcae_version = 0;
+        String ctcae_version = "0.0";
         String ae_term = "";
         String other_toxicity = "";
 
@@ -167,7 +167,7 @@ public class AgentSpecificTermsImporter {
                     if (row != null) {
                         nsc = getCellData("", i, row.getCell((short)headers.get("NSC")));
                         ctcae_category= getCellData("", i, row.getCell((short)headers.get("CTCAE_CATEGORY")));
-                        ctcae_version = Integer.parseInt(getCellData("", i, row.getCell((short)headers.get("CTCAE_VERSION"))));
+                        ctcae_version = getCellData("", i, row.getCell((short)headers.get("CTCAE_VERSION")));
                         ae_term = getCellData("", i, row.getCell((short)headers.get("AE_TERM")));
                         other_toxicity = getCellData("", i, row.getCell((short)headers.get("OTHER_TOXICITY")));
                     }
@@ -180,7 +180,7 @@ public class AgentSpecificTermsImporter {
                             nsc = _s[headers.get("NSC")];
                             ctcae_category = _s[headers.get("CTCAE_CATEGORY")];
                             try {
-                                ctcae_version = _s[headers.get("CTCAE_VERSION")].trim() != "" ? Integer.valueOf(_s[headers.get("CTCAE_VERSION")]).intValue() : 0;
+                                ctcae_version = _s[headers.get("CTCAE_VERSION")].trim();
                             } catch (NumberFormatException e) {
 //                                System.out.println(s);
                                 return null;

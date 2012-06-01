@@ -25,10 +25,10 @@ public interface TerminologyRepository {
 	 * Gets the ctc term.
 	 *
 	 * @param categoryName the category name
-	 * @param ctcaeVersion the ctcae version
+	 * @param ctcVersionName the ctcae version
 	 * @param termName the term name
 	 * @return the ctc term
 	 */
-	public List<CtcTerm> getCtcTerm(String categoryName, Integer ctcaeVersion, String termName);
+	public List<CtcTerm> getCtcTerm(String categoryName, String ctcVersionName, String termName);
 
 }

@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Required;
 
 public class StudyTerminologyMigrator implements Migrator<Study> {
@@ -31,8 +32,7 @@ public class StudyTerminologyMigrator implements Migrator<Study> {
         	
             if (srcAeTerminology.getCtcVersion() != null) {
             	AeTerminology aeTerminology = destination.getAeTerminology();
-            	int ctcVersionId = Integer.parseInt(srcAeTerminology.getCtcVersion().getName());
-                Ctc ctc = ctcDao.getById(ctcVersionId);
+                Ctc ctc = ctcDao.getByName(srcAeTerminology.getCtcVersion().getName());
                 aeTerminology.setTerm(Term.CTC);
                 aeTerminology.setCtcVersion(ctc);
                 outcome.ifNullObject(ctc, DomainObjectImportOutcome.Severity.ERROR, "CTC is either Empty or Not Valid");
@@ -48,7 +48,8 @@ public class StudyTerminologyMigrator implements Migrator<Study> {
             
             if (srcAeTerminology.getMeddraVersion() != null) {
             	AeTerminology aeTerminology = destination.getAeTerminology();
-            	MeddraVersion mvs = meddraVersionDao.getById(Integer.parseInt(srcAeTerminology.getMeddraVersion().getName()));
+                List<MeddraVersion> meddraVersions = meddraVersionDao.getMeddraByName(srcAeTerminology.getMeddraVersion().getName());
+            	MeddraVersion mvs = CollectionUtils.isNotEmpty(meddraVersions) ? meddraVersions.get(0) : null ;
                 aeTerminology.setTerm(Term.MEDDRA);
                 aeTerminology.setMeddraVersion(mvs);
                 outcome.ifNullObject(mvs, DomainObjectImportOutcome.Severity.ERROR, "MedDRA Version is either Empty or Not Valid");

@@ -92,7 +92,7 @@ public class ASAELServiceImpl {
         if(existingAgentTerm == null){
            if(isInactive) return null;
            //create new
-           CtcTerm ctcTerm = loadTerm(termType.getCategory(),Integer.parseInt(termType.getCtcVersion()), termType.getCtepTerm());
+           CtcTerm ctcTerm = loadTerm(termType.getCategory(),termType.getCtcVersion(), termType.getCtepTerm());
            if(ctcTerm == null){
                ProcessingOutcome outcome = Helper.createOutcome(AgentSpecificTerm.class, termType.getCtepTerm(),
                        true, "Term not found. So, unable to add to agent (" + agent.getNscNumber() + ") expected term : " + termType.getCtepTerm() );
@@ -153,7 +153,7 @@ public class ASAELServiceImpl {
         }
     }
 
-    private CtcTerm loadTerm(String ctcae_category, Integer ctcae_version, String ae_term) {
+    private CtcTerm loadTerm(String ctcae_category, String ctcae_version, String ae_term) {
         List<CtcTerm> list = terminologyRepository.getCtcTerm(ctcae_category, ctcae_version, ae_term);
         if (list.size() > 0) {
             return list.get(0);

@@ -110,7 +110,7 @@ public class CtcTermDaoTest extends DaoTestCase<CtcTermDao> {
     * */
 
     public void testGetCtcTermByNameCategoryCtcVersion() {
-        List<CtcTerm> terms = getDao().getCtcTerm("DERMATOLOGY/SKIN", 2, "Burn");
+        List<CtcTerm> terms = getDao().getCtcTerm("DERMATOLOGY/SKIN", "2.0", "Burn");
         assertEquals(1, terms.size());
         assertEquals("Burn", terms.get(0).getTerm());
         assertEquals("ALLERGY/IMMUNOLOGY", terms.get(0).getCategory().getName());

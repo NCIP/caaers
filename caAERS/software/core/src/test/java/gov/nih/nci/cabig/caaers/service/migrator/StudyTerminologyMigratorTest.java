@@ -41,7 +41,7 @@ public class StudyTerminologyMigratorTest extends AbstractTestCase {
 	
 	public void testMigrate_WithCorrectCtcVersion() {
 		AeTerminology ctcV3Terminology = Fixtures.createCtcV3Terminology(xstreamStudy);
-        EasyMock.expect(ctcDao.getById(Integer.parseInt(ctcV3Terminology.getCtcVersion().getName()))).andReturn(ctcV3Terminology.getCtcVersion());
+        EasyMock.expect(ctcDao.getByName(ctcV3Terminology.getCtcVersion().getName())).andReturn(ctcV3Terminology.getCtcVersion());
         replayMocks();
         
         migrator.migrate(xstreamStudy, dest, outcome);
@@ -65,7 +65,7 @@ public class StudyTerminologyMigratorTest extends AbstractTestCase {
 	
 	public void testMigrate_WithIncorrectCtcVersion() {
 		AeTerminology ctcV3Terminology = Fixtures.createCtcV3Terminology(xstreamStudy);
-        EasyMock.expect(ctcDao.getById(Integer.parseInt(ctcV3Terminology.getCtcVersion().getName()))).andReturn(null);
+        EasyMock.expect(ctcDao.getByName(ctcV3Terminology.getCtcVersion().getName())).andReturn(null);
         replayMocks();
         
         migrator.migrate(xstreamStudy, dest, outcome);
@@ -111,7 +111,7 @@ public class StudyTerminologyMigratorTest extends AbstractTestCase {
 		otherMeddraVersion.setId(9);
 		otherMeddraVersion.setName("MedDRA v9");
 		mvs.add(otherMeddraVersion);
-		EasyMock.expect(ctcDao.getById(Integer.parseInt(ctcV3Terminology.getCtcVersion().getName()))).andReturn(ctcV3Terminology.getCtcVersion()).anyTimes();
+		EasyMock.expect(ctcDao.getByName(ctcV3Terminology.getCtcVersion().getName())).andReturn(ctcV3Terminology.getCtcVersion()).anyTimes();
 		EasyMock.expect(meddraVersionDao.getMeddraByName("MedDRA v9")).andReturn(mvs).anyTimes();
 		
 		replayMocks();
@@ -131,7 +131,7 @@ public class StudyTerminologyMigratorTest extends AbstractTestCase {
 		otherMeddraVersion.setId(9);
 		otherMeddraVersion.setName("MedDRA v9");
 		mvs.add(otherMeddraVersion);
-		EasyMock.expect(ctcDao.getById(Integer.parseInt(ctcV3Terminology.getCtcVersion().getName()))).andReturn(ctcV3Terminology.getCtcVersion()).anyTimes();
+		EasyMock.expect(ctcDao.getByName(ctcV3Terminology.getCtcVersion().getName())).andReturn(ctcV3Terminology.getCtcVersion()).anyTimes();
 		EasyMock.expect(meddraVersionDao.getMeddraByName("MedDRA v9")).andReturn(null).anyTimes();
 		
 		replayMocks();
