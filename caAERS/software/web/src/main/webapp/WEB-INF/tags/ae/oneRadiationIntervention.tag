@@ -16,7 +16,7 @@
 
     <ui:row path="aeReport.radiationInterventions[${index}].studyRadiation">
          <jsp:attribute name="label"><ui:label path="${fieldGroup.fields[7].propertyName}" text="${fieldGroup.fields[7].displayName}"
-                                               mandatory="${fieldGroup.fields[7].attributes.mandatory}" required="true"/></jsp:attribute>
+                                               mandatory="${fieldGroup.fields[7].attributes.mandatory}" required="false"/></jsp:attribute>
          <jsp:attribute name="value"><ui:select path="${fieldGroup.fields[7].propertyName}" options="${fieldGroup.fields[7].attributes.options}" field="${fieldGroup.fields[7]}" /></jsp:attribute>
     </ui:row>
     <ui:row path="aeReport.radiationInterventions[${index}].studyRadiation.description">
