@@ -2,11 +2,13 @@ package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
+import gov.nih.nci.cabig.caaers.utils.ExpectedAETermSorter;
 import gov.nih.nci.cabig.ctms.web.chrome.Task;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
+import java.util.Collections;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -61,7 +63,8 @@ public class EditStudyController extends StudyController<StudyCommand> {
 
         command.setPrevFS(command.getStudy().getPrimaryFundingSponsor());
         command.setPrevCC(command.getStudy().getStudyCoordinatingCenter());
-        
+        Collections.sort(command.getStudy().getExpectedAEMeddraLowLevelTerms(), new ExpectedAETermSorter());
+        Collections.sort(command.getStudy().getExpectedAECtcTerms(), new ExpectedAETermSorter());
         return command;
     }
 

@@ -6,8 +6,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <style type="text/css">
-        .leftpanel { margin:1px 0px 5px; }
-		#build-name { position: relative; clear: left; }        
+    .leftpanel { margin:1px 0px 5px; }
+    #build-name { position: relative; clear: left; }
+    input.autocomplete { width: 355px;}
 </style>
 
 <title>${tab.longTitle}</title>
@@ -303,17 +304,21 @@ Event.observe(window, "load", function() {
             <chrome:division title="CTEP Disease Terms" id="disease">
                     <p><tags:instructions code="study.study_disease.ctep" /></p>
 
+                    <div style="padding-bottom: 5px;"><caaers:message code="LBL_disease.category" /></div>
 					<ui:autocompleter path="diseaseCategoryAsText" size="45" enableClearButton="true" initialDisplayValue="Begin typing here"></ui:autocompleter>
                     
                     <p id="disease-selected" style="display: none"></p>
-
+                    <br>
                    
+                    <div style="padding-bottom: 5px;"><caaers:message code="LBL_disease.subcategory" /></div>
                     <select multiple size="1" onmouseover="javascript:hover()" style="width:400px" id="disease-sub-category">
                         <option value="">Please select a Category first</option>
                     </select>
 
+                    <br>
+                    <br>
                     <div>
-                        <br>Diseases<br>
+                        <div style="padding-bottom: 5px;"><caaers:message code="LBL_diseases" /></div>
                         <select multiple size="1" style="width:400px" id="disease-term">
                             <option value="">Please select a Category first</option>
                         </select>
