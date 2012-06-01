@@ -28,7 +28,7 @@ public abstract class AbstractEventListener   implements ApplicationListener {
                 correlationId = eventMonitor.addEvent(SecurityUtils.getUserLoginName(((AuthenticationSuccessEvent) event).getAuthentication()), "AUTHENTICATION");
             } else if (event instanceof EntityModificationEvent){
                 String eventType = ((EntityModificationEvent) event).getEventType().name();
-                correlationId = eventMonitor.addEvent(SecurityUtils.getUserLoginName(((AuthenticationSuccessEvent) event).getAuthentication()), eventType);
+                correlationId = eventMonitor.addEvent(SecurityUtils.getUserLoginName(((EntityModificationEvent) event).getAuthentication()), eventType);
             }
         }
     }
