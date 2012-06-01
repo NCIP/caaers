@@ -4,6 +4,7 @@
         id="-1001"
         name="New Site"
         grid_id="gridSite"
+        nci_institute_code="x"
     />
     <INVESTIGATORS
         id="-100"

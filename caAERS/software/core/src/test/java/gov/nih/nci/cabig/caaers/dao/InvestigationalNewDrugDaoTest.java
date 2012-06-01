@@ -124,5 +124,12 @@ public class InvestigationalNewDrugDaoTest extends DaoTestCase<InvestigationalNe
         assertEquals(-771, inds.get(0).getINDHolder().getId().longValue());
 
     }
+    public void testFindOrganizationHeldIND() {
+        List<InvestigationalNewDrug> inds = getDao().findOrganizationHeldIND("-881", "x");
+        assertEquals(1, inds.size());
+        assertEquals(-881, inds.get(0).getId().longValue());
+        assertEquals(-771, inds.get(0).getINDHolder().getId().longValue());
+
+    }
 
 }

@@ -880,16 +880,18 @@ public class StudyConverter {
                     }
                     studyAgent.setPartOfLeadIND(studyAgentType.isPartOfLeadIND());
 
-                    StudyAgentINDAssociation studyAgentINDAssociation = new StudyAgentINDAssociation();
-                    InvestigationalNewDrug investigationalNewDrug = new InvestigationalNewDrug();
+
+
                     StudyAgentType.StudyAgentINDAssociations studyAgentINDAssociations = studyAgentType.getStudyAgentINDAssociations();
                     if (studyAgentINDAssociations != null) {
                         StudyAgentINDAssociationType studyAgentINDAssociationType = studyAgentINDAssociations.getStudyAgentINDAssociation();
                         if (studyAgentINDAssociationType != null) {
                             InvestigationalNewDrugType investigationalNewDrugType = studyAgentINDAssociationType.getInvestigationalNewDrug();
                             if (investigationalNewDrugType != null) {
+                                InvestigationalNewDrug investigationalNewDrug = new InvestigationalNewDrug();
                                 investigationalNewDrug.setIndNumber(investigationalNewDrugType.getIndNumber().intValue());
                                 investigationalNewDrug.setHolderName(investigationalNewDrugType.getHolderName());
+                                StudyAgentINDAssociation studyAgentINDAssociation = new StudyAgentINDAssociation();
                                 studyAgentINDAssociation.setInvestigationalNewDrug(investigationalNewDrug);
                                 studyAgent.getStudyAgentINDAssociations().add(studyAgentINDAssociation);
                             }

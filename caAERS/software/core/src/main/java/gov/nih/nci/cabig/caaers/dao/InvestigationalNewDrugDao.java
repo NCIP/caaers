@@ -6,10 +6,12 @@ import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.MapUtils;
+import org.apache.cxf.common.util.CollectionUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -106,6 +108,14 @@ public class InvestigationalNewDrugDao extends GridIdentifiableDao<Investigation
         return getHibernateTemplate().findByNamedParam(q.getQueryString(), new String[] {"name", "indNumber"}, new String[] {holderName, number});
     }
 
+    
+    public List<InvestigationalNewDrug> findOrganizationHeldIND(String number, String nciCode){
+        HQLQuery q = new HQLQuery("SELECT holder.investigationalNewDrug FROM gov.nih.nci.cabig.caaers.domain.OrganizationHeldIND holder");
+        q.join("holder.investigationalNewDrug as ind");
+        q.leftJoin("holder.organization as org");
+        q.andWhere("org.nciInstituteCode = :nciCode and str(ind.indNumber) = :indNumber");
+        return getHibernateTemplate().findByNamedParam(q.getQueryString(), new String[] {"nciCode", "indNumber"}, new String[] {nciCode, number});
+    }
     /**
      * TODO
      * 
