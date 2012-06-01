@@ -19,7 +19,7 @@ public enum ExpeditedReportSection {
     RADIATION_INTERVENTION_SECTION("Radiation"),
     
     /** The AGENT s_ interventio n_ section. */
-    AGENTS_INTERVENTION_SECTION("Agents", true),
+    AGENTS_INTERVENTION_SECTION("Agents", false),
     
     /** The SURGER y_ interventio n_ section. */
     SURGERY_INTERVENTION_SECTION("Surgery"),
@@ -31,7 +31,7 @@ public enum ExpeditedReportSection {
     OTHER_AE_INTERVENTION_SECTION("Other"),
 
     /** The MEDICA l_ devic e_ section. */
-    MEDICAL_DEVICE_SECTION("Device", true),
+    MEDICAL_DEVICE_SECTION("Device", false),
     
     /** The DESCRIPTIO n_ section. */
     DESCRIPTION_SECTION("Describe Event", true), 
@@ -67,7 +67,7 @@ public enum ExpeditedReportSection {
     ADDITIONAL_INFO_SECTION("Additional Info"), 
     
     /** The SUBMI t_ repor t_ section. */
-    SUBMIT_REPORT_SECTION("Review & Submit", true), 
+    SUBMIT_REPORT_SECTION("Review & Submit", false), 
     
     /** The OUTCOM e_ section. */
     OUTCOME_SECTION("Outcome");
