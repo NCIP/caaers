@@ -64,7 +64,7 @@
 <xs:element name="labs">
 <xs:complexType>
 <xs:sequence>
-<xs:element  minOccurs="0" maxOccurs="unbounded" ref="lab"></xs:element>
+<xs:element maxOccurs="unbounded" minOccurs="0" ref="lab"></xs:element>
 </xs:sequence>
 </xs:complexType>
 </xs:element>
@@ -515,6 +515,21 @@
 </xs:enumeration>
 </xs:restriction>
 </xs:simpleType>
+<xs:element name="ConfigProperties">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="name" type="CustomStringType"></xs:element>
+<xs:element maxOccurs="unbounded" name="ConfigProperty" type="ConfigPropertyType"></xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:complexType name="ConfigPropertyType">
+<xs:sequence>
+<xs:element name="code" type="CustomStringType"></xs:element>
+<xs:element name="name" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="description" type="xs:string"></xs:element>
+</xs:sequence>
+</xs:complexType>
 <xs:complexType name="WsError">
 <xs:sequence>
 <xs:element name="exception" type="xs:string"></xs:element>

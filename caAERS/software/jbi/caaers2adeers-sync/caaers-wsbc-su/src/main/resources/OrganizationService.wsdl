@@ -56,6 +56,39 @@
 </xs:sequence>
 </xs:complexType>
 </xs:element>
+<xs:element name="lab" type="LabTermType"></xs:element>
+<xs:complexType name="LabTermType">
+<xs:complexContent>
+<xs:extension base="DomainObjectType">
+<xs:sequence>
+<xs:element name="term" type="CustomStringType"></xs:element>
+<xs:element minOccurs="0" name="status" type="ActiveInactiveStatusType"></xs:element>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="labs">
+<xs:complexType>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" ref="lab"></xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="labCategory" type="LabCategoryType"></xs:element>
+<xs:complexType name="LabCategoryType">
+<xs:sequence>
+<xs:element name="category" type="CustomStringType"></xs:element>
+<xs:element ref="labs"></xs:element>
+<xs:element minOccurs="0" name="status" type="ActiveInactiveStatusType"></xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="labCategories">
+<xs:complexType>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" ref="labCategory"></xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
 <xs:element name="preExistingCondition" type="PreExistingConditionType"></xs:element>
 <xs:complexType name="PreExistingConditionType">
 <xs:complexContent>
@@ -65,6 +98,7 @@
 <xs:element name="meddraLltCode" type="xs:string"></xs:element>
 <xs:element minOccurs="0" name="meddraLlt" type="xs:string"></xs:element>
 <xs:element minOccurs="0" name="meddraHlgt" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="status" type="ActiveInactiveStatusType"></xs:element>
 </xs:sequence>
 </xs:extension>
 </xs:complexContent>
@@ -85,6 +119,7 @@
 <xs:element name="meddraCode" type="CustomStringType"></xs:element>
 <xs:element name="meddraTerm" type="xs:string"></xs:element>
 <xs:element name="therapyType" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="status" type="ActiveInactiveStatusType"></xs:element>
 </xs:sequence>
 </xs:extension>
 </xs:complexContent>
@@ -134,15 +169,15 @@
 <xs:complexContent>
 <xs:extension base="MutableDomainObjectType">
 <xs:sequence>
-<xs:element minOccurs="0" name="descriptionText" type="CustomStringType"></xs:element>
+<xs:element minOccurs="0" name="descriptionText" type="xs:string"></xs:element>
 <xs:element name="name" type="CustomStringType"></xs:element>
 <xs:element name="nciInstituteCode" type="CustomStringType"></xs:element>
-<xs:element minOccurs="0" name="city" type="CustomStringType"></xs:element>
-<xs:element minOccurs="0" name="state" type="CustomStringType"></xs:element>
-<xs:element minOccurs="0" name="country" type="CustomStringType"></xs:element>
+<xs:element minOccurs="0" name="city" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="state" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="country" type="xs:string"></xs:element>
 <xs:element minOccurs="0" name="status" type="ActiveInactiveStatusType"></xs:element>
 <xs:element minOccurs="0" name="mergedOrganization" type="OrganizationType"></xs:element>
-<xs:element minOccurs="0" name="type" type="CustomStringType"></xs:element>
+<xs:element minOccurs="0" name="type" type="xs:string"></xs:element>
 </xs:sequence>
 </xs:extension>
 </xs:complexContent>
@@ -486,6 +521,21 @@
 </xs:enumeration>
 </xs:restriction>
 </xs:simpleType>
+<xs:element name="ConfigProperties">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="name" type="CustomStringType"></xs:element>
+<xs:element maxOccurs="unbounded" name="ConfigProperty" type="ConfigPropertyType"></xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:complexType name="ConfigPropertyType">
+<xs:sequence>
+<xs:element name="code" type="CustomStringType"></xs:element>
+<xs:element name="name" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="description" type="xs:string"></xs:element>
+</xs:sequence>
+</xs:complexType>
 <xs:complexType name="WsError">
 <xs:sequence>
 <xs:element name="exception" type="xs:string"></xs:element>
@@ -512,7 +562,7 @@
 <xs:sequence>
 <xs:element minOccurs="0" name="klassName" type="xs:string"></xs:element>
 <xs:element name="businessIdentifier" type="xs:string"></xs:element>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="message" nillable="true" type="xs:string"></xs:element>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="message" type="xs:string"></xs:element>
 <xs:element minOccurs="0" name="dataBaseId" type="xs:string"></xs:element>
 <xs:element minOccurs="0" name="correlationId" type="xs:string"></xs:element>
 <xs:element minOccurs="0" name="correlationDescription" type="xs:string"></xs:element>
@@ -552,7 +602,7 @@
 <xs:element name="SecurityExceptionFault" type="SecurityExceptionFault"></xs:element>
 <xs:complexType name="BaseFault">
 <xs:sequence>
-<xs:element name="message" nillable="true" type="xs:string"></xs:element>
+<xs:element name="message" type="xs:string"></xs:element>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="SecurityExceptionFault">

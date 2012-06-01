@@ -64,7 +64,7 @@
 <xs:element name="labs">
 <xs:complexType>
 <xs:sequence>
-<xs:element maxOccurs="unbounded" ref="lab"></xs:element>
+<xs:element maxOccurs="unbounded" minOccurs="0" ref="lab"></xs:element>
 </xs:sequence>
 </xs:complexType>
 </xs:element>
