@@ -9,7 +9,6 @@
                     <aeTerm>Diarrhea</aeTerm>
                     <category>Gastrointestinal disorders</category>
                     <ctcAEVersion>4.0</ctcAEVersion>
-                    <otherToxicityComment/>
                     <status>Active</status>
                 </adverseEvent>
                 <adverseEvent updatedDate="09-10-2010 09:57:25" createdDate="12-18-2009 09:33:07">
@@ -99,14 +98,14 @@
                     <aeTerm>Dysgeusia</aeTerm>
                     <category>Nervous system disorders</category>
                     <ctcAEVersion>4.0</ctcAEVersion>
-                    <otherToxicityComment/>
+                    <otherToxicityComment></otherToxicityComment>
                     <status>Active</status>
                 </adverseEvent>
                 <adverseEvent updatedDate="10-07-2010 11:56:14" createdDate="12-18-2009 10:09:24">
                     <aeTerm>Alopecia</aeTerm>
                     <category>Skin and subcutaneous tissue disorders</category>
                     <ctcAEVersion>4.0</ctcAEVersion>
-                    <otherToxicityComment/>
+                    <otherToxicityComment> </otherToxicityComment>
                     <status>Active</status>
                 </adverseEvent>
             </adverseEventList>

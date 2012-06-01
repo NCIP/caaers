@@ -34,7 +34,9 @@
             <category><xsl:value-of select="category"/></category>
             <xsl:variable name="_ctcVer" select="ctcAEVersion" />
             <ctcVersion><xsl:value-of select="ctcAEVersion" /></ctcVersion>
-            <otherToxicity><xsl:value-of select="otherToxicityComment" /></otherToxicity>
+            <xsl:if test="translate(otherToxicityComment/text(), ' ', '') != ''">
+                <otherToxicity><xsl:value-of select="otherToxicityComment" /></otherToxicity>
+            </xsl:if>
             <status><xsl:value-of select="status"/></status>
         </asa:expectedAECtcTerm>
 
