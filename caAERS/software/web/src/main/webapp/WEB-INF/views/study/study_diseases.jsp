@@ -280,13 +280,15 @@ Event.observe(window, "load", function() {
      
 </head>
 <body>
+
+<study:summary />
+
 <p>
     <tags:instructions code="study.study_disease.top" />
     <c:if test="${not (diseaseTerminology eq 'MEDDRA' or diseaseTerminology eq 'CTEP' or diseaseTerminology eq 'OTHER')}">
         <tags:instructions code="study.study_disease.missing_terminology" heading="Note" />
     </c:if>
 </p>
-<study:summary />
 <div style="clear:both;">
     <%-- Can't use tags:tabForm b/c there are two boxes in the form --%>
     <form:form method="post" name="studyDiseasesForm" >
