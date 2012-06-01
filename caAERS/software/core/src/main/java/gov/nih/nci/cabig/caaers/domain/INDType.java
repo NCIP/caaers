@@ -12,15 +12,15 @@ public enum INDType implements CodedEnum<Integer> {
     NA(0, "NA"), 
     /** The N a_ commercial. */
     NA_COMMERCIAL(3, "N/A-Commercial Agent"),
-    /** The IN d_ exempt. */
-    IND_EXEMPT(4, "IND-Exempt"),
-    /** The DC p_ ind. */
-    DCP_IND(5, "DCP IND"),
+//    /** The IN d_ exempt. */
+//    IND_EXEMPT(4, "IND-Exempt"),
+//    /** The DC p_ ind. */
+//    DCP_IND(5, "DCP IND"),
     /** The OTHER. */
-    OTHER(2, "Other IND Holder"),
-    /** The CTE p_ ind. */
-    CTEP_IND(1, "CTEP IND");
-
+    OTHER(2, "Other IND Holder")
+//    /** The CTE p_ ind. */
+//    CTEP_IND(1, "CTEP IND");
+      ;
     /** The code. */
     private int code;
 
