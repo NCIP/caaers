@@ -113,10 +113,10 @@
 }
 
 .alphacube_message {
-  font: 12px arial;
+  font: 12px lucida grande, sans-serif;
 	text-align:center;
-	width:100%;
-	padding-bottom:10px;
+	width:auto;
+	padding: 20px;
 }
 
 .alphacube_buttons {
@@ -127,7 +127,13 @@
 .alphacube_buttons input {
 	width:20%;
 	margin:10px;
+    text-shadow: 0 -1px navy;
+    -moz-border-radius: 30px;
+    -webkit-border-radius: 30px;
+    border-radius: 30px;
 }
+
+.alphacube_buttons input:hover {background-image: none;background-color:  #3876c1}
 
 .alphacube_progress {
 	float:left;
