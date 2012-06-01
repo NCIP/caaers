@@ -339,7 +339,6 @@ public abstract class AbstractQuery {
     }
 
     public void filterByRetiredStatus(String alias, Boolean status) {
-        System.out.println("Filtering by Retired: " + alias + "->"+ status);
         andWhere(alias + ".retiredIndicator = :value");
         setParameter("value", status.booleanValue());
     }
