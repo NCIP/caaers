@@ -493,7 +493,7 @@
         <xs:complexContent>
             <xs:extension base="cct:MutableDomainObjectType">
                 <xs:sequence>
-                    <xs:element name="name" type="StudyCtcVersionType"/>
+                    <xs:element name="name" type="cct:CustomStringType"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -680,15 +680,7 @@
             <xs:enumeration value="Other"/>
         </xs:restriction>
     </xs:simpleType>
-    
-    <xs:simpleType name="StudyCtcVersionType">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="2"/>
-            <xs:enumeration value="3"/>
-            <xs:enumeration value="4"/>
-        </xs:restriction>
-    </xs:simpleType>
-    
+
     <xs:simpleType name="StudyMeddraVersionType">
         <xs:restriction base="xs:string" />
     </xs:simpleType>
