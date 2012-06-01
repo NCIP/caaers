@@ -7,7 +7,6 @@ function showDashboardStudiesMenuOptions(_element, _ssi, _id, _complete) {
             "<li><a class='submitter-blue' href='#' onclick='addStudySite(\"" + _id + "\", " + _complete + ")'>Add Study Site</a></li>" +
             "<li><a class='submitter-blue' href='#' onclick='doRegisterSubject(\"" + _id + "\")'>Register Subject</a></li>" +
             "<li><a class='submitter-blue' href='#' onclick='doUpdate(\"" + _ssi + "\", \"" + _id + "\")'>Synchronize with CTEP</a></li>" +
-            "<li><a class='submitter-red' href='#'>Delete</a></li>" +
             "</ul></div>";
     jQuery(_element).menu({
             content: html,
