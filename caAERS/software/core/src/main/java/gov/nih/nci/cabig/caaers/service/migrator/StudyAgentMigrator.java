@@ -51,7 +51,7 @@ public class StudyAgentMigrator implements Migrator<gov.nih.nci.cabig.caaers.dom
         holder.setOrganization(org);
         holder.setInvestigationalNewDrug(ind);
         ind.setINDHolder(holder);
-
+        investigationalNewDrugDao.save(ind);
         return  ind;
 
     } 
