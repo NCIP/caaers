@@ -138,9 +138,19 @@
 			
 			);
 		showPopupMessage();
-		setTimeout(function() {ctepDataInitialization.importCTEPData($('ctcaeChecked').checked, $('deviceChecked').checked, $('conditionChecked').checked, $('therapyChecked').checked, 
-				$('agentDUOMChecked').checked,$('labChecked').checked, $('agentChecked').checked,	$('asaelChecked').checked, $('organizationChecked').checked, ajaxCallBack);
-				document.getElementById("importButton").setAttribute("disabled", "disabled");},2000);
+
+        document.getElementById("importButton").setAttribute("disabled", "disabled");
+
+        ctepDataInitialization.importCTEPData($('ctcaeChecked').checked,
+                $('deviceChecked').checked,
+                $('conditionChecked').checked,
+                $('therapyChecked').checked,
+                $('agentDUOMChecked').checked,
+                $('labChecked').checked,
+                $('agentChecked').checked,
+                $('asaelChecked').checked,
+                $('organizationChecked').checked,
+                ajaxCallBack);
 				
 	}
 	
