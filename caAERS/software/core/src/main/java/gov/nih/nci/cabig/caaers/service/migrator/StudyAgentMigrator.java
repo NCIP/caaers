@@ -131,6 +131,19 @@ public class StudyAgentMigrator implements Migrator<gov.nih.nci.cabig.caaers.dom
             migrate(studyAgent, newStudyAgent, outcome);
             destination.addStudyAgent(newStudyAgent);
         }
+        
+        if(log.isInfoEnabled()){
+            for (StudyAgent studyAgent : destination.getStudyAgents()) {
+               log.info(" SA " + studyAgent.getAgentName());
+                if(studyAgent.getStudyAgentINDAssociations() != null){
+                    for(StudyAgentINDAssociation a : studyAgent.getStudyAgentINDAssociations()){
+                        if(a.getInvestigationalNewDrug() == null ) continue;
+                        log.info("    ... Ind : " + a.getInvestigationalNewDrug().getHolderName() + " , " + a.getInvestigationalNewDrug().getIndNumber());
+                    }
+                }
+               
+            }
+        }
 
 	}
 	

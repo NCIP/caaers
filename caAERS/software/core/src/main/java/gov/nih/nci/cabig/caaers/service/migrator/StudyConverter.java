@@ -16,6 +16,8 @@ import gov.nih.nci.cabig.caaers.integration.schema.study.StudyDeviceType.StudyDe
 import gov.nih.nci.cabig.caaers.integration.schema.study.StudyDeviceINDAssociationType;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -33,6 +35,8 @@ import java.util.List;
  *
  */
 public class StudyConverter {
+
+    private static Log logger = LogFactory.getLog(StudyConverter.class);
 
 	private CtcTermDao ctcTermDao;
 	private LowLevelTermDao lowLevelTermDao;
@@ -855,6 +859,7 @@ public class StudyConverter {
         saAssociation.setInvestigationalNewDrug(ind);       
         if(indType.getIndNumber() != null) ind.setIndNumber(indType.getIndNumber().intValue());
         if(StringUtils.isNotEmpty(indType.getHolderName())) ind.setHolderName(indType.getHolderName());
+        logger.info("    IND " + saAssociation.getInvestigationalNewDrug().getHolderName() + " , " + saAssociation.getInvestigationalNewDrug().getIndNumber());
         sa.addStudyAgentINDAssociation(saAssociation);
     }
     
@@ -874,7 +879,7 @@ public class StudyConverter {
         if(saType.getStudyAgentINDAssociations() != null){
                populateIND(saType.getStudyAgentINDAssociations(), sa);
         }
-        
+        logger.info(" Study Agent " + sa.getAgentName());
         study.addStudyAgent(sa);
     }
     
@@ -886,7 +891,7 @@ public class StudyConverter {
         for(StudyAgentType studyAgentType : studyAgents.getStudyAgent()){
             populateStudyAgent(studyAgentType, study);
         }
-
+        
     }
 
     private void populateStudyAgentsDomain2Dto(gov.nih.nci.cabig.caaers.integration.schema.study.Study studyDto, Study study) throws Exception {
