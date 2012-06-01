@@ -51,7 +51,7 @@
     <INTERVENTION_SITES id="-33" name="Rolling"/>    
         
     <ctc_grades/> <!-- to delete in case of existing refs -->
-    <agents id="-101"/>
+    <agents id="-101" nsc="101"/>
     
      <STUDY_ORGANIZATIONS
         id="-10"

@@ -36,8 +36,8 @@
             ctep_code="10043882"
             other_required="0"
             />
-    <agents id="-101"/>
-    <agents id="-102"/>            
+    <agents id="-101" nsc="101"/>
+    <agents id="-102" nsc="102"/>
             
      <ORGANIZATIONS
             id="-1003"

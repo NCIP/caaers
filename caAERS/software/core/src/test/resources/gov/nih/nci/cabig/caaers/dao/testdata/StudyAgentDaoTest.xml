@@ -19,6 +19,7 @@
     <AGENTS
         id="-3002"
         name="Orange"
+        nsc="101"
         />
     <STUDY_AGENTS
         id="-11"

@@ -44,8 +44,8 @@
     <!-- to delete in case of existing refs -->
 
     <!-- ====================== agents =============================================== -->
-    <agents id="-101" name="agent1"/>
-    <agents id="-102" name="agent2"/>
+    <agents id="-101" name="agent1" nsc="101"/>
+    <agents id="-102" name="agent2" nsc="102"/>
 
     <!-- ========================= Study related information ================================= -->
     <STUDIES id="-999" short_title="dummy" load_status="0"/>
