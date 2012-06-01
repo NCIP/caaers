@@ -5,11 +5,11 @@
 <script type='text/javascript' src='<c:url value="/dwr/util.js"/>'></script>
 <c:forEach items="${objects}" var="object"><script type='text/javascript' src='<c:url value="/dwr/interface/${object}.js"/>'></script></c:forEach>
 <script>
+dwr.engine.setTimeout(0);
 if(!AE.DWR_ERROR_HANDLER_REGISTERED){
 	//register dwr error handler. 
 	dwr.engine.setErrorHandler(handleDWRError);
 	dwr.engine.setOrdered(true);
-    dwr.engine.setTimeout(1200000);
 	//dwr.engine.setPreHook(showDWRLoadingIndicator);
 	//dwr.engine.setPostHook(hideDWRLoadingIndicator);
 	AE.DWR_ERROR_HANDLER_REGISTERED=true;
