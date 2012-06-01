@@ -38,12 +38,7 @@
                 </studyPurpose>
                 <aeTermUnique>true</aeTermUnique>
                 <stud:aeTerminology>
-                    <stud:ctcVersion>
-                        <xsl:variable name="_ctcVer" select="ctcVersion" />
-                        <name>
-                            <xsl:call-template name="lookup"><xsl:with-param name="_map" select="$map//ctcversions" /><xsl:with-param name="_code" select="$_ctcVer" /></xsl:call-template>
-                        </name>
-                    </stud:ctcVersion>
+                    <stud:ctcVersion><name><xsl:value-of select="ctcVersion" /></name></stud:ctcVersion>
                 </stud:aeTerminology>
                 <stud:diseaseTerminology>
                     <diseaseCodeTerm>CTEP</diseaseCodeTerm>

@@ -33,9 +33,7 @@
             <ctepTerm><xsl:value-of select="aeTerm"/></ctepTerm>
             <category><xsl:value-of select="category"/></category>
             <xsl:variable name="_ctcVer" select="ctcAEVersion" />
-            <ctcVersion>
-                <xsl:call-template name="lookup"><xsl:with-param name="_map" select="$map//ctcversions" /><xsl:with-param name="_code" select="$_ctcVer" /></xsl:call-template>
-            </ctcVersion>
+            <ctcVersion><xsl:value-of select="ctcAEVersion" /></ctcVersion>
             <otherToxicity><xsl:value-of select="otherToxicityComment" /></otherToxicity>
             <status><xsl:value-of select="status"/></status>
         </asa:expectedAECtcTerm>
