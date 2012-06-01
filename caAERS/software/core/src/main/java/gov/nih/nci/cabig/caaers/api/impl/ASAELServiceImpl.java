@@ -14,6 +14,7 @@ import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.service.AgentSpecificAdverseEventListService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -52,7 +53,7 @@ public class ASAELServiceImpl {
         return csr;
     }
     
-    
+    @Transactional(readOnly=false)
     public void createOrUpdate(CaaersServiceResponse csr,ASAELAgentType asaelAgentType) throws  Exception{
         String nscNumber = asaelAgentType.getAgent().getNscNumber();
         Agent agent = getAgentDao().getByNscNumber(nscNumber);
