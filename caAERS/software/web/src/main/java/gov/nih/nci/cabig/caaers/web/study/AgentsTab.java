@@ -35,6 +35,7 @@ public class AgentsTab extends StudyTab {
         super("Interventions", "Interventions", "study/study_agents");
         indTypeMap.put("", "Please select");
         indTypeMap.put(INDType.NA.name(), INDType.NA.getDisplayName());
+        indTypeMap.put(INDType.IND_EXEMPT.name(), INDType.IND_EXEMPT.getDisplayName());
         indTypeMap.put(INDType.NA_COMMERCIAL.name(), INDType.NA_COMMERCIAL.getDisplayName());
         indTypeMap.put(INDType.OTHER.name(), INDType.OTHER.getDisplayName());
 
