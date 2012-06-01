@@ -34,9 +34,10 @@ public class AgentsTab extends StudyTab {
     public AgentsTab() {
         super("Interventions", "Interventions", "study/study_agents");
         indTypeMap.put("", "Please select");
-        for (INDType indType : INDType.values()) {
-            indTypeMap.put(indType.name(), indType.getDisplayName());
-        }
+        indTypeMap.put(INDType.NA.name(), INDType.NA.getDisplayName());
+        indTypeMap.put(INDType.NA_COMMERCIAL.name(), INDType.NA_COMMERCIAL.getDisplayName());
+        indTypeMap.put(INDType.OTHER.name(), INDType.OTHER.getDisplayName());
+
     }
 
     @Override
@@ -75,12 +76,7 @@ public class AgentsTab extends StudyTab {
         	//IND should be cleared for NA
         	if(studyAgent.getIndType() != null){
         		switch (studyAgent.getIndType()){
-        		case CTEP_IND://associated with default CTEP IND
-        			studyAgent.getStudyAgentINDAssociations().get(0).setInvestigationalNewDrug(command.fetchDefaultInvestigationalNewDrugForCTEP());
-        			break;
-        		case DCP_IND://associate with default DCP IND
-        			studyAgent.getStudyAgentINDAssociations().get(0).setInvestigationalNewDrug(command.fetchDefaultInvestigationalNewDrugForDCP());
-        			break;
+
         		case OTHER:
         			break; //leave it.
         		default:

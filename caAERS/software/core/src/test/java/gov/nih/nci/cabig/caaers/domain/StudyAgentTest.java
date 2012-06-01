@@ -128,6 +128,7 @@ public class StudyAgentTest extends AbstractTestCase {
 		sa.setRetiredIndicator(false);
 		sa.setIndType(INDType.CTEP_IND);
 		sa.setPartOfLeadIND(true);
+
 		assertTrue(sa.isCTEPLead());
 		
 		sa.setRetiredIndicator(true);

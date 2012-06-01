@@ -328,7 +328,18 @@ public class StudyAgent extends StudyIntervention {
      */
     @Transient
      public boolean isCTEPLead() {
-         return (!isRetired() && getIndType() != null && getIndType().equals(INDType.CTEP_IND) && getPartOfLeadIND()); 
+        if(isRetired()) return false;
+        if(!getPartOfLeadIND()) return false;
+        if(getStudyAgentINDAssociations() == null || getStudyAgentINDAssociations().isEmpty()) return false;
+        for(StudyAgentINDAssociation a : getStudyAgentINDAssociations())  {
+           if(a.getInvestigationalNewDrug().getINDHolder() instanceof  OrganizationHeldIND) {
+               boolean isCTEP = ((OrganizationHeldIND)a.getInvestigationalNewDrug().getINDHolder()).getOrganization().isCtep()  ;
+               if(isCTEP) return true;
+           }
+        }
+        return false;
+        
+        
      }
 
     @OneToMany(mappedBy = "studyAgent", fetch = FetchType.LAZY, orphanRemoval = true)

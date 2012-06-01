@@ -537,5 +537,9 @@ public abstract class Organization extends AbstractMutableRetireableDomainObject
         return name;
     }
 
-
+    @Transient
+    public boolean isCtep(){
+        if(getNciInstituteCode() == null) return false;
+        return "CTEP".equals(getNciInstituteCode());
+    }
 }
