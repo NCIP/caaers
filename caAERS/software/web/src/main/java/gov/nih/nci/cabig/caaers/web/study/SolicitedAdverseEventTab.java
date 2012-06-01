@@ -11,11 +11,7 @@ import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -75,7 +71,13 @@ public class SolicitedAdverseEventTab extends StudyTab {
 
         return refdata;
     }
-    
+
+    @Override
+    public void postProcess(HttpServletRequest request, StudyCommand command, Errors errors) {
+        super.postProcess(request, command, errors);
+        request.setAttribute("flashMessage", messageSource.getMessage("MSG_study.solicited.ae.page.flash.message", null, Locale.getDefault()));
+    }
+
     @Override
     protected void validate(final StudyCommand command, final BeanWrapper commandBean, final Map<String, InputFieldGroup> fieldGroups, final Errors errors) {
        

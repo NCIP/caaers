@@ -70,7 +70,11 @@ public abstract class AutomaticSaveAjaxableFormController<C, D extends MutableDo
         if (!errors.hasErrors() && !refdata.containsKey("flashMessage")) {
             // page == 0 is not considered because every flow will have just CONTINUE button on the 1st page.
             if (page == WebUtils.getPreviousPage(request) && page > 0)
-                refdata.put("flashMessage", "Information saved successfully");
+                if (request.getAttribute("flashMessage") == null) {
+                    refdata.put("flashMessage", "Information saved successfully");
+                } else {
+                    refdata.put("flashMessage", request.getAttribute("flashMessage"));
+                }
         }
     }
     
