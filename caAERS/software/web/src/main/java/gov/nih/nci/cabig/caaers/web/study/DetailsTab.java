@@ -251,7 +251,8 @@ public class DetailsTab extends StudyTab {
             command.getStudyRepository().clearStudyInvestigators(command.getStudy().getPrimaryFundingSponsor());
             command.setPrevFS(command.getStudy().getPrimaryFundingSponsor());
         }
-        
+
+        request.setAttribute("tabFlashMessage", messageSource.getMessage(String.format("MSG_study.%s.flash_message", this.getClass().getSimpleName()), null, Locale.getDefault()));
     }
 
     public CtcDao getCtcDao() {

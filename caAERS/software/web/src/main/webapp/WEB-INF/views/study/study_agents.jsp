@@ -145,6 +145,8 @@ function toggleAgentOrOther(index) {
 
 <study:summary />
 
+<chrome:flashMessage/>
+
 <form:form id="command" name="command">
 
     <chrome:box  title="Agents">

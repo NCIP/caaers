@@ -87,6 +87,7 @@ public class AgentsTab extends StudyTab {
         }
 
         command.synchronizeStudyWithAgentAEList(agentSpecificAdverseEventListService, command.getStudy(), false);
+        request.setAttribute("tabFlashMessage", messageSource.getMessage(String.format("MSG_study.%s.flash_message", this.getClass().getSimpleName()), null, Locale.getDefault()));
     }
 
     @Override

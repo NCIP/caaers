@@ -15,6 +15,7 @@ import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -80,6 +81,8 @@ public class IdentifiersTab extends StudyTab {
         if (command.isMustFireEvent()) {
             if (getEventFactory() != null) getEventFactory().publishEntityModifiedEvent(command.getStudy());
         }
+
+        request.setAttribute("tabFlashMessage", messageSource.getMessage(String.format("MSG_study.%s.flash_message", this.getClass().getSimpleName()), null, Locale.getDefault()));
 
     }
 

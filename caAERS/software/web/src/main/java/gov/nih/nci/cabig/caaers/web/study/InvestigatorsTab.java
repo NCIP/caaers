@@ -11,10 +11,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -80,6 +77,7 @@ class InvestigatorsTab extends StudyTab {
         }
 
         command.setMustFireEvent(true);
+        request.setAttribute("tabFlashMessage", messageSource.getMessage(String.format("MSG_study.%s.flash_message", this.getClass().getSimpleName()), null, Locale.getDefault()));
     }
 
     @Override

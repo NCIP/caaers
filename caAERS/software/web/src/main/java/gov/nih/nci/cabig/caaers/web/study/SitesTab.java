@@ -60,8 +60,8 @@ class SitesTab extends StudyTab {
             	command.deleteStudySiteAtIndex(index);
                 command.setStudySiteIndex(-1);
             }
-            
-            
+
+
         }
 
         // checking new Study Sites
@@ -87,6 +87,7 @@ class SitesTab extends StudyTab {
             i++;
         }
 
+        request.setAttribute("tabFlashMessage", messageSource.getMessage(String.format("MSG_study.%s.flash_message", this.getClass().getSimpleName()), null, Locale.getDefault()));
     }
 
     @Override

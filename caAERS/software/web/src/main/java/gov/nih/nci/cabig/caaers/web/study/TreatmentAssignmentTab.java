@@ -46,6 +46,7 @@ public class TreatmentAssignmentTab extends StudyTab {
         	command.deleteTreatmentAssignmentAtIndex(Integer.parseInt(selected));
         }
         command.synchronizeTreatmentAssignmentSelectedInterventions();
+        request.setAttribute("tabFlashMessage", messageSource.getMessage(String.format("MSG_study.%s.flash_message", this.getClass().getSimpleName()), null, Locale.getDefault()));
     }
 
     @Override

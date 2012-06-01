@@ -75,7 +75,7 @@ public class SolicitedAdverseEventTab extends StudyTab {
     @Override
     public void postProcess(HttpServletRequest request, StudyCommand command, Errors errors) {
         super.postProcess(request, command, errors);
-        request.setAttribute("flashMessage", messageSource.getMessage("MSG_study.solicited.ae.page.flash.message", null, Locale.getDefault()));
+        request.setAttribute("tabFlashMessage", messageSource.getMessage(String.format("MSG_study.%s.flash_message", this.getClass().getSimpleName()), null, Locale.getDefault()));
     }
 
     @Override

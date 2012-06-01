@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.utils.ExpectedAETermSorter;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 
 import java.util.Collections;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,6 +43,8 @@ public class ExpectedAEsTab extends StudyTab {
 
     public void postProcess(HttpServletRequest request, StudyCommand command, Errors errors) {
         super.postProcess(request, command, errors);
+        request.setAttribute("tabFlashMessage", messageSource.getMessage(String.format("MSG_study.%s.flash_message", this.getClass().getSimpleName()), null, Locale.getDefault()));
+
     }
 
     protected void validate(StudyCommand command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {

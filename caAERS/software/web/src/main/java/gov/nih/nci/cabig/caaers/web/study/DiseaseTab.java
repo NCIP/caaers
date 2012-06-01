@@ -7,10 +7,7 @@ import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -92,6 +89,7 @@ public class DiseaseTab extends StudyTab {
             handleStudyDiseaseAction(errors, command, request.getParameter("_action"), request.getParameter("_selected"), request);
             command.setDiseaseLlt(null);
         }
+        request.setAttribute("tabFlashMessage", messageSource.getMessage(String.format("MSG_study.%s.flash_message", this.getClass().getSimpleName()), null, Locale.getDefault()));
     }
 
     @Override

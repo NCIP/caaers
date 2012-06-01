@@ -282,6 +282,7 @@ Event.observe(window, "load", function() {
 <body>
 
 <study:summary />
+<chrome:flashMessage/>
 
 <p>
     <tags:instructions code="study.study_disease.top" />
