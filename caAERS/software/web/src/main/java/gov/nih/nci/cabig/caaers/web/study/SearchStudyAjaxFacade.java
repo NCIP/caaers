@@ -121,6 +121,7 @@ public class SearchStudyAjaxFacade {
     }
 
     public List<StudyAjaxableDomainObject> getStudiesTable(Map parameterMap, String type, String text, HttpServletRequest request) {
+/*
         StudyQuery sq = new StudyQuery();
 
         StringTokenizer typeToken = new StringTokenizer(type, ",");
@@ -137,8 +138,11 @@ public class SearchStudyAjaxFacade {
                 sq.filterByShortTitle(sText);
             }
         }
-        
-        List<Study> studies = studyRepository.search(sq, type, text, coppaMode);
+*/
+
+//        List<Study> studies = studyRepository.search(sq, type, text, coppaMode);
+        List<Study> studies = studyRepository.getAllStudiesByShortTitleOrIdentifiers(text);
+
         List<StudyAjaxableDomainObject> rs = new ArrayList<StudyAjaxableDomainObject>();
         for (Study s : studies) {
             StudyAjaxableDomainObject as = new StudyAjaxableDomainObject();
@@ -149,6 +153,8 @@ public class SearchStudyAjaxFacade {
             as.setPhaseCode(s.getPhaseCode());
             as.setPrimarySponsorCode(s.getPrimarySponsorCode());
             as.setExternalId(s.getExternalId() != null ? s.getExternalId().trim() : "");
+            as.setFundingSponsorIdentifierValue(s.getFundingSponsorIdentifierValue());
+            as.setDataEntryStatus(s.getDataEntryStatus() != null ? s.getDataEntryStatus() : false);
             rs.add(as);
         }
         return rs;

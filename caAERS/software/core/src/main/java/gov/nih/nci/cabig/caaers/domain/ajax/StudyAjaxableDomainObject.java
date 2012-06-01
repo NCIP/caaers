@@ -27,6 +27,9 @@ public class StudyAjaxableDomainObject extends AbstractAjaxableDomainObject {
     /** The cc identifier value. */
     private String ccIdentifierValue;
 
+    private String fundingSponsorIdentifierValue;
+    private boolean dataEntryStatus;
+
     /**
      * Gets the display name.
      *
@@ -163,4 +166,20 @@ public class StudyAjaxableDomainObject extends AbstractAjaxableDomainObject {
 	public void setCcIdentifierValue(String ccIdentifierValue) {
 		this.ccIdentifierValue = ccIdentifierValue;
 	}
+
+    public String getFundingSponsorIdentifierValue() {
+        return fundingSponsorIdentifierValue;
+    }
+
+    public void setFundingSponsorIdentifierValue(String fundingSponsorIdentifierValue) {
+        this.fundingSponsorIdentifierValue = fundingSponsorIdentifierValue;
+    }
+
+    public boolean isDataEntryStatus() {
+        return dataEntryStatus;
+    }
+
+    public void setDataEntryStatus(boolean dataEntryStatus) {
+        this.dataEntryStatus = dataEntryStatus;
+    }
 }
