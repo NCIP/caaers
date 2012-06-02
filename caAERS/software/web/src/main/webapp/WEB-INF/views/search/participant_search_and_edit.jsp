@@ -7,10 +7,8 @@
         /* Override default lable length */
        	div.row div.label { width: 9em; } 
         div.row div.value { margin-left: 10em; }
-</style>
-
-<style>
-    .yui-dt table { width: 100%; }
+        .yui-dt table { width: 100%; }
+        #yui-dt0-th-actions { width: 70px;}
 </style>
     
 <title>Search Subjects</title>
@@ -50,10 +48,19 @@ var nameFormatter = function(elCell, oRecord, oColumn, oData) {
     elCell.innerHTML = _fname + "&nbsp;" + _lname;
 };
 
+var actionsFormatter = function(elCell, oRecord, oColumn, oData) {
+    var _id = oRecord.getData("id");
+    var _fname = oRecord.getData("firstName");
+    var _lname = oRecord.getData("lastName");
+    elCell.innerHTML = "<img src='<c:url value="/images/orange-actions.gif" />'>";
+};
+
 var myColumnDefs = [
     {key:"fullName", label:"Full name", sortable:true, resizeable:true, formatter: nameFormatter},
     {key:"primaryIdentifierValue", label:"Primary ID", sortable:true, resizeable:true},
-    {key:"studySubjectIdentifiersCSV", label:"Study Subject Identifiers", sortable:true, resizeable:true}
+    {key:"studyPrimaryIdentifier", label:"Study ID", sortable:true, resizeable:true},
+    {key:"studySubjectIdentifiersCSV", label:"Study Subject Identifiers", sortable:true, resizeable:true},
+    {key:"actions", label:"&nbsp;", sortable:true, formatter:actionsFormatter}
 ];
 
 var myFields = [
@@ -61,7 +68,8 @@ var myFields = [
     {key:'firstName', parser:"string"},
     {key:'lastName', parser:"string"},
     {key:'primaryIdentifierValue', parser:"string"},
-    {key:'studySubjectIdentifiersCSV', parser:"string"}
+    {key:'studySubjectIdentifiersCSV', parser:"string"},
+    {key:'studyPrimaryIdentifier', parser:"string"}
 ];
     
 </script>

@@ -33,6 +33,8 @@ public class ParticipantAjaxableDomainObject extends AbstractAjaxableDomainObjec
     /** The study subject identifiers string. */
     private String studySubjectIdentifiersString;
 
+    private String studyPrimaryIdentifier;
+
   //  List<StudySiteAjaxableDomainObject> studySites = new ArrayList<StudySiteAjaxableDomainObject>();
     /** The studies. */
   List<StudySearchableAjaxableDomainObject> studies = new ArrayList<StudySearchableAjaxableDomainObject>();
@@ -284,5 +286,13 @@ public class ParticipantAjaxableDomainObject extends AbstractAjaxableDomainObjec
      */
     public void setStudySubjectIdentifiersString(String studySubjectIdentifiersString) {
         this.studySubjectIdentifiersString = studySubjectIdentifiersString;
+    }
+
+    public String getStudyPrimaryIdentifier() {
+        return studyPrimaryIdentifier;
+    }
+
+    public void setStudyPrimaryIdentifier(String studyPrimaryIdentifier) {
+        this.studyPrimaryIdentifier = studyPrimaryIdentifier;
     }
 }

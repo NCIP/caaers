@@ -21,11 +21,23 @@ public class ParticipantAjaxableDomainObjectQuery extends AbstractAjaxableDomain
     
 
     public ParticipantAjaxableDomainObjectQuery() {
-        super("select participant.id, participant.firstName, participant.lastName, participant.gender," +
-                "participant.race,participant.ethnicity,identifier.value,identifier.primaryIndicator," +
-                "spa.studySubjectIdentifier from Participant participant");
+        super("SELECT participant.id, " +
+                "participant.firstName, " +
+                "participant.lastName, " +
+                "participant.gender," +
+                "participant.race," +
+                "participant.ethnicity," +
+                "identifier.value," +
+                "identifier.primaryIndicator," +
+                "spa.studySubjectIdentifier, " +
+                "studyIdentifier.value " +
+                "FROM Participant participant");
+
         leftJoin("participant.identifiers as identifier");
         leftJoin("participant.assignments as spa");
+        leftJoin("spa.studySite as studySite");
+        leftJoin("studySite.study as study");
+        leftJoin("study.identifiers as studyIdentifier");
         orderBy("participant.firstName");
     }
     
@@ -33,6 +45,9 @@ public class ParticipantAjaxableDomainObjectQuery extends AbstractAjaxableDomain
        andWhere("identifier.primaryIndicator is true and sIdentifier.primaryIndicator is true");
     }
     
+    public void filterByStudyPrimaryIdentifiers() {
+       andWhere("studyIdentifier.primaryIndicator is true ");
+    }
 
     public void filterParticipantsWithMatchingText(String text) {
         String[] subtexts = text.split("[\\s]+");
@@ -61,8 +76,6 @@ public class ParticipantAjaxableDomainObjectQuery extends AbstractAjaxableDomain
     }
 
     public void filterParticipants(final Map props) throws ParseException {
-		
-
         if (props.get("participantIdentifier") != null) {
         	filterByParticipantIdentifierValue(props.get("participantIdentifier").toString());
         }
@@ -70,11 +83,10 @@ public class ParticipantAjaxableDomainObjectQuery extends AbstractAjaxableDomain
         if (props.get("participantFirstName") != null) {
             this.filterByFirstName(props.get("participantFirstName").toString());
         }
+
         if (props.get("participantLastName") != null) {
             this.filterByLastName(props.get("participantLastName").toString());
         }
-
-		
 	}
     
     public void filterByFirstName(final String firstName) {

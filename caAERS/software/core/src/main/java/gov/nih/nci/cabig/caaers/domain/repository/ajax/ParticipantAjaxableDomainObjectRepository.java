@@ -59,12 +59,9 @@ public class ParticipantAjaxableDomainObjectRepository<T extends ParticipantAjax
                 if (o[7] != null && (Boolean) o[7]) {
                     participantAjaxableDomainObject.setPrimaryIdentifierValue((String) o[6]);
                 }
-
                 participantAjaxableDomainObject.collectStudySubjectIdentifier((String) o[8]);
-               // addAdditionalProperties(participantAjaxableDomainObject, o);
-                existingParticipantsMap.put(participantAjaxableDomainObject.getId(),participantAjaxableDomainObject);
-                
-
+                participantAjaxableDomainObject.setStudyPrimaryIdentifier((String)o[9]);
+                existingParticipantsMap.put(participantAjaxableDomainObject.getId(), participantAjaxableDomainObject);
             } else  {
             	updateAdditionalProperties(participantAjaxableDomainObject, o);
             }

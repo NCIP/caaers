@@ -688,6 +688,7 @@ public class SearchStudyAjaxFacade extends AbstractAjaxFacade {
         List<ParticipantAjaxableDomainObject> participants = new ArrayList<ParticipantAjaxableDomainObject>();
         ParticipantAjaxableDomainObjectQuery query = new ParticipantAjaxableDomainObjectQuery();
         query.filterParticipantsWithMatchingText(text);
+        query.filterByStudyPrimaryIdentifiers();
 
         try {
             participants = participantAjaxableDomainObjectRepository.findParticipants(query);
