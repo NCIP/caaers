@@ -36,3 +36,26 @@ function doUpdate(_sfsId, _id) {
 function openUrl(_url) {
     window.location = _url;
 }
+
+function showDashboardSubjectsAssignmentsMenuOptions(_element, _subjectId, _studyId, _assignmentId) {
+    var _el = jQuery(_element);
+    var html = "<div><ul style='font-family:tahoma;'>" +
+            "<li><a class='submitter-blue' href='#' onclick='editSubjectDetails(" +_studyId + ", " + _subjectId + ")'>Edit Subject Details</a></li>" +
+            "<li><a class='submitter-blue' href='#' onclick='editMedicalHistory(" +_studyId + ", " + _subjectId + ", " + _assignmentId + ")'>Edit Medical History</a></li>" +
+            "<li><a class='submitter-blue' href='#' onclick='enterAdverseEvents(" +_studyId + ", " + _subjectId + ")'>Enter Adverse Events</a></li>" +
+            "<li><a class='submitter-blue' href='#' onclick='assignToStudy(" +_studyId + ", " + _subjectId + ")'>Assign to Study</a></li>" +
+            "</ul></div>";
+    _el.menu({
+            content: html,
+            maxHeight: 180,
+            width: 180,
+            positionOpts: {
+                directionV: 'down',
+                posX: 'left',
+                posY: 'bottom',
+                offsetX: 0,
+                offsetY: 0
+            },
+            showSpeed: 300
+        });
+}

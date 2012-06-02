@@ -27,7 +27,7 @@
                                         <td align="RIGHT">
                                             <img src="<c:url value="/images/orange-actions.gif" />"
                                                  border="0"
-                                                 onmouseover='showDashboardSubjectsAssignmentsMenuOptions(${subject.id}, ${assignment.studySite.study.id}, ${assignment.id})'
+                                                 onmouseover='showDashboardSubjectsAssignmentsMenuOptions(this, ${subject.id}, ${assignment.studySite.study.id}, ${assignment.id})'
                                                  id='_d_assignment_${assignment.id}'
                                                  style="cursor: pointer;
                                                  margin-right: 15px;">
@@ -62,29 +62,6 @@
 
     function assignToStudy(_studyId, _subjectId) {
         document.location = "<c:url value="/pages/participant/assignParticipant?" />" + "participantId=" + _subjectId;
-    }
-
-    function showDashboardSubjectsAssignmentsMenuOptions(_subjectId, _studyId, _assignmentId) {
-        var _el = jQuery("#_d_assignment_" + _assignmentId);
-        var html = "<div><ul style='font-family:tahoma;'>" +
-                "<li><a class='submitter-blue' href='#' onclick='editSubjectDetails(" +_studyId + ", " + _subjectId + ")'>Edit Subject Details</a></li>" +
-                "<li><a class='submitter-blue' href='#' onclick='editMedicalHistory(" +_studyId + ", " + _subjectId + ", " + _assignmentId + ")'>Edit Medical History</a></li>" +
-                "<li><a class='submitter-blue' href='#' onclick='enterAdverseEvents(" +_studyId + ", " + _subjectId + ")'>Enter Adverse Events</a></li>" +
-                "<li><a class='submitter-blue' href='#' onclick='assignToStudy(" +_studyId + ", " + _subjectId + ")'>Assign to Study</a></li>" +
-                "</ul></div>";
-        _el.menu({
-                content: html,
-                maxHeight: 180,
-                width: 180,
-                positionOpts: {
-                    directionV: 'down',
-                    posX: 'left',
-                    posY: 'bottom',
-                    offsetX: 0,
-                    offsetY: 0
-                },
-                showSpeed: 300
-            });
     }
 
     function loadAllSubjects() {

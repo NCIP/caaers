@@ -30,7 +30,9 @@ public class ParticipantAjaxableDomainObjectQuery extends AbstractAjaxableDomain
                 "identifier.value," +
                 "identifier.primaryIndicator," +
                 "spa.studySubjectIdentifier, " +
-                "studyIdentifier.value " +
+                "studyIdentifier.value, " +
+                "spa.id, " +
+                "study.id " +
                 "FROM Participant participant");
 
         leftJoin("participant.identifiers as identifier");

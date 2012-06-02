@@ -50,9 +50,9 @@ var nameFormatter = function(elCell, oRecord, oColumn, oData) {
 
 var actionsFormatter = function(elCell, oRecord, oColumn, oData) {
     var _id = oRecord.getData("id");
-    var _fname = oRecord.getData("firstName");
-    var _lname = oRecord.getData("lastName");
-    elCell.innerHTML = "<img src='<c:url value="/images/orange-actions.gif" />'>";
+    var _assId = oRecord.getData("assignmentId");
+    var _stId = oRecord.getData("studyId");
+    elCell.innerHTML = "<img src='<c:url value="/images/orange-actions.gif" />' border='0' onmouseover='showDashboardSubjectsAssignmentsMenuOptions(this, " + _id + ", " + _stId + ", " + _assId + ")' style='cursor: pointer; margin-right: 15px;'>";
 };
 
 var myColumnDefs = [
@@ -69,9 +69,27 @@ var myFields = [
     {key:'lastName', parser:"string"},
     {key:'primaryIdentifierValue', parser:"string"},
     {key:'studySubjectIdentifiersCSV', parser:"string"},
-    {key:'studyPrimaryIdentifier', parser:"string"}
+    {key:'studyPrimaryIdentifier', parser:"string"},
+    {key:'assignmentId', parser:"string"},
+    {key:'studyId', parser:"string"}
 ];
-    
+
+    function enterAdverseEvents(_studyId, _subjectId) {
+        document.location = "<c:url value="/pages/ae/captureRoutine?" />" + "studyId=" + _studyId + "&subjectId=" + _subjectId;
+    }
+
+    function editMedicalHistory(_studyId, _subjectId, _assignmentId) {
+        document.location = "<c:url value="/pages/participant/edit?" />" + "participantId=" + _subjectId + "&assignmentId=" + _assignmentId + "&tabName=EditSubjectMedHistoryTab";
+    }
+
+    function editSubjectDetails(_studyId, _subjectId) {
+        document.location = "<c:url value="/pages/participant/edit?" />" + "participantId=" + _subjectId;
+    }
+
+    function assignToStudy(_studyId, _subjectId) {
+        document.location = "<c:url value="/pages/participant/assignParticipant?" />" + "participantId=" + _subjectId;
+    }
+
 </script>
 </head>
 <body>
