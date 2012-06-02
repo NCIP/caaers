@@ -153,7 +153,7 @@ function showDiseases() {
             sel.options.add(new Option("All", ""))
             sel.options[0].selected = true;
             diseases.each(function(cat) {
-                var opt = new Option(cat.term, cat.id)
+                var opt = new Option(cat.ctepTerm, cat.id)
                 sel.options.add(opt)
             })
         })
