@@ -185,6 +185,73 @@ public class FactResolverTest extends TestCase {
 		fact = resolver.assertFact(localStudy,"gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug","holderName","Wrong Name","==");
 		assertFalse(fact);
 	}
+
+
+    public void testIsOnlyYesOnInvestigationalNewDrug() throws  Exception{
+
+
+        {
+            StudyAgent agent = Fixtures.createStudyAgent("test");
+            INDHolder indHolder = Fixtures.createOrganizationINDHolder(localOrganization);
+            InvestigationalNewDrug ind = Fixtures.createInvestigationalNewDrug(indHolder, "-2");
+
+            StudyAgentINDAssociation studyAgentIndAssociation = new StudyAgentINDAssociation();
+            studyAgentIndAssociation.setStudyAgent(agent);
+            studyAgentIndAssociation.setInvestigationalNewDrug(ind);
+
+            agent.addStudyAgentINDAssociation(studyAgentIndAssociation);
+
+            localStudy.addStudyAgent(agent);
+            assertTrue(agent.getInvestigationalNewDrugIndicator());
+            boolean fact = resolver.assertFact(localStudy,"gov.nih.nci.cabig.caaers.domain.StudyAgent","investigationalNewDrugIndicator","true","==");
+            assertTrue(fact);
+            fact = resolver.assertFact(localStudy,"gov.nih.nci.cabig.caaers.domain.StudyAgent","investigationalNewDrugIndicator","true","isOnly");
+            assertTrue(fact)   ;
+        }
+
+        {
+            StudyAgent agent = Fixtures.createStudyAgent("test");
+            INDHolder indHolder = Fixtures.createOrganizationINDHolder(localOrganization);
+            InvestigationalNewDrug ind = Fixtures.createInvestigationalNewDrug(indHolder, "-2");
+
+            StudyAgentINDAssociation studyAgentIndAssociation = new StudyAgentINDAssociation();
+            studyAgentIndAssociation.setStudyAgent(agent);
+            studyAgentIndAssociation.setInvestigationalNewDrug(ind);
+
+            agent.addStudyAgentINDAssociation(studyAgentIndAssociation);
+
+            localStudy.addStudyAgent(agent);
+            localStudy.addStudyAgent(agent);
+            assertTrue(agent.getInvestigationalNewDrugIndicator());
+            boolean fact = resolver.assertFact(localStudy,"gov.nih.nci.cabig.caaers.domain.StudyAgent","investigationalNewDrugIndicator","true","==");
+            assertTrue(fact);
+            fact = resolver.assertFact(localStudy,"gov.nih.nci.cabig.caaers.domain.StudyAgent","investigationalNewDrugIndicator","true","isOnly");
+            assertTrue(fact)   ;
+        }
+
+        {
+            StudyAgent agent = Fixtures.createStudyAgent("test");
+            INDHolder indHolder = Fixtures.createOrganizationINDHolder(localOrganization);
+            InvestigationalNewDrug ind = Fixtures.createInvestigationalNewDrug(indHolder, "-2");
+
+            StudyAgentINDAssociation studyAgentIndAssociation = new StudyAgentINDAssociation();
+            studyAgentIndAssociation.setStudyAgent(agent);
+            studyAgentIndAssociation.setInvestigationalNewDrug(ind);
+
+            agent.addStudyAgentINDAssociation(studyAgentIndAssociation);
+
+            localStudy.addStudyAgent(agent);
+            localStudy.addStudyAgent(Fixtures.createStudyAgent("x"));
+            assertTrue(agent.getInvestigationalNewDrugIndicator());
+            boolean fact = resolver.assertFact(localStudy,"gov.nih.nci.cabig.caaers.domain.StudyAgent","investigationalNewDrugIndicator","true","==");
+            assertTrue(fact);
+
+            fact = resolver.assertFact(localStudy,"gov.nih.nci.cabig.caaers.domain.StudyAgent","investigationalNewDrugIndicator","true","isOnly");
+//            assertTrue(fact);
+        }
+
+
+    }
 	
 	/*
 	 * Testing : factResolver.assertFact(study,'gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug','holderName','runTimeValue','runTimeOperator')
