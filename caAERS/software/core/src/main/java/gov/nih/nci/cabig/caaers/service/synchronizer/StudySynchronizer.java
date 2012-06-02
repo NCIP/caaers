@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.service.migrator.CompositeMigrator;
 import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -40,5 +41,6 @@ public class StudySynchronizer extends CompositeMigrator<Study>{
 		if(xmlStudy.getDesign() != null){
 			dbStudy.setDesign(xmlStudy.getDesign());
 		}
+        dbStudy.setLastSynchedDate(new Date());
 	}
 }
