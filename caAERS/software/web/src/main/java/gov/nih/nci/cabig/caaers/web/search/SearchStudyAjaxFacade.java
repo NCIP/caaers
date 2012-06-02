@@ -682,53 +682,27 @@ public class SearchStudyAjaxFacade extends AbstractAjaxFacade {
         return model.assemble();
     }
 
- 
-
     @SuppressWarnings("finally")
-    private List<ParticipantAjaxableDomainObject> getParticipants(final String type, final String text) {
-
-        StringTokenizer typeToken = new StringTokenizer(type, ",");
-        StringTokenizer textToken = new StringTokenizer(text, ",");
-        log.debug("type :: " + type);
-        log.debug("text :: " + text);
-        String sType, sText;
-
+    private List<ParticipantAjaxableDomainObject> getParticipants(String text) {
+        log.debug("Searching participants by: " + text);
         List<ParticipantAjaxableDomainObject> participants = new ArrayList<ParticipantAjaxableDomainObject>();
-        
-        
         ParticipantAjaxableDomainObjectQuery query = new ParticipantAjaxableDomainObjectQuery();
-        //ParticipantQuery participantQuery = new ParticipantQuery();
-        //participantQuery.leftJoinFetchOnIdentifiers();
-        while (typeToken.hasMoreTokens() && textToken.hasMoreTokens()) {
-            sType = typeToken.nextToken();
-            sText = textToken.nextToken();
-            
-            if (sType.equals("firstName")) {
-            	query.filterByFirstName(sText);
-            } else if (sType.equals("identifier")) {
-            	query.filterByParticipantIdentifierValue(sText);
-            } else if (sType.equals("lastName")) {
-            	query.filterByLastName(sText);
-            }
-        }
+        query.filterParticipantsWithMatchingText(text);
 
         try {
             participants = participantAjaxableDomainObjectRepository.findParticipants(query);
-            // System.out.println("Q1: " + query.getQueryString());
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
+            log.error("ERROR while searching Participants: " , e);
             throw new RuntimeException("Formatting Error", e);
-        }
-        finally {
+        } finally {
             return participants;
         }
     }
 
     public List<ParticipantAjaxableDomainObject> buildParticipantTable(final Map parameterMap, final String type, final String text, final HttpServletRequest request) {
-
         List<ParticipantAjaxableDomainObject> participants = new ArrayList<ParticipantAjaxableDomainObject>();
         if (type != null && text != null) {
-            participants = getParticipants(type, text);
+            participants = getParticipants(text);
         }
         return participants;
     }

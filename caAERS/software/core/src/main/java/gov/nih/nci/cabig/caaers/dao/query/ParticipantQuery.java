@@ -3,23 +3,14 @@ package gov.nih.nci.cabig.caaers.dao.query;
 public class ParticipantQuery extends AbstractQuery {
 
     private static final String queryString = "SELECT distinct p from Participant p ";
-
     private static final String FIRST_NAME = "firstName";
-
     private static final String LAST_NAME = "lastName";
-
     private static final String IDENTIFIER_VALUE = "identifier";
-
     private static final String IDENTIFIER_TYPE = "type";
-
     private static final String STUDY_SITE_ID = "studySiteId";
-
     private static final String GENDER = "gender";
-
     private static final String RACE = "race";
-
     private static final String ETHNITICTY = "ethnicity";
-    
     public static final String ASSIGNMENT_ALIAS = "assignment";
 
     public ParticipantQuery() {
@@ -116,7 +107,5 @@ public class ParticipantQuery extends AbstractQuery {
     	andWhere("p.id in (select assignments.participant.id from StudyParticipantAssignment assignments where assignments.studySite.organization.id=:orgId)");
     	setParameter("orgId", organizationId);
     }   
-
-
 
 }
