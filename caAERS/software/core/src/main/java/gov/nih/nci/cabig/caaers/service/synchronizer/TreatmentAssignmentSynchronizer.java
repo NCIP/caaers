@@ -23,9 +23,10 @@ public class TreatmentAssignmentSynchronizer implements Migrator<gov.nih.nci.cab
 	public void migrate(Study dbStudy, Study xmlStudy,DomainObjectImportOutcome<Study> outcome) {
 
         //if there is no TAC available in XMLStudy, ignore
-        if (CollectionUtils.isEmpty(xmlStudy.getTreatmentAssignments())) {
-            return;
-        }
+		//commenting this since this is no longer valid. Adeers syn should remove any local TACs is not present in Adeers
+//        if (CollectionUtils.isEmpty(xmlStudy.getTreatmentAssignments())) {
+//            return;
+//        }
 
         //create an Index of existing ones (available in DB)
         Hashtable<String, TreatmentAssignment> dbTacIndexMap = new Hashtable<String, TreatmentAssignment>();
