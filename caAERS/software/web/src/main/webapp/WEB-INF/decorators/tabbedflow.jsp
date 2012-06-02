@@ -51,39 +51,42 @@
 
         <!-- AE summary  -->
 		<c:if test="${not empty aesummary}">
+            <caaers:message code="LBL_Subject" var="lblSubject"/>
 			<div class="pane summary" id="reporter-summary">
-			  <div class="row">
-			    <div class="summarylabel" style="width:7em;"><caaers:message code="LBL_Subject" /></div>
-			    <div class="summaryvalue" style="margin-left:8em;">${aesummary['Participant']}</div>
-			  </div>
-			  <div class="row">
-			    <div class="summarylabel" style="width:7em;"><caaers:message code="LBL_Study" /></div>
-			    <div class="summaryvalue" style="margin-left:8em;">${aesummary['Study']}</div>
-			  </div>
-			  <div class="row">
-			    <div class="summarylabel" style="width:7em;"><caaers:message code="LBL_CourseCycle" /></div>
-			    <div class="summaryvalue" style="margin-left:8em;">${aesummary['Course']}</div>
-			  </div>
-			  <c:if test="${aesummary['Report Name'] != null}">
-			  	<div class="row">
-				  	<div class="summarylabel" style="width:7em;"><caaers:message code="LBL_Report" /></div>
-				  	<div class="summaryvalue" style="margin-left:8em;">${aesummary['Report Name'] }</div>
-				</div>
-			  </c:if>
-			  <c:if test="${showReportContextMenu}">
+			  <chrome:division collapsable="true" collapsed="true" title="${lblSubject} : ${aesummary['Participant']}" id="collapsedSummary">
                   <div class="row">
-                      <div class="summarylabel">
-                          Report(s)
+                      <div class="summarylabel" style="width:7em;"><caaers:message code="LBL_Subject" /></div>
+                      <div class="summaryvalue" style="margin-left:8em;">${aesummary['Participant']}</div>
+                  </div>
+                  <div class="row">
+                      <div class="summarylabel" style="width:7em;"><caaers:message code="LBL_Study" /></div>
+                      <div class="summaryvalue" style="margin-left:8em;">${aesummary['Study']}</div>
+                  </div>
+                  <div class="row">
+                      <div class="summarylabel" style="width:7em;"><caaers:message code="LBL_CourseCycle" /></div>
+                      <div class="summaryvalue" style="margin-left:8em;">${aesummary['Course']}</div>
+                  </div>
+                  <c:if test="${aesummary['Report Name'] != null}">
+                      <div class="row">
+                          <div class="summarylabel" style="width:7em;"><caaers:message code="LBL_Report" /></div>
+                          <div class="summaryvalue" style="margin-left:8em;">${aesummary['Report Name'] }</div>
                       </div>
-                      <div class="summaryvalue">
-                          <div>
-                              <tags:noform>
-                                  <ae:reportingContext checkBoxMode="true" allReportDefinitions="${command.applicableReportDefinitions}" selectedReportDefinitions="${command.selectedReportDefinitions}" />
-                              </tags:noform>
+                  </c:if>
+                  <c:if test="${showReportContextMenu}">
+                      <div class="row">
+                          <div class="summarylabel">
+                              Report(s)
+                          </div>
+                          <div class="summaryvalue">
+                              <div>
+                                  <tags:noform>
+                                      <ae:reportingContext checkBoxMode="true" allReportDefinitions="${command.applicableReportDefinitions}" selectedReportDefinitions="${command.selectedReportDefinitions}" />
+                                  </tags:noform>
+                              </div>
                           </div>
                       </div>
-                  </div>
-              </c:if>
+                  </c:if>
+			  </chrome:division>
             </div>
 		</c:if>
         
