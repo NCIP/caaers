@@ -282,7 +282,7 @@ public class SAEReportPriorTherapy extends AbstractExpeditedReportCollectionElem
         if (studyParticipantPriorTherapy != null) {
             SAEReportPriorTherapy saeReportPriorTherapy = copyBasicProperties(studyParticipantPriorTherapy);
             for (StudyParticipantPriorTherapyAgent priorTherapyAgent : studyParticipantPriorTherapy.getPriorTherapyAgents()) {
-                if (priorTherapyAgent.getChemoAgent() == null) continue;
+                if (priorTherapyAgent.getAgent() == null && priorTherapyAgent.getChemoAgent() == null) continue;
                 saeReportPriorTherapy.addPriorTherapyAgent(PriorTherapyAgent.createSaeReportPriorTherapyAgent(priorTherapyAgent));
             }
             return saeReportPriorTherapy;

@@ -30,6 +30,8 @@ public class PriorTherapyAgent extends AbstractMutableDomainObject {
 
     /** The chemo agent. */
     private ChemoAgent chemoAgent;
+    
+    private Agent agent;
 
     // //// LOGIC
 
@@ -40,11 +42,9 @@ public class PriorTherapyAgent extends AbstractMutableDomainObject {
      */
     @Transient
     public String getName() {
-        if (getChemoAgent() != null) {
-            return getChemoAgent().getName();
-        } else {
-            return null;
-        }
+        if(getAgent() != null) return getAgent().getDisplayName();
+        if(getChemoAgent() != null) return getChemoAgent().getName();
+        return null;
     }
 
     // //// BOUND PROPERTIES
@@ -67,6 +67,16 @@ public class PriorTherapyAgent extends AbstractMutableDomainObject {
      */
     public void setChemoAgent(ChemoAgent agent) {
         this.chemoAgent = agent;
+    }
+
+    @ManyToOne
+    @JoinColumn(name= "agent_id")
+    public Agent getAgent() {
+        return agent;
+    }
+
+    public void setAgent(Agent agent) {
+        this.agent = agent;
     }
 
     // This is annotated this way so that the IndexColumn in the parent
@@ -98,9 +108,9 @@ public class PriorTherapyAgent extends AbstractMutableDomainObject {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result
-                + ((saeReportPriorTherapy == null) ? 0 : saeReportPriorTherapy.hashCode());
-        result = prime * result + ((chemoAgent == null) ? 0 : chemoAgent.hashCode());
+        result = prime * result + ((getSaeReportPriorTherapy() == null) ? 0 : getSaeReportPriorTherapy().hashCode());
+        result = prime * result + ((getChemoAgent() == null) ? 0 : getChemoAgent().hashCode());
+        result = prime * result + ((getAgent() == null) ? 0 : getAgent().hashCode());
         return result;
     }
 
@@ -113,12 +123,15 @@ public class PriorTherapyAgent extends AbstractMutableDomainObject {
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
         final PriorTherapyAgent other = (PriorTherapyAgent) obj;
-        if (saeReportPriorTherapy == null) {
-            if (other.saeReportPriorTherapy != null) return false;
-        } else if (!saeReportPriorTherapy.equals(other.saeReportPriorTherapy)) return false;
-        if (chemoAgent == null) {
-            if (other.chemoAgent != null) return false;
-        } else if (!chemoAgent.equals(other.chemoAgent)) return false;
+        if (getSaeReportPriorTherapy() == null) {
+            if (other.getSaeReportPriorTherapy() != null) return false;
+        } else if (!getSaeReportPriorTherapy().equals(other.getSaeReportPriorTherapy())) return false;
+        if (getChemoAgent() == null) {
+            if (other.getChemoAgent() != null) return false;
+        } else if (!getChemoAgent().equals(other.getChemoAgent())) return false;
+        if (getAgent() == null) {
+            if (other.getAgent() != null) return false;
+        } else if (!getAgent().equals(other.getAgent())) return false;
         return true;
     }
 

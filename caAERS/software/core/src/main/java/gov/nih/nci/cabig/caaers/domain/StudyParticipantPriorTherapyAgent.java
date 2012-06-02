@@ -29,6 +29,8 @@ public class StudyParticipantPriorTherapyAgent extends AbstractMutableDomainObje
 
     /** The chemo agent. */
     private ChemoAgent chemoAgent;
+    
+    private Agent agent;
 
     // //// LOGIC
 
@@ -39,11 +41,9 @@ public class StudyParticipantPriorTherapyAgent extends AbstractMutableDomainObje
      */
     @Transient
     public String getName() {
-        if (getChemoAgent() != null) {
-            return getChemoAgent().getName();
-        } else {
-            return null;
-        }
+        if(getAgent() != null) return agent.getDisplayName();
+        if(getChemoAgent() != null) return getChemoAgent().getName();
+        return null;
     }
 
     // //// BOUND PROPERTIES
@@ -66,6 +66,16 @@ public class StudyParticipantPriorTherapyAgent extends AbstractMutableDomainObje
      */
     public void setChemoAgent(ChemoAgent agent) {
         this.chemoAgent = agent;
+    }
+
+    @ManyToOne
+    @JoinColumn(name= "agent_id")
+    public Agent getAgent() {
+        return agent;
+    }
+
+    public void setAgent(Agent agent) {
+        this.agent = agent;
     }
 
     // This is annotated this way so that the IndexColumn in the parent
@@ -97,9 +107,9 @@ public class StudyParticipantPriorTherapyAgent extends AbstractMutableDomainObje
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result
-                + ((priorTherapy == null) ? 0 : priorTherapy.hashCode());
-        result = prime * result + ((chemoAgent == null) ? 0 : chemoAgent.hashCode());
+        result = prime * result + ((getPriorTherapy() == null) ? 0 : getPriorTherapy().hashCode());
+        result = prime * result + ((getChemoAgent() == null) ? 0 : getChemoAgent().hashCode());
+        result = prime * result + ((getAgent() == null) ? 0 : getAgent().hashCode());
         return result;
     }
 
@@ -112,12 +122,17 @@ public class StudyParticipantPriorTherapyAgent extends AbstractMutableDomainObje
         if (obj == null) return false;
         
         final StudyParticipantPriorTherapyAgent other = (StudyParticipantPriorTherapyAgent) obj;
-        if (priorTherapy == null) {
-            if (other.priorTherapy != null) return false;
-        } else if (!priorTherapy.equals(other.priorTherapy)) return false;
-        if (chemoAgent == null) {
-            if (other.chemoAgent != null) return false;
-        } else if (!chemoAgent.equals(other.chemoAgent)) return false;
+        if (getPriorTherapy() == null) {
+            if (other.getPriorTherapy() != null) return false;
+        } else if (!getPriorTherapy().equals(other.getPriorTherapy())) return false;
+        if (getChemoAgent() == null) {
+            if (other.getChemoAgent() != null) return false;
+        } else if (!getChemoAgent().equals(other.getChemoAgent())) return false;
+
+        if (getAgent() == null) {
+            if (other.getAgent() != null) return false;
+        } else if (!getAgent().equals(other.getAgent())) return false;
+
         return true;
     }
 

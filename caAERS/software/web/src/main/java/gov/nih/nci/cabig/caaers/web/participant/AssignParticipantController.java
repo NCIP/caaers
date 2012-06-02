@@ -39,6 +39,7 @@ public class AssignParticipantController extends AutomaticSaveAjaxableFormContro
     protected PreExistingConditionDao preExistingConditionDao;
     protected AbstractStudyDiseaseDao abstractStudyDiseaseDao;
     protected ChemoAgentDao chemoAgentDao;
+    protected AgentDao agentDao;
 
     private ResearchStaffDao rsDao;
     private InvestigatorDao investigatorDao;
@@ -134,6 +135,7 @@ public class AssignParticipantController extends AutomaticSaveAjaxableFormContro
         ControllerTools.registerDomainObjectEditor(binder, preExistingConditionDao);
         ControllerTools.registerDomainObjectEditor(binder, "assignment.diseaseHistory.abstractStudyDisease", abstractStudyDiseaseDao);
         ControllerTools.registerDomainObjectEditor(binder, chemoAgentDao);
+        ControllerTools.registerDomainObjectEditor(binder, agentDao);
 
     }
 
@@ -258,6 +260,14 @@ public class AssignParticipantController extends AutomaticSaveAjaxableFormContro
 
     public void setChemoAgentDao(ChemoAgentDao chemoAgentDao) {
         this.chemoAgentDao = chemoAgentDao;
+    }
+
+    public AgentDao getAgentDao() {
+        return agentDao;
+    }
+
+    public void setAgentDao(AgentDao agentDao) {
+        this.agentDao = agentDao;
     }
 
     public ResearchStaffDao getRsDao() {

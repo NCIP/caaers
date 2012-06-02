@@ -238,7 +238,7 @@ public class PatientDetailsTab extends AeTab {
             
         );
 
-        creator.createRepeatingFieldGroup("ptAgent", "saeReportPriorTherapies", InputFieldFactory.createTextField("priorTherapyAgents.chemoAgent", "Agent", false));
+        creator.createRepeatingFieldGroup("ptAgent", "saeReportPriorTherapies", InputFieldFactory.createTextField("priorTherapyAgents.agent", "Agent", false));
     }
     
     
@@ -349,7 +349,7 @@ public class PatientDetailsTab extends AeTab {
 /*
             int j = 0;
             for (PriorTherapyAgent ptAgent : pt.getPriorTherapyAgents()) {
-                String agentPropertyName = String.format("aeReport.saeReportPriorTherapies[%d].priorTherapyAgents[%d].chemoAgent", i, j);
+                String agentPropertyName = String.format("aeReport.saeReportPriorTherapies[%d].priorTherapyAgents[%d].agent", i, j);
                 if (ptAgent == null || ptAgent.getName() == null || ptAgent.getName().trim().equals("")) {
                     errors.rejectValue(agentPropertyName, "SAE_034", "Missing Prior Therapy Agent");
                 }
@@ -533,17 +533,7 @@ public class PatientDetailsTab extends AeTab {
     	
     	//NOTE : firefox for some reason is chopping off the '[x]' in the variable name, so had to do this hoof-up in obtaining the chemoagent.
     	PriorTherapyAgent agent = new PriorTherapyAgent();
-//    	ChemoAgent chemoAgent = command.getPriorTherapyAgent();
-//    	command.setPriorTherapyAgent(null);
-    	/*
-    	 * I dont know why ajax calls strip off array parameter - priorTherapyAgents[x]
-    	 * 
-    	 * if(chemoAgent == null){
-    		chemoAgent = command.getPriorTherapyAgents().get(command.getParentIndex());
-    		command.getPriorTherapyAgents().set(command.getParentIndex(), null);
-    	}
-    	*/
-//    	agent.setChemoAgent(chemoAgent);
+
     	priorTherapy.addPriorTherapyAgent(agent);
     	
     	return modelAndView;

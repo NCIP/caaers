@@ -58,6 +58,7 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
     protected PreExistingConditionDao preExistingConditionDao;
     protected AbstractStudyDiseaseDao abstractStudyDiseaseDao;
     protected ChemoAgentDao chemoAgentDao;
+    protected AgentDao agentDao;
     private Configuration configuration;
 
     private EventFactory eventFactory;
@@ -128,6 +129,7 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
         ControllerTools.registerDomainObjectEditor(binder, studyDao);
         ControllerTools.registerDomainObjectEditor(binder, "assignment.diseaseHistory.abstractStudyDisease", abstractStudyDiseaseDao);
         ControllerTools.registerDomainObjectEditor(binder, chemoAgentDao);
+        ControllerTools.registerDomainObjectEditor(binder, agentDao);
     }
 
     /**
@@ -241,6 +243,11 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
     public void setChemoAgentDao(ChemoAgentDao chemoAgentDao) {
 		this.chemoAgentDao = chemoAgentDao;
 	}
+
+    @Required
+    public void setAgentDao(AgentDao agentDao) {
+        this.agentDao = agentDao;
+    }
 
     @Override
     protected void onBindAndValidate(HttpServletRequest request, Object command, BindException errors, int page) throws Exception {

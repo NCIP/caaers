@@ -229,7 +229,7 @@ public class ExpeditedReportTree extends PropertylessNode {
                                                 property("month", "Month"),
                                                 property("day", "Day")),
                                         list("priorTherapyAgents", "PriorTherapyAgent",
-                                                property("chemoAgent", getMessage("LBL_aeReport.saeReportPriorTherapies.priorTherapyAgents.chemoAgent-input", "Agent"))
+                                                property("agent", getMessage("LBL_aeReport.saeReportPriorTherapies.priorTherapyAgents.agent-input", "Agent"))
                                         )
                                 )
                             ),

@@ -8,6 +8,7 @@ import org.extremecomponents.table.core.TableModel;
 
 /**
  * @author Biju Joseph
+ * @deprecated  BJ : To be removed (unused)
  */
 public class ChemoAgentLinkDisplayCell extends AbstractCell {
 

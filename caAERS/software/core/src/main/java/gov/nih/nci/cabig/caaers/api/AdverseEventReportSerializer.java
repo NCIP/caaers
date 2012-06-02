@@ -432,6 +432,7 @@ public class AdverseEventReportSerializer {
 			   PriorTherapyAgent pta = new PriorTherapyAgent();
 			   pta.setId(agent.getId());
 			   pta.setChemoAgent(agent.getChemoAgent());
+               pta.setAgent(getAgent(agent.getAgent()));
 			   s.addPriorTherapyAgent(pta);
 		   }
 		   
@@ -862,11 +863,21 @@ public class AdverseEventReportSerializer {
 	    private StudyAgent getStudyAgent(StudyAgent sa) {
 	    	StudyAgent studyAgent = new StudyAgent();
 	    	studyAgent.setIndType(sa.getIndType());
-	    	studyAgent.setAgent(sa.getAgent());
+	    	studyAgent.setAgent(getAgent(sa.getAgent()));
 	    	studyAgent.setAgentAsString(sa.getAgentAsString());
 	    	studyAgent.setOtherAgent(sa.getOtherAgent());
 	    	return studyAgent;
 	    }
+    
+        private Agent getAgent(Agent agent){
+            Agent a = new Agent();
+            a.setName(agent.getName());
+            a.setNscNumber(agent.getNscNumber());
+            a.setDescription(agent.getDescription());
+            a.setDisplayName(agent.getDisplayName());
+            a.setRetiredIndicator(agent.getRetiredIndicator());
+            return a;
+        }
 	    private Organization getOrganization(Organization org) {
 	    	Organization organization = new LocalOrganization();
 	    	organization.setId(org.getId());

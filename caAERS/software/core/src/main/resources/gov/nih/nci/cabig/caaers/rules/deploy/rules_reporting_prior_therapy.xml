@@ -265,7 +265,7 @@
      RuleName : PTA_UK_CHK
      Logic : Prior Therapy Agents must be unique
      Error Code : PTA_UK_ERR
-     Error Message : CHEMO_AGENT_NAME must be unique
+     Error Message : AGENT_NAME must be unique
      ============================================================================= -->
     <rule name="PTA_UK_CHK">
         <lhs>
@@ -279,7 +279,7 @@
                         i++;
                         if(aet.getPriorTherapyAgents() == null) continue;
                         for(PriorTherapyAgent pta : aet.getPriorTherapyAgents()) {
-                            if (!hSet.add(pta.getChemoAgent())) {
+                            if (!hSet.add(String.valueOf(pta.getName()))) {
                                 errors.addValidationError("PTA_UK_ERR", "Agents within a single prior therapy must be unique", i);
                             }
                         }

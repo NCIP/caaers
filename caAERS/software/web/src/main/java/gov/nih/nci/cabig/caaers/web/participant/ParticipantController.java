@@ -45,6 +45,7 @@ public abstract class ParticipantController<C extends ParticipantInputCommand> e
     protected PreExistingConditionDao preExistingConditionDao;
     protected AbstractStudyDiseaseDao abstractStudyDiseaseDao;
     protected ChemoAgentDao chemoAgentDao;
+    protected AgentDao agentDao;
     protected StudyDao studyDao;
     private Configuration configuration;
     private StudySiteDao studySiteDao;
@@ -66,6 +67,7 @@ public abstract class ParticipantController<C extends ParticipantInputCommand> e
         ControllerTools.registerDomainObjectEditor(binder, studyDao);
         ControllerTools.registerDomainObjectEditor(binder, "assignment.diseaseHistory.abstractStudyDisease", abstractStudyDiseaseDao);
         ControllerTools.registerDomainObjectEditor(binder, chemoAgentDao);
+        ControllerTools.registerDomainObjectEditor(binder, agentDao);
 
     }
 
@@ -187,6 +189,10 @@ public abstract class ParticipantController<C extends ParticipantInputCommand> e
 
     public void setChemoAgentDao(ChemoAgentDao chemoAgentDao) {
         this.chemoAgentDao = chemoAgentDao;
+    }
+
+    public void setAgentDao(AgentDao agentDao) {
+        this.agentDao = agentDao;
     }
 
     public void setStudyDao(StudyDao studyDao) {
