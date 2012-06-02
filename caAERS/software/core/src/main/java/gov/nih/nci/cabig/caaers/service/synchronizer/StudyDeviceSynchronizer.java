@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.service.synchronizer;
 
 import edu.nwu.bioinformatics.commons.CollectionUtils;
+import gov.nih.nci.cabig.caaers.domain.AbstractMutableRetireableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyDevice;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
@@ -23,7 +24,7 @@ public class StudyDeviceSynchronizer implements Migrator<Study> {
      * @param studyDomainObjectImportOutcome
      */
     public void migrate(Study dest, Study src, DomainObjectImportOutcome<Study> studyDomainObjectImportOutcome) {
-        if (CollectionUtils.isEmpty(src.getStudyDevices())) return;
+//        if (CollectionUtils.isEmpty(src.getStudyDevices())) return;
 
 		HashMap<String, StudyDevice> map = new HashMap<String, StudyDevice>();
 		for(StudyDevice sd : dest.getActiveStudyDevices()) {
@@ -33,7 +34,8 @@ public class StudyDeviceSynchronizer implements Migrator<Study> {
 
         for (StudyDevice sd : src.getStudyDevices()) {
             String key = (sd.getDevice() != null ? sd.getDevice().getCommonName() : sd.getCommonName());
-            StudyDevice studyDevice = map.get(key);
+//            StudyDevice studyDevice = map.get(key);
+            StudyDevice studyDevice = map.remove(key);
 
             if (studyDevice == null) {
                 // ADD NEW
@@ -52,6 +54,8 @@ public class StudyDeviceSynchronizer implements Migrator<Study> {
                 studyDevice.setOtherDeviceType(sd.getOtherDeviceType());
             }
         }
+      //now soft delete, all the ones not present in XML Study
+      AbstractMutableRetireableDomainObject.retire(map.values());
     }
 
 }
