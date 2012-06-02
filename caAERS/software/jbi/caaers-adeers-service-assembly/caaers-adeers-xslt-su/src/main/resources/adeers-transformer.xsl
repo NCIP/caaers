@@ -1000,11 +1000,11 @@
                 <xsl:for-each select="DeviceAttribution">
                     <ATTRIBUTION_FOR_AE>
                         	<xsl:choose>
+                                <xsl:when test="MedicalDevice/brandName != '' ">
+                                    <CAUSE_NAME><xsl:value-of select="MedicalDevice/brandName"/></CAUSE_NAME>
+                                </xsl:when>
                         		<xsl:when test="MedicalDevice/commonName != '' ">
                                 	<CAUSE_NAME><xsl:value-of select="MedicalDevice/commonName"/></CAUSE_NAME>
-                            	</xsl:when>
-                        		<xsl:when test="MedicalDevice/brandName != '' ">
-                                	<CAUSE_NAME><xsl:value-of select="MedicalDevice/brandName"/></CAUSE_NAME>
                             	</xsl:when>
                         	</xsl:choose>
                         <TYPE_OF_CAUSE>DEVICE</TYPE_OF_CAUSE>
