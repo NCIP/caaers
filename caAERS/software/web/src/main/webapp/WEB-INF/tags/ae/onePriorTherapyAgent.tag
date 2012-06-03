@@ -20,7 +20,7 @@
           	initialDisplayValue="${initValue}" enableClearButton="true" required="true" cssClass="validate-NOTEMPTY">
               <jsp:attribute name="populatorJS">
                   function(autocompleter, text){
-                      createAE.Agents(text, function(values) {
+                      createAE.matchAgents(text, function(values) {
                           autocompleter.setChoices(values)
                       })
                   }
