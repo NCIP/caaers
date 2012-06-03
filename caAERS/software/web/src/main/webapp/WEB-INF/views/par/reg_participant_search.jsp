@@ -7,9 +7,6 @@
 
     <style>
         .yui-dt table { width: 100%; }
-
-       
-               
     </style>
     
     <script type="text/javascript">
@@ -20,7 +17,6 @@
         
         function onKey(e) {
             var keynum = getKeyNum(e);
-
             if (keynum == 13) {
                 Event.stop(e);
                 buildTable('assembler', true);
@@ -28,23 +24,16 @@
         }
 
         function buildTable(form, validate) {
-
             var text = $F('searchText');
-
             if (text == '') {
-                if (validate) $('error').innerHTML = "<font color='#FF0000'>Provide at least one character in the search field.</font>";
+                if (validate) jQuery('#flashErrors').show();
             } else {
                 $('indicator').show();
-                
-                $('error').innerHTML = ""
+                jQuery('#flashErrors').hide();
                 $('indicator').className = ''
-                var type = $('searchType').options[$('searchType').selectedIndex].value;
-
                 var parameterMap = getParameterMap(form);
-                createParticipant.getParticipantTable(parameterMap, type, text, ajaxCallBack)
-
+                createParticipant.getParticipantTable(parameterMap, "", text, ajaxCallBack)
                 $('bigSearch').show();
-
             }
         }
 
@@ -108,39 +97,29 @@
 </head>
 <body>
 
-
+<chrome:box autopad="true" title="Search Criteria">
   <form:form id="searchForm" method="post" cssClass="standard">
         <tags:hasErrorsMessage hideErrorDetails="${hideErrorDetails}"/>
         <tags:jsErrorsMessage/>
-      
-		<table border="0" cellspacing="2" cellpadding="2" class="search" width="100%">
-        <p><tags:instructions code="instruction_subject_as2s.searchsub"/></p>
-        <tr>
-            
-            <td class="searchType">Search for subject by</td>
-            <td>
-                <form:select path="searchType">
-                    <form:options items="${participantSearchType}" itemLabel="desc" itemValue="code"/>
-                </form:select>
-            </td>
-            <td><form:input path="searchText" id="searchText" size="30" onkeydown="onKey(event);"/></td>
-            <c:set var="targetPage" value="${assignType == 'study' ? '_target1' : '_target0'}"/>
-            <td width="100%">
-                <tags:button color="blue" type="button" value="Search" size="small" icon="search" onclick="buildTable('assembler', true);"/>
-                <img src="<c:url value="/images/alphacube/progress.gif" />" style="display:none;" id="indicator">
-            </td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td class="notation">
-                <div id="error"></div>
-            </td>
 
-        </tr>
+      <tags:instructions code="instruction_subject_as2s.searchsub"/>
 
-    </table>
+      <div class="errors" id="flashErrors" style="display: none;">
+          <span id="command_errors">Provide at least one character in the search field.</span>
+      </div>
+
+      <div class="row">
+          <div class="label"></div>
+          <div class="value">
+              <form:input path="searchText" id="searchText" size="30" onkeydown="onKey(event);"/>&nbsp;
+              <tags:button color="blue" type="button" value="Search" size="small" icon="search" onclick="buildTable('assembler', true);"/>
+              <img src="<c:url value="/images/alphacube/progress.gif" />" style="display:none;" id="indicator">
+          </div>
+      </div>
+      <c:set var="targetPage" value="${assignType == 'study' ? '_target1' : '_target0'}"/>
+
   </form:form>
+</chrome:box>
 
 <div id="bigSearch" style="display:none;">
     <form:form id="assembler">

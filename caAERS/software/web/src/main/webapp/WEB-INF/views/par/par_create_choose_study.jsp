@@ -39,6 +39,7 @@
             if (validate) jQuery('#flashErrors').show();
         } else {
             $('indicator').show();
+            jQuery('#flashErrors').hide();
             var parameterMap = getParameterMap(form);
             parameterMap["organizationID"] = "<c:out value="${command.organization.id}" />";
             searchStudy.getStudiesForCreateParticipant(parameterMap, "", text, "${command.organization.nciInstituteCode}", ajaxCallBack);

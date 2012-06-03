@@ -18,7 +18,6 @@ public class ParticipantAjaxableDomainObjectQuery extends AbstractAjaxableDomain
     private static final String FIRST_NAME = "firstName";
     private static final String LAST_NAME = "lastName";
     private static final String STUDY_ID = "studyId";
-    
 
     public ParticipantAjaxableDomainObjectQuery() {
         super("SELECT participant.id, " +
@@ -98,7 +97,7 @@ public class ParticipantAjaxableDomainObjectQuery extends AbstractAjaxableDomain
             setParameter(FIRST_NAME, searchString);
         }
     }
-    
+
 
     public void filterByLastName(final String lastName) {
         if (!StringUtils.isBlank(lastName)) {
@@ -116,7 +115,6 @@ public class ParticipantAjaxableDomainObjectQuery extends AbstractAjaxableDomain
         }
     }
 
-    
     public void filterByStudy(Integer studyId) {
         if (studyId != null) {
             join("spa.studySite as ss");
@@ -125,6 +123,15 @@ public class ParticipantAjaxableDomainObjectQuery extends AbstractAjaxableDomain
             setParameter(STUDY_ID, studyId);
         }
     }
-    
+
+    public void filterByNameOrIdentifiers(String text) {
+        if (StringUtils.isEmpty(text)) return;
+        text = "%" + text.toLowerCase() + "%";
+        andWhere("(lower(identifier.value) LIKE :TEXT or " +
+                "lower(spa.studySubjectIdentifier) LIKE :TEXT or " +
+                "participant.firstName LIKE :TEXT or " +
+                "participant.lastName LIKE :TEXT)");
+        setParameter("TEXT", text);
+    }
 
 }

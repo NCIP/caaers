@@ -92,34 +92,11 @@ public class CreateParticipantAjaxFacade {
     * Ajax Call hits this method to generate table
     */
     public List<ParticipantAjaxableDomainObject> getParticipantTable(final Map parameterMap, final String type, final String text, final HttpServletRequest request) {
-
         List<ParticipantAjaxableDomainObject> participants = new ArrayList<ParticipantAjaxableDomainObject>();
         if (type != null && text != null) {
             participants = constructExecuteParticipantQuery(type, text);
         }
-
         return participants;
-/*
-        log.debug("Participants :: " + participants.size());
-
-        Context context = null;
-        if (parameterMap == null) {
-            context = new HttpServletRequestContext(request);
-        } else {
-            context = new HttpServletRequestContext(request, parameterMap);
-        }
-
-        TableModel model = new TableModelImpl(context);
-
-        try {
-            return buildParticipant(model, participants).toString();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return "";
-*/
     }
 
     /**
@@ -240,40 +217,16 @@ public class CreateParticipantAjaxFacade {
      * */
     @SuppressWarnings("finally")
     private List<ParticipantAjaxableDomainObject> constructExecuteParticipantQuery(final String searchType, final String searchText) {
-    	
-    	StringTokenizer typeToken = new StringTokenizer(searchType, ",");
-        StringTokenizer textToken = new StringTokenizer(searchText, ",");
-
-        String sType, sText;
-        
         List<ParticipantAjaxableDomainObject> participants = new ArrayList<ParticipantAjaxableDomainObject>();
-        
         ParticipantAjaxableDomainObjectQuery query = new ParticipantAjaxableDomainObjectQuery();
-
-        while (typeToken.hasMoreTokens() && textToken.hasMoreTokens()) {
-            sType = typeToken.nextToken();
-            sText = textToken.nextToken();
-            
-            if (sType.equals("fn")) {
-            	query.filterByFirstName(sText);
-            } else if (sType.equals("idtf")) {
-            	query.filterByParticipantIdentifierValue(sText);                
-            } else if (sType.equals("ln")) {
-            	query.filterByLastName(sText);
-            }
-        }
-        
+        query.filterByNameOrIdentifiers(searchText);
         try {
             participants = participantAjaxableDomainObjectRepository.findParticipants(query);
-            // System.out.println("Q2: " + query.getQueryString());
-        }
-        catch (Exception e) {
-            throw new RuntimeException("Formatting Error", e);
-        }
-        finally {
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
             return participants;
         }
-
     }
 
     /**
