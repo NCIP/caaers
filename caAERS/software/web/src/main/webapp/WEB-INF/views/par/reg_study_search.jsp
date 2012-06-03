@@ -78,7 +78,7 @@
         ValidationManager.submitPostProcess = function(formElement, flag) {
             flag = true;
             $('searchText').value = $('searchText_').value;
-            $('_searchType').value = $('searchType').value;
+//            $('_searchType').value = $('searchType').value;
             // $('_studySite').value = $('studySite').value;
             if (formElement.id != 'command') {
                 return true
