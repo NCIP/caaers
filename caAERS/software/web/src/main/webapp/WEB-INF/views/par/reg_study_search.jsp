@@ -9,9 +9,7 @@
     <title>Search for a Study</title>
     <style>
         .yui-dt table { width: 100%; }
-
-       
-
+        #yui-dt0-th-name-liner {width: 200px;}
     </style>
 
     <script>
@@ -124,16 +122,18 @@
                     _checked = "checked";
                 }
 
-                elCell.innerHTML = "<input " + _checked + " type=\"radio\" class=\"sitesRadioBtn siteStudy_"+ _id +"\" onclick=\"resetStudyAndSites(this);\" value=\"" + _id + "\" id=\"studySite" + _id + "\" name=\"studySite\">" + oData;
+                elCell.innerHTML = "<input " + _checked + " type=\"radio\" class=\"sitesRadioBtn siteStudy_"+ _id +"\" onclick=\"resetStudyAndSites(this);\" value=\"" + _id + "\" id=\"studySite" + _id + "\" name=\"studySite\">&nbsp;" + oData;
+        };
+
+        var actionsFormatter = function(elCell, oRecord, oColumn, oData) {
+            elCell.innerHTML = "<img src='<c:url value="/images/orange-actions.gif" />'>";
         };
 
         var myColumnDefs = [
             {key:"primaryId", label:"Study ID", sortable:true, resizeable:true},
-            {key:"studyShortTitle", label:"Short Title", sortable:true, resizeable:true},
-            {key:"status", label:"Status", sortable:true, resizeable:true},
-            {key:"studyPhase", label:"Phase", sortable:true, resizeable:true},
-            {key:"nciInstituteCode", label:"Funding Sponsor", sortable:true, resizeable:true},
-            {key:"name", label:"Study Site", sortable:true, resizeable:true, formatter: radioFormatter}
+            {key:"studyShortTitle", label:"Title", sortable:true, resizeable:true},
+            {key:"name", label:"Study site", sortable:true, resizeable:true, formatter: radioFormatter},
+            {key:"actions", label:"&nbsp;", sortable:true, resizeable:true, formatter: actionsFormatter}
         ];
 
         var myFields = [

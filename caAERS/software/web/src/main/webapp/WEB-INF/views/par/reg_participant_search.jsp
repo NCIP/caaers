@@ -53,6 +53,12 @@
                 elCell.innerHTML = "<a href='asaelEdit?agentID=" + orgId + "'>" + oData + "</a>";
         };
 
+        var nameFormatter = function(elCell, oRecord, oColumn, oData) {
+                var fn = oRecord.getData("firstName");
+                var ln = oRecord.getData("lastName");
+                elCell.innerHTML = fn + "&nbsp;" + ln;
+        };
+
         var radioFormatter = function(elCell, oRecord, oColumn, oData) {
 
                 var _ss = 0;
@@ -67,17 +73,19 @@
                     _checked = "checked";
                 }
 
-                elCell.innerHTML = "<input " + _checked + " type=\"radio\" onclick=\"selectParticipant(this.value)\" value=\"" + _id + "\" id=\"participant" + _id + "\" name=\"participant\">&nbsp;" + oData;
+                elCell.innerHTML = "<input " + _checked + " type=\"radio\" onclick=\"selectParticipant(this.value)\" value=\"" + _id + "\" id=\"participant" + _id + "\" name=\"participant\">&nbsp;"
+        };
+
+        var actionsFormatter = function(elCell, oRecord, oColumn, oData) {
+            elCell.innerHTML = "<img src='<c:url value="/images/orange-actions.gif" />'>";
         };
 
         var myColumnDefs = [
-            {key:"primaryIdentifierValue", label:"Primary ID", sortable:true, resizeable:true, formatter: radioFormatter},
-            {key:"firstName", label:"First Name", sortable:true, resizeable:true},
-            {key:"lastName", label:"Last Name", sortable:true, resizeable:true},
+            {key:"select", label:"Select", sortable:true, resizeable:true, formatter: radioFormatter},
+            {key:"primaryIdentifierValue", label:"Primary ID", sortable:true, resizeable:true},
+            {key:"name", label:"Name", sortable:true, resizeable:true, formatter: nameFormatter},
             {key:"studySubjectIdentifiersCSV", label:"Study Subject Identifiers", sortable:true, resizeable:true},
-            {key:"gender", label:"Gender", sortable:true, resizeable:true},
-            {key:"race", label:"Race", sortable:true, resizeable:true},
-            {key:"ethnicity", label:"Ethnicity", sortable:true, resizeable:true}
+            {key:"actions", label:"&nbsp;", sortable:true, resizeable:true, formatter: actionsFormatter}
         ];
 
         var myFields = [
