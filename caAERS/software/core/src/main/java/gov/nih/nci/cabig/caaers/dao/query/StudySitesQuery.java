@@ -9,7 +9,8 @@ public class StudySitesQuery extends AbstractQuery {
     
     public StudySitesQuery() {
         super("SELECT distinct ss FROM StudySite ss");
-        leftJoin("ss.study.identifiers as identifier");
+        joinStudies();
+        leftJoin("study.identifiers as identifier");
     }
 
     public void joinStudies() {
@@ -46,6 +47,12 @@ public class StudySitesQuery extends AbstractQuery {
             andWhere(String.format("(lower(identifier.value) LIKE :%s)", IDENTIFIER_EXACT_VALUE));
             setParameter(IDENTIFIER_EXACT_VALUE, searchString);
         }
+    }
+
+    public void filterByShortTitleOrIdentifiers(String text) {
+        andWhere("(lower(study.shortTitle) LIKE :TITLE or lower(identifier.value) LIKE :IDENTIFIER)");
+        setParameter("TITLE", "%" + text.toLowerCase() + "%");
+        setParameter("IDENTIFIER", "%" + text.toLowerCase() + "%");
     }
 
 }

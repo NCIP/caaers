@@ -201,7 +201,7 @@ public class SearchStudyAjaxFacade {
             organizationID = 0;
         }
 
-        List<StudySite> studySites = getStudySites(type, text, organizationID, true);
+        List<StudySite> studySites = getStudySites(text, organizationID, true);
         List<StudySiteAjaxableDomainObject> rs = new ArrayList<StudySiteAjaxableDomainObject>();
 
         for (StudySite ss : studySites) {
@@ -219,33 +219,18 @@ public class SearchStudyAjaxFacade {
         return rs;
     }
 
+/*
     private List<StudySite> getObjects(String type, String text) {
         return getStudySites(type, text, 0, false);
     }
 
-    public List<StudySite> getStudySites(String type, String text, int organizationID, boolean hideIncomplete) {
+*/
+    public List<StudySite> getStudySites(String text, int organizationID, boolean hideIncomplete) {
         StudySitesQuery studySitesQuery = new StudySitesQuery();
-
-        if (organizationID > 0)
-            studySitesQuery.filterByOrganizationId(organizationID);
+        if (organizationID > 0) studySitesQuery.filterByOrganizationId(organizationID);
         studySitesQuery.filterByDataEntryComplete(hideIncomplete);
-
-        StringTokenizer typeToken = new StringTokenizer(type, ",");
-        StringTokenizer textToken = new StringTokenizer(text, ",");
-        String sType;
-        String sText;
-        while (typeToken.hasMoreTokens() && textToken.hasMoreTokens()) {
-            sType = typeToken.nextToken();
-            sText = textToken.nextToken();
-
-            if ("st".equals(sType)) {
-                studySitesQuery.filterStudiesWithMatchingShortTitleOnly(sText);
-            } else if ("idtf".equals(sType)) {
-                studySitesQuery.filterStudiesWithMatchingIdentifierOnly(sText);
-            }
-        }
-
-        List<StudySite> studySites = studyRepository.search(studySitesQuery, type, text, coppaMode);
+        studySitesQuery.filterByShortTitleOrIdentifiers(text);
+        List<StudySite> studySites = studyRepository.search(studySitesQuery, "st", text, coppaMode);
         return studySites;
     }
 

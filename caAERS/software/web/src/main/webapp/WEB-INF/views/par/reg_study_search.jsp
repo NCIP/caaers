@@ -59,20 +59,16 @@
         }
 
         function buildTable(form, validate) {
-            // START tags:tabMethod
-
             var text = $F('searchText_');
-
             if (text == '') {
-                if (validate) $('error').innerHTML = "<font color='#FF0000'>Provide at least one character in the search field.</font>"
+                if (validate) jQuery('#flashErrors').show();
             } else {
-                //$('error').innerHTML = ""
-                var type = $('searchType').options[$('searchType').selectedIndex].value;
+                if (validate) jQuery('#flashErrors').hide();
                 $('indicator').show();
 
                 var parameterMap = getParameterMap(form);
                 parameterMap["organizationID"] = "<c:out value="${command.participant.assignments[0].studySite.organization.id}" />";
-                searchStudy.getTableForAssignParticipant(parameterMap, type, text, ajaxCallBack);
+                searchStudy.getTableForAssignParticipant(parameterMap, "", text, ajaxCallBack);
                 $('indicator').hide();
                 $('bigSearch').show();
             }
@@ -164,36 +160,21 @@
     <form:form id="searchForm" method="post" cssClass="standard">
         <tags:hasErrorsMessage hideErrorDetails="${hideErrorDetails}"/>
         <tags:jsErrorsMessage/>
-        
-        <p><tags:instructions code="instruction_subject_as2s.searchstudy"/></p>
-        <table border="0" cellspacing="0" cellpadding="0" class="search" width="100%">
-            <tr>
-                <td>
 
-                    <table border="0" cellspacing="0" cellpadding="0">
-                        <tr></tr>
-                        <tr>
-                            <td class="searchType">Search for a study&nbsp;&nbsp;</td>
-                            <td><form:select path="searchType"><form:options items="${studySearchType}" itemLabel="desc" itemValue="code"/></form:select></td>
-                            <td>
-                                <input type="text" size="25" onkeydown="onKey(event);" value="${command.searchText}" id="searchText_">
-                                <%--<form:input path="searchText" size="25" onkeydown="onKey(event);" />&nbsp;--%>
-                                <tags:button color="blue" type="button" value="Search" size="small" icon="search" onclick="buildTable('assembler', true);"/>
+        <div class="errors" id="flashErrors" style="display: none;">
+            <span id="command_errors">Provide at least one character in the search field.</span>
+        </div>
 
-                                <img src="<c:url value="/images/alphacube/progress.gif" />" style="display:none;" id="indicator"></td>
-                                <c:set var="targetPage" value="${assignType == 'study' ? '_target0' : '_target1'}"/>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="notation" colspan="2">
-                                <div id="error"></div>
-                            </td>
+        <div class="row">
+            <div class="label"></div>
+            <div class="value">
+                <input type="text" size="25" onkeydown="onKey(event);" value="${command.searchText}" id="searchText_">&nbsp;
+                <tags:button color="blue" type="button" value="Search" size="small" icon="search" onclick="buildTable('assembler', true);"/>
+                <img src="<c:url value="/images/alphacube/progress.gif" />" style="display:none;" id="indicator"></td>
+            </div>
+        </div>
 
-                    </table>
-
-                </td>
-            </tr>
-        </table>
+        <c:set var="targetPage" value="${assignType == 'study' ? '_target0' : '_target1'}"/>
 
     </form:form>
 </chrome:box>
