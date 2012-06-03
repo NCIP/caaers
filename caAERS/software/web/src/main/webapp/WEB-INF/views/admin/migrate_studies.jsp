@@ -78,7 +78,7 @@
 		<br>
 
 					<tr align="center">						
-						<td> <b>Study Short Title</b></td>																	
+						<td> <b>Study title</b></td>
 					</tr>																			
 				 
 				    

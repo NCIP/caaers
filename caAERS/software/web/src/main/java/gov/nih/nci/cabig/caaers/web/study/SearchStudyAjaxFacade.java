@@ -24,6 +24,7 @@ import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 
 import gov.nih.nci.cabig.caaers.web.participant.ParticipantInputCommand;
+import org.apache.commons.lang.StringUtils;
 import org.extremecomponents.table.bean.Column;
 import org.extremecomponents.table.bean.Row;
 import org.extremecomponents.table.bean.Table;
@@ -167,16 +168,12 @@ public class SearchStudyAjaxFacade {
         List<Study> studies; 
         List<StudyAjaxableDomainObject> rs = new ArrayList<StudyAjaxableDomainObject>();
         
-        if (text != null && type != null && !text.equals("")) {
+        if (StringUtils.isNotEmpty(text)) {
             StudyHavingStudySiteQuery query = new StudyHavingStudySiteQuery();
             query.joinStudyOrganization();
             query.filterByDataEntryStatus(true);
             query.filterByStudySiteNciInstituteCode(nciCode);
-            if ("st".equals(type)) {
-                query.filterByStudyShortTile(text);
-            } else if ("idtf".equals(type)) {
-                query.filterByIdentifierValue(text);
-            }
+            query.filterByShortTitleOrIdentifiers(text);
             query.filterBySST();
             studies = studyRepository.find(query);
 

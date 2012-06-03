@@ -114,7 +114,7 @@
 		<input type="hidden" name="_selected" value="">
 		<input type="hidden" id="_ITEM_COUNT" name="_ITEM_COUNT" value="${fn:length(command.study.studySites)}">
  	    <div align="left" style="margin-left: 50px">
-             <tags:table contentID="studySites" width="55%">
+             <tags:table contentID="studySites" width="100%">
              <table width="100%" border="0" cellspacing="1" cellpadding="3">
                  <tr id="ss-table-head" bgcolor="#cccccc">
                      <th width="95%" class="tableHeader"><tags:requiredIndicator/>Site</th>

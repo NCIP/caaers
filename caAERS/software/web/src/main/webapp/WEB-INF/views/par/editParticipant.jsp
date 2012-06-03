@@ -27,7 +27,7 @@
         <table class="tablecontent">
             <tr>
                 <th scope="col">Study Primary ID</th>
-                <th scope="col">Study Short Title</th>
+                <th scope="col">Study Title</th>
                 <th scope="col">Site</th>
                 <th scope="col">Study Subject Identifier</th>
             </tr>

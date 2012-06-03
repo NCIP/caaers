@@ -133,7 +133,7 @@ function removeSystemIdentifier(container, index) {
 <table class="tablecontent" width="100%">
     <tr>
        <th scope="col" width="150px">Study Primary ID</th>
-       <th scope="col">Study Short Title</th>
+       <th scope="col">Study Title</th>
        <th scope="col">Site</th>
        <th scope="col" width="150px">Study Subject Identifier</th>
     </tr>

@@ -86,7 +86,7 @@ function submitPage(s){
                         </div>
 
                         <div class="row">
-                            <div class="label">Study short title</div>
+                            <div class="label">Study title</div>
                             <div class="value">${studySite.study.shortTitle}</div>
                         </div>
                         <div class="row">

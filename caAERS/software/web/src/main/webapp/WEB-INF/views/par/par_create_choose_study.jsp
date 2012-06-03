@@ -11,23 +11,21 @@
 <title>Search for a Study</title>
 <style>
     .yui-dt table { width: 100%; }
-    #yui-dt0-th-primaryIdentifierValue {width: 60px;}
     #yui-dt0-th-primarySponsorCode {width: 130px;}
-    #yui-dt0-th-shortTitle {width: 350px;}
-    #yui-dt0-th-primaryIdentifierValue{width: 100px;}
+    /*#yui-dt0-th-shortTitle {width: 350px;}*/
+    #yui-dt0-th-primaryIdentifierValue{width: 150px;}
     #yui-dt0-th-phaseCode{width: 100px;}
+    #yui-dt0-th-active {width: 50px;}
 </style>
 
 <script>
 
     function sync() {
        $('searchText').value = $F('searchText_');
-       $('_searchType').value = $F('searchType');
     }
 
     function onKey(e) {
         var keynum = getKeyNum(e);
-
         if (keynum == 13) {
             Event.stop(e);
             buildTable('assembler', true);
@@ -38,14 +36,12 @@
         var text = $F('searchText_');
 
         if (text == '') {
-            if (validate) $('error').innerHTML = "<font color='#FF0000'>Provide at least one character in the search field.</font>"
+            if (validate) jQuery('#flashErrors').show();
         } else {
-            var type = $('searchType').options[$('searchType').selectedIndex].value;
             $('indicator').show();
-
             var parameterMap = getParameterMap(form);
             parameterMap["organizationID"] = "<c:out value="${command.organization.id}" />";
-            searchStudy.getStudiesForCreateParticipant(parameterMap, type, text, "${command.organization.nciInstituteCode}", ajaxCallBack);
+            searchStudy.getStudiesForCreateParticipant(parameterMap, "", text, "${command.organization.nciInstituteCode}", ajaxCallBack);
             $('indicator').hide();
             $('bigSearch').show();
         }
@@ -98,6 +94,10 @@
         elCell.innerHTML = oData;
     };
 
+    var actionsFormatter = function(elCell, oRecord, oColumn, oData) {
+        elCell.innerHTML = "<img src='<c:url value="/images/orange-actions.gif" />'>";
+    };
+
     var radioFormatter = function(elCell, oRecord, oColumn, oData) {
         var _id = oRecord.getData("id");
         var _piv = oRecord.getData("primaryIdentifierValue");
@@ -105,18 +105,22 @@
         <c:if test="${not empty command.study.id}">
             if (${command.study.id} == _id) {
                 _checked = "checked";
-                if ($("ids")) $("ids").show();    
+                if ($("ids")) $("ids").show();
             }
         </c:if>
-        elCell.innerHTML = "<input id='_study" + _piv + "' type='radio' " + _checked + " value='" + _id + "' name='study' onclick='$(\"command\").study.value = " + _id + "; if ($(\"ids\")) $(\"ids\").show();'>&nbsp;&nbsp;" + oData;
+        elCell.innerHTML = "<input id='_study" + _piv + "' type='radio' " + _checked + " value='" + _id + "' name='study' onclick='$(\"command\").study.value = " + _id + "; if ($(\"ids\")) $(\"ids\").show();'>&nbsp;&nbsp;";
     };
 
     var myColumnDefs = [
-        {key:"primaryIdentifierValue", label:"Study ID", sortable:true, resizeable:true, formatter : radioFormatter, minWidth:150, maxWidth:150},
-        {key:"shortTitle", label:"Short Title", sortable:true, resizeable:true},
+        {key:"active", label:"Select", sortable:true, resizeable:true, formatter : radioFormatter},
+        {key:"primaryIdentifierValue", label:"Study ID", sortable:true, resizeable:true},
+        {key:"shortTitle", label:"Title", sortable:true, resizeable:true},
+/*
         {key:"primarySponsorCode", label:"Funding Sponsor", sortable:true, resizeable:true},
         {key:"phaseCode", label:"Phase", sortable:true, resizeable:true},
         {key:"status", label:"Status", sortable:true, resizeable:true}
+*/
+        {key:"actions", label:"&nbsp;", sortable:true, resizeable:true, formatter:actionsFormatter},
     ];
 
     var myFields = [
@@ -145,33 +149,21 @@
         <tags:hasErrorsMessage hideErrorDetails="${hideErrorDetails}"/>
         <tags:jsErrorsMessage/>
 
+        <div class="errors" id="flashErrors" style="display: none;">
+            <span id="command_errors">Provide at least one character in the search field.</span>
+        </div>
+
         <p><tags:instructions code="instruction_subject_as2s.searchstudy"/></p>
-        <table border="0" cellspacing="0" cellpadding="0" class="search" width="100%">
-            <tr>
-                <td>
 
-                    <table border="0" cellspacing="0" cellpadding="0">
-                        <tr></tr>
-                        <tr>
-                            <td class="searchType">Search for a study&nbsp;&nbsp;</td>
-                            <td><form:select path="searchType"><form:options items="${searchType}" itemLabel="desc" itemValue="code"/></form:select></td>
-                            <td>
-                                <input type="text" size="25" onkeydown="onKey(event);" value="${command.searchText}" id="searchText_">
-                                <tags:button color="blue" type="button" value="Search" size="small" icon="search" onclick="sync(); buildTable('assembler', true);"/>
-                                <img src="<c:url value="/images/alphacube/progress.gif" />" style="display:none;" id="indicator"></td>
-                                <c:set var="targetPage" value="${assignType == 'study' ? '_target0' : '_target1'}"/>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="notation" colspan="2">
-                                <div id="error"></div>
-                            </td>
-
-                    </table>
-
-                </td>
-            </tr>
-        </table>
+        <div class="row">
+            <div class="label"></div>
+            <div class="value" style="margin-left: 100px;">
+                <input type="text" size="25" onkeydown="onKey(event);" value="${command.searchText}" id="searchText_">
+                <tags:button color="blue" type="button" value="Search" size="small" icon="search" onclick="sync(); buildTable('assembler', true);"/>
+                <img src="<c:url value="/images/alphacube/progress.gif" />" style="display:none;" id="indicator"></td>
+                <c:set var="targetPage" value="${assignType == 'study' ? '_target0' : '_target1'}"/>
+            </div>
+        </div>
 
     </form:form>
 </chrome:box>
@@ -209,7 +201,6 @@
     <tags:tabControls tab="${tab}" flow="${flow}"/>
 
     <form:hidden path="searchText"/>
-    <form:hidden path="searchType" id="_searchType"/>
     <div style="display:none;">
         <form:input path="study" cssClass="validate-NOTEMPTY" title="Study"/>
         <form:input path="assignment.studySubjectIdentifier" cssClass="validate-NOTEMPTY" title="Study Subject Identifier"/>

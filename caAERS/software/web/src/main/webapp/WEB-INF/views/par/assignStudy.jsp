@@ -56,7 +56,7 @@
 
             <table class="tablecontent">
                 <tr>
-                    <th scope="col">Study Short Title</th>
+                    <th scope="col">Study title</th>
                     <th scope="col">Site</th>
                 </tr>
                 <tr class="results">

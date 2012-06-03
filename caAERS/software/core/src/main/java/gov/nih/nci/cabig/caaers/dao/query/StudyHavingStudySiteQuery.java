@@ -34,18 +34,26 @@ public class StudyHavingStudySiteQuery extends AbstractQuery {
         andWhere("lower(ss.organization.name) LIKE :" + ORGANIZATION_NAME);
         setParameter(ORGANIZATION_NAME, searchString);
     }
+
     public void filterByStudySiteNciInstituteCode(final String nciInstituteCode) {
         String searchString = "%" + nciInstituteCode.toLowerCase() + "%";
         andWhere("lower(ss.organization.nciInstituteCode) LIKE :" + NCI_INSTITUTE_CODE);
         setParameter(NCI_INSTITUTE_CODE, searchString);
     }
+
     public void filterByStudyShortTile(final String shortTitle) {
         String searchString = "%" + shortTitle.toLowerCase() + "%";
         andWhere("lower(s.shortTitle) LIKE :" + STIUDY_SHORT_TITLE);
         setParameter(STIUDY_SHORT_TITLE, searchString);
     }
 
-    
+    public void filterByShortTitleOrIdentifiers(String text) {
+        leftOuterJoin(STUDY_ALIAS + ".identifiers as identifier");
+        andWhere("(lower(s.shortTitle) LIKE :TITLE or lower(identifier.value) LIKE :IDENTIFIER)");
+        setParameter("TITLE", "%" + text.toLowerCase() + "%");
+        setParameter("IDENTIFIER", "%" + text.toLowerCase() + "%");
+    }
+
 //  identifier
     public void filterByIdentifierValue(final String Identifiervalue) {
     	joinIdentifier();

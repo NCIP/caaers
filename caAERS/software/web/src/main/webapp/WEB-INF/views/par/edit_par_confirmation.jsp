@@ -109,10 +109,10 @@
         <chrome:division title="Study Subject Assignments">
             <table class="tablecontent" width="100%">
                 <tr>
-                    <th scope="col" width="150px">Study Primary ID</th>
-                    <th scope="col">Study Short Title</th>
+                    <th scope="col" width="150px">Study primary ID</th>
+                    <th scope="col">Study title</th>
                     <th scope="col">Site</th>
-                    <th scope="col" width="150px">Study Subject Identifier</th>
+                    <th scope="col" width="150px">Study subject identifier</th>
                 </tr>
                 <c:forEach items="${command.assignments}" var="assignment" varStatus="i">
                         <tr class="results">
