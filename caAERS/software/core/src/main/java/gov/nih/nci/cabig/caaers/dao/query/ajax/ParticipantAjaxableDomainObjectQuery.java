@@ -129,8 +129,8 @@ public class ParticipantAjaxableDomainObjectQuery extends AbstractAjaxableDomain
         text = "%" + text.toLowerCase() + "%";
         andWhere("(lower(identifier.value) LIKE :TEXT or " +
                 "lower(spa.studySubjectIdentifier) LIKE :TEXT or " +
-                "participant.firstName LIKE :TEXT or " +
-                "participant.lastName LIKE :TEXT)");
+                "lower(participant.firstName) LIKE :TEXT or " +
+                "lower(participant.lastName) LIKE :TEXT)");
         setParameter("TEXT", text);
     }
 
