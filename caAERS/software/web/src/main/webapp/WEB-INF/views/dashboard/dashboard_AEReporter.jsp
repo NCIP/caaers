@@ -226,6 +226,11 @@
 
     <c:set var="_DATE" value="" />
     <table border="0" cellpadding="0" cellspacing="0" class="dashboard_table" width="99%">
+        <tr>
+            <th>Report name
+            <th>Identifiers
+            <th>Status
+        </tr>
         <c:forEach items="${reportActivity}" var="rvDTO" varStatus="index">
             <c:set var="ALT" value="${index.count % 2 == 0 ? 'alt' : ''}"></c:set>
             <%--<c:if test="${index.first}"> first</c:if><c:if test="${index.last}"> last</c:if>--%>
