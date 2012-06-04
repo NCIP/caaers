@@ -134,6 +134,7 @@
             {key:'studyShortTitle', parser:"string"},
             {key:'status', parser:"string"},
             {key:'dataEntryStatus', parser:"string"},
+            {key:'fundingSponsorIdentifierValue', parser:"string"},
             {key:'studyPhase', parser:"string"},
             {key:'nciInstituteCode', parser:"string"},
             {key:'name', parser:"string"}

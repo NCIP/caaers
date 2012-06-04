@@ -34,6 +34,7 @@ public class StudySiteAjaxableDomainObject extends AbstractAjaxableDomainObject 
     private String studyPhase;
 
     private boolean dataEntryStatus;
+    private String fundingSponsorIdentifierValue;
 
 
     /**
@@ -223,5 +224,13 @@ public class StudySiteAjaxableDomainObject extends AbstractAjaxableDomainObject 
 
     public void setDataEntryStatus(boolean dataEntryStatus) {
         this.dataEntryStatus = dataEntryStatus;
+    }
+
+    public String getFundingSponsorIdentifierValue() {
+        return fundingSponsorIdentifierValue;
+    }
+
+    public void setFundingSponsorIdentifierValue(String fundingSponsorIdentifierValue) {
+        this.fundingSponsorIdentifierValue = fundingSponsorIdentifierValue;
     }
 }

@@ -175,6 +175,7 @@ public class SearchStudyAjaxFacade {
             query.filterByStudySiteNciInstituteCode(nciCode);
             query.filterByShortTitleOrIdentifiers(text);
             query.filterBySST();
+            query.orderBy("s.id DESC");
             studies = studyRepository.find(query);
 
             for (Study s : studies) {
@@ -186,6 +187,7 @@ public class SearchStudyAjaxFacade {
                 sado.setPrimaryIdentifierValue(s.getPrimaryIdentifierValue());
                 sado.setPhaseCode(s.getPhaseCode());
                 sado.setPrimarySponsorCode(s.getPrimarySponsorCode());
+                sado.setFundingSponsorIdentifierValue(s.getFundingSponsorIdentifierValue());
                 rs.add(sado);
             }
         }
@@ -215,6 +217,7 @@ public class SearchStudyAjaxFacade {
             ssado.setStudyPhase(ss.getStudy().getPhaseCode());
             ssado.setNciInstituteCode(ss.getStudy().getPrimaryFundingSponsor().getOrganization().getNciInstituteCode());
             ssado.setName(ss.getOrganization().getFullName());  //CAAERS-4565
+            ssado.setFundingSponsorIdentifierValue(ss.getStudy().getFundingSponsorIdentifierValue());
             rs.add(ssado);
         }
 
