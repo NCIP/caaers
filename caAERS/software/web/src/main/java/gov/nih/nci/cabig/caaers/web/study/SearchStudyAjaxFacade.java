@@ -182,6 +182,7 @@ public class SearchStudyAjaxFacade {
                 sado.setId(s.getId());
                 sado.setShortTitle(s.getShortTitle());
                 sado.setStatus(s.getStatus());
+                sado.setDataEntryStatus(s.getDataEntryStatus());
                 sado.setPrimaryIdentifierValue(s.getPrimaryIdentifierValue());
                 sado.setPhaseCode(s.getPhaseCode());
                 sado.setPrimarySponsorCode(s.getPrimarySponsorCode());
