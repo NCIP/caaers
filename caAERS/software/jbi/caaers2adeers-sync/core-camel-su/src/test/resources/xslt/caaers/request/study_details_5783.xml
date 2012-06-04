@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<payload>
+    <system>adeers</system>
+    <response>
+        <entity>study</entity>
+        <operation name="getStudyDetails">
+            <data>
+                <StudyDetails xmlns="">
+                    <ctcVersion>4.0</ctcVersion>
+                    <currentStatus>Administratively Complete</currentStatus>
+                    <currentStatusDate>2003-07-11</currentStatusDate>
+                    <localDocumentNumber>01-H-0162</localDocumentNumber>
+                    <monitoringMethod>CDUS - Abbreviated</monitoringMethod>
+                    <nciDocumentNum>5783</nciDocumentNum>
+                    <participationType>Clinical Center</participationType>
+                    <phase>I</phase>
+                    <primaryStudyType>Age Related</primaryStudyType>
+                    <sponsorOrganization>NHLBI</sponsorOrganization>
+                    <studyAgents>
+                        <studyAgent createdDate="10-22-2001 12:15:00" lead="Yes" updatedDate="02-11-2003 17:58:29">
+                            <agent>
+                                <nscNumber>603570</nscNumber>
+                                <agentName>MoAb 3A1</agentName>
+                                <agentStatus>Active</agentStatus>
+                                <inds/>
+                            </agent>
+                            <commercialInvestigational>Investigational</commercialInvestigational>
+                        </studyAgent>
+                        <studyAgent createdDate="10-22-2001 12:15:00" lead="No" updatedDate="02-11-2003 17:58:29">
+                            <agent>
+                                <nscNumber>603572</nscNumber>
+                                <agentName>MoAb 3-276 (Moab 95-6-22)</agentName>
+                                <agentStatus>Active</agentStatus>
+                                <inds/>
+                            </agent>
+                            <commercialInvestigational>Investigational</commercialInvestigational>
+                        </studyAgent>
+                        <studyAgent createdDate="10-22-2001 12:15:00" lead="No" updatedDate="02-11-2003 17:58:29">
+                            <agent>
+                                <nscNumber>603571</nscNumber>
+                                <agentName>MoAb 3-275 (Moab 95-5-49)</agentName>
+                                <agentStatus>Active</agentStatus>
+                                <inds/>
+                            </agent>
+                            <commercialInvestigational>Investigational</commercialInvestigational>
+                        </studyAgent>
+                    </studyAgents>
+                    <studyDevices/>
+                    <studyDiseases>
+                        <studyDisease createdDate="10-22-2001 12:20:41" lead="Yes" updatedDate="12-29-2004 17:36:23">
+                            <diseaseName>Hematopoietic malignancy, NOS</diseaseName>
+                            <reportingMedDRA>10018864</reportingMedDRA>
+                        </studyDisease>
+                    </studyDiseases>
+                    <studyOrganizations>
+                        <studyOrganization createdDate="10-22-2001 12:02:44" role="Document to Lead Organization"
+                                           updatedDate="04-06-2007 12:24:04">
+                            <localDocumentNumber>01-H-0162</localDocumentNumber>
+                            <organization>
+                                <ctepId>NHLBI</ctepId>
+                                <organizationName>National Heart Lung and Blood Institute</organizationName>
+                                <organizationType>CLC</organizationType>
+                            </organization>
+                            <status>Active</status>
+                            <principalInvestigator ctepInvestigatorId="27262">
+                                <firstname>Austin</firstname>
+                                <middlename>John</middlename>
+                                <lastname>Barrett</lastname>
+                                <email>barrettj@ctisinc1.gwagate.nhlbi.nih.gov</email>
+                                <principalInvestigatorStatus>Active</principalInvestigatorStatus>
+                            </principalInvestigator>
+                        </studyOrganization>
+                    </studyOrganizations>
+                    <studyTherapies/>
+                    <studyTreatmentAssignments/>
+                    <title>Ex vivo selective depletion of alloreactive donor T lymphocytes utilizing RFT5-SMPT-dgA, a
+                        specific anti-interleukin-2 receptor immunotoxin: reducing graft-versus-host disease risk
+                        associated with HLA-matched, nonmyeloablative, peripheral blood stem cell transplantation for
+                        hematologic malignancies in older adults
+                    </title>
+                </StudyDetails>
+            </data>
+        </operation>
+    </response>
+</payload>

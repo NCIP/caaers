@@ -129,20 +129,24 @@
     <xsl:template match="studyDiseases">
         <ctepStudyDiseases>
             <xsl:apply-templates select="studyDisease" />
-            <stud:ctepStudyDisease>
-                <stud:diseaseTerm>
-                    <term>Hematopoietic malignancy, NOS</term>
-                    <meddraCode>10018864</meddraCode>
-                </stud:diseaseTerm>
-                <leadDisease>false</leadDisease>
-            </stud:ctepStudyDisease>
-            <stud:ctepStudyDisease>
-                <stud:diseaseTerm>
-                    <term>Solid tumor, NOS</term>
-                    <meddraCode>10029000</meddraCode>
-                </stud:diseaseTerm>
-                <leadDisease>false</leadDisease>
-            </stud:ctepStudyDisease>
+            <xsl:if test="not(studyDisease/reportingMedDRA/text() = '10018864')">
+                <stud:ctepStudyDisease>
+                    <stud:diseaseTerm>
+                        <term>Hematopoietic malignancy, NOS</term>
+                        <meddraCode>10018864</meddraCode>
+                    </stud:diseaseTerm>
+                    <leadDisease>false</leadDisease>
+                </stud:ctepStudyDisease>
+            </xsl:if>
+            <xsl:if test="not(//studyDisease/reportingMedDRA/text() = '10029000')">
+                <stud:ctepStudyDisease>
+                    <stud:diseaseTerm>
+                        <term>Solid tumor, NOS</term>
+                        <meddraCode>10029000</meddraCode>
+                    </stud:diseaseTerm>
+                    <leadDisease>false</leadDisease>
+                </stud:ctepStudyDisease>
+            </xsl:if>
         </ctepStudyDiseases>
     </xsl:template>
     <xsl:template match="studyDisease">
