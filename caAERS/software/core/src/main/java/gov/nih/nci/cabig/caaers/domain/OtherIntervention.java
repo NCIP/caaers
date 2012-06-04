@@ -95,4 +95,10 @@ public class OtherIntervention extends StudyIntervention {
     public  String getInterventionName() {
     	return getName();
     }
+    
+    @Override
+    @Transient
+    public String getHashKey() {
+    	return super.getHashKey()+(StringUtils.isBlank(description)?"":description);
+    }
 }
