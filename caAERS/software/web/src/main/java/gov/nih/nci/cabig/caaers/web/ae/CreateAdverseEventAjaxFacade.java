@@ -1196,7 +1196,7 @@ public class CreateAdverseEventAjaxFacade {
         if(sd != null){
             StudyDevice d = new StudyDevice();
             d.setOtherBrandName(sd.getBrandName());
-            d.setOtherCommonName(sd.getOtherCommonName());
+            d.setOtherCommonName(sd.getCommonName());
             d.setOtherDeviceType(sd.getDeviceType());
             d.setCatalogNumber(sd.getCatalogNumber());
             d.setManufacturerCity(sd.getManufacturerCity());
