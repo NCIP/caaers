@@ -189,7 +189,7 @@
 	            YAHOO.util.DataSource(responseData); 
 	            myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 	            myDataSource.responseSchema = { 
-	                fields: ["steps", "loggedOn","service","overallStatus","notes","entity"] 
+	                fields: ["steps", "loggedOn","service","overallStatus","notes","entity","loggedOnDateStr"] 
 	            }; 
 	            
 	        var actionFormatter = function(elCell, oRecord, oColumn, oData) {
