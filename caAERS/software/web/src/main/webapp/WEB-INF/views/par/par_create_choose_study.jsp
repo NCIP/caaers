@@ -137,6 +137,26 @@
         {key:'primarySponsorCode', parser:"string"}
     ];
 
+    function doEdit(_id) {
+        window.location = "<c:url value="/pages/study/edit?studyId=" />" + _id;
+    }
+
+    function addStudySite(_id, _complete) {
+        window.location = "<c:url value="/pages/study/edit?tabName=SitesTab&studyId=" />" + _id;
+    }
+
+    function addStudyInvestigators(_id, _complete) {
+        window.location = "<c:url value="/pages/study/edit?tabName=InvestigatorsTab&studyId=" />" + _id;
+    }
+
+    function addStudyPersonnel(_id, _complete) {
+        window.location = "<c:url value="/pages/study/edit?tabName=PersonnelTab&studyId=" />" + _id;
+    }
+
+    function doRegisterSubject(_id) {
+        window.location = "<c:url value="/pages/participant/create?studyId=" />" + _id;
+    }
+
 </script>
 
 </head>
