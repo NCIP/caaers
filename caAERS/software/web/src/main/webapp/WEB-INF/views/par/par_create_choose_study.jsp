@@ -133,6 +133,7 @@
         {key:'shortTitle', parser:"string"},
         {key:'status', parser:"string"},
         {key:'phaseCode', parser:"string"},
+        {key:'dataEntryStatus', parser:"string"},
         {key:'primarySponsorCode', parser:"string"}
     ];
 
