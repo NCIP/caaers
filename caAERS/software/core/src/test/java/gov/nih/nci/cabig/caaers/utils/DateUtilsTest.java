@@ -210,4 +210,16 @@ public class DateUtilsTest extends TestCase {
     		fail("should not throw error");
     	}
     }
+    
+    public void testParsingDateWithHyphens(){
+    	try {
+    		SimpleDateFormat sf = new SimpleDateFormat(DateUtils.DATE_WITH_HYPHENS);
+    		String dateString = "05-31-2012";
+    		Date d = sf.parse(dateString);
+    		System.out.println(d);
+    	}catch (Exception e){
+    		e.printStackTrace();
+    		fail("should not throw error");
+    	}
+    }
 }

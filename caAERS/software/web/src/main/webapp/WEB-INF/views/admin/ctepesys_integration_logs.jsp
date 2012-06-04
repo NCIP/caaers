@@ -189,12 +189,12 @@
 	            YAHOO.util.DataSource(responseData); 
 	            myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 	            myDataSource.responseSchema = { 
-	                fields: ["steps", "loggedOn","service","overallStatus","notes"] 
+	                fields: ["steps", "loggedOn","service","overallStatus","notes","entity"] 
 	            }; 
 	            
 	        var actionFormatter = function(elCell, oRecord, oColumn, oData) {
 	        	var row_number = oRecord._nCount;
-	             elCell.innerHTML = '<A  HREF="javascript:showPopupMessage(' + row_number + ')";>View Details</A> || <a href="logdownload?cstr=' + correlationArray[row_number]+ '&dstr=05-31-2012">Messages</a>';
+	        	elCell.innerHTML = '<A  HREF="javascript:showPopupMessage(' + row_number + ')";>View Details</A> || <a href="logdownload?cstr=' + correlationArray[row_number]+ '&dstr=' + oRecord._oData.loggedOnDateStr + '&' + 'entity=' + oRecord._oData.entity + '">Messages</a>';
 	         }
 	            
 	        var myDataTable = new YAHOO.widget.RowExpansionDataTable( 

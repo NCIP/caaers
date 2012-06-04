@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.zip.ZipEntry;
@@ -34,12 +35,13 @@ public class CTEPDataIntegrationLogDownloadController extends AbstractController
             return null;
         }
 
-        if (!baseFolder.endsWith(File.pathSeparator)) {
-            baseFolder = baseFolder + File.pathSeparator;
+        if (!baseFolder.endsWith(File.separator)) {
+            baseFolder = baseFolder + File.separator;
         }
 
         String dateStr = request.getParameter("dstr");
         String correlationId = request.getParameter("cstr");
+        String entity = request.getParameter("entity");
 
         if (StringUtils.isEmpty(dateStr)) {
             log.warn("dstr in request is empty");
@@ -49,9 +51,14 @@ public class CTEPDataIntegrationLogDownloadController extends AbstractController
             log.warn("cstr in request is empty");
             return null;
         }
+        
+        if (StringUtils.isEmpty(entity)) {
+            log.warn("entity in request is empty");
+            return null;
+        }
 
         
-        File tempFile = createZipFile(baseFolder, dateStr, correlationId);
+        File tempFile = createZipFile(baseFolder, entity, dateStr, correlationId);
         if(tempFile != null){
 
 
@@ -83,10 +90,11 @@ public class CTEPDataIntegrationLogDownloadController extends AbstractController
         return null;
     }
 
-    private File createZipFile(String baseFolder, String dateStr, String correlationId){
+    private File createZipFile(String baseFolder, String entity, String dateStr, String correlationId){
         Date d = null;
         try{
-            d =  DateUtils.parseDate(dateStr, "MM-dd-yyyy");
+        	SimpleDateFormat sf = new SimpleDateFormat(DateUtils.DATE_WITH_HYPHENS);
+        	d = sf.parse(dateStr);
         }catch (ParseException pe){
             log.error("Unable to parse dstr request parameter", pe);
             return null;
@@ -116,7 +124,7 @@ public class CTEPDataIntegrationLogDownloadController extends AbstractController
             fos = new FileOutputStream(tempFile);
             zos = new ZipOutputStream(fos);
 
-            String strFolderToZip = baseFolder + subFolder + File.pathSeparator + correlationId;
+            String strFolderToZip = baseFolder + subFolder + File.separator + entity + File.separator + correlationId;
             File zipFolder = new File(strFolderToZip);
 
             int len = zipFolder.getAbsolutePath().lastIndexOf(File.separator);

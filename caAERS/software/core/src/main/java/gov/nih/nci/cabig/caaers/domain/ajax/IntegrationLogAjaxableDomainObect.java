@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain.ajax;
 
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
+
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -24,7 +26,18 @@ public class IntegrationLogAjaxableDomainObect {
 	private String service;
 	private String overallStatus;
 	private Map<String,String> steps = new LinkedHashMap<String,String>();
+	private String loggedOnDateStr = null;
 	
+	public String getLoggedOnDateStr() {
+		if(getLoggedOn() == null){
+			return null;
+		}
+		
+		return DateUtils.formatDate(getLoggedOn(), DateUtils.DATE_WITH_HYPHENS);
+	}
+	public void setLoggedOnDateStr(String loggedOnDateStr) {
+		this.loggedOnDateStr = loggedOnDateStr;
+	}
 	public Date getLoggedOn() {
 		return loggedOn;
 	}
