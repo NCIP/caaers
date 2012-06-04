@@ -74,32 +74,25 @@ function ajaxCallBack(jsonResult) {
         elCell.innerHTML = "<img src='<c:url value="/images/orange-actions.gif" />' border='0' onmouseover=\"showDashboardStudiesMenuOptions(this, '" + _ssi + "', " + _id + ", '" + _active + "')\" style=\"cursor: pointer; margin-right: 15px;\">";
     };
 
-    function showDashboardStudiesMenuOptions(_element, _ssi, _id, _complete) {
-        var html = "<div><ul style='font-family:tahoma;'>" +
-                "<li><a class='submitter-blue' href='#' onclick='openUrl(\"<c:url value="/pages/study/edit?studyId=" />" + _id + "\")'>Edit study details</a></li>" +
-                "<li><a class='submitter-blue' href='#' onclick='openUrl(\"<c:url value="/pages/study/edit?tabName=SitesTab&studyId=" />" + _id + "\")'>Add Study Site</a></li>" +
-                "<li><a class='submitter-blue' href='#' onclick='openUrl(\"<c:url value="/pages/study/edit?tabName=InvestigatorsTab&studyId=" />" + _id + "\")'>Manage Investigators</a></li>" +
-                "<li><a class='submitter-blue' href='#' onclick='openUrl(\"<c:url value="/pages/study/edit?tabName=PersonnelTab&studyId=" />" + _id + "\")'>Manage Personnel</a></li>" +
-                "<li><a class='submitter-blue' href='#' onclick='openUrl(\"<c:url value="/pages/participant/create?studyId=" />" + _id + "\")'>Register Subject</a></li>" +
-                "<li><a class='submitter-blue' href='#' onclick='doUpdate(\"" + _ssi + "\", \"" + _id + "\")'>Synchronize with CTEP</a></li>" +
-                "</ul></div>";
-        jQuery(_element).menu({
-                content: html,
-                maxHeight: 180,
-                width: 180,
-                positionOpts: {
-                    directionV: 'down',
-                    posX: 'left',
-                    posY: 'bottom',
-                    offsetX: 0,
-                    offsetY: 0
-                },
-                showSpeed: 300
-            });
-    }
 
     function doEdit(_id) {
         window.location = "<c:url value="/pages/study/edit?studyId=" />" + _id;
+    }
+
+    function addStudySite(_id, _complete) {
+        window.location = "<c:url value="/pages/study/edit?tabName=SitesTab&studyId=" />" + _id;
+    }
+
+    function addStudyInvestigators(_id, _complete) {
+        window.location = "<c:url value="/pages/study/edit?tabName=InvestigatorsTab&studyId=" />" + _id;
+    }
+
+    function addStudyPersonnel(_id, _complete) {
+        window.location = "<c:url value="/pages/study/edit?tabName=PersonnelTab&studyId=" />" + _id;
+    }
+
+    function doRegisterSubject(_id) {
+        window.location = "<c:url value="/pages/participant/create?studyId=" />" + _id;
     }
 
     var myColumnDefs = [
