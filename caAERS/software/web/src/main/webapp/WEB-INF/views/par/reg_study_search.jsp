@@ -124,8 +124,8 @@
         var myColumnDefs = [
             {key:"primaryId", label:"Study ID", sortable:true, resizeable:true},
             {key:"studyShortTitle", label:"Title", sortable:true, resizeable:true},
-            {key:"name", label:"Study site", sortable:true, resizeable:true, formatter: radioFormatter},
-            {key:"actions", label:"&nbsp;", sortable:true, resizeable:true, formatter: actionsFormatter}
+            {key:"name", label:"Study site", sortable:true, resizeable:true, formatter: radioFormatter}
+            // {key:"actions", label:"&nbsp;", sortable:true, resizeable:true, formatter: actionsFormatter}
         ];
 
         var myFields = [
