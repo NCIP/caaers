@@ -77,7 +77,10 @@
         };
 
         var actionsFormatter = function(elCell, oRecord, oColumn, oData) {
-            elCell.innerHTML = "<img src='<c:url value="/images/orange-actions.gif" />'>";
+            var _id = oRecord.getData("id");
+            var _assId = oRecord.getData("assignmentId");
+            var _stId = oRecord.getData("studyId");
+            elCell.innerHTML = "<img src='<c:url value="/images/orange-actions.gif" />' border='0' onmouseover='showDashboardSubjectsAssignmentsMenuOptions(this, " + _id + ", " + _stId + ", " + _assId + ")' style='cursor: pointer; margin-right: 15px;'>";
         };
 
         var myColumnDefs = [
@@ -96,8 +99,26 @@
             {key:'studySubjectIdentifiersCSV', parser:"string"},
             {key:'gender', parser:"string"},
             {key:'race', parser:"string"},
-            {key:'ethnicity', parser:"string"}
+            {key:'ethnicity', parser:"string"},
+            {key:'assignmentId', parser:"string"},
+            {key:'studyId', parser:"string"}
         ];
+
+        function enterAdverseEvents(_studyId, _subjectId) {
+            document.location = "<c:url value="/pages/ae/captureRoutine?" />" + "studyId=" + _studyId + "&subjectId=" + _subjectId;
+        }
+
+        function editMedicalHistory(_studyId, _subjectId, _assignmentId) {
+            document.location = "<c:url value="/pages/participant/edit?" />" + "participantId=" + _subjectId + "&assignmentId=" + _assignmentId + "&tabName=EditSubjectMedHistoryTab";
+        }
+
+        function editSubjectDetails(_studyId, _subjectId) {
+            document.location = "<c:url value="/pages/participant/edit?" />" + "participantId=" + _subjectId;
+        }
+
+        function assignToStudy(_studyId, _subjectId) {
+            document.location = "<c:url value="/pages/participant/assignParticipant?" />" + "participantId=" + _subjectId;
+        }
 
     </script>
 
@@ -118,7 +139,7 @@
 
       <div class="row">
           <div class="label"></div>
-          <div class="value">
+          <div class="value" style="margin-left: 100px;">
               <form:input path="searchText" id="searchText" size="30" onkeydown="onKey(event);"/>&nbsp;
               <tags:button color="blue" type="button" value="Search" size="small" icon="search" onclick="buildTable('assembler', true);"/>
               <img src="<c:url value="/images/alphacube/progress.gif" />" style="display:none;" id="indicator">
