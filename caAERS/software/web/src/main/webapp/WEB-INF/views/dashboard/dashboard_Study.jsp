@@ -23,7 +23,7 @@
                                 <td align="RIGHT">
                                     <img src="<c:url value="/images/orange-actions.gif" />"
                                          border="0"
-                                         onmouseover='showDashboardStudiesMenuOptions(this, "${study.fundingSponsorIdentifierValue}", "${study.id}", ${not empty study.dataEntryStatus ? study.dataEntryStatus : false})'
+                                         onmouseover='showDashboardStudiesMenuOptions(this, roles_map, "${study.fundingSponsorIdentifierValue}", "${study.id}", ${not empty study.dataEntryStatus ? study.dataEntryStatus : false})'
                                          id='_d_study_${study.primaryIdentifier}'
                                          style="cursor: pointer;
                                          margin-right: 15px;"></td>

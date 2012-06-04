@@ -72,4 +72,11 @@ try { document.execCommand('BackgroundImageCache', false, true); } catch(e) {}
 </script>  
 <![endif]-->
 
+<script>
+    var roles_map = new Array();
+    <c:forEach items="${roles}" var="r">
+    roles_map.push("${r.key}");
+    </c:forEach>
+</script>
+
 <!-- END tags\standard\head.tag -->

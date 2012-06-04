@@ -27,7 +27,7 @@
                                         <td align="RIGHT">
                                             <img src="<c:url value="/images/orange-actions.gif" />"
                                                  border="0"
-                                                 onmouseover='showDashboardSubjectsAssignmentsMenuOptions(this, ${subject.id}, ${assignment.studySite.study.id}, ${assignment.id})'
+                                                 onmouseover='showDashboardSubjectsAssignmentsMenuOptions(this, roles_map, ${subject.id}, ${assignment.studySite.study.id}, ${assignment.id})'
                                                  id='_d_assignment_${assignment.id}'
                                                  style="cursor: pointer;
                                                  margin-right: 15px;">

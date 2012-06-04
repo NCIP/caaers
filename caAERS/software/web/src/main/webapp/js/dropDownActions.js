@@ -1,7 +1,7 @@
 
 // STUDY ACTIONS
 
-function showDashboardStudiesMenuOptions(_element, _ssi, _id, _complete) {
+function showDashboardStudiesMenuOptions(_element, _roles, _ssi, _id, _complete) {
     var html = "<div><ul style='font-family:tahoma;'>" +
             "<li><a class='submitter-blue' href='#' onclick='doEdit(\"" + _id + "\")'>Edit study details</a></li>" +
             "<li><a class='submitter-blue' href='#' onclick='addStudySite(\"" + _id + "\", " + _complete + ")'>Add Study Site</a></li>" +
@@ -39,7 +39,7 @@ function openUrl(_url) {
     window.location = _url;
 }
 
-function showDashboardSubjectsAssignmentsMenuOptions(_element, _subjectId, _studyId, _assignmentId) {
+function showDashboardSubjectsAssignmentsMenuOptions(_element, _roles, _subjectId, _studyId, _assignmentId) {
     var _el = jQuery(_element);
     var html = "<div><ul style='font-family:tahoma;'>" +
             "<li><a class='submitter-blue' href='#' onclick='editSubjectDetails(" +_studyId + ", " + _subjectId + ")'>Edit Subject Details</a></li>" +
