@@ -69,14 +69,23 @@ AE.WEBSSO_AUTHENTICATION_MODE = ${configuration.authenticationModeWebSSO};
 <!--[if lte IE 6]>
 <script type="text/javascript">  
 try { document.execCommand('BackgroundImageCache', false, true); } catch(e) {}  
-</script>  
-<![endif]-->
+</script>
 
+<![endif]-->
+<!--
+<c:forEach items="${roles}" var="r">
+    <c:out value="${r.key}" />
+</c:forEach>
+-->
 <script>
     var roles_map = new Array();
     <c:forEach items="${roles}" var="r">
     roles_map.push("${r.key}");
     </c:forEach>
+
+    function hasRole(_roleName) {
+        return (jQuery.inArray(_roleName, roles_map) >=0);
+    }
 </script>
 
 <!-- END tags\standard\head.tag -->
