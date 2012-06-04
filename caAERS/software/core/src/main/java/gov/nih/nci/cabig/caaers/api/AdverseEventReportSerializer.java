@@ -870,6 +870,7 @@ public class AdverseEventReportSerializer {
 	    }
     
         private Agent getAgent(Agent agent){
+            if(agent == null) return  null;
             Agent a = new Agent();
             a.setName(agent.getName());
             a.setNscNumber(agent.getNscNumber());
