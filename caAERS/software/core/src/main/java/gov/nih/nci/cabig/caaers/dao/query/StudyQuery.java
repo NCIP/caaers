@@ -5,7 +5,6 @@ import gov.nih.nci.cabig.caaers.domain.*;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 public class StudyQuery extends AbstractQuery {
 	
@@ -267,13 +266,16 @@ public class StudyQuery extends AbstractQuery {
     	if(identifier instanceof OrganizationAssignedIdentifier){
     		//organization
             Organization org =  ((OrganizationAssignedIdentifier) identifier).getOrganization();
-            if(org.getNciInstituteCode() != null){
-                andWhere("identifier.organization.nciInstituteCode = :orgNCICode" );
-                setParameter("orgNCICode", org.getNciInstituteCode());
-            }else{
-                andWhere("identifier.organization.id = :" + STUDY_IDENTIFIER_ORGANIZATION );
-                setParameter(STUDY_IDENTIFIER_ORGANIZATION, org.getId());
-            }
+            if (org != null) {
+				if (org.getNciInstituteCode() != null) {
+					andWhere("identifier.organization.nciInstituteCode = :orgNCICode");
+					setParameter("orgNCICode", org.getNciInstituteCode());
+				} else {
+					andWhere("identifier.organization.id = :"
+							+ STUDY_IDENTIFIER_ORGANIZATION);
+					setParameter(STUDY_IDENTIFIER_ORGANIZATION, org.getId());
+				}
+			}
 
     	}else {
     		//system
