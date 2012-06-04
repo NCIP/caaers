@@ -649,7 +649,7 @@ public class StudyRepository {
 
     public List<Study> getAllStudies(int firstrow, int maxrows) {
         StudyQuery q = new StudyQuery();
-        q.orderBy("s.id DESC");
+        q.orderBy("id DESC");
         return this.find(q, firstrow, maxrows);
     }
 

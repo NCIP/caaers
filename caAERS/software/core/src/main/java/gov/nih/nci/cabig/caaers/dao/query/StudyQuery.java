@@ -392,5 +392,9 @@ public class StudyQuery extends AbstractQuery {
             setParameter("OrganizationCodes", Arrays.asList(organizationCodes));
         }
     }
-    
+
+    public void orderBy(String orderField){
+        super.orderBy(STUDY_ALIAS + "." + orderField);
+    }
+
 }
