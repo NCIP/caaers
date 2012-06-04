@@ -115,7 +115,10 @@
         };
 
         var actionsFormatter = function(elCell, oRecord, oColumn, oData) {
-            elCell.innerHTML = "<img src='<c:url value="/images/orange-actions.gif" />'>";
+            var _id = oRecord.getData("id");
+            var _ssi = oRecord.getData("fundingSponsorIdentifierValue");
+            var _active = oRecord.getData("dataEntryStatus");
+            elCell.innerHTML = "<img src='<c:url value="/images/orange-actions.gif" />' border='0' onmouseover=\"showDashboardStudiesMenuOptions(this, '" + _ssi + "', " + _id + ", '" + _active + "')\" style=\"cursor: pointer; margin-right: 15px;\">";
         };
 
         var myColumnDefs = [
@@ -130,11 +133,32 @@
             {key:'primaryId', parser:"string"},
             {key:'studyShortTitle', parser:"string"},
             {key:'status', parser:"string"},
+            {key:'dataEntryStatus', parser:"string"},
             {key:'studyPhase', parser:"string"},
             {key:'nciInstituteCode', parser:"string"},
             {key:'name', parser:"string"}
         ];
-        
+
+        function doEdit(_id) {
+            window.location = "<c:url value="/pages/study/edit?studyId=" />" + _id;
+        }
+
+        function addStudySite(_id, _complete) {
+            window.location = "<c:url value="/pages/study/edit?tabName=SitesTab&studyId=" />" + _id;
+        }
+
+        function addStudyInvestigators(_id, _complete) {
+            window.location = "<c:url value="/pages/study/edit?tabName=InvestigatorsTab&studyId=" />" + _id;
+        }
+
+        function addStudyPersonnel(_id, _complete) {
+            window.location = "<c:url value="/pages/study/edit?tabName=PersonnelTab&studyId=" />" + _id;
+        }
+
+        function doRegisterSubject(_id) {
+            window.location = "<c:url value="/pages/participant/create?studyId=" />" + _id;
+        }
+
     </script>
 </head>
 <body>
@@ -227,6 +251,13 @@
         </c:if>
     })
 </script>
+
+<div id="please_wait" style="display: none;" class="flash-message info" >
+    <h3><img src= "<chrome:imageUrl name="../check.png"/>" />&nbsp;<caaers:message code="LBL_please.wait" /></h3>
+    <br><br>
+    <div><caaers:message code="LBL_study.in.process" /></div>
+</div>
+<div id="error_page" style="display: none;" class="flash-message error" ><div><caaers:message code="LBL_study.process.error" /></div><br><span id="_errorMessage">.</span></div>
 
 </body>
 </html>

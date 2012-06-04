@@ -33,6 +33,8 @@ public class StudySiteAjaxableDomainObject extends AbstractAjaxableDomainObject 
     /** The study phase. */
     private String studyPhase;
 
+    private boolean dataEntryStatus;
+
 
     /**
      * Gets the type.
@@ -213,5 +215,13 @@ public class StudySiteAjaxableDomainObject extends AbstractAjaxableDomainObject 
      */
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public boolean isDataEntryStatus() {
+        return dataEntryStatus;
+    }
+
+    public void setDataEntryStatus(boolean dataEntryStatus) {
+        this.dataEntryStatus = dataEntryStatus;
     }
 }

@@ -211,6 +211,7 @@ public class SearchStudyAjaxFacade {
             ssado.setPrimaryId(ss.getStudy().getPrimaryIdentifierValue());
             ssado.setStudyShortTitle(ss.getStudy().getShortTitle());
             ssado.setStatus(ss.getStudy().getStatus());
+            ssado.setDataEntryStatus(ss.getStudy().getDataEntryStatus());
             ssado.setStudyPhase(ss.getStudy().getPhaseCode());
             ssado.setNciInstituteCode(ss.getStudy().getPrimaryFundingSponsor().getOrganization().getNciInstituteCode());
             ssado.setName(ss.getOrganization().getFullName());  //CAAERS-4565
