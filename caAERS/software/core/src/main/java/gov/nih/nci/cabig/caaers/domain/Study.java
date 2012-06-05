@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -216,6 +217,10 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     protected Boolean aeTermUnique;
     
     protected Date lastSynchedDate;
+    
+    // set of NCI ORG codes
+    
+    private static final Set<String> NCI_ORG_CODES= new HashSet<String>(Arrays.asList(new String[]{"CTEP","DCP","CIP"}));
 
     /**
      * Instantiates a new study.
@@ -2460,7 +2465,44 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     public void setStudyPurpose(String studyPurpose) {
         this.studyPurpose = studyPurpose;
     }
-
+    
+    @Transient
+    public boolean isNCIIND(){
+    	for(StudyAgent sa : getStudyAgents()){
+    		for(StudyAgentINDAssociation saia : sa.getStudyAgentINDAssociations()){
+    			if(saia.getInvestigationalNewDrug() != null && saia.getInvestigationalNewDrug().getINDHolder() != null && 
+    					saia.getInvestigationalNewDrug().getINDHolder() instanceof OrganizationHeldIND){
+    				Organization org = ((OrganizationHeldIND)saia.getInvestigationalNewDrug().getINDHolder()).getOrganization();
+    				if(org.getNciInstituteCode() != null && NCI_ORG_CODES.contains(org.getNciInstituteCode())){
+    					return true;
+    				}
+    			}
+    		}
+    	}
+    	
+    	return false;
+    }
+    
+    
+    @Transient
+    public boolean isNCIIDE(){
+    	for(StudyDevice sd : getStudyDevices()){
+    		for(StudyDeviceINDAssociation sdia : sd.getStudyDeviceINDAssociations()){
+    			if(sdia.getInvestigationalNewDrug() != null && sdia.getInvestigationalNewDrug().getINDHolder() != null && 
+    					sdia.getInvestigationalNewDrug().getINDHolder() instanceof OrganizationHeldIND){
+    				Organization org = ((OrganizationHeldIND)sdia.getInvestigationalNewDrug().getINDHolder()).getOrganization();
+    				if(org.getNciInstituteCode() != null && NCI_ORG_CODES.contains(org.getNciInstituteCode())){
+    					return true;
+    				}
+    			}
+    		}
+    	}
+    	
+    	return false;
+    }
+    
+    
+    
 
     /**
      * Will initialize the Epochs.
