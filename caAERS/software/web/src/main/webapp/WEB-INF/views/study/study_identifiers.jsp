@@ -91,7 +91,7 @@
         	
       		<c:forEach varStatus="status" items="${command.study.identifiersLazy}" var="si">
         		<c:if test="${(si.class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
-					new jsIdentifier(${status.index}, '${si.organization.fullName}');
+					new jsIdentifier(${status.index}, "${si.organization.fullName}");
 				</c:if>
 				<c:if test="${(si.class.name =='gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
 					new jsIdentifier(${status.index});
