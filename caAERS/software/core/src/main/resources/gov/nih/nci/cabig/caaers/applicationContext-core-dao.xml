@@ -661,5 +661,18 @@ This applicationContext contains the definition of the DAOs
 	
 
     <!-- Factory beans end here-->
+    
+    <!-- Overwrite the default Spring Event multicaster -->
+  <bean id="applicationEventMulticaster" class="gov.nih.nci.cabig.caaers.tools.spring.EventMulticasterFactoryBean" depends-on="configuration">
+    <property name="simpleApplicationEventMulticaster">
+    	<bean class="org.springframework.context.event.SimpleApplicationEventMulticaster" />
+    </property>
+    <property name="taskExecutor">
+       <bean class="org.springframework.core.task.SimpleAsyncTaskExecutor">
+           <property name="threadNamePrefix" value="caaers-async" />
+           <property name="daemon" value="true" />
+       </bean>
+    </property>
+  </bean>
 
 </beans>
