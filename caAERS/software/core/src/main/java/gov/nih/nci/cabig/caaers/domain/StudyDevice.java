@@ -432,4 +432,14 @@ public class StudyDevice extends StudyIntervention {
     public  String getInterventionName() {
     	return getDisplayName();
     }
+    
+    /**
+     * Gets the investigational new drug indicator.
+     *
+     * @return the investigational new drug indicator
+     */
+    @Transient
+    public boolean getInvestigationalNewDrugIndicator() {
+        return getStudyDeviceINDAssociations() != null && getStudyDeviceINDAssociations().size() > 0;
+    }
 }

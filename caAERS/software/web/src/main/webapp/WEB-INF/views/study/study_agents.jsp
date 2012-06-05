@@ -47,6 +47,18 @@ function fireAction(action, index) {
         case "addStudyAgent":
             ajaxCRUD._addItem('StudyAgent', null, null, '_SA', null, ${tab.number}, 'Top');
             break;
+        case "addDeviceIND":
+            var containerID = '_Device-IND-' + index;
+            var opts = new Hash();
+            opts.set("index", index);
+            ajaxCRUD._addItem('StudyDeviceIND', null, null, containerID, opts, ${tab.number}, 'Bottom');
+            break; 
+        case "removeDeviceIND":
+            var children = $('_Device-IND-' + index).childElements();
+            $A(children).each(function(el) {
+                el.remove();
+            });
+            break;    
         case "addIND":
             var containerID = '_SA-IND-' + index;
             var opts = new Hash();

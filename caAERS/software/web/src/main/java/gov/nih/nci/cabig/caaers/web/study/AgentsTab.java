@@ -1,9 +1,15 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
-import gov.nih.nci.cabig.caaers.domain.*;
-import gov.nih.nci.cabig.caaers.integration.schema.common.TherapyType;
+import gov.nih.nci.cabig.caaers.domain.AbstractStudyInterventionExpectedAE;
+import gov.nih.nci.cabig.caaers.domain.AgentSpecificTerm;
+import gov.nih.nci.cabig.caaers.domain.INDType;
+import gov.nih.nci.cabig.caaers.domain.OtherIntervention;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyAgent;
+import gov.nih.nci.cabig.caaers.domain.StudyDevice;
+import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
+import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.service.AgentSpecificAdverseEventListService;
-import gov.nih.nci.cabig.caaers.web.ae.ExpeditedAdverseEventInputCommand;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
@@ -11,12 +17,16 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
+import gov.nih.nci.cabig.ctms.domain.EnumHelper;
 
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 
-import gov.nih.nci.cabig.ctms.domain.EnumHelper;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
@@ -170,6 +180,19 @@ public class AgentsTab extends StudyTab {
          return indFieldGroup;
     }
     
+    /**
+     * Creates the IND lookup field.
+     * */
+    private InputFieldGroup createStudyDeviceINDFieldGroup(StudyCommand command, int studyDeviceIndex){
+    	//based on the fact that UI only supports one IND field for a device, by default one field will be created.
+    	 InputFieldGroup indFieldGroup = new DefaultInputFieldGroup("ind" + studyDeviceIndex);
+    	 InputField indField = InputFieldFactory.createAutocompleterField("study.studyDevices[" + studyDeviceIndex + "].studyDeviceINDAssociations[" + 0 + "].investigationalNewDrug", "IND #", false);
+         indField.getAttributes().put(InputField.ENABLE_CLEAR, true);
+         InputFieldAttributes.setSize(indField, 41);
+         indFieldGroup.getFields().add(indField);
+         return indFieldGroup;
+    }
+    
     @Override
     public String getMethodName(HttpServletRequest request) {
     	String currentItem = request.getParameter("currentItem");
@@ -269,6 +292,25 @@ public class AgentsTab extends StudyTab {
         ModelAndView modelAndView = new ModelAndView("study/ajax/studyAgentINDSection");
         modelAndView.getModel().put("indfields", createINDFieldGroup(command, studyAgentIndex));
         modelAndView.getModel().put("index", studyAgentIndex);
+
+        return modelAndView;
+    }
+    
+    
+    /**
+     * This method will add IND to the study device.
+     * @param request
+     * @param object
+     * @param errors
+     * @return
+     */
+    public ModelAndView addStudyDeviceIND(HttpServletRequest request, Object object, Errors errors) {
+        StudyCommand command = (StudyCommand)object;
+        Integer studyDeviceIndex = WebUtils.getIntParameter(request, "index");
+        InputFieldGroupMap map = new InputFieldGroupMap();
+        ModelAndView modelAndView = new ModelAndView("study/ajax/studyAgentINDSection");
+        modelAndView.getModel().put("indfields", createStudyDeviceINDFieldGroup(command, studyDeviceIndex));
+        modelAndView.getModel().put("index", studyDeviceIndex);
 
         return modelAndView;
     }
