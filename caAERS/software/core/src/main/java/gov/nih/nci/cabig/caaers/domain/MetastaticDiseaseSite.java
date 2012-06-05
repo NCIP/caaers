@@ -2,10 +2,7 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
@@ -144,5 +141,16 @@ public class MetastaticDiseaseSite extends AbstractMutableDomainObject {
      */
     public MetastaticDiseaseSite copy() {
         return copyBasicProperties(this);
+    }
+
+
+    /**
+     * Gets the name.
+     *
+     * @return the name
+     */
+    @Transient
+    public String getName(){
+        return (codedSite != null) ? ((otherSite != null) ? codedSite.getName() + " - " + otherSite : codedSite.getName() ): null;
     }
 }

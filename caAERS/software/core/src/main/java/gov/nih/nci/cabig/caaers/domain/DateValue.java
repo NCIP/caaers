@@ -312,12 +312,9 @@ public class DateValue implements Comparable<DateValue> {
         return 0;
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
+    @Override
     public String toString() {
-        return String.format(format, month == null ? 0 : month, day == null ? 0 : day,
-                year == null ? 0 : year);
+        return "DateValue{" + "day=" + String.valueOf(day) +  ", month=" + String.valueOf(month) +  ", year=" + String.valueOf(year) +  '}';
     }
 
     /**
@@ -363,4 +360,6 @@ public class DateValue implements Comparable<DateValue> {
     public boolean isEmpty() {
         return (this.getMonth() == 0 && this.getDay() == 0 && this.getDay() == 0);
     }
+    
+    
 }

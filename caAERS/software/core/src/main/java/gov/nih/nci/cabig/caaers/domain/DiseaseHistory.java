@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.persistence.AttributeOverride;
@@ -18,6 +19,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.*;
 import org.springframework.beans.BeanUtils;
 
@@ -303,10 +305,12 @@ public class DiseaseHistory extends AbstractExpeditedReportSingleChild {
     public static DiseaseHistory createDiseaseHistory(StudyParticipantDiseaseHistory studyParticipantDiseaseHistory) {
         if (studyParticipantDiseaseHistory != null) {
             DiseaseHistory saeReportDiseaseHistory = copyBasicProperties(studyParticipantDiseaseHistory);
-
+            HashSet<String> set = new HashSet<String>();
             for (StudyParticipantMetastaticDiseaseSite metastaticDiseaseSite : studyParticipantDiseaseHistory.getMetastaticDiseaseSites()) {
-                saeReportDiseaseHistory.addMetastaticDiseaseSite(MetastaticDiseaseSite.
-                        createReportMetastaticDiseaseSite(metastaticDiseaseSite));
+                if(StringUtils.isEmpty(metastaticDiseaseSite.getName())) continue;
+                if(set.add(metastaticDiseaseSite.getName())){
+                    saeReportDiseaseHistory.addMetastaticDiseaseSite(MetastaticDiseaseSite.createReportMetastaticDiseaseSite(metastaticDiseaseSite));
+                }
             }
 
             return saeReportDiseaseHistory;

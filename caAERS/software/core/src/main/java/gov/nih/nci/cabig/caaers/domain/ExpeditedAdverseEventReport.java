@@ -10,11 +10,7 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -1331,14 +1327,16 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
      * synchronize prior therapies from assignment to report.
      */
     private void syncrhonizePriorTherapies() {
-
+        HashSet<String> set = new HashSet<String>();
         if (getSaeReportPriorTherapies().isEmpty()) {
             //copy only once
             for (StudyParticipantPriorTherapy studyParticipantPriorTherapy : getAssignment().getPriorTherapies()) {
                 if(studyParticipantPriorTherapy.getPriorTherapy() == null) continue;
                 if(studyParticipantPriorTherapy.getPriorTherapy().isRetired()) continue;
-                SAEReportPriorTherapy priorTherapy = SAEReportPriorTherapy.createSAEReportPriorTherapy(studyParticipantPriorTherapy);
-                addSaeReportPriorTherapies(priorTherapy);
+                if(set.add(studyParticipantPriorTherapy.getDisplayName())){
+                    SAEReportPriorTherapy priorTherapy = SAEReportPriorTherapy.createSAEReportPriorTherapy(studyParticipantPriorTherapy);
+                    addSaeReportPriorTherapies(priorTherapy);
+                }
             }
         }
     }
@@ -1348,13 +1346,17 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
      * Syncrhonize pre existing conditions.
      */
     private void syncrhonizePreExistingConditions() {
-
+        HashSet<String> set = new HashSet<String>();
         if (getSaeReportPreExistingConditions().isEmpty()) {
             //copy only once
             for (StudyParticipantPreExistingCondition studyParticipantPreExistingCondition : getAssignment().getPreExistingConditions()) {
+                if(studyParticipantPreExistingCondition.getPreExistingCondition() == null) continue;
                 if(studyParticipantPreExistingCondition.getPreExistingCondition().isRetired()) continue;
-                SAEReportPreExistingCondition saeReportPreExistingCondition = SAEReportPreExistingCondition.createSAEReportPreExistingCondition(studyParticipantPreExistingCondition);
-                addSaeReportPreExistingCondition(saeReportPreExistingCondition);
+                if(set.add(studyParticipantPreExistingCondition.getName()))  {
+                    SAEReportPreExistingCondition saeReportPreExistingCondition = SAEReportPreExistingCondition.createSAEReportPreExistingCondition(studyParticipantPreExistingCondition);
+                    addSaeReportPreExistingCondition(saeReportPreExistingCondition);
+                }
+
             }
         }
 
@@ -1365,12 +1367,15 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
      * Syncrhonize concomitant medications.
      */
     private void syncrhonizeConcomitantMedications() {
-
+        HashSet<String> set = new HashSet<String>();
         if (getConcomitantMedications().isEmpty()) {
             //copy only once
             for (StudyParticipantConcomitantMedication studyParticipantConcomitantMedication : getAssignment().getConcomitantMedications()) {
-                ConcomitantMedication saeReportConcomitantMedication = ConcomitantMedication.createConcomitantMedication(studyParticipantConcomitantMedication);
-                addConcomitantMedication(saeReportConcomitantMedication);
+                if(studyParticipantConcomitantMedication.getAgentName() == null) continue;
+                if(set.add(studyParticipantConcomitantMedication.getAgentName())){
+                    ConcomitantMedication saeReportConcomitantMedication = ConcomitantMedication.createConcomitantMedication(studyParticipantConcomitantMedication);
+                    addConcomitantMedication(saeReportConcomitantMedication);
+                }
             }
 
         }

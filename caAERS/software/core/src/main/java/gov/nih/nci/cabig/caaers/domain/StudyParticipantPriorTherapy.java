@@ -78,6 +78,11 @@ public class StudyParticipantPriorTherapy extends AbstractMutableDomainObject {
         }
     }
 
+    @Transient
+    public String getDisplayName(){
+        return String.valueOf(getName()) + ", from " + String.valueOf(startDate) + ", to " + String.valueOf(endDate) ;
+    }
+
     // //// BOUND PROPERTIES
 
     /**

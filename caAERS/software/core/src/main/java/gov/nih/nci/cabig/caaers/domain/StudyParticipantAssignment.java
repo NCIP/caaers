@@ -652,6 +652,7 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     private void syncrhonizeConcomitantMedication(final List<ConcomitantMedication> saeReportConcomitantMedications) {
 
         for (ConcomitantMedication saeReportConcomitantMedication : saeReportConcomitantMedications) {
+            if(StringUtils.isEmpty(saeReportConcomitantMedication.getAgentName())) continue;
             if (!containsConcomitantMedication(saeReportConcomitantMedication)) {
                 StudyParticipantConcomitantMedication studyParticipantConcomitantMedication = StudyParticipantConcomitantMedication.createAssignmentConcomitantMedication(saeReportConcomitantMedication);
                 addConcomitantMedication(studyParticipantConcomitantMedication);
@@ -669,6 +670,7 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     public boolean containsMetastaticDiseaseSite(MetastaticDiseaseSite metastaticDiseaseSite){
     	if(metastaticDiseaseSite == null ) return true;
     	if(getDiseaseHistory() == null) return true;
+        if(StringUtils.isEmpty(metastaticDiseaseSite.getName()))  return  true;
     	for(StudyParticipantMetastaticDiseaseSite spaSite : getDiseaseHistory().getMetastaticDiseaseSites()){
     		if(metastaticDiseaseSite.equals(spaSite.getCodedSite(), spaSite.getOtherSite())) return true;
     	}
@@ -736,6 +738,7 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     private void syncrhonizePreExistingCondition(final List<SAEReportPreExistingCondition> saeReportPreExistingConditions) {
 
         for (SAEReportPreExistingCondition saeReportPreExistingCondition : saeReportPreExistingConditions) {
+            if(saeReportPreExistingCondition.getPreExistingCondition() == null) continue;
             if(saeReportPreExistingCondition.getPreExistingCondition().isRetired()) continue;
 
             if (!containsPreExistingCondition(saeReportPreExistingCondition)) {
