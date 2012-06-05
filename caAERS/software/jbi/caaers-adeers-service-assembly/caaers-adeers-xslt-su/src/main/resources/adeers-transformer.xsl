@@ -685,9 +685,9 @@
                     </THERAPY_COMMENTS>
                 </xsl:if>
 
-                <xsl:for-each select="PriorTherapyAgent">
+                <xsl:for-each select="PriorTherapyAgent/Agent">
                     <CHEMO_AGENT_NAME>
-                        <xsl:value-of select="ChemoAgent/name"/>
+                        <xsl:value-of select="name"/>
                     </CHEMO_AGENT_NAME>
                 </xsl:for-each>
             </PRIOR_THERAPY>
