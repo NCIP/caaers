@@ -610,6 +610,7 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
      */
     private void syncrhonizePriorTherapies(final List<SAEReportPriorTherapy> saeReportPriorTherapies) {
         for (SAEReportPriorTherapy saeReportPriorTherapy : saeReportPriorTherapies) {
+            if(saeReportPriorTherapy.getPriorTherapy() == null) continue;
             if(saeReportPriorTherapy.getPriorTherapy().isRetired() ) continue;
 
             StudyParticipantPriorTherapy spaPT = containsPriorTherapy(saeReportPriorTherapy);
