@@ -254,6 +254,7 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
                 if(log.isDebugEnabled()) log.debug("xmlSearchResult : for (" + searchText + ") :" + xmlSearchResult);
 
                 String xmlStudies = xsltTransformer.toText(xmlSearchResult, "xslt/c2a_generic_response.xslt");
+                if(StringUtils.isEmpty(xmlStudies)) return studyList;
 
                 Studies studies = (Studies) unmarshaller.unmarshal(new StringReader(xmlStudies));
                 for(gov.nih.nci.cabig.caaers.integration.schema.study.Study dtoStudy : studies.getStudy()){
