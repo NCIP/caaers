@@ -250,8 +250,8 @@ public class AdeersSubmissionWorkflowTest extends BaseCaller {
     public void testSubmitOrWithdraw_10Day() throws  Exception{
         String a10DayXML = getString("a_10Day.xml");
         assertNotNull(a10DayXML);
-        AdeersWebServiceImpl impl = new AdeersWebServiceImpl();
-        String response = impl.callWebService(a10DayXML);
+      //  AdeersWebServiceImpl impl = new AdeersWebServiceImpl();
+        String response = null;//impl.callWebService(a10DayXML);
         assertNotNull(response);
         System.out.println(response);
     }
