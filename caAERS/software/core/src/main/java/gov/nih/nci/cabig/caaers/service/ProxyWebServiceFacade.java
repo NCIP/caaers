@@ -247,6 +247,7 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
                 Map<String, String> criteriaMap = new HashMap<String, String>();
                 criteriaMap.put("documentTitle", searchText);
                 criteriaMap.put("nciDocumentNumber", searchText);
+                criteriaMap.put("localDocumentNumber", searchText);
 
                 String correlationId = RandomStringUtils.randomAlphanumeric(15);
                 String message = buildMessage(correlationId, "adeers", SEARCH_STUDY_ENTITY_NAME, SEARCH_STUDY_OPERATION_NAME, "sync", criteriaMap);
