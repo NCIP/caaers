@@ -48,7 +48,7 @@
     }
 
     td.taskItem a {
-        font-family: Lucida Grande, sans-serif;
+        font-family: Lucida Sans Unicode, sans-serif;
         font-size: 13px;
         color: #094c86;
         text-shadow: 0 1px white;
@@ -65,7 +65,7 @@
     }
 
     .tasksSubheader h3.subHeader {
-        font-family: Lucida Grande, sans-serif;
+        font-family: Lucida Sans Unicode, sans-serif;
         font-size: 14px;
         color: #1265ae;
         text-shadow: 0 1px white;
@@ -75,7 +75,7 @@
     }
 
     .subSubheader span.tasksSubSubheaderText {
-        font-family: Lucida Grande, sans-serif;
+        font-family: Lucida Sans Unicode, sans-serif;
         font-size: 14px;
         color: #fff;
         text-shadow: 0 -1px #333;
@@ -134,7 +134,7 @@
     }
 
     .boxIPhone h3 {
-        font: bold 15px "Lucida Grande",Arial,Helvetica,sans-serifsans-serif;
+        font: bold 15px "Lucida Sans Unicode",Arial,Helvetica,sans-serifsans-serif;
         color: #2774b8;
         text-shadow: 0 1px white;
         padding-top: 8px;
@@ -144,7 +144,7 @@
     }
 
     .boxIPhone h3.blue {
-        font: bold 15px "Lucida Grande",Arial,Helvetica,sans-serifsans-serif;
+        font: bold 15px "Lucida Sans Unicode",Arial,Helvetica,sans-serifsans-serif;
         color: #2774B8;
         text-shadow: 0 1px white;
         padding-top: 8px;
@@ -154,7 +154,7 @@
     }
 
     .dashboard_table {
-        font-family: "Lucida Grande",Arial,Helvetica,sans-serifsans-serif;
+        font-family: "Lucida Sans Unicode",Arial,Helvetica,sans-serifsans-serif;
         margin: 0 1px 0 2px;
         /*border-collapse: collapse;*/
         border-bottom: 0px solid #dddddd;
@@ -253,7 +253,8 @@
         font-weight: bold;
         padding-top: 7px;
         padding-bottom: 7px;
-        text-shadow: 0 1px white
+        text-shadow: 0 1px white;
+        line-height: 12px;
     }
 
     tr.taskTitleRow td, tr.taskTitleRow th {

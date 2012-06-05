@@ -98,7 +98,7 @@
 .alphacube_content {
 	overflow:auto;
 	color: #000;
-	font-family: lucida Grande, sans-serif;
+	font-family: Lucida Sans Unicode, sans-serif;
 	background:#FDFDFD;
 }
 
@@ -113,7 +113,7 @@
 }
 
 .alphacube_message {
-  font: 12px lucida grande, sans-serif;
+  font: 12px Lucida Sans Unicode, sans-serif;
 	text-align:center;
 	width:auto;
 	padding: 20px;

@@ -68,14 +68,37 @@
 .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button { font-family: Arial,sans-serif; font-size: 1em; }
 .ui-widget-content { border: 1px solid #aaaaaa; background: #e6e6e6 url(images/ui-bg_flat_75_e6e6e6_40x100.png) 50% 50% repeat-x; color: #222222; }
 .ui-widget-content a { color: #222222; }
-.ui-widget-header { border: 1px solid #aaaaaa; background: #DC5800 url(images/ui-bg_highlight-soft_50_DC5800_1x100.png) 50% 50% repeat-x; color: #ffffff; font-weight: bold; }
+.ui-widget-header { border: 1px solid #aaaaaa; background: #9d9d9d;
+background: -moz-linear-gradient(top,  #9d9d9d 0%, #878787 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#9d9d9d), color-stop(100%,#878787));
+background: -webkit-linear-gradient(top,  #9d9d9d 0%,#878787 100%);
+background: -o-linear-gradient(top,  #9d9d9d 0%,#878787 100%);
+background: -ms-linear-gradient(top,  #9d9d9d 0%,#878787 100%);
+background: linear-gradient(top,  #9d9d9d 0%,#878787 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9d9d9d', endColorstr='#878787',GradientType=0 );
+ color: #ffffff; font-weight: bold; }
 .ui-widget-header a { color: #ffffff; }
 
 /* Interaction states
 ----------------------------------*/
-.ui-state-default, .ui-widget-content .ui-state-default { border: 1px solid #d3d3d3; background: #e6e6e6 url(images/ui-bg_highlight-hard_75_e6e6e6_1x100.png) 50% 50% repeat-x; font-weight: normal; color: #555555; outline: none; }
-.ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited { color: #555555; text-decoration: none; outline: none; }
-.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus { border: 1px solid #999999; background: #314993 url(images/ui-bg_highlight-soft_40_314993_1x100.png) 50% 50% repeat-x; font-weight: normal; color: #ffffff; outline: none; }
+.ui-state-default, .ui-widget-content .ui-state-default { border: 1px solid #1067b2; background: #68b1ed;
+background: -moz-linear-gradient(top,  #68b1ed 0%, #4187c2 50%, #287ac1 50%, #1067b2 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#68b1ed), color-stop(50%,#4187c2), color-stop(50%,#287ac1), color-stop(100%,#1067b2));
+background: -webkit-linear-gradient(top,  #68b1ed 0%,#4187c2 50%,#287ac1 50%,#1067b2 100%);
+background: -o-linear-gradient(top,  #68b1ed 0%,#4187c2 50%,#287ac1 50%,#1067b2 100%);
+background: -ms-linear-gradient(top,  #68b1ed 0%,#4187c2 50%,#287ac1 50%,#1067b2 100%);
+background: linear-gradient(top,  #68b1ed 0%,#4187c2 50%,#287ac1 50%,#1067b2 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#68b1ed', endColorstr='#1067b2',GradientType=0 );
+ font-weight: normal; color: white; outline: none; text-shadow:0 -1px #0D5593; }
+.ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited { color: #fff; text-decoration: none; outline: none; }
+.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus {  background: #84c2f4;
+    background: -moz-linear-gradient(top, #84c2f4 0%, #5ea1d8 50%, #4196e1 50%, #1488ee 79%, #0a77d6 91%, #0969bd 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #84c2f4), color-stop(50%, #5ea1d8), color-stop(50%, #4196e1), color-stop(79%, #1488ee), color-stop(91%, #0a77d6), color-stop(100%, #0969bd));
+    background: -webkit-linear-gradient(top, #84c2f4 0%, #5ea1d8 50%, #4196e1 50%, #1488ee 79%, #0a77d6 91%, #0969bd 100%);
+    background: -o-linear-gradient(top, #84c2f4 0%, #5ea1d8 50%, #4196e1 50%, #1488ee 79%, #0a77d6 91%, #0969bd 100%);
+    background: -ms-linear-gradient(top, #84c2f4 0%, #5ea1d8 50%, #4196e1 50%, #1488ee 79%, #0a77d6 91%, #0969bd 100%);
+    background: linear-gradient(top, #84c2f4 0%, #5ea1d8 50%, #4196e1 50%, #1488ee 79%, #0a77d6 91%, #0969bd 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#84c2f4', endColorstr = '#0969bd', GradientType = 0); font-weight: normal; color: #ffffff; outline: none; }
 .ui-state-hover a, .ui-state-hover a:hover { color: #ffffff; text-decoration: none; outline: none; }
 .ui-state-active, .ui-widget-content .ui-state-active { border: 1px solid #aaaaaa; background: #e6e6e6 url(images/ui-bg_highlight-hard_65_e6e6e6_1x100.png) 50% 50% repeat-x; font-weight: normal; color: #212121; outline: none; }
 .ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited { color: #212121; outline: none; text-decoration: none; }
@@ -416,7 +439,7 @@
 .ui-tabs .ui-tabs-nav li { position: relative; float: left; border-bottom-width: 0 !important; margin: 0 .2em -1px 0; padding: 0; }
 .ui-tabs .ui-tabs-nav li a { float: left; text-decoration: none; padding: .5em 1em; }
 .ui-tabs .ui-tabs-nav li.ui-tabs-selected { padding-bottom: 1px; border-bottom-width: 0; }
-.ui-tabs .ui-tabs-nav li.ui-tabs-selected a, .ui-tabs .ui-tabs-nav li.ui-state-disabled a, .ui-tabs .ui-tabs-nav li.ui-state-processing a { cursor: text; }
+.ui-tabs .ui-tabs-nav li.ui-tabs-selected a, .ui-tabs .ui-tabs-nav li.ui-state-disabled a, .ui-tabs .ui-tabs-nav li.ui-state-processing a {text-shadow: 0 1px white; cursor: text; }
 .ui-tabs .ui-tabs-nav li a, .ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a { cursor: pointer; } /* first selector in group seems obsolete, but required to overcome bug in Opera applying cursor: text overall if defined elsewhere... */
 .ui-tabs .ui-tabs-panel { padding: 1em 1.4em; display: block; border-width: 0; background: none; }
 .ui-tabs .ui-tabs-hide { display: none !important; }

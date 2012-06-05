@@ -1,9 +1,9 @@
 /**** GENERAL TAG STYLE OVERRIDES */
 
 body {
-     background: url("../images/blue/bg.png") repeat-y scroll center center #02307F;
+     background: #02307F;
      color: #333333;
-     font-family: "Lucida Grande", Arial, Helvetica, sans-serifsans-serif;
+     font-family: "Lucida Sans Unicode", Arial, Helvetica, sans-serif;
      font-size: 10pt;
 
      margin: 0;
@@ -12,8 +12,8 @@ body {
 }
 
 .wide-header {
-     background: url("../images/blue/wide_header_bg.png") no-repeat scroll center center transparent;
-     height: 130px;
+     background:url("../images/blue/top_texture_bg.png") no-repeat scroll center -60px;
+     height: 98px;
      left: 0;
      margin: 0;
      position: absolute;
@@ -36,9 +36,9 @@ body {
      font-size: 13px;
      padding: 5px 15px;
      position: relative;
-     top: 41px;
-     width: 950px;
-     z-index: 0;
+     top: 44px;
+
+     z-index: 1;
 }
 
 .workflow-tabs2 {
@@ -56,9 +56,9 @@ body {
      left: -18px;
      padding: 5px 15px;
      position: relative;
-     top: -21px;
+     top: -6px;
      width: 950px;
-     z-index: 0;
+     z-index: 1;
 }
 
 #welcome-user {
@@ -76,7 +76,7 @@ body {
 
 #thirdlevelnav {
      font-size: 13px;
-     margin: 3px 2px;
+     margin: 3px 0px;
 }
 
 #thirdlevelnav div {
@@ -106,6 +106,7 @@ body {
      -moz-box-shadow: 0 0 3px #999999;
     -webkit-box-shadow: 0 0 3px #999999;
     box-shadow: 0 0 3px #999999;
+
 }
 
 #thirdlevelnav div a.complete {
@@ -169,7 +170,7 @@ a img {
      padding-right: 1px;
      position: relative;
      text-align: left;
-     width: 979px;
+     width: 980px;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -206,7 +207,7 @@ a:hover {
 
 /**** COMMON TEMPLATE ELEMENTS */
 #header {
-     height: 100px;
+     height: 98px;
      position: relative;
      width: 980px;
 }
@@ -245,7 +246,7 @@ a#logout {
     box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset, 0 1px 1px rgba(0, 0, 0, 0.6);
      color: white;
      display: block;
-     font-family: "Lucida Grande", sans-serif;
+     font-family: "Lucida Sans Unicode", sans-serif;
      font-size: 12px;
      font-weight: normal;
      margin-right: 0;
@@ -302,7 +303,7 @@ a#help {
     -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset, 0 1px 1px rgba(0, 0, 0, 0.6);
     box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset, 0 1px 1px rgba(0, 0, 0, 0.6);
      color: white;
-     font-family: "Lucida Grande", sans-serif;
+     font-family: "Lucida Sans Unicode", sans-serif;
      font-size: 12px;
      font-weight: normal;
      margin-right: 0;
@@ -360,9 +361,9 @@ ul#sections li a {
      color: #FFFFFF;
      display: block;
      float: left;
-     font-family: "Lucida Grande", sans-serif;
+     font-family: "Lucida Sans Unicode", sans-serif;
      margin-left: 5px;
-     padding: 8px 20px;
+     padding: 11px 20px;
      text-align: center;
      text-decoration: none;
      text-shadow: 0 -1px 0px #053E6F;
@@ -408,10 +409,12 @@ ul#sections li.selected a {
 }
 
 #build-name {
-     color: #666666;
+     color: #fff;
      font-size: 85%;
-     margin-left: 20px;
-     padding: 3px;
+    text-shadow: 0 1px 2px black;
+     background: url(../../images/blue/wide_footer_bg.png) no-repeat center top;
+     padding: 15px 0 28px;
+    text-align: center;
 }
 
 /**** COMMON TAB STYLES (shared across all three levels) */
@@ -423,22 +426,32 @@ ul.tabs {
 }
 
 ul.tabs li {
-     display: inline-block;
+     display: -moz-inline-stack;
+    display: inline-block;
      font-size: 14px;
      list-style-type: none;
      padding: 0;
+    zoom:1;
+    *display: inline;
 }
 
 #sections {
      right: 0px;
      position: absolute;
-     top: 66px;
+     top: 59px;
 }
 
 #taskbar {
-     background: url("../images/blue/taskbar_BG.png") repeat-x scroll center top transparent;
+    background: #bb98d2;
+    background: -moz-linear-gradient(top,  #bb98d2 0%, #a37ebc 50%, #9a71b6 50%, #82589e 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#bb98d2), color-stop(50%,#a37ebc), color-stop(50%,#9a71b6), color-stop(100%,#82589e));
+    background: -webkit-linear-gradient(top,  #bb98d2 0%,#a37ebc 50%,#9a71b6 50%,#82589e 100%);
+    background: -o-linear-gradient(top,  #bb98d2 0%,#a37ebc 50%,#9a71b6 50%,#82589e 100%);
+    background: -ms-linear-gradient(top,  #bb98d2 0%,#a37ebc 50%,#9a71b6 50%,#82589e 100%);
+    background: linear-gradient(top,  #bb98d2 0%,#a37ebc 50%,#9a71b6 50%,#82589e 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bb98d2', endColorstr='#82589e',GradientType=0 );
      color: #FFFFFF;
-     font-family: "Lucida Grande", sans-serif;
+     font-family: "Lucida Sans Unicode", sans-serif;
      font-size: 14px;
      height: 42px;
      line-height: 13pt;
@@ -450,6 +463,13 @@ ul.tabs li {
      vertical-align: middle;
      width: 970px;
      z-index: 1;
+    -moz-border-radius: 6px 0 0 0;
+    -webkit-border-radius: 6px 0 0 0;
+    border-radius: 6px 0 0 0;
+    -moz-box-shadow: 0 1px 0 rgba(255,255,255,0.4) inset;
+    -webkit-box-shadow: 0 1px 0 rgba(255,255,255,0.4) inset;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.4) inset;
+    border-bottom:1px solid #4a325b;
 }
 
 #taskbar ul {
@@ -483,10 +503,20 @@ ul.tabs li {
 }
 
 #taskbar li.gt4 a:hover {
-     background: url("../images/blue/purple_hover.png") no-repeat scroll right top transparent;
+    background: #82589e;
+    background: -moz-linear-gradient(top,  #82589e 0%, #9a71b6 50%, #a37ebc 50%, #bb98d2 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#82589e), color-stop(50%,#9a71b6), color-stop(50%,#a37ebc), color-stop(100%,#bb98d2));
+    background: -webkit-linear-gradient(top,  #82589e 0%,#9a71b6 50%,#a37ebc 50%,#bb98d2 100%);
+    background: -o-linear-gradient(top,  #82589e 0%,#9a71b6 50%,#a37ebc 50%,#bb98d2 100%);
+    background: -ms-linear-gradient(top,  #82589e 0%,#9a71b6 50%,#a37ebc 50%,#bb98d2 100%);
+    background: linear-gradient(top,  #82589e 0%,#9a71b6 50%,#a37ebc 50%,#bb98d2 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#82589e', endColorstr='#bb98d2',GradientType=0 );
+     border-right: 1px solid #dbc8e7;
      border-left: 1px solid #67437E;
      color: #FFFFFF;
      margin-left: 0;
+    margin-right: -1px;
+    padding-bottom:13px;
 }
 
 #taskbar li.gt4 a:active {
@@ -500,10 +530,20 @@ ul.tabs li {
 }
 
 #taskbar li.lte4 a:hover {
-     background: url("../images/blue/purple_hover.png") no-repeat scroll right center transparent;
+     background: #82589e;
+    background: -moz-linear-gradient(top,  #82589e 0%, #9a71b6 50%, #a37ebc 50%, #bb98d2 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#82589e), color-stop(50%,#9a71b6), color-stop(50%,#a37ebc), color-stop(100%,#bb98d2));
+    background: -webkit-linear-gradient(top,  #82589e 0%,#9a71b6 50%,#a37ebc 50%,#bb98d2 100%);
+    background: -o-linear-gradient(top,  #82589e 0%,#9a71b6 50%,#a37ebc 50%,#bb98d2 100%);
+    background: -ms-linear-gradient(top,  #82589e 0%,#9a71b6 50%,#a37ebc 50%,#bb98d2 100%);
+    background: linear-gradient(top,  #82589e 0%,#9a71b6 50%,#a37ebc 50%,#bb98d2 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#82589e', endColorstr='#bb98d2',GradientType=0 );
      border-left: 1px solid #67437E;
+    border-right:  1px solid #dbc8e7;
      color: #FFFFFF;
      margin-left: 0;
+    margin-right: -1px;
+
 }
 
 #taskbar li.lte4 a:active {
@@ -519,21 +559,58 @@ ul.tabs li {
      background: url("../images/blue/selected_bg.png") no-repeat scroll right center transparent;
      border-left: 1px solid #67437E;
      margin-left: 0;
+    border-right: none;
+    margin-right: 0;
+
 }
 
 #taskbar .gt4 a.selected, #taskbar .gt4 a.selected:hover, #taskbar .gt4 a.selected:active {
      background: url("../images/blue/selected_bg.png") no-repeat scroll right center transparent;
      border-left: 1px solid #67437E;
      margin-left: 0;
-    padding-bottom: 11px;
+     padding-bottom: 13px;
+    border-right:  none;
+    margin-right: 0;
 }
 
 /**** PAGE CONTENT BOXES */
 
 #main {
-     margin-top: 50px;
-     padding: 12px 18px 20px;
+     margin-top: 0px;
+     padding: 50px 18px 20px;
      position: relative;
+    -moz-box-shadow: 0 0 8px black;
+    -webkit-box-shadow: 0 0 8px black;
+    box-shadow: 0 0 8px black;
+    -moz-border-radius: 6px 0 6px 6px;
+    -webkit-border-radius: 6px 0 6px 6px;
+    border-radius: 6px 0 6px 6px;
+    background: white;
+}
+
+.tabpane {margin-top: 0px;
+
+     position: relative;
+    -moz-box-shadow: 0 0 8px black;
+    -webkit-box-shadow: 0 0 8px black;
+    box-shadow: 0 0 8px black;
+    -moz-border-radius: 6px 0 6px 6px;
+    -webkit-border-radius: 6px 0 6px 6px;
+    border-radius: 6px 0 6px 6px;
+    background: white;}
+
+.tabpane #main {
+    background:  none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    border-box-shadow: none;
+}
+
+#main .tabpane {
+    background:  none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    border-box-shadow: none;
 }
 
 #flash-message, .flash-message {
@@ -640,14 +717,12 @@ ul.tabs li {
      border: 1px solid #333333;
 }
 
-.summary .division h3 {
-     border-bottom: 1px solid #333333;
-     font-size: 1.5em;
-}
+
 
 .summary .division {
      margin-bottom: 20px;
 }
+.summary .division h3 {margin-top: 0}
 
 /* A pane is a vertical subdivision of the page.
    Individual panes will need to have their widths specified
@@ -669,7 +744,7 @@ ul.tabs li {
 
 .box .header h2 {
      color: #1265AE;
-     font-family: "Lucida Grande", sans-serif;
+     font-family: "Lucida Sans Unicode", sans-serif;
      font-size: 23px;
      font-weight: normal;
      height: 36px;
@@ -741,11 +816,11 @@ h2.title {
 .box h3, .division h3 {
      border-bottom: 1px dotted #CCCCCC;
      color: #2569A2;
-     font-family: "Lucida Grande", sans-serif;
+     font-family: "Lucida Sans Unicode", sans-serif;
      font-size: 18px;
      font-weight: normal;
      line-height: 23px;
-     margin-top: 20px;
+     margin-top: 0px;
      padding: 10px 8px;
 }
 
@@ -822,6 +897,7 @@ h2.title {
 
 span.phone-number {
      font-style: italic;
+    color: #999;
 }
 
 .error input {

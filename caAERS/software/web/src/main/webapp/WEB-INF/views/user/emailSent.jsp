@@ -27,7 +27,7 @@
     body {
         background: #02307f url(../../images/blue/top_texture_bg.png) top center no-repeat;
         color: #fff;
-        font-family: "Lucida Grande", sans-serif;
+        font-family: "Lucida Sans Unicode", sans-serif;
     }
 
     #header {

@@ -7,7 +7,7 @@
 
 .eXtremeTable .tableRegion {
 	border: 1px solid #6cafe9;
-	font-family: lucida grande, sans-serif;
+	font-family: Lucida Sans Unicode, sans-serif;
 	font-size: 12px;
 	margin-top: 7px;
 }
@@ -23,7 +23,7 @@
 .eXtremeTable .title {
 	color: #444444;
 	font-weight: bold;
-	font-family: lucida grande, sans-serif;
+	font-family: Lucida Sans Unicode, sans-serif;
 	font-size: 15px;
 	vertical-align: middle;
 }
@@ -47,14 +47,14 @@
 }
 
 .eXtremeTable .filter input {
-	font-family: lucida grande, sans-serif;
+	font-family: Lucida Sans Unicode, sans-serif;
 	font-size: 10px;
 	border: solid 1px gray;
 	padding: 1px;
 }
 
 .eXtremeTable .filter select {
-	font-family: lucida grande, sans-serif;
+	font-family: Lucida Sans Unicode, sans-serif;
 	font-size: 9px;
 	border: solid 1px #EEE;
 }
@@ -62,7 +62,7 @@
 .eXtremeTable .tableHeader {
 	background-color: #6dafe9;
 	color: #2b4f6f;
-	font-family: lucida grande, sans-serif;
+	font-family: Lucida Sans Unicode, sans-serif;
 	font-size: 13px;
 	font-weight: bold;
 	text-align: left;
@@ -81,7 +81,7 @@
 .eXtremeTable .centerTableHeader {
 	background-color: #6dafe9;
 	color: #2b4f6f;
-	font-family: lucida grande, sans-serif;
+	font-family: Lucida Sans Unicode, sans-serif;
 	font-size: 13px;
 	font-weight: bold;
 	text-align: center;
@@ -101,7 +101,7 @@
 .eXtremeTable .tableHeaderSort {
 	background-color: #6dafe9;
 	color: #2b4f6f;
-	font-family: lucida grande, sans-serif;
+	font-family: Lucida Sans Unicode, sans-serif;
 	font-size: 13px;
 	font-weight: bold;
 	text-align: left;
@@ -133,7 +133,7 @@
 	padding-bottom: 3px;
 	padding-left: 8px;
 	vertical-align: middle;
-	font-family: lucida grande, sans-serif;
+	font-family: Lucida Sans Unicode, sans-serif;
 	font-size: 12px;
 }
 
@@ -204,7 +204,7 @@
 
 .eXtremeTable .statusBar {
 	background-color: #F4F4F4;
-	font-family: lucida grande, sans-serif;
+	font-family: Lucida Sans Unicode, sans-serif;
 	font-size: 10px;
 }
 
@@ -225,7 +225,7 @@
 
 .eXtremeTable .formButton {
 	cursor: pointer;
-	font-family: lucida grande, sans-serif;
+	font-family: Lucida Sans Unicode, sans-serif;
 	font-weight: bold;
 	background-color: #308dbb;
 	color: white;
@@ -241,14 +241,14 @@
 .eXtremeTable .calcTitle {
 	background-color: #F4F4F4;
 	color: black;
-	font-family: lucida grande, sans-serif;
+	font-family: Lucida Sans Unicode, sans-serif;
 	font-weight: bold;
 }
 
 .eXtremeTable .calcResult {
 	background-color: #F4F4F4;
 	color: black;
-	font-family: lucida grande, sans-serif;
+	font-family: Lucida Sans Unicode, sans-serif;
 }
 
 

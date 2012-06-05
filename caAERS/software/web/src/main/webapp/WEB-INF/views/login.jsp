@@ -14,7 +14,7 @@
             } .right {
                 position: absolute;
                 right: 116px;
-                top: 99px;
+                top: 135px;
                 margin-left: 25px;
                 margin-top: 1em;
                 text-align: center;
@@ -31,7 +31,7 @@
             body {
                 background:#02307f url(../images/blue/top_texture_bg.png) top center no-repeat;
                 color: #fff;
-                font-family:"Lucida Grande",sans-serif;
+                font-family:"Lucida Sans Unicode",sans-serif;
             } #header {
                 visibility: hidden
             } .wide-header {
@@ -54,7 +54,7 @@
                 color: yellow
             }
 
-            #main {background-image: none}
+            #main {background: none;-moz-box-shadow: none; -webkit-box-shadow: none; box-shadow: none;}
             
             h2 {
                 color: #fff;

@@ -1,6 +1,6 @@
 body {
-	background: url( ../images/blue/bg.png) repeat-y center #314993;
-	font-family: Arial, Helvetica, sans-serif;
+
+	font-family: lucida sans unicode, arial,Helvetica, sans-serif;
 	font-size: 10pt;
 	color: #000000;
 	text-align: center;
@@ -11,48 +11,24 @@ body {
 html div.row, * html .autoclear {
 	height: 1%
 }
-#workflow-tabs {
-	height: 1%;
-}
-.workflow-tabs {
-width:951px;
-z-index:-1;
-}
+
+#main {margin-top: 40px; padding-top: 10px; padding-bottom: 45px}
+.tabpane {z-index: -1}
 .pane {
 	/* Fix the issue of summary not aligned properly */
     clear: both;
 }
-.wide-header {
-	background:transparent url(../images/blue/wide_header_bg.png) no-repeat scroll center center;
-	}
-#taskbar {
-	background: transparent url( ../images/blue/taskbar_BG.png ) repeat-x scroll center top;
-	color: #FFFFFF;
-	font-size: 12pt;
-	height: 51px;
-	padding-left: 10px;
-	position: relative;
-	top: 98px;
-	vertical-align: middle;
-	z-index:1;
-	width: 971px;
 
-}
+
 div.row, build-name, main {
 	clear: both;
 }
-#build-name {
-	z-index:-1;
-}
-#thirdlevelnav {
-	font-size:9pt;
-	height:15px;
-}
+
 
 #all {
 	width:980px;
 	margin:0px auto;
-	padding-left:-0.1px;
+
 	text-align:left;
 	position:relative;
 }

@@ -42,6 +42,10 @@
         return true;
     }
 
+    /**
+    * BEN, alphacube is the skin of the Windows that opnes... that gray one with an orange bar on it
+     * you need to create a new SKIN which we can use here instead of alphacube
+     */
     function submitSearch() {
         if (!validateInputText()) return;
         popupDiv = new Window({className:"alphacube", width:500, height:125, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
