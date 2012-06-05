@@ -24,11 +24,11 @@ public class StudyInterventionSynchronizer implements Migrator<Study> {
     public void migrate(Study dest, Study src, DomainObjectImportOutcome<Study> studyDomainObjectImportOutcome) {
     	HashMap<String, OtherIntervention> map = new HashMap<String, OtherIntervention>();
 		for(OtherIntervention otherIntervention : dest.getActiveOtherInterventions()) {
-			map.put(otherIntervention.getName(), otherIntervention);
+			map.put(otherIntervention.getHashKey(), otherIntervention);
 		}
 		
 		for(OtherIntervention xmlOtherIntervention : src.getOtherInterventions()){
-			OtherIntervention otherIntervention = map.remove(xmlOtherIntervention.getName());
+			OtherIntervention otherIntervention = map.remove(xmlOtherIntervention.getHashKey());
 			if(otherIntervention == null){
 				//newly added one, so add it to study
 				dest.addOtherIntervention(xmlOtherIntervention);
