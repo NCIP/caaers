@@ -27,6 +27,12 @@ public class StudySynchronizer extends CompositeMigrator<Study>{
 		DomainObjectImportOutcome<Study> outcome) {
 		
 		dbStudy.setShortTitle(StringUtils.isNotEmpty(xmlStudy.getShortTitle()) ? xmlStudy.getShortTitle() : "NA");
+        dbStudy.setAeTermUnique(xmlStudy.getAeTermUnique());
+        dbStudy.setVerbatimFirst(xmlStudy.getVerbatimFirst());
+        dbStudy.setStudyPurpose(xmlStudy.getStudyPurpose());
+        dbStudy.setPhaseCode(xmlStudy.getPhaseCode());
+        dbStudy.setLastSynchedDate(new Date());
+
 		dbStudy.setLongTitle(xmlStudy.getLongTitle());
 		if(xmlStudy.getDescription() != null &&  StringUtils.isNotEmpty(xmlStudy.getDescription())){
 			dbStudy.setDescription(xmlStudy.getDescription());
@@ -34,13 +40,13 @@ public class StudySynchronizer extends CompositeMigrator<Study>{
 		if(xmlStudy.getPrecis() != null &&  StringUtils.isNotEmpty(xmlStudy.getPrecis())){
 			dbStudy.setPrecis(xmlStudy.getPrecis());
 		}
-		dbStudy.setPhaseCode(xmlStudy.getPhaseCode());
+
 		dbStudy.setStatus(xmlStudy.getStatus());
 		dbStudy.setMultiInstitutionIndicator(xmlStudy.getMultiInstitutionIndicator());
 		dbStudy.setAdeersReporting(xmlStudy.getAdeersReporting());
 		if(xmlStudy.getDesign() != null){
 			dbStudy.setDesign(xmlStudy.getDesign());
 		}
-        dbStudy.setLastSynchedDate(new Date());
+
 	}
 }
