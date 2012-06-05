@@ -1335,6 +1335,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         if (getSaeReportPriorTherapies().isEmpty()) {
             //copy only once
             for (StudyParticipantPriorTherapy studyParticipantPriorTherapy : getAssignment().getPriorTherapies()) {
+                if(studyParticipantPriorTherapy.getPriorTherapy() == null) continue;
                 if(studyParticipantPriorTherapy.getPriorTherapy().isRetired()) continue;
                 SAEReportPriorTherapy priorTherapy = SAEReportPriorTherapy.createSAEReportPriorTherapy(studyParticipantPriorTherapy);
                 addSaeReportPriorTherapies(priorTherapy);
