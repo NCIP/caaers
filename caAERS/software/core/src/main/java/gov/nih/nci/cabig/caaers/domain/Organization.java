@@ -114,7 +114,7 @@ public abstract class Organization extends AbstractMutableRetireableDomainObject
 		this.type = type;
 	}
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="merged_org_id", nullable=true)
     public Organization getMergedOrganization() {
 		return mergedOrganization;
