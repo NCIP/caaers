@@ -414,6 +414,9 @@
     <field name="chemoAgent" type="gov.nih.nci.cabig.caaers.domain.ChemoAgent">
       <bind-xml name="ChemoAgent"/>
     </field>
+    <field name="agent" type="gov.nih.nci.cabig.caaers.domain.Agent">
+          <bind-xml name="Agent"/>
+    </field>
   </class>
 
   <class name="gov.nih.nci.cabig.caaers.domain.ChemoAgent">
