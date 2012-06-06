@@ -243,7 +243,7 @@
 </c:if>
 <!--POPUPS-->
 <div id="please_wait" style="display: none;" class="info-box message" ><p><caaers:message code="LBL_please.wait" /><br><caaers:message code="LBL_study.in.process" /></p></div>
-<div id="success_message" style="display: none;" class="info-box message" ><p id="_messageText"></p></div>
+<div id="success_message" style="display: none;" class="success-box message" ><p id="_messageText"></p></div>
 <div id="search_submit" class="info-box message" style="display: none;"><p><caaers:message code="LBL_please.wait" /><br><caaers:message code="LBL_study.searching" /></p></div>
 <div id="error_page" class="error-box message" style="display: none;"><p><caaers:message code="LBL_study.process.error" /><br><span id="_errorMessage">.</span></p></div>
 
