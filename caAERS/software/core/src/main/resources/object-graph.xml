@@ -273,7 +273,7 @@
 			<objectType>gov.nih.nci.cabig.caaers.domain.INDType</objectType>
 		</node>
 	</navigationPath>
-	
+	 <!-- Study Agent -->
 	<navigationPath>
 		<sourceObjectType>gov.nih.nci.cabig.caaers.domain.Study</sourceObjectType>
 		<targetObjectType>gov.nih.nci.cabig.caaers.domain.StudyAgent</targetObjectType>
@@ -316,6 +316,52 @@
 			<objectType>gov.nih.nci.cabig.caaers.domain.StudyAgent</objectType>
 		</node>
 	</navigationPath>
+
+    <!-- Study device -->
+    <navigationPath>
+        <sourceObjectType>gov.nih.nci.cabig.caaers.domain.Study</sourceObjectType>
+        <targetObjectType>gov.nih.nci.cabig.caaers.domain.StudyDevice</targetObjectType>
+        <node>
+            <name>study</name>
+            <collection>false</collection>
+            <objectType>gov.nih.nci.cabig.caaers.domain.Study</objectType>
+        </node>
+        <node>
+            <name>activeStudyDevices</name>
+            <collection>true</collection>
+            <objectType>gov.nih.nci.cabig.caaers.domain.StudyDevice</objectType>
+        </node>
+    </navigationPath>
+    <navigationPath>
+        <sourceObjectType>gov.nih.nci.cabig.caaers.domain.LocalStudy</sourceObjectType>
+        <targetObjectType>gov.nih.nci.cabig.caaers.domain.StudyAgent</targetObjectType>
+        <node>
+            <name>study</name>
+            <collection>false</collection>
+            <objectType>gov.nih.nci.cabig.caaers.domain.LocalStudy</objectType>
+        </node>
+        <node>
+            <name>activeStudyDevices</name>
+            <collection>true</collection>
+            <objectType>gov.nih.nci.cabig.caaers.domain.StudyDevice</objectType>
+        </node>
+    </navigationPath>
+    <navigationPath>
+        <sourceObjectType>gov.nih.nci.cabig.caaers.domain.RemoteStudy</sourceObjectType>
+        <targetObjectType>gov.nih.nci.cabig.caaers.domain.StudyAgent</targetObjectType>
+        <node>
+            <name>study</name>
+            <collection>false</collection>
+            <objectType>gov.nih.nci.cabig.caaers.domain.RemoteStudy</objectType>
+        </node>
+        <node>
+            <name>activeStudyDevices</name>
+            <collection>true</collection>
+            <objectType>gov.nih.nci.cabig.caaers.domain.StudyDevice</objectType>
+        </node>
+    </navigationPath>
+
+    <!-- study Organization -->
 	<navigationPath>
 		<sourceObjectType>gov.nih.nci.cabig.caaers.domain.Study</sourceObjectType>
 		<targetObjectType>gov.nih.nci.cabig.caaers.domain.Organization</targetObjectType>
