@@ -12,7 +12,7 @@
 <c:set var="mainGroup">metastatic${index}</c:set>
 <c:set var="siteField" value="${fieldGroups[mainGroup].fields[0]}" />
 
-<chrome:division id="aeReport.diseaseHistory.metastaticDiseaseSites[${index}]" collapsable="false" deleteParams="'metastaticDiseaseSite', ${index}, 'anchorMetastaticDiseases', {}" enableDelete="true" collapsed="false">
+<chrome:division id="aeReport.diseaseHistory.metastaticDiseaseSites[${index}]" collapsable="false" deleteParams="'metastaticDiseaseSite', ${index}, 'anchorMetastaticDiseases', {}" enableDelete="true" collapsed="false" skipHeaderHTMLTag="true">
 
     <jsp:attribute name="title">
 

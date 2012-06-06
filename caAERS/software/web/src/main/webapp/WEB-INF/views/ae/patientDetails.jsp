@@ -336,7 +336,7 @@
   <tags:jsErrorsMessage/>
   <chrome:box id="aeReport.participantHistory" title="General" collapsable="true">
     <p><tags:instructions code="instruction_ae_patientdetails_general"/></p>
-		<a name="anchorGeneral" />
+		<a name="anchorGeneral"></a>
 		<div id="anchorGeneral">
 			<table width="100%">
 			<tr>
@@ -497,7 +497,7 @@
 
 
 <caaers:renderFilter elementID="diseaseHistory.metastaticDiseaseSites[].codedSite">
-  <a name="anchorMetastaticDiseasesSection" />
+  <a name="anchorMetastaticDiseasesSection"></a>
   <chrome:box id="aeReport.diseaseHistory.metastaticDiseaseSites" title="Metastatic Disease Site" collapsable="true" >
       <jsp:body>
         <p><tags:instructions code="instruction_ae_patientdetails_metadiseasesite"/></p>
@@ -534,7 +534,7 @@
                 <tags:indicator id="pre-cond-btn-indicator" />
 
             <div id="_preExistingConditions">
-                <a name="anchorPreExistingCondition"/>
+                <a name="anchorPreExistingCondition"></a>
                 <tags:indicator id="preExistingCondition-indicator"/>
                 <div id="anchorPreExistingCondition">
                     <c:set var="size" value="${fn:length(command.aeReport.saeReportPreExistingConditions)}" />
@@ -567,7 +567,7 @@
           <tags:button cssClass="foo" id="concomitantMedication-btn" color="blue" value="Add" icon="Add" type="button" onclick="addConMeds();" size="small"/>
           <tags:indicator id="concomitantMedication-btn-indicator"/>
 
-          <a name="anchorConcomitantMedication"/>
+          <a name="anchorConcomitantMedication"></a>
           <tags:indicator id="preExistingCondition-indicator"/>
           <div id="anchorConcomitantMedication">
               <c:set var="size" value="${fn:length(command.aeReport.concomitantMedications)}" />
@@ -607,7 +607,7 @@
         <!--<input id="priortherapy-btn" type="button" value="Add" ${size gt 0 and command.aeReport.saeReportPriorTherapies[0].priorTherapy.id eq _priorTherapy_nopriortherapy_id}/>-->
         <tags:indicator id="priortherapy-btn-indicator" />
 
-        <a name="anchorPriorTherapy"/>
+        <a name="anchorPriorTherapy"></a>
         <tags:indicator id="priorTherapy-indicator" />
         <div id="anchorPriorTherapy">
 
