@@ -47,12 +47,12 @@
      * you need to create a new SKIN which we can use here instead of alphacube
      */
     function submitSearch() {
-//        if (!validateInputText()) return;
-        popupDiv = new Window({className:"green", width:500, height:125, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
+        if (!validateInputText()) return;
+        popupDiv = new Window({className:"alphacube", width:500, height:125, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
         popupDiv.setContent("search_submit");
         popupDiv.showCenter(true);
         popupDiv.show();
-//        doSearch.delay(1);
+        doSearch.delay(1);
     }
 
     function showPopup() {
