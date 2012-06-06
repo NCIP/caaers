@@ -91,9 +91,9 @@
         createStudy.syncStudyWithAdEERS(id, studyDbId, function(_resultId) {
             popupDiv.close();
 
-            if (true || _resultId.error) {
-//                showError(_resultId.errorMessage);
-                showError("This is not a real error message. Testing... stay cool, it will go away soon.");
+            if (_resultId.error) {
+                showError(_resultId.errorMessage);
+//                showError("This is not a real error message. Testing... stay cool, it will go away soon.");
 //                jQuery('#studyLink' + _index).html("<b>Error</b>");
             } else {
                 var _dbId = _resultId.objectContent;
