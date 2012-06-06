@@ -103,7 +103,7 @@
 	
 	 function showPopupMessage(){
 		var d = $('synchMessage');
-		Dialog.alert(d.innerHTML, {className: "alphacube", width:300, okLabel: "Close" });
+		Dialog.alert(d.innerHTML, {className: "alphacube", width:600, okLabel: "Close" });
 	}
 	
 	Event.observe(window, "load", function() {
@@ -213,10 +213,10 @@
 	</form:form>
 </chrome:box>
 
-<div id="synchMessage" style="display:none; padding: 15px;">
-		<div style="font-size: 10pt; padding-top: 20px; padding-bottom: 20px; padding-left: 5px; padding-right: 5px">
-			<div class="label"><caaers:message code="LBL_CTEP_DataSynch_Message" /></div> <div class="value">
-		</div>
+<div id="synchMessage" style="display: none;" class="flash-message info" >
+    <h3><img src= "<chrome:imageUrl name="../check.png"/>" />&nbsp;<caaers:message code="LBL_please.wait" /></h3>
+    <br><br>
+    <div><caaers:message code="LBL_CTEP_DataSynch_Message" /></div>
 </div>
 
 </body>
