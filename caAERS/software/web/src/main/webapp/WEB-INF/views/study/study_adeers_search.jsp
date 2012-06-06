@@ -48,7 +48,7 @@
      */
     function submitSearch() {
         if (!validateInputText()) return;
-        popupDiv = new Window({className:"alphacube", width:800, height:115, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
+        popupDiv = new Window({className:"alphacube", width:750, height:115, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
         popupDiv.setContent("search_submit");
         popupDiv.showCenter(true);
         popupDiv.show();
@@ -56,7 +56,7 @@
     }
 
     function showPopup() {
-        popupDiv = new Window({className:"alphacube", width:800, height:115, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
+        popupDiv = new Window({className:"alphacube", width:750, height:115, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
         popupDiv.setContent("please_wait");
         popupDiv.showCenter(true);
         popupDiv.show();
@@ -64,7 +64,7 @@
     }
 
     function showSuccessPopup(_messageText) {
-        popupDiv = new Window({className:"alphacube", width:800, height:115, zIndex:100, resizable:true, recenterAuto:true, draggable:false, closable:true, minimizable:false, maximizable:false});
+        popupDiv = new Window({className:"alphacube", width:750, height:115, zIndex:100, resizable:true, recenterAuto:true, draggable:false, closable:true, minimizable:false, maximizable:false});
         popupDiv.setContent("success_message");
         jQuery("#_messageText").html(_messageText);
         popupDiv.showCenter(true);
@@ -78,7 +78,7 @@
         jQuery('#flashErrors').show();
         hideFlashErrorMessage.delay(10);
 */
-        popupDiv = new Window({className:"alphacube", width:800, height:115, zIndex:100, resizable:true, recenterAuto:true, draggable:true, closable:true, minimizable:false, maximizable:false});
+        popupDiv = new Window({className:"alphacube", width:750, height:115, zIndex:100, resizable:true, recenterAuto:true, draggable:true, closable:true, minimizable:false, maximizable:false});
         jQuery('#_errorMessage').html(_errorMessage);
         popupDiv.setContent('error_page');
         popupDiv.showCenter(true);
