@@ -853,17 +853,19 @@ public class StudyConverter {
     private void populateIND(StudyAgentType.StudyAgentINDAssociations associations, StudyAgent sa){
         StudyAgentINDAssociationType assType = associations.getStudyAgentINDAssociation();
         if(assType == null) return;
+        StudyAgentINDAssociation saAssociation = new StudyAgentINDAssociation();
+        sa.addStudyAgentINDAssociation(saAssociation);
+
         InvestigationalNewDrugType indType = assType.getInvestigationalNewDrug();
         if(indType == null) return;
         if(indType.getIndNumber() == null && indType.getHolderName() == null) return;
-        
-        StudyAgentINDAssociation saAssociation = new StudyAgentINDAssociation();
         InvestigationalNewDrug ind = new InvestigationalNewDrug();
         saAssociation.setInvestigationalNewDrug(ind);       
+
         if(indType.getIndNumber() != null) ind.setIndNumber(indType.getIndNumber().intValue());
         if(StringUtils.isNotEmpty(indType.getHolderName())) ind.setHolderName(indType.getHolderName());
         logger.info("    IND " + saAssociation.getInvestigationalNewDrug().getHolderName() + " , " + saAssociation.getInvestigationalNewDrug().getIndNumber());
-        sa.addStudyAgentINDAssociation(saAssociation);
+
     }
     
     private void populateStudyAgent(StudyAgentType saType, Study study){
@@ -1162,6 +1164,9 @@ public class StudyConverter {
             if( ideAssociations != null){
                 StudyDeviceINDAssociationType ideAssociationType =  ideAssociations.getStudyDeviceINDAssociation();
                 if(ideAssociationType != null){
+                    StudyDeviceINDAssociation studyDeviceINDAssociation = new StudyDeviceINDAssociation();
+                    sd.addStudyDeviceINDAssociation(studyDeviceINDAssociation);
+
                     InvestigationalNewDrugType ideType = ideAssociationType.getInvestigationalNewDrug();
                     String ideHolder = ideType.getHolderName();
                     BigInteger ideNumber = ideType.getIndNumber();
@@ -1169,9 +1174,8 @@ public class StudyConverter {
                        InvestigationalNewDrug ind = new InvestigationalNewDrug();
                         ind.setHolderName(ideHolder);
                         ind.setIndNumber(ideNumber.intValue());
-                        StudyDeviceINDAssociation studyDeviceINDAssociation = new StudyDeviceINDAssociation();
                         studyDeviceINDAssociation.setInvestigationalNewDrug(ind);
-                       sd.getStudyDeviceINDAssociations().add(studyDeviceINDAssociation);
+
                     }
 
                 }

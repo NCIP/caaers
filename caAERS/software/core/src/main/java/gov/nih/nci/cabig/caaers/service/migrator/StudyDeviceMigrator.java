@@ -1,9 +1,10 @@
 package gov.nih.nci.cabig.caaers.service.migrator;
 
+import com.aparzev.util.CollectionUtils;
 import gov.nih.nci.cabig.caaers.dao.DeviceDao;
-import gov.nih.nci.cabig.caaers.domain.Device;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyDevice;
+import gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao;
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.repository.DeviceRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
@@ -22,6 +23,8 @@ public class StudyDeviceMigrator implements Migrator<Study> {
 	private DeviceRepository deviceRepository;
 	private DeviceDao deviceDao;
 	private DeviceMigrator deviceMigrator;
+    private InvestigationalNewDrugDao investigationalNewDrugDao;
+    private OrganizationDao organizationDao;
     private static Log log = LogFactory.getLog(StudyRepository.class);
 
 	public void migrate(Study src, Study dest, DomainObjectImportOutcome<Study> outcome) {
@@ -68,10 +71,56 @@ public class StudyDeviceMigrator implements Migrator<Study> {
                 newStudyDevice.setOtherCommonName(sd.getOtherCommonName());
                 newStudyDevice.setOtherDeviceType(sd.getOtherDeviceType());
             }
+            
             dest.getStudyDevices().add(newStudyDevice);
+            migrate(sd, newStudyDevice, outcome);
         }
 	}
 
+    private InvestigationalNewDrug findOrCreateIND(String holderName, String number){
+        //check - with assumption that holderName is NCI code
+        List<InvestigationalNewDrug> inds = investigationalNewDrugDao.findOrganizationHeldIND(String.valueOf(number), String.valueOf(holderName));
+        if(CollectionUtils.isEmpty(inds)){
+            //check with assumption that holder name is Organization Name.
+            inds = investigationalNewDrugDao.findByNumberAndHolderName(number, holderName);
+        }
+
+
+        if(CollectionUtils.isNotEmpty(inds)) return inds.get(0);
+
+        //need to create IND
+        InvestigationalNewDrug ind = new InvestigationalNewDrug();
+        if(StringUtils.isNotEmpty(number)) ind.setIndNumber(Integer.parseInt(number));
+
+        OrganizationHeldIND holder = new OrganizationHeldIND();
+        Organization org = organizationDao.getByNCIcode(holderName);
+        if(org == null) org = organizationDao.getByName(holderName);
+        if(org == null) return null; //still null then cannot create IND?
+
+        holder.setOrganization(org);
+        holder.setInvestigationalNewDrug(ind);
+        ind.setINDHolder(holder);
+        investigationalNewDrugDao.save(ind);
+        return  ind;
+
+    }
+
+
+    private void migrate(StudyDevice src, StudyDevice dest, DomainObjectImportOutcome<Study> outcome){
+        if(src.getStudyDeviceINDAssociations() != null){
+            for(StudyDeviceINDAssociation indAssociation : src.getStudyDeviceINDAssociations()){
+                if(indAssociation == null) continue;
+                StudyDeviceINDAssociation newSda = new StudyDeviceINDAssociation();
+                InvestigationalNewDrug ind = null;
+                if(indAssociation.getInvestigationalNewDrug() != null){
+                    ind = findOrCreateIND(indAssociation.getInvestigationalNewDrug().getHolderName(), indAssociation.getInvestigationalNewDrug().getStrINDNo()) ;
+                }
+                newSda.setInvestigationalNewDrug(ind);
+                dest.addStudyDeviceINDAssociation(newSda);
+            }
+        }
+    }
+    
     public DeviceRepository getDeviceRepository() {
         return deviceRepository;
     }
@@ -94,5 +143,21 @@ public class StudyDeviceMigrator implements Migrator<Study> {
 
     public void setDeviceMigrator(DeviceMigrator deviceMigrator) {
         this.deviceMigrator = deviceMigrator;
+    }
+
+    public InvestigationalNewDrugDao getInvestigationalNewDrugDao() {
+        return investigationalNewDrugDao;
+    }
+
+    public void setInvestigationalNewDrugDao(InvestigationalNewDrugDao investigationalNewDrugDao) {
+        this.investigationalNewDrugDao = investigationalNewDrugDao;
+    }
+
+    public OrganizationDao getOrganizationDao() {
+        return organizationDao;
+    }
+
+    public void setOrganizationDao(OrganizationDao organizationDao) {
+        this.organizationDao = organizationDao;
     }
 }

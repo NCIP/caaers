@@ -4,6 +4,7 @@ import edu.nwu.bioinformatics.commons.CollectionUtils;
 import gov.nih.nci.cabig.caaers.domain.AbstractMutableRetireableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyDevice;
+import gov.nih.nci.cabig.caaers.domain.StudyDeviceINDAssociation;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
 
@@ -52,6 +53,11 @@ public class StudyDeviceSynchronizer implements Migrator<Study> {
                 studyDevice.setOtherCommonName(sd.getOtherCommonName());
                 studyDevice.setOtherBrandName(sd.getOtherBrandName());
                 studyDevice.setOtherDeviceType(sd.getOtherDeviceType());
+
+                studyDevice.getStudyDeviceINDAssociations().clear();
+                for(StudyDeviceINDAssociation sda : sd.getStudyDeviceINDAssociations()) {
+                   studyDevice.addStudyDeviceINDAssociation(sda);
+                }
             }
         }
       //now soft delete, all the ones not present in XML Study
