@@ -48,7 +48,7 @@
      */
     function submitSearch() {
         if (!validateInputText()) return;
-        popupDiv = new Window({className:"alphacube", width:800, height:130, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
+        popupDiv = new Window({className:"alphacube", width:800, height:120, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
         popupDiv.setContent("search_submit");
         popupDiv.showCenter(true);
         popupDiv.show();
@@ -56,7 +56,7 @@
     }
 
     function showPopup() {
-        popupDiv = new Window({className:"alphacube", width:800, height:130, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
+        popupDiv = new Window({className:"alphacube", width:800, height:120, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
         popupDiv.setContent("please_wait");
         popupDiv.showCenter(true);
         popupDiv.show();
@@ -69,7 +69,7 @@
         jQuery('#flashErrors').show();
         hideFlashErrorMessage.delay(10);
 */
-        popupDiv = new Window({className:"alphacube", width:800, height:130, zIndex:100, resizable:true, recenterAuto:true, draggable:true, closable:true, minimizable:false, maximizable:false});
+        popupDiv = new Window({className:"alphacube", width:800, height:120, zIndex:100, resizable:true, recenterAuto:true, draggable:true, closable:true, minimizable:false, maximizable:false});
         jQuery('#_errorMessage').html(_errorMessage);
         popupDiv.setContent('error_page');
         popupDiv.showCenter(true);
