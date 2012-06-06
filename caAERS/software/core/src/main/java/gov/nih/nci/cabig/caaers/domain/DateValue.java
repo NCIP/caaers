@@ -312,11 +312,6 @@ public class DateValue implements Comparable<DateValue> {
         return 0;
     }
 
-    @Override
-    public String toString() {
-        return "DateValue{" + "day=" + String.valueOf(day) +  ", month=" + String.valueOf(month) +  ", year=" + String.valueOf(year) +  '}';
-    }
-
     /**
      * To date.
      *
