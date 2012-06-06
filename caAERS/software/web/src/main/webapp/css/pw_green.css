@@ -1,156 +1,26 @@
-.overlay_green {
-	background-color: #000000;
-	-moz-opacity: 0.6;
-	opacity: 0.6;
-}
+.overlay_green {background-color: #000000; -moz-opacity: 0.6; opacity: 0.6; }
+.green_nw {background: transparent url(../images/alphacube/left-top.gif) no-repeat 0 0; width: 10px; height: 25px; }
+.green_n  {background: transparent url(../images/alphacube/top-middle.gif) repeat-x 0 0; height: 25px; }
+.green_ne {background: transparent url(../images/alphacube/right-top.gif) no-repeat 0 0; width: 10px; height: 25px; }
+.green_w  {background: transparent url(../images/alphacube/frame-left.gif) repeat-y top left; width: 7px; }
+.green_e  {background: transparent url(../images/alphacube/frame-right.gif) repeat-y top right; width: 7px;}
+.green_sw {background: transparent url(../images/alphacube/bottom-left-c.gif) no-repeat 0 0; width: 7px; height: 7px; }
+.green_s  {background: transparent url(../images/alphacube/bottom-middle.gif) repeat-x 0 0; height: 7px;}
+.green_se, .green_sizer {background: transparent url(../images/alphacube/bottom-right-c.gif) no-repeat 0 0; width: 7px; height: 7px; }
 
-.green_nw {
-	background: transparent url(../images/alphacube/left-top.gif) no-repeat 0 0;			
-  width:10px;
-  height:25px;
-}
-
-.green_n {
-  background: transparent url(../images/alphacube/top-middle.gif) repeat-x 0 0;			
-  height:25px;
-}
-
-.green_ne {
-  background: transparent url(../images/alphacube/right-top.gif) no-repeat 0 0;			
-  width:10px;	  
-  height:25px;
-}
-
-.green_w {
-  background: transparent url(../images/alphacube/frame-left.gif) repeat-y top left;			
-  width:7px;
-}
-
-.green_e {
-  background: transparent url(../images/alphacube/frame-right.gif) repeat-y top right;			
-  width:7px;	  
-}
-
-.green_sw {
-  background: transparent url(../images/alphacube/bottom-left-c.gif) no-repeat 0 0;			
-  width:7px;
-  height:7px;
-}
-
-.green_s {
-  background: transparent url(../images/alphacube/bottom-middle.gif) repeat-x 0 0;			
-  height:7px;
-}
-
-.green_se, .green_sizer  {
-  background: transparent url(../images/alphacube/bottom-right-c.gif) no-repeat 0 0;			
-  width:7px;
-  height:7px;
-}
-
-.green_sizer {
-	cursor:se-resize;	
-}
-
-.green_close {
-	width: 23px;
-	height: 23px;
-	background: transparent url(../images/alphacube/button-close-focus.gif) no-repeat 0 0;			
-	position:absolute;
-	top:0px;
-	right:11px;
-	cursor:pointer;
-	z-index:1000;
-}
-
-.green_minimize {
-	width: 23px;
-	height: 23px;
-	background: transparent url(../images/alphacube/button-min-focus.gif) no-repeat 0 0;			
-	position:absolute;
-	top:0px;
-	right:55px;
-	cursor:pointer;
-	z-index:1000;
-}
-
-.green_maximize {
-	width: 23px;
-	height: 23px;
-	background: transparent url(../images/alphacube/button-max-focus.gif) no-repeat 0 0;			
-	position:absolute;
-	top:0px;
-	right:33px;
-	cursor:pointer;
-	z-index:1000;
-}
-
-.green_title {
-	float:left;
-	height:14px;
-	font-size:14px;
-	text-align:center;
-	margin-top:2px;
-	width:100%;
-	color:#123456;
-}
-
-.green_content {
-	overflow:auto;
-	color: #000;
-	font-family: Lucida Sans Unicode, sans-serif;
-	background:#FDFDFD;
-}
+.green_sizer    {cursor: se-resize;}
+.green_close    {width: 23px;height: 23px;background: transparent url(../images/alphacube/button-close-focus.gif) no-repeat 0 0;position: absolute;top: 0px;right: 11px;cursor: pointer;z-index: 1000;}
+.green_minimize {width: 23px;height: 23px;background: transparent url(../images/alphacube/button-min-focus.gif) no-repeat 0 0;position: absolute;top: 0px;right: 55px;cursor: pointer;z-index: 1000;}
+.green_maximize {width: 23px;height: 23px;background: transparent url(../images/alphacube/button-max-focus.gif) no-repeat 0 0;position: absolute;top: 0px;right: 33px;cursor: pointer;z-index: 1000;}
+.green_title    {float: left;height: 14px;font-size: 14px;text-align: center;margin-top: 2px;width: 100%;color: #123456;}
+.green_content  {overflow: auto;color: #000;font-family: Lucida Sans Unicode, sans-serif;background: #FDFDFD;}
 
 /* For alert/confirm dialog */
-.green_window {
-	border:1px solid #F00;	
-	background: #FFF;
-	padding:20px;
-	margin-left:auto;
-	margin-right:auto;
-	width:400px;
-}
-
-.green_message {
-  font: 12px Lucida Sans Unicode, sans-serif;
-	text-align:center;
-	width:auto;
-	padding: 20px;
-}
-
-.green_buttons {
-	text-align:center;
-	width:100%;
-}
-
-.green_buttons input {
-	width:20%;
-	margin:10px;
-    text-shadow: 0 -1px navy;
-    -moz-border-radius: 30px;
-    -webkit-border-radius: 30px;
-    border-radius: 30px;
-}
-
-.green_buttons input:hover {background-image: none;background-color:  #3876c1}
-
-.green_progress {
-	float:left;
-	margin:auto;
-	text-align:center;
-	width:100%;
-	height:16px;
-	background: #FFF url('../images/alphacube/progress.gif') no-repeat center center
-}
-
-.green_wired_frame {
-	background: #FFF;
-	-moz-opacity: 0.6;
-	opacity: 0.6;	
-}
-
-
-#logout_warning p {
-    text-align: center;
-}
+.green_window {border: 1px solid #F00;background: #FFF;padding: 20px;margin-left: auto;margin-right: auto;width: 400px;}
+.green_message {font: 12px Lucida Sans Unicode, sans-serif;text-align: center;width: auto;padding: 20px;}
+.green_buttons {text-align: center;width: 100%;}
+.green_buttons input {width: 20%;margin: 10px;text-shadow: 0 -1px navy;-moz-border-radius: 30px;-webkit-border-radius: 30px;border-radius: 30px;}
+.green_buttons input:hover {background-image: none;background-color: #3876c1}
+.green_progress {float: left;margin: auto;text-align: center;width: 100%;height: 16px; background: #FFF url('../images/alphacube/progress.gif') no-repeat center center}
+.green_wired_frame {background: #FFF;-moz-opacity: 0.6;opacity: 0.6;}
+#logout_warning p {text-align: center;}
