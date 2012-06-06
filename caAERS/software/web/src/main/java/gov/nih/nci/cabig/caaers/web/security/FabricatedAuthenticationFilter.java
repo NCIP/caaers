@@ -147,17 +147,19 @@ public final class FabricatedAuthenticationFilter implements Filter {
 		List ol = new ArrayList();
 		List cl = new ArrayList();
         Map<String, String> authorities = new HashMap<String, String>();
+        Map originalRoles = new HashMap<String, String>();
 
-		Authentication oa = SecurityUtils.getOriginalAuthentication();
-		if (oa != null && oa.getAuthorities() != null && oa.getAuthorities().length > 0) {
-			for (GrantedAuthority ga : oa.getAuthorities()) {
+		Authentication originalAuthentication = SecurityUtils.getOriginalAuthentication();
+		if (originalAuthentication != null && originalAuthentication.getAuthorities() != null && originalAuthentication.getAuthorities().length > 0) {
+			for (GrantedAuthority ga : originalAuthentication.getAuthorities()) {
 				ol.add(roles.get(ga.getAuthority()));
+                originalRoles.put(ga.getAuthority(), roles.get(ga.getAuthority()));
 			}
 		}
 
-		Authentication ca = SecurityUtils.getAuthentication();
-		if (ca != null && ca.getAuthorities() != null && ca.getAuthorities().length > 0) {
-			for (GrantedAuthority ga : ca.getAuthorities()) {
+		Authentication contextualAuthentication = SecurityUtils.getAuthentication();
+		if (contextualAuthentication != null && contextualAuthentication.getAuthorities() != null && contextualAuthentication.getAuthorities().length > 0) {
+			for (GrantedAuthority ga : contextualAuthentication.getAuthorities()) {
 				cl.add(roles.get(ga.getAuthority()));
                 authorities.put(ga.getAuthority(), roles.get(ga.getAuthority()));
 			}
@@ -167,6 +169,8 @@ public final class FabricatedAuthenticationFilter implements Filter {
 		httpRequest.setAttribute("cl", cl);
 		httpRequest.setAttribute("ol", ol);
         httpRequest.setAttribute("roles", authorities);
+        httpRequest.setAttribute("originalRoles", originalRoles);
+
 		// END Roles
 	}
 
