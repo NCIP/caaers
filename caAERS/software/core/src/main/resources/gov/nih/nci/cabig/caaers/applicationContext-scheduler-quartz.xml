@@ -67,7 +67,7 @@
 		<property name="jobGroup" value="DEFAULT" />
 	    <property name="misfireInstruction" value="0" />
 		<!-- run every midnight -->
-		<property name="cronExpression" value="0 0 0 * * ?"/>
+		<property name="cronExpression" value="0 0/15 * * * ?"/>
 	</bean>
 
 </beans>
