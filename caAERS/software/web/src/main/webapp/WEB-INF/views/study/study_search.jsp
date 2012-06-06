@@ -159,12 +159,11 @@ function onKey(e) {
     </form:form>
 </chrome:box>
 
-<div class="endpanes" />
 <div class="row" style="float:right;">
 </div>
 
 <div id="bigSearch" style="display:none;">
-<div class="endpanes" />
+
 <chrome:box title="Results">
 <form:form id="assembler">
      <chrome:division id="single-fields">
