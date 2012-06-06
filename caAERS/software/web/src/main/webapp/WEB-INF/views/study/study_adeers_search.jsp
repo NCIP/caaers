@@ -48,7 +48,7 @@
      */
     function submitSearch() {
         if (!validateInputText()) return;
-        popupDiv = new Window({className:"alphacube", width:500, height:125, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
+        popupDiv = new Window({className:"alphacube", width:800, height:130, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
         popupDiv.setContent("search_submit");
         popupDiv.showCenter(true);
         popupDiv.show();
@@ -56,7 +56,7 @@
     }
 
     function showPopup() {
-        popupDiv = new Window({className:"alphacube", width:500, height:125, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
+        popupDiv = new Window({className:"alphacube", width:800, height:130, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
         popupDiv.setContent("please_wait");
         popupDiv.showCenter(true);
         popupDiv.show();
@@ -69,7 +69,7 @@
         jQuery('#flashErrors').show();
         hideFlashErrorMessage.delay(10);
 */
-        popupDiv = new Window({className:"alphacube", width:500, height:120, zIndex:100, resizable:true, recenterAuto:true, draggable:true, closable:true, minimizable:false, maximizable:false});
+        popupDiv = new Window({className:"alphacube", width:800, height:130, zIndex:100, resizable:true, recenterAuto:true, draggable:true, closable:true, minimizable:false, maximizable:false});
         jQuery('#_errorMessage').html(_errorMessage);
         popupDiv.setContent('error_page');
         popupDiv.showCenter(true);
@@ -235,10 +235,14 @@
 </chrome:box>
 </c:if>
 <!--POPUPS-->
-<div id="please_wait" style="display: none;" class="flash-message info" >
-    <h3><img src= "<chrome:imageUrl name="../check.png"/>" />&nbsp;<caaers:message code="LBL_please.wait" /></h3>
-    <br><br>
-    <div><caaers:message code="LBL_study.in.process" /></div>
-</div>
-<div id="error_page" class="flash-message error" style="display: none;"><div><caaers:message code="LBL_study.process.error" /></div><br><span id="_errorMessage">.</span></div>
-<div id="search_submit" class="flash-message info" style="display: none;"><h3><img src= "<chrome:imageUrl name="../check.png"/>" />&nbsp;<caaers:message code="LBL_please.wait" /></h3><br><br><div><caaers:message code="LBL_study.searching" /></div></div>
+<div id="please_wait" style="display: none;" class="info-box message" ><p><caaers:message code="LBL_please.wait" /><br><caaers:message code="LBL_study.in.process" /></p></div>
+<div id="search_submit" class="info-box message" style="display: none;"><p><caaers:message code="LBL_please.wait" /><br><caaers:message code="LBL_study.searching" /></p></div>
+<div id="error_page" class="error-box message" style="display: none;"><p><caaers:message code="LBL_study.process.error" /><br><span id="_errorMessage">.</span></p></div>
+
+<!--
+EXAMPLES
+<div class="info-box message"><p>This is a friendly little information notification. Now you know!</p></div>
+<div class="success-box message"><p>This is a friendly little success notification. You did it, yay!</p></div>
+<div class="warning-box message"><p>This is a friendly little warning notification. You should be careful!</p></div>
+<div class="error-box message"><p>This is a friendly little error notification. Uh, oh… now what?</p></div>
+-->
