@@ -13,7 +13,7 @@
 .green_minimize {width: 23px;height: 23px;background: transparent url(../images/alphacube/button-min-focus.gif) no-repeat 0 0;position: absolute;top: 0px;right: 55px;cursor: pointer;z-index: 1000;}
 .green_maximize {width: 23px;height: 23px;background: transparent url(../images/alphacube/button-max-focus.gif) no-repeat 0 0;position: absolute;top: 0px;right: 33px;cursor: pointer;z-index: 1000;}
 .green_title    {float: left;height: 14px;font-size: 14px;text-align: center;margin-top: 2px;width: 100%;color: #123456;}
-.green_content  {overflow: auto;color: #000;font-family: Lucida Sans Unicode, sans-serif;background: #FDFDFD;}
+.green_content  {overflow: auto;color: #000;font-family: Lucida Sans Unicode, sans-serif;background: #56de73;}
 
 /* For alert/confirm dialog */
 .green_window {border: 1px solid #F00;background: #FFF;padding: 20px;margin-left: auto;margin-right: auto;width: 400px;}
