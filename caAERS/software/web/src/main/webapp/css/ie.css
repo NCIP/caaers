@@ -19,6 +19,7 @@ html div.row, * html .autoclear {
     clear: both;
 }
 
+#sections {top: 59px}
 
 div.row, build-name, main {
 	clear: both;

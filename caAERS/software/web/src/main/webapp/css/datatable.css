@@ -58,7 +58,7 @@ th.yui-dt-resizeable .yui-dt-resizerliner .yui-dt-liner {
     
 }
 
-#tableDiv thead {background: #3882c1 url(../images/table/yui-datatable_header.jpg) repeat-x top;}
+thead {background: #3882c1 url(../images/table/yui-datatable_header.jpg) repeat-x top;}
 
 th.yui-dt-resizeable .yui-dt-resizerliner .yui-dt-liner a:hover {
     color:white

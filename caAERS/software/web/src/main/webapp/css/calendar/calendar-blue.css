@@ -8,7 +8,7 @@ div.calendar {z-index : 10;}
   color: #000;
   cursor: default;
   background: #e2e2e2 url(../../images/calendar/cal_bg.png) repeat-x top;
-  font-family: Lucida Sans Unicode, sans serif;
+  font-family: Lucida Grande, arial, sans serif;
   -moz-border-radius: 6px;
   -webkit-border-radius: 6px;
   -border-radius: 6px;

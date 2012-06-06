@@ -76,7 +76,7 @@ body {
 
 #thirdlevelnav {
      font-size: 13px;
-     margin: 3px 0px;
+     margin: 0px;
 }
 
 #thirdlevelnav div {
@@ -96,6 +96,7 @@ body {
      padding: 4px 8px 5px 10px;
      text-decoration: none;
      text-shadow: 0 1px #FFFFFF;
+    display: inline-block;
 }
 
 #thirdlevelnav div a:hover {
@@ -167,7 +168,7 @@ a img {
 
 #all {
      margin: 0 auto;
-     padding-right: 1px;
+     padding:0;
      position: relative;
      text-align: left;
      width: 980px;
@@ -438,7 +439,7 @@ ul.tabs li {
 #sections {
      right: 0px;
      position: absolute;
-     top: 59px;
+     top: 58px;
 }
 
 #taskbar {
@@ -687,7 +688,7 @@ ul.tabs li {
      -moz-box-shadow: 0 0 8px rgba(0, 0, 0, 0.3) inset;
     -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, 0.3) inset;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.3) inset;
-     margin: 0 4px 15px;
+     margin: 8px 4px 15px;
      padding: 20px;
      text-shadow: 0 1px white;
 }
@@ -720,9 +721,9 @@ ul.tabs li {
 
 
 .summary .division {
-     margin-bottom: 20px;
+     margin-bottom: 0px;
 }
-.summary .division h3 {margin-top: 0}
+.summary .division h3 {margin-top: 0; padding:  0; border-bottom: none;}
 
 /* A pane is a vertical subdivision of the page.
    Individual panes will need to have their widths specified
@@ -749,7 +750,7 @@ ul.tabs li {
      font-weight: normal;
      height: 36px;
      margin: 0;
-     padding: 5px 20px;
+     padding: 2px 20px;
      text-shadow: 0 1px white;
 }
 
