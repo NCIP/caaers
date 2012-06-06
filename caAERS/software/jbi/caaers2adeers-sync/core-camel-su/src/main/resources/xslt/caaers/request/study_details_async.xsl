@@ -183,6 +183,14 @@
             <xsl:variable name="_partOfLead" select="inds//ind/@lead = 'Yes'"  />
             <partOfLeadIND><xsl:value-of select="$_partOfLead" /></partOfLeadIND>
             <xsl:apply-templates select="inds" />
+
+            <!-- special case -->
+            <xsl:if test="not(inds/ind) and (parent::node()/commercialInvestigational/text() = 'Investigational') ">
+                <studyAgentINDAssociations>
+                    <stud:studyAgentINDAssociation>
+                    </stud:studyAgentINDAssociation>
+                </studyAgentINDAssociations>
+            </xsl:if>
         </stud:studyAgent>
     </xsl:template>
     <xsl:template match="inds">

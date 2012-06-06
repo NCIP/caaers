@@ -983,7 +983,7 @@
 <xs:complexContent>
 <xs:extension base="cct:MutableDomainObjectType">
 <xs:sequence>
-<xs:element ref="investigationalNewDrug"></xs:element>
+<xs:element minOccurs="0" ref="investigationalNewDrug"></xs:element>
 </xs:sequence>
 </xs:extension>
 </xs:complexContent>
@@ -1201,7 +1201,7 @@
 <xs:complexContent>
 <xs:extension base="cct:MutableDomainObjectType">
 <xs:sequence>
-<xs:element ref="investigationalNewDrug"></xs:element>
+<xs:element minOccurs="0" ref="investigationalNewDrug"></xs:element>
 </xs:sequence>
 </xs:extension>
 </xs:complexContent>
@@ -1380,7 +1380,7 @@
   </wsdl:binding>
   <wsdl:service name="StudyService">
     <wsdl:port binding="tns:StudyServiceSoapBinding" name="StudyManagementWebServicePort">
-      <soap:address location="https://dev.semanticbits.com/caaers/services//StudyService"></soap:address>
+      <soap:address location="https://dev.semanticbits.com/caaers/services/StudyService"></soap:address>
         <http-conf:client ReceiveTimeout="300000"/>
         <http-conf:client ConnectionTimeout="400000"/>
         <http-conf:client CacheControl="no-cache" />
