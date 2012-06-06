@@ -1,58 +1,58 @@
-.overlay_alphacube {
+.overlay_green {
 	background-color: #000000;
 	-moz-opacity: 0.6;
 	opacity: 0.6;
 }
 
-.alphacube_nw {
+.green_nw {
 	background: transparent url(../images/alphacube/left-top.gif) no-repeat 0 0;			
   width:10px;
   height:25px;
 }
 
-.alphacube_n {
+.green_n {
   background: transparent url(../images/alphacube/top-middle.gif) repeat-x 0 0;			
   height:25px;
 }
 
-.alphacube_ne {
+.green_ne {
   background: transparent url(../images/alphacube/right-top.gif) no-repeat 0 0;			
   width:10px;	  
   height:25px;
 }
 
-.alphacube_w {
+.green_w {
   background: transparent url(../images/alphacube/frame-left.gif) repeat-y top left;			
   width:7px;
 }
 
-.alphacube_e {
+.green_e {
   background: transparent url(../images/alphacube/frame-right.gif) repeat-y top right;			
   width:7px;	  
 }
 
-.alphacube_sw {
+.green_sw {
   background: transparent url(../images/alphacube/bottom-left-c.gif) no-repeat 0 0;			
   width:7px;
   height:7px;
 }
 
-.alphacube_s {
+.green_s {
   background: transparent url(../images/alphacube/bottom-middle.gif) repeat-x 0 0;			
   height:7px;
 }
 
-.alphacube_se, .alphacube_sizer  {
+.green_se, .green_sizer  {
   background: transparent url(../images/alphacube/bottom-right-c.gif) no-repeat 0 0;			
   width:7px;
   height:7px;
 }
 
-.alphacube_sizer {
+.green_sizer {
 	cursor:se-resize;	
 }
 
-.alphacube_close {
+.green_close {
 	width: 23px;
 	height: 23px;
 	background: transparent url(../images/alphacube/button-close-focus.gif) no-repeat 0 0;			
@@ -63,7 +63,7 @@
 	z-index:1000;
 }
 
-.alphacube_minimize {
+.green_minimize {
 	width: 23px;
 	height: 23px;
 	background: transparent url(../images/alphacube/button-min-focus.gif) no-repeat 0 0;			
@@ -74,7 +74,7 @@
 	z-index:1000;
 }
 
-.alphacube_maximize {
+.green_maximize {
 	width: 23px;
 	height: 23px;
 	background: transparent url(../images/alphacube/button-max-focus.gif) no-repeat 0 0;			
@@ -85,7 +85,7 @@
 	z-index:1000;
 }
 
-.alphacube_title {
+.green_title {
 	float:left;
 	height:14px;
 	font-size:14px;
@@ -95,7 +95,7 @@
 	color:#123456;
 }
 
-.alphacube_content {
+.green_content {
 	overflow:auto;
 	color: #000;
 	font-family: Lucida Sans Unicode, sans-serif;
@@ -103,7 +103,7 @@
 }
 
 /* For alert/confirm dialog */
-.alphacube_window {
+.green_window {
 	border:1px solid #F00;	
 	background: #FFF;
 	padding:20px;
@@ -112,19 +112,19 @@
 	width:400px;
 }
 
-.alphacube_message {
+.green_message {
   font: 12px Lucida Sans Unicode, sans-serif;
 	text-align:center;
 	width:auto;
 	padding: 20px;
 }
 
-.alphacube_buttons {
+.green_buttons {
 	text-align:center;
 	width:100%;
 }
 
-.alphacube_buttons input {
+.green_buttons input {
 	width:20%;
 	margin:10px;
     text-shadow: 0 -1px navy;
@@ -133,9 +133,9 @@
     border-radius: 30px;
 }
 
-.alphacube_buttons input:hover {background-image: none;background-color:  #3876c1}
+.green_buttons input:hover {background-image: none;background-color:  #3876c1}
 
-.alphacube_progress {
+.green_progress {
 	float:left;
 	margin:auto;
 	text-align:center;
@@ -144,7 +144,7 @@
 	background: #FFF url('../images/alphacube/progress.gif') no-repeat center center
 }
 
-.alphacube_wired_frame {
+.green_wired_frame {
 	background: #FFF;
 	-moz-opacity: 0.6;
 	opacity: 0.6;	
