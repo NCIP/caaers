@@ -63,6 +63,15 @@
         return popupDiv;
     }
 
+    function showSuccessPopup(_messageText) {
+        popupDiv = new Window({className:"alphacube", width:800, height:115, zIndex:100, resizable:true, recenterAuto:true, draggable:false, closable:true, minimizable:false, maximizable:false});
+        popupDiv.setContent("success_message");
+        jQuery("#_messageText").html(_messageText);
+        popupDiv.showCenter(true);
+        popupDiv.show();
+        return popupDiv;
+    }
+
     function showError(_errorMessage) {
 /*
         jQuery('#command_errors').html(_errorMessage);
@@ -97,7 +106,7 @@
                 var _s = "<img src='<c:url value="/images/orange-actions.gif" />' border='0' onmouseover='showMenuOptions(#{index}, \"#{action}\", \"#{fsid}\", \"#{ncic}\", \"#{studyId}\")' id='_study#{index}' style='cursor:pointer;'>";
                 _s = _s.interpolate({index:_index, action:"UPDATE", fsid:id, ncic:nciCode, studyId:_dbId})
                 jQuery('#studyLink' + _index).html(_s);
-                showFlashMessage(flashText);
+                showSuccessPopup(flashText);
             }
 
         });
@@ -236,6 +245,7 @@
 </c:if>
 <!--POPUPS-->
 <div id="please_wait" style="display: none;" class="info-box message" ><p><caaers:message code="LBL_please.wait" /><br><caaers:message code="LBL_study.in.process" /></p></div>
+<div id="success_message" style="display: none;" class="info-box message" ><p id="_messageTxt"></p></div>
 <div id="search_submit" class="info-box message" style="display: none;"><p><caaers:message code="LBL_please.wait" /><br><caaers:message code="LBL_study.searching" /></p></div>
 <div id="error_page" class="error-box message" style="display: none;"><p><caaers:message code="LBL_study.process.error" /><br><span id="_errorMessage">.</span></p></div>
 
