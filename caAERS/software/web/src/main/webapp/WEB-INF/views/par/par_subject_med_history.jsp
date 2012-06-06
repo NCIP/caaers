@@ -20,6 +20,9 @@
 		 	border : 0px;
 		 }
 
+        div.row div.label { width: 12em; color:black; font-size: 10pt;}
+        div.row div.value, div.row div.extra { margin-left: 13em; }
+
 	</style>
  	<tags:dwrJavascriptLink objects="createAE"/>
 	<script type="text/javascript">
@@ -265,7 +268,7 @@
 	<chrome:box id="assignment.general" title="General" collapsable="true">
 	   <p><tags:instructions code="instruction_subject_enter.medhist.gen"/></p>
 		<%--<tags:hasErrorsMessage path="assignment.baselinePerformance" />--%>
-		<a name="anchorGeneral" />
+		<a name="anchorGeneral"></a>
 		<div id="anchorGeneral">
 			<ui:row path="assignment.baselinePerformance">
 				<jsp:attribute name="label">
