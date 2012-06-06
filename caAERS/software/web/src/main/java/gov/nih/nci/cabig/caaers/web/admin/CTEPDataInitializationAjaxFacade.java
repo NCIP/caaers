@@ -118,6 +118,7 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
 		if(organizationsChecked) {
 			try {
 				proxyWebServiceFacade.syncOrganizations();
+				proxyWebServiceFacade.mergeOrganizations();
 				appendSynchSuccessMessage(sb, "Organizations");
 			} catch (Exception e) {
 				appendSynchFailureMessage(sb, "Organizations");
@@ -308,7 +309,7 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
     	if(serviceName.equalsIgnoreCase("GetLabsLOV")) return "lab";
     	if(serviceName.equalsIgnoreCase("SearchStudy")) return "study";
     	if(serviceName.equalsIgnoreCase("GetStudyDetails")) return "study";
-    	if(serviceName.equalsIgnoreCase("GetMergedOrganization")) return "organization";
+    	if(serviceName.equalsIgnoreCase("GetMergedOrganization")) return "mergedorganization";
     	if(serviceName.equalsIgnoreCase("GetAgentDoseUOMLOV")) return "agentDoseUOM";
 
         return null;

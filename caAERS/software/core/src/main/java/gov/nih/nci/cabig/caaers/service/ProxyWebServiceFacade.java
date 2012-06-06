@@ -78,6 +78,9 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
 	
 	public static final String SYNC_CTCAE_ENTITY_NAME="ctcae";
 	public static final String SYNC_CTCAE_OPERATION_NAME="getCTCAELOV";
+	
+	public static final String MERGED_ORG_ENTITY_NAME="mergedorganization";
+	public static final String MERGED_ORG_OPERATION_NAME="getMergedOrganization";
 
     private EventFactory eventFactory;
     private WebServiceTemplate webServiceTemplate;
@@ -204,6 +207,10 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
 
 	public String syncOrganizations() {
 		return send(SYNC_ORG_ENTITY_NAME, SYNC_ORG_OPERATION_NAME, false, buildCriteriaMap(null));
+	}
+	
+	public String mergeOrganizations() {
+		return send(MERGED_ORG_ENTITY_NAME, MERGED_ORG_OPERATION_NAME, false, buildCriteriaMap(null));
 	}
 
 	public String syncAgents() {

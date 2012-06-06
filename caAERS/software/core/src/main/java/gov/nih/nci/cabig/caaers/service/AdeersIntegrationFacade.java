@@ -88,5 +88,11 @@ public interface AdeersIntegrationFacade {
      * @return the correlation Id
      */
     String syncCTCAE();
+    
+    /**
+     * Will update caAERS merged organizations with AdEERS merged organizations.
+     * @return the correlation Id
+     */
+    String mergeOrganizations();
    
 }
