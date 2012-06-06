@@ -7,7 +7,7 @@
 <%@attribute name="preExistingCondition" type="gov.nih.nci.cabig.caaers.domain.PreExistingCondition"%>
 <%@attribute name="otherValue" type="java.lang.String"%>
 
-<chrome:division id="assignment.preExistingConditions[${index}]" collapsable="false" deleteParams="'preExistingCondition', ${index}, 'anchorPreExistingCondition', {}" enableDelete="true" collapsed="false">
+<chrome:division id="assignment.preExistingConditions[${index}]" collapsable="false" deleteParams="'preExistingCondition', ${index}, 'anchorPreExistingCondition', {}" enableDelete="true" collapsed="false" skipHeaderHTMLTag="true">
 
     <jsp:attribute name="title">
 		<c:out value="${not empty preExistingCondition.text ? preExistingCondition.text : otherValue }" />

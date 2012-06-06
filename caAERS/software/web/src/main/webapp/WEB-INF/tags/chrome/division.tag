@@ -14,6 +14,7 @@
 <%@attribute name="collapsable" required="false" %>
 <%@attribute name="collapsed" required="false" %>
 <%@attribute name="jsAction" required="false" %>
+<%@attribute name="skipHeaderHTMLTag" required="false"  %>
 
 <caaers:renderFilter elementID="${empty path ? 'dummyPath' : path}" uiType="DIVISION">
 <div class="division ${cssClass} <c:if test='${collapsable}'>COLLAPSABLE-DIVISION</c:if>" <tags:attribute name="id" value="${id}"/> <tags:attribute name="style" value="${style}"/>>
@@ -25,7 +26,7 @@
         </c:set>
 
         <c:if test="${enableDelete || collapsable}">
-			<h3>
+            <c:if test="${!skipHeaderHTMLTag}"><h3></c:if>
                 <table cellspacing="1" cellpadding="1" border="0" width="100%">
                     <tr>
                         <c:if test="${collapsable}"><td align="left"><a style="cursor:pointer;" href="javascript:SwitchCollapsableState('contentOf-${id}', '${id}')"><img id="image-${id}" src="<c:url value="/images/arrow-${collapsed ? 'right' : 'down'}.png" />" border="0" style="padding-right:5px;"/></a></td></c:if>
@@ -38,11 +39,12 @@
                          </c:if>
                     </tr>
                 </table>
-				</h3>
+                <c:if test="${!skipHeaderHTMLTag}"></h3></c:if>
            </c:if>
 
         <c:if test="${!enableDelete && !collapsable}">
-	   		<h3>${_title}</h3><jsp:invoke fragment="titleFragment" />
+            <c:if test="${!skipHeaderHTMLTag}"><h3></c:if>${_title}<c:if test="${!skipHeaderHTMLTag}"></h3></c:if>
+            <jsp:invoke fragment="titleFragment" />
 	   	</c:if>
 
     </c:if>

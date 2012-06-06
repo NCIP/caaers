@@ -9,7 +9,7 @@
 <%@attribute name="anatomicSite" type="gov.nih.nci.cabig.caaers.domain.AnatomicSite" required="true"%>
 <%@attribute name="metastaticSite" type="gov.nih.nci.cabig.caaers.domain.StudyParticipantMetastaticDiseaseSite" required="true"%>
 
- <chrome:division id="assignment.diseaseHistory.metastaticDiseaseSites[${index}]" collapsable="false" deleteParams="'metastaticDiseaseSite', ${index}, 'anchorMetastaticDiseases', {}" enableDelete="true" collapsed="false">
+ <chrome:division id="assignment.diseaseHistory.metastaticDiseaseSites[${index}]" collapsable="false" deleteParams="'metastaticDiseaseSite', ${index}, 'anchorMetastaticDiseases', {}" enableDelete="true" collapsed="false" skipHeaderHTMLTag="true">
 
 
     <jsp:attribute name="title">${metastaticSite.name}</jsp:attribute>
