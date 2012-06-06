@@ -193,7 +193,7 @@
              ‘Surgery’
              ‘Radiation’
      Error Code : PTY_BR4B_ERR
-     Error Message : CHEMO_AGENTS must be provided for the provided PRIOR_THERAPY value.
+     Error Message : CHEMO_AGENTS must not be provided for the provided PRIOR_THERAPY value.
      ============================================================================= -->
     <rule name="PTY_BR4B_CHK">
         <lhs>
@@ -211,8 +211,8 @@
 									"'Prior Therapy Agents' must not be provided if 'Prior_Therapy' is 'No prior therapy', 'Surgery' ,'Radiation therapy'",
 									 i).addFieldNames("aeReport.saeReportPriorTherapies[" + i + "]",
 									 	"aeReport.saeReportPriorTherapies[" + i + "].priorTherapyAgents",
-										"aeReport.saeReportPriorTherapies[" + i + "].priorTherapyAgents[0].chemoAgent",
-										"aeReport.saeReportPriorTherapies[" + i + "].priorTherapyAgents[0].chemoAgent.fullName");
+										"aeReport.saeReportPriorTherapies[" + i + "].priorTherapyAgents[0].agent",
+										"aeReport.saeReportPriorTherapies[" + i + "].priorTherapyAgents[0].agent.displayName");
 		                		}
 		               	   }
 		                }
