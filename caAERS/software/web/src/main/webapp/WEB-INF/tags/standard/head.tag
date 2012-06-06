@@ -38,7 +38,7 @@
 <!--[if lte IE 6]>
 <jwr:style src="/csslib/ie6.zcss" />
 <![endif]-->
-<>
+
 <link rel="stylesheet" type="text/css" media="screen" href="<c:url value="/css/pw_green.css" />"></link>
 
 <caaers:message var="_unsavedInfoMsg" code="${code}" text="There are unsaved changes." />
