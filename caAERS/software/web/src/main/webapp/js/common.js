@@ -961,6 +961,14 @@ function showTimerPopup(_elementId, _secondsToKeep) {
     setTimeout(function() {_hideTimerPopup(popupDiv)}, _secondsToKeep * 1000);
 }
 
+function showConfigurableTimerPopup(_elementId, _secondsToKeep, _w, _h, _r, _d, _c, _m, _mx) {
+    var popupDiv = new Window({className:"alphacube", width:_w, height:_h, zIndex:100, resizable:_r, recenterAuto:true, draggable:_d, closable:_c, minimizable:_m, maximizable:_mx});
+    popupDiv.setContent(_elementId);
+    popupDiv.showCenter(true);
+    popupDiv.show();
+    setTimeout(function() {_hideTimerPopup(popupDiv)}, _secondsToKeep * 1000);
+}
+
 function showMessagePopup(contentId) {
     popupDiv = new Window({className:"alphacube", width:500, height:125, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
     popupDiv.setContent(contentId);
