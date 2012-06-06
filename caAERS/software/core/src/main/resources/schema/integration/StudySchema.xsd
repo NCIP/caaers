@@ -353,7 +353,7 @@
         <xs:complexContent>
             <xs:extension base="cct:MutableDomainObjectType">     
                <xs:sequence>
-                    <xs:element ref="investigationalNewDrug"/>
+                    <xs:element ref="investigationalNewDrug" minOccurs="0"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -607,7 +607,7 @@
         <xs:complexContent>
             <xs:extension base="cct:MutableDomainObjectType">
                 <xs:sequence>
-                    <xs:element ref="investigationalNewDrug"/>
+                    <xs:element ref="investigationalNewDrug" minOccurs="0"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
