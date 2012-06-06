@@ -147,6 +147,23 @@ public class Fixtures {
         agent.getAgent().setName(agentName);
         return agent;
     }
+    
+    public static StudyAgentINDAssociation createStudyAgentIndAssociation(String number, String nciCode){
+        StudyAgentINDAssociation saa = new StudyAgentINDAssociation();
+        INDHolder holder = Fixtures.createOrganizationINDHolder(Fixtures.createOrganization(nciCode, nciCode));
+        InvestigationalNewDrug ind = createInvestigationalNewDrug(holder,number ) ;
+        saa.setInvestigationalNewDrug(ind);
+        return saa;
+    }
+
+
+    public static StudyDeviceINDAssociation createStudyDeviceIndAssociation(String number, String nciCode){
+        StudyDeviceINDAssociation saa = new StudyDeviceINDAssociation();
+        INDHolder holder = Fixtures.createOrganizationINDHolder(Fixtures.createOrganization(nciCode, nciCode));
+        InvestigationalNewDrug ind = createInvestigationalNewDrug(holder,number ) ;
+        saa.setInvestigationalNewDrug(ind);
+        return saa;
+    }
 
     public static StudyAgent createStudyAgent(String agentName, InvestigationalNewDrug ind, INDType indType){
 

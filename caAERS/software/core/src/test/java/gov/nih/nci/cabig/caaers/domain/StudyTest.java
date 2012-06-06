@@ -273,4 +273,21 @@ public class StudyTest extends TestCase {
         assertNull(study.findStudyAgentById(1));
     }
 
+
+    public void testIsNciIndStudy(){
+        assertFalse(study.isNciIndStudy());
+        StudyAgent sa  = Fixtures.createStudyAgent("x");
+        sa.addStudyAgentINDAssociation(Fixtures.createStudyAgentIndAssociation("6", "CTEP"));
+        study.addStudyAgent(sa);
+        assertTrue(study.isNciIndStudy());
+    }
+
+    public void testIsNciIdeStudy(){
+        assertFalse(study.isNciIdeStudy());
+        
+        StudyDevice sd = Fixtures.createStudyDevice(1);
+        sd.getStudyDeviceINDAssociations().add(Fixtures.createStudyDeviceIndAssociation("9", "DCP"));
+        study.addStudyDevice(sd);
+        assertTrue(study.isNciIdeStudy());
+    }
 }
