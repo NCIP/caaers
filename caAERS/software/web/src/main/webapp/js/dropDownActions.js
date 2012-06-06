@@ -64,11 +64,25 @@ function openUrl(_url) {
 
 function showDashboardSubjectsAssignmentsMenuOptions(_element, _roles, _subjectId, _studyId, _assignmentId) {
     var _el = jQuery(_element);
+
+    var _optionSubjectEdit = "";
+    var _optionSubjectMedicalHistory = "";
+    if (hasRole('registration_qa_manager') || hasRole('registration_qa_manager') || hasRole('subject_manager') || hasRole('registrar') || hasRole('data_reader')) {
+        _optionSubjectEdit = "<li><a class='submitter-blue' href='#' onclick='editSubjectDetails(" +_studyId + ", " + _subjectId + ")'>Edit Subject Details</a></li>";
+        _optionSubjectMedicalHistory = "<li><a class='submitter-blue' href='#' onclick='editMedicalHistory(" +_studyId + ", " + _subjectId + ", " + _assignmentId + ")'>Edit Medical History</a></li>";
+    }
+
+    var _optionEnterAdverseEvents = "";
+    if (hasRole('ae_reporter') || hasRole('data_reader')) _optionEnterAdverseEvents = "<li><a class='submitter-blue' href='#' onclick='enterAdverseEvents(" +_studyId + ", " + _subjectId + ")'>Enter Adverse Events</a></li>";
+
+    var _optionAssignToStudy = "";
+    if (hasRole('registrar')) _optionAssignToStudy = "<li><a class='submitter-blue' href='#' onclick='assignToStudy(" +_studyId + ", " + _subjectId + ")'>Assign to Study</a></li>";
+
     var html = "<div><ul style='font-family:tahoma;'>" +
-            "<li><a class='submitter-blue' href='#' onclick='editSubjectDetails(" +_studyId + ", " + _subjectId + ")'>Edit Subject Details</a></li>" +
-            "<li><a class='submitter-blue' href='#' onclick='editMedicalHistory(" +_studyId + ", " + _subjectId + ", " + _assignmentId + ")'>Edit Medical History</a></li>" +
-            "<li><a class='submitter-blue' href='#' onclick='enterAdverseEvents(" +_studyId + ", " + _subjectId + ")'>Enter Adverse Events</a></li>" +
-            "<li><a class='submitter-blue' href='#' onclick='assignToStudy(" +_studyId + ", " + _subjectId + ")'>Assign to Study</a></li>" +
+            _optionSubjectEdit +
+            _optionSubjectMedicalHistory +
+            _optionEnterAdverseEvents +
+            _optionAssignToStudy +
             "</ul></div>";
     _el.menu({
             content: html,
