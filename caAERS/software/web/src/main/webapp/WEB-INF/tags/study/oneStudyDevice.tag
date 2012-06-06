@@ -75,41 +75,46 @@
             <div class="label">Device type</div>
             <div class="value" id="study.studyDevices[${index}].device.autocompleter.type"><input id="study.studyDevices[${index}].device.autocompleter.type.i" type="text" size="30" value="${command.study.studyDevices[index].device.type}" disabled></div>
         </div>
-        
-        <div class="row" <c:if test = "${fn:length(command.study.studyDevices[index].studyDeviceINDAssociations) == 0}"> style="display:none" </c:if>>
-	        <div class="label">&nbsp; IND #  </div>
-	        <div class="value">
-		        <c:set var ="indVal" value=""/>
-		        <c:if test= "${not empty command.study.studyDevices[index].studyDeviceINDAssociations[0].investigationalNewDrug}">
-		          <c:set var ="indVal" value="${command.study.studyDevices[index].studyDeviceINDAssociations[0].investigationalNewDrug.indNumber}::${command.study.studyDevices[index].studyDeviceINDAssociations[0].investigationalNewDrug.holderName} "/>
-		        </c:if>
-		        
-		            <ui:autocompleter path="study.studyDevices[${index}].studyDeviceINDAssociations[0].investigationalNewDrug" initialDisplayValue="${indVal}"  size="40" title="Study Device IND" enableClearButton="true">
-		                          <jsp:attribute name="populatorJS">
-										function(autocompleter, text) {
-		         							createStudy.matchINDs(text, function(values) {
-		         							autocompleter.setChoices(values)
-		         						  })
-		        						}
-									</jsp:attribute>
-									<jsp:attribute name="selectorJS"> 
-							             function(ind) { 
-							        		return ind.strINDNo + '::' + ind.holderName; 
-							        	}
-							        </jsp:attribute>
-			                        <jsp:attribute name="optionsJS"> {
-			                                afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
-			                                    var propertyName = "study.studyDevices[${index}].studyDeviceINDAssociations[0].investigationalNewDrug";
-			                                    $(propertyName).value = selectedChoice.id;
-			
-			                                }
-			                            }
-			                         </jsp:attribute>
-		                      </ui:autocompleter>
-	        </div>
-    	</div>
-        <span id="_Device-IND-${index}"></span>
     </div>
+    <c:choose>
+    	<c:when test="${empty command.study.studyDevices[index].id || ( not empty command.study.studyDevices[index].id  and fn:length(command.study.studyDevices[index].studyDeviceINDAssociations)==0)}">
+	   		<span id="_Device-IND-${index}"></span>
+    	</c:when>
+    	<c:otherwise>
+    		 <div class="row" <c:if test = "${fn:length(command.study.studyDevices[index].studyDeviceINDAssociations) == 0}"> style="display:none" </c:if>>
+		        <div class="label">&nbsp; IND #  </div>
+		        <div class="value">
+			        <c:set var ="indVal" value=""/>
+			        <c:if test= "${not empty command.study.studyDevices[index].studyDeviceINDAssociations[0].investigationalNewDrug}">
+			          <c:set var ="indVal" value="${command.study.studyDevices[index].studyDeviceINDAssociations[0].investigationalNewDrug.indNumber}::${command.study.studyDevices[index].studyDeviceINDAssociations[0].investigationalNewDrug.holderName} "/>
+			        </c:if>
+			        
+			            <ui:autocompleter path="study.studyDevices[${index}].studyDeviceINDAssociations[0].investigationalNewDrug" initialDisplayValue="${indVal}"  size="40" title="Study Device IND" enableClearButton="true">
+			                          <jsp:attribute name="populatorJS">
+											function(autocompleter, text) {
+			         							createStudy.matchINDs(text, function(values) {
+			         							autocompleter.setChoices(values)
+			         						  })
+			        						}
+										</jsp:attribute>
+										<jsp:attribute name="selectorJS"> 
+								             function(ind) { 
+								        		return ind.strINDNo + '::' + ind.holderName; 
+								        	}
+								        </jsp:attribute>
+				                        <jsp:attribute name="optionsJS"> {
+				                                afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
+				                                    var propertyName = "study.studyDevices[${index}].studyDeviceINDAssociations[0].investigationalNewDrug";
+				                                    $(propertyName).value = selectedChoice.id;
+				
+				                                }
+				                            }
+				                         </jsp:attribute>
+			             </ui:autocompleter>
+		        </div>
+	    	</div>
+    </c:otherwise>
+    </c:choose>
 
     <c:set var="isReadonly" value="${!empty command.study.studyDevices[index].id and
                             (!empty command.study.studyDevices[index].device or
@@ -158,17 +163,14 @@
 	<td></td>
 	<td>
  		<div align="right">
- 			<tags:indicator id="_Device-IND-${index}_indicator" />
- 			<c:if test = "${empty command.study.studyDevices[index].id || ( not empty command.study.studyDevices[index].id  and fn:length(command.study.studyDevices[index].studyDeviceINDAssociations)==0)}">
-           		<tags:button color="blue" type="button" value="Add Other IND" size="small" icon="add" onclick="javascript:fireAction('addDeviceIND', ${index});"/>
+            <tags:indicator id="_Device-IND-${index}_indicator" />
+            <c:if test = "${empty command.study.studyDevices[index].id || ( not empty command.study.studyDevices[index].id  and fn:length(command.study.studyDevices[index].studyDeviceINDAssociations)==0)}">
+            	<tags:button color="blue" type="button" value="Add Other IND" size="small" icon="add" onclick="javascript:fireAction('addDeviceIND', ${index});"/>
             </c:if>
-        </div>	
+        </div>
+           
     </td>
 </tr>
-
-<tr><td>
-
-</td></tr>
 </table>
 </chrome:division>
 
