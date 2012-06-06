@@ -7,7 +7,7 @@ import org.springframework.beans.factory.InitializingBean;
 
 import java.util.Calendar;
 
-public class FileTracker implements InitializingBean {
+public class FileTracker implements InitializingBean, Processor {
     private String folder;
 
 
@@ -16,17 +16,15 @@ public class FileTracker implements InitializingBean {
     }
 
     public String fileURI(IntegrationLog.Stage s){
-        Calendar c = Calendar.getInstance();
-        String subFolder =  c.get(Calendar.YEAR)
-                + "/"
-                + (c.get(Calendar.MONTH) + 1)
-                +"/"
-                + c.get(Calendar.DAY_OF_MONTH)  ;
-
-        return "file://"+ folder +"/?fileName=" + subFolder + "/${in.header.c2a_entity}/${in.header.c2a_correlation_id}/"+ s.name() + ".xml";
+        return "file://"+ folder +"/?fileName=${date:now:yyyy}/${date:now:MM}/${date:now:dd}/${in.header.c2a_entity}/${in.header.c2a_correlation_id}/"+ s.name() + ".xml";
     }
 
     public void setFolder(String folder) {
         this.folder = folder;
     }
+
+	public void process(Exchange exchange) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 }
