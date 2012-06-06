@@ -355,6 +355,13 @@ public class DateValue implements Comparable<DateValue> {
     public boolean isEmpty() {
         return (this.getMonth() == 0 && this.getDay() == 0 && this.getDay() == 0);
     }
-    
-    
+
+    /* (non-Javadoc)
+    * @see java.lang.Object#toString()
+    */
+    public String toString() {
+        return String.format(format, month == null ? 0 : month, day == null ? 0 : day,
+                year == null ? 0 : year);
+    }
+
 }
