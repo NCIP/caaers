@@ -2467,16 +2467,19 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     }
     
     @Transient
-    public boolean isNCIIND(){
-    	for(StudyAgent sa : getStudyAgents()){
+    public boolean isNciIndStudy(){
+    	for(StudyAgent sa : getActiveStudyAgents()){
     		for(StudyAgentINDAssociation saia : sa.getStudyAgentINDAssociations()){
-    			if(saia.getInvestigationalNewDrug() != null && saia.getInvestigationalNewDrug().getINDHolder() != null && 
-    					saia.getInvestigationalNewDrug().getINDHolder() instanceof OrganizationHeldIND){
-    				Organization org = ((OrganizationHeldIND)saia.getInvestigationalNewDrug().getINDHolder()).getOrganization();
-    				if(org.getNciInstituteCode() != null && NCI_ORG_CODES.contains(org.getNciInstituteCode())){
-    					return true;
-    				}
-    			}
+                if(saia == null) continue;
+                InvestigationalNewDrug ind = saia.getInvestigationalNewDrug();
+                if(ind == null) continue;
+                if(ind.getINDHolder() == null) continue;
+                if(ind.getINDHolder() instanceof  OrganizationHeldIND){
+                    Organization org = ((OrganizationHeldIND)saia.getInvestigationalNewDrug().getINDHolder()).getOrganization();
+                    if(org == null) continue;
+                    if(org.getNciInstituteCode() == null) continue;
+                    if(NCI_ORG_CODES.contains(org.getNciInstituteCode())) return true;
+                }
     		}
     	}
     	
@@ -2485,20 +2488,23 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     
     
     @Transient
-    public boolean isNCIIDE(){
-    	for(StudyDevice sd : getStudyDevices()){
-    		for(StudyDeviceINDAssociation sdia : sd.getStudyDeviceINDAssociations()){
-    			if(sdia.getInvestigationalNewDrug() != null && sdia.getInvestigationalNewDrug().getINDHolder() != null && 
-    					sdia.getInvestigationalNewDrug().getINDHolder() instanceof OrganizationHeldIND){
-    				Organization org = ((OrganizationHeldIND)sdia.getInvestigationalNewDrug().getINDHolder()).getOrganization();
-    				if(org.getNciInstituteCode() != null && NCI_ORG_CODES.contains(org.getNciInstituteCode())){
-    					return true;
-    				}
-    			}
-    		}
-    	}
-    	
-    	return false;
+    public boolean isNciIdeStudy(){
+        for(StudyDevice sd : getActiveStudyDevices()){
+            for(StudyDeviceINDAssociation sdia : sd.getStudyDeviceINDAssociations()){
+                if(sdia == null) continue;
+                InvestigationalNewDrug ind = sdia.getInvestigationalNewDrug();
+                if(ind == null) continue;
+                if(ind.getINDHolder() == null) continue;
+                if(ind.getINDHolder() instanceof  OrganizationHeldIND){
+                    Organization org = ((OrganizationHeldIND) ind.getINDHolder()).getOrganization();
+                    if(org == null) continue;
+                    if(org.getNciInstituteCode() == null) continue;
+                    if(NCI_ORG_CODES.contains(org.getNciInstituteCode())) return true;
+                }
+            }
+        }
+
+        return false;
     }
     
     

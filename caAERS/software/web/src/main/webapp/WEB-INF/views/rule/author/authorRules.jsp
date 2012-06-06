@@ -811,7 +811,7 @@ div#createNew h3, div.section h3 {
 				                })
 
 			}
-			else if (selectedField.value == 'investigationalNewDrugIndicator') {
+			else if (selectedField.value == 'investigationalNewDrugIndicator' || selectedField.value == 'investigationalNewDeviceIndicator') {
 
 							var newId = validValueField.id; 
 							var spanId = newId + '.span';
@@ -1478,7 +1478,8 @@ div#createNew h3, div.section h3 {
 							</script>
                         </c:when>
                         <c:when
-							test='${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName eq "investigationalNewDrugIndicator"}'>
+							test='${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName eq "investigationalNewDrugIndicator" or
+							command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName eq "investigationalNewDeviceIndicator"}'>
                           <script type="text/javascript">
 
 														loadOrgs();
