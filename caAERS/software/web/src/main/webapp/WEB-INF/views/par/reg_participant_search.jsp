@@ -87,8 +87,7 @@
             {key:"select", label:"Select", sortable:true, resizeable:true, formatter: radioFormatter},
             {key:"primaryIdentifierValue", label:"Primary ID", sortable:true, resizeable:true},
             {key:"name", label:"Name", sortable:true, resizeable:true, formatter: nameFormatter},
-            {key:"studySubjectIdentifiersCSV", label:"Study Subject Identifiers", sortable:true, resizeable:true},
-            {key:"actions", label:"&nbsp;", sortable:true, resizeable:true, formatter: actionsFormatter}
+            {key:"studySubjectIdentifiersCSV", label:"Study Subject Identifiers", sortable:true, resizeable:true}
         ];
 
         var myFields = [
