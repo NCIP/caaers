@@ -64,12 +64,8 @@
     }
 
     function showSuccessPopup(_messageText) {
-        popupDiv = new Window({className:"alphacube", width:750, height:115, zIndex:100, resizable:true, recenterAuto:true, draggable:false, closable:true, minimizable:false, maximizable:false});
-        popupDiv.setContent("success_message");
         jQuery("#_messageText").html(_messageText);
-        popupDiv.showCenter(true);
-        popupDiv.show();
-        return popupDiv;
+        showConfigurableTimerPopup("success_message", 5, 750, 115, true, true, true, false, false);
     }
 
     function showError(_errorMessage) {
@@ -107,7 +103,8 @@
                 var _s = "<img src='<c:url value="/images/orange-actions.gif" />' border='0' onmouseover='showMenuOptions(#{index}, \"#{action}\", \"#{fsid}\", \"#{ncic}\", \"#{studyId}\")' id='_study#{index}' style='cursor:pointer;'>";
                 _s = _s.interpolate({index:_index, action:"UPDATE", fsid:id, ncic:nciCode, studyId:_dbId})
                 jQuery('#studyLink' + _index).html(_s);
-                showSuccessPopup(flashText);
+                var _p = showSuccessPopup(flashText);
+                hideSuccessPopup
             }
 
         });
