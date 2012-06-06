@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -329,7 +330,7 @@ public class StudyAgent extends StudyIntervention {
     @Transient
      public boolean isCTEPLead() {
         if(isRetired()) return false;
-        if(!getPartOfLeadIND()) return false;
+        if(BooleanUtils.isNotTrue(getPartOfLeadIND())) return false;
         if(getStudyAgentINDAssociations() == null || getStudyAgentINDAssociations().isEmpty()) return false;
         for(StudyAgentINDAssociation a : getStudyAgentINDAssociations())  {
            if(a.getInvestigationalNewDrug().getINDHolder() instanceof  OrganizationHeldIND) {
