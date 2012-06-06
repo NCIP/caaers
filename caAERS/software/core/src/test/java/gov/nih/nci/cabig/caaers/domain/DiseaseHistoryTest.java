@@ -43,6 +43,10 @@ public class DiseaseHistoryTest extends AbstractTestCase {
 
 
         studyParticipantMetastaticDiseaseSite = new StudyParticipantMetastaticDiseaseSite();
+        AnatomicSite as = new AnatomicSite();
+        as.setName("x");
+        studyParticipantMetastaticDiseaseSite.setOtherSite("test");
+        studyParticipantMetastaticDiseaseSite.setCodedSite(as);
         studyParticipantDiseaseHistory.addMetastaticDiseaseSite(studyParticipantMetastaticDiseaseSite);
 
 
@@ -146,7 +150,6 @@ public class DiseaseHistoryTest extends AbstractTestCase {
 
         assertNotNull(diseaseHistory.getMetastaticDiseaseSites().size());
 
-        assertEquals(studyParticipantDiseaseHistory.getMetastaticDiseaseSites().size(), diseaseHistory.getMetastaticDiseaseSites().size());
         assertEquals(studyParticipantDiseaseHistory.getMetastaticDiseaseSites().size(), diseaseHistory.getMetastaticDiseaseSites().size());
 
         assertFalse(diseaseHistory.getMetastaticDiseaseSites().isEmpty());
