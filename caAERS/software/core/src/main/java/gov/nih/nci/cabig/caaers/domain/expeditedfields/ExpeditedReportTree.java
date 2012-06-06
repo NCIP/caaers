@@ -122,6 +122,7 @@ public class ExpeditedReportTree extends PropertylessNode {
 
                         section(MEDICAL_DEVICE_SECTION,
 //                        	list("medicalDevices", getMessage("LBL_aeReport.medicalDevices.title", "MedicalDevice"),
+                            property("investigationalDeviceAdministered",getMessage("LBL_aeReport.investigationalDeviceAdministered", "Was an investigational device administered on this protocol?")),
                         	list("medicalDevices", "MedicalDevice",
                                         property("brandName", getMessage("LBL_aeReport.medicalDevices.brandName", "Brand name")),
                                         property("commonName", getMessage("LBL_aeReport.medicalDevices.commonName", "Common name")),

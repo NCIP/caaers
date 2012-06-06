@@ -216,8 +216,34 @@
 				
 				<expression>factResolver.assertFact(study,'gov.nih.nci.cabig.caaers.domain.StudyAgent','investigationalNewDrugIndicator','runTimeValue','runTimeOperator')</expression>
 				<grammer prefix=" Study Investigational new drug? " postfix="(Commercially Available Agent Only)"/>
-			</field>			
-			<field name="adeersReporting" display-uri="AdEERS Reporting">
+			</field>
+
+            <field name="investigationalNewDeviceIndicator" display-uri="IDE Holder">
+                <field-value>
+                    <input-type>autocompleter</input-type>
+                </field-value>
+                <operator name="==" display-uri="Equal To" readable-text="is "/>
+                <operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
+                <expression>factResolver.assertFact(study,'gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug','holderName','runTimeValue','runTimeOperator')</expression>
+                <grammer prefix=" Study Device IDE Holder " postfix="."/>
+            </field>
+            <field name="StudyDeviceIdeIndicator" display-uri="Investigational new device?" >
+                <field-value>
+                    <input-type>select</input-type>
+                </field-value>
+
+                <valid-value value="false" display-uri="No" readable-text="No "/>
+                <valid-value value="true" display-uri="Yes" readable-text="Yes "/>
+
+                <operator name="==" display-uri="Is " readable-text="Is"/>
+                <operator name="isOnly" display-uri="Is Only" readable-text="Is Only "/>
+
+                <expression>factResolver.assertFact(study,'gov.nih.nci.cabig.caaers.domain.StudyDevice','investigationalNewDeviceIndicator','runTimeValue','runTimeOperator')</expression>
+                <grammer prefix=" Study Investigational new device? " postfix="(Commercially Available Device Only)"/>
+            </field>
+
+
+            <field name="adeersReporting" display-uri="AdEERS Reporting">
 				<field-value>
 					<input-type>select</input-type>
 				</field-value>

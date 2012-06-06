@@ -308,10 +308,11 @@ function selectFieldChanged(fldSelectPath, fldRuleBindURLPath, fldRuleNamePath){
 		<caaers:message code="LBL_aeReport.medicalDevices.heading" var="_title" />
 		<chrome:box title="${_title}">
 		<div class="half">
-			   		 <rd:renderMandatoryFields key="MEDICAL_DEVICE_SECTION~MedicalDevices" startIndex="0" endIndex="10"/>
+			   		 <rd:renderMandatoryFields key="MEDICAL_DEVICE_SECTION~MedicalDevices" startIndex="0" endIndex="11"/>
 					 </div>
 			 	  <div class="half">
-			   		 <rd:renderMandatoryFields key="MEDICAL_DEVICE_SECTION~MedicalDevices" startIndex="11" />
+			   		 <rd:renderMandatoryFields key="MEDICAL_DEVICE_SECTION~MedicalDevices" startIndex="12" />
+                     <rd:renderMandatoryFields key="MEDICAL_DEVICE_SECTION" />
 			 	  </div>
 				  <br style="clear:both;"/>
 		</chrome:box>

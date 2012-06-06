@@ -72,7 +72,15 @@ public class StudyDevice extends StudyIntervention {
         lazyListHelper.add(StudyDeviceINDAssociation.class, new StudyDeviceChildInstantiateFactory<StudyDeviceINDAssociation>(this,StudyDeviceINDAssociation.class));
 
     }
-
+    /**
+     * Gets the investigational new device indicator.
+     *
+     * @return the investigational new device indicator
+     */
+    @Transient
+    public boolean getInvestigationalNewDeviceIndicator() {
+        return getStudyDeviceINDAssociations() != null && getStudyDeviceINDAssociations().size() > 0;
+    }
 
     /**
      * Gets the display name.

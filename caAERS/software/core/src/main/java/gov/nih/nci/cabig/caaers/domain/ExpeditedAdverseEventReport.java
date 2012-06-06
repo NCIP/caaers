@@ -12,19 +12,16 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.*;
 
+import javax.persistence.*;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.Parameter;
 import org.springframework.beans.BeanUtils;
 
  
@@ -43,6 +40,8 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
    
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -3747213703166595074L;
+    
+    private Boolean investigationalDeviceAdministered;
 	
 	/** The created at. */
 	private Timestamp createdAt;
@@ -617,6 +616,14 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
 
 
     ////// BEAN PROPERTIES
+    @Column(name="ide_administered")
+    public Boolean getInvestigationalDeviceAdministered() {
+        return investigationalDeviceAdministered;
+    }
+
+    public void setInvestigationalDeviceAdministered(Boolean investigationalDeviceAdministered) {
+        this.investigationalDeviceAdministered = investigationalDeviceAdministered;
+    }
 
     /**
      * Gets the assignment.
