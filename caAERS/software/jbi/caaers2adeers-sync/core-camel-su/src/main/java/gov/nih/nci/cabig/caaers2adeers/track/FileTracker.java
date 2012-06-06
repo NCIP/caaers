@@ -1,13 +1,9 @@
 package gov.nih.nci.cabig.caaers2adeers.track;
 
 
-import org.apache.camel.Exchange;
-import org.apache.camel.Processor;
 import org.springframework.beans.factory.InitializingBean;
 
-import java.util.Calendar;
-
-public class FileTracker implements InitializingBean, Processor {
+public class FileTracker implements InitializingBean {
     private String folder;
 
 
@@ -23,8 +19,4 @@ public class FileTracker implements InitializingBean, Processor {
         this.folder = folder;
     }
 
-	public void process(Exchange exchange) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
 }
