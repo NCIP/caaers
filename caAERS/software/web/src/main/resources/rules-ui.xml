@@ -276,6 +276,7 @@
                 <valid-value value="true" display-uri="Yes" readable-text="Yes "/>
                 <valid-value value="false" display-uri="No" readable-text="No "/>
                 <operator name="==" display-uri="Equal To" readable-text="is "/>
+                <operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
                 <expression>factResolver.assertFact(study,null,'nciIdeStudy','runTimeValue','runTimeOperator')</expression>
                 <grammer prefix=" IDE held by NCI " postfix="."/>
             </field>
