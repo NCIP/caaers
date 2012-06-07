@@ -1612,17 +1612,10 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     public List<StudyTherapy> getStudyTherapies() {
 
         List<StudyTherapy> therapies = new ArrayList<StudyTherapy>();
-        
-        if(isSurgeryPresent()) therapies.add(new StudyTherapy(this, StudyTherapyType.SURGERY));
-        if(isDevicePresent()) therapies.add(new StudyTherapy(this, StudyTherapyType.DEVICE));
-        if(isRadiationPresent()) therapies.add(new StudyTherapy(this, StudyTherapyType.RADIATION));
-        if(isBehavioralInterventionPresent()) therapies.add(new StudyTherapy(this, StudyTherapyType.BEHAVIORAL));
-        if(isDrugAdministrationPresent()) therapies.add(new StudyTherapy(this, StudyTherapyType.DRUG_ADMINISTRATION));
-        if(isDietaryInterventionPresent()) therapies.add(new StudyTherapy(this, StudyTherapyType.DIETARY_SUPPLEMENT));
-        if(isGeneticInterventionPresent()) therapies.add(new StudyTherapy(this, StudyTherapyType.GENETIC));
-        if(isGeneticInterventionPresent()) therapies.add(new StudyTherapy(this, StudyTherapyType.BIOLOGICAL_VACCINE));
-        if(isOtherInterventionPresent()) therapies.add(new StudyTherapy(this, StudyTherapyType.OTHER));
-        
+
+        for(StudyTherapyType t : StudyTherapyType.values())    {
+            if(hasTherapyOfType(t)) therapies.add(new StudyTherapy(this, t));
+        }
         return therapies;
     }
 
