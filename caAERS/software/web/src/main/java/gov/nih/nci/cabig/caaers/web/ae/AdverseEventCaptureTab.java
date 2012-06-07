@@ -176,9 +176,14 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         if(caaersFieldConfigurationManager.isFieldMandatory(TAB_NAME, "adverseEvents[].outcomes")){
         	outcomesMandatory = true;
         }
-        
         refData.put("outcomesMandatory", outcomesMandatory);
         
+        Boolean aeTermMandatory = false;
+        if(caaersFieldConfigurationManager.isFieldMandatory(TAB_NAME, "adverseEvents[].adverseEventCtcTerm.term")){
+            aeTermMandatory = true;
+        }
+        refData.put("aeTermMandatory", aeTermMandatory);
+
         //return super.referenceData(command);
         return refData;
     }

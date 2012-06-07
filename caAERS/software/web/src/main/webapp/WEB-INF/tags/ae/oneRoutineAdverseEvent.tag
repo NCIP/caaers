@@ -73,7 +73,8 @@
                 </div>
                 <div class="value">
                     <c:if test="${command.study.aeTerminology.term eq 'CTC'}">
-                    <ui:autocompleter path="adverseEvents[${index}].ctcTerm" initialDisplayValue="${command.adverseEvents[index].ctcTerm.fullName}">
+                    <ui:autocompleter path="adverseEvents[${index}].ctcTerm"  required="${aeTermMandatory}"
+                                      initialDisplayValue="${command.adverseEvents[index].ctcTerm.fullName}">
                         <jsp:attribute name="populatorJS">function(autocompleter, text) {
                             createAE.matchTerms(text, ${command.study.aeTerminology.ctcVersion.id}, '', 25, function(values) {
                                 autocompleter.setChoices(values);
@@ -94,8 +95,8 @@
 						</jsp:attribute>
                     </ui:autocompleter>
                 </c:if>
-                <c:if test="${command.study.aeTerminology.term eq 'MEDDRA'}">
-                    <ui:autocompleter path="adverseEvents[${index}].meddraTerm">
+                    <c:if test="${command.study.aeTerminology.term eq 'MEDDRA'}">
+                    <ui:autocompleter path="adverseEvents[${index}].meddraTerm"  required="${aeTermMandatory}" >
                         <jsp:attribute name="initialDisplayValue">
                             <c:if test="${command.adverseEvents[index].meddraTerm.fullName ne ''}">${command.adverseEvents[index].meddraTerm.fullName}</c:if>
                         </jsp:attribute>
