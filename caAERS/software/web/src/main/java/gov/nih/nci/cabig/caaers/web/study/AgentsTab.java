@@ -186,7 +186,7 @@ public class AgentsTab extends StudyTab {
     private InputFieldGroup createStudyDeviceINDFieldGroup(StudyCommand command, int studyDeviceIndex){
     	//based on the fact that UI only supports one IND field for a device, by default one field will be created.
     	 InputFieldGroup indFieldGroup = new DefaultInputFieldGroup("ind" + studyDeviceIndex);
-    	 InputField indField = InputFieldFactory.createAutocompleterField("study.studyDevices[" + studyDeviceIndex + "].studyDeviceINDAssociations[" + 0 + "].investigationalNewDrug", "IND #", false);
+    	 InputField indField = InputFieldFactory.createAutocompleterField("study.studyDevices[" + studyDeviceIndex + "].studyDeviceINDAssociations[" + 0 + "].investigationalNewDrug", "IDE #", false);
          indField.getAttributes().put(InputField.ENABLE_CLEAR, true);
          InputFieldAttributes.setSize(indField, 41);
          indFieldGroup.getFields().add(indField);
