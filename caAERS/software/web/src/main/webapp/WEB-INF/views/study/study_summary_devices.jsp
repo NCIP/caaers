@@ -11,8 +11,8 @@
         {key:"brandName", label:"Brand name", sortable:true, resizeable:true, minWidth:"150", maxWidth:"300"},
         {key:"commonName", label:"Common name", sortable:true, resizeable:true, minWidth:"200", maxWidth:"200"},
         {key:"deviceType", label:"Device type", sortable:true, resizeable:true, minWidth:"200", maxWidth:"200"},
-        {key:"ind_num", label:"IND #", sortable:true, resizeable:true, minWidth:"150", maxWidth:"300"},
-        {key:"inv_drug", label:"Investigational new drug?", sortable:true, resizeable:true, minWidth:"150", maxWidth:"300"}
+        {key:"ind_num", label:"IDE #", sortable:true, resizeable:true, minWidth:"150", maxWidth:"300"},
+        {key:"inv_drug", label:"Investigational new device?", sortable:true, resizeable:true, minWidth:"150", maxWidth:"300"}
     ];
 
     var devicesFields = [
