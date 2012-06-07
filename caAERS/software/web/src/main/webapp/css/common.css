@@ -1453,3 +1453,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffede5', end
 background: linear-gradient(top, #ffede5 0%,#ffbfa3 100%); /* W3C */
  }
 .error-box p{color:#9b4e36; font-size:15px; padding:20px 20px 20px 65px;font-style:italic;background:url(../images/error.png) 20px 50% no-repeat;}
+
+div.divisionText {
+    border-bottom: 1px dotted #CCCCCC;
+    margin-top: 0;
+    padding-bottom: 1px;
+    line-height: 23px;
+}

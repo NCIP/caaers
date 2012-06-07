@@ -27,6 +27,7 @@
 
         <c:if test="${enableDelete || collapsable}">
             <c:if test="${!skipHeaderHTMLTag}"><h3></c:if>
+            <c:if test="${skipHeaderHTMLTag}"><div class="divisionText"></c:if>
                 <table cellspacing="1" cellpadding="1" border="0" width="100%">
                     <tr>
                         <c:if test="${collapsable}"><td align="left"><a style="cursor:pointer;" href="javascript:SwitchCollapsableState('contentOf-${id}', '${id}')"><img id="image-${id}" src="<c:url value="/images/arrow-${collapsed ? 'right' : 'down'}.png" />" border="0" style="padding-right:5px;"/></a></td></c:if>
@@ -40,6 +41,7 @@
                     </tr>
                 </table>
                 <c:if test="${!skipHeaderHTMLTag}"></h3></c:if>
+                <c:if test="${skipHeaderHTMLTag}"></div></c:if>
            </c:if>
 
         <c:if test="${!enableDelete && !collapsable}">
