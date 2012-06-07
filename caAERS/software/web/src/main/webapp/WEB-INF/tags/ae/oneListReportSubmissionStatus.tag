@@ -21,7 +21,8 @@
 <c:set var="detailsEnabled" value="${(reportStatus eq 'COMPLETED') or (reportStatus eq 'INPROCESS') or (reportStatus eq 'FAILED') or (reportStatus eq 'WITHDRAW_FAILED') or (reportStatus eq 'AMENDED') }" />
 
 <c:if test="${detailsEnabled}">
-	<span class="${_statusCSS }">${lastVersion.statusAsString}</span> (<a href="javascript:showToolTip(($('_ctx_${theReport.id}').innerHTML), '${lastVersion.statusAsString}')"><caaers:message code="LBL_view.server.response" text="View response" /></a>)
+	<span class="${_statusCSS }"><c:if test="${reportStatus eq 'INPROCESS' or reportStatus eq 'COMPLETED' or reportStatus eq 'AMENDED'}">${lastVersion.statusAsString}</c:if></span>
+    (<a href="javascript:showToolTip(($('_ctx_${theReport.id}').innerHTML), '${lastVersion.statusAsString}')"><caaers:message code="LBL_view.server.response" text="View response" /></a>)
 	<div id="_table${theReport.id}"	style="position: absolute; display: none; width:400px; left: 520px;">
         <div id="_ctx_${theReport.id}">
         <c:choose>
