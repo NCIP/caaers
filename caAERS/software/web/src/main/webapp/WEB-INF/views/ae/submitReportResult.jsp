@@ -125,9 +125,7 @@
 
 					<c:if test="${exportOptionsCount > 0}">
 						<div style="text-align:right;">
-							<a id="export-menu" class="fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all">
-							<span class="ui-icon ui-icon-triangle-1-s"></span>
-							Export</a>
+                            <img id="export-menu" class="actionsButton" src='<c:url value="/images/orange-export.gif" />' border='0' style='cursor:pointer;'>
 						</div>
 					</c:if>
                         <div id="reportStatusRowId">
