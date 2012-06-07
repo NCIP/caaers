@@ -23,6 +23,11 @@ public abstract class AbstractEventListener   implements ApplicationListener {
     protected static final Log log = LogFactory.getLog(AbstractEventListener.class);
 
     public void preProcess(ApplicationEvent event){
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         if(eventMonitor !=  null){
             if(event instanceof AuthenticationSuccessEvent) {
                 correlationId = eventMonitor.addEvent(SecurityUtils.getUserLoginName(((AuthenticationSuccessEvent) event).getAuthentication()), "AUTHENTICATION");
