@@ -342,7 +342,6 @@ public class CreateAdverseEventAjaxFacade {
         if (participantId != null) {
             domainObjectQuery.filterByParticipant(participantId);
         }
-        domainObjectQuery.filterByStudyStatus(ignoreCompletedStudy);
         domainObjectQuery.filterByDataEntryStatus(true);
         List<StudyAjaxableDomainObject> studies = studySearchableAjaxableDomainObjectRepository.findStudies(domainObjectQuery);
         studies = RankBasedSorterUtils.sort(studies , text, new Serializer<StudyAjaxableDomainObject>(){

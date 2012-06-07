@@ -61,7 +61,6 @@ public class RuleAjaxFacade {
     	studyQuery.filterStudiesWithMatchingText(text);
     	studyQuery.joinStudyOrganization();
     	studyQuery.filterByDataEntryStatus(true);
-    	studyQuery.filterByNonAdministrativelyComplete();
     	studyQuery.filterBySponsorOrganizationId(Integer.parseInt(sponsorId));
     	List<Study> studies = searchStudies(studyQuery);
         studies = RankBasedSorterUtils.sort(studies , text, new Serializer<Study>(){
@@ -82,7 +81,6 @@ public class RuleAjaxFacade {
         StudyQuery studyQuery = new StudyQuery();
         studyQuery.filterStudiesWithMatchingText(text);
         studyQuery.filterByDataEntryStatus(true);
-        studyQuery.filterByNonAdministrativelyComplete();
         List<Study> studies = searchStudies(studyQuery);
         studies = RankBasedSorterUtils.sort(studies , text, new Serializer<Study>(){
             public String serialize(Study object) {
@@ -107,7 +105,6 @@ public class RuleAjaxFacade {
     	studyQuery.filterStudiesWithMatchingText(text);
     	studyQuery.joinStudyOrganization();
     	studyQuery.filterByDataEntryStatus(true);
-    	studyQuery.filterByNonAdministrativelyComplete();
     	studyQuery.filterByOrganizationId(Integer.parseInt(institutionId));
         List<Study> studies = searchStudies(studyQuery);
         studies = RankBasedSorterUtils.sort(studies , text, new Serializer<Study>(){

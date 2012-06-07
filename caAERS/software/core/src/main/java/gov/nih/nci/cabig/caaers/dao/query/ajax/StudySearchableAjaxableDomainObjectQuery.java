@@ -143,13 +143,6 @@ public class StudySearchableAjaxableDomainObjectQuery extends AbstractAjaxableDo
     }
 
 
-    public void filterByStudyStatus(boolean ignoreCompletedStudy) {
-        if (ignoreCompletedStudy) {
-            andWhere("study.status <> :" + STATUS);
-            setParameter(STATUS, Study.STATUS_ADMINISTRATIVELY_COMPLETE);
-        }
-    }
-    
     /**
      * If true, will return only QC completed studies.
      * @param ignoreNonQCedStudy

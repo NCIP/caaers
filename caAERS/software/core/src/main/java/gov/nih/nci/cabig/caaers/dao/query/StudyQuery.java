@@ -219,11 +219,6 @@ public class StudyQuery extends AbstractQuery {
         setParameter("ID", id);
     }
     
-    // s.status <> 'adminstratively complete'
-    public void filterByNonAdministrativelyComplete() {
-        andWhere("s.status <> '" + Study.STATUS_ADMINISTRATIVELY_COMPLETE + "'");
-    }
-
     // identifier
     public void filterByIdentifierValue(final String Identifiervalue) {
     	joinIdentifier();

@@ -54,18 +54,6 @@ public class StudyQueryTest extends TestCase{
 		assertEquals("wrong number of parameters", studyQuery.getParameterMap().size(), 3);
 	}
 	
-	public void testFilterByNonAdministrativelyComplete(){
-		StudyQuery studyQuery = new StudyQuery();
-		studyQuery.filterByNonAdministrativelyComplete();
-		assertEquals("wrong parsing for constructor",
-                "select  distinct s from Study s WHERE s.status <> 'Administratively Complete'", studyQuery
-                                .getQueryString());
-		
-		assertEquals("wrong number of parameters", studyQuery.getParameterMap().size(), 0);
-        
-		
-	}
-	
 	public void testFilterByIdentifierValue(){
 		StudyQuery studyQuery = new StudyQuery();
 		studyQuery.filterByIdentifierValue("idvalue");

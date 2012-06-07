@@ -132,7 +132,6 @@ public class StudyAjaxableDomainObjectRepositoryIntegrationTest extends CaaersDb
 
     public void testFilterStudiesByTrueStatus() {
         query = new StudySearchableAjaxableDomainObjectQuery();
-        query.filterByStudyStatus(true);
 
         List<StudySearchableAjaxableDomainObject> studyAjaxableDomainObjects = studySearchableAjaxableDomainObjectRepository.findStudies(query);
 
@@ -144,7 +143,6 @@ public class StudyAjaxableDomainObjectRepositoryIntegrationTest extends CaaersDb
 
     public void testFilterStudiesByFalseStatus() {
         query = new StudySearchableAjaxableDomainObjectQuery();
-        query.filterByStudyStatus(false);
 
         List<StudySearchableAjaxableDomainObject> studyAjaxableDomainObjects = studySearchableAjaxableDomainObjectRepository.findStudies(query);
 

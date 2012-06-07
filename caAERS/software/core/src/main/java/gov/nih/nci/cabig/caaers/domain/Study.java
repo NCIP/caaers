@@ -63,9 +63,6 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
 	/** The Constant serialVersionUID. */
 	protected static final long serialVersionUID = 2524271609924679883L;
 	
-	/** The Constant STATUS_ADMINISTRATIVELY_COMPLETE. */
-	public static final String STATUS_ADMINISTRATIVELY_COMPLETE = "Administratively Complete";
-    
     /** The Constant STATUS_ACTIVE. */
     public static final String STATUS_ACTIVE = "Active - Trial is open to accrual";
 
@@ -1612,7 +1609,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     public List<StudyTherapy> getStudyTherapies() {
 
         List<StudyTherapy> therapies = new ArrayList<StudyTherapy>();
-
+        
         for(StudyTherapyType t : StudyTherapyType.values())    {
             if(hasTherapyOfType(t)) therapies.add(new StudyTherapy(this, t));
         }
@@ -2468,13 +2465,13 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
                 if(ind == null) continue;
                 if(ind.getINDHolder() == null) continue;
                 if(ind.getINDHolder() instanceof  OrganizationHeldIND){
-                    Organization org = ((OrganizationHeldIND)saia.getInvestigationalNewDrug().getINDHolder()).getOrganization();
+    				Organization org = ((OrganizationHeldIND)saia.getInvestigationalNewDrug().getINDHolder()).getOrganization();
                     if(org == null) continue;
                     if(org.getNciInstituteCode() == null) continue;
                     if(NCI_ORG_CODES.contains(org.getNciInstituteCode())) return true;
-                }
+    				}
+    			}
     		}
-    	}
     	
     	return false;
     }
@@ -2483,7 +2480,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     @Transient
     public boolean getNciIdeStudy(){
         for(StudyDevice sd : getActiveStudyDevices()){
-            for(StudyDeviceINDAssociation sdia : sd.getStudyDeviceINDAssociations()){
+    		for(StudyDeviceINDAssociation sdia : sd.getStudyDeviceINDAssociations()){
                 if(sdia == null) continue;
                 InvestigationalNewDrug ind = sdia.getInvestigationalNewDrug();
                 if(ind == null) continue;
@@ -2493,11 +2490,11 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
                     if(org == null) continue;
                     if(org.getNciInstituteCode() == null) continue;
                     if(NCI_ORG_CODES.contains(org.getNciInstituteCode())) return true;
-                }
-            }
-        }
-
-        return false;
+    			}
+    		}
+    	}
+    	
+    	return false;
     }
     
     
