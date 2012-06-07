@@ -50,7 +50,7 @@
         var aeReportId = ${empty command.aeReport.id ? 'null' : command.aeReport.id}
 
         var AETerminologyVersionID = ${not empty command.assignment.studySite.study.aeTerminology.ctcVersion ? command.assignment.studySite.study.aeTerminology.ctcVersion.id : command.assignment.studySite.study.aeTerminology.meddraVersion.id}
-        var OtherMeddraTerminologyVersionID = ${not empty command.assignment.studySite.study.aeTerminology.ctcVersion ? command.assignment.studySite.study.otherMeddra.id : -1}
+        var OtherMeddraTerminologyVersionID = ${not empty command.assignment.studySite.study.aeTerminology.ctcVersion ? (not empty command.assignment.studySite.study.otherMeddra.id ? command.assignment.studySite.study.otherMeddra.id : -1 ): -1}
 
         var grades = ['NORMAL','MILD', 'MODERATE', 'SEVERE', 'LIFE_THREATENING', 'DEATH'];
 
