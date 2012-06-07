@@ -21,6 +21,7 @@ div.calendar {z-index : 10;}
   padding: 2px;          /* Make the buttons seem like they're pressing */
 }
 
+.calendar thead {background: none}
 
 .calendar thead .headrow .button { /* "<<", "<", ">", ">>" buttons have this class */
   text-align: center;    /* They are the navigation buttons */

@@ -11,14 +11,7 @@
        div.row div.value  {white-space:normal;}
 	   #studyDetails td.label { font-weight: bold; float: left; margin-left: 0.5em; margin-right: 0.5em; width:12em; padding: 1px; }
 
-       .yui-dt-label .yui-dt-sortable {
-           color: black;
-           text-decoration: none;
-           /*border: 1px solid #ACACAC;*/
-                      padding: 3px 7px;
-                      text-shadow: 0 1px white;
 
-       }
 
        #agentsTableDiv table {
 /*
@@ -29,14 +22,11 @@
 */
        }
 
-       th.yui-dt-resizeable .yui-dt-resizerliner .yui-dt-liner a:hover {
-           color:black;
-       }
+
 
        th.yui-dt-resizeable .yui-dt-resizerliner .yui-dt-liner {
 
-           background: url("../../images/table/tablecontent_header.jpg") repeat-x scroll center center transparent;
-           border: 1px solid #000;
+
            padding: 2px 2px;
            text-shadow: 0 1px white;
 

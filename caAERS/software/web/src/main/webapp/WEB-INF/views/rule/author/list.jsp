@@ -8,7 +8,6 @@
 
         th.yui-dt-resizeable .yui-dt-resizerliner .yui-dt-liner {
             position: relative;
-            background: #3882c1 url(<c:url value="/images/table/yui-datatable_header.jpg" />) repeat-x top;
             font-size: 13px;
             font-weight: bold;
             margin: 0px;

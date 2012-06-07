@@ -78,7 +78,9 @@
       #main {
           text-align: center;
           text-shadow: 0 2px 3px black;
+      background: none;-moz-box-shadow: none; -webkit-box-shadow: none; box-shadow: none;
       }
+
 
       input.required[type="text"], input.required[type="password"], select.required, textarea.required {
           -moz-box-shadow: 0 2px 4px black;
