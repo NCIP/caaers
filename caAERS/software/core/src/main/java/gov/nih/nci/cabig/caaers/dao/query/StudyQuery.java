@@ -109,13 +109,11 @@ public class StudyQuery extends AbstractQuery {
     }
     
     public void joinOtherIntervention() {
-
-        leftOuterJoin("s.otherInterventions as i");
-
+        leftOuterJoin("s.otherInterventionsInternal as i");
     }
     
     public void joinDeviceIntervention() {
-        leftOuterJoin("s.studyDevices as d");
+        leftOuterJoin("s.studyDevicesInternal as d");
 
     }
     
@@ -125,8 +123,8 @@ public class StudyQuery extends AbstractQuery {
     }
     
     public void joinStudyIntervention() {
-        leftOuterJoin("s.studyDevices as d");
-        leftOuterJoin("s.otherInterventions as i");
+        leftOuterJoin("s.studyDevicesInternal as d");
+        leftOuterJoin("s.otherInterventionsInternal as i");
         leftOuterJoin("s.studyAgentsInternal as sai");
     }
     
