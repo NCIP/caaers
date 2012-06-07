@@ -84,8 +84,8 @@ public class AgentSpecificAdverseEventListServiceImpl implements AgentSpecificAd
                 }
             }
 
-            if (action.equals(AgentSpecificTerm.EXPTECTED_AE_DELETED)) return;
-
+            if (action.equals(AgentSpecificTerm.EXPTECTED_AE_DELETED) || !at.isExpected()) return;
+            
             ExpectedAECtcTerm aeT = new ExpectedAECtcTerm();
             aeT.setStudy(s);
             aeT.setCtcTerm(t);
@@ -104,7 +104,7 @@ public class AgentSpecificAdverseEventListServiceImpl implements AgentSpecificAd
                 }
             }
 
-            if (action.equals(AgentSpecificTerm.EXPTECTED_AE_DELETED)) return;
+            if (action.equals(AgentSpecificTerm.EXPTECTED_AE_DELETED) || !at.isExpected()) return;
 
             ExpectedAEMeddraLowLevelTerm aeT = new ExpectedAEMeddraLowLevelTerm();
             aeT.setStudy(s);
