@@ -121,4 +121,15 @@ public class CreateStudyController extends StudyController<StudyCommand> {
         return mv;
     }
 
+    @Override
+    protected StudyCommand save(StudyCommand command, Errors errors) {
+        StudyCommand c = super.save(command, errors);
+        if(errors.hasErrors()) return c;
+        // Fire the event for re-indexing
+        if (command.isMustFireEvent()) {
+            if (getEventFactory() != null) getEventFactory().publishEntityModifiedEvent(command.getStudy());
+            command.setMustFireEvent(false);
+        }
+        return c;
+    }
 }
