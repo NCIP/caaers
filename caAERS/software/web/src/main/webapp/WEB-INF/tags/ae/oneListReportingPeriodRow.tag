@@ -8,22 +8,44 @@
 
 <script>
 	Event.observe(window, "load", function(){
+/*
 		$('actions-${reportingPeriod.id}').observe('click' , function(clickEvent){
 			Event.stop(clickEvent);//to prevent it from expanding/collapsing the box
 		});
+*/
 	});
 	
 	function executeReportingPeriodActions(id){
+/*
 		var sbox = $("actions-" + id);
 		if(sbox.value == 'editReportingPeriod'){
-			if(confirm('Are you sure you want to take the action - Edit Adverse Events ?')){
-				var url = '<c:url value="/pages/ae/reviewResolver?participant=${command.participant.id}&study=${command.study.id}&adverseEventReportingPeriod=' + id + '"/>';
-				window.location = url;
-			}else{
-				return false;
-			}
-		} 
+*/
+        if (confirm('Are you sure you want to take the action - Edit Adverse Events ?')) {
+            var url = '<c:url value="/pages/ae/reviewResolver?participant=${command.participant.id}&study=${command.study.id}&adverseEventReportingPeriod=' + id + '"/>';
+            window.location = url;
+        } else {
+            return false;
+        }
+//		}
 	}
+
+    function showAEMenuOptions(_element, _rpid) {
+        _items = "<li><a class='submitter-blue' href='#' onclick='executeReportingPeriodActions(" + _rpid + ")'>Edit Adverse Events</a></li>";
+        var html = "<div><ul style='font-family:tahoma;'>" + _items + "</ul></div>";
+        jQuery(_element).menu({
+                content: html,
+                maxHeight: 180,
+                width: 230,
+                positionOpts: {
+                    directionV: 'down',
+                    posX: 'left',
+                    posY: 'bottom',
+                    offsetX: 0,
+                    offsetY: 0
+                },
+                showSpeed: 300
+            });
+    }
 	
 </script>
 
@@ -38,10 +60,13 @@
 	<td width="10%" onclick="expandImageClick('collapseElement${reportingPeriod.id}', 'table${reportingPeriod.id}');">${fn:length(reportingPeriod.evaluatedAdverseEvents)}</td>
 	<td align="left" onclick="expandImageClick('collapseElement${reportingPeriod.id}', 'table${reportingPeriod.id}');"><span class="${reportingPeriod.reportStatus eq 'Reports Due' ? 'reportsDue' : reportingPeriod.reportStatus eq 'Report Submission Failed' ? 'reportsFailed' : reportingPeriod.reportStatus eq 'Reports Completed' ? 'reportsCompleted' : reportingPeriod.reportStatus eq 'Reports Overdue' ? 'reportsOverdue' : 'reportsNone' }" >${reportingPeriod.reportStatus}</span></td>
 	<td width="20%" align="center" onclick="expandImageClick('collapseElement${reportingPeriod.id}', 'table${reportingPeriod.id}');">
+        <img src='<c:url value="/images/orange-actions.gif" />' border='0' onmouseover='showAEMenuOptions(this, ${reportingPeriod.id})' style='cursor:pointer;'>
+<%--
         <SELECT style="" id="actions-${reportingPeriod.id}" name="actions" onChange="javascript:executeReportingPeriodActions(${reportingPeriod.id})" >
 				<OPTION selected value="none">Please select</OPTION>
 		     	<OPTION value="editReportingPeriod">Edit Adverse Events</OPTION>
 		</SELECT>
+--%>
 	</td>
 </tr>
 

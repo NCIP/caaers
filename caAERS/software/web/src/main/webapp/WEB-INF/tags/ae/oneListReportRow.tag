@@ -25,7 +25,7 @@
     }
 
     function createDropDowns() {
-        jQuery(".fg-button").each(function() {
+        jQuery(".actionsButton").each(function() {
             id = jQuery(this).attr("id");
             options = "options-" + id;
             jQuery("#"+id).menu({
@@ -75,7 +75,8 @@
 		<td width="20%" id="action${report.id}" align="center">
 
             <div style="text-align:right;">
-                <a id="actions-menu-${report.id}" class="submitter fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all"><span class="ui-icon ui-icon-triangle-1-s"></span><span style="color:white">Actions</span></a>
+                <img id="actions-menu-${report.id}" class="actionsButton" src='<c:url value="/images/orange-actions.gif" />' border='0' style='cursor:pointer;'>
+                <%--<a id="actions-menu-${report.id}" class="submitter fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all"><span class="ui-icon ui-icon-triangle-1-s"></span><span style="color:white">Actions</span></a>--%>
             </div>
             <div id="options-actions-menu-${report.id}" style="display: none;">
                 <ul>
