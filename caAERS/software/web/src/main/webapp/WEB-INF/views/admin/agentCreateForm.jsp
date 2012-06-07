@@ -59,12 +59,12 @@
             </div>
 
             <c:set var="_visible" value="${command.terminology.code == 1 and command.ctcVersion.id > 0 or command.terminology.code == 2 and command.meddraVersion.id > 0}" />
-
+			<input type="hidden" name="_finish" />
 <%--
             <div id="_BUTTON" style="display:${_visible ? '' : 'none'}">
                 <tags:button color="blue" size="small" value="Change terminology" onclick="changeTerminology()"/>
             </div>
---%>
+
 
             <div id="_ALL" style="display:${_visible ? '' : 'none'}">
 
@@ -82,8 +82,16 @@
             <tags:table bgColor="#cccccc" contentID="asael_">
                 <table id="termsTable" width="100%" border="0" cellspacing="1" cellpadding="3">
                     <tr bgcolor="#E4E4E4">
-                        <th scope="col" align="left" colspan="2"><b>Terminology</b></th>
-                        <th scope="col" align="left" colspan="2"><b>Term</b></th>
+                        <th scope="col" align="left" width="10%"><b>Terminology</b></th>
+                        <th scope="col" align="left" width="26%"><b>Term</b></th>
+                        <th scope="col" align="left" width="8%"><b>Grade 1</b></th>
+                        <th scope="col" align="left" width="8%"><b>Grade 2</b></th>
+                        <th scope="col" align="left" width="8%"><b>Grade 3</b></th>
+                        <th scope="col" align="left" width="8%"><b>Grade 4</b></th>
+                        <th scope="col" align="left" width="8%"><b>Grade 5</b></th>
+                        <th scope="col" align="left" width="8%"><b>Expected (yes/no)</b></th>
+                        <th scope="col" align="left" width="9%"><b>Overall % expected</b></th>
+                        <th width="7%">&nbsp;</th>
                     </tr>
                     <c:forEach items="${command.agentSpecificTerms}" var="agentTerm" varStatus="status">
                         <c:if test="${!agentTerm.deleted}">
@@ -98,7 +106,7 @@
                  <tr id="observedBlankRow" style="display:none;"><td></td></tr>
                 </table>
             </tags:table>
-            </div>
+            </div>--%>
             
         </chrome:division>
 

@@ -7,6 +7,10 @@ import gov.nih.nci.cabig.caaers.utils.AgentSpecificTermSorter;
 import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang.StringUtils;
+import org.springframework.web.util.WebUtils;
+
 import java.util.ArrayList;
 
 /*
@@ -45,8 +49,13 @@ public class AgentEditController extends AgentController {
                 c.setTerminology(Term.MEDDRA);
                 c.setMeddraVersion(meddraVersionDao.getById(t.getTerm().getMeddraVersion().getId()));
             }
-        } else {
-            
+        } else if(WebUtils.hasSubmitParameter(request, "terminologyName")){
+        	c.setTerminology(Term.valueOf(request.getParameter("terminologyName")));
+            c.setCtcVersion(ctcDao.getById(Integer.parseInt(request.getParameter("terminologyId"))));
+        }
+        
+        if(WebUtils.hasSubmitParameter(request, "showSuccessMessage")){
+        	request.setAttribute("flashMessage", "Information saved successfully");
         }
 
         return c;
