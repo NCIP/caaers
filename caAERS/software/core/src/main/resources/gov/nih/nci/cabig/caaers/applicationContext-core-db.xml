@@ -19,7 +19,7 @@
         p:maxActive="10" p:maxIdle="2"
         p:maxWait="180000"
         p:removeAbandoned="true"
-        p:removeAbandonedTimeout="300"
+        p:removeAbandonedTimeout="1200"
         p:logAbandoned="true"
         p:testWhileIdle="true"
         p:testOnReturn="true"
@@ -27,7 +27,7 @@
         p:minEvictableIdleTimeMillis="600000"
         p:url="s[datasource.url]"
         p:username="s[datasource.username]"
-        p:password="s[datasource.password]" />
+        p:password="s[datasource.password]"/>
         
          
        <bean id="csmDataSource" class="gov.nih.nci.cabig.caaers.tools.spring.DeferredLoadingFactoryBean">
