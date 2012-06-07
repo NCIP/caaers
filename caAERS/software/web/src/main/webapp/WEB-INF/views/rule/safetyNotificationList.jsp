@@ -52,10 +52,8 @@
             nfAction: "<select id='action-id' onChange=\"javascript:handleAction(this, '${nf.id}')\">" +
                         "<option value=\"\">Please select</option>" +
                         "<option value=\"\">View/Edit</option>" +
-                        <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.Rule:CREATE">
-                        "<option value=\"\">Export</option>" +
-                        </csmauthz:accesscontrol>
                       "</select>"
+            <%--nfAction: "<span id='studyLink${nf.id}'><img src='<c:url value="/images/orange-import.gif" />' border='0' onclick='handleEditAction(\"${nf.id}\")' id='_study${nf.id}' style='cursor: pointer;'></span>"--%>
         }
         <c:if test="${!status.last}">,</c:if>
         </c:forEach>
@@ -71,7 +69,7 @@
                 var myColumnDefs = [
                     {key:"nfName",              label:"Name",               sortable:true,      resizeable:true},
                     {key:"nfStudy",             label:"Study",              sortable:true,      resizeable:true},
-                    {key:"nfAction",            label:"Action",             sortable:false,     resizeable:true}
+                    {key:"nfAction",            label:"",             		sortable:false,     resizeable:false}
                 ];
 
                 var activeDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.notifications.slice(0,50));
@@ -97,6 +95,11 @@
         });
 
         /////////////////////////////////
+        
+        <%-- function handleEditAction(id){
+        	var url = '<c:url value="/pages/rule/editSafetyNotifiction?id=" />' + id;
+            window.location = url;
+        } --%>
 
         function handleAction(selectElement, id){
             var action = selectElement.options[selectElement.selectedIndex].text;
