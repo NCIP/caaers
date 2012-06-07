@@ -465,13 +465,14 @@ public class AdverseEventReportSerializer {
 	   }
 	   
 	   private SurgeryIntervention getSurgeryIntervention(SurgeryIntervention surgeryIntervention) throws Exception{
-           if (surgeryIntervention.getStudySurgery() == null) return null;
-		   SurgeryIntervention s = new SurgeryIntervention();
-		   OtherIntervention oi = new OtherIntervention();
-           oi.setId(surgeryIntervention.getStudySurgery().getId());
-           oi.setName(surgeryIntervention.getStudySurgery().getName());
-           oi.setDescription(surgeryIntervention.getStudySurgery().getDescription());
-           s.setStudySurgery(oi);
+           SurgeryIntervention s = new SurgeryIntervention();
+           if (surgeryIntervention.getStudySurgery() != null){
+               OtherIntervention oi = new OtherIntervention();
+               oi.setId(surgeryIntervention.getStudySurgery().getId());
+               oi.setName(surgeryIntervention.getStudySurgery().getName());
+               oi.setDescription(surgeryIntervention.getStudySurgery().getDescription());
+               s.setStudySurgery(oi);
+           }
 		   s.setId(surgeryIntervention.getId());
 		   s.setTreatmentArm(surgeryIntervention.getTreatmentArm());
 		   s.setDescription(surgeryIntervention.getDescription());
@@ -486,27 +487,31 @@ public class AdverseEventReportSerializer {
 
 	   
 	   private MedicalDevice getMedicalDevice(MedicalDevice medicalDevice) throws Exception {
-           if (medicalDevice.getStudyDevice() == null) return null;
+           StudyDevice studyDevice = null;
+           if (medicalDevice.getStudyDevice() != null){
+               studyDevice = new StudyDevice();
+               if (!medicalDevice.getStudyDevice().isOtherDevice()) {
+                   Device device = new Device();
+                   device.setBrandName(medicalDevice.getBrandName());
+                   device.setCommonName(medicalDevice.getCommonName());
+                   device.setType(medicalDevice.getDeviceType());
+                   studyDevice.setDevice(device);
+               } else {
+                   studyDevice.setOtherBrandName(medicalDevice.getBrandName());
+                   studyDevice.setOtherCommonName(medicalDevice.getCommonName());
+                   studyDevice.setOtherDeviceType(medicalDevice.getDeviceType());
+               }
 
-           StudyDevice studyDevice = new StudyDevice();
-           if (!medicalDevice.getStudyDevice().isOtherDevice()) {
-               Device device = new Device();
-               device.setBrandName(medicalDevice.getBrandName());
-               device.setCommonName(medicalDevice.getCommonName());
-               device.setType(medicalDevice.getDeviceType());
-               studyDevice.setDevice(device);
-           } else {
-               studyDevice.setOtherBrandName(medicalDevice.getBrandName());
-               studyDevice.setOtherCommonName(medicalDevice.getCommonName());
-               studyDevice.setOtherDeviceType(medicalDevice.getDeviceType());
+
+               studyDevice.setManufacturerName(medicalDevice.getManufacturerName());
+               studyDevice.setManufacturerCity(medicalDevice.getManufacturerCity());
+               studyDevice.setManufacturerState(medicalDevice.getManufacturerState());
+               studyDevice.setModelNumber(medicalDevice.getModelNumber());
+               studyDevice.setCatalogNumber(medicalDevice.getCatalogNumber());
            }
 
+
            MedicalDevice m = new MedicalDevice(studyDevice);
-		   studyDevice.setManufacturerName(medicalDevice.getManufacturerName());
-		   studyDevice.setManufacturerCity(medicalDevice.getManufacturerCity());
-		   studyDevice.setManufacturerState(medicalDevice.getManufacturerState());
-		   studyDevice.setModelNumber(medicalDevice.getModelNumber());
-		   studyDevice.setCatalogNumber(medicalDevice.getCatalogNumber());
            m.setId(medicalDevice.getId());
            m.setBrandName(medicalDevice.getBrandName());
 		   m.setCommonName(medicalDevice.getCommonName());
@@ -533,14 +538,15 @@ public class AdverseEventReportSerializer {
 	   }
 	   
 	   private RadiationIntervention getRadiationIntervention(RadiationIntervention ri) throws Exception {
-           if (ri.getStudyRadiation() == null) return null;
-           OtherIntervention oi = new OtherIntervention();
-           oi.setId(ri.getStudyRadiation().getId());
-           oi.setName(ri.getStudyRadiation().getName());
-           oi.setDescription(ri.getStudyRadiation().getDescription());
-		   RadiationIntervention radiationIntervention = new RadiationIntervention();
-           radiationIntervention.setStudyRadiation(oi);
-           
+           RadiationIntervention radiationIntervention = new RadiationIntervention();
+           if (ri.getStudyRadiation() != null){
+                OtherIntervention oi = new OtherIntervention();
+                oi.setId(ri.getStudyRadiation().getId());
+                oi.setName(ri.getStudyRadiation().getName());
+                oi.setDescription(ri.getStudyRadiation().getDescription());
+                radiationIntervention.setStudyRadiation(oi);
+           }
+
 		   try {
 			   radiationIntervention.setId(ri.getId());
 			   radiationIntervention.setDosage(ri.getDosage());
