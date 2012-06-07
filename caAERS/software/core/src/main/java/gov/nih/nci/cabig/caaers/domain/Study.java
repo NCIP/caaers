@@ -2467,7 +2467,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     }
     
     @Transient
-    public boolean isNciIndStudy(){
+    public boolean getNciIndStudy(){
     	for(StudyAgent sa : getActiveStudyAgents()){
     		for(StudyAgentINDAssociation saia : sa.getStudyAgentINDAssociations()){
                 if(saia == null) continue;
@@ -2488,7 +2488,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     
     
     @Transient
-    public boolean isNciIdeStudy(){
+    public boolean getNciIdeStudy(){
         for(StudyDevice sd : getActiveStudyDevices()){
             for(StudyDeviceINDAssociation sdia : sd.getStudyDeviceINDAssociations()){
                 if(sdia == null) continue;

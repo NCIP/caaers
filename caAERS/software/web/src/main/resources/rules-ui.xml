@@ -250,6 +250,7 @@
 				<valid-value value="true" display-uri="Yes" readable-text="Yes "/>
 				<valid-value value="false" display-uri="No" readable-text="No "/>
 				<operator name="==" display-uri="Equal To" readable-text="is "/>
+                <operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
 				<expression>factResolver.assertFact(study,null,'adeersReporting','runTimeValue','runTimeOperator')</expression>
 				<grammer prefix=" AdEERS Reporting " postfix="."/>
 			</field>
@@ -262,6 +263,7 @@
                 <valid-value value="true" display-uri="Yes" readable-text="Yes "/>
                 <valid-value value="false" display-uri="No" readable-text="No "/>
                 <operator name="==" display-uri="Equal To" readable-text="is "/>
+                <operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
                 <expression>factResolver.assertFact(study,null,'nciIndStudy','runTimeValue','runTimeOperator')</expression>
                 <grammer prefix=" IND held by NCI " postfix="."/>
             </field>
