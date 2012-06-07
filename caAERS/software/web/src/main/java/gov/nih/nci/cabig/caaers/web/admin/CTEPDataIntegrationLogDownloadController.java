@@ -103,11 +103,12 @@ public class CTEPDataIntegrationLogDownloadController extends AbstractController
         Calendar c = Calendar.getInstance();
         c.setTime(d);
 
-        String subFolder = c.get(Calendar.YEAR)
-                + "/"
-                + (c.get(Calendar.MONTH) + 1)
-                + "/"
-                + c.get(Calendar.DAY_OF_MONTH);
+        String subFolder = DateUtils.formatDate(d, "yyyy") +
+                File.pathSeparator +
+                DateUtils.formatDate(d,"MM") +
+                File.pathSeparator +
+                DateUtils.formatDate(d, "dd");
+
 
 
         File tempFile = null;
