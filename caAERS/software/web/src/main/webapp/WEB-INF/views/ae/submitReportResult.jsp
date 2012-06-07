@@ -26,9 +26,14 @@
         		
         	}
         	
-        	
+            function refreshThePage() {
+                jQuery("#_target").attr("name", "_target2");
+                jQuery("#_page").attr("value", "2");
+                var _e = document.getElementsByName("_finish")[0];
+                jQuery(_e).attr('disabled', '');
+                $('command').submit();
+            }
 
-        	
         	Event.observe(window, "load", function() {
 	        		jQuery("#export-menu").menu({
 					content: jQuery("#actions-${command.aeReport.id}").html(),		
