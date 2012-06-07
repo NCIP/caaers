@@ -140,15 +140,23 @@
                                     </div>
                                 </div>
                             </c:if>
+
+                            <c:if test="${(command.report.lastVersion.reportStatus == 'FAILED') or (command.report.lastVersion.reportStatus eq 'WITHDRAW_FAILED')}">
+                                <div class="error-box message">
+                                    <p>
+                                        <span class="${_statusCSS }">${command.report.lastVersion.statusAsString}</span>
+                                        <br>
+                                        ${command.report.lastVersion.submissionMessage}
+                                    </p>
+                                </div>
+                            </c:if>
+
                             <div class="row">
                                 <div class="label">
                                     Submission Status
                                 </div>
                                 <div id="reportSubmissionStatus" class="value">
                                     <c:if test="${command.report.lastVersion.reportStatus == 'COMPLETED'}">
-                                        <ae:oneListReportSubmissionStatus theReport="${report}" reportStatus="${command.report.lastVersion.reportStatus}" lastVersion="${command.report.lastVersion}"/>
-                                    </c:if>
-                                    <c:if test="${(command.report.lastVersion.reportStatus == 'FAILED') or (command.report.lastVersion.reportStatus eq 'WITHDRAW_FAILED')}">
                                         <ae:oneListReportSubmissionStatus theReport="${report}" reportStatus="${command.report.lastVersion.reportStatus}" lastVersion="${command.report.lastVersion}"/>
                                     </c:if>
                                     <c:if test="${command.report.lastVersion.reportStatus == 'INPROCESS'}">
