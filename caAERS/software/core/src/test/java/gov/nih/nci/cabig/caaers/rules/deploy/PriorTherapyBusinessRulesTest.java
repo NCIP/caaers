@@ -433,5 +433,19 @@ public class PriorTherapyBusinessRulesTest extends AbstractBusinessRulesExecutio
         assertSameErrorCount(errors, 2);
         assertCorrectErrorCode(errors, "PTA_UK_ERR");
     }
+    
+    /**
+     * RuleName : PTY_BR6_CHK Logic : Report cannot refer to retired Prior Therapy Error Code : PTY_BR6_ERR
+     * Error Message : Prior Therapy is incorrect and is removed from protocol 
+     */
+    public void testRetiredPriorTherapyPresentInReport() throws Exception {
+        ExpeditedAdverseEventReport aeReport = createAEReport();
+        aeReport.getSaeReportPriorTherapies().get(0).getPriorTherapy().retire();
+        
+        ValidationErrors errors = fireRules(aeReport);
+        assertSameErrorCount(errors, 1, "When prior therapy has been retired");
+        assertCorrectFieldNames(errors.getErrorAt(0), "aeReport.saeReportPriorTherapies[0].priorTherapy");
+
+    }
 
 }

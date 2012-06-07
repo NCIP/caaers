@@ -294,5 +294,33 @@
 
         </rhs>
     </rule>
+    
+      <!-- ==========================================================================
+    RuleName : PTY_BR6_CHK
+    Rule : Report cannot refer to retired Prior Therapy
+    Error Code : PTY_BR6_ERR
+    Error Message : Prior Therapy is incorrect and is removed from protocol 
+    ============================================================================= -->
+    <rule name="PTY_BR6_CHK">
+        <lhs>
+            <pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+            <pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+            <eval>new ExpeditedAdverseEventValidator() {
+               public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+                   int i = 0;
+                   for(SAEReportPriorTherapy reportTherapy : aeReport.getSaeReportPriorTherapies()) {
+                         if (reportTherapy != null &amp;&amp; reportTherapy.getPriorTherapy() != null  &amp;&amp; reportTherapy.getPriorTherapy().isRetired()) {
+                            errors.addValidationError("PTY_BR6_ERR", "Prior Therapy is incorrect and is removed from protocol").addFieldNames("aeReport.saeReportPriorTherapies[" + i + "].priorTherapy");
+                        }
+                      i++;
+                   }
+                   return errors.hasErrors() ? FAIL : SUCCESS;
+                }
+           }.validate(aeReport, errors)</eval>
+        </lhs>
+        <rhs>
+            <!--  Error message is already populated -->
+        </rhs>
+    </rule>
 
 </package>

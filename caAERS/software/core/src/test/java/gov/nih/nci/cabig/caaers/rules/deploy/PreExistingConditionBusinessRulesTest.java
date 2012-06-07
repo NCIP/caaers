@@ -1,6 +1,11 @@
 package gov.nih.nci.cabig.caaers.rules.deploy;
 
+import gov.nih.nci.cabig.caaers.domain.DeviceOperator;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
+import gov.nih.nci.cabig.caaers.domain.ReprocessedDevice;
+import gov.nih.nci.cabig.caaers.domain.StudyDevice;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
 public class PreExistingConditionBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase {
@@ -84,6 +89,23 @@ public class PreExistingConditionBusinessRulesTest extends AbstractBusinessRules
         assertSameErrorCount(errors, 1);
         assertCorrectErrorCode(errors, "PEC_BR1_ERR");
 
+    }
+    
+    
+    /**
+     * 	RuleName : PEC_BR2_CHK
+    	Rule : Report cannot refer to retired PreExisting Condition
+    	Error Code : PEC_BR2_ERR
+    	Error Message :  PreExisting Condition is incorrect and is removed from protocol
+     */
+    public void testRetiredPreExistingConditionPresentInReport() throws Exception{
+    	ExpeditedAdverseEventReport aeReport = createAEReport();
+    	aeReport.getSaeReportPreExistingConditions().get(0).getPreExistingCondition().retire();
+    	
+    	ValidationErrors errors = fireRules(aeReport); 
+
+        assertSameErrorCount(errors, 3, "When pre-existing condition has been retired");
+        assertCorrectFieldNames(errors.getErrorAt(2), "aeReport.saeReportPreExistingConditions[0].preExistingCondition");
     }
 
 }

@@ -276,7 +276,7 @@
     RuleName : PAG_BR5_CHK
     Rule : 'Protocol Agent' must be active."
     Error Code : PAG_BR5_ERR
-    Error Message : Agent is incorrect and is removed from protocol.
+    Error Message : Study Agent is incorrect and is removed from protocol.
     ============================================================================= -->
     <rule name="PAG_BR5_CHK">
         <lhs>
@@ -295,7 +295,7 @@
                     if(ca.getStudyAgent() == null ) continue;
                     if(ca.getStudyAgent().isRetired()){
                     	errors.addValidationError("PAG_BR5_ERR",
-                    		"Agent is incorrect and is removed from protocol.", i,ca.getStudyAgent().getAgentName()).addFieldNames("aeReport.treatmentInformation.courseAgents[" + i + "].studyAgent");
+                    		"Study Agent is incorrect and is removed from protocol.", i,ca.getStudyAgent().getAgentName()).addFieldNames("aeReport.treatmentInformation.courseAgents[" + i + "].studyAgent");
                     }
                     
                     i++;                    
@@ -572,6 +572,62 @@
                    return errors.hasErrors() ? FAIL : SUCCESS;
                 }
 
+           }.validate(aeReport, errors)</eval>
+        </lhs>
+        <rhs>
+            <!--  Error message is already populated -->
+        </rhs>
+    </rule>
+    
+     <!-- ==========================================================================
+    RuleName : SME_BR12_CHK
+    Rule : Report cannot refer to retired Study Agents
+    Error Code : SME_BR12_ERR
+    Error Message : Agent is incorrect and is removed from protocol 
+    ============================================================================= -->
+    <rule name="SME_BR12_CHK">
+        <lhs>
+            <pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+            <pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+            <eval>new ExpeditedAdverseEventValidator() {
+               public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+                   int i = 0;
+                   for(CourseAgent ca : aeReport.getTreatmentInformation().getCourseAgents()) {
+                        if (ca.getStudyAgent() != null &amp;&amp; (ca.getStudyAgent().getAgent() != null &amp;&amp; ca.getStudyAgent().getAgent().isRetired())) {
+                            errors.addValidationError("SME_BR12_ERR", "Agent is incorrect and is removed from protocol").addFieldNames("aeReport.treatmentInformation.courseAgents[" + i + "].studyAgent.agent");
+                        }
+                      i++;
+                   }
+                   return errors.hasErrors() ? FAIL : SUCCESS;
+                }
+           }.validate(aeReport, errors)</eval>
+        </lhs>
+        <rhs>
+            <!--  Error message is already populated -->
+        </rhs>
+    </rule>
+    
+      <!-- ==========================================================================
+    RuleName : SME_BR13_CHK
+    Rule : Report cannot refer to retired Study Devices or Devices
+    Error Code : SME_BR13_ERR
+    Error Message : Study Device or Device is incorrect and is removed from protocol
+    ============================================================================= -->
+    <rule name="SME_BR13_CHK">
+        <lhs>
+            <pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+            <pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+            <eval>new ExpeditedAdverseEventValidator() {
+               public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+                   int i = 0;
+                   for(MedicalDevice md : aeReport.getMedicalDevices()) {
+                        if (md.getStudyDevice() != null &amp;&amp; (md.getStudyDevice().isRetired() || (md.getStudyDevice().getDevice() != null &amp;&amp; md.getStudyDevice().getDevice().isRetired()))) {
+                            errors.addValidationError("SME_BR13_ERR", "'Study Device' or 'Device' is incorrect and is removed from protocol").addFieldNames("aeReport.medicalDevices[" + i + "].studyDevice");
+                        }
+                      i++;
+                   }
+                   return errors.hasErrors() ? FAIL : SUCCESS;
+                }
            }.validate(aeReport, errors)</eval>
         </lhs>
         <rhs>

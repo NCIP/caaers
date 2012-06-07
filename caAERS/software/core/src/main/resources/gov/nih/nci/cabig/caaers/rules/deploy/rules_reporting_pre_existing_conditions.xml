@@ -43,6 +43,33 @@
             <!-- Already Populated Error Message-->
         </rhs>
     </rule>
-
-
+    
+      <!-- ==========================================================================
+    RuleName : PEC_BR2_CHK
+    Rule : Report cannot refer to retired PreExisting Condition
+    Error Code : PEC_BR2_ERR
+    Error Message : PreExisting Condition is incorrect and is removed from protocol 
+    ============================================================================= -->
+    <rule name="PEC_BR2_CHK">
+        <lhs>
+            <pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+            <pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+            <eval>new ExpeditedAdverseEventValidator() {
+               public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+                   int i = 0;
+                   for(SAEReportPreExistingCondition reportCondition : aeReport.getSaeReportPreExistingConditions()) {
+                        if (reportCondition != null &amp;&amp; reportCondition.getPreExistingCondition() != null  &amp;&amp; reportCondition.getPreExistingCondition().isRetired()) {
+                            errors.addValidationError("PEC_BR2_ERR", "PreExisting Condition is incorrect and is removed from protocol").addFieldNames("aeReport.saeReportPreExistingConditions[" + i + "].preExistingCondition");
+                        }
+                      i++;
+                   }
+                   return errors.hasErrors() ? FAIL : SUCCESS;
+                }
+           }.validate(aeReport, errors)</eval>
+        </lhs>
+        <rhs>
+            <!--  Error message is already populated -->
+        </rhs>
+    </rule>
+    
 </package>

@@ -498,9 +498,9 @@ public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExe
      * 	RuleName : PAG_BR5_CHK
     	Rule : 'Protocol Agent' must be active."
     	Error Code : PAG_BR5_ERR
-    	Error Message : Agent is incorrect and is removed from protocol.
+    	Error Message : Study Agent is incorrect and is removed from protocol.
      */
-    public void testAllAgentsPresentInReportAreRetired() throws Exception{
+    public void testAllStudyAgentsPresentInReportAreRetired() throws Exception{
     	ExpeditedAdverseEventReport aeReport = createAEReport();
     	TreatmentInformation ti = aeReport.getTreatmentInformation();
     	ti.getCourseAgents().get(0).getStudyAgent().retire();
@@ -510,10 +510,29 @@ public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExe
     	ValidationErrors errors = fireRules(aeReport);
 
 
-        assertSameErrorCount(errors,2, "When all study agent has been retired");
+        assertSameErrorCount(errors,2, "When all study agents have been retired");
         assertCorrectErrorCode(errors, "PAG_BR5_ERR");
         assertCorrectFieldNames(errors.getErrorAt(0), "aeReport.treatmentInformation.courseAgents[0].studyAgent");
         assertCorrectFieldNames(errors.getErrorAt(1), "aeReport.treatmentInformation.courseAgents[1].studyAgent");
+    }
+    
+    /**
+     * 	RuleName : SME_BR12_CHK
+    	Rule : 'Agent' must be active."
+    	Error Code : SME_BR12_ERR
+    	Error Message : Agent is incorrect and is removed from protocol.
+     */
+    public void testAllAgentsPresentInReportAreRetired() throws Exception{
+    	ExpeditedAdverseEventReport aeReport = createAEReport();
+    	TreatmentInformation ti = aeReport.getTreatmentInformation();
+    	ti.getCourseAgents().get(0).getStudyAgent().getAgent().retire();
+    	
+    	ValidationErrors errors = fireRules(aeReport);
+
+
+        assertSameErrorCount(errors,1, "When all agents have been retired");
+        assertCorrectErrorCode(errors, "SME_BR12_ERR");
+        assertCorrectFieldNames(errors.getErrorAt(0), "aeReport.treatmentInformation.courseAgents[0].studyAgent.agent");
     }
 
 
@@ -813,6 +832,65 @@ public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExe
         aeReport.addMedicalDevice(device);
         ValidationErrors errors = fireRules(aeReport);
         assertEquals(0, errors.getErrorCount());
+    }
+    
+    
+    /**
+     * 	RuleName : SME_BR13_CHK
+    	Rule : 'Study Device' must be active."
+    	Error Code : SME_BR13_ERR
+    	Error Message : Study Device or Device is incorrect and is removed from protocol.
+     */
+    public void testRetiredStudyDevicePresentInReport() throws Exception{
+    	ExpeditedAdverseEventReport aeReport = createAEReport();
+    	StudyDevice studyDevice = Fixtures.createStudyDevice();
+    	aeReport.getStudy().getStudyDevices().add(studyDevice);
+    	
+    	MedicalDevice device = new MedicalDevice(studyDevice);
+        device.getStudyDevice().getDevice().setBrandName("Brand Name");
+        device.getStudyDevice().setModelNumber("123");
+        device.setReprocessorAddress("test");
+        device.setReprocessorName("test");
+        device.setDeviceReprocessed(ReprocessedDevice.YES);
+        device.setDeviceOperator(DeviceOperator.OTHER);
+        device.setOtherDeviceOperator("SOME OTHER OPERATOR");
+        aeReport.addMedicalDevice(device);
+        studyDevice.retire();
+    	
+    	ValidationErrors errors = fireRules(aeReport); 
+
+
+        assertSameErrorCount(errors, 2, "When study device has been retired");
+        assertCorrectFieldNames(errors.getErrorAt(0), "aeReport.medicalDevices[0].studyDevice");
+    }
+    
+    /**
+     * 	RuleName : SME_BR13_CHK
+    	Rule : 'Study Device' must be active."
+    	Error Code : SME_BR13_ERR
+    	Error Message : Study Device or Device is incorrect and is removed from protocol.
+     */
+    public void testRetiredDevicePresentInReport() throws Exception{
+    	ExpeditedAdverseEventReport aeReport = createAEReport();
+    	StudyDevice studyDevice = Fixtures.createStudyDevice();
+    	aeReport.getStudy().getStudyDevices().add(studyDevice);
+    	
+    	MedicalDevice device = new MedicalDevice(studyDevice);
+        device.getStudyDevice().getDevice().setBrandName("Brand Name");
+        device.getStudyDevice().setModelNumber("123");
+        device.setReprocessorAddress("test");
+        device.setReprocessorName("test");
+        device.setDeviceReprocessed(ReprocessedDevice.YES);
+        device.setDeviceOperator(DeviceOperator.OTHER);
+        device.setOtherDeviceOperator("SOME OTHER OPERATOR");
+        aeReport.addMedicalDevice(device);
+        studyDevice.getDevice().retire();
+    	
+    	ValidationErrors errors = fireRules(aeReport); 
+
+
+        assertSameErrorCount(errors, 1, "When device has been retired");
+        assertCorrectFieldNames(errors.getErrorAt(0), "aeReport.medicalDevices[0].studyDevice");
     }
 
 }
