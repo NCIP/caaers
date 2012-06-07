@@ -82,14 +82,14 @@
     	</c:when>
     	<c:otherwise>
     		 <div class="row" <c:if test = "${fn:length(command.study.studyDevices[index].studyDeviceINDAssociations) == 0}"> style="display:none" </c:if>>
-		        <div class="label">&nbsp; IND #  </div>
+		        <div class="label">&nbsp; IDE #  </div>
 		        <div class="value">
 			        <c:set var ="indVal" value=""/>
 			        <c:if test= "${not empty command.study.studyDevices[index].studyDeviceINDAssociations[0].investigationalNewDrug}">
 			          <c:set var ="indVal" value="${command.study.studyDevices[index].studyDeviceINDAssociations[0].investigationalNewDrug.indNumber}::${command.study.studyDevices[index].studyDeviceINDAssociations[0].investigationalNewDrug.holderName} "/>
 			        </c:if>
 			        
-			            <ui:autocompleter path="study.studyDevices[${index}].studyDeviceINDAssociations[0].investigationalNewDrug" initialDisplayValue="${indVal}"  size="40" title="Study Device IND" enableClearButton="true">
+			            <ui:autocompleter path="study.studyDevices[${index}].studyDeviceINDAssociations[0].investigationalNewDrug" initialDisplayValue="${indVal}"  size="40" title="Study Device IDE" enableClearButton="true">
 			                          <jsp:attribute name="populatorJS">
 											function(autocompleter, text) {
 			         							createStudy.matchINDs(text, function(values) {
