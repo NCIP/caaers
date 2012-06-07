@@ -511,13 +511,13 @@ div#createNew h3, div.section h3 {
 		
 		var selectedOperator = operatorDropDown.options[operatorDropDown.selectedIndex];
 		var selectId =  operatorDropDown.id.substring(0,operatorDropDown.id.lastIndexOf(".")); 
-		
+
 		
 		
 		// Get the index of Domain Object
 		var domainObjectDropDownID = selectId.substring(0,selectId.lastIndexOf("field")) + 'objectType';
-		
-		
+		var attrDropDownID =   selectId.substring(0,selectId.lastIndexOf("literalRestriction")) + 'fieldName';
+        var _attrValue = $F(attrDropDownID) ;
 		
 		var domainObjectSelectedIndex = $(domainObjectDropDownID).selectedIndex;
 		//alert (domainObjectSelectedIndex);
@@ -538,8 +538,13 @@ div#createNew h3, div.section h3 {
 								
 						//	alert(domainObject.field[0].operator[operatorDropDown.selectedIndex-1].displayUri);
 						
-							
-							$(displayUriID).value = domainObject.field[0].operator[operatorDropDown.selectedIndex-1].readableText;
+							domainObject.field.each(function(fv){
+
+                               if(fv.name == _attrValue){
+                                   $(displayUriID).value = fv.operator[operatorDropDown.selectedIndex-1].readableText;
+                               }
+                            });
+
 							
 							//$(fieldDisplayUri).value = domainObject.field[fieldDropDown.selectedIndex-1].displayUri;
 							
