@@ -77,11 +77,6 @@ public class IdentifiersTab extends StudyTab {
             // study.getIdentifiers().remove(Integer.parseInt(selected));
         }
 
-        // Fire the event for re-indexing
-        if (command.isMustFireEvent()) {
-            if (getEventFactory() != null) getEventFactory().publishEntityModifiedEvent(command.getStudy());
-        }
-
         request.setAttribute("tabFlashMessage", messageSource.getMessage(String.format("MSG_study.%s.flash_message", this.getClass().getSimpleName()), null, Locale.getDefault()));
 
     }

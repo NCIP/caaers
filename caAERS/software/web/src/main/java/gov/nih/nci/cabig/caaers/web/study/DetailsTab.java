@@ -253,6 +253,11 @@ public class DetailsTab extends StudyTab {
         }
 
         request.setAttribute("tabFlashMessage", messageSource.getMessage(String.format("MSG_study.%s.flash_message", this.getClass().getSimpleName()), null, Locale.getDefault()));
+        // Fire the event for re-indexing
+        if (command.isMustFireEvent()) {
+            if (getEventFactory() != null) getEventFactory().publishEntityModifiedEvent(command.getStudy());
+        }
+
     }
 
     public CtcDao getCtcDao() {
