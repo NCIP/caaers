@@ -345,7 +345,9 @@
 			</view-column>
 
 		</dependent-object>
--->				    
+-->		
+
+<!-- Vinodh-06082012: Removing from query dependency as it throws 503 error 		    
 		<dependent-object>
 			<class-name>gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment</class-name>
 			<display-name>StudyParticipantAssignment</display-name>
@@ -372,7 +374,7 @@
 			</view-column>
 
 		</dependent-object>
-
+-->
 	</search-target-object>
 	
 	<!-- ParticipantQuery.java -->
