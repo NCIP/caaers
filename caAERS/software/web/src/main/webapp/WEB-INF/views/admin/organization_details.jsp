@@ -104,7 +104,9 @@
 	    <li id="thirdlevelnav" class="tab"><div><a href="searchOrganization">Search Organization</a></div></li>
       </csmauthz:accesscontrol>
   </ul>
-    </div>      
+    </div>
+</div>
+
 
  
 
