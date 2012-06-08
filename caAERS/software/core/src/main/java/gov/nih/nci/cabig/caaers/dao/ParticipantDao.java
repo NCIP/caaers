@@ -155,7 +155,7 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements 
      * @return The list of participants.
      */
     @SuppressWarnings("unchecked")
-    public List<Participant> searchParticipant(final ParticipantQuery query, int firstrow, int maxrows) {
+    public List<Participant> searchParticipant(final ParticipantQuery query, Integer firstrow, Integer maxrows) {
         String queryString = query.getQueryString();
         log.debug(">>> " + queryString.toString());
         return (List<Participant>) super.search(query, firstrow, maxrows);
