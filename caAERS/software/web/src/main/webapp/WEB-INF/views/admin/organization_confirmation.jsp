@@ -14,6 +14,7 @@
 </head>
 <body>
 <chrome:box title="Confirmation">
+<chrome:flashMessage/>
 <form:form>
 
 <chrome:division id="single-fields">
