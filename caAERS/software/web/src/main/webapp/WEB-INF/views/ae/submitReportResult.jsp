@@ -167,7 +167,7 @@
                             <c:if test="${(command.report.lastVersion.reportStatus == 'PENDING') or (command.report.lastVersion.reportStatus == 'FAILED')}">
                                 <div style="float:left;">
                                     <c:set var="href">
-                                        <c:url value="/pages/ae/edit?aeReport=${command.aeReport.id}&report=${report.id}"/>
+                                        <c:url value="/pages/ae/edit?aeReport=${command.aeReport.id}&report=${command.report.id}"/>
                                     </c:set>
 									<tags:button color="blue" value="Edit Report" icon="back" markupWithTag="a" href="${href}" />
                                 </div>
