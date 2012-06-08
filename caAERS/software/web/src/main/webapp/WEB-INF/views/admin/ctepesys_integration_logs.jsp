@@ -255,17 +255,18 @@
 <script type="text/javascript" src="<c:url value="/js/wz_tooltip/wz_tooltip.js" />"></script>
  <div class="tabpane">
      <div class="workflow-tabs2">
-  <ul id="" class="tabs autoclear">
-  	<li id="thirdlevelnav" class="tab"><div>
-        <a href="ctepesysDataImport">CTEP-ESYS Data Import</a>
-    </div></li>
-    <li id="thirdlevelnav" class="tab"><div>
-        <a href="trackReports">Report Submission Logs</a>
-    </div></li>
-    <li id="thirdlevelnav" class="tab selected"><div>
-        <a href="#">CTEP-ESYS Data Integration Logs</a>
-    </div></li>
-  </ul>
+	  <ul id="" class="tabs autoclear">
+	  	<li id="thirdlevelnav" class="tab"><div>
+	        <a href="ctepesysDataImport">CTEP-ESYS Data Import</a>
+	    </div></li>
+	    <li id="thirdlevelnav" class="tab"><div>
+	        <a href="trackReports">Report Submission Logs</a>
+	    </div></li>
+	    <li id="thirdlevelnav" class="tab selected"><div>
+	        <a href="#">CTEP-ESYS Data Integration Logs</a>
+	    </div></li>
+	  </ul>
+  </div>
 </div>
          
 
