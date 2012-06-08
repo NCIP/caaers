@@ -2,12 +2,8 @@
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <%@attribute name="key" %>
 <c:if test="${not empty warningMessage}">
-    <div id="flash-message" class="${empty warningMessageClass ? 'warning' : warningMessageClass}">
-    	<img src= "<chrome:imageUrl name="../error-yellow.png"/>" />&nbsp;${warningMessage}
-    </div>
+    <div class="warning-box message"><p>${warningMessage}</p></div>
 </c:if>
 <c:if test="${not empty key}">
-  <div id="flash-message" class="${empty warningMessageClass ? 'warning' : warningMessageClass}">
-	${requestScope[key]}
-  </div>
+  <div class="warning-box message"><p>${requestScope[key]}</p></div>
 </c:if>
