@@ -56,20 +56,20 @@
 			  <chrome:division collapsable="true" collapsed="true" title="${lblSubject} : ${aesummary['Participant']}" id="collapsedSummary">
                   <div class="row">
                       <div class="summarylabel" style="width:7em;"><caaers:message code="LBL_Subject" /></div>
-                      <div class="summaryvalue" style="margin-left:8em;">${aesummary['Participant']}</div>
+                      <div class="summaryvalue" style="margin-left:8em;"><c:out escapeXml="true" value="${aesummary['Participant']}" /> </div>
                   </div>
                   <div class="row">
                       <div class="summarylabel" style="width:7em;"><caaers:message code="LBL_Study" /></div>
-                      <div class="summaryvalue" style="margin-left:8em;">${aesummary['Study']}</div>
+                      <div class="summaryvalue" style="margin-left:8em;"><c:out escapeXml="true" value="${aesummary['Study']}" /></div>
                   </div>
                   <div class="row">
                       <div class="summarylabel" style="width:7em;"><caaers:message code="LBL_CourseCycle" /></div>
-                      <div class="summaryvalue" style="margin-left:8em;">${aesummary['Course']}</div>
+                      <div class="summaryvalue" style="margin-left:8em;"><c:out escapeXml="true" value="${aesummary['Course']}" /></div>
                   </div>
                   <c:if test="${aesummary['Report Name'] != null}">
                       <div class="row">
                           <div class="summarylabel" style="width:7em;"><caaers:message code="LBL_Report" /></div>
-                          <div class="summaryvalue" style="margin-left:8em;">${aesummary['Report Name'] }</div>
+                          <div class="summaryvalue" style="margin-left:8em;"><c:out escapeXml="true" value="${aesummary['Report Name'] }" /></div>
                       </div>
                   </c:if>
                   <c:if test="${showReportContextMenu}">
@@ -95,15 +95,15 @@
 			<div class="pane summary" id="ae-summary">
 			  <div class="row">
 			    <div class="summarylabel" style="width:7em;"><caaers:message code="LBL_Subject" /></div>
-			    <div class="summaryvalue" style="margin-left:8em;">${routineAeSummary['Participant']}</div>
+			    <div class="summaryvalue" style="margin-left:8em;"><c:out escapeXml="true" value="${routineAeSummary['Participant']}"/></div>
 			  </div>
 			  <div class="row">
 			    <div class="summarylabel" style="width:7em;"><caaers:message code="LBL_Study" /></div>
-			    <div class="summaryvalue" style="margin-left:8em;">${routineAeSummary['Study']}</div>
+			    <div class="summaryvalue" style="margin-left:8em;"><c:out escapeXml="true" value="${routineAeSummary['Study']}" /></div>
 			  </div>
 			  <div class="row">
 			    <div class="summarylabel" style="width:7em;"><caaers:message code="LBL_CourseCycle" /></div>
-			    <div class="summaryvalue" style="margin-left:8em;">${routineAeSummary['Course']}</div>
+			    <div class="summaryvalue" style="margin-left:8em;"><c:out escapeXml="true" value="${routineAeSummary['Course']}"/></div>
 			  </div>
 			</div>
 		</c:if>
