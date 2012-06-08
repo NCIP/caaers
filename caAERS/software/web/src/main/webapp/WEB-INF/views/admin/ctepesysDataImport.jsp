@@ -190,6 +190,7 @@
     </div></li>
   </ul>
 </div>
+</div>
 
 
 <chrome:box title="CTEP Data Import">
