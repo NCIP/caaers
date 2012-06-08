@@ -42,7 +42,7 @@
                             	afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
                             		$('assignment.diseaseHistory.metastaticDiseaseSites[${index}].codedSite').value = selectedChoice.id;
                                     ValidationManager.setValidState('assignment.diseaseHistory.metastaticDiseaseSites[${index}].codedSite-input');
-
+                                    setTitleMDS(${index});
                             		if(selectedChoice.id == 110){
                             			AE.slideAndShow('assignment.diseaseHistory.metastaticDiseaseSites[${index}].other');
                                         $('showALL${index}').hide();
@@ -75,3 +75,11 @@
 
 
 </chrome:division>
+
+<script>
+
+    Event.observe($("assignment.diseaseHistory.metastaticDiseaseSites[${index}].otherSite"), "keyup", function() {
+        setTitleMDS(${index});
+    });
+
+</script>
