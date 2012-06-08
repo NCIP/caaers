@@ -83,12 +83,12 @@
                 <table id="termsTable" width="100%" border="0" cellspacing="1" cellpadding="3">
                     <tr bgcolor="#E4E4E4">
                         <th scope="col" align="left" width="10%"><b>Terminology</b></th>
-                        <th scope="col" align="left" width="26%"><b>Term</b></th>
-                        <th scope="col" align="left" width="8%"><b>Grade 1</b></th>
-                        <th scope="col" align="left" width="8%"><b>Grade 2</b></th>
-                        <th scope="col" align="left" width="8%"><b>Grade 3</b></th>
-                        <th scope="col" align="left" width="8%"><b>Grade 4</b></th>
-                        <th scope="col" align="left" width="8%"><b>Grade 5</b></th>
+                        <th scope="col" align="left" width="21%"><b>Term</b></th>
+                        <th scope="col" align="left" width="9%"><b>Grade 1</b></th>
+                        <th scope="col" align="left" width="9%"><b>Grade 2</b></th>
+                        <th scope="col" align="left" width="9%"><b>Grade 3</b></th>
+                        <th scope="col" align="left" width="9%"><b>Grade 4</b></th>
+                        <th scope="col" align="left" width="9%"><b>Grade 5</b></th>
                         <th scope="col" align="left" width="8%"><b>Expected (yes/no)</b></th>
                         <th scope="col" align="left" width="9%"><b>Overall % expected</b></th>
                         <th width="7%">&nbsp;</th>
