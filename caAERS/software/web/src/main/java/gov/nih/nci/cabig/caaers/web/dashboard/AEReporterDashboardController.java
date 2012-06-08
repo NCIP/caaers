@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.dashboard;
 
 import gov.nih.nci.cabig.caaers.domain.dto.TaskNotificationDTO;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
+import gov.nih.nci.cabig.caaers.domain.report.ReportVersionDTO;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepositoryImpl;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportVersionRepository;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
@@ -22,7 +23,7 @@ public class AEReporterDashboardController extends DashboardController {
     
     public ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String loginId = SecurityUtils.getUserLoginName();
-        List<ReportVersion> reportActivity = reportVersionRepository.getReportActivity();
+        List<ReportVersionDTO> reportActivity = reportVersionRepository.getReportActivity();
         ModelAndView mv = new ModelAndView("dashboard/dashboard_AEReporter");
         mv.addObject("reportActivity", reportActivity);
 

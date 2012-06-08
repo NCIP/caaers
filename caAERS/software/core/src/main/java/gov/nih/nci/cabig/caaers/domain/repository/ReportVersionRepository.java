@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.dao.query.ReportVersionDTOQuery;
 import gov.nih.nci.cabig.caaers.dao.report.ReportVersionDao;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
+import gov.nih.nci.cabig.caaers.domain.report.ReportVersionDTO;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,7 +55,7 @@ public class ReportVersionRepository {
      *
      * @return the past due
      */
-    public List<ReportVersion> getPastDue() {
+    public List<ReportVersionDTO> getPastDue() {
         ReportVersionDTOQuery q = new ReportVersionDTOQuery();
         q.andWhere("rv.dueOn < :tomorrow");
         q.andWhere("rv.submittedOn is null");
@@ -66,7 +67,7 @@ public class ReportVersionRepository {
         cal.add(Calendar.DATE, 1);
         Date d = cal.getTime();
         q.setParameter("tomorrow", d);
-        List<ReportVersion> l = reportVersionDao.search(q);
+        List<ReportVersionDTO> l = removeDuplicates(reportVersionDao.searchDTO(q));
         return l;
     }
 
@@ -75,7 +76,7 @@ public class ReportVersionRepository {
      *
      * @return the report activity
      */
-    public List<ReportVersion> getReportActivity() {
+    public List<ReportVersionDTO> getReportActivity() {
         ReportVersionDTOQuery q = new ReportVersionDTOQuery();
         q.orderBy("coalesce(rv.dueOn, rv.submittedOn,rv.withdrawnOn)");
         
@@ -95,8 +96,19 @@ public class ReportVersionRepository {
         Date today = cal.getTime();
         q.setParameter("dueOn", today);
 */
-        List<ReportVersion> l = reportVersionDao.search(q);
+        List<ReportVersionDTO> l = removeDuplicates(reportVersionDao.searchDTO(q));
         return l;
+    }
+
+    private List<ReportVersionDTO> removeDuplicates(List<ReportVersionDTO> l) {
+        List<ReportVersionDTO> uniqueList = new ArrayList<ReportVersionDTO>();
+        Set<Integer> idSet = new HashSet<Integer>();
+        for (ReportVersionDTO rv : l) {
+            if (idSet.add(rv.getRv().getId())) {
+                uniqueList.add(rv);
+            }
+        }
+        return uniqueList;
     }
 
     /**
