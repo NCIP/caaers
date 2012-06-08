@@ -93,7 +93,14 @@
                     </c:otherwise>
                 </c:choose>
 				<div style="text-align:right;">
-                    <img id="actions-menu-${report.id}" class="actionsButton" src='<c:url value="/images/orange-actions.gif" />' border='0' style='cursor:pointer;'>
+
+                    <c:if test="${reportMessages[report.id].submittable}">
+                        <c:if test="${(report.lastVersion.reportStatus == 'PENDING') or (report.lastVersion.reportStatus == 'FAILED')}">
+                            <tags:button id="_submit_button" type="button" icon="submit" color="green" value="Submit" onclick="doAction('submit', '${report.aeReport.id}', '${report.id}');"/>
+                        </c:if>
+                    </c:if>
+
+                    <img vertical-align="middle" id="actions-menu-${report.id}" class="actionsButton" src='<c:url value="/images/orange-actions.gif" />' border='0' style='cursor:pointer;'>
 					<%--<a id="actions-menu-${report.id}" class="submitter fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all"><span class="ui-icon ui-icon-triangle-1-s"></span>Actions</a>--%>
 				</div>
                 <div id="options-actions-menu-${report.id}" style="display:none;">
@@ -149,11 +156,6 @@
 	                    	<c:if test="${report.reportDefinition.amendable and (report.lastVersion.reportStatus == 'COMPLETED') }">
 								<li><a href="#" onclick="javascript:if(confirm('Are you sure you want to amend this report?')){doAction('amend', '${report.aeReport.id}', '${report.id}')};" >Amend</a></li>
 	                    	</c:if>
-	                        <c:if test="${(report.lastVersion.reportStatus == 'PENDING') or (report.lastVersion.reportStatus == 'FAILED')}">
-	                            <c:if test="${renderSubmitLink[report.id]}">
-	                            	<li><a class="submitter-green" href="#" onclick="javascript:doAction('submit', '${report.aeReport.id}', '${report.id}');" ><img src="<chrome:imageUrl name="../blue/submit-small.png"/>" alt="" />&nbsp;Submit</a></li>
-	                            </c:if>
-	                        </c:if>
 	                    </c:if>
 						<c:if test="${(report.lastVersion.reportStatus == 'PENDING') or (report.lastVersion.reportStatus == 'FAILED')}">
 	                        <li><a class="submitter-red" href="#" onclick="javascript:if(confirm('Are you sure you want to withdraw this report?')){doAction('withdraw', '${report.aeReport.id}', '${report.id}')};"><img src="<chrome:imageUrl name="../blue/Withdraw-icon-small.png"/>">&nbsp;Withdraw</a></li>
