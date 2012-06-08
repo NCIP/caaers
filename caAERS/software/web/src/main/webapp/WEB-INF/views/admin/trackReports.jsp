@@ -237,6 +237,7 @@ color:#0033FF;
     </div></li>
   </ul>
 </div>
+</div>
          
 
 <form:form name="command" id="command" method="post">
