@@ -71,14 +71,18 @@ public class AgentAjaxFacade extends AbstractAjaxFacade {
         if (type.equals("ctep")) {
             for (int i : agentIDs) {
                     AgentSpecificCtcTerm at = new AgentSpecificCtcTerm();
-                    at.setTerm(ctcTermDao.getById(i));
+                    CtcTerm ctcTerm = ctcTermDao.getById(i);
+                    if (c.isDuplicate(ctcTerm)) continue;
+                    at.setTerm(ctcTerm);
                     at.setAgent(a);
                     c.getAgentSpecificTerms().add(at);
             }
         } else {
             for (int i : agentIDs) {
                     AgentSpecificMeddraLowLevelTerm at = new AgentSpecificMeddraLowLevelTerm();
-                    at.setTerm(lowLevelTermDao.getById(i));
+                    LowLevelTerm lowLevelTerm = lowLevelTermDao.getById(i);
+                    if (c.isDuplicate(lowLevelTerm)) continue;
+                    at.setTerm(lowLevelTerm);
                     at.setAgent(a);
                     c.getAgentSpecificTerms().add(at);
             }

@@ -5,8 +5,8 @@ import gov.nih.nci.cabig.caaers.domain.AgentSpecificTerm;
 import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.MeddraVersion;
 import gov.nih.nci.cabig.caaers.domain.Term;
+import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -133,6 +133,15 @@ public class AgentCommand {
     	if(a == null ^ b == null) return false;
     	if(a == null && b == null) return true;
     	if(a.equals(b)) return true;
+    	return false;
+    }
+    
+    public boolean isDuplicate(DomainObject domainObject){
+    	for(AgentSpecificTerm ast: agentSpecificTerms){
+    		if(ast.getTerm().getId().equals(domainObject.getId())){
+    			return true;
+    		}
+    	}
     	return false;
     }
 }
