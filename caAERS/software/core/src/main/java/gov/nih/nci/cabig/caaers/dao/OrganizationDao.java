@@ -1,30 +1,24 @@
 package gov.nih.nci.cabig.caaers.dao;
 
-import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
+import com.semanticbits.coppa.infrastructure.RemoteSession;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationFromStudySiteQuery;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
 import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
+import org.apache.commons.lang.StringUtils;
+import org.hibernate.HibernateException;
+import org.hibernate.LockMode;
+import org.hibernate.StatelessSession;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
-import org.hibernate.HibernateException;
-import org.hibernate.LockMode;
-import org.hibernate.Session;
-import org.springframework.beans.factory.annotation.Required;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.semanticbits.coppa.infrastructure.RemoteSession;
 
 /**
  * This class implements the Data access related operations for the Organization domain object.
@@ -75,9 +69,29 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
         return null;
     }
 
-    public void saveAll(List<Organization> organizations){
-        getHibernateTemplate().saveOrUpdateAll(organizations);
+    //BJ : This method will save the organizations, as there is no transactions and it is intentional.
+    public void saveAll(final List<Organization> organizations){
+        StatelessSession session = getHibernateTemplate().getSessionFactory().openStatelessSession();
+        try{
+           for(Organization o : organizations) {
+               log.info("processing :" + o.getNciInstituteCode());
+               if(o.getId() == null){
+                   if(log.isInfoEnabled()) log.info("Inserting " + o.getNciInstituteCode());
+                   session.insert(o); 
+               } else {
+                   if(log.isInfoEnabled()) log.info("Updating " + o.getNciInstituteCode());
+                   session.update(o);
+               }
+           }
+        }catch (HibernateException e){
+            throw getHibernateTemplate().convertHibernateAccessException(e);
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }finally {
+            session.close();
+        }
     }
+
 
     /**
      * Get the list of all organizations.

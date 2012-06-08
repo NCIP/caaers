@@ -130,12 +130,12 @@ public class OrganizationManagementServiceImpl implements OrganizationManagement
             logger.info("Time taken by  createOrUpdateOrganizations to migrate : (" + newOrgs.size() + ") "  + ( ( System.currentTimeMillis() - now)/1000) + " seconds" );
         }
         now = System.currentTimeMillis();
-        int i = 0;
+
+        if(logger.isInfoEnabled())logger.info("Going to save  "  + newOrgs.size() + "  organizations");
+        organizationDao.clearSession();
+        organizationDao.saveAll(newOrgs);
+        if(logger.isInfoEnabled())logger.info("Saved "  + newOrgs.size() + "  organizations");
         for(Organization o : newOrgs){
-            i++;
-            organizationRepository.saveImportedOrganization(o);
-            if((i%250) == 0 ) organizationDao.flush();
-            if(logger.isInfoEnabled()) logger.info( "Organization with NCI Code : " + o.getNciInstituteCode() + ", id : " + o.getId() + " modified/created" );
             ProcessingOutcome outcome =  Helper.createOutcome(Organization.class, o.getNciInstituteCode(), false,
                     "Organization with NCI Code : " + o.getNciInstituteCode() + ", id : " + o.getId() + " modified/created" );
             outcomes.add(outcome);
