@@ -165,7 +165,7 @@
  		<div align="right">
             <tags:indicator id="_Device-IND-${index}_indicator" />
             <c:if test = "${empty command.study.studyDevices[index].id || ( not empty command.study.studyDevices[index].id  and fn:length(command.study.studyDevices[index].studyDeviceINDAssociations)==0)}">
-            	<tags:button color="blue" type="button" value="Add Other IND" size="small" icon="add" onclick="javascript:fireAction('addDeviceIND', ${index});"/>
+            	<tags:button color="blue" type="button" value="Add Other IDE" size="small" icon="add" onclick="javascript:fireAction('addDeviceIND', ${index});"/>
             </c:if>
         </div>
            
