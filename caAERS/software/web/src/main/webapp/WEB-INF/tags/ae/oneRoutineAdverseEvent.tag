@@ -68,6 +68,7 @@
             </div>
             <div class="row">
                 <div class="label">
+                    <c:if test="${aeTermMandatory}"><tags:requiredIndicator/></c:if>
                     <c:if test="${command.study.aeTerminology.term eq 'CTC'}"><caaers:message code="LBL_aeReport.adverseEvents.ctcTerm" /></c:if>
                     <c:if test="${command.study.aeTerminology.term eq 'MEDDRA'}"><caaers:message code="LBL_aeReport.adverseEvents.meddraTerm" /></c:if>
                 </div>
