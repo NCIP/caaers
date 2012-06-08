@@ -96,11 +96,10 @@
 
                     <c:if test="${reportMessages[report.id].submittable}">
                         <c:if test="${(report.lastVersion.reportStatus == 'PENDING') or (report.lastVersion.reportStatus == 'FAILED')}">
-                            <tags:button id="_submit_button" type="button" icon="submit" color="green" value="Submit" onclick="doAction('submit', '${report.aeReport.id}', '${report.id}');"/>
+                            <tags:button id="_submit_button" type="button" icon="submit" size="" color="green" value="Submit" onclick="doAction('submit', '${report.aeReport.id}', '${report.id}');"/>
                         </c:if>
                     </c:if>
-
-                    <img vertical-align="middle" id="actions-menu-${report.id}" class="actionsButton" src='<c:url value="/images/orange-actions.gif" />' border='0' style='cursor:pointer;'>
+                    <img vertical-align="middle" align="absmiddle" id="actions-menu-${report.id}" class="actionsButton" src='<c:url value="/images/orange-actions.gif" />' border='0' style='cursor:pointer;'>
 					<%--<a id="actions-menu-${report.id}" class="submitter fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all"><span class="ui-icon ui-icon-triangle-1-s"></span>Actions</a>--%>
 				</div>
                 <div id="options-actions-menu-${report.id}" style="display:none;">
