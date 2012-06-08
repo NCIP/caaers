@@ -213,7 +213,7 @@
                 <br/>
                 <chrome:division title="Study Subject Identifier">
                     <p><tags:instructions code="instruction_subject_enter.choosestudy.sid"/></p>
-                    <label for="studySubjectIdentifierInput"><tags:requiredIndicator/>&nbsp;Study subject identifier</label>
+                    <label for="studySubjectIdentifierInput"><tags:requiredIndicator/>&nbsp;<b>Study subject identifier</b></label>
                     <input id="studySubjectIdentifierInput" type="text" maxlength="2000" value="${command.assignment.studySubjectIdentifier}" name="studySubjectIdentifierInput" class="${not empty command.assignment.studySubjectIdentifier ? 'valueOK' : 'required'}" onkeyup="$('assignment.studySubjectIdentifier').value = this.value"/>
                 </chrome:division>
             </div>

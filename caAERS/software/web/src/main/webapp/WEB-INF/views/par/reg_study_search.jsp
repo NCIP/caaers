@@ -219,7 +219,7 @@
                 <br/>
                 <chrome:division title="Study Subject Identifier">
                     <p><tags:instructions code="instruction_subject_enter.choosestudy.sid"/></p>
-                    <label for="studySubjectIdentifierInput"><tags:requiredIndicator/>&nbsp;Study subject identifier</label>
+                    <label for="studySubjectIdentifierInput"><tags:requiredIndicator/>&nbsp;<b>Study subject identifier</b></label>
                     <input id="studySubjectIdentifierInput" type="text" maxlength="2000" value="${command.studySubjectIdentifier}" name="studySubjectIdentifierInput" class="${not empty command.studySubjectIdentifier ? 'valueOK' : 'required'}"/>
                 </chrome:division>
 
