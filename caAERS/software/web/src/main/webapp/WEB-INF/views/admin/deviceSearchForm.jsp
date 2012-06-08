@@ -68,9 +68,6 @@ var myFields = [
             </div>
             </chrome:box>
 
-          <div class="endpanes" />
-          <div class="endpanes" />
-
     </form:form>
 
            <div id="bigSearch" style="display:none;">
