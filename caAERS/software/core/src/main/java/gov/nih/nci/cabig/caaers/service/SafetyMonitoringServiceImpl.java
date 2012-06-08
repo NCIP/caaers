@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.dao.query.NotificationQuery;
 import gov.nih.nci.cabig.caaers.domain.AbstractStudyInterventionExpectedAE;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.CodedGrade;
+import gov.nih.nci.cabig.caaers.domain.CtcGrade;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Notification;
@@ -132,7 +133,11 @@ public class SafetyMonitoringServiceImpl implements SafetyMonitoringService {
 			List<Grade> grades = new ArrayList<Grade>();
 			for(CodedGrade grade: grades1){
 				if(grade.getCode() >= 1 && grade.getCode() <=5){
-					grades.add((Grade)grade);
+					if(grade instanceof CtcGrade){
+						grades.add(((CtcGrade)grade).getGrade());
+					}else{
+						grades.add((Grade)grade);
+					}
 				}
 			}
 			return grades.toArray(new Grade[0]);
