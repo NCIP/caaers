@@ -154,6 +154,7 @@ public class ExpeditedAdverseEventReportDao extends
     }
 
     public void deleteAttribution(DomainObject obj, List<? extends AdverseEventAttribution<? extends DomainObject>> attributions, AdverseEvent ae){
+        if(obj == null || obj.getId() == null) return;
     	AdverseEventAttribution<? extends DomainObject> unwantedAttribution = null;
     	for(AdverseEventAttribution<? extends DomainObject> attribution : attributions){
     		if(obj.getId().equals(attribution.getCause().getId())) {
