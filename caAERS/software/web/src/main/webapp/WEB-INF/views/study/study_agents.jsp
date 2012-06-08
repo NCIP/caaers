@@ -84,9 +84,9 @@ function updateDeviceBoxTitleFromOther(index) {
 
 function updateDeviceBoxTitle(id, _commonName, _brandName, _type) {
     var s = "";
-    if (_commonName != null && _commonName.trim() != '') s += (_commonName + ", ");
-    if (_brandName != null && _brandName.trim() != '') s += (_brandName + ", ");
-    if (_type != null && _type.trim() != '') s += (_type + ", ");
+    if (_commonName != null && jQuery.trim(_commonName) != '') s += (_commonName + ", ");
+    if (_brandName != null && jQuery.trim(_brandName) != '') s += (_brandName + ", ");
+    if (_type != null && jQuery.trim(_type) != '') s += (_type + ", ");
     $(id).innerHTML = s.substring(0, s.length - 2);
 }
 
