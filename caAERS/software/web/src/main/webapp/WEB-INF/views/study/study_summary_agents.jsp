@@ -43,7 +43,9 @@
                     <c:set var="indAssociationsString" value="" />
                     <c:if test="${fn:length(studyAgent.studyAgentINDAssociations) > 0}">
                         <c:forEach items="${studyAgent.studyAgentINDAssociations }" var="sai">
-                            <c:set var="indAssociationsString" value="${sai.investigationalNewDrug.strINDNo},&nbsp;&nbsp;${sai.investigationalNewDrug.holderName}" />
+                        	<c:if test="${not empty sai.investigationalNewDrug}">
+                            	<c:set var="indAssociationsString" value="${sai.investigationalNewDrug.strINDNo},&nbsp;&nbsp;${sai.investigationalNewDrug.holderName}" />
+                            </c:if>
                         </c:forEach>
                     </c:if>
 
