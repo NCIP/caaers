@@ -134,7 +134,7 @@ public class OrganizationManagementServiceImpl implements OrganizationManagement
         for(Organization o : newOrgs){
             i++;
             organizationRepository.saveImportedOrganization(o);
-            if((i%250) > 0 ) organizationDao.flush();
+            if((i%250) == 0 ) organizationDao.flush();
             ProcessingOutcome outcome =  Helper.createOutcome(Organization.class, o.getNciInstituteCode(), false,
                     "Organization with NCI Code : " + o.getNciInstituteCode() + ", id : " + o.getId() + " modified/created" );
             outcomes.add(outcome);
