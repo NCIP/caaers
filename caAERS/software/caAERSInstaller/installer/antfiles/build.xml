@@ -6,8 +6,8 @@
 	<!-- set global properties for this build -->
 	<property file="${user.home}/.gridenv.properties" />
 	<property name="tomcat.download.url" value="@TOMCAT_DOWNLOAD_URL@" />
-	<property name="tomcat.file.name" value="apache-tomcat-5.5.27.zip" />
-	<property name="tomcat.version" value="apache-tomcat-5.5.27" />
+	<property name="tomcat.file.name" value="apache-tomcat-6.0.33.zip" />
+	<property name="tomcat.version" value="apache-tomcat-6.0.33" />
 	<property name="caaers.download.url" value="@CAAERS_DOWNLOAD_URL@"/>
 	<property name="caaers.file.name" value="caaers.war" />
 	<property name="caaers.core.jar" value="caaers-core-*.jar" />
@@ -297,14 +297,6 @@
 		<delete dir="${basedir}/tomcat_temp" />
 	</target>
 	<target name="setUpConfDirectory">
-		<copy file="${basedir}/resources/templates/conf/ApplicationSecurityConfig.xml" tofile="${tomcat.temp.home}/conf/cabig/ApplicationSecurityConfig.xml" overwrite="true" />
-		<replace file="${tomcat.temp.home}/conf/cabig/ApplicationSecurityConfig.xml" token="@PATH_TO_CABIG_CONF@" value="${tomcat.temp.home}/conf/cabig" />
-		<copy file="${basedir}/resources/templates/conf/${database.vendor}.caaers.hibernate.cfg.xml" tofile="${tomcat.temp.home}/conf/cabig/caaers.hibernate.cfg.xml" overwrite="true" />
-		<replace file="${tomcat.temp.home}/conf/cabig/caaers.hibernate.cfg.xml" token="@DB_USER@" value="${database.userid}" />
-		<replace file="${tomcat.temp.home}/conf/cabig/caaers.hibernate.cfg.xml" token="@DB_PASSWORD@" value="${database.password}" />
-		<replace file="${tomcat.temp.home}/conf/cabig/caaers.hibernate.cfg.xml" token="@DB_HOST@" value="${database.host.name}" />
-		<replace file="${tomcat.temp.home}/conf/cabig/caaers.hibernate.cfg.xml" token="@DB_PORT@" value="${database.host.port}" />
-		<replace file="${tomcat.temp.home}/conf/cabig/caaers.hibernate.cfg.xml" token="@DB_NAME@" value="${database.name}" />
 
 		<antcall target="copy_csm_jass_config" />
 		
@@ -314,7 +306,6 @@
 		<replace file="${tomcat.temp.home}/conf/cabig/csm_jaas.config" token="@DB_PORT@" value="${database.host.port}" />
 		<replace file="${tomcat.temp.home}/conf/cabig/csm_jaas.config" token="@DB_NAME@" value="${database.name}" />
 		<propertyfile file="${tomcat.temp.home}/conf/catalina.properties">
-			<entry key="gov.nih.nci.security.configFile" value="$${catalina.home}/conf/cabig/ApplicationSecurityConfig.xml" />
 			<entry key="java.security.auth.login.config" value="$${catalina.home}/conf/cabig/csm_jaas.config" />
 		</propertyfile>
 		<mkdir dir="${tomcat.temp.home}/conf/caaers" />
