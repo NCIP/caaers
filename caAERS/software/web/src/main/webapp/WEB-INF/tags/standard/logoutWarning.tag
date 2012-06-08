@@ -1,9 +1,6 @@
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <div id="logout_warning" style="display:none;text-align:left;padding-left:10px; width:500px;">
-    <p>
-        <tags:message key="instruction_logout_warning">
-        </tags:message>
-    </p>
+    <div class="warning-box message"><p><tags:message key="instruction_logout_warning"></tags:message></p></div>
     <div class="content buttons autoclear" style="margin-top:50px;">
         <div class="flow-buttons">
             <span class="next">
