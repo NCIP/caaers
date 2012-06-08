@@ -6,9 +6,7 @@
 <caaers:message var="_syncpopmsg" code="ae.study.sync.message" text="Study is being synchronized with CTEP-ESYS. This popup will automatically close once the data is in sync. Thank you for your patience." />
 <c:if test="${command.studyOutOfSync}">
     <div id="divStudySync" style="display:none;">
-        <div id="flash-message" class="${empty warningMessageClass ? 'warning' : warningMessageClass}">
-            <img src= "<chrome:imageUrl name="../error-yellow.png"/>" />${_syncpopmsg}
-        </div>
+        <div class="info-box message"><p>${_syncpopmsg}</p></div>
     </div>
     <script type="text/javascript">
 
