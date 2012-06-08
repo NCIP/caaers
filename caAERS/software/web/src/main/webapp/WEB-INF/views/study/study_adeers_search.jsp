@@ -219,7 +219,7 @@
         ];
 
         studiesJSONResult = [
-            <c:forEach items="${studies}" var="s">
+            <c:forEach items="${studies}" var="s" varStatus="i">
                 {
                     "id":"${s.id}",
                     "fsid":"${s.fundingSponsorIdentifierValue}",
@@ -227,7 +227,8 @@
                     "shortTitle":"<c:out value="${s.shortTitle}" escapeXml="true" />",
                     "longTitle":"<c:out value="${s.longTitle}" escapeXml="true" />",
                     "action":"${s.status}"
-                },
+                }
+                <c:if test="${!i.last}">,</c:if>
             </c:forEach>
         ];
 
