@@ -228,7 +228,22 @@
         function hideShowAllTable(){
 		  $('showAllDropDown').hide();
 	   }
-		
+
+        function setTitleMDS(_index) {
+            var titleID = $('titleOf_assignment.diseaseHistory.metastaticDiseaseSites[' + _index + ']');
+            var name = $("assignment.diseaseHistory.metastaticDiseaseSites[" + _index + "].codedSite-input");
+            var value = name.value;
+            if ($("assignment.diseaseHistory.metastaticDiseaseSites[" + _index + "].codedSite").value == 110) {
+                $('assignment.diseaseHistory.metastaticDiseaseSites[' + _index + '].other').show();
+                value += " - " + $("assignment.diseaseHistory.metastaticDiseaseSites[" + _index + "].otherSite").value + "";
+                $('showALL' + _index).hide();
+            } else {
+                $('assignment.diseaseHistory.metastaticDiseaseSites[' + _index + '].other').hide();
+                $('showALL' + _index).show();
+            }
+            $(titleID).innerHTML = value;
+        }
+
 	</script>
   </head>
   <body>
