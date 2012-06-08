@@ -71,7 +71,7 @@ public class TreatmentTab extends AeTab {
         List<TreatmentAssignment> taList = command.getAeReport().getStudy().getActiveTreatmentAssignments();
         if (taList != null) {
             for (TreatmentAssignment ta : taList) {
-                map.put(ta.getId(), ta.getCode());
+                map.put("" + ta.getId(), ta.getCode());
             }
         }
         return map;
