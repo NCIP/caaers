@@ -5,6 +5,15 @@
 <head>
     <title>Not implemented</title>
   	<style type="text/css">
+          pre {
+              white-space: pre-wrap;       /* css-3 */
+              white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
+              white-space: -pre-wrap;      /* Opera 4-6 */
+              white-space: -o-pre-wrap;    /* Opera 7 */
+              word-wrap: break-word;       /* Internet Explorer 5.5+ */
+              width: 99%;
+          }
+
   		.label {
   			float:left;
 			font-weight:bold;
@@ -193,7 +202,7 @@
 		 <c:forEach items="${FIELDS.PENF}" var="entry">
 		 	<chrome:division title="${entry.key}" >
 		 		<c:forEach items="${entry.value}" var="pair">
-		 			<rd:renderPair pair="${pair}" preformatedValue="${pair.key eq 'Message'}" />
+		 			<rd:renderPair pair="${pair}" preformatedValue="${pair.key eq 'Message'}"  valueStyle="width:98%"/>
 		 		</c:forEach>
 		 	</chrome:division>
 		 </c:forEach>
