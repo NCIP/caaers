@@ -151,7 +151,7 @@
                             </c:if>
 
                             <c:if test="${(command.report.lastVersion.reportStatus == 'INPROCESS')}">
-                                <div class="info-box message"><p>${command.report.lastVersion.statusAsString}</p></div>
+                                <div class="info-box message"><p>${command.report.lastVersion.statusAsString}<br>Submission to AdEERS in process</p></div>
                             </c:if>
 
                             <div class="row">
@@ -164,7 +164,7 @@
                                         <ae:oneListReportSubmissionStatus theReport="${report}" reportStatus="${command.report.lastVersion.reportStatus}" lastVersion="${command.report.lastVersion}"/>
                                     </c:if>
                                     <c:if test="${command.report.lastVersion.reportStatus == 'INPROCESS'}">
-                                        <span class="dueOn"><i>Submission to AdEERS in process</i></span>
+                                        <%--<span class="dueOn"><i>Submission to AdEERS in process</i></span>--%>
                                     </c:if>
                                 </div>
                             </div>
