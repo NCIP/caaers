@@ -19,11 +19,7 @@ public class AdeersWebServiceImpl implements AdeersWebService {
 
 	Logger log = Logger.getLogger(getClass());
 	
-	private String adeersKeyStore ;
 
-	public void setAdeersKeyStore(String adeersKeyStore){
-		this.adeersKeyStore=adeersKeyStore;
-	}
 	public String callWebService(String aeReport) throws Exception {
 		
 		return submitOrWithdraw(aeReport);
@@ -42,8 +38,6 @@ public class AdeersWebServiceImpl implements AdeersWebService {
 		//String fileSeparator = System.getProperty("file.separator");
 		//String clientAbsoluteTrustStore = System.getProperty("user.home") + fileSeparator + clientTrustStore;
 
-		log.info("Key Store PATH " + adeersKeyStore);
-//		System.setProperty("javax.net.ssl.trustStore", adeersKeyStore);
 		AEReportXMLServiceSoapBindingStub binding;
         try {
             binding = (AEReportXMLServiceSoapBindingStub)   new AEReportXMLService_ServiceLocator(url).getAEReportXMLService();

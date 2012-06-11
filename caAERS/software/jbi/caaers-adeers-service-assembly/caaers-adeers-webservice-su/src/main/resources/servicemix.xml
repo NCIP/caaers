@@ -61,10 +61,7 @@
         </property>
     </bean>	                       
 	<bean id="adeersWebService" class="webservice.adeers.AdeersWebServiceImpl" >
-		<property name="adeersKeyStore" ref="adeersKeyStore"/>
 	</bean>
-	<bean id="adeersKeyStore" class="java.lang.String">
-		<constructor-arg value="${caaers-adeers.keyStorePath}" />
-	</bean>
+
 
 </beans>
