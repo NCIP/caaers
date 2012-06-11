@@ -178,45 +178,45 @@
             <OTHER_TREATMENT_ASSIGNMENT><xsl:value-of select="TreatmentInformation/treatmentDescription"/></OTHER_TREATMENT_ASSIGNMENT>
            </xsl:if>
         </TREATMENT_ASSIGNMENT_INFORMATION>
-        <COURSE_INFORMATION>
-            <xsl:if test="TreatmentInformation/firstCourseDate != ''">
-                <START_DATE_OF_FIRST_COURSE>
-                    <xsl:call-template name="standard_date">
-                        <xsl:with-param name="date" select="TreatmentInformation/firstCourseDate"/>
-                    </xsl:call-template>
-                    <!--2002-09-24-->
-                </START_DATE_OF_FIRST_COURSE>
-            </xsl:if>
-            <xsl:if test="TreatmentInformation/AdverseEventCourse/date != ''">
-                <START_DATE_OF_AE_COURSE>
-                    <xsl:call-template name="standard_date">
-                        <xsl:with-param name="date"
-                            select="TreatmentInformation/AdverseEventCourse/date"/>
-                    </xsl:call-template>
-                </START_DATE_OF_AE_COURSE>
-            </xsl:if>
-            <xsl:if test="TreatmentInformation/AdverseEventCourse/number != ''">
-                <COURSE_NUMBER_OF_AE>
-                    <xsl:value-of select="TreatmentInformation/AdverseEventCourse/number"/>
-                </COURSE_NUMBER_OF_AE>
-            </xsl:if>
-            <xsl:if test="TreatmentInformation/totalCourses != ''">
-                <TOTAL_NUMBER_OF_COURSES>
-                    <xsl:value-of select="TreatmentInformation/totalCourses"/>
-                </TOTAL_NUMBER_OF_COURSES>
-            </xsl:if>
-            
+        <xsl:if test="TreatmentInformation/firstCourseDate or TreatmentInformation/AdverseEventCourse/child::* or TreatmentInformation/totalCourses or TreatmentInformation/investigationalAgentAdministered">
+            <COURSE_INFORMATION>
+                <xsl:if test="TreatmentInformation/firstCourseDate != ''">
+                    <START_DATE_OF_FIRST_COURSE>
+                        <xsl:call-template name="standard_date">
+                            <xsl:with-param name="date" select="TreatmentInformation/firstCourseDate"/>
+                        </xsl:call-template>
+                        <!--2002-09-24-->
+                    </START_DATE_OF_FIRST_COURSE>
+                </xsl:if>
+                <xsl:if test="TreatmentInformation/AdverseEventCourse/date != ''">
+                    <START_DATE_OF_AE_COURSE>
+                        <xsl:call-template name="standard_date">
+                            <xsl:with-param name="date"
+                                            select="TreatmentInformation/AdverseEventCourse/date"/>
+                        </xsl:call-template>
+                    </START_DATE_OF_AE_COURSE>
+                </xsl:if>
+                <xsl:if test="TreatmentInformation/AdverseEventCourse/number != ''">
+                    <COURSE_NUMBER_OF_AE>
+                        <xsl:value-of select="TreatmentInformation/AdverseEventCourse/number"/>
+                    </COURSE_NUMBER_OF_AE>
+                </xsl:if>
+                <xsl:if test="TreatmentInformation/totalCourses != ''">
+                    <TOTAL_NUMBER_OF_COURSES>
+                        <xsl:value-of select="TreatmentInformation/totalCourses"/>
+                    </TOTAL_NUMBER_OF_COURSES>
+                </xsl:if>
+                <xsl:choose>
+                    <xsl:when test="TreatmentInformation/investigationalAgentAdministered = 'true'">
+                        <INV_AGENT_ADMIN>Yes</INV_AGENT_ADMIN>
+                    </xsl:when>
+                    <xsl:when test="TreatmentInformation/investigationalAgentAdministered = 'false'">
+                        <INV_AGENT_ADMIN>No</INV_AGENT_ADMIN>
+                    </xsl:when>
+                </xsl:choose>
+            </COURSE_INFORMATION>
+        </xsl:if>
 
- 		    <xsl:choose>
-	  			<xsl:when test="TreatmentInformation/investigationalAgentAdministered = 'true'">
-	  				<INV_AGENT_ADMIN>Yes</INV_AGENT_ADMIN>
-	  			</xsl:when>
-	  			<xsl:when test="TreatmentInformation/investigationalAgentAdministered = 'false'">
-	  				<INV_AGENT_ADMIN>No</INV_AGENT_ADMIN>
-	  			</xsl:when>
-	  		</xsl:choose>
-
-        </COURSE_INFORMATION>
 
         <xsl:if test="RadiationIntervention/administration != '' ">
             <RADIATION_INTERVENTION>
