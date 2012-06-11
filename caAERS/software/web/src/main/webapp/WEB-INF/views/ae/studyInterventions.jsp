@@ -22,7 +22,10 @@
     </style>
 </head>
 <body>
-
+<script language="JavaScript">
+    AE.radiationInterventionSize = ${fn:length(command.aeReport.radiationInterventions)};
+    AE.surgeryInterventionSize =   ${fn:length(command.aeReport.surgeryInterventions)};
+</script>
 <script language="JavaScript">
 var divisions = new Hash();
 var routingHelper = new RoutingAndReviewHelper(createAE, 'aeReport');
@@ -140,13 +143,19 @@ function updateMedicalDevice(i, studyDeviceId){
         interventionInstance._addItem('agent', null, null, '_agents');
     }
     function addRadiation() {
+        if(AE.radiationInterventionSize > 0) return;
         interventionInstance._addItem('radiation', null, null, '_radiations');
+        AE.radiationInterventionSize = AE.radiationInterventionSize + 1;
+        $('btn-add-radiation').hide();
     }
     function addDevice() {
         interventionInstance._addItem('device', null, null, '_devices');
     }
     function addSurgery() {
+        if(AE.surgeryInterventionSize > 0 ) return;
         interventionInstance._addItem('surgery', null, null, '_surgeries');
+        AE.surgeryInterventionSize = AE.surgeryInterventionSize + 1;
+        $('btn-add-surgery').hide();
     }
     function addBehavioral() {
         interventionInstance._addItem('behavioral', null, null, '_behaviorals');
@@ -170,6 +179,20 @@ function updateMedicalDevice(i, studyDeviceId){
 
     function fireAction(itemType, index, location, elementId, css) {
         interventionInstance._deleteItem(itemType, index, location);
+        if(itemType == 'radiation'){
+            AE.radiationInterventionSize = AE.radiationInterventionSize - 1;
+        }
+
+        if(itemType == 'surgery'){
+            AE.surgeryInterventionSize = AE.surgeryInterventionSize - 1 ;
+        }
+
+        if(AE.radiationInterventionSize > 0){
+            $('btn-add-radiation').show();
+        }
+        if(AE.surgeryInterventionSize > 0){
+            $('btn-add-surgery').show();
+        }
     }
 
     var interventionInstance = null;
