@@ -83,9 +83,9 @@
 
     function doUpdate(id, _index, nciCode, operation, studyDbId) {
 //        jQuery('#studyLink' + _index).html(_ajaxIndicatorHtml);
-        p = showPopup();
+        var p = showPopup();
         createStudy.syncStudyWithAdEERS(id, studyDbId, function(_resultId) {
-            popupDiv.close();
+            p.close();
 
             if (_resultId.error) {
                 showError(_resultId.errorMessage);
