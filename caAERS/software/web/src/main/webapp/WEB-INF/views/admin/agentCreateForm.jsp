@@ -18,7 +18,7 @@
         </div>
         <div class="row">
             <div class="label"><ui:label labelProperty="agent.nscNumber" text="" path="agent.nscNumber" /></div>
-            <div class="value"><ui:text path="agent.nscNumber" size="20" readonly="${not empty command.agent.nscNumber}"  cssClass="required validate-NOTEMPTY$$MAXLENGTH2000" title="Agent identifier"/></div>
+            <div class="value"><ui:text path="agent.nscNumber" size="20" readonly="${false && not empty command.agent.nscNumber}"  cssClass="required validate-NOTEMPTY$$MAXLENGTH2000" title="Agent identifier"/></div>
         </div>
 
 
