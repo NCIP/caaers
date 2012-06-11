@@ -4,32 +4,27 @@
 <html>
 <head>
     <title>Not implemented</title>
-  	<style type="text/css">
-          pre {
-              white-space: pre-wrap;       /* css-3 */
-              white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
-              white-space: -pre-wrap;      /* Opera 4-6 */
-              white-space: -o-pre-wrap;    /* Opera 7 */
-              word-wrap: break-word;       /* Internet Explorer 5.5+ */
-              width: 99%;
-          }
+    <style type="text/css">
+        pre {
+            overflow-x: auto; /* Use horizontal scroller if needed; for Firefox 2, not needed in Firefox 3 */
+            white-space: pre-wrap; /* css-3 */
+            white-space: -moz-pre-wrap !important; /* Mozilla, since 1999 */
+            white-space: -pre-wrap; /* Opera 4-6 */
+            white-space: -o-pre-wrap; /* Opera 7 */
+            width: 99%;
+            word-wrap: break-word; /* Internet Explorer 5.5+ */
+            margin: 0px 0px 0px 0px;
+            padding:5px 5px 3px 5px;
+        }
 
-  		.label {
-  			float:left;
-			font-weight:bold;
-			margin-left:0.5em;
-			text-align:right;
-  		}
-  		.value {
-  			padding-left:15px;
-  		}
-  		div.row div.label { width: 11em; }
-        div.mandatoryField div.label { width: 21em; }
-        div.mandatoryField div.value { margin-left: 22em; }
-  	</style>
+
+    </style>
+
     <script language="javascript">
-    	
-    	 
+        if(Prototype.Browser.IE){
+            document.write('<style type="text/css">pre { white-space : normal; }</style>');
+        }
+
     </script>
     <link type="image/x-icon" href="../../../images/caaers.ico" rel="shortcut icon"/>
 </head>
