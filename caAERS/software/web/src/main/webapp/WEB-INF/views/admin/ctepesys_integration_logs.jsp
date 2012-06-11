@@ -156,12 +156,21 @@
 	  	Dialog.alert(d.innerHTML, {className: "alphacube", height:500, width:500, okLabel: "Close" });
 	}
 	
+	var booleanFormatter = function(elCell, oRecord, oColumn, oData) {
+	        	if(oData == true){
+	        			elCell.innerHTML = 'Yes';
+	        		}
+	        	if(oData == false){
+	        			elCell.innerHTML = 'No';
+	        		}
+	         }
+	
 	var myColumnDefsForDetails = [{key:"entity", label:"Entity", resizeable:true, minWidth:200, maxWidth:350},
 							{key:"businessId", label:"BusinessId", sortable:true, resizeable:true, minWidth:200, maxWidth:350},
-						{key:"failed", label:"Failed", sortable:true, resizeable:true, minWidth:300, maxWidth:350},
+						{key:"failed", label:"Failed", sortable:true, resizeable:true, minWidth:300, maxWidth:350, formatter:booleanFormatter},
 						{key:"outcome", label:"Notes", sortable:true, resizeable:true, minWidth:100, maxWidth:100}];
 	
-	var myFieldsForDetails = [{key:'entity', parser:"string"},{key:'businessId', parser:"string"},{key:'failed', parser:"string"},{key:'outcome', parser:"string"}];
+	var myFieldsForDetails = [{key:'entity', parser:"string"},{key:'businessId', parser:"string"},{key:'failed', parser:"boolean"},{key:'outcome', parser:"string"}];
 	
 	function displayLogDetailsTable(data) {
 	   initializeYUITableNoPagination("tableDiv",data, myColumnDefsForDetails, myFieldsForDetails);
