@@ -170,6 +170,8 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         //initalize the seriousness outcome indicators
         command.initializeOutcomes();
         
+        command.getStudy().getExpectedAECtcTerms().size();
+        
         Map<String, Object> refData = super.referenceData(command);
         Boolean outcomesMandatory = false;
         // Put a flag in the referenceData to mark Outcome as mandatory if configured so.
