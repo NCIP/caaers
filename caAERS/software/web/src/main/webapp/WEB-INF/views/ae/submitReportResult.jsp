@@ -137,12 +137,8 @@
                            
                             <c:if test="${report.reportDefinition.amendable == true}">
                                 <div class="row">
-                                    <div class="label">
-                                        Amendment
-                                    </div>
-                                    <div class="value">
-                                        ${report.lastVersion.reportVersionId}
-                                    </div>
+                                    <div class="label">Amendment</div>
+                                    <div class="value">${report.lastVersion.reportVersionId}</div>
                                 </div>
                             </c:if>
 
@@ -150,9 +146,17 @@
                                 <div class="error-box message"><p>${command.report.lastVersion.statusAsString}</p></div>
                             </c:if>
 
+                            <c:if test="${(command.report.lastVersion.reportStatus == 'COMPLETED')}">
+                                <div class="success-box message"><p>${command.report.lastVersion.statusAsString}</p></div>
+                            </c:if>
+
+                            <c:if test="${(command.report.lastVersion.reportStatus == 'INPROCESS')}">
+                                <div class="info-box message"><p>${command.report.lastVersion.statusAsString}</p></div>
+                            </c:if>
+
                             <div class="row">
-                                <div class="label">Submission Status</div>
-                                <div id="reportSubmissionStatus" class="value">
+                                <div class="label" style="width: 50px;">&nbsp;</div>
+                                <div id="reportSubmissionStatus" class="value" style="margin-left: 5px;">
                                     <c:if test="${command.report.lastVersion.reportStatus == 'COMPLETED'}">
                                         <ae:oneListReportSubmissionStatus theReport="${report}" reportStatus="${command.report.lastVersion.reportStatus}" lastVersion="${command.report.lastVersion}"/>
                                     </c:if>
