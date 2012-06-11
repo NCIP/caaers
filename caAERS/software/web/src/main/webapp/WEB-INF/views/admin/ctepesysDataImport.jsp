@@ -100,13 +100,16 @@
 	function displayCTEPLOVInitializeTable() {
 	   initializeYUITableNoPagination("tableDiv",fillerData, myColumnDefs, myFields);
 	}
-	
-	 function showPopupMessage(){
-		var d = $('synchMessage');
-		Dialog.alert(d.innerHTML, {className: "alphacube", width:600, okLabel: "Close" });
-	}
-	
-	Event.observe(window, "load", function() {
+
+    function showPopupMessage() {
+        popupDiv = new Window({className:"alphacube", width:750, height:115, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:true, minimizable:false, maximizable:false});
+        popupDiv.setContent("synchMessage");
+        popupDiv.showCenter(true);
+        popupDiv.show();
+        return popupDiv;
+    }
+
+    Event.observe(window, "load", function() {
 		displayCTEPLOVInitializeTable();
 	});
 	
@@ -214,10 +217,8 @@
 	</form:form>
 </chrome:box>
 
-<div id="synchMessage" style="display: none;" class="flash-message info" >
-    <h3><img src= "<chrome:imageUrl name="../check.png"/>" />&nbsp;<caaers:message code="LBL_please.wait" /></h3>
-    <br><br>
-    <div><caaers:message code="LBL_CTEP_DataSynch_Message" /></div>
+<div id="synchMessage" style="display: none;" class="info-box message" >
+    <p><caaers:message code="LBL_CTEP_DataSynch_Message" /></p>
 </div>
 
 </body>
