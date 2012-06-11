@@ -1460,3 +1460,13 @@ div.divisionText {
     padding-bottom: 1px;
     line-height: 23px;
 }
+
+div.divisionText .divisionTitle {
+    color: #2569A2;
+    font-family: "Lucida Sans Unicode",sans-serif;
+    font-size: 18px;
+    font-weight: normal;
+    line-height: 23px;
+    margin-top: 0;
+    padding: 10px 8px;
+}
