@@ -48,7 +48,17 @@ public class AgentCreateController extends AgentController {
     	// TODO Auto-generated method stub
     	super.postProcessPage(request, command, errors, page);
     }
-    
+
+    @Override
+    protected void validatePage(Object oCommand, Errors errors, int page, boolean finish) {
+        AgentCommand c = (AgentCommand)oCommand;
+        Agent a = agentDao.getByNscNumber(c.getAgent().getNscNumber());
+        if (a != null)
+            errors.reject("STU_012", new Object[] {String.format("Duplicate agent number '%s'", c.getAgent().getNscNumber())}, String.format("Duplicate agent number '%s'", c.getAgent().getNscNumber()));
+        else
+            super.validatePage(oCommand, errors, page, finish);
+    }
+
     @Override
     protected ModelAndView processFinish(HttpServletRequest request,
     		HttpServletResponse response, Object command, BindException errors)

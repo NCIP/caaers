@@ -56,16 +56,6 @@ public class AgentController extends AutomaticSaveAjaxableFormController<AgentCo
     }
 
     @Override
-    protected void validatePage(Object oCommand, Errors errors, int page, boolean finish) {
-        AgentCommand c = (AgentCommand)oCommand;
-        Agent a = agentDao.getByNscNumber(c.getAgent().getNscNumber());
-        if (a != null)
-            errors.reject("STU_012", new Object[] {"agent number"}, String.format("Duplicate agent number '%s'", c.getAgent().getNscNumber()));
-        else
-            super.validatePage(oCommand, errors, page, finish);
-    }
-
-    @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
         request.getSession().removeAttribute(getReplacedCommandSessionAttributeName(request));
         request.getSession().removeAttribute(AgentEditController.class.getName() + ".FORM.command");
