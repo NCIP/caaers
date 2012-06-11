@@ -2,6 +2,28 @@
 <html>
 <head>
     <title>${tab.longTitle}</title>
+    <style type="text/css">
+        pre {
+            overflow-x: auto; /* Use horizontal scroller if needed; for Firefox 2, not needed in Firefox 3 */
+            white-space: pre-wrap; /* css-3 */
+            white-space: -moz-pre-wrap !important; /* Mozilla, since 1999 */
+            white-space: -pre-wrap; /* Opera 4-6 */
+            white-space: -o-pre-wrap; /* Opera 7 */
+            width: 99%;
+            word-wrap: break-word; /* Internet Explorer 5.5+ */
+            margin: 0px 0px 0px 0px;
+            padding:5px 5px 3px 5px;
+        }
+
+
+    </style>
+
+    <script language="javascript">
+        if(Prototype.Browser.IE){
+            document.write('<style type="text/css">pre { white-space : normal; }</style>');
+        }
+
+    </script>
 </head>
 <body>
 <tags:tabForm tab="${tab}" flow="${flow}" hideErrorDetails="false">
