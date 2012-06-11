@@ -103,7 +103,6 @@
                 _s = _s.interpolate({index:_index, action:"UPDATE", fsid:id, ncic:nciCode, studyId:_dbId})
                 jQuery('#studyLink' + _index).html(_s);
                 var _p = showSuccessPopup(flashText);
-                hideSuccessPopup
             }
 
         });
