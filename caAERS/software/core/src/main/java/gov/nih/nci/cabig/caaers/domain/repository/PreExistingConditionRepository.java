@@ -17,6 +17,7 @@ public class PreExistingConditionRepository {
     public List<PreExistingCondition> getAll(boolean activeOnly) {
         PreExistingConditionQuery q = new PreExistingConditionQuery();
         if (activeOnly) q.filterByRetiredStatus(false);
+        q.orderBy("text");
         return (List<PreExistingCondition>)preExistingConditionDao.search(q);
     }
 
