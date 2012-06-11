@@ -603,7 +603,7 @@ public class EvaluationServiceImpl implements EvaluationService {
     }
 
     public SafetyRuleEvaluationResultDTO evaluateSafetySignallingRules(ObservedAdverseEventProfile observedAEProfile) {
-    	if(observedAEProfile.getNotificationStatus() == NotificationStatus.NOTIFY){
+    	if(observedAEProfile.getNotificationStatus() == NotificationStatus.NOTIFY || observedAEProfile.getNotificationStatus() == NotificationStatus.IGNORE_ALREADY_NOTIFIED){
     		SafetyRuleEvaluationResultDTO result = new SafetyRuleEvaluationResultDTO();
             result.setNotificationStatus(NotificationStatus.IGNORE_ALREADY_NOTIFIED);
             result.setRulesMatched(Arrays.asList(new String[]{}));
