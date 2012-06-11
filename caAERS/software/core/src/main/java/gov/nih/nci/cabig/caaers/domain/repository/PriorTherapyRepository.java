@@ -18,6 +18,7 @@ public class PriorTherapyRepository {
         PriorTherapyQuery q = new PriorTherapyQuery();
         if (excludeNoPriorTherapy) q.filterOutNoPriorTherapy();
         if (activeOnly) q.filterByRetiredStatus(false);
+        q.orderBy("text");
         return (List<PriorTherapy>)priorTherapyDao.search(q);
     }
 
