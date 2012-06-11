@@ -136,7 +136,10 @@ public class TreatmentAssignmentTab extends StudyTab {
         } else if (index >=0) {
             TreatmentAssignment ta = tas.get(index);
             //CAAERS-5584
-            if(ta.getCode() == null) ta.setCode("null");
+            if(ta.getCode() == null){
+                ta.setCode("null");
+                ta.setDescription("null");
+            }
             ta.retire();
         }
 
