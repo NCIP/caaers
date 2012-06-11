@@ -54,4 +54,10 @@ public class OrganizationQueryTest extends TestCase {
 
     }
 
+    public void testFilterByOrganizationTypesOrNull() {
+        OrganizationQuery q = new OrganizationQuery();
+        q.filterByOrganizationTypesOrNull(new String[] {"CCR", "CLC", "NCP"});
+        assertEquals("SELECT distinct o from Organization o WHERE (lower(o.type) = 'ccr' or lower(o.type) = 'clc' or lower(o.type) = 'ncp' or o.type IS NULL)  order by o.name", q.getQueryString());
+    }
+
 }
