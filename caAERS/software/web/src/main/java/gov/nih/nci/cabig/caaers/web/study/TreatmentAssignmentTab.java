@@ -135,6 +135,8 @@ public class TreatmentAssignmentTab extends StudyTab {
             log.debug("Wrong <index> for <treatment assignmen> list.");
         } else if (index >=0) {
             TreatmentAssignment ta = tas.get(index);
+            //CAAERS-5584
+            if(ta.getCode() == null) ta.setCode("null");
             ta.retire();
         }
 
