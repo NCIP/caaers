@@ -60,7 +60,6 @@
         popupDiv.setContent("please_wait");
         popupDiv.showCenter(true);
         popupDiv.show();
-        return popupDiv;
     }
 
     function showSuccessPopup(_messageText) {
@@ -83,9 +82,9 @@
 
     function doUpdate(id, _index, nciCode, operation, studyDbId) {
 //        jQuery('#studyLink' + _index).html(_ajaxIndicatorHtml);
-        var p = showPopup();
+        showPopup();
         createStudy.syncStudyWithAdEERS(id, studyDbId, function(_resultId) {
-            p.close();
+            popupDiv.close();
 
             if (_resultId.error) {
                 showError(_resultId.errorMessage);
