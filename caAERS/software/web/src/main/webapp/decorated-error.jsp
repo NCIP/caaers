@@ -154,7 +154,8 @@
                         </B>
                     </TD>
                     <TD>
-                        <%= String.valueOf(message) %>
+                    	<% request.setAttribute("message", message); %>
+                    	<c:out value="${message}" />
                     </TD>
                 </TR>
                 </TABLE>
