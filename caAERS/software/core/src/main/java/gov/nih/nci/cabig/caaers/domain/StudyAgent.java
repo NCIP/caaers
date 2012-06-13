@@ -356,12 +356,27 @@ public class StudyAgent extends StudyIntervention {
 	}
 	
 	public boolean shouldHonor(){
-		// shouldHonor = true if study has a CTEP Ind and given studyAgent is CTEP Ind
-    	// shouldHonor = true if study has no CTEP Ind and given studyAgent is not CTEP Ind
-    	// shouldHonor = false if study has a CTEP Ind and given studyAgent is not CTEP Ind
-    	// All other combinations are invalid
-		if(isCTEPLead() && !getStudy().hasLeadCTEPInds()) throw new IllegalStateException("Agent is CTEP lead but study has no CTEP INDs. Its an invalid state.");
-		return !(getStudy().hasLeadCTEPInds() ^ isCTEPLead());
+        
+        /*
+            BJ : Refactored after discussing with Kruttik.
+            //------ Previous comments as-is -------------
+            // shouldHonor = true if study has a CTEP Ind and given studyAgent is CTEP Ind
+            // shouldHonor = false if study has a CTEP Ind and given studyAgent is not CTEP Ind
+    	    // shouldHonor = true if study has no CTEP Ind and given studyAgent is not CTEP Ind
+
+    	    // All other combinations are invalid
+         */
+
+		//is this agent a ctep IND ?
+        if(isCTEPLead()) return true;
+
+        //not a ctep ind, so check if there are other ctep IND ?
+        if(getStudy().hasLeadCTEPInds()) return false;
+
+        //if there are INDs belonging to non-ctep orgs ?
+        if(getStudy().hasInvestigationalNewDrugs()) return true;
+
+        return false;
 	}
 	
 	@Transient

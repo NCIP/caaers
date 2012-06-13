@@ -2512,10 +2512,23 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     }
     
     public boolean hasLeadCTEPInds(){
-        for (StudyAgent sa : getStudyAgents()) {
-            if (sa == null || sa.getAgent() == null) continue;
+        for (StudyAgent sa : getActiveStudyAgents()) {
             if (sa.isCTEPLead())
                 return true;
+        }
+        return false;
+    }
+    
+    public boolean hasInvestigationalNewDrugs(){
+        for(StudyAgent sa : getActiveStudyAgents()) {
+            if(sa.getInvestigationalNewDrugIndicator()) return true;
+        }
+        return false;
+    }
+    
+    public boolean hasInvestigationalNewDevices(){
+        for(StudyDevice sd : getActiveStudyDevices()) {
+            if(sd.getInvestigationalNewDrugIndicator()) return true;
         }
         return false;
     }

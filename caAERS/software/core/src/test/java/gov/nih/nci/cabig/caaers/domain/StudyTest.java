@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import junit.framework.TestCase;
  * @author Biju Joseph 
  *
  */
-public class StudyTest extends TestCase {
+public class StudyTest extends AbstractTestCase {
 	Study study;
 	protected void setUp() throws Exception {
 		super.setUp();

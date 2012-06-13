@@ -124,6 +124,8 @@ public class StudyAgentTest extends AbstractTestCase {
 	
 	public void testIsCTEPLead(){
 		StudyAgent sa = Fixtures.createStudyAgent("abcd");
+        sa.addStudyAgentINDAssociation(Fixtures.createStudyAgentIndAssociation("111", "CTEP"));
+
 		
 		sa.setRetiredIndicator(false);
 		sa.setIndType(INDType.CTEP_IND);
@@ -138,12 +140,15 @@ public class StudyAgentTest extends AbstractTestCase {
 		
 		sa.setRetiredIndicator(false);
 		sa.setIndType(null);
-		sa.setPartOfLeadIND(true);
+		sa.setPartOfLeadIND(false);
 		assertFalse(sa.isCTEPLead());
-		
+
+        sa = Fixtures.createStudyAgent("abcd");
+        sa.addStudyAgentINDAssociation(Fixtures.createStudyAgentIndAssociation("111", "DCP"));
 		sa.setRetiredIndicator(false);
 		sa.setIndType(INDType.DCP_IND);
 		sa.setPartOfLeadIND(true);
+
 		assertFalse(sa.isCTEPLead());
 		
 		sa.setRetiredIndicator(false);
@@ -155,12 +160,12 @@ public class StudyAgentTest extends AbstractTestCase {
 	public void testShouldHonor1(){
 		Study study = registerMockFor(Study.class);
 		StudyAgent sa = Fixtures.createStudyAgent("abcd");
+        sa.addStudyAgentINDAssociation(Fixtures.createStudyAgentIndAssociation("111", "CTEP"));
 		sa.setStudy(study);
 		
 		sa.setRetiredIndicator(false);
 		sa.setIndType(INDType.CTEP_IND);
 		sa.setPartOfLeadIND(true);		
-		EasyMock.expect(study.hasLeadCTEPInds()).andReturn(true).times(2);
 		replayMocks();
 		assertTrue(sa.shouldHonor());
 		verifyMocks();
@@ -170,12 +175,12 @@ public class StudyAgentTest extends AbstractTestCase {
 	public void testShouldHonor2(){
 		Study study = registerMockFor(Study.class);
 		StudyAgent sa = Fixtures.createStudyAgent("abcd");
+        sa.addStudyAgentINDAssociation(Fixtures.createStudyAgentIndAssociation("111", "CTEP"));
 		sa.setStudy(study);
 		
 		sa.setRetiredIndicator(false);
 		sa.setIndType(INDType.DCP_IND);
 		sa.setPartOfLeadIND(true);		
-		EasyMock.expect(study.hasLeadCTEPInds()).andReturn(false);
 		replayMocks();
 		assertTrue(sa.shouldHonor());
 		verifyMocks();
@@ -195,22 +200,5 @@ public class StudyAgentTest extends AbstractTestCase {
 		verifyMocks();
 	}
 	
-	public void testShouldHonor4(){
-		Study study = registerMockFor(Study.class);
-		StudyAgent sa = Fixtures.createStudyAgent("abcd");
-		sa.setStudy(study);
-		
-		sa.setRetiredIndicator(false);
-		sa.setIndType(INDType.CTEP_IND);
-		sa.setPartOfLeadIND(true);		
-		EasyMock.expect(study.hasLeadCTEPInds()).andReturn(false);
-		replayMocks();
-		try {
-			sa.shouldHonor();
-			fail();
-		} catch (Exception e) {
-			verifyMocks();
-		}
-		
-	}
+
 }
