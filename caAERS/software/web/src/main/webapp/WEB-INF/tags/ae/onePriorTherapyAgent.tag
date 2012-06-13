@@ -4,16 +4,18 @@
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui" %>
+<%@ taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
 <%@attribute name="index" required="true" %>
 <%@attribute name="parentIndex" required="true" %>
 <%@attribute name="style"%>
 <%@attribute name="agent" type="gov.nih.nci.cabig.caaers.domain.PriorTherapyAgent" %>
 
-<table width="480px" border="0">
+<table width="510px" border="0">
 <tr>
     <td align="left">
         <%--${agent.agent.name}--%>
         <c:set var="initValue" value="${not empty agent.agent ? agent.agent.displayName : 'Begin typing here'}"/>
+          <b><caaers:message code="LBL_agent.name" /></b>
           <ui:autocompleter path="aeReport.saeReportPriorTherapies[${parentIndex}].priorTherapyAgents[${index}].agent" title="PriorTherapy agent"
             displayNamePath="aeReport.saeReportPriorTherapies[${parentIndex}].priorTherapyAgents[${index}].agent.displayName"
             readonly="${not empty agent.agent}"

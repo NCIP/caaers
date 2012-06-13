@@ -4,6 +4,7 @@
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui" %>
+<%@ taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
 
 <%@attribute name="index" required="true" %>
 <%@attribute name="parentIndex" required="true" %>
@@ -20,6 +21,7 @@
  			<tr>
   				<td width="99%">
                       <c:set var="initValue" value="${not empty agent.agent ? agent.agent.displayName : 'Begin typing here'}"/>
+                      <b><caaers:message code="LBL_agent.name" /></b>
                       <ui:autocompleter path="assignment.priorTherapies[${parentIndex}].priorTherapyAgents[${index}].agent"
                       	initialDisplayValue="${initValue}"
                         title="PriorTherapy agent"
