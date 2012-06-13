@@ -38,13 +38,13 @@
         if (text == '') {
             if (validate) jQuery('#flashErrors').show();
         } else {
-            $('indicator').show();
+            jQuery('#indicator').show();
             jQuery('#flashErrors').hide();
             var parameterMap = getParameterMap(form);
             parameterMap["organizationID"] = "<c:out value="${command.organization.id}" />";
             searchStudy.getStudiesForCreateParticipant(parameterMap, "", text, "${command.organization.nciInstituteCode}", ajaxCallBack);
-            $('indicator').hide();
-            $('bigSearch').show();
+            jQuery('#indicator').hide();
+            jQuery('#bigSearch').show();
         }
     }
 
@@ -119,12 +119,7 @@
         {key:"active", label:"Select", sortable:true, resizeable:true, formatter : radioFormatter},
         {key:"primaryIdentifierValue", label:"Study ID", sortable:true, resizeable:true},
         {key:"shortTitle", label:"Title", sortable:true, resizeable:true},
-/*
-        {key:"primarySponsorCode", label:"Funding Sponsor", sortable:true, resizeable:true},
-        {key:"phaseCode", label:"Phase", sortable:true, resizeable:true},
-        {key:"status", label:"Status", sortable:true, resizeable:true}
-*/
-        {key:"actions", label:"&nbsp;", sortable:true, resizeable:true, formatter:actionsFormatter},
+        {key:"actions", label:"&nbsp;", sortable:true, resizeable:true, formatter:actionsFormatter}
     ];
 
     var myFields = [
