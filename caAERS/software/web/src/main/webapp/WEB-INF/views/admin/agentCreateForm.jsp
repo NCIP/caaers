@@ -7,7 +7,6 @@
     <jsp:attribute name="singleFields">
         <input type="hidden" name="_action" />
 
-<div class="tabpane">
     <div class="content">
 
         <%--<chrome:box title="Agent Edit Form" autopad="false">--%>
@@ -113,7 +112,7 @@
         <%--</chrome:box>--%>
 
     </div>
-</div>
+
 <script>
     var v1Index = $('terminology').selectedIndex;
     var vCIndex = $('ctcVersion').selectedIndex;

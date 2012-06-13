@@ -58,8 +58,6 @@ var myFields = [
 ];
 </script>
 
-<div class="tabpane">
-
 
         <admin:agent3rdLevelMenu selected="search" />
 
@@ -110,5 +108,3 @@ var myFields = [
                </form:form>
            </div>
        </div>
-
-</div>

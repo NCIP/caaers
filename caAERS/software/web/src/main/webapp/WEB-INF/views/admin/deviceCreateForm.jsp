@@ -6,7 +6,6 @@
     <jsp:attribute name="singleFields">
         <input type="hidden" name="_action" />
 
-<div class="tabpane">
     <div class="content">
 
         <%--<chrome:box title="Agent Edit Form" autopad="false">--%>
@@ -24,7 +23,7 @@
             </div>
 
     </div>
-</div>
+
     </jsp:attribute>
 </tags:tabForm>
 

@@ -46,8 +46,6 @@ var myFields = [
 ];
 </script>
 
-<div class="tabpane">
-
         <admin:agent3rdLevelMenu selected="searchDevice" />
 
 <div class="content">
@@ -86,5 +84,3 @@ var myFields = [
                </form:form>
            </div>
        </div>
-
-</div>

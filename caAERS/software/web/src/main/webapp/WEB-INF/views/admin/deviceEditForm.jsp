@@ -8,7 +8,6 @@
     <jsp:attribute name="singleFields">
         <input type="hidden" name="_action" />
 
-<div class="tabpane">
     <div class="content">
         <div class="row">
             <div class="label"><ui:label labelProperty="aeReport.medicalDevices.commonName" text="" path="device.commonName" /></div>
@@ -23,7 +22,6 @@
             <div class="value"><ui:text path="device.type" size="60" cssClass="${empty command.device.type ? 'required' : 'valueOK'} validate-NOTEMPTY$$MAXLENGTH2000" title="Device type" readonly="${!hasAgentCreate}"/></div>
         </div>
     </div>
-</div>
 
     </jsp:attribute>
 </tags:tabForm>
