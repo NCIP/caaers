@@ -1,6 +1,19 @@
 
 <dataset>
 
+    <ORGANIZATIONS
+            id="-1001"
+            version="1"
+            name="National Cancer Institute"
+            description_text="NCI"
+            nci_institute_code="NCI"
+            />
+    <!-- IND holders -->
+    <investigational_new_drugs id="-881" ind_number="-881"/>
+    <investigational_new_drugs id="-882" ind_number="-882"/>
+    <ind_holders id="-771" dtype="ORG" org_id="-1001" drug_id="-881"/>
+    <ind_holders id="-772" dtype="ORG" org_id="-1001" drug_id="-882"/>
+
     <ctc_versions id="3" name="3.0" />
     <ctc_versions id="4" name="4.0" />
     <meddra_versions id="10" name="medDRA v10" />
@@ -28,7 +41,10 @@
 
 	<study_agents id="-1" study_id="-2" agent_id="-990"/>
 	<study_agents id="-2" study_id="-2" agent_id="-991"/>
-	
+
+    <study_agent_inds id="-1" study_agent_id="-1" ind_id="-881" />
+    <study_agent_inds id="-2" study_agent_id="-2" ind_id="-882" />
+
 	<treatment_assignment id="-1" code="TAC1" study_id="-2" />
 	<treatment_assignment id="-2" code="TAC2" study_id="-2" />
 	<treatment_assignment id="-3" code="TAC1" study_id="-3" />
@@ -44,8 +60,6 @@
     <ta_agents id="-3" version="0" study_agent_id="-1"/>
     <ta_agents id="-4" version="0" study_agent_id="-2"/>
 
-    <ind_holders/>
-    <study_agent_inds/>
     <disease_terminologies />
 
     <CTC_TERMS id="4010" category_id="402" term="Nausea" ctep_term="Nausea" ctep_code="100438810" other_required="0" />
@@ -65,5 +79,6 @@
     <identifiers />
     <study_interventions_exp_aes />
     <ta_expected_ae_intervention />
+    <site_investigators />
 
 </dataset>

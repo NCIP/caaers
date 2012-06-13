@@ -64,89 +64,112 @@ public class AgentSpecificAdverseEventListServiceTest extends CaaersDbTestCase {
     }
     
     public void testSynchronizeStudyWithAgent(){
-    	StudyAgent studyAgent = studyAgentDao.getById(-1);
-    	service.synchronizeStudyWithAgent(studyAgent, AgentSpecificTerm.EXPTECTED_AE_ADDED);
-    	studyDao.save(studyAgent.getStudy());
-    	
-    	interruptSession();
-    	
-    	Study s = studyDao.getById(-2);
-        assertEquals(4, s.getExpectedAECtcTerms().size());
-        assertEquals(1, s.getExpectedAEMeddraLowLevelTerms().size());
-        assertEquals(2, s.getTreatmentAssignments().get(0).getTreatmentAssignmentStudyInterventions().size());
-        assertEquals(2, s.getTreatmentAssignments().get(1).getTreatmentAssignmentStudyInterventions().size());
-        assertEquals(2, s.getTreatmentAssignments().get(0).getAbstractStudyInterventionExpectedAEs().size());
-        assertEquals(2, s.getTreatmentAssignments().get(1).getAbstractStudyInterventionExpectedAEs().size());
-        assertExpectednessSingleTAAE(s.getTreatmentAssignments().get(0).getExistingTerm(agentSpecificTermDao.getById(-1).getTerm()));
-        
-        interruptSession();
-        
-        studyAgent = studyAgentDao.getById(-2);
-    	service.synchronizeStudyWithAgent(studyAgent, AgentSpecificTerm.EXPTECTED_AE_ADDED);
-    	studyDao.save(studyAgent.getStudy());
-    	
-    	interruptSession();
-    	
-    	s = studyDao.getById(-2);
-        assertEquals(6, s.getExpectedAECtcTerms().size());
-        assertEquals(1, s.getExpectedAEMeddraLowLevelTerms().size());
-        assertEquals(2, s.getTreatmentAssignments().get(0).getTreatmentAssignmentStudyInterventions().size());
-        assertEquals(2, s.getTreatmentAssignments().get(1).getTreatmentAssignmentStudyInterventions().size());
-        assertEquals(4, s.getTreatmentAssignments().get(0).getAbstractStudyInterventionExpectedAEs().size());
-        assertEquals(4, s.getTreatmentAssignments().get(1).getAbstractStudyInterventionExpectedAEs().size());
-        assertExpectednessMultipleTAAE(s.getTreatmentAssignments().get(0).getExistingTerm(agentSpecificTermDao.getById(-1).getTerm()));
-        
-        studyAgent = studyAgentDao.getById(-2);
-    	service.synchronizeStudyWithAgent(studyAgent, AgentSpecificTerm.EXPTECTED_AE_ADDED);
-    	studyDao.save(studyAgent.getStudy());
-    	
-    	interruptSession();
-    	
-    	s = studyDao.getById(-2);
-        assertEquals(6, s.getExpectedAECtcTerms().size());
-        assertEquals(1, s.getExpectedAEMeddraLowLevelTerms().size());
-        assertEquals(2, s.getTreatmentAssignments().get(0).getTreatmentAssignmentStudyInterventions().size());
-        assertEquals(2, s.getTreatmentAssignments().get(1).getTreatmentAssignmentStudyInterventions().size());
-        assertEquals(4, s.getTreatmentAssignments().get(0).getAbstractStudyInterventionExpectedAEs().size());
-        assertEquals(4, s.getTreatmentAssignments().get(1).getAbstractStudyInterventionExpectedAEs().size());
-        assertExpectednessMultipleTAAE(s.getTreatmentAssignments().get(0).getExistingTerm(agentSpecificTermDao.getById(-1).getTerm()));
-        
-        interruptSession();
-        s = studyDao.getById(-2);
-        s.getExpectedAECtcTerms().size();
-        s.getExpectedAEMeddraLowLevelTerms().size();
-        for(TreatmentAssignment ta: s.getTreatmentAssignments()){
-        	ta.getTreatmentAssignmentStudyInterventions().size();
-        	for(AbstractStudyInterventionExpectedAE as : ta.getAbstractStudyInterventionExpectedAEs()){
-				as.getTreatmentAssignmentAgents().size();
-			}
+        {
+            StudyAgent studyAgent = studyAgentDao.getById(-1);
+            Study s = studyDao.getById(-2);
+            System.out.println(s.getExpectedAECtcTerms().size());
+            service.synchronizeStudyWithAgent(studyAgent, AgentSpecificTerm.EXPTECTED_AE_ADDED);
+            studyDao.save(studyAgent.getStudy());
         }
-        for(StudyAgent sa : s.getStudyAgents()){
-        	if(sa.getAgent()!=null){
-        		sa.getAgent().getAgentSpecificTerms().size();
-        		sa.getTreatmentAssignmentAgents().size();
-        	}
+        
+    	
+    	interruptSession();
+        {
+
+            Study s = studyDao.getById(-2);
+            assertEquals(3, s.getExpectedAECtcTerms().size());
+            assertEquals(1, s.getExpectedAEMeddraLowLevelTerms().size());
+            assertEquals(2, s.getTreatmentAssignments().get(0).getTreatmentAssignmentStudyInterventions().size());
+            assertEquals(2, s.getTreatmentAssignments().get(1).getTreatmentAssignmentStudyInterventions().size());
+            assertEquals(2, s.getTreatmentAssignments().get(0).getAbstractStudyInterventionExpectedAEs().size());
+            assertEquals(2, s.getTreatmentAssignments().get(1).getAbstractStudyInterventionExpectedAEs().size());
+            assertExpectednessSingleTAAE(s.getTreatmentAssignments().get(0).getExistingTerm(agentSpecificTermDao.getById(-1).getTerm()));
         }
-        interruptSession();
-        studyAgent = s.getStudyAgents().get(0);
-        studyAgent.retire();
-    	service.synchronizeStudyWithAgent(studyAgent, AgentSpecificTerm.EXPTECTED_AE_DELETED);
-    	studyAgent.removeTreatmentAssignmentAgents();
-    	studyDao.save(studyAgent.getStudy());
         
         interruptSession();
+        {
+
+            StudyAgent studyAgent = studyAgentDao.getById(-2);
+            service.synchronizeStudyWithAgent(studyAgent, AgentSpecificTerm.EXPTECTED_AE_ADDED);
+            studyDao.save(studyAgent.getStudy());
+
+        }
+    	interruptSession();
+        {
+
+            Study s = studyDao.getById(-2);
+            assertEquals(6, s.getExpectedAECtcTerms().size());
+            assertEquals(1, s.getExpectedAEMeddraLowLevelTerms().size());
+            assertEquals(2, s.getTreatmentAssignments().get(0).getTreatmentAssignmentStudyInterventions().size());
+            assertEquals(2, s.getTreatmentAssignments().get(1).getTreatmentAssignmentStudyInterventions().size());
+            assertEquals(4, s.getTreatmentAssignments().get(0).getAbstractStudyInterventionExpectedAEs().size());
+            assertEquals(4, s.getTreatmentAssignments().get(1).getAbstractStudyInterventionExpectedAEs().size());
+            assertExpectednessMultipleTAAE(s.getTreatmentAssignments().get(0).getExistingTerm(agentSpecificTermDao.getById(-1).getTerm()));
+
+            StudyAgent studyAgent = studyAgentDao.getById(-2);
+            service.synchronizeStudyWithAgent(studyAgent, AgentSpecificTerm.EXPTECTED_AE_ADDED);
+            studyDao.save(studyAgent.getStudy());
+        }
     	
-    	s = studyDao.getById(-2);
-    	for(ExpectedAECtcTerm ex_ae: s.getExpectedAECtcTerms()){
-    		System.out.println(ex_ae.getCtcTerm().getCtepTerm());
-    	}
-        assertEquals(4, s.getExpectedAECtcTerms().size());
-        assertEquals(1, s.getExpectedAEMeddraLowLevelTerms().size());
-        assertEquals(1, s.getTreatmentAssignments().get(0).getTreatmentAssignmentStudyInterventions().size());
-        assertEquals(1, s.getTreatmentAssignments().get(1).getTreatmentAssignmentStudyInterventions().size());
-        assertEquals(2, s.getTreatmentAssignments().get(0).getAbstractStudyInterventionExpectedAEs().size());
-        assertEquals(2, s.getTreatmentAssignments().get(1).getAbstractStudyInterventionExpectedAEs().size());
-        assertExpectednessSingleTAAE(s.getTreatmentAssignments().get(0).getExistingTerm(agentSpecificTermDao.getById(-1).getTerm()));
+    	interruptSession();
+    	
+        {
+            Study s = studyDao.getById(-2);
+            assertEquals(6, s.getExpectedAECtcTerms().size());
+            assertEquals(1, s.getExpectedAEMeddraLowLevelTerms().size());
+            assertEquals(2, s.getTreatmentAssignments().get(0).getTreatmentAssignmentStudyInterventions().size());
+            assertEquals(2, s.getTreatmentAssignments().get(1).getTreatmentAssignmentStudyInterventions().size());
+            assertEquals(4, s.getTreatmentAssignments().get(0).getAbstractStudyInterventionExpectedAEs().size());
+            assertEquals(4, s.getTreatmentAssignments().get(1).getAbstractStudyInterventionExpectedAEs().size());
+            assertExpectednessMultipleTAAE(s.getTreatmentAssignments().get(0).getExistingTerm(agentSpecificTermDao.getById(-1).getTerm()));
+        }
+        
+        interruptSession();
+        {
+            Study s = studyDao.getById(-2);
+            s.getExpectedAECtcTerms().size();
+            s.getExpectedAEMeddraLowLevelTerms().size();
+            for(TreatmentAssignment ta: s.getTreatmentAssignments()){
+                ta.getTreatmentAssignmentStudyInterventions().size();
+                for(AbstractStudyInterventionExpectedAE as : ta.getAbstractStudyInterventionExpectedAEs()){
+                    as.getTreatmentAssignmentAgents().size();
+                }
+            }
+            for(StudyAgent sa : s.getStudyAgents()){
+                if(sa.getAgent()!=null){
+                    sa.getAgent().getAgentSpecificTerms().size();
+                    sa.getTreatmentAssignmentAgents().size();
+                }
+            }
+        }
+        
+        interruptSession();
+        {
+            Study s = studyDao.getById(-2);
+            StudyAgent studyAgent = s.getStudyAgents().get(0);
+            studyAgent.retire();
+            service.synchronizeStudyWithAgent(studyAgent, AgentSpecificTerm.EXPTECTED_AE_DELETED);
+            studyAgent.removeTreatmentAssignmentAgents();
+            studyDao.save(studyAgent.getStudy());
+
+            interruptSession();
+
+            s = studyDao.getById(-2);
+            for(ExpectedAECtcTerm ex_ae: s.getExpectedAECtcTerms()){
+                System.out.println(ex_ae.getCtcTerm().getCtepTerm());
+            }
+
+
+            assertEquals(4, s.getExpectedAECtcTerms().size());
+            assertEquals(1, s.getExpectedAEMeddraLowLevelTerms().size());
+            assertEquals(1, s.getTreatmentAssignments().get(0).getTreatmentAssignmentStudyInterventions().size());
+            assertEquals(1, s.getTreatmentAssignments().get(1).getTreatmentAssignmentStudyInterventions().size());
+            assertEquals(2, s.getTreatmentAssignments().get(0).getAbstractStudyInterventionExpectedAEs().size());
+            assertEquals(2, s.getTreatmentAssignments().get(1).getAbstractStudyInterventionExpectedAEs().size());
+            assertExpectednessSingleTAAE(s.getTreatmentAssignments().get(0).getExistingTerm(agentSpecificTermDao.getById(-1).getTerm()));
+        }
+
+
     }
     
     public void testSynchronizeStudyWithAgentTerm(){
@@ -158,7 +181,7 @@ public class AgentSpecificAdverseEventListServiceTest extends CaaersDbTestCase {
     	studyDao.save(studyAgent.getStudy());
     	interruptSession();
     	Study s = studyDao.getById(-2);
-        assertEquals(4, s.getExpectedAECtcTerms().size());
+        assertEquals(3, s.getExpectedAECtcTerms().size());
         assertEquals(1, s.getExpectedAEMeddraLowLevelTerms().size());
         assertEquals(2, s.getTreatmentAssignments().get(0).getTreatmentAssignmentStudyInterventions().size());
         assertEquals(2, s.getTreatmentAssignments().get(1).getTreatmentAssignmentStudyInterventions().size());
