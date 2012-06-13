@@ -739,6 +739,7 @@ background: linear-gradient(top, #eaf8ff 0%,#ccefff 100%); /* W3C */
      text-shadow: 0 1px white;
 }
 
+.summary .yui-pg-first, .summary .yui-pg-previous, .summary .yui-pg-next, .summary .yui-pg-last {color: #666}
 .green-means-go {
      background: url("../images/blue/green_gradient.png") repeat-x scroll center top #6AF06A;
      border: 2px solid #888888;
