@@ -23,7 +23,7 @@
      <jsp:body>
     <c:if test="${empty priorTherapy.name}">
         <ui:row path="assignment.priorTherapies[${index}].priorTherapy">
-            <jsp:attribute name="label">Prior Therapy</jsp:attribute>
+            <jsp:attribute name="label"><span class="required-indicator">*</span>&nbsp;Prior Therapy</jsp:attribute>
             <jsp:attribute name="value"><ui:select options="${priorTherapyOptions}" path="assignment.priorTherapies[${index}].priorTherapy" /></jsp:attribute>
             <jsp:attribute name="embededJS">
              Event.observe($('assignment.priorTherapies[${index}].priorTherapy'), 'change' , function(evt) {

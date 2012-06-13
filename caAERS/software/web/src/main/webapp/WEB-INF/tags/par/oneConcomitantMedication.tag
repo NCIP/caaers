@@ -29,7 +29,7 @@
                 <c:if test="${empty concomitantMedication.name}">
                         <ui:row path="assignment.concomitantMedications[${index}].agentName">
                             <jsp:attribute name="label">
-                                <ui:label path="assignment.concomitantMedications[${index}].agentName" text="Medication name" />
+                                <span class="required-indicator">*</span><ui:label path="assignment.concomitantMedications[${index}].agentName" text="Medication name" />
                             </jsp:attribute>
                             <jsp:attribute name="value">
                                 <ui:text path="assignment.concomitantMedications[${index}].agentName" />

@@ -16,7 +16,7 @@
     <jsp:attribute name="titleFragment" >
     <c:if test="${empty preExistingCondition.text && empty otherValue}">
     <ui:row path="assignment.preExistingConditions[${index}]">
-        <jsp:attribute name="label">Pre-existing condition</jsp:attribute>
+        <jsp:attribute name="label"><span class="required-indicator">*</span>&nbsp;Pre-existing condition</jsp:attribute>
         <jsp:attribute name="value">
             <ui:select options="${preExistingConditionOptions}" path="assignment.preExistingConditions[${index}].preExistingCondition"></ui:select>&nbsp;
                 <c:set var="display" value="${empty preExistingCondition ? 'inline' : 'none'}" />
