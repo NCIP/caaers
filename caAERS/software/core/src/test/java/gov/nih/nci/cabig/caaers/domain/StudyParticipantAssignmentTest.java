@@ -94,7 +94,7 @@ public class StudyParticipantAssignmentTest extends AbstractTestCase {
         report.getDiseaseHistory().setCtepStudyDisease(new CtepStudyDisease());
         
         assignment.synchronizeMedicalHistoryFromReportToAssignment(report);
-        report.getDiseaseHistory().addMetastaticDiseaseSite(new MetastaticDiseaseSite());
+        report.getDiseaseHistory().addMetastaticDiseaseSite(Fixtures.createMetastaticDiseaseSite("x"));
         assignment.setDiseaseHistory(new StudyParticipantDiseaseHistory());
         assignment.synchronizeMedicalHistoryFromReportToAssignment(report);
 
@@ -102,7 +102,7 @@ public class StudyParticipantAssignmentTest extends AbstractTestCase {
 
         createAssignment();
         assignment.setDiseaseHistory(new StudyParticipantDiseaseHistory());
-        MetastaticDiseaseSite diseaseSite = new MetastaticDiseaseSite();
+        MetastaticDiseaseSite diseaseSite = Fixtures.createMetastaticDiseaseSite("x");
         diseaseSite.setId(2);
         
         report.getDiseaseHistory().addMetastaticDiseaseSite(diseaseSite);

@@ -10,6 +10,6 @@ public class StudySitesQueryTest extends TestCase {
     public void testFilterByOrgId() {
         StudySitesQuery q = new StudySitesQuery();
         q.filterByOrganizationId(5);
-        assertEquals("SELECT distinct ss FROM StudySite ss left join ss.study.identifiers as identifier join ss.organization AS o WHERE o.id = :orgId", q.getQueryString());
+        assertEquals("SELECT distinct ss FROM StudySite ss join ss.study AS study left join study.identifiers as identifier join ss.organization AS o WHERE o.id = :orgId", q.getQueryString());
     }
 }

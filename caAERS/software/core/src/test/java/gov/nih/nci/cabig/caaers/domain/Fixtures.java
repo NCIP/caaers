@@ -1027,4 +1027,16 @@ public class Fixtures {
         t.setName(code);
         return t;
     }
+    
+    public static AnatomicSite createAnatomicSite(String name, String category){
+        AnatomicSite a = new AnatomicSite();
+        a.setName(name);
+        a.setCategory(category);
+        return a;
+    }
+    public static MetastaticDiseaseSite createMetastaticDiseaseSite(String name){
+       MetastaticDiseaseSite m = new MetastaticDiseaseSite();
+        m.setCodedSite(Fixtures.createAnatomicSite(name, name));
+        return m;
+    }
 }
