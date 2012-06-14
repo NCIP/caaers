@@ -7,5 +7,7 @@
     	description="Description"
     	nsc="nsc"
     	retired_indicator="false"/>
+    <study_agents />
+    <study_agent_inds />
 
 </dataset>

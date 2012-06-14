@@ -78,8 +78,9 @@ public class AgentServiceTest extends CaaersDbNoSecurityTestCase{
 			 
 			 assertEquals(2,errorMssgs.size());
 			 for(ProcessingOutcome errMssg : errorMssgs){
+                 System.out.println(errMssg.getBusinessId() + " : " + errMssg.getMessages());
 				 assertNotNull(errMssg.getBusinessId());
-				 assertEquals(0,errMssg.getMessages().size());
+                 assertFalse(errMssg.isFailed());
 			 }
 			 
 			 interruptSession();
