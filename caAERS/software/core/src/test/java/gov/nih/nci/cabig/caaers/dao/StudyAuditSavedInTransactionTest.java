@@ -24,12 +24,14 @@ public class StudyAuditSavedInTransactionTest extends DaoNoSecurityTestCase<Stud
 
     private TransactionTemplate transactionTemplate;
     StudyDao studyDao;
+    private CtcDao ctcDao;
 
     public void setUp() throws Exception {
         super.setUp();
         studyDao = (StudyDao) getDeployedApplicationContext().getBean("studyDao");
         transactionTemplate = (TransactionTemplate) getApplicationContext().getBean(
                 "transactionTemplate");
+        ctcDao = (CtcDao) getApplicationContext().getBean("ctcDao");
     }
 
     public void testAuditStudyRollBack() {
@@ -44,6 +46,7 @@ public class StudyAuditSavedInTransactionTest extends DaoNoSecurityTestCase<Stud
                     newStudy.setShortTitle("Short Title Inserted");
                     newStudy.setLongTitle("Long Title Inserted");
                     newStudy.setAeTerminology(Fixtures.createCtcV3Terminology(newStudy));
+                    newStudy.getAeTerminology().setCtcVersion(ctcDao.getByName("3.0"));
                     newStudy.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
                     newStudy.setMultiInstitutionIndicator(Boolean.FALSE);
                     newStudy.setAdeersReporting(Boolean.TRUE);

@@ -1,4 +1,21 @@
 <dataset>
+    <ctc_versions
+            id="3"
+            name="3.0"
+            />
+    <ctc_categories
+            id="302"
+            name="blood/bone marrow"
+            version_id="3"
+            />
+    <ctc_terms
+            id="3007"
+            category_id="302"
+            term="Auditory/Ear - Other (Specify, __)"
+            ctep_term="Ear disorder"
+            ctep_code="10014004"
+            other_required="1"
+            />
     <studies />
     <disease_terminologies />
     <audit_events></audit_events>
