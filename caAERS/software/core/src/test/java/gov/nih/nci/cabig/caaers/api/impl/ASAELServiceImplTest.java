@@ -52,7 +52,7 @@ public class ASAELServiceImplTest extends DaoTestCase {
         List<EntityProcessingOutcomeType> l = csr.getServiceResponse().getEntityProcessingOutcomes().getEntityProcessingOutcome();
 
         assertEquals(1, l.size());
-        assertEquals("Added to add to agent (nsc990) expected term : Ear pain", l.get(0).getMessage().get(0));
+        assertEquals("Term not found. So, unable to add to agent (nsc990) expected term : Ear pain", l.get(0).getMessage().get(0));
 
         assertEquals(3, s.getExpectedAECtcTerms().size());
     }
