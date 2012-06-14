@@ -48,7 +48,7 @@ public class StudyExpectedAEMigrator implements Migrator<Study> {
 					}
 					
 					if(xmlExpectedAECtcTerm.getCtcTerm() != null){
-						List<CtcTerm> ctcTerms = ctcTermDao.getByCtepCodeandVersion(xmlExpectedAECtcTerm.getCtcTerm().getCtepCode(), dest.getAeTerminology().getCtcVersion().getId());
+						List<CtcTerm> ctcTerms = ctcTermDao.getByCtepCodeandVersion(xmlExpectedAECtcTerm.getCtcTerm().getCtepCode(), dest.getAeTerminology().getCtcVersion().getName());
 						if(ctcTerms != null && !ctcTerms.isEmpty()){
 							domainExpectedAECtcTerm = new ExpectedAECtcTerm();
 							domainExpectedAECtcTerm.setCtcTerm(ctcTerms.get(0));

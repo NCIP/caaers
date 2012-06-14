@@ -52,7 +52,7 @@ public class StudyEvaluationPeriodsMigrator implements Migrator<Study> {
 								domainSolicitedAdverseEvent = new SolicitedAdverseEvent();
 								if(xmlSolicitedAdverseEvent.getCtcterm() != null && !"".equals(xmlSolicitedAdverseEvent.getCtcterm().getCtepCode())){
 									if(dest.getAeTerminology().getCtcVersion() != null){
-										List<CtcTerm> ctcTerms = ctcTermDao.getByCtepCodeandVersion(xmlSolicitedAdverseEvent.getCtcterm().getCtepCode(), dest.getAeTerminology().getCtcVersion().getId());
+										List<CtcTerm> ctcTerms = ctcTermDao.getByCtepCodeandVersion(xmlSolicitedAdverseEvent.getCtcterm().getCtepCode(), dest.getAeTerminology().getCtcVersion().getName());
 										if(ctcTerms != null && !ctcTerms.isEmpty()){
 											domainSolicitedAdverseEvent.setCtcterm(ctcTerms.get(0));
 										}

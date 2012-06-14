@@ -8,7 +8,7 @@
         <aeTermUnique>true</aeTermUnique>
         <ns2:aeTerminology>
             <ns2:ctcVersion>
-                <name>3</name>
+                <name>3.0</name>
             </ns2:ctcVersion>
         </ns2:aeTerminology>
         <ns2:diseaseTerminology>
@@ -24,26 +24,10 @@
                     <nciInstituteCode>CTEP</nciInstituteCode>
                 </ns2:organization>
                 <studyInvestigators>
-                    <ns2:studyInvestigator>
-                        <roleCode>PI</roleCode>
-                        <startDate>2009-05-06</startDate>
-                        <ns2:siteInvestigator>
-                            <ns2:investigator>
-                                <firstName>Silvio</firstName>
-                                <lastName>Berlusconi</lastName>
-                            </ns2:investigator>
-                        </ns2:siteInvestigator>
-                    </ns2:studyInvestigator>
+
                 </studyInvestigators>
                 <studyPersonnels>
-                    <ns2:studyPersonnel>
-                        <roleCode>ae_rule_and_report_manager</roleCode>
-                        <startDate>2012-03-21</startDate>
-                        <ns2:researchStaff>
-                            <firstName>Andrei</firstName>
-                            <lastName>Abramovich</lastName>
-                        </ns2:researchStaff>
-                    </ns2:studyPersonnel>
+
                 </studyPersonnels>
             </ns2:studyFundingSponsor>
         </fundingSponsor>

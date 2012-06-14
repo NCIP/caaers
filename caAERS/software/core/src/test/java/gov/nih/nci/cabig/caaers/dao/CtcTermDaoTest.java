@@ -79,7 +79,7 @@ public class CtcTermDaoTest extends DaoTestCase<CtcTermDao> {
     }
     
     public void testGetByCtepCodeandVersion() throws Exception {
-        List<CtcTerm> ctcTerms = getDao().getByCtepCodeandVersion("10016241",3);
+        List<CtcTerm> ctcTerms = getDao().getByCtepCodeandVersion("10016241","3.0");
         assertEquals(1, ctcTerms.size());
         assertEquals("Atrophy, subcutaneous fat", ctcTerms.get(0).getTerm());
     }
@@ -113,8 +113,8 @@ public class CtcTermDaoTest extends DaoTestCase<CtcTermDao> {
         List<CtcTerm> terms = getDao().getCtcTerm("DERMATOLOGY/SKIN", "2.0", "Burn");
         assertEquals(1, terms.size());
         assertEquals("Burn", terms.get(0).getTerm());
-        assertEquals("ALLERGY/IMMUNOLOGY", terms.get(0).getCategory().getName());
-        assertEquals(3, terms.get(0).getCategory().getCtc().getId().intValue());
+        assertEquals("DERMATOLOGY/SKIN", terms.get(0).getCategory().getName());
+        assertEquals(2, terms.get(0).getCategory().getCtc().getId().intValue());
     }
 
 }

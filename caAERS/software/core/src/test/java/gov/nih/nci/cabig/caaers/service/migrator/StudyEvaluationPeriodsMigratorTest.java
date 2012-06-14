@@ -73,7 +73,7 @@ public class StudyEvaluationPeriodsMigratorTest extends AbstractTestCase {
         List<CtcTerm> ctcTerms = new ArrayList<CtcTerm>();
         ctcTerms.add(ctcTerm);
         
-        EasyMock.expect(ctcTermDao.getByCtepCodeandVersion(ctcTerm.getCtepCode(),aeTerminology.getCtcVersion().getId())).andReturn(ctcTerms).anyTimes();
+        EasyMock.expect(ctcTermDao.getByCtepCodeandVersion(ctcTerm.getCtepCode(),aeTerminology.getCtcVersion().getName())).andReturn(ctcTerms).anyTimes();
         replayMocks();
         
         migrator.migrate(xmlStudy, dest, outcome);
@@ -245,7 +245,7 @@ public class StudyEvaluationPeriodsMigratorTest extends AbstractTestCase {
         List<CtcTerm> ctcTerms = new ArrayList<CtcTerm>();
         ctcTerms.add(ctcTerm);
         
-        EasyMock.expect(ctcTermDao.getByCtepCodeandVersion(ctcTerm.getCtepCode(),aeTerminology.getCtcVersion().getId())).andReturn(ctcTerms).anyTimes();
+        EasyMock.expect(ctcTermDao.getByCtepCodeandVersion(ctcTerm.getCtepCode(),aeTerminology.getCtcVersion().getName())).andReturn(ctcTerms).anyTimes();
         
       //For EasyMock Return 
         List<LowLevelTerm> llts = new ArrayList<LowLevelTerm>();

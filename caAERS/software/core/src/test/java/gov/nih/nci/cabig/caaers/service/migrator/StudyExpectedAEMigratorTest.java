@@ -88,10 +88,10 @@ public class StudyExpectedAEMigratorTest extends AbstractTestCase{
         llts_2.add(llt_2);
         
         EasyMock.expect(lowLevelTermDao.getByMeddraCodeandVersion(llt_1.getMeddraCode(),dest.getOtherMeddra().getId())).andReturn(llts_1).anyTimes();
-        EasyMock.expect(ctcTermDao.getByCtepCodeandVersion(ctcTerm_1.getCtepCode(),aeTerminology.getCtcVersion().getId())).andReturn(ctcTerms_1).anyTimes();
+        EasyMock.expect(ctcTermDao.getByCtepCodeandVersion(ctcTerm_1.getCtepCode(),aeTerminology.getCtcVersion().getName())).andReturn(ctcTerms_1).anyTimes();
         
         EasyMock.expect(lowLevelTermDao.getByMeddraCodeandVersion(llt_2.getMeddraCode(),dest.getOtherMeddra().getId())).andReturn(llts_2).anyTimes();
-        EasyMock.expect(ctcTermDao.getByCtepCodeandVersion(ctcTerm_2.getCtepCode(),aeTerminology.getCtcVersion().getId())).andReturn(ctcTerms_2).anyTimes();
+        EasyMock.expect(ctcTermDao.getByCtepCodeandVersion(ctcTerm_2.getCtepCode(),aeTerminology.getCtcVersion().getName())).andReturn(ctcTerms_2).anyTimes();
         
         replayMocks();
         
@@ -200,7 +200,7 @@ public class StudyExpectedAEMigratorTest extends AbstractTestCase{
         EasyMock.expect(lowLevelTermDao.getByMeddraCodeandVersion(llt_1.getMeddraCode(),dest.getOtherMeddra().getId())).andReturn(llts_1).anyTimes();
         
         EasyMock.expect(lowLevelTermDao.getByMeddraCodeandVersion(llt_2.getMeddraCode(),dest.getOtherMeddra().getId())).andReturn(llts_2).anyTimes();
-        EasyMock.expect(ctcTermDao.getByCtepCodeandVersion(ctcTerm_2.getCtepCode(),aeTerminology.getCtcVersion().getId())).andReturn(ctcTerms_2).anyTimes();
+        EasyMock.expect(ctcTermDao.getByCtepCodeandVersion(ctcTerm_2.getCtepCode(),aeTerminology.getCtcVersion().getName())).andReturn(ctcTerms_2).anyTimes();
         
         replayMocks();
         

@@ -74,12 +74,12 @@ public class CtcTermDao extends CaaersDao<CtcTerm> {
     /**
      * Get the List if CtcTerms matching the provided ctepCode and Version
      * @param ctepCode
-     * @param versionId
+     * @param versionName
      * @return
      */
     @SuppressWarnings("unchecked")
-    public List<CtcTerm> getByCtepCodeandVersion(String ctepCode, int versionId){
-    	return getHibernateTemplate().find("select term from CtcTerm term join term.category as category join category.ctc as ctcversion where term.ctepCode = ? and ctcversion.id = ? ", new Object[] {ctepCode,versionId});
+    public List<CtcTerm> getByCtepCodeandVersion(String ctepCode, String versionName){
+    	return getHibernateTemplate().find("select term from CtcTerm term join term.category as category join category.ctc as ctcversion where term.ctepCode = ? and ctcversion.name = ? ", new Object[] {ctepCode,versionName});
     }
 
     /**

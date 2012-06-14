@@ -1053,8 +1053,7 @@ public class StudyConverter {
 							for(SolicitedAdverseEventType solicitedAdverseEventType : solicitedAdverseEventTypeList){
 								solicitedAdverseEvent = new SolicitedAdverseEvent();
 								if(solicitedAdverseEventType.getCtepCode() != null && !"".equals(solicitedAdverseEventType.getCtepCode())){
-									int ctcVersion = Integer.parseInt(studyDto.getAeTerminology().getCtcVersion().getName());
-									List<CtcTerm> terms = ctcTermDao.getByCtepCodeandVersion(solicitedAdverseEventType.getCtepCode(), ctcVersion);
+									List<CtcTerm> terms = ctcTermDao.getByCtepCodeandVersion(solicitedAdverseEventType.getCtepCode(), studyDto.getAeTerminology().getCtcVersion().getName());
 									if (terms.size() == 0) {
 										break;
 									}
