@@ -565,7 +565,7 @@
             <objectType>gov.nih.nci.cabig.caaers.domain.ObservedAdverseEventProfile</objectType>
         </node>
         <node>
-            <name>category</name>
+            <name>ctcCategory</name>
             <collection>false</collection>
             <objectType>gov.nih.nci.cabig.caaers.domain.CtcCategory</objectType>
         </node>
