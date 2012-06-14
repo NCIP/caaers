@@ -118,7 +118,7 @@ public class AgentSpecificCtcTerm extends AgentSpecificTerm<CtcTerm> {
         if(StringUtils.isNotEmpty(termCategory) && !StringUtils.equals(getTerm().getCategory().getName() , termCategory)) return false;
         
         //is terminology version matching ?
-        if(StringUtils.isNotEmpty(terminologyVersion) && !StringUtils.equals(getTerm().getCategory().getCtc().getId().toString(), terminologyVersion)) return false;
+        if(StringUtils.isNotEmpty(terminologyVersion) && !StringUtils.equals(getTerm().getCategory().getCtc().getName().toString(), terminologyVersion)) return false;
         
         //is otherToxicity matching ?
         if(StringUtils.isNotEmpty(otherToxicity) && !StringUtils.equals(getOtherToxicity(), otherToxicity)) return false;

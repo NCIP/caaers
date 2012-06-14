@@ -16,8 +16,8 @@
 
         <CTC_TERMS id="3012" category_id="302" term="Anal pain" ctep_term="Anal pain" ctep_code="10002167" other_required="0" />
         <CTC_TERMS id="3010" category_id="302" term="Nausea" ctep_term="Nausea" ctep_code="100288131" other_required="0" />
-        <ctc_terms id="-5" category_id="-6" term="Ear pain" ctep_term="Ear pain" other_required="0"/>
-        <ctc_terms id="-51" category_id="-6" term="Headache" ctep_term="headache" other_required="0"/>
+        <ctc_terms id="-5" category_id="-6" term="Ear pain" ctep_term="Ear pain" ctep_code="200" other_required="0"/>
+        <ctc_terms id="-51" category_id="-6" term="Headache" ctep_term="headache"  ctep_code="300" other_required="0"/>
 
         <agent_terms id="-1" agent_id="-990" term_id="3010" term_type="ctep" expected="true" />
 

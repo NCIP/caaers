@@ -42,8 +42,9 @@ public class ASAELServiceImplTest extends DaoTestCase {
         asaelType.getAsaelAgent().get(0).getExpectedAECtcTerm().remove(0);
         asaelType.getAsaelAgent().get(0).getExpectedAECtcTerm().remove(0);
         asaelType.getAsaelAgent().get(0).getExpectedAECtcTerm().get(0).setCtepTerm("Ear pain");
+        asaelType.getAsaelAgent().get(0).getExpectedAECtcTerm().get(0).setCtepCode("200");
         asaelType.getAsaelAgent().get(0).getExpectedAECtcTerm().get(0).setCategory("Category - 01");
-        asaelType.getAsaelAgent().get(0).getExpectedAECtcTerm().get(0).setCtcVersion("3");
+        asaelType.getAsaelAgent().get(0).getExpectedAECtcTerm().get(0).setCtcVersion("3.0");
         asaelType.getAsaelAgent().get(0).getExpectedAECtcTerm().get(0).setOtherToxicity("SOME OTHER TOXICITY TEXT");
 
         Study s = studyDao.getById(-2);
@@ -52,7 +53,7 @@ public class ASAELServiceImplTest extends DaoTestCase {
         List<EntityProcessingOutcomeType> l = csr.getServiceResponse().getEntityProcessingOutcomes().getEntityProcessingOutcome();
 
         assertEquals(1, l.size());
-        assertEquals("Term not found. So, unable to add to agent (nsc990) expected term : Ear pain", l.get(0).getMessage().get(0));
+        assertEquals("Added to add to agent (nsc990) expected term : Ear pain", l.get(0).getMessage().get(0));
 
         assertEquals(3, s.getExpectedAECtcTerms().size());
     }
@@ -65,7 +66,7 @@ public class ASAELServiceImplTest extends DaoTestCase {
         asaelType.getAsaelAgent().get(0).getExpectedAECtcTerm().get(0).setCtepTerm("Nausea");
         asaelType.getAsaelAgent().get(0).getExpectedAECtcTerm().get(0).setStatus(ActiveInactiveStatusType.INACTIVE);
         asaelType.getAsaelAgent().get(0).getExpectedAECtcTerm().get(0).setCategory("auditory/ear");
-        asaelType.getAsaelAgent().get(0).getExpectedAECtcTerm().get(0).setCtcVersion("3");
+        asaelType.getAsaelAgent().get(0).getExpectedAECtcTerm().get(0).setCtcVersion("3.0");
 
         Study s = studyDao.getById(-2);
         assertEquals(2, s.getExpectedAECtcTerms().size());
@@ -109,8 +110,8 @@ public class ASAELServiceImplTest extends DaoTestCase {
 
     private ExpectedAECtcTermType createExpectedAECtcTermType() {
         ExpectedAECtcTermType t = new ExpectedAECtcTermType();
-        t.setCategory("C1");
-        t.setCtcVersion("4");
+        t.setCategory("auditory/ear");
+        t.setCtcVersion("3.0");
         t.setCtepTerm("Nausea:" + System.currentTimeMillis());
         t.setStatus(ActiveInactiveStatusType.ACTIVE);
         return t;
