@@ -64,6 +64,51 @@
     </listener>
     
     <filter>
+	  <filter-name>SessionFixationFilter</filter-name>
+	  <filter-class>gov.nih.nci.cabig.caaers.web.filters.SessionFixationFilter</filter-class>
+	</filter>
+	<filter-mapping>
+        <filter-name>SessionFixationFilter</filter-name>
+        <url-pattern>/j_acegi_security_check</url-pattern>
+    </filter-mapping>
+    <filter>
+	  <filter-name>XSSFilter</filter-name>
+	  <!-- <filter-class>com.cj.xss.XSSFilter</filter-class> -->
+	  <filter-class>gov.nih.nci.cabig.caaers.web.filters.BadInputFilter</filter-class>
+	  <init-param>
+          <param-name>escapeQuotes</param-name>
+          <param-value>true</param-value>
+      </init-param>
+      <init-param>
+          <param-name>escapeJavaScript</param-name>
+          <param-value>true</param-value>
+      </init-param>
+	</filter>
+	<filter-mapping>
+	  <filter-name>XSSFilter</filter-name>
+	  <url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<filter>
+	  <filter-name>XSRFFilter</filter-name>
+	  <filter-class>gov.nih.nci.cabig.caaers.web.filters.CsrfPreventionFilter</filter-class>
+	</filter>
+	<filter-mapping>
+        <filter-name>XSRFFilter</filter-name>
+        <url-pattern>/pages/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>XSRFFilter</filter-name>
+        <url-pattern>/public/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>XSRFFilter</filter-name>
+        <url-pattern>/services/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>XSRFFilter</filter-name>
+        <url-pattern>/j_acegi_security_check</url-pattern>
+    </filter-mapping>
+    <filter>
         <filter-name>OpenSessionInViewInterceptorFilter</filter-name>
         <filter-class>gov.nih.nci.cabig.caaers.web.OpenSessionInViewInterceptorFilter</filter-class>
         <init-param>
@@ -108,7 +153,6 @@
 		<filter-name>Acegi Filter Chain Proxy</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	
 	<filter>
   		<filter-name>GzipFilter</filter-name>
   		<filter-class>gov.nih.nci.cabig.caaers.web.filters.GzipFilter</filter-class>
