@@ -33,7 +33,7 @@ Will have same identifiers as that in CaaersStudyTest.xml
             <p:studyFundingSponsor>
                 <p:organization>
                     <name>Cancer Therapy Evaluation Program</name>
-                    <nciInstituteCode/>
+                    <nciInstituteCode>CTEP</nciInstituteCode>
                 </p:organization>
             </p:studyFundingSponsor>
         </fundingSponsor>
@@ -44,7 +44,7 @@ Will have same identifiers as that in CaaersStudyTest.xml
             <p:studyCoordinatingCenter>
                 <p:organization>
                     <name>Cancer and Leukemia Group B</name>
-                    <nciInstituteCode></nciInstituteCode>
+                    <nciInstituteCode>CALGB</nciInstituteCode>
                 </p:organization>
             </p:studyCoordinatingCenter>
         </coordinatingCenter>
@@ -52,7 +52,7 @@ Will have same identifiers as that in CaaersStudyTest.xml
             <p:studySite>
                 <p:organization>
                     <name>Cancer Therapy Evaluation Program</name>
-                    <nciInstituteCode></nciInstituteCode>
+                    <nciInstituteCode>CTEP</nciInstituteCode>
                 </p:organization>
                 <startDate>2002-02-02</startDate>
                 <studyInvestigators>
@@ -63,7 +63,7 @@ Will have same identifiers as that in CaaersStudyTest.xml
             <p:studySite>
                 <p:organization>
                     <name>Johns Hopkins University</name>
-                    <nciInstituteCode></nciInstituteCode>
+                    <nciInstituteCode>MD017</nciInstituteCode>
                 </p:organization>
                  <startDate>2002-02-02</startDate>
                 <studyPersonnels>
@@ -73,7 +73,7 @@ Will have same identifiers as that in CaaersStudyTest.xml
                         <p:researchStaff>
                             <firstName>Allan</firstName>
                             <lastName>Border</lastName>
-                            <nciIdentifier></nciIdentifier>
+                            <nciIdentifier>Allan</nciIdentifier>
                         </p:researchStaff>
                     </p:studyPersonnel>
                 </studyPersonnels>

@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.api;
 
 import edu.nwu.bioinformatics.commons.ResourceRetriever;
 import gov.nih.nci.cabig.caaers.CaaersDbNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.api.impl.Helper;
 import gov.nih.nci.cabig.caaers.api.impl.StudyProcessorImpl;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
@@ -66,9 +67,19 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
      * BehavioralTherapyType
      */
     public void testStudyUpdateOfInstanceAtt() throws Exception {
-        createStudy("studydata/CreateStudyTest.xml");
+        {
+            CaaersServiceResponse response = createStudy("studydata/CreateStudyTest.xml");
+            System.out.println(Helper.toString(response));
+
+        }
+
         studies = (gov.nih.nci.cabig.caaers.integration.schema.study.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfInstanceAtt.xml"));
-        studyProcessor.updateStudy(studies);
+        {
+            CaaersServiceResponse response = studyProcessor.updateStudy(studies);
+            System.out.println(Helper.toString(response));
+        }
+
+
         SecurityTestUtils.switchToSuperuser();
         updatedStudy = studyDao.getByShortTitle("Study_PCS_Updated");
         assertNotNull(updatedStudy);
@@ -85,11 +96,13 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
      */
     public void testStudyUpdateOfTreatmentAssignmentAttr() throws Exception {
 
-        createStudy("studydata/CreateStudyTest.xml");
+        CaaersServiceResponse response = createStudy("studydata/CreateStudyTest.xml");
+        System.out.println(Helper.toString(response));
 
         studies = (gov.nih.nci.cabig.caaers.integration.schema.study.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfTreatmentAssignmentAttr.xml"));
 
-        studyProcessor.updateStudy(studies);
+        response = studyProcessor.updateStudy(studies);
+        System.out.println(Helper.toString(response));
 
         SecurityTestUtils.switchToSuperuser();
 
@@ -124,12 +137,12 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
      */
     public void testStudyUpdateOfTreatmentAssignmentAdd() throws Exception {
 
-        createStudy("studydata/CreateStudyTest.xml");
-
+        CaaersServiceResponse response = createStudy("studydata/CreateStudyTest.xml");
+        System.out.println(Helper.toString(response));
         studies = (gov.nih.nci.cabig.caaers.integration.schema.study.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfTreatmentAssignmentAdd.xml"));
 
-        studyProcessor.updateStudy(studies);
-
+         response = studyProcessor.updateStudy(studies);
+        System.out.println(Helper.toString(response));
         SecurityTestUtils.switchToSuperuser();
 
         updatedStudy = studyDao.getByShortTitle("Study PCS");
@@ -166,12 +179,12 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
      */
     public void testStudyUpdateOfCtepStudyDiseasesAdd() throws Exception {
 
-        createStudy("studydata/CreateStudyTest.xml");
-
+        CaaersServiceResponse response = createStudy("studydata/CreateStudyTest.xml");
+        System.out.println(Helper.toString(response));
         studies = (gov.nih.nci.cabig.caaers.integration.schema.study.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfCtepStudyDiseasesAdd.xml"));
 
-        studyProcessor.updateStudy(studies);
-
+         response = studyProcessor.updateStudy(studies);
+        System.out.println(Helper.toString(response));
         SecurityTestUtils.switchToSuperuser();
 
         updatedStudy = studyDao.getByShortTitle("Study PCS");
@@ -206,12 +219,12 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
      */
     public void testStudyUpdateOfCtepStudyDiseasesUpdate() throws Exception {
 
-        createStudy("studydata/CreateStudyTest.xml");
-
+        CaaersServiceResponse response = createStudy("studydata/CreateStudyTest.xml");
+        System.out.println(Helper.toString(response));
         studies = (gov.nih.nci.cabig.caaers.integration.schema.study.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfCtepStudyDiseasesUpdate.xml"));
 
-        studyProcessor.updateStudy(studies);
-
+         response = studyProcessor.updateStudy(studies);
+        System.out.println(Helper.toString(response));
         SecurityTestUtils.switchToSuperuser();
 
         updatedStudy = studyDao.getByShortTitle("Study PCS");
@@ -240,12 +253,12 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
      */
     public void testStudyUpdateOfMeddraStudyDiseasesAdd() throws Exception {
 
-        createStudy("studydata/CreateStudyTest.xml");
-
+        CaaersServiceResponse response = createStudy("studydata/CreateStudyTest.xml");
+        System.out.println(Helper.toString(response));
         studies = (gov.nih.nci.cabig.caaers.integration.schema.study.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfMeddraStudyDiseasesAdd.xml"));
 
-        studyProcessor.updateStudy(studies);
-
+         response = studyProcessor.updateStudy(studies);
+        System.out.println(Helper.toString(response));
         SecurityTestUtils.switchToSuperuser();
 
         updatedStudy = studyDao.getByShortTitle("Study PCS");
@@ -263,12 +276,12 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
      */
     public void testStudyUpdateOfStudySiteAdd() throws Exception {
 
-        createStudy("studydata/CreateStudyTest.xml");
-
+        CaaersServiceResponse response = createStudy("studydata/CreateStudyTest.xml");
+        System.out.println(Helper.toString(response));
         studies = (gov.nih.nci.cabig.caaers.integration.schema.study.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfStudySiteAdd.xml"));
 
-        studyProcessor.updateStudy(studies);
-
+         response = studyProcessor.updateStudy(studies);
+        System.out.println(Helper.toString(response));
         SecurityTestUtils.switchToSuperuser();
 
         updatedStudy = studyDao.getByShortTitle("Study PCS");
@@ -287,12 +300,12 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
      */
     public void testStudyUpdateOfStudySite_StudyInvestigatorAdd() throws Exception {
 
-        createStudy("studydata/CreateStudyTest.xml");
-
+        CaaersServiceResponse response = createStudy("studydata/CreateStudyTest.xml");
+        System.out.println(Helper.toString(response));
         studies = (gov.nih.nci.cabig.caaers.integration.schema.study.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfStudySite_StudyInvestigatorAdd.xml"));
 
-        studyProcessor.updateStudy(studies);
-
+         response = studyProcessor.updateStudy(studies);
+        System.out.println(Helper.toString(response));
         SecurityTestUtils.switchToSuperuser();
 
         updatedStudy = studyDao.getByShortTitle("Study PCS");
@@ -320,12 +333,12 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
      */
     public void testStudyUpdateOfStudySite_StudyInvestigatorUpdate() throws Exception {
 
-        createStudy("studydata/CreateStudyTest.xml");
-
+        CaaersServiceResponse response = createStudy("studydata/CreateStudyTest.xml");
+        System.out.println(Helper.toString(response));
         studies = (gov.nih.nci.cabig.caaers.integration.schema.study.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfStudySite_StudyInvestigatorUpdate.xml"));
 
-        studyProcessor.updateStudy(studies);
-
+         response = studyProcessor.updateStudy(studies);
+        System.out.println(Helper.toString(response));
         SecurityTestUtils.switchToSuperuser();
 
         updatedStudy = studyDao.getByShortTitle("Study PCS");
@@ -362,12 +375,12 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
      */
     public void testStudyUpdateOfStudySite_StudyPersonnelAdd() throws Exception {
 
-        createStudy("studydata/CreateStudyTest.xml");
-
+        CaaersServiceResponse response = createStudy("studydata/CreateStudyTest.xml");
+        System.out.println(Helper.toString(response));
         studies = (gov.nih.nci.cabig.caaers.integration.schema.study.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfStudySite_StudyPersonnelAdd.xml"));
 
-        studyProcessor.updateStudy(studies);
-
+         response = studyProcessor.updateStudy(studies);
+        System.out.println(Helper.toString(response));
         SecurityTestUtils.switchToSuperuser();
 
         updatedStudy = studyDao.getByShortTitle("Study PCS");
@@ -394,14 +407,14 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
      */
     public void testStudyUpdateOfStudySite_StudyPersonnelUpdate() throws Exception {
 
-        createStudy("studydata/CreateStudyTest.xml");
-
+        CaaersServiceResponse response = createStudy("studydata/CreateStudyTest.xml");
+        System.out.println(Helper.toString(response));
 
         studies = (gov.nih.nci.cabig.caaers.integration.schema.study.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfStudySite_StudyPersonnelUpdate.xml"));
 
 
-        studyProcessor.updateStudy(studies);
-
+         response = studyProcessor.updateStudy(studies);
+        System.out.println(Helper.toString(response));
         SecurityTestUtils.switchToSuperuser();
 
 
@@ -435,12 +448,12 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
      */
     public void testStudyUpdateOfStudyAgentAdd() throws Exception {
 
-        createStudy("studydata/CreateStudyTest.xml");
-
+        CaaersServiceResponse response = createStudy("studydata/CreateStudyTest.xml");
+        System.out.println(Helper.toString(response));
         studies = (gov.nih.nci.cabig.caaers.integration.schema.study.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfStudyAgentAdd.xml"));
 
-        studyProcessor.updateStudy(studies);
-
+         response = studyProcessor.updateStudy(studies);
+        System.out.println(Helper.toString(response));
         SecurityTestUtils.switchToSuperuser();
 
         updatedStudy = studyDao.getByShortTitle("Study PCS");
@@ -457,13 +470,14 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
      * @throws Exception
      */
     public void testStudyCreate_DuplicateIdentifiers() throws Exception{
-    	 createStudy("studydata/CreateStudyTest.xml");
-    	 
+        CaaersServiceResponse response = createStudy("studydata/CreateStudyTest.xml");
+        System.out.println(Helper.toString(response));
     	 //make sure it got created
     	 Study study = studyDao.getByShortTitle("Study PCS");
     	 assertNotNull(study);
     	 
-    	 CaaersServiceResponse response = createStudy("studydata/CreateStudyTest_3.xml");
+    	  response = createStudy("studydata/CreateStudyTest_3.xml");
+        System.out.println(Helper.toString(response));
     	 assertEquals("1", response.getServiceResponse().getResponsecode());
     }
 
@@ -472,14 +486,15 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
      * @throws Exception
      */
     public void testStudyUpdate_NoDuplicateIdentifiers() throws Exception{
-    	 createStudy("studydata/CreateStudyTest.xml");
-    	 
+        CaaersServiceResponse response = createStudy("studydata/CreateStudyTest.xml");
+        System.out.println(Helper.toString(response));
     	 //make sure it got created
     	 Study study = studyDao.getByShortTitle("Study PCS");
     	 assertNotNull(study);
 
          studies = (gov.nih.nci.cabig.caaers.integration.schema.study.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdate_SameIdentifiers.xml"));
-         CaaersServiceResponse response = studyProcessor.updateStudy(studies);
+          response = studyProcessor.updateStudy(studies);
+        System.out.println(Helper.toString(response));
          assertEquals("0", response.getServiceResponse().getResponsecode());
     }
     
@@ -489,13 +504,14 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
      * @throws Exception
      */
     public void testStudyUpdate_AddingDuplicateIdentifiers() throws Exception{
-    	 createStudy("studydata/CreateStudyTest.xml");       //STEP 1
-    	 
+        CaaersServiceResponse response =  createStudy("studydata/CreateStudyTest.xml");       //STEP 1
+        System.out.println(Helper.toString(response));
     	 //make sure it got created
     	 Study study = studyDao.getByShortTitle("Study PCS");
     	 assertNotNull(study);
 
-    	 CaaersServiceResponse response =  createStudy("studydata/CreateStudyTest_4.xml");    //STEP 2
+    	 response =  createStudy("studydata/CreateStudyTest_4.xml");    //STEP 2
+        System.out.println(Helper.toString(response));
     	 assertEquals("1", response.getServiceResponse().getResponsecode());
     	 
     	//make sure it got created
@@ -505,6 +521,7 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
          //try to update the same study (created in  STEP 1)
         studies = (gov.nih.nci.cabig.caaers.integration.schema.study.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdate_SameIdentifiers.xml"));
          response = studyProcessor.updateStudy(studies);
+        System.out.println(Helper.toString(response));
          assertEquals("0", response.getServiceResponse().getResponsecode());
     }
 

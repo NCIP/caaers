@@ -30,7 +30,7 @@
             <p:studyFundingSponsor>
                 <p:organization>
                     <name>Cancer Therapy Evaluation Program</name>
-                    <nciInstituteCode/>
+                    <nciInstituteCode>CTEP</nciInstituteCode>
                 </p:organization>
             </p:studyFundingSponsor>
         </fundingSponsor>
@@ -41,7 +41,7 @@
             <p:studyCoordinatingCenter>
                 <p:organization>
                     <name>Cancer and Leukemia Group B</name>
-                    <nciInstituteCode></nciInstituteCode>
+                    <nciInstituteCode>CALGB</nciInstituteCode>
                 </p:organization>
             </p:studyCoordinatingCenter>
         </coordinatingCenter>
@@ -49,7 +49,7 @@
             <p:studySite>
                 <p:organization>
                     <name>Cancer Therapy Evaluation Program</name>
-                    <nciInstituteCode></nciInstituteCode>
+                    <nciInstituteCode>CTEP</nciInstituteCode>
                 </p:organization>
                 <studyInvestigators>
                     <p:studyInvestigator>
@@ -59,7 +59,7 @@
                             <p:investigator>
                                 <firstName>Gerry</firstName>
                                 <lastName>Elbridge</lastName>
-                                <nciIdentifier></nciIdentifier>
+                                <nciIdentifier>Gerry</nciIdentifier>
                             </p:investigator>
                         </p:siteInvestigator>
                     </p:studyInvestigator>
@@ -70,7 +70,7 @@
                             <p:investigator>
                                 <firstName>George</firstName>
                                 <lastName>Clinton</lastName>
-                                <nciIdentifier></nciIdentifier>
+                                <nciIdentifier>George</nciIdentifier>
                             </p:investigator>
                         </p:siteInvestigator>
                     </p:studyInvestigator>
@@ -82,7 +82,7 @@
                         <p:researchStaff>
                             <firstName>Mike</firstName>
                             <lastName>Conway</lastName>
-                            <nciIdentifier></nciIdentifier>
+                            <nciIdentifier>Mike</nciIdentifier>
                         </p:researchStaff>
                     </p:studyPersonnel>
                 </studyPersonnels>
@@ -90,7 +90,7 @@
             <p:studySite>
                 <p:organization>
                     <name>Johns Hopkins University</name>
-                    <nciInstituteCode></nciInstituteCode>
+                    <nciInstituteCode>MD017</nciInstituteCode>
                 </p:organization>
                 <studyPersonnels>
                     <p:studyPersonnel>
@@ -99,7 +99,7 @@
                         <p:researchStaff>
                             <firstName>Allan</firstName>
                             <lastName>Border</lastName>
-                            <nciIdentifier></nciIdentifier>
+                            <nciIdentifier>Allan</nciIdentifier>
                         </p:researchStaff>
                     </p:studyPersonnel>
                 </studyPersonnels>

@@ -91,7 +91,7 @@
             <p:studySite>
                 <p:organization>
                     <name>Johns Hopkins University</name>
-                    <nciInstituteCode></nciInstituteCode>
+                    <nciInstituteCode>MD017</nciInstituteCode>
                 </p:organization>
                 <studyPersonnels>
                     <p:studyPersonnel>

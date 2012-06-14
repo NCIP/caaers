@@ -39,6 +39,7 @@
     <!-- Cancer Therapy Evaluation Program -->
     <RESEARCH_STAFFS
     	id="-2001"
+        nci_identifier="Mike"
     	first_name="Mike"
     	last_name="Conway"
     	email_address="mike@ctep.com"
@@ -52,6 +53,7 @@
     <!-- University of Jonathan Dean -->	
    <RESEARCH_STAFFS
     	id="-2002"
+        nci_identifier="Allan"
     	first_name="Allan"
     	last_name="Border"
     	email_address="allan.b@gmail.com"
@@ -65,6 +67,7 @@
     <!-- University of Jonathan Dean -->	
    <RESEARCH_STAFFS
     	id="-2004"
+        nci_identifier="Roger"
     	first_name="Roger"
     	last_name="Keith"
     	email_address="allan.b@gmail.com"
@@ -78,6 +81,7 @@
     <!-- Sydney Hospital -->	
     <RESEARCH_STAFFS
     	id="-2003"
+        nci_identifier="Monish"
     	first_name="Monish"
     	last_name="Dombla"
     	email_address="monish.dombla@semanticbits.com"
@@ -91,6 +95,7 @@
     	
     <INVESTIGATORS
     	id="-3001"
+        nci_identifier="Gerry"
     	first_name="Gerry"
     	last_name="Elbridge"
     	email_address="ge@nci.com"
@@ -98,6 +103,7 @@
     	
     <INVESTIGATORS
     	id="-3002"
+        nci_identifier="George"
     	first_name="George"
     	last_name="Clinton"
     	email_address="gc@nci.com"
@@ -105,6 +111,7 @@
     	
     <INVESTIGATORS
     	id="-3003"
+        nci_identifier="James"
     	first_name="James"
     	last_name="Madison"
     	email_address="jm@testemail.com"
@@ -112,6 +119,7 @@
     	
     <INVESTIGATORS
     	id="-3004"
+        nci_identifier="Aaron"
     	first_name="Aaron"
     	last_name="Burr"
     	email_address="ab@nci.com"
@@ -119,6 +127,7 @@
     	
     <INVESTIGATORS
     	id="-3005"
+        nci_identifier="David"
     	first_name="David"
     	last_name="Algor"
     	email_address="da@nci.com"
@@ -248,10 +257,10 @@
    		 dtype="ORG"
    		 org_id="-103"
    		 drug_id="-8002" />
-   	
+
    	<CTC_VERSIONS
    		id="3"
-   		name="3.0"/>
+   		name="3"/>
 
 		
 	<workflow_configuration

@@ -125,4 +125,26 @@ public class Helper {
     	}
     	return sb.toString();
     }
+    
+    public static String toString(CaaersServiceResponse response){
+        StringBuffer sb = new StringBuffer();
+        sb.append(response.getServiceResponse().getStatus());
+        sb.append(" Errors  {");
+        for(WsError e : response.getServiceResponse().getWsError()){
+            sb.append(e.getErrorCode()) .append(":").append(e.getErrorDesc());
+        }
+        sb.append("}");
+
+        if(response.getServiceResponse().getEntityProcessingOutcomes() != null){
+            sb.append(" Outcomes {");
+            for(EntityProcessingOutcomeType o : response.getServiceResponse().getEntityProcessingOutcomes().getEntityProcessingOutcome()){
+                   sb.append(" outcome : ").append(o.getMessage()).append("::").append(o.getDataBaseId()) ;
+                   sb.append(",") ;
+            }
+            sb.append("}");
+        }
+
+        return sb.toString();
+        
+    }
 }
