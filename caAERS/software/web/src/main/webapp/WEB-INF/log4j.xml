@@ -23,28 +23,40 @@
         </layout>
     </appender>
 
-	<logger name="gov.nih.nci.cabig.caaers">
+	<logger name="gov.nih.nci.cabig.caaers" additivity="false">
         <level value="ERROR"/>
         <appender-ref ref="caAERSLogFile"/>
     </logger>
-	<logger name="gov.nih.nci.cabig.caaers.domain.repository">
+	<logger name="gov.nih.nci.cabig.caaers.domain.repository" additivity="false">
         <level value="INFO"/>
         <appender-ref ref="caAERSLogFile"/>
     </logger>
-	<logger name="gov.nih.nci.cabig.caaers.web.listener">
+	<logger name="gov.nih.nci.cabig.caaers.web.listener" additivity="false">
         <level value="ERROR"/>
         <appender-ref ref="caAERSLogFile"/>
     </logger>
-	<logger name="gov.nih.nci.cabig.caaers.accesscontrol">
+	<logger name="gov.nih.nci.cabig.caaers.accesscontrol" additivity="false">
         <level value="ERROR"/>
         <appender-ref ref="caAERSLogFile"/>
     </logger>    
-	<logger name="gov.nih.nci.cabig.caaers.security">
+	<logger name="gov.nih.nci.cabig.caaers.security" additivity="false">
         <level value="ERROR"/>
         <appender-ref ref="caAERSLogFile"/>
     </logger>
+    <logger name="gov.nih.nci.cabig.caaers.audit.AuditUtils" additivity="false">
+        <level value="ERROR"/>
+        <appender-ref ref="caAERSLogFile"/>
+    </logger>
+    <logger name="gov.nih.nci.cabig.caaers.service.SafetyMonitoringServiceImpl" additivity="false">
+        <level value="ERROR"/>
+        <appender-ref ref="caAERSLogFile"/>
+    </logger>
+    <logger name="gov.nih.nci.cabig.caaers.web.filters" additivity="false">
+        <level value="DEBUG"/>
+        <appender-ref ref="caAERSLogFile"/>
+    </logger>
     
-	<logger name="org.hibernate.SQL">
+	<logger name="org.hibernate.SQL" additivity="false">
         <level value="ERROR" />
         <appender-ref ref="hibernateFile"/>
     </logger>
