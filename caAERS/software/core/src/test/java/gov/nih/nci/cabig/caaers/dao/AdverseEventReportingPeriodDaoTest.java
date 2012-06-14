@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.dao;
 import edu.nwu.bioinformatics.commons.DateUtils;
 import edu.nwu.bioinformatics.commons.testing.CoreTestCase;
 import gov.nih.nci.cabig.caaers.DaoNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.dao.query.AdverseEventReportingPeriodForReviewQuery;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
@@ -25,7 +26,9 @@ import java.util.List;
  */
 
 public class AdverseEventReportingPeriodDaoTest extends DaoNoSecurityTestCase<AdverseEventReportingPeriodDao> {
-	
+    private CtcDao ctcDao = (CtcDao) getApplicationContext().getBean("ctcDao");
+    private CtcTermDao ctcTermDao = (CtcTermDao) getApplicationContext().getBean("ctcTermDao");
+    private LowLevelTermDao lowLevelTermDao = (LowLevelTermDao) getDeployedApplicationContext().getBean("lowLevelTermDao");
 	private TreatmentAssignmentDao treatmentAssignmentDao = (TreatmentAssignmentDao) getApplicationContext()
     								.getBean("treatmentAssignmentDao");
 	private StudyParticipantAssignmentDao assignmentDao = (StudyParticipantAssignmentDao) getApplicationContext()
@@ -60,9 +63,8 @@ public class AdverseEventReportingPeriodDaoTest extends DaoNoSecurityTestCase<Ad
     	AdverseEvent ae = new AdverseEvent();
     	ae.setSolicited(true);
     	ae.setRequiresReporting(true);
-    	CtcTerm term = new CtcTerm();
-    	term.setId(3007);
-    	
+        CtcTerm term = ctcTermDao.getById(3012);
+
     	ae.setAdverseEventCtcTerm(Fixtures.createAdverseEventCtcTerm(ae, term));
     	
     	
@@ -95,9 +97,8 @@ public class AdverseEventReportingPeriodDaoTest extends DaoNoSecurityTestCase<Ad
     	AdverseEvent ae = new AdverseEvent();
     	ae.setSolicited(true);
     	ae.setRequiresReporting(true);
-    	CtcTerm term = new CtcTerm();
-    	term.setId(3007);
-    	
+        CtcTerm term = ctcTermDao.getById(3012);
+
     	ae.setAdverseEventCtcTerm(Fixtures.createAdverseEventCtcTerm(ae, term));
     	
     	
@@ -142,9 +143,8 @@ public class AdverseEventReportingPeriodDaoTest extends DaoNoSecurityTestCase<Ad
     	AdverseEvent ae = new AdverseEvent();
     	ae.setSolicited(true);
     	ae.setRequiresReporting(true);
-    	CtcTerm term = new CtcTerm();
-    	term.setId(3007);
-    	
+        CtcTerm term = ctcTermDao.getById(3012);
+
     	ae.setAdverseEventCtcTerm(Fixtures.createAdverseEventCtcTerm(ae, term));
     	
     	
