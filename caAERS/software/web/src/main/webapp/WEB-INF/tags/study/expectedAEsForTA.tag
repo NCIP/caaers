@@ -16,7 +16,7 @@
 </style>
 <c:if test="${command.study.havingTreatmentLevelInterventions }">
 	<c:forEach items="${command.study.treatmentAssignments }" var="ta" varStatus="ta_status">
-		<c:if test="${ta.havingInterventions }">
+		<c:if test="${ta.havingInterventions && !ta.retiredIndicator}">
 		<c:set var="index" value="0"/>
 		<chrome:division title="${ta.code }" collapsable="true" id="expected-ae-${ta.code }">
 			<tags:table bgColor="#AAAAAA" contentID="termsDiv">
