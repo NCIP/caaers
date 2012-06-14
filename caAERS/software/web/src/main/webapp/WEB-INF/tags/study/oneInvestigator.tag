@@ -33,7 +33,7 @@
     <td style="border-right:none;">
         <c:set var="_invRoleField" value="${fieldGroups[mainGroup].fields[1]}"/>
         <c:set var="_invRoleValue"><caaers:value path="${_invRoleField.propertyName}"/></c:set>
-        <ui:select options="${_invRoleField.attributes.options}" path="${_invRoleField.propertyName}" required="true" title="${_invRoleField.displayName}" validationJSClass="${_invRoleField.validatorClassName}" disabled="${readOnly}"/>
+        <ui:select options="${_invRoleField.attributes.options}" path="${_invRoleField.propertyName}" required="true" title="${_invRoleField.displayName}" validationJSClass="${_invRoleField.validatorClassName}" disabled="${readOnly and not empty _invRoleValue}"/>
     </td>
 
     <td style="border-right:none;">

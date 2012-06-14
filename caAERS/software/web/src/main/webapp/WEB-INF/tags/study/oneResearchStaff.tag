@@ -29,11 +29,12 @@
 
     <td style="border-right:none; width:300px;">
 	    <c:set var="_staffRoleField" value="${fieldGroups[mainGroup].fields[1]}" />
+        <c:set var="_staffRoleValue"><caaers:value path="${_staffRoleField.propertyName}"/></c:set>
 	 	<ui:select options="${_staffRoleField.attributes.options}"
 	 		path="${_staffRoleField.propertyName}" 
 	 		required="true"
 	 		title="${_staffRoleField.displayName}"
-	 		validationJSClass="${_staffRoleField.validatorClassName}" disabled="${readOnly}"/>
+	 		validationJSClass="${_staffRoleField.validatorClassName}" disabled="${readOnly and not empty _staffRoleValue}"/>
 	 </td>
 
     <td style="border-left:none;">
