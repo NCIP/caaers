@@ -53,7 +53,7 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
     private static final String ORGS_FETCH_HQL = "from Organization o where o.id in (select distinct oi.organization.id from " +
 			"OrganizationIndex oi where oi.loginId = :loginName and oi.roleCode " +
 			"in (:roleCodeIds) and oi.organization.id in (select distinct ss.organization.id " +
-			"from StudySite ss) )";
+			"from StudySite ss where ss.study.id in (select s.id from Study s where s.dataEntryStatus = true)) ) order by o.name";
     
 
     /* (non-Javadoc)
