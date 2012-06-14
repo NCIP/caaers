@@ -52,7 +52,7 @@ public class CreateParticipantTabTest extends AbstractTabTestCase<CreateParticip
         		// TODO Auto-generated method stub
         		
         	}
-        	public List<Organization> getOrganizationsHavingStudySites(OrganizationFromStudySiteQuery query) {
+        	public List<Organization> getOrganizationsHavingStudySites() {
         		return new ArrayList<Organization>();
         	} 
         	public List<Organization> getApplicableOrganizationsFromStudySites(String text, Integer studyId){

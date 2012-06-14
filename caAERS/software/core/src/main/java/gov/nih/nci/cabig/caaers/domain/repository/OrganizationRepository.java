@@ -35,7 +35,7 @@ public interface OrganizationRepository {
      * @param query the query
      * @return the organizations having study sites
      */
-    List<Organization> getOrganizationsHavingStudySites(final OrganizationFromStudySiteQuery query);
+    List<Organization> getOrganizationsHavingStudySites();
     
     /**
      * Gets the applicable organizations from study sites.

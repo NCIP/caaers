@@ -3,18 +3,24 @@ package gov.nih.nci.cabig.caaers.domain.repository;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.OrganizationConverterDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
+import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
+import gov.nih.nci.cabig.caaers.dao.query.EnrollingSiteOganizationsQuery;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationFromStudySiteQuery;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
 import gov.nih.nci.cabig.caaers.dao.query.StudyOrganizationsQuery;
 import gov.nih.nci.cabig.caaers.domain.ConverterOrganization;
-import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.RemoteOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
+import gov.nih.nci.cabig.caaers.domain.UserGroupType;
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.acegisecurity.Authentication;
+import org.acegisecurity.context.SecurityContextHolder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
@@ -43,6 +49,11 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
     
     /** The coppa mode for auto completers. */
     private boolean coppaModeForAutoCompleters;
+    
+    private static final String ORGS_FETCH_HQL = "from Organization o where o.id in (select distinct oi.organization.id from " +
+			"OrganizationIndex oi where oi.loginId = :loginName and oi.roleCode " +
+			"in (:roleCodeIds) and oi.organization.id in (select distinct ss.organization.id " +
+			"from StudySite ss) )";
     
 
     /* (non-Javadoc)
@@ -96,8 +107,26 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
     /* (non-Javadoc)
      * @see gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository#getOrganizationsHavingStudySites(gov.nih.nci.cabig.caaers.dao.query.OrganizationFromStudySiteQuery)
      */
-    public List<Organization> getOrganizationsHavingStudySites(OrganizationFromStudySiteQuery query ) {
-        return organizationDao.getOrganizationsHavingStudySites(query);
+    public List<Organization> getOrganizationsHavingStudySites() {
+    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String userName = SecurityUtils.getUserLoginName(authentication);
+		UserGroupType[] roles = SecurityUtils.getRoles();
+		List<Integer> roleIds = new ArrayList<Integer>();
+		for(UserGroupType ugType : roles){
+			roleIds.add(ugType.getCode());
+		}
+		
+    	List<Organization> resultList = new ArrayList<Organization>();
+
+		EnrollingSiteOganizationsQuery query = new EnrollingSiteOganizationsQuery(ORGS_FETCH_HQL);
+        query.setParameter("loginName", userName);
+        query.setParameterList("roleCodeIds", roleIds);
+        resultList = (List<Organization>) search(query);
+		return resultList;
+    }
+    
+    private List<?> search(final AbstractQuery query){
+    	return organizationDao.search(query);
     }
     
     /**

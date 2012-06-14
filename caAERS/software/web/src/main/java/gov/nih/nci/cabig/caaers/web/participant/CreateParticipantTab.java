@@ -53,8 +53,7 @@ public class CreateParticipantTab<T extends ParticipantInputCommand> extends Tab
 
         Map<Object, Object> options = new LinkedHashMap<Object, Object>();
         options.put("", "Please select");
-        OrganizationFromStudySiteQuery query = new OrganizationFromStudySiteQuery();
-        List<Organization> organizations = organizationRepository.getOrganizationsHavingStudySites(query);
+        List<Organization> organizations = organizationRepository.getOrganizationsHavingStudySites();
         if (organizations != null) {
             options.putAll(WebUtils.collectOptions(organizations, "id", "fullName"));
         }
