@@ -49,6 +49,7 @@ function buildTable(form) {
 <body>
 
 <form:form name="searchForm" id="searchForm" method="post">
+<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
 <p><tags:instructions code="advancedstudysearch" /></p>  
 <chrome:box title="Study Criteria" cssClass="paired" autopad="true">
 		    <div class="row">
@@ -125,6 +126,7 @@ function buildTable(form) {
 
 <div id="bigSearch" style="border:0px green dotted; display:none;">
 <form:form id="assembler" >
+<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
 <div>
 	<input type="hidden" name="_prop" id="prop" >
 	<input type="hidden" name="_value" id="value"  >

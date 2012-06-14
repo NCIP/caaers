@@ -41,6 +41,7 @@ function buildTable(form) {
 
 
 <form:form name="searchForm" id="searchForm" method="post">
+<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
 <p>
   <tags:instructions code="advancedsubjectsearch" />
 </p>
@@ -117,7 +118,7 @@ function buildTable(form) {
 <div id="bigSearch" style="border:0px green dotted; display:none;">
 <br>
 <form:form id="assembler" >
-
+<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
 
 <div>			
 	<input type="hidden" name="_prop" id="prop" >

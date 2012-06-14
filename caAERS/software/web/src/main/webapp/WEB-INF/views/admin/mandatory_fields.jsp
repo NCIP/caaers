@@ -45,6 +45,7 @@
     	</div>
     	<div class="content">
 			<form:form>
+				<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
 			    <caaers:message code="configure.menu.aefields.title" var="detailsSectionTitle"/>
         		<chrome:box title="${detailsSectionTitle}">
              			<tags:instructions code="admin.mandatory.fields.instruction" />

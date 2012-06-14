@@ -100,6 +100,7 @@
 <c:if test="${not updated}">
     <c:url value="/public/user/changePassword" var="action"/>
     <form:form action="${action}">
+    	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
         <h2>Please enter your new password</h2>
 
         Your password must:<br>

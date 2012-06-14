@@ -31,6 +31,7 @@
 
 	<tags:instructions code="instruction_selectRoutingAndReview"/>
 	<form:form method="post" cssClass="standard autoclear">
+		<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
         <tags:jsErrorsMessage/>
         <tags:hasErrorsMessage />
     	<tags:tabFields tab="${tab}"/>

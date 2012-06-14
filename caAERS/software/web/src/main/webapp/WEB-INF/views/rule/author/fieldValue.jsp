@@ -5,6 +5,7 @@
 
 
 <form:form>
+	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
 					<form:select path="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].fieldConstraint[0].literalRestriction[0].value" id="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].fieldConstraint[0].literalRestriction[0].value">
 						<option value=""/>Please Select-- </option>
 						<form:option value="Unrelated"/>

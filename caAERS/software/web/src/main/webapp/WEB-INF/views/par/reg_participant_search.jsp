@@ -127,6 +127,7 @@
 
 <chrome:box autopad="true" title="Search Criteria">
   <form:form id="searchForm" method="post" cssClass="standard">
+  	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
         <tags:hasErrorsMessage hideErrorDetails="${hideErrorDetails}"/>
         <tags:jsErrorsMessage/>
 
@@ -151,6 +152,7 @@
 
 <div id="bigSearch" style="display:none;">
     <form:form id="assembler">
+    	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
         <div>
             <input type="hidden" name="_prop" id="prop">
             <input type="hidden" name="_value" id="value">
@@ -174,6 +176,7 @@
   
 
 <form:form id="command">
+	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
 	    <form:hidden path="participant"/>
      <tags:tabFields tab="${tab}"/>
      <tags:tabControls tab="${tab}" flow="${flow}"/>

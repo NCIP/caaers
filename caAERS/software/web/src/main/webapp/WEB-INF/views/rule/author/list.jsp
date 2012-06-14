@@ -217,6 +217,7 @@ YAHOO.util.Event.addListener(window, "load", function() {
 			<p class="updated">${command.message}</p>
 		</c:if>
 		<form:form action="${action}" enctype="multipart/form-data" cssClass="standard">
+			<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
             <div class="row">
                 <div class="label">
                     Select XML file

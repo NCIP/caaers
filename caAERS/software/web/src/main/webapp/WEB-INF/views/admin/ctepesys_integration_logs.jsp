@@ -280,6 +280,7 @@
          
 
 <form:form name="command" id="command" method="post">
+	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
  
 <chrome:box title="Search" autopad="true">
     <div class="content">

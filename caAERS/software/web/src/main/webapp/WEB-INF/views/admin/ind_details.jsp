@@ -52,6 +52,7 @@
 
   <div class="content">
 	<form:form>
+		<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
         <chrome:box title="Investigational New Drug Details">
 		<chrome:division id="single-fields">
              <tags:instructions code="inddetails" />

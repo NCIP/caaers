@@ -97,6 +97,7 @@ var myFields = [
 <div class="content">
 
 <form:form name="searchForm" id="searchForm" method="post">
+	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
 	<p><tags:instructions code="instruction_subject_search"/></p>
 
     <chrome:box title="Search Criteria" cssClass="mpaired" autopad="false">
@@ -114,6 +115,7 @@ var myFields = [
 <br>
 
 <form:form id="assembler" >
+	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
 
     <c:set var="display" value="none" />
 

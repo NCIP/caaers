@@ -16,7 +16,7 @@
 <chrome:box title="Confirmation">
 <chrome:flashMessage/>
 <form:form>
-
+<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
 <chrome:division id="single-fields">
       <div class="content">
             <div class="row">

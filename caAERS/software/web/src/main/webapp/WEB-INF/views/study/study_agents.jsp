@@ -160,7 +160,7 @@ function toggleAgentOrOther(index) {
 <chrome:flashMessage/>
 
 <form:form id="command" name="command">
-
+<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
     <chrome:box  title="Agents">
 <%--<tags:tabForm tab="${tab}" flow="${flow}" formName="studyAgentsForm" hideErrorDetails="false">--%>
     <input type="hidden" id="_ITEM_COUNT" name="_ITEM_COUNT" value="${fn:length(command.study.studyAgents)}">

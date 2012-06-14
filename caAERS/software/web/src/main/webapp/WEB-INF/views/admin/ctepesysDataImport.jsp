@@ -207,6 +207,7 @@
     <p><tags:instructions code="LBL_ctep.data.import.instructions"/></p>
 
 	<form:form name="ctepDataForm"id="assembler">
+		<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
 	     <chrome:division id="single-fields">
 	        <div id="tableDiv">
 			</div>

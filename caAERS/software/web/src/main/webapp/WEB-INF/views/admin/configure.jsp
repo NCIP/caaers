@@ -59,6 +59,7 @@
 </script>
         
     <form:form action="${action}" cssClass="standard">
+    	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
         <chrome:box title="Configure caAERS" autopad="true">
             <p><tags:instructions code="configurecaares" /></p>
             <c:if test="${param.updated}"><p class="updated">Settings saved</p></c:if>

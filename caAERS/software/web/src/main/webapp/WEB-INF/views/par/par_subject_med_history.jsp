@@ -261,6 +261,7 @@
 	  </div>
   <p><tags:instructions code="instruction_subject_enter.medhist.top"/></p>
    <form:form id="command">
+   	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
    <div id="showAllDropDown" style="position: absolute; display: none; left: 300px; width:300px; z-index:99; top:0px;">
    <table width="100%" class="eXtremeTable" frame="border" border-color="blue" bgcolor="white">
      <tbody>

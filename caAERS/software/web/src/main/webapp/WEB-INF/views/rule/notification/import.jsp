@@ -50,6 +50,7 @@
 <tags:instructions code="importxmlreportdefinitions" />
 </p>
 	<form:form action="${action}" enctype="multipart/form-data" cssClass="standard">
+		<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
             <div class="row">
                 <div class="label" style="width:11em;">
                    Report Definition File  

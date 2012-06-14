@@ -32,6 +32,7 @@
 
 <c:if test="${not hideBox}">
     <caaers:form name="${formName}" enctype="${enctype}" id="${empty formId ? 'command' : formId}" validate="false">
+    	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
     	<jsp:invoke fragment="header" />
     	<chrome:warningMessage/>
         <chrome:box title="${empty title ? tab.shortTitle : title}" id="${boxId}" cssClass="${boxClass}" noBackground="${noBackground}" additionalTitle="${additionalTitle}">
@@ -65,6 +66,7 @@
 <c:if test="${hideBox}">
 	<chrome:warningMessage/>
     <caaers:form name="${formName}" enctype="${enctype}"  id="${empty formId ? 'command' : formId}">
+    	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
     	<jsp:invoke fragment="header" />
     	<chrome:flashMessage/>
         <tags:tabFields tab="${tab}"/>

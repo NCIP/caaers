@@ -356,6 +356,7 @@
   <study:summary />
  
   <form:form name="solicitedAEForm">
+  	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
     <%--<tags:instructions code="study.study_evalpdtypes.top" />--%>
   	  	
   	<!--  Idea is copied from tabForm.tag -->

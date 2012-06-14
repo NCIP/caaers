@@ -46,6 +46,7 @@ function buildTable(form) {
 </head>
 <body>
 <form:form name="searchForm" id="searchForm" method="post">
+<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
 <p>
   Search for routine AEs by choosing any of the listed criteria.
 </p>
@@ -150,6 +151,7 @@ function buildTable(form) {
 
 <div id="bigSearch" style="display:none;">
 <form:form id="assembler" >
+<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
 <div>			
 	<input type="hidden" name="_prop" id="prop" >
 	<input type="hidden" name="_value" id="value"  >

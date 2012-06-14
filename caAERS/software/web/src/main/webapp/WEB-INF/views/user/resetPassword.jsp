@@ -122,6 +122,7 @@
   </c:if>
   <c:url value="/public/user/resetPassword" var="action"/>
     <form:form action="${action}">
+    	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
          <c:if test="${not empty param.login_error}">
              <p class="errors">
                   <img src="../../images/error-yellow.png" style="margin-right:10px">Password is too old. Please reset your password.

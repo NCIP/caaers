@@ -11,6 +11,7 @@
 <c:if test="${checkBoxMode}">
 <div id="contextMenuOuter">
 <form action="dummy">
+<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
 <div id="contextMenuContent">
 	<c:forEach var="rd" items="${allReportDefinitions}" >
 	 	<c:set var="_rdChecked" value="${false}" scope="page" />

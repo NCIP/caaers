@@ -75,6 +75,7 @@
         	</ul>
     	</div> 
     <form:form action="${action}">
+    	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
     <chrome:box title="Password Policy Configuration" autopad="true">
 
     <c:url value="/pages/admin/passwordPolicyConfigure" var="action" />

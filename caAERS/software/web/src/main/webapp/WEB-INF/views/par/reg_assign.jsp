@@ -17,6 +17,7 @@
 <body>
 <p id="instructions">In order to assign a Subject to a Study, you need to first search for either a subject or a study.</p>
 <form:form id="searchForm" name="searchForm" action="/caaers/pages/participant/assignStudy" method="post" cssClass="standard">
+	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
 	<chrome:box autopad="true" cssClass="paired" title="Select Study"
 		id="study-search">
 		<table width="100%" border="0" cellpadding="0" cellspacing="0">
@@ -55,6 +56,7 @@
 <form:form id="searchForm2" name="searchForm2"
 	action="/caaers/pages/participant/assignParticipant" method="post"
 	cssClass="standard">
+	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
 	<chrome:box autopad="true" cssClass="paired" title="Select Subject"
 		id="participant-search">
 		<table width="100%" border="0" cellpadding="0" cellspacing="0">

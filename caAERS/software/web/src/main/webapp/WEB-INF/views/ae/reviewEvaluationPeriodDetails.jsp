@@ -54,6 +54,7 @@
 		
 		<chrome:box title="Adverse Events">
  							<form:form commandName="command">
+ 								<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
 								<tags:renderRow field="${fieldGroups.reportingPeriodFG.fields[0]}">
 									<jsp:attribute name="value">
 										<tags:renderInputs field="${fieldGroups.reportingPeriodFG.fields[0]}" />

@@ -51,7 +51,7 @@ var myFields = [
 <div class="content">
 
     <form:form name="searchForm" id="searchForm" method="post">
-
+		<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
             <chrome:box title="Search Devices" autopad="false">
             <tags:instructions code="admin.devices.search.instructions" />
             <div class="row">
@@ -70,6 +70,7 @@ var myFields = [
 
            <div id="bigSearch" style="display:none;">
                <form:form id="assembler">
+               	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
                    <div>
                        <input type="hidden" name="_name" id="_name">
                        <input type="hidden" name="_nsc" id="_nsc">
@@ -84,3 +85,4 @@ var myFields = [
                </form:form>
            </div>
        </div>
+

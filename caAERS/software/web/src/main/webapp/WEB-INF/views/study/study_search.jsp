@@ -131,6 +131,7 @@ function onKey(e) {
 <chrome:box title="Search Criteria" autopad="true">
 <tags:instructions code="study.search.top" />
     <form:form name="searchForm" id="searchForm" method="post">
+    	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
        <div>
 			<input type="hidden" name="_selected" id="_selected" value="">
 			<input type="hidden" name="_action" id="_action" value="">
@@ -166,6 +167,7 @@ function onKey(e) {
 
 <chrome:box title="Results">
 <form:form id="assembler">
+	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
      <chrome:division id="single-fields">
         <div id="tableDiv">
    			<c:out value="${assembler}" escapeXml="false"/>

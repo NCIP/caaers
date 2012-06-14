@@ -248,6 +248,7 @@
             <div class="left">
                 <img src="../images/blue/login-logo.png" id="logo" alt="Cancer Adverse Event Reporting System"><h2>Please Log in:</h2>
                 <form method="POST" id="login" action='<c:url value="/j_acegi_security_check"/>?rand=${_today.time}'>
+                	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
                     <c:if test="${not empty param.login_error}">
                         <p class="errors">
                              <img src="../images/error-yellow.png" style="margin-right:10px">${sessionScope['ACEGI_SECURITY_LAST_EXCEPTION'].message}

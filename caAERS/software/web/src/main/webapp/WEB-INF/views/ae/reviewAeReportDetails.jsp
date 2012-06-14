@@ -174,6 +174,7 @@
 		<chrome:box title="Enter comments">
 			<chrome:division>
 				<form:form commandName="command">
+					<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
 					<table width="100%">
 						<tr>
 							<td width="50%" align="right">

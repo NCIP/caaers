@@ -293,6 +293,7 @@ Event.observe(window, "load", function() {
 <div style="clear:both;">
     <%-- Can't use tags:tabForm b/c there are two boxes in the form --%>
     <form:form method="post" name="studyDiseasesForm" >
+    	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
       <input type="hidden" name="_action" value="">
       <input type="hidden" name="_selected" value="">
       <tags:tabFields tab="${tab}"/>

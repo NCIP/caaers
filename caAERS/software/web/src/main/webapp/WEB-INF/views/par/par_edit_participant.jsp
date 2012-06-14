@@ -333,7 +333,7 @@ function removeSystemIdentifier(container, index) {
      
 </tags:tabForm>
 
-<form name="dummyForm"></form>
+<form name="dummyForm"><input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/></form>
 
 </body>
 </html>

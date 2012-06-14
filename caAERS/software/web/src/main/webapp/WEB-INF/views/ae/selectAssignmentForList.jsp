@@ -110,6 +110,7 @@
 </head>
 <body>
 <form:form method="post" cssClass="standard autoclear">
+	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
     <tags:tabFields tab="${tab}"/>
 
     <div class="autoclear" id="criteria-div">

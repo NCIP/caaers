@@ -3,7 +3,7 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
  <form:form  method="post" modelAttribute="participantCommand">
-
+<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
 
 <chrome:division title="Participant Details">
 

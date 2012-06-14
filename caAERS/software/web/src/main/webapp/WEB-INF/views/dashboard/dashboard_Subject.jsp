@@ -8,6 +8,7 @@
 
   	<jsp:body>
   		<form action = "dummy">
+  			<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
                 <div id="subjects" class="<c:if test="${fn:length(subjectList) > 10}">scrollerTask</c:if>">
                     <table border="0" cellpadding="0" cellspacing="0" class="dashboard_table" width="100%">
                         <tr class="taskTitleRow">

@@ -54,6 +54,7 @@
 
 <chrome:box autopad="true">
     <form:form id="searchForm" method="post" cssClass="standard" commandName="command">
+    	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
         <table border="0" cellspacing="0" cellpadding="0" class="search">
             <tr>
             </tr>
@@ -90,6 +91,7 @@
 
 <p id="instructions">Please choose a Participant and then press Continue to proceed</p>
 <form:form id="searchParticipant" method="post" cssClass="standard" commandName="command">
+	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
     <input type="hidden" name="execution" value="${flowExecutionKey}">
                         <input type="hidden" name="_eventId" value="confirm">
                         <input type="submit" value="Confirm" id="submitForm" align="middle" width="22"

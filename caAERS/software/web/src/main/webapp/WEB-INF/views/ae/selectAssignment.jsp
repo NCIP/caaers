@@ -282,6 +282,7 @@
 <body>
 
 <form:form method="post" cssClass="standard autoclear">
+	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
     <tags:tabFields tab="${tab}"/>
     <div class="autoclear" id="criteria-div">
     	<chrome:box title="Select study, subject, and course/cycle" id="study-entry">

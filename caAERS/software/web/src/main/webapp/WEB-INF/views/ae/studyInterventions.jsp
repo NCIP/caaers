@@ -295,6 +295,7 @@ function updateMedicalDevice(i, studyDeviceId){
 </div>
 
 <form:form id="command">
+	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
         <chrome:flashMessage/>
         <tags:hasErrorsMessage />
         <tags:jsErrorsMessage/>

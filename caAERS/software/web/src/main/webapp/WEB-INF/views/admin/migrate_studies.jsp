@@ -59,6 +59,7 @@
     
     <chrome:box autopad="true" title="Import Studies " id="studies">
     <form:form method="post" cssClass="standard" name="studySiteForm">
+    	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
 	<div>		
 		<input type="hidden" name="_action" value="">
 		<input type="hidden" name="_selected" value="">

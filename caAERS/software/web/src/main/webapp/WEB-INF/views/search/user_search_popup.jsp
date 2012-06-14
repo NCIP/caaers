@@ -91,6 +91,7 @@
             <a name="bm"> </a>
     		<div class="content">
     			<form:form name="searchForm" id="searchForm" method="post">
+    				<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
     				<caaers:message code="user.search.criteriaSection" var="criteriaSectionTitle"/>
     				<chrome:box title="Search Criteria" cssClass="mpaired" autopad="false">
 						<div class="row">
@@ -169,6 +170,7 @@
 				<div id="bigSearch" style="display:none;">
 			         <br>
 			         <form:form id="assembler">
+			         	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
 			             <div>
 			                 <input type="hidden" name="_prop" id="prop">
 			                 <input type="hidden" name="_value" id="value">

@@ -130,6 +130,7 @@
 
     <p><tags:instructions code="study.adEERSsearch.top"/></p>
     <form:form name="searchForm" id="searchForm" method="post">
+    	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
 
         <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.command'].allErrors}">
             <div class="errors">

@@ -51,6 +51,7 @@
 </script>
 
 <form:form id="priorTherapy" method="post" modelAttribute="priorTherapy">
+	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
 
     <chrome:division title="Prior Therapy Details">
         <table id="test2" class="single-fields" width="100%">
