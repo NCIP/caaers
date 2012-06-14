@@ -45,6 +45,7 @@ public class ExpeditedAdverseEventReportTest extends AbstractTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+        switchToSuperUser();
         report = new ExpeditedAdverseEventReport();
         report.setCreatedAt(CREATED_AT);
         publicId = "str id";
