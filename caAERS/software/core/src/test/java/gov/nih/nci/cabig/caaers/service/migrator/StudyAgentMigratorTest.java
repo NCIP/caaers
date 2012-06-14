@@ -56,7 +56,7 @@ public class StudyAgentMigratorTest extends DaoTestCase {
 
         migrator.migrate(s, dbStudy, outcome);
 
-        assertEquals(2, agentDao.getAll().size());
+        assertEquals(3, agentDao.getAll().size());
         assertEquals(3, dbStudy.getStudyAgents().size());
 
     }
