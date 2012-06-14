@@ -1039,4 +1039,22 @@ public class Fixtures {
         m.setCodedSite(Fixtures.createAnatomicSite(name, name));
         return m;
     }
+    
+    public static StudyParticipantMetastaticDiseaseSite createStudyParticipantMetastaticDiseaseSite(String name){
+        StudyParticipantMetastaticDiseaseSite m = new StudyParticipantMetastaticDiseaseSite();
+        m.setCodedSite(createAnatomicSite(name, name));
+        return m    ;
+    }
+    
+    public ConcomitantMedication createConcomitantMedication(String agentName){
+        ConcomitantMedication c = new ConcomitantMedication();
+        c.setAgentName(agentName);
+        return c;
+    }
+    
+    public static StudyParticipantConcomitantMedication createStudyParticipantConcomitantMedication(String n){
+        StudyParticipantConcomitantMedication c = new StudyParticipantConcomitantMedication();
+        c.setAgentName(n);
+        return c;
+    }
 }

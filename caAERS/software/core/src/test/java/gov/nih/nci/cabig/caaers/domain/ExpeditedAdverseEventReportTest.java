@@ -27,7 +27,7 @@ import org.springframework.beans.BeanWrapperImpl;
  * @author Biju Joseph
  */
 @CaaersUseCases({CREATE_EXPEDITED_REPORT})
-public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase {
+public class ExpeditedAdverseEventReportTest extends AbstractTestCase {
     private static final Timestamp CREATED_AT = DateTools.createTimestamp(2006, Calendar.MAY, 8, 9,
             8, 7);
 
@@ -61,7 +61,7 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
         report.setReportingPeriod(Fixtures.createReportingPeriod());
         wrappedReport = new BeanWrapperImpl(report);
         assignment = new StudyParticipantAssignment();
-        assignment.addConcomitantMedication(new StudyParticipantConcomitantMedication());
+        assignment.addConcomitantMedication(Fixtures.createStudyParticipantConcomitantMedication("x"));
         StudyParticipantPriorTherapy spt = new StudyParticipantPriorTherapy();
         spt.setPriorTherapy(Fixtures.createPriorTherapy("hello"));
         assignment.addPriorTherapy(spt);
@@ -69,7 +69,7 @@ public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase 
         spc.setPreExistingCondition(Fixtures.createPreExistingCondition("n", "n", "n", "n"));
         assignment.addPreExistingCondition(spc);
         StudyParticipantDiseaseHistory studyParticipantDiseaseHistory = new StudyParticipantDiseaseHistory();
-        studyParticipantDiseaseHistory.addMetastaticDiseaseSite(new StudyParticipantMetastaticDiseaseSite());
+        studyParticipantDiseaseHistory.addMetastaticDiseaseSite(Fixtures.createStudyParticipantMetastaticDiseaseSite("x"));
         assignment.setDiseaseHistory(studyParticipantDiseaseHistory);
 
         reportingPeriod = new AdverseEventReportingPeriod();
