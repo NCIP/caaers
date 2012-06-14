@@ -643,7 +643,7 @@ public class StudyRepository {
      */
     public List<Study> getAllStudies() {
         StudyQuery q = new StudyQuery();
-        q.orderBy("s.id desc");
+        q.orderBy("id desc");
         return this.find(q);
     }
 
