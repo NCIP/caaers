@@ -61,7 +61,7 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
 		reportDefinitionDao = registerDaoMockFor(ReportDefinitionDao.class);
 		reportRepository = registerMockFor(ReportRepository.class);
 		
-		command = new CaptureAdverseEventInputCommand(null, null, null, reportDefinitionDao, null, reportDao);
+		command = new CaptureAdverseEventInputCommand(null, null, reportDefinitionDao, null, reportDao);
 		command.setAdverseEventReportingPeriod(reportingPeriod);
 		
 	

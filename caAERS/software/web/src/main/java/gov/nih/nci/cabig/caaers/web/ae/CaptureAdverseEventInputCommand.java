@@ -49,8 +49,6 @@ import org.apache.commons.lang.StringUtils;
  */
 public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand {
 	
-	private StudyParticipantAssignment assignment;
-	private StudyParticipantAssignmentDao assignmentDao;
 	private ReportDefinitionDao reportDefinitionDao;
 	private ExpeditedAdverseEventReportDao  aeReportDao;
 	
@@ -104,11 +102,10 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	}
 	
 	public CaptureAdverseEventInputCommand(AdverseEventReportingPeriodDao adverseEventReportingPeriodDao, 
-				StudyParticipantAssignmentDao assignmentDao, EvaluationService evaluationService, ReportDefinitionDao reportDefinitionDao, StudyDao studyDao, ExpeditedAdverseEventReportDao aeReportDao){
+				 EvaluationService evaluationService, ReportDefinitionDao reportDefinitionDao, StudyDao studyDao, ExpeditedAdverseEventReportDao aeReportDao){
 		
 		this();
 		this.adverseEventReportingPeriodDao = adverseEventReportingPeriodDao;
-		this.assignmentDao = assignmentDao;
 		this.evaluationService = evaluationService;
 		this.reportDefinitionDao = reportDefinitionDao;
 		this.studyDao = studyDao;
@@ -172,75 +169,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	}
 	
 	
-	public void reassociate(){
-//		//reassociate all report definitions
-//		if(allReportDefinitions != null)
-//		for(ReportDefinition repDef : allReportDefinitions){
-//			reportDefinitionDao.reassociate(repDef);
-//		}
-		studyDao.lock(study);
-		if(this.adverseEventReportingPeriod != null && this.adverseEventReportingPeriod.getId() != null){
-			adverseEventReportingPeriodDao.reassociate(this.adverseEventReportingPeriod);
-		}
-		
-	}
 
-
-
-    /**
-     * This method will take care of initializing the lazy associations
-     * This method will take care of
-     *  - Updating the index fixed list for AdverseEvents, associated to the reporting period 
-     *  - initializing the lazy associations
-     */
-    public void initialize(){
-    	//set the assignment into the command.
-    	if(this.adverseEventReportingPeriod != null){
-    		this.assignment = this.adverseEventReportingPeriod.getAssignment();
-    		// cleanEmptyAdverseEvents();
-    	}
-    	if(adverseEventReportingPeriod != null){
-    		Study study = adverseEventReportingPeriod.getStudy();
-			if(study.getStudyOrganizations() != null) study.getStudyOrganizations().size();
-			if(study.getExpectedAECtcTerms() != null)	 study.getExpectedAECtcTerms().size();
-			boolean isCTCStudy = study.getAeTerminology().getTerm() == Term.CTC;
-			if(isCTCStudy){
-				getCtcCategories();
-				for(AdverseEvent ae : getAdverseEvents()){
-					if(ae.getAdverseEventTerm() == null) continue;
-					
-					ae.getAdverseEventTerm().isOtherRequired();
-					if(ae.getAdverseEventCtcTerm().getCtcTerm() != null){
-						ae.getAdverseEventCtcTerm().getCtcTerm().isOtherRequired();
-	                    ae.getAdverseEventCtcTerm().getCtcTerm().getContextualGrades().size();
-					}
-				}
-			}
-			this.adverseEventReportingPeriod.getAdverseEvents().size();
-			this.adverseEventReportingPeriod.getAeReports().size();
-			for(ExpeditedAdverseEventReport aeReport : this.adverseEventReportingPeriod.getAeReports()){
-				aeReport.getReports().size();
-				aeReport.getAdverseEvents().size();
-				for(Report report : aeReport.getReports()){
-					report.getReportDefinition().getParent();
-					report.getLastVersion().getReportedAdversEvents().size();
-				}
-			}
-			List<ReportingPeriodReviewComment> reviewCommentList = this.adverseEventReportingPeriod.getReviewCommentsInternal();
-			if(reviewCommentList != null)
-				this.adverseEventReportingPeriod.getReviewComments().size();
-			if(this.assignment != null){
-				if(assignment.getParticipant() != null)	this.assignment.getParticipant().getIdentifiers();
-			}
-			
-			this.adverseEventReportingPeriod.getAssignment().getStudySite().getStudySiteWorkflowConfigs().size();
-			this.adverseEventReportingPeriod.getAssignment().getLabLoads().size();
-
-			this.adverseEventReportingPeriod.isBaselineReportingType();
-
-		}
-    }
-    
    
 
 //
@@ -405,22 +334,9 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	public void setTermCode(Integer ignore){}
 	
     public StudyParticipantAssignment getAssignment() {
-        if(assignment != null) return assignment;
-        
-        //fetch the assignment from DB.
-    	if (getParticipant() != null && getStudy() != null) {
-            this.assignment =  assignmentDao.getAssignment(getParticipant(), getStudy());
-        }
-    	
-    	return this.assignment;
+        return adverseEventReportingPeriod.getAssignment();
     }
-
-	public void setAssignment(StudyParticipantAssignment assignment) {
-		this.assignment = assignment;
-	}
-
 	public boolean getIgnoreCompletedStudy() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

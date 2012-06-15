@@ -29,13 +29,11 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
 	
 	private CaptureAdverseEventAjaxFacade facade;
 	private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
-    private StudyParticipantAssignmentDao assignmentDao;
 	private ReportDefinitionDao reportDefinitionDao;
 	private ExpeditedAdverseEventReportDao aeReportDao;
 	private StudyDao studyDao;
     private CtcTermDao ctcTermDao;
     LowLevelTermDao lowLevelTermDao;
-    private StudyParticipantAssignment assignment;
 	private EvaluationService evaluationService;
 	private StudySite  studySite;
 	private Study study;
@@ -47,14 +45,12 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
 		super.setUp();
 		
 		adverseEventReportingPeriodDao = registerDaoMockFor(AdverseEventReportingPeriodDao.class);
-		assignmentDao = registerDaoMockFor(StudyParticipantAssignmentDao.class);
 		reportDefinitionDao = registerDaoMockFor(ReportDefinitionDao.class);
 		studyDao = registerDaoMockFor(StudyDao.class);
 		aeReportDao = registerDaoMockFor(ExpeditedAdverseEventReportDao.class);
         ctcTermDao = registerDaoMockFor(CtcTermDao.class);
         lowLevelTermDao = registerDaoMockFor(LowLevelTermDao.class);
 		
-		assignment = registerMockFor(StudyParticipantAssignment.class);
         evaluationService = registerMockFor(EvaluationService.class);
         studySite  = registerMockFor(StudySite.class);
         study  = registerMockFor(Study.class);
@@ -101,8 +97,8 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
 	}
 	
 	private CaptureAdverseEventInputCommand setupCaptureAdverseEventCommand(Term term) {
-		CaptureAdverseEventInputCommand command = new CaptureAdverseEventInputCommand(adverseEventReportingPeriodDao,
-                assignmentDao, evaluationService, reportDefinitionDao , studyDao, aeReportDao);
+		CaptureAdverseEventInputCommand command = new CaptureAdverseEventInputCommand(adverseEventReportingPeriodDao
+                , evaluationService, reportDefinitionDao , studyDao, aeReportDao);
 	
 		AdverseEventReportingPeriod reportingPeriod = Fixtures.createReportingPeriod(1,
                 DateUtils.formatDate(DateUtils.yesterday()),

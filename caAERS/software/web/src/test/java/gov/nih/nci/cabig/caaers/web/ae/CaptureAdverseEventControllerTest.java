@@ -35,7 +35,6 @@ public class CaptureAdverseEventControllerTest extends WebTestCase {
 
     ParticipantDao participantDao;
     StudyDao studyDao;
-    StudyParticipantAssignmentDao assignmentDao;
     TreatmentAssignmentDao treatmentAssignmentDao;
     CtcTermDao ctcTermDao;
     CtcCategoryDao ctcCategoryDao;
@@ -93,7 +92,6 @@ public class CaptureAdverseEventControllerTest extends WebTestCase {
 
         participantDao = registerDaoMockFor(ParticipantDao.class);
         studyDao = registerDaoMockFor(StudyDao.class);
-        assignmentDao = registerDaoMockFor(StudyParticipantAssignmentDao.class);
         treatmentAssignmentDao = registerDaoMockFor(TreatmentAssignmentDao.class);
         ctcTermDao = registerDaoMockFor(CtcTermDao.class);
         ctcCategoryDao = registerDaoMockFor(CtcCategoryDao.class);
@@ -111,7 +109,6 @@ public class CaptureAdverseEventControllerTest extends WebTestCase {
         controller = new CaptureAdverseEventController();
         controller.setParticipantDao(participantDao);
         controller.setStudyDao(studyDao);
-        controller.setAssignmentDao(assignmentDao);
         controller.setTreatmentAssignmentDao(treatmentAssignmentDao);
         controller.setCtcTermDao(ctcTermDao);
         controller.setCtcCategoryDao(ctcCategoryDao);
@@ -156,7 +153,7 @@ public class CaptureAdverseEventControllerTest extends WebTestCase {
 
 
 
-        command = new CaptureAdverseEventInputCommand(adverseEventReportingPeriodDao,assignmentDao, evaluationService, reportDefinitionDao, studyDao, expeditedAdverseEventReportDao);
+        command = new CaptureAdverseEventInputCommand(adverseEventReportingPeriodDao, evaluationService, reportDefinitionDao, studyDao, expeditedAdverseEventReportDao);
         command.setAdverseEventReportingPeriod(adverseEventReportingPeriod);
         command.setStudy(assignment.getStudySite().getStudy());
         command.setParticipant(assignment.getParticipant());

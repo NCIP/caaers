@@ -67,7 +67,6 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 
 	private ParticipantDao participantDao;
 	private StudyDao studyDao;
-	private StudyParticipantAssignmentDao assignmentDao;
 	private TreatmentAssignmentDao treatmentAssignmentDao;
 	private CtcTermDao ctcTermDao;
 	private CtcCategoryDao ctcCategoryDao;
@@ -251,7 +250,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	
 	@Override
 	protected Object formBackingObject(HttpServletRequest request)	throws Exception {
-		CaptureAdverseEventInputCommand cmd = new CaptureAdverseEventInputCommand(adverseEventReportingPeriodDao,assignmentDao, evaluationService, reportDefinitionDao, studyDao, expeditedAdverseEventReportDao);
+		CaptureAdverseEventInputCommand cmd = new CaptureAdverseEventInputCommand(adverseEventReportingPeriodDao, evaluationService, reportDefinitionDao, studyDao, expeditedAdverseEventReportDao);
 
 		cmd.setWorkflowEnabled(configuration.get(Configuration.ENABLE_WORKFLOW));
 
@@ -432,9 +431,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	public void setStudyDao(StudyDao studyDao) {
 		this.studyDao = studyDao;
 	}
-	public void setAssignmentDao(StudyParticipantAssignmentDao assignmentDao){
-		this.assignmentDao = assignmentDao;
-	}
+
 	
 	public void setTreatmentAssignmentDao(
 			TreatmentAssignmentDao treatmentAssignmentDao) {

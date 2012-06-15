@@ -20,6 +20,7 @@ import gov.nih.nci.cabig.caaers.domain.OutcomeType;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 
 import java.util.ArrayList;
@@ -30,11 +31,10 @@ import java.util.List;
  * @author Biju Joseph
  *
  */
-public class CaptureAdverseEventInputCommandTest extends AbstractNoSecurityTestCase {
+public class CaptureAdverseEventInputCommandTest extends AbstractTestCase {
 	
 	CaptureAdverseEventInputCommand command;
 	
-	private StudyParticipantAssignmentDao assignmentDao;
 	private ReportDefinitionDao reportDefinitionDao;
 	private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
 	private EvaluationService evaluationService;
@@ -49,13 +49,13 @@ public class CaptureAdverseEventInputCommandTest extends AbstractNoSecurityTestC
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		assignmentDao = registerDaoMockFor(StudyParticipantAssignmentDao.class);
+        SecurityTestUtils.switchToSuperuser();
 		reportDefinitionDao = registerDaoMockFor(ReportDefinitionDao.class);
 		adverseEventReportingPeriodDao = registerDaoMockFor(AdverseEventReportingPeriodDao.class);
 		evaluationService = registerMockFor(EvaluationService.class);
 		studyDao = registerDaoMockFor(StudyDao.class);
 		aeReportDao = registerDaoMockFor(ExpeditedAdverseEventReportDao.class);
-		command = new CaptureAdverseEventInputCommand(adverseEventReportingPeriodDao, assignmentDao, evaluationService, reportDefinitionDao, studyDao,aeReportDao );
+		command = new CaptureAdverseEventInputCommand(adverseEventReportingPeriodDao, evaluationService, reportDefinitionDao, studyDao,aeReportDao );
 		
 		reportingPeriod = Fixtures.createReportingPeriod();
 		
@@ -97,7 +97,6 @@ public class CaptureAdverseEventInputCommandTest extends AbstractNoSecurityTestC
 	
 	public void testIsAssociatedToLabAlers(){
 		StudyParticipantAssignment assignment = Fixtures.createAssignment();
-        command.setAssignment(assignment);
 		reportingPeriod.setAssignment(assignment);
 		assertFalse(command.isAssociatedToLabAlerts());
 	}
@@ -224,13 +223,7 @@ public class CaptureAdverseEventInputCommandTest extends AbstractNoSecurityTestC
 		assertFalse(command.isOutcomePresent(OutcomeType.HOSPITALIZATION, command.getAdverseEvents().get(0).getOutcomes()));
 	}
 	
-	/**
-	 * This method tests {@link CaptureAdverseEventInputCommand#initialize()}
-	 */
-	public void testInitialize(){
-		command.initialize();
-		assertNotNull(command.getAdverseEvents());
-	}
+
 	
 	@Override
 	protected void tearDown() throws Exception {

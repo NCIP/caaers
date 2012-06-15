@@ -12,11 +12,6 @@ public class ReviewEvaluationPeriodCommand extends CaptureAdverseEventInputComma
 		this.adverseEventReportingPeriodDao = adverseEventReportingPeriodDao;
 	}
 	
-	@Override
-	public void reassociate(){
-		if(this.adverseEventReportingPeriod != null && this.adverseEventReportingPeriod.getId() != null){
-			adverseEventReportingPeriodDao.reassociate(this.adverseEventReportingPeriod);
-		}
-	}
+
 	
 }
