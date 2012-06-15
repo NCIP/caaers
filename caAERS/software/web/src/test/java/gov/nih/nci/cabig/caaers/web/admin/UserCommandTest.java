@@ -6,8 +6,12 @@ import gov.nih.nci.cabig.caaers.tools.Messages;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
 import gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSessionFactory;
 import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRole;
+import org.springframework.context.MessageSource;
+import org.springframework.context.MessageSourceResolvable;
+import org.springframework.context.NoSuchMessageException;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * 
@@ -20,10 +24,27 @@ public class UserCommandTest extends WebTestCase {
 
     @Override
     protected void setUp() throws Exception {
-        CaaersContextLoader.getApplicationContext().getBean(Messages.class);  //initialize messages
+        Messages m = new Messages();
+
+        m.setMessageSource(new MessageSource() {
+            public String getMessage(String code, Object[] args, String defaultMessage, Locale locale) {
+                return "TEST";
+            }
+
+            public String getMessage(String code, Object[] args, Locale locale) throws NoSuchMessageException {
+                return "test";
+            }
+
+            public String getMessage(MessageSourceResolvable resolvable, Locale locale) throws NoSuchMessageException {
+                return "test";
+            }
+        });
         super.setUp();
         switchToSuperUser();
         command = new UserCommand();
+
+
+
     }
 
     public void testGetAllGlobalRoles(){
