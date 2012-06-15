@@ -251,8 +251,11 @@ function isValidUSPhoneNumber(areaCode, prefixNumber, suffixNumber) {
             _ext = phoneNumber.substr(_x + 1);
             phoneNumber = phoneNumber.substr(0, _x);
         }
-        
+        if (!containsOnlyPhoneCharacters(phoneNumber)) {
+            return false;
+        }
         phoneNumber = phoneNumber.replace(/\D+/g, '');
+        // alert(phoneNumber);
         var length = phoneNumber.length;
         if (phoneNumber.length >= 7) {
             var areaCode = phoneNumber.substring(0, length - 7);
@@ -299,6 +302,15 @@ function isNumeric(string, ignoreWhiteSpace) {
 // Check that a string contains only a-zA-z0-9# , * ( ) - _ [ ] { } ' " . : 
 function isCaAERSIdentifier(string, ignoreWhiteSpace) {
     return (string.search(/^[a-zA-Z0-9#,*()_\-'":\.{}\[\]]*$/) >= 0);
+}
+
+// Check that a string contains only Phone Characters - "0123456789()-"
+function containsOnlyPhoneCharacters(string) {
+    var p = string.search(/[^0-9\-\(\)]/);
+    if (p != -1) {
+        return false;
+    }
+    return true;
 }
 
 //checks whether the string is decimal
