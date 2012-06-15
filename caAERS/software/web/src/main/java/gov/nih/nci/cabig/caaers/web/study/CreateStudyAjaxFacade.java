@@ -235,7 +235,6 @@ public class CreateStudyAjaxFacade {
     /**
      * @author Ion C. Olaru
      * Brings all the study's related organizations (CC + FS + Study Sites)  
-     *
      * */
     public List<Organization> matchStudyOrganizations(final String text, final Integer studyId) {
         List<StudyOrganization> sos = organizationRepository.getApplicableOrganizationsFromStudyOrganizations(text, studyId);

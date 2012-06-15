@@ -37,4 +37,10 @@ public class StudyOrganizationsQuery extends AbstractQuery {
         setParameter(ORGANIZATION_NAME, searchString);
     }
 
+    public void filterByOrganizationNameOrNciCode(final String text) {
+        String searchString = "%" + text.toLowerCase() + "%";
+        andWhere("(lower(so.organization.name) LIKE :TEXT or lower(so.organization.nciInstituteCode) LIKE :TEXT)");
+        setParameter("TEXT", searchString);
+    }
+
 }

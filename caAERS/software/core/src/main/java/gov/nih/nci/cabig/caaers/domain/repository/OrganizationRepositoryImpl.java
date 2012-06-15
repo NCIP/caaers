@@ -219,14 +219,15 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
          return restrictBySubnames(subnames, false, true);
     }
 
- 	/* (non-Javadoc)
-	  * @see gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository#getApplicableOrganizationsFromStudyOrganizations(java.lang.String, java.lang.Integer)
-	  */
-	 public List<StudyOrganization> getApplicableOrganizationsFromStudyOrganizations(final String text, Integer studyId) {
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository#getApplicableOrganizationsFromStudyOrganizations(java.lang.String, java.lang.Integer)
+     */
+    public List<StudyOrganization> getApplicableOrganizationsFromStudyOrganizations(final String text, Integer studyId) {
          StudyOrganizationsQuery query = new StudyOrganizationsQuery();
 
          if(text != null && !text.equals(""))
-             query.filterByOrganizationName(text);
+//             query.filterByOrganizationName(text);
+             query.filterByOrganizationNameOrNciCode(text);
 
          if(studyId != null) 
              query.filterByStudyId(studyId);
