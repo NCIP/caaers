@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.web.util.WebUtils;
 
 
 /**
@@ -33,25 +34,26 @@ public class CsrfPreventionFilter implements Filter {
 	protected static final Log logger = LogFactory.getLog(CsrfPreventionFilter.class);
 
     public static final String CSRF_TOKEN = "CSRF_TOKEN";
+    public static final String CSRF_TOKEN_HEADER = "X-CSRF-Token";
 
     private FilterConfig filterConfig;
 
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;
-//        initializeCsfrToken(request);
-//
-//        if (!StringUtils.containsIgnoreCase(request.getRequestURI(), "dwr") &&
-//                !StringUtils.containsIgnoreCase(request.getRequestURI(), "images")) {
-//        	if (request.getMethod().toUpperCase().equals("POST")) {
-//
-//                boolean isValidRequest = isValidCsrfToken(request);
-//                if (!isValidRequest) {
-//                    response.sendError(403);
-//                    return;
-//                }
-//            }
-//        }
+        initializeCsfrToken(request);
+        
+        if (!StringUtils.containsIgnoreCase(request.getRequestURI(), "dwr") &&
+                !StringUtils.containsIgnoreCase(request.getRequestURI(), "images")) {
+        	if (request.getMethod().toUpperCase().equals("POST")) {
+                
+                boolean isValidRequest = isValidCsrfToken(request);
+                if (!isValidRequest) {
+                    response.sendError(403);
+                    return;
+                }
+            }
+        }
 
         chain.doFilter(request, response);
     }
@@ -72,7 +74,7 @@ public class CsrfPreventionFilter implements Filter {
     }
      
     protected boolean isValidCsrfToken(HttpServletRequest req) {
-        String csrfParamToken = req.getParameter(CSRF_TOKEN);
+        String csrfParamToken = getCSRFToken(req);
         String csrfSessionToken = req.getSession().getAttribute(CSRF_TOKEN).toString();
         if(!StringUtils.isEmpty(csrfParamToken) && !StringUtils.isEmpty(csrfSessionToken) && csrfParamToken.equals(csrfSessionToken)) {
             return true;
@@ -81,6 +83,16 @@ public class CsrfPreventionFilter implements Filter {
         	logger.warn("Invalid security Token. Supplied token: " + csrfParamToken + ". Session token: " + csrfSessionToken + ". IP: " + req.getRemoteAddr());
             return false;
         }
+    }
+    
+    protected String getCSRFToken(HttpServletRequest request){
+    	if(WebUtils.hasSubmitParameter(request, CSRF_TOKEN)){
+    		return request.getParameter(CSRF_TOKEN);
+    	}
+    	if(!StringUtils.isEmpty(request.getHeader(CSRF_TOKEN_HEADER))){
+    		return request.getHeader(CSRF_TOKEN_HEADER);
+    	}
+    	return null;
     }
     
 

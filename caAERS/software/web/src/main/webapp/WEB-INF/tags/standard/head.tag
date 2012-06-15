@@ -62,6 +62,8 @@ AE.UNSAVED_DATA_MESSAGE='${_unsavedInfoMsg}';
 
 AE.WEBSSO_AUTHENTICATION_MODE = ${configuration.authenticationModeWebSSO};
 
+AE.CSRF_TOKEN = '${CSRF_TOKEN }';
+
 </script>
 
 <link rel="shortcut icon" href="../../images/caaers.ico" type="image/x-icon"/>

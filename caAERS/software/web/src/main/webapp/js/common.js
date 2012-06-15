@@ -994,3 +994,16 @@ function hideCoppaSearchDisclaimer(){
 
 	}
 }
+Ajax.Responders.register({
+	onCreate: function(request, xhr) {
+	  reqt = request;
+	  if (AE.CSRF_TOKEN) {
+		  var header = 'X-CSRF-Token';
+		  if (!request.options.requestHeaders) {
+			  request.options.requestHeaders = {};
+		  }
+		  request.options.requestHeaders[header] = AE.CSRF_TOKEN;
+	  }
+	}
+});
+
