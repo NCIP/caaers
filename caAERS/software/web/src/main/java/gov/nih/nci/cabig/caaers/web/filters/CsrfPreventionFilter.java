@@ -39,19 +39,19 @@ public class CsrfPreventionFilter implements Filter {
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;
-        initializeCsfrToken(request);
-        
-        if (!StringUtils.containsIgnoreCase(request.getRequestURI(), "dwr") &&
-                !StringUtils.containsIgnoreCase(request.getRequestURI(), "images")) {
-        	if (request.getMethod().toUpperCase().equals("POST")) {
-                
-                boolean isValidRequest = isValidCsrfToken(request);
-                if (!isValidRequest) {
-                    response.sendError(403);
-                    return;
-                }
-            }
-        }
+//        initializeCsfrToken(request);
+//
+//        if (!StringUtils.containsIgnoreCase(request.getRequestURI(), "dwr") &&
+//                !StringUtils.containsIgnoreCase(request.getRequestURI(), "images")) {
+//        	if (request.getMethod().toUpperCase().equals("POST")) {
+//
+//                boolean isValidRequest = isValidCsrfToken(request);
+//                if (!isValidRequest) {
+//                    response.sendError(403);
+//                    return;
+//                }
+//            }
+//        }
 
         chain.doFilter(request, response);
     }
