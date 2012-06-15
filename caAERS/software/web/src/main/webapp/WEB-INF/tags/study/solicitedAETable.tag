@@ -52,8 +52,7 @@
                         <div class="inst">
                             <a href="#jumphere" class="instructionLinks" id="activeEpochs[${statusVar.index}].descriptionText-id">Edit Instructions</a>
                         </div>
-                        <tags:popupEditInstruction propertyName="study.activeEpochs[${statusVar.index}].descriptionText">
-                        </tags:popupEditInstruction>
+                        <tags:popupEditInstruction propertyName="study.activeEpochs[${statusVar.index}].descriptionText"></tags:popupEditInstruction>
                         <a name="jumphere"/>
                     </c:if>
                 </th>
