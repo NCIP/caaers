@@ -8,7 +8,7 @@ class UpdatePriorTherapySequenceCurrentValue extends edu.northwestern.bioinforma
 	    	
     	if (databaseMatches('oracle')) {
 	    	  for(int i =0; i < 200 ; i++){
-		    		execute("select prior_therapies_id_seq.nextval");
+		    		execute("select seq_prior_therapies_id.nextval from dual");
 		    	}
     	}
     }

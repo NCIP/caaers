@@ -8,7 +8,7 @@ class UpdatePreExistingConditionsSequenceCurrentValue extends edu.northwestern.b
 	    	
     	if (databaseMatches('oracle')) {
 	    	  for(int i =0; i < 200 ; i++){
-		    		execute("select pre_existing_conditions_id_seq.nextval");
+		    		execute("select seq_pre_existing_conditions_id.nextval from dual");
 		    	}
     	}
     }
