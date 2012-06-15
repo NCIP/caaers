@@ -27,7 +27,6 @@
 
 <div id="all">
 <standard:header/>
-<div class="tabpane">
 
     <chrome:workflowTabs tab="${tab}" flow="${flow}"/>
 
@@ -112,7 +111,6 @@
         </div>
     </chrome:body>
 
-</div>
 <standard:footer/>
 </div>
 

@@ -71,7 +71,7 @@ var myFields = [
 </head>
 <body>
 
-<div class="tabpane">
+
 <div class="workflow-tabs2">
  <ul id="" class="tabs autoclear">
     <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.Organization:CREATE">
@@ -129,6 +129,6 @@ var myFields = [
      </div>
  </div>
  
-</div>
+
 </body>
 </html>

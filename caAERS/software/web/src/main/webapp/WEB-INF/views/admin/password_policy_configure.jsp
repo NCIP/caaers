@@ -48,7 +48,7 @@
   </script>
 </head>
 <body>
-	<div class="tabpane">
+
 	<div class="workflow-tabs2">
     	    <ul id="" class="tabs autoclear">
     	    	<csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.tools.configuration.Configuration:READ || gov.nih.nci.cabig.caaers.tools.configuration.Configuration:UPDATE">
@@ -210,6 +210,6 @@
 	    <div class="row submit" style="float: right;"><tags:button type="submit" value="Save" color="green" icon="save" /></div>
     </csmauthz:accesscontrol>
     </form:form>
-    </div>
+
 </body>
 </html>

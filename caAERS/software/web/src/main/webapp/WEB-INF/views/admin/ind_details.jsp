@@ -36,21 +36,15 @@
  </head>
  <body>
  <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug:READ" var="_hasRead"/>
- <div class="tabpane">
-     <div class="workflow-tabs2">
-  <ul id="" class="tabs autoclear">
-    <c:if test="${_hasRead}">
-       <li id="thirdlevelnav" class="tab selected">
-           <div><a href="#">Create IND#</a></div>
-       </li>
-    </c:if>
-    <li id="thirdlevelnav" class="tab"><div>
-        <a href="searchIND">Search IND#</a>
-    </div></li>
-  </ul>
-         </div>
 
-  <div class="content">
+ <div class="workflow-tabs2">
+     <ul id="" class="tabs autoclear">
+         <c:if test="${_hasRead}"><li id="thirdlevelnav" class="tab selected"><div><a href="#">Create IND#</a></div></li></c:if>
+         <li id="thirdlevelnav" class="tab"><div><a href="searchIND">Search IND#</a></div></li>
+     </ul>
+ </div>
+
+ <div class="content">
 	<form:form>
 		<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
         <chrome:box title="Investigational New Drug Details">
@@ -80,7 +74,6 @@
 	</form:form>
 
   </div>
-  
-  </div>
+
  </body>
 </html>

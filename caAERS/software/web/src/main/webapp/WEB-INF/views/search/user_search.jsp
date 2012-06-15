@@ -199,7 +199,7 @@
 		</script>
 	</head>
 	<body>
-		<div class="tabpane">
+
 			<div class="workflow-tabs2">
     			<ul id="" class="tabs autoclear">
                         <li id="thirdlevelnav" class="">
@@ -312,7 +312,7 @@
 			     </div>
 
     		</div>
-		</div>
+
 
         <div id="success" class="flash-message info" style="display: none;"><img src= "<chrome:imageUrl name="../check.png"/>" />&nbsp;<caaers:message code="LBL_user.updated" /></div>
 

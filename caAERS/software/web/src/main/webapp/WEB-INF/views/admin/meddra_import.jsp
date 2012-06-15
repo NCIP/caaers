@@ -144,8 +144,7 @@ var t= 0 ;
 <body>
 
 
- <div class="tabpane">
-     <div class="workflow-tabs2">
+<div class="workflow-tabs2">
   <ul id="" class="tabs autoclear">
     <li id="thirdlevelnav" class="tab"><div>
         <a href="import">Import</a>

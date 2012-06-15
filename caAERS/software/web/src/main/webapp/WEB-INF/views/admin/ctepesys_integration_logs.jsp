@@ -262,7 +262,7 @@
 
 <body>
 <script type="text/javascript" src="<c:url value="/js/wz_tooltip/wz_tooltip.js" />"></script>
- <div class="tabpane">
+
      <div class="workflow-tabs2">
 	  <ul id="" class="tabs autoclear">
 	  	<li id="thirdlevelnav" class="tab"><div>
@@ -276,8 +276,7 @@
 	    </div></li>
 	  </ul>
   </div>
-</div>
-         
+
 
 <form:form name="command" id="command" method="post">
 	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>

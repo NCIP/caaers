@@ -87,7 +87,6 @@
 	</head>
 	<body>
 
-		<div class="tabpane">
             <a name="bm"> </a>
     		<div class="content">
     			<form:form name="searchForm" id="searchForm" method="post">
@@ -187,7 +186,6 @@
 			     </div>
 
     		</div>
-		</div>
 	</body>
 </html>
 </page:applyDecorator>

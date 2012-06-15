@@ -297,9 +297,6 @@
         }
     	</script>
 
-    
-    	<div class="tabpane">
-    		
     		<div class="workflow-tabs2">
     			<ul id="" class="tabs autoclear">
                         <li id="thirdlevelnav" class="selected">
@@ -628,6 +625,6 @@
     				</chrome:box>
     			</jsp:attribute>
     		</tags:tabForm>
-    	</div>
+
 	</body>
 </html>

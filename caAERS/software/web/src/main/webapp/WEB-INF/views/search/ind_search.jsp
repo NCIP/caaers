@@ -56,7 +56,6 @@ var myFields = [
 <body>
 <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug:CREATE" var="_hasCreate"/>
 
-<div class="tabpane">
     <div class="workflow-tabs2">
         <ul id="" class="tabs autoclear">
             <c:if test="${_hasCreate}">
@@ -113,6 +112,5 @@ var myFields = [
         </div>
     </div>
 
-</div>
 </body>
 </html>

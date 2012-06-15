@@ -29,7 +29,7 @@
   </script>
 </head>
 <body>
-	<div class="tabpane">
+
 	    <div class="workflow-tabs2">
     	    <ul id="" class="tabs autoclear">
         	    <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.tools.configuration.Configuration:READ || gov.nih.nci.cabig.caaers.tools.configuration.Configuration:UPDATE">
@@ -79,6 +79,6 @@
         		</csmauthz:accesscontrol>
 			</form:form>
 		</div>
-    </div>
+
 </body>
 </html>
