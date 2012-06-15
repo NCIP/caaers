@@ -18,4 +18,11 @@ public class StudyOrganizationsQueryTest extends TestCase {
 		assertEquals("select so from StudyOrganization so WHERE  so.retiredIndicator <> true  AND  so.study.id = :studyId", query.getQueryString());
 		assertTrue(query.getParameterMap().containsKey("studyId"));
 	}
+
+    public void testFilterByOrganizationNameOrNciCode() {
+        StudyOrganizationsQuery query = new StudyOrganizationsQuery();
+        query.filterByOrganizationNameOrNciCode("filterText");
+        assertEquals("select so from StudyOrganization so WHERE (lower(so.organization.name) LIKE :TEXT or lower(so.organization.nciInstituteCode) LIKE :TEXT)", query.getQueryString());
+        assertTrue(query.getParameterMap().containsKey("TEXT"));
+    }
 }
