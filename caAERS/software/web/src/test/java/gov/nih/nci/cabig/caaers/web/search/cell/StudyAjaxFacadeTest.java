@@ -44,6 +44,7 @@ public class StudyAjaxFacadeTest extends DwrFacadeTestCase {
         study = new LocalStudy();
         study.setShortTitle("short title");
         study.setId(1);
+        study.setDataEntryStatus(false);
         studySite = new StudySite();
         studySite.setStudy(study);
         studySite.setOrganization(new LocalOrganization());
@@ -72,8 +73,7 @@ public class StudyAjaxFacadeTest extends DwrFacadeTestCase {
     	AssignParticipantStudyCommand command = new AssignParticipantStudyCommand();
     	session.setAttribute( AssignParticipantController.class.getName() + ".FORM.command", command);
     	expect(webContext.getSession()).andReturn(session).anyTimes();
-        // expect(studySearchableAjaxableDomainObjectRepository.findStudies(isA(StudySearchableAjaxableDomainObjectQuery.class), eq(""), eq(""))).andReturn(Arrays.asList(study));
-        expect(studyRepository.search(isA(StudySitesQuery.class), eq(""), eq(""), eq(false))).andReturn(Arrays.asList(studySite));
+        expect(studyRepository.search(isA(StudySitesQuery.class), eq("st"), eq(""), eq(false))).andReturn(Arrays.asList(studySite));
         replayMocks();
         List table = searchStudyAjaxFacade.getTableForAssignParticipant(new HashMap(), "", "", request);
         verifyMocks();

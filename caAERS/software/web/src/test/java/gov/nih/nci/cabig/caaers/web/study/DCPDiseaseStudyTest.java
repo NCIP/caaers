@@ -11,9 +11,14 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
 
 import org.easymock.EasyMock;
+import org.springframework.context.MessageSource;
+import org.springframework.context.MessageSourceResolvable;
+import org.springframework.context.NoSuchMessageException;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
+
+import java.util.Locale;
 
 /**
  * @author Ion C. Olaru
@@ -43,6 +48,19 @@ public class DCPDiseaseStudyTest extends WebTestCase {
         study = Fixtures.createStudy("study");
       
         diseaseTab = new DiseaseTab();
+        diseaseTab.setMessageSource(new MessageSource() {
+            public String getMessage(String code, Object[] args, String defaultMessage, Locale locale) {
+                return null;
+            }
+
+            public String getMessage(String code, Object[] args, Locale locale) throws NoSuchMessageException {
+                return null;
+            }
+
+            public String getMessage(MessageSourceResolvable resolvable, Locale locale) throws NoSuchMessageException {
+                return null;
+            }
+        });
         diseaseTab.setConditionDao(conditionDao);
     }
 

@@ -620,12 +620,6 @@
 
 	<bean name="/admin/searchUser"  id="userSearchController" class="gov.nih.nci.cabig.caaers.web.search.SearchUserController"/>    
 
-    <!-- Validators -->
 
-    <bean id="numInRangeValidator" class="gov.nih.nci.cabig.caaers.validation.validator.NumInRangeValidator" autowire-candidate="false"/>
-
-    <bean name="Messages" class="gov.nih.nci.cabig.caaers.tools.Messages">
-        <property name="messageSource" ref="messageSource" />
-    </bean>
 
 </beans>

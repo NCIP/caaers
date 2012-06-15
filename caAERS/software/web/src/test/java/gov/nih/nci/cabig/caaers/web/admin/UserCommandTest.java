@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.admin;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.CaaersContextLoader;
 import gov.nih.nci.cabig.caaers.tools.Messages;
+import gov.nih.nci.cabig.caaers.web.WebTestCase;
 import gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSessionFactory;
 import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRole;
 
@@ -13,7 +14,7 @@ import java.util.List;
  * @author Monish
  *
  */
-public class UserCommandTest extends AbstractTestCase {
+public class UserCommandTest extends WebTestCase {
 
 	private UserCommand command;
 

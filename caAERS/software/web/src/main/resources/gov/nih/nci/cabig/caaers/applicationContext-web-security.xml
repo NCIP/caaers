@@ -218,7 +218,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
           <!-- STUDY FLOW ,  UPDATE (assumption : user with CREATE would automatically have UPDATE )-->
           <entry key="gov.nih.nci.cabig.caaers.web.study.DetailsTab" value="gov.nih.nci.cabig.caaers.domain.Study:UPDATE"/>
-          <entry key="gov.nih.nci.cabig.caaers.web.study.StudyTherapiesTab" value="gov.nih.nci.cabig.caaers.domain.StudyTherapy:CREATE"/>
           <entry key="gov.nih.nci.cabig.caaers.web.study.AgentsTab" value="gov.nih.nci.cabig.caaers.domain.StudyAgent:CREATE"/>
           <entry key="gov.nih.nci.cabig.caaers.web.study.TreatmentAssignmentTab" value="gov.nih.nci.cabig.caaers.domain.TreatmentAssignment:CREATE"/>
           <entry key="gov.nih.nci.cabig.caaers.web.study.DiseaseTab" value="gov.nih.nci.cabig.caaers.domain.AbstractStudyDisease:CREATE"/>

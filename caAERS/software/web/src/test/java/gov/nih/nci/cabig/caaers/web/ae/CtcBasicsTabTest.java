@@ -50,7 +50,7 @@ public class CtcBasicsTabTest extends AeTabTestCase {
     @Override
     protected CtcBasicsTab createTab() {
         CtcBasicsTab ctcBasicsTab = new CtcBasicsTab();
-        EasyMock.expect(evaluationService.validateReportingBusinessRules(command.getAeReport(), ctcBasicsTab.section())).andReturn(new ValidationErrors()).anyTimes();
+        EasyMock.expect(evaluationService.validateReportingBusinessRules(command.getAeReport(), new ExpeditedReportSection[]{ExpeditedReportSection.BASICS_SECTION})).andReturn(new ValidationErrors()).anyTimes();
         ctcDao = registerDaoMockFor(CtcDao.class);
         ctcBasicsTab.setCtcDao(ctcDao);
         return ctcBasicsTab;

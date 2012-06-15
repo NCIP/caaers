@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
+import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.*;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
 import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
@@ -9,6 +10,7 @@ import gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite;
 import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
 import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.repository.PreExistingConditionRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.PriorTherapyRepository;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
@@ -62,7 +64,8 @@ public class PatientDetailsTabTest extends AeTabTestCase {
 	protected AeTab createTab() {
 		PatientDetailsTab pdt =  new PatientDetailsTab();
 		pdt.setConfigurationProperty(configurationProperty);
-        EasyMock.expect(evaluationService.validateReportingBusinessRules(command.getAeReport(), pdt.section())).andReturn(new ValidationErrors()).anyTimes();
+        ExpeditedReportSection sections[] = new ExpeditedReportSection[]{MEDICAL_INFO_SECTION, PRIOR_THERAPIES_SECTION, PRE_EXISTING_CONDITION_SECTION};
+        EasyMock.expect(evaluationService.validateReportingBusinessRules(command.getAeReport(),sections)).andReturn(new ValidationErrors()).anyTimes();
 		pdt.setPreExistingConditionRepository(new PreExistingConditionRepository() {
             @Override
             public List<PreExistingCondition> getAll(boolean activeOnly) {

@@ -9,6 +9,7 @@ import java.util.List;
 
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.repository.ConfigPropertyRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ConfigPropertyRepositoryImpl;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
@@ -50,7 +51,7 @@ public class StudyInterventionsTabTest  extends AeTabTestCase {
         
 		EasyMock.expect(cpRepository.getByType(ConfigPropertyType.AGENT_UOM)).andReturn(cpList).anyTimes();
 		EasyMock.expect(configurationProperty.getMap()).andReturn(map).anyTimes();
-		EasyMock.expect(evaluationService.validateReportingBusinessRules(command.getAeReport(), tab.section())).andReturn(new ValidationErrors()).anyTimes();
+		EasyMock.expect(evaluationService.validateReportingBusinessRules(command.getAeReport(), new ExpeditedReportSection[]{ExpeditedReportSection.STUDY_INTERVENTIONS})).andReturn(new ValidationErrors()).anyTimes();
 
 		return tab;
 	}

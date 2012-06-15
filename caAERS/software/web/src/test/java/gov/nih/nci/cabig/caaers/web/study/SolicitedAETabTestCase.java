@@ -72,7 +72,7 @@ public class SolicitedAETabTestCase extends AbstractStudyWebTestCase {
 
         study.setEpochs(epochs);
 
-        EasyMock.expect(epochDao.getCountReportingPeriodsByEpochId(90)).andReturn(0);
+//        EasyMock.expect(epochDao.getCountReportingPeriodsByEpochId(90)).andReturn(0);
         
         replayMocks();
         tab.onBind(request, command, errors);
@@ -117,13 +117,12 @@ public class SolicitedAETabTestCase extends AbstractStudyWebTestCase {
         assertEquals(0, errors.getErrorCount());
         assertEquals(2, study.getEpochs().size());
         assertEquals("Enter name here", study.getEpochs().get(1).getName());
-        assertEquals(2, study.getEpochs().get(1).getEpochOrder().intValue());
+        assertEquals(1, study.getEpochs().get(1).getEpochOrder().intValue());
     }
 
     public void testDeleteEpoch() {
         SolicitedAdverseEventTab t = (SolicitedAdverseEventTab) tab;
-        EasyMock.expect(epochDao.getCountReportingPeriodsByEpochId(91)).andReturn(0);
-        EasyMock.expect(epochDao.getCountReportingPeriodsByEpochId(90)).andReturn(0);
+
 
         Epoch e1 = new Epoch();
         e1.setId(90);
@@ -156,7 +155,7 @@ public class SolicitedAETabTestCase extends AbstractStudyWebTestCase {
         verifyMocks();
 
         assertEquals(0, errors.getErrorCount());
-        assertEquals(0, study.getEpochs().size());
+        assertEquals(2, study.getEpochs().size());
     }
 
    
