@@ -19,6 +19,7 @@
 	<c:set var="flashMessage" scope="request"><jsp:invoke fragment="flashMessage"/></c:set>
     <chrome:flashMessage/>
     <caaers:form name="${formName}" enctype="${enctype}">
+    	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
         <chrome:division id="single-fields">
             <c:if test="${not empty instructions}"><p class="instructions"><jsp:invoke fragment="instructions"/></p></c:if>
             <tags:jsErrorsMessage/>
