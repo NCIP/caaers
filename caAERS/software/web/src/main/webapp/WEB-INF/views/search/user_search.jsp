@@ -3,30 +3,12 @@
 	<head>
 
         <style>
-            div.yui-dt-liner a:hover  {
-                color: white;
-            }
-
-            .yui-dt table {
-                width: 100%;
-            }
-
-            .autocomplete {
-                width: 510px;
-            }
-
-            div.row div.label {
-                width: 9em;
-            }
-
-            div.row div.value {
-                margin-left: 10em;
-            }
-
-            .fg-button.submitter {
-                font-family: Verdana;
-                font-size: 9pt;
-            }
+            div.yui-dt-liner a:hover  {color: white;}
+            .yui-dt table {width: 100%;}
+            .autocomplete {width: 510px;}
+            div.row div.label {width: 9em;}
+            div.row div.value {margin-left: 10em;}
+            .fg-button.submitter {font-family: Verdana;font-size: 9pt;}
         </style>
 
         <title><caaers:message code="user.search.pageTitle"/></title>
@@ -131,34 +113,7 @@
                 })
             }
 
-            function showMenuOptions(strId, rt, un, active) {
-//                alert(strId + "," + rt + "," + un +  "," + active);
-                var html_start = "<div><ul style='font-family:tahoma;'>";
-                var html_end = "</ul></div>";
-                var _editAction = "<li><a class='submitter-blue' href='#' onclick='javascript:doEdit(#{strId}, \"#{rt}\", \"#{un}\")'>Edit</a></li>";
-                var _action = "Activate";
-                if (active == "Active") {
-                    _action = "Deactivate"
-                }
-                var _activateAction = "<li><a class='submitter-blue' href='#' onclick='javascript:doActivate(#{strId}, \"#{rt}\", \"#{un}\", \"#{active}\")'>" + _action + "</a></li>";
-                var html = html_start + _editAction + (un != "" ? _activateAction : "") + html_end;
-                var html = html.interpolate({strId:strId, rt:rt, un:un, active:active});
-                jQuery('#personnelActions' + strId).menu({
-                        content: html,
-                        maxHeight: 180,
-                        positionOpts: {
-                            directionV: 'down',
-                            posX: 'left',
-                            posY: 'bottom',
-                            offsetX: 0,
-                            offsetY: 0
-                        },
-                        showSpeed: 300
-                    });
-            }
-
-            var actionsRow = "<a onmouseover='showMenuOptions(#{id}, \"#{rt}\", \"#{un}\", \"#{active}\")' id='personnelActions#{id}' class='submitterButton submitter fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all'>Actions<span class='ui-icon ui-icon-triangle-1-s'></span></a>";
-
+            var actionsRow = "<img onmouseover='showOrganizationMenuOptions(this, #{id}, \"#{rt}\", \"#{un}\", \"#{active}\")' src='<c:url value="/images/orange-actions.gif" />' border='0' onmouseover='' style='cursor: pointer;'>";
 			var actionsFormatter = function(elCell, oRecord, oColumn, oData) {
                 var _id = oRecord.getData("id");
                 var _rt = oRecord.getData("recordType");
