@@ -42,7 +42,7 @@ public abstract class OrganizationController<C extends Organization> extends
 
     protected WebControllerValidator webControllerValidator;
     
-    private EventFactory eventFactory;
+    protected EventFactory eventFactory;
     
     public OrganizationController() {
         setCommandClass(Organization.class);
@@ -103,7 +103,6 @@ public abstract class OrganizationController<C extends Organization> extends
     			return modelAndView;
     		}
             organizationRepository.createOrUpdate(organization);
-            eventFactory.publishEntityModifiedEvent(new LocalOrganization(), false);
             modelAndView.getModel().put("flashMessage", "Successfully created the Organization");
             modelAndView.addAllObjects(errors.getModel());
     	}

@@ -3,9 +3,12 @@ package gov.nih.nci.cabig.caaers.web.admin;
 import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
+import org.springframework.validation.BindException;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Controller class for adding new organizations.
@@ -41,5 +44,12 @@ public class CreateOrganizationController extends OrganizationController<Organiz
         int targetPage = getTargetPage(request, curPage);
         if (targetPage < curPage) return true;
         return super.suppressValidation(request, command);
+    }
+
+    @Override
+    protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
+        ModelAndView mv = super.processFinish(request, response, command, errors);
+        eventFactory.publishEntityModifiedEvent(new LocalOrganization(), false);
+        return mv;
     }
 }
