@@ -236,6 +236,10 @@
 <script>
     jQuery(document).ready(function() {
         buildTable('assembler', false);
+        jQuery('#flow-prev').click(function() {
+            ValidationManager.validate = false;
+            Errors.clear();
+        });
     });
 </script>
 
