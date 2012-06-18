@@ -30,7 +30,7 @@ YAHOO.util.Event.addListener(window, "load", function() {
             {key:"ssName",             label:"Name",         sortable:true,      resizeable:true},
             {key:"ssDescription",       label:"Description",           sortable:true,      resizeable:true},
             {key:"ssCreatedDate",      label:"Saved on",       sortable:true,      resizeable:true},
-            {key:"ssAction",           label:"Action",              sortable:true,      resizeable:true},
+            {key:"ssAction",           label:"Action",              sortable:true,      resizeable:true}
         ];
 
         var myDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.rsList.slice(0,50));
