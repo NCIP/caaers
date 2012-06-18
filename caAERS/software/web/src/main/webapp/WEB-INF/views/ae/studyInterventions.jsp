@@ -208,6 +208,7 @@ function updateMedicalDevice(i, studyDeviceId){
             paramHash.set(target, page);
             paramHash.set('_asynchronous', true);
             paramHash.set('decorator', 'nullDecorator');
+            paramHash.set('CSRF_TOKEN', AE.CSRF_TOKEN);
         },
 
         _addItem: function(itemType, src, val, location, options) {
