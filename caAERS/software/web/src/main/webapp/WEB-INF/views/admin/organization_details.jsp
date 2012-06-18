@@ -119,16 +119,6 @@
             	<tags:renderRow field="${field}" readOnly="${!_hasUpdateRights}"/>
             </c:forEach>
             
-            <c:if test="${(command.id gt 0) }">
-
-            	<div class="row">
-            		<div class="value">
-            			<input type="submit" value="Sync" id="sync-org" onClick="javascript:syncOrganization();"/>
-            		</div>
-            	</div>
-
-            </c:if>
-                	
         </jsp:attribute>
     	
     
