@@ -90,6 +90,11 @@
 	<filter>
 	  <filter-name>XSRFFilter</filter-name>
 	  <filter-class>gov.nih.nci.cabig.caaers.web.filters.CsrfPreventionFilter</filter-class>
+	  <init-param>
+			<param-name>allow</param-name>
+			<!-- Comma separated list of values that will be allowed to bypass the filter if they are present in the url. -->
+			<param-value>dwr,images,services</param-value>	
+		</init-param>
 	</filter>
 	<filter-mapping>
         <filter-name>XSRFFilter</filter-name>

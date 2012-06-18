@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.filters;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import javax.servlet.Filter;
@@ -16,6 +18,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.web.util.WebUtils;
+
+import edu.emory.mathcs.backport.java.util.Arrays;
 
 
 /**
@@ -36,22 +40,18 @@ public class CsrfPreventionFilter implements Filter {
     public static final String CSRF_TOKEN = "CSRF_TOKEN";
     public static final String CSRF_TOKEN_HEADER = "X-CSRF-Token";
 
-    private FilterConfig filterConfig;
+    private List<String> allow = new ArrayList<String>();
 
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;
         initializeCsfrToken(request);
         
-        if (!StringUtils.containsIgnoreCase(request.getRequestURI(), "dwr") &&
-                !StringUtils.containsIgnoreCase(request.getRequestURI(), "images")) {
-        	if (request.getMethod().toUpperCase().equals("POST")) {
-                
-                boolean isValidRequest = isValidCsrfToken(request);
-                if (!isValidRequest) {
-                    response.sendError(403);
-                    return;
-                }
+        if (request.getMethod().toUpperCase().equals("POST") && !isAllowed(request.getRequestURI())) {
+            boolean isValidRequest = isValidCsrfToken(request);
+            if (!isValidRequest) {
+                response.sendError(403);
+                return;
             }
         }
 
@@ -96,8 +96,20 @@ public class CsrfPreventionFilter implements Filter {
     }
     
 
-    public void init(FilterConfig config) throws ServletException {
-        this.filterConfig = config;
+    public void init(FilterConfig filterConfig) throws ServletException {
+    	String allowString = filterConfig.getInitParameter("allow");
+    	if(!StringUtils.isBlank(allowString)){
+    		this.allow = Arrays.asList(allowString.split(",\\s*"));
+    	}
+    }
+    
+    private boolean isAllowed(String url){
+    	for(String allowed : this.allow){
+    		if(StringUtils.containsIgnoreCase(url, allowed)){
+    			return true;
+    		}
+    	}
+    	return false;
     }
     
     public void destroy() {
