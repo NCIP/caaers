@@ -86,11 +86,19 @@ public class StudySiteDao extends CaaersDao<StudySite> {
     /*
      * @See ParticipantService
      */
-    public StudySite findByStudyAndOrganization(final Integer studyId, final Integer orgId) {
+    public StudySite findByStudyAndOrganization(final Integer studyId, final Integer orgId, boolean filterByRetired) {
         StringBuilder queryBuf = new StringBuilder(" select distinct ss from StudySite ss " + "where ss.organization.id=? and ss.study.id=? ");
+        if (filterByRetired) {
+            queryBuf.append("and ss.retiredIndicator=?");
+        }
         log.debug("findByStudyAndOrganization : " + queryBuf.toString());
         getHibernateTemplate().setMaxResults(5);
-        List<StudySite> studySites = getHibernateTemplate().find(queryBuf.toString(), new Object[]{orgId,studyId});
+        List<StudySite> studySites = null;
+        if (filterByRetired) {
+            studySites = getHibernateTemplate().find(queryBuf.toString(), new Object[]{orgId, studyId, false});
+        } else {
+            studySites = getHibernateTemplate().find(queryBuf.toString(), new Object[]{orgId, studyId});
+        }
         getHibernateTemplate().setMaxResults(DEFAULT_MAX_RESULTS_SIZE);
         return studySites.size() == 1 ? studySites.get(0) : null;
     }

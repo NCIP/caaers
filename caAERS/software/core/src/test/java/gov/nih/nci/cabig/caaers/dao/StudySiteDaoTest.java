@@ -31,16 +31,16 @@ public class StudySiteDaoTest extends DaoTestCase<StudySiteDao> {
 	}
 	
 	public void testFindByStudyAndOrganization() {
-		StudySite site = getDao().findByStudyAndOrganization(-2, -1001);
+		StudySite site = getDao().findByStudyAndOrganization(-2, -1001, true);
 		assertNotNull(site);
 	}
 	
 	public void testFindByStudyAndOrganizationInvalidStudy(){
-		StudySite site = getDao().findByStudyAndOrganization(-21, -1001);
+		StudySite site = getDao().findByStudyAndOrganization(-21, -1001, true);
 		assertNull(site);
 	}
 	public void testFindByStudyAndOrganizationInvalidOrganization(){
-		StudySite site = getDao().findByStudyAndOrganization(-2, -1002);
+		StudySite site = getDao().findByStudyAndOrganization(-2, -1002, true);
 		assertNull(site);
 	}
 	

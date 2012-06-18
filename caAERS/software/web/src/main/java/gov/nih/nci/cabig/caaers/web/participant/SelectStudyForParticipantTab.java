@@ -76,7 +76,7 @@ public class SelectStudyForParticipantTab <T extends ParticipantInputCommand> ex
     public void onBind(HttpServletRequest request, T command, Errors errors) {
         super.onBind(request, command, errors);
         if (command.getStudy() != null && command.getStudy().getId() != null) {
-            StudySite studySite = studySiteDao.findByStudyAndOrganization(command.getStudy().getId(), command.getOrganization().getId());
+            StudySite studySite = studySiteDao.findByStudyAndOrganization(command.getStudy().getId(), command.getOrganization().getId(), true);
             command.getAssignment().setStudySite(studySite);
             command.getAssignment().setParticipant(command.getParticipant());
             studySite.getStudy().getPrimaryIdentifier();

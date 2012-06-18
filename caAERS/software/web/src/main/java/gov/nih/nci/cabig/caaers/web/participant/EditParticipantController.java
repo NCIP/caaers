@@ -76,15 +76,18 @@ public class EditParticipantController<T extends ParticipantInputCommand> extend
         if (participant.getAssignments().size() > 0)
             cmd.setOrganization(participant.getAssignments().get(0).getStudySite().getOrganization());
 
-        if (assignment != null) {
-            StudySite site = getStudySiteDao().getById(assignment.getStudySite().getId());
-            cmd.setAssignment(assignment);
-            cmd.setStudy(site.getStudy());
-            cmd.refreshStudyDiseases();
-        }
-
+        populateCommandFromAssignment(assignment, cmd);
         return cmd;
 
+    }
+
+    private void populateCommandFromAssignment(StudyParticipantAssignment spa, EditParticipantCommand c) {
+        if (spa != null) {
+            StudySite site = getStudySiteDao().getById(spa.getStudySite().getId());
+            c.setAssignment(spa);
+            c.setStudy(site.getStudy());
+            c.refreshStudyDiseases();
+        }
     }
 
     @Override
@@ -184,10 +187,15 @@ public class EditParticipantController<T extends ParticipantInputCommand> extend
         super.onBindAndValidate(request, command, errors, page);
         ParticipantInputCommand cmd = (ParticipantInputCommand) command;
 
-        // if the target tab is not the next to the cirrent one
+        // if the target tab is not the next to the current one
         if (getTargetPage(request, command, errors, page) - page > 1) {
 
-            // if the assisgnment object needed by SubjectMedHistoryTab is not in the command
+            // if there is only 1 assignment for the participant, then we fetch it an populate the command accordingly.
+            if (cmd.getParticipant().getAssignments().size() == 1) {
+                populateCommandFromAssignment(cmd.getParticipant().getAssignments().get(0), (EditParticipantCommand)cmd);
+            }
+
+            // if the assignment object needed by SubjectMedHistoryTab is not in the command
             if (cmd.assignment == null || cmd.assignment.getId() == null) {
                 Class c = getTab((T) command, getTargetPage(request, command, errors, page)).getClass();
                 if (c == EditSubjectMedHistoryTab.class)
