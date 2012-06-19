@@ -183,9 +183,8 @@
                     <ui:label path="substitution" text="Insert substitutions." />
                     <select id="sub-sel" onchange="insertReplacement(this);">
                         <option value="">${subopt1}</option>
-                        <option value="one">One</option>
-                        <option value="two">Two</option>
-                        <option value="three">Three</option>
+                        <option value="study.shortTitle">Study short title</option>
+                        <option value="study.primaryIdentifier.value">Study identifier</option>
                     </select>
                 </jsp:attribute>
             </ui:row>
