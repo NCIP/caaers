@@ -1,9 +1,11 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Embedded;
@@ -15,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Cascade;
@@ -193,6 +196,22 @@ public class StudyAgent extends StudyIntervention {
     @Transient
     public boolean getInvestigationalNewDrugIndicator() {
         return getStudyAgentINDAssociations() != null && getStudyAgentINDAssociations().size() > 0;
+    }
+
+    @Transient
+    public boolean getInvestigationalNewDrugInactive(){
+     if(CollectionUtils.isNotEmpty(getStudyAgentINDAssociations())) {
+         for(StudyAgentINDAssociation ass: getStudyAgentINDAssociations()){
+             InvestigationalNewDrug ind = ass.getInvestigationalNewDrug();
+             if(ind == null) continue;
+             if(ind.getEndDate() == null) continue;
+             
+             if(DateUtils.compareDate(new Date(), ind.getEndDate()) > 0 )  return true;
+         }
+     }
+      
+        
+      return false;
     }
 
     /**

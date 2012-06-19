@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import org.easymock.classextension.EasyMock;
 /**
  * 
@@ -199,6 +200,43 @@ public class StudyAgentTest extends AbstractTestCase {
 		assertFalse(sa.shouldHonor());
 		verifyMocks();
 	}
+    
+    
+    public void testGetInvestigationalNewDrugInactive(){
+        StudyAgent sa1 = Fixtures.createStudyAgent("test");
+        assertFalse(sa1.getInvestigationalNewDrugInactive());
+
+        sa1.addStudyAgentINDAssociation(Fixtures.createStudyAgentIndAssociation("1", "CTEP"));
+        assertFalse(sa1.getInvestigationalNewDrugInactive());
+        {
+        StudyAgent sa2 = Fixtures.createStudyAgent("test");
+
+        StudyAgentINDAssociation ass1 =     Fixtures.createStudyAgentIndAssociation("1", "CTEP");
+        sa2.addStudyAgentINDAssociation(ass1);
+        ass1.getInvestigationalNewDrug().setEndDate(DateUtils.yesterday());
+
+
+        StudyAgentINDAssociation ass2 = Fixtures.createStudyAgentIndAssociation("1", "CTEP");
+        ass2.getInvestigationalNewDrug().setEndDate(DateUtils.yesterday());
+        sa2.addStudyAgentINDAssociation(ass2);
+        assertTrue(sa2.getInvestigationalNewDrugInactive());
+        }
+
+        {
+            StudyAgent sa2 = Fixtures.createStudyAgent("test");
+
+            StudyAgentINDAssociation ass1 =     Fixtures.createStudyAgentIndAssociation("1", "CTEP");
+            sa2.addStudyAgentINDAssociation(ass1);
+            ass1.getInvestigationalNewDrug().setEndDate(DateUtils.tomorrow());
+
+
+            StudyAgentINDAssociation ass2 = Fixtures.createStudyAgentIndAssociation("1", "CTEP");
+            ass2.getInvestigationalNewDrug().setEndDate(DateUtils.tomorrow());
+            sa2.addStudyAgentINDAssociation(ass2);
+            assertFalse(sa2.getInvestigationalNewDrugInactive());
+        }
+
+    }
 	
 
 }

@@ -232,8 +232,23 @@
 				<operator name="isOnly" display-uri="Is Only" readable-text="Is Only "/>
 				
 				<expression>factResolver.assertFact(study,'gov.nih.nci.cabig.caaers.domain.StudyAgent','investigationalNewDrugIndicator','runTimeValue','runTimeOperator')</expression>
-				<grammer prefix=" Study Investigational new drug? " postfix="(Commercially Available Agent Only)"/>
+				<grammer prefix=" Study Investigational new drug? " />
 			</field>
+
+            <field name="StudyAgentIndEndDateIndicator" display-uri="IND is inactive?" >
+                <field-value>
+                    <input-type>select</input-type>
+                </field-value>
+
+                <valid-value value="false" display-uri="No" readable-text="No "/>
+                <valid-value value="true" display-uri="Yes" readable-text="Yes "/>
+
+                <operator name="==" display-uri="Is " readable-text="Is"/>
+                <operator name="isOnly" display-uri="Is Only" readable-text="Is Only "/>
+
+                <expression>factResolver.assertFact(study,'gov.nih.nci.cabig.caaers.domain.StudyAgent','investigationalNewDrugInactive','runTimeValue','runTimeOperator')</expression>
+                <grammer prefix=" IND is inactive? " />
+            </field>
 
             <field name="investigationalNewDeviceIndicator" display-uri="IDE Holder">
                 <field-value>
@@ -256,7 +271,7 @@
                 <operator name="isOnly" display-uri="Is Only" readable-text="Is Only "/>
 
                 <expression>factResolver.assertFact(study,'gov.nih.nci.cabig.caaers.domain.StudyDevice','investigationalNewDeviceIndicator','runTimeValue','runTimeOperator')</expression>
-                <grammer prefix=" Study Investigational new device? " postfix="(Commercially Available Device Only)"/>
+                <grammer prefix=" Study Investigational new device? " />
             </field>
 
             <!-- adEERS reporting ? -->
