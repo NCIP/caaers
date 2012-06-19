@@ -18,7 +18,7 @@
     </div>
     <div class="row">
         <div class="label">Name</div>
-        <div class="value"><ui:text path="study.otherInterventions[${index}].name" size="40"  readonly="${!empty otherIntervention.id}"/></div>
+        <div class="value"><ui:text path="study.otherInterventions[${index}].name" size="40"  readonly="${!empty otherIntervention.id && !empty otherIntervention.name}"/></div>
     </div>
     <div class="row">
         <div class="label">Description</div>
