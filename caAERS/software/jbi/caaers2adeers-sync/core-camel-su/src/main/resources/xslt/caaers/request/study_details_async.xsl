@@ -206,7 +206,7 @@
             <stud:investigationalNewDrug>
                 <indNumber><xsl:value-of select="indNumber" /></indNumber>
                 <holderName><xsl:value-of select="indHolder" /></holderName>
-                <xsl:if test="indEndDate">
+                <xsl:if test="normalize-space(indEndDate) != ''">
                     <endDate><xsl:value-of select="indEndDate" /></endDate>
                 </xsl:if>
             </stud:investigationalNewDrug>
