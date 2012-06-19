@@ -173,14 +173,14 @@
             <div class="row">
                 <div class="label">Reporter</div>
                 <div class="value">
-                    <select id="staff" name="aeReport.reporter.person" class="required">
+                    <select id="staff" name="aeReport.reporter.person" class="${(!empty command.aeReport.reporter && !empty command.aeReport.reporter.id) ? 'valueOK' : 'required'}">
                         <option value="">Please select</option>
                         <c:forEach var="researchStaff" items="${researchStaffList }">
-                        	<option value="${researchStaff.id }"  }>${researchStaff.firstName } ${researchStaff.lastName }</option>
+                        	<option value="${researchStaff.id }">${researchStaff.firstName } ${researchStaff.lastName }</option>
                         </c:forEach>
                         </optgroup>
                         <c:forEach var="investigator" items="${investigatorList }">
-                        	<option value="${investigator.id }" }>${investigator.firstName } ${investigator.lastName }</option>
+                        	<option value="${investigator.id}">${investigator.firstName } ${investigator.lastName }</option>
                         </c:forEach>
                         </optgroup>
                         <option value="" style="font-style:italic"><i>Enter manually</i></option>
@@ -202,7 +202,7 @@
         <div class="row">
                 <div class="label">Physician</div>
                 <div class="value">
-                    <select id="physician" name="aeReport.physician.person" class="required">
+                    <select id="physician" name="aeReport.physician.person" class="${(!empty command.aeReport.physician && !empty command.aeReport.physician.id) ? 'valueOK' : 'required'}">
                         <option value="">Please select</option>
                         <c:forEach var="investigator" items="${investigatorList }">
                         	<option value="${investigator.id }"  }>${investigator.firstName } ${investigator.lastName }</option>

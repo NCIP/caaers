@@ -247,9 +247,16 @@ var ValidationManager = {
     doFieldValidation: function(inputField) {
         if (!inputField) return;
         if (inputField.hasClassName("autocomplete")) return;
-        
+
         ValidationManager.prepareField(inputField);
-        var isValid = (validateFields(new Array(inputField), false) && trimWhitespace(inputField.value) != "");
+
+        var isValid = false;
+        if (inputField.type == "select-one" && ValidationManager.hasSpecialTextValue(inputField.options[inputField.selectedIndex].text)) {
+            isValid = true;
+        } else {
+            isValid = (validateFields(new Array(inputField), false) && trimWhitespace(inputField.value) != "");
+        }
+
         ValidationManager.setState(inputField, isValid);
     },
 
@@ -377,6 +384,11 @@ var ValidationManager = {
                 }
             };
         }
+    },
+
+    hasSpecialTextValue: function(_text) {
+        if (_text == "Enter manually") return true;
+        return false;
     }
 }
 
