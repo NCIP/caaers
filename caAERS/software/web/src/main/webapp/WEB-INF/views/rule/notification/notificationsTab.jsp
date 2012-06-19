@@ -10,7 +10,7 @@
 		
 		#tsu:hover{
 			color:#002EE2;
-            background-image: url(../images/rule/timescale_back.gif);
+            background-image: url(<c:url value="/images/rule/timescale_back.gif" /> );
             cursor: pointer;
 		}
 		#tsu_current{
@@ -172,7 +172,7 @@
 		<!-- hidden direct recipient div -->
 		<div id="div_recipient_direct" style="display: none">
   			<input type="text" name="directRecipient" id="email" size="40" class="rInput"/>
-			<input type="image" src="../images/rule/remove_condition.gif" align="absmiddle" id="remove-action-image" style="border: 0px none ;" onClick="javascript:{removeRecipient(this.parentNode)}"/>
+			<input type="image" src="<c:url value="/images/rule/remove_condition.gif" />" align="absmiddle" id="remove-action-image" style="border: 0px none ;" onClick="javascript:{removeRecipient(this.parentNode)}"/>
     	</div> 
     	<div id="div_matter">
 	   			<!-- This box contains the body-->

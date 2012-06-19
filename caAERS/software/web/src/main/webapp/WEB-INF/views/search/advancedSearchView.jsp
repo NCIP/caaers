@@ -197,7 +197,7 @@
     }
 
     li.li-category-selected {
-        background-image:url(../images/chrome/ae-cat-arrow.png);
+        background-image:url(<c:url value="/images/chrome/ae-cat-arrow.png" /> );
 		background-repeat:no-repeat;
     }
 

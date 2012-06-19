@@ -17,7 +17,7 @@
 	
 	th.yui-dt-col-service, th.yui-dt-col-loggedOn, th.yui-dt-col-overallStatus, th.yui-dt-col-notes {
     position: relative;
-    background: #3882c1 url(../images/table/yui-datatable_header.jpg) repeat-x top;
+    background: #3882c1 url(<c:url value="/images/table/yui-datatable_header.jpg" />) repeat-x top;
     font-size: 13px;
     font-weight: bold;
     margin: 0px;
