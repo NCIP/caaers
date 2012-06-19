@@ -214,6 +214,8 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     protected Boolean aeTermUnique;
     
     protected Date lastSynchedDate;
+
+    protected String participationType;
     
     // set of NCI ORG codes
     
@@ -1994,7 +1996,14 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         return emails;
     }
 
-    
+    public String getParticipationType() {
+        return participationType;
+    }
+
+    public void setParticipationType(String participationType) {
+        this.participationType = participationType;
+    }
+
     /**
      * Gets the epochs.
      *

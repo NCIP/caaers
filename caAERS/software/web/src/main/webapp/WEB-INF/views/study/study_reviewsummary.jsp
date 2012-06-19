@@ -144,8 +144,16 @@
                 	<div class="label"><caaers:message code="LBL_study.verbatimFirst" /></div>
                 	<div class="value">${command.study.verbatimFirst == null ? '' : command.study.verbatimFirst ? 'Yes' : 'No'}</div>
             	</div>
-            	<div class="row">
-                	<div class="label">Data Entry Status</div>
+                <div class="row">
+                    <div class="label"><caaers:message code="LBL_study.studyPurpose" /></div>
+                    <div class="value">${command.study.studyPurpose} </div>
+                </div>
+                <div class="row">
+                    <div class="label"><caaers:message code="LBL_study.participationType" /></div>
+                    <div class="value">${command.study.participationType} </div>
+                </div>
+                <div class="row">
+                	<div class="label"><caaers:message code="LBL_dataEntryStatus" /></div>
                 	<div id="data-entry-status-div" class="value">${command.dataEntryStatus} </div>
             	</div>		
        </chrome:division>

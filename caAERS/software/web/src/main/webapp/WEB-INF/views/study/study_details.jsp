@@ -167,47 +167,24 @@
           <%-- Short Title--%>
           <tags:renderRow field="${fieldGroups.studyDetails.fields[0]}"/>
 
-<%--
-          &lt;%&ndash; Long Title&ndash;%&gt;
-          <tags:renderRow field="${fieldGroups.studyDetails.fields[1]}"/>
-
-          &lt;%&ndash; Precis &ndash;%&gt;
-          <tags:renderRow field="${fieldGroups.studyDetails.fields[2]}"/>
-
-          &lt;%&ndash; Description &ndash;%&gt;
-          <tags:renderRow field="${fieldGroups.studyDetails.fields[3]}"/>
-
---%>
           <%-- Phase --%>
           <tags:renderRow field="${fieldGroups.studyDetails.fields[1]}"/>
           
-<%--
-          &lt;%&ndash; Status &ndash;%&gt;
-          <tags:renderRow field="${fieldGroups.studyDetails.fields[5]}"/>
---%>
+
 
       </c:if>
 
       <c:if test="${!isDEComplete && isStudyCreator || isDEComplete && isStudyQAmanager || isStudySuplimental}">
 
-<%--
-          &lt;%&ndash; MultiInstitutional &ndash;%&gt;
-          <tags:renderRow field="${fieldGroups.studyDetails.fields[6]}"/>
---%>
 
-<%--
-          &lt;%&ndash; Adeers reporting &ndash;%&gt;
-          <tags:renderRow field="${fieldGroups.studyDetails.fields[2]}"/>
-
---%>
           <%-- Verbatim first --%>
           <tags:renderRow field="${fieldGroups.studyDetails.fields[2]}"/>
-
-          <%-- Data Entry Status --%>
-          <tags:renderRow field="${fieldGroups.studyDetails.fields[3]}"/>
-          
           <%-- Study Purpose --%>
           <tags:renderRow field="${fieldGroups.studyDetails.fields[4]}"/>
+          <%-- Study Participation Type --%>
+          <tags:renderRow field="${fieldGroups.studyDetails.fields[5]}"/>
+          <%-- Data Entry Status --%>
+          <tags:renderRow field="${fieldGroups.studyDetails.fields[3]}"/>
 
       </c:if>
 

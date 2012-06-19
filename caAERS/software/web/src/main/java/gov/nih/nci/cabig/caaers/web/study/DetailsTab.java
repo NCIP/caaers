@@ -82,6 +82,8 @@ public class DetailsTab extends StudyTab {
             studyPurposeMap.put("", "Please select");
             fields.add(InputFieldFactory.createSelectField("study.studyPurpose", "Study Purpose", false, collectOptionsFromConfig("studyPurposeRefData", "code", "desc")));
 
+            fields.add(InputFieldFactory.createSelectField("study.participationType", "Participation type", false, collectOptionsFromConfig("studyParticipationTypeRefData", "code", "desc")));
+
         }
 
 

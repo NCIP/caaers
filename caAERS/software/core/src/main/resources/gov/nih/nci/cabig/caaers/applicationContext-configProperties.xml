@@ -1393,9 +1393,6 @@
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Prevention" /><property name="desc" value="Prevention" /></bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Sentinel Node Biopsy" /><property name="desc" value="Sentinel Node Biopsy" /></bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Pathology" /><property name="desc" value="Pathology" /></bean>
-
-
-
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Epidemiology" /><property name="desc" value="Epidemiology" /></bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Diagnostic" /><property name="desc" value="Diagnostic" /></bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Observational" /><property name="desc" value="Observational" /></bean>
@@ -1405,6 +1402,18 @@
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Health Services Research" /><property name="desc" value="Health Services Research" /></bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Basic Science" /><property name="desc" value="Basic Science" /></bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Other" /><property name="desc" value="Other" /></bean>
+                    </list>
+                </entry>
+                <entry key="studyParticipationTypeRefData">
+                    <list>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Intergroup" /><property name="desc" value="Intergroup" /></bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Clinical Center" /><property name="desc" value="Clinical Center" /></bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Cancer Center" /><property name="desc" value="Cancer Center" /></bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Multi-Center" /><property name="desc" value="Multi-Center" /></bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Consortium" /><property name="desc" value="Consortium" /></bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Single Institution" /><property name="desc" value="Single Institution" /></bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Network" /><property name="desc" value="Network" /></bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov"><property name="code" value="Group" /><property name="desc" value="Group" /></bean>
                     </list>
                 </entry>
             </map>
