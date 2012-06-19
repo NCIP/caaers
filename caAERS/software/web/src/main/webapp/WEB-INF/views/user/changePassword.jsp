@@ -8,6 +8,11 @@
             margin: 0 auto;
         }
 
+         #main {
+          text-align: center;
+          text-shadow: 0 2px 3px black;
+      background: none;-moz-box-shadow: none; -webkit-box-shadow: none; box-shadow: none;
+      }
         a {
             color: #fff;
         }

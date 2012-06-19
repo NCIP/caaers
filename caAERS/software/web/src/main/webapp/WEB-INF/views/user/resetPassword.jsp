@@ -71,7 +71,7 @@
       
       #logo {
           position: absolute;
-          top: -114px;
+          top: -83px;
           left: 172px;
       }
 
