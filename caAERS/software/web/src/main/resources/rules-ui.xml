@@ -187,7 +187,6 @@
                 <valid-value value="Single Institution" display-uri="Single Institution" readable-text="Single Institution"/>
                 <valid-value value="Network" display-uri="Network" readable-text="Network"/>
                 <valid-value value="Group" display-uri="Group" readable-text="Group"/>
-
                 <operator name="==" display-uri="Equal To" readable-text="is "/>
                 <operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
                 <expression>factResolver.assertFact(study,null,'participationType','runTimeValue','runTimeOperator')</expression>
