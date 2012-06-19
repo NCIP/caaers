@@ -40,14 +40,17 @@ public class CsrfPreventionFilter implements Filter {
     public static final String CSRF_TOKEN = "CSRF_TOKEN";
     public static final String CSRF_TOKEN_HEADER = "X-CSRF-Token";
 
-    private List<String> allow = new ArrayList<String>();
+    /**
+     * The attribute that determines whether or not to skip a url for filtering.
+     */
+    private List<String> allowURIs = new ArrayList<String>();
 
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;
         initializeCsfrToken(request);
         
-        if (request.getMethod().toUpperCase().equals("POST") && !isAllowed(request.getRequestURI())) {
+        if (request.getMethod().toUpperCase().equals("POST") && !isAllowedURI(request.getRequestURI())) {
             boolean isValidRequest = isValidCsrfToken(request);
             if (!isValidRequest) {
                 response.sendError(403);
@@ -97,14 +100,14 @@ public class CsrfPreventionFilter implements Filter {
     
 
     public void init(FilterConfig filterConfig) throws ServletException {
-    	String allowString = filterConfig.getInitParameter("allow");
+    	String allowString = filterConfig.getInitParameter("allowURIs");
     	if(!StringUtils.isBlank(allowString)){
-    		this.allow = Arrays.asList(allowString.split(",\\s*"));
+    		this.allowURIs = Arrays.asList(allowString.split(",\\s*"));
     	}
     }
     
-    private boolean isAllowed(String url){
-    	for(String allowed : this.allow){
+    private boolean isAllowedURI(String url){
+    	for(String allowed : this.allowURIs){
     		if(StringUtils.containsIgnoreCase(url, allowed)){
     			return true;
     		}
