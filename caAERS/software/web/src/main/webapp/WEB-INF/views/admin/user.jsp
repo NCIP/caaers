@@ -68,7 +68,7 @@
 				var _tableId = el+"-sitesTable";
 				var _sitesFldName = el + '.sites';
 				var _trId = el + '-site-' +_nciCode;
-				var _deleteBtn = "<a href=\"javascript:removeSite('" + el + "-site-" +_nciCode + "','" +index+ "');\"><img src='/caaers/images/buttons/button_icons/small/x_icon_small.png' border='1' alt='delete'></a>"
+				var _deleteBtn = "<a href=\"javascript:removeSite('" + el + "-site-" +_nciCode + "','" +index+ "');\"><img src='<c:url value="/images/buttons/button_icons/small/x_icon_small.png" />' border='1' alt='delete'></a>"
 				
 				$(_tableId).down('tr').insert({
 					after: tableRow.interpolate({selectedChoiceForDisplay:_selectedSiteForDisplay, identifier : _nciCode ,fldName : _sitesFldName, deleteBtn : _deleteBtn, trId : _trId })
@@ -86,7 +86,7 @@
 				var _tableId = el+"-studiesTable";
 				var _studiesFldName = el + '.studies';
 				var _trId = el + '-study-' +_studyId;
-				var _deleteBtn = "<a href=\"javascript:removeStudy('" + el + "-study-" +_studyId + "','" +index+ "');\"><img src='/caaers/images/buttons/button_icons/small/x_icon_small.png' border='0' alt='delete'></a>"
+				var _deleteBtn = "<a href=\"javascript:removeStudy('" + el + "-study-" +_studyId + "','" +index+ "');\"><img src='<c:url value="/images/buttons/button_icons/small/x_icon_small.png" />' border='0' alt='delete'></a>"
 
 				$(_tableId).down('tr').insert({
 					after: tableRow.interpolate({selectedChoiceForDisplay : _selectedStudyForDisplay, identifier:_studyId, fldName : _studiesFldName, deleteBtn : _deleteBtn, trId : _trId })
@@ -158,7 +158,7 @@
 					var nSiteSummary = '';
 					var nStudySummary = '';
 					var nRoleSummary = '';
-					var selectedImg = "&nbsp;&nbsp;&nbsp;&nbsp;<img src='/caaers/images/check.png' border='0'>";
+					var selectedImg = "&nbsp;&nbsp;&nbsp;&nbsp;<img src='<c:url value="/images/check.png" />' border='0'>";
 					var eRoleSummary = $('summary-'+index).innerHTML;
 					
 					if(eRoleSummary.blank()){
@@ -469,7 +469,7 @@
 											<c:set var="_roleSummary" value="${_sitesSummary}${_studiesSummary}"/>
 										</c:if>
 										<span id="summary-${index.index}">
-											${_roleSummary} ${roleMembership.checked ? '&nbsp;&nbsp;&nbsp;&nbsp;<img src="/caaers/images/check.png" border="0">' : '' }
+											${_roleSummary} ${roleMembership.checked ? '&nbsp;&nbsp;&nbsp;&nbsp;<img src="<c:url value="/images/check.png" />" border="0">' : '' }
 										</span>
 									</jsp:attribute>
                                     <jsp:body>
@@ -532,7 +532,7 @@
 																	<td>
                                                                         <c:if test="${command.UA}">
 																		<a href="javascript:removeSite('roleMembershipHelper[${index.index}]-site-${site}','${index.index}');">
-       																	<img src="/caaers/images/buttons/button_icons/small/trash.gif" border="0" alt="delete"></a>
+       																	<img src="<c:url value="/images/buttons/button_icons/small/trash.gif" />" border="0" alt="delete"></a>
        																	</c:if>
 																	</td>
 																</tr>	
@@ -606,7 +606,7 @@
 																		<td>
                                                                         <c:if test="${command.UA}">
 																			<a href="javascript:removeStudy('roleMembershipHelper[${index.index}]-study-${study}','${index.index}');">
-	       																	<img src="/caaers/images/buttons/button_icons/small/trash.gif" border="0" alt="delete"></a>
+	       																	<img src="<c:url value="/images/buttons/button_icons/small/trash.gif" />" border="0" alt="delete"></a>
                                                                         </c:if>
 																		</td>
 																	</tr>	

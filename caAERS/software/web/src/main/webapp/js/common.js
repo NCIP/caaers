@@ -239,9 +239,9 @@ Object.extend(ListEditor.prototype, {
         if (this.options.minimizeable) {
         	var minMaxControl = Builder.node("a", { 'class': 'list-control min-max-control', 'title': 'Show-Hide Section', 'href': '#' });
         	if(itemDiv.hasClassName('minimized')) {
-        		minMaxControl.innerHTML = '<img border="0" alt="Show Section" src="/caaers/images/b-plus.gif" />';
+        		minMaxControl.innerHTML = '<img border="0" alt="Show Section" src="../../images/b-plus.gif" />';
         	}else{
-        		minMaxControl.innerHTML = '<img border="0" alt="Hide Section" src="/caaers/images/b-minus.gif" />'; 
+        		minMaxControl.innerHTML = '<img border="0" alt="Hide Section" src="../../images/b-minus.gif" />';
         	}
         	// set directly to avoid escaping
             Event.observe(minMaxControl, "click", this.minMax.bindAsEventListener(this))
@@ -249,7 +249,7 @@ Object.extend(ListEditor.prototype, {
         }
         if (this.options.deletable) {
             var deleteControl = Builder.node("a", { 'class': 'list-control delete-control', 'title': 'Delete', 'href': '#' })
-//            deleteControl.innerHTML = "<img src='/caaers/images/checkno.gif'>"
+//            deleteControl.innerHTML = "<img src='../../images/checkno.gif'>"
             deleteControl.innerHTML = "<img src='../../images/checkno.gif'>"
             Event.observe(deleteControl, "click", this.remove.bindAsEventListener(this))
             controls.appendChild(deleteControl)
@@ -330,12 +330,12 @@ Object.extend(ListEditor.prototype, {
         	//maximize
         	pelt.removeClassName('minimized');
         	Effect.BlindDown(elt);
-        	eelt.src = '/caaers/images/b-minus.gif';
+        	eelt.src = '../../images/b-minus.gif';
      	} else {
      		//minimize
      		pelt.addClassName('minimized')
      		Effect.BlindUp(elt);
-     		eelt.src = '/caaers/images/b-plus.gif'; 
+     		eelt.src = '../../images/b-plus.gif';
      	}
      	Event.stop(event);
     }

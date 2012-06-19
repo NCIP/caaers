@@ -22,7 +22,7 @@ id="nf-${index}" cssClass="nf-section" >
           <c:forEach var="email" items="${pnf.contactMechanismBasedRecipients}">
    			<div>
   			<input name="emailNotifications[${index}].contactMechanismBasedRecipients" id="email" value="${email.contact}" size="40"/>
-			<input type="image" src="/caaers/images/rule/remove_condition.gif" align="absmiddle" 
+			<input type="image" src="<c:url value="/images/rule/remove_condition.gif" />" align="absmiddle"
         		 style="border: 0px none ;" onClick="javascript:{removeRecipient(this.parentNode)}"/>
     		</div> 
    		 </c:forEach>
@@ -37,7 +37,7 @@ id="nf-${index}" cssClass="nf-section" >
 			  	<option value="${role.key}" ${selectedRole.contact == role.key ? 'SELECTED' : ''}>${role.value}</option>
 			  </c:forEach>
       	   </select>
-	       <input type="image" src="/caaers/images/rule/remove_condition.gif" align="absmiddle" style="border: 0px none ;" 	onClick="javascript:{removeRecipient(this.parentNode)}"/>
+	       <input type="image" src="<c:url value="/images/rule/remove_condition.gif" />" align="absmiddle" style="border: 0px none ;" 	onClick="javascript:{removeRecipient(this.parentNode)}"/>
     	  </div>
    	      </c:forEach>
    	      <span id="rbookmark${index}" /> 

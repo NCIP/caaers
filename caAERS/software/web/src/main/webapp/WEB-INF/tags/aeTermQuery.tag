@@ -321,7 +321,7 @@
   	
 	</div>
 <!-- the hidden window for category popup -->
-
+ <c:url value="/images/chrome/ae-cat-arrow.png" var="img-ae-cat-arrow" />
 <style>
     ul.ae-category {
         cursor:pointer;
@@ -347,7 +347,7 @@
     }
 
     li.li-category-selected {
-        background-image:url(/caaers/images/chrome/ae-cat-arrow.png);
+        background-image:url(${img-ae-cat-arrow});
 		background-repeat:no-repeat;
     }
 

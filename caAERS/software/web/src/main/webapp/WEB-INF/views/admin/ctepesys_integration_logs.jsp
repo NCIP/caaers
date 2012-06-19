@@ -134,9 +134,9 @@
 			str += (i % 2 == 0) ? '<tr class="alt">' : '<tr>';
 			str += '<td>' + key + '</td>';
 			if(objArray[key] == 'Success'){
-				str += '<td> <img src="/caaers/images/chrome/../check.png"> </td>';
+				str += '<td> <img src="<c:url value="/images/chrome/../check.png" />"> </td>';
 			} else {
-				str += '<td> <img src="/caaers/images/chrome/../checkno.gif"> </td>';
+				str += '<td> <img src="<c:url value="/images/chrome/../checkno.gif" />"> </td>';
 			}
 		    str += '</tr>';
 			i = i +1;

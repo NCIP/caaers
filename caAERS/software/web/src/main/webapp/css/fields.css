@@ -32,7 +32,7 @@ input[disabled], select[disabled], textarea[disabled] {
 input[type=button], input[type=submit], input[type=reset] {
   color: white;
   background-color: #3876C1;
-  background-image:url(/caaers/images/blue/button_bg.jpg);
+  background-image:url(../images/blue/button_bg.jpg);
   border: 1px solid #3876c1;
 }
 input[type=button]:hover, input[type=submit]:hover, input[type=reset]:hover {
