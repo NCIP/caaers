@@ -175,6 +175,24 @@
 				<expression>factResolver.assertFact(study,null,'phaseCode','runTimeValue','runTimeOperator')</expression>
 				<grammer prefix=" Phase " postfix="."/>
 			</field>
+            <field name="participationType" display-uri="Participation type">
+                <field-value>
+                    <input-type>multiselect</input-type>
+                </field-value>
+                <valid-value value="Intergroup" display-uri="Intergroup" readable-text="Intergroup"/>
+                <valid-value value="Clinical Center" display-uri="Clinical Center" readable-text="Clinical Center"/>
+                <valid-value value="Cancer Center" display-uri="Cancer Center" readable-text="Cancer Center"/>
+                <valid-value value="Multi-Center" display-uri="Multi-Center" readable-text="Multi-Center"/>
+                <valid-value value="Consortium" display-uri="Consortium" readable-text="Consortium"/>
+                <valid-value value="Single Institution" display-uri="Single Institution" readable-text="Single Institution"/>
+                <valid-value value="Network" display-uri="Network" readable-text="Network"/>
+                <valid-value value="Group" display-uri="Group" readable-text="Group"/>
+
+                <operator name="==" display-uri="Equal To" readable-text="is "/>
+                <operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
+                <expression>factResolver.assertFact(study,null,'participationType','runTimeValue','runTimeOperator')</expression>
+                <grammer prefix=" Participation type " postfix="."/>
+            </field>
 			<!--
 			<field name="INDType" display-uri="IND Information" >
 				<field-value>
