@@ -20,6 +20,7 @@ public class StudyMigrator extends CompositeMigrator<Study> {
         dest.setAeTermUnique(src.getAeTermUnique() == null ? false : src.getAeTermUnique());
         dest.setVerbatimFirst(src.getVerbatimFirst() == null ? false : src.getVerbatimFirst());
         dest.setStudyPurpose(src.getStudyPurpose());
+        dest.setParticipationType(src.getParticipationType());
         dest.setLastSynchedDate(new Date());
 	}
 }

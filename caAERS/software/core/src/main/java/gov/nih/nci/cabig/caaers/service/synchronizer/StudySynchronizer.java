@@ -29,6 +29,7 @@ public class StudySynchronizer extends CompositeMigrator<Study>{
 		dbStudy.setShortTitle(StringUtils.isNotEmpty(xmlStudy.getShortTitle()) ? xmlStudy.getShortTitle() : "NA");
         dbStudy.setAeTermUnique(xmlStudy.getAeTermUnique());
         dbStudy.setVerbatimFirst(xmlStudy.getVerbatimFirst());
+        dbStudy.setParticipationType(xmlStudy.getParticipationType());
         dbStudy.setStudyPurpose(xmlStudy.getStudyPurpose());
         dbStudy.setPhaseCode(xmlStudy.getPhaseCode());
         dbStudy.setLastSynchedDate(new Date());

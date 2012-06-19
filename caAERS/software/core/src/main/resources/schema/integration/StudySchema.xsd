@@ -36,6 +36,7 @@
                     <xs:element name="adeersReporting" type="xs:boolean" minOccurs="0"/>
                     <xs:element name="otherMeddra" type="xs:string" minOccurs="0"/>
                     <xs:element name="studyPurpose" type="xs:string" minOccurs="0"/>
+                    <xs:element name="participationType" type="xs:string" minOccurs="0"/>
                     <xs:element name="aeTermUnique" type="xs:boolean" minOccurs="0"/>
                     <xs:element ref="aeTerminology"/>
 
@@ -367,6 +368,7 @@
                 <xs:sequence>
                     <xs:element name="indNumber" type="xs:integer"/>
                     <xs:element name="holderName" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="endDate" type="xs:date" minOccurs="0" maxOccurs="1"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>

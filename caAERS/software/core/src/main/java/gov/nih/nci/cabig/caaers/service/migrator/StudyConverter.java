@@ -49,6 +49,7 @@ public class StudyConverter {
             studyDto.setStudyPurpose(study.getStudyPurpose());
             studyDto.setAeTermUnique(study.getAeTermUnique());
             studyDto.setVerbatimFirst(study.getVerbatimFirst());
+            studyDto.setParticipationType(study.getParticipationType());
 
             if(study.getOtherMeddra() != null && !study.getOtherMeddra().equals("")){
                 MeddraVersion otherMeddra = new MeddraVersion();
@@ -91,6 +92,7 @@ public class StudyConverter {
 			//Populate Study Instance attributes
 			study.setShortTitle(studyDto.getShortTitle());
             study.setVerbatimFirst(studyDto.isVerbatimFirst());
+            study.setParticipationType(studyDto.getParticipationType());
             study.setAeTermUnique(studyDto.isAeTermUnique());
 			if(studyDto.getPhaseCode() != null) study.setPhaseCode(studyDto.getPhaseCode().value());
             study.setStudyPurpose(studyDto.getStudyPurpose());
