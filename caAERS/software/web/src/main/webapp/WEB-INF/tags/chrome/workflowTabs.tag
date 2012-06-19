@@ -19,14 +19,15 @@
     <c:set var="_isU" value="${fn:contains(unfilledTabs, atab.shortTitle)}" />
     <c:set var="_isF" value="${not _isU}" />
 
+     <c:set var="tickMarkImage"><c:url value="/images/buttons/button_icons/small/blue_checkmark.png" /></c:set>
+     <c:if test="${selected}"><c:set var="tickMarkImage"><c:url value="/images/buttons/button_icons/small/check_icon_small.png" /></c:set></c:if>
+
     <li class="tab ${selected ? 'selected' : ''} ${status.last ? 'last' : ''}" id="thirdlevelnav"><div>
      <c:if test="${_isM}"><font style="color: red; text-shadow:0 1px white;vertical-align: top">*</font></c:if>
         <a href="#" class="tab${atab.number} ${(flow.name eq 'Edit expedited report' or flow.name eq 'Create expedited report') ? (_isU ? 'incomplete' : 'complete'):''}">
         	<c:if test="${flow.name eq 'Edit expedited report' or flow.name eq 'Create expedited report'}">
 				<c:if test="${!status.last}">
-					<c:if test="${ _isF }">
-		        		<img src="<chrome:imageUrl name="../buttons/button_icons/small/check_icon_small.png" />" alt="Complete" style="vertical-align:top;" />
-		        	</c:if>
+					<c:if test="${ _isF }"><img src="${tickMarkImage}" alt="Complete" style="vertical-align:top;" /></c:if>
 				</c:if>
 			</c:if>
 			${atab.number + 1}. ${atab.shortTitle}&nbsp;
