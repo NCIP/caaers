@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -49,6 +50,8 @@ public class InvestigationalNewDrug extends AbstractMutableDomainObject {
     /** The i nd holder. */
     private INDHolder iNDHolder;
 
+    private Date endDate;
+
 //    /** The study agent ind associations. */
 //    private List<StudyAgentINDAssociation> studyAgentINDAssociations;
 
@@ -92,6 +95,14 @@ public class InvestigationalNewDrug extends AbstractMutableDomainObject {
     public void setINDHolder(INDHolder holder) {
         iNDHolder = holder;
         holderName = holder.getName();
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
 //    /**
@@ -144,9 +155,6 @@ public class InvestigationalNewDrug extends AbstractMutableDomainObject {
     @Transient
     public String getStrINDNo() {
     	if(indNumber == null) return "";
-    	if(indNumber == CTEP_IND) return STRING_CTEP_IND;
-    	if(indNumber == DCP_IND) return STRING_DCP_IND;
-    	
         return String.valueOf(indNumber);
     }
 

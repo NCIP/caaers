@@ -10,6 +10,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import java.util.Date;
 import java.util.List;
 
 public class StudyAgentMigrator implements Migrator<gov.nih.nci.cabig.caaers.domain.Study> {
@@ -28,7 +29,7 @@ public class StudyAgentMigrator implements Migrator<gov.nih.nci.cabig.caaers.dom
         return newAgent;
     }
 
-    private InvestigationalNewDrug findOrCreateIND(String holderName, String number){
+    private InvestigationalNewDrug findOrCreateIND(String holderName, String number, Date endDate){
         //check - with assumption that holderName is NCI code
         List<InvestigationalNewDrug> inds = investigationalNewDrugDao.findOrganizationHeldIND(String.valueOf(number), String.valueOf(holderName));
         if(CollectionUtils.isEmpty(inds)){
@@ -36,21 +37,25 @@ public class StudyAgentMigrator implements Migrator<gov.nih.nci.cabig.caaers.dom
             inds = investigationalNewDrugDao.findByNumberAndHolderName(number, holderName);
         }
 
+        InvestigationalNewDrug ind = null;
+        if(CollectionUtils.isNotEmpty(inds)){
+            ind = inds.get(0);
+        } else{
+            //need to create IND
+            ind = new InvestigationalNewDrug();
+            if(StringUtils.isNotEmpty(number)) ind.setIndNumber(Integer.parseInt(number));
 
-        if(CollectionUtils.isNotEmpty(inds)) return inds.get(0);
-        
-        //need to create IND
-        InvestigationalNewDrug ind = new InvestigationalNewDrug();
-        if(StringUtils.isNotEmpty(number)) ind.setIndNumber(Integer.parseInt(number));
-        
-        OrganizationHeldIND holder = new OrganizationHeldIND();
-        Organization org = organizationDao.getByNCIcode(holderName);
-        if(org == null) org = organizationDao.getByName(holderName);
-        if(org == null) return null; //still null then cannot create IND?
-        
-        holder.setOrganization(org);
-        holder.setInvestigationalNewDrug(ind);
-        ind.setINDHolder(holder);
+            OrganizationHeldIND holder = new OrganizationHeldIND();
+            Organization org = organizationDao.getByNCIcode(holderName);
+            if(org == null) org = organizationDao.getByName(holderName);
+            if(org == null) return null; //still null then cannot create IND?
+
+            holder.setOrganization(org);
+            holder.setInvestigationalNewDrug(ind);
+            ind.setINDHolder(holder);
+        }
+
+        ind.setEndDate(endDate);
         investigationalNewDrugDao.save(ind);
         return  ind;
 
@@ -94,7 +99,9 @@ public class StudyAgentMigrator implements Migrator<gov.nih.nci.cabig.caaers.dom
                 for(StudyAgentINDAssociation indAssociation : src.getStudyAgentINDAssociations()){
                    InvestigationalNewDrug ind = null;
                    if(indAssociation.getInvestigationalNewDrug() != null){
-                      ind = findOrCreateIND(indAssociation.getInvestigationalNewDrug().getHolderName(), indAssociation.getInvestigationalNewDrug().getStrINDNo()) ;
+                      ind = findOrCreateIND(indAssociation.getInvestigationalNewDrug().getHolderName(),
+                              indAssociation.getInvestigationalNewDrug().getStrINDNo(),
+                              indAssociation.getInvestigationalNewDrug().getEndDate()) ;
                    }
                    StudyAgentINDAssociation newIndAssociation = new StudyAgentINDAssociation();
                    newIndAssociation.setInvestigationalNewDrug(ind);

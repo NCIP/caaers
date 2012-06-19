@@ -866,6 +866,7 @@ public class StudyConverter {
 
         if(indType.getIndNumber() != null) ind.setIndNumber(indType.getIndNumber().intValue());
         if(StringUtils.isNotEmpty(indType.getHolderName())) ind.setHolderName(indType.getHolderName());
+        if(indType.getEndDate() != null) ind.setEndDate(indType.getEndDate().toGregorianCalendar().getTime());
         logger.info("    IND " + saAssociation.getInvestigationalNewDrug().getHolderName() + " , " + saAssociation.getInvestigationalNewDrug().getIndNumber());
 
     }
@@ -931,14 +932,22 @@ public class StudyConverter {
                 List<StudyAgentINDAssociation> as = sa.getStudyAgentINDAssociations();
 
                 if (as != null && as.size() > 0) {
-                    if (as.get(0).getInvestigationalNewDrug() != null) {
+
+                    InvestigationalNewDrug ind =   as.get(0).getInvestigationalNewDrug();
+
+                    if (ind != null) {
                         sat.setStudyAgentINDAssociations(new StudyAgentType.StudyAgentINDAssociations());
                         sat.getStudyAgentINDAssociations().setStudyAgentINDAssociation(new StudyAgentINDAssociationType());
-
                         InvestigationalNewDrugType idt = new InvestigationalNewDrugType();
                         sat.getStudyAgentINDAssociations().getStudyAgentINDAssociation().setInvestigationalNewDrug(idt);
-                        idt.setIndNumber(new BigInteger((as.get(0).getInvestigationalNewDrug().getIndNumber().toString())));
-                        idt.setHolderName(as.get(0).getInvestigationalNewDrug().getHolderName());
+
+                        if(ind.getIndNumber() != null) idt.setIndNumber(new BigInteger((ind.getStrINDNo())));
+                        if(ind.getINDHolder() != null) idt.setHolderName(ind.getHolderName());
+                        if(ind.getEndDate() != null){
+                            Calendar c = Calendar.getInstance();
+                            c.setTime(ind.getEndDate());
+                            idt.setEndDate(convertCalendar2XmlGregorianCalendar(c));
+                        }
                     }
                 }
 
