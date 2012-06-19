@@ -206,6 +206,9 @@
             <stud:investigationalNewDrug>
                 <indNumber><xsl:value-of select="indNumber" /></indNumber>
                 <holderName><xsl:value-of select="indHolder" /></holderName>
+                <xsl:if test="indEndDate">
+                    <endDate><xsl:value-of select="indEndDate" /></endDate>
+                </xsl:if>
             </stud:investigationalNewDrug>
         </stud:studyAgentINDAssociation>
     </xsl:template>
