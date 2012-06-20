@@ -237,6 +237,9 @@
                             <stud:investigationalNewDrug>
                                 <indNumber><xsl:value-of select="ideNumber" /></indNumber>
                                 <holderName><xsl:value-of select="ideHolder" /></holderName>
+                                <xsl:if test="normalize-space(ideStatus) != ''">
+                                    <status><xsl:value-of select="ideStatus" /></status>
+                                </xsl:if>
                             </stud:investigationalNewDrug>
                         </stud:studyDeviceINDAssociation>
                     </studyDeviceINDAssociations>
