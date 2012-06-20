@@ -82,7 +82,7 @@ public class StudySearchableAjaxableDomainObjectRepository<T extends StudySearch
                 studySearchableAjaxableDomainObject.setPhaseCode((String) o[4]);
                 studySearchableAjaxableDomainObject.setStatus((String) o[5]);
                 studySearchableAjaxableDomainObject.setExternalId((String)o[6]);
-                studySearchableAjaxableDomainObject.setPrimarySponsorCode((String)o[7]);
+//                studySearchableAjaxableDomainObject.setPrimarySponsorCode((String)o[7]);
 
                 existingStudyMap.put(studySearchableAjaxableDomainObject.getId(), studySearchableAjaxableDomainObject);
 

@@ -54,11 +54,11 @@ public class StudySearchableAjaxableDomainObjectQuery extends AbstractAjaxableDo
                 "identifier.primaryIndicator," +
                 "study.phaseCode," +
                 "study.status," +
-                "study.externalId," +
-                "ss.organization.nciInstituteCode "+
+                "study.externalId " +
+//                ", ss.organization.nciInstituteCode "+
                 "from Study study");
         leftJoin("study.identifiers as identifier");
-        join("study.studyOrganizations as ss");
+//        join("study.studyOrganizations as ss");
         orderBy("study.shortTitle");
 
 
