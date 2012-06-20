@@ -10,6 +10,27 @@
 </style>
 
 <script>
+
+ function textName_OnKeyDown(e){
+  		var keynum;                                 
+                    if(window.event) // IE                              
+                    {
+                            keynum = e.keyCode
+                    }
+                    else if(e.which) // Netscape/Firefox/Opera
+                    {
+                            keynum = e.which
+                    }                   
+
+                    if (keynum == 13) 
+                    {
+                           buildTable('assembler');
+                            return false;
+                    }
+  
+  }
+
+
 function buildTable(form) {
 	$('indicator').className='';
 //	showCoppaSearchDisclaimer();
@@ -71,11 +92,11 @@ var myFields = [
              <tags:instructions code="admin.agent.search" />
                   <div class="row">
                       <div class="label"><caaers:message code="LBL_agent.name" /></div>
-                      <div class="value"><input id="name" type="text" name="name"/></div>
+                      <div class="value"><input id="name" type="text" name="name" onkeydown="return textName_OnKeyDown(event)"/></div>
                   </div>
                   <div class="row">
                       <div class="label"><caaers:message code="LBL_agent.nscNumber" /></div>
-                      <div class="value"><input id="nsc" type="text" name="nsc"/></div>
+                      <div class="value"><input id="nsc" type="text" name="nsc" onkeydown="return textName_OnKeyDown(event)"/></div>
                   </div>
 <%--
                   <div class="row">
