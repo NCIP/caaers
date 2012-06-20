@@ -81,6 +81,19 @@ public class EditParticipantController<T extends ParticipantInputCommand> extend
 
     }
 
+    @Override
+    protected boolean suppressValidation(HttpServletRequest request, Object command, BindException errors) {
+        int curPage = getCurrentPage(request);
+        int targetPage = getTargetPage(request, curPage);
+        EditParticipantCommand c = (EditParticipantCommand)command;
+
+        // Do partial validation on Subject Details page, skipping Assignment selection if user just saves the page
+        if (targetPage == 1 && curPage == 1) {
+            c.getAdditionalParameters().put("DO_PARTIAL_VALIDATION", "");
+        }
+        return super.suppressValidation(request, command, errors);
+    }
+
     private void populateCommandFromAssignment(StudyParticipantAssignment spa, EditParticipantCommand c) {
         if (spa != null) {
             StudySite site = getStudySiteDao().getById(spa.getStudySite().getId());

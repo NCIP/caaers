@@ -19,6 +19,7 @@ public class ParticipantInputCommand {
     protected final Log log = LogFactory.getLog(getClass());
 
     protected HashMap<String, Boolean> emptyFieldNameMap;
+    protected HashMap<String, String> additionalParameters;
 
 /*
     protected ResearchStaff loggedinResearchStaff;
@@ -66,6 +67,7 @@ public class ParticipantInputCommand {
 
     public ParticipantInputCommand() {
     	this.chemoAgents = new ArrayList<String>(); // new ArrayList<ChemoAgent>();
+        this.additionalParameters = new HashMap<String, String>();
     }
 
     public ParticipantInputCommand(Participant participant) {
@@ -320,4 +322,9 @@ public class ParticipantInputCommand {
     public void setHasParUpdate(boolean hasParUpdate) {
         this.hasParUpdate = hasParUpdate;
     }
+
+    public HashMap<String, String> getAdditionalParameters() {
+        return additionalParameters;
+    }
+
 }

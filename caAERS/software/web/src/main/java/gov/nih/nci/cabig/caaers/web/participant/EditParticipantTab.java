@@ -163,8 +163,11 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
             errors.rejectValue("participant.dateOfBirth", "PT_010", "Incorrect Date Of Birth");
         }
 
-        if (command.getAssignment() == null) errors.reject("PT_002", "Select one assignment please.");
-
+        if (!command.getAdditionalParameters().containsKey("DO_PARTIAL_VALIDATION")) {
+            if (command.getAssignment() == null) errors.reject("PT_002", "Select one assignment please.");
+        } else {
+            command.getAdditionalParameters().remove("DO_PARTIAL_VALIDATION");
+        }
 
         // CHECK Participant Identifiers
         List<Identifier> siteIdentifiers = participantDao.getSiteIdentifiers(command.getOrganization().getId().intValue());
