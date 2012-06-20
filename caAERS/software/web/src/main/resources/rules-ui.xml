@@ -235,7 +235,7 @@
 				<grammer prefix=" Study Investigational new drug? " />
 			</field>
 
-            <field name="StudyAgentIndEndDateIndicator" display-uri="IND is inactive?" >
+            <field name="StudyAgentIndInactiveIndicator" display-uri="IND is inactive?" >
                 <field-value>
                     <input-type>select</input-type>
                 </field-value>
@@ -248,6 +248,21 @@
 
                 <expression>factResolver.assertFact(study,'gov.nih.nci.cabig.caaers.domain.StudyAgent','investigationalNewDrugInactive','runTimeValue','runTimeOperator')</expression>
                 <grammer prefix=" IND is inactive? " />
+            </field>
+
+            <field name="StudyAgentIndActiveIndicator" display-uri="IND is active?" >
+                <field-value>
+                    <input-type>select</input-type>
+                </field-value>
+
+                <valid-value value="false" display-uri="No" readable-text="No "/>
+                <valid-value value="true" display-uri="Yes" readable-text="Yes "/>
+
+                <operator name="==" display-uri="Is " readable-text="Is"/>
+                <operator name="isOnly" display-uri="Is Only" readable-text="Is Only "/>
+
+                <expression>factResolver.assertFact(study,'gov.nih.nci.cabig.caaers.domain.StudyAgent','investigationalNewDrugActive','runTimeValue','runTimeOperator')</expression>
+                <grammer prefix=" IND is active? " />
             </field>
 
             <field name="investigationalNewDeviceIndicator" display-uri="IDE Holder">
@@ -273,6 +288,37 @@
                 <expression>factResolver.assertFact(study,'gov.nih.nci.cabig.caaers.domain.StudyDevice','investigationalNewDeviceIndicator','runTimeValue','runTimeOperator')</expression>
                 <grammer prefix=" Study Investigational new device? " />
             </field>
+
+            <field name="StudyDeviceIndInactiveIndicator" display-uri="IDE is inactive?" >
+                <field-value>
+                    <input-type>select</input-type>
+                </field-value>
+
+                <valid-value value="false" display-uri="No" readable-text="No "/>
+                <valid-value value="true" display-uri="Yes" readable-text="Yes "/>
+
+                <operator name="==" display-uri="Is " readable-text="Is"/>
+                <operator name="isOnly" display-uri="Is Only" readable-text="Is Only "/>
+
+                <expression>factResolver.assertFact(study,'gov.nih.nci.cabig.caaers.domain.StudyDevice','investigationalNewDrugInactive','runTimeValue','runTimeOperator')</expression>
+                <grammer prefix=" IDE is inactive? " />
+            </field>
+
+            <field name="StudyDeviceIndActiveIndicator" display-uri="IDE is active?" >
+                <field-value>
+                    <input-type>select</input-type>
+                </field-value>
+
+                <valid-value value="false" display-uri="No" readable-text="No "/>
+                <valid-value value="true" display-uri="Yes" readable-text="Yes "/>
+
+                <operator name="==" display-uri="Is " readable-text="Is"/>
+                <operator name="isOnly" display-uri="Is Only" readable-text="Is Only "/>
+
+                <expression>factResolver.assertFact(study,'gov.nih.nci.cabig.caaers.domain.StudyDevice','investigationalNewDrugActive','runTimeValue','runTimeOperator')</expression>
+                <grammer prefix=" IDE is active? " />
+            </field>
+
 
             <!-- adEERS reporting ? -->
             <field name="adeersReporting" display-uri="AdEERS Reporting">

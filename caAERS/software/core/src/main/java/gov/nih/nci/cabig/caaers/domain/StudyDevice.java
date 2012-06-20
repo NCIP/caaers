@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.*;
@@ -454,5 +455,29 @@ public class StudyDevice extends StudyIntervention {
     @Transient
     public boolean getInvestigationalNewDrugIndicator() {
         return getStudyDeviceINDAssociations() != null && getStudyDeviceINDAssociations().size() > 0;
+    }
+
+
+    /**
+     * Returns true if all are inactive
+     * @return
+     */
+    @Transient
+    public boolean getInvestigationalNewDrugInactive(){
+        return !getInvestigationalNewDrugActive();
+    }
+
+    /**
+     * Returns true if all the INDs are active
+     * @return
+     */
+    @Transient
+    public boolean getInvestigationalNewDrugActive(){
+        if(CollectionUtils.isEmpty(getStudyDeviceINDAssociations())) return true;
+        for(StudyDeviceINDAssociation ass: getStudyDeviceINDAssociations()){
+            if(ass.getInvestigationalNewDrug() == null) continue;
+            if(ass.getInvestigationalNewDrug().isInactive()) return false;
+        }
+        return true;
     }
 }

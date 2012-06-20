@@ -198,20 +198,27 @@ public class StudyAgent extends StudyIntervention {
         return getStudyAgentINDAssociations() != null && getStudyAgentINDAssociations().size() > 0;
     }
 
+    /**
+     * Returns true if all are inactive
+     * @return
+     */
     @Transient
     public boolean getInvestigationalNewDrugInactive(){
-     if(CollectionUtils.isNotEmpty(getStudyAgentINDAssociations())) {
-         for(StudyAgentINDAssociation ass: getStudyAgentINDAssociations()){
-             InvestigationalNewDrug ind = ass.getInvestigationalNewDrug();
-             if(ind == null) continue;
-             if(ind.getEndDate() == null) continue;
-             
-             if(DateUtils.compareDate(new Date(), ind.getEndDate()) > 0 )  return true;
-         }
-     }
-      
-        
-      return false;
+        return !getInvestigationalNewDrugActive();
+    }
+
+    /**
+     * Returns true if all the INDs are active
+     * @return
+     */
+    @Transient
+    public boolean getInvestigationalNewDrugActive(){
+        if(CollectionUtils.isEmpty(getStudyAgentINDAssociations())) return true;
+        for(StudyAgentINDAssociation ass: getStudyAgentINDAssociations()){
+            if(ass.getInvestigationalNewDrug() == null) continue;
+            if(ass.getInvestigationalNewDrug().isInactive()) return false;
+        }
+        return true;
     }
 
     /**

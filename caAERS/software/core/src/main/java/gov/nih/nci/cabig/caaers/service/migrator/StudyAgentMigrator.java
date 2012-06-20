@@ -29,7 +29,7 @@ public class StudyAgentMigrator implements Migrator<gov.nih.nci.cabig.caaers.dom
         return newAgent;
     }
 
-    private InvestigationalNewDrug findOrCreateIND(String holderName, String number, Date endDate){
+    private InvestigationalNewDrug findOrCreateIND(String holderName, String number, String status){
         //check - with assumption that holderName is NCI code
         List<InvestigationalNewDrug> inds = investigationalNewDrugDao.findOrganizationHeldIND(String.valueOf(number), String.valueOf(holderName));
         if(CollectionUtils.isEmpty(inds)){
@@ -55,7 +55,7 @@ public class StudyAgentMigrator implements Migrator<gov.nih.nci.cabig.caaers.dom
             ind.setINDHolder(holder);
         }
 
-        ind.setEndDate(endDate);
+        ind.setStatus(status);
         investigationalNewDrugDao.save(ind);
         return  ind;
 
@@ -101,7 +101,7 @@ public class StudyAgentMigrator implements Migrator<gov.nih.nci.cabig.caaers.dom
                    if(indAssociation.getInvestigationalNewDrug() != null){
                       ind = findOrCreateIND(indAssociation.getInvestigationalNewDrug().getHolderName(),
                               indAssociation.getInvestigationalNewDrug().getStrINDNo(),
-                              indAssociation.getInvestigationalNewDrug().getEndDate()) ;
+                              indAssociation.getInvestigationalNewDrug().getStatus()) ;
                    }
                    StudyAgentINDAssociation newIndAssociation = new StudyAgentINDAssociation();
                    newIndAssociation.setInvestigationalNewDrug(ind);

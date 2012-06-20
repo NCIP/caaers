@@ -369,6 +369,7 @@
                     <xs:element name="indNumber" type="xs:integer"/>
                     <xs:element name="holderName" type="xs:string" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="endDate" type="xs:date" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="status" type="cct:ActiveInactiveStatusType" minOccurs="0" maxOccurs="1"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>

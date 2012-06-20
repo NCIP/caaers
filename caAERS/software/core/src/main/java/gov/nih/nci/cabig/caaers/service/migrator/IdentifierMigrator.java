@@ -25,8 +25,7 @@ implements Migrator<E> {
 	 * Will migrate the identifiers from source to destination
 	 */
 
-	public void migrate(E src, E dest,
-			DomainObjectImportOutcome<E> outcome) {
+	public void migrate(E src, E dest, DomainObjectImportOutcome<E> outcome) {
 
 		int protocolAuthorityIdentifierCount = 0;
 		int coordinatingCenterIdentifierCount = 0;

@@ -50,7 +50,7 @@ public class InvestigationalNewDrug extends AbstractMutableDomainObject {
     /** The i nd holder. */
     private INDHolder iNDHolder;
 
-    private Date endDate;
+    private String status;
 
 //    /** The study agent ind associations. */
 //    private List<StudyAgentINDAssociation> studyAgentINDAssociations;
@@ -97,15 +97,25 @@ public class InvestigationalNewDrug extends AbstractMutableDomainObject {
         holderName = holder.getName();
     }
 
-    public Date getEndDate() {
-        return endDate;
+    public String getStatus() {
+        return status;
     }
 
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-//    /**
+    @Transient
+    public boolean isActive(){
+        return status == null || status.equals(ActiveInactiveStatus.AC.getCode());
+    }
+
+    @Transient
+    public boolean isInactive(){
+        return status != null && status.equals(ActiveInactiveStatus.IN.getCode());
+    }
+
+    //    /**
 //     * Gets the study agent ind associations.
 //     *
 //     * @return the study agent ind associations

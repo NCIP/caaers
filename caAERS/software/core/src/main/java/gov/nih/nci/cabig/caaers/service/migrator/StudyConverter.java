@@ -6,14 +6,22 @@ import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
-import gov.nih.nci.cabig.caaers.integration.schema.common.DeviceType;
-import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationType;
-import gov.nih.nci.cabig.caaers.integration.schema.common.PersonnelRoleCodeType;
-import gov.nih.nci.cabig.caaers.integration.schema.common.RoleCodeType;
+import gov.nih.nci.cabig.caaers.integration.schema.common.*;
 import gov.nih.nci.cabig.caaers.integration.schema.study.*;
+import gov.nih.nci.cabig.caaers.integration.schema.study.AgentType;
+import gov.nih.nci.cabig.caaers.integration.schema.study.DiseaseTermType;
+import gov.nih.nci.cabig.caaers.integration.schema.study.IndType;
+import gov.nih.nci.cabig.caaers.integration.schema.study.InvestigationalNewDrugType;
+import gov.nih.nci.cabig.caaers.integration.schema.study.InvestigatorType;
+import gov.nih.nci.cabig.caaers.integration.schema.study.ObjectFactory;
+import gov.nih.nci.cabig.caaers.integration.schema.study.ResearchStaffType;
+import gov.nih.nci.cabig.caaers.integration.schema.study.SiteInvestigatorType;
 import gov.nih.nci.cabig.caaers.integration.schema.study.StudyDeviceType.*;
 import gov.nih.nci.cabig.caaers.integration.schema.study.StudyDeviceType.StudyDeviceINDAssociations;
 import gov.nih.nci.cabig.caaers.integration.schema.study.StudyDeviceINDAssociationType;
+import gov.nih.nci.cabig.caaers.integration.schema.study.StudyIdentifierType;
+import gov.nih.nci.cabig.caaers.integration.schema.study.TreatmentAssignmentType;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -866,7 +874,11 @@ public class StudyConverter {
 
         if(indType.getIndNumber() != null) ind.setIndNumber(indType.getIndNumber().intValue());
         if(StringUtils.isNotEmpty(indType.getHolderName())) ind.setHolderName(indType.getHolderName());
-        if(indType.getEndDate() != null) ind.setEndDate(indType.getEndDate().toGregorianCalendar().getTime());
+        ind.setStatus(ActiveInactiveStatus.AC.getCode());
+        if(indType.getEndDate() != null){
+            Calendar c = indType.getEndDate().toGregorianCalendar();
+            if(Calendar.getInstance().after(c)) ind.setStatus(ActiveInactiveStatus.IN.getCode());
+        }
         logger.info("    IND " + saAssociation.getInvestigationalNewDrug().getHolderName() + " , " + saAssociation.getInvestigationalNewDrug().getIndNumber());
 
     }
@@ -943,11 +955,7 @@ public class StudyConverter {
 
                         if(ind.getIndNumber() != null) idt.setIndNumber(new BigInteger((ind.getStrINDNo())));
                         if(ind.getINDHolder() != null) idt.setHolderName(ind.getHolderName());
-                        if(ind.getEndDate() != null){
-                            Calendar c = Calendar.getInstance();
-                            c.setTime(ind.getEndDate());
-                            idt.setEndDate(convertCalendar2XmlGregorianCalendar(c));
-                        }
+                        idt.setStatus(ind.isActive() ? ActiveInactiveStatusType.ACTIVE : ActiveInactiveStatusType.INACTIVE);
                     }
                 }
 
@@ -1180,10 +1188,15 @@ public class StudyConverter {
                     InvestigationalNewDrugType ideType = ideAssociationType.getInvestigationalNewDrug();
                     String ideHolder = ideType.getHolderName();
                     BigInteger ideNumber = ideType.getIndNumber();
+                    
                     if(ideNumber != null){
                        InvestigationalNewDrug ind = new InvestigationalNewDrug();
                         ind.setHolderName(ideHolder);
                         ind.setIndNumber(ideNumber.intValue());
+                        ind.setStatus(ActiveInactiveStatus.AC.getCode());
+                        if(ideType.getStatus() != null){
+                            ind.setStatus(ideType.getStatus().value());
+                        }
                         studyDeviceINDAssociation.setInvestigationalNewDrug(ind);
 
                     }
@@ -1280,6 +1293,7 @@ public class StudyConverter {
 
                         indType.setHolderName(ind.getHolderName());
                         indType.setIndNumber(BigInteger.valueOf(ind.getIndNumber()));
+                        indType.setStatus(ind.isActive() ? ActiveInactiveStatusType.ACTIVE : ActiveInactiveStatusType.INACTIVE);
                     }
                     
                 }

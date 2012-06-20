@@ -213,11 +213,11 @@ public class StudyAgentTest extends AbstractTestCase {
 
         StudyAgentINDAssociation ass1 =     Fixtures.createStudyAgentIndAssociation("1", "CTEP");
         sa2.addStudyAgentINDAssociation(ass1);
-        ass1.getInvestigationalNewDrug().setEndDate(DateUtils.yesterday());
+        ass1.getInvestigationalNewDrug().setStatus(ActiveInactiveStatus.IN.getCode());
 
 
         StudyAgentINDAssociation ass2 = Fixtures.createStudyAgentIndAssociation("1", "CTEP");
-        ass2.getInvestigationalNewDrug().setEndDate(DateUtils.yesterday());
+        ass2.getInvestigationalNewDrug().setStatus(ActiveInactiveStatus.IN.getCode());
         sa2.addStudyAgentINDAssociation(ass2);
         assertTrue(sa2.getInvestigationalNewDrugInactive());
         }
@@ -227,11 +227,11 @@ public class StudyAgentTest extends AbstractTestCase {
 
             StudyAgentINDAssociation ass1 =     Fixtures.createStudyAgentIndAssociation("1", "CTEP");
             sa2.addStudyAgentINDAssociation(ass1);
-            ass1.getInvestigationalNewDrug().setEndDate(DateUtils.tomorrow());
+            ass1.getInvestigationalNewDrug().setStatus(ActiveInactiveStatus.AC.getCode());
 
 
             StudyAgentINDAssociation ass2 = Fixtures.createStudyAgentIndAssociation("1", "CTEP");
-            ass2.getInvestigationalNewDrug().setEndDate(DateUtils.tomorrow());
+            ass2.getInvestigationalNewDrug().setStatus(ActiveInactiveStatus.AC.getCode());
             sa2.addStudyAgentINDAssociation(ass2);
             assertFalse(sa2.getInvestigationalNewDrugInactive());
         }
