@@ -16,7 +16,26 @@
 
 <script>
 
-    function doSearch() {
+  function textName_OnKeyDown(e){
+  		var keynum;                                 
+                    if(window.event) // IE                              
+                    {
+                            keynum = e.keyCode
+                    }
+                    else if(e.which) // Netscape/Firefox/Opera
+                    {
+                            keynum = e.which
+                    }                   
+
+                    if (keynum == 13) 
+                    {
+                            doSearch();
+                            return false;
+                    }
+  
+  }
+
+  function doSearch() {
         buildTable('assembler');
         jQuery('#bigSearch').show();
     }
@@ -104,7 +123,7 @@ var myFields = [
         <div class="row">
             <div class="label">&nbsp;</div>
             <div class="value">
-                <input id="searchText" type="text" name="searchText"/>&nbsp;
+                <input id="searchText" type="text" name="searchText" onkeydown="return textName_OnKeyDown(event)"/>&nbsp;
                 <tags:button color="blue" type="button" value="Search" size="small" icon="search" onclick="doSearch();"/>&nbsp;<tags:indicator id="indicator"/>
             </div>
         </div>
