@@ -333,6 +333,28 @@ function refreshGrades(index) {
                                     <ui:text path="verbatim"></ui:text>&nbsp;
                                     <tags:button size="small" type="button" color="blue" icon="add" value="Add" id="addverbatim" onclick="addByVerbatim()"/>
                                 </jsp:attribute>
+                                 <jsp:attribute name="embededJS">
+			  						if(${not readOnly}){
+			  							Event.observe($('verbatim'), 'keydown', function(e){
+											var keynum;                                 
+						                    if(window.event) // IE                              
+						                    {
+						                            keynum = e.keyCode
+						                    }
+						                    else if(e.which) // Netscape/Firefox/Opera
+						                    {
+						                            keynum = e.which
+						                    }                   
+						
+						                    if (keynum == 13) 
+						                    {
+						                    	   Event.stop(e)
+						                    	  addByVerbatim()
+						                    	   
+						                    }
+										})
+			 					 	}
+								</jsp:attribute>
                             </ui:row>
                         </c:if>
 
