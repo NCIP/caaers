@@ -23,10 +23,10 @@ public class StudyAgentsSynchronizer  implements Migrator<gov.nih.nci.cabig.caae
 	
 	public void migrate(Study dbStudy, Study xmlStudy, DomainObjectImportOutcome<Study> outcome) {
 		
-		//Ignore if the section is empty
-		if(CollectionUtils.isEmpty(xmlStudy.getStudyAgents())){
-			return;
-		}
+		//Ignore if the section is empty- Update- This is no longer true since CTEP sync should remove and override the agents
+//		if(CollectionUtils.isEmpty(xmlStudy.getStudyAgents())){
+//			return;
+//		}
 		
 		//create an index of existing agents in the dbStudy.
 		HashMap<String, StudyAgent> dbStudyAgentIndexMap = new HashMap<String, StudyAgent>();
