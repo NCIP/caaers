@@ -150,6 +150,17 @@
                 {key:'externalId',   	parser:"string"},
                 {key:'active',   	    parser:"string"}
             ];
+            
+            
+            function handleSelectPersonType(selectPersonType) {
+            	if(selectPersonType.value == 'Investigator' || selectPersonType.value == 'ResearchStaff') {
+            			$('selectOrganization').style.display = "block";
+            		} else {
+            		    $('organization-input').value = "";
+            		     $('organization').value = "";
+            			$('selectOrganization').style.display = "none";
+            		}
+            }
 			
 		</script>
 	</head>
@@ -191,7 +202,23 @@
 			                <div class="value"><input id="propPi" name="personIdentifier" type="text"/></div>
 			            </div>			            
 			            
-			            <div class="row">
+						<div class="row">
+			                <div class="label"><caaers:message code="LBL_loginId"/>&nbsp; </div>
+			                <div class="value"><input id="propUn" name="userName" type="text"/></div>
+			            </div>
+			            
+						<div class="row">
+			            	<div class="label"><caaers:message code="LBL_personType"/>&nbsp; </div>
+			            	<div class="value">
+				            	<select name="propPt" id="propPt" onchange="javascript:handleSelectPersonType(this);">
+				            		<option value="Please Select"><caaers:message code="LBL_please.select" />
+									<option value="ResearchStaff"><caaers:message code="LBL_research.staff" />
+									<option value="Investigator"><caaers:message code="LBL_investigator" />
+								</select>
+							</div>
+						</div>	
+						
+						 <div class="row" id="selectOrganization" style="display:none">
 							<div class="label"><caaers:message code="LBL_organization"/>&nbsp; </div>
 								<div class="value">
 									<ui:autocompleter path="organization"
@@ -216,23 +243,7 @@
 										</jsp:attribute>
 									</ui:autocompleter>
 								</div>
-			            </div>			            
-			            
-						<div class="row">
-			                <div class="label"><caaers:message code="LBL_loginId"/>&nbsp; </div>
-			                <div class="value"><input id="propUn" name="userName" type="text"/></div>
-			            </div>
-			            
-						<div class="row">
-			            	<div class="label"><caaers:message code="LBL_personType"/>&nbsp; </div>
-			            	<div class="value">
-				            	<select name="propPt" id="propPt">
-				            		<option value="Please Select"><caaers:message code="LBL_please.select" />
-									<option value="ResearchStaff"><caaers:message code="LBL_research.staff" />
-									<option value="Investigator"><caaers:message code="LBL_investigator" />
-								</select>
-							</div>
-						</div>			            
+			            </div>			  		            
 						
 						<div class="row">
 							<div class="value" style="float:left;">
