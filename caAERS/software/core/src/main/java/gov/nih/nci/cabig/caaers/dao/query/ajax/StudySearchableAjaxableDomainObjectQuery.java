@@ -67,6 +67,7 @@ public class StudySearchableAjaxableDomainObjectQuery extends AbstractAjaxableDo
 
     public void filterStudiesByStudySiteBySiteId(Integer siteId) {
         if (siteId != null) {
+        	join("study.studyOrganizations as ss");
             andWhere(String.format("ss.class = :%s", STUDY_SITE_CLASS));
             setParameter(STUDY_SITE_CLASS, "SST");
             andWhere(String.format("ss.organization.id = :%s", SITE_ID));
@@ -91,6 +92,7 @@ public class StudySearchableAjaxableDomainObjectQuery extends AbstractAjaxableDo
     }
     
     public void filterByParticipant(String firstName, String lastName, String ethnicity,final String identifierValue, String gender, DateValue dateOfBirth) {
+    	join("study.studyOrganizations as ss");
         leftJoin("ss.studyParticipantAssignments as spa left join spa.participant as p");
         filterByParticipantIdentifierValue(identifierValue);
         filterByFirstName(firstName);
@@ -133,7 +135,7 @@ public class StudySearchableAjaxableDomainObjectQuery extends AbstractAjaxableDo
     }
 
     public void filterByParticipant(Integer participantId) {
-
+    	join("study.studyOrganizations as ss");
         leftJoin("ss.studyParticipantAssignments as spa left join spa.participant as p");
         //to get reserch staff for sites not part of assignment 
         andWhere("p.id =:" + PARTICIPANT_ID);
