@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<payload>
+    <system>adeers</system>
+    <response>
+        <entity>study</entity>
+        <operation name="getStudyDetails">
+            <data>
+                <StudyDetails xmlns="">
+                    <ctcVersion>4.0</ctcVersion>
+                    <currentStatus>Approved</currentStatus>
+                    <currentStatusDate>2012-03-09</currentStatusDate>
+                    <localDocumentNumber>ACRIN-6701</localDocumentNumber>
+                    <monitoringMethod>CDUS - Abbreviated</monitoringMethod>
+                    <nciDocumentNum>ACRIN-6701</nciDocumentNum>
+                    <participationType>Network</participationType>
+                    <phase>Other</phase>
+                    <primaryStudyType>Imaging</primaryStudyType>
+                    <sponsorOrganization>CIP</sponsorOrganization>
+                    <studyAgents/>
+                    <studyDevices>
+                        <studyDevice createdDate="01-25-2012 10:57:55" updatedDate="01-25-2012 11:32:17">
+                            <commercialInvestigational>Investigational</commercialInvestigational>
+                            <device>
+                                <brandName xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+                                <category>Imaging Device</category>
+                                <commonName>MRI-DCE</commonName>
+                                <deviceDbId>707</deviceDbId>
+                                <ideHolder/>
+                                <ideNumber/>
+                                <ideStatus>Active</ideStatus>
+                                <ideStatusDate>2009-01-29</ideStatusDate>
+                            </device>
+                            <lead>Yes</lead>
+                            <status>Active</status>
+                        </studyDevice>
+                        <studyDevice createdDate="01-25-2012 10:57:55" updatedDate="01-25-2012 11:32:17">
+                            <commercialInvestigational>Investigational</commercialInvestigational>
+                            <device>
+                                <brandName xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
+                                <category>Imaging Device</category>
+                                <commonName>MRI-DW</commonName>
+                                <deviceDbId>778</deviceDbId>
+                                <ideHolder/>
+                                <ideNumber/>
+                                <ideStatus>Active</ideStatus>
+                                <ideStatusDate>2009-02-04</ideStatusDate>
+                            </device>
+                            <lead>No</lead>
+                            <status>Active</status>
+                        </studyDevice>
+                    </studyDevices>
+                    <studyDiseases>
+                        <studyDisease createdDate="01-25-2012 10:05:05" lead="Yes" updatedDate="">
+                            <diseaseName>Prostate cancer, NOS</diseaseName>
+                            <reportingMedDRA>10036910</reportingMedDRA>
+                        </studyDisease>
+                    </studyDiseases>
+                    <studyOrganizations>
+                        <studyOrganization createdDate="01-20-2012 16:13:16" role="Document to Lead Organization"
+                                           updatedDate="">
+                            <localDocumentNumber>ACRIN-6701</localDocumentNumber>
+                            <organization>
+                                <ctepId>ACRIN</ctepId>
+                                <organizationName>American College of Radiology Imaging Network</organizationName>
+                                <organizationType>NWK</organizationType>
+                            </organization>
+                            <status>Active</status>
+                            <principalInvestigator ctepInvestigatorId="34229">
+                                <firstname>Mark</firstname>
+                                <middlename>Alan</middlename>
+                                <lastname>Rosen</lastname>
+                                <email>mark.rosen@ctisinc1.uphs.upenn.edu</email>
+                                <principalInvestigatorStatus>Active</principalInvestigatorStatus>
+                            </principalInvestigator>
+                        </studyOrganization>
+                    </studyOrganizations>
+                    <studyTherapies/>
+                    <studyTreatmentAssignments/>
+                    <title>Repeatability Assessment of Quantitative DCE-MRI and DWI: A Multicenter Study of Functional
+                        Imaging Standardization in the Prostate
+                    </title>
+                </StudyDetails>
+            </data>
+        </operation>
+    </response>
+</payload>

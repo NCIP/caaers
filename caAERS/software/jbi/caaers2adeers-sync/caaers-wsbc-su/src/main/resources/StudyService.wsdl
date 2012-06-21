@@ -704,6 +704,7 @@
 <xs:element minOccurs="0" name="adeersReporting" type="xs:boolean"></xs:element>
 <xs:element minOccurs="0" name="otherMeddra" type="xs:string"></xs:element>
 <xs:element minOccurs="0" name="studyPurpose" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="participationType" type="xs:string"></xs:element>
 <xs:element minOccurs="0" name="aeTermUnique" type="xs:boolean"></xs:element>
 <xs:element ref="aeTerminology"></xs:element>
 <xs:element ref="diseaseTerminology"></xs:element>
@@ -995,6 +996,8 @@
 <xs:sequence>
 <xs:element name="indNumber" type="xs:integer"></xs:element>
 <xs:element minOccurs="0" name="holderName" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="endDate" type="xs:date"></xs:element>
+<xs:element minOccurs="0" name="status" type="cct:ActiveInactiveStatusType"></xs:element>
 </xs:sequence>
 </xs:extension>
 </xs:complexContent>

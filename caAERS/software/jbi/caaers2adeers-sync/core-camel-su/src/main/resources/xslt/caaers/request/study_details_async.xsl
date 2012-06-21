@@ -231,6 +231,14 @@
                 <ctepDbIdentifier><xsl:value-of select="deviceDbId" /></ctepDbIdentifier>
                 <xsl:if test="status"><status><xsl:value-of select="status" /></status></xsl:if>
             </stud:device>
+            <!-- special case -->
+            <xsl:if test="not(ideNumber/text()) and (parent::node()/commercialInvestigational/text() = 'Investigational') ">
+                <studyDeviceINDAssociations>
+                    <stud:studyDeviceINDAssociation>
+                    </stud:studyDeviceINDAssociation>
+                </studyDeviceINDAssociations>
+            </xsl:if>
+
                 <xsl:if test="ideNumber/text() and ideHolder/text()">
                     <studyDeviceINDAssociations>
                         <stud:studyDeviceINDAssociation>
