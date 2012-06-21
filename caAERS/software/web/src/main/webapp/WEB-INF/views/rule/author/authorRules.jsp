@@ -95,7 +95,7 @@ div#createNew h3, div.section h3 {
 		}
 
 
-		function fetchCondition(ruleCount) {
+		function fetchCondition(ruleCount, fieldIndex) {
 				try {
 					authorRule.addCondition(ruleCount, function(columnContent) {
 							
@@ -129,7 +129,7 @@ div#createNew h3, div.section h3 {
 								var grammerPrefixID = 'ruleSet.rule['+ ruleCount + '].condition.column[' + newNode + '].fieldConstraint[0].grammerPrefix';
 								
 								//for term 
-								$(grammerPrefixID).value=domainObject.field[4].grammer.prefix;
+								$(grammerPrefixID).value=domainObject.field[fieldIndex].grammer.prefix;
 								
 								
 								//alert(newColumnId);
@@ -776,8 +776,8 @@ div#createNew h3, div.section h3 {
 					
 					newNode = divNodes;
 					callback = true;
-					
-					fetchCondition(ruleCount);
+
+					fetchCondition(ruleCount, fieldDropDown.selectedIndex - 2);
 					
 					// Reset all the dropdowns for 'term'
 					
