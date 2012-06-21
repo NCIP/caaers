@@ -216,8 +216,9 @@ YAHOO.util.Event.addListener(window, "load", function() {
 		<c:if test="${command.updated}">
 			<p class="updated">${command.message}</p>
 		</c:if>
-		<form:form action="${action}" enctype="multipart/form-data" cssClass="standard">
-			<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
+		<form:form action="${action}?CSRF_TOKEN=${CSRF_TOKEN }" enctype="multipart/form-data" cssClass="standard">
+			<!-- The following does not work with multipart form hence adding the SCRF token to the form action -->
+			<%-- <input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/> --%>
             <div class="row">
                 <div class="label">
                     Select XML file

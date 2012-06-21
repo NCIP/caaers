@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.filters;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -14,6 +15,11 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -95,6 +101,22 @@ public class CsrfPreventionFilter implements Filter {
     	if(!StringUtils.isEmpty(request.getHeader(CSRF_TOKEN_HEADER))){
     		return request.getHeader(CSRF_TOKEN_HEADER);
     	}
+    	//process multipart form for imports
+    	/*try {
+            List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+            for (FileItem item : items) {
+                if (item.isFormField()) {
+                    // Process regular form field (input type="text|radio|checkbox|etc", select, etc).
+                    if(item.getFieldName().equals(CSRF_TOKEN)){
+                    	return item.getString();
+                    }
+                } 
+            }
+        } catch (FileUploadException e) {
+        	// this might mean the request is not multipart
+            // do nothing let the process flow continue
+        } */
+
     	return null;
     }
     
