@@ -26,11 +26,13 @@ public class FactResolverTest extends TestCase {
 	
 	StudyFundingSponsor localSponsor;
 	StudyFundingSponsor remoteSponsor;
+    ExpeditedAdverseEventReport aeReport;
 	
 	protected void setUp() throws Exception {
 		super.setUp();
 		ae = new AdverseEvent();
 		ae.setAttributionSummary(Attribution.DEFINITE);
+        aeReport = Fixtures.createSavableExpeditedReport();
 		resolver = new FactResolver();
 		
 		localStudy = Fixtures.createStudy("test");
@@ -417,6 +419,18 @@ public class FactResolverTest extends TestCase {
 
 
     }
+
+    public void testInterventionTypesOnReport() throws Exception{
+        boolean fact = resolver.assertFact(aeReport, "gov.nih.nci.cabig.caaers.domain.StudyTherapyType","studyTherapyType","Drug Administration","==");
+        assertFalse(fact);
+        aeReport.getTreatmentInformation().addCourseAgent(new CourseAgent());
+        fact = resolver.assertFact(aeReport, "gov.nih.nci.cabig.caaers.domain.StudyTherapyType","studyTherapyType","Drug Administration","==");
+        assertTrue(fact);
+        fact = resolver.assertFact(aeReport, "gov.nih.nci.cabig.caaers.domain.StudyTherapyType","studyTherapyType","Radiation","==");
+        assertFalse(fact);
+        fact = resolver.assertFact(aeReport, "gov.nih.nci.cabig.caaers.domain.StudyTherapyType","studyTherapyType","Surgery","!=");
+        assertTrue(fact);
+    }
 	
 	private Study createCGLIBProxyStudy(Class<? extends Study> klass, String shortTitle) {
         Enhancer enhancer = new Enhancer();
@@ -426,5 +440,7 @@ public class FactResolverTest extends TestCase {
         study.setShortTitle(shortTitle);
         return study;
    }
+
+
 
 }

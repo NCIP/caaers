@@ -16,6 +16,7 @@ import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -1786,6 +1787,21 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         OtherCause otherCause = findOtherCauseByCause(cause);
         if(otherCause != null) return getOtherCauses().remove(otherCause);
         return false;
+    }
+
+    @Transient
+    public List<StudyTherapyType> getInterventionTypes(){
+        List<StudyTherapyType> interventionTypes = new ArrayList<StudyTherapyType>();
+        if(CollectionUtils.isNotEmpty(getRadiationInterventions())) interventionTypes.add(StudyTherapyType.RADIATION);
+        if(CollectionUtils.isNotEmpty(getSurgeryInterventions())) interventionTypes.add(StudyTherapyType.SURGERY);
+        if(CollectionUtils.isNotEmpty(getBehavioralInterventions())) interventionTypes.add(StudyTherapyType.BEHAVIORAL);
+        if(CollectionUtils.isNotEmpty(getBiologicalInterventionsInternal())) interventionTypes.add(StudyTherapyType.BIOLOGICAL_VACCINE);
+        if(CollectionUtils.isNotEmpty(getGeneticInterventions())) interventionTypes.add(StudyTherapyType.GENETIC);
+        if(CollectionUtils.isNotEmpty(getDietaryInterventions())) interventionTypes.add(StudyTherapyType.DIETARY_SUPPLEMENT);
+        if(CollectionUtils.isNotEmpty(getOtherAEInterventions())) interventionTypes.add(StudyTherapyType.OTHER);
+        if(CollectionUtils.isNotEmpty(getMedicalDevices())) interventionTypes.add(StudyTherapyType.DEVICE);
+        if(CollectionUtils.isNotEmpty(getTreatmentInformation().getCourseAgents())) interventionTypes.add(StudyTherapyType.DRUG_ADMINISTRATION);
+        return interventionTypes;
     }
 
 }

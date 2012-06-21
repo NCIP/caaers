@@ -1449,4 +1449,26 @@ public class ExpeditedAdverseEventReportTest extends AbstractTestCase {
         }
 
     }
+
+    public void testGetInterventionTypes(){
+        assertTrue(report.getInterventionTypes().isEmpty());
+        CourseAgent courseAgent = new CourseAgent();
+        courseAgent.setStudyAgent(Fixtures.createStudyAgent("xx"));
+        report.getTreatmentInformation().addCourseAgent(courseAgent);
+        assertTrue(report.getInterventionTypes().contains(StudyTherapyType.DRUG_ADMINISTRATION));
+        
+        MedicalDevice md = new MedicalDevice();
+        md.setStudyDevice(Fixtures.createStudyDevice());
+        report.addMedicalDevice(md);
+        assertTrue(report.getInterventionTypes().contains(StudyTherapyType.DEVICE));
+        
+        RadiationIntervention rd = new RadiationIntervention();
+        rd.setStudyRadiation(Fixtures.createOtherIntervention(1, "Radiation", StudyTherapyType.RADIATION));
+        report.addRadiationIntervention(rd);
+        assertTrue(report.getInterventionTypes().contains(StudyTherapyType.RADIATION));
+        
+        SurgeryIntervention sg = new SurgeryIntervention();
+        report.addSurgeryIntervention(sg);
+        assertTrue(report.getInterventionTypes().contains(StudyTherapyType.SURGERY));
+    }
 }
