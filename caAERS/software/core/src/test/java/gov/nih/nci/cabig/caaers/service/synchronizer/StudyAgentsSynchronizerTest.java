@@ -59,8 +59,8 @@ public class StudyAgentsSynchronizerTest extends AbstractTestCase{
 		dbStudy.addStudyAgent(studyAgent2);
 		studyAgentsSynchronizer.migrate(dbStudy, xmlStudy, outcome);
 		assertEquals(2, dbStudy.getStudyAgents().size());
-		assertFalse( dbStudy.getStudyAgents().get(0).isRetired());
-		assertFalse( dbStudy.getStudyAgents().get(1).isRetired());
+		assertTrue( dbStudy.getStudyAgents().get(0).isRetired());
+		assertTrue( dbStudy.getStudyAgents().get(1).isRetired());
 	}
 	
 	public void testStudyAgents_AddAll(){
