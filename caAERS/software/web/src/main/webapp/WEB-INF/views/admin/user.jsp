@@ -469,7 +469,8 @@
 											<c:set var="_roleSummary" value="${_sitesSummary}${_studiesSummary}"/>
 										</c:if>
 										<span id="summary-${index.index}">
-											${_roleSummary} ${roleMembership.checked ? '&nbsp;&nbsp;&nbsp;&nbsp;<img src="<c:url value="/images/check.png" />" border="0">' : '' }
+                                            <c:url value="/images/check.png" var="chkPng" />
+											${_roleSummary} ${roleMembership.checked ? '&nbsp;&nbsp;&nbsp;&nbsp;<img src="' + chkPng + '" border="0">' : '' }
 										</span>
 									</jsp:attribute>
                                     <jsp:body>
