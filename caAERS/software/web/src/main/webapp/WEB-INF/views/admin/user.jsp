@@ -470,7 +470,11 @@
 										</c:if>
 										<span id="summary-${index.index}">
                                             <c:url value="/images/check.png" var="chkPng" />
-											${_roleSummary} ${roleMembership.checked ? '&nbsp;&nbsp;&nbsp;&nbsp;<img src="' + chkPng + '" border="0">' : '' }
+											${_roleSummary}
+											<c:if test="${roleMembership.checked}">
+                                                &nbsp;&nbsp;&nbsp;&nbsp;<img src="<c:url value="/images/check.png" />" border="0">
+											</c:if>
+
 										</span>
 									</jsp:attribute>
                                     <jsp:body>

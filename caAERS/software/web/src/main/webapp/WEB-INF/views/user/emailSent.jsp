@@ -30,7 +30,7 @@
     }
 
     body {
-        background: #02307f url(../../images/blue/top_texture_bg.png) top center no-repeat;
+        background: #02307f url(<c:url value="/images/blue/top_texture_bg.png" /> ) top center no-repeat;
         color: #fff;
         font-family: "Lucida Sans Unicode", sans-serif;
     }
@@ -83,7 +83,7 @@
         color: #8db0eb;
         font-weight: normal;
         padding: 15px 0px;
-        background: url(../../images/footer_divider.png) no-repeat top center;
+        background: url(<c:url value="/images/footer_divider.png" />) no-repeat top center;
         bottom: -175px;
         text-shadow: 0 1px 1px #000;
         font-size: 10px;
