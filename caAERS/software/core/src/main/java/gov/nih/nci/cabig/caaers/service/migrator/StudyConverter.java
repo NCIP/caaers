@@ -944,12 +944,12 @@ public class StudyConverter {
                 List<StudyAgentINDAssociation> as = sa.getStudyAgentINDAssociations();
 
                 if (as != null && as.size() > 0) {
+                    sat.setStudyAgentINDAssociations(new StudyAgentType.StudyAgentINDAssociations());
+                    sat.getStudyAgentINDAssociations().setStudyAgentINDAssociation(new StudyAgentINDAssociationType());
 
                     InvestigationalNewDrug ind =   as.get(0).getInvestigationalNewDrug();
-
                     if (ind != null) {
-                        sat.setStudyAgentINDAssociations(new StudyAgentType.StudyAgentINDAssociations());
-                        sat.getStudyAgentINDAssociations().setStudyAgentINDAssociation(new StudyAgentINDAssociationType());
+
                         InvestigationalNewDrugType idt = new InvestigationalNewDrugType();
                         sat.getStudyAgentINDAssociations().getStudyAgentINDAssociation().setInvestigationalNewDrug(idt);
 
@@ -1186,19 +1186,21 @@ public class StudyConverter {
                     sd.addStudyDeviceINDAssociation(studyDeviceINDAssociation);
 
                     InvestigationalNewDrugType ideType = ideAssociationType.getInvestigationalNewDrug();
-                    String ideHolder = ideType.getHolderName();
-                    BigInteger ideNumber = ideType.getIndNumber();
-                    
-                    if(ideNumber != null){
-                       InvestigationalNewDrug ind = new InvestigationalNewDrug();
-                        ind.setHolderName(ideHolder);
-                        ind.setIndNumber(ideNumber.intValue());
-                        ind.setStatus(ActiveInactiveStatus.AC.getCode());
-                        if(ideType.getStatus() != null){
-                            ind.setStatus(ideType.getStatus().value());
-                        }
-                        studyDeviceINDAssociation.setInvestigationalNewDrug(ind);
+                    if(ideType != null){
+                        String ideHolder = ideType.getHolderName();
+                        BigInteger ideNumber = ideType.getIndNumber();
 
+                        if(ideNumber != null){
+                            InvestigationalNewDrug ind = new InvestigationalNewDrug();
+                            ind.setHolderName(ideHolder);
+                            ind.setIndNumber(ideNumber.intValue());
+                            ind.setStatus(ActiveInactiveStatus.AC.getCode());
+                            if(ideType.getStatus() != null){
+                                ind.setStatus(ideType.getStatus().value());
+                            }
+                            studyDeviceINDAssociation.setInvestigationalNewDrug(ind);
+
+                        }
                     }
 
                 }
@@ -1284,13 +1286,14 @@ public class StudyConverter {
                 StudyDeviceINDAssociations associationTypes = new StudyDeviceINDAssociations();
                 sdt.setStudyDeviceINDAssociations(associationTypes);
                 for(StudyDeviceINDAssociation sdINDAssociation : studyDeviceINDAssociations){
+
+                    StudyDeviceINDAssociationType associationType = new StudyDeviceINDAssociationType();
+                    associationTypes.setStudyDeviceINDAssociation(associationType);
+                    InvestigationalNewDrugType indType = new InvestigationalNewDrugType();
+                    associationType.setInvestigationalNewDrug(indType);
+
                     InvestigationalNewDrug ind = sdINDAssociation.getInvestigationalNewDrug();
                     if(ind != null){
-                        StudyDeviceINDAssociationType associationType = new StudyDeviceINDAssociationType();
-                        InvestigationalNewDrugType indType = new InvestigationalNewDrugType();
-                        associationType.setInvestigationalNewDrug(indType);
-                        associationTypes.setStudyDeviceINDAssociation(associationType);
-
                         indType.setHolderName(ind.getHolderName());
                         indType.setIndNumber(BigInteger.valueOf(ind.getIndNumber()));
                         indType.setStatus(ind.isActive() ? ActiveInactiveStatusType.ACTIVE : ActiveInactiveStatusType.INACTIVE);
