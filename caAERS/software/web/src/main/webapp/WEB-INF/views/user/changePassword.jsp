@@ -3,97 +3,114 @@
 <head>
     <title>Change Password</title>
     <style type="text/css">
-        .box {
-            width: 30em;
-            margin: 0 auto;
-        }
 
-         #main {
-          text-align: center;
-          text-shadow: 0 2px 3px black;
-      background: none;-moz-box-shadow: none; -webkit-box-shadow: none; box-shadow: none;
-      }
-        a {
-            color: #fff;
-        }
+          .box {
+              width: 30em;
+              margin: 0 auto;
+          }
 
-        .submit {
-            float: right;
-            margin-top: 1em;
-        }
+          .submit {
+              margin: 15px auto;
+          }
 
-        .box {
-            width: 30em;
-            margin: 0 auto;
-        }
+          .box {
+              width: 30em;
+              margin: 0 auto;
+          }
 
-        .submit {
-            margin-left: 25px;
-            margin-top: 1em;
-        }
 
-        .forgot {
-            float: left;
-            margin-top: 1em;
-        }
+          .forgot {
+              float: left;
+              margin-top: 1em;
+          }
 
-        .forgot a {
-            color: #fff;
-        }
+          .forgot a {
+              color: #fff;
+          }
 
-        body {
-            background-image: none;
-            color: #ccc;
-        }
+          body {
+                    background:#02307f url(../../images/blue/top_texture_bg.png) top center no-repeat;
+                    color: #fff;
+                    font-family:"Lucida Sans Unicode",sans-serif;
+                }
 
-        #header {
-            visibility: hidden
-        }
+          #header {
+              visibility: hidden
+          }
 
-        #all {
-            background: none;
-            width: 400px;
-        }
+          #all {
+              background: none;
+              width: 700px;
+          }
 
-        #build-name {
-            color: #2e3257
-        }
+          #build-name {
+                    color: #8db0eb;
+                    font-weight: normal;
+                    padding: 15px 0px;
+                    background: url(../../images/footer_divider.png) no-repeat top center;
+                    bottom: -175px;
+                    text-shadow: 0 1px 1px #000;
+                    font-size: 10px;
+                    margin-top: 0px;
+                    text-align: center
+                }
 
-        h2 {
-            color: #fff;
-            font-size: 20px;
-            font-weight: normal;
-            margin-top: 50px;
-            margin-bottom: 10px;
-        }
+          h2 {
+              color: #fff;
+              font-size: 20px;
+              font-weight: normal;
+              margin-top: 50px;
+              margin-bottom: 10px;
+              text-align: center
+          }
 
-        h1 {
-            visibility: hidden;
-        }
+          h1 {
+              visibility: hidden;
+          }
 
-        #logo {
-            position: absolute;
-            top: -135px;
-        }
+          #logo {
+              position: absolute;
+              top: -83px;
+              left: 172px;
+          }
 
-        .errors {
-            color: #FFCC00;
-        }
+          #main {
+              text-align: center;
+              text-shadow: 0 2px 3px black;
+          background: none;-moz-box-shadow: none; -webkit-box-shadow: none; box-shadow: none;
+          }
 
-        input {
-            outline: none;
-        }
 
-        .wide-header {
-            display: none;
-        }
+          input.required[type="text"], input.required[type="password"], select.required, textarea.required {
+              -moz-box-shadow: 0 2px 4px black;
+              -webkit-box-shadow: 0 2px 4px black;
+              box-shadow: 0 2px 4px black;
 
-        .errors, div.errors, ul.errors {
-            /*color: #FFCC00;*/
-            border: none;
-            margin: 0;
-        }
-    </style>
+          }
+
+          div.row div.value {
+              margin-left: 21em;
+          }
+
+          div.row div.label {
+              width: 20em;
+              padding-top: 4px;
+          }
+
+          .errors {
+              color: #FFCC00;
+          }
+
+          input {
+              outline: none;
+          }
+    	  .wide-header {
+    	  	display:none;
+    	  }
+    	  .errors {
+                    color: #FFCC00;
+                }
+      </style>
 </head>
 <body>
 <a href="<c:url value="/public/login" />"><img src="<c:url value="/images/blue/login-logo.png" />" id="logo"></a>
@@ -108,6 +125,7 @@
     	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
         <h2>Please enter your new password</h2>
 
+        <div style="text-align: LEFT; padding-left: 177px;">
         Your password must:<br>
         <ul style="width: 400px;">
             <c:if test="${command.passwordPolicy.passwordCreationPolicy.combinationPolicy.upperCaseAlphabetRequired}"><li>contain at least one upper case letter;</c:if>
@@ -116,7 +134,7 @@
             <li>have a length of minimum ${command.passwordPolicy.passwordCreationPolicy.minPasswordLength} characters;
             <li>not contain a substring of your username  longer than ${command.passwordPolicy.passwordCreationPolicy.combinationPolicy.maxSubstringLength} characters;
         </ul>
-
+        </div>
         <br/><br/>
         <tags:hasErrorsMessage/>
 
