@@ -409,7 +409,7 @@
 			</field>
 		</domain-object>		
 
-		<domain-object identifier="aeReport" class-name="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport" display-uri="Expedited Adverse Event Report">
+		<domain-object identifier="aeReport" class-name="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport" display-uri="Report">
             <field name="intervention" display-uri="Intervention">
                 <field-value>
                     <input-type>multiselect</input-type>
