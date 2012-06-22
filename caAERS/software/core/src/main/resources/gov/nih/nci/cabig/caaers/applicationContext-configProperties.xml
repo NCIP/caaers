@@ -361,10 +361,6 @@
                             <property name="code" value="Centimeter" />
                             <property name="desc" value="Centimeter" />
                         </bean>
-                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
-                            <property name="code" value="Inch" />
-                            <property name="desc" value="Inch" />
-                        </bean>
                     </list>
                 </entry>
 
@@ -373,10 +369,6 @@
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="Kilogram" />
                             <property name="desc" value="Kilogram" />
-                        </bean>
-                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
-                            <property name="code" value="Pound" />
-                            <property name="desc" value="Pound" />
                         </bean>
                     </list>
                 </entry>
