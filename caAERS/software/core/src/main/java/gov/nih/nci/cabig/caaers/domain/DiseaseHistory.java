@@ -213,7 +213,6 @@ public class DiseaseHistory extends AbstractExpeditedReportSingleChild {
      */
     @OneToOne(fetch=FetchType.EAGER)
     @JoinColumn(name = "study_disease_id")
-    @Cascade(value = {CascadeType.ALL})
     public AbstractStudyDisease getAbstractStudyDisease() {
         return abstractStudyDisease;
     }
