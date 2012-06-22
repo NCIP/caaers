@@ -5,6 +5,8 @@ import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
+import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
@@ -1470,5 +1472,25 @@ public class ExpeditedAdverseEventReportTest extends AbstractTestCase {
         SurgeryIntervention sg = new SurgeryIntervention();
         report.addSurgeryIntervention(sg);
         assertTrue(report.getInterventionTypes().contains(StudyTherapyType.SURGERY));
+    }
+    
+    public void testGetAdverseEventAttributions()
+    {
+        List<AdverseEventAttribution> l = report.getAdverseEventAttributions();
+        assertTrue(l.isEmpty());
+       
+        CourseAgent cause = new CourseAgent();
+        CourseAgentAttribution courseAgentAttribution = new CourseAgentAttribution();
+
+
+        courseAgentAttribution.setId(1);
+        courseAgentAttribution.setGridId("grid id");
+        courseAgentAttribution.setCause(cause);
+        courseAgentAttribution.setVersion(2);
+        courseAgentAttribution.setAttribution(Attribution.POSSIBLE);
+        report.getAdverseEvents().get(0).addAdverseEventAttribution(courseAgentAttribution);
+
+        l = report.getAdverseEventAttributions();
+        assertTrue(l.size() == 1);
     }
 }
