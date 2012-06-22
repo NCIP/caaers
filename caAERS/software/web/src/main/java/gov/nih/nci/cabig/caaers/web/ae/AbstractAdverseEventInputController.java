@@ -290,8 +290,6 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
         ExpeditedAdverseEventReport aeReport = expeditedCommand.getAeReport();
         if(aeReport != null && aeReport.getId() != null){
             expeditedCommand.setAeReport(expeditedAdverseEventReportDao.getById(aeReport.getId()));
-            //initializing some stuff
-            expeditedCommand.getAeReport().getAdverseEventAttributions();
         }
         if(expeditedCommand.getStudy() != null){
             DiseaseCodeTerm diseaseCodingTerm = expeditedCommand.getAeReport().getStudy().getDiseaseTerminology().getDiseaseCodeTerm();

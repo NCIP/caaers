@@ -99,6 +99,8 @@ public class StudyInterventionsTab extends AeTab {
     	refData.put("radiationMandatorySection", command.isSectionMandatory(ExpeditedReportSection.RADIATION_INTERVENTION_SECTION));
     	refData.put("surgeryMandatorySection", command.isSectionMandatory(ExpeditedReportSection.SURGERY_INTERVENTION_SECTION));
     	refData.put("deviceMandatorySection", command.isSectionMandatory(ExpeditedReportSection.MEDICAL_DEVICE_SECTION));
+        //initializing some stuff
+        command.getAeReport().getAdverseEventAttributions();
         return refData;
     }
     
