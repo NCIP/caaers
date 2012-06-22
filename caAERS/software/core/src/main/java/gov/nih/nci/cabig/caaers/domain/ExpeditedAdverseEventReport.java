@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
@@ -1803,5 +1804,16 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         if(CollectionUtils.isNotEmpty(getTreatmentInformation().getCourseAgents())) interventionTypes.add(StudyTherapyType.DRUG_ADMINISTRATION);
         return interventionTypes;
     }
+
+    @Transient
+    public List<AdverseEventAttribution> getAdverseEventAttributions(){
+        List<AdverseEventAttribution> attributions = new ArrayList<AdverseEventAttribution>();
+        for(AdverseEvent ae: getAdverseEvents())   {
+            attributions.addAll(ae.getAdverseEventAttributions());
+        }
+        return attributions;
+    }
+    
+    
 
 }
