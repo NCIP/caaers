@@ -42,6 +42,7 @@
     </script>
 </head>
 <body>
+<c:if test="${configuration.authenticationMode ne 'local'}">
 <chrome:division title="Configuration">
     <div class="row">
         <div class="leftpanel">
@@ -62,6 +63,7 @@
         </div>
     </div>
 </chrome:division>
+</c:if>
 <chrome:division title="Email Configuration">
 
     <div class="row">
