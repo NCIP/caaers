@@ -60,7 +60,7 @@
                 
             },
             sitePopulator: function(autocompleter, text) {
-                createStudy.restrictOrganizations(text, ${_isSSPAonCC || _isSSPAonFS}, function(values) {
+                createStudy.restrictOrganizations(text, ${_isSSPAonCC || _isSSPAonFS}, true, function(values) {
                     autocompleter.setChoices(values)
                 })
             },

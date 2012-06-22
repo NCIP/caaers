@@ -222,8 +222,8 @@ public class CreateStudyAjaxFacade {
     /*
      * added this method to call this wherever any security filtering on organization is required
      */
-    public List<Organization> restrictOrganizations(final String text, Boolean skipFiltering) {
-        List<Organization> orgs = organizationRepository.restrictBySubnames(extractSubnames(text), skipFiltering, true);
+    public List<Organization> restrictOrganizations(final String text, Boolean skipFiltering, boolean filterByOrgType) {
+        List<Organization> orgs = organizationRepository.restrictBySubnames(extractSubnames(text), skipFiltering, true,filterByOrgType);
         orgs = RankBasedSorterUtils.sort(orgs , text, new Serializer<Organization>(){
             public String serialize(Organization object) {
                 return object.getFullName();

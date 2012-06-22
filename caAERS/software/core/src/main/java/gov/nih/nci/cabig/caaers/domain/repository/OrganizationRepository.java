@@ -88,7 +88,7 @@ public interface OrganizationRepository {
      * @param skipFiltering the skip filtering
      * @return the list
      */
-    List<Organization> restrictBySubnames(final String[] subnames, boolean skipFiltering, boolean filterByRetired);
+    List<Organization> restrictBySubnames(final String[] subnames, boolean skipFiltering, boolean filterByRetired, boolean filterByOrgType);
 
     /**
      * Restrict by subnames.

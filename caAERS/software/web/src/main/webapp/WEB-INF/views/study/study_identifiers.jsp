@@ -55,7 +55,7 @@
                     })
                 </c:if>
                 <c:if test="${!_isSSIMonCC && !_isSSIMonFS}">
-                    createStudy.restrictOrganizations(text, false, function(values) {
+                    createStudy.restrictOrganizations(text, false, false, function(values) {
                         autocompleter.setChoices(values)
                     })
                 </c:if>
