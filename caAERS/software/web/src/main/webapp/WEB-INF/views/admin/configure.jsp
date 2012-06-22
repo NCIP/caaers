@@ -100,16 +100,18 @@
                     <admin:oneConfigEntry entry="${command.conf['esbLogLocation'].property}"/>
                     <admin:oneConfigEntry entry="${command.conf['studySyncDelay'].property}"/>
                 </div>
-                <div id="tabs-3">
-                    <admin:oneConfigEntry entry="${command.conf['paLimit'].property}"/>
-                    <admin:oneConfigEntry entry="${command.conf['poLimit'].property}"/>
-                    <admin:oneConfigEntry entry="${command.conf['labViewerBaseUrl'].property}"/>
-                    <admin:oneConfigEntry entry="${command.conf['pscBaseUrl'].property}"/>
-                    <admin:oneConfigEntry entry="${command.conf['caExchangeNonGridUrl'].property}"/>
-                    <admin:oneConfigEntry entry="${command.conf['caExchangeUrl'].property}"/>
-                    <admin:oneConfigEntry entry="${command.conf['caExchangeNonGridUserName'].property}"/>
-                    <admin:oneConfigEntry entry="${command.conf['caExchangeNonGridPassword'].property}"/>
-                </div>
+                <c:if test="${configuration.authenticationMode ne 'local'}">
+                    <div id="tabs-3">
+                        <admin:oneConfigEntry entry="${command.conf['paLimit'].property}"/>
+                        <admin:oneConfigEntry entry="${command.conf['poLimit'].property}"/>
+                        <admin:oneConfigEntry entry="${command.conf['labViewerBaseUrl'].property}"/>
+                        <admin:oneConfigEntry entry="${command.conf['pscBaseUrl'].property}"/>
+                        <admin:oneConfigEntry entry="${command.conf['caExchangeNonGridUrl'].property}"/>
+                        <admin:oneConfigEntry entry="${command.conf['caExchangeUrl'].property}"/>
+                        <admin:oneConfigEntry entry="${command.conf['caExchangeNonGridUserName'].property}"/>
+                        <admin:oneConfigEntry entry="${command.conf['caExchangeNonGridPassword'].property}"/>
+                    </div>
+                </c:if>
                 <div id="tabs-4">
                     <admin:oneConfigEntry entry="${command.conf['smtpAddress'].property}"/>
                     <admin:oneConfigEntry entry="${command.conf['smtpPort'].property}"/>
