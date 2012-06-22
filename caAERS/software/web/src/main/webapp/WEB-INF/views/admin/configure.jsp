@@ -67,7 +67,9 @@
                 <ul>
                     <li><a href="#tabs-1">General</a></li>
                     <li><a href="#tabs-2">AdEERS Integration</a></li>
-                    <li><a href="#tabs-3">CCTS Integration</a></li>
+                    <c:if test="${configuration.authenticationMode ne 'local'}">
+                        <li><a href="#tabs-3">CCTS Integration</a></li>
+                    </c:if>
                     <li><a href="#tabs-4">Email</a></li>
                     <li><a href="happy?subview=1">System Status</a></li>
                 </ul>
