@@ -384,9 +384,7 @@ div#createNew h3, div.section h3 {
 	function isFieldExists(ruleCount, domainObjectName, fieldName)
 	{
 
-				if (fieldName == 'studyTherapy') {
-					return false;
-				}
+				if(true) return false
 				
 				var columns = $('rule-'+(ruleCount + 1)+'-columns');
 				
@@ -439,21 +437,32 @@ div#createNew h3, div.section h3 {
 			var val = "";
 			var displayUriID = selectId+ '.readableValue';
 			var selVal = "";
-					              
+
 			for (var i = 0; i < item.options.length; i++) {
 				if (item.options[ i ].selected) {
 					 selVal = item.options[ i ].text;
-					
+
 					// g is for global replacement
             		 val = val + "," + selVal.replace(/\,/g,' ');
-            		 
+
             	}
-		    }	
+		    }
 		    $(displayUriID).value = val.replace(/\,/,'');
 			
 	}
-	
-	
+
+
+        function handleValueOntextNonValidValues(item)
+        {
+
+            var selectId =   item.id.substring(0,item.id.lastIndexOf("."));
+            var val = "";
+            var displayUriID = selectId+ '.readableValue';
+            var selVal = $F(item);
+            val = val + "," + selVal.replace(/\,/g,' ');
+            $(displayUriID).value = val.replace(/\,/,'');
+
+        }
 	function handleValueOnselect(operatorDropDown, ruleCount, fieldIndex, multi)
 	{
 		
@@ -852,7 +861,8 @@ div#createNew h3, div.section h3 {
 	
 					
 					
-			} else if (selectedField.value == 'meddraCode') {
+			}
+            else if (selectedField.value == 'meddraCode') {
 				var newId = validValueField.id; 
 				var spanId = newId + '.span';
 				var hiddenId = selectId + '.literalRestriction[0].readableValue'
@@ -865,13 +875,14 @@ div#createNew h3, div.section h3 {
 				$(spanId).innerHTML = inputArea + '<div id="' + newId + '-choices' + '"></div>' + hiddenArea;
 				
 				
-			}else if (selectedField.value == 'significanceLevel'){
+			}
+            else if (selectedField.value == 'significanceLevel'){
 
                 var newId = validValueField.id;
                 var spanId = newId + '.span';
                 var hiddenId = selectId + '.literalRestriction[0].readableValue'
 
-                var inputArea = '<input id="' + newId + '" name="' + newId +'" ></input>';
+                var inputArea = '<input id="' + newId + '" name="' + newId +'" onblur="handleValueOntextNonValidValues(this)" ></input>';
                 inputArea += '<img alt="activity indicator" src="<c:url value="/images/indicator.white.gif" />" class="indicator" id="ind-indicator"/>';
 
                 var hiddenArea = '<input type="hidden" id="' + hiddenId + '" name="' + hiddenId +'" cols=40 rows=8/>';
@@ -879,7 +890,8 @@ div#createNew h3, div.section h3 {
                 $(spanId).innerHTML = inputArea + '<div id="' + newId + '-choices' + '"></div>' + hiddenArea;
 
 
-            } else if (selectedField.value == 'reportDefinitionName' || selectedField.value == 'treatmentAssignmentCode') {
+            }
+            else if (selectedField.value == 'reportDefinitionName' || selectedField.value == 'treatmentAssignmentCode') {
 					
 					var criteria1 = "" ;
 					
@@ -927,7 +939,8 @@ div#createNew h3, div.section h3 {
 				                })
 			
 			
-			} else 
+			}
+            else
 			{
 				//alert ("here");
 				authorRule.getValidValues(domainObjectSelectedIndex-1, fieldDropDown.selectedIndex-1, 
@@ -1566,7 +1579,7 @@ div#createNew h3, div.section h3 {
                                 var inputArea = '<input id="' + newId + '" name="' + newId +'" value="'+ fieldValue.replace(/\,/,'') + '" />';
                                 inputArea += '<img alt="activity indicator" src="<c:url value="/images/indicator.white.gif" />" class="indicator" id="ind-indicator"/>';
 
-                                var hiddenArea = '<input type="hidden" id="' + hiddenId + '" name="' + hiddenId +'" cols=40 rows=8/>';
+                                var hiddenArea = '<input type="hidden" id="' + hiddenId + '" name="' + hiddenId +'" value="' + fieldValue + '" cols=40 rows=8/>';
 
                                 $(spanId).innerHTML = inputArea + '<div id="' + newId + '-choices' + '"></div>' + hiddenArea;
 
