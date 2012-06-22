@@ -98,7 +98,7 @@ public class ObservedAdverseEventProfile extends AbstractMutableDomainObject {
 
     @Transient
     public ObservedAdverseEventSignificanceLevel getSignificance(){
-        return new ObservedAdverseEventSignificanceLevel(observedSignificance);
+        return new ObservedAdverseEventSignificanceLevel(pValue);
     }
 
 	public Double getExpectedFrequency() {
