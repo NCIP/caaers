@@ -17,7 +17,7 @@
 
 <c:set var="v" value="aeReport.medicalDevices[${index}]" />
 
-<ae:fieldGroupDivision fieldGroupFactoryName="medicalDevice" title="${command.aeReport.medicalDevices[index].studyDevice.displayName}" index="${index}" style="${style}" enableDelete="true" deleteParams="'device', ${index}, '_devices'" collapsed="${!empties[v] && collapsed}">
+<ae:fieldGroupDivision fieldGroupFactoryName="medicalDevice" title="${device.studyDevice.displayName}" index="${index}" style="${style}" enableDelete="true" deleteParams="'device', ${index}, '_devices'" collapsed="${!empties[v] && collapsed}">
     <tags:errors path="aeReport.medicalDevices[${index}]"/>
 <%--
     <c:forEach items="${fieldGroup.fields}" var="field">
@@ -34,7 +34,7 @@
                           mandatory="${fieldGroup.fields[21].attributes.mandatory}"/>
                  </jsp:attribute>
                  <jsp:attribute name="value"><ui:select path="${fieldGroup.fields[21].propertyName}" options="${fieldGroup.fields[21].attributes.options}" field="${fieldGroup.fields[21]}" 
-                 readonly ="${not empty device.id}" displayNamePath="${v}.studyDevice.displayName" /></jsp:attribute>
+                 readonly ="${not empty device.id and not empty device.studyDevice}" displayNamePath="${v}.studyDevice.displayName" /></jsp:attribute>
             </ui:row>
 
         </td>
@@ -47,21 +47,34 @@
                      <ui:label path="${fieldGroup.fields[0].propertyName}" text="${fieldGroup.fields[0].displayName}" required="false"
                                mandatory="${fieldGroup.fields[0].attributes.mandatory}"/>
                  </jsp:attribute>
-                 <jsp:attribute name="value"><ui:text path="${fieldGroup.fields[0].propertyName}" field="${fieldGroup.fields[0]}" readonly="${not empty device.id}"/>
+                 <jsp:attribute name="value">
+                     <ui:text path="${fieldGroup.fields[0].propertyName}" field="${fieldGroup.fields[0]}"
+                                                      readonly="${not empty device.id}"
+                                                      displayNamePath="${v}.studyDevice.brandName" />
                  </jsp:attribute>
             </ui:row>
             <ui:row path="aeReport.medicalDevices[${index}].commonName">
-                 <jsp:attribute name="label"><ui:label path="${fieldGroup.fields[1].propertyName}" text="${fieldGroup.fields[1].displayName}"
+                 <jsp:attribute name="label">
+                     <ui:label path="${fieldGroup.fields[1].propertyName}" text="${fieldGroup.fields[1].displayName}"
                                                         mandatory="${fieldGroup.fields[1].attributes.mandatory}" required="false"/>
                  </jsp:attribute>
-                 <jsp:attribute name="value"><ui:text path="${fieldGroup.fields[1].propertyName}" field="${fieldGroup.fields[1]}" readonly="${not empty device.id}"/></jsp:attribute>
+                 <jsp:attribute name="value">
+                     <ui:text path="${fieldGroup.fields[1].propertyName}" field="${fieldGroup.fields[1]}"
+                                                      readonly="${not empty device.id}"
+                                                      displayNamePath="${v}.studyDevice.commonName"
+                             />
+                 </jsp:attribute>
             </ui:row>
             <ui:row path="aeReport.medicalDevices[${index}].deviceType">
-                 <jsp:attribute name="label"><ui:label path="${fieldGroup.fields[2].propertyName}" text="${fieldGroup.fields[2].displayName}"
+                 <jsp:attribute name="label">
+                     <ui:label path="${fieldGroup.fields[2].propertyName}" text="${fieldGroup.fields[2].displayName}"
                                                         mandatory="${fieldGroup.fields[2].attributes.mandatory}" required="false"/>
                  </jsp:attribute>
-                 <jsp:attribute name="value"><ui:text path="${fieldGroup.fields[2].propertyName}" field="${fieldGroup.fields[2]}" readonly="${not empty device.id}"
-                 /></jsp:attribute>
+                 <jsp:attribute name="value">
+                     <ui:text path="${fieldGroup.fields[2].propertyName}" field="${fieldGroup.fields[2]}"
+                                                      readonly="${not empty device.id }"
+                                                      displayNamePath="${v}.studyDevice.deviceType"/>
+                 </jsp:attribute>
             </ui:row>
             <ui:row path="aeReport.medicalDevices[${index}].manufacturerName">
                  <jsp:attribute name="label"><ui:label path="${fieldGroup.fields[3].propertyName}" text="${fieldGroup.fields[3].displayName}"

@@ -113,6 +113,7 @@ function updateMedicalDevice(i, studyDeviceId){
       ].each(function(n){
          var e = $(baseName + n);
          if(e)e.value = d[n];
+
       });
       
    });
