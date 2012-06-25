@@ -49,7 +49,7 @@
                  </jsp:attribute>
                  <jsp:attribute name="value">
                      <ui:text path="${fieldGroup.fields[0].propertyName}" field="${fieldGroup.fields[0]}"
-                                                      readonly="${not empty device.id}"
+                                                      readonly="${true}"
                                                       displayNamePath="${v}.studyDevice.brandName" />
                  </jsp:attribute>
             </ui:row>
@@ -60,7 +60,7 @@
                  </jsp:attribute>
                  <jsp:attribute name="value">
                      <ui:text path="${fieldGroup.fields[1].propertyName}" field="${fieldGroup.fields[1]}"
-                                                      readonly="${not empty device.id}"
+                                                      readonly="${true"
                                                       displayNamePath="${v}.studyDevice.commonName"
                              />
                  </jsp:attribute>
@@ -72,7 +72,7 @@
                  </jsp:attribute>
                  <jsp:attribute name="value">
                      <ui:text path="${fieldGroup.fields[2].propertyName}" field="${fieldGroup.fields[2]}"
-                                                      readonly="${not empty device.id }"
+                                                      readonly="${true}"
                                                       displayNamePath="${v}.studyDevice.deviceType"/>
                  </jsp:attribute>
             </ui:row>

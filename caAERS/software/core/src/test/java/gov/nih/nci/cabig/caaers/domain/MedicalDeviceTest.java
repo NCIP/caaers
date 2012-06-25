@@ -90,4 +90,18 @@ public class MedicalDeviceTest extends AbstractTestCase {
         medicalDevice.setDeviceOperator(deviceOperator );
         assertSame(deviceOperator, medicalDevice.getDeviceOperator()); 
     }
+    
+    
+    public void testReadingBrandNameCommonNameAndDeviceTypeFromStudyDevice(){
+        StudyDevice sd = Fixtures.createStudyDevice();
+        sd.getDevice().setBrandName("b");
+        sd.getDevice().setCommonName("c");
+        sd.getDevice().setType("t");
+        
+        MedicalDevice md = new MedicalDevice(sd);
+        assertEquals("b", md.getBrandName());
+        assertEquals("c", md.getCommonName());
+        assertEquals("t", md.getDeviceType());
+
+    }
 }

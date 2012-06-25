@@ -125,6 +125,11 @@ public class MedicalDevice extends AbstractExpeditedReportCollectionElementChild
      */
     public void setStudyDevice(StudyDevice studyDevice) {
         this.studyDevice = studyDevice;
+        if(studyDevice != null){
+            setBrandName(studyDevice.getBrandName());
+            setCommonName(studyDevice.getCommonName());
+            setDeviceType(studyDevice.getDeviceType());
+        }
     }
    
     /**
@@ -133,6 +138,7 @@ public class MedicalDevice extends AbstractExpeditedReportCollectionElementChild
      * @return the brand name
      */
     public String getBrandName() {
+        if(getStudyDevice() != null) setBrandName(getStudyDevice().getBrandName());
         return brandName;
     }
 
@@ -169,6 +175,7 @@ public class MedicalDevice extends AbstractExpeditedReportCollectionElementChild
      * @return the common name
      */
     public String getCommonName() {
+        if(getStudyDevice() != null) setCommonName(getStudyDevice().getCommonName());
         return commonName;
     }
 
@@ -227,6 +234,7 @@ public class MedicalDevice extends AbstractExpeditedReportCollectionElementChild
      * @return the device type
      */
     public String getDeviceType() {
+        if(getStudyDevice() != null) setDeviceType(getStudyDevice().getDeviceType());
         return deviceType;
     }
 
