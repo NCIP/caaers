@@ -396,6 +396,7 @@ public class FactResolverTest extends TestCase {
         observedAE1.setLowLevelTerm(Fixtures.createLowLevelTerm("abcd","efg"));
         observedAE1.setGrade(Grade.LIFE_THREATENING);
         observedAE1.setObservedSignificance(0.9);
+        observedAE1.setpValue(0.9);
         observedAE1.setTreatmentAssignment(ta);
 
         boolean fact = resolver.assertFact(observedAE1, "gov.nih.nci.cabig.caaers.domain.Grade","code","3",">=");
