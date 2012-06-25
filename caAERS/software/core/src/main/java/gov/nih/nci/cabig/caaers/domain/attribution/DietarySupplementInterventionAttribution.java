@@ -14,10 +14,17 @@ import javax.persistence.ManyToOne;
 @Entity
 @DiscriminatorValue("DI")
 public class DietarySupplementInterventionAttribution extends AdverseEventAttribution<DietarySupplementIntervention> {
-    
+
+    public DietarySupplementInterventionAttribution(DietarySupplementIntervention cause) {
+        super(cause);
+    }
+
+    public DietarySupplementInterventionAttribution() {
+    }
+
     /* (non-Javadoc)
-     * @see gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution#getCause()
-     */
+    * @see gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution#getCause()
+    */
     @ManyToOne
     @JoinColumn(name = "cause_id")
     @Override

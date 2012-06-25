@@ -39,6 +39,13 @@ import org.springframework.beans.BeanUtils;
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_ae_attributions_id")})
 public abstract class AdverseEventAttribution<T extends DomainObject> extends AbstractMutableDomainObject {
 
+    public AdverseEventAttribution(T cause) {
+        this.cause = cause;
+    }
+
+    public AdverseEventAttribution() {
+    }
+
     /** The cause. */
     private T cause;
     

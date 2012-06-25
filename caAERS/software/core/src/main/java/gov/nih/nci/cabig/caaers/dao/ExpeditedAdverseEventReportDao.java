@@ -2,17 +2,8 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
-import gov.nih.nci.cabig.caaers.domain.CourseAgent;
-import gov.nih.nci.cabig.caaers.domain.DateValue;
-import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
-import gov.nih.nci.cabig.caaers.domain.OtherCause;
-import gov.nih.nci.cabig.caaers.domain.RadiationIntervention;
-import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
-import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
+import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.attribution.*;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
@@ -129,44 +120,102 @@ public class ExpeditedAdverseEventReportDao extends
 
 
     /**
-     * When we delte an element which has been attributed, the attribution also needs to be deleted.
+     * When we delete an element which has been attributed, the attribution also needs to be deleted.
      * @param o
      */
     public boolean cascaeDeleteToAttributions(DomainObject o, ExpeditedAdverseEventReport aeReport){
     	for(AdverseEvent ae : aeReport.getAdverseEvents()){
-    		if(o instanceof RadiationIntervention){
-    			deleteAttribution(o, ae.getRadiationAttributions(), ae);
-        	}else if(o instanceof MedicalDevice) {
-        		deleteAttribution(o, ae.getDeviceAttributions(), ae);
-        	}else if(o instanceof SurgeryIntervention) {
-        		deleteAttribution(o, ae.getSurgeryAttributions(), ae);
-        	}else if(o instanceof CourseAgent) {
-        		deleteAttribution(o, ae.getCourseAgentAttributions(), ae);
-        	}else if(o instanceof ConcomitantMedication) {
-        		deleteAttribution(o, ae.getConcomitantMedicationAttributions(), ae);
-        	}else if(o instanceof OtherCause) {
-        		deleteAttribution(o, ae.getOtherCauseAttributions(), ae);
-        	}else if(o instanceof DiseaseHistory) {
-        		deleteAttribution(o, ae.getDiseaseAttributions(), ae);
-        	}
-    	}
+            if (o instanceof RadiationIntervention) {
+                deleteAttribution(o, ae.getRadiationAttributions(), ae);
+            } else if (o instanceof MedicalDevice) {
+                deleteAttribution(o, ae.getDeviceAttributions(), ae);
+            } else if (o instanceof SurgeryIntervention) {
+                deleteAttribution(o, ae.getSurgeryAttributions(), ae);
+            } else if (o instanceof CourseAgent) {
+                deleteAttribution(o, ae.getCourseAgentAttributions(), ae);
+            } else if (o instanceof ConcomitantMedication) {
+                deleteAttribution(o, ae.getConcomitantMedicationAttributions(), ae);
+            } else if (o instanceof OtherCause) {
+                deleteAttribution(o, ae.getOtherCauseAttributions(), ae);
+            } else if (o instanceof DiseaseHistory) {
+                deleteAttribution(o, ae.getDiseaseAttributions(), ae);
+            } else if (o instanceof OtherAEIntervention) {
+                deleteAttribution(o, ae.getOtherInterventionAttributions(), ae);
+            } else if (o instanceof BehavioralIntervention) {
+                deleteAttribution(o, ae.getBehavioralInterventionAttributions(), ae);
+            } else if (o instanceof BiologicalIntervention) {
+                deleteAttribution(o, ae.getBiologicalInterventionAttributions(), ae);
+            } else if (o instanceof DietarySupplementIntervention) {
+                deleteAttribution(o, ae.getDietarySupplementInterventionAttributions(), ae);
+            } else if (o instanceof GeneticIntervention) {
+                deleteAttribution(o, ae.getGeneticInterventionAttributions(), ae);
+            }
+        }
     	return true;
     }
 
-    public void deleteAttribution(DomainObject obj, List<? extends AdverseEventAttribution<? extends DomainObject>> attributions, AdverseEvent ae){
-        if(obj == null || obj.getId() == null) return;
-    	AdverseEventAttribution<? extends DomainObject> unwantedAttribution = null;
-    	for(AdverseEventAttribution<? extends DomainObject> attribution : attributions){
-    		if(obj.getId().equals(attribution.getCause().getId())) {
-    			unwantedAttribution = attribution;
-    			break;
-    		}
-
-    	}
-    	if(unwantedAttribution != null){
-    		attributions.remove(unwantedAttribution);
-    		unwantedAttribution.setAdverseEvent(null);
-    	}
+    /**
+     * Insert a new Attribution for the a new Object
+     * @param o
+     * @param aeReport
+     * @return
+     */
+    public boolean addAttributionsToAEs(DomainObject o, ExpeditedAdverseEventReport aeReport) {
+        for (AdverseEvent ae : aeReport.getAdverseEvents()) {
+            if (o instanceof RadiationIntervention) {
+                addAttribution(new RadiationAttribution((RadiationIntervention)o), ae.getRadiationAttributions(), ae);
+            } else if (o instanceof OtherAEIntervention) {
+                addAttribution(new OtherInterventionAttribution((OtherAEIntervention)o), ae.getOtherInterventionAttributions(), ae);
+            } else if (o instanceof BehavioralIntervention) {
+                addAttribution(new BehavioralInterventionAttribution((BehavioralIntervention)o), ae.getBehavioralInterventionAttributions(), ae);
+            } else if (o instanceof BiologicalIntervention) {
+                addAttribution(new BiologicalInterventionAttribution((BiologicalIntervention)o), ae.getBiologicalInterventionAttributions(), ae);
+            } else if (o instanceof DietarySupplementIntervention) {
+                addAttribution(new DietarySupplementInterventionAttribution((DietarySupplementIntervention)o), ae.getDietarySupplementInterventionAttributions(), ae);
+            } else if (o instanceof GeneticIntervention) {
+                addAttribution(new GeneticInterventionAttribution((GeneticIntervention)o), ae.getGeneticInterventionAttributions(), ae);
+            } else if (o instanceof MedicalDevice) {
+                addAttribution(new DeviceAttribution((MedicalDevice)o), ae.getDeviceAttributions(), ae);
+            } else if (o instanceof SurgeryIntervention) {
+                addAttribution(new SurgeryAttribution((SurgeryIntervention)o), ae.getSurgeryAttributions(), ae);
+            } else if (o instanceof CourseAgent) {
+                addAttribution(new CourseAgentAttribution((CourseAgent)o), ae.getCourseAgentAttributions(), ae);
+            } else if (o instanceof ConcomitantMedication) {
+                addAttribution(new ConcomitantMedicationAttribution((ConcomitantMedication)o), ae.getConcomitantMedicationAttributions(), ae);
+            } else if (o instanceof OtherCause) {
+                addAttribution(new OtherCauseAttribution((OtherCause)o), ae.getOtherCauseAttributions(), ae);
+            } else if (o instanceof DiseaseHistory) {
+                addAttribution(new DiseaseAttribution((DiseaseHistory)o), ae.getDiseaseAttributions(), ae);
+            }
+        }
+        return true;
     }
 
+    public void deleteAttribution(DomainObject obj, List<? extends AdverseEventAttribution<? extends DomainObject>> attributions, AdverseEvent ae) {
+        if (obj == null || obj.getId() == null) return;
+        AdverseEventAttribution<? extends DomainObject> unwantedAttribution = null;
+        for (AdverseEventAttribution<? extends DomainObject> attribution : attributions) {
+            if (obj.getId().equals(attribution.getCause().getId())) {
+                unwantedAttribution = attribution;
+                break;
+            }
+
+        }
+        if (unwantedAttribution != null) {
+            attributions.remove(unwantedAttribution);
+            unwantedAttribution.setAdverseEvent(null);
+        }
+    }
+
+    public void addAttribution(AdverseEventAttribution<? extends DomainObject> newAttribution, List attributions, AdverseEvent ae) {
+        if (newAttribution == null || newAttribution.getCause() == null || newAttribution.getCause().getId() == null) return;
+
+        for (Object o : attributions) {
+            AdverseEventAttribution a = (AdverseEventAttribution)o;
+            if (a.getCause().getId().equals(newAttribution.getCause().getId())) return;
+        }
+
+        newAttribution.setAdverseEvent(ae);
+        attributions.add(newAttribution);
+    }
 }

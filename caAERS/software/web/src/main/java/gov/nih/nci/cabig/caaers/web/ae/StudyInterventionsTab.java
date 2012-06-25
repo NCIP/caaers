@@ -5,23 +5,7 @@ import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.createSelect
 import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.createTextField;
 import static gov.nih.nci.cabig.caaers.web.utils.WebUtils.collectOptions;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
-import gov.nih.nci.cabig.caaers.domain.AgentAdjustment;
-import gov.nih.nci.cabig.caaers.domain.Availability;
-import gov.nih.nci.cabig.caaers.domain.BehavioralIntervention;
-import gov.nih.nci.cabig.caaers.domain.BiologicalIntervention;
-import gov.nih.nci.cabig.caaers.domain.ConfigPropertyType;
-import gov.nih.nci.cabig.caaers.domain.CourseAgent;
-import gov.nih.nci.cabig.caaers.domain.DelayUnits;
-import gov.nih.nci.cabig.caaers.domain.DeviceOperator;
-import gov.nih.nci.cabig.caaers.domain.DietarySupplementIntervention;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReportChild;
-import gov.nih.nci.cabig.caaers.domain.GeneticIntervention;
-import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
-import gov.nih.nci.cabig.caaers.domain.OtherAEIntervention;
-import gov.nih.nci.cabig.caaers.domain.RadiationAdministration;
-import gov.nih.nci.cabig.caaers.domain.RadiationIntervention;
-import gov.nih.nci.cabig.caaers.domain.ReprocessedDevice;
-import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.repository.ConfigPropertyRepositoryImpl;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
@@ -721,6 +705,10 @@ public class StudyInterventionsTab extends AeTab {
         child.setReport(null);
     }
 
+    public void insertAttributions(ExpeditedAdverseEventReportChild child, ExpeditedAdverseEventInputCommand command) {
+        expeditedAdverseEventReportDao.addAttributionsToAEs((DomainObject) child, command.getAeReport());
+    }
+
     public ExpeditedAdverseEventReportDao getExpeditedAdverseEventReportDao() {
         return expeditedAdverseEventReportDao;
     }
@@ -749,4 +737,20 @@ public class StudyInterventionsTab extends AeTab {
 		this.configPropertyRepositoryImpl = configPropertyRepositoryImpl;
 	}
 
+    @Override
+    public void postProcess(HttpServletRequest request, ExpeditedAdverseEventInputCommand command, Errors errors) {
+        super.postProcess(request, command, errors);
+        AbstractExpeditedAdverseEventInputCommand c = (AbstractExpeditedAdverseEventInputCommand)command;
+
+        // check interventions
+        for (CourseAgent ca : c.getAeReport().getTreatmentInformation().getCourseAgents()) c.addAttribution(ca);
+        for (SurgeryIntervention si : c.getAeReport().getSurgeryInterventions()) insertAttributions(si, c);
+        for (BehavioralIntervention si : c.getAeReport().getBehavioralInterventions()) insertAttributions(si, c);
+        for (BiologicalIntervention si : c.getAeReport().getBiologicalInterventions()) insertAttributions(si, c);
+        for (DietarySupplementIntervention si : c.getAeReport().getDietaryInterventions()) insertAttributions(si, c);
+        for (GeneticIntervention si : c.getAeReport().getGeneticInterventions()) insertAttributions(si, c);
+        for (OtherAEIntervention si : c.getAeReport().getOtherAEInterventions()) insertAttributions(si, c);
+        for (RadiationIntervention si : c.getAeReport().getRadiationInterventions()) insertAttributions(si, c);
+        for (MedicalDevice si : c.getAeReport().getMedicalDevices()) insertAttributions(si, c);
+    }
 }

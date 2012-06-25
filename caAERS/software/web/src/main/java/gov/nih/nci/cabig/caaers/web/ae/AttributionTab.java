@@ -124,7 +124,7 @@ public class AttributionTab extends AeTab {
     @Override
     public boolean hasMandatoryFields(ExpeditedAdverseEventInputCommand command, HttpServletRequest request) {
         if (command instanceof AbstractExpeditedAdverseEventInputCommand) {
-            List<ReportDefinition> rds = ((AbstractExpeditedAdverseEventInputCommand)command).getSelectedReportDefinitions();
+            List<ReportDefinition> rds = command.getSelectedReportDefinitions();
             for (ReportDefinition rd : rds) {
                 if (!rd.getAttributionRequired()) return false;
             }

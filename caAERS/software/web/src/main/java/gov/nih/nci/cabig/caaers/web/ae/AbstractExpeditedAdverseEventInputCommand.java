@@ -20,6 +20,7 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
+import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
@@ -503,7 +504,11 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     public void deleteAttribution(DomainObject o){
     	reportDao.cascaeDeleteToAttributions(o, getAeReport());
     }
-    
+
+    public void addAttribution(DomainObject o){
+    	reportDao.addAttributionsToAEs(o, getAeReport());
+    }
+
     public AdverseEventRoutingAndReviewRepository getAdverseEventRoutingAndReviewRepository(){
     	return adverseEventRoutingAndReviewRepository;
     }

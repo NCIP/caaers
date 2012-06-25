@@ -33,6 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
 
 /**
@@ -791,7 +792,25 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
     	assertTrue(returnVal);
     	assertEquals(1, list.size());
     }
-    
+
+    public void testInsertAttribution() {
+        RadiationIntervention ri = new RadiationIntervention();
+        ri.setId(1);
+
+        OtherAEIntervention oi = new OtherAEIntervention();
+        oi.setId(2);
+
+        ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
+        assertEquals(0, aeReport.getAdverseEvents().get(0).getOtherInterventionAttributions().size());
+        assertEquals(0, aeReport.getAdverseEvents().get(0).getRadiationAttributions().size());
+
+        getDao().addAttributionsToAEs(ri, aeReport);
+        getDao().addAttributionsToAEs(oi, aeReport);
+        assertEquals(1, aeReport.getAdverseEvents().get(0).getOtherInterventionAttributions().size());
+        assertEquals(1, aeReport.getAdverseEvents().get(0).getRadiationAttributions().size());
+
+    }
+
    public void testCascadeDeleteToAttributions_DiseaseAttribution(){
 	   DiseaseAttribution d1 = new DiseaseAttribution();
 	   DiseaseHistory dh1 = new DiseaseHistory();

@@ -16,10 +16,17 @@ import javax.persistence.ManyToOne;
 @Entity
 @DiscriminatorValue("DV")
 public class DeviceAttribution extends AdverseEventAttribution<MedicalDevice> {
-    
+
+    public DeviceAttribution(MedicalDevice cause) {
+        super(cause);
+    }
+
+    public DeviceAttribution() {
+    }
+
     /* (non-Javadoc)
-     * @see gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution#getCause()
-     */
+    * @see gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution#getCause()
+    */
     @ManyToOne
     @JoinColumn(name = "cause_id")
     @Override

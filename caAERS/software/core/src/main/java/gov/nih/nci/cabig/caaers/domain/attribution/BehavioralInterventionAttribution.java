@@ -14,10 +14,17 @@ import javax.persistence.ManyToOne;
 @Entity
 @DiscriminatorValue("HI")
 public class BehavioralInterventionAttribution extends AdverseEventAttribution<BehavioralIntervention> {
-    
+
+    public BehavioralInterventionAttribution(BehavioralIntervention cause) {
+        super(cause);
+    }
+
+    public BehavioralInterventionAttribution() {
+    }
+
     /* (non-Javadoc)
-     * @see gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution#getCause()
-     */
+    * @see gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution#getCause()
+    */
     @ManyToOne
     @JoinColumn(name = "cause_id")
     @Override

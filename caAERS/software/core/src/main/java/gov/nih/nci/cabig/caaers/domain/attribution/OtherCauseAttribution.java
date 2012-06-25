@@ -16,10 +16,17 @@ import javax.persistence.ManyToOne;
 @Entity
 @DiscriminatorValue("OC")
 public class OtherCauseAttribution extends AdverseEventAttribution<OtherCause> {
-    
+
+    public OtherCauseAttribution(OtherCause cause) {
+        super(cause);
+    }
+
+    public OtherCauseAttribution() {
+    }
+
     /* (non-Javadoc)
-     * @see gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution#getCause()
-     */
+    * @see gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution#getCause()
+    */
     @ManyToOne
     @JoinColumn(name = "cause_id")
     @Override

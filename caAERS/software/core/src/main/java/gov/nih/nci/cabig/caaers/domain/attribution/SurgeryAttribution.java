@@ -16,10 +16,17 @@ import javax.persistence.ManyToOne;
 @Entity
 @DiscriminatorValue("SI")
 public class SurgeryAttribution extends AdverseEventAttribution<SurgeryIntervention> {
-    
+
+    public SurgeryAttribution(SurgeryIntervention cause) {
+        super(cause);
+    }
+
+    public SurgeryAttribution() {
+    }
+
     /* (non-Javadoc)
-     * @see gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution#getCause()
-     */
+    * @see gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution#getCause()
+    */
     @ManyToOne
     @JoinColumn(name = "cause_id")
     @Override

@@ -16,10 +16,17 @@ import javax.persistence.ManyToOne;
 @Entity
 @DiscriminatorValue("CA")
 public class CourseAgentAttribution extends AdverseEventAttribution<CourseAgent> {
-    
+
+    public CourseAgentAttribution(CourseAgent cause) {
+        super(cause);
+    }
+
+    public CourseAgentAttribution() {
+    }
+
     /* (non-Javadoc)
-     * @see gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution#getCause()
-     */
+    * @see gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution#getCause()
+    */
     @ManyToOne
     @JoinColumn(name = "cause_id")
     @Override

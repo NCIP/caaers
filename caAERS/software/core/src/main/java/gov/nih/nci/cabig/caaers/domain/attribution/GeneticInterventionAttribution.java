@@ -14,10 +14,17 @@ import javax.persistence.ManyToOne;
 @Entity
 @DiscriminatorValue("GI")
 public class GeneticInterventionAttribution extends AdverseEventAttribution<GeneticIntervention> {
-    
+
+    public GeneticInterventionAttribution(GeneticIntervention cause) {
+        super(cause);
+    }
+
+    public GeneticInterventionAttribution() {
+    }
+
     /* (non-Javadoc)
-     * @see gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution#getCause()
-     */
+    * @see gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution#getCause()
+    */
     @ManyToOne
     @JoinColumn(name = "cause_id")
     @Override
