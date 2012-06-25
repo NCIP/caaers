@@ -30,8 +30,10 @@
                 	<c:set var="indAssociationsString" value="" />
 	                <c:if test="${fn:length(sd.studyDeviceINDAssociations) > 0}">
 	                    <c:forEach items="${sd.studyDeviceINDAssociations }" var="sai">
-	                        <c:set var="indAssociationsString" value="${sai.investigationalNewDrug.strINDNo},&nbsp;&nbsp;${sai.investigationalNewDrug.holderName}" />
-	                    </c:forEach>
+	                    	<c:if test="${not empty sai.investigationalNewDrug}">
+                            	<c:set var="indAssociationsString" value="${sai.investigationalNewDrug.strINDNo},&nbsp;&nbsp;${sai.investigationalNewDrug.holderName}" />
+                         	</c:if>
+	                     </c:forEach>
 	                </c:if>
                 
 	                "brandName":"${sd.brandName}", 
