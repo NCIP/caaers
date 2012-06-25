@@ -124,7 +124,9 @@
         <stud:treatmentAssignment>
             <ctepDbIdentifier><xsl:value-of select="tacDbId" /></ctepDbIdentifier>
             <code><xsl:value-of select="code" /></code>
-            <description><xsl:value-of select="description" /></description>
+            <xsl:if test="normalize-space(description) != ''">
+                <description><xsl:value-of select="description" /></description>
+            </xsl:if>
         </stud:treatmentAssignment>
     </xsl:template>
     <xsl:template match="studyDiseases">
