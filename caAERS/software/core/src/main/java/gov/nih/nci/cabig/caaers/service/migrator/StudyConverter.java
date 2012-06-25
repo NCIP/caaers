@@ -737,7 +737,6 @@ public class StudyConverter {
 
 		gov.nih.nci.cabig.caaers.integration.schema.study.Study.Identifiers identifiers = studyDto.getIdentifiers();
 		if(identifiers != null){
-			List<Identifier> identifierList = study.getIdentifiers();
 			List<OrganizationAssignedIdentifierType> orgAssignedIdList = identifiers.getOrganizationAssignedIdentifier();
 			if(orgAssignedIdList != null && !orgAssignedIdList.isEmpty()){
 				OrganizationAssignedIdentifier orgIdentifier;
@@ -749,10 +748,27 @@ public class StudyConverter {
 					orgIdentifier.setPrimaryIndicator(organizationAssignedIdentifierType.isPrimaryIndicator());
 					organization.setName(organizationAssignedIdentifierType.getOrganization().getName());
 					orgIdentifier.setOrganization(organization);
-					identifierList.add(orgIdentifier);
+					study.addIdentifier(orgIdentifier);
 				}
-				study.setIdentifiers(identifierList);
 			}
+            
+            List<SystemAssignedIdentifierType> sysAssignedIdList = identifiers.getSystemAssignedIdentifier();
+            if(sysAssignedIdList != null && !sysAssignedIdList.isEmpty()){
+                for(SystemAssignedIdentifierType systemAssignedIdentifierType : sysAssignedIdList){
+                    if(StringUtils.isEmpty(systemAssignedIdentifierType.getSystemName()) ||  
+                            StringUtils.isEmpty(systemAssignedIdentifierType.getValue())) continue;
+                    
+                    if(systemAssignedIdentifierType.getType() == null) continue;
+                    
+                    SystemAssignedIdentifier sysIdentifier = new SystemAssignedIdentifier();
+
+                    sysIdentifier.setSystemName(systemAssignedIdentifierType.getSystemName());
+                    sysIdentifier.setType(systemAssignedIdentifierType.getType().value());
+                    sysIdentifier.setValue(systemAssignedIdentifierType.getValue());
+                    study.addIdentifier(sysIdentifier);
+                }
+            }
+
 		}
 
 	}
