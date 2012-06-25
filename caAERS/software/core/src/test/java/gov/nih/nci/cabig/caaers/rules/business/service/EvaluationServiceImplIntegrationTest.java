@@ -73,6 +73,7 @@ public class EvaluationServiceImplIntegrationTest extends CaaersDbTestCase {
         observedAE1.setLowLevelTerm(Fixtures.createLowLevelTerm("abcd","efg"));
         observedAE1.setGrade(Grade.LIFE_THREATENING);
         observedAE1.setObservedSignificance(0.9);
+        observedAE1.setpValue(0.9);
         observedAE1.setTreatmentAssignment(ta);
 
 
@@ -87,6 +88,7 @@ public class EvaluationServiceImplIntegrationTest extends CaaersDbTestCase {
             observedAE1.setLowLevelTerm(Fixtures.createLowLevelTerm("abcd","efg"));
             observedAE1.setGrade(Grade.SEVERE);
             observedAE1.setObservedSignificance(0.9);
+            observedAE1.setpValue(0.9);
             observedAE1.setTreatmentAssignment(ta);
 
 
@@ -101,6 +103,7 @@ public class EvaluationServiceImplIntegrationTest extends CaaersDbTestCase {
             observedAE1.setLowLevelTerm(Fixtures.createLowLevelTerm("abcd","efg"));
             observedAE1.setGrade(Grade.NORMAL);
             observedAE1.setObservedSignificance(0.9);
+            observedAE1.setpValue(0.9);
             observedAE1.setTreatmentAssignment(ta);
 
 
@@ -115,6 +118,7 @@ public class EvaluationServiceImplIntegrationTest extends CaaersDbTestCase {
             observedAE1.setLowLevelTerm(Fixtures.createLowLevelTerm("abcd","efg"));
             observedAE1.setGrade(Grade.SEVERE);
             observedAE1.setObservedSignificance(0.3);
+            observedAE1.setpValue(0.3);
             observedAE1.setTreatmentAssignment(ta);
 
 
