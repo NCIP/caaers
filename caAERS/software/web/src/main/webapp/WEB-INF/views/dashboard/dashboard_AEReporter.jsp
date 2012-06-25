@@ -269,7 +269,7 @@
                         <td><i>Withdrawn on:</i><br><span style="color:#2e83bb;"><tags:formatDate value="${rvDTO.rv.withdrawnOn}" /></span></td>
                     </c:when>
                     <c:when test="${_s eq 'COMPLETED' or _s eq 'AMENDED'}">
-                        <td><i>Submited on:</i><br><span style="color:#66a811;"><tags:formatDate value="${rvDTO.rv.submittedOn}" /></span></td>
+                        <td><i>Submitted on:</i><br><span style="color:#66a811;"><tags:formatDate value="${rvDTO.rv.submittedOn}" /></span></td>
                     </c:when>
                 </c:choose>
 <%--
@@ -280,7 +280,7 @@
                     </td>
                 </c:if>
                 <c:if test="${rvDTO.rv.submittedOn ne null and rvDTO.rv.reportStatus eq 'COMPLETED'}">
-                    <td align="right" width="100px"><i>Submited on:</i></td>
+                    <td align="right" width="100px"><i>Submitted on:</i></td>
                     <td align="left" width="70px"><span style="color:#66a811;"><tags:formatDate value="${rvDTO.rv.submittedOn}" /></span></td>
                 </c:if>
                 <c:if test="${rvDTO.rv.submittedOn eq null and rvDTO.rv.dueOn eq null}">
