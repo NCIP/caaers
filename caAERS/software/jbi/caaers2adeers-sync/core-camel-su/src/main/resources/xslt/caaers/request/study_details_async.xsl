@@ -32,10 +32,7 @@
                 </phaseCode>
                 <verbatimFirst>true</verbatimFirst>
                 <adeersReporting>true</adeersReporting>
-                <studyPurpose>
-                    <xsl:variable name="_purpose" select="primaryStudyType"></xsl:variable>
-                    <xsl:call-template name="lookup"><xsl:with-param name="_map" select="$map//studypurposes" /><xsl:with-param name="_code" select="$_purpose" /></xsl:call-template>
-                </studyPurpose>
+                <studyPurpose><xsl:value-of select="primaryStudyType"/></studyPurpose>
                 <participationType><xsl:value-of select="participationType" /></participationType>
                 <aeTermUnique>true</aeTermUnique>
                 <stud:aeTerminology>
