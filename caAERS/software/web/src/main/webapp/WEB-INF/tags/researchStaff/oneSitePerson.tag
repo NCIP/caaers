@@ -37,7 +37,7 @@
                                             <jsp:attribute name="embededJS"></jsp:attribute>
                                             <jsp:attribute name="populatorJS">
                                                 function(autocompleter, text) {
-                                                    createStudy.restrictOrganizations(text, false, function(values) {
+                                                    createStudy.restrictOrganizations(text, false, false, function(values) {
                                                         var actualValues = new Array();
                                                         for(var i = 0; i< values.length; i++){
                                                            if(AE.sitePersonOrgs.indexOf(values[i].id) < 0) actualValues.push(values[i]);
