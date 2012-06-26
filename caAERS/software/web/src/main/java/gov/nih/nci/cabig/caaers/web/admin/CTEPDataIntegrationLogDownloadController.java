@@ -99,9 +99,6 @@ public class CTEPDataIntegrationLogDownloadController extends AbstractController
             log.error("Unable to parse dstr request parameter", pe);
             return null;
         }
-        
-        Calendar c = Calendar.getInstance();
-        c.setTime(d);
 
         String subFolder = DateUtils.formatDate(d, "yyyy") +
                 File.pathSeparator +
