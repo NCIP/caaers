@@ -121,13 +121,11 @@ public class CTEPDataIntegrationLogDownloadController extends AbstractController
 
         ZipOutputStream zos = null;
         FileOutputStream fos = null;
+        String strFolderToZip = baseFolder + subFolder + File.separator + entity + File.separator + correlationId;
         try{
             fos = new FileOutputStream(tempFile);
             zos = new ZipOutputStream(fos);
-
-            String strFolderToZip = baseFolder + subFolder + File.separator + entity + File.separator + correlationId;
             File zipFolder = new File(strFolderToZip);
-
             int len = zipFolder.getAbsolutePath().lastIndexOf(File.separator);
             String baseName = zipFolder.getAbsolutePath().substring(0, len + 1);
             addFolderToZip(zipFolder, zos, baseName);
@@ -135,7 +133,7 @@ public class CTEPDataIntegrationLogDownloadController extends AbstractController
             zos.flush();
             
         }catch (Exception e){
-            log.error("Unable to zip folder", e);
+            log.error("Unable to zip folder (folderName :" + strFolderToZip + ")", e);
         } finally {
             if(zos != null)IOUtils.closeQuietly(zos);
             if(fos != null)IOUtils.closeQuietly(fos);  
