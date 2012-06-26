@@ -313,6 +313,16 @@ YAHOO.util.Event.addListener(window, "load", function() {
         <br /><b> <font color="red">Looks like rule (${rs.id}, ${rs.ruleBindURI}, ${rs.ruleLevel.description}, ${rs.ruleType.name}, ${rs.organization.nciInstituteCode}) is not enabled but is present in deploy area</font></b>
     </c:if>
     </c:forEach>
+    <c:if test="${not fn:contains(command.allFromRuntimeEngine,'gov.nih.nci.cabig.caaers.rules.reporting_pre_existing_condition_section' )}"><font color="red"><br />Missing business rule : gov.nih.nci.cabig.caaers.rules.reporting_pre_existing_condition_section</font> </c:if>
+     <c:if test="${not fn:contains(command.allFromRuntimeEngine,'gov.nih.nci.cabig.caaers.rules.reporting_prior_therapies_section' )}"><font color="red"><br />Missing business rule : gov.nih.nci.cabig.caaers.rules.reporting_prior_therapies_section </font> </c:if>
+    <c:if test="${not fn:contains(command.allFromRuntimeEngine,'gov.nih.nci.cabig.caaers.rules.reporting_medical_info_section' )}"><font color="red"><br />Missing business rule : gov.nih.nci.cabig.caaers.rules.reporting_medical_info_section</font> </c:if>
+     <c:if test="${not fn:contains(command.allFromRuntimeEngine,'gov.nih.nci.cabig.caaers.rules.reporting_description_section' )}"><font color="red"><br />Missing business rule : gov.nih.nci.cabig.caaers.rules.reporting_description_section</font> </c:if>
+    <c:if test="${not fn:contains(command.allFromRuntimeEngine,'gov.nih.nci.cabig.caaers.rules.reporting_treatment_info_section' )}"><font color="red"><br />Missing business rule : gov.nih.nci.cabig.caaers.rules.reporting_treatment_info_section</font> </c:if>
+     <c:if test="${not fn:contains(command.allFromRuntimeEngine,'gov.nih.nci.cabig.caaers.rules.reporting_basics_section'  )}"><font color="red"><br />Missing business rule : gov.nih.nci.cabig.caaers.rules.reporting_basics_section</font> </c:if>
+    <c:if test="${not fn:contains(command.allFromRuntimeEngine,'gov.nih.nci.cabig.caaers.rules.reporting_study_interventions' )}"><font color="red"><br />Missing business rule : gov.nih.nci.cabig.caaers.rules.reporting_study_interventions</font> </c:if>
+     <c:if test="${not fn:contains(command.allFromRuntimeEngine,'gov.nih.nci.cabig.caaers.rules.reporting_labs_section')}"><font color="red"><br />Missing business rule : gov.nih.nci.cabig.caaers.rules.reporting_labs_section</font> </c:if>
+    <c:if test="${not fn:contains(command.allFromRuntimeEngine,'gov.nih.nci.cabig.caaers.rules.reporting_attribution_section' )}"><font color="red"><br />Missing business rule : gov.nih.nci.cabig.caaers.rules.reporting_attribution_section</font> </c:if>
+
 
 </div>
 </body>
