@@ -36,6 +36,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.workflow.StudySiteWorkflowConfig;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 import gov.nih.nci.cabig.caaers.event.EventFactory;
@@ -132,9 +133,10 @@ public class StudyRepository {
 
     private String getStudyKey(Study s) {
         String key = "";
-        OrganizationAssignedIdentifier i = s.getFundingSponsorIdentifier();
+//        OrganizationAssignedIdentifier i = s.getFundingSponsorIdentifier();
+        SystemAssignedIdentifier i = s.getCtepEsysIdentifier();
         if (i != null) {
-            key = i.getOrganization().getNciInstituteCode() + ":" + i.getValue();
+            key = i.getSystemName() + ":" + i.getValue();
         } else {
             key = s.getShortTitle();
         }

@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.LocalStudy;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.integration.schema.study.Studies;
 import gov.nih.nci.cabig.caaers.service.migrator.StudyConverter;
@@ -273,7 +274,11 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
                     OrganizationAssignedIdentifier identifier = domainStudy.getFundingSponsor().getOrganizationAssignedIdentifier();
                     identifier.setOrganization(domainStudy.getFundingSponsor().getStudyFundingSponsor().getOrganization());
                     domainStudy.addIdentifier(identifier);
-
+                    SystemAssignedIdentifier systemAssignedIdentifier = new SystemAssignedIdentifier();
+                    systemAssignedIdentifier.setSystemName("CTEP-ESYS");
+                    systemAssignedIdentifier.setType("Other");
+                    systemAssignedIdentifier.setValue(domainStudy.getFundingSponsorIdentifierValue());
+                    domainStudy.addIdentifier(systemAssignedIdentifier);
                     studyList.add(domainStudy);
                 }
             }catch (Exception e){
@@ -339,7 +344,7 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
                 return String.valueOf(study.getId());
             }
         }
-        return syncStudy(UPDATE_STUDY_OPERATION_NAME, study.getFundingSponsorIdentifierValue());
+        return syncStudy(UPDATE_STUDY_OPERATION_NAME, study.getCtepEsysIdentifierValue());
     }
     
 }

@@ -567,6 +567,36 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     }
     
     /**
+     * Gets the coordinating center identifier.
+     *
+     * @return the coordinating center identifier
+     */
+    @Transient
+    public SystemAssignedIdentifier getCtepEsysIdentifier() {
+        for (Identifier identifier : getIdentifiers()) {
+
+            if (identifier instanceof SystemAssignedIdentifier
+                    && ((SystemAssignedIdentifier) identifier).getSystemName().equalsIgnoreCase(
+                    		SystemAssignedIdentifier.CTEP_ESYS_NAME)) {
+                return (SystemAssignedIdentifier) identifier;
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * Gets the funding sponsor identifier value.
+     *
+     * @return the funding sponsor identifier value
+     */
+    @Transient
+    public String getCtepEsysIdentifierValue() {
+        Identifier id =  getCtepEsysIdentifier();
+        if(id == null) return null;
+        return id.getValue();
+    }
+    
+    /**
      * Gets the identifier containing.
      *
      * @param text the text

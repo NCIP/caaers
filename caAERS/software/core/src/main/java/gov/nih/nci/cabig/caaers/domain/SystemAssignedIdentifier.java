@@ -18,6 +18,9 @@ public class SystemAssignedIdentifier extends Identifier {
 
     /** The Constant MRN_IDENTIFIER_TYPE. */
     public static final String MRN_IDENTIFIER_TYPE = "MRN";
+    
+    /** The Constant CTEP-ESYS system name. */
+    public static final String CTEP_ESYS_NAME = "CTEP-ESYS";
 
     /** The system name. */
     private String systemName;
