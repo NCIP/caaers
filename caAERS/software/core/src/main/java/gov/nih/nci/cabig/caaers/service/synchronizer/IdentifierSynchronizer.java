@@ -20,35 +20,38 @@ public class IdentifierSynchronizer<E extends AbstractIdentifiableDomainObject> 
 	public void migrate(E dbObj, E xmlObj,
 			DomainObjectImportOutcome<E> outcome) {
 		
-		List<Identifier> newIdentifiersList = new ArrayList<Identifier>();
+		dbObj.getIdentifiers().clear();
+		dbObj.getIdentifiers().addAll(xmlObj.getIdentifiers());
 		
-		//Identify newly added Identifiers.
-		for(Identifier xmlIdentifer : xmlObj.getIdentifiers()){
-			if(xmlIdentifer instanceof OrganizationAssignedIdentifier){
-				for(Identifier dbIdentifer : dbObj.getIdentifiers()){
-					if(dbIdentifer instanceof OrganizationAssignedIdentifier){
-						xmlIdentifer.setId(dbIdentifer.getId());
-						if(xmlIdentifer.equals(dbIdentifer)){
-							break;
-						}else{
-							xmlIdentifer.setId(null);
-						}
-			 		}
-				}
-				if(xmlIdentifer.getId() == null){
-					newIdentifiersList.add(xmlIdentifer);
-				}
-			}
-		}
-		//Adding the new identifiers to the existing Study.
-		for(Identifier newIdentifier : newIdentifiersList){
-			String type = newIdentifier.getType();
-			if ("Protocol Authority Identifier".equals(type) || "Coordinating Center Identifier".equals(type)){
-				//FundingSponsor identifier which is of type "Protocol Authority Identifier" cannot be modified.
-				//CoordinatingCenter identifier which is of type "Coordinating Center Identifier" cannot be modified.
-			}else{
-				dbObj.getIdentifiers().add(newIdentifier);
-			}
-		}
+//		List<Identifier> newIdentifiersList = new ArrayList<Identifier>();
+//		
+//		//Identify newly added Identifiers.
+//		for(Identifier xmlIdentifer : xmlObj.getIdentifiers()){
+//			if(xmlIdentifer instanceof OrganizationAssignedIdentifier){
+//				for(Identifier dbIdentifer : dbObj.getIdentifiers()){
+//					if(dbIdentifer instanceof OrganizationAssignedIdentifier){
+//						xmlIdentifer.setId(dbIdentifer.getId());
+//						if(xmlIdentifer.equals(dbIdentifer)){
+//							break;
+//						}else{
+//							xmlIdentifer.setId(null);
+//						}
+//			 		}
+//				}
+//				if(xmlIdentifer.getId() == null){
+//					newIdentifiersList.add(xmlIdentifer);
+//				}
+//			}
+//		}
+//		//Adding the new identifiers to the existing Study.
+//		for(Identifier newIdentifier : newIdentifiersList){
+//			String type = newIdentifier.getType();
+//			if ("Protocol Authority Identifier".equals(type) || "Coordinating Center Identifier".equals(type)){
+//				//FundingSponsor identifier which is of type "Protocol Authority Identifier" cannot be modified.
+//				//CoordinatingCenter identifier which is of type "Coordinating Center Identifier" cannot be modified.
+//			}else{
+//				dbObj.getIdentifiers().add(newIdentifier);
+//			}
+//		}
 	} //end method
 }
