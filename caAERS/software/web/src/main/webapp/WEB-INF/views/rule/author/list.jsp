@@ -55,6 +55,16 @@
     
     
     <script type="text/javascript">
+     function showRuleDebugInfo(rsId){
+        _e = $('rule-debug-'+ rsId)
+        if(Element.visible(_e)){
+            _e.hide();
+            $('rule-debug').hide();
+        }else{
+            _e.show();
+            $('rule-debug').show();
+        }
+     }
 
     Event.observe(window, "load", function() {});
 		
@@ -91,7 +101,7 @@ YAHOO.example.Data = {
             rsDescription: "${rs.ruleType.name}",
             rsOrganization: "${empty rs.organization ? 'NA' : rs.organization.fullName}",
             rsStudyID: "${rs.study.shortTitle}",
-            rsStatus: "<div id='status-${rs.id}'>${rs.status}</div>"
+            rsStatus: "<div id='status-${rs.id}' onclick='showRuleDebugInfo(${rs.id})'>${rs.status}</div>"
 
             ,
             rsAction: "<select id='action-id' onChange=\"javascript:handleAction(this, '${rs.id}', '${rs.ruleBindURI}', 'status-${rs.id}')\">" +
@@ -235,23 +245,59 @@ YAHOO.util.Event.addListener(window, "load", function() {
     </chrome:division>
     </csmauthz:accesscontrol>
 </chrome:box>
-<div id="rule-debug" style="display: none;" >
-    Below section will be removed later, after we test the Rules module throughly.
-    <p>Stage Area :
+
+<c:forEach items="${command.ruleSets}" var="rs" varStatus="status">
+    <div id="rule-debug-${rs.id}" style="display: none;background-color: #c0c0b0;">
+        <p>
+        RuleSet Id: ${rs.id} <br />
+        Rule Level: ${empty rs.ruleLevel ? 'NA' : rs.ruleLevel.description}  <br />
+        Rule Type : ${rs.ruleType.name} <br />
+        Organization : ${empty rs.organization ? 'NA' : rs.organization.fullName} <br />
+        Study : ${rs.study.shortTitle} <br />
+        Status : ${rs.status}  <br />
+        Present in Stage area : ${fn:contains(command.allFromSageArea,rs.ruleBindURI )} <br />
+        Present in Deploy area : ${fn:contains(command.allFromDeployArea,rs.ruleBindURI )} <br />
+        Present in Runtime area : ${fn:contains(command.allFromRuntimeEngine,rs.ruleBindURI )} <br />
+        <c:if test="${rs.status eq 'Enabled' and (not fn:contains(command.allFromRuntimeEngine,rs.ruleBindURI ) )}">
+            <br /><b><font color="red">Looks like rule is enabled but is not present in runtime area</font> </b>
+        </c:if>
+        <c:if test="${rs.status eq 'Enabled' and (not fn:contains(command.allFromDeployArea,rs.ruleBindURI ) )}">
+                <br /><b> <font color="red">Looks like rule is enabled but is not present in deploy area</font></b>
+        </c:if>
+        <c:if test="${rs.status eq 'Not Enabled' and (fn:contains(command.allFromRuntimeEngine,rs.ruleBindURI ) )}">
+            <br /><b> <font color="red">Looks like rule is not enabled but is present in runtime area</font></b>
+        </c:if>
+        <c:if test="${rs.status eq 'Not Enabled' and (fn:contains(command.allFromDeployArea,rs.ruleBindURI ) )}">
+            <br /><b> <font color="red">Looks like rule is not enabled but is present in deploy area</font></b>
+        </c:if>
+        </p>
+    </div>
+</c:forEach>
+<div id="rule-debug" style="display: none; background-color: #c0c0c0;" >
+    Below section contains more details of the status of the rules:
+    <p>Stage Area (count : ${fn:length(command.allFromSageArea)}):
         <c:forEach var="s" items="${command.allFromSageArea}">
             <li>${s}</li>
         </c:forEach>
     </p>
-    <p>Deploy Area :
+    <p>Deploy Area (count : ${fn:length(command.allFromDeployArea)}) :
         <c:forEach var="s" items="${command.allFromDeployArea}">
             <li>${s}</li>
         </c:forEach>
     </p>
-    <p>Runtime Area :
+    <p>Runtime Area (count : ${fn:length(command.allFromRuntimeEngine)}) :
         <c:forEach var="s" items="${command.allFromRuntimeEngine}">
             <li>${s}</li>
         </c:forEach>
     </p>
+
+    <c:forEach var="s" items="${command.allFromDeployArea}">
+
+        <c:if test="${not fn:contains(command.allFromRuntimeEngine, s)}">
+            <br /> <font color="red">Alert ::::: rules ${s} is not available in runtime area   </font>
+        </c:if>
+    </c:forEach>
+
 
 </div>
 </body>
