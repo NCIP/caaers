@@ -9,16 +9,15 @@
         <div class="info-box message"><p>${_syncpopmsg}</p></div>
     </div>
     <script type="text/javascript">
-
         var studyDbIdVal = ${empty command.aeReport.study.id ? 0 : command.aeReport.study.id};
-        Event.observe(window, "load", function(){
-            Dialog.info($('divStudySync').innerHTML, {className: "alphacube", width:600, title:'<img height="13px" width="13px" src="<c:url value="/images/indicator.gif" />" alt="activity indicator" width="20px" height="20px"/> '});
-            //
-            createAE.syncStudyWithAdEERS(studyDbIdVal, function(_resultId) {
-                Dialog.closeInfo();
+        jQuery("document").ready(function () {
+            var popupDiv = new Window({destroyOnClose: true, className:"alphacube", width:600, height:150, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
+            popupDiv.setContent("divStudySync");
+            popupDiv.showCenter(true);
+            popupDiv.show();
+            createAE.syncStudyWithAdEERS(studyDbIdVal, function (_resultId) {
+                popupDiv.close();
             });
-
         });
-
     </script>
 </c:if>
