@@ -50,7 +50,7 @@
                  <jsp:attribute name="value">
                      <ui:text path="${fieldGroup.fields[0].propertyName}" field="${fieldGroup.fields[0]}"
                                                       readonly="true"
-                                                      displayNamePath="${v}.studyDevice.brandName" />
+                                                      displayNamePath="${v}.brandName" />
                  </jsp:attribute>
             </ui:row>
             <ui:row path="aeReport.medicalDevices[${index}].commonName">
@@ -61,7 +61,7 @@
                  <jsp:attribute name="value">
                      <ui:text path="${fieldGroup.fields[1].propertyName}" field="${fieldGroup.fields[1]}"
                                                       readonly="true"
-                                                      displayNamePath="${v}.studyDevice.commonName"
+                                                      displayNamePath="${v}.commonName"
                              />
                  </jsp:attribute>
             </ui:row>
@@ -73,7 +73,7 @@
                  <jsp:attribute name="value">
                      <ui:text path="${fieldGroup.fields[2].propertyName}" field="${fieldGroup.fields[2]}"
                                                       readonly="true"
-                                                      displayNamePath="${v}.studyDevice.deviceType"/>
+                                                      displayNamePath="${v}.deviceType"/>
                  </jsp:attribute>
             </ui:row>
             <ui:row path="aeReport.medicalDevices[${index}].manufacturerName">
