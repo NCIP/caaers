@@ -173,15 +173,13 @@ public class AttributionTabTest extends AeTabTestCase {
         ensureAeCount(2);
 
         Map<String, InputFieldGroup> map = getTab().createFieldGroups(command);
-        assertEquals("Wrong number of groups", 0, map.size());
+        assertEquals("Wrong number of groups", 1, map.size());
 
-/*
         InputFieldGroup actualGroup0 = map.get("device0");
         assertNotNull(actualGroup0);
         assertEquals(2, actualGroup0.getFields().size());
         assertEquals("attributionMap[device][0][0]", actualGroup0.getFields().get(0).getPropertyName());
         assertEquals("attributionMap[device][1][0]", actualGroup0.getFields().get(1).getPropertyName());
-*/
     }
 
     public void testNoDiseaseFieldsWhenDiseaseBlank() throws Exception {
