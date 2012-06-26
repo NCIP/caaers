@@ -32,6 +32,7 @@
 <tags:js name='jquery/scroll/jquery.serialScroll-min' />
 
 <!--[if IE]>
+<tags:js name='jquery/jquery.caret.ie' />
 <jwr:style src="/csslib/ie.zcss" />
 <![endif]-->
 

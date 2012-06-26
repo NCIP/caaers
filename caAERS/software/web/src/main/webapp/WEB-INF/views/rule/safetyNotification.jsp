@@ -20,6 +20,7 @@
     <title>${tab.longTitle}</title>
     <tags:dwrJavascriptLink objects="createAE" />
     <script type="text/javascript">
+        var _b = "FF";
 	    if(Prototype.Browser.IE){
 	        document.write('<style type="text/css">pre { white-space : normal; }</style>');
 	    }
@@ -41,38 +42,65 @@
 
 
         var lastElement; //will store the last element on focus
-        function insertReplacement(selSub){
+        function insertReplacement(selSub) {
             i = selSub.selectedIndex;
-            if(i < 0) return;
-            if(!lastElement){
+            if (i < 0) return;
+            if (!lastElement) {
                 selSub.selectedIndex = 0;
                 return;
             }
 
-            var txtToInsert = FREE_MARKER_PREFIX + selSub.options[i].value  + FREE_MARKER_SUFFIX;
+            var txtToInsert = FREE_MARKER_PREFIX + selSub.options[i].value + FREE_MARKER_SUFFIX;
 
             var msg = lastElement.value;
 
-            if(lastElement.type == 'text'){
+            if (lastElement.type == 'text') {
                 //text (subject)
                 msg = msg + txtToInsert;
                 lastElement.value = msg;
-            }else if(lastElement.type == 'textarea'){
+            } else if (lastElement.type == 'textarea') {
                 //textarea (message)
-                st = lastElement.selectionStart;
-                end = lastElement.selectionEnd;
-                len = lastElement.textLength;
-                msg = msg.substring(0,st) + txtToInsert + msg.substring(end, len);
-                lastElement.value = msg;
-                lastElement.selectionStart = st + txtToInsert.length;
-                lastElement.selectionEnd = lastElement.selectionStart;
+                if (_b == "IE") {
+                    insertTextOnCursorPosition(txtToInsert, document.getElementById("notification.content"), th.caretPosition);
+                } else {
+                    st = lastElement.selectionStart;
+                    end = lastElement.selectionEnd;
+                    len = lastElement.textLength;
+                    msg = msg.substring(0, st) + txtToInsert + msg.substring(end, len);
+                    lastElement.value = msg;
+                    lastElement.selectionStart = st + txtToInsert.length;
+                    lastElement.selectionEnd = lastElement.selectionStart;
+                }
             }
             selSub.selectedIndex = 0;
             lastElement.focus();
         }
+
+        function insertTextOnCursorPosition(_text, _textareaElement, _position) {
+            var text = jQuery(_textareaElement).val();
+            _startText = text.substring(0, _position);
+            _endText = text.substring(_position);
+            jQuery(_textareaElement).val(_startText + " " + _text + " " +_endText);
+        }
     </script>
 </head>
 <body>
+
+<!--[if IE]>
+<script>
+    var _b = "IE";
+    var th = null;
+    jQuery("document").ready(function () {
+        th = new ieTextAreaHack(document.getElementById("notification.content"));
+        th.caretChange(function () {
+            qa(th);
+        });
+    });
+
+    function qa(th) {
+    }
+</script>
+<![endif]-->
 
 <div id="s-email" style="display: none;">
     <div>
@@ -179,7 +207,6 @@
             <ui:row path="substitution">
                 <jsp:attribute name="label"> </jsp:attribute>
                 <jsp:attribute name="value">
-
                     <ui:label path="substitution" text="Insert substitutions." />
                     <select id="sub-sel" onchange="insertReplacement(this);">
                         <option value="">${subopt1}</option>
