@@ -250,6 +250,7 @@ YAHOO.util.Event.addListener(window, "load", function() {
     <div id="rule-debug-${rs.id}" style="display: none;background-color: #c0c0b0;">
         <p>
         RuleSet Id: ${rs.id} <br />
+        RuleSet URL: ${rs.ruleBindURI} <br />
         Rule Level: ${empty rs.ruleLevel ? 'NA' : rs.ruleLevel.description}  <br />
         Rule Type : ${rs.ruleType.name} <br />
         Organization : ${empty rs.organization ? 'NA' : rs.organization.fullName} <br />
@@ -259,16 +260,16 @@ YAHOO.util.Event.addListener(window, "load", function() {
         Present in Deploy area : ${fn:contains(command.allFromDeployArea,rs.ruleBindURI )} <br />
         Present in Runtime area : ${fn:contains(command.allFromRuntimeEngine,rs.ruleBindURI )} <br />
         <c:if test="${rs.status eq 'Enabled' and (not fn:contains(command.allFromRuntimeEngine,rs.ruleBindURI ) )}">
-            <br /><b><font color="red">Looks like rule is enabled but is not present in runtime area</font> </b>
+            <br /><b><font color="red">Looks like rule (${rs.id}, ${rs.ruleBindURI}, ${rs.ruleLevel.description}, ${rs.ruleType.name}, ${rs.organization.nciInstituteCode}) is enabled but is not present in runtime area</font> </b>
         </c:if>
         <c:if test="${rs.status eq 'Enabled' and (not fn:contains(command.allFromDeployArea,rs.ruleBindURI ) )}">
-                <br /><b> <font color="red">Looks like rule is enabled but is not present in deploy area</font></b>
+                <br /><b> <font color="red">Looks like rule (${rs.id}, ${rs.ruleBindURI}, ${rs.ruleLevel.description}, ${rs.ruleType.name}, ${rs.organization.nciInstituteCode}) is enabled but is not present in deploy area</font></b>
         </c:if>
         <c:if test="${rs.status eq 'Not Enabled' and (fn:contains(command.allFromRuntimeEngine,rs.ruleBindURI ) )}">
-            <br /><b> <font color="red">Looks like rule is not enabled but is present in runtime area</font></b>
+            <br /><b> <font color="red">Looks like rule (${rs.id}, ${rs.ruleBindURI}, ${rs.ruleLevel.description}, ${rs.ruleType.name}, ${rs.organization.nciInstituteCode}) is not enabled but is present in runtime area</font></b>
         </c:if>
         <c:if test="${rs.status eq 'Not Enabled' and (fn:contains(command.allFromDeployArea,rs.ruleBindURI ) )}">
-            <br /><b> <font color="red">Looks like rule is not enabled but is present in deploy area</font></b>
+            <br /><b> <font color="red">Looks like rule (${rs.id}, ${rs.ruleBindURI}, ${rs.ruleLevel.description}, ${rs.ruleType.name}, ${rs.organization.nciInstituteCode}) is not enabled but is present in deploy area</font></b>
         </c:if>
         </p>
     </div>
@@ -298,6 +299,20 @@ YAHOO.util.Event.addListener(window, "load", function() {
         </c:if>
     </c:forEach>
 
+    <c:forEach items="${command.ruleSets}" var="rs" varStatus="status">
+    <c:if test="${rs.status eq 'Enabled' and (not fn:contains(command.allFromRuntimeEngine,rs.ruleBindURI ) )}">
+        <br /><b><font color="red">Looks like rule (${rs.id}, ${rs.ruleBindURI}, ${rs.ruleLevel.description}, ${rs.ruleType.name}, ${rs.organization.nciInstituteCode}) is enabled but is not present in runtime area</font> </b>
+    </c:if>
+    <c:if test="${rs.status eq 'Enabled' and (not fn:contains(command.allFromDeployArea,rs.ruleBindURI ) )}">
+        <br /><b> <font color="red">Looks like rule (${rs.id}, ${rs.ruleBindURI}, ${rs.ruleLevel.description}, ${rs.ruleType.name}, ${rs.organization.nciInstituteCode}) is enabled but is not present in deploy area</font></b>
+    </c:if>
+    <c:if test="${rs.status eq 'Not Enabled' and (fn:contains(command.allFromRuntimeEngine,rs.ruleBindURI ) )}">
+        <br /><b> <font color="red">Looks like rule (${rs.id}, ${rs.ruleBindURI}, ${rs.ruleLevel.description}, ${rs.ruleType.name}, ${rs.organization.nciInstituteCode}) is not enabled but is present in runtime area</font></b>
+    </c:if>
+    <c:if test="${rs.status eq 'Not Enabled' and (fn:contains(command.allFromDeployArea,rs.ruleBindURI ) )}">
+        <br /><b> <font color="red">Looks like rule (${rs.id}, ${rs.ruleBindURI}, ${rs.ruleLevel.description}, ${rs.ruleType.name}, ${rs.organization.nciInstituteCode}) is not enabled but is present in deploy area</font></b>
+    </c:if>
+    </c:forEach>
 
 </div>
 </body>
