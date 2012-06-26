@@ -8,14 +8,19 @@
     <div id="divStudySync" style="display: none;" class="info-box message"><p>${_syncpopmsg}</p></div>
     <script type="text/javascript">
         var studyDbIdVal = ${empty command.aeReport.study.id ? 0 : command.aeReport.study.id};
+        var popupDiv;
         jQuery(document).ready(function() {
-            var popupDiv = new Window({destroyOnClose: false, className:"alphacube", width:600, height:150, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
+            popupDiv = new Window({destroyOnClose: false, className:"alphacube", width:600, height:150, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
             popupDiv.setContent("divStudySync");
             popupDiv.showCenter(true);
             popupDiv.show();
             createAE.syncStudyWithAdEERS(studyDbIdVal, function (_resultId) {
-                popupDiv.close();
+                setTimeout(function() {closePopup()}, 2 * 1000);
             });
         });
+
+        function closePopup() {
+            popupDiv.close();
+        }
     </script>
 </c:if>
