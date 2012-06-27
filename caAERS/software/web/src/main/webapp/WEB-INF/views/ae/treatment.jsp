@@ -118,12 +118,21 @@
                    </div>
                 </div>
         	</chrome:division>
-        	<chrome:division title="Course Information">
-				<tags:renderRow field="${fieldGroups.treatmentInfo.fields[3]}"/>
-            	<tags:renderRow field="${fieldGroups.treatmentInfo.fields[4]}"/>
-            	<tags:renderRow field="${fieldGroups.treatmentInfo.fields[5]}"/>
-            	<tags:renderRow field="${fieldGroups.treatmentInfo.fields[6]}"/>
-			</chrome:division>
+
+            <c:set var="_showCourseSection" value="false" />
+            <caaers:renderFilter elementID="${fieldGroups.treatmentInfo.fields[3].propertyName}"><c:set var="_showCourseSection" value="true" /></caaers:renderFilter>
+            <caaers:renderFilter elementID="${fieldGroups.treatmentInfo.fields[4].propertyName}"><c:set var="_showCourseSection" value="true" /></caaers:renderFilter>
+            <caaers:renderFilter elementID="${fieldGroups.treatmentInfo.fields[5].propertyName}"><c:set var="_showCourseSection" value="true" /></caaers:renderFilter>
+            <caaers:renderFilter elementID="${fieldGroups.treatmentInfo.fields[6].propertyName}"><c:set var="_showCourseSection" value="true" /></caaers:renderFilter>
+
+            <c:if test="${_showCourseSection}">
+                <chrome:division title="Course Information">
+                    <tags:renderRow field="${fieldGroups.treatmentInfo.fields[3]}"/>
+                    <tags:renderRow field="${fieldGroups.treatmentInfo.fields[4]}"/>
+                    <tags:renderRow field="${fieldGroups.treatmentInfo.fields[5]}"/>
+                    <tags:renderRow field="${fieldGroups.treatmentInfo.fields[6]}"/>
+                </chrome:division>
+            </c:if>
 			<ae:reportingContext allReportDefinitions="${command.applicableReportDefinitions}" selectedReportDefinitions="${command.selectedReportDefinitions}" />
         </jsp:attribute>
         
