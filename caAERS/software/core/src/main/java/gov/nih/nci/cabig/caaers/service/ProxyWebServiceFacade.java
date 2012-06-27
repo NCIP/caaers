@@ -344,7 +344,11 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
                 return String.valueOf(study.getId());
             }
         }
-        return syncStudy(UPDATE_STUDY_OPERATION_NAME, study.getCtepEsysIdentifierValue());
+        String idText = study.getCtepEsysIdentifierValue();
+        if(idText == null){
+        	idText = study.getFundingSponsorIdentifierValue();
+        }
+        return syncStudy(UPDATE_STUDY_OPERATION_NAME, idText);
     }
     
 }

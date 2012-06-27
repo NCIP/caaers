@@ -115,33 +115,31 @@ public class StudyRepository {
 
         HashMap<String, Study> studyIndexMap = new HashMap<String, Study>();
         
-        for(Study s : adEERSStudies){
-            s.setStatus("IMPORT");
-            studyIndexMap.put(getStudyKey(s), s); //index adEERS studies
-        }
-        
-        for(Study s : caaersStudies){
-           Study adEERSStudy = studyIndexMap.get(getStudyKey(s));
-           if(adEERSStudy != null){
-               adEERSStudy.setId(s.getId());  //set the ID to differentiate it.
-               adEERSStudy.setStatus("UPDATE");
-           }
+        for(Study adEERSStudy : adEERSStudies){
+        	adEERSStudy.setStatus("IMPORT");
+            for(Study caaersStudy : caaersStudies){
+            	String idValue = caaersStudy.getCtepEsysIdentifierValue();
+            	if(idValue != null){
+            		if(adEERSStudy.getCtepEsysIdentifierValue().equalsIgnoreCase(idValue)){
+            			adEERSStudy.setId(caaersStudy.getId());  //set the ID to differentiate it.
+                        adEERSStudy.setStatus("UPDATE");
+            		}
+            	}else{
+            		OrganizationAssignedIdentifier id = caaersStudy.getFundingSponsorIdentifier();
+                	if(id != null){
+                		if(adEERSStudy.getFundingSponsorIdentifier().getOrganization().getNciInstituteCode().equalsIgnoreCase(id.getOrganization().getNciInstituteCode())
+                				&& adEERSStudy.getFundingSponsorIdentifier().getValue().equalsIgnoreCase(id.getValue())){
+                			adEERSStudy.setId(caaersStudy.getId());  //set the ID to differentiate it.
+                            adEERSStudy.setStatus("UPDATE");
+                		}
+                	}
+            	}
+            }
         }
 
         return adEERSStudies;
     }
 
-    private String getStudyKey(Study s) {
-        String key = "";
-//        OrganizationAssignedIdentifier i = s.getFundingSponsorIdentifier();
-        SystemAssignedIdentifier i = s.getCtepEsysIdentifier();
-        if (i != null) {
-            key = i.getSystemName() + ":" + i.getValue();
-        } else {
-            key = s.getShortTitle();
-        }
-        return key;
-    }
     /**
      * Search the study 
      * @param query
