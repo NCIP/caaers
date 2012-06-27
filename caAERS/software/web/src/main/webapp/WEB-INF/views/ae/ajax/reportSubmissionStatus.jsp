@@ -29,13 +29,13 @@
 <div class="row">
 <div class="label">Submission Status</div>
 <div id="reportSubmissionStatus" class="value">
-	<c:if test="${lastVersion.reportStatus == 'COMPLETED'}" >
+	<c:if test="${lastVersion.reportStatus eq 'COMPLETED'}" >
 		<ae:oneListReportSubmissionStatus theReport="${theReport}" reportStatus="${lastVersion.reportStatus}" lastVersion="${lastVersion}"/>
 	</c:if>	
-	<c:if test="${(lastVersion.reportStatus eq= 'FAILED') or (lastVersion.reportStatus eq 'WITHDRAW_FAILED')}" >
+	<c:if test="${(lastVersion.reportStatus eq 'FAILED') or (lastVersion.reportStatus eq 'WITHDRAW_FAILED')}" >
 		<ae:oneListReportSubmissionStatus theReport="${theReport}" reportStatus="${lastVersion.reportStatus}" lastVersion="${lastVersion}"/>           			
 	</c:if>
-	<c:if test="${lastVersion.reportStatus == 'INPROCESS'}" >
+	<c:if test="${lastVersion.reportStatus eq 'INPROCESS'}" >
 		<span class="dueOn" >
 			<i>Submission to AdEERS in process</i>
 		</span>

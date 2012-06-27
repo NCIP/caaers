@@ -146,7 +146,7 @@
                                 <div class="error-box message"><p>${command.report.lastVersion.statusAsString}</p></div>
                             </c:if>
 
-                            <c:if test="${(command.report.lastVersion.reportStatus == 'COMPLETED')}">
+                            <c:if test="${(command.report.lastVersion.reportStatus == 'COMPLETED' || command.report.lastVersion.reportStatus == 'AMENDED')}">
                                 <div class="success-box message"><p>${command.report.lastVersion.statusAsString}</p></div>
                             </c:if>
 
