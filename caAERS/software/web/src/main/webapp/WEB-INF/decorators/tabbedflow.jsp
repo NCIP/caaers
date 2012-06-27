@@ -52,7 +52,6 @@
 		<c:if test="${not empty aesummary}">
             <caaers:message code="LBL_Subject" var="lblSubject"/>
 			<div class="pane summary" id="reporter-summary">
-			  <chrome:division collapsable="true" collapsed="true" title="${lblSubject} : ${aesummary['Participant']}" id="collapsedSummary">
                   <div class="row">
                       <div class="summarylabel" style="width:7em;"><caaers:message code="LBL_Subject" /></div>
                       <div class="summaryvalue" style="margin-left:8em;"><c:out escapeXml="true" value="${aesummary['Participant']}" /> </div>
@@ -85,7 +84,6 @@
                           </div>
                       </div>
                   </c:if>
-			  </chrome:division>
             </div>
 		</c:if>
         
