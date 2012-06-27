@@ -158,7 +158,7 @@ function removeSystemIdentifier(container, index) {
 	</c:if>        
       ${assignment.studySite.organization.name}
       </td>
-      <td><ui:text path="${assign}" /></td>
+      <td><ui:text path="${assign}" readonly="${not empty command.assignments[i.index].id}" /></td>
     </tr>
   </c:forEach>
 </table>
