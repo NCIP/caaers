@@ -672,12 +672,14 @@ function replaceDefaultText(e) {
 
     function OpenUp(element) {
         element = $(element);
-        new Effect.BlindDown(element, arguments[1] || {});
+        jQuery(element).slideDown('fast', function () {});
+        // new Effect.BlindDown(element, arguments[1] || {});
     }
 
     function CloseDown(element) {
         element = $(element);
-        new Effect.BlindUp(element, arguments[1] || {});
+        jQuery(element).slideUp('fast', function () {});
+        // new Effect.BlindUp(element, arguments[1] || {});
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
