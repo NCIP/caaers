@@ -459,7 +459,7 @@ div#createNew h3, div.section h3 {
             var val = "";
             var displayUriID = selectId+ '.readableValue';
             var selVal = $F(item);
-            val = val + "," + selVal.replace(/\,/g,' ');
+            val =  selVal.replace(/\,/g,' ');
             $(displayUriID).value = val.replace(/\,/,'');
 
         }
@@ -1572,7 +1572,7 @@ div#createNew h3, div.section h3 {
                                 var fieldValue = '';
                                 <c:forEach items="${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].literalRestriction[0].value}"
                                                         var="val">
-                                fieldValue = fieldValue + ',' + '${val}';
+                                fieldValue =  '${val}';
                                 </c:forEach>
 
 
