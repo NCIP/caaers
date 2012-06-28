@@ -971,8 +971,21 @@ function showConfigurableTimerPopup(_elementId, _secondsToKeep, _w, _h, _r, _d, 
     setTimeout(function() {_hideTimerPopup(popupDiv)}, _secondsToKeep * 1000);
 }
 
-function showMessagePopup(contentId) {
-    popupDiv = new Window({className:"alphacube", width:500, height:125, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
+function showMessagePopup(contentId, winopts) {
+    opts = Object.extend({
+        className:"alphacube",
+        width:500,
+        height:125,
+        zIndex:100,
+        resizable:false,
+        recenterAuto:true,
+        draggable:false,
+        closable:false,
+        minimizable:false,
+        maximizable:false},
+        winopts)
+
+    popupDiv = new Window(opts);
     popupDiv.setContent(contentId);
     popupDiv.showCenter(true);
     popupDiv.show();

@@ -20,11 +20,13 @@ import gov.nih.nci.cabig.caaers.integration.schema.study.InvestigationalNewDrugT
 import gov.nih.nci.cabig.caaers.integration.schema.study.StudyAgentType;
 import gov.nih.nci.cabig.caaers.integration.schema.study.StudyDeviceINDAssociationType;
 import gov.nih.nci.cabig.caaers.integration.schema.study.StudyDeviceType;
+import gov.nih.nci.cabig.caaers.rules.common.AdverseEventEvaluationResult;
 import gov.nih.nci.cabig.caaers.rules.common.RuleLevel;
 import gov.nih.nci.cabig.caaers.rules.common.RuleType;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
+import org.apache.commons.lang.ArrayUtils;
 
 import java.math.BigInteger;
 import java.sql.Timestamp;
@@ -1056,5 +1058,16 @@ public class Fixtures {
         StudyParticipantConcomitantMedication c = new StudyParticipantConcomitantMedication();
         c.setAgentName(n);
         return c;
+    }
+    
+    public static AdverseEventEvaluationResult createAdverseEventEvaluationResult(String... reportDefNames){
+        String msg = "";
+        AdverseEventEvaluationResult result = AdverseEventEvaluationResult.noRulesFound("test");
+        for(String s : reportDefNames){
+            msg  = msg + s;
+            result.getRuleEvaluationResult().addResponse(s);
+        }
+        result.getRuleEvaluationResult().setMessage(msg);
+        return result;
     }
 }

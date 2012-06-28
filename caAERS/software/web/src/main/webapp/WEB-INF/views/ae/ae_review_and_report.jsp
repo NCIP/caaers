@@ -36,6 +36,30 @@
   	padding-top: 0.2em;
   	padding-bottom: 1.3em;
   }
+  div.dcdebug{
+      text-align: left;
+  }
+
+  div.even{
+      background-color: #f5f5dc;
+  }
+  div.rsuggestion{
+      background-color: #bc8f8f;
+      font-weight: bold;
+  }
+  div.rengine{
+      background-color: #adff2f;
+  }
+  div.rset{
+      background-color: #e6e6fa;
+  }
+  div.submittedae{
+     color: blue;
+     font-style: italic;
+  }
+  span.dlink{
+      color: #f5f5f5;
+  }
   	 
  </style>
  
@@ -1011,7 +1035,9 @@ function validate(aeReportId){
 			 	<ae:rulesMessageBottom rulesMessages="${_rulesMsgs}" aeReportId="${_aeReportId}" />
 				<div class="row" style="text-align:right;">
 			 		<tags:button id="report-btn-${_aeReportId}" type="button" onclick="forwardToReport(${_aeReportId}, this.form);" value="Report" color="green" icon="continue" />
+                    <span onclick="showMessagePopup('dc-eval-debug-${_aeReportId}',{width:800, height:335, resizable:true, draggable:true, closable:true, maximizable:true})" class="dlink"> .</span>
 				</div>
+
 			</div>
            </jsp:body>
 		</chrome:accordion>
@@ -1050,8 +1076,9 @@ function validate(aeReportId){
 		<div class="rulesMessageBottom">
 			<ae:rulesMessageBottom rulesMessages="${_rulesMsgs}" aeReportId="0" />
 			<div class="row" style="text-align:right;">
-			 	<tags:button id="report-btn-0" type="button" onclick="forwardToReport(0, this.form);" value="Report" color="green" icon="continue" />
+			 	<tags:button id="report-btn-0" type="button" onclick="forwardToReport(0, this.form);" value="Report" color="green" icon="continue" /> <span onclick="showMessagePopup('dc-eval-debug-0', {width:800, height:335, resizable:true, draggable:true, closable:true, maximizable:true})"  class="dlink"> .</span>
 			</div>
+
 		</div>
        </jsp:body>
 	</chrome:accordion>	
@@ -1065,6 +1092,7 @@ function validate(aeReportId){
    	 <tags:button type="button" icon="add" id="add-dc-btn" value="Add Report Collection" color="green"  size="small" onclick="showNewDataCollection()" />
     </div>
    </c:if>
+          <ae:evaluationDebug result="${command.evaluationResult}" />
    </jsp:attribute>
    
    <jsp:attribute name="tabControls">
@@ -1076,7 +1104,6 @@ function validate(aeReportId){
           </div>
       </div>
   </jsp:attribute>
-   
   </tags:tabForm>
  </body>
 </html>

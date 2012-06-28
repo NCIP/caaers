@@ -24,13 +24,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import gov.nih.nci.cabig.caaers.rules.common.AdverseEventEvaluationResult;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import org.easymock.classextension.EasyMock;
 
 /**
  * @author Biju Joseph
  */
-public class EvaluationServiceTest extends AbstractNoSecurityTestCase {
+public class EvaluationServiceTest extends AbstractTestCase {
 	
 	public static Integer ZERO = new Integer(0);
 	public static Integer ONE = new Integer(1);
@@ -52,6 +53,7 @@ public class EvaluationServiceTest extends AbstractNoSecurityTestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
+        switchToSuperUser();
 		reportDefinitionDao = registerDaoMockFor(ReportDefinitionDao.class);
 		expeditedAdverseEventReportDao = registerDaoMockFor(ExpeditedAdverseEventReportDao.class);
 		organizationDao = registerDaoMockFor(OrganizationDao.class);
@@ -246,10 +248,10 @@ public class EvaluationServiceTest extends AbstractNoSecurityTestCase {
 		aeList.add(ae1);
 		aeList.add(ae2);
 		
-		Map<AdverseEvent, List<String>> map = new HashMap<AdverseEvent, List<String>>();
-		map.put(ae1, Arrays.asList(new String[] { "rd1", "rd2" }));
-		map.put(ae2, Arrays.asList(new String[] { "rd1", "rd2", "rd3"}));
-		
+		Map<AdverseEvent, List<AdverseEventEvaluationResult>> map = new HashMap<AdverseEvent, List<AdverseEventEvaluationResult>>();
+		map.put(ae1, Arrays.asList(new AdverseEventEvaluationResult[] { Fixtures.createAdverseEventEvaluationResult("rd1", "rd2" )}));
+		map.put(ae2, Arrays.asList(new AdverseEventEvaluationResult[] { Fixtures.createAdverseEventEvaluationResult("rd1", "rd2", "rd3")}));
+
 
 		Study study = Fixtures.createStudy("test");
 
@@ -328,11 +330,11 @@ public class EvaluationServiceTest extends AbstractNoSecurityTestCase {
 		ArrayList<AdverseEvent> aeList = new ArrayList<AdverseEvent>();
 		aeList.add(ae1);
 		aeList.add(ae2);
-		
-		Map<AdverseEvent, List<String>> map = new HashMap<AdverseEvent, List<String>>();
-		map.put(ae1, Arrays.asList(new String[] { "one", "two" }));
-		map.put(ae2, Arrays.asList(new String[] { "one", "two", "three"}));
-		
+
+        Map<AdverseEvent, List<AdverseEventEvaluationResult>> map = new HashMap<AdverseEvent, List<AdverseEventEvaluationResult>>();
+        map.put(ae1, Arrays.asList(new AdverseEventEvaluationResult[] { Fixtures.createAdverseEventEvaluationResult("one", "two" )}));
+        map.put(ae2, Arrays.asList(new AdverseEventEvaluationResult[] { Fixtures.createAdverseEventEvaluationResult("one", "two", "three" )}));
+
 
 		Study study = Fixtures.createStudy("test");
 
@@ -477,14 +479,16 @@ public class EvaluationServiceTest extends AbstractNoSecurityTestCase {
 		expect(reportingPeriod.getAeReports()).andReturn(Arrays.asList(aeReport1));
 		expect(reportingPeriod.getNonExpeditedAdverseEvents()).andReturn(aeList2);
 		expect(reportingPeriod.getStudy()).andReturn(study).anyTimes();
-		
-		
-		Map<AdverseEvent, List<String>> map0 = new HashMap<AdverseEvent, List<String>>();
-		map0.put(ae2, Arrays.asList("RD2"));
-		
-		Map<AdverseEvent, List<String>> map1 = new HashMap<AdverseEvent, List<String>>();
-		map1.put(ae1, new ArrayList<String>()); //noting returned by rules
-		map1.put(ae2, Arrays.asList("RD2"));// R2 for ae2 aswell for this data collection
+
+
+        Map<AdverseEvent, List<AdverseEventEvaluationResult>> map0 = new HashMap<AdverseEvent, List<AdverseEventEvaluationResult>>();
+        map0.put(ae2, Arrays.asList(new AdverseEventEvaluationResult[] { Fixtures.createAdverseEventEvaluationResult("RD2" )}));
+
+
+        Map<AdverseEvent, List<AdverseEventEvaluationResult>> map1 = new HashMap<AdverseEvent, List<AdverseEventEvaluationResult>>();
+        map1.put(ae1, Arrays.asList(new AdverseEventEvaluationResult[] {  }));  //noting returned by rules
+        map1.put(ae2, Arrays.asList(new AdverseEventEvaluationResult[] { Fixtures.createAdverseEventEvaluationResult("RD2" )}));  // R2 for ae2 aswell for this data collection
+
 		
 		expect(adverseEventEvaluationService.evaluateSAEReportSchedule(null, aeList2, study)).andReturn(map0);
 		
@@ -620,13 +624,13 @@ public class EvaluationServiceTest extends AbstractNoSecurityTestCase {
 		expect(aeReport1.findReportsToAmmend(rd2)).andReturn(Arrays.asList(r1));
 		expect(aeReport1.findReportsToEdit(rd2)).andReturn(new ArrayList<Report>()).times(2);
 		expect(aeReport1.findReportsToWitdraw(rd2)).andReturn(new ArrayList<Report>());
-		
-		Map<AdverseEvent, List<String>> map0 = new HashMap<AdverseEvent, List<String>>();
-		map0.put(ae2, Arrays.asList("RD2"));
-		
-		Map<AdverseEvent, List<String>> map1 = new HashMap<AdverseEvent, List<String>>();
-		map1.put(ae2, Arrays.asList("RD2"));// R2 for ae2 aswell for this data collection
-		
+
+        Map<AdverseEvent, List<AdverseEventEvaluationResult>> map0 = new HashMap<AdverseEvent, List<AdverseEventEvaluationResult>>();
+        map0.put(ae2, Arrays.asList(new AdverseEventEvaluationResult[] { Fixtures.createAdverseEventEvaluationResult("RD2" )}));
+
+        Map<AdverseEvent, List<AdverseEventEvaluationResult>> map1 = new HashMap<AdverseEvent, List<AdverseEventEvaluationResult>>();
+        map1.put(ae2, Arrays.asList(new AdverseEventEvaluationResult[] { Fixtures.createAdverseEventEvaluationResult("RD2" )}));    // R2 for ae2 aswell for this data collection
+
 		expect(adverseEventEvaluationService.evaluateSAEReportSchedule(null, aeList2, study)).andReturn(map0);
 		
 		expect(adverseEventEvaluationService.evaluateSAEReportSchedule(aeReport1, aeList2, study)).andReturn(map1);
@@ -758,15 +762,16 @@ public class EvaluationServiceTest extends AbstractNoSecurityTestCase {
 		expect(reportingPeriod.getAeReports()).andReturn(Arrays.asList(aeReport1));
 		expect(reportingPeriod.getNonExpeditedAdverseEvents()).andReturn(aeList2);
 		expect(reportingPeriod.getStudy()).andReturn(study).anyTimes();
-		
-		
-		Map<AdverseEvent, List<String>> map0 = new HashMap<AdverseEvent, List<String>>();
-		map0.put(ae2, Arrays.asList("RD1"));
-		
-		Map<AdverseEvent, List<String>> map1 = new HashMap<AdverseEvent, List<String>>();
-		map1.put(ae1, new ArrayList<String>()); //noting returned by rules
-		map1.put(ae2, Arrays.asList("RD1"));// R1 for ae2 aswell for this data collection
-		
+
+
+        Map<AdverseEvent, List<AdverseEventEvaluationResult>> map0 = new HashMap<AdverseEvent, List<AdverseEventEvaluationResult>>();
+        map0.put(ae2, Arrays.asList(new AdverseEventEvaluationResult[] { Fixtures.createAdverseEventEvaluationResult("RD1" )}));
+
+        Map<AdverseEvent, List<AdverseEventEvaluationResult>> map1 = new HashMap<AdverseEvent, List<AdverseEventEvaluationResult>>();
+        map1.put(ae1, Arrays.asList(new AdverseEventEvaluationResult[] {  }));
+        map1.put(ae2, Arrays.asList(new AdverseEventEvaluationResult[] { Fixtures.createAdverseEventEvaluationResult("RD1" )}));    // R1 for ae2 aswell for this data collection
+
+
 		expect(adverseEventEvaluationService.evaluateSAEReportSchedule(null, aeList2, study)).andReturn(map0);
 		
 		expect(adverseEventEvaluationService.evaluateSAEReportSchedule(aeReport1, aeList, study)).andReturn(map1);
@@ -900,10 +905,13 @@ public class EvaluationServiceTest extends AbstractNoSecurityTestCase {
 		expect(reportingPeriod.getStudy()).andReturn(study).anyTimes();
 		
 		//rules engine result
-		Map<AdverseEvent, List<String>> map0 = new HashMap<AdverseEvent, List<String>>();
-		Map<AdverseEvent, List<String>> map1 = new HashMap<AdverseEvent, List<String>>();
-		map1.put(ae1, Arrays.asList("RD2")); 
-		
+
+        Map<AdverseEvent, List<AdverseEventEvaluationResult>> map0 = new HashMap<AdverseEvent, List<AdverseEventEvaluationResult>>();
+
+        Map<AdverseEvent, List<AdverseEventEvaluationResult>> map1 = new HashMap<AdverseEvent, List<AdverseEventEvaluationResult>>();
+        map1.put(ae1, Arrays.asList(new AdverseEventEvaluationResult[] { Fixtures.createAdverseEventEvaluationResult("RD2" )}));
+
+
 		expect(adverseEventEvaluationService.evaluateSAEReportSchedule(null, aeList2, study)).andReturn(map0);
 		
 		expect(adverseEventEvaluationService.evaluateSAEReportSchedule(aeReport1, Arrays.asList(ae1), study)).andReturn(map1);
@@ -1001,14 +1009,17 @@ public class EvaluationServiceTest extends AbstractNoSecurityTestCase {
 		expect(reportingPeriod.getAeReports()).andReturn(Arrays.asList(aeReport1));
 		expect(reportingPeriod.getNonExpeditedAdverseEvents()).andReturn(aeList2);
 		expect(reportingPeriod.getStudy()).andReturn(study).anyTimes();
+
+
+        Map<AdverseEvent, List<AdverseEventEvaluationResult>> map0 = new HashMap<AdverseEvent, List<AdverseEventEvaluationResult>>();
+        map0.put(ae2, Arrays.asList(new AdverseEventEvaluationResult[] { Fixtures.createAdverseEventEvaluationResult("RD1" )}));
+
+        Map<AdverseEvent, List<AdverseEventEvaluationResult>> map1 = new HashMap<AdverseEvent, List<AdverseEventEvaluationResult>>();
+        map1.put(ae1, Arrays.asList(new AdverseEventEvaluationResult[] {  }));       //nothing by rules
+        map1.put(ae2, Arrays.asList(new AdverseEventEvaluationResult[] { Fixtures.createAdverseEventEvaluationResult("RD1" )}));    // R1 for ae2 aswell for this data collection
+
 		
-		
-		Map<AdverseEvent, List<String>> map0 = new HashMap<AdverseEvent, List<String>>();
-		map0.put(ae2, Arrays.asList("RD1"));
-		
-		Map<AdverseEvent, List<String>> map1 = new HashMap<AdverseEvent, List<String>>();
-		map1.put(ae1, new ArrayList<String>()); //noting returned by rules
-		map1.put(ae2,Arrays.asList("RD1"));// RD2 for ae2 aswell for this data collection
+
 		
 		expect(adverseEventEvaluationService.evaluateSAEReportSchedule(null, aeList2, study)).andReturn(map0);
 		
@@ -1131,11 +1142,14 @@ public class EvaluationServiceTest extends AbstractNoSecurityTestCase {
 		expect(reportingPeriod.getStudy()).andReturn(study).anyTimes();
 		
 		//rules engine should not return anything.
-		Map<AdverseEvent, List<String>> map0 = new HashMap<AdverseEvent, List<String>>();
-		Map<AdverseEvent, List<String>> map1 = new HashMap<AdverseEvent, List<String>>();
-		map1.put(ae1, new ArrayList<String>()); //noting returned by rules for ae1
-		map1.put(ae2, Arrays.asList("RDX"));// nothing for ae2
-		
+
+        Map<AdverseEvent, List<AdverseEventEvaluationResult>> map0 = new HashMap<AdverseEvent, List<AdverseEventEvaluationResult>>();
+
+        Map<AdverseEvent, List<AdverseEventEvaluationResult>> map1 = new HashMap<AdverseEvent, List<AdverseEventEvaluationResult>>();
+        map1.put(ae1, Arrays.asList(new AdverseEventEvaluationResult[] {  }));  //nothing by rules for ae1
+        map1.put(ae2, Arrays.asList(new AdverseEventEvaluationResult[] { Fixtures.createAdverseEventEvaluationResult("RDX" )}));    // nothing for ae2
+
+
 		expect(reportDefinitionDao.getByName("RDX")).andReturn(rdx).anyTimes();
 		
 		expect(adverseEventEvaluationService.evaluateSAEReportSchedule(null, new ArrayList<AdverseEvent>(), study)).andReturn(map0);
@@ -1251,14 +1265,16 @@ public class EvaluationServiceTest extends AbstractNoSecurityTestCase {
 		expect(reportingPeriod.getAeReports()).andReturn(Arrays.asList(aeReport1));
 		expect(reportingPeriod.getNonExpeditedAdverseEvents()).andReturn(aeList2);
 		expect(reportingPeriod.getStudy()).andReturn(study).anyTimes();
-		
-		
-		Map<AdverseEvent, List<String>> map0 = new HashMap<AdverseEvent, List<String>>();
-		map0.put(ae2, new ArrayList<String>());
-		
-		Map<AdverseEvent, List<String>> map1 = new HashMap<AdverseEvent, List<String>>();
-		map1.put(ae1, Arrays.asList("RD1")); 
-		map1.put(ae2, new ArrayList<String>());
+
+
+        Map<AdverseEvent, List<AdverseEventEvaluationResult>> map0 = new HashMap<AdverseEvent, List<AdverseEventEvaluationResult>>();
+        map0.put(ae2, Arrays.asList(new AdverseEventEvaluationResult[] { }));
+
+        Map<AdverseEvent, List<AdverseEventEvaluationResult>> map1 = new HashMap<AdverseEvent, List<AdverseEventEvaluationResult>>();
+        map1.put(ae1, Arrays.asList(new AdverseEventEvaluationResult[] { Fixtures.createAdverseEventEvaluationResult("RD1" ) }));
+        map1.put(ae2, Arrays.asList(new AdverseEventEvaluationResult[] { }));    // R1 for ae2 aswell for this data collection
+
+
 		
 		expect(adverseEventEvaluationService.evaluateSAEReportSchedule(null, aeList2, study)).andReturn(map0);
 		
@@ -1364,14 +1380,17 @@ public class EvaluationServiceTest extends AbstractNoSecurityTestCase {
 		expect(reportingPeriod.getAeReports()).andReturn(Arrays.asList(aeReport1));
 		expect(reportingPeriod.getNonExpeditedAdverseEvents()).andReturn(aeList2);
 		expect(reportingPeriod.getStudy()).andReturn(study).anyTimes();
-		
-		
-		Map<AdverseEvent, List<String>> map0 = new HashMap<AdverseEvent, List<String>>();
-		map0.put(ae2, new ArrayList<String>());
-		
-		Map<AdverseEvent, List<String>> map1 = new HashMap<AdverseEvent, List<String>>();
-		map1.put(ae1, new ArrayList<String>()); 
-		map1.put(ae2, new ArrayList<String>());
+
+        Map<AdverseEvent, List<AdverseEventEvaluationResult>> map0 = new HashMap<AdverseEvent, List<AdverseEventEvaluationResult>>();
+        map0.put(ae2, Arrays.asList(new AdverseEventEvaluationResult[] { }));
+
+        Map<AdverseEvent, List<AdverseEventEvaluationResult>> map1 = new HashMap<AdverseEvent, List<AdverseEventEvaluationResult>>();
+        map1.put(ae1, Arrays.asList(new AdverseEventEvaluationResult[] {  }));
+        map1.put(ae2, Arrays.asList(new AdverseEventEvaluationResult[] { }));
+
+
+
+
 		
 		expect(adverseEventEvaluationService.evaluateSAEReportSchedule(null, aeList2, study)).andReturn(map0);
 		
@@ -1469,12 +1488,12 @@ public class EvaluationServiceTest extends AbstractNoSecurityTestCase {
 		expect(reportingPeriod.getStudy()).andReturn(study).anyTimes();
 		
 		//nothing suggest by rules engine.
-		Map<AdverseEvent, List<String>> map0 = new HashMap<AdverseEvent, List<String>>();
-		map0.put(ae2, new ArrayList<String>());
-		
-		Map<AdverseEvent, List<String>> map1 = new HashMap<AdverseEvent, List<String>>();
-		map1.put(ae1, new ArrayList<String>()); 
-		map1.put(ae2, new ArrayList<String>());
+        Map<AdverseEvent, List<AdverseEventEvaluationResult>> map0 = new HashMap<AdverseEvent, List<AdverseEventEvaluationResult>>();
+        map0.put(ae2, Arrays.asList(new AdverseEventEvaluationResult[] { }));
+
+        Map<AdverseEvent, List<AdverseEventEvaluationResult>> map1 = new HashMap<AdverseEvent, List<AdverseEventEvaluationResult>>();
+        map1.put(ae1, Arrays.asList(new AdverseEventEvaluationResult[] {  }));
+        map1.put(ae2, Arrays.asList(new AdverseEventEvaluationResult[] { }));
 		
 		expect(adverseEventEvaluationService.evaluateSAEReportSchedule(null, aeList2, study)).andReturn(map0);
 		

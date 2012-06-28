@@ -489,4 +489,9 @@ public class AdverseEventTest extends AbstractTestCase {
     	assertEquals("abcd, hello", ae.getDisplayName());
     }
 
+    public void testToReadableString(){
+       String s =  AdverseEvent.toReadableString(adverseEvent);
+       assertEquals(" ID : 1 Grade : DEATH Start date : 11/02/2008", s);
+    }
+
 }

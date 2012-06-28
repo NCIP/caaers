@@ -11,6 +11,7 @@ import gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper.ActionType;
 import gov.nih.nci.cabig.caaers.domain.dto.SafetyRuleEvaluationResultDTO;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.*;
+import gov.nih.nci.cabig.caaers.rules.common.AdverseEventEvaluationResult;
 import gov.nih.nci.cabig.caaers.rules.common.CaaersRuleUtil;
 import gov.nih.nci.cabig.caaers.rules.common.RuleType;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
@@ -133,35 +134,65 @@ public class EvaluationServiceImpl implements EvaluationService {
         //to hold the report defnitions while cleaning up. 
         Map<String , ReportDefinition> loadedReportDefinitionsMap = new HashMap<String, ReportDefinition>();
 
-        Map<AdverseEvent, List<String>> adverseEventEvaluationResultMap;
+        Map<AdverseEvent, List<AdverseEventEvaluationResult>> adverseEventEvaluationResultMap;
         Map<AdverseEvent, List<String>> map;
-        List<ReportDefinition> defList = new ArrayList<ReportDefinition>();
+
         boolean alertNeeded = false;
         Integer aeReportId = expeditedData == null ? new Integer(0) : expeditedData.getId();
-
         try {
         	//evaluate the SAE reporting rules
             adverseEventEvaluationResultMap = adverseEventEvaluationService.evaluateSAEReportSchedule(expeditedData, aeList, study);
+            evaluationResult.getRulesEngineRawResultMap().put(aeReportId, adverseEventEvaluationResultMap);
             map = new HashMap<AdverseEvent, List<String>>();
             
             //clean up - by eliminating the deleted report definitions.
-            for(Map.Entry<AdverseEvent, List<String>> entry : adverseEventEvaluationResultMap.entrySet()){
-                List<String> rdNames = entry.getValue();
-                List<String> validReportDefNames = new ArrayList<String>();
-                map.put(entry.getKey(), validReportDefNames);
-                for(String reportDefName : rdNames){
+            for(Map.Entry<AdverseEvent, List<AdverseEventEvaluationResult>> entry : adverseEventEvaluationResultMap.entrySet()){
+                Set<String> rdNameSet = new HashSet<String>();
+                AdverseEvent adverseEvent = entry.getKey();
+
+                List<String> validReportDefNames   = new ArrayList<String>();
+                map.put(adverseEvent, validReportDefNames);
+                evaluationResult.addProcessingStep(aeReportId, "RulesEngine: Evaluation for adverse event (" + AdverseEvent.toReadableString(adverseEvent) + ") :", null);
+                for(AdverseEventEvaluationResult adverseEventEvaluationResult : entry.getValue()){
+                    evaluationResult.addProcessingStep(aeReportId, " RuleSet:", adverseEventEvaluationResult.getRuleMetadata() );
+                    evaluationResult.addProcessingStep(aeReportId, " Raw message :", adverseEventEvaluationResult.getMessage() );
+                    if(adverseEventEvaluationResult.getRuleEvaluationResult() != null){
+                        evaluationResult.addProcessingStep(aeReportId, " Bind URL :", adverseEventEvaluationResult.getRuleEvaluationResult().getBindURI() );
+                        evaluationResult.addProcessingStep(aeReportId, " Matched rules :", adverseEventEvaluationResult.getRuleEvaluationResult().getMatchedRules().toString() );
+                    } else {
+                        evaluationResult.addProcessingStep(aeReportId, " Bind URL :", null );
+                        evaluationResult.addProcessingStep(aeReportId, " Matched rules :", null );
+                    }
+
+
+                    if(adverseEventEvaluationResult.isCannotDetermine() || adverseEventEvaluationResult.isNoRulesFound()) continue;
+
+                    evaluationResult.addProcessingStep(aeReportId, " Raw suggestions :", adverseEventEvaluationResult.getRuleEvaluationResult().getResponses().toString() );
+
+                    rdNameSet.addAll(adverseEventEvaluationResult.getRuleEvaluationResult().getResponses());
+                }
+
+                for(String reportDefName : rdNameSet){
                     ReportDefinition rd = loadedReportDefinitionsMap.get(reportDefName);
                     if(rd == null) {
                         rd = reportDefinitionDao.getByName(reportDefName);
+                        if(rd == null){
+                            log.warn("Report definition (" + reportDefName + "), is referred in rules but is not found");
+                            continue; //we cannot find the report referred by the rule
+                        }
                         loadedReportDefinitionsMap.put(reportDefName, rd);
                     }
 
                     if(rd.getEnabled()){
                         validReportDefNames.add(reportDefName);
                     }
-                    
+
                 }
+                evaluationResult.addProcessingStep(aeReportId, "caAERS : Plausible suggestions :", validReportDefNames.toString() );
+                evaluationResult.addProcessingStep(aeReportId, " ", null );
+
             }
+
 
             //save this for reference.
             evaluationResult.addRulesEngineResult(aeReportId, map);
@@ -177,6 +208,10 @@ public class EvaluationServiceImpl implements EvaluationService {
             				if(report.isReported(adverseEvent)){
             					nameList.remove(report.getName());
             					evaluationResult.removeReportDefinitionName(aeReportId, adverseEvent, report.getName());
+                                evaluationResult.addProcessingStep(aeReportId, "caAERS : Adverse event (" + AdverseEvent.toReadableString(adverseEvent) + "):", null);
+                                evaluationResult.addProcessingStep(aeReportId, " Unmodified and belongs to completed report :", null );
+                                evaluationResult.addProcessingStep(aeReportId, " Removing suggestion :", report.getName() );
+
             				}
             			}
             			
@@ -190,6 +225,7 @@ public class EvaluationServiceImpl implements EvaluationService {
             for(AdverseEvent ae : map.keySet()){
             	List<String> nameList = map.get(ae);
             	ae.setRequiresReporting(!nameList.isEmpty());
+                evaluationResult.addProcessingStep(aeReportId, "caAERS: Adverse event (" + AdverseEvent.toReadableString(ae) + ") may need reporting ? : ", String.valueOf(ae.getRequiresReporting()) );
             	reportDefinitionNames.addAll(nameList);
             	
             }
@@ -200,6 +236,7 @@ public class EvaluationServiceImpl implements EvaluationService {
             }
             
             //load all report definitions
+            List<ReportDefinition> defList = new ArrayList<ReportDefinition>();
             for(String reportDefName : reportDefinitionNames){
             	ReportDefinition rd = loadedReportDefinitionsMap.get(reportDefName);
                 if(rd == null) rd = reportDefinitionDao.getByName(reportDefName);
@@ -230,7 +267,9 @@ public class EvaluationServiceImpl implements EvaluationService {
             			defList.remove(rdFound);
             			defList.add(activeReport.getReportDefinition());
             			evaluationResult.replaceReportDefinitionName(aeReportId, rdFound.getName(), activeReport.getName());
-            		}
+                        evaluationResult.addProcessingStep(aeReportId, "caAERS: Active child report (" + activeReport.getName() + ") present", null );
+                        evaluationResult.addProcessingStep(aeReportId, " Removing suggestion", rdFound.getName() );
+                    }
             	}
             	
             	//throw away all suggestions of rules engine, (if they belong to the same group as that of manually selected)
@@ -242,14 +281,17 @@ public class EvaluationServiceImpl implements EvaluationService {
             				//remove it from rules engine suggestions
             				defList.remove(rdSuggested);
             				evaluationResult.replaceReportDefinitionName(aeReportId, rdSuggested.getName(), rdManual.getName());
-            			}
+                            evaluationResult.addProcessingStep(aeReportId, "caAERS: Manually selected report (" + rdManual.getName() + ") present", null );
+                            evaluationResult.addProcessingStep(aeReportId, " Removing suggestion", rdSuggested.getName() );
+                        }
             		}
             		
             		//now add the manually selected report.
             		defList.add(rdManual);
             		evaluationResult.addReportDefinitionName(aeReportId, rdManual.getName());
-            		
-            	}
+                    evaluationResult.addProcessingStep(aeReportId, " Adding to suggestion ", rdManual.getName() );
+
+                }
             	
             	List<AdverseEvent> modifiedAdverseEvents = expeditedData.getModifiedAdverseEvents();
             	
@@ -277,6 +319,9 @@ public class EvaluationServiceImpl implements EvaluationService {
          					defList.add(rdCompleted);
          					for(AdverseEvent ae : modifiedAdverseEvents){
          						evaluationResult.addReportDefinitionName(aeReportId, ae, rdCompleted.getName());
+                                evaluationResult.addProcessingStep(aeReportId, "caAERS: Submitted adverse event (" + AdverseEvent.toReadableString(ae) + ") is modified : ", null);
+                                evaluationResult.addProcessingStep(aeReportId, " Adding to suggestion ", rdCompleted.getName() );
+
          					}
          					
          				}
@@ -294,6 +339,16 @@ public class EvaluationServiceImpl implements EvaluationService {
            
            //filter the report definitions
            List<ReportDefinition> reportDefinitions =  reportDefinitionFilter.filter(defList);
+            
+           if(reportDefinitions != null){
+               List<String> filteredReportDefnitionNames = new ArrayList<String>();
+               for(ReportDefinition rd: reportDefinitions){
+                   filteredReportDefnitionNames.add(rd.getName());
+               }
+               evaluationResult.addProcessingStep(aeReportId, " ", null );
+               evaluationResult.addProcessingStep(aeReportId, "caAERS: Final suggestion after filtering :", filteredReportDefnitionNames.toString());
+           }
+
            
           //modify the alert necessary flag, based on eventual set of report definitions
           if(expeditedData == null){
@@ -304,7 +359,7 @@ public class EvaluationServiceImpl implements EvaluationService {
               }
           }
        	  evaluationResult.getAeReportAlertMap().put(aeReportId, alertNeeded);
-       	
+          evaluationResult.addProcessingStep(aeReportId, "caAERS: Alert is needed ? ",  String.valueOf(alertNeeded));
            
            //logging 
            if(log.isDebugEnabled()){
@@ -402,8 +457,35 @@ public class EvaluationServiceImpl implements EvaluationService {
            evaluationResult.getAmendmentMap().put(aeReportId, rdAmmendSet);
            evaluationResult.getEditMap().put(aeReportId, rdEditSet);
            evaluationResult.getWithdrawalMap().put(aeReportId, rdWithdrawSet);
-           
-           
+
+           if(!rdCreateSet.isEmpty()){
+               evaluationResult.addProcessingStep(aeReportId, "caAERS: Create options :",  null);
+               for(ReportDefinitionWrapper rdWrapper : rdCreateSet){
+                evaluationResult.addProcessingStep(aeReportId,  " " + rdWrapper.getReadableMessage(), null);
+               }
+           }
+
+           if(!rdAmmendSet.isEmpty()){
+               evaluationResult.addProcessingStep(aeReportId, "caAERS: Amend options :",  null);
+               for(ReportDefinitionWrapper rdWrapper : rdAmmendSet){
+                   evaluationResult.addProcessingStep(aeReportId,  " " + rdWrapper.getReadableMessage(), null);
+               }
+           }
+
+           if(!rdEditSet.isEmpty()){
+               evaluationResult.addProcessingStep(aeReportId, "caAERS: Edit options :",  null);
+               for(ReportDefinitionWrapper rdWrapper : rdEditSet){
+                   evaluationResult.addProcessingStep(aeReportId,  " " + rdWrapper.getReadableMessage(), null);
+               }
+           }
+
+           if(!rdWithdrawSet.isEmpty()){
+               evaluationResult.addProcessingStep(aeReportId, "caAERS: Withdraw options :",  null);
+               for(ReportDefinitionWrapper rdWrapper : rdWithdrawSet){
+                   evaluationResult.addProcessingStep(aeReportId, " " + rdWrapper.getReadableMessage(), null);
+               }
+           }
+
            //update the result object
            evaluationResult.addEvaluatedAdverseEvents(aeReportId, aeList);
 //           evaluationResult.addResult(aeList, reportDefinitions);

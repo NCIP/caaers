@@ -1619,6 +1619,16 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     	.append("}");
     	return sb.toString();
     }
+    
+    public static String toReadableString(AdverseEvent ae){
+        if(ae == null) return "";
+        StringBuilder sb = new StringBuilder();
+        if(ae.getId() != null) sb.append(" ID : ").append(ae.getId())  ;
+        if(ae.getAdverseEventTerm() != null) sb.append(" Term : ").append(ae.getAdverseEventTerm().getFullName());
+        if(ae.getGrade() != null)sb.append(" Grade : ").append(ae.getGrade().name());
+        if(ae.getStartDate() != null) sb.append(" Start date : ").append(ae.getStartDateAsString()) ;
+        return sb.toString();
+    }
 
 	/**
 	 * Sets the participant at risk.

@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import gov.nih.nci.cabig.caaers.rules.common.AdverseEventEvaluationResult;
 import org.apache.commons.collections.CollectionUtils;
 
  
@@ -42,7 +43,11 @@ public class EvaluationResultDTO {
 	//will store the result of rules engine, as it is.[aeReportId - (adverseEvent - {ReportDefinitionNames} ]
 	/** The rules engine result map. */
 	Map<Integer, Map<AdverseEvent, List<String>>> rulesEngineResultMap = new HashMap<Integer, Map<AdverseEvent, List<String>>>();
+    
+    Map<Integer, Map<AdverseEvent, List<AdverseEventEvaluationResult>>> rulesEngineRawResultMap = new HashMap<Integer, Map<AdverseEvent, List<AdverseEventEvaluationResult>>>();
 	
+    Map<Integer, List<String>> processingSteps = new HashMap<Integer, List<String>>();
+    
 	/** The processed rules engine result map. */
 	Map<Integer, Map<AdverseEvent, Set<String>>> processedRulesEngineResultMap = new HashMap<Integer, Map<AdverseEvent,Set<String>>>();
 	
@@ -205,6 +210,17 @@ public class EvaluationResultDTO {
 //		}
 //	}
 	
+    public void addProcessingStep(Integer aeReportId, String step, String details){
+        List<String> steps = processingSteps.get(aeReportId);
+        if(steps == null){
+            steps = new ArrayList<String>();
+            processingSteps.put(aeReportId, steps);
+        }
+        String s = step;
+        if(details != null) s = s + " " +details;
+
+        steps.add(s);
+    }
 	/**
  * Replace report definition name.
  *
@@ -258,9 +274,7 @@ public void replaceReportDefinitionName(Integer aeReportId, String theOne, Strin
 		Map<AdverseEvent, Set<String>> map = processedRulesEngineResultMap.get(aeReportId);
 		for(Map.Entry<AdverseEvent, Set<String>> entry : map.entrySet()){
 			Set<String> reportDefinitionNames = entry.getValue();
-			if(!reportDefinitionNames.isEmpty()){
-				reportDefinitionNames.remove(theOne);
-			}
+            reportDefinitionNames.add(theOne);
 		}
 	}
 	
@@ -509,8 +523,24 @@ public Map<Integer, Set<ReportDefinitionWrapper>> getAmendmentMap() {
 	public void setRulesEngineResultMap(Map<Integer, Map<AdverseEvent, List<String>>> rulesEngineResultMap) {
 		this.rulesEngineResultMap = rulesEngineResultMap;
 	}
-	
-	/**
+
+    public Map<Integer, Map<AdverseEvent, List<AdverseEventEvaluationResult>>> getRulesEngineRawResultMap() {
+        return rulesEngineRawResultMap;
+    }
+
+    public void setRulesEngineRawResultMap(Map<Integer, Map<AdverseEvent, List<AdverseEventEvaluationResult>>> rulesEngineRawResultMap) {
+        this.rulesEngineRawResultMap = rulesEngineRawResultMap;
+    }
+
+    public Map<Integer, List<String>> getProcessingSteps() {
+        return processingSteps;
+    }
+
+    public void setProcessingSteps(Map<Integer, List<String>> processingSteps) {
+        this.processingSteps = processingSteps;
+    }
+
+    /**
 	 * Checks if is alert recommended.
 	 *
 	 * @return true, if is alert recommended
@@ -556,7 +586,8 @@ public Map<Integer, Set<ReportDefinitionWrapper>> getAmendmentMap() {
 		.append("\n ammendmentMap : ").append(amendmentMap.toString())
 		.append("\n withdrawMap : ").append(withdrawalMap.toString())
 		.append("\n editMap : ").append(editMap.toString())
-		.append("\n createMap : ").append(createMap.toString());
+		.append("\n createMap : ").append(createMap.toString())
+		.append("\n processingSteps : ").append(processingSteps.toString());
 		sb.append("\n}");
 		return sb.toString();
 	}
