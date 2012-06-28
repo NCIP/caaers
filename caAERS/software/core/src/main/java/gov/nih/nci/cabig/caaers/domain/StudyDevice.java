@@ -480,4 +480,15 @@ public class StudyDevice extends StudyIntervention {
         }
         return true;
     }
+
+    @Transient
+    public boolean getHasIdeHeldByNci(){
+        for(StudyDeviceINDAssociation sdia : getStudyDeviceINDAssociations()){
+            if(sdia == null) continue;
+            InvestigationalNewDrug ind = sdia.getInvestigationalNewDrug();
+            if(ind == null) continue;
+            if(ind.isHeldByNCI()) return true;
+        }
+        return false;
+    }
 }

@@ -4,9 +4,7 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.validation.annotation.UniqueNciIdentifierForOrganization;
 import gov.nih.nci.cabig.ctms.lang.ComparisonTools;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -41,7 +39,9 @@ import org.hibernate.annotations.Parameter;
 @DiscriminatorColumn(name = "type")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_organizations_id") })
 public abstract class Organization extends AbstractMutableRetireableDomainObject{
-    
+    // set of NCI ORG codes    (BJ : Refactored, moved from Study class)
+    public static final Set<String> NCI_ORG_CODES= new HashSet<String>(Arrays.asList(new String[]{"CTEP","DCP","CIP"}));
+
     /** The Constant DEFAULT_SITE_NAME. */
     public static final String DEFAULT_SITE_NAME = "default";
 

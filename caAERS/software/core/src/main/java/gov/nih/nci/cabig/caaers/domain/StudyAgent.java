@@ -435,4 +435,15 @@ public class StudyAgent extends StudyIntervention {
     	}
     }
 
+    public boolean getHasIndHeldByNci(){
+        for(StudyAgentINDAssociation saia :  getStudyAgentINDAssociations()){
+            if(saia == null) continue;
+            InvestigationalNewDrug ind = saia.getInvestigationalNewDrug();
+            if(ind == null) continue;
+            if(ind.isHeldByNCI()) return true;
+
+        }
+        return false;
+    }
+
 }

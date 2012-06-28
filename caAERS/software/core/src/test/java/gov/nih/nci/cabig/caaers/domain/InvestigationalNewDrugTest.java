@@ -17,4 +17,13 @@ public class InvestigationalNewDrugTest extends TestCase {
 
     }
 
+    public void testIsHeldByNCI(){
+        InvestigationalNewDrug ind = new InvestigationalNewDrug();
+        assertFalse(ind.isHeldByNCI());
+        ind.setINDHolder(Fixtures.createOrganizationINDHolder(Fixtures.createOrganization("x")));
+        assertFalse(ind.isHeldByNCI());
+        ind.setINDHolder(Fixtures.createOrganizationINDHolder(Fixtures.createOrganization("CTEP", "CTEP")));
+        assertTrue(ind.isHeldByNCI());
+    }
+
 }

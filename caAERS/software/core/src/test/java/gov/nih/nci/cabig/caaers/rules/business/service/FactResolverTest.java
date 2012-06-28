@@ -432,8 +432,108 @@ public class FactResolverTest extends TestCase {
         fact = resolver.assertFact(aeReport, "gov.nih.nci.cabig.caaers.domain.StudyTherapyType","studyTherapyType","Surgery","!=");
         assertTrue(fact);
     }
-	
-	private Study createCGLIBProxyStudy(Class<? extends Study> klass, String shortTitle) {
+
+    public void testNciHeldIndOnReport() throws Exception {
+        boolean fact = resolver.assertFact(aeReport,null,"hasNciIndAgent","true","==");
+        assertFalse(fact);
+
+        StudyAgent sa  = Fixtures.createStudyAgent("x");
+        sa.addStudyAgentINDAssociation(Fixtures.createStudyAgentIndAssociation("6", "CTEP"));
+        CourseAgent ca = new CourseAgent();
+        aeReport.getTreatmentInformation().addCourseAgent(ca);
+        fact = resolver.assertFact(aeReport,null,"hasNciIndAgent","true","==");
+        assertFalse(fact);
+        ca.setStudyAgent(sa);
+        fact = resolver.assertFact(aeReport,null,"hasNciIndAgent","true","==");
+        assertTrue(fact);
+    }
+
+
+    public void testIndOnReport() throws Exception {
+        boolean fact = resolver.assertFact(aeReport,"gov.nih.nci.cabig.caaers.domain.StudyAgent","investigationalNewDrugIndicator","true","==");
+        assertFalse(fact);
+
+        StudyAgent sa  = Fixtures.createStudyAgent("x");
+        sa.addStudyAgentINDAssociation(Fixtures.createStudyAgentIndAssociation("6", "CTEP"));
+        CourseAgent ca = new CourseAgent();
+        aeReport.getTreatmentInformation().addCourseAgent(ca);
+        fact = resolver.assertFact(aeReport,"gov.nih.nci.cabig.caaers.domain.StudyAgent","investigationalNewDrugIndicator","true","==");
+        assertFalse(fact);
+        ca.setStudyAgent(sa);
+        fact = resolver.assertFact(aeReport,"gov.nih.nci.cabig.caaers.domain.StudyAgent","investigationalNewDrugIndicator","true","==");
+        assertTrue(fact);
+        fact = resolver.assertFact(aeReport,"gov.nih.nci.cabig.caaers.domain.StudyAgent","investigationalNewDrugIndicator","true","isOnly");
+        assertTrue(fact);
+
+        ca = new CourseAgent();
+        aeReport.getTreatmentInformation().addCourseAgent(ca);
+        fact = resolver.assertFact(aeReport,"gov.nih.nci.cabig.caaers.domain.StudyAgent","investigationalNewDrugIndicator","true","==");
+        assertTrue(fact);
+        fact = resolver.assertFact(aeReport,"gov.nih.nci.cabig.caaers.domain.StudyAgent","investigationalNewDrugIndicator","true","isOnly");
+        assertTrue(fact);
+
+        ca.setStudyAgent(Fixtures.createStudyAgent("non-ctep-ind"));
+
+        fact = resolver.assertFact(aeReport,"gov.nih.nci.cabig.caaers.domain.StudyAgent","investigationalNewDrugIndicator","true","==");
+        assertTrue(fact);
+        fact = resolver.assertFact(aeReport,"gov.nih.nci.cabig.caaers.domain.StudyAgent","investigationalNewDrugIndicator","true","isOnly");
+        assertFalse(fact);
+    }
+
+
+    public void testNciHeldIdeOnReport() throws Exception {
+        boolean fact = resolver.assertFact(aeReport,null,"hasNciIdeDevice","true","==");
+        assertFalse(fact);
+
+        StudyDevice sd = Fixtures.createStudyDevice(1);
+        sd.getStudyDeviceINDAssociations().add(Fixtures.createStudyDeviceIndAssociation("9", "DCP"));
+        MedicalDevice md = new MedicalDevice();
+        aeReport.addMedicalDevice(md);
+        fact = resolver.assertFact(aeReport,null,"hasNciIdeDevice","true","==");
+        assertFalse(fact);
+        fact = resolver.assertFact(aeReport,null,"hasNciIdeDevice","false","==");
+        assertTrue(fact);
+        fact = resolver.assertFact(aeReport,null,"hasNciIdeDevice","true","!=");
+        assertTrue(fact);
+        md.setStudyDevice(sd);
+        fact = resolver.assertFact(aeReport,null,"hasNciIdeDevice","true","==");
+        assertTrue(fact);
+    }
+
+
+
+    public void testIdeOnReport() throws Exception {
+        boolean fact = resolver.assertFact(aeReport,"gov.nih.nci.cabig.caaers.domain.StudyDevice","investigationalNewDeviceIndicator","true","==");
+        assertFalse(fact);
+
+        StudyDevice sd = Fixtures.createStudyDevice(1);
+        sd.getStudyDeviceINDAssociations().add(Fixtures.createStudyDeviceIndAssociation("9", "DCP"));
+        MedicalDevice md = new MedicalDevice();
+        aeReport.addMedicalDevice(md);
+        fact = resolver.assertFact(aeReport,"gov.nih.nci.cabig.caaers.domain.StudyDevice","investigationalNewDeviceIndicator","true","==");
+        assertFalse(fact);
+        md.setStudyDevice(sd);
+        fact = resolver.assertFact(aeReport,"gov.nih.nci.cabig.caaers.domain.StudyDevice","investigationalNewDeviceIndicator","true","==");
+        assertTrue(fact);
+
+        fact = resolver.assertFact(aeReport,"gov.nih.nci.cabig.caaers.domain.StudyDevice","investigationalNewDeviceIndicator","true","isOnly");
+        assertTrue(fact);
+
+        md = new MedicalDevice();
+        sd = Fixtures.createStudyDevice();
+        sd.getStudyDeviceINDAssociations().clear();
+        md.setStudyDevice(sd);
+        aeReport.addMedicalDevice(md);
+
+        fact = resolver.assertFact(aeReport,"gov.nih.nci.cabig.caaers.domain.StudyDevice","investigationalNewDeviceIndicator","true","==");
+        assertTrue(fact);
+        fact = resolver.assertFact(aeReport,"gov.nih.nci.cabig.caaers.domain.StudyDevice","investigationalNewDeviceIndicator","true","isOnly");
+        assertFalse(fact);
+
+    }
+
+
+    private Study createCGLIBProxyStudy(Class<? extends Study> klass, String shortTitle) {
         Enhancer enhancer = new Enhancer();
         enhancer.setSuperclass(klass);
         enhancer.setCallback(NoOp.INSTANCE);

@@ -204,4 +204,14 @@ public class InvestigationalNewDrug extends AbstractMutableDomainObject {
     public String toString() {
         return "InvestigationalNewDrug[" + indNumber + " : " + getHolderName() + "]";
     }
+
+    /**
+     * True, when the IND holder belongs to gov.nih.nci.cabig.caaers.domain.Organization#NCI_ORG_CODES
+     * @return
+     */
+    @Transient
+    public boolean isHeldByNCI(){
+        if(getINDHolder() == null) return false;
+        return getINDHolder().isNciAffiliate();
+    }
 }

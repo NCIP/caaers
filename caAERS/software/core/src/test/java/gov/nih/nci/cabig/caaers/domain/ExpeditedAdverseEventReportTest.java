@@ -1493,4 +1493,26 @@ public class ExpeditedAdverseEventReportTest extends AbstractTestCase {
         l = report.getAdverseEventAttributions();
         assertTrue(l.size() == 1);
     }
+
+    public void testGetHasNciIndAgent(){
+        assertFalse(report.getHasNciIndAgent());
+        StudyAgent sa  = Fixtures.createStudyAgent("x");
+        sa.addStudyAgentINDAssociation(Fixtures.createStudyAgentIndAssociation("6", "CTEP"));
+        CourseAgent ca = new CourseAgent();
+        report.getTreatmentInformation().addCourseAgent(ca);
+        assertFalse(report.getHasNciIndAgent());
+        ca.setStudyAgent(sa);
+        assertTrue(report.getHasNciIndAgent());
+
+    }
+    public void testGetHasNciIdeDevice(){
+        assertFalse(report.getHasNciIdeDevice());
+        StudyDevice sd = Fixtures.createStudyDevice(1);
+        sd.getStudyDeviceINDAssociations().add(Fixtures.createStudyDeviceIndAssociation("9", "DCP"));
+        MedicalDevice md = new MedicalDevice();
+        report.addMedicalDevice(md);
+        assertFalse(report.getHasNciIdeDevice());
+        md.setStudyDevice(sd);
+        assertTrue(report.getHasNciIdeDevice());
+    }
 }

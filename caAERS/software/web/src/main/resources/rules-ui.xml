@@ -424,6 +424,62 @@
                 <expression>factResolver.assertFact(aeReport,'gov.nih.nci.cabig.caaers.domain.StudyTherapyType','studyTherapyType','runTimeValue','runTimeOperator')</expression>
                 <grammer prefix=" Intervention " postfix="."/>
             </field>
+
+            <!-- Has NCI IND -->
+            <field name="hasNciIndAgent" display-uri="IND held by NCI">
+                <field-value>
+                    <input-type>select</input-type>
+                </field-value>
+                <valid-value value="true" display-uri="Yes" readable-text="Yes "/>
+                <valid-value value="false" display-uri="No" readable-text="No "/>
+                <operator name="==" display-uri="Equal To" readable-text="is "/>
+                <operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
+                <expression>factResolver.assertFact(aeReport,null,'hasNciIndAgent','runTimeValue','runTimeOperator')</expression>
+                <grammer prefix=" IND held by NCI " postfix="."/>
+            </field>
+
+            <!-- Has NCI IDE -->
+            <field name="hasNciIdeDevice" display-uri="IDE held by NCI">
+                <field-value>
+                    <input-type>select</input-type>
+                </field-value>
+                <valid-value value="true" display-uri="Yes" readable-text="Yes "/>
+                <valid-value value="false" display-uri="No" readable-text="No "/>
+                <operator name="==" display-uri="Equal To" readable-text="is "/>
+                <operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
+                <expression>factResolver.assertFact(aeReport,null,'hasNciIdeDevice','runTimeValue','runTimeOperator')</expression>
+                <grammer prefix=" IDE held by NCI " postfix="."/>
+            </field>
+
+            <field name="CourseAgentIndIndicator" display-uri="Investigational new drug?" >
+                <field-value>
+                    <input-type>select</input-type>
+                </field-value>
+
+                <valid-value value="false" display-uri="No" readable-text="No "/>
+                <valid-value value="true" display-uri="Yes" readable-text="Yes "/>
+
+                <operator name="==" display-uri="Is " readable-text="Is"/>
+                <operator name="isOnly" display-uri="Is Only" readable-text="Is Only "/>
+
+                <expression>factResolver.assertFact(aeReport,'gov.nih.nci.cabig.caaers.domain.StudyAgent','investigationalNewDrugIndicator','runTimeValue','runTimeOperator')</expression>
+                <grammer prefix=" Investigational new drug? " />
+            </field>
+
+            <field name="MedicalDeviceIdeIndicator" display-uri="Investigational new device?" >
+                <field-value>
+                    <input-type>select</input-type>
+                </field-value>
+
+                <valid-value value="false" display-uri="No" readable-text="No "/>
+                <valid-value value="true" display-uri="Yes" readable-text="Yes "/>
+
+                <operator name="==" display-uri="Is " readable-text="Is"/>
+                <operator name="isOnly" display-uri="Is Only" readable-text="Is Only "/>
+
+                <expression>factResolver.assertFact(aeReport,'gov.nih.nci.cabig.caaers.domain.StudyDevice','investigationalNewDeviceIndicator','runTimeValue','runTimeOperator')</expression>
+                <grammer prefix=" Investigational new device? " />
+            </field>
 			<!--<field name="outcomeIdentifier" display-uri="Outcome Identifier">-->
 				<!--<field-value>-->
 					<!--<input-type>multiselect</input-type>-->

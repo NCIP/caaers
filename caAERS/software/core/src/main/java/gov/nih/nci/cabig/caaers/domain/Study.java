@@ -217,10 +217,6 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
 
     protected String participationType;
     
-    // set of NCI ORG codes
-    
-    private static final Set<String> NCI_ORG_CODES= new HashSet<String>(Arrays.asList(new String[]{"CTEP","DCP","CIP"}));
-
     /**
      * Instantiates a new study.
      */
@@ -2498,20 +2494,8 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     @Transient
     public boolean getNciIndStudy(){
     	for(StudyAgent sa : getActiveStudyAgents()){
-    		for(StudyAgentINDAssociation saia : sa.getStudyAgentINDAssociations()){
-                if(saia == null) continue;
-                InvestigationalNewDrug ind = saia.getInvestigationalNewDrug();
-                if(ind == null) continue;
-                if(ind.getINDHolder() == null) continue;
-                if(ind.getINDHolder() instanceof  OrganizationHeldIND){
-    				Organization org = ((OrganizationHeldIND)saia.getInvestigationalNewDrug().getINDHolder()).getOrganization();
-                    if(org == null) continue;
-                    if(org.getNciInstituteCode() == null) continue;
-                    if(NCI_ORG_CODES.contains(org.getNciInstituteCode())) return true;
-    				}
-    			}
-    		}
-    	
+            if(sa.getHasIndHeldByNci()) return true;
+    	}
     	return false;
     }
     
@@ -2519,18 +2503,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     @Transient
     public boolean getNciIdeStudy(){
         for(StudyDevice sd : getActiveStudyDevices()){
-    		for(StudyDeviceINDAssociation sdia : sd.getStudyDeviceINDAssociations()){
-                if(sdia == null) continue;
-                InvestigationalNewDrug ind = sdia.getInvestigationalNewDrug();
-                if(ind == null) continue;
-                if(ind.getINDHolder() == null) continue;
-                if(ind.getINDHolder() instanceof  OrganizationHeldIND){
-                    Organization org = ((OrganizationHeldIND) ind.getINDHolder()).getOrganization();
-                    if(org == null) continue;
-                    if(org.getNciInstituteCode() == null) continue;
-                    if(NCI_ORG_CODES.contains(org.getNciInstituteCode())) return true;
-    			}
-    		}
+    		if(sd.getHasIdeHeldByNci()) return true;
     	}
     	
     	return false;

@@ -64,4 +64,9 @@ public abstract class INDHolder extends AbstractMutableDomainObject {
     @Transient
     public abstract String getName();
 
+    @Transient
+    public boolean isNciAffiliate(){
+        return false;
+    }
+
 }

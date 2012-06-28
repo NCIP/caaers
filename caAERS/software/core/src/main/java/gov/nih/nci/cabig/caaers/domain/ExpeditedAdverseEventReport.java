@@ -1814,6 +1814,24 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         return attributions;
     }
     
-    
+    @Transient
+    public boolean getHasNciIndAgent(){
+        if(getTreatmentInformation().getCourseAgents() != null){
+           for(CourseAgent ca : getTreatmentInformation().getCourseAgents()){
+               if(ca.getStudyAgent() != null && ca.getStudyAgent().getHasIndHeldByNci()) return true;
+           }
+        }
+        return false;
+    }
+
+    @Transient
+    public boolean getHasNciIdeDevice(){
+        if(getMedicalDevices() != null) {
+            for(MedicalDevice md : getMedicalDevices()){
+                if(md.getStudyDevice() != null && md.getStudyDevice().getHasIdeHeldByNci()) return true;
+            }
+        }
+        return false;
+    }
 
 }

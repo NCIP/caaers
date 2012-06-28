@@ -56,6 +56,5 @@ public class ObjectGraphTest extends TestCase {
     	NavigationPath np = objectGraphFactory.findNavigationPath(sourceObjectType, targetObjectType);
     	assertNotNull(np);
     }
-    
-    
+
 }

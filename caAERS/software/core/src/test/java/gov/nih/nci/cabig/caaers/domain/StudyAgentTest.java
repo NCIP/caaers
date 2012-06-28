@@ -237,6 +237,23 @@ public class StudyAgentTest extends AbstractTestCase {
         }
 
     }
-	
+
+
+
+	public void testGetHasIndHeldByNci(){
+        {
+            StudyAgent sa1 = Fixtures.createStudyAgent("test");
+            sa1.addStudyAgentINDAssociation(Fixtures.createStudyAgentIndAssociation("1", "CTEP"));
+            assertTrue(sa1.getHasIndHeldByNci());
+            sa1.addStudyAgentINDAssociation(Fixtures.createStudyAgentIndAssociation("1", "UX"));
+            assertTrue(sa1.getHasIndHeldByNci());
+        }
+        {
+            StudyAgent sa1 = Fixtures.createStudyAgent("test");
+            assertFalse(sa1.getHasIndHeldByNci());
+            sa1.addStudyAgentINDAssociation(Fixtures.createStudyAgentIndAssociation("1", "UX"));
+            assertFalse(sa1.getHasIndHeldByNci());
+        }
+    }
 
 }
