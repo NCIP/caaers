@@ -10,7 +10,7 @@ public class EvaluationResultDTOTest extends TestCase {
        EvaluationResultDTO dto = new EvaluationResultDTO();
        
         dto.addProcessingStep(1, "x", "y");
-        assertEquals("x[y]", dto.getProcessingSteps().get(1).get(0));
+        assertEquals("x y", dto.getProcessingSteps().get(1).get(0));
         assertNull(dto.getProcessingSteps().get(0));
     }
 }
