@@ -411,7 +411,7 @@ public class EvaluationServiceImpl implements EvaluationService {
 	        	  }
 	        	  
 	        	  //Nothing getting edited,  add in this report def in create list
-	        	  if(reportsEdited != null && !reportsEdited.isEmpty()){
+	        	  if(reportsEdited == null || reportsEdited.isEmpty()){
 	        		 wrapper = new ReportDefinitionWrapper(rd, null, ActionType.CREATE);
 	         		 wrapper.setStatus("Not started");
 	         		 rdCreateSet.add(wrapper);
