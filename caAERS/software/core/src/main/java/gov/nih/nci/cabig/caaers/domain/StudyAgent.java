@@ -435,6 +435,7 @@ public class StudyAgent extends StudyIntervention {
     	}
     }
 
+    @Transient
     public boolean getHasIndHeldByNci(){
         for(StudyAgentINDAssociation saia :  getStudyAgentINDAssociations()){
             if(saia == null) continue;
