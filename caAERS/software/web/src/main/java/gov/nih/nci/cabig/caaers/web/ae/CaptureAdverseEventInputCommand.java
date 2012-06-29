@@ -769,18 +769,21 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     		if(createWrappers != null){
     			for(ReportDefinitionWrapper wrapper: createWrappers){
     				ReportTableRow row  = rowMap.get(wrapper.getDef().getId());
+                    if(row == null) continue;
     				row.setPreSelected(true);
         			row.setGrpAction(null);
         			row.setOtherAction(null);
+                    createAndEditWrappers.add(wrapper);
     			}
 
-                createAndEditWrappers.addAll(createWrappers);
+               
     		}
     		
     		Set<ReportDefinitionWrapper> editWrappers = evaluationResult.getEditMap().get(aeReportId);
     		if(editWrappers != null){
     			for(ReportDefinitionWrapper wrapper: editWrappers){
     				ReportTableRow row  = rowMap.get(wrapper.getDef().getId());
+                    if(row == null) continue;
     				row.setPreSelected(true);
     				
     				row.setAction(ActionType.EDIT);
@@ -794,16 +797,17 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
         			row.setDue(DurationUtils.formatDuration(wrapper.getDueOn().getTime() - new Date().getTime(), wrapper.getDef().getTimeScaleUnitType().getFormat()));
         			row.setGrpDue("");
         			row.setOtherDue("");
+                    createAndEditWrappers.add(wrapper);
     			}
                 
-                createAndEditWrappers.addAll(editWrappers);
     		}
     		
     		Set<ReportDefinitionWrapper> withdrawWrappers = evaluationResult.getWithdrawalMap().get(aeReportId);
     		if(withdrawWrappers != null){
     			for(ReportDefinitionWrapper wrapper: withdrawWrappers){
     				ReportTableRow row  = rowMap.get(wrapper.getDef().getId());
-    				
+    			    if(row == null) continue;
+
     				row.setAction(ActionType.EDIT);
     				row.setGrpAction(ActionType.WITHDRAW);
     				row.setOtherAction(ActionType.WITHDRAW);
@@ -829,7 +833,8 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     		if(ammendWrappers != null){
     			for(ReportDefinitionWrapper wrapper: ammendWrappers){
     				ReportTableRow row  = rowMap.get(wrapper.getDef().getId());
-    				
+    				if(row == null) continue;
+
     				row.setAction(ActionType.AMEND);
     				row.setGrpAction(ActionType.AMEND);
     				
@@ -841,7 +846,9 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
         			row.setOtherDue("");
 
                     //preselect the other one
-                    rowMap.get(wrapper.getSubstitute().getId()).setPreSelected(true);
+                    if(rowMap.get(wrapper.getSubstitute().getId()) != null){
+                        rowMap.get(wrapper.getSubstitute().getId()).setPreSelected(true);
+                    }
     			}
 
     		}
