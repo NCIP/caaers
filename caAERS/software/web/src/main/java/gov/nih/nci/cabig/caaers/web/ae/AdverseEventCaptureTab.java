@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.web.fields.*;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
@@ -160,9 +161,11 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
     private boolean isFieldRequired(AdverseEvent ae, String fieldPath){
     	if(ae.getSolicited() || ae.isRetired())
     		return false;
-    	else{
-    		return caaersFieldConfigurationManager.isFieldMandatory(TAB_NAME, fieldPath);
-    	}
+    	return isFieldRequired(fieldPath);
+    }
+    
+    public boolean isFieldRequired(String fieldPath){
+        return caaersFieldConfigurationManager.isFieldMandatory(TAB_NAME, fieldPath);
     }
 
     @Override
@@ -173,24 +176,16 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         command.getStudy().getExpectedAECtcTerms().size();
         
         Map<String, Object> refData = super.referenceData(command);
-        Boolean outcomesMandatory = false;
         // Put a flag in the referenceData to mark Outcome as mandatory if configured so.
-        if(caaersFieldConfigurationManager.isFieldMandatory(TAB_NAME, "adverseEvents[].outcomes")){
-        	outcomesMandatory = true;
-        }
-        refData.put("outcomesMandatory", outcomesMandatory);
-        
-        Boolean aeTermMandatory = false;
-        if(caaersFieldConfigurationManager.isFieldMandatory(TAB_NAME, "adverseEvents[].adverseEventCtcTerm.term")){
-            aeTermMandatory = true;
-        }
-        refData.put("aeTermMandatory", aeTermMandatory);
+        refData.put("outcomesMandatory", isFieldRequired("adverseEvents[].outcomes"));
+        refData.put("aeTermMandatory", isFieldRequired("adverseEvents[].adverseEventCtcTerm.term"));
 
         //return super.referenceData(command);
         return refData;
     }
 
 
+    
     
 
     @Override
@@ -249,11 +244,31 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
     
     @Override
     protected void validate(CaptureAdverseEventInputCommand command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
+        Term aeTerminologyTerm = command.getStudy().getAeTerminology().getTerm();
+
+        boolean ctcTerminology = aeTerminologyTerm == null ? false : aeTerminologyTerm == Term.CTC;
+        boolean meddraTerminology = aeTerminologyTerm == null ? false : aeTerminologyTerm == Term.MEDDRA;
+        
         short i = 0;
         for (AdverseEvent ae : command.getAdverseEventReportingPeriod().getAdverseEvents()) {
-            if (ae.getAdverseEventCtcTerm() == null) {
-                errors.rejectValue("adverseEvents[" + i + "].detailsForOther", "SAE_045", new Object[]{ae.getDetailsForOther()}, "");
+            if(isFieldRequired(ae, "adverseEvents[].adverseEventCtcTerm.term")){
+                if(ae.getAdverseEventTerm() == null || ae.getAdverseEventTerm().getTerm() == null){
+                    if(ctcTerminology){
+                        errors.rejectValue("adverseEvents[" + i + "].ctcTerm", "SAE_045", new Object[]{ae.getDetailsForOther()}, "");
+                    }
+                    if(meddraTerminology){
+                        errors.rejectValue("adverseEvents[" + i + "].meddraTerm", "SAE_045", new Object[]{ae.getDetailsForOther()}, ""); 
+                    }
+                    
+                } 
             }
+            
+            if(isFieldRequired(ae, "adverseEvents[].detailsForOther")){
+                if(StringUtils.isEmpty(ae.getDetailsForOther())) {
+                    errors.rejectValue("adverseEvents[" + i + "].detailsForOther", "CAE_018", "Missing Verbatim");
+                }
+            }
+            
             i++;
         }
 
