@@ -181,6 +181,8 @@ public class BadInputFilter implements Filter {
         angleBracketsHashMap.put(Pattern.compile(">"), "&gt;");
     	javaScriptHashMap.put(Pattern.compile("<(\\s*)(/\\s*)?script(\\s*)>"), "<$2script-disabled>");
     	javaScriptHashMap.put(Pattern.compile("%3Cscript%3E"), "%3Cscript-disabled%3E");
+    	javaScriptHashMap.put(Pattern.compile("<(\\s*)(/\\s*)?iframe(\\s*)>"), "<$2iframe-disabled>");
+    	javaScriptHashMap.put(Pattern.compile("%3Ciframe%3E"), "%3Ciframe-disabled%3E");
     	javaScriptHashMap.put(Pattern.compile("alert(\\s*)\\("), "alert[");
     	javaScriptHashMap.put(Pattern.compile("alert%28"), "alert%5B");
     	javaScriptHashMap.put(Pattern.compile("document(.*)\\.(.*)cookie"), "document cookie");

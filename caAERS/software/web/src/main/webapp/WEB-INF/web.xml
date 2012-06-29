@@ -93,6 +93,19 @@
 	  <url-pattern>/*</url-pattern>
 	</filter-mapping>
 	<filter>
+	  <filter-name>XSSSecondaryFilter</filter-name>
+	  <filter-class>gov.nih.nci.cabig.caaers.web.filters.XSSFilter</filter-class>
+	  <init-param>
+			<param-name>allowURIs</param-name>
+			<!-- Comma separated list of values that will be allowed to bypass the filter if they are present in the url. -->
+			<param-value>rule/create,import</param-value>	
+		</init-param>
+	</filter>
+	<filter-mapping>
+	  <filter-name>XSSSecondaryFilter</filter-name>
+	  <url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<filter>
 	  <filter-name>XSRFFilter</filter-name>
 	  <filter-class>gov.nih.nci.cabig.caaers.web.filters.CsrfPreventionFilter</filter-class>
 	  <init-param>
