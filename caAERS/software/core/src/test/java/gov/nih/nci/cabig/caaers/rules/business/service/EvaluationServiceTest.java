@@ -801,7 +801,7 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		
 		//aeReport 1
 		assertTrue(result.getAmendmentMap().get(aeReport1.getId()).isEmpty());
-		assertFalse(result.getCreateMap().get(aeReport1.getId()).isEmpty());
+		assertTrue(result.getCreateMap().get(aeReport1.getId()).isEmpty());
 		assertTrue(result.getWithdrawalMap().get(aeReport1.getId()).isEmpty());
 		assertFalse(result.getEditMap().get(aeReport1.getId()).isEmpty());
 		
@@ -1182,16 +1182,14 @@ public class EvaluationServiceTest extends AbstractTestCase {
     	assertTrue(result.getWithdrawalMap().get(aeReport1.getId()).isEmpty());
     	assertFalse(result.getEditMap().get(aeReport1.getId()).isEmpty());
     	assertFalse(result.getAmendmentMap().get(aeReport1.getId()).isEmpty());
-    	assertFalse(result.getCreateMap().get(aeReport1.getId()).isEmpty());
+    	assertTrue(result.getCreateMap().get(aeReport1.getId()).isEmpty());
     	
     	assertEquals(1, result.getEditMap().get(aeReport1.getId()).size());
     	assertEquals(1, result.getAmendmentMap().get(aeReport1.getId()).size());
-    	assertEquals(1, result.getCreateMap().get(aeReport1.getId()).size());
-    	
+
     	assertEquals(rdx , new ArrayList<ReportDefinitionWrapper>(result.getEditMap().get(aeReport1.getId())).get(0).getDef());
     	assertEquals(rd1 , new ArrayList<ReportDefinitionWrapper>(result.getAmendmentMap().get(aeReport1.getId())).get(0).getDef());
     	assertEquals(rd1 , new ArrayList<ReportDefinitionWrapper>(result.getAmendmentMap().get(aeReport1.getId())).get(0).getSubstitute());
-    	assertEquals(rdx , new ArrayList<ReportDefinitionWrapper>(result.getCreateMap().get(aeReport1.getId())).get(0).getDef());
 
     	verifyMocks();
     }
