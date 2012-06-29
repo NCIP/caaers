@@ -114,6 +114,26 @@ function removeSystemIdentifier(container, index) {
 
 //---------------------------------------------------------------------------------------------------------------------
 
+ function _update(d) {
+ 			 confirmWin.close();
+            $(d + '_readonly').style.display='none';
+            $(d + '_update').style.display='';
+       }
+       
+       
+     var confirmWin ;
+
+	 function showStudySubjectIdChangeMsg(d){
+		 $('studySubjectId').value= d;
+	    	confirmWin = new Window({className :"alphacube", title: "Confirm", hideEffect:Element.hide, zIndex:100, width:600, height:180 , 
+	    	minimizable:false, maximizable:false,
+				showEffect:Element.show 
+				}); 
+			confirmWin.setContent($('search_submit')) ;
+			confirmWin.showCenter(true);
+	
+	 }
+       
 </script>
 
 <tags:tabForm tab="${tab}" flow="${flow}" hideErrorDetails="false" willSave="true">
@@ -123,6 +143,7 @@ function removeSystemIdentifier(container, index) {
 <div>
     <input type="hidden" name="_action" value="">
     <input type="hidden" name="_selected" value="">
+    <input type="hidden" name="studySubjectId" id="studySubjectId" value=""/>
 </div>
 </jsp:attribute>
 
@@ -158,7 +179,18 @@ function removeSystemIdentifier(container, index) {
 	</c:if>        
       ${assignment.studySite.organization.name}
       </td>
-      <td><ui:text path="${assign}" readonly="${not empty command.assignments[i.index].id}" /></td>
+      <td>
+		<div id="${assign}_readonly" style="display: ${not empty command.assignments[i.index].id ? '' : 'none'}">
+		 	${command.assignments[i.index].studySubjectIdentifier}
+		 	 <c:if test="${not empty roles.registration_qa_manager}">
+		 		<tags:button icon="edit" size="small" value="Update" color="blue" onclick="showStudySubjectIdChangeMsg('${assign}');" type="button"/>
+		 	</c:if>
+		 	 
+		</div>
+		<div id="${assign}_update" style="display: ${not empty command.assignments[i.index].id ? 'none' : ''}">
+		 	<ui:text path="${assign}"/>
+		</div>
+      </td>
     </tr>
   </c:forEach>
 </table>
@@ -334,6 +366,14 @@ function removeSystemIdentifier(container, index) {
 </tags:tabForm>
 
 <form name="dummyForm"><input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/></form>
+
+<div id="search_submit" style="display: none; class="info-box message">
+	<p><br><caaers:message code="LBL_study.subject.id.change.warning.msg" /></p>
+	   		<tags:button type="button" color="red" cssClass="" value="Cancel" onclick="confirmWin.close();" />
+			<tags:button type="button" color="blue" icon="submit" cssClass="" onclick="_update($('studySubjectId').value);" value="Continue" />
+</div>
+
+<div id="please_wait" style="display: none;" class="warning-box message" ><p><br><caaers:message code="LBL_study.subject.id.change.warning.msg" /></p></div>
 
 </body>
 </html>
