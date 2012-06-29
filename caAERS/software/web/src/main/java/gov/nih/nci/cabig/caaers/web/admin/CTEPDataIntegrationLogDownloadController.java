@@ -101,9 +101,9 @@ public class CTEPDataIntegrationLogDownloadController extends AbstractController
         }
 
         String subFolder = DateUtils.formatDate(d, "yyyy") +
-                File.pathSeparator +
+                File.separator +
                 DateUtils.formatDate(d,"MM") +
-                File.pathSeparator +
+                File.separator +
                 DateUtils.formatDate(d, "dd");
 
 
