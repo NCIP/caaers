@@ -66,15 +66,18 @@
                 <div class="label"><ui:label path="*" text="*" labelProperty="aeReport.adverseEvents.detailsForOther"/></div>
                 <div class="value"><caaers:value path="${fieldGroups[mainGroup].fields[0 + indexCorrection].propertyName}" /></div>
             </div>
+            <caaers:message code="LBL_aeReport.adverseEvents.ctcTerm" var="ctcTermLabel" />
+            <caaers:message code="LBL_aeReport.adverseEvents.meddraTerm" var="meddraTermLabel" />
             <div class="row">
                 <div class="label">
                     <c:if test="${aeTermMandatory}"><tags:requiredIndicator/></c:if>
-                    <c:if test="${command.study.aeTerminology.term eq 'CTC'}"><caaers:message code="LBL_aeReport.adverseEvents.ctcTerm" /></c:if>
-                    <c:if test="${command.study.aeTerminology.term eq 'MEDDRA'}"><caaers:message code="LBL_aeReport.adverseEvents.meddraTerm" /></c:if>
+                    <c:if test="${command.study.aeTerminology.term eq 'CTC'}">${ctcTermLabel}</c:if>
+                    <c:if test="${command.study.aeTerminology.term eq 'MEDDRA'}">${meddraTermLabel}</c:if>
                 </div>
                 <div class="value">
                     <c:if test="${command.study.aeTerminology.term eq 'CTC'}">
                     <ui:autocompleter path="adverseEvents[${index}].ctcTerm"  required="${aeTermMandatory}"
+                                      title="${ctcTermLabel}"
                                       initialDisplayValue="${command.adverseEvents[index].ctcTerm.fullName}">
                         <jsp:attribute name="populatorJS">function(autocompleter, text) {
                             createAE.matchTerms(text, ${command.study.aeTerminology.ctcVersion.id}, '', 25, function(values) {
@@ -97,7 +100,8 @@
                     </ui:autocompleter>
                 </c:if>
                     <c:if test="${command.study.aeTerminology.term eq 'MEDDRA'}">
-                    <ui:autocompleter path="adverseEvents[${index}].meddraTerm"  required="${aeTermMandatory}" >
+                    <ui:autocompleter path="adverseEvents[${index}].meddraTerm"  title="${meddraTermLabel}"
+                                      required="${aeTermMandatory}" >
                         <jsp:attribute name="initialDisplayValue">
                             <c:if test="${command.adverseEvents[index].meddraTerm.fullName ne ''}">${command.adverseEvents[index].meddraTerm.fullName}</c:if>
                         </jsp:attribute>
