@@ -89,7 +89,7 @@
             		</tr>   
              		<tr id="reportResetDiv">
             			<td>
-	            				<a href="javascript:resetReports()">Reset Stuck Reports ('Submission to AdEERS in process') </a>
+	            				<a href="javascript:resetReports()"><caaers:message code="LBL_track.report.reset" /></a>
             			</td>
             		</tr>           		         		
              </table>	
