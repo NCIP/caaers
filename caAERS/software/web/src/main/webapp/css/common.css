@@ -1471,3 +1471,11 @@ div.divisionText .divisionTitle {
     margin-top: 0;
     padding: 10px 8px;
 }
+
+div.shorty {
+    width: 100%;
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

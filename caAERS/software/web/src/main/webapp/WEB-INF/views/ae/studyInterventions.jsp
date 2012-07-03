@@ -290,7 +290,7 @@ function updateMedicalDevice(i, studyDeviceId){
 
 <div class="row">
     <div class="summarylabel">Treatment</div>
-    <div class="summaryvalue">${command.aeReport.treatmentInformation.treatmentDescription != null ? command.aeReport.treatmentInformation.treatmentDescription : command.aeReport.treatmentInformation.treatmentAssignment.description}</div>
+    <div class="summaryvalue shorty">${command.aeReport.treatmentInformation.treatmentDescription != null ? command.aeReport.treatmentInformation.treatmentDescription : command.aeReport.treatmentInformation.treatmentAssignment.description}</div>
 </div>
 
 <form:form id="command">

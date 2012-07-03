@@ -221,11 +221,11 @@
 						<div>
 							<div class="row">
 				    			<div class="summarylabel">Search name</div>
-				        		<div class="summaryvalue"><ui:text path="searchName" size="20" mandatory="true"/></div>
+				        		<div class="summaryvalue shorty"><ui:text path="searchName" size="20" mandatory="true"/></div>
 							</div>
 				    		<div class="row">
 				    			<div class="summarylabel">Search description</div>
-				    			<div class="summaryvalue"><ui:textarea path="searchDescription" rows="3" cols="40"/></div>
+				    			<div class="summaryvalue shorty"><ui:textarea path="searchDescription" rows="3" cols="40"/></div>
 				    		</div>
 						</div>
 						<div align="right">

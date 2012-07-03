@@ -127,11 +127,11 @@
     
     <div class="row">
       <div class="summarylabel">Study</div>
-      <div class="summaryvalue">(${command.study.primaryIdentifier.value}) ${command.study.longTitle}</div>
+      <div class="summaryvalue shorty">(${command.study.primaryIdentifier.value}) ${command.study.longTitle}</div>
     </div>
     <div class="row">
       <div class="summarylabel">Subject</div>
-      <div class="summaryvalue">(${command.assignment == null ? '' : command.assignment.studySubjectIdentifier })</div>
+      <div class="summaryvalue shorty">(${command.assignment == null ? '' : command.assignment.studySubjectIdentifier })</div>
     </div>
   </div>
 </c:if>

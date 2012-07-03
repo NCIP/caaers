@@ -130,7 +130,7 @@
 				<div class="summarylabel">
 					${command.searchCriteriaParticipantCentric  ? 'Subject' : 'Study'}
 				</div>
-				<div class="summaryvalue">
+				<div class="summaryvalue shorty">
 					${command.searchResultsDTO.header}
 				</div>
    			</div>
@@ -152,7 +152,7 @@
 								<div class="summarylabel">
 									${command.searchCriteriaParticipantCentric  ? 'Study' : 'Subject'}
 								</div>
-								<div class="summaryvalue">
+								<div class="summaryvalue shorty">
 									${resultEntry.value.header}
 								</div>
 							</div>
@@ -163,7 +163,7 @@
 									<div class="summarylabel">
 										Study
 									</div>
-									<div class="summaryvalue">
+									<div class="summaryvalue shorty">
 										${resultEntry.value.groupHeader}
 									</div>
 								</div>
@@ -172,7 +172,7 @@
 								<div class="summarylabel">
 									Subject
 								</div>
-								<div class="summaryvalue">
+								<div class="summaryvalue shorty">
 									${resultEntry.value.header}
 								</div>
 							</div>

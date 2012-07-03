@@ -169,7 +169,7 @@
 
 <div class="row">
     <div class="summarylabel"><b>Subject</b></div>
-    <div class="summaryvalue">${command.participant.fullName}</div>
+    <div class="summaryvalue shorty">${command.participant.fullName}</div>
 </div>
 </p>
 

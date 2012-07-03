@@ -803,6 +803,16 @@ function expandImageClick(imgID, targetID) {
 //---------------------------------------------------------------------------------------------------------------------
 Event.observe(window, 'load', function(){
 	Event.observe('contextMenu', 'click' , showContexMenu);
+
+    $$('div.summaryvalue').each(
+        function (e){
+            Event.observe(e, 'mouseover', function(ev){
+                Event.element(ev).addClassName('shorty');
+            });
+            Event.observe(e, 'mouseout', function(ev){
+                Event.element(ev).removeClassName('shorty');
+            });
+        });
 });
 //this function is used to show the reporting context menu
  function showContexMenu(evt){
