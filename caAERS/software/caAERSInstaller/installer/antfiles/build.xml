@@ -8,7 +8,8 @@
 	<property name="tomcat.download.url" value="@TOMCAT_DOWNLOAD_URL@" />
 	<property name="tomcat.file.name" value="apache-tomcat-6.0.33.zip" />
 	<property name="tomcat.version" value="apache-tomcat-6.0.33" />
-    <property name="servicemix.download.url" value="@SERVICEMIX_DOWNLOAD_URL@" />
+    <property name="servicemix.download.url.windows" value="@SERVICEMIX_DOWNLOAD_URL_WINDOWS@" />
+    <property name="servicemix.download.url.unix" value="@SERVICEMIX_DOWNLOAD_URL_UNIX@" />
     <property name="servicemix.file.name" value="apache-servicemix-3.3.2.zip" />
     <property name="servicemix.version" value="apache-servicemix-3.3.2" />
 	<property name="caaers.download.url" value="@CAAERS_DOWNLOAD_URL@"/>
@@ -148,6 +149,14 @@
 		<mkdir dir="${jar.extract.dir}" />
 		<echo message="Https:${user.tomcat.https.enabled}" />
 	</target>
+
+    <condition property="isWindows">
+        <os family="windows"/>
+    </condition>
+
+    <condition property="servicemix.download.url" value="${servicemix.download.url.windows}" else="${servicemix.download.url.unix}">
+        <os family="windows"/>
+    </condition>
 
     <condition property="requires.servicemix.installation">
         <and>
