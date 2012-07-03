@@ -4,6 +4,8 @@ import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter;
+import gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor;
 import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
@@ -11,9 +13,7 @@ import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 
@@ -77,32 +77,42 @@ public class StudyOrganizationSynchronizer implements Migrator<gov.nih.nci.cabig
 	
 	private void syncFundingSponsor(Study dbStudy, Study xmlStudy, DomainObjectImportOutcome<Study> outcome ){
 		
-		if(dbStudy.getFundingSponsor() != null && xmlStudy.getFundingSponsor() != null){
-			syncStudyInvestigators(dbStudy.getFundingSponsor().getStudyFundingSponsor(),
-					   xmlStudy.getFundingSponsor().getStudyFundingSponsor(),
-					   dbStudy.getFundingSponsor().getStudyFundingSponsor().getOrganization(),
-					   outcome);
-
-			syncStudyPersonnels(dbStudy.getFundingSponsor().getStudyFundingSponsor(),
-				   xmlStudy.getFundingSponsor().getStudyFundingSponsor(),
-				   dbStudy.getFundingSponsor().getStudyFundingSponsor().getOrganization(),
-				   outcome);
+		StudyFundingSponsor dbStudySponsor = dbStudy.getPrimaryFundingSponsor();
+		StudyFundingSponsor xmlStudySponsor = xmlStudy.getPrimaryFundingSponsor();
+		if(dbStudySponsor!=null && xmlStudySponsor!=null){
+			//update funding sponsor if changed
+			if(!dbStudySponsor.getOrganization().equals(xmlStudySponsor.getOrganization())){
+				//clear study personnel
+				dbStudySponsor.getStudyPersonnels().clear();
+				//clear study investigator
+				dbStudySponsor.getStudyInvestigators().clear();
+				//update funding sponsor
+				dbStudy.setPrimaryFundingSponsorOrganization(xmlStudy.getPrimaryFundingSponsorOrganization());
+			}
+			//Synchronize investigators and personnel
+			syncStudyInvestigators(dbStudySponsor, xmlStudySponsor, dbStudySponsor.getOrganization(), outcome);
+			syncStudyPersonnels(dbStudySponsor, xmlStudySponsor, dbStudySponsor.getOrganization(), outcome);
 		}
-		
 	}
 	
 	private void syncCoordinatingCenter(Study dbStudy, Study xmlStudy, DomainObjectImportOutcome<Study> outcome ){
 		
-		if(dbStudy.getCoordinatingCenter() != null && xmlStudy.getCoordinatingCenter() != null){
-			syncStudyInvestigators(dbStudy.getCoordinatingCenter().getStudyCoordinatingCenter(),
-					   xmlStudy.getCoordinatingCenter().getStudyCoordinatingCenter(),
-					   dbStudy.getCoordinatingCenter().getStudyCoordinatingCenter().getOrganization(),
-					   outcome);
-
-		   syncStudyPersonnels(dbStudy.getCoordinatingCenter().getStudyCoordinatingCenter(),
-		   xmlStudy.getCoordinatingCenter().getStudyCoordinatingCenter(),
-		   dbStudy.getCoordinatingCenter().getStudyCoordinatingCenter().getOrganization(),
-		   outcome);
+		StudyCoordinatingCenter dbStudyCoordinatingCenter = dbStudy.getStudyCoordinatingCenter();
+		StudyCoordinatingCenter xmlStudyCoordinatingCenter = xmlStudy.getStudyCoordinatingCenter();
+		
+		if(dbStudyCoordinatingCenter != null && xmlStudyCoordinatingCenter != null){
+			//update coordinating center if changed
+			if(!dbStudyCoordinatingCenter.getOrganization().equals(xmlStudyCoordinatingCenter.getOrganization())){
+				//clear study personnel
+				dbStudyCoordinatingCenter.getStudyPersonnels().clear();
+				//clear study investigator
+				dbStudyCoordinatingCenter.getStudyInvestigators().clear();
+				//update coordinating center
+				dbStudyCoordinatingCenter.setOrganization(xmlStudyCoordinatingCenter.getOrganization());
+			}
+			//Synchronize investigators and personnel
+			syncStudyInvestigators(dbStudyCoordinatingCenter, xmlStudyCoordinatingCenter, dbStudyCoordinatingCenter.getOrganization(), outcome);
+			syncStudyPersonnels(dbStudyCoordinatingCenter, xmlStudyCoordinatingCenter, dbStudyCoordinatingCenter.getOrganization(), outcome);
 		}
 	}
 	
