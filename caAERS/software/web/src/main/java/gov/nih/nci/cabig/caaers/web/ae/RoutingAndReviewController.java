@@ -16,18 +16,14 @@ import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.tools.editors.EnumByNameEditor;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.context.MessageSource;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
@@ -39,6 +35,7 @@ import org.springframework.web.servlet.mvc.SimpleFormController;
  * @author Biju Joseph
  */
 public class RoutingAndReviewController extends SimpleFormController{
+    protected MessageSource messageSource;
     private ParticipantDao participantDao;
 
     private StudyDao studyDao;
@@ -75,6 +72,9 @@ public class RoutingAndReviewController extends SimpleFormController{
     	RoutingAndReviewCommand command = new RoutingAndReviewCommand();
     	command.setWorkflowEnabled(configuration.get(Configuration.ENABLE_WORKFLOW));
     	command.setReviewStatusList(workflowService.allowedReviewStatuses(SecurityUtils.getUserLoginName()));
+        if(!command.getWorkflowEnabled()){
+            request.setAttribute("warning.routingAndReview.notenabled", messageSource.getMessage("warning.routingAndReview.notenabled", new Object[]{}, "Course routing and review is not enabled, so the search may not return any result", Locale.getDefault()));
+        }
         return command;
     }
     
@@ -259,4 +259,12 @@ public class RoutingAndReviewController extends SimpleFormController{
 	public void setOrganizationDao(OrganizationDao organizationDao) {
 		this.organizationDao = organizationDao;
 	}
+
+    public MessageSource getMessageSource() {
+        return messageSource;
+    }
+
+    public void setMessageSource(MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
 }
