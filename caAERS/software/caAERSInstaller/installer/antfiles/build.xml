@@ -8,14 +8,28 @@
 	<property name="tomcat.download.url" value="@TOMCAT_DOWNLOAD_URL@" />
 	<property name="tomcat.file.name" value="apache-tomcat-6.0.33.zip" />
 	<property name="tomcat.version" value="apache-tomcat-6.0.33" />
+    <property name="servicemix.download.url" value="@SERVICEMIX_DOWNLOAD_URL@" />
+    <property name="servicemix.file.name" value="apache-servicemix-3.3.2.zip" />
+    <property name="servicemix.version" value="apache-servicemix-3.3.2" />
 	<property name="caaers.download.url" value="@CAAERS_DOWNLOAD_URL@"/>
 	<property name="caaers.file.name" value="caaers.war" />
 	<property name="caaers.core.jar" value="caaers-core-*.jar" />
+
+    <property name="adeers.sa.url" value="@ADEERS_SA_DOWNLOAD_URL@" />
+    <property name="adeers.sync.sa.url" value="@ADEERS_SYNC_SA_DOWNLOAD_URL@" />
+    <property name="adeers.lookup.xml.url" value="@ADEERS_LOOKUP_XML_DOWNLOAD_URL@" />
+    <property name="adeers.caxchange.props.url" value="@ADEERS_CAXCHANGE_PROPS_DOWNLOAD_URL@" />
+    <property name="adeers.caxchange.conf.zip" value="@ADEERS_CAXCHANGE_CONF_URL@" />
+
 	<property name="temp.dir" value="${user.home}/caaers_temp" />
 	<property name="working.dir" value="${temp.dir}/caaers" />
 	<property name="extract.dir" value="${working.dir}/extract" />
 	<property name="jar.extract.dir" value="${working.dir}/jarextract" />
 	<property name="auth.mode" value="local" />
+
+    <tstamp>
+        <format property="time.stamp" pattern="yyyy-mm-dd_hh_MM_ss"/>
+    </tstamp>
 	
 	<path id="rules.url">
 		<pathelement location="${rules.repository.dir}" />
@@ -65,24 +79,28 @@
     -->
 	<!-- CONDITION 1 -->
 	<condition property="requires.tomcat.installation">
-		<and>
-			<equals arg1="${tomcat.https.enabled}" arg2="false" />
-			<equals arg1="${tomcat.exist}" arg2="false" />
-			<equals arg1="${user.tomcat.exist}" arg2="false" />
-		</and>
+        <and>
+            <equals arg1="${user.tomcat.selection}" arg2="new" />
+            <isset property="tomcat.install.dir"/>
+        </and>
+
 	</condition>
 	<!-- CONDITION 2 -->
 	<condition property="use.existing.tomcat.requires.https.enabling">
 		<and>
-			<equals arg1="${tomcat.https.enabled}" arg2="false" />
-			<equals arg1="${tomcat.exist}" arg2="true" />
+            <equals arg1="${user.tomcat.selection}" arg2="specify" />
+            <isset property="user.ext.tomcat.home"/>
+			<!--<equals arg1="${user.tomcat.https.enabled}" arg2="false" />-->
+            <equals arg1="${user.tomcat.configure.ssl}" arg2="true" />
 		</and>
 	</condition>
 	<!-- CONDITION 3 -->
 	<condition property="use.existing.tomcat.no.https.enabling.required">
 		<and>
-			<equals arg1="${tomcat.https.enabled}" arg2="true" />
-			<equals arg1="${tomcat.exist}" arg2="true" />
+            <equals arg1="${user.tomcat.selection}" arg2="specify" />
+            <isset property="user.ext.tomcat.home"/>
+			<!--<equals arg1="${user.tomcat.https.enabled}" arg2="true" />-->
+            <equals arg1="${user.tomcat.configure.ssl}" arg2="false" />
 		</and>
 	</condition>
 	<!-- CONDITION 4 -->
@@ -128,8 +146,23 @@
 		<mkdir dir="${working.dir}" />
 		<mkdir dir="${extract.dir}" />
 		<mkdir dir="${jar.extract.dir}" />
-		<echo message="Https:${tomcat.https.enabled}" />
+		<echo message="Https:${user.tomcat.https.enabled}" />
 	</target>
+
+    <condition property="requires.servicemix.installation">
+        <and>
+            <equals arg1="${user.servicemix.selection}" arg2="new" />
+            <isset property="servicemix.install.dir"/>
+        </and>
+
+    </condition>
+
+    <condition property="use.existing.servicemix">
+        <and>
+            <equals arg1="${user.servicemix.selection}" arg2="specify" />
+            <isset property="user.ext.servicemix.home"/>
+        </and>
+    </condition>
 	<!--
 
 	                                  ******************
@@ -154,7 +187,7 @@
 			<param name="tomcat.temp.home" value="${tomcat.install.dir}/${tomcat.version}" />
 		</antcall>
 		<propertyfile file="${user.home}/.gridenv.properties">
-			<entry key="env.CATALINA_HOME" value="${tomcat.install.dir}/${tomcat.version}" />
+			<entry key="CATALINA_HOME" value="${tomcat.install.dir}/${tomcat.version}" />
 			<entry key="tomcat.exist" value="true" />
 			<entry key="tomcat.https.enabled" value="true" />
 		</propertyfile>
@@ -171,16 +204,18 @@
 	<target name="use_existing_tomcat_requires_https_enabling" if="use.existing.tomcat.requires.https.enabling">
 		<echo message="Configuring for target condition 2" />
 		<antcall target="configureServer.xml">
-			<param name="tomcat.temp.home" value="${CATALINA_HOME}" />
+			<param name="tomcat.temp.home" value="${user.ext.tomcat.home}" />
 		</antcall>
 		<antcall target="setUpConfDirectory">
-			<param name="tomcat.temp.home" value="${CATALINA_HOME}" />
+			<param name="tomcat.temp.home" value="${user.ext.tomcat.home}" />
 		</antcall>
 		<antcall target="download_and_install_caaers">
-			<param name="tomcat.temp.home" value="${CATALINA_HOME}" />
+			<param name="tomcat.temp.home" value="${user.ext.tomcat.home}" />
 		</antcall>
 		<propertyfile file="${user.home}/.gridenv.properties">
-			<entry key="tomcat.https.enabled" value="true" />
+            <entry key="CATALINA_HOME" value="${user.ext.tomcat.home}" />
+            <entry key="tomcat.exist" value="true" />
+            <entry key="tomcat.https.enabled" value="true" />
 		</propertyfile>
 	</target>
 	<!--
@@ -195,12 +230,13 @@
 	<target name="use_existing_tomcat_no_https_enabling_required" if="use.existing.tomcat.no.https.enabling.required">
 		<echo message="Configuring for condition 3" />
 		<antcall target="setUpConfDirectory">
-			<param name="tomcat.temp.home" value="${CATALINA_HOME}" />
+			<param name="tomcat.temp.home" value="${user.ext.tomcat.home}" />
 		</antcall>
 		<antcall target="download_and_install_caaers">
-			<param name="tomcat.temp.home" value="${CATALINA_HOME}" />
+			<param name="tomcat.temp.home" value="${user.ext.tomcat.home}" />
 		</antcall>
 		<propertyfile file="${user.home}/.gridenv.properties">
+            <entry key="CATALINA_HOME" value="${user.ext.tomcat.home}" />
 			<entry key="tomcat.exist" value="true" />
 			<entry key="tomcat.https.enabled" value="true" />
 		</propertyfile>
@@ -226,7 +262,7 @@
 			<param name="tomcat.temp.home" value="${user.ext.tomcat.home}" />
 		</antcall>
 		<propertyfile file="${user.home}/.gridenv.properties">
-			<entry key="env.CATALINA_HOME" value="${user.ext.tomcat.home}" />
+			<entry key="CATALINA_HOME" value="${user.ext.tomcat.home}" />
 			<entry key="tomcat.exist" value="true" />
 			<entry key="tomcat.https.enabled" value="true" />
 		</propertyfile>
@@ -249,11 +285,40 @@
 			<param name="tomcat.temp.home" value="${user.ext.tomcat.home}" />
 		</antcall>
 		<propertyfile file="${user.home}/.gridenv.properties">
-			<entry key="env.CATALINA_HOME" value="${user.ext.tomcat.home}" />
+			<entry key="CATALINA_HOME" value="${user.ext.tomcat.home}" />
 			<entry key="tomcat.exist" value="true" />
 			<entry key="tomcat.https.enabled" value="true" />
 		</propertyfile>
 	</target>
+
+
+    <target name="requires_servicemix_installation" if="requires.servicemix.installation">
+        <echo message="Configuring for servicemix and condition 1" />
+        <antcall target="download_and_install_servicemix">
+            <param name="install.dir" value="${servicemix.install.dir}" />
+        </antcall>
+        <antcall target="download_and_install_adeers_assembly">
+            <param name="servicemix.temp.home" value="${servicemix.install.dir}/${servicemix.version}" />
+        </antcall>
+        <propertyfile file="${user.home}/.gridenv.properties">
+            <entry key="SERVICEMIX_HOME" value="${servicemix.install.dir}/${servicemix.version}" />
+        </propertyfile>
+    </target>
+
+    <target name="use_existing_servicemix" if="use.existing.servicemix">
+        <echo message="Configuring for servicemix and condition 2" />
+        <antcall target="clean_servicemix">
+            <param name="servicemix.temp.home" value="${user.ext.servicemix.home}" />
+        </antcall>
+        <antcall target="download_and_install_adeers_assembly">
+            <param name="servicemix.temp.home" value="${user.ext.servicemix.home}" />
+        </antcall>
+
+        <propertyfile file="${user.home}/.gridenv.properties">
+            <entry key="SERVICEMIX_HOME" value="${user.ext.servicemix.home}" />
+        </propertyfile>
+    </target>
+
 	<!--
 
 			 *************************************************************************************************
@@ -264,6 +329,8 @@
 
  	 -->
 	<target name="caaers">
+        <antcall target="requires_servicemix_installation" />
+        <antcall target="use_existing_servicemix" />
 		<antcall target="requires_tomcat_installation" />
 		<antcall target="use_existing_tomcat_requires_https_enabling" />
 		<antcall target="use_existing_tomcat_no_https_enabling_required" />
@@ -280,8 +347,10 @@
 
  	 -->
 	<target name="configureServer.xml">
+        <copy file="${tomcat.temp.home}/conf/server.xml" tofile="${tomcat.temp.home}/conf/server.xml.bkup.${time.stamp}" overwrite="true" />
+        <echo message="tomcat.temp.home is ${tomcat.temp.home}"/>
 		<xmltask source="${tomcat.temp.home}/conf/server.xml" dest="${tomcat.temp.home}/conf/server.xml">
-			<remove path="/Server/Service/Connector[@scheme='https']" />
+            <remove path="/Server/Service/Connector[@scheme='https']" />
 		</xmltask>
 		<xmltask source="${tomcat.temp.home}/conf/server.xml" dest="${tomcat.temp.home}/conf/server.xml">
 			<insert path="/Server/Service[@name='Catalina']" file="${basedir}/resources/templates/tomcat/serverTemplate.xml" />
@@ -289,6 +358,7 @@
 		<mkdir dir="${tomcat.temp.home}/conf/cabig" />
 		<copy file="${basedir}/resources/templates/conf/caaers_keystore.xml" tofile="${tomcat.temp.home}/conf/cabig/caaers_keystore" overwrite="true" />
 	</target>
+
 	<target name="download_and_install_tomcat">
 		<delete dir="${install.dir}/${tomcat.version}" />
 		<mkdir dir="${basedir}/tomcat_temp" />
@@ -296,7 +366,11 @@
 		<unzip src="${basedir}/tomcat_temp/${tomcat.file.name}" dest="${install.dir}" />
 		<delete dir="${basedir}/tomcat_temp" />
 	</target>
-	<target name="setUpConfDirectory">
+
+
+	<target name="setUpConfDirectory" >
+
+        <move file="${tomcat.temp.home}/conf/cabig/csm_jaas.config" tofile="${tomcat.temp.home}/conf/cabig/csm_jaas.config.bkup.${time.stamp}" overwrite="true" />
 
 		<antcall target="copy_csm_jass_config" />
 		
@@ -311,6 +385,7 @@
 		<mkdir dir="${tomcat.temp.home}/conf/caaers" />
 		<mkdir dir="${user.home}/.caaers" />
 		<mkdir dir="${basedir}/conf_temp" />
+
 		<copy file="${basedir}/resources/templates/conf/${database.vendor}.datasource.properties" tofile="${basedir}/conf_temp/datasource.properties" overwrite="true" />
 		<replace file="${basedir}/conf_temp/datasource.properties" token="@DB_USER@" value="${database.userid}" />
 		<replace file="${basedir}/conf_temp/datasource.properties" token="@DB_PASSWORD@" value="${database.password}" />
@@ -389,6 +464,15 @@
 	 	<replace file="${basedir}/conf_temp/datasource.properties" token="grid.studyconsumer.url=@STUDY_CONSUMER_URL@" value="" />
 		<replace file="${basedir}/conf_temp/datasource.properties" token="grid.registrationconsumer.url=@REGISTRATION_CONSUMER_URL@" value="" />
 	</target>
+
+
+    <target name="download_and_install_servicemix">
+        <delete dir="${install.dir}/${servicemix.version}" />
+        <mkdir dir="${basedir}/servicemix_temp" />
+        <get src="${servicemix.download.url}" dest="${basedir}/servicemix_temp/${servicemix.file.name}" />
+        <unzip src="${basedir}/servicemix_temp/${servicemix.file.name}" dest="${install.dir}" />
+        <delete dir="${basedir}/servicemix_temp" />
+    </target>
 	
 	<!--
 		This target will download caaers.war from the remote location. Then will unwar, and unjar 
@@ -414,8 +498,42 @@
 		<antcall target="create-user" />
 		<delete dir="${user.home}/caaers_download_temp" />
 	</target>
-	
-	<target name="define-vars">
+
+    <target name="clean_servicemix" depends="init">
+
+        <delete file="${servicemix.temp.home}/lib/caaers-adeers-client*.zip" />
+        <delete file="${servicemix.temp.home}/lib/optional/caaers-adeers-client*.zip" />
+        <delete file="${servicemix.temp.home}/hotdeploy/*caaers*" />
+
+        <delete dir="${servicemix.temp.home}/bin/data" />
+        <delete dir="${servicemix.temp.home}/data" />
+
+        <mkdir dir="${basedir}/servicemix_temp"/>
+
+        <get src="${adeers.caxchange.conf.zip}" dest="${basedir}/servicemix_temp/caXchangeConf.zip" />
+
+        <unzip src="${basedir}/servicemix_temp/caXchangeConf.zip" dest="${servicemix.temp.home}/conf" />
+
+        <delete dir="${basedir}/servicemix_temp" />
+
+    </target>
+
+    <target name="download_and_install_adeers_assembly" depends="init">
+
+        <delete file="${servicemix.temp.home}/hotdeploy/caaers-adeers-sa.zip" />
+        <delete file="${servicemix.temp.home}/hotdeploy/caaers-adeers-sync-sa.zip" />
+
+        <move file="${servicemix.temp.home}/lookup.xml" tofile="${servicemix.temp.home}/lookup.xml.bkup.${time.stamp}" failonerror="false"/>
+        <move file="${servicemix.temp.home}/conf/caxchange.properties" tofile="${servicemix.temp.home}/conf/caxchange.properties.bkup.${time.stamp}" failonerror="false"/>
+
+        <get src="${adeers.sa.url}" dest="${servicemix.temp.home}/hotdeploy/caaers-adeers-sa.zip" />
+        <get src="${adeers.sync.sa.url}" dest="${servicemix.temp.home}/hotdeploy/caaers-adeers-sync-sa.zip" />
+        <get src="${adeers.lookup.xml.url}" dest="${servicemix.temp.home}/lookup.xml" />
+        <get src="${adeers.caxchange.props.url}" dest="${servicemix.temp.home}/conf/caxchange.properties" />
+
+    </target>
+
+    <target name="define-vars">
 		<condition property="datasource.dialect" value="gov.nih.nci.cabig.caaers.tools.hibernate.ImprovedPostgreSQLDialect">
 			<contains string="${database.vendor}" substring="post" />
 		</condition>
@@ -462,8 +580,47 @@
 			<classpath refid="customlib.cp"/>
        </java>
 	</target>
+
+    <target name="check-csm-users" description="checks for presence of csm users" depends="define-vars">
+
+    <echo message="${datasource.driver}"/>
+    <echo message="${datasource.url}"/>
+    <echo message="${database.userid}"/>
+    <echo message="${database.password}"/>
+    <property file="${extract.dir}/user.properties"/>
+    <echo message="${user.username}"/>
+    <echo message="${user.password}"/>
+
+    <delete file="${user.home}/csm_query_output.txt"/>
+
+    <sql driver="${datasource.driver}" userid="${database.userid}" password="${database.password}" url="${datasource.url}"
+         classpathref="bering.classpath" onerror="abort" autocommit="true" rdbms="postgresql"
+         output="${user.home}/csm_query_output.txt" print="true" showheaders="false">
+        SELECT 'no_of_users='|| count(user_id) from csm_user;
+    </sql>
+
+    <sql driver="${datasource.driver}" userid="${database.userid}" password="${database.password}" url="${datasource.url}"
+         classpathref="bering.classpath" onerror="abort" autocommit="true" rdbms="oracle"
+         output="${user.home}/csm_query_output.txt" print="true" showheaders="false">
+        SELECT concat('no_of_users=', count(user_id)) from csm_user;
+    </sql>
+
+    <property file="${user.home}/csm_query_output.txt"/>
+
+     <condition property="csm.users.exist">
+         <and>
+             <isset property="no_of_users"/>
+             <not>
+                <equals arg1="${no_of_users}" arg2="0"/>
+             </not>
+         </and>
+     </condition>
+
+        <echo message="${no_of_users}"/>
+        <echo message="${csm.users.exist}"/>
+    </target>
 		
-	<target name="create-user" description="create user with all caAERS related roles." depends="create-user-properties,define-vars">
+	<target name="create-user" unless="csm.users.exist" description="create user with all caAERS related roles." depends="check-csm-users, create-user-properties,define-vars">
 		   
 		<echo message="${datasource.driver}"/>    
 		<echo message="${datasource.url}"/>    
@@ -473,8 +630,9 @@
 		<echo message="${user.username}"/>
 		<echo message="${user.password}"/>
 
+
 		<sql driver="${datasource.driver}" userid="${database.userid}" password="${database.password}" url="${datasource.url}"
-			classpathref="bering.classpath" onerror="abort" autocommit="true" rdbms="postgresql">
+			classpathref="bering.classpath" onerror="abort" autocommit="true" rdbms="postgresql" >
 
             INSERT INTO csm_user(user_id, login_name, first_name, last_name,"password", email_id, start_date)
             VALUES ((select nextval('csm_user_user_id_seq')),

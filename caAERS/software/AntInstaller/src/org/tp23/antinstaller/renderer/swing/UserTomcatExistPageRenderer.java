@@ -12,6 +12,7 @@ import java.awt.Graphics;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.io.File;
+import java.lang.System;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -105,11 +106,11 @@ public class UserTomcatExistPageRenderer extends SwingPageRenderer{
 		String tomcatRoot = ctx.getInstaller().getResultContainer().getDefaultValue("${user.ext.tomcat.home}");
 		File root = new File(tomcatRoot);
 		File bin = new File(root,"bin");
-		File common = new File(root,"common");
 		File conf = new File(root,"conf");
-		File server = new File(root,"server");
 		File webapps = new File(root,"webapps");
-		if(root.exists()&&bin.exists()&&common.exists()&&conf.exists()&&server.exists()&&webapps.exists()){
+        System.out.println("tomcatRoot = " + tomcatRoot);
+        System.out.println("root="+root.exists() + " bin="+ bin.exists() + " conf="+ conf.exists() +" webapps=" + webapps.exists());
+		if(root.exists() && bin.exists() && conf.exists() && webapps.exists()){
 			str = "";
 			String https = "false";
 			boolean httpsEnabled = TomcatUtils.httpsEnabled(tomcatRoot);

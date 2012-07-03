@@ -44,6 +44,7 @@ public class AppRootInput
 	private String checkDir2;
 
 	public AppRootInput() {
+        super();
 	}
 
 	/**
@@ -81,7 +82,7 @@ public class AppRootInput
 	}
 
 	private boolean checkExists(MessageRenderer mr,File root,String check){
-		File checkFile = new File(root,checkFile1);
+		File checkFile = new File(root,check);
 		if(!checkFile.exists()){
 			reportMissing(mr,checkFile);
 			return false;
