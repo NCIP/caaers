@@ -6,9 +6,12 @@ public class StudySitesQuery extends AbstractQuery {
 
     public static final String SHORT_TITLE = "shortTitle";
     private static final String IDENTIFIER_EXACT_VALUE = "identifierValue";
+    private static String RETIRED_INDICATOR = "retiredIndicator";
     
     public StudySitesQuery() {
         super("SELECT distinct ss FROM StudySite ss");
+        andWhere("ss.retiredIndicator = :" + RETIRED_INDICATOR);
+        setParameter(RETIRED_INDICATOR, new Boolean(false));
         joinStudies();
         leftJoin("study.identifiers as identifier");
     }

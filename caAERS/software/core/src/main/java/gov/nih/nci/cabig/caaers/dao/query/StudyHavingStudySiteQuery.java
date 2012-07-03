@@ -7,6 +7,8 @@ public class StudyHavingStudySiteQuery extends AbstractQuery {
     private static String ORGANIZATION_NAME = "organizationName";
     
     private static String NCI_INSTITUTE_CODE = "nciInstituteCode";
+    
+    private static String RETIRED_INDICATOR = "retiredIndicator";
 
     private static String STIUDY_SHORT_TITLE = "shortTitle";
 
@@ -38,7 +40,9 @@ public class StudyHavingStudySiteQuery extends AbstractQuery {
     public void filterByStudySiteNciInstituteCode(final String nciInstituteCode) {
         String searchString = "%" + nciInstituteCode.toLowerCase() + "%";
         andWhere("lower(ss.organization.nciInstituteCode) LIKE :" + NCI_INSTITUTE_CODE);
+        andWhere("ss.retiredIndicator = :" + RETIRED_INDICATOR);
         setParameter(NCI_INSTITUTE_CODE, searchString);
+        setParameter(RETIRED_INDICATOR, new Boolean(false));
     }
 
     public void filterByStudyShortTile(final String shortTitle) {
