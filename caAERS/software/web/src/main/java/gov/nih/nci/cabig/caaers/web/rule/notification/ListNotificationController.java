@@ -63,11 +63,21 @@ public class ListNotificationController extends SimpleFormController {
     	ReportDefinition dbReportDefinition = reportDefinitionDao.getByName(reportDefName);
     	ReportDefinition xmlReportDefinition = reportDefinitionConverter.dtoToDomain(reportDefinitions.getReportDefinition().get(0));
 
-    	// Handle the case when there is missing organization
+    	// Handle the case when there is invalid organization
     	if(xmlReportDefinition.getOrganization() == null) {
     		StringBuffer messageSb = new StringBuffer(xmlReportDefinition.getName());
     		messageSb.append("\n");
     		messageSb.append("Import failed as Organization provided in the xml doesn't exist");
+    		command.setUpdated(true);
+    		command.setErrorMessage(messageSb.toString());
+    		ModelAndView modelAndView  = new ModelAndView(getFormView(), errors.getModel());
+    		return modelAndView;
+    	}
+    	// Handle the case when there is invalid report group
+    	if(xmlReportDefinition.getGroup() == null) {
+    		StringBuffer messageSb = new StringBuffer(xmlReportDefinition.getName());
+    		messageSb.append("\n");
+    		messageSb.append("Import failed as Report Group provided in the xml doesn't exist");
     		command.setUpdated(true);
     		command.setErrorMessage(messageSb.toString());
     		ModelAndView modelAndView  = new ModelAndView(getFormView(), errors.getModel());
