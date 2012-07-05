@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.ListValues;
 
@@ -34,6 +35,7 @@ public class SearchStudyController extends SimpleFormController {
     private ListValues listValues;
 
     private ConfigProperty configurationProperty;
+    private Configuration configuration;
 
     public SearchStudyController() {
         setCommandClass(SearchStudyCommand.class);
