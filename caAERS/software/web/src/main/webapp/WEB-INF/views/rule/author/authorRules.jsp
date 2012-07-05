@@ -1,4 +1,5 @@
 <%@include file="/WEB-INF/views/taglibs.jsp"%>
+<%@include file="/WEB-INF/views/taglibs.jsp"%>
 <html>
 <head>
 <tags:dwrJavascriptLink objects="authorRule,createAE" />
