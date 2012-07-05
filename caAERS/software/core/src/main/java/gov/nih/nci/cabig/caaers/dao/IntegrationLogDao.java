@@ -9,6 +9,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.Query;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -92,6 +93,20 @@ public class IntegrationLogDao extends GridIdentifiableDao<IntegrationLog> imple
     	query.setParameter("operation", opertion);
     	query.setParameter("REQUEST_COMPLETE", SynchStatus.REQUEST_COMPLETION);
     	return (Date) query.uniqueResult();
+    }
+    
+    public boolean hasLogDetails(IntegrationLog il){
+    	if (il == null || il.getCorrelationId() == null) {
+    		return false;
+    	}
+    	String queryString = "from IntegrationLog il where il.correlationId = :correlationId and il.integrationLogDetails is not empty";
+    	Query query = getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery(queryString);
+    	query.setParameter("correlationId", il.getCorrelationId());
+    	IntegrationLog log = (IntegrationLog)query.uniqueResult();
+    	if (log != null){
+    		return true;
+    	}
+    	return false;
     }
     
 }

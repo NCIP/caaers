@@ -10,6 +10,13 @@ public class IntegrationLogAjaxableDomainObect {
 	
 	private String entity;
 	private String correlationId;
+	public Boolean getHasLogDetails() {
+		return hasLogDetails;
+	}
+	public void setHasLogDetails(Boolean hasLogDetails) {
+		this.hasLogDetails = hasLogDetails;
+	}
+	private Boolean hasLogDetails;
 	public String getCorrelationId() {
 		return correlationId;
 	}

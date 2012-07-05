@@ -198,6 +198,7 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
         	IntegrationLogAjaxableDomainObect ajaxIntLog = new IntegrationLogAjaxableDomainObect();
         	ajaxIntLog.setEntity(entry.getValue().get(0).getEntity());
         	ajaxIntLog.setCorrelationId(entry.getValue().get(0).getCorrelationId());
+        	ajaxIntLog.setHasLogDetails(integrationLogDao.hasLogDetails(entry.getValue().get(0)));
         	ajaxIntLog.setLoggedOn(getEarliestLogTime(entry.getValue()));
         	
         	// need to sort the grouped integration logs by id to display the synch status in work flow order

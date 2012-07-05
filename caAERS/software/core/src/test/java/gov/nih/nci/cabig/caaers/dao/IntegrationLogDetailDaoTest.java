@@ -89,5 +89,14 @@ public class IntegrationLogDetailDaoTest extends DaoNoSecurityTestCase<Integrati
 		queriedIntLogDetails = dao.searchIntegrationLogDetails(query2);
 		assertEquals(2,queriedIntLogDetails.size());
 	}
+	
+	public void testGetByIntegrationLog() throws Exception {
+		IntegrationLog intLog1 = integrationLogDao.getById(1002);
+		assertTrue(integrationLogDao.hasLogDetails(intLog1));
+		
+		IntegrationLog intLog2 = integrationLogDao.getById(1007);
+		assertTrue(integrationLogDao.hasLogDetails(intLog2));
+		
+	}
 
 }
