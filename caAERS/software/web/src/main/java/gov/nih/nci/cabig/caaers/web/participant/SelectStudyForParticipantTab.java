@@ -141,10 +141,10 @@ public class SelectStudyForParticipantTab <T extends ParticipantInputCommand> ex
         }
     }
     
-    protected void validateUniqueStudySubjectIdentifiersInStudy(Study study, Errors errors, int repitionCount, String studySubjectIdentifier){
-		if(studyDao.checkIfStudyHasRepeatedAssignmentIdentifiers(study, repitionCount)){
-			errors.reject("PT_013",new Object[]{studySubjectIdentifier},"The same study subject identifier, cannot be assigned" +
-					" to more than one subject across the study");
+    protected void validateUniqueStudySubjectIdentifiersInStudy(Study study, Errors errors, int repetitionCount, String studySubjectIdentifier){
+		if(studyDao.getNumberOfStudySubjectsInStudyWithGivenAssignmentIdentifier(study, studySubjectIdentifier) > repetitionCount){
+			errors.reject("PT_013",new Object[]{studySubjectIdentifier} ,"The study subject identifier, " + studySubjectIdentifier  + " has been already" +
+					" assigned to another subject on the study");
 		}
 }
 

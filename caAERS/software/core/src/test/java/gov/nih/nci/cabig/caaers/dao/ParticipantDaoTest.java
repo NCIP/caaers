@@ -275,11 +275,11 @@ public class ParticipantDaoTest extends DaoNoSecurityTestCase<ParticipantDao> {
     
     public void testStudyDupAssignmentIdentifiers(){
     	Study study = studyDao.getById(-2000);
-    	assertTrue(studyDao.checkIfStudyHasRepeatedAssignmentIdentifiers(study, 1));
+    	assertEquals(new Long(2),studyDao.getNumberOfStudySubjectsInStudyWithGivenAssignmentIdentifier(study, "1234"));
     }
     
     public void testStudyDupAssignmentIdentifiers1(){
     	Study study = studyDao.getById(-2000);
-    	assertFalse(studyDao.checkIfStudyHasRepeatedAssignmentIdentifiers(study, 2));
+    	assertEquals(new Long(0), studyDao.getNumberOfStudySubjectsInStudyWithGivenAssignmentIdentifier(study, "123"));
     }
 }

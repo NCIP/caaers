@@ -2,10 +2,22 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import edu.nwu.bioinformatics.commons.CollectionUtils;
 import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
-import gov.nih.nci.cabig.caaers.dao.query.DuplicateStudyParticipantIdentifiersInStudyQuery;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.AbstractAjaxableDomainObjectQuery;
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.ExpectedAECtcTerm;
+import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.IntegrationLog;
+import gov.nih.nci.cabig.caaers.domain.LocalStudy;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyAgent;
+import gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation;
+import gov.nih.nci.cabig.caaers.domain.StudyDevice;
+import gov.nih.nci.cabig.caaers.domain.StudyDeviceINDAssociation;
+import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
+import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.Term;
+import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
 import java.sql.SQLException;
@@ -13,9 +25,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
-import org.hibernate.*;
+import org.apache.commons.lang.StringUtils;
+import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
+import org.hibernate.LockMode;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
@@ -46,8 +62,8 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
     private static final String JOINS = "join o.identifiers as identifier " + "join o.studyOrganizations as ss left outer join ss.studyParticipantAssignments as spa left outer join spa.participant as p left outer join p.identifiers as pIdentifier";
     private static final String QUERY_BY_SHORT_TITLE = "select s from " + Study.class.getName() + " s where shortTitle = :st";
     
-    private static final String DUP_PRT_ASSIGNMENT_IDS_IN_STUDY_HQL = "select spa.studySubjectIdentifier from StudyParticipantAssignment spa where spa.studySite.id in (select " +
-    		" ss.id from StudySite ss where ss.study.id = :studyId) group by spa.studySubjectIdentifier having count(*) > :num";
+    private static final String DUP_PRT_ASSIGNMENT_IDS_IN_STUDY_HQL = "select count(*) from StudyParticipantAssignment spa where spa.studySite.id in (select " +
+    		" ss.id from StudySite ss where ss.study.id = :studyId) and spa.studySubjectIdentifier = :identifier";
 
     private RemoteSession remoteSession;
     
@@ -382,19 +398,28 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
     }
     
     // repitionCount - number of repetitions of study subject Id that has to be checked
-    public boolean checkIfStudyHasRepeatedAssignmentIdentifiers(Study study, long repitionCount){
-    	if(study == null || study.getId() == null) return false;
-    	DuplicateStudyParticipantIdentifiersInStudyQuery query = 
-    			new DuplicateStudyParticipantIdentifiersInStudyQuery(DUP_PRT_ASSIGNMENT_IDS_IN_STUDY_HQL);
-    	
+    public Long getNumberOfStudySubjectsInStudyWithGivenAssignmentIdentifier(Study study, String studySubjectIdentifier){
+    	if(study == null || study.getId() == null ) return 0L;
+    	if(StringUtils.isBlank(studySubjectIdentifier)) return 0L;
+    	Query query = getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery(DUP_PRT_ASSIGNMENT_IDS_IN_STUDY_HQL);
     	query.setParameter("studyId", study.getId());
-    	query.setParameter("num", repitionCount);
+    	query.setParameter("identifier", studySubjectIdentifier);
     	
-    	List<String> dupIds = (List<String>) search(query);
-    	if(dupIds != null && dupIds.size() > 0){
+    	Long count = (Long) query.uniqueResult();
+    	return count;
+    }
+    
+    public boolean hasLogDetails(IntegrationLog il){
+    	if (il == null || il.getCorrelationId() == null) {
+    		return false;
+    	}
+    	String queryString = "from IntegrationLog il where il.correlationId = :correlationId and il.integrationLogDetails is not empty";
+    	Query query = getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery(queryString);
+    	query.setParameter("correlationId", il.getCorrelationId());
+    	IntegrationLog log = (IntegrationLog)query.uniqueResult();
+    	if (log != null){
     		return true;
     	}
-    	
     	return false;
     }
     
