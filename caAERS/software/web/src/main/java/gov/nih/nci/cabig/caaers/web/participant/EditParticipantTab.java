@@ -4,20 +4,39 @@ package gov.nih.nci.cabig.caaers.web.participant;
 
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
 import gov.nih.nci.cabig.caaers.dao.query.StudyParticipantAssignmentQuery;
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.DateValue;
+import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.caaers.web.ListValues;
-import gov.nih.nci.cabig.caaers.web.fields.*;
+import gov.nih.nci.cabig.caaers.web.fields.CompositeField;
+import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.InputField;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
+import gov.nih.nci.cabig.caaers.web.fields.ReadonlyFieldDecorator;
+import gov.nih.nci.cabig.caaers.web.fields.SecurityObjectIdFieldDecorator;
+import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -42,8 +61,13 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
     private ParticipantDao participantDao;
     private ListValues listValues;
     private ConfigProperty configurationProperty;
+    private StudyDao studyDao;
 
-    private static final String PARTICIPANT_FIELD_GROUP = "participant";
+    public void setStudyDao(StudyDao studyDao) {
+		this.studyDao = studyDao;
+	}
+
+	private static final String PARTICIPANT_FIELD_GROUP = "participant";
     private static final String SITE_FIELD_GROUP = "site";
 
 
@@ -150,6 +174,13 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
             command.refreshStudyDiseases();
         }
     }
+    
+    protected void validateUniqueStudySubjectIdentifiersInStudy(Study study, Errors errors, int repitionCount, String studySubjectIdentifier){
+			if(studyDao.checkIfStudyHasRepeatedAssignmentIdentifiers(study, repitionCount)){
+				errors.reject("PT_013",new Object[]{studySubjectIdentifier} ,"The same study subject identifier, " + studySubjectIdentifier  + " cannot be assigned" +
+						" to more than one subject across the study");
+			}
+    }
 
     /**
      * Validate the Participant info
@@ -168,7 +199,18 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
         } else {
             command.getAdditionalParameters().remove("DO_PARTIAL_VALIDATION");
         }
-
+        
+        // Check uniqueness of Study Subject identifier across study
+        for(StudyParticipantAssignment assignment : command.getAssignments()){
+        	if(assignment.getId() != null){
+        		// the number of study subjects in the study that share the same study subject identifier cannot be more than 1
+        		validateUniqueStudySubjectIdentifiersInStudy(assignment.getStudySite().getStudy(),errors,1,assignment.getStudySubjectIdentifier());
+        	} else {
+        		// since the assignment is new, the number of study subjects in the study that share the same study subject identifier cannot be more than 0
+        		validateUniqueStudySubjectIdentifiersInStudy(assignment.getStudySite().getStudy(),errors,0,assignment.getStudySubjectIdentifier());
+        	}
+        }
+       
         // CHECK Participant Identifiers
         List<Identifier> siteIdentifiers = participantDao.getSiteIdentifiers(command.getOrganization().getId().intValue());
         for (int i=0; i<siteIdentifiers.size(); i++) {

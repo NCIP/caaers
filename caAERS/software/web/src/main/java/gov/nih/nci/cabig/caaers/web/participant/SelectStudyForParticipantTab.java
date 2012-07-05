@@ -1,21 +1,26 @@
 package gov.nih.nci.cabig.caaers.web.participant;
 
 //java imports
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
-import gov.nih.nci.cabig.caaers.dao.query.StudyHavingStudySiteQuery;
 import gov.nih.nci.cabig.caaers.dao.query.StudyParticipantAssignmentQuery;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.web.ListValues;
-import gov.nih.nci.cabig.caaers.web.fields.*;
-import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
+import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
+import gov.nih.nci.cabig.caaers.web.fields.ReadonlyFieldDecorator;
+import gov.nih.nci.cabig.caaers.web.fields.SecurityObjectIdFieldDecorator;
+import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -35,6 +40,11 @@ public class SelectStudyForParticipantTab <T extends ParticipantInputCommand> ex
     
     StudyRepository studyRepository;
     private StudySiteDao studySiteDao;
+    public void setStudyDao(StudyDao studyDao) {
+		this.studyDao = studyDao;
+	}
+
+	private StudyDao studyDao;
 
     public SelectStudyForParticipantTab() {
         super("Choose Study", "Choose Study", "par/par_create_choose_study");
@@ -118,8 +128,25 @@ public class SelectStudyForParticipantTab <T extends ParticipantInputCommand> ex
         if (l.size() > 0) {
             errors.reject("ERR_DUPLICATE_STUDY_SITE_IDENTIFIER", new Object[] {command.getAssignment().getStudySubjectIdentifier(), command.getAssignment().getStudySite().getStudy().getShortTitle(), command.getAssignment().getStudySite().getOrganization().getName()}, "Duplicate Study Site identifier.");
         }
-
+        
+        // Check uniqueness of Study Subject identifier across study
+        for(StudyParticipantAssignment assignment : command.getAssignments()){
+        	if(assignment.getId() != null){
+        		// the assignment is already saved, so the number of study subjects in same study that share the same study subject identifier should not be more than 1
+        		validateUniqueStudySubjectIdentifiersInStudy(assignment.getStudySite().getStudy(),errors,1, assignment.getStudySubjectIdentifier());
+        	} else {
+        		validateUniqueStudySubjectIdentifiersInStudy(assignment.getStudySite().getStudy(),errors,0,assignment.getStudySubjectIdentifier());
+        	}
+        	
+        }
     }
+    
+    protected void validateUniqueStudySubjectIdentifiersInStudy(Study study, Errors errors, int repitionCount, String studySubjectIdentifier){
+		if(studyDao.checkIfStudyHasRepeatedAssignmentIdentifiers(study, repitionCount)){
+			errors.reject("PT_013",new Object[]{studySubjectIdentifier},"The same study subject identifier, cannot be assigned" +
+					" to more than one subject across the study");
+		}
+}
 
     @Override
     public Map<String, InputFieldGroup> createFieldGroups(T command) {
