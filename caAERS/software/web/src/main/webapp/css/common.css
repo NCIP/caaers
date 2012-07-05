@@ -1473,7 +1473,7 @@ div.divisionText .divisionTitle {
 }
 
 div.shorty {
-    width: 100%;
+
     max-width: 100%;
     white-space: nowrap;
     overflow: hidden;
