@@ -10,6 +10,35 @@
     </style>
     
     <script type="text/javascript">
+    
+      function showPopup() {
+        popupDiv = new Window({className:"alphacube", width:350, height:75, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
+        popupDiv.setContent("please_wait");
+        popupDiv.showCenter(true);
+        popupDiv.show();
+    }
+    
+    
+    jQuery(document).ready(function() {
+	        <c:if test="${!empty param.tabName}">
+	        	showPopup();
+	        	var timer;
+	        	timer = setTimeout('goToPage("${param.tabName}")' ,1500);
+	        </c:if>
+   		 });
+    
+      var tabsHash = new Hash();
+	    <c:forEach items="${flow.tabs}" var="atab" varStatus="status">
+	    <csmauthz:accesscontrol domainObject="${atab}" authorizationCheckName="tabAuthorizationCheck">
+	        tabsHash.set('${atab.class.simpleName}','${atab.number}');
+	    </csmauthz:accesscontrol>
+	    </c:forEach>
+    
+     function goToPage(s) {
+        jQuery("#command").attr("action", "<c:url value="/pages/participant/assignParticipant?participantId=${param.participantId}" />");
+        $('_target').name = '_target' + tabsHash.get(s);
+        $('command').submit();
+    }
 
         function navRollOver(obj, state) {
             document.getElementById(obj).className = (state == 'on') ? 'resultsOver' : 'results';
@@ -118,7 +147,7 @@
         function assignToStudy(_studyId, _subjectId) {
             document.location = "<c:url value="/pages/participant/assignParticipant?" />" + "participantId=" + _subjectId;
         }
-
+        
     </script>
 
 
@@ -182,6 +211,10 @@
      <tags:tabControls tab="${tab}" flow="${flow}"/>
 </form:form>
 
+<div id="please_wait" style="display: none;" class="flash-message info" >
+    <h3><img src= "<chrome:imageUrl name="../check.png"/>" />&nbsp;<caaers:message code="LBL_redirecting_to_search_study" /></h3>
+    <br><br>
+</div>
 </body>
 </html>
 

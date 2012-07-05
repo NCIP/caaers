@@ -100,7 +100,12 @@ public class AssignParticipantController extends AutomaticSaveAjaxableFormContro
             command.setLoggedInOrganizations(WebUtils.extractOrganizations(command.getLoggedinInvestigator()));
         }
 */
-
+        
+        if(request.getParameter("participantId") !=null ){
+        	Participant participant = participantDao.getById(Integer.parseInt(request.getParameter("participantId")));
+        	if(participant != null){command.setParticipant(participant); }
+        } 
+        
         command.init();
         return command;
     }
