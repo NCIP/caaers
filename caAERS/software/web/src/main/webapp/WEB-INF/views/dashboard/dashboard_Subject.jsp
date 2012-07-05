@@ -62,7 +62,8 @@
     }
 
     function assignToStudy(_studyId, _subjectId) {
-        document.location = "<c:url value="/pages/participant/assignParticipant?" />" + "participantId=" + _subjectId;
+      //  document.location = "<c:url value="/pages/participant/assignParticipant?" />" + "participantId=" + _subjectId;
+        window.location = "<c:url value="/pages/participant/assignParticipant?tabName=AssignStudyTab&participantId=" />" +_subjectId;
     }
 
     function loadAllSubjects() {
