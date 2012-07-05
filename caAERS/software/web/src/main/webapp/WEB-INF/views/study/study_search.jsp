@@ -155,7 +155,9 @@ function onKey(e) {
 
             <tags:button color="blue" type="button" value="Search" size="small" icon="search" onclick="buildTable('searchForm'); $('bigSearch').show();"/>
             <tags:indicator id="indicator" />
-            <span id="coppa-search-disclaimer" class="coppa-search-disclaimer" style="display:none;"><caaers:message code="coppa.search.message" /></span>
+            <span id="coppa-search-disclaimer" class="coppa-search-disclaimer" style="display:none;">
+                <caaers:message code="${ configuration.authenticationMode eq 'local' ? 'study.search.message' : 'coppa.search.message'}" />
+            </span>
         </div>
     </form:form>
 </chrome:box>
