@@ -205,7 +205,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
         if (isFieldRequired("reportingPeriod.treatmentAssignment")) {
             if (rPeriod.getTreatmentAssignment() == null || rPeriod.getTreatmentAssignment().getId() == null) {
                 if (StringUtils.isEmpty(rPeriod.getTreatmentAssignmentDescription())) {
-                    errors.reject("CRP_001", "Select the Treatment Assignment.");
+                    errors.reject("CRP_001", "Treatment assignment description is missing");
                     return;
                 }
             } else {
