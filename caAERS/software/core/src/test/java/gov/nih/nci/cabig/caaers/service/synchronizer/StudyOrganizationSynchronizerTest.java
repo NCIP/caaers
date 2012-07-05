@@ -61,6 +61,7 @@ public class StudyOrganizationSynchronizerTest extends AbstractTestCase{
 		studyFundingSponsor1.addStudyInvestigators(studyInvestigator2);
 		fundingSponsor1.setStudyFundingSponsor(studyFundingSponsor1);
 		dbStudy.setFundingSponsor(fundingSponsor1);
+		dbStudy.addStudyFundingSponsor(studyFundingSponsor1);
 		
 		
 		FundingSponsor fundingSponsor1a = Fixtures.createFundingSponsor(organization1, orgIdentifier1);
@@ -73,9 +74,10 @@ public class StudyOrganizationSynchronizerTest extends AbstractTestCase{
 		studyFundingSponsor1a.addStudyInvestigators(studyInvestigator3a);
 		fundingSponsor1a.setStudyFundingSponsor(studyFundingSponsor1a);
 		xmlStudy.setFundingSponsor(fundingSponsor1a);
+		xmlStudy.addStudyFundingSponsor(studyFundingSponsor1a);
 		
 		studyOrganizationSynchronizer.migrate(dbStudy, xmlStudy, outcome);
-		assertEquals(3, dbStudy.getFundingSponsor().getStudyFundingSponsor().getStudyInvestigators().size());
+		assertEquals(3, dbStudy.getPrimaryFundingSponsor().getStudyInvestigators().size());
 		
 	}
 	
@@ -93,6 +95,7 @@ public class StudyOrganizationSynchronizerTest extends AbstractTestCase{
 		studyFundingSponsor1.addStudyPersonnel(studyPersonnel2);
 		fundingSponsor1.setStudyFundingSponsor(studyFundingSponsor1);
 		dbStudy.setFundingSponsor(fundingSponsor1);
+		dbStudy.addStudyFundingSponsor(studyFundingSponsor1);
 		
 		FundingSponsor fundingSponsor1a = Fixtures.createFundingSponsor(organization1, orgIdentifier1);
 		studyFundingSponsor1a = Fixtures.createStudyFundingSponsor(organization1);
@@ -110,9 +113,10 @@ public class StudyOrganizationSynchronizerTest extends AbstractTestCase{
 		studyFundingSponsor1a.addStudyPersonnel(studyPersonnel3a);
 		fundingSponsor1a.setStudyFundingSponsor(studyFundingSponsor1a);
 		xmlStudy.setFundingSponsor(fundingSponsor1a);
+		xmlStudy.addStudyFundingSponsor(studyFundingSponsor1a);
 		
 		studyOrganizationSynchronizer.migrate(dbStudy, xmlStudy, outcome);
-		assertEquals(3,dbStudy.getFundingSponsor().getStudyFundingSponsor().getStudyPersonnels().size());
+		assertEquals(3,dbStudy.getPrimaryFundingSponsor().getStudyPersonnels().size());
 	}
 	
 }
