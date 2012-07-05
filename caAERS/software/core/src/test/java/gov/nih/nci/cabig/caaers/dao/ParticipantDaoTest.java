@@ -29,6 +29,8 @@ import org.springframework.jdbc.core.StatementCallback;
 public class ParticipantDaoTest extends DaoNoSecurityTestCase<ParticipantDao> {
 
     private OrganizationDao organizationDao = (OrganizationDao) getApplicationContext().getBean("organizationDao");
+    
+    private StudyDao studyDao = (StudyDao) getApplicationContext().getBean("studyDao");
 
     public void testGetById() throws Exception {
         Participant participant = getDao().getById(-100);
@@ -269,5 +271,15 @@ public class ParticipantDaoTest extends DaoNoSecurityTestCase<ParticipantDao> {
     public void testGetSiteIdentifiers() {
         List<Identifier> identifiers = getDao().getSiteIdentifiers(-1001);
         assertEquals(3, identifiers.size());
+    }
+    
+    public void testStudyDupAssignmentIdentifiers(){
+    	Study study = studyDao.getById(-2000);
+    	assertTrue(studyDao.checkIfStudyHasRepeatedAssignmentIdentifiers(study, 1));
+    }
+    
+    public void testStudyDupAssignmentIdentifiers1(){
+    	Study study = studyDao.getById(-2000);
+    	assertFalse(studyDao.checkIfStudyHasRepeatedAssignmentIdentifiers(study, 2));
     }
 }

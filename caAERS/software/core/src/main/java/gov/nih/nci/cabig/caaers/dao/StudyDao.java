@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import edu.nwu.bioinformatics.commons.CollectionUtils;
 import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
+import gov.nih.nci.cabig.caaers.dao.query.DuplicateStudyParticipantIdentifiersInStudyQuery;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.AbstractAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.domain.*;
@@ -44,6 +45,9 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 
     private static final String JOINS = "join o.identifiers as identifier " + "join o.studyOrganizations as ss left outer join ss.studyParticipantAssignments as spa left outer join spa.participant as p left outer join p.identifiers as pIdentifier";
     private static final String QUERY_BY_SHORT_TITLE = "select s from " + Study.class.getName() + " s where shortTitle = :st";
+    
+    private static final String DUP_PRT_ASSIGNMENT_IDS_IN_STUDY_HQL = "select spa.studySubjectIdentifier from StudyParticipantAssignment spa where spa.studySite.id in (select " +
+    		" ss.id from StudySite ss where ss.study.id = :studyId) group by spa.studySubjectIdentifier having count(*) > :num";
 
     private RemoteSession remoteSession;
     
@@ -376,4 +380,23 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
             }
         });
     }
+    
+    // repitionCount - number of repetitions of study subject Id that has to be checked
+    public boolean checkIfStudyHasRepeatedAssignmentIdentifiers(Study study, long repitionCount){
+    	if(study == null || study.getId() == null) return false;
+    	DuplicateStudyParticipantIdentifiersInStudyQuery query = 
+    			new DuplicateStudyParticipantIdentifiersInStudyQuery(DUP_PRT_ASSIGNMENT_IDS_IN_STUDY_HQL);
+    	
+    	query.setParameter("studyId", study.getId());
+    	query.setParameter("num", repitionCount);
+    	
+    	List<String> dupIds = (List<String>) search(query);
+    	if(dupIds != null && dupIds.size() > 0){
+    		return true;
+    	}
+    	
+    	return false;
+    }
+    
+    
 }
