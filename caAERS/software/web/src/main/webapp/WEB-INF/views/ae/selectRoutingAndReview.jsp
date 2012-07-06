@@ -34,7 +34,9 @@
 		<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
         <tags:jsErrorsMessage/>
         <tags:hasErrorsMessage />
-        <chrome:warningMessage key="warning.routingAndReview.notenabled"/>
+        <c:if test="${not empty requestScope['warning.routingAndReview.notenabled']}">
+            <chrome:warningMessage key="warning.routingAndReview.notenabled"/>
+        </c:if>
     	<tags:tabFields tab="${tab}"/>
 			<div id="criteria-div">
 				<chrome:box title="Search Criteria" id="search-criteria" autopad="true" >
