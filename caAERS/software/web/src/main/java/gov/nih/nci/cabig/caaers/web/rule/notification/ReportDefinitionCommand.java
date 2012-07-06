@@ -237,6 +237,7 @@ public class ReportDefinitionCommand {
     	ReportDefinitionExistsQuery query = new ReportDefinitionExistsQuery();
     	query.filterByDifferentId(reportDef.getId());
     	query.filterByName(reportDef.getName());
+    	query.filterByOrganization(reportDef.getOrganization());
     	int cnt = rpDefDao.noOfSimilarReportDefinitions(query);
     	return cnt > 0;
     }

@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.dao.query;
 
+import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import junit.framework.TestCase;
 /**
  * 
@@ -23,6 +25,13 @@ public class ReportDefinitionExistsQueryTest extends TestCase {
 	public void testFilterByName() {
 		query.filterByName("abcd");
 		assertEquals("select count(rd) from ReportDefinition rd WHERE rd.name like :rdname", query.getQueryString());
+	}
+	
+	public void testFilterByOrganization() {
+		Organization org = new LocalOrganization();
+		org.setNciInstituteCode("nciCode1");
+		query.filterByOrganization(org);
+		assertEquals("select count(rd) from ReportDefinition rd WHERE rd.organization.nciInstituteCode like :nciInstituteCode", query.getQueryString());
 	}
 
 }

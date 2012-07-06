@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.dao.query;
 
+import gov.nih.nci.cabig.caaers.domain.Organization;
+
 /**
  * 
  * @author Biju Joseph
@@ -23,5 +25,12 @@ public class ReportDefinitionExistsQuery extends AbstractQuery {
 		andWhere("rd.name like :rdname");
 		setParameter("rdname", name);
 	}
+	
+	public void filterByOrganization(Organization organization){
+		if(organization == null || organization.getNciInstituteCode() == null) return;
+		andWhere("rd.organization.nciInstituteCode like :nciInstituteCode");
+		setParameter("nciInstituteCode",organization.getNciInstituteCode());
+	}
+		
 	
 }

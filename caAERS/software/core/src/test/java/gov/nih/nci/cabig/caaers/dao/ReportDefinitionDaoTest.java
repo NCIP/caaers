@@ -201,6 +201,8 @@ public class ReportDefinitionDaoTest extends DaoTestCase<ReportDefinitionDao> {
     	ReportDefinitionExistsQuery query = new ReportDefinitionExistsQuery();
     	query.filterByDifferentId(-2223);
     	query.filterByName("RCT-222");
+    	Organization org = orgDao.getById(-1001);
+    	query.filterByOrganization(org);
     	
     	Integer cnt = rctDao.noOfSimilarReportDefinitions(query);
     	System.out.println(cnt);
@@ -211,6 +213,8 @@ public class ReportDefinitionDaoTest extends DaoTestCase<ReportDefinitionDao> {
     	ReportDefinitionExistsQuery query = new ReportDefinitionExistsQuery();
     	query.filterByDifferentId(-2223);
     	query.filterByName("RCT-222");
+    	Organization org = orgDao.getById(-1001);
+    	query.filterByOrganization(org);
     	
     	Integer cnt = rctDao.noOfSimilarReportDefinitions(query);
     	System.out.println(cnt);
