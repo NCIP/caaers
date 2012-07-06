@@ -40,7 +40,7 @@
 
     <!--sa archive -->
     <property name="caaers-adeers.sa.build.dir" value="${build.dir}/assembly"/>
-    <property name="caaers-adeers.sa.archive" value="caaers-adeers-sa-2.5-RC2.zip"/>
+    <property name="caaers-adeers.sa.archive" value="caaers-adeers-sa-2.5-RC3-SNAPSHOT.zip"/>
 
     <property name="src.resources.dir" value="src/main/resources"/>
     <property name="src.java.dir" value="src/main/java"/>
@@ -130,7 +130,7 @@
         <copy todir="${eip.comp.build.dir}/META-INF">
             <fileset dir="caaers-adeers-eip-su" includes="*.xml"/>
         </copy>
-        <zip destfile="${su.build.dir}/caaers-adeers-eip-su-2.5-RC2.zip">
+        <zip destfile="${su.build.dir}/caaers-adeers-eip-su-2.5-RC3-SNAPSHOT.zip">
             <fileset dir="${eip.comp.build.dir}"/>
         </zip>
 
@@ -147,7 +147,7 @@
             destdir="${webservice.comp.build.dir}" debug="on" source="1.5" target="1.5">
             <classpath refid="build.classpath"/>
         </javac>
-        <zip destfile="${su.build.dir}/caaers-adeers-webservice-su-2.5-RC2.zip">
+        <zip destfile="${su.build.dir}/caaers-adeers-webservice-su-2.5-RC3-SNAPSHOT.zip">
             <fileset dir="${webservice.comp.build.dir}"/>
         </zip>
 
@@ -157,7 +157,7 @@
         <copy todir="${http.comp.build.dir}/META-INF">
             <fileset dir="caaers-adeers-http-su" includes="*.xml"/>
         </copy>
-        <zip destfile="${su.build.dir}/caaers-adeers-http-su-2.5-RC2.zip">
+        <zip destfile="${su.build.dir}/caaers-adeers-http-su-2.5-RC3-SNAPSHOT.zip">
             <fileset dir="${http.comp.build.dir}"/>
         </zip>
 
@@ -170,14 +170,14 @@
         <copy todir="${xslt.comp.build.dir}/lib">
             <fileset dir="caaers-adeers-xslt-su/lib" includes="*.*"/>
         </copy>
-        <zip destfile="${su.build.dir}/caaers-adeers-xslt-su-2.5-RC2.zip">
+        <zip destfile="${su.build.dir}/caaers-adeers-xslt-su-2.5-RC3-SNAPSHOT.zip">
             <fileset dir="${xslt.comp.build.dir}"/>
         </zip>
 
         <copy todir="${jms.comp.build.dir}">
             <fileset dir="caaers-adeers-jms-su/${src.resources.dir}"/>
         </copy>
-        <zip destfile="${su.build.dir}/caaers-adeers-jms-su-2.5-RC2.zip">
+        <zip destfile="${su.build.dir}/caaers-adeers-jms-su-2.5-RC3-SNAPSHOT.zip">
             <fileset dir="${jms.comp.build.dir}"/>
         </zip>
     </target>
