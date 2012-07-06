@@ -48,5 +48,25 @@ public class MetastaticDiseaseSiteTest extends AbstractTestCase {
 
     }
 
+    public void testcreateReportMetastaticDiseaseSiteEmptyOtherSite() {
+
+        studyParticipantMetastaticDiseaseSite.setOtherSite(null);
+        MetastaticDiseaseSite metastaticDiseaseSite = MetastaticDiseaseSite.
+                createReportMetastaticDiseaseSite(studyParticipantMetastaticDiseaseSite);
+
+        assertNotNull(metastaticDiseaseSite);
+
+        assertNull("must not copy id ", metastaticDiseaseSite.getId());
+        assertNull("must not copy grid id ", metastaticDiseaseSite.getGridId());
+        assertNull("must not copy version no ", metastaticDiseaseSite.getVersion());
+
+        assertNull( metastaticDiseaseSite.getOtherSite());
+
+
+        assertSame("codedSite must refer to same object", codedSite, metastaticDiseaseSite.getCodedSite());
+
+
+    }
+
 
 }

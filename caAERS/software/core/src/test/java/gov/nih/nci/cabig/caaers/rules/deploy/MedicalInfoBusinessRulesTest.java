@@ -292,7 +292,7 @@ public class MedicalInfoBusinessRulesTest extends AbstractBusinessRulesExecution
         assertSameErrorCount(errors, 1);
         assertNotNull(errors.getErrorAt(0).getFieldNames());
         Object i = errors.getErrorAt(0).getReplacementVariables()[0];
-        assertCorrectFieldNames(errors.getErrorAt(0), "aeReport.diseaseHistory.metastaticDiseaseSites[" + i + "].codedSite-input", "aeReport.diseaseHistory.metastaticDiseaseSites[" + i + "].otherSite");
+        assertCorrectFieldNames(errors.getErrorAt(0), "aeReport.diseaseHistory.metastaticDiseaseSites[" + i + "].codedSite", "aeReport.diseaseHistory.metastaticDiseaseSites[" + i + "].otherSite");
     }
 
     /**
