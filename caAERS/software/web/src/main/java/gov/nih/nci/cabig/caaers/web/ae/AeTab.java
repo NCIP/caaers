@@ -164,7 +164,8 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
         
         for (InputFieldGroup group : groupMap.values()) {
             for (InputField field : group.getFields()) {
-                if (isMandatory(command.getMandatoryProperties(), field)) {
+            	//adding a special check for first AE. Start date should be mandatory.
+                if (isMandatory(command.getMandatoryProperties(), field) || (group.getName().equals("main0") && field.getPropertyName().endsWith("startDate"))) {
                     field.getAttributes().put(MANDATORY_FIELD_ATTR, true);
 
                     if (field.getCategory() == InputField.Category.COMPOSITE) {
