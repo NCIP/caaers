@@ -398,10 +398,17 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
     }
     
     // repitionCount - number of repetitions of study subject Id that has to be checked
-    public Long getNumberOfStudySubjectsInStudyWithGivenAssignmentIdentifier(Study study, String studySubjectIdentifier){
+    public Long getNumberOfStudySubjectsInStudyWithGivenAssignmentIdentifier(Study study, String studySubjectIdentifier, Integer excludeStudySubjectId){
     	if(study == null || study.getId() == null ) return 0L;
     	if(StringUtils.isBlank(studySubjectIdentifier)) return 0L;
-    	Query query = getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery(DUP_PRT_ASSIGNMENT_IDS_IN_STUDY_HQL);
+    	Query query = null;
+    	if(excludeStudySubjectId != null ){
+    		query = getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery(DUP_PRT_ASSIGNMENT_IDS_IN_STUDY_HQL+ " and spa.id not in (:excludeStudySubjectId)");
+    		query.setParameter("excludeStudySubjectId", excludeStudySubjectId);
+    	} else {
+    		query = getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery(DUP_PRT_ASSIGNMENT_IDS_IN_STUDY_HQL);
+    	}
+    	
     	query.setParameter("studyId", study.getId());
     	query.setParameter("identifier", studySubjectIdentifier);
     	

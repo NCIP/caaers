@@ -175,8 +175,8 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
         }
     }
     
-    protected void validateUniqueStudySubjectIdentifiersInStudy(Study study, Errors errors, int repetitionCount, String studySubjectIdentifier){
-			if(studyDao.getNumberOfStudySubjectsInStudyWithGivenAssignmentIdentifier(study, studySubjectIdentifier) > repetitionCount){
+    protected void validateUniqueStudySubjectIdentifiersInStudy(Study study, Errors errors, String studySubjectIdentifier, Integer excludeStudySubjectId){
+			if(studyDao.getNumberOfStudySubjectsInStudyWithGivenAssignmentIdentifier(study, studySubjectIdentifier, excludeStudySubjectId) > 0){
 				errors.reject("PT_013",new Object[]{studySubjectIdentifier} ,"The study subject identifier, " + studySubjectIdentifier  + " has been already" +
 						" assigned to another subject on the study");
 			}
@@ -202,13 +202,7 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
         
         // Check uniqueness of Study Subject identifier across study
         for(StudyParticipantAssignment assignment : command.getAssignments()){
-        	if(assignment.getId() != null){
-        		// the number of study subjects in the study that share the same study subject identifier cannot be more than 1
-        		validateUniqueStudySubjectIdentifiersInStudy(assignment.getStudySite().getStudy(),errors,1,assignment.getStudySubjectIdentifier());
-        	} else {
-        		// since the assignment is new, the number of study subjects in the study that share the same study subject identifier cannot be more than 0
-        		validateUniqueStudySubjectIdentifiersInStudy(assignment.getStudySite().getStudy(),errors,0,assignment.getStudySubjectIdentifier());
-        	}
+        	validateUniqueStudySubjectIdentifiersInStudy(assignment.getStudySite().getStudy(),errors,assignment.getStudySubjectIdentifier(), assignment.getId());
         }
        
         // CHECK Participant Identifiers
