@@ -1,5 +1,6 @@
 <%@tag import="gov.nih.nci.cabig.caaers.domain.INDType" %>
 <%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui"%>
+<%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"  %>
@@ -45,7 +46,7 @@
         </c:if>
         <%----%>
 
-		<ui:autocompleter path="${_agentField.propertyName}" 
+		<ui:autocompleter path="${_agentField.propertyName}"
 			required="${_agentField.required}" 
 			validationJSClass="${_agentField.validatorClassName}" 
 			readonly="${readOnly}" 
@@ -145,15 +146,16 @@
 		<ui:label path="${_indField.propertyName}" text="${_indField.displayName}"></ui:label>
 	</jsp:attribute>
 	<jsp:attribute name="value">
-		<ui:autocompleter path="${_indField.propertyName}" 
+        <c:set var="indDispName"><caaers:value path="${_indField.propertyName}.numberAndHolderName" /></c:set>
+		<ui:autocompleter path="${_indField.propertyName}"
 			required="${_indField.required}" 
 			validationJSClass="${_indField.validatorClassName}" 
 			readonly="false" 
 			size="${_indField.attributes.size}"
 			title="${_indField.displayName}"
 			enableClearButton="${_indField.attributes.enableClear}" 
-			initialDisplayValue="Begin typing here"
-			displayNamePath="${_indField.propertyName}.numberAndHolderName">
+			initialDisplayValue="${empty indDispName ? 'Begin typing here' : indDispName}"
+			>
 		<jsp:attribute name="populatorJS">
 			function(autocompleter, text) {
          		createStudy.matchINDs(text, function(values) {
