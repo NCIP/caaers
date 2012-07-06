@@ -30,6 +30,8 @@
 </style>
 
 <script type="text/javascript">
+	cummulativeCount = 0;
+	currentCount = 0
     var correlationArray = [];
 	function initializeYUITableNoPagination(tableId, responseData, columnDefs, fields) {
 	    YAHOO.example.CellSelection = new function() {
@@ -65,6 +67,7 @@
 	    for(i=0 ; i < jsonResult.length; i++) {
 	    	correlationArray.push(jsonResult[i].correlationId);
 	    }
+	    currentCount = jsonResult.length;
 	    showLogsYUITable(jsonResult);
 	}
 	
@@ -93,6 +96,7 @@
 			endDateParam = null;
 		}
 		
+		cummulativeCount = currentCount + cummulativeCount;
         ctepDataInitialization.searchIntegrationLogs(startDateParam, endDateParam, $('status').value, $('service').value,ajaxCallBack);
     }
     
@@ -153,6 +157,7 @@
 	 function ajaxCallBackForDetails(jsonResult) {
 	 	var d = $('synchMessage');
 	  	displayLogDetailsTable(jsonResult);
+	  	currentCount = currentCount + 1;
 	  	Dialog.alert(d.innerHTML, {className: "alphacube", height:500, width:500, okLabel: "Close" });
 	}
 	
@@ -202,7 +207,7 @@
 	            }; 
 	            
 	        var actionFormatter = function(elCell, oRecord, oColumn, oData) {
-	        	var row_number = oRecord._nCount;
+	        	var row_number = oRecord._nCount - cummulativeCount;
 	        	if (oRecord._oData.hasLogDetails == true) {
 	        		elCell.innerHTML = '<A  HREF="javascript:showPopupMessage(' + row_number + ')";> View Details</A> || <a href="logdownload?cstr=' + correlationArray[row_number]+ '&dstr=' + oRecord._oData.loggedOnDateStr + '&' + 'entity=' + oRecord._oData.entity + '">Messages</a>';
 	        	} else {
