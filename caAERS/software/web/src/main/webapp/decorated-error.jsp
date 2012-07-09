@@ -181,11 +181,13 @@
                     <tr>
                         <td>
                             <font color="blue">
-                                <%=String.valueOf(name) %>
+                                <% request.setAttribute("temp_name", String.valueOf(name)); %>
+                    			<c:out value="${temp_name}" />
                             </font>
                         </td>
                         <td>
-                            <%=String.valueOf(value)%>
+                        	<% request.setAttribute("temp_value", String.valueOf(value)); %>
+                    		<c:out value="${temp_value}" />
                         </td>
                     </tr>
                     <%
@@ -210,11 +212,13 @@
                     <tr>
                         <td>
                             <font color="blue">
-                                <%=String.valueOf(name) %>
+                                <% request.setAttribute("temp_name", String.valueOf(name)); %>
+                    			<c:out value="${temp_name}" />
                             </font>
                         </td>
                         <td>
-                            <%=String.valueOf(value)%>
+                        	<% request.setAttribute("temp_value", String.valueOf(value)); %>
+                    		<c:out value="${temp_value}" />
                         </td>
                     </tr>
                     <%
