@@ -122,7 +122,7 @@
                  </tr>
                  <c:forEach varStatus="status" items="${command.study.studySites}" var="ss">
                  	<c:if test="${not ss.retired}">
-                     <study:oneStudySite cssClass="ss-section" index="${status.index}" readOnly="${not empty ss.organization}"/>
+                     <study:oneStudySite cssClass="ss-section" index="${status.index}" readOnly="${not empty ss.id}"/>
                     </c:if>
                  </c:forEach>
              </table>
