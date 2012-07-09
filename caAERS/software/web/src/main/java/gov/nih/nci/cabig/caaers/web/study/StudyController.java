@@ -153,6 +153,11 @@ public abstract class StudyController<C extends StudyCommand> extends AutomaticS
     @Override
     protected boolean shouldSave(final HttpServletRequest request, final C command, final Tab<C> tab) {
 
+        String action = request.getParameter("_action");
+        if (StringUtils.equals(action, "removeSite")) {
+            return false;
+        }
+
         boolean asyncReqParamPresent = isAjaxRequest(request);
         
         //save an Ajax request when it is "a remove" task
@@ -223,6 +228,10 @@ public abstract class StudyController<C extends StudyCommand> extends AutomaticS
     @Override
     protected Object currentFormObject(HttpServletRequest request, Object oCommand) throws Exception {
         StudyCommand cmd = (StudyCommand) super.currentFormObject(request, oCommand);
+
+        String action = request.getParameter("_action");
+        if (StringUtils.equals(action, "removeSite")) { return cmd; }
+        
         boolean asyncReqParamPresent = isAjaxRequest(request);
         Object isAjax = findInRequest(request, "_isAjax");
         if (isAjax != null || asyncReqParamPresent) return cmd;

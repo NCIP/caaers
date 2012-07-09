@@ -428,7 +428,10 @@ public class StudyCommand {
     public void deleteStudySiteAtIndex(int index){
         List<StudySite> sites = study.getStudySites();
         if(sites.size() > index){
-            sites.get(index).retire();
+            StudySite ss = sites.get(index);
+            ss.retire();
+
+            if(ss.getOrganization() == null) sites.remove(ss);
         }
     }
     

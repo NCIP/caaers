@@ -18,6 +18,7 @@ import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 
@@ -41,7 +42,7 @@ class SitesTab extends StudyTab {
 
         if (isAjax != null) return;
 
-        if ("removeSite".equals(action)) {
+        if (StringUtils.equals(action, "removeSite")) {
 
             int index = Integer.parseInt(request.getParameter("_selected"));
             StudySite site = command.getStudy().getStudySites().get(index);
@@ -62,29 +63,6 @@ class SitesTab extends StudyTab {
             }
 
 
-        }
-
-        // checking new Study Sites
-        HashMap<Integer, StudyOrganization> hm = new HashMap<Integer, StudyOrganization>();
-        List<StudyOrganization> copySS = new ArrayList(command.getStudy().getStudyOrganizations());
-
-        int i = 0;
-        for (StudyOrganization ss : copySS) {
-            if (ss instanceof StudySite && ss.getOrganization() != null && ss.getOrganization().getId() != null) {
-                if (ss.getId() == null) {
-                    StudyOrganization existingStudySite = hm.get(ss.getOrganization().getId());
-                    if (existingStudySite != null) {
-                        if (existingStudySite.getRetiredIndicator()) {
-                            command.getStudy().getStudyOrganizations().remove(i);
-                            i--;
-                            existingStudySite.setRetiredIndicator(false);
-                        }
-                    }
-                } else {
-                    hm.put(ss.getOrganization().getId(), ss);
-                }
-            }
-            i++;
         }
 
         request.setAttribute("tabFlashMessage", messageSource.getMessage(String.format("MSG_study.%s.flash_message", this.getClass().getSimpleName()), null, Locale.getDefault()));

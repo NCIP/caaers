@@ -31,6 +31,9 @@ public class StudyChildInstantiateFactory<T extends StudyChild> extends Instanti
     public T create() {
         T child = super.create();
         child.setStudy(study);
+        if(child instanceof  Retireable){
+            ((Retireable) child).setRetiredIndicator(false);
+        }
         return child;
     }
 }

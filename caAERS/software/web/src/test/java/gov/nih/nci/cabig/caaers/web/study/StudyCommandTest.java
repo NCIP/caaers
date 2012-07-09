@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
+import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
@@ -20,13 +21,14 @@ import org.easymock.classextension.EasyMock;
  * @author Biju Joseph
  *
  */
-public class StudyCommandTest extends AbstractNoSecurityTestCase {
+public class StudyCommandTest extends AbstractTestCase {
 	StudyCommand command;
 	StudyDao studyDao;
 	StudyRepository studyRepository;
 	InvestigationalNewDrugDao investigationalNewDrugDao;
 	protected void setUp() throws Exception {
 		super.setUp();
+        switchToSuperUser();
 		studyDao = registerDaoMockFor(StudyDao.class);
 		studyRepository = registerMockFor(StudyRepository.class);
 		investigationalNewDrugDao = registerDaoMockFor(InvestigationalNewDrugDao.class);
@@ -56,7 +58,9 @@ public class StudyCommandTest extends AbstractNoSecurityTestCase {
 		
 		
 		StudySite ss1 = new StudySite();
+        ss1.setOrganization(Fixtures.createOrganization("t1"));
 		StudySite ss2 = new StudySite();
+        ss2.setOrganization(Fixtures.createOrganization("t2"));
 		s.addStudySite(ss1);
 		s.addStudySite(ss2);
 	}
@@ -86,14 +90,24 @@ public class StudyCommandTest extends AbstractNoSecurityTestCase {
 	}
 	
 	
-	public void testDeleteStudySiteAtIndex() {
+	public void testDeleteStudySiteAtIndexWhenNoOrgAssociatedToSite() {
 		assertEquals(2, command.getStudy().getStudySites().size());
 		assertFalse(command.getStudy().getStudySites().get(1).isRetired());
 		command.getStudy().getStudySites().get(1).setId(55);
+		command.getStudy().getStudySites().get(1).setOrganization(null);
 		command.deleteStudySiteAtIndex(1);
-		assertEquals(2, command.getStudy().getStudySites().size());
-		assertTrue(command.getStudy().getStudySites().get(1).isRetired());
+		assertEquals(1, command.getStudy().getStudySites().size());
 	}
+
+
+    public void testDeleteStudySiteAtIndex() {
+        assertEquals(2, command.getStudy().getStudySites().size());
+        assertFalse(command.getStudy().getStudySites().get(1).isRetired());
+        command.getStudy().getStudySites().get(1).setId(55);
+        command.deleteStudySiteAtIndex(1);
+        assertEquals(2, command.getStudy().getStudySites().size());
+        assertTrue(command.getStudy().getStudySites().get(1).isRetired());
+    }
 	
 	public void testDeleteCtepStudyDiseaseAtIndex(){
 	    Fixtures.createDiseaseTerminology(command.getStudy());
