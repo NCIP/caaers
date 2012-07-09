@@ -107,7 +107,7 @@ public abstract class StudyOrganization extends AbstractMutableRetireableDomainO
      * @return the organization
      */
     @ManyToOne
-    @JoinColumn(name = "site_id", nullable = false)
+    @JoinColumn(name = "site_id")
     @Cascade(value = { CascadeType.LOCK})
     public Organization getOrganization() {
         return organization;
