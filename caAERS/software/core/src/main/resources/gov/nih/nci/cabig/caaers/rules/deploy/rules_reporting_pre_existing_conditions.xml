@@ -12,6 +12,7 @@
     <import name="com.semanticbits.rules.utils.NumberUtil"/>
     <import name="gov.nih.nci.cabig.caaers.rules.runtime.ExpeditedAdverseEventValidator"/>
     <import name="com.semanticbits.rules.utils.DateUtil"/>
+    <import name="org.apache.commons.lang.StringUtils"/>
 
 
     <!-- ==========================================================================
@@ -28,7 +29,7 @@
                 public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
                     int i = 0;
                     for(SAEReportPreExistingCondition pc : aeReport.getSaeReportPreExistingConditions()){
-                            if(pc.getOther() != null &amp;&amp; pc.getPreExistingCondition() != null){
+                            if( StringUtils.isNotEmpty(pc.getOther()) &amp;&amp; pc.getPreExistingCondition() != null){
                                 errors.addValidationError("PEC_BR1_ERR", "Either and only 'Pre-existing condition' or
                                 'Other(pre-existing)' must be provided", i).addFieldNames("aeReport.saeReportPreExistingConditions[" + i + "].preExistingCondition", "aeReport.saeReportPreExistingConditions[" + i + "].other");
                             }

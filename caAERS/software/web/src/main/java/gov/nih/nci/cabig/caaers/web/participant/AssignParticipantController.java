@@ -132,6 +132,7 @@ public class AssignParticipantController extends AutomaticSaveAjaxableFormContro
 
 
     protected void initBinder(HttpServletRequest httpServletRequest, ServletRequestDataBinder binder) throws Exception {
+        super.initBinder(httpServletRequest, binder);
         ControllerTools.registerDomainObjectEditor(binder, participantDao);
         ControllerTools.registerDomainObjectEditor(binder, studySiteDao);
 
