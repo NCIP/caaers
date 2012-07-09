@@ -14,6 +14,7 @@ import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySiteAjaxableDomainOb
 import gov.nih.nci.cabig.caaers.service.AdeersIntegrationFacade;
 import gov.nih.nci.cabig.caaers.service.ProxyWebServiceFacade;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
+import gov.nih.nci.cabig.caaers.utils.ExpectedAETermSorter;
 import gov.nih.nci.cabig.caaers.utils.ranking.RankBasedSorterUtils;
 import gov.nih.nci.cabig.caaers.utils.ranking.Serializer;
 import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
@@ -722,7 +723,15 @@ public class CreateStudyAjaxFacade {
         Study study = command.getStudy();
 
         boolean isMeddra = study.getAeTerminology().getTerm() == Term.MEDDRA;
-        List studyTerms = (isMeddra) ? study.getExpectedAEMeddraLowLevelTerms() : study.getExpectedAECtcTerms();
+        List studyTerms = null;
+        if(isMeddra){
+        	Collections.sort(study.getExpectedAEMeddraLowLevelTerms(), new ExpectedAETermSorter());
+        	studyTerms = study.getExpectedAEMeddraLowLevelTerms();
+        }else{
+        	Collections.sort(study.getExpectedAECtcTerms(), new ExpectedAETermSorter());
+        	studyTerms = study.getExpectedAECtcTerms();
+        }
+        //List studyTerms = (isMeddra) ? study.getExpectedAEMeddraLowLevelTerms() : study.getExpectedAECtcTerms();
         // System.out.println("Removing element " + _index + " out of " + studyTerms.size());
         studyTerms.remove(_index);
         // System.out.println("Element removed. The new size is " + studyTerms.size() + "\n\r\n\r");
