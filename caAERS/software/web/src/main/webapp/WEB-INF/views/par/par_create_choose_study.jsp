@@ -95,13 +95,6 @@
         elCell.innerHTML = oData;
     };
 
-    var actionsFormatter = function(elCell, oRecord, oColumn, oData) {
-        var _id = oRecord.getData("id");
-        var _ssi = oRecord.getData("fundingSponsorIdentifierValue");
-        var _active = oRecord.getData("dataEntryStatus");
-        elCell.innerHTML = "<img src='<c:url value="/images/orange-actions.gif" />' border='0' onmouseover=\"showDashboardStudiesMenuOptions(this, roles_map, '" + _ssi + "', " + _id + ", '" + _active + "')\" style=\"cursor: pointer; margin-right: 15px;\">";
-    };
-
     var radioFormatter = function(elCell, oRecord, oColumn, oData) {
         var _id = oRecord.getData("id");
         var _piv = oRecord.getData("primaryIdentifierValue");
@@ -118,8 +111,7 @@
     var myColumnDefs = [
         {key:"active", label:"Select", sortable:true, resizeable:true, formatter : radioFormatter},
         {key:"primaryIdentifierValue", label:"Study ID", sortable:true, resizeable:true},
-        {key:"shortTitle", label:"Title", sortable:true, resizeable:true},
-        {key:"actions", label:"&nbsp;", sortable:true, resizeable:true, formatter:actionsFormatter}
+        {key:"shortTitle", label:"Title", sortable:true, resizeable:true}
     ];
 
     var myFields = [
