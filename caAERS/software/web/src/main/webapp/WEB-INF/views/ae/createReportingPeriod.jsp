@@ -88,7 +88,8 @@
         <caaers:message code="LBL_reportingPeriod.cycleNumber" var="x" />
         <ui:row path="reportingPeriod.cycleNumber">
              <jsp:attribute name="label"><tags:renderLabel field="${fieldGroups.ReportingPeriod.fields[4]}" /></jsp:attribute>
-             <jsp:attribute name="value"><ui:text path="${fieldGroups.ReportingPeriod.fields[4].propertyName}" field="${fieldGroups.ReportingPeriod.fields[4]}" title="${x}"/></jsp:attribute>
+             <jsp:attribute name="value"><ui:text path="${fieldGroups.ReportingPeriod.fields[4].propertyName}" field="${fieldGroups.ReportingPeriod.fields[4]}" 
+             title="${x}" cssClass="validate-NUMERIC"/></jsp:attribute>
         </ui:row>
 <center>
     <caaers:renderFilter elementID="reportingPeriod.treatmentAssignment">

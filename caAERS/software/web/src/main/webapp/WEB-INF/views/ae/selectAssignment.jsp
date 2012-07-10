@@ -69,6 +69,12 @@
                 height: 500,
                 recenterAuto:true});
             this.win.showCenter(true);
+            this.win.setCloseCallback(function(){
+               if(!isPositiveInteger($('adverseEventReportingPeriod').value)) {
+             	$('adverseEventReportingPeriod').value = '';
+             	}
+             	return true
+            });
         },
         
         refreshRPCrlOptionsOnCreation:function(newRPId, rpName) {
@@ -121,6 +127,11 @@
         },
 
         showOrHideEditRPCtrl:function() {
+         	if(isPositiveInteger(this.rpCtrl.value)) {
+           		 $('adverseEventReportingPeriod').value = this.rpCtrl.value;
+             }else {
+             	 $('adverseEventReportingPeriod').value = '';
+             }
         	$('adverseEventReportingPeriod').value = this.rpCtrl.value;
             //the edit reporting period button show/hide based on select box value
             if (this.rpCtrl.value > 0) {
@@ -270,13 +281,20 @@
             updateSelectedDisplay(studyAutocompleterProps);
             initSearchField();
             rpCreator = new RPCreatorClass('course-input','edit_button');
-            $('adverseEventReportingPeriod').value = '${command.adverseEventReportingPeriod.id }';
-            rpCreator.populateRPCrlOptions(${command.adverseEventReportingPeriod.id});
+            if(isPositiveInteger(${command.adverseEventReportingPeriod.id })) {
+           		 $('adverseEventReportingPeriod').value = '${command.adverseEventReportingPeriod.id }';
+             	 rpCreator.populateRPCrlOptions(${command.adverseEventReportingPeriod.id});
+             }else {
+             	 $('adverseEventReportingPeriod').value = '';
+             	 rpCreator.populateRPCrlOptions('');
+             }
            
     		//remove the query string from form url
     		removeQueryStringFromForm('command');
     		
         })
+        
+        function isPositiveInteger(s){return parseInt(s,10)==s && s >= 0;}
     </script>
 </head>
 <body>
