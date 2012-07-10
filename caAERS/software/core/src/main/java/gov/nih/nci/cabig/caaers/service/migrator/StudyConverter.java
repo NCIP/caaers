@@ -459,14 +459,14 @@ public class StudyConverter {
 
             if (study.getAeTerminology().getCtcVersion() != null) {
                 CtcVersionType ctc = new CtcVersionType();
-                ctc.setName(study.getAeTerminology().getCtcVersion().getId().toString());
+                ctc.setName(study.getAeTerminology().getCtcVersion().getName());
                 aeTerminology.setCtcVersion(ctc);
 
             }
 
             if (study.getAeTerminology().getMeddraVersion() != null) {
                 MeddraVersionType meddra = new MeddraVersionType();
-                meddra.setName(study.getAeTerminology().getMeddraVersion().getId().toString());
+                meddra.setName(study.getAeTerminology().getMeddraVersion().getName());
                 aeTerminology.setMeddraVersion(meddra);
             }
 
