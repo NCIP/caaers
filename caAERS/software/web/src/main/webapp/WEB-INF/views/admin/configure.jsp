@@ -15,10 +15,11 @@
     </style>
 </head>
 <body>
-<script>
+<script type="text/javascript" src="<c:url value="/js/jquery/jquery.cookie.js" />"></script>
+<script type="text/javascript" language="javascript">
     jQuery(function() {
-        jQuery( "#ctabs" ).tabs();
-    });
+        jQuery( "#ctabs" ).tabs({cookie:{expires:1}});
+ });
 </script>
 	    <div class="workflow-tabs2">
     	    <ul id="" class="tabs autoclear">
