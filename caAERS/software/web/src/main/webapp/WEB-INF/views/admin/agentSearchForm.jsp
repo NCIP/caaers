@@ -88,7 +88,7 @@ var myFields = [
     <form:form name="searchForm" id="searchForm" method="post">
     	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
 
-            <chrome:box title="Search Agents" autopad="false">
+            <chrome:box title="Search Criteria" autopad="false">
              <tags:instructions code="admin.agent.search" />
                   <div class="row">
                       <div class="label"><caaers:message code="LBL_agent.name" /></div>

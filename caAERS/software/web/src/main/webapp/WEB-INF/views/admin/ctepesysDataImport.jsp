@@ -193,7 +193,7 @@
   </ul>
 </div>
 
-<chrome:box title="CTEP Data Import">
+<chrome:box title="CTEP List Of Values">
 
  <div id="autoRemoveElement" style="display: none;">
         <div id="flash-message" class="info">

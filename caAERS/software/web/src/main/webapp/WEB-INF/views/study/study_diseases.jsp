@@ -308,13 +308,13 @@ Event.observe(window, "load", function() {
             <chrome:division title="CTEP Disease Terms" id="disease">
                     <p><tags:instructions code="study.study_disease.ctep" /></p>
 
-                    <div style="padding-bottom: 5px;"><caaers:message code="LBL_disease.category" /></div>
+                    <div style="padding-bottom: 5px;"><b><caaers:message code="LBL_disease.category" /></b></div>
 					<ui:autocompleter path="diseaseCategoryAsText" size="45" enableClearButton="true" initialDisplayValue="Begin typing here"></ui:autocompleter>
                     
                     <p id="disease-selected" style="display: none"></p>
                     <br>
                    
-                    <div style="padding-bottom: 5px;"><caaers:message code="LBL_disease.subcategory" /></div>
+                    <div style="padding-bottom: 5px;"><b><caaers:message code="LBL_disease.subcategory" /></b></div>
                     <select multiple size="1" onmouseover="javascript:hover()" style="width:400px" id="disease-sub-category">
                         <option value="">Please select a Category first</option>
                     </select>
@@ -322,14 +322,14 @@ Event.observe(window, "load", function() {
                     <br>
                     <br>
                     <div>
-                        <div style="padding-bottom: 5px;"><caaers:message code="LBL_diseases" /></div>
+                        <div style="padding-bottom: 5px;"><b><caaers:message code="LBL_diseases" /></b></div>
                         <select multiple size="1" style="width:400px" id="disease-term">
                             <option value="">Please select a Category first</option>
                         </select>
 
                         <span id="disease-selected-name"></span>
                         <div style="text-align:right; padding-right:11px; padding-top:2px;">
-                            <tags:button color="blue" type="button" value="Add disease" size="small" icon="add" onclick="fireAction('addStudyDisease','0');"/>
+                            <tags:button color="blue" type="button" value="Select disease" size="small" icon="add" onclick="fireAction('addStudyDisease','0');"/>
                         </div>
                     </div>
                     <br/>
@@ -347,7 +347,7 @@ Event.observe(window, "load", function() {
             <chrome:division title="${meddraVersion} Terms">
 					<p><tags:instructions code="study.study_disease.meddra" /></p>
 					<ui:autocompleter path="diseaseLlt" enableClearButton="true" initialDisplayValue="Begin typing here" size="38"/>
-                    <tags:button color="blue" type="button" value="Add disease" size="small" icon="add" onclick="fireAction('addMeddraStudyDisease','0');"/>
+                    <tags:button color="blue" type="button" value="Select disease" size="small" icon="add" onclick="fireAction('addMeddraStudyDisease','0');"/>
             </chrome:division>
             </c:if>
             
@@ -355,7 +355,7 @@ Event.observe(window, "load", function() {
             <chrome:division title="Other, Specify">
 					<p><tags:instructions code="study.study_disease.other" /></p>
 					<ui:autocompleter path="condition" enableClearButton="true" initialDisplayValue="Begin typing here" size="38" />
-                    <tags:button color="blue" type="button" value="Add condition" size="small" icon="add" onclick="fireAction('addOtherCondition','0');"/>
+                    <tags:button color="blue" type="button" value="Select condition" size="small" icon="add" onclick="fireAction('addOtherCondition','0');"/>
             </chrome:division>
             </c:if>
 
@@ -365,13 +365,13 @@ Event.observe(window, "load", function() {
         <chrome:box title="Selected Diseases " id="diseases">
             <!-- CTEP -->
             <c:if test="${diseaseTerminology == 'CTEP' }">
-            <chrome:division title="CTEP">
+            <chrome:division title="">
             <p><tags:instructions code="study.study_disease.selected" /></p>
 
             <tags:table contentID="ctcDisease">
                <table id="termsTable" width="100%" border="0" cellspacing="1" cellpadding="3">
     			<tr bgcolor="#eeeeee">
-    				<th scope="col" align="left"><b>CTC disease term</b> </th>
+    				<th scope="col" align="left"><b>CTEP disease term</b> </th>
     				<th scope="col" width="10%" align="center"><b>Primary</b> </th>
     				<th scope="col" width="5%" align="center"><caaers:message code="table.action" /></th>
     			</tr>
@@ -393,7 +393,7 @@ Event.observe(window, "load", function() {
 
             <!-- MedDRA -->
             <c:if test="${diseaseTerminology == 'MEDDRA' }">
-            <chrome:division title="MedDRA">   
+            <chrome:division title="">
             <p><tags:instructions code="study.study_disease.selected" /></p>
             <center>
 			<table width="100%" class="tablecontent">
@@ -421,7 +421,7 @@ Event.observe(window, "load", function() {
 
             <!-- OTHER -->
             <c:if test="${diseaseTerminology == 'OTHER' }">
-            <chrome:division title="Other, Specify">
+            <chrome:division title="">
             <p><tags:instructions code="study.study_disease.selected" /></p>
             <center>
 			<table width="100%" class="tablecontent">

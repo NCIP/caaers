@@ -19,7 +19,7 @@
 			required="${_siteField.required}" 
 			validationJSClass="${_siteField.validatorClassName}" 
 			readonly="${readOnly}" 
-			size="${_siteField.attributes.size}"
+			size="90"
 			title="${field.displayName}"
 			enableClearButton="${_siteField.attributes.enableClear}" 
 			initialDisplayValue="Begin typing here" />
