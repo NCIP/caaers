@@ -161,13 +161,13 @@ button.omnipotent-button.blue td.r, button.omnipotent-button.blue:link td.r, a.o
 	background-position:-534px -204px;
 }
 button.omnipotent-button.blue.hover td.l, button.omnipotent-button.blue:hover td.l, a.omnipotent-button.blue.hover td.l, a.omnipotent-button.blue:hover td.l {
-	background-position:0 -238px;
+	_background-position:0 -238px;
 }
 button.omnipotent-button.blue.hover td.m, button.omnipotent-button.blue:hover td.m, a.omnipotent-button.blue.hover td.m, a.omnipotent-button.blue:hover td.m {
-	background-position:-18px -238px;
+	_background-position:-18px -238px;
 }
 button.omnipotent-button.blue.hover td.r, button.omnipotent-button.blue:hover td.r, a.omnipotent-button.blue.hover td.r, a.omnipotent-button.blue:hover td.r {
-	background-position:-534px -238px;
+	_background-position:-534px -238px;
 }
 button.omnipotent-button.blue.active td.l, button.omnipotent-button.blue:active td.l, a.omnipotent-button.blue.active td.l, a.omnipotent-button.blue:active td.l {
 	background-position:0 -272px;
@@ -353,13 +353,13 @@ button.omnipotent-button.small.blue td.r, button.omnipotent-button.small.blue:li
 	background-position:-536px -156px;
 }
 button.omnipotent-button.small.blue.hover td.l, button.omnipotent-button.small.blue:hover td.l, a.omnipotent-button.small.blue.hover td.l, a.omnipotent-button.small.blue:hover td.l {
-	background-position:0 -182px;
+	_background-position:0 -182px;
 }
 button.omnipotent-button.small.blue.hover td.m, button.omnipotent-button.small.blue:hover td.m, a.omnipotent-button.small.blue.hover td.m, a.omnipotent-button.small.blue:hover td.m {
-	background-position:-16px -182px;
+	_background-position:-16px -182px;
 }
 button.omnipotent-button.small.blue.hover td.r, button.omnipotent-button.small.blue:hover td.r, a.omnipotent-button.small.blue.hover td.r, a.omnipotent-button.small.blue:hover td.r {
-	background-position:-536px -182px;
+	_background-position:-536px -182px;
 }
 button.omnipotent-button.small.blue.active td.l, button.omnipotent-button.small.blue:active td.l, a.omnipotent-button.small.blue.active td.l, a.omnipotent-button.small.blue:active td.l {
 	background-position:0 -208px;
