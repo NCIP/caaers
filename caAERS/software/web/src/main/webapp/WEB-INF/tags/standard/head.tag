@@ -3,7 +3,7 @@
 <%@taglib uri="http://jawr.net/tags" prefix="jwr" %>
 <%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
 
-<meta http-equiv="X-UA-Compatible" content="IE=7, IE=9">
+<meta http-equiv="X-UA-Compatible" content="IE=7">
 
 <tags:js name="compressed/prototype_jquery_scriptaclous_accordion" />
 <%-- 
