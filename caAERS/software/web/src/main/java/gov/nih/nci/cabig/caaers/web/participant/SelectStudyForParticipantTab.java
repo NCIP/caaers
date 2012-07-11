@@ -47,7 +47,7 @@ public class SelectStudyForParticipantTab <T extends ParticipantInputCommand> ex
 	private StudyDao studyDao;
 
     public SelectStudyForParticipantTab() {
-        super("Choose Study", "Choose Study", "par/par_create_choose_study");
+        super("Select Study", "Select Study", "par/par_create_choose_study");
         addFieldDecorators(new SecurityObjectIdFieldDecorator(Participant.class), new ReadonlyFieldDecorator());
     }
 
@@ -96,6 +96,9 @@ public class SelectStudyForParticipantTab <T extends ParticipantInputCommand> ex
     public void postProcess(HttpServletRequest request, T command, Errors errors) {
         super.postProcess(request, command, errors);
         command.getParticipant().addAssignment(command.getAssignment());
+        if(!errors.hasErrors()){
+        	command.initialize(command.getStudy());
+        }
     }
 
     @Override

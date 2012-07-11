@@ -11,6 +11,7 @@ import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 import gov.nih.nci.cabig.caaers.web.validation.validator.WebControllerValidator;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
@@ -118,6 +119,13 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
 */
 
         return c;
+    }
+    
+    @Override
+    protected Object currentFormObject(HttpServletRequest request,
+    		Object oCommand) throws Exception {
+    	((ParticipantInputCommand)oCommand).setTargetPage(WebUtils.getTargetPage(request));
+    	return super.currentFormObject(request, oCommand);
     }
 
     protected void initBinder(HttpServletRequest httpServletRequest, ServletRequestDataBinder binder) throws Exception {

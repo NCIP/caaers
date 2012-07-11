@@ -248,17 +248,7 @@
   </head>
   <body>
 
-  <%--(${empties})--%>
-      <div class="summary">
-      <div class="row">
-          <div class="label">Subject</div>
-          <div class="value">${command.participant.fullName}</div>
-	  </div>
-	  <div class="row">
-          <div class="label">Study</div>
-          <div class="value">${command.study.shortTitle}</div>
-      </div>
-	  </div>
+ <par:summary subjectFullName="${command.participant.fullName}" studyShortTitle="${command.study.shortTitle}"/>
   <p><tags:instructions code="instruction_subject_enter.medhist.top"/></p>
    <form:form id="command">
    	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>

@@ -113,6 +113,18 @@
 
                 elCell.innerHTML = "<input " + _checked + " type=\"radio\" class=\"sitesRadioBtn siteStudy_"+ _id +"\" onclick=\"resetStudyAndSites(this);\" value=\"" + _id + "\" id=\"studySite" + _id + "\" name=\"studySite\">&nbsp;" + oData;
         };
+        
+        var pivRadioFormatter = function(elCell, oRecord, oColumn, oData) {
+        	var _id = oRecord.getData("id");
+	        var _piv = oRecord.getData("primaryId");
+	        elCell.innerHTML = "<label for='studySite" + _id + "'>" + _piv + "</label>";
+    	};
+    
+	    var shortTitleRadioFormatter = function(elCell, oRecord, oColumn, oData) {
+	    	var _id = oRecord.getData("id");
+	        var _st = oRecord.getData("studyShortTitle");
+	        elCell.innerHTML = "<label for='studySite" + _id + "'>" + _st + "</label>";
+	    };
 
         var actionsFormatter = function(elCell, oRecord, oColumn, oData) {
             var _id = oRecord.getData("id");
@@ -122,8 +134,8 @@
         };
 
         var myColumnDefs = [
-            {key:"primaryId", label:"Study ID", sortable:true, resizeable:true},
-            {key:"studyShortTitle", label:"Title", sortable:true, resizeable:true},
+            {key:"primaryId", label:"Study ID", sortable:true, resizeable:true, formatter: pivRadioFormatter},
+            {key:"studyShortTitle", label:"Title", sortable:true, resizeable:true, formatter: shortTitleRadioFormatter},
             {key:"name", label:"Study site", sortable:true, resizeable:true, formatter: radioFormatter}
             // {key:"actions", label:"&nbsp;", sortable:true, resizeable:true, formatter: actionsFormatter}
         ];
@@ -165,13 +177,7 @@
 <body>
 <!-- TOP LOGOS END HERE -->
 <!-- TOP NAVIGATION STARTS HERE -->
-<p id="instructions">
-
-<div class="row">
-    <div class="summarylabel"><b>Subject</b></div>
-    <div class="summaryvalue shorty">${command.participant.fullName}</div>
-</div>
-</p>
+<par:summary subjectFullName="${command.participant.fullName}" studyShortTitle="${command.study.shortTitle}"/>
 
 <chrome:box autopad="true" title="Search Criteria">
 

@@ -64,6 +64,16 @@ public class ParticipantInputCommand {
     private boolean unidentifiedMode;
 
     private boolean hasParUpdate;
+    
+    public Integer getTargetPage() {
+		return targetPage;
+	}
+
+	public void setTargetPage(Integer targetPage) {
+		this.targetPage = targetPage;
+	}
+
+	private Integer targetPage;
 
     public ParticipantInputCommand() {
     	this.chemoAgents = new ArrayList<String>(); // new ArrayList<ChemoAgent>();
@@ -117,6 +127,12 @@ public class ParticipantInputCommand {
         } else if (diseaseCodingTerm.equals(DiseaseCodeTerm.OTHER)) {
             studyDiseasesMap = WebUtils.collectOptions(studyDiseases, "id", "term.conditionName", "Please select");
         }
+    }
+    
+    public void initialize(Study study){
+    	if (study == null) return;
+    	study.getDiseaseTerminology();
+    	if(study.getCtepStudyDiseases() != null) study.getCtepStudyDiseases().size();
     }
     
     public Participant getParticipant() {

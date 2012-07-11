@@ -85,7 +85,10 @@
         var nameFormatter = function(elCell, oRecord, oColumn, oData) {
                 var fn = oRecord.getData("firstName");
                 var ln = oRecord.getData("lastName");
+                var _id = oRecord.getData("id");
                 elCell.innerHTML = fn + "&nbsp;" + ln;
+                
+               elCell.innerHTML = "<label for='participant" + _id + "'>" + fn + "&nbsp;" + ln + "</label>";
         };
 
         var radioFormatter = function(elCell, oRecord, oColumn, oData) {
@@ -104,6 +107,18 @@
 
                 elCell.innerHTML = "<input " + _checked + " type=\"radio\" onclick=\"selectParticipant(this.value)\" value=\"" + _id + "\" id=\"participant" + _id + "\" name=\"participant\">&nbsp;"
         };
+        
+        var primaryIdRadioFormatter = function(elCell, oRecord, oColumn, oData) {
+	        var _piv = oRecord.getData("primaryIdentifierValue");
+	        var _id = oRecord.getData("id");
+	        elCell.innerHTML = "<label for='participant" + _id + "'>" + _piv + "</label>";
+    	};
+    	
+    	var studySubjectIdsRadioFormatter = function(elCell, oRecord, oColumn, oData) {
+	        var _ssIds = oRecord.getData("studySubjectIdentifiersCSV");
+	        var _id = oRecord.getData("id");
+	        elCell.innerHTML = "<label for='participant" + _id + "'>" + _ssIds + "</label>";
+    	};
 
         var actionsFormatter = function(elCell, oRecord, oColumn, oData) {
             var _id = oRecord.getData("id");
@@ -114,9 +129,9 @@
 
         var myColumnDefs = [
             {key:"select", label:"Select", sortable:true, resizeable:true, formatter: radioFormatter},
-            {key:"primaryIdentifierValue", label:"Primary ID", sortable:true, resizeable:true},
+            {key:"primaryIdentifierValue", label:"Primary ID", sortable:true, resizeable:true, formatter : primaryIdRadioFormatter},
             {key:"name", label:"Name", sortable:true, resizeable:true, formatter: nameFormatter},
-            {key:"studySubjectIdentifiersCSV", label:"Study Subject Identifiers", sortable:true, resizeable:true}
+            {key:"studySubjectIdentifiersCSV", label:"Study Subject Identifiers", sortable:true, resizeable:true, formatter : studySubjectIdsRadioFormatter}
         ];
 
         var myFields = [

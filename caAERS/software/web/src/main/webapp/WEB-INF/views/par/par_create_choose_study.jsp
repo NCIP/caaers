@@ -107,11 +107,23 @@
         </c:if>
         elCell.innerHTML = "<input id='_study" + _piv + "' type='radio' " + _checked + " value='" + _id + "' name='study' onclick='$(\"command\").study.value = " + _id + "; if ($(\"ids\")) $(\"ids\").show();'>&nbsp;&nbsp;";
     };
+    
+    var pivRadioFormatter = function(elCell, oRecord, oColumn, oData) {
+        var _piv = oRecord.getData("primaryIdentifierValue");
+        elCell.innerHTML = "<label for='_study" + _piv + "'>" + _piv + "</label>";
+    };
+    
+    var shortTitleRadioFormatter = function(elCell, oRecord, oColumn, oData) {
+    	var _piv = oRecord.getData("primaryIdentifierValue");
+        var _st = oRecord.getData("shortTitle");
+        elCell.innerHTML = "<label for='_study" + _piv + "'>" + _st + "</label>";
+    };
+    
 
     var myColumnDefs = [
         {key:"active", label:"Select", sortable:true, resizeable:true, formatter : radioFormatter},
-        {key:"primaryIdentifierValue", label:"Study ID", sortable:true, resizeable:true},
-        {key:"shortTitle", label:"Title", sortable:true, resizeable:true}
+        {key:"primaryIdentifierValue", label:"Study ID", sortable:true, resizeable:true, formatter : pivRadioFormatter},
+        {key:"shortTitle", label:"Title", sortable:true, resizeable:true, formatter : shortTitleRadioFormatter}
     ];
 
     var myFields = [
@@ -150,11 +162,7 @@
 </head>
 <body>
 
-<div class="row">
-    <div class="summarylabel"><b>Subject</b></div>
-    <div class="summaryvalue shorty">${command.participant.fullName}</div>
-</div>
-</p>
+<par:summary subjectFullName="${command.participant.fullName}" studyShortTitle="${command.study.shortTitle}"/>
 
 <chrome:box autopad="true" title="Search Criteria">
 

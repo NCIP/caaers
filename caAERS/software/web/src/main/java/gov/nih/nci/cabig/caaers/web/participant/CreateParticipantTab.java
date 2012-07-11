@@ -175,6 +175,12 @@ public class CreateParticipantTab<T extends ParticipantInputCommand> extends Tab
                 errors.rejectValue("participant.organizationIdentifiers[" + i + "].value", "STU_009", "Duplicate, already an identifier of this type is present");
             }
         }
+    
+        if(command.getTargetPage() == 2){
+        	if(command.getStudy() == null){
+        		errors.reject("PT_014", "Study should be selected first on the 'Select Study' tab");
+        	}
+        }
 
     }
 

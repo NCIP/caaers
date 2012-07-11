@@ -37,7 +37,7 @@ public class AssignStudyTab extends TabWithFields<AssignParticipantStudyCommand>
     private StudySiteDao studySiteDao;
 
     public AssignStudyTab() {
-        super("Search for Studies", "Search Study", "par/reg_study_search");
+        super("Search Study", "Search Study", "par/reg_study_search");
         addFieldDecorators(new SecurityObjectIdFieldDecorator(Participant.class), new ReadonlyFieldDecorator());
     }
 
