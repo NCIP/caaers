@@ -6,7 +6,7 @@
 
 /* Begin omnipotent-button type="button" core CSS*/
 button.omnipotent-button, a.omnipotent-button {
-	behavior: url('/caaers/js/button-pseudoclass-IE-hack.htc');
+	_behavior: url('/caaers/js/button-pseudoclass-IE-hack.htc');
 	background:transparent;
 	border:none;
 	font-size:19px;
@@ -213,7 +213,7 @@ button.omnipotent-button.orange.active td.r, button.omnipotent-button.orange:act
 
 /* Begin omnipotent-button type="button" size="small" core CSS*/
 button.omnipotent-button.small, a.omnipotent-button.small {
-	behavior: url('/caaers/js/button-pseudoclass-IE-hack.htc');
+	_behavior: url('/caaers/js/button-pseudoclass-IE-hack.htc');
 	background:transparent;
 	border:none;
 	color:white;
