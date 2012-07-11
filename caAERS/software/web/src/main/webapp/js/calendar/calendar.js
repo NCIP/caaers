@@ -89,7 +89,7 @@ Calendar.is_ie = ( /msie/i.test(navigator.userAgent) &&
 
 Calendar.is_ie5 = ( Calendar.is_ie && /msie 5\.0/i.test(navigator.userAgent) );
 
-Calendar.is_ie7 = (/MSIE 7/.test(navigator.userAgent));
+Calendar.is_ie7 = (/MSIE 7/.test(navigator.userAgent)) || (/MSIE 8/.test(navigator.userAgent));
 
 /// detect Opera browser
 Calendar.is_opera = /opera/i.test(navigator.userAgent);
