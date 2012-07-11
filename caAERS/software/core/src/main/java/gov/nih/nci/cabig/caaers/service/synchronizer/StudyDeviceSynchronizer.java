@@ -29,14 +29,11 @@ public class StudyDeviceSynchronizer implements Migrator<Study> {
 
 		HashMap<String, StudyDevice> map = new HashMap<String, StudyDevice>();
 		for(StudyDevice sd : dest.getActiveStudyDevices()) {
-            String key = (sd.getDevice() != null ? sd.getDevice().getCommonName() : sd.getCommonName());
-			map.put(key, sd);
+			map.put(getKey(sd), sd);
 		}
 
         for (StudyDevice sd : src.getStudyDevices()) {
-            String key = (sd.getDevice() != null ? sd.getDevice().getCommonName() : sd.getCommonName());
-//            StudyDevice studyDevice = map.get(key);
-            StudyDevice studyDevice = map.remove(key);
+            StudyDevice studyDevice = map.remove(getKey(sd));
 
             if (studyDevice == null) {
                 // ADD NEW
@@ -62,6 +59,13 @@ public class StudyDeviceSynchronizer implements Migrator<Study> {
         }
       //now soft delete, all the ones not present in XML Study
       AbstractMutableRetireableDomainObject.retire(map.values());
+    }
+    
+    private String getKey(StudyDevice sd){
+    	if(sd.getDevice() == null){
+    		return sd.getCommonName()+"-"+sd.getBrandName();
+    	}
+    	return sd.getDevice().getCtepDbIdentifier();
     }
 
 }
