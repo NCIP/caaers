@@ -779,6 +779,10 @@ background: linear-gradient(top, #eaf8ff 0%,#ccefff 100%); /* W3C */
 .pane {
 }
 
+.content {
+    zoom:1;
+}
+
 /* Each pane will contain one or more "boxes" */
 .box {
      background-color: #FFFFFF;
