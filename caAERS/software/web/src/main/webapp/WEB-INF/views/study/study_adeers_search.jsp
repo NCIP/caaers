@@ -55,9 +55,9 @@
         doSearch.delay(1);
     }
 
-    function showPopup() {
+    function showPopup(contentDivId) {
         popupDiv = new Window({className:"alphacube", width:750, height:115, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
-        popupDiv.setContent("please_wait");
+        popupDiv.setContent(contentDivId);
         popupDiv.showCenter(true);
         popupDiv.show();
     }
@@ -80,9 +80,9 @@
         popupDiv.show();
     }
 
-    function doUpdate(id, _index, nciCode, operation, studyDbId) {
+    function doUpdate(contentDivId, id, _index, nciCode, operation, studyDbId) {
 //        jQuery('#studyLink' + _index).html(_ajaxIndicatorHtml);
-        showPopup();
+        showPopup(contentDivId);
         createStudy.syncStudyWithAdEERS(id, studyDbId, function(_resultId) {
             popupDiv.close();
 
@@ -156,13 +156,13 @@
 
         function showMenuOptions(strId, _action, _fsid, _ncic, _studyId) {
             var _items = "<li>ERROR</li>";
-            var onClickString = "javascript:doUpdate(\"#{id}\", \"#{index}\", \"#{nciCode}\", \"#{operation}\", #{studyId})";
+            var onClickString = "javascript:doUpdate(\"#{contentDivId}\", \"#{id}\", \"#{index}\", \"#{nciCode}\", \"#{operation}\", #{studyId})";
 
             if (_action == "UPDATE") {
-                _items = "<li><a class='submitter-blue' href='#' onclick='" + onClickString.interpolate({id:_fsid, index:strId, nciCode:_ncic, operation:_action, studyId: _studyId}) + "'>Synchronize study with CTEP-ESYS</a></li>";
+                _items = "<li><a class='submitter-blue' href='#' onclick='" + onClickString.interpolate({contentDivId:"please_wait_syncing", id:_fsid, index:strId, nciCode:_ncic, operation:_action, studyId: _studyId}) + "'>Synchronize study with CTEP-ESYS</a></li>";
                 _items += "<li><a class='submitter-blue' href='#' onclick='javascript:editStudy(" + _studyId + ")'>Edit Study in caAERS</a></li>";
             } else {
-                _items = "<li><a class='submitter-blue' href='#' onclick='" + onClickString.interpolate({id:_fsid, index:strId, nciCode:_ncic, operation:_action,studyId: _studyId}) + "'>Import Study</a></li>";
+                _items = "<li><a class='submitter-blue' href='#' onclick='" + onClickString.interpolate({contentDivId:"please_wait_importing", id:_fsid, index:strId, nciCode:_ncic, operation:_action,studyId: _studyId}) + "'>Import Study</a></li>";
             }
 
             var html = "<div><ul style='font-family:tahoma;'>" + _items + "</ul></div>";
@@ -183,7 +183,7 @@
         }
 
         var actionsRow = "<span id='studyLink#{index}'><img src='<c:url value="/images/orange-actions.gif" />' border='0' onmouseover='showMenuOptions(#{index}, \"#{action}\", \"#{fsid}\", \"#{ncic}\", \"#{studyId}\")' id='_study#{index}' style='cursor: pointer;'></span>";
-        var actionsRowOneItem = "<span id='studyLink#{index}'><img src='<c:url value="/images/orange-import.gif" />' border='0' onclick='doUpdate(\"#{fsid}\", \"#{index}\", \"#{ncic}\", \"CREATE\")' id='_study#{index}' style='cursor: pointer;'></span>";
+        var actionsRowOneItem = "<span id='studyLink#{index}'><img src='<c:url value="/images/orange-import.gif" />' border='0' onclick='doUpdate(\"please_wait_importing\",\"#{fsid}\", \"#{index}\", \"#{ncic}\", \"CREATE\")' id='_study#{index}' style='cursor: pointer;'></span>";
 
         var actionFormatter = function(elCell, oRecord, oColumn, oData) {
             var _index = this.getRecordIndex(oRecord);
@@ -242,9 +242,10 @@
 </chrome:box>
 </c:if>
 <!--POPUPS-->
-<div id="please_wait" style="display: none;" class="info-box message" ><p><caaers:message code="LBL_please.wait" /><br><caaers:message code="LBL_study.in.process" /></p></div>
+<div id="please_wait_syncing" style="display: none;" class="info-box message" ><p><caaers:message code="LBL_study.synchronizing" /></p></div>
+<div id="please_wait_importing" style="display: none;" class="info-box message" ><p><caaers:message code="LBL_study.importing" /></p></div>
 <div id="success_message" style="display: none;" class="success-box message" ><p id="_messageText"></p></div>
-<div id="search_submit" class="info-box message" style="display: none;"><p><caaers:message code="LBL_please.wait" /><br><caaers:message code="LBL_study.searching" /></p></div>
+<div id="search_submit" class="info-box message" style="display: none;"><p><caaers:message code="LBL_study.searching" /></p></div>
 <div id="error_page" class="error-box message" style="display: none;"><p><caaers:message code="LBL_study.process.error" /><br><span id="_errorMessage">.</span></p></div>
 
 <!--
