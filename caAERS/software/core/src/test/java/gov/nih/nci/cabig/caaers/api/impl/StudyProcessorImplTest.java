@@ -69,6 +69,7 @@ public class StudyProcessorImplTest extends DaoTestCase {
         xmlDevice.setDevice(new DeviceType());
         xmlDevice.getDevice().setCommonName("Common name 11");
         xmlDevice.getDevice().setBrandName("Brand name 11");
+        xmlDevice.getDevice().setCtepDbIdentifier("-11");
         xmlStudy.getStudyDevices().getStudyDevice().add(xmlDevice);
 
         CaaersServiceResponse csr =  studyProcessor.updateStudy(ss);
@@ -89,6 +90,7 @@ public class StudyProcessorImplTest extends DaoTestCase {
         StudyDeviceType xmlDevice = new StudyDeviceType();
         xmlDevice.setDevice(new DeviceType());
         xmlDevice.getDevice().setCommonName("Common name - This device was not in the database.");
+        xmlDevice.getDevice().setCtepDbIdentifier("-101");
         xmlStudy.getStudyDevices().getStudyDevice().add(xmlDevice);
 
         CaaersServiceResponse csr =  studyProcessor.updateStudy(ss);
