@@ -89,7 +89,7 @@
         <ui:row path="reportingPeriod.cycleNumber">
              <jsp:attribute name="label"><tags:renderLabel field="${fieldGroups.ReportingPeriod.fields[4]}" /></jsp:attribute>
              <jsp:attribute name="value"><ui:text path="${fieldGroups.ReportingPeriod.fields[4].propertyName}" field="${fieldGroups.ReportingPeriod.fields[4]}" 
-             title="${x}" cssClass="validate-NUMERIC"/></jsp:attribute>
+             title="${x}" cssClass="validate-NUMERIC" maxlength="3"/></jsp:attribute>
         </ui:row>
 <center>
     <caaers:renderFilter elementID="reportingPeriod.treatmentAssignment">
