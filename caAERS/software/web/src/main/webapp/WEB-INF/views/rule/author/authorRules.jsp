@@ -835,7 +835,7 @@ div#createNew h3, div.section h3 {
 					var hiddenId = 'ruleSet.rule[' + ruleCount + '].condition.column[' + columnCount + '].fieldConstraint[0].literalRestriction[0].readableValue'; 
 																	
 															
-					var inputArea = '<input type="text" id="' + newId + '" name="' + newId +'" size="35" />';
+					var inputArea = '<input type="text" id="' + newId + '" name="' + newId +'" size="35" class="autocomplete"/>';
 					inputArea += '<img alt="activity indicator" src="<c:url value="/images/indicator.white.gif" />" class="indicator" id="ind-indicator"/>';
 					
 
@@ -843,7 +843,7 @@ div#createNew h3, div.section h3 {
 					
 					
 					
-					$(spanId).innerHTML = inputArea + '<div id="' + newId + '-choices' + '"></div>' + hiddenArea;
+					$(spanId).innerHTML = inputArea + '<div id="' + newId + '-choices' + '" class="autocomplete"></div>' + hiddenArea;
 
 	
 
@@ -1511,12 +1511,12 @@ div#createNew h3, div.section h3 {
 																	
 																	
 																	
-																	var inputArea = '<input type="text" id="' + newId + '" name="' + newId +'" value = "'+ fieldValue + '" size="35" />';
+																	var inputArea = '<input type="text" id="' + newId + '" name="' + newId +'" value = "'+ fieldValue + '" size="35" class="autocomplete"/>';
 																	inputArea += '<img alt="activity indicator" src="<c:url value="/images/indicator.white.gif" />" class="indicator" id="ind-indicator"/>';
 																	
 																	var hiddenArea = '<input type="hidden" id="' + hiddenId + '" name="' + hiddenId +'" value = "'+ fieldValue + '" size="35" />';
 																	
-																	$(spanId).innerHTML = inputArea + '<div id="' + newId + '-choices' + '" ></div>' + hiddenArea;
+																	$(spanId).innerHTML = inputArea + '<div id="' + newId + '-choices' + '" class="autocomplete"></div>' + hiddenArea;
 
 	
 
