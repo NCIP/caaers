@@ -173,6 +173,11 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         //initalize the seriousness outcome indicators
         command.initializeOutcomes();
         
+        //initializing the review comments collection
+        if(command.getAdverseEventReportingPeriod()!=null && command.getAdverseEventReportingPeriod().getReviewComments()!=null){
+        	command.getAdverseEventReportingPeriod().getReviewComments().size();
+        }
+        
         command.getStudy().getExpectedAECtcTerms().size();
         
         Map<String, Object> refData = super.referenceData(command);
