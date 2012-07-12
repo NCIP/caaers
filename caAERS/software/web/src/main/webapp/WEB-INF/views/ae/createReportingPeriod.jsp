@@ -70,7 +70,8 @@
         <caaers:message code="LBL_reportingPeriod.startDate" var="x" />
         <ui:row path="reportingPeriod.startDate">
              <jsp:attribute name="label"><tags:renderLabel field="${fieldGroups.ReportingPeriod.fields[1]}" /></jsp:attribute>
-             <jsp:attribute name="value"><ui:date path="reportingPeriod.startDate" field="${fieldGroups.ReportingPeriod.fields[1]}" title="${x}"/></jsp:attribute>
+             <jsp:attribute name="value"><ui:date path="reportingPeriod.startDate" field="${fieldGroups.ReportingPeriod.fields[1]}"
+              title="${x}" cssClass="validate-DATE"/></jsp:attribute>
         </ui:row>
 
         <caaers:message code="LBL_reportingPeriod.endDate" var="x" />
