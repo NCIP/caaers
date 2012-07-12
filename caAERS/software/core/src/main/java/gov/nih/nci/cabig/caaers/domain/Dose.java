@@ -14,7 +14,8 @@ import org.springframework.beans.BeanUtils;
  */
 @Embeddable
 public class Dose {
-    
+    /** The code. */
+    private int code; //to force hibernate to load the object
     /** The amount. */
     private String amount;
 
@@ -23,7 +24,24 @@ public class Dose {
 
     /** The route. */
     private String route; // caDSR?
+    /**
+     * Gets the code.
+     *
+     * @return the code
+     */
+    @Column(name = "dose_amount")
+    public int getCode(){
+        return code;
+    }
 
+    /**
+     * Sets the code.
+     *
+     * @param code the new code
+     */
+    public void setCode(int code) {
+        this.code = code;
+    }
     // //// LOGIC
 
     /**

@@ -222,6 +222,7 @@ public class CourseAgent extends AbstractMutableDomainObject implements Serializ
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "amount", column = @Column(name = "modified_dose_amount")),
+            @AttributeOverride(name = "code", column = @Column(name = "modified_dose_code")),
             @AttributeOverride(name = "units", column = @Column(name = "modified_dose_units")),
             @AttributeOverride(name = "route", column = @Column(name = "modified_dose_route"))})
     public Dose getModifiedDose() {

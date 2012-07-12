@@ -145,7 +145,9 @@ public class TreatmentInformation extends AbstractExpeditedReportSingleChild imp
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "date", column = @Column(name = "adverse_event_course_date")),
-            @AttributeOverride(name = "number", column = @Column(name = "adverse_event_course_number"))})
+            @AttributeOverride(name = "number", column = @Column(name = "adverse_event_course_number")) ,
+            @AttributeOverride(name = "code", column = @Column(name = "adverse_event_course_dcode"))
+    })
     public CourseDate getAdverseEventCourse() {
         if (adverseEventCourse == null) adverseEventCourse = new CourseDate();
         return adverseEventCourse;

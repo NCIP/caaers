@@ -175,6 +175,7 @@ public class StudyAgent extends StudyIntervention {
      *
      * @return the participation
      */
+    @Transient
     public Participation getParticipation() {
         return participation;
     }

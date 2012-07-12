@@ -12,6 +12,8 @@ import javax.persistence.Embeddable;
  */
 @Embeddable
 public class CourseDate {
+    /** The code. */
+    private int code; //to force hibernate to load the object
     
     /** The number. */
     private Integer number;
@@ -32,6 +34,24 @@ public class CourseDate {
      */
     public CourseDate(Integer number) {
         this.number = number;
+    }
+
+    /**
+     * Gets the code.
+     *
+     * @return the code
+     */
+    public int getCode(){
+        return code;
+    }
+
+    /**
+     * Sets the code.
+     *
+     * @param code the new code
+     */
+    public void setCode(int code) {
+        this.code = code;
     }
 
     /**
