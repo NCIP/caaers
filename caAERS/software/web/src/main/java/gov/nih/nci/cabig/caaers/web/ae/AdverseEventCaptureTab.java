@@ -175,7 +175,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         
         //initializing the review comments collection
         if(command.getAdverseEventReportingPeriod()!=null && command.getAdverseEventReportingPeriod().getReviewComments()!=null){
-        	command.getAdverseEventReportingPeriod().getReviewComments().size();
+        	command.getAdverseEventReportingPeriod().getReviewCommentsInternal().size();
         }
         
         command.getStudy().getExpectedAECtcTerms().size();

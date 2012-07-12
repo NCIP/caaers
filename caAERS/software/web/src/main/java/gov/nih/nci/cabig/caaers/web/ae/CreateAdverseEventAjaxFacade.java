@@ -1002,13 +1002,16 @@ public class CreateAdverseEventAjaxFacade {
     public AjaxOutput addReviewComment(String comment, String reportIdString){
      
     	Integer reportId = Integer.parseInt(reportIdString);
-    	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
+//    	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
     	String userId = getUserId();
     	
-    	Report report = null;
-    	for(Report r: command.getAeReport().getActiveReports())
-    		if(r.getId().equals(reportId))
-    			report = r;
+//    	Report report = null;
+//    	for(Report r: command.getAeReport().getActiveReports())
+//    		if(r.getId().equals(reportId))
+//    			report = r;
+		Report report = null;
+    	if(reportId != null || !reportId.equals(""))
+    		report = reportDao.getById(reportId);		
     	adverseEventRoutingAndReviewRepository.addReportReviewComment(report, comment, userId);
     	
         return fetchPreviousComments(reportId, userId);
@@ -1016,26 +1019,32 @@ public class CreateAdverseEventAjaxFacade {
     
     public AjaxOutput editReviewComment(String comment, Integer commentId, String reportIdString){
     	Integer reportId = Integer.parseInt(reportIdString);
-    	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
+//    	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
     	String userId = getUserId();
     	Report report = null;
-    	for(Report r: command.getAeReport().getActiveReports())
-    		if(r.getId().equals(reportId))
-    			report = r;
+    	if(reportId != null || !reportId.equals(""))
+    		report = reportDao.getById(reportId);
+//    	Report report = null;
+//    	for(Report r: command.getAeReport().getActiveReports())
+//    		if(r.getId().equals(reportId))
+//    			report = r;
     	adverseEventRoutingAndReviewRepository.editReportReviewComment(report, comment, userId, commentId);
     	return fetchPreviousComments(reportId, getUserId());
     }
     
     public AjaxOutput deleteReviewComment(Integer commentId, String reportIdString){
     	Integer reportId = Integer.parseInt(reportIdString);
-    	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
+//    	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
     	String userId = getUserId();
     	Report report = null;
-    	for(Report r: command.getAeReport().getActiveReports())
-    		if(r.getId().equals(reportId))
-    			report = r;
+    	if(reportId != null || !reportId.equals(""))
+    		report = reportDao.getById(reportId);
+//    	Report report = null;
+//    	for(Report r: command.getAeReport().getActiveReports())
+//    		if(r.getId().equals(reportId))
+//    			report = r;
     	adverseEventRoutingAndReviewRepository.deleteReportReviewComment(report, commentId);
-    	return fetchPreviousComments(reportId, getUserId());
+    	return fetchPreviousComments(reportId, userId);
     }
     
     // ******************************************************************************************************

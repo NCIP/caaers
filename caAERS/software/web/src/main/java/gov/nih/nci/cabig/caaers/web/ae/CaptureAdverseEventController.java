@@ -224,7 +224,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
             cmd.setStudy(cmd.getAdverseEventReportingPeriod().getStudy());
             cmd.setParticipant(cmd.getParticipant());
             //initializing the review comments collection
-            cmd.getAdverseEventReportingPeriod().getReviewComments().size();
+            cmd.getAdverseEventReportingPeriod().getReviewCommentsInternal().size();
         }
         
         return cmd;
@@ -281,7 +281,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
             if (courseId != null){
             	cmd.setAdverseEventReportingPeriod(adverseEventReportingPeriodDao.getById(courseId));
             	//initializing the review comments collection
-                cmd.getAdverseEventReportingPeriod().getReviewComments().size();
+                cmd.getAdverseEventReportingPeriod().getReviewCommentsInternal().size();
             }
 
         }

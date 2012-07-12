@@ -89,6 +89,10 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
            int reportId = WebUtils.getIntParameter(request,"aeReport");
             ExpeditedAdverseEventReport aeReport = expeditedAdverseEventReportDao.getById(reportId);
             command.setAeReport(aeReport);
+            //initializing the review comments collection
+            for(Report r: command.getAeReport().getActiveReports()){
+            	r.getReviewCommentsInternal().size();
+            }
         }
 
         return command;

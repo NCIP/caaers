@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.PersonRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
@@ -290,6 +291,10 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
         ExpeditedAdverseEventReport aeReport = expeditedCommand.getAeReport();
         if(aeReport != null && aeReport.getId() != null){
             expeditedCommand.setAeReport(expeditedAdverseEventReportDao.getById(aeReport.getId()));
+            //initializing the review comments collection
+            for(Report r: expeditedCommand.getAeReport().getActiveReports()){
+            	r.getReviewCommentsInternal().size();
+            }
         }else{
             aeReport.setReportingPeriod(reportingPeriodDao.getById(aeReport.getReportingPeriod().getId()));
         }
