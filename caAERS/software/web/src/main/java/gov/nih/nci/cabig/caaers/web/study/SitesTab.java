@@ -34,6 +34,16 @@ class SitesTab extends StudyTab {
     public SitesTab() {
         super("Sites", "Sites", "study/study_sites");
     }
+    
+    @Override
+    public Map<String, Object> referenceData(HttpServletRequest request,
+    		StudyCommand command) {
+    	for(StudySite site : command.getStudy().getActiveStudySites()){
+    		site.getActiveStudyInvestigators().size();
+    		site.getActiveStudyPersonnel().size();
+    	}
+    	return super.referenceData(request, command);
+    }
 
     @Override
     public void postProcess(HttpServletRequest request, StudyCommand command, Errors errors) {
