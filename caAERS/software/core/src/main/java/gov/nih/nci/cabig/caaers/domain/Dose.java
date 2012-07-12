@@ -29,7 +29,7 @@ public class Dose {
      *
      * @return the code
      */
-    @Column(name = "dose_amount")
+    @Column(name = "dose_code")
     public int getCode(){
         return code;
     }
