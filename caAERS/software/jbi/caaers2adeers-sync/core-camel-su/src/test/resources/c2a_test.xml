@@ -13,7 +13,7 @@
                 <sm:installComponent groupId="org.apache.servicemix" artifactId="servicemix-camel" version="2010.01"/>
                 <sm:installComponent groupId="org.apache.servicemix" artifactId="servicemix-quartz" version="2010.01"/>
                 <sm:installComponent groupId="org.apache.servicemix" artifactId="servicemix-cxf-bc" version="2010.01"/>
-                <sm:deployServiceAssembly groupId="gov.nih.nci.cabig.caaers2adeers" artifactId="caaers-adeers-sync-sa" version="2.5-RC3"/>
+                <sm:deployServiceAssembly groupId="gov.nih.nci.cabig.caaers2adeers" artifactId="caaers-adeers-sync-sa" version="2.5-RC4-SNAPSHOT"/>
             </sm:deployments>
 
 
