@@ -123,6 +123,7 @@ public class CreateParticipantTabTest extends AbstractTabTestCase<CreateParticip
         newParticipantCommand.setParticipant(new Participant());
         newParticipantCommand.setOrganization(new LocalOrganization());
         newParticipantCommand.getOrganization().setId(-1);
+        newParticipantCommand.setTargetPage(2);
         return newParticipantCommand;
     }
 
