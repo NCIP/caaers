@@ -106,8 +106,12 @@
 
     function addByVerbatim() {
         var value = jQuery.trim(jQuery('#verbatim').val());
-        if (value != '')
+        if (value != ''){
             rpCreator.addObservedAEByVerbatim(value);
+        	jQuery('#verbatim-input-msg').hide();
+ 		}else{
+        	jQuery('#verbatim-input-msg').show();
+        }
         jQuery('#verbatim').val('');
     }
 
@@ -332,6 +336,7 @@ function refreshGrades(index) {
                                 <jsp:attribute name="value">
                                     <ui:text path="verbatim"></ui:text>&nbsp;
                                     <tags:button size="small" type="button" color="blue" icon="add" value="Add" id="addverbatim" onclick="addByVerbatim()"/>
+                                    <ul class="errors" id="verbatim-input-msg" style="display:none"><li><b>Missing:</b> "Verbatim"</li></ul>
                                 </jsp:attribute>
                                  <jsp:attribute name="embededJS">
 			  						if(${not readOnly}){
