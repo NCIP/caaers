@@ -29,7 +29,7 @@
     <jsp:body>
 
 
-        <c:if test="${empty priorTherapy.name}">
+        <c:if test="${empty priorTherapy.priorTherapy}">
             <tags:renderRow field="${fieldGroups[mainGroup].fields[0]}" />
             <script>
                             Event.observe('${fieldGroups[mainGroup].fields[0].propertyName}', 'change' , function(evt){
