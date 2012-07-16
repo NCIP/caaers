@@ -370,6 +370,7 @@
 
 	<target name="download_and_install_tomcat">
 		<delete dir="${install.dir}/${tomcat.version}" />
+		<delete dir="${basedir}/tomcat_temp" />
 		<mkdir dir="${basedir}/tomcat_temp" />
 		<get src="${tomcat.download.url}" dest="${basedir}/tomcat_temp/${tomcat.file.name}" />
 		<unzip src="${basedir}/tomcat_temp/${tomcat.file.name}" dest="${install.dir}" />
@@ -478,6 +479,7 @@
 
     <target name="download_and_install_servicemix">
         <delete dir="${install.dir}/${servicemix.version}" />
+    	<delete dir="${basedir}/servicemix_temp" />
         <mkdir dir="${basedir}/servicemix_temp" />
         <get src="${servicemix.download.url}" dest="${basedir}/servicemix_temp/${servicemix.file.name}" />
         <unzip src="${basedir}/servicemix_temp/${servicemix.file.name}" dest="${install.dir}" />
