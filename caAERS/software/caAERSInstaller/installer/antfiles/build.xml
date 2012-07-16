@@ -356,7 +356,7 @@
 
  	 -->
 	<target name="configureServer.xml">
-        <copy file="${tomcat.temp.home}/conf/server.xml" tofile="${tomcat.temp.home}/conf/server.xml.bkup.${time.stamp}" overwrite="true" />
+        <copy file="${tomcat.temp.home}/conf/server.xml" tofile="${tomcat.temp.home}/conf/server.xml.bkup.${time.stamp}" overwrite="true" failonerror="false"/>
         <echo message="tomcat.temp.home is ${tomcat.temp.home}"/>
 		<xmltask source="${tomcat.temp.home}/conf/server.xml" dest="${tomcat.temp.home}/conf/server.xml">
             <remove path="/Server/Service/Connector[@scheme='https']" />
@@ -379,7 +379,8 @@
 
 	<target name="setUpConfDirectory" >
 
-        <move file="${tomcat.temp.home}/conf/cabig/csm_jaas.config" tofile="${tomcat.temp.home}/conf/cabig/csm_jaas.config.bkup.${time.stamp}" overwrite="true" />
+        <move file="${tomcat.temp.home}/conf/cabig/csm_jaas.config" tofile="${tomcat.temp.home}/conf/cabig/csm_jaas.config.bkup.${time.stamp}" overwrite="true" 
+        	failonerror="false"/>
 
 		<antcall target="copy_csm_jass_config" />
 		
