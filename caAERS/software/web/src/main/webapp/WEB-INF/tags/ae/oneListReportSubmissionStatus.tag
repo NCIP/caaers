@@ -35,7 +35,7 @@
                 ${fn:replace(lastVersion.submissionMessage,".","<br>")}
             </c:when>
             <c:when test="${(reportStatus eq 'COMPLETED') or (reportStatus eq 'AMENDED')}">
-            ${fn:replace(lastVersion.submissionMessage,".","<br>")}<br><a href="${lastVersion.submissionUrl}" target="_blank">${lastVersion.submissionUrl}</a>
+            ${fn:replace(  fn:replace(lastVersion.submissionMessage,lastVersion.submissionUrl," ")    ,".","<br>")}<br><a href="${lastVersion.submissionUrl}" target="_blank">${lastVersion.submissionUrl}</a>
             </c:when>
         </c:choose>
         </div>
