@@ -77,7 +77,7 @@
           <list>
             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Enter Study" p:linkName="createStudyController"/>
             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Manage Studies" p:linkName="searchStudyController"/>
-            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="CTEP Studies" p:linkName="searchAdEERSStudyController"/>
+            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="NCI Studies" p:linkName="searchAdEERSStudyController"/>
           </list>
         </property>
       </bean>
