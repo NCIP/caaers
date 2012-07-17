@@ -41,130 +41,130 @@
 				<c:if test="${fn:toLowerCase(icon) == 'withdraw'}">
 					<c:choose>
 						<c:when test="${size=='small'}">
-							<img src="<chrome:imageUrl name="../buttons/button_icons/small/withdraw_icon_small.png"/>" alt="" />
+							<img src="<tags:imageUrl name="buttons/button_icons/small/withdraw_icon_small.png"/>" alt="" />
 						</c:when>
 						<c:otherwise>
-							<img src="<chrome:imageUrl name="../buttons/button_icons/withdraw_icon.png"/>" alt="" />
+							<img src="<tags:imageUrl name="buttons/button_icons/withdraw_icon.png"/>" alt="" />
 						</c:otherwise>
 					</c:choose>
 				</c:if>
 				<c:if test="${fn:toLowerCase(icon) == 'save'}">
 					<c:choose>
 						<c:when test="${size=='small'}">
-							<img src="<chrome:imageUrl name="../buttons/button_icons/small/disk_icon_small.png"/>" alt="" />
+							<img src="<tags:imageUrl name="buttons/button_icons/small/disk_icon_small.png"/>" alt="" />
 						</c:when>
 						<c:otherwise>
-							<img src="<chrome:imageUrl name="../buttons/button_icons/disk_icon.png"/>" alt="" />
+							<img src="<tags:imageUrl name="buttons/button_icons/disk_icon.png"/>" alt="" />
 						</c:otherwise>
 					</c:choose>
 				</c:if>
 				<c:if test="${fn:toLowerCase(icon) =='back'}">
 					<c:choose>
 						<c:when test="${size=='small'}">
-		    				<img src="<chrome:imageUrl name="../buttons/button_icons/small/back_icon_small.png"/>" alt="" />
+		    				<img src="<tags:imageUrl name="buttons/button_icons/small/back_icon_small.png"/>" alt="" />
 						</c:when>
 						<c:otherwise>
-							<img src="<chrome:imageUrl name="../buttons/button_icons/back_icon.png"/>" alt="" />
+							<img src="<tags:imageUrl name="buttons/button_icons/back_icon.png"/>" alt="" />
 						</c:otherwise>
 					</c:choose>
 				</c:if>
 				<c:if test="${fn:toLowerCase(icon) =='save &amp; back'}">
 					<c:choose>
 						<c:when test="${size=='small'}">
-		    				<img src="<chrome:imageUrl name="../buttons/button_icons/small/saveback_icon_small.png"/>" alt="" />
+		    				<img src="<tags:imageUrl name="buttons/button_icons/small/saveback_icon_small.png"/>" alt="" />
 						</c:when>
 						<c:otherwise>
-							<img src="<chrome:imageUrl name="../buttons/button_icons/saveback_icon.png"/>" alt="" />
+							<img src="<tags:imageUrl name="buttons/button_icons/saveback_icon.png"/>" alt="" />
 						</c:otherwise>
 					</c:choose>
 				</c:if>
 				<c:if test="${fn:toLowerCase(icon) == 'add' || fn:toLowerCase(icon) =='+'}">
 					<c:choose>
 						<c:when test="${size=='small'}">
-		    				<img src="<chrome:imageUrl name="../buttons/button_icons/small/add_icon_small.png"/>" alt="" />
+		    				<img src="<tags:imageUrl name="buttons/button_icons/small/add_icon_small.png"/>" alt="" />
 						</c:when>
 						<c:otherwise>
-							<img src="<chrome:imageUrl name="../buttons/button_icons/add_icon.png"/>" alt="" />
+							<img src="<tags:imageUrl name="buttons/button_icons/add_icon.png"/>" alt="" />
 						</c:otherwise>
 					</c:choose>
 				</c:if>
 				<c:if test="${fn:toLowerCase(icon) == 'page'}">
 					<c:choose>
 						<c:when test="${size=='small'}">
-		    				<img src="<chrome:imageUrl name="../buttons/button_icons/small/page_icon_small.png"/>" alt="" />
+		    				<img src="<tags:imageUrl name="buttons/button_icons/small/page_icon_small.png"/>" alt="" />
 						</c:when>
 						<c:otherwise>
-							<img src="<chrome:imageUrl name="../buttons/button_icons/page_icon.png"/>" alt="" />
+							<img src="<tags:imageUrl name="buttons/button_icons/page_icon.png"/>" alt="" />
 						</c:otherwise>
 					</c:choose>
 				</c:if>
 				<c:if test="${fn:toLowerCase(icon) == 'window'}">
 					<c:choose>
 						<c:when test="${size=='small'}">
-		    				<img src="<chrome:imageUrl name="../buttons/button_icons/small/window_icon_small.png"/>" alt="" />
+		    				<img src="<tags:imageUrl name="buttons/button_icons/small/window_icon_small.png"/>" alt="" />
 						</c:when>
 						<c:otherwise>
-							<img src="<chrome:imageUrl name="../buttons/button_icons/window_icon.png"/>" alt="" />
+							<img src="<tags:imageUrl name="buttons/button_icons/window_icon.png"/>" alt="" />
 						</c:otherwise>
 					</c:choose>
 				</c:if>
 				<c:if test="${fn:toLowerCase(icon) == 'check'}">
 					<c:choose>
 						<c:when test="${size=='small'}">
-		    				<img src="<chrome:imageUrl name="../buttons/button_icons/small/check_icon_small.png"/>" alt="" />
+		    				<img src="<tags:imageUrl name="buttons/button_icons/small/check_icon_small.png"/>" alt="" />
 						</c:when>
 						<c:otherwise>
-							<img src="<chrome:imageUrl name="../buttons/button_icons/check_icon.png"/>" alt="" />
+							<img src="<tags:imageUrl name="buttons/button_icons/check_icon.png"/>" alt="" />
 						</c:otherwise>
 					</c:choose>
 				</c:if>
 				<c:if test="${fn:toLowerCase(icon) == 'subject'}">
 					<c:choose>
 						<c:when test="${size=='small'}">
-		    				<img src="<chrome:imageUrl name="../buttons/button_icons/small/subject_icon_small.png"/>" alt="" />
+		    				<img src="<tags:imageUrl name="buttons/button_icons/small/subject_icon_small.png"/>" alt="" />
 						</c:when>
 						<c:otherwise>
-							<img src="<chrome:imageUrl name="../buttons/button_icons/subject_icon.png"/>" alt="" />
+							<img src="<tags:imageUrl name="buttons/button_icons/subject_icon.png"/>" alt="" />
 						</c:otherwise>
 					</c:choose>
 				</c:if>
 				<c:if test="${fn:toLowerCase(icon) == 'x'}">
 					<c:choose>
 						<c:when test="${size=='small'}">
-		    				<img src="<chrome:imageUrl name="../buttons/button_icons/small/trash.gif"/>" alt="" />
+		    				<img src="<tags:imageUrl name="buttons/button_icons/small/trash.gif"/>" alt="" />
 						</c:when>
 						<c:otherwise>
-							<img src="<chrome:imageUrl name="../buttons/button_icons/trash.png"/>" alt="" height="23px"/>
+							<img src="<tags:imageUrl name="buttons/button_icons/trash.png"/>" alt="" height="23px"/>
 						</c:otherwise>
 					</c:choose>
 				</c:if>
 				<c:if test="${fn:toLowerCase(icon) == 'search'}">
 					<c:choose>
 						<c:when test="${size=='small'}">
-		    				<img src="<chrome:imageUrl name="../buttons/button_icons/small/search_icon_small.png"/>" alt="" />
+		    				<img src="<tags:imageUrl name="buttons/button_icons/small/search_icon_small.png"/>" alt="" />
 						</c:when>
 						<c:otherwise>
-							<img src="<chrome:imageUrl name="../buttons/button_icons/search.png"/>" alt="" />
+							<img src="<tags:imageUrl name="buttons/button_icons/search.png"/>" alt="" />
 						</c:otherwise>
 					</c:choose>
 				</c:if>
 				<c:if test="${fn:toLowerCase(icon) == 'add multiple'}">
 					<c:choose>
 						<c:when test="${size=='small'}">
-		    				<img src="<chrome:imageUrl name="../buttons/button_icons/small/addmultiple_icon_small.png"/>" alt="" />
+		    				<img src="<tags:imageUrl name="buttons/button_icons/small/addmultiple_icon_small.png"/>" alt="" />
 						</c:when>
 						<c:otherwise>
-							<img src="<chrome:imageUrl name="../buttons/button_icons/addmultiple_icon.png"/>" alt="" />
+							<img src="<tags:imageUrl name="buttons/button_icons/addmultiple_icon.png"/>" alt="" />
 						</c:otherwise>
 					</c:choose>
 				</c:if>
 				<c:if test="${fn:toLowerCase(icon) == 'edit'}">
 					<c:choose>
 						<c:when test="${size=='small'}">
-		    				<img src="<chrome:imageUrl name="../buttons/button_icons/small/edit_icon_small.png"/>" alt="" />
+		    				<img src="<tags:imageUrl name="buttons/button_icons/small/edit_icon_small.png"/>" alt="" />
 						</c:when>
 						<c:otherwise>
-							<img src="<chrome:imageUrl name="../buttons/button_icons/edit_icon.png"/>" alt="" />
+							<img src="<tags:imageUrl name="buttons/button_icons/edit_icon.png"/>" alt="" />
 						</c:otherwise>
 					</c:choose>
 				</c:if>
@@ -174,20 +174,20 @@
 				<c:if test="${fn:toLowerCase(icon) == 'save &amp; continue' || fn:toLowerCase(icon) =='save & continue'}">
 					<c:choose>
 						<c:when test="${size=='small'}">
-		    				<img src="<chrome:imageUrl name="../buttons/button_icons/small/savecontinue_icon_small.png"/>" alt="" />
+		    				<img src="<tags:imageUrl name="buttons/button_icons/small/savecontinue_icon_small.png"/>" alt="" />
 						</c:when>
 						<c:otherwise>
-							<img src="<chrome:imageUrl name="../buttons/button_icons/savecontinue_icon.png"/>" alt="" />
+							<img src="<tags:imageUrl name="buttons/button_icons/savecontinue_icon.png"/>" alt="" />
 						</c:otherwise>
 					</c:choose>
 				</c:if>
 				<c:if test="${fn:toLowerCase(icon) == 'continue' || fn:toLowerCase(icon) =='next'}">
 					<c:choose>
 						<c:when test="${size=='small'}">
-		    				<img src="<chrome:imageUrl name="../buttons/button_icons/small/continue_icon_small.png"/>" alt="" />
+		    				<img src="<tags:imageUrl name="buttons/button_icons/small/continue_icon_small.png"/>" alt="" />
 						</c:when>
 						<c:otherwise>
-							<img src="<chrome:imageUrl name="../buttons/button_icons/continue_icon.png"/>" alt="" />
+							<img src="<tags:imageUrl name="buttons/button_icons/continue_icon.png"/>" alt="" />
 						</c:otherwise>
 					</c:choose>
 				</c:if>
