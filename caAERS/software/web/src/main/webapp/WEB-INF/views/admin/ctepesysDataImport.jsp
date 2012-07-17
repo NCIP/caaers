@@ -34,22 +34,6 @@
     </style>
     
 <title>CTEP Data Import</title>
-	<!-- Required CSS -->
-	<link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/2.9.0/build/progressbar/assets/skins/sam/progressbar.css">
-	 
-	<!-- Dependency source file -->
-	<script src = "http://yui.yahooapis.com/2.9.0/build/yahoo-dom-event/yahoo-dom.event.js" ></script>
-	<script src = "http://yui.yahooapis.com/2.9.0/build/element/element-min.js" ></script>
-	<!-- Optional dependency source file -->
-	<script src="http://yui.yahooapis.com/2.9.0/build/animation/animation-min.js" type="text/javascript"></script>
-	 
-	<!-- ProgressBar source file -->
-	<script src = "http://yui.yahooapis.com/2.9.0/build/progressbar/progressbar-min.js" ></script>
-	<!-- Dependencies -->
-	<script src="http://yui.yahooapis.com/2.9.0/build/yahoo-dom-event/yahoo-dom-event.js" type="text/javascript"></script>
- 
-	<!-- Source file -->
-<script src="http://yui.yahooapis.com/2.9.0/build/animation/animation-min.js" type="text/javascript"></script>
 <script language="JavaScript" type="text/JavaScript">
 	
 	function initializeYUITableNoPagination(tableId, responseData, columnDefs, fields) {
