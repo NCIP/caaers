@@ -83,7 +83,7 @@
                                 <div class="label"><ui:label path="sitePersonnel[${index}].startDate" labelProperty="start.date" text="Start date"/></div>
                                 <div class="value">
                                     <c:if test="${ not (readOnly or not hasRSCreate)}">
-                                        <ui:date path="sitePersonnel[${index}].startDate"/>
+                                        <ui:date path="sitePersonnel[${index}].startDate" cssClass="validate-DATE" title="Start date"/>
                                     </c:if>
                                     <c:if test="${ (readOnly or not hasRSCreate)}">
                                         <tags:formatDate value="${command.sitePersonnel[index].startDate}"/>
@@ -94,7 +94,7 @@
                                 <div class="label"><ui:label path="sitePersonnel[${index}].endDate" labelProperty="end.date" text="End date"/></div>
                                 <div class="value">
                                     <c:if test="${ not (readOnly or not hasRSCreate)}">
-                                        <ui:date path="sitePersonnel[${index}].endDate" />
+                                        <ui:date path="sitePersonnel[${index}].endDate" cssClass="validate-DATE" title="End date"/>
                                     </c:if>
                                     <c:if test="${ (readOnly or not hasRSCreate)}">
                                         <tags:formatDate value="${command.sitePersonnel[index].endDate}"/>
