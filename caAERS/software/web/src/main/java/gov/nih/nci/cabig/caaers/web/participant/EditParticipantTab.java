@@ -177,8 +177,8 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
     
     protected void validateUniqueStudySubjectIdentifiersInStudy(Study study, Errors errors, String studySubjectIdentifier, Integer excludeStudySubjectId){
 			if(studyDao.getNumberOfStudySubjectsInStudyWithGivenAssignmentIdentifier(study, studySubjectIdentifier, excludeStudySubjectId) > 0){
-				errors.reject("PT_013",new Object[]{studySubjectIdentifier} ,"The study subject identifier, " + studySubjectIdentifier  + " has been already" +
-						" assigned to another subject on the study");
+				errors.reject("PT_013",new Object[]{studySubjectIdentifier} ,"The specified study subject identifier " + studySubjectIdentifier  + " is already " +
+						"being used by another subject. Please specify a different study subject identifier");
 			}
     }
 
@@ -218,22 +218,6 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
                 if ( ( sID.getValue().toLowerCase().equals(pID.getValue().toLowerCase()) && StringUtils.equals(sID.getType(), pID.getType()) ) && (sID.getId() == null || sID.getId().intValue() != pID.getId().intValue())) {
                     errors.reject("ERR_DUPLICATE_SITE_IDENTIFIER", new Object[] {command.getOrganization().getName(), pID.getValue()}, "Duplicate identifiers for the same site.");
                 }
-            }
-        }
-
-        // Checking Study-Subject identifiers, uniqueness per StudySite
-        Integer pID = command.getParticipant().getId();
-        List<StudyParticipantAssignment> assignments = command.getAssignments();
-
-        for (StudyParticipantAssignment a : assignments) {
-            StudyParticipantAssignmentQuery query = new StudyParticipantAssignmentQuery();
-            query.filterByStudySiteId(a.getStudySite().getId());
-            query.filterByStudySubjectIdentifier(a.getStudySubjectIdentifier());
-            query.filterByParticipantExcluded(pID);
-
-            List l = studySiteDao.search(query);
-            if (l.size() > 0) {
-                errors.reject("ERR_DUPLICATE_STUDY_SITE_IDENTIFIER", new Object[] {a.getStudySubjectIdentifier(), a.getStudySite().getStudy().getShortTitle(), a.getStudySite().getOrganization().getName()}, "Duplicate Study Site identifier.");
             }
         }
 

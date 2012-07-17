@@ -117,21 +117,6 @@ public class SelectStudyForParticipantTab <T extends ParticipantInputCommand> ex
             command.setStudy(null);
         }
 
-        Integer pID = command.getAssignment().getParticipant().getId();
-
-        StudyParticipantAssignmentQuery query = new StudyParticipantAssignmentQuery();
-        query.filterByStudySiteId(command.getAssignment().getStudySite().getId());
-        query.filterByStudySubjectIdentifier(command.getAssignment().getStudySubjectIdentifier());
-
-        if (pID != null) {
-            query.filterByParticipantExcluded(pID);
-        }
-
-        List l = studySiteDao.search(query);
-        if (l.size() > 0) {
-            errors.reject("ERR_DUPLICATE_STUDY_SITE_IDENTIFIER", new Object[] {command.getAssignment().getStudySubjectIdentifier(), command.getAssignment().getStudySite().getStudy().getShortTitle(), command.getAssignment().getStudySite().getOrganization().getName()}, "Duplicate Study Site identifier.");
-        }
-        
         // Check uniqueness of Study Subject identifier across study
         for(StudyParticipantAssignment assignment : command.getAssignments()){
         	validateUniqueStudySubjectIdentifiersInStudy(assignment.getStudySite().getStudy(),errors,assignment.getStudySubjectIdentifier(), assignment.getId());
@@ -140,10 +125,10 @@ public class SelectStudyForParticipantTab <T extends ParticipantInputCommand> ex
     
     protected void validateUniqueStudySubjectIdentifiersInStudy(Study study, Errors errors, String studySubjectIdentifier, Integer excludeStudySubjectId){
 		if(studyDao.getNumberOfStudySubjectsInStudyWithGivenAssignmentIdentifier(study, studySubjectIdentifier, excludeStudySubjectId) > 0){
-			errors.reject("PT_013",new Object[]{studySubjectIdentifier} ,"The study subject identifier, " + studySubjectIdentifier  + " has been already" +
-					" assigned to another subject on the study");
+			errors.reject("PT_013",new Object[]{studySubjectIdentifier} ,"The specified study subject identifier " + studySubjectIdentifier  + " is already " +
+					"being used by another subject. Please specify a different study subject identifier");
 		}
-}
+    }
 
 
     @Override

@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
 import gov.nih.nci.cabig.caaers.dao.query.StudyParticipantAssignmentQuery;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
@@ -95,18 +96,16 @@ public class AssignStudyTab extends TabWithFields<AssignParticipantStudyCommand>
             return;
         }
 
-        // Checking Study-Subject identifiers, uniqueness for the selected StudySite
-        Integer pID = command.getParticipant().getId();
-        StudyParticipantAssignmentQuery query = new StudyParticipantAssignmentQuery();
-        query.filterByStudySiteId(command.getStudySite().getId());
-        query.filterByStudySubjectIdentifier(command.getStudySubjectIdentifier());
-        query.filterByParticipantExcluded(pID);
-
-        List l = studySiteDao.search(query);
-        if (l.size() > 0) {
-            errors.reject("ERR_DUPLICATE_STUDY_SITE_IDENTIFIER", new Object[] {command.getStudySubjectIdentifier(), command.getStudySite().getStudy().getShortTitle(), command.getStudySite().getOrganization().getName()}, "Duplicate Study Site identifier.");
-        }
+        // Check uniqueness of Study Subject identifier across study
+        	validateUniqueStudySubjectIdentifiersInStudy(command.getStudySite().getStudy(),errors,command.getStudySubjectIdentifier(), command.getAssignment().getId());
         
+    }
+    
+    protected void validateUniqueStudySubjectIdentifiersInStudy(Study study, Errors errors, String studySubjectIdentifier, Integer excludeStudySubjectId){
+		if(studyDao.getNumberOfStudySubjectsInStudyWithGivenAssignmentIdentifier(study, studySubjectIdentifier, excludeStudySubjectId) > 0){
+			errors.reject("PT_013",new Object[]{studySubjectIdentifier} ,"The specified study subject identifier " + studySubjectIdentifier  + " is already " +
+					"being used by another subject. Please specify a different study subject identifier");
+		}
     }
 
 /*
