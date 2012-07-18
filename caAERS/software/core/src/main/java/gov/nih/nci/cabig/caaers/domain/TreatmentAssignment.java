@@ -365,9 +365,9 @@ public class TreatmentAssignment extends AbstractMutableRetireableDomainObject i
 		}else{
 			AbstractStudyInterventionExpectedAE asiea = null;
 			if (agentSpecificTerm instanceof AgentSpecificCtcTerm) {
-				asiea = new StudyInterventionExpectedCtcTerm(treatmentAssignmentAgent, agentSpecificTerm);
+				asiea = new StudyInterventionExpectedCtcTerm(treatmentAssignmentAgent, agentSpecificTerm, treatmentAssignmentAgent.getStudyAgent().shouldHonor());
 			}else {
-				asiea = new StudyInterventionExpectedMeddraLowLevelTerm(treatmentAssignmentAgent, agentSpecificTerm);
+				asiea = new StudyInterventionExpectedMeddraLowLevelTerm(treatmentAssignmentAgent, agentSpecificTerm, treatmentAssignmentAgent.getStudyAgent().shouldHonor());
 			}
 			this.getAbstractStudyInterventionExpectedAEs().add(asiea);
 		}

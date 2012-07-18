@@ -45,10 +45,10 @@ public abstract class AbstractStudyInterventionExpectedAE<T extends DomainObject
     /** The expected. */
     private boolean expected = true;
 
-    public AbstractStudyInterventionExpectedAE(TreatmentAssignmentAgent treatmentAssignmentAgent, AgentSpecificTerm agentSpecificTerm){
+    public AbstractStudyInterventionExpectedAE(TreatmentAssignmentAgent treatmentAssignmentAgent, AgentSpecificTerm agentSpecificTerm, boolean shouldHonor){
     	this.treatmentAssignmentAgents.add(treatmentAssignmentAgent);
     	this.term = (T)agentSpecificTerm.getTerm();
-    	this.expected = agentSpecificTerm.isExpected();
+    	this.expected = agentSpecificTerm.isExpected() && shouldHonor;
     	this.expectednessFrequency = agentSpecificTerm.getExpectednessFrequency();
     	this.grade1Frequency = agentSpecificTerm.getGrade1Frequency();
     	this.grade2Frequency = agentSpecificTerm.getGrade2Frequency();
