@@ -146,7 +146,9 @@
 		<ui:label path="${_indField.propertyName}" text="${_indField.displayName}"></ui:label>
 	</jsp:attribute>
 	<jsp:attribute name="value">
-        <c:set var="indDispName"><caaers:value path="${_indField.propertyName}.numberAndHolderName" /></c:set>
+        <c:set var="_indObjId"><caaers:value path="${_indField.propertyName}" /></c:set>
+        <c:set var="_indDisplayNamePath" value="${_indField.propertyName}.numberAndHolderName" />
+        <c:set var="indDispName"><caaers:value path="${empty _indObjId ? _indField.propertyName : _indDisplayNamePath}" /></c:set>
 		<ui:autocompleter path="${_indField.propertyName}"
 			required="${_indField.required}" 
 			validationJSClass="${_indField.validatorClassName}" 
