@@ -16,7 +16,7 @@ class CreateTrackingTable extends edu.northwestern.bioinformatics.bering.Migrati
         }
 
         if (databaseMatches('oracle')) {
-            execute("ALTER TABLE integration_logs MODIFY logged_on DATE SET DEFAULT sysdate");
+            execute("ALTER TABLE integration_logs MODIFY logged_on DEFAULT sysdate");
         }
 
         createTable('integration_log_details') { t ->
