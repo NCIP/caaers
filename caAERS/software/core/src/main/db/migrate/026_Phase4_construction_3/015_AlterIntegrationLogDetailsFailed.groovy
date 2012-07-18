@@ -7,9 +7,9 @@ class AddFailedToIntegrationLogDetails extends edu.northwestern.bioinformatics.b
 	    }
 	    
 	    if (databaseMatches('oracle')) {
-	    	execute("update integration_log_details set failed = 'false' where failed is null");
+	    	execute("update integration_log_details set failed =  0 where failed is null");
 		    execute("alter table integration_log_details modify failed not null");
-		    execute("alter table integration_log_details modify failed default false");
+		    execute("alter table integration_log_details modify failed default 0");
 	    }
     }
 
