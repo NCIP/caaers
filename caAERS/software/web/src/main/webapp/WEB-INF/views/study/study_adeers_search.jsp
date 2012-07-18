@@ -115,7 +115,7 @@
 
 </script>
 
-<chrome:box title="Search CTEP Studies" autopad="true">
+<chrome:box title="Search NCI Studies" autopad="true">
 
 
     <div class="errors" id="flashErrors" style="display: none;">
