@@ -66,6 +66,7 @@ public class SearchAdEERSStudyController extends SimpleFormController {
             } catch (Exception e) {
                 errors.reject("ERR_adeers.search.error", e.getMessage());
                 logger.error(e);
+                e.printStackTrace();
             }
             map.put("studies", studies);
         }
