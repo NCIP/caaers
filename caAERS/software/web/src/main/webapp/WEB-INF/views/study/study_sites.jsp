@@ -15,6 +15,9 @@
             var confirmation = confirm("Do you really want to delete?");
             if (!confirmation) return; //return if not agreed.
 
+            if($('study.studySites'+ selected + '.retiredIndicator')) {
+                $('study.studySites'+ selected + '.retiredIndicator').value = 'true';
+            }
             ValidationManager.validate = false;
             var ssfrm = $('command');
             ssfrm._target.name = '_noname';
@@ -124,6 +127,7 @@
                  	<c:if test="${not ss.retired}">
                      <study:oneStudySite cssClass="ss-section" index="${status.index}" readOnly="${not empty ss.id}"/>
                     </c:if>
+                     <form:hidden id="study.studySites${status.index}.retiredIndicator" path="study.studySites[${status.index}].retiredIndicator"   />
                  </c:forEach>
              </table>
              </tags:table>

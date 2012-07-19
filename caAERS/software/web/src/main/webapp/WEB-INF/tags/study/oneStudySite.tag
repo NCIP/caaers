@@ -14,13 +14,13 @@
 <tr id="${cssClass}-${empty idSuffix ? index : idSuffix}" class="${css}" onmouseout="this.className='${css}'" onmouseover="this.className='highlight'" style="${style}" valign="top" bgcolor="#ffffff">
 	 <td style="border-right:none;">
 	 <c:set var="_siteField" value="${fieldGroups[mainGroup].fields[0]}" />
-	 <ui:autocompleter path="${_siteField.propertyName}" 
+	 <ui:autocompleter path="${_siteField.propertyName}"
 	 		displayNamePath="${_siteField.propertyName}.fullName"
 			required="${_siteField.required}" 
 			validationJSClass="${_siteField.validatorClassName}" 
 			readonly="${readOnly}" 
 			size="90"
-			title="${field.displayName}"
+			title="${_siteField.displayName}"
 			enableClearButton="${_siteField.attributes.enableClear}" 
 			initialDisplayValue="Begin typing here" />
 	 </td>
