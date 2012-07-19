@@ -7,7 +7,11 @@ import gov.nih.nci.cabig.caaers.service.AdeersIntegrationFacade;
 import gov.nih.nci.cabig.caaers.tools.Messages;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.ListValues;
+import gov.nih.nci.cabig.caaers.ws.impl.OrganizationManagementWebServiceImpl;
+
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.validation.BindException;
@@ -27,6 +31,7 @@ public class SearchAdEERSStudyController extends SimpleFormController {
     private StudyRepository studyRepository;
     private ListValues listValues;
     private ConfigProperty configurationProperty;
+    private static Log logger = LogFactory.getLog(SearchAdEERSStudyController.class);
 
     public SearchAdEERSStudyController() {
         setCommandClass(SearchCommand.class);
@@ -60,6 +65,7 @@ public class SearchAdEERSStudyController extends SimpleFormController {
                 studies = studyRepository.searchInAdEERS(c.getSearchText());
             } catch (Exception e) {
                 errors.reject("ERR_adeers.search.error", e.getMessage());
+                logger.error(e);
             }
             map.put("studies", studies);
         }
