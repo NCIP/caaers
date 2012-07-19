@@ -19,9 +19,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.dbunit.operation.DatabaseOperation;
@@ -954,6 +956,24 @@ assertTrue(true);
         interruptSession();
         study = getDao().getById(-2);
         assertEquals(4, study.getStudyDevices().size());
+    }
+    
+    public void testGetAllStudyFundingSponsorIdentfierData(){
+    	Map<String,StudyIdenitifierQueryDataHolder> results = new HashMap<String,StudyIdenitifierQueryDataHolder>();
+    	results = getDao().getAllStudyFundingSponsorIdentifierValueData();
+    	assertEquals(1,results.size());
+    	assertNull(results.get("-9442608").getSystemName());
+    	assertEquals(-5,results.get("-9442608").getStudyId().intValue());
+    	assertEquals("CALGB",results.get("-9442608").getNciInstituteCode());
+    }
+    
+    public void testGetAllStudyCTEPESYSIdentfierData(){
+    	Map<String,StudyIdenitifierQueryDataHolder> results = new HashMap<String,StudyIdenitifierQueryDataHolder>();
+    	results = getDao().getAllStudyCTEPESYSIdentifierValueData();
+    	assertEquals(1,results.size());
+    	assertNull(results.get("1138-421").getNciInstituteCode());
+    	assertEquals(-5,results.get("1138-421").getStudyId().intValue());
+    	assertEquals("CTEP-ESYS",results.get("1138-421").getSystemName());
     }
 
 /*
