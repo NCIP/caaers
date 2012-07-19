@@ -605,7 +605,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
                 s = reportingPeriod.getStudy();
                 p = reportingPeriod.getParticipant();
 
-                dto.setStudyShortTitle(s.getShortTitle());
+                dto.setPrimaryStudyIdentifier(s.getPrimaryIdentifierValue());
                 dto.setSubjectFullName(p.getFullName());
                 dto.setTask(task.getName());
                 dto.setDescription(task.getDescription());

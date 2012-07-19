@@ -31,8 +31,8 @@ public class TaskNotificationDTO implements Serializable {
     /** The subject full name. */
     private String subjectFullName;
     
-    /** The study short title. */
-    private String studyShortTitle;
+    /** The primary study identifier. */
+    private String primaryStudyIdentifier;
     
     /** The date. */
     private Date date;
@@ -95,24 +95,6 @@ public class TaskNotificationDTO implements Serializable {
     }
 
     /**
-     * Gets the study short title.
-     *
-     * @return the study short title
-     */
-    public String getStudyShortTitle() {
-        return studyShortTitle;
-    }
-
-    /**
-     * Sets the study short title.
-     *
-     * @param studyShortTitle the new study short title
-     */
-    public void setStudyShortTitle(String studyShortTitle) {
-        this.studyShortTitle = studyShortTitle;
-    }
-
-    /**
      * Gets the date.
      *
      * @return the date
@@ -120,6 +102,24 @@ public class TaskNotificationDTO implements Serializable {
     public Date getDate() {
         return date;
     }
+
+    /**
+     * Gets the primary study identifier.
+     *
+     * @return primary study identifier
+     */
+    public String getPrimaryStudyIdentifier() {
+		return primaryStudyIdentifier;
+	}
+
+    /**
+     * Sets primary study identifier.
+     *
+     * @param primaryStudyIdentifier the primary study identifier
+     */
+	public void setPrimaryStudyIdentifier(String primaryStudyIdentifier) {
+		this.primaryStudyIdentifier = primaryStudyIdentifier;
+	}
 
     /**
      * Sets the date.

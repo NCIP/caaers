@@ -20,7 +20,7 @@
                 <tr class="${ALT} taskTitleRow" id="prevROW_${index.index}">
                     <td valign="top"><tags:formatDate value="${task.date}" /></td>
                     <td nowrap valign="top"><c:out value="${task.subjectFullName}" escapeXml="true" /></td>
-                    <td valign="top"><c:out value="${task.studyShortTitle}" escapeXml="true" /></td>
+                    <td valign="top"><c:out value="${task.primaryStudyIdentifier}" escapeXml="true" /></td>
                     <td valign="top"><c:out value="${task.status}" escapeXml="true" /></td>
                     <td valign="top"><c:out value="${task.task}" escapeXml="true" /></td>
                     <td valign="top" align="center"><a style="cursor:pointer; border-bottom: none" onClick="displayPopup('reportingPeriod', ${task.reportingPeriodId});"><img src="<chrome:imageUrl name="../editComment.png" />" /></a></td>
