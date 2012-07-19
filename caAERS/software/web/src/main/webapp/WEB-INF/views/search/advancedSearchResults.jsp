@@ -42,7 +42,7 @@
    		    Windows.addObserver(popupObserver);
 		}
 		
-		
+		var myDataTable;
 		Event.observe(window, 'load', function() {
 		
 		var showTimer,hideTimer;
@@ -87,7 +87,7 @@
 			};
 
         // Create DataTable
-        var myDataTable = new YAHOO.widget.ScrollingDataTable("columnshowhide", myColumnDefs, myDataSource, oConfigs);
+        myDataTable = new YAHOO.widget.ScrollingDataTable("columnshowhide", myColumnDefs, myDataSource, oConfigs);
         
         var tt = new YAHOO.widget.Tooltip("myTooltip", { preventoverlap:false});
         
@@ -133,7 +133,12 @@
 			});
         
         
-        
+			myDataTable.subscribe("renderEvent", function(){
+				setTimeout(function(){
+					$$(".yui-dt-liner").each(function(e){e.hide()});
+					$$(".yui-dt-liner").each(function(e){e.show()});			
+				},100);
+			});
         });
 		
 	function renderNestedView(){
