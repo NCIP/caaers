@@ -10,10 +10,10 @@ YAHOO.example.Data = {
 <c:forEach items="${savedSearchList}" var="ss" varStatus="status">
         {
             //ssName: "${ss.name}",
-            ssName: '<a href="<c:url value="/pages/search/advancedSearch?searchName=${ss.name }"/>">${ss.name }</a>',
-            ssDescription: "${ss.description}",
-            ssCreatedDate: "${ss.createdDate}",
-            ssAction: '<a href="<c:url value="/pages/search/advancedSearch?searchName=${ss.name }&_target2=2&_page=1&runSavedQuery=true"/>">Run</a>'
+            ssName: '<a href="<c:url value="/pages/search/advancedSearch?searchName=' + '${caaers:escapeJS(ss.name)}' + '"/>">' + '${caaers:escapeJS(ss.name)}' + '</a>',
+            ssDescription: '${caaers:escapeJS(ss.description)}',
+            ssCreatedDate: '${caaers:escapeJS(ss.createdDate)}',
+            ssAction: '<a href="<c:url value="/pages/search/advancedSearch?searchName=' + '${caaers:escapeJS(ss.name)}' + '&_target2=2&_page=1&runSavedQuery=true"/>">Run</a>'
         }
         <c:if test="${!status.last}">,</c:if>
 </c:forEach>
