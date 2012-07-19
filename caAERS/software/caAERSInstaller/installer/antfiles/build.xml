@@ -608,13 +608,13 @@
     <sql driver="${datasource.driver}" userid="${database.userid}" password="${database.password}" url="${datasource.url}"
          classpathref="bering.classpath" onerror="abort" autocommit="true" rdbms="postgresql"
          output="${user.home}/csm_query_output.txt" print="true" showheaders="false">
-        SELECT 'no_of_users='|| count(user_id) from csm_user;
+        SELECT 'no_of_users='|| count(user_id) from csm_user where login_name = '${user.username}';
     </sql>
 
     <sql driver="${datasource.driver}" userid="${database.userid}" password="${database.password}" url="${datasource.url}"
          classpathref="bering.classpath" onerror="abort" autocommit="true" rdbms="oracle"
          output="${user.home}/csm_query_output.txt" print="true" showheaders="false">
-        SELECT concat('no_of_users=', count(user_id)) from csm_user;
+        SELECT concat('no_of_users=', count(user_id)) from csm_user  where login_name = '${user.username}';
     </sql>
 
     <property file="${user.home}/csm_query_output.txt"/>
