@@ -122,14 +122,13 @@ public class StudyRepository {
         
         for(Study adEERSStudy : adEERSStudies){
         	adEERSStudy.setStatus("IMPORT");
-        	if (ctepEsysIdValues.get(adEERSStudy.getCtepEsysIdentifierValue()) != null){
+        	if (adEERSStudy.getCtepEsysIdentifierValue() != null && ctepEsysIdValues.get(adEERSStudy.getCtepEsysIdentifierValue()) != null){
         		adEERSStudy.setId(ctepEsysIdValues.get(adEERSStudy.getCtepEsysIdentifierValue()).getStudyId());  //set the ID to differentiate it.
                 adEERSStudy.setStatus("UPDATE");
-        	} else adEERSStudy.setStatus("IMPORT");
-        	if (fundingSponsorIdValues.get(adEERSStudy.getFundingSponsorIdentifier().getValue()) != null && fundingSponsorIdValues.get(adEERSStudy.getFundingSponsorIdentifier().
+        	} else  if (adEERSStudy.getFundingSponsorIdentifier() != null && fundingSponsorIdValues.get(adEERSStudy.getFundingSponsorIdentifier().getValue()) != null && fundingSponsorIdValues.get(adEERSStudy.getFundingSponsorIdentifier().
         			getValue()).getNciInstituteCode().equalsIgnoreCase(adEERSStudy.getFundingSponsorIdentifier().getOrganization().getNciInstituteCode())){
-        		adEERSStudy.setId(ctepEsysIdValues.get(adEERSStudy.getCtepEsysIdentifierValue()).getStudyId());  //set the ID to differentiate it.
-                adEERSStudy.setStatus("UPDATE");
+        			adEERSStudy.setId(ctepEsysIdValues.get(adEERSStudy.getCtepEsysIdentifierValue()).getStudyId());  //set the ID to differentiate it.
+        			adEERSStudy.setStatus("UPDATE");
         	}
         }
 
