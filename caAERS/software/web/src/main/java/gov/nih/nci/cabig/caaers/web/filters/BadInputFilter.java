@@ -79,6 +79,11 @@ public class BadInputFilter implements Filter {
      * The attribute that determines whether or not to skip a url for filtering.
      */
     private List<String> allowURIs = new ArrayList<String>();
+    
+    /**
+     * The attribute that determines whether or not to skip a parameter for filtering.
+     */
+    private List<String> allowParams = new ArrayList<String>();
 
     /**
      * The flag that determines whether or not to escape quotes that are
@@ -363,6 +368,10 @@ public class BadInputFilter implements Filter {
     	if(!StringUtils.isBlank(allowString)){
     		this.allowURIs = Arrays.asList(allowString.split(",\\s*"));
     	}
+    	String allowParams = filterConfig.getInitParameter("allowParams");
+    	if(!StringUtils.isBlank(allowParams)){
+    		this.allowParams = Arrays.asList(allowParams.split(",\\s*"));
+    	}
         setAllow(filterConfig.getInitParameter("allow"));
         setDeny(filterConfig.getInitParameter("deny"));
         String initParam = filterConfig.getInitParameter("escapeQuotes");
@@ -568,6 +577,7 @@ public class BadInputFilter implements Filter {
                 (String[]) paramMap.keySet().toArray(STRING_ARRAY);
             for (int i = 0; i < paramNames.length; i++) {
                 String name = paramNames[i];
+                if(isAllowedParam(name)) continue;
                 String[] values = ((HttpServletRequest)
                     request).getParameterValues(name);
                 // See if the name contains the pattern.
@@ -694,7 +704,18 @@ public class BadInputFilter implements Filter {
     
     private boolean isAllowedURI(String url){
     	for(String allowed : this.allowURIs){
-    		if(StringUtils.containsIgnoreCase(url, allowed)){
+    		//if(StringUtils.containsIgnoreCase(url, allowed)){
+    		if(url.endsWith(allowed)){
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
+    private boolean isAllowedParam(String param){
+    	for(String allowed : this.allowParams){
+    		//if(StringUtils.containsIgnoreCase(url, allowed)){
+    		if(param.equals(allowed)){
     			return true;
     		}
     	}

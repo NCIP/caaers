@@ -59,7 +59,8 @@ public class XSSFilter implements Filter {
     
     private boolean isAllowedURI(String url){
     	for(String allowed : this.allowURIs){
-    		if(StringUtils.containsIgnoreCase(url, allowed)){
+    		//if(StringUtils.containsIgnoreCase(url, allowed)){
+    		if(url.endsWith(allowed)){
     			return true;
     		}
     	}

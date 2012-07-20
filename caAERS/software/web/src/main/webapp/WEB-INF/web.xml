@@ -77,7 +77,12 @@
 	  <init-param>
 			<param-name>allowURIs</param-name>
 			<!-- Comma separated list of values that will be allowed to bypass the filter if they are present in the url. -->
-			<param-value>rule/create,import</param-value>	
+			<param-value>rule/create,rule/createOptions,import</param-value>	
+		</init-param>
+		<init-param>
+			<param-name>allowParams</param-name>
+			<!-- Comma separated list of values that will be allowed to bypass the filter if they are present in the params. -->
+			<param-value>notification.content</param-value>	
 		</init-param>
 	  <init-param>
           <param-name>escapeQuotes</param-name>
@@ -98,7 +103,7 @@
 	  <init-param>
 			<param-name>allowURIs</param-name>
 			<!-- Comma separated list of values that will be allowed to bypass the filter if they are present in the url. -->
-			<param-value>rule/create,import</param-value>	
+			<param-value>rule/create,rule/createOptions,import</param-value>	
 		</init-param>
 	</filter>
 	<filter-mapping>
