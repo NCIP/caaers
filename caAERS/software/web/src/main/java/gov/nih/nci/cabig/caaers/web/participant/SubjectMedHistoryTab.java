@@ -433,6 +433,10 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
     		if (DateUtils.compareDate(todaysDate, command.getAssignment().getDiseaseHistory().getDiagnosisDate().toDate()) < 0) {
     			errors.rejectValue("assignment.diseaseHistory.diagnosisDate", "SAE_035");
             }
+    		
+    		if (DateUtils.compareDate(command.getAssignment().getDiseaseHistory().getDiagnosisDate().toDate(), command.getParticipant().getDateOfBirth().toDate()) < 0) {
+    			errors.rejectValue("assignment.diseaseHistory.diagnosisDate", "SAE_037");
+            }
         }
     }
 
