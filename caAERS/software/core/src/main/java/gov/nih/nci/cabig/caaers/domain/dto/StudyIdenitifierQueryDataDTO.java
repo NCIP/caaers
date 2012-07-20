@@ -1,6 +1,6 @@
-package gov.nih.nci.cabig.caaers.domain;
+package gov.nih.nci.cabig.caaers.domain.dto;
 
-public class StudyIdenitifierQueryDataHolder {
+public class StudyIdenitifierQueryDataDTO {
 	
 	String nciInstituteCode;
 	String systemName;

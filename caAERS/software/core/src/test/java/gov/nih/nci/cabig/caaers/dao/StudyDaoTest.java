@@ -8,9 +8,40 @@ import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.AeTerminology;
+import gov.nih.nci.cabig.caaers.domain.Agent;
+import gov.nih.nci.cabig.caaers.domain.Arm;
+import gov.nih.nci.cabig.caaers.domain.Condition;
+import gov.nih.nci.cabig.caaers.domain.CtcTerm;
+import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
+import gov.nih.nci.cabig.caaers.domain.Epoch;
+import gov.nih.nci.cabig.caaers.domain.ExpectedAECtcTerm;
+import gov.nih.nci.cabig.caaers.domain.ExpectedAEMeddraLowLevelTerm;
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
+import gov.nih.nci.cabig.caaers.domain.LoadStatus;
+import gov.nih.nci.cabig.caaers.domain.LocalStudy;
+import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.domain.OtherIntervention;
+import gov.nih.nci.cabig.caaers.domain.RemoteStudy;
+import gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyAgent;
+import gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation;
+import gov.nih.nci.cabig.caaers.domain.StudyCondition;
+import gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter;
+import gov.nih.nci.cabig.caaers.domain.StudyDevice;
+import gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor;
+import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
+import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.domain.Term;
+import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
+import gov.nih.nci.cabig.caaers.domain.dto.StudyIdenitifierQueryDataDTO;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
-import gov.nih.nci.cabig.caaers.integration.schema.common.TherapyType;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
@@ -26,7 +57,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.dbunit.operation.DatabaseOperation;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.StatementCallback;
 
@@ -959,7 +989,7 @@ assertTrue(true);
     }
     
     public void testGetAllStudyFundingSponsorIdentfierData(){
-    	Map<String,StudyIdenitifierQueryDataHolder> results = new HashMap<String,StudyIdenitifierQueryDataHolder>();
+    	Map<String,StudyIdenitifierQueryDataDTO> results = new HashMap<String,StudyIdenitifierQueryDataDTO>();
     	results = getDao().getAllStudyFundingSponsorIdentifierValueData();
     	assertEquals(1,results.size());
     	assertNull(results.get("-9442608").getSystemName());
@@ -968,7 +998,7 @@ assertTrue(true);
     }
     
     public void testGetAllStudyCTEPESYSIdentfierData(){
-    	Map<String,StudyIdenitifierQueryDataHolder> results = new HashMap<String,StudyIdenitifierQueryDataHolder>();
+    	Map<String,StudyIdenitifierQueryDataDTO> results = new HashMap<String,StudyIdenitifierQueryDataDTO>();
     	results = getDao().getAllStudyCTEPESYSIdentifierValueData();
     	assertEquals(1,results.size());
     	assertNull(results.get("1138-421").getNciInstituteCode());
