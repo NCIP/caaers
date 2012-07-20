@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jbi xmlns="http://java.sun.com/xml/ns/jbi" version="1.0">
+  <service-assembly>
+    <identification>
+      <name>caaers-adders-sa</name>
+      <description>Apache ServiceMix::Service Assembly</description>
+    </identification>
+    <service-unit>
+      <identification>
+        <name>core-camel-su</name>
+        <description>core-camel-su</description>
+      </identification>
+      <target>
+        <artifacts-zip>core-camel-su-2.5-m4-SNAPSHOT.zip</artifacts-zip>
+        <component-name>servicemix-camel</component-name>
+      </target>
+    </service-unit>
+    <service-unit>
+      <identification>
+        <name>adeers-wsbc-su</name>
+        <description>adeers-wsbc-su</description>
+      </identification>
+      <target>
+        <artifacts-zip>adeers-wsbc-su-2.5-m4-SNAPSHOT.zip</artifacts-zip>
+        <component-name>servicemix-cxf-bc</component-name>
+      </target>
+    </service-unit>
+    <service-unit>
+      <identification>
+        <name>caaers-wsbc-su</name>
+        <description>caaers-wsbc-su</description>
+      </identification>
+      <target>
+        <artifacts-zip>caaers-wsbc-su-2.5-m4-SNAPSHOT.zip</artifacts-zip>
+        <component-name>servicemix-cxf-bc</component-name>
+      </target>
+    </service-unit>
+  </service-assembly>
+</jbi>

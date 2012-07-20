@@ -1,0 +1,544 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is Oracle JAX-WS 2.1.5. --><xs:schema xmlns:tns="http://services.ctep.nci.nih.gov/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://services.ctep.nci.nih.gov/">
+
+<xs:element name="CESAEException" type="tns:CESAEException"/>
+
+<xs:element name="getASAEL" type="tns:getASAEL"/>
+
+<xs:element name="getASAELResponse" type="tns:getASAELResponse"/>
+
+<xs:element name="getAgentDoseUOMLOV" type="tns:getAgentDoseUOMLOV"/>
+
+<xs:element name="getAgentDoseUOMLOVResponse" type="tns:getAgentDoseUOMLOVResponse"/>
+
+<xs:element name="getAgentsLOV" type="tns:getAgentsLOV"/>
+
+<xs:element name="getAgentsLOVResponse" type="tns:getAgentsLOVResponse"/>
+
+<xs:element name="getCTCAELOV" type="tns:getCTCAELOV"/>
+
+<xs:element name="getCTCAELOVResponse" type="tns:getCTCAELOVResponse"/>
+
+<xs:element name="getDevicesLOV" type="tns:getDevicesLOV"/>
+
+<xs:element name="getDevicesLOVResponse" type="tns:getDevicesLOVResponse"/>
+
+<xs:element name="getLabsLOV" type="tns:getLabsLOV"/>
+
+<xs:element name="getLabsLOVResponse" type="tns:getLabsLOVResponse"/>
+
+<xs:element name="getMergedOrganization" type="tns:getMergedOrganization"/>
+
+<xs:element name="getMergedOrganizationResponse" type="tns:getMergedOrganizationResponse"/>
+
+<xs:element name="getOrganizationsLOV" type="tns:getOrganizationsLOV"/>
+
+<xs:element name="getOrganizationsLOVResponse" type="tns:getOrganizationsLOVResponse"/>
+
+<xs:element name="getPreExistingConditionsLOV" type="tns:getPreExistingConditionsLOV"/>
+
+<xs:element name="getPreExistingConditionsLOVResponse" type="tns:getPreExistingConditionsLOVResponse"/>
+
+<xs:element name="getTherapiesLOV" type="tns:getTherapiesLOV"/>
+
+<xs:element name="getTherapiesLOVResponse" type="tns:getTherapiesLOVResponse"/>
+
+<xs:complexType name="getTherapiesLOV">
+<xs:sequence>
+<xs:element name="TherapiesLOVCriteria" type="tns:therapiesCriteria" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="therapiesCriteria">
+<xs:complexContent>
+<xs:extension base="tns:baseSearchCriteria">
+<xs:sequence>
+<xs:element name="medDRACode" type="xs:string" minOccurs="0"/>
+<xs:element name="status" type="xs:string" minOccurs="0"/>
+<xs:element name="therapyName" type="xs:string" minOccurs="0"/>
+<xs:element name="therapyType" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="baseSearchCriteria">
+<xs:sequence>
+<xs:element name="createdDate" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="lastUpdatedDate" type="xs:dateTime" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getTherapiesLOVResponse">
+<xs:sequence>
+<xs:element name="Therapies" type="tns:therapiesDTO" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="therapiesDTO">
+<xs:sequence>
+<xs:element name="therapies" type="tns:therapyDTO" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="therapyDTO">
+<xs:complexContent>
+<xs:extension base="tns:abstractDTO">
+<xs:sequence>
+<xs:element name="therapyName" type="xs:string" minOccurs="0"/>
+<xs:element name="therapyType" type="xs:string" minOccurs="0"/>
+<xs:element name="medDRACode" type="xs:string" minOccurs="0"/>
+<xs:element name="status" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="abstractDTO">
+<xs:sequence/>
+<xs:attribute name="createdDate" type="xs:string"/>
+<xs:attribute name="updatedDate" type="xs:string"/>
+</xs:complexType>
+
+<xs:complexType name="CESAEException">
+<xs:sequence>
+<xs:element name="message" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getMergedOrganization">
+<xs:sequence>
+<xs:element name="CTEPId" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getMergedOrganizationResponse">
+<xs:sequence>
+<xs:element name="MergedOrganization" type="tns:mergedOrganizationsDTO" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="mergedOrganizationsDTO">
+<xs:complexContent>
+<xs:extension base="tns:abstractDTO">
+<xs:sequence>
+<xs:element name="ctepId" type="xs:string" minOccurs="0"/>
+<xs:element name="mergedTo" type="tns:organizationDTO" minOccurs="0"/>
+<xs:element name="name" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="organizationDTO">
+<xs:complexContent>
+<xs:extension base="tns:abstractDTO">
+<xs:sequence>
+<xs:element name="address" type="tns:addressDTO" minOccurs="0"/>
+<xs:element name="ctepId" type="xs:string" minOccurs="0"/>
+<xs:element name="organizationName" type="xs:string" minOccurs="0"/>
+<xs:element name="organizationType" type="xs:string" minOccurs="0"/>
+<xs:element name="status" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="addressDTO">
+<xs:sequence>
+<xs:element name="street" type="xs:string" minOccurs="0"/>
+<xs:element name="street2" type="xs:string" minOccurs="0"/>
+<xs:element name="city" type="xs:string" minOccurs="0"/>
+<xs:element name="state" type="xs:string" minOccurs="0"/>
+<xs:element name="country" type="xs:string" minOccurs="0"/>
+<xs:element name="zip" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getOrganizationsLOV">
+<xs:sequence>
+<xs:element name="OrgSearchCriteria" type="tns:searchOraganizationCriteria" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="searchOraganizationCriteria">
+<xs:complexContent>
+<xs:extension base="tns:baseSearchCriteria">
+<xs:sequence>
+<xs:element name="ctepId" type="xs:string" minOccurs="0"/>
+<xs:element name="organizationName" type="xs:string" minOccurs="0"/>
+<xs:element name="status" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="getOrganizationsLOVResponse">
+<xs:sequence>
+<xs:element name="Organizations" type="tns:organizationsDTO" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="organizationsDTO">
+<xs:sequence>
+<xs:element name="organization" type="tns:organizationDTO" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getDevicesLOV">
+<xs:sequence>
+<xs:element name="DevicesLOVCriteria" type="tns:deviceCriteria" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="deviceCriteria">
+<xs:complexContent>
+<xs:extension base="tns:baseSearchCriteria">
+<xs:sequence>
+<xs:element name="deviceDBId" type="xs:long"/>
+<xs:element name="deviceName" type="xs:string" minOccurs="0"/>
+<xs:element name="status" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="getDevicesLOVResponse">
+<xs:sequence>
+<xs:element name="Devices" type="tns:devicesDTO" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="devicesDTO">
+<xs:sequence>
+<xs:element name="device" type="tns:deviceDTO" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="deviceDTO">
+<xs:complexContent>
+<xs:extension base="tns:abstractDTO">
+<xs:sequence>
+<xs:element name="brandName" type="xs:string" minOccurs="0"/>
+<xs:element name="category" type="xs:string" minOccurs="0"/>
+<xs:element name="commonName" type="xs:string" minOccurs="0"/>
+<xs:element name="deviceDbId" type="xs:long"/>
+<xs:element name="displayFlag" type="xs:string" minOccurs="0"/>
+<xs:element name="ideHolder" type="xs:string" minOccurs="0"/>
+<xs:element name="ideNumber" type="xs:string" minOccurs="0"/>
+<xs:element name="status" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="getPreExistingConditionsLOV">
+<xs:sequence>
+<xs:element name="PreExistingConditionLOVCriteria" type="tns:preExistingConditionCriteria" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="preExistingConditionCriteria">
+<xs:complexContent>
+<xs:extension base="tns:baseSearchCriteria">
+<xs:sequence>
+<xs:element name="preExistingConditionName" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="getPreExistingConditionsLOVResponse">
+<xs:sequence>
+<xs:element name="PreExistingConditions" type="tns:preExistingConditionsDTO" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="preExistingConditionsDTO">
+<xs:sequence>
+<xs:element name="existingConditions" type="tns:preExistingConditionDTO" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="preExistingConditionDTO">
+<xs:complexContent>
+<xs:extension base="tns:abstractDTO">
+<xs:sequence>
+<xs:element name="categoryDBCode" type="xs:string" minOccurs="0"/>
+<xs:element name="categoryDescription" type="xs:string" minOccurs="0"/>
+<xs:element name="conditionName" type="xs:string" minOccurs="0"/>
+<xs:element name="medDRACode" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="getLabsLOV">
+<xs:sequence>
+<xs:element name="LabsLOVCriteria" type="tns:labsCriteria" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="labsCriteria">
+<xs:complexContent>
+<xs:extension base="tns:baseSearchCriteria">
+<xs:sequence>
+<xs:element name="labCategory" type="xs:string" minOccurs="0"/>
+<xs:element name="labName" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="getLabsLOVResponse">
+<xs:sequence>
+<xs:element name="LabCategories" type="tns:labsCategoriesDTO" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="labsCategoriesDTO">
+<xs:sequence>
+<xs:element name="labCategory" type="tns:labCategoryDTO" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="labCategoryDTO">
+<xs:sequence>
+<xs:element name="category" type="xs:string" minOccurs="0"/>
+<xs:element name="lab" type="tns:labDTO" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="labDTO">
+<xs:complexContent>
+<xs:extension base="tns:abstractDTO">
+<xs:sequence>
+<xs:element name="defaultUOM" type="xs:string" minOccurs="0"/>
+<xs:element name="labName" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="getCTCAELOV">
+<xs:sequence>
+<xs:element name="CTCAELOVCriteria" type="tns:ctcaeSearchCriteria" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="ctcaeSearchCriteria">
+<xs:complexContent>
+<xs:extension base="tns:baseSearchCriteria">
+<xs:sequence>
+<xs:element name="aeTerm" type="xs:string" minOccurs="0"/>
+<xs:element name="medDRACode" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="getCTCAELOVResponse">
+<xs:sequence>
+<xs:element name="CTCAELOV" type="tns:ctcdto" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="ctcdto">
+<xs:complexContent>
+<xs:extension base="tns:abstractDTO">
+<xs:sequence>
+<xs:element name="ctcaeCategory" type="tns:ctcaeCategoryDTO" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+<xs:attribute name="version" type="xs:string"/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="ctcaeCategoryDTO">
+<xs:complexContent>
+<xs:extension base="tns:abstractDTO">
+<xs:sequence>
+<xs:element name="ctcadverseEvent" type="tns:ctcAdverseEventDTO" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+<xs:attribute name="category" type="xs:string"/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="ctcAdverseEventDTO">
+<xs:complexContent>
+<xs:extension base="tns:abstractDTO">
+<xs:sequence>
+<xs:element name="ctcAEVersion" type="xs:string" minOccurs="0"/>
+<xs:element name="ctcGrade" type="tns:ctcGradeDTO" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="medDRACode" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="aeTerm" type="xs:string"/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="ctcGradeDTO">
+<xs:complexContent>
+<xs:extension base="tns:abstractDTO">
+<xs:sequence>
+<xs:element name="gradeDescription" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="grade" type="xs:long" use="required"/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="getAgentsLOV">
+<xs:sequence>
+<xs:element name="AgentLOVCriteria" type="tns:agentCriteria" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="agentCriteria">
+<xs:complexContent>
+<xs:extension base="tns:baseSearchCriteria">
+<xs:sequence>
+<xs:element name="name" type="xs:string" minOccurs="0"/>
+<xs:element name="nscNumber" type="xs:string" minOccurs="0"/>
+<xs:element name="status" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="getAgentsLOVResponse">
+<xs:sequence>
+<xs:element name="Agents" type="tns:agentsDTO" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="agentsDTO">
+<xs:sequence>
+<xs:element name="agent" type="tns:agentsLovDTO" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="agentsLovDTO">
+<xs:complexContent>
+<xs:extension base="tns:abstractDTO">
+<xs:sequence>
+<xs:element name="nscNumber" type="xs:string" minOccurs="0"/>
+<xs:element name="agentName" type="xs:string" minOccurs="0"/>
+<xs:element name="agentStatus" type="xs:string" minOccurs="0"/>
+<xs:element name="inds" type="tns:indsDTO" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="indsDTO">
+<xs:sequence>
+<xs:element name="ind" type="tns:indDTO" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="indDTO">
+<xs:sequence>
+<xs:element name="indHolder" type="xs:string" minOccurs="0"/>
+<xs:element name="indNumber" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="lead" type="xs:string"/>
+</xs:complexType>
+
+<xs:complexType name="getASAEL">
+<xs:sequence>
+<xs:element name="ASAELCriteria" type="tns:asaelCriteria" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="asaelCriteria">
+<xs:complexContent>
+<xs:extension base="tns:baseSearchCriteria">
+<xs:sequence>
+<xs:element name="nscNumber" type="xs:string" minOccurs="0"/>
+<xs:element name="status" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="getASAELResponse">
+<xs:sequence>
+<xs:element name="ASAEL" type="tns:asaeldto" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="asaeldto">
+<xs:sequence>
+<xs:element name="agent" type="tns:agentAEDTO" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="agentAEDTO">
+<xs:complexContent>
+<xs:extension base="tns:abstractDTO">
+<xs:sequence>
+<xs:element name="name" type="xs:string" minOccurs="0"/>
+<xs:element name="nsc" type="xs:string" minOccurs="0"/>
+<xs:element name="adverseEventList" type="tns:adverseEventListDTO" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="adverseEventListDTO">
+<xs:sequence>
+<xs:element name="adverseEvent" type="tns:agentAdverseEventDTO" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="agentAdverseEventDTO">
+<xs:complexContent>
+<xs:extension base="tns:abstractDTO">
+<xs:sequence>
+<xs:element name="aeTerm" type="xs:string" minOccurs="0"/>
+<xs:element name="category" type="xs:string" minOccurs="0"/>
+<xs:element name="ctcVersion" type="xs:string" minOccurs="0"/>
+<xs:element name="otherToxicityComment" type="xs:string" minOccurs="0"/>
+<xs:element name="status" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="getAgentDoseUOMLOV">
+<xs:sequence>
+<xs:element name="UOMSearchCriteria" type="tns:uomCriteria" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="uomCriteria">
+<xs:complexContent>
+<xs:extension base="tns:baseSearchCriteria">
+<xs:sequence/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="getAgentDoseUOMLOVResponse">
+<xs:sequence>
+<xs:element name="AgentDoseUOM" type="tns:unitOfMeasuresDTO" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="unitOfMeasuresDTO">
+<xs:sequence>
+<xs:element name="agentDoseUOM" type="tns:unitOfMeasureDTO" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="unitOfMeasureDTO">
+<xs:complexContent>
+<xs:extension base="tns:abstractDTO">
+<xs:sequence>
+<xs:element name="unitOfMeasure" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+</xs:schema>

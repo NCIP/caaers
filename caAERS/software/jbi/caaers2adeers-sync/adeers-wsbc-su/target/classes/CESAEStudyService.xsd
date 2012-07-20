@@ -1,0 +1,442 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is Oracle JAX-WS 2.1.5. --><xs:schema xmlns:tns="http://services.ctep.nci.nih.gov/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://services.ctep.nci.nih.gov/">
+
+<xs:element name="CESAEException" type="tns:CESAEException"/>
+
+<xs:element name="getStudyAgents" type="tns:getStudyAgents"/>
+
+<xs:element name="getStudyAgentsResponse" type="tns:getStudyAgentsResponse"/>
+
+<xs:element name="getStudyDetails" type="tns:getStudyDetails"/>
+
+<xs:element name="getStudyDetailsResponse" type="tns:getStudyDetailsResponse"/>
+
+<xs:element name="getStudyDevices" type="tns:getStudyDevices"/>
+
+<xs:element name="getStudyDevicesResponse" type="tns:getStudyDevicesResponse"/>
+
+<xs:element name="getStudyDiseases" type="tns:getStudyDiseases"/>
+
+<xs:element name="getStudyDiseasesResponse" type="tns:getStudyDiseasesResponse"/>
+
+<xs:element name="getStudyOrganizations" type="tns:getStudyOrganizations"/>
+
+<xs:element name="getStudyOrganizationsResponse" type="tns:getStudyOrganizationsResponse"/>
+
+<xs:element name="getStudyTreatmentAssignments" type="tns:getStudyTreatmentAssignments"/>
+
+<xs:element name="getStudyTreatmentAssignmentsResponse" type="tns:getStudyTreatmentAssignmentsResponse"/>
+
+<xs:element name="searchStudy" type="tns:searchStudy"/>
+
+<xs:element name="searchStudyResponse" type="tns:searchStudyResponse"/>
+
+<xs:complexType name="getStudyDiseases">
+<xs:sequence>
+<xs:element name="StudyCriteria" type="tns:studyCriteria" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="studyCriteria">
+<xs:complexContent>
+<xs:extension base="tns:baseSearchCriteria">
+<xs:sequence>
+<xs:element name="nciDocumentNumber" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="baseSearchCriteria">
+<xs:sequence>
+<xs:element name="createdDate" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="lastUpdatedDate" type="xs:dateTime" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getStudyDiseasesResponse">
+<xs:sequence>
+<xs:element name="StudyDiseases" type="tns:studyDiseasesDTO" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="studyDiseasesDTO">
+<xs:complexContent>
+<xs:extension base="tns:studyAbstarctDTO">
+<xs:sequence>
+<xs:element name="studyDisease" type="tns:studyDiseaseDTO" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="studyAbstarctDTO">
+<xs:complexContent>
+<xs:extension base="tns:abstractDTO">
+<xs:sequence>
+<xs:element name="nciDocumentNumber" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="abstractDTO">
+<xs:sequence/>
+<xs:attribute name="createdDate" type="xs:string"/>
+<xs:attribute name="updatedDate" type="xs:string"/>
+</xs:complexType>
+
+<xs:complexType name="studyDiseaseDTO">
+<xs:complexContent>
+<xs:extension base="tns:abstractDTO">
+<xs:sequence>
+<xs:element name="diseaseName" type="xs:string" minOccurs="0"/>
+<xs:element name="reportingMedDRA" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="lead" type="xs:string"/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="CESAEException">
+<xs:sequence>
+<xs:element name="message" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getStudyAgents">
+<xs:sequence>
+<xs:element name="StudyCriteria" type="tns:studyCriteria" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getStudyAgentsResponse">
+<xs:sequence>
+<xs:element name="StudyAgents" type="tns:studyAgentsDTO" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="studyAgentsDTO">
+<xs:complexContent>
+<xs:extension base="tns:studyAbstarctDTO">
+<xs:sequence>
+<xs:element name="studyAgent" type="tns:studyAgentDTO" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="studyAgentDTO">
+<xs:complexContent>
+<xs:extension base="tns:abstractDTO">
+<xs:sequence>
+<xs:element name="agent" type="tns:agentsLovDTO" minOccurs="0"/>
+<xs:element name="commercialInvestigational" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="lead" type="xs:string"/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="agentsLovDTO">
+<xs:complexContent>
+<xs:extension base="tns:abstractDTO">
+<xs:sequence>
+<xs:element name="nscNumber" type="xs:string" minOccurs="0"/>
+<xs:element name="agentName" type="xs:string" minOccurs="0"/>
+<xs:element name="agentStatus" type="xs:string" minOccurs="0"/>
+<xs:element name="inds" type="tns:indsDTO" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="indsDTO">
+<xs:sequence>
+<xs:element name="ind" type="tns:indDTO" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="indDTO">
+<xs:sequence>
+<xs:element name="indHolder" type="xs:string" minOccurs="0"/>
+<xs:element name="indNumber" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="lead" type="xs:string"/>
+</xs:complexType>
+
+<xs:complexType name="getStudyDetails">
+<xs:sequence>
+<xs:element name="StudyCriteria" type="tns:studyCriteria" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getStudyDetailsResponse">
+<xs:sequence>
+<xs:element name="StudyDetails" type="tns:studyDetailsDTO" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="studyDetailsDTO">
+<xs:complexContent>
+<xs:extension base="tns:abstractDTO">
+<xs:sequence>
+<xs:element name="ctcVersion" type="xs:string" minOccurs="0"/>
+<xs:element name="currentStatus" type="xs:string" minOccurs="0"/>
+<xs:element name="currentStatusDate" type="xs:string" minOccurs="0"/>
+<xs:element name="localDocumentNumber" type="xs:string" minOccurs="0"/>
+<xs:element name="monitoringMethod" type="xs:string" minOccurs="0"/>
+<xs:element name="nciDocumentNum" type="xs:string" minOccurs="0"/>
+<xs:element name="participationType" type="xs:string" minOccurs="0"/>
+<xs:element name="phase" type="xs:string" minOccurs="0"/>
+<xs:element name="primaryStudyType" type="xs:string" minOccurs="0"/>
+<xs:element name="sponsorOrganization" type="xs:string" minOccurs="0"/>
+<xs:element name="studyAgents" type="tns:studyAgentsDTO" minOccurs="0"/>
+<xs:element name="studyDevices" type="tns:studyDevicesDTO" minOccurs="0"/>
+<xs:element name="studyDiseases" type="tns:studyDiseasesDTO" minOccurs="0"/>
+<xs:element name="studyOrganizations" type="tns:studyOrganizationsDTO" minOccurs="0"/>
+<xs:element name="studyTherapies" type="tns:studyTherapiesDTO" minOccurs="0"/>
+<xs:element name="studyTreatmentAssignments" type="tns:studyTreatmentAssignmentsDTO" minOccurs="0"/>
+<xs:element name="title" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="studyDevicesDTO">
+<xs:complexContent>
+<xs:extension base="tns:studyAbstarctDTO">
+<xs:sequence>
+<xs:element name="studyDevice" type="tns:studyDeviceDTO" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="studyDeviceDTO">
+<xs:complexContent>
+<xs:extension base="tns:abstractDTO">
+<xs:sequence>
+<xs:element name="commercialInvestigational" type="xs:string" minOccurs="0"/>
+<xs:element name="device" type="tns:deviceDTO" minOccurs="0"/>
+<xs:element name="lead" type="xs:string" minOccurs="0"/>
+<xs:element name="status" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="deviceDTO">
+<xs:complexContent>
+<xs:extension base="tns:abstractDTO">
+<xs:sequence>
+<xs:element name="brandName" type="xs:string" minOccurs="0"/>
+<xs:element name="category" type="xs:string" minOccurs="0"/>
+<xs:element name="commonName" type="xs:string" minOccurs="0"/>
+<xs:element name="deviceDbId" type="xs:long"/>
+<xs:element name="displayFlag" type="xs:string" minOccurs="0"/>
+<xs:element name="ideHolder" type="xs:string" minOccurs="0"/>
+<xs:element name="ideNumber" type="xs:string" minOccurs="0"/>
+<xs:element name="status" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="studyOrganizationsDTO">
+<xs:complexContent>
+<xs:extension base="tns:studyAbstarctDTO">
+<xs:sequence>
+<xs:element name="studyOrganization" type="tns:studyOrgDTO" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="studyOrgDTO">
+<xs:complexContent>
+<xs:extension base="tns:abstractDTO">
+<xs:sequence>
+<xs:element name="localDocumentNumber" type="xs:string" minOccurs="0"/>
+<xs:element name="organization" type="tns:organizationDTO" minOccurs="0"/>
+<xs:element name="status" type="xs:string" minOccurs="0"/>
+<xs:element name="statusDate" type="xs:string" minOccurs="0"/>
+<xs:element name="principalInvestigator" type="tns:studyInvestigatorDTO" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="role" type="xs:string"/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="organizationDTO">
+<xs:complexContent>
+<xs:extension base="tns:abstractDTO">
+<xs:sequence>
+<xs:element name="address" type="tns:addressDTO" minOccurs="0"/>
+<xs:element name="ctepId" type="xs:string" minOccurs="0"/>
+<xs:element name="organizationName" type="xs:string" minOccurs="0"/>
+<xs:element name="organizationType" type="xs:string" minOccurs="0"/>
+<xs:element name="status" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="addressDTO">
+<xs:sequence>
+<xs:element name="street" type="xs:string" minOccurs="0"/>
+<xs:element name="street2" type="xs:string" minOccurs="0"/>
+<xs:element name="city" type="xs:string" minOccurs="0"/>
+<xs:element name="state" type="xs:string" minOccurs="0"/>
+<xs:element name="country" type="xs:string" minOccurs="0"/>
+<xs:element name="zip" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="studyInvestigatorDTO">
+<xs:sequence>
+<xs:element name="firstname" type="xs:string" minOccurs="0"/>
+<xs:element name="middlename" type="xs:string" minOccurs="0"/>
+<xs:element name="lastname" type="xs:string" minOccurs="0"/>
+<xs:element name="email" type="xs:string" minOccurs="0"/>
+<xs:element name="investigatorStatus" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="ctepInvestigatorId" type="xs:string"/>
+</xs:complexType>
+
+<xs:complexType name="studyTherapiesDTO">
+<xs:sequence>
+<xs:element name="therapy" type="tns:studyTherapyDTO" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="studyTherapyDTO">
+<xs:complexContent>
+<xs:extension base="tns:abstractDTO">
+<xs:sequence>
+<xs:element name="ctepName" type="xs:string" minOccurs="0"/>
+<xs:element name="medDRACode" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="preferredTerm" type="xs:string"/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="studyTreatmentAssignmentsDTO">
+<xs:complexContent>
+<xs:extension base="tns:studyAbstarctDTO">
+<xs:sequence>
+<xs:element name="studyTreatmentAssignment" type="tns:studyTreatmentAssignmentDTO" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="studyTreatmentAssignmentDTO">
+<xs:complexContent>
+<xs:extension base="tns:abstractDTO">
+<xs:sequence>
+<xs:element name="tacDbId" type="xs:string" minOccurs="0"/>
+<xs:element name="code" type="xs:string" minOccurs="0"/>
+<xs:element name="description" type="xs:string" minOccurs="0"/>
+<xs:element name="status" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="searchStudy">
+<xs:sequence>
+<xs:element name="StudySearchCriteria" type="tns:studySearchCriteria" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="studySearchCriteria">
+<xs:complexContent>
+<xs:extension base="tns:baseSearchCriteria">
+<xs:sequence>
+<xs:element name="documentTitle" type="xs:string" minOccurs="0"/>
+<xs:element name="localDocumentNumber" type="xs:string" minOccurs="0"/>
+<xs:element name="nciDocumentNumber" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="searchStudyResponse">
+<xs:sequence>
+<xs:element name="Documents" type="tns:searchStudyDTO" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="searchStudyDTO">
+<xs:sequence>
+<xs:element name="document" type="tns:documentsDTO" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="documentsDTO">
+<xs:complexContent>
+<xs:extension base="tns:abstractDTO">
+<xs:sequence>
+<xs:element name="nciDocumentNumber" type="xs:string" minOccurs="0"/>
+<xs:element name="sponsorOrganization" type="xs:string" minOccurs="0"/>
+<xs:element name="localDocumentNumberList" type="tns:localDocumentNumbersDTO" minOccurs="0"/>
+<xs:element name="documentTitle" type="xs:string" minOccurs="0"/>
+<xs:element name="currentStatus" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="localDocumentNumbersDTO">
+<xs:sequence>
+<xs:element name="localDocumentNumber" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getStudyOrganizations">
+<xs:sequence>
+<xs:element name="StudyCriteria" type="tns:studyCriteria" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getStudyOrganizationsResponse">
+<xs:sequence>
+<xs:element name="StudyOrganizations" type="tns:studyOrganizationsDTO" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getStudyDevices">
+<xs:sequence>
+<xs:element name="StudyCriteria" type="tns:studyCriteria" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getStudyDevicesResponse">
+<xs:sequence>
+<xs:element name="StudyDevices" type="tns:studyDevicesDTO" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getStudyTreatmentAssignments">
+<xs:sequence>
+<xs:element name="StudyCriteria" type="tns:studyTACCriteria" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="studyTACCriteria">
+<xs:complexContent>
+<xs:extension base="tns:studyCriteria">
+<xs:sequence>
+<xs:element name="tacDbId" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="getStudyTreatmentAssignmentsResponse">
+<xs:sequence>
+<xs:element name="StudyTreatmentAssignments" type="tns:studyTreatmentAssignmentsDTO" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>

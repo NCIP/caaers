@@ -59,6 +59,7 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
 			boolean agentsChecked, boolean asaelChecked, boolean organizationsChecked) {
 		
 		StringBuffer sb = new StringBuffer();
+		sb.append("<center>");
 		sb.append("<table>");
 		
 		if(ctcaeChecked){
@@ -145,6 +146,7 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
 		}
 		
 		sb.append("</table>");
+		sb.append("</center>");
 		
 		return sb.toString();
 

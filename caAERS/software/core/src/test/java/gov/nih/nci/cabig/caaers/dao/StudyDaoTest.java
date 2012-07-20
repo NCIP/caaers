@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.DaoNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.dto.StudyIdenitifierQueryDataDTO;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.integration.schema.common.TherapyType;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
@@ -959,7 +960,7 @@ assertTrue(true);
     }
     
     public void testGetAllStudyFundingSponsorIdentfierData(){
-    	Map<String,StudyIdenitifierQueryDataHolder> results = new HashMap<String,StudyIdenitifierQueryDataHolder>();
+    	Map<String,StudyIdenitifierQueryDataDTO> results = new HashMap<String,StudyIdenitifierQueryDataDTO>();
     	results = getDao().getAllStudyFundingSponsorIdentifierValueData();
     	assertEquals(1,results.size());
     	assertNull(results.get("-9442608").getSystemName());
@@ -968,7 +969,7 @@ assertTrue(true);
     }
     
     public void testGetAllStudyCTEPESYSIdentfierData(){
-    	Map<String,StudyIdenitifierQueryDataHolder> results = new HashMap<String,StudyIdenitifierQueryDataHolder>();
+    	Map<String,StudyIdenitifierQueryDataDTO> results = new HashMap<String,StudyIdenitifierQueryDataDTO>();
     	results = getDao().getAllStudyCTEPESYSIdentifierValueData();
     	assertEquals(1,results.size());
     	assertNull(results.get("1138-421").getNciInstituteCode());

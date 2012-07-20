@@ -119,7 +119,9 @@ public class SelectStudyForParticipantTab <T extends ParticipantInputCommand> ex
 
         // Check uniqueness of Study Subject identifier across study
         for(StudyParticipantAssignment assignment : command.getAssignments()){
-        	validateUniqueStudySubjectIdentifiersInStudy(assignment.getStudySite().getStudy(),errors,assignment.getStudySubjectIdentifier(), assignment.getId());
+        	if (!StringUtils.isEmpty(assignment.getStudySubjectIdentifier()) && assignment.getStudySite() != null) {
+        		validateUniqueStudySubjectIdentifiersInStudy(assignment.getStudySite().getStudy(),errors,assignment.getStudySubjectIdentifier(), assignment.getId());
+        	}
         }
     }
     
@@ -135,7 +137,7 @@ public class SelectStudyForParticipantTab <T extends ParticipantInputCommand> ex
     public Map<String, InputFieldGroup> createFieldGroups(T command) {
         InputFieldGroupMap map = new InputFieldGroupMap();
         InputFieldGroup studySubjectIdentifierFieldGroup = new DefaultInputFieldGroup(STUDY_SUBJECT_IDENTIFIER_FIELD_GROUP);
-        studySubjectIdentifierFieldGroup.getFields().add(InputFieldFactory.createTextField(STUDY_SUBJECT_IDENTIFIER_FIELD, "Study subject identifier", true));
+        studySubjectIdentifierFieldGroup.getFields().add(InputFieldFactory.createTextField(STUDY_SUBJECT_IDENTIFIER_FIELD, "Study subject identifier"));
         map.addInputFieldGroup(studySubjectIdentifierFieldGroup);
         return map;
     }
