@@ -20,10 +20,6 @@
 
 <script>
 
-	function onEventHighlightRow(){
-		alert("hightlight row");
-	}
-
     function sync() {
        $('searchText').value = $F('searchText_');
     }
@@ -72,42 +68,9 @@
     }
 */
 
-	function initializeOnRowHighlightedYUITableNoPagination(tableId, responseData, columnDefs, fields) {
-		    YAHOO.example.CellSelection = new function() {
-		        var columDefs = columnDefs.clone();
-		        var tableFields = fields.clone();
-		
-		        var activeDataSource = new YAHOO.util.DataSource(responseData);
-		        var rowFormatter = function(elTr, oRecord) {
-			        return true;
-			    };
-		        activeDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
-		        activeDataSource.responseSchema = {
-		            fields: tableFields
-		        };
-		
-		        var myConfigs = {
-		            draggableColumns : false,
-		            width: "100%",
-		            formatRow : rowFormatter
-		        };
-		
-		        this.activeDataTable = new YAHOO.widget.DataTable("row", columDefs, activeDataSource, myConfigs);
-		      //  this.rowHighlightDataTable = new YAHOO.widget.DataTable("row",  columDefs, activeDataSource, { 
-	          //          caption:"Example: Row Highlighting" 
-	         //       }); 
-		        // Enable row highlighting 
-		        this.activeDataTable.subscribe("rowMouseoverEvent", this.activeDataTable.onEventHighlightRow); 
-		        this.activeDataTable.subscribe("rowMouseoutEvent", this.activeDataTable.onEventUnhighlightRow); 
-			//    this.activeDataTable.subscribe("rowMouseoverEvent", this.activeDataTable.onEventHighlightRow);
-		      //  this.activeDataTable.subscribe("rowMouseoutEvent", this.activeDataTable.onEventUnhighlightRow);
-		    }
-		}
-	
-
     function ajaxCallBack(jsonResult) {
         $('indicator').className='indicator'
-        initializeOnRowHighlightedYUITableNoPagination("tableDiv", jsonResult, myColumnDefs, myFields);
+        initializeYUITable("tableDiv", jsonResult, myColumnDefs, myFields);
         hideCoppaSearchDisclaimer();
 
         var value = jQuery('input:radio[name=study]:checked').val();
@@ -202,9 +165,6 @@
 <par:summary subjectFullName="${command.participant.fullName}" studyShortTitle="${command.study.shortTitle}"/>
 
 <chrome:box autopad="true" title="Search Criteria">
-	<div id="cell"></div> 
-	<div id="row"></div> 
-	<div id="column"></div> 
 
     <form:form id="searchForm" method="post" cssClass="standard">
     	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
@@ -266,8 +226,8 @@
 
     <form:hidden path="searchText"/>
     <div style="display:none;">
-        <form:input path="study" title="Study"/>
-        <form:input path="assignment.studySubjectIdentifier" title="Study Subject Identifier"/>
+        <form:input path="study" cssClass="validate-NOTEMPTY" title="Study"/>
+        <form:input path="assignment.studySubjectIdentifier" cssClass="validate-NOTEMPTY" title="Study Subject Identifier"/>
     </div>
 </form:form>
 

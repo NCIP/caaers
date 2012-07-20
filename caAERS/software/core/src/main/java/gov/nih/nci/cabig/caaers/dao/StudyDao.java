@@ -2,8 +2,6 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import edu.nwu.bioinformatics.commons.CollectionUtils;
 import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
-import gov.nih.nci.cabig.caaers.dao.query.LoadStudyCtepEsysIdentifierDataQuery;
-import gov.nih.nci.cabig.caaers.dao.query.LoadStudyFundingSponsorIdentifierDataQuery;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.AbstractAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.domain.ExpectedAECtcTerm;
@@ -16,13 +14,13 @@ import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation;
 import gov.nih.nci.cabig.caaers.domain.StudyDevice;
 import gov.nih.nci.cabig.caaers.domain.StudyDeviceINDAssociation;
+import gov.nih.nci.cabig.caaers.domain.StudyIdenitifierQueryDataHolder;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
-import gov.nih.nci.cabig.caaers.domain.dto.StudyIdenitifierQueryDataDTO;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
 import java.sql.SQLException;
@@ -72,11 +70,11 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
     private static final String DUP_PRT_ASSIGNMENT_IDS_IN_STUDY_HQL = "select count(*) from StudyParticipantAssignment spa where spa.studySite.id in (select " +
     		" ss.id from StudySite ss where ss.study.id = :studyId) and spa.studySubjectIdentifier = :identifier";
     
-    private static final String LOAD_STUDY_FUNDING_SPONSOR_IDENTIFIER_DATA_HQL = "select s.id as studyId, i.organization.nciInstituteCode as nciInstituteCode,i.value as value, i.type as type from Study s " +
-    		" join s.identifiers i where i.type = :FUNDING_SPONSOR_ID_TYPE";
+    private static final String LOAD_STUDY_FUNDING_SPONSOR_IDENTIFIER_DATA_HQL = "select s.id as studyId, oai.organization.nciInstituteCode as nciInstituteCode,oai.value as value, oai.type as type from Study s, " +
+    		"OrganizationAssignedIdentifier oai where oai = any elements (s.identifiers) and oai.type = :FUNDING_SPONSOR_ID_TYPE";
     
-    private static final String LOAD_STUDY_CTEP_ESYS_IDENTIFIER_DATA_HQL = "select s.id as studyId, i.systemName as systemName, i.value as value, i.type as type from Study s " +
-    		" join s.identifiers i where i.systemName = :CTEP_ESYS_SYSTEM_NAME";
+    private static final String LOAD_STUDY_CTEP_ESYS_IDENTIFIER_DATA_HQL = "select s.id as studyId, sai.systemName as systemName,sai.value as value, sai.type as type from Study s, " +
+    		"SystemAssignedIdentifier sai where sai = any elements (s.identifiers) and sai.systemName = :CTEP_ESYS_SYSTEM_NAME";
 
     private RemoteSession remoteSession;
     
@@ -444,17 +442,17 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
     }
     
     // get funding sponsor identifier values of all studies
-    public Map<String,StudyIdenitifierQueryDataDTO> getAllStudyFundingSponsorIdentifierValueData(){
+    public Map<String,StudyIdenitifierQueryDataHolder> getAllStudyFundingSponsorIdentifierValueData(){
     	
-    	Map<String,StudyIdenitifierQueryDataDTO> results = new HashMap<String,StudyIdenitifierQueryDataDTO>();
+    	Map<String,StudyIdenitifierQueryDataHolder> results = new HashMap<String,StudyIdenitifierQueryDataHolder>();
     	
-    	LoadStudyFundingSponsorIdentifierDataQuery query = new LoadStudyFundingSponsorIdentifierDataQuery(LOAD_STUDY_FUNDING_SPONSOR_IDENTIFIER_DATA_HQL);
+    	Query query = getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery(LOAD_STUDY_FUNDING_SPONSOR_IDENTIFIER_DATA_HQL);
     	query.setParameter("FUNDING_SPONSOR_ID_TYPE", OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE);
     	
-    	List queryData = (List<Object>) search(query);
+    	List queryData = (List<Object>) query.list();
     	for(Object object: queryData){
     		Object[] objArray = (Object[])(object);
-    		StudyIdenitifierQueryDataDTO data = new StudyIdenitifierQueryDataDTO();
+    		StudyIdenitifierQueryDataHolder data = new StudyIdenitifierQueryDataHolder();
     		data.setStudyId((Integer)objArray[0]);
     		data.setNciInstituteCode((String)objArray[1]);
     		data.setIdentifierType((String)objArray[3]);
@@ -463,17 +461,17 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
     	return results;
     }
     
-  public Map<String,StudyIdenitifierQueryDataDTO> getAllStudyCTEPESYSIdentifierValueData(){
+  public Map<String,StudyIdenitifierQueryDataHolder> getAllStudyCTEPESYSIdentifierValueData(){
     	
-    	Map<String,StudyIdenitifierQueryDataDTO> results = new HashMap<String,StudyIdenitifierQueryDataDTO>();
+    	Map<String,StudyIdenitifierQueryDataHolder> results = new HashMap<String,StudyIdenitifierQueryDataHolder>();
     	
-    	LoadStudyCtepEsysIdentifierDataQuery query = new LoadStudyCtepEsysIdentifierDataQuery(LOAD_STUDY_CTEP_ESYS_IDENTIFIER_DATA_HQL);
+    	Query query = getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery(LOAD_STUDY_CTEP_ESYS_IDENTIFIER_DATA_HQL);
     	query.setParameter("CTEP_ESYS_SYSTEM_NAME", SystemAssignedIdentifier.CTEP_ESYS_NAME);
     	
-    	List queryData = (List<Object>) search(query);
+    	List queryData = (List<Object>) query.list();
     	for(Object object: queryData){
     		Object[] objArray = (Object[])(object);
-    		StudyIdenitifierQueryDataDTO data = new StudyIdenitifierQueryDataDTO();
+    		StudyIdenitifierQueryDataHolder data = new StudyIdenitifierQueryDataHolder();
     		data.setStudyId((Integer)objArray[0]);
     		data.setSystemName((String)objArray[1]);
     		data.setIdentifierType((String)objArray[3]);

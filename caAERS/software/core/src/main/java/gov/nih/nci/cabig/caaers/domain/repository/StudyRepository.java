@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
+import gov.nih.nci.cabig.caaers.CaaersUserProvisioningException;
 import gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao;
 import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
@@ -33,21 +34,19 @@ import gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter;
 import gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor;
 import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
+import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.dto.StudyIdenitifierQueryDataDTO;
+import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.workflow.StudySiteWorkflowConfig;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.resolver.CoppaConstants;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
+
+import java.util.*;
+
 import gov.nih.nci.cabig.caaers.service.AdeersIntegrationFacade;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -111,10 +110,6 @@ public class StudyRepository {
     public List<Study> searchInAdEERS(String text){
         List<Study> adEERSStudies = adeersIntegrationFacade.searchStudies(text);
         List<Study> caaersStudies = getAllStudiesByShortTitleOrIdentifiers(text);
-        
-        Map<String,StudyIdenitifierQueryDataDTO> ctepEsysIdValues = studyDao.getAllStudyCTEPESYSIdentifierValueData();
-        Map<String,StudyIdenitifierQueryDataDTO> fundingSponsorIdValues = studyDao.getAllStudyFundingSponsorIdentifierValueData();
-        
         if(CollectionUtils.isEmpty(adEERSStudies)) return new ArrayList<Study>(); //empty list
         if(CollectionUtils.isEmpty(caaersStudies)) return adEERSStudies;
 
@@ -122,14 +117,24 @@ public class StudyRepository {
         
         for(Study adEERSStudy : adEERSStudies){
         	adEERSStudy.setStatus("IMPORT");
-        	if (adEERSStudy.getCtepEsysIdentifierValue() != null && ctepEsysIdValues.get(adEERSStudy.getCtepEsysIdentifierValue()) != null){
-        		adEERSStudy.setId(ctepEsysIdValues.get(adEERSStudy.getCtepEsysIdentifierValue()).getStudyId());  //set the ID to differentiate it.
-                adEERSStudy.setStatus("UPDATE");
-        	} else  if (adEERSStudy.getFundingSponsorIdentifier() != null && fundingSponsorIdValues.get(adEERSStudy.getFundingSponsorIdentifier().getValue()) != null && fundingSponsorIdValues.get(adEERSStudy.getFundingSponsorIdentifier().
-        			getValue()).getNciInstituteCode().equalsIgnoreCase(adEERSStudy.getFundingSponsorIdentifier().getOrganization().getNciInstituteCode())){
-        			adEERSStudy.setId(fundingSponsorIdValues.get(adEERSStudy.getFundingSponsorIdentifier().getValue()).getStudyId());  //set the ID to differentiate it.
-        			adEERSStudy.setStatus("UPDATE");
-        	}
+            for(Study caaersStudy : caaersStudies){
+            	String idValue = caaersStudy.getCtepEsysIdentifierValue();
+            	if(idValue != null){
+            		if(adEERSStudy.getCtepEsysIdentifierValue().equalsIgnoreCase(idValue)){
+            			adEERSStudy.setId(caaersStudy.getId());  //set the ID to differentiate it.
+                        adEERSStudy.setStatus("UPDATE");
+            		}
+            	}else{
+            		OrganizationAssignedIdentifier id = caaersStudy.getFundingSponsorIdentifier();
+                	if(id != null){
+                		if(adEERSStudy.getFundingSponsorIdentifier().getOrganization().getNciInstituteCode().equalsIgnoreCase(id.getOrganization().getNciInstituteCode())
+                				&& adEERSStudy.getFundingSponsorIdentifier().getValue().equalsIgnoreCase(id.getValue())){
+                			adEERSStudy.setId(caaersStudy.getId());  //set the ID to differentiate it.
+                            adEERSStudy.setStatus("UPDATE");
+                		}
+                	}
+            	}
+            }
         }
 
         return adEERSStudies;
