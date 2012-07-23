@@ -110,13 +110,11 @@ public class StudyRepository {
     
     public List<Study> searchInAdEERS(String text){
         List<Study> adEERSStudies = adeersIntegrationFacade.searchStudies(text);
-        List<Study> caaersStudies = getAllStudiesByShortTitleOrIdentifiers(text);
         
         Map<String,StudyIdenitifierQueryDataDTO> ctepEsysIdValues = studyDao.getAllStudyCTEPESYSIdentifierValueData();
         Map<String,StudyIdenitifierQueryDataDTO> fundingSponsorIdValues = studyDao.getAllStudyFundingSponsorIdentifierValueData();
         
         if(CollectionUtils.isEmpty(adEERSStudies)) return new ArrayList<Study>(); //empty list
-        if(CollectionUtils.isEmpty(caaersStudies)) return adEERSStudies;
 
         HashMap<String, Study> studyIndexMap = new HashMap<String, Study>();
         
