@@ -80,7 +80,7 @@ public abstract class AeWebTestCase extends WebTestCase {
         reportDao = registerDaoMockFor(ExpeditedAdverseEventReportDao.class);
         studyDao = registerMockFor(StudyDao.class);
         participantDao = registerMockFor(ParticipantDao.class);
-        expeditedReportTree = new ExpeditedReportTree();
+        expeditedReportTree = new ExpeditedReportTree(null);
         expeditedReportDao = registerMockFor(ExpeditedAdverseEventReportDao.class);
         reportingPeriodDao = registerDaoMockFor(AdverseEventReportingPeriodDao.class);
         renderDecisionManager = registerMockFor(RenderDecisionManager.class);

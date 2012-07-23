@@ -24,7 +24,7 @@ public class MandatoryPropertiesTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        tree = new ExpeditedReportTree();
+        tree = new ExpeditedReportTree(null);
         mandatory = new MandatoryProperties(tree);
     }
 

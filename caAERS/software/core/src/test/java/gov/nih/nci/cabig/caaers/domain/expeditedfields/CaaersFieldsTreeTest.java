@@ -40,7 +40,7 @@ public class CaaersFieldsTreeTest extends CaaersTestCase {
         ExpeditedReportTree reportTree = registerMockFor(ExpeditedReportTree.class);
         tree.setExpeditedReportTree(reportTree);
 
-        reportTree.initialize();
+        reportTree.reinitialize();
         
         replayMocks();
         tree.initialize();

@@ -76,8 +76,8 @@ public class CaaersFieldsTree extends PropertylessNode {
     /**
      * Re-initializes the fields in the tree. 
      */
-    public void initialize() {
-       if(expeditedReportTree != null) expeditedReportTree.initialize();
+    public synchronized void initialize() {
+       if(expeditedReportTree != null) expeditedReportTree.reinitialize();
     }
 
     /* (non-Javadoc)

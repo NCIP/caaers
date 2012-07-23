@@ -25,7 +25,7 @@ public class EditReportDefinitionControllerTest extends TestCase {
     EditReportDefinitionController controller;
     public void setUp() throws Exception {
         super.setUp();
-        tree = new ExpeditedReportTree();
+        tree = new ExpeditedReportTree(null);
         controller = new EditReportDefinitionController();
         controller.setExpeditedReportTree(tree);
     }

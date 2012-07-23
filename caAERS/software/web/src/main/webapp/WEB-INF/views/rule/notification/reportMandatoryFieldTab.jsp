@@ -369,6 +369,13 @@ function selectFieldChanged(fldSelectPath, fldRuleBindURLPath, fldRuleNamePath){
             </div>
         </div>
 
+
+         <div style="background: #daa520" class="hidden">
+           <c:forEach var="mf" items="${command.reportDefinition.mandatoryFields}" varStatus="s">
+                ${s.index + 1} : (${mf.id}) -  ${mf.fieldPath}  <br />
+           </c:forEach>
+         </div>
+
 		</jsp:attribute>
 	</tags:tabForm> 
 </body>

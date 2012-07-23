@@ -113,7 +113,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         facade.setTreatmentAssignmentDao(treatmentAssignmentDao);
         facade.setLowLevelTermDao(lowLevelTermDao);
         facade.setInteroperationService(interoperationService);
-        facade.setExpeditedReportTree(new ExpeditedReportTree());
+        facade.setExpeditedReportTree(new ExpeditedReportTree(null));
         facade.setReportRepository(reportRepository);
         facade.setResearchStaffDao(researchStaffDao);
         facade.setProxyWebServiceFacade(proxyWebserviceFacade);

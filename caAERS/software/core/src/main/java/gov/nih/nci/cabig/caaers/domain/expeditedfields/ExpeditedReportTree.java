@@ -27,19 +27,13 @@ import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSec
  * @author Biju Joseph
  */
 public class ExpeditedReportTree extends PropertylessNode {
+   private boolean reIniting;
     
     /** The sections. */
     private Map<ExpeditedReportSection, TreeNode> sections;
     
     /** The message source. */
     private MessageSource messageSource;
-
-    /**
-     * Instantiates a new expedited report tree.
-     */
-    public ExpeditedReportTree() {
-        this(null);
-    }
 
     /**
      * Instantiates a new expedited report tree.
@@ -52,10 +46,17 @@ public class ExpeditedReportTree extends PropertylessNode {
 
     }
 
+    public void reinitialize(){
+        if(reIniting) return;
+        reIniting = true;
+        initialize();
+        reIniting = false;
+    }
+
     /**
      * Will initialize the fields in the tree, by recreating the sections. 
      */
-    public void initialize(){
+    private void initialize(){
         sections = new LinkedHashMap<ExpeditedReportSection, TreeNode>();
         add(
                         section(BASICS_SECTION),

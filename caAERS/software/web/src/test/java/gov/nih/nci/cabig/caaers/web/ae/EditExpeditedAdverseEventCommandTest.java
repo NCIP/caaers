@@ -72,7 +72,7 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
 		reportDefinitionDao = registerDaoMockFor(ReportDefinitionDao.class);
 		assignmentDao = registerDaoMockFor(StudyParticipantAssignmentDao.class);
 		reportingPeriodDao = registerDaoMockFor(AdverseEventReportingPeriodDao.class);
-		expeditedReportTree = new ExpeditedReportTree();
+		expeditedReportTree = new ExpeditedReportTree(null);
 		renderDecisionManager = registerMockFor(RenderDecisionManager.class);
 		reportRepository = registerMockFor(ReportRepositoryImpl.class);
 		adverseEventRoutingAndReviewRepository = registerMockFor(AdverseEventRoutingAndReviewRepositoryImpl.class);
