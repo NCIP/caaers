@@ -20,14 +20,13 @@
         }
     </script>
     <style type="text/css">
-        .ui-tabs-nav{z-index: 150;}
-        div.row { padding: 5px 3px; }
-        .row .value { margin-left: 22%; }
-        .row .label { width: 20%; text-align: right; }
-        p.description { margin: 0.25em 0 0 1em; }
-        div.submit { text-align: right; }
-        .value input[type=text] { width: 80%; }
-        form { margin-top: 1em; }
+        /*div.row { padding: 5px 3px; }*/
+        /*.row .value { margin-left: 22%; }*/
+        /*.row .label { width: 20%; text-align: right; }*/
+        /*p.description { margin: 0.25em 0 0 1em; }*/
+        /*div.submit { text-align: right; }*/
+        /*.value input[type=text] { width: 80%; }*/
+        /*form { margin-top: 1em; }*/
 
     </style>
 </head>
