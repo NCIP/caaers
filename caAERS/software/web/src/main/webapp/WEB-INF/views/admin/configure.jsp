@@ -4,6 +4,7 @@
 <head>
     <title>Configure caAERS</title>
     <style type="text/css">
+        .content{zoom:0;}
         div.row { padding: 5px 3px; }
         .row .value { margin-left: 22%; }
         .row .label { width: 20%; text-align: right; }
@@ -11,7 +12,7 @@
         div.submit { text-align: right; }
         .value input[type=text] { width: 80%; }
         form { margin-top: 1em; }
-        .updated { border: #494 solid; border-width: 1px 0; background-color: #8C8; padding: 1em 2em; text-align: center; margin: 1em 30%; color: #fff; font-weight: bold; font-size: 1.1em; }
+
     </style>
 </head>
 <body>
@@ -62,7 +63,9 @@
     	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
         <chrome:box title="Configure caAERS" autopad="true">
             <p><tags:instructions code="configurecaares" /></p>
-            <c:if test="${param.updated}"><p class="updated">Settings saved</p></c:if>
+            <c:if test="${param.updated}">
+                <div class="success-box message"><p>Settings saved</p></div>
+            </c:if>
 
             <div id="ctabs">
                 <ul>
@@ -79,7 +82,10 @@
                     <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.tools.configuration.Configuration:UPDATE">
                         <div class="row">
                             <div class="label"><caaers:message code="reloadLabels" text="Reload labels"/></div>
-                            <div class="value" id="reloadedLabels"><input type="button" onclick="reloadLabels()" value="<caaers:message code="reloadLabels" text="Reload labels"/>"></div>
+                            <div class="value" id="reloadedLabels">
+                                <caaers:message code="reloadLabels" text="Reload labels" var="lblReloadLabelValue"/>
+                                <tags:button value="${lblReloadLabelValue}" color="blue" onclick="reloadLabels()" />
+                            </div>
                         </div>
                     </csmauthz:accesscontrol>
                     <admin:oneConfigEntry entry="${command.conf['autoCompleterChars'].property}"/>

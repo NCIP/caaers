@@ -51,7 +51,7 @@
 
     <!-- inner border -->
     <div class="border-T"><div class="border-L"><div class="border-R"><div class="border-B"><div class="border-TL"><div class="border-TR"><div class="border-BL"><div class="border-BR">
-        <div class="interior" id="contentOf-${id}" style="display:${collapsed ? "none" : "block"};">
+        <div class="interior" id="contentOf-${id}" style="${collapsed ? "display:none" : ""};">
             <c:if test="${autopad}"><div class="content"></c:if>
             <jsp:doBody/>
             <c:if test="${autopad}"></div></c:if>
