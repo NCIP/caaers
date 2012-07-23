@@ -69,12 +69,6 @@ function showRulePicker(fldSelectPath, fldRuleBindURLPath, fldRuleNamePath, fldS
         adiv.innerHTML = "";
     });
 
-    AE.ALL_FIELD_RULES.each(function(v){
-        $$('.chk_' + v).each(function(_cb){
-            _cb.checked = false;
-        });
-    });
-
     var ruleNames = $(AE.FLD_RULE_NAME).value;
     $('rules_popup').select('.selected-rules-value')[0].innerHTML= ruleNames;
 
