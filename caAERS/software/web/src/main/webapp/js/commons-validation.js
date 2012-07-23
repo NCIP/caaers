@@ -52,6 +52,7 @@ function validateFields(formFields, displayError) {
                        (!element.prefix && !element.suffix && isValidUSPhoneNumber(element.value) == false) ) ) ||
                     (vPattern.toLowerCase() == 'alphanumeric' && isAlphanumeric(element.value, true) == false) ||
                     (vPattern.toLowerCase() == 'numeric' && isNumeric(element.value, true) == false) ||
+                    (vPattern.toLowerCase() == 'wholenumber' && isWholenumber(element.value, true) == false) ||
                     (vPattern.toLowerCase() == 'alphabetic' && isAlphabetic(element.value, true) == false) ||
                     (vPattern.toLowerCase().indexOf('date') == 0 && isCorrectDate(element.value) == false) ||
                     (vPattern.toLowerCase().indexOf('positive') == 0 && element.value < 0) ||
@@ -297,6 +298,12 @@ function isNumeric(string, ignoreWhiteSpace) {
         if ((ignoreWhiteSpace && string.search(/[^\d\s]/) != -1) || (!ignoreWhiteSpace && string.search(/\D/) != -1)) return false;
     }
     return true;
+}
+
+// Check that a string contains only whole numbers
+function isWholenumber(string) {
+	var rx = new RegExp(/^\d+$/);
+	return rx.test(string);
 }
 
 // Check that a string contains only a-zA-z0-9# , * ( ) - _ [ ] { } ' " . : 

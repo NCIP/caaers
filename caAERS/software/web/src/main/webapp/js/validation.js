@@ -37,6 +37,7 @@
 // US Phone No.     | US_PHONE_NO        | <[input].... type=.... class=validate-US_PHONE_NO
 // Alphanumeric     | ALPHANUMERIC       | <[input].... type=.... class=validate-ALPHANUMERIC
 // Numeric          | NUMERIC            | <[input].... type=.... class=validate-NUMERIC
+// WholeNumber      | WholeNumber        | <[input].... type=.... class=validate-WHOLENUMBER
 // Alphabetic       | ALPHABETIC         | <[input].... type=.... class=validate-ALPHABETIC
 // date             | DATE               | <[input].... type=.... class=validate-DATE[(<format>)]
 // Decimal          | DECIMAL            | <[input].... type=.... class=validate-DECIMAL
@@ -155,6 +156,9 @@ var ValidationManager = {
             } else {
                 Element.writeAttribute(element, "vpattern", validationType);
                 element.patternError = ValidationManager.ERROR_MSG_PATTERN
+                if(validationType == 'WHOLENUMBER'){
+                	 element.patternError =  element.patternError + "Number";
+                }
             }
         }
     },
