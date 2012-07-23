@@ -75,6 +75,10 @@ function showRulePicker(fldSelectPath, fldRuleBindURLPath, fldRuleNamePath, fldS
         });
     });
 
+    var ruleNames = $(AE.FLD_RULE_NAME).value;
+    $('rules_popup').select('.selected-rules-value')[0].innerHTML= ruleNames;
+
+
 
     //show the window.
     var alertPopup =  Dialog.alert($('rules_popup').innerHTML, {id:'winRulePicker' , className:"alphacube", width:800, height:400, okLabel: "close" ,
@@ -89,13 +93,10 @@ function showRulePicker(fldSelectPath, fldRuleBindURLPath, fldRuleNamePath, fldS
         }
     });
 
-
-    var ruleNames = $(fldRuleNamePath).value;
-    $('winRulePicker').select('.selected-rules-value')[0].innerHTML= ruleNames;
     if(ruleNames){
        var ruleNameArray = ruleNames.split(',');
        $A(ruleNameArray).each(function(v){
-           $('winRulePicker').select('.chk_' + v)[0].checked=true;
+           $('winRulePicker').select('.chk_' + v)[0].checked = true;
        });
     }
     
@@ -336,44 +337,45 @@ function selectFieldChanged(fldSelectPath, fldRuleBindURLPath, fldRuleNamePath){
 
         <div id="rules_popup" style="display:none;">
             <div class="rules_popup_content eXtremeTable">
-            <c:if test="${command.fieldRulesAvailable}">
-                <div class="row selected-rules-row">
-                    <div class="label">Selected Rules</div>
-                    <div class="value selected-rules-value"></div>
-                </div>
-                <div style="align:left;">
-                    Pick and choose the rules from below
-                    <br />
-                    <hr />
-                </div>
-                <c:forEach var="rule" items="${command.ruleSet.rule}" varStatus="ruleStatus">
-                  <div class="row ${(ruleStatus.index %2) gt 0 ? 'odd' : 'even' } ">
-                      <div class="label">
-                          <input type="checkbox" value="${rule.metaData.name}" class="chk_${rule.metaData.name}"
-                                 onclick="ruleSelected(this,'${command.ruleSet.name}' , '${rule.metaData.name}');"/>
-                          ${rule.metaData.name}
-                      </div>
-                      <div class="value">
-                          
-                          <c:forEach var="line" items="${rule.readableRule.line}">
-                              ${line} <br />
-                         </c:forEach>
-                         Then <br />
-                          <c:forEach var="_act" items="${rule.readableAction}">
-                              &nbsp;&nbsp;&nbsp; ${_act}
-                          </c:forEach>
-                      </div>
-                  </div>
-                </c:forEach>
+                <c:if test="${command.fieldRulesAvailable}">
+                    <div class="row selected-rules-row">
+                        <div class="label">Selected Rules</div>
+                        <div class="value selected-rules-value"></div>
+                    </div>
+                    <div style="align:left;text-align: left; padding-top: 30px;">
+                        Pick and choose the rules from below
+                        <br />
+                        <hr />
+                    </div>
+                    <c:forEach var="rule" items="${command.ruleSet.rule}" varStatus="ruleStatus">
+                        <div class="${(ruleStatus.index %2) gt 0 ? 'odd' : 'even' } "  style="margin-top:20px;clear:both;">
+                            <div class="label" style="width: 13em;float:left;">
+                                <input type="checkbox" value="${rule.metaData.name}" class="chk_${rule.metaData.name}"
+                                       onclick="ruleSelected(this,'${command.ruleSet.name}' , '${rule.metaData.name}');"/>
+                                    ${rule.metaData.name}
+                            </div>
+                            <div class="value" style="margin-left: 14em;text-align:left;">
 
-            </c:if>
-            <c:if test="${not command.fieldRulesAvailable}">
-                 <div class="row">
-                     <div class="value">No field level rules available</div>
-                 </div>
-            </c:if>
+                                <c:forEach var="line" items="${rule.readableRule.line}">
+                                    ${line} <br />
+                                </c:forEach>
+                                Then <br />
+                                <c:forEach var="_act" items="${rule.readableAction}">
+                                    &nbsp;&nbsp;&nbsp; ${_act}
+                                </c:forEach>
+                            </div>
+                        </div>
+                    </c:forEach>
+
+                </c:if>
+                <c:if test="${not command.fieldRulesAvailable}">
+                    <div class="row">
+                        <div class="value">No field level rules available</div>
+                    </div>
+                </c:if>
             </div>
         </div>
+
 		</jsp:attribute>
 	</tags:tabForm> 
 </body>
