@@ -106,7 +106,7 @@
                     <admin:oneConfigEntry entry="${command.conf['wsUsername'].property}"/>
                     <admin:oneConfigEntry entry="${command.conf['wsPassword'].property}"/>
                     <admin:oneConfigEntry entry="${command.conf['esbLogLocation'].property}"/>
-                    <admin:oneConfigEntry entry="${command.conf['studySyncDelay'].property}"/>
+                    <admin:oneConfigEntry entry="${command.conf['studySyncDelay'].property}" cssClass="validate-WHOLENUMBER"/>
                 </div>
                 <c:if test="${configuration.authenticationMode ne 'local'}">
                     <div id="tabs-3">

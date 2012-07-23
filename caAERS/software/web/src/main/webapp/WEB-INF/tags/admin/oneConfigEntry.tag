@@ -7,6 +7,7 @@
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui"%>
 <%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
+<%@ attribute name="cssClass" required="false" %>
 <div class="row">
     <div class="label"><form:label path="conf[${entry.key}].value" id="conf[${entry.key}].value">${entry.name}</form:label></div>
     <div class="value">
@@ -22,7 +23,7 @@
                 </div>
             </c:when>
             <c:when test="${entry.controlType == 'text'}">
-                <div><form:input path="${beanPath}" id="${beanPath}"/></div>
+                <div><form:input path="${beanPath}" id="${beanPath}" cssClass="${cssClass}" /></div>
             </c:when>
             <c:otherwise>
                 <div>Unimplemented control type ${entry.controlType} for ${beanPath}</div>
