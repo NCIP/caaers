@@ -31,17 +31,7 @@
      clear: both;
     }
 
-    .updated {
-     border: #494 solid;
-     border-width: 1px 0;
-     background-color: #8C8;
-     padding: 1em 2em;
-     text-align: center;
-     margin: 1em 30%;
-     color: #fff;
-     font-weight: bold;
-     font-size: 1.1em;
-    }
+
   </style>
   <script type="text/javascript">
       AE.PAGE_HELP_LINK = 'passwordPolicyConfigure';
@@ -73,12 +63,13 @@
             		</li>
             	</csmauthz:accesscontrol>
         	</ul>
-    	</div> 
+    	</div>
+
     <form:form action="${action}">
     	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
     <chrome:box title="Password Policy Configuration" autopad="true">
-
     <c:url value="/pages/admin/passwordPolicyConfigure" var="action" />
+    <c:if test="${updated}"> <div class="success-box message"><p>Settings saved</p></div></c:if>
     <p><tags:instructions code="passwordconfig" /></p>
 
       <chrome:division title="Login Policy">
@@ -202,8 +193,6 @@
 	  </div>
 	</chrome:division>
 
-
-      <c:if test="${updated}"><p class="updated">Settings saved</p></c:if>
 
   </chrome:box>
   	<csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy:UPDATE">

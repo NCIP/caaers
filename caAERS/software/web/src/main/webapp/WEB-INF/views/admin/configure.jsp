@@ -3,8 +3,24 @@
 <html>
 <head>
     <title>Configure caAERS</title>
+    <script type="text/javascript" src="<c:url value="/js/jquery/jquery.cookie.js" />"></script>
+    <script type="text/javascript" language="javascript">
+        jQuery(function() {
+            jQuery( "#ctabs" ).tabs({cookie:{expires:1}});
+        });
+    </script>
+    <script>
+        function reloadLabels() {
+            jQuery.ajax({
+                url: '<c:url value="/pages/admin/reload" />',
+                success: function(data) {
+                    jQuery('#reloadedLabels').html("<a style='color:green; font-weight:bold;'>Labels reloaded successfully.</a>");
+                }
+            });
+        }
+    </script>
     <style type="text/css">
-        .content{zoom:0;}
+        .ui-tabs-nav{z-index: 150;}
         div.row { padding: 5px 3px; }
         .row .value { margin-left: 22%; }
         .row .label { width: 20%; text-align: right; }
@@ -16,12 +32,7 @@
     </style>
 </head>
 <body>
-<script type="text/javascript" src="<c:url value="/js/jquery/jquery.cookie.js" />"></script>
-<script type="text/javascript" language="javascript">
-    jQuery(function() {
-        jQuery( "#ctabs" ).tabs({cookie:{expires:1}});
- });
-</script>
+
 	    <div class="workflow-tabs2">
     	    <ul id="" class="tabs autoclear">
     	    	<csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.tools.configuration.Configuration:READ || gov.nih.nci.cabig.caaers.tools.configuration.Configuration:UPDATE">
@@ -48,25 +59,15 @@
         	</ul>
     	</div>
 
-<script>
-    function reloadLabels() {
-        jQuery.ajax({
-            url: '<c:url value="/pages/admin/reload" />',
-            success: function(data) {
-                jQuery('#reloadedLabels').html("<a style='color:green; font-weight:bold;'>Labels reloaded successfully.</a>");
-            }
-        });
-    }
-</script>
+
         
     <form:form action="${action}" cssClass="standard">
     	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
         <chrome:box title="Configure caAERS" autopad="true">
-            <p><tags:instructions code="configurecaares" /></p>
             <c:if test="${param.updated}">
                 <div class="success-box message"><p>Settings saved</p></div>
             </c:if>
-
+            <p><tags:instructions code="configurecaares" /></p>
             <div id="ctabs">
                 <ul>
                     <li><a href="#tabs-1">General</a></li>
