@@ -30,7 +30,8 @@
     .required_item_heading {
      clear: both;
     }
-
+	
+	div.submit { text-align: right; }
 
   </style>
   <script type="text/javascript">
@@ -137,7 +138,7 @@
 	  </div>
 	</div>  
 	</chrome:division>
-	<chrome:division title="Complexity Requirement" style="margin-left: 20px;">	  
+	<chrome:division title="Complexity Requirement">	  
 	  
 	  <div class="nested_section">
 	    <div class="row">
@@ -196,7 +197,7 @@
 
   </chrome:box>
   	<csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy:UPDATE">
-	    <div class="row submit" style="float: right;"><tags:button type="submit" value="Save" color="green" icon="save" /></div>
+	    <div class="row submit""><tags:button type="submit" value="Save" color="green" icon="save" /></div>
     </csmauthz:accesscontrol>
     </form:form>
 
