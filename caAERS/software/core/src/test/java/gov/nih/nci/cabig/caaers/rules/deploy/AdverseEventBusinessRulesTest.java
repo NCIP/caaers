@@ -63,12 +63,12 @@ public class AdverseEventBusinessRulesTest extends AbstractBusinessRulesExecutio
     public void testGradeMODERATE_HospitalizationNONE() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
         for (AdverseEvent ae : aeReport.getAdverseEvents()) {
-            ae.setGrade(Grade.MODERATE);
+            ae.setGrade(Grade.MILD);
             ae.setHospitalization(Hospitalization.NONE);
         }
 
         ValidationErrors errors = fireRules(aeReport);
-        assertNoErrors(errors, "When  grade is MODERATE and  hospitalization is NONE");
+        assertNoErrors(errors, "When  grade is MILDs and  hospitalization is NONE");
 
     }
 

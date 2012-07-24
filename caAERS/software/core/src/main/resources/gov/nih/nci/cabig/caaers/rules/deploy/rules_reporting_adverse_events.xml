@@ -14,9 +14,9 @@
 
 	<!-- ==========================================================================
 	RuleName : AER_BR3_CHK
-	Logic : "'Hospitalization' must be provided if 'Grade' greater than 2"
+	Logic : "'Hospitalization' must be provided if 'Grade' greater than or equal to 2"
 	Error Code : AER_BR3_ERR
-	Error Message : HOSPITALIZATION must be provided if GRADE is greater than or equal to 3
+	Error Message : HOSPITALIZATION must be provided if GRADE is greater than or equal to 2
 	============================================================================= -->
 	<rule name="AER_BR3_CHK">
 		<lhs>
@@ -28,11 +28,11 @@
 						for(AdverseEvent ae : aeReport.getAdverseEvents()){
 						
 							if(
-							   (ae.getGrade() != null) &amp;&amp; (ae.getGrade().getCode() &gt; Grade.MODERATE.getCode() )
+							   (ae.getGrade() != null) &amp;&amp; (ae.getGrade().getCode() &gt; Grade.MILD.getCode() )
 							   &amp;&amp; 
 							   ((ae.getHospitalization() == null) || (ae.getHospitalization().getCode() == Hospitalization.NONE.getCode())  ) 
 							  ){
-								errors.addValidationError("AER_BR3_ERR","'Hospitalization' must be provided if 'Grade' greater than 2", i).addFieldNames("aeReport.adverseEvents[" + i + "].hospitalization", "aeReport.adverseEvents[" + i + "].grade");
+								errors.addValidationError("AER_BR3_ERR","'Hospitalization' must be provided if 'Grade' greater than or equal to 2", i).addFieldNames("aeReport.adverseEvents[" + i + "].hospitalization", "aeReport.adverseEvents[" + i + "].grade");
 							}
 							
 							i++;
