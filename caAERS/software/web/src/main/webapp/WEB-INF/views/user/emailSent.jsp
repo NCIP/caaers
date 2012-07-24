@@ -97,7 +97,6 @@
 <body>
 
 <a href="<c:url value="/public/login" />"><img src="<c:url value="/images/blue/login-logo.png" />" id="logo" alt="Cancer Adverse Event Reporting System"></a>
-An e-mail has been sent to the requested user.
-
+An email containing instructions for reseting the password has been sent to the specified user.
 </body>
 </html>
