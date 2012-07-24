@@ -151,14 +151,19 @@
 	}
 	
 	 function showPopupMessage(row_id){
+		$$(".message").each(function(el){el.show()});
+		$("tableDiv").innerHTML = "";
+		popupDiv = new Window({className:"alphacube", width:500, height:500, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:true, minimizable:false, maximizable:false});
+        popupDiv.setContent("synchMessage");
+        popupDiv.showCenter(true);
+        popupDiv.show();
 		ctepDataInitialization.getIntegrationLogDetailsBasedOnCorrelationId(correlationArray[row_id], ajaxCallBackForDetails);
 	 }
 	 
 	 function ajaxCallBackForDetails(jsonResult) {
-	 	var d = $('synchMessage');
 	  	displayLogDetailsTable(jsonResult);
+	  	$$(".message").each(function(el){el.hide()});
 	  	currentCount = currentCount + 1;
-	  	Dialog.alert(d.innerHTML, {className: "alphacube", height:500, width:500, okLabel: "Close" });
 	}
 	
 	var booleanFormatter = function(elCell, oRecord, oColumn, oData) {
@@ -170,10 +175,10 @@
 	        		}
 	         }
 	
-	var myColumnDefsForDetails = [{key:"entity", label:"Entity", resizeable:true, minWidth:200, maxWidth:350},
-							{key:"businessId", label:"BusinessId", sortable:true, resizeable:true, minWidth:200, maxWidth:350},
-						{key:"failed", label:"Failed", sortable:true, resizeable:true, minWidth:300, maxWidth:350, formatter:booleanFormatter},
-						{key:"outcome", label:"Notes", sortable:true, resizeable:true, minWidth:100, maxWidth:100}];
+	var myColumnDefsForDetails = [{key:"entity", label:"Entity", resizeable:true},
+							{key:"businessId", label:"BusinessId", sortable:true, resizeable:true},
+						{key:"failed", label:"Failed", sortable:true, resizeable:true, formatter:booleanFormatter},
+						{key:"outcome", label:"Notes", sortable:true, resizeable:true}];
 	
 	var myFieldsForDetails = [{key:'entity', parser:"string"},{key:'businessId', parser:"string"},{key:'failed', parser:"boolean"},{key:'outcome', parser:"string"}];
 	
@@ -328,8 +333,9 @@
 </form:form>
 
 <div id="synchMessage" style="display:none; padding: 15px;">
-		<div id="tableDiv">
-		</div>
+	<div class="info-box message"><p><caaers:message code="LBL_integration_log.details_search" /></p></div>
+	<div id="tableDiv">
+	</div>
 </div>
 
 </body>
