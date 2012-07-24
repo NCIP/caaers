@@ -9,12 +9,12 @@
                 <tr>
                     <td colspan="2">
                         <div class="row  instructions">
-                            <div class="label" style="position: relative; left: 8px;">Subject</div>
+                            <div class="label" >Subject</div>
                             <div class="value" style="margin-left: 70px;"s> ${subjectFullName}</div>
                         </div>
                         <c:if test="${not empty studyShortTitle}">
 	                        <div class="row  instructions">
-		                        <div class="label" style="position: relative; left: 8px;">Study</div>
+		                        <div class="label" >Study</div>
 		                        <div class="value" style="margin-left: 70px;"> ${studyShortTitle}</div>
 	                        </div>
                         </c:if>

@@ -8,7 +8,7 @@
                 <tr>
                     <td colspan="2">
                         <div class="row  instructions">
-                            <div class="label" style="position: relative; left: 8px;">${studySummary[0].code}</div>
+                            <div class="label">${studySummary[0].code}</div>
                             <div class="value" style="margin-left: 70px;">
                                 <c:choose>
                                     <c:when test="${not empty studySummary[0].desc}">
