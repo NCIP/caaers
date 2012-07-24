@@ -883,12 +883,10 @@
                         </xsl:call-template>
                     </AE_END_DATE>
                 </xsl:if>
-                <HOSPITALIZATION>
-                    <xsl:choose>
-                        <xsl:when test="substring(hospitalization, 1, 1) = 2">No</xsl:when>
-                        <xsl:otherwise>Yes</xsl:otherwise>
-                    </xsl:choose>
-                </HOSPITALIZATION>
+                <xsl:choose>
+                    <xsl:when test="substring(hospitalization, 1, 1) = 1"><HOSPITALIZATION>Yes</HOSPITALIZATION></xsl:when>
+                    <xsl:when test="substring(hospitalization, 1, 1) = 2"><HOSPITALIZATION>No</HOSPITALIZATION></xsl:when>
+                </xsl:choose>
                 <xsl:if test="detailsForOther">
                 	<AE_COMMENTS>
                         <xsl:value-of select="detailsForOther"/>
