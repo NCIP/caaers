@@ -102,13 +102,13 @@
                 </tr>
                 <c:forEach items="${command.study.activeTreatmentAssignments}" var="ta">
                     <tr bgcolor="white">
-                        <td><ui:radio path="reportingPeriod.treatmentAssignment" value="${ta.id}" onclick="clearOtherTAC();"/>&nbsp;${ta.code}
-                        <td>${ta.htmlEscapedDescription}
+                        <td><ui:radio path="reportingPeriod.treatmentAssignment" value="${ta.id}" onclick="clearOtherTAC();"/>&nbsp;<label for="reportingPeriod.treatmentAssignment">${ta.code}</label></td>
+                        <td><label for="reportingPeriod.treatmentAssignment">${ta.htmlEscapedDescription}</label></td>
                     </tr>
                 </c:forEach>
                 <tr bgcolor="white">
-                    <td><ui:radio path="reportingPeriod.treatmentAssignment" value="" id="otherTA" />&nbsp;Other
-                    <td><ui:textarea rows="2" path="reportingPeriod.treatmentAssignmentDescription" cols="100"></ui:textarea>
+                    <td><ui:radio path="reportingPeriod.treatmentAssignment" value="" id="otherTA" />&nbsp;<label for="reportingPeriod.treatmentAssignment">Other</label></td>
+                    <td><ui:textarea rows="2" path="reportingPeriod.treatmentAssignmentDescription" cols="100"></ui:textarea></td>
                 </tr>
             </table>
         </tags:table>
