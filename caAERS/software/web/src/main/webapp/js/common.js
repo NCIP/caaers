@@ -943,13 +943,14 @@ function openDivisionById(_id) {
 
 //-------------------------------------------------------------------------------------------------------------------
 function showCoppaSearchDisclaimer(){
-	try{
-		if(AE.WEBSSO_AUTHENTICATION_MODE){
-			$('coppa-search-disclaimer').show();
-		}
-	}catch(e){
-
-	}
+//	commenting this since COPPA is deprecated.
+//	try{
+//		if(AE.WEBSSO_AUTHENTICATION_MODE){
+//			$('coppa-search-disclaimer').show();
+//		}
+//	}catch(e){
+//
+//	}
 }
 //-------------------------------------------------------------------------------------------------------------------
 /**
