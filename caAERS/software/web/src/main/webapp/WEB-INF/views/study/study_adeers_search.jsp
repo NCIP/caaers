@@ -1,7 +1,7 @@
 <%@include file="/WEB-INF/views/taglibs.jsp" %>
 <tags:dwrJavascriptLink objects="createStudy"/>
 
-<title>Search AdEERS Studies</title>
+<title>Search NCI Studies</title>
 
 <style>
     div.yui-dt-liner a:hover  {
