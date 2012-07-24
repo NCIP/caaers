@@ -251,7 +251,7 @@
                 window.location = url;
             }
 
-            function deActivatePerson(){
+            function deActivatePerson(button){
   
               //will put todays date as end date on all the site researchstaff end dates.
               $$('.date').each(function (_el){
@@ -262,8 +262,9 @@
                   
               });
               alert('<caaers:message code="MSG_deactivate_effect" text="Please click Save to complete deactivation" />');
+              button.disabled = true;
             }
-	    	function activatePerson(){
+	    	function activatePerson(button){
               $$('.date').each(function (_el){
                   var val = _el.value;
                   if( _el.name.indexOf('endDate') > 0){
@@ -272,6 +273,7 @@
 
               });
               alert('<caaers:message code="MSG_activate_effect" text="Please click Save to complete activation" />');
+              button.disabled = true;
             }
 
             function deActivateUser(){
@@ -345,10 +347,10 @@
                                             <div class="value">
                                                  <c:if test="${command.PO}">
                                                <c:if test="${command.person.active}">
-                                                    <tags:button value="Deactivate Person" color="red" type="button" size="small" onclick="javascript:deActivatePerson()" />
+                                                    <tags:button value="Deactivate Person" color="red" type="button" size="small" onclick="javascript:deActivatePerson(this)" />
                                                </c:if>
                                                <c:if test="${not command.person.active}">
-                                                   <tags:button value="Activate Person" color="green" type="button" size="small" onclick="javascript:activatePerson()" />
+                                                   <tags:button value="Activate Person" color="green" type="button" size="small" onclick="javascript:activatePerson(this)" />
                                                </c:if>
                                             </c:if>
                                             </div>
