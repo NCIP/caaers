@@ -41,7 +41,7 @@ public class SubmitExpeditedAdverseEventCommand{
         this.unidentifiedMode = unidentifiedMode;
         reportDeliveries = new ArrayList<ReportDelivery>();
         summary = report.getAeReport().getSummary(unidentifiedMode);
-        summary.put("Report Name", report.getName());
+        summary.put("Report Name", report.getLabel());
     }
 
     public Map<String,String> getSummary(){
