@@ -151,7 +151,7 @@
                             </c:if>
 
                             <c:if test="${(command.report.lastVersion.reportStatus == 'INPROCESS')}">
-                                <div class="info-box message"><p>Submission in process</p></div>
+                                <div class="info-box message"><p>Submission in progress</p></div>
                             </c:if>
 
                             <div class="row">
