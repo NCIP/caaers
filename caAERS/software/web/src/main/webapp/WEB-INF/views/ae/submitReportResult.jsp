@@ -77,6 +77,9 @@
 	<body>
 		<script type="text/javascript" src="<c:url value="/js/wz_tooltip/wz_tooltip.js" />"></script>
 		<tags:tabForm tab="${tab}" flow="${flow}">
+            <jsp:attribute name="instructions">
+                <tags:instructions code="instruction_ae_submit_results" />
+            </jsp:attribute>
 			<jsp:attribute name="singleFields">
 				<div id="actions-${command.aeReport.id}" style="display:none;">
     						<ul>
