@@ -100,7 +100,7 @@ YAHOO.example.Data = {
             rsLevel: "${empty rs.ruleLevel ? 'NA' : rs.ruleLevel.description}",
             rsDescription: "${rs.ruleType.name}",
             rsOrganization: "${empty rs.organization ? 'NA' : rs.organization.fullName}",
-            rsStudyID: "${rs.study.shortTitle}",
+            rsStudyID: "${rs.study.displayName}",
             rsStatus: "<div id='status-${rs.id}' onclick='showRuleDebugInfo(${rs.id})'>${rs.status}</div>"
 
             ,
