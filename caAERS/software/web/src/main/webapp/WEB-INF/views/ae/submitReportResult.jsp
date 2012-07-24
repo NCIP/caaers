@@ -59,7 +59,7 @@
 	<!--[if IE]>
         <style>
 			* {
-				zoom:1;
+				zoom:0;
 			}
 			#taskbar ul, #floatingTaskbar ul {
 				margin:0 0 0 -8px;
