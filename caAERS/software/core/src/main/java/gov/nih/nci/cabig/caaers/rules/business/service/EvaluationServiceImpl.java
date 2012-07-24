@@ -172,6 +172,12 @@ public class EvaluationServiceImpl implements EvaluationService {
                     rdNameSet.addAll(adverseEventEvaluationResult.getRuleEvaluationResult().getResponses());
                 }
 
+                //CAAERS-5702
+                if(rdNameSet.contains("IGNORE")){
+                    rdNameSet.clear();
+                    evaluationResult.addProcessingStep(aeReportId, "caAERS : Protocol specific exception, so removing all recommendations","");
+                }
+
                 for(String reportDefName : rdNameSet){
                     ReportDefinition rd = loadedReportDefinitionsMap.get(reportDefName);
                     if(rd == null) {
