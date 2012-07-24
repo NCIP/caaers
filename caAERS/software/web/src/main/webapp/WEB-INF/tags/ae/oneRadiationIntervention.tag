@@ -24,7 +24,7 @@
             <caaers:message code="LBL_aeReport.radiationInterventions.studyRadiation.description" text="Study radiation description" />
         </jsp:attribute>
         <jsp:attribute name="value"><span id="aeReport.radiationInterventions[${index}].studyRadiation.description_content">
-           ${radiation.studyRadiation.description}
+           ${empty radiation.studyRadiation.description ? '' : radiation.studyRadiation.description}
            </span>
         </jsp:attribute>
     </ui:row>
