@@ -35,6 +35,10 @@
         <level value="ERROR"/>
         <appender-ref ref="caAERSLogFile"/>
     </logger>
+    <logger name="org.apache.jackrabbit" additivity="false">
+        <level value="ERROR"/>
+        <appender-ref ref="caAERSLogFile"/>
+    </logger>
 	<logger name="gov.nih.nci.cabig.caaers.accesscontrol" additivity="false">
         <level value="ERROR"/>
         <appender-ref ref="caAERSLogFile"/>
@@ -51,11 +55,14 @@
         <level value="ERROR"/>
         <appender-ref ref="caAERSLogFile"/>
     </logger>
-    <logger name="gov.nih.nci.cabig.caaers.web.filters" additivity="false">
-        <level value="DEBUG"/>
+    <logger name="gov.nih.nci.cabig.caaers.web" additivity="false">
+        <level value="ERROR"/>
         <appender-ref ref="caAERSLogFile"/>
     </logger>
-    
+    <logger name="gov.nih.nci.cabig.caaers.web.filters" additivity="false">
+        <level value="ERROR"/>
+        <appender-ref ref="caAERSLogFile"/>
+    </logger>
 	<logger name="org.hibernate.SQL" additivity="false">
         <level value="ERROR" />
         <appender-ref ref="hibernateFile"/>
