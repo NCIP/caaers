@@ -12,7 +12,7 @@
 
 			<tr>
 				<td width="5%">
-					<c:if test="${reportTrackingStatus.status || reportTrackingStatus.status==false}">
+					<c:if test="${(reportTrackingStatus.status || reportTrackingStatus.status==false) && reportTrackingStatus.statusMessage != ''}">
 						<chrome:collapsableElement targetID="reptable${step}-${reportTracking.id}-${reportTracking.attemptNumber}" collapsed="true" id="ID_02"/>
 					</c:if>
 				</td>
