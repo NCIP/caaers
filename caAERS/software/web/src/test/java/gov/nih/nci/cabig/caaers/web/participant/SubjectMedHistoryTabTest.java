@@ -20,6 +20,7 @@ public class SubjectMedHistoryTabTest extends SubjectFlowAbstractTabTestCase {
     public void testValidateDiseaseInformation() {
         getAssignment().setDiseaseHistory(new StudyParticipantDiseaseHistory());
         getAssignment().getDiseaseHistory().setDiagnosisDate(new DateValue(DateUtils.today()));
+        command.setParticipant(command.getAssignment().getParticipant());
         tab.validate(command, errors);
         assertEquals(0, errors.getFieldErrorCount("assignment.diseaseHistory.diagnosisDate"));
     }
@@ -27,6 +28,7 @@ public class SubjectMedHistoryTabTest extends SubjectFlowAbstractTabTestCase {
     public void testValidateDiseaseInformationInvalidDate() {
         getAssignment().setDiseaseHistory(new StudyParticipantDiseaseHistory());
         getAssignment().getDiseaseHistory().setDiagnosisDate(new DateValue(2010, 15, 12));
+        command.setParticipant(command.getAssignment().getParticipant());
         tab.validate(command, errors);
         assertEquals(1, errors.getFieldErrorCount("assignment.diseaseHistory.diagnosisDate"));
         assertEquals("SAE_036", errors.getFieldError("assignment.diseaseHistory.diagnosisDate").getCode());
