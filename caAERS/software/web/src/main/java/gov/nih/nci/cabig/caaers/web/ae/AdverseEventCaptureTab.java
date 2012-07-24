@@ -312,12 +312,12 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
             }
             
             
-            // If grade is greater than 2 then hospitalization cannot be null.
+            // If grade is greater than 1 then hospitalization cannot be null.
             if(!command.getAdverseEventReportingPeriod().isBaselineReportingType()) {
             	if(caaersFieldConfigurationManager.isFieldApplicable(TAB_NAME, "adverseEvents[].hospitalization"))
             		if (ae.getGrade() != null) {
-            			if (ae.getGrade().getCode() > 2 && ae.getHospitalization() == null)
-            				errors.rejectValue("adverseEvents[" + i + "].hospitalization", "CAE_004", "Hospitalization must be entered if grade is greater than 2");
+            			if (ae.getGrade().getCode() > 1 && ae.getHospitalization() == null)
+            				errors.rejectValue("adverseEvents[" + i + "].hospitalization", "CAE_004", "Hospitalization must be entered if grade is greater than 1");
             		}
             }
             
