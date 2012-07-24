@@ -9,6 +9,9 @@
 
         }
      </script>
+     <style type="text/css">
+     	div.submit { text-align: right; }
+     </style>
 <tags:dwrJavascriptLink objects="createStudy"/>
 <title>Person/User Confirmation</title>
 </head>
@@ -136,6 +139,6 @@
 
 
 		</div>
-	            <div class="row submit" style="float: right;"><tags:button type="submit" value="Edit" color="green" icon="edit"  onclick="redirect('${command.requestURL}')"/></div>
+	            <div class="row submit"><tags:button type="submit" value="Edit" color="green" icon="edit"  onclick="redirect('${command.requestURL}')"/></div>
 	</body>
 </html>
