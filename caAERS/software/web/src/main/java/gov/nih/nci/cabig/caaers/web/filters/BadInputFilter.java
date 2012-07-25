@@ -149,15 +149,6 @@ public class BadInputFilter implements Filter {
     protected String deny = null;
 
     /**
-     * A Map of regular expressions used to filter the parameters.  The key
-     * is the regular expression String to search for, and the value is the
-     * regular expression String used to modify the parameter if the search
-     * String is found.
-     */
-    protected HashMap<Pattern, String> parameterEscapes =
-        new HashMap<Pattern, String>();
-
-    /**
      * The ServletContext under which this Filter runs.  Used for logging.
      */
     protected ServletContext servletContext;
@@ -240,11 +231,6 @@ public class BadInputFilter implements Filter {
     public void setEscapeQuotes(boolean escapeQuotes) {
 
         this.escapeQuotes = escapeQuotes;
-        if (escapeQuotes) {
-            // Escape all quotes.
-            parameterEscapes.putAll(quotesHashMap);
-        }
-
     }
 
     /**
@@ -266,13 +252,7 @@ public class BadInputFilter implements Filter {
      * @param escapeAngleBrackets
      */
     public void setEscapeAngleBrackets(boolean escapeAngleBrackets) {
-
         this.escapeAngleBrackets = escapeAngleBrackets;
-        if (escapeAngleBrackets) {
-            // Escape all angle brackets.
-            parameterEscapes.putAll(angleBracketsHashMap);
-        }
-
     }
 
     /**
@@ -282,9 +262,7 @@ public class BadInputFilter implements Filter {
      * performed.
      */
     public boolean getEscapeJavaScript() {
-
         return escapeJavaScript;
-
     }
 
     /**
@@ -296,13 +274,7 @@ public class BadInputFilter implements Filter {
      * @param escapeJavaScript
      */
     public void setEscapeJavaScript(boolean escapeJavaScript) {
-
         this.escapeJavaScript = escapeJavaScript;
-        if (escapeJavaScript) {
-            // Escape potentially dangerous JavaScript method calls.
-            parameterEscapes.putAll(javaScriptHashMap);
-        }
-
     }
     
     /**
@@ -566,18 +538,31 @@ public class BadInputFilter implements Filter {
             logger.debug("BadInputFilter: Cannot filter parameters!");
         }
         
-        // Loop through each of the substitution patterns.
-        Iterator escapesIterator = parameterEscapes.keySet().iterator();
-        while (escapesIterator.hasNext()) {
-            Pattern pattern = (Pattern) escapesIterator.next();
-
-            // Loop through the list of parameters.
-            @SuppressWarnings("unchecked")
-            String[] paramNames =
+        
+        // Loop through the list of parameters.
+        String[] paramNames =
                 (String[]) paramMap.keySet().toArray(STRING_ARRAY);
-            for (int i = 0; i < paramNames.length; i++) {
-                String name = paramNames[i];
-                if(isAllowedParam(name)) continue;
+        for (int i = 0; i < paramNames.length; i++) {
+        	String name = paramNames[i];
+        	HashMap<Pattern, String> parameterEscapes =
+        	        new HashMap<Pattern, String>();
+        	// Loop through each of the substitution patterns.
+        	if (escapeAngleBrackets) {
+                // Escape all angle brackets.
+                parameterEscapes.putAll(angleBracketsHashMap);
+            }
+            if (escapeQuotes && !isAllowedParam(name)) {
+                // Escape all angle brackets.
+                parameterEscapes.putAll(quotesHashMap);
+            }
+            if (escapeJavaScript) {
+                // Escape all angle brackets.
+                parameterEscapes.putAll(javaScriptHashMap);
+            }
+            @SuppressWarnings("unchecked")
+            Iterator escapesIterator = parameterEscapes.keySet().iterator();
+            while (escapesIterator.hasNext()) {
+                Pattern pattern = (Pattern) escapesIterator.next();
                 String[] values = ((HttpServletRequest)
                     request).getParameterValues(name);
                 // See if the name contains the pattern.
