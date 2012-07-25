@@ -5,7 +5,7 @@
   <parent>
     <artifactId>parent</artifactId>
     <groupId>gov.nih.nci.cabig.caaers2adeers</groupId>
-    <version>2.5-RC5-SNAPSHOT</version>
+    <version>2.5-RC5</version>
   </parent>
   <groupId>gov.nih.nci.cabig.caaers2adeers</groupId>
   <artifactId>caaers-adeers-sync-sa</artifactId>
