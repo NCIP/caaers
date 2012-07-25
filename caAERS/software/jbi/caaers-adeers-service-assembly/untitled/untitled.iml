@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="javaeeApplication" name="javaEEApplication">
+      <configuration>
+        <descriptors>
+          <deploymentDescriptor name="application.xml" url="file://$MODULE_DIR$/META-INF/application.xml" />
+        </descriptors>
+      </configuration>
+    </facet>
+  </component>
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/..">
+      <sourceFolder url="file://$MODULE_DIR$/../configure/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../caaers-adeers-webservice-su/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../caaers-adeers-eip-su/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../caaers-adeers-http-su/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../caaers-adeers-jms-su/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../caaers-adeers-webservice-su/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../caaers-adeers-webservice-su/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../caaers-adeers-webservice-su/src/test/resources" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../caaers-adeers-xslt-su/src/main/resources" isTestSource="false" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
+
