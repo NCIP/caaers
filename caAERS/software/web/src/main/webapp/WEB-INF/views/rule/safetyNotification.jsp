@@ -126,7 +126,7 @@
             <ui:row path="notification.study">
                 <jsp:attribute name="label"><ui:label path="notification.study" required="true" text="Study." /></jsp:attribute>
                 <jsp:attribute name="value">
-                    <ui:autocompleter path="notification.study" required="true" initialDisplayValue="${empty command.notification.study ? 'Begin typing here' : command.notification.study.displayName}" enableClearButton="true" >
+                    <ui:autocompleter path="notification.study" required="true" initialDisplayValue="${empty command.notification.study ? 'Begin typing here' : command.notification.study.displayName}" enableClearButton="true" title="Study">
                         <jsp:attribute name="populatorJS">
                             function(autocompleter, text) {
                                 createAE.matchStudies(text,null, false, function(values) { autocompleter.setChoices(values)} )
@@ -144,7 +144,7 @@
             <ui:row path="notification.name">
                 <jsp:attribute name="label"><ui:label path="notification.name" required="true" text="Name." /></jsp:attribute>
                 <jsp:attribute name="value">
-                    <ui:text path="notification.name" required="true" size="50" />
+                    <ui:text path="notification.name" required="true" size="50" title="Name"/>
                 </jsp:attribute>
             </ui:row>
 
@@ -161,7 +161,7 @@
                             <td width="49%" >
                                 <c:forEach var="e" items="${command.notification.recipientEmails}">
                                     <div>
-                                        <input type="text" maxlength="2000" value="${e}" class="validate-NOTEMPTY$$EMAIL valueOK" name="recipientEmails" title="Email address" >
+                                        <input type="text" maxlength="2000" value="${e}" class="validate-NOTEMPTY$$EMAIL valueOK" name="recipientEmails" title="Email Address" >
                                         <input type="image" align="absmiddle" onclick="javascript:{this.parentNode.parentNode.removeChild(this.parentNode)}" style="border: 0px none ;" src="<c:url value="/images/rule/remove_condition.gif" />">
                                     </div>
 
@@ -193,7 +193,7 @@
             <ui:row path="notification.subject">
                 <jsp:attribute name="label"><ui:label path="notification.subject" required="true" text="Subject." /></jsp:attribute>
                 <jsp:attribute name="value">
-                    <ui:text path="notification.subject" required="true" size="100">
+                    <ui:text path="notification.subject" required="true" size="100" title="Subject">
                         <jsp:attribute name="embededJS">
                             $('notification.subject').observe('focus', function(evt) {
                                 lastElement = Event.element(evt);
@@ -219,7 +219,7 @@
             <ui:row path="notification.content">
                 <jsp:attribute name="label"><ui:label path="notification.content" required="true" text="Mail content." /></jsp:attribute>
                 <jsp:attribute name="value">
-                    <ui:textarea path="notification.content" required="true" rows="20" cols="100">
+                    <ui:textarea path="notification.content" required="true" rows="20" cols="100" title="Mail Content">
                         <jsp:attribute name="embededJS">
                             $('notification.content').observe('focus', function(evt) {
                                 lastElement = Event.element(evt);
