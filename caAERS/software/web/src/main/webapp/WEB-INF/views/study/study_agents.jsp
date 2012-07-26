@@ -167,6 +167,7 @@ function toggleAgentOrOther(index) {
 
     <div style="padding-left:0px;">
     <p id="instructions"></p>
+    <tags:hasErrorsMessage hideErrorDetails="false"/>
         <div align="left">
             <tags:indicator id="_SA_indicator" />
             <tags:button color="blue" type="button" value="Add Agent" size="small" icon="add" onclick="javascript:fireAction('addStudyAgent','0');"/>
