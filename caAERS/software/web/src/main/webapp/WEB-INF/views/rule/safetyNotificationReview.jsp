@@ -44,7 +44,7 @@
             </ui:row>
 
             <ui:row path="notification.emails">
-                <jsp:attribute name="label"><ui:label path="notification.emails" required="true" text="Recipients."/></jsp:attribute>
+                <jsp:attribute name="label"><ui:label path="notification.emails" required="true" text="Recipients"/></jsp:attribute>
                 <jsp:attribute name="value">
                     <div>&nbsp;</div>
                     <table border="0" cellspacing="2" cellpadding="0" width="90%">
