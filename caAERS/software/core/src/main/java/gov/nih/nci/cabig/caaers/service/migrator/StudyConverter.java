@@ -808,6 +808,7 @@ public class StudyConverter {
                     o.setPrimaryIndicator(sid.getPrimaryIndicator());
                     o.setSystemName(sid.getSystemName());
                     o.setValue(sid.getValue());
+                    o.setType(StudyIdentifierType.fromValue(sid.getType()));
                     identifiers.getSystemAssignedIdentifier().add(o);
                 }
             }
