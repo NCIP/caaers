@@ -9,6 +9,7 @@ import org.easymock.EasyMock;
 
 import javax.servlet.FilterChain;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -80,6 +81,31 @@ public class FabricatedAuthenticationFilterTest extends WebTestCase {
        }
     }
 
+    public void testDoFilter() throws Exception {
+
+        FilterChain chain = registerMockFor(FilterChain.class);
+        chain.doFilter(request, response);
+        replayMocks();
+
+        Map<String, String> urlMap = new HashMap<String, String>();
+        urlMap.put("/pages/study/edit", "gov.nih.nci.cabig.caaers.domain.Study:studyId");
+        filter.setFilterByURLAndEntityMap(urlMap);
+
+        Map<String, String> filterByURLAndRoleListMap =   new HashMap<String, String>();
+        filterByURLAndRoleListMap.put("/pages/study/edit", "user_administrator,data_reader");
+        filter.setFilterByURLAndRoleListMap(filterByURLAndRoleListMap);
+
+        request.setRequestURI("http://abc.com/pages/study/edit?studyId=7");
+        request.setContextPath("http://abc.com");
+
+        filter.doFilter(request, response, chain);
+        assertContains((Collection) request.getAttribute("cl"), "Caaers Super User") ;
+        assertTrue( ( (Map<String, String>)request.getAttribute("roles")).containsKey("caaers_super_user") )  ;
+        assertTrue( ( (Map<String, String>)request.getAttribute("originalRoles")).containsKey("caaers_super_user") )  ;
+        verifyMocks();
+
+    }
+
     public void testDoFilterAlreadyFiltered() throws Exception {
 
         FilterChain chain = registerMockFor(FilterChain.class);
@@ -90,7 +116,7 @@ public class FabricatedAuthenticationFilterTest extends WebTestCase {
         filter.doFilter(request, response, chain);
         assertContains((Collection) request.getAttribute("cl"), "Caaers Super User") ;
         assertTrue( ( (Map<String, String>)request.getAttribute("roles")).containsKey("caaers_super_user") )  ;
-        assertTrue( ( (Map<String, String>)request.getAttribute("originalRoles")).containsKey("caaers_super_user") )  ;
+        assertTrue(((Map<String, String>) request.getAttribute("originalRoles")).containsKey("caaers_super_user"))  ;
         verifyMocks();
         
     }
