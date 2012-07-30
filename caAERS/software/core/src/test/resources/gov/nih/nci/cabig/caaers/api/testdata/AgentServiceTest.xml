@@ -6,7 +6,7 @@
     	name="Agent"
     	description="Description"
     	nsc="nsc"
-    	retired_indicator="false"/>
+    	retired_indicator="0"/>
     <study_agents />
     <study_agent_inds />
 

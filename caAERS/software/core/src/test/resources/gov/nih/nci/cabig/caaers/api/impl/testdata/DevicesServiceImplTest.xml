@@ -1,6 +1,6 @@
 <dataset>
 
-    <devices id="-1" common_name="cn1" brand_name="bn1" device_type="dt1" retired_indicator="false" ctep_db_identifier="111" />
-    <devices id="-2" common_name="cn2" brand_name="bn2" device_type="dt2" retired_indicator="false" ctep_db_identifier="222"/>
+    <devices id="-1" common_name="cn1" brand_name="bn1" device_type="dt1" retired_indicator="0" ctep_db_identifier="111" />
+    <devices id="-2" common_name="cn2" brand_name="bn2" device_type="dt2" retired_indicator="0" ctep_db_identifier="222"/>
 
 </dataset>

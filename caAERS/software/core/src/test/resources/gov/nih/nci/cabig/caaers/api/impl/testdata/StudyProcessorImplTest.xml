@@ -49,9 +49,9 @@
     <SPA_CONCOMITANT_MEDICATIONS/>
     <SPA_PRE_EXISTING_CONDS/>
 
-    <devices id="-1" common_name="Common name 01" brand_name="Brand name 01" device_type="Type 01" ctep_db_identifier="-1" retired_indicator="false" />
-    <devices id="-2" common_name="Common name 02" brand_name="Brand name 02" device_type="Type 02" ctep_db_identifier="-2" retired_indicator="false" />
-    <devices id="-11" common_name="Common name 11" brand_name="Brand name 11" device_type="Type 11" ctep_db_identifier="-11" retired_indicator="false" />
+    <devices id="-1" common_name="Common name 01" brand_name="Brand name 01" device_type="Type 01" ctep_db_identifier="-1" retired_indicator="0" />
+    <devices id="-2" common_name="Common name 02" brand_name="Brand name 02" device_type="Type 02" ctep_db_identifier="-2" retired_indicator="0" />
+    <devices id="-11" common_name="Common name 11" brand_name="Brand name 11" device_type="Type 11" ctep_db_identifier="-11" retired_indicator="0" />
 
     <study_devices id="-1" study_id="-2" retired_indicator="0" study_therapy_type="4" device_id="-1"/>
     <study_devices id="-2" study_id="-2"  retired_indicator="0" study_therapy_type="4" device_id="-2"/>
