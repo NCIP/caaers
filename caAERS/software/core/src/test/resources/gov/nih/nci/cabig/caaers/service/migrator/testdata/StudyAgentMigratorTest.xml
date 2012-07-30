@@ -18,8 +18,8 @@
     <agents name="A-01" nsc="nsc-01" id="-1"/>
     <agents name="A-02" nsc="nsc-02" id="-2"/>
 
-    <study_agents study_id="-2" agent_id="-1" study_therapy_type="1"/>
-    <study_agents study_id="-2" agent_id="-2" study_therapy_type="1" />
+    <study_agents study_id="-2" agent_id="-1" study_therapy_type="1" id="-1222"/>
+    <study_agents study_id="-2" agent_id="-2" study_therapy_type="1" id="-2111"/>
 
     <ctc_grades/>
 	<study_agents />
