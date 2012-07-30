@@ -27,7 +27,7 @@
 
     <ctc_grades/>
 
-    <agents name="Calcium carbonate" nsc="725280" />
+    <agents id="-100" name="Calcium carbonate" nsc="725280" />
 
 	<study_agents />
     <ind_holders/>
@@ -59,8 +59,8 @@
     <investigators id="-1" first_name="Silvio" last_name="Berlusconi" email_address="sb@la-piovra.it"/>
     <research_staffs id="-1" first_name="Andrei" last_name="Abramovich" email_address="aa@la-piovra.ru"/>
 
-    <site_investigators site_id="-1003" investigator_id="-1" />
-    <site_research_staffs site_id="-1003" researchstaff_id="-1" />
+    <site_investigators id="-1001" site_id="-1003" investigator_id="-1" />
+    <site_research_staffs id="-1002" site_id="-1003" researchstaff_id="-1" />
 
     <disease_categories id="-1" />
     <disease_terms id="-1" term="Tinnitus1" category_id="-1" />
