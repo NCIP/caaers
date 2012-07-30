@@ -88,10 +88,14 @@ public class AgentServiceTest extends CaaersDbNoSecurityTestCase{
 			 List<Agent> updatedAgents = agentDao.getAll();
 			 assertEquals(2,updatedAgents.size());
 			 
-			 assertEquals("nsc",updatedAgents.get(0).getNscNumber());
-			 assertEquals("updated Agent",updatedAgents.get(0).getName());
-			 assertEquals("updated description",updatedAgents.get(0).getDescription());
-			 assertTrue(updatedAgents.get(0).getRetiredIndicator());
+             Agent a = updatedAgents.get(0);
+             if(!a.getNscNumber().equals("nsc")){
+                 a = updatedAgents.get(1);
+             }
+			 assertEquals("nsc",a.getNscNumber());
+			 assertEquals("updated Agent",a.getName());
+			 assertEquals("updated description",a.getDescription());
+			 assertTrue(a.getRetiredIndicator());
 			 
 		 }
 
