@@ -17,6 +17,7 @@
 <%@attribute name="mainGroupName" required="true" %>
 <%@attribute name="containerName" required="true" %>
 <%@attribute name="removeAction" required="true" %>
+<%@attribute name="readonly"%>
 
 <%--
     containerName: refreshing the <containerName> element when an item is deleted from the <items>, on remove action
@@ -25,6 +26,7 @@
 
 <c:set var="deleteParams">'${removeButtonAction}',${index}</c:set>
 <c:set var="mainGroup">${mainGroupName}${index}</c:set>
+<c:set var="readonly">${not empty readonly? readonly : not empty identifier.id && (not empty identifier.type && identifier.type ne '') && (not empty identifier.value && identifier.value ne '')}</c:set>
 
 <tr id="${sectionClass}-${listEditorIndex}" class="${sectionClass}" bgcolor="#ffffff">
 
@@ -34,7 +36,7 @@
             <c:when test="${field.categoryName == 'autocompleter'}"><c:set var="_align" value="left" /></c:when>
         </c:choose>
         <td align="${_align}">
-            <tags:renderInputs field="${field}"/>
+            <tags:renderInputs field="${field}" readonly="${readonly}"/>
             <c:if test="${field.categoryName == 'autocompleter'}">
                 <c:set var="x">
                     <jsp:attribute name="value"><caaers:value path="${field.propertyName}" /></jsp:attribute>
@@ -44,15 +46,18 @@
                         <jsp:attribute name="value"><caaers:value path="${field.propertyName}.fullName" /></jsp:attribute>
                     </c:set>
                 </c:if>
-                
-                <script>AE.createStandardAutocompleter('${field.propertyName}', function(autocompleter, text) {
-                    createParticipant.matchOrganization(text, function(values) {
-                        autocompleter.setChoices(values)
-                    })
-                }, function(organization) {
-                    var nciInstituteCode = organization.nciInstituteCode == null ? "" : " ( " + organization.nciInstituteCode + " ) ";
-                    return organization.name + nciInstituteCode
-        }, {initialInputValue:'${initValue}'});</script>
+                <c:if test="${(not readonly)}">
+	                <script>
+		                AE.createStandardAutocompleter('${field.propertyName}', function(autocompleter, text) {
+		                    createParticipant.matchOrganization(text, function(values) {
+		                        autocompleter.setChoices(values)
+		                    })
+		                }, function(organization) {
+		                    var nciInstituteCode = organization.nciInstituteCode == null ? "" : " ( " + organization.nciInstituteCode + " ) ";
+		                    return organization.name + nciInstituteCode
+		        		}, {initialInputValue:'${initValue}'});
+	        		</script>
+	        	</c:if>
             </c:if>
         </td>
     </c:forEach>

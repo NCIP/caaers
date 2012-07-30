@@ -314,6 +314,7 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
         }
 
         modelAndView.getModel().put("indexes", indexes);
+        modelAndView.getModel().put("remove", "remove");
         return modelAndView;
     }
     
