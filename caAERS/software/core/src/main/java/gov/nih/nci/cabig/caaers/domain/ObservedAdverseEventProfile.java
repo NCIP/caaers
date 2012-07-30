@@ -18,7 +18,7 @@ import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "observed_ae_profiles")
-@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_observed_ae_profiles") })
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_observed_ae_profiles_id") })
 public class ObservedAdverseEventProfile extends AbstractMutableDomainObject {
 	
 	public static final double NULL_ZERO_VALUE=0.00000001;
