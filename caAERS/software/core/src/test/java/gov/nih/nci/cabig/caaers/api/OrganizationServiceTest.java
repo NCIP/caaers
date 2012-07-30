@@ -51,10 +51,19 @@ public class OrganizationServiceTest extends CaaersDbNoSecurityTestCase{
 	 public void testAddAndUpdateOrganizatinos(){
 			List<Organization> existingOrganizations = organizationDao.getAll();
 			 assertEquals(3,existingOrganizations.size());
-			 assertEquals("Northwestern University", existingOrganizations.get(1).getName());
-			 assertEquals("NUCC", existingOrganizations.get(1).getDescriptionText());
-			 assertEquals("WAKE", existingOrganizations.get(1).getNciInstituteCode());
-			 assertFalse(existingOrganizations.get(1).getRetiredIndicator());
+         
+             Organization o = existingOrganizations.get(0);
+             if(!o.getNciInstituteCode().equals("WAKE")) {
+                o = existingOrganizations.get(1);
+             }
+
+             if(!o.getNciInstituteCode().equals("WAKE")) {
+                 o = existingOrganizations.get(2);
+             }
+			 assertEquals("Northwestern University", o.getName());
+			 assertEquals("NUCC", o.getDescriptionText());
+			 assertEquals("WAKE", o.getNciInstituteCode());
+			 assertFalse(o.getRetiredIndicator());
 			 
 			 // update existing organization
 			Organization updatedOrganization = new LocalOrganization();
