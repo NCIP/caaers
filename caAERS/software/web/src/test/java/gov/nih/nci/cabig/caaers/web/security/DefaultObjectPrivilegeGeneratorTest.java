@@ -6,6 +6,7 @@ import junit.framework.TestSuite;
 import junit.framework.TestCase;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * DefaultObjectPrivilegeGenerator Tester.
@@ -26,4 +27,12 @@ public class DefaultObjectPrivilegeGeneratorTest extends AbstractTestCase {
 
     }
 
+    public void testSetObjectPrivilegeMap(){
+        HashMap<String,String> map = new HashMap<String,String>();
+        map.put("/x","y");
+        gen = new DefaultObjectPrivilegeGenerator();
+        gen.setObjectPrivilegeMap(map);
+        assertSame(map, gen.objectPrivilegeMap);
+        
+    }
 }
