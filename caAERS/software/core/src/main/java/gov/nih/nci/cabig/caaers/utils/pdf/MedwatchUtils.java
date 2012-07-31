@@ -32,44 +32,44 @@ public class MedwatchUtils {
 
 
 
-    public static int possibleElements(NodeList nodes , int n , String commaSeperatedXPath){
+//    public static int possibleElements(NodeList nodes , int n , String commaSeperatedXPath){
+//
+//        if(nodes == null || nodes.getLength() == 0) return 1;
+//        String[] xpath = StringUtils.isEmpty(commaSeperatedXPath) ? new String[]{"."} : commaSeperatedXPath.split(",");
+//        int l = 0;
+//        int k = 1;
+//        for(int i = 0; i < nodes.getLength(); i++){
+//            Node node = nodes.item(i);
+//            for(int j = 0 ; j < xpath.length; j++){
+//               String s = evalXPathsOnNode(node, xpath[j]);
+//               l += StringUtils.length(s);
+//            }
+//            if(l >= n) return k;
+//
+//            k++;
+//        }
+//
+//        return k;
+//    }
 
-        if(nodes == null || nodes.getLength() == 0) return 1;
-        String[] xpath = StringUtils.isEmpty(commaSeperatedXPath) ? new String[]{"."} : commaSeperatedXPath.split(",");
-        int l = 0;
-        int k = 1;
-        for(int i = 0; i < nodes.getLength(); i++){
-            Node node = nodes.item(i);
-            for(int j = 0 ; j < xpath.length; j++){
-               String s = evalXPathsOnNode(node, xpath[j]);
-               l += StringUtils.length(s);
-            }
-            if(l >= n) return k;
-            
-            k++;
-        }
-
-        return k;
-    }
-
-    public static String evalXPathsOnNode(Node n, String strXPath){
-        try{
-
-            TransformerFactory factory = TransformerFactory.newInstance();
-            Transformer transformer = factory.newTransformer();
-            DOMSource domSource = new DOMSource(n);
-            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION,"yes");
-            StringWriter sw = new StringWriter();
-            StreamResult result = new StreamResult(sw);
-            transformer.transform(domSource, result);
-            return evalXPathOnXML(sw.toString(), strXPath);
-
-        }catch (Exception e){
-           log.debug(e);
-        }
-        
-        return "";
-    }
+//    public static String evalXPathsOnNode(Node n, String strXPath){
+//        try{
+//
+//            TransformerFactory factory = TransformerFactory.newInstance();
+//            Transformer transformer = factory.newTransformer();
+//            DOMSource domSource = new DOMSource(n);
+//            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION,"yes");
+//            StringWriter sw = new StringWriter();
+//            StreamResult result = new StreamResult(sw);
+//            transformer.transform(domSource, result);
+//            return evalXPathOnXML(sw.toString(), strXPath);
+//
+//        }catch (Exception e){
+//           log.debug(e);
+//        }
+//
+//        return "";
+//    }
 
     public static String evalXPathOnXML(String xml, String xpathExpression){
         try{
