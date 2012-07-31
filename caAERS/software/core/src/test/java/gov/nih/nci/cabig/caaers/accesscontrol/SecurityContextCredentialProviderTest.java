@@ -11,6 +11,7 @@ public class SecurityContextCredentialProviderTest extends AbstractTestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
+		SecurityTestUtils.switchToNoUser();
 		SecurityTestUtils.switchToGridUser("some delegated epr", EasyMock.createMock(GlobusCredential.class));
 	}
 	
