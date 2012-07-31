@@ -596,13 +596,18 @@
 	<target name="test" if="run.test" depends="corbetura-init,clean-test-results, compile-test" description="Runs the testcases">
 		<echo message="Executing in ${ant.project.name}" />
 		<echo message="Test results dir: ${test.results.dir}, with pattern ${testPattern} and classes from ${test.classes.dir}" />
-        <echo message="Instrumented folder location :${instrumented.classes.dir}" />
+        <echo message="Instrumented folder location web:${instrumented.classes.dir}" />
+        <echo message="Instrumented folder location bootstrap:${basedir}/../bootstrap/build/instrumented-classes" />
+        <echo message="Instrumented folder location core:${basedir}/../core/build/instrumented-classes" />
+
 		<mkdir dir="${test.results.dir}" />
 		
 		<junit printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" 
 			showoutput="false" outputtoformatters="false" fork="true" forkmode="once" timeout="9000000" maxmemory="1024m" >
 			<jvmarg value="-XX:MaxPermSize=256m" />
 			<classpath location="${instrumented.classes.dir}" />
+			<classpath location="${basedir}/../bootstrap/build/instrumented-classes" />
+			<classpath location="${basedir}/../core/build/instrumented-classes" />
 			<classpath refid="test.run.classpath" />
 			
 			<sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura.report.dir}/cobertura.ser" />
