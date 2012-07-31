@@ -39,6 +39,7 @@
             <exclude org="org.springframework" module="spring-remoting" />
             <exclude org="ant" module="ant" />
             <exclude org="hibernate" />
+            <exclude org="cobertura" />
 
             <!-- Semanticbits Ant related tasks -->
 			<dependency org="com.semanticbits.ctms.ant" name="sbanttasks" rev="1.0" conf="build->default(*)" />
@@ -104,7 +105,7 @@
             </dependency>
         	<dependency org="org.easymock" name="easymockclassextension" rev="2.2.1" conf="test->default(*)" />
         	<dependency org="junit" name="junit" rev="3.8.1" conf="test->default(*)"/>
-        	<dependency org="cobertura" name="cobertura" rev="1.9.2" conf="test->default(*)"/>
+        	<dependency org="net.sourceforge.cobertura" name="cobertura" rev="1.9.2" conf="test->default(*)"/>
 
         </dependencies>
 </ivy-module>
