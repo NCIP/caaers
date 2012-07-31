@@ -19,7 +19,7 @@
         <ctc_terms id="-5" category_id="-6" term="Ear pain" ctep_term="Ear pain" ctep_code="200" other_required="0"/>
         <ctc_terms id="-51" category_id="-6" term="Headache" ctep_term="headache"  ctep_code="300" other_required="0"/>
 
-        <agent_terms id="-1" agent_id="-990" term_id="3010" term_type="ctep" expected="true" />
+        <agent_terms id="-1" agent_id="-990" term_id="3010" term_type="ctep" expected="1" />
 
         <MEDDRA_LLT id="-11" meddra_code="2" meddra_term="Hello World" />
 
