@@ -210,35 +210,6 @@ public class CreateAdverseEventAjaxFacade {
         return chemoAgentDao.getById(Integer.parseInt(chemoAgentId));
     }
 
-    public String buildChemoAgentsTable(String el, final Map parameterMap, String tableId, HttpServletRequest request) throws Exception {
-
-        try {
-            List<ChemoAgent> chemoAgents = chemoAgentDao.getAll();
-            TableModel model = getTableModel(parameterMap, request);
-
-//            String onInvokeAction = "showShowAllTable('" + tableId + "')";
-            String onInvokeAction = "showShowAllTable('" + el + "', '" + tableId + "')";
-
-            addTableAndRowToModel(model, tableId, chemoAgents, onInvokeAction);
-
-            Column columnTerm = model.getColumnInstance();
-            columnTerm.setProperty("name");
-            columnTerm.setTitle("Agent");
-            columnTerm.setCell("gov.nih.nci.cabig.caaers.web.search.link.ChemoAgentLinkDisplayCell");
-            model.addColumn(columnTerm);
-
-
-            return model.assemble().toString();
-
-
-        }
-        catch (Exception e) {
-            log.error("error while retriving the ctc terms" + e.toString() + " message" + e.getMessage());
-        }
-
-        return "";
-
-    }
 
     public List<InterventionSite> matchInterventionSites(String text) {
         String[] excerpts = {text};
@@ -399,37 +370,6 @@ public class CreateAdverseEventAjaxFacade {
         return terms;
     }
 
-    public String buildTermsTableByCategory(final Map parameterMap, Integer ctcCategoryId, String tableId, HttpServletRequest request) throws Exception {
-        if (ctcCategoryId == null || ctcCategoryId == 0) {
-            return "";
-        }
-
-        try {
-            List<CtcTerm> terms = getTermsByCategory(ctcCategoryId);
-            TableModel model = getTableModel(parameterMap, request);
-            String onInvokeAction = "buildTable('command'," + ctcCategoryId.intValue() + ",'" + tableId + "')";
-
-            addTableAndRowToModel(model, tableId, terms, onInvokeAction);
-
-            Column columnTerm = model.getColumnInstance();
-            columnTerm.setProperty("fullName");
-            columnTerm.setTitle("CTC term");
-            columnTerm.setCell("gov.nih.nci.cabig.caaers.web.search.CtcTermLinkDisplayCell");
-            model.addColumn(columnTerm);
-
-
-            return model.assemble().toString();
-
-
-        }
-        catch (Exception e) {
-            log.error("error while retriving the ctc terms" + e.toString() + " message" + e.getMessage());
-        }
-
-        return "";
-
-    }
-
     public List<CtcCategory> getCategories(int ctcVersionId) {
         List<CtcCategory> categories = ctcDao.getById(ctcVersionId).getCategories();
         // cut down objects for serialization
@@ -489,39 +429,6 @@ public class CreateAdverseEventAjaxFacade {
         labTerm.getCategory().getLabVersion().setCategories(null);
 
         return labTerm;
-    }
-
-    public String buildLabTermsTable(final Map parameterMap, String labCategoryId, String tableId, HttpServletRequest request) throws Exception {
-
-        if (labCategoryId == null || labCategoryId.equalsIgnoreCase("")) {
-            return "";
-        }
-
-
-        try {
-            TableModel model = getTableModel(parameterMap, request);
-            List<LabTerm> terms = getLabTermsByCategory(Integer.parseInt(labCategoryId));
-
-            String onInvokeAction = "showLabsTable('" + labCategoryId + "','" + tableId + "')";
-
-            addTableAndRowToModel(model, tableId, terms, onInvokeAction);
-
-            Column columnTerm = model.getColumnInstance();
-            columnTerm.setProperty("term");
-            columnTerm.setTitle("Lab test name");
-            columnTerm.setCell("gov.nih.nci.cabig.caaers.web.search.link.LabTermLinkDisplayCell");
-            model.addColumn(columnTerm);
-
-
-            return model.assemble().toString();
-
-        }
-        catch (Exception e) {
-            log.error("error while retriving the lab terms" + e.toString() + " message" + e.getMessage());
-        }
-
-        return "";
-
     }
 
 

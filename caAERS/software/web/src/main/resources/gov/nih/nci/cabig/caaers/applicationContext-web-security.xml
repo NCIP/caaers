@@ -205,11 +205,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <entry key="/pages/search/advancedSearch" value="gov.nih.nci.cabig.caaers.domain.AdvanceSearch:ACCESS"/>
         <entry key="/pages/search/listSearch" value="gov.nih.nci.cabig.caaers.domain.AdvanceSearch:CREATE"/>
 
-		<!--========= SEARCH ========-->
-		<entry key="/pages/search/study" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
-		<entry key="/pages/search/participant" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
-		<entry key="/pages/search/routineReport" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
-
 	</util:map>
 
     <util:map id="tabObjectPrivilegeMap">

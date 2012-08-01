@@ -294,22 +294,6 @@
 			
         })
 
-        function showAjaxTable(an, ctc, tableId, outerTableId) {
-            var ctcId = ctc;
-            var parameterMap = getParameterMap('command');
-
-            createAE.buildTermsTableByCategory(parameterMap, ctcId, tableId, showTable2);
-            function showTable2(table) {
-                //$('indicator').className = 'indicator'
-                var testDiv = $(tableId);
-                var testOuterDiv = $(outerTableId);
-                
-                testDiv.innerHTML = table;
-                testDiv.show();
-                testOuterDiv.show();
-            }
-
-        }
 
         function hideShowAllTable(popupTable) {
             var popupTableDiv = $(popupTable);

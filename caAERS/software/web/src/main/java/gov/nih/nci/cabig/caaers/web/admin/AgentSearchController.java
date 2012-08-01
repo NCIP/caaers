@@ -4,7 +4,6 @@ import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.dao.AgentSpecificTermDao;
 import gov.nih.nci.cabig.caaers.service.AgentSpecificAdverseEventListService;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
-import gov.nih.nci.cabig.caaers.web.search.SearchController;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -24,7 +23,7 @@ import java.util.Map;
 * 
 * */
 
-public class AgentSearchController extends SearchController {
+public class AgentSearchController extends SimpleFormController {
 
     private AgentDao agentDao;
     private AgentSpecificTermDao agentSpecificTermDao;

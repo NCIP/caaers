@@ -4,7 +4,6 @@ import edu.duke.cabig.c3pr.esb.Metadata;
 import gme.ccts_cabig._1_0.gov_nih_nci_cabig_ccts_ae.AeNotification;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.factory.AENotificationFactory;
 import gov.nih.nci.cabig.caaers.esb.client.MessageBroadcastService;
 import gov.nih.nci.cabig.caaers.utils.XMLUtil;
@@ -45,22 +44,7 @@ public class InteroperationServiceImpl implements InteroperationService {
         
     }
 
-    /* (non-Javadoc)
-     * @see gov.nih.nci.cabig.caaers.service.InteroperationService#pushToStudyCalendar(gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport)
-     */
-    public void pushToStudyCalendar(RoutineAdverseEventReport roReport)
-            throws CaaersSystemException {
-        AeNotification aeNotification = null;
-		try {
-			aeNotification = aeNotificationFactory.createAENotificationForRoutineAdverseEventReport(roReport);
-			getMessageBroadcastService().broadcast(XMLUtil.getAdverseEventXML(aeNotification));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			throw new CaaersSystemException(e);
-		}
-        // getMessageBroadcastService().broadcast(secure(XMLUtil.getXML(aeNotification)));
-        
-    }
+
     /*
     public String broadcastCOPPA(String message,Metadata metaData) throws CaaersSystemException {
     	String result = null;

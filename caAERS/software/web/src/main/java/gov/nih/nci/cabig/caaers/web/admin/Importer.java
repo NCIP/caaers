@@ -148,9 +148,6 @@ public abstract class Importer{
         if ("participant".equals(type)) {
         	return "classpath:gov/nih/nci/cabig/caaers/ParticipantSchema.xsd";
         }
-        if ("routineAeReport".equals(type)) {
-            return "classpath:gov/nih/nci/cabig/caaers/routineAeXSD.xsd";
-        }
         if ("investigator".equals(type)) {
             return "classpath:gov/nih/nci/cabig/caaers/Investigator.xsd";
         }  

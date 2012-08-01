@@ -2,7 +2,6 @@ package gov.nih.nci.cabig.caaers.domain.factory;
 
 import gme.ccts_cabig._1_0.gov_nih_nci_cabig_ccts_ae.AeNotification;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -37,23 +36,6 @@ public class AENotificationFactory {
 
     }
 
-    /**
-     * Creates a new AENotification object.
-     *
-     * @param roReport the ro report
-     * @return the ae notification
-     * @throws Exception the exception
-     */
-    public AeNotification createAENotificationForRoutineAdverseEventReport(final RoutineAdverseEventReport roReport) throws Exception {
-        AeNotification aeNotification = new AeNotification();
-        aeNotification.setRegistrationGridId(roReport.getAssignment().getGridId());
-        Date detectionDate = roReport.getAdverseEvents().get(0).getStartDate();
-        if (detectionDate == null) detectionDate = roReport.getStartDate();
-        //aeNotification.setDetectionDate(new java.sql.Date(detectionDate.getTime()));
-        aeNotification.setDetectionDate(getXmlDate(detectionDate));
-        aeNotification.setDescription(roReport.getNotificationMessage());
-        return aeNotification;
-    }
     
     /**
      * Gets the xml date.

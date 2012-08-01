@@ -2,48 +2,30 @@ package gov.nih.nci.cabig.caaers.web.participant;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
-import gov.nih.nci.cabig.caaers.dao.query.StudyHavingStudySiteQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
-import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.ajax.ParticipantAjaxableDomainObject;
-import gov.nih.nci.cabig.caaers.domain.ajax.StudyAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.StringTokenizer;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-
 import gov.nih.nci.cabig.caaers.utils.ranking.RankBasedSorterUtils;
 import gov.nih.nci.cabig.caaers.utils.ranking.Serializer;
-import gov.nih.nci.cabig.caaers.web.AbstractAjaxFacade;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
-import org.extremecomponents.table.bean.Column;
-import org.extremecomponents.table.bean.Export;
-import org.extremecomponents.table.bean.Row;
-import org.extremecomponents.table.bean.Table;
-import org.extremecomponents.table.context.Context;
-import org.extremecomponents.table.context.HttpServletRequestContext;
-import org.extremecomponents.table.core.TableConstants;
-import org.extremecomponents.table.core.TableModel;
-import org.extremecomponents.table.core.TableModelImpl;
-import org.extremecomponents.table.view.CsvView;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.web.servlet.mvc.BaseCommandController;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Saurabh Agrawal
@@ -67,27 +49,6 @@ public class CreateParticipantAjaxFacade {
 
 
 
-/*
-    public List<StudyAjaxableDomainObject> getStudiesHasvingStudySites(final Map parameterMap, final String type, final String text, final String nciCode, final HttpServletRequest request) {
-        StudyHavingStudySiteQuery query = new StudyHavingStudySiteQuery();
-        query.joinStudyOrganization();
-        query.filterByDataEntryStatus(true);
-        query.filterByStudySiteNciInstituteCode(nciCode);
-        if ("st".equals(type)) {
-            query.filterByStudyShortTile(text);
-        } else if ("idtf".equals(type)) {
-            query.filterByIdentifierValue(text);
-        }
-        query.filterBySST();
-        List<Study> studies = studyRepository.find(query);
-
-        List rs = new ArrayList<StudyAjaxableDomainObject>();
-
-        return rs;
-    }
-*/
-
-
     /*
     * Ajax Call hits this method to generate table
     */
@@ -99,118 +60,6 @@ public class CreateParticipantAjaxFacade {
         return participants;
     }
 
-    /**
-     * Builds Participant table fro AJAX calls
-     * */
-    public Object buildParticipant(final TableModel model, final Collection participants) throws Exception {
-        Table table = model.getTableInstance();
-        table.setTableId("ajaxTable");
-        table.setForm("assembler");
-        table.setItems(participants);
-        table.setAction(model.getContext().getContextPath() + "/pages/search/participant");
-        table.setTitle("");
-        table.setShowPagination(true);
-        table.setOnInvokeAction("buildTable('assembler')");
-        table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
-        table.setSortRowsCallback("gov.nih.nci.cabig.caaers.web.table.SortRowsCallbackImpl");
-        table.setSortable(true);
-        table.setShowPagination(true);
-        model.addTable(table);
-
-/*
-        Export export = model.getExportInstance();
-        export.setView(TableConstants.VIEW_CSV);
-        export.setViewResolver(TableConstants.VIEW_CSV);
-        export.setImageName(TableConstants.VIEW_CSV);
-        export.setText(TableConstants.VIEW_CSV);
-        export.addAttribute(CsvView.DELIMITER, "|");
-        export.setFileName("caaers_participants.txt");
-        model.addExport(export);
-*/
-
-        Row row = model.getRowInstance();
-        row.setHighlightRow(Boolean.TRUE);
-        model.addRow(row);
-
-        Column columnPrimaryIdentifier = model.getColumnInstance();
-        columnPrimaryIdentifier.setSortable(true);
-        columnPrimaryIdentifier.setFilterable(true);
-        columnPrimaryIdentifier.setProperty("primaryIdentifier.value");
-        columnPrimaryIdentifier.setAlias("primaryIdentifier");
-        columnPrimaryIdentifier.setTitle("Primary ID");
-        columnPrimaryIdentifier.setCell("gov.nih.nci.cabig.caaers.web.search.cell.SelectedParticipantCell");
-
-        model.addColumn(columnPrimaryIdentifier);
-        addFirstName(model);
-        addLastName(model);
-        addGender(model);
-        addRace(model);
-        addEthnicity(model);
-
-        return model.assemble();
-    }
-
-    /**
-     * Add Ethnicity column to the AJAX table
-     * */
-    private void addEthnicity(TableModel model) {
-        Column colummEthnicity = model.getColumnInstance();
-        colummEthnicity.setProperty("ethnicity");
-        model.addColumn(colummEthnicity);
-    }
-
-    /**
-     * Add Race column to the AJAX table
-     * */
-    private void addRace(TableModel model) {
-        Column colummRace = model.getColumnInstance();
-        colummRace.setProperty("race");
-        model.addColumn(colummRace);
-    }
-
-    /**
-     * Add Gender column to the AJAX table
-     * */
-    private void addGender(TableModel model) {
-        Column colummGender = model.getColumnInstance();
-        colummGender.setProperty("gender");
-        model.addColumn(colummGender);
-    }
-
-    /**
-     * Add Last Name column to the AJAX table
-     * */
-    private void addLastName(TableModel model) {
-        Column columnLastName = model.getColumnInstance();
-        columnLastName.setProperty("lastName");
-        columnLastName.setSortable(true);
-        columnLastName.setFilterable(true);
-        model.addColumn(columnLastName);
-    }
-
-    /**
-     * Add First Name column to the AJAX table
-     * */
-    private void addFirstName(TableModel model) {
-        Column columnFirstName = model.getColumnInstance();
-        columnFirstName.setProperty("firstName");
-        columnFirstName.setSortable(true);
-        columnFirstName.setFilterable(true);
-        model.addColumn(columnFirstName);
-    }
-
-    /**
-     * Add Primarr Identifier column to the AJAX table
-     * */
-    private void addPrimaryIdentifier(TableModel model) {
-        Column columnPrimaryIdentifier = model.getColumnInstance();
-        columnPrimaryIdentifier.setSortable(true);
-        columnPrimaryIdentifier.setFilterable(true);
-        columnPrimaryIdentifier.setProperty("primaryIdentifier.value");
-        columnPrimaryIdentifier.setTitle("Primary ID");
-        model.addColumn(columnPrimaryIdentifier);
-
-    }
 
     /**
      * Builds and executes the HQL for Subject Search

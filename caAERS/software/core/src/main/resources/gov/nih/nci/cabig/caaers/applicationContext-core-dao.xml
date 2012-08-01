@@ -68,7 +68,6 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.CtcGrade</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Identifier</value>
                 <value>gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport</value>
-                <value>gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport</value>
                 <value>gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Search</value>
                 <value>gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig</value>

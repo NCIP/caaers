@@ -14,10 +14,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.extremecomponents.table.context.Context;
-import org.extremecomponents.table.context.HttpServletRequestContext;
-import org.extremecomponents.table.core.TableModel;
-import org.extremecomponents.table.core.TableModelImpl;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.ServletRequestDataBinder;
@@ -49,29 +45,6 @@ public class SearchStudyController extends SimpleFormController {
         return refdata;
     }
 
-/*
-    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
-        super.initBinder(request, binder);
-        Enumeration en = request.getParameterNames();
-
-        if (request.getMethod().equals(METHOD_GET)) {
-            SearchStudyAjaxFacade studyFacade = new SearchStudyAjaxFacade();
-            Context context = null;
-            context = new HttpServletRequestContext(request);
-
-            TableModel model = new TableModelImpl(context);
-            Object viewData = null;
-            try {
-                viewData = studyFacade.build(model, new ArrayList());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            request.setAttribute("assembler", viewData);
-        }
-    }
-
-*/
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws ServletException {
         SearchStudyCommand sCommand = new SearchStudyCommand();
@@ -79,41 +52,6 @@ public class SearchStudyController extends SimpleFormController {
         return sCommand;
     }
 
-    @Override
-    protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object oCommand, BindException errors) throws Exception {
-        SearchStudyAjaxFacade studyFacade = new SearchStudyAjaxFacade();
-        Context context = null;
-        context = new HttpServletRequestContext(request);
-
-        TableModel model = new TableModelImpl(context);
-        Object viewData = null;
-        try {
-            viewData = studyFacade.build(model, new ArrayList());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        request.setAttribute("assembler", viewData);
-
-        /*
-         * String action = request.getParameter("_action");
-         * 
-         * 
-         * if("addCriteria".equals(action)) {
-         * ((SearchStudyCommand)oCommand).getSearchCriteria().add(new SearchCommand()); } else if
-         * ("removeCriteria".equals(action)) { int index =
-         * Integer.parseInt(request.getParameter("_selected"));
-         * ((SearchStudyCommand)oCommand).getSearchCriteria().remove(index); }
-         */
-
-        Map map = errors.getModel();
-        map.put("studySearchType", listValues.getStudySearchType());
-        ModelAndView modelAndView = new ModelAndView(getSuccessView(), map);
-
-        // needed for saving session state
-        request.getSession().setAttribute(getFormSessionAttributeName(), oCommand);
-
-        return modelAndView;
-    }
 
 
     public void setListValues(final ListValues listValues) {

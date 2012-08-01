@@ -9,7 +9,6 @@ import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationService;
 import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationServiceImpl;
@@ -109,9 +108,6 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
             //return "classpath:gov/nih/nci/cabig/caaers/participantXSD.xsd";
         	return "classpath:schema/integration/ParticipantSchema.xsd";
         }
-        if ("routineAeReport".equals(type)) {
-            return "classpath:schema/integration/routineAeXSD.xsd";
-        }
         if ("investigator".equals(type)) {
             return "classpath:schema/integration/Investigator.xsd";
         }  
@@ -137,29 +133,6 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 
     }
     
-    
-    public ExpeditedAdverseEventReport getExpedited(RoutineAdverseEventReport raer) {
-        log.debug("Checking for expedited AEs");
-        Study study = raer.getStudy();
-
-        // Create the expedited Report
-        ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
-        aeReport.setAssignment(raer.getAssignment());
-        aeReport.setCreatedAt(nowFactory.getNowTimestamp());
-
-        try {
-            for (AdverseEvent ae : raer.getAdverseEvents()) {
-
-                String message = adverseEventEvaluationService.assesAdverseEvent(ae, study);
-                if (message.equals("SERIOUS_ADVERSE_EVENT")) {
-                    aeReport.addAdverseEvent(ae);
-                }
-            }
-            return aeReport.getAdverseEvents().isEmpty() ? null : aeReport;
-        } catch (Exception e) {
-            throw new CaaersSystemException("There was an error evaluating Routine AEs", e);
-        }
-    }
 
     private ImportCommand createCommandObject() {
         ImportCommand ic = new ImportCommand();

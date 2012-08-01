@@ -1,42 +1,26 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.query.StudyHavingStudySiteQuery;
-import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.dao.query.StudySitesQuery;
-import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySearchableAjaxableDomainObjectQuery;
-import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
-import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudyAjaxableDomainObject;
-import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySiteAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository;
-import gov.nih.nci.cabig.caaers.tools.ObjectTools;
-import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
-import gov.nih.nci.cabig.caaers.web.AbstractAjaxFacade;
 import gov.nih.nci.cabig.caaers.web.participant.AssignParticipantController;
-import gov.nih.nci.cabig.caaers.web.participant.AssignParticipantStudyCommand;
-import gov.nih.nci.cabig.caaers.CaaersSystemException;
-
-import java.util.*;
-
-import javax.servlet.http.HttpServletRequest;
-
-import gov.nih.nci.cabig.caaers.web.participant.ParticipantInputCommand;
 import org.apache.commons.lang.StringUtils;
-import org.extremecomponents.table.bean.Column;
-import org.extremecomponents.table.bean.Row;
-import org.extremecomponents.table.bean.Table;
-import org.extremecomponents.table.context.Context;
-import org.extremecomponents.table.context.HttpServletRequestContext;
-import org.extremecomponents.table.core.TableModel;
-import org.extremecomponents.table.core.TableModelImpl;
-import org.springframework.beans.factory.annotation.Required;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.Log;
+import org.springframework.beans.factory.annotation.Required;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class SearchStudyAjaxFacade {
 
@@ -45,81 +29,6 @@ public class SearchStudyAjaxFacade {
     private StudyRepository studyRepository;
     private boolean coppaMode;
     private static final Log log = LogFactory.getLog(SearchStudyAjaxFacade.class);
-
-    public Object build(TableModel model, Collection studySearchableAjaxableDomainObjects) throws Exception {
-        addTable(model, studySearchableAjaxableDomainObjects);
-        addPrimaryIdColumn(model);
-        addShorTitleColumn(model);
-        addSponsorColumn(model);
-        addPhaseCodeColumn(model);
-        addStatusColumn(model);
-        return model.assemble();
-    }
-
-    private void addStatusColumn(TableModel model) {
-        Column columnStatusCode = model.getColumnInstance();
-        columnStatusCode.setProperty("study.status");
-        model.addColumn(columnStatusCode);
-        columnStatusCode.setSortable(Boolean.TRUE);
-    }
-
-    private void addPhaseCodeColumn(TableModel model) {
-        Column columnPhaseCode = model.getColumnInstance();
-        columnPhaseCode.setTitle("Phase");
-        columnPhaseCode.setProperty("phaseCode");
-        model.addColumn(columnPhaseCode);
-        columnPhaseCode.setSortable(Boolean.TRUE);
-    }
-
-    private void addSponsorColumn(TableModel model) {
-        Column columnSponsorCode = model.getColumnInstance();
-        columnSponsorCode.setTitle("Funding Sponsor");
-        columnSponsorCode.setProperty("primarySponsorCode");
-        columnSponsorCode.setSortable(Boolean.TRUE);
-        model.addColumn(columnSponsorCode);
-    }
-
-    private void addShorTitleColumn(TableModel model) {
-        Column columnShortTitle = model.getColumnInstance();
-        columnShortTitle.setTitle("Short Title");
-        columnShortTitle.setProperty("shortTitle");
-        columnShortTitle.setSortable(Boolean.TRUE);
-        model.addColumn(columnShortTitle);
-    }
-
-    private void addPrimaryIdColumn(TableModel model) {
-        Column columnPrimaryIdentifier = model.getColumnInstance();
-        columnPrimaryIdentifier.setProperty("primaryIdentifierValue");
-        columnPrimaryIdentifier.setTitle("Study ID");
-        columnPrimaryIdentifier.setCell("gov.nih.nci.cabig.caaers.web.study.StudyLinkDisplayCell");
-        model.addColumn(columnPrimaryIdentifier);
-    }
-
-    private void addTable(TableModel model, Collection studySearchableAjaxableDomainObjects) {
-        Table table = model.getTableInstance();
-        table.setTableId("ajaxTable");
-        table.setForm("assembler");
-        table.setItems(studySearchableAjaxableDomainObjects);
-        table.setAction(model.getContext().getContextPath() + "/assembler.run");
-        table.setTitle("");
-        table.setShowPagination(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal());
-        table.setOnInvokeAction("buildTable('assembler')");
-        table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
-        //only support filtering & sorting in local authentication mode. 
-        table.setFilterable(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal());
-        table.setSortable(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal());
-        if(Configuration.LAST_LOADED_CONFIGURATION.isAuthenticationModeLocal()){
-        	table.setRowsDisplayed(100);
-        }
-        table.setSortRowsCallback("gov.nih.nci.cabig.caaers.web.table.SortRowsCallbackImpl");
-
-        table.setAutoIncludeParameters(false);
-        model.addTable(table);
-
-        Row row = model.getRowInstance();
-        row.setHighlightRow(Boolean.TRUE);
-        model.addRow(row);
-    }
 
     public List<StudyAjaxableDomainObject> getStudiesTable(Map parameterMap, String type, String text, HttpServletRequest request) {
 /*
@@ -224,12 +133,7 @@ public class SearchStudyAjaxFacade {
         return rs;
     }
 
-/*
-    private List<StudySite> getObjects(String type, String text) {
-        return getStudySites(type, text, 0, false);
-    }
 
-*/
     public List<StudySite> getStudySites(String text, int organizationID, boolean hideIncomplete) {
         StudySitesQuery studySitesQuery = new StudySitesQuery();
         if (organizationID > 0) studySitesQuery.filterByOrganizationId(organizationID);
@@ -238,7 +142,6 @@ public class SearchStudyAjaxFacade {
         List<StudySite> studySites = studyRepository.search(studySitesQuery, "st", text, coppaMode);
         return studySites;
     }
-
 
     @Required
     public void setStudySearchableAjaxableDomainObjectRepository(StudySearchableAjaxableDomainObjectRepository studySearchableAjaxableDomainObjectRepository) {

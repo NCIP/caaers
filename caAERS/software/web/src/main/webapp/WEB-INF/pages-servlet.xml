@@ -306,18 +306,6 @@
     		<bean class="java.lang.String">
 	    		<constructor-arg value="/pages/admin/mandatoryFields"/>
     		</bean>
-<!--    		<bean class="java.lang.String">-->
-<!--	    		<constructor-arg value="/pages/admin/searchInvestigator"/>-->
-<!--    		</bean>-->
-<!--    		<bean class="java.lang.String">-->
-<!--	    		<constructor-arg value="/pages/admin/createInvestigator"/>-->
-<!--    		</bean>-->
-<!--    		<bean class="java.lang.String">-->
-<!--	    		<constructor-arg value="/pages/admin/searchResearchStaff"/>-->
-<!--    		</bean>-->
-<!--    		<bean class="java.lang.String">-->
-<!--	    		<constructor-arg value="/pages/admin/createResearchStaff"/>-->
-<!--    		</bean>-->
     		<bean class="java.lang.String">
 	    		<constructor-arg value="/pages/admin/import"/>
     		</bean>
@@ -470,7 +458,6 @@
   </bean>
 
   <bean name="/admin/searchOrganization" id="searchOrganizationController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.search.SearchOrganizationController" />
-  <bean name="/admin/searchResearchStaff" id="searchResearchStaffController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.search.SearchResearchStaffController" />
 
   <bean name="/admin/import" id="importController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.ImportController" />
   <bean name="/admin/importMeddra" id="importMeddraController" autowire="byName" class="gov.nih.nci.cabig.caaers.web.admin.ImportMeddraController" />
@@ -478,17 +465,13 @@
   <bean name="/admin/createIND" id="createINDController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.CreateINDController"/>
   <bean name="/admin/searchIND" id="searchINDController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.search.SearchINDController"/>
   
-  <bean name="/search/study" id="studyController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.search.StudyController"/>
-  <bean name="/search/participant" id="participantController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.search.ParticipantController"/>
   <bean name="/participant/search" id="searchParticipantController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.search.SearchParticipantController"/>
 
 
   <bean name="/search/listSearch" id="listSearchController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.search.ListSearchController"/>
   
   <bean name="/search/advancedSearch" id="advancedSearchController" autowire="byType" 	class="gov.nih.nci.cabig.caaers.web.search.AdvancedSearchController"/>
-  
-  <bean name="/search/routineReport" id="routineReportController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.search.RoutineReportController"/>
-    
+
   <bean name="/search/exportSearchResults" id="exportSearchResultsController" autowire="byType"  class="gov.nih.nci.cabig.caaers.web.search.ExportSearchResultsController"/>
   <!--
   <bean name="/help" id="helpController" autowire="byType"

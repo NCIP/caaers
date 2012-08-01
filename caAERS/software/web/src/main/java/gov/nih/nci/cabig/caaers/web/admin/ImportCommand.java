@@ -5,7 +5,6 @@ import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 
@@ -39,8 +38,6 @@ public class ImportCommand {
     private List<DomainObjectImportOutcome<Study>> importableStudies = new ArrayList<DomainObjectImportOutcome<Study>>();
     private List<DomainObjectImportOutcome<Participant>> nonImportableParticipants = new ArrayList<DomainObjectImportOutcome<Participant>>();
     private List<DomainObjectImportOutcome<Participant>> importableParticipants = new ArrayList<DomainObjectImportOutcome<Participant>>();
-    private List<DomainObjectImportOutcome<RoutineAdverseEventReport>> nonImportableRoutineAdverseEventReports = new ArrayList<DomainObjectImportOutcome<RoutineAdverseEventReport>>();
-    private List<DomainObjectImportOutcome<RoutineAdverseEventReport>> importableRoutineAdverseEventReports = new ArrayList<DomainObjectImportOutcome<RoutineAdverseEventReport>>();
     private List<DomainObjectImportOutcome<Investigator>> importableInvestigators = new ArrayList<DomainObjectImportOutcome<Investigator>>();
     private List<DomainObjectImportOutcome<Investigator>> nonImportableInvestigators = new ArrayList<DomainObjectImportOutcome<Investigator>>();
     private List<DomainObjectImportOutcome<ResearchStaff>> importableResearchStaff = new ArrayList<DomainObjectImportOutcome<ResearchStaff>>();
@@ -192,33 +189,6 @@ public class ImportCommand {
         getNonImportableParticipants().add(domainObjectImportOutcome);
     }
 
-    public List<DomainObjectImportOutcome<RoutineAdverseEventReport>> getImportableRoutineAdverseEventReports() {
-        return importableRoutineAdverseEventReports;
-    }
-
-    public void setImportableRoutineAdverseEventReports(
-                    List<DomainObjectImportOutcome<RoutineAdverseEventReport>> importableRoutineAes) {
-        this.importableRoutineAdverseEventReports = importableRoutineAes;
-    }
-
-    public void addImportableRoutineAdverseEventReport(
-                    DomainObjectImportOutcome<RoutineAdverseEventReport> domainObjectImportOutcome) {
-        getImportableRoutineAdverseEventReports().add(domainObjectImportOutcome);
-    }
-
-    public List<DomainObjectImportOutcome<RoutineAdverseEventReport>> getNonImportableRoutineAdverseEventReports() {
-        return nonImportableRoutineAdverseEventReports;
-    }
-
-    public void setNonImportableRoutineAdverseEventReports(
-                    List<DomainObjectImportOutcome<RoutineAdverseEventReport>> nonImportableRoutineAes) {
-        this.nonImportableRoutineAdverseEventReports = nonImportableRoutineAes;
-    }
-
-    public void addNonImportableRoutineAdverseEventReport(
-                    DomainObjectImportOutcome<RoutineAdverseEventReport> domainObjectImportOutcome) {
-        getNonImportableRoutineAdverseEventReports().add(domainObjectImportOutcome);
-    }
 
     public String getSchemaValidationResult() {
         return schemaValidationResult;
@@ -287,8 +257,6 @@ public class ImportCommand {
 	    importableStudies = new ArrayList<DomainObjectImportOutcome<Study>>();
 	    nonImportableParticipants = new ArrayList<DomainObjectImportOutcome<Participant>>();
 	    importableParticipants = new ArrayList<DomainObjectImportOutcome<Participant>>();
-	    nonImportableRoutineAdverseEventReports = new ArrayList<DomainObjectImportOutcome<RoutineAdverseEventReport>>();
-	    importableRoutineAdverseEventReports = new ArrayList<DomainObjectImportOutcome<RoutineAdverseEventReport>>();
 	    importableInvestigators = new ArrayList<DomainObjectImportOutcome<Investigator>>();
 	    nonImportableInvestigators = new ArrayList<DomainObjectImportOutcome<Investigator>>();
 	    importableResearchStaff = new ArrayList<DomainObjectImportOutcome<ResearchStaff>>();
