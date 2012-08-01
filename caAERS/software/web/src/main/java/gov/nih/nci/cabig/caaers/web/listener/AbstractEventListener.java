@@ -23,6 +23,7 @@ public abstract class AbstractEventListener   implements ApplicationListener {
     protected static final Log log = LogFactory.getLog(AbstractEventListener.class);
 
     public void preProcess(ApplicationEvent event){
+        //FIXME: BJ - Non threadsafe access of correlationId
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
@@ -39,6 +40,7 @@ public abstract class AbstractEventListener   implements ApplicationListener {
     }
 
     public void postProcess(ApplicationEvent event){
+        //FIXME: BJ - Non threadsafe access of correlationId
         if(eventMonitor != null && correlationId != null) eventMonitor.markCompletion(correlationId);
     }
     /**
