@@ -27,10 +27,11 @@ public class EventMonitorTest extends AbstractTestCase {
         e.setThreadName("j");
         e.setCompletedOn(completedOn);
         assertEquals("2011-12-29T00:00:00, eventType: 'x', time: '86400 seconds'}", e.toString());
-        
+        assertNotNull(e.getDisplayName());
         String id = monitor.addEvent("x", "y");
         int i = monitor.getAllEvents().size();
         assertEquals(1,i);
+
     }
 
     public void testMarkCompletion() throws Exception {
