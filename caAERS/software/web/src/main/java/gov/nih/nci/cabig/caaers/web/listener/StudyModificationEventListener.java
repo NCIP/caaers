@@ -46,42 +46,42 @@ public class StudyModificationEventListener extends AbstractEventListener {
         log.debug("Exiting gov.nih.nci.cabig.caaers.web.listener.StudyModificationEventListener.preProcess: " + event.toString());
     }
 
-    /**
-     * Will find all the usersnames associated with the study
-     * @param study
-     * @return
-     */
-    private Set<String> findLoginNamesFromStudy(Study study){
-      Set<String> userNames = new HashSet<String>();
-        List<StudyOrganization> sos = study.getStudyOrganizations();
-        for (StudyOrganization so:sos) {
-        	List<StudyPersonnel>  sps= so.getStudyPersonnels();
-        	for (StudyPersonnel sp:sps) {
-                if(sp == null) continue;
-                SiteResearchStaff srs = sp.getSiteResearchStaff();
-                if(srs == null) continue;
-                ResearchStaff rs = srs.getResearchStaff();
-                if(rs == null) continue;
-                String loginName = rs.getLoginId();
-                if(loginName != null) userNames.add(loginName);
-        	}
-
-        	List<StudyInvestigator> sis = so.getStudyInvestigators();
-        	for (StudyInvestigator si:sis) {
-                if(si == null) continue;
-                SiteInvestigator siteInv = si.getSiteInvestigator();
-                if(siteInv == null) continue;
-                Investigator i = siteInv.getInvestigator();
-                if(i == null) continue;
-                String loginName = i.getLoginId();
-                if(loginName != null) userNames.add(loginName);
-
-        	}
-
-        }
-        return userNames;
-    }
-    
+//    /**
+//     * Will find all the usersnames associated with the study
+//     * @param study
+//     * @return
+//     */
+//    private Set<String> findLoginNamesFromStudy(Study study){
+//      Set<String> userNames = new HashSet<String>();
+//        List<StudyOrganization> sos = study.getStudyOrganizations();
+//        for (StudyOrganization so:sos) {
+//        	List<StudyPersonnel>  sps= so.getStudyPersonnels();
+//        	for (StudyPersonnel sp:sps) {
+//                if(sp == null) continue;
+//                SiteResearchStaff srs = sp.getSiteResearchStaff();
+//                if(srs == null) continue;
+//                ResearchStaff rs = srs.getResearchStaff();
+//                if(rs == null) continue;
+//                String loginName = rs.getLoginId();
+//                if(loginName != null) userNames.add(loginName);
+//        	}
+//
+//        	List<StudyInvestigator> sis = so.getStudyInvestigators();
+//        	for (StudyInvestigator si:sis) {
+//                if(si == null) continue;
+//                SiteInvestigator siteInv = si.getSiteInvestigator();
+//                if(siteInv == null) continue;
+//                Investigator i = siteInv.getInvestigator();
+//                if(i == null) continue;
+//                String loginName = i.getLoginId();
+//                if(loginName != null) userNames.add(loginName);
+//
+//        	}
+//
+//        }
+//        return userNames;
+//    }
+//
 
     
     public StudyRepository getStudyRepository() {
