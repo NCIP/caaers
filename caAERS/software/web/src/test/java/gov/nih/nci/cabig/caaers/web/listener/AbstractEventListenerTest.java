@@ -1,12 +1,14 @@
 package gov.nih.nci.cabig.caaers.web.listener;
 
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
+import gov.nih.nci.cabig.caaers.accesscontrol.dataproviders.FilteredDataLoader;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.event.*;
 import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import org.acegisecurity.Authentication;
 import org.acegisecurity.event.authentication.AuthenticationSuccessEvent;
+import org.easymock.EasyMock;
 import org.springframework.context.ApplicationEvent;
 
 /**
@@ -15,12 +17,20 @@ import org.springframework.context.ApplicationEvent;
 public class AbstractEventListenerTest extends AbstractTestCase {
 
     AuthenticationSuccessListener listener;
+    CourseModificationEventListener courseListener;
+    FilteredDataLoader loader;
 
     @Override
     public void setUp() throws Exception {
-        super.setUp();  
+        super.setUp();
+        loader = registerMockFor(FilteredDataLoader.class);
         listener = new AuthenticationSuccessListener();
+        courseListener = new CourseModificationEventListener();
+
         listener.setEventMonitor(new EventMonitor());
+        listener.setFilteredDataLoader(loader);
+        courseListener.setEventMonitor(new EventMonitor());
+        courseListener.setFilteredDataLoader(loader);
         SecurityTestUtils.switchToSuperuser();
     }
 
@@ -81,6 +91,31 @@ public class AbstractEventListenerTest extends AbstractTestCase {
         assertFalse(new ResearchStaffModificationEventListener().isSupported( new AuthenticationSuccessEvent(SecurityUtils.getAuthentication())));
         assertFalse(new SubjectModificationEventListener().isSupported( new AuthenticationSuccessEvent(SecurityUtils.getAuthentication())));
 
+    }
+
+    public void testOnApplicationEventUnsupportedEvent() throws  Exception{
+        Authentication a = SecurityUtils.getAuthentication();
+        replayMocks();
+        listener.onApplicationEvent(new EntityModificationEvent(a, new Lab(), null));
+        verifyMocks();
+    }
+
+    public void testOnApplicationEventCourseModification() throws  Exception{
+        Authentication a = SecurityUtils.getAuthentication();
+        loader.updateIndexByUserName(a);
+        replayMocks();
+        courseListener.onApplicationEvent(new CourseModificationEvent(a, new AdverseEventReportingPeriod()));
+        verifyMocks();
+    }
+
+
+    public void testOnApplicationEventOnAuthentication() throws  Exception{
+        Authentication a = SecurityUtils.getAuthentication();
+        AuthenticationSuccessEvent event = new AuthenticationSuccessEvent(a);
+        loader.updateIndexByUserName(a);
+        replayMocks();
+        listener.onApplicationEvent(event);
+        verifyMocks();
     }
 
 
