@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.caaers.security.SecurityUtilsTest;
 import gov.nih.nci.cabig.caaers.web.utils.ConfigPropertyHelper;
 import org.springframework.context.ApplicationContext;
 import org.springframework.validation.FieldError;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,8 @@ import java.util.Map;
  * @author Biju Joseph
  * @author Ion C. Olaru
  */
+
+@SuppressWarnings("unchecked")
 public class CreateParticipantTabTest extends AbstractTabTestCase<CreateParticipantTab, ParticipantInputCommand> {
 
     private CreateParticipantTab createParticipantTab;
@@ -31,6 +34,7 @@ public class CreateParticipantTabTest extends AbstractTabTestCase<CreateParticip
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+        createParticipantTab = createTab();
         ConfigPropertyHelper.putParticipantIdentifiersType(configProperty);
         newParticipantCommand.setStudy(new LocalStudy());
     }
@@ -349,7 +353,22 @@ public class CreateParticipantTabTest extends AbstractTabTestCase<CreateParticip
         assertEquals("Wrong number of errors", 0, errors.getFieldErrorCount("participant.systemAssignedIdentifiers[1].value"));
         assertEquals("Wrong number of errors", 0, errors.getFieldErrorCount("participant.organizationAssignedIdentifiers[1].value"));
     }
-
+    
+    public void testOnBind() {
+    	
+    	assertEquals(0,newParticipantCommand.getParticipant().getOrganizationIdentifiers().size());
+    	
+    	newParticipantCommand.getParticipant().getIdentifiers().add(new OrganizationAssignedIdentifier());
+    	createParticipantTab.onBind(request, newParticipantCommand, errors);
+    	assertEquals(newParticipantCommand.getParticipant().getOrganizationIdentifiers().get(0).getOrganization(),newParticipantCommand.getOrganization());
+    	assertTrue(newParticipantCommand.getParticipant().getOrganizationIdentifiers().get(0).getPrimaryIndicator());
+    }
+    
+    public void testReferenceData(){
+    	Map<Object,Object> refData = createParticipantTab.referenceData(request, newParticipantCommand);
+    	assertEquals("New",(String)refData.get("action"));
+    }
+    
 
     public synchronized ApplicationContext getDeployedApplicationContext() {
         return CaaersContextLoader.getApplicationContext();
