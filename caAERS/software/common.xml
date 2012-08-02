@@ -583,7 +583,7 @@
 			    <fileset dir="${classes.dir}">
 			        <include name="**/*.class"/>
 			    	<exclude name="**/*$Ajc*.class"/>
-			    	<exclude name="**/gme.ccts_cabig*/*.class"/>
+			    	<exclude name="**/gme.ccts_cabig._1_0.gov_nih_nci_cabig_ccts_ae/*.class"/>
 			    </fileset>
 			</cobertura-instrument>
 	</target>
