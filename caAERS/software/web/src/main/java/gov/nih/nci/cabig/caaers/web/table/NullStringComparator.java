@@ -14,6 +14,7 @@ public class NullStringComparator extends NullComparator {
 
     public NullStringComparator(Comparator comparator) {
         super(comparator);
+        this.stringComparator = comparator;
     }
 
     public NullStringComparator() {
