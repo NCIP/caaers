@@ -51,6 +51,16 @@ public class ExportRuleControllerTest extends WebTestCase {
         replayMocks();
         controller.handle(request, response, null, null);
         verifyMocks();
-        assertEquals("<y>a</y>",  response.getContentAsString());
+        assertEquals("<y>a</y>", response.getContentAsString());
+    }
+
+    public void testCommand()throws Exception{
+        ExportRuleCommand cmd = new ExportRuleCommand();
+        cmd.setFolder("f");
+        cmd.setMessage("m");
+        cmd.setUpdated(true);
+        assertEquals("f", cmd.getFolder());
+        assertEquals("m", cmd.getMessage());
+        assertTrue(cmd.isUpdated());
     }
 }
