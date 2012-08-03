@@ -84,6 +84,16 @@ public class AssignParticipantTabTest extends AbstractTabTestCase<AssignParticip
     	assertNotNull(mv);
     	assertEquals("subject_results",mv.getViewName());
     }
+    
+    @Override
+    public void testRefDataIncludesFieldGroups() throws Exception {
+    	// not valid in the current class
+    }
+    
+    @Override
+    public void testFieldPropertiesExist() {
+    	// not valid in the current class
+    }
 
     
     public synchronized ApplicationContext getDeployedApplicationContext() {
