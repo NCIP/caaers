@@ -54,6 +54,21 @@ public class ExportRuleControllerTest extends WebTestCase {
         assertEquals("<y>a</y>", response.getContentAsString());
     }
 
+
+    public void testHandleRequest() throws Exception {
+        assertSame(ruleSetDao, controller.getRuleSetDao());
+        assertSame(caaersRulesEngineService, controller.getCaaersRulesEngineService());
+        RuleSet ruleSet = Fixtures.createRuleSet();
+        ruleSet.setRuleBindURI("x");
+        request.setParameter("ruleSetName", ruleSet.getRuleBindURI());
+        EasyMock.expect(ruleSetDao.getByBindURI("x")).andReturn(ruleSet);
+        EasyMock.expect(caaersRulesEngineService.exportRules("x")).andReturn("<y>a</y>");
+        replayMocks();
+        controller.handleRequest(request,response);
+        verifyMocks();
+        assertEquals("<y>a</y>", response.getContentAsString());
+    }
+
     public void testCommand()throws Exception{
         ExportRuleCommand cmd = new ExportRuleCommand();
         cmd.setFolder("f");
