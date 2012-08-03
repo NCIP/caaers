@@ -1,4 +1,4 @@
-package gov.nih.nci.cabig.caaers.web.rule.author;
+package gov.nih.nci.cabig.caaers.web.rule.notification;
 
 import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
 
@@ -6,7 +6,7 @@ import java.rmi.RemoteException;
 
 import org.springframework.web.multipart.MultipartFile;
 
-public class ImportRuleCommand implements RuleInputCommand {
+public class ImportReportDefinitionCommand implements RuleInputCommand {
 
     private String folder;
     private String message;
@@ -32,7 +32,7 @@ public class ImportRuleCommand implements RuleInputCommand {
         this.updated = updated;
     }
 
-    public ImportRuleCommand() throws RemoteException {
+    public ImportReportDefinitionCommand() throws RemoteException {
         // ruleSets = ruleAuthoringService.getAllRuleSets();
         // ruleSets.remove(0);//removing the default
     }

@@ -4,7 +4,6 @@ import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.ReportDefinitions;
 import gov.nih.nci.cabig.caaers.service.migrator.ReportDefinitionConverter;
-import gov.nih.nci.cabig.caaers.web.rule.author.ImportRuleCommand;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,7 +21,7 @@ public class ImportReportDefinitionController extends SimpleFormController{
 	
 	
 	public ImportReportDefinitionController() {
-        setCommandClass(ImportRuleCommand.class);
+        setCommandClass(ImportReportDefinitionCommand.class);
         setBindOnNewForm(true);
         setFormView("rule/notification/import");
         setSuccessView("rule/notification/import");
@@ -30,7 +29,7 @@ public class ImportReportDefinitionController extends SimpleFormController{
 	
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
-        ImportRuleCommand command = new ImportRuleCommand();
+        ImportReportDefinitionCommand command = new ImportReportDefinitionCommand();
         command.setFolder(request.getParameter("importDir"));
         return command;
     }
@@ -38,11 +37,11 @@ public class ImportReportDefinitionController extends SimpleFormController{
     @Override
     protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
     	
-    	ImportRuleCommand importRuleCommand = (ImportRuleCommand) command;
+    	ImportReportDefinitionCommand importReportDefinitionCommand = (ImportReportDefinitionCommand) command;
         
-    	if (importRuleCommand.getRuleSetFile1().isEmpty()) {
-        	importRuleCommand.setMessage("Please choose a file");
-        	importRuleCommand.setUpdated(true);
+    	if (importReportDefinitionCommand.getRuleSetFile1().isEmpty()) {
+        	importReportDefinitionCommand.setMessage("Please choose a file");
+        	importReportDefinitionCommand.setUpdated(true);
         	ModelAndView modelAndView = new ModelAndView(getFormView(), errors.getModel());
             return modelAndView;
 
@@ -51,7 +50,7 @@ public class ImportReportDefinitionController extends SimpleFormController{
     	ReportDefinitions reportDefinitions = null;
     	JAXBContext jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.integration.schema.reportdefinition");
     	Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-    	reportDefinitions = (ReportDefinitions)unmarshaller.unmarshal(importRuleCommand.getRuleSetFile1().getInputStream());
+    	reportDefinitions = (ReportDefinitions)unmarshaller.unmarshal(importReportDefinitionCommand.getRuleSetFile1().getInputStream());
     	String reportDefName = reportDefinitions.getReportDefinition().get(0).getName();
     	
     	
@@ -59,9 +58,9 @@ public class ImportReportDefinitionController extends SimpleFormController{
     		StringBuffer message = new StringBuffer(reportDefName);
     		message.append("\n");
     		message.append("Exists in caAERS");
-//    		importRuleCommand.setMessage(message.toString());
-    		importRuleCommand.setErrorMessage(message.toString());
-    		importRuleCommand.setUpdated(true);
+//    		importReportDefinitionCommand.setMessage(message.toString());
+    		importReportDefinitionCommand.setErrorMessage(message.toString());
+    		importReportDefinitionCommand.setUpdated(true);
         	ModelAndView modelAndView = new ModelAndView(getFormView(), errors.getModel());
             return modelAndView;
         }
@@ -71,8 +70,8 @@ public class ImportReportDefinitionController extends SimpleFormController{
     	StringBuffer messageSb = new StringBuffer(reportDefinition.getName());
     	messageSb.append("\n");
     	messageSb.append("Imported Successfully !");
-    	importRuleCommand.setMessage(messageSb.toString());
-    	importRuleCommand.setUpdated(true);
+    	importReportDefinitionCommand.setMessage(messageSb.toString());
+    	importReportDefinitionCommand.setUpdated(true);
     	ModelAndView modelAndView = new ModelAndView(getSuccessView(), errors.getModel());
     	return modelAndView;
 
