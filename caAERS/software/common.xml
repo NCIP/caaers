@@ -589,7 +589,7 @@
 			    	<exclude name="**/AeNotification.class"/>
 			    	<exclude name="**/ObjectFactory.class"/>
 			    	<exclude name="**/*SDO.class"/>
-			    	<exclude name="**/integration/schema/*.class"/>
+			    	<exclude name="**/integration/schema/**/*.class"/>
 			    	<exclude name="**/ccts_cabig._1_0/gov_nih_nci_cabig_ccts_ae/*.class"/>
 			    	<exclude name="**/web/search/ui/*.class"/>
 			    </fileset>
