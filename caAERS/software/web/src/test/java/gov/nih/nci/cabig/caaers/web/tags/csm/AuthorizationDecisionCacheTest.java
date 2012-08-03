@@ -86,4 +86,9 @@ public class AuthorizationDecisionCacheTest extends AbstractTestCase {
 
       assertNull(cache.isAuthorized("x", "hi", "hello"));
     }
+    
+    public void testMaxElementsToCache() throws Exception{
+        cache.setMaxElementsToCache(2);
+        assertEquals(2, cache.getMaxElementsToCache());
+    }
 }
