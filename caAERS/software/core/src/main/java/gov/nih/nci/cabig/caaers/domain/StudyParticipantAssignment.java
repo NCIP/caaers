@@ -43,9 +43,6 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     /** The date of enrollment. */
     private Date dateOfEnrollment;
 
-
-    //private List<RoutineAdverseEventReport> aeRoutineReports;
-
     /** The lab loads. */
     private List<LabLoad> labLoads;
 
@@ -97,15 +94,6 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     // //// LOGIC
 
 
-    /**
-     * Adds the routine report.
-     *
-     * @param routineReport the routine report
-     */
-    public void addRoutineReport(RoutineAdverseEventReport routineReport) {
-        routineReport.setAssignment(this);
-        getAeRoutineReports().add(routineReport);
-    }
 
     /**
      * Adds the reporting period.
@@ -240,26 +228,6 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
             }
         }
         return aeReports;
-    }
-
-    /**
-     * Gets the ae routine reports.
-     *
-     * @return the ae routine reports
-     */
-    @Transient
-    public List<RoutineAdverseEventReport> getAeRoutineReports() {
-//        if (aeRoutineReports == null) aeRoutineReports = new ArrayList<RoutineAdverseEventReport>();
-        return new ArrayList<RoutineAdverseEventReport>();
-    }
-
-    /**
-     * Sets the ae routine reports.
-     *
-     * @param aeRoutineReports the new ae routine reports
-     */
-    public void setAeRoutineReports(List<RoutineAdverseEventReport> aeRoutineReports) {
-//        this.aeRoutineReports = aeRoutineReports;
     }
 
     /**

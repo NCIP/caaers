@@ -17,7 +17,6 @@ import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 import gov.nih.nci.cabig.caaers.integration.schema.common.*;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ConfigPropertyType;
 import gov.nih.nci.cabig.caaers.integration.schema.study.InvestigationalNewDrugType;
-import gov.nih.nci.cabig.caaers.integration.schema.study.StudyAgentType;
 import gov.nih.nci.cabig.caaers.integration.schema.study.StudyDeviceINDAssociationType;
 import gov.nih.nci.cabig.caaers.integration.schema.study.StudyDeviceType;
 import gov.nih.nci.cabig.caaers.rules.common.AdverseEventEvaluationResult;
@@ -26,7 +25,6 @@ import gov.nih.nci.cabig.caaers.rules.common.RuleType;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
-import org.apache.commons.lang.ArrayUtils;
 
 import java.math.BigInteger;
 import java.sql.Timestamp;
@@ -193,12 +191,7 @@ public class Fixtures {
     	return ind;
     }
 
-    public static RoutineAdverseEventReport createSavableRoutineReport() {
-        RoutineAdverseEventReport report = new RoutineAdverseEventReport();
-        report.setStartDate(new Timestamp(103));
-        report.setEndDate(new Timestamp(106));
-        return report;
-    }
+
 
     public static ExpeditedAdverseEventReport createSavableExpeditedReport() {
         ExpeditedAdverseEventReport report = new ExpeditedAdverseEventReport();

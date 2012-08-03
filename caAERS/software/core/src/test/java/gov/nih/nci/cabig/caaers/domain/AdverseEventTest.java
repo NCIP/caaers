@@ -1,17 +1,10 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import static gov.nih.nci.cabig.caaers.CaaersUseCase.AE_DATA_COLLECTION;
 import edu.nwu.bioinformatics.commons.CollectionUtils;
 import edu.nwu.bioinformatics.commons.DateUtils;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
-import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.DeviceAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.DiseaseAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.RadiationAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.SurgeryAttribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.*;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 
@@ -19,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.AE_DATA_COLLECTION;
 
 /**
  * @author Biju Joseph
@@ -47,7 +42,6 @@ public class AdverseEventTest extends AbstractTestCase {
     private AdverseEventReportingPeriod reportingPeriod;
     private ExpeditedAdverseEventReport report;
 
-    private RoutineAdverseEventReport routineReport;
     private AbstractAdverseEventTerm adverseEventTerm;
 
 
@@ -62,8 +56,6 @@ public class AdverseEventTest extends AbstractTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        routineReport = new RoutineAdverseEventReport();
-        routineReport.setId(1);
         report = new ExpeditedAdverseEventReport();
         outcome1 = new Outcome();
         outcome1.setOutcomeType(OutcomeType.DISABILITY);
