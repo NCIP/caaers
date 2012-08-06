@@ -6,8 +6,6 @@ import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
 import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
-import gov.nih.nci.cabig.caaers.web.WebTestCase;
-import junit.framework.TestCase;
 import org.easymock.EasyMock;
 
 import java.util.ArrayList;
@@ -20,6 +18,7 @@ import java.util.Map;
  */
 public class CSMUserListFilterAspectTest extends AbstractTestCase {
     CSMUserListFilterAspect csmUserListFilterAspect;
+
     UserRepository userRepository;
     public void setUp() throws Exception {
         csmUserListFilterAspect = new CSMUserListFilterAspect();
