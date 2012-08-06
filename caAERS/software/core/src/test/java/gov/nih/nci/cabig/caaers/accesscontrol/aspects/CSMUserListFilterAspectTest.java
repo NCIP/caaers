@@ -29,7 +29,7 @@ public class CSMUserListFilterAspectTest extends AbstractTestCase {
 
     public void testApplyFilter() throws Exception {
         assertSame(userRepository, csmUserListFilterAspect.getUserRepository());
-        User user = new User();
+        User user = new User() ;
         Map<UserGroupType, RoleMembership> roleMembershipMap = new HashMap<UserGroupType, RoleMembership>();
         user.setRoleMembershipMap(roleMembershipMap);
         EasyMock.expect(userRepository.getUserByLoginName("SYSTEM")).andReturn(user);
