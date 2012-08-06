@@ -3,7 +3,6 @@ package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.esb.client.impl.CaaersAdeersMessageBroadcastServiceImpl;
-import gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.RecipientType;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.tools.mail.CaaersJavaMailSender;
 import gov.nih.nci.cabig.caaers.web.listener.Event;
