@@ -3,10 +3,8 @@ package gov.nih.nci.cabig.caaers.accesscontrol.aspects;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.accesscontrol.dataproviders.FilteredDataLoader;
 import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
-import junit.framework.TestCase;
 import org.acegisecurity.Authentication;
 import org.acegisecurity.context.SecurityContextHolder;
-import org.easymock.EasyMock;
 
 /**
  * @author: Biju Joseph
