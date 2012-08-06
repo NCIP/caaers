@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.accesscontrol.aspects;
 
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.RoleMembership;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
@@ -17,7 +18,7 @@ import java.util.Map;
 /**
  * @author: Biju Joseph
  */
-public class CSMUserListFilterAspectTest extends WebTestCase {
+public class CSMUserListFilterAspectTest extends AbstractTestCase {
     CSMUserListFilterAspect csmUserListFilterAspect;
     UserRepository userRepository;
     public void setUp() throws Exception {
