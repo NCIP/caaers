@@ -35,7 +35,7 @@ public class CSMUserListFilterAspectTest extends AbstractTestCase {
         User user = new User() ;
         Map<UserGroupType, RoleMembership> roleMembershipMap = new HashMap<UserGroupType, RoleMembership>();
         user.setRoleMembershipMap(roleMembershipMap);
-        EasyMock.expect(userRepository.getUserByLoginName("SYSTEM")).andReturn(user);
+        EasyMock.expect(userRepository.getUserByLoginName("SYSTEM_ADMIN")).andReturn(user);
         replayMocks();
         List<String> l = new ArrayList<String>();
         l.add("x");

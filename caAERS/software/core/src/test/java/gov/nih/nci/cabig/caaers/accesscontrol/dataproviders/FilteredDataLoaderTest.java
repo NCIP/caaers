@@ -51,9 +51,9 @@ public class FilteredDataLoaderTest extends AbstractTestCase {
         i1.addEntityId(2);
         List<IndexEntry> iList = new ArrayList<IndexEntry>();
         iList.add(i1);
-        EasyMock.expect(orgIdFetcher.fetch("SYSTEM")).andReturn(iList);
-        EasyMock.expect(orgIndexDao.queryAllIndexEntries("SYSTEM")).andReturn(iListExisting);
-        orgIndexDao.updateIndex(EasyMock.eq("SYSTEM"), EasyMock.eq(UserGroupType.ae_reporter.getCode()), EasyMock.eq(i1), EasyMock.eq(i0));
+        EasyMock.expect(orgIdFetcher.fetch("SYSTEM_ADMIN")).andReturn(iList);
+        EasyMock.expect(orgIndexDao.queryAllIndexEntries("SYSTEM_ADMIN")).andReturn(iListExisting);
+        orgIndexDao.updateIndex(EasyMock.eq("SYSTEM_ADMIN"), EasyMock.eq(UserGroupType.ae_reporter.getCode()), EasyMock.eq(i1), EasyMock.eq(i0));
         EasyMock.expectLastCall().anyTimes();
         replayMocks();
         loader.updateIndexByUserName(SecurityUtils.getAuthentication());
