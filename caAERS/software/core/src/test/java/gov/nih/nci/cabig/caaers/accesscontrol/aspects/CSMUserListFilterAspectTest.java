@@ -6,6 +6,8 @@ import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
 import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
+import org.acegisecurity.context.SecurityContext;
+import org.acegisecurity.context.SecurityContextHolder;
 import org.easymock.EasyMock;
 
 import java.util.ArrayList;
@@ -24,7 +26,8 @@ public class CSMUserListFilterAspectTest extends AbstractTestCase {
         csmUserListFilterAspect = new CSMUserListFilterAspect();
         userRepository = registerMockFor(UserRepository.class);
         csmUserListFilterAspect.setUserRepository(userRepository);
-        SecurityTestUtils.switchToSuperuser();
+        SecurityContextHolder.getContext().setAuthentication(null);
+        switchToSuperUser();
     }
 
     public void testApplyFilter() throws Exception {

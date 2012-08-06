@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.dao.index.OrganizationIndexDao;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.index.IndexEntry;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
+import org.acegisecurity.context.SecurityContextHolder;
 import org.easymock.EasyMock;
 
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class FilteredDataLoaderTest extends AbstractTestCase {
         orgIdFetcher = registerMockFor(CaaersOrganizationIdFetcherImpl.class);
         idIndexDaoMap.put(orgIdFetcher, orgIndexDao);
         idFetchers.add(orgIdFetcher);
+        SecurityContextHolder.getContext().setAuthentication(null);
         switchToSuperUser();
     }
 
