@@ -1,20 +1,15 @@
 package webservice.adeers;
 
 import gov.nih.nci.ctep.adeers.client.*;
-
-import java.io.FileInputStream;
-import java.io.StringReader;
-import java.io.StringWriter;
+import gov.nih.nci.ctep.adeers.client.Error;
+import junit.framework.TestCase;
 
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-
-import gov.nih.nci.ctep.adeers.client.Error;
-import junit.framework.TestCase;
-import org.apache.commons.io.IOUtils;
+import java.io.*;
 
 public abstract class AdeersIntegrationTestCase extends TestCase{
 	private String adeersWebServiceAddress = "https://betapps-ctep.nci.nih.gov/adeerswsbeta/services/AEReportXMLService";
@@ -53,11 +48,18 @@ public abstract class AdeersIntegrationTestCase extends TestCase{
         }
     }
 
-    protected String loadFile(String file) throws Exception{
-        FileInputStream fis = new FileInputStream(file);
-        String s = IOUtils.toString(fis);
-        IOUtils.closeQuietly(fis);
-        return s;
+
+
+    private String loadFile( String file ) throws IOException {
+        BufferedReader reader = new BufferedReader( new FileReader(file));
+        String         line = null;
+        StringBuilder  stringBuilder = new StringBuilder();
+
+        while( ( line = reader.readLine() ) != null ) {
+            stringBuilder.append( line );
+        }
+
+        return stringBuilder.toString();
     }
     
     protected String transformContent(String xml) throws Exception {
