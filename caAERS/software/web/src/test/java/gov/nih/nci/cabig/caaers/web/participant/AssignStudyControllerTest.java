@@ -1,4 +1,4 @@
-package gov.nih.nci.cabig.caaers.web.par;
+package gov.nih.nci.cabig.caaers.web.participant;
 
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.ASSIGN_PARTICIPANT;
 import static org.easymock.EasyMock.expectLastCall;
