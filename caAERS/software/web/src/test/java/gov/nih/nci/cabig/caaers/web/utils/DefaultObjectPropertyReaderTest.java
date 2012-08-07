@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.utils;
 import gov.nih.nci.cabig.caaers.domain.Epoch;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
 import gov.nih.nci.cabig.caaers.web.study.StudyCommand;
 import junit.framework.TestCase;
 
@@ -15,6 +16,7 @@ public class DefaultObjectPropertyReaderTest extends TestCase {
 	DefaultObjectPropertyReader reader;
 	protected void setUp() throws Exception {
 		super.setUp();
+		SecurityTestUtils.switchToSuperuser();
 		Study study = Fixtures.createStudy("test");
 		Epoch e1 = Fixtures.createEpoch(1, "test");
 		Epoch e2 = Fixtures.createEpoch(1, "test");
@@ -26,7 +28,7 @@ public class DefaultObjectPropertyReaderTest extends TestCase {
 	}
 
 	public void testGetPropertyValueFromPath() throws Exception{
-		System.out.println(reader.getPropertyValueFromPath());
+		assertEquals("Wrong property value", "test",reader.getPropertyValueFromPath());
 	}
 
 }

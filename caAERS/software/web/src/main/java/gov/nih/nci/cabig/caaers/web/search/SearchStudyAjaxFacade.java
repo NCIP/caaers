@@ -56,13 +56,17 @@ public class SearchStudyAjaxFacade extends AbstractAjaxFacade {
                                  final ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao,
                                  final OrganizationDao organizationDao) {
         this.studyDao = studyDao;
-        participantDao = participantDoa;
+        this.participantDao = participantDoa;
         this.adverseEventDao = adverseEventDao;
         this.expeditedAdverseEventReportDao = expeditedAdverseEventReportDao;
         this.organizationDao = organizationDao;
     }
 
-    /**
+    public OrganizationDao getOrganizationDao() {
+		return organizationDao;
+	}
+
+	/**
      * YUI result
      * 
      * */
