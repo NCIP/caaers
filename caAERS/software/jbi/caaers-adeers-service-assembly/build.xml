@@ -61,7 +61,9 @@
     </path>
 
     <path id="test.build.classpath">
-
+        <fileset dir="${servicemix.toolkit.dir}/lib">
+            <include name="**/*.jar"/>
+        </fileset>
         <fileset dir="caaers-adeers-webservice-su/test-lib">
             <include name="*.jar"/>
         </fileset>
