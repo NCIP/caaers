@@ -5,9 +5,6 @@ import gov.nih.nci.ctep.adeers.client.AEReportJobInfo;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
-import webservice.adeers.BaseCaller;
-
-
 
 /*
  * R - Regular Report
@@ -17,7 +14,7 @@ import webservice.adeers.BaseCaller;
  * 24A - 24 hr Amend
  * 24AC - 24 hr Amend Complete
  */
-public class AdeersSubmissionWorkflowTest extends BaseCaller {
+public class AdeersSubmissionWorkflowTestCase extends AdeersIntegrationTestCase {
 	private static String R = "Regular report";
 	private static String RA = "Regular amendment";
 	private static String _24 = "24-hr notification";
@@ -26,7 +23,7 @@ public class AdeersSubmissionWorkflowTest extends BaseCaller {
 	private static String _24AC = "24-hr amendment complete";
 	private static String RT = "$RT";
 	private static String TN_AN = "<!--TN,AN-->";
-	
+
 	/*
 	 * Work Flow :
 	 * 	1. Submit a new Regular report, obtain ticket number 

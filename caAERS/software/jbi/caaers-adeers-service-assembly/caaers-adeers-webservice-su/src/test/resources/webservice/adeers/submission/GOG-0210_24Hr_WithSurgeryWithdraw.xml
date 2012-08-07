@@ -1,0 +1,16 @@
+<AdverseEventReport>
+    <WITHDRAW>true</WITHDRAW><id>156</id><StudyParticipantAssignment><StudySite><Study><Identifier><type>Protocol Authority Identifier</type><value>GOG-0210</value><primaryIndicator>true</primaryIndicator></Identifier><Identifier>
+                <type>Coordinating Center Identifier</type>
+                <value>GOG-0210</value>
+                <primaryIndicator>false</primaryIndicator>
+            </Identifier>
+            <Identifier>
+                <type>Other</type>
+                <value>GOG-0210</value>
+                <primaryIndicator>false</primaryIndicator>
+            </Identifier>
+        </Study>
+    </StudySite>
+    <studySubjectIdentifier>test1ae44</studySubjectIdentifier>
+</StudyParticipantAssignment><Report><id>313</id><assignedIdentifer>1</assignedIdentifer><ReportVersion><reportVersionId>1</reportVersionId></ReportVersion></Report>
+</AdverseEventReport>

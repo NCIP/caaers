@@ -1,0 +1,16 @@
+<AdverseEventReport>
+    <WITHDRAW>true</WITHDRAW><id>156</id><StudyParticipantAssignment><StudySite><Study><Identifier><type>Protocol Authority Identifier</type><value>ANBL09P1</value><primaryIndicator>true</primaryIndicator></Identifier><Identifier>
+                <type>Coordinating Center Identifier</type>
+                <value>ANBL09P1</value>
+                <primaryIndicator>false</primaryIndicator>
+            </Identifier>
+            <Identifier>
+                <type>Other</type>
+                <value>ANBL09P1</value>
+                <primaryIndicator>false</primaryIndicator>
+            </Identifier>
+        </Study>
+    </StudySite>
+    <studySubjectIdentifier>Testae4</studySubjectIdentifier>
+</StudyParticipantAssignment><Report><id>313</id><assignedIdentifer>1</assignedIdentifer><ReportVersion><reportVersionId>0</reportVersionId></ReportVersion></Report>
+</AdverseEventReport>
