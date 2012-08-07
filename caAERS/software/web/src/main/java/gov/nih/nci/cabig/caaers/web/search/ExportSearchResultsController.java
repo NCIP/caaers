@@ -59,6 +59,14 @@ public class ExportSearchResultsController extends AbstractCommandController {
 		}
 	}
 	
+	public static String getXlsSearchResultsFilename() {
+		return XLS_SEARCH_RESULTS_FILENAME;
+	}
+
+	public AdvancedSearchUi getAdvancedSearchUi() {
+		return advancedSearchUi;
+	}
+
 	private void generateOutput(HttpServletResponse response)throws Exception{
 		
 		String tempDir = System.getProperty("java.io.tmpdir");
