@@ -881,6 +881,16 @@ public class Fixtures {
      u.setLoginName(loginId);
      return u;
   }
+    
+  public static gov.nih.nci.security.authorization.domainobjects.User createCSMUser(long id, String loginId, String name){
+      gov.nih.nci.security.authorization.domainobjects.User u = new gov.nih.nci.security.authorization.domainobjects.User();
+      u.setUserId(id);
+      u.setLoginName(loginId);
+      u.setFirstName(name);
+      u.setLastName(name);
+      u.setEmailId(loginId+ "@test.com");
+      return u;
+  }
 
   public static SAEReportPreExistingCondition createSAEReportPreExistingCondition(String name){
     SAEReportPreExistingCondition pec =  new SAEReportPreExistingCondition();
