@@ -221,77 +221,6 @@ public class SearchStudyAjaxFacade extends AbstractAjaxFacade {
         }
     }
 
-    @SuppressWarnings("finally")
-    private List<Investigator> constructExecuteInvestigatorQuery(final String type, final String text) {
-
-        StringTokenizer typeToken = new StringTokenizer(type, ",");
-        StringTokenizer textToken = new StringTokenizer(text, ",");
-        log.debug("type :: " + type);
-        log.debug("text :: " + text);
-        String sType, sText;
-        List<Investigator> investigators = new ArrayList<Investigator>();
-
-        InvestigatorQuery investigatorQuery = new InvestigatorQuery();
-
-        while (typeToken.hasMoreTokens() && textToken.hasMoreTokens()) {
-            sType = typeToken.nextToken();
-            sText = textToken.nextToken();
-            if (sType.equals("firstName")) {
-                investigatorQuery.filterByFirstName(sText);
-            } else if (sType.equals("nciIdentifier")) {
-                investigatorQuery.filterByNciIdentifier(sText);
-            } else if (sType.equals("lastName")) {
-                investigatorQuery.filterByLastName(sText);
-            } else if (sType.equals("organization")) {
-            	investigatorQuery.filterByOrganization(sText);
-            }
-        }
-
-        try {
-            //investigators = investigatorRepository.searchInvestigator(investigatorQuery,type,text);
-        }
-        catch (Exception e) {
-            throw new RuntimeException("Formatting Error", e);
-        }
-        finally {
-            return investigators;
-        }
-    }
-
-    @SuppressWarnings("finally")
-    private List<SiteResearchStaff> constructExecuteSiteResearchStaffQuery(final String type, final String text) {
-
-        StringTokenizer typeToken = new StringTokenizer(type, ",");
-        StringTokenizer textToken = new StringTokenizer(text, ",");
-        log.debug("type :: " + type);
-        log.debug("text :: " + text);
-        String sType, sText;
-        List<SiteResearchStaff> siteResearchStaffs = new ArrayList<SiteResearchStaff>();
-
-        SiteResearchStaffQuery query = new SiteResearchStaffQuery();
-
-        while (typeToken.hasMoreTokens() && textToken.hasMoreTokens()) {
-            sType = typeToken.nextToken();
-            sText = textToken.nextToken();
-            if (sType.equals("firstName")) {
-                query.filterByFirstName(sText);
-            } else if (sType.equals("lastName")) {
-                query.filterByLastName(sText);
-            } else if (sType.equals("organization")) {
-            	query.filterByOrganization(sText);
-            }
-        }
-
-        try {
-            //siteResearchStaffs = researchStaffRepository.getSiteResearchStaff(query,type,text);
-        }
-        catch (Exception e) {
-            throw new RuntimeException("Formatting Error", e);
-        }
-        finally {
-            return siteResearchStaffs;
-        }
-    }
 
 
     /**
@@ -319,37 +248,6 @@ public class SearchStudyAjaxFacade extends AbstractAjaxFacade {
         //return ObjectTools.reduceAll(organizations, "id", "name", "nciInstituteCode", "externalId");
     }
 
-    public List<UserAjaxableDomainObject> getInvestigatorTable(final Map parameterMap, final String type, final String text, final HttpServletRequest request) {
-
-        List<Investigator> investigators = new ArrayList<Investigator>();
-        if (type != null && text != null) {
-            investigators = constructExecuteInvestigatorQuery(type, text);
-        }
-
-        List<UserAjaxableDomainObject> rs = new ArrayList<UserAjaxableDomainObject>();
-        for (Investigator i : investigators) {
-            UserAjaxableDomainObject rsado = new UserAjaxableDomainObject();
-            rsado.setFirstName(i.getFirstName());
-            rsado.setLastName(i.getLastName());
-            rsado.setMiddleName(i.getMiddleName());
-
-            StringBuffer sb = new StringBuffer();
-            for (SiteInvestigator si : i.getSiteInvestigators()) {
-                sb.append(si.getOrganization().getName() + "<br>");
-            }
-            rsado.setOrganization(sb.toString());
-
-            rsado.setId(i.getId());
-            rsado.setActive(i.isActive() ? "Active" : "Inactive");
-            rsado.setNumber(i.getNciIdentifier() != null ? i.getNciIdentifier() : "");
-            rsado.setExternalId(i.getExternalId() != null ? i.getExternalId().trim() : "");
-            rs.add(rsado);
-        }
-
-
-        return rs;
-    }
-
     public List<Agent> getAgentsTable(final Map parameterMap, final String text, final String nsc, final HttpServletRequest request) {
         List<Agent> agents = new ArrayList<Agent>();
         agents = agentRepository.getAgentsByNameAndNsc(text, nsc, false);
@@ -370,40 +268,6 @@ public class SearchStudyAjaxFacade extends AbstractAjaxFacade {
         }
         return ObjectTools.reduceAll(devices, "id", "commonName", "brandName", "type", "retiredIndicator");
     }
-
-    public List<UserAjaxableDomainObject> getResearchStaffTable(final Map parameterMap, final String type, final String text, final HttpServletRequest request) {
-        
-        List<SiteResearchStaff> siteResearchStaffs = new ArrayList<SiteResearchStaff>();
-        if (type != null && text != null) {
-            siteResearchStaffs = constructExecuteSiteResearchStaffQuery(type, text);
-        }
-
-        // List<UserAjaxableDomainObject> rs = new ArrayList<UserAjaxableDomainObject>();
-        Set<UserAjaxableDomainObject> set = new HashSet<UserAjaxableDomainObject>();
-        
-        for (SiteResearchStaff srs : siteResearchStaffs) {
-            UserAjaxableDomainObject rsado = new UserAjaxableDomainObject();
-            rsado.setFirstName(srs.getResearchStaff().getFirstName());
-            rsado.setLastName(srs.getResearchStaff().getLastName());
-            rsado.setMiddleName(srs.getResearchStaff().getMiddleName());
-
-            StringBuffer sb = new StringBuffer("");
-            for (SiteResearchStaff site : srs.getResearchStaff().getSiteResearchStaffs()) {
-                sb.append(site.getOrganization().getName() + "<br>");
-            }
-            rsado.setOrganization(sb.toString());
-
-            rsado.setId(srs.getResearchStaff().getId());
-            rsado.setNumber(srs.getResearchStaff().getNciIdentifier() != null ? srs.getResearchStaff().getNciIdentifier() : "");
-            rsado.setExternalId(srs.getResearchStaff().getExternalId() != null ? srs.getResearchStaff().getExternalId().trim() : "");
-            rsado.setActive(srs.isActive() ? "Active" : "Inactive");
-            set.add(rsado);
-        }
-
-        return new ArrayList<UserAjaxableDomainObject>(set);
-    }
-
-
 
     @SuppressWarnings("finally")
     private List<ParticipantAjaxableDomainObject> getParticipants(String text) {
