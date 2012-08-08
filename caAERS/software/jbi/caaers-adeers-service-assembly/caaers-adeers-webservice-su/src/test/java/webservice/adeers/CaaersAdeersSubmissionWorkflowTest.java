@@ -24,6 +24,20 @@ public class CaaersAdeersSubmissionWorkflowTest extends AdeersIntegrationTestCas
           assertEquals(secondTicketNumber, ticketNumber);
 
        }
+    /**
+     * On a multi modality study  RTOG-0524
+     *   1. Report 24 hr with NCI Ind Agent
+     *   2. Complete 24 hr with 5 Day report with Radiation information aswell.
+     * @throws Exception
+     */
+      public void testSurgery24HrSubmissionFollowedBy5DayWithNCIAgentAndRadiation() throws Exception{
+
+          String ticketNumber = submitAndReturnTicketNumber("T92-0215_NCI_Surgery24Hr.xml");
+          String secondTicketNumber =  replaceValuesThenSubmitAndReturnTicketNumber("T92-0215_NCI_SurgeryAndRadiationAndAgent5Day.xml",
+                  ticketNumber, null);
+          assertEquals(secondTicketNumber, ticketNumber);
+
+       }
 
 
     /**

@@ -9,6 +9,11 @@ public class SubmitToAdeersTest extends AdeersIntegrationTestCase {
         transformAndSubmitSuccessPath(caaersXMLFile);
 	}
 
+	public void testSurgerySubmission() throws Exception {
+		String caaersXMLFile = "T92-0215_NCI_Surgery24Hr.xml";
+        transformAndSubmitSuccessPath(caaersXMLFile);
+	}
+
 	public void testAgentReportWithLabs() throws Exception {
 		String caaersXMLFile = "CALGB-50303_CommercialAgent10DayReport.xml";
         transformAndSubmitSuccessPath(caaersXMLFile);
