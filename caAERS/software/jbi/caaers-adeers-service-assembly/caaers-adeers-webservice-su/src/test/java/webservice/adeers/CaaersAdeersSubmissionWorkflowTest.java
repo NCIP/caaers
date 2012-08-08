@@ -91,6 +91,21 @@ public class CaaersAdeersSubmissionWorkflowTest extends AdeersIntegrationTestCas
         assertNotNull(ticketNumber);
     }
 
+
+    /**
+     * On a multi modality study  N0071
+     *   1. Report 10 day Agent Only
+     *   2. Amend it with 10 day device only
+     * @throws Exception
+     */
+    public void test10DayNonNCIAgentThenAmendAndReplaceItWithNonNCIDevice10Day() throws Exception{
+
+        String ticketNumber = submitAndReturnTicketNumber("N0071_10Day_DeviceOnly.xml");
+        String secondTicketNumber =  replaceValuesThenSubmitAndReturnTicketNumber("N0071_Amend10DayAgnent_With10DayDevice.xml",
+                ticketNumber, "1");
+        assertEquals(secondTicketNumber, ticketNumber);
+    }
+
     /**
      * On a surgery  study  GOG-0210
      *   1. Report 10Day Surgery
