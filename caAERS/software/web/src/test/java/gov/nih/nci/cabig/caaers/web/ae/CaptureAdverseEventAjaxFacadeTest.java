@@ -2,11 +2,14 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import static gov.nih.nci.cabig.caaers.domain.Fixtures.setId;
 import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 
 import gov.nih.nci.cabig.caaers.dao.*;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.ajax.AdverseEventReportingPeriodAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepositoryImpl;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
@@ -17,6 +20,7 @@ import gov.nih.nci.cabig.caaers.web.validation.validator.AdverseEventReportingPe
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.acegisecurity.Authentication;
@@ -37,7 +41,11 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
 	private EvaluationService evaluationService;
 	private StudySite  studySite;
 	private Study study;
+    private Participant participant;
 	private AdverseEventReportingPeriodValidator adverseEventReportingPeriodValidator;
+    StudyParticipantAssignmentDao assignmentDao;
+    StudyParticipantAssignment assignment;
+    ParticipantDao participantDao;
 	
 	
 	@Override
@@ -50,16 +58,22 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
 		aeReportDao = registerDaoMockFor(ExpeditedAdverseEventReportDao.class);
         ctcTermDao = registerDaoMockFor(CtcTermDao.class);
         lowLevelTermDao = registerDaoMockFor(LowLevelTermDao.class);
-		
+        assignmentDao = registerDaoMockFor(StudyParticipantAssignmentDao.class);
+		participantDao = registerDaoMockFor(ParticipantDao.class);
         evaluationService = registerMockFor(EvaluationService.class);
         studySite  = registerMockFor(StudySite.class);
         study  = registerMockFor(Study.class);
+        assignment = registerMockFor(StudyParticipantAssignment.class);
+
+        participant = registerMockFor(Participant.class);
         
 		facade = new CaptureAdverseEventAjaxFacade();
         facade.setCtcTermDao(ctcTermDao);
         facade.setLowLevelTermDao(lowLevelTermDao);
         facade.setStudyDao(studyDao);
         facade.setReportingPeriodDao(adverseEventReportingPeriodDao);
+        facade.setAssignmentDao(assignmentDao);
+        facade.setParticipantDao(participantDao);
 
 		
 	}
@@ -294,5 +308,82 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
         facade.addObservedAE(new int[]{1});
         verifyMocks();
         assertEquals(1, command.getAdverseEventReportingPeriod().getAdverseEvents().size());
+    }
+    
+    public void testFetchCourseDetailsForNonExistingReportingPeriod() throws Exception {
+        expect(adverseEventReportingPeriodDao.getById(5)).andReturn(null); 
+        replayMocks();
+        try{
+            facade.fetchCourseDetails(5);
+            fail("Must throw NPE");
+        }catch (NullPointerException npe){
+            
+        }
+        verifyMocks();
+    }
+
+    public void testFetchCoursesWithNoActiveReportingPeriods() throws Exception{
+        expect(participantDao.getById(1)).andReturn(participant).anyTimes();
+        expect(studyDao.getById(1)).andReturn(study).anyTimes();
+        expect(assignmentDao.getAssignment(participant, study)).andReturn(assignment).anyTimes();
+        expect(assignment.getActiveReportingPeriods()).andReturn(null);
+        replayMocks();
+        Object[] courses = (Object[])facade.fetchCourses(1, 1).getObjectContent();
+        assertEquals(0, courses.length);
+        verifyMocks();
+    }
+
+
+
+    public void testFetchCoursesWithActiveReportingPeriods() throws Exception{
+        expect(participantDao.getById(1)).andReturn(participant).anyTimes();
+        expect(studyDao.getById(1)).andReturn(study).anyTimes();
+        expect(assignmentDao.getAssignment(participant, study)).andReturn(assignment).anyTimes();
+
+        AdverseEventReportingPeriod rp = Fixtures.createReportingPeriod(1, "12/12/2011", "12/20/2011");
+        rp.setTreatmentAssignment(null);
+        rp.setTreatmentAssignmentDescription("desc1");
+
+        List<AdverseEventReportingPeriod> list = new ArrayList<AdverseEventReportingPeriod>();
+        list.add(rp);
+
+        expect(assignment.getActiveReportingPeriods()).andReturn(list).anyTimes();
+        replayMocks();
+        Object[] courses = (Object[])facade.fetchCourses(1, 1).getObjectContent();
+        assertEquals(1, courses.length);
+        verifyMocks();
+    }
+    public void testFetchCourseDetails() throws Exception {
+        AdverseEventReportingPeriod rp = Fixtures.createReportingPeriod(1, "12/12/2011", "12/20/2011");
+        TreatmentAssignment ta = Fixtures.createTreatmentAssignment("tac1");
+        rp.setTreatmentAssignment(ta);
+        expect(adverseEventReportingPeriodDao.getById(5)).andReturn(rp).anyTimes();
+        replayMocks();
+
+        AdverseEventReportingPeriodAjaxableDomainObject ajaxObj = (AdverseEventReportingPeriodAjaxableDomainObject) facade.fetchCourseDetails(5).getObjectContent();
+        assertNotNull(ajaxObj);
+        assertEquals("tac1", ajaxObj.getTacCode());
+        assertEquals(new Integer(1), ajaxObj.getId());
+
+        verifyMocks();
+    }
+
+
+
+
+    public void testFetchCourseDetailsWithOtherTac() throws Exception {
+        AdverseEventReportingPeriod rp = Fixtures.createReportingPeriod(1, "12/12/2011", "12/20/2011");
+        rp.setTreatmentAssignment(null);
+        rp.setTreatmentAssignmentDescription("desc1");
+        expect(adverseEventReportingPeriodDao.getById(5)).andReturn(rp).anyTimes();
+        replayMocks();
+
+        AdverseEventReportingPeriodAjaxableDomainObject ajaxObj = (AdverseEventReportingPeriodAjaxableDomainObject) facade.fetchCourseDetails(5).getObjectContent();
+        assertNotNull(ajaxObj);
+        assertEquals("Other", ajaxObj.getTacCode());
+        assertEquals("desc1", ajaxObj.getTacDescription());
+        assertEquals(new Integer(1), ajaxObj.getId());
+
+        verifyMocks();
     }
 }
