@@ -14,6 +14,11 @@ public class SubmitToAdeersTest extends AdeersIntegrationTestCase {
         transformAndSubmitSuccessPath(caaersXMLFile);
 	}
 
+	public void testAgentReportWithOtherCauses() throws Exception {
+		String caaersXMLFile = "N0071_NonNCI_Agent10Day.xml";
+        transformAndSubmitSuccessPath(caaersXMLFile);
+	}
+
 	private void transformAndSubmitSuccessPath(String caaersXMLFile) throws Exception {
 
         AEReportJobInfo aeReportJobInfo = transformAndSubmit(caaersXMLFile);
