@@ -9,6 +9,8 @@ import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
+import gov.nih.nci.cabig.caaers.domain.Agent;
+import gov.nih.nci.cabig.caaers.domain.Device;
 import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
 import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
@@ -63,6 +65,10 @@ public class SearchStudyAjaxFacadeTest extends DwrFacadeTestCase{
 		facade.setInvestigationalNewDrugDao(investigationalNewDrugDao);
 		organizationRepository = registerMockFor(OrganizationRepository.class);
 		facade.setOrganizationRepository(organizationRepository);
+		agentRepository = registerMockFor(AgentRepository.class);
+		facade.setAgentRepository(agentRepository);
+		deviceRepository = registerMockFor(DeviceRepository.class);
+		facade.setDeviceRepository(deviceRepository);
 	}
 	
 	public void testConstructor() throws Exception{
@@ -116,6 +122,42 @@ public class SearchStudyAjaxFacadeTest extends DwrFacadeTestCase{
 		assertEquals(1,results.size());
 		assertEquals("external1",results.get(0).getExternalId());
 		assertEquals("NC010",results.get(0).getNciInstituteCode());
+	}
+	
+	public void testGetAgentsTable() throws Exception{
+		List<Agent> agents = new ArrayList<Agent>();
+		Agent agent = new Agent();
+		agent.setDescription("description");
+		agent.setDisplayName("Agent 1");
+		agent.setNscNumber("1234");
+		agents.add(agent);
+		EasyMock.expect(agentRepository.getAgentsByNameAndNsc("agent1", "nscNumber", false)).andReturn(agents);
+		replayMocks();
+		List<Agent> results = facade.getAgentsTable(new HashMap<String,Object>(), "agent1", "nscNumber", request);
+		verifyMocks();
+		assertNotNull(results);
+		assertEquals(1,results.size());
+		assertEquals("1234",results.get(0).getNscNumber());
+		assertNull(results.get(0).getDescription());
+		assertFalse(results.get(0).getRetiredIndicator());
+	}
+	
+	public void testGetDevices() throws Exception{
+		List<Device> devices = new ArrayList<Device>();
+		Device device = new Device();
+		device.setCommonName("cn");
+		device.setBrandName("bn");
+		device.setType("type");
+		devices.add(device);
+		EasyMock.expect(deviceRepository.getByMatchText("cn", false)).andReturn(devices);
+		replayMocks();
+		List<Device> results = facade.getDevices(new HashMap<String,Object>(), "cn", request);
+		verifyMocks();
+		assertNotNull(results);
+		assertEquals(1,results.size());
+		assertEquals("cn",results.get(0).getCommonName());
+		assertEquals("bn",results.get(0).getBrandName());
+		assertFalse(results.get(0).getRetiredIndicator());
 	}
 
 }
