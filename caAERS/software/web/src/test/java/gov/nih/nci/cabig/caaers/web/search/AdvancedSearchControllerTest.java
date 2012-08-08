@@ -38,7 +38,7 @@ public class AdvancedSearchControllerTest extends WebTestCase {
 		Search search = new Search();
 		search.setCreatedDate(NOW);
 		
-		File testFile = new ClassPathResource("saved_advanced_search1.xml").getFile();
+		/*File testFile = new ClassPathResource("/gov/nih/nci/cabig/caaers/advancedsearch/saved_advanced_search1.xml").getFile();
         BufferedReader ds = new BufferedReader(new FileReader(testFile));
         String line = null;
         StringBuffer xml = new StringBuffer();
@@ -46,7 +46,7 @@ public class AdvancedSearchControllerTest extends WebTestCase {
             xml.append(line.trim());
         }
 		
-		search.setCriteriaXml(xml.toString());
+		search.setCriteriaXml(xml.toString());*/
 		searches.add(search);
 		
 		EasyMock.expect(searchDao.getByLoginAndName("SYSTEM", "searchName")).andReturn(searches);
