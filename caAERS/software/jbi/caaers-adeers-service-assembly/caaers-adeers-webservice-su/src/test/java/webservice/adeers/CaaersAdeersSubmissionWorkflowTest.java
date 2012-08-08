@@ -25,7 +25,7 @@ public class CaaersAdeersSubmissionWorkflowTest extends AdeersIntegrationTestCas
 
        }
     /**
-     * On a multi modality study  RTOG-0524
+     * On a multi modality study  T92-0215
      *   1. Report 24 hr with NCI Ind Agent
      *   2. Complete 24 hr with 5 Day report with Radiation information aswell.
      * @throws Exception
