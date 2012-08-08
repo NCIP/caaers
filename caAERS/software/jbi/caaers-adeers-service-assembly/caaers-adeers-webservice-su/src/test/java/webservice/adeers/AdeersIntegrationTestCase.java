@@ -50,7 +50,7 @@ public abstract class AdeersIntegrationTestCase extends TestCase{
 
 
 
-    private String loadFile( String file ) throws IOException {
+    public String loadFile( String file ) throws IOException {
         BufferedReader reader = new BufferedReader( new FileReader(file));
         String         line = null;
         StringBuilder  stringBuilder = new StringBuilder();
