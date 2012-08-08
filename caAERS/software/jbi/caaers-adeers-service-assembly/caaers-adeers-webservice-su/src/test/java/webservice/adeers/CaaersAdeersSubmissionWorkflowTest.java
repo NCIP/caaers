@@ -70,6 +70,16 @@ public class CaaersAdeersSubmissionWorkflowTest extends AdeersIntegrationTestCas
         String ticketNumber = submitAndReturnTicketNumber("GOG-0210_10Day_SurgeryOnly.xml");
         assertNotNull(ticketNumber);
     }
+    /**
+     * On a surgery only study  GOG-0210
+     *   1. Report 10Day Surgery
+     * @throws Exception
+     */
+    public void testSubmit10DayCommercialAgent() throws Exception{
+
+        String ticketNumber = submitAndReturnTicketNumber("CALGB-50303_CommercialAgent10DayReport.xml");
+        assertNotNull(ticketNumber);
+    }
 
     /**
      * On a surgery  study  GOG-0210

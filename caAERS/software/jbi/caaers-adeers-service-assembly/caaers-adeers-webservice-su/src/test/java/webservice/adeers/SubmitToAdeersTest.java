@@ -8,7 +8,12 @@ public class SubmitToAdeersTest extends AdeersIntegrationTestCase {
 		String caaersXMLFile = "RTOG-0524_NCI_IND_Agent_And_Radiation.xml";
         transformAndSubmitSuccessPath(caaersXMLFile);
 	}
-	
+
+	public void testAgentReportWithLabs() throws Exception {
+		String caaersXMLFile = "CALGB-50303_CommercialAgent10DayReport.xml";
+        transformAndSubmitSuccessPath(caaersXMLFile);
+	}
+
 	private void transformAndSubmitSuccessPath(String caaersXMLFile) throws Exception {
 
         AEReportJobInfo aeReportJobInfo = transformAndSubmit(caaersXMLFile);
