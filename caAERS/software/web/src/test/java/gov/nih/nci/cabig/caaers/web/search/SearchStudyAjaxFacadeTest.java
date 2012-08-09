@@ -9,11 +9,13 @@ import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
+import gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.Device;
 import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
 import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.ajax.ParticipantAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.repository.AgentRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.DeviceRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepository;
@@ -69,6 +71,8 @@ public class SearchStudyAjaxFacadeTest extends DwrFacadeTestCase{
 		facade.setAgentRepository(agentRepository);
 		deviceRepository = registerMockFor(DeviceRepository.class);
 		facade.setDeviceRepository(deviceRepository);
+		participantAjaxableDomainObjectRepository = registerMockFor(ParticipantAjaxableDomainObjectRepository.class);
+		facade.setParticipantAjaxableDomainObjectRepository(participantAjaxableDomainObjectRepository);
 	}
 	
 	public void testConstructor() throws Exception{
@@ -158,6 +162,25 @@ public class SearchStudyAjaxFacadeTest extends DwrFacadeTestCase{
 		assertEquals("cn",results.get(0).getCommonName());
 		assertEquals("bn",results.get(0).getBrandName());
 		assertFalse(results.get(0).getRetiredIndicator());
+	}
+	
+	public void testBuildParticipantsTable() throws Exception{
+		List<ParticipantAjaxableDomainObject> participants = new ArrayList<ParticipantAjaxableDomainObject>();
+		ParticipantAjaxableDomainObject participant = new ParticipantAjaxableDomainObject();
+		participant.setLastName("last");
+		participant.setFirstName("first");
+		participant.setId(1);
+		participant.setEthnicity("Hispanic");
+		participants.add(participant);
+		
+		EasyMock.expect(participantAjaxableDomainObjectRepository.findParticipants((ParticipantAjaxableDomainObjectQuery) EasyMock.anyObject())).andReturn(participants);
+		replayMocks();
+		List<ParticipantAjaxableDomainObject> results = facade.buildParticipantTable(new HashMap<String,Object>(), "type", "text", request);
+		verifyMocks();
+		assertNotNull(results);
+		assertEquals(1,results.size());
+		assertEquals("last",results.get(0).getLastName());
+		assertEquals("Hispanic",results.get(0).getEthnicity());
 	}
 
 }
