@@ -300,18 +300,18 @@
           <table>
         		<tr>
         			<td>
-            				<tags:renderRow field="${fieldGroups.main.fields[1]}"/>
+            				<tags:renderRow field="${fieldGroups.main.fields[0]}"/>
         			</td>
         			<td>
-            				<tags:renderRow field="${fieldGroups.main.fields[2]}"/>
+            				<tags:renderRow field="${fieldGroups.main.fields[1]}"/>
         			</td>
         		</tr> 
         		<tr>
         			<td>
-            				<tags:renderRow field="${fieldGroups.main.fields[3]}"/>
+            				<tags:renderRow field="${fieldGroups.main.fields[2]}"/>
         			</td>
         			<td>
-            				<tags:renderRow field="${fieldGroups.main.fields[4]}"/>
+            				<tags:renderRow field="${fieldGroups.main.fields[3}"/>
         			</td>
         		</tr>
         		<tr>
