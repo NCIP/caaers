@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.web.DwrFacadeTestCase;
 import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
 import gov.nih.nci.cabig.caaers.web.search.ui.DependentObject;
 import gov.nih.nci.cabig.caaers.web.search.ui.SearchTargetObject;
+import gov.nih.nci.cabig.caaers.web.search.ui.UiAttribute;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,6 +20,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.ServletException;
+
+import org.easymock.EasyMock;
 
 /**
  *
@@ -82,6 +85,26 @@ public class AdvancedSearchAjaxFacadeTest extends DwrFacadeTestCase {
 		command.setSearchTargetObject(searchTObject);
 		command.setCriteriaParameters(criteriaParams);
 		expect(webContext.getCurrentPage()).andReturn("0");
+		DependentObject dpObject = new DependentObject();
+		
+		List<UiAttribute> uiAttributes = new ArrayList<UiAttribute>();
+		UiAttribute uiAttribute = new UiAttribute();
+		uiAttribute.setName("title");
+		uiAttribute.setDataType("String");
+		uiAttribute.setAjaxMethod("addAttribute");
+		uiAttributes.add(uiAttribute);
+		
+		SearchTargetObject sto = new SearchTargetObject();
+		DependentObject dpO = new DependentObject();
+		dpO.setClassName("Study");
+		List<DependentObject> depObjs = new ArrayList<DependentObject>();
+		depObjs.add(dpO);
+		sto.setDependentObject(depObjs);
+		String dependeontObjectName = "Study";
+	
+		
+		dpObject.setUiAttribute(uiAttributes);
+		AdvancedSearchUiUtil.getDependentObjectByName(sto,dependeontObjectName);
 		try {
 			expect(webContext.forwardToString("0?ajax_action=updateAttribute&index=0&attributeName=attributeName&subview=updateValueContent")).andReturn("<p></p>");
 		} catch (ServletException e) {
