@@ -1,0 +1,1 @@
+<payload><system>adeers</system><request><entity>agent</entity><operation mode="async" name="getAgentsLOV"><criteria><criterion name="createdDate">2012-08-01T23:01:00</criterion><criterion name="lastUpdatedDate">2012-08-01T23:01:00</criterion></criteria></operation></request></payload>

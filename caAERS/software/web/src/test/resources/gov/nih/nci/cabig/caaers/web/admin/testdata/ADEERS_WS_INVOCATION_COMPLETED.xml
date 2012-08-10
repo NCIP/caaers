@@ -1,0 +1,1 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body><ns2:getAgentsLOVResponse xmlns:ns2="http://services.ctep.nci.nih.gov/"><Agents xmlns=""/></ns2:getAgentsLOVResponse></soap:Body></soap:Envelope>
