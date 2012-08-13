@@ -48,7 +48,6 @@
         <property name="reportVersionDao" ref="reportVersionDao"/>
     </bean>
 
-    <bean id="expeditedAdverseEventReportRepository" class="gov.nih.nci.cabig.caaers.domain.repository.ExpeditedAdverseEventReportRepository" autowire="byType" />
 
     <bean id="researchStaffRepository" class="gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository">
         <property name="researchStaffDao" ref="researchStaffDao"/>
