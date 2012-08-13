@@ -50,26 +50,7 @@ public class ReportVersionRepository {
         }
     }
 
-    /**
-     * Gets the past due.
-     *
-     * @return the past due
-     */
-    public List<ReportVersionDTO> getPastDue() {
-        ReportVersionDTOQuery q = new ReportVersionDTOQuery();
-        q.andWhere("rv.dueOn < :tomorrow");
-        q.andWhere("rv.submittedOn is null");
-        q.orderBy("rv.dueOn");
 
-//        q.filterByReportStatus(ReportStatus.COMPLETED);
-
-        Calendar cal = GregorianCalendar.getInstance();
-        cal.add(Calendar.DATE, 1);
-        Date d = cal.getTime();
-        q.setParameter("tomorrow", d);
-        List<ReportVersionDTO> l = removeDuplicates(reportVersionDao.searchDTO(q));
-        return l;
-    }
 
     /**
      * Gets the report activity.
