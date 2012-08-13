@@ -32,11 +32,6 @@ public class ListSafetyNotificationController extends SimpleFormController {
         return new ListSafetyNotificationCommand(notifications);
     }
 
-    @Override
-    protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
-        return super.onSubmit(request, response, command, errors);
-    }
-
 
     @Required
     public NotificationDao getNotificationDao() {
