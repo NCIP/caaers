@@ -3,7 +3,6 @@ package gov.nih.nci.cabig.caaers.web.participant;
 //java imports
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
-import gov.nih.nci.cabig.caaers.dao.query.StudyParticipantAssignmentQuery;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
@@ -19,7 +18,6 @@ import gov.nih.nci.cabig.caaers.web.fields.SecurityObjectIdFieldDecorator;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
