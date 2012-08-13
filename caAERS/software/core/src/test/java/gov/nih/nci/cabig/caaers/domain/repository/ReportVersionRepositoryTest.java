@@ -1,12 +1,10 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
-import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.dao.report.ReportVersionDao;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
-import org.apache.tomcat.util.buf.TimeStamp;
 import org.easymock.EasyMock;
 
 import java.util.ArrayList;
