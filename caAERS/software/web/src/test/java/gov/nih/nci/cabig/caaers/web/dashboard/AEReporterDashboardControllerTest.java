@@ -39,7 +39,7 @@ public class AEReporterDashboardControllerTest extends WebTestCase {
         assertSame(rrRepositry, controller.getRrRepositry());
         assertSame(reportVersionRepository, controller.getReportVersionRepository());
         EasyMock.expect(reportVersionRepository.getReportActivity()).andReturn(reportActivity);
-        EasyMock.expect(rrRepositry.getTaskNotificationByUserLogin("SYSTEM")).andReturn(taskNotifications);
+        EasyMock.expect(rrRepositry.getTaskNotificationByUserLogin("SYSTEM_ADMIN")).andReturn(taskNotifications);
         replayMocks();
         ModelAndView mv = controller.handleRequestInternal(request, response);
         assertSame(reportActivity, mv.getModel().get("reportActivity"));
