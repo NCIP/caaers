@@ -33,4 +33,28 @@ public class ELTest extends TestCase {
         assertEquals("true", el.evaluate("${true || false}"));
         assertEquals("true", el.evaluate("${true}"));
     }
+    
+    public void testString(){
+    	assertEquals("testString",el.evaluate("testString"));
+    }
+    
+    public void testBooleanLiteral(){
+    	assertEquals("false",el.evaluate("false"));
+    }
+    
+    public void testExpression(){
+    	assertEquals("9.0",el.evaluate("${2*5 + 12/3 -5}"));
+    	assertEquals("true",el.evaluate("${4.0 >= 3}"));
+    	assertEquals("12001.4",el.evaluate("${1.2E4 + 1.4}"));
+    	assertEquals("1.0",el.evaluate("${1.0 mod 3}"));
+    }
+    
+    public void testIncorrectInput(){
+    	try {
+    		assertEquals("9.0",el.evaluate("${ABoi23*344/167uio98}"));
+    		fail("Test should have failed");
+    	} catch (Exception ex){
+    		
+    	}
+    }
 }
