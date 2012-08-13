@@ -4,6 +4,7 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import com.semanticbits.rules.brxml.*;
 import com.semanticbits.rules.brxml.Condition;
+import gov.nih.nci.cabig.caaers.domain.dto.TaskNotificationDTO;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.*;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.CombinationPolicy;
@@ -1072,5 +1073,11 @@ public class Fixtures {
         }
         result.getRuleEvaluationResult().setMessage(msg);
         return result;
+    }
+    
+    public static TaskNotificationDTO createTaskNotificationDTO(String description) {
+        TaskNotificationDTO dto = new TaskNotificationDTO();
+        dto.setDescription(description);
+        return dto;
     }
 }
