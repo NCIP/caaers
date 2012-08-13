@@ -18,12 +18,11 @@
  */
 package gov.nih.nci.cabig.caaers.utils.el;
 
-import javax.servlet.jsp.el.FunctionMapper;
-import javax.servlet.jsp.el.ELException;
 import java.lang.reflect.Method;
-
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.jsp.el.FunctionMapper;
 
 public class MockFunctionMapper implements FunctionMapper {
 
