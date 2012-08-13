@@ -52,6 +52,18 @@ public class DeviceRepositoryTest extends DaoNoSecurityTestCase<OrganizationDao>
         assertEquals(1, l.size());
     }
 
+    public void testGetALLFilterByCommonName() {
+        List l = deviceRepository.getByCommonName("Device-01 common name");
+        assertNotNull(l);
+        assertEquals(1, l.size());
+    }
+
+
+    public void testGetByMatchText() {
+        List l = deviceRepository.getByMatchText("Device-01 common name", false);
+        assertNotNull(l);
+        assertEquals(1, l.size());
+    }
     public void testGetALLFilterByCtepDbIdentifier() {
         List l = deviceRepository.getByCtepDbIdentifier("ctepId-A");
         assertNotNull(l);
