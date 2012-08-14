@@ -48,6 +48,8 @@ public class InvestigatorRepositoryImplTest extends AbstractTestCase {
         repositoryImpl.setAuthenticationMode("local");
         repositoryImpl.setOrganizationDao(organizationDao);
         repositoryImpl.setSiteInvestigatorDao(siteInvestigatorDao);
+        assertSame(eventFactory, repositoryImpl.getEventFactory());
+        assertSame(investigatorDao, repositoryImpl.getInvestigatorDao());
     }
 
     public void testSave() {
