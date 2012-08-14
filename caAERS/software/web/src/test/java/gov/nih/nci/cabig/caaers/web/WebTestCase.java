@@ -4,16 +4,21 @@ import edu.nwu.bioinformatics.commons.DateUtils;
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
+import gov.nih.nci.cabig.caaers.tools.Messages;
 import gov.nih.nci.cabig.ctms.lang.StaticNowFactory;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.Locale;
 
 import javax.servlet.jsp.PageContext;
 
 import org.acegisecurity.intercept.method.aspectj.AspectJCallback;
 import org.acegisecurity.intercept.method.aspectj.AspectJSecurityInterceptor;
 import org.aspectj.lang.JoinPoint;
+import org.springframework.context.MessageSource;
+import org.springframework.context.MessageSourceResolvable;
+import org.springframework.context.NoSuchMessageException;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockHttpSession;
@@ -54,6 +59,23 @@ public abstract class WebTestCase extends AbstractTestCase {
 
         switchToSuperUser();
         SecurityTestUtils.switchToCaaersSecurityFacadeMock(null);
+
+        Messages m = new Messages();
+
+        m.setMessageSource(new MessageSource() {
+            public String getMessage(String code, Object[] args, String defaultMessage, Locale locale) {
+                return "TEST";
+            }
+
+            public String getMessage(String code, Object[] args, Locale locale) throws NoSuchMessageException {
+                return "test";
+            }
+
+            public String getMessage(MessageSourceResolvable resolvable, Locale locale) throws NoSuchMessageException {
+                return "test";
+            }
+        });
+
     }
     
     static class MockAspectJSecurityInterceptor extends AspectJSecurityInterceptor {

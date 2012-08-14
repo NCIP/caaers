@@ -30,7 +30,6 @@ public class SearchAdEERSStudyController extends SimpleFormController {
 
     private StudyRepository studyRepository;
     private ListValues listValues;
-    private ConfigProperty configurationProperty;
     private static Log logger = LogFactory.getLog(SearchAdEERSStudyController.class);
 
     public SearchAdEERSStudyController() {
@@ -79,13 +78,6 @@ public class SearchAdEERSStudyController extends SimpleFormController {
         this.listValues = listValues;
     }
 
-    public ConfigProperty getConfigurationProperty() {
-        return configurationProperty;
-    }
-
-    public void setConfigurationProperty(ConfigProperty configurationProperty) {
-        this.configurationProperty = configurationProperty;
-    }
 
     @Required
     public void setStudyRepository(StudyRepository studyRepository  ) {
