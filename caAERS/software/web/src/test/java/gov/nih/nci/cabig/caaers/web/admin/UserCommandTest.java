@@ -24,21 +24,6 @@ public class UserCommandTest extends WebTestCase {
 
     @Override
     protected void setUp() throws Exception {
-        Messages m = new Messages();
-
-        m.setMessageSource(new MessageSource() {
-            public String getMessage(String code, Object[] args, String defaultMessage, Locale locale) {
-                return "TEST";
-            }
-
-            public String getMessage(String code, Object[] args, Locale locale) throws NoSuchMessageException {
-                return "test";
-            }
-
-            public String getMessage(MessageSourceResolvable resolvable, Locale locale) throws NoSuchMessageException {
-                return "test";
-            }
-        });
         super.setUp();
         switchToSuperUser();
         command = new UserCommand();
