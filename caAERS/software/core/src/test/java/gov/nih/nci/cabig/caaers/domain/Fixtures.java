@@ -51,6 +51,14 @@ public class Fixtures {
         organization.setId(organizationId);
         return organization;
     }
+    
+    public static RemoteInvestigator createRemoteInvestigator(String externalId){
+        RemoteInvestigator i = new RemoteInvestigator();
+        i.setFirstName("FN_"+ externalId);
+        i.setLastName("LN_"+externalId);
+
+        return i;
+    }
 
     public static <T extends DomainObject> T setId(final int id, final T target) {
         target.setId(id);

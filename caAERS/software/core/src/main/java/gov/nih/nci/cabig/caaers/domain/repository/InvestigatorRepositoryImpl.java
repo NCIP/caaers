@@ -100,11 +100,7 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
         String nciIdentifier = (String)searchCriteriaMap.get("personIdentifier");
         String organization = (String)searchCriteriaMap.get("organization");
 
-        if(StringUtils.isEmpty(firstName) &&
-        		StringUtils.isEmpty(lastName) &&
-        			StringUtils.isEmpty(nciIdentifier) &&
-        				StringUtils.isEmpty(organization)){
-        	
+        if(StringUtils.isEmpty(firstName) && StringUtils.isEmpty(lastName) && StringUtils.isEmpty(nciIdentifier) && StringUtils.isEmpty(organization)){
         	return investigatorDao.getLocalInvestigator(query);
         }
         
