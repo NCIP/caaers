@@ -5,6 +5,8 @@ import gov.nih.nci.cabig.caaers.domain.attribution.*;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
+import gov.nih.nci.cabig.caaers.validation.AdverseEventGroup;
+import gov.nih.nci.cabig.caaers.validation.fields.validators.NotNullConstraint;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.io.Serializable;
@@ -643,6 +645,7 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
      *
      * @return the adverse event term
      */
+    @NotNullConstraint(groups=AdverseEventGroup.class, fieldPath="adverseEvents[].adverseEventCtcTerm")
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "adverseEvent", orphanRemoval = true)
     @Cascade(value = {CascadeType.ALL})
     public AbstractAdverseEventTerm getAdverseEventTerm() {
@@ -663,6 +666,7 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
      *
      * @return the details for other
      */
+    @NotNullConstraint(groups=AdverseEventGroup.class, fieldPath="adverseEvents[].detailsForOther")
     public String getDetailsForOther() {
         return detailsForOther;
     }
@@ -683,6 +687,7 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
      */
     @Type(type = "grade")
     @Column(name = "grade_code")
+    @NotNullConstraint(groups=AdverseEventGroup.class, fieldPath="adverseEvents[].grade")
     public Grade getGrade() {
         return grade;
     }
@@ -701,6 +706,7 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
      *
      * @return the start date
      */
+    @NotNullConstraint(groups=AdverseEventGroup.class, fieldPath="adverseEvents[].startDate")
     public Date getStartDate() {
         return startDate;
     }
@@ -743,6 +749,7 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
      *
      * @return the end date
      */
+    @NotNullConstraint(groups=AdverseEventGroup.class, fieldPath="adverseEvents[].endDate")
     public Date getEndDate() {
         return endDate;
     }
@@ -763,6 +770,7 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
      */
     @Type(type = "hospitalization")
     @Column(name = "hospitalization_code")
+    @NotNullConstraint(groups=AdverseEventGroup.class, fieldPath="adverseEvents[].hospitalization")
     public Hospitalization getHospitalization() {
         return hospitalization;
     }
@@ -781,6 +789,7 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
      *
      * @return the expected
      */
+    @NotNullConstraint(groups=AdverseEventGroup.class, fieldPath="adverseEvents[].expected")
     public Boolean getExpected() {
         return expected;
     }
@@ -812,6 +821,7 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
      */
     @Type(type = "attribution")
     @Column(name = "attribution_summary_code")
+    @NotNullConstraint(groups=AdverseEventGroup.class, fieldPath="adverseEvents[].attributionSummary")
     public Attribution getAttributionSummary() {
         return attributionSummary;
     }
@@ -830,6 +840,7 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
      *
      * @return the comments
      */
+    @NotNullConstraint(groups=AdverseEventGroup.class, fieldPath="adverseEvents[].comments")
     public String getComments() {
         return comments;
     }
@@ -1149,6 +1160,7 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
      *
      * @return the event location
      */
+    @NotNullConstraint(groups=AdverseEventGroup.class, fieldPath="adverseEvents[].eventLocation")
     public String getEventLocation() {
         return eventLocation;
     }
@@ -1173,6 +1185,7 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     @JoinColumn(name = "adverse_event_id", nullable=false)
     @Cascade(value = {CascadeType.ALL})
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
+    @NotNullConstraint(groups=AdverseEventGroup.class, fieldPath="adverseEvents[].outcomes")
     public List<Outcome> getOutcomes() {
         if (outcomes == null) outcomes = new ArrayList<Outcome>();
         return outcomes;
@@ -1644,6 +1657,7 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
 	 *
 	 * @return the participant at risk
 	 */
+	@NotNullConstraint(groups=AdverseEventGroup.class, fieldPath="adverseEvents[].participantAtRisk")
 	public Boolean getParticipantAtRisk() {
 		return participantAtRisk;
 	}

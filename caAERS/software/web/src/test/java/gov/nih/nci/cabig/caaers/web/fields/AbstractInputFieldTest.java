@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.fields;
 
-import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
+import gov.nih.nci.cabig.caaers.validation.fields.validators.FieldValidator;
 import junit.framework.TestCase;
 import org.apache.commons.lang.ArrayUtils;
 import org.springframework.beans.BeanWrapper;

@@ -423,10 +423,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
   	<bean id="renderDecisionManagerBean" class="gov.nih.nci.cabig.caaers.web.RenderDecisionManager" scope="session" lazy-init="true"/>
     <bean id="renderDecisionManager" class="gov.nih.nci.cabig.caaers.web.RenderDecisionManagerFactoryBean" />
     
-    <bean id="caaersFieldConfigurationManager" class="gov.nih.nci.cabig.caaers.web.CaaersFieldConfigurationManager">
-    	<property name="caaersFieldDefinitionDao" ref="caaersFieldDefinitionDao" />
-    </bean>
-    
 
     <bean id="siteAuthorizationCheck" class="gov.nih.nci.cabig.caaers.security.authorization.SiteAuthorizationCheck">
         <property name="caaersSecurityFacade" ref="caaersSecurityFacade" />

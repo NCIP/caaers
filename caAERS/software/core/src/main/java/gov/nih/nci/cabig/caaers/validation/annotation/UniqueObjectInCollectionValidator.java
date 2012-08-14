@@ -1,11 +1,11 @@
 package gov.nih.nci.cabig.caaers.validation.annotation;
 
+import gov.nih.nci.cabig.caaers.domain.Retireable;
+import gov.nih.nci.cabig.caaers.validation.AbstractConstraintValidator;
+
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
-import gov.nih.nci.cabig.caaers.domain.Retireable;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -13,9 +13,10 @@ import org.apache.commons.logging.LogFactory;
  * Created by IntelliJ IDEA. User: admin Date: Dec 17, 2007 Time: 5:29:22 PM To change this template
  * use File | Settings | File Templates.
  */
-public class UniqueObjectInCollectionValidator implements Validator<UniqueObjectInCollection> {
+public class UniqueObjectInCollectionValidator extends AbstractConstraintValidator<UniqueObjectInCollection, Object> implements Validator<UniqueObjectInCollection> {
 
-    String message;
+
+	String message;
 
     private static Log logger = LogFactory.getLog(UniqueObjectInCollectionValidator.class);
 
@@ -41,10 +42,12 @@ public class UniqueObjectInCollectionValidator implements Validator<UniqueObject
     }
 
     public void initialize(final UniqueObjectInCollection parameters) {
+    	super.initialize(parameters);
         this.message = parameters.message();
     }
 
     public String message() {
         return this.message;
     }
+    
 }

@@ -480,8 +480,12 @@ This applicationContext contains the definition of the DAOs
                 <!-- caching -->
                 <prop key="hibernate.cache.use_second_level_cache">true</prop>
                 <prop key="hibernate.cache.provider_class">org.hibernate.cache.SingletonEhCacheProvider</prop>
-
-            </props>
+                
+                <!-- validation -->                
+                <prop key="javax.persistence.validation.mode">none</prop><!--
+				<prop key="hibernate.validator.apply_to_ddl">false</prop>
+                <prop key="hibernate.validator.autoregister_listeners">false</prop>
+            --></props>
         </property>
     </bean>
 

@@ -35,7 +35,19 @@ public class HQLQueryRunnerTestCase extends CaaersDbTestCase {
         System.out.println("time " +(en-st));
         super.tearDown();
     }
+    
+    public void testHQL(){
 
+        String hql = "select distinct s  , terminology , ta , org , sai , spa from  Study s left outer join s.studyAgentsInternal as sai join s.aeTerminology as terminology join s.treatmentAssignmentsInternal as ta left outer join s.studyOrganizations as ss left outer join ss.organization as org join s.studyOrganizations as ss left outer join ss.studyParticipantAssignments as spa WHERE sai.studyTherapyType = '4'";
+
+        HQLQuery query = new HQLQuery(hql.toString());
+
+        List<String> resultList = (List<String>) fetcher.search(query);
+        System.out.println("result Count : " + resultList.size());
+        System.out.println(new TreeSet(resultList));
+    }
+
+    /*
     public void testStudyIDFetcher1(){
 
 
@@ -377,7 +389,7 @@ public class HQLQueryRunnerTestCase extends CaaersDbTestCase {
         System.out.println("result Count : " + resultList.size());
         System.out.println(new TreeSet(resultList));
     }
-
+*/
 
     private List<Integer> orgIds(){
        return orgIds(1, 5000);

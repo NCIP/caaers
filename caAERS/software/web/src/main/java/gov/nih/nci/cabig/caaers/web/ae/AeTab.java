@@ -14,8 +14,8 @@ import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.SchedulerService;
 import gov.nih.nci.cabig.caaers.validation.ValidationError;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
+import gov.nih.nci.cabig.caaers.validation.fields.validators.FieldValidator;
 import gov.nih.nci.cabig.caaers.web.fields.*;
-import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 import gov.nih.nci.cabig.caaers.web.utils.
         WebUtils;
 

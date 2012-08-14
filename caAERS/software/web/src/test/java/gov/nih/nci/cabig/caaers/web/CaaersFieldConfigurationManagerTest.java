@@ -6,6 +6,7 @@ import java.util.Map;
 
 import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
 import gov.nih.nci.cabig.caaers.domain.report.RequirednessIndicator;
+import gov.nih.nci.cabig.caaers.validation.CaaersFieldConfigurationManager;
 
 /**
  * This class test CaaersFieldConfigurationManager class

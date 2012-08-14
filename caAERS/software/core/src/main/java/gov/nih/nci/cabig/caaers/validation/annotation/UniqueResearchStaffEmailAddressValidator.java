@@ -3,20 +3,21 @@ package gov.nih.nci.cabig.caaers.validation.annotation;
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
+import gov.nih.nci.cabig.caaers.validation.AbstractConstraintValidator;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Required;
 
-public class UniqueResearchStaffEmailAddressValidator implements
+public class UniqueResearchStaffEmailAddressValidator extends AbstractConstraintValidator<UniqueResearchStaffEmailAddress, Object> implements
 Validator<UniqueResearchStaffEmailAddress>{
 	
 	private ResearchStaffRepository researchStaffRepository;
 	String message;
 	
 	public void initialize(UniqueResearchStaffEmailAddress parameters) {
+    	super.initialize(parameters);
 		message = parameters.message();
-		
 	}
 
 	public String message() {

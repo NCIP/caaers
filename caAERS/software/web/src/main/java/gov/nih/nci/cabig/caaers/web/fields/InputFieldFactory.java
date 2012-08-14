@@ -9,7 +9,7 @@ import static gov.nih.nci.cabig.caaers.web.fields.InputField.Category.SELECT;
 import static gov.nih.nci.cabig.caaers.web.fields.InputField.Category.SPLIT_DATE;
 import static gov.nih.nci.cabig.caaers.web.fields.InputField.Category.TEXT;
 import static gov.nih.nci.cabig.caaers.web.fields.InputField.Category.TEXTAREA;
-import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
+import gov.nih.nci.cabig.caaers.validation.fields.validators.FieldValidator;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

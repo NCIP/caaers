@@ -9,6 +9,9 @@ import gov.nih.nci.cabig.caaers.CaaersTestCase;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
+
+import org.junit.Ignore;
+
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.List;
@@ -18,6 +21,7 @@ import java.util.List;
  * @author Ion C. Olaru 
  *
  */
+@Ignore
 public class CaaersRulesEngineServiceRuleableFieldsTest_BROKEN_ extends CaaersTestCase {
 
 	public static final String SPONSOR_LEVEL = "Sponsor";

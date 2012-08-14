@@ -4,9 +4,9 @@ import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
 import gov.nih.nci.cabig.caaers.domain.report.RequirednessIndicator;
+import gov.nih.nci.cabig.caaers.validation.fields.validators.FieldValidator;
+import gov.nih.nci.cabig.caaers.validation.fields.validators.SignValidator;
 import gov.nih.nci.cabig.caaers.web.fields.*;
-import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
-import gov.nih.nci.cabig.caaers.web.fields.validators.SignValidator;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import java.util.Arrays;

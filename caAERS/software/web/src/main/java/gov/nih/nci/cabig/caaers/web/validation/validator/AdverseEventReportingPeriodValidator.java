@@ -5,7 +5,8 @@ import java.util.Date;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 
-import gov.nih.nci.cabig.caaers.web.CaaersFieldConfigurationManager;
+import gov.nih.nci.cabig.caaers.validation.CaaersFieldConfigurationManager;
+
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import gov.nih.nci.cabig.caaers.domain.*;

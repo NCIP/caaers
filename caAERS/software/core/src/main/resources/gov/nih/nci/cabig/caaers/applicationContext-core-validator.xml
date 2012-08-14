@@ -14,30 +14,45 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
 http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
-
+	<bean id="caaersFieldConfigurationManager" class="gov.nih.nci.cabig.caaers.validation.CaaersFieldConfigurationManager">
+    	<property name="caaersFieldDefinitionDao" ref="caaersFieldDefinitionDao" />
+    </bean>
+    
+    <bean id="validator"  autowire="byType" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+    	<property name="validationProperties">
+		    <props></props>
+		</property>
+    </bean> 
+    
     <!-- validator beans starts here-->
 
     <bean id="uniqueNciIdentifierForOrganizationValidator" class="gov.nih.nci.cabig.caaers.validation.annotation.UniqueNciIdentifierForOrganizationValidator">
         <property name="organizationDao" ref="organizationDao"/>
         <property name="organizationRepository" ref="organizationRepository"/>
-    </bean>
+        <property name="caaersFieldConfigurationManager" ref="caaersFieldConfigurationManager"/>		   
+ </bean>
 
     <bean id="uniqueIdentifierValidator"
           class="gov.nih.nci.cabig.caaers.validation.annotation.UniqueIdentifierForParticipantValidator">
         <property name="participantDao" ref="participantDao"/>
+        <property name="caaersFieldConfigurationManager" ref="caaersFieldConfigurationManager"/>
     </bean>
 
     <bean id="uniqueObjectInCollectionValidator"
-          class="gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollectionValidator"/>
+          class="gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollectionValidator">
+        <property name="caaersFieldConfigurationManager" ref="caaersFieldConfigurationManager"/>
+    </bean>
 
     <bean id="uniqueIdentifierForStudyValidator"
           class="gov.nih.nci.cabig.caaers.validation.annotation.UniqueIdentifierForStudyValidator">
         <property name="studyDao" ref="studyDao"/>
+        <property name="caaersFieldConfigurationManager" ref="caaersFieldConfigurationManager"/>
     </bean>
 
     <bean id="uniqueResearchStaffEmailAddressValidator"
           class="gov.nih.nci.cabig.caaers.validation.annotation.UniqueResearchStaffEmailAddressValidator">
         <property name="researchStaffRepository" ref="researchStaffRepository"/>
+        <property name="caaersFieldConfigurationManager" ref="caaersFieldConfigurationManager"/>
     </bean>
 
     <!-- validator beans end here-->

@@ -4,9 +4,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.ValidatorFactory;
 
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
-import gov.nih.nci.cabig.caaers.domain.LocalStudy;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import junit.framework.TestCase;
@@ -78,6 +82,11 @@ public class UniqueObjectInCollectionValidatorTest extends TestCase {
         tac1.retire();
 
         assertTrue(validator.validate(Arrays.asList(tac1, tac2, tac3)));
+        
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();        
+        Set<ConstraintViolation<List<TreatmentAssignment>>> violations = factory.getValidator().validate(Arrays.asList(tac1, tac2, tac3));
+        
+        assertTrue(violations.isEmpty());
 
 
     }

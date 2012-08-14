@@ -9,18 +9,26 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import javax.validation.Constraint;
+import javax.validation.Payload;
+
 /**
  * Created by IntelliJ IDEA. User: admin Date: Dec 17, 2007 Time: 5:28:28 PM To change this template
  * use File | Settings | File Templates.
  */
 @Documented
 @ValidatorClass(UniqueObjectInCollectionValidator.class)
+@Constraint(validatedBy=UniqueObjectInCollectionValidator.class)
 @Target( { METHOD, FIELD, ElementType.PARAMETER })
 @Retention(RUNTIME)
-public @interface UniqueObjectInCollection
-
+public @interface UniqueObjectInCollection 
 {
-
-    public abstract String message() default "Duplicate..!";
+    String message() default "Duplicate..!";     
+    
+    Class<?>[] groups() default {};
+    
+    Class<? extends Payload>[] payload() default {};
+    
+    String fieldPath() default "";
 
 }

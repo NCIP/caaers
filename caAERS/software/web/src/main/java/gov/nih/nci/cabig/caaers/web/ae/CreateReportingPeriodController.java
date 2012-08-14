@@ -9,7 +9,7 @@ import gov.nih.nci.cabig.caaers.service.AdeersIntegrationFacade;
 import gov.nih.nci.cabig.caaers.service.AdverseEventReportingPeriodService;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
-import gov.nih.nci.cabig.caaers.web.CaaersFieldConfigurationManager;
+import gov.nih.nci.cabig.caaers.validation.CaaersFieldConfigurationManager;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManagerFactoryBean;

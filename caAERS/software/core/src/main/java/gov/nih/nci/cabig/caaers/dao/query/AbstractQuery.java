@@ -191,7 +191,11 @@ public abstract class AbstractQuery {
     public void leftJoinFetch(String objectQuery) {
         addToJoinsList(" left join fetch " + objectQuery);
     }
-
+    
+    public void leftOuterJoinFetch(String objectQuery) {
+        addToJoinsList(" left outer join fetch " + objectQuery);
+    }
+    
     public void addToJoinsList(String object) {
         addToJoinsList(object, -1);
     }

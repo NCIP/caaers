@@ -7,7 +7,7 @@ import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TabSection;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
-import gov.nih.nci.cabig.caaers.web.CaaersFieldConfigurationManager;
+import gov.nih.nci.cabig.caaers.validation.CaaersFieldConfigurationManager;
 import gov.nih.nci.cabig.caaers.web.ae.AdverseEventCaptureTab;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;

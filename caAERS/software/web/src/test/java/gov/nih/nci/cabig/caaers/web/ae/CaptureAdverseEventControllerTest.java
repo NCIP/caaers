@@ -9,7 +9,7 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
-import gov.nih.nci.cabig.caaers.web.CaaersFieldConfigurationManager;
+import gov.nih.nci.cabig.caaers.validation.CaaersFieldConfigurationManager;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManagerFactoryBean;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
 import org.springframework.validation.BindException;

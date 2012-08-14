@@ -64,7 +64,8 @@ public class Helper {
     }
 
     public static CaaersServiceResponse populateMessage(CaaersServiceResponse response, String message) {
-        ServiceResponse serviceResponse = response.getServiceResponse();
+        ServiceResponse serviceResponse = response.getServiceResponse();        
+        serviceResponse.setStatus(Status.PROCESSED);
         serviceResponse.setResponsecode("0");
         serviceResponse.setMessage(message);
         return response;
@@ -90,14 +91,22 @@ public class Helper {
 
     
     public static CaaersServiceResponse populateProcessingOutcome(CaaersServiceResponse response, ProcessingOutcome outcome){
-        EntityProcessingOutcomeType entityProcessingOutcomeType = createProcessingOutcomeType(outcome.isFailed(), outcome.getKlassName(),
-                outcome.getBusinessId(), outcome.getCaaersDBId(), null, outcome.getMessages());
-        response.getServiceResponse().getEntityProcessingOutcomes().getEntityProcessingOutcome().add(entityProcessingOutcomeType);
+    	ServiceResponse serviceRespons = response.getServiceResponse();
+    	
+    	EntityProcessingOutcomes entityProcessingOutcomes = serviceRespons.getEntityProcessingOutcomes();
+        if(entityProcessingOutcomes == null){
+            entityProcessingOutcomes = new EntityProcessingOutcomes();
+            serviceRespons.setEntityProcessingOutcomes(entityProcessingOutcomes);
+        }
+    	EntityProcessingOutcomeType entityProcessingOutcomeType = createProcessingOutcomeType(outcome.isFailed(), outcome.getKlassName(),
+        		StringUtils.isEmpty(outcome.getBusinessId()) ? "UNKNOWN" : outcome.getBusinessId(), outcome.getCaaersDBId(), null, outcome.getMessages());
+    	entityProcessingOutcomes.getEntityProcessingOutcome().add(entityProcessingOutcomeType);
+    	
         if(outcome.isFailed()) {
-            response.getServiceResponse().setStatus(Status.PARTIALLY_PROCESSED);
+        	serviceRespons.setStatus(Status.PARTIALLY_PROCESSED);
         } else{
-            Status existingStatus = response.getServiceResponse().getStatus();
-            if(existingStatus == null) response.getServiceResponse().setStatus(Status.PROCESSED);
+            Status existingStatus = serviceRespons.getStatus();
+            if(existingStatus == null) serviceRespons.setStatus(Status.PROCESSED);
         }
         return response;
     }

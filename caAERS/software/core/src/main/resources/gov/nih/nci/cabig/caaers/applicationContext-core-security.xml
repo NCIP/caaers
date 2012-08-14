@@ -63,7 +63,10 @@
                     <props>
                         <prop key="hibernate.connection.release_mode">auto</prop>
                         <prop key="hibernate.dialect">s[csm.datasource.dialect]</prop>
-                    </props>                    
+                        <prop key="javax.persistence.validation.mode">none</prop><!--
+                        <prop key="hibernate.validator.apply_to_ddl">false</prop>
+                        <prop key="hibernate.validator.autoregister_listeners">false</prop>
+                    --></props>                    
                 </property>
             </bean>
         </property>

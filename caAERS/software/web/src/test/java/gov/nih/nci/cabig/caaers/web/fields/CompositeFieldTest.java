@@ -2,7 +2,7 @@ package gov.nih.nci.cabig.caaers.web.fields;
 
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.domain.ParticipantHistory;
-import gov.nih.nci.cabig.caaers.web.fields.validators.DecimalRangeValidator;
+import gov.nih.nci.cabig.caaers.validation.fields.validators.DecimalRangeValidator;
 
 import java.math.BigDecimal;
 import java.util.Collections;

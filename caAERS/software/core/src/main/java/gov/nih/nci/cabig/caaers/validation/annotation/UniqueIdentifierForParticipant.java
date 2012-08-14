@@ -9,8 +9,12 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import javax.validation.Constraint;
+import javax.validation.Payload;
+
 @Documented
 @ValidatorClass(UniqueIdentifierForParticipantValidator.class)
+@Constraint(validatedBy=UniqueIdentifierForParticipantValidator.class)
 @Target( { METHOD, FIELD, ElementType.PARAMETER })
 @Retention(RUNTIME)
 public @interface UniqueIdentifierForParticipant {
@@ -18,5 +22,11 @@ public @interface UniqueIdentifierForParticipant {
 
     int min() default 0;
 
-    String message() default "Identifier already exits in database";
+    String message() default "Identifier already exits in database";     
+    
+    Class<?>[] groups() default {};
+    
+    Class<? extends Payload>[] payload() default {};
+    
+    String fieldPath() default "";
 }

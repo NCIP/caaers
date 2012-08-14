@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.validation.AbstractConstraintValidator;
 
 import java.util.List;
 
@@ -18,9 +19,9 @@ import org.springframework.beans.factory.annotation.Required;
  * 
  * Checks whether already a Participant with the given identifier exist.
  */
-public class UniqueIdentifierForParticipantValidator implements Validator<UniqueIdentifierForParticipant> {
-
-    Log logger = LogFactory.getLog(UniqueIdentifierForParticipantValidator.class);
+public class UniqueIdentifierForParticipantValidator extends AbstractConstraintValidator<UniqueIdentifierForParticipant, Object> implements Validator<UniqueIdentifierForParticipant> {
+    
+	Log logger = LogFactory.getLog(UniqueIdentifierForParticipantValidator.class);
 
     String message;
 
@@ -64,6 +65,7 @@ public class UniqueIdentifierForParticipantValidator implements Validator<Unique
     }
 
     public void initialize(UniqueIdentifierForParticipant parameters) {
+    	super.initialize(parameters);
         message = parameters.message();
     }
 

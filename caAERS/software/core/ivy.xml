@@ -95,11 +95,20 @@
                 <exclude org="javax.servlet" />
                 <exclude org="gov.nih.nci.cabig.ctms" module="ctms-commons-testing-unit"     />
                 <exclude org="org.hibernate" />
+				<exclude module="jta" />
             </dependency>
 
             <!--Home grown infrastructure jar for COPPA  -->
             <dependency org="com.semanticbits.remoteentitymanager" name="remoteentitymanager" rev="1.2.1" conf="*->publish,distGrid">
-                <exclude org="org.slf4j"     />
+                <exclude org="org.slf4j" />
+                
+                <!-- adding excludes on for older versions -->
+                <exclude org="xalan"/>
+                <exclude org="wsdl4j"/>
+                <exclude org="commons-beanutils"/>
+                <exclude org="commons-discovery"/>
+                <exclude org="antlr"/>
+                <exclude org="org.springframework"/>
             </dependency>
             <!-- C3PR esb client -->
             <dependency org="edu.duke.cabig.c3pr" name="c3pr-esb-client" rev="2.9.6_M2" conf="build,dist,distGrid->distGrid">
@@ -109,6 +118,7 @@
             <!-- caGrid and related JARs -->
             <dependency org="caGrid" name="cds" rev="1.4" >
                 <artifact name="caGrid-cds-client" conf="*->client" />
+                <exclude module="jta"/>
             </dependency>
 
             <!--caXchange -->
@@ -253,21 +263,39 @@
             <dependency org="org.apache.activemq" name="activemq-core" rev="4.1.1"/>
             <dependency org="backport-util-concurrent" name="backport-util-concurrent" rev="3.1"/>
             <dependency org="freemarker" name="freemarker" rev="2.3.4"   />
-
+            
+            <!-- Validation -->
+			<dependency org="javax.validation" name="validation-api" rev="1.0.0.GA"/>
+			<dependency org="org.hibernate" name="hibernate-validator" rev="4.2.0.Final">
+                <exclude org="org.easymock" />
+                <exclude org="org.slf4j"/>
+                <exclude org="javax.xml.bind"/>
+                <exclude org="com.sun.xml.bind"/>
+                <exclude module="hibernate" />
+            </dependency>
+			
             <!-- Test/Runtime dependencies -->
             <dependency org="org.dbunit" name="dbunit" rev="2.4.8" conf="build->default;test->default">
                 <exclude org="org.slf4j" module="slf4j-api" rev="1.4.3"/>
+                <exclude org="junit"/>
             </dependency>
 
 
 			<!-- Test Only Dependencies -->
         	<dependency org="edu.northwestern.bioinformatics" name="core-commons-testing" rev="77" conf="test->default" />
-        	<dependency org="org.easymock" name="easymockclassextension" rev="2.2.1" conf="test->default" />
-             <dependency org="org.springframework" name="spring-test" rev="3.0.7.RELEASE"   conf="test->default" />
-        	<dependency org="junit" name="junit" rev="3.8.1" conf="test->default"/>
-            <dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-testing-unit" rev="${ctms.version}" conf="test->default(*)" transitive="false"/>            
+        	<dependency org="org.springframework" name="spring-test" rev="3.0.7.RELEASE"   conf="test->default" />
+        	<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-testing-unit" rev="${ctms.version}" conf="test->default(*)" transitive="false"/>            
 			<!--<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-testing-all" rev="0.8" conf="test->default"/>-->
             <dependency org="net.sourceforge.cobertura" name="cobertura" rev="1.9.2" conf="test->default(*)"/>
+			
+			<dependency org="org.easymock" name="easymockclassextension" rev="2.2.1" conf="test->default(*)" >
+                <exclude org="cglib"/>
+            </dependency>
+        	<dependency org="junit" name="junit" rev="4.4" conf="test->default(*)"/>
+        	<dependency org="cobertura" name="cobertura" rev="1.8" conf="test->default(*)">
+                <exclude org="log4j"/>
+                <exclude org="asm"/>
+            </dependency>
 
         </dependencies>
 </ivy-module>

@@ -6,10 +6,10 @@ import gov.nih.nci.cabig.caaers.domain.LabTerm;
 import gov.nih.nci.cabig.caaers.domain.Lab;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
+import gov.nih.nci.cabig.caaers.validation.fields.validators.DecimalValidator;
+import gov.nih.nci.cabig.caaers.validation.fields.validators.FieldValidator;
+import gov.nih.nci.cabig.caaers.validation.fields.validators.SignValidator;
 import gov.nih.nci.cabig.caaers.web.fields.*;
-import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
-import gov.nih.nci.cabig.caaers.web.fields.validators.DecimalValidator;
-import gov.nih.nci.cabig.caaers.web.fields.validators.SignValidator;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import java.util.*;

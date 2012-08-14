@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
+import gov.nih.nci.cabig.caaers.validation.AbstractConstraintValidator;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ import org.springframework.beans.factory.annotation.Required;
 /**
  * @author Biju Joseph, Created on December,6th, 2007
  */
-public class UniqueNciIdentifierForOrganizationValidator implements
+public class UniqueNciIdentifierForOrganizationValidator extends AbstractConstraintValidator<UniqueNciIdentifierForOrganization, Object> implements
                 Validator<UniqueNciIdentifierForOrganization> {
 
     String message;
@@ -32,6 +33,7 @@ public class UniqueNciIdentifierForOrganizationValidator implements
     }
 
     public void initialize(UniqueNciIdentifierForOrganization uniqueNciIdentifierForResearchStaff) {
+    	super.initialize(uniqueNciIdentifierForResearchStaff);
         message = uniqueNciIdentifierForResearchStaff.message();
     }
 

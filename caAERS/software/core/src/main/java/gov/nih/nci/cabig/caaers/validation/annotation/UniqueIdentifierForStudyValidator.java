@@ -6,13 +6,14 @@ import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.validation.AbstractConstraintValidator;
 
 import java.util.List;
 
 import org.apache.commons.lang.ObjectUtils;
 import org.springframework.beans.factory.annotation.Required;
 
-public class UniqueIdentifierForStudyValidator implements Validator<UniqueIdentifierForStudy> {
+public class UniqueIdentifierForStudyValidator extends AbstractConstraintValidator<UniqueIdentifierForStudy, Object> implements Validator<UniqueIdentifierForStudy> {
     private String message;
 
     private StudyDao studyDao;
@@ -50,6 +51,7 @@ public class UniqueIdentifierForStudyValidator implements Validator<UniqueIdenti
     }
 
     public void initialize(UniqueIdentifierForStudy parameters) {
+    	super.initialize(parameters);
         message = parameters.message();
     }
 
