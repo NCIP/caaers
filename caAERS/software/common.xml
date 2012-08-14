@@ -572,11 +572,7 @@
 			<mkdir dir="${cobertura.report.dir}" />
 			<mkdir dir="${cobertura.report.dir}/xmlreport" />
 			<taskdef  resource="tasks.properties">
-				<classpath>
-					<fileset dir="${test.lib.dir}">
-						<include name="**/*.jar" />
-					</fileset>
-				</classpath>
+				<classpath refid="test.classpath" />
 			</taskdef>
 			<cobertura-instrument todir="${instrumented.classes.dir}" datafile="${cobertura.report.dir}/cobertura.ser">
 			    <fileset dir="${classes.dir}">
