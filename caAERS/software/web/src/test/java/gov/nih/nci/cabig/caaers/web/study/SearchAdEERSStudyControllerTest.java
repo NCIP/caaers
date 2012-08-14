@@ -80,7 +80,7 @@ public class SearchAdEERSStudyControllerTest extends WebTestCase {
             sCommand.setSearchText("abc");
             List<Study> studies = new ArrayList<Study>();
             BindException errors = new BindException(sCommand, "command");
-            EasyMock.expect(studyRepository.searchInAdEERS("abc")).andThrow(new Exception("test"));
+            EasyMock.expect(studyRepository.searchInAdEERS("abc")).andThrow(new RuntimeException("test"));
             replayMocks();
             ModelAndView mv = controller.onSubmit(request, response, sCommand, errors);
             assertTrue(errors.hasErrors());
