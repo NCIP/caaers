@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.participant;
 
 import gov.nih.nci.cabig.caaers.CaaersContextLoader;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
 import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.LocalStudy;
@@ -9,7 +10,6 @@ import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
 import gov.nih.nci.cabig.caaers.web.utils.ConfigPropertyHelper;
@@ -31,6 +31,7 @@ public class SelectStudyForParticipantTabTest extends AbstractTabTestCase<Select
     protected CaaersSecurityFacade facade;
     protected StudyRepository studyRepository;
     protected StudySiteDao studySiteDao;
+    protected StudyDao studyDao;
 
     @Override
     protected void setUp() throws Exception {
@@ -43,6 +44,8 @@ public class SelectStudyForParticipantTabTest extends AbstractTabTestCase<Select
         selectStudyForParticipantTab.setStudyRepository(studyRepository);
         studySiteDao = registerDaoMockFor(StudySiteDao.class);
         selectStudyForParticipantTab.setStudySiteDao(studySiteDao);
+        studyDao = registerDaoMockFor(StudyDao.class);
+        selectStudyForParticipantTab.setStudyDao(studyDao);
     }
 
     @Override
@@ -84,6 +87,35 @@ public class SelectStudyForParticipantTabTest extends AbstractTabTestCase<Select
         return referenceData;
     }
 
+/*
+* The Participant has 3 identifiers
+* This should not throw an error about duplicate identifiers
+*
+* */
+    public void testValidateUniqueness5() throws Exception {
+
+    	Study s = new LocalStudy();
+    	s.setId(2);
+    	OrganizationAssignedIdentifier primaryId = new OrganizationAssignedIdentifier();
+    	primaryId.setValue("val");
+    	primaryId.setPrimaryIndicator(true);
+    	s.getIdentifiers().add(primaryId);
+    	request.setParameter("studyId", "2");
+    	newParticipantCommand.setStudy(s);
+    	StudySite ss = new StudySite();
+    	ss.setStudy(s);
+    	StudyParticipantAssignment assignment = new StudyParticipantAssignment();
+    	assignment.setStudySite(ss);
+    	assignment.setStudySubjectIdentifier("1211");
+    	newParticipantCommand.setAssignment(assignment);
+    	EasyMock.expect(studyDao.getNumberOfStudySubjectsInStudyWithGivenAssignmentIdentifier((Study)EasyMock.anyObject(),
+    			(String)EasyMock.anyObject(), EasyMock.anyInt())).andReturn(2L);
+    	replayMocks();
+    	selectStudyForParticipantTab.validate(newParticipantCommand, errors);
+        verifyMocks();
+        assertEquals(1, errors.getErrorCount());
+    }
+    
     public void testOnBind() {
     	
     	Study s = new LocalStudy();
