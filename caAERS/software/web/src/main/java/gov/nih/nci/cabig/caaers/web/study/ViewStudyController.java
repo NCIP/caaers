@@ -15,7 +15,6 @@ public class ViewStudyController extends ParameterizableViewController {
     public ModelAndView handleRequestInternal(HttpServletRequest request,
                     HttpServletResponse response) throws Exception {
 
-        setViewName("study/study_confirmation");
         ModelAndView mav = new ModelAndView("study/study_confirmation");
 
         return mav;
