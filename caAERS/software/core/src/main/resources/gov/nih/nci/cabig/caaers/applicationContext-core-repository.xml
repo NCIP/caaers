@@ -102,7 +102,6 @@
     	<property name="reportDao" ref="reportDao" />
     </bean>
 
-    <bean id="ajaxableDomainObjectRepository" class="gov.nih.nci.cabig.caaers.domain.repository.ajax.AjaxableDomainObjectRepository" parent="daoTemplate" />
 
     <bean id="terminologyRepository" class="gov.nih.nci.cabig.caaers.domain.repository.TerminologyRepositoryImpl" autowire="byType"/>
 
