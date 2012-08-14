@@ -8,6 +8,8 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AeTerminology;
 import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AdverseEventType;
+import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AttributionType;
+import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.HospitalizationType;
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.OutComeEnumType;
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.OutcomeType;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
@@ -97,6 +99,46 @@ public class AdverseEventConverterTest extends AbstractTestCase {
 		
 		assertEquals(1,advEvent.getOutcomes().size());
 		assertEquals("Vomiting",advEvent.getOutcomes().get(0).getOther());
+	}
+	
+	public void testConvertAdverseEventDtoToAdverseEventDomain1() throws Exception{
+		
+		AdverseEventType dto = new AdverseEventType();
+		
+		OutcomeType outcomeType = new OutcomeType();
+		outcomeType.setOther("Vomiting");
+		outcomeType.setOutComeEnumType(OutComeEnumType.OTHER_SERIOUS);
+		List<OutcomeType> outcomes = new ArrayList<OutcomeType>();
+		outcomes.add(outcomeType);
+		dto.setOutcome(outcomes);
+		
+		dto.setHospitalization(HospitalizationType.NO);
+		dto.setAttributionSummary(AttributionType.PROBABLE);
+		
+		Date date0 = DateUtils.parseDate("04/27/2011");
+		GregorianCalendar c0 = new GregorianCalendar();
+		c0.setTime(date0);
+
+		XMLGregorianCalendar startDate = DatatypeFactory.newInstance().newXMLGregorianCalendar(c0);
+		
+		
+		dto.setStartDate(startDate);
+		
+		Date date1 = DateUtils.parseDate("05/11/2011");
+		GregorianCalendar c1 = new GregorianCalendar();
+		c1.setTime(date1);
+
+		XMLGregorianCalendar endDate = DatatypeFactory.newInstance().newXMLGregorianCalendar(c1);
+		
+		dto.setEndDate(endDate);
+		
+		AeTerminology terminology = new AeTerminology();
+		Ctc ctc = new Ctc();
+		ctc.setName("ctc");
+		terminology.setCtcVersion(ctc);
+		
+		Date startDateOfFirstCourse = DateUtils.parseDate("05/11/2007");
+		converter.convertAdverseEventDtoToAdverseEventDomain(dto, null, terminology, startDateOfFirstCourse, AdverseEventManagementServiceImpl.CREATE);
 	}
 	
 }
