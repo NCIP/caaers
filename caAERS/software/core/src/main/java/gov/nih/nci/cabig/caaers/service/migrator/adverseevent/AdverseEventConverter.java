@@ -154,8 +154,13 @@ public class AdverseEventConverter {
 			LowLevelTerm lowLevelTerm = getLowLevelTerm(xmlLowLevelTerm.getMeddraCode(),xmlLowLevelTerm.getMeddraTerm());
 			if (lowLevelTerm == null) {
 				throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_021", new String[]{xmlLowLevelTerm.getMeddraCode().toString()},"",Locale.getDefault()));
-			} else {			
-				AdverseEventMeddraLowLevelTerm adverseEventMeddraLowLevelTerm = new AdverseEventMeddraLowLevelTerm();
+			} else {	
+				//for update, lowlevelterm already exists
+				AdverseEventMeddraLowLevelTerm adverseEventMeddraLowLevelTerm = adverseEvent.getAdverseEventMeddraLowLevelTerm();
+				if( adverseEventMeddraLowLevelTerm == null ) {
+					adverseEventMeddraLowLevelTerm = new AdverseEventMeddraLowLevelTerm();	
+				}
+				
 				adverseEventMeddraLowLevelTerm.setLowLevelTerm(lowLevelTerm);
 				adverseEventMeddraLowLevelTerm.setAdverseEvent(adverseEvent);
 				adverseEvent.setAdverseEventMeddraLowLevelTerm(adverseEventMeddraLowLevelTerm);
@@ -198,7 +203,11 @@ public class AdverseEventConverter {
 				if (!gradeAllowed) {
 					throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_030", new String[]{adverseEventDto.getGrade()+"",adverseEventDto.getCtepCode()},"",Locale.getDefault()));
 				}
-				AdverseEventCtcTerm adverseEventCtcTerm = new AdverseEventCtcTerm();
+				//for update AECtcTerm already exists
+				AdverseEventCtcTerm adverseEventCtcTerm = (AdverseEventCtcTerm) adverseEvent.getAdverseEventTerm();
+				if(adverseEventCtcTerm == null) {
+					adverseEventCtcTerm = new AdverseEventCtcTerm();
+				}				
 				adverseEventCtcTerm.setCtcTerm(ctcTerm);
 				adverseEventCtcTerm.setAdverseEvent(adverseEvent);
 				adverseEvent.setAdverseEventTerm(adverseEventCtcTerm);
