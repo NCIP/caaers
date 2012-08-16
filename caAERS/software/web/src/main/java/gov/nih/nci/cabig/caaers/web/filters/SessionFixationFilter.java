@@ -13,6 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
@@ -33,8 +34,11 @@ public class SessionFixationFilter implements Filter {
 		if (request instanceof HttpServletRequest) {
 			HttpServletRequest httpRequest = (HttpServletRequest) request;
 			HttpSession session = httpRequest.getSession(false);
-
+			HttpServletResponse httpResponse= (HttpServletResponse) response;
+			
 	        if (session == null) {
+	        	logger.info("Session is null, hence returning ");
+	        	httpResponse.sendRedirect("/caaers/public/login");
 	            return;
 	        }
 	        
