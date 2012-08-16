@@ -17,11 +17,12 @@
         </path>
     </target>
 	
-	<target name="runcukes" depends="clean-test-results, compile-test, cucumber.jars.classpath">
+	<target name="runcukes" depends="clean, init, compile-test, cucumber.jars.classpath">
         <mkdir dir="build/cucumber-junit-report"/>
         <java classname="cucumber.cli.Main" fork="true" failonerror="false" resultproperty="cucumber.exitstatus">
             <!--<classpath refid="cucumber.jars.classpath"/>-->
         	<classpath refid="test.run.classpath"/>
+        	<sysproperty key="geb.env" value="${geb.env}"/>
             <arg value="--format"/>
             <arg value="junit:build/cucumber-junit-report/allcukes.xml"/>
             <arg value="--format"/>
