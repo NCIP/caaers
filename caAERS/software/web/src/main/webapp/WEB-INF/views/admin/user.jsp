@@ -26,7 +26,8 @@
             .hand { cursor: pointer; }
 			div.row div.label { width:13em; }
 			div.row div.value { margin-left:14em; }
-			.rightpanel { width:54% }
+			.rightpanel { width:48%}
+			.leftpanel {width: 50%}
         </style>
 
         <tags:dwrJavascriptLink objects="user,createStudy"/>
