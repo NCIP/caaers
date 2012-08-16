@@ -38,6 +38,7 @@
             <dependency org="net.sourceforge.cobertura" name="cobertura" rev="1.9.2" conf="test->default(*)"/>
             <dependency org="info.cukes" name="cucumber-junit" rev="1.0.11" conf="test->default(*)"/>
             <dependency org="info.cukes" name="cucumber-groovy" rev="1.0.11" conf="test->default(*)"/>
+            <!-- <dependency org="info.cukes" name="cucumber-java" rev="1.0.11" conf="test->default(*)"/> -->
             <dependency org="org.codehaus.groovy" name="groovy-all" rev="1.8.6" conf="test->default(*)"/>
             <dependency org="org.codehaus.geb" name="geb-core" rev="0.7.1" conf="test->default(*)"/>
             <dependency org="org.seleniumhq.selenium" name="selenium-firefox-driver" rev="2.25.0" conf="test->default(*)"/>

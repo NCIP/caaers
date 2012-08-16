@@ -1,14 +1,8 @@
-
-
-
-
-
-
 import org.openqa.selenium.htmlunit.HtmlUnitDriver
 
 driver = { new HtmlUnitDriver(true)}
-//baseUrl = "https://localhost:8443/caaers/"
-baseUrl = "https://dev.semanticbits.com/caaers/"
+baseUrl = "https://localhost:8443/caaers/"
+//baseUrl = "https://dev.semanticbits.com/caaers/"
 reportsDir = "target/geb-reports"
 reportOnTestFailureOnly = true
 
