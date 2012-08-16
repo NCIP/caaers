@@ -361,5 +361,11 @@
 		<subant target="publish-local" buildpath="grid/ivy-build.xml" />
 	</target>
 	
+	<!-- ==========================================================
+		target : runcukes
+	=============================================================-->
+	<target name="runcukes" description="run cucumber test cases in the features module">
+		<subant target="runcukes" buildpath="features/ivy-build.xml" />
+	</target>
 	
 </project>
