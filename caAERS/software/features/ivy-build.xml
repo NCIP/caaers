@@ -30,7 +30,7 @@
             <arg value="--format"/>
             <arg value="html:build/cucumber-html-report"/>
         	<arg value="--format"/>
-        	<arg value="json:build/cucumber-json-report"/>
+        	<arg value="json:build/cucumber.json"/>
             <arg value="--glue"/>
             <arg value="src/test/groovy"/>
             <arg value="src/test/resources"/>
