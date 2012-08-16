@@ -22,6 +22,14 @@ public class TimeValue {
     /** The type. */
     private int type = 0; // this is to force hibernate to instantiate it.
 
+    public TimeValue() {
+        this(null, null );
+    }
+
+    public TimeValue(Integer hour, Integer minute) {
+        this.hour = hour;
+        this.minute = minute;
+    }
 
     /**
      * Gets the hour.

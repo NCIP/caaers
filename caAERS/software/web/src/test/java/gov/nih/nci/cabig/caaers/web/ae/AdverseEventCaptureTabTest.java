@@ -9,12 +9,7 @@ import static gov.nih.nci.cabig.caaers.domain.OutcomeType.OTHER_SERIOUS;
 import static gov.nih.nci.cabig.caaers.domain.OutcomeType.REQUIRED_INTERVENTION;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.Fixtures;
-import gov.nih.nci.cabig.caaers.domain.Grade;
-import gov.nih.nci.cabig.caaers.domain.Outcome;
-import gov.nih.nci.cabig.caaers.domain.OutcomeType;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
 import gov.nih.nci.cabig.caaers.domain.report.RequirednessIndicator;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
@@ -29,6 +24,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 /**
@@ -40,6 +37,7 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
     
 	AdverseEventCaptureTab tab;
 	CaptureAdverseEventInputCommand command;
+    BeanWrapper commandWrapper;
 	Errors errors;
 	ExpeditedAdverseEventReportDao reportDao;
 	ReportDefinitionDao reportDefinitionDao;
@@ -57,20 +55,25 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
 		List<AdverseEvent> aeList = createAdverseEventList();
 		reportingPeriod.setAdverseEvents(aeList);
 		Fixtures.createCtcV3Terminology(reportingPeriod.getStudy());
-		reportDao = registerDaoMockFor(ExpeditedAdverseEventReportDao.class);
+        
+        setUpCommand(reportingPeriod);
+
+        reportDao = registerDaoMockFor(ExpeditedAdverseEventReportDao.class);
 		reportDefinitionDao = registerDaoMockFor(ReportDefinitionDao.class);
 		reportRepository = registerMockFor(ReportRepository.class);
-		
-		command = new CaptureAdverseEventInputCommand(null, null, reportDefinitionDao, null, reportDao);
-		command.setAdverseEventReportingPeriod(reportingPeriod);
-		
-	
-		errors = new BindException(command, "command");
 		
 		tab.setReportRepository(reportRepository);
 		tab.setCaaersFieldConfigurationManager(caaersFieldConfigurationManager);
 	}
 	
+    private void setUpCommand(AdverseEventReportingPeriod reportingPeriod){
+        command = new CaptureAdverseEventInputCommand(null, null, reportDefinitionDao, null, reportDao);
+        command.setAdverseEventReportingPeriod(reportingPeriod);
+        command.setParticipant(reportingPeriod.getParticipant());
+        command.setStudy(reportingPeriod.getStudy());
+        commandWrapper = new BeanWrapperImpl(command);
+        errors = new BindException(command, "command");
+    }
 	protected void setupCaaersFieldConfigurationManager(){
 		caaersFieldConfigurationManager = new CaaersFieldConfigurationManager();
 		Map<String, Mandatory> map = new HashMap<String, Mandatory>();
@@ -93,11 +96,10 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
 		fieldMap.put(AdverseEventCaptureTab.class.getName(), map);
 		caaersFieldConfigurationManager.setFieldConfigurationMap(fieldMap);
 	}
-	
 	public List<AdverseEvent> createAdverseEventList(){
 		List<AdverseEvent> aeList = new ArrayList<AdverseEvent>();
 		for(int i =0; i < 3; i++){
-			AdverseEvent ae = Fixtures.createAdverseEvent(i+1, Grade.NORMAL);
+			AdverseEvent ae = Fixtures.createAdverseEvent(i+1, Grade.getByCode(i+1));
 			//add couple of outcomes
 			Outcome o1 = Fixtures.createOutcome(i*3 +10,OutcomeType.DEATH);
 			Outcome o2 = Fixtures.createOutcome(i*3 +11,OutcomeType.HOSPITALIZATION);
@@ -107,10 +109,11 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
 			ae.addOutcome(o3);
 			
 			aeList.add(ae);
-		} 
+		}
+        aeList.add(Fixtures.createAdverseEvent(4, Grade.MILD, Fixtures.createCtcTerm("j", "k")));
+        aeList.add(Fixtures.createAdverseEvent(5, Grade.MILD, Fixtures.createCtcTerm("a", "b")));
 		return aeList;
 	} 
-
 	public void testCreateFieldGroupsCaptureAdverseEventInputCommand() {
 		command.initializeOutcomes();
 		Map<String, InputFieldGroup> fieldMap = tab.createFieldGroups(command);
@@ -175,7 +178,6 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
 				"participantAtRisk",
 				"eventLocation");
 	}
-	
 	public void testPostprocess(){
 		command.initializeOutcomes();
 		
@@ -191,6 +193,130 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
 		assertNull(command.getPrimaryAdverseEventId());
 		
 	}
+
+    public void testValidate_WhenStudyEnforceTermUniquness(){
+        command.initializeOutcomes();
+        Map<String, InputFieldGroup> fieldMap = tab.createFieldGroups(command);
+        tab.validate(command, commandWrapper, fieldMap, errors);
+        assertTrue(errors.hasErrors());
+        assertEquals(1, errors.getGlobalErrorCount());
+        assertEquals("DUPLICATE_EXPECTED_AE", errors.getGlobalErrors().get(0).getCode());
+    }
+
+    public void testValidate_WhenStudyDoNotEnforceTermUniquness(){
+        command.initializeOutcomes();
+        command.getStudy().setAeTermUnique(false);
+        Map<String, InputFieldGroup> fieldMap = tab.createFieldGroups(command);
+        tab.validate(command, commandWrapper, fieldMap, errors);
+        assertFalse(errors.hasErrors());
+    }
+
+
+    public void testValidate_Only1Grade5AdverseEvent(){
+        command.initializeOutcomes();
+        AdverseEventReportingPeriod reportingPeriod = command.getAdverseEventReportingPeriod();
+        reportingPeriod.getAdverseEvents().get(0).setGrade(Grade.DEATH);
+        reportingPeriod.getAdverseEvents().get(1).setGrade(Grade.DEATH);
+
+        command.getStudy().setAeTermUnique(false);
+        Map<String, InputFieldGroup> fieldMap = tab.createFieldGroups(command);
+        tab.validate(command, commandWrapper, fieldMap, errors);
+        assertTrue(errors.hasErrors());
+        assertEquals(1, errors.getErrorCount());
+        assertTrue(errors.hasFieldErrors("adverseEvents[1].grade"));
+        assertTrue(errors.getFieldErrors().get(0).getCode().equals("SAE_033"));
+    }
+
+
+
+    public void testValidate_EventHourMandatory(){
+        command.initializeOutcomes();
+        AdverseEventReportingPeriod reportingPeriod = command.getAdverseEventReportingPeriod();
+        reportingPeriod.getAdverseEvents().remove(0);
+        reportingPeriod.getAdverseEvents().remove(0);
+        reportingPeriod.getAdverseEvents().remove(0);
+        reportingPeriod.getAdverseEvents().get(0).setEventApproximateTime(new TimeValue(10,10));
+        reportingPeriod.getAdverseEvents().get(1).setGrade(Grade.DEATH);
+        caaersFieldConfigurationManager.getFieldConfigurationMap().get(AdverseEventCaptureTab.class.getName()).put("adverseEvents[].eventApproximateTime.hourString", Mandatory.MANDATORY);
+        command.getStudy().setAeTermUnique(false);
+        Map<String, InputFieldGroup> fieldMap = tab.createFieldGroups(command);
+        tab.validate(command, commandWrapper, fieldMap, errors);
+        assertTrue(errors.hasErrors());
+        assertEquals(1, errors.getErrorCount());
+        assertTrue(errors.hasFieldErrors("adverseEvents[1].eventApproximateTime.hourString"));
+        assertTrue(errors.getFieldErrors().get(0).getCode().equals("CAE_017"));
+    }
+
+
+    public void testValidate_VerbatimLength(){
+        command.initializeOutcomes();
+        AdverseEventReportingPeriod reportingPeriod = command.getAdverseEventReportingPeriod();
+        String hugeString = "xyzxyzxyzxyzxyzxyzxyzxyzxyzxyzxyzxyzxyzxyzxyzxyzxyzxy" +
+                            "xyzxyzxyzxyzxyzxyzxyzxyzxyzxyzxyzxyzxyzxyzxyzxyzxyzxy" +
+                            "zxyzxyzxyzxyzxyzxyzxyzxyzxyzxyzxyzxyzxyzxyzxyzxyzxyzxyz";
+
+        reportingPeriod.getAdverseEvents().get(0).setDetailsForOther("123456");
+        reportingPeriod.getAdverseEvents().get(1).setDetailsForOther(hugeString);
+
+        command.getStudy().setAeTermUnique(false);
+        Map<String, InputFieldGroup> fieldMap = tab.createFieldGroups(command);
+        tab.validate(command, commandWrapper, fieldMap, errors);
+        assertTrue(errors.hasErrors());
+        assertEquals(1, errors.getErrorCount());
+        assertTrue(errors.hasFieldErrors("adverseEvents[1].detailsForOther"));
+        assertTrue(errors.getFieldErrors().get(0).getCode().equals("SAE_021"));
+    }
+
+    
+    public void testValidate_WhenVerbatimIsMandatory(){
+        command.initializeOutcomes();
+        command.getStudy().setAeTermUnique(false);
+        caaersFieldConfigurationManager.getFieldConfigurationMap().get(AdverseEventCaptureTab.class.getName()).put("adverseEvents[].detailsForOther", Mandatory.MANDATORY);
+        Map<String, InputFieldGroup> fieldMap = tab.createFieldGroups(command);
+        {
+            tab.validate(command, commandWrapper, fieldMap, errors);
+            assertTrue(errors.hasErrors());
+            assertEquals(5, errors.getErrorCount());
+            assertTrue(errors.hasFieldErrors("adverseEvents[0].detailsForOther"));
+            assertTrue(errors.hasFieldErrors("adverseEvents[1].detailsForOther"));
+            assertTrue(errors.hasFieldErrors("adverseEvents[2].detailsForOther"));
+            assertTrue(errors.hasFieldErrors("adverseEvents[3].detailsForOther"));
+            assertTrue(errors.hasFieldErrors("adverseEvents[4].detailsForOther"));
+        }
+
+
+        {
+           AdverseEventReportingPeriod reportingPeriod = command.getAdverseEventReportingPeriod();
+           reportingPeriod.getAdverseEvents().get(0).setDetailsForOther("x");
+           reportingPeriod.getAdverseEvents().get(4).setDetailsForOther("y");
+           setUpCommand(reportingPeriod);
+            tab.validate(command, commandWrapper, fieldMap, errors);
+            assertTrue(errors.hasErrors());
+            assertEquals(3, errors.getErrorCount());
+            assertTrue(errors.hasFieldErrors("adverseEvents[1].detailsForOther"));
+            assertTrue(errors.hasFieldErrors("adverseEvents[2].detailsForOther"));
+            assertTrue(errors.hasFieldErrors("adverseEvents[3].detailsForOther"));
+        }
+
+
+        {
+            AdverseEventReportingPeriod reportingPeriod = command.getAdverseEventReportingPeriod();
+            reportingPeriod.getAdverseEvents().get(0).setDetailsForOther("x0");
+            reportingPeriod.getAdverseEvents().get(1).setDetailsForOther("x1");
+            reportingPeriod.getAdverseEvents().get(2).setDetailsForOther("x2");
+            reportingPeriod.getAdverseEvents().get(3).setDetailsForOther("y1");
+            reportingPeriod.getAdverseEvents().get(4).setDetailsForOther("y2");
+            setUpCommand(reportingPeriod);
+            tab.validate(command, commandWrapper, fieldMap, errors);
+            assertFalse(errors.hasErrors());
+
+        }
+
+
+
+
+    }
+
 	/*
 	public void testPostprocessWhenActionIsAmmend(){
 		command.initializeOutcomes();

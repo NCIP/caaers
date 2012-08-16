@@ -640,12 +640,16 @@ public class Fixtures {
     public static AdverseEvent createAdverseEvent(int id, Grade grade){
     	CtcTerm ctcTerm = Fixtures.createCtcTerm("abcd", "123");
         ctcTerm.setGridId("aaaabbb444aaa");
-		AdverseEvent ae = new AdverseEvent();
-		ae.setId(id);
-		ae.setGrade(grade);
-		Fixtures.createAdverseEventCtcTerm(ae, ctcTerm);
-		ae.setSignature(ae.getCurrentSignature());
-		return ae;
+		return createAdverseEvent(id, grade, ctcTerm);
+    }
+
+    public static AdverseEvent createAdverseEvent(int id, Grade grade, CtcTerm ctcTerm){
+        AdverseEvent ae = new AdverseEvent();
+        ae.setId(id);
+        ae.setGrade(grade);
+        Fixtures.createAdverseEventCtcTerm(ae, ctcTerm);
+        ae.setSignature(ae.getCurrentSignature());
+        return ae;
     }
     
     public static Organization createOrganization(final String name, final String nciInstituteCode) {

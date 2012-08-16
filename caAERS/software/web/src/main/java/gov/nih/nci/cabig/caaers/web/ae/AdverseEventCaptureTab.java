@@ -311,16 +311,6 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
                 errors.rejectValue("adverseEvents[" + i + "].detailsForOther", "SAE_021", new Object[] {VERBATIM_MAX_SIZE}, "The size of the verbatim value should not exceed " +  VERBATIM_MAX_SIZE + " characters.");
             }
             
-            
-            // If grade is greater than 1 then hospitalization cannot be null.
-            if(!command.getAdverseEventReportingPeriod().isBaselineReportingType()) {
-            	if(caaersFieldConfigurationManager.isFieldApplicable(TAB_NAME, "adverseEvents[].hospitalization"))
-            		if (ae.getGrade() != null) {
-            			if (ae.getGrade().getCode() > 1 && ae.getHospitalization() == null)
-            				errors.rejectValue("adverseEvents[" + i + "].hospitalization", "CAE_004", "Hospitalization must be entered if grade is greater than 1");
-            		}
-            }
-            
             // Check if end date is greater than the start date
             if(caaersFieldConfigurationManager.isFieldApplicable(TAB_NAME, "adverseEvents[].startDate") && caaersFieldConfigurationManager.isFieldApplicable(TAB_NAME, "adverseEvents[].endDate"))
             	if(ae.getEndDate() != null && ae.getStartDate() != null && DateUtils.compareDate(ae.getStartDate(), ae.getEndDate()) > 0)
