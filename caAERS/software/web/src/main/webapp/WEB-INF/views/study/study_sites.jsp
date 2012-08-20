@@ -63,7 +63,7 @@
                 
             },
             sitePopulator: function(autocompleter, text) {
-                createStudy.restrictOrganizations(text, ${_isSSPAonCC || _isSSPAonFS}, ${command.study.ctepEsysIdentifier eq null}, function(values) {
+                createStudy.restrictOrganizations(text, ${_isSSPAonCC || _isSSPAonFS}, ${command.study.ctepEsysIdentifier ne null}, function(values) {
                     autocompleter.setChoices(values)
                 })
             },
