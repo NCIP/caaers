@@ -246,7 +246,7 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
         query.setFiltered(skipFiltering);
         if (filterByRetired) query.filterByRetiredStatus(false);
         if(filterByOrgType){
-        	query.filterByOrganizationTypesOrNull(new String[] {"CCR", "CLC", "NCP"});
+        	query.filterByOrganizationTypes(new String[]{"CCR", "CLC", "NCP"});
         }
         List<Organization> localOrganizations;
  		localOrganizations = organizationDao.getBySubnames(query);

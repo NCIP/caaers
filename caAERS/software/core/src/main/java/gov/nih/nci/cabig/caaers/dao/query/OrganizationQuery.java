@@ -31,13 +31,12 @@ public class OrganizationQuery extends AbstractQuery {
      * it will also return organizations that have org_type as NULL
      * @param types
      */
-    public void filterByOrganizationTypesOrNull(final String[] types) {
-        String[] whereArray = new String[types.length + 1];
+    public void filterByOrganizationTypes(final String[] types) {
+        String[] whereArray = new String[types.length];
         String whereString = "";
         for (byte i=0; i<types.length; i++) {
             whereArray[i] = String.format("lower(o.type) = '%s'", types[i].toLowerCase());
         }
-        whereArray[types.length] = "o.type IS NULL";
         whereString = "(" + StringUtils.join(whereArray, " or ") + ")";
         andWhere(whereString);
     }
