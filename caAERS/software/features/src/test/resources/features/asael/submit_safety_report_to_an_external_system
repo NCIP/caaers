@@ -1,0 +1,47 @@
+Feature: caAERS will provide interfaces and methods for the messaging of AEs to systems external to the local adopter. We anticipate that this will include two-way communication of adverse events with cooperative groups, national studies, study sponsors, the NCI and the FDA.
+ 	Background: 
+ 		Given the caAERS system is integrated with AdEERS
+ 		
+ 	Scenario: Submit an expedited safety report to AdEERS for an "Agent Only" CTEP sponsored trial
+ 	Given I am logged in as an Adverse Event Report
+ 	And I have imported study "RTOG-0417"
+ 	And "Fox Chase Cancer Center (PA086)" is a study site
+ 	And data entry is complete for the study
+ 	And I am authorized on the study for which the report is submitted
+ 	And I have recorded an adverse event for "Grade 3, Dehydration"
+ 	And "Donald Duck" is a study subject
+ 	When I am on the Manage Reports screen
+ 	And I enter "RTOG-0417" in the Study field
+ 	Then I see "A Phase II Study of Bevacizumab in Combination with Definitive Radiotherapy and Cisplatin Chemotherapy in Untreated Patients with Locally Advanced Cervical Carcinoma" in the search results"
+ 	When I select "A Phase II Study of Bevacizumab in Combination with Definitive Radiotherapy and Cisplatin Chemotherapy in Untreated Patients with Locally Advanced Cervical Carcinoma"
+ 	Then the study field is populated with "A Phase II Study of Bevacizumab in Combination with Definitive Radiotherapy and Cisplatin Chemotherapy in Untreated Patients with Locally Advanced Cervical Carcinoma"
+ 	When I enter "Donald Duck" in the Subject field
+ 	Then I see "Donald Duck" in the search results
+ 	When I select "Donald Duck"
+ 	Then the subject field is populated with "Donald Duck"
+ 	When I click the 'Continue' button
+ 	Then I am taken to the "AE List" page
+ 	When I click "Actions"
+ 	And I click 'Edit Adverse Event'
+ 	Then I am taken to step 2 of the capture routine AEs flow
+ 	When I click the 'Save & Report' button
+ 	Then I am taken to step 3 of the capture routine AEs flow
+ 	When I click the 'Report' button
+ 	Then I am taken to step 1 of the Expedited Report flow
+ 	When I enter only mandatory information on for steps 1 - 10 of the Expedited Report flow
+ 	Then on the 'Review and Submit' screen "Physician sign-off is mandatory for this report." should be the only validation message I see
+ 	When I click the checkbox next to "I certify that this report has been reviewed and approved by a physician or his/her medically certified designee responsible for the care of this patient."
+ 	Then I should see a "Ready to Submit" message displayed
+ 	When I click the 'Submit' button 
+ 	Then I should be taken to the '1. Submitter' screen
+ 	And the checkbox next to "If the submitter is the same as the reporter" should be checked
+ 	When I click the "Save & Continue" button
+ 	Then I should be taken to the '2. Recipients' screen
+ 	When I click the 'Submit' button 
+ 	Then I should be taken to the '3. Submission Status' screen
+ 	And see the message "Submission in Progress" displayed
+ 	When I refresh the '3. Submission Status' screen
+ 	Then I should see the message "Submitted successfully on [current date]"
+ 	
+ 	
+ 		
