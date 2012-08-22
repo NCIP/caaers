@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.api.impl;
 import gov.nih.nci.cabig.caaers.api.ProcessingOutcome;
 import gov.nih.nci.cabig.caaers.api.OrganizationManagementService;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
+import gov.nih.nci.cabig.caaers.domain.ActiveInactiveStatus;
 import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
@@ -82,6 +83,7 @@ public class OrganizationManagementServiceImpl implements OrganizationManagement
             dbOrganization.retire();
             Organization mergedDbOrganization = organizationDao.getByNCIcode(organization.getMergedOrganization().getNciInstituteCode());
             dbOrganization.setMergedOrganization(mergedDbOrganization);
+            dbOrganization.setStatus(ActiveInactiveStatus.IN.getCode());
             organizationRepository.createOrUpdate(dbOrganization);
             return Helper.createOutcome(Organization.class, organization.getNciInstituteCode(), false, "successful");
         } catch (Exception e) {

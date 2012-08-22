@@ -1092,4 +1092,13 @@ public class Fixtures {
         dto.setDescription(description);
         return dto;
     }
+    
+    public static OrganizationType createOrganizationType(String n){
+        OrganizationType o = new OrganizationType();
+        o.setName(n);
+        o.setCity(n);
+        o.setNciInstituteCode(n);
+        o.setStatus(ActiveInactiveStatusType.ACTIVE);
+        return o;
+    }
 }

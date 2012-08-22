@@ -84,9 +84,6 @@ public abstract class Organization extends AbstractMutableRetireableDomainObject
     /** The external id. */
     protected String externalId;
     
-   /* *//** The status code. *//*
-    protected ActiveInactiveStatus status = ActiveInactiveStatus.AC;*/
-    
     /** The merged organization. */
     protected Organization mergedOrganization;
     
@@ -94,6 +91,8 @@ public abstract class Organization extends AbstractMutableRetireableDomainObject
     protected String type;
     
     protected Date lastSynchedDate;
+    
+    protected String status = ActiveInactiveStatus.AC.getCode();
 	
     // //// LOGIC
 
@@ -124,26 +123,15 @@ public abstract class Organization extends AbstractMutableRetireableDomainObject
 		this.mergedOrganization = mergedOrganization;
 	}
 
-	/**
-     * Gets the status code.
-     * 
-     * @return the status code
-     *//*
-    @Enumerated(EnumType.STRING)
-    public ActiveInactiveStatus getStatus() {
-		return status;
-	}
+    public String getStatus() {
+        return status;
+    }
 
-    *//**
-	 * Sets the status code.
-	 * 
-	 * @param statusCode the new status code
-	 *//*
-	public void setStatus(ActiveInactiveStatus status) {
-		this.status = status;
-	}
-*/
-	/*
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+/*
      * @See study_details.jsp , study_identifiers.jsp
      */
     /**
