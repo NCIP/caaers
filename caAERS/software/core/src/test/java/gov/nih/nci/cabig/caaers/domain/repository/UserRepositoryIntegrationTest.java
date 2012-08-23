@@ -4,6 +4,9 @@ import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.RoleMembership;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
+
+import java.util.Date;
 
 /**
  * UserRepositoryImpl Tester.
@@ -158,6 +161,50 @@ public class UserRepositoryIntegrationTest extends CaaersTestCase {
         }
 
 
+    }
+    
+    public void testUpdateUserEndDate() throws Exception {
+
+        long l = System.currentTimeMillis()  ;
+        String loginName = "x" + l;
+        
+        {
+            User x = userRepository.getUserByLoginName(loginName);
+            assertNull(x);
+        }
+
+        
+        {
+            User x = new User();
+            x.setFirstName("x");
+            x.setLastName("y");
+            x.setMiddleName("Z");
+            x.setLoginName(loginName);
+            x.setEmailAddress(loginName+"@xxx.com");
+            x.findRoleMembership(UserGroupType.system_administrator);
+
+            userRepository.createOrUpdateUser(x, "www.xxx.com/test");
+            userRepository.provisionUser(x);
+            assertNotNull(x.getCsmUser().getUserId());
+        }
+        {
+            User x = userRepository.getUserByLoginName(loginName);
+            assertNull(x.getCsmUser().getEndDate());
+            Date today = new Date();
+            x.getCsmUser().setEndDate(today);
+            
+            userRepository.createOrUpdateUser(x, null);
+            
+            User y = userRepository.getUserByLoginName(loginName);
+            assertNotNull(y);
+            assertEquals("x", y.getFirstName());
+            assertTrue(1 == y.getUserGroupTypes().size());
+            assertTrue(y.getUserGroupTypes().contains(UserGroupType.system_administrator));
+            assertNotNull(y.getCsmUser().getEndDate());
+            assertEquals(0,DateUtils.compateDateAndTime(today, y.getCsmUser().getEndDate()));
+            assertTrue(y.isLocked());
+
+        }
     }
 
 }

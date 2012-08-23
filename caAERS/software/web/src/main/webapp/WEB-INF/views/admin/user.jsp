@@ -281,8 +281,8 @@
                 
             }
 
-            function unlockUser(){
-               user.unlockUser(function(){
+            function unlockUserPassword(){
+               user.unlockUserPassword(function(){
                    alert('<caaers:message code="MSG_user.unlocked" text="User account unlocked" />');
                    $('unlock-btn-div').hide();
                });
@@ -364,7 +364,7 @@
                                             <div class="value">
                                                 <c:if test="${command.UA}">
                                                 <c:if test="${command.user.locked}">
-                                                  <div id="unlock-btn-div"><tags:button value="Unlock User" color="blue" type="button" size="small" onclick="unlockUser()" /></div>
+                                                  <div id="unlock-btn-div"><tags:button value="Unlock User" color="blue" type="button" size="small" onclick="unlockUserPassword()" /></div>
                                                 </c:if>
                                                 <c:if test="${command.user.active}">
                                                   <%--<tags:button value="Deactivate User" color="red" type="button" size="small" onclick="deActivateUser()" />--%>

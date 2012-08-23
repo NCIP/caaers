@@ -21,13 +21,13 @@ public class UserTest extends TestCase {
 		cal.add(Calendar.SECOND, -100);
 		user.setFailedLoginAttempts(-1);
 		user.setLastFailedLoginAttemptTime(cal.getTime());
-		assertTrue(user.isLocked());
+		assertTrue(user.isPasswordLocked());
 	}
 	
 	public void testIsLocked_CheckingFailure1() {
 		user.setFailedLoginAttempts(-1);
 		user.setLastFailedLoginAttemptTime(null);
-		assertFalse(user.isLocked());
+		assertFalse(user.isPasswordLocked());
 	}
 	
 	public void testIsLocked_CheckingFailure2() {
@@ -35,7 +35,7 @@ public class UserTest extends TestCase {
 		cal.add(Calendar.SECOND, -100);
 		user.setFailedLoginAttempts(1);
 		user.setLastFailedLoginAttemptTime(cal.getTime());
-		assertFalse(user.isLocked());
+		assertFalse(user.isPasswordLocked());
 	}
 	
 	public void testUnlock_CheckingSuccess() {
@@ -43,7 +43,7 @@ public class UserTest extends TestCase {
 		cal.add(Calendar.SECOND, -100);
 		user.setFailedLoginAttempts(-1);
 		user.setLastFailedLoginAttemptTime(cal.getTime());
-		user.unlock();
+		user.unlockPassword();
 		assertTrue(user.getFailedLoginAttempts()==0);
 		assertTrue(user.getLastFailedLoginAttemptTime()==null);
 	}
@@ -53,7 +53,7 @@ public class UserTest extends TestCase {
 		cal.add(Calendar.SECOND, -100);
 		user.setFailedLoginAttempts(-1);
 		user.setLastFailedLoginAttemptTime(cal.getTime());
-		user.unlock();
+		user.unlockPassword();
 		assertFalse(user.getFailedLoginAttempts()==-1);
 		assertTrue(user.getLastFailedLoginAttemptTime()==null);
 	}
@@ -63,7 +63,7 @@ public class UserTest extends TestCase {
 		cal.add(Calendar.SECOND, -100);
 		user.setFailedLoginAttempts(-1);
 		user.setLastFailedLoginAttemptTime(cal.getTime());
-		user.unlock();
+		user.unlockPassword();
 		assertTrue(user.getFailedLoginAttempts()==0);
 		assertFalse(user.getLastFailedLoginAttemptTime()==cal.getTime());
 	}

@@ -34,6 +34,17 @@ public class UserAjaxableDomainObject extends AbstractAjaxableDomainObject {
     
     /** The record type. */
     private String recordType;
+    
+    /** The locked. */
+    private boolean locked;
+
+	public Boolean getLocked() {
+		return locked;
+	}
+
+	public void setLocked(Boolean locked) {
+		this.locked = locked;
+	}
 
 	/**
 	 * Gets the user name.

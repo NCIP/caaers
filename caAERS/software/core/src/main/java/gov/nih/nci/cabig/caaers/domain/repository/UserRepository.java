@@ -55,11 +55,11 @@ public interface UserRepository {
 	public void sendUserEmail(String emailAddress, String subject, String text);
 	
 	/**
-	 * Unlock user.
+	 * Unlock user password.
 	 *
 	 * @param user the user
 	 */
-	public void unlockUser(User user);
+	public void unlockUserPassword(User user);
 	
 	/**
 	 * Search csm user.
@@ -112,6 +112,20 @@ public interface UserRepository {
      * @param roleMemberships the role memberships
      */
     void provisionRoleMemberships(gov.nih.nci.security.authorization.domainobjects.User csmUser, List<SuiteRoleMembership> roleMemberships);
+    
+    /**
+	 * Unlock user.
+	 *
+	 * @param user the user
+	 */
+    public void unlockUser(User user);
+    
+    /**
+   	 * Lock user.
+   	 *
+   	 * @param user the user
+   	 */
+    public void lockUser(User user);
     
 
 }

@@ -2,11 +2,17 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.RoleMembership;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import gov.nih.nci.security.util.StringEncrypter;
 
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +24,6 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.apache.commons.codec.digest.DigestUtils;
-
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.CollectionOfElements;
 import org.hibernate.annotations.GenericGenerator;
@@ -125,7 +130,7 @@ public class User extends AbstractMutableDomainObject{
      * Unlock.
      */
     @Transient
-    public void unlock() {
+    public void unlockPassword() {
     	setFailedLoginAttempts(0);
     	setLastFailedLoginAttemptTime(null);
     }
@@ -136,7 +141,7 @@ public class User extends AbstractMutableDomainObject{
      * @return true, if is locked
      */
     @Transient
-    public boolean isLocked() {
+    public boolean isPasswordLocked() {
     	if(getFailedLoginAttempts()==-1 && getLastFailedLoginAttemptTime()!=null)	return true;
     	return false;
     }
@@ -686,5 +691,29 @@ public class User extends AbstractMutableDomainObject{
 		} else if (!loginName.equals(other.loginName))
 			return false;
 		return true;
+	}
+	
+	/**
+	 * Checks if the user has been admin locked based on the users endDate in csm_user.
+	 *
+	 * @return true, if is user deactivated
+	 */
+	@Transient
+	public boolean isLocked(){
+		Date userEndDate = csmUser.getEndDate();
+		if(userEndDate != null && DateUtils.compateDateAndTime(userEndDate,Calendar.getInstance().getTime()) <= 0){
+			return true;
+		}
+		return false;
+	}
+	
+	
+	public void lock(){
+		csmUser.setEndDate(Calendar.getInstance().getTime());
+	}
+	
+		
+	public void unLock(){
+		csmUser.setEndDate(null);
 	}
 }

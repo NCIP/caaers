@@ -2,12 +2,14 @@ package gov.nih.nci.cabig.caaers.web.dashboard;
 
 import gov.nih.nci.cabig.caaers.domain.ajax.UserAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.repository.UserRepositoryImpl;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.security.authorization.domainobjects.User;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -30,6 +32,9 @@ public class UsersDashboardController extends DashboardController {
             ajaxableUser.setLastName(csmUser.getLastName());
             ajaxableUser.setUserName(csmUser.getLoginName());
             ajaxableUser.setEmailAddress(csmUser.getEmailId());
+            if(csmUser.getEndDate() != null){
+            	ajaxableUser.setLocked(DateUtils.compareDate(csmUser.getEndDate(), Calendar.getInstance().getTime()) <= 0);
+            }
             ajaxableUserList.add(ajaxableUser);
         }
         mv.addObject("users", ajaxableUserList);

@@ -7,11 +7,13 @@ import gov.nih.nci.cabig.caaers.domain.ajax.StudyAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.ajax.UserAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.repository.*;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.utils.ranking.RankBasedSorterUtils;
 import gov.nih.nci.cabig.caaers.utils.ranking.Serializer;
 import gov.nih.nci.cabig.caaers.web.AbstractAjaxFacade;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -182,6 +184,10 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
                 ajaxableUser.setUserName(csmUser.getLoginName());
                 ajaxableUser.setEmailAddress(csmUser.getEmailId());
                 ajaxableUser.setRecordType("CSM_RECORD");
+                if(csmUser.getEndDate() != null){
+                	ajaxableUser.setLocked(DateUtils.compareDate(csmUser.getEndDate(), Calendar.getInstance().getTime()) <= 0);
+                }
+                
                 ajaxableUserList.add(ajaxableUser);
             }
         }
@@ -217,6 +223,10 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
                 rsado.setNumber(srs.getResearchStaff().getNciIdentifier() != null ? srs.getResearchStaff().getNciIdentifier() : "");
                 rsado.setExternalId(srs.getResearchStaff().getExternalId() != null ? srs.getResearchStaff().getExternalId().trim() : "");
                 rsado.setActive(srs.isActive() ? "Active" : "Inactive");
+                if(srs.getResearchStaff().getCaaersUser() != null){
+                	User user = userRepository.getUserByLoginName(srs.getResearchStaff().getCaaersUser().getLoginName());
+                	if(user != null) rsado.setLocked(user.isLocked());
+                }
                 set.add(rsado);
             } 
         }
@@ -296,6 +306,10 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
 
                 invAdo.setId(i.getId());
                 invAdo.setActive(i.isActive() ? "Active" : "Inactive");
+                if(i.getCaaersUser() != null){
+                	User user = userRepository.getUserByLoginName(i.getCaaersUser().getLoginName());
+                	if(user != null) invAdo.setLocked(user.isLocked());
+                }
                 invAdo.setNumber(i.getNciIdentifier() != null ? i.getNciIdentifier() : "");
                 invAdo.setExternalId(i.getExternalId() != null ? i.getExternalId().trim() : "");
                 inv.add(invAdo);
@@ -383,10 +397,28 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
          return studies;
      }
 
-    public void unlockUser(){
+    public void unlockUserPassword(){
         UserCommand command = (UserCommand) extractCommand();
         User user = command.getUser();
-        getUserRepository().unlockUser(user);
+        getUserRepository().unlockUserPassword(user);
+    }
+      
+    public boolean lockUnlockUser(String userName) {
+        try {
+        	User user = userRepository.getUserByLoginName(userName);
+        	if (user == null) return false;
+        	
+            if (user.isLocked()) {
+                userRepository.unlockUser(user);
+            } else {
+            	 userRepository.lockUser(user);
+            }
+            
+            userRepository.createOrUpdateUser(user, null);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public boolean activateUser(int personId, String userName, String action) {

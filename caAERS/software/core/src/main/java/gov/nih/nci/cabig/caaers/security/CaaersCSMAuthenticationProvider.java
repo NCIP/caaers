@@ -62,6 +62,11 @@ public class CaaersCSMAuthenticationProvider extends CSMAuthenticationProvider {
 		try {
 			// If the user is a caAERS user, then apply Login Policy Validations
 			if(caaersUser!=null) {	
+				// check if the account is locked
+					if(caaersUser.isLocked()){
+						throw new LockedException("Account is locked.");
+					}
+					
 					if(caaersUser.getSecondsPastLastFailedLoginAttempt() > passwordPolicy.getLoginPolicy().getLockOutDuration()) {
 						if(passwordPolicy.getLoginPolicy().getAllowedLoginTime() <= caaersUser.getSecondsPastLastFailedLoginAttempt()) {
 							caaersUser.setFailedLoginAttempts(0);

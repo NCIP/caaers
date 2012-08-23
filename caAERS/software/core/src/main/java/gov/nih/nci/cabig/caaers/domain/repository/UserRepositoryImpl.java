@@ -283,8 +283,8 @@ public class UserRepositoryImpl implements UserRepository {
     /* (non-Javadoc)
      * @see gov.nih.nci.cabig.caaers.domain.repository.UserRepository#unlockUser(gov.nih.nci.cabig.caaers.domain.User)
      */
-    public void unlockUser(User user){
-    	user.unlock();
+    public void unlockUserPassword(User user){
+    	user.unlockPassword();
     	save(user);
     }
     
@@ -527,4 +527,12 @@ public class UserRepositoryImpl implements UserRepository {
     public void setProvisioningSessionFactory(ProvisioningSessionFactory provisioningSessionFactory) {
         this.provisioningSessionFactory = provisioningSessionFactory;
     }
+
+	public void unlockUser(User user) {
+		user.unLock();
+	}
+
+	public void lockUser(User user) {
+		user.lock();
+	}
 }

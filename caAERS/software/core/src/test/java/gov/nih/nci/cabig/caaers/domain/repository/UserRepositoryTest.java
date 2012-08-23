@@ -66,7 +66,7 @@ public class UserRepositoryTest extends AbstractTestCase {
     	_user.setLastFailedLoginAttemptTime(new Timestamp(new Date().getTime()));
     	userDao.save(_user);
     	replayMocks();
-    	repository.unlockUser(_user);
+    	repository.unlockUserPassword(_user);
     	verifyMocks();
     	assertNull(_user.getLastFailedLoginAttemptTime());
     	assertEquals(0,_user.getFailedLoginAttempts());
