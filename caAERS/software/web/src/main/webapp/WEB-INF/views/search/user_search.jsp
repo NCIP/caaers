@@ -108,7 +108,7 @@
                     win.setContent("success");
                     win.showCenter(true);
                     win.show();
-                    jQuery('#_span' + personId).html(actionsRow.interpolate({id:personId, rt:rt, un:userName, active:(action == 'Active' ? "Inactive" : "Active"), locked:(locked == true ? "true" : "false")}));
+                    jQuery('#_span' + personId).html(actionsRow.interpolate({id:personId, rt:rt, un:userName, active:(action == 'Active' ? "Inactive" : "Active"), locked:(locked == 'true' ? "true" : "false")}));
                     hideWin.delay(2);
                 })
             }
@@ -119,7 +119,7 @@
                     win.setContent("success");
                     win.showCenter(true);
                     win.show();
-                   jQuery('#_span' + personId).html(actionsRow.interpolate({id:personId, rt:rt, un:userName, active:(action == 'Active' ? "Active" : "Inactive"), locked:(locked == true ? "true" : "false")}));
+                   jQuery('#_span' + personId).html(actionsRow.interpolate({id:personId, rt:rt, un:userName, active:(action == 'Active' ? "Active" : "Inactive"), locked:(locked == 'false' ? "true" : "false")}));
                     hideWin.delay(2);
                 })
             }
