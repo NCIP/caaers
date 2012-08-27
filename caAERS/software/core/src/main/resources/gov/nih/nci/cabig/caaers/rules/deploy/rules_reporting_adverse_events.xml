@@ -10,60 +10,8 @@
 	<import name="com.semanticbits.rules.utils.NumberUtil" />
 	<import name="gov.nih.nci.cabig.caaers.rules.runtime.ExpeditedAdverseEventValidator" />
 	<import name="com.semanticbits.rules.utils.DateUtil" />
-	
 
-	<!-- ==========================================================================
-	RuleName : AER_BR3_CHK
-	Logic : "'Hospitalization' must be provided if 'Grade' greater than or equal to 2"
-	Error Code : AER_BR3_ERR
-	Error Message : HOSPITALIZATION must be provided if GRADE is greater than or equal to 2
-	============================================================================= -->
-	<rule name="AER_BR3_CHK">
-		<lhs>
-			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
-			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
-			<eval>new ExpeditedAdverseEventValidator() {
-					public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
-						int i = 0;
-						for(AdverseEvent ae : aeReport.getAdverseEvents()){
-						
-							if(
-							   (ae.getGrade() != null) &amp;&amp; (ae.getGrade().getCode() &gt; Grade.MILD.getCode() )
-							   &amp;&amp; 
-							   ((ae.getHospitalization() == null) || (ae.getHospitalization().getCode() == Hospitalization.NONE.getCode())  ) 
-							  ){
-								errors.addValidationError("AER_BR3_ERR","'Hospitalization' must be provided if 'Grade' greater than or equal to 2", i).addFieldNames("aeReport.adverseEvents[" + i + "].hospitalization", "aeReport.adverseEvents[" + i + "].grade");
-							}
-							
-							i++;
-						}
-						return false;
-					}
-					
-				  }.validate(aeReport, errors)</eval>
-		</lhs>
-		<rhs>
-			<!-- Already Populated Error Message-->
-       	</rhs>
-	</rule>
-	
-	<!-- ==========================================================================
-	RuleName : AER_BR4_CHK
-	Logic : "'AE Start Date' must be provided if 'Is Primary AE?' is 'Yes'"
-	Error Code : AER_BR4_ERR
-	Error Message :  AE_START_DATE Date must be provided if IS_PRIMARY_AE is "Yes"
-	============================================================================= 
-	<rule name="AER_BR4_CHK">
-		<lhs>
-			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
-			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
-			<eval>NullSafeFieldExtractor.extractField(aeReport,"adverseEvents[0].startDate") == null</eval>
-		</lhs>
-		<rhs>
-			errors.addValidationError("AER_BR4_ERR","'Start date' must be provided for the primary adverse event", 1);
-       	</rhs>
-	</rule>
-	-->
+
 	<!-- ==========================================================================
 	RuleName : AER_BR5_CHK
 	Logic : "'End date' must be greater than or equal to 'Start date' for adverse event"

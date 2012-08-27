@@ -72,23 +72,6 @@ public class AdverseEventBusinessRulesTest extends AbstractBusinessRulesExecutio
 
     }
 
-    /**
-     * RuleName : AER_BR3_CHK Logic : "'Hospitalization' must be provided if 'Grade' greater than 2"
-     * Error Code : AER_BR3_ERR Error Message : YES must be provided if GRADE is greater
-     * than or equal to 3
-     */
-    public void testGradeSEVERE_HospitalizationNONE() throws Exception {
-        ExpeditedAdverseEventReport aeReport = createAEReport();
-        for (AdverseEvent ae : aeReport.getAdverseEvents()) {
-            ae.setGrade(Grade.SEVERE);
-            ae.setHospitalization(Hospitalization.NONE);
-        }
-
-        ValidationErrors errors = fireRules(aeReport);
-        assertCorrectErrorCode(errors, "AER_BR3_ERR",
-                        "When  grade is SEVERE and  hospitalization is NONE");
-        assertSameErrorCount(errors, 2);
-    }
 
     /**
      * RuleName : AER_BR3_CHK Logic : "'Hospitalization' must be provided if 'Grade' greater than 2"
@@ -125,30 +108,6 @@ public class AdverseEventBusinessRulesTest extends AbstractBusinessRulesExecutio
 
     }
 
-    /**
-     * RuleName : AER_BR3_CHK Logic : "'Hospitalization' must be provided if 'Grade' greater than 2"
-     * Error Code : AER_BR3_ERR Error Message : YES must be provided if GRADE is greater
-     * than or equal to 3
-     */
-    public void testGradeSEVER_And_HospitalizationNONE_For_Second() throws Exception {
-        ExpeditedAdverseEventReport aeReport = createAEReport();
-        AdverseEvent ae = aeReport.getAdverseEvents().get(0);
-        ae.setGrade(Grade.SEVERE);
-        ae.setHospitalization(Hospitalization.YES);
-
-        ae = aeReport.getAdverseEvents().get(1);
-        ae.setGrade(Grade.SEVERE);
-        ae.setHospitalization(Hospitalization.NONE);
-
-        ValidationErrors errors = fireRules(aeReport);
-        assertSameErrorCount(errors, 1);
-        assertCorrectErrorCode(errors, "AER_BR3_ERR");
-        assertEquals("Correct replacement values", 1, errors.getErrorAt(0).getReplacementVariables()[0]);
-
-        assertNotNull(errors.getErrorAt(0).getFieldNames());
-        Object i = errors.getErrorAt(0).getReplacementVariables()[0];
-        assertCorrectFieldNames(errors.getErrorAt(0), "aeReport.adverseEvents[" + i + "].hospitalization", "aeReport.adverseEvents[" + i + "].grade");
-    }
 //
 //    /**
 //     * RuleName : AER_BR4_CHK Logic : "'AE Start Date' must be provided if 'Is Primary AE?' is
