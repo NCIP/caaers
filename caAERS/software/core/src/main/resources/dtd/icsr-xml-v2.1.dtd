@@ -1,0 +1,3508 @@
+﻿<!--
+INDIVIDUAL CASE SAFETY REPORT
+XML DOCUMENT TYPE DEFINITION VERSION 2.1
+-->
+
+<!-- ================================================================== -->
+<!-- Entities	-->
+<!-- ================================================================== -->
+<!-- Use the lang attribute to indicate the language of an elements
+	 content via an ISO 639 language Code.
+-->
+<!ENTITY % lang.att "lang CDATA #IMPLIED">
+<!-- Standard Character Entities to escape SGML special characters.
+	 When "<", ">", and "&" occur in text, they should be replaced
+	 by "&lt;", "&gt;", and "&amp;" respectively.
+-->
+<!-- Less Than "<" -->
+<!ENTITY lt "&#38;#60;">
+<!-- Greater Than ">" -->
+<!ENTITY gt "&#62;">
+<!-- Ampersand "&" -->
+<!ENTITY amp "&#38;#38;">
+<!-- ================================================================== -->
+<!-- Elements and Attributes	-->
+<!-- ================================================================== -->
+<!ELEMENT ichicsr (ichicsrmessageheader, safetyreport+)>
+<!ATTLIST ichicsr
+	lang CDATA #REQUIRED
+>
+<!-- M.1 ICH ICSR Message Header Information -->
+<!ELEMENT ichicsrmessageheader (messagetype, messageformatversion, messageformatrelease, messagenumb, messagesenderidentifier, messagereceiveridentifier, messagedateformat, messagedate)>
+<!ATTLIST ichicsrmessageheader
+	%lang.att;
+>
+<!--
+Field ref:	M.1.1
+Field title:	Message Type
+Field name:	messagetype
+Field length:	16AN
+Field values:	icsr
+-->
+<!ELEMENT messagetype (#PCDATA)>
+<!ATTLIST messagetype
+	%lang.att;
+>
+<!--
+Field ref:	M.1.2
+Field title:	Message Format Version
+Field name:	messageformatversion
+Field length:	3AN
+Field values:
+Comment :	In Step 4 ICSR DTD version 2.1, this field will have value "2".
+-->
+<!ELEMENT messageformatversion (#PCDATA)>
+<!ATTLIST messageformatversion
+	%lang.att;
+>
+<!--
+Field ref:	M.1.3
+Field title:	Message Format Release
+Field name:	messageformatrelease
+Field length:	3AN
+Comment :	In Step 4 ICSR DTD version 2.1, this field will have value "1".
+-->
+<!ELEMENT messageformatrelease (#PCDATA)>
+<!ATTLIST messageformatrelease
+	%lang.att;
+>
+<!--
+Field ref:	M.1.4
+Field title:	Message Number
+Field name:	messagenumb
+Field length:	100AN
+Comment :	This field is important for the efficient tracking of Reports. Since the SafetyReportID field is optional, the identification and acknowledgement of safety reports must be done on the basis of the Message Number an the position of each Safety Report in a Message.
+Comment :	The Message Number is specific to one transmission between one Sender and one Receiver.
+-->
+<!ELEMENT messagenumb (#PCDATA)>
+<!ATTLIST messagenumb
+	%lang.att;
+>
+<!--
+Field ref:	M.1.5
+Field title:	Message Sender Identifier
+Field name:	messagesenderidentifier
+Field length:	60AN
+Comment :	This field is of primary importance for efficient tracking of Safety Reports. It permits a Receiver to define a Thread of Reports related to a Case and to analyse the sequence of follow-ups. It is also required for the acknowledgement of Reports.
+Comment :	It should be a coded value agreed between correspondents through an Interchange Agreement. Message not having pre-agreed values in this field should be rejected.
+-->
+<!ELEMENT messagesenderidentifier (#PCDATA)>
+<!ATTLIST messagesenderidentifier
+	%lang.att;
+>
+<!--
+Field ref:	M.1.6
+Field title:	Message Receiver Identifier
+Field name:	messagereceiveridentifier
+Field length:	60AN
+-->
+<!ELEMENT messagereceiveridentifier (#PCDATA)>
+<!ATTLIST messagereceiveridentifier
+	%lang.att;
+>
+<!--
+Field ref:	M.1.7.a
+Field title:	Message Date Format
+Field name:	messagedateformat
+Field length:	3N
+Field values:	204=CCYYMMDDHHMMSS
+-->
+<!ELEMENT messagedateformat (#PCDATA)>
+<!ATTLIST messagedateformat
+	%lang.att;
+>
+<!--
+Field ref:	M.1.7.b
+Field title:	Message Date
+Field name:	messagedate
+Field length:	14N
+-->
+<!ELEMENT messagedate (#PCDATA)>
+<!ATTLIST messagedate
+	%lang.att;
+>
+<!-- Individual Case Safety Report(s) Specifications -->
+<!--
+Entity ref:	A.1
+Entity title:	SAFETY REPORT
+Entity name:	safetyreport
+Comment :	The following fields are specific to the Report and should be considered as a Report Header: safetyreportid, safetyreportversion, transmissiondateformat, transmissiondate, receivedateformat, receivedate, sender, receiver. A Sender may change the contents of these fields without altering the contents of the Report associated to a Case. In this case, the Sender acts as a Relay.
+Comment :	Any change in the other fields generates a new Report. The Sender acts as an Author.
+Comment :	At present, there is no way to identify when the Sender acts as Relay or as Author, the ReceiptDate being insufficient for this purpose. This would require that the Sender would highlight the fields added, deleted or modified from a Report they received. This function was discussed by the ICH M2 EWG and may be introduced in the future as part of the message specification. The Receiver must compare subsequent Reports within one thread and between threads.
+Comment :	The relational model of the Safety Report is described in the following figure:
+
+
+
+Comment :	One and only one of the following fields should be populated:
+A.1.10.1 - National regulatory authority's case report number
+A.1.10.2 -  Company's case report number
+A.1.10.3 - Other sender's case report number
+Comment :	While the Case Number (A.1.10) is used to identify a Case and is fixed by the Case Author, the Report Identifier is used to facilitate the communication between two correspondents: Sender and Receiver. Being the safetyreportid and safetyreportversion optional fields, the Sender may choose among the following identification policies:
+a.- not to specify safetyreportid. In this case, the reference to the report is done on the basis of the messagenumber and the position of the Report in the Message (the third report in the message. The acknowledgement will follow this identification policy).
+b.- to specify the Report Number (safetyreportid) but not to specify the Report Version (safetyreportversion). The Report Number is the number given by the Sender to the report, as opposed to the Case Number, given by the original Case author. As indicated by the ICH E2B EWG, the ReceiptDate may be used to locate the report in the sequence of follow-ups related to a Case, or more specifically to a Thread.
+c.- to specify the Report Number (safetyreportid) and the Report Version (safetyreportversion). This may be done by Case authors not interested in keeping the historic but interested in keeping track of the number of follow-ups transmitted.
+Comment :	A possible flow of reports is described in the following picture. The fact that the Case Number (CN) remains the same makes it possible to recognise that the three reports respond to the same Case (MN: message number, RN: report number, LRN: Local Report Number, CN: case number).
+-->
+<!ELEMENT safetyreport (safetyreportversion?, safetyreportid, primarysourcecountry?, occurcountry?, transmissiondateformat?, transmissiondate?, reporttype?, serious?, seriousnessdeath?, seriousnesslifethreatening?, seriousnesshospitalization?, seriousnessdisabling?, seriousnesscongenitalanomali?, seriousnessother?, receivedateformat?, receivedate?, receiptdateformat?, receiptdate?, additionaldocument?, documentlist?, fulfillexpeditecriteria?, authoritynumb?, companynumb?, duplicate?, casenullification?, nullificationreason?, medicallyconfirm?, (reportduplicate*, linkedreport*, primarysource+, sender, receiver, patient))>
+<!ATTLIST safetyreport
+	%lang.att;
+>
+<!--
+Entity ref:
+Entity title:	REPORT DUPLICATE
+Entity name:	reportduplicate
+Comment :	This repeatable entity will be present whenever duplicate is set to "yes".
+Comment :	A possible scenario for the use of reportduplicate is the following (MN: message number, RN: report number, CN: case number):
+-->
+<!ELEMENT reportduplicate (duplicatesource?, duplicatenumb?)>
+<!ATTLIST reportduplicate
+	%lang.att;
+>
+<!--
+Entity ref:
+Entity title:	LINKED REPORT
+Entity name:	linkedreport
+-->
+<!ELEMENT linkedreport (linkreportnumb?)>
+<!ATTLIST linkedreport
+	%lang.att;
+>
+<!-- A.2 Primary source(s) of information -->
+<!--
+Entity ref:	A.2
+Entity title:	PRIMARY SOURCE
+Entity name:	primarysource
+Comment :	The following fields must be populated:
+	A.2.1.1d reporterfamilyname
+	A.2.1.2a reporterorganization
+	A.2.1.2d reportercity
+	A.2.1.3 reportercountry
+	A.2.1.4 reporterqualification
+-->
+<!ELEMENT primarysource (reportertitle?, reportergivename?, reportermiddlename?, reporterfamilyname?, reporterorganization?, reporterdepartment?, reporterstreet?, reportercity?, reporterstate?, reporterpostcode?, reportercountry?, qualification?, literaturereference?, studyname?, sponsorstudynumb?, observestudytype?)>
+<!ATTLIST primarysource
+	%lang.att;
+>
+<!-- A.3.1 Sender -->
+<!--
+Entity ref:	A.3.1
+Entity title:	SENDER
+Entity name:	sender
+Comment :	It has been discussed if Sender refers to the first sender or to the last sender.
+The reasons in favour of being the first sender include the following:
+-the sender is already indicated at the message header level. -the additional administrative information should be available in the data base of addresses of the receiver.
+-the sender block does not allow for a coded value: sender id identification required for controlled transmission of safety reports.
+-if the sender is the last sender, this require consistency checking for all the reports in one message.
+The reasons in favour of being the last sender include the following:
+-there may be difference correspondents within the same sender organisation for difference reports.
+-spontaneous reporting may be done by non-registered correspondents.
+-->
+<!ELEMENT sender (sendertype?, senderorganization?, senderdepartment?, sendertitle?, sendergivename?, sendermiddlename?, senderfamilyname?, senderstreetaddress?, sendercity?, senderstate?, senderpostcode?, sendercountrycode?, sendertel?, sendertelextension?, sendertelcountrycode?, senderfax?, senderfaxextension?, senderfaxcountrycode?, senderemailaddress?)>
+<!ATTLIST sender
+	%lang.att;
+>
+<!-- A.3.2 Receiver -->
+<!--
+Entity ref:	A.3.2
+Entity title:	RECEIVER
+Entity name:	receiver
+-->
+<!ELEMENT receiver (receivertype?, receiverorganization?, receiverdepartment?, receivertitle?, receivergivename?, receivermiddlename?, receiverfamilyname?, receiverstreetaddress?, receivercity?, receiverstate?, receiverpostcode?, receivercountrycode?, receivertel?, receivertelextension?, receivertelcountrycode?, receiverfax?, receiverfaxextension?, receiverfaxcountrycode?, receiveremailaddress?)>
+<!ATTLIST receiver
+	%lang.att;
+>
+<!-- B.1 Patient characteristics -->
+<!--
+Entity ref:	B.1
+Entity title:	PATIENT
+Entity name:	patient
+Comment :	There must be one and only one Patient entity in one Safety Report.
+Comment :	At least one of the following fields must be populated:
+B.1.1 - Patient initials
+B.1.1.1a - GP medical record number
+B.1.1.1b - Specialist record number
+B.1.1.1c - Hospital record number
+B.1.1.1d - Patient investigation number
+B.1.2.1 - Date of Birth
+B.1.2.2a - Age value at time of onset reaction/event
+B.1.2.3 - Patient age group
+B.1.5 - Sex
+-->
+<!ELEMENT patient (patientinitial?, patientgpmedicalrecordnumb?, patientspecialistrecordnumb?, patienthospitalrecordnumb?, patientinvestigationnumb?, patientbirthdateformat?, patientbirthdate?, patientonsetage?, patientonsetageunit?, gestationperiod?, gestationperiodunit?, patientagegroup?, patientweight?, patientheight?, patientsex?, lastmenstrualdateformat?, patientlastmenstrualdate?, patientmedicalhistorytext?, resultstestsprocedures?, (medicalhistoryepisode*, patientpastdrugtherapy*, patientdeath?, parent?, reaction+, test*, drug+, summary?))>
+<!ATTLIST patient
+	%lang.att;
+>
+<!-- B.1.7 Relevant medical history and concurrent -->
+<!--
+Entity ref:	B.1.7
+Entity title:	RELEVANT MEDICAL HISTORY EPISODE
+Entity name:	medicalhistoryepisode
+-->
+<!ELEMENT medicalhistoryepisode (patientepisodenamemeddraversion?, patientepisodename?, patientmedicalstartdateformat?, patientmedicalstartdate?, patientmedicalcontinue?, patientmedicalenddateformat?, patientmedicalenddate?, patientmedicalcomment?)>
+<!ATTLIST medicalhistoryepisode
+	%lang.att;
+>
+<!-- B.1.8 Relevant past drug history -->
+<!--
+Entity ref:	B.1.8
+Entity title:	RELEVANT PAST DRUG HISTORY
+Entity name:	patientpastdrugtherapy
+-->
+<!ELEMENT patientpastdrugtherapy (patientdrugname?, patientdrugstartdateformat?, patientdrugstartdate?, patientdrugenddateformat?, patientdrugenddate?, patientindicationmeddraversion?, patientdrugindication?, patientdrgreactionmeddraversion?, patientdrugreaction?)>
+<!ATTLIST patientpastdrugtherapy
+	%lang.att;
+>
+<!-- B.1.9 In case of death: -->
+<!--
+Entity ref:	B.1.9
+Entity title:	PATIENT DEATH
+Entity name:	patientdeath
+Comment :	This entity contains the fields and entities relevant to the case in with death took place.
+-->
+<!ELEMENT patientdeath (patientdeathdateformat?, patientdeathdate?, patientautopsyyesno?, (patientdeathcause*, patientautopsy*))>
+<!ATTLIST patientdeath
+	%lang.att;
+>
+<!--
+Entity ref:
+Entity title:	CAUSE OF PATIENT DEATH
+Entity name:	patientdeathcause
+-->
+<!ELEMENT patientdeathcause (patientdeathreportmeddraversion?, patientdeathreport?)>
+<!ATTLIST patientdeathcause
+	%lang.att;
+>
+<!--
+Entity ref:
+Entity title:	PATIENT AUPTOPSY
+Entity name:	patientautopsy
+-->
+<!ELEMENT patientautopsy (patientdetermautopsmeddraversion?, patientdetermineautopsy?)>
+<!ATTLIST patientautopsy
+	%lang.att;
+>
+<!-- B.1.10 For a parent-child / fetus report, information concerning the parent: -->
+<!--
+Entity ref:	B.1.10
+Entity title:	PARENT
+Entity name:	parent
+Comment :	Information concerning the parent for a parent-child / fetus report.
+-->
+<!ELEMENT parent (parentidentification?, parentbirthdateformat?, parentbirthdate?, parentage?, parentageunit?, parentlastmenstrualdateformat?, parentlastmenstrualdate?, parentweight?, parentheight?, parentsex?, parentmedicalrelevanttext?, (parentmedicalhistoryepisode*, parentpastdrugtherapy*))>
+<!ATTLIST parent
+	%lang.att;
+>
+<!-- B.1.10.7 Relevant medical history and concurrent conditions of parent -->
+<!--
+Entity ref:	B.1.10.7
+Entity title:	RELEVANT MEDICAL HISTORY
+Entity name:	parentmedicalhistoryepisode
+-->
+<!ELEMENT parentmedicalhistoryepisode (parentmdepisodemeddraversion?, parentmedicalepisodename?, parentmedicalstartdateformat?, parentmedicalstartdate?, parentmedicalcontinue?, parentmedicalenddateformat?, parentmedicalenddate?, parentmedicalcomment?)>
+<!ATTLIST parentmedicalhistoryepisode
+	%lang.att;
+>
+<!-- B.1.10.8 Relevant past drug history -->
+<!--
+Entity ref:	B.1.10.8
+Entity title:	PARENT PAST DRUG THERAPY
+Entity name:	parentpastdrugtherapy
+Comment :	Relevant past drug history.
+-->
+<!ELEMENT parentpastdrugtherapy (parentdrugname?, parentdrugstartdateformat?, parentdrugstartdate?, parentdrugenddateformat?, parentdrugenddate?, parentdrgindicationmeddraversion?, parentdrugindication?, parentdrgreactionmeddraversion?, parentdrugreaction?)>
+<!ATTLIST parentpastdrugtherapy
+	%lang.att;
+>
+<!-- B.2 Reaction(s) / Event(s) -->
+<!--
+Entity ref:	B.2
+Entity title:	REACTION
+Entity name:	reaction
+Comment :	The following field must be populated:
+B.2.i.2 - Reaction term
+This field should be a valid MedDRA 2.1 or superior LLT
+-->
+<!ELEMENT reaction (primarysourcereaction?, reactionmeddraversionllt?, reactionmeddrallt?, reactionmeddraversionpt?, reactionmeddrapt?, termhighlighted?, reactionstartdateformat?, reactionstartdate?, reactionenddateformat?, reactionenddate?, reactionduration?, reactiondurationunit?, reactionfirsttime?, reactionfirsttimeunit?, reactionlasttime?, reactionlasttimeunit?, reactionoutcome?)>
+<!ATTLIST reaction
+	%lang.att;
+>
+<!-- B.3 Results of tests and procedures relevant to the investigation of the patient: -->
+<!--
+Entity ref:	B.3
+Entity title:	TEST
+Entity name:	test
+Comment :	Results of tests and procedures relevant to the investigation of the patient.
+-->
+<!ELEMENT test (testdateformat?, testdate?, testname?, testresult?, testunit?, lowtestrange?, hightestrange?, moreinformation?)>
+<!ATTLIST test
+	%lang.att;
+>
+<!--
+Entity ref:	B.4
+Entity title:	DRUG
+Entity name:	drug
+Comment :	The following field should be populated:
+B.4.k.2.1- Proprietary medicinal product name
+-->
+<!ELEMENT drug (drugcharacterization?, medicinalproduct?, obtaindrugcountry?, drugbatchnumb?, drugauthorizationnumb?, drugauthorizationcountry?, drugauthorizationholder?, drugstructuredosagenumb?, drugstructuredosageunit?, drugseparatedosagenumb?, drugintervaldosageunitnumb?, drugintervaldosagedefinition?, drugcumulativedosagenumb?, drugcumulativedosageunit?, drugdosagetext?, drugdosageform?, drugadministrationroute?, drugparadministration?, reactiongestationperiod?, reactiongestationperiodunit?, drugindicationmeddraversion?, drugindication?, drugstartdateformat?, drugstartdate?, drugstartperiod?, drugstartperiodunit?, druglastperiod?, druglastperiodunit?, drugenddateformat?, drugenddate?, drugtreatmentduration?, drugtreatmentdurationunit?, actiondrug?, drugrecurreadministration?, drugadditional?, (activesubstance*, drugrecurrence*, drugreactionrelatedness*))>
+<!ATTLIST drug
+	%lang.att;
+>
+<!--
+Entity ref:
+Entity title:	ACTIVE SUBSTANCE
+Entity name:	activesubstance
+-->
+<!ELEMENT activesubstance (activesubstancename)>
+<!ATTLIST activesubstance
+	%lang.att;
+>
+<!--
+Entity ref:
+Entity title:	DRUG RECURRENCE
+Entity name:	drugrecurrence
+-->
+<!ELEMENT drugrecurrence (drugrecuractionmeddraversion?, drugrecuraction)>
+<!ATTLIST drugrecurrence
+	%lang.att;
+>
+<!-- B.4.k.18 Relatedness of drug to reaction / event -->
+<!--
+Entity ref:	B.4.k.18
+Entity title:	RELATEDNESS OF DRUG TO REACTION / EVENT
+Entity name:	drugreactionrelatedness
+-->
+<!ELEMENT drugreactionrelatedness (drugreactionassesmeddraversion?, drugreactionasses?, drugassessmentsource?, drugassessmentmethod?, drugresult?)>
+<!ATTLIST drugreactionrelatedness
+	%lang.att;
+>
+<!-- B.5 Narrative case summary and further information: -->
+<!--
+Entity ref:	B.5
+Entity title:	NARRATIVE CASE SUMMARY
+Entity name:	summary
+-->
+<!ELEMENT summary (narrativeincludeclinical?, reportercomment?, senderdiagnosismeddraversion?, senderdiagnosis?, sendercomment?)>
+<!ATTLIST summary
+	%lang.att;
+>
+<!--
+Block name:
+Block ref:	A.1
+Block title:	REPORT IDENTIFICATION
+-->
+<!--
+Field ref:
+Field title:	Safety report version
+Field name:	safetyreportversion
+Field length:	2AN
+Comment :	This field is optional. Receivers may re-create the version number for a Report in a particular Thread on the basis of the Receipt Date (InfoDate).
+-->
+<!ELEMENT safetyreportversion (#PCDATA)>
+<!ATTLIST safetyreportversion
+	%lang.att;
+>
+<!--
+Field ref:
+Field title:	Safety report id identifier
+Field name:	safetyreportid
+Field length:	100AN
+Comment :	This field contains the Report Number (report Id identifier) given by a sender to a report. Contrary to the Case Number, that is given by the creator of the Case and remains unchanged all through the life cycle of the Case, and to the Message Number, that is given by the message sender and is specific to one transmission between the Sender and one Receiver, the Report Number is given by the Sender to one Report and is sent to as many correspondents as required. All the receivers of the Report will refer to it by the same number (or alternatively by the Message number and the sequential position of the Report in the message).
+Comment :	At present, this field is optional. However, all the Senders should have a consistent numbering system for reports.
+Comment :	Senders may choose by generating a new Report Number when data is added or modified in the Report or by keeping the same Report Number and increasing the Report Version.
+-->
+<!ELEMENT safetyreportid (#PCDATA)>
+<!ATTLIST safetyreportid
+	%lang.att;
+>
+<!-- A.1.1 Identification of the country of the primary -->
+<!--
+Field ref:	A.1.1
+Field title:	Identification of the country of the primary.
+Field name:	primarysourcecountry
+Field length:	2A
+Field values:	ISO3166
+-->
+<!ELEMENT primarysourcecountry (#PCDATA)>
+<!ATTLIST primarysourcecountry
+	%lang.att;
+>
+<!-- A.1.2 Identification of the country where the reaction / event occurred -->
+<!--
+Field ref:	A.1.2
+Field title:	Identification of the country where the reaction / event occurred
+Field name:	occurcountry
+Field length:	2A
+Field values:	ISO3166
+-->
+<!ELEMENT occurcountry (#PCDATA)>
+<!ATTLIST occurcountry
+	%lang.att;
+>
+<!-- A.1.3a Date of this transmission format -->
+<!--
+Field ref:	A.1.3a
+Field title:	Date format
+Field name:	transmissiondateformat
+Field length:	3N
+Field values:	102:CCYYMMDD
+-->
+<!ELEMENT transmissiondateformat (#PCDATA)>
+<!ATTLIST transmissiondateformat
+	%lang.att;
+>
+<!-- A.1.3b Date of this transmission -->
+<!--
+Field ref:	A.1.3b
+Field title:	Date of this transmission
+Field name:	transmissiondate
+Field length:	8N
+Field values:	102:CCYYMMDD
+Comment :	Must be indicated according to the date format.
+-->
+<!ELEMENT transmissiondate (#PCDATA)>
+<!ATTLIST transmissiondate
+	%lang.att;
+>
+<!-- A.1.4 Type of report -->
+<!--
+Field ref:	A.1.4
+Field title:	Type of report
+Field name:	reporttype
+Field length:	1N
+Field values:
+1=Spontaneous
+2=Report from study
+3=Other
+4=Not available to sender (unknown)
+-->
+<!ELEMENT reporttype (#PCDATA)>
+<!ATTLIST reporttype
+	%lang.att;
+>
+<!-- A.1.5.1 Serious -->
+<!--
+Field ref:	A.1.5.1
+Field title:	Serious
+Field name:	serious
+Field length:	1N
+Field values:
+1=Yes
+2=No
+-->
+<!ELEMENT serious (#PCDATA)>
+<!ATTLIST serious
+	%lang.att;
+>
+<!-- A.1.5.2 Seriousness criteria -->
+<!--
+Block ref:	A.1.5.2
+Block title:	SERIOUSNESS CRITERIA
+Block name:
+-->
+<!--
+Field ref:	A.1.5.2a
+Field title:	Results in death
+Field name:	seriousnessdeath
+Field length:	1N
+Field values:
+1=Yes
+2=No
+-->
+<!ELEMENT seriousnessdeath (#PCDATA)>
+<!ATTLIST seriousnessdeath
+	%lang.att;
+>
+<!--
+Field ref:	A.1.5.2b
+Field title:	Life threatening
+Field name:	seriousnesslifethreatening
+Field length:	1N
+Field values:
+1=Yes
+2=No
+-->
+<!ELEMENT seriousnesslifethreatening (#PCDATA)>
+<!ATTLIST seriousnesslifethreatening
+	%lang.att;
+>
+<!--
+Field ref:	A.1.5.2c
+Field title:	Caused/prolonged hospitalization
+Field name:	seriousnesshospitalization
+Field length:	1N
+Field values:
+1=Yes
+2=No
+-->
+<!ELEMENT seriousnesshospitalization (#PCDATA)>
+<!ATTLIST seriousnesshospitalization
+	%lang.att;
+>
+<!--
+Field ref:	A.1.5.2d
+Field title:	Disabling/Incapacitating
+Field name:	seriousnessdisabling
+Field length:	1N
+Field values:
+1=Yes
+2=No
+-->
+<!ELEMENT seriousnessdisabling (#PCDATA)>
+<!ATTLIST seriousnessdisabling
+	%lang.att;
+>
+<!--
+Field ref:	A.1.5.2e
+Field title:	Congenital anomaly/birth defect
+Field name:	seriousnesscongenitalanomali
+Field length:	1N
+Field values:
+1=Yes
+2=No
+-->
+<!ELEMENT seriousnesscongenitalanomali (#PCDATA)>
+<!ATTLIST seriousnesscongenitalanomali
+	%lang.att;
+>
+<!--
+Field ref:	A.1.5.2f
+Field title:	Other medically important condition
+Field name:	seriousnessother
+Field length:	1N
+Field values:
+1=Yes
+2=No
+-->
+<!ELEMENT seriousnessother (#PCDATA)>
+<!ATTLIST seriousnessother
+	%lang.att;
+>
+<!-- A.1.6a Date report was first received from source format -->
+<!--
+Field ref:	A.1.6a
+Field title:	Date report was first received from source format
+Field name:	receivedateformat
+Field length:	3N
+Field values:	102=CCYYMMDD
+-->
+<!ELEMENT receivedateformat (#PCDATA)>
+<!ATTLIST receivedateformat
+	%lang.att;
+>
+<!-- A.1.6b Date report was first received from source -->
+<!--
+Field ref:	A.1.6b
+Field title:	Date report was first received from source
+Field name:	receivedate
+Field length:	8N
+-->
+<!ELEMENT receivedate (#PCDATA)>
+<!ATTLIST receivedate
+	%lang.att;
+>
+<!-- A.1.7a Date of receipt of the most recent information for this report -->
+<!--
+Field ref:	A.1.7a
+Field title:	Date of receipt of the most recent information format
+Field name:	receiptdateformat
+Field length:	3N
+Field values:	102=CCYYMMDD
+-->
+<!ELEMENT receiptdateformat (#PCDATA)>
+<!ATTLIST receiptdateformat
+	%lang.att;
+>
+<!-- A.1.7b Date of receipt of the most recent information for this report -->
+<!--
+Field ref:	A.1.7b
+Field title:	Date of receipt of the most recent information
+Field name:	receiptdate
+Field length:	8N
+Field values:	102=CCYYMMDD
+Comment :	Mandatory field.
+-->
+<!ELEMENT receiptdate (#PCDATA)>
+<!ATTLIST receiptdate
+	%lang.att;
+>
+<!-- A.1.8.1 Are additional documents available -->
+<!--
+Field ref:	A.1.8.1
+Field title:	Are additional documents available?
+Field name:	additionaldocument
+Field length:	1N
+Field values:
+1=Yes
+2=No
+-->
+<!ELEMENT additionaldocument (#PCDATA)>
+<!ATTLIST additionaldocument
+	%lang.att;
+>
+<!-- A.1.8.2 List of documents held by sender -->
+<!--
+Field ref:	A.1.8.2
+Field title:	List of documents held by sender
+Field name:	documentlist
+Field length:	100AN
+-->
+<!ELEMENT documentlist (#PCDATA)>
+<!ATTLIST documentlist
+	%lang.att;
+>
+<!-- A.1.9 Does this case fulfill the local criteria for an expedited report -->
+<!--
+Field ref:	A.1.9
+Field title:	Does this case fulfill the local criteria for an expedited report?
+Field name:	fulfillexpeditecriteria
+Field length:	1N
+Field values:
+1=Yes
+2=No
+-->
+<!ELEMENT fulfillexpeditecriteria (#PCDATA)>
+<!ATTLIST fulfillexpeditecriteria
+	%lang.att;
+>
+<!--
+The A.1.10 - Report Identification Numbers must be populated as per the following user guidance:
+
+A.1.10.1 and A.1.10.2 are the identifiers given by a national regulatory authority and by a company or other organisation, respectively. The contents of A.1.10.1 or A.1.10.2 should be populated only once, and all of these three items should remain unchanged for any transmissions subsequent to the original transmission. That is to say, these fields must only be populated once by the originator of the first transmission. Companies or other organisations should ensure a single international report number (A.1.10.2) to facilitate the unique identification of a report that may have been sent to many places and subject to multiple transmissions. The contents of the fields A.1.10.1 and/or A.1.10.2 should first list A.1.1 - Identification of the country of primary source and secondly list A.3.1.2 - Sender Identifier, Sender Organization, and lastly, the company international case report number, delimited by hyphens.
+
+For example, a report transmitted by a US company to a regulatory authority would populate A.1.10.2 with "US-Company Name-12345", where "12345" is the company's unique case report number. In the event that the regulatory authority transmitted this ICSR to another regulatory authority, A.1.10.2 would remain the same. The regulatory authority would not populate A.1.10.1.
+
+If the situation occurs where multiple reports are received about the same case, such as a report from a physician and a report from another company, the information may be merged. One number will be maintained as the case number in its original field and the second number will be listed as a suspected duplicate.
+-->
+<!-- A.1.10.1 National regulatory authority's case report number -->
+<!--
+Field ref:	A.1.10.1
+Field title:	National regulatory authority's case report number
+Field name:	authoritynumb
+Field length:	100AN
+-->
+<!ELEMENT authoritynumb (#PCDATA)>
+<!ATTLIST authoritynumb
+	%lang.att;
+>
+<!-- A.1.10.2 Company's case report number -->
+<!--
+Field ref:	A.1.10.2
+Field title:	Company's case report number
+Field name:	companynumb
+Field length:	100AN
+-->
+<!ELEMENT companynumb (#PCDATA)>
+<!ATTLIST companynumb
+	%lang.att;
+>
+<!-- A.1.11 Suspected duplicate -->
+<!--
+Field ref:	A.1.11
+Field title:	Suspected duplicate : Are there duplicates?
+Field name:	duplicate
+Field length:	1N
+Field values: 1=YES
+-->
+<!ELEMENT duplicate (#PCDATA)>
+<!ATTLIST duplicate
+	%lang.att;
+>
+<!-- A.1.11.1 Source of the duplicate -->
+<!--
+Field ref:	A.1.11.1
+Field title:	Source of the duplicate
+Field name:	duplicatesource
+Field length:	50AN
+-->
+<!ELEMENT duplicatesource (#PCDATA)>
+<!ATTLIST duplicatesource
+	%lang.att;
+>
+<!-- A.1.11.2 Case report number of the suspected duplicate -->
+<!--
+Field ref:	A.1.11.2
+Field title:	Case report number of the suspected duplicate
+Field name:	duplicatenumb
+Field length:	100AN
+Field values:
+-->
+<!ELEMENT duplicatenumb (#PCDATA)>
+<!ATTLIST duplicatenumb
+	%lang.att;
+>
+<!-- A.1.12 Identification number of the report which is linked to this report -->
+<!--
+Field ref:	A.1.12
+Field title:	Identification number of the report which is linked to this report
+Field name:	linkreportnumb
+Field length:	100AN
+Field values:
+-->
+<!ELEMENT linkreportnumb (#PCDATA)>
+<!ATTLIST linkreportnumb
+	%lang.att;
+>
+<!-- A.1.13 Report nullification -->
+<!--
+Field ref:	A.1.13
+Field title:	Report nullification
+Field name:	casenullification.
+Field length:	1N
+Field values:	1=YES
+-->
+<!ELEMENT casenullification (#PCDATA)>
+<!ATTLIST casenullification
+	%lang.att;
+>
+<!-- A.1.13.1 Reason for nullification -->
+<!--
+Field ref:	A.1.13.1
+Field title:	Reason for nullification
+Field name:	nullificationreason
+Field length:	200AN
+Field values:
+-->
+<!ELEMENT nullificationreason (#PCDATA)>
+<!ATTLIST nullificationreason
+	%lang.att;
+>
+<!-- A.1.14 Was the case medically confirmed, if not initially from health professional? -->
+<!--
+Field ref:	A.1.14
+Field title:	Was the case medically confirmed, if not initially from health professional?
+Field name:	medicallyconfirm
+Field length:	1N
+Field values:
+1=Yes
+2=No
+-->
+<!ELEMENT medicallyconfirm (#PCDATA)>
+<!ATTLIST medicallyconfirm
+	%lang.att;
+>
+<!-- A.2.1.1a Reporter identifier -->
+<!--
+Field ref:	A.2.1.1a
+Field title:	Reporter's title
+Field name:	reportertitle
+Field length:	10AN
+Field values:
+-->
+<!ELEMENT reportertitle (#PCDATA)>
+<!ATTLIST reportertitle
+	%lang.att;
+>
+<!-- A.2.1.1b Reporter identifier -->
+<!--
+Field ref:	A.2.1.1b
+Field title:	Reporter's given name
+Field name:	reportergivename
+Field length:	35AN
+-->
+<!ELEMENT reportergivename (#PCDATA)>
+<!ATTLIST reportergivename
+	%lang.att;
+>
+<!-- A.2.1.1c Reporter identifier -->
+<!--
+Field ref:	A.2.1.1c
+Field title:	Reporter's middle name
+Field name:	reportermiddlename
+Field length:	15AN
+-->
+<!ELEMENT reportermiddlename (#PCDATA)>
+<!ATTLIST reportermiddlename
+	%lang.att;
+>
+<!-- A.2.1.1d Reporter identifier -->
+<!--
+Field ref:	A.2.1.1d
+Field title:	Reporter's family name
+Field name:	reporterfamilyname
+Field length:	35AN
+Field values:
+-->
+<!ELEMENT reporterfamilyname (#PCDATA)>
+<!ATTLIST reporterfamilyname
+	%lang.att;
+>
+<!-- A.2.1.2a Reporter's address -->
+<!--
+Field ref:	A.2.1.2a
+Field title:	Reporter's organization
+Field name:	reporterorganization
+Field length:	60AN
+Field values:
+-->
+<!ELEMENT reporterorganization (#PCDATA)>
+<!ATTLIST reporterorganization
+	%lang.att;
+>
+<!-- A.2.1.2b Reporter's address -->
+<!--
+Field ref:	A.2.1.2.b
+Field title:	Reporter's department
+Field name:	reporterdepartment
+Field length:	60AN
+Field values:
+-->
+<!ELEMENT reporterdepartment (#PCDATA)>
+<!ATTLIST reporterdepartment
+	%lang.att;
+>
+<!-- A.2.1.2c Reporter's address -->
+<!--
+Field ref:	A.2.1.2.c
+Field title:	Reporter's street
+Field name:	reporterstreet
+Field length:	60AN
+Field values:
+-->
+<!ELEMENT reporterstreet (#PCDATA)>
+<!ATTLIST reporterstreet
+	%lang.att;
+>
+<!-- A.2.1.2d Reporter's address -->
+<!--
+Field ref:	A.2.1.2.d
+Field title:	Reporter's city
+Field name:	reportercity
+Field length:	35AN
+Field values:
+-->
+<!ELEMENT reportercity (#PCDATA)>
+<!ATTLIST reportercity
+	%lang.att;
+>
+<!-- A.2.1.2e Reporter's address -->
+<!--
+Field ref:	A.2.1.2.e
+Field title:	Reporter's state or province
+Field name:	reporterstate
+Field length:	40AN
+Field values:
+-->
+<!ELEMENT reporterstate (#PCDATA)>
+<!ATTLIST reporterstate
+	%lang.att;
+>
+<!-- A.2.1.2f Reporter's address -->
+<!--
+Field ref:	A.2.1.2.f
+Field title:	Reporter's post code
+Field name:	reporterpostcode
+Field length:	15AN
+Field values:
+-->
+<!ELEMENT reporterpostcode (#PCDATA)>
+<!ATTLIST reporterpostcode
+	%lang.att;
+>
+<!-- A.2.1.3 Country -->
+<!--
+Field ref:	A.2.1.3
+Field title:	Reporter's country
+Field name:	reportercountry
+Field length:	2A
+Field values:	ISO3166
+-->
+<!ELEMENT reportercountry (#PCDATA)>
+<!ATTLIST reportercountry
+	%lang.att;
+>
+<!-- A.2.1.4 Qualification -->
+<!--
+Field ref:	A.2.1.4
+Field title:	Reporter's qualification
+Field name:	qualification
+Field length:	1N
+Field values:
+1=Physician7
+2=Pharmacist
+3=Other Health Professional
+4=Lawyer
+5=Consumer or other non health professional
+-->
+<!ELEMENT qualification (#PCDATA)>
+<!ATTLIST qualification
+	%lang.att;
+>
+<!-- A.2.2 Literature reference(s) -->
+<!--
+Field ref:	A.2.2
+Field title:	Literature reference(s)
+Field name:	literaturereference
+Field length:	500AN
+Field values:
+-->
+<!ELEMENT literaturereference (#PCDATA)>
+<!ATTLIST literaturereference
+	%lang.att;
+>
+<!-- A.2.3.1 Study name -->
+<!--
+Field ref:	A.2.3.1
+Field title:	Study name
+Field name:	studyname
+Field length:	100AN
+Field values:
+-->
+<!ELEMENT studyname (#PCDATA)>
+<!ATTLIST studyname
+	%lang.att;
+>
+<!-- A.2.3.2 Sponsor study number -->
+<!--
+Field ref:	A.2.3.2
+Field title:	Sponsor study number
+Field name:	sponsorstudynumb
+Field length:	35AN
+Field values:
+
+-->
+<!ELEMENT sponsorstudynumb (#PCDATA)>
+<!ATTLIST sponsorstudynumb
+	%lang.att;
+>
+<!-- A.2.3.3 Study type in which the reactions / events were observed -->
+<!--
+Field ref:	A.2.3.3
+Field title:	Study type in which the reactions / events were observed
+Field name:	observestudytype
+Field length:	1N
+Field values:
+1=Clinical trials
+2=Individual patient use
+3=Other studies
+-->
+<!ELEMENT observestudytype (#PCDATA)>
+<!ATTLIST observestudytype
+	%lang.att;
+>
+<!-- A.3.1.1 Sender type -->
+<!--
+Field ref:	A.3.1.1
+Field title:	Sender type
+Field name:	sendertype
+Field length:	1N
+Field values:
+1=Pharmaceutical Company
+2=Regulatory Authority
+3=Health professional
+4=Regional Pharmacovigilance Center
+5=WHO Collaborating Center for International Drug Monitoring
+6=Other
+-->
+<!ELEMENT sendertype (#PCDATA)>
+<!ATTLIST sendertype
+	%lang.att;
+>
+<!-- A.3.1.2 Sender organization -->
+<!--
+Field ref:	A.3.1.2
+Field title:	Sender's organization
+Field name:	senderorganization
+Field length:	60AN
+Field values:
+Comment :	Mandatory field. The contents of this field must be previsously agreed and specified in the Interchange Agreement.-->
+<!ELEMENT senderorganization (#PCDATA)>
+<!ATTLIST senderorganization
+	%lang.att;
+>
+<!-- A.3.1.3a Person responsible for sending the report -->
+<!--
+Field ref:	A.3.1.3a
+Field title:	Sender's department
+Field name:	senderdepartment
+Field length:	60AN
+Field values:
+-->
+<!ELEMENT senderdepartment (#PCDATA)>
+<!ATTLIST senderdepartment
+	%lang.att;
+>
+<!-- A.3.1.3b Person responsible for sending the report -->
+<!--
+Field ref:	A.3.1.3b
+Field title:	Sender's title
+Field name:	sendertitle
+Field length:	10AN
+Field values:
+-->
+<!ELEMENT sendertitle (#PCDATA)>
+<!ATTLIST sendertitle
+	%lang.att;
+>
+<!-- A.3.1.3c Person responsible for sending the report -->
+<!--
+Field ref:	A.3.1.3c
+Field title:	Sender's given name
+Field name:	sendergivename
+Field length:	35AN
+Field values:
+-->
+<!ELEMENT sendergivename (#PCDATA)>
+<!ATTLIST sendergivename
+	%lang.att;
+>
+<!-- A.3.1.3d Person responsible for sending the report -->
+<!--
+Field ref:	A.3.1.3d
+Field title:	Sender's middle name
+Field name:	sendermiddlename
+Field length:	15AN
+Field values:
+-->
+<!ELEMENT sendermiddlename (#PCDATA)>
+<!ATTLIST sendermiddlename
+	%lang.att;
+>
+<!-- A.3.1.3e Person responsible for sending the report -->
+<!--
+Field ref:	A.3.1.3e
+Field title:	Sender's family name
+Field name:	senderfamilyname
+Field length:	35AN
+Field values:
+-->
+<!ELEMENT senderfamilyname (#PCDATA)>
+<!ATTLIST senderfamilyname
+	%lang.att;
+>
+<!-- A.3.1.4a Address, fax, telephone and E-mail address -->
+<!--
+Field ref:	A.3.1.4a
+Field title:	Sender's street address
+Field name:	senderstreetaddress
+Field length:	40AN
+Field values:
+-->
+<!ELEMENT senderstreetaddress (#PCDATA)>
+<!ATTLIST senderstreetaddress
+	%lang.att;
+>
+<!-- A.3.1.4b Address, fax, telephone and E-mail address -->
+<!--
+Field ref:	A.3.1.4b
+Field title:	Sender's city
+Field name:	sendercity
+Field length:	35AN
+Field values:
+-->
+<!ELEMENT sendercity (#PCDATA)>
+<!ATTLIST sendercity
+	%lang.att;
+>
+<!-- A.3.1.4c Address, fax, telephone and E-mail address -->
+<!--
+Field ref:	A.3.1.4c
+Field title:	Sender's state or province
+Field name:	senderstate
+Field length:	40AN
+Field values:
+-->
+<!ELEMENT senderstate (#PCDATA)>
+<!ATTLIST senderstate
+	%lang.att;
+>
+<!-- A.3.1.4d Address, fax, telephone and E-mail address -->
+<!--
+Field ref:	A.3.1.4d
+Field title:	Sender's post code
+Field name:	senderpostcode
+Field length:	15AN
+Field values:
+-->
+<!ELEMENT senderpostcode (#PCDATA)>
+<!ATTLIST senderpostcode
+	%lang.att;
+>
+<!-- A.3.1.4e Address, fax, telephone and E-mail address -->
+<!--
+Field ref:	A.3.1.4e
+Field title:	Sender's country code
+Field name:	sendercountrycode
+Field length:	2A
+Field values:	ISO3166
+-->
+<!ELEMENT sendercountrycode (#PCDATA)>
+<!ATTLIST sendercountrycode
+	%lang.att;
+>
+<!-- A.3.1.4f Address, fax, telephone and E-mail address -->
+<!--
+Field ref:	A.3.1.4f
+Field title:	Sender's telephone
+Field name:	sendertel
+Field length:	10AN
+Field values:
+-->
+<!ELEMENT sendertel (#PCDATA)>
+<!ATTLIST sendertel
+	%lang.att;
+>
+<!-- A.3.1.4g Address, fax, telephone and E-mail address -->
+<!--
+Field ref:	A.3.1.4g
+Field title:	Sender's telephone extension
+Field name:	sendertelextension
+Field length:	5AN
+Field values:
+-->
+<!ELEMENT sendertelextension (#PCDATA)>
+<!ATTLIST sendertelextension
+	%lang.att;
+>
+<!-- A.3.1.4h Address, fax, telephone and E-mail address -->
+<!--
+Field ref:	A.3.1.4h
+Field title:	Sender's telephone country code
+Field name:	sendertelcountrycode
+Field length:	3AN
+Field values:
+-->
+<!ELEMENT sendertelcountrycode (#PCDATA)>
+<!ATTLIST sendertelcountrycode
+	%lang.att;
+>
+<!-- A.3.1.4i Address, fax, telephone and E-mail address -->
+<!--
+Field ref:	A.3.1.4i
+Field title:	Sender's fax
+Field name:	senderfax
+Field length:	10AN
+Field values:
+-->
+<!ELEMENT senderfax (#PCDATA)>
+<!ATTLIST senderfax
+	%lang.att;
+>
+<!-- A.3.1.4j Address, fax, telephone and E-mail address -->
+<!--
+Field ref:	A.3.1.4j
+Field title:	Sender's fax extension
+Field name:	senderfaxextension
+Field length:	5AN
+Field values:
+-->
+<!ELEMENT senderfaxextension (#PCDATA)>
+<!ATTLIST senderfaxextension
+	%lang.att;
+>
+<!-- A.3.1.4k Address, fax, telephone and E-mail address -->
+<!--
+Field ref:	A.3.1.4k
+Field title:	Sender's fax country code
+Field name:	senderfaxcountrycode
+Field length:	3AN
+Field values:
+-->
+<!ELEMENT senderfaxcountrycode (#PCDATA)>
+<!ATTLIST senderfaxcountrycode
+	%lang.att;
+>
+<!-- A.3.1.4l Address, fax, telephone and E-mail address -->
+<!--
+Field ref:	A.3.1.4l
+Field title:	Sender's email address
+Field name:	senderemailaddress
+Field length:	100AN
+Field values:
+-->
+<!ELEMENT senderemailaddress (#PCDATA)>
+<!ATTLIST senderemailaddress
+	%lang.att;
+>
+<!-- A.3.2.1 Receiver type -->
+<!--
+Field ref:	A.3.2.1
+Field title:	Receiver type
+Field name:	receivertype
+Field length:	1N
+Field values:
+1=Pharmaceutical Company
+2=Regulatory Authority
+4=Regional Pharmacovigilance Center
+5=WHO Collaborating Center for International Drug Monitoring
+6=Other
+-->
+<!ELEMENT receivertype (#PCDATA)>
+<!ATTLIST receivertype
+	%lang.att;
+>
+<!-- A.3.2.2a Receiver identifier -->
+<!--
+Field ref:	A.3.2.2a
+Field title:	Receiver's organization
+Field name:	receiverorganization
+Field length:	60AN
+Field values:
+-->
+<!ELEMENT receiverorganization (#PCDATA)>
+<!ATTLIST receiverorganization
+	%lang.att;
+>
+<!-- A.3.2.2b Receiver identifier -->
+<!--
+Field ref:	A.3.2.2b
+Field title:	Receiver's department
+Field name:	receiverdepartment
+Field length:	60AN
+Field values:
+-->
+<!ELEMENT receiverdepartment (#PCDATA)>
+<!ATTLIST receiverdepartment
+	%lang.att;
+>
+<!-- A.3.2.2c Receiver identifier -->
+<!--
+Field ref:	A.3.2.2c
+Field title:	Receiver's title
+Field name:	receivertitle
+Field length:	10AN
+Field values:
+-->
+<!ELEMENT receivertitle (#PCDATA)>
+<!ATTLIST receivertitle
+	%lang.att;
+>
+<!-- A.3.2.2d Receiver identifier -->
+<!--
+Field ref:	A.3.2.2d
+Field title:	Receiver's given name
+Field name:	receivergivename
+Field length:	35AN
+Field values:
+-->
+<!ELEMENT receivergivename (#PCDATA)>
+<!ATTLIST receivergivename
+	%lang.att;
+>
+<!-- A.3.2.2e Receiver identifier -->
+<!--
+Field ref:	A.3.2.2e
+Field title:	Receiver's middle name
+Field name:	receivermiddlename
+Field length:	15AN
+Field values:
+-->
+<!ELEMENT receivermiddlename (#PCDATA)>
+<!ATTLIST receivermiddlename
+	%lang.att;
+>
+<!-- A.3.2.2f Receiver identifier -->
+<!--
+Field ref:	A.3.2.2f
+Field title:	Receiver's family name
+Field name:	receiverfamilyname
+Field length:	35AN
+Field values:
+-->
+<!ELEMENT receiverfamilyname (#PCDATA)>
+<!ATTLIST receiverfamilyname
+	%lang.att;
+>
+<!-- A.3.2.3a Receiver's address, fax, telephone and E-mail address -->
+<!--
+Field ref:	A.3.2.3a
+Field title:	Receiver's streed address
+Field name:	receiverstreetaddress
+Field length:	40AN
+Field values:
+-->
+<!ELEMENT receiverstreetaddress (#PCDATA)>
+<!ATTLIST receiverstreetaddress
+	%lang.att;
+>
+<!-- A.3.2.3b Receiver's address, fax, telephone and E-mail address -->
+<!--
+Field ref:	A.3.2.3b
+Field title:	Receiver's city
+Field name:	receivercity
+Field length:	35AN
+Field values:
+-->
+<!ELEMENT receivercity (#PCDATA)>
+<!ATTLIST receivercity
+	%lang.att;
+>
+<!-- A.3.2.3c Receiver's address, fax, telephone and E-mail address -->
+<!--
+Field ref:	A.3.2.3c
+Field title:	Receiver's state or province
+Field name:	receiverstate
+Field length:	40AN
+Field values:
+-->
+<!ELEMENT receiverstate (#PCDATA)>
+<!ATTLIST receiverstate
+	%lang.att;
+>
+<!-- A.3.2.3d Receiver's address, fax, telephone and E-mail address -->
+<!--
+Field ref:	A.3.2.3d
+Field title:	Receiver's post code
+Field name:	receiverpostcode
+Field length:	15AN
+Field values:
+-->
+<!ELEMENT receiverpostcode (#PCDATA)>
+<!ATTLIST receiverpostcode
+	%lang.att;
+>
+<!-- A.3.2.3e Receiver's address, fax, telephone and E-mail address -->
+<!--
+Field ref:	A.3.2.3e
+Field title:	Receiver's country code
+Field name:	receivercountrycode
+Field length:	2A
+Field values:	ISO3166
+-->
+<!ELEMENT receivercountrycode (#PCDATA)>
+<!ATTLIST receivercountrycode
+	%lang.att;
+>
+<!-- A.3.2.3f Receiver's address, fax, telephone and E-mail address -->
+<!--
+Field ref:	A.3.2.3f
+Field title:	Receiver's telephone
+Field name:	receivertel
+Field length:	10AN
+Field values:
+-->
+<!ELEMENT receivertel (#PCDATA)>
+<!ATTLIST receivertel
+	%lang.att;
+>
+<!-- A.3.2.3g Receiver's address, fax, telephone and E-mail address -->
+<!--
+
+Field ref:	A.3.2.3g
+Field title:	Receiver's telephone extension
+Field name:	receivertelextension
+Field length:	5AN
+Field values:
+-->
+<!ELEMENT receivertelextension (#PCDATA)>
+<!ATTLIST receivertelextension
+	%lang.att;
+>
+<!-- A.3.2.3h Receiver's address, fax, telephone and E-mail address -->
+<!--
+Field ref:	A.3.2.3h
+Field title:	Receiver's telephone country code
+Field name:	receivertelcountrycode
+Field length:	3AN
+Field values:
+-->
+<!ELEMENT receivertelcountrycode (#PCDATA)>
+<!ATTLIST receivertelcountrycode
+	%lang.att;
+>
+<!-- A.3.2.3i Receiver's address, fax, telephone and E-mail address -->
+<!--
+Field ref:	A.3.2.3i
+Field title:	Receiver's fax
+Field name:	receiverfax
+Field length:	10AN
+Field values:
+-->
+<!ELEMENT receiverfax (#PCDATA)>
+<!ATTLIST receiverfax
+	%lang.att;
+>
+<!-- A.3.2.3j Receiver's address, fax, telephone and E-mail address -->
+<!--
+Field ref:	A.3.2.3j
+Field title:	Receiver's fax extension
+Field name:	receiverfaxextension
+Field length:	5AN
+Field values:
+-->
+<!ELEMENT receiverfaxextension (#PCDATA)>
+<!ATTLIST receiverfaxextension
+	%lang.att;
+>
+<!-- A.3.2.3k Receiver's address, fax, telephone and E-mail address -->
+<!--
+Field ref:	A.3.2.3k
+Field title:	Receiver's fax country code
+Field name:	receiverfaxcountrycode
+Field length:	3AN
+Field values:
+-->
+<!ELEMENT receiverfaxcountrycode (#PCDATA)>
+<!ATTLIST receiverfaxcountrycode
+	%lang.att;
+>
+<!-- A.3.2.3l Receiver's address, fax, telephone and E-mail address -->
+<!--
+Field ref:	A.3.2.3l
+Field title:	Receiver's e-mail address
+Field name:	receiveremailaddress
+Field length:	100AN
+Field values:
+-->
+<!ELEMENT receiveremailaddress (#PCDATA)>
+<!ATTLIST receiveremailaddress
+	%lang.att;
+>
+<!-- B.1.1 Patient initials -->
+<!--
+Field ref:	B.1.1
+Field title:	Patient initials
+Field name:	patientinitial
+Field length:	10AN
+Field values:
+-->
+<!ELEMENT patientinitial (#PCDATA)>
+<!ATTLIST patientinitial
+	%lang.att;
+>
+<!-- B.1.1.1a Patient medical record number(s) and source(s) -->
+<!--
+Field ref:	B.1.1.1a
+Field title:	GP medical record number
+Field name:	patientgpmedicalrecordnumb
+Field length:	20AN
+Field values:
+-->
+<!ELEMENT patientgpmedicalrecordnumb (#PCDATA)>
+<!ATTLIST patientgpmedicalrecordnumb
+	%lang.att;
+>
+<!-- B.1.1.1b Patient medical record number(s) and source(s) -->
+<!--
+Field ref:	B.1.1.1b
+Field title:	Specialist record number
+Field name:	patientspecialistrecordnumb
+Field length:	20AN
+Field values:
+-->
+<!ELEMENT patientspecialistrecordnumb (#PCDATA)>
+<!ATTLIST patientspecialistrecordnumb
+	%lang.att;
+>
+<!-- B.1.1.1c Patient medical record number(s) and source(s) -->
+<!--
+Field ref:	B.1.1.1c
+Field title:	Hospital record number
+Field name:	patienthospitalrecordnumb
+Field length:	20AN
+Field values:
+-->
+<!ELEMENT patienthospitalrecordnumb (#PCDATA)>
+<!ATTLIST patienthospitalrecordnumb
+	%lang.att;
+>
+<!-- B.1.1.1d Patient medical record number(s) and source(s) -->
+<!--
+Field ref:	B.1.1.1d
+Field title:	Investigation number
+Field name:	patientinvestigationnumb
+Field length:	20AN
+Field values:
+-->
+<!ELEMENT patientinvestigationnumb (#PCDATA)>
+<!ATTLIST patientinvestigationnumb
+	%lang.att;
+>
+<!-- B.1.2.1a Date of birth format -->
+<!--
+Field ref:	B.1.2.1a
+Field title:	Date of birth format
+Field name:	patientbirthdateformat
+Field length:	3N
+Field values:	102=CCYYMMDD
+-->
+<!ELEMENT patientbirthdateformat (#PCDATA)>
+<!ATTLIST patientbirthdateformat
+	%lang.att;
+>
+<!-- B.1.2.1b Date of birth -->
+<!--
+Field ref:	B.1.2.1b
+Field title:	Date of birth
+Field name:	patientbirthdate
+Field length:	8N
+Field values:	102=CCYYMMDD
+-->
+<!ELEMENT patientbirthdate (#PCDATA)>
+<!ATTLIST patientbirthdate
+	%lang.att;
+>
+<!-- B.1.2.2a Age at time of onset of reaction / event -->
+<!--
+Field ref:	B.1.2.2a
+Field title:	Age at time of onset of reaction/event value
+Field name:	patientonsetage
+Field length:	5N
+Field values:
+-->
+<!ELEMENT patientonsetage (#PCDATA)>
+<!ATTLIST patientonsetage
+	%lang.att;
+>
+<!-- B.1.2.2b Age at time of onset of reaction / event unit -->
+<!--
+Field ref:	B.1.2.2b
+Field title:	Age at time of onset of reaction/event unit
+Field name:	patientonsetageunit
+Field length:	3N
+Field values:
+800=Decade
+801=Year
+802=Month
+803=Week
+804=Day
+805=Hour
+-->
+<!ELEMENT patientonsetageunit (#PCDATA)>
+<!ATTLIST patientonsetageunit
+	%lang.att;
+>
+<!-- B.1.2.2.1a Gestation period when reaction / event was observed in the fetus -->
+<!--
+Field ref:	B.1.2.2.1a
+Field title:	Gestation period when reaction/event was observed in the fetus
+Field name:	gestationperiod
+Field length:	3N
+Field values:
+-->
+<!ELEMENT gestationperiod (#PCDATA)>
+<!ATTLIST gestationperiod
+	%lang.att;
+>
+<!-- B.1.2.2.1b Gestation period when reaction / event was observed in the fetus unit -->
+<!--
+Field ref:	B.1.2.2.1b
+Field title:	Gestation period unit
+Field name:	gestationperiodunit
+Field length:	3N
+Field values:
+802=Month
+803=Week
+804=Day
+810=Trimester
+-->
+<!ELEMENT gestationperiodunit (#PCDATA)>
+<!ATTLIST gestationperiodunit
+	%lang.att;
+>
+<!-- B.1.2.3 Patient age group -->
+<!--
+Field ref:	B.1.2.3
+Field title:	Patient age group
+Field name:	patientagegroup
+Field length:	1N
+Field values:
+1=Neonate
+2=Infant
+3=Child
+4=Adolescent
+5=Adult
+6=Elderly
+-->
+<!ELEMENT patientagegroup (#PCDATA)>
+<!ATTLIST patientagegroup
+	%lang.att;
+>
+<!-- B.1.3 Weight (kg) -->
+<!--
+Field ref:	B.1.3
+Field title:	Weight (kg)
+Field name:	patientweight
+Field length:	6N
+Field values:
+-->
+<!ELEMENT patientweight (#PCDATA)>
+<!ATTLIST patientweight
+	%lang.att;
+>
+<!-- B.1.4 Height (cm) -->
+<!--
+Field ref:	B.1.4
+Field title:	Height (cm)
+Field name:	patientheight
+Field length:	3N
+Field values:
+-->
+<!ELEMENT patientheight (#PCDATA)>
+<!ATTLIST patientheight
+	%lang.att;
+>
+<!-- B.1.5 Sex -->
+<!--
+Field ref:	B.1.5
+Field title:	Sex
+Field name:	patientsex
+Field length:	1N
+Field values:	(ISO 5218)
+1=Male
+2=Female
+9=Not specified
+0=Unknown
+-->
+<!ELEMENT patientsex (#PCDATA)>
+<!ATTLIST patientsex
+	%lang.att;
+>
+<!-- B.1.6a Last menstrual period date format -->
+<!--
+Field ref:	B.1.6a
+Field title:	Last menstrual period date format
+Field name:	lastmenstrualdateformat
+Field length:	3N
+Field values:
+102=CCYYMMDD
+610=CCYYMM
+602=CCYY
+-->
+<!ELEMENT lastmenstrualdateformat (#PCDATA)>
+<!ATTLIST lastmenstrualdateformat
+	%lang.att;
+>
+<!-- B.1.6b Last menstrual period date -->
+<!--
+Field ref:	B.1.6b
+Field title:	Last menstrual period date
+Field name:	patientlastmenstrualdate
+Field length:	8N
+Field values:
+-->
+<!ELEMENT patientlastmenstrualdate (#PCDATA)>
+<!ATTLIST patientlastmenstrualdate
+	%lang.att;
+>
+<!-- B.1.7.1a.1 MedDRA version -->
+<!-- B.1.7.1a.1 Structured information -->
+<!--
+Field ref:	B.1.7.1a.1
+Field title:	MedDRA version for Medical History
+Field name:	patientepisodenamemeddraversion
+Field length:	8AN
+Field values:
+-->
+<!ELEMENT patientepisodenamemeddraversion (#PCDATA)>
+<!ATTLIST patientepisodenamemeddraversion
+	%lang.att;
+>
+<!-- B.1.7.1a.2 Structured information -->
+<!--
+Field ref:	B.1.7.1a.2
+Field title:	Disease/surgical procedure
+Field name:	patientepisodename
+Field length:	100AN
+Field values:
+-->
+<!ELEMENT patientepisodename (#PCDATA)>
+<!ATTLIST patientepisodename
+	%lang.att;
+>
+<!-- B.1.7.1b Start date format -->
+<!--
+Field ref:	B.1.7.1b
+Field title:	Start date format
+Field name:	patientmedicalstartdateformat
+Field length:	3N
+Field values:
+102=CCYYMMDD
+610=CCYYMM
+602=CCYY
+-->
+<!ELEMENT patientmedicalstartdateformat (#PCDATA)>
+<!ATTLIST patientmedicalstartdateformat
+	%lang.att;
+>
+<!-- B.1.7.1c Start date -->
+<!--
+Field ref:	B.1.7.1c
+Field title:	Start date
+Field name:	patientmedicalstartdate
+Field length:	8N
+Field values:
+-->
+<!ELEMENT patientmedicalstartdate (#PCDATA)>
+<!ATTLIST patientmedicalstartdate
+	%lang.att;
+>
+<!-- B.1.7.1d Continuing -->
+<!--
+Field ref:	B.1.7.1d
+Field title:	Continuing
+Field name:	patientmedicalcontinue
+Field length:	1N
+Field values:
+1=Yes
+2=No
+3=Unknown
+-->
+<!ELEMENT patientmedicalcontinue (#PCDATA)>
+<!ATTLIST patientmedicalcontinue
+	%lang.att;
+>
+<!-- B.1.7.1e End date format -->
+<!--
+Field ref:	B.1.7.1e
+Field title:	End date format
+Field name:	patientmedicalenddateformat
+Field length:	3N
+Field values:
+102=CCYYMMDD
+610=CCYYMM
+602=CCYY
+-->
+<!ELEMENT patientmedicalenddateformat (#PCDATA)>
+<!ATTLIST patientmedicalenddateformat
+	%lang.att;
+>
+<!-- B.1.7.1f End date -->
+<!--
+Field ref:	B.1.7.1f
+Field title:	End date
+Field name:	patientmedicalenddate
+Field length:	8N
+Field values:
+-->
+<!ELEMENT patientmedicalenddate (#PCDATA)>
+<!ATTLIST patientmedicalenddate
+	%lang.att;
+>
+<!-- B.1.7.1g Comments -->
+<!--
+Field ref:	B.1.7.1g
+Field title:	Comments
+Field name:	patientmedicalcomment
+Field length:	100AN
+Field values:
+-->
+<!ELEMENT patientmedicalcomment (#PCDATA)>
+<!ATTLIST patientmedicalcomment
+	%lang.att;
+>
+<!-- B.1.7.2 Text for relevant medical history and concurrent conditions -->
+<!--
+Field ref:	B.1.7.2
+Field title:	Text for relevant medical history and concurrent conditions
+Field name:	patientmedicalhistorytext
+Field length:	10000AN
+Field values:
+-->
+<!ELEMENT patientmedicalhistorytext (#PCDATA)>
+<!ATTLIST patientmedicalhistorytext
+	%lang.att;
+>
+<!-- B.1.8a Name of drug -->
+<!--
+Field ref:	B.1.8a
+Field title:	Name of drug
+Field name:	patientdrugname
+Field length:	70AN
+Field values:
+-->
+<!ELEMENT patientdrugname (#PCDATA)>
+<!ATTLIST patientdrugname
+	%lang.att;
+>
+<!-- B.1.8b Start date format -->
+<!--
+Field ref:	B.1.8b
+Field title:	Start date format
+Field name:	patientdrugstartdateformat
+Field length:	3N
+Field values:
+102=CCYYMMDD
+610=CCYYMM
+602=CCYY
+
+-->
+<!ELEMENT patientdrugstartdateformat (#PCDATA)>
+<!ATTLIST patientdrugstartdateformat
+	%lang.att;
+>
+<!-- B.1.8c Start date -->
+<!--
+Field ref:	B.1.8c
+Field title:	Start date
+Field name:	patientdrugstartdate
+Field length:	8N
+Field values:
+Comment :
+-->
+<!ELEMENT patientdrugstartdate (#PCDATA)>
+<!ATTLIST patientdrugstartdate
+	%lang.att;
+>
+<!-- B.1.8d End date format -->
+<!--
+Field ref:	B.1.8d
+Field title:	End date format
+Field name:	patientdrugenddateformat
+Field length:	3N
+Field values:
+102=CCYYMMDD
+610=CCYYMM
+602CCYY
+-->
+<!ELEMENT patientdrugenddateformat (#PCDATA)>
+<!ATTLIST patientdrugenddateformat
+	%lang.att;
+>
+<!-- B.1.8e End date -->
+<!--
+Field ref:	B.1.8e
+Field title:	End date
+Field name:	patientdrugenddate
+Field length:	8N
+Field values:
+-->
+<!ELEMENT patientdrugenddate (#PCDATA)>
+<!ATTLIST patientdrugenddate
+	%lang.att;
+>
+<!-- B.1.8f.1 MedDRA version for indication -->
+<!--
+Field ref:	B.1.8f.1
+Field title:	MedDRA version for indication
+Field name:	patientindicationmeddraversion
+Field length:	8N
+Field values:
+-->
+<!ELEMENT patientindicationmeddraversion (#PCDATA)>
+<!ATTLIST patientindicationmeddraversion
+	%lang.att;
+>
+<!-- B.1.8f Indication -->
+<!--
+Field ref:	B.1.8f
+Field title:	Indication
+Field name:	patientdrugindication
+Field length:	100AN
+Field values:
+-->
+<!ELEMENT patientdrugindication (#PCDATA)>
+<!ATTLIST patientdrugindication
+	%lang.att;
+>
+<!-- B.1.8g.1 MedDRA version for reaction -->
+<!--
+Field ref:	B.1.8g.1
+Field title:	MedDRA version for reaction
+Field name:	patientdrgreactionmeddraversion
+Field length:	8AN
+Field values:
+-->
+<!ELEMENT patientdrgreactionmeddraversion (#PCDATA)>
+<!ATTLIST patientdrgreactionmeddraversion
+	%lang.att;
+>
+<!-- B.1.8g Reaction -->
+<!--
+Field ref:	B.1.8g
+Field title:	Reaction
+Field name:	patientdrugreaction
+Field length:	100AN
+Field values:
+-->
+<!ELEMENT patientdrugreaction (#PCDATA)>
+<!ATTLIST patientdrugreaction
+	%lang.att;
+>
+<!-- B.1.9.1a Date of death format -->
+<!--
+Field ref:	B.1.9.1a
+Field title:	Date of death format
+Field name:	patientdeathdateformat
+Field length:	3N
+Field values:
+102=CCYYMMDD
+610=CCYYMM
+602=CCYY
+-->
+<!ELEMENT patientdeathdateformat (#PCDATA)>
+<!ATTLIST patientdeathdateformat
+	%lang.att;
+>
+<!-- B.1.9.1b Date of death -->
+<!--
+Field ref:	B.1.9.1b
+Field title:	Date of death
+Field name:	patientdeathdate
+Field length:	8N
+Field values:
+-->
+<!ELEMENT patientdeathdate (#PCDATA)>
+<!ATTLIST patientdeathdate
+	%lang.att;
+>
+<!-- B.1.9.2.a MedDRA version -->
+<!--
+Field ref:	B.1.9.2.a
+Field title:	MedDRA version for reported cause(s) of death
+Field name:	patientdeathreportmeddraversion
+Field length:	8N
+Field values:
+-->
+<!ELEMENT patientdeathreportmeddraversion (#PCDATA)>
+<!ATTLIST patientdeathreportmeddraversion
+	%lang.att;
+>
+<!-- B.1.9.2.b Reported cause of death -->
+<!--
+Field ref:	B.1.9.2.b
+Field title:	Reported cause of death
+Field name:	patientdeathreport
+Field length:	100AN
+Field values:
+Comment :	Field controlled by MedDRA LLT 2.1 or superior.
+-->
+<!ELEMENT patientdeathreport (#PCDATA)>
+<!ATTLIST patientdeathreport
+	%lang.att;
+>
+<!-- B.1.9.3 Was autopsy done? -->
+<!--
+Field ref:	B.1.9.3
+Field title:	Was autopsy done?
+Field name:	patientautopsyyesno
+Field length:	1N
+Field values:
+1=Yes
+2=No
+3=Unknown
+-->
+<!ELEMENT patientautopsyyesno (#PCDATA)>
+<!ATTLIST patientautopsyyesno
+	%lang.att;
+>
+<!-- B.1.9.4.a MedDRA version -->
+<!--
+Field ref:	B.1.9.4.a
+Field title:	MedDRA version for autopsy-determined cause(s) of death
+Field name:	patientdetermautopsmeddraversion
+Field length:	8AN
+Field values:
+-->
+<!ELEMENT patientdetermautopsmeddraversion (#PCDATA)>
+<!ATTLIST patientdetermautopsmeddraversion
+	%lang.att;
+>
+<!-- B.1.9.4.b Autopsy-determined causes(s) of death -->
+<!--
+Field ref:	B.1.9.4.b
+Field title:	Autopsy-determined causes(s) of death
+Field name:	patientdetermineautopsy
+Field length:	100AN
+Field values:
+Comment :	Field controlled by MedDRA LLT 2.1 or superior.
+-->
+<!ELEMENT patientdetermineautopsy (#PCDATA)>
+<!ATTLIST patientdetermineautopsy
+	%lang.att;
+>
+<!-- B.1.10.1 Parent identification -->
+<!--
+Field ref:	B.1.10.1
+Field title:	Parent identification
+Field name:	parentidentification
+Field length:	10AN
+Field values:
+-->
+<!ELEMENT parentidentification (#PCDATA)>
+<!ATTLIST parentidentification
+	%lang.att;
+>
+<!-- B.1.10.2.1a Date of birth of parent format -->
+<!--
+Field ref:	B.1.10.2.1a
+Field title:	Date of birth of parent format
+Field name:	parentbirthdateformat
+Field length:	3N
+Field values:	102=CCYYMMDD
+-->
+<!ELEMENT parentbirthdateformat (#PCDATA)>
+<!ATTLIST parentbirthdateformat
+	%lang.att;
+>
+<!-- B.1.10.2.1b Date of birth of parent -->
+<!--
+Field ref:	B.1.10.2.1b
+Field title:	Date of birth of parent
+Field name:	parentbirthdate
+Field length:	8N
+Field values:
+-->
+<!ELEMENT parentbirthdate (#PCDATA)>
+<!ATTLIST parentbirthdate
+	%lang.att;
+>
+<!-- B.1.10.2.2a Age of parent -->
+<!--
+Field ref:	B.1.10.2.2a
+Field title:	Age of parent value
+Field name:	parentage
+Field length:	2N
+Field values:
+-->
+<!ELEMENT parentage (#PCDATA)>
+<!ATTLIST parentage
+	%lang.att;
+>
+<!-- B.1.10.2.2b Age of parent unit -->
+<!--
+Field ref:	B.1.10.2.2b
+Field title:	Age of parent unit
+Field name:	parentageunit
+Field length:	3N
+Field values:	801=Year
+-->
+<!ELEMENT parentageunit (#PCDATA)>
+<!ATTLIST parentageunit
+	%lang.att;
+>
+<!-- B.1.10.3a Last menstrual period format -->
+<!--
+Field ref:	B.1.10.3a
+Field title:	Last menstrual period date format
+Field name:	parentlastmenstrualdateformat
+Field length:	3N
+Field values:	102=CCYYMMDD
+-->
+<!ELEMENT parentlastmenstrualdateformat (#PCDATA)>
+<!ATTLIST parentlastmenstrualdateformat
+	%lang.att;
+>
+<!-- B.1.10.3b Last menstrual period -->
+<!--
+Field ref:	B.1.10.3b
+Field title:	Last menstrual period date
+Field name:	parentlastmenstrualdate
+Field length:	8N
+Field values:	102=CCYYMMDD
+-->
+<!ELEMENT parentlastmenstrualdate (#PCDATA)>
+<!ATTLIST parentlastmenstrualdate
+	%lang.att;
+>
+<!-- B.1.10.4 Weight (kg) of parent -->
+<!--
+Field ref:	B.1.10.4
+Field title:	Weight (kg) of parent
+Field name:	parentweight
+Field length:	6N
+Field values:
+-->
+<!ELEMENT parentweight (#PCDATA)>
+<!ATTLIST parentweight
+	%lang.att;
+>
+<!-- B.1.10.5 Height (cm) of parent -->
+<!--
+Field ref:	B.1.10.5
+Field title:	Height (cm) of parent
+Field name:	parentheight
+Field length:	3N
+Field values:
+-->
+<!ELEMENT parentheight (#PCDATA)>
+<!ATTLIST parentheight
+	%lang.att;
+>
+<!-- B.1.10.6 Sex of parent -->
+<!--
+Field ref:	B.1.10.6
+Field title:	Sex of parent
+Field name:	parentsex
+Field length:	1N
+Field values:	(ISO5218)
+1=Male
+2=Female
+9=Not Specified
+0=Unknown
+-->
+<!ELEMENT parentsex (#PCDATA)>
+<!ATTLIST parentsex
+	%lang.att;
+>
+<!-- B.1.10.7.1a.1 MedDRA version -->
+<!--
+Field ref:	B.1.10.7.1a.1
+Field title:	MedDRA version for parent medical history
+Field name:	parentmdepisodemeddraversion
+Field length:	8AN
+Field values:
+-->
+<!ELEMENT parentmdepisodemeddraversion (#PCDATA)>
+<!ATTLIST parentmdepisodemeddraversion
+	%lang.att;
+>
+<!-- B.1.10.7.1a.2 Structured information -->
+<!--
+Field ref:	B.1.10.7.1a.2
+Field title:	Desease / surgical procedure
+Field name:	parentmedicalepisodename
+Field length:	100AN
+Field values:
+Comment :	Field controlled by MedDRA LLT 2.1 or superior.
+-->
+<!ELEMENT parentmedicalepisodename (#PCDATA)>
+<!ATTLIST parentmedicalepisodename
+	%lang.att;
+>
+<!-- B.1.10.7.1b Start date format -->
+<!--
+Field ref:	B.1.10.7.1b
+Field title:	Start date format
+Field name:	parentmedicalstartdateformat
+Field length:	3N
+Field values:
+102=CCYYMMDD
+610=CCYYMM
+602=CCYY
+-->
+<!ELEMENT parentmedicalstartdateformat (#PCDATA)>
+<!ATTLIST parentmedicalstartdateformat
+	%lang.att;
+>
+<!-- B.1.10.7.1c Start date -->
+<!--
+Field ref:	B.1.10.7.1c
+Field title:	Start date
+Field name:	parentmedicalstartdate
+Field length:	8N
+Field values:
+-->
+<!ELEMENT parentmedicalstartdate (#PCDATA)>
+<!ATTLIST parentmedicalstartdate
+	%lang.att;
+>
+<!-- B.1.10.7.1d Continuing -->
+<!--
+Field ref:	B.1.10.7.1d
+Field title:	Continuing
+Field name:	parentmedicalcontinue
+Field length:	1N
+Field values:
+1=Yes
+2=No
+3=Unknown
+-->
+<!ELEMENT parentmedicalcontinue (#PCDATA)>
+<!ATTLIST parentmedicalcontinue
+	%lang.att;
+>
+<!-- B.1.10.7.1e End date format -->
+<!--
+Field ref:	B.1.10.7.1e
+Field title:	End date format
+Field name:	parentmedicalenddateformat
+Field length:	3N
+Field values:
+102=CCYYMMDD
+610=CCYYMM
+602=CCYY
+-->
+<!ELEMENT parentmedicalenddateformat (#PCDATA)>
+<!ATTLIST parentmedicalenddateformat
+	%lang.att;
+>
+<!-- B.1.10.7.1f End date -->
+<!--
+Field ref:	B.1.10.7.1f
+Field title:	End date
+Field name:	parentmedicalenddate
+Field length:	8N
+Field values:
+-->
+<!ELEMENT parentmedicalenddate (#PCDATA)>
+<!ATTLIST parentmedicalenddate
+	%lang.att;
+>
+<!-- B.1.10.7.1g Comments -->
+<!--
+Field ref:	B.1.10.7.1g
+Field title:	Comments
+Field name:	parentmedicalcomment
+Field length:	100AN
+Field values:
+-->
+<!ELEMENT parentmedicalcomment (#PCDATA)>
+<!ATTLIST parentmedicalcomment
+	%lang.att;
+>
+<!-- B.1.10.7.2 Text for relevant medical history and concurrent conditions (not including reaction / event) of parent -->
+<!--
+Field ref:	B.1.10.7.2
+Field title:	Text for relevant medical history and concurrent conditions (not including reaction / event) of parent
+Field name:	parentmedicalrelevanttext
+Field length:	10000AN
+Field values:
+-->
+<!ELEMENT parentmedicalrelevanttext (#PCDATA)>
+<!ATTLIST parentmedicalrelevanttext
+	%lang.att;
+>
+<!-- B.1.10.8a Name of drug as -->
+<!--
+Field ref:	B.1.10.8a
+Field title:	Name of drug
+Field name:	parentdrugname
+Field length:	70AN
+Field values:
+-->
+<!ELEMENT parentdrugname (#PCDATA)>
+<!ATTLIST parentdrugname
+	%lang.att;
+>
+<!-- B.1.10.8b Start date format -->
+<!--
+Field ref:	B.1.10.8b
+Field title:	Start date format
+Field name:	parentdrugstartdateformat
+Field length:	3N
+Field values:
+102=CCYYMMDD
+610=CCYYMM
+602=CCYY
+-->
+<!ELEMENT parentdrugstartdateformat (#PCDATA)>
+<!ATTLIST parentdrugstartdateformat
+	%lang.att;
+>
+<!-- B.1.10.8c Start date -->
+<!--
+Field ref:	B.1.10.8c
+Field title:	Start date
+Field name:	parentdrugstartdate
+Field length:	8N
+Field values:
+-->
+<!ELEMENT parentdrugstartdate (#PCDATA)>
+<!ATTLIST parentdrugstartdate
+	%lang.att;
+>
+<!-- B.1.10.8d End date format -->
+<!ELEMENT parentdrugenddateformat (#PCDATA)>
+<!ATTLIST parentdrugenddateformat
+	%lang.att;
+>
+<!--
+Field ref:	B.1.10.8d
+Field title:	End date format
+Field name:	parentdrugenddateformat
+Field length:	3N
+Field values:
+102=CCYYMMDD
+610=CCYYMM
+602=CCYY
+-->
+<!-- B.1.10.8e End date -->
+<!--
+Field ref:	B.1.10.8e
+Field title:	End date
+Field name:	parentdrugenddate
+Field length:	8N
+Field values:
+-->
+<!ELEMENT parentdrugenddate (#PCDATA)>
+<!ATTLIST parentdrugenddate
+	%lang.att;
+>
+<!-- B.1.10.8f.1 MedDRA version for indication -->
+<!--
+Field ref:	B.1.10.8f.1
+Field title:	MedDRA version for indication
+Field name:	parentdrgindicationmeddraversion
+Field length:	8AN
+Field values:
+-->
+<!ELEMENT parentdrgindicationmeddraversion (#PCDATA)>
+<!ATTLIST parentdrgindicationmeddraversion
+	%lang.att;
+>
+<!-- B.1.10.8f Indication -->
+<!--
+Field ref:	B.1.10.8f
+Field title:	Indication
+Field name:	parentdrugindication
+Field length:	100AN
+Field values:
+-->
+<!ELEMENT parentdrugindication (#PCDATA)>
+<!ATTLIST parentdrugindication
+	%lang.att;
+>
+<!-- B.1.10.8g.1 MedDRA version for indication -->
+<!--
+Field ref:	B.1.10.8g.1
+Field title:	MedDRA version for reaction
+Field name:	parentdrgreactionmeddraversion
+Field length:	100AN
+Field values:
+-->
+<!ELEMENT parentdrgreactionmeddraversion (#PCDATA)>
+<!ATTLIST parentdrgreactionmeddraversion
+	%lang.att;
+>
+<!-- B.1.10.8g Reactions (if any and known) -->
+<!--
+Field ref:	B.1.10.8g
+Field title:	Reactions (if any and known)
+Field name:	parentdrugreaction
+Field length:	100AN
+Field values:
+-->
+<!ELEMENT parentdrugreaction (#PCDATA)>
+<!--
+Field ref:	B.2.i.1
+Field title:	Reaction / event as reported by primary
+Field name:	primarysourcereaction
+Field length:	100AN
+Field values:
+-->
+<!ATTLIST parentdrugreaction
+	%lang.att;
+>
+<!-- B.2.i.1 Reaction / event as reported by primary -->
+<!--
+Field ref:	B.2.i.1
+Field title:	Reaction / event as reported by primary
+Field name:	primarysourcereaction
+Field length:	100AN
+Field values:
+-->
+<!ELEMENT primarysourcereaction (#PCDATA)>
+<!ATTLIST primarysourcereaction
+	%lang.att;
+>
+<!-- B.2.i.1.a MedDRA version for reaction/event term LLT -->
+<!--
+Field ref:	B.2.i.1.a
+Field title:	MedDRA version for reaction/event term LLT
+Field name:	reactionmeddraversionllt
+Field length:	8AN
+Field values:
+-->
+<!ELEMENT reactionmeddraversionllt (#PCDATA)>
+<!ATTLIST reactionmeddraversionllt
+	%lang.att;
+>
+<!-- B.2.i.1.b MedDRA LLT for reaction/event term -->
+<!--
+Field ref:	B.2.i.1.b
+Field title:	Reaction/event in MedDRA terminology (LLT)
+Field name:	reactionmeddrallt
+Field length:	200AN
+Field values:
+-->
+<!ELEMENT reactionmeddrallt (#PCDATA)>
+<!ATTLIST reactionmeddrallt
+	%lang.att;
+>
+<!-- B.2.i.2.a MedDRA version for reaction/event term PT -->
+<!--
+Field ref:	B.2.i.2.a
+Field title:	MedDRA version for reaction/event term PT
+Field name:	reactionmeddraversionpt
+Field length:	8AN
+Field values:
+-->
+<!ELEMENT reactionmeddraversionpt (#PCDATA)>
+<!ATTLIST reactionmeddraversionpt
+	%lang.att;
+>
+<!-- B.2.i.2.b MedDRA PT for reaction/event term -->
+<!--
+Field ref:	B.2.i.2.b
+Field title:	Reaction/event MedDRA term (PT)
+Field name:	reactionmeddrapt
+Field length:	200AN
+Field values:
+-->
+<!ELEMENT reactionmeddrapt (#PCDATA)>
+<!ATTLIST reactionmeddrapt
+	%lang.att;
+>
+<!-- B.2.i.3 Term highlighted by the reporter -->
+<!--
+Field ref:	B.2.i.3
+Field title:	Term highlighted by the reporter
+Field name:	termhighlighted
+Field length:	1N
+Field values:
+1=Yes, highlighted by the reporter, NOT serious
+2=No, not highlighted by the reporter, NOT serious
+3=Yes, highlighted by the reporter, SERIOUS
+4=No, not highlighted by the reporter, SERIOUS
+
+-->
+<!ELEMENT termhighlighted (#PCDATA)>
+<!ATTLIST termhighlighted
+	%lang.att;
+>
+<!-- B.2.i.4a Date of start of reaction / event format -->
+<!--
+Field ref:	B.2.i.4a
+Field title:	Date of start of reaction/event format
+Field name:	reactionstartdateformat
+Field length:	3N
+Field values:
+102=CCYYMMDD
+203=CCYYMMDDHHMM
+610=CCYYMM
+602=CCYY
+-->
+<!ELEMENT reactionstartdateformat (#PCDATA)>
+<!ATTLIST reactionstartdateformat
+	%lang.att;
+>
+<!-- B.2.i.4b Date of start of reaction / event -->
+<!--
+Field ref:	B.2.i.4b
+Field title:	Date of start of reaction/event
+Field name:	reactionstartdate
+Field length:	12N
+Field values:
+-->
+<!ELEMENT reactionstartdate (#PCDATA)>
+<!ATTLIST reactionstartdate
+	%lang.att;
+>
+<!-- B.2.i.5a Date of end of reaction / event format -->
+<!--
+Field ref:	B.2.i.5a
+Field title:	Date of end of reaction/event format
+Field name:	reactionenddateformat
+Field length:	3N
+Field values:
+102=CCYYMMDD
+203=CCYYMMDDHHMM
+610=CCYYMM
+602=CCYY
+-->
+<!ELEMENT reactionenddateformat (#PCDATA)>
+<!ATTLIST reactionenddateformat
+	%lang.att;
+>
+<!-- B.2.i.5b Date of end of reaction / event -->
+<!--
+Field ref:	B.2.i.5b
+Field title:	Date of end of reaction/event
+Field name:	reactionenddate
+Field length:	12N
+Field values:
+-->
+<!ELEMENT reactionenddate (#PCDATA)>
+<!ATTLIST reactionenddate
+	%lang.att;
+>
+<!-- B.2.i.6a Duration of reaction / event -->
+<!--
+Field ref:	B.2.i.6a
+Field title:	Duration of reaction/event value
+Field name:	reactionduration
+Field length:	5N
+Field values:
+-->
+<!ELEMENT reactionduration (#PCDATA)>
+<!ATTLIST reactionduration
+	%lang.att;
+>
+<!-- B.2.i.6b Duration of reaction / event unit -->
+<!--
+Field ref:	B.2.i.6b
+Field title:	Duration of reaction/event unit
+Field name:	reactiondurationunit
+Field length:	3N
+Field values:
+801=Year
+802=Month
+803=Week
+804=Day
+805=Hour
+806=Minute
+807=Second
+-->
+<!ELEMENT reactiondurationunit (#PCDATA)>
+<!ATTLIST reactiondurationunit
+	%lang.att;
+>
+<!-- B.2.i.7.1a Time interval between beginning of suspect drug administration and start of reaction / event -->
+<!--
+Field ref:	B.2.i.7.1a
+Field title:	Time interval between beginning of suspect drug administration and start of reaction/event
+Field name:	reactionfirsttime
+Field length:	5N
+Field values:
+-->
+<!ELEMENT reactionfirsttime (#PCDATA)>
+<!ATTLIST reactionfirsttime
+	%lang.att;
+>
+<!-- B.2.i.7.1b Time interval between beginning of suspect drug administration and start of reaction / event unit -->
+<!--
+Field ref:	B.2.i.7.1b
+Field title:	Time interval unit between beginning of suspect drug administration and start of reaction/event
+Field name:	reactionfirsttimeunit
+Field length:	3N
+Field values:
+801=Year
+802=Month
+803=Week
+804=Day
+805=Hour
+806=Minute
+807=Second
+-->
+<!ELEMENT reactionfirsttimeunit (#PCDATA)>
+<!ATTLIST reactionfirsttimeunit
+	%lang.att;
+>
+<!-- B.2.i.7.2a Time interval between last dose and start of reaction / event -->
+<!--
+Field ref:	B.2.i.7.2a
+Field title:	Time interval between last dose and start of reaction/event
+Field name:	reactionlasttime
+Field length:	5N
+Field values:
+-->
+<!ELEMENT reactionlasttime (#PCDATA)>
+<!ATTLIST reactionlasttime
+	%lang.att;
+>
+<!-- B.2.i.7.2b Time interval between last dose and start of reaction / event unit -->
+<!--
+Field ref:	B.2.i.7.2b
+Field title:	Time interval between last dose and start of reaction/event unit
+Field name:	reactionlasttimeunit
+Field length:	3N
+Field values:
+801=Year
+802=Month
+803=Week
+804=Day
+805=Hour
+806=Minute
+807=Second
+-->
+<!ELEMENT reactionlasttimeunit (#PCDATA)>
+<!ATTLIST reactionlasttimeunit
+	%lang.att;
+>
+<!-- B.2.i.8 Outcome of reaction / event at the time of last observation -->
+<!--
+Field ref:	B.2.i.8
+Field title:	Outcome of reaction / event at the time of last observation
+Field name:	reactionoutcome
+Field length:	1N
+Field values:
+1=recovered/resolved
+2=recovering/resolving
+3=not recovered/not resolved
+4=recovered/resolved with sequel
+5=fatal
+6=unknown
+-->
+<!ELEMENT reactionoutcome (#PCDATA)>
+<!ATTLIST reactionoutcome
+	%lang.att;
+>
+<!-- B.3.1a Date format -->
+<!--
+Field title:	Date format
+Field name:	testdateformat
+Field ref:	B.3.1a
+Field length:	3N
+Field values:	102=CCYYMMDD; 610=CCYYMM; 602=CCYY
+-->
+<!ELEMENT testdateformat (#PCDATA)>
+<!ATTLIST testdateformat
+	%lang.att;
+>
+<!-- B.3.1b Date -->
+<!--
+Field ref:	B.3.1b
+Field title:	Test date
+Field name:	testdate
+Field length:	8N
+Field values:
+-->
+<!ELEMENT testdate (#PCDATA)>
+<!ATTLIST testdate
+	%lang.att;
+>
+<!-- B.3.1c Test -->
+<!--
+Field ref:	B.3.1c
+Field title:	Test
+Field name:	testname
+Field length:	70AN
+Field values:
+-->
+<!ELEMENT testname (#PCDATA)>
+<!ATTLIST testname
+	%lang.att;
+>
+<!-- B.3.1d Result -->
+<!--
+Field ref:	B.3.1d
+Field title:	Result
+Field name:	testresult
+Field length:	50AN
+Field values:
+-->
+<!ELEMENT testresult (#PCDATA)>
+<!ATTLIST testresult
+	%lang.att;
+>
+<!-- B.3.1e Unit -->
+<!--
+Field ref:	B.3.1e
+Field title:	Test unit
+Field name:	testunit
+Field length:	35AN
+Field values:
+-->
+<!ELEMENT testunit (#PCDATA)>
+<!ATTLIST testunit
+	%lang.att;
+>
+<!-- B.3.1.1 Normal low range -->
+<!--
+Field ref:	B.3.1.1
+Field title:	Normal low range
+Field name:	lowtestrange
+Field length:	10AN
+Field values:
+-->
+<!ELEMENT lowtestrange (#PCDATA)>
+<!ATTLIST lowtestrange
+	%lang.att;
+>
+<!-- B.3.1.2 Normal high range -->
+<!--
+Field ref:	B.3.1.
+Field title:	Normal high range
+Field name:	hightestrange
+Field length:	10AN
+Field values:
+-->
+<!ELEMENT hightestrange (#PCDATA)>
+<!ATTLIST hightestrange
+	%lang.att;
+>
+<!-- B.3.1.3 More information available (Y/N) -->
+<!--
+Field ref:	B.3.1.3
+Field title:	More information available (Y/N)
+Field name:	moreinformation
+Field length:	1N
+Field values:
+1=Yes
+2=No
+-->
+<!ELEMENT moreinformation (#PCDATA)>
+<!ATTLIST moreinformation
+	%lang.att;
+>
+<!-- B.3.2 Results of tests and procedures relevant to the investigation of the patient -->
+<!--
+Field ref:	B.3.2
+Field title:	Results of tests and procedures relevant to the investigation of the patient
+Field name:	resultstestsprocedures
+Field length:	2000AN
+Field values:
+-->
+<!ELEMENT resultstestsprocedures (#PCDATA)>
+<!ATTLIST resultstestsprocedures
+	%lang.att;
+>
+<!-- B.4.k.1 Characterization of drug -->
+<!--
+Field ref:	B.4.k.1
+Field title:	Characterization of drug
+Field name:	drugcharacterization
+Field length:	1N
+Field values:
+1=Suspect
+2=Concomitant
+3=Interacting
+-->
+<!ELEMENT drugcharacterization (#PCDATA)>
+<!ATTLIST drugcharacterization
+	%lang.att;
+>
+<!-- B.4.k.2.1 Proprietary medicinal product name -->
+<!--
+Field ref:	B.4.k.2.1
+Field title:	Proprietary medicinal product name
+Field name:	medicinalproduct
+Field length:	70AN
+Field values:
+Comment :	Mandatory field. This field should be populated according to the EMP Product Dictionary or the WHO Drug Dictionary.
+-->
+<!ELEMENT medicinalproduct (#PCDATA)>
+<!ATTLIST medicinalproduct
+	%lang.att;
+>
+<!-- B.4.k.2.2 Active drug substance names -->
+<!--
+Field ref:	B.4.k.2.2
+Field title:	Active drug substance name
+Field name:	activesubstancename
+Field length:	70AN
+Field values:
+-->
+<!ELEMENT activesubstancename (#PCDATA)>
+<!ATTLIST activesubstancename
+	%lang.att;
+>
+<!-- B.4.k.2.2 Identification of the country where the drug was obtained -->
+<!--
+Field ref:	B.4.k.2.3
+Field title:	Identification of the country where the drug was obtained
+Field name:	obtaindrugcountry
+Field length:	2A
+Field values:	ISO3166
+-->
+<!ELEMENT obtaindrugcountry (#PCDATA)>
+<!ATTLIST obtaindrugcountry
+	%lang.att;
+>
+<!-- B.4.k.3 Batch / lot number -->
+<!--
+Field ref:	B.4.k.3
+Field title:	Batch / lot number
+Field name:	drugbatchnumb
+Field length:	35AN
+Field values:
+-->
+<!ELEMENT drugbatchnumb (#PCDATA)>
+<!ATTLIST drugbatchnumb
+	%lang.att;
+>
+<!-- B.4.k.4.1 Authorization / application number -->
+<!--
+Field ref:	B.4.k.4.1
+Field title:	Authorization / application number
+Field name:	drugauthorizationnumb
+Field length:	35AN
+Field values:
+-->
+<!ELEMENT drugauthorizationnumb (#PCDATA)>
+<!ATTLIST drugauthorizationnumb
+	%lang.att;
+>
+<!-- B.4.k.4.2 Country of authorization / application -->
+<!--
+Field ref:	B.4.k.4.2
+Field title:	Country of authorization / application
+Field name:	drugauthorizationcountry
+Field length:	2A
+Field values:	ISO3166
+-->
+<!ELEMENT drugauthorizationcountry (#PCDATA)>
+<!ATTLIST drugauthorizationcountry
+	%lang.att;
+>
+<!-- B.4.k.4.3 Name of holder/applicant -->
+<!--
+Field ref:	B.4.k.4.3
+Field title:	Name of drug authorization holder
+Field name:	drugauthorizationholder
+Field length:	60AN
+Field values:
+-->
+<!ELEMENT drugauthorizationholder (#PCDATA)>
+<!ATTLIST drugauthorizationholder
+	%lang.att;
+>
+<!-- B.4.k.5.1 Dose (number) -->
+<!--
+Field ref:	B.4.k.5.1
+Field title:	Dose (number)
+Field name:	drugstructuredosagenumb
+Field length:	8N
+Field values:
+-->
+<!ELEMENT drugstructuredosagenumb (#PCDATA)>
+<!ATTLIST drugstructuredosagenumb
+	%lang.att;
+>
+<!-- B.4.k.5.2 Dose (unit) -->
+<!--
+Field ref:	B.4.k.5.2
+Field title:	Dose (unit)
+Field name:	drugstructuredosageunit
+Field length:	3N
+Field values:
+001=kg kilogram(s)
+002=G gram(s)
+003=Mg milligram(s)
+004=µg microgram(s)
+005=ng nanogram(s)
+006=pg picogram(s)
+007=mg/kg milligram(s)/kilogram
+008=µg/kg microgram(s)/kilogram
+009=mg/m 2 milligram(s)/sq. meter
+010=µg/ m 2 microgram(s)/ sq. Meter
+011=l litre(s)
+012=ml millilitre(s)
+013=µl microlitre(s)
+014=Bq becquerel(s)
+015=GBq gigabecquerel(s)
+016=MBq megabecquerel(s)
+017=Kbq kilobecquerel(s)
+018=Ci curie(s)
+019=MCi millicurie(s)
+020=µCi microcurie(s)
+021=NCi nanocurie(s)
+022=Mol mole(s)
+023=Mmol millimole(s)
+024=µmol micromole(s)
+025=Iu international unit(s)
+026=Kiu iu(1000s)
+027=Miu iu(1,000,000s)
+028=iu/kg iu/kilogram
+029=Meq milliequivalent(s)
+030=% percent
+031=Gtt drop(s)
+032=DF dosage form
+-->
+<!ELEMENT drugstructuredosageunit (#PCDATA)>
+<!ATTLIST drugstructuredosageunit
+	%lang.att;
+>
+<!-- B.4.k.5.3 Number of separate -->
+<!--
+Field ref:	B.4.k.5.4
+Field title:	Number of units in the interval
+Field name:	drugintervaldosageunitnumb
+Field length:	3N
+Field values:
+-->
+<!ELEMENT drugseparatedosagenumb (#PCDATA)>
+<!ATTLIST drugseparatedosagenumb
+	%lang.att;
+>
+<!-- B.4.k.5.4 Number of units in the interval -->
+<!ELEMENT drugintervaldosageunitnumb (#PCDATA)>
+<!ATTLIST drugintervaldosageunitnumb
+	%lang.att;
+>
+<!-- B.4.k.5.5 Definition of the interval -->
+<!--
+Field ref:	B.4.k.5.5
+Field title:	Definition of the interval
+Field name:	drugintervaldosagedefinition
+Field length:	3AN
+Field values:
+801=Year
+802=Month
+803=Week
+804=Day
+805=Hour
+806=Minute
+-->
+<!ELEMENT drugintervaldosagedefinition (#PCDATA)>
+<!ATTLIST drugintervaldosagedefinition
+	%lang.att;
+>
+<!-- B.4.k.5.6 Cumulative dose to first reaction (number) -->
+<!--
+Field ref:	B.4.k.5.6
+Field title:	Cumulative dose to first reaction (number)
+Field name:	drugcumulativedosagenumb
+Field length:	10N
+Field values:
+-->
+<!ELEMENT drugcumulativedosagenumb (#PCDATA)>
+<!ATTLIST drugcumulativedosagenumb
+	%lang.att;
+>
+<!-- B.4.k.5.7 Cumulative dose to first reaction (unit) -->
+<!--
+Field ref:	B.4.k.5.7
+Field title:	Cumulative dose to first reaction (unit)
+Field name:	drugcumulativedosageunit
+Field length:	3AN
+Field values:
+-->
+<!ELEMENT drugcumulativedosageunit (#PCDATA)>
+<!ATTLIST drugcumulativedosageunit
+	%lang.att;
+>
+<!-- B.4.k.6 Dosage text -->
+<!--
+Field ref:	B.4.k.6
+Field title:	Dosage text
+Field name:	drugdosagetext
+Field length:	100AN
+Field values:
+-->
+<!ELEMENT drugdosagetext (#PCDATA)>
+<!ATTLIST drugdosagetext
+	%lang.att;
+>
+<!-- B.4.k.7 Pharmaceutical form (Dosage form) -->
+<!--
+Field ref:	B.4.k.7
+Field title:	Pharmaceutical form (Dosage form)
+Field name:	drugdosageform
+Field length:	50AN
+Field values:	Field controlled by the  List of Standard Terms.
+-->
+<!ELEMENT drugdosageform (#PCDATA)>
+<!ATTLIST drugdosageform
+	%lang.att;
+>
+<!-- B.4.k.8 Route of administration -->
+<!--
+Field ref:	B.4.k.8
+Field title:	Route of administration
+Field name:	drugadministrationroute
+Field length:	3N
+Field values:
+001=Auricular (otic)
+002=Buccal
+003=Cutaneous
+004=Dental
+005=Endocervical
+006=Endosinusial
+007=Endotracheal
+008=Epidural
+009=Extra-amniotic
+010=Hemodialysis
+011=Intra corpus cavernosum
+012=Intra-amniotic
+013=Intra-arterial
+014=Intra-articular
+015=Intra-uterine
+016=Intracardiac
+017=Intracavernous
+018=Intracerebral
+019=Intracervical
+020=Intracisternal
+021=Intracorneal
+022=Intracoronary
+023=Intradermal
+024=Intradiscal (intraspinal)
+025=Intrahepatic
+026=Intralesional
+027=Intralymphatic
+028=Intramedullar (bone marrow)
+029=Intrameningeal
+030=Intramuscular
+031=Intraocular
+032=Intrapericardial
+033=Intraperitoneal
+034=Intrapleural
+035=Intrasynovial
+036=Intratumor
+037=Intrathecal
+038=Intrathoracic
+039=Intratracheal
+040=Intravenous bolus
+041=Intravenous drip
+042=Intravenous (not otherwise specified)
+043=Intravesical
+044=Iontophoresis
+045=Nasal
+046=Occlusive dressing technique
+047=Ophthalmic
+048=Oral
+049=Oropharingeal
+050=Other
+051=Parenteral
+052=Periarticular
+053=Perineural
+054=Rectal
+055=Respiratory (inhalation)
+056=Retrobulbar
+057=Sunconjunctival
+058=Subcutaneous
+059=Subdermal
+060=Sublingual
+061=Topical
+062=Transdermal
+063=Transmammary
+064=Transplacental
+065=Unknown
+066=Urethral
+067=Vaginal
+-->
+<!ELEMENT drugadministrationroute (#PCDATA)>
+<!ATTLIST drugadministrationroute
+	%lang.att;
+>
+<!-- B.4.k.9 Parent route of administration (in case of a parent child / fetus report) -->
+<!--
+Field ref:	B.4.k.9
+Field title:	Parent route of administration (in case of a parent child / fetus report)
+Field name:	drugparadministration
+Field length:	3N
+Field values:
+001=Auricular (otic)
+002=Buccal
+003=Cutaneous
+004=Dental
+005=Endocervical
+006=Endosinusial
+007=Endotracheal
+008=Epidural
+009=Extra-amniotic
+010=Hemodialysis
+011=Intra corpus cavernosum
+012=Intra-amniotic
+013=Intra-arterial
+014=Intra-articular
+015=Intra-uterine
+016=Intracardiac
+017=Intracavernous
+018=Intracerebral
+019=Intracervical
+020=Intracisternal
+021=Intracorneal
+022=Intracoronary
+023=Intradermal
+024=Intradiscal (intraspinal)
+025=Intrahepatic
+026=Intralesional
+027=Intralymphatic
+028=Intramedullar (bone marrow)
+029=Intrameningeal
+030=Intramuscular
+031=Intraocular
+032=Intrapericardial
+033=Intraperitoneal
+034=Intrapleural
+035=Intrasynovial
+036=Intratumor
+037=Intrathecal
+038=Intrathoracic
+039=Intratracheal
+040=Intravenous bolus
+041=Intravenous drip
+042=Intravenous (not otherwise specified)
+043=Intravesical
+044=Iontophoresis
+045=Nasal
+046=Occlusive dressing technique
+047=Ophthalmic
+048=Oral
+049=Oropharingeal
+050=Other
+051=Parenteral
+052=Periarticular
+053=Perineural
+054=Rectal
+055=Respiratory (inhalation)
+056=Retrobulbar
+057=Sunconjunctival
+058=Subcutaneous
+059=Subdermal
+060=Sublingual
+061=Topical
+062=Transdermal
+063=Transmammary
+064=Transplacental
+065=Unknown
+066=Urethral
+067=Vaginal
+-->
+<!ELEMENT drugparadministration (#PCDATA)>
+<!ATTLIST drugparadministration
+	%lang.att;
+>
+<!-- B.4.k.10a Gestation period at time of exposure -->
+<!--
+Field ref:	B.4.k.10a
+Field title:	Gestation period at time of exposure
+Field name:	reactiongestationperiod
+Field length:	3N
+Field values:
+-->
+<!ELEMENT reactiongestationperiod (#PCDATA)>
+<!ATTLIST reactiongestationperiod
+	%lang.att;
+>
+<!-- B.4.k.10b Gestation period at time of exposure unit -->
+<!--
+Field ref:	B.4.k.10b
+Field title:	Gestation period unit
+Field name:	reactiongestationperiodunit
+Field length:	3N
+Field values:
+802=Month
+803=Week
+804=Day
+810=Trimester
+-->
+<!ELEMENT reactiongestationperiodunit (#PCDATA)>
+<!ATTLIST reactiongestationperiodunit
+	%lang.att;
+>
+<!-- B.4.k.11a MedDRA version for indication -->
+<!--
+Field ref:	B.4.k.11a
+Field title:	MedDRA version for indication
+Field name:	drugindicationmeddraversion
+Field length:	8AN
+Field values:
+-->
+<!ELEMENT drugindicationmeddraversion (#PCDATA)>
+<!ATTLIST drugindicationmeddraversion
+	%lang.att;
+>
+<!-- B.4.k.11b Indication for use in the case -->
+<!--
+Field ref:	B.4.k.11b
+Field title:	Indication for use in the case
+Field name:	drugindication
+Field length:	100AN
+Field values:
+Comment :	Field controlled by MedDRA LLT 2.1 or superior.
+-->
+<!ELEMENT drugindication (#PCDATA)>
+<!ATTLIST drugindication
+	%lang.att;
+>
+<!-- B.4.k.12a Date of start of drug format -->
+<!--
+Field ref:	B.4.k.12a
+Field title:	Date of start of drug format
+Field name:	drugstartdateformat
+Field length:	3N
+Field values:
+102=CCYYMMDD
+610=CCYYMM
+602=CCYY
+-->
+<!ELEMENT drugstartdateformat (#PCDATA)>
+<!ATTLIST drugstartdateformat
+	%lang.att;
+>
+<!-- B.4.k.12b Date of start of drug -->
+<!--
+Field ref:	B.4.k.12b
+Field title:	Date of start of drug
+Field name:	drugstartdate
+Field length:	8N
+Field values:
+-->
+<!ELEMENT drugstartdate (#PCDATA)>
+<!ATTLIST drugstartdate
+	%lang.att;
+>
+<!-- B.4.k.13.1a Time interval between beginning of drug administration and start of reaction / event -->
+<!--
+Field ref:	B.4.k.13.1a
+Field title:	Time interval between beginning of drug administration and start of reaction/event
+Field name:	drugstartperiod
+Field length:	5N
+Field values:
+-->
+<!ELEMENT drugstartperiod (#PCDATA)>
+<!ATTLIST drugstartperiod
+	%lang.att;
+>
+<!-- B.4.k.13.1b Time interval between beginning of drug administration and start of reaction / event unit -->
+<!--
+Field ref:	B.4.k.13.1b
+Field title:	Time interval between beginning of drug administration and start of reaction/event unit
+Field name:	drugstartperiodunit
+Field length:	3N
+Field values:
+801=Year
+802=Month
+803=Week
+804=Day
+805=Hour
+806=Minute
+807=Second
+-->
+<!ELEMENT drugstartperiodunit (#PCDATA)>
+<!ATTLIST drugstartperiodunit
+	%lang.att;
+>
+<!-- fB.4.k.13.2a Time interval between last dose of drug and start of reaction / event -->
+<!--
+Field ref:	B.4.k.12.2a
+Field title:	Time interval between last dose of drug and start of reaction/event
+Field name:	druglastperiod
+Field length:	5N
+Field values:
+-->
+<!ELEMENT druglastperiod (#PCDATA)>
+<!ATTLIST druglastperiod
+	%lang.att;
+>
+<!-- B.4.k.13.2b Time interval between last dose of drug and start of reaction / event unit -->
+<!--
+Field ref:	B.4.k.13.2b
+Field title:	Time interval between last dose of drug and start of reaction/event unit
+Field name:	druglastperiodunit
+Field length:	3N
+Field values:
+801=Year
+802=Month
+803=Week
+804=Day
+805=Hour
+806=Minute
+807=Second
+-->
+<!ELEMENT druglastperiodunit (#PCDATA)>
+<!ATTLIST druglastperiodunit
+	%lang.att;
+>
+<!-- B.4.k.14a Date of last administration format -->
+<!--
+Field ref:	B.4.k.14a
+Field title:	Date of last administration format
+Field name:	drugenddateformat
+Field length:	3N
+Field values:
+102=CCYYMMDD
+610=CCYYMM
+602=CCYY
+-->
+<!ELEMENT drugenddateformat (#PCDATA)>
+<!ATTLIST drugenddateformat
+	%lang.att;
+>
+<!-- B.4.k.14b Date of last administration -->
+<!--
+Field ref:	B.4.k.14b
+Field title:	Date of last administration
+Field name:	drugenddate
+Field length:	8N
+Field values:
+-->
+<!ELEMENT drugenddate (#PCDATA)>
+<!ATTLIST drugenddate
+	%lang.att;
+>
+<!-- B.4.k.15a Duration of drug administration unit -->
+<!--
+Field ref:	B.4.k.15a
+Field title:	Treatment duration
+Field name:	drugtreatmentduration
+Field length:	5N
+Field values:
+-->
+<!ELEMENT drugtreatmentduration (#PCDATA)>
+<!ATTLIST drugtreatmentduration
+	%lang.att;
+>
+<!-- B.4.k.15b Duration of drug administration unit -->
+<!--
+Field ref:	B.4.k.15b
+Field title:	Treatment duration unit
+Field name:	drugtreatmentdurationunit
+Field length:	3N
+Field values:
+801=Year
+802=Month
+803=Week
+804=Day
+805=Hour
+806=Minute
+-->
+<!ELEMENT drugtreatmentdurationunit (#PCDATA)>
+<!ATTLIST drugtreatmentdurationunit
+	%lang.att;
+>
+<!-- B.4.k.16 Action(s) taken with drug -->
+<!--
+Field ref:	B.4.k.16
+Field title:	Action(s) taken with drug
+Field name:	actiondrug
+Field length:	1N
+Field values:
+1=Drug withdrawn
+2=Dose reduced
+3=Dose increased
+4=Dose not changed
+5=Unknown
+6=Not applicable
+-->
+<!ELEMENT actiondrug (#PCDATA)>
+<!ATTLIST actiondrug
+	%lang.att;
+>
+<!-- B.4.k.17.1 Did reaction recur on readministration? -->
+<!--
+Field ref:	B.4.k.17.1
+Field title:	Did reaction recur on readministration?
+Field name:	drugrecurreadministration
+Field length:	1N
+Field values:
+1=Yes
+2=No
+3=Unknown
+-->
+<!ELEMENT drugrecurreadministration (#PCDATA)>
+<!ATTLIST drugrecurreadministration
+	%lang.att;
+>
+<!-- B.4.k.17.2a MedDRA version for reaction/event recurred-->
+<!--
+Field ref:	B.4.k.17.2a
+Field title:	MedDRA version for reaction(s)/event(s) recurred
+Field name:	drugrecuractionmeddraversion
+Field length:	8AN
+Field values:
+-->
+<!ELEMENT drugrecuractionmeddraversion (#PCDATA)>
+<!ATTLIST drugrecuractionmeddraversion
+	%lang.att;
+>
+<!-- B.4.k.17.2b If yes, which reaction / event recurred? -->
+<!--
+Field ref:	B.4.k.17.2b
+Field title:	If yes, which reaction / event recurred?
+Field name:	drugrecuraction
+Field length:	100AN
+Field values:
+Comment :	Field controlled by MedDRA LLT 2.1 or superior.
+-->
+<!ELEMENT drugrecuraction (#PCDATA)>
+<!ATTLIST drugrecuraction
+	%lang.att;
+>
+<!-- B.4.k.18.1a MedDRA version for reaction assessed -->
+<!--
+Field ref:	B.4.k.18.1a
+Field title:	MedDRA version for Reaction assessed
+Field name:	drugreactionassesmeddraversion
+Field length:	8AN
+Field values:
+-->
+<!ELEMENT drugreactionassesmeddraversion (#PCDATA)>
+<!ATTLIST drugreactionassesmeddraversion
+	%lang.att;
+>
+<!-- B.4.k.18.1b Reaction assessed -->
+<!--
+Field ref:	B.4.k.18.1b
+Field title:	Reaction assessed
+Field name:	drugreactionasses
+Field length:	100AN
+Field values:
+-->
+<!ELEMENT drugreactionasses (#PCDATA)>
+<!ATTLIST drugreactionasses
+	%lang.att;
+>
+<!-- B.4.k.18.2 Source of assessment -->
+<!--
+Field ref:	B.4.k.18.2
+Field title:	Source of assessment
+Field name:	drugassessmentsource
+Field length:	60AN
+Field values:
+-->
+<!ELEMENT drugassessmentsource (#PCDATA)>
+<!ATTLIST drugassessmentsource
+	%lang.att;
+>
+<!-- B.4.k.18.3 Method of assessment -->
+<!--
+Field ref:	B.4.k.18.3
+Field title:	Method of assessment
+Field name:	drugassessmentmethod
+Field length:	35AN
+Field values:
+-->
+<!ELEMENT drugassessmentmethod (#PCDATA)>
+<!ATTLIST drugassessmentmethod
+	%lang.att;
+>
+<!-- B.4.k.18.4 Result -->
+<!--
+Field ref:	B.4.k.18.4
+Field title:	Assessment result
+Field name:	drugresult
+Field length:	35AN
+Field values:
+-->
+<!ELEMENT drugresult (#PCDATA)>
+<!ATTLIST drugresult
+	%lang.att;
+>
+<!-- B.4.k.19 Additional information on drug -->
+<!--
+Field ref:	B.4.k.19
+Field title:	Additional information on drug
+Field name:	drugadditional
+Field length:	100AN
+Field values:
+-->
+<!ELEMENT drugadditional (#PCDATA)>
+<!ATTLIST drugadditional
+	%lang.att;
+>
+<!-- B.5.1 Case narrative including clinical course, therapeutic measures, outcome and additional relevant information -->
+<!--
+Field ref:	B.5.1
+Field title:	Case narrative including clinical course, therapeutic measures, outcome and additional relevant information
+Field name:	narrativeincludeclinical
+Field length:	20000AN
+Field values:
+-->
+<!ELEMENT narrativeincludeclinical (#PCDATA)>
+<!ATTLIST narrativeincludeclinical
+	%lang.att;
+>
+<!-- B.5.2 Reporter's comments -->
+<!--
+Field ref:	B.5.2
+Field title:	Reporter's comments
+Field name:	reportercomment
+Field length:	210AN
+Field values:
+-->
+<!ELEMENT reportercomment (#PCDATA)>
+<!ATTLIST reportercomment
+	%lang.att;
+>
+<!-- B.5.3a MedDRA version for senders diagnosis or syndrome -->
+<!--
+Field ref:	B.5.3a
+Field title:	B.5.3a MedDRA version for senders diagnosis or syndrome
+Field name:	senderdiagnosismeddraversion
+Field length:	8AN
+Field values:
+Comment :	Field controlled by MedDRA LLT 2.1 or superior.
+-->
+<!ELEMENT senderdiagnosismeddraversion (#PCDATA)>
+<!ATTLIST senderdiagnosismeddraversion
+	%lang.att;
+>
+<!-- B.5.3 Sender's diagnosis / syndrome and / or reclassification of reaction / event -->
+<!--
+Field ref:	B.5.3
+Field title:	Sender's diagnosis / syndrome and / or reclassification of reaction / event
+Field name:	senderdiagnosis
+Field length:	210AN
+Field values:
+Comment :	Field controlled by MedDRA LLT 2.1 or superior.
+-->
+<!ELEMENT senderdiagnosis (#PCDATA)>
+<!ATTLIST senderdiagnosis
+	%lang.att;
+>
+<!-- B.5.4 Sender's comments -->
+<!--
+Field ref:	B.5.4
+Field title:	Sender's comments
+Field name:	sendercomment
+Field length:	2000AN
+Field values:
+-->
+<!ELEMENT sendercomment (#PCDATA)>
+<!ATTLIST sendercomment
+	%lang.att;
+>

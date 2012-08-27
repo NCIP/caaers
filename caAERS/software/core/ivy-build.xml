@@ -164,6 +164,8 @@
                 <include name="ASAEL.xsd"/>
                 <include name="Device.xsd"/>
             	<include name="Ctc.xsd"/>
+            	<include name="Icsr.xsd"/>
+            	<include name="Icsrack.xsd"/>
             </schema>
             <produces dir="${generated.src.dir}" includes="**/schema/integration/**/*.java"/>
 

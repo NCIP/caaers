@@ -1,0 +1,127 @@
+<xs:schema
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        targetNamespace='http://schema.integration.caaers.cabig.nci.nih.gov/icsr'
+        xmlns:ich='http://schema.integration.caaers.cabig.nci.nih.gov/icsr'
+        elementFormDefault="qualified">
+    <xs:import schemaLocation="Icsr.xsd" namespace="http://schema.integration.caaers.cabig.nci.nih.gov/icsr" />
+
+    <xs:element name='ichicsrack'>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref='ich:ichicsrmessageheader'/>
+                <xs:element ref='ich:acknowledgment'/>
+            </xs:sequence>
+            <xs:attribute name='lang' type='xs:string' use='required'/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name='acknowledgment'>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref='ich:messageacknowledgment'/>
+                <xs:element ref='ich:reportacknowledgment' minOccurs='0' maxOccurs='unbounded'/>
+            </xs:sequence>
+            <xs:attribute name='lang' type='xs:string' use='optional'/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name='messageacknowledgment'>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref='ich:icsrmessagenumb'/>
+                <xs:element ref='ich:localmessagenumb' minOccurs='0' maxOccurs='1'/>
+                <xs:element ref='ich:icsrmessagesenderidentifier'/>
+                <xs:element ref='ich:icsrmessagereceiveridentifier'/>
+                <xs:element ref='ich:icsrmessagedateformat'/>
+                <xs:element ref='ich:icsrmessagedate'/>
+                <xs:element ref='ich:transmissionacknowledgmentcode'/>
+                <xs:element ref='ich:parsingerrormessage' minOccurs='0' maxOccurs='1'/>
+            </xs:sequence>
+            <xs:attribute name='lang' type='xs:string' use='optional'/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name='icsrmessagenumb'>
+        <xs:complexType mixed='true'>
+            <xs:attribute name='lang' type='xs:string' use='optional'/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name='localmessagenumb'>
+        <xs:complexType mixed='true'>
+            <xs:attribute name='lang' type='xs:string' use='optional'/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name='icsrmessagesenderidentifier'>
+        <xs:complexType mixed='true'>
+            <xs:attribute name='lang' type='xs:string' use='optional'/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name='icsrmessagereceiveridentifier'>
+        <xs:complexType mixed='true'>
+            <xs:attribute name='lang' type='xs:string' use='optional'/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name='icsrmessagedateformat'>
+        <xs:complexType mixed='true'>
+            <xs:attribute name='lang' type='xs:string' use='optional'/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name='icsrmessagedate'>
+        <xs:complexType mixed='true'>
+            <xs:attribute name='lang' type='xs:string' use='optional'/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name='transmissionacknowledgmentcode'>
+        <xs:complexType mixed='true'>
+            <xs:attribute name='lang' type='xs:string' use='optional'/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name='parsingerrormessage'>
+        <xs:complexType mixed='true'>
+            <xs:attribute name='lang' type='xs:string' use='optional'/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name='reportacknowledgment'>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref='ich:safetyreportid'/>
+                <xs:element ref='ich:safetyreportversion' minOccurs='0' maxOccurs='1'/>
+                <xs:element ref='ich:localreportnumb' minOccurs='0' maxOccurs='1'/>
+                <xs:element ref='ich:authoritynumb' minOccurs='0' maxOccurs='1'/>
+                <xs:element ref='ich:companynumb' minOccurs='0' maxOccurs='1'/>
+                <xs:element ref='ich:receiptdateformat' minOccurs='0' maxOccurs='1'/>
+                <xs:element ref='ich:receiptdate' minOccurs='0' maxOccurs='1'/>
+                <xs:element ref='ich:reportacknowledgmentcode'/>
+                <xs:element ref='ich:errormessagecomment' minOccurs='0' maxOccurs='1'/>
+            </xs:sequence>
+            <xs:attribute name='lang' type='xs:string' use='optional'/>
+        </xs:complexType>
+    </xs:element>
+
+
+    <xs:element name='localreportnumb'>
+        <xs:complexType mixed='true'>
+            <xs:attribute name='lang' type='xs:string' use='optional'/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name='reportacknowledgmentcode'>
+        <xs:complexType mixed='true'>
+            <xs:attribute name='lang' type='xs:string' use='optional'/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name='errormessagecomment'>
+        <xs:complexType mixed='true'>
+            <xs:attribute name='lang' type='xs:string' use='optional'/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
