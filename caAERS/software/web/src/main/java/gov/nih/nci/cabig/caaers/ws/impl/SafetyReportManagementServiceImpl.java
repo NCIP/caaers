@@ -14,7 +14,7 @@ import javax.jws.soap.SOAPBinding;
  */
 @WebService(endpointInterface="gov.nih.nci.cabig.caaers.ws.SafetyReportManagementService",
         serviceName="SafetyReportManagementService",
-        targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/icsr")
+        targetNamespace="")
 @SOAPBinding(parameterStyle=SOAPBinding.ParameterStyle.BARE)
 
 public class SafetyReportManagementServiceImpl implements SafetyReportManagementService {

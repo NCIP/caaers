@@ -9,7 +9,7 @@ import javax.jws.WebService;
 /**
  * @author: Biju Joseph
  */
-@WebService(name="SafetyReportManagementServiceInterface",targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/icsr")
+@WebService(name="SafetyReportManagementServiceInterface",targetNamespace="")
 public interface SafetyReportManagementService {
 
     public Ichicsrack submitSafetyReport(@WebParam Ichicsr icsr);
