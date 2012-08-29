@@ -90,16 +90,10 @@ from another source.
 <!-- ==================================================================	-->
 <!-- Use the lang attribute to indicate the language of an	
    elements content via an ISO 639 language Code.			-->
-<!ENTITY % lang.att "lang CDATA #IMPLIED">
 <!-- Standard Character Entities to escape SGML special characters.      
    When "<", ">", and "&" occur in text, they should be replaced      
    by "&lt;", "&gt;", and "&amp;" respectfully.                       -->
 <!-- Less Than "<" -->
-<!ENTITY lt "&#38;#60;">
-<!-- Greater Than ">" -->
-<!ENTITY gt "&#62;">
-<!-- Ampersand "&" -->
-<!ENTITY amp "&#38;#38;">
 <!-- ==================================================================	-->
 <!-- Elements and Attributes						-->
 <!-- ==================================================================	-->
@@ -120,7 +114,7 @@ Entity title:	ICSR ACK MESSAGE HEADER
 -->
 <!ELEMENT ichicsrmessageheader (messagetype, messageformatversion, messageformatrelease, messagenumb, messagesenderidentifier, messagereceiveridentifier, messagedateformat, messagedate)>
 <!ATTLIST ichicsrmessageheader
-	%lang.att; 
+	lang CDATA #IMPLIED 
 >
 <!-- M.1.1 Message Type -->
 <!--
@@ -132,7 +126,7 @@ Field values:	ichicsrack
 -->
 <!ELEMENT messagetype (#PCDATA)>
 <!ATTLIST messagetype
-	%lang.att; 
+	lang CDATA #IMPLIED 
 >
 <!-- M.1.2 Message Format Version -->
 <!--
@@ -144,7 +138,7 @@ Comment :	In Step 4 ICSR ACK DTD version 1.0, this field will have value "1".
 -->
 <!ELEMENT messageformatversion (#PCDATA)>
 <!ATTLIST messageformatversion
-	%lang.att; 
+	lang CDATA #IMPLIED 
 >
 <!-- M.1.3 Message Format Release -->
 <!--
@@ -156,7 +150,7 @@ Comment :	In Step 4 ICSR ACK DTD version 1.0, this field will have value "0".
 -->
 <!ELEMENT messageformatrelease (#PCDATA)>
 <!ATTLIST messageformatrelease
-	%lang.att; 
+	lang CDATA #IMPLIED 
 >
 <!-- M.1.4 Message Number -->
 <!--
@@ -168,7 +162,7 @@ Field values:
 -->
 <!ELEMENT messagenumb (#PCDATA)>
 <!ATTLIST messagenumb
-	%lang.att; 
+	lang CDATA #IMPLIED 
 >
 <!-- M.1.5 Message Sender Identifier -->
 <!--
@@ -180,7 +174,7 @@ Field values:
 -->
 <!ELEMENT messagesenderidentifier (#PCDATA)>
 <!ATTLIST messagesenderidentifier
-	%lang.att; 
+	lang CDATA #IMPLIED 
 >
 <!-- M.1.6 Message Receiver Identifier -->
 <!--
@@ -192,7 +186,7 @@ Field values:
 -->
 <!ELEMENT messagereceiveridentifier (#PCDATA)>
 <!ATTLIST messagereceiveridentifier
-	%lang.att; 
+	lang CDATA #IMPLIED 
 >
 <!-- M.1.7a Message Date Format -->
 <!--
@@ -204,7 +198,7 @@ Field values:	204=CCYYMMDDHHMMSS
 -->
 <!ELEMENT messagedateformat (#PCDATA)>
 <!ATTLIST messagedateformat
-	%lang.att; 
+	lang CDATA #IMPLIED 
 >
 <!-- M.1.7b Message Date -->
 <!--
@@ -216,7 +210,7 @@ Field values:	CCYYMMDDHHMMSS
 -->
 <!ELEMENT messagedate (#PCDATA)>
 <!ATTLIST messagedate
-	%lang.att; 
+	lang CDATA #IMPLIED 
 >
 <!-- A.1 ICSR Acknowledgment Message-->
 <!--
@@ -225,7 +219,7 @@ Entity title:	ICSR Acknowledgment
 -->
 <!ELEMENT acknowledgment (messageacknowledgment, reportacknowledgment*)>
 <!ATTLIST acknowledgment
-	%lang.att; 
+	lang CDATA #IMPLIED 
 >
 <!-- A.1 Message Acknowledgment -->
 <!--
@@ -234,7 +228,7 @@ Entity title:	ICSR ACK MESSAGE ACKNOWLEGMENT
 -->
 <!ELEMENT messageacknowledgment (icsrmessagenumb, localmessagenumb?, icsrmessagesenderidentifier, icsrmessagereceiveridentifier, icsrmessagedateformat, icsrmessagedate, transmissionacknowledgmentcode, parsingerrormessage?)>
 <!ATTLIST messageacknowledgment
-	%lang.att; 
+	lang CDATA #IMPLIED 
 >
 <!-- A.1.1 ICSR Message Number -->
 <!--
@@ -246,7 +240,7 @@ Comment :
 -->
 <!ELEMENT icsrmessagenumb (#PCDATA)>
 <!ATTLIST icsrmessagenumb
-	%lang.att; 
+	lang CDATA #IMPLIED 
 >
 <!-- A.1.2 Local Message Number -->
 <!--
@@ -258,7 +252,7 @@ Field values:
 -->
 <!ELEMENT localmessagenumb (#PCDATA)>
 <!ATTLIST localmessagenumb
-	%lang.att; 
+	lang CDATA #IMPLIED 
 >
 <!-- A.1.3 ICSR Message Sender Identifier -->
 <!--
@@ -270,7 +264,7 @@ Field values:
 -->
 <!ELEMENT icsrmessagesenderidentifier (#PCDATA)>
 <!ATTLIST icsrmessagesenderidentifier
-	%lang.att; 
+	lang CDATA #IMPLIED 
 >
 <!-- A.1.4 ICSR Message Receiver Identifier -->
 <!--
@@ -282,7 +276,7 @@ Field values:
 -->
 <!ELEMENT icsrmessagereceiveridentifier (#PCDATA)>
 <!ATTLIST icsrmessagereceiveridentifier
-	%lang.att; 
+	lang CDATA #IMPLIED 
 >
 <!-- A.1.5a ICSR Message Date Format -->
 <!--
@@ -294,7 +288,7 @@ Field values:	204=CCYYMMDDHHMMSS
 -->
 <!ELEMENT icsrmessagedateformat (#PCDATA)>
 <!ATTLIST icsrmessagedateformat
-	%lang.att; 
+	lang CDATA #IMPLIED 
 >
 <!-- A.1.5b ICSR Message Date -->
 <!--
@@ -306,7 +300,7 @@ Field values:	CCYYMMDDHHMMSS
 -->
 <!ELEMENT icsrmessagedate (#PCDATA)>
 <!ATTLIST icsrmessagedate
-	%lang.att; 
+	lang CDATA #IMPLIED 
 >
 <!-- A.1.6 Transmission Acknowledgment -->
 <!--
@@ -321,7 +315,7 @@ Field values:
 -->
 <!ELEMENT transmissionacknowledgmentcode (#PCDATA)>
 <!ATTLIST transmissionacknowledgmentcode
-	%lang.att; 
+	lang CDATA #IMPLIED 
 >
 <!-- A.1.7 Parsing Error Message -->
 <!--
@@ -332,7 +326,7 @@ Field length:	250AN
 -->
 <!ELEMENT parsingerrormessage (#PCDATA)>
 <!ATTLIST parsingerrormessage
-	%lang.att; 
+	lang CDATA #IMPLIED 
 >
 <!-- B.1 Report Acknowledgment -->
 <!--
@@ -341,7 +335,7 @@ Entity title:	ICSR ACK REPORT ACKNOWLEGMENT
 -->
 <!ELEMENT reportacknowledgment (safetyreportversion?, safetyreportid, safetyreportversion?, localreportnumb?, authoritynumb?, companynumb?, receiptdateformat?, receiptdate?, reportacknowledgmentcode, errormessagecomment?)>
 <!ATTLIST reportacknowledgment
-	%lang.att; 
+	lang CDATA #IMPLIED 
 >
 <!-- B.1.1 Safety Report Version -->
 <!--
@@ -352,7 +346,7 @@ Field length:	2AN
 -->
 <!ELEMENT safetyreportversion (#PCDATA)>
 <!ATTLIST safetyreportversion
-	%lang.att; 
+	lang CDATA #IMPLIED 
 >
 <!-- B.1.2 Safety Report Identification -->
 <!--
@@ -363,7 +357,7 @@ Field length:	100AN
 -->
 <!ELEMENT safetyreportid (#PCDATA)>
 <!ATTLIST safetyreportid
-	%lang.att; 
+	lang CDATA #IMPLIED 
 >
 <!-- B.1.3 Local Report Number -->
 <!--
@@ -375,7 +369,7 @@ Comment :	A possible scenario for the use of localreportnumber is the following 
 -->
 <!ELEMENT localreportnumb (#PCDATA)>
 <!ATTLIST localreportnumb
-	%lang.att; 
+	lang CDATA #IMPLIED 
 >
 <!-- B.1.4  Regulatory authority's case report number (E2BM - A.1.10.1)-->
 <!--
@@ -386,7 +380,7 @@ Field length:	100AN
 -->
 <!ELEMENT authoritynumb (#PCDATA)>
 <!ATTLIST authoritynumb
-	%lang.att; 
+	lang CDATA #IMPLIED 
 >
 <!-- B.1.5 Other Sender's case report number (E2BM - A.1.10.2) -->
 <!--
@@ -398,7 +392,7 @@ Field values:
 -->
 <!ELEMENT companynumb (#PCDATA)>
 <!ATTLIST companynumb
-	%lang.att; 
+	lang CDATA #IMPLIED 
 >
 <!-- B.1.7a Receipt Date Format -->
 <!--
@@ -410,7 +404,7 @@ Field values:	102 - Format CCYYMMDD
 -->
 <!ELEMENT receiptdateformat (#PCDATA)>
 <!ATTLIST receiptdateformat
-	%lang.att; 
+	lang CDATA #IMPLIED 
 >
 <!-- B.1.7b Date of receipt of the most recent information (E2BM - A.1.7) -->
 <!--
@@ -422,7 +416,7 @@ Field values:
 -->
 <!ELEMENT receiptdate (#PCDATA)>
 <!ATTLIST receiptdate
-	%lang.att; 
+	lang CDATA #IMPLIED 
 >
 <!-- B.1.8 Acknowledgment Code for a report -->
 <!--
@@ -436,7 +430,7 @@ Field values:
 -->
 <!ELEMENT reportacknowledgmentcode (#PCDATA)>
 <!ATTLIST reportacknowledgmentcode
-	%lang.att; 
+	lang CDATA #IMPLIED 
 >
 <!-- B.1.9 Error Message or Comment -->
 <!--
@@ -448,5 +442,5 @@ Field values:
 -->
 <!ELEMENT errormessagecomment (#PCDATA)>
 <!ATTLIST errormessagecomment
-	%lang.att; 
+	lang CDATA #IMPLIED 
 >

@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    Generated from icsr.dtd
+    Generated from icsr-xml-v2.1.dtd
 -->
-<xs:schema  xmlns:xs="http://www.w3.org/2001/XMLSchema" >
+<xs:schema  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  targetNamespace='http://schema.integration.caaers.cabig.nci.nih.gov/icsr'
+  xmlns:ich='http://schema.integration.caaers.cabig.nci.nih.gov/icsr'
+  elementFormDefault="qualified">
 
  <xs:element name='ichicsr'>
   <xs:complexType>
    <xs:sequence>
-    <xs:element ref='ichicsrmessageheader'/>
-    <xs:element ref='safetyreport' maxOccurs='unbounded'/>
+    <xs:element ref='ich:ichicsrmessageheader'/>
+    <xs:element ref='ich:safetyreport' maxOccurs='unbounded'/>
    </xs:sequence>
    <xs:attribute name='lang' type='xs:string' use='required'/>
   </xs:complexType>
@@ -17,14 +20,14 @@
  <xs:element name='ichicsrmessageheader'>
   <xs:complexType>
    <xs:sequence>
-    <xs:element ref='messagetype'/>
-    <xs:element ref='messageformatversion'/>
-    <xs:element ref='messageformatrelease'/>
-    <xs:element ref='messagenumb'/>
-    <xs:element ref='messagesenderidentifier'/>
-    <xs:element ref='messagereceiveridentifier'/>
-    <xs:element ref='messagedateformat'/>
-    <xs:element ref='messagedate'/>
+    <xs:element ref='ich:messagetype'/>
+    <xs:element ref='ich:messageformatversion'/>
+    <xs:element ref='ich:messageformatrelease'/>
+    <xs:element ref='ich:messagenumb'/>
+    <xs:element ref='ich:messagesenderidentifier'/>
+    <xs:element ref='ich:messagereceiveridentifier'/>
+    <xs:element ref='ich:messagedateformat'/>
+    <xs:element ref='ich:messagedate'/>
    </xs:sequence>
    <xs:attribute name='lang' type='xs:string' use='optional'/>
   </xs:complexType>
@@ -82,40 +85,40 @@
  <xs:element name='safetyreport'>
   <xs:complexType>
    <xs:sequence>
-    <xs:element ref='safetyreportversion' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='safetyreportid'/>
-    <xs:element ref='primarysourcecountry' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='occurcountry' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='transmissiondateformat' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='transmissiondate' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='reporttype' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='serious' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='seriousnessdeath' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='seriousnesslifethreatening' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='seriousnesshospitalization' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='seriousnessdisabling' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='seriousnesscongenitalanomali' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='seriousnessother' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='receivedateformat' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='receivedate' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='receiptdateformat' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='receiptdate' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='additionaldocument' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='documentlist' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='fulfillexpeditecriteria' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='authoritynumb' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='companynumb' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='duplicate' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='casenullification' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='nullificationreason' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='medicallyconfirm' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:safetyreportversion' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:safetyreportid'/>
+    <xs:element ref='ich:primarysourcecountry' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:occurcountry' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:transmissiondateformat' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:transmissiondate' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:reporttype' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:serious' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:seriousnessdeath' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:seriousnesslifethreatening' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:seriousnesshospitalization' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:seriousnessdisabling' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:seriousnesscongenitalanomali' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:seriousnessother' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:receivedateformat' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:receivedate' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:receiptdateformat' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:receiptdate' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:additionaldocument' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:documentlist' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:fulfillexpeditecriteria' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:authoritynumb' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:companynumb' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:duplicate' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:casenullification' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:nullificationreason' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:medicallyconfirm' minOccurs='0' maxOccurs='1'/>
     <xs:sequence>
-     <xs:element ref='reportduplicate' minOccurs='0' maxOccurs='unbounded'/>
-     <xs:element ref='linkedreport' minOccurs='0' maxOccurs='unbounded'/>
-     <xs:element ref='primarysource' maxOccurs='unbounded'/>
-     <xs:element ref='sender'/>
-     <xs:element ref='receiver'/>
-     <xs:element ref='patient'/>
+     <xs:element ref='ich:reportduplicate' minOccurs='0' maxOccurs='unbounded'/>
+     <xs:element ref='ich:linkedreport' minOccurs='0' maxOccurs='unbounded'/>
+     <xs:element ref='ich:primarysource' maxOccurs='unbounded'/>
+     <xs:element ref='ich:sender'/>
+     <xs:element ref='ich:receiver'/>
+     <xs:element ref='ich:patient'/>
     </xs:sequence>
    </xs:sequence>
       <xs:attribute name='lang' type='xs:string' use='optional'/>
@@ -125,8 +128,8 @@
  <xs:element name='reportduplicate'>
   <xs:complexType>
    <xs:sequence>
-    <xs:element ref='duplicatesource' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='duplicatenumb' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:duplicatesource' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:duplicatenumb' minOccurs='0' maxOccurs='1'/>
    </xs:sequence>
       <xs:attribute name='lang' type='xs:string' use='optional'/>
   </xs:complexType>
@@ -135,7 +138,7 @@
  <xs:element name='linkedreport'>
   <xs:complexType>
    <xs:sequence>
-    <xs:element ref='linkreportnumb' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:linkreportnumb' minOccurs='0' maxOccurs='1'/>
    </xs:sequence>
       <xs:attribute name='lang' type='xs:string' use='optional'/>
   </xs:complexType>
@@ -144,22 +147,22 @@
  <xs:element name='primarysource'>
   <xs:complexType>
    <xs:sequence>
-    <xs:element ref='reportertitle' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='reportergivename' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='reportermiddlename' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='reporterfamilyname' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='reporterorganization' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='reporterdepartment' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='reporterstreet' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='reportercity' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='reporterstate' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='reporterpostcode' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='reportercountry' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='qualification' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='literaturereference' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='studyname' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='sponsorstudynumb' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='observestudytype' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:reportertitle' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:reportergivename' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:reportermiddlename' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:reporterfamilyname' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:reporterorganization' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:reporterdepartment' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:reporterstreet' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:reportercity' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:reporterstate' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:reporterpostcode' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:reportercountry' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:qualification' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:literaturereference' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:studyname' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:sponsorstudynumb' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:observestudytype' minOccurs='0' maxOccurs='1'/>
    </xs:sequence>
       <xs:attribute name='lang' type='xs:string' use='optional'/>
   </xs:complexType>
@@ -168,25 +171,25 @@
  <xs:element name='sender'>
   <xs:complexType>
    <xs:sequence>
-    <xs:element ref='sendertype' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='senderorganization' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='senderdepartment' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='sendertitle' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='sendergivename' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='sendermiddlename' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='senderfamilyname' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='senderstreetaddress' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='sendercity' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='senderstate' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='senderpostcode' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='sendercountrycode' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='sendertel' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='sendertelextension' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='sendertelcountrycode' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='senderfax' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='senderfaxextension' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='senderfaxcountrycode' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='senderemailaddress' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:sendertype' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:senderorganization' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:senderdepartment' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:sendertitle' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:sendergivename' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:sendermiddlename' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:senderfamilyname' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:senderstreetaddress' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:sendercity' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:senderstate' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:senderpostcode' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:sendercountrycode' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:sendertel' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:sendertelextension' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:sendertelcountrycode' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:senderfax' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:senderfaxextension' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:senderfaxcountrycode' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:senderemailaddress' minOccurs='0' maxOccurs='1'/>
    </xs:sequence>
       <xs:attribute name='lang' type='xs:string' use='optional'/>
   </xs:complexType>
@@ -195,25 +198,25 @@
  <xs:element name='receiver'>
   <xs:complexType>
    <xs:sequence>
-    <xs:element ref='receivertype' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='receiverorganization' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='receiverdepartment' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='receivertitle' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='receivergivename' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='receivermiddlename' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='receiverfamilyname' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='receiverstreetaddress' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='receivercity' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='receiverstate' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='receiverpostcode' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='receivercountrycode' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='receivertel' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='receivertelextension' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='receivertelcountrycode' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='receiverfax' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='receiverfaxextension' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='receiverfaxcountrycode' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='receiveremailaddress' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:receivertype' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:receiverorganization' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:receiverdepartment' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:receivertitle' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:receivergivename' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:receivermiddlename' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:receiverfamilyname' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:receiverstreetaddress' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:receivercity' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:receiverstate' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:receiverpostcode' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:receivercountrycode' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:receivertel' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:receivertelextension' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:receivertelcountrycode' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:receiverfax' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:receiverfaxextension' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:receiverfaxcountrycode' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:receiveremailaddress' minOccurs='0' maxOccurs='1'/>
    </xs:sequence>
       <xs:attribute name='lang' type='xs:string' use='optional'/>
   </xs:complexType>
@@ -222,34 +225,34 @@
  <xs:element name='patient'>
   <xs:complexType>
    <xs:sequence>
-    <xs:element ref='patientinitial' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='patientgpmedicalrecordnumb' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='patientspecialistrecordnumb' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='patienthospitalrecordnumb' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='patientinvestigationnumb' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='patientbirthdateformat' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='patientbirthdate' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='patientonsetage' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='patientonsetageunit' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='gestationperiod' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='gestationperiodunit' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='patientagegroup' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='patientweight' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='patientheight' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='patientsex' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='lastmenstrualdateformat' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='patientlastmenstrualdate' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='patientmedicalhistorytext' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='resultstestsprocedures' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:patientinitial' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:patientgpmedicalrecordnumb' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:patientspecialistrecordnumb' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:patienthospitalrecordnumb' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:patientinvestigationnumb' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:patientbirthdateformat' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:patientbirthdate' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:patientonsetage' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:patientonsetageunit' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:gestationperiod' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:gestationperiodunit' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:patientagegroup' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:patientweight' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:patientheight' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:patientsex' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:lastmenstrualdateformat' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:patientlastmenstrualdate' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:patientmedicalhistorytext' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:resultstestsprocedures' minOccurs='0' maxOccurs='1'/>
     <xs:sequence>
-     <xs:element ref='medicalhistoryepisode' minOccurs='0' maxOccurs='unbounded'/>
-     <xs:element ref='patientpastdrugtherapy' minOccurs='0' maxOccurs='unbounded'/>
-     <xs:element ref='patientdeath' minOccurs='0' maxOccurs='1'/>
-     <xs:element ref='parent' minOccurs='0' maxOccurs='1'/>
-     <xs:element ref='reaction' maxOccurs='unbounded'/>
-     <xs:element ref='test' minOccurs='0' maxOccurs='unbounded'/>
-     <xs:element ref='drug' maxOccurs='unbounded'/>
-     <xs:element ref='summary' minOccurs='0' maxOccurs='1'/>
+     <xs:element ref='ich:medicalhistoryepisode' minOccurs='0' maxOccurs='unbounded'/>
+     <xs:element ref='ich:patientpastdrugtherapy' minOccurs='0' maxOccurs='unbounded'/>
+     <xs:element ref='ich:patientdeath' minOccurs='0' maxOccurs='1'/>
+     <xs:element ref='ich:parent' minOccurs='0' maxOccurs='1'/>
+     <xs:element ref='ich:reaction' maxOccurs='unbounded'/>
+     <xs:element ref='ich:test' minOccurs='0' maxOccurs='unbounded'/>
+     <xs:element ref='ich:drug' maxOccurs='unbounded'/>
+     <xs:element ref='ich:summary' minOccurs='0' maxOccurs='1'/>
     </xs:sequence>
    </xs:sequence>
       <xs:attribute name='lang' type='xs:string' use='optional'/>
@@ -259,14 +262,14 @@
  <xs:element name='medicalhistoryepisode'>
   <xs:complexType>
    <xs:sequence>
-    <xs:element ref='patientepisodenamemeddraversion' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='patientepisodename' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='patientmedicalstartdateformat' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='patientmedicalstartdate' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='patientmedicalcontinue' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='patientmedicalenddateformat' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='patientmedicalenddate' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='patientmedicalcomment' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:patientepisodenamemeddraversion' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:patientepisodename' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:patientmedicalstartdateformat' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:patientmedicalstartdate' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:patientmedicalcontinue' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:patientmedicalenddateformat' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:patientmedicalenddate' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:patientmedicalcomment' minOccurs='0' maxOccurs='1'/>
    </xs:sequence>
       <xs:attribute name='lang' type='xs:string' use='optional'/>
   </xs:complexType>
@@ -275,15 +278,15 @@
  <xs:element name='patientpastdrugtherapy'>
   <xs:complexType>
    <xs:sequence>
-    <xs:element ref='patientdrugname' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='patientdrugstartdateformat' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='patientdrugstartdate' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='patientdrugenddateformat' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='patientdrugenddate' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='patientindicationmeddraversion' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='patientdrugindication' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='patientdrgreactionmeddraversion' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='patientdrugreaction' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:patientdrugname' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:patientdrugstartdateformat' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:patientdrugstartdate' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:patientdrugenddateformat' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:patientdrugenddate' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:patientindicationmeddraversion' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:patientdrugindication' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:patientdrgreactionmeddraversion' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:patientdrugreaction' minOccurs='0' maxOccurs='1'/>
    </xs:sequence>
       <xs:attribute name='lang' type='xs:string' use='optional'/>
   </xs:complexType>
@@ -292,12 +295,12 @@
  <xs:element name='patientdeath'>
   <xs:complexType>
    <xs:sequence>
-    <xs:element ref='patientdeathdateformat' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='patientdeathdate' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='patientautopsyyesno' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:patientdeathdateformat' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:patientdeathdate' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:patientautopsyyesno' minOccurs='0' maxOccurs='1'/>
     <xs:sequence>
-     <xs:element ref='patientdeathcause' minOccurs='0' maxOccurs='unbounded'/>
-     <xs:element ref='patientautopsy' minOccurs='0' maxOccurs='unbounded'/>
+     <xs:element ref='ich:patientdeathcause' minOccurs='0' maxOccurs='unbounded'/>
+     <xs:element ref='ich:patientautopsy' minOccurs='0' maxOccurs='unbounded'/>
     </xs:sequence>
    </xs:sequence>
       <xs:attribute name='lang' type='xs:string' use='optional'/>
@@ -307,8 +310,8 @@
  <xs:element name='patientdeathcause'>
   <xs:complexType>
    <xs:sequence>
-    <xs:element ref='patientdeathreportmeddraversion' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='patientdeathreport' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:patientdeathreportmeddraversion' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:patientdeathreport' minOccurs='0' maxOccurs='1'/>
    </xs:sequence>
       <xs:attribute name='lang' type='xs:string' use='optional'/>
   </xs:complexType>
@@ -317,8 +320,8 @@
  <xs:element name='patientautopsy'>
   <xs:complexType>
    <xs:sequence>
-    <xs:element ref='patientdetermautopsmeddraversion' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='patientdetermineautopsy' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:patientdetermautopsmeddraversion' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:patientdetermineautopsy' minOccurs='0' maxOccurs='1'/>
    </xs:sequence>
       <xs:attribute name='lang' type='xs:string' use='optional'/>
   </xs:complexType>
@@ -327,20 +330,20 @@
  <xs:element name='parent'>
   <xs:complexType>
    <xs:sequence>
-    <xs:element ref='parentidentification' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='parentbirthdateformat' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='parentbirthdate' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='parentage' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='parentageunit' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='parentlastmenstrualdateformat' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='parentlastmenstrualdate' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='parentweight' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='parentheight' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='parentsex' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='parentmedicalrelevanttext' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:parentidentification' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:parentbirthdateformat' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:parentbirthdate' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:parentage' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:parentageunit' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:parentlastmenstrualdateformat' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:parentlastmenstrualdate' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:parentweight' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:parentheight' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:parentsex' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:parentmedicalrelevanttext' minOccurs='0' maxOccurs='1'/>
     <xs:sequence>
-     <xs:element ref='parentmedicalhistoryepisode' minOccurs='0' maxOccurs='unbounded'/>
-     <xs:element ref='parentpastdrugtherapy' minOccurs='0' maxOccurs='unbounded'/>
+     <xs:element ref='ich:parentmedicalhistoryepisode' minOccurs='0' maxOccurs='unbounded'/>
+     <xs:element ref='ich:parentpastdrugtherapy' minOccurs='0' maxOccurs='unbounded'/>
     </xs:sequence>
    </xs:sequence>
       <xs:attribute name='lang' type='xs:string' use='optional'/>
@@ -350,14 +353,14 @@
  <xs:element name='parentmedicalhistoryepisode'>
   <xs:complexType>
    <xs:sequence>
-    <xs:element ref='parentmdepisodemeddraversion' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='parentmedicalepisodename' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='parentmedicalstartdateformat' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='parentmedicalstartdate' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='parentmedicalcontinue' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='parentmedicalenddateformat' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='parentmedicalenddate' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='parentmedicalcomment' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:parentmdepisodemeddraversion' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:parentmedicalepisodename' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:parentmedicalstartdateformat' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:parentmedicalstartdate' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:parentmedicalcontinue' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:parentmedicalenddateformat' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:parentmedicalenddate' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:parentmedicalcomment' minOccurs='0' maxOccurs='1'/>
    </xs:sequence>
       <xs:attribute name='lang' type='xs:string' use='optional'/>
   </xs:complexType>
@@ -366,15 +369,15 @@
  <xs:element name='parentpastdrugtherapy'>
   <xs:complexType>
    <xs:sequence>
-    <xs:element ref='parentdrugname' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='parentdrugstartdateformat' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='parentdrugstartdate' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='parentdrugenddateformat' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='parentdrugenddate' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='parentdrgindicationmeddraversion' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='parentdrugindication' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='parentdrgreactionmeddraversion' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='parentdrugreaction' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:parentdrugname' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:parentdrugstartdateformat' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:parentdrugstartdate' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:parentdrugenddateformat' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:parentdrugenddate' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:parentdrgindicationmeddraversion' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:parentdrugindication' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:parentdrgreactionmeddraversion' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:parentdrugreaction' minOccurs='0' maxOccurs='1'/>
    </xs:sequence>
       <xs:attribute name='lang' type='xs:string' use='optional'/>
   </xs:complexType>
@@ -383,23 +386,23 @@
  <xs:element name='reaction'>
   <xs:complexType>
    <xs:sequence>
-    <xs:element ref='primarysourcereaction' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='reactionmeddraversionllt' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='reactionmeddrallt' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='reactionmeddraversionpt' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='reactionmeddrapt' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='termhighlighted' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='reactionstartdateformat' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='reactionstartdate' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='reactionenddateformat' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='reactionenddate' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='reactionduration' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='reactiondurationunit' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='reactionfirsttime' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='reactionfirsttimeunit' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='reactionlasttime' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='reactionlasttimeunit' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='reactionoutcome' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:primarysourcereaction' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:reactionmeddraversionllt' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:reactionmeddrallt' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:reactionmeddraversionpt' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:reactionmeddrapt' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:termhighlighted' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:reactionstartdateformat' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:reactionstartdate' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:reactionenddateformat' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:reactionenddate' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:reactionduration' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:reactiondurationunit' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:reactionfirsttime' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:reactionfirsttimeunit' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:reactionlasttime' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:reactionlasttimeunit' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:reactionoutcome' minOccurs='0' maxOccurs='1'/>
    </xs:sequence>
       <xs:attribute name='lang' type='xs:string' use='optional'/>
   </xs:complexType>
@@ -408,14 +411,14 @@
  <xs:element name='test'>
   <xs:complexType>
    <xs:sequence>
-    <xs:element ref='testdateformat' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='testdate' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='testname' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='testresult' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='testunit' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='lowtestrange' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='hightestrange' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='moreinformation' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:testdateformat' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:testdate' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:testname' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:testresult' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:testunit' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:lowtestrange' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:hightestrange' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:moreinformation' minOccurs='0' maxOccurs='1'/>
    </xs:sequence>
       <xs:attribute name='lang' type='xs:string' use='optional'/>
   </xs:complexType>
@@ -424,45 +427,45 @@
  <xs:element name='drug'>
   <xs:complexType>
    <xs:sequence>
-    <xs:element ref='drugcharacterization' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='medicinalproduct' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='obtaindrugcountry' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='drugbatchnumb' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='drugauthorizationnumb' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='drugauthorizationcountry' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='drugauthorizationholder' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='drugstructuredosagenumb' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='drugstructuredosageunit' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='drugseparatedosagenumb' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='drugintervaldosageunitnumb' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='drugintervaldosagedefinition' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='drugcumulativedosagenumb' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='drugcumulativedosageunit' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='drugdosagetext' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='drugdosageform' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='drugadministrationroute' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='drugparadministration' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='reactiongestationperiod' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='reactiongestationperiodunit' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='drugindicationmeddraversion' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='drugindication' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='drugstartdateformat' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='drugstartdate' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='drugstartperiod' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='drugstartperiodunit' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='druglastperiod' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='druglastperiodunit' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='drugenddateformat' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='drugenddate' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='drugtreatmentduration' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='drugtreatmentdurationunit' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='actiondrug' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='drugrecurreadministration' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='drugadditional' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:drugcharacterization' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:medicinalproduct' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:obtaindrugcountry' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:drugbatchnumb' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:drugauthorizationnumb' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:drugauthorizationcountry' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:drugauthorizationholder' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:drugstructuredosagenumb' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:drugstructuredosageunit' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:drugseparatedosagenumb' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:drugintervaldosageunitnumb' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:drugintervaldosagedefinition' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:drugcumulativedosagenumb' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:drugcumulativedosageunit' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:drugdosagetext' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:drugdosageform' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:drugadministrationroute' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:drugparadministration' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:reactiongestationperiod' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:reactiongestationperiodunit' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:drugindicationmeddraversion' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:drugindication' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:drugstartdateformat' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:drugstartdate' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:drugstartperiod' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:drugstartperiodunit' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:druglastperiod' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:druglastperiodunit' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:drugenddateformat' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:drugenddate' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:drugtreatmentduration' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:drugtreatmentdurationunit' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:actiondrug' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:drugrecurreadministration' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:drugadditional' minOccurs='0' maxOccurs='1'/>
     <xs:sequence>
-     <xs:element ref='activesubstance' minOccurs='0' maxOccurs='unbounded'/>
-     <xs:element ref='drugrecurrence' minOccurs='0' maxOccurs='unbounded'/>
-     <xs:element ref='drugreactionrelatedness' minOccurs='0' maxOccurs='unbounded'/>
+     <xs:element ref='ich:activesubstance' minOccurs='0' maxOccurs='unbounded'/>
+     <xs:element ref='ich:drugrecurrence' minOccurs='0' maxOccurs='unbounded'/>
+     <xs:element ref='ich:drugreactionrelatedness' minOccurs='0' maxOccurs='unbounded'/>
     </xs:sequence>
    </xs:sequence>
       <xs:attribute name='lang' type='xs:string' use='optional'/>
@@ -472,7 +475,7 @@
  <xs:element name='activesubstance'>
   <xs:complexType>
    <xs:sequence>
-    <xs:element ref='activesubstancename'/>
+    <xs:element ref='ich:activesubstancename'/>
    </xs:sequence>
       <xs:attribute name='lang' type='xs:string' use='optional'/>
   </xs:complexType>
@@ -481,8 +484,8 @@
  <xs:element name='drugrecurrence'>
   <xs:complexType>
    <xs:sequence>
-    <xs:element ref='drugrecuractionmeddraversion' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='drugrecuraction'/>
+    <xs:element ref='ich:drugrecuractionmeddraversion' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:drugrecuraction'/>
    </xs:sequence>
       <xs:attribute name='lang' type='xs:string' use='optional'/>
   </xs:complexType>
@@ -491,11 +494,11 @@
  <xs:element name='drugreactionrelatedness'>
   <xs:complexType>
    <xs:sequence>
-    <xs:element ref='drugreactionassesmeddraversion' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='drugreactionasses' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='drugassessmentsource' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='drugassessmentmethod' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='drugresult' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:drugreactionassesmeddraversion' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:drugreactionasses' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:drugassessmentsource' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:drugassessmentmethod' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:drugresult' minOccurs='0' maxOccurs='1'/>
    </xs:sequence>
       <xs:attribute name='lang' type='xs:string' use='optional'/>
   </xs:complexType>
@@ -504,11 +507,11 @@
  <xs:element name='summary'>
   <xs:complexType>
    <xs:sequence>
-    <xs:element ref='narrativeincludeclinical' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='reportercomment' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='senderdiagnosismeddraversion' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='senderdiagnosis' minOccurs='0' maxOccurs='1'/>
-    <xs:element ref='sendercomment' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:narrativeincludeclinical' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:reportercomment' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:senderdiagnosismeddraversion' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:senderdiagnosis' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='ich:sendercomment' minOccurs='0' maxOccurs='1'/>
    </xs:sequence>
       <xs:attribute name='lang' type='xs:string' use='optional'/>
   </xs:complexType>

@@ -1,16 +1,13 @@
 package gov.nih.nci.cabig.caaers.ws;
 
-import icsr.Ichicsr;
-import icsr.Ichicsrack;
-
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
 /**
  * @author: Biju Joseph
  */
-@WebService(name="SafetyReportManagementServiceInterface")
+@WebService(name="SafetyReportManagementServiceInterface", targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/icsr")
 public interface SafetyReportManagementService {
 
-    public Ichicsrack submitSafetyReport(@WebParam Ichicsr icsr);
+    public Object submitSafetyReport(@WebParam Object icsr);
 }

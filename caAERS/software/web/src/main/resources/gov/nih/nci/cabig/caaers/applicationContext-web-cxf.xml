@@ -323,8 +323,7 @@
             <ref bean="wsAuditInfoInterceptor" />
         </jaxws:inInterceptors>
         <jaxws:schemaLocations>
-            <jaxws:schemaLocation>/schema/integration/Icsr.xsd</jaxws:schemaLocation>
-            <jaxws:schemaLocation>/schema/integration/Icsrack.xsd</jaxws:schemaLocation>
+            <jaxws:schemaLocation>/schema/integration/SafetyReport.xsd</jaxws:schemaLocation>
         </jaxws:schemaLocations>
     </jaxws:endpoint>
 </beans>

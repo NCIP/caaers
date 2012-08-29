@@ -1,11 +1,15 @@
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
-    <xs:import schemaLocation="Icsr.xsd" />
+<xs:schema
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        targetNamespace='http://schema.integration.caaers.cabig.nci.nih.gov/icsr'
+        xmlns:ich='http://schema.integration.caaers.cabig.nci.nih.gov/icsr'
+        elementFormDefault="qualified">
+    <xs:import schemaLocation="Icsr.xsd" namespace="http://schema.integration.caaers.cabig.nci.nih.gov/icsr" />
 
     <xs:element name='ichicsrack'>
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref='ichicsrmessageheader'/>
-                <xs:element ref='acknowledgment'/>
+                <xs:element ref='ich:ichicsrmessageheader'/>
+                <xs:element ref='ich:acknowledgment'/>
             </xs:sequence>
             <xs:attribute name='lang' type='xs:string' use='required'/>
         </xs:complexType>
@@ -14,8 +18,8 @@
     <xs:element name='acknowledgment'>
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref='messageacknowledgment'/>
-                <xs:element ref='reportacknowledgment' minOccurs='0' maxOccurs='unbounded'/>
+                <xs:element ref='ich:messageacknowledgment'/>
+                <xs:element ref='ich:reportacknowledgment' minOccurs='0' maxOccurs='unbounded'/>
             </xs:sequence>
             <xs:attribute name='lang' type='xs:string' use='optional'/>
         </xs:complexType>
@@ -24,14 +28,14 @@
     <xs:element name='messageacknowledgment'>
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref='icsrmessagenumb'/>
-                <xs:element ref='localmessagenumb' minOccurs='0' maxOccurs='1'/>
-                <xs:element ref='icsrmessagesenderidentifier'/>
-                <xs:element ref='icsrmessagereceiveridentifier'/>
-                <xs:element ref='icsrmessagedateformat'/>
-                <xs:element ref='icsrmessagedate'/>
-                <xs:element ref='transmissionacknowledgmentcode'/>
-                <xs:element ref='parsingerrormessage' minOccurs='0' maxOccurs='1'/>
+                <xs:element ref='ich:icsrmessagenumb'/>
+                <xs:element ref='ich:localmessagenumb' minOccurs='0' maxOccurs='1'/>
+                <xs:element ref='ich:icsrmessagesenderidentifier'/>
+                <xs:element ref='ich:icsrmessagereceiveridentifier'/>
+                <xs:element ref='ich:icsrmessagedateformat'/>
+                <xs:element ref='ich:icsrmessagedate'/>
+                <xs:element ref='ich:transmissionacknowledgmentcode'/>
+                <xs:element ref='ich:parsingerrormessage' minOccurs='0' maxOccurs='1'/>
             </xs:sequence>
             <xs:attribute name='lang' type='xs:string' use='optional'/>
         </xs:complexType>
@@ -88,15 +92,15 @@
     <xs:element name='reportacknowledgment'>
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref='safetyreportid'/>
-                <xs:element ref='safetyreportversion' minOccurs='0' maxOccurs='1'/>
-                <xs:element ref='localreportnumb' minOccurs='0' maxOccurs='1'/>
-                <xs:element ref='authoritynumb' minOccurs='0' maxOccurs='1'/>
-                <xs:element ref='companynumb' minOccurs='0' maxOccurs='1'/>
-                <xs:element ref='receiptdateformat' minOccurs='0' maxOccurs='1'/>
-                <xs:element ref='receiptdate' minOccurs='0' maxOccurs='1'/>
-                <xs:element ref='reportacknowledgmentcode'/>
-                <xs:element ref='errormessagecomment' minOccurs='0' maxOccurs='1'/>
+                <xs:element ref='ich:safetyreportid'/>
+                <xs:element ref='ich:safetyreportversion' minOccurs='0' maxOccurs='1'/>
+                <xs:element ref='ich:localreportnumb' minOccurs='0' maxOccurs='1'/>
+                <xs:element ref='ich:authoritynumb' minOccurs='0' maxOccurs='1'/>
+                <xs:element ref='ich:companynumb' minOccurs='0' maxOccurs='1'/>
+                <xs:element ref='ich:receiptdateformat' minOccurs='0' maxOccurs='1'/>
+                <xs:element ref='ich:receiptdate' minOccurs='0' maxOccurs='1'/>
+                <xs:element ref='ich:reportacknowledgmentcode'/>
+                <xs:element ref='ich:errormessagecomment' minOccurs='0' maxOccurs='1'/>
             </xs:sequence>
             <xs:attribute name='lang' type='xs:string' use='optional'/>
         </xs:complexType>
