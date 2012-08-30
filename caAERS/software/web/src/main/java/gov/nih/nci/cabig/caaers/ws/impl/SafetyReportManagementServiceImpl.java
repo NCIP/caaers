@@ -17,7 +17,7 @@ import javax.jws.soap.SOAPBinding;
 public class SafetyReportManagementServiceImpl implements SafetyReportManagementService {
 
     @WebMethod
-    public Object submitSafetyReport(@WebParam Object icsr){
+    public Object submitSafetyReport(@WebParam(name = "report") Object icsr){
         return null;
     }
 
