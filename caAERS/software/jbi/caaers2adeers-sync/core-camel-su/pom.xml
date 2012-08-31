@@ -72,7 +72,11 @@
           <artifactId>postgresql</artifactId>
           <version>9.0-801.jdbc3</version>
       </dependency>
-
+      <dependency>
+          <groupId>com.oracle</groupId>
+          <artifactId>ojdbc14</artifactId>
+          <version>10.2.0.2.0</version>
+      </dependency>
       <dependency>
           <groupId>junit</groupId>
           <artifactId>junit</artifactId>
