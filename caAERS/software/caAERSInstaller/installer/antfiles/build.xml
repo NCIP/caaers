@@ -593,7 +593,7 @@
        </java>
 	</target>
 
-    <target name="check-csm-users" description="checks for presence of csm users" depends="define-vars">
+    <target name="check-csm-users" description="checks for presence of csm users" depends="create-user-properties,define-vars">
 
     <echo message="${datasource.driver}"/>
     <echo message="${datasource.url}"/>
