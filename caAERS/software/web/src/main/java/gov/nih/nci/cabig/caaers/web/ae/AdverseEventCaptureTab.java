@@ -51,7 +51,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
      *    8. Hospitalization
      *    9. Expectedness
      *   10. Outcome
-     *   
+     *   11. External Id
      * Note:- We should run the adverse events against the index fixed list, since that list will have null items in it, we should skip if 'AdverseEvent' is null.
      */
 
@@ -128,12 +128,15 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
                 //Event location
                 InputField eventLocationField = InputFieldFactory.createTextField("eventLocation", "Where was the patient when the event occurred?", "aeReport.adverseEvents.eventLocation", isFieldRequired(ae, "adverseEvents[].eventLocation"));
                 mainFieldFactory.addField(eventLocationField);
+                
+                //external Id
+                InputField externalIdField = InputFieldFactory.createTextField("externalId", " AE identifier that can be used as a reference of an AE record in another system.", "aeReport.adverseEvents.externalId", false);
+                externalIdField.setReadable(true);
+                mainFieldFactory.addField(externalIdField);
 
                 InputFieldGroup fieldGroup = mainFieldFactory.createGroup(i);
                 mainFieldFactory.addFieldGroup(fieldGroup);
                 mainFieldFactory.clearFields();
-                
-                
                 
                 //now add the fields related to outcomes
                 InputFieldGroup outcomeFieldGrp = new DefaultInputFieldGroup(OUTCOME_FIELD_GROUP + i);

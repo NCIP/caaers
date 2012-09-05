@@ -133,7 +133,15 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     /** The event location. */
     private String eventLocation;
     
-    /** The graded date. */
+    public String getExternalId() {
+		return externalId;
+	}
+
+	public void setExternalId(String externalId) {
+		this.externalId = externalId;
+	}
+
+	/** The graded date. */
     private Date gradedDate;
     
     /** The post submission updated date. */
@@ -147,6 +155,8 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     
     /** The participant at risk. */
     private Boolean participantAtRisk;
+    
+    private String externalId;
     
     /**
      * Instantiates a new adverse event.

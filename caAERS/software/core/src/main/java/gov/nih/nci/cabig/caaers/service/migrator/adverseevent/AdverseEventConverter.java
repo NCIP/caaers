@@ -43,6 +43,7 @@ public class AdverseEventConverter {
 			if (adverseEventDto.getVerbatim() != null) { 
 				adverseEvent.setDetailsForOther(adverseEventDto.getVerbatim());
 			}
+			adverseEvent.setExternalId(adverseEventDto.getExternalId());
 			populateGrade(adverseEventDto,adverseEvent);
 			populateHospitalization(adverseEventDto,adverseEvent);
 			adverseEvent.setExpected(adverseEventDto.isExpected());

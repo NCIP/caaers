@@ -111,6 +111,7 @@
                    	<xs:element maxOccurs="unbounded" minOccurs="0" name="outcome" type="OutcomeType"/>  
                     <xs:element minOccurs="0" name="eventApproximateTime" type="TimeType"/>
                     <xs:element minOccurs="0" name="eventLocation" type="xs:string"/>
+                    <xs:element minOccurs="0" name="externalId" type="xs:string"/>
                     <!-- <xs:element name="requiresReporting" type="xs:boolean" minOccurs="0"/>  -->
                    <!-- <xs:element name="gradedDate" type="xs:date" minOccurs="0"/>
                     <xs:element name="reported" type="xs:boolean" minOccurs="0"/>	-->

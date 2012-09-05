@@ -1,16 +1,15 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import java.util.Collections;
 import gov.nih.nci.cabig.caaers.domain.comparator.AdverseEventComprator;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowAware;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
-import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -27,9 +26,15 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.BooleanUtils;
-import org.hibernate.annotations.*;
+import org.apache.commons.lang.StringUtils;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.IndexColumn;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
 
  
 /**
@@ -112,6 +117,16 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
 	/** The active ae reports. */
 	private List<ExpeditedAdverseEventReport> activeAeReports;
 	
+	private String externalId;
+	
+	public String getExternalId() {
+		return externalId;
+	}
+
+	public void setExternalId(String externalId) {
+		this.externalId = externalId;
+	}
+
 	/**
 	 * Instantiates a new adverse event reporting period.
 	 */
