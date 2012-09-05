@@ -154,7 +154,8 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
 				"expected",
 				"eventApproximateTime",
 				"participantAtRisk",
-				"eventLocation");
+				"eventLocation",
+				"externalId");
 		
 		correctMainGroupFields(fieldMap.get("main1"), "adverseEvents[1].", "detailsForOther",
 				"grade",
@@ -165,7 +166,8 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
 				"expected",
 				"eventApproximateTime",
 				"participantAtRisk",
-				"eventLocation");
+				"eventLocation",
+				"externalId");
 		
 		correctMainGroupFields(fieldMap.get("main2"), "adverseEvents[2].", "detailsForOther",
 				"grade",
@@ -176,7 +178,8 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
 				"expected",
 				"eventApproximateTime",
 				"participantAtRisk",
-				"eventLocation");
+				"eventLocation",
+				"externalId");
 	}
 	public void testPostprocess(){
 		command.initializeOutcomes();
