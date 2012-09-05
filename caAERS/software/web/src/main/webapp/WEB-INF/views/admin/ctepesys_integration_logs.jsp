@@ -311,7 +311,7 @@
             				<tags:renderRow field="${fieldGroups.main.fields[2]}"/>
         			</td>
         			<td>
-            				<tags:renderRow field="${fieldGroups.main.fields[3}"/>
+            				<tags:renderRow field="${fieldGroups.main.fields[3]}"/>
         			</td>
         		</tr>
         		<tr>
