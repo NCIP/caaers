@@ -238,6 +238,8 @@ This applicationContext contains the definition of the DAOs
 				<value>gov.nih.nci.cabig.caaers.domain.IntegrationLog</value>
 				<value>gov.nih.nci.cabig.caaers.domain.IntegrationLogDetail</value>
 				<value>gov.nih.nci.cabig.caaers.domain.StudyDeviceINDAssociation</value>
+				<value>gov.nih.nci.cabig.caaers.domain.dto.ExternalAdverseEventDTO</value>
+				<value>gov.nih.nci.cabig.caaers.domain.dto.ExternalAdverseEventReportingPeriodDTO</value>
             </list>
         </property>
         <property name="entityInterceptor">
