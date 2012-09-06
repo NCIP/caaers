@@ -15,6 +15,10 @@
             <value>
                 CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
                 PATTERN_TYPE_APACHE_ANT
+                /js/**/*=#NONE#
+                /css/**/*=#NONE#
+                /**/caaers.zcss=#NONE#
+                /**/caaers.zjs=#NONE#
                 /**=channelProcessingFilter,httpSessionContextIntegrationFilter,s[authenticationMode]LogoutFilter,s[authenticationMode]AuthenticationProcessingFilter,securityContextHolderAwareRequestFilter,anonymousProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor,fabricatedAuthenticationFilter
             </value>
         </property>

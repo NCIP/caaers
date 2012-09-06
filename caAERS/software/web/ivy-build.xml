@@ -2,7 +2,12 @@
 <project name="caaers-web" default="compile" xmlns:ivy="antlib:org.apache.ivy.ant">
 	<property name="parent.dir" value="${basedir}/.." />
 	<property file="${parent.dir}/build.properties" />
-	
+
+    <path id="gwt.classpath">
+        <fileset dir="${lib.dir}">
+            <include name="*gwt*.jar" />
+        </fileset>
+    </path>
 	<!--
 	<target name="resolve" depends="common.resolve">
 	     <copy-resources src="${module.lib}/main/coppasimulator" dest="${lib.dir}"  filter="false" />
@@ -55,10 +60,66 @@
 	 <target name="clean-war" unless="skip.clean">
 	 	<delete dir="${dist.dir}/${war.filename}" />
 	 	<deltree dir="${war.dir}" />
-	 </target>	
-	 
-	 	
-	 <target name="war" depends="clean-war, init-war, resolve-dist">
+	 </target>
+
+    <target name="gwtc" description="GWT compile to JavaScript (production mode)">
+        <java failonerror="true" fork="true" classname="com.google.gwt.dev.Compiler">
+            <sysproperty key="gwt.persistentunitcache" value="false" />
+            <classpath>
+                <pathelement path="${main.src}" />
+                <pathelement path="${main.src.resources}" />
+                <path refid="gwt.classpath"/>
+            </classpath>
+            <!-- add jvmarg -Xss16M or similar if you see a StackOverflowError -->
+            <jvmarg value="-Xmx512M"/>
+            <jvmarg value="-Xss16M"/>
+            <arg line="-war"/>
+            <arg value="${war.dir}"/>
+            <!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
+            <!--<arg line="${gwt.args}"/>-->
+            <arg value="gov.nih.nci.cabig.caaers.gwt.Review"/>
+        </java>
+    </target>
+
+    <target name="devmode" description="GWT compile to JavaScript (production mode)">
+        <java failonerror="true" fork="true" classname="com.google.gwt.dev.Compiler">
+            <sysproperty key="gwt.persistentunitcache" value="false" />
+            <classpath>
+                <pathelement path="${main.src}" />
+                <pathelement path="${main.src.resources}" />
+                <path refid="gwt.classpath"/>
+            </classpath>
+            <!-- add jvmarg -Xss16M or similar if you see a StackOverflowError -->
+            <jvmarg value="-Xmx512M"/>
+            <jvmarg value="-Xss16M"/>
+            <arg line="-war"/>
+            <arg value="${main.src}/../webapp"/>
+            <!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
+            <!--<arg line="${gwt.args}"/>-->
+            <arg value="gov.nih.nci.cabig.caaers.gwt.Review"/>
+        </java>
+    </target>
+
+    <!--<target name="devmode" description="GWT Run development mode">-->
+        <!--<java failonerror="true" fork="true" classname="com.google.gwt.dev.DevMode">-->
+            <!--<sysproperty key="gwt.persistentunitcache" value="false" />-->
+            <!--<classpath>-->
+                <!--<pathelement path="${main.src}" />-->
+                <!--<pathelement path="${main.src.resources}" />-->
+                <!--<path refid="gwt.classpath"/>-->
+            <!--</classpath>-->
+            <!--<jvmarg value="-Xmx512M"/>-->
+            <!--<jvmarg value="-Xss16M"/>-->
+            <!--<arg value="-startupUrl"/>-->
+            <!--<arg value="Review.html"/>-->
+            <!--<arg line="-war"/>-->
+            <!--<arg value="${main.src}/../webapp"/>-->
+            <!--&lt;!&ndash; Additional arguments like -style PRETTY or -logLevel DEBUG &ndash;&gt;-->
+            <!--<arg value="gov.nih.nci.cabig.caaers.gwt.Review"/>-->
+        <!--</java>-->
+    <!--</target>-->
+
+	 <target name="war" depends="clean-war, init-war, resolve-dist, gwtc">
 	 	<!-- copy the resources related to webservices -->
 		<copy-resources src="${classes.dir}" dest="${war.dir}/WEB-INF/classes" filter="false"/>
 	 	<copy-resources src="${main.src}/../webapp" dest="${war.dir}"  filter="false" />
@@ -70,7 +131,7 @@
 
 
 	 	<war destfile="${dist.dir}/${war.filename}" basedir="${war.dir}" level="9"
-	 		webxml="${main.src}/../webapp/WEB-INF/web.xml">	 		
+	 		webxml="${main.src}/../webapp/WEB-INF/web.xml">
 	 	</war>
 
 
@@ -118,7 +179,7 @@
 	<!--=================================================================
 		target :deploy-caaers
 	==================================================================== -->
-	<target name="deploy-caaers" depends="set-confs,common.clean-lib-dir,undeploy-caaers, compile, copy-caaers-context">
+	<target name="deploy-caaers" depends="set-confs,common.clean-lib-dir,undeploy-caaers, compile, copy-caaers-context, devmode">
     </target>
     <!--=================================================================
          target :set-confs
