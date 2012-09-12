@@ -19,7 +19,7 @@
      <xsl:variable name="_cmPossible" select="number(4)" />
      <xsl:variable name="_attPossible" select="number(4)" />
      <xsl:variable name="_cmdPossible" select="number(3)" />
-     <xsl:variable name="_tacPossible" select="number(90)" />
+     <xsl:variable name="_tacPossible" select="number(40)" />
      <xsl:variable name="_edPossible" select="number(300)" />
     
     <xsl:variable name="_ptPossible" select="mu:possibleElements(AdverseEventReport/SAEReportPriorTherapy, 50,'//PriorTherapy/text,//ChemoAgent/name')" />
