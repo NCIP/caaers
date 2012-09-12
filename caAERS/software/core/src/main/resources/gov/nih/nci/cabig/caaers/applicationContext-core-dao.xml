@@ -238,8 +238,8 @@ This applicationContext contains the definition of the DAOs
 				<value>gov.nih.nci.cabig.caaers.domain.IntegrationLog</value>
 				<value>gov.nih.nci.cabig.caaers.domain.IntegrationLogDetail</value>
 				<value>gov.nih.nci.cabig.caaers.domain.StudyDeviceINDAssociation</value>
-				<value>gov.nih.nci.cabig.caaers.domain.dto.ExternalAdverseEventDTO</value>
-				<value>gov.nih.nci.cabig.caaers.domain.dto.ExternalAdverseEventReportingPeriodDTO</value>
+				<value>gov.nih.nci.cabig.caaers.domain.ExternalAdverseEvent</value>
+				<value>gov.nih.nci.cabig.caaers.domain.ExternalAdverseEventReportingPeriod</value>
             </list>
         </property>
         <property name="entityInterceptor">
@@ -544,9 +544,11 @@ This applicationContext contains the definition of the DAOs
     <bean id="adverseEventDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AdverseEventDao">
     	<property name="studyParticipantAssignmentDao" ref="studyParticipantAssignmentDao"/>
     </bean>
+    <bean id="externalAdverseEventDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ExternalAdverseEventDao"/>
 	<bean id="configPropertyDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ConfigPropertyDao" />
     <bean id="expeditedAdverseEventReportDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao" autowire="byName"/>
     <bean id="adverseEventReportingPeriodDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao"/>
+    <bean id="externalAdverseEventReportingPeriodDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ExternalAdverseEventReportingPeriodDao"/>
     <bean id="epochDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.EpochDao"/>
     <bean id="participantDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ParticipantDao"/>
     <bean id="studyParticipantAssignmentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao"/>

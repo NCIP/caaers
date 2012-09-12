@@ -1,0 +1,7 @@
+<dataset>
+    <!-- TODO: expand to allow multiple XML files so that this doesn't have to be
+        copy/pasted -->
+    <ext_adverse_events id="-1" version ="0" adverse_event_term="term1" start_date="2012-08-01" end_date="2012-08-11" 
+    	verbatim="Verbatim Text1" grade="1" external_id="1" attribution="Drug"/>
+
+</dataset>

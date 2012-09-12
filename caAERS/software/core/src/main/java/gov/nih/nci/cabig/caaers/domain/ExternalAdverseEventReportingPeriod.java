@@ -1,10 +1,5 @@
-package gov.nih.nci.cabig.caaers.domain.dto;
+package gov.nih.nci.cabig.caaers.domain;
 
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import java.text.SimpleDateFormat;
@@ -32,7 +27,7 @@ import org.hibernate.annotations.Type;
 @Entity
 @Table(name = "ext_ae_reporting_prds")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_ext_ae_reporting_prds_id") })
-public class ExternalAdverseEventReportingPeriodDTO extends AbstractMutableDomainObject{
+public class ExternalAdverseEventReportingPeriod extends AbstractMutableDomainObject{
 	
 	/** The Constant BASELINE_REPORTING_TYPE. */
 	private static final String BASELINE_REPORTING_TYPE = "Baseline";
@@ -120,7 +115,7 @@ public class ExternalAdverseEventReportingPeriodDTO extends AbstractMutableDomai
 	/**
 	 * Instantiates a new adverse event reporting period.
 	 */
-	public ExternalAdverseEventReportingPeriodDTO() {
+	public ExternalAdverseEventReportingPeriod() {
 		formatter = new SimpleDateFormat("MM/dd/yy");
     }
 	

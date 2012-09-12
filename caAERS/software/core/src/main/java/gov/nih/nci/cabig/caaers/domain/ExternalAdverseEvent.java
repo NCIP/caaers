@@ -1,10 +1,6 @@
-package gov.nih.nci.cabig.caaers.domain.dto;
+package gov.nih.nci.cabig.caaers.domain;
 
-import gov.nih.nci.cabig.caaers.domain.Grade;
-import gov.nih.nci.cabig.caaers.domain.OutcomeType;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
-import gov.nih.nci.cabig.caaers.validation.AdverseEventGroup;
-import gov.nih.nci.cabig.caaers.validation.fields.validators.NotNullConstraint;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import java.util.Date;
@@ -27,8 +23,51 @@ import org.hibernate.annotations.Parameter;
 @Entity
 @Table(name = "ext_adverse_events")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_ext_adverse_events_id")})
-public class ExternalAdverseEventDTO extends AbstractMutableDomainObject{
-   
+public class ExternalAdverseEvent extends AbstractMutableDomainObject{
+
+	public String getAdverseEventTermCode() {
+		return adverseEventTermCode;
+	}
+
+	public void setAdverseEventTermCode(String adverseEventTermCode) {
+		this.adverseEventTermCode = adverseEventTermCode;
+	}
+
+	public String getAdverseEventTermOtherValue() {
+		return adverseEventTermOtherValue;
+	}
+
+	public void setAdverseEventTermOtherValue(String adverseEventTermOtherValue) {
+		this.adverseEventTermOtherValue = adverseEventTermOtherValue;
+	}
+
+	/** The adverse event term. */
+	private String adverseEventTerm;
+	
+	/** The adverse event term. */
+	private String adverseEventTermCode;
+	
+	/** The adverse event term. */
+	private String adverseEventTermOtherValue;
+
+    /** The grade. */
+    private Grade grade;
+
+    /** The verbatim. */
+    private String verbatim;
+
+    /** The start date. */
+    private Date startDate;
+
+    /** The end date. */
+    private Date endDate;
+
+    /** The serious. */
+    private String howSerious;
+    
+    /** The Attribution. */
+    private String attribution;
+    
 	public Grade getGrade() {
 		return grade;
 	}
@@ -61,28 +100,6 @@ public class ExternalAdverseEventDTO extends AbstractMutableDomainObject{
 		this.attribution = attribution;
 	}
 
-	/** The adverse event term. */
-	private String adverseEventTerm;
-
-    /** The grade. */
-    private Grade grade;
-
-    /** The verbatim. */
-    private String verbatim;
-
-    /** The start date. */
-    private Date startDate;
-
-    /** The end date. */
-    private Date endDate;
-
-    /** The serious. */
-    private OutcomeType howSerious;
-    
-    /** The Attribution. */
-    private String attribution;
-
-    
     public String getExternalId() {
 		return externalId;
 	}
@@ -140,7 +157,6 @@ public class ExternalAdverseEventDTO extends AbstractMutableDomainObject{
      *
      * @return the end date
      */
-    @NotNullConstraint(groups=AdverseEventGroup.class, fieldPath="adverseEvents[].endDate")
     public Date getEndDate() {
         return endDate;
     }
@@ -154,31 +170,11 @@ public class ExternalAdverseEventDTO extends AbstractMutableDomainObject{
         this.endDate = endDate;
     }
 
-    /**
-     * Gets the display serious.
-     *
-     * @return the display serious
-     */
-    @Transient
-    public String getDisplaySerious() {
-        if (howSerious != null) return howSerious.getDisplayName();
-        return "";
-    }
-
-    /**
-     * Sets the display serious.
-     *
-     * @param igonre the new display serious
-     */
-    public void setDisplaySerious(String igonre) {
-
-    }
-
-	public OutcomeType getHowSerious() {
+	public String getHowSerious() {
 		return howSerious;
 	}
 
-	public void setHowSerious(OutcomeType howSerious) {
+	public void setHowSerious(String howSerious) {
 		this.howSerious = howSerious;
 	}
 
