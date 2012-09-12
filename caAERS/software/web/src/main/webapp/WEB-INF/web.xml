@@ -344,20 +344,11 @@
         <servlet-name>CXFServlet</servlet-name>
         <servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
     </servlet>
-
     <servlet-mapping>
         <servlet-name>CXFServlet</servlet-name>
         <url-pattern>/services/*</url-pattern>
     </servlet-mapping>
-    <servlet>
-        <servlet-name>greetServlet</servlet-name>
-        <servlet-class>gov.nih.nci.cabig.caaers.gwt.server.GreetingServiceImpl</servlet-class>
-    </servlet>
 
-    <servlet-mapping>
-        <servlet-name>greetServlet</servlet-name>
-        <url-pattern>/review/greet</url-pattern>
-    </servlet-mapping>
     <error-page><error-code>403</error-code><location>/accessDenied.jsp</location></error-page>
     <error-page> <error-code>500</error-code> <location>/decorated-error.jsp</location></error-page>
     <error-page><exception-type>java.lang.Throwable</exception-type><location>/decorated-error.jsp</location></error-page>
