@@ -1,15 +1,14 @@
 package gov.nih.nci.cabig.caaers.dao;
 
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExternalAdverseEvent;
 
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * This class implements the Data access related operations for the AdverseEvent domain object.
+ * This class implements the Data access related operations for the External AdverseEvent domain object.
  * 
- * @author Rhett Sutphin
+ * @author Ramakrishna Gundala
  */
 @Transactional(readOnly = true)
 public class ExternalAdverseEventDao extends CaaersDao<ExternalAdverseEvent> {
@@ -27,8 +26,8 @@ public class ExternalAdverseEventDao extends CaaersDao<ExternalAdverseEvent> {
      *                The event to be saved.
      */
     @Transactional(readOnly = false)
-    public void save(final AdverseEvent event) {
-        getHibernateTemplate().saveOrUpdate(event);
+    public void save(final ExternalAdverseEvent externalAdverseEvent) {
+        getHibernateTemplate().saveOrUpdate(externalAdverseEvent);
     }
 
 }

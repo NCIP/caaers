@@ -1,15 +1,18 @@
 package gov.nih.nci.cabig.caaers.dao;
 
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.dao.query.ExternalAdverseEventReportingPeriodQuery;
 import gov.nih.nci.cabig.caaers.domain.ExternalAdverseEventReportingPeriod;
+
+import java.util.List;
 
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * This class implements the Data access related operations for the AdverseEvent domain object.
+ * This class implements the Data access related operations for the External AdverseEvent Reporting Period
+ *  domain object.
  * 
- * @author Rhett Sutphin
+ * @author Ramakrishna
  */
 @Transactional(readOnly = true)
 public class ExternalAdverseEventReportingPeriodDao extends CaaersDao<ExternalAdverseEventReportingPeriod> {
@@ -27,8 +30,15 @@ public class ExternalAdverseEventReportingPeriodDao extends CaaersDao<ExternalAd
      *                The event to be saved.
      */
     @Transactional(readOnly = false)
-    public void save(final AdverseEvent event) {
-        getHibernateTemplate().saveOrUpdate(event);
+    public void save(final ExternalAdverseEventReportingPeriod externalAdverseEventReportingPeriod) {
+        getHibernateTemplate().saveOrUpdate(externalAdverseEventReportingPeriod);
+    }
+    
+    public List<ExternalAdverseEventReportingPeriod> searchExternalAEReportingPeriods(final 
+    		ExternalAdverseEventReportingPeriodQuery query) {
+        String queryString = query.getQueryString();
+        log.debug(">>> " + queryString.toString());
+        return (List<ExternalAdverseEventReportingPeriod>) super.search(query);
     }
 
 }
