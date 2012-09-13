@@ -7,7 +7,10 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -62,13 +65,6 @@ public class ExternalAdverseEventReportingPeriod extends AbstractMutableDomainOb
 	/** The name. */
 	private String name;
 	
-	/** The formatter. */
-	private SimpleDateFormat formatter;
-	
-	// This gives the Report Status for the reporting Period
-	/** The report status. */
-	private String reportStatus;
-	
 	@Column(name = "treatment_assignment_code")
 	public String getTreatmentAssignmentCode() {
 		return treatmentAssignmentCode;
@@ -76,22 +72,6 @@ public class ExternalAdverseEventReportingPeriod extends AbstractMutableDomainOb
 
 	public void setTreatmentAssignmentCode(String treatmentAssignmentCode) {
 		this.treatmentAssignmentCode = treatmentAssignmentCode;
-	}
-
-	public SimpleDateFormat getFormatter() {
-		return formatter;
-	}
-
-	public void setFormatter(SimpleDateFormat formatter) {
-		this.formatter = formatter;
-	}
-
-	public String getReportStatus() {
-		return reportStatus;
-	}
-
-	public void setReportStatus(String reportStatus) {
-		this.reportStatus = reportStatus;
 	}
 
 	public static String getBaselineReportingType() {
@@ -112,14 +92,6 @@ public class ExternalAdverseEventReportingPeriod extends AbstractMutableDomainOb
 		this.externalId = externalId;
 	}
 
-	/**
-	 * Instantiates a new adverse event reporting period.
-	 */
-	public ExternalAdverseEventReportingPeriod() {
-		formatter = new SimpleDateFormat("MM/dd/yy");
-    }
-	
-	
 	// BEAN PROPERTIES
     
     /**
@@ -150,6 +122,7 @@ public class ExternalAdverseEventReportingPeriod extends AbstractMutableDomainOb
      */
     @ManyToOne(fetch = FetchType.LAZY)
     @Cascade(value={CascadeType.MERGE, CascadeType.LOCK})
+    @JoinColumn(name="assignment_id")
     public StudyParticipantAssignment getAssignment() {
         return assignment;
     }
@@ -252,8 +225,7 @@ public class ExternalAdverseEventReportingPeriod extends AbstractMutableDomainOb
     /* (non-Javadoc)
      * @see gov.nih.nci.cabig.caaers.domain.workflow.WorkflowAware#getReviewStatus()
      */
-    @Column(name = "review_status_code")
-    @Type(type = "reviewStatus")
+    @Enumerated(EnumType.STRING)
     public ReviewStatus getReviewStatus() {
         return reviewStatus;
     }

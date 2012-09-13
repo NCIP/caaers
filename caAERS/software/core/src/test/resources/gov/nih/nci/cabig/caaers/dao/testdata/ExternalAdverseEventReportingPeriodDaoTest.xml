@@ -1,0 +1,44 @@
+<dataset>
+	 <organizations
+        id="-1000"
+        name="New Site"/> 
+	 <studies
+        id="-1000"
+        short_title="Short title"
+        load_status="1"
+        />
+	 <study_organizations
+        id="-1000"
+        site_id="-1000"
+        study_id="-1000"
+        start_date="2006-10-10"
+        type="SST"
+        />
+ 	<participants
+        id="-1000"
+        instituitional_patient_number="P002"
+        institution="Hospital"
+        first_name="George"
+        last_name="Milan"
+        birth_day="02"
+        birth_month="01"
+        birth_year="2006"
+        gender="Male"
+        ethnicity="ethnicity"
+        race="race"
+        middle_name="m"
+        maiden_name="m"
+        load_status="1" />
+     <participant_assignments
+        id="-1000"
+        study_site_id="-1000"
+        participant_id="-1000"
+        date_of_enrollment="2006-09-30"
+        load_status="1"
+        />
+        
+    <ext_ae_reporting_prds id="-1000" version ="0" description="Reporting Period for participant" cycle_number="1" 
+     review_status="DRAFT_INCOMPLETE" workflow_id="1" treatment_assignment_code="code1" treatment_assignment_desc="description1" start_date="2012-08-01" 
+     end_date="2012-08-11" name="Period1" assignment_id="-1000" external_id="1" grid_id="2ugthug8722326bhbdhg"/>
+
+</dataset>

@@ -1,15 +1,14 @@
 package gov.nih.nci.cabig.caaers.dao;
 
-import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
-import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_ROUTINE_REPORT;
 import gov.nih.nci.cabig.caaers.CaaersDbNoSecurityTestCase;
-import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.domain.ExternalAdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.Grade;
+
+import java.util.Date;
 
 /**
  * @author Ramakrishna Gundala
  */
-@CaaersUseCases({CREATE_EXPEDITED_REPORT, CREATE_ROUTINE_REPORT})
 public class ExternalAdverseEventDaoTest extends CaaersDbNoSecurityTestCase {
 	
 	private ExternalAdverseEventDao dao;
@@ -22,8 +21,33 @@ public class ExternalAdverseEventDaoTest extends CaaersDbNoSecurityTestCase {
 
     public void testGetById() throws Exception{
     	
-    	ExternalAdverseEvent externalAdverseEvent  = dao.getById(-1);
+    	ExternalAdverseEvent externalAdverseEvent  = dao.getById(-1000);
     	assertNotNull(externalAdverseEvent);
+    }
+    
+    public void testSave() throws Exception{
+    	
+    	ExternalAdverseEvent externalAdverseEvent  = new ExternalAdverseEvent();
+    	externalAdverseEvent.setAdverseEventTerm("term2");
+    	externalAdverseEvent.setAdverseEventTermCode("code2");
+    	externalAdverseEvent.setAdverseEventTermOtherValue("other value2");
+    	externalAdverseEvent.setExternalId("-2");
+    	externalAdverseEvent.setStartDate(new Date());
+    	externalAdverseEvent.setAttribution("device1");
+    	String verbatim = "the subject had vomiting on so and so date becauese of device1";
+    	externalAdverseEvent.setVerbatim(verbatim);
+    	externalAdverseEvent.setGrade(Grade.NORMAL);
+    	
+    	dao.save(externalAdverseEvent);
+    	
+    	interruptSession();
+    	ExternalAdverseEvent savedExternalAdverseEvent  = dao.getById(externalAdverseEvent.getId());
+    	assertNotNull(savedExternalAdverseEvent.getId());
+    	assertEquals(verbatim,savedExternalAdverseEvent.getVerbatim());
+    	assertEquals("device1",savedExternalAdverseEvent.getAttribution());
+    	assertEquals(Grade.NORMAL,savedExternalAdverseEvent.getGrade());
+    	assertEquals("term2",savedExternalAdverseEvent.getAdverseEventTerm());
+    	assertEquals("code2",savedExternalAdverseEvent.getAdverseEventTermCode());
     }
     
 }

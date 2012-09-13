@@ -6,6 +6,8 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -68,6 +70,7 @@ public class ExternalAdverseEvent extends AbstractMutableDomainObject{
     /** The Attribution. */
     private String attribution;
     
+    @Enumerated(EnumType.ORDINAL)
 	public Grade getGrade() {
 		return grade;
 	}
