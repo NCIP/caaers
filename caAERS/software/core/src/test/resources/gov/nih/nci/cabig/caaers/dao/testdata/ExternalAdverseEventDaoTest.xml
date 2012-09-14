@@ -1,5 +1,5 @@
 <dataset>
     <ext_adverse_events id="-1000" version ="0" adverse_event_term="term1" start_date="2012-08-01" end_date="2012-08-11" 
-    	verbatim="Verbatim Text1" grade="1" external_id="1" attribution="Drug"/>
+    	verbatim="Verbatim Text1" grade="2" external_id="1" attribution="Drug" creation_date="2012-09-08" reviewed_date="2012-09-13" status="PENDING" />
 
 </dataset>

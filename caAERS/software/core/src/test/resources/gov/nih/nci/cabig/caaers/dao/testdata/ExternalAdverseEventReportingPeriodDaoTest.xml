@@ -29,6 +29,7 @@
         middle_name="m"
         maiden_name="m"
         load_status="1" />
+        
      <participant_assignments
         id="-1000"
         study_site_id="-1000"
@@ -37,8 +38,39 @@
         load_status="1"
         />
         
+        
+         <epochs
+     	id="-1000"
+     	name="test epoch 1"
+     	order_no="1"
+     	study_id="-1000"
+     	/>
+     	
+     	
+     	 <treatment_assignment
+     	id="-1000"
+     	code="adverseEventReportingPeriodCode"
+     	study_id="-1000"
+     	/>
+        
+        <ae_reporting_periods
+		id="-1000"
+		start_date="2012-07-23"
+		end_date="2012-07-25"
+		description="test object 1000"
+		treatment_assignment_id="-1000"
+		assignment_id="-1000"
+		epoch_id="-1000" 
+		review_status_code="1"
+		/>
+		
+        
     <ext_ae_reporting_prds id="-1000" version ="0" description="Reporting Period for participant" cycle_number="1" 
-     review_status="DRAFT_INCOMPLETE" workflow_id="1" treatment_assignment_code="code1" treatment_assignment_desc="description1" start_date="2012-08-01" 
-     end_date="2012-08-11" name="Period1" assignment_id="-1000" external_id="1" grid_id="2ugthug8722326bhbdhg"/>
+     review_status="DRAFT_INCOMPLETE" workflow_id="1" treatment_assignment_code="code1" other_description="description1" start_date="2012-08-01" 
+     end_date="2012-08-11" creation_date="2012-09-08" name="Period1" reporting_period_id="-1000" external_id="1" grid_id="2ugthug8722326bhbdhg"/>
+     
+     
+     <ext_adverse_events id="-1000" version ="0" adverse_event_term="term1" start_date="2012-08-01" end_date="2012-08-11" verbatim="Verbatim Text1"
+      grade="1" external_id="1" attribution="Drug" creation_date="2012-09-08" reviewed_date="2012-09-13" status="PENDING" ext_rep_prd_id="-1000" />
 
 </dataset>

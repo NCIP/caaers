@@ -8,9 +8,13 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -69,6 +73,41 @@ public class ExternalAdverseEvent extends AbstractMutableDomainObject{
     
     /** The Attribution. */
     private String attribution;
+    
+    @Enumerated(EnumType.STRING)
+    public ExternalAEReviewStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(ExternalAEReviewStatus status) {
+		this.status = status;
+	}
+
+	private Date creationDate = new Date();
+    
+    private ExternalAEReviewStatus status;
+    
+    public Date getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
+	}
+
+    @ManyToOne
+    @JoinColumn(name = "ext_rep_prd_id", nullable = true)
+    @Cascade(value = {CascadeType.LOCK, CascadeType.DETACH})
+	public ExternalAdverseEventReportingPeriod getExternalAdverseEventReportingPeriod() {
+		return externalAdverseEventReportingPeriod;
+	}
+
+	public void setExternalAdverseEventReportingPeriod(
+			ExternalAdverseEventReportingPeriod externalAdverseEventReportingPeriod) {
+		this.externalAdverseEventReportingPeriod = externalAdverseEventReportingPeriod;
+	}
+
+	private ExternalAdverseEventReportingPeriod externalAdverseEventReportingPeriod;
     
     @Enumerated(EnumType.ORDINAL)
 	public Grade getGrade() {

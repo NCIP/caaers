@@ -2,7 +2,9 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,11 +13,14 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -49,7 +54,7 @@ public class ExternalAdverseEventReportingPeriod extends AbstractMutableDomainOb
 	private String treatmentAssignmentCode;
 	
 	/** The treatment assignment description. */
-	private String treatmentAssignmentDescription;
+	private String otherDescription;
 	
 	/** The start date. */
 	private Date startDate;
@@ -57,11 +62,51 @@ public class ExternalAdverseEventReportingPeriod extends AbstractMutableDomainOb
 	/** The end date. */
 	private Date endDate;
 	
-	/** The assignment. */
-	private StudyParticipantAssignment assignment;
-	
 	/** The name. */
 	private String name;
+	
+	private List<ExternalAdverseEvent> externalAdverseEvents = new ArrayList<ExternalAdverseEvent>();
+	
+	public Date getCreationDate() {
+		return creationDate;
+	}
+
+	@OneToMany(mappedBy = "externalAdverseEventReportingPeriod", orphanRemoval = true)
+    @Cascade(value = {CascadeType.ALL})
+    @OrderBy
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
+	public List<ExternalAdverseEvent> getExternalAdverseEvents() {
+		return externalAdverseEvents;
+	}
+
+	public void setExternalAdverseEvents(
+			List<ExternalAdverseEvent> externalAdverseEvents) {
+		this.externalAdverseEvents = externalAdverseEvents;
+	}
+	
+	public void addExternalAdverseEvent(ExternalAdverseEvent externalAdverseEvent){
+		getExternalAdverseEvents().add(externalAdverseEvent);
+		externalAdverseEvent.setExternalAdverseEventReportingPeriod(this);
+	}
+
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
+	}
+
+	private Date creationDate = new Date();
+	
+	@ManyToOne//(fetch = FetchType.LAZY)
+	@JoinColumn(name="reporting_period_id")
+	public AdverseEventReportingPeriod getDomainReportingPeriod() {
+		return domainReportingPeriod;
+	}
+
+	public void setDomainReportingPeriod(
+			AdverseEventReportingPeriod domainReportingPeriod) {
+		this.domainReportingPeriod = domainReportingPeriod;
+	}
+
+	private AdverseEventReportingPeriod domainReportingPeriod;
 	
 	@Column(name = "treatment_assignment_code")
 	public String getTreatmentAssignmentCode() {
@@ -99,7 +144,7 @@ public class ExternalAdverseEventReportingPeriod extends AbstractMutableDomainOb
 	 */
 	@Transient
     public Participant getParticipant() {
-        return getAssignment() == null ? null : getAssignment().getParticipant();
+        return getDomainReportingPeriod().getAssignment() == null ? null : getDomainReportingPeriod().getAssignment().getParticipant();
     }
 
     /**
@@ -109,29 +154,8 @@ public class ExternalAdverseEventReportingPeriod extends AbstractMutableDomainOb
      */
     @Transient
     public Study getStudy() {
-        StudySite ss = getAssignment() == null ? null : getAssignment().getStudySite();
+        StudySite ss = getDomainReportingPeriod().getAssignment() == null ? null : getDomainReportingPeriod().getAssignment().getStudySite();
         return ss == null ? null : ss.getStudy();
-    }
-    
-    /**
-     * Gets the assignment.
-     *
-     * @return the assignment
-     */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @Cascade(value={CascadeType.MERGE, CascadeType.LOCK})
-    @JoinColumn(name="assignment_id")
-    public StudyParticipantAssignment getAssignment() {
-        return assignment;
-    }
-
-    /**
-     * Sets the assignment.
-     *
-     * @param assignment the new assignment
-     */
-    public void setAssignment(StudyParticipantAssignment assignment) {
-        this.assignment = assignment;
     }
     
     /**
@@ -243,23 +267,27 @@ public class ExternalAdverseEventReportingPeriod extends AbstractMutableDomainOb
     public void setName(String name) {
 		this.name = name;
 	}
-    
-    /**
-     * Gets the treatment assignment description.
-     *
-     * @return the treatment assignment description
-     */
-    @Column(name = "treatment_assignment_desc")
-    public String getTreatmentAssignmentDescription() {
-        return treatmentAssignmentDescription;
-    }
 
     /**
-     * Sets the treatment assignment description.
+     * Gets the other description.
      *
-     * @param treatmentAssignmentDescription the new treatment assignment description
+     * @return the other description
      */
-    public void setTreatmentAssignmentDescription(String treatmentAssignmentDescription) {
-        this.treatmentAssignmentDescription = treatmentAssignmentDescription;
-    }
+	public String getOtherDescription() {
+		return otherDescription;
+	}
+
+	public void setOtherDescription(String otherDescription) {
+		this.otherDescription = otherDescription;
+	}
+	
+	@Transient
+	
+	public StudyParticipantAssignment getAssignment(){
+		if(getDomainReportingPeriod() != null && getDomainReportingPeriod().getAssignment() != null){
+			return getDomainReportingPeriod().getAssignment();
+		}
+		
+		return null;
+	}
 }

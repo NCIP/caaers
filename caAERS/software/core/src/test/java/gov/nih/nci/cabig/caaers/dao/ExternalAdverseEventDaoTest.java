@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.CaaersDbNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.domain.ExternalAEReviewStatus;
 import gov.nih.nci.cabig.caaers.domain.ExternalAdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 
@@ -37,6 +38,7 @@ public class ExternalAdverseEventDaoTest extends CaaersDbNoSecurityTestCase {
     	String verbatim = "the subject had vomiting on so and so date becauese of device1";
     	externalAdverseEvent.setVerbatim(verbatim);
     	externalAdverseEvent.setGrade(Grade.NORMAL);
+    	externalAdverseEvent.setStatus(ExternalAEReviewStatus.REJECTED);
     	
     	dao.save(externalAdverseEvent);
     	
@@ -48,6 +50,7 @@ public class ExternalAdverseEventDaoTest extends CaaersDbNoSecurityTestCase {
     	assertEquals(Grade.NORMAL,savedExternalAdverseEvent.getGrade());
     	assertEquals("term2",savedExternalAdverseEvent.getAdverseEventTerm());
     	assertEquals("code2",savedExternalAdverseEvent.getAdverseEventTermCode());
+    	assertEquals(ExternalAEReviewStatus.REJECTED,savedExternalAdverseEvent.getStatus());
     }
     
 }
