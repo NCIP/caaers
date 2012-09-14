@@ -8,6 +8,7 @@ public class ParticipantQuery extends AbstractQuery {
     private static final String IDENTIFIER_VALUE = "identifier";
     private static final String IDENTIFIER_TYPE = "type";
     private static final String STUDY_SITE_ID = "studySiteId";
+    private static final String STUDY_ID = "studyId";
     private static final String GENDER = "gender";
     private static final String RACE = "race";
     private static final String ETHNITICTY = "ethnicity";
@@ -56,6 +57,7 @@ public class ParticipantQuery extends AbstractQuery {
     }
     
     public void filterByStudySubjectIdentifier(String studySubjectIdentifier,String operator) {
+    	joinAssignment();
     	andWhere("lower(assignment.studySubjectIdentifier) "+operator+" :SSI");
     	if (operator.equals("like")) {
     		setParameter("SSI", getLikeValue(studySubjectIdentifier.toLowerCase()));
@@ -80,7 +82,7 @@ public class ParticipantQuery extends AbstractQuery {
         andWhere("identifier.type = :" + IDENTIFIER_TYPE);
         setParameter(IDENTIFIER_TYPE, type);
     }
-
+        
     public void filterByNotMachingStudySiteId(final Integer studySiteId) {
         andWhere("p.id not in (select assignments.participant.id from  StudyParticipantAssignment assignments where assignments.studySite.id=:"
                         + STUDY_SITE_ID + ")");

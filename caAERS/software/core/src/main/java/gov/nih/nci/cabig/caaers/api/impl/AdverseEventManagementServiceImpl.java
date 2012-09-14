@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.api.AbstractImportService;
 import gov.nih.nci.cabig.caaers.api.ProcessingOutcome;
 import gov.nih.nci.cabig.caaers.dao.*;
 import gov.nih.nci.cabig.caaers.dao.index.AdverseEventIndexDao;
+import gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationService;
@@ -95,15 +96,27 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 
 		Criteria criteria = adverseEventsInputMessage.getCriteria();
 		String studyIdentifier = criteria.getStudyIdentifier();
-		String participantIdentifier = criteria.getParticipantIdentifier();
+		String studySubjectIdentifier = criteria.getStudySubjectIdentifier();
 		// fetch study
 		Study dbStudy = fetchStudy(studyIdentifier, caaersServiceResponse);
+		if (dbStudy == null) {
+			//response must be populated with appropriate errors that lead to one of these being null
+			return caaersServiceResponse;
+		}
 		// fetch participant
-		Participant dbParticipant = fetchParticipant(participantIdentifier, caaersServiceResponse);
+		Participant dbParticipant = fetchParticipant(studySubjectIdentifier, dbStudy.getId(), caaersServiceResponse);
+		if (dbParticipant == null) {
+			//response must be populated with appropriate errors that lead to one of these being null
+			return caaersServiceResponse;
+		}
 		
 		// fetch study participant assignment
 		StudyParticipantAssignment assignment = fetchAssignment(caaersServiceResponse, studyIdentifier,
-				participantIdentifier, dbStudy, dbParticipant);
+				studySubjectIdentifier, dbStudy, dbParticipant);
+		if (assignment == null) {
+			//response must be populated with appropriate errors that lead to one of these being null
+			return caaersServiceResponse;
+		}
 
 		// fetch AE reporting period
 		AdverseEventReportingPeriod adverseEventReportingPeriod = fetchAEReportingPeriod(criteria, assignment,
@@ -112,7 +125,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 		// set default response message
 		caaersServiceResponse.getServiceResponse().setMessage("Completed the request processing sucessfully");
 
-		if (dbParticipant == null || dbStudy == null || assignment == null || adverseEventReportingPeriod == null) {
+		if (adverseEventReportingPeriod == null) {
 			//response must be populated with appropriate errors that lead to one of these being null
 			return caaersServiceResponse;
 		}
@@ -125,7 +138,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 			dbAdverseEvents = getAdverseEventDao().getByAssignment(
 					adverseEventReportingPeriod.getAssignment());
 		} catch (Exception e) {
-			String message = messageSource.getMessage("WS_AEMS_069", new String[] { studyIdentifier, participantIdentifier }, "", Locale
+			String message = messageSource.getMessage("WS_AEMS_069", new String[] { studyIdentifier, studySubjectIdentifier }, "", Locale
 					.getDefault());
 			logger.error(message, e);
 			Helper.populateError(caaersServiceResponse, "WS_AEMS_069", message);
@@ -323,7 +336,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 			} catch (Exception e) {				
 				  String message = messageSource.getMessage("WS_AEMS_069", new
 						  String[] { adverseEventsInputMessage.getCriteria().getStudyIdentifier()
-						  , adverseEventsInputMessage.getCriteria().getParticipantIdentifier()},
+						  , adverseEventsInputMessage.getCriteria().getStudySubjectIdentifier()},
 						  "", Locale.getDefault());
 				  logger.error(message, e);
 				  Helper.populateError(caaersServiceResponse, "WS_AEMS_069", message);
@@ -377,13 +390,13 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 	/**
 	 * @param caaersServiceResponse
 	 * @param studyIdentifier
-	 * @param participantIdentifier
+	 * @param studySubjectIdentifier
 	 * @param dbStudy
 	 * @param dbParticipant
 	 * @return StudyParticipantAssignment
 	 */
 	private StudyParticipantAssignment fetchAssignment(CaaersServiceResponse caaersServiceResponse,
-			String studyIdentifier, String participantIdentifier, Study dbStudy, Participant dbParticipant) {
+			String studyIdentifier, String studySubjectIdentifier, Study dbStudy, Participant dbParticipant) {
 		StudyParticipantAssignment assignment = null;
 		
 		try {
@@ -391,13 +404,13 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 			if (assignment != null) {
 				logger.info("Participant is  assigned to Study");
 			} else {
-				String message = messageSource.getMessage("WS_AEMS_005", new String[] { participantIdentifier,
+				String message = messageSource.getMessage("WS_AEMS_005", new String[] { studySubjectIdentifier,
 						studyIdentifier }, "", Locale.getDefault());
 				logger.error(message);
 				Helper.populateError(caaersServiceResponse, "WS_AEMS_005", message);
 			}
 		} catch (Exception e) {
-			String message = messageSource.getMessage("WS_AEMS_063", new String[] { studyIdentifier, participantIdentifier }, "", Locale
+			String message = messageSource.getMessage("WS_AEMS_063", new String[] { studyIdentifier, studySubjectIdentifier }, "", Locale
 					.getDefault());
 			logger.error(message, e);
 			Helper.populateError(caaersServiceResponse, "WS_AEMS_063", message);
@@ -406,43 +419,48 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 		return assignment;
 	}
 
-	private Participant fetchParticipant(String identifier, CaaersServiceResponse caaersServiceResponse) {
-		if (identifier == null) {
-			String message = messageSource.getMessage("WS_AEMS_032", new String[] { identifier }, "", Locale
+	private Participant fetchParticipant(String studySubjectIdentifier, Integer studyIdentifier, CaaersServiceResponse caaersServiceResponse) {
+		if (studySubjectIdentifier == null) {
+			String message = messageSource.getMessage("WS_AEMS_032", new String[] { studySubjectIdentifier }, "", Locale
 					.getDefault());
 			logger.error(message);
 			Helper.populateError(caaersServiceResponse, "WS_AEMS_032", message);
 			return null;
 		}
+		
+		if (studyIdentifier == null) {
+			String message = messageSource.getMessage("WS_AEMS_034", new String[] { studyIdentifier.toString() }, "", Locale
+					.getDefault());
+			logger.error(message);
+			Helper.populateError(caaersServiceResponse, "WS_AEMS_034", message);
+			return null;
+		}
+		
 		Participant dbParticipant = null;
 		try {
-			dbParticipant = fetchParticipant(identifier);
-			if (dbParticipant != null) {
+			ParticipantQuery pq = new ParticipantQuery();
+			pq.joinStudy();
+			pq.filterByStudySubjectIdentifier(studySubjectIdentifier, "=");
+			pq.filterByStudyId(studyIdentifier, "=");
+			
+			logger.error("AE part >>> " + pq.getQueryString());
+			List<Participant> dbParticipants = participantDao.searchParticipant(pq);			
+			if (dbParticipants != null && dbParticipants.size() == 1) {
 				logger.info("Participant exists in caAERS");
+				dbParticipant = dbParticipants.get(0);
 			} else {
-				String message = messageSource.getMessage("WS_AEMS_001", new String[] { identifier }, "", Locale
+				String message = messageSource.getMessage("WS_AEMS_005", new String[] { studySubjectIdentifier, studyIdentifier.toString() }, "", Locale
 						.getDefault());
 				logger.error(message);
-				Helper.populateError(caaersServiceResponse, "WS_AEMS_001", message);				
+				Helper.populateError(caaersServiceResponse, "WS_AEMS_005", message);				
 			}
+			
 		} catch (Exception e) {
 			String message = messageSource.getMessage("WS_AEMS_002", new String[] { e.getMessage() }, "", Locale
 					.getDefault());
 			logger.error("Participant Criteria to ParticipantDomain Conversion Failed ", e);
 			Helper.populateError(caaersServiceResponse, "WS_AEMS_002", message);
 			dbParticipant = null;
-		}
-		return dbParticipant;
-	}
-	
-
-	private Participant fetchParticipant(String identifier) {
-		Participant dbParticipant = null;
-		Identifier pi = new Identifier();
-		pi.setValue(identifier);
-		dbParticipant = participantDao.getByIdentifier(pi);
-		if (dbParticipant != null) {
-			participantDao.evict(dbParticipant);
 		}
 		return dbParticipant;
 	}
@@ -546,7 +564,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 		} catch (Exception e) {
 			throw new CaaersSystemException("WS_AEMS_062", 
 					messageSource.getMessage("WS_AEMS_062",
-					new String[] { criteria.getStudyIdentifier(), criteria.getParticipantIdentifier() }, "", Locale
+					new String[] { criteria.getStudyIdentifier(), criteria.getStudySubjectIdentifier() }, "", Locale
 							.getDefault()));
 		}
 
