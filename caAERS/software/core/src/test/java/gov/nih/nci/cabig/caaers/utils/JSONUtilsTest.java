@@ -16,7 +16,7 @@ public class JSONUtilsTest extends TestCase {
         t.setName("Nausea");
         ae.setTerm(t);
         ae.setGrade("NORMAL");
-        ae.setHosptialization("YES");
+        ae.setWhySerious("YES");
         ae.setExpected("true");
         ae.setAttribution("LIKELY");
         ae.setVerbatim("Sick to Stomach");

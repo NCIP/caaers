@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain.dto;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * @author: Biju Joseph
  */
@@ -16,6 +18,9 @@ public class TermDTO {
     private String otherSpecify;
     private String _otherSpecify;
 
+    public boolean isSame(TermDTO other){
+        return StringUtils.equals(this.code, other.code) && StringUtils.equals(this.otherSpecify, other.otherSpecify);
+    }
     public Integer getOldId() {
         return _id;
     }
@@ -68,4 +73,8 @@ public class TermDTO {
         this._otherSpecify = otherSpecify;
     }
 
+    public String getDisplayName(){
+        if(StringUtils.isEmpty(otherSpecify)) return name;
+        return name + ", " + otherSpecify;
+    }
 }
