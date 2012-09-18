@@ -1,6 +1,9 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
+import gov.nih.nci.cabig.caaers.validation.AdverseEventGroup;
+import gov.nih.nci.cabig.caaers.validation.fields.validators.NotNullConstraint;
+import gov.nih.nci.cabig.caaers.validation.fields.validators.NumberRangeConstraint;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import java.util.Date;
@@ -74,6 +77,8 @@ public class ExternalAdverseEvent extends AbstractMutableDomainObject{
     /** The Attribution. */
     private String attribution;
     
+    private ExternalAdverseEventReportingPeriod externalAdverseEventReportingPeriod;
+    
     @Enumerated(EnumType.STRING)
     public ExternalAEReviewStatus getStatus() {
 		return status;
@@ -85,7 +90,7 @@ public class ExternalAdverseEvent extends AbstractMutableDomainObject{
 
 	private Date creationDate = new Date();
     
-    private ExternalAEReviewStatus status;
+    private ExternalAEReviewStatus status = ExternalAEReviewStatus.PENDING;
     
     public Date getCreationDate() {
 		return creationDate;
@@ -106,10 +111,22 @@ public class ExternalAdverseEvent extends AbstractMutableDomainObject{
 			ExternalAdverseEventReportingPeriod externalAdverseEventReportingPeriod) {
 		this.externalAdverseEventReportingPeriod = externalAdverseEventReportingPeriod;
 	}
+	
+	
+	 /**
+     * This method will return the display name of this adverse event.
+     *
+     * @return the display name
+     */
+    @Transient
+    public String getDisplayName(){
+    	StringBuilder name = new StringBuilder(this.getAdverseEventTerm());
+    	return name.toString();
+    }
 
-	private ExternalAdverseEventReportingPeriod externalAdverseEventReportingPeriod;
-    
     @Enumerated(EnumType.ORDINAL)
+    @NotNullConstraint(groups=AdverseEventGroup.class, fieldPath="adverseEvents[].grade")
+    @NumberRangeConstraint(groups=AdverseEventGroup.class, fieldPath="adverseEvents[].grade",begin=1, end=5)
 	public Grade getGrade() {
 		return grade;
 	}
@@ -118,6 +135,7 @@ public class ExternalAdverseEvent extends AbstractMutableDomainObject{
 		return startDate;
 	}
 
+	@NotNullConstraint(groups=AdverseEventGroup.class, fieldPath="adverseEvents[].adverseEventCtcTerm")
 	public String getAdverseEventTerm() {
 		return adverseEventTerm;
 	}

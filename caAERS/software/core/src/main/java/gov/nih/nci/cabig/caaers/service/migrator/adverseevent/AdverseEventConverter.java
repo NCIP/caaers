@@ -127,7 +127,7 @@ public class AdverseEventConverter {
 	
 	
 	public void convertAdverseEventDtoToExternalAdverseEventDTO(AdverseEventType adverseEventDto, 
-			ExternalAdverseEvent adverseEvent, AeTerminology terminology  , Date startDateOfFirstCourse, String operation) throws CaaersSystemException{
+			ExternalAdverseEvent adverseEvent, AeTerminology terminology  , Date startDateOfFirstCourse) throws CaaersSystemException{
 		if(adverseEvent == null){
 			throw new IllegalArgumentException("adverse event cannot be null");
 		}
@@ -186,11 +186,11 @@ public class AdverseEventConverter {
 			
 			// populate adverse event term, code and other value
 
-			if (operation.equals(AdverseEventManagementServiceImpl.CREATE) || operation.equals(AdverseEventManagementServiceImpl.UPDATE)) {
-				if (terminology.getCtcVersion() != null && adverseEventDto.getCtepCode() != null) {
-					populateCtcTermOfExternalAdverseEvent(adverseEventDto,adverseEvent,terminology.getCtcVersion());
-				}
+			if (terminology.getCtcVersion() != null && adverseEventDto.getCtepCode() != null) {
+				populateCtcTermOfExternalAdverseEvent(adverseEventDto,adverseEvent,terminology.getCtcVersion());
 			}
+			
+			adverseEvent.setExternalId(adverseEventDto.getExternalId());
 			
 		}catch(Exception e){
 			throw new CaaersSystemException(e);

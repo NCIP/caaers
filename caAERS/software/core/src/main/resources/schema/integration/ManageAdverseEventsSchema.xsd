@@ -74,6 +74,7 @@
 	                    <xs:element minOccurs="1" name="treatmentAssignmentCode" type="xs:string"/>
 	                    <xs:element minOccurs="1" name="otherTreatmentAssignmentDescription" type="xs:string"/>
                     </xs:choice>
+                    <xs:element minOccurs="0" name="externalId" type="xs:string"/>
                 </xs:sequence> 
     </xs:complexType>
 

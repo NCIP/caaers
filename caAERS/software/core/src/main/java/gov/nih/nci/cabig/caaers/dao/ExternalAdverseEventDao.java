@@ -1,7 +1,12 @@
 package gov.nih.nci.cabig.caaers.dao;
 
+import gov.nih.nci.cabig.caaers.dao.query.UpdatedExternalAdverseEventsStatusQuery;
+import gov.nih.nci.cabig.caaers.domain.ExternalAEReviewStatus;
 import gov.nih.nci.cabig.caaers.domain.ExternalAdverseEvent;
 
+import java.util.List;
+
+import org.hibernate.Query;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class ExternalAdverseEventDao extends CaaersDao<ExternalAdverseEvent> {
 	
+  private static final String UPDATE_AE_STATUS_HQL = "update ExternalAdverseEvent eae set eae.status = :newStatus where " +
+  		"eae.status = :oldStatus and eae.externalId in (:externalIds)";
+
     @Override
     @Transactional(readOnly = true, propagation= Propagation.NOT_SUPPORTED)
     public Class<ExternalAdverseEvent> domainClass() {
@@ -28,6 +36,18 @@ public class ExternalAdverseEventDao extends CaaersDao<ExternalAdverseEvent> {
     @Transactional(readOnly = false)
     public void save(final ExternalAdverseEvent externalAdverseEvent) {
         getHibernateTemplate().saveOrUpdate(externalAdverseEvent);
+    }
+    
+    @Transactional(readOnly = false)
+    public void updateStatus(ExternalAEReviewStatus newStatus,ExternalAEReviewStatus oldStatus, List<String> externalIds) {
+    	UpdatedExternalAdverseEventsStatusQuery updateQuery = new UpdatedExternalAdverseEventsStatusQuery(UPDATE_AE_STATUS_HQL);
+    	updateQuery.setParameter("newStatus", newStatus);
+    	updateQuery.setParameter("oldStatus", oldStatus);
+    	updateQuery.setParameter("externalIds", externalIds);
+    	
+    	Query query = getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery(UPDATE_AE_STATUS_HQL);
+    	query.executeUpdate();
+    	
     }
 
 }

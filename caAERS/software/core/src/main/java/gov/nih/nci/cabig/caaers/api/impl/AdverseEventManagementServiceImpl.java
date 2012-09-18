@@ -1,14 +1,43 @@
 package gov.nih.nci.cabig.caaers.api.impl;
 
-import com.semanticbits.rules.impl.BusinessRulesExecutionServiceImpl;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.api.AbstractImportService;
 import gov.nih.nci.cabig.caaers.api.ProcessingOutcome;
-import gov.nih.nci.cabig.caaers.dao.*;
+import gov.nih.nci.cabig.caaers.dao.AdverseEventDao;
+import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
+import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
+import gov.nih.nci.cabig.caaers.dao.ExternalAdverseEventDao;
+import gov.nih.nci.cabig.caaers.dao.ExternalAdverseEventReportingPeriodDao;
+import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
+import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.index.AdverseEventIndexDao;
 import gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery;
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.domain.AeTerminology;
+import gov.nih.nci.cabig.caaers.domain.Ctc;
+import gov.nih.nci.cabig.caaers.domain.Epoch;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.ExternalAEReviewStatus;
+import gov.nih.nci.cabig.caaers.domain.ExternalAdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.ExternalAdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
+import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
+import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AdverseEventMeddraLowLevelTermType;
+import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AdverseEventType;
+import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AdverseEvents;
+import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AdverseEventsInputMessage;
+import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.Criteria;
+import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationService;
 import gov.nih.nci.cabig.caaers.service.AdverseEventReportingPeriodService;
 import gov.nih.nci.cabig.caaers.service.migrator.adverseevent.AdverseEventConverter;
@@ -16,8 +45,22 @@ import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.validation.AdverseEventGroup;
 import gov.nih.nci.cabig.caaers.validation.ValidationError;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
-import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.*;
-import gov.nih.nci.cabig.caaers.integration.schema.common.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import javax.validation.groups.Default;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -29,12 +72,7 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 
-import java.util.*;
-import java.util.Map.Entry;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-import javax.validation.groups.Default;
+import com.semanticbits.rules.impl.BusinessRulesExecutionServiceImpl;
 
 public class AdverseEventManagementServiceImpl extends AbstractImportService implements ApplicationContextAware {
 
@@ -51,6 +89,13 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 	protected StudyParticipantAssignmentDao studyParticipantAssignmentDao;
 	protected AdverseEventIndexDao adverseEventIndexDao;
 	protected AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
+	protected ExternalAdverseEventReportingPeriodDao externalAdverseEventReportingPeriodDao;
+	protected ExternalAdverseEventDao externalAdverseEventDao;
+	public void setExternalAdverseEventDao(
+			ExternalAdverseEventDao externalAdverseEventDao) {
+		this.externalAdverseEventDao = externalAdverseEventDao;
+	}
+
 	protected TreatmentAssignmentDao treatmentAssignmentDao;
 	protected CtcTermDao ctcTermDao;
 
@@ -77,7 +122,284 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 	}
 
 	public CaaersServiceResponse createAdverseEvent(AdverseEventsInputMessage adverseEventsInputMessage) {
-		return saveAdverseEvent(adverseEventsInputMessage, CREATE);
+		Boolean createProvisionalAdverseEvents = true;
+		if(createProvisionalAdverseEvents) {
+			return createProvisionalAdverseEvents(adverseEventsInputMessage);
+		} else {
+			return saveAdverseEvent(adverseEventsInputMessage, CREATE);
+		}
+	}
+	
+	private boolean validateAdverseEventInputMessage(AdverseEventsInputMessage adverseEventsInputMessage, CaaersServiceResponse caaersServiceResponse){
+		
+		Boolean validMessage = true;
+		if (adverseEventsInputMessage.getAdverseEvents() == null) {
+			Helper.populateError(caaersServiceResponse, "WS_AEMS_025", messageSource.getMessage(
+					"WS_AEMS_025", new String[] {}, "", Locale.getDefault()));
+			validMessage = false;
+		}
+		
+		if (adverseEventsInputMessage.getCriteria().getCourse() == null) {			
+			throw new CaaersSystemException("WS_AEMS_065", 
+					messageSource.getMessage("WS_AEMS_065",
+					new String[] { }, "", Locale.getDefault()));
+		}
+		
+		return validMessage;
+	}
+	
+	/**
+	 * @param criteria
+	 * @param assignment
+	 * @param caaersServiceResponse
+	 * @return AdverseEventReportingPeriod
+	 */
+	private AdverseEventReportingPeriod fetchAEReportingPeriod(Criteria criteria,
+			StudyParticipantAssignment assignment, CaaersServiceResponse caaersServiceResponse, String externalId) {
+		AdverseEventReportingPeriod adverseEventReportingPeriod = null;
+		if (criteria.getCourse() != null) {
+			try {
+				adverseEventReportingPeriod = createDomainReportingPeriodIfNotExists(criteria, assignment, externalId);
+			} catch (CaaersSystemException e) {
+				logger.error(e);
+				Helper.populateError(caaersServiceResponse, e.getErrorCode(), e.getMessage());
+			}
+		}
+		return adverseEventReportingPeriod;
+	}
+	
+	private AdverseEventReportingPeriod createDomainReportingPeriodIfNotExists(Criteria criteria, StudyParticipantAssignment assignment, String externalId) throws CaaersSystemException {
+		List<AdverseEventReportingPeriod> rPeriodList = adverseEventReportingPeriodDao.getByAssignment(assignment);
+		
+		String treatmentAssignmentCode = null;
+		String otherTreatmentAssignmentDescription = null; 
+		if((treatmentAssignmentCode = criteria.getCourse().getTreatmentAssignmentCode()) != null){
+			for (AdverseEventReportingPeriod matchingDomainAdverseEventReportingPeriod : rPeriodList) {
+				// compare TAC and treatment type to determine if matchingDomainAdverseEventReportingPeriod exists.
+				if(matchingDomainAdverseEventReportingPeriod.getTreatmentAssignment().getCode() != null && matchingDomainAdverseEventReportingPeriod.
+						getTreatmentAssignment().getCode().equals(treatmentAssignmentCode) && criteria.getCourse().getTreatmentType().
+						equals(matchingDomainAdverseEventReportingPeriod.getEpoch().getName())){
+					return matchingDomainAdverseEventReportingPeriod;
+				}
+			}
+		} else if ((otherTreatmentAssignmentDescription = criteria.getCourse().getOtherTreatmentAssignmentDescription()) != null){
+					for (AdverseEventReportingPeriod matchingDomainAdverseEventReportingPeriod : rPeriodList) {
+						if(matchingDomainAdverseEventReportingPeriod.getTreatmentAssignment().getDescription() != null && matchingDomainAdverseEventReportingPeriod.
+								getTreatmentAssignmentDescription().equals(otherTreatmentAssignmentDescription)){
+							return matchingDomainAdverseEventReportingPeriod;
+						}
+					}
+		} else {
+			throw new CaaersSystemException("WS_AEMS_070", "One of treatment assignment code or other treatment assignment description is required");
+		}
+		
+		// get study from assignment
+		Study study = assignment.getStudySite().getStudy();
+		Date xmlStartDate = criteria.getCourse().getStartDateOfThisCourse().toGregorianCalendar().getTime();
+		Date xmlEndDate = null;
+		if (criteria.getCourse().getEndDateOfThisCourse() != null) {
+			xmlEndDate = criteria.getCourse().getEndDateOfThisCourse().toGregorianCalendar().getTime();
+		}
+		
+		AdverseEventReportingPeriod newAeReportingPeriod = new AdverseEventReportingPeriod();
+		
+		TreatmentAssignment ta = resolveTreamtmentAssignment(criteria, study);
+		newAeReportingPeriod.setTreatmentAssignment(ta);
+		newAeReportingPeriod.setStartDate(xmlStartDate);
+		newAeReportingPeriod.setEndDate(xmlEndDate);
+		if(criteria.getCourse().getCycleNumber() != null) newAeReportingPeriod.setCycleNumber(criteria.getCourse().getCycleNumber().intValue());
+		assignment.addReportingPeriod(newAeReportingPeriod);
+		Epoch epochToSave = getEpoch(criteria, study);
+		// CAAERS-2813
+		if (epochToSave == null) {
+			throw new CaaersSystemException("WS_AEMS_010", messageSource.getMessage("WS_AEMS_010",
+					new String[] { criteria.getCourse().getTreatmentType() }, "", Locale.getDefault()));
+		}
+		newAeReportingPeriod.setEpoch(epochToSave);
+		// get the externalId from the message and set here.
+		newAeReportingPeriod.setExternalId(externalId);
+		
+		Map<String, String> errors = validateRepPeriodDates(newAeReportingPeriod, rPeriodList,
+				assignment.getStartDateOfFirstCourse());
+		
+		// update workflow to DCC
+	//	adverseEventRoutingAndReviewRepository.advanceReportingPeriodWorkflow(newAeReportingPeriod.getWorkflowId(), null, newAeReportingPeriod, getUserId());
+		if (errors.size() == 0) {
+			try {
+				adverseEventReportingPeriodDao.save(newAeReportingPeriod);
+			} catch (Exception e) {
+				throw new CaaersSystemException("WS_AEMS_068", messageSource.getMessage("WS_AEMS_068",
+						new String[] { }, "", Locale.getDefault()));
+			}
+			
+		} else {
+			String keys[] = errors.keySet().toArray(new String[] {});
+			throw new CaaersSystemException(keys[0], errors.get(keys[0]));
+		}
+		
+			
+		return newAeReportingPeriod;
+	}
+	
+	private Epoch getEpoch(Criteria criteria, Study study){
+		List<Epoch> epochs = study.getEpochs();
+		if (StringUtils.isNotEmpty(criteria.getCourse().getTreatmentType())) {
+			for (Epoch epoch : epochs) {
+				if (epoch.getName().equals(criteria.getCourse().getTreatmentType())) {
+					return epoch;
+				}
+			}
+		}
+		
+		return null;
+	}
+	
+	private CaaersServiceResponse createProvisionalAdverseEvents(AdverseEventsInputMessage adverseEventsInputMessage){
+		CaaersServiceResponse caaersServiceResponse = Helper.createResponse();
+		if (!validateAdverseEventInputMessage(adverseEventsInputMessage,caaersServiceResponse)){
+			return caaersServiceResponse;
+		}
+		
+		Criteria criteria = adverseEventsInputMessage.getCriteria();
+		String studyIdentifier = criteria.getStudyIdentifier();
+		String studySubjectIdentifier = criteria.getStudySubjectIdentifier();
+		// fetch study
+		Study dbStudy = fetchStudy(studyIdentifier, caaersServiceResponse);
+		if (dbStudy == null) {
+			//response must be populated with appropriate errors that lead to one of these being null
+			return caaersServiceResponse;
+		}
+		// fetch participant
+		Participant dbParticipant = fetchParticipant(studySubjectIdentifier, dbStudy.getId(), caaersServiceResponse);
+		if (dbParticipant == null) {
+			//response must be populated with appropriate errors that lead to one of these being null
+			return caaersServiceResponse;
+		}
+		
+		// fetch study participant assignment
+		StudyParticipantAssignment assignment = fetchAssignment(caaersServiceResponse, studyIdentifier,
+				studySubjectIdentifier, dbStudy, dbParticipant);
+		if (assignment == null) {
+			//response must be populated with appropriate errors that lead to one of these being null
+			return caaersServiceResponse;
+		}
+		
+		
+		ExternalAdverseEventReportingPeriod externalAdverseEventReportingPeriod = buildExternalReportingPeriod(adverseEventsInputMessage, caaersServiceResponse, assignment, null);
+		
+		// fetch AE reporting period
+		AdverseEventReportingPeriod adverseEventReportingPeriod = fetchAEReportingPeriod(criteria, assignment, caaersServiceResponse, 
+				adverseEventsInputMessage.getCriteria().getCourse().getExternalId());
+		
+		// update the  the status of the old adv events( from earlier msgs), that have same external ids (from the current msg) and which are 
+		// still in pending to ignored.
+		List<String> externalIds = getExternalIdsOfExternalAEs(externalAdverseEventReportingPeriod);
+		if(externalIds != null && externalIds.size() > 0){
+			externalAdverseEventDao.updateStatus(ExternalAEReviewStatus.IGNORED, ExternalAEReviewStatus.PENDING, externalIds);
+		}
+		
+		// associate externalAdverseEventReportingPeriod to the domain reporting period
+		externalAdverseEventReportingPeriod.setDomainReportingPeriod(adverseEventReportingPeriod);
+		
+		// save external reporting period along with the external adverse events
+		saveExternalAdverseEventReportingPeriod(externalAdverseEventReportingPeriod, caaersServiceResponse);
+		
+
+		return caaersServiceResponse;
+	}
+	
+	private List<String> getExternalIdsOfExternalAEs(ExternalAdverseEventReportingPeriod externalAdverseEventReportingPeriod){
+		List<String> externalIds = new ArrayList<String>();
+		for(ExternalAdverseEvent externalAdverseEvent : externalAdverseEventReportingPeriod.getExternalAdverseEvents()){
+			externalIds.add(externalAdverseEvent.getExternalId());
+		}
+		
+		return externalIds;
+	}
+	
+	public void saveExternalAdverseEventReportingPeriod(ExternalAdverseEventReportingPeriod externalAdverseEventReportingPeriod, CaaersServiceResponse caaersServiceResponse){
+		try{
+			externalAdverseEventReportingPeriodDao.save(externalAdverseEventReportingPeriod);
+			caaersServiceResponse.getServiceResponse().setMessage("Completed the request processing successfully");
+		}catch(Exception ex){
+			String message = messageSource.getMessage("WS_AEMS_071", null, Locale.getDefault());
+			logger.error(message, ex);
+			Helper.populateError(caaersServiceResponse, "WS_AEMS_071", message);
+			logger.error(ex.getMessage());
+			caaersServiceResponse.getServiceResponse().setMessage("Error while saving provisional adverse event reporting period.");
+		}
+		
+	}
+	
+	
+	private ExternalAdverseEventReportingPeriod buildExternalReportingPeriod(AdverseEventsInputMessage adverseEventsInputMessage, CaaersServiceResponse caaersServiceResponse, StudyParticipantAssignment assignment,String externalId) throws CaaersSystemException {
+		
+		Criteria criteria = adverseEventsInputMessage.getCriteria();
+		// get study from assignment
+		Study study = assignment.getStudySite().getStudy();
+		Date xmlStartDate = criteria.getCourse().getStartDateOfThisCourse().toGregorianCalendar().getTime();
+		Date xmlEndDate = null;
+		if (criteria.getCourse().getEndDateOfThisCourse() != null) {
+			xmlEndDate = criteria.getCourse().getEndDateOfThisCourse().toGregorianCalendar().getTime();
+		}
+		ExternalAdverseEventReportingPeriod externalAeReportingPeriod = new ExternalAdverseEventReportingPeriod();
+		externalAeReportingPeriod.setStartDate(xmlStartDate);
+		externalAeReportingPeriod.setEndDate(xmlEndDate);
+		if(criteria.getCourse().getCycleNumber() != null){
+			externalAeReportingPeriod.setCycleNumber(criteria.getCourse().getCycleNumber().intValue());
+		}
+		
+		if(criteria.getCourse().getTreatmentAssignmentCode() != null){
+			TreatmentAssignment ta = resolveTreamtmentAssignment(criteria, study);
+			externalAeReportingPeriod.setTreatmentAssignmentCode(ta.getCode());
+		} else {
+			externalAeReportingPeriod.setOtherTreatmentAssignmentDescription(criteria.getCourse().getOtherTreatmentAssignmentDescription());
+		}
+		externalAeReportingPeriod.setExternalId(externalId);
+		
+		processExternalAdverseEvents(adverseEventsInputMessage,caaersServiceResponse,study, assignment, externalAeReportingPeriod);
+		
+		
+		return externalAeReportingPeriod;
+	}
+	
+	private void processExternalAdverseEvents(AdverseEventsInputMessage adverseEventsInputMessage, CaaersServiceResponse caaersServiceResponse, 
+			Study study, StudyParticipantAssignment assignment,	ExternalAdverseEventReportingPeriod externalAdverseEventReportingPeriod){
+		AdverseEvents xmlAdverseEvents = adverseEventsInputMessage.getAdverseEvents();
+		int index =1;
+		for(AdverseEventType adverseEventDto : xmlAdverseEvents.getAdverseEvent()){
+			ExternalAdverseEvent externalAdverseEvent = new ExternalAdverseEvent();
+			adverseEventConverter.convertAdverseEventDtoToExternalAdverseEventDTO(
+					adverseEventDto, externalAdverseEvent, study.getAeTerminology(), assignment.getStartDateOfFirstCourse());
+				try {
+					
+					Set<ConstraintViolation<ExternalAdverseEvent>> constraintViolations = validator.validate(externalAdverseEvent, AdverseEventGroup.class, Default.class);
+					convertConstraintViolationsToProcessOutcomes(
+							externalAdverseEvent, String.valueOf(index), constraintViolations, caaersServiceResponse);
+					// add it to external adverse event reporting period to be saved ...
+					if(constraintViolations.isEmpty()) {
+						externalAdverseEventReportingPeriod.addExternalAdverseEvent(externalAdverseEvent);
+					}
+				} catch (CaaersSystemException e) {
+					Helper.populateErrorOutcome(caaersServiceResponse, null, null, (index) + "", Arrays
+							.asList(new String[] { e.getMessage() }));
+				}
+			index++;
+		}
+	}
+	
+	private TreatmentAssignment resolveTreamtmentAssignment(Criteria criteria, Study study){
+		TreatmentAssignment ta = null;
+		try {
+			ta = treatmentAssignmentDao.getAssignmentsByStudyIdExactMatch(criteria
+					.getCourse().getTreatmentAssignmentCode(), study.getId());
+		} catch (Exception e) {
+			throw new CaaersSystemException("WS_AEMS_064", messageSource.getMessage("WS_AEMS_064",
+					new String[] { String.valueOf(study.getId()) }, "", Locale
+							.getDefault()));
+		}
+		
+		return ta;
 	}
 
 	private CaaersServiceResponse saveAdverseEvent(AdverseEventsInputMessage adverseEventsInputMessage, String operation) {
@@ -594,15 +916,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 				adverseEventReportingPeriod.setTreatmentAssignmentDescription(criteria.getCourse()
 						.getOtherTreatmentAssignmentDescription());
 			} else {
-				TreatmentAssignment ta = null;
-				try {
-					ta = treatmentAssignmentDao.getAssignmentsByStudyIdExactMatch(criteria
-							.getCourse().getTreatmentAssignmentCode(), study.getId());
-				} catch (Exception e) {
-					throw new CaaersSystemException("WS_AEMS_064", messageSource.getMessage("WS_AEMS_064",
-							new String[] { String.valueOf(study.getId()) }, "", Locale
-									.getDefault()));
-				}
+				TreatmentAssignment ta = resolveTreamtmentAssignment(criteria, study);
 				if (ta != null) {
 					adverseEventReportingPeriod.setTreatmentAssignment(ta);
 				} else {
@@ -925,6 +1239,20 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 		}
 	}
 	
+	private void convertConstraintViolationsToProcessOutcomes( 
+			ExternalAdverseEvent adverseEvent, String index, Set<ConstraintViolation<ExternalAdverseEvent>> constraintViolations, 
+			CaaersServiceResponse caaersServiceResponse) {
+		String valErrmsg = null;
+		for (ConstraintViolation violation : constraintViolations) {
+			valErrmsg = violation.getMessage() 
+				+ " (" + violation.getPropertyPath() 
+				+ ") in " + adverseEvent.getClass().getSimpleName() 
+				+ "(" + adverseEvent.getDisplayName() + ")";
+			Helper.populateErrorOutcome(caaersServiceResponse, null, null, index, Arrays
+					.asList(new String[] { valErrmsg }));
+		}
+	}
+	
  	private void notifyStudyPersonnel(StudyParticipantAssignment assignment) throws MailException {
 		List<String> emails = new ArrayList<String>();
 		MailException mailException = null;
@@ -1051,6 +1379,12 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 	public void setValidator(Validator validator) {
 		this.validator = validator;
 	}
+	
+	public void setExternalAdverseEventReportingPeriodDao(
+			ExternalAdverseEventReportingPeriodDao externalAdverseEventReportingPeriodDao) {
+		this.externalAdverseEventReportingPeriodDao = externalAdverseEventReportingPeriodDao;
+	}
+
 	
 	
 	/*

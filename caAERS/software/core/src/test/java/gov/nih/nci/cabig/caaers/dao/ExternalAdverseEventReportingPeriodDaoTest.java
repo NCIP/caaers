@@ -46,7 +46,7 @@ public class ExternalAdverseEventReportingPeriodDaoTest extends CaaersDbNoSecuri
     	externalAeReportingPeriod.setName("Period2");
     	externalAeReportingPeriod.setStartDate(new Date());
     	externalAeReportingPeriod.setTreatmentAssignmentCode("Code2");
-    	externalAeReportingPeriod.setOtherDescription("Description2");
+    	externalAeReportingPeriod.setOtherTreatmentAssignmentDescription("Description2");
     	
     	externalAeReportingPeriod.addExternalAdverseEvent(createExternalAdverseEvent());
     	
@@ -59,7 +59,7 @@ public class ExternalAdverseEventReportingPeriodDaoTest extends CaaersDbNoSecuri
     	assertNotNull(savedExternalAeReportingPeriod.getAssignment());
     	assertEquals(-1000,savedExternalAeReportingPeriod.getAssignment().getId().intValue());
     	assertEquals(-1000,savedExternalAeReportingPeriod.getAssignment().getStudySite().getId().intValue());
-    	assertEquals("Description2",savedExternalAeReportingPeriod.getOtherDescription());
+    	assertEquals("Description2",savedExternalAeReportingPeriod.getOtherTreatmentAssignmentDescription());
     	assertEquals(ReviewStatus.APPROVED,savedExternalAeReportingPeriod.getReviewStatus());
     	assertEquals(1,savedExternalAeReportingPeriod.getExternalAdverseEvents().size());
     	assertEquals("term2",savedExternalAeReportingPeriod.getExternalAdverseEvents().get(0).getAdverseEventTerm());
@@ -86,7 +86,7 @@ public class ExternalAdverseEventReportingPeriodDaoTest extends CaaersDbNoSecuri
     	externalAeReportingPeriod.setName("Period2");
     	externalAeReportingPeriod.setStartDate(new Date());
     	externalAeReportingPeriod.setTreatmentAssignmentCode("Code2");
-    	externalAeReportingPeriod.setOtherDescription("Description2");
+    	externalAeReportingPeriod.setOtherTreatmentAssignmentDescription("Description2");
     	externalAeReportingPeriod.setExternalId("-2");
     	
     	dao.save(externalAeReportingPeriod);

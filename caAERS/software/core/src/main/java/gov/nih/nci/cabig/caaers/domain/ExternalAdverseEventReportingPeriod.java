@@ -10,7 +10,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -48,13 +47,13 @@ public class ExternalAdverseEventReportingPeriod extends AbstractMutableDomainOb
 	private Integer workflowId;
 	
 	/** The review status. */
-	private ReviewStatus reviewStatus;
+	private ReviewStatus reviewStatus = ReviewStatus.DRAFT_INCOMPLETE;
 	
 	/** The treatment assignment code. */
 	private String treatmentAssignmentCode;
 	
 	/** The treatment assignment description. */
-	private String otherDescription;
+	private String otherTreatmentAssignmentDescription;
 	
 	/** The start date. */
 	private Date startDate;
@@ -259,7 +258,17 @@ public class ExternalAdverseEventReportingPeriod extends AbstractMutableDomainOb
     	this.reviewStatus = reviewStatus;
     }
     
-    /**
+    @Column(name="other_description")
+    public String getOtherTreatmentAssignmentDescription() {
+		return otherTreatmentAssignmentDescription;
+	}
+
+	public void setOtherTreatmentAssignmentDescription(
+			String otherTreatmentAssignmentDescription) {
+		this.otherTreatmentAssignmentDescription = otherTreatmentAssignmentDescription;
+	}
+
+	/**
      * Sets the name.
      *
      * @param name the new name
@@ -268,21 +277,7 @@ public class ExternalAdverseEventReportingPeriod extends AbstractMutableDomainOb
 		this.name = name;
 	}
 
-    /**
-     * Gets the other description.
-     *
-     * @return the other description
-     */
-	public String getOtherDescription() {
-		return otherDescription;
-	}
-
-	public void setOtherDescription(String otherDescription) {
-		this.otherDescription = otherDescription;
-	}
-	
 	@Transient
-	
 	public StudyParticipantAssignment getAssignment(){
 		if(getDomainReportingPeriod() != null && getDomainReportingPeriod().getAssignment() != null){
 			return getDomainReportingPeriod().getAssignment();
