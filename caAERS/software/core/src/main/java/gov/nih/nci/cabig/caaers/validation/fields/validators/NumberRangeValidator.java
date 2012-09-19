@@ -11,6 +11,10 @@ import org.apache.commons.lang.math.NumberUtils;
 public class NumberRangeValidator extends FieldValidator<NumberRangeConstraint, Object> {
     int begin;
     int end;
+    
+    public NumberRangeValidator(){
+    	
+    }
 
     public NumberRangeValidator(int begin, int end) {
         this.begin = begin;
