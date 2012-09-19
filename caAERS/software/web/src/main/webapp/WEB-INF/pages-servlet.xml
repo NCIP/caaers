@@ -66,8 +66,8 @@
               <list>
                     <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Report Adverse Events" p:linkName="captureAdverseEventController"/>
                     <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Manage Reports" p:linkName="listAdverseEventsController"/>
-                    <!--<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Routing and Review" p:linkName="routingAndReviewController"/>-->
-                    <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Routing and Review" p:linkName="aeReconciliationController"/>
+                    <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Routing and Review" p:linkName="routingAndReviewController"/>
+                    <!--<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Routing and Review" p:linkName="aeReconciliationController"/>-->
               </list>
             </property>
       </bean>
@@ -184,8 +184,8 @@
       <list>
         <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Report Adverse Events" p:linkName="captureAdverseEventController"/>
         <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Manage Reports" p:linkName="listAdverseEventsController"/>
-        <!--<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Routing and Review" p:linkName="routingAndReviewController"/>-->
-        <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Routing and Review" p:linkName="aeReconciliationController"/>
+        <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Routing and Review" p:linkName="routingAndReviewController"/>
+        <!--<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Routing and Review" p:linkName="aeReconciliationController"/>-->
       </list>
     </property>
   </bean>
@@ -415,8 +415,8 @@
 
 
     <!--  AE   -->
-  <bean name="/ae/routingAndReview" id="aeReconciliationController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.AdverseEventReconciliationController"/>
-  <bean name="/ae/routingAndReviewx" id="routingAndReviewController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.RoutingAndReviewController"/>
+  <bean name="/ae/reconcileAe" id="aeReconciliationController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.AdverseEventReconciliationController"/>
+  <bean name="/ae/routingAndReview" id="routingAndReviewController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.RoutingAndReviewController"/>
   <bean name="/ae/listReviewComments" id="listReviewCommentsController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.RoutingAndReviewCommentController" />
   <bean name="/ae/captureRoutine" id="captureAdverseEventController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.CaptureAdverseEventController"/>
   <bean name="/ae/createReportingPeriod" id="createReportingPeriodController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.CreateReportingPeriodController"/>

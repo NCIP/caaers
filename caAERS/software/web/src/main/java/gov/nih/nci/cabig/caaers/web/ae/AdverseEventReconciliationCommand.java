@@ -14,6 +14,11 @@ import java.util.*;
  */
 public class AdverseEventReconciliationCommand {
 
+    private String rejectedExternalAeStr;
+    private String unmappedExternalAeStr;
+    private String unmappedInternalAeStr;
+    private String matchedAeMappingStr;
+
     private AdverseEventReportingPeriod reportingPeriod;
 
 
@@ -96,15 +101,18 @@ public class AdverseEventReconciliationCommand {
     public void link(Integer internalAeId, Integer externalAeId){
         AdverseEventDTO externalAe = find(externalAeId, externalAeList);
         AdverseEventDTO internalAe = find(internalAeId, internalAeList);
+        AdverseEventDTO oldExternalAe = null;
         if(externalAe != null) {
             unMappedExternalAeList.remove(externalAe);
         }
         if(internalAe != null) {
             unMappedInternalAeList.remove(internalAe);
+            oldExternalAe = matchedAeMapping.get(internalAe);
         }
-
+        if(oldExternalAe != null){
+            unMappedExternalAeList.add(oldExternalAe);
+        }
         if(internalAe != null && externalAe != null){
-            internalAe.setExternalID(externalAe.getExternalID());
             matchedAeMapping.put(internalAe, externalAe);
         }
 
@@ -219,5 +227,37 @@ public class AdverseEventReconciliationCommand {
 
     public void setMatchedAeMapping(Map<AdverseEventDTO, AdverseEventDTO> matchedAeMapping) {
         this.matchedAeMapping = matchedAeMapping;
+    }
+
+    public String getRejectedExternalAeStr() {
+        return rejectedExternalAeStr;
+    }
+
+    public void setRejectedExternalAeStr(String rejectedExternalAeStr) {
+        this.rejectedExternalAeStr = rejectedExternalAeStr;
+    }
+
+    public String getUnmappedExternalAeStr() {
+        return unmappedExternalAeStr;
+    }
+
+    public void setUnmappedExternalAeStr(String unmappedExternalAeStr) {
+        this.unmappedExternalAeStr = unmappedExternalAeStr;
+    }
+
+    public String getUnmappedInternalAeStr() {
+        return unmappedInternalAeStr;
+    }
+
+    public void setUnmappedInternalAeStr(String unmappedInternalAeStr) {
+        this.unmappedInternalAeStr = unmappedInternalAeStr;
+    }
+
+    public String getMatchedAeMappingStr() {
+        return matchedAeMappingStr;
+    }
+
+    public void setMatchedAeMappingStr(String matchedAeMappingStr) {
+        this.matchedAeMappingStr = matchedAeMappingStr;
     }
 }

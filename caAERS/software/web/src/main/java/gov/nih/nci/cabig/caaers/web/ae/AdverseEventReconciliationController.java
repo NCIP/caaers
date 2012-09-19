@@ -31,6 +31,7 @@ public class AdverseEventReconciliationController extends AutomaticSaveAjaxableF
         Flow<AdverseEventReconciliationCommand> flow = new Flow<AdverseEventReconciliationCommand>("Reconcile Adverse Events");
         flow.addTab(new AdverseEventLinkTab("Link Adverse Event Data", "Link Adverse Events", "ae/ae_reconcile_link"));
         flow.addTab(new AdverseEventMergeTab("Merge Adverse Event Data", "Merge Adverse Events", "ae/ae_reconcile_merge"));
+        flow.addTab(new AdverseEventSelectTab("Choose New Adverse Event Data", "Choose Adverse Events", "ae/ae_reconcile_choose"));
         flow.addTab(new AdverseEventReconciliationReportTab("Reconciliation Summary", "Summary", "ae/ae_reconcile_summary"));
         setFlow(flow);
     }

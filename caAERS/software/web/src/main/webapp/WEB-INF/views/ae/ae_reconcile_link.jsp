@@ -36,17 +36,6 @@
 
 <script type="text/javascript">
 
-AE.aeTbl1TrTemplate ='<tr id="aewd-#{widgetId}-t1tr#{idx}">' +
-        '           <td width="${widthSource}">#{source}</td>' +
-        '           <td width="${widthId}">#{id}</td>' +
-        '           <td width="${widthTerm}">#{term}</td>' +
-        '           <td width="${widthGrade}">#{grade}</td>' +
-        '           <td width="${widthStartDate}">#{startDate}</td>' +
-        '           <td width="${widthEndDate}">#{endDate}</td>' +
-        '           <td width="${widthVerbatim}">#{verbatim}</td>' +
-        '           <td width="${widthWhySerious}">#{whySerious}</td>' +
-        '           <td width="${widthAttribution}">#{attribution}</td>' +
-        '         </tr>';
 AE.linkEvent = new YAHOO.util.CustomEvent('onLink');
 AE.unlinkEvent = new YAHOO.util.CustomEvent('onUnlink');
 AE.rejectEvent = new YAHOO.util.CustomEvent('onReject');
@@ -452,6 +441,14 @@ AE.aeWidget = Class.create({
 
 boostrapVariables();
 
+Event.observe(window, "load", function() {
+    Event.observe(command, "submit", function(){
+       $('rejectedExternalAeStr').value = AE.eRejected.join(',');
+       $('unmappedInternalAeStr').value = AE.iUnmapped.join(',');
+       $('unmappedExternalAeStr').value = AE.eUnmapped.join(',');
+       $('matchedAeMappingStr').value = AE.aeMappingHash.toQueryString();
+    });
+});
 
 </script>
 
@@ -493,7 +490,10 @@ boostrapVariables();
         </c:forEach>
         </tbody>
     </table>
-
+     <form:hidden id="matchedAeMappingStr" path="matchedAeMappingStr"  />
+     <form:hidden id="unmappedInternalAeStr" path="unmappedInternalAeStr"  />
+     <form:hidden id="unmappedExternalAeStr" path="unmappedExternalAeStr"  />
+     <form:hidden id="rejectedExternalAeStr" path="rejectedExternalAeStr"  />
     </jsp:attribute>
     </tags:tabForm>
 </body>
