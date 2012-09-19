@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 
 import java.util.Map;
@@ -16,6 +17,7 @@ public class AdverseEventReconciliationReportTab extends TabWithFields<AdverseEv
 
     @Override
     public Map<String, InputFieldGroup> createFieldGroups(AdverseEventReconciliationCommand command) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        InputFieldGroupMap map = new InputFieldGroupMap();
+        return map;
     }
 }

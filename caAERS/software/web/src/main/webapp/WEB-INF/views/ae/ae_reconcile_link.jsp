@@ -17,12 +17,10 @@
 <style type="text/css">
     .ae-link-widget{}
     tr.aeWorkedOn td {
-
-        background-color: #adff2f;
+        background-color: #fffccc;
     }
     .wgtBtnDiv{
         width: 7em;
-        background: #ffd700;
     }
     .picker-div{
         height: 100%;

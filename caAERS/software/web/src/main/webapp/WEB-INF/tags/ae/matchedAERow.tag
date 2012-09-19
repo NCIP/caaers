@@ -9,7 +9,9 @@
 
 <c:if test="${fillerRow}">
     <tr>
-        <td colspan="10" class="fillerRow">================================================================</td>
+        <td colspan="10" class="fillerRow">
+            <hr align="center" width="96%" size="1" color="blue">
+        </td>
     </tr>
 </c:if>
 
