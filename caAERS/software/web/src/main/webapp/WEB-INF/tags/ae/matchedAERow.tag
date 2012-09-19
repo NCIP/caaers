@@ -24,7 +24,7 @@
             <td width="${requestScope.widthGrade}">${ae1.grade}</td>
             <td width="${requestScope.widthStartDate}">${ae1.startDate}</td>
             <td width="${requestScope.widthEndDate}">${ae1.endDate}</td>
-            <td width="${requestScope.widthVerbatim}">${ae1.verbatim} to test the width this is necessary</td>
+            <td width="${requestScope.widthVerbatim}">${ae1.verbatim}</td>
             <td width="${requestScope.widthWhySerious}">${ae1.whySerious}</td>
             <td width="${requestScope.widthAttribution}">${ae1.attribution}</td>
             <td width="${requestScope.widthActions}" class="actionBtns">
@@ -33,7 +33,7 @@
                                   onclick="wt${widgetId}.onEditBtnClick(this);" />
                 </div>
                 <div id="aewd-${widgetId}-div-cancel" style="display:none;" class="wgtBtnDiv">
-                    <tags:button  id="aewd-${widgetId}-btn-cancel" value="Cancel" color="green" size="small" cssClass="wgtBtn wgtBtnCancel" type="button" icon="-"
+                    <tags:button  id="aewd-${widgetId}-btn-cancel" value="Save" color="blue" size="small" cssClass="wgtBtn wgtBtnCancel" type="button" icon="save"
                                   onclick="wt${widgetId}.onCancelBtnClick(this);" />
                 </div>
                 <div id="aewd-${widgetId}-div-find" style="${empty ae2 ? '' :'display:none;'}"  class="wgtBtnDiv" >

@@ -457,7 +457,7 @@ Event.observe(window, "load", function() {
 <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section11courseandagent">
 <jsp:attribute name="singleFields">
 <div class="eXtremeTable" >
-    <table class="tableRegion" width="100%" border="1" cellspacing="0" cellpadding="0">
+    <table class="tableRegion" width="100%" border="0" cellspacing="0" cellpadding="0">
         <thead>
         <tr class="label" align="center">
             <td class="tableHeader" width="${widthSource}">&nbsp;&nbsp;&nbsp;</td>
