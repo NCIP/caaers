@@ -193,10 +193,10 @@ th.yui-dt-hidden .yui-dt-resizer {
 .yui-dt-label .yui-dt-sortable { color: white; text-decoration: none }
 
 .yui-skin-sam th.yui-dt-asc .yui-dt-liner {
-    background: url(dt-arrow-up.png) no-repeat right
+    background: url(../images/table/dt-arrow-up.png) no-repeat right
 }
 .yui-skin-sam th.yui-dt-desc .yui-dt-liner {
-    background: url(dt-arrow-dn.png) no-repeat right
+    background: url(../images/table/dt-arrow-dn.png) no-repeat right
 }
 
 .yui-dt-paginator.yui-pg-container {margin: 15px 0; font-size: 11px}
