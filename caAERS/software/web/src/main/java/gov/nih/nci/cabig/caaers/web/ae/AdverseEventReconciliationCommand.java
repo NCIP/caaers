@@ -31,7 +31,13 @@ public class AdverseEventReconciliationCommand {
 
     private List<AdverseEventDTO> externalAeList;
     private List<AdverseEventDTO> internalAeList;
+    private Map<Integer, AdverseEventDTO> externalAeMap;
+    private Map<Integer, AdverseEventDTO> internalAeMap;
+    
     private Map<AdverseEventDTO, AdverseEventDTO> matchedAeMapping;
+    private Map<Integer, Integer> matchedAeIdMapping;
+
+    private Map<String, AdverseEventDTO> mergeMap;
 
     static AdverseEventDTO find(AdverseEventDTO value, Map<AdverseEventDTO, AdverseEventDTO> map){
         for(Map.Entry<AdverseEventDTO, AdverseEventDTO> e: map.entrySet()){
@@ -66,6 +72,10 @@ public class AdverseEventReconciliationCommand {
     public AdverseEventReconciliationCommand(List<AdverseEventDTO> internalAeList, List<AdverseEventDTO> externalAeList){
         this.externalAeList = externalAeList;
         this.internalAeList = internalAeList;
+        
+        internalAeMap = new HashMap<Integer, AdverseEventDTO>();
+        externalAeMap = new HashMap<Integer, AdverseEventDTO>();
+        mergeMap = new HashMap<String, AdverseEventDTO>();
 
         unMappedInternalAeList = new ArrayList<AdverseEventDTO>();
         unMappedExternalAeList = new ArrayList<AdverseEventDTO>();
@@ -73,20 +83,24 @@ public class AdverseEventReconciliationCommand {
         rejectedExternalAeList = new ArrayList<AdverseEventDTO>();
 
         for(AdverseEventDTO ae : internalAeList){
+            internalAeMap.put(ae.getId(), ae);
             if(ae.isRejected()) this.rejectedInternalAeList.add(ae);
             else this.unMappedInternalAeList.add(ae);
         }
         for(AdverseEventDTO ae : externalAeList){
+            externalAeMap.put(ae.getId(), ae);
             if(ae.isRejected()) this.rejectedExternalAeList.add(ae);
             else this.unMappedExternalAeList.add(ae);
         }
 
         matchedAeMapping = new HashMap<AdverseEventDTO, AdverseEventDTO>();
+        matchedAeIdMapping = new HashMap<Integer, Integer>();
         List<AdverseEventDTO> tmp = new ArrayList<AdverseEventDTO>( unMappedInternalAeList);
         for(AdverseEventDTO ae : tmp){
            AdverseEventDTO found = find(ae, unMappedExternalAeList);
            if(found != null){
                matchedAeMapping.put(ae, found);
+               matchedAeIdMapping.put(ae.getId(), found.getId());
                unMappedExternalAeList.remove(found);
                unMappedInternalAeList.remove(ae);
            }
@@ -97,6 +111,7 @@ public class AdverseEventReconciliationCommand {
         }
 
     }
+
     
     public void link(Integer internalAeId, Integer externalAeId){
         AdverseEventDTO externalAe = find(externalAeId, externalAeList);
@@ -259,5 +274,101 @@ public class AdverseEventReconciliationCommand {
 
     public void setMatchedAeMappingStr(String matchedAeMappingStr) {
         this.matchedAeMappingStr = matchedAeMappingStr;
+    }
+
+    public Map<Integer, AdverseEventDTO> getExternalAeMap() {
+        return externalAeMap;
+    }
+
+    public void setExternalAeMap(Map<Integer, AdverseEventDTO> externalAeMap) {
+        this.externalAeMap = externalAeMap;
+    }
+
+    public Map<Integer, AdverseEventDTO> getInternalAeMap() {
+        return internalAeMap;
+    }
+
+    public void setInternalAeMap(Map<Integer, AdverseEventDTO> internalAeMap) {
+        this.internalAeMap = internalAeMap;
+    }
+
+    public Map<String, AdverseEventDTO> getMergeMap() {
+        return mergeMap;
+    }
+
+    public void setMergeMap(Map<String, AdverseEventDTO> mergeMap) {
+        this.mergeMap = mergeMap;
+    }
+
+    public Map<Integer, Integer> getMatchedAeIdMapping() {
+        return matchedAeIdMapping;
+    }
+
+    public void setMatchedAeIdMapping(Map<Integer, Integer> matchedAeIdMapping) {
+        this.matchedAeIdMapping = matchedAeIdMapping;
+    }
+
+    public void processExternalAeRejections(){
+        String arr[] = StringUtils.split(rejectedExternalAeStr, ',');
+        rejectedExternalAeList.clear();
+        if(arr != null) {
+            for(String s : arr){
+                AdverseEventDTO ae = externalAeMap.get(Integer.parseInt(s));
+                rejectedExternalAeList.add(ae);
+            }
+        }
+    }
+
+
+    public void processUnmappedExternalAes(){
+        String arr[] = StringUtils.split(unmappedExternalAeStr, ',');
+        unMappedExternalAeList.clear();
+        if(arr != null) {
+            for(String s : arr){
+                AdverseEventDTO ae = externalAeMap.get(Integer.parseInt(s));
+                unMappedExternalAeList.add(ae);
+            }
+        }
+    }
+
+
+
+    public void processUnmappedInternalAes(){
+        String arr[] = StringUtils.split(unmappedInternalAeStr, ',');
+        unMappedInternalAeList.clear();
+        if(arr != null) {
+            for(String s : arr){
+                AdverseEventDTO ae = internalAeMap.get(Integer.parseInt(s));
+                unMappedInternalAeList.add(ae);
+            }
+        }
+    }
+    
+    public void processAeMapping(){
+        String arr[] = StringUtils.split(matchedAeMappingStr, '&') ;
+        matchedAeMapping.clear();
+        matchedAeIdMapping.clear();
+        if(arr != null){
+            for(String s : arr){
+                String ids[] = StringUtils.split(s, '=');
+                if(ids != null){
+                    AdverseEventDTO iae = internalAeMap.get(Integer.parseInt(ids[0]));
+                    AdverseEventDTO eae = externalAeMap.get(Integer.parseInt(ids[1]));
+                    matchedAeMapping.put(iae, eae);
+                    matchedAeIdMapping.put(iae.getId(), eae.getId());
+                    addToMergeMap(iae,eae);
+                }
+            }
+        }
+    }
+
+    public void addToMergeMap(AdverseEventDTO iae, AdverseEventDTO eae){
+        String key = iae.getId() + "_" + eae.getId();
+        if(!mergeMap.containsKey(key)){
+            AdverseEventDTO ae = iae.clone();
+            List<String> diff = iae.diff(eae); 
+            ae.clearFields(diff.toArray(new String[]{}));
+            mergeMap.put(key, ae);
+        }
     }
 }

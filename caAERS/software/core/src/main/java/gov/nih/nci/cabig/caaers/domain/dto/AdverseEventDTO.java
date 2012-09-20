@@ -3,6 +3,11 @@ package gov.nih.nci.cabig.caaers.domain.dto;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import org.apache.commons.lang.StringUtils;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author: Biju Joseph
  */
@@ -211,7 +216,46 @@ public class AdverseEventDTO {
         result = 31 * result + id;
         return result;
     }
-
+    
+    public AdverseEventDTO clone(){
+        AdverseEventDTO d =  new AdverseEventDTO();
+        d.id = this.id;
+        d.term = this.term.clone();
+        d.source = this.source;
+        d.externalID = this.externalID;
+        d.grade = this.grade;
+        d.startDate = this.startDate;
+        d.endDate = this.endDate;
+        d.verbatim = this.verbatim;
+        d.whySerious = this.whySerious;
+        d.attribution = this.attribution;
+        return d;
+    }
+    
+    public List<String> diff(AdverseEventDTO d){
+        ArrayList<String> l = new ArrayList<String>();
+        if(!d.term.isSame(term)) l.add("term");
+        if(!StringUtils.equals(d.grade, grade)) l.add("grade");
+        if(!StringUtils.equals(d.startDate, startDate)) l.add("startDate");
+        if(!StringUtils.equals(d.endDate, endDate)) l.add("endDate");
+        if(!StringUtils.equals(d.verbatim, verbatim)) l.add("verbatim");
+        if(!StringUtils.equals(d.whySerious, whySerious)) l.add("whySerious");
+        if(!StringUtils.equals(d.attribution, attribution)) l.add("attribution");
+        return l;
+    }
+    
+    public void clearFields(String... l){
+        for(String f : l) {
+            if(f.equals("grade")) setGrade(null);
+            if(f.equals("startDate")) setStartDate(null);
+            if(f.equals("endDate")) setEndDate(null);
+            if(f.equals("verbatim")) setVerbatim(null);
+            if(f.equals("whySerious")) setWhySerious(null);
+            if(f.equals("attribution")) setAttribution(null);
+            if(f.equals("term")) term.clearFields("code", "name", "otherSpecify");
+        }
+    }
+    
     @Override
     public String toString() {
         return "AE [" +

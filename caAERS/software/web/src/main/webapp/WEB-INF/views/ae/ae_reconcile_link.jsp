@@ -13,7 +13,6 @@
 <c:set var="widthActions" value="4%" scope="request" />
 <head>
 <title>${tab.longTitle}</title>
-<tags:dwrJavascriptLink objects="createAE"/>
 <style type="text/css">
     .ae-link-widget{}
     tr.aeWorkedOn td {
@@ -438,15 +437,16 @@ AE.aeWidget = Class.create({
 });
 
 boostrapVariables();
+ValidationManager.submitPreProcess = function(){
 
-Event.observe(window, "load", function() {
-    Event.observe(command, "submit", function(){
-       $('rejectedExternalAeStr').value = AE.eRejected.join(',');
-       $('unmappedInternalAeStr').value = AE.iUnmapped.join(',');
-       $('unmappedExternalAeStr').value = AE.eUnmapped.join(',');
-       $('matchedAeMappingStr').value = AE.aeMappingHash.toQueryString();
-    });
-});
+    $('rejectedExternalAeStr').value = AE.eRejected.join(',');
+    $('unmappedInternalAeStr').value = AE.iUnmapped.join(',');
+    $('unmappedExternalAeStr').value = AE.eUnmapped.join(',');
+    $('matchedAeMappingStr').value = AE.aeMappingHash.toQueryString();
+    alert(1)
+    return false;
+}
+
 
 </script>
 

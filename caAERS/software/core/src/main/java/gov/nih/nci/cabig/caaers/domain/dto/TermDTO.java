@@ -18,6 +18,13 @@ public class TermDTO {
     private String otherSpecify;
     private String _otherSpecify;
 
+    public void clearFields(String... fields){
+        for(String f : fields) {
+            if(StringUtils.equals(f, "code")) setCode(null);
+            if(StringUtils.equals(f, "name")) setName(null);
+            if(StringUtils.equals(f, "otherSpecify")) setOtherSpecify(null);
+        }
+    }
     public boolean isSame(TermDTO other){
         return StringUtils.equals(this.code, other.code) && StringUtils.equals(this.otherSpecify, other.otherSpecify);
     }
@@ -77,4 +84,14 @@ public class TermDTO {
         if(StringUtils.isEmpty(otherSpecify)) return name;
         return name + ", " + otherSpecify;
     }
+    
+    public TermDTO clone(){
+        TermDTO t = new TermDTO();
+        t.id = this.id;
+        t.name = this.name;
+        t.otherSpecify = this.otherSpecify;
+                
+        return t;
+    }
+    
 }
