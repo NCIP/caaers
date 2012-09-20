@@ -471,6 +471,11 @@ ValidationManager.submitPreProcess = function(){
         </tr>
         </thead>
         <tbody>
+        <tr>
+            <td colspan="10" class="fillerRow">
+                &nbsp;
+            </td>
+        </tr>
         <c:set var="_addFiller" value="false" />
         <c:forEach var="e" items="${command.matchedAeMapping}" varStatus="x">
             <c:if test="${_addFiller}">
@@ -486,6 +491,11 @@ ValidationManager.submitPreProcess = function(){
             <ae:matchedAERow ae1="${e}" />
             <c:set var="_addFiller" value="true" />
         </c:forEach>
+        <tr>
+            <td colspan="10" class="fillerRow">
+                <hr align="center" width="96%" size="1" color="blue">
+            </td>
+        </tr>
         </tbody>
     </table>
      <form:hidden id="matchedAeMappingStr" path="matchedAeMappingStr"  />

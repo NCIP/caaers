@@ -18,6 +18,11 @@
     <script type="text/javascript">
 
     </script>
+    <style type="text/css">
+        .td-ae3{
+            background: gray;
+        }
+    </style>
 
 </head>
 <body>
@@ -41,6 +46,12 @@
                         </tr>
                         </thead>
                         <tbody>
+                        <tr>
+                            <td colspan="10" class="fillerRow">
+                                &nbsp;
+                            </td>
+                        </tr>
+
                         <c:set var="_addFiller" value="false" />
                         <c:forEach var="e" items="${command.matchedAeMapping}" varStatus="x">
                             <c:if test="${differingAeIdMap[e.key.id]}">
