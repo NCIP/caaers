@@ -1,7 +1,7 @@
 class CreateReconciledAdverseEvents extends edu.northwestern.bioinformatics.bering.Migration {
      void up() {
        	createTable("reconciled_adverse_events") { t ->
-            t.addColumn("version_id", "integer", nullable: false)
+            t.addColumn("version", "integer", nullable: false)
             t.addColumn("item_id", "integer")
             t.addColumn("report_id", "integer")
             t.addColumn("attribution_summary_code", "integer")
