@@ -443,7 +443,6 @@ ValidationManager.submitPreProcess = function(){
     $('unmappedInternalAeStr').value = AE.iUnmapped.join(',');
     $('unmappedExternalAeStr').value = AE.eUnmapped.join(',');
     $('matchedAeMappingStr').value = AE.aeMappingHash.toQueryString();
-    alert(1)
     return false;
 }
 

@@ -2,26 +2,57 @@
 
 <html>
 <c:set var="widthSource" value="6%" scope="request" />
-<c:set var="widthId" value="2%" scope="request" />
+<c:set var="widthId" value="4%" scope="request" />
 <c:set var="widthTerm" value="18%" scope="request" />
 <c:set var="widthGrade" value="14%" scope="request" />
 <c:set var="widthStartDate" value="12%" scope="request" />
 <c:set var="widthEndDate" value="12%" scope="request" />
 <c:set var="widthVerbatim" value="14%" scope="request" />
 <c:set var="widthWhySerious" value="10%" scope="request" />
-<c:set var="widthAttribution" value="8%" scope="request" />
-<c:set var="widthActions" value="4%" scope="request" />
+<c:set var="widthAttribution" value="10%" scope="request" />
 <head>
     <title>${tab.longTitle}</title>
-    <tags:dwrJavascriptLink objects="createAE"/>
 
     <script type="text/javascript">
+        function updateCellValue(ae1, ae2, item, el){
+            var td = $('td-' + item + ae1);
+            var v = el.value;
+            if(v == '') v = '--'
+            td.innerHTML = v;
+            td.addClassName('td-highlight');
+            Element.removeClassName.delay(1, td, 'td-highlight');
 
+            if(item == 'term'){
+                 el.siblings().each(function(e){
+                      if(e.type == 'hidden'){
+                          var x = $('term' + ae1 + '-' +e.name);
+                          if(x) x.value = e.value;
+                      }
+                 });
+            } else {
+                $(item + ae1).value = el.value;
+            }
+
+            $$('col-'+ item + ae1).each(function(e){
+                e.removeClassName('empty');
+            });
+
+        }
     </script>
     <style type="text/css">
-        .td-ae3{
+        td.td-ae3{
             background: gray;
         }
+        td.td-highlight {
+           background: #ffff99;
+        }
+        td.empty{
+            color: red;
+        }
+        td.empty input{
+            border: 1px solid #900;
+        }
+
     </style>
 
 </head>
@@ -42,33 +73,21 @@
                             <td class="tableHeader" width="${widthVerbatim}">Verbatim</td>
                             <td class="tableHeader" width="${widthWhySerious}">Why Serious?</td>
                             <td class="tableHeader" width="${widthAttribution}">Attribution</td>
-                            <td class="tableHeader" width="${widthActions}"></td>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
-                            <td colspan="10" class="fillerRow">
+                            <td colspan="9" class="fillerRow">
                                 &nbsp;
                             </td>
                         </tr>
-
-                        <c:set var="_addFiller" value="false" />
+                        <c:set var="cntr" value="0"/>
                         <c:forEach var="e" items="${command.matchedAeMapping}" varStatus="x">
                             <c:if test="${differingAeIdMap[e.key.id]}">
-
-                                <c:if test="${_addFiller}">
-                                    <ae:mergeAERow fillerRow="true" />
-                                </c:if>
-
+                                <c:set var="cntr" value="${cntr + 1}"/>
                                 <c:set var="mmkey" value="${e.key.id}_${e.value.id}" />
-                                <ae:mergeAERow ae1="${e.key}" ae2="${e.value}" ae3="${command.mergeMap[mmkey]}" />
-
-
-
-                                <c:set var="_addFiller" value="true" />
+                                <ae:mergeAERow ae1="${e.key}" ae2="${e.value}" ae3="${command.mergeMap[mmkey]}" cssClass="${cntr % 2 == 0 ? 'evenx' : 'oddx'}" />
                             </c:if>
-
-
                         </c:forEach>
 
                         </tbody>

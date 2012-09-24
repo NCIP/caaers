@@ -14,6 +14,7 @@ import java.util.*;
  */
 public class AdverseEventReconciliationCommand {
 
+    private String rejectedInternalAeStr;
     private String rejectedExternalAeStr;
     private String unmappedExternalAeStr;
     private String unmappedInternalAeStr;
@@ -308,13 +309,44 @@ public class AdverseEventReconciliationCommand {
         this.matchedAeIdMapping = matchedAeIdMapping;
     }
 
+    public String getRejectedInternalAeStr() {
+        return rejectedInternalAeStr;
+    }
+
+    public void setRejectedInternalAeStr(String rejectedInternalAeStr) {
+        this.rejectedInternalAeStr = rejectedInternalAeStr;
+    }
+
     public void processExternalAeRejections(){
         String arr[] = StringUtils.split(rejectedExternalAeStr, ',');
         rejectedExternalAeList.clear();
+        Set<Integer> set = new HashSet<Integer>();
         if(arr != null) {
             for(String s : arr){
-                AdverseEventDTO ae = externalAeMap.get(Integer.parseInt(s));
-                rejectedExternalAeList.add(ae);
+                if(StringUtils.isEmpty(s)) continue;
+                Integer i = Integer.parseInt(s);
+                if(set.add(i)) {
+                    AdverseEventDTO ae = externalAeMap.get(i);
+                    rejectedExternalAeList.add(ae);
+                }
+
+            }
+        }
+    }
+
+
+    public void processInternalAeRejections(){
+        String arr[] = StringUtils.split(rejectedInternalAeStr, ',');
+        rejectedInternalAeList.clear();
+        Set<Integer> set = new HashSet<Integer>();
+        if(arr != null) {
+            for(String s : arr){
+                if(StringUtils.isEmpty(s)) continue;
+                Integer i = Integer.parseInt(s);
+                if(set.add(i)) {
+                    AdverseEventDTO ae = internalAeMap.get(i);
+                    rejectedInternalAeList.add(ae);
+                }
             }
         }
     }
