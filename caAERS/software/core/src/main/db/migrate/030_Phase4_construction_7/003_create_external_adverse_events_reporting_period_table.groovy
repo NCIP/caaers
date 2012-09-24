@@ -15,7 +15,7 @@ class CreateExternalAdverseEventsReportingPeriodsTable extends edu.northwestern.
             t.addColumn("assignment_id", "integer", nullable: false)
         }
         
-         execute('ALTER TABLE ext_ae_reporting_prds ADD CONSTRAINT fk_ext_rprt_per_prt_assgnmnts_id FOREIGN KEY (assignment_id) REFERENCES participant_assignments (id)')
+         execute('ALTER TABLE ext_ae_reporting_prds ADD CONSTRAINT fk_ext_rp_assignment_id FOREIGN KEY (assignment_id) REFERENCES participant_assignments (id)')
     }
 
     void down() {
