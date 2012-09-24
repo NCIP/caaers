@@ -203,8 +203,17 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 		
 		AdverseEventReportingPeriod newAeReportingPeriod = new AdverseEventReportingPeriod();
 		
-		TreatmentAssignment ta = resolveTreamtmentAssignment(criteria, study);
-		newAeReportingPeriod.setTreatmentAssignment(ta);
+		if(treatmentAssignmentCode != null){
+			TreatmentAssignment ta = resolveTreamtmentAssignment(criteria, study);
+			if (ta == null) {
+				throw new CaaersSystemException("WS_AEMS_009", messageSource.getMessage("WS_AEMS_009",
+						new String[] { criteria.getCourse().getTreatmentAssignmentCode() }, "", Locale
+								.getDefault()));
+			}
+			newAeReportingPeriod.setTreatmentAssignment(ta);
+		} else {
+			newAeReportingPeriod.setTreatmentAssignmentDescription(otherTreatmentAssignmentDescription);
+		}
 		newAeReportingPeriod.setStartDate(xmlStartDate);
 		newAeReportingPeriod.setEndDate(xmlEndDate);
 		if(criteria.getCourse().getCycleNumber() != null) newAeReportingPeriod.setCycleNumber(criteria.getCourse().getCycleNumber().intValue());
@@ -351,6 +360,11 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 		
 		if(criteria.getCourse().getTreatmentAssignmentCode() != null){
 			TreatmentAssignment ta = resolveTreamtmentAssignment(criteria, study);
+			if (ta == null) {
+				throw new CaaersSystemException("WS_AEMS_009", messageSource.getMessage("WS_AEMS_009",
+						new String[] { criteria.getCourse().getTreatmentAssignmentCode() }, "", Locale
+								.getDefault()));
+			}
 			externalAeReportingPeriod.setTreatmentAssignmentCode(ta.getCode());
 		} else {
 			externalAeReportingPeriod.setOtherTreatmentAssignmentDescription(criteria.getCourse().getOtherTreatmentAssignmentDescription());
