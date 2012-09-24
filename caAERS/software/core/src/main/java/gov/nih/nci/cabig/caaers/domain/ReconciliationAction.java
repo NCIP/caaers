@@ -18,7 +18,9 @@ public enum ReconciliationAction implements CodedEnum<Integer> {
     
     DELETE(2, "delete"),
     
-    UPDATE(2, "update");
+    UPDATE(3, "update"),
+	
+	ERROR(4, "error");
     
     /** The code. */
     private Integer code;

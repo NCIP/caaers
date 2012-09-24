@@ -5,6 +5,8 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -19,58 +21,63 @@ import org.hibernate.annotations.Parameter;
 * This class represents the Reconciliation Adverse Event Reporting Period domain object associated with 
 * the Reconciliation Adverse event report.
 *
-* @author Ramakrishsna
+* @author Ramakrishna
 *
 */
 
 @Entity
 @Table(name = "recon_rpt_adv_events")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_recon_rpt_adv_events_id")})
-public class ReconciliationReportAdverseEvent extends AbstractMutableDomainObject{
+public class ReconciledAdverseEvent extends AbstractMutableDomainObject{
 	
 	/** The reconciliation report adverseEvent reporting period. */
-	private ReconciliationReportReportingPeriod reconciliationReportReportingPeriod;
+	private ReconciliationReport reconciliationReportReportingPeriod;
 	
-	/** Created date of the reconciliation report adverse event. */
-	private Date createdDate = new Date();
+	private Integer itemId;
 	
-	private Integer adverseEventtId;
-	
+	public Integer getItemId() {
+		return itemId;
+	}
+
+	public void setItemId(Integer itemId) {
+		this.itemId = itemId;
+	}
+
 	private Grade grade;
 	
 	private Date startDate;
 	
 	private Date endDate;
 	
+	private String verbatim;
+	
+	private String whySerious;
+	
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+
+	public void setErrorMessage(String errorMessage) {
+		this.errorMessage = errorMessage;
+	}
+
+	private String attribution;
+	
+	private String errorMessage;
 	
 	@ManyToOne
     @JoinColumn(name = "recon_rep_prd_id", nullable = true)
     @Cascade(value = {CascadeType.LOCK, CascadeType.DETACH})
-	public ReconciliationReportReportingPeriod getReconciliationReportReportingPeriod() {
+	public ReconciliationReport getReconciliationReportReportingPeriod() {
 		return reconciliationReportReportingPeriod;
 	}
 
 	public void setReconciliationReportReportingPeriod(
-			ReconciliationReportReportingPeriod reconciliationReportReportingPeriod) {
+			ReconciliationReport reconciliationReportReportingPeriod) {
 		this.reconciliationReportReportingPeriod = reconciliationReportReportingPeriod;
 	}
 
-	public Date getCreatedDate() {
-		return createdDate;
-	}
-
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
-	}
-
-	public Integer getAdverseEventtId() {
-		return adverseEventtId;
-	}
-
-	public void setAdverseEventtId(Integer adverseEventtId) {
-		this.adverseEventtId = adverseEventtId;
-	}
-
+	@Enumerated(EnumType.ORDINAL)
 	public Grade getGrade() {
 		return grade;
 	}
@@ -119,6 +126,7 @@ public class ReconciliationReportAdverseEvent extends AbstractMutableDomainObjec
 		this.attribution = attribution;
 	}
 
+	@Enumerated(EnumType.ORDINAL)
 	public ReconciliationSystem getSystem() {
 		return system;
 	}
@@ -135,12 +143,6 @@ public class ReconciliationReportAdverseEvent extends AbstractMutableDomainObjec
 		this.action = action;
 	}
 
-	private String verbatim;
-	
-	private String whySerious;
-	
-	private String attribution;
-	
 	/** The system on which the reconciliation action should be taken */
 	private ReconciliationSystem system; 
 	

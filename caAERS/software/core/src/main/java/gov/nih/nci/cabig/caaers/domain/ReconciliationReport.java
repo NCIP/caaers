@@ -24,18 +24,18 @@ import org.hibernate.annotations.Parameter;
 /**
 * This class represents the Reconciliation Report Adverse Event domain object.
 *
-* @author Ramakrishsna
+* @author Ramakrishna
 *
 */
 
 @Entity
-@Table(name = "recon_rprt_rep_period")
-@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_recon_rprt_rep_period_id")})
-public class ReconciliationReportReportingPeriod extends AbstractMutableDomainObject{
+@Table(name = "recon_rprt_rep_periods")
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_recon_rprt_rep_periods_id")})
+public class ReconciliationReport extends AbstractMutableDomainObject{
 	
 	private AdverseEventReportingPeriod adverseEventReportingPeriod;
 	
-	private List<ReconciliationReportAdverseEvent> reconciliationReportAdverseEvents = new ArrayList<ReconciliationReportAdverseEvent>();
+	private List<ReconciledAdverseEvent> reconciliationReportAdverseEvents = new ArrayList<ReconciledAdverseEvent>();
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="reporting_period_id")
@@ -52,12 +52,12 @@ public class ReconciliationReportReportingPeriod extends AbstractMutableDomainOb
     @Cascade(value = {CascadeType.ALL})
     @OrderBy
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
-	public List<ReconciliationReportAdverseEvent> getReconciliationReportAdverseEvents() {
+	public List<ReconciledAdverseEvent> getReconciliationReportAdverseEvents() {
 		return reconciliationReportAdverseEvents;
 	}
 
 	public void setReconciliationReportAdverseEvents(
-			List<ReconciliationReportAdverseEvent> reconciliationReportAdverseEvents) {
+			List<ReconciledAdverseEvent> reconciliationReportAdverseEvents) {
 		this.reconciliationReportAdverseEvents = reconciliationReportAdverseEvents;
 	}
 
