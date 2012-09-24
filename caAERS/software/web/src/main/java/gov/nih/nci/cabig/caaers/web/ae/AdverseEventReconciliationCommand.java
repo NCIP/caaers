@@ -38,6 +38,8 @@ public class AdverseEventReconciliationCommand {
 
     private Map<String, AdverseEventDTO> mergeMap;
 
+    private List<AdverseEventDTO> errorAeList;
+
     static AdverseEventDTO find(AdverseEventDTO value, Map<AdverseEventDTO, AdverseEventDTO> map){
         for(Map.Entry<AdverseEventDTO, AdverseEventDTO> e: map.entrySet()){
             if(e.getValue().equals(value)) return e.getKey();
@@ -315,6 +317,14 @@ public class AdverseEventReconciliationCommand {
         this.rejectedInternalAeStr = rejectedInternalAeStr;
     }
 
+    public List<AdverseEventDTO> getErrorAeList() {
+        return errorAeList;
+    }
+
+    public void setErrorAeList(List<AdverseEventDTO> errorAeList) {
+        this.errorAeList = errorAeList;
+    }
+
     public void processExternalAeRejections(){
         String arr[] = StringUtils.split(rejectedExternalAeStr, ',');
         rejectedExternalAeList.clear();
@@ -404,10 +414,49 @@ public class AdverseEventReconciliationCommand {
 
 
     public ReconciliationReport generateReconcilationReport(){
-       ReconciliationReport report = new ReconciliationReport();
-       report.setReviewedBy(SecurityUtils.getUserLoginName());
-       report.setCreatedDate(new Date());
+        ReconciliationReport report = new ReconciliationReport();
+        report.setReviewedBy(SecurityUtils.getUserLoginName());
+        report.setCreatedDate(new Date());
+        for(AdverseEventDTO ae : rejectedExternalAeList){
+           report.addReconciledAdverseEvent(ae.getReconciledAdverseEvent(ReconciliationAction.DELETE));
+        }
+        for(AdverseEventDTO ae : rejectedInternalAeList){
+           report.addReconciledAdverseEvent(ae.getReconciledAdverseEvent(ReconciliationAction.DELETE));
+        }
+        for(AdverseEventDTO ae : unMappedExternalAeList){
+            report.addReconciledAdverseEvent(ae.getReconciledAdverseEvent(ReconciliationAction.ADD));
+        }
+        for(AdverseEventDTO ae : unMappedInternalAeList){
+            report.addReconciledAdverseEvent(ae.getReconciledAdverseEvent(ReconciliationAction.ADD));
+        }
+        for(AdverseEventDTO ae : errorAeList){
+            report.addReconciledAdverseEvent(ae.getReconciledAdverseEvent(ReconciliationAction.ERROR));
+        }
+        
+        for(Map.Entry<AdverseEventDTO, AdverseEventDTO> e : matchedAeMapping.entrySet()){
+            AdverseEventDTO iae = e.getKey();
+            AdverseEventDTO eae = e.getValue();
+            String key = iae.getId() + "_" + eae.getId();
+            
+            AdverseEventDTO merged = mergeMap.get(key);
+            if(merged == null) continue;
+            if(!iae.diff(merged).isEmpty()){
+               ReconciledAdverseEvent rae = merged.getReconciledAdverseEvent(ReconciliationAction.UPDATE);
+               rae.setSystem(ReconciliationSystem.CAAERS);
+               rae.setExternalId(eae.getExternalID());
+               rae.setItemId(iae.getId());
+               report.addReconciledAdverseEvent(rae);
+            }
+            
+            if(!eae.diff(merged).isEmpty()){
+                ReconciledAdverseEvent rae = merged.getReconciledAdverseEvent(ReconciliationAction.UPDATE);
+                rae.setSystem(ReconciliationSystem.FORCE);
+                rae.setItemId(eae.getId());
+                report.addReconciledAdverseEvent(rae);
+            }
 
-       return null;
+        }
+        
+       return report;
     }
 }

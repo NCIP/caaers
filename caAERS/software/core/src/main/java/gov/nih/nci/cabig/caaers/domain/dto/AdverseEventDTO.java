@@ -1,8 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain.dto;
 
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.ReconciledAdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.ReconciliationSystem;
+import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
@@ -213,9 +212,27 @@ public class AdverseEventDTO {
                 ']';
     }
 
-    public ReconciledAdverseEvent getReconciledAdverseEvent(){
+    public ReconciledAdverseEvent getReconciledAdverseEvent(ReconciliationAction action){
         ReconciledAdverseEvent ae = new ReconciledAdverseEvent();
-       // ae.setSystem(ReconciliationSystem.valueOf());
+        ae.setSystem(ReconciliationSystem.getByDisplayName(source));
+        ae.setItemId(id);
+        ae.setAction(action);
+        if(StringUtils.isNotEmpty(grade)) ae.setGrade(Grade.getByShortName(grade));
+        if(StringUtils.isNotEmpty(attribution)) ae.setAttribution(Attribution.getByDisplayName(attribution));
+        if(StringUtils.isNotEmpty(externalID)) ae.setExternalId(externalID);
+        if(term != null){
+            if(StringUtils.isNotEmpty(term.getCode())) ae.setTermCode(term.getCode());
+            if(StringUtils.isNotEmpty(term.getName())) ae.setTermName(term.getName());
+            if(StringUtils.isNotEmpty(term.getOtherSpecify())) ae.setTermOtherSpecify(term.getOtherSpecify());
+        }
+        if(StringUtils.isNotEmpty(startDate)){
+            try {ae.setStartDate(DateUtils.parseDate(startDate));} catch (Exception e) {}
+        }
+        if(StringUtils.isNotEmpty(endDate)){
+            try {ae.setEndDate(DateUtils.parseDate(endDate));} catch (Exception e) {}
+        }
+        if(StringUtils.isNotEmpty(verbatim)) ae.setVerbatim(verbatim);
+        if(StringUtils.isNotEmpty(externalID)) ae.setVerbatim(externalID);
         return ae;
     }
 }

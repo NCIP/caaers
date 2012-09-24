@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.*;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class ReconciliationReport extends AbstractMutableDomainObject{
 
 	private AdverseEventReportingPeriod adverseEventReportingPeriod;
 	
-	private List<ReconciledAdverseEvent> reconciledAdverseEvents;
+	private List<ReconciledAdverseEvent> reconciledAdverseEvents = new ArrayList<ReconciledAdverseEvent>();
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="reporting_period_id")
@@ -84,5 +85,7 @@ public class ReconciliationReport extends AbstractMutableDomainObject{
 		this.reviewedBy = reviewedBy;
 	}
 
-
+    public void addReconciledAdverseEvent(ReconciledAdverseEvent ae){
+       reconciledAdverseEvents.add(ae);
+    }
 }
