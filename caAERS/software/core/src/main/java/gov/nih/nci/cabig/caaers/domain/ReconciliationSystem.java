@@ -57,6 +57,15 @@ public enum ReconciliationSystem implements CodedEnum<Integer> {
     	return getByClassAndCode(ReconciliationSystem.class, code);
     }
     
+    public static ReconciliationSystem getByDisplayName(String name){
+        for(ReconciliationSystem s: values()){
+            if(s.getDisplayName().equals(name)){
+                return s;
+            }
+        }
+        return null;
+    }
+    
 
     /* (non-Javadoc)
      * @see gov.nih.nci.cabig.ctms.domain.CodedEnum#getCode()

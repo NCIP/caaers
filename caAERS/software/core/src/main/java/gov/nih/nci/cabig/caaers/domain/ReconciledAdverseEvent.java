@@ -36,20 +36,18 @@ public class ReconciledAdverseEvent extends AbstractMutableDomainObject{
     private ReconciliationAction action;
 
 	private Integer itemId;
-
 	private Grade grade;
-	
 	private Date startDate;
-	
 	private Date endDate;
-	
 	private String verbatim;
-	
 	private String whySerious;
-
     private Attribution attribution;
-
+    private String externalId;
+    private String termCode;
+    private String termName;
+    private String termOtherSpecify;
     private String errorMessage;
+    
 
 
 	@ManyToOne
@@ -145,5 +143,37 @@ public class ReconciledAdverseEvent extends AbstractMutableDomainObject{
 
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
+    }
+
+    public String getExternalId() {
+        return externalId;
+    }
+
+    public void setExternalId(String externalId) {
+        this.externalId = externalId;
+    }
+
+    public String getTermCode() {
+        return termCode;
+    }
+
+    public void setTermCode(String termCode) {
+        this.termCode = termCode;
+    }
+
+    public String getTermName() {
+        return termName;
+    }
+
+    public void setTermName(String termName) {
+        this.termName = termName;
+    }
+
+    public String getTermOtherSpecify() {
+        return termOtherSpecify;
+    }
+
+    public void setTermOtherSpecify(String termOtherSpecify) {
+        this.termOtherSpecify = termOtherSpecify;
     }
 }

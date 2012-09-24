@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.dto.AdverseEventDTO;
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.*;
@@ -404,6 +405,8 @@ public class AdverseEventReconciliationCommand {
 
     public ReconciliationReport generateReconcilationReport(){
        ReconciliationReport report = new ReconciliationReport();
+       report.setReviewedBy(SecurityUtils.getUserLoginName());
+       report.setCreatedDate(new Date());
 
        return null;
     }

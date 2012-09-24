@@ -71,6 +71,13 @@ public enum Grade implements CodedEnum<Integer>, CodedGrade {
     public static Grade getByCode(int code) {
         return getByClassAndCode(Grade.class, code);
     }
+    
+    public static Grade getByShortName(String name){
+        for(Grade g: values()){
+            if(g.getShortName().equals(name)) return g;
+        }
+        return null;
+    }
 
     /* (non-Javadoc)
      * @see gov.nih.nci.cabig.ctms.domain.CodedEnum#getCode()

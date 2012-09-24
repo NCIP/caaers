@@ -47,6 +47,15 @@ public enum Attribution implements CodedEnum<Integer>{
     public static Attribution getByCode(int code) {
         return getByClassAndCode(Attribution.class, code);
     }
+    
+    public static Attribution getByDisplayName(String name){
+        for(Attribution a : values()){
+            if(a.getDisplayName().equals(name)){
+                return a;
+            }
+        }
+        return null;
+    }
 
     /* (non-Javadoc)
      * @see gov.nih.nci.cabig.ctms.domain.CodedEnum#getCode()

@@ -11,6 +11,10 @@ class CreateReconciledAdverseEvents extends edu.northwestern.bioinformatics.beri
             t.addColumn("verbatim", "string")
             t.addColumn("error_message", "string")
             t.addColumn("grade_code", "integer")
+            t.addColumn("external_id", "string")
+            t.addColumn("term_code", "string")
+            t.addColumn("term_name", "string")
+            t.addColumn("term_other_specify", "string")
             t.addColumn("system", "integer", nullable: false)
         }
         
