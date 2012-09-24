@@ -8,7 +8,7 @@ import gov.nih.nci.cabig.ctms.domain.CodedEnum;
 
  
 /**
- * The Enum ExternalAEReviewStatus.
+ * The Enum ReconciliationSystem.
  *
  * @author Ramakrishna
  */
@@ -26,7 +26,7 @@ public enum ReconciliationSystem implements CodedEnum<Integer> {
     
     
     /**
-     * Instantiates a new review status.
+     * Instantiates a new reconciliation system.
      *
      * @param code the code
      */
@@ -36,7 +36,7 @@ public enum ReconciliationSystem implements CodedEnum<Integer> {
     }
     
     /**
-     * Instantiates a new review status.
+     * Instantiates a new reconciliation system.
      *
      * @param code the code
      * @param longName the long name

@@ -5,10 +5,9 @@ import static gov.nih.nci.cabig.ctms.domain.CodedEnumHelper.register;
 import static gov.nih.nci.cabig.ctms.domain.CodedEnumHelper.toStringHelper;
 import static gov.nih.nci.cabig.ctms.domain.EnumHelper.sentenceCasedName;
 import gov.nih.nci.cabig.ctms.domain.CodedEnum;
-
  
 /**
- * The Enum ExternalAEReviewStatus.
+ * The Enum ReconciliationAction.
  *
  * @author Ramakrishna
  */
@@ -28,9 +27,8 @@ public enum ReconciliationAction implements CodedEnum<Integer> {
     /** The display name. */
     private String displayName;
     
-    
     /**
-     * Instantiates a new review status.
+     * Instantiates a new reconciliation action.
      *
      * @param code the code
      */
@@ -40,7 +38,7 @@ public enum ReconciliationAction implements CodedEnum<Integer> {
     }
     
     /**
-     * Instantiates a new review status.
+     * Instantiates a new reconciliation action.
      *
      * @param code the code
      * @param longName the long name

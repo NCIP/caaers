@@ -48,7 +48,7 @@ public class ReconciliationReport extends AbstractMutableDomainObject{
 		this.adverseEventReportingPeriod = adverseEventReportingPeriod;
 	}
 
-	@OneToMany(mappedBy = "reconciliationReportReportingPeriod", orphanRemoval = true)
+	@OneToMany(mappedBy = "reconciliationReport", orphanRemoval = true)
     @Cascade(value = {CascadeType.ALL})
     @OrderBy
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
