@@ -86,6 +86,10 @@ public enum Grade implements CodedEnum<Integer>, CodedGrade {
         return displayName == null ? sentenceCasedName(this) : displayName;
     }
 
+    public String getShortName() {
+        return  sentenceCasedName(this) ;
+    }
+
     // for bean-property access
     /* (non-Javadoc)
      * @see gov.nih.nci.cabig.caaers.domain.CodedGrade#getName()

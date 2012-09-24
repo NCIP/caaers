@@ -1,9 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.dto.AdverseEventDTO;
 import org.apache.commons.lang.StringUtils;
 
@@ -402,5 +399,12 @@ public class AdverseEventReconciliationCommand {
             ae.clearFields(diff.toArray(new String[]{}));
             mergeMap.put(key, ae);
         }
+    }
+
+
+    public ReconciliationReport generateReconcilationReport(){
+       ReconciliationReport report = new ReconciliationReport();
+
+       return null;
     }
 }

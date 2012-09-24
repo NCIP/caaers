@@ -1,6 +1,6 @@
-class CreateReconciliationRptReportingPeriods extends edu.northwestern.bioinformatics.bering.Migration {
+class CreateReconciliationReports extends edu.northwestern.bioinformatics.bering.Migration {
      void up() {
-       	createTable("recon_rprt_rep_periods") { t ->
+       	createTable("reconciliation_reports") { t ->
             t.addColumn("version_id", "integer", nullable: false)
             t.addColumn("reporting_period_id", "integer")
             t.addColumn("created_date", "date", nullable:false)
@@ -8,10 +8,10 @@ class CreateReconciliationRptReportingPeriods extends edu.northwestern.bioinform
             t.addColumn("reviewed_by", "string", nullable: false)
         }
         
-        execute('ALTER TABLE recon_rprt_rep_periods ADD CONSTRAINT fk_rec_rpt_prd_ae_rep_prd_id FOREIGN KEY (reporting_period_id) REFERENCES ae_reporting_periods (id)')
+        execute('ALTER TABLE reconciliation_reports ADD CONSTRAINT fk_recon_reports_rp_id FOREIGN KEY (reporting_period_id) REFERENCES ae_reporting_periods (id)')
     }
 
     void down() {
-        dropTable("recon_rprt_rep_periods")
+        dropTable("reconciliation_reports")
     }
 }

@@ -1,24 +1,16 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.Parameter;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -29,13 +21,22 @@ import org.hibernate.annotations.Parameter;
 */
 
 @Entity
-@Table(name = "recon_rprt_rep_periods")
-@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_recon_rprt_rep_periods_id")})
+@Table(name = "reconciliation_reports")
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_reconciliation_reports_id")})
 public class ReconciliationReport extends AbstractMutableDomainObject{
-	
+
+    /** Created date of the reconciliation report. */
+    private Date createdDate = new Date();
+
+    /** The date the reconciliation report is updated. */
+    private Date updatedDate;
+
+    /** The user who reviewed the reconciliation report. */
+    private String reviewedBy;
+
 	private AdverseEventReportingPeriod adverseEventReportingPeriod;
 	
-	private List<ReconciledAdverseEvent> reconciliationReportAdverseEvents = new ArrayList<ReconciledAdverseEvent>();
+	private List<ReconciledAdverseEvent> reconciledAdverseEvents;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="reporting_period_id")
@@ -43,8 +44,7 @@ public class ReconciliationReport extends AbstractMutableDomainObject{
 		return adverseEventReportingPeriod;
 	}
 
-	public void setAdverseEventReportingPeriod(
-			AdverseEventReportingPeriod adverseEventReportingPeriod) {
+	public void setAdverseEventReportingPeriod( AdverseEventReportingPeriod adverseEventReportingPeriod) {
 		this.adverseEventReportingPeriod = adverseEventReportingPeriod;
 	}
 
@@ -52,13 +52,12 @@ public class ReconciliationReport extends AbstractMutableDomainObject{
     @Cascade(value = {CascadeType.ALL})
     @OrderBy
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
-	public List<ReconciledAdverseEvent> getReconciliationReportAdverseEvents() {
-		return reconciliationReportAdverseEvents;
+	public List<ReconciledAdverseEvent> getReconciledAdverseEvents() {
+		return reconciledAdverseEvents;
 	}
 
-	public void setReconciliationReportAdverseEvents(
-			List<ReconciledAdverseEvent> reconciliationReportAdverseEvents) {
-		this.reconciliationReportAdverseEvents = reconciliationReportAdverseEvents;
+	public void setReconciledAdverseEvents(List<ReconciledAdverseEvent> reconciledAdverseEvents) {
+		this.reconciledAdverseEvents = reconciledAdverseEvents;
 	}
 
 	public Date getCreatedDate() {
@@ -85,13 +84,5 @@ public class ReconciliationReport extends AbstractMutableDomainObject{
 		this.reviewedBy = reviewedBy;
 	}
 
-	/** Created date of the reconciliation report. */
-	private Date createdDate = new Date();
-	
-	/** The date the reconciliation report is updated. */
-	private Date updatedDate;
-	
-	/** The user who reviewed the reconciliation report. */
-	private String reviewedBy;
 
 }

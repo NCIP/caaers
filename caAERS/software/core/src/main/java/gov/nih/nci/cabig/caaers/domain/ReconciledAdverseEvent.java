@@ -4,16 +4,12 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import java.util.Date;
 
+import javax.persistence.*;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.*;
 import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 
@@ -26,22 +22,20 @@ import org.hibernate.annotations.Parameter;
 */
 
 @Entity
-@Table(name = "recon_rpt_adv_events")
-@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_recon_rpt_adv_events_id")})
+@Table(name = "reconciled_adverse_events")
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_reconciled_adverse_even_id")})
 public class ReconciledAdverseEvent extends AbstractMutableDomainObject{
 	
 	/** The reconciliation report adverseEvent reporting period. */
-	private ReconciliationReport reconciliationReportReportingPeriod;
-	
-	private Integer itemId;
-	
-	public Integer getItemId() {
-		return itemId;
-	}
+	private ReconciliationReport reconciliationReport;
 
-	public void setItemId(Integer itemId) {
-		this.itemId = itemId;
-	}
+    /** The system on which the reconciliation action should be taken */
+    private ReconciliationSystem system;
+
+    /** Action to be taken for reconciliation on the adverse event. */
+    private ReconciliationAction action;
+
+	private Integer itemId;
 
 	private Grade grade;
 	
@@ -52,32 +46,24 @@ public class ReconciledAdverseEvent extends AbstractMutableDomainObject{
 	private String verbatim;
 	
 	private String whySerious;
-	
-	public String getErrorMessage() {
-		return errorMessage;
-	}
 
-	public void setErrorMessage(String errorMessage) {
-		this.errorMessage = errorMessage;
-	}
+    private Attribution attribution;
 
-	private String attribution;
-	
-	private String errorMessage;
-	
+    private String errorMessage;
+
+
 	@ManyToOne
-    @JoinColumn(name = "recon_rep_prd_id", nullable = true)
-    @Cascade(value = {CascadeType.LOCK, CascadeType.DETACH})
-	public ReconciliationReport getReconciliationReportReportingPeriod() {
-		return reconciliationReportReportingPeriod;
+    @JoinColumn(name = "report_id", nullable = false)
+	public ReconciliationReport getReconciliationReport() {
+		return reconciliationReport;
 	}
 
-	public void setReconciliationReportReportingPeriod(
-			ReconciliationReport reconciliationReportReportingPeriod) {
-		this.reconciliationReportReportingPeriod = reconciliationReportReportingPeriod;
+	public void setReconciliationReport(ReconciliationReport reconciliationReport) {
+		this.reconciliationReport = reconciliationReport;
 	}
 
-	@Enumerated(EnumType.ORDINAL)
+    @Type(type = "grade")
+    @Column(name = "grade_code")
 	public Grade getGrade() {
 		return grade;
 	}
@@ -118,11 +104,13 @@ public class ReconciledAdverseEvent extends AbstractMutableDomainObject{
 		this.whySerious = whySerious;
 	}
 
-	public String getAttribution() {
+    @Type(type = "attribution")
+    @Column(name = "attribution_summary_code")
+	public Attribution getAttribution() {
 		return attribution;
 	}
 
-	public void setAttribution(String attribution) {
+	public void setAttribution(Attribution attribution) {
 		this.attribution = attribution;
 	}
 
@@ -143,10 +131,19 @@ public class ReconciledAdverseEvent extends AbstractMutableDomainObject{
 		this.action = action;
 	}
 
-	/** The system on which the reconciliation action should be taken */
-	private ReconciliationSystem system; 
-	
-	/** Action to be taken for reconciliation on the adverse event. */
-	private ReconciliationAction action;
+    public Integer getItemId() {
+        return itemId;
+    }
 
+    public void setItemId(Integer itemId) {
+        this.itemId = itemId;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
 }

@@ -1,23 +1,23 @@
-class CreateReconciliationRptReportAdverseEvents extends edu.northwestern.bioinformatics.bering.Migration {
+class CreateReconciledAdverseEvents extends edu.northwestern.bioinformatics.bering.Migration {
      void up() {
-       	createTable("recon_rpt_adv_events") { t ->
+       	createTable("reconciled_adverse_events") { t ->
             t.addColumn("version_id", "integer", nullable: false)
             t.addColumn("item_id", "integer")
-            t.addColumn("recon_rep_prd_id", "integer")
-            t.addColumn("attribution", "string")
+            t.addColumn("report_id", "integer")
+            t.addColumn("attribution_summary_code", "integer")
             t.addColumn("why_serious", "string")
             t.addColumn("start_date", "date")
             t.addColumn("end_date", "date")
             t.addColumn("verbatim", "string")
             t.addColumn("error_message", "string")
-            t.addColumn("grade", "integer", nullable: false)
+            t.addColumn("grade_code", "integer")
             t.addColumn("system", "integer", nullable: false)
         }
         
-         execute('ALTER TABLE recon_rpt_adv_events ADD CONSTRAINT fk_rec_rpt_ae_recon_rep_prd_id FOREIGN KEY (recon_rep_prd_id) REFERENCES recon_rprt_rep_periods (id)')
+         execute('ALTER TABLE reconciled_adverse_events ADD CONSTRAINT fk_recon_ae_recon_rep_id FOREIGN KEY (report_id) REFERENCES reconciliation_reports (id)')
     }
 
     void down() {
-        dropTable("recon_rpt_adv_events")
+        dropTable("reconciled_adverse_events")
     }
 }
