@@ -240,6 +240,8 @@ This applicationContext contains the definition of the DAOs
 				<value>gov.nih.nci.cabig.caaers.domain.StudyDeviceINDAssociation</value>
 				<value>gov.nih.nci.cabig.caaers.domain.ExternalAdverseEvent</value>
 				<value>gov.nih.nci.cabig.caaers.domain.ExternalAdverseEventReportingPeriod</value>
+				<value>gov.nih.nci.cabig.caaers.domain.ReconciliationReportReportingPeriod</value>
+				<value>gov.nih.nci.cabig.caaers.domain.ReconciliationReportAdverseEvent</value>
             </list>
         </property>
         <property name="entityInterceptor">
