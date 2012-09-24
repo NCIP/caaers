@@ -415,6 +415,7 @@
 
 
     <!--  AE   -->
+  <bean name="/ae/reconciliationReport" id="reconciliationReportController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.ReconciliationReportController"/>
   <bean name="/ae/reconcileAe" id="aeReconciliationController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.AdverseEventReconciliationController"/>
   <bean name="/ae/routingAndReview" id="routingAndReviewController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.RoutingAndReviewController"/>
   <bean name="/ae/listReviewComments" id="listReviewCommentsController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.RoutingAndReviewCommentController" />
