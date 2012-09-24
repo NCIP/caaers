@@ -17,9 +17,8 @@ public class ReconciledAdverseEventDaoTest extends CaaersDbNoSecurityTestCase {
 	}
 
     public void testGetById() throws Exception{
-    	
     	ReconciledAdverseEvent reconciledAdverseEvent  = dao.getById(-1000);
-    //	assertNotNull(reconciledAdverseEvent);
+    	assertNotNull(reconciledAdverseEvent);
     }
     
 }

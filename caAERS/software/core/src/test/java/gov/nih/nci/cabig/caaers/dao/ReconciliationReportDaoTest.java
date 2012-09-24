@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.dao;
 import gov.nih.nci.cabig.caaers.CaaersDbNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Grade;
+import gov.nih.nci.cabig.caaers.domain.ReconciledAdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ReconciliationReport;
 
 import java.util.Date;
@@ -13,12 +14,14 @@ import java.util.Date;
 public class ReconciliationReportDaoTest extends CaaersDbNoSecurityTestCase {
 	
 	private ReconciliationReportDao dao;
+	private ReconciledAdverseEventDao reconciledAdverseEventDao;
 	private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
 	
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		dao = (ReconciliationReportDao) getDeployedApplicationContext().getBean("reconciliationReportDao");
+		reconciledAdverseEventDao = (ReconciledAdverseEventDao) getDeployedApplicationContext().getBean("reconciledAdverseEventDao");
 		adverseEventReportingPeriodDao = (AdverseEventReportingPeriodDao) getDeployedApplicationContext().getBean("adverseEventReportingPeriodDao");
 	}
 
@@ -51,5 +54,11 @@ public class ReconciliationReportDaoTest extends CaaersDbNoSecurityTestCase {
     	assertEquals("User1",reconciliationReport.getReviewedBy());
     	assertEquals(today,reconciliationReport.getUpdatedDate());
     }
+   
+   
+   public void testGetReconciledAdverseEventById() throws Exception{
+	   ReconciledAdverseEvent reconciledAdverseEvent  = reconciledAdverseEventDao.getById(-1000);
+   	   assertNotNull(reconciledAdverseEvent);
+   }
     
 }
