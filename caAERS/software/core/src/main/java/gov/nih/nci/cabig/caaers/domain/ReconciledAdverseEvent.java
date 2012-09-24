@@ -113,6 +113,7 @@ public class ReconciledAdverseEvent extends AbstractMutableDomainObject{
 	}
 
 	@Enumerated(EnumType.ORDINAL)
+	@Column(name = "system")
 	public ReconciliationSystem getSystem() {
 		return system;
 	}
@@ -121,6 +122,7 @@ public class ReconciledAdverseEvent extends AbstractMutableDomainObject{
 		this.system = system;
 	}
 
+	@Column(name = "action_code")
 	public ReconciliationAction getAction() {
 		return action;
 	}

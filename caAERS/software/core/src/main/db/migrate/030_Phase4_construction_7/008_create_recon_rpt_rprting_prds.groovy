@@ -2,6 +2,7 @@ class CreateReconciliationReports extends edu.northwestern.bioinformatics.bering
      void up() {
        	createTable("reconciliation_reports") { t ->
             t.addColumn("version", "integer", nullable: false)
+            t.addColumn("grid_id", "string")
             t.addColumn("reporting_period_id", "integer")
             t.addColumn("created_date", "date", nullable:false)
             t.addColumn("updated_date", "date")

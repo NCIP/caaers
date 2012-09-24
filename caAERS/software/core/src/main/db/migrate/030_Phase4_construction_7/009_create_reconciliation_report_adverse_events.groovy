@@ -2,6 +2,7 @@ class CreateReconciledAdverseEvents extends edu.northwestern.bioinformatics.beri
      void up() {
        	createTable("reconciled_adverse_events") { t ->
             t.addColumn("version", "integer", nullable: false)
+            t.addColumn("grid_id", "string")
             t.addColumn("item_id", "integer")
             t.addColumn("report_id", "integer")
             t.addColumn("attribution_summary_code", "integer")
@@ -11,6 +12,7 @@ class CreateReconciledAdverseEvents extends edu.northwestern.bioinformatics.beri
             t.addColumn("verbatim", "string")
             t.addColumn("error_message", "string")
             t.addColumn("grade_code", "integer")
+            t.addColumn("action_code", "integer", nullable: false)
             t.addColumn("external_id", "string")
             t.addColumn("term_code", "string")
             t.addColumn("term_name", "string")

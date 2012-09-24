@@ -1,0 +1,76 @@
+<dataset>
+	 <organizations
+        id="-1000"
+        name="New Site"/> 
+	 <studies
+        id="-1000"
+        short_title="Short title"
+        load_status="1"
+        />
+	 <study_organizations
+        id="-1000"
+        site_id="-1000"
+        study_id="-1000"
+        start_date="2006-10-10"
+        type="SST"
+        />
+ 	<participants
+        id="-1000"
+        instituitional_patient_number="P002"
+        institution="Hospital"
+        first_name="George"
+        last_name="Milan"
+        birth_day="02"
+        birth_month="01"
+        birth_year="2006"
+        gender="Male"
+        ethnicity="ethnicity"
+        race="race"
+        middle_name="m"
+        maiden_name="m"
+        load_status="1" />
+        
+     <participant_assignments
+        id="-1000"
+        study_site_id="-1000"
+        participant_id="-1000"
+        date_of_enrollment="2006-09-30"
+        load_status="1"
+        />
+        
+        
+         <epochs
+     	id="-1000"
+     	name="test epoch 1"
+     	order_no="1"
+     	study_id="-1000"
+     	/>
+     	
+     	
+     	 <treatment_assignment
+     	id="-1000"
+     	code="adverseEventReportingPeriodCode"
+     	study_id="-1000"
+     	/>
+        
+        <ae_reporting_periods
+		id="-1000"
+		start_date="2012-07-23"
+		end_date="2012-07-25"
+		description="test object 1000"
+		treatment_assignment_id="-1000"
+		assignment_id="-1000"
+		epoch_id="-1000" 
+		review_status_code="1"
+		/>
+		
+        
+    <reconciliation_reports id="-1000" version ="0" created_date="2012-09-01" updated_date="2012-09-02"  
+    	reporting_period_id="-1000" grid_id="2ugthug8722326bhbdhg" reviewed_by="Admin"/>
+     
+    <reconciled_adverse_events id="-1000" version ="0" item_id="11" external_id="11" start_date="2012-09-01" end_date="2012-09-15" 
+    	verbatim="Patient vomitted twice because of nausea and headache" grade_code="2" error_message="Grade is out of range" 
+    	attribution_summary_code="1" system="1" action_code="3" term_code="term1" term_name="name1" 
+    	term_other_specify="other1" report_id="-1000"/>
+
+</dataset>

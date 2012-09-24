@@ -551,6 +551,8 @@ This applicationContext contains the definition of the DAOs
     <bean id="expeditedAdverseEventReportDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao" autowire="byName"/>
     <bean id="adverseEventReportingPeriodDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao"/>
     <bean id="externalAdverseEventReportingPeriodDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ExternalAdverseEventReportingPeriodDao"/>
+    <bean id="reconciliationReportDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ReconciliationReportDao"/>
+    <bean id="reconciledAdverseEventDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ReconciledAdverseEventDao"/>
     <bean id="epochDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.EpochDao"/>
     <bean id="participantDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ParticipantDao"/>
     <bean id="studyParticipantAssignmentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao"/>
