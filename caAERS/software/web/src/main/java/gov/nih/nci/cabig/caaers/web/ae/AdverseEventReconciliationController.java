@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.domain.ReconciliationReport;
 import gov.nih.nci.cabig.caaers.domain.dto.AdverseEventDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.TermDTO;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
@@ -12,10 +13,12 @@ import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
+import org.springframework.web.HttpSessionRequiredException;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -34,6 +37,27 @@ public class AdverseEventReconciliationController extends AutomaticSaveAjaxableF
         flow.addTab(new AdverseEventSelectTab("Choose New Adverse Event Data", "Choose Adverse Events", "ae/ae_reconcile_choose"));
         flow.addTab(new AdverseEventReconciliationReportTab("Reconciliation Summary", "Summary", "ae/ae_reconcile_summary"));
         setFlow(flow);
+    }
+
+    @Override
+    protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        
+        ModelAndView mv = null;
+        if(request.getParameter("showReport")!= null){
+            HttpSession session = request.getSession(false);
+            if(session != null){
+                String formAttrName = getFormSessionAttributeName(request);
+                Object command = session.getAttribute(formAttrName);
+                if(command != null){
+                    ReconciliationReport report = ((AdverseEventReconciliationCommand) command).generateReconcilationReport();
+                    mv = new ModelAndView("ae/ae_reconcile_report");
+                    mv.addObject("report", report);
+                }
+            }
+        }
+
+        if(mv != null) return mv;
+        return super.handleRequestInternal(request, response);   
     }
 
     @Override
