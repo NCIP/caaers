@@ -326,8 +326,10 @@ public class AdverseEventReconciliationCommand {
     }
 
     public void processExternalAeRejections(){
-        String arr[] = StringUtils.split(rejectedExternalAeStr, ',');
         rejectedExternalAeList.clear();
+        if(StringUtils.isEmpty(rejectedExternalAeStr)) return;
+
+        String arr[] = StringUtils.split(rejectedExternalAeStr, '_');
         Set<Integer> set = new HashSet<Integer>();
         if(arr != null) {
             for(String s : arr){
@@ -344,8 +346,10 @@ public class AdverseEventReconciliationCommand {
 
 
     public void processInternalAeRejections(){
-        String arr[] = StringUtils.split(rejectedInternalAeStr, ',');
         rejectedInternalAeList.clear();
+        if(StringUtils.isEmpty(rejectedInternalAeStr)) return;
+        String arr[] = StringUtils.split(rejectedInternalAeStr, '_');
+
         Set<Integer> set = new HashSet<Integer>();
         if(arr != null) {
             for(String s : arr){
@@ -361,8 +365,10 @@ public class AdverseEventReconciliationCommand {
 
 
     public void processUnmappedExternalAes(){
-        String arr[] = StringUtils.split(unmappedExternalAeStr, ',');
         unMappedExternalAeList.clear();
+        if(StringUtils.isEmpty(unmappedExternalAeStr)) return;
+        String arr[] = StringUtils.split(unmappedExternalAeStr, '_');
+
         if(arr != null) {
             for(String s : arr){
                 AdverseEventDTO ae = externalAeMap.get(Integer.parseInt(s));
@@ -374,8 +380,10 @@ public class AdverseEventReconciliationCommand {
 
 
     public void processUnmappedInternalAes(){
-        String arr[] = StringUtils.split(unmappedInternalAeStr, ',');
         unMappedInternalAeList.clear();
+        String arr[] = StringUtils.split(unmappedInternalAeStr, '_');
+        if(StringUtils.isEmpty(unmappedInternalAeStr)) return;
+
         if(arr != null) {
             for(String s : arr){
                 AdverseEventDTO ae = internalAeMap.get(Integer.parseInt(s));
@@ -385,9 +393,10 @@ public class AdverseEventReconciliationCommand {
     }
     
     public void processAeMapping(){
-        String arr[] = StringUtils.split(matchedAeMappingStr, '&') ;
         matchedAeMapping.clear();
         matchedAeIdMapping.clear();
+        if(StringUtils.isEmpty(matchedAeMappingStr)) return;
+        String arr[] = StringUtils.split(matchedAeMappingStr, '&') ;
         if(arr != null){
             for(String s : arr){
                 String ids[] = StringUtils.split(s, '=');
@@ -440,12 +449,16 @@ public class AdverseEventReconciliationCommand {
             
             AdverseEventDTO merged = mergeMap.get(key);
             if(merged == null) continue;
+
+            boolean linked = true;
+
             if(!iae.diff(merged).isEmpty()){
-               ReconciledAdverseEvent rae = merged.getReconciledAdverseEvent(ReconciliationAction.UPDATE);
-               rae.setSystem(ReconciliationSystem.CAAERS);
-               rae.setExternalId(eae.getExternalID());
-               rae.setItemId(iae.getId());
-               report.addReconciledAdverseEvent(rae);
+                ReconciledAdverseEvent rae = merged.getReconciledAdverseEvent(ReconciliationAction.UPDATE);
+                rae.setSystem(ReconciliationSystem.CAAERS);
+                rae.setExternalId(eae.getExternalID());
+                rae.setItemId(iae.getId());
+                report.addReconciledAdverseEvent(rae);
+                linked = false;
             }
             
             if(!eae.diff(merged).isEmpty()){
@@ -453,6 +466,13 @@ public class AdverseEventReconciliationCommand {
                 rae.setSystem(ReconciliationSystem.FORCE);
                 rae.setItemId(eae.getId());
                 report.addReconciledAdverseEvent(rae);
+                linked = false;
+            }
+
+            if(linked){
+                ReconciledAdverseEvent rae = merged.getReconciledAdverseEvent(ReconciliationAction.LINKED);
+                rae.setSystem(ReconciliationSystem.CAAERS);
+                rae.setExternalId(eae.getExternalID());
             }
 
         }

@@ -439,9 +439,9 @@ AE.aeWidget = Class.create({
 boostrapVariables();
 ValidationManager.submitPreProcess = function(){
 
-    $('rejectedExternalAeStr').value = AE.eRejected.join(',');
-    $('unmappedInternalAeStr').value = AE.iUnmapped.join(',');
-    $('unmappedExternalAeStr').value = AE.eUnmapped.join(',');
+    $('rejectedExternalAeStr').value = AE.eRejected.join('_');
+    $('unmappedInternalAeStr').value = AE.iUnmapped.join('_');
+    $('unmappedExternalAeStr').value = AE.eUnmapped.join('_');
     $('matchedAeMappingStr').value = AE.aeMappingHash.toQueryString();
     return false;
 }

@@ -54,10 +54,28 @@
              $(trId).removeClassName('ae-rejected');
         }
         ValidationManager.submitPreProcess = function(){
-        $('rejectedExternalAeStr').value = AE.eRejected.join(',');
-        $('rejectedInternalAeStr').value = AE.iRejected.join(',');
+        $('rejectedExternalAeStr').value = AE.eRejected.join('_');
+        $('rejectedInternalAeStr').value = AE.iRejected.join('_');
         return false;
         }
+
+        function showReport(){
+            var rejectedExternalAeStr = AE.eRejected.join('_');
+            var rejectedInternalAeStr = AE.iRejected.join('_');
+            var tourl = AE.APP_BASE_URL  + '/pages/ae/reconcileAe?subview=yes&showReport=yes';
+            if(rejectedExternalAeStr) tourl = tourl + '&rejectedExternalAeStr=' + rejectedExternalAeStr;
+            if(rejectedInternalAeStr) tourl = tourl + '&rejectedInternalAeStr=' + rejectedInternalAeStr;
+
+            var opts = {
+                className:"alphacube", width:900, height:485, zIndex:100,
+                resizable:true, recenterAuto:true,url:tourl,
+                draggable:true,  closable:true, minimizable:false,
+                maximizable:false};
+            var repWin = new Window(opts);
+            repWin.show();
+
+        }
+
     </script>
 
 </head>
@@ -137,6 +155,56 @@
                 </div>
             </chrome:division>
 
+        </jsp:attribute>
+        <jsp:attribute name="tabControls">
+            <div class="content buttons autoclear">
+            <div class="flow-buttons">
+            <span class="prev">
+                <button id="flow-prev" type="submit" class="omnipotent-button blue tab1" title="">
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td class="l"></td>
+                            <td class="m">
+                                <img alt="" src="/caaers/images/buttons/button_icons/back_icon.png">
+                                <span id="flow-prev-value">Back</span>
+                            </td>
+                            <td class="r"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </button>
+            </span>
+            <span class="next">
+                <button type="button" onclick="showReport()" class="omnipotent-button blue tab1" title="">
+                    <table>
+                        <tbody><tr>
+                            <td class="l"></td>
+                            <td class="m">
+                                <img alt="" src="/caaers/images/buttons/button_icons/window_icon.png">
+                                <span>View Report</span>
+                            </td>
+                            <td class="r"></td>
+                        </tr>
+                        </tbody></table>
+                </button>
+                <button id="flow-next" type="submit" class="omnipotent-button green" title="">
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td class="l"></td>
+                            <td class="m">
+                                <span id="flow-next-value">Confirm &amp; Save</span>
+                                <img alt="" src="/caaers/images/buttons/button_icons/disk_icon.png">
+                            </td>
+                            <td class="r"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </button>
+            </span>
+            </div>
+            </div>
         </jsp:attribute>
 </tags:tabForm>
 </body>

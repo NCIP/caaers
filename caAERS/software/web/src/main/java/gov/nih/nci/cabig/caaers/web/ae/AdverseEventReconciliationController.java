@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
+import gov.nih.nci.cabig.caaers.dao.ReconciliationReportDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ReconciliationReport;
@@ -11,6 +12,7 @@ import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFor
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.HttpSessionRequiredException;
@@ -30,12 +32,12 @@ import java.util.Map;
 public class AdverseEventReconciliationController extends AutomaticSaveAjaxableFormController<AdverseEventReconciliationCommand, AdverseEventReportingPeriod, AdverseEventReportingPeriodDao> {
     private Configuration configuration;
     private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
+    private ReconciliationReportDao reconciliationReportDao;
     public AdverseEventReconciliationController() {
         Flow<AdverseEventReconciliationCommand> flow = new Flow<AdverseEventReconciliationCommand>("Reconcile Adverse Events");
         flow.addTab(new AdverseEventLinkTab("Link Adverse Event Data", "Link Adverse Events", "ae/ae_reconcile_link"));
         flow.addTab(new AdverseEventMergeTab("Merge Adverse Event Data", "Merge Adverse Events", "ae/ae_reconcile_merge"));
         flow.addTab(new AdverseEventSelectTab("Choose New Adverse Event Data", "Choose Adverse Events", "ae/ae_reconcile_choose"));
-        flow.addTab(new AdverseEventReconciliationReportTab("Reconciliation Summary", "Summary", "ae/ae_reconcile_summary"));
         setFlow(flow);
     }
 
@@ -49,7 +51,20 @@ public class AdverseEventReconciliationController extends AutomaticSaveAjaxableF
                 String formAttrName = getFormSessionAttributeName(request);
                 Object command = session.getAttribute(formAttrName);
                 if(command != null){
-                    ReconciliationReport report = ((AdverseEventReconciliationCommand) command).generateReconcilationReport();
+                    AdverseEventReconciliationCommand reconciliationCommand = (AdverseEventReconciliationCommand) command;
+                    
+                    //process rejections
+                    String rejectedExternalAeStr = request.getParameter("rejectedExternalAeStr");
+                    String rejectedInternalAeStr = request.getParameter("rejectedInternalAeStr");
+                    if(StringUtils.isNotEmpty(rejectedExternalAeStr)){
+                      reconciliationCommand.setRejectedExternalAeStr(rejectedExternalAeStr);
+                      reconciliationCommand.processExternalAeRejections();
+                    }
+                    if(StringUtils.isNotEmpty(rejectedInternalAeStr)){
+                        reconciliationCommand.setRejectedInternalAeStr(rejectedInternalAeStr);
+                        reconciliationCommand.processInternalAeRejections();
+                    }
+                    ReconciliationReport report = reconciliationCommand.generateReconcilationReport();
                     mv = new ModelAndView("ae/ae_reconcile_report");
                     mv.addObject("report", report);
                 }
@@ -64,11 +79,14 @@ public class AdverseEventReconciliationController extends AutomaticSaveAjaxableF
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
         List<AdverseEventDTO> externalAes = new ArrayList<AdverseEventDTO>();
         List<AdverseEventDTO> internalAes = new ArrayList<AdverseEventDTO>();
+        List<AdverseEventDTO> errorAes = new ArrayList<AdverseEventDTO>();
         populateInternalAes(internalAes);
         populateExternalAes(externalAes);
-        
+        populateErrorAes(errorAes);
+
         AdverseEventReconciliationCommand command = new AdverseEventReconciliationCommand(internalAes, externalAes);
         command.setReportingPeriod(adverseEventReportingPeriodDao.getById(44));
+        command.setErrorAeList(errorAes);
         command.link(14,4);
         return command;
     }
@@ -114,7 +132,22 @@ public class AdverseEventReconciliationController extends AutomaticSaveAjaxableF
 
 
         @Override
-    protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
+    protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object cmd, BindException errors) throws Exception {
+        if(!errors.hasErrors()){
+            AdverseEventReconciliationCommand command = (AdverseEventReconciliationCommand) cmd;
+            //mark delete external Aes
+
+            //mark reviewed - external Aes
+
+            //delete caaers-Aes
+
+            //update caAERS Aes
+
+            //save the reconciliation report
+            ReconciliationReport report = command.generateReconcilationReport();
+            report.setAdverseEventReportingPeriod(command.getReportingPeriod());
+            reconciliationReportDao.save(report);
+        }
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
@@ -138,6 +171,14 @@ public class AdverseEventReconciliationController extends AutomaticSaveAjaxableF
 
     public void setAdverseEventReportingPeriodDao(AdverseEventReportingPeriodDao adverseEventReportingPeriodDao) {
         this.adverseEventReportingPeriodDao = adverseEventReportingPeriodDao;
+    }
+
+    public ReconciliationReportDao getReconciliationReportDao() {
+        return reconciliationReportDao;
+    }
+
+    public void setReconciliationReportDao(ReconciliationReportDao reconciliationReportDao) {
+        this.reconciliationReportDao = reconciliationReportDao;
     }
 
     private AdverseEventDTO mockAdverseEvent(int id, int termId, String termCode, String term, String grade, String startDate, String endDate, String verbatim, String whySerious, String attibution){
@@ -210,5 +251,20 @@ public class AdverseEventReconciliationController extends AutomaticSaveAjaxableF
         dto.setSource("Force");
         dto.setExternalID("96");
         aeList.add(dto);
+    }
+
+    private void populateErrorAes(List<AdverseEventDTO> aeList){
+        AdverseEventDTO dto = null;
+
+        dto = mockAdverseEvent(56, 1056, "4490", "Vomitings", "Mild", "10/10/2011", "10/11/2011", "threwup on my face", "Hospitalized", "Likely");
+        dto.setSource("Force");
+        dto.setExternalID("691");
+        aeList.add(dto);
+
+        dto = mockAdverseEvent(57, 1057, "5490", "Itching", "Death", "10/09/2011", "10/12/2011", "pimples", "", "Probable");
+        dto.setSource("Force");
+        dto.setExternalID("792");
+        aeList.add(dto);
+
     }
 }

@@ -13,14 +13,16 @@ import gov.nih.nci.cabig.ctms.domain.CodedEnum;
  */
 public enum ReconciliationAction implements CodedEnum<Integer> {
 	
-	ADD(1, "add"), 
+	ADD(1, "add"),   //new
     
-    DELETE(2, "delete"),
+    DELETE(2, "delete"),  //marked for deletion
     
-    UPDATE(3, "update"),
+    UPDATE(3, "update"), //updated (merged)
 	
-	ERROR(4, "error");
-    
+	ERROR(4, "error"),   //invalid (term, grade etc)
+
+	LINKED(5, "linked"); //(a perfect match so linked)
+
     /** The code. */
     private Integer code;
     
