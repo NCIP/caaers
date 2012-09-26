@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.dto.AdverseEventDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.TermDTO;
+import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
@@ -22,10 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author: Biju Joseph
@@ -82,10 +80,6 @@ public class AdverseEventReconciliationController extends AutomaticSaveAjaxableF
 
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
-
-        List<AdverseEventDTO> externalAes = new ArrayList<AdverseEventDTO>();
-        List<AdverseEventDTO> internalAes = new ArrayList<AdverseEventDTO>();
-        List<AdverseEventDTO> errorAes = new ArrayList<AdverseEventDTO>();
 
         AdverseEventReconciliationCommand command = new AdverseEventReconciliationCommand(reconciliationReportDao, externalAdverseEventDao, ctcTermDao,  lowLevelTermDao);
         String rpId = request.getParameter("rpId");
@@ -164,15 +158,77 @@ public class AdverseEventReconciliationController extends AutomaticSaveAjaxableF
             
             List<AdverseEvent> aeList = reportingPeriod.getAdverseEvents();
             //delete caaers-Aes
-            for(AdverseEventDTO ae : command.getRejectedExternalAeList()){
+            for(AdverseEventDTO ae : command.getRejectedInternalAeList()){
                 AdverseEvent adverseEvent = reportingPeriod.findAdverseEventById(ae.getId());
                 if(adverseEvent != null)aeList.remove(adverseEvent);
             }
 
+            //ae's to be updated
             
-            //update caAERS Aes
+            boolean isCTC = reportingPeriod.getStudy().getAeTerminology().getTerm() == Term.CTC;
+            boolean isMedDRA = reportingPeriod.getStudy().getAeTerminology().getTerm() == Term.MEDDRA;
 
-            //save the reconciliation report
+            Set<Integer> termIdSet = new HashSet<Integer>();
+            for(AdverseEventDTO ae: command.getUnMappedExternalAeList()){
+                termIdSet.add(ae.getTerm().getId());
+            }
+            for(AdverseEventDTO ae : command.getMatchedAeMapping().values()){
+                termIdSet.add(ae.getTerm().getId());
+            }
+            Map<Integer, CtcTerm> ctcTermMap = new HashMap<Integer, CtcTerm>();
+            Map<Integer, LowLevelTerm> meddraTermMap = new HashMap<Integer, LowLevelTerm>();
+            if(isCTC){
+                List<CtcTerm> ctcTerms = ctcTermDao.findByIds(new ArrayList<Integer>(termIdSet));
+                if(ctcTerms != null){
+                    for(CtcTerm ctcTerm : ctcTerms) ctcTermMap.put(ctcTerm.getId(), ctcTerm);
+                }
+            }else if(isMedDRA){
+                List<LowLevelTerm> meddraTerms = lowLevelTermDao.findByIds(new ArrayList<Integer>(termIdSet));
+                if(meddraTerms != null){
+                    for(LowLevelTerm meddraTerm : meddraTerms) meddraTermMap.put(meddraTerm.getId(), meddraTerm);
+                }
+            }
+            //update caAERS Aes
+            for(Map.Entry<AdverseEventDTO , AdverseEventDTO> entry : command.getMatchedAeMapping().entrySet()){
+                 AdverseEvent adverseEvent = reportingPeriod.findAdverseEventById(entry.getKey().getId());
+                 String mergeMapKey = entry.getKey().getId() + "_" + entry.getValue().getId();
+                 AdverseEventDTO merged = command.getMergeMap().get(mergeMapKey) ;
+                 if(isCTC){
+                    CtcTerm ctcTerm = adverseEvent.getAdverseEventCtcTerm().getCtcTerm();
+                    if(ctcTerm.getId() != merged.getTerm().getId()){
+                        CtcTerm newTerm = ctcTermMap.get(merged.getTerm().getId());
+                        adverseEvent.getAdverseEventCtcTerm().setCtcTerm(newTerm);
+                    }
+                 }
+                 if(isMedDRA){
+                    LowLevelTerm meddraTerm = adverseEvent.getAdverseEventMeddraLowLevelTerm().getLowLevelTerm();
+                    if(meddraTerm.getId() != merged.getTerm().getId()){
+                        LowLevelTerm newTerm = meddraTermMap.get(merged.getTerm().getId());
+                        adverseEvent.getAdverseEventMeddraLowLevelTerm().setTerm(newTerm);
+                    }
+                 }
+                 merged.mergeChanges(adverseEvent);
+            }
+
+            //new caAERS Aes
+            for(AdverseEventDTO ae : command.getUnMappedExternalAeList()){
+                 AdverseEvent adverseEvent = new AdverseEvent();
+                 adverseEvent.setGradedDate(new Date());
+                 if(isCTC){
+                     CtcTerm ctcTerm = ctcTermMap.get(ae.getTerm().getId());
+                     AdverseEventCtcTerm adverseEventCtcTerm = new AdverseEventCtcTerm();
+                     adverseEventCtcTerm.setCtcTerm(ctcTerm);
+                     adverseEvent.setAdverseEventCtcTerm(adverseEventCtcTerm);
+                 }
+                if(isMedDRA){
+                    LowLevelTerm meddraTerm = meddraTermMap.get(ae.getTerm().getId());
+                    AdverseEventMeddraLowLevelTerm adverseEventMeddraLowLevelTerm = new AdverseEventMeddraLowLevelTerm();
+                    adverseEventMeddraLowLevelTerm.setLowLevelTerm(meddraTerm);
+                    adverseEvent.setAdverseEventMeddraLowLevelTerm(adverseEventMeddraLowLevelTerm);
+                }
+                ae.mergeChanges(adverseEvent);
+                reportingPeriod.addAdverseEvent(adverseEvent);
+            }
 
             report.setAdverseEventReportingPeriod(reportingPeriod);
             reconciliationReportDao.save(report);

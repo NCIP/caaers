@@ -244,7 +244,18 @@ public class AdverseEventDTO {
         if(StringUtils.isNotEmpty(externalID)) ae.setVerbatim(externalID);
         return ae;
     }
-    
+
+    public void mergeChanges(AdverseEvent ae) {
+        //not term will not be touched.
+        ae.setExternalId(externalID);
+        ae.setGrade(isEmpty(grade) ? null : Grade.getByShortName(grade));
+        try{ae.setStartDate(isEmpty(startDate) ? null : DateUtils.parseDate(startDate));}catch (Exception e){}
+        try{ae.setEndDate(isEmpty(endDate) ? null : DateUtils.parseDate(endDate));}catch (Exception e){}
+        ae.setDetailsForOther(isEmpty(verbatim) ? null : verbatim);
+        ae.setAttributionSummary(isEmpty(attribution) ? null : Attribution.getByDisplayName(attribution));
+        //TODO: why seriosu???
+    }
+
     public static AdverseEventDTO create(ExternalAdverseEvent eae){
         AdverseEventDTO ae = new AdverseEventDTO();
         ae.setTerm(new TermDTO());
@@ -295,4 +306,9 @@ public class AdverseEventDTO {
         return ae;
     }
 
+    public static boolean isEmpty(String s){
+        if(StringUtils.isEmpty(s)) return true;
+        if(StringUtils.equals("--", s)) return true;
+        return false;
+    }
 }
