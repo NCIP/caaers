@@ -1,10 +1,11 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
+import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
+import gov.nih.nci.cabig.caaers.dao.ExternalAdverseEventDao;
 import gov.nih.nci.cabig.caaers.dao.ReconciliationReportDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.ReconciliationReport;
+import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.dto.AdverseEventDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.TermDTO;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
@@ -33,6 +34,10 @@ public class AdverseEventReconciliationController extends AutomaticSaveAjaxableF
     private Configuration configuration;
     private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
     private ReconciliationReportDao reconciliationReportDao;
+    private ExternalAdverseEventDao externalAdverseEventDao;
+    private CtcTermDao ctcTermDao;
+    private LowLevelTermDao lowLevelTermDao;
+
     public AdverseEventReconciliationController() {
         Flow<AdverseEventReconciliationCommand> flow = new Flow<AdverseEventReconciliationCommand>("Reconcile Adverse Events");
         flow.addTab(new AdverseEventLinkTab("Link Adverse Event Data", "Link Adverse Events", "ae/ae_reconcile_link"));
@@ -77,17 +82,20 @@ public class AdverseEventReconciliationController extends AutomaticSaveAjaxableF
 
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
+
         List<AdverseEventDTO> externalAes = new ArrayList<AdverseEventDTO>();
         List<AdverseEventDTO> internalAes = new ArrayList<AdverseEventDTO>();
         List<AdverseEventDTO> errorAes = new ArrayList<AdverseEventDTO>();
-        populateInternalAes(internalAes);
-        populateExternalAes(externalAes);
-        populateErrorAes(errorAes);
 
-        AdverseEventReconciliationCommand command = new AdverseEventReconciliationCommand(internalAes, externalAes);
-        command.setReportingPeriod(adverseEventReportingPeriodDao.getById(44));
-        command.setErrorAeList(errorAes);
-        command.link(14,4);
+        AdverseEventReconciliationCommand command = new AdverseEventReconciliationCommand(reconciliationReportDao, externalAdverseEventDao, ctcTermDao,  lowLevelTermDao);
+        String rpId = request.getParameter("rpId");
+        if(StringUtils.isNotEmpty(rpId)){
+            AdverseEventReportingPeriod reportingPeriod = adverseEventReportingPeriodDao.getById(Integer.parseInt(rpId));
+            command.setReportingPeriod(reportingPeriod);
+            command.loadExternalAdverseEvents();
+            command.loadInternalAdverseEvents();
+            command.doAutoMapping();
+        }
         return command;
     }
 
@@ -104,7 +112,6 @@ public class AdverseEventReconciliationController extends AutomaticSaveAjaxableF
     protected boolean shouldSave(HttpServletRequest request, AdverseEventReconciliationCommand command, Tab<AdverseEventReconciliationCommand> tab) {
         return false;
     }
-
 
     @SuppressWarnings("unchecked")
     @Override
@@ -133,22 +140,51 @@ public class AdverseEventReconciliationController extends AutomaticSaveAjaxableF
 
         @Override
     protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object cmd, BindException errors) throws Exception {
+        
         if(!errors.hasErrors()){
             AdverseEventReconciliationCommand command = (AdverseEventReconciliationCommand) cmd;
+            AdverseEventReportingPeriod reportingPeriod = adverseEventReportingPeriodDao.getById(command.getReportingPeriod().getId());
+            ReconciliationReport report = command.generateReconcilationReport();
+
             //mark delete external Aes
-
+            List<String> externalIds = command.getRejectedExternalAeExternalIds();
+            if(!externalIds.isEmpty()){
+                externalAdverseEventDao.updateStatus(ExternalAEReviewStatus.PENDING, ExternalAEReviewStatus.REJECTED, externalIds);
+            }
+            //mark the incorrect - error items
+            List<String> errorIds = command.getIncorrectExternalAeExternalIds();
+            if(!errorIds.isEmpty()){
+                externalAdverseEventDao.updateStatus(ExternalAEReviewStatus.PENDING, ExternalAEReviewStatus.ERROR, errorIds);
+            }
             //mark reviewed - external Aes
-
+            List<String> reviewedExternalIds = command.getAllReviewedExternalAeExternalIds();
+            if(!reviewedExternalIds.isEmpty()){
+                externalAdverseEventDao.updateStatus(ExternalAEReviewStatus.PENDING, ExternalAEReviewStatus.REVIEWED, reviewedExternalIds);
+            }
+            
+            List<AdverseEvent> aeList = reportingPeriod.getAdverseEvents();
             //delete caaers-Aes
+            for(AdverseEventDTO ae : command.getRejectedExternalAeList()){
+                AdverseEvent adverseEvent = reportingPeriod.findAdverseEventById(ae.getId());
+                if(adverseEvent != null)aeList.remove(adverseEvent);
+            }
 
+            
             //update caAERS Aes
 
             //save the reconciliation report
-            ReconciliationReport report = command.generateReconcilationReport();
-            report.setAdverseEventReportingPeriod(command.getReportingPeriod());
+
+            report.setAdverseEventReportingPeriod(reportingPeriod);
             reconciliationReportDao.save(report);
+
+            reportingPeriod.setOldAeMapping(null);
+            adverseEventReportingPeriodDao.save(reportingPeriod);
+
+            ModelAndView mv  = new ModelAndView("ae/ae_reconcile_report");
+            mv.addObject("report", report);
+            return mv;
         }
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null; 
     }
 
 
@@ -181,90 +217,28 @@ public class AdverseEventReconciliationController extends AutomaticSaveAjaxableF
         this.reconciliationReportDao = reconciliationReportDao;
     }
 
-    private AdverseEventDTO mockAdverseEvent(int id, int termId, String termCode, String term, String grade, String startDate, String endDate, String verbatim, String whySerious, String attibution){
-        AdverseEventDTO dto = new AdverseEventDTO();
-        dto.setId(id);
-        TermDTO t = new TermDTO();
-        t.setId(termId);
-        t.setCode(termCode);
-        t.setName(term);
-        dto.setTerm(t);
-        dto.setGrade(grade);
-        dto.setStartDate(startDate);
-        dto.setEndDate(endDate);
-        dto.setVerbatim(verbatim);
-        dto.setWhySerious(whySerious);
-        dto.setAttribution(attibution);
-        return dto;
+    public ExternalAdverseEventDao getExternalAdverseEventDao() {
+        return externalAdverseEventDao;
     }
 
-    private void populateInternalAes(List<AdverseEventDTO> aeList){
-        AdverseEventDTO dto = null;
-
-
-        dto = mockAdverseEvent(12, 102, "5490", "Nausea", "Severe", "10/09/2011", "10/11/2011", "Redness in left eye", "", "Probable");
-        dto.setSource("caAERS");
-        dto.setExternalID("92");
-        aeList.add(dto);
-
-        dto = mockAdverseEvent(14, 104, "5492", "Lymphopenia", "Moderate", "10/09/2011", "10/13/2011", "", "", "Unrelated");
-        dto.setSource("caAERS");
-        aeList.add(dto);
-
-        dto = mockAdverseEvent(15, 205, "7493", "Proctitis", "Mild", "", "", "Sick stomach", "Hospitalized", "Unrelated");
-        dto.setSource("caAERS");
-        aeList.add(dto);
-
-        dto = mockAdverseEvent(16, 706, "6496", "Alkaline phosphatase", "Moderate", "", "", "Sick stomach", "Hospitalized", "Unrelated");
-        dto.setSource("caAERS");
-        aeList.add(dto);
-    }
-    private void populateExternalAes(List<AdverseEventDTO> aeList){
-        AdverseEventDTO dto = null;
-
-        dto = mockAdverseEvent(1, 101, "4490", "Pain", "Mild", "10/10/2011", "10/11/2011", "Redness in eye", "Hospitalized", "Likely");
-        dto.setSource("Force");
-        dto.setExternalID("91");
-        aeList.add(dto);
-
-        dto = mockAdverseEvent(2, 102, "5490", "Nausea", "Severe", "10/09/2011", "10/12/2011", "Red eye", "", "Probable");
-        dto.setSource("Force");
-        dto.setExternalID("92");
-        aeList.add(dto);
-
-        dto = mockAdverseEvent(3, 103, "5491", "Vomiting", "Severe", "10/09/2011", "10/10/2011", "Red neck", "", "Probable");
-        dto.setSource("Force");
-        dto.setExternalID("93");
-        aeList.add(dto);
-
-        dto = mockAdverseEvent(4, 104, "5492", "Lymphopenia", "Moderate", "10/09/2011", "10/13/2011", "", "", "Definite");
-        dto.setSource("Force");
-        dto.setExternalID("94");
-        aeList.add(dto);
-
-        dto = mockAdverseEvent(5, 105, "5493", "Fistula-intestinal", "Mild", "10/09/2011", "", "Sick stomach", "Hospitalized", "Unrelated");
-        dto.setSource("Force");
-        dto.setExternalID("95");
-        aeList.add(dto);
-
-        dto = mockAdverseEvent(6, 106, "5496", "Gastritis", "Mild", "", "", "Sick stomach", "Hospitalized", "Unrelated");
-        dto.setSource("Force");
-        dto.setExternalID("96");
-        aeList.add(dto);
+    public void setExternalAdverseEventDao(ExternalAdverseEventDao externalAdverseEventDao) {
+        this.externalAdverseEventDao = externalAdverseEventDao;
     }
 
-    private void populateErrorAes(List<AdverseEventDTO> aeList){
-        AdverseEventDTO dto = null;
-
-        dto = mockAdverseEvent(56, 1056, "4490", "Vomitings", "Mild", "10/10/2011", "10/11/2011", "threwup on my face", "Hospitalized", "Likely");
-        dto.setSource("Force");
-        dto.setExternalID("691");
-        aeList.add(dto);
-
-        dto = mockAdverseEvent(57, 1057, "5490", "Itching", "Death", "10/09/2011", "10/12/2011", "pimples", "", "Probable");
-        dto.setSource("Force");
-        dto.setExternalID("792");
-        aeList.add(dto);
-
+    public CtcTermDao getCtcTermDao() {
+        return ctcTermDao;
     }
+
+    public void setCtcTermDao(CtcTermDao ctcTermDao) {
+        this.ctcTermDao = ctcTermDao;
+    }
+
+    public LowLevelTermDao getLowLevelTermDao() {
+        return lowLevelTermDao;
+    }
+
+    public void setLowLevelTermDao(LowLevelTermDao lowLevelTermDao) {
+        this.lowLevelTermDao = lowLevelTermDao;
+    }
+
 }

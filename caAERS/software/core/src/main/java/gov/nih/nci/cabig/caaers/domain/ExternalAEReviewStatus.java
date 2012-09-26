@@ -18,7 +18,7 @@ public enum ExternalAEReviewStatus implements CodedEnum<Integer> {
     
     REJECTED(2, "Rejected"), 
     
-    MERGED(3, "Merged"),
+    ERROR(3, "Error"),
     
     IGNORED(4, "Ignored"), 
     

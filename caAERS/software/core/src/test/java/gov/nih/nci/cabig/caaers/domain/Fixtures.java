@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import com.semanticbits.rules.brxml.*;
 import com.semanticbits.rules.brxml.Condition;
+import gov.nih.nci.cabig.caaers.domain.dto.AeMergeDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.TaskNotificationDTO;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.*;
@@ -1098,5 +1099,13 @@ public class Fixtures {
         o.setNciInstituteCode(n);
         o.setStatus(ActiveInactiveStatusType.ACTIVE);
         return o;
+    }
+    
+    public static AeMergeDTO createAeMergeDTO(){
+        AeMergeDTO d = new AeMergeDTO();
+        d.setMerges(new int[]{1,2,1,2,2,1,1});
+        d.setExternalAeId(11);
+        d.setInteralAeId(15);
+        return d;
     }
 }

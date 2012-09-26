@@ -2,6 +2,8 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import static gov.nih.nci.cabig.ctms.domain.CodedEnumHelper.getByClassAndCode;
 import static gov.nih.nci.cabig.ctms.domain.CodedEnumHelper.register;
+import static gov.nih.nci.cabig.ctms.domain.EnumHelper.sentenceCasedName;
+
 import gov.nih.nci.cabig.ctms.domain.CodedEnum;
 
  
@@ -59,6 +61,10 @@ public enum OutcomeType implements CodedEnum<Integer> {
     public String getDisplayName() {
         return displayName;
     }
+    
+    public String getShortName(){
+        return sentenceCasedName(this);
+    }
 
     /**
      * Gets the name.
@@ -84,6 +90,13 @@ public enum OutcomeType implements CodedEnum<Integer> {
      */
     public static OutcomeType getByCode(final int code) {
         return getByClassAndCode(OutcomeType.class, code);
+    }
+    
+    public static OutcomeType getByShortName(String name){
+        for(OutcomeType t : values()){
+            if(t.getShortName().equals(name)) return t;
+        }
+        return null;
     }
 
 }

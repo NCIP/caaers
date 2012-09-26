@@ -8,13 +8,7 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import java.util.Date;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -33,22 +27,6 @@ import org.hibernate.annotations.Parameter;
 @Table(name = "ext_adverse_events")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_ext_adverse_events_id")})
 public class ExternalAdverseEvent extends AbstractMutableDomainObject{
-
-	public String getAdverseEventTermCode() {
-		return adverseEventTermCode;
-	}
-
-	public void setAdverseEventTermCode(String adverseEventTermCode) {
-		this.adverseEventTermCode = adverseEventTermCode;
-	}
-
-	public String getAdverseEventTermOtherValue() {
-		return adverseEventTermOtherValue;
-	}
-
-	public void setAdverseEventTermOtherValue(String adverseEventTermOtherValue) {
-		this.adverseEventTermOtherValue = adverseEventTermOtherValue;
-	}
 
 	/** The adverse event term. */
 	private String adverseEventTerm;
@@ -76,8 +54,32 @@ public class ExternalAdverseEvent extends AbstractMutableDomainObject{
     
     /** The Attribution. */
     private String attribution;
-    
+
+
+    private Date creationDate = new Date();
+
+    private ExternalAEReviewStatus status = ExternalAEReviewStatus.PENDING;
+
+
     private ExternalAdverseEventReportingPeriod externalAdverseEventReportingPeriod;
+
+
+    public String getAdverseEventTermCode() {
+        return adverseEventTermCode;
+    }
+
+    public void setAdverseEventTermCode(String adverseEventTermCode) {
+        this.adverseEventTermCode = adverseEventTermCode;
+    }
+
+    public String getAdverseEventTermOtherValue() {
+        return adverseEventTermOtherValue;
+    }
+
+    public void setAdverseEventTermOtherValue(String adverseEventTermOtherValue) {
+        this.adverseEventTermOtherValue = adverseEventTermOtherValue;
+    }
+
     
     @Enumerated(EnumType.STRING)
     public ExternalAEReviewStatus getStatus() {
@@ -88,10 +90,6 @@ public class ExternalAdverseEvent extends AbstractMutableDomainObject{
 		this.status = status;
 	}
 
-	private Date creationDate = new Date();
-    
-    private ExternalAEReviewStatus status = ExternalAEReviewStatus.PENDING;
-    
     public Date getCreationDate() {
 		return creationDate;
 	}

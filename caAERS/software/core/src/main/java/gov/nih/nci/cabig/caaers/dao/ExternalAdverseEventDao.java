@@ -18,8 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class ExternalAdverseEventDao extends CaaersDao<ExternalAdverseEvent> {
 	
-  private static final String UPDATE_AE_STATUS_HQL = "update ExternalAdverseEvent eae set eae.status = :newStatus where " +
-  		"eae.status = :oldStatus and eae.externalId in (:externalIds)";
 
     @Override
     @Transactional(readOnly = true, propagation= Propagation.NOT_SUPPORTED)
@@ -30,7 +28,7 @@ public class ExternalAdverseEventDao extends CaaersDao<ExternalAdverseEvent> {
     /**
      * Save the Adverse Event.
      * 
-     * @param event
+     * @param externalAdverseEvent
      *                The event to be saved.
      */
     @Transactional(readOnly = false)
@@ -40,13 +38,13 @@ public class ExternalAdverseEventDao extends CaaersDao<ExternalAdverseEvent> {
     
     @Transactional(readOnly = false)
     public void updateStatus(ExternalAEReviewStatus newStatus,ExternalAEReviewStatus oldStatus, List<String> externalIds) {
-    	UpdatedExternalAdverseEventsStatusQuery updateQuery = new UpdatedExternalAdverseEventsStatusQuery(UPDATE_AE_STATUS_HQL);
+    	UpdatedExternalAdverseEventsStatusQuery updateQuery = new UpdatedExternalAdverseEventsStatusQuery(UpdatedExternalAdverseEventsStatusQuery.UPDATE_AE_STATUS_HQL);
+
     	Query query = getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery(updateQuery.getQueryString());
-    	query.setParameter("newStatus", newStatus);
-    	query.setParameter("oldStatus", oldStatus);
-    	query.setParameterList("externalIds", externalIds);
-    	query.executeUpdate();
-    	
+        updateQuery.setParameter("newStatus", newStatus);
+        updateQuery.setParameter("oldStatus", oldStatus);
+        updateQuery.setParameterList("externalIds", externalIds);
+        super.search(updateQuery) ;
     }
 
 }

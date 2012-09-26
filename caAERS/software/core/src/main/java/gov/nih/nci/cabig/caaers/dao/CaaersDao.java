@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import edu.nwu.bioinformatics.commons.CollectionUtils;
 import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
+import gov.nih.nci.cabig.caaers.dao.query.HQLQuery;
 import gov.nih.nci.cabig.caaers.dao.query.NativeSQLQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.AbstractAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
@@ -213,6 +214,12 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
             }
         }
         query.append(')');
+    }
+
+    public List<T> findByIds(List<Integer> ids){
+        HQLQuery query = new HQLQuery("select o from " + domainClass().getName() + " o where id in (:ids)");
+        query.setParameterList("ids", ids);
+        return (List<T>) search(query);
     }
 
     /**

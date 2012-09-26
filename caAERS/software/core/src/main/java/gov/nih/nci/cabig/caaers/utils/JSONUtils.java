@@ -13,6 +13,15 @@ public class JSONUtils {
     private static char delimiter = '"';
     private static char colon = ':';
 
+    public static String toJSON(int[] arr){
+       if(arr == null) return "[]";
+        StringBuilder sb = new StringBuilder("[");
+       for(int i = 0; i < arr.length; i++){
+          if(i > 0) sb.append(",");
+          sb.append(arr[i]);
+       }
+       return sb.append("]").toString();
+    }
     public static Map<String, Object> describe(Object o){
         Map<String, Object> m = new LinkedHashMap<String, Object> ();
         Method[] methods = o.getClass().getMethods();

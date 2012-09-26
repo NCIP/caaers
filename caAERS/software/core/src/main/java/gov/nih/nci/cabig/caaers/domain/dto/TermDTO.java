@@ -89,6 +89,7 @@ public class TermDTO {
         TermDTO t = new TermDTO();
         t.id = this.id;
         t.name = this.name;
+        t.code = this.code;
         t.otherSpecify = this.otherSpecify;
                 
         return t;

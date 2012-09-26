@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import org.dbunit.operation.DatabaseOperation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -116,4 +117,14 @@ public class CtcTermDaoTest extends DaoTestCase<CtcTermDao> {
 
     }
 
+    
+    public void testGetByTermIds(){
+        List<Integer> ids = new ArrayList<Integer>();
+        ids.add(3001);
+        ids.add(3002);
+        ids.add(-99809);
+        List<CtcTerm> terms = getDao().findByIds(ids);
+        assertEquals(2, terms.size());
+        assertTrue(terms.get(0).getId().equals(3001) || terms.get(0).getId().equals(3002)  );
+    }
 }

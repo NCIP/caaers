@@ -22,7 +22,7 @@ public class ReconciledAdverseEventDao extends CaaersDao<ReconciledAdverseEvent>
     /**
      * Save the Adverse Event.
      * 
-     * @param event The event to be saved.
+     * @param reconciledAdverseEvent The event to be saved.
      */
     @Transactional(readOnly = false)
     public void save(final ReconciledAdverseEvent reconciledAdverseEvent) {

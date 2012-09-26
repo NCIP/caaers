@@ -1,7 +1,15 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
+import gov.nih.nci.cabig.caaers.dao.ExternalAdverseEventDao;
+import gov.nih.nci.cabig.caaers.dao.ReconciliationReportDao;
+import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
+import gov.nih.nci.cabig.caaers.dao.query.ExternalAdverseEventQuery;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.dto.AdverseEventDTO;
+import gov.nih.nci.cabig.caaers.domain.dto.AeMappingsDTO;
+import gov.nih.nci.cabig.caaers.domain.dto.AeMergeDTO;
+import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import org.apache.commons.lang.StringUtils;
 
@@ -12,6 +20,11 @@ import java.util.*;
  */
 public class AdverseEventReconciliationCommand {
 
+    private ReconciliationReportDao reconciliationReportDao;
+    private ExternalAdverseEventDao externalAdverseEventDao;
+    private CtcTermDao ctcTermDao;
+    private LowLevelTermDao lowLevelTermDao;
+    
     private String rejectedInternalAeStr;
     private String rejectedExternalAeStr;
     private String unmappedExternalAeStr;
@@ -19,7 +32,6 @@ public class AdverseEventReconciliationCommand {
     private String matchedAeMappingStr;
 
     private AdverseEventReportingPeriod reportingPeriod;
-
 
 
     private List<AdverseEventDTO> unMappedExternalAeList;
@@ -31,6 +43,7 @@ public class AdverseEventReconciliationCommand {
     private List<AdverseEventDTO> externalAeList;
     private List<AdverseEventDTO> internalAeList;
     private Map<Integer, AdverseEventDTO> externalAeMap;
+    private Map<String, AdverseEventDTO> externalAeExternalIdMap;
     private Map<Integer, AdverseEventDTO> internalAeMap;
     
     private Map<AdverseEventDTO, AdverseEventDTO> matchedAeMapping;
@@ -68,14 +81,21 @@ public class AdverseEventReconciliationCommand {
       
         return found;
     }
-    
-    
-    public AdverseEventReconciliationCommand(List<AdverseEventDTO> internalAeList, List<AdverseEventDTO> externalAeList){
-        this.externalAeList = externalAeList;
-        this.internalAeList = internalAeList;
+
+    public AdverseEventReconciliationCommand(ReconciliationReportDao reconciliationReportDao,ExternalAdverseEventDao externalAdverseEventDao, 
+                                             CtcTermDao ctcTermDao, LowLevelTermDao lowLevelTermDao){
+        this.reconciliationReportDao = reconciliationReportDao;
+        this.externalAdverseEventDao = externalAdverseEventDao;
+        this.ctcTermDao = ctcTermDao;
+        this.lowLevelTermDao = lowLevelTermDao;
         
-        internalAeMap = new HashMap<Integer, AdverseEventDTO>();
-        externalAeMap = new HashMap<Integer, AdverseEventDTO>();
+        this.errorAeList = new ArrayList<AdverseEventDTO>();
+        externalAeList = new ArrayList<AdverseEventDTO>();
+        internalAeList = new ArrayList<AdverseEventDTO>();
+       
+        externalAeMap = new LinkedHashMap<Integer, AdverseEventDTO>();
+        externalAeExternalIdMap = new LinkedHashMap<String, AdverseEventDTO>();
+        internalAeMap = new LinkedHashMap<Integer, AdverseEventDTO>();
         mergeMap = new HashMap<String, AdverseEventDTO>();
 
         unMappedInternalAeList = new ArrayList<AdverseEventDTO>();
@@ -83,93 +103,145 @@ public class AdverseEventReconciliationCommand {
         rejectedInternalAeList = new ArrayList<AdverseEventDTO>();
         rejectedExternalAeList = new ArrayList<AdverseEventDTO>();
 
-        for(AdverseEventDTO ae : internalAeList){
-            internalAeMap.put(ae.getId(), ae);
-            if(ae.isRejected()) this.rejectedInternalAeList.add(ae);
-            else this.unMappedInternalAeList.add(ae);
-        }
-        for(AdverseEventDTO ae : externalAeList){
-            externalAeMap.put(ae.getId(), ae);
-            if(ae.isRejected()) this.rejectedExternalAeList.add(ae);
-            else this.unMappedExternalAeList.add(ae);
-        }
-
         matchedAeMapping = new HashMap<AdverseEventDTO, AdverseEventDTO>();
         matchedAeIdMapping = new HashMap<Integer, Integer>();
-        List<AdverseEventDTO> tmp = new ArrayList<AdverseEventDTO>( unMappedInternalAeList);
-        for(AdverseEventDTO ae : tmp){
-           AdverseEventDTO found = find(ae, unMappedExternalAeList);
-           if(found != null){
-               matchedAeMapping.put(ae, found);
-               matchedAeIdMapping.put(ae.getId(), found.getId());
-               unMappedExternalAeList.remove(found);
-               unMappedInternalAeList.remove(ae);
+
+
+    }
+    private boolean isValidGrade(Grade g, List<? extends CodedGrade> grades){
+        if(g == null) return false;
+        if(grades == null || grades.isEmpty()) return false;
+        for(CodedGrade cg : grades){
+            if(cg.getCode() == g.getCode()) return true;
+        }
+        return false;
+    } 
+    public void loadExternalAdverseEvents(){
+        ExternalAdverseEventQuery query = new ExternalAdverseEventQuery();
+        query.filterByCreatedOnBefore(new Date());
+        query.filterByStatus(ExternalAEReviewStatus.PENDING);
+        query.filterByReportingPeriod(reportingPeriod.getId());
+        List<ExternalAdverseEvent> eaeList = (List<ExternalAdverseEvent> )externalAdverseEventDao.search(query);
+        AeTerminology terminology = reportingPeriod.getStudy().getAeTerminology();
+        StringBuilder errorBuilder = new StringBuilder();
+        for(ExternalAdverseEvent eae : eaeList){
+            AdverseEventDTO dto = AdverseEventDTO.create(eae);
+            errorBuilder.setLength(0);
+            if(terminology.getTerm() == Term.CTC){
+                CtcTerm term = ctcTermDao.getByCtepCodeandVersion(eae.getAdverseEventTermCode(), terminology.getCtcVersion());
+                dto.getTerm().setId(term != null ? term.getId() : 0);
+                if(term == null){
+                    errorBuilder.append(String.format("Invalid CTC term. Unable to find ('%s:%s') with in Ctc version '%s'.",
+                            eae.getAdverseEventTermCode(),
+                            eae.getAdverseEventTerm(),
+                            terminology.getCtcVersion().getName()));
+                }  else {
+                    dto.getTerm().setId(term.getId());
+                    if (!isValidGrade(eae.getGrade(), term.getGrades())){
+                        errorBuilder.append(String.format("Grade '%s' is not valid for the term '%s:%s'. Valid options are '%s'",
+                                eae.getGrade().getShortName() ,
+                                eae.getAdverseEventTermCode(),
+                                eae.getAdverseEventTerm(),
+                                term.getGrades().toString()));
+                    }
+                }
+
+            } else if(terminology.getTerm() == Term.MEDDRA){
+                List<LowLevelTerm> lowLevelTerms = lowLevelTermDao.getByMeddraCodeandVersion(eae.getAdverseEventTermCode(), terminology.getMeddraVersion().getId()) ;
+                LowLevelTerm term = (lowLevelTerms == null || lowLevelTerms.isEmpty()) ? null : lowLevelTerms.get(0);
+                if(term == null){
+                    errorBuilder.append(String.format("Invalid MedDRA term. Unable to find ('%s:%s') with in MedDRA version '%s'.",
+                            eae.getAdverseEventTermCode(),
+                            eae.getAdverseEventTerm(),
+                            terminology.getMeddraVersion().getName()));
+                }else{
+                    dto.getTerm().setId(term.getId());
+                }
+            }
+
+            if(errorBuilder.length() > 0){
+                dto.setError(errorBuilder.toString());
+                errorAeList.add(dto);
+            } else {
+                externalAeList.add(dto);
+                externalAeMap.put(dto.getId(), dto);
+                externalAeExternalIdMap.put(dto.getExternalID(), dto);
+                unMappedExternalAeList.add(dto);
+            }
+        }
+
+
+
+    }
+    public void loadInternalAdverseEvents(){
+        for(AdverseEvent ae : reportingPeriod.getAdverseEvents()){
+            if(ae.isRetired()) continue;
+            if(StringUtils.isEmpty(ae.getExternalId()) || externalAeExternalIdMap.containsKey(ae.getExternalId()) ){
+                AdverseEventDTO dto = AdverseEventDTO.create(ae);
+                internalAeList.add(dto);
+                internalAeMap.put(dto.getId(), dto);
+                if(StringUtils.isEmpty(ae.getExternalId())){
+                    unMappedInternalAeList.add(dto);
+                } else {
+                    unMappedExternalAeList.remove(externalAeExternalIdMap.get(dto.getExternalID()));
+                }
+            }
+        }
+    }
+    public  void doAutoMapping(){
+        AeMappingsDTO oldMapping = StringUtils.isNotEmpty(reportingPeriod.getOldAeMapping()) ? AeMappingsDTO.deseralize(reportingPeriod.getOldAeMapping()) : null;
+        if(oldMapping != null){
+           //handle rejections
+           if(oldMapping.getRejectedExternalAeIds() != null){
+               for(Integer id : oldMapping.getRejectedExternalAeIds()){
+                   AdverseEventDTO rejected = externalAeMap.get(id);
+                   if(rejected != null){
+                       unMappedExternalAeList.remove(rejected);
+                       rejectedExternalAeList.add(rejected);
+                   }
+               }
            }
-        }
-        tmp = new ArrayList<AdverseEventDTO>( unMappedInternalAeList);
-        for(AdverseEventDTO ae : tmp){
-            if(StringUtils.isNotEmpty(ae.getExternalID())) unMappedInternalAeList.remove(ae);
+           if(oldMapping.getRejectedInternalAeIds() != null){
+               for(Integer id : oldMapping.getRejectedInternalAeIds()){
+                   AdverseEventDTO rejected = internalAeMap.get(id);
+                   if(rejected != null){
+                       unMappedInternalAeList.remove(rejected);
+                       rejectedInternalAeList.add(rejected);
+                   }
+               }
+           }
+
+           //handle mappings
+           if(oldMapping.getRelations() != null){
+               for(AeMergeDTO relation : oldMapping.getRelations()){
+                   AdverseEventDTO iae = internalAeMap.get(relation.getInteralAeId());
+                   AdverseEventDTO eae = internalAeMap.get(relation.getExternalAeId());
+                   if(iae == null || eae == null) continue;
+                   matchedAeMapping.put(iae, eae);
+                   matchedAeIdMapping.put(iae.getId(), eae.getId());
+                   unMappedExternalAeList.remove(eae);
+                   unMappedInternalAeList.remove(iae);
+                   AdverseEventDTO merged = addToMergeMap(iae, eae);
+                   relation.mergeChanges(iae, eae, merged);
+               }
+           }
+
         }
 
-    }
-
-    
-    public void link(Integer internalAeId, Integer externalAeId){
-        AdverseEventDTO externalAe = find(externalAeId, externalAeList);
-        AdverseEventDTO internalAe = find(internalAeId, internalAeList);
-        AdverseEventDTO oldExternalAe = null;
-        if(externalAe != null) {
-            unMappedExternalAeList.remove(externalAe);
-        }
-        if(internalAe != null) {
-            unMappedInternalAeList.remove(internalAe);
-            oldExternalAe = matchedAeMapping.get(internalAe);
-        }
-        if(oldExternalAe != null){
-            unMappedExternalAeList.add(oldExternalAe);
-        }
-        if(internalAe != null && externalAe != null){
-            matchedAeMapping.put(internalAe, externalAe);
-        }
-
-    }
-    public void unlink(Integer internalAeId, Integer externalAeId){
-        AdverseEventDTO internalAe = find(internalAeId, internalAeList);
-        if(internalAe != null){
-            AdverseEventDTO externalAe = matchedAeMapping.get(internalAe);
-            if(externalAe != null) {
-                unMappedExternalAeList.add(externalAe);
+        List<AdverseEventDTO> unmapped = new ArrayList<AdverseEventDTO>( unMappedInternalAeList);
+        for(AdverseEventDTO ae : unmapped){
+            AdverseEventDTO found = find(ae, unMappedExternalAeList);
+            if(found != null){
+                matchedAeMapping.put(ae, found);
+                matchedAeIdMapping.put(ae.getId(), found.getId());
+                unMappedExternalAeList.remove(found);
+                unMappedInternalAeList.remove(ae);
+                addToMergeMap(ae, found);
             }
-            matchedAeMapping.remove(internalAe);
-            unMappedInternalAeList.add(internalAe);
-            internalAe.setExternalID(null);
         }
+        
     }
-    
-    public void reject(Integer externalAeId){
-        AdverseEventDTO externalAe = find(externalAeId, externalAeList);
-        if(externalAe != null){
-            rejectedExternalAeList.add(externalAe);
-            unMappedExternalAeList.remove(externalAe);
-            AdverseEventDTO internalAe = find(externalAe, matchedAeMapping);
-            if(internalAe != null){
-                internalAe.setExternalID(null);
-                unMappedInternalAeList.add(internalAe);
-                matchedAeMapping.remove(internalAe);
-            }
 
-            externalAe.setRejected(true);
-        }
-    }
-    
-    public void unreject(Integer externalAeId){
-        AdverseEventDTO externalAe = find(externalAeId, rejectedExternalAeList);
-        if(externalAe != null) {
-            unMappedExternalAeList.add(externalAe);
-            externalAe.setRejected(false);
-            rejectedExternalAeList.remove(externalAe);
-        }
-    }
 
     public Study getStudy() {
         return reportingPeriod.getStudy();
@@ -325,6 +397,36 @@ public class AdverseEventReconciliationCommand {
         this.errorAeList = errorAeList;
     }
 
+
+    public List<String> getAllReviewedExternalAeExternalIds(){
+        List<String> ids = new ArrayList<String>();
+        List<String> rejected = getRejectedExternalAeExternalIds();
+        List<String> incorrect = getIncorrectExternalAeExternalIds();
+        boolean hasRejected = rejected.isEmpty();
+        boolean hasIncorrect = incorrect.isEmpty();
+        for(AdverseEventDTO ae : externalAeList){
+            if(hasRejected && rejected.contains(ae.getExternalID())) continue;
+            if(hasIncorrect && incorrect.contains(ae.getExternalID())) continue;
+            ids.add(ae.getExternalID());
+        }
+        return ids;
+    }
+
+    public List<String> getRejectedExternalAeExternalIds(){
+        List<String> ids = new ArrayList<String>();
+        for(AdverseEventDTO ae : rejectedInternalAeList){
+            ids.add(ae.getExternalID());
+        }
+        return ids;
+    }
+
+    public List<String> getIncorrectExternalAeExternalIds(){
+        List<String> ids = new ArrayList<String>();
+        for(AdverseEventDTO ae : errorAeList){
+            ids.add(ae.getExternalID());
+        }
+        return ids;
+    }
     public void processExternalAeRejections(){
         rejectedExternalAeList.clear();
         if(StringUtils.isEmpty(rejectedExternalAeStr)) return;
@@ -411,14 +513,15 @@ public class AdverseEventReconciliationCommand {
         }
     }
 
-    public void addToMergeMap(AdverseEventDTO iae, AdverseEventDTO eae){
+    public AdverseEventDTO addToMergeMap(AdverseEventDTO iae, AdverseEventDTO eae){
         String key = iae.getId() + "_" + eae.getId();
         if(!mergeMap.containsKey(key)){
             AdverseEventDTO ae = iae.clone();
             List<String> diff = iae.diff(eae); 
             ae.clearFields(diff.toArray(new String[]{}));
-            mergeMap.put(key, ae);
+            return  mergeMap.put(key, ae);
         }
+        return mergeMap.get(key);
     }
 
 

@@ -92,9 +92,8 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
 	
 	/** The name. */
 	private String name;
-	
-	/** The formatter. */
-	private SimpleDateFormat formatter;
+
+    private String oldAeMapping;
 	
 	/** The baseline reporting type. */
 	private boolean baselineReportingType;
@@ -131,7 +130,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
 	 * Instantiates a new adverse event reporting period.
 	 */
 	public AdverseEventReportingPeriod() {
-		formatter = new SimpleDateFormat("MM/dd/yy");
+
     }
 	
 	//LOGIC
@@ -406,7 +405,15 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
-    
+
+    public String getOldAeMapping() {
+        return oldAeMapping;
+    }
+
+    public void setOldAeMapping(String oldAeMapping) {
+        this.oldAeMapping = oldAeMapping;
+    }
+
     /**
      * Gets the treatment assignment.
      *
@@ -640,6 +647,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
     public String getName() {
     	
     	if(StringUtils.isEmpty(name)){
+            SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yy");
     		StringBuffer sb = new StringBuffer();
     		sb.append((getCycleNumber() != null)? "Cycle #: " + getCycleNumber() + "; " : "")
     		// .append((getTreatmentAssignment() != null) ? "TAC: " + getTreatmentAssignment().getCode() + ";" : "")

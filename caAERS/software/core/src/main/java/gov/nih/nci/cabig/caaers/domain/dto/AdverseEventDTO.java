@@ -28,6 +28,7 @@ public class AdverseEventDTO {
     private String whySerious;
     private String attribution;
     private String expected;
+    private String error;
 
 
     public boolean isSame(AdverseEventDTO other){
@@ -140,6 +141,14 @@ public class AdverseEventDTO {
         this.endDate = endDate;
     }
 
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -235,4 +244,55 @@ public class AdverseEventDTO {
         if(StringUtils.isNotEmpty(externalID)) ae.setVerbatim(externalID);
         return ae;
     }
+    
+    public static AdverseEventDTO create(ExternalAdverseEvent eae){
+        AdverseEventDTO ae = new AdverseEventDTO();
+        ae.setTerm(new TermDTO());
+        ae.setId(eae.getId());
+        ae.setExternalID(eae.getExternalId());
+        ae.getTerm().setCode(eae.getAdverseEventTermCode());
+        ae.getTerm().setName(eae.getAdverseEventTerm());
+        ae.getTerm().setOtherSpecify(eae.getAdverseEventTermOtherValue());
+        if(eae.getGrade() != null) ae.setGrade(eae.getGrade().getShortName());
+        if(eae.getStartDate() != null) ae.setStartDate(DateUtils.formatDate(eae.getStartDate()));
+        if(eae.getEndDate() != null) ae.setEndDate(DateUtils.formatDate(eae.getEndDate()));
+        ae.setVerbatim(eae.getVerbatim());
+        ae.setWhySerious(eae.getHowSerious());
+        ae.setAttribution(eae.getAttribution());
+        return ae;
+    }
+
+    public static AdverseEventDTO create(AdverseEvent iae){
+        AdverseEventDTO ae = new AdverseEventDTO();
+        ae.setTerm(new TermDTO());
+        ae.setId(iae.getId());
+        ae.setExternalID(iae.getExternalId());
+        if(iae.getAdverseEventCtcTerm() != null){
+            ae.getTerm().setId(iae.getAdverseEventCtcTerm().getTerm().getId());
+            ae.getTerm().setCode(iae.getAdverseEventCtcTerm().getTerm().getCtepCode());
+            ae.getTerm().setName(iae.getAdverseEventCtcTerm().getTerm().getCtepTerm());
+            ae.getTerm().setName(iae.getLowLevelTerm() != null ? iae.getLowLevelTerm().getMeddraTerm() : null);
+        }else if(iae.getAdverseEventMeddraLowLevelTerm() != null){
+            ae.getTerm().setId(iae.getAdverseEventMeddraLowLevelTerm().getTerm().getId());
+            ae.getTerm().setCode(iae.getAdverseEventMeddraLowLevelTerm().getTerm().getMeddraCode());
+            ae.getTerm().setName(iae.getAdverseEventMeddraLowLevelTerm().getTerm().getMeddraTerm());
+        }
+
+        if(iae.getGrade() != null) ae.setGrade(iae.getGrade().getShortName());
+        if(iae.getStartDate() != null) ae.setStartDate(DateUtils.formatDate(iae.getStartDate()));
+        if(iae.getEndDate() != null) ae.setEndDate(DateUtils.formatDate(iae.getEndDate()));
+        ae.setVerbatim(iae.getDetailsForOther());
+        if(iae.getOutcomes() != null){
+            StringBuilder outcomeBuilder = new StringBuilder();
+            for(Outcome o: iae.getOutcomes()){
+                if(outcomeBuilder.length() > 0) outcomeBuilder.append(",");
+                outcomeBuilder.append(o.getOutcomeType().getDisplayName());
+            }
+            ae.setWhySerious(outcomeBuilder.toString());
+        }
+
+        ae.setAttribution(iae.getAttributionSummary() != null ?  iae.getAttributionSummary().getDisplayName() : null);
+        return ae;
+    }
+
 }
