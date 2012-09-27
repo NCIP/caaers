@@ -294,7 +294,7 @@ public class AdverseEventDTO {
             ae.getTerm().setId(iae.getAdverseEventCtcTerm().getTerm().getId());
             ae.getTerm().setCode(iae.getAdverseEventCtcTerm().getTerm().getCtepCode());
             ae.getTerm().setName(iae.getAdverseEventCtcTerm().getTerm().getCtepTerm());
-            ae.getTerm().setOtherSpecify(valueOf(iae.getLowLevelTerm().getTerm()));
+            if(iae.getLowLevelTerm() != null)ae.getTerm().setOtherSpecify(valueOf(iae.getLowLevelTerm().getTerm()));
         }else if(iae.getAdverseEventMeddraLowLevelTerm() != null){
             ae.getTerm().setId(iae.getAdverseEventMeddraLowLevelTerm().getTerm().getId());
             ae.getTerm().setCode(iae.getAdverseEventMeddraLowLevelTerm().getTerm().getMeddraCode());
