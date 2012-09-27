@@ -88,4 +88,81 @@ public class ReconciliationReport extends AbstractMutableDomainObject{
     public void addReconciledAdverseEvent(ReconciledAdverseEvent ae){
        reconciledAdverseEvents.add(ae);
     }
+    
+    @Transient
+    public List<ReconciledAdverseEvent> getForceAesToBeAdded(){
+    	List<ReconciledAdverseEvent> reconciledAdverseEvents = new ArrayList<ReconciledAdverseEvent>();
+    	for(ReconciledAdverseEvent ae : this.reconciledAdverseEvents){
+    		if(ae.getAction() == ReconciliationAction.ADD && ae.getSystem() == ReconciliationSystem.CAAERS){
+    			reconciledAdverseEvents.add(ae);
+    		}
+    	}
+    	return reconciledAdverseEvents;
+    }
+    
+    @Transient
+    public List<ReconciledAdverseEvent> getCaaersAesToBeAdded(){
+    	List<ReconciledAdverseEvent> reconciledAdverseEvents = new ArrayList<ReconciledAdverseEvent>();
+    	for(ReconciledAdverseEvent ae : this.reconciledAdverseEvents){
+    		if(ae.getAction() == ReconciliationAction.ADD && ae.getSystem() == ReconciliationSystem.FORCE){
+    			reconciledAdverseEvents.add(ae);
+    		}
+    	}
+    	return reconciledAdverseEvents;
+    }
+    
+    @Transient
+    public List<ReconciledAdverseEvent> getCaaersAesToBeUpdated(){
+    	List<ReconciledAdverseEvent> reconciledAdverseEvents = new ArrayList<ReconciledAdverseEvent>();
+    	for(ReconciledAdverseEvent ae : this.reconciledAdverseEvents){
+    		if(ae.getAction() == ReconciliationAction.UPDATE && ae.getSystem() == ReconciliationSystem.CAAERS){
+    			reconciledAdverseEvents.add(ae);
+    		}
+    	}
+    	return reconciledAdverseEvents;
+    }
+    
+    @Transient
+    public List<ReconciledAdverseEvent> getForceAesToBeUpdated(){
+    	List<ReconciledAdverseEvent> reconciledAdverseEvents = new ArrayList<ReconciledAdverseEvent>();
+    	for(ReconciledAdverseEvent ae : this.reconciledAdverseEvents){
+    		if(ae.getAction() == ReconciliationAction.UPDATE && ae.getSystem() == ReconciliationSystem.FORCE){
+    			reconciledAdverseEvents.add(ae);
+    		}
+    	}
+    	return reconciledAdverseEvents;
+    }
+    
+    @Transient
+    public List<ReconciledAdverseEvent> getCaaersAesToBeDeleted(){
+    	List<ReconciledAdverseEvent> reconciledAdverseEvents = new ArrayList<ReconciledAdverseEvent>();
+    	for(ReconciledAdverseEvent ae : this.reconciledAdverseEvents){
+    		if(ae.getAction() == ReconciliationAction.DELETE && ae.getSystem() == ReconciliationSystem.CAAERS){
+    			reconciledAdverseEvents.add(ae);
+    		}
+    	}
+    	return reconciledAdverseEvents;
+    }
+    
+    @Transient
+    public List<ReconciledAdverseEvent> getForceAesToBeDeleted(){
+    	List<ReconciledAdverseEvent> reconciledAdverseEvents = new ArrayList<ReconciledAdverseEvent>();
+    	for(ReconciledAdverseEvent ae : this.reconciledAdverseEvents){
+    		if(ae.getAction() == ReconciliationAction.DELETE && ae.getSystem() == ReconciliationSystem.FORCE){
+    			reconciledAdverseEvents.add(ae);
+    		}
+    	}
+    	return reconciledAdverseEvents;
+    }
+    
+    @Transient
+    public List<ReconciledAdverseEvent> getAesWithErrors(){
+    	List<ReconciledAdverseEvent> reconciledAdverseEvents = new ArrayList<ReconciledAdverseEvent>();
+    	for(ReconciledAdverseEvent ae : this.reconciledAdverseEvents){
+    		if(ae.getAction() == ReconciliationAction.ERROR){
+    			reconciledAdverseEvents.add(ae);
+    		}
+    	}
+    	return reconciledAdverseEvents;
+    }
 }

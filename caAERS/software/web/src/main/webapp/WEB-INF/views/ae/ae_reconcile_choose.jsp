@@ -62,7 +62,7 @@
         function showReport(){
             var rejectedExternalAeStr = AE.eRejected.join('_');
             var rejectedInternalAeStr = AE.iRejected.join('_');
-            var tourl = AE.APP_BASE_URL  + '/pages/ae/reconcileAe?subview=yes&showReport=yes';
+            var tourl = AE.APP_BASE_URL  + '/pages/ae/reconcileAe?showReport=yes';
             if(rejectedExternalAeStr) tourl = tourl + '&rejectedExternalAeStr=' + rejectedExternalAeStr;
             if(rejectedInternalAeStr) tourl = tourl + '&rejectedInternalAeStr=' + rejectedInternalAeStr;
 
