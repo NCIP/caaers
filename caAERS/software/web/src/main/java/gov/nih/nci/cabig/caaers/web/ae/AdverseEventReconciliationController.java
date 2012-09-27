@@ -94,17 +94,30 @@ public class AdverseEventReconciliationController extends AutomaticSaveAjaxableF
     }
 
     @Override
+    protected void onBind(HttpServletRequest request, Object oCommand, BindException errors) throws Exception {
+        super.onBind(request, oCommand, errors);
+
+        //reload the reporting period on every submit.
+        AdverseEventReconciliationCommand reconciliationCommand = (AdverseEventReconciliationCommand) oCommand;
+        if(reconciliationCommand.getReportingPeriod() != null) {
+            Integer id = reconciliationCommand.getReportingPeriod().getId();
+            reconciliationCommand.setReportingPeriod(adverseEventReportingPeriodDao.getById(id));
+        }
+
+    }
+
+    @Override
     protected AdverseEventReportingPeriod getPrimaryDomainObject(AdverseEventReconciliationCommand command) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return command.getReportingPeriod();  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     protected AdverseEventReportingPeriodDao getDao() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return adverseEventReportingPeriodDao;
     }
 
     protected boolean shouldSave(HttpServletRequest request, AdverseEventReconciliationCommand command, Tab<AdverseEventReconciliationCommand> tab) {
-        return false;
+        return true;
     }
 
     @SuppressWarnings("unchecked")
@@ -137,7 +150,7 @@ public class AdverseEventReconciliationController extends AutomaticSaveAjaxableF
         
         if(!errors.hasErrors()){
             AdverseEventReconciliationCommand command = (AdverseEventReconciliationCommand) cmd;
-            AdverseEventReportingPeriod reportingPeriod = adverseEventReportingPeriodDao.getById(command.getReportingPeriod().getId());
+            AdverseEventReportingPeriod reportingPeriod = command.getReportingPeriod();
             ReconciliationReport report = command.generateReconcilationReport();
 
             //mark delete external Aes
