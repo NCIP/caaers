@@ -7,6 +7,7 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -100,5 +101,28 @@ public class Outcome extends AbstractMutableDomainObject {
         Outcome outcome = new Outcome();
         BeanUtils.copyProperties(this, outcome, new String[]{"id", "gridId", "version"});
         return outcome;
+    }
+
+    @Transient
+    public String getDisplayName(){
+        if(isOther()) return outcomeType.getShortName() + ":" + other;
+        return outcomeType.getShortName();
+    }
+
+    @Transient
+    public boolean isOther(){
+        return (outcomeType == OutcomeType.OTHER_SERIOUS)  ;
+    }
+    
+    public void populateOutcomeType(String s){
+        if(s == null) return;
+        if(s.startsWith(OutcomeType.OTHER_SERIOUS.getShortName())){
+            setOutcomeType(OutcomeType.OTHER_SERIOUS);
+            int l = s.length();
+            int i = s.indexOf(':') + 1;
+            if(l > i) setOther(s.substring(i));
+        }else {
+            setOutcomeType(OutcomeType.getByShortName(s));
+        }
     }
 }

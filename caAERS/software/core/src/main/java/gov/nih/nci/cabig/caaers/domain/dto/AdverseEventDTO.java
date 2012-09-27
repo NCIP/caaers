@@ -13,6 +13,7 @@ import java.util.Map;
  * @author: Biju Joseph
  */
 public class AdverseEventDTO {
+    private static String dash = "--";
     private String source;
     private boolean rejected;
 
@@ -20,13 +21,13 @@ public class AdverseEventDTO {
     private String externalID;
 
     private TermDTO term;
-    private String grade;
-    private String startDate;
-    private String endDate;
+    private String grade = dash;
+    private String startDate = dash;
+    private String endDate = dash;
 
-    private String verbatim;
-    private String whySerious;
-    private String attribution;
+    private String verbatim = dash;
+    private String whySerious = dash;
+    private String attribution = dash;
     private String expected;
     private String error;
 
@@ -226,22 +227,22 @@ public class AdverseEventDTO {
         ae.setSystem(ReconciliationSystem.getByDisplayName(source));
         ae.setItemId(id);
         ae.setAction(action);
-        if(StringUtils.isNotEmpty(grade)) ae.setGrade(Grade.getByShortName(grade));
-        if(StringUtils.isNotEmpty(attribution)) ae.setAttribution(Attribution.getByDisplayName(attribution));
-        if(StringUtils.isNotEmpty(externalID)) ae.setExternalId(externalID);
+        if(!isEmpty(grade)) ae.setGrade(Grade.getByShortName(grade));
+        if(!isEmpty(attribution)) ae.setAttribution(Attribution.getByDisplayName(attribution));
+        if(!isEmpty(externalID)) ae.setExternalId(externalID);
         if(term != null){
-            if(StringUtils.isNotEmpty(term.getCode())) ae.setTermCode(term.getCode());
-            if(StringUtils.isNotEmpty(term.getName())) ae.setTermName(term.getName());
-            if(StringUtils.isNotEmpty(term.getOtherSpecify())) ae.setTermOtherSpecify(term.getOtherSpecify());
+            if(!isEmpty(term.getCode())) ae.setTermCode(term.getCode());
+            if(!isEmpty(term.getName())) ae.setTermName(term.getName());
+            if(!isEmpty(term.getOtherSpecify())) ae.setTermOtherSpecify(term.getOtherSpecify());
         }
-        if(StringUtils.isNotEmpty(startDate)){
+        if(!isEmpty(startDate)){
             try {ae.setStartDate(DateUtils.parseDate(startDate));} catch (Exception e) {}
         }
-        if(StringUtils.isNotEmpty(endDate)){
+        if(!isEmpty(endDate)){
             try {ae.setEndDate(DateUtils.parseDate(endDate));} catch (Exception e) {}
         }
-        if(StringUtils.isNotEmpty(verbatim)) ae.setVerbatim(verbatim);
-        if(StringUtils.isNotEmpty(externalID)) ae.setVerbatim(externalID);
+        if(!isEmpty(verbatim)) ae.setVerbatim(verbatim);
+        if(!isEmpty(whySerious)) ae.setWhySerious(whySerious);
         return ae;
     }
 
@@ -253,7 +254,18 @@ public class AdverseEventDTO {
         try{ae.setEndDate(isEmpty(endDate) ? null : DateUtils.parseDate(endDate));}catch (Exception e){}
         ae.setDetailsForOther(isEmpty(verbatim) ? null : verbatim);
         ae.setAttributionSummary(isEmpty(attribution) ? null : Attribution.getByDisplayName(attribution));
-        //TODO: why seriosu???
+        List<OutcomeType> outcomeTypesToRetain = new ArrayList<OutcomeType>();
+        if(!isEmpty(whySerious)){
+            String[] arr = StringUtils.split(whySerious,',');
+            for(String s : arr){
+                Outcome o =  new Outcome();
+                o.populateOutcomeType(s);
+                outcomeTypesToRetain.add(o.getOutcomeType());
+                ae.addOutComeIfNecessary(o);
+            }
+        }
+        ae.removeOtherOutcomes(outcomeTypesToRetain);
+
     }
 
     public static AdverseEventDTO create(ExternalAdverseEvent eae){
@@ -262,14 +274,14 @@ public class AdverseEventDTO {
         ae.setId(eae.getId());
         ae.setExternalID(eae.getExternalId());
         ae.getTerm().setCode(eae.getAdverseEventTermCode());
-        ae.getTerm().setName(eae.getAdverseEventTerm());
+        if(!isEmpty(eae.getAdverseEventTerm()))ae.getTerm().setName(eae.getAdverseEventTerm());
         ae.getTerm().setOtherSpecify(eae.getAdverseEventTermOtherValue());
         if(eae.getGrade() != null) ae.setGrade(eae.getGrade().getShortName());
         if(eae.getStartDate() != null) ae.setStartDate(DateUtils.formatDate(eae.getStartDate()));
         if(eae.getEndDate() != null) ae.setEndDate(DateUtils.formatDate(eae.getEndDate()));
-        ae.setVerbatim(eae.getVerbatim());
-        ae.setWhySerious(eae.getHowSerious());
-        ae.setAttribution(eae.getAttribution());
+        if(!isEmpty(eae.getVerbatim()))ae.setVerbatim(eae.getVerbatim());
+        if(!isEmpty(eae.getHowSerious()))ae.setWhySerious(eae.getHowSerious());
+        if(!isEmpty(eae.getAttribution()))ae.setAttribution(eae.getAttribution());
         return ae;
     }
 
@@ -282,7 +294,7 @@ public class AdverseEventDTO {
             ae.getTerm().setId(iae.getAdverseEventCtcTerm().getTerm().getId());
             ae.getTerm().setCode(iae.getAdverseEventCtcTerm().getTerm().getCtepCode());
             ae.getTerm().setName(iae.getAdverseEventCtcTerm().getTerm().getCtepTerm());
-            ae.getTerm().setName(iae.getLowLevelTerm() != null ? iae.getLowLevelTerm().getMeddraTerm() : null);
+            ae.getTerm().setOtherSpecify(valueOf(iae.getLowLevelTerm().getTerm()));
         }else if(iae.getAdverseEventMeddraLowLevelTerm() != null){
             ae.getTerm().setId(iae.getAdverseEventMeddraLowLevelTerm().getTerm().getId());
             ae.getTerm().setCode(iae.getAdverseEventMeddraLowLevelTerm().getTerm().getMeddraCode());
@@ -292,23 +304,30 @@ public class AdverseEventDTO {
         if(iae.getGrade() != null) ae.setGrade(iae.getGrade().getShortName());
         if(iae.getStartDate() != null) ae.setStartDate(DateUtils.formatDate(iae.getStartDate()));
         if(iae.getEndDate() != null) ae.setEndDate(DateUtils.formatDate(iae.getEndDate()));
-        ae.setVerbatim(iae.getDetailsForOther());
+        if(!isEmpty(iae.getDetailsForOther()))ae.setVerbatim(iae.getDetailsForOther());
         if(iae.getOutcomes() != null){
             StringBuilder outcomeBuilder = new StringBuilder();
-            for(Outcome o: iae.getOutcomes()){
-                if(outcomeBuilder.length() > 0) outcomeBuilder.append(",");
-                outcomeBuilder.append(o.getOutcomeType().getDisplayName());
+            for(OutcomeType ot : OutcomeType.values()){
+                Outcome o = iae.getOutcomeOfType(ot);
+                if(o != null){
+                    if(outcomeBuilder.length() > 0) outcomeBuilder.append(",");
+                    outcomeBuilder.append(o.getDisplayName());
+                }
             }
             ae.setWhySerious(outcomeBuilder.toString());
         }
 
-        ae.setAttribution(iae.getAttributionSummary() != null ?  iae.getAttributionSummary().getDisplayName() : null);
+        if(iae.getAttributionSummary() != null) ae.setAttribution(iae.getAttributionSummary().getDisplayName() );
         return ae;
     }
 
+    private static String valueOf(Object o){
+        return o == null ? dash : String.valueOf(o);
+    }
+    
     public static boolean isEmpty(String s){
         if(StringUtils.isEmpty(s)) return true;
-        if(StringUtils.equals("--", s)) return true;
+        if(StringUtils.equals(dash, s)) return true;
         return false;
     }
 }

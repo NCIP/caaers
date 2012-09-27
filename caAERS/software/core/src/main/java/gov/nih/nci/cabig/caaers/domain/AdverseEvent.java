@@ -1688,4 +1688,36 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
         return sb.toString();
     }
 
+    /**
+     * 
+     * @param outcomeType
+     * @return
+     */
+    @Transient
+    public Outcome getOutcomeOfType(OutcomeType outcomeType){
+       for(Outcome o : getOutcomes()){
+           if(o.getOutcomeType() == outcomeType) return o;
+       }
+       return  null;
+    }
+    
+    public void addOutComeIfNecessary(Outcome outcome){
+       Outcome o = getOutcomeOfType(outcome.getOutcomeType());
+       if(o == null){
+           addOutcome(outcome);
+       } else {
+           if(outcome.getOutcomeType() == OutcomeType.OTHER_SERIOUS) o.setOther(outcome.getOther());
+       }
+    }
+    
+    public void removeOtherOutcomes(List<OutcomeType> outcomeTypesToRetain){
+        List<OutcomeType> typesToRemove = OutcomeType.outcomeTypesAsList();
+        typesToRemove.removeAll(outcomeTypesToRetain);
+        
+        for(OutcomeType t : typesToRemove){
+            Outcome o = getOutcomeOfType(t);
+            if(o != null) getOutcomes().remove(o);
+        }
+    }
+
 }

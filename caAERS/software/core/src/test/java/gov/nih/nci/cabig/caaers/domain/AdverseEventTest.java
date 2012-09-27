@@ -8,10 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.attribution.*;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.AE_DATA_COLLECTION;
 
@@ -484,6 +481,62 @@ public class AdverseEventTest extends AbstractTestCase {
     public void testToReadableString(){
        String s =  AdverseEvent.toReadableString(adverseEvent);
        assertEquals(" ID : 1 Grade : DEATH Start date : 11/02/2008", s);
+    }
+   
+    public void testAddOutcomeIfNecessary(){
+        Outcome o = new Outcome();
+        o.setOutcomeType(OutcomeType.DEATH);
+        adverseEvent.getOutcomes().clear();
+        assertTrue(adverseEvent.getOutcomes().isEmpty());
+        adverseEvent.addOutComeIfNecessary(o);
+        
+        Outcome o2 = new Outcome();
+        o2.setOutcomeType(OutcomeType.LIFE_THREATENING);
+        adverseEvent.addOutComeIfNecessary(o2);
+        
+        assertEquals(2, adverseEvent.getOutcomes().size());
+
+        Outcome o3 = new Outcome();
+        o3.setOutcomeType(OutcomeType.OTHER_SERIOUS);
+        o3.setOther("x");
+        adverseEvent.addOutComeIfNecessary(o3);
+        assertEquals(3, adverseEvent.getOutcomes().size());
+
+        Outcome o4 = new Outcome();
+        o4.setOutcomeType(OutcomeType.OTHER_SERIOUS);
+        o4.setOther("x");
+        adverseEvent.addOutComeIfNecessary(o4);
+        assertEquals(3, adverseEvent.getOutcomes().size());
+        assertEquals("Other serious:x", o4.getDisplayName());
+
+        Outcome o5 = adverseEvent.getOutcomeOfType(OutcomeType.LIFE_THREATENING) ;
+        assertNotNull(o5);
+        adverseEvent.removeOtherOutcomes(Arrays.asList(OutcomeType.DEATH));
+        assertEquals(1, adverseEvent.getOutcomes().size());
+
+    }
+    public void testGetOutcomeOfType(){
+        {
+            Outcome o = adverseEvent.getOutcomeOfType(OutcomeType.DEATH);
+            assertNotNull(o);
+        }
+        
+        {
+            Outcome o1 = new Outcome();
+            o1.setOutcomeType(OutcomeType.DEATH);
+            adverseEvent.addOutComeIfNecessary(o1);
+        }
+        
+        {
+            Outcome o1 = new Outcome();
+            o1.setOutcomeType(OutcomeType.LIFE_THREATENING);
+            adverseEvent.addOutcome(o1);
+        }
+
+        Outcome o = adverseEvent.getOutcomeOfType(OutcomeType.DEATH);
+        assertNotNull(o);
+        assertEquals("Death", o.getDisplayName());
+
     }
 
 }

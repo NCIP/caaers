@@ -6,7 +6,10 @@ import static gov.nih.nci.cabig.ctms.domain.EnumHelper.sentenceCasedName;
 
 import gov.nih.nci.cabig.ctms.domain.CodedEnum;
 
- 
+import java.util.ArrayList;
+import java.util.List;
+
+
 /**
  * This enumeration represents the outcomes which are possible for seriousness indicator.
  * 
@@ -97,6 +100,12 @@ public enum OutcomeType implements CodedEnum<Integer> {
             if(t.getShortName().equals(name)) return t;
         }
         return null;
+    }
+    
+    public static List<OutcomeType> outcomeTypesAsList(){
+        List<OutcomeType> l = new ArrayList<OutcomeType>();
+        for(OutcomeType t : values()) l.add(t);
+        return l;
     }
 
 }
