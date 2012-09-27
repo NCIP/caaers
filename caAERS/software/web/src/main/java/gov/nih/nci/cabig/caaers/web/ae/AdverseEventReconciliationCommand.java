@@ -241,7 +241,27 @@ public class AdverseEventReconciliationCommand {
         }
         
     }
+    public void seralizeMapping()  {
+        AeMappingsDTO mappings = new AeMappingsDTO();
+        List<Integer> rejectedExternal = new ArrayList<Integer>();
+        for(AdverseEventDTO ae : getRejectedExternalAeList()) rejectedExternal.add(ae.getId());
+        
+        List<Integer> rejectedInternal = new ArrayList<Integer>();
+        for(AdverseEventDTO ae : getRejectedInternalAeList()) rejectedInternal.add(ae.getId());
+        List<AeMergeDTO> relations = new ArrayList<AeMergeDTO>();
+        for(Map.Entry<AdverseEventDTO, AdverseEventDTO> entry: matchedAeMapping.entrySet()){
+            String key = entry.getKey().getId() +  "_"  +  entry.getValue().getId();
+            AeMergeDTO merge = new AeMergeDTO();
+            merge.setExternalAeId(entry.getKey().getId());
+            merge.setExternalAeId(entry.getValue().getId());
+            relations.add(merge);
+            AdverseEventDTO ae = mergeMap.get(key);
+            if(ae != null) merge.copyChanges(entry.getKey(), entry.getValue(), ae);
+        }
+        mappings.setRelations(relations.toArray(new AeMergeDTO[]{}));
 
+        reportingPeriod.setOldAeMapping(AeMappingsDTO.seralize(mappings));
+    }
 
     public Study getStudy() {
         return reportingPeriod.getStudy();

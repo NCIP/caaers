@@ -66,7 +66,7 @@ public class AeMappingsDTO {
         return m;
     }
     
-    public static String seralize(AeMappingsDTO o) throws  Exception{
+    public static String seralize(AeMappingsDTO o){
         StringBuilder sb = new StringBuilder("{");
         sb.append("relations:[");
         if(o.getRelations() != null){

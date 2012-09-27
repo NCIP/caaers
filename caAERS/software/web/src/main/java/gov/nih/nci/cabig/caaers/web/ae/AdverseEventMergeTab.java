@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.domain.dto.AdverseEventDTO;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
+import org.springframework.validation.Errors;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -34,5 +35,15 @@ public class AdverseEventMergeTab extends TabWithFields<AdverseEventReconciliati
         }
         refData.put("differingAeIdMap", differingAeIdMap);
         return refData;
+    }
+
+
+    /**
+     * Invoked after successful binding and validation.
+     */
+    @Override
+    public void postProcess(HttpServletRequest request, AdverseEventReconciliationCommand command, Errors errors) {
+        if(errors.hasErrors()) return;
+        command.seralizeMapping();
     }
 }

@@ -34,5 +34,6 @@ public class AdverseEventLinkTab extends TabWithFields<AdverseEventReconciliatio
         command.processUnmappedExternalAes();
         command.processUnmappedInternalAes();
         command.processAeMapping();
+        command.seralizeMapping();
     }
 }

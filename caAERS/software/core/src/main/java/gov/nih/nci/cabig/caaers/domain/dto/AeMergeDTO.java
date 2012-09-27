@@ -3,6 +3,8 @@ package gov.nih.nci.cabig.caaers.domain.dto;
 import gov.nih.nci.cabig.caaers.utils.JSONUtils;
 import org.apache.commons.lang.StringUtils;
 
+import java.util.List;
+
 /**
  * @author Biju Joseph
  */
@@ -35,6 +37,30 @@ public class AeMergeDTO {
         this.merges = merges;
     }
     
+    public void copyChanges(AdverseEventDTO iae, AdverseEventDTO eae, AdverseEventDTO mergedAe){
+        List<String> diff = iae.diff(eae);
+        if(diff.contains("term")){
+            if(mergedAe.getTerm().isSame(iae.getTerm())) merges[0] = 1; else merges[0] = 2;
+        }
+        if(diff.contains("grade")){
+            if(StringUtils.equals(iae.getGrade(), mergedAe.getGrade())) merges[1] = 1; else merges[1] = 2;
+        }
+        if(diff.contains("startDate")){
+            if(StringUtils.equals(iae.getStartDate(), mergedAe.getStartDate())) merges[2] = 1; else merges[2] = 2;
+        }
+        if(diff.contains("endDate")){
+            if(StringUtils.equals(iae.getEndDate(), mergedAe.getEndDate())) merges[3] = 1; else merges[3] = 2;
+        }
+        if(diff.contains("verbatim")){
+            if(StringUtils.equals(iae.getVerbatim(), mergedAe.getVerbatim())) merges[4] = 1; else merges[4] = 2;
+        }
+        if(diff.contains("whySerious")){
+            if(StringUtils.equals(iae.getWhySerious(), mergedAe.getWhySerious())) merges[5] = 1; else merges[5] = 2;
+        }
+        if(diff.contains("attribution")){
+            if(StringUtils.equals(iae.getAttribution(), mergedAe.getAttribution())) merges[6] = 1; else merges[6] = 2;
+        }
+    }
     public void mergeChanges(AdverseEventDTO iae, AdverseEventDTO eae, AdverseEventDTO mergedAe){
         if(merges != null){
             mergedAe.setExternalID(eae.getExternalID());
@@ -82,7 +108,7 @@ public class AeMergeDTO {
         }
     }
     
-    public static String seralize(AeMergeDTO m) throws Exception{
+    public static String seralize(AeMergeDTO m) {
         StringBuilder sb = new StringBuilder("{");
         sb.append("i:").append(m.getInteralAeId().intValue());
         sb.append(",e:").append(m.getExternalAeId().intValue());

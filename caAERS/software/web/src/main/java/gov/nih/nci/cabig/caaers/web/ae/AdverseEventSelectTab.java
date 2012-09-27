@@ -52,5 +52,6 @@ public class AdverseEventSelectTab extends TabWithFields<AdverseEventReconciliat
 
         command.processExternalAeRejections();
         command.processInternalAeRejections();
+        command.seralizeMapping();
     }
 }
