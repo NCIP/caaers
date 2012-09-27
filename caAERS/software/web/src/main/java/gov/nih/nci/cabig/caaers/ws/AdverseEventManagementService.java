@@ -37,6 +37,24 @@ public interface AdverseEventManagementService {
 	public CaaersServiceResponse createAdverseEvent(@WebParam(name="AdverseEventsInputMessage", targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent") AdverseEventsInputMessage adverseEventsInputMessage) ;
 	
 	/**
+	 * Create Provisional Adverse Events for a Study Participant Assignment on a given Course/Cycle.<br/>
+	 *  Refer to ManageAdverseEvents.xsd for schema definition.<br/>
+	 * Few rules to enforce in implementation , return messages to client in CaaersServiceResponse.<br/>
+	 *	1. Participant and Study should be existing in caAERS.<br/>
+	 *	2. Adverse Event Management Service creates course if course is not present in caAERS System.  <br/>
+     *	4. Start date of this course/cycle cannot be earlier than the Start date of first course/cycle.<br/>
+     *	5. Course End date cannot be earlier than Start date.<br/>
+     *	6. For Non-Baseline treatment type Start date cannot be equal to End date.<br/>
+     *	7. Course/cycle cannot overlap with an existing course/cycle.<br/>
+	 *	8. Baseline treatment type cannot start after an existing Non-Baseline treatment type.<br/>
+	 *	9. Non-Baseline treatment type cannot start before an existing Baseline treatment type.		<br/>
+	 * @param adverseEventsInputMessage
+	 * @return gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse
+	 */
+	@WebMethod
+	public CaaersServiceResponse createProvisionalAdverseEvents(@WebParam(name="AdverseEventsInputMessage", targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent") AdverseEventsInputMessage adverseEventsInputMessage) ;
+	
+	/**
 	 * Update Adverse Events for a Study Participant Assignment on a given Course/Cycle.
 	 * @param adverseEventsInputMessage
 	 * @return gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse

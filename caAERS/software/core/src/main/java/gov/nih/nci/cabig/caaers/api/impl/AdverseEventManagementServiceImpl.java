@@ -122,12 +122,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 	}
 
 	public CaaersServiceResponse createAdverseEvent(AdverseEventsInputMessage adverseEventsInputMessage) {
-		Boolean createProvisionalAdverseEvents = true;
-		if(createProvisionalAdverseEvents) {
-			return createProvisionalAdverseEvents(adverseEventsInputMessage);
-		} else {
-			return saveAdverseEvent(adverseEventsInputMessage, CREATE);
-		}
+		return saveAdverseEvent(adverseEventsInputMessage, CREATE);
 	}
 	
 	private boolean validateAdverseEventInputMessage(AdverseEventsInputMessage adverseEventsInputMessage, CaaersServiceResponse caaersServiceResponse){
@@ -263,7 +258,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 		return null;
 	}
 	
-	private CaaersServiceResponse createProvisionalAdverseEvents(AdverseEventsInputMessage adverseEventsInputMessage){
+	public CaaersServiceResponse createProvisionalAdverseEvents(AdverseEventsInputMessage adverseEventsInputMessage){
 		CaaersServiceResponse caaersServiceResponse = Helper.createResponse();
 		if (!validateAdverseEventInputMessage(adverseEventsInputMessage,caaersServiceResponse)){
 			return caaersServiceResponse;
