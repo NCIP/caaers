@@ -41,10 +41,10 @@ public class ExternalAdverseEventDao extends CaaersDao<ExternalAdverseEvent> {
     	UpdatedExternalAdverseEventsStatusQuery updateQuery = new UpdatedExternalAdverseEventsStatusQuery(UpdatedExternalAdverseEventsStatusQuery.UPDATE_AE_STATUS_HQL);
 
     	Query query = getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery(updateQuery.getQueryString());
-        updateQuery.setParameter("newStatus", newStatus);
-        updateQuery.setParameter("oldStatus", oldStatus);
-        updateQuery.setParameterList("externalIds", externalIds);
-        super.search(updateQuery) ;
+        query.setParameter("newStatus", newStatus);
+        query.setParameter("oldStatus", oldStatus);
+        query.setParameterList("externalIds", externalIds);
+       	query.executeUpdate();
     }
 
 }
