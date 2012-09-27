@@ -20,11 +20,11 @@ public class ExternalAdverseEventQuery extends AbstractQuery {
     }
 
     public void filterByCreatedOnAfter(Date created){
-        andWhere("eae.created_on > :cdt" );
+        andWhere("eae.creationDate > :cdt" );
         setParameter("cdt", created);
     }
     public void filterByCreatedOnBefore(Date created){
-        andWhere("eae.created_on <= :cdt" );
+        andWhere("eae.creationDate <= :cdt" );
         setParameter("cdt", created);
     }
     public void joinExternalReportingPeriod(){

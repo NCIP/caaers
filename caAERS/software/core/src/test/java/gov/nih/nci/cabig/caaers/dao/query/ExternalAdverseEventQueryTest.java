@@ -20,7 +20,7 @@ public class ExternalAdverseEventQueryTest extends TestCase {
     public void testFilterByCreatedOnAfter() throws Exception {
         ExternalAdverseEventQuery q = new ExternalAdverseEventQuery();
         q.filterByCreatedOnAfter(new Date());
-        assertEquals("select eae from ExternalAdverseEvent eae WHERE eae.created_on > :cdt", q.getQueryString());
+        assertEquals("select eae from ExternalAdverseEvent eae WHERE eae.creationDate > :cdt", q.getQueryString());
 
     }
 }
