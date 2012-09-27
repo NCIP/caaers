@@ -11,6 +11,7 @@ import gov.nih.nci.cabig.caaers.domain.dto.AeMappingsDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.AeMergeDTO;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.*;
@@ -245,9 +246,11 @@ public class AdverseEventReconciliationCommand {
         AeMappingsDTO mappings = new AeMappingsDTO();
         List<Integer> rejectedExternal = new ArrayList<Integer>();
         for(AdverseEventDTO ae : getRejectedExternalAeList()) rejectedExternal.add(ae.getId());
+        mappings.setRejectedExternalAeIds(ArrayUtils.toPrimitive(rejectedExternal.toArray(new Integer[]{})));
         
         List<Integer> rejectedInternal = new ArrayList<Integer>();
         for(AdverseEventDTO ae : getRejectedInternalAeList()) rejectedInternal.add(ae.getId());
+        mappings.setRejectedInternalAeIds(ArrayUtils.toPrimitive(rejectedInternal.toArray(new Integer[]{})));
         List<AeMergeDTO> relations = new ArrayList<AeMergeDTO>();
         for(Map.Entry<AdverseEventDTO, AdverseEventDTO> entry: matchedAeMapping.entrySet()){
             String key = entry.getKey().getId() +  "_"  +  entry.getValue().getId();

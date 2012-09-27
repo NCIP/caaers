@@ -150,7 +150,6 @@
                         </tr>
                         </tbody>
                     </table>
-                    <form:hidden id="rejectedExternalAeStr" path="rejectedExternalAeStr"  />
                     <form:hidden id="rejectedInternalAeStr" path="rejectedInternalAeStr"  />
                 </div>
             </chrome:division>
