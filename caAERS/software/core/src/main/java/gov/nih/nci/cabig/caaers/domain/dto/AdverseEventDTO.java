@@ -270,6 +270,7 @@ public class AdverseEventDTO {
 
     public static AdverseEventDTO create(ExternalAdverseEvent eae){
         AdverseEventDTO ae = new AdverseEventDTO();
+        ae.setSource(ReconciliationSystem.FORCE.getDisplayName());
         ae.setTerm(new TermDTO());
         ae.setId(eae.getId());
         ae.setExternalID(eae.getExternalId());
@@ -287,6 +288,7 @@ public class AdverseEventDTO {
 
     public static AdverseEventDTO create(AdverseEvent iae){
         AdverseEventDTO ae = new AdverseEventDTO();
+        ae.setSource(ReconciliationSystem.CAAERS.getDisplayName());
         ae.setTerm(new TermDTO());
         ae.setId(iae.getId());
         ae.setExternalID(iae.getExternalId());
