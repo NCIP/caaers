@@ -255,7 +255,7 @@ public class AdverseEventReconciliationCommand {
         for(Map.Entry<AdverseEventDTO, AdverseEventDTO> entry: matchedAeMapping.entrySet()){
             String key = entry.getKey().getId() +  "_"  +  entry.getValue().getId();
             AeMergeDTO merge = new AeMergeDTO();
-            merge.setExternalAeId(entry.getKey().getId());
+            merge.setInteralAeId(entry.getKey().getId());
             merge.setExternalAeId(entry.getValue().getId());
             relations.add(merge);
             AdverseEventDTO ae = mergeMap.get(key);
