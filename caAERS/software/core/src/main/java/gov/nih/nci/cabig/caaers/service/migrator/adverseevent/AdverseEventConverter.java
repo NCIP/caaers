@@ -137,8 +137,9 @@ public class AdverseEventConverter {
 			adverseEvent.setVerbatim(adverseEventDto.getVerbatim());
 			
 			// populate attribution
-			if (adverseEventDto.getAttributionSummary() != null) { 
-				adverseEvent.setAttribution(adverseEventDto.getAttributionSummary().name());
+			if (adverseEventDto.getAttributionSummary() != null) {
+                Attribution attribution = Attribution.valueOf(adverseEventDto.getAttributionSummary().name());
+				adverseEvent.setAttribution(attribution.getDisplayName());
 			}
 			
 			// populate howSerious
@@ -152,7 +153,7 @@ public class AdverseEventConverter {
 				} 
 			}
 			
-			if(mostSeriousOutcome != null) adverseEvent.setHowSerious(mostSeriousOutcome.getName());
+			if(mostSeriousOutcome != null) adverseEvent.setHowSerious(mostSeriousOutcome.getShortName());
 				
 			// populate grade
 			Grade grade = Grade.getByCode(adverseEventDto.getGrade());
@@ -160,34 +161,19 @@ public class AdverseEventConverter {
 			
 			// populate start date
 			if(adverseEventDto.getStartDate() != null){
-				//check for future date .
-				int dateCompare = DateUtils.compareDate(new Date(), adverseEventDto.getStartDate().toGregorianCalendar().getTime());
-				if (dateCompare == -1) {
-					throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_031", new String[]{adverseEventDto.getStartDate()+""},"",Locale.getDefault()));
-				}
 				adverseEvent.setStartDate(adverseEventDto.getStartDate().toGregorianCalendar().getTime());
 			}
 			
 			// populate end date
 			if(adverseEventDto.getEndDate() != null){
-				int dateCompare = DateUtils.compareDate(new Date(), adverseEventDto.getEndDate().toGregorianCalendar().getTime());
-				if (dateCompare == -1) {
-					throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_031", new String[]{adverseEventDto.getEndDate()+""},"",Locale.getDefault()));
-				}
 				adverseEvent.setEndDate(adverseEventDto.getEndDate().toGregorianCalendar().getTime());
 			}	
-	        // Check if the start date is equal to or before the end date.
-			if(adverseEventDto.getStartDate() != null && startDateOfFirstCourse != null){
-				int dateCompare = DateUtils.compareDate(adverseEventDto.getStartDate().toGregorianCalendar().getTime(),startDateOfFirstCourse);
-				if (dateCompare < 0) {
-					throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_059", new String[]{adverseEventDto.getStartDate()+"",startDateOfFirstCourse+""},"",Locale.getDefault()));
-				}
-			}
-			
+
 			// populate adverse event term, code and other value
 
 			if (terminology.getCtcVersion() != null && adverseEventDto.getCtepCode() != null) {
-				populateCtcTermOfExternalAdverseEvent(adverseEventDto,adverseEvent,terminology.getCtcVersion());
+                adverseEvent.setAdverseEventTerm(adverseEventDto.getCtepCode());
+                adverseEvent.setAdverseEventTermOtherValue(adverseEventDto.getOtherMeddra().getMeddraCode());
 			}
 			
 			adverseEvent.setExternalId(adverseEventDto.getExternalId());
@@ -289,24 +275,7 @@ public class AdverseEventConverter {
 
 		}
 	}
-	
-	private void populateCtcTermOfExternalAdverseEvent(AdverseEventType adverseEventDto, ExternalAdverseEvent adverseEvent,Ctc ctc) throws CaaersSystemException{
-		if (adverseEventDto.getCtepCode() != null) {
-			CtcTerm ctcTerm = ctcTermDao.getByCtepCodeandVersion(adverseEventDto.getCtepCode(), ctc);
 
-			if (ctcTerm == null) {
-				throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_020", new String[]{adverseEventDto.getCtepCode()},"",Locale.getDefault()));
-			} else {
-				adverseEvent.setAdverseEventTerm(ctcTerm.getCtepTerm());
-				adverseEvent.setAdverseEventTermCode(ctcTerm.getCtepCode());
-				if (adverseEventDto.getOtherMeddra() != null) {
-					// populate other value from medra code
-					adverseEvent.setAdverseEventTermOtherValue(adverseEventDto.getOtherMeddra().getMeddraCode());
-				}
-			}
-		}
-
-	}
 	public void populateOutcomes(AdverseEventType adverseEventDto, AdverseEvent adverseEvent) {
 		for (OutcomeType xmlOutcome:adverseEventDto.getOutcome()) {
 			String xmlOc = xmlOutcome.getOutComeEnumType().name();

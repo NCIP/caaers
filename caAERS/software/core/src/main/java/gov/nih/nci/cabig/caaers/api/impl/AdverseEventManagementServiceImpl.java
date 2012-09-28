@@ -378,8 +378,8 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 		int index =1;
 		for(AdverseEventType adverseEventDto : xmlAdverseEvents.getAdverseEvent()){
 			ExternalAdverseEvent externalAdverseEvent = new ExternalAdverseEvent();
-			adverseEventConverter.convertAdverseEventDtoToExternalAdverseEventDTO(
-					adverseEventDto, externalAdverseEvent, study.getAeTerminology(), assignment.getStartDateOfFirstCourse());
+			adverseEventConverter.convertAdverseEventDtoToExternalAdverseEventDTO( adverseEventDto, externalAdverseEvent,
+                    study.getAeTerminology(), assignment.getStartDateOfFirstCourse());
 				try {
 					
 					Set<ConstraintViolation<ExternalAdverseEvent>> constraintViolations = validator.validate(externalAdverseEvent, AdverseEventGroup.class, Default.class);
@@ -390,8 +390,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 						externalAdverseEventReportingPeriod.addExternalAdverseEvent(externalAdverseEvent);
 					}
 				} catch (CaaersSystemException e) {
-					Helper.populateErrorOutcome(caaersServiceResponse, null, null, (index) + "", Arrays
-							.asList(new String[] { e.getMessage() }));
+					Helper.populateErrorOutcome(caaersServiceResponse, null, null, (index) + "", Arrays.asList(new String[] { e.getMessage() }));
 				}
 			index++;
 		}
