@@ -105,14 +105,10 @@ public class Outcome extends AbstractMutableDomainObject {
 
     @Transient
     public String getDisplayName(){
-        if(isOther()) return outcomeType.getShortName() + ":" + other;
+        if(outcomeType == OutcomeType.OTHER_SERIOUS) return outcomeType.getShortName() + ":" + other;
         return outcomeType.getShortName();
     }
 
-    @Transient
-    public boolean isOther(){
-        return (outcomeType == OutcomeType.OTHER_SERIOUS)  ;
-    }
     
     public void populateOutcomeType(String s){
         if(s == null) return;
