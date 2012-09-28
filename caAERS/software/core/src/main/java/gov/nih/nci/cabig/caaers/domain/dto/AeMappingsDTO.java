@@ -45,7 +45,7 @@ public class AeMappingsDTO {
         int p6 = s.indexOf("]", p5);
         String relations = p2 - p1 > 1 ? s.substring(p1,p2) : null;
         String eRejections = p4 - p3 > 1 ? s.substring(p3, p4) : null;
-        String iRejections = p6 - p5 > 1 ? s.substring(p5) : null;
+        String iRejections = p6 - p5 > 1 ? s.substring(p5, p6) : null;
         if(relations != null){
             String[] rArr = StringUtils.split(relations, "}");
             List<AeMergeDTO> merges = new ArrayList<AeMergeDTO>();
