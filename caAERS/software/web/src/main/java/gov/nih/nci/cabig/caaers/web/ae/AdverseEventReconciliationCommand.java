@@ -130,7 +130,6 @@ public class AdverseEventReconciliationCommand {
             errorBuilder.setLength(0);
             if(terminology.getTerm() == Term.CTC){
                 CtcTerm term = ctcTermDao.getByCtepCodeandVersion(eae.getAdverseEventTermCode(), terminology.getCtcVersion());
-                dto.getTerm().setId(term != null ? term.getId() : 0);
                 if(term == null){
                     errorBuilder.append(String.format("Invalid CTC term. Unable to find ('%s:%s') with in Ctc version '%s'.",
                             eae.getAdverseEventTermCode(),
@@ -138,6 +137,19 @@ public class AdverseEventReconciliationCommand {
                             terminology.getCtcVersion().getName()));
                 }  else {
                     dto.getTerm().setId(term.getId());
+                    dto.getTerm().setName(term.getFullName());
+                    dto.getTerm().setCode(term.getCtepCode());
+                    if(StringUtils.isNotEmpty(eae.getAdverseEventTermOtherValue())){
+                        //load the other Other Meddra.
+                        MeddraVersion meddraVersion = reportingPeriod.getStudy().getOtherMeddra();
+                        if(meddraVersion != null){
+                            List<LowLevelTerm> lowLevelTerms = lowLevelTermDao.getByMeddraCodeandVersion(eae.getAdverseEventTermCode(), terminology.getMeddraVersion().getId()) ;
+                            LowLevelTerm otherTerm = (lowLevelTerms == null || lowLevelTerms.isEmpty()) ? null : lowLevelTerms.get(0);
+                            if(otherTerm != null){
+                                dto.getTerm().setOtherSpecify(otherTerm.getFullName());
+                            }
+                        }
+                    }
                     if (!isValidGrade(eae.getGrade(), term.getGrades())){
                         errorBuilder.append(String.format("Grade '%s' is not valid for the term '%s:%s'. Valid options are '%s'",
                                 eae.getGrade().getShortName() ,
@@ -157,6 +169,8 @@ public class AdverseEventReconciliationCommand {
                             terminology.getMeddraVersion().getName()));
                 }else{
                     dto.getTerm().setId(term.getId());
+                    dto.getTerm().setCode(term.getMeddraCode());
+                    dto.getTerm().setName(term.getFullName());
                 }
             }
 

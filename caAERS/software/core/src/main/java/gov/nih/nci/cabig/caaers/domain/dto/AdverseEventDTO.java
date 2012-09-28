@@ -295,12 +295,12 @@ public class AdverseEventDTO {
         if(iae.getAdverseEventCtcTerm() != null){
             ae.getTerm().setId(iae.getAdverseEventCtcTerm().getTerm().getId());
             ae.getTerm().setCode(iae.getAdverseEventCtcTerm().getTerm().getCtepCode());
-            ae.getTerm().setName(iae.getAdverseEventCtcTerm().getTerm().getCtepTerm());
-            if(iae.getLowLevelTerm() != null)ae.getTerm().setOtherSpecify(valueOf(iae.getLowLevelTerm().getTerm()));
+            ae.getTerm().setName(iae.getAdverseEventCtcTerm().getTerm().getFullName());
+            if(iae.getLowLevelTerm() != null)ae.getTerm().setOtherSpecify(valueOf(iae.getLowLevelTerm().getFullName()));
         }else if(iae.getAdverseEventMeddraLowLevelTerm() != null){
             ae.getTerm().setId(iae.getAdverseEventMeddraLowLevelTerm().getTerm().getId());
             ae.getTerm().setCode(iae.getAdverseEventMeddraLowLevelTerm().getTerm().getMeddraCode());
-            ae.getTerm().setName(iae.getAdverseEventMeddraLowLevelTerm().getTerm().getMeddraTerm());
+            ae.getTerm().setName(iae.getAdverseEventMeddraLowLevelTerm().getTerm().getFullName());
         }
 
         if(iae.getGrade() != null) ae.setGrade(iae.getGrade().getShortName());
