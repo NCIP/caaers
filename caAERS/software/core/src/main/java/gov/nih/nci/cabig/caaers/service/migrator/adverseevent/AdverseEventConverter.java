@@ -172,7 +172,7 @@ public class AdverseEventConverter {
 			// populate adverse event term, code and other value
 
 			if (terminology.getCtcVersion() != null && adverseEventDto.getCtepCode() != null) {
-                adverseEvent.setAdverseEventTerm(adverseEventDto.getCtepCode());
+                adverseEvent.setAdverseEventTermCode(adverseEventDto.getCtepCode());
                 if(adverseEventDto.getOtherMeddra() != null)  adverseEvent.setAdverseEventTermOtherValue(adverseEventDto.getOtherMeddra().getMeddraCode());
 			}
 			

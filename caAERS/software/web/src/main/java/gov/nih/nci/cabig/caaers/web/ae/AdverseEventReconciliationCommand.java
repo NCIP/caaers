@@ -230,7 +230,7 @@ public class AdverseEventReconciliationCommand {
            if(oldMapping.getRelations() != null){
                for(AeMergeDTO relation : oldMapping.getRelations()){
                    AdverseEventDTO iae = internalAeMap.get(relation.getInteralAeId());
-                   AdverseEventDTO eae = internalAeMap.get(relation.getExternalAeId());
+                   AdverseEventDTO eae = externalAeMap.get(relation.getExternalAeId());
                    if(iae == null || eae == null) continue;
                    matchedAeMapping.put(iae, eae);
                    matchedAeIdMapping.put(iae.getId(), eae.getId());
