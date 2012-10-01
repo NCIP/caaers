@@ -173,7 +173,7 @@ public class AdverseEventReconciliationController extends AutomaticSaveAjaxableF
             //delete caaers-Aes
             for(AdverseEventDTO ae : command.getRejectedInternalAeList()){
                 AdverseEvent adverseEvent = reportingPeriod.findAdverseEventById(ae.getId());
-                if(adverseEvent != null)aeList.remove(adverseEvent);
+                if(adverseEvent != null)adverseEvent.retire();
             }
 
             //ae's to be updated
@@ -232,12 +232,14 @@ public class AdverseEventReconciliationController extends AutomaticSaveAjaxableF
                      AdverseEventCtcTerm adverseEventCtcTerm = new AdverseEventCtcTerm();
                      adverseEventCtcTerm.setCtcTerm(ctcTerm);
                      adverseEvent.setAdverseEventCtcTerm(adverseEventCtcTerm);
+                     adverseEventCtcTerm.setAdverseEvent(adverseEvent);
                  }
                 if(isMedDRA){
                     LowLevelTerm meddraTerm = meddraTermMap.get(ae.getTerm().getId());
                     AdverseEventMeddraLowLevelTerm adverseEventMeddraLowLevelTerm = new AdverseEventMeddraLowLevelTerm();
                     adverseEventMeddraLowLevelTerm.setLowLevelTerm(meddraTerm);
                     adverseEvent.setAdverseEventMeddraLowLevelTerm(adverseEventMeddraLowLevelTerm);
+                    adverseEventMeddraLowLevelTerm.setAdverseEvent(adverseEvent);
                 }
                 ae.mergeChanges(adverseEvent);
                 reportingPeriod.addAdverseEvent(adverseEvent);

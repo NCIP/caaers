@@ -75,6 +75,10 @@
             repWin.show();
 
         }
+        function confirmAndSave(){
+            $('finishHidden').name = '_finish';
+            $('command').submit();
+        }
 
     </script>
 
@@ -187,7 +191,7 @@
                         </tr>
                         </tbody></table>
                 </button>
-                <button id="flow-next" type="submit" class="omnipotent-button green" title="">
+                <button id="confirm" type="button" class="omnipotent-button green" title="" onclick="confirmAndSave()">
                     <table>
                         <tbody>
                         <tr>
@@ -201,6 +205,7 @@
                         </tbody>
                     </table>
                 </button>
+                <input type="hidden" name="_unwanted" value="true" id="finishHidden" />
             </span>
             </div>
             </div>
