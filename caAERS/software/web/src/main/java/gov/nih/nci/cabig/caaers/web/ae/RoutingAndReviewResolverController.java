@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 
@@ -45,10 +46,14 @@ public class RoutingAndReviewResolverController extends AbstractController{
 		if(reportingPeriod.isRetired()){
 			redirectUrl = "routingAndReview?study=" + studyId + "&participant=" + participantId + "&retiredReportingPeriod=true&paginationAction=firstPage&numberOfResultsPerPage=15";
 		}else{
-			redirectUrl = "captureRoutine?adverseEventReportingPeriod=" + reportingPeriodId + "&study=" + studyId + "&participant=" + participantId + "&_page=0&_target1=1&displayReportingPeriod=true&addReportingPeriodBinder=true";
-			// Only ae_reporter will be taken to the edit flow of adverse events ie the url mentioned above. For all other roles, the user will be redirected to the read-only page.
-			if(!SecurityUtils.checkAuthorization(UserGroupType.ae_reporter)){
-				redirectUrl = "reviewEvaluationPeriod?adverseEventReportingPeriod=" + reportingPeriodId;
+			if(SecurityUtils.checkAuthorization(UserGroupType.ae_study_data_reviewer) && reportingPeriod.getReviewStatus() == ReviewStatus.DATA_COORDINATOR_REVIEW){
+				redirectUrl = "reconcileAe?rpId=" + reportingPeriod.getId();
+			} else{
+				redirectUrl = "captureRoutine?adverseEventReportingPeriod=" + reportingPeriodId + "&study=" + studyId + "&participant=" + participantId + "&_page=0&_target1=1&displayReportingPeriod=true&addReportingPeriodBinder=true";
+				// Only ae_reporter will be taken to the edit flow of adverse events ie the url mentioned above. For all other roles, the user will be redirected to the read-only page.
+				if(!SecurityUtils.checkAuthorization(UserGroupType.ae_reporter)){
+					redirectUrl = "reviewEvaluationPeriod?adverseEventReportingPeriod=" + reportingPeriodId;
+				}
 			}
 		}
 		ModelAndView mv = new ModelAndView(new RedirectView(redirectUrl));
