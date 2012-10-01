@@ -17,7 +17,7 @@
 	var catSel = null;
 	var RPCreatorClass = Class.create();
 	var deleteIndex = 0;
-
+    var aeTermUnique = "${command.study.aeTermUnique}"   == "true" ;
     var oldSignatures = new Array();
     var routingHelper = new RoutingAndReviewHelper(captureAE, 'reportingPeriod');
     var LOCATION = document.location;
@@ -34,23 +34,27 @@
             var first = 0;
             
             $H(selectedTerms).keys().each(function(termID) {
+                if(!aeTermUnique){
+                    listOfTermIDs.push(termID);
+                } else {
+                    var re = new RegExp("other[,|\\s|(|)]+specify");
+                    var otherTerm = selectedTerms.get(termID).toLowerCase();
+                    // var otherSepcifyTerm = (otherTerm.indexOf('other') > 0 && otherTerm.indexOf('specify') > 0);
+                    var otherSepcifyTerm = otherTerm.match(re);
 
-                var re = new RegExp("other[,|\\s|(|)]+specify");
-                var otherTerm = selectedTerms.get(termID).toLowerCase();
-                // var otherSepcifyTerm = (otherTerm.indexOf('other') > 0 && otherTerm.indexOf('specify') > 0);
-                var otherSepcifyTerm = otherTerm.match(re);
-
-                var tID = (otherSepcifyTerm ? -1 : lookupByTermId(termID));
-                if (tID == -1){
-                     listOfTermIDs.push(termID); 
-                }else {
-                    openDivisionById(tID);
-                    if (first == 0) {
-                        // jump to the box
-                        document.location = document.location.toString().split("#")[0] + "#adverseEventTerm-" + termID;
-                        first = termID;
+                    var tID = (otherSepcifyTerm ? -1 : lookupByTermId(termID));
+                    if (tID == -1){
+                        listOfTermIDs.push(termID);
+                    }else {
+                        openDivisionById(tID);
+                        if (first == 0) {
+                            // jump to the box
+                            document.location = document.location.toString().split("#")[0] + "#adverseEventTerm-" + termID;
+                            first = termID;
+                        }
                     }
                 }
+
             }.bind(this));
 
 

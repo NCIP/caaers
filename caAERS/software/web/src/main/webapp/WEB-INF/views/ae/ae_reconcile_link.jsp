@@ -43,7 +43,14 @@ AE.externalAEHash =  new Hash();
 AE.iUnmapped = [];
 AE.eUnmapped = [];
 AE.eRejected = [];
+AE.matchFormatter = function(elCell, oRecord, oColumn, oData){
 
+   var i = (oData) ? parseInt(oData) : 0;
+   if(i > 45) elCell.innerHTML = 'Very High';
+   else if(i > 25) elCell.innerHTML = 'High';
+   else if(i > 15) elCell.innerHTML = 'Medium';
+   else elCell.innerHTML = 'Low';
+}
 AE.unlink = function (iaeId, eaeId){
 //    console.debug("Entering Unlink : { eUnmapped :  [" + AE.eUnmapped.join(",") + "] , iUnmapped : [" + AE.iUnmapped.join(",") + "] , mapping : [" + AE.aeMappingHash.inspect()+ "] }");
 
@@ -135,17 +142,14 @@ AE.ae = Class.create({
     match:function(oae){
         var p = 0;
 //        if(oae.externalId == this.externalId) return 100;
-        if(oae.externalId == this.externalId){
-            p = 100;
-        }  else {
-            if(oae.term == this.term) p = p+40;
-            if(oae.startDate == this.startDate) p = p+ 20;
-            if(oae.endDate == this.endDate) p = p+20;
+            if(oae.externalId == this.externalId) p = 46;
+            if(oae.term == this.term) p = p+20;
+            if(oae.startDate == this.startDate) p = p+ 16;
+            if(oae.endDate == this.endDate) p = p+2;
             if(oae.grade == this.grade) p = p+ 10;
-            if(oae.attribution == this.attribution) p = p+5;
-            if(oae.verbatim == this.verbatim) p = p+3;
+            if(oae.attribution == this.attribution) p = p+2;
+            if(oae.verbatim == this.verbatim) p = p+2;
             if(oae.whySerious == this.whySerious) p = p+2;
-        }
 
         return '{' +
                 'id : ' + this.id + ',' +
@@ -249,7 +253,7 @@ AE.aeWidget = Class.create({
             {key:"verbatim", label: "Verbatim", sortable:true, resizeable:true},
             {key:"whySerious", label: "Why Serious?", sortable:false, resizeable:false},
             {key:"attribution", label: "Attribution", sortable:false, resizeable:false},
-            {key:"percent", label: "Match" ,formatter:YAHOO.widget.DataTable.formatNumber, sortable:true, resizeable:false}
+            {key:"percent", label: "Match" ,formatter:AE.matchFormatter, sortable:true, resizeable:false}
         ];
         var ds = new YAHOO.util.DataSource(this.aePickerData);
         ds.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
