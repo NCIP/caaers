@@ -556,7 +556,8 @@ public class AdverseEventReconciliationCommand {
             AdverseEventDTO ae = iae.clone();
             List<String> diff = iae.diff(eae); 
             ae.clearFields(diff.toArray(new String[]{}));
-            return  mergeMap.put(key, ae);
+            mergeMap.put(key, ae);
+            return ae;
         }
         return mergeMap.get(key);
     }
