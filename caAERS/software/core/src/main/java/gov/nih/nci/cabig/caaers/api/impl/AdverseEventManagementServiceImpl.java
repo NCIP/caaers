@@ -32,6 +32,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
+import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AdverseEventMeddraLowLevelTermType;
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AdverseEventType;
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AdverseEvents;
@@ -39,8 +40,10 @@ import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AdverseEventsInp
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.Criteria;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationService;
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.service.AdverseEventReportingPeriodService;
 import gov.nih.nci.cabig.caaers.service.migrator.adverseevent.AdverseEventConverter;
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.validation.AdverseEventGroup;
 import gov.nih.nci.cabig.caaers.validation.ValidationError;
@@ -91,10 +94,6 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 	protected AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
 	protected ExternalAdverseEventReportingPeriodDao externalAdverseEventReportingPeriodDao;
 	protected ExternalAdverseEventDao externalAdverseEventDao;
-	public void setExternalAdverseEventDao(
-			ExternalAdverseEventDao externalAdverseEventDao) {
-		this.externalAdverseEventDao = externalAdverseEventDao;
-	}
 
 	protected TreatmentAssignmentDao treatmentAssignmentDao;
 	protected CtcTermDao ctcTermDao;
@@ -105,6 +104,8 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 	private MailSender mailSender;
 	private ApplicationContext applicationContext;
 	private MessageSource messageSource;
+    private Configuration configuration;
+    private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
 
 	private static Log logger = LogFactory.getLog(AdverseEventManagementServiceImpl.class);
 
@@ -231,6 +232,10 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 		if (errors.size() == 0) {
 			try {
 				adverseEventReportingPeriodDao.save(newAeReportingPeriod);
+                if(configuration.get(Configuration.ENABLE_WORKFLOW)){
+                    Long wfId = adverseEventRoutingAndReviewRepository.enactReportingPeriodWorkflow(newAeReportingPeriod);
+                    logger.debug("Enacted workflow : " + wfId);
+                }
 			} catch (Exception e) {
 				throw new CaaersSystemException("WS_AEMS_068", messageSource.getMessage("WS_AEMS_068",
 						new String[] { }, "", Locale.getDefault()));
@@ -307,8 +312,12 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 		
 		// save external reporting period along with the external adverse events
 		saveExternalAdverseEventReportingPeriod(externalAdverseEventReportingPeriod, caaersServiceResponse);
-		
 
+        List<String> possibleTransitions = adverseEventRoutingAndReviewRepository.nextTransitionNames(adverseEventReportingPeriod.getWorkflowId(), SecurityUtils.getUserLoginName());
+        if(possibleTransitions.contains("Submit to Data Coordinator")) {
+            adverseEventRoutingAndReviewRepository.advanceReportingPeriodWorkflow(adverseEventReportingPeriod.getWorkflowId(), "Submit to Data Coordinator", adverseEventReportingPeriod, SecurityUtils.getUserLoginName());
+        }
+        
 		return caaersServiceResponse;
 	}
 	
@@ -390,7 +399,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 						externalAdverseEventReportingPeriod.addExternalAdverseEvent(externalAdverseEvent);
 					}
 				} catch (CaaersSystemException e) {
-					Helper.populateErrorOutcome(caaersServiceResponse, null, null, (index) + "", Arrays.asList(new String[] { e.getMessage() }));
+					Helper.populateErrorOutcome(caaersServiceResponse, null, null, (index) + "", Arrays.asList(new String[]{e.getMessage()}));
 				}
 			index++;
 		}
@@ -633,7 +642,6 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 	
 	/**
 	 * @param adverseEventsInputMessage
-	 * @param operation
 	 * @param caaersServiceResponse
 	 * @param terminology
 	 * @param adverseEventReportingPeriod
@@ -1393,32 +1401,51 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 		this.externalAdverseEventReportingPeriodDao = externalAdverseEventReportingPeriodDao;
 	}
 
-	
-	
-	/*
-	 * private Study processStudyCriteria(StudyType xmlStudy) throws
-	 * CaaersSystemException{logger.info(
-	 * "Entering processStudyCriteria() in AdverseEventManagementServiceImpl");
-	 * 
-	 * Study study = new Study();
-	 * 
-	 * try{ studyCriteriaConverter.convertStudyDtoToStudyDomain(xmlStudy,
-	 * study); }catch(CaaersSystemException caEX){ throw new
-	 * CaaersSystemException("Study Criteria to StudyDomain Conversion Failed ",
-	 * caEX); } return study; } private Participant
-	 * processParticipantCriteria(ParticipantType xmlParticipant) throws
-	 * CaaersSystemException{logger.info(
-	 * "Entering processParticipant() in AdverseEventManagementServiceImpl");
-	 * 
-	 * Participant participant = new Participant();
-	 * 
-	 * try{
-	 * participantCriteriaConverter.convertParticipantDtoToParticipantDomain
-	 * (xmlParticipant, participant); }catch(CaaersSystemException caEX){ throw
-	 * newCaaersSystemException(
-	 * "Participant Criteria to ParticipantDomain Conversion Failed ", caEX); }
-	 * return participant; }
-	 */
+    public void setExternalAdverseEventDao(
+            ExternalAdverseEventDao externalAdverseEventDao) {
+        this.externalAdverseEventDao = externalAdverseEventDao;
+    }
+
+    public Configuration getConfiguration() {
+        return configuration;
+    }
+
+    public void setConfiguration(Configuration configuration) {
+        this.configuration = configuration;
+    }
+
+    public AdverseEventRoutingAndReviewRepository getAdverseEventRoutingAndReviewRepository() {
+        return adverseEventRoutingAndReviewRepository;
+    }
+
+    public void setAdverseEventRoutingAndReviewRepository(AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository) {
+        this.adverseEventRoutingAndReviewRepository = adverseEventRoutingAndReviewRepository;
+    }
+
+    /*
+      * private Study processStudyCriteria(StudyType xmlStudy) throws
+      * CaaersSystemException{logger.info(
+      * "Entering processStudyCriteria() in AdverseEventManagementServiceImpl");
+      *
+      * Study study = new Study();
+      *
+      * try{ studyCriteriaConverter.convertStudyDtoToStudyDomain(xmlStudy,
+      * study); }catch(CaaersSystemException caEX){ throw new
+      * CaaersSystemException("Study Criteria to StudyDomain Conversion Failed ",
+      * caEX); } return study; } private Participant
+      * processParticipantCriteria(ParticipantType xmlParticipant) throws
+      * CaaersSystemException{logger.info(
+      * "Entering processParticipant() in AdverseEventManagementServiceImpl");
+      *
+      * Participant participant = new Participant();
+      *
+      * try{
+      * participantCriteriaConverter.convertParticipantDtoToParticipantDomain
+      * (xmlParticipant, participant); }catch(CaaersSystemException caEX){ throw
+      * newCaaersSystemException(
+      * "Participant Criteria to ParticipantDomain Conversion Failed ", caEX); }
+      * return participant; }
+      */
 	
 	/*
 	 * private boolean enableAuthorization(boolean on) { AuthorizationSwitch sw
