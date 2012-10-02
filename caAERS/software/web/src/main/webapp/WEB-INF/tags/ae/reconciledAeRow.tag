@@ -4,7 +4,7 @@
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 
 <%@attribute name="ae" required="true" type="gov.nih.nci.cabig.caaers.domain.ReconciledAdverseEvent" %>
-<%@attribute name="showInRed" type="java.lang.Boolean" %>
+<%@attribute name="displayError" type="java.lang.Boolean" %>
 
   <tr>
   	<td class="fillerRow"> ${ae.itemId}</td>
@@ -16,3 +16,8 @@
   	<td class="fillerRow"> ${ae.whySerious}</td>
   	<td class="fillerRow"> ${ae.attribution}</td>
   </tr>
+  <c:if test="${not empty displayError && displayError eq 'true'}">
+	  <tr>
+	  	<td colspan="8" class="errorMessage" >${ae.errorMessage}</td>
+	  </tr>
+  </c:if>
