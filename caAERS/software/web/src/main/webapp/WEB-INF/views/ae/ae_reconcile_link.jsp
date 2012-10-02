@@ -59,20 +59,20 @@ AE.unlink = function (iaeId, eaeId){
     if(eaeIdOld){
         AE.eUnmapped.push(eaeIdOld);
     }
-    if(eaeId){
-        AE.eUnmapped.push(eaeId);
-    }
 //    console.debug("Exiting Unlink : { eUnmapped :  [" + AE.eUnmapped.join(",") + "] , iUnmapped : [" + AE.iUnmapped.join(",") + "] , mapping : [" + AE.aeMappingHash.inspect()+ "] }");
 };
 AE.link = function (iaeId, eaeId){
 //    console.debug("Entering Link : { eUnmapped :  [" + AE.eUnmapped.join(",") + "] , iUnmapped : [" + AE.iUnmapped.join(",") + "] , mapping : [" + AE.aeMappingHash.inspect()+ "] }");
     var i = AE.eUnmapped.indexOf(eaeId);
     if(i > -1) AE.eUnmapped.splice(i, 1);
+
     var eaeIdOld = AE.aeMappingHash.get(iaeId);
     if(eaeIdOld){
         AE.eUnmapped.push(eaeIdOld);
     }
+
     AE.aeMappingHash.set(iaeId, eaeId)
+
     var j =  AE.iUnmapped.indexOf(iaeId);
     if(j > -1)AE.iUnmapped.splice(j, 1);
 //    console.debug("Exiting Link : { eUnmapped :  [" + AE.eUnmapped.join(",") + "] , iUnmapped : [" + AE.iUnmapped.join(",") + "] , mapping : [" + AE.aeMappingHash.inspect()+ "] }");
@@ -268,7 +268,6 @@ AE.aeWidget = Class.create({
         this.aePickerTbl.subscribe("rowMouseoutEvent", this.aePickerTbl.onEventUnhighlightRow, this, this);
     } ,
     generatePickerTableData : function(){
-//        console.debug("widget :" + this.widgetId + ", picker data");
         var ueaeArr = [];
         this.aePickerData.length = 0;
         var ae1 = this.ae1;
@@ -276,16 +275,19 @@ AE.aeWidget = Class.create({
         $A(AE.eUnmapped).each(function(i){
             var eae = AE.externalAEHash.get(i);
             var _str1 = eae.match(ae1)  ;
-//            console.debug("          " + _str1) ;
             ueaeArr.push(_str1.evalJSON());
         });
         ueaeArr.sort(ae1.sortOnPercent);
         if(ae2){
             var _str2 =   ae2.match(ae1);
-//            console.debug("          " + _str2) ;
             this.aePickerData.push(_str2.evalJSON());
         }
         this.aePickerData = this.aePickerData.concat(ueaeArr);
+//        var _debugStr = " Widget : " + this.widgetId + " picker data [" ;
+//        $A(this.aePickerData).each(function (x){ _debugStr = _debugStr + ", " + x.id + "->" + x.externalId});
+//        _debugStr = _debugStr + "] \n UnMapped AE :" + AE.eUnmapped.inspect() ;
+//        console.debug(_debugStr);
+
     },
     showAePickerRow : function(selectedAeId){
         this.aePickerVisible = true;
@@ -295,7 +297,6 @@ AE.aeWidget = Class.create({
             this.definePickerTable();
         }else {
             this.aePickerTbl.onDataReturnInitializeTable(null, {results : this.aePickerData}, null)
-            //this.aePickerTbl.onDataReturnSetRows(null, {results : this.aePickerData}, null)
         }
 
         if(selectedAeId){
