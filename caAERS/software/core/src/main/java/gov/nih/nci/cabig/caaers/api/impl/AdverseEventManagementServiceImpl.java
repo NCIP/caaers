@@ -180,8 +180,8 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 			for (AdverseEventReportingPeriod matchingDomainAdverseEventReportingPeriod : rPeriodList) {
 				// compare TAC and treatment type to determine if matchingDomainAdverseEventReportingPeriod exists.
 				if(matchingDomainAdverseEventReportingPeriod.getTreatmentAssignment().getCode() != null && matchingDomainAdverseEventReportingPeriod.
-						getTreatmentAssignment().getCode().equals(treatmentAssignmentCode) && criteria.getCourse().getTreatmentType().
-						equals(matchingDomainAdverseEventReportingPeriod.getEpoch().getName())){
+						getTreatmentAssignment().getCode().equals(treatmentAssignmentCode) && criteria.getCourse().getTreatmentType() == null ? 
+								true:criteria.getCourse().getTreatmentType().equals(matchingDomainAdverseEventReportingPeriod.getEpoch().getName())){
 					return matchingDomainAdverseEventReportingPeriod;
 				}
 			}
