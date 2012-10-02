@@ -476,6 +476,7 @@ public class AdverseEventReconciliationCommand {
                 Integer i = Integer.parseInt(s);
                 if(set.add(i)) {
                     AdverseEventDTO ae = externalAeMap.get(i);
+                    unMappedExternalAeList.remove(ae);
                     rejectedExternalAeList.add(ae);
                 }
 
@@ -496,6 +497,7 @@ public class AdverseEventReconciliationCommand {
                 Integer i = Integer.parseInt(s);
                 if(set.add(i)) {
                     AdverseEventDTO ae = internalAeMap.get(i);
+                    unMappedInternalAeList.remove(ae);
                     rejectedInternalAeList.add(ae);
                 }
             }

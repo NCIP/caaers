@@ -111,6 +111,9 @@
                         <c:forEach var="e" items="${command.unMappedExternalAeList}" varStatus="x">
                               <ae:chooseAERow ae1="${e}" rejected="${rejectedExternalAeMap[e.id]}" external="true" />
                         </c:forEach>
+                        <c:forEach var="e" items="${command.rejectedExternalAeList}" varStatus="x">
+                              <ae:chooseAERow ae1="${e}" rejected="true" external="true" />
+                        </c:forEach>
                         <tr>
                             <td colspan="9" class="fillerRow">
                                &nbsp;
@@ -146,6 +149,9 @@
                         </tr>
                         <c:forEach var="e" items="${command.unMappedInternalAeList}" varStatus="x">
                             <ae:chooseAERow ae1="${e}" rejected="${rejectedInternalAeMap[e.id]}" external="false" />
+                        </c:forEach>
+                        <c:forEach var="e" items="${command.rejectedInternalAeList}" varStatus="x">
+                            <ae:chooseAERow ae1="${e}" rejected="true" external="false" />
                         </c:forEach>
                         <tr>
                             <td colspan="9" class="fillerRow">
