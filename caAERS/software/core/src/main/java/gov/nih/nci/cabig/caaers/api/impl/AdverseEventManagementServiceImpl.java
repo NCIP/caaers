@@ -222,11 +222,12 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 		if(criteria.getCourse().getCycleNumber() != null) newAeReportingPeriod.setCycleNumber(criteria.getCourse().getCycleNumber().intValue());
 		assignment.addReportingPeriod(newAeReportingPeriod);
 		Epoch epochToSave = getEpoch(criteria, study);
+		
 		// CAAERS-2813
-		if (epochToSave == null) {
+	/*	if (epochToSave == null) {
 			throw new CaaersSystemException("WS_AEMS_010", messageSource.getMessage("WS_AEMS_010",
 					new String[] { criteria.getCourse().getTreatmentType() }, "", Locale.getDefault()));
-		}
+		}*/
 		newAeReportingPeriod.setEpoch(epochToSave);
 		// get the externalId from the message and set here.
 		newAeReportingPeriod.setExternalId(externalId);
