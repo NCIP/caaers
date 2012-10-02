@@ -76,6 +76,7 @@ import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 
 import com.semanticbits.rules.impl.BusinessRulesExecutionServiceImpl;
+import org.springframework.transaction.annotation.Transactional;
 
 public class AdverseEventManagementServiceImpl extends AbstractImportService implements ApplicationContextAware {
 
@@ -130,19 +131,25 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 		
 		Boolean validMessage = true;
 		if (adverseEventsInputMessage.getAdverseEvents() == null) {
-			Helper.populateError(caaersServiceResponse, "WS_AEMS_025", messageSource.getMessage(
-					"WS_AEMS_025", new String[] {}, "", Locale.getDefault()));
+			Helper.populateError(caaersServiceResponse, "WS_AEMS_025",
+                    messageSource.getMessage( "WS_AEMS_025", new String[] {}, "", Locale.getDefault())
+            );
 			validMessage = false;
 		}
 		
-		if (adverseEventsInputMessage.getCriteria().getCourse() == null) {			
-			throw new CaaersSystemException("WS_AEMS_065", 
-					messageSource.getMessage("WS_AEMS_065",
-					new String[] { }, "", Locale.getDefault()));
+		if (adverseEventsInputMessage.getCriteria().getCourse() == null) {
+            Helper.populateError(caaersServiceResponse, "WS_AEMS_065",
+                    messageSource.getMessage("WS_AEMS_065", new String[] { }, "", Locale.getDefault())
+            );
+            validMessage = false;
 		}
 		
 		return validMessage;
 	}
+
+    public boolean isWorkflowEnabled(){
+        return configuration.get(Configuration.ENABLE_WORKFLOW);
+    }
 	
 	/**
 	 * @param criteria
@@ -232,7 +239,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 		if (errors.size() == 0) {
 			try {
 				adverseEventReportingPeriodDao.save(newAeReportingPeriod);
-                if(configuration.get(Configuration.ENABLE_WORKFLOW)){
+                if(isWorkflowEnabled()){
                     Long wfId = adverseEventRoutingAndReviewRepository.enactReportingPeriodWorkflow(newAeReportingPeriod);
                     logger.debug("Enacted workflow : " + wfId);
                 }
@@ -262,12 +269,19 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 		
 		return null;
 	}
-	
+
+    @Transactional
 	public CaaersServiceResponse createProvisionalAdverseEvents(AdverseEventsInputMessage adverseEventsInputMessage){
 		CaaersServiceResponse caaersServiceResponse = Helper.createResponse();
-		if (!validateAdverseEventInputMessage(adverseEventsInputMessage,caaersServiceResponse)){
+
+        if (!validateAdverseEventInputMessage(adverseEventsInputMessage,caaersServiceResponse)){
 			return caaersServiceResponse;
 		}
+
+        if(!isWorkflowEnabled()){
+            Helper.populateError(caaersServiceResponse, "WS_AEMS_072", messageSource.getMessage("WS_AEMS_072", new Object[]{}, Locale.getDefault()) );
+            return caaersServiceResponse;
+        }
 		
 		Criteria criteria = adverseEventsInputMessage.getCriteria();
 		String studyIdentifier = criteria.getStudyIdentifier();
