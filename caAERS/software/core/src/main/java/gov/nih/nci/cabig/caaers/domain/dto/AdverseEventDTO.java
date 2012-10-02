@@ -243,6 +243,7 @@ public class AdverseEventDTO {
         }
         if(!isEmpty(verbatim)) ae.setVerbatim(verbatim);
         if(!isEmpty(whySerious)) ae.setWhySerious(whySerious);
+        if(!isEmpty(error)) ae.setErrorMessage(error);
         return ae;
     }
 
