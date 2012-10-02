@@ -75,7 +75,7 @@
 	                    <xs:element minOccurs="1" name="otherTreatmentAssignmentDescription" type="xs:string"/>
                     </xs:choice>
                     <xs:element minOccurs="0" name="externalId" type="xs:string"/>
-                </xs:sequence> 
+                </xs:sequence>
     </xs:complexType>
 
 
@@ -88,7 +88,11 @@
             <xs:sequence>
                 <xs:element maxOccurs="unbounded" ref="adverseEvent"/>
             </xs:sequence>
-        </xs:complexType>        
+        </xs:complexType>
+        <xs:unique name="UniqueAdverseEvents">
+            <xs:selector xpath="adverseevent"/>
+            <xs:field xpath="@externalId" />
+        </xs:unique>
     </xs:element>
     
     
