@@ -131,9 +131,8 @@ public class AdverseEventReconciliationCommand {
             if(terminology.getTerm() == Term.CTC){
                 CtcTerm term = ctcTermDao.getByCtepCodeandVersion(eae.getAdverseEventTermCode(), terminology.getCtcVersion());
                 if(term == null){
-                    errorBuilder.append(String.format("Invalid CTC term. Unable to find ('%s:%s') with in Ctc version '%s'.",
+                    errorBuilder.append(String.format("Invalid CTC term. Unable to find ('%s') with in Ctc version '%s'.",
                             eae.getAdverseEventTermCode(),
-                            eae.getAdverseEventTerm(),
                             terminology.getCtcVersion().getName()));
                 }  else {
                     dto.getTerm().setId(term.getId());
@@ -151,11 +150,15 @@ public class AdverseEventReconciliationCommand {
                         }
                     }
                     if (!isValidGrade(eae.getGrade(), term.getGrades())){
+                        String gradeString = "";
+                        for(CodedGrade g : term.getGrades()){
+                            gradeString += g.getName();
+                        }
                         errorBuilder.append(String.format("Grade '%s' is not valid for the term '%s:%s'. Valid options are '%s'",
                                 eae.getGrade().getShortName() ,
                                 eae.getAdverseEventTermCode(),
                                 eae.getAdverseEventTerm(),
-                                term.getGrades().toString()));
+                                gradeString));
                     }
                 }
 
