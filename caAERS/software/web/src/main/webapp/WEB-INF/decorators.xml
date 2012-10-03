@@ -6,6 +6,7 @@
 <decorators defaultdir="/WEB-INF/decorators">
     <decorator name="standardNoHeader" page="standard-no-header.jsp">
         <pattern>/pages/rule/notification/createReportType</pattern>
+        <pattern>/pages/ae/ae_reconcile_report?inline=true</pattern>
     </decorator>
 
     <decorator name="standard" page="standard.jsp">

@@ -68,7 +68,7 @@ public class AdverseEventReconciliationController extends AutomaticSaveAjaxableF
                         reconciliationCommand.processInternalAeRejections();
                     }
                     ReconciliationReport report = reconciliationCommand.generateReconcilationReport();
-                    mv = new ModelAndView("ae/ae_reconcile_report");
+                    mv = new ModelAndView("ae/ae_reconcile_report?inline=true");
                     mv.addObject("report", report);
                 }
             }
