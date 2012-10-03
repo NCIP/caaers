@@ -86,6 +86,7 @@ public class ReconciliationReport extends AbstractMutableDomainObject{
 	}
 
     public void addReconciledAdverseEvent(ReconciledAdverseEvent ae){
+       ae.setReconciliationReport(this);
        reconciledAdverseEvents.add(ae);
     }
     
