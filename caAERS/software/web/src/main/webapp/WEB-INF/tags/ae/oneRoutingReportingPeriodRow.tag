@@ -89,11 +89,14 @@
                                          <table width="100%" border="0" cellspacing="0" class="rpTableRegionOuter eXtremeTable">
                                              <thead>
                                              <tr class="label">
-                                                 <td class="tableHeader" width="100%">Report Name</td>
+                                                 <td class="tableHeader" width="100%">Reconciliation Reports</td>
                                              </tr>
                                              </thead>
                                              <c:forEach items="${reportingPeriod.reconciliationReports}" var="rr" varStatus="rrStatus">
-                                                   Report # ${rrStatus.index + 1} -  ${empty rr.reviewedBy ? '' : ' by ' + rr.reviewedBy} on <tags:formatDate value="${rr.createdDate}" />
+                                              <tr><td>
+                                                  <c:url var="rrURL" value="/ae/reconciliationReport"/>
+                                                  <a href="${rrURL}?rrId=${rr.id}">Report # ${rrStatus.index + 1}</a> -  by ${rr.reviewedBy} on <tags:formatDate value="${rr.createdDate}" />
+                                              </td></tr>
                                              </c:forEach>
                                          </table>
                                      </td>
