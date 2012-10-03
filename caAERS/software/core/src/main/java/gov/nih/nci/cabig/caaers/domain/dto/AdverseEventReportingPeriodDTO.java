@@ -1,11 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain.dto;
 
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.ReportStatus;
-import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
-import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 
 import java.util.ArrayList;
@@ -55,7 +50,7 @@ public class AdverseEventReportingPeriodDTO {
 	/** The active ae reports. */
 	private List<ExpeditedAdverseEventReportDTO> activeAeReports;
 	
-	
+	private List<ReconciliationReport> reconciliationReports;
 	
 	/** The study. */
 	private Study study;
@@ -66,7 +61,10 @@ public class AdverseEventReportingPeriodDTO {
 	/** The adverse event reporting period. */
 	private AdverseEventReportingPeriod adverseEventReportingPeriod;
 	
-	
+	public void addReconciliationReport(ReconciliationReport reconciliationReport){
+        if(reconciliationReports == null) reconciliationReports = new ArrayList<ReconciliationReport>();
+        reconciliationReports.add(reconciliationReport);
+    }
 	/**
 	 * Adds the adverse event ae report dto.
 	 *
@@ -385,8 +383,16 @@ public class AdverseEventReportingPeriodDTO {
 	public void setDcpSponsoredStudy(boolean dcpSponsoredStudy) {
 		this.dcpSponsoredStudy = dcpSponsoredStudy;
 	}
-	
-	/**
+
+    public List<ReconciliationReport> getReconciliationReports() {
+        return reconciliationReports;
+    }
+
+    public void setReconciliationReports(List<ReconciliationReport> reconciliationReports) {
+        this.reconciliationReports = reconciliationReports;
+    }
+
+    /**
 	 * Checks for actions to do.
 	 *
 	 * @return true, if successful

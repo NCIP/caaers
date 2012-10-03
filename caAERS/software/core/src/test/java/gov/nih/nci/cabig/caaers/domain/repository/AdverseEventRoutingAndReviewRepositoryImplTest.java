@@ -1,9 +1,12 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.CaaersNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.ReconciliationReportDao;
 import gov.nih.nci.cabig.caaers.dao.query.AdverseEventReportingPeriodForReviewQuery;
+import gov.nih.nci.cabig.caaers.dao.query.ReconciliationReportQuery;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.dto.AdverseEventReportingPeriodDTO;
@@ -16,6 +19,7 @@ import gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReviewComment;
 import gov.nih.nci.cabig.caaers.domain.workflow.StudySiteWorkflowConfig;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
+import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
 import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import gov.nih.nci.cabig.caaers.service.workflow.WorkflowService;
 
@@ -32,7 +36,7 @@ import org.jbpm.graph.exe.ProcessInstance;
  * @author Biju Joseph
  *
  */
-public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecurityTestCase {
+public class AdverseEventRoutingAndReviewRepositoryImplTest extends AbstractTestCase {
 	
 	
 	AdverseEventReportingPeriodDao rpDao;
@@ -44,6 +48,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 	ProcessInstance processInstance;
 	ContextInstance contextInstance;
 	ReportValidationService reportValidationService;
+    ReconciliationReportDao reconciliationReportDao;
 	
 	Map<String, Object> variables = new HashMap<String, Object>();
 	
@@ -51,9 +56,11 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
+        SecurityTestUtils.switchToSuperuser();
 		rDao = registerDaoMockFor(ExpeditedAdverseEventReportDao.class);
 		rpDao = registerDaoMockFor(AdverseEventReportingPeriodDao.class);
 		reportDao = registerDaoMockFor(ReportDao.class);
+        reconciliationReportDao = registerDaoMockFor(ReconciliationReportDao.class);
 		factory = registerMockFor(AERoutingAndReviewDTOFactory.class);
 		wfService = registerMockFor(WorkflowService.class);
 		processInstance = registerMockFor(ProcessInstance.class);
@@ -67,6 +74,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		impl.setReportDao(reportDao);
 		impl.setWorkflowService(wfService);
 		impl.setReportValidationService(reportValidationService);
+        impl.setReconciliationReportDao(reconciliationReportDao);
 	}
 	
 	public void testFetchReviewCommentsForReport() {
@@ -228,6 +236,8 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 	
 		EasyMock.expect(factory.createAdverseEventEvalutionPeriodDTO(rp, userId, true)).andReturn(rpDto);
 		EasyMock.expect(factory.createAdverseEventReportDTO(aeReport, userId)).andReturn(rDto);
+        List rrList = new ArrayList<ReconciliationReport>();
+        EasyMock.expect(reconciliationReportDao.search((ReconciliationReportQuery)EasyMock.anyObject())).andReturn(rrList).anyTimes();
 		replayMocks();
 		
 		Participant participant = Fixtures.createParticipant("Joel", "biju");

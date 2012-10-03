@@ -79,6 +79,33 @@
 					</c:choose>
 				</td>
 			</tr>
+            <tr>
+                <td width="100%">
+                     <c:choose>
+                         <c:when test="${not empty reportingPeriod.reconciliationReports}">
+                             <table width="100%" border="0" cellspacing="0" class="rpTableRegionOuter">
+                                 <tr>
+                                     <td>
+                                         <table width="100%" border="0" cellspacing="0" class="rpTableRegionOuter eXtremeTable">
+                                             <thead>
+                                             <tr class="label">
+                                                 <td class="tableHeader" width="100%">Report Name</td>
+                                             </tr>
+                                             </thead>
+                                             <c:forEach items="${reportingPeriod.reconciliationReports}" var="rr" varStatus="rrStatus">
+                                                   Report # ${rrStatus.index + 1} -  ${empty rr.reviewedBy ? '' : ' by ' + rr.reviewedBy} on <tags:formatDate value="${rr.createdDate}" />
+                                             </c:forEach>
+                                         </table>
+                                     </td>
+                                 </tr>
+                             </table>
+                         </c:when>
+                         <c:otherwise>
+                             There are no reconciliation reports for this course/cycle.
+                         </c:otherwise>
+                     </c:choose>
+                </td>
+            </tr>
 			<tr style="display:none">
 				<td width="100%">
 					<ae:routingAndReviewListAllAeSection reportingPeriod="${reportingPeriod.adverseEventReportingPeriod}" isDCPStudy="${reportingPeriod.dcpSponsoredStudy}"/>

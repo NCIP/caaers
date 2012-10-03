@@ -2,7 +2,9 @@ package gov.nih.nci.cabig.caaers.domain.repository;
 
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.ReconciliationReportDao;
 import gov.nih.nci.cabig.caaers.dao.query.AdverseEventReportingPeriodForReviewQuery;
+import gov.nih.nci.cabig.caaers.dao.query.ReconciliationReportQuery;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.dto.AdverseEventReportingPeriodDTO;
@@ -19,11 +21,7 @@ import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import gov.nih.nci.cabig.caaers.service.workflow.WorkflowService;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.apache.commons.lang.StringUtils;
 import org.jbpm.context.exe.ContextInstance;
@@ -39,7 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventRoutingAndReviewRepository {
-	
+
 	/** The routing and review factory. */
 	private AERoutingAndReviewDTOFactory routingAndReviewFactory;
 	
@@ -57,6 +55,8 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 
 	/** The workflow service. */
 	private WorkflowService workflowService;
+
+    private ReconciliationReportDao reconciliationReportDao;
 	
 	/** The Constant SUBMIT_TO_CENTRAL_OFFICE_SAE_COORDINATOR. */
 	private static final String SUBMIT_TO_CENTRAL_OFFICE_SAE_COORDINATOR = "Submit to Central Office Report Reviewer";
@@ -424,7 +424,8 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		}
 		
 		List<AdverseEventReportingPeriod> reportingPeriods = adverseEventReportingPeriodDao.findAdverseEventReportingPeriods(query);
-		
+		Map<Integer, AdverseEventReportingPeriodDTO> reportingPeriodDTOMap = new HashMap<Integer, AdverseEventReportingPeriodDTO>();
+
 
 		List<AdverseEventReportingPeriodDTO> reportingPeriodDTOs = new ArrayList<AdverseEventReportingPeriodDTO>();
 		for(AdverseEventReportingPeriod reportingPeriod : reportingPeriods){
@@ -453,11 +454,24 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 						continue;
 				}
 				//only add the dto, if there is action to do.
-				if(reportingPeriodDTO.hasActionsToDo()) reportingPeriodDTOs.add(reportingPeriodDTO);
-				if(isReportReviewer && reportingPeriodDTO.hasReportWorkflowEnded()) reportingPeriodDTOs.add(reportingPeriodDTO);
+				if((isReportReviewer && reportingPeriodDTO.hasReportWorkflowEnded()) || reportingPeriodDTO.hasActionsToDo()) {
+                    reportingPeriodDTOs.add(reportingPeriodDTO);
+                    reportingPeriodDTOMap.put(reportingPeriodDTO.getId(),  reportingPeriodDTO);
+                }
 			}
 			
 		}
+        if(!reportingPeriodDTOMap.isEmpty()){
+            ReconciliationReportQuery rrQuery = new ReconciliationReportQuery();
+            rrQuery.filerByReportingPeriodId(reportingPeriodDTOMap.keySet());
+            List<ReconciliationReport> reconciliationReports = (List<ReconciliationReport>)reconciliationReportDao.search(rrQuery);
+            for(ReconciliationReport reconciliationReport : reconciliationReports){
+                AdverseEventReportingPeriodDTO adverseEventReportingPeriodDTO = reportingPeriodDTOMap.get(reconciliationReport.getAdverseEventReportingPeriod().getId());
+                adverseEventReportingPeriodDTO.addReconciliationReport(reconciliationReport);
+            }
+        }
+
+
 		
 		return reportingPeriodDTOs;
 	}
@@ -724,5 +738,12 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 	public ReportDao getReportDao(){
 		return reportDao;
 	}
-	
+
+    public ReconciliationReportDao getReconciliationReportDao() {
+        return reconciliationReportDao;
+    }
+
+    public void setReconciliationReportDao(ReconciliationReportDao reconciliationReportDao) {
+        this.reconciliationReportDao = reconciliationReportDao;
+    }
 }

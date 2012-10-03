@@ -69,7 +69,7 @@ public class AdverseEventReconciliationController extends AutomaticSaveAjaxableF
                     }
                     ReconciliationReport report = reconciliationCommand.generateReconcilationReport();
 
-                    mv = new ModelAndView("forward:/ae/reconciliationReport?decorator=standardNoHeader&customDecoration=true");
+                    mv = new ModelAndView("forward:/pages/ae/reconciliationReport?decorator=standardNoHeader&customDecoration=true");
                     request.setAttribute("report", report);
                 }
             }

@@ -39,7 +39,7 @@ public class ReconciliationReport extends AbstractMutableDomainObject{
 	
 	private List<ReconciledAdverseEvent> reconciledAdverseEvents = new ArrayList<ReconciledAdverseEvent>();
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="reporting_period_id")
 	public AdverseEventReportingPeriod getAdverseEventReportingPeriod() {
 		return adverseEventReportingPeriod;

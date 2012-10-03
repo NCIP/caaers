@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain.dto;
 
+import gov.nih.nci.cabig.caaers.domain.ReconciliationReport;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
 
@@ -102,4 +103,12 @@ public class AdverseEventReportingPeriodDTOTest extends TestCase {
 		dto.addAdverseEventAeReportDTO(aeReport2);
 		assertTrue("hasReportWorkflowEnded should have returned true", dto.hasReportWorkflowEnded());
 	}
+    
+    public void testAddReconcilationReport(){
+        ReconciliationReport r1 = new ReconciliationReport();
+        assertNull(dto.getReconciliationReports());
+        dto.addReconciliationReport(r1);
+        assertEquals(1, dto.getReconciliationReports().size());
+        assertSame(r1, dto.getReconciliationReports().get(0));
+    }
 }
