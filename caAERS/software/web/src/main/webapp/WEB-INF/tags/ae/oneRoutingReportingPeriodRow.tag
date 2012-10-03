@@ -94,7 +94,7 @@
                                              </thead>
                                              <c:forEach items="${reportingPeriod.reconciliationReports}" var="rr" varStatus="rrStatus">
                                               <tr><td>
-                                                  <c:url var="rrURL" value="/ae/reconciliationReport"/>
+                                                  <c:url var="rrURL" value="/pages/ae/reconciliationReport"/>
                                                   <a href="${rrURL}?rrId=${rr.id}">Report # ${rrStatus.index + 1}</a> -  by ${rr.reviewedBy} on <tags:formatDate value="${rr.createdDate}" />
                                               </td></tr>
                                              </c:forEach>
