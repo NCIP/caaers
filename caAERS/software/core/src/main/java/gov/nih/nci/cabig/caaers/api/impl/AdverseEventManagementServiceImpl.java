@@ -179,7 +179,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 		if((treatmentAssignmentCode = criteria.getCourse().getTreatmentAssignmentCode()) != null){
 			for (AdverseEventReportingPeriod matchingDomainAdverseEventReportingPeriod : rPeriodList) {
 				// compare TAC and treatment type to determine if matchingDomainAdverseEventReportingPeriod exists.
-				if(matchingDomainAdverseEventReportingPeriod.getTreatmentAssignment().getCode() != null && matchingDomainAdverseEventReportingPeriod.
+				if(matchingDomainAdverseEventReportingPeriod.getTreatmentAssignment()!= null && matchingDomainAdverseEventReportingPeriod.getTreatmentAssignment().getCode() != null && matchingDomainAdverseEventReportingPeriod.
 						getTreatmentAssignment().getCode().equals(treatmentAssignmentCode) && criteria.getCourse().getTreatmentType() == null ? 
 								true:criteria.getCourse().getTreatmentType().equals(matchingDomainAdverseEventReportingPeriod.getEpoch().getName())){
 					return matchingDomainAdverseEventReportingPeriod;
@@ -187,7 +187,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 			}
 		} else if ((otherTreatmentAssignmentDescription = criteria.getCourse().getOtherTreatmentAssignmentDescription()) != null){
 					for (AdverseEventReportingPeriod matchingDomainAdverseEventReportingPeriod : rPeriodList) {
-						if(matchingDomainAdverseEventReportingPeriod.getTreatmentAssignment().getDescription() != null && matchingDomainAdverseEventReportingPeriod.
+						if(matchingDomainAdverseEventReportingPeriod.getTreatmentAssignmentDescription() != null && matchingDomainAdverseEventReportingPeriod.
 								getTreatmentAssignmentDescription().equals(otherTreatmentAssignmentDescription)){
 							return matchingDomainAdverseEventReportingPeriod;
 						}
