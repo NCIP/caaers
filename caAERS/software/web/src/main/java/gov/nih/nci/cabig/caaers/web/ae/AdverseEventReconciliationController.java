@@ -170,7 +170,6 @@ public class AdverseEventReconciliationController extends AutomaticSaveAjaxableF
                 externalAdverseEventDao.updateStatus(ExternalAEReviewStatus.PENDING, ExternalAEReviewStatus.REVIEWED, reviewedExternalIds);
             }
             
-            List<AdverseEvent> aeList = reportingPeriod.getAdverseEvents();
             //delete caaers-Aes
             for(AdverseEventDTO ae : command.getRejectedInternalAeList()){
                 AdverseEvent adverseEvent = reportingPeriod.findAdverseEventById(ae.getId());
