@@ -174,6 +174,11 @@ public class AdverseEventReconciliationCommand {
                 }
             }
 
+            if(!dto.isDateValid()){
+                errorBuilder.append("Invalid start date or end date.");
+            }
+
+
             if(errorBuilder.length() > 0){
                 dto.setError(errorBuilder.toString());
                 errorAeList.add(dto);

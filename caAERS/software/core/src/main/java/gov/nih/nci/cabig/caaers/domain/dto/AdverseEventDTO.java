@@ -4,10 +4,8 @@ import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import org.apache.commons.lang.StringUtils;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.util.*;
 
 /**
  * @author: Biju Joseph
@@ -332,5 +330,22 @@ public class AdverseEventDTO {
         if(StringUtils.isEmpty(s)) return true;
         if(StringUtils.equals(dash, s)) return true;
         return false;
+    }
+    
+    public boolean isDateValid(){
+        if(isEmpty(startDate) || isEmpty(endDate)) return true;
+        Date d1 = null;
+        Date d2 = null;
+        try {
+            d1 = DateUtils.parseDate(startDate);
+        } catch (ParseException e) {
+            return false;
+        }
+        try {
+            d2 = DateUtils.parseDate(endDate);
+        } catch (ParseException e) {
+            return false;
+        }
+        return (DateUtils.compareDate(d1, d2) <= 0);
     }
 }
