@@ -11,5 +11,11 @@
         <mapper class="edu.nwu.bioinformatics.commons.sitemesh.PathInfoDecoratorMapper">
             <param name="config" value="${decorators-file}"/>
         </mapper>
+        <mapper class="com.opensymphony.module.sitemesh.mapper.ParameterDecoratorMapper">
+            <param name="decorator.parameter" value="decorator" />
+            <param name="parameter.name" value="customDecoration" />
+            <param name="parameter.value" value="true" />
+        </mapper>
+
     </decorator-mappers>
 </sitemesh>
