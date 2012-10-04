@@ -119,7 +119,7 @@ public class AdverseEventReconciliationCommand {
     } 
     public void loadExternalAdverseEvents(){
         ExternalAdverseEventQuery query = new ExternalAdverseEventQuery();
-        query.filterByCreatedOnBefore(new Date());
+
         query.filterByStatus(ExternalAEReviewStatus.PENDING);
         query.filterByReportingPeriod(reportingPeriod.getId());
         List<ExternalAdverseEvent> eaeList = (List<ExternalAdverseEvent> )externalAdverseEventDao.search(query);
