@@ -305,6 +305,7 @@
     <div class="autoclear" id="criteria-div">
     	<chrome:box title="Select study, subject, and course/cycle" id="study-entry">
     		<tags:instructions code="instruction_ae_assignmentNote"/>
+            <tags:hasErrorsMessage />
     		<div class="row">
 	            <%--<tags:instructions code="instruction_ae_select_study"/>--%>
 	            <form:hidden path="study"/>
