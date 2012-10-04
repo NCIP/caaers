@@ -39,7 +39,7 @@ public class ExternalAdverseEventDaoTest extends CaaersDbNoSecurityTestCase {
     	List<String> externalIds = new ArrayList<String>();
     	externalIds.add(externalAdverseEvent.getExternalId());
     	
-    	dao.updateStatus(ExternalAEReviewStatus.IGNORED, ExternalAEReviewStatus.PENDING, externalIds);
+    	dao.updateStatus( ExternalAEReviewStatus.PENDING, ExternalAEReviewStatus.IGNORED,externalIds);
     	interruptSession();
     	ExternalAdverseEvent updatedExternalAdverseEvent = dao.getById(-1000);
     	assertEquals(ExternalAEReviewStatus.IGNORED,updatedExternalAdverseEvent.getStatus());
