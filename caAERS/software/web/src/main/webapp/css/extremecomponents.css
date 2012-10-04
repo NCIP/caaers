@@ -40,6 +40,8 @@ color:#333;
     text-shadow: 0 1px white;
 
 }
+
+.selectAbove {color: #ED4242; font-style: italic;}
 .eXtremeTable .oddx, .eXtremeTable .evenx {border-bottom: 1px solid #eee;}
 .eXtremeTable .yui-dt-bd thead {}
 .eXtremeTable .yui-dt-data tr {cursor: pointer; border-bottom: 1px solid #ddd;}
