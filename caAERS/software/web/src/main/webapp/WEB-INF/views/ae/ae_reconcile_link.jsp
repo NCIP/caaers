@@ -16,7 +16,14 @@
 <style type="text/css">
     .ae-link-widget{}
     tr.aeWorkedOn td {
-        background-color: #fffccc;
+        background: #fdfdef;
+    background: -moz-linear-gradient(top,  #fdfdef 0%, #f9f6c3 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fdfdef), color-stop(100%,#f9f6c3));
+    background: -webkit-linear-gradient(top,  #fdfdef 0%,#f9f6c3 100%);
+    background: -o-linear-gradient(top,  #fdfdef 0%,#f9f6c3 100%);
+    background: -ms-linear-gradient(top,  #fdfdef 0%,#f9f6c3 100%);
+    background: linear-gradient(to bottom,  #fdfdef 0%,#f9f6c3 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fdfdef', endColorstr='#f9f6c3',GradientType=0 );
     }
     .wgtBtnDiv{
         width: 7em;
@@ -26,7 +33,7 @@
         width: 100%;
     }
     button.omnipotent-button.small, a.omnipotent-button.small{
-        font-size: 10px;
+        font-size: 11px;
     }
 
 </style>
@@ -265,7 +272,7 @@ AE.aeWidget = Class.create({
             fields: ["id","externalId","term","grade","startDate","endDate", "verbatim", "whySerious", "attribution", "percent"]
         };
 
-        this.aePickerTbl = new YAHOO.widget.ScrollingDataTable(this.containerId, colDefs, ds, {height:"10em"});
+        this.aePickerTbl = new YAHOO.widget.ScrollingDataTable(this.containerId, colDefs, ds, {height:"12em"});
         this.aePickerTbl.set("selectionMode", "single");
         this.aePickerTbl.subscribe("rowClickEvent", this.onAePickerRowSelection, this, this);
         this.aePickerTbl.subscribe("rowMouseoverEvent", this.aePickerTbl.onEventHighlightRow, this, this);
@@ -479,11 +486,7 @@ ValidationManager.submitPreProcess = function(){
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td colspan="10" class="fillerRow">
-                &nbsp;
-            </td>
-        </tr>
+
         <c:set var="_addFiller" value="false" />
         <c:forEach var="e" items="${command.matchedAeMapping}" varStatus="x">
             <c:if test="${_addFiller}">
@@ -499,11 +502,7 @@ ValidationManager.submitPreProcess = function(){
             <ae:matchedAERow ae1="${e}" />
             <c:set var="_addFiller" value="true" />
         </c:forEach>
-        <tr>
-            <td colspan="10" class="fillerRow">
-                <hr align="center" width="96%" size="1" color="blue">
-            </td>
-        </tr>
+
         </tbody>
     </table>
      <form:hidden id="matchedAeMappingStr" path="matchedAeMappingStr"  />

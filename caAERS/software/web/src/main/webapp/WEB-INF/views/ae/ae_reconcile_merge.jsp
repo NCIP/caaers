@@ -41,7 +41,9 @@
     </script>
     <style type="text/css">
         td.td-ae3{
-            background: gray;
+            background: #EFEFEF;
+            color: #999;
+            text-shadow: 0 1px white;
         }
         td.td-highlight {
            background: #ffff99;

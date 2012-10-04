@@ -58,7 +58,19 @@ th.yui-dt-resizeable .yui-dt-resizerliner .yui-dt-liner {
     
 }
 
-thead {background: #3882c1 url(../images/table/yui-datatable_header.jpg) repeat-x top;}
+thead {
+    background: #74b5ed;
+    background: -moz-linear-gradient(top,  #74b5ed 0%, #589ed9 50%, #5095ce 50%, #3783c1 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#74b5ed), color-stop(50%,#589ed9), color-stop(50%,#5095ce), color-stop(100%,#3783c1));
+    background: -webkit-linear-gradient(top,  #74b5ed 0%,#589ed9 50%,#5095ce 50%,#3783c1 100%);
+    background: -o-linear-gradient(top,  #74b5ed 0%,#589ed9 50%,#5095ce 50%,#3783c1 100%);
+    background: -ms-linear-gradient(top,  #74b5ed 0%,#589ed9 50%,#5095ce 50%,#3783c1 100%);
+    background: linear-gradient(to bottom,  #74b5ed 0%,#589ed9 50%,#5095ce 50%,#3783c1 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#74b5ed', endColorstr='#3783c1',GradientType=0 );
+    border-top: 1px solid #3783c1;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.4) inset;
+    -webkit-box-shadow: 0 1px 0 rgba(255,255,255,0.4) inset;
+}
 
 th.yui-dt-resizeable .yui-dt-resizerliner .yui-dt-liner a:hover {
     color:white
@@ -139,7 +151,7 @@ th.yui-dt-hidden .yui-dt-resizer {
 .yui-skin-sam .yui-dt-liner {
     margin: 0;
     padding: 0;
-    padding: 4px 10px 4px 10px;
+    padding: 4px 8px;
 }
 .yui-skin-sam .yui-dt-coltarget {
     width: 5px;
@@ -185,7 +197,15 @@ th.yui-dt-hidden .yui-dt-resizer {
 }
 .yui-skin-sam th.yui-dt-asc,
 .yui-skin-sam th.yui-dt-desc {
-    background: url(../images/table/sprite.png) repeat-x 0 -100px
+    background: #3783c1;
+    background: -moz-linear-gradient(top,  #3783c1 0%, #5095ce 50%, #589ed9 50%, #74b5ed 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#3783c1), color-stop(50%,#5095ce), color-stop(50%,#589ed9), color-stop(100%,#74b5ed));
+    background: -webkit-linear-gradient(top,  #3783c1 0%,#5095ce 50%,#589ed9 50%,#74b5ed 100%);
+    background: -o-linear-gradient(top,  #3783c1 0%,#5095ce 50%,#589ed9 50%,#74b5ed 100%);
+    background: -ms-linear-gradient(top,  #3783c1 0%,#5095ce 50%,#589ed9 50%,#74b5ed 100%);
+    background: linear-gradient(to bottom,  #3783c1 0%,#5095ce 50%,#589ed9 50%,#74b5ed 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3783c1', endColorstr='#74b5ed',GradientType=0 );
+
 }
 .yui-skin-sam th.yui-dt-sortable .yui-dt-label {
     margin-right: 10px
@@ -210,10 +230,11 @@ a:hover.yui-pg-first, a:hover.yui-pg-previous, a:hover.yui-pg-next, a:hover.yui-
 tr.yui-dt-even { background-color: #FFF; border-bottom: 1px gray solid;}
 tr.yui-dt-odd { background: url(../images/table/yui-dt-odd_bg.jpg) repeat-x center; border-bottom: 1px solid #e5edf7; padding: 2px; }
 
-div.yui-dt-liner {padding: 4px 8px; text-shadow: 0 1px white}
+div.yui-dt-liner {padding: 4px 8px; }
 
 div.yui-dt-liner a {color:#236dad; text-decoration: none}
 div.yui-dt-liner a:hover {color:#053e6f; text-decoration: none}
+.eXtremeTable div.yui-dt-liner a:hover {color:#fff; text-decoration: none}
 
 tbody .yui-dt-editable {
     cursor: pointer

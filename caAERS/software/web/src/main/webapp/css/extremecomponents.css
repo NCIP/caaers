@@ -6,14 +6,56 @@
 
 
 .eXtremeTable .tableRegion {
-	border: 1px solid #6cafe9;
+	border: 1px solid #A8C9E0;
 	font-family: Lucida Sans Unicode, sans-serif;
 	font-size: 12px;
 	margin-top: 7px;
 }
+.eXtremeTable .tableHeader:last-child {border-right:  none;}
+
+.eXtremeTable .fillerRow {display: none}
+
+.eXtremeTable .tableRegion .tdNoMatch {text-align: center;border-bottom: 1px solid #ccc;padding: 3px 10px; background: #efefef; color: #AAAAAA; font-style: italic;text-shadow: 0 1px white;}
+
+.eXtremeTable .tableRegion td {padding:  3px 8px;}
+.eXtremeTable .tableRegion button td {padding: 0}
+.eXtremeTable .tableRegion .yui-dt-bd td {padding: 3px 1px}
 
 .eXtremeTable .filter {
 	background-color: #F4F4F4;
+}
+.eXtremeTable .tableRegion td.eae {border-bottom: 1px solid #eeeeee}
+.eXtremeTable .yui-skin-sam tr.yui-dt-odd {background-color: #efefef}
+.eXtremeTable th .yui-dt-label {color: white;text-shadow:0 -1px #2166A1}
+.eXtremeTable .yui-skin-sam tr.yui-dt-selected td, .eXtremeTable .yui-skin-sam tr.yui-dt-selected td.yui-dt-asc, .eXtremeTable .yui-skin-sam tr.yui-dt-selected td.yui-dt-desc {
+    background: #f6fce3;
+    background: -moz-linear-gradient(top,  #f6fce3 0%, #dff497 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f6fce3), color-stop(100%,#dff497));
+    background: -webkit-linear-gradient(top,  #f6fce3 0%,#dff497 100%);
+    background: -o-linear-gradient(top,  #f6fce3 0%,#dff497 100%);
+    background: -ms-linear-gradient(top,  #f6fce3 0%,#dff497 100%);
+    background: linear-gradient(to bottom,  #f6fce3 0%,#dff497 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f6fce3', endColorstr='#dff497',GradientType=0 );
+color:#333;
+    text-shadow: 0 1px white;
+
+}
+.eXtremeTable .oddx, .eXtremeTable .evenx {border-bottom: 1px solid #eee;}
+.eXtremeTable .yui-dt-bd thead {}
+.eXtremeTable .yui-dt-data tr {cursor: pointer; border-bottom: 1px solid #ddd;}
+.eXtremeTable .yui-dt-data tr:hover {
+    background: #fdfdef;
+    background: -moz-linear-gradient(top,  #fdfdef 0%, #f9f6c3 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fdfdef), color-stop(100%,#f9f6c3));
+    background: -webkit-linear-gradient(top,  #fdfdef 0%,#f9f6c3 100%);
+    background: -o-linear-gradient(top,  #fdfdef 0%,#f9f6c3 100%);
+    background: -ms-linear-gradient(top,  #fdfdef 0%,#f9f6c3 100%);
+    background: linear-gradient(to bottom,  #fdfdef 0%,#f9f6c3 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fdfdef', endColorstr='#f9f6c3',GradientType=0 );
+
+   color:#333;
+    text-shadow: 0 1px white;
+
 }
 
 .eXtremeTable .filter td {
@@ -60,7 +102,6 @@
 }
 
 .eXtremeTable .tableHeader {
-	background-color: #6dafe9;
 	color: #2b4f6f;
 	font-family: Lucida Sans Unicode, sans-serif;
 	font-size: 13px;
@@ -71,10 +112,16 @@
 	padding-top: 4px;
 	padding-bottom: 4px;
 	margin: 0px;
-	border-right: solid 1px #d5e8f9;
-	background-image: url(../images/blue/eXtableheader_bg.png);
-	background-repeat: repeat-x;
-	background-position: top;
+	border-right: solid 1px #A8C9E0;
+    background: #eaf2f9;
+    background: -moz-linear-gradient(top,  #eaf2f9 0%, #b7d9f5 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eaf2f9), color-stop(100%,#b7d9f5));
+    background: -webkit-linear-gradient(top,  #eaf2f9 0%,#b7d9f5 100%);
+    background: -o-linear-gradient(top,  #eaf2f9 0%,#b7d9f5 100%);
+    background: -ms-linear-gradient(top,  #eaf2f9 0%,#b7d9f5 100%);
+    background: linear-gradient(to bottom,  #eaf2f9 0%,#b7d9f5 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eaf2f9', endColorstr='#b7d9f5',GradientType=0 );
+    border-bottom: 1px solid #A8C9E0;
     text-shadow: 0 1px white;
 }
 
