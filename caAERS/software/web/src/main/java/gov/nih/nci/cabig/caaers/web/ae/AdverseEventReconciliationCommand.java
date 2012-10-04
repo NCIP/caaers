@@ -459,7 +459,7 @@ public class AdverseEventReconciliationCommand {
 
     public List<String> getRejectedExternalAeExternalIds(){
         List<String> ids = new ArrayList<String>();
-        for(AdverseEventDTO ae : rejectedInternalAeList){
+        for(AdverseEventDTO ae : rejectedExternalAeList){
             ids.add(ae.getExternalID());
         }
         return ids;
