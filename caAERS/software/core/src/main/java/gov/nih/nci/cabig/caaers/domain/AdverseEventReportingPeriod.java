@@ -650,7 +650,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
             SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yy");
     		StringBuffer sb = new StringBuffer();
     		sb.append((getCycleNumber() != null)? "Cycle #: " + getCycleNumber() + "; " : "")
-    		// .append((getTreatmentAssignment() != null) ? "TAC: " + getTreatmentAssignment().getCode() + ";" : "")
+    		.append((getTreatmentAssignment() != null) ? "TAC: " + getTreatmentAssignment().getCode() + "; " : "")
     		.append((startDate != null) ? "Start Date: " + formatter.format(startDate) : "");
     		name = sb.toString();
     	}
