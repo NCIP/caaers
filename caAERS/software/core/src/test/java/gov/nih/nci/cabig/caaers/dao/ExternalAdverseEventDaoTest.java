@@ -75,7 +75,7 @@ public class ExternalAdverseEventDaoTest extends CaaersDbNoSecurityTestCase {
     	externalIds.add(externalAdverseEvent2.getExternalId());
     	Integer id2 = externalAdverseEvent2.getId();
     	
-    	dao.updateStatus(ExternalAEReviewStatus.IGNORED, ExternalAEReviewStatus.PENDING, externalIds);
+    	dao.updateStatus(ExternalAEReviewStatus.PENDING, ExternalAEReviewStatus.IGNORED, externalIds);
     	interruptSession();
     	ExternalAdverseEvent updatedExternalAdverseEvent1 = dao.getById(-1000);
     	ExternalAdverseEvent updatedExternalAdverseEvent2 = dao.getById(id2);
