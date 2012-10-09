@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 
@@ -40,7 +41,7 @@ public class AdverseEventReportingPeriodTest extends AbstractNoSecurityTestCase 
 
 	public void testGetName() {
 		assertEquals("Cycle #: 1; TAC: acd; Start Date: 03/02/00",  reportingPeriod1.getName());
-		assertEquals("Cycle #: 1; TAC: acd; ", reportingPeriod2.getName());
+		assertEquals("Cycle #: 5; TAC: acd; ", reportingPeriod2.getName());
 		assertEquals("", reportingPeriod3.getName());
 	}
 	
