@@ -116,6 +116,8 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     /** The base date. */
     protected Date baseDate; //will store the base date, (for new report creation)
 
+    private boolean includeNonSeriousAes;
+
     /**
      * Instantiates a new report definition.
      */
@@ -930,4 +932,12 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
 	public void setEnabled(Boolean enabled) {
 		this.enabled = enabled;
 	}
+
+    public boolean getIncludeNonSeriousAes() {
+        return includeNonSeriousAes;
+    }
+
+    public void setIncludeNonSeriousAes(boolean includeNonSeriousAes) {
+        this.includeNonSeriousAes = includeNonSeriousAes;
+    }
 }

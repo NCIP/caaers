@@ -99,6 +99,8 @@ public class BasicsTab extends TabWithFields<ReportDefinitionCommand> {
         fields.add(parentReportDefinition);
         
         fields.add(InputFieldFactory.createBooleanSelectField("reportDefinition.workflowEnabled", "Workflow enabled?", true));
+        fields.add(InputFieldFactory.createBooleanSelectField("reportDefinition.includeNonSeriousAes", "Include all non-serious AEs by default?", true));
+
         fields.add(InputFieldFactory.createBooleanSelectField("reportDefinition.enabled", "Enabled?", true));
 
         map.addInputFieldGroup(fieldGroup);
