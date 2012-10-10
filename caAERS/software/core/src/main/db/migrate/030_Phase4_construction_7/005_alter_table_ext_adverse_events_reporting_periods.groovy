@@ -7,9 +7,9 @@ class AlterExternalAdverseEventReportingPeriod extends edu.northwestern.bioinfor
     	}
     	
     	if(databaseMatches('oracle')){
-    		execute("alter table ext_ae_reporting_prds modify treatment_assignment_desc varchar2");
+    		execute("alter table ext_ae_reporting_prds modify treatment_assignment_desc varchar2(4000)");
     		execute("alter table ext_adverse_events modify end_date null");
-    		execute("alter table ext_ae_reporting_prds modify external_id null");
+    		execute("alter table ext_ae_reporting_prds modify (external_id null)");
     	}
     }
 
