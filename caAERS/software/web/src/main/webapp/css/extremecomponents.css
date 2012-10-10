@@ -40,7 +40,8 @@ color:#333;
     text-shadow: 0 1px white;
 
 }
-
+.actionBtns button.omnipotent-button.small td.m, .actionBtns a.omnipotent-button.small td.m      {padding: 2px 3px 1px}
+.actionBtns button.omnipotent-button.small td.m img, .actionBtns a.omnipotent-button.small td.m img {margin-top:-2px}
 .selectAbove {color: #ED4242; font-style: italic;}
 .eXtremeTable .oddx, .eXtremeTable .evenx {border-bottom: 1px solid #eee;}
 .eXtremeTable .yui-dt-bd thead {}

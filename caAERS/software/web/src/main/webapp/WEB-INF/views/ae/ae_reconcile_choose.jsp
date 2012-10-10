@@ -13,7 +13,7 @@
     <title>${tab.longTitle}</title>
     <style type="text/css">
         tr.ae-rejected {
-            text-decoration: line-through;
+            color: #aaa;
         }
         .wgtBtnDiv{
             width: 7em;
