@@ -131,7 +131,6 @@ public class ExternalAdverseEvent extends AbstractMutableDomainObject{
 		return startDate;
 	}
 
-	@NotNullConstraint(groups=AdverseEventGroup.class, fieldPath="adverseEvents[].adverseEventCtcTerm")
 	public String getAdverseEventTerm() {
 		return adverseEventTerm;
 	}
