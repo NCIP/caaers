@@ -87,6 +87,7 @@
 	</jsp:attribute>
 	<jsp:attribute name="embededJS">
 		<%-- Script to tackle hospitalization Dropdown--%>
+        if($('${not isRoutineFlow ? 'aeReport.': ''}adverseEvents[${index}].hospitalization')){
 			$('${not isRoutineFlow ? 'aeReport.': ''}adverseEvents[${index}].hospitalization').observe('change', function(e){
 				if(e.element().value == 'YES'){
 					$('${fieldGroups[outcomeGroup].fields[1].propertyName}').checked = true;
@@ -94,14 +95,20 @@
 					$('${fieldGroups[outcomeGroup].fields[1].propertyName}').checked = false;
 				}
 			});
+        }
+
+
 		<%-- Script to tackle death  --%>
 
 
             $('${fieldGroups[outcomeGroup].fields[1].propertyName}').observe('change', function() {
                 var checked = $('${fieldGroups[outcomeGroup].fields[1].propertyName}').checked;
-                if (checked) $('${not isRoutineFlow ? 'aeReport.': ''}adverseEvents[${index}].hospitalization').value = 'YES';
-                else {
-                    $('${not isRoutineFlow ? 'aeReport.': ''}adverseEvents[${index}].hospitalization').selectedIndex = 0;
+                if($('${not isRoutineFlow ? 'aeReport.': ''}adverseEvents[${index}].hospitalization')){
+                    if (checked){
+                        $('${not isRoutineFlow ? 'aeReport.': ''}adverseEvents[${index}].hospitalization').value = 'YES';
+                    } else {
+                        $('${not isRoutineFlow ? 'aeReport.': ''}adverseEvents[${index}].hospitalization').selectedIndex = 0;
+                    }
                 }
             })
 
