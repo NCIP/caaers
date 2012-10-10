@@ -118,8 +118,7 @@ public class ExternalAdverseEvent extends AbstractMutableDomainObject{
      */
     @Transient
     public String getDisplayName(){
-    	StringBuilder name = new StringBuilder(this.getAdverseEventTerm());
-    	return name.toString();
+    	return this.getAdverseEventTerm();
     }
 
     @Enumerated(EnumType.ORDINAL)
