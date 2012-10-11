@@ -26,7 +26,7 @@ public class AdverseEventReconcileSummaryTab  extends TabWithFields<AdverseEvent
     @Override
     public Map<String, Object> referenceData(HttpServletRequest request, AdverseEventReconciliationCommand command) {
         ReconciliationReport report = command.generateReconcilationReport();
-        Map<String, Object> map =  referenceData(request, command);
+        Map<String, Object> map =  super.referenceData(request, command);
         map.put("report", report);
         return map;
     }
