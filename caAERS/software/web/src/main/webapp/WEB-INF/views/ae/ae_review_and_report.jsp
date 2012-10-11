@@ -1,4 +1,3 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@include file="/WEB-INF/views/taglibs.jsp"%>
 <html>
  <head>
@@ -1072,10 +1071,6 @@ function validate(aeReportId){
 		<ae:recommendedReportRow applicableTableRows="${command.applicableReportTableMap[_aeReportId]}" recommendedTableRows="${command.recommendedReportTableMap[_aeReportId]}" aeReportId="${_aeReportId}" />
 		</chrome:division>
 		<!--  Listing of adverse events -->
-        <c:set var="checkAllAes" value="false" />
-        <c:forEach var="rdRow" items="${command.recommendedReportTableMap[_aeReportId]}">
-            <c:set var="checkAllAes" value="${checkAllAes or rdRow.includeNonSeriousAes}"/>
-        </c:forEach>
 		<ae:seriousAdverseEvents adverseEvents="${command.evaluationResult.allAeMap[_aeReportId]}" aeReportId="${_aeReportId}" primaryAeId="${_primaryAE.id}" />
 		<!--  Rules Message Bottom -->
 		<div class="rulesMessageBottom">
