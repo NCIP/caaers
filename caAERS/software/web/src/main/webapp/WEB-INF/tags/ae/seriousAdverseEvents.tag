@@ -11,7 +11,6 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
 <%@attribute name="aeReportId" required="true" type="java.lang.Integer" description="Id of the data collection"%>
 <%@attribute name="adverseEvents" required="true" type="java.util.List" description="List of adverse events to be displayed"%>
 <%@attribute name="primaryAeId" required="true" type="java.lang.Integer" description="The primary adverse event ID" %>
-<%@attribute name="defaultChecked" required="true" type="java.lang.Boolean" description="Check all Aes by default" %>
 <c:if test="${not empty adverseEvents}">
 <c:set var="aeDivTitle"><spring:message code="LBL_captureAdverseEvents.heading.adverseEvents" /></c:set>
 <chrome:division title="${aeDivTitle}">
