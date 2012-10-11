@@ -280,7 +280,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
           <entry key="gov.nih.nci.cabig.caaers.web.ae.AdverseEventLinkTab" value="gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment:READ"/>
           <entry key="gov.nih.nci.cabig.caaers.web.ae.AdverseEventMergeTab" value="gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment:READ"/>
           <entry key="gov.nih.nci.cabig.caaers.web.ae.AdverseEventSelectTab" value="gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment:READ"/>
-          <entry key="gov.nih.nci.cabig.caaers.web.ae.AdverseEventReconciliationReportTab" value="gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment:READ"/>
+          <entry key="gov.nih.nci.cabig.caaers.web.ae.AdverseEventReconcileSummaryTab" value="gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment:READ"/>
 
           <!--========= RULES ========-->
           <entry key="gov.nih.nci.cabig.caaers.web.rule.author.SelectRuleTypeTab" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE || gov.nih.nci.cabig.caaers.domain.Rule:UPDATE"/>

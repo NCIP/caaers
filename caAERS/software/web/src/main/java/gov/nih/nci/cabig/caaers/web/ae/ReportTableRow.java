@@ -34,6 +34,7 @@ public class ReportTableRow {
 	private Date baseDate;
 
     private boolean stringent;
+    private boolean includeNonSeriousAes;
 	
 	
 	public ExpeditedAdverseEventReport getAeReport() {
@@ -135,14 +136,23 @@ public class ReportTableRow {
     public void setStringent(boolean stringent){
         this.stringent = stringent;
     }
-	
-	public static ReportTableRow createReportTableRow(ReportDefinition rd, Date baseDate, ActionType action){
+
+    public boolean isIncludeNonSeriousAes() {
+        return includeNonSeriousAes;
+    }
+
+    public void setIncludeNonSeriousAes(boolean includeNonSeriousAes) {
+        this.includeNonSeriousAes = includeNonSeriousAes;
+    }
+
+    public static ReportTableRow createReportTableRow(ReportDefinition rd, Date baseDate, ActionType action){
 		ReportTableRow row = new ReportTableRow();
 		row.setReportDefinition(rd);
 		row.setAction(action);
 		row.setBaseDate(baseDate);
         row.setStringent(true);
 		row.setDue(baseDate != null ?  rd.getExpectedDisplayDueDate(baseDate) :  rd.getExpectedDisplayDueDate());
+        row.setIncludeNonSeriousAes(rd.getIncludeNonSeriousAes());
 		return row;
 	}
 	

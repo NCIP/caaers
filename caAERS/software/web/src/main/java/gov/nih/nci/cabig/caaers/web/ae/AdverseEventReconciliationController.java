@@ -38,9 +38,10 @@ public class AdverseEventReconciliationController extends AutomaticSaveAjaxableF
 
     public AdverseEventReconciliationController() {
         Flow<AdverseEventReconciliationCommand> flow = new Flow<AdverseEventReconciliationCommand>("Reconcile Adverse Events");
-        flow.addTab(new AdverseEventLinkTab("Link Adverse Event Data", "Link Adverse Events", "ae/ae_reconcile_link"));
-        flow.addTab(new AdverseEventMergeTab("Merge Adverse Event Data", "Merge Adverse Events", "ae/ae_reconcile_merge"));
-        flow.addTab(new AdverseEventSelectTab("Choose New Adverse Event Data", "Choose Adverse Events", "ae/ae_reconcile_choose"));
+        flow.addTab(new AdverseEventLinkTab("Map Adverse Events", "Link Adverse Events", "ae/ae_reconcile_link"));
+        flow.addTab(new AdverseEventMergeTab("Merge Adverse Events", "Merge Adverse Events", "ae/ae_reconcile_merge"));
+        flow.addTab(new AdverseEventSelectTab("Choose Adverse Events", "Choose Adverse Events", "ae/ae_reconcile_choose"));
+        flow.addTab(new AdverseEventReconcileSummaryTab("Reconciliation Report", "Adverse Event Reconciliation Report", "ae/ae_reconcile_report"));
         setFlow(flow);
     }
 
@@ -253,6 +254,7 @@ public class AdverseEventReconciliationController extends AutomaticSaveAjaxableF
 
             ModelAndView mv  = new ModelAndView("ae/ae_reconcile_report");
             mv.addObject("report", report);
+            mv.addObject("flashMessage", messageSource.getMessage("reconciliation.report.saved", new Object[] {}, "Reconciliation report saved", Locale.getDefault()));
             return mv;
         }
         return null; 

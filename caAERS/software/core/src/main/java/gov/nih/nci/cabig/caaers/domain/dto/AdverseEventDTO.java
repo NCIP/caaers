@@ -276,12 +276,36 @@ public class AdverseEventDTO {
         ae.getTerm().setCode(eae.getAdverseEventTermCode());
         if(!isEmpty(eae.getAdverseEventTerm()))ae.getTerm().setName(eae.getAdverseEventTerm());
         ae.getTerm().setOtherSpecify(eae.getAdverseEventTermOtherValue());
-        if(eae.getGrade() != null) ae.setGrade(eae.getGrade().getShortName());
-        if(eae.getStartDate() != null) ae.setStartDate(DateUtils.formatDate(eae.getStartDate()));
-        if(eae.getEndDate() != null) ae.setEndDate(DateUtils.formatDate(eae.getEndDate()));
-        if(!isEmpty(eae.getVerbatim()))ae.setVerbatim(eae.getVerbatim());
-        if(!isEmpty(eae.getHowSerious()))ae.setWhySerious(eae.getHowSerious());
-        if(!isEmpty(eae.getAttribution()))ae.setAttribution(eae.getAttribution());
+        if(eae.getGrade() != null) {
+            ae.setGrade(eae.getGrade().getShortName());
+        } else {
+            ae.setGrade(dash);
+        }
+        if(eae.getStartDate() != null){
+            ae.setStartDate(DateUtils.formatDate(eae.getStartDate()));
+        } else {
+            ae.setStartDate(dash);
+        }
+        if(eae.getEndDate() != null) {
+            ae.setEndDate(DateUtils.formatDate(eae.getEndDate()));
+        } else {
+            ae.setEndDate(dash);
+        }
+        if(!isEmpty(eae.getVerbatim())){
+           ae.setVerbatim(eae.getVerbatim());
+        } else {
+           ae.setVerbatim(dash);
+        }
+        if(!isEmpty(eae.getHowSerious())){
+            ae.setWhySerious(eae.getHowSerious());
+        } else {
+            ae.setWhySerious(dash);
+        }
+        if(!isEmpty(eae.getAttribution())){
+            ae.setAttribution(eae.getAttribution());
+        } else {
+            ae.setAttribution(dash);
+        }
         return ae;
     }
 
@@ -300,12 +324,34 @@ public class AdverseEventDTO {
             ae.getTerm().setId(iae.getAdverseEventMeddraLowLevelTerm().getTerm().getId());
             ae.getTerm().setCode(iae.getAdverseEventMeddraLowLevelTerm().getTerm().getMeddraCode());
             ae.getTerm().setName(iae.getAdverseEventMeddraLowLevelTerm().getTerm().getFullName());
+        } else {
+            ae.getTerm().setName(dash);
         }
 
-        if(iae.getGrade() != null) ae.setGrade(iae.getGrade().getShortName());
-        if(iae.getStartDate() != null) ae.setStartDate(DateUtils.formatDate(iae.getStartDate()));
-        if(iae.getEndDate() != null) ae.setEndDate(DateUtils.formatDate(iae.getEndDate()));
-        if(!isEmpty(iae.getDetailsForOther()))ae.setVerbatim(iae.getDetailsForOther());
+        if(iae.getGrade() != null) {
+            ae.setGrade(iae.getGrade().getShortName());
+        }else{
+            ae.setGrade(dash);
+        }
+
+        if(iae.getStartDate() != null){
+            ae.setStartDate(DateUtils.formatDate(iae.getStartDate()));
+        }  else {
+            ae.setStartDate(dash);
+        }
+
+        if(iae.getEndDate() != null) {
+            ae.setEndDate(DateUtils.formatDate(iae.getEndDate()));
+        } else{
+            ae.setEndDate(dash);
+        }
+
+        if(!isEmpty(iae.getDetailsForOther())){
+            ae.setVerbatim(iae.getDetailsForOther());
+        } else {
+            ae.setVerbatim(dash);
+        }
+
         if(iae.getOutcomes() != null){
             StringBuilder outcomeBuilder = new StringBuilder();
             for(OutcomeType ot : OutcomeType.values()){
@@ -316,9 +362,16 @@ public class AdverseEventDTO {
                 }
             }
             ae.setWhySerious(outcomeBuilder.toString());
+        } else{
+            ae.setWhySerious(dash);
         }
 
-        if(iae.getAttributionSummary() != null) ae.setAttribution(iae.getAttributionSummary().getDisplayName() );
+        if(iae.getAttributionSummary() != null) {
+            ae.setAttribution(iae.getAttributionSummary().getDisplayName() );
+        } else {
+            ae.setAttribution(dash);
+        }
+
         return ae;
     }
 

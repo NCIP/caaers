@@ -12,6 +12,7 @@
     </style>
 </head>
 <body>
+<chrome:flashMessage/>
 <c:set var= "dash" value="--" scope="request" />
 <chrome:division title="(${fn:length(report.forceAesToBeAdded)}) Records To be Added to Source System" collapsable="true" id="div1">
     <div class="eXtremeTable" >
