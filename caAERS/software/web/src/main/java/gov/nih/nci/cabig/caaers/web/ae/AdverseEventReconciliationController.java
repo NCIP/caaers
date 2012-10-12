@@ -191,17 +191,20 @@ public class AdverseEventReconciliationController extends AutomaticSaveAjaxableF
             }
             Map<Integer, CtcTerm> ctcTermMap = new HashMap<Integer, CtcTerm>();
             Map<Integer, LowLevelTerm> meddraTermMap = new HashMap<Integer, LowLevelTerm>();
-            if(isCTC){
-                List<CtcTerm> ctcTerms = ctcTermDao.findByIds(new ArrayList<Integer>(termIdSet));
-                if(ctcTerms != null){
-                    for(CtcTerm ctcTerm : ctcTerms) ctcTermMap.put(ctcTerm.getId(), ctcTerm);
-                }
-            }else if(isMedDRA){
-                List<LowLevelTerm> meddraTerms = lowLevelTermDao.findByIds(new ArrayList<Integer>(termIdSet));
-                if(meddraTerms != null){
-                    for(LowLevelTerm meddraTerm : meddraTerms) meddraTermMap.put(meddraTerm.getId(), meddraTerm);
+            if(!termIdSet.isEmpty()){
+                if(isCTC){
+                    List<CtcTerm> ctcTerms = ctcTermDao.findByIds(new ArrayList<Integer>(termIdSet));
+                    if(ctcTerms != null){
+                        for(CtcTerm ctcTerm : ctcTerms) ctcTermMap.put(ctcTerm.getId(), ctcTerm);
+                    }
+                }else if(isMedDRA){
+                    List<LowLevelTerm> meddraTerms = lowLevelTermDao.findByIds(new ArrayList<Integer>(termIdSet));
+                    if(meddraTerms != null){
+                        for(LowLevelTerm meddraTerm : meddraTerms) meddraTermMap.put(meddraTerm.getId(), meddraTerm);
+                    }
                 }
             }
+
             //update caAERS Aes
             for(Map.Entry<AdverseEventDTO , AdverseEventDTO> entry : command.getMatchedAeMapping().entrySet()){
                  AdverseEvent adverseEvent = reportingPeriod.findAdverseEventById(entry.getKey().getId());
