@@ -1029,7 +1029,7 @@ function validate(aeReportId){
 			</chrome:division>
             <%-- Check the report defs for all AE inclusion --%>
             <c:set var="includeAllAes" value="false" />
-            <c:forEach var="aRRow" items="">
+            <c:forEach var="aRRow" items="${command.recommendedReportTableMap[_aeReportId]}">
                 <c:set var="includeAllAes" value="${includeAllAes or aRRow.includeNonSeriousAes}" />
             </c:forEach>
 			<!--  Listing of adverse events -->
@@ -1077,7 +1077,7 @@ function validate(aeReportId){
 		</chrome:division>
         <%-- Check the report defs for all AE inclusion --%>
         <c:set var="includeAllAes" value="false" />
-        <c:forEach var="aRRow" items="">
+        <c:forEach var="aRRow" items="${command.recommendedReportTableMap[_aeReportId]}">
             <c:set var="includeAllAes" value="${includeAllAes or aRRow.includeNonSeriousAes}" />
         </c:forEach>
         <!--  Listing of adverse events -->
