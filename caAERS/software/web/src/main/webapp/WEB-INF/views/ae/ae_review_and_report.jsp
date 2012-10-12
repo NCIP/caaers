@@ -1027,9 +1027,14 @@ function validate(aeReportId){
 				recommendedTableRows="${command.recommendedReportTableMap[_aeReportId]}"
 			    aeReportId="${_aeReportId}" />
 			</chrome:division>
+            <%-- Check the report defs for all AE inclusion --%>
+            <c:set var="includeAllAes" value="false" />
+            <c:forEach var="aRRow" items="">
+                <c:set var="includeAllAes" value="${includeAllAes or aRRow.includeNonSeriousAes}" />
+            </c:forEach>
 			<!--  Listing of adverse events -->
 			<ae:seriousAdverseEvents adverseEvents="${command.evaluationResult.allAeMap[_aeReportId]}" aeReportId="${_aeReportId}" 
-				primaryAeId="${empty _primaryAE ? 0 : _primaryAE.id}" />
+				primaryAeId="${empty _primaryAE ? 0 : _primaryAE.id}"  selectNonSerious="${includeAllAes}" />
 			<!--  Rules Message Bottom -->
 			<div class="rulesMessageBottom">
 			 	<ae:rulesMessageBottom rulesMessages="${_rulesMsgs}" aeReportId="${_aeReportId}" />
@@ -1070,9 +1075,15 @@ function validate(aeReportId){
 		<!--  Listing the reports -->
 		<ae:recommendedReportRow applicableTableRows="${command.applicableReportTableMap[_aeReportId]}" recommendedTableRows="${command.recommendedReportTableMap[_aeReportId]}" aeReportId="${_aeReportId}" />
 		</chrome:division>
-		<!--  Listing of adverse events -->
-		<ae:seriousAdverseEvents adverseEvents="${command.evaluationResult.allAeMap[_aeReportId]}" aeReportId="${_aeReportId}" primaryAeId="${_primaryAE.id}" />
-		<!--  Rules Message Bottom -->
+        <%-- Check the report defs for all AE inclusion --%>
+        <c:set var="includeAllAes" value="false" />
+        <c:forEach var="aRRow" items="">
+            <c:set var="includeAllAes" value="${includeAllAes or aRRow.includeNonSeriousAes}" />
+        </c:forEach>
+        <!--  Listing of adverse events -->
+		<ae:seriousAdverseEvents adverseEvents="${command.evaluationResult.allAeMap[_aeReportId]}" aeReportId="${_aeReportId}" primaryAeId="${_primaryAE.id}" selectNonSerious="${includeAllAes}" />
+
+        <!--  Rules Message Bottom -->
 		<div class="rulesMessageBottom">
 			<ae:rulesMessageBottom rulesMessages="${_rulesMsgs}" aeReportId="0" />
 			<div class="row" style="text-align:right;">

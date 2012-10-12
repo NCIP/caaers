@@ -11,6 +11,7 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
 <%@attribute name="aeReportId" required="true" type="java.lang.Integer" description="Id of the data collection"%>
 <%@attribute name="adverseEvents" required="true" type="java.util.List" description="List of adverse events to be displayed"%>
 <%@attribute name="primaryAeId" required="true" type="java.lang.Integer" description="The primary adverse event ID" %>
+<%@attribute name="selectNonSerious" required="true" type="java.lang.Boolean" description="Select non serious AEs" %>
 <c:if test="${not empty adverseEvents}">
 <c:set var="aeDivTitle"><spring:message code="LBL_captureAdverseEvents.heading.adverseEvents" /></c:set>
 <chrome:division title="${aeDivTitle}">
@@ -35,7 +36,7 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
 	      <tr class="${_cssClass}">
 		      <td style="text-align:center;" class="${_cssClass}">
 		      	<c:if test="${not ae.retired}">
-		      	 <input id="ae-${aeReportId}-${ae.id}" type="checkbox" checked 
+		      	 <input id="ae-${aeReportId}-${ae.id}" type="checkbox" ${(selectNonSerious or ae.requiresReporting) ? 'checked' : ''}
 		      		value="${ae.id}" class="ae ae_${aeReportId}" 
 		      		name="ae_${aeReportId}"
 		      	 	onclick="${_jsHandler}" />
