@@ -7,22 +7,22 @@
 <%@attribute name="displayError" type="java.lang.Boolean" %>
 
   <tr>
-  	<td class="fillerRow"> ${empty ae.externalId ? requestScope.dash : ae.externalId}</td>
-  	<td class="fillerRow"> ${ae.termName}</td>
-  	<td class="fillerRow"> ${empty ae.grade ? '' : ae.grade.shortName}</td>
-  	<td class="fillerRow">
+  	<td > ${empty ae.externalId ? requestScope.dash : ae.externalId}</td>
+  	<td > ${ae.termName}</td>
+  	<td> ${empty ae.grade ? '' : ae.grade.shortName}</td>
+  	<td >
       <c:if test="${not empty ae.startDate}">
           <tags:formatDate value="${ae.startDate}" />
       </c:if>
   	</td>
-  	<td class="fillerRow">
+  	<td>
       <c:if test="${not empty ae.startDate}">
           <tags:formatDate value="${ae.endDate}" />
       </c:if>
       </td>
-  	<td class="fillerRow"> ${empty ae.verbatim ? requestScope.dash  : ae.verbatim}</td>
-  	<td class="fillerRow"> ${empty ae.whySerious ? requestScope.dash  : ae.whySerious}</td>
-  	<td class="fillerRow"> ${empty ae.attribution ? requestScope.dash : ae.attribution.displayName}</td>
+  	<td> ${empty ae.verbatim ? requestScope.dash  : ae.verbatim}</td>
+  	<td> ${empty ae.whySerious ? requestScope.dash  : ae.whySerious}</td>
+  	<td> ${empty ae.attribution ? requestScope.dash : ae.attribution.displayName}</td>
   </tr>
   <c:if test="${not empty displayError && displayError eq 'true'}">
 	  <tr class="error">
