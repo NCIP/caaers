@@ -59,7 +59,7 @@
 
 </head>
 <body>
-<tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section11courseandagent">
+<tags:tabForm tab="${tab}" flow="${flow}"  hideTabControls="${command.noExternalAes}">
         <jsp:attribute name="singleFields">
         	<chrome:division title="Review AEs">
                 <div class="eXtremeTable" >

@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 import org.springframework.validation.Errors;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -15,6 +16,16 @@ public class AdverseEventLinkTab extends TabWithFields<AdverseEventReconciliatio
 
     public AdverseEventLinkTab(String longTitle, String shortTitle, String viewName) {
         super(longTitle, shortTitle, viewName);
+    }
+
+    @Override
+    public Map<String, Object> referenceData(HttpServletRequest request, AdverseEventReconciliationCommand command) {
+        Map<String, Object> refData =  super.referenceData(request, command);
+        if(command.isNoExternalAes()){
+            refData.put("warningMessage", messageSource.getMessage("reconciliation.no.external.ae", new Object[]{}, Locale.getDefault()));
+        }
+
+        return refData;
     }
 
     @Override

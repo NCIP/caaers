@@ -467,7 +467,7 @@ ValidationManager.submitPreProcess = function(){
 
 </head>
 <body>
-<tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section11courseandagent">
+<tags:tabForm tab="${tab}" flow="${flow}" hideTabControls="${command.noExternalAes}">
 <jsp:attribute name="singleFields">
 <div class="eXtremeTable" >
     <table class="tableRegion" width="100%" border="0" cellspacing="0" cellpadding="0">

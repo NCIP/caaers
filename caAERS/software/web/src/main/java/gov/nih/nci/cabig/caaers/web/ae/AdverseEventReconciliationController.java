@@ -45,40 +45,6 @@ public class AdverseEventReconciliationController extends AutomaticSaveAjaxableF
         setFlow(flow);
     }
 
-    @Override
-    protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        
-        ModelAndView mv = null;
-        if(request.getParameter("showReport")!= null){
-            HttpSession session = request.getSession(false);
-            if(session != null){
-                String formAttrName = getFormSessionAttributeName(request);
-                Object command = session.getAttribute(formAttrName);
-                if(command != null){
-                    AdverseEventReconciliationCommand reconciliationCommand = (AdverseEventReconciliationCommand) command;
-                    
-                    //process rejections
-                    String rejectedExternalAeStr = request.getParameter("rejectedExternalAeStr");
-                    String rejectedInternalAeStr = request.getParameter("rejectedInternalAeStr");
-                    if(StringUtils.isNotEmpty(rejectedExternalAeStr)){
-                      reconciliationCommand.setRejectedExternalAeStr(rejectedExternalAeStr);
-                      reconciliationCommand.processExternalAeRejections();
-                    }
-                    if(StringUtils.isNotEmpty(rejectedInternalAeStr)){
-                        reconciliationCommand.setRejectedInternalAeStr(rejectedInternalAeStr);
-                        reconciliationCommand.processInternalAeRejections();
-                    }
-                    ReconciliationReport report = reconciliationCommand.generateReconcilationReport();
-
-                    mv = new ModelAndView("forward:/pages/ae/reconciliationReport?decorator=standardNoHeader&customDecoration=true");
-                    request.setAttribute("report", report);
-                }
-            }
-        }
-
-        if(mv != null) return mv;
-        return super.handleRequestInternal(request, response);   
-    }
 
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {

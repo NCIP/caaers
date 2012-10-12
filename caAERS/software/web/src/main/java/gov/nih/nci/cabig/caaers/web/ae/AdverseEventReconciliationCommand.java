@@ -54,6 +54,8 @@ public class AdverseEventReconciliationCommand {
 
     private List<AdverseEventDTO> errorAeList;
 
+    private boolean noExternalAes;
+
     static AdverseEventDTO find(AdverseEventDTO value, Map<AdverseEventDTO, AdverseEventDTO> map){
         for(Map.Entry<AdverseEventDTO, AdverseEventDTO> e: map.entrySet()){
             if(e.getValue().equals(value)) return e.getKey();
@@ -125,6 +127,7 @@ public class AdverseEventReconciliationCommand {
         List<ExternalAdverseEvent> eaeList = (List<ExternalAdverseEvent> )externalAdverseEventDao.search(query);
         AeTerminology terminology = reportingPeriod.getStudy().getAeTerminology();
         StringBuilder errorBuilder = new StringBuilder();
+        noExternalAes = eaeList.isEmpty();
         for(ExternalAdverseEvent eae : eaeList){
             AdverseEventDTO dto = AdverseEventDTO.create(eae);
             errorBuilder.setLength(0);
@@ -442,6 +445,13 @@ public class AdverseEventReconciliationCommand {
         this.errorAeList = errorAeList;
     }
 
+    public boolean isNoExternalAes() {
+        return noExternalAes;
+    }
+
+    public void setNoExternalAes(boolean noExternalAes) {
+        this.noExternalAes = noExternalAes;
+    }
 
     public List<String> getAllReviewedExternalAeExternalIds(){
         List<String> ids = new ArrayList<String>();

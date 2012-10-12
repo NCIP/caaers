@@ -21,7 +21,7 @@
     </script>
 </head>
 <body>
-<tags:tabForm tab="${tab}" flow="${flow}">
+<tags:tabForm tab="${tab}" flow="${flow}" hideTabControls="${command.noExternalAes}">
 <jsp:attribute name="singleFields">
     <c:set var= "dash" value="--" scope="request" />
     <c:set var="report" value="${requestScope.report}"  />
