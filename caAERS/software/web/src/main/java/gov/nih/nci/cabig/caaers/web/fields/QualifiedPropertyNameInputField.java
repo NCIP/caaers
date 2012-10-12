@@ -117,9 +117,17 @@ public abstract class QualifiedPropertyNameInputField implements InputField {
         }
         if (getCategory() != null && (getCategory().equals(Category.TEXT) || getCategory().equals(Category.TEXTAREA))) {
             if (getValidators() == null || getValidators().length == 0) {
-                validatorClassName.append("validate-MAXLENGTH2000");
+            	if (this.getAttributes() != null && this.getAttributes().containsKey("size") ) {
+            			validatorClassName.append("validate-MAXLENGTH" + this.getAttributes().get("size"));
+            	} else {
+            			validatorClassName.append("validate-MAXLENGTH2000");
+            	}
             } else {
-                validatorClassName.append("$$MAXLENGTH2000");
+            	if (this.getAttributes() != null && this.getAttributes().containsKey("size") ) {
+            			validatorClassName.append("$$MAXLENGTH" + this.getAttributes().get("size"));
+            	} else {
+            			validatorClassName.append("$$MAXLENGTH2000");
+            	}
             }
 
 
