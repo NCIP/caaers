@@ -32,6 +32,11 @@
         <level value="TRACE"/>
         <appender-ref ref="file"/>
     </logger>
+    <logger name="edu.northwestern.bioinformatics.bering" additivity="false">
+        <level value="DEBUG"/>
+        <appender-ref ref="stdout"/>
+        <appender-ref ref="file"/>
+    </logger>
     <root>
         <priority value="ERROR"/>
         <appender-ref ref="stdout"/>
