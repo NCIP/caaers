@@ -11,8 +11,8 @@ class ChangeTableExternalAdverseEventReportingPeriod extends edu.northwestern.bi
        	  addColumn("ext_ae_reporting_prds","reporting_period_id","integer");
        	  dropColumn("ext_ae_reporting_prds","assignment_id");
        	  
-       	  execute('ALTER TABLE ext_adverse_events ADD CONSTRAINT fk_ext_adv_evts_ext_ae_rep_prds FOREIGN KEY (ext_rep_prd_id) REFERENCES ext_ae_reporting_prds(id)')
-       	  execute('ALTER TABLE ext_ae_reporting_prds ADD CONSTRAINT fk_ext_rep_per_ae_rep_prds FOREIGN KEY (reporting_period_id) REFERENCES ae_reporting_periods(id)')
+       	  execute('ALTER TABLE ext_adverse_events ADD CONSTRAINT fk_exevts_exrp_id FOREIGN KEY (ext_rep_prd_id) REFERENCES ext_ae_reporting_prds(id)')
+       	  execute('ALTER TABLE ext_ae_reporting_prds ADD CONSTRAINT fk_exrp_rpid_rp FOREIGN KEY (reporting_period_id) REFERENCES ae_reporting_periods(id)')
     }
 
     void down() {
