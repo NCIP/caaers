@@ -317,9 +317,9 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 		
 		// update the  the status of the old adv events( from earlier msgs), that have same external ids (from the current msg) and which are 
 		// still in pending to ignored.
-		List<String> externalIds = getExternalIdsOfExternalAEs(externalAdverseEventReportingPeriod);
-		if(externalIds != null && externalIds.size() > 0){
-			externalAdverseEventDao.updateStatus(ExternalAEReviewStatus.IGNORED, ExternalAEReviewStatus.PENDING, externalIds);
+		List<String> externalIds = externalAdverseEventReportingPeriod.getExternalAdverseEventIds();
+		if(!externalIds.isEmpty()){
+			externalAdverseEventDao.updateStatus(ExternalAEReviewStatus.PENDING, ExternalAEReviewStatus.IGNORED, externalIds);
 		}
 		
 		// associate externalAdverseEventReportingPeriod to the domain reporting period
@@ -336,14 +336,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 		return caaersServiceResponse;
 	}
 	
-	private List<String> getExternalIdsOfExternalAEs(ExternalAdverseEventReportingPeriod externalAdverseEventReportingPeriod){
-		List<String> externalIds = new ArrayList<String>();
-		for(ExternalAdverseEvent externalAdverseEvent : externalAdverseEventReportingPeriod.getExternalAdverseEvents()){
-			externalIds.add(externalAdverseEvent.getExternalId());
-		}
-		
-		return externalIds;
-	}
+
 	
 	public void saveExternalAdverseEventReportingPeriod(ExternalAdverseEventReportingPeriod externalAdverseEventReportingPeriod, CaaersServiceResponse caaersServiceResponse){
 		try{

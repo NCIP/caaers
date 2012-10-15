@@ -285,4 +285,13 @@ public class ExternalAdverseEventReportingPeriod extends AbstractMutableDomainOb
 		
 		return null;
 	}
+    @Transient
+    public List<String> getExternalAdverseEventIds(){
+        List<String> externalIds = new ArrayList<String>();
+        for(ExternalAdverseEvent externalAdverseEvent : getExternalAdverseEvents()){
+            externalIds.add(externalAdverseEvent.getExternalId());
+        }
+
+        return externalIds;
+    }
 }
