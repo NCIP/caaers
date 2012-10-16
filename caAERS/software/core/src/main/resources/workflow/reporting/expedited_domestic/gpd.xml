@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<root-container name="expedited_domestic" width="1147" height="781">
-  <node name="Start Expedited Domestic Flow" x="478" y="29" width="268" height="36">
+<root-container name="expedited_domestic" width="1270" height="817">
+  <node name="Start Expedited Domestic Flow" x="475" y="25" width="268" height="36">
     <edge>
       <label x="5" y="-10"/>
     </edge>
   </node>
-  <node name="Submit Report To Physician" x="475" y="147" width="271" height="36">
+  <node name="Submit Report To Physician" x="477" y="114" width="271" height="36">
     <edge>
       <label x="5" y="-10"/>
     </edge>
@@ -16,50 +16,84 @@
       <bendpoint w1="277" h1="394" w2="267" h2="-4"/>
     </edge>
   </node>
-  <node name="Physician Review" x="482" y="286" width="256" height="36">
+  <node name="Physician Review" x="495" y="232" width="256" height="36">
     <edge>
-      <label x="5" y="-10"/>
+      <label x="-56" y="-1"/>
+      <bendpoint w1="-29" h1="59" w2="-42" h2="-68"/>
     </edge>
     <edge>
       <label x="-145" y="-5"/>
       <bendpoint w1="-196" h1="34" w2="166" h2="40"/>
     </edge>
   </node>
-  <node name="Submit Report To Central Office" x="469" y="425" width="296" height="36">
+  <node name="Submit Report To Central Office" x="488" y="359" width="296" height="36">
     <edge>
-      <label x="4" y="-9"/>
+      <label x="-74" y="-17"/>
     </edge>
     <edge>
-      <label x="5" y="-10"/>
-      <bendpoint w1="211" h1="-2" w2="218" h2="137"/>
-      <bendpoint w1="211" h1="-57" w2="218" h2="82"/>
-      <bendpoint w1="209" h1="-140" w2="216" h2="-1"/>
+      <label x="1" y="-7"/>
+      <bendpoint w1="46" h1="-70" w2="59" h2="57"/>
     </edge>
   </node>
-  <node name="Provide Additional Information To Physician" x="86" y="280" width="325" height="36">
+  <node name="Provide Additional Information To Physician" x="67" y="230" width="325" height="36">
     <edge>
       <label x="-64" y="-21"/>
       <bendpoint w1="176" h1="-39" w2="-186" h2="-45"/>
     </edge>
   </node>
-  <node name="Central Office Report Review" x="475" y="545" width="290" height="36">
+  <node name="Central Office Report Review" x="541" y="475" width="290" height="36">
     <edge>
-      <label x="5" y="-10"/>
+      <label x="-102" y="-13"/>
+      <bendpoint w1="-43" h1="63" w2="-88" h2="-53"/>
     </edge>
     <edge>
-      <label x="5" y="-10"/>
-      <bendpoint w1="-192" h1="-60" w2="205" h2="-56"/>
+      <label x="-106" y="-20"/>
+      <bendpoint w1="-259" h1="-45" w2="225" h2="-46"/>
     </edge>
   </node>
-  <node name="Provide Additional Information To Central Office" x="53" y="541" width="340" height="36">
+  <node name="Provide Additional Information To Central Office" x="32" y="476" width="340" height="36">
     <edge>
-      <label x="-100" y="-6"/>
-      <bendpoint w1="214" h1="53" w2="-183" h2="49"/>
+      <label x="-171" y="-4"/>
+      <bendpoint w1="216" h1="47" w2="-268" h2="48"/>
     </edge>
     <edge>
       <label x="5" y="-10"/>
       <bendpoint w1="3" h1="-94" w2="-384" h2="161"/>
     </edge>
   </node>
-  <node name="End Expedited Domestic Flow" x="498" y="744" width="250" height="36"/>
+  <node name="Submit Report To Medical Monitor" x="572" y="591" width="319" height="36">
+    <edge>
+      <label x="-47" y="-7"/>
+      <bendpoint w1="34" h1="-60" w2="79" h2="56"/>
+    </edge>
+    <edge>
+      <label x="-59" y="-2"/>
+    </edge>
+  </node>
+  <node name="Medical Monitor Review" x="1004" y="674" width="188" height="44">
+    <edge>
+      <label x="-68" y="-19"/>
+    </edge>
+    <edge>
+      <label x="-38" y="17"/>
+      <bendpoint w1="34" h1="-79" w2="36" h2="78"/>
+    </edge>
+  </node>
+  <node name="Provide Additional Information To Medical Monitor" x="924" y="521" width="345" height="36">
+    <edge>
+      <label x="-112" y="-15"/>
+      <bendpoint w1="-46" h1="80" w2="-48" h2="-77"/>
+    </edge>
+  </node>
+  <node name="Compile Comments" x="427" y="677" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="Finalize Report and Submit" x="359" y="775" width="201" height="36">
+    <edge>
+      <label x="-35" y="-18"/>
+    </edge>
+  </node>
+  <node name="End Expedited Domestic Flow" x="739" y="780" width="250" height="36"/>
 </root-container>

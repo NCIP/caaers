@@ -84,7 +84,7 @@
 			</factoryKey>
 		</action>
 		<description>
-			This task is assigned to the CRA, the Physican has approved the report. The CRA now have to submit the report to Central office for further review. 
+			This task is assigned to the CRA after the Physican has approved the report. The CRA will then submit the report to Central office for further review. 
 		</description>
 		<event type="node-leave">
 			<action class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" name="taskCloseActionHandler" config-type="bean">
@@ -135,7 +135,7 @@
 			</factoryKey>
 		</action>
 		<description>
-			This taks is associated to the Personnel at Central office. The central office personal may approve the report, of will send it back to the submitter (CRA) asking additional information. 
+			This taks is associated to the Personnel at Central office. The central office personnel may approve the report and send it to Medical Monitor or send it back to the submitter (CRA) asking for additional information. 
 		</description>
 		<event type="node-leave">
 			<action class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" name="taskCloseActionHandler" config-type="bean">
@@ -146,10 +146,9 @@
 					jbpmConfiguration
 				</factoryKey>
 			</action>
-		</event>
-		<transition to="End Expedited Domestic Flow" name="Approve Report"></transition>	
-		<transition to="Provide Additional Information To Central Office" name="Request Additional Information"></transition>
-		
+		</event>	
+		<transition to="Submit Report To Medical Monitor" name="Approve Report"></transition>
+		<transition to="Provide Additional Information To Central Office" name="Request Additional Information"></transition>			
 	</node>
 
 	<node name="Provide Additional Information To Central Office">
@@ -162,7 +161,7 @@
 			</factoryKey>
 		</action>
 		<description>
-			This task is associated to the CRA, the central office has requested for additional information. The CRA must complete the information and send it to Central office for further review. 
+			This task is assigned to the CRA. The central office has requested for additional information. The CRA must complete the information and send it back to Central office for further review. 
 		</description>
 		<event type="node-leave">
 			<action class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" name="taskCloseActionHandler" config-type="bean">
@@ -177,8 +176,135 @@
 		<transition to="Central Office Report Review" name="Submit to Central Office Report Reviewer"></transition>
 		<transition to="Physician Review" name="Send to Physician for Review"></transition>
 	</node>
+	
+	<node name="Submit Report To Medical Monitor">
+		<action name="nodeSkipActionHandler" class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" config-type="bean">
+			<targetBean>
+				nodeSkipActionHandler
+			</targetBean>
+			<factoryKey>
+				jbpmConfiguration
+			</factoryKey>
+		</action>
+		<description>
+			This taks is assigned to the Personnel at Central office. The Personnel will submit the report to the Medical Monitor for further review. 
+		</description>
+		<event type="node-leave">
+			<action class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" name="taskCloseActionHandler" config-type="bean">
+				<targetBean>
+					taskCloseActionHandler
+				</targetBean>
+				<factoryKey>
+					jbpmConfiguration
+				</factoryKey>
+			</action>
+		</event>		
+		<transition to="Central Office Report Review" name="Submit to Central Office Report Reviewer"></transition>
+		<transition to="Medical Monitor Review" name="Send to Medical Monitor for Review"></transition>
+	</node>
 
+	<node name="Medical Monitor Review">
+		<action name="nodeSkipActionHandler" class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" config-type="bean">
+			<targetBean>
+				nodeSkipActionHandler
+			</targetBean>
+			<factoryKey>
+				jbpmConfiguration
+			</factoryKey>
+		</action>
+		<description>
+			This taks is associated to the Study Medical Monitor. The medical monitor may approve the report or send it back to the DCC at Central Office asking additional information. 
+		</description>
+		<event type="node-leave">
+			<action class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" name="taskCloseActionHandler" config-type="bean">
+				<targetBean>
+					taskCloseActionHandler
+				</targetBean>
+				<factoryKey>
+					jbpmConfiguration
+				</factoryKey>
+			</action>
+		</event>
+		<transition to="Compile Comments" name="Approve Report"></transition>	
+		<transition to="Provide Additional Information To Medical Monitor" name="Request Additional Information"></transition>		
+	</node>
+	
+	<node name="Provide Additional Information To Medical Monitor">
+		<action name="nodeSkipActionHandler" class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" config-type="bean">
+			<targetBean>
+				nodeSkipActionHandler
+			</targetBean>
+			<factoryKey>
+				jbpmConfiguration
+			</factoryKey>
+		</action>
+		<description>
+			This task is associated to the personnel (DCC) at the Central Office. Medical Monitor has requested for additional information. The DCC must provide the information and send it back to the Medical Monitor for further review. 
+		</description>
+		<event type="node-leave">
+			<action class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" name="taskCloseActionHandler" config-type="bean">
+				<targetBean>
+					taskCloseActionHandler
+				</targetBean>
+				<factoryKey>
+					jbpmConfiguration
+				</factoryKey>
+			</action>
+		</event>
+		<transition to="Medical Monitor Review" name="Submit to Medical Monitor for Review"></transition>
+	</node>
+	
+	<node name="Compile Comments">
+		<action name="nodeSkipActionHandler" class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" config-type="bean">
+			<targetBean>
+				nodeSkipActionHandler
+			</targetBean>
+			<factoryKey>
+				jbpmConfiguration
+			</factoryKey>
+		</action>
+		<description>
+			This task is assigned to the personnel (DCC) at the central office. The DCC must compile comments, narrative and queries and send the report to the CRA. 
+		</description>
+		<event type="node-leave">
+			<action class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" name="taskCloseActionHandler" config-type="bean">
+				<targetBean>
+					taskCloseActionHandler
+				</targetBean>
+				<factoryKey>
+					jbpmConfiguration
+				</factoryKey>
+			</action>
+		</event>		
+		<transition to="Finalize Report and Submit" name="Send feedback, comments and queries to CRA"></transition>
+	</node>
+	
+	<node name="Finalize Report and Submit">
+		<action name="nodeSkipActionHandler" class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" config-type="bean">
+			<targetBean>
+				nodeSkipActionHandler
+			</targetBean>
+			<factoryKey>
+				jbpmConfiguration
+			</factoryKey>
+		</action>
+		<description>
+			This task is associated to the CRA. The CRA must finalize the report and submit it to external system. 
+		</description>
+		<event type="node-leave">
+			<action class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" name="taskCloseActionHandler" config-type="bean">
+				<targetBean>
+					taskCloseActionHandler
+				</targetBean>
+				<factoryKey>
+					jbpmConfiguration
+				</factoryKey>
+			</action>
+		</event>		
+		<transition to="End Expedited Domestic Flow" name="Submit report to External System"></transition>
+	</node>
 
+	
 	<end-state name="End Expedited Domestic Flow"></end-state>
 
 
