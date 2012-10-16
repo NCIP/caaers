@@ -45,14 +45,15 @@
 .eXtremeTable .yui-skin-sam tr.yui-dt-odd {background-color: #efefef}
 .eXtremeTable th .yui-dt-label {color: white;text-shadow:0 -1px #2166A1}
 .eXtremeTable .yui-skin-sam tr.yui-dt-selected td, .eXtremeTable .yui-skin-sam tr.yui-dt-selected td.yui-dt-asc, .eXtremeTable .yui-skin-sam tr.yui-dt-selected td.yui-dt-desc {
-    background: #f6fce3;
-    background: -moz-linear-gradient(top,  #f6fce3 0%, #dff497 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f6fce3), color-stop(100%,#dff497));
-    background: -webkit-linear-gradient(top,  #f6fce3 0%,#dff497 100%);
-    background: -o-linear-gradient(top,  #f6fce3 0%,#dff497 100%);
-    background: -ms-linear-gradient(top,  #f6fce3 0%,#dff497 100%);
-    background: linear-gradient(to bottom,  #f6fce3 0%,#dff497 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f6fce3', endColorstr='#dff497',GradientType=0 );
+    background: #eff7ff;
+    background: -moz-linear-gradient(top,  #eff7ff 0%, #97d3ef 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eff7ff), color-stop(100%,#97d3ef));
+    background: -webkit-linear-gradient(top,  #eff7ff 0%,#97d3ef 100%);
+    background: -o-linear-gradient(top,  #eff7ff 0%,#97d3ef 100%);
+    background: -ms-linear-gradient(top,  #eff7ff 0%,#97d3ef 100%);
+    background: linear-gradient(to bottom,  #eff7ff 0%,#97d3ef 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eff7ff', endColorstr='#97d3ef',GradientType=0 );
+
 color:#333;
     text-shadow: 0 1px white;
 
