@@ -5,12 +5,13 @@
 
 <%@attribute name="ae" required="true" type="gov.nih.nci.cabig.caaers.domain.ReconciledAdverseEvent" %>
 <%@attribute name="displayError" type="java.lang.Boolean" %>
+<%@attribute name="cssClass" %>
 
-  <tr>
-  	<td > ${empty ae.externalId ? requestScope.dash : ae.externalId}</td>
-  	<td > ${ae.termName}</td>
-  	<td> ${empty ae.grade ? '' : ae.grade.shortName}</td>
-  	<td >
+  <tr class="${cssClass}">
+  	<td  class="${cssClass}"> ${empty ae.externalId ? requestScope.dash : ae.externalId}</td>
+  	<td  class="${cssClass}"> ${ae.termName}</td>
+  	<td  class="${cssClass}"> ${empty ae.grade ? '' : ae.grade.shortName}</td>
+  	<td  class="${cssClass}">
       <c:if test="${not empty ae.startDate}">
           <tags:formatDate value="${ae.startDate}" />
       </c:if>
@@ -20,9 +21,9 @@
           <tags:formatDate value="${ae.endDate}" />
       </c:if>
       </td>
-  	<td> ${empty ae.verbatim ? requestScope.dash  : ae.verbatim}</td>
-  	<td> ${empty ae.whySerious ? requestScope.dash  : ae.whySerious}</td>
-  	<td> ${empty ae.attribution ? requestScope.dash : ae.attribution.displayName}</td>
+  	<td  class="${cssClass}"> ${empty ae.verbatim ? requestScope.dash  : ae.verbatim}</td>
+  	<td  class="${cssClass}"> ${empty ae.whySerious ? requestScope.dash  : ae.whySerious}</td>
+  	<td  class="${cssClass}"> ${empty ae.attribution ? requestScope.dash : ae.attribution.displayName}</td>
   </tr>
   <c:if test="${not empty displayError && displayError eq 'true'}">
 	  <tr class="error">

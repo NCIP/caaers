@@ -20,7 +20,7 @@
             	<ae:reconciledAeRowHeader/>
             <tbody>
             <c:forEach items="${report.forceAesToBeAdded}" varStatus="x" var="reconAe">
-            	<ae:reconciledAeRow ae="${reconAe}" />
+            	<ae:reconciledAeRow ae="${reconAe}" cssClass="${x.index %2 ne 0 ? 'odd' : 'even'}"/>
             </c:forEach>
             </tbody>
         </table>
@@ -33,7 +33,7 @@
             	<ae:reconciledAeRowHeader/>
             <tbody>
             <c:forEach items="${report.forceAesToBeUpdated}" varStatus="x" var="reconAe">
-            	<ae:reconciledAeRow ae="${reconAe}" />
+            	<ae:reconciledAeRow ae="${reconAe}" cssClass="${x.index %2 ne 0 ? 'odd' : 'even'}"/>
             </c:forEach>
             </tbody>
         </table>
@@ -46,7 +46,7 @@
             	<ae:reconciledAeRowHeader/>
             <tbody>
             <c:forEach items="${report.forceAesToBeDeleted}" varStatus="x" var="reconAe">
-            	<ae:reconciledAeRow ae="${reconAe}" />
+            	<ae:reconciledAeRow ae="${reconAe}" cssClass="${x.index %2 ne 0 ? 'odd' : 'even'}"/>
             </c:forEach>
             </tbody>
         </table>
@@ -59,7 +59,7 @@
             	<ae:reconciledAeRowHeader/>
             <tbody>
             <c:forEach items="${report.aesWithErrors}" varStatus="x" var="reconAe">
-            	<ae:reconciledAeRow ae="${reconAe}" displayError="true"/>
+            	<ae:reconciledAeRow ae="${reconAe}" displayError="true" cssClass="${x.index %2 ne 0 ? 'odd' : 'even'}"/>
             </c:forEach>
             </tbody>
         </table>
@@ -72,7 +72,7 @@
             	<ae:reconciledAeRowHeader/>
             <tbody>
             <c:forEach items="${report.caaersAesToBeDeleted}" varStatus="x" var="reconAe">
-            	<ae:reconciledAeRow ae="${reconAe}" />
+            	<ae:reconciledAeRow ae="${reconAe}" cssClass="${x.index %2 ne 0 ? 'odd' : 'even'}"/>
             </c:forEach>
             </tbody>
         </table>
@@ -85,7 +85,7 @@
             	<ae:reconciledAeRowHeader/>
             <tbody>
             <c:forEach items="${report.caaersAesToBeUpdated}" varStatus="x" var="reconAe">
-            	<ae:reconciledAeRow ae="${reconAe}" />
+            	<ae:reconciledAeRow ae="${reconAe}" cssClass="${x.index %2 ne 0 ? 'odd' : 'even'}"/>
             </c:forEach>
             </tbody>
         </table>
@@ -98,7 +98,7 @@
             	<ae:reconciledAeRowHeader/>
             <tbody>
             <c:forEach items="${report.caaersAesToBeAdded}" varStatus="x" var="reconAe">
-            	<ae:reconciledAeRow ae="${reconAe}" />
+            	<ae:reconciledAeRow ae="${reconAe}" cssClass="${x.index %2 ne 0 ? 'odd' : 'even'}" />
             </c:forEach>
             </tbody>
         </table>
