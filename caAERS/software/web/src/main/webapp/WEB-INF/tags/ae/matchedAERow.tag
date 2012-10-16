@@ -19,17 +19,17 @@
 
 <c:if test="${not fillerRow}">
     <c:if test="${not empty ae1}">
-        <tr id="aewd-${widgetId}-tr-iae">
-            <td width="${requestScope.widthSource}">${ae1.source}</td>
-            <td width="${requestScope.widthId}">${empty ae1.externalID ? '-' : ae1.externalID }</td>
-            <td width="${requestScope.widthTerm}"> ${ae1.term.displayName}</td>
-            <td width="${requestScope.widthGrade}">${ae1.grade}</td>
-            <td width="${requestScope.widthStartDate}">${ae1.startDate}</td>
-            <td width="${requestScope.widthEndDate}">${ae1.endDate}</td>
-            <td width="${requestScope.widthVerbatim}">${ae1.verbatim}</td>
-            <td width="${requestScope.widthWhySerious}">${ae1.whySerious}</td>
-            <td width="${requestScope.widthAttribution}">${ae1.attribution}</td>
-            <td width="${requestScope.widthActions}" class="actionBtns">
+        <tr id="aewd-${widgetId}-tr-iae" class="tr-ae1">
+            <td width="${requestScope.widthSource}" class="tr-ae1-c1">${ae1.source}</td>
+            <td width="${requestScope.widthId}" class="tr-ae1-c2">${empty ae1.externalID ? '-' : ae1.externalID }</td>
+            <td width="${requestScope.widthTerm}" class="tr-ae1-c3"> ${ae1.term.displayName}</td>
+            <td width="${requestScope.widthGrade}" class="tr-ae1-c4">${ae1.grade}</td>
+            <td width="${requestScope.widthStartDate}" class="tr-ae1-c5">${ae1.startDate}</td>
+            <td width="${requestScope.widthEndDate}" class="tr-ae1-c6">${ae1.endDate}</td>
+            <td width="${requestScope.widthVerbatim}" class="tr-ae1-c7">${ae1.verbatim}</td>
+            <td width="${requestScope.widthWhySerious}" class="tr-ae1-c8">${ae1.whySerious}</td>
+            <td width="${requestScope.widthAttribution}" class="tr-ae1-c9">${ae1.attribution}</td>
+            <td width="${requestScope.widthActions}" class="actionBtns tr-ae1-c10">
                 <div id="aewd-${widgetId}-div-edit" style="${empty ae2 ? 'display:none;' : ''}" class="wgtBtnDiv">
                     <tags:button  id="aewd-${widgetId}-btn-edit" value="Edit" color="blue" size="small" cssClass="wgtBtn wgtBtnEdit" type="button" icon="edit"
                                   onclick="wt${widgetId}.onEditBtnClick(this);" />
@@ -47,30 +47,30 @@
             </td>
         </tr>
     </c:if>
-        <tr id="aewd-${widgetId}-tr-eae" style="${empty ae2 ? 'display:none;' : ''}">
-            <td width="${requestScope.widthSource}" class="eae">${ae2.source}</td>
-            <td width="${requestScope.widthId}"  class="eae">${ae2.externalID}</td>
-            <td width="${requestScope.widthTerm}"  class="eae">${ae2.term.displayName}</td>
-            <td width="${requestScope.widthGrade}"  class="eae">${ae2.grade}</td>
-            <td width="${requestScope.widthStartDate}"  class="eae">${ae2.startDate}</td>
-            <td width="${requestScope.widthEndDate}"  class="eae">${ae2.endDate}</td>
-            <td width="${requestScope.widthVerbatim}"  class="eae">${ae2.verbatim}</td>
-            <td width="${requestScope.widthWhySerious}"  class="eae">${ae2.whySerious}</td>
-            <td width="${requestScope.widthAttribution}"  class="eae">${ae2.attribution}</td>
-            <td width="${requestScope.widthActions}">
+        <tr id="aewd-${widgetId}-tr-eae" style="${empty ae2 ? 'display:none;' : ''}" class="tr-ae2">
+            <td width="${requestScope.widthSource}" class="eae tr-ae2-c1">${ae2.source}</td>
+            <td width="${requestScope.widthId}"  class="eae tr-ae2-c2">${ae2.externalID}</td>
+            <td width="${requestScope.widthTerm}"  class="eae tr-ae2-c3">${ae2.term.displayName}</td>
+            <td width="${requestScope.widthGrade}"  class="eae tr-ae2-c4">${ae2.grade}</td>
+            <td width="${requestScope.widthStartDate}"  class="eae tr-ae2-c5">${ae2.startDate}</td>
+            <td width="${requestScope.widthEndDate}"  class="eae tr-ae2-c6">${ae2.endDate}</td>
+            <td width="${requestScope.widthVerbatim}"  class="eae tr-ae2-c7">${ae2.verbatim}</td>
+            <td width="${requestScope.widthWhySerious}"  class="eae tr-ae2-c8">${ae2.whySerious}</td>
+            <td width="${requestScope.widthAttribution}"  class="eae tr-ae2-c9">${ae2.attribution}</td>
+            <td width="${requestScope.widthActions}" class="eae tr-ae2-c10">
               &nbsp;
             </td>
         </tr>
-    <tr id="aewd-${widgetId}-tr-nomatch" style="${empty ae2 ? '' : 'display:none;'}">
+    <tr id="aewd-${widgetId}-tr-nomatch" style="${empty ae2 ? '' : 'display:none;'}" class="tr-nomatch">
         <td width="100%" class="tdNoMatch" colspan="10">No matching AE found</td>
     </tr>
 
-    <tr id="aewd-${widgetId}-tr-pick">
-        <td id="aewd-${widgetId}-tbl-t2td"  width="94%" colspan="9">
+    <tr id="aewd-${widgetId}-tr-pick" class="tr-picker">
+        <td id="aewd-${widgetId}-tbl-t2td"  width="94%" colspan="9" class="tr-picker-c1">
             <div id="aewd-${widgetId}-t2div" style="display:none;" class="yui-skin-sam picker-div">
             </div>
         </td>
-        <td width="${requestScope.widthActions}" class="actionBtns">
+        <td width="${requestScope.widthActions}" class="actionBtns tr-picker-c10">
             <div id="aewd-${widgetId}-div-link" style="display:none;"  class="wgtBtnDiv" >
                 <tags:button  id="aewd-${widgetId}-btn-link" value="Link" color="green" cssClass="wgtBtn wgtBtnLink" type="button"  size="small" icon="add"
                               onclick="wt${widgetId}.onLinkBtnClick(this)" />
@@ -85,68 +85,3 @@
        var wt${widgetId} = new AE.aeWidget(${widgetId}, ${ae1.id}, ${empty ae2 ? -1 : ae2.id});
     </script>
 </c:if>
-
-
-
-<%--<div id="aewd-${widgetId}" class="aeLinkWidget">--%>
-    <%--<table id="aewd-${widgetId}-tbl" width="100%">--%>
-        <%--<tr id="aewd-${widgetId}-tbltr1">--%>
-            <%--<td id="aewd-${widgetId}-tbl-t1td" width="99%">--%>
-                <%--<div id="aewd-${widgetId}-t1div">--%>
-                    <%--<table width="100%" id="aewd-${widgetId}-t1">--%>
-
-                        <%--<tr id="aewd-${widgetId}-t1trae1">--%>
-                            <%--<td width="6%">${ae1.source}</td>--%>
-                            <%--<td width="2%">${ae1.id}</td>--%>
-                            <%--<td width="23%"> ${ae1.term.displayName}</td>--%>
-                            <%--<td width="14%">${ae1.grade}</td>--%>
-                            <%--<td width="6%">${ae1.startDate}</td>--%>
-                            <%--<td width="6%">${ae1.endDate}</td>--%>
-                            <%--<td width="23%">${ae1.verbatim}</td>--%>
-                            <%--<td width="10%">${ae1.whySerious}</td>--%>
-                            <%--<td width="10%">${ae1.attribution}</td>--%>
-                        <%--</tr>--%>
-                        <%--<c:if test="${not empty ae2}">--%>
-
-                            <%--<tr id="aewd-${widgetId}-t1trae2">--%>
-                                <%--<td width="6%">${ae2.source}</td>--%>
-                                <%--<td width="2%">${ae2.id}</td>--%>
-                                <%--<td width="23%"> ${ae2.term.displayName}</td>--%>
-                                <%--<td width="14%">${ae2.grade}</td>--%>
-                                <%--<td width="6%">${ae2.startDate}</td>--%>
-                                <%--<td width="6%">${ae2.endDate}</td>--%>
-                                <%--<td width="23%">${ae2.verbatim}</td>--%>
-                                <%--<td width="10%">${ae2.whySerious}</td>--%>
-                                <%--<td width="10%">${ae2.attribution}</td>--%>
-                            <%--</tr>--%>
-                        <%--</c:if>--%>
-                        <%--<c:if test="${empty ae2}">--%>
-                            <%--<tr id="aewd-${widgetId}-tr-nomatch">--%>
-                                <%--<td width="100%" class="tdNoMatch" colspan="9">No matching AE found</td>--%>
-                            <%--</tr>--%>
-                        <%--</c:if>--%>
-                    <%--</table>--%>
-
-                <%--</div>--%>
-            <%--</td>--%>
-            <%--<td width="1%">--%>
-                <%--<div id="aewd-${widgetId}-div-actions">--%>
-                   <%--<div id="aewd-${widgetId}-div-edit" style="${empty ae2 ? 'display:none;' : ''}">--%>
-                       <%--<button id="aewd-${widgetId}-btn-edit" class="aeLinkWidgetEditBtn" type="button">Edit</button>--%>
-                   <%--</div>--%>
-                    <%--<div id="aewd-${widgetId}-div-find" style="${empty ae2 ? '' :'display:none;'}">--%>
-                        <%--<button id="aewd-${widgetId}-btn-find" class="aeLinkWidgetFindBtn" type="button">Find</button>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-
-            <%--</td>--%>
-        <%--</tr>--%>
-
-        <%--<tr id="aewd-${widgetId}-tbltr2">--%>
-            <%--<td id="aewd-${widgetId}-tbl-t2td"  width="100%" colspan="2">--%>
-                <%--<div id="aewd-${widgetId}-t2div" style="display:none;">--%>
-                <%--</div>--%>
-            <%--</td>--%>
-        <%--</tr>--%>
-    <%--</table>--%>
-<%--</div>--%>
