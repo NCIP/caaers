@@ -13,7 +13,8 @@
 }
 .eXtremeTable .tableHeader:last-child {border-right:  none;}
 
-.eXtremeTable .fillerRow {display: none}
+.eXtremeTable .fillerRow {background: #ccc;-moz-box-shadow:0 0 8px rgba(0,0,0,0.4) inset;-webkit-box-shadow:0 0 8px rgba(0,0,0,0.4) inset;box-shadow:0 0 8px rgba(0,0,0,0.4) inset;}
+.eXtremeTable .tr-filler1 {display: none}
 
 .eXtremeTable .tableRegion .tdNoMatch {text-align: center;border-bottom: 1px solid #ccc;padding: 3px 10px; background: #efefef; color: #AAAAAA; font-style: italic;text-shadow: 0 1px white;}
 
@@ -21,10 +22,26 @@
 .eXtremeTable .tableRegion button td {padding: 0}
 .eXtremeTable .tableRegion .yui-dt-bd td {padding: 3px 1px}
 
+.eXtremeTable .tableRegion tr.error {
+    background: #ffffff;
+    background: -moz-linear-gradient(top,  #ffffff 0%, #fce5e5 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#fce5e5));
+    background: -webkit-linear-gradient(top,  #ffffff 0%,#fce5e5 100%);
+    background: -o-linear-gradient(top,  #ffffff 0%,#fce5e5 100%);
+    background: -ms-linear-gradient(top,  #ffffff 0%,#fce5e5 100%);
+    background: linear-gradient(to bottom,  #ffffff 0%,#fce5e5 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#fce5e5',GradientType=0 );
+
+    text-shadow: 0 1px white;
+    color: #8E0000;
+
+}
+.eXtremeTable .tableRegion tr.error td.error {border-top:  1px solid pink;
+    border-bottom:  1px solid pink;}
+
 .eXtremeTable .filter {
 	background-color: #F4F4F4;
 }
-.eXtremeTable .tableRegion td.eae {border-bottom: 1px solid #eeeeee}
 .eXtremeTable .yui-skin-sam tr.yui-dt-odd {background-color: #efefef}
 .eXtremeTable th .yui-dt-label {color: white;text-shadow:0 -1px #2166A1}
 .eXtremeTable .yui-skin-sam tr.yui-dt-selected td, .eXtremeTable .yui-skin-sam tr.yui-dt-selected td.yui-dt-asc, .eXtremeTable .yui-skin-sam tr.yui-dt-selected td.yui-dt-desc {

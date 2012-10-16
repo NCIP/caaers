@@ -84,7 +84,7 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td colspan="9" class="fillerRow">
+                            <td colspan="9" class="spacerRow">
                                 &nbsp;
                             </td>
                         </tr>
@@ -97,7 +97,7 @@
                               <ae:chooseAERow ae1="${e}" rejected="true" external="true"  cssClass="${cntr %2 ne 0 ? 'odd' : 'even'}" />
                         </c:forEach>
                         <tr>
-                            <td colspan="9" class="fillerRow">
+                            <td colspan="9" class="spacerRow">
                                &nbsp;
                             </td>
                         </tr>
@@ -126,7 +126,7 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td colspan="9" class="fillerRow">
+                            <td colspan="9" class="spacerRow">
                                 &nbsp;
                             </td>
                         </tr>
@@ -140,7 +140,7 @@
                             <ae:chooseAERow ae1="${e}" rejected="true" external="false"  cssClass="${cntr %2 ne 0 ? 'odd' : 'even'}"  />
                         </c:forEach>
                         <tr>
-                            <td colspan="9" class="fillerRow">
+                            <td colspan="9" class="spacerRow">
                                 &nbsp;
                             </td>
                         </tr>

@@ -42,7 +42,7 @@
     <style type="text/css">
         td.td-ae3{
             background: #EFEFEF;
-            color: #999;
+            color: #888;
             text-shadow: 0 1px white;
         }
         td.td-highlight {

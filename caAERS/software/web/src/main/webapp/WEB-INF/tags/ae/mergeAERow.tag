@@ -122,7 +122,6 @@
     </tr>
     <tr class="tr-filler tr-filler1">
         <td colspan="9" class="fillerRow">
-            <hr align="center" width="96%" size="1" color="blue">
         </td>
     </tr>
     <tr id="aemrg-${widgetId}-tr-mae"  class="tr-ae3 ${cssClass}" >

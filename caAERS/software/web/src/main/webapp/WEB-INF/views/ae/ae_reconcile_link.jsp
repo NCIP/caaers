@@ -488,21 +488,20 @@ ValidationManager.submitPreProcess = function(){
         <tbody>
 
         <c:set var="_addFiller" value="false" />
+
         <c:forEach var="e" items="${command.matchedAeMapping}" varStatus="x">
-            <c:if test="${_addFiller}">
-                <ae:matchedAERow fillerRow="true" />
-            </c:if>
+            <ae:matchedAERow fillerRow="true" />
             <ae:matchedAERow ae1="${e.key}" ae2="${e.value}" />
             <c:set var="_addFiller" value="true" />
         </c:forEach>
         <c:forEach var="e" items="${command.unMappedInternalAeList}">
-            <c:if test="${_addFiller}">
-                <ae:matchedAERow fillerRow="true"/>
-            </c:if>
+             <ae:matchedAERow fillerRow="true" />
             <ae:matchedAERow ae1="${e}" />
             <c:set var="_addFiller" value="true" />
         </c:forEach>
-
+        <c:if test="${_addFiller}">
+                <ae:matchedAERow fillerRow="true"/>
+            </c:if>
         </tbody>
     </table>
      <form:hidden id="matchedAeMappingStr" path="matchedAeMappingStr"  />
