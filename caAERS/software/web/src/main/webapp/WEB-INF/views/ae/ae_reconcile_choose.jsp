@@ -1,4 +1,3 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jstl/xml_rt" %>
 <%@include file="/WEB-INF/views/taglibs.jsp" %>
 <c:set var="widthId" value="2%" scope="request" />
 <c:set var="widthTerm" value="22%" scope="request" />
