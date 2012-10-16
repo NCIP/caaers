@@ -326,6 +326,9 @@ public class ReportRepositoryImpl implements ReportRepository {
                 	List<String> addresses = null;
                 	if(ArrayUtils.contains(RoleUtils.reportSpecificRoles, roleName)){
                 		addresses = report.findEmailAddressByRole(roleName);
+                	}else if(ArrayUtils.contains(RoleUtils.sponsorAndCoordinatingCenterSpecificRoles, roleName)){
+                        addresses = aeReport.getStudy().getStudyCoordinatingCenter().findEmailAddressByRole(roleName);
+                        addresses.addAll(aeReport.getStudy().getStudyFundingSponsors().get(0).findEmailAddressByRole(roleName)) ;
                 	}else if(ArrayUtils.contains(RoleUtils.studySiteSpecificRoles, roleName)){
                 		addresses = aeReport.getStudySite().findEmailAddressByRole(roleName);
                 	}else{

@@ -92,6 +92,9 @@ protected static final Log logger = LogFactory.getLog(ScheduledNotificationProce
     	      	for(RoleBasedRecipient recipient : roleRecipients){
     	      		if(ArrayUtils.contains(RoleUtils.reportSpecificRoles, recipient.getRoleName())){
     	      			emails = report.findEmailAddressByRole(recipient.getRoleName());
+    	      		}else if(ArrayUtils.contains(RoleUtils.sponsorAndCoordinatingCenterSpecificRoles, recipient.getRoleName())){
+                          emails = study.getStudyCoordinatingCenter().findEmailAddressByRole(recipient.getRoleName());
+                          emails.addAll(study.getStudyFundingSponsors().get(0).findEmailAddressByRole(recipient.getRoleName()));
     	      		}else if(ArrayUtils.contains(RoleUtils.studySiteSpecificRoles, recipient.getRoleName())){
     	      			emails = studySite.findEmailAddressByRole(recipient.getRoleName());
     	      		}else{
