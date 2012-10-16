@@ -108,9 +108,12 @@ public enum UserGroupType implements CodedEnum<Integer> {
     data_reader(-122, "data_reader"),
     
     /** The data_analyst. */
-    data_analyst(-123, "data_analyst");
+    data_analyst(-123, "data_analyst"),
+	
+	 /** The data_analyst. */
+    study_medical_monitor(-124, "study_medical_monitor");
     
-    /** The csm name. */
+    /** The study_medical_monitor. */
     private String csmName;
     
     /** The acronyms. */

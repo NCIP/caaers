@@ -21,7 +21,9 @@ public enum Location implements CodedEnum<Integer> {
 	COORDINATING_CENTER(2), 
 	
 	/** The ALL. */
-	ALL(3);
+	ALL(3),
+	
+	SPONSOR(4);
 
     /** The code. */
     private Integer code;
