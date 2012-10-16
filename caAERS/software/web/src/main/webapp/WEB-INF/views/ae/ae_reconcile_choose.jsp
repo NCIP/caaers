@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/xml_rt" %>
 <%@include file="/WEB-INF/views/taglibs.jsp" %>
 <c:set var="widthId" value="2%" scope="request" />
 <c:set var="widthTerm" value="22%" scope="request" />
@@ -65,6 +66,7 @@
 <body>
 <tags:tabForm tab="${tab}" flow="${flow}">
         <jsp:attribute name="singleFields">
+            <c:set var="cntr" value="1" />
         	<chrome:division title="New External Adverse Events">
                 <div class="eXtremeTable" >
                     <table class="tableRegion" width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -88,10 +90,12 @@
                             </td>
                         </tr>
                         <c:forEach var="e" items="${command.unMappedExternalAeList}" varStatus="x">
-                              <ae:chooseAERow ae1="${e}" rejected="${rejectedExternalAeMap[e.id]}" external="true" />
+                              <c:set var="cntr" value="${cntr + 1}" />
+                              <ae:chooseAERow ae1="${e}" rejected="${rejectedExternalAeMap[e.id]}" external="true"  cssClass="${cntr %2 ne 0 ? 'odd' : 'even'}" />
                         </c:forEach>
                         <c:forEach var="e" items="${command.rejectedExternalAeList}" varStatus="x">
-                              <ae:chooseAERow ae1="${e}" rejected="true" external="true" />
+                              <c:set var="cntr" value="${cntr + 1}" />
+                              <ae:chooseAERow ae1="${e}" rejected="true" external="true"  cssClass="${cntr %2 ne 0 ? 'odd' : 'even'}" />
                         </c:forEach>
                         <tr>
                             <td colspan="9" class="fillerRow">
@@ -104,6 +108,7 @@
                 </div>
             </chrome:division>
 
+            <c:set var="cntr" value="1" />
             <chrome:division title="Unmapped caAERS Adverse Events">
                 <div class="eXtremeTable" >
                     <table class="tableRegion" width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -126,11 +131,14 @@
                                 &nbsp;
                             </td>
                         </tr>
+
                         <c:forEach var="e" items="${command.unMappedInternalAeList}" varStatus="x">
-                            <ae:chooseAERow ae1="${e}" rejected="${rejectedInternalAeMap[e.id]}" external="false" />
+                            <c:set var="cntr" value="${cntr + 1}" />
+                            <ae:chooseAERow ae1="${e}" rejected="${rejectedInternalAeMap[e.id]}" external="false" cssClass="${cntr %2 ne 0 ? 'odd' : 'even'}" />
                         </c:forEach>
                         <c:forEach var="e" items="${command.rejectedInternalAeList}" varStatus="x">
-                            <ae:chooseAERow ae1="${e}" rejected="true" external="false" />
+                            <c:set var="cntr" value="${cntr + 1}" />
+                            <ae:chooseAERow ae1="${e}" rejected="true" external="false"  cssClass="${cntr %2 ne 0 ? 'odd' : 'even'}"  />
                         </c:forEach>
                         <tr>
                             <td colspan="9" class="fillerRow">
