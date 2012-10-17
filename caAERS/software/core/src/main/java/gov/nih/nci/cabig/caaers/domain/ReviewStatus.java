@@ -46,7 +46,17 @@ public enum ReviewStatus implements CodedEnum<Integer> {
     APPROVED(11, "Reviewed"),
     
     /** The SUBMITTE d_ t o_ sponsor. */
-    SUBMITTED_TO_SPONSOR(12, "Submitted to Sponsor");
+    SUBMITTED_TO_SPONSOR(12, "Submitted to Sponsor"),
+    
+    SUBMIT_TO_MEDICAL_MONITOR(13, "Submit to Medical Monitor"),
+    
+    MEDICAL_MONITOR_REVIEW(14, "Medical Monitor Review"),
+    
+    MEDICAL_MONITOR_ADDITIONAL_INFO(15, "Additional Info Requested By Medical Monitor"),
+    
+    COMPILE_COMMENTS(16, "Compile Comments"),
+    
+    FINALIZE_REPORT_AND_SUBMIT(17, "Finalize Report and Submit to Sponsor");
     
     /** The code. */
     private Integer code;

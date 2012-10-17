@@ -44,8 +44,7 @@ public enum PersonRole implements CodedEnum<Integer>{
 	AE_STUDY_DATA_REVIEWER(10, "Data Coordinator", "ae_study_data_reviewer", UserGroupType.ae_study_data_reviewer),
 	
 	/** The A e_ stud y_ dat a_ reviewer. */
-	STUDY_MEDICAL_MONITOR(11, "Study Medical Monitor", "study_medical_monitor", UserGroupType.ae_study_data_reviewer),
-	;
+	STUDY_MEDICAL_MONITOR(11, "Study Medical Monitor", "study_medical_monitor", UserGroupType.ae_expedited_report_reviewer);
 	
 	/** The code. */
 	private Integer code;

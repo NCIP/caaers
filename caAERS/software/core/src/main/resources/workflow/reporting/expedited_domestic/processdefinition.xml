@@ -264,7 +264,7 @@
 			</factoryKey>
 		</action>
 		<description>
-			This task is assigned to the personnel (DCC) at the central office. The DCC must compile comments, narrative and queries and send the report to the CRA. 
+			This task is assigned to the personnel (DCC) at the central office. The DCC must compile comments, narrative and queries and send the report to the site CRA. 
 		</description>
 		<event type="node-leave">
 			<action class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" name="taskCloseActionHandler" config-type="bean">
