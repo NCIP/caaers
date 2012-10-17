@@ -3,15 +3,12 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.Grade;
-import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.LabLoad;
 import gov.nih.nci.cabig.caaers.domain.Outcome;
 import gov.nih.nci.cabig.caaers.domain.OutcomeType;
@@ -19,18 +16,15 @@ import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.dto.ApplicableReportDefinitionsDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.EvaluationResultDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper;
 import gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper.ActionType;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.utils.DurationUtils;
-import gov.nih.nci.cabig.caaers.utils.IndexFixedList;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -226,8 +220,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	
 	/**
 	 * This method will synchronize the outcomes list associated with the adverse event. 
-	 *   If grade is 5, the outcome of type death is added, else removed(if present)
-	 *   If hospitalization is 'yes', the outcome of type hospitalization is added, else removed (if present)
+	 *   Death and hospitalization are sync'd on the UI by JS.
 	 *   If the serious(outcome) not available in the outcomes list, it will be added.
 	 *   Remove all the other outcomes present in the list (means user deselected a previously selected one)
 	 */
@@ -254,31 +247,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
                 	removeOutcomeIfPresent(outcomeType, ae.getOutcomes());
                 }
             }
-
-            //special cases, add DEATH and HOSPITALIZATION
-            //if grade is 5 make sure we have OutcomeType.DEATH
-            if (ae.getGrade() != null && ae.getGrade().equals(Grade.DEATH)) {
-                if (!isOutcomePresent(OutcomeType.DEATH, ae.getOutcomes())) {
-                    Outcome newOutcome = new Outcome();
-                    newOutcome.setOutcomeType(OutcomeType.DEATH);
-                    ae.addOutcome(newOutcome);
-                }
-            } else {
-                removeOutcomeIfPresent(OutcomeType.DEATH, ae.getOutcomes());
-            }
-
-            //if hospitalized, make sure we have OutcomeType.HOSPITALIZATION
-            if (ae.getHospitalization() != null && ae.getHospitalization().equals(Hospitalization.YES)) {
-                if (!isOutcomePresent(OutcomeType.HOSPITALIZATION, ae.getOutcomes())) {
-                    Outcome newOutcome = new Outcome();
-                    newOutcome.setOutcomeType(OutcomeType.HOSPITALIZATION);
-                    ae.addOutcome(newOutcome);
-                }
-            } else {
-                removeOutcomeIfPresent(OutcomeType.HOSPITALIZATION, ae.getOutcomes());
-            }
 		}
-		
 	}
 	
 	
