@@ -38,21 +38,6 @@ public class QualifiedPropertyNameInputFieldTest extends AbstractTestCase {
         assertEquals("commons-validations.js uses this class name for validation", "validate-NOTEMPTY$$MAXLENGTH2000", field.getValidatorClassName());
     }
 
-    public void testGetValidatorClassNameForRequiredTextFieldWithSize() throws Exception {
-        field = new TestQualifiedPropertyNameInputField(InputFieldFactory.createTextField("propertyName", "displayName", true)) {
-            @Override
-            public Category getCategory() {
-                return Category.TEXT;
-            }
-        };
-        
-        // Setting the size of the field.
-        Map<String, Object> attrMap = new HashMap<String, Object>();
-        attrMap.put("size", new Integer(4));
-        field.setAttributes(attrMap );
-        
-        assertEquals("commons-validations.js uses this class name for validation", "validate-NOTEMPTY$$MAXLENGTH4", field.getValidatorClassName());
-    }
     
     public void testGetValidatorNameWithUpdatedSize() throws Exception {
         field = new TestQualifiedPropertyNameInputField(InputFieldFactory.createNumberField("propertyName", "displayName", true, FieldValidator.createTextSizeValidator(4))) {
