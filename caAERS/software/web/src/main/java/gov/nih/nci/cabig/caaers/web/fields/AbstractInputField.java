@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.fields;
 
 import gov.nih.nci.cabig.caaers.validation.fields.validators.FieldValidator;
+import gov.nih.nci.cabig.caaers.validation.fields.validators.TextSizeValidator;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -157,7 +159,7 @@ public abstract class AbstractInputField implements InputField {
     public FieldValidator[] getValidators() {
         return validators;
     }
-
+    
     public String getValidatorClassName() {
         StringBuffer validatorClassNameBuffer = new StringBuffer("");
 
@@ -175,17 +177,20 @@ public abstract class AbstractInputField implements InputField {
                 }
             }
         }
-        if (getCategory() != null && (getCategory().equals(Category.TEXT) || getCategory().equals(Category.TEXTAREA))) {
-            if (getValidators() == null || getValidators().length == 0) {
-                validatorClassNameBuffer.append("validate-MAXLENGTH2000");
-            } else {
-                validatorClassNameBuffer.append("$$MAXLENGTH2000");
-            }
+		if (getCategory() != null && (getCategory().equals(Category.TEXT) || getCategory().equals(Category.TEXTAREA))) {
+			if (getValidators() == null || getValidators().length == 0) {
+				validatorClassNameBuffer.append("validate-MAXLENGTH2000");
+			} else {
+				FieldValidator validator = WebUtils.getRequiredValidator(getValidators(), FieldValidator.TEXTSIZE_VALIDATOR);
+				if (validator != null) {
+					validatorClassNameBuffer.append("$$MAXLENGTH"
+							+ ((TextSizeValidator) validator).getTextSize());
+				} else {
+					validatorClassNameBuffer.append("$$MAXLENGTH2000");
+				}
+			}
 
-
-        }
-
-
+		}
         return validatorClassNameBuffer.toString();
     }
 

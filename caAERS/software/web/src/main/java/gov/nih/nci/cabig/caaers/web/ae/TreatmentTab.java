@@ -6,15 +6,13 @@ import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
+import gov.nih.nci.cabig.caaers.validation.fields.validators.FieldValidator;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang.StringUtils;
-import org.springframework.validation.Errors;
 
 /**
  * @author Rhett Sutphin
@@ -37,10 +35,12 @@ public class TreatmentTab extends AeTab {
         InputField newDescField = InputFieldFactory.createTextArea("treatmentDescription", "Enter a description of treatment assignment or dose level");
         InputFieldAttributes.setColumns(newDescField, 70);
         InputFieldAttributes.setRows(newDescField, 4);
-        InputField eventCourseField = InputFieldFactory.createNumberField("adverseEventCourse.number", "Course number on which event occurred", false);
+        InputField eventCourseField = InputFieldFactory.createNumberField("adverseEventCourse.number", "Course number on which event occurred", false,FieldValidator.createTextSizeValidator(4));
         InputFieldAttributes.setSize(eventCourseField, 4);
-        InputField totalCourseField = InputFieldFactory.createNumberField("totalCourses", "Total number of courses to date", false);
+        InputField totalCourseField = InputFieldFactory.createNumberField("totalCourses", "Total number of courses to date", false, FieldValidator.createTextSizeValidator(4));
         InputFieldAttributes.setSize(totalCourseField, 4);
+        
+        
         //InputField investigationalAgentAdministeredField = InputFieldFactory.createSelectField("investigationalAgentAdministered", "Was an investigational agent administered on this protocol?" , false, createInvestigationalAgentAdministeredOptions());
         //investigationalAgentAdministeredField.getAttributes().put(InputField.HELP, "ae.treatment.aeReport.treatmentInformation.investigationalAgentAdministered");
  

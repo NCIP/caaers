@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.fields;
 
 import gov.nih.nci.cabig.caaers.validation.fields.validators.FieldValidator;
+import gov.nih.nci.cabig.caaers.validation.fields.validators.TextSizeValidator;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -117,20 +119,15 @@ public abstract class QualifiedPropertyNameInputField implements InputField {
         }
         if (getCategory() != null && (getCategory().equals(Category.TEXT) || getCategory().equals(Category.TEXTAREA))) {
             if (getValidators() == null || getValidators().length == 0) {
-            	if (this.getAttributes() != null && this.getAttributes().containsKey("size") ) {
-            			validatorClassName.append("validate-MAXLENGTH" + this.getAttributes().get("size"));
-            	} else {
-            			validatorClassName.append("validate-MAXLENGTH2000");
-            	}
+           		validatorClassName.append("validate-MAXLENGTH2000");
             } else {
-            	if (this.getAttributes() != null && this.getAttributes().containsKey("size") ) {
-            			validatorClassName.append("$$MAXLENGTH" + this.getAttributes().get("size"));
+            	FieldValidator validator = WebUtils.getRequiredValidator(getValidators(),FieldValidator.TEXTSIZE_VALIDATOR);
+            	if ( validator != null ) {
+            		validatorClassName.append("$$MAXLENGTH" + ((TextSizeValidator)validator).getTextSize() );
             	} else {
-            			validatorClassName.append("$$MAXLENGTH2000");
+            		validatorClassName.append("$$MAXLENGTH2000");
             	}
             }
-
-
         }
 
         return validatorClassName.toString();

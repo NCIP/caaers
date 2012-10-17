@@ -30,6 +30,7 @@ public abstract class FieldValidator<A extends Annotation, T> extends AbstractCo
     public static final FieldValidator ALPHANUMERIC_VALIDATOR;
     public static final FieldValidator SIGN_VALIDATOR;
     public static final FieldValidator IDENTIFIER_VALIDATOR;
+    public static final FieldValidator TEXTSIZE_VALIDATOR;
 
     private boolean positive;
 
@@ -49,10 +50,15 @@ public abstract class FieldValidator<A extends Annotation, T> extends AbstractCo
         ALPHANUMERIC_VALIDATOR = new AlphanumericValidator();
         SIGN_VALIDATOR = new SignValidator(true);
         IDENTIFIER_VALIDATOR = new IdentifierValidator();
+        TEXTSIZE_VALIDATOR = new TextSizeValidator();
     }
 
     public static NumberRangeValidator createNumberRangeValidator(int begin, int end) {
         return new NumberRangeValidator(begin, end);
+    }
+   
+    public static TextSizeValidator createTextSizeValidator(int size) {
+        return new TextSizeValidator(size);
     }
     
     public static PatternBasedValidator createPatternBasedValidator(String pattern, String cssClassName){

@@ -13,6 +13,7 @@ import org.springframework.validation.FieldError;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import gov.nih.nci.cabig.caaers.validation.ValidationError;
+import gov.nih.nci.cabig.caaers.validation.fields.validators.FieldValidator;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.ctms.domain.CodedEnum;
 import java.io.File;
@@ -327,4 +328,19 @@ public class WebUtils {
         }
         return orgs;
     }
+    
+	public static FieldValidator getRequiredValidator(FieldValidator[] validators,	FieldValidator requiredType) {
+
+		if (validators != null) {
+
+			for (FieldValidator f : validators) {
+				if (f.getClass().equals(requiredType.getClass())) {
+					return f;
+				}
+
+			}
+		}
+		return null;
+	}
+
 }

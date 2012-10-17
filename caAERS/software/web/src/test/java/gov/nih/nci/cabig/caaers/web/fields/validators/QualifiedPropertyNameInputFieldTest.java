@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
+import gov.nih.nci.cabig.caaers.validation.fields.validators.FieldValidator;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.QualifiedPropertyNameInputField;
@@ -51,6 +52,16 @@ public class QualifiedPropertyNameInputFieldTest extends AbstractTestCase {
         field.setAttributes(attrMap );
         
         assertEquals("commons-validations.js uses this class name for validation", "validate-NOTEMPTY$$MAXLENGTH4", field.getValidatorClassName());
+    }
+    
+    public void testGetValidatorNameWithUpdatedSize() throws Exception {
+        field = new TestQualifiedPropertyNameInputField(InputFieldFactory.createNumberField("propertyName", "displayName", true, FieldValidator.createTextSizeValidator(4))) {
+            @Override
+            public Category getCategory() {
+                return Category.TEXT;
+            }
+        };
+        assertEquals("commons-validations.js uses this class name for validation", "validate-NOTEMPTY$$TEXT$$NUMERIC$$MAXLENGTH4", field.getValidatorClassName());
     }
 
     public void testGetValidatorClassNameForRequiredTextAreaField() throws Exception {

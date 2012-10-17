@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
+import gov.nih.nci.cabig.caaers.validation.fields.validators.FieldValidator;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
 
 import java.util.Collection;
@@ -107,6 +108,12 @@ public class WebUtilsTest extends WebTestCase{
 	public void testHasParameter() throws Exception{
 		request.setParameter("stringParam", "value1");
 		assertTrue(WebUtils.hasParameter(request, "stringParam")) ;
+	}
+	
+	public void testRequiredValidator() throws Exception {
+		FieldValidator[] validators = new FieldValidator[] {FieldValidator.DATE_VALIDATOR, FieldValidator.TEXTSIZE_VALIDATOR};
+		assertNotNull (WebUtils.getRequiredValidator(validators, FieldValidator.TEXTSIZE_VALIDATOR));
+		
 	}
 
 }

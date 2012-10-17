@@ -261,6 +261,25 @@ public class InputFieldFactory {
         }
         return createInputField(TEXT, propertyName, displayName, validators);
     }
+    
+	public static InputField createNumberField(String propertyName,
+			String displayName, boolean required, FieldValidator... validators) {
+		FieldValidator[] newValidators = null;
+
+		if (required) {
+			final int N = validators.length;
+			newValidators = new FieldValidator[N + 2];
+			System.arraycopy(validators, 0, newValidators, 1, validators.length);
+			newValidators[0] = FieldValidator.NOT_NULL_VALIDATOR;
+			newValidators[validators.length + 1] = FieldValidator.NUMBER_VALIDATOR;
+		} else {
+			final int N = validators.length;
+			newValidators = new FieldValidator[N + 1];
+			System.arraycopy(validators, 0, newValidators, 0, validators.length);
+			newValidators[validators.length] = FieldValidator.NUMBER_VALIDATOR;
+		}
+		return createInputField(TEXT, propertyName, displayName, newValidators);
+	}
 
     public static InputField createPhoneField(String propertyName, String displayName, boolean required) {
         FieldValidator validators[] = null;
