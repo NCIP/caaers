@@ -155,12 +155,13 @@ public class AdverseEventReconciliationCommand {
                     if (!isValidGrade(eae.getGrade(), term.getGrades())){
                         String gradeString = "";
                         for(CodedGrade g : term.getGrades()){
-                            gradeString += g.getName();
+                            if(gradeString.length() > 0 ) gradeString +=", ";
+                            gradeString +=  g.getCode() + ":" + Grade.getByCode(g.getCode()).getShortName();
                         }
                         errorBuilder.append(String.format("Grade '%s' is not valid for the term '%s:%s'. Valid options are '%s'",
-                                eae.getGrade().getShortName() ,
+                                eae.getGrade().getCode() + ":" +eae.getGrade().getShortName() ,
                                 eae.getAdverseEventTermCode(),
-                                eae.getAdverseEventTerm(),
+                                term.getFullName(),
                                 gradeString));
                     }
                 }
