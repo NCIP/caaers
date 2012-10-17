@@ -444,6 +444,10 @@ public class WorkflowServiceImpl implements WorkflowService {
 			StudyCoordinatingCenter coordinatingCenter2 = study.getStudyCoordinatingCenter();
 			if(coordinatingCenter2 != null) studyOrganizations.add(coordinatingCenter2);
 			break;
+		case SPONSOR:
+			StudyFundingSponsor fundingSponsor = study.getStudyFundingSponsors().get(0);
+			if(fundingSponsor != null) studyOrganizations.add(fundingSponsor);
+			break;
 		}
 		
 		studyDao.reassociateStudyOrganizations(studyOrganizations);
@@ -491,6 +495,11 @@ public class WorkflowServiceImpl implements WorkflowService {
 				break;
 			case STUDY_COORDINATOR:
 				break;
+			case STUDY_MEDICAL_MONITOR:
+				List<Person> expeditedReportReviewers = fetchUsersHavingRoleFromStudyOrganizations(studyOrganizations, personRole);
+				people.addAll(expeditedReportReviewers);
+				break;
+				
 		}
 		return people;
 	}
