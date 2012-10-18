@@ -32,8 +32,7 @@ public abstract class QualifiedPropertyNameInputField implements InputField {
      * This method will validate against the Source field validators.
      */
     public void validate(BeanWrapper commandBean, Errors errors) {
-        if(!src.isValidateable()) return;
-        src.validate(commandBean, errors);
+        AbstractInputField.validate(this, commandBean, errors);
     }
 
     public FieldValidator[] getValidators() {

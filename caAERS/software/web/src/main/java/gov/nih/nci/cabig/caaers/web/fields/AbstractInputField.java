@@ -79,12 +79,14 @@ public abstract class AbstractInputField implements InputField {
      * This base implementation does a simple not-null check if the field is required.
      */
     public void validate(BeanWrapper commandBean, Errors errors) {
-        if (validators == null) return;
-        if(!isValidateable()) return ;
-        
-        for (FieldValidator validator : validators) {
-            if (!validator.isValid(commandBean.getPropertyValue(this.getPropertyName()))) {
-                errors.rejectValue(this.getPropertyName(), "REQUIRED", "<b>" + validator.getMessagePrefix() + ":</b> &quot;" + this.getDisplayName() +"&quot;");
+        AbstractInputField.validate(this, commandBean, errors);
+    }
+
+    public static void validate(InputField field , BeanWrapper commandBean, Errors errors){
+         if(field.getValidators() == null || !field.isValidateable()) return ;
+        for (FieldValidator validator : field.getValidators()) {
+            if (!validator.isValid(commandBean.getPropertyValue(field.getPropertyName()))) {
+                errors.rejectValue(field.getPropertyName(), "REQUIRED", "<b>" + validator.getMessagePrefix() + ":</b> &quot;" + field.getDisplayName() +"&quot;");
                 return;
             }
         }
