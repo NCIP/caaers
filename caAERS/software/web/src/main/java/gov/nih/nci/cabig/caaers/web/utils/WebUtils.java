@@ -328,19 +328,6 @@ public class WebUtils {
         }
         return orgs;
     }
-    
-	public static FieldValidator getRequiredValidator(FieldValidator[] validators,	FieldValidator requiredType) {
 
-		if (validators != null) {
-
-			for (FieldValidator f : validators) {
-				if (f.getClass().equals(requiredType.getClass())) {
-					return f;
-				}
-
-			}
-		}
-		return null;
-	}
 
 }

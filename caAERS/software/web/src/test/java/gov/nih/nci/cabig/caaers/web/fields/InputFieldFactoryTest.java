@@ -98,6 +98,11 @@ public class InputFieldFactoryTest extends AbstractTestCase {
         assertEquals("field must be text field", InputField.Category.TEXT, field.getCategory());
     }
 
+    public void testCreateNumberFieldWithExternalValidators(){
+        InputField field = InputFieldFactory.createNumberField("propertyName", "value", true, FieldValidator.DATE_VALIDATOR);
+        assertEqualArrays(new FieldValidator[]{ FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.NUMBER_VALIDATOR,FieldValidator.DATE_VALIDATOR} , field.getValidators());
+    }
+
     public void testCreateDateFieldIfDateFieldIsNotRequired() throws Exception {
         Collection<Grade> items = Arrays.asList(Grade.values());
         Map<Object, Object> actual = WebUtils.collectOptions(items, "code", "name");

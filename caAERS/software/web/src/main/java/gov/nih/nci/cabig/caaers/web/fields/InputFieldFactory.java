@@ -11,8 +11,7 @@ import static gov.nih.nci.cabig.caaers.web.fields.InputField.Category.TEXT;
 import static gov.nih.nci.cabig.caaers.web.fields.InputField.Category.TEXTAREA;
 import gov.nih.nci.cabig.caaers.validation.fields.validators.FieldValidator;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Rhett Sutphin
@@ -252,34 +251,13 @@ public class InputFieldFactory {
         return new DefaultInputField(category, "dc", "Don't Care", DEFAULT_REQUIREDNESS);
     }
 
-    public static InputField createNumberField(String propertyName, String displayName, boolean required) {
-        FieldValidator validators[] = null;
-        if (required) {
-            validators = new FieldValidator[]{FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.NUMBER_VALIDATOR};
-        } else {
-            validators = new FieldValidator[]{FieldValidator.NUMBER_VALIDATOR};
-        }
-        return createInputField(TEXT, propertyName, displayName, validators);
+    public static InputField createNumberField(String propertyName, String displayName, boolean required, FieldValidator... validators) {
+        Set<FieldValidator> validatorList = new LinkedHashSet<FieldValidator>();
+        if(required) validatorList.add(FieldValidator.NOT_NULL_VALIDATOR);
+        validatorList.add(FieldValidator.NUMBER_VALIDATOR);
+        for(FieldValidator v : validators) validatorList.add(v);
+        return createInputField(TEXT, propertyName, displayName, validatorList.toArray(new FieldValidator[]{}));
     }
-    
-	public static InputField createNumberField(String propertyName,
-			String displayName, boolean required, FieldValidator... validators) {
-		FieldValidator[] newValidators = null;
-
-		if (required) {
-			final int N = validators.length;
-			newValidators = new FieldValidator[N + 2];
-			System.arraycopy(validators, 0, newValidators, 1, validators.length);
-			newValidators[0] = FieldValidator.NOT_NULL_VALIDATOR;
-			newValidators[validators.length + 1] = FieldValidator.NUMBER_VALIDATOR;
-		} else {
-			final int N = validators.length;
-			newValidators = new FieldValidator[N + 1];
-			System.arraycopy(validators, 0, newValidators, 0, validators.length);
-			newValidators[validators.length] = FieldValidator.NUMBER_VALIDATOR;
-		}
-		return createInputField(TEXT, propertyName, displayName, newValidators);
-	}
 
     public static InputField createPhoneField(String propertyName, String displayName, boolean required) {
         FieldValidator validators[] = null;
@@ -334,7 +312,7 @@ public class InputFieldFactory {
 
         @Override
         public String getValidatorClassName() {
-            return super.getValidatorClassName();    //To change body of overridden methods use File | Settings | File Templates.
+            return super.getValidatorClassName();
         }
 
         @Override

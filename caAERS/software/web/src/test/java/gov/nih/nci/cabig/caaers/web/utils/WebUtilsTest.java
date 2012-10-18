@@ -109,11 +109,5 @@ public class WebUtilsTest extends WebTestCase{
 		request.setParameter("stringParam", "value1");
 		assertTrue(WebUtils.hasParameter(request, "stringParam")) ;
 	}
-	
-	public void testRequiredValidator() throws Exception {
-		FieldValidator[] validators = new FieldValidator[] {FieldValidator.DATE_VALIDATOR, FieldValidator.TEXTSIZE_VALIDATOR};
-		assertNotNull (WebUtils.getRequiredValidator(validators, FieldValidator.TEXTSIZE_VALIDATOR));
-		
-	}
 
 }

@@ -103,6 +103,14 @@ public abstract class AbstractInputField implements InputField {
         }
     }
 
+    public FieldValidator  getValidatorOfType(Class<? extends FieldValidator> klass) {
+        if(validators == null) return null;
+        for(FieldValidator v : validators){
+            if(v.getClass().equals(klass)) return v;
+        }
+        return null;
+    }
+
     public static boolean isEmpty(InputField field, BeanWrapper commandBean) {
         return commandBean.getPropertyValue(field.getPropertyName()) == null;
     }
@@ -178,18 +186,9 @@ public abstract class AbstractInputField implements InputField {
             }
         }
 		if (getCategory() != null && (getCategory().equals(Category.TEXT) || getCategory().equals(Category.TEXTAREA))) {
-			if (getValidators() == null || getValidators().length == 0) {
-				validatorClassNameBuffer.append("validate-MAXLENGTH2000");
-			} else {
-				FieldValidator validator = WebUtils.getRequiredValidator(getValidators(), FieldValidator.TEXTSIZE_VALIDATOR);
-				if (validator != null) {
-					validatorClassNameBuffer.append("$$MAXLENGTH"
-							+ ((TextSizeValidator) validator).getTextSize());
-				} else {
-					validatorClassNameBuffer.append("$$MAXLENGTH2000");
-				}
-			}
-
+            TextSizeValidator sizeValidator = (TextSizeValidator) getValidatorOfType(TextSizeValidator.class);
+            validatorClassNameBuffer.append(validatorClassNameBuffer.length() > 0 ? "$$MAXLENGTH" : "validate-MAXLENGTH") ;
+            validatorClassNameBuffer.append(sizeValidator == null ? 2000 : sizeValidator.getTextSize());
 		}
         return validatorClassNameBuffer.toString();
     }

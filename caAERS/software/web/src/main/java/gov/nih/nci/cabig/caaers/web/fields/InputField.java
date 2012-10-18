@@ -130,6 +130,8 @@ public interface InputField {
 
     Map<String, Object> getAttributes();
 
+    FieldValidator  getValidatorOfType(Class<? extends FieldValidator> klass);
+
     enum Category {
         TEXT, TEXTAREA, DATE, SPLIT_DATE, SELECT, AUTOCOMPLETER, COMPOSITE, CHECKBOX, LONGSELECT, INPLACE_TEXT, LABEL, RADIO, IMAGE , HIDDEN
     }

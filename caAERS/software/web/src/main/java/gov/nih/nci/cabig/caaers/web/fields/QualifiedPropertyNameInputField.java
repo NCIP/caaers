@@ -1,16 +1,13 @@
 package gov.nih.nci.cabig.caaers.web.fields;
 
 import gov.nih.nci.cabig.caaers.validation.fields.validators.FieldValidator;
-import gov.nih.nci.cabig.caaers.validation.fields.validators.TextSizeValidator;
-import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.validation.Errors;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.springframework.beans.BeanWrapper;
-import org.springframework.validation.Errors;
 
 /**
  * @author Rhett Sutphin
@@ -20,8 +17,6 @@ public abstract class QualifiedPropertyNameInputField implements InputField {
 
     private InputField src;
     private Map<String, Object> attributes;
-    private boolean mandatory;
-    private FieldValidator[] validators;
 
     
     public QualifiedPropertyNameInputField(InputField src) {
@@ -37,17 +32,8 @@ public abstract class QualifiedPropertyNameInputField implements InputField {
      * This method will validate against the Source field validators.
      */
     public void validate(BeanWrapper commandBean, Errors errors) {
-        FieldValidator[] validators = getValidators();
-        if (validators == null) return;
         if(!src.isValidateable()) return;
-
-        for (FieldValidator validator : validators) {
-            if (!validator.isValid(commandBean.getPropertyValue(this.getPropertyName()))) {
-                errors.rejectValue(this.getPropertyName(), "REQUIRED", "<b>" + validator.getMessagePrefix()
-                        + ":</b> &quot;" + this.getDisplayName() + "&quot;");
-                return;
-            }
-        }
+        src.validate(commandBean, errors);
     }
 
     public FieldValidator[] getValidators() {
@@ -95,6 +81,10 @@ public abstract class QualifiedPropertyNameInputField implements InputField {
 
     protected abstract InputField qualifySubfield(InputField subfield);
 
+    public FieldValidator getValidatorOfType(Class<? extends FieldValidator> klass) {
+        return src.getValidatorOfType(klass);
+    }
+
     @Override
     public String toString() {
         return new StringBuilder(getClass().getSimpleName()).append("[propertyName=").append(
@@ -103,34 +93,7 @@ public abstract class QualifiedPropertyNameInputField implements InputField {
     }
 
     public String getValidatorClassName() {
-        StringBuffer validatorClassName = new StringBuffer("");
-        if (getValidators() != null) {
-            for (int i = 0; i < getValidators().length; i++) {
-                FieldValidator validator = getValidators()[i];
-                if (i == 0) {
-                    validatorClassName.append(String.format("validate-%s", validator.getValidatorCSSClassName()));
-
-                } else {
-
-                    validatorClassName.append(String.format("$$%s", validator.getValidatorCSSClassName()));
-
-                }
-            }
-        }
-        if (getCategory() != null && (getCategory().equals(Category.TEXT) || getCategory().equals(Category.TEXTAREA))) {
-            if (getValidators() == null || getValidators().length == 0) {
-           		validatorClassName.append("validate-MAXLENGTH2000");
-            } else {
-            	FieldValidator validator = WebUtils.getRequiredValidator(getValidators(),FieldValidator.TEXTSIZE_VALIDATOR);
-            	if ( validator != null ) {
-            		validatorClassName.append("$$MAXLENGTH" + ((TextSizeValidator)validator).getTextSize() );
-            	} else {
-            		validatorClassName.append("$$MAXLENGTH2000");
-            	}
-            }
-        }
-
-        return validatorClassName.toString();
+        return src.getValidatorClassName();
     }
 
 
