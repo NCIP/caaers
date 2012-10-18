@@ -26,7 +26,7 @@
       <bendpoint w1="-196" h1="34" w2="166" h2="40"/>
     </edge>
   </node>
-  <node name="Submit Report To Central Office" x="488" y="359" width="296" height="36">
+  <node name="Submit Report To Central Office" x="498" y="357" width="296" height="36">
     <edge>
       <label x="-74" y="-17"/>
     </edge>
@@ -41,10 +41,9 @@
       <bendpoint w1="176" h1="-39" w2="-186" h2="-45"/>
     </edge>
   </node>
-  <node name="Central Office Report Review" x="541" y="475" width="290" height="36">
+  <node name="Central Office Report Review" x="514" y="479" width="290" height="36">
     <edge>
       <label x="-102" y="-13"/>
-      <bendpoint w1="-43" h1="63" w2="-88" h2="-53"/>
     </edge>
     <edge>
       <label x="-106" y="-20"/>
@@ -61,11 +60,7 @@
       <bendpoint w1="3" h1="-94" w2="-384" h2="161"/>
     </edge>
   </node>
-  <node name="Submit Report To Medical Monitor" x="572" y="591" width="319" height="36">
-    <edge>
-      <label x="-47" y="-7"/>
-      <bendpoint w1="34" h1="-60" w2="79" h2="56"/>
-    </edge>
+  <node name="Submit Report To Medical Monitor" x="528" y="591" width="319" height="36">
     <edge>
       <label x="-59" y="-2"/>
     </edge>

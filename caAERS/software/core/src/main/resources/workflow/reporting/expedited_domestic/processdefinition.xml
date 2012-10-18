@@ -199,7 +199,6 @@
 				</factoryKey>
 			</action>
 		</event>		
-		<transition to="Central Office Report Review" name="Submit to Central Office Report Reviewer"></transition>
 		<transition to="Medical Monitor Review" name="Send to Medical Monitor for Review"></transition>
 	</node>
 
