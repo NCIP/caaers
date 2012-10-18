@@ -454,20 +454,15 @@ public class WorkflowServiceImpl implements WorkflowService {
 		
 		switch(personRole){
 			case AE_EXPEDITED_REPORT_REVIEWER:
-				List<Person> saeCoordinators = fetchUsersHavingRoleFromStudyOrganizations(studyOrganizations, personRole);
-				people.addAll(saeCoordinators);
-				break;
-			case AE_STUDY_DATA_REVIEWER:
-				List<Person> dataCoordinators = fetchUsersHavingRoleFromStudyOrganizations(studyOrganizations, personRole);
-				people.addAll(dataCoordinators);
-				break;
-			case ADVERSE_EVENT_COORDINATOR:
-				List<Person> aeCoordinators = fetchUsersHavingRoleFromStudyOrganizations(studyOrganizations, personRole);
-				people.addAll(aeCoordinators);
-				break;
-			case AE_REPORTER:
-				List<Person> participantCoordinators = fetchUsersHavingRoleFromStudyOrganizations(studyOrganizations, personRole);
-				people.addAll(participantCoordinators);
+            case AE_STUDY_DATA_REVIEWER:
+            case ADVERSE_EVENT_COORDINATOR:
+            case AE_REPORTER:
+            case PRINCIPAL_INVESTIGATOR:
+            case SITE_INVESTIGATOR:
+            case SITE_PRINCIPAL_INVESTIGATOR:
+            case STUDY_MEDICAL_MONITOR:
+				List<Person> personList = fetchUsersHavingRoleFromStudyOrganizations(studyOrganizations, personRole);
+				people.addAll(personList);
 				break;
 			case PHYSICIAN:
 				Person physician = report.getAeReport().getPhysician().getPerson();
@@ -475,31 +470,15 @@ public class WorkflowServiceImpl implements WorkflowService {
 					people.add(physician);
 				}
 				break;
-			case PRINCIPAL_INVESTIGATOR:
-				List<Person> principalInvestigators = fetchUsersHavingRoleFromStudyOrganizations(studyOrganizations, personRole);
-				people.addAll(principalInvestigators);
-				break;
 			case REPORTER:
 				Person reporter = report.getAeReport().getReporter().getPerson();
 				if(reporter != null && reporter.isUser()){
 					people.add(reporter);
 				}
 				break;
-			case SITE_INVESTIGATOR:
-				List<Person> siteInvestigators = fetchUsersHavingRoleFromStudyOrganizations(studyOrganizations, personRole);
-				people.addAll(siteInvestigators);
-				break;
-			case SITE_PRINCIPAL_INVESTIGATOR:
-				List<Person> sitePrincipalInvestigators = fetchUsersHavingRoleFromStudyOrganizations(studyOrganizations, personRole);
-				people.addAll(sitePrincipalInvestigators);
-				break;
+
 			case STUDY_COORDINATOR:
 				break;
-			case STUDY_MEDICAL_MONITOR:
-				List<Person> expeditedReportReviewers = fetchUsersHavingRoleFromStudyOrganizations(studyOrganizations, personRole);
-				people.addAll(expeditedReportReviewers);
-				break;
-				
 		}
 		return people;
 	}
