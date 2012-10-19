@@ -46,7 +46,8 @@ public class RoutingAndReviewResolverController extends AbstractController{
 		if(reportingPeriod.isRetired()){
 			redirectUrl = "routingAndReview?study=" + studyId + "&participant=" + participantId + "&retiredReportingPeriod=true&paginationAction=firstPage&numberOfResultsPerPage=15";
 		}else{
-			if(SecurityUtils.checkAuthorization(UserGroupType.ae_study_data_reviewer) && reportingPeriod.getReviewStatus() == ReviewStatus.DATA_COORDINATOR_REVIEW){
+            boolean fromRoutingAndReview = StringUtils.equals(request.getParameter("src"), "RoutingReview");
+			if(fromRoutingAndReview && SecurityUtils.checkAuthorization(UserGroupType.ae_study_data_reviewer) && reportingPeriod.getReviewStatus() == ReviewStatus.DATA_COORDINATOR_REVIEW){
 				redirectUrl = "reconcileAe?rpId=" + reportingPeriod.getId();
 			} else{
 				redirectUrl = "captureRoutine?adverseEventReportingPeriod=" + reportingPeriodId + "&study=" + studyId + "&participant=" + participantId + "&_page=0&_target1=1&displayReportingPeriod=true&addReportingPeriodBinder=true";
