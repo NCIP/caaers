@@ -294,7 +294,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 			return caaersServiceResponse;
 		}
 		// fetch participant
-		Participant dbParticipant = fetchParticipant(studySubjectIdentifier, dbStudy.getId(), caaersServiceResponse);
+		Participant dbParticipant = fetchParticipant(studySubjectIdentifier, dbStudy.getId(),dbStudy.getShortTitle(), caaersServiceResponse);
 		if (dbParticipant == null) {
 			//response must be populated with appropriate errors that lead to one of these being null
 			return caaersServiceResponse;
@@ -451,7 +451,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 			return caaersServiceResponse;
 		}
 		// fetch participant
-		Participant dbParticipant = fetchParticipant(studySubjectIdentifier, dbStudy.getId(), caaersServiceResponse);
+		Participant dbParticipant = fetchParticipant(studySubjectIdentifier, dbStudy.getId(),dbStudy.getShortTitle(), caaersServiceResponse);
 		if (dbParticipant == null) {
 			//response must be populated with appropriate errors that lead to one of these being null
 			return caaersServiceResponse;
@@ -670,9 +670,9 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 				if (aeType.getId() != null) {
 					code = String.valueOf(aeType.getId());
 					adverseEvent = this.getAdverseEventDao().getById(aeType.getId().intValue());
-				} else if (aeType.getCtepCode() != null) {
-					code = aeType.getCtepCode();
-					adverseEvent = checkIfCtcTermExists(adverseEventReportingPeriod, aeType.getCtepCode(), terminology
+				} else if (aeType.getAdverseEventCtepTerm() != null && (aeType.getAdverseEventCtepTerm().getCtepCode() != null)) {
+					code = aeType.getAdverseEventCtepTerm().getCtepCode();
+					adverseEvent = checkIfCtcTermExists(adverseEventReportingPeriod, aeType.getAdverseEventCtepTerm().getCtepCode(), terminology
 							.getCtcVersion(), dbAdverseEvents);
 				} else if (aeType.getAdverseEventMeddraLowLevelTerm() != null) {
 					code = aeType.getAdverseEventMeddraLowLevelTerm().getMeddraCode();
@@ -715,7 +715,6 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 			}
 		}// end of for
 	}
-
 	
 	private void deleteAdverseEvent(AdverseEvent adverseEvent, AdverseEventReportingPeriod adverseEventReportingPeriod) {
 		List<AdverseEvent> dbAdverseEvents = adverseEventReportingPeriod.getAdverseEvents();
@@ -765,7 +764,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 		return assignment;
 	}
 
-	private Participant fetchParticipant(String studySubjectIdentifier, Integer studyIdentifier, CaaersServiceResponse caaersServiceResponse) {
+	private Participant fetchParticipant(String studySubjectIdentifier, Integer studyIdentifier, String studyShortTitle, CaaersServiceResponse caaersServiceResponse) {
 		if (studySubjectIdentifier == null) {
 			String message = messageSource.getMessage("WS_AEMS_032", new String[] { studySubjectIdentifier }, "", Locale
 					.getDefault());
@@ -795,7 +794,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 				logger.info("Participant exists in caAERS");
 				dbParticipant = dbParticipants.get(0);
 			} else {
-				String message = messageSource.getMessage("WS_AEMS_005", new String[] { studySubjectIdentifier, studyIdentifier.toString() }, "", Locale
+				String message = messageSource.getMessage("WS_AEMS_005", new String[] { studySubjectIdentifier, studyShortTitle }, "", Locale
 						.getDefault());
 				logger.error(message);
 				Helper.populateError(caaersServiceResponse, "WS_AEMS_005", message);				
@@ -1037,8 +1036,8 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 		
 		if (xmlAdverseEvent.getId() != null) {
 			adverseEvent = getAdverseEventDao().getById(xmlAdverseEvent.getId().intValue());
-		} else if (xmlAdverseEvent.getCtepCode() != null) {
-			adverseEvent = checkIfCtcTermExists(adverseEventReportingPeriod, xmlAdverseEvent.getCtepCode(), terminology
+		} else if (xmlAdverseEvent.getAdverseEventCtepTerm() != null && xmlAdverseEvent.getAdverseEventCtepTerm().getCtepCode()!=null) {
+			adverseEvent = checkIfCtcTermExists(adverseEventReportingPeriod, xmlAdverseEvent.getAdverseEventCtepTerm().getCtepCode(), terminology
 					.getCtcVersion(), dbAdverseEvents);
 		} else if (xmlAdverseEvent.getAdverseEventMeddraLowLevelTerm() != null) {
 			adverseEvent = checkIfMeddraTermExists(adverseEventReportingPeriod, xmlAdverseEvent
@@ -1364,8 +1363,8 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 		String code = null;
 		if (adverseEventDto.getId() != null) {
 			code = adverseEventDto.getId() + "";
-		} else if (adverseEventDto.getCtepCode() != null) {
-			code = adverseEventDto.getCtepCode();
+		} else if (adverseEventDto.getAdverseEventCtepTerm() != null && adverseEventDto.getAdverseEventCtepTerm().getCtepCode() != null) {
+			code = adverseEventDto.getAdverseEventCtepTerm().getCtepCode();
 		} else if (adverseEventDto.getAdverseEventMeddraLowLevelTerm() != null) {
 			code = adverseEventDto.getAdverseEventMeddraLowLevelTerm().getMeddraCode();
 		} else if (adverseEventDto.getVerbatim() != null) {

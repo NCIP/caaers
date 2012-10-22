@@ -159,7 +159,17 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     
     private String externalId;
     
-    /**
+    private String otherSpecify;
+    
+    public String getOtherSpecify() {
+		return otherSpecify;
+	}
+
+	public void setOtherSpecify(String otherSpecify) {
+		this.otherSpecify = otherSpecify;
+	}
+
+	/**
      * Instantiates a new adverse event.
      */
     public AdverseEvent() {

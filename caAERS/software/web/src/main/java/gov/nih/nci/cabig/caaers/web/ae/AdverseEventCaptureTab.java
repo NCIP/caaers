@@ -80,9 +80,15 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
                 //other MedDRA
         		InputField otherMeddraField = (ae.getSolicited()) ? InputFieldFactory.createLabelField("lowLevelTerm.meddraTerm", "Other (MedDRA)", false & unRetired) :
         															InputFieldFactory.createAutocompleterField("lowLevelTerm", "Other (MedDRA)", true & unRetired);
+               
         		//only add otherMedDRA on non MedDRA and otherRequired=true
                 if(ae.getAdverseEventTerm().isOtherRequired() && study.getOtherMeddra() != null){
                 	mainFieldFactory.addField(otherMeddraField);
+                }else{
+                	   //other Specify
+            		InputField otherSpecifyField =  InputFieldFactory.createTextField("otherSpecify", "Other (specify)", "aeReport.adverseEvents.otherSpecify", true);
+                    InputFieldAttributes.setSize(otherSpecifyField, 25);
+                	mainFieldFactory.addField(otherSpecifyField);
                 }
                 
             	//verbatim - Is required when there is no other MedDRA

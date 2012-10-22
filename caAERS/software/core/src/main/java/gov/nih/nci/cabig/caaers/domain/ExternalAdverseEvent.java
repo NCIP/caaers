@@ -54,9 +54,18 @@ public class ExternalAdverseEvent extends AbstractMutableDomainObject{
     
     /** The Attribution. */
     private String attribution;
+    
+    private String otherSpecify;
 
+    public String getOtherSpecify() {
+		return otherSpecify;
+	}
 
-    private Date creationDate = new Date();
+	public void setOtherSpecify(String otherSpecify) {
+		this.otherSpecify = otherSpecify;
+	}
+
+	private Date creationDate = new Date();
 
     private ExternalAEReviewStatus status = ExternalAEReviewStatus.PENDING;
 

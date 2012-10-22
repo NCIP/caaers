@@ -76,7 +76,7 @@ public class AdverseEventConverter {
 	  
 
 			if (operation.equals(AdverseEventManagementServiceImpl.CREATE) || operation.equals(AdverseEventManagementServiceImpl.UPDATE)) {
-				if (terminology.getCtcVersion() != null && adverseEventDto.getCtepCode() != null) {
+				if (terminology.getCtcVersion() != null && adverseEventDto.getAdverseEventCtepTerm() != null && adverseEventDto.getAdverseEventCtepTerm().getCtepCode()!=null) {
 					populateCtcTerm(adverseEventDto,adverseEvent,terminology.getCtcVersion());
 				}
 				
@@ -171,9 +171,13 @@ public class AdverseEventConverter {
 
 			// populate adverse event term, code and other value
 
-			if (terminology.getCtcVersion() != null && adverseEventDto.getCtepCode() != null) {
-                adverseEvent.setAdverseEventTermCode(adverseEventDto.getCtepCode());
-                if(adverseEventDto.getOtherMeddra() != null)  adverseEvent.setAdverseEventTermOtherValue(adverseEventDto.getOtherMeddra().getMeddraCode());
+			if (terminology.getCtcVersion() != null && adverseEventDto.getAdverseEventCtepTerm()!=null && adverseEventDto.getAdverseEventCtepTerm().getCtepCode() != null) {
+                adverseEvent.setAdverseEventTermCode(adverseEventDto.getAdverseEventCtepTerm().getCtepCode());
+                if(adverseEventDto.getAdverseEventCtepTerm().getOtherMeddra() != null) {
+                	adverseEvent.setAdverseEventTermOtherValue(adverseEventDto.getAdverseEventCtepTerm().getOtherMeddra().getMeddraCode());
+                }else if (adverseEventDto.getAdverseEventCtepTerm().getOtherSpecify()!= null){
+                	adverseEvent.setOtherSpecify(adverseEventDto.getAdverseEventCtepTerm().getOtherSpecify());
+                }
 			}
 			
 			adverseEvent.setExternalId(adverseEventDto.getExternalId());
@@ -228,18 +232,18 @@ public class AdverseEventConverter {
 		}
 	}
 	private void populateCtcTerm(AdverseEventType adverseEventDto, AdverseEvent adverseEvent,Ctc ctc) throws CaaersSystemException{
-		if (adverseEventDto.getCtepCode() != null) {
+		if (adverseEventDto.getAdverseEventCtepTerm() != null && adverseEventDto.getAdverseEventCtepTerm().getCtepCode() != null) {
 			//CtcTerm ctcTerm = ctcTermDao.getCtcTerm(new String[]{adverseEventDto.getCtepCode()});//getByCtepCodeandVersion(adverseEventDto.getAdverseEventCtcTerm().getCtepCode(), adverseEventDto.getAdverseEventCtcTerm().getCtcVersion());
-			CtcTerm ctcTerm = ctcTermDao.getByCtepCodeandVersion(adverseEventDto.getCtepCode(), ctc);
+			CtcTerm ctcTerm = ctcTermDao.getByCtepCodeandVersion(adverseEventDto.getAdverseEventCtepTerm().getCtepCode(), ctc);
 
 			if (ctcTerm == null) {
-				throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_020", new String[]{adverseEventDto.getCtepCode()},"",Locale.getDefault()));
+				throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_020", new String[]{adverseEventDto.getAdverseEventCtepTerm().getCtepCode()},"",Locale.getDefault()));
 			} else {
 				if (ctcTerm.isOtherRequired()) {
-					if (adverseEventDto.getOtherMeddra() != null) {
-						LowLevelTerm lowLevelTerm = getLowLevelTerm(adverseEventDto.getOtherMeddra().getMeddraCode(),adverseEventDto.getOtherMeddra().getMeddraTerm());
+					if (adverseEventDto.getAdverseEventCtepTerm().getOtherMeddra() != null) {
+						LowLevelTerm lowLevelTerm = getLowLevelTerm(adverseEventDto.getAdverseEventCtepTerm().getOtherMeddra().getMeddraCode(),adverseEventDto.getAdverseEventCtepTerm().getOtherMeddra().getMeddraTerm());
 						if (lowLevelTerm == null) {
-							throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_021", new String[]{adverseEventDto.getOtherMeddra().getMeddraCode().toString()},"",Locale.getDefault()));
+							throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_021", new String[]{adverseEventDto.getAdverseEventCtepTerm().getOtherMeddra().getMeddraCode().toString()},"",Locale.getDefault()));
 							
 						} else {
 							adverseEvent.setLowLevelTerm(lowLevelTerm);
@@ -248,8 +252,8 @@ public class AdverseEventConverter {
 						throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_022", new String[]{},"",Locale.getDefault()));
 					}
 				} else {
-					if (adverseEventDto.getOtherMeddra() != null) {
-						throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_023", new String[]{adverseEventDto.getCtepCode()},"",Locale.getDefault()));
+					if (adverseEventDto.getAdverseEventCtepTerm().getOtherMeddra() != null) {
+						throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_023", new String[]{adverseEventDto.getAdverseEventCtepTerm().getCtepCode()},"",Locale.getDefault()));
 					}
 				}
 				List<CtcGrade> ctcGrades = ctcTerm.getContextualGrades();
@@ -261,7 +265,7 @@ public class AdverseEventConverter {
 					}
 				}
 				if (!gradeAllowed) {
-					throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_030", new String[]{adverseEventDto.getGrade()+"",adverseEventDto.getCtepCode()},"",Locale.getDefault()));
+					throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_030", new String[]{adverseEventDto.getGrade()+"",adverseEventDto.getAdverseEventCtepTerm().getCtepCode()},"",Locale.getDefault()));
 				}
 				//for update AECtcTerm already exists
 				AdverseEventCtcTerm adverseEventCtcTerm = (AdverseEventCtcTerm) adverseEvent.getAdverseEventTerm();
