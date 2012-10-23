@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 
@@ -55,8 +56,15 @@ public class CtcBasicsTab extends BasicsTab {
          * InputFieldAttributes.setDetails(otherVerbatimField,"The CTC term chosen requires a MedDRA
          * based term or a free text entry ");
          */
-        InputField otherLowLevelTermField = InputFieldFactory.createAutocompleterField("lowLevelTerm", "Other (MedDRA)", false);
-        creator.createRepeatingFieldGroup(CtcBasicsTab.CTC_OTHER_FIELD_GROUP, "adverseEvents", otherLowLevelTermField);
+        
+        if(command.getStudy().getOtherMeddra() != null){
+        	InputField otherLowLevelTermField = InputFieldFactory.createAutocompleterField("lowLevelTerm", "Other (MedDRA)", false);
+        	creator.createRepeatingFieldGroup(CtcBasicsTab.CTC_OTHER_FIELD_GROUP, "adverseEvents", otherLowLevelTermField);
+        } else  {     
+			InputField otherSpecifyField =  InputFieldFactory.createTextField("otherSpecify", "Other (specify)", "aeReport.adverseEvents.otherSpecify", false);
+	        InputFieldAttributes.setSize(otherSpecifyField, 25);
+	        creator.createRepeatingFieldGroup("otherSpecify", "adverseEvents", otherSpecifyField);
+        }
         
         //add the fields for outcomes
         for(InputFieldGroup outcomeFieldGrp : getOutcomeInputFieldGroups(command)){

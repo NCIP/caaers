@@ -84,9 +84,9 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         		//only add otherMedDRA on non MedDRA and otherRequired=true
                 if(ae.getAdverseEventTerm().isOtherRequired() && study.getOtherMeddra() != null){
                 	mainFieldFactory.addField(otherMeddraField);
-                }else{
+                }else if(ae.getAdverseEventTerm().isOtherRequired()){
                 	   //other Specify
-            		InputField otherSpecifyField =  InputFieldFactory.createTextField("otherSpecify", "Other (specify)", "aeReport.adverseEvents.otherSpecify", true);
+            		InputField otherSpecifyField =  InputFieldFactory.createTextField("otherSpecify", "Other (specify)", "aeReport.adverseEvents.otherSpecify", false);
                     InputFieldAttributes.setSize(otherSpecifyField, 25);
                 	mainFieldFactory.addField(otherSpecifyField);
                 }

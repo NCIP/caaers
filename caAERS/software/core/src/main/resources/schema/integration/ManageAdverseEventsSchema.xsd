@@ -157,7 +157,7 @@
     
      <xs:complexType name="AdverseEventCtepTermType">
                 <xs:sequence>
-                 	<xs:element minOccurs="0" name="ctepCode" type="xs:string"/>
+                 	<xs:element minOccurs="1" name="ctepCode" type="xs:string"/>
                    	 <xs:choice>  
 	                    <xs:element minOccurs="0" name="otherMeddra" type="AdverseEventMeddraLowLevelTermType"/>
 	                    <xs:element minOccurs="0" name="otherSpecify" type="xs:string"/>

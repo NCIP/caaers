@@ -18,6 +18,7 @@
 
 <c:set var="ctcTermGroup">ctcTerm${index}</c:set>
 <c:set var="ctcOtherGroup">ctcOther${index}</c:set>
+<c:set var="ctcOtherSpecify">otherSpecify${index}</c:set>
 <c:set var="mainGroup">main${index}</c:set>
 <c:set var="title">${adverseEvent.adverseEventCtcTerm.ctcTerm.term}</c:set>
 <c:set var="title_grade">${command.aeReport.adverseEvents[index].grade.code}</c:set>
@@ -51,28 +52,45 @@
 		</div>
 		
 		<!--  Other MedDRA -->
-        <div style="display:${(adverseEvent.adverseEventTerm.otherRequired) and (not empty command.adverseEventReportingPeriod.study.otherMeddra)? 'block' : 'none'}">
-        <ui:row path="${fieldGroups[ctcOtherGroup].fields[0].propertyName}">
-            <jsp:attribute name="label"><ui:label path="${fieldGroups[ctcOtherGroup].fields[0].propertyName}" text="${fieldGroups[ctcOtherGroup].fields[0].displayName}"/></jsp:attribute>
-            <jsp:attribute name="value">
-                <ui:autocompleter path="${fieldGroups[ctcOtherGroup].fields[0].propertyName}" initialDisplayValue="${empty adverseEvent.lowLevelTerm ? 'Begin typing here' : adverseEvent.lowLevelTerm.meddraTerm}" enableClearButton="true">
-                    <jsp:attribute name="populatorJS">
-                        function(autocompleter, text) {
-                            var terminologyVersionId = ${empty command.adverseEventReportingPeriod.study.otherMeddra.id ? 0 :command.adverseEventReportingPeriod.study.otherMeddra.id};
-                            createAE.matchLowLevelTermsByCode(terminologyVersionId, text, function(values) {
-                                autocompleter.setChoices(values)})
-                        }
-                    </jsp:attribute>
-                    <jsp:attribute name="selectorJS">
-                        function(lowLevelTerm) {
-                            return lowLevelTerm.meddraTerm;
-                        }
-                    </jsp:attribute>
-                    
-                </ui:autocompleter>
-            </jsp:attribute>
-        </ui:row>
-        </div>
+		<c:if test="${adverseEvent.adverseEventTerm.otherRequired}">
+			<c:choose>
+				<c:when test="${not empty command.adverseEventReportingPeriod.study.otherMeddra}">
+			        <div">
+			        <ui:row path="${fieldGroups[ctcOtherGroup].fields[0].propertyName}">
+			            <jsp:attribute name="label"><ui:label path="${fieldGroups[ctcOtherGroup].fields[0].propertyName}" text="${fieldGroups[ctcOtherGroup].fields[0].displayName}"/></jsp:attribute>
+			            <jsp:attribute name="value">
+			                <ui:autocompleter path="${fieldGroups[ctcOtherGroup].fields[0].propertyName}" initialDisplayValue="${empty adverseEvent.lowLevelTerm ? 'Begin typing here' : adverseEvent.lowLevelTerm.meddraTerm}" enableClearButton="true">
+			                    <jsp:attribute name="populatorJS">
+			                        function(autocompleter, text) {
+			                            var terminologyVersionId = ${empty command.adverseEventReportingPeriod.study.otherMeddra.id ? 0 :command.adverseEventReportingPeriod.study.otherMeddra.id};
+			                            createAE.matchLowLevelTermsByCode(terminologyVersionId, text, function(values) {
+			                                autocompleter.setChoices(values)})
+			                        }
+			                    </jsp:attribute>
+			                    <jsp:attribute name="selectorJS">
+			                        function(lowLevelTerm) {
+			                            return lowLevelTerm.meddraTerm;
+			                        }
+			                    </jsp:attribute>
+			                    
+			                </ui:autocompleter>
+			            </jsp:attribute>
+			        </ui:row>
+			        </div>
+			    </c:when>
+        		<c:otherwise>
+        			<div>
+			        <ui:row path="${fieldGroups[ctcOtherSpecify].fields[0].propertyName}">
+			            <jsp:attribute name="label"><ui:label path="${fieldGroups[ctcOtherSpecify].fields[0].propertyName}" text="${fieldGroups[ctcOtherSpecify].fields[0].displayName}"/></jsp:attribute>
+			            <jsp:attribute name="value">
+			               <ui:text path="${fieldGroups[ctcOtherSpecify].fields[0].propertyName}" size="25" />
+			            </jsp:attribute>
+			        </ui:row>
+			        </div>
+				</c:otherwise>
+			</c:choose>
+	        
+        </c:if>
 <%--
         <tags:renderRow field="${fieldGroups[ctcOtherGroup].fields[0]}" style="display: none">
         <jsp:attribute name="label">

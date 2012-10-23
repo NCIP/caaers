@@ -294,7 +294,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 			return caaersServiceResponse;
 		}
 		// fetch participant
-		Participant dbParticipant = fetchParticipant(studySubjectIdentifier, dbStudy.getId(),dbStudy.getShortTitle(), caaersServiceResponse);
+		Participant dbParticipant = fetchParticipant(studySubjectIdentifier, dbStudy.getId(), studyIdentifier, caaersServiceResponse);
 		if (dbParticipant == null) {
 			//response must be populated with appropriate errors that lead to one of these being null
 			return caaersServiceResponse;
@@ -451,7 +451,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 			return caaersServiceResponse;
 		}
 		// fetch participant
-		Participant dbParticipant = fetchParticipant(studySubjectIdentifier, dbStudy.getId(),dbStudy.getShortTitle(), caaersServiceResponse);
+		Participant dbParticipant = fetchParticipant(studySubjectIdentifier, dbStudy.getId(), studyIdentifier, caaersServiceResponse);
 		if (dbParticipant == null) {
 			//response must be populated with appropriate errors that lead to one of these being null
 			return caaersServiceResponse;
@@ -764,7 +764,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 		return assignment;
 	}
 
-	private Participant fetchParticipant(String studySubjectIdentifier, Integer studyIdentifier, String studyShortTitle, CaaersServiceResponse caaersServiceResponse) {
+	private Participant fetchParticipant(String studySubjectIdentifier, Integer studyDbId, String inputStudyIdentifier, CaaersServiceResponse caaersServiceResponse) {
 		if (studySubjectIdentifier == null) {
 			String message = messageSource.getMessage("WS_AEMS_032", new String[] { studySubjectIdentifier }, "", Locale
 					.getDefault());
@@ -773,8 +773,8 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 			return null;
 		}
 		
-		if (studyIdentifier == null) {
-			String message = messageSource.getMessage("WS_AEMS_034", new String[] { studyIdentifier.toString() }, "", Locale
+		if (studyDbId == null) {
+			String message = messageSource.getMessage("WS_AEMS_034", new String[] { studyDbId.toString() }, "", Locale
 					.getDefault());
 			logger.error(message);
 			Helper.populateError(caaersServiceResponse, "WS_AEMS_034", message);
@@ -786,7 +786,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 			ParticipantQuery pq = new ParticipantQuery();
 			pq.joinStudy();
 			pq.filterByStudySubjectIdentifier(studySubjectIdentifier, "=");
-			pq.filterByStudyId(studyIdentifier, "=");
+			pq.filterByStudyId(studyDbId, "=");
 			
 			logger.error("AE part >>> " + pq.getQueryString());
 			List<Participant> dbParticipants = participantDao.searchParticipant(pq);			
@@ -794,7 +794,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 				logger.info("Participant exists in caAERS");
 				dbParticipant = dbParticipants.get(0);
 			} else {
-				String message = messageSource.getMessage("WS_AEMS_005", new String[] { studySubjectIdentifier, studyShortTitle }, "", Locale
+				String message = messageSource.getMessage("WS_AEMS_005", new String[] { studySubjectIdentifier, inputStudyIdentifier }, "", Locale
 						.getDefault());
 				logger.error(message);
 				Helper.populateError(caaersServiceResponse, "WS_AEMS_005", message);				

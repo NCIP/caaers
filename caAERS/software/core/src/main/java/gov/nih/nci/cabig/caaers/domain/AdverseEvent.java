@@ -1117,6 +1117,8 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     	if(this.getAdverseEventCtcTerm().isOtherRequired()){
     		if(this.getLowLevelTerm() != null) {
     			name.append(", " + this.getLowLevelTerm().getMeddraTerm());
+    		}else if(this.getOtherSpecify() != null){
+    			name.append(", " + this.getOtherSpecify());
     		}else if(this.getDetailsForOther() != null){
     			name.append(", " + this.getDetailsForOther());
     		}
