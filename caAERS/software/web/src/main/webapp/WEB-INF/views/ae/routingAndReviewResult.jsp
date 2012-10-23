@@ -19,7 +19,10 @@
          Tip(text, WIDTH, 300, TITLE, title, SHADOW, false, FADEIN, 300, FADEOUT, 300, STICKY, 1, CLOSEBTN, true, CLICKCLOSE, true);
      }
 	
-		
+	function displayEditLink(url) {
+	    window.location = url;
+	}
+	
 	function advanceWorkflow(valueSelected, wfId, entityId, entityType){
 		
 		var newStatus = valueSelected;
@@ -45,7 +48,6 @@
 								var entityStatusId = entityType + '-' + entityId + '-status';
 								$(entityStatusId).innerHTML = output.htmlContent;
 							}
-						//	alert('The action: "' + newStatus + '" was taken.');
 						});
 			}
 		
@@ -75,7 +77,6 @@
       								$('reportingPeriod-validation-errors-popup').style.display='none';
 		   		   					contentWin = null;
       								Windows.removeObserver(this);
-      							//	sb.selectedIndex = 0;
       							}
       						}
       					}
@@ -101,14 +102,11 @@
 							var entityStatusId = entityType + '-' + entityId + '-status';
 							$(entityStatusId).innerHTML = output.htmlContent;
 						}
-					//	alert('The action: "' + newStatus + '" was taken.');
 					});
 				}
 			});
 		}
-//	sb.enable();
 		}else{
-			//sb.value = 'Please Select';
 			return false;
 		}
 	}
@@ -125,12 +123,13 @@
 			reportURL = reportURL
 					+ '?aeReport=' + aeReportId
 					+ '&report=' + entityId
-					+ '&viewOnly=true&src=RoutingReview" />';
+					+ '&viewOnly=true&src=RoutingReview';
 					
 			var _optionDetails = "";
 			
 			if ( aeStatus != 'COMPLETED') {
-				_optionDetails = "<li><a class='submitter-blue' href='" + reportURL + "' >"	+ "View" + "</a></li>";
+				_optionDetails = '<li><a class="submitter-blue" href="#" onclick="displayEditLink('
+					+ "'" + reportURL + "'" + ')">' + "View" +  '</a></li>';
 			}
 			for ( var i = 0; i < _actions.length; i++) {
 				_optionDetails = _optionDetails
@@ -168,10 +167,11 @@
 			var reportingPeriodPageURL = '<c:url value= "/pages/ae/reviewResolver" />';
 			reportingPeriodPageURL = reportingPeriodPageURL
 					+ '?adverseEventReportingPeriod=' + entityId
-					+ '&src=RoutingReview" />';
+					+ '&src=RoutingReview';
 
-			var _optionDetails = "<li><a class='submitter-blue' href='" + reportingPeriodPageURL + "' >"
-					+ "Edit" + "</a></li>";
+			var _optionDetails = '<li><a class="submitter-blue" href="#" onclick="displayEditLink('
+					+ "'" + reportingPeriodPageURL + "'" + ')">' + "Edit" +  '</a></li>';
+					
 			for ( var i = 0; i < _actions.length; i++) {
 				_optionDetails = _optionDetails
 						+ '<li><a class="submitter-blue" href="#" onclick="advanceWorkflow('
