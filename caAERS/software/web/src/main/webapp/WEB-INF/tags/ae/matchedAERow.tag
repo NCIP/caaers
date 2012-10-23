@@ -9,7 +9,7 @@
 
 <c:if test="${fillerRow}">
     <tr>
-        <td colspan="10" class="fillerRow">
+        <td colspan="9" class="fillerRow">
             &nbsp;
         </td>
     </tr>
@@ -21,7 +21,6 @@
     <c:if test="${not empty ae1}">
         <tr id="aewd-${widgetId}-tr-iae" class="tr-ae1">
             <td width="${requestScope.widthSource}" class="tr-ae1-c1">${ae1.source}</td>
-            <td width="${requestScope.widthId}" class="tr-ae1-c2">${empty ae1.externalID ? '-' : ae1.externalID }</td>
             <td width="${requestScope.widthTerm}" class="tr-ae1-c3"> ${ae1.term.displayName}</td>
             <td width="${requestScope.widthGrade}" class="tr-ae1-c4">${ae1.grade}</td>
             <td width="${requestScope.widthStartDate}" class="tr-ae1-c5">${ae1.startDate}</td>
@@ -49,7 +48,6 @@
     </c:if>
         <tr id="aewd-${widgetId}-tr-eae" style="${empty ae2 ? 'display:none;' : ''}" class="tr-ae2">
             <td width="${requestScope.widthSource}" class="eae tr-ae2-c1">${ae2.source}</td>
-            <td width="${requestScope.widthId}"  class="eae tr-ae2-c2">${ae2.externalID}</td>
             <td width="${requestScope.widthTerm}"  class="eae tr-ae2-c3">${ae2.term.displayName}</td>
             <td width="${requestScope.widthGrade}"  class="eae tr-ae2-c4">${ae2.grade}</td>
             <td width="${requestScope.widthStartDate}"  class="eae tr-ae2-c5">${ae2.startDate}</td>
@@ -62,7 +60,7 @@
             </td>
         </tr>
     <tr id="aewd-${widgetId}-tr-nomatch" style="${empty ae2 ? '' : 'display:none;'}" class="tr-nomatch">
-        <td width="100%" class="tdNoMatch" colspan="10">No matching AE found</td>
+        <td width="100%" class="tdNoMatch" colspan="9">No matching AE found</td>
     </tr>
 
     <tr id="aewd-${widgetId}-tr-pick" class="tr-picker">

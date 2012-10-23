@@ -2,13 +2,12 @@
 
 <html>
 <c:set var="widthSource" value="6%" scope="request" />
-<c:set var="widthId" value="4%" scope="request" />
 <c:set var="widthTerm" value="18%" scope="request" />
 <c:set var="widthGrade" value="14%" scope="request" />
 <c:set var="widthStartDate" value="12%" scope="request" />
 <c:set var="widthEndDate" value="12%" scope="request" />
 <c:set var="widthVerbatim" value="14%" scope="request" />
-<c:set var="widthWhySerious" value="10%" scope="request" />
+<c:set var="widthWhySerious" value="14%" scope="request" />
 <c:set var="widthAttribution" value="10%" scope="request" />
 <head>
     <title>${tab.longTitle}</title>
@@ -67,7 +66,6 @@
                         <thead>
                         <tr class="label" align="center">
                             <td class="tableHeader" width="${widthSource}">&nbsp;&nbsp;&nbsp;</td>
-                            <td class="tableHeader" width="${widthId}">ID</td>
                             <td class="tableHeader" width="${widthTerm}"> Term</td>
                             <td class="tableHeader" width="${widthGrade}">Grade</td>
                             <td class="tableHeader" width="${widthStartDate}">Start</td>
@@ -79,7 +77,7 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td colspan="9" class="fillerRow">
+                            <td colspan="8" class="fillerRow">
                                 &nbsp;
                             </td>
                         </tr>

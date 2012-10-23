@@ -2,13 +2,12 @@
 
 <html>
 <c:set var="widthSource" value="6%" scope="request" />
-<c:set var="widthId" value="2%" scope="request" />
 <c:set var="widthTerm" value="22%" scope="request" />
 <c:set var="widthGrade" value="14%" scope="request" />
 <c:set var="widthStartDate" value="6%" scope="request" />
 <c:set var="widthEndDate" value="6%" scope="request" />
 <c:set var="widthVerbatim" value="21%" scope="request" />
-<c:set var="widthWhySerious" value="10%" scope="request" />
+<c:set var="widthWhySerious" value="12%" scope="request" />
 <c:set var="widthAttribution" value="9%" scope="request" />
 <c:set var="widthActions" value="4%" scope="request" />
 <head>
@@ -230,14 +229,13 @@ AE.aeWidget = Class.create({
         if(tds){
             if(this.ae2){
                 tds[0].innerHTML = this.ae2.source;
-                tds[1].innerHTML = this.ae2.externalId;
-                tds[2].innerHTML = this.ae2.term;
-                tds[3].innerHTML = this.ae2.grade;
-                tds[4].innerHTML = this.ae2.startDate;
-                tds[5].innerHTML = this.ae2.endDate;
-                tds[6].innerHTML = this.ae2.verbatim;
-                tds[7].innerHTML = this.ae2.whySerious;
-                tds[8].innerHTML = this.ae2.attribution;
+                tds[1].innerHTML = this.ae2.term;
+                tds[2].innerHTML = this.ae2.grade;
+                tds[3].innerHTML = this.ae2.startDate;
+                tds[4].innerHTML = this.ae2.endDate;
+                tds[5].innerHTML = this.ae2.verbatim;
+                tds[6].innerHTML = this.ae2.whySerious;
+                tds[7].innerHTML = this.ae2.attribution;
             }
 
         }
@@ -256,20 +254,19 @@ AE.aeWidget = Class.create({
     },
     definePickerTable : function(){
         var colDefs = [
-            {key:"externalId", label: "ID", sortable:false, resizeable:false},
             {key:"term", label: "Term", sortable:true, resizeable:true},
             {key:"grade", label: "Grade", sortable:true, resizeable:false},
             {key:"startDate", label: "Start",formatter:YAHOO.widget.DataTable.formatDate, sortable:true, sortOptions:{defaultDir:YAHOO.widget.DataTable.CLASS_DESC},resizeable:false},
             {key:"endDate", label: "End",formatter:YAHOO.widget.DataTable.formatDate, sortable:true, sortOptions:{defaultDir:YAHOO.widget.DataTable.CLASS_DESC},resizeable:false},
             {key:"verbatim", label: "Verbatim", sortable:true, resizeable:true},
-            {key:"whySerious", label: "Why Serious?", sortable:false, resizeable:false},
+            {key:"whySerious", label: "Serious?", sortable:false, resizeable:false},
             {key:"attribution", label: "Attribution", sortable:false, resizeable:false},
             {key:"percent", label: "Match" ,formatter:AE.matchFormatter, sortable:true, resizeable:false}
         ];
         var ds = new YAHOO.util.DataSource(this.aePickerData);
         ds.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
         ds.responseSchema = {
-            fields: ["id","externalId","term","grade","startDate","endDate", "verbatim", "whySerious", "attribution", "percent"]
+            fields: ["id","term","grade","startDate","endDate", "verbatim", "whySerious", "attribution", "percent"]
         };
 
         this.aePickerTbl = new YAHOO.widget.ScrollingDataTable(this.containerId, colDefs, ds, {height:"12em", width:'800px'});
@@ -474,13 +471,12 @@ ValidationManager.submitPreProcess = function(){
         <thead>
         <tr class="label" align="center">
             <td class="tableHeader" width="${widthSource}">&nbsp;&nbsp;&nbsp;</td>
-            <td class="tableHeader" width="${widthId}">ID</td>
             <td class="tableHeader" width="${widthTerm}"> Term</td>
             <td class="tableHeader" width="${widthGrade}">Grade</td>
             <td class="tableHeader" width="${widthStartDate}">Start</td>
             <td class="tableHeader" width="${widthEndDate}">End</td>
             <td class="tableHeader" width="${widthVerbatim}">Verbatim</td>
-            <td class="tableHeader" width="${widthWhySerious}">Why Serious?</td>
+            <td class="tableHeader" width="${widthWhySerious}">Serious?</td>
             <td class="tableHeader" width="${widthAttribution}">Attribution</td>
             <td class="tableHeader" width="${widthActions}"></td>
         </tr>

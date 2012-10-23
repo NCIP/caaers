@@ -8,7 +8,6 @@
 <%@attribute name="cssClass" %>
 
   <tr class="${cssClass}">
-  	<td  class="${cssClass}"> ${empty ae.externalId ? requestScope.dash : ae.externalId}</td>
   	<td  class="${cssClass}"> ${ae.termName}</td>
   	<td  class="${cssClass}"> ${empty ae.grade ? '' : ae.grade.shortName}</td>
   	<td  class="${cssClass}">
@@ -27,6 +26,6 @@
   </tr>
   <c:if test="${not empty displayError && displayError eq 'true'}">
 	  <tr class="error">
-	  	<td colspan="8" class="error" >${ae.errorMessage}</td>
+	  	<td colspan="7" class="error" >${ae.errorMessage}</td>
 	  </tr>
   </c:if>

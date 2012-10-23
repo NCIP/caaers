@@ -28,7 +28,6 @@
 </c:if>
 
 <tr id="${external ? 'eae' : 'iae'}-${widgetId}-tr" class="${rejected ? 'ae-rejected' : ''} ${cssClass}">
-    <td width="${requestScope.widthId}"  class="${rejected ? 'ae-rejected' : ''} ${cssClass}">${e1 }</td>
     <td width="${requestScope.widthTerm}"  class="${rejected ? 'ae-rejected' : ''} ${cssClass}"> ${t1}</td>
     <td width="${requestScope.widthGrade}"  class="${rejected ? 'ae-rejected' : ''} ${cssClass}">${g1}</td>
     <td width="${requestScope.widthStartDate}"  class="${rejected ? 'ae-rejected' : ''} ${cssClass}">${sd1}</td>

@@ -42,7 +42,6 @@
 
     <tr id="aemrg-${widgetId}-tr-iae" class="tr-ae1 ${cssClass}">
         <td width="${requestScope.widthSource}" class="td-ae1 tr-ae1-c1 ${cssClass}" >${ae1.source}</td>
-        <td width="${requestScope.widthId}" class="td-ae1  tr-ae1-c2 ${cssClass}" >${empty ae1.externalID ? dash : ae1.externalID }</td>
         <td width="${requestScope.widthTerm}" class="td-ae1  tr-ae1-c3  col-term-${widgetId} ${cssClass}" >
             <c:if test="${t1 ne t2}">
                 <input type="hidden" id="t1${widgetId}-id" name="id" value="${ae1.term.id}" />
@@ -82,7 +81,6 @@
     </tr>
     <tr id="aemrg-${widgetId}-tr-eae" class="tr-ae2 ${cssClass}">
         <td width="${requestScope.widthSource}" class="td-ae2  tr-ae2-c1 ${cssClass}" >${ae2.source}</td>
-        <td width="${requestScope.widthId}" class="td-ae2   tr-ae2-c2 ${cssClass}" >${empty ae2.externalID ? dash : ae2.externalID }</td>
         <td width="${requestScope.widthTerm}" class="td-ae2   tr-ae2-c3 col-term-${widgetId} ${cssClass}" >
             <c:if test="${t1 ne t2}">
                 <input type="hidden" id="t2${widgetId}-id" name="id" value="${ae2.term.id}" />
@@ -121,7 +119,7 @@
 
     </tr>
     <tr class="tr-filler tr-filler1">
-        <td colspan="9" class="fillerRow">
+        <td colspan="8" class="fillerRow">
         </td>
     </tr>
     <tr id="aemrg-${widgetId}-tr-mae"  class="tr-ae3 ${cssClass}" >
@@ -137,7 +135,6 @@
             <form:hidden id="endDate${widgetId}" path="mergeMap[${mmkey}].endDate" />
             <form:hidden id="whySerious${widgetId}" path="mergeMap[${mmkey}].whySerious" />
         </td>
-        <td width="${requestScope.widthId}"  class="td-ae3 tr-ae3-c2 ${cssClass}"  >${empty ae2.externalID ? dash : ae2.externalID }</td>
         <td width="${requestScope.widthTerm}" id="td-term${widgetId}" class="td-ae3 col-term-${widgetId} ${cssClass}" >
             ${( (t1 eq t3) || (t2 eq t3)) ? (empty t3 ? dash : t3) : (empty t1 and empty t2) ? dash : '<div id="col-term-${widgetId}" class="selectAbove">Select above </div>'}
         </td>
@@ -162,7 +159,7 @@
 
     </tr>
     <tr class="tr-filler tr-filler2">
-        <td colspan="9" class="fillerRow">
+        <td colspan="8" class="fillerRow">
             &nbsp;
         </td>
     </tr>
