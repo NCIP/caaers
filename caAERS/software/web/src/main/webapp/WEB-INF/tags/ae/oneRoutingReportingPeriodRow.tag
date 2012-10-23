@@ -27,7 +27,6 @@ var options_${reportingPeriod.id} = [];
 		<chrome:collapsableElement targetID="rptable${reportingPeriod.id}" collapsed="true" id="rpID_${reportingPeriod.id}"/>
 	</td>
 	<td width="18%" align="left">
-		<%--<a href="<c:url value="${reportingPeriodPageURL}"/>">${reportingPeriod.evaluationPeriodName}</a> --%>
 		 ${reportingPeriod.evaluationPeriodName}
 	</td>
 	<td width="22%">${reportingPeriod.evaluationPeriodTypeName}</td>
