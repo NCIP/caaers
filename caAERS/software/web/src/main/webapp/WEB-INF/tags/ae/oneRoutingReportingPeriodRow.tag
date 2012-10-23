@@ -8,31 +8,36 @@
 <%@attribute name="index" required="true" type="java.lang.Integer" %>
 <%@attribute name="reportingPeriod" type="gov.nih.nci.cabig.caaers.domain.dto.AdverseEventReportingPeriodDTO" required="true" description="The course that is being rendered" %>
 
+
+
+<script type="text/javascript">
+var options_${reportingPeriod.id} = [];
+
+<c:forEach items="${reportingPeriod.possibleActions}" var="aStatus">
+	options_${reportingPeriod.id}.push('${aStatus}');
+</c:forEach>
+</script>
+
 <c:set var="currClass" value="${(index %2) eq 0 ? 'odd' : 'even'}" />
 <%-- <c:set var="reportingPeriodPageURL" 
 	value="/pages/ae/captureRoutine?participant=${reportingPeriod.participant.id}&study=${reportingPeriod.study.id}&_page=0&adverseEventReportingPeriod=${reportingPeriod.id}&_target1=1&displayReportingPeriod=true&addReportingPeriodBinder=true" /> --%>
-<c:set var="reportingPeriodPageURL"
-	value="/pages/ae/reviewResolver?participant=${reportingPeriod.participant.id}&study=${reportingPeriod.study.id}&adverseEventReportingPeriod=${reportingPeriod.id}" />
 
 <tr align="center" id="${index}" class="${currClass}">
 	<td>
 		<chrome:collapsableElement targetID="rptable${reportingPeriod.id}" collapsed="true" id="rpID_${reportingPeriod.id}"/>
 	</td>
 	<td width="18%" align="left">
-		<a href="<c:url value="${reportingPeriodPageURL}"/>">${reportingPeriod.evaluationPeriodName}</a>
-		<%-- ${reportingPeriod.evaluationPeriodName} --%>
+		<%--<a href="<c:url value="${reportingPeriodPageURL}"/>">${reportingPeriod.evaluationPeriodName}</a> --%>
+		 ${reportingPeriod.evaluationPeriodName}
 	</td>
 	<td width="22%">${reportingPeriod.evaluationPeriodTypeName}</td>
 	<c:if test="${reportingPeriod.workflowId != null}">
 	<td width="25%" id="reportingPeriod-${reportingPeriod.id}-status">${reportingPeriod.reviewStatus.displayName}</td>
 	<td><a href="#" onClick="displayPopup('reportingPeriod', ${reportingPeriod.id})"><img src="<chrome:imageUrl name="../editComment.png" />" /></a></td>
 	<td width="25%">
-		<select onChange="advanceWorkflow(this,${reportingPeriod.workflowId }, ${reportingPeriod.id }, 'reportingPeriod')" class="wf${reportingPeriod.workflowId }" style="width: 150px">
-			<option value="Please Select">Please select</option>
-			<c:forEach items="${reportingPeriod.possibleActions}" var="aStatus">
-				<option value="${aStatus }">${aStatus}</option>
-			</c:forEach>
-		</select>
+		<img border="0" style="cursor: pointer;
+          margin-right: 15px;" id="course_routingreview_cycle_${reportingPeriod.id}"  onmouseover="showRoutingReviewCourseMenuOptions( ${reportingPeriod.workflowId}, ${reportingPeriod.id}, 'reportingPeriod','','')" src="/caaers/images/orange-actions.gif">
+          
 		<img id="reportingPeriod-${reportingPeriod.id}-indicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator" style="display:none;"/>
 	</td>
 	</c:if>

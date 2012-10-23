@@ -19,12 +19,12 @@
          Tip(text, WIDTH, 300, TITLE, title, SHADOW, false, FADEIN, 300, FADEOUT, 300, STICKY, 1, CLOSEBTN, true, CLICKCLOSE, true);
      }
 	
-	function advanceWorkflow(selectBox,wfId, entityId, entityType){
-		var sb = $(selectBox);
-		var newStatus = sb.value;
-		if(sb.value == '' || sb.value == 'Please Select') return;
-		if(confirm('Are you sure you want to take the action - ' + sb.value + ' ?')){
-			sb.disable();
+		
+	function advanceWorkflow(valueSelected, wfId, entityId, entityType){
+		
+		var newStatus = valueSelected;
+		if(valueSelected == '' || valueSelected == 'Please Select') return;
+		if(confirm('Are you sure you want to take the action - ' + valueSelected + ' ?')){
 			
 			if(entityType == 'report'){
 				var indicatorId = entityType + '-' + entityId + '-indicator';
@@ -32,21 +32,20 @@
 						routingAndReview.advanceWorkflow(wfId, newStatus, entityId, entityType , function(output){
 				
 							if(output.objectContent){
-								sb.options.length = 0;
-								var pleaseSelectOpt = new Option('Please select', 'Please select');
-								sb.options.add(pleaseSelectOpt);
 								var i = 0;
+								var _actions = window['options_report_' + entityId];
+								_actions.length = 0;
 								for(i = 0; i< output.objectContent.length; i++){
 									var status = output.objectContent[i];
-									var opt = new Option(status, status);
-									
-									sb.options.add(opt);
+									_actions.push(status);	
 								}
+								showRoutingReviewCourseMenuOptions(wfId, entityId);
+								
 								$(indicatorId).style.display='none';
 								var entityStatusId = entityType + '-' + entityId + '-status';
 								$(entityStatusId).innerHTML = output.htmlContent;
 							}
-							alert('The action: "' + newStatus + '" was taken.');
+						//	alert('The action: "' + newStatus + '" was taken.');
 						});
 			}
 		
@@ -76,7 +75,7 @@
       								$('reportingPeriod-validation-errors-popup').style.display='none';
 		   		   					contentWin = null;
       								Windows.removeObserver(this);
-      								sb.selectedIndex = 0;
+      							//	sb.selectedIndex = 0;
       							}
       						}
       					}
@@ -87,32 +86,122 @@
 						routingAndReview.advanceWorkflow(wfId, newStatus, entityId, entityType , function(output){
 				
 						if(output.objectContent){
-							sb.options.length = 0;
-							var pleaseSelectOpt = new Option('Please Select', 'Please Select');
-							sb.options.add(pleaseSelectOpt);
+			
 							var i = 0;
+							var _actions = window['options_' + entityId];
+							_actions.length = 0;
 							for(i = 0; i< output.objectContent.length; i++){
 								var status = output.objectContent[i];
-								var opt = new Option(status, status);
+								_actions.push(status);
 								
-								sb.options.add(opt);
 							}
+							showRoutingReviewCourseMenuOptions(wfId, entityId);
+							
 							$(indicatorId).style.display='none';
 							var entityStatusId = entityType + '-' + entityId + '-status';
 							$(entityStatusId).innerHTML = output.htmlContent;
 						}
-						alert('The action: "' + newStatus + '" was taken.');
+					//	alert('The action: "' + newStatus + '" was taken.');
 					});
 				}
 			});
 		}
-		sb.enable();
+//	sb.enable();
 		}else{
-			sb.value = 'Please Select';
+			//sb.value = 'Please Select';
 			return false;
 		}
 	}
 	
+
+	function showRoutingReviewCourseMenuOptions(workflowId, entityId,entityType, aeReportId, aeStatus) {
+		
+		var html="";
+		if(entityType == 'report'){
+				
+			var _element = $('course_routingreview_reportcycle_' + entityId);
+			var _actions = window['options_report_' + entityId];
+			var reportURL = '<c:url value= "/pages/ae/reviewResolver" />';
+			reportURL = reportURL
+					+ '?aeReport=' + aeReportId
+					+ '&report=' + entityId
+					+ '&viewOnly=true&src=RoutingReview" />';
+					
+			var _optionDetails = "";
+			
+			if ( aeStatus != 'COMPLETED') {
+				_optionDetails = "<li><a class='submitter-blue' href='" + reportURL + "' >"	+ "View" + "</a></li>";
+			}
+			for ( var i = 0; i < _actions.length; i++) {
+				_optionDetails = _optionDetails
+								+ '<li><a class="submitter-blue" href="#" onclick="advanceWorkflow('
+								+ "'" + _actions[i] + "' , ";
+				_optionDetails = _optionDetails + workflowId + ", ";
+				_optionDetails = _optionDetails + entityId + ',';
+				_optionDetails = _optionDetails + "'" +entityType + "'";
+				_optionDetails = _optionDetails + ')">';
+				_optionDetails = _optionDetails + _actions[i] + '</a></li>';
+				_optionDetails = _optionDetails + "\n";
+			}
+			 html = "<div><ul style='font-family:tahoma;'>" + _optionDetails
+				+ "</ul></div>";
+			
+			 jQuery(_element).menu({
+					content : html,
+					maxHeight : 180,
+					width : 180,
+					positionOpts : {
+						directionV : 'down',
+						posX : 'left',
+						posY : 'bottom',
+						offsetX : 0,
+						offsetY : 0
+					},
+					showSpeed : 300
+				});	
+				
+		} else if (entityType == 'reportingPeriod') {
+
+			var _element = $('course_routingreview_cycle_' + entityId);
+			var _actions = window['options_' + entityId];
+
+			var reportingPeriodPageURL = '<c:url value= "/pages/ae/reviewResolver" />';
+			reportingPeriodPageURL = reportingPeriodPageURL
+					+ '?adverseEventReportingPeriod=' + entityId
+					+ '&src=RoutingReview" />';
+
+			var _optionDetails = "<li><a class='submitter-blue' href='" + reportingPeriodPageURL + "' >"
+					+ "Edit" + "</a></li>";
+			for ( var i = 0; i < _actions.length; i++) {
+				_optionDetails = _optionDetails
+						+ '<li><a class="submitter-blue" href="#" onclick="advanceWorkflow('
+						+ "'" + _actions[i] + "' , ";
+				_optionDetails = _optionDetails + workflowId + ", ";
+				_optionDetails = _optionDetails + entityId + ',';
+				_optionDetails = _optionDetails + "'" +entityType + "'";
+				_optionDetails = _optionDetails + ')">';
+				_optionDetails = _optionDetails + _actions[i] + '</a></li>';
+				_optionDetails = _optionDetails + "\n";
+			}
+			html = "<div><ul style='font-family:tahoma;'>" + _optionDetails
+					+ "</ul></div>";
+			jQuery(_element).menu({
+				content : html,
+				maxHeight : 180,
+				width : 180,
+				positionOpts : {
+					directionV : 'down',
+					posX : 'left',
+					posY : 'bottom',
+					offsetX : 0,
+					offsetY : 0
+				},
+				showSpeed : 300
+			});
+		
+		}
+		
+	}
 </script>
 </head>
 <body>
