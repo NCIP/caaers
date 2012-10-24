@@ -82,15 +82,16 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         															InputFieldFactory.createAutocompleterField("lowLevelTerm", "Other (MedDRA)", true & unRetired);
                
         		//only add otherMedDRA on non MedDRA and otherRequired=true
-                if(ae.getAdverseEventTerm().isOtherRequired() && study.getOtherMeddra() != null){
-                	mainFieldFactory.addField(otherMeddraField);
-                }else if(ae.getAdverseEventTerm().isOtherRequired()){
-                	   //other Specify
-            		InputField otherSpecifyField =  InputFieldFactory.createTextField("otherSpecify", "Other (specify)", "aeReport.adverseEvents.otherSpecify", false);
-                    InputFieldAttributes.setSize(otherSpecifyField, 25);
-                	mainFieldFactory.addField(otherSpecifyField);
+                if(ae.getAdverseEventTerm().isOtherRequired()){
+                    if(study.getOtherMeddra() != null){
+                        mainFieldFactory.addField(otherMeddraField);
+                    } else {
+                        //other Specify
+                        InputField otherSpecifyField =  InputFieldFactory.createTextField("otherSpecify", "Other (specify)", "aeReport.adverseEvents.otherSpecify", false);
+                        mainFieldFactory.addField(otherSpecifyField);
+                    }
                 }
-                
+
             	//verbatim - Is required when there is no other MedDRA
                 boolean verbatimMandatory = (study.getOtherMeddra() == null) && (ae.getAdverseEventTerm().isOtherRequired());
                 boolean verbatimApplicable = caaersFieldConfigurationManager.isFieldApplicable(TAB_NAME, "adverseEvents[].detailsForOther");
