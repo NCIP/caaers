@@ -136,7 +136,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
                 mainFieldFactory.addField(eventLocationField);
                 
                 //external Id
-                InputField externalIdField = InputFieldFactory.createTextField("externalId", " AE identifier that can be used as a reference of an AE record in another system.", "aeReport.adverseEvents.externalId", false);
+                InputField externalIdField = InputFieldFactory.createLabelField("externalId", "ExternalId", false);
                 externalIdField.setReadable(true);
                 mainFieldFactory.addField(externalIdField);
 
