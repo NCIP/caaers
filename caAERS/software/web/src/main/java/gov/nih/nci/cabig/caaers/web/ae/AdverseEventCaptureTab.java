@@ -137,7 +137,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
                 mainFieldFactory.addField(eventLocationField);
                 
                 //external Id
-                InputField externalIdField = InputFieldFactory.createLabelField("externalId", "ExternalId", false);
+                InputField externalIdField = InputFieldFactory.createLabelField("externalId", "External Id", false);
                 externalIdField.setReadable(true);
                 mainFieldFactory.addField(externalIdField);
 
