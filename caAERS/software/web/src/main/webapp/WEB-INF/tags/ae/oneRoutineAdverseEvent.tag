@@ -214,8 +214,6 @@
 			<tags:renderRow field="${fieldGroups[mainGroup].fields[9 + indexCorrection]}" />
 			<%-- Risk --%>
 			<tags:renderRow field="${fieldGroups[mainGroup].fields[8 + indexCorrection]}" />
-			<%-- External ID --%>
-			<tags:renderRow field="${fieldGroups[mainGroup].fields[10 + indexCorrection]}" />
 		</div>
 	</div>
 	
