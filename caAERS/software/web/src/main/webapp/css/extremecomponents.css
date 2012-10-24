@@ -14,7 +14,7 @@
 .eXtremeTable .tableHeader:last-child {border-right:  none;}
 
 
-.eXtremeTable .tableRegion .tdNoMatch {text-align: center;border-bottom: 1px solid #ccc;padding: 3px 10px; background: #efefef; color: #AAAAAA; font-style: italic;text-shadow: 0 1px white;}
+.eXtremeTable .tableRegion .tdNoMatch {text-align: center;border-bottom: 1px solid #ccc;padding: 3px 10px; background: #efefef; color: red; font-style: italic;text-shadow: 0 1px white;}
 
 .eXtremeTable .tableRegion td {padding:  3px 8px;}
 .eXtremeTable .tableRegion button td {padding: 0}
