@@ -1,11 +1,12 @@
 <%@include file="/WEB-INF/views/taglibs.jsp"%>
-<tags:dwrJavascriptLink objects="ctepDataInitialization"/>
+
 <html>
 <head>
 <title>CTEP-ESYS Data Integration Logs</title>
 <link rel="stylesheet" type="text/css" href="/caaers/css/slider.css" />
 <link rel="stylesheet" type="text/css" href="/caaers/css/ae.css" />
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
+<tags:dwrJavascriptLink objects="ctepDataInitialization"/>
 
 <style type="text/css">
 
