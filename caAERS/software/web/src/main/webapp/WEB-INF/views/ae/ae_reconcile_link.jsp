@@ -15,14 +15,7 @@
 <style type="text/css">
     .ae-link-widget{}
     tr.aeWorkedOn td {
-        background: #fdfdef;
-    background: -moz-linear-gradient(top,  #fdfdef 0%, #f9f6c3 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fdfdef), color-stop(100%,#f9f6c3));
-    background: -webkit-linear-gradient(top,  #fdfdef 0%,#f9f6c3 100%);
-    background: -o-linear-gradient(top,  #fdfdef 0%,#f9f6c3 100%);
-    background: -ms-linear-gradient(top,  #fdfdef 0%,#f9f6c3 100%);
-    background: linear-gradient(to bottom,  #fdfdef 0%,#f9f6c3 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fdfdef', endColorstr='#f9f6c3',GradientType=0 );
+
     }
     .wgtBtnDiv{
         width: 7em;

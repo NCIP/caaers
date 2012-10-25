@@ -25,7 +25,7 @@
             }.forgot a:hover {
                 color: #fff;border-bottom: 1px solid #fff;
             }
-            
+
             body {
                 background:#02307f url(../images/blue/top_texture_bg.png) top center no-repeat;
                 color: #fff;
@@ -53,7 +53,7 @@
             }
 
             #main {background: none;-moz-box-shadow: none; -webkit-box-shadow: none; box-shadow: none;}
-            
+
             h2 {
                 color: #fff;
                 font-size: 30px;
@@ -62,21 +62,19 @@
                 text-shadow: 0 2px 1px black;
                 text-align: center;
             }
-            
-            h1 {
-                visibility: hidden;
-            } #logo {
+
+            #logo {
                 position: absolute;
                 top: -135px;
                 left: 184px;
             } .errors {
                 color: #FFCC00;
             }
-            
+
             input {
                 outline: none;
             }
-            
+
             div.row div.label {
                 float: left;
                 font-weight: normal;
@@ -95,6 +93,7 @@
             ul.errors {
                 color:#F05757;
                 font-size: 11px;
+                display: none;
             }
 
             input.required[type="text"], input.required[type="password"], select.required, textarea.required  {
@@ -102,6 +101,8 @@
                 -webkit-box-shadow: 0 2px 4px black;
                 box-shadow: 0 2px 4px black;
             }
+
+            #all-login {text-align: left; margin-top: -120px}
             
             .container {
 			padding: 10px 20px 20px 20px;
@@ -199,10 +200,10 @@
 			
 			
 			
-			h1 {font-size: 25px; color:#02307F; font-weight:normal;margin-bottom:10px; margin-top: 10px;
+			h1 {font-size: 25px; color:#02307F; font-weight:normal;margin-bottom:10px; margin-top: 0px;
 			}	
 				
-			 h1.signIn {width: 388px; float:right; margin:25px 0 0 0}
+			 h1.signIn {width: 388px; float:right; margin:15px 0 0 0}
 				
 			 a,  a:visited{transition: all ease-in-out 0.2s;
 				-moz-transition: all ease-in-out 0.2s;
@@ -228,7 +229,7 @@
 			form#login fieldset p label {
 				width: 350px;
 				display: block;
-				margin: 8px 5px 8px 30px;
+				margin: 9px 5px 8px 32px;
 				padding: 0;
 				cursor:text;
 				font-size: 16px;
@@ -677,7 +678,7 @@
  <div class="topDivider"></div>
  <div class="container">
  <div id="splash"> 
- <h1> A little about caAERS…</h1>
+ <h1> A little about caAERS...</h1>
  <p>
 The caBIG Adverse Event Reporting System (caAERS) is an open source software tool that is used to record and report adverse events that occur during clinical trials. This tool supports regulatory and protocol compliance for adverse event reporting and allows local collection, management, and querying of adverse event data. This tool also supports service based integration of data from other clinical trials management systems.</p>
  <p><a target="_blank" href="https://wiki.nci.nih.gov/display/caAERS/caAERS;jsessionid=4B63E7527DFDBF9DF7432C2FCDF7C660#caAERS-ToolOverview">Learn more</a></p>
@@ -697,11 +698,11 @@ The caBIG Adverse Event Reporting System (caAERS) is an open source software too
     
    			<p>
 				<label for="username">Username</label><br />
-				<input type="text" name="j_username" value="${sessionScope['ACEGI_SECURITY_LAST_USERNAME']}" id="username" class="validate-NOTEMPTY required">
+				<input type="text" name="j_username" value="${sessionScope['ACEGI_SECURITY_LAST_USERNAME']}" id="username" class="username validate-NOTEMPTY required">
 			</p>
 			<p>
 				<label for="password">Password</label><br />
-				<input type="password" name="j_password" value="" id="password" class="validate-NOTEMPTY required">
+				<input type="password" name="j_password" value="" id="password" class="password validate-NOTEMPTY required">
 			</p>
             
             

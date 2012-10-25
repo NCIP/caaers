@@ -26,11 +26,11 @@ button.omnipotent-button td, a.omnipotent-button td {
 	background-repeat:no-repeat;
 }
 button.omnipotent-button td.l, button.omnipotent-button td.r, a.omnipotent-button td.l, a.omnipotent-button td.r {
-	height:34px;
+	height:33px;
 	width:15px;
 }
 button.omnipotent-button td.m, a.omnipotent-button td.m {
-	padding-top:2px;
+	padding-top:0px;
 	padding-left:3px;
 	padding-right:3px;
 }
@@ -227,11 +227,11 @@ button.omnipotent-button.small td, a.omnipotent-button.small td {
 	background-repeat:no-repeat;
 }
 button.omnipotent-button.small td.l, button.omnipotent-button.small td.r, a.omnipotent-button.small td.l, a.omnipotent-button.small td.r {
-	height:26px;
+	height:25px;
 	width:14px;
 }
 button.omnipotent-button.small td.m, a.omnipotent-button.small td.m {
-	padding-top:3px;
+	padding-top:0px;
 	padding-left:3px;
 	padding-right:3px;
 }

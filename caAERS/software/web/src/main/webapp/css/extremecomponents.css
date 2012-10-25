@@ -16,7 +16,9 @@
 
 .eXtremeTable .tableRegion .tdNoMatch {text-align: center;border-bottom: 1px solid #ccc;padding: 3px 10px; background: #efefef; color: red; font-style: italic;text-shadow: 0 1px white;}
 
-.eXtremeTable .tableRegion td {padding:  3px 8px;}
+.eXtremeTable .tableRegion td {padding:  3px 8px;line-height: 13px;}
+.eXtremeTable .tableRegion td.fillerRow {padding: 0}
+.eXtremeTable .tableRegion td.fillerRow hr.hrfiller {background:  #ddd; height: 4px; border: none}
 .eXtremeTable .tableRegion button td {padding: 0}
 .eXtremeTable .tableRegion .yui-dt-bd td {padding: 3px 1px}
 
@@ -41,37 +43,38 @@
 	background-color: #F4F4F4;
 }
 .eXtremeTable .yui-skin-sam tr.yui-dt-odd {background-color: #efefef}
-.eXtremeTable th .yui-dt-label {color: white;text-shadow:0 -1px #2166A1}
+.eXtremeTable th .yui-dt-label {color: #2b4f6f;text-shadow: 0 1px white;}
 .eXtremeTable .yui-skin-sam tr.yui-dt-selected td, .eXtremeTable .yui-skin-sam tr.yui-dt-selected td.yui-dt-asc, .eXtremeTable .yui-skin-sam tr.yui-dt-selected td.yui-dt-desc {
-    background: #eff7ff;
-    background: -moz-linear-gradient(top,  #eff7ff 0%, #97d3ef 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eff7ff), color-stop(100%,#97d3ef));
-    background: -webkit-linear-gradient(top,  #eff7ff 0%,#97d3ef 100%);
-    background: -o-linear-gradient(top,  #eff7ff 0%,#97d3ef 100%);
-    background: -ms-linear-gradient(top,  #eff7ff 0%,#97d3ef 100%);
-    background: linear-gradient(to bottom,  #eff7ff 0%,#97d3ef 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eff7ff', endColorstr='#97d3ef',GradientType=0 );
+    background: #f8ffe8;
+    background: -moz-linear-gradient(top,  #f8ffe8 0%, #e3f5ab 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f8ffe8), color-stop(100%,#e3f5ab));
+    background: -webkit-linear-gradient(top,  #f8ffe8 0%,#e3f5ab 100%);
+    background: -o-linear-gradient(top,  #f8ffe8 0%,#e3f5ab 100%);
+    background: -ms-linear-gradient(top,  #f8ffe8 0%,#e3f5ab 100%);
+    background: linear-gradient(to bottom,  #f8ffe8 0%,#e3f5ab 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8ffe8', endColorstr='#e3f5ab',GradientType=0 );
 
 color:#333;
     text-shadow: 0 1px white;
 
 }
 .actionBtns button.omnipotent-button.small td.m, .actionBtns a.omnipotent-button.small td.m      {padding: 2px 3px 1px}
-.actionBtns button.omnipotent-button.small td.m img, .actionBtns a.omnipotent-button.small td.m img {margin-top:-2px}
+.actionBtns button.omnipotent-button.small td.m img, .actionBtns a.omnipotent-button.small td.m img {margin-top:0}
 .selectAbove {color: #ED4242; font-style: italic;}
 .eXtremeTable .oddx, .eXtremeTable .evenx {border-bottom: 1px solid #eee;}
+/*.tr-ae1.oddx, .tr-ae1.evenx, .tr-ae2.oddx, .tr-ae2.evenx {color: gray}
+.tr-ae1.oddx label, .tr-ae1.evenx label {color: #333}       */
 .eXtremeTable .yui-dt-bd thead {}
 .eXtremeTable .yui-dt-data tr {cursor: pointer; border-bottom: 1px solid #ddd;}
 .eXtremeTable .yui-dt-data tr:hover {
-    background: #fdfdef;
-    background: -moz-linear-gradient(top,  #fdfdef 0%, #f9f6c3 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fdfdef), color-stop(100%,#f9f6c3));
-    background: -webkit-linear-gradient(top,  #fdfdef 0%,#f9f6c3 100%);
-    background: -o-linear-gradient(top,  #fdfdef 0%,#f9f6c3 100%);
-    background: -ms-linear-gradient(top,  #fdfdef 0%,#f9f6c3 100%);
-    background: linear-gradient(to bottom,  #fdfdef 0%,#f9f6c3 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fdfdef', endColorstr='#f9f6c3',GradientType=0 );
-
+    background: #d1e8ff;
+    background: -moz-linear-gradient(top,  #d1e8ff 0%, #81cbed 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#d1e8ff), color-stop(100%,#81cbed));
+    background: -webkit-linear-gradient(top,  #d1e8ff 0%,#81cbed 100%);
+    background: -o-linear-gradient(top,  #d1e8ff 0%,#81cbed 100%);
+    background: -ms-linear-gradient(top,  #d1e8ff 0%,#81cbed 100%);
+    background: linear-gradient(to bottom,  #d1e8ff 0%,#81cbed 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d1e8ff', endColorstr='#81cbed',GradientType=0 );
    color:#333;
     text-shadow: 0 1px white;
 

@@ -29,7 +29,8 @@ version: 2.7.0
 }
 .yui-skin-sam thead .yui-dt-sortable {
     cursor: pointer;
-    color: white;
+    color: #2b4f6f;
+    text-shadow: 0 1px white;
 }
 .yui-skin-sam thead .yui-dt-draggable {
     cursor: move
@@ -44,36 +45,46 @@ version: 2.7.0
 
 
 th.yui-dt-resizeable .yui-dt-resizerliner .yui-dt-liner {
-    position: relative;
+    color: #2b4f6f;
+	font-family: Lucida Sans Unicode, sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+	text-align: left;
+	padding-right: 8px;
+	padding-left: 8px;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	margin: 0px;
+	border:none;
+    background: #eaf2f9;
+    background: -moz-linear-gradient(top,  #eaf2f9 0%, #b7d9f5 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eaf2f9), color-stop(100%,#b7d9f5));
+    background: -webkit-linear-gradient(top,  #eaf2f9 0%,#b7d9f5 100%);
+    background: -o-linear-gradient(top,  #eaf2f9 0%,#b7d9f5 100%);
+    background: -ms-linear-gradient(top,  #eaf2f9 0%,#b7d9f5 100%);
+    background: linear-gradient(to bottom,  #eaf2f9 0%,#b7d9f5 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eaf2f9', endColorstr='#b7d9f5',GradientType=0 );
 
-    font-size: 13px;
-    font-weight: bold;
-    margin: 0px;
-    color: white;
-    text-shadow: 0 -1px #2166a1;
-    height: auto;
-    padding-top: 7px;
-    padding-bottom: 7px;
-    text-decoration: none
+    text-shadow: 0 1px white;
     
 }
 
 thead {
-    background: #74b5ed;
-    background: -moz-linear-gradient(top,  #74b5ed 0%, #589ed9 50%, #5095ce 50%, #3783c1 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#74b5ed), color-stop(50%,#589ed9), color-stop(50%,#5095ce), color-stop(100%,#3783c1));
-    background: -webkit-linear-gradient(top,  #74b5ed 0%,#589ed9 50%,#5095ce 50%,#3783c1 100%);
-    background: -o-linear-gradient(top,  #74b5ed 0%,#589ed9 50%,#5095ce 50%,#3783c1 100%);
-    background: -ms-linear-gradient(top,  #74b5ed 0%,#589ed9 50%,#5095ce 50%,#3783c1 100%);
-    background: linear-gradient(to bottom,  #74b5ed 0%,#589ed9 50%,#5095ce 50%,#3783c1 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#74b5ed', endColorstr='#3783c1',GradientType=0 );
+    background: #eaf2f9;
+    background: -moz-linear-gradient(top,  #eaf2f9 0%, #b7d9f5 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eaf2f9), color-stop(100%,#b7d9f5));
+    background: -webkit-linear-gradient(top,  #eaf2f9 0%,#b7d9f5 100%);
+    background: -o-linear-gradient(top,  #eaf2f9 0%,#b7d9f5 100%);
+    background: -ms-linear-gradient(top,  #eaf2f9 0%,#b7d9f5 100%);
+    background: linear-gradient(to bottom,  #eaf2f9 0%,#b7d9f5 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eaf2f9', endColorstr='#b7d9f5',GradientType=0 );
     border-top: 1px solid #3783c1;
     box-shadow: 0 1px 0 rgba(255,255,255,0.4) inset;
     -webkit-box-shadow: 0 1px 0 rgba(255,255,255,0.4) inset;
 }
 
 th.yui-dt-resizeable .yui-dt-resizerliner .yui-dt-liner a:hover {
-    color:white
+    color: #2b4f6f;
 }
 
 .yui-dt-resizer {
@@ -197,20 +208,20 @@ th.yui-dt-hidden .yui-dt-resizer {
 }
 .yui-skin-sam th.yui-dt-asc,
 .yui-skin-sam th.yui-dt-desc {
-    background: #3783c1;
-    background: -moz-linear-gradient(top,  #3783c1 0%, #5095ce 50%, #589ed9 50%, #74b5ed 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#3783c1), color-stop(50%,#5095ce), color-stop(50%,#589ed9), color-stop(100%,#74b5ed));
-    background: -webkit-linear-gradient(top,  #3783c1 0%,#5095ce 50%,#589ed9 50%,#74b5ed 100%);
-    background: -o-linear-gradient(top,  #3783c1 0%,#5095ce 50%,#589ed9 50%,#74b5ed 100%);
-    background: -ms-linear-gradient(top,  #3783c1 0%,#5095ce 50%,#589ed9 50%,#74b5ed 100%);
-    background: linear-gradient(to bottom,  #3783c1 0%,#5095ce 50%,#589ed9 50%,#74b5ed 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3783c1', endColorstr='#74b5ed',GradientType=0 );
+    background: #b7d9f5;
+    background: -moz-linear-gradient(top,  #b7d9f5 0%, #eaf2f9 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#b7d9f5), color-stop(100%,#eaf2f9));
+    background: -webkit-linear-gradient(top,  #b7d9f5 0%,#eaf2f9 100%);
+    background: -o-linear-gradient(top,  #b7d9f5 0%,#eaf2f9 100%);
+    background: -ms-linear-gradient(top,  #b7d9f5 0%,#eaf2f9 100%);
+    background: linear-gradient(to bottom,  #b7d9f5 0%,#eaf2f9 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b7d9f5', endColorstr='#eaf2f9',GradientType=0 );
 
 }
 .yui-skin-sam th.yui-dt-sortable .yui-dt-label {
     margin-right: 10px
 }
-.yui-dt-label .yui-dt-sortable { color: white; text-decoration: none }
+.yui-dt-label .yui-dt-sortable { color: #2b4f6f; text-decoration: none }
 
 .yui-skin-sam th.yui-dt-asc .yui-dt-liner {
     background: url(../images/table/dt-arrow-up.png) no-repeat right
@@ -234,7 +245,7 @@ div.yui-dt-liner {padding: 4px 8px; }
 
 div.yui-dt-liner a {color:#236dad; text-decoration: none}
 div.yui-dt-liner a:hover {color:#053e6f; text-decoration: none}
-.eXtremeTable div.yui-dt-liner a:hover {color:#fff; text-decoration: none}
+.eXtremeTable div.yui-dt-liner a:hover {color: #2b4f6f; text-decoration: none}
 
 tbody .yui-dt-editable {
     cursor: pointer
@@ -280,6 +291,20 @@ tbody .yui-dt-editable {
 .yui-skin-sam tr.yui-dt-odd {
     background-color: #EDF5FF
 }
+.eXtremeTable .tr-picker .yui-skin-sam tr.yui-dt-odd {
+    background: #fff ;
+    border-bottom:1px solid #ccc;
+}
+.eXtremeTable .tr-picker .yui-skin-sam tr.yui-dt-odd:hover { background: #d1e8ff;
+    background: -moz-linear-gradient(top,  #d1e8ff 0%, #81cbed 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#d1e8ff), color-stop(100%,#81cbed));
+    background: -webkit-linear-gradient(top,  #d1e8ff 0%,#81cbed 100%);
+    background: -o-linear-gradient(top,  #d1e8ff 0%,#81cbed 100%);
+    background: -ms-linear-gradient(top,  #d1e8ff 0%,#81cbed 100%);
+    background: linear-gradient(to bottom,  #d1e8ff 0%,#81cbed 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d1e8ff', endColorstr='#81cbed',GradientType=0 );
+   color:#333;
+    text-shadow: 0 1px white;}
 .yui-skin-sam tr.yui-dt-even td.yui-dt-asc,
 .yui-skin-sam tr.yui-dt-even td.yui-dt-desc {
     background-color: #EDF5FF

@@ -9,7 +9,7 @@
 
 <c:if test="${fillerRow}">
     <tr>
-        <td colspan="9" class="fillerRow">
+        <td colspan="10" class="fillerRow">
             <hr class="hrfiller"  />
         </td>
     </tr>

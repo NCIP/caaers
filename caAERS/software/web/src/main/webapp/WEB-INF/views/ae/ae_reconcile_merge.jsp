@@ -52,9 +52,10 @@
     </script>
     <style type="text/css">
         td.td-ae3{
-            background: #EFEFEF;
-            color: #888;
+            background: #eee;
+            color: #333;
             text-shadow: 0 1px white;
+            font-weight: bold;
         }
         td.td-highlight {
            background: #ffff99;
