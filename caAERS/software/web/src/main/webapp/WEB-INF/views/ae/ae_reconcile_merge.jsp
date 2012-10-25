@@ -9,10 +9,22 @@
 <c:set var="widthVerbatim" value="14%" scope="request" />
 <c:set var="widthWhySerious" value="14%" scope="request" />
 <c:set var="widthAttribution" value="10%" scope="request" />
+<caaers:message var="unmergedAEAlert" code="reconciliation.empty.selectAbove" text="Unmerged adverse events on page." />
 <head>
     <title>${tab.longTitle}</title>
 
     <script type="text/javascript">
+        ValidationManager.submitPostProcess = function(formVar, flag, submit) {
+            var selectAboves = $$('.selectAbove');
+            if(selectAboves.length > 0) {
+                alert( "${unmergedAEAlert}");
+                AE.SUBMISSION_INPROGRESS = false;
+                return false;
+            }
+            return true;
+
+        }
+
         function updateCellValue(ae1, ae2, item, el){
             var td = $('td-' + item + ae1);
             var v = el.value;
