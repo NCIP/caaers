@@ -1,13 +1,16 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.*;
 import org.springframework.beans.BeanUtils;
 
- 
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
+
+
 /**
  * This class represents the Additional Information domain object associated with the Adverse event
  * report.
@@ -57,6 +60,8 @@ public class AdditionalInformation extends AbstractExpeditedReportSingleChild {
 
     /** The other information. */
     private String otherInformation;
+
+    private List<AdditionalInformationDocument> additionalInformationDocuments= new ArrayList<AdditionalInformationDocument>();
 
     // //// LOGIC
 
@@ -296,6 +301,22 @@ public class AdditionalInformation extends AbstractExpeditedReportSingleChild {
         this.irbReport = irbReport;
     }
 
+
+    /**
+     * Gets the additionalInformationDocument
+     *
+     * @return the additional information document
+     */
+    @OneToMany(mappedBy = "additionalInformation", fetch = FetchType.LAZY, orphanRemoval = true)
+    @Cascade(value = {CascadeType.ALL})
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
+    public List<AdditionalInformationDocument> getAdditionalInformationDocuments() {
+        return additionalInformationDocuments;
+    }
+
+    public void setAdditionalInformationDocuments(List<AdditionalInformationDocument> additionalInformationDocuments) {
+        this.additionalInformationDocuments = additionalInformationDocuments;
+    }
 
     /**
      * Copy.

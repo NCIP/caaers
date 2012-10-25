@@ -36,7 +36,7 @@
   <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
     <!-- one of the properties available; the maximum file size in bytes -->
     <property name="maxUploadSize" value="10000000"/>
-  </bean>    
+  </bean>
   
   <bean id="urlMapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" lazy-init="true">
     <property name="interceptors">
@@ -417,6 +417,10 @@
     <!--  AE   -->
   <bean name="/ae/reconciliationReport" id="reconciliationReportController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.ReconciliationReportController"/>
   <bean name="/ae/reconcileAe" id="aeReconciliationController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.AdverseEventReconciliationController"/>
+  <bean name="/ae/additionalInformationDocumentUpload" id="additionalInformationDocumentUpload" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.AdditionalInformationDocumentUploadController"/>
+  <bean name="/ae/additionalInformationDocumentZipDownload" id="additionalInformationDocumentZipDownload" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.AdditionalInformationDocumentZipDownloadController"/>
+  <bean name="/ae/additionalInformationDocumentDownload" id="additionalInformationDocumentDownload" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.AdditionalInformationDocumentDownloadController"/>
+  <bean name="/ae/additionalInformationDocumentDelete" id="additionalInformationDocumentDelete" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.AdditionalInformationDocumentDeleteController"/>
   <bean name="/ae/routingAndReview" id="routingAndReviewController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.RoutingAndReviewController"/>
   <bean name="/ae/listReviewComments" id="listReviewCommentsController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.RoutingAndReviewCommentController" />
   <bean name="/ae/captureRoutine" id="captureAdverseEventController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.CaptureAdverseEventController"/>

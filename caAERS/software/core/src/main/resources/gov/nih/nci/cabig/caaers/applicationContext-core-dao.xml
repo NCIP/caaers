@@ -138,6 +138,7 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.DietarySupplementIntervention</value>
                 <value>gov.nih.nci.cabig.caaers.domain.OtherAEIntervention</value>
                 <value>gov.nih.nci.cabig.caaers.domain.AdditionalInformation</value>
+                <value>gov.nih.nci.cabig.caaers.domain.AdditionalInformationDocument</value>
                 <value>gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition</value>
                 <value>gov.nih.nci.cabig.caaers.domain.MedicalDevice</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Device</value>
@@ -350,6 +351,7 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.DietarySupplementIntervention</value>
                 <value>gov.nih.nci.cabig.caaers.domain.OtherAEIntervention</value>
                 <value>gov.nih.nci.cabig.caaers.domain.AdditionalInformation</value>
+                <value>gov.nih.nci.cabig.caaers.domain.AdditionalInformationDocument</value>
                 <value>gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition</value>
                 <value>gov.nih.nci.cabig.caaers.domain.MedicalDevice</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Device</value>
@@ -573,6 +575,7 @@ This applicationContext contains the definition of the DAOs
     	<property name="remoteSession" ref="remoteSession"/>
     </bean>
     <bean id="siteResearchStaffDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.SiteResearchStaffDao"/>
+    <bean id="additionalInformationDocumentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AdditionalInformationDocumentDao"/>
 
     <bean id="passwordPolicyDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.security.passwordpolicy.PasswordPolicyDao"/>
     <bean id="organizationDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.OrganizationDao">

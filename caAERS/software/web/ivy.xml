@@ -69,6 +69,9 @@
                 <exclude conf="*" org="javax.servlet" module="jsp-api" />
 			</dependency>
 
+            <dependency org="org.codehaus.jackson" name="jackson-core-asl" rev="1.4.2"/>
+            <dependency org="org.codehaus.jackson" name="jackson-mapper-asl" rev="1.4.2"/>
+
             <dependency org="org.springframework" name="spring-webmvc" rev="3.0.7.RELEASE">
                  <exclude org="org.apache.axis" />
                  <exclude org="struts" />

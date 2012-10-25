@@ -454,5 +454,7 @@ default-lazy-init="true">
 		</property> 
 	</bean>
     <bean id="safetyMonitoringServiceTarget" class="gov.nih.nci.cabig.caaers.service.SafetyMonitoringServiceImpl" autowire="byType" />
+    <bean id="additionalInformationDocumentService"
+          class="gov.nih.nci.cabig.caaers.service.adverseevent.AdditionalInformationDocumentService" autowire="byType" />
 
 </beans>

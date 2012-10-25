@@ -67,7 +67,14 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="/pages/ae/reviewResolver" value="ae_reporter,ae_expedited_report_reviewer,ae_study_data_reviewer,data_reader" />
 		<entry key="/pages/ae/reviewEvaluationPeriod" value="ae_reporter,ae_expedited_report_reviewer,ae_study_data_reviewer,data_reader" />
 		<entry key="/pages/ae/reviewAeReport" value="ae_reporter,ae_expedited_report_reviewer,ae_study_data_reviewer,data_reader" />
-		<entry key="/pages/ae/submitReport" value="ae_reporter,ae_expedited_report_reviewer,data_reader" />		        
+
+        <entry key="/pages/ae/additionalInformationDocumentUpload" value="ae_reporter,data_reader" />
+        <entry key="/pages/ae/additionalInformationDocumentDelete" value="ae_reporter,data_reader" />
+
+        <entry key="/pages/ae/additionalInformationDocumentDownload" value="ae_reporter,ae_expedited_report_reviewer,ae_study_data_reviewer,data_reader" />
+        <entry key="/pages/ae/additionalInformationDocumentZipDownload" value="ae_reporter,ae_expedited_report_reviewer,ae_study_data_reviewer,data_reader" />
+
+        <entry key="/pages/ae/submitReport" value="ae_reporter,ae_expedited_report_reviewer,data_reader" />
 		<entry key="/pages/ae/edit" value="ae_reporter,data_reader" />        
 		<entry key="/pages/ae/routingAndReview" value="ae_reporter,ae_expedited_report_reviewer,ae_study_data_reviewer,data_reader" />
 		<entry key="/pages/ae/reconciliationReport" value="ae_reporter,ae_expedited_report_reviewer,ae_study_data_reviewer,data_reader" />
@@ -138,7 +145,14 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="/pages/ae/reviewResolver" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ || gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod:READ || gov.nih.nci.cabig.caaers.domain.workflow.ReportReviewComment:READ || gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment:READ" />
 		<entry key="/pages/ae/reviewEvaluationPeriod" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ || gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment:READ" />
 		<entry key="/pages/ae/reviewAeReport" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ || gov.nih.nci.cabig.caaers.domain.workflow.ReportReviewComment:READ" />
-		<entry key="/pages/ae/submitReport" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE" />
+
+        <entry key="/pages/ae/additionalInformationDocumentUpload" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE" />
+        <entry key="/pages/ae/additionalInformationDocumentDelete" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE" />
+
+        <entry key="/pages/ae/additionalInformationDocumentDownload"    value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ || gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE || gov.nih.nci.cabig.caaers.domain.workflow.ReportReviewComment:READ" />
+        <entry key="/pages/ae/additionalInformationDocumentZipDownload" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ || gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE || gov.nih.nci.cabig.caaers.domain.workflow.ReportReviewComment:READ" />
+
+        <entry key="/pages/ae/submitReport" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE" />
 		<entry key="/pages/ae/createReportingPeriod" value="gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod:CREATE" />
         <entry key="/pages/ae/blankForm" value="gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod:CREATE || gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod:UPDATE || gov.nih.nci.cabig.caaers.domain.Study:READ" />
 		<entry key="/pages/ae/edit" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE" />

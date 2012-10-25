@@ -1,0 +1,219 @@
+
+/*
+[fmt]1A90-1A0A-B*/
+/*Have ideas for improving this CSS for the general community? Submit your changes at: https://github.com/Valums-File-Uploader/file-uploader
+http://valums-file-uploader.github.com/file-uploader/stylesheets/fileuploader.css
+*/
+.qq-uploader {
+    position: relative;
+    width: 100%;
+    margin-bottom: 25px;
+}
+.qq-upload-button {
+    display: block;
+    /*or inline-block*/
+    width: 105px;
+    padding: 7px 19px;
+    text-align: center;
+    /*+border-radius:5px;*/
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    border-radius: 5px;
+    /*+box-shadow:0px 1px 2px #B2B2B2;*/
+    -moz-box-shadow: 0px 1px 2px #B2B2B2;
+    -webkit-box-shadow: 0px 1px 2px #B2B2B2;
+    -o-box-shadow: 0px 1px 2px #B2B2B2;
+    box-shadow: 0px 1px 2px #B2B2B2;
+    /*[disabled]background:#880000;*/
+    background: rgb(109, 179, 242);
+    /*Old browsers*/
+    background: -moz-linear-gradient(top, rgba(109,179,242,1) 0%, rgba(84,163,238,1) 50%, rgba(54,144,240,1) 51%, rgba(30,105,222,1) 100%);
+    /*FF3.6+*/
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(109,179,242,1)), color-stop(50%,rgba(84,163,238,1)), color-stop(51%,rgba(54,144,240,1)), color-stop(100%,rgba(30,105,222,1)));
+    /*Chrome,Safari4+*/
+    background: -webkit-linear-gradient(top, rgba(109,179,242,1) 0%,rgba(84,163,238,1) 50%,rgba(54,144,240,1) 51%,rgba(30,105,222,1) 100%);
+    /*Chrome10+,Safari5.1+*/
+    background: -o-linear-gradient(top, rgba(109,179,242,1) 0%,rgba(84,163,238,1) 50%,rgba(54,144,240,1) 51%,rgba(30,105,222,1) 100%);
+    /*Opera 11.10+*/
+    background: -ms-linear-gradient(top, rgba(109,179,242,1) 0%,rgba(84,163,238,1) 50%,rgba(54,144,240,1) 51%,rgba(30,105,222,1) 100%);
+    /*IE10+*/
+    background: linear-gradient(to bottom, rgba(109,179,242,1) 0%,rgba(84,163,238,1) 50%,rgba(54,144,240,1) 51%,rgba(30,105,222,1) 100%);
+    /*W3C*/
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6db3f2', endColorstr='#1e69de',GradientType=0 );
+    /*IE6-9*/
+    /*[disabled]border-bottom:1px solid #DDD;*/
+    color: #FFF;
+    /*+text-shadow:0px 1px 1px #000000;*/
+    -moz-text-shadow: 0px 1px 1px #000000;
+    -webkit-text-shadow: 0px 1px 1px #000000;
+    -o-text-shadow: 0px 1px 1px #000000;
+    text-shadow: 0px 1px 1px #000000;
+    font-weight: bold;
+}
+.qq-upload-button-hover {
+    /*[disabled]background:#CC0000;*/
+}
+.qq-upload-button-focus {
+    /*[disabled]outline:1px dotted #000000;*/
+}
+.qq-upload-drop-area, .qq-upload-extra-drop-area {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    min-height: 50px;
+    z-index: 2;
+    background: #E5E4A9;
+    text-align: center;
+}
+.qq-upload-drop-area span {
+    display: block;
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    margin-top: -8px;
+    font-size: 16px;
+    line-height: 16px;
+}
+.qq-upload-extra-drop-area {
+    position: relative;
+    margin-top: 50px;
+    font-size: 16px;
+    padding-top: 30px;
+    height: 20px;
+    min-height: 40px;
+}
+.qq-upload-drop-area-active {
+    /*When files are dragged over the drop-area*/
+    background: #E7E453;
+}
+.qq-upload-list {
+    margin: 8px 0 0;
+    padding: 0;
+    list-style: none;
+}
+.qq-upload-list li {
+    color: #FFFFFF;
+    margin: 0 0 1px;
+    padding: 9px;
+    overflow: hidden;
+    line-height: 15px;
+    font-size: 15px;
+    list-style: none;
+    /*+text-shadow:none;*/
+    -moz-text-shadow: none;
+    -webkit-text-shadow: none;
+    -o-text-shadow: none;
+    text-shadow: none;
+    /*+border-radius:3px;*/
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -khtml-border-radius: 3px;
+    border-radius: 3px;
+    position: relative;
+    background: #BFE613;
+    background: #5DA30C -moz-linear-gradient(-45deg, rgba(45, 170, 60, 0), rgba(45, 170, 60, 0) 10%, rgba(146, 209, 0, 0.4) 30%, rgba(146, 209, 0, 0.4) 50%, rgba(45, 170, 60, 0) 50%, rgba(45, 170, 60, 0));
+    background: #5DA30C -webkit-gradient(linear, 0 0, 60 60, from(rgba(45, 170, 60, 0)), color-stop(.49, rgba(45, 170, 60, 0)), color-stop(.491, rgba(146, 209, 0, .4)), color-stop(.8, rgba(146, 209, 0, .4)), color-stop(.801, rgba(45, 170, 60, 0)), to(rgba(45, 170, 60, 0)));
+    background-size: 120px 120px;
+    -webkit-animation-name: gradientShift;
+    -webkit-animation-duration: 1s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-fill-mode: both;
+    -webkit-animation-timing-function: linear;
+    -moz-animation-name: gradientShift;
+    -moz-animation-duration: 1s;
+    -moz-animation-iteration-count: infinite;
+    -moz-animation-fill-mode: both;
+    -moz-animation-timing-function: linear;
+}
+.qq-upload-file, .qq-upload-spinner, .qq-upload-size, .qq-upload-cancel, .qq-upload-failed-text {
+    margin-right: 12px;
+    /*Place text above loading bar*/
+    z-index: 250;
+    position: relative;
+}
+.qq-upload-spinner {
+    display: inline-block;
+    background: url("../images/loading.gif");
+    width: 15px;
+    height: 15px;
+    vertical-align: text-bottom;
+}
+.qq-upload-size, .qq-upload-cancel {
+    font-size: 12px;
+    font-weight: normal;
+}
+.qq-upload-failed-text {
+    display: none;
+}
+.qq-upload-fail .qq-upload-failed-text {
+    display: inline;
+}
+.qq-upload-list li.qq-upload-success {
+    background: #5DA30C;
+    color: #FFFFFF;
+}
+.qq-upload-list li.qq-upload-fail {
+    background: #AF0000;
+    color: #FFFFFF;
+}
+.qq-upload-button:hover {
+    background: #0F5BBB;
+}
+.qq-upload-button:active {
+    top: 2px;
+}
+.qq-upload-spinner, .qq-upload-size, .qq-upload-cancel, .qq-upload-failed-text {
+    float: right;
+}
+.qq-upload-spinner {
+    display: none;
+}
+.qq-progress-bar {
+    width: 51%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0;
+    /*[disabled]position:relative;*/
+    /*[disabled]z-index:0;*/
+    /*[disabled]width:600px;*/
+    /*[disabled]height:60px;*/
+    /*[disabled]padding-right:3px;*/
+    /*[disabled]-moz-border-radius:7px;*/
+    /*[disabled]-webkit-border-radius:7px;*/
+    /*[disabled]border-radius:7px;*/
+    background-color: #5DA30C;
+    /*+box-shadow:0px 0px 14px #0D4500;*/
+    -moz-box-shadow: 0px 0px 14px #0D4500;
+    -webkit-box-shadow: 0px 0px 14px #0D4500;
+    -o-box-shadow: 0px 0px 14px #0D4500;
+    box-shadow: 0px 0px 14px #0D4500;
+    /*+border-radius:3px;*/
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -khtml-border-radius: 3px;
+    border-radius: 3px;
+}
+.qq-upload-cancel {
+    color: #800000;
+}
+.qq-upload-success .qq-progress-bar {
+    display: none;
+}
+
+
+/*
+http://valums-file-uploader.github.com/file-uploader/stylesheets/loading-animation.css
+*/
+@-webkit-keyframes gradientShift {
+	0%   { background-position-x: 0px; }
+    100% { background-position-x: 120px; }
+}
+
+@-moz-keyframes gradientShift {
+	0%   { background-position: 0px 0; }
+    100% { background-position: 120px 0; }
+}

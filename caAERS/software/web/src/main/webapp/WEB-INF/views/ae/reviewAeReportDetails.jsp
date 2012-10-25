@@ -169,7 +169,48 @@
     				</c:forEach>
 				</table>
 			</chrome:box>
-	
+
+    <c:if test="${not empty  documents}">
+
+        <chrome:box title="Report Attachments" id="reportAttachments" collapsable="true">
+
+            <ae:oneListAdditionalInformation title="Autopsy Report" property="autopsyReport" documents="${documents}" showAttachmentsCount="true"/>
+
+            <ae:oneListAdditionalInformation title="Consults" property="consults" documents="${documents}"
+                    showAttachmentsCount="true"/>
+
+            <ae:oneListAdditionalInformation title="Discharge Summary" property="dischargeSummary"
+                                             documents="${documents}" showAttachmentsCount="true"/>
+
+            <ae:oneListAdditionalInformation title="Flow Sheets/Case Report Forms" property="flowCharts"
+                                             documents="${documents}" showAttachmentsCount="true"/>
+
+            <ae:oneListAdditionalInformation title="Laboratory Reports" property="labReports" documents="${documents}" showAttachmentsCount="true"/>
+
+            <ae:oneListAdditionalInformation title="OBA Form" property="obaForm" documents="${documents}" showAttachmentsCount="true"/>
+
+            <ae:oneListAdditionalInformation title="Pathology Report" property="pathologyReport"
+                                             documents="${documents}" showAttachmentsCount="true"/>
+
+            <ae:oneListAdditionalInformation title="Progress Notes" property="progressNotes" documents="${documents}" showAttachmentsCount="true"/>
+
+            <ae:oneListAdditionalInformation title="Radiology Report" property="radiologyReports"
+                                             documents="${documents}" showAttachmentsCount="true"/>
+
+            <ae:oneListAdditionalInformation property="referralLetters" title="Referral Letters"
+                                             documents="${documents}" showAttachmentsCount="true" />
+
+            <ae:oneListAdditionalInformation property="irbReport" title="Summary Report Sent to IRB"
+                                             documents="${documents}" showAttachmentsCount="true" />
+
+            <ae:oneListAdditionalInformation property="other" title="Other" documents="${documents}" showAttachmentsCount="true" />
+            <ae:oneListAdditionalInformation property="otherInformation" title="Other Information"
+                                             documents="${documents}" showAttachmentsCount="true" />
+            <ae:zipAdditionalInformation additionalInformationId="${additionalInformationId}"/>
+
+        </chrome:box>
+    </c:if>
+
 	<c:if test="${command.workflowEnabled}">		
 		<chrome:box title="Enter comments">
 			<chrome:division>
