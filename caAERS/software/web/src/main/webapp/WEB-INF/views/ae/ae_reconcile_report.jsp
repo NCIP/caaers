@@ -30,10 +30,10 @@
 <chrome:division title="(${fn:length(report.forceAesToBeUpdated)}) Records To be Updated in the Source System" collapsable="true" id="div2">
     <div class="eXtremeTable" >
         <table class="tableRegion" width="100%" border="0" cellspacing="1" cellpadding="1">
-            	<ae:reconciledAeRowHeader/>
+            	<ae:reconciledAeRowHeader  showExternalID="true"/>
             <tbody>
             <c:forEach items="${report.forceAesToBeUpdated}" varStatus="x" var="reconAe">
-            	<ae:reconciledAeRow ae="${reconAe}" cssClass="${x.index %2 ne 0 ? 'odd' : 'even'}"/>
+            	<ae:reconciledAeRow ae="${reconAe}" cssClass="${x.index %2 ne 0 ? 'odd' : 'even'}"  showExternalID="true"/>
             </c:forEach>
             </tbody>
         </table>
@@ -43,10 +43,10 @@
 <chrome:division title="(${fn:length(report.forceAesToBeDeleted)}) Records To be Deleted from Source System" collapsable="true" id="div3">
     <div class="eXtremeTable" >
         <table class="tableRegion" width="100%" border="0" cellspacing="1" cellpadding="1">
-            	<ae:reconciledAeRowHeader/>
+            	<ae:reconciledAeRowHeader  showExternalID="true"/>
             <tbody>
             <c:forEach items="${report.forceAesToBeDeleted}" varStatus="x" var="reconAe">
-            	<ae:reconciledAeRow ae="${reconAe}" cssClass="${x.index %2 ne 0 ? 'odd' : 'even'}"/>
+            	<ae:reconciledAeRow ae="${reconAe}" cssClass="${x.index %2 ne 0 ? 'odd' : 'even'}"  showExternalID="true"/>
             </c:forEach>
             </tbody>
         </table>
