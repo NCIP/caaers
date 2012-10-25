@@ -49,6 +49,7 @@ public class RoutingAndReviewResolverController extends AbstractController{
             boolean fromRoutingAndReview = StringUtils.equals(request.getParameter("src"), "RoutingReview");
 			if(fromRoutingAndReview && SecurityUtils.checkAuthorization(UserGroupType.ae_study_data_reviewer) && reportingPeriod.getReviewStatus() == ReviewStatus.DATA_COORDINATOR_REVIEW){
 				redirectUrl = "reconcileAe?rpId=" + reportingPeriod.getId();
+                AdverseEventReconciliationController.clearCommandObject(request);
 			} else{
 				redirectUrl = "captureRoutine?adverseEventReportingPeriod=" + reportingPeriodId + "&study=" + studyId + "&participant=" + participantId + "&_page=0&_target1=1&displayReportingPeriod=true&addReportingPeriodBinder=true";
 				// Only ae_reporter will be taken to the edit flow of adverse events ie the url mentioned above. For all other roles, the user will be redirected to the read-only page.

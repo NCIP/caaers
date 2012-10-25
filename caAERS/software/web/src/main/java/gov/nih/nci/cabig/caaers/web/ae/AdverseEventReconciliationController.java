@@ -36,6 +36,8 @@ public class AdverseEventReconciliationController extends AutomaticSaveAjaxableF
     private CtcTermDao ctcTermDao;
     private LowLevelTermDao lowLevelTermDao;
 
+    private static String commandName  = AdverseEventReconciliationController.class.getName() + ".FORM.command" ;
+
     public AdverseEventReconciliationController() {
         Flow<AdverseEventReconciliationCommand> flow = new Flow<AdverseEventReconciliationCommand>("Reconcile Adverse Events");
         flow.addTab(new AdverseEventLinkTab("Map Adverse Events", "Link Adverse Events", "ae/ae_reconcile_link"));
@@ -45,6 +47,20 @@ public class AdverseEventReconciliationController extends AutomaticSaveAjaxableF
         setFlow(flow);
     }
 
+
+    public static void clearCommandObject(HttpServletRequest request){
+        request.getSession(true).removeAttribute(commandName);
+    }
+
+    @Override
+    protected String getFormSessionAttributeName() {
+        return commandName;
+    }
+
+    @Override
+    protected String getReplacedCommandSessionAttributeName(HttpServletRequest request) {
+        return getFormSessionAttributeName();
+    }
 
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
