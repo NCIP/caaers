@@ -430,6 +430,173 @@
                 return true;
             }
         </SCRIPT>
+        <script>
+        jQuery(function(jQuery){
+			   
+			// simple jQuery validation script
+			jQuery('form').submit(function(){
+				
+				var valid = true;
+				var errormsg = 'This field is required!';
+				var errorcn = 'error';
+				
+				jQuery('.' + errorcn, this).remove();			
+				
+				jQuery('.required', this).each(function(){
+					var parent = jQuery(this).parent();
+					if( jQuery(this).val() == '' ){
+						var msg = jQuery(this).attr('title');
+						msg = (msg != '') ? msg : errormsg;
+						jQuery('<span class="'+ errorcn +'">'+ msg +'</span>')
+							.appendTo(parent)
+							.fadeIn('fast')
+							.click(function(){ jQuery(this).remove(); })
+						valid = false;
+					};
+				});
+				
+				return valid;
+			});
+			
+		})	
+		</script>
+		
+		<script>
+		(function(jQuery){		
+		    jQuery.InFieldLabels = function(label,field, options){
+		        // To avoid scope issues, use 'base' instead of 'this'
+		        // to reference this class from internal events and functions.
+		        var base = this;
+		        
+		        // Access to jQuery and DOM versions of each element
+		        base.jQuerylabel = jQuery(label);
+		        base.label = label;
+
+		 		base.jQueryfield = jQuery(field);
+				base.field = field;
+		        
+				base.jQuerylabel.data("InFieldLabels", base);
+				base.showing = true;
+		        
+		        base.init = function(){
+					// Merge supplied options with default options
+		            base.options = jQuery.extend({},jQuery.InFieldLabels.defaultOptions, options);
+
+					// Check if the field is already filled in
+					if(base.jQueryfield.val() != ""){
+						base.jQuerylabel.hide();
+						base.showing = false;
+					};
+					
+					base.jQueryfield.focus(function(){
+						base.fadeOnFocus();
+					}).blur(function(){
+						base.checkForEmpty(true);
+					}).bind('keydown.infieldlabel',function(e){
+						// Use of a namespace (.infieldlabel) allows us to
+						// unbind just this method later
+						base.hideOnChange(e);
+					}).change(function(e){
+						base.checkForEmpty();
+					}).bind('onPropertyChange', function(){
+						base.checkForEmpty();
+					});
+		        };
+
+				// If the label is currently showing
+				// then fade it down to the amount
+				// specified in the settings
+				base.fadeOnFocus = function(){
+					if(base.showing){
+						base.setOpacity(base.options.fadeOpacity);
+					};
+				};
+				
+				base.setOpacity = function(opacity){
+					base.jQuerylabel.stop().animate({ opacity: opacity }, base.options.fadeDuration);
+					base.showing = (opacity > 0.0);
+				};
+				
+				// Checks for empty as a fail safe
+				// set blur to true when passing from
+				// the blur event
+				base.checkForEmpty = function(blur){
+					if(base.jQueryfield.val() == ""){
+						base.prepForShow();
+						base.setOpacity( blur ? 1.0 : base.options.fadeOpacity );
+					} else {
+						base.setOpacity(0.0);
+					};
+				};
+				
+				base.prepForShow = function(e){
+					if(!base.showing) {
+						// Prepare for a animate in...
+						base.jQuerylabel.css({opacity: 0.0}).show();
+						
+						// Reattach the keydown event
+						base.jQueryfield.bind('keydown.infieldlabel',function(e){
+							base.hideOnChange(e);
+						});
+					};
+				};
+
+				base.hideOnChange = function(e){
+					if(
+						(e.keyCode == 16) || // Skip Shift
+						(e.keyCode == 9) // Skip Tab
+					  ) return; 
+					
+					if(base.showing){
+						base.jQuerylabel.hide();
+						base.showing = false;
+					};
+					
+					// Remove keydown event to save on CPU processing
+					base.jQueryfield.unbind('keydown.infieldlabel');
+				};
+		      
+				// Run the initialization method
+		        base.init();
+		    };
+			
+		    jQuery.InFieldLabels.defaultOptions = {
+		        fadeOpacity: 0.5, // Once a field has focus, how transparent should the label be
+				fadeDuration: 300 // How long should it take to animate from 1.0 opacity to the fadeOpacity
+		    };
+			
+
+		    jQuery.fn.inFieldLabels = function(options){
+		        return this.each(function(){
+					// Find input or textarea based on for= attribute
+					// The for attribute on the label must contain the ID
+					// of the input or textarea element
+					var for_attr = jQuery(this).attr('for');
+					if( !for_attr ) return; // Nothing to attach, since the for field wasn't used
+					
+					
+					// Find the referenced input or textarea element
+					var jQueryfield = jQuery(
+						"input#" + for_attr + "[type='text']," + 
+						"input#" + for_attr + "[type='password']," + 
+						"textarea#" + for_attr
+						);
+						
+					if( jQueryfield.length == 0) return; // Again, nothing to attach
+					
+					// Only create object for input[text], input[password], or textarea
+		            (new jQuery.InFieldLabels(this, jQueryfield[0], options));
+		        });
+		    };
+			
+		})(jQuery);
+		</script>
+		
+		<script type="text/javascript" charset="utf-8">
+			jQuery(function(){
+				jQuery("label").inFieldLabels(); 
+			});
+		</script>
         <!--[if lte IE 6]>
             <div id="ie6">
             <img src="../images/blue/no-ie-warning.png" alt="Internet Explorer" style="position:absolute; top:20px; left:20px;">
@@ -530,11 +697,11 @@ The caBIG Adverse Event Reporting System (caAERS) is an open source software too
     
    			<p>
 				<label for="username">Username</label><br />
-				<input type="text" name="j_username" value="${sessionScope['ACEGI_SECURITY_LAST_USERNAME']}" id="username" class="validate-NOTEMPTY required" title="Username">
+				<input type="text" name="j_username" value="${sessionScope['ACEGI_SECURITY_LAST_USERNAME']}" id="username" class="validate-NOTEMPTY required">
 			</p>
 			<p>
 				<label for="password">Password</label><br />
-				<input type="password" name="j_password" value="" id="password" class="validate-NOTEMPTY required" title="Password">
+				<input type="password" name="j_password" value="" id="password" class="validate-NOTEMPTY required">
 			</p>
             
             
