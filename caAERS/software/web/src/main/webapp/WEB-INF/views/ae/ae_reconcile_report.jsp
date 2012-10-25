@@ -14,7 +14,7 @@
 <body>
 <chrome:flashMessage/>
 <c:set var= "dash" value="--" scope="request" />
-<chrome:division title="(${fn:length(report.forceAesToBeAdded)}) Records To be Added to Source System" collapsable="true" id="div1">
+<chrome:division title="(${fn:length(report.forceAesToBeAdded)}) Records To be Added to External System" collapsable="true" id="div1">
     <div class="eXtremeTable" >
         <table class="tableRegion" width="100%" border="0" cellspacing="1" cellpadding="1">
             	<ae:reconciledAeRowHeader/>
@@ -27,7 +27,7 @@
     </div>
 </chrome:division>
 
-<chrome:division title="(${fn:length(report.forceAesToBeUpdated)}) Records To be Updated in the Source System" collapsable="true" id="div2">
+<chrome:division title="(${fn:length(report.forceAesToBeUpdated)}) Records To be Updated in the External System" collapsable="true" id="div2">
     <div class="eXtremeTable" >
         <table class="tableRegion" width="100%" border="0" cellspacing="1" cellpadding="1">
             	<ae:reconciledAeRowHeader  showExternalID="true"/>
@@ -40,7 +40,7 @@
     </div>
 </chrome:division>
 
-<chrome:division title="(${fn:length(report.forceAesToBeDeleted)}) Records To be Deleted from Source System" collapsable="true" id="div3">
+<chrome:division title="(${fn:length(report.forceAesToBeDeleted)}) Records To be Deleted from External System" collapsable="true" id="div3">
     <div class="eXtremeTable" >
         <table class="tableRegion" width="100%" border="0" cellspacing="1" cellpadding="1">
             	<ae:reconciledAeRowHeader  showExternalID="true"/>
@@ -56,10 +56,10 @@
 <chrome:division title="(${fn:length(report.aesWithErrors)}) Records with Integration Errors" collapsable="true" id="div4">
     <div class="eXtremeTable" >
         <table class="tableRegion" width="100%" border="0" cellspacing="1" cellpadding="1">
-            	<ae:reconciledAeRowHeader/>
+            	<ae:reconciledAeRowHeader showExternalID="true"/>
             <tbody>
             <c:forEach items="${report.aesWithErrors}" varStatus="x" var="reconAe">
-            	<ae:reconciledAeRow ae="${reconAe}" displayError="true" cssClass="${x.index %2 ne 0 ? 'odd' : 'even'}"/>
+            	<ae:reconciledAeRow ae="${reconAe}" displayError="true" cssClass="${x.index %2 ne 0 ? 'odd' : 'even'}" showExternalID="true"/>
             </c:forEach>
             </tbody>
         </table>

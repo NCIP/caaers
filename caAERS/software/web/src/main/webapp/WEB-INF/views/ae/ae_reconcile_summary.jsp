@@ -25,7 +25,7 @@
 <jsp:attribute name="singleFields">
     <c:set var= "dash" value="--" scope="request" />
     <c:set var="report" value="${requestScope.report}"  />
-    <chrome:division title="(${fn:length(report.forceAesToBeAdded)}) Records To be Added to Source System" collapsable="true" id="div1">
+    <chrome:division title="(${fn:length(report.forceAesToBeAdded)}) Records To be Added to External System" collapsable="true" id="div1">
         <div class="eXtremeTable" >
             <table class="tableRegion" width="100%" border="0" cellspacing="1" cellpadding="1">
                     <ae:reconciledAeRowHeader />
@@ -37,7 +37,7 @@
             </table>
         </div>
     </chrome:division>
-    <chrome:division title="(${fn:length(report.forceAesToBeUpdated)}) Records To be Updated in the Source System" collapsable="true" id="div2">
+    <chrome:division title="(${fn:length(report.forceAesToBeUpdated)}) Records To be Updated in the External System" collapsable="true" id="div2">
         <div class="eXtremeTable" >
             <table class="tableRegion" width="100%" border="0" cellspacing="1" cellpadding="1">
                     <ae:reconciledAeRowHeader showExternalID="true"/>
@@ -49,7 +49,7 @@
             </table>
         </div>
     </chrome:division>
-    <chrome:division title="(${fn:length(report.forceAesToBeDeleted)}) Records To be Deleted from Source System" collapsable="true" id="div3">
+    <chrome:division title="(${fn:length(report.forceAesToBeDeleted)}) Records To be Deleted from External System" collapsable="true" id="div3">
         <div class="eXtremeTable" >
             <table class="tableRegion" width="100%" border="0" cellspacing="1" cellpadding="1">
                     <ae:reconciledAeRowHeader showExternalID="true"/>

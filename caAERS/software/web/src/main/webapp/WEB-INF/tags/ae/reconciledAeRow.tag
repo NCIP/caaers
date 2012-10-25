@@ -9,7 +9,7 @@
 <%@attribute name="cssClass" %>
 
   <tr class="${cssClass}">
-    <c:if test="showExternalID"><td  class="${cssClass}"> ${empty ae.externalId ? requestScope.dash : ae.externalId}</td></c:if>
+    <c:if test="${showExternalID}"><td  class="${cssClass}"> ${empty ae.externalId ? requestScope.dash : ae.externalId}</td></c:if>
     <td  class="${cssClass}"> ${ae.termName}</td>
     <td  class="${cssClass}"> ${empty ae.grade ? '' : ae.grade.shortName}</td>
     <td  class="${cssClass}">
