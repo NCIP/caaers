@@ -30,7 +30,7 @@
     treatmentAssignmentsJSONResult = [
         <c:forEach items="${command.study.treatmentAssignments}" var="treatmentAssignment">
             <c:if test="${not treatmentAssignment.retired}">
-                {"code":"<c:out value="${treatmentAssignment.code}" escapeXml="true" />", "doseLevelOrder":"<c:out value="${treatmentAssignment.doseLevelOrder}" escapeXml="true" />", "description":"<c:out value="${treatmentAssignment.description}" escapeXml="true" />", "comments":"<c:out value="${treatmentAssignment.comments}" escapeXml="true" />"},
+                {"code":"<c:out value="${treatmentAssignment.code}" escapeXml="true" />", "doseLevelOrder":"<c:out value="${treatmentAssignment.doseLevelOrder}" escapeXml="true" />", "description":"<c:out value="${treatmentAssignment.escapedDescription}" escapeXml="true" />", "comments":"<c:out value="${treatmentAssignment.comments}" escapeXml="true" />"},
             </c:if>
         </c:forEach>
     ];
