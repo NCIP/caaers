@@ -91,7 +91,7 @@
                         <tbody>
                         <tr>
                             <td colspan="8" class="fillerRow">
-                                &nbsp;
+                                <hr class="hrfiller"  />
                             </td>
                         </tr>
                         <c:set var="cntr" value="0"/>
