@@ -7,9 +7,10 @@ import gov.nih.nci.cabig.caaers.domain.AdditionalInformationDocument;
 import gov.nih.nci.cabig.caaers.domain.AdditionalInformationDocumentType;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import org.apache.commons.io.FileUtils;
-import org.springframework.core.io.ClassPathResource;
+import org.apache.commons.lang.RandomStringUtils;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 /**
@@ -18,22 +19,22 @@ public class AdditionalInformationDocumentServiceIntegrationTest extends CaaersD
 
     private AdditionalInformationDocumentService additionalInformationDocumentService;
 
-    private static final String FILE_NAME = "test.txt";
 
-    private ClassPathResource classPathResource = null;
 
     private final AdditionalInformationDocumentType ADDITIONAL_INFORMATION_DOCUMENT_TYPE = AdditionalInformationDocumentType.OTHER_INFORMATION;
     private AdditionalInformation additionalInformation;
 
 
     private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
+    private File file;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
 
+        file = File.createTempFile(RandomStringUtils.randomAlphabetic(4),".txt");
 
-        classPathResource = new ClassPathResource("/gov/nih/nci/cabig/caaers/service/adverseevent/test.txt");
+        FileUtils.writeStringToFile(file,"sample text");
 
         additionalInformationDocumentService = (AdditionalInformationDocumentService) getDeployedApplicationContext().getBean("additionalInformationDocumentService");
         expeditedAdverseEventReportDao = (ExpeditedAdverseEventReportDao) getDeployedApplicationContext().getBean("expeditedAdverseEventReportDao");
@@ -46,8 +47,8 @@ public class AdditionalInformationDocumentServiceIntegrationTest extends CaaersD
     public void testFileUploadSameFileMultipleTimes() throws IOException {
 
         for (int i = 0; i < 3; i++) {
-            AdditionalInformationDocument additionalInformationDocument = additionalInformationDocumentService.uploadFile(FILE_NAME, additionalInformation,
-                    classPathResource.getInputStream(), ADDITIONAL_INFORMATION_DOCUMENT_TYPE);
+            AdditionalInformationDocument additionalInformationDocument = additionalInformationDocumentService.uploadFile(file.getName(), additionalInformation,
+                    new FileInputStream(file), ADDITIONAL_INFORMATION_DOCUMENT_TYPE);
 
 
             AdditionalInformationDocument additionalInformationDocumentServiceByFileId = additionalInformationDocumentService.findByFileId(additionalInformationDocument.getFileId());
@@ -57,13 +58,13 @@ public class AdditionalInformationDocumentServiceIntegrationTest extends CaaersD
 
             assertEquals(ADDITIONAL_INFORMATION_DOCUMENT_TYPE, additionalInformationDocument.getAdditionalInformationDocumentType());
 
-            assertTrue(FileUtils.contentEquals(classPathResource.getFile(), new File(additionalInformationDocument.getFilePath())));
+            assertTrue(FileUtils.contentEquals(file, new File(additionalInformationDocument.getFilePath())));
 
 
             assertNotNull(additionalInformationDocumentServiceByFileId);
             assertNotNull(additionalInformationDocumentServiceByFileId.getFile());
             assertTrue(additionalInformationDocumentServiceByFileId.getFile().exists());
-            assertTrue(FileUtils.contentEquals(classPathResource.getFile(), additionalInformationDocumentServiceByFileId.getFile()));
+            assertTrue(FileUtils.contentEquals(file, additionalInformationDocumentServiceByFileId.getFile()));
 
         }
     }
