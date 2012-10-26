@@ -160,6 +160,6 @@
     </tr>
     <tr class="tr-filler tr-filler2">
         <td colspan="8" class="fillerRow">
-            &nbsp;
+            <hr class="hrfiller"  />
         </td>
     </tr>
