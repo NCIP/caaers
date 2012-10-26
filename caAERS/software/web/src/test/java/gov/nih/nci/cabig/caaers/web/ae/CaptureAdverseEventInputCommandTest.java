@@ -167,8 +167,7 @@ public class CaptureAdverseEventInputCommandTest extends AbstractTestCase {
 		command.getAdverseEvents().get(0).setGrade(Grade.DEATH);
 		command.synchronizeOutcome();
 		
-		//make sure that ae has death outcome
-		assertTrue(command.isOutcomePresent(OutcomeType.DEATH, command.getAdverseEvents().get(0).getOutcomes()));
+
 		//make sure, ae got rid of disablity
 		assertFalse(command.isOutcomePresent(OutcomeType.DISABILITY, command.getAdverseEvents().get(0).getOutcomes()));
 		assertEquals("abcd", command.getOutcomeOtherDetails().get(0));
@@ -176,32 +175,7 @@ public class CaptureAdverseEventInputCommandTest extends AbstractTestCase {
 		
 	}
 	
-	/**
-	 * This method tests {@link CaptureAdverseEventInputCommand#synchronizeOutcome()}
-	 */
-	public void testSynchronizeOutcomeMakeSureDEATHOutcomeIsRemoved(){
-		command.initializeOutcomes();
-		//make uncheck the Disability
-		command.getOutcomes().get(0).put(OutcomeType.DISABILITY.getCode(), false);
-		command.getAdverseEvents().get(0).setGrade(Grade.DEATH);
-		command.synchronizeOutcome();
-		
-		//make sure that ae has death outcome
-		assertTrue(command.isOutcomePresent(OutcomeType.DEATH, command.getAdverseEvents().get(0).getOutcomes()));
-		//make sure, ae got rid of disablity
-		assertFalse(command.isOutcomePresent(OutcomeType.DISABILITY, command.getAdverseEvents().get(0).getOutcomes()));
-		assertEquals("abcd", command.getOutcomeOtherDetails().get(0));
-		
-		command.initializeOutcomes(); //to make sure death is there in the outcome map.
-		assertTrue(command.getOutcomes().get(0).get(OutcomeType.DEATH.getCode()));
-		assertTrue(command.isOutcomePresent(OutcomeType.DEATH, command.getAdverseEvents().get(0).getOutcomes()));
-		//update the ae grade to something else
-		command.getAdverseEvents().get(0).setGrade(Grade.MILD);
-		command.getOutcomes().get(0).put(OutcomeType.DEATH.getCode(), false);
-		command.synchronizeOutcome();
-		assertFalse(command.isOutcomePresent(OutcomeType.DEATH, command.getAdverseEvents().get(0).getOutcomes()));
-	}
-	
+
 	/**
 	 * This method tests {@link CaptureAdverseEventInputCommand#synchronizeOutcome()}
 	 */

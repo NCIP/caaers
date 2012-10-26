@@ -63,7 +63,7 @@ public class CtcBasicsTab extends BasicsTab {
         } else  {     
 			InputField otherSpecifyField =  InputFieldFactory.createTextField("otherSpecify", "Other (specify)", "aeReport.adverseEvents.otherSpecify", false);
 	        InputFieldAttributes.setSize(otherSpecifyField, 25);
-	        creator.createRepeatingFieldGroup("otherSpecify", "adverseEvents", otherSpecifyField);
+	        creator.createRepeatingFieldGroup(CtcBasicsTab.CTC_OTHER_FIELD_GROUP, "adverseEvents", otherSpecifyField);
         }
         
         //add the fields for outcomes

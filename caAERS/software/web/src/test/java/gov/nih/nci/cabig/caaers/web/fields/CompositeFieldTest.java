@@ -51,7 +51,7 @@ public class CompositeFieldTest extends AbstractTestCase {
     	ParticipantHistory history = new ParticipantHistory();
     	history.getWeight();
     	
-    	InputField textField = InputFieldFactory.createTextField("bsa", "", new DecimalRangeValidator(1, 999));
+    	InputField textField = InputFieldFactory.createTextField("quantity", "", new DecimalRangeValidator(1, 999));
     	group.addField(textField);
     	
     	field = new CompositeField("weight", group);
@@ -66,9 +66,9 @@ public class CompositeFieldTest extends AbstractTestCase {
     
     public void testValidateCompositeField_InvalidValue() throws Exception {
     	ParticipantHistory history = new ParticipantHistory();
-    	history.setBsa("-99.0");
+    	history.getWeight().setQuantity(-99.0);
     	
-    	InputField textField = InputFieldFactory.createTextField("bsa", "", new DecimalRangeValidator(1, 999));
+    	InputField textField = InputFieldFactory.createTextField("quantity", "", new DecimalRangeValidator(1, 999));
     	group.addField(textField);
     	
     	field = new CompositeField("weight", group);
