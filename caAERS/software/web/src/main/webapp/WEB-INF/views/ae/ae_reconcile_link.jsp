@@ -254,7 +254,8 @@ AE.aeWidget = Class.create({
             {key:"verbatim", label: "Verbatim", sortable:true, resizeable:true},
             {key:"whySerious", label: "Serious?", sortable:false, resizeable:false},
             {key:"attribution", label: "Attribution", sortable:false, resizeable:false},
-            {key:"percent", label: "Match" ,formatter:AE.matchFormatter, sortable:true, resizeable:false}
+            {key:"percent", label: "Match" ,formatter:AE.matchFormatter, sortable:true, resizeable:false} ,
+            {key:"percent", label: "Score" , sortable:false, resizeable:false}
         ];
         var ds = new YAHOO.util.DataSource(this.aePickerData);
         ds.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
