@@ -161,12 +161,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 			StudyParticipantAssignment assignment, CaaersServiceResponse caaersServiceResponse, String externalId) {
 		AdverseEventReportingPeriod adverseEventReportingPeriod = null;
 		if (criteria.getCourse() != null) {
-			try {
-				adverseEventReportingPeriod = createDomainReportingPeriodIfNotExists(criteria, assignment, externalId);
-			} catch (CaaersSystemException e) {
-				logger.error(e);
-				Helper.populateError(caaersServiceResponse, e.getErrorCode(), e.getMessage());
-			}
+			adverseEventReportingPeriod = createDomainReportingPeriodIfNotExists(criteria, assignment, externalId);
 		}
 		return adverseEventReportingPeriod;
 	}
@@ -177,13 +172,22 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 		String treatmentAssignmentCode = null;
 		String otherTreatmentAssignmentDescription = null; 
 		if((treatmentAssignmentCode = criteria.getCourse().getTreatmentAssignmentCode()) != null){
+			// compare TAC and treatment type to determine if matchingDomainAdverseEventReportingPeriod exists.
 			for (AdverseEventReportingPeriod matchingDomainAdverseEventReportingPeriod : rPeriodList) {
-				// compare TAC and treatment type to determine if matchingDomainAdverseEventReportingPeriod exists.
-				if(matchingDomainAdverseEventReportingPeriod.getTreatmentAssignment()!= null && matchingDomainAdverseEventReportingPeriod.getTreatmentAssignment().getCode() != null && matchingDomainAdverseEventReportingPeriod.
-						getTreatmentAssignment().getCode().equals(treatmentAssignmentCode) && criteria.getCourse().getTreatmentType() == null ? 
-								true:criteria.getCourse().getTreatmentType().equals(matchingDomainAdverseEventReportingPeriod.getEpoch().getName())){
-					return matchingDomainAdverseEventReportingPeriod;
+				boolean tacMatches = false;
+				boolean treatmentTypeMatches = false;
+				
+				if(matchingDomainAdverseEventReportingPeriod.getTreatmentAssignment()!= null && matchingDomainAdverseEventReportingPeriod.getTreatmentAssignment().
+						getCode() != null && matchingDomainAdverseEventReportingPeriod.getTreatmentAssignment().getCode().equals(treatmentAssignmentCode)){
+					tacMatches = true;
 				}
+				if(criteria.getCourse().getTreatmentType() == null){
+					treatmentTypeMatches = true;
+				} else if(matchingDomainAdverseEventReportingPeriod.getEpoch() != null && criteria.getCourse().getTreatmentType().equals(matchingDomainAdverseEventReportingPeriod.getEpoch().getName())){
+					treatmentTypeMatches = true;
+				}
+					
+				if(tacMatches & treatmentTypeMatches) return matchingDomainAdverseEventReportingPeriod;
 			}
 		} else if ((otherTreatmentAssignmentDescription = criteria.getCourse().getOtherTreatmentAssignmentDescription()) != null){
 					for (AdverseEventReportingPeriod matchingDomainAdverseEventReportingPeriod : rPeriodList) {
@@ -309,29 +313,35 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 		}
 		
 		
-		ExternalAdverseEventReportingPeriod externalAdverseEventReportingPeriod = buildExternalReportingPeriod(adverseEventsInputMessage, caaersServiceResponse, assignment, null);
-		
-		// fetch AE reporting period
-		AdverseEventReportingPeriod adverseEventReportingPeriod = fetchAEReportingPeriod(criteria, assignment, caaersServiceResponse, 
-				adverseEventsInputMessage.getCriteria().getCourse().getExternalId());
-		
-		// update the  the status of the old adv events( from earlier msgs), that have same external ids (from the current msg) and which are 
-		// still in pending to ignored.
-		List<String> externalIds = externalAdverseEventReportingPeriod.getExternalAdverseEventIds();
-		if(!externalIds.isEmpty()){
-			externalAdverseEventDao.updateStatus(ExternalAEReviewStatus.PENDING, ExternalAEReviewStatus.IGNORED, externalIds);
-		}
-		
-		// associate externalAdverseEventReportingPeriod to the domain reporting period
-		externalAdverseEventReportingPeriod.setDomainReportingPeriod(adverseEventReportingPeriod);
-		
-		// save external reporting period along with the external adverse events
-		saveExternalAdverseEventReportingPeriod(externalAdverseEventReportingPeriod, caaersServiceResponse);
+		try {
+			ExternalAdverseEventReportingPeriod externalAdverseEventReportingPeriod = buildExternalReportingPeriod(adverseEventsInputMessage, caaersServiceResponse, assignment, null);
+			
+			// fetch AE reporting period
+			AdverseEventReportingPeriod adverseEventReportingPeriod = fetchAEReportingPeriod(criteria, assignment, caaersServiceResponse, 
+					adverseEventsInputMessage.getCriteria().getCourse().getExternalId());
+			
+			// update the  the status of the old adv events( from earlier msgs), that have same external ids (from the current msg) and which are 
+			// still in pending to ignored.
+			List<String> externalIds = externalAdverseEventReportingPeriod.getExternalAdverseEventIds();
+			if(!externalIds.isEmpty()){
+				externalAdverseEventDao.updateStatus(ExternalAEReviewStatus.PENDING, ExternalAEReviewStatus.IGNORED, externalIds);
+			}
+			
+			// associate externalAdverseEventReportingPeriod to the domain reporting period
+			externalAdverseEventReportingPeriod.setDomainReportingPeriod(adverseEventReportingPeriod);
+			
+			// save external reporting period along with the external adverse events
+			saveExternalAdverseEventReportingPeriod(externalAdverseEventReportingPeriod, caaersServiceResponse);
 
-        List<String> possibleTransitions = adverseEventRoutingAndReviewRepository.nextTransitionNames(adverseEventReportingPeriod.getWorkflowId(), SecurityUtils.getUserLoginName());
-        if(possibleTransitions.contains("Submit to Data Coordinator")) {
-            adverseEventRoutingAndReviewRepository.advanceReportingPeriodWorkflow(adverseEventReportingPeriod.getWorkflowId(), "Submit to Data Coordinator", adverseEventReportingPeriod, SecurityUtils.getUserLoginName());
-        }
+			List<String> possibleTransitions = adverseEventRoutingAndReviewRepository.nextTransitionNames(adverseEventReportingPeriod.getWorkflowId(), SecurityUtils.getUserLoginName());
+			if(possibleTransitions.contains("Submit to Data Coordinator")) {
+			    adverseEventRoutingAndReviewRepository.advanceReportingPeriodWorkflow(adverseEventReportingPeriod.getWorkflowId(), "Submit to Data Coordinator", adverseEventReportingPeriod, SecurityUtils.getUserLoginName());
+			}
+		} catch (CaaersSystemException e) {
+			logger.error(e);
+			Helper.populateError(caaersServiceResponse, e.getErrorCode(), e.getMessage());
+			e.printStackTrace();
+		}
         
 		return caaersServiceResponse;
 	}
