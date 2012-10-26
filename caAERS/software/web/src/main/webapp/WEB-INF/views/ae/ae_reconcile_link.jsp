@@ -262,7 +262,7 @@ AE.aeWidget = Class.create({
             fields: ["id","term","grade","startDate","endDate", "verbatim", "whySerious", "attribution", "percent"]
         };
 
-        this.aePickerTbl = new YAHOO.widget.ScrollingDataTable(this.containerId, colDefs, ds, {height:"12em", width:'800px'});
+        this.aePickerTbl = new YAHOO.widget.ScrollingDataTable(this.containerId, colDefs, ds, {height:"12em", width:'890px'});
         this.aePickerTbl.set("selectionMode", "single");
         this.aePickerTbl.subscribe("rowClickEvent", this.onAePickerRowSelection, this, this);
         this.aePickerTbl.subscribe("rowMouseoverEvent", this.aePickerTbl.onEventHighlightRow, this, this);
