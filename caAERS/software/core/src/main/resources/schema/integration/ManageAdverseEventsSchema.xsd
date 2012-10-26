@@ -66,7 +66,7 @@
 				            </xs:documentation>
 				     </xs:annotation>
                     <xs:element minOccurs="0" name="startDateOfFirstCourse" type="xs:date"/>
-                    <xs:element minOccurs="1" name="startDateOfThisCourse" type="xs:date"/>
+                    <xs:element minOccurs="0" name="startDateOfThisCourse" type="xs:date"/>
                     <xs:element minOccurs="0" name="endDateOfThisCourse" type="xs:date"/>
                     <xs:element minOccurs="0" name="treatmentType" type="xs:string"/>
                     <xs:element minOccurs="0" name="cycleNumber" type="xs:integer"/>
