@@ -112,7 +112,7 @@ public class AdditionalInformationDocument extends AbstractMutableDomainObject i
      * @return the additionalInformationDocumentType
      */
     @Enumerated(EnumType.STRING)
-    @Column(name = "additional_information_document_type")
+    @Column(name = "document_type")
     public AdditionalInformationDocumentType getAdditionalInformationDocumentType() {
         return additionalInformationDocumentType;
     }

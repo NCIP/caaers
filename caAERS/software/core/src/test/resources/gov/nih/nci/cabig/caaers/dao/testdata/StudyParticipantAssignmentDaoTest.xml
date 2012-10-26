@@ -196,6 +196,7 @@
     <TREATMENTS/>
     <ae_labs/>
     <concomitant_medications/>
+    <additional_information_document />
     <additional_information />
     <study_agents />
     <!--  We have some investigational new drugs pre-loaded for CTEP (for organizations table delete) -->

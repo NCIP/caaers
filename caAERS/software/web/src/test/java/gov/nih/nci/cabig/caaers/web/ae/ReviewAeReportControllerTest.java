@@ -7,6 +7,7 @@ import java.util.Map;
 import gov.nih.nci.cabig.caaers.api.AdeersReportGenerator;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
+import gov.nih.nci.cabig.caaers.service.adverseevent.AdditionalInformationDocumentService;
 import org.acegisecurity.Authentication;
 import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.context.SecurityContext;
@@ -41,8 +42,9 @@ public class ReviewAeReportControllerTest extends WebTestCase{
 	protected StudyParticipantAssignmentDao assignmentDao;
 	protected Configuration configuration;
 	BindException errors;
-	
-	protected ReviewAeReportController controller;
+    private AdditionalInformationDocumentService additionalInformationDocumentService;
+
+    protected ReviewAeReportController controller;
 	protected ReviewAeReportCommand command;
 	protected EvaluationService evaluationService;
 	protected ReportValidationService reportValidationService;
@@ -55,6 +57,7 @@ public class ReviewAeReportControllerTest extends WebTestCase{
 		configuration = registerMockFor(Configuration.class);
 		evaluationService = registerMockFor(EvaluationService.class);
 		reportValidationService = registerMockFor(ReportValidationService.class);
+        additionalInformationDocumentService = registerMockFor(AdditionalInformationDocumentService.class);
 		reportDao = registerDaoMockFor(ReportDao.class);
 		command = new ReviewAeReportCommand(expeditedAdverseEventReportDao, reportDao);
 
@@ -66,6 +69,7 @@ public class ReviewAeReportControllerTest extends WebTestCase{
 		controller.setConfiguration(configuration);
 		controller.setEvaluationService(evaluationService);
 		controller.setReportValidationService(reportValidationService);
+        controller.setAdditionalInformationDocumentService(additionalInformationDocumentService);
         controller.setReportDao(new ReportDao() {
             @Override
             public Report getById(int id) {
@@ -97,6 +101,7 @@ public class ReviewAeReportControllerTest extends WebTestCase{
 		ValidationErrors vErrors = new ValidationErrors();
 		expect(evaluationService.validateReportingBusinessRules(isA(ExpeditedAdverseEventReport.class), isA(ExpeditedReportSection.class))).andReturn(vErrors).anyTimes();
 		expect(reportValidationService.isSubmittable(report)).andReturn(new ReportSubmittability());
+		expect(additionalInformationDocumentService.findByAdditionalInformationId(aeReport.getAdditionalInformation().getId())).andReturn(new ArrayList<AdditionalInformationDocument>());
 		replayMocks();
 		Map<String, Object> refdata = controller.referenceData(request, command, errors);
 		verifyMocks();

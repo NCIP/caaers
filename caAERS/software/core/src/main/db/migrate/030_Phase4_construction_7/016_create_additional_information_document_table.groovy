@@ -9,7 +9,7 @@ class CreateAdditionalInformationDocument extends edu.northwestern.bioinformatic
             t.addColumn('relative_path', 'string', nullable: false)
             t.addColumn('additional_information_id', 'integer', nullable: false)
             t.addColumn('grid_id', 'string', nullable: false)
-            t.addColumn('additional_information_document_type', 'string', nullable: false)
+            t.addColumn('document_type', 'string', nullable: false)
 
             t.addVersionColumn()
         }
