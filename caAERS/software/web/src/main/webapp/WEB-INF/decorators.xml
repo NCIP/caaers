@@ -45,6 +45,10 @@
     </decorator>
 
     <excludes>
+        <pattern>*additionalInformationDocumentUpload*</pattern>
+        <pattern>/*/additionalInformationDocumentUpload/*</pattern>
+        <pattern>/*/additionalInformationDocumentUpload</pattern>
+        <pattern>/pages/ae/additionalInformationDocumentUpload</pattern>
         <pattern>/*/image/*</pattern>
         <pattern>/*/js/*</pattern>
         <!-- exclude Ajax subview renderings -->

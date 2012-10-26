@@ -87,7 +87,7 @@
                     },
                     onProgress:function (id, fileName, loaded, total) {
                         if (loaded < total) {
-                            progress =   '  '+ Math.round(loaded / total * 100) + ' % of ' + Math.round(total / 1024) + ' kB';
+                            progress = '  ' + Math.round(loaded / total * 100) + ' % of ' + Math.round(total / 1024) + ' kB';
                             $('file-' + id + '_progress').removeClassName('info-box')
                                     .update('Uploading ' + fileName + progress);
                         }
@@ -99,13 +99,14 @@
                             var downloadURL = '<a target="_blank" href="additionalInformationDocumentDownload?fileId=' + responseJSON.fileId + '">' + fileName + '</a>';
                             var deleteURL = '<a href="javascript:deleteDocument(\'' + responseJSON.fileId + '\',\'file-' + id + '\')">' + deleteIcon + '</a>';
 
-                            $('file-' + id).removeClassName('info-box')
-                                    .update('<tr id="file-' + id + '" ><td valign="top">' + downloadURL + '</td><td>' + responseJSON.fileSize + '</td><td>' + deleteURL + '</td></tr>');
+                            $('file-' + id).removeClassName('info-box');
+                            $('file-' + id).update('<td valign="top">' + downloadURL + '</td><td>' + responseJSON.fileSize + '</td><td>' + deleteURL + '</td>');
+
                         } else {
                             $('file-' + id).removeClassName('info-box')
                                     .addClassName('error-box')
                                     .update('<i class="icon-exclamation-sign"></i> ' +
-                                    'Error with ' + fileName +responseJSON.error);
+                                    'Error with ' + fileName + responseJSON.error);
                         }
                     }
                 });
