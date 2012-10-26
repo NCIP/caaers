@@ -65,7 +65,7 @@ public class AdverseEventReconciliationCommand {
     static AdverseEventDTO find(AdverseEventDTO ae, List<AdverseEventDTO> list){
         AdverseEventDTO found = null;
         for(AdverseEventDTO dto : list) {
-            if(ae.isSame(dto)) {
+            if(ae.isSamePerMatchPercentage(dto)) {
                 found = dto ;
                 break;
             }
@@ -207,11 +207,7 @@ public class AdverseEventReconciliationCommand {
                 AdverseEventDTO dto = AdverseEventDTO.create(ae);
                 internalAeList.add(dto);
                 internalAeMap.put(dto.getId(), dto);
-                if(StringUtils.isEmpty(ae.getExternalId())){
-                    unMappedInternalAeList.add(dto);
-                } else {
-                    unMappedExternalAeList.remove(externalAeExternalIdMap.get(dto.getExternalID()));
-                }
+                unMappedInternalAeList.add(dto);
             }
         }
     }

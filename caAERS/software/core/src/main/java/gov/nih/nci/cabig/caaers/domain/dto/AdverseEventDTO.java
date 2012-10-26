@@ -42,6 +42,26 @@ public class AdverseEventDTO {
                 StringUtils.equals(whySerious, other.whySerious) &&
                 StringUtils.equals(attribution, other.attribution);
     }
+    
+    public boolean isSamePerMatchPercentage(AdverseEventDTO oae){
+        if(isSame(oae)){
+            return true;
+        }
+        
+        int p =0;
+        
+        if(StringUtils.equals(oae.getExternalID(),this.getExpected())) p += 46;
+        if(oae.term.isSame(this.term)) p = p+20;
+        if( StringUtils.equals(oae.startDate,this.startDate)) p = p+ 16;
+        if( StringUtils.equals(oae.endDate, this.endDate)) p = p+2;
+        if( StringUtils.equals(oae.grade, this.grade))  p = p+ 10;
+        if( StringUtils.equals(oae.attribution,this.attribution)) p = p+2;
+        if( StringUtils.equals(oae.verbatim , this.verbatim)) p = p+2;
+        if( StringUtils.equals(oae.whySerious , this.whySerious)) p = p+2;
+        
+       return p > 45;
+    }
+
 
     public boolean isRejected() {
         return rejected;
