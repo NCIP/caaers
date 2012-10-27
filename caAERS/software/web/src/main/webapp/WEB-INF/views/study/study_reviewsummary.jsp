@@ -106,7 +106,7 @@
                 	<c:if test="${command.study.primaryFundingSponsorOrganization.externalId != null}">
                 		<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>
                 	</c:if>                	
-                	<div class="value"><c:out value="${command.study.primaryFundingSponsorOrganization.name}" escapeXml="true" />  </div>
+                	<div class="value"><c:out value="${command.study.primaryFundingSponsorOrganization.fullName}" escapeXml="true" />  </div>
             	</div>
 				<div class="row">
                 	<div class="label">Coordinating center</div>
@@ -114,7 +114,7 @@
                 	<c:if test="${command.study.studyCoordinatingCenter.organization.externalId != null}">
                 		<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>
                 	</c:if>
-                	<c:out value="${command.study.studyCoordinatingCenter.organization.name}" escapeXml="true" />
+                	<c:out value="${command.study.studyCoordinatingCenter.organization.fullName}" escapeXml="true" />
                 	</div>
             	</div>
 

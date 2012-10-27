@@ -18,7 +18,7 @@
     sitesJSONResult = [
         <c:forEach items="${command.study.studySites}" var="studySite">
             <c:if test="${!studySite.retired}">
-                {"name":"<c:out value="${studySite.organization.name}" escapeXml="true" />"},
+                {"name":"<c:out value="${studySite.organization.fullName}" escapeXml="true" />"},
             </c:if>
         </c:forEach>
     ];

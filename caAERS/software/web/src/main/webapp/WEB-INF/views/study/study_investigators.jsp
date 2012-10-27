@@ -158,9 +158,9 @@
                                    <div class="" style="font-size: 11px;">
                                        <c:choose>
                                            <c:when test="${_isATeamAdmin || _canModifyTheCC || _canModifyTheFS}">
-                                               <a style="cursor:pointer;" href="javascript:chooseSitesfromSummary(${status.index});" title="click here to edit investigator assigned to study">${studySite.organization.name}</a>
+                                               <a style="cursor:pointer;" href="javascript:chooseSitesfromSummary(${status.index});" title="click here to edit investigator assigned to study">${studySite.organization.fullName}</a>
                                            </c:when>
-                                           <c:otherwise>${studySite.organization.name}</c:otherwise>
+                                           <c:otherwise>${studySite.organization.fullName}</c:otherwise>
                                        </c:choose>
                                        <b>(${fn:length(studySite.studyInvestigators)})</b>
                                    </div>
