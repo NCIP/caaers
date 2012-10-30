@@ -147,12 +147,12 @@ AE.ae = Class.create({
 //        if(oae.externalId == this.externalId) return 100;
             if(oae.externalId == this.externalId) p = 46;
             if(oae.term == this.term) p = p+20;
-            if(oae.startDate == this.startDate) p = p+ 16;
-            if(oae.endDate == this.endDate) p = p+2;
-            if(oae.grade == this.grade) p = p+ 10;
-            if(oae.attribution == this.attribution) p = p+2;
-            if(oae.verbatim == this.verbatim) p = p+2;
-            if(oae.whySerious == this.whySerious) p = p+2;
+            if(this.equals(oae.startDate , this.startDate)) p = p+ 16;
+            if(this.equals(oae.endDate , this.endDate)) p = p+2;
+            if(this.equals(oae.grade , this.grade)) p = p+ 10;
+            if(this.equals(oae.attribution , this.attribution)) p = p+2;
+            if(this.equals(oae.verbatim , this.verbatim)) p = p+2;
+            if(this.equals(oae.whySerious , this.whySerious)) p = p+2;
 
         return '{' +
                 'id : ' + this.id + ',' +
@@ -173,6 +173,21 @@ AE.ae = Class.create({
     } ,
     toSring: function(){
         return "id : " + this.id + ", externalId : " + this.externalId;
+    },
+    equals : function(s1, s2) {
+        if(s1){
+             if(s2){
+                 return s1 == s2;
+             }   else {
+                 return false;
+             }
+        } else {
+            if(s2){
+                return false;
+            } else {
+                return true;
+            }
+        }
     }
 });
 

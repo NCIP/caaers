@@ -2,8 +2,10 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import com.semanticbits.rules.brxml.*;
 import com.semanticbits.rules.brxml.Condition;
+import gov.nih.nci.cabig.caaers.domain.dto.AdverseEventDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.AeMergeDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.TaskNotificationDTO;
+import gov.nih.nci.cabig.caaers.domain.dto.TermDTO;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.*;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.CombinationPolicy;
@@ -1107,5 +1109,25 @@ public class Fixtures {
         d.setExternalAeId(11);
         d.setInteralAeId(15);
         return d;
+    }
+
+    public static AdverseEventDTO createAdverseEventDTO(){
+        return  Fixtures.createAdverseEventDTO(12, 102, "5490", "Nausea", "Severe", "10/09/2011", "10/11/2011", "Redness in left eye", "", "Probable");
+    }
+    public static AdverseEventDTO createAdverseEventDTO(int id, int termId, String termCode, String term, String grade, String startDate, String endDate, String verbatim, String whySerious, String attibution){
+        AdverseEventDTO dto = new AdverseEventDTO();
+        dto.setId(id);
+        TermDTO t = new TermDTO();
+        t.setId(termId);
+        t.setCode(termCode);
+        t.setName(term);
+        dto.setTerm(t);
+        dto.setGrade(grade);
+        dto.setStartDate(startDate);
+        dto.setEndDate(endDate);
+        dto.setVerbatim(verbatim);
+        dto.setWhySerious(whySerious);
+        dto.setAttribution(attibution);
+        return dto;
     }
 }
