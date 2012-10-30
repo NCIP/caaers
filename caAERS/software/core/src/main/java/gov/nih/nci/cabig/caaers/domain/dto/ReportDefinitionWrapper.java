@@ -34,6 +34,10 @@ public class ReportDefinitionWrapper {
 		public String toString() {
 			return name().charAt(0) + name().toLowerCase().substring(1);
 		}
+
+        public String getDisplayName(){
+            return  toString();
+        }
 	}
 	
 	/** The def. */

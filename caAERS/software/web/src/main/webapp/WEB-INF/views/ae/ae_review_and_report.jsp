@@ -952,7 +952,7 @@ function validate(aeReportId){
 			     "${row.reportDefinition.label}" , "${row.group}" , "${row.reportDefinition.reportType.code}",
 			     "${row.status}", "${row.grpStatus}", "${row.otherStatus}",
 			     "${row.due}", "${row.grpDue}", "${row.otherDue}",
-			     "${row.action}", "${row.grpAction}", "${row.otherAction}",
+			     "${row.action.displayName}", "${row.grpAction.displayName}", "${row.otherAction.displayName}",
 			      ${not empty row.reportDefinition.parent},
 			      ${not row.reportDefinition.enabled},
 			      ${not row.stringent});
@@ -960,7 +960,7 @@ function validate(aeReportId){
                         "${row.reportDefinition.label}" , "${row.group}" , "${row.reportDefinition.reportType.code}",
                         "${row.status}", "${row.grpStatus}", "${row.otherStatus}",
                         "${row.due}", "${row.grpDue}", "${row.otherDue}",
-                        "${row.action}", "${row.grpAction}", "${row.otherAction}",
+                        "${row.action.displayName}", "${row.grpAction.displayName}", "${row.otherAction.displayName}",
                          ${not empty row.reportDefinition.parent},
                          ${not row.reportDefinition.enabled},
                          ${not row.stringent});
