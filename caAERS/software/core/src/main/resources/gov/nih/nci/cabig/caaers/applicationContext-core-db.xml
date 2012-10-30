@@ -16,7 +16,7 @@
 
     <bean id="localPoolDataSource" lazy-init="true" class="org.apache.commons.dbcp.BasicDataSource"
         p:driverClassName="s[datasource.driver]"
-        p:maxActive="10" p:maxIdle="2"
+        p:maxActive="25" p:maxIdle="4"
         p:maxWait="180000"
         p:removeAbandoned="true"
         p:removeAbandonedTimeout="1200"
