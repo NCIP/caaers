@@ -22,8 +22,8 @@ import java.util.Map;
  * @since 10/25/2012
  */
 @Entity
-@Table(name = "additional_information_document")
-@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_additional_info_doc_id")})
+@Table(name = "additional_info_document")
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_additional_info_documen_id")})
 public class AdditionalInformationDocument extends AbstractMutableDomainObject implements Comparable<AdditionalInformationDocument> {
 
     private String fileId;

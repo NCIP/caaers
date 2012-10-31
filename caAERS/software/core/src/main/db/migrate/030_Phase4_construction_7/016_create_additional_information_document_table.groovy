@@ -1,6 +1,6 @@
 class CreateAdditionalInformationDocument extends edu.northwestern.bioinformatics.bering.Migration {
     void up() {
-        createTable('additional_information_document') { t ->
+        createTable('additional_info_document') { t ->
             t.addColumn('file_id', 'string', nullable: false)
             t.addColumn('original_file_name', 'string', nullable: false)
             t.addColumn('file_name', 'string', nullable: false)
@@ -13,10 +13,10 @@ class CreateAdditionalInformationDocument extends edu.northwestern.bioinformatic
 
             t.addVersionColumn()
         }
-        execute('ALTER TABLE additional_information_document ADD CONSTRAINT fk_additional_information_id FOREIGN KEY (additional_information_id) REFERENCES additional_information')
+        execute('ALTER TABLE additional_info_document ADD CONSTRAINT fk_additional_info_id FOREIGN KEY (additional_information_id) REFERENCES additional_information')
     }
 
     void down() {
-        dropTable('additional_information_document')
+        dropTable('additional_info_document')
     }
 }
