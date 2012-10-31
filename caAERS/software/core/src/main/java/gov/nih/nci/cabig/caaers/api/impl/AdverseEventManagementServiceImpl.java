@@ -202,7 +202,10 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 		
 		// get study from assignment
 		Study study = assignment.getStudySite().getStudy();
-		Date xmlStartDate = criteria.getCourse().getStartDateOfThisCourse().toGregorianCalendar().getTime();
+		Date xmlStartDate = null;
+		if(criteria.getCourse().getStartDateOfThisCourse() != null){
+			xmlStartDate = criteria.getCourse().getStartDateOfThisCourse().toGregorianCalendar().getTime();
+		}
 		Date xmlEndDate = null;
 		if (criteria.getCourse().getEndDateOfThisCourse() != null) {
 			xmlEndDate = criteria.getCourse().getEndDateOfThisCourse().toGregorianCalendar().getTime();
@@ -210,39 +213,34 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 		
 		AdverseEventReportingPeriod newAeReportingPeriod = new AdverseEventReportingPeriod();
 		
-		if(treatmentAssignmentCode != null){
-			TreatmentAssignment ta = resolveTreamtmentAssignment(criteria, study);
-			if (ta == null) {
-				throw new CaaersSystemException("WS_AEMS_009", messageSource.getMessage("WS_AEMS_009",
-						new String[] { criteria.getCourse().getTreatmentAssignmentCode() }, "", Locale
-								.getDefault()));
-			}
-			newAeReportingPeriod.setTreatmentAssignment(ta);
-		} else {
-			newAeReportingPeriod.setTreatmentAssignmentDescription(otherTreatmentAssignmentDescription);
-		}
 		newAeReportingPeriod.setStartDate(xmlStartDate);
 		newAeReportingPeriod.setEndDate(xmlEndDate);
 		if(criteria.getCourse().getCycleNumber() != null) newAeReportingPeriod.setCycleNumber(criteria.getCourse().getCycleNumber().intValue());
-		assignment.addReportingPeriod(newAeReportingPeriod);
 		Epoch epochToSave = getEpoch(criteria, study);
 		
-		// CAAERS-2813
-	/*	if (epochToSave == null) {
-			throw new CaaersSystemException("WS_AEMS_010", messageSource.getMessage("WS_AEMS_010",
-					new String[] { criteria.getCourse().getTreatmentType() }, "", Locale.getDefault()));
-		}*/
-		newAeReportingPeriod.setEpoch(epochToSave);
 		// get the externalId from the message and set here.
 		newAeReportingPeriod.setExternalId(externalId);
 		
 		Map<String, String> errors = validateRepPeriodDates(newAeReportingPeriod, rPeriodList,
-				assignment.getStartDateOfFirstCourse());
+				assignment.getStartDateOfFirstCourse(),epochToSave);
 		
 		// update workflow to DCC
 	//	adverseEventRoutingAndReviewRepository.advanceReportingPeriodWorkflow(newAeReportingPeriod.getWorkflowId(), null, newAeReportingPeriod, getUserId());
 		if (errors.size() == 0) {
 			try {
+				assignment.addReportingPeriod(newAeReportingPeriod);
+				newAeReportingPeriod.setEpoch(epochToSave);
+				if(treatmentAssignmentCode != null){
+					TreatmentAssignment ta = resolveTreamtmentAssignment(criteria, study);
+					if (ta == null) {
+						throw new CaaersSystemException("WS_AEMS_009", messageSource.getMessage("WS_AEMS_009",
+								new String[] { criteria.getCourse().getTreatmentAssignmentCode() }, "", Locale
+										.getDefault()));
+					}
+					newAeReportingPeriod.setTreatmentAssignment(ta);
+				} else {
+					newAeReportingPeriod.setTreatmentAssignmentDescription(otherTreatmentAssignmentDescription);
+				}
 				adverseEventReportingPeriodDao.save(newAeReportingPeriod);
                 if(isWorkflowEnabled()){
                     Long wfId = adverseEventRoutingAndReviewRepository.enactReportingPeriodWorkflow(newAeReportingPeriod);
@@ -368,7 +366,10 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 		Criteria criteria = adverseEventsInputMessage.getCriteria();
 		// get study from assignment
 		Study study = assignment.getStudySite().getStudy();
-		Date xmlStartDate = criteria.getCourse().getStartDateOfThisCourse().toGregorianCalendar().getTime();
+		Date xmlStartDate = null;
+		if(criteria.getCourse().getStartDateOfThisCourse() != null){
+			xmlStartDate = criteria.getCourse().getStartDateOfThisCourse().toGregorianCalendar().getTime();
+		}
 		Date xmlEndDate = null;
 		if (criteria.getCourse().getEndDateOfThisCourse() != null) {
 			xmlEndDate = criteria.getCourse().getEndDateOfThisCourse().toGregorianCalendar().getTime();
@@ -895,7 +896,10 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 					new String[] { }, "", Locale.getDefault()));
 		}
 		
-		Date xmlStartDate = criteria.getCourse().getStartDateOfThisCourse().toGregorianCalendar().getTime();
+		Date xmlStartDate = null;
+		if(criteria.getCourse().getStartDateOfThisCourse() != null){
+			xmlStartDate = criteria.getCourse().getStartDateOfThisCourse().toGregorianCalendar().getTime();
+		}
 		Date xmlEndDate = null;
 		if (criteria.getCourse().getEndDateOfThisCourse() != null) {
 			xmlEndDate = criteria.getCourse().getEndDateOfThisCourse().toGregorianCalendar().getTime();
@@ -993,7 +997,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 
 			adverseEventReportingPeriod.setAssignment(assignment);
 			Map<String, String> errors = validateRepPeriodDates(adverseEventReportingPeriod, rPeriodList,
-					assignment.getStartDateOfFirstCourse());
+					assignment.getStartDateOfFirstCourse(),epochToSave);
 			if (errors.size() == 0) {
 				try {
 					studyParticipantAssignmentDao.save(assignment);
@@ -1148,7 +1152,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 	}
 
 	private Map<String, String> validateRepPeriodDates(AdverseEventReportingPeriod rPeriod,
-			List<AdverseEventReportingPeriod> rPeriodList, Date firstCourseDate) {
+			List<AdverseEventReportingPeriod> rPeriodList, Date firstCourseDate, Epoch epoch) {
 
 		Date startDate = rPeriod.getStartDate();
 		Date endDate = rPeriod.getEndDate();
@@ -1169,7 +1173,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 		// This is allowed only for Baseline reportingPeriods and not for other
 		// reporting periods.
 
-		if (rPeriod.getEpoch() != null && !rPeriod.getEpoch().getName().equals("Baseline")) {
+		if (epoch != null && !epoch.getName().equals("Baseline")) {
 			if (endDate != null && startDate.equals(endDate)) {
 				errors.put("WS_AEMS_016", messageSource.getMessage("WS_AEMS_016", new String[] {}, "", Locale
 						.getDefault()));
@@ -1216,7 +1220,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 
 			// If the epoch of reportingPeriod is not - Baseline , then it
 			// cannot be earlier than a Baseline
-			if (rPeriod.getEpoch() != null && rPeriod.getEpoch().getName().equals("Baseline")) {
+			if (epoch != null && epoch.getName().equals("Baseline")) {
 				if (!aerp.getEpoch().getName().equals("Baseline")) {
 					if (DateUtils.compareDate(sDate, startDate) < 0) {
 						errors.put("WS_AEMS_018", messageSource.getMessage("WS_AEMS_018", new String[] {}, "", Locale
