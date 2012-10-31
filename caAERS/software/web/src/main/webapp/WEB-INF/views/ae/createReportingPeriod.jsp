@@ -17,11 +17,12 @@
 			padding:0;
 		}
 	</style>
-     <script>
+	<script language="javascript" type="text/javascript">
          var countTA = ${fn:length(command.study.activeTreatmentAssignments)};
          Event.observe(window, "load", function() {
             if ($('reportingPeriod.treatmentAssignmentDescription').value != '' || countTA == 0)
                 $('otherTA').checked = true;
+            $('reportingPeriod.treatmentAssignmentDescription').value = '${command.study.otherTreatmentAssignment}';
          });
 
          function clearOtherTAC() {
@@ -41,7 +42,7 @@
 	          	form._action.value = 'delete';
     	      	form.submit();
     	    }
-         }
+         }          
      </script>
     <%--<tags:javascriptLink name="prototype"/>--%>
 </head>
@@ -109,6 +110,7 @@
                 <tr bgcolor="white">
                     <td><ui:radio path="reportingPeriod.treatmentAssignment" value="" id="otherTA" />&nbsp;<label for="reportingPeriod.treatmentAssignment">Other</label></td>
                     <td><ui:textarea rows="2" path="reportingPeriod.treatmentAssignmentDescription" cols="100"></ui:textarea></td>
+                    
                 </tr>
             </table>
         </tags:table>
@@ -118,8 +120,6 @@
 	<jsp:attribute name="navButtons">
 	      	<div class="content buttons autoclear">
     	      <div class="flow-buttons">
-
-
                   <c:if test="${param.id ne  '-1'}">
                         <span class="prev">
                             <tags:button color="red" type="button" onclick="javascript:deleteCourse()" cssClass="tab${tabNumber}" value="Delete" icon="delete"/>
