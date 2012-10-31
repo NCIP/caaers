@@ -540,7 +540,7 @@
 																	<td>
                                                                         <c:if test="${command.UA}">
 																		<a href="javascript:removeSite('roleMembershipHelper[${index.index}]-site-${site}','${index.index}');">
-       																	<img src="<c:url value="/images/buttons/button_icons/small/trash.gif" />" border="0" alt="delete"></a>
+       																	<img src="<c:url value="/images/buttons/button_icons/small/x_icon_small.png" />" border="0" alt="delete"></a>
        																	</c:if>
 																	</td>
 																</tr>	
@@ -614,7 +614,7 @@
 																		<td>
                                                                         <c:if test="${command.UA}">
 																			<a href="javascript:removeStudy('roleMembershipHelper[${index.index}]-study-${study}','${index.index}');">
-	       																	<img src="<c:url value="/images/buttons/button_icons/small/trash.gif" />" border="0" alt="delete"></a>
+	       																	<img src="<c:url value="/images/buttons/button_icons/small/x_icon_small.png" />" border="0" alt="delete"></a>
                                                                         </c:if>
 																		</td>
 																	</tr>	
