@@ -1,0 +1,1 @@
+update task_configuration set  message = 'The task "AE Study Data Review" is assigned to you. Please use the link ${REPORTING_PERIOD_LINK}&src=RoutingReview to access the evaluation period.' where status_name = 'DATA_COORDINATOR_REVIEW'
