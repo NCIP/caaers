@@ -21,7 +21,7 @@ function showDashboardStudiesMenuOptions(_element, _roles, _ssi, _id, _complete)
         _optionPersonnel = "<li><a class='submitter-blue' href='#' onclick='addStudyPersonnel(\"" + _id + "\")'>Manage personnel</a></li>";
 
     var _optionRegisterSubject = "";
-    if (hasRole('registrar') || hasRole('subject_manager'))
+    if (hasRole('registrar') && hasRole('subject_manager'))
         _optionRegisterSubject = "<li><a class='submitter-blue' href='#' onclick='doRegisterSubject(\"" + _id + "\")'>Register subject</a></li>";
 
     var html = "<div><ul style='font-family:tahoma;'>" +
