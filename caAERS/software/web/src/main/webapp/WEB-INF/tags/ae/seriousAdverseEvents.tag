@@ -53,7 +53,7 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
 		        <c:if test="${ae.reported}"><img src="<chrome:imageUrl name="../reported_icon.png" />" /></c:if>
 		      </td>
 		      <td  class="${_cssClass}">
-		     	${ae.displayGrade }
+		     	<c:out value="${ae.displayGrade }" />
 		      </td>
 		      <td  class="${_cssClass}">
 		      	<c:if test="${empty ae.startDate}">
@@ -68,7 +68,7 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
 		        <c:if test="${not ae.retired}">
 		        <input id="ae-${aeReportId}-${ae.id}-primary" type="radio" name="ae_${aeReportId}_primary" 
 		        value="${ae.id}" ${ae.id eq primaryAeId ? 'checked' :''} class="ae_${aeReportId}_primary"
-		        onclick="handlePrimaryAdverseEvent( ${aeReportId},${ae.id},'${ae.adverseEventTerm.universalTerm}', '${ae.displayGrade}')" />
+		        onclick="handlePrimaryAdverseEvent( ${aeReportId},${ae.id},'${ae.adverseEventTerm.universalTerm}', '<c:out value="${ae.displayGrade }" />')" />
 		        </c:if>
 		      </td>
 	      </tr>
