@@ -52,7 +52,7 @@ public class AdverseEventDTO {
         if(isSame(oae)) return 100;
         int p =0;
 
-        if(StringUtils.equals(oae.getExternalID(),this.getExpected())) p += 46;
+        if(StringUtils.equals(oae.getExternalID(),this.getExternalID())) p += 46;
         if(oae.term.isSame(this.term)) p = p+20;
         if( StringUtils.equals(oae.startDate,this.startDate)) p = p+ 16;
         if( StringUtils.equals(oae.endDate, this.endDate)) p = p+2;

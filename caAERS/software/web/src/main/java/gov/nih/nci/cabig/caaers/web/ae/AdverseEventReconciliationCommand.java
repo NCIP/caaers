@@ -63,24 +63,18 @@ public class AdverseEventReconciliationCommand {
         return null;
     }
     static AdverseEventDTO find(AdverseEventDTO ae, List<AdverseEventDTO> list){
-        AdverseEventDTO found = null;
-        // related to https://tracker.nci.nih.gov/browse/CAAERS-5931
-        boolean foundFirstMatch = false;
+        AdverseEventDTO firstMatch = null;
         for(AdverseEventDTO dto : list) {
             if(ae.isSamePerMatchPercentage(dto)) {
-            	if(!foundFirstMatch){
-            		// found the 1st match
-            		found = dto ;
-            		continue;
-            	} else {
-            		// found more than 1 match, so don't return any AdverseEventDTO
-            		return null;
-            	}
-                
+            	if(firstMatch == null)  {
+                    firstMatch = dto;
+                    continue;
+                }
+                // related to https://tracker.nci.nih.gov/browse/CAAERS-5931
+                return null;
             }
         }
-      
-        return found;
+        return firstMatch;
     }
     static AdverseEventDTO find(int id, List<AdverseEventDTO> list){
         AdverseEventDTO found = null;
