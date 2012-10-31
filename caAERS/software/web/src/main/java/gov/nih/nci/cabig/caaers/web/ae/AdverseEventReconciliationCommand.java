@@ -64,10 +64,19 @@ public class AdverseEventReconciliationCommand {
     }
     static AdverseEventDTO find(AdverseEventDTO ae, List<AdverseEventDTO> list){
         AdverseEventDTO found = null;
+        // related to https://tracker.nci.nih.gov/browse/CAAERS-5931
+        boolean foundFirstMatch = false;
         for(AdverseEventDTO dto : list) {
             if(ae.isSamePerMatchPercentage(dto)) {
-                found = dto ;
-                break;
+            	if(!foundFirstMatch){
+            		// found the 1st match
+            		found = dto ;
+            		continue;
+            	} else {
+            		// found more than 1 match, so don't return any AdverseEventDTO
+            		return null;
+            	}
+                
             }
         }
       
