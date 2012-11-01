@@ -22,7 +22,8 @@
          Event.observe(window, "load", function() {
             if ($('reportingPeriod.treatmentAssignmentDescription').value != '' || countTA == 0)
                 $('otherTA').checked = true;
-            $('reportingPeriod.treatmentAssignmentDescription').value = '${command.study.otherTreatmentAssignment}';
+            if ( $('reportingPeriod.treatmentAssignmentDescription').value == '')
+            	$('reportingPeriod.treatmentAssignmentDescription').value = '${command.study.otherTreatmentAssignment}';
          });
 
          function clearOtherTAC() {
