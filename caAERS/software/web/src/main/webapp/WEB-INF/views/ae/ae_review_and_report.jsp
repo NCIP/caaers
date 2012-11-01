@@ -386,7 +386,8 @@
 	 if(selectedAEs.length == 0){
 		 curRdObject.deSelect();
 		//update the display text.
-		updateDisplayTexts(aeReportId);
+		 updateDisplayTexts(aeReportId);
+         alert('Select at least one adverse event before selecting report');
 		 return;
 	 }
 	 //caaersLog("handleReportSelection [aeReportId :" + aeReportId + ", rdId : " + rdId  + ", curRdObject : " + curRdObject.id);
