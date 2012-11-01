@@ -27,6 +27,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.context.MessageSource;
 
 public class AdverseEventConverter {
@@ -143,17 +144,17 @@ public class AdverseEventConverter {
 			}
 			
 			// populate howSerious
-			gov.nih.nci.cabig.caaers.domain.OutcomeType mostSeriousOutcome = null; 
+			StringBuilder howSeriousSb = new StringBuilder();
 			
 			for (OutcomeType xmlOutcome:adverseEventDto.getOutcome()) {
 				String xmlOc = xmlOutcome.getOutComeEnumType().name();
 				gov.nih.nci.cabig.caaers.domain.OutcomeType oct = gov.nih.nci.cabig.caaers.domain.OutcomeType.valueOf(xmlOc);
-				if(mostSeriousOutcome == null || mostSeriousOutcome.compareTo(oct) > 1){
-					mostSeriousOutcome = oct;
-				} 
+				howSeriousSb.append(oct.getShortName()).append(",");
 			}
-			
-			if(mostSeriousOutcome != null) adverseEvent.setHowSerious(mostSeriousOutcome.getShortName());
+			String howSerious = howSeriousSb.toString();
+			if(StringUtils.isNotEmpty(howSerious)) {
+				adverseEvent.setHowSerious(howSerious);
+			}
 				
 			// populate grade
 			Grade grade = Grade.getByCode(adverseEventDto.getGrade());
