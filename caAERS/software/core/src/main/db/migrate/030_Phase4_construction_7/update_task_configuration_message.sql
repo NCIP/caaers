@@ -1,0 +1,1 @@
+update task_configuration set  message = 'The task "Submit Report To Physician" is assigned to you. Please use the link ${EXPEDITED_REPORT_LINK} to access the report.' where task_name = 'Submit Report To Physician'
