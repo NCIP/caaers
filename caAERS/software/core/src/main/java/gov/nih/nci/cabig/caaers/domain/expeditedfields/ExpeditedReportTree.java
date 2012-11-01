@@ -371,8 +371,7 @@ public class ExpeditedReportTree extends PropertylessNode {
             PropertyValues values = node.getPropertyValuesFrom(report);
             for (PropertyValue pv : values.getPropertyValues()) {
                 Object value = pv.getValue();
-                if(value == null)  unsatisfied.add(new UnsatisfiedProperty(node, pv.getName()));
-                if(value instanceof CodedEnum && String.valueOf(value).contains("Please select")) unsatisfied.add(new UnsatisfiedProperty(node, pv.getName()));
+                if(value == null || (value instanceof CodedEnum && String.valueOf(value).contains("Please select") ))  unsatisfied.add(new UnsatisfiedProperty(node, pv.getName()));
             }
         }
         return unsatisfied;

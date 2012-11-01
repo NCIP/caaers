@@ -109,7 +109,7 @@ public class MandatoryProperties {
             TreeNode node = tree.find(path);
             if(node != null && section.isAncestorOf(node)){
                 Object value = bw.getPropertyValue(path);
-                if(value == null || value instanceof CodedEnum && String.valueOf(value).contains("Please select")) return Arrays.asList(new UnsatisfiedProperty(node, path));
+                if(value == null || (value instanceof CodedEnum && String.valueOf(value).contains("Please select") )) return Arrays.asList(new UnsatisfiedProperty(node, path));
             }
         }
 
