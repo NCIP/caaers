@@ -21,6 +21,7 @@
      <xsl:variable name="_cmdPossible" select="number(3)" />
      <xsl:variable name="_tacPossible" select="number(40)" />
      <xsl:variable name="_edPossible" select="number(300)" />
+     <xsl:variable name="_caPossible" select="number(1)" />
     
     <xsl:variable name="_ptPossible" select="mu:possibleElements(AdverseEventReport/SAEReportPriorTherapy, 50,'//PriorTherapy/text,//ChemoAgent/name')" />
     <xsl:variable name="_pcPossible" select="mu:possibleElements(AdverseEventReport/SAEReportPreExistingCondition, 50,'//PreExistingCondition/text')" />
@@ -33,6 +34,7 @@
     <xsl:variable name="_cmCount" select="count(AdverseEventReport/ConcomitantMedication)" />
     <xsl:variable name="_cmdCount" select="count(AdverseEventReport/ConcomitantMedication)" />
     <xsl:variable name="_mdCount" select="count(AdverseEventReport/MedicalDevice)" />
+    <xsl:variable name="_caCount" select="count(AdverseEventReport/TreatmentInformation/CourseAgent)" />
     <xsl:variable name="_attCount" select="count(AdverseEventReport/AdverseEvent[1]//attribution[contains(., '3') or contains(.,'4') or contains(.,'5')])" />
 
 
@@ -46,7 +48,7 @@
     <xsl:variable name="_attContinue" select="$_attCount &gt;= $_attPossible" />
 
     <xsl:variable name="_tacContinue" select="mu:after(AdverseEventReport/TreatmentInformation/TreatmentAssignment/description, $_tacPossible) != '' or
-    mu:after(AdverseEventReport/TreatmentInformation/treatmentDescription, $_tacPossible) != ''"></xsl:variable>
+    mu:after(AdverseEventReport/TreatmentInformation/treatmentDescription, $_tacPossible) != '' or $_caCount &gt;= $_caPossible"></xsl:variable>
     <xsl:variable name="_edContinue" select="mu:after(AdverseEventReport/AdverseEventResponseDescription/eventDescription, $_edPossible) != ''"></xsl:variable>
 
 
@@ -873,17 +875,6 @@
                                                                     &amp;#160;&amp;#160;&amp;#160; &amp;#160;&amp;#160;&amp;#160;
                                                                     Continued... </xsl:text>
                                                             </xsl:if>
-
-
-                                                            <xsl:for-each select="AdverseEventReport/TreatmentInformation/CourseAgent">
-                                                                <fo:block><xsl:value-of select="Dose/amount"/><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text><xsl:value-of select="Dose/units"/></fo:block>
-                                                                <fo:block><xsl:value-of select="formulation"/></fo:block>
-                                                                <fo:block><xsl:value-of select="administrationDelayAmount"/><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text><xsl:value-of select="administrationDelayUnits"/></fo:block>
-                                                                <fo:block><xsl:value-of select="AgentAdjustment"/></fo:block>
-                                                                <fo:block><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:block>
-                                                            </xsl:for-each>
-
-
                                                         </fo:block>
 
                                                     </fo:table-cell>
@@ -1176,8 +1167,8 @@
                                                         </fo:block>
                                                         <fo:block xsl:use-attribute-sets="normal">
                                                             <xsl:for-each
-                                                                    select="AdverseEventReport/StudyParticipantAssignment/StudySite/Study/StudyAgent">
-                                                                <xsl:value-of select="Agent/nscNumber"/>
+                                                                    select="AdverseEventReport/TreatmentInformation/CourseAgent">
+                                                                <xsl:value-of select="StudyAgent/Agent/nscNumber"/>
                                                                 <fo:block/>
                                                             </xsl:for-each>
                                                         </fo:block>
@@ -2819,6 +2810,14 @@
                                                                 select="mu:after(AdverseEventReport/TreatmentInformation/TreatmentAssignment/description, $_tacPossible)"/>
                                                         <xsl:value-of
                                                                 select="mu:after(AdverseEventReport/TreatmentInformation/treatmentDescription, $_tacPossible)"/>
+                                                                                                        
+                                                    	<xsl:for-each select="AdverseEventReport/TreatmentInformation/CourseAgent">
+                                                                <fo:block><xsl:value-of select="Dose/amount"/><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text><xsl:value-of select="Dose/units"/></fo:block>
+                                                                <fo:block><xsl:value-of select="formulation"/></fo:block>
+                                                                <fo:block><xsl:value-of select="administrationDelayAmount"/><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text><xsl:value-of select="administrationDelayUnits"/></fo:block>
+                                                                <fo:block><xsl:value-of select="AgentAdjustment"/></fo:block>
+                                                                <fo:block><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:block>
+                                                    	</xsl:for-each>
                                                     </fo:block>
                                                 </fo:table-cell>
                                             </fo:table-row>
