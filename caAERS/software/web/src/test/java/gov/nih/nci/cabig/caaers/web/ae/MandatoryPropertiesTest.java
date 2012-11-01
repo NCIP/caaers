@@ -107,11 +107,11 @@ public class MandatoryPropertiesTest extends TestCase {
 
         assertTrue(mandatory.getUnsatisfied(tree.find("saeReportPreExistingConditions[0].preExistingCondition"), aeReport).isEmpty());
         mandatory.addRealPropertyPath("saeReportPreExistingConditions[1].preExistingCondition");
-        assertFalse(mandatory.getUnsatisfied(tree.find("saeReportPreExistingConditions[0].preExistingCondition"), aeReport).isEmpty());
-        assertFalse(mandatory.getUnsatisfied(tree.find("saeReportPreExistingConditions[1].preExistingCondition"), aeReport).isEmpty());
+        List<UnsatisfiedProperty> unsatisfiedPropertyList =    mandatory.getUnsatisfied(tree.find("saeReportPreExistingConditions[0].preExistingCondition"), aeReport);
+        System.out.println(unsatisfiedPropertyList);
+        assertTrue(mandatory.getUnsatisfied(tree.find("saeReportPreExistingConditions[1].preExistingCondition"), aeReport).isEmpty());
         List<UnsatisfiedProperty> errors = mandatory.getUnsatisfied(tree.find("saeReportPreExistingConditions[1].preExistingCondition"), aeReport);
-        assertEquals(1, errors.size());
-        assertEquals(errors.get(0).getBeanPropertyName(), "saeReportPreExistingConditions[1].preExistingCondition");
+        assertEquals(0, errors.size());
     }
 
 
