@@ -54,32 +54,26 @@
 
         </td>
         <td width="${requestScope.widthGrade}" class="td-ae1  tr-ae1-c4  col-grade-${widgetId} ${cssClass} ${g1 ne g2 ? '' : 'tdGray'}" >
-            <!-- g1 : ${g1} , g2 : ${g2} : ${g1 ne g2} -->
             <c:if test="${g1 ne g2}"><input  id="rb1-g${widgetId}"  type="radio" name="g${widgetId}" value="${g1}"  ${g3 eq g1? 'checked="yes"':'' }  onclick="updateCellValue('${widgetId}','${ae2.id}','grade', this)" /></c:if>
             <label for="rb1-g${widgetId}" >${empty g1 ? dash : g1}  </label>
         </td>
         <td width="${requestScope.widthStartDate}" class="td-ae1 tr-ae1-c5 col-startDate-${widgetId} ${cssClass} ${sd1 ne sd2 ? '' : 'tdGray'}" >
-            <!-- sd1 : ${sd1} , sd2 : ${sd2} : ${sd1 ne sd2} -->
             <c:if test="${sd1 ne sd2}"><input id="rb1-st${widgetId}" type="radio" name="st${widgetId}" value="${sd1}"  ${sd3 eq sd1? 'checked="yes"':''}  onclick="updateCellValue('${widgetId}','${ae2.id}','startDate', this)" /></c:if>
             <label for="rb1-st${widgetId}" >${empty sd1? dash:sd1} </label>
         </td>
         <td width="${requestScope.widthEndDate}" class="td-ae1  tr-ae1-c6 col-endDate-${widgetId} ${cssClass} ${ed1 ne ed2 ? '' : 'tdGray'}" >
-            <!-- ed1 : ${ed1} , ed2 : ${ed2} : ${ed1 ne ed2}-->
             <c:if test="${ed1 ne ed2}"><input id="rb1-ed${widgetId}" type="radio" name="en${widgetId}" value="${ed1}"  ${ed3 eq ed1? 'checked="yes"':''}   onclick="updateCellValue('${widgetId}','${ae2.id}','endDate', this)" /></c:if>
             <label for="rb1-ed${widgetId}" >${empty ed1 ? dash : ed1}</label>
         </td>
         <td width="${requestScope.widthVerbatim}" class="td-ae1  tr-ae1-c7 col-v-${widgetId} ${cssClass} ${v1 ne v2 ? '' : 'tdGray'}" >
-            <!-- v1 : ${v1} , v2 : ${v2} : ${v1 ne v2}-->
             <c:if test="${v1 ne v2}"><input  id="rb1-v${widgetId}" type="radio" name="v${widgetId}" value="${v1}"  ${v3 eq v1? 'checked="yes"':''}  onclick="updateCellValue('${widgetId}','${ae2.id}','verbatim', this)" /></c:if>
             <label for="rb1-v${widgetId}">${empty v1 ? dash : v1}</label>
         </td>
         <td width="${requestScope.widthWhySerious}" class="td-ae1  tr-ae1-c8 col-whySerious-${widgetId} ${cssClass} ${s1 ne s2 ? '' : 'tdGray'}" >
-            <!-- s1 : ${s1} , s2 : ${s2} : ${s1 ne s2}-->
             <c:if test="${s1 ne s2}"><input id="rb1-s${widgetId}" type="radio" name="s${widgetId}" value="${s1}"  ${s3 eq s1? 'checked="yes"':''}   onclick="updateCellValue('${widgetId}','${ae2.id}','whySerious', this)" /></c:if>
             <label for="rb1-s${widgetId}">${empty s1? dash : s1}</label>
         </td>
         <td width="${requestScope.widthAttribution}" class="td-ae1  tr-ae1-c9  col-attribution-${widgetId} ${cssClass} ${a1 ne a2 ? '' : 'tdGray'}" >
-            <!-- a1 : ${a1} , a2 : ${a2} -->
             <c:if test="${a1 ne a2}"><input id="rb1-a${widgetId}" type="radio" name="a${widgetId}" value="${a1}"  ${a3 eq a1? 'checked="yes"':''}    onclick="updateCellValue('${widgetId}','${ae2.id}','attribution', this)" /></c:if>
             <label for="rb1-a${widgetId}">${empty a1? dash : a1}</label>
         </td>
