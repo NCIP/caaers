@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.dao.AdditionalInformationDocumentDao;
 import gov.nih.nci.cabig.caaers.domain.AdditionalInformation;
 import gov.nih.nci.cabig.caaers.domain.AdditionalInformationDocument;
 import gov.nih.nci.cabig.caaers.domain.AdditionalInformationDocumentType;
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -33,6 +34,8 @@ public class AdditionalInformationDocumentService {
 
     private AdditionalInformationDocumentDao additionalInformationDocumentDao;
 
+    private Configuration configuration;
+
     private static Log logger = LogFactory.getLog(AdditionalInformationDocumentService.class);
 
     public AdditionalInformationDocument uploadFile(String fileName, AdditionalInformation additionalInformation, InputStream inputStream,
@@ -41,9 +44,9 @@ public class AdditionalInformationDocumentService {
 
         try {
 
-            //@todo -Saurabh -this should be externalized
-            String directory = FilenameUtils.normalize(System.getProperty("user.home") + "/caaers/ae-files/" +
-                    additionalInformation.getId());
+            String aeAttachmentsLocation = configuration.get(Configuration.AE_ATTACHMENTS_LOCATION);
+
+            String directory = FilenameUtils.normalize(aeAttachmentsLocation + "/" + additionalInformation.getId());
 
             String extension = StringUtils.isNotBlank(FilenameUtils.getExtension(fileName)) ? "." + FilenameUtils.getExtension(fileName) : "";
 
@@ -127,5 +130,10 @@ public class AdditionalInformationDocumentService {
     @Required
     public void setAdditionalInformationDocumentDao(AdditionalInformationDocumentDao additionalInformationDocumentDao) {
         this.additionalInformationDocumentDao = additionalInformationDocumentDao;
+    }
+
+    @Required
+    public void setConfiguration(Configuration configuration) {
+        this.configuration = configuration;
     }
 }

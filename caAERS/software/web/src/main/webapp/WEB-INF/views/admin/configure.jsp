@@ -92,6 +92,7 @@
                     <admin:oneConfigEntry entry="${command.conf['autoCompleterDelay'].property}"/>
                     <admin:oneConfigEntry entry="${command.conf['caaersBaseHelpUrl'].property}"/>
                     <admin:oneConfigEntry entry="${command.conf['caaersBaseUrl'].property}"/>
+                    <admin:oneConfigEntry entry="${command.conf['aeAttachmentsLocation'].property}"/>
                     <admin:oneConfigEntry entry="${command.conf['enableWorkflow'].property}"/>
                     <admin:oneConfigEntry entry="${command.conf['httpSessionWarning'].property}"/>
                     <admin:oneConfigEntry entry="${command.conf['httpSessionWarningWait'].property}"/>
