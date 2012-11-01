@@ -73,6 +73,7 @@ public class StudySynchronizer extends CompositeMigrator<Study>{
 				ctcVersion.setName(xmlStudy.getAeTerminology().getCtcVersion().getName());
 				aeTerminology.setCtcVersion(ctcVersion);
 				dbStudy.setAeTerminology(aeTerminology);
+				aeTerminology.setStudy(dbStudy);
 			}
 			if (xmlStudy.getAeTerminology().getMeddraVersion() != null) {
 				aeTerminology = new AeTerminology();
@@ -80,6 +81,7 @@ public class StudySynchronizer extends CompositeMigrator<Study>{
 				meddraVersion.setName(xmlStudy.getAeTerminology().getMeddraVersion().getName());
 				aeTerminology.setMeddraVersion(meddraVersion);
 				dbStudy.setAeTerminology(aeTerminology);
+				aeTerminology.setStudy(dbStudy);
             }
 		}
 
