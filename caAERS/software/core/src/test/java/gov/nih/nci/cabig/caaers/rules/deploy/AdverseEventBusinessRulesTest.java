@@ -234,22 +234,6 @@ public class AdverseEventBusinessRulesTest extends AbstractBusinessRulesExecutio
         assertNoErrors(errors, "Adverse events CTC when unique");
     }
 
-    /**
-     * RuleName : "AER_UK_CHK" Logic : Adverse Events CTC must be unique Error Code : AER_UK_ERR
-     * Error Message : ADVERSE_EVENT_CTC must be unique
-     */
-    public void testDuplicateCTC() throws Exception {
-        ExpeditedAdverseEventReport aeReport = createAEReport();
-        aeReport.getAdverseEvents().get(0).getAdverseEventCtcTerm().getCtcTerm().setId(3002);
-        aeReport.getAdverseEvents().get(1).getAdverseEventCtcTerm().getCtcTerm().setId(3002);
-        aeReport.getAdverseEvents().get(1).getAdverseEventCtcTerm().getTerm().setTerm("abcxyz");
-
-        ValidationErrors errors = fireRules(aeReport);
-        assertCorrectErrorCode(errors, "AER_UK_ERR");
-        assertSameErrorCount(errors, 1);
-        assertEquals("Replacement variables should be same", 1, errors.getErrorAt(0).getReplacementVariables()[0]);
-        assertEquals("Replacement variables should be same", "abcxyz", errors.getErrorAt(0).getReplacementVariables()[1]);
-    }
 
     public void testSingleAeTerm() throws Exception {
     	ExpeditedAdverseEventReport aeReport = createAEReport();
