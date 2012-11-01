@@ -88,6 +88,11 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         if(request.getParameter("aeReport") != null){
            int reportId = WebUtils.getIntParameter(request,"aeReport");
             ExpeditedAdverseEventReport aeReport = expeditedAdverseEventReportDao.getById(reportId);
+            //(CAAERS-5865)to perform sync only for ctep-sys studies, 
+            //set studyOutOfSync to false, so sync will not run
+            if(aeReport.getStudy().getCtepEsysIdentifier() == null) {
+            	command.setStudyOutOfSync(false);
+            }
             command.setAeReport(aeReport);
             //initializing the review comments collection
             for(Report r: command.getAeReport().getActiveReports()){
