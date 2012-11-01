@@ -13,7 +13,7 @@
     mainGroupName="mainOrg"
     containerName="addOrganizationIdentifierDiv"
     removeAction="removeOrganizationIdentifier"
-    readonly="${readonly}"/>
+    readonly="false"/>
     
 </c:forEach>
 </tags:noform>
