@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.caaers.domain.expeditedfields.UnsatisfiedProperty;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
+import gov.nih.nci.cabig.ctms.domain.CodedEnum;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanWrapper;
@@ -210,7 +211,9 @@ public class ReportValidationServiceImpl implements ReportValidationService{
             TreeNode node = expeditedReportTree.find(fieldPath);
             
             if(node != null && sectionNode.isAncestorOf(node)){
-                if(bw.getPropertyValue(fieldPath) == null){
+                Object value = bw.getPropertyValue(fieldPath);
+
+                if(value == null || (value instanceof CodedEnum && String.valueOf(value).contains("Please select") )){
                    messages.addMissingField(section, node.getDisplayName(), fieldPath); 
                 }
             }

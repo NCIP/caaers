@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.domain.expeditedfields.UnsatisfiedProperty;
 
 import java.util.*;
 
+import gov.nih.nci.cabig.ctms.domain.CodedEnum;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeanWrapper;
@@ -106,8 +107,9 @@ public class MandatoryProperties {
         BeanWrapper bw = new BeanWrapperImpl(aeReport);
         for(String path : realPropertyPaths){
             TreeNode node = tree.find(path);
-            if(node != null){
-                if(bw.getPropertyValue(path) == null) return Arrays.asList(new UnsatisfiedProperty(node, path));
+            if(node != null && section.isAncestorOf(node)){
+                Object value = bw.getPropertyValue(path);
+                if(value == null || value instanceof CodedEnum && String.valueOf(value).contains("Please select")) return Arrays.asList(new UnsatisfiedProperty(node, path));
             }
         }
 
