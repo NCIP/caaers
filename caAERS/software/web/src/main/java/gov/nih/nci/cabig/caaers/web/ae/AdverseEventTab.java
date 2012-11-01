@@ -91,9 +91,17 @@ public class AdverseEventTab extends TabWithFields<CaptureAdverseEventInputComma
         return options;
 	}
 	
-	public CompositeField createTimeField(String baseProperty, String displayName, String labelProperty){
-    	InputField hrField = InputFieldFactory.createTextField("hourString", "", FieldValidator.HOUR_VALIDATOR);
-    	InputField mmField = InputFieldFactory.createTextField("minuteString"," ", FieldValidator.MINUTE_VALIDATOR);
+	public CompositeField createTimeField(String baseProperty, String displayName, String labelProperty, boolean required){
+
+		InputField hrField;
+		InputField mmField;
+        if (required) {
+        	 hrField = InputFieldFactory.createTextField("hourString", "", "Event time hour", FieldValidator.HOUR_VALIDATOR, FieldValidator.NOT_NULL_VALIDATOR);
+        	 mmField = InputFieldFactory.createTextField("minuteString"," ", "Event time minute", FieldValidator.MINUTE_VALIDATOR, FieldValidator.NOT_NULL_VALIDATOR);
+        } else {
+        	 hrField = InputFieldFactory.createTextField("hourString", "", "Event time hour", FieldValidator.HOUR_VALIDATOR);
+        	 mmField = InputFieldFactory.createTextField("minuteString", " ", "Event time minute", FieldValidator.MINUTE_VALIDATOR);
+        }
     	LinkedHashMap< Object, Object> amPmOption = new LinkedHashMap<Object, Object>();
     	amPmOption.put("0", "AM");
     	amPmOption.put("1", "PM");

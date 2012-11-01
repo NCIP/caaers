@@ -12,12 +12,14 @@
 <%@attribute name="disabled" type="java.lang.Boolean" %>
 <%@attribute name="readonly" type="java.lang.Boolean" %>
 <%@attribute name="hideDay" type="java.lang.Boolean" %>
+<%@attribute name="skipErrorTag" type="java.lang.Boolean" %>
 
 <c:set var="fieldValue"><jsp:attribute name="value"><caaers:value path="${field.propertyName}" /></jsp:attribute></c:set>
 <c:if test="${empty fieldValue && field.required}"><c:set var="cssValue" value="required" /></c:if>
 <c:if test="${empty fieldValue && field.attributes.mandatory}"><c:set var="cssValue" value="mandatory" /></c:if>
 <c:if test="${empty fieldValue && field.attributes.mandatory && field.required}"><c:set var="cssValue" value="mandatory required" /></c:if>
 <c:if test="${not empty fieldValue && (field.attributes.mandatory || field.required)}"><c:set var="cssValue" value="valueOK" /></c:if>
+<c:if test="${empty skipErrorTag}"><c:set var="skipErrorTag" value="false" /></c:if>
 
 <caaers:renderFilter elementID="${field.propertyName}">
 <c:set scope="request" var="cntRF" value="${requestScope.cntRF + 1}" />
@@ -82,11 +84,14 @@
     <c:when test="${field.categoryName == 'select'}">
         <form:select path="${field.propertyName}" id="${field.propertyName}" items="${field.attributes.options}" disabled="${readonly || disabled}" title="${field.displayName}" cssClass="${cssClass} ${field.validatorClassName} ${cssValue}"/>
     </c:when>
+    
     <c:when test="${field.categoryName == 'composite'}">
         <c:forEach items="${field.attributes.subfields}" var="subfield">
-            <label>${subfield.displayName}${empty subfield.displayName ? '' : ':'}
-                <tags:renderInputs field="${subfield}"/>
-            </label>
+            ${subfield.displayName}${empty subfield.displayName ? '' : ':'}
+                <tags:renderInputs field="${subfield}" skipErrorTag="true"/>
+        </c:forEach>
+        <c:forEach items="${field.attributes.subfields}" var="subfield">
+                <tags:errors path="${subfield.propertyName}"/>
         </c:forEach>
     </c:when>
 
@@ -130,5 +135,7 @@
 <c:if test="${not empty field.attributes.help and field.categoryName ne 'autocompleter'}">
     <tags:hoverHelp path="${field.propertyName}" code="${field.attributes.help}" />
 </c:if>
-<tags:errors path="${field.propertyName}"/>
+<c:if test="${!skipErrorTag}">
+    <tags:errors path="${field.propertyName}"/>
+</c:if>
 </caaers:renderFilter>

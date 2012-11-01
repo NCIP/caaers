@@ -124,7 +124,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
                 mainFieldFactory.addField(expectednessField);
                 
                 //Time of event
-                InputField timeOfEventField = createTimeField("eventApproximateTime", "Event time", "aeReport.adverseEvents.eventApproximateTime.hourString");
+                InputField timeOfEventField = createTimeField("eventApproximateTime", "Event time", "aeReport.adverseEvents.eventApproximateTime.hourString", isFieldRequired(ae, "adverseEvents[].eventApproximateTime.hourString"));
                 mainFieldFactory.addField(timeOfEventField);
                 
                 //Participant at risk
@@ -331,12 +331,17 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
             
             if(caaersFieldConfigurationManager.isFieldMandatory(TAB_NAME, "adverseEvents[].outcomes") && !ae.getSolicited()){
             	if(ae.getOutcomes() == null || ae.getOutcomes().isEmpty())
-            		errors.rejectValue("adverseEvents[" + i + "].outcomes", "CAE_016", "Missing outcomes");
+            		errors.rejectValue("adverseEvents[" + i + "].outcomes", "CAE_016", "Missing outcomes.");
             }
             
             if(caaersFieldConfigurationManager.isFieldMandatory(TAB_NAME, "adverseEvents[].eventApproximateTime.hourString") && !ae.getSolicited()){
             	if(ae.getEventApproximateTime() == null || ae.getEventApproximateTime().getHourString() == null)
-            		errors.rejectValue("adverseEvents[" + i + "].eventApproximateTime.hourString", "CAE_017", "Missing event time");
+            		errors.rejectValue("adverseEvents[" + i + "].eventApproximateTime.hourString", "CAE_019", "Missing event hour.");
+            }
+            
+            if(caaersFieldConfigurationManager.isFieldMandatory(TAB_NAME, "adverseEvents[].eventApproximateTime.minuteString") && !ae.getSolicited()){
+            	if(ae.getEventApproximateTime() == null || ae.getEventApproximateTime().getMinuteString() == null)
+            		errors.rejectValue("adverseEvents[" + i + "].eventApproximateTime.minuteString", "CAE_020", "Missing event minute.");
             }
             i++;
         }
