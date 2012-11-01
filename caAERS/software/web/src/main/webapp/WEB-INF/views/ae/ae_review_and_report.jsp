@@ -489,7 +489,8 @@ function findSelectedAdverseEvents(aeReportId){
 	 
 	 //find all selected adverse events. 
 	 var selectedAEs = findSelectedAdverseEvents(aeReportId);
-	 $('report-btn-' + aeReportId).disabled = (selectedAEs.length < 1);
+     var hasActualAction = hasActualActionOnReports(aeReportId);
+	 $('report-btn-' + aeReportId).disabled = (selectedAEs.length < 1) || !hasActualAction;
 	 if(selectedAEs.length < 1){
 
 	
