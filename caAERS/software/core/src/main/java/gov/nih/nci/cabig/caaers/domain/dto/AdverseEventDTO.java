@@ -382,7 +382,9 @@ public class AdverseEventDTO {
                     outcomeBuilder.append(o.getDisplayName());
                 }
             }
-            ae.setWhySerious(outcomeBuilder.toString());
+
+            String seriousness = outcomeBuilder.toString();
+            ae.setWhySerious(StringUtils.isEmpty(seriousness) ? dash : seriousness);
         } else{
             ae.setWhySerious(dash);
         }
