@@ -14,6 +14,7 @@ import gov.nih.nci.cabig.caaers.service.migrator.CompositeMigrator;
 import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Required;
 
 /**
  * 
@@ -24,7 +25,7 @@ public class StudySynchronizer extends CompositeMigrator<Study>{
 	
 	private CtcDao ctcDao;
 	
-
+	@Required
 	public void setCtcDao(CtcDao ctcDao) {
 		this.ctcDao = ctcDao;
 	}
