@@ -27,6 +27,7 @@ public class CtcBasicsTab extends BasicsTab {
 	
     private static final String CTC_TERM_FIELD_GROUP = "ctcTerm";
     private static final String CTC_OTHER_FIELD_GROUP = "ctcOther";
+    private static final String CTC_OTHER_SPECIFY_FIELD_GROUP = "otherSpecify";
 
     private CtcDao ctcDao;
 
@@ -63,7 +64,7 @@ public class CtcBasicsTab extends BasicsTab {
         } else  {     
 			InputField otherSpecifyField =  InputFieldFactory.createTextField("otherSpecify", "Other (specify)", "aeReport.adverseEvents.otherSpecify", false);
 	        InputFieldAttributes.setSize(otherSpecifyField, 25);
-	        creator.createRepeatingFieldGroup(CtcBasicsTab.CTC_OTHER_FIELD_GROUP, "adverseEvents", otherSpecifyField);
+	        creator.createRepeatingFieldGroup(CtcBasicsTab.CTC_OTHER_SPECIFY_FIELD_GROUP, "adverseEvents", otherSpecifyField);
         }
         
         //add the fields for outcomes
