@@ -88,8 +88,8 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         if(request.getParameter("aeReport") != null){
            int reportId = WebUtils.getIntParameter(request,"aeReport");
             ExpeditedAdverseEventReport aeReport = expeditedAdverseEventReportDao.getById(reportId);
-            //(CAAERS-5865)to perform sync only for ctep-sys studies, 
-            //set studyOutOfSync to false, so sync will not run
+          //(CAAERS-5865)to perform sync only for ctep-esys studies, 
+            //set studyOutOfSync to false, so sync will not run for non-ctep-esys studies
             if(aeReport.getStudy().getCtepEsysIdentifier() == null) {
             	command.setStudyOutOfSync(false);
             }
@@ -278,6 +278,12 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         
         //will pre determine the display/render-ability of fields 
         command.updateFieldMandatoryness();
+        
+        //CAAERS-5865, if study is not CTEP-ESYS study, set outOfSync flag as false,
+        //so syncing process will not be triggered
+        if(command.getAeReport().getStudy().getCtepEsysIdentifier() == null) {
+        	command.setStudyOutOfSync(false);
+        }
 
     }
 

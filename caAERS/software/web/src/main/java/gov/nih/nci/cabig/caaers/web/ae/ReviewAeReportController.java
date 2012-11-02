@@ -78,6 +78,13 @@ public class ReviewAeReportController extends SimpleFormController{
             command.setReportId(Integer.parseInt(reportId));
         else
             command.setReportId(null);
+        
+        //(CAAERS-5865)to perform sync only for ctep-esys studies, 
+        //set studyOutOfSync to false, so sync will not run for non-ctep-esys studies
+        if(aeReport.getStudy().getCtepEsysIdentifier() == null) {
+        	command.setStudyOutOfSync(false);
+        }
+        
         command.setAeReport(aeReport);
         for (Report r : aeReport.getReports()) {
             if (r.getId().equals(Integer.parseInt(reportId)))
