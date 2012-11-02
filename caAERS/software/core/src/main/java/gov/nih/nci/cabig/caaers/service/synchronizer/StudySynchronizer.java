@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.service.synchronizer;
 
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
-import gov.nih.nci.cabig.caaers.domain.AeTerminology;
+import gov.nih.nci.cabig.caaers.dao.MeddraVersionDao;
 import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
 import gov.nih.nci.cabig.caaers.domain.DiseaseTerminology;
@@ -12,9 +12,9 @@ import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.migrator.CompositeMigrator;
 
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Required;
 
 /**
  * 
@@ -23,6 +23,39 @@ import org.springframework.beans.factory.annotation.Required;
  */
 public class StudySynchronizer extends CompositeMigrator<Study>{
 	
+	private CtcDao ctcDao;
+	private MeddraVersionDao meddraVersionDao;
+	
+	public void setCtcDao(CtcDao ctcDao) {
+		this.ctcDao = ctcDao;
+	}
+	
+	public void setMeddraVersionDao(MeddraVersionDao meddraVersionDao) {
+		this.meddraVersionDao = meddraVersionDao;
+	}
+	
+	 private void populateAeTerminology(Study dbStudy,Study xmlStudy,
+				DomainObjectImportOutcome<Study> outcome) {
+
+			if(xmlStudy.getAeTerminology() != null){
+
+				if(xmlStudy.getAeTerminology().getCtcVersion() != null && xmlStudy.getAeTerminology().getCtcVersion().getName() != null){
+					Ctc ctcVersion =ctcDao.getByName(xmlStudy.getAeTerminology().getCtcVersion().getName());
+					if(ctcVersion != null){
+						dbStudy.getAeTerminology().setCtcVersion(ctcVersion);
+					}
+				}
+				if (xmlStudy.getAeTerminology().getMeddraVersion() != null && xmlStudy.getAeTerminology().getMeddraVersion().getName() != null) {
+					List<MeddraVersion> meddraVersions = meddraVersionDao.getMeddraByName(xmlStudy.getAeTerminology().getMeddraVersion().getName());
+					if (meddraVersions != null && !meddraVersions.isEmpty()){
+						dbStudy.getAeTerminology().setMeddraVersion(meddraVersions.get(0));
+					}
+	            }
+			}
+
+		}
+
+
 	@Override
 	/**
 	 * Will sync the basic properties of the source Study to destination Study.
@@ -37,6 +70,8 @@ public class StudySynchronizer extends CompositeMigrator<Study>{
         dbStudy.setStudyPurpose(xmlStudy.getStudyPurpose());
         dbStudy.setPhaseCode(xmlStudy.getPhaseCode());
         dbStudy.setLastSynchedDate(new Date());
+        
+        populateAeTerminology(dbStudy, xmlStudy, outcome);
         
         populateDiseaseTerminology(dbStudy, xmlStudy, outcome);
 

@@ -24,7 +24,6 @@
         <property name="studyImportService" ref="studyImportService" />
         <property name="studyConverter" ref="studyConverter" />
         <property name="studyDao" ref="studyDao" />
-        <property name="ctcDao" ref="ctcDao" />
         <property name="studyRepository" ref="studyRepository" />
         <property name="studySynchronizer" ref="studySynchronizer" />
         <property name="domainObjectValidator" ref="domainObjectValidator" />
