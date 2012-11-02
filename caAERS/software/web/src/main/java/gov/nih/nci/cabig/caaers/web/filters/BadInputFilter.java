@@ -170,8 +170,12 @@ public class BadInputFilter implements Filter {
     public BadInputFilter() {
 
         // Populate the regex escape maps.
-        quotesHashMap.put(Pattern.compile("\""), "&quot;");
-        quotesHashMap.put(Pattern.compile("\'"), "&#39;");
+
+        //commented follwing 2 lines to fix  -
+        // CAAERS-6005 - Apostrophe (') in course description is being rendered html character codes in it
+        //quotesHashMap.put(Pattern.compile("\""), "&quot;");
+        //quotesHashMap.put(Pattern.compile("\'"), "&#39;");
+
         quotesHashMap.put(Pattern.compile("`"), "&#96;");
         angleBracketsHashMap.put(Pattern.compile("<"), "&lt;");
         angleBracketsHashMap.put(Pattern.compile(">"), "&gt;");
