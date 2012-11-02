@@ -23,13 +23,6 @@ import org.springframework.beans.factory.annotation.Required;
  */
 public class StudySynchronizer extends CompositeMigrator<Study>{
 	
-	private CtcDao ctcDao;
-	
-	@Required
-	public void setCtcDao(CtcDao ctcDao) {
-		this.ctcDao = ctcDao;
-	}
-
 	@Override
 	/**
 	 * Will sync the basic properties of the source Study to destination Study.
@@ -44,8 +37,6 @@ public class StudySynchronizer extends CompositeMigrator<Study>{
         dbStudy.setStudyPurpose(xmlStudy.getStudyPurpose());
         dbStudy.setPhaseCode(xmlStudy.getPhaseCode());
         dbStudy.setLastSynchedDate(new Date());
-        
-        populateAeTerminology(dbStudy, xmlStudy, outcome);
         
         populateDiseaseTerminology(dbStudy, xmlStudy, outcome);
 
@@ -66,32 +57,6 @@ public class StudySynchronizer extends CompositeMigrator<Study>{
 
 	}
 	
-	private void populateAeTerminology(Study dbStudy,Study xmlStudy,
-			DomainObjectImportOutcome<Study> outcome) {
-
-		if(xmlStudy.getAeTerminology() != null){
-			AeTerminology aeTerminology = null;
-
-			if(xmlStudy.getAeTerminology().getCtcVersion() != null && xmlStudy.getAeTerminology().getCtcVersion().getName() != null){
-				Ctc ctcVersion =ctcDao.getByName(xmlStudy.getAeTerminology().getCtcVersion().getName());
-				if(ctcVersion != null){
-					aeTerminology = new AeTerminology();
-					aeTerminology.setCtcVersion(ctcVersion);
-					dbStudy.setAeTerminology(aeTerminology);
-					aeTerminology.setStudy(dbStudy);
-				}
-			}
-			if (xmlStudy.getAeTerminology().getMeddraVersion() != null) {
-				aeTerminology = new AeTerminology();
-				MeddraVersion meddraVersion = new MeddraVersion();
-				meddraVersion.setName(xmlStudy.getAeTerminology().getMeddraVersion().getName());
-				aeTerminology.setMeddraVersion(meddraVersion);
-				dbStudy.setAeTerminology(aeTerminology);
-				aeTerminology.setStudy(dbStudy);
-            }
-		}
-
-	}
 	
 	private void populateDiseaseTerminology(Study dbStudy,Study xmlStudy,
 			DomainObjectImportOutcome<Study> outcome) {

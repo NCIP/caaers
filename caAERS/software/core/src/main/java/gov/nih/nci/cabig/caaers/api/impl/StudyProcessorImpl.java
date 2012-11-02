@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.api.impl;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.api.AbstractImportService;
 import gov.nih.nci.cabig.caaers.api.ProcessingOutcome;
+import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.domain.*;
@@ -58,6 +59,12 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 	private MessageSource messageSource;
     private OrganizationManagementServiceImpl oms;
     private OrganizationConverter organizationConverter;
+	private CtcDao ctcDao;
+	
+	public void setCtcDao(CtcDao ctcDao) {
+		this.ctcDao = ctcDao;
+	}
+
 
     public StudyProcessorImpl() {
     }
@@ -309,8 +316,9 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
                             + "\" does not exist in caAERS" , DomainObjectImportOutcome.Severity.ERROR);
                     return caaersServiceResponse;
                 }
-
+                
                 studySynchronizer.migrate(dbStudy, studyImportOutcome.getImportedDomainObject(), studyImportOutcome);
+                populateAeTerminology(dbStudy, studyImportOutcome.getImportedDomainObject(), studyImportOutcome);
                 studyImportOutcome.setImportedDomainObject(dbStudy);
 
                 //check if another study exist?
@@ -364,6 +372,33 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 
 		logger.info("Leaving updateStudy() in StudyProcessor");
 		return caaersServiceResponse;
+	}
+    
+    private void populateAeTerminology(Study dbStudy,Study xmlStudy,
+			DomainObjectImportOutcome<Study> outcome) {
+
+		if(xmlStudy.getAeTerminology() != null){
+			AeTerminology aeTerminology = null;
+
+			if(xmlStudy.getAeTerminology().getCtcVersion() != null && xmlStudy.getAeTerminology().getCtcVersion().getName() != null){
+				Ctc ctcVersion =ctcDao.getByName(xmlStudy.getAeTerminology().getCtcVersion().getName());
+				if(ctcVersion != null){
+					aeTerminology = new AeTerminology();
+					aeTerminology.setCtcVersion(ctcVersion);
+					dbStudy.setAeTerminology(aeTerminology);
+					aeTerminology.setStudy(dbStudy);
+				}
+			}
+			if (xmlStudy.getAeTerminology().getMeddraVersion() != null) {
+				aeTerminology = new AeTerminology();
+				MeddraVersion meddraVersion = new MeddraVersion();
+				meddraVersion.setName(xmlStudy.getAeTerminology().getMeddraVersion().getName());
+				aeTerminology.setMeddraVersion(meddraVersion);
+				dbStudy.setAeTerminology(aeTerminology);
+				aeTerminology.setStudy(dbStudy);
+            }
+		}
+
 	}
 	
 	/**
