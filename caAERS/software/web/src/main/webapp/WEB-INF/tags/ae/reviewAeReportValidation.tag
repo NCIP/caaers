@@ -39,16 +39,16 @@
 	</td>
 	<td id="report-action">
 		<div>
-			<img id="sliderWFAction-indicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator" style="display:none;"/>
-			<a id="actions-menu-${report.id }" class="submitter fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all"><span class="ui-icon ui-icon-triangle-1-s"></span>Actions</a>
-		</div>
+         <img id="actions-menu-${report.id}" class="actionsButton" src='<c:url value="/images/orange-actions.gif" />' border='0' style='cursor:pointer;'>
+
+        </div>
 		<div id="options-actions-menu-${command.reportId}" style="display:none;z-index:1">
 			<ul>
 				<span id="sliderWFAction"></span>
 			</ul>
 			<c:if test="${reportMessages[command.ZERO].submittable and reportMessages[report.id].submittable && isUserSAECoordinato}" >
 				<c:if test="${(report.lastVersion.reportStatus == 'PENDING') or (report.lastVersion.reportStatus == 'FAILED')}" >
-					<li><a class="submitter-green" href="#" onclick="javascript:submitReport(${report.id });" >Submit <img src="<chrome:imageUrl name="../buttons/button_icons/small/continue_icon_small.png"/>" alt="" /></a></li>	
+					<li><a class="submitter-green" href="#" onclick="javascript:submitReport(${report.id });" >Submit <img src="<chrome:imageUrl name="../buttons/button_icons/small/continue_icon_small.png"/>" alt="" /></a></li>
 				</c:if>
 			</c:if>
 			<c:if test="${command.study.caaersXMLType}">
@@ -59,6 +59,6 @@
 				<li><a href="#" onclick="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=pdf'/>','_self')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/> Export AdEERS PDF</a></li>
 				<c:set var="exportOptionsCount" value="${exportOptionsCount + 1}"/>
 			</c:if>
-		</div> 
+		</div>
 	</td>
 </tr>

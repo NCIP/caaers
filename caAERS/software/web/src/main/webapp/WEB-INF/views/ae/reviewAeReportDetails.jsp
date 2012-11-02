@@ -46,7 +46,7 @@
 		}
 		
 		function createDropDowns() {
-		jQuery(".fg-button").each(function(){
+		jQuery(".actionsButton").each(function(){
 			id = jQuery(this).attr("id");
 			options = "options-" + id;
 			jQuery("#"+id).menu({
