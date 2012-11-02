@@ -10,16 +10,16 @@
 
     <div class="content">
         <div class="row">
-            <div class="label"><ui:label labelProperty="aeReport.medicalDevices.commonName" text="" path="device.commonName" /></div>
+            <div class="label"><ui:label labelProperty="aeReport.medicalDevices.commonName" text="" path="device.commonName" required="true"/></div>
             <div class="value"><ui:text path="device.commonName" size="60" cssClass="${empty command.device.commonName ? 'required' : 'valueOK'} validate-NOTEMPTY$$MAXLENGTH2000" title="Device common name" readonly="${!hasAgentCreate}"/></div>
         </div>
         <div class="row">
-            <div class="label"><ui:label labelProperty="aeReport.medicalDevices.brandName" text="" path="device.brandName" required="true"/></div>
-            <div class="value"><ui:text path="device.brandName" size="60" cssClass="${empty command.device.brandName ? 'required' : 'valueOK'} validate-NOTEMPTY$$MAXLENGTH2000" title="Device brand name" readonly="${!hasAgentCreate}"/></div>
+            <div class="label"><ui:label labelProperty="aeReport.medicalDevices.brandName" text="" path="device.brandName"/></div>
+            <div class="value"><ui:text path="device.brandName" size="60" cssClass="validate-MAXLENGTH2000" title="Device brand name" readonly="${!hasAgentCreate}"/></div>
         </div>
         <div class="row">
-            <div class="label"><ui:label labelProperty="aeReport.medicalDevices.deviceType" text="" path="device.type" required="true"/></div>
-            <div class="value"><ui:text path="device.type" size="60" cssClass="${empty command.device.type ? 'required' : 'valueOK'} validate-NOTEMPTY$$MAXLENGTH2000" title="Device type" readonly="${!hasAgentCreate}"/></div>
+            <div class="label"><ui:label labelProperty="aeReport.medicalDevices.deviceType" text="" path="device.type" /></div>
+            <div class="value"><ui:text path="device.type" size="60" cssClass="validate-MAXLENGTH2000" title="Device type" readonly="${!hasAgentCreate}"/></div>
         </div>
     </div>
 
