@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.dao.query;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.util.Arrays;
 
 public class InvestigatorQuery extends AbstractQuery {
@@ -29,11 +31,22 @@ public class InvestigatorQuery extends AbstractQuery {
     }
 
     public void filterByName(final String name) {
-        String searchString = "%" + name.toLowerCase() + "%";
-        andWhere("(lower(i.firstName) LIKE :FIRST_NAME OR lower(i.lastName) LIKE :LAST_NAME OR lower(i.middleName) LIKE :MIDDLE_NAME)");
-        setParameter("FIRST_NAME", searchString);
-        setParameter("LAST_NAME", searchString);
-        setParameter("MIDDLE_NAME", searchString);
+        String[] searchFields = StringUtils.split(name);
+        int i = 0;
+        if (searchFields != null) {
+            for (String searchField : searchFields) {
+                String searchString = "%" + StringUtils.lowerCase(searchField) + "%";
+                String firstNameKey = "FIRST_NAME_" + i;
+                String lastNameKey = "LAST_NAME_" + i;
+                String middleNameKey = "MIDDLE_NAME_" + i;
+                andWhere(String.format("(lower(i.firstName) LIKE :%s OR lower(i.lastName) LIKE :%s OR lower(i.middleName) LIKE :%s)",
+                        firstNameKey, lastNameKey, middleNameKey));
+                setParameter(firstNameKey, searchString);
+                setParameter(lastNameKey, searchString);
+                setParameter(middleNameKey, searchString);
+                i++;
+            }
+        }
     }
 
     public void filterByFirstName(final String firstName) {
