@@ -267,6 +267,8 @@ default-lazy-init="true">
 	<bean id="studyInterventionSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.StudyInterventionSynchronizer"/>
 
 	<bean id="studySynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.StudySynchronizer">
+		<property name="ctcDao" ref="ctcDao" />
+		<property name="meddraVersionDao" ref="meddraVersionDao" />
 		<property name="children">
 			<list>
 				<ref bean="identifierSynchronizer"/>
