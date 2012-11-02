@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.service.synchronizer;
 
+import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.domain.AeTerminology;
 import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
@@ -9,11 +10,8 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.integration.schema.study.DiseaseCodeType;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.migrator.CompositeMigrator;
-import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -24,6 +22,12 @@ import org.apache.commons.lang.StringUtils;
  */
 public class StudySynchronizer extends CompositeMigrator<Study>{
 	
+	private CtcDao ctcDao;
+	
+
+	public void setCtcDao(CtcDao ctcDao) {
+		this.ctcDao = ctcDao;
+	}
 
 	@Override
 	/**
@@ -67,13 +71,14 @@ public class StudySynchronizer extends CompositeMigrator<Study>{
 		if(xmlStudy.getAeTerminology() != null){
 			AeTerminology aeTerminology = null;
 
-			if(xmlStudy.getAeTerminology().getCtcVersion() != null){
-				aeTerminology = new AeTerminology();
-				Ctc ctcVersion = new Ctc();
-				ctcVersion.setName(xmlStudy.getAeTerminology().getCtcVersion().getName());
-				aeTerminology.setCtcVersion(ctcVersion);
-				dbStudy.setAeTerminology(aeTerminology);
-				aeTerminology.setStudy(dbStudy);
+			if(xmlStudy.getAeTerminology().getCtcVersion() != null && xmlStudy.getAeTerminology().getCtcVersion().getName() != null){
+				Ctc ctcVersion =ctcDao.getByName(xmlStudy.getAeTerminology().getCtcVersion().getName());
+				if(ctcVersion != null){
+					aeTerminology = new AeTerminology();
+					aeTerminology.setCtcVersion(ctcVersion);
+					dbStudy.setAeTerminology(aeTerminology);
+					aeTerminology.setStudy(dbStudy);
+				}
 			}
 			if (xmlStudy.getAeTerminology().getMeddraVersion() != null) {
 				aeTerminology = new AeTerminology();
