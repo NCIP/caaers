@@ -287,15 +287,13 @@ function refreshGrades(index) {
   **/
  function updateExpected(index, ctcTermID, meddraTermID, verbatimText, doRefreshGrades) {
      var _el = $('adverseEvents[' + index + '].expected');
-
-     // $('_test' + index).innerHTML = index + ', ' + ctcTermID + ', ' + meddraTermID + ', ' + verbatimText;
-     //alert(index + ', ' + ctcTermID + ', ' + meddraTermID + ', ' + verbatimText);
-
-     captureAE.isExpected(index, ctcTermID, meddraTermID, verbatimText, function(ajaxOutput) {
-         // alert(ajaxOutput.objectContent == true);
-         if (ajaxOutput.objectContent) _el.selectedIndex = 1;
-         else { if (_el.selectedIndex == 1) _el.selectedIndex = 0; } 
-     });
+     if(_el){
+         captureAE.isExpected(index, ctcTermID, meddraTermID, verbatimText, function(ajaxOutput) {
+             var selIndex = 0;
+             if (ajaxOutput.objectContent) selIndex = 1;
+             _el.selectedIndex = selIndex;
+         });
+     }
 
      if (doRefreshGrades) refreshGrades(index);
  }

@@ -57,21 +57,7 @@
                 <ui:row path="${fieldGroups[ctcOtherGroup].fields[0].propertyName}">
                     <jsp:attribute name="label"><ui:label path="${fieldGroups[ctcOtherGroup].fields[0].propertyName}" text="${fieldGroups[ctcOtherGroup].fields[0].displayName}"/></jsp:attribute>
                     <jsp:attribute name="value">
-                        <ui:autocompleter path="${fieldGroups[ctcOtherGroup].fields[0].propertyName}" initialDisplayValue="${empty adverseEvent.lowLevelTerm ? 'Begin typing here' : adverseEvent.lowLevelTerm.meddraTerm}" enableClearButton="true">
-                            <jsp:attribute name="populatorJS">
-                                function(autocompleter, text) {
-                                    var terminologyVersionId = ${empty command.adverseEventReportingPeriod.study.otherMeddra.id ? 0 :command.adverseEventReportingPeriod.study.otherMeddra.id};
-                                    createAE.matchLowLevelTermsByCode(terminologyVersionId, text, function(values) {
-                                        autocompleter.setChoices(values)})
-                                }
-                            </jsp:attribute>
-                            <jsp:attribute name="selectorJS">
-                                function(lowLevelTerm) {
-                                    return lowLevelTerm.meddraTerm;
-                                }
-                            </jsp:attribute>
-
-                        </ui:autocompleter>
+                        <ui:text path="${fieldGroups[ctcOtherGroup].fields[0].propertyName}.fullName" readonly="true"/>
                     </jsp:attribute>
                 </ui:row>
             </c:if>
@@ -80,7 +66,7 @@
                 <ui:row path="${fieldGroups[ctcOtherGroup].fields[0].propertyName}">
                     <jsp:attribute name="label"><ui:label path="${fieldGroups[ctcOtherGroup].fields[0].propertyName}" text="${fieldGroups[ctcOtherGroup].fields[0].displayName}"/></jsp:attribute>
                     <jsp:attribute name="value">
-                       <ui:text path="${fieldGroups[ctcOtherGroup].fields[0].propertyName}"  />
+                       <ui:text path="${fieldGroups[ctcOtherGroup].fields[0].propertyName}" readonly="true" />
                     </jsp:attribute>
                 </ui:row>
             </c:if>
