@@ -14,6 +14,8 @@ import org.apache.commons.lang.StringUtils;
  */
 @Embeddable
 public class LabValue {
+
+    private int zone = 0;    //used to coverup oracle bug
     
     /** The value. */
     private String value;
@@ -55,6 +57,14 @@ public class LabValue {
      */
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public int getZone() {
+        return zone;
+    }
+
+    public void setZone(int zone) {
+        this.zone = zone;
     }
 
     /* (non-Javadoc)

@@ -493,7 +493,7 @@ Object.extend(ListEditor.prototype, {
         })
         this.form.descendants().each(function(elt) {
         	if(elt.nodeName == '#comment') return; //Fix for IE7, on comment node hasAttribute call is failing.
-            if (!(elt.name || elt.id || elt.hasAttribute("for"))) return;
+            if (!(elt.name || elt.id || elt.hasAttribute("href") || elt.hasAttribute("for"))) return;
             changes.each(function(change) {
 
                 if (change.current != null) {
@@ -527,11 +527,17 @@ Object.extend(ListEditor.prototype, {
                         } else if (elt.id == secContentId) {
                             elt.id = secContentNewId;
                             matchedAndChanged = true
+                        } else if(elt.id.indexOf(secId) > -1 ){
+                            elt.id = elt.id.gsub(secId, secNewId);
                         }
                     }
 
                     if (elt.hasAttribute("for") && elt.getAttribute("for") && elt.getAttribute("for").match(rootRE)) {
                         elt.setAttribute("for", elt.getAttribute("for").replace(root, newRoot));
+                        matchedAndChanged = true
+                    }
+                    if(elt.hasAttribute("href") && elt.getAttribute("href").indexOf(secId) > -1)  {
+                        elt.setAttribute("href", elt.getAttribute("href").gsub(secId, secNewId))
                         matchedAndChanged = true
                     }
                     if (matchedAndChanged) {

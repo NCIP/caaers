@@ -103,6 +103,7 @@ public class Lab extends AbstractExpeditedReportCollectionElementChild {
      */
     @Embedded
     @AttributeOverrides({
+            @AttributeOverride(name = "zone", column = @Column(name = "baseline_zone")),
             @AttributeOverride(name = "value", column = @Column(name = "baseline_value")),
             @AttributeOverride(name = "date", column = @Column(name = "baseline_date"))})
     public LabValue getBaseline() {
@@ -126,6 +127,7 @@ public class Lab extends AbstractExpeditedReportCollectionElementChild {
      */
     @Embedded
     @AttributeOverrides({
+            @AttributeOverride(name = "zone", column = @Column(name = "nadir_zone")),
             @AttributeOverride(name = "value", column = @Column(name = "nadir_value")),
             @AttributeOverride(name = "date", column = @Column(name = "nadir_date"))})
     public LabValue getNadir() {
@@ -149,6 +151,7 @@ public class Lab extends AbstractExpeditedReportCollectionElementChild {
      */
     @Embedded
     @AttributeOverrides({
+            @AttributeOverride(name = "zone", column = @Column(name = "recovery_zone")),
             @AttributeOverride(name = "value", column = @Column(name = "recovery_value")),
             @AttributeOverride(name = "date", column = @Column(name = "recovery_date"))})
     public LabValue getRecovery() {
