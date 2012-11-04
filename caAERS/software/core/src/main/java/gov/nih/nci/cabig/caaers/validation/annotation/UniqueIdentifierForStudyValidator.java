@@ -11,6 +11,7 @@ import gov.nih.nci.cabig.caaers.validation.AbstractConstraintValidator;
 import java.util.List;
 
 import org.apache.commons.lang.ObjectUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 
 public class UniqueIdentifierForStudyValidator extends AbstractConstraintValidator<UniqueIdentifierForStudy, Object> implements Validator<UniqueIdentifierForStudy> {
@@ -58,7 +59,8 @@ public class UniqueIdentifierForStudyValidator extends AbstractConstraintValidat
     public String message() {
         return message;
     }
-
+    
+    @Autowired
     @Required
     public void setStudyDao(StudyDao studyDao) {
         this.studyDao = studyDao;

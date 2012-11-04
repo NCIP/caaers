@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.utils.ProjectedList;
 import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
+import gov.nih.nci.cabig.caaers.validation.fields.validators.NotNullConstraint;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 
 import java.util.ArrayList;
@@ -90,6 +91,7 @@ public class Participant extends Person {
      * @see gov.nih.nci.cabig.caaers.domain.Person#getFirstName()
      */
     @Override
+    @NotNullConstraint
     public String getFirstName() {
         return firstName;
     }
@@ -98,6 +100,7 @@ public class Participant extends Person {
      * @see gov.nih.nci.cabig.caaers.domain.Person#getLastName()
      */
     @Override
+    @NotNullConstraint
     public String getLastName() {
         return lastName;
     }
@@ -348,6 +351,7 @@ public class Participant extends Person {
      *
      * @return the gender
      */
+    @NotNullConstraint
     public String getGender() {
         return gender;
     }
@@ -366,6 +370,7 @@ public class Participant extends Person {
      *
      * @return the ethnicity
      */
+    @NotNullConstraint
     public String getEthnicity() {
         return ethnicity;
     }
@@ -384,6 +389,7 @@ public class Participant extends Person {
      *
      * @return the race
      */
+    @NotNullConstraint
     public String getRace() {
         return race;
     }

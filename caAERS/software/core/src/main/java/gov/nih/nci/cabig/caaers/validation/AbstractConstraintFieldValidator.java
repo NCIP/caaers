@@ -2,7 +2,6 @@ package gov.nih.nci.cabig.caaers.validation;
 
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import javax.validation.ConstraintValidator;

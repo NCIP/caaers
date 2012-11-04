@@ -378,6 +378,7 @@ default-lazy-init="true">
 	<bean id="adverseEventReportSerializer" class="gov.nih.nci.cabig.caaers.api.AdverseEventReportSerializer" />
 	
 	<bean id="domainObjectValidator" autowire="byType" lazy-init="true"	class="gov.nih.nci.cabig.caaers.validation.validator.DomainObjectValidator"/>
+	
 	<bean id="freeMarkerService" class="gov.nih.nci.cabig.caaers.service.FreeMarkerService"/>
 
 	<bean id="reportValidationService" class="gov.nih.nci.cabig.caaers.domain.repository.ReportValidationServiceImpl">

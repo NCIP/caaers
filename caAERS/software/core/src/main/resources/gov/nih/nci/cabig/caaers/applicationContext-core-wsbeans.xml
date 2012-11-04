@@ -33,16 +33,17 @@
         <property name="organizationConverter" ref="organizationConverter" />
     </bean>
 
-    <bean id="participantServiceImpl" class="gov.nih.nci.cabig.caaers.api.impl.ParticipantServiceImpl">
+    <bean id="participantServiceImpl" autowire="byType" class="gov.nih.nci.cabig.caaers.api.impl.ParticipantServiceImpl">
+        <!--
         <property name="participantImportServiceImpl" ref="participantImportService" />
         <property name="participantConverter" ref="participantConverter" />
         <property name="participantDao" ref="participantDao" />
         <property name="participantSynchronizer" ref="participantSynchronizer" />
-        <property name="domainObjectValidator" ref="domainObjectValidator" />
+        <property name="validator" ref="validator" />
         <property name="studyDao" ref="studyDao" />
         <property name="studySearchableAjaxableDomainObjectRepository" ref="studySearchableAjaxableDomainObjectRepository" />
         <property name="organizationRepository" ref="organizationRepository" />
-
+        -->
     </bean>
 
     <bean id="adverseEventManagementServiceImpl" autowire="byType" class="gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl"/>

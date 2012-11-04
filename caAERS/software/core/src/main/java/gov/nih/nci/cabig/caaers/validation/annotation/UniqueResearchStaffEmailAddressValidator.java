@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.validation.AbstractConstraintValidator;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 
 public class UniqueResearchStaffEmailAddressValidator extends AbstractConstraintValidator<UniqueResearchStaffEmailAddress, Object> implements
@@ -37,7 +38,8 @@ Validator<UniqueResearchStaffEmailAddress>{
         }
 		return true;
 	}
-
+	
+	@Autowired
 	@Required
 	public void setResearchStaffRepository(
 			ResearchStaffRepository researchStaffRepository) {

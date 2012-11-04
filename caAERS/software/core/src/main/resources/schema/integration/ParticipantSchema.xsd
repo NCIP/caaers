@@ -204,15 +204,25 @@
     <xs:element name="participantRef">
     	<xs:complexType>
 	    	 <xs:sequence>
-	        	<xs:element name="identifiers" minOccurs="1" maxOccurs="1">
-	               <xs:complexType>
-	                   <xs:sequence>
-	                       <xs:element ref="organizationAssignedIdentifier" minOccurs="1" maxOccurs="unbounded"/>
-	                       <xs:element ref="systemAssignedIdentifier"  minOccurs="0" maxOccurs="unbounded"/>
-	                   </xs:sequence>
-	               </xs:complexType>
-	            </xs:element>
-	        </xs:sequence>
+	    	    <xs:choice>
+		        	<xs:element name="identifiers" minOccurs="1" maxOccurs="1">
+		               <xs:complexType>
+		                   <xs:sequence>
+		                       <xs:element ref="organizationAssignedIdentifier" minOccurs="1" maxOccurs="unbounded"/>
+		                       <xs:element ref="systemAssignedIdentifier"  minOccurs="0" maxOccurs="unbounded"/>
+		                   </xs:sequence>
+		               </xs:complexType>
+		            </xs:element>
+		            <xs:element name="participantAssignment">
+			            <xs:complexType>
+		                       <xs:sequence>
+		                           <xs:element name="studySubjectIdentifier" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		                           <xs:element name="studyIdentifier" type="ReducedIdentifierType" minOccurs="1" maxOccurs="1"/>
+		                       </xs:sequence>
+		                   </xs:complexType>
+		            </xs:element>
+	            </xs:choice>
+	        </xs:sequence>	        
         </xs:complexType>
     </xs:element>
 </xs:schema>

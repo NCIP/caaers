@@ -10,6 +10,10 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.groups.Default;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -24,8 +28,21 @@ public class DomainObjectValidator implements ApplicationContextAware{
 	
 	private static final Log logger = LogFactory.getLog(DomainObjectValidator.class);
 	private ApplicationContext applicationContext;
+	private javax.validation.Validator validator;
 	private List<String> errors;
 	
+	public List<String> validate(final Object command) {
+		if (command != null) {
+        	errors = new ArrayList<String>();
+			Set<ConstraintViolation<Object>> violations = validator.validate(command, Default.class);
+			
+			for (ConstraintViolation<Object> constraintViolation : violations) {
+				String errMsg = " (" + constraintViolation.getPropertyPath() + ")" + constraintViolation.getMessage();
+				errors.add(errMsg);
+			}
+		}
+		return errors; 
+	}
 	
 	/**
 	    * This checks if the property is readable ?
@@ -34,16 +51,16 @@ public class DomainObjectValidator implements ApplicationContextAware{
 	    * @param propertyName - The property name to evaluate
 	    * @return - false, in case of exception, otherwise will delegate to BeanWrapper.
 	    */
-	   	public static boolean isReadableProperty(BeanWrapper beanWrapper,String propertyName){
+	   	/*public static boolean isReadableProperty(BeanWrapper beanWrapper,String propertyName){
 	   		try{
 	   			return beanWrapper.isReadableProperty(propertyName);
 	   		}catch(RuntimeException e){
 	   			logger.warn("error while reading property[" + propertyName + "]", e);
 	   		}
 	   		return false;
-	   	}
+	   	}*/
 	   	
-	    public List<String> validate(final Object command) {
+	    /*public List<String> validate(final Object command) {
 	        if (command != null) {
 	        	errors = new ArrayList<String>();
 	            BeanWrapperImpl beanWrapperImpl = new BeanWrapperImpl(command);
@@ -84,9 +101,9 @@ public class DomainObjectValidator implements ApplicationContextAware{
 		                
             }
 	        return errors;    
-	    }
+	    }*/
 
-	    private List<String> validateCollectionProperty(String readMethodName, BeanWrapperImpl beanWrapperImpl, String propertyName, String propertyNameWhereErrorWillBeDisplayed) {
+	    /*private List<String> validateCollectionProperty(String readMethodName, BeanWrapperImpl beanWrapperImpl, String propertyName, String propertyNameWhereErrorWillBeDisplayed) {
 	        if (readMethodName != null) {
 
 	            try {
@@ -98,7 +115,7 @@ public class DomainObjectValidator implements ApplicationContextAware{
 				}
 	        }
 	        return errors;
-	    }
+	    }*/
 
 	    /**
 	     *
@@ -108,7 +125,7 @@ public class DomainObjectValidator implements ApplicationContextAware{
 	     * @param errors
 	     * @param propertyNameWhereErrorWillBeDisplayed name of the proeprty where errros should be displayed.
 	     */
-	    private List<String> validateProperty(BeanWrapperImpl beanWrapperImpl, String propertyName) {
+	    /*private List<String> validateProperty(BeanWrapperImpl beanWrapperImpl, String propertyName) {
 	        if (propertyName != null) {
 	            try {
 					Annotation[] annotationsArray = beanWrapperImpl.getPropertyDescriptor(propertyName).getReadMethod().getAnnotations();
@@ -119,10 +136,10 @@ public class DomainObjectValidator implements ApplicationContextAware{
 				}
 	        }
 	        return errors;
-	    }
+	    }*/
 
 
-	    private List<String> validate(Annotation[] annotationsArray, Object propertyValue, String propertyName) {
+	    /*private List<String> validate(Annotation[] annotationsArray, Object propertyValue, String propertyName) {
 	        for (Annotation validatorAnnotation : annotationsArray) {
 	            Validator<Annotation> validator = createValidator(validatorAnnotation);
 
@@ -137,7 +154,7 @@ public class DomainObjectValidator implements ApplicationContextAware{
 	            }
 	        }
 	        return errors;
-	    }
+	    }*/
 
 	    /**
 	     * Creates the validator for a given annotation type.
@@ -145,7 +162,7 @@ public class DomainObjectValidator implements ApplicationContextAware{
 	     * @param annotation the annotation
 	     * @return the validator
 	     */
-	    @SuppressWarnings("unchecked")
+	    /*@SuppressWarnings("unchecked")
 	    private Validator<Annotation> createValidator(final Annotation annotation) {
 	        try {
 	            ValidatorClass validatorClass = annotation.annotationType().getAnnotation(ValidatorClass.class);
@@ -153,7 +170,6 @@ public class DomainObjectValidator implements ApplicationContextAware{
 	                return null;
 	            }
 	           
-
 	            Map<String, Validator> validatorClasses = (Map<String, Validator>) applicationContext.getBeansOfType(validatorClass.value());
 	            if (validatorClasses != null && !validatorClasses.isEmpty()) {
 	                Validator validator = validatorClasses.get(validatorClasses.keySet().iterator().next());
@@ -168,7 +184,7 @@ public class DomainObjectValidator implements ApplicationContextAware{
 	        }
 	        logger.info("No validator found for annotation:" + annotation.toString());
 	        return null;
-	    }
+	    }*/
 
 	
 
@@ -176,6 +192,14 @@ public class DomainObjectValidator implements ApplicationContextAware{
 			throws BeansException {
 		this.applicationContext = applicationContext;
 		
+	}
+
+	public javax.validation.Validator getValidator() {
+		return validator;
+	}
+
+	public void setValidator(javax.validation.Validator validator) {
+		this.validator = validator;
 	}
 
 }

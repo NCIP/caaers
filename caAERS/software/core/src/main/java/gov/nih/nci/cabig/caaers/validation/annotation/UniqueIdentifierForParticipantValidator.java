@@ -12,6 +12,7 @@ import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 
 /**
@@ -73,7 +74,8 @@ public class UniqueIdentifierForParticipantValidator extends AbstractConstraintV
         return message;
     }
 
-    @Required
+    @Autowired
+	@Required
     public void setParticipantDao(ParticipantDao participantDao) {
         this.participantDao = participantDao;
     }

@@ -5,6 +5,8 @@ import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.validation.annotation.UniqueIdentifierForStudyValidator;
+import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollectionValidator;
 import gov.nih.nci.cabig.caaers.validation.validator.DomainObjectValidator;
 
 import java.util.ArrayList;
@@ -23,6 +25,8 @@ public class ParticipantDomainObjectValidatorTest extends CaaersTestCase{
         participant.getIdentifiersLazy().remove(0);
 		errors = new ArrayList<String>();
 		domainObjectValidator = (DomainObjectValidator)getDeployedApplicationContext().getBean("domainObjectValidator");
+		System.out.println("uniqueIdentifierForStudyValidator = " + getDeployedApplicationContext().getBean(UniqueIdentifierForStudyValidator.class));
+		System.out.println("UniqueObjectInCollectionValidator = " + getDeployedApplicationContext().getBean(UniqueObjectInCollectionValidator.class));
 	}
 	
 	public void testDuplicateOrganizationAssignedIdentifiers(){

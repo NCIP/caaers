@@ -25,7 +25,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     </bean> 
     
     <!-- validator beans starts here-->
-
+    
+    <!-- 
     <bean id="uniqueNciIdentifierForOrganizationValidator" class="gov.nih.nci.cabig.caaers.validation.annotation.UniqueNciIdentifierForOrganizationValidator">
         <property name="organizationDao" ref="organizationDao"/>
         <property name="organizationRepository" ref="organizationRepository"/>
@@ -54,7 +55,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <property name="researchStaffRepository" ref="researchStaffRepository"/>
         <property name="caaersFieldConfigurationManager" ref="caaersFieldConfigurationManager"/>
     </bean>
-
+    -->
     <!-- validator beans end here-->
     
 </beans>

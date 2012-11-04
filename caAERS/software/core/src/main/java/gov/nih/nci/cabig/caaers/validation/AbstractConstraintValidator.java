@@ -57,10 +57,11 @@ public abstract class AbstractConstraintValidator<A extends Annotation, T> imple
 		}
 		return null;
 	}
-
+	
+	
 	public CaaersFieldConfigurationManager getCaaersFieldConfigurationManager() {
 		return caaersFieldConfigurationManager;
-	}
+	}	
 	
 	@Autowired
 	@Required

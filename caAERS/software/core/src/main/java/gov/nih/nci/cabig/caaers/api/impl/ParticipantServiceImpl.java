@@ -4,47 +4,59 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.api.AbstractImportService;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ResponseDataType;
+import gov.nih.nci.cabig.caaers.integration.schema.common.Status;
+import gov.nih.nci.cabig.caaers.integration.schema.common.WsError;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.AssignmentType;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.ParticipantRef;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.ParticipantType;
-import gov.nih.nci.cabig.caaers.integration.schema.participant.ParticipantType.Assignments;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.Participants;
+import gov.nih.nci.cabig.caaers.integration.schema.participant.ParticipantType.Assignments;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
-import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Message;
-import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
 import gov.nih.nci.cabig.caaers.service.ParticipantImportServiceImpl;
+import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Message;
 import gov.nih.nci.cabig.caaers.service.migrator.ParticipantConverter;
 import gov.nih.nci.cabig.caaers.service.synchronizer.ParticipantSynchronizer;
-import gov.nih.nci.cabig.caaers.validation.validator.DomainObjectValidator;
 import gov.nih.nci.security.util.StringUtilities;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import javax.validation.groups.Default;
+
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.MessageSource;
-import org.springframework.context.MessageSourceAware;
 
-public class ParticipantServiceImpl extends AbstractImportService implements MessageSourceAware {
+public class ParticipantServiceImpl extends AbstractImportService implements ApplicationContextAware {
 	
 	private static Log logger = LogFactory.getLog(ParticipantServiceImpl.class);
+	private ApplicationContext applicationContext;
 	private MessageSource messageSource;
     private ParticipantDao participantDao;
     private StudyDao studyDao;
     private ParticipantImportServiceImpl participantImportServiceImpl;
     private ParticipantConverter participantConverter;
     private ParticipantSynchronizer participantSynchronizer;
-    private DomainObjectValidator domainObjectValidator;
+    //private DomainObjectValidator domainObjectValidator;
+    private Validator validator;
     private EventFactory eventFactory;
 
     
@@ -54,6 +66,7 @@ public class ParticipantServiceImpl extends AbstractImportService implements Mes
 	public DomainObjectImportOutcome<Participant> processParticipant(ParticipantType xmlParticipant){
 		logger.info("Entering processParticipant() in ParticipantServiceImpl");
 		
+		CaaersServiceResponse caaersServiceResponse = Helper.createResponse();
 		DomainObjectImportOutcome<Participant> participantImportOutcome = null;
 		Participant participant = new Participant();
 		
@@ -68,13 +81,15 @@ public class ParticipantServiceImpl extends AbstractImportService implements Mes
         if(participantImportOutcome == null){
         	participantImportOutcome = participantImportServiceImpl.importParticipant(participant);
         	if(participantImportOutcome.isSavable()){
-				//Check if Study Exists; If Exists then update
-        		Participant dbParticipant = fetchParticipant(participantImportOutcome.getImportedDomainObject());
+        		Participant dbParticipant = fetchParticipantByAssignment(participantImportOutcome.getImportedDomainObject(), caaersServiceResponse);
+        		
         		if(dbParticipant != null){
         			logger.info("Participant Exists in caAERS trying to Update");
         			participantSynchronizer.migrate(dbParticipant, participantImportOutcome.getImportedDomainObject(), participantImportOutcome);
         			participantImportOutcome.setImportedDomainObject(dbParticipant);
         			logger.info("Participant in caAERS Updated");
+        		}else if (caaersServiceResponse.getServiceResponse().getStatus() == Status.FAILED_TO_PROCESS) {
+        			participantImportOutcome.addErrorMessage(caaersServiceResponse.getServiceResponse().getMessage(), DomainObjectImportOutcome.Severity.ERROR);
         		}else{
         			logger.info("New Participant to be Created");
         		}
@@ -83,6 +98,19 @@ public class ParticipantServiceImpl extends AbstractImportService implements Mes
         logger.info("Leaving processParticipant() in ParticipantServiceImpl");
 		return participantImportOutcome;
 	}
+	
+	public String getStudySubjectIdentifierFromInXML(ParticipantType xmlParticipant) {
+		String identifier = null;
+		Assignments assignments = xmlParticipant.getAssignments();
+		for(AssignmentType assignmentType : assignments.getAssignment()){
+			identifier = assignmentType.getStudySubjectIdentifier();
+			if(StringUtils.isNotEmpty(identifier) ){
+				return identifier;
+			}
+		}
+		return null;		
+	}
+	
 	public Identifier getStudyIdentifierFromInXML(ParticipantType xmlParticipant) {
 		Identifier identifier = null;
 		Assignments assignments = xmlParticipant.getAssignments();
@@ -101,8 +129,7 @@ public class ParticipantServiceImpl extends AbstractImportService implements Mes
 			authorizedStudies = getAuthorizedStudies(identifier.getValue());
 			return authorizedStudies;
 		}
-		return authorizedStudies;
-		
+		return authorizedStudies;		
 	}
 
 	private String checkAuthorizedOrganizations (ParticipantType xmlParticipant) {
@@ -124,147 +151,183 @@ public class ParticipantServiceImpl extends AbstractImportService implements Mes
 		}
 		return "ALL_ORGS_AUTH";
 	}
-	public CaaersServiceResponse createParticipant(
-			Participants xmlParticipants) {
-		
-		ParticipantType xmlParticipant = xmlParticipants.getParticipant().get(0);
+	
 
-		CaaersServiceResponse caaersServiceResponse = Helper.createResponse();
-		Participant participant = new Participant();
-		DomainObjectImportOutcome<Participant> participantImportOutcome = null;
-		Identifier identifier = getStudyIdentifierFromInXML(xmlParticipant);
-		if (identifier != null ) {
-			List<StudySearchableAjaxableDomainObject> authorizedStudies = getAuthorizedStudies(identifier);
+	/**
+	 * validates xml input and fetches participant based on study identifier and study subject identifier
+	 * @param studySubjectIdentifier - string
+	 * @param studyIdentifier - String
+	 * @param xmlParticipant - xml participant object
+	 * @param caaersServiceResponse - response
+	 * @return Participant - returns retrieve participant, if not returns null, with response filled with appropriate messages
+	 */
+	private Participant validateInputsAndFetchParticipant(String studySubjectIdentifier, Identifier studyIdentifier, ParticipantType xmlParticipant, 
+			CaaersServiceResponse caaersServiceResponse) {		
+		
+		if (studyIdentifier != null ) {
+			List<StudySearchableAjaxableDomainObject> authorizedStudies = getAuthorizedStudies(studyIdentifier);
 			if(authorizedStudies.size() == 0) {
-				return createNoStudyAuthorizationResponse(caaersServiceResponse, identifier);
+				createNoStudyAuthorizationResponse(caaersServiceResponse, studyIdentifier);
+				return null;
 			}			
 		}
 		
 		String errorMsg = checkAuthorizedOrganizations(xmlParticipant);
 		if(!errorMsg.equals("ALL_ORGS_AUTH")) {
-			return createNoOrganizationAuthorizationResponse(caaersServiceResponse, errorMsg);
-		}		
-		
-        try{
+			createNoOrganizationAuthorizationResponse(caaersServiceResponse, errorMsg);
+			return null;
+		}
+		return fetchParticipantByAssignment(studySubjectIdentifier, studyIdentifier, caaersServiceResponse);		
+	}
+	
+	/**
+	 * converts xml participant to the DomainImportOutcome<Participant>
+	 * @param xmlParticipant - xml participant object
+	 * @param studySubjectIdentifier - string
+	 * @param caaersServiceResponse - response
+	 * @param processStr - should be created/updated/deleted to be used in response message
+	 * @return converted and imported domain object
+	 */
+	private DomainObjectImportOutcome<Participant> convertToImportedDomainObject(ParticipantType xmlParticipant, String studySubjectIdentifier,
+			CaaersServiceResponse caaersServiceResponse, String processStr) {
+		Participant participant = new Participant();
+		try{
         	participantConverter.convertParticipantDtoToParticipantDomain(xmlParticipant, participant);
         }catch(CaaersSystemException caEX){
-        	participantImportOutcome = new DomainObjectImportOutcome<Participant>();
-        	logger.error("ParticipantDto to ParticipantDomain Conversion Failed " , caEX);
-        	participantImportOutcome.addErrorMessage("ParticipantDto to ParticipantDomain Conversion Failed " , DomainObjectImportOutcome.Severity.ERROR);
-        	caaersServiceResponse.getServiceResponse().setResponsecode("1");
-        	caaersServiceResponse.getServiceResponse().setMessage("ParticipantDto to ParticipantDomain Conversion Failed ");
+        	String message = messageSource.getMessage("WS_PMS_005", new String[] { caEX.getMessage() }, "", Locale
+					.getDefault());
+			logger.error(message, caEX);
+			populateError(caaersServiceResponse, "WS_PMS_005", message);
+			return null;
         }
         
-        if(participantImportOutcome == null){
-        	participantImportOutcome = participantImportServiceImpl.importParticipant(participant);
-        	if(fetchParticipant(participantImportOutcome.getImportedDomainObject()) != null){
-    			participantImportOutcome.addErrorMessage(participant.getClass().getSimpleName() + " identifier already exists. ", Severity.ERROR);
-    			caaersServiceResponse.getServiceResponse().setResponsecode("1");
-    			caaersServiceResponse.getServiceResponse().setMessage("Participant exists in caAERS, which is identifiable by one of the identifiers provided");
-    		}
-        	
-        	StringBuilder sb = new StringBuilder("Participant ");
-    		sb.append(participantImportOutcome.getImportedDomainObject().getFirstName()).append(" ");
-    		sb.append(participantImportOutcome.getImportedDomainObject().getLastName());
-    		List<String> errors = domainObjectValidator.validate(participantImportOutcome.getImportedDomainObject());
-        	if(participantImportOutcome.isSavable() && errors.size() == 0){
-        		participantDao.save(participantImportOutcome.getImportedDomainObject());
-
-        		caaersServiceResponse.getServiceResponse().setResponsecode("0");
-        		sb.append("  Created in caAERS");
-        		caaersServiceResponse.getServiceResponse().setMessage(sb.toString());
-				logger.info(sb.toString());
-                if(eventFactory != null) eventFactory.publishEntityModifiedEvent(participantImportOutcome.getImportedDomainObject(), false);
-
-        	}else{
-        		caaersServiceResponse.getServiceResponse().setResponsecode("1");
-        		sb.append("  could not be created in caAERS");
-        		caaersServiceResponse.getServiceResponse().setMessage(sb.toString());
-				logger.info(sb.toString());
-				List<String> messages = new ArrayList<String>(); 
-				for(Message message : participantImportOutcome.getMessages()){
-					messages.add(message.getMessage());
-				}
-				for(String errMsg : errors){
-					messages.add(errMsg);
-	        	}
-				Helper.populateErrorOutcome(caaersServiceResponse, null, null, null, messages);
+        DomainObjectImportOutcome<Participant> participantImportOutcome =
+        	participantImportServiceImpl.importParticipant(participant);
+    	
+    	Participant importedDomainObject = participantImportOutcome.getImportedDomainObject();
+    	
+		//List<String> errors = domainObjectValidator.validate(importedDomainObject);
+    	Set<ConstraintViolation<Participant>> constraintViolations = validator.validate(importedDomainObject, Default.class);
+		
+		if( !participantImportOutcome.isSavable() || constraintViolations.size() > 0) {
+    		String errMessage = messageSource.getMessage("WS_PMS_007", 
+    				new String[] { importedDomainObject.getFirstName(), importedDomainObject.getLastName(), 
+    				studySubjectIdentifier, processStr },
+    				"", Locale.getDefault());
+    		populateError(caaersServiceResponse, "WS_PMS_007", errMessage);
+			logger.info(errMessage);
+			
+			List<String> messages = new ArrayList<String>(); 
+			for(Message message : participantImportOutcome.getMessages()){
+				messages.add(message.getMessage());
 			}
-        }
+			String valErrmsg = null;
+			for (ConstraintViolation<Participant> violation : constraintViolations) {
+				valErrmsg = violation.getMessage() 
+					+ " (" + violation.getPropertyPath() 
+					+ ") in " + participant.getClass().getSimpleName() 
+					+ "(" + participant.getFullName() + ")";
+				messages.add(valErrmsg);
+			}
+			Helper.populateErrorOutcome(caaersServiceResponse, null, null, null, messages);
+			return null;
+		}
+		
+		return participantImportOutcome;
+	}
+	
+	public CaaersServiceResponse createParticipant(
+			Participants xmlParticipants) {
+		
+		CaaersServiceResponse caaersServiceResponse = Helper.createResponse();
+		
+		ParticipantType xmlParticipant = xmlParticipants.getParticipant().get(0);
+		
+		Identifier studyIdentifier = getStudyIdentifierFromInXML(xmlParticipant);
+		String studySubjectIdentifier = getStudySubjectIdentifierFromInXML(xmlParticipant);
+		
+		Participant dbParticipant = validateInputsAndFetchParticipant(studySubjectIdentifier, studyIdentifier, xmlParticipant, caaersServiceResponse);
+		if( dbParticipant != null) {
+			String message = messageSource.getMessage("WS_PMS_004", new String[] { studySubjectIdentifier, studyIdentifier.getValue() }, "", Locale
+					.getDefault());
+			logger.error(message);
+			populateError(caaersServiceResponse, "WS_PMS_004", message);
+			return caaersServiceResponse;
+		}
+		
+		if(caaersServiceResponse.getServiceResponse().getStatus() == Status.FAILED_TO_PROCESS ) {
+			//Check if error is participant not found
+			List<WsError> wserrors = caaersServiceResponse.getServiceResponse().getWsError();
+			if(wserrors!=null && !wserrors.isEmpty() && !"WS_PMS_003".equals(wserrors.get(0).getErrorCode()) ) {
+				return caaersServiceResponse;
+			}
+		}
+		//resetting the response object
+		caaersServiceResponse = Helper.createResponse();
+				
+		DomainObjectImportOutcome<Participant> participantImportOutcome =
+			convertToImportedDomainObject(xmlParticipant, studySubjectIdentifier, caaersServiceResponse, "created");
+    	        
+		if(participantImportOutcome != null) {
+			Participant importedDomainObject = participantImportOutcome.getImportedDomainObject();
+			participantDao.save(importedDomainObject);
+			String message = messageSource.getMessage("WS_PMS_006", 
+					new String[] { importedDomainObject.getFirstName(), importedDomainObject.getLastName(), studySubjectIdentifier },
+					"", Locale.getDefault());    
+			Helper.populateMessage(caaersServiceResponse, message);
+			logger.info(message);
+	        if(eventFactory != null) {
+	        	eventFactory.publishEntityModifiedEvent(importedDomainObject, false);
+	        }
+		}   
 
 		return caaersServiceResponse;
 	}
 
+
 	public CaaersServiceResponse updateParticipant(
 			Participants xmlParticipants) {
 		
+		CaaersServiceResponse caaersServiceResponse = Helper.createResponse();
+		
 		ParticipantType xmlParticipant = xmlParticipants.getParticipant().get(0);
 		
-		CaaersServiceResponse caaersServiceResponse = Helper.createResponse();
-
-		Identifier identifier = getStudyIdentifierFromInXML(xmlParticipant);
-		if (identifier != null ) {
-			List<StudySearchableAjaxableDomainObject> authorizedStudies = getAuthorizedStudies(identifier);
-			if(authorizedStudies.size() == 0) {
-				return createNoStudyAuthorizationResponse(caaersServiceResponse, identifier);
-			}			
-		}
-
-		String errorMsg = checkAuthorizedOrganizations(xmlParticipant);
-		if(!errorMsg.equals("ALL_ORGS_AUTH")) {
-			return createNoOrganizationAuthorizationResponse(caaersServiceResponse, errorMsg);
+		Identifier studyIdentifier = getStudyIdentifierFromInXML(xmlParticipant);
+		String studySubjectIdentifier = getStudySubjectIdentifierFromInXML(xmlParticipant);
+		
+		Participant dbParticipant = validateInputsAndFetchParticipant(studySubjectIdentifier, studyIdentifier, xmlParticipant, caaersServiceResponse);
+		if( dbParticipant == null) {
+			String message = messageSource.getMessage("WS_PMS_003", new String[] { studySubjectIdentifier, studyIdentifier.getValue() }, "", Locale
+					.getDefault());
+			logger.error(message);
+			populateError(caaersServiceResponse, "WS_PMS_003", message);
+			return caaersServiceResponse;
 		}
 		
-		DomainObjectImportOutcome<Participant> participantImportOutcome = null;
-		Participant participant = new Participant();
-       
-        try{
-        	participantConverter.convertParticipantDtoToParticipantDomain(xmlParticipant, participant);
-        }catch(CaaersSystemException caEX){
-        	participantImportOutcome = new DomainObjectImportOutcome<Participant>();
-        	logger.error("ParticipantDto to ParticipantDomain Conversion Failed " , caEX);
-        	participantImportOutcome.addErrorMessage("ParticipantDto to ParticipantDomain Conversion Failed " , DomainObjectImportOutcome.Severity.ERROR);
-        	caaersServiceResponse.getServiceResponse().setResponsecode("1");
-        	caaersServiceResponse.getServiceResponse().setMessage("ParticipantDto to ParticipantDomain Conversion Failed ");
-        }
-        
-        if(participantImportOutcome == null){
-        	participantImportOutcome = participantImportServiceImpl.importParticipant(participant);
+		if(caaersServiceResponse.getServiceResponse().getStatus() == Status.FAILED_TO_PROCESS) {
+			return caaersServiceResponse;
+		}
+		//resetting the response object
+		caaersServiceResponse = Helper.createResponse();
+				
+		DomainObjectImportOutcome<Participant> participantImportOutcome =
+			convertToImportedDomainObject(xmlParticipant, studySubjectIdentifier, caaersServiceResponse, "updated");
+    	        
+        if(participantImportOutcome != null){
+        	Participant importedDomainObject = participantImportOutcome.getImportedDomainObject();
         	
-        	StringBuilder sb = new StringBuilder("Participant ");
-    		sb.append(participantImportOutcome.getImportedDomainObject().getFirstName()).append(" ");
-    		sb.append(participantImportOutcome.getImportedDomainObject().getLastName());
-    		List<String> errors = domainObjectValidator.validate(participantImportOutcome.getImportedDomainObject());
-        	if(participantImportOutcome.isSavable() && errors.size() == 0){
-        		Participant dbParticipant = fetchParticipant(participantImportOutcome.getImportedDomainObject());
-        		if(dbParticipant != null){
-        			participantSynchronizer.migrate(dbParticipant, participantImportOutcome.getImportedDomainObject(), participantImportOutcome);
-        			participantImportOutcome.setImportedDomainObject(dbParticipant);
-        			participantDao.save(participantImportOutcome.getImportedDomainObject());
-            		caaersServiceResponse.getServiceResponse().setResponsecode("0");
-            		sb.append("  Updated in caAERS");
-            		caaersServiceResponse.getServiceResponse().setMessage(sb.toString());
-    				logger.info(sb.toString());
-        		}else{
-        			caaersServiceResponse.getServiceResponse().setResponsecode("1");
-        			sb.append("  Does not exist in caAERS");
-        			caaersServiceResponse.getServiceResponse().setMessage(sb.toString());
-        			participantImportOutcome.addErrorMessage(sb.toString(), DomainObjectImportOutcome.Severity.ERROR);
-        		}
-        	}else{
-        		caaersServiceResponse.getServiceResponse().setResponsecode("1");
-        		sb.append("  could not be updated in caAERS");
-        		caaersServiceResponse.getServiceResponse().setMessage(sb.toString());
-				logger.info(sb.toString());
-				List<String> messages = new ArrayList<String>(); 
-				for(Message message : participantImportOutcome.getMessages()){
-					messages.add(message.getMessage());
-				}
-				for(String errMsg : errors){
-					messages.add(errMsg);
-	        	}
-				Helper.populateErrorOutcome(caaersServiceResponse, null, null, null, messages);
-        	}
+			participantSynchronizer.migrate(dbParticipant, participantImportOutcome.getImportedDomainObject(), participantImportOutcome);
+			participantImportOutcome.setImportedDomainObject(dbParticipant);
+			participantDao.save(participantImportOutcome.getImportedDomainObject());
+			
+			String message = messageSource.getMessage("WS_PMS_008", 
+					new String[] { importedDomainObject.getFirstName(), importedDomainObject.getLastName(), studySubjectIdentifier },
+					"", Locale.getDefault());    
+			Helper.populateMessage(caaersServiceResponse, message);
+			logger.info(message);
+	        if(eventFactory != null) {
+	        	eventFactory.publishEntityModifiedEvent(importedDomainObject, false);
+	        }
         }
 
 		return caaersServiceResponse;
@@ -272,79 +335,47 @@ public class ParticipantServiceImpl extends AbstractImportService implements Mes
 	
 	public CaaersServiceResponse deleteParticipant(Participants xmlParticipants) {
 		
+		CaaersServiceResponse caaersServiceResponse = Helper.createResponse();
+		
 		ParticipantType xmlParticipant = xmlParticipants.getParticipant().get(0);
 		
-		CaaersServiceResponse caaersServiceResponse = Helper.createResponse();
-
-		Identifier identifier = getStudyIdentifierFromInXML(xmlParticipant);
-		if (identifier != null ) {
-			List<StudySearchableAjaxableDomainObject> authorizedStudies = getAuthorizedStudies(identifier);
-			if(authorizedStudies.size() == 0) {
-				return createNoStudyAuthorizationResponse(caaersServiceResponse, identifier);
-			}			
-		}
-
-		String errorMsg = checkAuthorizedOrganizations(xmlParticipant);
+		Identifier studyIdentifier = getStudyIdentifierFromInXML(xmlParticipant);
+		String studySubjectIdentifier = getStudySubjectIdentifierFromInXML(xmlParticipant);
 		
-		if(!errorMsg.equals("ALL_ORGS_AUTH")) {
-			return createNoOrganizationAuthorizationResponse(caaersServiceResponse, errorMsg);
+		Participant dbParticipant = validateInputsAndFetchParticipant(studySubjectIdentifier, studyIdentifier, xmlParticipant, caaersServiceResponse);
+		if( dbParticipant == null) {
+			String message = messageSource.getMessage("WS_PMS_003", new String[] { studySubjectIdentifier, studyIdentifier.getValue() }, "", Locale
+					.getDefault());
+			logger.error(message);
+			populateError(caaersServiceResponse, "WS_PMS_003", message);
+		} else if(dbParticipant.getHasReportingPeriods()) {
+			String message = messageSource.getMessage("WS_PMS_009", new String[] { studySubjectIdentifier, studyIdentifier.getValue() }, "", Locale
+					.getDefault());
+			logger.error(message);
+			populateError(caaersServiceResponse, "WS_PMS_009", message);
 		}
 		
-		DomainObjectImportOutcome<Participant> participantImportOutcome = null;
-		Participant participant = new Participant();
-       
-        try{
-        	participantConverter.convertParticipantDtoToParticipantDomain(xmlParticipant, participant);
-        }catch(CaaersSystemException caEX){
-        	participantImportOutcome = new DomainObjectImportOutcome<Participant>();
-        	logger.error("ParticipantDto to ParticipantDomain Conversion Failed " , caEX);
-        	participantImportOutcome.addErrorMessage("ParticipantDto to ParticipantDomain Conversion Failed " , DomainObjectImportOutcome.Severity.ERROR);
-        	caaersServiceResponse.getServiceResponse().setResponsecode("1");
-        	caaersServiceResponse.getServiceResponse().setMessage("ParticipantDto to ParticipantDomain Conversion Failed ");
-        }
-        
-        if(participantImportOutcome == null){
-        	participantImportOutcome = participantImportServiceImpl.importParticipant(participant);
+		if(caaersServiceResponse.getServiceResponse().getStatus() == Status.FAILED_TO_PROCESS) {
+			return caaersServiceResponse;
+		}
+		//resetting the response object
+		caaersServiceResponse = Helper.createResponse();
+				
+		DomainObjectImportOutcome<Participant> participantImportOutcome =
+			convertToImportedDomainObject(xmlParticipant, studySubjectIdentifier, caaersServiceResponse, "deleted");
+    	        
+        if(participantImportOutcome != null){
+        	Participant importedDomainObject = participantImportOutcome.getImportedDomainObject();
         	
-        	StringBuilder sb = new StringBuilder("Participant ");
-    		sb.append(participantImportOutcome.getImportedDomainObject().getFirstName()).append(" ");
-    		sb.append(participantImportOutcome.getImportedDomainObject().getLastName());
-    		List<String> errors = domainObjectValidator.validate(participantImportOutcome.getImportedDomainObject());
-        	if(errors.size() == 0){
-        		Participant dbParticipant = fetchParticipant(participantImportOutcome.getImportedDomainObject());
-        		if(dbParticipant != null ){
-        			if(dbParticipant.getHasReportingPeriods()){
-        				caaersServiceResponse.getServiceResponse().setResponsecode("1");
-                		sb.append(" has reporting periods. Hence cannot be deleted in caAERS");
-                		caaersServiceResponse.getServiceResponse().setMessage(sb.toString());
-        				logger.info(sb.toString());
-        			} else {
-	        			participantDao.delete(dbParticipant);
-	            		caaersServiceResponse.getServiceResponse().setResponsecode("0");
-	            		sb.append(" Deleted in caAERS");
-	            		caaersServiceResponse.getServiceResponse().setMessage(sb.toString());
-	    				logger.info(sb.toString());
-        			}
-        		}else{
-        			caaersServiceResponse.getServiceResponse().setResponsecode("1");
-        			sb.append("  Does not exist in caAERS");
-        			Helper.populateError(caaersServiceResponse, "WS_GEN_001", messageSource.getMessage("WS_GEN_001",new String[]{},"",Locale.getDefault()));
-        			participantImportOutcome.addErrorMessage(sb.toString() +  " Does not exist in caAERS", DomainObjectImportOutcome.Severity.ERROR);
-        		}
-        	}else{
-        		caaersServiceResponse.getServiceResponse().setResponsecode("1");
-        		sb.append("  could not be deleted in caAERS");
-        		caaersServiceResponse.getServiceResponse().setMessage(sb.toString());
-				logger.info(sb.toString());
-				List<String> messages = new ArrayList<String>(); 
-				for(Message message : participantImportOutcome.getMessages()){
-					messages.add(message.getMessage());
-				}
-				for(String errMsg : errors){
-					messages.add(errMsg);
-	        	}
-				Helper.populateErrorOutcome(caaersServiceResponse, null, null, null, messages);
-        	}
+			participantDao.delete(dbParticipant);
+			String message = messageSource.getMessage("WS_PMS_010", 
+					new String[] { importedDomainObject.getFirstName(), importedDomainObject.getLastName(), studySubjectIdentifier },
+					"", Locale.getDefault());    
+			Helper.populateMessage(caaersServiceResponse, message);
+			logger.info(message);
+	        if(eventFactory != null) {
+	        	eventFactory.publishEntityModifiedEvent(importedDomainObject, false);
+	        }
         }
 
 		return caaersServiceResponse;
@@ -354,17 +385,20 @@ public class ParticipantServiceImpl extends AbstractImportService implements Mes
 	public CaaersServiceResponse getParticipant(ParticipantRef xmlParticipantRefType) {
 		
 		CaaersServiceResponse caaersServiceResponse = Helper.createResponse();
-		Participant participant = new Participant();
+		
 		Participant dbParticipant = null;
-        try{
-        	participantConverter.convertParticipantRefToParticipantDomain(xmlParticipantRefType, participant);
-        }catch(CaaersSystemException caEX){
-        	logger.error("ParticipantDto to ParticipantDomain Conversion Failed " , caEX);
-        	caaersServiceResponse.getServiceResponse().setResponsecode("1");
-        	caaersServiceResponse.getServiceResponse().setMessage("ParticipantDto to ParticipantDomain Conversion Failed ");
+		
+		//TODO : Only fetch By Assignment works..Need to add fetch by Identifier(mostly not required)       
+        ParticipantRef.ParticipantAssignment assignment = xmlParticipantRefType.getParticipantAssignment();
+        if(assignment == null || assignment.getStudyIdentifier() == null || assignment.getStudyIdentifier().getType() == null) {
+        	populateError(caaersServiceResponse, "WS_PMS_013", messageSource.getMessage("WS_PMS_013", 
+        			new String[]{},"",Locale.getDefault()));
+        	return caaersServiceResponse;
         }
-        
-        dbParticipant = fetchParticipant(participant);
+        Identifier studyId = new Identifier();
+        studyId.setType(assignment.getStudyIdentifier().getType().value());
+        studyId.setValue(assignment.getStudyIdentifier().getValue());
+        dbParticipant = fetchParticipantByAssignment(assignment.getStudySubjectIdentifier(), studyId, caaersServiceResponse);
         
 		if(dbParticipant != null ){
 			caaersServiceResponse.getServiceResponse().setResponsecode("0");
@@ -374,21 +408,18 @@ public class ParticipantServiceImpl extends AbstractImportService implements Mes
 			 Participants participants = new Participants();
 			 participants.getParticipant().add(dbParticipantType);
 			 caaersServiceResponse.getServiceResponse().getResponseData().setAny(participants);
-		}else{
-			caaersServiceResponse.getServiceResponse().setResponsecode("1");
-			caaersServiceResponse.getServiceResponse().setMessage("Unable to retrieve participant. Check the identifier");
 		}
 
 		return caaersServiceResponse;
 	}
 	
 	private CaaersServiceResponse createNoStudyAuthorizationResponse(CaaersServiceResponse caaersServiceResponse, Identifier identifier){
-		Helper.populateError(caaersServiceResponse, "WS_AEMS_027", messageSource.getMessage("WS_AEMS_027", new String[]{identifier.getValue()},"",Locale.getDefault()));
+		populateError(caaersServiceResponse, "WS_GEN_003", messageSource.getMessage("WS_GEN_003", new String[]{identifier.getValue()},"",Locale.getDefault()));
 		return caaersServiceResponse;
 	}
 	
 	private CaaersServiceResponse createNoOrganizationAuthorizationResponse(CaaersServiceResponse caaersServiceResponse, String errorMsg){
-		Helper.populateError(caaersServiceResponse, "WS_AEMS_029", messageSource.getMessage("WS_AEMS_029", new String[]{errorMsg},"",Locale.getDefault()));
+		populateError(caaersServiceResponse, "WS_GEN_005", messageSource.getMessage("WS_GEN_005", new String[]{errorMsg},"",Locale.getDefault()));
 		return caaersServiceResponse;
 	}
 	
@@ -403,15 +434,94 @@ public class ParticipantServiceImpl extends AbstractImportService implements Mes
 		}
 		return dbParticipant;
 	}
-	private Study fetchStudy(Identifier identifier){
+	
+	private Participant fetchParticipantByAssignment(Participant participant,
+			CaaersServiceResponse caaersServiceResponse) {
+		Participant dbParticipant = null;
+		for(StudyParticipantAssignment assignment : participant.getAssignments()){
+			for(Identifier identifier : assignment.getStudySite().getStudy().getIdentifiers()) {
+				dbParticipant = fetchParticipantByAssignment(assignment.getStudySubjectIdentifier(),
+						identifier, caaersServiceResponse);
+				if(dbParticipant != null){
+					participantDao.evict(dbParticipant);
+					return dbParticipant;
+				}				
+			}			
+		}
+		return dbParticipant;
+	}
+	
+	private Participant fetchParticipantByAssignment(String studySubjectIdentifier,
+			Identifier studyIdentifier, CaaersServiceResponse caaersServiceResponse) {
+		Participant dbParticipant = null;
+		
+		if (StringUtils.isEmpty(studySubjectIdentifier)) {
+			String message = messageSource.getMessage("WS_PMS_014", new String[] { studySubjectIdentifier }, "", Locale
+					.getDefault());
+			logger.error(message);
+			populateError(caaersServiceResponse, "WS_PMS_014", message);
+			return null;
+		}
+		
+		if (studyIdentifier == null || StringUtils.isEmpty(studyIdentifier.getValue())) {
+			String message = messageSource.getMessage("WS_PMS_015", new String[] { studyIdentifier.getValue() }, "", Locale
+					.getDefault());
+			logger.error(message);
+			populateError(caaersServiceResponse, "WS_PMS_015", message);
+			return null;
+		}
+		
+		try {
+			Study study = fetchStudy(studyIdentifier);
+			if(study == null) {
+				String message = messageSource.getMessage("WS_PMS_002", new String[] { studyIdentifier.getValue() }, "", Locale
+						.getDefault());
+				logger.error(message);
+				populateError(caaersServiceResponse, "WS_PMS_002", message);	
+				return dbParticipant;
+			}
+			
+			ParticipantQuery pq = new ParticipantQuery();
+			pq.joinStudy();
+			pq.filterByStudySubjectIdentifier(studySubjectIdentifier, "=");
+			pq.filterByStudyId(study.getId(), "=");
+			
+			List<Participant> dbParticipants = participantDao.searchParticipant(pq);			
+			if (dbParticipants != null && dbParticipants.size() == 1) {
+				logger.info("Participant registered to this study in caAERS");
+				dbParticipant = dbParticipants.get(0);
+			} else {
+				String message = messageSource.getMessage("WS_PMS_003", new String[] { studySubjectIdentifier, studyIdentifier.getValue() }, "", Locale
+						.getDefault());
+				logger.error(message);
+				populateError(caaersServiceResponse, "WS_PMS_003", message);				
+			}
+			
+		} catch (Exception e) {
+			String message = messageSource.getMessage("WS_PMS_016", new String[] { e.getMessage() }, "", Locale
+					.getDefault());
+			logger.error("Error retrieving participant", e);
+			populateError(caaersServiceResponse, "WS_PMS_016", message);
+			dbParticipant = null;
+		}
+		return dbParticipant;
+	}
+	
+	private void populateError(CaaersServiceResponse caaersServiceResponse, String errorCode, String message) {
+		Helper.populateError(caaersServiceResponse, errorCode, message);
+		caaersServiceResponse.getServiceResponse().setMessage(message);
+	}
+	
+	private Study fetchStudy(Identifier identifier) {
 		Study dbStudy = null;
 		dbStudy = studyDao.getByIdentifier(identifier);
-			if(dbStudy != null){
-				return dbStudy;
-			}
-			studyDao.evict(dbStudy);
+		if(dbStudy != null){
+			return dbStudy;
+		}
+		studyDao.evict(dbStudy);
 		return dbStudy;
 	}
+	
 	public ParticipantDao getParticipantDao() {
 		return participantDao;
 	}
@@ -446,13 +556,21 @@ public class ParticipantServiceImpl extends AbstractImportService implements Mes
 		this.participantSynchronizer = participantSynchronizer;
 	}
 	
-	public void setDomainObjectValidator(DomainObjectValidator domainObjectValidator) {
+	/*public void setDomainObjectValidator(DomainObjectValidator domainObjectValidator) {
 		this.domainObjectValidator = domainObjectValidator;
-	}
-
+	}*/
+	
 	public void setMessageSource(MessageSource messageSource) {
 		this.messageSource = messageSource;
 	}
+	public Validator getValidator() {
+		return validator;
+	}
+
+	public void setValidator(Validator validator) {
+		this.validator = validator;
+	}
+
 	public void setStudyDao(StudyDao studyDao) {
 		this.studyDao = studyDao;
 	}
@@ -463,4 +581,8 @@ public class ParticipantServiceImpl extends AbstractImportService implements Mes
     public void setEventFactory(EventFactory eventFactory) {
         this.eventFactory = eventFactory;
     }
+
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.applicationContext = applicationContext;
+	}
 }

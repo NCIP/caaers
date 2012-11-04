@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.validation.AbstractConstraintValidator;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 
 /**
@@ -41,7 +42,8 @@ public class UniqueNciIdentifierForOrganizationValidator extends AbstractConstra
         return message;
     }
 
-    @Required
+    @Autowired
+	@Required
     public void setOrganizationDao(OrganizationDao organizationDao) {
         this.organizationDao = organizationDao;
     }
@@ -50,6 +52,7 @@ public class UniqueNciIdentifierForOrganizationValidator extends AbstractConstra
 		return organizationRepository;
 	}
 
+	@Autowired
 	@Required
 	public void setOrganizationRepository(
 			OrganizationRepository organizationRepository) {
