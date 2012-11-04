@@ -29,6 +29,7 @@ import gov.nih.nci.cabig.caaers.utils.DurationUtils;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -134,6 +135,14 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 
 
     public void save(boolean incrementAeTermVersion){
+    	Set<AdverseEvent> allAEs = new HashSet<AdverseEvent>();
+    	//create a set of all AEs in all suggested reports
+    	if(getEvaluationResult() != null) {
+    		Map<Integer, List<AdverseEvent>> allAeMap = getEvaluationResult().getAllAeMap();
+    		for (List<AdverseEvent> listAes : allAeMap.values()) {
+				allAEs.addAll(listAes);
+			}
+    	}
         if(this.getAdverseEventReportingPeriod() != null){
 			//initialize the graded date.
 			for(AdverseEvent ae : adverseEventReportingPeriod.getAdverseEvents()){
@@ -147,6 +156,15 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
                     ae.getAdverseEventTerm().setVersion(version);
 
                 }
+                
+                //match the ae in the reporting period to the one in the evaluated AE results
+                //and copy over the requires reporting flag status
+                for (AdverseEvent adverseEvent : allAEs) {
+					if(ae.getId().equals(adverseEvent.getId())) {
+						ae.setRequiresReporting(adverseEvent.getRequiresReporting());
+						break;
+					}
+				}
 			}
 
             // ToDo - delegate to gov.nih.nci.cabig.caaers.domain.repository.AdverseEventReportingPeriodRepository
