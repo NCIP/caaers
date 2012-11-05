@@ -7,7 +7,7 @@
 <%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui"%>
 
 <c:set var="hasOtherMeddra" value="${not empty command.study.otherMeddra}" />
-<c:set var="indexCorrection" value="${ae.adverseEventTerm.otherRequired or hasOtherMeddra ? 1  : 0}" />
+<c:set var="indexCorrection" value="${ae.adverseEventTerm.otherRequired ? 1  : 0}" />
 <c:set var="mainGroup">main${index}</c:set>
 <c:set var="title_term">${ae.adverseEventTerm.medDRA ? ae.adverseEventTerm.term.meddraTerm : ae.adverseEventTerm.term.fullName}</c:set>
 <c:set var="title_otherMedDRA_term">${ae.lowLevelTerm.meddraTerm}</c:set>
