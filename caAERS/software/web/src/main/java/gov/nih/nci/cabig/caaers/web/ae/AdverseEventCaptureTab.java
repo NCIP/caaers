@@ -262,6 +262,10 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         
         short i = 0;
         for (AdverseEvent ae : command.getAdverseEventReportingPeriod().getAdverseEvents()) {
+            if(ae.isRetired()){
+                i++;
+                continue;
+            }
             if(isFieldRequired(ae, "adverseEvents[].adverseEventCtcTerm.term")){
                 if(ae.getAdverseEventTerm() == null || ae.getAdverseEventTerm().getTerm() == null){
                     if(ctcTerminology){
