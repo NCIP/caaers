@@ -140,17 +140,17 @@ public class AdverseEventReconciliationController extends AutomaticSaveAjaxableF
             //mark delete external Aes
             List<String> externalIds = command.getRejectedExternalAeExternalIds();
             if(!externalIds.isEmpty()){
-                externalAdverseEventDao.updateStatus(ExternalAEReviewStatus.PENDING, ExternalAEReviewStatus.REJECTED, externalIds);
+                externalAdverseEventDao.updateStatus(ExternalAEReviewStatus.PENDING, ExternalAEReviewStatus.REJECTED, externalIds,command.getReportingPeriod().getId());
             }
             //mark the incorrect - error items
             List<String> errorIds = command.getIncorrectExternalAeExternalIds();
             if(!errorIds.isEmpty()){
-                externalAdverseEventDao.updateStatus(ExternalAEReviewStatus.PENDING, ExternalAEReviewStatus.ERROR, errorIds);
+                externalAdverseEventDao.updateStatus(ExternalAEReviewStatus.PENDING, ExternalAEReviewStatus.ERROR, errorIds,command.getReportingPeriod().getId());
             }
             //mark reviewed - external Aes
             List<String> reviewedExternalIds = command.getAllReviewedExternalAeExternalIds();
             if(!reviewedExternalIds.isEmpty()){
-                externalAdverseEventDao.updateStatus(ExternalAEReviewStatus.PENDING, ExternalAEReviewStatus.REVIEWED, reviewedExternalIds);
+                externalAdverseEventDao.updateStatus(ExternalAEReviewStatus.PENDING, ExternalAEReviewStatus.REVIEWED, reviewedExternalIds,command.getReportingPeriod().getId());
             }
             
             //delete caaers-Aes

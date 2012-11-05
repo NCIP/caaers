@@ -37,12 +37,13 @@ public class ExternalAdverseEventDao extends CaaersDao<ExternalAdverseEvent> {
     }
     
     @Transactional(readOnly = false)
-    public void updateStatus(ExternalAEReviewStatus oldStatus,ExternalAEReviewStatus newStatus, List<String> externalIds) {
+    public void updateStatus(ExternalAEReviewStatus oldStatus,ExternalAEReviewStatus newStatus, List<String> externalIds, Integer domainReportingPeriodId) {
     	UpdatedExternalAdverseEventsStatusQuery updateQuery = new UpdatedExternalAdverseEventsStatusQuery(UpdatedExternalAdverseEventsStatusQuery.UPDATE_AE_STATUS_HQL);
 
     	Query query = getHibernateTemplate().getSessionFactory().getCurrentSession().createQuery(updateQuery.getQueryString());
         query.setParameter("newStatus", newStatus);
         query.setParameter("oldStatus", oldStatus);
+        query.setParameter("domainReportingPeriodId", domainReportingPeriodId);
         query.setParameterList("externalIds", externalIds);
        	query.executeUpdate();
     }

@@ -322,7 +322,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 			// still in pending to ignored.
 			List<String> externalIds = externalAdverseEventReportingPeriod.getExternalAdverseEventIds();
 			if(!externalIds.isEmpty()){
-				externalAdverseEventDao.updateStatus(ExternalAEReviewStatus.PENDING, ExternalAEReviewStatus.IGNORED, externalIds);
+				externalAdverseEventDao.updateStatus(ExternalAEReviewStatus.PENDING, ExternalAEReviewStatus.IGNORED, externalIds,adverseEventReportingPeriod.getId());
 			}
 			
 			// associate externalAdverseEventReportingPeriod to the domain reporting period

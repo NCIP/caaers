@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.dao;
 import gov.nih.nci.cabig.caaers.CaaersDbNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.domain.ExternalAEReviewStatus;
 import gov.nih.nci.cabig.caaers.domain.ExternalAdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.ExternalAdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 
 import java.util.ArrayList;
@@ -15,11 +16,13 @@ import java.util.List;
 public class ExternalAdverseEventDaoTest extends CaaersDbNoSecurityTestCase {
 	
 	private ExternalAdverseEventDao dao;
+	private ExternalAdverseEventReportingPeriodDao externalAdverseEventReportingPeriodDao;
 	
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		dao = (ExternalAdverseEventDao) getDeployedApplicationContext().getBean("externalAdverseEventDao");
+		externalAdverseEventReportingPeriodDao = (ExternalAdverseEventReportingPeriodDao) getDeployedApplicationContext().getBean("externalAdverseEventReportingPeriodDao");
 	}
 
     public void testGetById() throws Exception{
@@ -39,7 +42,7 @@ public class ExternalAdverseEventDaoTest extends CaaersDbNoSecurityTestCase {
     	List<String> externalIds = new ArrayList<String>();
     	externalIds.add(externalAdverseEvent.getExternalId());
     	
-    	dao.updateStatus( ExternalAEReviewStatus.PENDING, ExternalAEReviewStatus.IGNORED,externalIds);
+    	dao.updateStatus( ExternalAEReviewStatus.PENDING, ExternalAEReviewStatus.IGNORED,externalIds, -1000);
     	interruptSession();
     	ExternalAdverseEvent updatedExternalAdverseEvent = dao.getById(-1000);
     	assertEquals(ExternalAEReviewStatus.IGNORED,updatedExternalAdverseEvent.getStatus());
@@ -65,7 +68,8 @@ public class ExternalAdverseEventDaoTest extends CaaersDbNoSecurityTestCase {
     	externalAdverseEvent2.setVerbatim(verbatim);
     	externalAdverseEvent2.setGrade(Grade.NORMAL);
     	externalAdverseEvent2.setStatus(ExternalAEReviewStatus.REJECTED);
-    	
+    	ExternalAdverseEventReportingPeriod externalAdverseEventReportingPeriod = externalAdverseEventReportingPeriodDao.getById(-1000);
+    	externalAdverseEvent2.setExternalAdverseEventReportingPeriod(externalAdverseEventReportingPeriod);
     	dao.save(externalAdverseEvent2);
     	
     	
@@ -75,7 +79,7 @@ public class ExternalAdverseEventDaoTest extends CaaersDbNoSecurityTestCase {
     	externalIds.add(externalAdverseEvent2.getExternalId());
     	Integer id2 = externalAdverseEvent2.getId();
     	
-    	dao.updateStatus(ExternalAEReviewStatus.PENDING, ExternalAEReviewStatus.IGNORED, externalIds);
+    	dao.updateStatus(ExternalAEReviewStatus.PENDING, ExternalAEReviewStatus.IGNORED, externalIds, -1000);
     	interruptSession();
     	ExternalAdverseEvent updatedExternalAdverseEvent1 = dao.getById(-1000);
     	ExternalAdverseEvent updatedExternalAdverseEvent2 = dao.getById(id2);
