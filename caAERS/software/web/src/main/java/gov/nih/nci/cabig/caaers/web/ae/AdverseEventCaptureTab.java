@@ -76,17 +76,17 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
                 
                 boolean unRetired = !ae.isRetired();
                 
-                //other MedDRA
-        		InputField otherMeddraField = (ae.getSolicited()) ? InputFieldFactory.createLabelField("lowLevelTerm.meddraTerm", "Other (MedDRA)", false & unRetired) :
-        															InputFieldFactory.createAutocompleterField("lowLevelTerm", "Other (MedDRA)", true & unRetired);
-               
         		//only add otherMedDRA on non MedDRA and otherRequired=true
                 if(ae.getAdverseEventTerm().isOtherRequired()){
                     if(study.getOtherMeddra() != null){
+                        //other MedDRA
+                        InputField otherMeddraField = (ae.getSolicited()) ? InputFieldFactory.createLabelField("lowLevelTerm.meddraTerm", "Other (MedDRA)", false & unRetired) :
+                                InputFieldFactory.createAutocompleterField("lowLevelTerm", "Other (MedDRA)", true & unRetired);
+
                         mainFieldFactory.addField(otherMeddraField);
                     } else {
                         //other Specify
-                        InputField otherSpecifyField =  InputFieldFactory.createTextField("otherSpecify", "Other (specify)", "aeReport.adverseEvents.otherSpecify", false);
+                        InputField otherSpecifyField =  InputFieldFactory.createTextField("otherSpecify", "Other (specify)", "aeReport.adverseEvents.otherSpecify", true);
                         mainFieldFactory.addField(otherSpecifyField);
                     }
                 }

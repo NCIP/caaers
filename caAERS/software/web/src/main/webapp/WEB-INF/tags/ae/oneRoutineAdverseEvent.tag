@@ -28,7 +28,7 @@
 
 <c:set var="title_term">${adverseEvent.adverseEventTerm.medDRA ? adverseEvent.adverseEventTerm.term.meddraTerm : adverseEvent.adverseEventTerm.term.fullName}</c:set>
 <c:set var="mainGroup">main${index}</c:set>
-<c:set var="indexCorrection" value="${adverseEvent.adverseEventTerm.otherRequired? 1  : 0}" />
+<c:set var="indexCorrection" value="${adverseEvent.adverseEventTerm.otherRequired or hasOtherMeddra ? 1  : 0}" />
 <c:set var="title_otherMedDRA_term">${adverseEvent.lowLevelTerm.meddraTerm}</c:set>
 <c:set var="title_grade">${adverseEvent.grade.code}</c:set>
 
@@ -132,7 +132,7 @@
 
         <div id="GRADES_AND_MEDDRA_${index}">
         <%-- Other MedDRA --%>
-        <c:if test="${indexCorrection gt 0 and not empty command.adverseEventReportingPeriod.study.otherMeddra}">
+        <c:if test="${indexCorrection gt 0}">
 
             <c:if test="${command.study.verbatimFirst}">
                 <c:set var="_verbatimValueFrom" value="'${adverseEvent.detailsForOther}'" />
@@ -142,9 +142,10 @@
             </c:if>
 
             <ui:row path="${fieldGroups[mainGroup].fields[0].propertyName}">
-                <jsp:attribute name="label"><ui:label path="${fieldGroups[mainGroup].fields[0].propertyName}" text="${fieldGroups[mainGroup].fields[0].displayName}"/></jsp:attribute>
+                <jsp:attribute name="label"><ui:label path="${fieldGroups[mainGroup].fields[0].propertyName}" text="${fieldGroups[mainGroup].fields[0].displayName}" required="true"/></jsp:attribute>
                 <jsp:attribute name="value">
-                    <ui:autocompleter path="${fieldGroups[mainGroup].fields[0].propertyName}" initialDisplayValue="${adverseEvent.lowLevelTerm.meddraTerm}">
+                    <c:if test="${hasOtherMeddra}">
+                        <ui:autocompleter path="${fieldGroups[mainGroup].fields[0].propertyName}" initialDisplayValue="${adverseEvent.lowLevelTerm.meddraTerm}" required="true">
                         <jsp:attribute name="populatorJS">
                             function(autocompleter, text) {
                                 var terminologyVersionId = ${empty command.adverseEventReportingPeriod.study.otherMeddra.id ? 0 :command.adverseEventReportingPeriod.study.otherMeddra.id};
@@ -167,22 +168,17 @@
 								}
 							}
 						</jsp:attribute>
-                    </ui:autocompleter>
+                        </ui:autocompleter>
+                    </c:if>
+                    <c:if test="${not hasOtherMeddra}">
+                        <ui:text path="${fieldGroups[mainGroup].fields[0].propertyName}" required="true"/>
+                    </c:if>
                 </jsp:attribute>
             </ui:row>
 
             <%--<tags:renderRow field="${fieldGroups[mainGroup].fields[0]}"/>--%>
         </c:if>
-        
-        <c:if test="${adverseEvent.adverseEventTerm.otherRequired and empty command.adverseEventReportingPeriod.study.otherMeddra}">
-                  <%--other specify text--%>
-                <ui:row path="${fieldGroups[mainGroup].fields[0].propertyName}">
-                    <jsp:attribute name="label"><ui:label path="${fieldGroups[mainGroup].fields[0].propertyName}" text="${fieldGroups[mainGroup].fields[0].displayName}"/></jsp:attribute>
-                    <jsp:attribute name="value">
-                       <ui:text path="${fieldGroups[mainGroup].fields[0].propertyName}" readonly="false" />
-                    </jsp:attribute>
-                </ui:row>
-         	</c:if>
+
         
 		<%-- Grade --%>
 		<tags:renderRow field="${fieldGroups[mainGroup].fields[1 + indexCorrection]}"/>
