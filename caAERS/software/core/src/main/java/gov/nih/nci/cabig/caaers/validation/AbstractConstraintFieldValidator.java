@@ -69,7 +69,6 @@ public abstract class AbstractConstraintFieldValidator<A extends Annotation, T> 
 	}
 	
 	@Autowired
-	@Required
 	public void setCaaersFieldConfigurationManager(CaaersFieldConfigurationManager caaersFieldConfigurationManager) {
 		this.caaersFieldConfigurationManager = caaersFieldConfigurationManager;
 	}
