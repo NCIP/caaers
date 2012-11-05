@@ -143,8 +143,8 @@
                 
                 if (isMeddra) {
                 } else {
-                    meddraRowInp.value = ""
-                    meddra.value = ""
+                    if(meddraRowInp) meddraRowInp.value = ""
+                    if(meddra) meddra.value = ""
                 }
             	
             },
@@ -158,8 +158,8 @@
             	if (this.initialCtcTerm != null ) {
             		var meddra = ctcTerm.lowLevelTermField
             		 if (meddra.length == 0) {
-            		 	meddraRowInp.value=""
-                    	meddra.value=""
+            		 	if(meddraRowInp)meddraRowInp.value=""
+                    	if(meddra) meddra.value=""
                 	 } else {
                 	 	 this.updateMeddraOrOther();
                     }
@@ -189,11 +189,14 @@
                     if ($(this._ctcDetailsId()).visible()) {
                         AE.slideAndShow(this._detailsForOtherLltRowId())
                     } else {
-                        $(this._detailsForOtherLltRowId()).show()
+                        if($(this._detailsForOtherLltRowId())) {
+                            $(this._detailsForOtherLltRowId()).show()
+                        }
+
                     }
                 } else {
                     AE.slideAndHide(this._detailsForOtherLltRowId())
-                    $(this._detailsForOtherLltId()).value = ""
+                    if($(this._detailsForOtherLltId())) $(this._detailsForOtherLltId()).value = ""
                 }
 
                 this.updateGrades(newCtcTerm.id)
