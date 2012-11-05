@@ -132,7 +132,7 @@
 
         <div id="GRADES_AND_MEDDRA_${index}">
         <%-- Other MedDRA --%>
-        <c:if test="${indexCorrection gt 0}">
+        <c:if test="${indexCorrection gt 0 and not empty command.adverseEventReportingPeriod.study.otherMeddra}">
 
             <c:if test="${command.study.verbatimFirst}">
                 <c:set var="_verbatimValueFrom" value="'${adverseEvent.detailsForOther}'" />
@@ -173,7 +173,16 @@
 
             <%--<tags:renderRow field="${fieldGroups[mainGroup].fields[0]}"/>--%>
         </c:if>
-
+        
+        <c:if test="${adverseEvent.adverseEventTerm.otherRequired and empty command.adverseEventReportingPeriod.study.otherMeddra}">
+                  <%--other specify text--%>
+                <ui:row path="${fieldGroups[mainGroup].fields[0].propertyName}">
+                    <jsp:attribute name="label"><ui:label path="${fieldGroups[mainGroup].fields[0].propertyName}" text="${fieldGroups[mainGroup].fields[0].displayName}"/></jsp:attribute>
+                    <jsp:attribute name="value">
+                       <ui:text path="${fieldGroups[mainGroup].fields[0].propertyName}" readonly="false" />
+                    </jsp:attribute>
+                </ui:row>
+         	</c:if>
         
 		<%-- Grade --%>
 		<tags:renderRow field="${fieldGroups[mainGroup].fields[1 + indexCorrection]}"/>
