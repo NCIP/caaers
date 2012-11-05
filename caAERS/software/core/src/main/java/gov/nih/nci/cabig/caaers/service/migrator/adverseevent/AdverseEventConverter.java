@@ -152,7 +152,10 @@ public class AdverseEventConverter {
 				howSeriousSb.append(oct.getShortName()).append(",");
 			}
 			String howSerious = howSeriousSb.toString();
+			
 			if(StringUtils.isNotEmpty(howSerious)) {
+				//remove the last char ','
+				howSerious = howSerious.substring(0, howSerious.length()-1);
 				adverseEvent.setHowSerious(howSerious);
 			}
 				
