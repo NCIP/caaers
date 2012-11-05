@@ -70,6 +70,9 @@ public class Fixtures {
         Participant p = new Participant();
         p.setFirstName(first);
         p.setLastName(last);
+        p.setEthnicity("White");
+        p.setGender("Male");
+        p.setRace("White");
         p.getIdentifiersLazy().add(new SystemAssignedIdentifier());
         p.getIdentifiersLazy().get(0).setValue("x");
         p.getIdentifiersLazy().get(0).setPrimaryIndicator(true);

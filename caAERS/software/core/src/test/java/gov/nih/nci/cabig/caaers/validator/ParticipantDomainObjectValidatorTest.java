@@ -22,11 +22,10 @@ public class ParticipantDomainObjectValidatorTest extends CaaersTestCase{
 	protected void setUp() throws Exception {
 		super.setUp();
 		participant = Fixtures.createParticipant("John", "Doe");
+		
         participant.getIdentifiersLazy().remove(0);
 		errors = new ArrayList<String>();
 		domainObjectValidator = (DomainObjectValidator)getDeployedApplicationContext().getBean("domainObjectValidator");
-		System.out.println("uniqueIdentifierForStudyValidator = " + getDeployedApplicationContext().getBean(UniqueIdentifierForStudyValidator.class));
-		System.out.println("UniqueObjectInCollectionValidator = " + getDeployedApplicationContext().getBean(UniqueObjectInCollectionValidator.class));
 	}
 	
 	public void testDuplicateOrganizationAssignedIdentifiers(){
