@@ -247,7 +247,8 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
         assertTrue(errors.hasErrors());
         assertEquals(1, errors.getErrorCount());
         assertTrue(errors.hasFieldErrors("adverseEvents[1].eventApproximateTime.hourString"));
-        assertTrue(errors.getFieldErrors().get(0).getCode().equals("CAE_017"));
+        System.out.println(errors);
+        assertTrue(errors.getFieldErrors().get(0).getCode().equals("CAE_019"));
     }
 
 
