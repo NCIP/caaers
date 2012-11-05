@@ -31,9 +31,9 @@
 <chrome:division title="${title_term} ${verbatim} ${title_lowlevel}, Grade: ${title_grade}" id="ae-section-${index}"
 	cssClass="ae-section aeID-${adverseEvent.adverseEventTerm.term.id}" style="${style}" collapsed="${!empties[v]}" collapsable="true">
 	<jsp:attribute name="titleFragment">&nbsp;<span id="title-frag-${index}" class="primary-indicator">${ index gt 0 ? '' : '[Primary]' }</span> </jsp:attribute>
-	<jsp:body>	
+	<jsp:body>
     <div id="${v}.ctc-details" class="ctc-details">
-  
+
         <div class="row" style="display:none;">
             <div class="label"><label for="${v}.ctc-category">CTC category</label></div>
             <div class="value">
@@ -49,7 +49,7 @@
 
         <tags:renderRow field="${fieldGroups[ctcTermGroup].fields[0]}" style="display:none;" extraParams="<a id=\"showAllTerm${index}\" href=\"javascript:showAjaxTable(this,$F('${v}.ctc-category'),'table${index}','table${index}-outer')\">Show All</a>" />
 		</div>
-		
+
 		<!--  Other MedDRA or Other specify text-->
         <div style="display:${adverseEvent.adverseEventTerm.otherRequired ? 'block' : 'none'}">
             <c:if test="${not empty command.adverseEventReportingPeriod.study.otherMeddra}">
@@ -57,7 +57,8 @@
                 <ui:row path="${fieldGroups[ctcOtherGroup].fields[0].propertyName}">
                     <jsp:attribute name="label"><ui:label path="${fieldGroups[ctcOtherGroup].fields[0].propertyName}" text="${fieldGroups[ctcOtherGroup].fields[0].displayName}"/></jsp:attribute>
                     <jsp:attribute name="value">
-                        <ui:text path="${fieldGroups[ctcOtherGroup].fields[0].propertyName}.fullName" readonly="true"/>
+                        <c:out value="${adverseEvent.lowLevelTerm.fullName}" />
+                        <%--<ui:text path="${fieldGroups[ctcOtherGroup].fields[0].propertyName}" readonly="true"/>--%>
                     </jsp:attribute>
                 </ui:row>
             </c:if>
@@ -72,14 +73,8 @@
             </c:if>
 
         </div>
-<%--
-        <tags:renderRow field="${fieldGroups[ctcOtherGroup].fields[0]}" style="display: none">
-        <jsp:attribute name="label">
-            <label>${fieldGroups[ctcOtherGroup].fields[0].displayName}</label>
-        </jsp:attribute>
-   		</tags:renderRow>
---%>
-  
+
+
     <div id="main-fields-${index}" class="main-fields">
 		<%-- Verbatim --%>
 		<tags:renderRow field="${fieldGroups[mainGroup].fields[0]}"/>
@@ -107,7 +102,7 @@
 				<tags:renderRow field="${fieldGroups[mainGroup].fields[9]}"/>
             </div>
 		</div>
-		  
+
 		<%-- Outcomes --%>
 		<ae:oneOutcome index="${index}" />
     </div>
