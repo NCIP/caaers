@@ -90,7 +90,9 @@ function updateOtherInterventionDescription(selbox, dSpanId){
     var v = selbox.getValue();
     if(v){
         createAE.retrieveOtherInterventionDescription(v, function(ajaxOutput){
-            $(dSpanId).innerHTML = ajaxOutput.htmlContent;
+            var v = '';
+            if(ajaxOutput.htmlContent != 'null') v = ajaxOutput.htmlContent;
+            $(dSpanId).innerHTML = v;
         });
     }
 }
