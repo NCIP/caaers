@@ -1,0 +1,8 @@
+/* IE 7 CSS ONLY */
+
+/*
+    This zoom setting solves the case of the flickering buttons on IE7. Can also be used for IE 8.
+*/
+* {
+    zoom: 1;
+}
