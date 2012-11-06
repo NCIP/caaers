@@ -26,8 +26,9 @@
         <jsp:attribute name="label">
             <caaers:message code="LBL_aeReport.surgeryInterventions.studySurgery.description" text="Study surgery description" />
         </jsp:attribute>
-        <jsp:attribute name="value"><span id="aeReport.surgeryInterventions[${index}].studySurgery.description_content">
-           ${surgery.studySurgery.description}
+        <jsp:attribute name="value">
+            <span id="aeReport.surgeryInterventions[${index}].studySurgery.description_content">
+                <c:out value="${empty surgery.studySurgery.description ? '' : surgery.studySurgery.description}" />
            </span>
         </jsp:attribute>
     </ui:row>
