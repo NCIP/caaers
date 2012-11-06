@@ -136,7 +136,7 @@ public class ReporterTab extends AeTab {
         InputField firstNameField = InputFieldFactory.createTextField(base + "firstName", "First name", true);
         InputField middleNameField = InputFieldFactory.createTextField(base + "middleName", "Middle name", false);
         InputField lastNameField = InputFieldFactory.createTextField(base + "lastName", "Last name", true);
-        InputField emailField = createContactField(base, ReportPerson.EMAIL, "E-mail address", true);
+        InputField emailField = createContactField(base, ReportPerson.EMAIL, "E-mail address", false);
         InputFieldAttributes.setSize(emailField, 50);
 
         InputField phoneField = createContactField(base, ReportPerson.PHONE, false);
