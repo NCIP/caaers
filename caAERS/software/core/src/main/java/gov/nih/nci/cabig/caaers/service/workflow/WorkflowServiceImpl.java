@@ -289,18 +289,24 @@ public class WorkflowServiceImpl implements WorkflowService {
 			String expediteReportUrl = " -- ";
 			String reportingPeriodUrl = "--" ;
 			Map variablesMap = context.getContextInstance().getVariables();
-			
+
+            String studyName = "";
+            String subjectName = "";
 			if(variablesMap != null){
 				expediteReportUrl = configuration.get(Configuration.CAAERS_BASE_URL) + URL_EXPEDITED_REPORT + String.valueOf(variablesMap.get(VAR_EXPEDITED_REPORT_ID))
 											+ "&report=" + String.valueOf(variablesMap.get(WorkflowService.VAR_REPORT_ID));
 				reportingPeriodUrl = configuration.get(Configuration.CAAERS_BASE_URL) + URL_REPORTING_PERIOD + String.valueOf(variablesMap.get(VAR_REPORTING_PERIOD_ID));
-					
+                studyName = String.valueOf(variablesMap.get(WorkflowService.VAR_WF_STUDY_NAME));
+                subjectName = String.valueOf(variablesMap.get(WorkflowService.VAR_WF_SUBJECT_NAME));
+
 			}
 			
 			Map<Object, Object> contextVariables = new HashMap<Object, Object>();
 			contextVariables.put(REPLACEMENT_EXPEDITED_REPORT_LINK, expediteReportUrl);
 			contextVariables.put(REPLACEMENT_REPORTING_PERIOD_LINK, reportingPeriodUrl);
-			
+			contextVariables.put(REPLACEMENT_STUDY, studyName);
+			contextVariables.put(REPLACEMENT_SUBJECT, subjectName);
+
 			String taskDescription = generateTaskDescription(createTaskCallback.getProcessDefinitionName(), createTaskCallback.getTaskName(), contextVariables);
 			createTaskCallback.setTaskDescription(taskDescription);
 			

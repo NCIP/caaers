@@ -37,10 +37,15 @@ public interface WorkflowService{
 	String VAR_EXPEDITED_REPORT_ID = "var_expedited_report_id";
 	String VAR_REPORT_ID = "var_report_id";
 	String VAR_WF_TYPE = "var_wf_type";
-	
+	String VAR_WF_STUDY_NAME = "var_wf_studyName";
+	String VAR_WF_SUBJECT_NAME = "var_wf_subjectName";
+
 	//Replacement key for emails
 	String REPLACEMENT_REPORTING_PERIOD_LINK = "REPORTING_PERIOD_LINK";
 	String REPLACEMENT_EXPEDITED_REPORT_LINK = "EXPEDITED_REPORT_LINK";
+	String REPLACEMENT_STUDY = "STUDY";
+	String REPLACEMENT_SUBJECT = "SUBJECT";
+
 	
 	String URL_REPORTING_PERIOD = "/pages/ae/reviewResolver?adverseEventReportingPeriod=";
 	String URL_EXPEDITED_REPORT = "/pages/ae/reviewResolver?aeReport=";
