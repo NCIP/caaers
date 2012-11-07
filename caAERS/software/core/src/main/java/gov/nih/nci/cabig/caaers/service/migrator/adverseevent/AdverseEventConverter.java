@@ -135,7 +135,12 @@ public class AdverseEventConverter {
 		
 		try{
 			// populate verbatim
-			adverseEvent.setVerbatim(adverseEventDto.getVerbatim());
+			String verbatim = adverseEventDto.getVerbatim();
+			if(verbatim != null){
+				// Remove the spaces which is causing CAAERS-6077				 
+				verbatim = verbatim.trim(); 
+			}
+			adverseEvent.setVerbatim(verbatim);
 			
 			// populate attribution
 			if (adverseEventDto.getAttributionSummary() != null) {
