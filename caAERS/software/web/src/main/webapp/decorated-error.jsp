@@ -59,15 +59,14 @@
 
         <script type="text/javascript" language="JavaScript">
             function PanelCombo(element) {
-                panelDiv = $(element + "-interior");
-                
-                if (panelDiv.style.display == 'none') {
-                    new Effect.OpenUp(panelDiv, arguments[1] || {});
+                panelDiv = $(element + "-interior");                
+                 if (panelDiv.style.display == 'none') {
 					$('errorlink').innerHTML = "Hide error code";
+					 panelDiv.toggle();
                 } else {
-                    new Effect.CloseDown(panelDiv, arguments[1] || {});
 					$('errorlink').innerHTML = "View error code";
-                }
+					 panelDiv.toggle();
+                }           
             }
             
             Effect.OpenUp = function(element) {
