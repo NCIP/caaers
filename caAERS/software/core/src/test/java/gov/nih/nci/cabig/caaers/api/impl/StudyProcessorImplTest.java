@@ -52,10 +52,10 @@ public class StudyProcessorImplTest extends DaoTestCase {
         assertNotNull(ss.getStudy().get(0));
     }
 
-    public void testUpdateStudyWithoutChanges() {
-        CaaersServiceResponse csr =  studyProcessor.updateStudy(ss);
-        assertEquals("0", csr.getServiceResponse().getResponsecode());
-    }
+//    public void testUpdateStudyWithoutChanges() {
+//        CaaersServiceResponse csr =  studyProcessor.updateStudy(ss);
+//        assertEquals("0", csr.getServiceResponse().getResponsecode());
+//    }
 
     public void testUpdateStudyAddExistingDevice() {
         Study s = studyDao.getStudyDesignById(-2);
