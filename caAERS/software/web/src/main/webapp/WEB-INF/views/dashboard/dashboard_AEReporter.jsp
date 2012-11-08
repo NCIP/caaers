@@ -12,7 +12,7 @@
                 <th>Study</th>
                 <th width="90px">Review Status</th>
                 <th nowrap>Notification</th>
-                <th nowrap>Comments</th>
+                <th nowrap></th>
                 <%--<th nowrap>Actions</th>--%>
             </tr>
             <c:forEach items="${taskNotifications}" var="task" varStatus="index">
@@ -23,7 +23,12 @@
                     <td valign="top"><c:out value="${task.primaryStudyIdentifier}" escapeXml="true" /></td>
                     <td valign="top"><c:out value="${task.status}" escapeXml="true" /></td>
                     <td valign="top"><c:out value="${task.task}" escapeXml="true" /></td>
-                    <td valign="top" align="center"><a style="cursor:pointer; border-bottom: none" onClick="displayPopup('reportingPeriod', ${task.reportingPeriodId});"><img src="<chrome:imageUrl name="../editComment.png" />" /></a></td>
+                    <td align="RIGHT">
+                        <img src="<c:url value="/images/orange-actions.gif" />"
+                             border="0"  id="report_${index}"
+                             onmouseover='showDashboardTaskPortletMenuOptions(this, ${task.entityId}, "${task.entityType}", "${task.aeReportId}", "${task.reportStatus.displayName}","${index}")'
+                             style="cursor: pointer;
+                             margin-right: 15px;"></td>
                     <%--<td valign="top"><select name="s101"><option value="-">Please select</select></td>--%>
                 </tr>
             </c:forEach>
@@ -37,6 +42,95 @@
 
 <script>
     var link = "<c:url value='/pages/study/edit?studyId=${study.id}' />";
+
+ // TASK PORTLET ACTIONS
+
+ 	var curWin;
+ 	function displayPopup(ety, etyId) {
+ 	    var url = "ae/listReviewComments?entity=#{entity}&entityId=#{entityId}&subview".interpolate({entity:ety, entityId:etyId});
+ 	    curWin = new Window({className:"alphacube",destroyOnClose:true,title:"",url: url, width: 950, height: 400,   recenterAuto:true});
+ 	    curWin.showCenter(true);
+ 	}
+
+ 	function displayEditLink(url) {
+ 	    window.location = url;
+ 	}
+ 	
+
+ 	function showDashboardTaskPortletMenuOptions(_element, entityId,entityType, aeReportId, aeStatus,index) {
+ 		var _el = jQuery(_element);
+ 		var html="";
+ 		if(entityType == 'report'){
+ 				
+ 			var _element = $('report_' + index);
+ 			var reportURL = '<c:url value= "/pages/ae/reviewResolver" />';
+ 			reportURL = reportURL
+ 					+ '?aeReport=' + aeReportId
+ 					+ '&report=' + entityId
+ 					+ '&viewOnly=true&src=RoutingReview';
+ 					
+ 			var _optionDetails = "";
+
+ 			
+ 			if ( aeStatus != 'COMPLETED') {
+ 				_optionDetails = '<li><a class="submitter-blue" href="#" onclick="displayEditLink('+ "'" + reportURL + "'" + ')"> <img src="<chrome:imageUrl name="../review.png" />"/>' + ' Review' +  '</a></li>';
+ 			}
+
+ 			var _comments = '<li ><a style="cursor:pointer; border-bottom: none" onClick="displayPopup('+ 
+ 			' &quot;reportingPeriod &quot;,' + entityId + ');">' + '&nbsp;' + '<img src="<chrome:imageUrl name="../editComment.png" />" /> Comment' +	'</a></li>';
+ 		 			
+ 		 	_optionDetails = _optionDetails + _comments;
+ 	
+ 			 html = "<div><ul style='font-family:tahoma;'>" + _optionDetails
+ 				+ "</ul></div>";
+ 				
+ 			  _el.menu({
+ 		    		content: html,
+ 		    		maxHeight: 180,
+ 		    		positionOpts: {
+ 		        	directionV: 'down',
+ 		        	posX: 'left',
+ 		        	posY: 'bottom',
+ 		        	offsetX: 0,
+ 		       	 	offsetY: 0
+         		},
+         		showSpeed: 300
+     		 });
+ 				
+ 		} else if (entityType == 'reportingPeriod') {
+
+ 			var reportingPeriodPageURL = '<c:url value= "/pages/ae/reviewResolver" />';
+ 			reportingPeriodPageURL = reportingPeriodPageURL
+ 					+ '?adverseEventReportingPeriod=' + entityId
+ 					+ '&src=RoutingReview';
+
+ 			var _optionDetails = '<li><a class="submitter-blue" href="#" onclick="displayEditLink('
+ 					+ "'" + reportingPeriodPageURL + "'" + ')"><img src="<chrome:imageUrl name="../review.png" />"/>' + ' Review' +  '</a></li>';
+
+			var _comments = '<li ><a style="cursor:pointer; border-bottom: none" onClick="displayPopup('+ 
+				' &quot;reportingPeriod &quot;,' + entityId + ');">' + '&nbsp;' + '<img src="<chrome:imageUrl name="../editComment.png" />" /> Comment' + '</a></li>';
+			 			
+			_optionDetails = _optionDetails + _comments;
+ 		 	
+ 					
+ 			html = "<div><ul style='font-family:tahoma;'>" + _optionDetails
+ 					+ "</ul></div>";
+ 			_el.menu({
+ 		    		content: html,
+ 		    		maxHeight: 180,
+ 		    		positionOpts: {
+ 		        	directionV: 'down',
+ 		        	posX: 'left',
+ 		        	posY: 'bottom',
+ 		        	offsetX: 0,
+ 		       	 	offsetY: 0
+         		},
+         		showSpeed: 300
+     		 });
+ 		
+ 		}
+ 		
+ 	}
 </script>
 
 <chrome:boxIPhone style="width:700px;">
@@ -339,13 +433,6 @@ jQuery(function( $ ){
 		step:2
 	});
 });
-
-var curWin;
-function displayPopup(ety, etyId) {
-    var url = "ae/listReviewComments?entity=#{entity}&entityId=#{entityId}&subview".interpolate({entity:ety, entityId:etyId});
-    curWin = new Window({className:"alphacube",destroyOnClose:true,title:"",url: url, width: 950, height: 400,   recenterAuto:true});
-    curWin.showCenter(true);
-}
 
 </script>
 

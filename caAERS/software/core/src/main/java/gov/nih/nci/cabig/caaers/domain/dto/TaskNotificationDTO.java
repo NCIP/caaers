@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain.dto;
 
-import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -39,6 +39,52 @@ public class TaskNotificationDTO implements Serializable {
     
     /** The possible actions. */
     private List<String> possibleActions;
+    
+    private Integer aeReportId;
+    
+//  could be AdverseEventReportingPeriod workflowId or Report workflowId
+    
+    public Integer getAeReportId() {
+		return aeReportId;
+	}
+
+	public void setAeReportId(Integer aeReportId) {
+		this.aeReportId = aeReportId;
+	}
+
+    // either 'report' or 'reportingPeriod'
+    
+    private String entityType;
+    
+    //  could be AdverseEventReportingPeriod Id or Report Id
+    private Integer entityId;
+    
+	public String getEntityType() {
+		return entityType;
+	}
+
+	public void setEntityType(String entityType) {
+		this.entityType = entityType;
+	}
+
+	public Integer getEntityId() {
+		return entityId;
+	}
+
+	public void setEntityId(Integer entityId) {
+		this.entityId = entityId;
+	}
+
+	public ReportStatus getReportStatus() {
+		return reportStatus;
+	}
+
+	public void setReportStatus(ReportStatus reportStatus) {
+		this.reportStatus = reportStatus;
+	}
+
+	/** The status. */
+	private ReportStatus reportStatus;
 
     /**
      * Gets the description.

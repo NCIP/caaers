@@ -601,22 +601,28 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
             TaskNotificationDTO dto = new TaskNotificationDTO();
 
             ContextInstance ci = task.getProcessInstance().getContextInstance();
-            String studyID = ci.getVariable(WorkflowService.VAR_STUDY_ID) != null ? ci.getVariable(WorkflowService.VAR_STUDY_ID).toString() : null;
             String reportingPeriodID  = ci.getVariable(WorkflowService.VAR_REPORTING_PERIOD_ID) != null ? ci.getVariable(WorkflowService.VAR_REPORTING_PERIOD_ID).toString() : null;
             String aeReportID = ci.getVariable(WorkflowService.VAR_EXPEDITED_REPORT_ID) != null ? ci.getVariable(WorkflowService.VAR_EXPEDITED_REPORT_ID).toString() : null;
-
+            String reportId = ci.getVariable(WorkflowService.VAR_REPORT_ID) != null? ci.getVariable(WorkflowService.VAR_REPORT_ID).toString() : null;
             AdverseEventReportingPeriod reportingPeriod = null;
             ExpeditedAdverseEventReport aeReport;
+            Report report = null;
             Study s;
             Participant p;
             
             if (reportingPeriodID != null) {
                 reportingPeriod = adverseEventReportingPeriodDao.getById(Integer.parseInt(reportingPeriodID));
-            } else {
-                if (aeReportID != null) {
+                dto.setEntityId(reportingPeriod.getId());
+                dto.setEntityType("reportingPeriod");
+            } else if (aeReportID != null) {
+                	dto.setAeReportId(Integer.parseInt(aeReportID));
                     aeReport = expeditedAdverseEventReportDao.getById(Integer.parseInt(aeReportID));
                     reportingPeriod = aeReport.getReportingPeriod();
-                }
+                    if(reportId == null) continue;
+            		report = reportDao.getById(Integer.parseInt(reportId));
+            		dto.setEntityType("report");
+                    dto.setEntityId(reportingPeriod.getId());
+                    dto.setReportStatus(report.getStatus());
             }
 
             if (reportingPeriod != null) {
