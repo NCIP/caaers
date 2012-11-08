@@ -215,7 +215,7 @@
 	</c:if>
 	<c:if test="${command.searchResultsDTO.resultCount gt 0}">
 		<c:if test="${command.searchCriteriaNeitherStudyNorParticipantCentric == false}">
-			<div class="row">
+			<div class="row summaryrow">
 				<div class="summarylabel">
 					${command.searchCriteriaParticipantCentric  ? 'Subject' : 'Study'}
 				</div>
@@ -237,7 +237,7 @@
 				<td witdh="100%">
 					<c:forEach items="${command.searchResultsDTO.filteredResultMap}" var="resultEntry">
 						<c:if test="${command.searchCriteriaNeitherStudyNorParticipantCentric == false}">
-							<div class="row" style="margin-top:30px; margin-bottom:0;">
+							<div class="row summaryrow" style="margin-top:30px; margin-bottom:0;">
 								<div class="summarylabel">
 									${command.searchCriteriaParticipantCentric  ? 'Study' : 'Subject'}
 								</div>
@@ -248,7 +248,7 @@
 						</c:if>
 						<c:if test="${command.searchCriteriaNeitherStudyNorParticipantCentric == true}">
 							<c:if test="${resultEntry.value.groupHeader != null and resultEntry.value.groupHeader != ''}">
-								<div class="row">
+								<div class="row summaryrow">
 									<div class="summarylabel">
 										Study
 									</div>
@@ -257,7 +257,7 @@
 									</div>
 								</div>
 							</c:if>
-							<div class="row" style="margin-top:30px; margin-bottom:0;">
+							<div class="row summaryrow" style="margin-top:30px; margin-bottom:0;">
 								<div class="summarylabel">
 									Subject
 								</div>

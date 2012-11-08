@@ -1483,3 +1483,6 @@ div.shorty {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+div.summaryrow {
+    width: 910px;
+}
