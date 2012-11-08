@@ -358,8 +358,10 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends AbstractTest
 		Map<String, Object> variables = new HashMap<String, Object>();
 		variables.put(WorkflowService.VAR_STUDY_ID, site.getStudy().getId());
 		variables.put(WorkflowService.VAR_WF_TYPE, AdverseEventReportingPeriod.class.getName());
+		variables.put(WorkflowService.VAR_WF_STUDY_NAME, reportingPeriod.getStudy().getDisplayName());
+		variables.put(WorkflowService.VAR_WF_SUBJECT_NAME, reportingPeriod.getParticipant().getFullName());
 		variables.put(WorkflowService.VAR_REPORTING_PERIOD_ID, reportingPeriod.getId());
-		
+
 		EasyMock.expect(wfService.createProcessInstance("test", variables)).andReturn(processInstance);
 	    EasyMock.expect(processInstance.getId()).andReturn(processId).anyTimes();
 	    rpDao.modifyOrSaveReviewStatusAndComments(reportingPeriod);
@@ -388,6 +390,8 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends AbstractTest
 		variables.put(WorkflowService.VAR_WF_TYPE, Report.class.getName());
 		variables.put(WorkflowService.VAR_REPORT_ID, report.getId());
 		variables.put(WorkflowService.VAR_EXPEDITED_REPORT_ID, aeReport.getId());
+        variables.put(WorkflowService.VAR_WF_STUDY_NAME, reportingPeriod.getStudy().getDisplayName());
+        variables.put(WorkflowService.VAR_WF_SUBJECT_NAME, reportingPeriod.getParticipant().getFullName());
 		
 		EasyMock.expect(wfService.createProcessInstance("test", variables)).andReturn(processInstance);
 	    EasyMock.expect(processInstance.getId()).andReturn(processId).anyTimes();
