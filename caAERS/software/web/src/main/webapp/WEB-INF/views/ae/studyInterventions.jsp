@@ -88,11 +88,10 @@ function closeAll() {
 //==================== Will get the description of other intervention ================
 function updateOtherInterventionDescription(selbox, dSpanId){
     var v = selbox.getValue();
+    $(dSpanId).innerHTML = '';
     if(v){
         createAE.retrieveOtherInterventionDescription(v, function(ajaxOutput){
-            var v = '';
-            if(ajaxOutput.htmlContent != 'null') v = ajaxOutput.htmlContent;
-            $(dSpanId).innerHTML = v;
+            if(ajaxOutput.htmlContent !=  null  ) $(dSpanId).innerHTML = ajaxOutput.htmlContent;
         });
     }
 }
