@@ -207,10 +207,14 @@ function isValidEmail(address) {
 // Check that an email address has the form something@something.something
 // This is a stricter standard than RFC 821 (?) which allows addresses like postmaster@localhost
 function isValidEmailStrict(address) {
-    if (isValidEmail(address) == false) return false;
-    var domain = address.substring(address.indexOf('@') + 1);
-    if (domain.indexOf('.') == -1) return false;
-    if (domain.indexOf('.') == 0 || domain.indexOf('.') == domain.length - 1) return false;
+
+    if(address){
+        if (isValidEmail(address) == false) return false;
+        var domain = address.substring(address.indexOf('@') + 1);
+        if (domain.indexOf('.') == -1) return false;
+        if (domain.indexOf('.') == 0 || domain.indexOf('.') == domain.length - 1) return false;
+    }
+
     return true;
 }
 
