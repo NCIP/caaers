@@ -125,12 +125,6 @@ public class ReporterTabTest extends AeTabTestCase {
         assertFieldRequiredErrorRaised("aeReport.reporter.lastName", "Last name");
     }
 
-    public void testReporterEmailAddressRequired() throws Exception {
-        command.getAeReport().getReporter().getContactMechanisms().remove(ReportPerson.EMAIL);
-        doValidate();
-        assertFieldRequiredErrorRaised("aeReport.reporter.contactMechanisms[e-mail]",
-                        "E-mail address");
-    }
 
     public void testPhysicianFirstNameRequired() throws Exception {
         command.getAeReport().getPhysician().setFirstName(null);
@@ -144,12 +138,6 @@ public class ReporterTabTest extends AeTabTestCase {
         assertFieldRequiredErrorRaised("aeReport.physician.lastName", "Last name");
     }
 
-    public void testPhysicianEmailAddressRequired() throws Exception {
-        command.getAeReport().getPhysician().getContactMechanisms().remove(ReportPerson.EMAIL);
-        doValidate();
-        assertFieldRequiredErrorRaised("aeReport.physician.contactMechanisms[e-mail]",
-                        "E-mail address");
-    }
 
     public void testValidate(){
     	command.setWorkflowEnabled(true);
