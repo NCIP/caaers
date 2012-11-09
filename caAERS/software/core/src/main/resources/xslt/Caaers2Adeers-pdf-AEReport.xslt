@@ -2123,9 +2123,97 @@
 				  			    </fo:table-row>
 			  			    </xsl:for-each>
 				</xsl:if>
+				<!-- Added Radiation -->
+                <xsl:if test="RadiationAttribution">          
+                            <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+                                <fo:table-cell>
+                                    <fo:block xsl:use-attribute-sets="normal" > 
+                                        Radiation 
+                                    </fo:block>                                 
+                                </fo:table-cell>
+                                
+                                <fo:table-cell>
+                                    <fo:block xsl:use-attribute-sets="normal" > 
+                                    </fo:block>                                 
+                                </fo:table-cell>
+                            </fo:table-row>
 
+                            <xsl:for-each select="RadiationAttribution"> 
+                                <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+                                    <fo:table-cell>
+                                        <fo:block xsl:use-attribute-sets="normal" > 
+                                            <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160;   </xsl:text><xsl:value-of select="RadiationIntervention/OtherIntervention/name"/>
+                                        </fo:block>                                 
+                                    </fo:table-cell>
+                                    <fo:table-cell>
+                                        <xsl:variable name="attributionVar5" select="attribution"/>
+                                        <fo:block xsl:use-attribute-sets="normal" > 
+                                            <xsl:value-of select="substring($attributionVar5,4,20)"/>
+                                        </fo:block>                                 
+                                    </fo:table-cell>
+                                </fo:table-row>
+                            </xsl:for-each>
+                </xsl:if>
+                <!-- Added Device -->
+                <xsl:if test="DeviceAttribution">          
+                            <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+                                <fo:table-cell>
+                                    <fo:block xsl:use-attribute-sets="normal" > 
+                                        Medical devices 
+                                    </fo:block>                                 
+                                </fo:table-cell>
+                                <fo:table-cell>
+                                    <fo:block xsl:use-attribute-sets="normal" > 
+                                    </fo:block>                                 
+                                </fo:table-cell>
+                            </fo:table-row>
 
-			  			    
+                            <xsl:for-each select="DeviceAttribution"> 
+                                <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+                                    <fo:table-cell>
+                                        <fo:block xsl:use-attribute-sets="normal" > 
+                                            <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160;   </xsl:text><xsl:value-of select="MedicalDevice/StudyDevice/Device/commonName"/>
+                                        </fo:block>                                 
+                                    </fo:table-cell>
+                                    <fo:table-cell>
+                                        <xsl:variable name="attributionVar6" select="attribution"/>
+                                        <fo:block xsl:use-attribute-sets="normal" > 
+                                            <xsl:value-of select="substring($attributionVar6,4,20)"/>
+                                        </fo:block>                                 
+                                    </fo:table-cell>
+                                </fo:table-row>
+                            </xsl:for-each>
+                </xsl:if>
+			  	<!-- Added Surgery -->
+                <xsl:if test="SurgeryAttribution">          
+                            <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+                                <fo:table-cell>
+                                    <fo:block xsl:use-attribute-sets="normal" > 
+                                        Surgery
+                                    </fo:block>                                 
+                                </fo:table-cell>
+                                <fo:table-cell>
+                                    <fo:block xsl:use-attribute-sets="normal" > 
+                                    </fo:block>                                 
+                                </fo:table-cell>
+                            </fo:table-row>
+
+                            <xsl:for-each select="SurgeryAttribution"> 
+                                <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+                                    <fo:table-cell>
+                                        <fo:block xsl:use-attribute-sets="normal" > 
+                                            <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160;   </xsl:text><xsl:value-of select="SurgeryIntervention/InterventionSite/name"/>
+                                        </fo:block>                                 
+                                    </fo:table-cell>
+                                    <fo:table-cell>
+                                        <xsl:variable name="attributionVar7" select="attribution"/>
+                                        <fo:block xsl:use-attribute-sets="normal" > 
+                                            <xsl:value-of select="substring($attributionVar7,4,20)"/>
+                                        </fo:block>                                 
+                                    </fo:table-cell>
+                                </fo:table-row>
+                            </xsl:for-each>
+                </xsl:if>	    
 			  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
 	      						<fo:table-cell>
 							  		<fo:block xsl:use-attribute-sets="normal" > 
