@@ -36,35 +36,21 @@ public class CaaersReportingPeriodIdFetcherImplBasedOnAuthStudySubject extends A
 
 
     //the query
-    private final String siteScopedHQL;
-    private final String studyScopedHQL;
+    private final String baseHQL =   "select distinct rp.id from  ParticipantIndex pi "
+            + " join pi.participant p "
+            + " join p.assignments spa "
+            + " join spa.reportingPeriods rp "
+            + " where pi.loginId = :LOGIN_ID" ;
 
-    public CaaersReportingPeriodIdFetcherImplBasedOnAuthStudySubject(){
 
-        //site query
-       siteScopedHQL = null;
 
-       StringBuilder query = new StringBuilder();
-
-        //study query
-       query.append("select distinct rp.id from  ParticipantIndex pi ")
-        .append(" join pi.participant p ")
-    	.append(" join p.assignments spa ")
-    	.append(" join spa.reportingPeriods rp ")
-        .append(" where pi.roleCode = :ROLE_CODE ")
-        .append(" and pi.loginId = :LOGIN_ID");
-
-        studyScopedHQL = query.toString();
-
+    public String getSiteScopedHQL(UserGroupType role){
+        if(role != null) return baseHQL + " and pi." + role.hqlAlias() + " = :" + role.hqlAlias();
+        return baseHQL;
     }
 
-
-    public String getSiteScopedHQL(){
-        return siteScopedHQL;
-    }
-
-    public String getStudyScopedHQL(){
-        return studyScopedHQL;
+    public String getStudyScopedHQL(UserGroupType role){
+        return getSiteScopedHQL(role);
     }
 
     

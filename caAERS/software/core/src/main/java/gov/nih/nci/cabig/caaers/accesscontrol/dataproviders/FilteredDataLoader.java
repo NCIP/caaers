@@ -39,58 +39,16 @@ public class FilteredDataLoader {
 			List<IndexEntry> indexEntries = idFetcher.fetch(userName);
             long t2 = System.currentTimeMillis();
 			log.info("TIME TOOK TO FETCH IDS " +idFetcher.getClass().getName() +" ..."+ (t2-t1)/1000 + " seconds");
+			
+			long t3 = System.currentTimeMillis();
 			AbstractIndexDao indexDao = (AbstractIndexDao)idFetcherIndexDaoMap.get(idFetcher);
-
-            List<IndexEntry> existingIndexEntries = indexDao.queryAllIndexEntries(userName);
-            long t3 = System.currentTimeMillis();
-            log.info("TIME TOOK TO query existing entries  " +idFetcher.getClass().getName() +" ..."+ (t3-t2)/1000 + " seconds");
-
-            Map<UserGroupType, IndexEntry> existingEntryMap = convertToMap(existingIndexEntries);
-            Map<UserGroupType, IndexEntry> newEntryMap = convertToMap(indexEntries);
-
-            Set<UserGroupType> allRoles = new HashSet<UserGroupType>();
-            if(!existingEntryMap.isEmpty()) allRoles.addAll(existingEntryMap.keySet());
-            if(!newEntryMap.isEmpty()) allRoles.addAll(newEntryMap.keySet());
-
-            updateAnIndex(userName, allRoles, existingEntryMap, newEntryMap, indexDao);
-
+			indexDao.updateIndex(userName, indexEntries);
             long t4 = System.currentTimeMillis();
 			log.info("TIME TOOK TO UPDATE INDEX ..."+ (t4-t3)/1000 + " seconds");
-
-
 		}
 		log.info("**END Updating Index for User " + userName + ", total time : " + (System.currentTimeMillis() - begin) /1000 +" seconds");
 
 	}
-
-    private Map<UserGroupType, IndexEntry> convertToMap(List<IndexEntry> entries){
-        Map<UserGroupType, IndexEntry> entryMap = new HashMap<UserGroupType, IndexEntry>();
-        if(entries != null){
-            for(IndexEntry entry : entries){
-                entryMap.put(entry.getRole(), entry);
-            }
-        }
-
-        return entryMap;
-    }
-
-
-    /**
-     * Will take care of refreshing the indexes
-     * @param allRoles
-     * @param existingMap
-     * @param availableMap
-     */
-    //should run in a transaction. 
-    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
-	public void updateAnIndex(String userName, Set<UserGroupType> allRoles , Map<UserGroupType, IndexEntry> existingMap, Map<UserGroupType, IndexEntry> availableMap, AbstractIndexDao indexDao){
-       for(UserGroupType ug: allRoles){
-           long t1= System.currentTimeMillis();
-           indexDao.updateIndex(userName, ug.getCode(), availableMap.get(ug), existingMap.get(ug));
-           long t2 = System.currentTimeMillis();
-           log.info("TIME TOOK to update index for Role [ " + ug.getDisplayName() +"] ..."+ (t2-t1)/1000 + " seconds");
-       }
-    }
 	
 	/**
 	 * Sets the id fetchers to Cache ...

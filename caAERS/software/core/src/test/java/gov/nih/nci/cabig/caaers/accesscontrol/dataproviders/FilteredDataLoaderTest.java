@@ -40,25 +40,26 @@ public class FilteredDataLoaderTest extends AbstractTestCase {
 
     public void testUpdateIndexByUserName() throws Exception {
 
-        IndexEntry i0 = new IndexEntry(UserGroupType.ae_reporter);
-        i0.addEntityId(1);
-        i0.addEntityId(0);
-        List<IndexEntry> iListExisting = new ArrayList<IndexEntry>();
-        iListExisting.add(i0);
+        IndexEntry i0 = new IndexEntry(Integer.MIN_VALUE);
+        i0.addRole(UserGroupType.business_administrator);
+        i0.addRole(UserGroupType.ae_reporter);
+        
 
-        IndexEntry i1 = new IndexEntry(UserGroupType.ae_reporter);
-        i1.addEntityId(1);
-        i1.addEntityId(2);
+        IndexEntry i1 = new IndexEntry(2);
+        i1.addRole(UserGroupType.ae_study_data_reviewer);
         List<IndexEntry> iList = new ArrayList<IndexEntry>();
+        iList.add(i0);
         iList.add(i1);
-        EasyMock.expect(orgIdFetcher.fetch("SYSTEM_ADMIN")).andReturn(iList);
-        EasyMock.expect(orgIndexDao.queryAllIndexEntries("SYSTEM_ADMIN")).andReturn(iListExisting);
-        orgIndexDao.updateIndex(EasyMock.eq("SYSTEM_ADMIN"), EasyMock.eq(UserGroupType.ae_reporter.getCode()), EasyMock.eq(i1), EasyMock.eq(i0));
+        
+        EasyMock.expect(orgIdFetcher.fetch("SYSTEM")).andReturn(iList);
+        orgIndexDao.updateIndex("SYSTEM", iList);
         EasyMock.expectLastCall().anyTimes();
+        
         replayMocks();
+        
         loader.updateIndexByUserName(SecurityUtils.getAuthentication());
         verifyMocks();
-
+        
     }
     public void testUpdateIndexByUserNameEmptyFetchers() throws Exception {
         replayMocks();

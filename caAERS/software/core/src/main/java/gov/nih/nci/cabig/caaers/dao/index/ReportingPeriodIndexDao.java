@@ -11,9 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class ReportingPeriodIndexDao extends AbstractIndexDao {
 
-
-
-
     @Override
     public String entityIdColumnName() {
         return "reportingperiod_id";
@@ -28,6 +25,14 @@ public class ReportingPeriodIndexDao extends AbstractIndexDao {
     public String sequenceName() {
         return "seq_reportingperiod_index_id";
     }
-    
-	
+
+	@Override
+	public String entityTableName() {
+		return "ae_reporting_periods";
+	}
+
+	@Override
+	public String getIdColumnFromEntity() {
+		return "id";
+    }	
 }

@@ -26,6 +26,17 @@ public class AdverseEventIndexDao extends AbstractIndexDao {
     public String sequenceName() {
         return "seq_adverseevent_index_id";
     }
+
+	@Override
+	public String entityTableName() {
+		return "adverse_events";
+	}
+
+	@Override
+	public String getIdColumnFromEntity() {
+		return "id";
+    }
+
     
     
 }

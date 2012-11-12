@@ -27,4 +27,14 @@ public class StudyIndexDao extends AbstractIndexDao {
         return "seq_study_index_id";
     }
 
+	@Override
+	public String entityTableName() {
+		return "studies";
+	}
+
+	@Override
+	public String getIdColumnFromEntity() {
+		return "id";
+    }
+
 }

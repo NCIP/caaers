@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.dao.query;
 
 import org.hibernate.Hibernate;
 import org.hibernate.type.IntegerType;
+import org.hibernate.type.StringType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,13 +12,13 @@ import java.util.Set;
  * @author: Biju Joseph
  */
 public class NativeSQLQuery extends AbstractQuery{
-    private Map<String, IntegerType> scalarMap = new HashMap<String, IntegerType>();
+    private Map<String, org.hibernate.type.Type> scalarMap = new HashMap<String, org.hibernate.type.Type>();
 
     public NativeSQLQuery(String sql){
         super(sql);
     }
 
-    public void setScalar(String key, IntegerType type){
+    public void setScalar(String key, org.hibernate.type.Type type){
         scalarMap.put(key, type);
     }
 
@@ -25,11 +26,11 @@ public class NativeSQLQuery extends AbstractQuery{
         return scalarMap.keySet();
     }
 
-    public IntegerType getScalarType(String key){
+    public org.hibernate.type.Type getScalarType(String key){
         return scalarMap.get(key);
     }
 
-    public Map<String, IntegerType> getScalarMap() {
+    public Map<String, org.hibernate.type.Type> getScalarMap() {
         return scalarMap;
     }
 }

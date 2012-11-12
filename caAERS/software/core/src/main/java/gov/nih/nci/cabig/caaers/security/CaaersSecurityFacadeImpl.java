@@ -14,11 +14,7 @@ import gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSessionFactory;
 import gov.nih.nci.security.UserProvisioningManager;
 import gov.nih.nci.security.util.StringUtilities;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
@@ -207,26 +203,37 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
      */
     //BJ - Refactored to use the RoleMembership
     public List<IndexEntry> getAccessibleStudyIds(String userName){
+        Map<Integer, IndexEntry> indexMap = new HashMap<Integer, IndexEntry>() ;
+        IndexEntry allSiteIndexEntry = new IndexEntry(ALL_IDS_FABRICATED_ID);
+
         List<IndexEntry> entries = new ArrayList<IndexEntry>();
         
         User user = userRepository.getUserByLoginName(userName);
         for(RoleMembership roleMembership : user.getRoleMembershipMap().values()){
+            if(roleMembership.isGlobalScoped()) continue;
+            if((roleMembership.isAllSite() && roleMembership.isAllStudy()) ||
+                    (roleMembership.isSiteScoped() && roleMembership.isAllSite()) ){
+                //can access all studies
+                allSiteIndexEntry.addRole(roleMembership.getRole());
+                continue;
+            }
 
-           IndexEntry entry = new IndexEntry(roleMembership.getRole());
-           entries.add(entry);
-           if(roleMembership.isGlobalScoped()) continue;
-           if((roleMembership.isAllSite() && roleMembership.isAllStudy()) ||
-              (roleMembership.isSiteScoped() && roleMembership.isAllSite()) ){
-              //can access all studies
-              entry.getEntityIds().add(ALL_IDS_FABRICATED_ID);
-              continue;
-           }
+
            if(roleMembership.isStudyScoped() && !roleMembership.isAllStudy()){
               //can access only specific studies
               if(CollectionUtils.isNotEmpty(roleMembership.getStudyIdentifiers())){
                   List<String> studyIdentifiers = new ArrayList<String>(roleMembership.getStudyIdentifiers());
                   List<Integer> studyIds = getStudyIdsByIdentifiersFromDB(studyIdentifiers);
-                  if(studyIds != null) entry.getEntityIds().addAll(studyIds);
+                  if(studyIds == null ) continue;
+                  for(Integer studyId : studyIds){
+                      IndexEntry entry = indexMap.get(studyId);
+                      if(entry == null){
+                          entry = new IndexEntry(studyId);
+                          indexMap.put(studyId, entry);
+                      }
+                      entry.addRole(roleMembership.getRole());
+                  }
+
                   continue;
               }
            }
@@ -234,10 +241,23 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
            if(CollectionUtils.isNotEmpty(roleMembership.getOrganizationNCICodes())){
                List<String> orgIdentifiers = new ArrayList<String>(roleMembership.getOrganizationNCICodes());
                List<Integer> studyIds = getStudyIdsByOrganizationNCICodesFromDB(orgIdentifiers);
-               if(studyIds != null) entry.getEntityIds().addAll(studyIds);
+               if(studyIds == null ) continue;
+               for(Integer studyId : studyIds){
+                   IndexEntry entry = indexMap.get(studyId);
+                   if(entry == null){
+                       entry = new IndexEntry(studyId);
+                       indexMap.put(studyId, entry);
+                   }
+                   entry.addRole(roleMembership.getRole());
+               }
            }
         }
 
+
+        if(allSiteIndexEntry.hasRoles()){
+            entries.add(allSiteIndexEntry);
+        }
+        entries.addAll(indexMap.values());
         return entries;
     }
 	
@@ -250,26 +270,35 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
      */
     //BJ - Refactored to use the RoleMembership
     public List<IndexEntry> getAccessibleOrganizationIds(String userName){
+        Map<Integer, IndexEntry> indexMap = new HashMap<Integer, IndexEntry>() ;
+        IndexEntry allSiteIndexEntry = new IndexEntry(ALL_IDS_FABRICATED_ID);
         List<IndexEntry> entries = new ArrayList<IndexEntry>();
         User user = userRepository.getUserByLoginName(userName);
         for(RoleMembership roleMembership : user.getRoleMembershipMap().values()){
-            IndexEntry entry = new IndexEntry(roleMembership.getRole());
-            entries.add(entry);
             if(roleMembership.isGlobalScoped()) continue;
             if(roleMembership.isAllSite()) {
-                entry.getEntityIds().add(ALL_IDS_FABRICATED_ID); //can access all sites
-                continue;
-            }
-            //only the ones mentioned in NCI codes
-            if(CollectionUtils.isNotEmpty(roleMembership.getOrganizationNCICodes())){
+                allSiteIndexEntry.addRole(roleMembership.getRole());
+            } else{
+                if(CollectionUtils.isEmpty(roleMembership.getOrganizationNCICodes())) continue;
+
                 List<String> orgIdentifiers = new ArrayList<String>(roleMembership.getOrganizationNCICodes());
                 List<Integer> orgIds = getOrganizationIdsByIdentifiersFromDB(orgIdentifiers);
-                if(orgIds != null) entry.getEntityIds().addAll(orgIds);
+                for(Integer orgId : orgIds){
+                    IndexEntry entry = indexMap.get(orgId);
+                    if(entry == null){
+                        entry = new IndexEntry(orgId);
+                        indexMap.put(orgId, entry);
+                    }
+                    entry.addRole(roleMembership.getRole());
+                }
             }
 
         }
 
-
+        if(allSiteIndexEntry.hasRoles()){
+            entries.add(allSiteIndexEntry);
+        }
+        entries.addAll(indexMap.values());
         return entries;
     }
 

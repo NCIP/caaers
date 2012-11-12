@@ -18,6 +18,7 @@ import gov.nih.nci.cabig.caaers.integration.schema.participant.Participants;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
@@ -198,14 +199,15 @@ public class ParticipantServiceTest extends CaaersDbNoSecurityTestCase {
             ParticipantIndex participantIndex = new ParticipantIndex();
             participantIndex.setLoginId(userName);
             participantIndex.setParticipant(dbParticipant);
-            participantIndex.setRoleCode(1);
+         //   participantIndex.setRoleCode(1);
             
-            IndexEntry e1 = new IndexEntry(UserGroupType.system_administrator);
-            e1.addEntityId(dbParticipant.getId());
+            IndexEntry e1 = new IndexEntry(dbParticipant.getId());
+            e1.addRole(UserGroupType.system_administrator);
+
+            List<IndexEntry> l = new ArrayList<IndexEntry>();
+            l.add(e1);
             
-            participantIndexDao.updateIndex(userName, UserGroupType.system_administrator.getCode(),e1 , null);
-            List<IndexEntry> entries = participantIndexDao.queryAllIndexEntries("SYSTEM");
-            assertEquals(1, entries.size());
+            participantIndexDao.updateIndex(userName, l);
 
             caaersServiceResponse = participantService.deleteParticipant(participants);
             
@@ -214,10 +216,6 @@ public class ParticipantServiceTest extends CaaersDbNoSecurityTestCase {
             List<Participant> matches = participantDao.getBySubnames(new String[]{"Richard"});
             assertEquals(0, matches.size());
             
-            // verify that index entries are successfully deleted along with participant
-            entries = participantIndexDao.queryAllIndexEntries("SYSTEM");
-            assertEquals(0, entries.size());
-
         } catch (IOException e) {
             e.printStackTrace();
             fail("Error running test: " + e.getMessage());
@@ -249,12 +247,16 @@ public class ParticipantServiceTest extends CaaersDbNoSecurityTestCase {
             ParticipantIndex participantIndex = new ParticipantIndex();
             participantIndex.setLoginId(userName);
             participantIndex.setParticipant(dbParticipant);
-            participantIndex.setRoleCode(1);
             
-            IndexEntry e1 = new IndexEntry(UserGroupType.system_administrator);
-            e1.addEntityId(dbParticipant.getId());
             
-            participantIndexDao.updateIndex(userName, UserGroupType.system_administrator.getCode(),e1 , null);
+
+            IndexEntry e1 = new IndexEntry(dbParticipant.getId());
+            e1.addRole(UserGroupType.system_administrator);
+
+            List<IndexEntry> l = new ArrayList<IndexEntry>();
+            l.add(e1);
+            
+            participantIndexDao.updateIndex(userName, l);
 
             caaersServiceResponse = participantService.getParticipant(participantRef);
             

@@ -9,8 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class ReportIndexDao extends AbstractIndexDao {
 
-
-
     @Override
     public String entityIdColumnName() {
         return "report_id";
@@ -24,6 +22,16 @@ public class ReportIndexDao extends AbstractIndexDao {
     @Override
     public String sequenceName() {
         return "seq_report_index_id";
+    }
+
+	@Override
+	public String entityTableName() {
+		return "report_schedules";
+	}
+
+	@Override
+	public String getIdColumnFromEntity() {
+		return "id";
     }
 
 }

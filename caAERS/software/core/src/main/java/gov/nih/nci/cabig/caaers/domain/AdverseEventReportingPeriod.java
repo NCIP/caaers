@@ -27,6 +27,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -791,7 +792,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
      * @param treatmentAssignmentDescription the new treatment assignment description
      */
     public void setTreatmentAssignmentDescription(String treatmentAssignmentDescription) {
-        this.treatmentAssignmentDescription = treatmentAssignmentDescription;
+        this.treatmentAssignmentDescription = StringEscapeUtils.unescapeHtml(treatmentAssignmentDescription);
     }
     
     /**

@@ -1,4 +1,3 @@
-
 package gov.nih.nci.cabig.caaers.accesscontrol.query.impl;
 
 import java.util.ArrayList;
@@ -38,33 +37,17 @@ import org.apache.commons.logging.LogFactory;
 public class CaaersInvestigatorIdFetcherImpl extends AbstractIdFetcher implements IdFetcher {
      protected final Log log = LogFactory.getLog(CaaersInvestigatorIdFetcherImpl.class);
     //the query
-    private final String siteScopedSQL;
-    private final String studyScopedSQL;
+    private final String siteScopedSQL = "select distinct sr.investigator_id as id from site_investigators  sr "
+            + "join organization_index oi on  oi.organization_id = sr.site_id "
+            + "where oi.login_id = :LOGIN_ID  " ;
 
+    private final String studyScopedSQL = "select distinct sr.investigator_id as id from site_investigators  sr "
+            + "join study_organizations so on sr.site_id = so.site_id "
+            + "join study_index si on so.study_id = si.study_id "
+            + "join organization_index oi on  oi.organization_id = sr.site_id  "
+            + "where si.login_id = :LOGIN_ID "
+            + "and si.login_id = oi.login_id ";
 
-    public CaaersInvestigatorIdFetcherImpl(){
-
-
-        //site scoped roles - can access all the researchstaff of their site.
-       StringBuilder siteSQL = new StringBuilder("select distinct sr.investigator_id as id from site_investigators  sr ")
-            .append("join organization_index oi on  oi.organization_id = sr.site_id ")
-            .append("where oi.login_id = :LOGIN_ID  ")
-            .append("and oi.role_code = :ROLE_CODE ");
-       siteScopedSQL = siteSQL.toString();
-
-        //study scoped roles - can access all research staff on their study and site
-        StringBuilder studySQL = new StringBuilder("select distinct sr.investigator_id as id from site_investigators  sr ")
-            .append("join study_organizations so on sr.site_id = so.site_id ")
-            .append("join study_index si on so.study_id = si.study_id ")
-            .append("join organization_index oi on  oi.organization_id = sr.site_id  ")
-            .append("where si.login_id = :LOGIN_ID ")
-            .append("and si.role_code = :ROLE_CODE ")
-            .append("and si.role_code = oi.role_code ")
-            .append("and si.login_id = oi.login_id ");
-        studyScopedSQL = studySQL.toString();
-
-
-    }
 
     
     /**
@@ -73,7 +56,8 @@ public class CaaersInvestigatorIdFetcherImpl extends AbstractIdFetcher implement
      * @return
      */
     @Override
-    public String getSiteScopedSQL() {
+    public String getSiteScopedSQL(UserGroupType role) {
+        if(role != null) return siteScopedSQL + " and oi." + role.dbAlias() + " = :" + role.hqlAlias();
         return siteScopedSQL;
     }
 
@@ -83,7 +67,8 @@ public class CaaersInvestigatorIdFetcherImpl extends AbstractIdFetcher implement
      * @return
      */
     @Override
-    public String getStudyScopedSQL() {
+    public String getStudyScopedSQL(UserGroupType role) {
+        if(role != null) return studyScopedSQL + " and si." + role.dbAlias() + " = oi." + role.dbAlias() + " and si." + role.dbAlias() + " = :" + role.hqlAlias();
         return studyScopedSQL;
     }
 

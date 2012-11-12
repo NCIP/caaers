@@ -8,10 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.index.IndexEntry;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -43,7 +40,7 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
      * Will return the Site scoped HQL query
      * @return
      */
-    public String getSiteScopedHQL() {
+    public String getSiteScopedHQL(UserGroupType role) {
     	return null;
     }
 
@@ -51,7 +48,7 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
      * Will return the Study scoped HQL query
      * @return
      */
-    public String getStudyScopedHQL() {
+    public String getStudyScopedHQL(UserGroupType role) {
     	return null;
     }
 
@@ -61,7 +58,7 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
      * Will return the Site scoped SQL query
      * @return
      */
-    public String getSiteScopedSQL() {
+    public String getSiteScopedSQL(UserGroupType role) {
     	return null;
     }
 
@@ -69,7 +66,7 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
      * Will return the Study scoped SQL query
      * @return
      */
-    public String getStudyScopedSQL() {
+    public String getStudyScopedSQL(UserGroupType role) {
     	return null;
     }
 
@@ -110,7 +107,10 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
        }
         
        if(loginId != null) query.getParameterMap().put("LOGIN_ID", loginId);
-       if(role != null) query.getParameterMap().put("ROLE_CODE", role.getCode()) ;
+
+       //TODO : implement the role split logic
+
+       if(role != null) query.getParameterMap().put(role.hqlAlias(), Boolean.TRUE) ;
        return query;
 
     }
@@ -122,43 +122,55 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
      */
 	public List fetch(String loginId){
 
-        List<IndexEntry> list = new ArrayList<IndexEntry>();
-    
+       Map<Integer, IndexEntry> indexEntryMap = new LinkedHashMap<Integer, IndexEntry>();
+
         //for all site scoped roles
         UserGroupType[] siteScopedRoles = getApplicableSiteScopedRoles();
         if(siteScopedRoles != null){
-          String sql = getSiteScopedSQL();
-          boolean nativeSQL = sql != null;
-          String hql = nativeSQL ? sql : getSiteScopedHQL();
-          for(UserGroupType role : siteScopedRoles){
-            IndexEntry entry = new IndexEntry(role);
-            if(hql != null){
-                AbstractQuery query = createQuery(loginId, role, hql, nativeSQL);
-                List<Integer> ids = (List<Integer>) search(query);
-                entry.setEntityIds(ids);
-            }
-            list.add(entry);
-          }
-
+              for(UserGroupType role : siteScopedRoles){
+                  String sql = getSiteScopedSQL(role);
+                  boolean nativeSQL = sql != null;
+                  String hql = nativeSQL ? sql : getSiteScopedHQL(role);
+                  if(hql != null){
+                      AbstractQuery query = createQuery(loginId, role, hql, nativeSQL);
+                      List<Integer> ids = (List<Integer>) search(query);
+                      for(Integer id : ids){
+                          IndexEntry entry = indexEntryMap.get(id);
+                          if(entry == null){
+                              entry = new IndexEntry(id);
+                              indexEntryMap.put(id, entry);
+                          }
+                          entry.addRole(role);
+                      }
+                  }
+              }
         }
 
         //for all study scoped roles
         UserGroupType[] studyScopedRolse = getApplicableStudyScopedRoles();
         if(studyScopedRolse != null){
-          String sql = getStudyScopedSQL();
-          boolean nativeSQL = sql != null;
-          String hql = nativeSQL ? sql : getStudyScopedHQL();
+
           for(UserGroupType role : studyScopedRolse){
-            IndexEntry entry = new IndexEntry(role);
+            String sql = getStudyScopedSQL(role);
+            boolean nativeSQL = sql != null;
+            String hql = nativeSQL ? sql : getStudyScopedHQL(role);
+
             if(hql != null){
                 AbstractQuery query = createQuery(loginId, role, hql, nativeSQL);
                 List<Integer> ids = (List<Integer>) search(query);
-                entry.setEntityIds(ids);
+                for(Integer id : ids){
+                    IndexEntry entry = indexEntryMap.get(id);
+                    if(entry == null){
+                        entry = new IndexEntry(id);
+                        indexEntryMap.put(id, entry);
+                    }
+                    entry.addRole(role);
+                }
             }
-            list.add(entry);
           }
         }
-        
+
+        List<IndexEntry> list = new ArrayList<IndexEntry>(indexEntryMap.values());
         if(log.isInfoEnabled()){
            log.info("Fetcher (" + getClass().getName() + " fetched " + String.valueOf(list));
         }
@@ -174,7 +186,7 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
             public Object doInHibernate(final Session session) throws HibernateException, SQLException {
                 if(query instanceof NativeSQLQuery){
                     org.hibernate.SQLQuery nativeQuery = session.createSQLQuery(query.getQueryString());
-                    Map<String, IntegerType> scalarMap = ((NativeSQLQuery) query).getScalarMap();
+                    Map<String, org.hibernate.type.Type> scalarMap = ((NativeSQLQuery) query).getScalarMap();
                     for(String key : scalarMap.keySet()){
                        nativeQuery.addScalar(key, scalarMap.get(key));
                     }
@@ -221,13 +233,6 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
 		this.applicableStudyScopedRoles = applicableStudyScopedRoles;
 	}
 
-    protected boolean isEmpty(IndexEntry entry){
-        if(entry == null) return true;
-        if(entry.getEntityIds() == null) return true;
-        return entry.getEntityIds().isEmpty();
-    }
 
-    protected boolean isAllSiteOrAllStudy(List<Integer> list){
-        return list.size() == 1 && list.get(0).equals(Integer.MIN_VALUE);
-    }
+
 }

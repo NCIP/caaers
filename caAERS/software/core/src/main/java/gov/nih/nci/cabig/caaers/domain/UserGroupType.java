@@ -172,8 +172,16 @@ public enum UserGroupType implements CodedEnum<Integer> {
         });
     }
 
-
     /**
+     * Get the Database Mapping Column name from Enum.
+     */
+    
+    public static String getColumnName(int roleId) {
+    	String colName = "R_" + Math.abs(roleId);
+    	return colName;
+    }
+    
+    /** 
      * Gets the csm name.
      *
      * @return the csm name
@@ -212,6 +220,20 @@ public enum UserGroupType implements CodedEnum<Integer> {
         return getByClassAndCode(UserGroupType.class, code);
     }
 
+    /**
+     * Gets the by code.
+     *
+     * @param code the code
+     * @return the by code
+     */
+    public static UserGroupType getByColumnName(final String columnName) {
+    	if ( columnName != null && columnName.contains("_") ) {
+    			int code =  -1 * Integer.parseInt(columnName.split("_")[1]);
+    		    return getByCode(code);
+    	}
+    	return null;
+    }
+    
     /**
      * Gets the by csm name.
      *
@@ -267,5 +289,13 @@ public enum UserGroupType implements CodedEnum<Integer> {
     		codes[i] = groupTypes[i].code;
     	}
     	return codes;
+    }
+
+    public String dbAlias(){
+        return "R_" + Math.abs(this.getCode());
+    }
+
+    public String hqlAlias(){
+        return "roleCode" + Math.abs(this.getCode());
     }
 }

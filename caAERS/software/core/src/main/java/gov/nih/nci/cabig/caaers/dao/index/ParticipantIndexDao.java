@@ -27,8 +27,14 @@ public class ParticipantIndexDao extends AbstractIndexDao {
     public String sequenceName() {
         return "seq_participant_index_id";
     }
-      
-	
 
+	@Override
+	public String entityTableName() {
+		return "participants";
+	}
 
+	@Override
+	public String getIdColumnFromEntity() {
+		return "id";
+	}
 }

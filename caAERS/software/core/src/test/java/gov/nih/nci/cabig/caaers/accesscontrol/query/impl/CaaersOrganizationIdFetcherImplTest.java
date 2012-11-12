@@ -31,33 +31,34 @@ public class CaaersOrganizationIdFetcherImplTest extends CaaersDbNoSecurityTestC
             @Override
             public List<IndexEntry> getAccessibleOrganizationIds(String loginId) {
                 List<IndexEntry> entries = new ArrayList<IndexEntry>();
-                for(UserGroupType ug : UserGroupType.values()){
-                   IndexEntry e = new IndexEntry(ug);
-                   entries.add(e);
+                IndexEntry allSites = new IndexEntry(Integer.MIN_VALUE);
+                allSites.addRole(UserGroupType.person_and_organization_information_manager);
 
-                   if(ug == UserGroupType.person_and_organization_information_manager){
-                       e.getEntityIds().add(Integer.MIN_VALUE);
-                   }
+                entries.add(allSites) ;
+                IndexEntry i_1001 = new IndexEntry(-1001);
+                i_1001.addRole(UserGroupType.ae_reporter);
 
-                   if(ug == UserGroupType.ae_reporter){
-                      e.getEntityIds().add(-1001);
-                      e.getEntityIds().add(-1002); 
-                   }
+                entries.add(i_1001);
+                IndexEntry i_1002 = new IndexEntry(-1002);
+                i_1002.addRole(UserGroupType.ae_reporter);
+                entries.add(i_1002);
 
-                   if(ug == UserGroupType.business_administrator){
-                      e.getEntityIds().add(-1003);
-                      e.getEntityIds().add(-1004); 
-                   }
+                IndexEntry i_1003 = new IndexEntry(-1003);
+                i_1003.addRole(UserGroupType.business_administrator);
+                entries.add(i_1003);
+                IndexEntry i_1004 = new IndexEntry(-1004);
+                i_1004.addRole(UserGroupType.business_administrator);
+                entries.add(i_1004);
 
-                }
+
                 return entries;
             }
 
             @Override
             public List<IndexEntry> getAccessibleStudyIds(String loginId) {
                 List<IndexEntry> entries =  super.getAccessibleStudyIds(loginId);
-                IndexEntry e = new IndexEntry(UserGroupType.ae_reporter);
-                e.addEntityId(-2);
+                IndexEntry e = new IndexEntry(-2);
+                e.addRole(UserGroupType.ae_reporter);
                 entries.add(e);
                 return entries;
             }

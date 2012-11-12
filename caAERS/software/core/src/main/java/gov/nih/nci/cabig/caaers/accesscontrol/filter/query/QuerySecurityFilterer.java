@@ -54,17 +54,6 @@ public class QuerySecurityFilterer {
     	//if global scoped user- ignore filtering.
 		if(SecurityUtils.hasGlobalScopedRoles()) return false;
 		return true;
-    	/*
-        List<UserGroupType> rolesToExclude = new ArrayList<UserGroupType>();
-        rolesToExclude.add(UserGroupType.caaers_super_user);
-        
-        if(rolesNotNeedFiltering != null){
-            for(String roleName : rolesNotNeedFiltering){
-                rolesToExclude.add(UserGroupType.valueOf(roleName));
-            }
-        }
-        
-        return !SecurityUtils.checkAuthorization(rolesToExclude.toArray(new UserGroupType[0]));*/
     }
   
     /**
@@ -102,11 +91,19 @@ public class QuerySecurityFilterer {
         query.modifyQueryString(newQuery);
 
         //issue joins with index and extra conditions.
-       query.join(getIndexAlias() + "." + getEntityAssociation() + " " +  entityAlias, 0);
+       query.join(getIndexAlias() + "." + getEntityAssociation() + " " + entityAlias, 0);
        query.andWhere(getIndexAlias() + ".loginId = :loginId");
-       query.andWhere(getIndexAlias() + ".roleCode in (" + ":roleCodes" +")");
        query.setParameter("loginId", getLoginId());
-       query.setParameterList("roleCodes", getRoleCodes() );
+       if(SecurityUtils.getRoles().length > 0){
+           StringBuilder orConds = new StringBuilder("(");
+           for(UserGroupType role  : SecurityUtils.getRoles()){
+              if(orConds.length() > 3) orConds.append(" OR ");
+              orConds.append(getIndexAlias()).append(".").append(role.hqlAlias()).append("=").append(":").append(role.hqlAlias());
+              query.setParameter(role.hqlAlias(), true);
+           }
+           orConds.append(")");
+           query.andWhere(orConds.toString());
+       }
        query.setFiltered(true);
     }
 
@@ -117,16 +114,6 @@ public class QuerySecurityFilterer {
     public String getLoginId(){
         return SecurityUtils.getUserLoginName();
     }
-
-    public List<Integer> getRoleCodes(){
-       List<Integer> roleCodes = new ArrayList<Integer>();
-       roleCodes.add(0);
-       for(UserGroupType role  : SecurityUtils.getRoles()){
-           roleCodes.add(role.getCode());
-       }
-       return roleCodes;
-    }
-
     /**
      * The association name of the entity from the index.
      * Eg:- ParticipantIndex  to Participant the association is "participant".

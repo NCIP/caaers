@@ -33,36 +33,15 @@ import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 
 public class CaaersAdverseEventIdFetcherImplBasedOnAuthStudySubject extends AbstractIdFetcher implements IdFetcher {
 
+    private String baseHQL = "select distinct ae.id from  ReportingPeriodIndex ri join ri.reportingPeriod rp join rp.adverseEvents ae where ri.loginId = :LOGIN_ID ";
 
-    //the query
-    private final String siteScopedHQL;
-    private final String studyScopedHQL;
-
-    public CaaersAdverseEventIdFetcherImplBasedOnAuthStudySubject(){
-
-        //site query
-       siteScopedHQL = null;
-
-       StringBuilder query = new StringBuilder();
-
-        //study query
-       query.append("select distinct ae.id from  ReportingPeriodIndex ri ")
-        .append(" join ri.reportingPeriod rp  ")
-        .append(" join rp.adverseEvents ae ")
-        .append(" where ri.roleCode = :ROLE_CODE ")
-        .append(" and ri.loginId = :LOGIN_ID");
-        
-        studyScopedHQL = query.toString();
-
+    public String getSiteScopedHQL(UserGroupType role){
+        if(role != null) return baseHQL + " and ri." + role.hqlAlias() + " = :" + role.hqlAlias();
+        return baseHQL;
     }
 
-
-    public String getSiteScopedHQL(){
-        return siteScopedHQL;
-    }
-
-    public String getStudyScopedHQL(){
-        return studyScopedHQL;
+    public String getStudyScopedHQL(UserGroupType role){
+        return getSiteScopedHQL(role);
     }
     
 }

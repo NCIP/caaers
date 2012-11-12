@@ -11,8 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class InvestigatorIndexDao extends AbstractIndexDao {
 
-
-
     @Override
     public String entityIdColumnName() {
         return "investigator_id";
@@ -27,7 +25,15 @@ public class InvestigatorIndexDao extends AbstractIndexDao {
     public String sequenceName() {
         return "seq_investigator_index_id";
     }
-      
-	
+
+	@Override
+	public String entityTableName() {
+		return "investigators";
+	}
+
+	@Override
+	public String getIdColumnFromEntity() {
+		return "id";
+    }
 
 }

@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.accesscontrol.query.impl;
 
 import com.semanticbits.security.contentfilter.IdFetcher;
+import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 
 /**
  * Will find the subjects a logged-in person has access to.
@@ -32,39 +33,25 @@ import com.semanticbits.security.contentfilter.IdFetcher;
 public class CaaersParticipantIdFetcherImpl extends AbstractIdFetcher implements IdFetcher {
 
     //the query
-    private final String siteScopedSQL;
-    private final String studyScopedSQL;
+    private final String siteScopedSQL = "select distinct a.participant_id as id from participant_assignments a "
+            + "join study_organizations so on so.id = a.study_site_id "
+            + "join organization_index oi on   so.site_id = oi.organization_id "
+            + "where oi.login_id = :LOGIN_ID  " ;
 
-    public CaaersParticipantIdFetcherImpl(){
+    private final String studyScopedSQL = "select distinct a.participant_id as id from participant_assignments  a "
+            + "join study_organizations so on so.id = a.study_site_id  "
+            + "join organization_index oi on oi.organization_id = so.site_id "
+            + "join study_index si on si.study_id =  so.study_id "
+            + "where oi.login_id = :LOGIN_ID "
+            + "and si.login_id = oi.login_id "  ;
 
-
-        //site scoped roles - can access all the participants of their site.
-       StringBuilder siteSQL = new StringBuilder("select distinct a.participant_id as id from participant_assignments a ")
-            .append("join study_organizations so on so.id = a.study_site_id ")
-            .append("join organization_index oi on   so.site_id = oi.organization_id ")
-            .append("where oi.login_id = :LOGIN_ID  ")
-            .append("and oi.role_code = :ROLE_CODE ");
-       siteScopedSQL = siteSQL.toString();
-
-        //study scoped roles - can access all participants
-        StringBuilder studySQL = new StringBuilder("select distinct a.participant_id as id from participant_assignments  a ")
-            .append("join study_organizations so on so.id = a.study_site_id  ")
-            .append("join organization_index oi on oi.organization_id = so.site_id ")
-            .append("join study_index si on si.study_id =  so.study_id ")
-            .append("where oi.login_id = :LOGIN_ID ")
-            .append("and oi.role_code = :ROLE_CODE ")
-            .append("and si.role_code = oi.role_code ")
-            .append("and si.login_id = oi.login_id ");
-        studyScopedSQL = studySQL.toString();
-
-    }
-
-
-    public String getSiteScopedSQL(){
+    public String getSiteScopedSQL(UserGroupType role){
+        if(role != null) return siteScopedSQL + " and oi." + role.dbAlias() + " = :" + role.hqlAlias();
         return siteScopedSQL;
     }
 
-    public String getStudyScopedSQL(){
+    public String getStudyScopedSQL(UserGroupType role){
+        if(role != null) return studyScopedSQL +  " and si." + role.dbAlias() + " = oi." + role.dbAlias()  + " and oi." + role.dbAlias() + " = :" + role.hqlAlias();
         return studyScopedSQL;
     }
 

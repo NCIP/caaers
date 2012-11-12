@@ -26,14 +26,8 @@ public class CaaersStudyIdFetcherImpl extends AbstractIdFetcher implements IdFet
 	public List fetch(String loginId) {
 
 		List<IndexEntry> resultList = getCaaersSecurityFacade().getAccessibleStudyIds(loginId);
-        List<Integer> studyIds;
-        List<Integer> allStudyIds = null;
         for(IndexEntry entry : resultList){
-            if(isEmpty(entry)) continue;
-            studyIds = entry.getEntityIds();
-            if(!isAllSiteOrAllStudy(studyIds)) continue;
-            if(allStudyIds == null ) allStudyIds = (List<Integer>) search(new HQLQuery("select s.id from Study s"));
-            entry.setEntityIds(allStudyIds);
+            if(entry.isAllSiteOrAllStudy()) continue;
         }
         
         if(log.isInfoEnabled()){

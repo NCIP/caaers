@@ -39,37 +39,19 @@ import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 
 public class CaaersExpeditedAEReportIdFetcherImplBasedOnAuthStudySubject extends AbstractIdFetcher implements IdFetcher {
 
-
-
     //the query
-    private final String siteScopedHQL;
-    private final String studyScopedHQL;
+    private final String baseHQL =  "select distinct r.id from  ReportingPeriodIndex ri " +
+             " join ri.reportingPeriod rp  " +
+            " join rp.aeReports r " +
+            " where ri.loginId = :LOGIN_ID" ;
 
-    public CaaersExpeditedAEReportIdFetcherImplBasedOnAuthStudySubject(){
-
-        //site query
-       siteScopedHQL = null;
-
-       StringBuilder query = new StringBuilder();
-
-        //study query
-       query.append("select distinct r.id from  ReportingPeriodIndex ri ")
-        .append(" join ri.reportingPeriod rp  ")
-        .append(" join rp.aeReports r ")
-        .append(" where ri.roleCode = :ROLE_CODE ")
-        .append(" and ri.loginId = :LOGIN_ID");
-
-        studyScopedHQL = query.toString();
-
+    public String getSiteScopedHQL(UserGroupType role){
+        if(role != null) return baseHQL + " and ri." + role.hqlAlias() + " = :" + role.hqlAlias();
+        return baseHQL;
     }
 
-
-    public String getSiteScopedHQL(){
-        return siteScopedHQL;
-    }
-
-    public String getStudyScopedHQL(){
-        return studyScopedHQL;
+    public String getStudyScopedHQL(UserGroupType role){
+        return getSiteScopedHQL(role);
     }
 
     

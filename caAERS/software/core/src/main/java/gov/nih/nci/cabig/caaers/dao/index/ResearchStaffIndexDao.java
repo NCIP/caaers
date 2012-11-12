@@ -26,4 +26,13 @@ public class ResearchStaffIndexDao extends AbstractIndexDao {
         return "seq_researchstaff_index_id";
     }
 
+	@Override
+	public String entityTableName() {
+		return "research_staffs";
+	}
+
+	@Override
+	public String getIdColumnFromEntity() {
+		return "id";
+    }
 }

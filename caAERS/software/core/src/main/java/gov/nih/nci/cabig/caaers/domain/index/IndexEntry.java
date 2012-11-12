@@ -17,83 +17,70 @@ import java.util.List;
 public class IndexEntry {
 
     /** The role. */
-    private UserGroupType role;
+    private List<UserGroupType> roles;
     
     /** The entity ids. */
-    private List<Integer> entityIds;
+    private Integer entityId;
 
     /**
      * Instantiates a new index entry.
      *
-     * @param role the role
+     * @param entityId the entity ID
      */
-    public IndexEntry(UserGroupType role){
+    public IndexEntry(Integer entityId){
 
-        entityIds = new ArrayList<Integer>();
-        this.role = role;
-    }
-   
-    /**
-     * Gets the role code.
-     *
-     * @return the role code
-     */
-    public Integer getRoleCode(){
-    	if (role == null) return 0;
-        return role.getCode();
+        this.entityId = entityId;
+        this.roles = new ArrayList<UserGroupType>();
     }
 
-    /**
-     * Gets the entity ids.
-     *
-     * @return the entity ids
-     */
-    public List<Integer> getEntityIds() {
-        return entityIds;
+    public List<UserGroupType> getRoles() {
+        return roles;
     }
 
-    /**
-     * Sets the entity ids.
-     *
-     * @param entityIds the new entity ids
-     */
-    public void setEntityIds(List<Integer> entityIds) {
-        this.entityIds = entityIds;
+    public void setRoles(List<UserGroupType> roles) {
+        this.roles = roles;
     }
 
-    /**
-     * Gets the role.
-     *
-     * @return the role
-     */
-    public UserGroupType getRole() {
-        return role;
+    public Integer getEntityId() {
+        return entityId;
     }
 
-    /**
-     * Sets the role.
-     *
-     * @param role the new role
-     */
-    public void setRole(UserGroupType role) {
-        this.role = role;
+    public void setEntityId(Integer entityId) {
+        this.entityId = entityId;
     }
-    
-    /**
-     * Adds the entity id.
-     *
-     * @param id the id
-     */
-    public void addEntityId(Integer id){
-        entityIds.add(id);
+
+    public void addRole(UserGroupType... roles){
+        for(UserGroupType role : roles)  {
+            if(!this.roles.contains(role)) this.roles.add(role);
+        }
+    }
+
+    public void addRole(List<UserGroupType> roles){
+        addRole(roles.toArray(new UserGroupType[]{}));
+    }
+
+    public boolean hasAnyOfTheRoles(UserGroupType... roles){
+        for(UserGroupType role : roles) if(hasRole(role)) return true;
+        return false;
+    }
+
+    public boolean hasRole(UserGroupType role){
+        return roles.contains(role);
+    }
+    public boolean  hasRoles()   {
+        return !roles.isEmpty();
+    }
+
+    public boolean isAllSiteOrAllStudy(){
+        return Integer.MIN_VALUE == entityId;
     }
 
     /* (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
+    * @see java.lang.Object#toString()
+    */
     @Override
     public String toString() {
-        return "[" + String.valueOf(role) + ", " + String.valueOf(entityIds) + "]";
+        return " String.valueOf(entityId) ,  [" + String.valueOf(roles) + "]";
     }
 }
 

@@ -26,4 +26,14 @@ public class ExpeditedAdverseEventReportIndexDao extends AbstractIndexDao {
         return "seq_expedited_ae_index_id";
     }
 
+	@Override
+	public String entityTableName() {
+		return "ae_reports";
+	}
+
+	@Override
+	public String getIdColumnFromEntity() {
+		return "id";
+    }
+
 }

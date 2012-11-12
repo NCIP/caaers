@@ -26,4 +26,14 @@ public class OrganizationIndexDao extends AbstractIndexDao {
         return "seq_organization_index_id";
     }
 
+	@Override
+	public String entityTableName() {
+		return "organizations";
+	}
+
+	@Override
+	public String getIdColumnFromEntity() {
+		return "id";
+    }
+
 }
