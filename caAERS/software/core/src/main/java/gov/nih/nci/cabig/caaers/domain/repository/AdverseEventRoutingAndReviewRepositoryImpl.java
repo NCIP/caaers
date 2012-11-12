@@ -621,7 +621,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
                     if(reportId == null) continue;
             		report = reportDao.getById(Integer.parseInt(reportId));
             		dto.setEntityType("report");
-                    dto.setEntityId(reportingPeriod.getId());
+                    dto.setEntityId(report.getId());
                     dto.setReportStatus(report.getStatus());
             }
 
