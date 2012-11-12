@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>gov.nih.nci.cabig.caaers2adeers</groupId>
   <artifactId>parent</artifactId>
-  <version>2.6-RC2-SNAPSHOT</version>
+  <version>2.6-RC2</version>
   <packaging>pom</packaging>
   <name>caAERS to AdEERS Integration</name>
   <url>http://servicemix.apache.org</url>
@@ -13,7 +13,7 @@
         <cxfBCVersion>2010.01</cxfBCVersion>
         <smLibVersion>2010.01</smLibVersion>
         <smVersion>3.3.2</smVersion>
-        <c2aVersion>2.6-RC2-SNAPSHOT</c2aVersion>
+        <c2aVersion>2.6-RC2</c2aVersion>
     </properties>
   <modules>
     <module>core-camel-su</module>
