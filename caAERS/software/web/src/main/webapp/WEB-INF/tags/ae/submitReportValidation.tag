@@ -63,38 +63,41 @@
 						</c:if>
 					</div>
 				</div>
+				
                 <c:choose>
-                    <c:when test="${reportMessages[report.id].submittable}">
+                    <c:when test="${reportMessages[report.id].submittable && renderSubmitLink[report.id]}">
                         <div class="row" style="margin-left:102px; background-color:#C8FFBF; padding:10px; width:500px; font-weight:bolder;">
                                 <img src="<chrome:imageUrl name="../buttons/button_icons/check_icon.png"/>" alt="" style="vertical-align:middle; margin-right:10px;" /> Ready to submit!
                         </div>
                     </c:when>
                     <c:otherwise>
-                        <div class="row" style="margin-left:102px; background-color:#FFDFDF; padding:10px; width:500px;">
-                            <h3 style="border:none; color:black; font-size:1.1em;">
-                                Information remaining to complete
-                            </h3>
-                            <c:forEach items="${reportMessages[report.id].messages}" var="sectionEntry">
-                                    <chrome:division title="${sectionEntry.key.displayName} section" collapsable="true" collapsed="true" id="${sectionEntry.key.displayName}-${report.id}">
-									<ul>
-										<c:forEach items="${sectionEntry.value}" var="msg">
-											<li>${msg.text} <c:if test="${not empty msg.property}"><!-- (${msg.property}) --></c:if></li>
-                                    	</c:forEach>
-										<c:if test="${sectionEntry.key ne 'SUBMIT_REPORT_SECTION'}">
-											<li><a href="javascript:goToPage('${sectionEntry.key}')"> <img src="<chrome:imageUrl name="../buttons/button_icons/small/back_icon_small.png"/>" alt=""/> Go back to this page</a></li>
-										</c:if>
-										<c:if test="${sectionEntry.key eq 'SUBMIT_REPORT_SECTION'}">
-											<li><a href="#signoff">Scroll up <img src="<chrome:imageUrl name="../blue/up_icon_small.png"/>" alt=""/></a></li>
-										</c:if>
-									</ul>
-									</chrome:division>
-                            </c:forEach>
-                        </div>
+                       <c:if test="${not reportMessages[report.id].submittable}">
+	                        <div class="row" style="margin-left:102px; background-color:#FFDFDF; padding:10px; width:500px;">
+	                            <h3 style="border:none; color:black; font-size:1.1em;">
+	                                Information remaining to complete
+	                            </h3>
+	                            <c:forEach items="${reportMessages[report.id].messages}" var="sectionEntry">
+	                                    <chrome:division title="${sectionEntry.key.displayName} section" collapsable="true" collapsed="true" id="${sectionEntry.key.displayName}-${report.id}">
+										<ul>
+											<c:forEach items="${sectionEntry.value}" var="msg">
+												<li>${msg.text} <c:if test="${not empty msg.property}"><!-- (${msg.property}) --></c:if></li>
+	                                    	</c:forEach>
+											<c:if test="${sectionEntry.key ne 'SUBMIT_REPORT_SECTION'}">
+												<li><a href="javascript:goToPage('${sectionEntry.key}')"> <img src="<chrome:imageUrl name="../buttons/button_icons/small/back_icon_small.png"/>" alt=""/> Go back to this page</a></li>
+											</c:if>
+											<c:if test="${sectionEntry.key eq 'SUBMIT_REPORT_SECTION'}">
+												<li><a href="#signoff">Scroll up <img src="<chrome:imageUrl name="../blue/up_icon_small.png"/>" alt=""/></a></li>
+											</c:if>
+										</ul>
+										</chrome:division>
+	                            </c:forEach>
+	                        </div>
+                         </c:if>
                     </c:otherwise>
                 </c:choose>
 				<div style="text-align:right;">
 
-                    <c:if test="${reportMessages[report.id].submittable}">
+                    <c:if test="${reportMessages[report.id].submittable && renderSubmitLink[report.id]}">
                         <c:if test="${(report.lastVersion.reportStatus == 'PENDING') or (report.lastVersion.reportStatus == 'FAILED')}">
                             <tags:button id="_submit_button" type="button" icon="submit" size="" color="green" value="Submit" onclick="doAction('submit', '${report.aeReport.id}', '${report.id}');"/>
                         </c:if>

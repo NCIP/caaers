@@ -117,7 +117,10 @@ public class ViewReportTab extends AeTab {
 
 
     	boolean isSuperUser = SecurityUtils.checkAuthorization(UserGroupType.caaers_super_user);
-    	boolean canLoggedInUserSubmit = isSuperUser || SecurityUtils.checkAuthorization(UserGroupType.ae_reporter,UserGroupType.ae_expedited_report_reviewer);
+    	// check if the logged in user is a reviewer at the CC
+        boolean isReviewerAtCC = isUserAEReviewer(command.getStudy());
+        
+    	boolean canLoggedInUserSubmit = isSuperUser || SecurityUtils.checkAuthorization(UserGroupType.ae_reporter) || isReviewerAtCC;
 
     	//First of all initialize renderSubmitLink map with the values based on the report status
     	for(Report report: command.getAeReport().getActiveReports()){
@@ -129,20 +132,14 @@ public class ViewReportTab extends AeTab {
     	// so simply return in this case
     	if(isSuperUser) return renderSubmitLink;
     	
-
-    	
-    	// We update reportSubmittability based on workflow if the workflow is enabled at the System level first
-        boolean isReviewerAtCC = isUserAEReviewer(command.getStudy());
-        
-    		
         // Now we have to check again whether the worklow is enabled for each individual report
         // If the workflow is disabled for a report then canLoggedInUserSubmit will determine the reportSubmittability
-        // else if the workflow is enabled for a report then only reviewer at the coordinating center can submit
-        // the report
+        // else if the workflow is enabled for a report then check if the logged in user can submit the report and the report is submittable i.e.
+    	// it should be in Finalize Report and Submit status.
         for(Report report: command.getAeReport().getActiveReports()){
             if(report.isWorkflowEnabled()){
                 boolean canSubmit = renderSubmitLink.get(report.getId());
-                renderSubmitLink.put(report.getId(), canSubmit && isReviewerAtCC);
+                renderSubmitLink.put(report.getId(), canSubmit && (report.getReviewStatus() == ReviewStatus.FINALIZE_REPORT_AND_SUBMIT));
             }
         }
         
