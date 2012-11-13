@@ -80,7 +80,7 @@ public class IndexEntry {
     */
     @Override
     public String toString() {
-        return " String.valueOf(entityId) ,  [" + String.valueOf(roles) + "]";
+        return String.valueOf(entityId) + ", [" + String.valueOf(roles) + "]\r\n";
     }
 }
 

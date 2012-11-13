@@ -41,6 +41,7 @@ public class CaaersOrganizationIdFetcherImpl extends  AbstractIdFetcher implemen
 
         //find all the accessible organization ids
         List<IndexEntry> organizationIndexEntryList = getCaaersSecurityFacade().getAccessibleOrganizationIds(loginId);
+        if(log.isInfoEnabled()) log.info(" Organization Index entries obtained from CSM {" + String.valueOf(organizationIndexEntryList) + "}");
         if(CollectionUtils.isEmpty(organizationIndexEntryList)) return organizationIndexEntryList;
 
         //if there is only all sites ?
@@ -52,10 +53,11 @@ public class CaaersOrganizationIdFetcherImpl extends  AbstractIdFetcher implemen
         if(CollectionUtils.isEmpty(studyIndexEntryList)) return studyIndexEntryList;
 
         //now pull out all study organization details from database.
-        NativeSQLQuery studySiteQuery = new NativeSQLQuery("select study_identifier, site_id, type from study_organizations where retired_indicator <> 1 order by study_identifier");
+        NativeSQLQuery studySiteQuery = new NativeSQLQuery("select study_identifier, site_id, type from study_organizations where retired_indicator <> :ri order by study_identifier");
         studySiteQuery.setScalar("study_identifier", StandardBasicTypes.INTEGER);
         studySiteQuery.setScalar("site_id", StandardBasicTypes.INTEGER);
         studySiteQuery.setScalar("type", StandardBasicTypes.STRING);
+        studySiteQuery.setParameter("ri", true);
 
         List<Object[]> studyOrgDataList = (List<Object[]>) search(studySiteQuery);
         if(studyOrgDataList == null || studyOrgDataList.isEmpty()) return organizationIndexEntryList;
@@ -124,6 +126,7 @@ public class CaaersOrganizationIdFetcherImpl extends  AbstractIdFetcher implemen
                          organizationIndexEntryMap.put(managedOrgId, managedOrgIndexEntry);
                      }
                      managedOrgIndexEntry.addRole(sponsorOrgIndexEntry.getRoles());
+                     if(log.isInfoEnabled()) log.info("Transitive Organization Index Entry " +  String.valueOf( managedOrgIndexEntry) + " via Study " + studyId + " , sponsors [" + sponsorOrgId + "]");
                  }
                  
              }
