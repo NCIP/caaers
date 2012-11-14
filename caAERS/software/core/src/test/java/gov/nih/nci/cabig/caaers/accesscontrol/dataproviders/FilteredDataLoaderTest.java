@@ -51,8 +51,8 @@ public class FilteredDataLoaderTest extends AbstractTestCase {
         iList.add(i0);
         iList.add(i1);
         
-        EasyMock.expect(orgIdFetcher.fetch("SYSTEM")).andReturn(iList);
-        orgIndexDao.updateIndex("SYSTEM", iList);
+        EasyMock.expect(orgIdFetcher.fetch("SYSTEM_ADMIN")).andReturn(iList);
+        orgIndexDao.updateIndex("SYSTEM_ADMIN", iList);
         EasyMock.expectLastCall().anyTimes();
         
         replayMocks();

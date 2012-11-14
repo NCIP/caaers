@@ -89,6 +89,9 @@
 		object_id="gov.nih.nci.cabig.caaers.domain.CaaersFieldDefinition"
 		privilege="READ"/>
 
+	<study_organizations />
+	<study_site_wf_cfgs />
+	<disease_terminologies />
 	<investigational_new_drugs />    
     <ind_holders />		
 	<investigators/>

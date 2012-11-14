@@ -44,8 +44,7 @@ public class CaaersSecurityFacadeTest extends CaaersDaoTestCase{
 		session.replaceRole(provisioningSessionFactory.createSuiteRoleMembership(SuiteRole.AE_REPORTER).forSites("A","B","C","D","E","F","G","H","I","J"));
 		
 		List<IndexEntry> list = caaersSecurityFacade.getAccessibleOrganizationIds("testuser1");
-		assertEquals(1,list.size());
-		//assertEquals(10, list.get(0).getEntityIds().size());
+		assertEquals(10,list.size());
 		
 		session.deleteRole(SuiteRole.AE_REPORTER);
 	}
@@ -68,8 +67,7 @@ public class CaaersSecurityFacadeTest extends CaaersDaoTestCase{
 		ProvisioningSession session = provisioningSessionFactory.createSession(csmUser.getUserId());
 		session.replaceRole(provisioningSessionFactory.createSuiteRoleMembership(SuiteRole.AE_REPORTER).forAllSites().forStudies("N7028","6307"));
 		List<IndexEntry> list = caaersSecurityFacade.getAccessibleStudyIds("testuser1");
-		assertEquals(1,list.size());
-	//	assertEquals(2,list.get(0).getEntityIds().size());
+		assertEquals(2,list.size());
 		
 		session.deleteRole(SuiteRole.AE_REPORTER);
 	}

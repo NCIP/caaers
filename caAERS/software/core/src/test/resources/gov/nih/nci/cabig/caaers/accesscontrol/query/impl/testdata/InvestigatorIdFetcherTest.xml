@@ -41,14 +41,22 @@
      	id="-1"
      	login_id = "test-user"
      	organization_id = "-1000"
-         role_code="-103"
+        r_101="1"
+        r_102="1"
+        r_103="1"
+        r_117="1"
+        r_123="1"
      />     
 
      <organization_index
      	id="-2"
      	login_id = "test-user2"
      	organization_id = "-1001"
-          role_code="-103"
+        r_101="1"
+        r_102="1"
+        r_103="1"
+        r_117="1"
+        r_123="1"
      /> 
      
      <studies
