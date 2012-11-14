@@ -5,7 +5,7 @@
 
     <!-- for testing, purge the log on each run -->
     <appender name="caAERSLogFile" class="org.apache.log4j.RollingFileAppender">
-        <param name="maxBackupIndex" value="20"/>
+        <param name="maxBackupIndex" value="40"/>
         <param name="file" value="${catalina.home}/logs/caaers.log"/>
         <param name="threshold" value="DEBUG"/>
         <param name="append" value="true"/>
@@ -13,41 +13,9 @@
             <param name="conversionPattern" value="caAERS-webapp-%d [%15t] %-5p %c %x: %m%n"/>
         </layout>
     </appender>
-    
-
-	<logger name="gov.nih.nci.cabig.caaers" additivity="false">
-        <level value="ERROR"/>
-    </logger>
-	<logger name="gov.nih.nci.cabig.caaers.domain.repository" additivity="false">
-        <level value="INFO"/>
-    </logger>
-	<logger name="gov.nih.nci.cabig.caaers.web.listener" additivity="false">
-        <level value="ERROR"/>
-    </logger>
-    <logger name="org.apache.jackrabbit" additivity="false">
-        <level value="ERROR"/>
-    </logger>
-	<logger name="gov.nih.nci.cabig.caaers.accesscontrol" additivity="false">
-        <level value="ERROR"/>
-    </logger>    
-	<logger name="gov.nih.nci.cabig.caaers.security" additivity="false">
-        <level value="ERROR"/>
-    </logger>
-    <logger name="gov.nih.nci.cabig.caaers.audit.AuditUtils" additivity="false">
-        <level value="ERROR"/>
-    </logger>
-    <logger name="gov.nih.nci.cabig.caaers.service.SafetyMonitoringServiceImpl" additivity="false">
-        <level value="ERROR"/>
-    </logger>
-    <logger name="gov.nih.nci.cabig.caaers.web" additivity="false">
-        <level value="ERROR"/>
-    </logger>
-    <logger name="gov.nih.nci.cabig.caaers.web.filters" additivity="false">
-        <level value="ERROR"/>
-    </logger>
 
 	<root>
-	  <level value="ERROR"/>
+	  <level value="DEBUG"/>
 	  	<appender-ref ref="caAERSLogFile"/>
 	</root>
 
