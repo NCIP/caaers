@@ -19,9 +19,9 @@ public class InvestigatorIdFetcherTest extends CaaersDaoTestCase {
 	
 	public void testFetch() {
 		 List<IndexEntry> list  = ( List<IndexEntry> )investigatorIdFetcher.fetch("test-user");
-		assertEquals(2,list.size());
+		assertEquals(1,list.size());
 		
 		list = ( List<IndexEntry> )investigatorIdFetcher.fetch("test-user2");
-		assertEquals(2,list.size());
+		assertEquals(1,list.size());
 	}
 }
