@@ -75,9 +75,9 @@ public abstract class AbstractIndexDao extends JdbcDaoSupport {
      * @return   - a list of distinct rolenames
      */
     public List<String> findAssociatedRoleNames(String loginId, Integer id){
-    	final String columns = "R_101,R_102,R_103,R_104,R_105,R_106,R_107,R_108,R_109,R_110,R_11,R_112,R_113,R_114,R_115,R_116,R_117,R_118,R_119,R_120,R_121,R_122,R_123,R_7942,R_7943";
+    	final String columns = "R_101,R_102,R_103,R_104,R_105,R_106,R_107,R_108,R_109,R_110,R_111,R_112,R_113,R_114,R_115,R_116,R_117,R_118,R_119,R_120,R_121,R_122,R_123,R_7942,R_7943";
     	
-        StringBuffer sb = new StringBuffer("select" +  columns + " from ")
+        StringBuffer sb = new StringBuffer("select " +  columns + " from ")
                 .append(indexTableName())
                 .append(" where login_id = '").append(loginId)
                 .append("' and ")
@@ -90,8 +90,7 @@ public abstract class AbstractIndexDao extends JdbcDaoSupport {
             	for ( String column : columns.split(",")) {
             		boolean val = rs.getBoolean(column);
             		if ( val ) {
-            			int roleCode = Integer.parseInt(column.split("_")[1]);
-            			roleNames.add(UserGroupType.getByCode(roleCode).getCsmName());
+            			roleNames.add(UserGroupType.getByColumnName(column).getCsmName());
             		}
             	}
                 return null;
