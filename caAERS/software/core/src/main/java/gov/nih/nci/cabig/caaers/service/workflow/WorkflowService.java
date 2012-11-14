@@ -39,12 +39,14 @@ public interface WorkflowService{
 	String VAR_WF_TYPE = "var_wf_type";
 	String VAR_WF_STUDY_NAME = "var_wf_studyName";
 	String VAR_WF_SUBJECT_NAME = "var_wf_subjectName";
+	String VAR_WF_COURSE_NAME = "var_wf_courseName";
 
 	//Replacement key for emails
 	String REPLACEMENT_REPORTING_PERIOD_LINK = "REPORTING_PERIOD_LINK";
 	String REPLACEMENT_EXPEDITED_REPORT_LINK = "EXPEDITED_REPORT_LINK";
 	String REPLACEMENT_STUDY = "STUDY";
 	String REPLACEMENT_SUBJECT = "SUBJECT";
+	String REPLACEMENT_COURSE = "COURSE";
 
 	
 	String URL_REPORTING_PERIOD = "/pages/ae/reviewResolver?adverseEventReportingPeriod=";

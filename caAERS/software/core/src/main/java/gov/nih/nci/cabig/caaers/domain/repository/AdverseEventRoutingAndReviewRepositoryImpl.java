@@ -94,6 +94,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		variables.put(WorkflowService.VAR_REPORTING_PERIOD_ID, reportingPeriod.getId());
 		variables.put(WorkflowService.VAR_WF_STUDY_NAME, studySite.getStudy().getDisplayName());
 		variables.put(WorkflowService.VAR_WF_SUBJECT_NAME, assignment.getParticipant().getFullName());
+		variables.put(WorkflowService.VAR_WF_COURSE_NAME, reportingPeriod.getName());
 
 		ProcessInstance pInstance = workflowService.createProcessInstance(wfConfig.getWorkflowDefinitionName(), variables);
 		
@@ -129,7 +130,8 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		variables.put(WorkflowService.VAR_EXPEDITED_REPORT_ID, report.getAeReport().getId());
         variables.put(WorkflowService.VAR_WF_STUDY_NAME, studySite.getStudy().getDisplayName());
         variables.put(WorkflowService.VAR_WF_SUBJECT_NAME, assignment.getParticipant().getFullName());
-		
+        variables.put(WorkflowService.VAR_WF_COURSE_NAME, report.getAeReport().getReportingPeriod().getName());
+
 		ProcessInstance pInstance = workflowService.createProcessInstance(wfConfig.getWorkflowDefinitionName(), variables);
 		
 
