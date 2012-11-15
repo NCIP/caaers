@@ -191,16 +191,18 @@
                                 else {
                                     $('aeReport.physicianSignOff').checked = false;
                                 }
-                                createAE.refreshSubmitReportValidationSection(function(output) {
-                                    var ajaxResult = output;
-                                    if (ajaxResult.error) {
-                                        caaersLog(ajaxResult.errorMessage);
-                                    } else {
-										caaersLog(output.htmlContent);
-                                        //$('report-validation-section').innerHTML = output.htmlContent;
-                                        routingHelper.retrieveReviewComments(reportId);
-                                    }
-                                });
+                                updatePhysicianSignOff();
+
+//                                createAE.refreshSubmitReportValidationSection(function(output) {
+//                                    var ajaxResult = output;
+//                                    if (ajaxResult.error) {
+//                                        caaersLog(ajaxResult.errorMessage);
+//                                    } else {
+//										caaersLog(output.htmlContent);
+//                                        //$('report-validation-section').innerHTML = output.htmlContent;
+//                                        routingHelper.retrieveReviewComments(reportId);
+//                                    }
+//                                });
                             }
                         }
                         alert('The action: "' + value + '" was taken.');
