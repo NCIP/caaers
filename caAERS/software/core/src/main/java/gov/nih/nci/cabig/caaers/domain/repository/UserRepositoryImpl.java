@@ -374,8 +374,11 @@ public class UserRepositoryImpl implements UserRepository {
      * @param user the user
      */
     protected void sendUpdateAccountEmail(User user){
+        String emailSubject = getMessageSource().getMessage("updateAccountEmail.subject",null, "Your updated caAERS account", Locale.getDefault());
+        String emailText = getMessageSource().getMessage("updateAccountEmail.subject", null, "Your caAERS account has been updated", Locale.getDefault());
+
     	if ("local".equals(getAuthenticationMode())) {
-    		sendUserEmail(user.getCsmUser().getEmailId(), "Your updated caAERS account", "Your caAERS account has been updated");  // annoying for development
+    		sendUserEmail(user.getCsmUser().getEmailId(), emailSubject, emailText);  // annoying for development
     	}
     }
 
