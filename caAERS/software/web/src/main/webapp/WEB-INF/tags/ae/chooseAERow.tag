@@ -10,15 +10,15 @@
 
 <c:set var="widgetId" value="${ae1.id}" />
 <c:set var= "dash" value="--" />
-<c:set var="t1" value="${ empty ae1.term.displayName ? dash : ae1.term.displayName }" />
+<c:set var="t1" value="${ empty caaers:escapeJS(ae1.term.displayName) ? dash : caaers:escapeJS(ae1.term.displayName) }" />
 <c:set var="src1" value="${ empty ae1.source ? dash : ae1.source }" />
-<c:set var="e1" value="${ empty ae1.externalID ? dash : ae1.externalID }" />
-<c:set var="g1" value="${empty ae1.grade ? dash : ae1.grade }" />
+<c:set var="e1" value="${ empty caaers:escapeJS(ae1.externalID) ? dash : caaers:escapeJS(ae1.externalID) }" />
+<c:set var="g1" value="${empty caaers:escapeJS(ae1.grade) ? dash : caaers:escapeJS(ae1.grade) }" />
 <c:set var="sd1" value="${empty ae1.startDate ? dash : ae1.startDate }" />
 <c:set var="ed1" value="${empty  ae1.endDate  ? dash : ae1.endDate}" />
-<c:set var="v1" value="${empty  ae1.verbatim ? dash : ae1.verbatim }" />
-<c:set var="s1" value="${empty  ae1.whySerious ? dash : ae1.whySerious}" />
-<c:set var="a1" value="${empty  ae1.attribution ? dash :  ae1.attribution }" />
+<c:set var="v1" value="${empty  caaers:escapeJS(ae1.verbatim) ? dash : caaers:escapeJS(ae1.verbatim) }" />
+<c:set var="s1" value="${empty  caaers:escapeJS(ae1.whySerious) ? dash : caaers:escapeJS(ae1.whySerious)}" />
+<c:set var="a1" value="${empty  caaers:escapeJS(ae1.attribution) ? dash :  caaers:escapeJS(ae1.attribution) }" />
 
 <c:if test="${rejected}">
     <script type="text/javascript">
