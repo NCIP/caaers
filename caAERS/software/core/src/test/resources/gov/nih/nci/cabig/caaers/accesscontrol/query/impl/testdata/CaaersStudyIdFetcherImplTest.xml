@@ -1,0 +1,135 @@
+<dataset>
+
+
+    <ORGANIZATIONS
+            id="-999"
+            name="New Site"
+            grid_id="gridSite"
+            nci_institute_code="A"
+            description_text="New Site"
+
+            />
+
+    <ORGANIZATIONS
+            id="-1001"
+            name="New Site"
+            grid_id="gridSite"
+            nci_institute_code="A"
+            />
+
+    <ORGANIZATIONS
+            id="-1002"
+            name="Another Site"
+            grid_id="anotherGridSite"
+            nci_institute_code="B"
+            />
+
+    <ORGANIZATIONS
+            id="-1003"
+            name="default"
+            grid_id="defaultGridSite"
+            nci_institute_code="C"
+            />
+    <ORGANIZATIONS
+            id="-1004"
+            version="1"
+            name="NCI"
+            description_text="NCI"
+            nci_institute_code="NCI"
+            />
+
+    <caaers_users id="-1"  login_name="1000@def.com" />
+    <RESEARCH_STAFFS
+            id="-1000"
+            first_name="Bill"
+            last_name="Gates"
+            email_address="1000@def.com"
+            phone_number="123-456-789"
+            nci_identifier="nci id"
+            user_id="-1"/>
+
+    <SITE_RESEARCH_STAFFS
+            id="-9001"
+            site_id="-1001"
+            researchstaff_id="-1000"/>
+
+    <site_rs_staff_roles
+            id="-6001"
+            site_research_staffs_id="-9001"
+            role_code="ae_reporter"
+            start_date="2008-01-01"
+            />
+
+
+    <STUDIES
+            id="-2"
+            multi_institution_indicator="0"
+            short_title="Short Title 2"
+            long_title="Long Title 2"
+            description="Description 2"
+            grid_id=""
+            load_status="1"
+            />
+            
+    <STUDIES
+            id="-3"
+            multi_institution_indicator="0"
+            short_title="Short Title 3"
+            long_title="Long Title 3"
+            description="Description 3"
+            grid_id=""
+            load_status="1"
+            />
+    <STUDIES
+            id="-4"
+            multi_institution_indicator="0"
+            short_title="Short Title 4"
+            long_title="Long Title 4"
+            description="Description 4"
+            grid_id=""
+            load_status="1"
+            />               
+
+    <STUDY_ORGANIZATIONS
+               id="-1000"
+               start_date="2006-10-10"
+               study_id="-4"
+               site_id="-1001"
+               type="SCC"/>
+
+    <STUDY_ORGANIZATIONS
+               id="-1001"
+              start_date="2006-10-10"
+               study_id="-2"
+               site_id="-999"
+               type="SFS"/>
+
+    <STUDY_ORGANIZATIONS
+               id="-1002"
+              start_date="2006-10-10"
+               study_id="-3"
+               site_id="-1003"
+               type="SST"/>
+
+     <study_personnel id="-9"
+       study_sites_id="-1000"
+       retired_indicator="0"
+       start_date="2006-10-01"
+       site_research_staffs_id="-9001"
+            />
+
+    <organization_index id="1" organization_id="-1001" login_id="test" r_117 = "1" r_123 = "1" />
+    <organization_index id="2" organization_id="-999" login_id="test"  r_117 = "1" r_123 = "1" />
+    <organization_index id="3" organization_id="-1003" login_id="test" r_117 = "1" r_123 = "1" />
+    
+    <investigational_new_drugs/>
+    <ind_holders/>
+    <investigators/>
+    <site_investigators/>
+    <study_investigators />
+    <investigator_index />
+    <ae_report_people />
+    <contact_mechanisms />
+    <ind_holders />
+    <identifiers />
+</dataset>
