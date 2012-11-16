@@ -3,7 +3,6 @@ package gov.nih.nci.cabig.caaers.domain.dto;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.StringEscapeUtils;
 
 import java.text.ParseException;
 import java.util.*;
@@ -294,12 +293,12 @@ public class AdverseEventDTO {
         ae.setSource(ReconciliationSystem.FORCE.getDisplayName());
         ae.setTerm(new TermDTO());
         ae.setId(eae.getId());
-        ae.setExternalID(StringEscapeUtils.escapeJavaScript(eae.getExternalId()));
-        ae.getTerm().setCode(StringEscapeUtils.escapeJavaScript(eae.getAdverseEventTermCode()));
-        if(!isEmpty(eae.getAdverseEventTerm()))ae.getTerm().setName(StringEscapeUtils.escapeJavaScript(eae.getAdverseEventTerm()));
-        ae.getTerm().setOtherSpecify(StringEscapeUtils.escapeJavaScript(eae.getAdverseEventTermOtherValue()));
+        ae.setExternalID(eae.getExternalId());
+        ae.getTerm().setCode(eae.getAdverseEventTermCode());
+        if(!isEmpty(eae.getAdverseEventTerm()))ae.getTerm().setName(eae.getAdverseEventTerm());
+        ae.getTerm().setOtherSpecify(eae.getAdverseEventTermOtherValue());
         if(eae.getGrade() != null) {
-            ae.setGrade(StringEscapeUtils.escapeJavaScript(eae.getGrade().getShortName()));
+            ae.setGrade(eae.getGrade().getShortName());
         } else {
             ae.setGrade(dash);
         }
@@ -314,17 +313,17 @@ public class AdverseEventDTO {
             ae.setEndDate(dash);
         }
         if(!isEmpty(eae.getVerbatim())){
-           ae.setVerbatim(StringEscapeUtils.escapeJavaScript(eae.getVerbatim()));
+           ae.setVerbatim(eae.getVerbatim());
         } else {
            ae.setVerbatim(dash);
         }
         if(!isEmpty(eae.getHowSerious())){
-            ae.setWhySerious(StringEscapeUtils.escapeJavaScript(eae.getHowSerious()));
+            ae.setWhySerious(eae.getHowSerious());
         } else {
             ae.setWhySerious(dash);
         }
         if(!isEmpty(eae.getAttribution())){
-            ae.setAttribution(StringEscapeUtils.escapeJavaScript(eae.getAttribution()));
+            ae.setAttribution(eae.getAttribution());
         } else {
             ae.setAttribution(dash);
         }
@@ -336,22 +335,22 @@ public class AdverseEventDTO {
         ae.setSource(ReconciliationSystem.CAAERS.getDisplayName());
         ae.setTerm(new TermDTO());
         ae.setId(iae.getId());
-        ae.setExternalID(StringEscapeUtils.escapeJavaScript(iae.getExternalId()));
+        ae.setExternalID(iae.getExternalId());
         if(iae.getAdverseEventCtcTerm() != null){
             ae.getTerm().setId(iae.getAdverseEventCtcTerm().getTerm().getId());
-            ae.getTerm().setCode(StringEscapeUtils.escapeJavaScript(iae.getAdverseEventCtcTerm().getTerm().getCtepCode()));
-            ae.getTerm().setName(StringEscapeUtils.escapeJavaScript(iae.getAdverseEventCtcTerm().getTerm().getFullName()));
-            if(iae.getLowLevelTerm() != null)ae.getTerm().setOtherSpecify(StringEscapeUtils.escapeJavaScript(valueOf(iae.getLowLevelTerm().getFullName())));
+            ae.getTerm().setCode(iae.getAdverseEventCtcTerm().getTerm().getCtepCode());
+            ae.getTerm().setName(iae.getAdverseEventCtcTerm().getTerm().getFullName());
+            if(iae.getLowLevelTerm() != null)ae.getTerm().setOtherSpecify(valueOf(iae.getLowLevelTerm().getFullName()));
         }else if(iae.getAdverseEventMeddraLowLevelTerm() != null){
             ae.getTerm().setId(iae.getAdverseEventMeddraLowLevelTerm().getTerm().getId());
-            ae.getTerm().setCode(StringEscapeUtils.escapeJavaScript(iae.getAdverseEventMeddraLowLevelTerm().getTerm().getMeddraCode()));
-            ae.getTerm().setName(StringEscapeUtils.escapeJavaScript(iae.getAdverseEventMeddraLowLevelTerm().getTerm().getFullName()));
+            ae.getTerm().setCode(iae.getAdverseEventMeddraLowLevelTerm().getTerm().getMeddraCode());
+            ae.getTerm().setName(iae.getAdverseEventMeddraLowLevelTerm().getTerm().getFullName());
         } else {
             ae.getTerm().setName(dash);
         }
 
         if(iae.getGrade() != null) {
-            ae.setGrade(StringEscapeUtils.escapeJavaScript(iae.getGrade().getShortName()));
+            ae.setGrade(iae.getGrade().getShortName());
         }else{
             ae.setGrade(dash);
         }
@@ -369,7 +368,7 @@ public class AdverseEventDTO {
         }
 
         if(!isEmpty(iae.getDetailsForOther())){
-            ae.setVerbatim(StringEscapeUtils.escapeJavaScript(iae.getDetailsForOther()));
+            ae.setVerbatim(iae.getDetailsForOther());
         } else {
             ae.setVerbatim(dash);
         }
@@ -391,7 +390,7 @@ public class AdverseEventDTO {
         }
 
         if(iae.getAttributionSummary() != null) {
-            ae.setAttribution(StringEscapeUtils.escapeJavaScript(iae.getAttributionSummary().getDisplayName()) );
+            ae.setAttribution(iae.getAttributionSummary().getDisplayName() );
         } else {
             ae.setAttribution(dash);
         }

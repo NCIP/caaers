@@ -10,13 +10,13 @@
 <%@attribute name="cssClass"  %>
     <c:set var="widgetId" value="${ae1.id}" />
     <c:set var= "dash" value="--" />
-    <c:set var="t1" value="${ae1.term.displayName}" />
-    <c:set var="t2" value="${ae2.term.displayName}" />
-    <c:set var="t3" value="${ae3.term.displayName}" />
+    <c:set var="t1" value="${caaers:escapeJS(ae1.term.displayName)}" />
+    <c:set var="t2" value="${caaers:escapeJS(ae2.term.displayName)}" />
+    <c:set var="t3" value="${caaers:escapeJS(ae3.term.displayName)}" />
 
-    <c:set var="g1" value="${ ae1.grade }" />
-    <c:set var="g2" value="${  ae2.grade }" />
-    <c:set var="g3" value="${  ae3.grade }" />
+    <c:set var="g1" value="${caaers:escapeJS(ae1.grade)}" />
+    <c:set var="g2" value="${caaers:escapeJS(ae2.grade)}" />
+    <c:set var="g3" value="${caaers:escapeJS(ae3.grade)}" />
 
     <c:set var="sd1" value="${ ae1.startDate  }" />
     <c:set var="sd2" value="${  ae2.startDate  }" />
@@ -26,17 +26,17 @@
     <c:set var="ed2" value="${  ae2.endDate }" />
     <c:set var="ed3" value="${  ae3.endDate }" />
 
-    <c:set var="v1" value="${  ae1.verbatim }" />
-    <c:set var="v2" value="${  ae2.verbatim }" />
-    <c:set var="v3" value="${  ae3.verbatim }" />
+    <c:set var="v1" value="${caaers:escapeJS(ae1.verbatim)}" />
+    <c:set var="v2" value="${caaers:escapeJS(ae2.verbatim)}" />
+    <c:set var="v3" value="${caaers:escapeJS(ae3.verbatim)}" />
 
-    <c:set var="s1" value="${  ae1.whySerious }" />
-    <c:set var="s2" value="${  ae2.whySerious }" />
-    <c:set var="s3" value="${  ae3.whySerious }" />
+    <c:set var="s1" value="${caaers:escapeJS(ae1.whySerious)}" />
+    <c:set var="s2" value="${caaers:escapeJS(ae2.whySerious)}" />
+    <c:set var="s3" value="${caaers:escapeJS(ae3.whySerious)}" />
 
-    <c:set var="a1" value="${  ae1.attribution }" />
-    <c:set var="a2" value="${  ae2.attribution }" />
-    <c:set var="a3" value="${  ae3.attribution }" />
+    <c:set var="a1" value="${caaers:escapeJS(ae1.attribution)}" />
+    <c:set var="a2" value="${caaers:escapeJS(ae2.attribution)}" />
+    <c:set var="a3" value="${caaers:escapeJS(ae3.attribution)}" />
 
     <c:set var="mmkey" value="${ae1.id}_${ae2.id}"  />
 

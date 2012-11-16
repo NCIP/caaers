@@ -9,9 +9,9 @@
 <%@attribute name="cssClass" %>
 
   <tr class="${cssClass}">
-    <c:if test="${showExternalID}"><td  class="${cssClass}"> ${empty ae.externalId ? requestScope.dash : ae.externalId}</td></c:if>
-    <td  class="${cssClass}"> ${ae.termName}</td>
-    <td  class="${cssClass}"> ${empty ae.grade ? '' : ae.grade.shortName}</td>
+    <c:if test="${showExternalID}"><td  class="${cssClass}"> ${empty caaers:escapeJS(ae.externalId) ? requestScope.dash : caaers:escapeJS(ae.externalId)}</td></c:if>
+    <td  class="${cssClass}"> ${caaers:escapeJS(ae.termName)}</td>
+    <td  class="${cssClass}"> ${empty caaers:escapeJS(ae.grade) ? '' : caaers:escapeJS(ae.grade.shortName)}</td>
     <td  class="${cssClass}">
         <c:if test="${not empty ae.startDate}">
             <tags:formatDate value="${ae.startDate}" />
@@ -22,9 +22,9 @@
             <tags:formatDate value="${ae.endDate}" />
         </c:if>
     </td>
-    <td  class="${cssClass}"> ${empty ae.verbatim ? requestScope.dash  : ae.verbatim}</td>
-    <td  class="${cssClass}"> ${empty ae.whySerious ? requestScope.dash  : ae.whySerious}</td>
-    <td  class="${cssClass}"> ${empty ae.attribution ? requestScope.dash : ae.attribution.displayName}</td>
+    <td  class="${cssClass}"> ${empty caaers:escapeJS(ae.verbatim) ? requestScope.dash  : caaers:escapeJS(ae.verbatim)}</td>
+    <td  class="${cssClass}"> ${empty caaers:escapeJS(ae.whySerious) ? requestScope.dash  : caaers:escapeJS(ae.whySerious)}</td>
+    <td  class="${cssClass}"> ${empty caaers:escapeJS(ae.attribution) ? requestScope.dash : caaers:escapeJS(ae.attribution.displayName)}</td>
 </tr>
 <c:if test="${not empty displayError && displayError eq 'true'}">
     <tr class="error">

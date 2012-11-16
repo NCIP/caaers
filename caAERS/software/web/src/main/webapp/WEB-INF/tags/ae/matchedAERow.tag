@@ -21,13 +21,13 @@
     <c:if test="${not empty ae1}">
         <tr id="aewd-${widgetId}-tr-iae" class="tr-ae1">
             <td width="${requestScope.widthSource}" class="tr-ae1-c1">${ae1.source}</td>
-            <td width="${requestScope.widthTerm}" class="tr-ae1-c2"> ${ae1.term.displayName}</td>
-            <td width="${requestScope.widthGrade}" class="tr-ae1-c3">${ae1.grade}</td>
+            <td width="${requestScope.widthTerm}" class="tr-ae1-c2"> ${caaers:escapeJS(ae1.term.displayName)}</td>
+            <td width="${requestScope.widthGrade}" class="tr-ae1-c3">${caaers:escapeJS(ae1.grade)}</td>
             <td width="${requestScope.widthStartDate}" class="tr-ae1-c4">${ae1.startDate}</td>
             <td width="${requestScope.widthEndDate}" class="tr-ae1-c5">${ae1.endDate}</td>
-            <td width="${requestScope.widthVerbatim}" class="tr-ae1-c6">${ae1.verbatim}</td>
-            <td width="${requestScope.widthWhySerious}" class="tr-ae1-c7">${ae1.whySerious}</td>
-            <td width="${requestScope.widthAttribution}" class="tr-ae1-c8">${ae1.attribution}</td>
+            <td width="${requestScope.widthVerbatim}" class="tr-ae1-c6">${caaers:escapeJS(ae1.verbatim)}</td>
+            <td width="${requestScope.widthWhySerious}" class="tr-ae1-c7">${caaers:escapeJS(ae1.whySerious)}</td>
+            <td width="${requestScope.widthAttribution}" class="tr-ae1-c8">${caaers:escapeJS(ae1.attribution)}</td>
             <td width="${requestScope.widthActions}" class="actionBtns tr-ae1-c9">
                 <div id="aewd-${widgetId}-div-edit" style="${empty ae2 ? 'display:none;' : ''}" class="wgtBtnDiv">
                     <tags:button  id="aewd-${widgetId}-btn-edit" value="Edit" color="blue" size="small" cssClass="wgtBtn wgtBtnEdit" type="button" icon="edit"
@@ -56,13 +56,13 @@
     </c:if>
         <tr id="aewd-${widgetId}-tr-eae" style="${empty ae2 ? 'display:none;' : ''}" class="tr-ae2">
             <td width="${requestScope.widthSource}" class="eae tr-ae2-c1">${ae2.source}</td>
-            <td width="${requestScope.widthTerm}"  class="eae tr-ae2-c2">${ae2.term.displayName}</td>
-            <td width="${requestScope.widthGrade}"  class="eae tr-ae2-c3">${ae2.grade}</td>
+            <td width="${requestScope.widthTerm}"  class="eae tr-ae2-c2">${caaers:escapeJS(ae2.term.displayName)}</td>
+            <td width="${requestScope.widthGrade}"  class="eae tr-ae2-c3">${caaers:escapeJS(ae2.grade)}</td>
             <td width="${requestScope.widthStartDate}"  class="eae tr-ae2-c4">${ae2.startDate}</td>
             <td width="${requestScope.widthEndDate}"  class="eae tr-ae2-c5">${ae2.endDate}</td>
-            <td width="${requestScope.widthVerbatim}"  class="eae tr-ae2-c6">${ae2.verbatim}</td>
-            <td width="${requestScope.widthWhySerious}"  class="eae tr-ae2-c7">${ae2.whySerious}</td>
-            <td width="${requestScope.widthAttribution}"  class="eae tr-ae2-c8">${ae2.attribution}</td>
+            <td width="${requestScope.widthVerbatim}"  class="eae tr-ae2-c6">${caaers:escapeJS(ae2.verbatim)}</td>
+            <td width="${requestScope.widthWhySerious}"  class="eae tr-ae2-c7">${caaers:escapeJS(ae2.whySerious)}</td>
+            <td width="${requestScope.widthAttribution}"  class="eae tr-ae2-c8">${caaers:escapeJS(ae2.attribution)}</td>
             <td width="${requestScope.widthActions}" class="eae tr-ae2-c9">
               &nbsp;
             </td>

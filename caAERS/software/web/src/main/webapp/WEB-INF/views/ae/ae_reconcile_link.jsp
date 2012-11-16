@@ -81,43 +81,43 @@ function boostrapVariables(){
 <tags:noform>
 //rejected - external
 <c:forEach var="ae" items="${command.rejectedExternalAeList}" varStatus="o" >
-    var o_${o.index} = new AE.ae(${ae.id}, "${ae.externalID}", ${ae.term.id}, "${ae.term.code}",
-            "${ae.term.name}", "${ae.term.otherSpecify}",
-            "${ae.grade}", "${ae.startDate}", "${ae.endDate}",
-            "${ae.verbatim}", "${ae.whySerious}", "${ae.attribution}", "${ae.source}", "${ae.rejected}") ;
+    var o_${o.index} = new AE.ae(${ae.id}, "${caaers:escapeJS(ae.externalID)}", ${ae.term.id}, "${caaers:escapeJS(ae.term.code)}",
+            "${caaers:escapeJS(ae.term.name)}", "${caaers:escapeJS(ae.term.otherSpecify)}",
+            "${caaers:escapeJS(ae.grade)}", "${ae.startDate}", "${ae.endDate}",
+            "${caaers:escapeJS(ae.verbatim)}", "${caaers:escapeJS(ae.whySerious)}", "${caaers:escapeJS(ae.attribution)}", "${ae.source}", "${ae.rejected}") ;
     AE.externalAEHash.set(${ae.id}, o_${o.index});
     AE.eRejected.push(${ae.id});
 </c:forEach>
             //unmapped - external
 <c:forEach var="ae" items="${command.unMappedExternalAeList}" varStatus="p">
-    var p_${p.index} = new AE.ae(${ae.id}, "${ae.externalID}", ${ae.term.id}, "${ae.term.code}",
-            "${ae.term.name}", "${ae.term.otherSpecify}",
-            "${ae.grade}", "${ae.startDate}", "${ae.endDate}",
-            "${ae.verbatim}", "${ae.whySerious}", "${ae.attribution}", "${ae.source}", "${ae.rejected}") ;
+    var p_${p.index} = new AE.ae(${ae.id}, "${caaers:escapeJS(ae.externalID)}", ${ae.term.id}, "${caaers:escapeJS(ae.term.code)}",
+            "${caaers:escapeJS(ae.term.name)}", "${caaers:escapeJS(ae.term.otherSpecify)}",
+            "${caaers:escapeJS(ae.grade)}", "${ae.startDate}", "${ae.endDate}",
+            "${caaers:escapeJS(ae.verbatim)}", "${caaers:escapeJS(ae.whySerious)}", "${caaers:escapeJS(ae.attribution)}", "${ae.source}", "${ae.rejected}") ;
     AE.externalAEHash.set(${ae.id}, p_${p.index});
     AE.eUnmapped.push(${ae.id});
 </c:forEach>
             //unmapped - internal
 <c:forEach var="ae" items="${command.unMappedInternalAeList}" varStatus="q">
-    var q_${q.index} = new AE.ae(${ae.id}, "${ae.externalID}", ${ae.term.id}, "${ae.term.code}",
-            "${ae.term.name}", "${ae.term.otherSpecify}",
-            "${ae.grade}", "${ae.startDate}", "${ae.endDate}",
-            "${ae.verbatim}", "${ae.whySerious}", "${ae.attribution}", "${ae.source}", "${ae.rejected}") ;
+    var q_${q.index} = new AE.ae(${ae.id}, "${caaers:escapeJS(ae.externalID)}", ${ae.term.id}, "${caaers:escapeJS(ae.term.code)}",
+            "${caaers:escapeJS(ae.term.name)}", "${caaers:escapeJS(ae.term.otherSpecify)}",
+            "${caaers:escapeJS(ae.grade)}", "${ae.startDate}", "${ae.endDate}",
+            "${caaers:escapeJS(ae.verbatim)}", "${caaers:escapeJS(ae.whySerious)}", "${caaers:escapeJS(ae.attribution)}", "${ae.source}", "${ae.rejected}") ;
     AE.internalAEHash.set(${ae.id}, q_${q.index});
     AE.iUnmapped.push(${ae.id});
 </c:forEach>
             //matched - internal and external
 <c:forEach var="e" items="${command.matchedAeMapping}" varStatus="r">
     AE.aeMappingHash.set(${e.key.id}, ${e.value.id});
-    var ir_${r.index} = new AE.ae(${e.key.id}, "${e.key.externalID}", ${e.key.term.id}, "${e.key.term.code}",
-            "${e.key.term.name}", "${e.key.term.otherSpecify}",
-            "${e.key.grade}", "${e.key.startDate}", "${e.key.endDate}",
-            "${e.key.verbatim}", "${e.key.whySerious}", "${e.key.attribution}", "${e.key.source}", "${e.key.rejected}") ;
+    var ir_${r.index} = new AE.ae(${e.key.id}, "${caaers:escapeJS(e.key.externalID)}", ${e.key.term.id}, "${caaers:escapeJS(e.key.term.code)}",
+            "${caaers:escapeJS(e.key.term.name)}", "${caaers:escapeJS(e.key.term.otherSpecify)}",
+            "${caaers:escapeJS(e.key.grade)}", "${e.key.startDate}", "${e.key.endDate}",
+            "${caaers:escapeJS(e.key.verbatim)}", "${caaers:escapeJS(e.key.whySerious)}", "${caaers:escapeJS(e.key.attribution)}", "${e.key.source}", "${e.key.rejected}") ;
     AE.internalAEHash.set(${e.key.id}, ir_${r.index});
-    var er_${r.index} = new AE.ae(${e.value.id}, "${e.value.externalID}", ${e.value.term.id}, "${e.value.term.code}",
-            "${e.value.term.name}", "${e.value.term.otherSpecify}",
-            "${e.value.grade}", "${e.value.startDate}", "${e.value.endDate}",
-            "${e.value.verbatim}", "${e.value.whySerious}", "${e.value.attribution}", "${e.value.source}", "${e.value.rejected}") ;
+    var er_${r.index} = new AE.ae(${e.value.id}, "${caaers:escapeJS(e.value.externalID)}", ${e.value.term.id}, "${caaers:escapeJS(e.value.term.code)}",
+            "${caaers:escapeJS(e.value.term.name)}", "${caaers:escapeJS(e.value.term.otherSpecify)}",
+            "${caaers:escapeJS(e.value.grade)}", "${e.value.startDate}", "${e.value.endDate}",
+            "${caaers:escapeJS(e.value.verbatim)}", "${caaers:escapeJS(e.value.whySerious)}", "${caaers:escapeJS(e.value.attribution)}", "${e.value.source}", "${e.value.rejected}") ;
     AE.externalAEHash.set(${e.value.id}, er_${r.index});
 
 </c:forEach>
