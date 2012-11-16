@@ -28,9 +28,15 @@
             var id = document.getElementById("staff").value;
             if (id == '') {
                 clear('reporter');
-               
+
             } else {
-                createAE.getResearchStaffDetails(id, updateReporterFromStaff)
+                if (document.getElementById("reporter_site_research_staff_" + id) != null) {
+                    var siteResearchStaffId = document.getElementById("reporter_site_research_staff_" + id).value;
+                    createAE.getSiteResearchStaff(siteResearchStaffId, updateReporterFromStaff)
+                } else if (document.getElementById("reporter_site_investigator_" + id) != null) {
+                    var siteInvestigatorId = document.getElementById("reporter_site_investigator_" + id).value;
+                    createAE.getSiteInvestigator(siteInvestigatorId, updateReporterFromStaff)
+                }
             }
         }
 
@@ -40,7 +46,8 @@
                 clear('physician');
                
             } else {
-                createAE.getInvestigator(id, updatePhysicianFromInvestigator)
+                var siteInvestigatorId=document.getElementById("physician_site_investigator_"+id).value;
+                createAE.getSiteInvestigator(siteInvestigatorId, updatePhysicianFromInvestigator)
             }
         }
 		/* IE7 fix:- null text is displayed when staff[field] is empty or null*/
@@ -175,17 +182,26 @@
                 <div class="value">
                     <select id="staff" name="aeReport.reporter.person" class="${(!empty command.aeReport.reporter && !empty command.aeReport.reporter.id) ? 'valueOK' : 'required'}">
                         <option value="">Please select</option>
-                        <c:forEach var="researchStaff" items="${researchStaffList }">
-                        	<option value="${researchStaff.id }">${researchStaff.firstName } ${researchStaff.lastName }</option>
+                        <c:forEach var="siteResearchStaff" items="${researchStaffList }">
+                        	<option value="${siteResearchStaff.researchStaff.id}">${siteResearchStaff.researchStaff.firstName } ${siteResearchStaff.researchStaff.lastName }</option>
                         </c:forEach>
-                        </optgroup>
-                        <c:forEach var="investigator" items="${investigatorList }">
-                        	<option value="${investigator.id}">${investigator.firstName } ${investigator.lastName }</option>
+
+                        <c:forEach var="siteInvestigator" items="${investigatorList }">
+                        	<option value="${siteInvestigator.investigator.id}">${siteInvestigator.investigator.firstName } ${siteInvestigator.investigator.lastName }</option>
                         </c:forEach>
-                        </optgroup>
                         <option value="" style="font-style:italic"><i>Enter manually</i></option>
                     </select>
                 </div>
+            </div>
+
+            <div style="display: none">
+                <c:forEach var="siteResearchStaff" items="${researchStaffList }">
+                    <input id="reporter_site_research_staff_${siteResearchStaff.researchStaff.id}" type="hidden" value="${siteResearchStaff.id}">
+                </c:forEach>
+
+                <c:forEach var="siteInvestigator" items="${investigatorList}">
+                    <input id="reporter_site_investigator_${siteInvestigator.investigator.id}" type="hidden" value="${siteInvestigator.id}">
+                </c:forEach>
             </div>
 
             <c:forEach items="${fieldGroups['reporter'].fields}" var="field">
@@ -204,12 +220,17 @@
                 <div class="value">
                     <select id="physician" name="aeReport.physician.person" class="${(!empty command.aeReport.physician && !empty command.aeReport.physician.id) ? 'valueOK' : 'required'}">
                         <option value="">Please select</option>
-                        <c:forEach var="investigator" items="${investigatorList }">
-                        	<option value="${investigator.id }"  }>${investigator.firstName } ${investigator.lastName }</option>
+                        <c:forEach var="siteInvestigator" items="${investigatorList}">
+                        	<option value="${siteInvestigator.investigator.id}">${siteInvestigator.investigator.firstName } ${siteInvestigator.investigator.lastName }</option>
                         </c:forEach>
                         <option value="" style="font-style:italic">Enter manually</option>
                     </select>
                 </div>
+               <div style="display: none">
+                   <c:forEach var="siteInvestigator" items="${investigatorList}">
+                       <input id="physician_site_investigator_${siteInvestigator.investigator.id}" type="hidden" value="${siteInvestigator.id}">
+                   </c:forEach>
+               </div>
             </div>
 
             <c:forEach items="${fieldGroups['physician'].fields}" var="field">

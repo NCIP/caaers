@@ -27,7 +27,7 @@ import org.hibernate.annotations.CascadeType;
 @Entity
 @Table(name = "site_investigators")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_site_investigators_id") })
-public class SiteInvestigator extends AbstractMutableDomainObject {
+public class SiteInvestigator extends AbstractMutableDomainObject implements Comparable<SiteInvestigator> {
 
     /** The organization. */
     private Organization organization;
@@ -329,4 +329,7 @@ public class SiteInvestigator extends AbstractMutableDomainObject {
     	return String.valueOf(investigator);
     }
 
+    public int compareTo(SiteInvestigator siteInvestigator) {
+        return getInvestigator().getFullName().compareTo(siteInvestigator.getInvestigator().getFullName());
+    }
 }

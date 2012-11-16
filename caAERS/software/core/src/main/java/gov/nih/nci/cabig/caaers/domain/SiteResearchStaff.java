@@ -30,7 +30,7 @@ import org.hibernate.annotations.*;
 @Entity
 @Table(name = "site_research_staffs")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_site_research_staffs_id") })
-public class SiteResearchStaff extends AbstractMutableRetireableDomainObject {
+public class SiteResearchStaff extends AbstractMutableRetireableDomainObject implements Comparable<SiteResearchStaff>{
 
 	/** The research staff. */
 	private ResearchStaff researchStaff;
@@ -200,7 +200,7 @@ public class SiteResearchStaff extends AbstractMutableRetireableDomainObject {
      * @return the research staff
      */
     @ManyToOne
-    @JoinColumn(name = "researchstaff_id")
+    @JoinColumn(name = "researchstaff_id",nullable = false)
 	public ResearchStaff getResearchStaff() {
 		return researchStaff;
 	}
@@ -493,4 +493,8 @@ public class SiteResearchStaff extends AbstractMutableRetireableDomainObject {
         this.associateAllStudies = associateAllStudies;
     }
 
+    public int compareTo(SiteResearchStaff siteResearchStaff) {
+        return getResearchStaff().getFullName().compareTo(siteResearchStaff.getResearchStaff().getFullName());
+
+    }
 }

@@ -107,6 +107,8 @@ public class CreateAdverseEventAjaxFacade {
     private OtherInterventionDao otherInterventionDao;
     private StudyDeviceDao studyDeviceDao;
     private AdeersIntegrationFacade proxyWebServiceFacade;
+    private SiteInvestigatorDao siteInvestigatorDao;
+    private SiteResearchStaffDao siteResearchStaffDao;
 
     public Class<?>[] controllers() {
         return CONTROLLERS;
@@ -281,7 +283,69 @@ public class CreateAdverseEventAjaxFacade {
     	Person user = investigatorDao.getById(Integer.parseInt(text));
         return reduce(user, "id", "firstName", "lastName", "middleName", "emailAddress", "phoneNumber", "faxNumber");
     }
-    
+
+    public Map getSiteInvestigator(String text) {
+        return getSiteResearchStaffOrSiteInvestigator(text, false);
+    }
+
+    public Map getSiteResearchStaff(String text) {
+
+        return getSiteResearchStaffOrSiteInvestigator(text, true);
+    }
+
+    public Map getSiteResearchStaffOrSiteInvestigator(String text, Boolean fetchSiteResearchStaff) {
+        Map user = new HashMap();
+
+        Address address = null;
+        Person person = null;
+        if (fetchSiteResearchStaff) {
+            SiteResearchStaff siteResearchStaff = siteResearchStaffDao.getById(Integer.parseInt(text));
+            if (siteResearchStaff != null) {
+                user.put("id", siteResearchStaff.getId());
+                user.put("emailAddress", siteResearchStaff.getEmailAddress());
+                user.put("phoneNumber", siteResearchStaff.getPhoneNumber());
+                user.put("faxNumber", siteResearchStaff.getFaxNumber());
+                address = siteResearchStaff.getAddress();
+                person = siteResearchStaff.getResearchStaff();
+
+            }
+        } else {
+            SiteInvestigator siteInvestigator = siteInvestigatorDao.getById(Integer.parseInt(text));
+
+            if (siteInvestigator != null) {
+                user.put("id", siteInvestigator.getId());
+                user.put("emailAddress", siteInvestigator.getEmailAddress());
+                user.put("phoneNumber", siteInvestigator.getPhoneNumber());
+                user.put("faxNumber", siteInvestigator.getFaxNumber());
+                address = siteInvestigator.getAddress();
+                person = siteInvestigator.getInvestigator();
+
+            }
+        }
+
+        if (address != null) {
+            Map addressMap=new HashMap();
+            addressMap.put("street", address.getStreet());
+            addressMap.put("city", address.getCity());
+            addressMap.put("state", address.getState());
+            addressMap.put("zip", address.getZip());
+
+            user.put("address", addressMap);
+            user.put("address.street", address.getStreet());
+            user.put("address.city", address.getCity());
+            user.put("address.state", address.getState());
+            user.put("address.zip", address.getZip());
+        }
+        if (person != null) {
+            user.put("firstName", person.getFirstName());
+            user.put("lastName", person.getLastName());
+            user.put("middleName", person.getMiddleName());
+            user.put("title", person.getTitle());
+        }
+
+        return user;
+    }
+
     public List<ParticipantAjaxableDomainObject> matchParticipants(String text, Integer studyId) {
         ParticipantAjaxableDomainObjectQuery query = new ParticipantAjaxableDomainObjectQuery();
         query.filterParticipantsWithMatchingText(text);
@@ -1415,5 +1479,15 @@ public class CreateAdverseEventAjaxFacade {
     @Required
     public void setProxyWebServiceFacade(AdeersIntegrationFacade proxyWebServiceFacade) {
         this.proxyWebServiceFacade = proxyWebServiceFacade;
+    }
+
+    @Required
+    public void setSiteInvestigatorDao(SiteInvestigatorDao siteInvestigatorDao) {
+        this.siteInvestigatorDao = siteInvestigatorDao;
+    }
+
+    @Required
+    public void setSiteResearchStaffDao(SiteResearchStaffDao siteResearchStaffDao) {
+        this.siteResearchStaffDao = siteResearchStaffDao;
     }
 }

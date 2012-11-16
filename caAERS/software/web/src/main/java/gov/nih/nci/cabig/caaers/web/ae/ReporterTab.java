@@ -56,11 +56,9 @@ public class ReporterTab extends AeTab {
     public Map<String, Object> referenceData(HttpServletRequest request,ExpeditedAdverseEventInputCommand command) {
     	Map<String, Object> refData =  super.referenceData(request, command);
     
-    	List<ResearchStaff> researchStaffList = new ArrayList<ResearchStaff>();
-    	List<Investigator> investigatorList = new ArrayList<Investigator>();
-    	
-    	Set<ResearchStaff> researchStaffSet = new HashSet<ResearchStaff>();
-    	Set<Investigator> investigatorSet = new HashSet<Investigator>();
+
+    	Set<SiteResearchStaff> researchStaffSet = new HashSet<SiteResearchStaff>();
+    	Set<SiteInvestigator> investigatorSet = new HashSet<SiteInvestigator>();
 
         HashSet<ResearchStaff> temporaryRsSet = new HashSet<ResearchStaff>();
         for(SiteResearchStaff srs : command.getAssignment().getStudySite().getOrganization().getSiteResearchStaffs()){
@@ -69,7 +67,7 @@ public class ReporterTab extends AeTab {
               if(rs.isUser()){
                  try{
                     User user = userRepository.getUserByLoginName(rs.getCaaersUser().getLoginName());
-                    if(user.hasRole(UserGroupType.ae_reporter)) researchStaffSet.add(rs);
+                    if(user.hasRole(UserGroupType.ae_reporter)) researchStaffSet.add(srs);
                  }catch(CaaersSystemException ignore){
                      //just continue the loop.. 
                  }
@@ -80,20 +78,13 @@ public class ReporterTab extends AeTab {
         }
 
     	for (StudyInvestigator sInvestigator: command.getAssignment().getStudySite().getActiveStudyInvestigators()){
-    		//investigatorList.add(sInvestigator.getSiteInvestigator().getInvestigator());
-    		investigatorSet.add(sInvestigator.getSiteInvestigator().getInvestigator());
+    		investigatorSet.add(sInvestigator.getSiteInvestigator());
     	}
 
-    	Iterator<ResearchStaff> rIterator = researchStaffSet.iterator();
-    	while(rIterator.hasNext()){
-    		researchStaffList.add(rIterator.next());
-    	}
-    	
-    	Iterator<Investigator> invIterator = investigatorSet.iterator();
-    	while(invIterator.hasNext()){
-    		investigatorList.add(invIterator.next());
-    	}
-    	
+        List<SiteResearchStaff> researchStaffList = new ArrayList<SiteResearchStaff>(researchStaffSet);
+    	List<SiteInvestigator> investigatorList = new ArrayList<SiteInvestigator>(investigatorSet);
+
+
     	//Sort the researchStaff and investigators list
     	Collections.sort(researchStaffList);
     	Collections.sort(investigatorList);
