@@ -188,15 +188,11 @@ Autocompleter.Base = Class.create({
   },
   
   onBlur: function(event) {
-    // needed to make click events working		  
-	  var element = Event.findElement(event, 'LI');
-	  if ( element != null )
-	  {
-	      setTimeout(this.hide.bind(this), 250);
-	      this.hasFocus = false;
-	      this.active = false;
-	  }	 
-  }, 
+	    // needed to make click events working
+	    setTimeout(this.hide.bind(this), 250);
+	    this.hasFocus = false;
+	    this.active = false;     
+	  }, 
   
   render: function() {
     if(this.entryCount > 0) {
