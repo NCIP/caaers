@@ -16,11 +16,6 @@
 						<ae:oneListReportSubmissionStatus theReport="${report.report}" reportStatus="${report.status}" lastVersion="${report.report.lastVersion}"/>
 					</td>
 					<td width="10%" id="report-${report.id}-status">${report.reviewStatus.displayName}</td>
-					<td width="5%" align="center">
-						<a href="#" onClick="displayPopup('report', ${report.id})">
-							<img src="<chrome:imageUrl name="../edit.png" />" />
-						</a>
-					</td>
 				    <td width="25%" align="center">
 						 <script type="text/javascript">
 					 	var options_report_${report.id} = [];

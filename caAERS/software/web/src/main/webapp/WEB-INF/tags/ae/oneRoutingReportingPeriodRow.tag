@@ -32,7 +32,6 @@ var options_${reportingPeriod.id} = [];
 	<td width="22%">${reportingPeriod.evaluationPeriodTypeName}</td>
 	<c:if test="${reportingPeriod.workflowId != null}">
 	<td width="25%" id="reportingPeriod-${reportingPeriod.id}-status">${reportingPeriod.reviewStatus.displayName}</td>
-	<td><a href="#" onClick="displayPopup('reportingPeriod', ${reportingPeriod.id})"><img src="<chrome:imageUrl name="../editComment.png" />" /></a></td>
 	<td width="25%">
 		<img border="0" style="cursor: pointer;
           margin-right: 15px;" id="course_routingreview_cycle_${reportingPeriod.id}"  onmouseover="showRoutingReviewCourseMenuOptions( ${reportingPeriod.workflowId}, ${reportingPeriod.id}, 'reportingPeriod','','')" src="/caaers/images/orange-actions.gif">
@@ -65,7 +64,6 @@ var options_${reportingPeriod.id} = [];
 														<td class="tableHeader" width="36%">Report Name</td>
 														<td class="centerTableHeader" width="24%">Report Submission Status</td>
 														<td class="centerTableHeader" width="10%">Review Status</td>
-														<td class="centerTableHeader" width="5%">Comments</td>
 														<td class="centerTableHeader" width="25%">Action</td>
 													</tr>						
 												</thead>
