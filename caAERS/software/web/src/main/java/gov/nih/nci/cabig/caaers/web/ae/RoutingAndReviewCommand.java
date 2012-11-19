@@ -45,7 +45,6 @@ public class RoutingAndReviewCommand{
     public RoutingAndReviewCommand() {
         REPORT_STATUS.addAll(Arrays.asList(ReportStatus.values()));
         Collections.sort((List<ReportStatus>)REPORT_STATUS, new Comparator<ReportStatus>() {
-			@Override
 			public int compare(ReportStatus o1, ReportStatus o2) {
 				return o1.getDisplayName().compareTo(o2.getDisplayName());
 			}
@@ -175,7 +174,6 @@ public class RoutingAndReviewCommand{
 		this.reviewStatusList = reviewStatusList;
 		if(this.reviewStatusList != null && !this.reviewStatusList.isEmpty()){
 			Collections.sort(this.reviewStatusList, new Comparator<ReviewStatus>() {
-				@Override
 				public int compare(ReviewStatus o1, ReviewStatus o2) {
 					return o1.getDisplayName().compareTo(o2.getDisplayName());
 				}
