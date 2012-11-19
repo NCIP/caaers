@@ -86,7 +86,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
                         mainFieldFactory.addField(otherMeddraField);
                     } else {
                         //other Specify
-                        InputField otherSpecifyField =  InputFieldFactory.createTextField("otherSpecify", "Other (specify)", "aeReport.adverseEvents.otherSpecify", true);
+                        InputField otherSpecifyField =  InputFieldFactory.createTextField("otherSpecify", "Other (specify)", "aeReport.adverseEvents.otherSpecify", true & unRetired);
                         mainFieldFactory.addField(otherSpecifyField);
                     }
                 }
