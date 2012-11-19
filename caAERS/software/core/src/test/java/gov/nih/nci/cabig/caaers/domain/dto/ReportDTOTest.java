@@ -31,7 +31,7 @@ public class ReportDTOTest extends TestCase {
 	}
 
 	public void testHasWorkflowEnded_WhenNotEnded(){
-		dto.setReviewStatus(ReviewStatus.CENTRAL_OFFICE_REVIEW);
+		dto.setReviewStatus(ReviewStatus.COORDINATING_CENTER_REVIEW);
 		assertFalse("hasWorkflowEnded should have returned false", dto.hasWorkflowEnded());
 	}
 	

@@ -61,7 +61,7 @@ public class WorkflowServiceImplIntegrationExpeditedDomesticTest extends CaaersD
 		
 		{
 			ReviewStatus status = wfService.advanceWorkflow(id, "Submit to Central Office Report Reviewer");
-			assertEquals(ReviewStatus.CENTRAL_OFFICE_REVIEW, status);
+			assertEquals(ReviewStatus.COORDINATING_CENTER_REVIEW, status);
 		}
 		interruptSession();
 	    loginId = "aec@def.com";
@@ -242,7 +242,7 @@ public class WorkflowServiceImplIntegrationExpeditedDomesticTest extends CaaersD
 			assertEquals(ReviewStatus.PHYSICIAN_APPROVED, status);
 			
 			status = wfService.advanceWorkflow(id, "Submit to Central Office SAE Coordinator");
-			assertEquals(ReviewStatus.CENTRAL_OFFICE_REVIEW, status);
+			assertEquals(ReviewStatus.COORDINATING_CENTER_REVIEW, status);
 		}
 		interruptSession();
         loginId = "aec@def.com";
@@ -277,7 +277,7 @@ public class WorkflowServiceImplIntegrationExpeditedDomesticTest extends CaaersD
 			assertEquals(ReviewStatus.PHYSICIAN_APPROVED, status);
 			
 			status = wfService.advanceWorkflow(id, "Submit to Central Office SAE Coordinator");
-			assertEquals(ReviewStatus.CENTRAL_OFFICE_REVIEW, status);
+			assertEquals(ReviewStatus.COORDINATING_CENTER_REVIEW, status);
 			
 			status = wfService.advanceWorkflow(id, "Approve Report");
 			assertEquals(ReviewStatus.SUBMIT_TO_SPONSOR, status);
@@ -310,7 +310,7 @@ public class WorkflowServiceImplIntegrationExpeditedDomesticTest extends CaaersD
 			assertEquals(ReviewStatus.PHYSICIAN_APPROVED, status);
 			
 			status = wfService.advanceWorkflow(id, "Submit to Central Office SAE Coordinator");
-			assertEquals(ReviewStatus.CENTRAL_OFFICE_REVIEW, status);
+			assertEquals(ReviewStatus.COORDINATING_CENTER_REVIEW, status);
 			
 			status = wfService.advanceWorkflow(id, "Approve Report");
 			assertEquals(ReviewStatus.SUBMIT_TO_SPONSOR, status);

@@ -35,7 +35,7 @@ public class ExpeditedAdverseEventReportDTOTest extends TestCase {
 
 	public void testHasWorkflowEnded_WhenNotEnded(){
 		ReportDTO reportDTO = new ReportDTO();
-		reportDTO.setReviewStatus(ReviewStatus.CENTRAL_OFFICE_REVIEW);
+		reportDTO.setReviewStatus(ReviewStatus.COORDINATING_CENTER_REVIEW);
 		dto.addReportDTO(reportDTO);
 		assertFalse("hasWorkflowEnded should have returned false", dto.hasWorkflowEnded());
 	}

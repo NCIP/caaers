@@ -73,15 +73,15 @@ public class AdverseEventReportingPeriodDTOTest extends TestCase {
 	public void testHasReportWorkflowEnded_WhenNotEnded(){
 		ExpeditedAdverseEventReportDTO aeReport1 = new ExpeditedAdverseEventReportDTO();
 		ReportDTO report1 = new ReportDTO();
-		report1.setReviewStatus(ReviewStatus.CENTRAL_OFFICE_REVIEW);
+		report1.setReviewStatus(ReviewStatus.COORDINATING_CENTER_REVIEW);
 		aeReport1.addReportDTO(report1);
 		ReportDTO report2 = new ReportDTO();
-		report2.setReviewStatus(ReviewStatus.CENTRAL_OFFICE_ADDITIONAL_INFO);
+		report2.setReviewStatus(ReviewStatus.COORDINATING_CENTER_ADDITIONAL_INFO);
 		aeReport1.addReportDTO(report2);
 		dto.addAdverseEventAeReportDTO(aeReport1);
 		ExpeditedAdverseEventReportDTO aeReport2 = new ExpeditedAdverseEventReportDTO();
 		report1 = new ReportDTO();
-		report1.setReviewStatus(ReviewStatus.CENTRAL_OFFICE_REVIEW);
+		report1.setReviewStatus(ReviewStatus.COORDINATING_CENTER_REVIEW);
 		aeReport2.addReportDTO(report1);
 		dto.addAdverseEventAeReportDTO(aeReport2);
 		assertFalse("hasReportWorkflowEnded should have returned false", dto.hasReportWorkflowEnded());
@@ -90,10 +90,10 @@ public class AdverseEventReportingPeriodDTOTest extends TestCase {
 	public void testHasReportWorkflowEnded_WhenEnded(){
 		ExpeditedAdverseEventReportDTO aeReport1 = new ExpeditedAdverseEventReportDTO();
 		ReportDTO report1 = new ReportDTO();
-		report1.setReviewStatus(ReviewStatus.CENTRAL_OFFICE_REVIEW);
+		report1.setReviewStatus(ReviewStatus.COORDINATING_CENTER_REVIEW);
 		aeReport1.addReportDTO(report1);
 		ReportDTO report2 = new ReportDTO();
-		report2.setReviewStatus(ReviewStatus.CENTRAL_OFFICE_ADDITIONAL_INFO);
+		report2.setReviewStatus(ReviewStatus.COORDINATING_CENTER_ADDITIONAL_INFO);
 		aeReport1.addReportDTO(report2);
 		dto.addAdverseEventAeReportDTO(aeReport1);
 		ExpeditedAdverseEventReportDTO aeReport2 = new ExpeditedAdverseEventReportDTO();
