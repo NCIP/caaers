@@ -1,16 +1,20 @@
 package gov.nih.nci.cabig.caaers.web.dashboard;
 
+import gov.nih.nci.cabig.caaers.dao.PersonDao;
+import gov.nih.nci.cabig.caaers.domain.Investigator;
+import gov.nih.nci.cabig.caaers.domain.Person;
 import gov.nih.nci.cabig.caaers.domain.dto.TaskNotificationDTO;
-import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersionDTO;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepositoryImpl;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportVersionRepository;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
-import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
+
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @author Ion C. Olaru
@@ -20,8 +24,13 @@ public class AEReporterDashboardController extends DashboardController {
 
     ReportVersionRepository reportVersionRepository;
     AdverseEventRoutingAndReviewRepositoryImpl rrRepositry;
+    PersonDao personDao;
     
-    public ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void setPersonDao(PersonDao personDao) {
+		this.personDao = personDao;
+	}
+
+	public ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String loginId = SecurityUtils.getUserLoginName();
         List<ReportVersionDTO> reportActivity = reportVersionRepository.getReportActivity();
         ModelAndView mv = new ModelAndView("dashboard/dashboard_AEReporter");
@@ -34,6 +43,15 @@ public class AEReporterDashboardController extends DashboardController {
             }
         }
         mv.addObject("taskNotifications", taskNotifications);
+        
+        Boolean isStaff = true;
+        
+        Person loggedInPerson = personDao.getByLoginId(loginId);
+        if(loggedInPerson instanceof Investigator){
+        	isStaff = false;
+        }
+        
+        request.setAttribute("isStaff", isStaff);
         
         return mv;
     }
