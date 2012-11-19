@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import static gov.nih.nci.cabig.ctms.domain.CodedEnumHelper.getByClassAndCode;
 import static gov.nih.nci.cabig.ctms.domain.CodedEnumHelper.register;
+import static gov.nih.nci.cabig.ctms.domain.EnumHelper.sentenceCasedName;
 import gov.nih.nci.cabig.ctms.domain.CodedEnum;
 
  
@@ -15,32 +16,35 @@ import gov.nih.nci.cabig.ctms.domain.CodedEnum;
 public enum ReportStatus implements CodedEnum<Integer> {
     
     /** The PENDING. */
-    PENDING(1), 
+    PENDING(1, "Pending"), 
  /** The COMPLETED. */
- COMPLETED(2), 
+ COMPLETED(2, "Completed"), 
  /** The WITHDRAWN. */
- WITHDRAWN(3), 
+ WITHDRAWN(3, "Withdrawn"), 
  /** The INPROCESS. */
- INPROCESS(4), 
+ INPROCESS(4, "In process"), 
  /** The FAILED. */
- FAILED(5), 
+ FAILED(5, "Failed"), 
  /** The REPLACED. */
- REPLACED(6), 
+ REPLACED(6, "Replaced"), 
  /** The AMENDED. */
- AMENDED(7), 
+ AMENDED(7, "Amended"), 
  /** The WITHDRA w_ failed. */
- WITHDRAW_FAILED(8);
+ WITHDRAW_FAILED(8, "Withdraw Failed");
     
     /** The code. */
     private int code;
+    
+    private String displayName;
 
     /**
      * Instantiates a new report status.
      *
      * @param code the code
      */
-    private ReportStatus(int code) {
+    private ReportStatus(int code, String name) {
         this.code = code;
+        this.displayName = name;
         register(this);
     }
 
@@ -55,7 +59,7 @@ public enum ReportStatus implements CodedEnum<Integer> {
      * @see gov.nih.nci.cabig.ctms.domain.CodedEnum#getDisplayName()
      */
     public String getDisplayName() {
-        return name();
+    	 return displayName == null ? sentenceCasedName(this) : displayName;
     }
 
     /**

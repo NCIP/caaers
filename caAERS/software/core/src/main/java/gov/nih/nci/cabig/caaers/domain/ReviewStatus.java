@@ -27,11 +27,11 @@ public enum ReviewStatus implements CodedEnum<Integer> {
     /** The PHYSICIA n_ approved. */
     PHYSICIAN_APPROVED (4, "Reviewed by Physician "), 
     
-    /** The CENTRA l_ offic e_ review. */
-    CENTRAL_OFFICE_REVIEW (5, "Central Office Report Review"), 
+    /** The COORDINATING_CENTER review. */
+    COORDINATING_CENTER_REVIEW (5, "Coordinating Center Review"), 
     
-    /** The CENTRA l_ offic e_ additiona l_ info. */
-    CENTRAL_OFFICE_ADDITIONAL_INFO (6, "Additional Info Request by Central Office"), 
+    /** The COORDINATING_CENTER_ADDITIONAL_INFO. */
+    COORDINATING_CENTER_ADDITIONAL_INFO (6, "Additional Info Request by Coordinating Center"), 
     
     /** The SUBMI t_ t o_ sponsor. */
     SUBMIT_TO_SPONSOR (7, "Ready for Submission to Sponsor "),
@@ -48,7 +48,7 @@ public enum ReviewStatus implements CodedEnum<Integer> {
     /** The SUBMITTE d_ t o_ sponsor. */
     SUBMITTED_TO_SPONSOR(12, "Submitted to Sponsor"),
     
-    SUBMIT_TO_MEDICAL_MONITOR(13, "Submit to Medical Monitor"),
+    SEND_TO_MEDICAL_MONITOR(13, "Send to Medical Monitor"),
     
     MEDICAL_MONITOR_REVIEW(14, "Medical Monitor Review"),
     

@@ -155,7 +155,7 @@ public class WorkflowConfig extends AbstractMutableDomainObject{
 	@Transient
 	public boolean isTaskActive(String name){
 		for(TaskConfig tc: getTaskConfigs()){
-			if(tc.getTaskName().equals(name) && tc.getApplicable())
+			if(tc.getTaskName().equalsIgnoreCase(name) && tc.getApplicable())
 				return true;
 		}
 		return false;
@@ -169,7 +169,7 @@ public class WorkflowConfig extends AbstractMutableDomainObject{
 	 */
 	public TaskConfig findTaskConfig(String taskNodeName){
 		for(TaskConfig taskConfig : getTaskConfigs()){
-			if(taskConfig.getTaskName().equals(taskNodeName)) return taskConfig;
+			if(taskConfig.getTaskName().equalsIgnoreCase(taskNodeName)) return taskConfig;
 		}
 		return null;
 	}
