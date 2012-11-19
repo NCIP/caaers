@@ -107,6 +107,25 @@
 				</div>
                 <div id="options-actions-menu-${report.id}" style="display:none;">
 					<ul>
+						 <%--
+                        DISPLAY ALL REPORTS Associated TO DATA COLLECTION
+                        --%>
+
+	                    <c:if test="${report.reportDefinition.reportFormatType.code == 7}">
+	                        <li><a href="#" onclick="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=customPDF'/>','_self')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/> (Custom) ${report.reportDefinition.label}</a></li>
+	                    	<c:set var="exportOptionsCount" value="${exportOptionsCount + 1}"/>
+						</c:if>
+						<c:if test="${report.reportDefinition.workflowEnabled == true}">
+							<span id="sliderWFAction-${report.id }" style="width:100%; font-size:0;"></span>
+						</c:if>
+	                    <c:if test="${reportMessages[report.id].submittable}">
+	                    	<c:if test="${report.reportDefinition.amendable and (report.lastVersion.reportStatus == 'COMPLETED') }">
+								<li><a href="#" onclick="javascript:if(confirm('Are you sure you want to amend this report?')){doAction('amend', '${report.aeReport.id}', '${report.id}')};" >Amend</a></li>
+	                    	</c:if>
+	                    </c:if>
+						<c:if test="${(report.lastVersion.reportStatus == 'PENDING') or (report.lastVersion.reportStatus == 'FAILED')}">
+	                        <li><a class="submitter-red" href="#" onclick="javascript:if(confirm('Are you sure you want to withdraw this report?')){doAction('withdraw', '${report.aeReport.id}', '${report.id}')};"><img src="<chrome:imageUrl name="../blue/Withdraw-icon-small.png"/>">&nbsp;Withdraw</a></li>
+	                    </c:if>
 						<c:set var="exportOptionsCount" value="0"/>
 	                    <%--<c:if test="${command.study.caaersXMLType}">--%>
 	                        <li><a href="#" onclick="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=xml'/>','_self')"><img src="<chrome:imageUrl name="../blue/xml-icon.png"/>" alt=""/> Export caAERS XML</a></li>
@@ -142,26 +161,6 @@
 	                        <li><a href="#" onclick="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=ciomssae'/>','_self')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/> Export DCP Safety Report PDF</a></li>
 	                    	<c:set var="exportOptionsCount" value="${exportOptionsCount + 1}"/>
 						<%--</c:if>--%>
-
-                        <%--
-                        DISPLAY ALL REPORTS Associated TO DATA COLLECTION
-                        --%>
-
-	                    <c:if test="${report.reportDefinition.reportFormatType.code == 7}">
-	                        <li><a href="#" onclick="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=customPDF'/>','_self')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/> (Custom) ${report.reportDefinition.label}</a></li>
-	                    	<c:set var="exportOptionsCount" value="${exportOptionsCount + 1}"/>
-						</c:if>
-						<c:if test="${report.reportDefinition.workflowEnabled == true}">
-							<span id="sliderWFAction-${report.id }" style="width:100%; font-size:0;"></span>
-						</c:if>
-	                    <c:if test="${reportMessages[report.id].submittable}">
-	                    	<c:if test="${report.reportDefinition.amendable and (report.lastVersion.reportStatus == 'COMPLETED') }">
-								<li><a href="#" onclick="javascript:if(confirm('Are you sure you want to amend this report?')){doAction('amend', '${report.aeReport.id}', '${report.id}')};" >Amend</a></li>
-	                    	</c:if>
-	                    </c:if>
-						<c:if test="${(report.lastVersion.reportStatus == 'PENDING') or (report.lastVersion.reportStatus == 'FAILED')}">
-	                        <li><a class="submitter-red" href="#" onclick="javascript:if(confirm('Are you sure you want to withdraw this report?')){doAction('withdraw', '${report.aeReport.id}', '${report.id}')};"><img src="<chrome:imageUrl name="../blue/Withdraw-icon-small.png"/>">&nbsp;Withdraw</a></li>
-	                    </c:if>
 					</ul>
                 </div>
 			</chrome:division>
