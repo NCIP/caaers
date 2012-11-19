@@ -621,6 +621,7 @@ This applicationContext contains the definition of the DAOs
     <bean id="treatmentAssignmentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao"/>
     <bean id="chemoAgentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ChemoAgentDao"/>
     <bean id="workflowConfigDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.workflow.WorkflowConfigDao"/>
+    <bean id="taskConfigDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.workflow.TaskConfigDao"/>
     <!--Rules/Scheduler/Notification DAOs-->
     <bean id="reportDefinitionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao"/>
     <bean id="reportDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.report.ReportDao"/>

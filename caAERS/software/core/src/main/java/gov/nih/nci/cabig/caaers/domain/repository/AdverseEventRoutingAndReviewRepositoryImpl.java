@@ -6,7 +6,20 @@ import gov.nih.nci.cabig.caaers.dao.ReconciliationReportDao;
 import gov.nih.nci.cabig.caaers.dao.query.AdverseEventReportingPeriodForReviewQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ReconciliationReportQuery;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.dao.workflow.TaskConfigDao;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.Person;
+import gov.nih.nci.cabig.caaers.domain.Physician;
+import gov.nih.nci.cabig.caaers.domain.ReconciliationReport;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.dto.AdverseEventReportingPeriodDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.ExpeditedAdverseEventReportDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.TaskNotificationDTO;
@@ -21,7 +34,13 @@ import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import gov.nih.nci.cabig.caaers.service.workflow.WorkflowService;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.jbpm.context.exe.ContextInstance;
@@ -63,7 +82,8 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
     
     /** The Constant SUBMIT_TO_PHYSICIAN. */
     private static final String SUBMIT_TO_PHYSICIAN = "Send to Physician for Review";
-	
+    
+    private TaskConfigDao taskConfigDao;
 	
 	/**
 	 * Instantiates a new adverse event routing and review repository impl.
@@ -73,6 +93,10 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		routingAndReviewFactory.setAdverseEventRoutingAndReviewRepository(this);
 	}
 	
+	public void setTaskConfigDao(TaskConfigDao taskConfigDao) {
+		this.taskConfigDao = taskConfigDao;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository#enactReportingPeriodWorkflow(gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod)
@@ -616,15 +640,17 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
                 reportingPeriod = adverseEventReportingPeriodDao.getById(Integer.parseInt(reportingPeriodID));
                 dto.setEntityId(reportingPeriod.getId());
                 dto.setEntityType("reportingPeriod");
+                if (reportingPeriod.getReviewStatus() != null) dto.setStatus(reportingPeriod.getReviewStatus().getDisplayName());
             } else if (aeReportID != null) {
-                	dto.setAeReportId(Integer.parseInt(aeReportID));
-                    aeReport = expeditedAdverseEventReportDao.getById(Integer.parseInt(aeReportID));
-                    reportingPeriod = aeReport.getReportingPeriod();
-                    if(reportId == null) continue;
-            		report = reportDao.getById(Integer.parseInt(reportId));
-            		dto.setEntityType("report");
-                    dto.setEntityId(report.getId());
-                    dto.setReportStatus(report.getStatus());
+            	dto.setAeReportId(Integer.parseInt(aeReportID));
+                aeReport = expeditedAdverseEventReportDao.getById(Integer.parseInt(aeReportID));
+                reportingPeriod = aeReport.getReportingPeriod();
+                if(reportId == null) continue;
+        		report = reportDao.getById(Integer.parseInt(reportId));
+        		dto.setEntityType("report");
+                dto.setEntityId(report.getId());
+                dto.setReportStatus(report.getStatus());
+                dto.setStatus(ReviewStatus.valueOf(taskConfigDao.getByTaskName(task.getName()).getStatusName()).getDisplayName());
             }
 
             if (reportingPeriod != null) {
@@ -636,7 +662,6 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
                 dto.setTask(task.getName());
                 dto.setDescription(task.getDescription());
                 dto.setDate(task.getCreate());
-                if (reportingPeriod.getReviewStatus() != null) dto.setStatus(reportingPeriod.getReviewStatus().getDisplayName());
                 dto.setReportingPeriodId(reportingPeriod.getId());
                 // dto.setPossibleActions(this.nextTransitionNames(reportingPeriod.getWorkflowId(), userLogin));
                 dtos.add(dto);

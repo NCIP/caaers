@@ -101,6 +101,7 @@
     	<property name="reportValidationService" ref="reportValidationService" />
     	<property name="reportDao" ref="reportDao" />
         <property name="reconciliationReportDao" ref="reconciliationReportDao" />
+         <property name="taskConfigDao" ref="taskConfigDao" />
     </bean>
 
 
