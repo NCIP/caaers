@@ -1,5 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
+import java.io.File;
+import java.net.URISyntaxException;
+
 import gov.nih.nci.cabig.caaers.api.impl.StudyProcessorImpl;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Study;
@@ -8,6 +11,8 @@ import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.validation.validator.DomainObjectValidator;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
+
+import org.apache.cxf.helpers.IOUtils;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.support.GenericApplicationContext;
 
@@ -53,6 +58,13 @@ public class StudyImporterTest extends WebTestCase {
 	
 	public void testProcessEntities(){
 		//TODO
+	}
+	
+	public void testAllPossibleResearchStaffRolesAndOneInvalid() throws URISyntaxException {
+		File studyFile = new File(getClass().getClassLoader().getResource("importstudy_5877.xml").toURI());
+		importer.processEntities(studyFile, command);
+		String valdResult = command.getSchemaValidationResult();
+		assertTrue(valdResult.contains("cvc-enumeration-valid: Value 'data_analyst_2' is not facet-valid"));
 	}
 	
 	public void testSave(){
