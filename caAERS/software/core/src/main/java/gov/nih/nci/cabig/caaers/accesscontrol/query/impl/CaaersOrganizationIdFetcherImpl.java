@@ -53,8 +53,8 @@ public class CaaersOrganizationIdFetcherImpl extends  AbstractIdFetcher implemen
         if(CollectionUtils.isEmpty(studyIndexEntryList)) return studyIndexEntryList;
 
         //now pull out all study organization details from database.
-        NativeSQLQuery studySiteQuery = new NativeSQLQuery("select study_identifier, site_id, type from study_organizations where retired_indicator <> :ri order by study_identifier");
-        studySiteQuery.setScalar("study_identifier", StandardBasicTypes.INTEGER);
+        NativeSQLQuery studySiteQuery = new NativeSQLQuery("select study_id, site_id, type from study_organizations where retired_indicator <> :ri order by study_id");
+        studySiteQuery.setScalar("study_id", StandardBasicTypes.INTEGER);
         studySiteQuery.setScalar("site_id", StandardBasicTypes.INTEGER);
         studySiteQuery.setScalar("type", StandardBasicTypes.STRING);
         studySiteQuery.setParameter("ri", true);
