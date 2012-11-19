@@ -28,12 +28,7 @@
             <param name="conversionPattern" value="%d [%15t] %-5p %c %x: %m%n"/>
         </layout>
     </appender>
-    <logger name="gov.nih.nci.cabig.caaers.domain.repository.StudyRepository" additivity="false">
-        <level value="TRACE"/>
-    </logger>
-    <logger name="edu.northwestern.bioinformatics.bering" additivity="false">
-        <level value="DEBUG"/>
-    </logger>
+
     <root>
         <priority value="ERROR"/>
         <appender-ref ref="stdout"/>
