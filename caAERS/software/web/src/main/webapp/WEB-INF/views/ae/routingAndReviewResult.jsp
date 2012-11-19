@@ -140,8 +140,15 @@
 				_optionDetails = _optionDetails + "'" +entityType + "'";
 				_optionDetails = _optionDetails + ')">';
 				_optionDetails = _optionDetails + _actions[i] + '</a></li>';
-				_optionDetails = _optionDetails + "\n";
+				_optionDetails = _optionDetails;
 			}
+
+			var _comments = '<li ><a style="cursor:pointer; border-bottom: none" onClick="displayPopup('+ 
+ 			' &apos;report &apos;,' + entityId + ');">' + '&nbsp;' + '<img src="<chrome:imageUrl name="../editComment.png" />" /> Comment' +	'</a></li>';
+
+ 			_optionDetails = _optionDetails + _comments + "\n"
+
+ 			
 			 html = "<div><ul style='font-family:tahoma;'>" + _optionDetails
 				+ "</ul></div>";
 			
@@ -171,6 +178,7 @@
 
 			var _optionDetails = '<li><a class="submitter-blue" href="#" onclick="displayEditLink('
 					+ "'" + reportingPeriodPageURL + "'" + ')">' + "Edit" +  '</a></li>';
+
 					
 			for ( var i = 0; i < _actions.length; i++) {
 				_optionDetails = _optionDetails
@@ -181,8 +189,14 @@
 				_optionDetails = _optionDetails + "'" +entityType + "'";
 				_optionDetails = _optionDetails + ')">';
 				_optionDetails = _optionDetails + _actions[i] + '</a></li>';
-				_optionDetails = _optionDetails + "\n";
+				_optionDetails = _optionDetails;
 			}
+
+			var _comments = '<li ><a style="cursor:pointer; border-bottom: none" onClick="displayPopup('+ 
+			' &apos;reportingPeriod &apos;,' + entityId + ');">' + '&nbsp;' + '<img src="<chrome:imageUrl name="../editComment.png" />" /> Comment' + '</a></li>';
+		 			
+			_optionDetails = _optionDetails + _comments + "\n";
+			
 			html = "<div><ul style='font-family:tahoma;'>" + _optionDetails
 					+ "</ul></div>";
 			jQuery(_element).menu({
@@ -273,7 +287,6 @@
        						 		<td width="18%" class="tableHeader">Course</td>
        				 				<td width="22%" class="centerTableHeader">Treatment Type</td>
        						 		<td width="25%" class="centerTableHeader">Review Status</td>
-        							<td width="8%" class="tableHeader">Comments</td>
         							<td width="25%" class="centerTableHeader">Action</td>
       							</tr>
     						</thead>
