@@ -50,7 +50,6 @@ public class RoutingAndReviewCommand{
 			}
 		});
         
-        REPORT_STATUS.remove(ReportStatus.INPROCESS);
         REPORT_STATUS.remove(ReportStatus.AMENDED);
         REPORT_STATUS.remove(ReportStatus.WITHDRAWN);
         REPORT_STATUS.remove(ReportStatus.REPLACED);
