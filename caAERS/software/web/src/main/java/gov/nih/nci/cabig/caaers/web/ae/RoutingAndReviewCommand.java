@@ -1,18 +1,18 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import edu.emory.mathcs.backport.java.util.Collections;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
 import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.dto.RoutingAndReviewSearchResultsDTO;
-import gov.nih.nci.cabig.caaers.service.workflow.WorkflowService;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -38,12 +38,20 @@ public class RoutingAndReviewCommand{
     private HashMap<Object, Object> reportStatusOptionsMap = new LinkedHashMap<Object, Object>();
     
     private List<ReviewStatus> reviewStatusList = new ArrayList<ReviewStatus>();
-    protected static final Collection<ReportStatus> REPORT_STATUS = new ArrayList<ReportStatus>(8);
+    protected final Collection<ReportStatus> REPORT_STATUS = new ArrayList<ReportStatus>(8);
     
     private RoutingAndReviewSearchResultsDTO searchResultsDTO; 
     
     public RoutingAndReviewCommand() {
         REPORT_STATUS.addAll(Arrays.asList(ReportStatus.values()));
+        Collections.sort((List<ReportStatus>)REPORT_STATUS, new Comparator<ReportStatus>() {
+			@Override
+			public int compare(ReportStatus o1, ReportStatus o2) {
+				return o1.getDisplayName().compareTo(o2.getDisplayName());
+			}
+		});
+        
+        REPORT_STATUS.remove(ReportStatus.INPROCESS);
         REPORT_STATUS.remove(ReportStatus.AMENDED);
         REPORT_STATUS.remove(ReportStatus.WITHDRAWN);
         REPORT_STATUS.remove(ReportStatus.REPLACED);
@@ -165,6 +173,14 @@ public class RoutingAndReviewCommand{
 
 	public void setReviewStatusList(List<ReviewStatus> reviewStatusList) {
 		this.reviewStatusList = reviewStatusList;
+		if(this.reviewStatusList != null && !this.reviewStatusList.isEmpty()){
+			Collections.sort(this.reviewStatusList, new Comparator<ReviewStatus>() {
+				@Override
+				public int compare(ReviewStatus o1, ReviewStatus o2) {
+					return o1.getDisplayName().compareTo(o2.getDisplayName());
+				}
+			});
+		}
     	reviewStatusOptionsMap.put("", "Please select");
     	reviewStatusOptionsMap.putAll(WebUtils.collectCustomOptions(reviewStatusList, "name", "code", "displayName", ":  "));
     	reviewStatusOptionsMap.putAll(WebUtils.collectOptions(reviewStatusList, "name", "displayName"));
