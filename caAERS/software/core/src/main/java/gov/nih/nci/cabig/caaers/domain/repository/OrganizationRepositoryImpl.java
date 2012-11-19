@@ -50,11 +50,6 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
     /** The coppa mode for auto completers. */
     private boolean coppaModeForAutoCompleters;
     
-    private static final String ORGS_FETCH_HQL = "from Organization o where o.id in (select distinct oi.organization.id from " +
-			"OrganizationIndex oi where oi.loginId = :loginName and oi.roleCode " +
-			"in (:roleCodeIds) and oi.organization.id in (select distinct ss.organization.id " +
-			"from StudySite ss where ss.study.id in (select s.id from Study s where s.dataEntryStatus = true)) ) order by o.name";
-    
 
     /* (non-Javadoc)
      * @see gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository#createOrUpdate(gov.nih.nci.cabig.caaers.domain.Organization)
@@ -110,17 +105,33 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
     public List<Organization> getOrganizationsHavingStudySites() {
     	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String userName = SecurityUtils.getUserLoginName(authentication);
-		UserGroupType[] roles = SecurityUtils.getRoles();
-		List<Integer> roleIds = new ArrayList<Integer>();
-		for(UserGroupType ugType : roles){
-			roleIds.add(ugType.getCode());
-		}
+		
+		// Prepare the condition
+        StringBuffer roleCond = new StringBuffer("(");
+        UserGroupType[] roles = SecurityUtils.getRoles();
+        int size = roles.length;
+        for ( UserGroupType role: roles) {                	
+        	roleCond.append( role.dbAlias() +  "=:" + role.dbAlias());
+        	size--;
+        	if ( size > 0 )
+        		roleCond.append(" OR ");
+        }
+        roleCond.append(")");
+        
+		String ORGS_FETCH_HQL = "from Organization o where o.id in (select distinct oi.organization.id from " +
+				"OrganizationIndex oi where oi.loginId = :loginName and " +
+				 roleCond.toString() +  " and oi.organization.id in (select distinct ss.organization.id " +
+				"from StudySite ss where ss.study.id in (select s.id from Study s where s.dataEntryStatus = true)) ) order by o.name";
+		
 		
     	List<Organization> resultList = new ArrayList<Organization>();
 
 		EnrollingSiteOganizationsQuery query = new EnrollingSiteOganizationsQuery(ORGS_FETCH_HQL);
         query.setParameter("loginName", userName);
-        query.setParameterList("roleCodeIds", roleIds);
+		for(UserGroupType ugType : roles){
+			query.setParameter(ugType.dbAlias(), true);
+		}
+
         resultList = (List<Organization>) search(query);
 		return resultList;
     }
