@@ -517,8 +517,6 @@
         <delete file="${servicemix.temp.home}/lib/optional/caaers-adeers-client*.zip" />
         <delete file="${servicemix.temp.home}/hotdeploy/*caaers*" />
 
-        <delete dir="${servicemix.temp.home}/bin/data" />
-        <delete dir="${servicemix.temp.home}/data" />
 
         <mkdir dir="${basedir}/servicemix_temp"/>
 
