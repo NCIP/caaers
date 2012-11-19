@@ -431,7 +431,7 @@ public class StudyCommand {
             StudySite ss = sites.get(index);
             ss.retire();
 
-            if(ss.getOrganization() == null) sites.remove(ss);
+            if(ss.getOrganization() == null || ss.getId() == null) sites.remove(ss);
         }
     }
     
