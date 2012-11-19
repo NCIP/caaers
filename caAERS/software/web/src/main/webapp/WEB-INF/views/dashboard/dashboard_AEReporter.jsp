@@ -26,7 +26,7 @@
                     <td align="RIGHT">
                         <img src="<c:url value="/images/orange-actions.gif" />"
                              border="0"  id="report_${index}"
-                             onmouseover='showDashboardTaskPortletMenuOptions(this, ${task.entityId}, "${task.entityType}", "${task.aeReportId}", "${task.reportStatus.displayName}","${index}")'
+                             onmouseover='showDashboardTaskPortletMenuOptions(this, ${task.entityId}, "${task.entityType}", "${task.aeReportId}", "${task.status}","${index}")'
                              style="cursor: pointer;
                              margin-right: 15px;"></td>
                     <%--<td valign="top"><select name="s101"><option value="-">Please select</select></td>--%>
@@ -60,6 +60,12 @@
  	function showDashboardTaskPortletMenuOptions(_element, entityId,entityType, aeReportId, aeStatus,index) {
  		var _el = jQuery(_element);
  		var html="";
+ 		var label = 'Review';
+		<c:if test="${isStaff}"> 
+			if (aeStatus == 'Draft/Incomplete'){
+		 		label = 'Edit'
+			}
+		</c:if>
  		if(entityType == 'report'){
  				
  			var _element = $('report_' + index);
@@ -73,7 +79,7 @@
 
  			
  			if ( aeStatus != 'COMPLETED') {
- 				_optionDetails = '<li><a class="submitter-blue" href="#" onclick="displayEditLink('+ "'" + reportURL + "'" + ')"> <img src="<chrome:imageUrl name="../review.png" />"/>' + ' Review' +  '</a></li>';
+ 				_optionDetails = '<li><a class="submitter-blue" href="#" onclick="displayEditLink('+ "'" + reportURL + "'" + ')"> <img src="<chrome:imageUrl name="../review.png" />"/>' + label +  '</a></li>';
  			}
 
  			var _comments = '<li ><a style="cursor:pointer; border-bottom: none" onClick="displayPopup('+ 
@@ -105,7 +111,7 @@
  					+ '&src=RoutingReview';
 
  			var _optionDetails = '<li><a class="submitter-blue" href="#" onclick="displayEditLink('
- 					+ "'" + reportingPeriodPageURL + "'" + ')"><img src="<chrome:imageUrl name="../review.png" />"/>' + ' Review' +  '</a></li>';
+ 					+ "'" + reportingPeriodPageURL + "'" + ')"><img src="<chrome:imageUrl name="../review.png" />"/>' + label +  '</a></li>';
 
 			var _comments = '<li ><a style="cursor:pointer; border-bottom: none" onClick="displayPopup('+ 
 				' &apos;reportingPeriod &apos;,' + entityId + ');">' + '&nbsp;' + '<img src="<chrome:imageUrl name="../editComment.png" />" /> Comment' + '</a></li>';
