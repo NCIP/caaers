@@ -49,7 +49,7 @@ public class OrganizationIndexDaoIntegrationTest extends CaaersDbTestCase {
         dao.updateIndex("test", iList);
 
         
-        assertTrue(i0.isAllSiteOrAllStudy());
+
         assertTrue( iList.size() == 2 );
         assertTrue(i0.getRoles().size() == 2);
         assertTrue ( i0.getRoles().contains(UserGroupType.ae_reporter));
@@ -57,7 +57,7 @@ public class OrganizationIndexDaoIntegrationTest extends CaaersDbTestCase {
 
         
         final Set<Integer> orgList = new HashSet<Integer>(); // Just to make sure not adding duplicate values. 
-        template.query("select organization_id from organization_index where login_id = 'test' and r_102 = '1' and r_117 = '1'", new RowMapper(){
+        template.query("select organization_id from organization_index where login_id = 'test' and r_102 = '1' or r_119 = '1'", new RowMapper(){
             public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
                 int i = rs.getInt(1);
                 orgList.add(i);
