@@ -65,8 +65,7 @@ public abstract class PersonContact extends Person {
      */
     @Transient
     public boolean isSavable() {
-        return getFirstName() != null && getLastName() != null
-                        && getContactMechanisms().get(EMAIL) != null;
+        return getFirstName() != null && getLastName() != null;
     }
 
     // //// BOUND PROPERTIES
