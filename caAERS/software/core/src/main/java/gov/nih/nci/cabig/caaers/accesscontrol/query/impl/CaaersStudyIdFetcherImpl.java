@@ -91,42 +91,8 @@ public class CaaersStudyIdFetcherImpl extends AbstractIdFetcher implements IdFet
         
 		return  new ArrayList<IndexEntry>(studiesMap.values());
 	}
-	
-	private void constructIndexEntriesForExtrapolatedStudies( List<Object[]> studyOrgDataList,List<UserGroupType> roles, Map<Integer, IndexEntry> studiesMap) {
-		
-		for ( Object val : studyOrgDataList) {
-			Integer entityId = (Integer)val;
-			IndexEntry e = new IndexEntry(entityId);
-			e.addRoles(roles);
-			updateStudiesMap(studiesMap, e);
-		}	
-	}
-	
-	private void updateStudiesMap( Map<Integer, IndexEntry> studiesMap, IndexEntry entry) {
-		Integer entityId = entry.getEntityId();
-		
-		if ( studiesMap.containsKey(entityId)) {
-			// update the roles.
-				IndexEntry e = studiesMap.get(entityId);
-				e.addRoles(entry.getRoles());
-				studiesMap.put(entityId, e);
-				
-		} else {
-			studiesMap.put(entityId, entry);
-		}
-		
-	}
 
-    /**
-     * Will convert an IndexEntry list to a map, with "entity-id" as the key
-     * @param entries
-     * @return
-     */
-    private Map<Integer, IndexEntry> toEntityBasedIndex(List<IndexEntry> entries){
-        Map<Integer, IndexEntry> map = new LinkedHashMap<Integer, IndexEntry>(entries.size());
-        for(IndexEntry entry : entries) map.put(entry.getEntityId(), entry);
-        return map;
-    }
+
 
     private void updateIndexEntry(Map<Integer, IndexEntry> entryMap, Integer entityId, List<UserGroupType> roles){
         IndexEntry entry = entryMap.get(entityId);
