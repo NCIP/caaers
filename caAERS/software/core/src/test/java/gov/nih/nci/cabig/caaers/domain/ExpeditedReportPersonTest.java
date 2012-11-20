@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_REPORT_FORMAT;
+
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 
@@ -34,11 +36,6 @@ public class ExpeditedReportPersonTest extends CaaersTestCase {
         assertFalse(person.isSavable());
     }
 
-    public void testSaveableWithoutEmailAddress() throws Exception {
-        setSaveable();
-        person.getContactMechanisms().remove(ReportPerson.EMAIL);
-        assertFalse(person.isSavable());
-    }
 
     private void setSaveable() {
         person.setFirstName("Mr.");
