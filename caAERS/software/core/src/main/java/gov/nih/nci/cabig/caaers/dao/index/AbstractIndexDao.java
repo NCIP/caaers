@@ -193,7 +193,7 @@ public abstract class AbstractIndexDao extends JdbcDaoSupport {
 
         for(String sql : deleteQueries)  getJdbcTemplate().execute(sql);
         for(String sql : insertQueries)  getJdbcTemplate().execute(sql);
-        getJdbcTemplate().batchUpdate(updateQueries.toArray(new String[]{}));
+        if(CollectionUtils.isNotEmpty(updateQueries))getJdbcTemplate().batchUpdate(updateQueries.toArray(new String[]{}));
 
         
     }
