@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.accesscontrol.query.impl;
 
+import gov.nih.nci.cabig.caaers.dao.query.HQLQuery;
 import gov.nih.nci.cabig.caaers.dao.query.NativeSQLQuery;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.index.IndexEntry;
@@ -35,51 +36,55 @@ public class CaaersStudyIdFetcherImpl extends AbstractIdFetcher implements IdFet
         if(log.isInfoEnabled()){
             log.info("Study Fetcher fetched : " + String.valueOf(resultList) );
         }
-        
-        String all_studies_results = "select distinct so.study_id as study_id from " +
-                " study_organizations so " +
-                " join organization_index oi on  oi.organization_id = so.site_id  " +
-                " where retired_indicator <> :ri";
-        
-        Map<Integer, IndexEntry> studiesMap = new LinkedHashMap<Integer, IndexEntry>();
-        
+
+        List<IndexEntry> allStudyEntries = new ArrayList<IndexEntry>();
         for(IndexEntry entry : resultList){
-            if(entry.isAllSiteOrAllStudy()) {
-            	
-            	// Prepare the condition
-                StringBuffer roleCond = new StringBuffer("(");
-                int size = entry.getRoles().size();
-                for ( UserGroupType role: entry.getRoles()) {                	
-                	roleCond.append( role.dbAlias() +  "=:" + role.dbAlias());
-                	size--;
-                	if ( size > 0 )
-                		roleCond.append(" OR ");
+            if(entry.isAllSiteOrAllStudy()) allStudyEntries.add(entry);
+        }
+
+        if(allStudyEntries.isEmpty()) return resultList;
+        resultList.removeAll(allStudyEntries);
+
+        Map<Integer, IndexEntry> studiesMap = new LinkedHashMap<Integer, IndexEntry>();
+        for(IndexEntry entry : resultList) {
+            studiesMap.put(entry.getEntityId(), entry);
+        }
+
+        List<IndexEntry> orgIndexEntries = getCaaersSecurityFacade().getAccessibleOrganizationIds(loginId);
+        if(CollectionUtils.isNotEmpty(orgIndexEntries)){
+            for(IndexEntry allStudyEntry : allStudyEntries){
+                for(IndexEntry orgIndexEntry : orgIndexEntries){
+                    List<Integer> orgIdList = new ArrayList<Integer>();
+                    if(orgIndexEntry.hasAnyOfTheRoles(allStudyEntry.getRoles().toArray(new UserGroupType[]{}))){
+                         if(orgIndexEntry.isAllSiteOrAllStudy()){
+                             List<Integer> allStudyId = (List<Integer>) search(new HQLQuery("select s.id from Study s"));
+                             if(CollectionUtils.isNotEmpty(allStudyId)){
+                                 for(Integer studyId : allStudyId){
+                                     updateIndexEntry(studiesMap, studyId, allStudyEntry.getRoles() );
+                                 }
+                             }
+                             break;
+                         } else {
+                             orgIdList.add(orgIndexEntry.getEntityId());
+                         }
+                    }
+
+                    if(!orgIdList.isEmpty()) {
+                         NativeSQLQuery studyQuery = new NativeSQLQuery("select distinct so.study_id as study_id from study_organizations so where so.site_id in (:orgIds) and so.retired_indicator = :ri");
+                        studyQuery.setParameter("ri", false);
+                        studyQuery.setParameterList("orgIds", orgIdList);
+                        studyQuery.setScalar("study_id", StandardBasicTypes.INTEGER);
+                        List<Object[]> studyIdList = (List<Object[]>) search(studyQuery);
+                        if(CollectionUtils.isNotEmpty(studyIdList)){
+                            for(Object[] id : studyIdList)  {
+                               updateIndexEntry(studiesMap, (Integer)id[0], allStudyEntry.getRoles());
+                            }
+                        }
+                    }
                 }
-                roleCond.append(")");
-                all_studies_results = all_studies_results + " and " + roleCond.toString();    
-                
-            	//now pull out all study organization details from database.
-                NativeSQLQuery studySiteQuery = new NativeSQLQuery(all_studies_results);
-                studySiteQuery.setScalar("study_id", StandardBasicTypes.INTEGER);
-                studySiteQuery.setParameter("ri", true);
-                
-                for ( UserGroupType role: entry.getRoles()) {
-                	studySiteQuery.setParameter(role.dbAlias(),true);
-                }
-                
-                
-                
-                // Update the all site query with roles condition.
-                
-                List<Object[]> studyOrgDataList = (List<Object[]>) search(studySiteQuery);
-                if(studyOrgDataList == null || studyOrgDataList.isEmpty()) break;
-              
-                constructIndexEntriesForExtrapolatedStudies(studyOrgDataList, entry.getRoles(), studiesMap);
-                	
-            } else {
-            	updateStudiesMap(studiesMap, entry);
             }
         }
+
         
 		return  new ArrayList<IndexEntry>(studiesMap.values());
 	}
@@ -108,5 +113,25 @@ public class CaaersStudyIdFetcherImpl extends AbstractIdFetcher implements IdFet
 		}
 		
 	}
-	
+
+    /**
+     * Will convert an IndexEntry list to a map, with "entity-id" as the key
+     * @param entries
+     * @return
+     */
+    private Map<Integer, IndexEntry> toEntityBasedIndex(List<IndexEntry> entries){
+        Map<Integer, IndexEntry> map = new LinkedHashMap<Integer, IndexEntry>(entries.size());
+        for(IndexEntry entry : entries) map.put(entry.getEntityId(), entry);
+        return map;
+    }
+
+    private void updateIndexEntry(Map<Integer, IndexEntry> entryMap, Integer entityId, List<UserGroupType> roles){
+        IndexEntry entry = entryMap.get(entityId);
+        if(entry == null){
+            entry = new IndexEntry(entityId);
+            entryMap.put(entityId, entry);
+        }
+        entry.addRoles(roles);
+    }
+
 }
