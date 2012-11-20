@@ -1,5 +1,5 @@
 <dataset>
-    
+    <identifiers />
     <organizations id="-1" name="New Site"/>
     <organizations id="-2" name="New Site"/>
     <organizations id="-3" name="New Site"/>
@@ -10,8 +10,8 @@
     <organizations id="-8" name="New Site"/>
     <organizations id="-9" name="New Site"/>
 
-    <organization_index id="1" organization_id="-1" login_id="test" r_102 = "1" r_103 = "1" r_104 = "1" r_105 = "1" r_106 = "1" />
-    <organization_index id="2" organization_id="-9" login_id="test" r_102 = "1" r_103 = "1" r_104 = "1" r_105 = "1" r_106 = "1" />
+    <organization_index id="-12" organization_id="-1" login_id="test" r_102 = "1" r_103 = "1" r_104 = "1" r_105 = "1" r_106 = "1" />
+    <organization_index id="-23" organization_id="-9" login_id="test" r_102 = "1" r_103 = "1" r_104 = "1" r_105 = "1" r_106 = "1" />
     
     <ind_holders />
     <site_investigators />
