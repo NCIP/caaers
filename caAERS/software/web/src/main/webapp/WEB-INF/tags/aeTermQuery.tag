@@ -76,7 +76,7 @@
                     			}								
 							});
             			}else{
-            				createAE.matchTerms(text, this.options.categorySelector.version, '', 25 , function(values){
+            				createAE.matchTerms(text, this.options.categorySelector.version, '', 75 , function(values){
                 				if(catSel.ignoreOtherSpecify){
                     				var vals = [];
                     				values.each(function(aterm){

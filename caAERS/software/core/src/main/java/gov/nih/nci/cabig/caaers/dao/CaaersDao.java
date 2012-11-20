@@ -94,7 +94,7 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
         if(substringMatchProperties != null && !substringMatchProperties.isEmpty()){
         	query.append(" order by o." + substringMatchProperties.get(0));
         }
-        getHibernateTemplate().setMaxResults(30);
+        getHibernateTemplate().setMaxResults(75);
         log.debug("query::" + query.toString());
         
         List<T> result = getHibernateTemplate().find(query.toString(), params.toArray());
@@ -160,7 +160,7 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
              return Collections.emptyList();
          }
     	 
-        getHibernateTemplate().setMaxResults(30);
+        getHibernateTemplate().setMaxResults(75);
         List<Object> params = new LinkedList<Object>();
         List<T> result =  getHibernateTemplate().find(buildSubnameQuery(subnames, extraConditions, extraParameters,
         		joins, params, substringMatchProperties, exactMatchProperties), params.toArray());

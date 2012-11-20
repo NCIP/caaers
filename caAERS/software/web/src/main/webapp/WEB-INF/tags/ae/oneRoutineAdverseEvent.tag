@@ -80,7 +80,7 @@
                                       title="${ctcTermLabel}"
                                       initialDisplayValue="${command.adverseEvents[index].ctcTerm.fullName}">
                         <jsp:attribute name="populatorJS">function(autocompleter, text) {
-                            createAE.matchTerms(text, ${command.study.aeTerminology.ctcVersion.id}, '', 25, function(values) {
+                            createAE.matchTerms(text, ${command.study.aeTerminology.ctcVersion.id}, '', 75, function(values) {
                                 autocompleter.setChoices(values);
             				});
                         }
