@@ -287,6 +287,7 @@ public void replaceReportDefinitionName(Integer aeReportId, String theOne, Strin
 	 */
 	public void addReportDefinitionName(Integer aeReportId, AdverseEvent adverseEvent, String theOne){
 		Map<AdverseEvent, Set<String>> map = processedRulesEngineResultMap.get(aeReportId);
+        if(adverseEvent.isRetired() && !map.containsKey(adverseEvent)) map.put(adverseEvent, new HashSet<String>());
 		map.get(adverseEvent).add(theOne);
 	}
 	
