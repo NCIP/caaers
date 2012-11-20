@@ -17,6 +17,7 @@ import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
@@ -120,6 +121,7 @@ public class CreateReportingPeriodControllerTest extends WebTestCase {
 		request.setParameter("participantId","5");
 		
 		expect(studyDao.getById(5)).andReturn(study);
+		expect(study.getCtepEsysIdentifierValue()).andReturn("CTEP-SYS").once();
 		expect(assignmentDao.getAssignment(participant, study)).andReturn(assignment);
 		expect(adverseEventReportingPeriodDao.getById(5)).andReturn(reportingPeriod);
 		expect(participantDao.getById(5)).andReturn(participant);

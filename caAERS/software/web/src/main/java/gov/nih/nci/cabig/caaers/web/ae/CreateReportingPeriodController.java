@@ -86,14 +86,17 @@ public class CreateReportingPeriodController extends SimpleFormController {
         int reportingPeriodId = NumberUtils.toInt(request.getParameter("id"), 0);
         int studyId = NumberUtils.toInt(request.getParameter("studyId"), 0);
         int participantId = NumberUtils.toInt(request.getParameter("participantId"), 0);
-
-        if(studyId > 0 && proxyWebServiceFacade != null){
-            String syncResult = proxyWebServiceFacade.updateStudy(studyId, false);
-            if(logger.isInfoEnabled()) logger.info("Synchronizing study (" + studyId + ") result : " + syncResult);
-        }
         
         //load assignment
         Study study = (studyId > 0) ? studyDao.getById(studyId) : null;
+        String idText = study.getCtepEsysIdentifierValue();
+        if(idText != null){
+        	if(studyId > 0 && proxyWebServiceFacade != null){
+                String syncResult = proxyWebServiceFacade.updateStudy(studyId, false);
+                if(logger.isInfoEnabled()) logger.info("Synchronizing study (" + studyId + ") result : " + syncResult);
+            }
+        }
+
         Participant participant = (participantId > 0) ? participantDao.getById(participantId) : null;
         StudyParticipantAssignment assignment = null;
         if (study != null && participant != null)
