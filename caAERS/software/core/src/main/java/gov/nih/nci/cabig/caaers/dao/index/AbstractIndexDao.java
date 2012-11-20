@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.dao.index;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -11,6 +12,7 @@ import gov.nih.nci.cabig.caaers.domain.index.IndexEntry;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.transaction.annotation.Transactional;
@@ -162,6 +164,64 @@ public abstract class AbstractIndexDao extends JdbcDaoSupport {
         boolean oracleDB = dataBase.equals(ORACLE_DB);
 
         Map<String, List<IndexEntry>> diffMap = diff(userName, indexEntries);
+
+        final List<IndexEntry> toInsert = diffMap.get("insert");
+        if(!CollectionUtils.isEmpty(toInsert)){
+
+            BatchPreparedStatementSetter setter =  new BatchPreparedStatementSetter() {
+
+                public void setValues(PreparedStatement ps, int index) throws SQLException {
+                    IndexEntry entry = toInsert.get(index);
+                    ps.setString(1, userName);
+                    ps.setInt(2, entry.getEntityId());
+                    String[] roleCols = UserGroupType.getAllRoleColumnsArray();
+                    for(int i = 0; i < roleCols.length; i++){
+                        ps.setBoolean(i+3 , entry.hasRole(UserGroupType.getByColumnName(roleCols[i])));
+                    }
+                }
+
+                public int getBatchSize() {
+                    return toInsert.size();
+                }
+            };
+
+            if(log.isInfoEnabled()){
+                log.info("Inserting : " + toInsert.size() + " records");
+                log.info(toInsert.toString());
+            }
+
+            getJdbcTemplate().batchUpdate(generateSQLInsertTemplate(oracleDB).toString(), setter);
+        }
+
+        final List<IndexEntry> toUpdate = diffMap.get("update");
+        if(!CollectionUtils.isEmpty(toUpdate)){
+            BatchPreparedStatementSetter setter =  new BatchPreparedStatementSetter() {
+
+                public void setValues(PreparedStatement ps, int index) throws SQLException {
+                    IndexEntry entry = toUpdate.get(index);
+                    String[] roleCols = UserGroupType.getAllRoleColumnsArray();
+                    for(int i = 0; i < roleCols.length; i++){
+                        ps.setBoolean(i+1 , entry.hasRole(UserGroupType.getByColumnName(roleCols[i])));
+                    }
+                    ps.setString(roleCols.length + 1 , userName);
+                    ps.setInt(roleCols.length + 2 , entry.getEntityId());
+                }
+
+                public int getBatchSize() {
+                    return toUpdate.size();
+                }
+            };
+
+            if(log.isInfoEnabled()){
+                log.info("Updating : " + toUpdate.size() + " records");
+                log.info(toUpdate.toString());
+            }
+
+            getJdbcTemplate().batchUpdate(generateSQLUpdateTemplate(oracleDB).toString(), setter);
+        }
+
+
+
         List<String> deleteQueries = new ArrayList<String>();
     	List<IndexEntry> toDelete = diffMap.get("delete");
         if(!CollectionUtils.isEmpty(toDelete)){
@@ -172,28 +232,14 @@ public abstract class AbstractIndexDao extends JdbcDaoSupport {
                     deleteQueries.add(generateSQL("delete",userName, entry, oracleDB));
                 }
             }
-        }
 
-        List<IndexEntry> toInsert = diffMap.get("insert");
-        List<String> insertQueries = new ArrayList<String>();
-        if(!CollectionUtils.isEmpty(toInsert)){
-            for(IndexEntry entry : toInsert) {
-                insertQueries.add(generateSQL("insert",userName, entry, oracleDB));
+            getJdbcTemplate().batchUpdate(deleteQueries.toArray(new String[]{}));
+            if(log.isInfoEnabled()){
+                log.info("Deleting : " + deleteQueries.size() + " records");
+                log.info(deleteQueries.toString());
             }
         }
 
-
-        List<IndexEntry> toUpdate = diffMap.get("update");
-        List<String> updateQueries = new ArrayList<String>();
-        if(!CollectionUtils.isEmpty(toUpdate)){
-            for(IndexEntry entry : toUpdate) {
-                updateQueries.add(generateSQL("update",userName, entry, oracleDB));
-            }
-        }
-
-        for(String sql : deleteQueries)  getJdbcTemplate().execute(sql);
-        for(String sql : insertQueries)  getJdbcTemplate().execute(sql);
-        if(CollectionUtils.isNotEmpty(updateQueries))getJdbcTemplate().batchUpdate(updateQueries.toArray(new String[]{}));
 
         
     }
@@ -243,6 +289,35 @@ public abstract class AbstractIndexDao extends JdbcDaoSupport {
         }
         return map;
     }
+
+    public String generateSQLInsertTemplate(boolean  isOracle){
+        StringBuilder sb = new StringBuilder("insert into ")
+                .append(indexTableName())
+                .append("(").append(isOracle ? "id, ": "")
+                .append("login_id,")
+                .append(entityIdColumnName()).append(",")
+                .append(UserGroupType.getAllRoleColumns()).append(")")
+                .append(" values (").append(isOracle ? sequenceName() + ".NEXTVAL," : "")
+                .append("?,?");
+        for(int i =0; i< UserGroupType.getAllRoleColumnsArray().length; i++) {
+            sb.append(",?");
+        }
+        sb.append(")");
+        return sb.toString();
+    }
+
+    public String generateSQLUpdateTemplate(boolean isOracle){
+        StringBuilder sb = new StringBuilder("update ")
+                .append(indexTableName())
+                .append(" set ");
+        for(int i = 0; i < UserGroupType.getAllRoleColumnsArray().length; i++){
+            if(i > 0) sb.append(" , ");
+            sb.append(UserGroupType.getAllRoleColumnsArray()[i]).append(" = ? ");
+        }
+        sb.append(" where login_id = ? and ").append(entityIdColumnName()).append(" = ?");
+        return sb.toString();
+    }
+
     public String generateSQL(String operation, String userName, IndexEntry entry, boolean isOracle){
          if(operation.equals("delete-all")) {
              return "delete from " + indexTableName() + " where login_id ='" + userName + "'";
@@ -250,48 +325,6 @@ public abstract class AbstractIndexDao extends JdbcDaoSupport {
          if(operation.equals("delete")){
              return "delete from " + indexTableName() + " where login_id = '" + userName + "' and " + entityIdColumnName() +  " = " + entry.getEntityId();
          }
-        if(operation.equals("insert")){
-
-            StringBuilder sb = new StringBuilder("insert into ")
-                    .append(indexTableName())
-                    .append("(").append(isOracle ? "id, ": "")
-                    .append("login_id,")
-                    .append(entityIdColumnName()).append(",")
-                    .append(UserGroupType.getAllRoleColumns()).append(")")
-                    .append(" values (").append(isOracle ? sequenceName() + ".NEXTVAL," : "")
-                    .append("'").append(userName).append("',")
-                    .append(entry.getEntityId());
-
-                for(int i = 0; i < UserGroupType.getAllRoleColumnsArray().length; i++){
-                    sb.append(",");
-                    UserGroupType role = UserGroupType.getByColumnName(UserGroupType.getAllRoleColumnsArray()[i]);
-                    boolean checked = entry.hasRole(role);
-                    if(checked) sb.append(isOracle? "1" : "true"); else sb.append(isOracle ? "0" : "false");
-                }
-               return sb.append(")").toString();
-        }
-
-        if(operation.equals("update")){
-
-            StringBuilder sb = new StringBuilder("update ")
-                    .append(indexTableName())
-                    .append(" set ");
-
-            for(int i = 0; i < UserGroupType.getAllRoleColumnsArray().length; i++){
-                if(i > 0 ) sb.append(" , ");
-                UserGroupType role = UserGroupType.getByColumnName(UserGroupType.getAllRoleColumnsArray()[i]);
-                boolean checked = entry.hasRole(role);
-                if(checked) {
-                    sb.append(role.dbAlias()).append("=").append(isOracle? "1" : "true");
-                } else {
-                    sb.append(role.dbAlias()).append("=").append(isOracle? "0" : "false");
-                }
-            }
-
-            return sb.append(" where login_id = '").append(userName).append("' ")
-                    .append(" and ").append(entityIdColumnName()).append("=").append(entry.getEntityId())
-                    .toString();
-        }
 
         return null;
     }
