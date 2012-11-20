@@ -256,8 +256,11 @@ public abstract class AbstractIndexDao extends JdbcDaoSupport {
                     .append(indexTableName())
                     .append("(").append(isOracle ? "id, ": "")
                     .append("login_id,")
+                    .append(entityIdColumnName()).append(",")
                     .append(UserGroupType.getAllRoleColumns()).append(")")
-                    .append(" values (").append(isOracle ? sequenceName() + ".NEXTVAL," : "").append("'").append(userName).append("'");
+                    .append(" values (").append(isOracle ? sequenceName() + ".NEXTVAL," : "")
+                    .append("'").append(userName).append("',")
+                    .append(entry.getEntityId());
 
                 for(int i = 0; i < UserGroupType.getAllRoleColumnsArray().length; i++){
                     sb.append(",");
@@ -281,7 +284,9 @@ public abstract class AbstractIndexDao extends JdbcDaoSupport {
                 if(checked) sb.append(role.dbAlias()).append("=").append(isOracle? "1" : "true"); else sb.append(isOracle ? "0" : "false");
             }
 
-            return sb.append(" where login_id = '").append(userName).append("'").toString();
+            return sb.append(" where login_id = '").append(userName).append("' ")
+                    .append(" and ").append(entityIdColumnName()).append("=").append(entry.getEntityId())
+                    .toString();
         }
 
         return null;
