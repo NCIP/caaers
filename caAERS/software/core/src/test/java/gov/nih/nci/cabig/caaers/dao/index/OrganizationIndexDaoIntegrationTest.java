@@ -33,7 +33,7 @@ public class OrganizationIndexDaoIntegrationTest extends CaaersDbTestCase {
 
     public void testUpdateIndex(){
             	
-        IndexEntry i0 = new IndexEntry(Integer.MIN_VALUE);
+        IndexEntry i0 = new IndexEntry(-1);
         i0.addRole(UserGroupType.business_administrator);
         i0.addRole(UserGroupType.ae_reporter);
         
@@ -65,7 +65,7 @@ public class OrganizationIndexDaoIntegrationTest extends CaaersDbTestCase {
             }
         });
         
-        assertTrue(orgList.size() == 9);
+        assertTrue(orgList.size() == 2);
     }
 
 

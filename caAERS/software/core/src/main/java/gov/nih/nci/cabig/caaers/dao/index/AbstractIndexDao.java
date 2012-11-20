@@ -281,7 +281,11 @@ public abstract class AbstractIndexDao extends JdbcDaoSupport {
                 if(i > 0 ) sb.append(" , ");
                 UserGroupType role = UserGroupType.getByColumnName(UserGroupType.getAllRoleColumnsArray()[i]);
                 boolean checked = entry.hasRole(role);
-                if(checked) sb.append(role.dbAlias()).append("=").append(isOracle? "1" : "true"); else sb.append(isOracle ? "0" : "false");
+                if(checked) {
+                    sb.append(role.dbAlias()).append("=").append(isOracle? "1" : "true");
+                } else {
+                    sb.append(role.dbAlias()).append("=").append(isOracle? "0" : "false");
+                }
             }
 
             return sb.append(" where login_id = '").append(userName).append("' ")
