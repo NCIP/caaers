@@ -44,30 +44,35 @@ public class CaaersOrganizationIdFetcherImpl extends  AbstractIdFetcher implemen
         if(log.isInfoEnabled()) log.info(" Organization Index entries obtained from CSM {" + String.valueOf(organizationIndexEntryList) + "}");
         if(CollectionUtils.isEmpty(organizationIndexEntryList)) return organizationIndexEntryList;
 
-        //if there is only all sites ?
-        if(organizationIndexEntryList.size() == 1 && organizationIndexEntryList.get(0).isAllSiteOrAllStudy()) return organizationIndexEntryList;
+        Map<Integer, IndexEntry> organizationIndexEntryMap = toEntityBasedIndex(organizationIndexEntryList);
+        IndexEntry allSiteEntry = organizationIndexEntryMap.get(Integer.MIN_VALUE);
+        if(allSiteEntry != null){
+            //extrapolate  - all site
+            List<Integer> allOrgIds = (List<Integer>) search(new HQLQuery("select o.id from Organization o"));
+            if(CollectionUtils.isNotEmpty(allOrgIds)){
+                for(Integer orgId : allOrgIds){
+                    updateIndexEntry(organizationIndexEntryMap, orgId, allSiteEntry.getRoles());
+                }
+            }
+        }
 
-        //TODO Do this only if we have study-scoped roles.
-        //find the studies that this login can access
-        List<IndexEntry> studyIndexEntryList = getCaaersSecurityFacade().getAccessibleStudyIds(loginId);
-        if(CollectionUtils.isEmpty(studyIndexEntryList)) return studyIndexEntryList;
 
-        //now pull out all study organization details from database.
-        NativeSQLQuery studySiteQuery = new NativeSQLQuery("select study_id, site_id, type from study_organizations where retired_indicator <> :ri order by study_id");
+        //now pull out all accessible study organization details from database.
+        NativeSQLQuery studySiteQuery = new NativeSQLQuery("select so.study_id as study_id , so.site_id as site_id, so.type as type " +
+                "from study_organizations so " +
+                "join studies s on s.id = so.study_id " +
+                "join study_index si on s.id = si.study_id where si.login_id = :loginId and so.retired_indicator = :ri");
         studySiteQuery.setScalar("study_id", StandardBasicTypes.INTEGER);
         studySiteQuery.setScalar("site_id", StandardBasicTypes.INTEGER);
         studySiteQuery.setScalar("type", StandardBasicTypes.STRING);
-        studySiteQuery.setParameter("ri", true);
+        studySiteQuery.setParameter("ri", false);
+        studySiteQuery.setParameter("loginId", loginId);
 
         List<Object[]> studyOrgDataList = (List<Object[]>) search(studySiteQuery);
-        if(studyOrgDataList == null || studyOrgDataList.isEmpty()) return organizationIndexEntryList;
 
-        //TODO - make sure that ALL Study is replaced.
-        studyIndexEntryList = studyIndexEntryList;
+        if(CollectionUtils.isEmpty(studyOrgDataList)) return new ArrayList(organizationIndexEntryMap.values());
 
-        Map<Integer, IndexEntry> organizationIndexEntryMap = toEntityBasedIndex(organizationIndexEntryList);
-        Map<Integer, IndexEntry> studyIdIndex = toEntityBasedIndex(studyIndexEntryList);
-        
+
         //create and map with the study organization data - for easy retrieval
         Map<Integer, List<Integer>> studyStudySiteMap = new HashMap<Integer, List<Integer>>();    //stores study - sites
         Map<Integer,  List<Integer>> studySponsorStudyMap = new HashMap<Integer, List<Integer>>();   //stores sponsors-studyid
@@ -90,50 +95,32 @@ public class CaaersOrganizationIdFetcherImpl extends  AbstractIdFetcher implemen
                 }
                 studyList.add((Integer) row[0]);
             }
-
-
         }
         
-
         //loop through all the sponsors in the DB
         for(Integer sponsorOrgId : studySponsorStudyMap.keySet()){
-
             //is my login associated to sponsor directly ?
             IndexEntry sponsorOrgIndexEntry =  organizationIndexEntryMap.get(sponsorOrgId);
+            if(sponsorOrgIndexEntry == null) continue;
 
             //find studies this organization is managing.
             List<Integer> managedStudyIds = studySponsorStudyMap.get(sponsorOrgId);
+            if(CollectionUtils.isEmpty(managedStudyIds)) continue;
 
              for(Integer studyId : managedStudyIds){
 
-                 //is this study present in my accessible studies ?
-                 IndexEntry studyIndexEntry =  studyIdIndex.get(studyId);
-                 if(studyIndexEntry == null) continue;
-
-
-                 //no - then either this login have no-access or this login has all site access
-                 if(sponsorOrgIndexEntry == null) continue;
-
                  //find the sites this sponsor is managing
                  List<Integer> managedOrgIds = studyStudySiteMap.get(studyId);
-                 if(managedOrgIds == null) continue;
+                 if(CollectionUtils.isEmpty(managedOrgIds)) continue;
 
                  //add the transitive role for the managed org. 
                  for(Integer managedOrgId : managedOrgIds){
-                     IndexEntry managedOrgIndexEntry = organizationIndexEntryMap.get(managedOrgId);
-                     if(managedOrgIndexEntry == null){
-                         managedOrgIndexEntry  = new IndexEntry(managedOrgId);
-                         organizationIndexEntryMap.put(managedOrgId, managedOrgIndexEntry);
-                     }
-                     managedOrgIndexEntry.addRole(sponsorOrgIndexEntry.getRoles());
-                     if(log.isInfoEnabled()) log.info("Transitive Organization Index Entry " +  String.valueOf( managedOrgIndexEntry) + " via Study " + studyId + " , sponsors [" + sponsorOrgId + "]");
+                     updateIndexEntry(organizationIndexEntryMap, managedOrgId, sponsorOrgIndexEntry.getRoles());
+                     if(log.isInfoEnabled()) log.info("Transitive Organization Index Entry " +  managedOrgId + " via Study " + studyId + " , sponsors [" + sponsorOrgId + "]");
                  }
-                 
              }
-            
         }
 
-        //TODO : merge organizationIndexEntryList - to reduce size.
         List<IndexEntry> updatedOrganizationIndexEntryList =  new ArrayList<IndexEntry>(organizationIndexEntryMap.values());
 
 
@@ -153,6 +140,15 @@ public class CaaersOrganizationIdFetcherImpl extends  AbstractIdFetcher implemen
         Map<Integer, IndexEntry> map = new LinkedHashMap<Integer, IndexEntry>(entries.size());
         for(IndexEntry entry : entries) map.put(entry.getEntityId(), entry);
         return map;
+    }
+
+    private void updateIndexEntry(Map<Integer, IndexEntry> entryMap, Integer entityId, List<UserGroupType> roles){
+        IndexEntry entry = entryMap.get(entityId);
+        if(entry == null){
+            entry = new IndexEntry(entityId);
+            entryMap.put(entityId, entry);
+        }
+        entry.addRoles(roles);
     }
 
 

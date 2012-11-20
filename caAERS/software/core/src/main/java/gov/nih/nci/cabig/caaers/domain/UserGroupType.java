@@ -119,6 +119,9 @@ public enum UserGroupType implements CodedEnum<Integer> {
     /** The code. */
     private int code;
 
+    private static String cols = "R_101,R_102,R_103,R_104,R_105,R_106,R_107,R_108,R_109,R_110,R_111,R_112,R_113,R_114,R_115,R_116,R_117,R_118,R_119,R_120,R_121,R_122,R_123,R_7942,R_7943";
+    private static String[] colsArray = cols.split(",");
+
     /**
      * Instantiates a new user group type.
      *
@@ -173,9 +176,12 @@ public enum UserGroupType implements CodedEnum<Integer> {
     }
 
    public static String getAllRoleColumns() {
-	   return "R_101,R_102,R_103,R_104,R_105,R_106,R_107,R_108,R_109,R_110,R_111,R_112,R_113,R_114,R_115,R_116,R_117,R_118,R_119,R_120,R_121,R_122,R_123,R_7942,R_7943";
+	   return cols;
    }
-    
+    public static String[] getAllRoleColumnsArray() {
+        return colsArray;
+    }
+
     /** 
      * Gets the csm name.
      *
@@ -222,10 +228,10 @@ public enum UserGroupType implements CodedEnum<Integer> {
      * @return the by code
      */
     public static UserGroupType getByColumnName(final String columnName) {
-    	if ( columnName != null && columnName.contains("_") ) {
-    			int code =  -1 * Integer.parseInt(columnName.split("_")[1]);
-    		    return getByCode(code);
-    	}
+        for(UserGroupType role : values()){
+            if(role.dbAlias().equalsIgnoreCase(columnName)) return role;
+        }
+
     	return null;
     }
     

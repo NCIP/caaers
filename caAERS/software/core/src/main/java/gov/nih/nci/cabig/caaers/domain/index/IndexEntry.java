@@ -37,16 +37,8 @@ public class IndexEntry {
         return roles;
     }
 
-    public void setRoles(List<UserGroupType> roles) {
-        this.roles = roles;
-    }
-
     public Integer getEntityId() {
         return entityId;
-    }
-
-    public void setEntityId(Integer entityId) {
-        this.entityId = entityId;
     }
 
     public void addRole(UserGroupType... roles){
@@ -55,7 +47,7 @@ public class IndexEntry {
         }
     }
 
-    public void addRole(List<UserGroupType> roles){
+    public void addRoles(List<UserGroupType> roles){
         addRole(roles.toArray(new UserGroupType[]{}));
     }
 
@@ -81,6 +73,13 @@ public class IndexEntry {
     @Override
     public String toString() {
         return String.valueOf(entityId) + ", [" + String.valueOf(roles) + "]\r\n";
+    }
+
+    public boolean equals(IndexEntry other){
+        if(!this.getEntityId().equals(other.getEntityId())) return false;
+        if(!other.getRoles().containsAll(this.getRoles())) return false;
+        if(!this.getRoles().containsAll(other.getRoles())) return false;
+        return true;
     }
 }
 

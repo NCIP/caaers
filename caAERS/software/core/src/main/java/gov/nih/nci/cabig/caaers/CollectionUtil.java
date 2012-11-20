@@ -17,7 +17,7 @@ public class CollectionUtil<T extends Retireable> {
         return l;
     }
 
-    public static List<Integer> subtract(List<Integer> a, List<Integer> b){
+    public static List<Integer> subtract(Collection<Integer> a, Collection<Integer> b){
         Set<Integer> y = new HashSet<Integer>(b);
         Set<Integer> z = new HashSet<Integer>();
         for(Integer i : a){

@@ -89,7 +89,7 @@ public class CaaersStudyIdFetcherImpl extends AbstractIdFetcher implements IdFet
 		for ( Object val : studyOrgDataList) {
 			Integer entityId = (Integer)val;
 			IndexEntry e = new IndexEntry(entityId);
-			e.addRole(roles);
+			e.addRoles(roles);
 			updateStudiesMap(studiesMap, e);
 		}	
 	}
@@ -100,7 +100,7 @@ public class CaaersStudyIdFetcherImpl extends AbstractIdFetcher implements IdFet
 		if ( studiesMap.containsKey(entityId)) {
 			// update the roles.
 				IndexEntry e = studiesMap.get(entityId);
-				e.addRole(entry.getRoles());
+				e.addRoles(entry.getRoles());
 				studiesMap.put(entityId, e);
 				
 		} else {

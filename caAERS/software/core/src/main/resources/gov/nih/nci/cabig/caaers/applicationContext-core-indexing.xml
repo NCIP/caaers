@@ -97,8 +97,8 @@
     <bean id="fullIndexDataLoaderTarget" class="gov.nih.nci.cabig.caaers.accesscontrol.dataproviders.FilteredDataLoader">
         <property name="idFetchers">
             <list>
-                <ref bean="organizationIdFetcher"/>
                 <ref bean="studyIdFetcher"/>
+                <ref bean="organizationIdFetcher"/>
                 <ref bean="researchStaffIdFetcher"/>
                 <ref bean="investigatorIdFetcher"/>
                 <ref bean="participantIdFetcher"/>
