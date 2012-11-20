@@ -257,7 +257,7 @@ public abstract class AbstractIndexDao extends JdbcDaoSupport {
                     .append("(").append(isOracle ? "id, ": "")
                     .append("login_id,")
                     .append(UserGroupType.getAllRoleColumns()).append(")")
-                    .append(" values (").append(isOracle ? sequenceName() + ".NEXTVAL," : "").append(userName);
+                    .append(" values (").append(isOracle ? sequenceName() + ".NEXTVAL," : "").append("'").append(userName).append("'");
 
                 for(int i = 0; i < UserGroupType.getAllRoleColumnsArray().length; i++){
                     sb.append(",");
@@ -265,7 +265,7 @@ public abstract class AbstractIndexDao extends JdbcDaoSupport {
                     boolean checked = entry.hasRole(role);
                     if(checked) sb.append(isOracle? "1" : "true"); else sb.append(isOracle ? "0" : "false");
                 }
-               return sb.toString();
+               return sb.append(")").toString();
         }
 
         if(operation.equals("update")){
@@ -275,13 +275,13 @@ public abstract class AbstractIndexDao extends JdbcDaoSupport {
                     .append(" set ");
 
             for(int i = 0; i < UserGroupType.getAllRoleColumnsArray().length; i++){
-                if(i > 0 ) sb.append(" ,");
+                if(i > 0 ) sb.append(" , ");
                 UserGroupType role = UserGroupType.getByColumnName(UserGroupType.getAllRoleColumnsArray()[i]);
                 boolean checked = entry.hasRole(role);
                 if(checked) sb.append(role.dbAlias()).append("=").append(isOracle? "1" : "true"); else sb.append(isOracle ? "0" : "false");
             }
 
-            return sb.toString();
+            return sb.append(" where login_id = '").append(userName).append("'").toString();
         }
 
         return null;
