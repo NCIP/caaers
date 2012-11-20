@@ -53,8 +53,9 @@ public class CaaersStudyIdFetcherImpl extends AbstractIdFetcher implements IdFet
         List<IndexEntry> orgIndexEntries = getCaaersSecurityFacade().getAccessibleOrganizationIds(loginId);
         if(CollectionUtils.isNotEmpty(orgIndexEntries)){
             for(IndexEntry allStudyEntry : allStudyEntries){
+                List<Integer> orgIdList = new ArrayList<Integer>();
                 for(IndexEntry orgIndexEntry : orgIndexEntries){
-                    List<Integer> orgIdList = new ArrayList<Integer>();
+
                     if(orgIndexEntry.hasAnyOfTheRoles(allStudyEntry.getRoles().toArray(new UserGroupType[]{}))){
                          if(orgIndexEntry.isAllSiteOrAllStudy()){
                              List<Integer> allStudyId = (List<Integer>) search(new HQLQuery("select s.id from Study s"));
@@ -69,16 +70,18 @@ public class CaaersStudyIdFetcherImpl extends AbstractIdFetcher implements IdFet
                          }
                     }
 
-                    if(!orgIdList.isEmpty()) {
-                         NativeSQLQuery studyQuery = new NativeSQLQuery("select distinct so.study_id as study_id from study_organizations so where so.site_id in (:orgIds) and so.retired_indicator = :ri");
-                        studyQuery.setParameter("ri", false);
-                        studyQuery.setParameterList("orgIds", orgIdList);
-                        studyQuery.setScalar("study_id", StandardBasicTypes.INTEGER);
-                        List<Object[]> studyIdList = (List<Object[]>) search(studyQuery);
-                        if(CollectionUtils.isNotEmpty(studyIdList)){
-                            for(Object[] id : studyIdList)  {
-                               updateIndexEntry(studiesMap, (Integer)id[0], allStudyEntry.getRoles());
-                            }
+
+                }
+
+                if(!orgIdList.isEmpty()) {
+                    NativeSQLQuery studyQuery = new NativeSQLQuery("select distinct so.study_id as study_id from study_organizations so where so.site_id in (:orgIds) and so.retired_indicator = :ri");
+                    studyQuery.setParameter("ri", false);
+                    studyQuery.setParameterList("orgIds", orgIdList);
+                    studyQuery.setScalar("study_id", StandardBasicTypes.INTEGER);
+                    List<Object[]> studyIdList = (List<Object[]>) search(studyQuery);
+                    if(CollectionUtils.isNotEmpty(studyIdList)){
+                        for(Object[] id : studyIdList)  {
+                            updateIndexEntry(studiesMap, (Integer)id[0], allStudyEntry.getRoles());
                         }
                     }
                 }
