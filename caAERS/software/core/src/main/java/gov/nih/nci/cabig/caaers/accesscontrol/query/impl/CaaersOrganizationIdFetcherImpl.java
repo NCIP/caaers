@@ -54,7 +54,7 @@ public class CaaersOrganizationIdFetcherImpl extends  AbstractIdFetcher implemen
                     updateIndexEntry(organizationIndexEntryMap, orgId, allSiteEntry.getRoles());
                 }
             }
-            organizationIndexEntryMap.remove(allSiteEntry);
+            organizationIndexEntryMap.remove(allSiteEntry.getEntityId());
         }
 
 
