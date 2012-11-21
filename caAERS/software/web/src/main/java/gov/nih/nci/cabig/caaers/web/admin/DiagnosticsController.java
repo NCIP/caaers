@@ -55,7 +55,9 @@ public class DiagnosticsController extends SimpleFormController{
 		
 		    // use the true flag to indicate you need a multipart message
 		    MimeMessageHelper helper = new MimeMessageHelper(message, true);
-		    helper.setTo("admin@semanticbits.com");
+            String fromEmail = configuration.get(Configuration.SYSTEM_FROM_EMAIL);
+            if(fromEmail == null) fromEmail = "admin@semanticbits.com" ;
+		    helper.setTo(fromEmail);
 		    caaersJavaMailSender.send(message);
 		    testResult = true;
 		} catch (Exception e) {
