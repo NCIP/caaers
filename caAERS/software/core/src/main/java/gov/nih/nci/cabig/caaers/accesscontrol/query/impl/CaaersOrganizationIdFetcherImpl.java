@@ -112,8 +112,9 @@ public class CaaersOrganizationIdFetcherImpl extends  AbstractIdFetcher implemen
 
         List<IndexEntry> studyIndexEntryList = studyIndexDao.queryAllIndexEntries(loginId);
         Map<Integer, IndexEntry> studyIndexEntryMap = toEntityBasedIndex(studyIndexEntryList);
-
-        for(Integer orgId : organizationIndexEntryMap.keySet()){
+        List<Integer> orgKeys = new ArrayList(organizationIndexEntryMap.keySet());
+        
+        for(Integer orgId : orgKeys ){
             IndexEntry orgIndexEntry = organizationIndexEntryMap.get(orgId);
             //am I a sponsor ?
             List<Integer> managedStudyIds = sponsors2StudyMap.get(orgId);
