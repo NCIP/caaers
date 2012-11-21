@@ -66,10 +66,10 @@ Site CRA -&gt;  CALGB Data Coordinator -&gt; Finalize
 				This transition is performed by the Data Coordinator
 			</description>
 		</transition>
-		<transition to="Provide Additional Information To Data Coordinator" name="Request Additional Information"></transition>
+		<transition to="Provide Additional Information to Data Coordinator" name="Request Additional Information"></transition>
 	</node>
 
-	<node name="Provide Additional Information To Data Coordinator">
+	<node name="Provide Additional Information to Data Coordinator">
 		<action name="nodeSkipActionHandler" class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" config-type="bean">
 			<targetBean>
 				nodeSkipActionHandler

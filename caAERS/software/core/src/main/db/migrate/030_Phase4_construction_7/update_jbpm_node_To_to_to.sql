@@ -1,4 +1,4 @@
-update jbpm_node set  name_ = 'Provide Additional Information to Data Coordinator' where name_ = 'Provide Additional Information to Data Coordinator';
+update jbpm_node set  name_ = 'Provide Additional Information to Data Coordinator' where name_ = 'Provide Additional Information To Data Coordinator';
 update jbpm_node set  name_ = 'Submit Report to Physician' where name_ = 'Submit Report To Physician';
 update jbpm_node set  name_ = 'Provide Additional Information to Physician' where name_ = 'Provide Additional Information To Physician';
 update jbpm_node set  name_ = 'Submit Report to Central Office' where name_ = 'Submit Report To Central Office';
