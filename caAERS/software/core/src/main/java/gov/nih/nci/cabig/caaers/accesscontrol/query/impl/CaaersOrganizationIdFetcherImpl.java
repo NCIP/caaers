@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.accesscontrol.query.impl;
 
+import gov.nih.nci.cabig.caaers.CollectionUtil;
+import gov.nih.nci.cabig.caaers.dao.index.StudyIndexDao;
 import gov.nih.nci.cabig.caaers.dao.query.HQLQuery;
 import gov.nih.nci.cabig.caaers.dao.query.NativeSQLQuery;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
@@ -26,6 +28,7 @@ public class CaaersOrganizationIdFetcherImpl extends  AbstractIdFetcher implemen
 
     protected final Log log = LogFactory.getLog(CaaersOrganizationIdFetcherImpl.class);
 
+    private StudyIndexDao studyIndexDao;
     /**
      * Will figure out which organization the logged-in user can access.
      *
@@ -73,54 +76,82 @@ public class CaaersOrganizationIdFetcherImpl extends  AbstractIdFetcher implemen
 
         if(CollectionUtils.isEmpty(studyOrgDataList)) return new ArrayList(organizationIndexEntryMap.values());
 
-
         //create and map with the study organization data - for easy retrieval
-        Map<Integer, List<Integer>> studyStudySiteMap = new HashMap<Integer, List<Integer>>();    //stores study - sites
-        Map<Integer,  List<Integer>> studySponsorStudyMap = new HashMap<Integer, List<Integer>>();   //stores sponsors-studyid
+        Map<Integer, List<Integer>> study2SitesMap = new HashMap<Integer, List<Integer>>();    //stores study - sites
+        Map<Integer, List<Integer>> study2SponsorsMap = new HashMap<Integer, List<Integer>>();    //stores study - sites
+        Map<Integer,  List<Integer>> sponsors2StudyMap = new HashMap<Integer, List<Integer>>();   //stores sponsors-studyid
         for(Object[] row : studyOrgDataList){
-            List<Integer> sitesList = studyStudySiteMap.get(row[0]);
+            List<Integer> sitesList = study2SitesMap.get(row[0]);
+            List<Integer> sponsorsList = study2SponsorsMap.get(row[0]);
+
             if(sitesList == null) {
                 sitesList = new ArrayList<Integer>();
-                studyStudySiteMap.put((Integer)row[0], sitesList);
+                study2SitesMap.put((Integer) row[0], sitesList);
             }
+            if(sponsorsList == null) {
+                sponsorsList = new ArrayList<Integer>();
+                study2SponsorsMap.put((Integer) row[0], sponsorsList);
+            }
+
             if(row[1] != null && StringUtils.equals(String.valueOf(row[2]), "SST") ){
                 sitesList.add((Integer) row[1]);
             }
 
 
             if(row[1] != null && ( StringUtils.equals(String.valueOf(row[2]), "SFS") || StringUtils.equals(String.valueOf(row[2]), "SCC"))){
-                List<Integer> studyList = studySponsorStudyMap.get((Integer)row[1]);
+                List<Integer> studyList = sponsors2StudyMap.get((Integer)row[1]);
                 if(studyList == null){
                     studyList = new ArrayList<Integer>();
-                    studySponsorStudyMap.put((Integer) row[1], studyList);
+                    sponsors2StudyMap.put((Integer) row[1], studyList);
                 }
                 studyList.add((Integer) row[0]);
+                sponsorsList.add((Integer) row[1]);
             }
         }
-        
-        //loop through all the sponsors in the DB
-        for(Integer sponsorOrgId : studySponsorStudyMap.keySet()){
-            //is my login associated to sponsor directly ?
-            IndexEntry sponsorOrgIndexEntry =  organizationIndexEntryMap.get(sponsorOrgId);
-            if(sponsorOrgIndexEntry == null) continue;
 
-            //find studies this organization is managing.
-            List<Integer> managedStudyIds = studySponsorStudyMap.get(sponsorOrgId);
-            if(CollectionUtils.isEmpty(managedStudyIds)) continue;
 
-             for(Integer studyId : managedStudyIds){
+        List<IndexEntry> studyIndexEntryList = studyIndexDao.queryAllIndexEntries(loginId);
+        Map<Integer, IndexEntry> studyIndexEntryMap = toEntityBasedIndex(studyIndexEntryList);
 
-                 //find the sites this sponsor is managing
-                 List<Integer> managedOrgIds = studyStudySiteMap.get(studyId);
-                 if(CollectionUtils.isEmpty(managedOrgIds)) continue;
+        for(Integer studyId : studyIndexEntryMap.keySet()){
+            //find the sponsors
+            List<Integer> sponsors = study2SponsorsMap.get(studyId);
+            if(sponsors == null) continue;
 
-                 //add the transitive role for the managed org. 
-                 for(Integer managedOrgId : managedOrgIds){
-                     updateIndexEntry(organizationIndexEntryMap, managedOrgId, sponsorOrgIndexEntry.getRoles());
-                     if(log.isInfoEnabled()) log.info("Transitive Organization Index Entry " +  managedOrgId + " via Study " + studyId + " , sponsors [" + sponsorOrgId + "]");
-                 }
+            for(Integer sponsorId : sponsors){
+
+                IndexEntry studyIndexEntry = studyIndexEntryMap.get(studyId);
+                //find the sponsoring org's indexentry
+                IndexEntry orgIndexEntry = organizationIndexEntryMap.get(sponsorId);
+                if(orgIndexEntry == null) continue;
+
+                //how many studies are managed by this organization (sponsor)
+                List<Integer> managedStudyIds = sponsors2StudyMap.get(sponsorId);
+                if(CollectionUtils.isEmpty(managedStudyIds)) continue;
+
+                //check if the roles at the org matches with the roles on the study
+                List<UserGroupType> commonRoles = orgIndexEntry.commonRoles(studyIndexEntry.getRoles());
+                if(commonRoles.isEmpty()) continue;
+
+
+
+                //how many sites are managed by this organization
+                for(Integer managedStudyId : managedStudyIds){
+
+                    //how many sites are there on these study?
+                    List<Integer> managedOrgIds = study2SitesMap.get(managedStudyId);
+                    if(CollectionUtils.isEmpty(managedOrgIds)) continue;
+
+                    //add the transitive role for the managed org.
+                    for(Integer managedOrgId : managedOrgIds){
+                        updateIndexEntry(organizationIndexEntryMap, managedOrgId, commonRoles);
+                        if(log.isInfoEnabled()) log.info("Transitive Organization Index Entry " +  managedOrgId + " via Study " + studyId + " , sponsors [" + sponsorId + "]");
+                    }
+                }
+
              }
         }
+
 
         List<IndexEntry> updatedOrganizationIndexEntryList =  new ArrayList<IndexEntry>(organizationIndexEntryMap.values());
 
@@ -152,5 +183,11 @@ public class CaaersOrganizationIdFetcherImpl extends  AbstractIdFetcher implemen
         entry.addRoles(roles);
     }
 
+    public StudyIndexDao getStudyIndexDao() {
+        return studyIndexDao;
+    }
 
+    public void setStudyIndexDao(StudyIndexDao studyIndexDao) {
+        this.studyIndexDao = studyIndexDao;
+    }
 }

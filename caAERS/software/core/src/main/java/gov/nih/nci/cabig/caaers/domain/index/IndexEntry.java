@@ -67,6 +67,14 @@ public class IndexEntry {
         return Integer.MIN_VALUE == entityId;
     }
 
+    public List<UserGroupType> commonRoles(List<UserGroupType> someRoles){
+        List<UserGroupType> commonRoles = new ArrayList<UserGroupType>();
+        for(UserGroupType role : someRoles){
+            if(hasRole(role)) commonRoles.add(role);
+        }
+        return commonRoles;
+    }
+
     /* (non-Javadoc)
     * @see java.lang.Object#toString()
     */

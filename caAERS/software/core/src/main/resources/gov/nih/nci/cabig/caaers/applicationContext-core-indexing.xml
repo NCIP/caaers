@@ -316,7 +316,9 @@
 	
 	<!-- ORGANIZATION , STUDY  FETCHERS IMPLEMENTATIONS -->
     <bean id="organizationIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersOrganizationIdFetcherImpl"
-          parent="abstractIdFetcher"/>
+          parent="abstractIdFetcher">
+        <property name="studyIndexDao" ref="studyIndexDao" />
+    </bean>
 
     
     <bean id="studyIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersStudyIdFetcherImpl"
