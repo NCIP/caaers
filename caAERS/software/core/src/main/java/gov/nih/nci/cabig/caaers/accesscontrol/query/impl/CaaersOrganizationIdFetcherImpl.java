@@ -113,44 +113,31 @@ public class CaaersOrganizationIdFetcherImpl extends  AbstractIdFetcher implemen
         List<IndexEntry> studyIndexEntryList = studyIndexDao.queryAllIndexEntries(loginId);
         Map<Integer, IndexEntry> studyIndexEntryMap = toEntityBasedIndex(studyIndexEntryList);
 
-        for(Integer studyId : studyIndexEntryMap.keySet()){
-            //find the sponsors
-            List<Integer> sponsors = study2SponsorsMap.get(studyId);
-            if(sponsors == null) continue;
+        for(Integer orgId : organizationIndexEntryMap.keySet()){
+            IndexEntry orgIndexEntry = organizationIndexEntryMap.get(orgId);
+            //am I a sponsor ?
+            List<Integer> managedStudyIds = sponsors2StudyMap.get(orgId);
+            if(CollectionUtils.isEmpty(managedStudyIds)) continue;
 
-            for(Integer sponsorId : sponsors){
+            for(Integer managedStudyId  :  managedStudyIds) {
+                IndexEntry studyIndexEntry = studyIndexEntryMap.get(managedStudyId);
+                if(studyIndexEntry == null) continue; //cannot access that study
 
-                IndexEntry studyIndexEntry = studyIndexEntryMap.get(studyId);
-                //find the sponsoring org's indexentry
-                IndexEntry orgIndexEntry = organizationIndexEntryMap.get(sponsorId);
-                if(orgIndexEntry == null) continue;
-
-                //how many studies are managed by this organization (sponsor)
-                List<Integer> managedStudyIds = sponsors2StudyMap.get(sponsorId);
-                if(CollectionUtils.isEmpty(managedStudyIds)) continue;
-
-                //check if the roles at the org matches with the roles on the study
+                //do I have the same role on that study ?
                 List<UserGroupType> commonRoles = orgIndexEntry.commonRoles(studyIndexEntry.getRoles());
                 if(commonRoles.isEmpty()) continue;
 
-
-
-                //how many sites are managed by this organization
-                for(Integer managedStudyId : managedStudyIds){
-
-                    //how many sites are there on these study?
-                    List<Integer> managedOrgIds = study2SitesMap.get(managedStudyId);
-                    if(CollectionUtils.isEmpty(managedOrgIds)) continue;
-
-                    //add the transitive role for the managed org.
-                    for(Integer managedOrgId : managedOrgIds){
-                        updateIndexEntry(organizationIndexEntryMap, managedOrgId, commonRoles);
-                        if(log.isInfoEnabled()) log.info("Transitive Organization Index Entry " +  managedOrgId + " via Study " + studyId + " , sponsors [" + sponsorId + "]");
-                    }
+                List<Integer> managedOrgIds = study2SitesMap.get(managedStudyId);
+                if(CollectionUtils.isEmpty(managedOrgIds)) continue;
+                for(Integer managedOrgId : managedOrgIds){
+                    updateIndexEntry(organizationIndexEntryMap, managedOrgId, commonRoles);
+                    if(log.isInfoEnabled()) log.info("Transitive Organization Index Entry " +  managedOrgId + " via Study " + managedStudyId + " , sponsors [" + orgId + "]");
                 }
 
-             }
+
+            }
         }
+
 
 
         List<IndexEntry> updatedOrganizationIndexEntryList =  new ArrayList<IndexEntry>(organizationIndexEntryMap.values());
