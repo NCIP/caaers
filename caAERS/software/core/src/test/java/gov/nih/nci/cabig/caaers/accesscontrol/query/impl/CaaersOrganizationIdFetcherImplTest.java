@@ -31,25 +31,16 @@ public class CaaersOrganizationIdFetcherImplTest extends CaaersDbNoSecurityTestC
             @Override
             public List<IndexEntry> getAccessibleOrganizationIds(String loginId) {
                 List<IndexEntry> entries = new ArrayList<IndexEntry>();
-                IndexEntry allSites = new IndexEntry(Integer.MIN_VALUE);
-                allSites.addRole(UserGroupType.person_and_organization_information_manager);
 
-                entries.add(allSites) ;
-                IndexEntry i_1001 = new IndexEntry(-1001);
+                IndexEntry i_1001 = new IndexEntry(-999);
                 i_1001.addRole(UserGroupType.ae_reporter);
-
-                entries.add(i_1001);
-                IndexEntry i_1002 = new IndexEntry(-1002);
+                i_1001.addRole(UserGroupType.data_reader);
+                
+                IndexEntry i_1002 = new IndexEntry(-1001);
                 i_1002.addRole(UserGroupType.ae_reporter);
+                
+                entries.add(i_1001);
                 entries.add(i_1002);
-
-                IndexEntry i_1003 = new IndexEntry(-1003);
-                i_1003.addRole(UserGroupType.business_administrator);
-                entries.add(i_1003);
-                IndexEntry i_1004 = new IndexEntry(-1004);
-                i_1004.addRole(UserGroupType.business_administrator);
-                entries.add(i_1004);
-
 
                 return entries;
             }
@@ -57,9 +48,20 @@ public class CaaersOrganizationIdFetcherImplTest extends CaaersDbNoSecurityTestC
             @Override
             public List<IndexEntry> getAccessibleStudyIds(String loginId) {
                 List<IndexEntry> entries =  super.getAccessibleStudyIds(loginId);
-                IndexEntry e = new IndexEntry(-2);
+                IndexEntry e = new IndexEntry(-1);
                 e.addRole(UserGroupType.ae_reporter);
+                
+                IndexEntry e1 = new IndexEntry(-4);
+                e1.addRole(UserGroupType.ae_reporter);
+                e1.addRole(UserGroupType.data_reader);
+                
+                IndexEntry e3 = new IndexEntry(-5);
+                e3.addRole(UserGroupType.data_reader);
+                
                 entries.add(e);
+                entries.add(e1);
+                entries.add(e3);
+                
                 return entries;
             }
         });
@@ -68,11 +70,11 @@ public class CaaersOrganizationIdFetcherImplTest extends CaaersDbNoSecurityTestC
 
     public void testFetch(){
         List<IndexEntry> entries = fetcher.fetch("1000@def.com");
-        assertEquals(5, entries.size());
+        assertEquals(3, entries.size());
     }
 
     public void tearDown() throws Exception {
-        fetcher.setCaaersSecurityFacade(facade);
+       fetcher.setCaaersSecurityFacade(facade);
         super.tearDown();
     }
 

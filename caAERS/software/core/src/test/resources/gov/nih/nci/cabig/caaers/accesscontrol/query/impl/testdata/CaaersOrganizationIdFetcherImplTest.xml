@@ -1,44 +1,30 @@
 <dataset>
-
-
     <ORGANIZATIONS
             id="-999"
-            name="New Site"
+            name="orgA"
             grid_id="gridSite"
-            nci_institute_code="A"
-            description_text="New Site"
+            nci_institute_code="orgA"
+            description_text="Organization A"
+            />
 
+    <ORGANIZATIONS
+            id="-1000"
+            name="orgB"
+            grid_id="gridSite"
+            nci_institute_code="orgB"
+            description_text="Organization B"
             />
 
     <ORGANIZATIONS
             id="-1001"
-            name="New Site"
-            grid_id="gridSite"
-            nci_institute_code="A"
-            />
-
-    <ORGANIZATIONS
-            id="-1002"
-            name="Another Site"
+            name="orgC"
             grid_id="anotherGridSite"
-            nci_institute_code="B"
-            />
-
-    <ORGANIZATIONS
-            id="-1003"
-            name="default"
-            grid_id="defaultGridSite"
-            nci_institute_code="C"
-            />
-    <ORGANIZATIONS
-            id="-1004"
-            version="1"
-            name="NCI"
-            description_text="NCI"
-            nci_institute_code="NCI"
+            nci_institute_code="orgC"
+            description_text="Organization C"
             />
 
     <caaers_users id="-1"  login_name="1000@def.com" />
+    
     <RESEARCH_STAFFS
             id="-1000"
             first_name="Bill"
@@ -47,59 +33,188 @@
             phone_number="123-456-789"
             nci_identifier="nci id"
             user_id="-1"/>
-
-    <SITE_RESEARCH_STAFFS
+       
+   <SITE_RESEARCH_STAFFS
             id="-9001"
             site_id="-1001"
             researchstaff_id="-1000"/>
-
+            
+            
     <site_rs_staff_roles
             id="-6001"
             site_research_staffs_id="-9001"
             role_code="ae_reporter"
             start_date="2008-01-01"
             />
-
-
-    <STUDIES
-            id="-2"
+   
+                         
+      <STUDIES
+            id="-1"
             multi_institution_indicator="0"
-            short_title="Short Title"
-            long_title="Long Title"
-            description="Description"
+            short_title="Short Title 1"
+            long_title="Long Title 1"
+            description="Description 1"
             grid_id=""
             load_status="1"
             />
+  
 
+      <STUDIES
+            id="-2"
+            multi_institution_indicator="0"
+            short_title="Short Title 2" 
+            long_title="Long Title 2"
+            description="Description 2"
+            grid_id=""
+            load_status="1"
+            />
+            
+      <STUDIES
+            id="-3"
+            multi_institution_indicator="0"
+            short_title="Short Title 3"
+            long_title="Long Title 3"
+            description="Description 3"
+            grid_id=""
+            load_status="1"
+            />
+       <STUDIES
+            id="-4"
+            multi_institution_indicator="0"
+            short_title="Short Title 4"
+            long_title="Long Title 4"
+            description="Description 4"
+            grid_id=""
+            load_status="1"
+            />
+            
+       <STUDIES
+            id="-5"
+            multi_institution_indicator="0"
+            short_title="Short Title 5"
+            long_title="Long Title 5"
+            description="Description 5"
+            grid_id=""
+            load_status="1"
+            />               
+
+		<STUDIES
+            id="-6"
+            multi_institution_indicator="0"
+            short_title="Short Title 6"
+            long_title="Long Title 6"
+            description="Description 6"
+            grid_id=""
+            load_status="1"
+            />
+         <STUDIES
+            id="-7"
+            multi_institution_indicator="0"
+            short_title="Short Title 7"
+            long_title="Long Title 7"
+            description="Description 7"
+            grid_id=""
+            load_status="1"
+            />    
+            
     <STUDY_ORGANIZATIONS
-               id="-1000"
+               id="-100"
+               start_date="2006-10-10"
+               study_id="-1"
+               site_id="-999"
+               type="SCC"/>
+               
+    <STUDY_ORGANIZATIONS
+               id="-101"
                start_date="2006-10-10"
                study_id="-2"
-               site_id="-1001"
+               site_id="-999"
+               type="SCC"/>
+               
+    <STUDY_ORGANIZATIONS
+               id="-102"
+               start_date="2006-10-10"
+               study_id="-3"
+               site_id="-999"
                type="SCC"/>
 
     <STUDY_ORGANIZATIONS
-               id="-1001"
+               id="-103"
               start_date="2006-10-10"
-               study_id="-2"
-               site_id="-999"
-               type="SFS"/>
-
-    <STUDY_ORGANIZATIONS
-               id="-1002"
-              start_date="2006-10-10"
-               study_id="-2"
-               site_id="-1003"
+               study_id="-1"
+               site_id="-1000"
                type="SST"/>
-
-     <study_personnel id="-9"
-       study_sites_id="-1000"
+               
+    <STUDY_ORGANIZATIONS
+               id="-104"
+              start_date="2006-10-10"
+               study_id="-4"
+               site_id="-1000"
+               type="SST"/>
+               
+     <STUDY_ORGANIZATIONS
+               id="-105"
+              start_date="2006-10-10"
+               study_id="-5"
+               site_id="-1000"
+               type="SST"/>
+               
+     <STUDY_ORGANIZATIONS
+               id="-106"
+              start_date="2006-10-10"
+               study_id="-1"
+               site_id="-1001"
+               type="SST"/>  
+     <STUDY_ORGANIZATIONS
+               id="-107"
+              start_date="2006-10-10"
+               study_id="-4"
+               site_id="-1001"
+               type="SST"/>   
+     <STUDY_ORGANIZATIONS
+               id="-108"
+              start_date="2006-10-10"
+               study_id="-7"
+               site_id="-1001"
+               type="SST"/>   
+               
+    <STUDY_ORGANIZATIONS
+               id="-109"
+              start_date="2006-10-10"
+               study_id="-4"
+               site_id="-999"
+               type="SST"/>  
+     <STUDY_ORGANIZATIONS
+               id="-110"
+              start_date="2006-10-10"
+               study_id="-5"
+               site_id="-999"
+               type="SST"/>   
+     <STUDY_ORGANIZATIONS
+               id="-111"
+              start_date="2006-10-10"
+               study_id="-7"
+               site_id="-999"
+               type="SST"/> 
+      
+      
+      
+   	<study_personnel id="-9"
+       study_sites_id="-100"
        retired_indicator="0"
        start_date="2006-10-01"
        site_research_staffs_id="-9001"
             />
+    <organization_index id="1" organization_id="-999" login_id="1000@def.com" r_117 = "1" r_123 = "0" />
+    <organization_index id="2" organization_id="-1001" login_id="1000@def.com" r_117 = "1" r_123 = "0" />
+    <organization_index id="3" organization_id="-999" login_id="1000@def.com" r_117 = "0" r_123 = "1" />
+     
+    <study_index id="1" study_id = "-1" login_id="1000@def.com" r_117 = "1" r_123 = "0" />
+	<study_index id="2" study_id = "-4" login_id="1000@def.com" r_117 = "1" r_123 = "0" />
 
-    <organization_index/>
+	<study_index id="3" study_id = "-4" login_id="1000@def.com" r_117 = "0" r_123 = "1" />
+	<study_index id="4" study_id = "-5" login_id="1000@def.com" r_117 = "0" r_123 = "1" />    
+                      
     <investigational_new_drugs/>
     <ind_holders/>
     <investigators/>
