@@ -100,6 +100,7 @@ public class DiagnosticsControllerTest extends AbstractTestCase {
 		caaersJavaMailSender.send(EasyMock.isA(MimeMessage.class));
 		messageBroadcastService.initialize();
 		EasyMock.expect(eventMonitor.getAllEvents()).andReturn(new ArrayList<Event>());
+        EasyMock.expect(configuration.get(Configuration.SYSTEM_FROM_EMAIL)).andReturn("biju@ll.com").anyTimes();
 		EasyMock.expect(configuration.getProperties()).andReturn(new ConfigurationProperties() {
 			
 			@Override
