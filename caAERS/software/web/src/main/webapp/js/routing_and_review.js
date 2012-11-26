@@ -123,7 +123,7 @@ Object.extend(RoutingAndReviewHelper.prototype, {
 		var sbox = $(sboxId);
 		var sboxIndicatorId = 'sliderWFAction-indicator-' + reportId;
 		var sboxIndicator = $(sboxIndicatorId);
-        if(sboxIndicator) sboxIndicator.show();
+    //  if(sboxIndicator) sboxIndicator.show();
 		this.ajaxFacade.retrieveNextTransitions(reportId, function(ajaxOutput){
 			this.updateSelectBoxContent(reportId, sbox, sboxIndicator, ajaxOutput.objectContent);
 		}.bind(this));
