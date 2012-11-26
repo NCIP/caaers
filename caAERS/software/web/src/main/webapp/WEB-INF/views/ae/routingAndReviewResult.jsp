@@ -1,5 +1,5 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp" %>
-
+<c:set var="commentsIcon"><img src="<chrome:imageUrl name="../editComment.png" />" /></c:set>
 <html>
 <head>
 <title>Routing & Review || Course/Cycle Information</title>
@@ -143,8 +143,9 @@
 				_optionDetails = _optionDetails;
 			}
 
-			var _comments = '<li ><a style="cursor:pointer; border-bottom: none" onClick="displayPopup('+ 
- 			' &apos;report &apos;,' + entityId + ');">' + '&nbsp;' + '<img src="<chrome:imageUrl name="../editComment.png" />" /> Comment' +	'</a></li>';
+			var _comments =  '<li >' +
+                    '<a style="cursor:pointer; border-bottom: none" onClick="displayPopup(\'report\',' + entityId + ');">${commentsIcon} Comment</a>' +
+                    '</li>';
 
  			_optionDetails = _optionDetails + _comments + "\n"
 
@@ -192,8 +193,9 @@
 				_optionDetails = _optionDetails;
 			}
 
-			var _comments = '<li ><a style="cursor:pointer; border-bottom: none" onClick="displayPopup('+ 
-			' &apos;reportingPeriod &apos;,' + entityId + ');">' + '&nbsp;' + '<img src="<chrome:imageUrl name="../editComment.png" />" /> Comment' + '</a></li>';
+			var _comments = '<li >' +
+                    '<a style="cursor:pointer; border-bottom: none" onClick="displayPopup(\'reportingPeriod\',' + entityId + ');">${commentsIcon} Comment</a>' +
+                    '</li>';
 		 			
 			_optionDetails = _optionDetails + _comments + "\n";
 			
