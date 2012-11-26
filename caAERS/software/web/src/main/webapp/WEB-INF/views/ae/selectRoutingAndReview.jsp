@@ -5,13 +5,13 @@
     <title>Routing & Review</title>
     <style type="text/css">
         input.autocomplete {
-            width: 75%;
+            width: 450px;
             font-style: normal;
             background-color: #CCE6FF;
         }
 
         input.pending-search {
-            width: 75%;
+            width: 450px;
             color: gray;
             font-style: italic;
             background-color: #CCE6FF;
@@ -44,7 +44,7 @@
 					<jsp:attribute name="label">Study
 					</jsp:attribute>
 					<jsp:attribute name="value">
-						<ui:autocompleter path="study"  initialDisplayValue="${empty command.study  ? 'Begin typing here' : command.study.shortTitle}" enableClearButton="true" size="50">
+						<ui:autocompleter path="study"  initialDisplayValue="${empty command.study  ? 'Begin typing here' : command.study.shortTitle}" enableClearButton="true" size="30">
 								<jsp:attribute name="populatorJS">
 									function(autocompleter, text) {
        	         					createAE.matchStudies(text, $('participant').value, ${command.ignoreCompletedStudy}, function(values) {
@@ -65,7 +65,7 @@
 					</jsp:attribute>
 					<jsp:attribute name="value">
 						<ui:autocompleter path="participant"  initialDisplayValue="${empty command.participant  ? 'Begin typing here' : command.participant.fullName}"
-							enableClearButton="true" size="50">
+							enableClearButton="true" size="30">
 							<jsp:attribute name="populatorJS">
 								function(autocompleter, text) {
                 					createAE.matchParticipants(text, $('study').value, function(values) {
@@ -85,7 +85,7 @@
 					<jsp:attribute name="label">Study site
 					</jsp:attribute>
 					<jsp:attribute name="value">
-						<ui:autocompleter path="organization"  initialDisplayValue="${empty command.organization  ? 'Begin typing here' : command.organization.fullName}" enableClearButton="true" size="50">
+						<ui:autocompleter path="organization"  initialDisplayValue="${empty command.organization  ? 'Begin typing here' : command.organization.fullName}" enableClearButton="true" size="30">
 							<jsp:attribute name="populatorJS">
 								function(autocompleter, text){
         							routingAndReview.matchSites(text, $('study').value, function(values) {
