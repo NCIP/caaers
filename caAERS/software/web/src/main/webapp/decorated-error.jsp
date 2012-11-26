@@ -30,6 +30,11 @@
     <html>
     <head>
         <style>
+        	div.stacktrace {
+                width:960px; 
+ 				overflow:scroll;
+            }
+            
             div.error {
                 font-size: 26px;
                 text-align: left;
@@ -194,6 +199,7 @@
                 </table>
                 <br/>
                 <b>Attribute List:</b>
+                <div class="stacktrace">
                 <table class="errortd" width="100%" cellspacing="1">
                     <%
                 java.util.Enumeration attributes = request.getAttributeNames();
@@ -224,14 +230,12 @@
                 } %>
                     <tr>
                         <td colspan="2">
-                            <b>StackTrace :</b>
-                            <br/>
+                            <b>StackTrace :</b>                            
                             <pre>
-                                             <%
-                                                 printExceptionStackTrace(new PrintWriter(out), exception);
-                                             	
-                                             %>
-                                  </pre>
+                                 <%
+                                 	printExceptionStackTrace(new PrintWriter(out), exception);                                             	
+                                  %>
+                            </pre>
                         </td>
                     </tr>
                 </table>
@@ -239,6 +243,10 @@
             </td>
         </tr>
         </table>
+        
+        </div>
+        
+        
 		</div>
 
     </body>
