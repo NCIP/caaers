@@ -86,14 +86,14 @@ public class JmsServiceImpl implements MessageListener {
          //Create sender and text message.
         try {
             TextMessage message = session.createTextMessage();
-            System.out.println("XML Payload...");
+//            System.out.println("XML Payload...");
 			message.setText(xml);
             
             //Send a non-text control message indicating end of messages.
              
-			System.out.println("sending jms...");
+//			System.out.println("sending jms...");
             producer.send(message);
-            System.out.println("jms sent...");
+//            System.out.println("jms sent...");
         }catch(Exception e){
         	throw new BroadcastException(e.getMessage(),e);
         }
@@ -109,13 +109,13 @@ public class JmsServiceImpl implements MessageListener {
 
     public void onMessage(Message msg) {
         // TODO Auto-generated method stub
-        System.out.println("jms received...");
+//        System.out.println("jms received...");
         TextMessage message = null;
         if (msg instanceof TextMessage) {
             message = (TextMessage) msg;
-            System.out.println("XML Payload...");
+//            System.out.println("XML Payload...");
             try {
-                System.out.println(message.getText());
+//                System.out.println(message.getText());
                 messages.add(message.getText());
                 if (this.messageConsumer != null) {
                     this.messageConsumer.processMessage(message.getText());
@@ -138,7 +138,7 @@ public class JmsServiceImpl implements MessageListener {
             //return;
         	session.close();
         }
-        System.out.println("initializing esb jms client....");
+//        System.out.println("initializing esb jms client....");
 
         if (connectionFactory == null) {        	
         	//Monish Dombla CAAERS-145
@@ -151,7 +151,7 @@ public class JmsServiceImpl implements MessageListener {
             this.connectionFactory = mqConnectionFactory;            
         }
         try {
-            System.out.println("creating connection and session....");
+//            System.out.println("creating connection and session....");
             connection = connectionFactory.createConnection();
             session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
             if (sendQueue != null) {
@@ -162,9 +162,9 @@ public class JmsServiceImpl implements MessageListener {
             if (recvQueue != null) {
                 consumer = session.createConsumer(recvQueue);
                 consumer.setMessageListener(this);
-                System.out.println("starting connection....");
+//                System.out.println("starting connection....");
                 connection.start();
-                System.out.println("connection started and subscriber registered....");
+//                System.out.println("connection started and subscriber registered....");
             } else {
                 System.out.println("no recieve queue provided....");
             }

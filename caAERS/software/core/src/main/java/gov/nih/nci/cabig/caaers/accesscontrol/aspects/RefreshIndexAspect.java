@@ -30,7 +30,7 @@ public class RefreshIndexAspect {
             //NOTE : BJ - FOR GLOBAL USERS ALSO WE SHOULD NOT INDEX (AS THEY CAN SEE EVERY THING)
 
             // proceed for other users.
-				System.out.println(" UPDATING INDEX ......");
+//				System.out.println(" UPDATING INDEX ......");
 				filteredDataLoader.updateIndexByUserName(authentication);
 				
 				/*

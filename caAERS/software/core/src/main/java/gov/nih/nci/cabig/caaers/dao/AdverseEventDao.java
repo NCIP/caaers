@@ -166,7 +166,7 @@ public class AdverseEventDao extends CaaersDao<AdverseEvent> {
 	private Example getAdverseEventExample(AdverseEvent adverseEvent) {
 		Example ex = Example.create(adverseEvent).excludeProperty("eventApproximateTime");
 		if (adverseEvent.getEventApproximateTime().getHour() == null) {
-			System.out.println("excluding ....");
+//			System.out.println("excluding ....");
 			ex.excludeProperty("eventApproximateTime");
 		}
 		ex.excludeProperty("retiredIndicator");
@@ -206,7 +206,7 @@ public class AdverseEventDao extends CaaersDao<AdverseEvent> {
     	safetyQuery.joinAdverseEventTerm();
     	safetyQuery.filterByStudy(study);
     	safetyQuery.filterByMatchingTermsOnExpectedAEProfileAndReportedAE();
-    	System.out.println(safetyQuery.getQueryString());
+//    	System.out.println(safetyQuery.getQueryString());
     	return search(safetyQuery);
 	}
    

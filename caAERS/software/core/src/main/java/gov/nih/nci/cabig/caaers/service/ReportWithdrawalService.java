@@ -63,7 +63,7 @@ public class ReportWithdrawalService {
         //if there are external systems, send message via service mix
     	String externalXml = xml.replaceAll("<AdverseEventReport>", "<AdverseEventReport>" + sb.toString());
     	
-    	System.out.println(externalXml);
+//    	System.out.println(externalXml);
     	
     	try {
     		messageBroadcastService.initialize();

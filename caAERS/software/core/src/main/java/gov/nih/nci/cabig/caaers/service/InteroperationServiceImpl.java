@@ -33,7 +33,7 @@ public class InteroperationServiceImpl implements InteroperationService {
 		try {
 			aeNotification = aeNotificationFactory.createAENotificationForExpeditedAdverseEventReport(aeReport);
 			String xml = XMLUtil.getAdverseEventXML(aeNotification);
-	        System.out.println("XML " + xml);
+//	        System.out.println("XML " + xml);
 	        
 	        // getMessageBroadcastService().broadcast(secure(XMLUtil.getXML(aeNotification)));
 	        getMessageBroadcastService().broadcast(XMLUtil.getAdverseEventXML(aeNotification));

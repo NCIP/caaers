@@ -231,6 +231,8 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
             } 
         }
 
+
+
         return new ArrayList<UserAjaxableDomainObject>(set);
     }
     
