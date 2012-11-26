@@ -84,7 +84,7 @@
  			}
 
  			var _comments =  '<li >' +
-                     '<a style="cursor:pointer; border-bottom: none" onClick="displayPopup(\'report\',' + entityId + ');">${commentsIcon} Comment</a>' +
+                     '<a style="cursor:pointer; border-bottom: none" href="#" onClick="displayPopup(\'report\',' + entityId + ');">${commentsIcon}Comment</a>' +
                      '</li>';
  		 			
  		 	_optionDetails = _optionDetails + _comments;
@@ -116,7 +116,7 @@
  					+ "'" + reportingPeriodPageURL + "'" + ')"><img src="<chrome:imageUrl name="../review.png" />"/>' + label +  '</a></li>';
 
 			var _comments =  '<li >' +
-                    '<a style="cursor:pointer; border-bottom: none" onClick="displayPopup(\'reportingPeriod\',' + entityId + ');">${commentsIcon} Comment</a>' +
+                    '<a style="cursor:pointer; border-bottom: none" href="#" onClick="displayPopup(\'reportingPeriod\',' + entityId + ');">${commentsIcon}Comment</a>' +
                     '</li>';
 			 			
 			_optionDetails = _optionDetails + _comments;
