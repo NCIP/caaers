@@ -226,12 +226,12 @@
 					<chrome:box title="Search details" id="popupId">
 						<div>
 							<div class="row">
-				    			<div class="summarylabel">Search name</div>
-				        		<div class="summaryvalue shorty"><ui:text path="searchName" size="20" mandatory="true"/></div>
+				    			<div class="summarylabel">Search name </div>
+				        		<div class="value"><ui:text path="searchName" size="40" mandatory="true"/></div>
 							</div>
 				    		<div class="row">
-				    			<div class="summarylabel">Search description</div>
-				    			<div class="summaryvalue shorty"><ui:textarea path="searchDescription" rows="3" cols="40"/></div>
+				    			<div class="summarylabel">Search description </div>
+				    			<div class="value"><ui:textarea path="searchDescription" rows="4" cols="40"/></div>
 				    		</div>
 						</div>
 						<div align="right">
