@@ -1,4 +1,5 @@
 <%@include file="/WEB-INF/views/taglibs.jsp" %>
+<c:set var="commentsIcon"><img src="<chrome:imageUrl name="../editComment.png" />" /></c:set>
 <c:if test="${not empty roles.ae_reporter or not empty roles.ae_expedited_report_reviewer}">
 
 <chrome:boxIPhone style="width:700px;">
@@ -82,8 +83,9 @@
  				_optionDetails = '<li><a class="submitter-blue" href="#" onclick="displayEditLink('+ "'" + reportURL + "'" + ')"> <img src="<chrome:imageUrl name="../review.png" />"/>' + label +  '</a></li>';
  			}
 
- 			var _comments = '<li ><a style="cursor:pointer; border-bottom: none" onClick="displayPopup('+ 
- 			' &apos;report &apos;,' + entityId + ');">' + '&nbsp;' + '<img src="<chrome:imageUrl name="../editComment.png" />" /> Comment' +	'</a></li>';
+ 			var _comments =  '<li >' +
+                     '<a style="cursor:pointer; border-bottom: none" onClick="displayPopup(\'report\',' + entityId + ');">${commentsIcon} Comment</a>' +
+                     '</li>';
  		 			
  		 	_optionDetails = _optionDetails + _comments;
  	
@@ -113,8 +115,9 @@
  			var _optionDetails = '<li><a class="submitter-blue" href="#" onclick="displayEditLink('
  					+ "'" + reportingPeriodPageURL + "'" + ')"><img src="<chrome:imageUrl name="../review.png" />"/>' + label +  '</a></li>';
 
-			var _comments = '<li ><a style="cursor:pointer; border-bottom: none" onClick="displayPopup('+ 
-				' &apos;reportingPeriod &apos;,' + entityId + ');">' + '&nbsp;' + '<img src="<chrome:imageUrl name="../editComment.png" />" /> Comment' + '</a></li>';
+			var _comments =  '<li >' +
+                    '<a style="cursor:pointer; border-bottom: none" onClick="displayPopup(\'reportingPeriod\',' + entityId + ');">${commentsIcon} Comment</a>' +
+                    '</li>';
 			 			
 			_optionDetails = _optionDetails + _comments;
  		 	
