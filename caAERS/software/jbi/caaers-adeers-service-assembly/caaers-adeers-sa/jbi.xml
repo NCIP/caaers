@@ -7,51 +7,51 @@
         </identification>
         <!-- <service-unit>
             <identification>
-                <name>caaers-adeers-http-su-2.6-RC3</name>
+                <name>caaers-adeers-http-su-2.6-RC4-SNAPSHOT</name>
                 <description>Web Service Artifact</description>
             </identification>
             <target>
-                <artifacts-zip>caaers-adeers-http-su-2.6-RC3.zip</artifacts-zip>
+                <artifacts-zip>caaers-adeers-http-su-2.6-RC4-SNAPSHOT.zip</artifacts-zip>
                 <component-name>servicemix-http</component-name>
             </target>
         </service-unit>-->
         <service-unit>
             <identification>
-                <name>caaers-adeers-eip-su-2.6-RC3</name>
+                <name>caaers-adeers-eip-su-2.6-RC4-SNAPSHOT</name>
                 <description>Pipeline for caAERS to Adeers</description>
             </identification>
             <target>
-                <artifacts-zip>caaers-adeers-eip-su-2.6-RC3.zip</artifacts-zip>
+                <artifacts-zip>caaers-adeers-eip-su-2.6-RC4-SNAPSHOT.zip</artifacts-zip>
                 <component-name>servicemix-eip</component-name>
             </target>
         </service-unit>
         <service-unit>
             <identification>
-                <name>caaers-adeers-xslt-su-2.6-RC3</name>
+                <name>caaers-adeers-xslt-su-2.6-RC4-SNAPSHOT</name>
                 <description>XSLT transformer to transform caaers xml to adeers xml</description>
             </identification>
             <target>
-                <artifacts-zip>caaers-adeers-xslt-su-2.6-RC3.zip</artifacts-zip>
+                <artifacts-zip>caaers-adeers-xslt-su-2.6-RC4-SNAPSHOT.zip</artifacts-zip>
                 <component-name>servicemix-lwcontainer</component-name>
             </target>
         </service-unit>
         <service-unit>
             <identification>
-                <name>caaers-adeers-webservice-su-2.6-RC3</name>
+                <name>caaers-adeers-webservice-su-2.6-RC4-SNAPSHOT</name>
                 <description>JAVA code to call adeers web service</description>
             </identification>
             <target>
-                <artifacts-zip>caaers-adeers-webservice-su-2.6-RC3.zip</artifacts-zip>
+                <artifacts-zip>caaers-adeers-webservice-su-2.6-RC4-SNAPSHOT.zip</artifacts-zip>
                 <component-name>servicemix-lwcontainer</component-name>
             </target>
         </service-unit>
         <service-unit>
             <identification>
-                <name>caaers-adeers-jms-su-2.6-RC3</name>
+                <name>caaers-adeers-jms-su-2.6-RC4-SNAPSHOT</name>
                 <description>JMS input and output queues for caAERS</description>
             </identification>
             <target>
-                <artifacts-zip>caaers-adeers-jms-su-2.6-RC3.zip</artifacts-zip>
+                <artifacts-zip>caaers-adeers-jms-su-2.6-RC4-SNAPSHOT.zip</artifacts-zip>
                 <component-name>servicemix-jms</component-name>
             </target>
         </service-unit>
