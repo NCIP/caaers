@@ -91,7 +91,7 @@
             })
             Event.observe(mode.basename + "-clear", "click", function() {
                 Element.removeClassName($(mode.basename + "-input"), "valueOK");
-                Element.removeClassName($(mode.basename + "-input"), "falidField");
+                Element.removeClassName($(mode.basename + "-input"), "validField");
                 Element.addClassName($(mode.basename + "-input"), "required");
                 $(mode.basename + "-selected").hide()
                 $(mode.basename).value = ""
