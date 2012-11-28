@@ -221,7 +221,7 @@
 
 <form:form id="command">
 	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
-	    <form:hidden path="participant"/>
+	<input type="hidden" name="participant" value=""/>
      <tags:tabFields tab="${tab}"/>
      <tags:tabControls tab="${tab}" flow="${flow}"/>
 </form:form>
