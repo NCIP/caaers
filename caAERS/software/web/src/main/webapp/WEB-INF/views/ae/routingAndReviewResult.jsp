@@ -113,8 +113,14 @@
 	
 
 	function showRoutingReviewCourseMenuOptions(workflowId, entityId,entityType, aeReportId, aeStatus) {
-		
 		var html="";
+		var label = 'Review';
+		<c:if test="${isStaff}"> 
+			if (aeStatus == 'Draft/Incomplete'){
+		 		label = 'Edit'
+			}
+		</c:if>
+		
 		if(entityType == 'report'){
 				
 			var _element = $('course_routingreview_reportcycle_' + entityId);
@@ -129,7 +135,7 @@
 			
 			if ( aeStatus != 'COMPLETED') {
 				_optionDetails = '<li><a class="submitter-blue" href="#" onclick="displayEditLink('
-					+ "'" + reportURL + "'" + ')">' + "View" +  '</a></li>';
+					+ "'" + reportURL + "'" + ')">' + label +  '</a></li>';
 			}
 			for ( var i = 0; i < _actions.length; i++) {
 				_optionDetails = _optionDetails
@@ -178,7 +184,7 @@
 					+ '&src=RoutingReview';
 
 			var _optionDetails = '<li><a class="submitter-blue" href="#" onclick="displayEditLink('
-					+ "'" + reportingPeriodPageURL + "'" + ')">' + "Edit" +  '</a></li>';
+					+ "'" + reportingPeriodPageURL + "'" + ')">' + label +  '</a></li>';
 
 					
 			for ( var i = 0; i < _actions.length; i++) {
