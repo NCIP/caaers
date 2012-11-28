@@ -85,10 +85,18 @@
             }
             
             if(user['address'] != null){
-            	updateFieldValue(prefix + '.' + 'address.street', user['address'].street);
-            	updateFieldValue(prefix + '.' + 'address.city', user['address'].city);
-            	updateFieldValue(prefix + '.' + 'address.state', user['address'].state);
-            	updateFieldValue(prefix + '.' + 'address.zip', user['address'].zip);
+            	if ( user['address'].street != null ) {
+            		updateFieldValue(prefix + '.' + 'address.street', user['address'].street);
+            	}
+            	if (user['address'].city  != null ) {
+            		updateFieldValue(prefix + '.' + 'address.city', user['address'].city);
+            	}
+            	if ( user['address'].state != null ) {
+            		updateFieldValue(prefix + '.' + 'address.state', user['address'].state);
+            	}
+            	if ( user['address'].zip != null ) {
+            		updateFieldValue(prefix + '.' + 'address.zip', user['address'].zip);
+            	}
             }else{
             	updateFieldValue(prefix + '.' + 'address.street', '');
             	updateFieldValue(prefix + '.' + 'address.city', '');
