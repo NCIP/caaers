@@ -13,8 +13,11 @@
 
     <xsl:output method="xml"/>
 
+    <xsl:variable name="lowest" select="number(-1)" />
+    <xsl:variable name="highest" select="number(9000)" />
 
-    <xsl:variable name="_lbPossible" select="number(3)" />
+    <xsl:variable name="_lbPossible" select="number(12)" />
+
      <xsl:variable name="_aePossible" select="number(3)" />
      <xsl:variable name="_cmPossible" select="number(4)" />
      <xsl:variable name="_attPossible" select="number(4)" />
@@ -22,7 +25,7 @@
      <xsl:variable name="_tacPossible" select="number(40)" />
      <xsl:variable name="_edPossible" select="number(300)" />
      <xsl:variable name="_caPossible" select="number(1)" />
-    
+
     <xsl:variable name="_ptPossible" select="mu:possibleElements(AdverseEventReport/SAEReportPriorTherapy, 50,'//PriorTherapy/text,//ChemoAgent/name')" />
     <xsl:variable name="_pcPossible" select="mu:possibleElements(AdverseEventReport/SAEReportPreExistingCondition, 50,'//PreExistingCondition/text')" />
     <xsl:variable name="_msdsPossible" select="mu:possibleElements(AdverseEventReport/DiseaseHistory/MetastaticDiseaseSite, 50,'//AnatomicSite/name,//otherSite')" />
@@ -42,7 +45,6 @@
     <xsl:variable name="_preCondContinue" select="$_pcCount &gt;= $_pcPossible" />
     <xsl:variable name="_ptContinue" select="$_ptCount &gt;= $_ptPossible" />
     <xsl:variable name="_msdsContinue" select="$_msdsCount &gt;= $_msdsPossible" />
-    <xsl:variable name="_lbContinue" select="$_lbCount &gt;= $_lbPossible" />
     <xsl:variable name="_cmContinue" select="$_cmCount &gt;= $_cmPossible" />
     <xsl:variable name="_cmdContinue" select="$_cmdCount &gt;= $_cmdPossible" />
     <xsl:variable name="_attContinue" select="$_attCount &gt;= $_attPossible" />
@@ -55,7 +57,7 @@
     <xsl:variable name="_cTenContinue" select="$_cmContinue or $_ptContinue or $_cmContinue" />
     <xsl:variable name="_bSevenContinue" select="$_preCondContinue or $_ptContinue or $_msdsContinue" />
     <xsl:variable name="_bFiveContinue" select="$_aeContinue or $_edContinue" />
-    <xsl:variable name="_showNextPage" select="$_tacContinue or $_bSevenContinue or $_lbContinue or $_bFiveContinue or $_cTenContinue or $_attContinue" />
+    <xsl:variable name="_showNextPage" select="$_tacContinue or $_bSevenContinue or $_bFiveContinue or $_cTenContinue or $_attContinue" />
 
 
     <xsl:attribute-set name="tr-height-1">
@@ -102,6 +104,11 @@
         <xsl:attribute name="font-size">6.5pt</xsl:attribute>
         <xsl:attribute name="font-weight">normal</xsl:attribute>
     </xsl:attribute-set>
+    <xsl:attribute-set name="normal-center">
+        <xsl:attribute name="font-size">6.5pt</xsl:attribute>
+        <xsl:attribute name="font-weight">normal</xsl:attribute>
+        <xsl:attribute name="text-align">center</xsl:attribute>
+    </xsl:attribute-set>
 
 
     <xsl:attribute-set name="normal-with-padding">
@@ -146,8 +153,7 @@
                     <fo:region-after extent="20mm"/>
                 </fo:simple-page-master>
 
-                <fo:simple-page-master master-name="A4-rest" margin-left="10mm" margin-top="12mm" margin-right="6mm"
-                                       margin-bottom="0mm">
+                <fo:simple-page-master master-name="A4-rest" margin-left="10mm" margin-top="12mm" margin-right="6mm"  margin-bottom="0mm">
                     <fo:region-body margin-top="1in" margin-bottom="20mm" column-count="2" column-gap="3mm"/>
                     <fo:region-before/>
                     <fo:region-after extent="20mm"/>
@@ -174,16 +180,10 @@
                                 <fo:table-row>
                                     <fo:table-cell>
                                         <fo:block xsl:use-attribute-sets="normal" text-align-last="left">
-                                            The public reporting burden for this collection of information has been
-                                            estimated to average 66
-                                            minutes per response, including the time for reviewing instructions,
-                                            searching existing data
-                                            sources, gathering and maintaining the data needed, and completing and
-                                            reviewing the
-                                            collection of information. Send comments regarding this burden estimate or
-                                            any other aspect of
-                                            this collection of information, including suggestions for reducing this
-                                            burden to:
+                                            The public reporting burden for this collection of information has been estimated to average 66 minutes per response,
+                                            including the time for reviewing instructions, searching existing data sources, gathering and maintaining the data needed,
+                                            and completing and reviewing the collection of information. Send comments regarding this burden estimate or
+                                            any other aspect of this collection of information, including suggestions for reducing this burden to:
                                         </fo:block>
                                     </fo:table-cell>
                                     <fo:table-cell>
@@ -256,26 +256,20 @@
                                             <fo:table-body>
                                                 <fo:table-row xsl:use-attribute-sets="tr-height-1">
                                                     <fo:table-cell number-columns-spanned="5" background-color="black">
-                                                        <fo:block xsl:use-attribute-sets="black-heading">A. PATIENT
-                                                            INFORMATION
-                                                        </fo:block>
+                                                        <fo:block xsl:use-attribute-sets="black-heading">A. PATIENT INFORMATION</fo:block>
                                                     </fo:table-cell>
                                                 </fo:table-row>
                                                 <fo:table-row height="25">
                                                     <fo:table-cell xsl:use-attribute-sets="cell-with-right-border">
-                                                        <fo:block xsl:use-attribute-sets="label">1. Patient Identifier
+                                                        <fo:block xsl:use-attribute-sets="label">1. Patient Identifier</fo:block>
+
+                                                        <fo:block xsl:use-attribute-sets="normal">
+                                                            <xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/studySubjectIdentifier"/>
                                                         </fo:block>
                                                         <fo:block>
-                                                            <xsl:text
-                                                                    disable-output-escaping="yes">&amp;#160;</xsl:text>
+                                                            <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
                                                         </fo:block>
-                                                        <fo:block xsl:use-attribute-sets="normal">
-                                                            <xsl:value-of
-                                                                    select="AdverseEventReport/StudyParticipantAssignment/studySubjectIdentifier"/>
-                                                        </fo:block>
-                                                        <fo:block padding-top="4mm" font-size="6.5pt"
-                                                                  text-align="center">In confidence
-                                                        </fo:block>
+                                                        <fo:block padding-top="4mm" font-size="6.5pt" text-align="center">In confidence</fo:block>
                                                     </fo:table-cell>
                                                     <fo:table-cell number-columns-spanned="2"
                                                                    xsl:use-attribute-sets="cell-with-right-border">
@@ -296,23 +290,18 @@
                                                             <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;</xsl:text>
                                                             of Birth:
                                                             <fo:inline xsl:use-attribute-sets="normal">
-                                                                <xsl:value-of
-                                                                        select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/monthString"/>/
-                                                                <xsl:if test="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/dayString">
-                                                                    <xsl:value-of
-                                                                            select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/dayString"/>/
-                                                                </xsl:if>
-                                                                <xsl:value-of
-                                                                        select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/yearString"/>
+                                                                <xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/monthString"/>/<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/dayString"/>/<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/yearString"/>
                                                             </fo:inline>
                                                         </fo:block>
                                                     </fo:table-cell>
                                                     <fo:table-cell xsl:use-attribute-sets="cell-with-right-border">
                                                         <fo:block xsl:use-attribute-sets="label">3. Sex</fo:block>
-                                                        <fo:block font-size="6.5pt">
+                                                        <fo:block xsl:use-attribute-sets="normal">
+                                                            <fo:block>
+                                                                <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
+                                                            </fo:block>
                                                             <xsl:choose>
-                                                                <xsl:when
-                                                                        test="AdverseEventReport/StudyParticipantAssignment/Participant/gender = 'Female'">
+                                                                <xsl:when test="AdverseEventReport/StudyParticipantAssignment/Participant/gender = 'Female'">
                                                                     [x]
                                                                 </xsl:when>
                                                                 <xsl:otherwise>[<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>]
@@ -320,10 +309,12 @@
                                                             </xsl:choose>
                                                             Female
                                                         </fo:block>
-                                                        <fo:block font-size="6.5pt">
+                                                        <fo:block>
+                                                            <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
+                                                        </fo:block>
+                                                        <fo:block  xsl:use-attribute-sets="normal">
                                                             <xsl:choose>
-                                                                <xsl:when
-                                                                        test="AdverseEventReport/StudyParticipantAssignment/Participant/gender = 'Male'">
+                                                                <xsl:when test="AdverseEventReport/StudyParticipantAssignment/Participant/gender = 'Male'">
                                                                     [x]
                                                                 </xsl:when>
                                                                 <xsl:otherwise>[<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>]
@@ -335,29 +326,24 @@
                                                     <fo:table-cell xsl:use-attribute-sets="cell-with-right-border">
                                                         <fo:block xsl:use-attribute-sets="label">4. Weight</fo:block>
                                                         <fo:block xsl:use-attribute-sets="label">
-                                                            <xsl:text
-                                                                    disable-output-escaping="yes">&amp;#160;</xsl:text>
+                                                            <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
                                                         </fo:block>
                                                         <fo:block xsl:use-attribute-sets="label">
                                                             <xsl:choose>
-                                                                <xsl:when
-                                                                        test="AdverseEventReport/ParticipantHistory/weight/unit = 'Pound'">
-                                                                    <fo:inline xsl:use-attribute-sets="normal"
-                                                                               text-decoration="underline">
+                                                                <xsl:when test="AdverseEventReport/ParticipantHistory/weight/unit = 'Pound'">
+                                                                    <fo:inline xsl:use-attribute-sets="normal" text-decoration="underline">
                                                                         <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;</xsl:text>
-                                                                        <xsl:value-of
-                                                                                select="AdverseEventReport/ParticipantHistory/weight/quantity"/>
+                                                                        <xsl:value-of select="AdverseEventReport/ParticipantHistory/weight/quantity"/>
                                                                         <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;</xsl:text>
                                                                     </fo:inline>
                                                                 </xsl:when>
                                                                 <xsl:otherwise>
-                                                                    <fo:leader leader-length="60%" leader-pattern="rule"
-                                                                               rule-thickness="0.5pt"/>
+                                                                    <fo:leader leader-length="60%" leader-pattern="rule" rule-thickness="0.5pt"/>
                                                                 </xsl:otherwise>
                                                             </xsl:choose>
                                                             lbs
                                                         </fo:block>
-                                                        <fo:block font-size="6.5pt" text-align="center">or</fo:block>
+                                                        <fo:block xsl:use-attribute-sets="normal-center">or</fo:block>
                                                         <fo:block xsl:use-attribute-sets="label">
                                                             <xsl:choose>
                                                                 <xsl:when
@@ -371,8 +357,7 @@
                                                                     </fo:inline>
                                                                 </xsl:when>
                                                                 <xsl:otherwise>
-                                                                    <fo:leader leader-length="60%" leader-pattern="rule"
-                                                                               rule-thickness="0.5pt"/>
+                                                                    <fo:leader leader-length="60%" leader-pattern="rule" rule-thickness="0.5pt"/>
                                                                 </xsl:otherwise>
                                                             </xsl:choose>
                                                             kgs
@@ -381,31 +366,24 @@
                                                 </fo:table-row>
                                                 <fo:table-row xsl:use-attribute-sets="tr-height-1">
                                                     <fo:table-cell number-columns-spanned="5" background-color="black">
-                                                        <fo:block xsl:use-attribute-sets="black-heading">B. ADVERSE
-                                                            EVENT OR PRODUCT PROBLEM
-                                                        </fo:block>
+                                                        <fo:block xsl:use-attribute-sets="black-heading">B. ADVERSE EVENT OR PRODUCT PROBLEM</fo:block>
                                                     </fo:table-cell>
                                                 </fo:table-row>
                                                 <fo:table-row height="5mm">
-                                                    <fo:table-cell xsl:use-attribute-sets="full-border"
-                                                                   number-columns-spanned="5">
+                                                    <fo:table-cell xsl:use-attribute-sets="full-border"  number-columns-spanned="5">
                                                         <fo:block>
                                                             <fo:inline font-size="6.5">1.</fo:inline>
                                                             <fo:inline xsl:use-attribute-sets="label">
-                                                                [x]
-                                                                Adverse Event
+                                                                [x] Adverse Event
                                                                 <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;</xsl:text>
                                                             </fo:inline>
                                                             <fo:inline font-size="6.5">and/or
                                                                 <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;</xsl:text>
                                                             </fo:inline>
                                                             <fo:inline xsl:use-attribute-sets="label">
-                                                                [ ]
-                                                                Product Problem
+                                                                [ ] Product Problem
                                                             </fo:inline>
-                                                            <fo:inline font-size="6.5" font-style="italic">(e.g.,
-                                                                defects/malfunctions)
-                                                            </fo:inline>
+                                                            <fo:inline font-size="6.5" font-style="italic">(e.g.,defects/malfunctions)</fo:inline>
                                                         </fo:block>
                                                     </fo:table-cell>
                                                 </fo:table-row>
@@ -596,7 +574,7 @@
                                                                    &amp;#160;&amp;#160;Continued... </xsl:text>
                                                             </xsl:if>
                                                         </fo:block>
-                                                   
+
                                                         <fo:block xsl:use-attribute-sets="normal">
                                                             Present Status:
                                                             <fo:block/>
@@ -628,20 +606,19 @@
                                                     </fo:table-cell>
                                                 </fo:table-row>
                                                 <fo:table-row height="42mm">
-                                                    <fo:table-cell xsl:use-attribute-sets="full-border"
-                                                                   number-columns-spanned="5">
+                                                    <fo:table-cell xsl:use-attribute-sets="full-border" number-columns-spanned="5">
                                                         <fo:block>
                                                             <fo:inline font-size="6.5">6.</fo:inline>
-                                                            <fo:inline xsl:use-attribute-sets="label">Relevant
-                                                                Tests/Laboratory Data, Including Dates
-                                                            </fo:inline>
+                                                            <fo:inline xsl:use-attribute-sets="label">Relevant Tests/Laboratory Data, Including Dates</fo:inline>
                                                         </fo:block>
                                                         <xsl:for-each select="AdverseEventReport/Lab">
-                                                            <xsl:if test="position() &lt; $_lbPossible">
-                                                                <xsl:apply-templates select="." />
-                                                            </xsl:if>
+                                                            <xsl:call-template name="printLab">
+                                                                <xsl:with-param name="labLow" select="$lowest" />
+                                                                <xsl:with-param name="labMax" select="($_lbPossible + 1)" />
+                                                                <xsl:with-param name="lab" select="." />
+                                                            </xsl:call-template>
                                                         </xsl:for-each>
-                                                        <xsl:if test="$_lbContinue = true()">
+                                                        <xsl:if test="mu:labCount() &gt; $_lbPossible">
 	                                                       <fo:block text-align="right" xsl:use-attribute-sets="normal">
                                                                <xsl:text disable-output-escaping="yes">&amp;#160; Continued... </xsl:text>
                                                            </fo:block>
@@ -660,7 +637,7 @@
                                                             <fo:inline font-size="6.5" font-style="italic">(e.g.,allergies,race,pregnancy, smoking and alcohol use, hepatic/renal
                                                             dysfunction, etc.)
                                                             </fo:inline>
-                                                      
+
 
                                                         </fo:block>
                                                         <fo:block xsl:use-attribute-sets="normal">
@@ -827,7 +804,7 @@
                                                             <fo:block font-size="6.5pt">
 
                                                                 <xsl:if test="(position() &lt;= $_attPossible) and (contains(., '3') or contains(.,'4') or contains(.,'5'))">
-                                                                    
+
                                                                     #<xsl:number format="1" value="position()"/>
                                                                      <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
                                                                     <xsl:value-of select="../CourseAgent/StudyAgent/Agent/name"/>
@@ -1175,16 +1152,11 @@
                                                     </fo:table-cell>
                                                 </fo:table-row>
                                                 <fo:table-row height="30mm">
-                                                    <fo:table-cell xsl:use-attribute-sets="cell-with-right-border"
-                                                                   number-columns-spanned="5">
+                                                    <fo:table-cell xsl:use-attribute-sets="cell-with-right-border" number-columns-spanned="5">
                                                         <fo:block>
                                                             <fo:inline font-size="6.5pt">10.</fo:inline>
-                                                            <fo:inline xsl:use-attribute-sets="label">Concomitant
-                                                                Medical Products and Therapy Dates
-                                                            </fo:inline>
-                                                            <fo:inline font-size="6.5pt" font-style="italic">(Exclude
-                                                                treatment of event)
-                                                            </fo:inline>
+                                                            <fo:inline xsl:use-attribute-sets="label">Concomitant Medical Products and Therapy Dates</fo:inline>
+                                                            <fo:inline font-size="6.5pt" font-style="italic">(Exclude treatment of event)</fo:inline>
                                                         </fo:block>
                                                         <xsl:for-each select="AdverseEventReport/ConcomitantMedication">
                                                             <xsl:if test="position() &lt; $_cmPossible">
@@ -2620,7 +2592,7 @@
                     </fo:block>
 
 
-                    <xsl:if test="$_showNextPage = true()">
+                    <xsl:if test="($_showNextPage = true()) or (mu:labCount() &gt; $_lbPossible)">
                         <fo:block break-before="page">
                             <fo:table xsl:use-attribute-sets="continue-table-border">
                                 <fo:table-column column-width="100%" />
@@ -2656,21 +2628,25 @@
                                         </fo:table-row>
                                     </xsl:if>
 
-                                    <xsl:if test="$_lbContinue = true()">
+                                    <xsl:if test="mu:labCount() &gt; $_lbPossible">
                                         <fo:table-row>
                                             <fo:table-cell>
-                                                <fo:block xsl:use-attribute-sets="label" font-style="italic"
-                                                          background-color='silver'>B. 6. Continued...
+                                                <fo:block xsl:use-attribute-sets="label" font-style="italic" background-color='silver'>B 6.Relevant Tests/Laboratory Data, Including Dates <fo:inline font-style="italic">(continued)</fo:inline>
                                                 </fo:block>
                                             </fo:table-cell>
                                         </fo:table-row>
                                         <fo:table-row>
-                                            <fo:table-cell xsl:use-attribute-sets="continue-table-border">
-                                                <xsl:for-each select="AdverseEventReport/Lab">
-                                                    <xsl:if test="position() &gt;= $_lbPossible">
-                                                        <xsl:apply-templates select="." />
-                                                    </xsl:if>
-                                                </xsl:for-each>
+                                            <fo:table-cell xsl:use-attribute-sets="continue-table-border" padding-left="1mm">
+                                                <xsl:value-of select="mu:resetLab()" />
+                                                <fo:block xsl:use-attribute-sets="normal" padding-top="4pt" >
+                                                    <xsl:for-each select="AdverseEventReport/Lab">
+                                                        <xsl:call-template name="printLab">
+                                                            <xsl:with-param name="labLow" select="($_lbPossible)"/>
+                                                            <xsl:with-param name="labMax" select="$highest"/>
+                                                            <xsl:with-param name="lab" select="."/>
+                                                        </xsl:call-template>
+                                                    </xsl:for-each>
+                                                </fo:block>
                                             </fo:table-cell>
                                         </fo:table-row>
                                     </xsl:if>
@@ -2810,7 +2786,7 @@
                                                                 select="mu:after(AdverseEventReport/TreatmentInformation/TreatmentAssignment/description, $_tacPossible)"/>
                                                         <xsl:value-of
                                                                 select="mu:after(AdverseEventReport/TreatmentInformation/treatmentDescription, $_tacPossible)"/>
-                                                                                                        
+
                                                     	<xsl:for-each select="AdverseEventReport/TreatmentInformation/CourseAgent">
                                                                 <fo:block><xsl:value-of select="Dose/amount"/><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text><xsl:value-of select="Dose/units"/></fo:block>
                                                                 <fo:block><xsl:value-of select="formulation"/></fo:block>
@@ -2931,66 +2907,106 @@
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="Lab">
-        <fo:block xsl:use-attribute-sets="normal">
-            <xsl:value-of select="labTerm/term"/>
-            <xsl:value-of select="other"/>
-            <fo:block/>
-            Base Line value :
+    <xsl:template name="printLab">
+        <xsl:param name="labLow" />
+        <xsl:param name="labMax" />
+        <xsl:param name="lab" />
 
-            <xsl:value-of select="baseline/value"/>
-            <xsl:text
-                    disable-output-escaping="yes">&amp;#160;</xsl:text>
-            <xsl:value-of select="units"/>
-            <xsl:text
-                    disable-output-escaping="yes">&amp;#160;</xsl:text>
-            <xsl:if test="baseline/date">(
-                <xsl:call-template name="standard_date">
-                    <xsl:with-param name="date"
-                                    select="baseline/date"/>
-                </xsl:call-template>
-                )
-            </xsl:if>
-            <fo:block/>
-        </fo:block>
         <fo:block xsl:use-attribute-sets="normal">
-            Worst value :
-            <xsl:value-of select="nadir/value"/>
-            <xsl:text
-                    disable-output-escaping="yes">&amp;#160;</xsl:text><xsl:value-of
-                select="units"/>
-            <xsl:text
-                    disable-output-escaping="yes">&amp;#160;</xsl:text>
-            <xsl:if test="nadir/date">(
-                <xsl:call-template name="standard_date">
-                    <xsl:with-param name="date"
-                                    select="nadir/date"/>
-                </xsl:call-template>
-                )
+            <!--<xsl:if test="mu:labCount() &gt; ($labLow + 3)">-->
+                <!--<fo:block><xsl:text  disable-output-escaping="yes">&amp;#160;</xsl:text><xsl:value-of select="mu:incrementLab()" /></fo:block>-->
+            <!--</xsl:if>-->
+            <xsl:if test="$lab/labTerm/term">
+            <xsl:value-of select="mu:incrementLab()" />
+                <xsl:if test="(mu:labCount() &lt; $labMax) and (mu:labCount() &gt; $labLow)">
+                    <fo:block padding-top="4pt"> <xsl:value-of select="$lab/labTerm/term"/>  </fo:block>
+                </xsl:if>
             </xsl:if>
-            <fo:block/>
-        </fo:block>
-        <fo:block xsl:use-attribute-sets="normal">
-            Recovery value :
-            <xsl:value-of select="recovery/value"/>
-            <xsl:text
-                    disable-output-escaping="yes">&amp;#160;</xsl:text>
-            <xsl:value-of select="units"/>
-            <xsl:text
-                    disable-output-escaping="yes">&amp;#160;</xsl:text>
-            <xsl:if test="recovery/date">(
-                <xsl:call-template name="standard_date">
-                    <xsl:with-param name="date"
-                                    select="recovery/date"/>
-                </xsl:call-template>
-                )
+            <xsl:if test="$lab/other">
+                <xsl:value-of select="mu:incrementLab()" />
+                <xsl:if test="(mu:labCount() &lt; $labMax) and (mu:labCount() &gt; $labLow)">
+                    <fo:block padding-top="4pt"> <xsl:value-of select="$lab/other"/> </fo:block>
+                </xsl:if>
             </xsl:if>
-            <fo:block/>
+            <xsl:if test="$lab/baseline/value != ''">
+                <xsl:value-of select="mu:incrementLab()" />
+                <xsl:if test="(mu:labCount() &lt; $labMax) and (mu:labCount() &gt; $labLow)">
+                    <fo:block />
+                    Base Line value :<xsl:value-of select="$lab/baseline/value"/>
+                    <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
+                    <xsl:value-of select="$lab/units"/> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
+                    <xsl:if test="$lab/baseline/date">(
+                        <xsl:call-template name="standard_date">
+                            <xsl:with-param name="date" select="$lab/baseline/date"/>
+                        </xsl:call-template>
+                        )
+                    </xsl:if>
+                </xsl:if>
+            </xsl:if>
+            <xsl:if test="$lab/nadir/value != ''">
+                <xsl:value-of select="mu:incrementLab()" />
+                <xsl:if test="(mu:labCount() &lt; $labMax) and (mu:labCount() &gt; $labLow)">
+                    <fo:block />
+                    Worst value : <xsl:value-of select="$lab/nadir/value"/>
+                    <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text><xsl:value-of select="$lab/units"/>
+                    <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
+                    <xsl:if test="$lab/nadir/date">(
+                        <xsl:call-template name="standard_date">
+                            <xsl:with-param name="date"
+                                            select="$lab/nadir/date"/>
+                        </xsl:call-template>
+                        )
+                    </xsl:if>
+                </xsl:if>
+            </xsl:if>
+            <xsl:if test="$lab/recovery/value != ''">
+                <xsl:value-of select="mu:incrementLab()" />
+                <xsl:if test="(mu:labCount() &lt; $labMax) and (mu:labCount() &gt; $labLow)">
+                    <fo:block />
+                    Recovery value :  <xsl:value-of select="$lab/recovery/value"/>
+                    <xsl:text  disable-output-escaping="yes">&amp;#160;</xsl:text>
+                    <xsl:value-of select="$lab/units"/>
+                    <xsl:text  disable-output-escaping="yes">&amp;#160;</xsl:text>
+                    <xsl:if test="$lab/recovery/date">(
+                        <xsl:call-template name="standard_date">
+                            <xsl:with-param name="date" select="$lab/recovery/date"/>
+                        </xsl:call-template>
+                        )
+                    </xsl:if>
+                </xsl:if>
+            </xsl:if>
+
+
+            <xsl:if test="$lab/site">
+                <xsl:value-of select="mu:incrementLab()" />
+                <xsl:if test="(mu:labCount() &lt; $labMax) and (mu:labCount() &gt; $labLow)">
+                    <fo:block />
+                    Site : <xsl:value-of select="$lab/site" />
+                </xsl:if>
+
+            </xsl:if>
+
+            <xsl:if test="$lab/infectiousAgent">
+                <xsl:value-of select="mu:incrementLab()" />
+                <xsl:if test="(mu:labCount() &lt; $labMax) and (mu:labCount() &gt; $labLow)">
+                    <fo:block />
+                    Infectious agent : <xsl:value-of select="$lab/infectiousAgent" />
+                </xsl:if>
+            </xsl:if>
+
+            <xsl:if test="$lab/labDate">
+                <xsl:value-of select="mu:incrementLab()" />
+                <xsl:if test="(mu:labCount() &lt; $labMax) and (mu:labCount() &gt; $labLow)">
+                    <fo:block />
+                    Lab date :
+                    <xsl:call-template name="standard_date">
+                        <xsl:with-param name="date" select="$lab/labDate"/>
+                    </xsl:call-template>
+                </xsl:if>
+            </xsl:if>
         </fo:block>
-        <fo:block>
-            <xsl:text
-                    disable-output-escaping="yes">&amp;#160;</xsl:text>
-        </fo:block>
+
+
     </xsl:template>
 
 
@@ -3055,7 +3071,7 @@
     </xsl:template>
 
     <xsl:template match="ConcomitantMedication">
-        <fo:block xsl:use-attribute-sets="normal">
+        <fo:block xsl:use-attribute-sets="normal" background-color="yellow">
             <xsl:value-of select="name"/>
             <xsl:if test="startDate/monthString">
                 (<xsl:value-of select="startDate/monthString"/>/<xsl:value-of select="startDate/yearString"/>)

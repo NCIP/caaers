@@ -10,6 +10,7 @@ import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.fop.apps.FOUserAgent;
@@ -117,7 +118,7 @@ public class XsltTransformer {
         } catch (Exception e) {
             throw new Exception(e);
         } finally {
-            out.close();
+            IOUtils.closeQuietly(out);
         }
     }
 

@@ -89,4 +89,25 @@ public class MedwatchUtilsTest extends TestCase {
         
     }
 
+
+    public void testGetOfCounter() throws Exception{
+        final MedwatchUtils.Counter c1 = MedwatchUtils.get();
+        final MedwatchUtils.Counter c2 = MedwatchUtils.get();
+        assertSame(c1, c2);
+
+
+
+        Thread t = new Thread(new Runnable() {
+            public void run() {
+                final MedwatchUtils.Counter c3 = MedwatchUtils.get();
+                assertFalse(c1 == c3);
+                assertSame(c3, MedwatchUtils.get());
+                System.out.println("thread started");
+            }
+        });
+        t.start();
+
+        t.join();
+
+    }
 }

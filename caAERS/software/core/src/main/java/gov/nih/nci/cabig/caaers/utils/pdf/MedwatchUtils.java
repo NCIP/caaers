@@ -1,15 +1,12 @@
 package gov.nih.nci.cabig.caaers.utils.pdf;
 
 import org.apache.commons.lang.StringUtils;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.xpath.XPathAPI;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.w3c.dom.traversal.NodeIterator;
-
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
@@ -17,8 +14,6 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathFactory;
 import java.io.ByteArrayInputStream;
 import java.io.StringWriter;
 
@@ -29,47 +24,55 @@ import java.io.StringWriter;
 public class MedwatchUtils {
 
     protected static final Log log = LogFactory.getLog(MedwatchUtils.class);
+    public static ThreadLocal<Counter> localCache = new ThreadLocal<Counter>();
 
+    public static Counter get(){
+        Counter c = localCache.get();
+        if(c == null) {
+            c = new Counter();
+            localCache.set(c);
+        }
+        return c;
+    }
 
+    public static int possibleElements(NodeList nodes , int n , String commaSeperatedXPath){
 
-//    public static int possibleElements(NodeList nodes , int n , String commaSeperatedXPath){
-//
-//        if(nodes == null || nodes.getLength() == 0) return 1;
-//        String[] xpath = StringUtils.isEmpty(commaSeperatedXPath) ? new String[]{"."} : commaSeperatedXPath.split(",");
-//        int l = 0;
-//        int k = 1;
-//        for(int i = 0; i < nodes.getLength(); i++){
-//            Node node = nodes.item(i);
-//            for(int j = 0 ; j < xpath.length; j++){
-//               String s = evalXPathsOnNode(node, xpath[j]);
-//               l += StringUtils.length(s);
-//            }
-//            if(l >= n) return k;
-//
-//            k++;
-//        }
-//
-//        return k;
-//    }
+        if(nodes == null || nodes.getLength() == 0) return 1;
+        String[] xpath = StringUtils.isEmpty(commaSeperatedXPath) ? new String[]{"."} : commaSeperatedXPath.split(",");
+        int l = 0;
+        int k = 1;
+        for(int i = 0; i < nodes.getLength(); i++){
+            Node node = nodes.item(i);
+            for(int j = 0 ; j < xpath.length; j++){
+               String s = evalXPathsOnNode(node, xpath[j]);
+               l += StringUtils.length(s);
+            }
+            if(l >= n) return k;
 
-//    public static String evalXPathsOnNode(Node n, String strXPath){
-//        try{
-//
-//            TransformerFactory factory = TransformerFactory.newInstance();
-//            Transformer transformer = factory.newTransformer();
-//            DOMSource domSource = new DOMSource(n);
-//            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION,"yes");
-//            StringWriter sw = new StringWriter();
-//            StreamResult result = new StreamResult(sw);
-//            transformer.transform(domSource, result);
-//            return evalXPathOnXML(sw.toString(), strXPath);
-//
-//        }catch (Exception e){
-//           log.debug(e);
-//        }
-//
-//        return "";
-//    }
+            k++;
+        }
+
+        return k;
+    }
+
+    public static String evalXPathsOnNode(Node n, String strXPath){
+        try{
+
+            TransformerFactory factory = TransformerFactory.newInstance();
+            Transformer transformer = factory.newTransformer();
+            DOMSource domSource = new DOMSource(n);
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION,"yes");
+            StringWriter sw = new StringWriter();
+            StreamResult result = new StreamResult(sw);
+            transformer.transform(domSource, result);
+            return evalXPathOnXML(sw.toString(), strXPath);
+
+        }catch (Exception e){
+           log.debug(e);
+        }
+
+        return "";
+    }
 
     public static String evalXPathOnXML(String xml, String xpathExpression){
         try{
@@ -138,5 +141,33 @@ public class MedwatchUtils {
 
     }
 
+    public static void incrementLab(){
+        get().incrementLab();
+    }
+    public static int labCount(){
+        return get().getLabCount();
+    }
+    public static int resetLab(){
+        return get().resetLabCount();
+    }
+
+    public static class Counter {
+        private  int labCount = 0;
+
+        public int resetLabCount(){
+            System.out.println("reset lab :" + labCount);
+            labCount = 0;
+            return labCount;
+        }
+        public int incrementLab(){
+            labCount++;
+            System.out.println("increment lab :" + labCount);
+            return labCount;
+        }
+        public int getLabCount(){
+            System.out.println("lab count :" + labCount);
+            return labCount;
+        }
+    }
 
 }
