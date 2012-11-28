@@ -15,7 +15,7 @@
     <field name="createdAt" type="timestamp">
       <bind-xml name="createdAt" node="element"/>
     </field>
-    <!-- 
+    <!--
     <field name="status" type="gov.nih.nci.cabig.caaers.domain.ReportStatus">
       <bind-xml name="status"/>
     </field>

@@ -523,13 +523,14 @@
                                                                    number-columns-spanned="3">
                                                         <fo:block>
                                                             <fo:inline font-size="6.5">4.</fo:inline>
-                                                            <fo:inline xsl:use-attribute-sets="label">Date of This
-                                                                Report
-                                                            </fo:inline>
+                                                            <fo:inline xsl:use-attribute-sets="label">Date of This Report </fo:inline>
                                                             <fo:inline font-size="6.5">(mm/dd/yyyy)</fo:inline>
                                                             <fo:block xsl:use-attribute-sets="normal">
-                                                                <xsl:value-of
-                                                                        select="java:format(java:java.text.SimpleDateFormat.new ('MM/dd/yyyy'), java:java.util.Date.new())"/>
+                                                                <xsl:if test="AdverseEventReport/Report/ReportVersion/submittedOn != ''">
+                                                                    <xsl:call-template name="standard_date">
+                                                                        <xsl:with-param name="date" select="AdverseEventReport/Report/ReportVersion/submittedOn"/>
+                                                                    </xsl:call-template>
+                                                                </xsl:if>
                                                             </fo:block>
                                                         </fo:block>
                                                     </fo:table-cell>
@@ -1682,8 +1683,7 @@
                                             <fo:table-body>
                                                 <fo:table-row xsl:use-attribute-sets="tr-height-1">
                                                     <fo:table-cell number-columns-spanned="6" background-color="black">
-                                                        <fo:block xsl:use-attribute-sets="black-heading">F. FOR USE BY
-                                                            USER FACILITY/IMPORTER (Devices Only)
+                                                        <fo:block xsl:use-attribute-sets="black-heading">F. FOR USE BY USER FACILITY/IMPORTER (Devices Only)
                                                         </fo:block>
                                                     </fo:table-cell>
                                                 </fo:table-row>
@@ -1771,8 +1771,7 @@
                                                         </fo:block>
                                                         <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">
                                                             <xsl:call-template name="standard_date">
-                                                                <xsl:with-param name="date"
-                                                                                select="AdverseEventReport/createdAt"/>
+                                                                <xsl:with-param name="date" select="AdverseEventReport/Report/ReportVersion/submittedOn"/>
                                                             </xsl:call-template>
                                                         </fo:block>
                                                     </fo:table-cell>
@@ -1860,8 +1859,7 @@
                                                             <xsl:if test="AdverseEventReport/Report/submittedToFDA = 'Yes'">
                                                                 [x] Yes
                                                                 <xsl:call-template name="standard_date">
-                                                                    <xsl:with-param name="date"
-                                                                                    select="AdverseEventReport/Report/ReportVersion/submittedOn"/>
+                                                                    <xsl:with-param name="date" select="AdverseEventReport/Report/ReportVersion/submittedOn"/>
                                                                 </xsl:call-template>
                                                             </xsl:if>
                                                         </fo:block>
