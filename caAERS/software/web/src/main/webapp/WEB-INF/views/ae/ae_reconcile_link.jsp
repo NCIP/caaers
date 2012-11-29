@@ -487,7 +487,7 @@ ValidationManager.submitPreProcess = function(){
             <td class="tableHeader" width="${widthEndDate}">End</td>
             <td class="tableHeader" width="${widthVerbatim}">Verbatim</td>
             <td class="tableHeader" width="${widthWhySerious}">Serious?</td>
-            <td class="tableHeader" width="${widthAttribution}">Attributionchk</td>
+            <td class="tableHeader" width="${widthAttribution}">Attribution</td>
             <td class="tableHeader" width="${widthActions}"></td>
         </tr>
         </thead>
