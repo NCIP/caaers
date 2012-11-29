@@ -164,7 +164,8 @@ AE.ae = Class.create({
                 'verbatim : "' + this.verbatim + '",' +
                 'whySerious : "' + this.whySerious + '",' +
                 'attribution : "' + this.attribution + '",'  +
-                'percent :' + p   +
+                'matchPercent :' + p   + ','  +
+                'scorePercent :' + p   +
                 '}';
 
     },
@@ -269,13 +270,13 @@ AE.aeWidget = Class.create({
             {key:"verbatim", label: "Verbatim", sortable:true, resizeable:true},
             {key:"whySerious", label: "Serious?", sortable:false, resizeable:false},
             {key:"attribution", label: "Attribution", sortable:false, resizeable:false},
-            {key:"percent", label: "Match" ,formatter:AE.matchFormatter, sortable:true, resizeable:false} ,
-            {key:"percent", label: "Score" , sortable:false, resizeable:false}
+            {key:"matchPercent", label: "Match" ,formatter:AE.matchFormatter, sortable:true, resizeable:false} ,
+            {key:"scorePercent", label: "Score" , sortable:false, resizeable:false}
         ];
         var ds = new YAHOO.util.DataSource(this.aePickerData);
         ds.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
         ds.responseSchema = {
-            fields: ["id","term","grade","startDate","endDate", "verbatim", "whySerious", "attribution", "percent"]
+            fields: ["id","term","grade","startDate","endDate", "verbatim", "whySerious", "attribution", "matchPercent","scorePercent"]
         };
 
         this.aePickerTbl = new YAHOO.widget.ScrollingDataTable(this.containerId, colDefs, ds, {height:"12em", width:'890px'});
@@ -300,10 +301,10 @@ AE.aeWidget = Class.create({
             this.aePickerData.push(_str2.evalJSON());
         }
         this.aePickerData = this.aePickerData.concat(ueaeArr);
-//        var _debugStr = " Widget : " + this.widgetId + " picker data [" ;
-//        $A(this.aePickerData).each(function (x){ _debugStr = _debugStr + ", " + x.id + "->" + x.externalId});
-//        _debugStr = _debugStr + "] \n UnMapped AE :" + AE.eUnmapped.inspect() ;
-//        console.debug(_debugStr);
+//         var _debugStr = " Widget : " + this.widgetId + " picker data [" ;
+//         $A(this.aePickerData).each(function (x){ _debugStr = _debugStr + ", " + x.id + "->" + x.externalId});
+//         _debugStr = _debugStr + "] \n UnMapped AE :" + AE.eUnmapped.inspect() ;
+//         console.debug(_debugStr);
 
     },
     showAePickerRow : function(selectedAeId){
@@ -486,7 +487,7 @@ ValidationManager.submitPreProcess = function(){
             <td class="tableHeader" width="${widthEndDate}">End</td>
             <td class="tableHeader" width="${widthVerbatim}">Verbatim</td>
             <td class="tableHeader" width="${widthWhySerious}">Serious?</td>
-            <td class="tableHeader" width="${widthAttribution}">Attribution</td>
+            <td class="tableHeader" width="${widthAttribution}">Attributionchk</td>
             <td class="tableHeader" width="${widthActions}"></td>
         </tr>
         </thead>
