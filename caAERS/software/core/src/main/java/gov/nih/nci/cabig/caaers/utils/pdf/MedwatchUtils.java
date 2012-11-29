@@ -150,22 +150,40 @@ public class MedwatchUtils {
     public static int resetLab(){
         return get().resetLabCount();
     }
+    public static void incrementMedHistory(){
+        get().incrementMedHistory();
+    }
+    public static int medHistoryCount(){
+        return get().getMedHistoryCount();
+    }
+    public static int resetMedHistory(){
+        return get().resetMedHistoryCount();
+    }
 
     public static class Counter {
         private  int labCount = 0;
+        private int medHistoryCount = 0;
 
+        public int resetMedHistoryCount(){
+            medHistoryCount = 0;
+            return medHistoryCount;
+        }
         public int resetLabCount(){
-            System.out.println("reset lab :" + labCount);
             labCount = 0;
             return labCount;
         }
+        public int incrementMedHistory(){
+            medHistoryCount++;
+            return medHistoryCount;
+        }
         public int incrementLab(){
             labCount++;
-            System.out.println("increment lab :" + labCount);
             return labCount;
         }
+        public int getMedHistoryCount(){
+            return medHistoryCount;
+        }
         public int getLabCount(){
-            System.out.println("lab count :" + labCount);
             return labCount;
         }
     }

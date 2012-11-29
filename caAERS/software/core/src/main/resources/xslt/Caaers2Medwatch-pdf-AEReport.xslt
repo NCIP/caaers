@@ -17,6 +17,7 @@
     <xsl:variable name="highest" select="number(9000)" />
 
     <xsl:variable name="_lbPossible" select="number(12)" />
+    <xsl:variable name="_mhPossible" select="number(8)" />
 
      <xsl:variable name="_aePossible" select="number(3)" />
      <xsl:variable name="_cmPossible" select="number(4)" />
@@ -55,9 +56,8 @@
 
 
     <xsl:variable name="_cTenContinue" select="$_cmContinue or $_ptContinue or $_cmContinue" />
-    <xsl:variable name="_bSevenContinue" select="$_preCondContinue or $_ptContinue or $_msdsContinue" />
     <xsl:variable name="_bFiveContinue" select="$_aeContinue or $_edContinue" />
-    <xsl:variable name="_showNextPage" select="$_tacContinue or $_bSevenContinue or $_bFiveContinue or $_cTenContinue or $_attContinue" />
+    <xsl:variable name="_showNextPage" select="$_tacContinue or $_bFiveContinue or $_cTenContinue or $_attContinue" />
 
 
     <xsl:attribute-set name="tr-height-1">
@@ -74,6 +74,16 @@
         <xsl:attribute name="font-size">6.5pt</xsl:attribute>
         <xsl:attribute name="font-weight">bold</xsl:attribute>
         <xsl:attribute name="padding-top">1mm</xsl:attribute>
+    </xsl:attribute-set>
+
+    <xsl:attribute-set name="sub-header">
+        <xsl:attribute name="font-size">6pt</xsl:attribute>
+        <xsl:attribute name="font-weight">bold</xsl:attribute>
+        <xsl:attribute name="padding-top">2mm</xsl:attribute>
+    </xsl:attribute-set>
+    <xsl:attribute-set name="sub-sub-header" >
+        <xsl:attribute name="font-size">6pt</xsl:attribute>
+        <xsl:attribute name="font-weight">bold</xsl:attribute>
     </xsl:attribute-set>
 
     <xsl:attribute-set name="pageNumberBlock">
@@ -111,15 +121,17 @@
     </xsl:attribute-set>
 
 
-    <xsl:attribute-set name="normal-with-padding">
+    <xsl:attribute-set name="normal-with-left-padding">
         <xsl:attribute name="font-size">6.5pt</xsl:attribute>
         <xsl:attribute name="font-weight">normal</xsl:attribute>
-        <xsl:attribute name="padding-left">10px</xsl:attribute>
-        <xsl:attribute name="padding-right">10px</xsl:attribute>
-        <xsl:attribute name="padding-top">10px</xsl:attribute>
-        <xsl:attribute name="padding-bottom">10px</xsl:attribute>
+        <xsl:attribute name="margin-left">12px</xsl:attribute>
     </xsl:attribute-set>
 
+    <xsl:attribute-set name="normal-with-double-left-padding">
+        <xsl:attribute name="font-size">6.5pt</xsl:attribute>
+        <xsl:attribute name="font-weight">normal</xsl:attribute>
+        <xsl:attribute name="margin-left">18px</xsl:attribute>
+    </xsl:attribute-set>
 
     <xsl:attribute-set name="continue">
         <xsl:attribute name="font-size">6.5pt</xsl:attribute>
@@ -630,24 +642,14 @@
                                                     <fo:table-cell xsl:use-attribute-sets="full-border"
                                                                    number-columns-spanned="5">
                                                         <fo:block font-size="6.5" font-style="italic">
-                                                            <fo:inline font-size="6.5" font-style="normal">7.
-                                                            </fo:inline>
-                                                            <fo:inline xsl:use-attribute-sets="label"
-                                                                       font-style="normal">Other Relevant History,Including Preexisting Medical Conditions
-                                                            </fo:inline>
-                                                            <fo:inline font-size="6.5" font-style="italic">(e.g.,allergies,race,pregnancy, smoking and alcohol use, hepatic/renal
-                                                            dysfunction, etc.)
-                                                            </fo:inline>
-
-
+                                                            <fo:inline font-size="6.5" font-style="normal">7. </fo:inline>
+                                                            <fo:inline xsl:use-attribute-sets="label" font-style="normal">Other Relevant History,Including Preexisting Medical Conditions </fo:inline>
+                                                            <fo:inline xsl:use-attribute-sets="normal" font-style="italic">(e.g.,allergies,race,pregnancy, smoking and alcohol use, hepatic/renal dysfunction, etc.) </fo:inline>
                                                         </fo:block>
-                                                        <fo:block xsl:use-attribute-sets="normal">
-                                                            <xsl:text
-                                                                    disable-output-escaping="yes">&amp;#160;</xsl:text>
-                                                        </fo:block>
-                                                        <fo:block xsl:use-attribute-sets="normal">Race:
-                                                            <xsl:value-of
-                                                                    select="AdverseEventReport/StudyParticipantAssignment/Participant/race"/>
+
+                                                        <xsl:value-of select="mu:incrementMedHistory()" />
+                                                        <fo:block xsl:use-attribute-sets="normal" padding-top="3pt">Race:
+                                                            <xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/race"/>
                                                         </fo:block>
 
 
@@ -656,118 +658,41 @@
                                                                   AdverseEventReport/DiseaseHistory/StudyCondition/Condition/conditionName != '' or
                                                                   AdverseEventReport/DiseaseHistory/MeddraStudyDisease/LowLevelTerm/meddraTerm != ''">
                                                             <fo:block xsl:use-attribute-sets="normal">Disease:
-                                                                <xsl:value-of
-                                                                        select="AdverseEventReport/DiseaseHistory/CtepStudyDisease/DiseaseTerm/ctepTerm"/>
-                                                                <xsl:value-of
-                                                                        select="AdverseEventReport/DiseaseHistory/otherPrimaryDisease"/>
-                                                                <xsl:value-of
-                                                                        select="AdverseEventReport/DiseaseHistory/StudyCondition/Condition/conditionName"/>
-                                                                <xsl:value-of
-                                                                        select="AdverseEventReport/DiseaseHistory/MeddraStudyDisease/LowLevelTerm/meddraTerm"/>
+                                                                <xsl:value-of select="AdverseEventReport/DiseaseHistory/CtepStudyDisease/DiseaseTerm/ctepTerm"/>
+                                                                <xsl:value-of select="AdverseEventReport/DiseaseHistory/otherPrimaryDisease"/>
+                                                                <xsl:value-of select="AdverseEventReport/DiseaseHistory/StudyCondition/Condition/conditionName"/>
+                                                                <xsl:value-of select="AdverseEventReport/DiseaseHistory/MeddraStudyDisease/LowLevelTerm/meddraTerm"/>
                                                             </fo:block>
-
+                                                            <xsl:value-of select="mu:incrementMedHistory()" />
                                                         </xsl:if>
 
                                                         <xsl:if test="AdverseEventReport/DiseaseHistory/AnatomicSite/name">
                                                             <fo:block xsl:use-attribute-sets="normal">Disease Site:
-                                                                <xsl:value-of
-                                                                        select="AdverseEventReport/DiseaseHistory/AnatomicSite/name"/>
+                                                                <xsl:value-of select="AdverseEventReport/DiseaseHistory/AnatomicSite/name"/>
                                                                 <xsl:if test="AdverseEventReport/DiseaseHistory/otherPrimaryDiseaseSite">
-                                                                    <xsl:text
-                                                                            disable-output-escaping="yes">&amp;#160;</xsl:text>(<xsl:value-of
-                                                                        select="AdverseEventReport/DiseaseHistory/otherPrimaryDiseaseSite"/>)
+                                                                    <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>(<xsl:value-of select="AdverseEventReport/DiseaseHistory/otherPrimaryDiseaseSite"/>)
                                                                 </xsl:if>
                                                             </fo:block>
+                                                            <xsl:value-of select="mu:incrementMedHistory()" />
                                                         </xsl:if>
 
                                                         <xsl:if test="AdverseEventReport/DiseaseHistory/diagnosisDate/monthString != '' or AdverseEventReport/DiseaseHistory/diagnosisDate/yearString != ''">
-                                                            <fo:block xsl:use-attribute-sets="normal">Date of initial
-                                                                diagnosis:
-                                                                <xsl:value-of
-                                                                        select="AdverseEventReport/DiseaseHistory/diagnosisDate/monthString"/>/<xsl:value-of
-                                                                        select="AdverseEventReport/DiseaseHistory/diagnosisDate/yearString"/>
+                                                            <fo:block xsl:use-attribute-sets="normal">Date of initial diagnosis:
+                                                                <xsl:value-of select="AdverseEventReport/DiseaseHistory/diagnosisDate/monthString"/>/<xsl:value-of select="AdverseEventReport/DiseaseHistory/diagnosisDate/yearString"/>
                                                             </fo:block>
+                                                            <xsl:value-of select="mu:incrementMedHistory()" />
                                                         </xsl:if>
 
-                                                        <xsl:if test="AdverseEventReport/DiseaseHistory/MetastaticDiseaseSite">
-                                                            <fo:block xsl:use-attribute-sets="normal">Metastatic site:
-                                                                <xsl:for-each
-                                                                        select="AdverseEventReport/DiseaseHistory/MetastaticDiseaseSite">
-                                                                <xsl:if test="position() &lt; $_msdsPossible">
-                                                                        <xsl:value-of select="AnatomicSite/name"/>
-                                                                        <xsl:if test="otherSite">:<xsl:value-of
-                                                                            select="otherSite"/>
-                                                                        </xsl:if>
-                                                                        <xsl:if test="position() != last()">
-                                                                        <xsl:text disable-output-escaping="yes">,&amp;#160;</xsl:text><xsl:text
-                                                                            disable-output-escaping="yes">&amp;#160;</xsl:text>
-                                                                        </xsl:if>
-                                                                </xsl:if>
-                                                                </xsl:for-each>
-                                                               <xsl:if test="$_msdsContinue = true()">
-                                                                   <xsl:text disable-output-escaping="yes">&amp;#160; Continued...</xsl:text>
-                                                               </xsl:if>
+                                                        <xsl:call-template name="printMedHistory">
+                                                            <xsl:with-param name="medLow" select="$lowest" />
+                                                            <xsl:with-param name="medMax" select="($_mhPossible + 1)" />
+                                                            <xsl:with-param name="aer" select="AdverseEventReport" />
+                                                        </xsl:call-template>
+                                                        <xsl:if test="mu:medHistoryCount() &gt; $_mhPossible">
+                                                            <fo:block text-align="right" xsl:use-attribute-sets="normal">
+                                                                <xsl:text disable-output-escaping="yes">&amp;#160; Continued... </xsl:text>
                                                             </fo:block>
                                                         </xsl:if>
-
-
-
-                                                        <xsl:if test="AdverseEventReport/SAEReportPreExistingCondition">
-                                                            <fo:block xsl:use-attribute-sets="normal">Preexisting
-                                                                Conditions:
-                                                                <xsl:for-each select="AdverseEventReport/SAEReportPreExistingCondition">
-                                                                    <xsl:if test="position() &lt; $_pcPossible">
-                                                                        <xsl:value-of select="PreExistingCondition/text"/>
-                                                                        <xsl:if test="other">
-                                                                            <xsl:value-of select="other"/>
-                                                                        </xsl:if>
-                                                                        <xsl:if test="position() != last()">
-                                                                            <xsl:text disable-output-escaping="yes">,&amp;#160;</xsl:text><xsl:text
-                                                                                disable-output-escaping="yes">&amp;#160;</xsl:text>
-                                                                        </xsl:if>
-                                                                    </xsl:if>
-                                                                </xsl:for-each>
-                                                                <xsl:if test="$_preCondContinue = true()">
-                                                                    <xsl:text disable-output-escaping="yes">&amp;#160; Continued...</xsl:text>
-                                                                </xsl:if>
-
-                                                            </fo:block>
-                                                        </xsl:if>
-
-                                                        <xsl:if test="AdverseEventReport/SAEReportPriorTherapy">
-
-                                                            <fo:block xsl:use-attribute-sets="normal">Prior Therapies:
-                                                                <xsl:for-each select="AdverseEventReport/SAEReportPriorTherapy">
-                                                                    <xsl:if test="position() &lt; $_ptPossible">
-                                                                        <xsl:value-of select="PriorTherapy/text"/>
-                                                                        <xsl:if test="PriorTherapyAgent">
-                                                                            <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
-                                                                            (Agents:
-                                                                            <xsl:for-each select="PriorTherapyAgent">
-                                                                                <fo:inline font-size="6.5pt"
-                                                                                           font-style="italic">
-                                                                                    <xsl:value-of select="ChemoAgent/name"/>
-                                                                                </fo:inline>
-                                                                                <xsl:if test="position() != last()">
-                                                                                    <xsl:text disable-output-escaping="yes">,&amp;#160;</xsl:text>
-                                                                                </xsl:if>
-                                                                                <xsl:if test="position() = last()">)
-                                                                                </xsl:if>
-                                                                            </xsl:for-each>
-                                                                        </xsl:if>
-                                                                        <xsl:if test="position() != last()">
-                                                                            <xsl:text disable-output-escaping="yes">,&amp;#160;</xsl:text>
-                                                                            <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
-                                                                        </xsl:if>
-                                                                    </xsl:if>
-                                                                </xsl:for-each>
-                                                                <xsl:if test="$_ptContinue = true()">
-                                                                    <xsl:text disable-output-escaping="yes">&amp;#160; Continued...</xsl:text>
-                                                                </xsl:if>
-
-                                                            </fo:block>
-                                                        </xsl:if>
-
                                                     </fo:table-cell>
                                                 </fo:table-row>
                                             </fo:table-body>
@@ -2590,7 +2515,7 @@
                     </fo:block>
 
 
-                    <xsl:if test="($_showNextPage = true()) or (mu:labCount() &gt; $_lbPossible)">
+                    <xsl:if test="($_showNextPage = true()) or (mu:labCount() &gt; $_lbPossible) or (mu:medHistoryCount() &gt; $_mhPossible)">
                         <fo:block break-before="page">
                             <fo:table xsl:use-attribute-sets="continue-table-border">
                                 <fo:table-column column-width="100%" />
@@ -2649,93 +2574,24 @@
                                         </fo:table-row>
                                     </xsl:if>
 
-                                    <xsl:if test="$_bSevenContinue = true()">
+                                    <xsl:if test="mu:medHistoryCount() &gt; $_mhPossible">
                                         <fo:table-row>
                                             <fo:table-cell>
                                                 <fo:block xsl:use-attribute-sets="label" font-style="italic"
-                                                          background-color='silver'>B. 7. Continued...
+                                                          background-color='silver'>B. 7. Other Relevant History,Including Preexisting Medical Conditions <fo:inline font-style="italic">(continued)</fo:inline>
                                                 </fo:block>
                                             </fo:table-cell>
                                         </fo:table-row>
                                         <fo:table-row>
                                             <fo:table-cell xsl:use-attribute-sets="continue-table-border">
-                                                <!--metastatic diseases site -->
-                                                <xsl:if test="$_msdsContinue = true()">
-                                                    <fo:block xsl:use-attribute-sets="normal">Metastatic site:
-                                                    <xsl:for-each
-                                                        select="AdverseEventReport/DiseaseHistory/MetastaticDiseaseSite">
-                                                        <xsl:if test="position() &gt;= $_msdsPossible">
-                                                                <xsl:value-of select="AnatomicSite/name"/>
-                                                                <xsl:if test="otherSite">:<xsl:value-of
-                                                                    select="otherSite"/>
-                                                                </xsl:if>
-                                                                <xsl:if test="position() != last()">
-                                                                <xsl:text disable-output-escaping="yes">,&amp;#160;</xsl:text><xsl:text
-                                                                    disable-output-escaping="yes">&amp;#160;</xsl:text>
-                                                                </xsl:if>
-                                                        </xsl:if>
-                                                    </xsl:for-each>
-                                                    </fo:block>
-                                                </xsl:if>
-                                                <!-- metastatic diseases site -->
-                                                <!--pre existing conditions -->
-                                                <xsl:if test="$_preCondContinue = true()">
-
-                                                    <fo:block xsl:use-attribute-sets="normal">Preexisting
-                                                        Conditions:
-                                                        <xsl:for-each
-                                                                select="AdverseEventReport/SAEReportPreExistingCondition">
-                                                            <xsl:if test="position() &gt;= $_pcPossible">
-                                                                <xsl:value-of select="PreExistingCondition/text"/>
-                                                                <xsl:if test="other">
-                                                                    <xsl:value-of select="other"/>
-                                                                </xsl:if>
-                                                                <xsl:if test="position() != last()">
-                                                                    <xsl:text
-                                                                            disable-output-escaping="yes">,&amp;#160;</xsl:text><xsl:text
-                                                                        disable-output-escaping="yes">&amp;#160;</xsl:text>
-                                                                </xsl:if>
-                                                            </xsl:if>
-                                                        </xsl:for-each>
-                                                    </fo:block>
-                                                </xsl:if>
-                                                <!-- end preexisting conditions -->
-                                                <!-- prior therapy  -->
-                                                <xsl:if test="$_ptContinue = true()">
-                                                    <fo:block xsl:use-attribute-sets="normal">Prior
-                                                        Therapies:
-                                                        <xsl:for-each select="AdverseEventReport/SAEReportPriorTherapy">
-                                                            <xsl:if test="position() &gt;= $_ptPossible">
-                                                                <xsl:value-of select="PriorTherapy/text"/>
-                                                                <xsl:if test="PriorTherapyAgent">
-                                                                    <xsl:text
-                                                                            disable-output-escaping="yes">&amp;#160;</xsl:text>
-                                                                    (Agents:
-                                                                    <xsl:for-each select="PriorTherapyAgent">
-                                                                        <fo:inline font-size="6.5pt"
-                                                                                   font-style="italic">
-                                                                            <xsl:value-of select="ChemoAgent/name"/>
-                                                                        </fo:inline>
-                                                                        <xsl:if test="position() != last()">
-                                                                            <xsl:text disable-output-escaping="yes">,&amp;#160;</xsl:text>
-                                                                        </xsl:if>
-                                                                        <xsl:if test="position() = last()">)
-                                                                        </xsl:if>
-                                                                    </xsl:for-each>
-                                                                </xsl:if>
-                                                                <xsl:if test="position() != last()">
-                                                                    <xsl:text
-                                                                            disable-output-escaping="yes">,&amp;#160;</xsl:text>
-                                                                    <xsl:text
-                                                                            disable-output-escaping="yes">&amp;#160;</xsl:text>
-                                                                </xsl:if>
-                                                            </xsl:if>
-                                                        </xsl:for-each>
-
-                                                    </fo:block>
-
-                                                </xsl:if>
-                                                <!-- end prior therapy -->
+                                                <xsl:value-of select="mu:resetMedHistory()" />
+                                                <fo:block xsl:use-attribute-sets="normal" padding-top="4pt" >
+                                                    <xsl:call-template name="printMedHistory">
+                                                        <xsl:with-param name="medLow" select="($_mhPossible - 1)"/>
+                                                        <xsl:with-param name="medMax" select="$highest"/>
+                                                        <xsl:with-param name="aer" select="AdverseEventReport"/>
+                                                    </xsl:call-template>
+                                                </fo:block>
                                             </fo:table-cell>
                                         </fo:table-row>
                                     </xsl:if>
@@ -2905,6 +2761,74 @@
         </fo:block>
     </xsl:template>
 
+    <xsl:template name="printMedHistory">
+       <xsl:param name="medLow" />
+       <xsl:param name="medMax" />
+       <xsl:param name="aer" />
+
+
+        <xsl:if test="$aer/DiseaseHistory/MetastaticDiseaseSite">
+            <xsl:value-of select="mu:incrementMedHistory()" />
+            <xsl:if test="(mu:medHistoryCount() &lt; $medMax) and (mu:medHistoryCount() &gt; $medLow)">
+                <fo:block xsl:use-attribute-sets="sub-header" >Metastatic site: </fo:block>
+            </xsl:if>
+            <xsl:for-each select="$aer/DiseaseHistory/MetastaticDiseaseSite">
+                <xsl:value-of select="mu:incrementMedHistory()" />
+                <xsl:if test="(mu:medHistoryCount() &lt; $medMax) and (mu:medHistoryCount() &gt; $medLow)">
+                    <fo:block xsl:use-attribute-sets="normal" margin-left="5px">
+                        <xsl:value-of select="AnatomicSite/name"/>
+                        <xsl:if test="otherSite">:<xsl:value-of select="otherSite"/> </xsl:if>
+                    </fo:block>
+                </xsl:if>
+            </xsl:for-each>
+        </xsl:if>
+        <xsl:if test="$aer/SAEReportPreExistingCondition">
+            <xsl:value-of select="mu:incrementMedHistory()" />
+            <xsl:if test="(mu:medHistoryCount() &lt; $medMax) and (mu:medHistoryCount() &gt; $medLow)">
+                <fo:block xsl:use-attribute-sets="sub-header">Preexisting Conditions:</fo:block>
+            </xsl:if>
+            <xsl:for-each select="$aer/SAEReportPreExistingCondition">
+                <xsl:value-of select="mu:incrementMedHistory()" />
+                <xsl:if test="(mu:medHistoryCount() &lt; $medMax) and (mu:medHistoryCount() &gt; $medLow)">
+                    <fo:block xsl:use-attribute-sets="normal" margin-left="5px" >
+                        <xsl:value-of select="PreExistingCondition/text"/>
+                        <xsl:if test="other"> <xsl:value-of select="other"/></xsl:if>
+                    </fo:block>
+                </xsl:if>
+            </xsl:for-each>
+        </xsl:if>
+
+        <xsl:if test="$aer/SAEReportPriorTherapy">
+            <xsl:value-of select="mu:incrementMedHistory()" />
+            <xsl:if test="(mu:medHistoryCount() &lt; $medMax) and (mu:medHistoryCount() &gt; $medLow)">
+                <fo:block xsl:use-attribute-sets="sub-header">Prior Therapies:</fo:block>
+            </xsl:if>
+            <xsl:for-each select="$aer/SAEReportPriorTherapy">
+                <xsl:value-of select="mu:incrementMedHistory()" />
+                <xsl:if test="(mu:medHistoryCount() &lt; $medMax) and (mu:medHistoryCount() &gt; $medLow)">
+                    <fo:block xsl:use-attribute-sets="normal" margin-left="5px">
+                        <xsl:value-of select="PriorTherapy/text"/>
+                    </fo:block>
+                    <xsl:if test="PriorTherapyAgent">
+                        <xsl:value-of select="mu:incrementMedHistory()" />
+                        <xsl:if test="(mu:medHistoryCount() &lt; $medMax) and (mu:medHistoryCount() &gt; $medLow)">
+                            <fo:block xsl:use-attribute-sets="sub-sub-header" margin-left="10px">Agents:</fo:block>
+                        </xsl:if>
+                        <xsl:for-each select="PriorTherapyAgent">
+                            <xsl:value-of select="mu:incrementMedHistory()" />
+                            <xsl:if test="(mu:medHistoryCount() &lt; $medMax) and (mu:medHistoryCount() &gt; $medLow)">
+                                <fo:block xsl:use-attribute-sets="normal" margin-left="20px">
+                                    <xsl:value-of select="Agent/name"/>
+                                </fo:block>
+                            </xsl:if>
+                        </xsl:for-each>
+                    </xsl:if>
+                </xsl:if>
+            </xsl:for-each>
+        </xsl:if>
+
+    </xsl:template>
+
     <xsl:template name="printLab">
         <xsl:param name="labLow" />
         <xsl:param name="labMax" />
@@ -3069,7 +2993,7 @@
     </xsl:template>
 
     <xsl:template match="ConcomitantMedication">
-        <fo:block xsl:use-attribute-sets="normal" background-color="yellow">
+        <fo:block xsl:use-attribute-sets="normal">
             <xsl:value-of select="name"/>
             <xsl:if test="startDate/monthString">
                 (<xsl:value-of select="startDate/monthString"/>/<xsl:value-of select="startDate/yearString"/>)
