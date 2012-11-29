@@ -56,14 +56,6 @@ th.yui-dt-resizeable .yui-dt-resizerliner .yui-dt-liner {
 	padding-bottom: 4px;
 	margin: 0px;
 	border:none;
-    background: #eaf2f9;
-    background: -moz-linear-gradient(top,  #eaf2f9 0%, #b7d9f5 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eaf2f9), color-stop(100%,#b7d9f5));
-    background: -webkit-linear-gradient(top,  #eaf2f9 0%,#b7d9f5 100%);
-    background: -o-linear-gradient(top,  #eaf2f9 0%,#b7d9f5 100%);
-    background: -ms-linear-gradient(top,  #eaf2f9 0%,#b7d9f5 100%);
-    background: linear-gradient(to bottom,  #eaf2f9 0%,#b7d9f5 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eaf2f9', endColorstr='#b7d9f5',GradientType=0 );
 
     text-shadow: 0 1px white;
     
