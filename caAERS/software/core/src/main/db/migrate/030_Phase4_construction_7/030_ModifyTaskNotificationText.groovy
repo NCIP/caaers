@@ -2,7 +2,7 @@ class ModifyTaskNotificationText extends edu.northwestern.bioinformatics.bering.
     void up() {
          execute("update task_configuration set message = 'Study  : \${STUDY}\n" +
                  "Subject: \${SUBJECT}\n" +
-                 "Course : \${COURSE}\n" +
+                 "Reporting Period : \${COURSE}\n" +
                  "' || message where length(message) > 0")
     }
 
