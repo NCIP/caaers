@@ -126,6 +126,23 @@ public class AgentsTab extends StudyTab {
         if (isAgentEmpty) {
             errors.rejectValue("study.studyAgents", "STU_008", "One or more Agents are missing or not in list");
         }
+        
+        boolean isDeviceEmpty = false;
+        
+        List<StudyDevice> devices = command.getStudy().getStudyDevices();
+        for ( int i = 0 ; i < command.getStudy().getStudyDevices().size(); i++ ) {
+        	StudyDevice device = devices.get(i);
+        		
+        	if ( device.getDevice() == null && device.getOtherCommonName() == null && device.getOtherBrandName() == null ) {
+        		isDeviceEmpty = true;
+        		errors.rejectValue("study.studyDevices[" + i + "].device", "STU_025","Select either Device or Other ");
+        		continue;
+        	}
+        }
+        
+        if ( isDeviceEmpty) {
+        	errors.rejectValue("study.studyDevices", "STU_024", "One or more Devices are missing or not in list");
+        }
 
     }
 
