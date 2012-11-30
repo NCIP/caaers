@@ -16,12 +16,12 @@
     <xsl:variable name="lowest" select="number(-1)" />
     <xsl:variable name="highest" select="number(9000)" />
 
-    <xsl:variable name="_lbPossible" select="number(12)" />
-    <xsl:variable name="_mhPossible" select="number(8)" />
+    <xsl:variable name="_lbPossible" select="number(15)" />
+    <xsl:variable name="_mhPossible" select="number(11)" />
 
      <xsl:variable name="_aePossible" select="number(3)" />
      <xsl:variable name="_cmPossible" select="number(4)" />
-     <xsl:variable name="_attPossible" select="number(4)" />
+     <xsl:variable name="_attPossible" select="number(2)" />
      <xsl:variable name="_cmdPossible" select="number(3)" />
      <xsl:variable name="_tacPossible" select="number(40)" />
      <xsl:variable name="_edPossible" select="number(300)" />
@@ -39,7 +39,9 @@
     <xsl:variable name="_cmdCount" select="count(AdverseEventReport/ConcomitantMedication)" />
     <xsl:variable name="_mdCount" select="count(AdverseEventReport/MedicalDevice)" />
     <xsl:variable name="_caCount" select="count(AdverseEventReport/TreatmentInformation/CourseAgent)" />
-    <xsl:variable name="_attCount" select="count(AdverseEventReport/AdverseEvent[1]//attribution[contains(., '3') or contains(.,'4') or contains(.,'5')])" />
+    <xsl:variable name="_agntAttCount" select="count(AdverseEventReport/AdverseEvent[1]/CourseAgentAttribution/attribution[contains(., '3') or contains(.,'4') or contains(.,'5')])" />
+    <xsl:variable name="_otherInvAttCount" select="count(AdverseEventReport/AdverseEvent[1]/CourseAgentAttribution/attribution[contains(., '3') or contains(.,'4') or contains(.,'5')])" />
+    <xsl:variable name="_attCount" select="($_agntAttCount + $_otherInvAttCount)" />
 
 
     <xsl:variable name="_aeContinue" select="$_aeCount &gt;= $_aePossible" />
@@ -158,16 +160,15 @@
 
             <fo:layout-master-set>
 
-                <fo:simple-page-master master-name="A4-first" margin-left="10mm" margin-top="12mm" margin-right="6mm"
-                                       margin-bottom="0mm">
-                    <fo:region-body margin-top="1in" margin-bottom="20mm" column-count="2" column-gap="3mm"/>
-                    <fo:region-before/>
-                    <fo:region-after extent="20mm"/>
+                <fo:simple-page-master master-name="A4-first" margin-left="10mm" margin-top="12mm" margin-right="6mm" margin-bottom="0mm">
+                    <fo:region-body margin-top="1in" margin-bottom="2mm" column-count="2" column-gap="3mm"/>
+                    <fo:region-before region-name="header-first" />
+                    <!--<fo:region-after extent="20mm"/>-->
                 </fo:simple-page-master>
 
                 <fo:simple-page-master master-name="A4-rest" margin-left="10mm" margin-top="12mm" margin-right="6mm"  margin-bottom="0mm">
                     <fo:region-body margin-top="1in" margin-bottom="20mm" column-count="2" column-gap="3mm"/>
-                    <fo:region-before/>
+                    <fo:region-before region-name="header-rest" />
                     <fo:region-after extent="20mm"/>
                 </fo:simple-page-master>
 
@@ -246,8 +247,11 @@
                 <!-- FOOTER END -->
 
                 <!-- Header START -->
-                <fo:static-content flow-name="xsl-region-before">
+                <fo:static-content flow-name="header-first">
                     <xsl:call-template name="insertHeader"/>
+                </fo:static-content>
+                <fo:static-content flow-name="header-rest">
+                    <xsl:call-template name="insertHeaderRest"/>
                 </fo:static-content>
                 <!-- Header END -->
 
@@ -552,8 +556,7 @@
                                                                    number-columns-spanned="5">
                                                         <fo:block>
                                                             <fo:inline font-size="6.5">5.</fo:inline>
-                                                            <fo:inline xsl:use-attribute-sets="label">Describe Event or
-                                                                Problem
+                                                            <fo:inline xsl:use-attribute-sets="label">Describe Event or Problem
                                                                 <xsl:if test="AdverseEventReport/AdverseEvent/AdverseEventCtcTerm/universal-term">
                                                                     (CTCAE)
                                                                 </xsl:if>
@@ -618,7 +621,7 @@
                                                         </fo:block>
                                                     </fo:table-cell>
                                                 </fo:table-row>
-                                                <fo:table-row height="42mm">
+                                                <fo:table-row height="52mm">
                                                     <fo:table-cell xsl:use-attribute-sets="full-border" number-columns-spanned="5">
                                                         <fo:block>
                                                             <fo:inline font-size="6.5">6.</fo:inline>
@@ -638,7 +641,7 @@
 	                                                    </xsl:if>
                                                     </fo:table-cell>
                                                 </fo:table-row>
-                                                <fo:table-row height="30mm">
+                                                <fo:table-row height="40mm">
                                                     <fo:table-cell xsl:use-attribute-sets="full-border"
                                                                    number-columns-spanned="5">
                                                         <fo:block font-size="6.5" font-style="italic">
@@ -698,9 +701,8 @@
                                             </fo:table-body>
                                         </fo:table>
                                         <fo:block xsl:use-attribute-sets="label" >
-                                            Submission of a report does not constitute an admission that medical
-                                            personnel, user facility, importer, distributor, manufacturer or product
-                                            caused or contributed to the event.
+                                            Submission of a report does not constitute an admission that medical personnel, user facility,
+                                            importer, distributor, manufacturer or product caused or contributed to the event.
                                         </fo:block>
                                         <fo:table border="1pt solid black" break-before="page" >
                                             <fo:table-column column-width="30%"/>
@@ -715,27 +717,22 @@
                                                         <fo:block xsl:use-attribute-sets="black-heading">C. SUSPECT PRODUCT(S)</fo:block>
                                                     </fo:table-cell>
                                                 </fo:table-row>
-                                                <fo:table-row height="14mm">
-                                                    <fo:table-cell xsl:use-attribute-sets="full-border"
-                                                                   number-columns-spanned="5">
+                                                <fo:table-row height="10mm">
+                                                    <fo:table-cell xsl:use-attribute-sets="full-border" number-columns-spanned="5">
                                                         <fo:block>
-                                                            <fo:inline font-size="6.5pt">1.</fo:inline>
-                                                            <fo:inline xsl:use-attribute-sets="label">Name</fo:inline>
-                                                            <fo:inline font-size="6.5pt" font-style="italic">(Give
-                                                                labeled strength and mfr/labeler)
-                                                            </fo:inline>
+                                                            <fo:inline xsl:use-attribute-sets="normal">1.</fo:inline> <fo:inline xsl:use-attribute-sets="label">Name</fo:inline>
+                                                            <fo:inline xsl:use-attribute-sets="normal" font-style="italic">(Give labeled strength and mfr/labeler)</fo:inline>
                                                         </fo:block>
                                                         <xsl:for-each select="/AdverseEventReport/AdverseEvent[1]//attribution">
                                                             <xsl:sort select="." order="descending"/>
-                                                            <fo:block font-size="6.5pt">
+                                                            <fo:block xsl:use-attribute-sets="normal">
 
                                                                 <xsl:if test="(position() &lt;= $_attPossible) and (contains(., '3') or contains(.,'4') or contains(.,'5'))">
-
-                                                                    #<xsl:number format="1" value="position()"/>
-                                                                     <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
+                                                                    #<xsl:number format="1" value="position()"/> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
                                                                     <xsl:value-of select="../CourseAgent/StudyAgent/Agent/name"/>
                                                                     <xsl:value-of select="../CourseAgent/StudyAgent/otherAgent"/>
                                                                     <xsl:value-of select="..//OtherIntervention/name"/>
+                                                                    <xsl:value-of select="../DiseaseHistory/DiseaseTerm/term"/>
 
                                                                 </xsl:if>
 
@@ -751,13 +748,11 @@
                                                     </fo:table-cell>
                                                 </fo:table-row>
                                                 <fo:table-row height="14mm">
-                                                    <fo:table-cell xsl:use-attribute-sets="full-border"
-                                                                   number-columns-spanned="2">
+                                                    <fo:table-cell xsl:use-attribute-sets="full-border" number-columns-spanned="2">
 
                                                         <fo:block>
                                                             <fo:inline font-size="6.5pt">2.</fo:inline>
-                                                            <fo:inline xsl:use-attribute-sets="label">Dose, Frequency
-                                                                and Route Used
+                                                            <fo:inline xsl:use-attribute-sets="label">Dose, Frequency and Route Used
                                                             </fo:inline>
                                                         </fo:block>
 
@@ -803,17 +798,14 @@
                                                                 </fo:inline>
                                                                 <fo:inline font-size="6.5pt">
                                                                     <xsl:call-template name="standard_date">
-                                                                        <xsl:with-param name="date"
-                                                                                        select="../firstCourseDate"/>
+                                                                        <xsl:with-param name="date" select="../firstCourseDate"/>
                                                                     </xsl:call-template>
-                                                                    <xsl:text
-                                                                            disable-output-escaping="yes">&amp;#160;   </xsl:text>
+                                                                    <xsl:text disable-output-escaping="yes">&amp;#160;   </xsl:text>
                                                                     to
                                                                     <xsl:choose>
                                                                         <xsl:when test="lastAdministeredDate">
                                                                             <xsl:call-template name="standard_date">
-                                                                                <xsl:with-param name="date"
-                                                                                                select="lastAdministeredDate"/>
+                                                                                <xsl:with-param name="date"  select="lastAdministeredDate"/>
                                                                             </xsl:call-template>
                                                                         </xsl:when>
                                                                         <xsl:otherwise>Unknown</xsl:otherwise>
@@ -825,8 +817,7 @@
                                                     </fo:table-cell>
                                                 </fo:table-row>
                                                 <fo:table-row height="14mm">
-                                                    <fo:table-cell xsl:use-attribute-sets="full-border"
-                                                                   number-columns-spanned="3">
+                                                    <fo:table-cell xsl:use-attribute-sets="full-border" number-columns-spanned="3">
                                                         <fo:block>
                                                             <fo:inline font-size="6.5pt">4.</fo:inline>
                                                             <fo:inline xsl:use-attribute-sets="label">Diagnosis for Use
@@ -1077,7 +1068,7 @@
                                                         </fo:block>
                                                     </fo:table-cell>
                                                 </fo:table-row>
-                                                <fo:table-row height="30mm">
+                                                <fo:table-row height="28mm">
                                                     <fo:table-cell xsl:use-attribute-sets="cell-with-right-border" number-columns-spanned="5">
                                                         <fo:block>
                                                             <fo:inline font-size="6.5pt">10.</fo:inline>
@@ -1098,8 +1089,7 @@
                                                 </fo:table-row>
                                                 <fo:table-row xsl:use-attribute-sets="tr-height-1">
                                                     <fo:table-cell number-columns-spanned="5" background-color="black">
-                                                        <fo:block xsl:use-attribute-sets="black-heading">D. SUSPECT
-                                                            MEDICAL DEVICE
+                                                        <fo:block xsl:use-attribute-sets="black-heading">D. SUSPECT MEDICAL DEVICE
                                                         </fo:block>
                                                     </fo:table-cell>
                                                 </fo:table-row>
@@ -1471,7 +1461,7 @@
                                                 </fo:table-row>
                                             </fo:table-body>
                                         </fo:table>
-                                        <fo:table border="1pt solid black" break-before="page" >
+                                        <fo:table border="1pt solid black">
                                             <fo:table-column column-width="30%"/>
                                             <fo:table-column column-width="20%"/>
                                             <fo:table-column column-width="10%"/>
@@ -1481,9 +1471,7 @@
                                             <fo:table-body>
                                                 <fo:table-row xsl:use-attribute-sets="tr-height-1">
                                                     <fo:table-cell number-columns-spanned="5" background-color="black">
-                                                        <fo:block xsl:use-attribute-sets="black-heading">E. INITIAL
-                                                            REPORTER
-                                                        </fo:block>
+                                                        <fo:block xsl:use-attribute-sets="black-heading">E. INITIAL REPORTER </fo:block>
                                                     </fo:table-cell>
                                                 </fo:table-row>
                                                 <fo:table-row height="8mm">
@@ -1593,8 +1581,7 @@
                                 </fo:table-row>
                             </fo:table-body>
                         </fo:table>
-                        <fo:table>
-                            <fo:table-column column-width="100%"/>
+                        <fo:table break-before="page">
                             <fo:table-body>
                                 <fo:table-row>
                                     <fo:table-cell>
@@ -1608,8 +1595,7 @@
                                             <fo:table-body>
                                                 <fo:table-row xsl:use-attribute-sets="tr-height-1">
                                                     <fo:table-cell number-columns-spanned="6" background-color="black">
-                                                        <fo:block xsl:use-attribute-sets="black-heading">F. FOR USE BY USER FACILITY/IMPORTER (Devices Only)
-                                                        </fo:block>
+                                                        <fo:block xsl:use-attribute-sets="black-heading">F. FOR USE BY USER FACILITY/IMPORTER (Devices Only)</fo:block>
                                                     </fo:table-cell>
                                                 </fo:table-row>
                                                 <fo:table-row>
@@ -1897,8 +1883,7 @@
                                                 </fo:table-row>
                                                 <fo:table-row xsl:use-attribute-sets="tr-height-1">
                                                     <fo:table-cell number-columns-spanned="6" background-color="black">
-                                                        <fo:block xsl:use-attribute-sets="black-heading">G. ALL
-                                                            MANUFACTURERS
+                                                        <fo:block xsl:use-attribute-sets="black-heading">G. ALL MANUFACTURERS
                                                         </fo:block>
                                                     </fo:table-cell>
                                                 </fo:table-row>
@@ -1977,10 +1962,13 @@
                                                 <fo:table-row xsl:use-attribute-sets="tr-height-1" height="10mm">
                                                     <fo:table-cell number-columns-spanned="2"
                                                                    xsl:use-attribute-sets="full-border">
-                                                        <fo:block xsl:use-attribute-sets="label">4. Date Received by
-                                                            manufacturer
-                                                            <fo:inline xsl:use-attribute-sets="normal">(mm/dd/yyyy)
-                                                            </fo:inline>
+                                                        <fo:block xsl:use-attribute-sets="label">4. Date Received by manufacturer <fo:inline xsl:use-attribute-sets="normal">(mm/dd/yyyy) </fo:inline></fo:block>
+                                                        <fo:block xsl:use-attribute-sets="normal">
+                                                            <xsl:if test="AdverseEventReport/Report/ReportVersion/submittedOn != ''">
+                                                                <xsl:call-template name="standard_date">
+                                                                    <xsl:with-param name="date" select="AdverseEventReport/Report/ReportVersion/submittedOn"/>
+                                                                </xsl:call-template>
+                                                            </xsl:if>
                                                         </fo:block>
                                                     </fo:table-cell>
                                                     <fo:table-cell number-columns-spanned="2" number-rows-spanned="3"
@@ -2087,21 +2075,17 @@
                                                         </fo:block>
                                                     </fo:table-cell>
                                                 </fo:table-row>
-                                                <fo:table-row xsl:use-attribute-sets="tr-height-1">
-                                                    <fo:table-cell number-columns-spanned="2"
-                                                                   xsl:use-attribute-sets="full-border">
-                                                        <fo:block xsl:use-attribute-sets="label">7. Type Of Report
-                                                        </fo:block>
+                                                <fo:table-row >
+                                                    <fo:table-cell number-columns-spanned="2" xsl:use-attribute-sets="full-border">
+                                                        <fo:block xsl:use-attribute-sets="label">7. Type Of Report </fo:block>
                                                         <fo:block xsl:use-attribute-sets="label">
                                                             <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;</xsl:text>
-                                                            <fo:inline font-style="italic" font-weight="normal">(Check
-                                                                all that apply)
-                                                            </fo:inline>
+                                                            <fo:inline font-style="italic" font-weight="normal">(Check all that apply) </fo:inline>
                                                         </fo:block>
                                                         <fo:table>
                                                             <fo:table-body>
                                                                 <fo:table-row>
-                                                                    <fo:table-cell>
+                                                                    <fo:table-cell text-align="left">
                                                                         <fo:block xsl:use-attribute-sets="normal"
                                                                                   padding-bottom="2px">[
                                                                             <xsl:if test="AdverseEventReport/Report/ReportDefinition/timeScaleUnitType = 'DAY' and AdverseEventReport/Report/ReportDefinition/duration = '5'">
@@ -2110,7 +2094,7 @@
                                                                             ] 5-day
                                                                         </fo:block>
                                                                     </fo:table-cell>
-                                                                    <fo:table-cell>
+                                                                    <fo:table-cell text-align="left">
                                                                         <fo:block xsl:use-attribute-sets="normal"
                                                                                   padding-bottom="2px">[
                                                                             <xsl:if test="AdverseEventReport/Report/ReportDefinition/timeScaleUnitType = 'DAY' and AdverseEventReport/Report/ReportDefinition/duration = '30'">
@@ -2121,7 +2105,7 @@
                                                                     </fo:table-cell>
                                                                 </fo:table-row>
                                                                 <fo:table-row>
-                                                                    <fo:table-cell>
+                                                                    <fo:table-cell text-align="left">
                                                                         <fo:block xsl:use-attribute-sets="normal"
                                                                                   padding-bottom="2px">[
                                                                             <xsl:if test="AdverseEventReport/Report/ReportDefinition/timeScaleUnitType = 'DAY' and AdverseEventReport/Report/ReportDefinition/duration = '7'">
@@ -2130,44 +2114,38 @@
                                                                             ] 7-day
                                                                         </fo:block>
                                                                     </fo:table-cell>
-                                                                    <fo:table-cell>
+                                                                    <fo:table-cell text-align="left">
                                                                         <fo:block xsl:use-attribute-sets="normal"
                                                                                   padding-bottom="2px">[ ] Periodic
                                                                         </fo:block>
                                                                     </fo:table-cell>
                                                                 </fo:table-row>
                                                                 <fo:table-row>
-                                                                    <fo:table-cell>
-                                                                        <fo:block xsl:use-attribute-sets="normal"
-                                                                                  padding-bottom="2px">[
+                                                                    <fo:table-cell text-align="left">
+                                                                        <fo:block xsl:use-attribute-sets="normal"  padding-bottom="2px">[
                                                                             <xsl:if test="AdverseEventReport/Report/ReportDefinition/timeScaleUnitType = 'DAY' and AdverseEventReport/Report/ReportDefinition/duration = '10'">
                                                                                 x
                                                                             </xsl:if>
                                                                             ] 10-day
                                                                         </fo:block>
                                                                     </fo:table-cell>
-                                                                    <fo:table-cell>
-                                                                        <fo:block xsl:use-attribute-sets="normal"
-                                                                                  padding-bottom="2px">[ ] Initial
+                                                                    <fo:table-cell text-align="left">
+                                                                        <fo:block xsl:use-attribute-sets="normal"  padding-bottom="2px">[ ] Initial
                                                                         </fo:block>
                                                                     </fo:table-cell>
                                                                 </fo:table-row>
                                                                 <fo:table-row>
-                                                                    <fo:table-cell>
-                                                                        <fo:block xsl:use-attribute-sets="normal"
-                                                                                  padding-bottom="2px">[
+                                                                    <fo:table-cell text-align="left">
+                                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px" text-align="left">[
                                                                             <xsl:if test="AdverseEventReport/Report/ReportDefinition/timeScaleUnitType = 'DAY' and AdverseEventReport/Report/ReportDefinition/duration = '15'">
                                                                                 x
                                                                             </xsl:if>
                                                                             ] 15-day
                                                                         </fo:block>
                                                                     </fo:table-cell>
-                                                                    <fo:table-cell>
-                                                                        <fo:block xsl:use-attribute-sets="normal"
-                                                                                  padding-bottom="2px">[ ] Follow-up #
-                                                                            <fo:leader leader-length="25%"
-                                                                                       leader-pattern="rule"
-                                                                                       rule-thickness="0.5pt"/>
+                                                                    <fo:table-cell text-align="left">
+                                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px"  text-align="left" >[ ] Follow-up #
+                                                                            <fo:leader leader-length="25%" leader-pattern="rule" rule-thickness="0.5pt"/>
                                                                         </fo:block>
                                                                     </fo:table-cell>
                                                                 </fo:table-row>
@@ -2176,30 +2154,23 @@
                                                     </fo:table-cell>
                                                 </fo:table-row>
                                                 <fo:table-row xsl:use-attribute-sets="tr-height-1" height="15mm">
-                                                    <fo:table-cell number-columns-spanned="2"
-                                                                   xsl:use-attribute-sets="full-border">
-                                                        <fo:block xsl:use-attribute-sets="label">9. Manufacturers Report
-                                                            Number
-                                                        </fo:block>
+                                                    <fo:table-cell number-columns-spanned="3" xsl:use-attribute-sets="full-border">
+                                                        <fo:block xsl:use-attribute-sets="label">9. Manufacturers Report Number</fo:block>
+                                                        <fo:block xsl:use-attribute-sets="normal"> <xsl:value-of  select="AdverseEventReport/Report/caseNumber" disable-output-escaping="yes"  /></fo:block>
                                                     </fo:table-cell>
-                                                    <fo:table-cell number-columns-spanned="4"
-                                                                   xsl:use-attribute-sets="full-border">
-                                                        <fo:block xsl:use-attribute-sets="label">8. Adverse Event
-                                                            Term(s)
-                                                        </fo:block>
+                                                    <fo:table-cell number-columns-spanned="3" xsl:use-attribute-sets="full-border">
+                                                        <fo:block xsl:use-attribute-sets="label">8. Adverse Event Term(s) </fo:block>
                                                     </fo:table-cell>
                                                 </fo:table-row>
                                             </fo:table-body>
                                         </fo:table>
-                                        <fo:table border="1pt solid black">
+                                        <fo:table border="1pt solid black" break-before="page">
                                             <fo:table-column column-width="60%"/>
                                             <fo:table-column column-width="40%"/>
                                             <fo:table-body>
                                                 <fo:table-row xsl:use-attribute-sets="tr-height-1">
                                                     <fo:table-cell number-columns-spanned="2" background-color="black">
-                                                        <fo:block xsl:use-attribute-sets="black-heading">H. DEVICE
-                                                            MANUFACTURERS ONLY
-                                                        </fo:block>
+                                                        <fo:block xsl:use-attribute-sets="black-heading">H. DEVICE MANUFACTURERS ONLY </fo:block>
                                                     </fo:table-cell>
                                                 </fo:table-row>
 
@@ -2491,15 +2462,14 @@
 
                                                 <fo:table-row xsl:use-attribute-sets="tr-height-1" height="100mm">
                                                     <fo:table-cell>
-                                                        <fo:block xsl:use-attribute-sets="label">10. [ ] Additional
-                                                            Manufacturer Narrative
+                                                        <fo:block xsl:use-attribute-sets="label">10. [ ] Additional Manufacturer Narrative
+                                                            <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;</xsl:text>
+                                                            <fo:inline xsl:use-attribute-sets="normal">and/or</fo:inline>
                                                         </fo:block>
                                                     </fo:table-cell>
                                                     <fo:table-cell>
-                                                        <fo:block xsl:use-attribute-sets="normal">and / or
-                                                            <fo:inline xsl:use-attribute-sets="label">11. [ ] Corrected
-                                                                data
-                                                            </fo:inline>
+                                                        <fo:block xsl:use-attribute-sets="label"  text-align="right" padding-right="3px" >
+                                                            11. [ ] Corrected data  <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
                                                         </fo:block>
                                                     </fo:table-cell>
                                                 </fo:table-row>
@@ -2710,14 +2680,10 @@
                 <fo:table-body>
                     <fo:table-row keep-together="always">
                         <fo:table-cell>
-                            <fo:block font-size="8" font-weight="bold">U.S. Department of Health and Human Services
-                            </fo:block>
+                            <fo:block font-size="8" font-weight="bold">U.S. Department of Health and Human Services </fo:block>
                             <fo:block font-size="8">Food and Drug Administration</fo:block>
-                            <!--<fo:block>-->
-                            <!--<xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>-->
-                            <!--</fo:block>-->
                             <fo:block font-size="12" font-weight="bold" padding-top="3mm">MEDWATCH</fo:block>
-                            <fo:block font-size="9" font-weight="bold" padding-top="1mm">FORM FDA 3500A</fo:block>
+                            <fo:block font-size="9" font-weight="bold" padding-top="1mm">FORM FDA 3500A (6/10)</fo:block>
                         </fo:table-cell>
                         <fo:table-cell text-align="center">
                             <fo:block font-size="10" font-family="Goudy">For use by user-facilities,importers,
@@ -2735,7 +2701,9 @@
                                 <fo:table-body>
                                     <fo:table-row height="18">
                                         <fo:table-cell xsl:use-attribute-sets="full-border">
-                                            <fo:block font-size="6.5" padding-top="1mm">Mfr Report #</fo:block>
+                                            <fo:block font-size="6.5" padding-top="1mm">Mfr Report # <xsl:value-of
+                                                    select="AdverseEventReport/Report/caseNumber" disable-output-escaping="yes"  />
+                                            </fo:block>
                                         </fo:table-cell>
                                     </fo:table-row>
                                     <fo:table-row height="18">
@@ -2760,6 +2728,52 @@
 
         </fo:block>
     </xsl:template>
+
+
+    <xsl:template name="insertHeaderRest">
+        <fo:block>
+            <fo:table>
+                <fo:table-column column-width="33%"/>
+                <fo:table-column column-width="34%"/>
+                <fo:table-column column-width="33%"/>
+                <fo:table-body>
+                    <fo:table-row keep-together="always">
+                        <fo:table-cell>
+                            <fo:block font-size="8" font-weight="bold">U.S. Department of Health and Human Services </fo:block>
+                            <fo:block font-size="8">Food and Drug Administration</fo:block>
+                            <fo:block font-size="12" font-weight="bold" padding-top="3mm">MEDWATCH</fo:block>
+                            <fo:block font-size="9" font-weight="bold" padding-top="1mm">FORM FDA 3500A (6/10) <fo:inline font-style="italic">(continued)</fo:inline> </fo:block>
+                        </fo:table-cell>
+                    <fo:table-cell>
+                        <fo:block
+                             />
+                    </fo:table-cell>
+
+                <fo:table-cell>
+                            <fo:table border="1pt solid black">
+                                <fo:table-column column-width="100%"/>
+                                <fo:table-body>
+                                    <fo:table-row height="12">
+                                        <fo:table-cell xsl:use-attribute-sets="full-border"  background-color="black">
+                                            <fo:block xsl:use-attribute-sets="black-heading">FDA USE ONLY</fo:block>
+                                        </fo:table-cell>
+                                    </fo:table-row>
+                                    <fo:table-row height="22">
+                                        <fo:table-cell text-align="right"
+                                                       xsl:use-attribute-sets="cell-with-right-border">
+                                            <fo:block font-size="6" font-weight="bold" padding-top="5mm" />
+                                        </fo:table-cell>
+                                    </fo:table-row>
+                                </fo:table-body>
+                            </fo:table>
+                        </fo:table-cell>
+                    </fo:table-row>
+                </fo:table-body>
+            </fo:table>
+
+        </fo:block>
+    </xsl:template>
+
 
     <xsl:template name="printMedHistory">
        <xsl:param name="medLow" />
