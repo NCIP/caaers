@@ -59,7 +59,7 @@ public class AdverseEventTab extends TabWithFields<CaptureAdverseEventInputComma
 	
 	public AdverseEventTab(String longTitle, String shortTitle, String viewName){
 		super(longTitle, shortTitle, viewName);
-        addFieldDecorators(new SecurityObjectIdFieldDecorator(AdverseEventReportingPeriod.class), new ReadonlyFieldDecorator());
+//        addFieldDecorators(new SecurityObjectIdFieldDecorator(AdverseEventReportingPeriod.class), new ReadonlyFieldDecorator());
 	}
 	
 	@Override
