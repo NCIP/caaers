@@ -7,6 +7,7 @@ import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.createTextAr
 import gov.nih.nci.cabig.caaers.domain.EventStatus;
 import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
+import gov.nih.nci.cabig.caaers.validation.fields.validators.TextSizeValidator;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
@@ -36,10 +37,9 @@ public class DescriptionTab extends AeTab {
     protected void createFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) {
         String baseProp = "responseDescription";
 
-        InputField desc = createTextArea(baseProp + ".eventDescription", "Description & treatment of event(s)", false);
+        InputField desc = createTextArea(baseProp + ".eventDescription", "Description & treatment of event(s)", new TextSizeValidator(4000));
         InputFieldAttributes.setColumns(desc, 70);
         InputFieldAttributes.setRows(desc, 8);
-        InputFieldAttributes.setSize(desc, 4000);
 
         Map<Object, Object> postEventStatusOpts = new LinkedHashMap<Object, Object>();
         postEventStatusOpts.put("", "Please select");
