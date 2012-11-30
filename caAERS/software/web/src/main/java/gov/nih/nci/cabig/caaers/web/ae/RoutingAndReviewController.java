@@ -3,8 +3,11 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
+import gov.nih.nci.cabig.caaers.dao.PersonDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
+import gov.nih.nci.cabig.caaers.domain.Investigator;
+import gov.nih.nci.cabig.caaers.domain.Person;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
 import gov.nih.nci.cabig.caaers.domain.dto.AdverseEventReportingPeriodDTO;
@@ -55,6 +58,13 @@ public class RoutingAndReviewController extends SimpleFormController{
     private static final String PAGINATION_ACTION = "paginationAction";
     
     private static final String CURRENT_PAGE_NUMBER = "currentPageNumber";
+    
+    PersonDao personDao;
+    
+    public void setPersonDao(PersonDao personDao) {
+		this.personDao = personDao;
+	}
+
     
     static{
     	REVIEW_STATUS.addAll(Arrays.asList(ReviewStatus.values()));
@@ -114,6 +124,13 @@ public class RoutingAndReviewController extends SimpleFormController{
     	RoutingAndReviewCommand cmd = (RoutingAndReviewCommand)command;
 
 		String userId = SecurityUtils.getUserLoginName();
+   	 	Boolean isStaff = true;
+        Person loggedInPerson = personDao.getByLoginId(userId);
+        if(loggedInPerson instanceof Investigator){
+        	isStaff = false;
+        }
+        request.setAttribute("isStaff", isStaff);
+		
 		ModelAndView modelAndView = super.processFormSubmission(request, response, command, errors);
     	if(!errors.hasErrors()){
     		List<AdverseEventReportingPeriodDTO> rpDtos = adverseEventRoutingAndReviewRepository.findAdverseEventReportingPeriods(cmd.getParticipant(), cmd.getStudy(), cmd.getOrganization(), cmd.getReviewStatus(), cmd.getReportStatus(), userId, configuration.get(Configuration.ENABLE_WORKFLOW));
