@@ -39,6 +39,7 @@ public class DescriptionTab extends AeTab {
         InputField desc = createTextArea(baseProp + ".eventDescription", "Description & treatment of event(s)", false);
         InputFieldAttributes.setColumns(desc, 70);
         InputFieldAttributes.setRows(desc, 8);
+        InputFieldAttributes.setSize(desc, 4000);
 
         Map<Object, Object> postEventStatusOpts = new LinkedHashMap<Object, Object>();
         postEventStatusOpts.put("", "Please select");
