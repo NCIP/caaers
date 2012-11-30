@@ -215,8 +215,12 @@ public class ExpeditedReportTree extends PropertylessNode {
                         ),
 
                         section(ATTRIBUTION_SECTION), // TODO: how to fill this??
-
-                        section(SUBMIT_REPORT_SECTION),// TODO: just a space filler section
+                         
+                         section(SUBMIT_REPORT_SECTION,
+                                         list("reports","ExternalCaseNumber",
+                                                 property("caseNumber", getMessage("LBL_aeReport.reviewAndSubmit.caseNumber", "Case number"))
+                                          )
+                                 ),
 
                         section(OUTCOME_SECTION),// TODO: just a space filler section
 

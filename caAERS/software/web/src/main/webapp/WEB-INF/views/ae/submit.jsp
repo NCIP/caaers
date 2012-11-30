@@ -299,8 +299,16 @@
 	       
         </c:if>
         <chrome:box title="${tab.shortTitle}" >
-        <ae:submitReportValidation/>
-     	<input type="hidden" name="_finish" id="_finish"/>
+        	<c:forEach items="${command.aeReport.reports}" varStatus="status" var="_report">
+        		<c:set var="mainGroup">main${status.index }</c:set>
+			       <caaers:message code="LBL_aeReport.reviewAndSubmit.caseNumber" var="x" />
+			       <ui:row path="aeReport.reports[${status.index }].caseNumber">
+			             <jsp:attribute name="label"><tags:renderLabel field="${fieldGroups[mainGroup].fields[0]}" /></jsp:attribute>
+			             <jsp:attribute name="value"><ui:text path="${fieldGroups[mainGroup].fields[0].propertyName}" field="${fieldGroups[mainGroup].fields[0]}" title="${x}"/></jsp:attribute>
+			        </ui:row>
+             </c:forEach>
+	        <ae:submitReportValidation/>
+	     	<input type="hidden" name="_finish" id="_finish"/>
 	
         </chrome:box>
 	<ae:reportingContext allReportDefinitions="${command.applicableReportDefinitions}" selectedReportDefinitions="${command.selectedReportDefinitions}" />

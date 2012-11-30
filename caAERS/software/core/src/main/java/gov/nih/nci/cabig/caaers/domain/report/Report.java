@@ -102,8 +102,20 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
     // dummy field to be used in serialized XML to check the status of the delivery for FDA
     /** The submitted to fda. */
     private String submittedToFDA = "No";
+    
+    private String caseNumber;
 
-    /**
+    public String getCaseNumber() {
+		return caseNumber;
+	}
+
+
+	public void setCaseNumber(String caseNumber) {
+		this.caseNumber = caseNumber;
+	}
+
+
+	/**
      * Instantiates a new report.
      */
     public Report(){

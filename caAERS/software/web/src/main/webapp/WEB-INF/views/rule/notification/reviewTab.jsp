@@ -189,6 +189,12 @@
                     <rd:renderMandatoryFields key="ADDITIONAL_INFO_SECTION" readOnly="true"/>
                 </td>
             </tr>
+            <tr>
+                <td><caaers:message code="LBL_aeReport.reviewAndSubmit.heading" /></td>
+                <td>
+                    <rd:renderMandatoryFields key="SUBMIT_REPORT_SECTION~ExternalCaseNumbers" readOnly="true"/>
+                </td>
+            </tr>
 
 		   </table>
 		</chrome:division>

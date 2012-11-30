@@ -20,11 +20,13 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
-import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
-import gov.nih.nci.cabig.caaers.domain.report.*;
+import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryField;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
@@ -235,7 +237,12 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
             for (TreeNode node : sectionNode.getChildren()) {
                 if (node.isList()) {
                     log.info("Initialized '" + node.getPropertyName() + "' in section " + section.name());
-                    wrapper.getPropertyValue(node.getPropertyName() + "[0]");
+                    try {
+						wrapper.getPropertyValue(node.getPropertyName() + "[0]");
+					} catch (Exception e) {
+						e.printStackTrace();
+						log.debug("exception while getting property value: " + node.getPropertyName() + "[0]" + "in expedited report");
+					}
                 }
             }
             
