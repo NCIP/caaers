@@ -8,7 +8,7 @@ public class ZipCodeValidator extends FieldValidator<ZipCodeConstraint, Object> 
     @Override
     public boolean isValid(Object fieldValue) {
     	if(fieldValue == null || StringUtils.isEmpty(fieldValue.toString())) return true;
-    	return fieldValue.toString().matches( "\\d{5}" );
+    	return fieldValue.toString().matches( "\\d{5}(-\\d{4})?");
     }
 
     @Override
@@ -17,6 +17,7 @@ public class ZipCodeValidator extends FieldValidator<ZipCodeConstraint, Object> 
     }
 
     public String getValidatorCSSClassName() {
-        return "ZIPCODE";
+        //return "ZIPCODE";
+    	return "ZIP_POSTAL_CODE";
     }
 }

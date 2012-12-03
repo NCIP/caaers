@@ -47,6 +47,12 @@ public class AdeersReportGenerator extends BasePDFGenerator {
         XsltTransformer xsltTrans = new XsltTransformer();
         return xsltTrans.toImage(adverseEventReportXml, pngOutFileName, xslFOXsltFile);
     }
+    
+    public List<String> generateImage(String adverseEventReportXml, String pngOutFileName, Report report) throws Exception {
+        XsltTransformer xsltTrans = new XsltTransformer();
+        String xsltFile = getXSLTForReportFormatType(report);
+        return xsltTrans.toImage(adverseEventReportXml, pngOutFileName, xsltFile);
+    }
 
     public void generateDcpSaeForm(String adverseEventReportXml, String pdfOutFileName) throws Exception {
         XsltTransformer xsltTrans = new XsltTransformer();
@@ -133,6 +139,34 @@ public class AdeersReportGenerator extends BasePDFGenerator {
 				break;
 		}
     	return new String[] { pdfOutFile };
+    	
+    }
+    
+    public String getXSLTForReportFormatType(Report report) throws Exception {
+    	assert report != null;
+    	ReportFormatType formatType = report.getReportDefinition().getReportFormatType();
+    	String xslTFile = xslFOXsltFile;
+    	switch (formatType) {
+			case DCPSAEFORM:
+				xslTFile = xslFODCPXsltFile;
+				break;
+			case MEDWATCHPDF:
+				xslTFile = xslFOMedWatchXsltFile;
+				break;
+			case CIOMSFORM:
+				xslTFile = xslFOCIOMSXsltFile;
+				break;
+			case CIOMSSAEFORM:
+				xslTFile = xslFOCIOMSTypeFormXsltFile;
+				break;
+			case CUSTOM_REPORT:
+				xslTFile = xslFOCustomXsltFile;
+				break;
+			default: //adders
+				xslTFile = xslFOXsltFile;
+				break;
+		}
+    	return xslTFile;
     	
     }
   

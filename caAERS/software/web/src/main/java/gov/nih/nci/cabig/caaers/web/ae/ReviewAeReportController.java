@@ -7,9 +7,11 @@ import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.AdditionalInformationDocument;
 import gov.nih.nci.cabig.caaers.domain.AdditionalInformationDocumentType;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.report.ReportType;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportValidationService;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
@@ -65,12 +67,14 @@ public class ReviewAeReportController extends SimpleFormController{
         String reportId = request.getParameter("report");
 
         ExpeditedAdverseEventReport aeReport = expeditedAdverseEventReportDao.getById(Integer.parseInt(aeReportId));
+       
         Report report = reportDao.getById(Integer.parseInt(reportId));
         String xml = adeersReportGenerator.generateCaaersXml(aeReport, report);
         String pngOutFile = WebUtils.getBaseFileName(aeReportId ,reportId);
 
-
-        List<String> list = adeersReportGenerator.generateImage(xml, tempDir + File.separator + pngOutFile);
+         //CAAERS-5904, see report as per the report definition format
+        //List<String> list = adeersReportGenerator.generateImage(xml, tempDir + File.separator + pngOutFile);
+        List<String> list = adeersReportGenerator.generateImage(xml, tempDir + File.separator + pngOutFile, report);
         command.addFiles(aeReportId, reportId, list);
 
 

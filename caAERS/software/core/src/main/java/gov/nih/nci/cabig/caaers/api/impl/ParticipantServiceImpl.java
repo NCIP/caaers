@@ -13,7 +13,9 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ResponseDataType;
+import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.Status;
 import gov.nih.nci.cabig.caaers.integration.schema.common.WsError;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.AssignmentType;
@@ -253,14 +255,19 @@ public class ParticipantServiceImpl extends AbstractImportService implements App
 			logger.error(message);
 			populateError(caaersServiceResponse, "WS_PMS_004", message);
 			return caaersServiceResponse;
+		} else {
+			//remove the error message for participant not found, as this is create flow
+			List<WsError> wsErrors = caaersServiceResponse.getServiceResponse().getWsError();
+			if(wsErrors != null && wsErrors.size() == 1 && "WS_PMS_003".equals(wsErrors.get(0).getErrorCode()) ) {
+				wsErrors.remove(0);		
+				Helper.populateMessage(caaersServiceResponse, "");
+			}
 		}
 		
+		validateAssignmentSite(caaersServiceResponse, xmlParticipant, null);
+		
 		if(caaersServiceResponse.getServiceResponse().getStatus() == Status.FAILED_TO_PROCESS ) {
-			//Check if error is participant not found
-			List<WsError> wserrors = caaersServiceResponse.getServiceResponse().getWsError();
-			if(wserrors!=null && !wserrors.isEmpty() && !"WS_PMS_003".equals(wserrors.get(0).getErrorCode()) ) {
-				return caaersServiceResponse;
-			}
+			return caaersServiceResponse;
 		}
 		//resetting the response object
 		caaersServiceResponse = Helper.createResponse();
@@ -296,13 +303,11 @@ public class ParticipantServiceImpl extends AbstractImportService implements App
 		String studySubjectIdentifier = getStudySubjectIdentifierFromInXML(xmlParticipant);
 		
 		Participant dbParticipant = validateInputsAndFetchParticipant(studySubjectIdentifier, studyIdentifier, xmlParticipant, caaersServiceResponse);
-		if( dbParticipant == null) {
-			String message = messageSource.getMessage("WS_PMS_003", new String[] { studySubjectIdentifier, studyIdentifier.getValue() }, "", Locale
-					.getDefault());
-			logger.error(message);
-			populateError(caaersServiceResponse, "WS_PMS_003", message);
+		if( dbParticipant == null) {			
 			return caaersServiceResponse;
 		}
+		
+		validateAssignmentSite(caaersServiceResponse, xmlParticipant, dbParticipant);
 		
 		if(caaersServiceResponse.getServiceResponse().getStatus() == Status.FAILED_TO_PROCESS) {
 			return caaersServiceResponse;
@@ -332,6 +337,36 @@ public class ParticipantServiceImpl extends AbstractImportService implements App
 
 		return caaersServiceResponse;
 	}
+
+	private void validateAssignmentSite(CaaersServiceResponse caaersServiceResponse, ParticipantType xmlParticipant,
+			Participant dbParticipant) {
+		
+		OrganizationType xmlOrg = xmlParticipant.getAssignments().getAssignment().get(0).getStudySite().getOrganization();
+		
+		if (StringUtils.isEmpty(xmlOrg.getName()) || StringUtils.isEmpty(xmlOrg.getNciInstituteCode()) 
+				|| ":".equals(xmlOrg.getNciInstituteCode().trim())) {
+			String message = messageSource.getMessage("WS_PMS_017", new String[] {}, "", Locale
+					.getDefault());
+			logger.error(message);
+			populateError(caaersServiceResponse, "WS_PMS_017", message);
+			
+		}
+		
+		if (dbParticipant == null) { //for create flow
+			return;
+		}
+		
+		Organization dbOrg = dbParticipant.getAssignments().get(0).getStudySite().getOrganization();
+			
+		if ( (dbOrg.getName() != null &&  !dbOrg.getName().equals(xmlOrg.getName()) )
+				|| (dbOrg.getNciInstituteCode() != null &&  !dbOrg.getNciInstituteCode().equals(xmlOrg.getNciInstituteCode()) )
+				) {
+			String message = messageSource.getMessage("WS_PMS_018", new String[] {}, "", Locale
+					.getDefault());
+			logger.error(message);
+			populateError(caaersServiceResponse, "WS_PMS_018", message);
+		}
+	}
 	
 	public CaaersServiceResponse deleteParticipant(Participants xmlParticipants) {
 		
@@ -344,10 +379,7 @@ public class ParticipantServiceImpl extends AbstractImportService implements App
 		
 		Participant dbParticipant = validateInputsAndFetchParticipant(studySubjectIdentifier, studyIdentifier, xmlParticipant, caaersServiceResponse);
 		if( dbParticipant == null) {
-			String message = messageSource.getMessage("WS_PMS_003", new String[] { studySubjectIdentifier, studyIdentifier.getValue() }, "", Locale
-					.getDefault());
-			logger.error(message);
-			populateError(caaersServiceResponse, "WS_PMS_003", message);
+			return caaersServiceResponse;
 		} else if(dbParticipant.getHasReportingPeriods()) {
 			String message = messageSource.getMessage("WS_PMS_009", new String[] { studySubjectIdentifier, studyIdentifier.getValue() }, "", Locale
 					.getDefault());

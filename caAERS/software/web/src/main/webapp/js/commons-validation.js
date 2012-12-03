@@ -225,16 +225,24 @@ function isValidZipcode(zipcode) {
 //    if (!(zipcode.length == 5 || zipcode.length == 9 || zipcode.length == 10)) return false;
 //    if ((zipcode.length == 5 || zipcode.length == 9) && !isNumeric(zipcode)) return false;
 //    if (zipcode.length == 10 && zipcode.search && zipcode.search(/^\d{5}-\d{4}$/) == -1) return false;
-    if(zipcode.length < 5) return false;
+    if(zipcode.length != 5) return false;
     return true;
 }
 
 // Check that a Canadian postal code is valid
+//Changed it to check US postal code is valid
 function isValidPostalcode(postalcode) {
-    if (postalcode.search) {
+    /*
+	if (postalcode.search) {
         postalcode = removeSpaces(postalcode);
         if (postalcode.length == 6 && postalcode.search(/^[a-zA-Z]\d[a-zA-Z]\d[a-zA-Z]\d$/) != -1) return true;
         else if (postalcode.length == 7 && postalcode.search(/^[a-zA-Z]\d[a-zA-Z]-\d[a-zA-Z]\d$/) != -1) return true;
+        else return false;
+    }
+    */
+	if (postalcode.search) {
+        postalcode = removeSpaces(postalcode);
+        if (postalcode.length == 10 && postalcode.search(/^\d{5}(-\d{4})?$/) != -1) return true;
         else return false;
     }
     return true;

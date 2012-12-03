@@ -287,10 +287,15 @@ default-lazy-init="true">
 	</bean>
 	
 	<bean id="reportMandatoryFieldDefinitionSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.ReportMandatoryFieldDefinitionSynchronizer"/>
+	<bean id="reportDeliveryDefinitionSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.ReportDeliveryDefinitionSynchronizer"/>
+	<bean id="reportNotificationDefinitionSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.ReportNotificationDefinitionSynchronizer"/>
+	
 	<bean id="reportDefinitionSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.ReportDefinitionSynchronizer">
 		<property name="children">
 			<list>
 				<ref bean="reportMandatoryFieldDefinitionSynchronizer"/>
+				<ref bean="reportDeliveryDefinitionSynchronizer"/>
+				<ref bean="reportNotificationDefinitionSynchronizer"/>
 			</list>
 		</property>
 	</bean>
