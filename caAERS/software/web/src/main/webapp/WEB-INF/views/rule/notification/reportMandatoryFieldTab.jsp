@@ -328,7 +328,7 @@ function selectFieldChanged(fldSelectPath, fldRuleBindURLPath, fldRuleNamePath){
 			<rd:renderMandatoryFields key="ADDITIONAL_INFO_SECTION" />
 		</chrome:box>
 		
-		<caaers:message code="LBL_aeReport.reviewAndSubmit.heading" var="_title" />
+		<caaers:message code="LBL_aeReport.reviewAndSubmit.heading" var="_title"  text="Review and submit"/>
 		<chrome:box title="${_title}">
 			<rd:renderMandatoryFields key="SUBMIT_REPORT_SECTION~ExternalCaseNumbers" />
 		</chrome:box>

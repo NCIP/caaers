@@ -1021,8 +1021,32 @@ public class CreateAdverseEventAjaxFacade {
     // ******************************************************************************************************
     // TODO: These methods have to change to call the repository methods with "Report" object / IDs
     // ******************************************************************************************************
-    
-    
+
+
+
+    public AjaxOutput updateReviewPageInfo(Boolean physicianSignOff, int reportIndex, String caseNumber){
+        AjaxOutput output = new AjaxOutput();
+
+        try {
+            ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
+            List<Report> reports = command.getAeReport().getReports();
+            if(reportIndex > -1){
+               reports.get(reportIndex).setCaseNumber(caseNumber);
+            }
+
+            command.getAeReport().setPhysicianSignOff(physicianSignOff);
+            saveIfAlreadyPersistent(command);
+            Map<String, String> params = new LinkedHashMap<String, String>(); // preserve order for testing
+            String html = renderAjaxView("submitReportValidationSection", 0, params);
+            output.setHtmlContent(html);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            e.printStackTrace();
+            output.setError(true);
+            output.setErrorMessage(e.getMessage());
+        }
+        return output;
+    }
     public AjaxOutput updatePhysicianSignOff(Boolean physicianSignOff){
     	AjaxOutput output = new AjaxOutput();
 

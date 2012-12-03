@@ -7,6 +7,7 @@
 
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
+<%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui"%>
 <%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
@@ -16,6 +17,22 @@
 	<c:forEach items="${command.aeReport.reports}" varStatus="status" var="report">
 		<c:if test="${report.status ne 'WITHDRAWN' and report.status ne 'REPLACED' and report.status ne 'AMENDED' and report.status ne 'COMPLETED'}">
 			<chrome:division collapsable="true" title="${report.reportDefinition.label}" id="division-${report.id}">
+                <c:set var="mainGroup">main${status.index }</c:set>
+            <caaers:message code="LBL_aeReport.reviewAndSubmit.caseNumber" var="x" />
+                <ui:row path="aeReport.reports[${status.index }].caseNumber">
+                    <jsp:attribute name="label"><tags:renderLabel field="${fieldGroups[mainGroup].fields[0]}" /></jsp:attribute>
+                    <jsp:attribute name="value"><ui:text path="${fieldGroups[mainGroup].fields[0].propertyName}" field="${fieldGroups[mainGroup].fields[0]}" title="${x}" >
+                        <jsp:attribute name="embededJS">
+                            Event.observe('${fieldGroups[mainGroup].fields[0].propertyName}', "blur", function() {
+                                if($F('${fieldGroups[mainGroup].fields[0].propertyName}')){
+                                    updatePhysicianSignOff(${status.index});
+                                }
+
+                            });
+
+                        </jsp:attribute>
+                    </ui:text></jsp:attribute>
+                </ui:row>
 				<div class="row">
 					<div class="leftpanel">
                         <div class="row">

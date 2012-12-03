@@ -367,12 +367,12 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
     	verifyMocks();
     }
     
-    public void testUpdatePhysicianSignOff() throws Exception{
+    public void testUpdateReviewPageInfo() throws Exception{
     	EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
     	expect(webContext.getCurrentPage()).andReturn("pages/ae/edit");
     	expect(webContext.forwardToString("pages/ae/edit?aeReport=0&subview=submitReportValidationSection")).andReturn("The Html");
     	replayMocks();
-    	AjaxOutput output = facade.updatePhysicianSignOff(true);
+    	AjaxOutput output = facade.updateReviewPageInfo(true, -1, "");
     	assertEquals("The Html", output.getHtmlContent());
     	assertTrue("Physician sign-off set incorrectly", command.getAeReport().getPhysicianSignOff());
     	verifyMocks();

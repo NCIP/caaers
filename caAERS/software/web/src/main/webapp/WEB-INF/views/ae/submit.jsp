@@ -80,10 +80,17 @@
     });
        
        
-    function updatePhysicianSignOff(){
+    function updatePhysicianSignOff(rIndex){
         try {
         	showDWRLoadingIndicator();
-            createAE.updatePhysicianSignOff($('aeReport.physicianSignOff').checked, function(output) {
+            var reportIndex = -1;
+            var caseNumber = '';
+            if(rIndex > -1){
+
+                var caseNumberField = $('aeReport.reports[' + rIndex + '].caseNumber')
+                if(caseNumberField) caseNumber = caseNumberField.value();
+            }
+            createAE.updateReviewPageInfo($('aeReport.physicianSignOff').checked,reportIndex,caseNumber,function(output) {
                 ajaxResult = output;
                 if (ajaxResult.error) {
                     caaersLog(ajaxResult.errorMessage);
@@ -191,7 +198,7 @@
                                 else {
                                     $('aeReport.physicianSignOff').checked = false;
                                 }
-                                updatePhysicianSignOff();
+                                updatePhysicianSignOff(-1);
 
 //                                createAE.refreshSubmitReportValidationSection(function(output) {
 //                                    var ajaxResult = output;
@@ -289,7 +296,7 @@
 			<chrome:box title="Physician signoff">
 			 	<div class="row">
    		     		<div class="label">
-			        	<ui:checkbox path="aeReport.physicianSignOff" onclick="javascript:updatePhysicianSignOff();"></ui:checkbox>
+			        	<ui:checkbox path="aeReport.physicianSignOff" onclick="javascript:updatePhysicianSignOff(-1);"></ui:checkbox>
     	   			</div>
       	 	 	<div class="value">
        		  		<b>I certify that this report has been reviewed and approved by a physician or his/her medically certified designee responsible for the care of this patient.</b>
@@ -299,14 +306,7 @@
 	       
         </c:if>
         <chrome:box title="${tab.shortTitle}" >
-        	<c:forEach items="${command.aeReport.reports}" varStatus="status" var="_report">
-        		<c:set var="mainGroup">main${status.index }</c:set>
-			       <caaers:message code="LBL_aeReport.reviewAndSubmit.caseNumber" var="x" />
-			       <ui:row path="aeReport.reports[${status.index }].caseNumber">
-			             <jsp:attribute name="label"><tags:renderLabel field="${fieldGroups[mainGroup].fields[0]}" /></jsp:attribute>
-			             <jsp:attribute name="value"><ui:text path="${fieldGroups[mainGroup].fields[0].propertyName}" field="${fieldGroups[mainGroup].fields[0]}" title="${x}"/></jsp:attribute>
-			        </ui:row>
-             </c:forEach>
+
 	        <ae:submitReportValidation/>
 	     	<input type="hidden" name="_finish" id="_finish"/>
 	
