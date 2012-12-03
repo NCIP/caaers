@@ -25,7 +25,7 @@ public class FieldValidatorTest extends AbstractTestCase {
         assertEquals("validations.js needs NUMERIC validator class", "NUMERIC", numberValidator.getValidatorCSSClassName());
         assertEquals("validations.js needs DATE validator class", "DATE", dateValidator.getValidatorCSSClassName());
         assertEquals("validations.js needs NOTEMPTY validator class", "NOTEMPTY", notNullValidator.getValidatorCSSClassName());
-        assertEquals("validations.js needs ZIPCODE validator class", "ZIPCODE", zipCodeValidator.getValidatorCSSClassName());
+        assertEquals("validations.js needs ZIPCODE validator class", "ZIP_POSTAL_CODE", zipCodeValidator.getValidatorCSSClassName());
 
     }
 }

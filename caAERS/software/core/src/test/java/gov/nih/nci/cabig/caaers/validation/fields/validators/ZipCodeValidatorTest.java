@@ -10,6 +10,7 @@ public class ZipCodeValidatorTest extends TestCase {
 		assertFalse(validator.isValid("1234567"));
 		assertFalse(validator.isValid("2017"));
 		assertTrue(validator.isValid("20171"));
+		assertTrue(validator.isValid("20171-1234"));
 	}
 
 	public void testGetMessagePrefix() {
@@ -17,7 +18,7 @@ public class ZipCodeValidatorTest extends TestCase {
 	}
 
 	public void testGetValidatorCSSClassName() {
-		assertEquals("ZIPCODE", validator.getValidatorCSSClassName());
+		assertEquals("ZIP_POSTAL_CODE", validator.getValidatorCSSClassName());
 	}
 
 }
