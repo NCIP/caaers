@@ -177,6 +177,7 @@ public class StudyInterventionsTab extends AeTab {
                 InputFieldFactory.createTextField("lotNumber", "Lot # (if known)"),
                 totalDoseField,
                 totalUOMField,
+                InputFieldFactory.createPastDateField("firstAdministeredDate", "Date first administered", false),
                 InputFieldFactory.createPastDateField("lastAdministeredDate", "Date last administered", false),
                 adminDelayField,
                 commentsField,

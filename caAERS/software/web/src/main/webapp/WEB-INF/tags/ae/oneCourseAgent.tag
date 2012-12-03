@@ -34,9 +34,10 @@
  <tags:renderRow field="${fieldGroup.fields[5]}"/>
  <tags:renderRow field="${fieldGroup.fields[6]}"/>
  <tags:renderRow field="${fieldGroup.fields[7]}"/>
+ <tags:renderRow field="${fieldGroup.fields[8]}"/>
 
     <div id="modified-dose-fields-${index}">
-        <c:forEach begin="8" end="${fn:length(fieldGroup.fields) - 1}" var="i">
+        <c:forEach begin="9" end="${fn:length(fieldGroup.fields) - 1}" var="i">
             <tags:renderRow field="${fieldGroup.fields[i]}"/>
         </c:forEach>
     </div>

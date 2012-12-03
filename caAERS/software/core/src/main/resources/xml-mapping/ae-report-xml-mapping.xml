@@ -1109,6 +1109,9 @@
     <field name="id" type="integer">
       <bind-xml name="id" node="element"/>
     </field>
+    <field name="firstAdministeredDate" type="date">
+      <bind-xml name="firstAdministeredDate" node="element"/>
+    </field>
     <field name="lastAdministeredDate" type="date">
       <bind-xml name="lastAdministeredDate" node="element"/>
     </field>

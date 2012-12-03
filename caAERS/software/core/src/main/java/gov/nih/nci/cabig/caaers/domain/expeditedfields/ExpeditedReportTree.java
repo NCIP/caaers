@@ -180,6 +180,7 @@ public class ExpeditedReportTree extends PropertylessNode {
                                                     property("amount", getMessage("LBL_aeReport.treatmentInformation.courseAgents.dose.amount", "Total dose administered this course")),
                                                     property("units", getMessage("LBL_aeReport.treatmentInformation.courseAgents.dose.units", "Unit of measure"))
                                             ),
+                                            property("firstAdministeredDate", getMessage("LBL_aeReport.treatmentInformation.courseAgents.firstAdministeredDate", "Date first administered")),
                                             property("lastAdministeredDate", getMessage("LBL_aeReport.treatmentInformation.courseAgents.lastAdministeredDate", "Date last administered")),
                                             property("administrationDelayAmount", getMessage("LBL_aeReport.treatmentInformation.courseAgents.administrationDelayAmount", "Administration Delay Amount")),
                                             property("administrationDelayUnits", getMessage("LBL_aeReport.treatmentInformation.courseAgents.administrationDelayUnits", "Administration Delay Units")),

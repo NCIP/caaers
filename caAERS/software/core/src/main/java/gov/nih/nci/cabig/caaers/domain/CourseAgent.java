@@ -61,7 +61,10 @@ public class CourseAgent extends AbstractMutableDomainObject implements Serializ
     
     /** The last administered date. */
     private Date lastAdministeredDate;
-    
+
+    /** The first administered date. */
+    private Date firstAdministeredDate;
+
     /** The total dose administered this course. */
     private BigDecimal totalDoseAdministeredThisCourse;
     
@@ -293,6 +296,14 @@ public class CourseAgent extends AbstractMutableDomainObject implements Serializ
      */
     public void setLastAdministeredDate(Date lastAdministeredDate) {
         this.lastAdministeredDate = lastAdministeredDate;
+    }
+
+    public Date getFirstAdministeredDate() {
+        return firstAdministeredDate;
+    }
+
+    public void setFirstAdministeredDate(Date firstAdministeredDate) {
+        this.firstAdministeredDate = firstAdministeredDate;
     }
 
     /**

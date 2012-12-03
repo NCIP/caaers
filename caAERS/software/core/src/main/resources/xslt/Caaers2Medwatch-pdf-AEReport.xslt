@@ -776,31 +776,28 @@
                                                         </fo:block>
 
                                                     </fo:table-cell>
-                                                    <fo:table-cell xsl:use-attribute-sets="full-border"
-                                                                   number-columns-spanned="3">
+                                                    <fo:table-cell xsl:use-attribute-sets="full-border" number-columns-spanned="3">
                                                         <fo:block font-size="6.5pt" font-style="italic">
-                                                            <fo:inline font-size="6.5pt" font-style="normal">3.
-                                                            </fo:inline>
-                                                            <fo:inline xsl:use-attribute-sets="label"
-                                                                       font-style="normal">Therapy Dates
-                                                            </fo:inline>
-                                                            <fo:inline font-size="6.5pt" font-style="italic">(If
-                                                                unknown, give
-                                                            </fo:inline>
+                                                            <fo:inline font-size="6.5pt" font-style="normal">3.</fo:inline>
+                                                            <fo:inline xsl:use-attribute-sets="label" font-style="normal">Therapy Dates</fo:inline>
+                                                            <fo:inline font-size="6.5pt" font-style="italic">(If unknown, give </fo:inline>
                                                             <fo:block/>
                                                             duration) from/to (or best estimate)
                                                         </fo:block>
-                                                        <xsl:for-each
-                                                                select="AdverseEventReport/TreatmentInformation/CourseAgent">
+                                                        <xsl:for-each select="AdverseEventReport/TreatmentInformation/CourseAgent">
                                                             <fo:block>
                                                                 <fo:inline font-size="6.5pt">#
                                                                     <xsl:number format="1 "/>
                                                                 </fo:inline>
                                                                 <fo:inline font-size="6.5pt">
-                                                                    <xsl:call-template name="standard_date">
-                                                                        <xsl:with-param name="date" select="../firstCourseDate"/>
-                                                                    </xsl:call-template>
-                                                                    <xsl:text disable-output-escaping="yes">&amp;#160;   </xsl:text>
+                                                                    <xsl:choose>
+                                                                        <xsl:when test="firstAdministeredDate">
+                                                                            <xsl:call-template name="standard_date">
+                                                                                <xsl:with-param name="date"  select="firstAdministeredDate"/>
+                                                                            </xsl:call-template>
+                                                                        </xsl:when>
+                                                                        <xsl:otherwise>Unknown</xsl:otherwise>
+                                                                    </xsl:choose>
                                                                     to
                                                                     <xsl:choose>
                                                                         <xsl:when test="lastAdministeredDate">
@@ -820,11 +817,8 @@
                                                     <fo:table-cell xsl:use-attribute-sets="full-border" number-columns-spanned="3">
                                                         <fo:block>
                                                             <fo:inline font-size="6.5pt">4.</fo:inline>
-                                                            <fo:inline xsl:use-attribute-sets="label">Diagnosis for Use
-                                                            </fo:inline>
-                                                            <fo:inline font-size="6.5pt" font-style="italic">
-                                                                (Indication)
-                                                            </fo:inline>
+                                                            <fo:inline xsl:use-attribute-sets="label">Diagnosis for Use</fo:inline>
+                                                            <fo:inline font-size="6.5pt" font-style="italic">(Indication)</fo:inline>
                                                         </fo:block>
                                                         <xsl:if test="AdverseEventReport/StudyParticipantAssignment/StudySite/Study/studyPurpose">
                                                             <fo:block>
@@ -2460,7 +2454,7 @@
                                                     </fo:table-cell>
                                                 </fo:table-row>
 
-                                                <fo:table-row xsl:use-attribute-sets="tr-height-1" height="100mm">
+                                                <fo:table-row xsl:use-attribute-sets="tr-height-1" height="125mm">
                                                     <fo:table-cell>
                                                         <fo:block xsl:use-attribute-sets="label">10. [ ] Additional Manufacturer Narrative
                                                             <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;</xsl:text>

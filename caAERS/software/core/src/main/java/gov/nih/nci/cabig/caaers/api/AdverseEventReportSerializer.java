@@ -1090,6 +1090,10 @@ public class AdverseEventReportSerializer {
 		    		CourseAgent ca1 = new CourseAgent();
 		    		ca1.setId(ca.getId());
 
+                    if (!notApplicableFieldPaths.contains("treatmentInformation.courseAgents[].firstAdministeredDate")) {
+                        ca1.setFirstAdministeredDate(ca.getFirstAdministeredDate());
+                    }
+
                     if (!notApplicableFieldPaths.contains("treatmentInformation.courseAgents[].lastAdministeredDate")) {
                         ca1.setLastAdministeredDate(ca.getLastAdministeredDate());
                     }
