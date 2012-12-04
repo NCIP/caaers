@@ -432,7 +432,11 @@ public class AgentsTab extends StudyTab {
             log.debug("Wrong <index> for <StudyDevice> list.");
         } else if (index >=0) {
             StudyDevice o = (StudyDevice)list.get(index);
-            o.retire();
+            if ( o.isOtherDevice() == false && o.getDevice() == null ) {   // Remove Device if the device information is empty. 
+            	list.remove(index);
+            } else {
+            	o.retire();
+            }
         }
         //
 
