@@ -1,19 +1,21 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
+import gov.nih.nci.cabig.caaers.RoleMembership;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.*;
-import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.repository.PersonRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
+import gov.nih.nci.cabig.caaers.web.participant.AssignParticipantStudyCommand;
 import gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSessionFactory;
 import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRoleMembership;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -74,6 +76,16 @@ public class UserTab extends TabWithFields<UserCommand>{
         }  
         
         return refdata;
+    }
+    
+    @Override
+    public void beforeBind(HttpServletRequest request, UserCommand command) {
+        super.beforeBind(request, command);
+        for (Iterator iterator = command.getRoleMembershipHelper().iterator(); iterator.hasNext();) {
+			SuiteRoleMembershipHelper type = (SuiteRoleMembershipHelper) iterator.next();
+			type.getSites().clear();
+			type.getStudies().clear();			
+		}
     }
     
     @Override
