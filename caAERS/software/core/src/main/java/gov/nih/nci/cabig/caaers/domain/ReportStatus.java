@@ -15,10 +15,10 @@ import gov.nih.nci.cabig.ctms.domain.CodedEnum;
  */
 public enum ReportStatus implements CodedEnum<Integer> {
     
-    /** The PENDING. */
-    PENDING(1, "Pending"), 
+ /** The PENDING. */
+ PENDING(1, "Not Submitted"), 
  /** The COMPLETED. */
- COMPLETED(2, "Completed"), 
+ COMPLETED(2, "Successful"), 
  /** The WITHDRAWN. */
  WITHDRAWN(3, "Withdrawn"), 
  /** The INPROCESS. */

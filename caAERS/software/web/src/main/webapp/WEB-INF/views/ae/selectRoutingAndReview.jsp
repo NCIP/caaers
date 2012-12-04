@@ -109,7 +109,7 @@
 					</jsp:attribute>
 				</ui:row>
 				<ui:row path="Report status">
-					<jsp:attribute name="label">Report status
+					<jsp:attribute name="label">Report submission status
 					</jsp:attribute>
 					<jsp:attribute name="value">
 						<ui:select options="${command.reportStatusOptionsMap}" path="reportStatus"></ui:select>
