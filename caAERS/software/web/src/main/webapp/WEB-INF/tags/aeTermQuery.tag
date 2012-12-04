@@ -237,8 +237,8 @@
 	function initalizeCategorySelector(){
 		//some pages add this tag, via ajax, so they are supposed to
 		//call this function directly.
-		catSel = new CategorySelector(${isMeddra}, ${version}, ${ignoreOtherSpecify});
-	 	catSel.initializeAutoCompleter();
+		catSel = new CategorySelector(${isMeddra}, ${version}, ${ignoreOtherSpecify});	 	
+		catSel.initializeAutoCompleter.defer();
 	}
  	
  	<c:if test="${isAjaxable}">
