@@ -5,7 +5,9 @@
 <title>Routing & Review || Course/Cycle Information</title>
 
 <tags:dwrJavascriptLink objects="routingAndReview"/>
-
+<style type="text/css">
+    .box{ width: 950px;}
+</style>
 <script type="text/javascript">
 	var curWin;
 	function displayPopup(ety, etyId){
@@ -238,12 +240,8 @@
 	<c:if test="${command.searchResultsDTO.resultCount gt 0}">
 		<c:if test="${command.searchCriteriaNeitherStudyNorParticipantCentric == false}">
 			<div class="row summaryrow">
-				<div class="summarylabel">
-					${command.searchCriteriaParticipantCentric  ? 'Subject' : 'Study'}
-				</div>
-				<div class="summaryvalue shorty">
-					${command.searchResultsDTO.header}
-				</div>
+				<div class="summarylabel">${command.searchCriteriaParticipantCentric  ? 'Subject' : 'Study'}</div>
+				<div class="summaryvalue shorty">${command.searchResultsDTO.header}</div>
    			</div>
    		</c:if>
     	<table width="100%" cellspacing="1" cellpadding="0" border="0">
@@ -260,32 +258,20 @@
 					<c:forEach items="${command.searchResultsDTO.filteredResultMap}" var="resultEntry">
 						<c:if test="${command.searchCriteriaNeitherStudyNorParticipantCentric == false}">
 							<div class="row summaryrow" style="margin-top:30px; margin-bottom:0;">
-								<div class="summarylabel">
-									${command.searchCriteriaParticipantCentric  ? 'Study' : 'Subject'}
-								</div>
-								<div class="summaryvalue shorty">
-									${resultEntry.value.header}
-								</div>
+								<div class="summarylabel">${command.searchCriteriaParticipantCentric  ? 'Study' : 'Subject'}</div>
+								<div class="summaryvalue shorty">${resultEntry.value.header}</div>
 							</div>
 						</c:if>
 						<c:if test="${command.searchCriteriaNeitherStudyNorParticipantCentric == true}">
 							<c:if test="${resultEntry.value.groupHeader != null and resultEntry.value.groupHeader != ''}">
 								<div class="row summaryrow">
-									<div class="summarylabel">
-										Study
-									</div>
-									<div class="summaryvalue shorty">
-										${resultEntry.value.groupHeader}
-									</div>
+									<div class="summarylabel">Study</div>
+									<div class="summaryvalue shorty">${resultEntry.value.groupHeader}</div>
 								</div>
 							</c:if>
 							<div class="row summaryrow" style="margin-top:30px; margin-bottom:0;">
-								<div class="summarylabel">
-									Subject
-								</div>
-								<div class="summaryvalue shorty">
-									${resultEntry.value.header}
-								</div>
+								<div class="summarylabel">Subject</div>
+								<div class="summaryvalue shorty">${resultEntry.value.header}</div>
 							</div>
 						</c:if>
 						<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tableRegion">
