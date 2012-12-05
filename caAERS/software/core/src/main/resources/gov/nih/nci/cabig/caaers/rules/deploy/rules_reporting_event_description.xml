@@ -24,6 +24,7 @@
 		<lhs>
 			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
 			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+            <eval>aeReport.getStudy().hasCtepEsysIdentifier()</eval>
 			<eval>aeReport.getResponseDescription().getRecoveryDate() == null</eval>
 			<or-conditional-element>
 				<eval>NullSafeFieldExtractor.extractField(aeReport,"responseDescription.presentStatus.displayName").equals("Fatal/Died")</eval>
@@ -51,7 +52,7 @@
 		<lhs>
 			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
 			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
-
+            <eval>aeReport.getStudy().hasCtepEsysIdentifier()</eval>
 			<eval>aeReport.getResponseDescription().getRecoveryDate() != null</eval>
  			<and-conditional-element>
 				<eval>!NullSafeFieldExtractor.extractField(aeReport,"responseDescription.presentStatus.displayName").equals("Fatal/Died")</eval>
@@ -75,6 +76,7 @@
 		<lhs>
 			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
 			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+            <eval>aeReport.getStudy().hasCtepEsysIdentifier()</eval>
 			<eval>NullSafeFieldExtractor.extractField(aeReport,"responseDescription.presentStatus.displayName").equals("Fatal/Died")</eval>
 		    <eval>!ObjectUtils.equals(NullSafeFieldExtractor.extractField(aeReport,"responseDescription.retreated"), Boolean.FALSE)</eval>
 		</lhs>
@@ -94,6 +96,7 @@
 		<lhs>
 			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
 			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+            <eval>aeReport.getStudy().hasCtepEsysIdentifier()</eval>
 			<eval>NullSafeFieldExtractor.extractField(aeReport,"responseDescription.presentStatus.displayName").equals("Fatal/Died")</eval>
 			<eval>ObjectUtils.equals(NullSafeFieldExtractor.extractField(aeReport,"responseDescription.dateRemovedFromProtocol"), null)</eval>
 		</lhs>
@@ -112,6 +115,7 @@
 		<lhs>
 			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
 			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<eval>aeReport.getStudy().hasCtepEsysIdentifier()</eval>
 			<eval>NullSafeFieldExtractor.extractField(aeReport,"responseDescription.presentStatus.displayName").equals("Fatal/Died")</eval>
 			<eval>DateUtil.compare(NullSafeFieldExtractor.extractField(aeReport,"responseDescription.dateRemovedFromProtocol"),
 					NullSafeFieldExtractor.extractField(aeReport,"responseDescription.recoveryDate")) &lt; 0</eval>
@@ -136,6 +140,7 @@
 			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
 			<eval>new ExpeditedAdverseEventValidator() {
 					public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+                        if(!aeReport.getStudy().hasCtepEsysIdentifier()) return SUCCESS;
 				        boolean hasStatusDied = NullSafeFieldExtractor.extractField(aeReport,"responseDescription.presentStatus.code").equals(6);
 				        boolean hasGrade5 = false;
 

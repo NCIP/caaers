@@ -27,6 +27,7 @@
             <eval>new ExpeditedAdverseEventValidator() {
                 public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
                     int i = 0;
+                    if(!aeReport.getStudy().hasCtepEsysIdentifier()) return SUCCESS;
                     for(SAEReportPriorTherapy pt : aeReport.getSaeReportPriorTherapies()) {
                             if(StringUtils.equalsIgnoreCase("Prior Therapy NOS", pt.getName()) &amp;&amp; pt.getOther() == null ) {
                                 errors.addValidationError("PTY_BR1_ERR","Comments (prior therapy) must be provided if 'Prior therapy' is
@@ -89,6 +90,7 @@
 
                 public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
                 int i = 0;
+                if(!aeReport.getStudy().hasCtepEsysIdentifier()) return SUCCESS;
                 for(SAEReportPriorTherapy pt : aeReport.getSaeReportPriorTherapies()){
                     if(pt.getStartDate().getYear() == null &amp;&amp; pt.getEndDate().getYear() != null){
                         errors.addValidationError("PTY_BR3_ERR","'Therapy End Date' must not be provided if 'Therapy Start Date'
@@ -108,7 +110,7 @@
     </rule>
 
     <!-- ==========================================================================
-     RuleName : PTY_BR2_CHK
+     RuleName : PTY_BR2_CHK  (Generic)
      Logic :  'Therapy End Date' must not be later than 'Therapy Start Date'
      Error Code : PTY_BR2_ERR
      Error Message : THERAPY_END_DATE must be later than or equal THERAPY_START_DATE
@@ -202,6 +204,7 @@
             <eval>new ExpeditedAdverseEventValidator() {
                 public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
 		                int i = 0;
+                        if(!aeReport.getStudy().hasCtepEsysIdentifier()) return SUCCESS;
 		                for(SAEReportPriorTherapy pt : aeReport.getSaeReportPriorTherapies()){
 		                	i++;
 		                	if(!(NullSafeFieldExtractor.extractField(pt, "priorTherapy.id") instanceof Integer)) continue;
@@ -240,6 +243,7 @@
 
                         public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
                             int i = 0;
+                            if(!aeReport.getStudy().hasCtepEsysIdentifier()) return SUCCESS;
                             HashSet hSet = new HashSet();
                             for (SAEReportPriorTherapy pt : aeReport.getSaeReportPriorTherapies()) {
                                 StringBuffer ptUnique = new StringBuffer();
@@ -274,6 +278,7 @@
             <eval>new ExpeditedAdverseEventValidator() {
                 public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
                     int i = 0;
+                    if(!aeReport.getStudy().hasCtepEsysIdentifier()) return SUCCESS;
                     for (SAEReportPriorTherapy aet : aeReport.getSaeReportPriorTherapies()) {
                         HashSet hSet = new HashSet();
                         i++;
@@ -308,6 +313,7 @@
             <eval>new ExpeditedAdverseEventValidator() {
                public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
                    int i = 0;
+                   if(!aeReport.getStudy().hasCtepEsysIdentifier()) return SUCCESS;
                    for(SAEReportPriorTherapy reportTherapy : aeReport.getSaeReportPriorTherapies()) {
                          if (reportTherapy != null &amp;&amp; reportTherapy.getPriorTherapy() != null  &amp;&amp; reportTherapy.getPriorTherapy().isRetired()) {
                             errors.addValidationError("PTY_BR6_ERR", "Prior Therapy is incorrect and is removed from protocol").addFieldNames("aeReport.saeReportPriorTherapies[" + i + "].priorTherapy");

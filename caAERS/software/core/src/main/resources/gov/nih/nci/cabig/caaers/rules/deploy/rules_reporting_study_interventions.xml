@@ -25,6 +25,7 @@
 		<lhs>
 			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
 			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+            <eval>aeReport.getStudy().hasCtepEsysIdentifier()</eval>
 			<eval>!aeReport.getStudy().hasTherapyOfType(StudyTherapyType.SURGERY)</eval>
 			<eval>aeReport.getSurgeryInterventions().size() &gt; 0</eval>	
 		</lhs>
@@ -43,6 +44,7 @@
 		<lhs>
 			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
 			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+            <eval>aeReport.getStudy().hasCtepEsysIdentifier()</eval>
 			<eval>!aeReport.getStudy().hasTherapyOfType(StudyTherapyType.RADIATION)</eval>
 			<eval>aeReport.getRadiationInterventions().size() &gt; 0</eval>	
 		</lhs>
@@ -62,6 +64,7 @@
 		<lhs>
 			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
 			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+            <eval>aeReport.getStudy().hasCtepEsysIdentifier()</eval>
 			<eval>!aeReport.getStudy().hasTherapyOfType(StudyTherapyType.DEVICE)</eval>
 			<eval>aeReport.getMedicalDevices().size() &gt; 0</eval>	
 		</lhs>
@@ -83,6 +86,7 @@
                 <pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
                 <eval>new ExpeditedAdverseEventValidator(){ 
                 	public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+                        if(!aeReport.getStudy().hasCtepEsysIdentifier()) return SUCCESS;
                     	TreatmentInformation ti = aeReport.getTreatmentInformation(); 
                     	if(ti == null) return SUCCESS; 
                     	if(ti.getCourseAgents() == null) return SUCCESS; 
@@ -121,6 +125,7 @@
                 object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
             <eval>new ExpeditedAdverseEventValidator(){
                 public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+                    if(!aeReport.getStudy().hasCtepEsysIdentifier()) return SUCCESS;
                     TreatmentInformation ti = aeReport.getTreatmentInformation();
                     if(ti == null) return SUCCESS;
                     if(ti.getCourseAgents() == null) return SUCCESS;
@@ -151,8 +156,9 @@
                 object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
             <pattern identifier="errors"
                 object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
-            <eval>new ExpeditedAdverseEventValidator(){ public boolean
-                validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+            <eval>new ExpeditedAdverseEventValidator(){
+                public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+                if(!aeReport.getStudy().hasCtepEsysIdentifier()) return SUCCESS;
                 TreatmentInformation ti = aeReport.getTreatmentInformation(); if(ti == null) return
                 SUCCESS; if(ti.getCourseAgents() == null) return SUCCESS; int i = 0; for(CourseAgent
                 ca : ti.getCourseAgents()){  
@@ -181,6 +187,7 @@
                 object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
             <pattern identifier="errors"
                 object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+            <eval>aeReport.getStudy().hasCtepEsysIdentifier()</eval>
             <eval>NullSafeFieldExtractor.extractField(aeReport,"treatmentInformation.firstCourseDate")
                 == null</eval>
             <eval>NullSafeFieldExtractor.extractField(aeReport,"treatmentInformation.adverseEventCourse.date")
@@ -198,7 +205,7 @@
     </rule>
     
     <!-- ==========================================================================
-    RuleName : PAG_BR4_CHK
+    RuleName : PAG_BR4_CHK    (Generic)
     Rule : 'Was an investigational agent administered on this protocol?' must be 'Yes' if one of the Agents is Investigational Agent.
     Error Code : PAG_BR4_ERR
     ============================================================================= -->
@@ -245,6 +252,7 @@
                 object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
             <eval>new ExpeditedAdverseEventValidator(){
                 public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+                    if(!aeReport.getStudy().hasCtepEsysIdentifier()) return SUCCESS;
                     TreatmentInformation ti = aeReport.getTreatmentInformation();
                     if(ti == null) return SUCCESS;
                     int indAgentCount = 0;
@@ -286,6 +294,7 @@
                 object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
             <eval>new ExpeditedAdverseEventValidator(){
                 public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+                    if(!aeReport.getStudy().hasCtepEsysIdentifier()) return SUCCESS;
                     TreatmentInformation ti = aeReport.getTreatmentInformation();
                     if(ti == null) return SUCCESS;
                     if(ti.getCourseAgents() == null) return SUCCESS;
@@ -321,6 +330,7 @@
                 object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
             <eval>new ExpeditedAdverseEventValidator(){
                 public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+                    if(!aeReport.getStudy().hasCtepEsysIdentifier()) return SUCCESS;
                    int i = 0;
                    for(MedicalDevice device : aeReport.getMedicalDevices()){
 
@@ -358,6 +368,7 @@
             <eval>new ExpeditedAdverseEventValidator(){
                 public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
                    int i = 0;
+                    if(!aeReport.getStudy().hasCtepEsysIdentifier()) return SUCCESS;
                    for(MedicalDevice device : aeReport.getMedicalDevices()){
                       if(device.getDeviceReprocessed() == ReprocessedDevice.YES){
                         if(device.getReprocessorName() == null){
@@ -393,6 +404,7 @@
             <eval>new ExpeditedAdverseEventValidator(){
                 public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
                    int i = 0;
+                    if(!aeReport.getStudy().hasCtepEsysIdentifier()) return SUCCESS;
                    for(MedicalDevice device : aeReport.getMedicalDevices()){
                       if(device.getDeviceReprocessed() != ReprocessedDevice.YES){
                         if(device.getReprocessorAddress() != null){
@@ -428,6 +440,7 @@
             <eval>new ExpeditedAdverseEventValidator(){
                 public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
                    int i = 0;
+                    if(!aeReport.getStudy().hasCtepEsysIdentifier()) return SUCCESS;
                    for(MedicalDevice device : aeReport.getMedicalDevices()) {
                       if(device.getDeviceReprocessed() == ReprocessedDevice.YES){
                         if(device.getReprocessorAddress() == null){
@@ -463,6 +476,7 @@
             <eval>new ExpeditedAdverseEventValidator(){
                 public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
                    int i = 0;
+                    if(!aeReport.getStudy().hasCtepEsysIdentifier()) return SUCCESS;
                    for(MedicalDevice device : aeReport.getMedicalDevices()){
                       if(device.getEvaluationAvailability() != Availability.RETURNED){
                         if(device.getReturnedDate() != null){
@@ -498,6 +512,7 @@
             <eval>new ExpeditedAdverseEventValidator(){
                 public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
                    int i = 0;
+                    if(!aeReport.getStudy().hasCtepEsysIdentifier()) return SUCCESS;
                    for(MedicalDevice device : aeReport.getMedicalDevices()){
                       if(device.getEvaluationAvailability() == Availability.RETURNED){
                         if(device.getReturnedDate() == null){
@@ -530,6 +545,7 @@
             <eval>new ExpeditedAdverseEventValidator() {
                 public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
                    int i = 0;
+                    if(!aeReport.getStudy().hasCtepEsysIdentifier()) return SUCCESS;
                    for(MedicalDevice device : aeReport.getMedicalDevices()) {
                         if (StringUtils.isNotBlank(device.getOtherDeviceOperator())) {
                             if (device.getDeviceOperator() != DeviceOperator.OTHER) {
@@ -561,6 +577,7 @@
             <eval>new ExpeditedAdverseEventValidator() {
                 public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
                    int i = 0;
+                    if(!aeReport.getStudy().hasCtepEsysIdentifier()) return SUCCESS;
                    for(MedicalDevice device : aeReport.getMedicalDevices()) {
                         if (device.getDeviceOperator() == DeviceOperator.OTHER) {
                             if (StringUtils.isBlank(device.getOtherDeviceOperator())) {
@@ -592,6 +609,7 @@
             <eval>new ExpeditedAdverseEventValidator() {
                public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
                    int i = 0;
+                    if(!aeReport.getStudy().hasCtepEsysIdentifier()) return SUCCESS;
                    for(CourseAgent ca : aeReport.getTreatmentInformation().getCourseAgents()) {
                         if (ca.getStudyAgent() != null &amp;&amp; (ca.getStudyAgent().getAgent() != null &amp;&amp; ca.getStudyAgent().getAgent().isRetired())) {
                             errors.addValidationError("SME_BR12_ERR", "Agent is incorrect and is removed from protocol").addFieldNames("aeReport.treatmentInformation.courseAgents[" + i + "].studyAgent.agent");
@@ -620,6 +638,7 @@
             <eval>new ExpeditedAdverseEventValidator() {
                public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
                    int i = 0;
+                    if(!aeReport.getStudy().hasCtepEsysIdentifier()) return SUCCESS;
                    for(MedicalDevice md : aeReport.getMedicalDevices()) {
                         if (md.getStudyDevice() != null &amp;&amp; (md.getStudyDevice().isRetired() || (md.getStudyDevice().getDevice() != null &amp;&amp; md.getStudyDevice().getDevice().isRetired()))) {
                             errors.addValidationError("SME_BR13_ERR", "'Study Device' or 'Device' is incorrect and is removed from protocol").addFieldNames("aeReport.medicalDevices[" + i + "].studyDevice");

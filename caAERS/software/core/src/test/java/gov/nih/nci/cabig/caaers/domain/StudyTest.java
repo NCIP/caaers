@@ -291,4 +291,14 @@ public class StudyTest extends AbstractTestCase {
         study.addStudyDevice(sd);
         assertTrue(study.getNciIdeStudy());
     }
+
+    public void testHasCtepEsysIdentifier(){
+        assertFalse(study.hasCtepEsysIdentifier());
+        SystemAssignedIdentifier id = new SystemAssignedIdentifier();
+        id.setType(SystemAssignedIdentifier.CTEP_ESYS_NAME);
+        id.setSystemName(SystemAssignedIdentifier.CTEP_ESYS_NAME);
+        id.setValue("x");
+        study.addIdentifier(id);
+        assertTrue(study.hasCtepEsysIdentifier());
+    }
 }

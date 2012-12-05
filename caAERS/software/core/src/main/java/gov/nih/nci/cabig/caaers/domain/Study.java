@@ -591,6 +591,10 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         if(id == null) return null;
         return id.getValue();
     }
+
+    public boolean hasCtepEsysIdentifier(){
+        return getCtepEsysIdentifier() != null;
+    }
     
     /**
      * Gets the identifier containing.

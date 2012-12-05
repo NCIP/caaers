@@ -27,6 +27,7 @@
             <pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
             <eval>new ExpeditedAdverseEventValidator() {
                 public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+                if(!aeReport.getStudy().hasCtepEsysIdentifier()) return SUCCESS;
                     int i = 0;
                     for(SAEReportPreExistingCondition pc : aeReport.getSaeReportPreExistingConditions()){
                             if( StringUtils.isNotEmpty(pc.getOther()) &amp;&amp; pc.getPreExistingCondition() != null){
@@ -58,6 +59,7 @@
             <eval>new ExpeditedAdverseEventValidator() {
                public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
                    int i = 0;
+                if(!aeReport.getStudy().hasCtepEsysIdentifier()) return SUCCESS;
                    for(SAEReportPreExistingCondition reportCondition : aeReport.getSaeReportPreExistingConditions()) {
                         if (reportCondition != null &amp;&amp; reportCondition.getPreExistingCondition() != null  &amp;&amp; reportCondition.getPreExistingCondition().isRetired()) {
                             errors.addValidationError("PEC_BR2_ERR", "PreExisting Condition is incorrect and is removed from protocol").addFieldNames("aeReport.saeReportPreExistingConditions[" + i + "].preExistingCondition");

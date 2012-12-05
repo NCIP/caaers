@@ -27,6 +27,7 @@
         <lhs>
             <pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
             <pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+            <eval>aeReport.getStudy().hasCtepEsysIdentifier()</eval>
             <or-conditional-element>
                 <eval>
                     StringUtils.equals(NullSafeFieldExtractor.extractStringField(aeReport,"diseaseHistory.abstractStudyDisease.termName"),
@@ -56,6 +57,7 @@
         <lhs>
             <pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
             <pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+            <eval>aeReport.getStudy().hasCtepEsysIdentifier()</eval>
             <eval>
                 !StringUtils.equals(NullSafeFieldExtractor.extractStringField(aeReport,"diseaseHistory.abstractStudyDisease.termName"),
                 "Solid tumor, NOS")
@@ -82,6 +84,7 @@
         <lhs>
             <pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
             <pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+            <eval>aeReport.getStudy().hasCtepEsysIdentifier()</eval>
             <eval>!(
                 "null".equals(NullSafeFieldExtractor.extractField(aeReport,"diseaseHistory.codedPrimaryDiseaseSite.name"))
                 ||
@@ -108,6 +111,7 @@
             <pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
             <eval>new ExpeditedAdverseEventValidator() {
                 public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+                    if(!aeReport.getStudy().hasCtepEsysIdentifier()) return SUCCESS;
                     int i = 0;
                     if(aeReport.getDiseaseHistory().getMetastaticDiseaseSites() == null) return SUCCESS;
                     for(MetastaticDiseaseSite ds : aeReport.getDiseaseHistory().getMetastaticDiseaseSites()) {
