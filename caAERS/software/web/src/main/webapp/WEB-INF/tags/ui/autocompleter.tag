@@ -48,7 +48,7 @@
           title="${title}" ${disabled ? 'disabled' : ''}
           value="${initialDisplayValue}"
           class="autocomplete ${cssValue} ${cssClass} ${validationCss}"
-          onkeydown="suppressEnter(event)"/>
+          onkeydown="suppressEnterShiftCntlAlt(event,'${path}-indicator');"/>
     
   <c:if test="${enableClearButton and not disabled}"><a id="${path}-clear" onclick="javascript:AE.resetAutocompleter('${path}')" style="cursor:pointer"><img src="<chrome:imageUrl name="../clear-left-button.png" />" alt="Clear" /></a></c:if>
   <tags:indicator id="${path}-indicator"/>
