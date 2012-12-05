@@ -777,6 +777,20 @@ function suppressEnter(e) {
     if (keynum == 13) Event.stop(e);
 }
 
+function suppressEnterShiftCntlAlt(e, id) {		
+    if (window.event) { // IE
+        keynum = e.keyCode;
+    }
+
+    else if (e.which) { // Netscape/Firefox/Opera
+        keynum = e.which;
+    }
+    //suppress Enter(13), Shift(16), Cntl(17), Alt(18)
+    if ( (keynum == 13) || (keynum == 16) || (keynum == 17) || (keynum == 18) ) {    	
+    	Event.stop(e);
+    	AE.hideIndicator(id);
+    }
+}
 
 /*
  * http://blog.stevenlevithan.com/archives/faster-than-innerhtml

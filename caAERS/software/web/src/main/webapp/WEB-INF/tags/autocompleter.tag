@@ -11,7 +11,7 @@
 <%@attribute name="initialDisplayValue" required="false" %>
 <%@attribute name="initialValue" required="false" %>
 
- <input size="${empty size ?  '50' : size}" type="text" value="${initialDisplayValue}" id="${propertyName}-input" title="${displayName}" ${disabled ? 'disabled' : ''} class="autocomplete ${required ? 'validate-NOTEMPTY' : ''}" onkeydown="suppressEnter(event);"/>
+ <input size="${empty size ?  '50' : size}" type="text" value="${initialDisplayValue}" id="${propertyName}-input" title="${displayName}" ${disabled ? 'disabled' : ''} class="autocomplete ${required ? 'validate-NOTEMPTY' : ''}" onkeydown="suppressEnterShiftCntlAlt(event,'${propertyName}-indicator');"/>
  <tags:indicator id="${propertyName}-indicator"/>
  <c:if test="${enableClear and not disabled}">
         <a id="${propertyName}-clear" onclick="javascript:$('${propertyName}-input').clear();$('${propertyName}').clear();" style="cursor:pointer"><img src="<chrome:imageUrl name="../clear-left-button.png" />" alt="Clear" /></a>
