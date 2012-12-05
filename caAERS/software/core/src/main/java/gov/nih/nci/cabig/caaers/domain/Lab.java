@@ -56,6 +56,8 @@ public class Lab extends AbstractExpeditedReportCollectionElementChild {
     /** The infectious agent. */
     private String infectiousAgent;
 
+    private String normalRange;
+
     // //// BEAN PROPERTIES
 
     /**
@@ -238,6 +240,14 @@ public class Lab extends AbstractExpeditedReportCollectionElementChild {
      */
     public void setSite(String site) {
         this.site = site;
+    }
+
+    public String getNormalRange() {
+        return normalRange;
+    }
+
+    public void setNormalRange(String normalRange) {
+        this.normalRange = normalRange;
     }
 
     /**

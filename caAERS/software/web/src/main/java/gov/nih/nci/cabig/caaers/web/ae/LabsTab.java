@@ -63,8 +63,13 @@ public class LabsTab extends AeTab {
         InputField infectiousAgentField = InputFieldFactory.createTextArea("infectiousAgent", "Infectious Agent", false);
         InputFieldAttributes.setColumns(infectiousAgentField, 60);
 
-        creator.createRepeatingFieldGroup("lab", "labs", createNameCreator(), labNameField,
-                otherField, InputFieldFactory.createSelectField("units", "Units", false, WebUtils.collectOptions(configurationProperty.getMap().get("labUnitsRefData"), "code", "desc", "Please select")),
+        InputField normalRangeField = InputFieldFactory.createTextField("normalRange", "Normal range", false);
+
+        creator.createRepeatingFieldGroup("lab", "labs", createNameCreator(),
+                labNameField,
+                otherField,
+                InputFieldFactory.createSelectField("units", "Units", false, WebUtils.collectOptions(configurationProperty.getMap().get("labUnitsRefData"), "code", "desc", "Please select")),
+                normalRangeField,
                 createLabValueField("baseline", "Baseline"), createLabDateField("baseline", "Baseline"),
                 createLabValueField("nadir", "Worst"), createLabDateField("nadir", "Worst"),
                 createLabValueField("recovery", "Recovery"), createLabDateField("recovery", "Recovery"),

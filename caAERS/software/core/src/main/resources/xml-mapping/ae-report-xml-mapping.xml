@@ -1376,6 +1376,9 @@
     <field name="units" type="string">
       <bind-xml name="units" node="element"/>
     </field>
+      <field name="normalRange" type="string">
+          <bind-xml name="normalRange" node="element"/>
+      </field>
     <field name="baseline" type="gov.nih.nci.cabig.caaers.domain.LabValue">
       <bind-xml name="baseline"/>
     </field>

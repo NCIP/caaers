@@ -2865,12 +2865,22 @@
                     <fo:block padding-top="4pt"> <xsl:value-of select="$lab/other"/> </fo:block>
                 </xsl:if>
             </xsl:if>
+            <xsl:if test="$lab/normalRange != ''">
+                <xsl:value-of select="mu:incrementLab()" />
+                <xsl:if test="(mu:labCount() &lt; $labMax) and (mu:labCount() &gt; $labLow)">
+                    <fo:block />
+                    <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
+                    Normal range : <xsl:value-of select="$lab/normalRange"/>
+                    <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
+                    <xsl:value-of select="$lab/units"/>
+                </xsl:if>
+            </xsl:if>
             <xsl:if test="$lab/baseline/value != ''">
                 <xsl:value-of select="mu:incrementLab()" />
                 <xsl:if test="(mu:labCount() &lt; $labMax) and (mu:labCount() &gt; $labLow)">
                     <fo:block />
                     <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
-                    Base Line value :<xsl:value-of select="$lab/baseline/value"/>
+                    Base Line value : <xsl:value-of select="$lab/baseline/value"/>
                     <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
                     <xsl:value-of select="$lab/units"/> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
                     <xsl:if test="$lab/baseline/date">(

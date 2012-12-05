@@ -202,6 +202,7 @@ public class ExpeditedReportTree extends PropertylessNode {
 							list("labs", new LabsDisplayNameCreator(),
                                  codedOrOther("labTerm", getMessage("LBL_aeReport.labs.labTerm", "Lab test name"), "other", getMessage("LBL_aeReport.labs.other", "Other test name")),
                                  property("units", getMessage("LBL_aeReport.labs.units", "Units")),
+                                 property("normalRange", getMessage("LBL_aeReport.labs.normalRange", "Normal range")),
                                  labValue("baseline", "Baseline"),
                                  labValue("nadir", "Worst"),
                                  labValue("recovery", "Recovery"),

@@ -50,10 +50,10 @@
         </jsp:attribute>
     </tags:renderRow>
 
-	<div id="not-microbiology-${index}" style="<c:if test="${lab.id > 0 && empty lab.labTerm.term}">display:'';</c:if><c:if test="${empty lab.id || not empty lab.labTerm.term}">display:none;</c:if>">
     <tags:renderRow field="${fieldGroup.fields[2]}" />
- 
-    <c:forEach begin="3" end="8" step="2" var="i">
+    <tags:renderRow field="${fieldGroup.fields[3]}" />
+	<div id="not-microbiology-${index}" style="<c:if test="${lab.id > 0 && empty lab.labTerm.term}">display:'';</c:if><c:if test="${empty lab.id || not empty lab.labTerm.term}">display:none;</c:if>">
+    <c:forEach begin="4" end="9" step="2" var="i">
         <caaers:renderFilter elementID="${fieldGroup.fields[i].propertyName}">
             <table border="0" cellpadding="0" cellspacing="0">
                 <tr>
@@ -76,9 +76,9 @@
     </div>
     
     <div id="microbiology-${index}" style="<c:if test="${lab.id > 0 && empty lab.labTerm.term}">display:'';</c:if><c:if test="${empty lab.id || not empty lab.labTerm.term}">display:none;</c:if>">
-        <tags:renderRow field="${fieldGroup.fields[9]}" />
         <tags:renderRow field="${fieldGroup.fields[10]}" />
         <tags:renderRow field="${fieldGroup.fields[11]}" />
+        <tags:renderRow field="${fieldGroup.fields[12]}" />
     </div>
     
 <%--</ae:fieldGroupDivision>--%>
