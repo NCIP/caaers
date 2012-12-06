@@ -361,7 +361,7 @@
             <tr class="${ALT}" style="border-bottom:1px #eeeeee solid;" id="AB_${_ID}">
                 <c:set var="_s" value="${rvDTO.rv.reportStatus}" />
 
-                <td>&nbsp;<a <c:if test="${_s eq 'COMPLETED' or _s eq 'WITHDRAWN'}"></c:if> onmouseover="showToolTip($('_Description${rvDTO.rv.id}').innerHTML, '');" onmouseout="tt_Hide();" <c:if test="${_s ne 'COMPLETED' and _s ne 'WITHDRAWN'}">href="<c:url value="/pages/ae/edit?rvID=${rvDTO.rv.id}&aeReport=${rvDTO.aeReportID}&report=${rvDTO.reportID}" />"</c:if><c:if test="${_s eq 'COMPLETED' or _s eq 'WITHDRAWN'}">href="<c:url value="/pages/ae/list?assignment=${rvDTO.assignmentID}" />"</c:if> >${rvDTO.reportName}</a></td>
+                <td>&nbsp;<a <c:if test="${_s eq 'COMPLETED' or _s eq 'WITHDRAWN'}"></c:if> onmouseover="showToolTip($('_Description${rvDTO.rv.id}').innerHTML, '');" onmouseout="tt_Hide();" <c:if test="${_s ne 'COMPLETED' and _s ne 'WITHDRAWN'}">href="<c:url value="/pages/ae/reviewResolver?rvID=${rvDTO.rv.id}&aeReport=${rvDTO.aeReportID}&report=${rvDTO.reportID}&src=RoutingReview" />"</c:if><c:if test="${_s eq 'COMPLETED' or _s eq 'WITHDRAWN'}">href="<c:url value="/pages/ae/list?assignment=${rvDTO.assignmentID}" />"</c:if> >${rvDTO.reportName}</a></td>
                 <td width="130px">${rvDTO.studyPrimaryIdentifier}<br>${rvDTO.subjectPrimaryIdentifier}</td>
                 <%--<td>${rvDTO.rv.reportStatus}</td>--%>
                 <c:choose>
