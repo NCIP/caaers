@@ -1,10 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.Attribution;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.Retireable;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
@@ -24,7 +21,10 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.*;
 
- 
+import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.CONCOMITANT_MEDICATION_SECTION;
+import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.DESCRIPTION_SECTION;
+
+
 /**
  * Provides method to validate the completeness of a {@link gov.nih.nci.cabig.caaers.domain.report.Report}
  * @author Sameer Sawant
@@ -180,10 +180,11 @@ public class ReportValidationServiceImpl implements ReportValidationService{
      * @param messages the messages
      */
     @SuppressWarnings("unchecked")
-    private void validate(
-            ExpeditedAdverseEventReport aeReport, List<String> mandatoryFields, List<String> selfReferencedMandatoryFields , ExpeditedReportSection section,
+    private void validate(ExpeditedAdverseEventReport aeReport, List<String> mandatoryFields, List<String> selfReferencedMandatoryFields , ExpeditedReportSection section,
             ReportSubmittability messages
     ) {
+        BeanWrapper bw = new BeanWrapperImpl(aeReport);
+
         TreeNode sectionNode = expeditedReportTree.getNodeForSection(section);
         if (sectionNode == null)
             throw new CaaersSystemException("There is no section node in the report tree for " + section.name() + ".  This shouldn't be possible.");
@@ -194,19 +195,13 @@ public class ReportValidationServiceImpl implements ReportValidationService{
             if (n == null) continue;
             applicableFields.add(field);
         }
-        List<UnsatisfiedProperty> unsatisfied = expeditedReportTree.verifyPropertiesPresent(
-                applicableFields, aeReport);
+        List<UnsatisfiedProperty> unsatisfied = expeditedReportTree.verifyPropertiesPresent(applicableFields, aeReport);
         for (UnsatisfiedProperty uProp : unsatisfied) {
-            TreeNode unsatisfiedNode = uProp.getTreeNode();
-
-            messages.addMissingField(
-                    section,
-                    uProp.getDisplayName(),
-                    uProp.getBeanPropertyName());
+            if(isErrorApplicable(bw, section, uProp)) messages.addMissingField( section, uProp.getDisplayName(), uProp.getBeanPropertyName());
         }
 
         //evaluate the self referenced fields
-        BeanWrapper bw = new BeanWrapperImpl(aeReport);
+
         for(String fieldPath : selfReferencedMandatoryFields){
             TreeNode node = expeditedReportTree.find(fieldPath);
             
@@ -220,6 +215,83 @@ public class ReportValidationServiceImpl implements ReportValidationService{
 
         }
 
+    }
+
+    /**
+     * Applicablity criteria :-
+     *   1. Lab category micro-biology (then baseline and
+     * @param section
+     * @param property
+     * @return
+     */
+    public boolean isErrorApplicable(BeanWrapper bw, ExpeditedReportSection section, UnsatisfiedProperty property){
+        String propertyPath =  property.getBeanPropertyName();
+        String parentEntityPath = propertyPath.substring(0, propertyPath.indexOf('.'));
+
+         if(section == ExpeditedReportSection.LABS_SECTION){
+             Lab lab =  (Lab)bw.getPropertyValue(parentEntityPath);
+             return isLabErrorApplicable(lab, propertyPath);
+         }
+         if(section == ExpeditedReportSection.MEDICAL_DEVICE_SECTION){
+             MedicalDevice device = (MedicalDevice)bw.getPropertyValue(parentEntityPath) ;
+             return isMedicalDeviceErrorApplicable(device, propertyPath);
+         }
+
+         if(section == DESCRIPTION_SECTION){
+             AdverseEventResponseDescription description = (AdverseEventResponseDescription) bw.getPropertyValue(parentEntityPath);
+             return isDescriptionErrorApplicable(description, propertyPath);
+         }
+
+         if(section == CONCOMITANT_MEDICATION_SECTION){
+             ConcomitantMedication conMed = (ConcomitantMedication) bw.getPropertyValue(parentEntityPath);
+             return isConMedErrorApplicable(conMed, propertyPath);
+         }
+
+        return true;
+    }
+
+    private boolean isLabErrorApplicable(Lab lab, String propertyPath){
+
+        if(propertyPath.contains("baseline") || propertyPath.contains("nadir") || propertyPath.contains("recovery")){
+            if(lab == null || lab.getLabTerm() == null || lab.getLabTerm().getCategory() == null) return true;
+            if(lab.getLabTerm().getCategory().getName().contains("Microbiology")) return false;
+        }
+        if(propertyPath.contains("labDate") || propertyPath.contains("site")){
+            if(lab == null || lab.getLabTerm() == null || lab.getLabTerm().getCategory() == null) return true;
+            if(!lab.getLabTerm().getCategory().getName().contains("Microbiology")) return false;
+        }
+
+        return true;
+    }
+
+    private boolean isDescriptionErrorApplicable(AdverseEventResponseDescription description, String propertyPath){
+        if(propertyPath.contains("recoveryDate")){
+            if(description == null || description.getPresentStatus() == null ||
+              description.getPresentStatus() != PostAdverseEventStatus.DEAD ||
+              description.getPresentStatus() != PostAdverseEventStatus.RECOVERED_WITH_SEQUELAE ||
+              description.getPresentStatus() != PostAdverseEventStatus.RECOVERED_WITHOUT_SEQUELAE ) return false;
+        }
+
+        return true;
+    }
+
+
+    private boolean isMedicalDeviceErrorApplicable(MedicalDevice medicalDevice, String propertyPath){
+       if(propertyPath.contains("reprocessorName") || propertyPath.contains("reprocessorAddress")){
+           if(medicalDevice == null || medicalDevice.getDeviceReprocessed() == null || medicalDevice.getDeviceReprocessed() != ReprocessedDevice.YES) return false;
+       }
+       if(propertyPath.contains("returnedDate")){
+           if(medicalDevice == null || medicalDevice.getEvaluationAvailability() == null || medicalDevice.getEvaluationAvailability() != Availability.RETURNED) return false;
+       }
+
+       return true;
+    }
+
+    private boolean isConMedErrorApplicable(ConcomitantMedication conMed, String propertyPath){
+        if(propertyPath.contains("endDate")) {
+            if(conMed == null || conMed.getStillTakingMedications() == null || conMed.getStillTakingMedications().equals(true)) return false;
+        }
+        return true;
     }
 
     /**

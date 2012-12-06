@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
@@ -24,7 +25,7 @@ import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSec
  */
 
 
-public class ReportValidationServiceTest extends CaaersTestCase {
+public class ReportValidationServiceTest extends AbstractTestCase {
 	
 	private ReportValidationServiceImpl reportValidationService;
 	private ExpeditedReportTree expeditedReportTree;
@@ -40,7 +41,7 @@ public class ReportValidationServiceTest extends CaaersTestCase {
 	@Override
     protected void setUp() throws Exception {
         super.setUp();
-        expeditedReportTree = (ExpeditedReportTree)getDeployedApplicationContext().getBean("expeditedReportTree");
+        expeditedReportTree = new ExpeditedReportTree(null);
         reportValidationService = new ReportValidationServiceImpl();
         
         reportValidationService.setExpeditedReportTree(expeditedReportTree);
@@ -328,6 +329,145 @@ public class ReportValidationServiceTest extends CaaersTestCase {
         assertFalse(reportSubmittability.isSubmittable());
         assertTrue(reportSubmittability.getMessages().containsKey(ExpeditedReportSection.AGENTS_INTERVENTION_SECTION));
         verifyMocks();
+
+    }
+
+    public void testValidateHiddenLabFields(){
+        populateLabs(expeditedData);
+        ReportMandatoryField mf1 = new ReportMandatoryField("labs[].baseline.value", Mandatory.MANDATORY);
+        ReportMandatoryField mf2 = new ReportMandatoryField("labs[].labDate", Mandatory.MANDATORY);
+        Report report = createAttributionMandatoryReport();
+        report.getReportDefinition().setAttributionRequired(false);
+        report.getMandatoryFields().add(mf1);
+        report.getMandatoryFields().add(mf2);
+        evaluationService.evaluateMandatoryness(expeditedData, report);
+
+        replayMocks();
+        List<ExpeditedReportSection> sections = new ArrayList<ExpeditedReportSection>();
+        sections.add(ExpeditedReportSection.LABS_SECTION);
+        ReportSubmittability reportSubmittability = reportValidationService.validate(report, sections , null);
+        System.out.println(reportSubmittability.getMessages());
+        assertTrue(reportSubmittability.isSubmittable());
+        verifyMocks();
+    }
+
+
+    public void testValidateHiddenLabFieldsWhenDataNotProvied(){
+        populateLabs(expeditedData);
+        ReportMandatoryField mf1 = new ReportMandatoryField("labs[].recovery.value", Mandatory.MANDATORY);
+        ReportMandatoryField mf2 = new ReportMandatoryField("labs[].site", Mandatory.MANDATORY);
+        Report report = createAttributionMandatoryReport();
+        report.getReportDefinition().setAttributionRequired(false);
+        report.getMandatoryFields().add(mf1);
+        report.getMandatoryFields().add(mf2);
+        evaluationService.evaluateMandatoryness(expeditedData, report);
+
+        replayMocks();
+        List<ExpeditedReportSection> sections = new ArrayList<ExpeditedReportSection>();
+        sections.add(ExpeditedReportSection.LABS_SECTION);
+        ReportSubmittability reportSubmittability = reportValidationService.validate(report, sections , null);
+        System.out.println(reportSubmittability.getMessages());
+        assertFalse(reportSubmittability.isSubmittable());
+        verifyMocks();
+    }
+
+    public void testValidateHiddenMedicalDeviceFields(){
+       populateMedicalDevices(expeditedData);
+        ReportMandatoryField mf1 = new ReportMandatoryField("medicalDevices[].reprocessorName", Mandatory.MANDATORY);
+        ReportMandatoryField mf2 = new ReportMandatoryField("medicalDevices[].returnedDate", Mandatory.MANDATORY);
+        Report report = createAttributionMandatoryReport();
+        report.getReportDefinition().setAttributionRequired(false);
+        report.getMandatoryFields().add(mf1);
+        report.getMandatoryFields().add(mf2);
+        evaluationService.evaluateMandatoryness(expeditedData, report);
+
+        replayMocks();
+        List<ExpeditedReportSection> sections = new ArrayList<ExpeditedReportSection>();
+        sections.add(ExpeditedReportSection.MEDICAL_DEVICE_SECTION);
+        ReportSubmittability reportSubmittability = reportValidationService.validate(report, sections , null);
+        System.out.println(reportSubmittability.getMessages());
+        assertTrue(reportSubmittability.isSubmittable());
+        verifyMocks();
+    }
+
+    public void testValidateHiddenMedicalDeviceFieldsWhenValuesNotProvided(){
+        populateMedicalDevices(expeditedData);
+        expeditedData.getMedicalDevices().get(0).setReprocessorName(null);
+        expeditedData.getMedicalDevices().get(1).setReturnedDate(null);
+        ReportMandatoryField mf1 = new ReportMandatoryField("medicalDevices[].reprocessorName", Mandatory.MANDATORY);
+        ReportMandatoryField mf2 = new ReportMandatoryField("medicalDevices[].returnedDate", Mandatory.MANDATORY);
+        Report report = createAttributionMandatoryReport();
+        report.getReportDefinition().setAttributionRequired(false);
+        report.getMandatoryFields().add(mf1);
+        report.getMandatoryFields().add(mf2);
+        evaluationService.evaluateMandatoryness(expeditedData, report);
+
+        replayMocks();
+        List<ExpeditedReportSection> sections = new ArrayList<ExpeditedReportSection>();
+        sections.add(ExpeditedReportSection.MEDICAL_DEVICE_SECTION);
+        ReportSubmittability reportSubmittability = reportValidationService.validate(report, sections , null);
+        System.out.println(reportSubmittability.getMessages());
+        assertFalse(reportSubmittability.isSubmittable());
+        verifyMocks();
+    }
+
+
+    public void testValidateHiddenConMedFields(){
+        expeditedData.addConcomitantMedication(Fixtures.createConcomitantMedication(true));
+        ReportMandatoryField mf1 = new ReportMandatoryField("concomitantMedications[].endDate", Mandatory.MANDATORY);
+        Report report = createAttributionMandatoryReport();
+        report.getReportDefinition().setAttributionRequired(false);
+        report.getMandatoryFields().add(mf1);
+        evaluationService.evaluateMandatoryness(expeditedData, report);
+
+        replayMocks();
+        List<ExpeditedReportSection> sections = new ArrayList<ExpeditedReportSection>();
+        sections.add(ExpeditedReportSection.CONCOMITANT_MEDICATION_SECTION);
+        ReportSubmittability reportSubmittability = reportValidationService.validate(report, sections , null);
+        System.out.println(reportSubmittability.getMessages());
+        assertTrue(reportSubmittability.isSubmittable());
+        verifyMocks();
+    }
+
+
+    public void testValidateHiddenConMedFieldsNotProvided(){
+        expeditedData.addConcomitantMedication(Fixtures.createConcomitantMedication(false));
+        ReportMandatoryField mf1 = new ReportMandatoryField("concomitantMedications[].endDate.year", Mandatory.MANDATORY);
+        Report report = createAttributionMandatoryReport();
+        report.getReportDefinition().setAttributionRequired(false);
+        report.getMandatoryFields().add(mf1);
+        evaluationService.evaluateMandatoryness(expeditedData, report);
+
+        replayMocks();
+        List<ExpeditedReportSection> sections = new ArrayList<ExpeditedReportSection>();
+        sections.add(ExpeditedReportSection.CONCOMITANT_MEDICATION_SECTION);
+        ReportSubmittability reportSubmittability = reportValidationService.validate(report, sections , null);
+        System.out.println(reportSubmittability.getMessages());
+        assertFalse(reportSubmittability.isSubmittable());
+        verifyMocks();
+    }
+
+
+    private void populateMedicalDevices(ExpeditedAdverseEventReport aeReport){
+        MedicalDevice md1 = Fixtures.createMedicalDevice(true, false);
+        md1.setReprocessorAddress("x");
+        md1.setReprocessorName("x");
+        MedicalDevice md2 = Fixtures.createMedicalDevice(false, true);
+        md2.setReturnedDate(new Date());
+        aeReport.addMedicalDevice(md1);
+        aeReport.addMedicalDevice(md2);
+
+
+    }
+    private void populateLabs(ExpeditedAdverseEventReport aeReport){
+        Lab l1 = Fixtures.createLab("abcd", "efg");
+        l1.getBaseline().setDate(new Date());
+        l1.getBaseline().setValue("1");
+
+        Lab l2 = Fixtures.createLab("Microbiology NOS", "Microbiology");
+        l2.setLabDate(new Date());
+        aeReport.addLab(l1);
+        aeReport.addLab(l2);
 
     }
 

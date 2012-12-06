@@ -1138,4 +1138,27 @@ public class Fixtures {
         dto.setAttribution(attibution);
         return dto;
     }
+
+    public static Lab createLab(String labTerm, String labCategory){
+        Lab l = new Lab();
+        LabCategory lc = new LabCategory();
+        lc.setName(labCategory);
+        LabTerm lt = new LabTerm();
+        lt.setTerm(labTerm);
+        lt.setCategory(lc);
+        l.setLabTerm(lt);
+        return l;
+    }
+
+    public static MedicalDevice createMedicalDevice(boolean reprocessed, boolean returned){
+        MedicalDevice medicalDevice = new MedicalDevice();
+        if(reprocessed) medicalDevice.setDeviceReprocessed(ReprocessedDevice.YES);
+        if(returned) medicalDevice.setEvaluationAvailability(Availability.RETURNED);
+        return medicalDevice;
+    }
+    public static ConcomitantMedication createConcomitantMedication(boolean stillTakingMedication){
+        ConcomitantMedication conMed = new ConcomitantMedication();
+        conMed.setStillTakingMedications(stillTakingMedication);
+        return conMed;
+    }
 }
