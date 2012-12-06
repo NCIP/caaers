@@ -21,8 +21,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.*;
 
-import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.CONCOMITANT_MEDICATION_SECTION;
-import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.DESCRIPTION_SECTION;
+import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.*;
 
 
 /**
@@ -228,11 +227,11 @@ public class ReportValidationServiceImpl implements ReportValidationService{
         String propertyPath =  property.getBeanPropertyName();
         String parentEntityPath = propertyPath.substring(0, propertyPath.indexOf('.'));
 
-         if(section == ExpeditedReportSection.LABS_SECTION){
+         if(section == LABS_SECTION){
              Lab lab =  (Lab)bw.getPropertyValue(parentEntityPath);
              return isLabErrorApplicable(lab, propertyPath);
          }
-         if(section == ExpeditedReportSection.MEDICAL_DEVICE_SECTION){
+         if(section == MEDICAL_DEVICE_SECTION){
              MedicalDevice device = (MedicalDevice)bw.getPropertyValue(parentEntityPath) ;
              return isMedicalDeviceErrorApplicable(device, propertyPath);
          }
