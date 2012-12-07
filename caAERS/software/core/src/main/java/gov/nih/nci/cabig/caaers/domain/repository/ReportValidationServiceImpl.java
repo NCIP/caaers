@@ -251,7 +251,7 @@ public class ReportValidationServiceImpl implements ReportValidationService{
 
     private boolean isLabErrorApplicable(Lab lab, String propertyPath){
 
-        if(propertyPath.contains("baseline") || propertyPath.contains("nadir") || propertyPath.contains("recovery")){
+        if(propertyPath.contains("baseline") || propertyPath.contains("nadir") || propertyPath.contains("recovery") || propertyPath.contains("infectiousAgent")){
             if(lab == null || lab.getLabTerm() == null || lab.getLabTerm().getCategory() == null) return true;
             if(lab.getLabTerm().getCategory().getName().contains("Microbiology")) return false;
         }
