@@ -451,6 +451,7 @@ public class AdverseEventReportSerializer {
 		   l.setRecovery(lab.getRecovery());
 		   l.setLabDate(lab.getLabDate());
 		   l.setSite(lab.getSite());
+           l.setNormalRange(lab.getNormalRange());
 		   l.setInfectiousAgent(lab.getInfectiousAgent());
 		   
 		   return l;

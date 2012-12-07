@@ -245,4 +245,21 @@ public class AdverseEventReportSerializerTest extends AbstractTestCase {
         // System.out.println(xml);
 
     }
+
+    public void testSerializeLabs() throws Exception{
+        String xmlFileName = "expedited_report_caaers_complete.xml";
+        ExpeditedAdverseEventReport aeReport = generateExpeditedReport(xmlFileName);
+//
+//        aeReport.getReports().get(0).getReportDefinition().addReportMandatoryFieldDefinition(new ReportMandatoryFieldDefinition("field.one.name", RequirednessIndicator.MANDATORY));
+//        aeReport.getReports().get(0).setMandatoryFields(new ArrayList<ReportMandatoryField>());
+
+
+        aeReport.addLab(Fixtures.createLab("abcd", "efgg"));
+        aeReport.getLabs().get(0).setId(1);
+        aeReport.getLabs().get(0).setNormalRange("1122");
+        aeReport.getLabs().get(0).setSite("xxx");
+        aeReport.getLabs().get(0).setUnits("mg");
+        String xml = serializer.serialize(aeReport, null);
+        assertTrue(xml.contains("<normalRange>1122</normalRange>"));
+    }
 }
