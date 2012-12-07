@@ -276,6 +276,7 @@
 	  <xsd:sequence>
   		<xsd:element name="name" type="xsd:string"/>
   		<xsd:element name="units" type="xsd:string"/>
+  		<xsd:element name="normalRange" type="xsd:string"/>
   		<xsd:element name="baseline" type="caaers:LabValue"/>
   		<xsd:element name="nadir" type="caaers:LabValue"/>
   		<xsd:element name="recovery" type="caaers:LabValue"/>
