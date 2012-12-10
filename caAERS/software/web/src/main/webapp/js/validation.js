@@ -75,11 +75,11 @@ var ValidationManager = {
     registeredInvokes: new Array(),
     ERROR_STRATEGY:"text",
     ERROR_HIGHTLIGHT_COLOR:"red",
-    ERROR_MSG_REQUIRED:"<b>Missing:</b> &quot;",
-    ERROR_MSG_PATTERN:"<b>Invalid:</b> &quot;",
+    ERROR_MSG_REQUIRED:"<b>Missing:</b> ",
+    ERROR_MSG_PATTERN:"<b>Invalid:</b> ",
     ERROR_MSG_MINLENGTH:"too short ",
     ERROR_MSG_MAXLENGTH:"too long ",
-    ERROR_MSG_PHONE:"<b>Invalid:</b>  &quot;",
+    ERROR_MSG_PHONE:"<b>Invalid:</b> ",
 
     validateForm: function(submit) {
         Errors.clear();
@@ -170,7 +170,9 @@ var ValidationManager = {
             if (errorStrategy1 == "text") {
                 var errorText = msg + element.title;
                 if(msg.startsWith("<b>") > 0){
-                    errorText = errorText + "&quot;"
+                	if ( element.title != '' && element.title != null ) {
+                		errorText =  "&quot;" +  errorText  + "&quot;";
+                	}
                 }
                 Errors.push(element.id, errorText);
                 new Insertion.Bottom(element.parentNode, " <ul id='" + element.name + "-msg'class='errors'><li>" + errorText + "</li></ul>")
