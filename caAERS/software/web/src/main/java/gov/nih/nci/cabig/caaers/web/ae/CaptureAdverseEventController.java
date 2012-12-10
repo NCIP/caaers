@@ -324,7 +324,15 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	@Override
 	protected ModelAndView handleInvalidSubmit(HttpServletRequest request, HttpServletResponse response) throws Exception{
 		String displayReportingPeriod = WebUtils.getStringParameter(request, "displayReportingPeriod");
-		if(StringUtils.isEmpty(displayReportingPeriod)) return  super.handleInvalidSubmit(request, response);
+        HttpSession session = request.getSession();
+		Integer studyId = (Integer)session.getAttribute(SELECTED_STUDY_ID);
+		Integer subjectId = (Integer)session.getAttribute(SELECTED_PARTICIPANT_ID);
+		Integer reportingPeriodId = (Integer)session.getAttribute(SELECTED_COURSE_ID);
+		
+		if(StringUtils.isEmpty(displayReportingPeriod)) {
+			String url = "/pages/ae/captureRoutine?study="+ studyId +"&participant=" +  subjectId + "&adverseEventReportingPeriod=" + reportingPeriodId  +"&_page=0&_target1=1&displayReportingPeriod=true&addReportingPeriodBinder=true";
+			return new ModelAndView("redirect:"+url);
+		}
 		
 		//generate the form, validate , processFormSubmission.
 		Object command = formBackingObject(request);
