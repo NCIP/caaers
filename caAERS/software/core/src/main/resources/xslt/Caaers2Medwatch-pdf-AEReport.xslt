@@ -18,8 +18,9 @@
 
     <xsl:variable name="_lbPossible" select="number(12)" />
     <xsl:variable name="_mhPossible" select="number(11)" />
+    <xsl:variable name="_descPossible" select="number(16)" />
 
-     <xsl:variable name="_aePossible" select="number(3)" />
+     <!--<xsl:variable name="_aePossible" select="number(3)" />-->
      <xsl:variable name="_cmPossible" select="number(4)" />
      <xsl:variable name="_attPossible" select="number(2)" />
      <xsl:variable name="_cmdPossible" select="number(3)" />
@@ -44,7 +45,7 @@
     <xsl:variable name="_attCount" select="($_agntAttCount + $_otherInvAttCount)" />
 
 
-    <xsl:variable name="_aeContinue" select="$_aeCount &gt;= $_aePossible" />
+    <!--<xsl:variable name="_aeContinue" select="$_aeCount &gt;= $_aePossible" />-->
     <xsl:variable name="_preCondContinue" select="$_pcCount &gt;= $_pcPossible" />
     <xsl:variable name="_ptContinue" select="$_ptCount &gt;= $_ptPossible" />
     <xsl:variable name="_msdsContinue" select="$_msdsCount &gt;= $_msdsPossible" />
@@ -58,8 +59,7 @@
 
 
     <xsl:variable name="_cTenContinue" select="$_cmContinue or $_ptContinue or $_cmContinue" />
-    <xsl:variable name="_bFiveContinue" select="$_aeContinue or $_edContinue" />
-    <xsl:variable name="_showNextPage" select="$_tacContinue or $_bFiveContinue or $_cTenContinue or $_attContinue" />
+    <xsl:variable name="_showNextPage" select="$_tacContinue or  $_cTenContinue or $_attContinue" />
 
 
     <xsl:attribute-set name="tr-height-1">
@@ -410,9 +410,7 @@
                                                                            number-columns-spanned="5">
                                                                 <fo:block>
                                                                     <fo:inline font-size="6.5">2.</fo:inline>
-                                                                    <fo:inline xsl:use-attribute-sets="label">Outcomes
-                                                                        Attributed to Adverse Event
-                                                                    </fo:inline>
+                                                                    <fo:inline xsl:use-attribute-sets="label">Outcomes Attributed to Adverse Event</fo:inline>
                                                                 </fo:block>
                                                                 <fo:block font-size="6.5" font-style="italic">
                                                                     <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;</xsl:text>
@@ -428,10 +426,17 @@
                                                                         <xsl:otherwise>[ ]</xsl:otherwise>
                                                                     </xsl:choose>
                                                                     Death:
+                                                                    <xsl:choose>
+                                                                        <xsl:when test="AdverseEventReport/AdverseEventResponseDescription/recoveryDate">
+                                                                            <xsl:call-template name="standard_date">
+                                                                                <xsl:with-param name="date" select="AdverseEventReport/AdverseEventResponseDescription/recoveryDate"/>
+                                                                            </xsl:call-template>
+                                                                        </xsl:when>
+                                                                        <xsl:otherwise>
+                                                                            <fo:leader leader-length="30%" leader-pattern="rule" rule-thickness="0.5pt"/>
+                                                                        </xsl:otherwise>
+                                                                    </xsl:choose>
 
-                                                                    <!-- if date exists , it goes here -->
-                                                                    <fo:leader leader-length="30%" leader-pattern="rule"
-                                                                               rule-thickness="0.5pt"/>
                                                                     <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;</xsl:text>
                                                                     <xsl:choose>
                                                                         <xsl:when
@@ -552,73 +557,28 @@
                                                     </fo:table-cell>
                                                 </fo:table-row>
                                                 <fo:table-row height="70mm">
-                                                    <fo:table-cell xsl:use-attribute-sets="full-border"
-                                                                   number-columns-spanned="5">
+                                                    <fo:table-cell xsl:use-attribute-sets="full-border" number-columns-spanned="5">
                                                         <fo:block>
                                                             <fo:inline font-size="6.5">5.</fo:inline>
                                                             <fo:inline xsl:use-attribute-sets="label">Describe Event or Problem
-                                                                <xsl:if test="AdverseEventReport/AdverseEvent/AdverseEventCtcTerm/universal-term">
-                                                                    (CTCAE)
-                                                                </xsl:if>
-                                                                <xsl:if test="AdverseEventReport/AdverseEvent/AdverseEventMeddraLowLevelTerm/universalTerm">
-                                                                    (MedDRA)
-                                                                </xsl:if>
+                                                                <xsl:if test="AdverseEventReport/AdverseEvent/AdverseEventCtcTerm/universal-term">(CTCAE)</xsl:if>
+                                                                <xsl:if test="AdverseEventReport/AdverseEvent/AdverseEventMeddraLowLevelTerm/universalTerm">(MedDRA)</xsl:if>
                                                             </fo:inline>
                                                         </fo:block>
-
-
-                                                        <xsl:for-each select="AdverseEventReport/AdverseEvent">
-                                                            <xsl:if test="position() &lt; $_aePossible">
-                                                                <xsl:apply-templates select="." />
-                                                            </xsl:if>
-
-                                                        </xsl:for-each>
-                                                        <xsl:if test="$_aeContinue = true()">
+                                                        <xsl:value-of select="mu:resetDescription()" />
+                                                        <xsl:value-of select="mu:resetDescriptionIndex()" />
+                                                        <xsl:call-template name="printAdverseEventDescription">
+                                                            <xsl:with-param name="aeLow" select="$lowest" />
+                                                            <xsl:with-param name="aeMax" select="$_descPossible + 1" />
+                                                            <xsl:with-param name="aer" select="AdverseEventReport" />
+                                                        </xsl:call-template>
+                                                        <xsl:if test="(mu:descriptionCount() &gt; $_descPossible) or mu:continueDescription()">
                                                             <fo:block text-align="right" xsl:use-attribute-sets="normal">
+
                                                                 <xsl:text disable-output-escaping="yes">&amp;#160; Continued... </xsl:text>
                                                             </fo:block>
                                                         </xsl:if>
-                                                        <fo:block xsl:use-attribute-sets="continue">Description of event:
-                                                            <xsl:value-of select="mu:before(AdverseEventReport/AdverseEventResponseDescription/eventDescription, $_edPossible)"/>
-                                                            <xsl:if test="$_edContinue">
-                                                               <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;
-                                                                   &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;
-                                                                   &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;
-                                                                   &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;
-                                                                   &amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;
-                                                                   &amp;#160;&amp;#160;&amp;#160; &amp;#160;&amp;#160;&amp;#160;
-                                                                   &amp;#160;&amp;#160;Continued... </xsl:text>
-                                                            </xsl:if>
-                                                        </fo:block>
 
-                                                        <fo:block xsl:use-attribute-sets="normal">
-                                                            Present Status:
-                                                            <fo:block/>
-                                                            <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'INTERVENTION_CONTINUES'">
-                                                                Intervention for AE Continues
-                                                            </xsl:if>
-                                                            <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'RECOVERING'">
-                                                                Recovering/Resolving
-                                                            </xsl:if>
-                                                            <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'RECOVERED_WITH_SEQUELAE'">
-                                                                Recovered/Resolved with Sequelae
-                                                            </xsl:if>
-                                                            <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'RECOVERED_WITHOUT_SEQUELAE'">
-                                                                Recovered/Resolved without Sequelae
-                                                            </xsl:if>
-                                                            <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'NOT_RECOVERED'">
-                                                                Not recovered/Not resolved
-                                                            </xsl:if>
-                                                            <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'DEAD'">
-                                                                Fatal/Died
-                                                            </xsl:if>
-                                                            <xsl:text
-                                                                    disable-output-escaping="yes">&amp;#160;</xsl:text>
-                                                            <xsl:call-template name="standard_date">
-                                                                <xsl:with-param name="date"
-                                                                                select="AdverseEventReport/AdverseEventResponseDescription/recoveryDate"/>
-                                                            </xsl:call-template>
-                                                        </fo:block>
                                                     </fo:table-cell>
                                                 </fo:table-row>
                                                 <fo:table-row height="40mm">
@@ -1746,9 +1706,7 @@
                                                     <fo:table-cell number-columns-spanned="4"
                                                                    xsl:use-attribute-sets="full-border"
                                                                    number-rows-spanned="2">
-                                                        <fo:block xsl:use-attribute-sets="label">12. Location Where
-                                                            Event Occured
-                                                        </fo:block>
+                                                        <fo:block xsl:use-attribute-sets="label">12. Location Where  Event Occured </fo:block>
                                                         <fo:table>
                                                             <fo:table-body>
                                                                 <fo:table-row>
@@ -1849,70 +1807,50 @@
                                                     <fo:table-cell number-columns-spanned="4" number-rows-spanned="2"
                                                                    xsl:use-attribute-sets="full-border">
                                                         <fo:block xsl:use-attribute-sets="label" padding-bottom="15mm">
-                                                            1. Contact Office - Name/Address (and manufacturing Site for
-                                                            Devices)
+                                                            1. Contact Office - Name/Address (and manufacturing Site for Devices)
                                                         </fo:block>
                                                     </fo:table-cell>
                                                     <fo:table-cell number-columns-spanned="2"
                                                                    xsl:use-attribute-sets="full-border">
-                                                        <fo:block xsl:use-attribute-sets="label" padding-bottom="7mm">2.
-                                                            Phone number
-                                                        </fo:block>
+                                                        <fo:block xsl:use-attribute-sets="label" padding-bottom="7mm">2.  Phone number  </fo:block>
                                                     </fo:table-cell>
                                                 </fo:table-row>
                                                 <fo:table-row xsl:use-attribute-sets="tr-height-1">
                                                     <fo:table-cell number-columns-spanned="2" number-rows-spanned="4"
                                                                    xsl:use-attribute-sets="full-border">
-                                                        <fo:block xsl:use-attribute-sets="label">3. Report Source
-                                                        </fo:block>
+                                                        <fo:block xsl:use-attribute-sets="label">3. Report Source </fo:block>
                                                         <fo:block xsl:use-attribute-sets="normal">
                                                             <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;</xsl:text>
-                                                            <fo:inline font-style="italic" font-weight="normal">(Check
-                                                                all that apply)
-                                                            </fo:inline>
+                                                            <fo:inline font-style="italic" font-weight="normal">(Check all that apply) </fo:inline>
                                                         </fo:block>
-                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[
-                                                            ] Foreign
+                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Foreign
                                                         </fo:block>
-                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[
-                                                            ] Study
+                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Study
                                                         </fo:block>
-                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[
-                                                            ] Literature
+                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Literature
                                                         </fo:block>
-                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[
-                                                            ] Consumer
+                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Consumer
                                                         </fo:block>
-                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[
-                                                            ] Health Professional
+                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Health Professional
                                                         </fo:block>
-                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[
-                                                            ] User Facility
+                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] User Facility
                                                         </fo:block>
-                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[
-                                                            ] Company Reprezentative
+                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Company Reprezentative
                                                         </fo:block>
-                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[
-                                                            ] Distributor
+                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Distributor
                                                         </fo:block>
-                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[
-                                                            ] Other:
+                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Other:</fo:block>
+                                                        <fo:block xsl:use-attribute-sets="normal" padding-top="10px">
+                                                            <fo:leader leader-length="100%" leader-pattern="rule" rule-thickness="0.5pt"/>
                                                         </fo:block>
                                                         <fo:block xsl:use-attribute-sets="normal" padding-top="10px">
-                                                            <fo:leader leader-length="100%" leader-pattern="rule"
-                                                                       rule-thickness="0.5pt"/>
+                                                            <fo:leader leader-length="100%" leader-pattern="rule" rule-thickness="0.5pt"/>
                                                         </fo:block>
                                                         <fo:block xsl:use-attribute-sets="normal" padding-top="10px">
-                                                            <fo:leader leader-length="100%" leader-pattern="rule"
-                                                                       rule-thickness="0.5pt"/>
+                                                            <fo:leader leader-length="100%" leader-pattern="rule" rule-thickness="0.5pt"/>
                                                         </fo:block>
                                                         <fo:block xsl:use-attribute-sets="normal" padding-top="10px">
-                                                            <fo:leader leader-length="100%" leader-pattern="rule"
-                                                                       rule-thickness="0.5pt"/>
-                                                        </fo:block>
-                                                        <fo:block xsl:use-attribute-sets="normal" padding-top="10px">
-                                                            <fo:leader leader-length="100%" leader-pattern="rule"
-                                                                       rule-thickness="0.5pt"/>
+                                                            <fo:leader leader-length="100%" leader-pattern="rule" rule-thickness="0.5pt"/>
                                                         </fo:block>
                                                         <fo:block xsl:use-attribute-sets="normal" padding-top="10px"/>
                                                     </fo:table-cell>
@@ -1938,79 +1876,54 @@
                                                             <fo:table-body>
                                                                 <fo:table-row>
                                                                     <fo:table-cell number-columns-spanned="2">
-                                                                        <fo:block xsl:use-attribute-sets="normal"
-                                                                                  padding-bottom="2px">(A)NDA #
-                                                                            <fo:leader leader-length="25%"
-                                                                                       leader-pattern="rule"
-                                                                                       rule-thickness="0.5pt"/>
+                                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="4px">(A)NDA #
+                                                                            <fo:leader leader-length="35%" leader-pattern="rule" rule-thickness="0.5pt"/>
                                                                         </fo:block>
                                                                     </fo:table-cell>
                                                                 </fo:table-row>
                                                                 <fo:table-row>
                                                                     <fo:table-cell number-columns-spanned="2">
-                                                                        <fo:block xsl:use-attribute-sets="normal"
-                                                                                  padding-bottom="2px">IND #
-                                                                            <fo:leader leader-length="25%"
-                                                                                       leader-pattern="rule"
-                                                                                       rule-thickness="0.5pt"/>
+                                                                        <fo:block xsl:use-attribute-sets="normal"  padding-bottom="4px">IND #
+                                                                            <fo:leader leader-length="35%" leader-pattern="rule" rule-thickness="0.5pt"/>
                                                                         </fo:block>
                                                                     </fo:table-cell>
                                                                 </fo:table-row>
                                                                 <fo:table-row>
                                                                     <fo:table-cell number-columns-spanned="2">
-                                                                        <fo:block xsl:use-attribute-sets="normal"
-                                                                                  padding-bottom="2px">STN #
-                                                                            <fo:leader leader-length="25%"
-                                                                                       leader-pattern="rule"
-                                                                                       rule-thickness="0.5pt"/>
+                                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="4px">STN #
+                                                                            <fo:leader leader-length="25%" leader-pattern="rule" rule-thickness="0.5pt"/>
                                                                         </fo:block>
                                                                     </fo:table-cell>
                                                                 </fo:table-row>
                                                                 <fo:table-row>
                                                                     <fo:table-cell number-columns-spanned="2">
-                                                                        <fo:block xsl:use-attribute-sets="normal"
-                                                                                  padding-bottom="2px">PMA/510(k) #
-                                                                            <fo:leader leader-length="25%"
-                                                                                       leader-pattern="rule"
-                                                                                       rule-thickness="0.5pt"/>
+                                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="4px">PMA/510(k) #
+                                                                            <fo:leader leader-length="25%" leader-pattern="rule" rule-thickness="0.5pt"/>
                                                                         </fo:block>
                                                                     </fo:table-cell>
                                                                 </fo:table-row>
                                                                 <fo:table-row>
                                                                     <fo:table-cell>
-                                                                        <fo:block xsl:use-attribute-sets="normal"
-                                                                                  padding-bottom="2px">Combination
-                                                                            Product
-                                                                        </fo:block>
+                                                                        <fo:block xsl:use-attribute-sets="normal"  padding-top="2px" padding-bottom="4px">Combination Product</fo:block>
                                                                     </fo:table-cell>
                                                                     <fo:table-cell>
-                                                                        <fo:block xsl:use-attribute-sets="normal">[ ]
-                                                                            Yes
-                                                                        </fo:block>
+                                                                        <fo:block xsl:use-attribute-sets="normal">[ ] Yes </fo:block>
                                                                     </fo:table-cell>
                                                                 </fo:table-row>
                                                                 <fo:table-row>
                                                                     <fo:table-cell>
-                                                                        <fo:block xsl:use-attribute-sets="normal"
-                                                                                  padding-bottom="2px">Pre-1938
-                                                                        </fo:block>
+                                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="4px">Pre-1938 </fo:block>
                                                                     </fo:table-cell>
                                                                     <fo:table-cell>
-                                                                        <fo:block xsl:use-attribute-sets="normal">[ ]
-                                                                            Yes
-                                                                        </fo:block>
+                                                                        <fo:block xsl:use-attribute-sets="normal">[ ] Yes </fo:block>
                                                                     </fo:table-cell>
                                                                 </fo:table-row>
                                                                 <fo:table-row>
                                                                     <fo:table-cell>
-                                                                        <fo:block xsl:use-attribute-sets="normal"
-                                                                                  padding-bottom="2px">OTC Product
-                                                                        </fo:block>
+                                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">OTC Product </fo:block>
                                                                     </fo:table-cell>
                                                                     <fo:table-cell>
-                                                                        <fo:block xsl:use-attribute-sets="normal">[ ]
-                                                                            Yes
-                                                                        </fo:block>
+                                                                        <fo:block xsl:use-attribute-sets="normal">[ ] Yes </fo:block>
                                                                     </fo:table-cell>
                                                                 </fo:table-row>
                                                             </fo:table-body>
@@ -2020,12 +1933,9 @@
                                                 <fo:table-row xsl:use-attribute-sets="tr-height-1" height="10mm">
                                                     <fo:table-cell number-columns-spanned="2"
                                                                    xsl:use-attribute-sets="full-border">
-                                                        <fo:block xsl:use-attribute-sets="label">6. If IND, Give
-                                                            Protocol #
-                                                        </fo:block>
+                                                        <fo:block xsl:use-attribute-sets="label">6. If IND, Give Protocol # </fo:block>
                                                         <fo:block xsl:use-attribute-sets="normal">
-                                                            <xsl:for-each
-                                                                    select="AdverseEventReport/StudyParticipantAssignment/StudySite/Study/Identifier">
+                                                            <xsl:for-each select="AdverseEventReport/StudyParticipantAssignment/StudySite/Study/Identifier">
                                                                 <xsl:if test="type = 'Coordinating Center Identifier'">
                                                                     <xsl:value-of select="value"/>
                                                                 </xsl:if>
@@ -2443,38 +2353,35 @@
                     </fo:block>
 
 
-                    <xsl:if test="($_showNextPage = true()) or (mu:labCount() &gt; $_lbPossible) or (mu:medHistoryCount() &gt; $_mhPossible)">
+                    <xsl:if test="($_showNextPage = true())
+                        or (mu:labCount() &gt; $_lbPossible)
+                        or (mu:medHistoryCount() &gt; $_mhPossible)
+                        or ( (mu:descriptionCount() &gt; $_descPossible) or mu:continueDescription() )">
                         <fo:block break-before="page">
                             <fo:table xsl:use-attribute-sets="continue-table-border">
                                 <fo:table-column column-width="100%" />
                                 <fo:table-body>
 
-                                    <xsl:if test="$_bFiveContinue = true()">
+                                    <xsl:if test="(mu:descriptionCount() &gt; $_descPossible) or mu:continueDescription()">
                                         <fo:table-row>
                                             <fo:table-cell>
                                                 <fo:block xsl:use-attribute-sets="label" font-style="italic"
-                                                          background-color='silver'>B. 5. Continued...
+                                                          background-color='silver'>
+                                                    B. 5. Describe Event or Problem (continued)
                                                 </fo:block>
                                             </fo:table-cell>
                                         </fo:table-row>
+
                                          <fo:table-row>
-                                            <fo:table-cell xsl:use-attribute-sets="continue-table-border">
-                                                <xsl:if test="$_aeContinue = true()">
-
-                                                    <xsl:for-each select="AdverseEventReport/AdverseEvent">
-                                                        <xsl:if test="position() &gt;= $_aePossible">
-                                                            <xsl:apply-templates select="." />
-                                                        </xsl:if>
-                                                    </xsl:for-each>
-
-                                                </xsl:if>
-                                                <xsl:if test="$_edContinue = true()">
-
-                                                    <fo:block xsl:use-attribute-sets="continue" keep-with-previous.within-page="always">Description of event:
-                                                            <xsl:value-of select="mu:after(AdverseEventReport/AdverseEventResponseDescription/eventDescription,$_edPossible)"/>
-                                                    </fo:block>
-
-                                                </xsl:if>
+                                            <fo:table-cell xsl:use-attribute-sets="continue-table-border" padding-left="1mm">
+                                                <xsl:value-of select="mu:resetDescription()" />
+                                                <fo:block padding-top="4px">
+                                                    <xsl:call-template name="printAdverseEventDescription">
+                                                        <xsl:with-param name="aeLow" select="$_descPossible" />
+                                                        <xsl:with-param name="aeMax" select="$highest" />
+                                                        <xsl:with-param name="aer" select="AdverseEventReport" />
+                                                    </xsl:call-template>
+                                                </fo:block>
                                             </fo:table-cell>
                                         </fo:table-row>
                                     </xsl:if>
@@ -2961,67 +2868,114 @@
 
 
 
-    <xsl:template match="AdverseEvent">
-        <xsl:choose>
-        <xsl:when test="substring(gridId,1,3) = 'PRY'">
-            <fo:block xsl:use-attribute-sets="normal" padding-top="2pt" >Primary AE:
-                <fo:block/>
-                Term:
-                <xsl:value-of
-                        select="AdverseEventCtcTerm/ctc-term/term"/>
-                <xsl:if test="LowLevelTerm/fullName">
-                    (<xsl:value-of
-                        select="LowLevelTerm/fullName"/>)
+    <xsl:template name="printAdverseEventDescription">
+        <xsl:param name="aeLow" />
+        <xsl:param name="aeMax" />
+        <xsl:param name="aer" />
+        <xsl:for-each select="$aer/AdverseEvent">
+            <xsl:value-of select="mu:incrementDescription()" />
+            <xsl:if test="(mu:descriptionCount() &lt; $aeMax) and (mu:descriptionCount() &gt; $aeLow)">
+                <xsl:choose>
+                    <xsl:when test="substring(gridId,1,3) = 'PRY'">
+                        <fo:block xsl:use-attribute-sets="normal" padding-top="2px">Primary AE:
+                            <xsl:text  disable-output-escaping="yes">&amp;#160;</xsl:text>
+                            <xsl:value-of select="AdverseEventCtcTerm/ctc-term/term"/>
+                            <xsl:if test="LowLevelTerm/fullName"> (<xsl:value-of select="LowLevelTerm/fullName"/>) </xsl:if>
+                            <xsl:value-of select="AdverseEventMeddraLowLevelTerm/universalTerm"/>
+                        </fo:block>
+                    </xsl:when>
+                    <xsl:otherwise> <fo:block xsl:use-attribute-sets="normal"  padding-top="4px" >AE <xsl:number format="1 "/>:
+                        <xsl:text  disable-output-escaping="yes">&amp;#160;</xsl:text>
+                        <xsl:text  disable-output-escaping="yes">&amp;#160;</xsl:text>
+                        <xsl:value-of select="AdverseEventCtcTerm/ctc-term/term"/>
+                        <xsl:if test="LowLevelTerm/fullName"> (<xsl:value-of select="LowLevelTerm/fullName"/>) </xsl:if>
+                        <xsl:value-of select="AdverseEventMeddraLowLevelTerm/universalTerm"/>
+                    </fo:block> </xsl:otherwise>
+                </xsl:choose>
+            </xsl:if>
+
+            <xsl:if test="detailsForOther">
+                <xsl:value-of select="mu:incrementDescription()" />
+                <xsl:if test="(mu:descriptionCount() &lt; $aeMax) and (mu:descriptionCount() &gt; $aeLow)">
+                    <fo:block  xsl:use-attribute-sets="normal" margin-left="5px">
+                        Verbatim: <xsl:value-of select="detailsForOther"/>
+                    </fo:block>
                 </xsl:if>
-                <xsl:value-of
-                        select="AdverseEventMeddraLowLevelTerm/universalTerm"/>
-                <xsl:if test="detailsForOther">
-                    <fo:block/>
-                    Verbatim:
-                    <xsl:value-of select="detailsForOther"/>
+            </xsl:if>
+
+            <xsl:if test="grade">
+                <xsl:value-of select="mu:incrementDescription()" />
+                <xsl:if test="(mu:descriptionCount() &lt; $aeMax) and (mu:descriptionCount() &gt; $aeLow)">
+                    <fo:block   xsl:use-attribute-sets="normal" margin-left="5px">
+                        Grade: <xsl:value-of select="grade"/>
+                    </fo:block>
                 </xsl:if>
-                <fo:block/>
-                Grade:
-                <xsl:value-of select="grade"/>
-                <fo:block/>
-                <xsl:value-of select="comments"/>
-                <fo:block/>
-                <xsl:value-of select="comments"/>
-                <fo:block/>
-            </fo:block>
-        </xsl:when>
-        <xsl:otherwise>
-            <fo:block xsl:use-attribute-sets="normal" padding-top="2pt">AE
-                <xsl:number format="1 "/>:
-                <fo:block/>
-                Term:
-                <xsl:value-of
-                        select="AdverseEventCtcTerm/ctc-term/term"/>
-                <xsl:if test="LowLevelTerm/fullName">
-                    (<xsl:value-of
-                        select="LowLevelTerm/fullName"/>)
+            </xsl:if>
+
+            <xsl:if test="comments">
+                <xsl:value-of select="mu:incrementDescription()" />
+                <xsl:if test="(mu:descriptionCount() &lt; $aeMax) and (mu:descriptionCount() &gt; $aeLow)">
+                    <fo:block   xsl:use-attribute-sets="normal" margin-left="5px">   f select="comments"/>
+                    </fo:block>
                 </xsl:if>
-                <xsl:value-of
-                        select="AdverseEventMeddraLowLevelTerm/universalTerm"/>
-                <xsl:if test="detailsForOther">
-                    <fo:block/>
-                    Verbatim:
-                    <xsl:value-of select="detailsForOther"/>
+            </xsl:if>
+        </xsl:for-each>
+
+        <xsl:if test="$aer/AdverseEventResponseDescription/presentStatus">
+            <xsl:value-of select="mu:incrementDescription()" />
+            <xsl:if test="(mu:descriptionCount() &lt; $aeMax) and (mu:descriptionCount() &gt; $aeLow)">
+                <fo:block   xsl:use-attribute-sets="normal" padding-top="3px">
+                    Present status:
+                    <xsl:if test="$aer/AdverseEventResponseDescription/presentStatus = 'INTERVENTION_CONTINUES'">Intervention for AE Continues</xsl:if>
+                    <xsl:if test="$aer/AdverseEventResponseDescription/presentStatus = 'RECOVERING'">Recovering/Resolving</xsl:if>
+                    <xsl:if test="$aer/AdverseEventResponseDescription/presentStatus = 'RECOVERED_WITH_SEQUELAE'">Recovered/Resolved with Sequelae</xsl:if>
+                    <xsl:if test="$aer/AdverseEventResponseDescription/presentStatus = 'RECOVERED_WITHOUT_SEQUELAE'">Recovered/Resolved without Sequelae</xsl:if>
+                    <xsl:if test="$aer/AdverseEventResponseDescription/presentStatus = 'NOT_RECOVERED'">Not recovered/Not resolved</xsl:if>
+                    <xsl:if test="$aer/AdverseEventResponseDescription/presentStatus = 'DEAD'">Fatal/Died</xsl:if>
+                    <xsl:if test="$aer/AdverseEventResponseDescription/recoveryDate">
+                        <xsl:text disable-output-escaping="yes">&amp;#160; on </xsl:text>
+                        <xsl:call-template name="standard_date">
+                            <xsl:with-param name="date" select="$aer/AdverseEventResponseDescription/recoveryDate"/>
+                        </xsl:call-template>
+                    </xsl:if>
+                </fo:block>
+
+            </xsl:if>
+        </xsl:if>
+
+
+        <xsl:if test="$aer/AdverseEventResponseDescription/eventDescription">
+            <xsl:value-of select="mu:incrementDescription()" />
+            <xsl:if test="mu:continueDescription() or ( (mu:descriptionCount() &lt; $aeMax) and (mu:descriptionCount() &gt; $aeLow) ) ">
+
+                <xsl:if test="mu:descriptionIndex() = 0">
+                    <fo:block xsl:use-attribute-sets="normal" padding-top="4px" padding-bottom="3px">Description : </fo:block>
+                    <xsl:value-of select="mu:incrementDescription()" />
                 </xsl:if>
-                <fo:block/>
-                Grade:
-                <xsl:value-of select="grade"/>
-                <fo:block/>
-                <xsl:value-of select="comments"/>
-                <fo:block/>
-            </fo:block>
-        </xsl:otherwise>
-        </xsl:choose>
-        <fo:block/>
+
+                <fo:block xsl:use-attribute-sets="normal" margin-left="5px">
+                    <xsl:value-of select="mu:description($aer/AdverseEventResponseDescription/eventDescription, $aeMax, 86)" />
+                </fo:block>
+
+            </xsl:if>
+
+        </xsl:if>
+
+            <!--<xsl:variable name="_curdescCnt" select="mu:descriptionCount()" />-->
+            <!--<xsl:variable name="_descAreaLeft" select="mu:charsPossible($aer/AdverseEventResponseDescription/eventDescription, $_curdescCnt , $aeMax, 75)"/>-->
+            <!--<xsl:value-of select="mu:incrementDescription()" />-->
+            <!--<xsl:if test="( (mu:descriptionCount() + $_descAreaLeft) &lt; $aeMax) and ((mu:descriptionCount() + $_descAreaLeft) &gt; $aeLow)">-->
+
+                <!--<fo:block xsl:use-attribute-sets="normal" margin-left="5px">-->
+                    <!--<xsl:value-of select="mu:descBefore($aer/AdverseEventResponseDescription/eventDescription, $_descAreaLeft)" />-->
+                <!--</fo:block>-->
+            <!--</xsl:if>-->
+
     </xsl:template>
 
     <xsl:template match="ConcomitantMedication">
         <fo:block xsl:use-attribute-sets="normal">
+            CM :
             <xsl:value-of select="name"/>
             <xsl:if test="startDate/monthString">
                 (<xsl:value-of select="startDate/monthString"/>/<xsl:value-of select="startDate/yearString"/>)

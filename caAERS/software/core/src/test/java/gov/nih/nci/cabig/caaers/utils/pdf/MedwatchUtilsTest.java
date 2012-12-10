@@ -8,6 +8,19 @@ import junit.framework.TestCase;
  */
 public class MedwatchUtilsTest extends TestCase {
 
+    public void testDescription(){
+        String description = "Hello how are you doing. Hope you are doing great. I will see you during next summer holidays!";
+        MedwatchUtils.setDescriptionIndex(0);
+        for(int i =0; i < 10; i++) MedwatchUtils.incrementDescription();
+        System.out.println(MedwatchUtils.descriptionCount());
+        System.out.println(MedwatchUtils.getDescriptionIndex());
+        String s1 = MedwatchUtils.description(description, 9,10);
+        String s2 = MedwatchUtils.description(description, 3000,10);
+        assertEquals(description, s1);
+        assertTrue(s2.equals(""));
+        System.out.println(s1);
+        System.out.println(s2);
+    }
     public void testBefore() throws Exception {
 
 

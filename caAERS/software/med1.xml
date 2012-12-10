@@ -1,103 +1,148 @@
 <AdverseEventReport>
-    <id>303</id>
-    <createdAt xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">2012-11-14
-        17:37:34.729
+    <id>224</id>
+    <createdAt xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">2012-12-03
+        16:04:10.873
     </createdAt>
     <AdverseEventReportingPeriod/>
     <AdverseEventResponseDescription>
-        <eventDescription>n</eventDescription>
-        <presentStatus xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
-            INTERVENTION_CONTINUES
-        </presentStatus>
+        <eventDescription>Biju Joseph is a very good person. He goes to church every Sunday. Plays with his kids every day. Help others every day. So what else one may need to become a good person like Biju ? I would say one must be having the heart to work for others without any monetary benefits. Hope this helps.</eventDescription>
+        <presentStatus xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">INTERVENTION_CONTINUES</presentStatus>
+        <studyDrugInterrupted>true</studyDrugInterrupted>
+        <eventAbate xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">YES
+        </eventAbate>
+        <eventReappear xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">YES
+        </eventReappear>
         <primaryTreatmentApproximateTime>
+            <hour>2</hour>
             <type>0</type>
         </primaryTreatmentApproximateTime>
     </AdverseEventResponseDescription>
     <Physician>
-        <firstName>Stuart</firstName>
-        <lastName>Grossman</lastName>
+        <firstName>Physician</firstName>
+        <lastName>Two</lastName>
         <address>
-            <city>a</city>
-            <state>va</state>
-            <street>s</street>
+            <city>herndon</city>
+            <state>VIRGINIA</state>
+            <street>13921 Park center rd</street>
             <zip>20171</zip>
         </address>
         <ContactMechanism xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                           xsi:type="java:org.exolab.castor.mapping.MapItem">
             <key xsi:type="java:java.lang.String">phone</key>
-            <value xsi:type="java:java.lang.String">1122221111</value>
+            <value xsi:type="java:java.lang.String">7037879656</value>
         </ContactMechanism>
         <ContactMechanism xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                           xsi:type="java:org.exolab.castor.mapping.MapItem">
             <key xsi:type="java:java.lang.String">fax</key>
-            <value xsi:type="java:java.lang.String">1122221111</value>
+            <value xsi:type="java:java.lang.String">777-777-7777</value>
         </ContactMechanism>
         <ContactMechanism xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                           xsi:type="java:org.exolab.castor.mapping.MapItem">
             <key xsi:type="java:java.lang.String">e-mail</key>
-            <value xsi:type="java:java.lang.String">b@kk.com</value>
+            <value xsi:type="java:java.lang.String">site.investigator@semanticbits.com</value>
         </ContactMechanism>
     </Physician>
     <Reporter>
-        <firstName>mayo</firstName>
-        <lastName>super user</lastName>
+        <firstName>mayo super</firstName>
+        <lastName>user</lastName>
         <address/>
         <ContactMechanism xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                           xsi:type="java:org.exolab.castor.mapping.MapItem">
             <key xsi:type="java:java.lang.String">phone</key>
-            <value xsi:type="java:java.lang.String">410-614-5366</value>
+            <value xsi:type="java:java.lang.String">5712631173</value>
+        </ContactMechanism>
+        <ContactMechanism xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                          xsi:type="java:org.exolab.castor.mapping.MapItem">
+            <key xsi:type="java:java.lang.String">fax</key>
+            <value xsi:type="java:java.lang.String">777-777-7777</value>
         </ContactMechanism>
         <ContactMechanism xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                           xsi:type="java:org.exolab.castor.mapping.MapItem">
             <key xsi:type="java:java.lang.String">e-mail</key>
-            <value xsi:type="java:java.lang.String">mayo-super-user@caaers.org</value>
+            <value xsi:type="java:java.lang.String">reshma.koganti@gmail.com</value>
         </ContactMechanism>
     </Reporter>
     <DiseaseHistory>
         <diagnosisDate>
-            <dayString>17</dayString>
-            <monthString>10</monthString>
+            <dayString>03</dayString>
+            <monthString>12</monthString>
             <yearString>2012</yearString>
         </diagnosisDate>
+        <MeddraStudyDisease>
+            <id>1712</id>
+            <LowLevelTerm>
+                <id>10118290</id>
+                <meddraCode>10006279</meddraCode>
+                <meddraTerm>Breast neoplasm</meddraTerm>
+                <fullName>Breast neoplasm</fullName>
+            </LowLevelTerm>
+        </MeddraStudyDisease>
+        <AnatomicSite>
+            <id>42</id>
+            <name>Testicle</name>
+            <category>Genitourinary</category>
+        </AnatomicSite>
+        <MetastaticDiseaseSite>
+            <id>80</id>
+            <AnatomicSite>
+                <id>111</id>
+                <name>Adrenal Gland</name>
+                <category>Other</category>
+            </AnatomicSite>
+        </MetastaticDiseaseSite>
+        <MetastaticDiseaseSite>
+            <id>81</id>
+            <AnatomicSite>
+                <id>70</id>
+                <name>Back</name>
+                <category>Musculoskeletal</category>
+            </AnatomicSite>
+        </MetastaticDiseaseSite>
+        <MetastaticDiseaseSite>
+            <id>82</id>
+            <AnatomicSite>
+                <id>38</id>
+                <name>Kidney</name>
+                <category>Genitourinary</category>
+            </AnatomicSite>
+        </MetastaticDiseaseSite>
     </DiseaseHistory>
     <ParticipantHistory>
         <height>
+            <quantity>100.0</quantity>
             <unit>Centimeter</unit>
         </height>
         <weight>
+            <quantity>100.0</quantity>
             <unit>Kilogram</unit>
         </weight>
-        <bsa>0.0</bsa>
+        <baselinePerformanceStatus>1 = Symptomatic, fully ambulatory</baselinePerformanceStatus>
+        <bsa>1.4334</bsa>
     </ParticipantHistory>
     <StudyParticipantAssignment>
-        <dateOfEnrollment>2012-10-17T00:00:00.000-04:00</dateOfEnrollment>
+        <dateOfEnrollment>2012-12-03T00:00:00.000-05:00</dateOfEnrollment>
         <StudySite>
             <StudyInvestigator>
-                <id>293</id>
+                <id>66679</id>
                 <roleCode>SI</roleCode>
                 <statusCode>true</statusCode>
                 <SiteInvestigator>
-                    <id>155</id>
+                    <id>314</id>
                     <Investigator>
-                        <id>100007</id>
-                        <firstName>Site</firstName>
-                        <lastName>Physician</lastName>
-                        <emailAddress>site.physician@gmail.com</emailAddress>
-                        <phoneNumber>555-555-5555</phoneNumber>
-                        <faxNumber>555-555-5555</faxNumber>
+                        <id>103349</id>
+                        <firstName>Physician</firstName>
+                        <lastName>Two</lastName>
+                        <emailAddress>site.investigator2@semanticbits.com</emailAddress>
                     </Investigator>
                 </SiteInvestigator>
             </StudyInvestigator>
             <statusCode>false</statusCode>
             <Study>
-                <id>54</id>
-                <multiInstitutionIndicator>true</multiInstitutionIndicator>
-                <shortTitle>I-SPY 2 Trial</shortTitle>
-                <longTitle>I-SPY 2 TRIAL: Investigation of Serial studies to Predict Your Therapeutic Response with
-                    Imaging And moLecular analysis
-                </longTitle>
+                <id>567</id>
+                <shortTitle>I-SPY 2 Trial (Investigation of Serial Studies to Predict Your Therapeutic Response With
+                    Imaging And moLecular Analysis 2)
+                </shortTitle>
                 <phaseCode>Phase II Trial</phaseCode>
-                <status>Active - Trial is open to accrual</status>
                 <Ctc>
                     <id>4</id>
                     <name>4.0</name>
@@ -105,210 +150,164 @@
                 <Identifier>
                     <type>Protocol Authority Identifier</type>
                     <value>I-SPY 2</value>
-                    <primaryIndicator>false</primaryIndicator>
+                    <primaryIndicator>true</primaryIndicator>
                 </Identifier>
                 <Identifier>
                     <type>Coordinating Center Identifier</type>
                     <value>I-SPY 2</value>
-                    <primaryIndicator>true</primaryIndicator>
+                    <primaryIndicator>false</primaryIndicator>
                 </Identifier>
-                <design xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
-                    OPEN_UNBLIND
-                </design>
+                <Identifier>
+                    <type>Other</type>
+                    <value>I-SPY 2</value>
+                    <primaryIndicator>false</primaryIndicator>
+                </Identifier>
+                <StudyAgent>
+                    <Agent>
+                        <name>ABT-888 (Veliparib)</name>
+                        <description>ABT-888 (Veliparib)</description>
+                        <nscNumber>737664</nscNumber>
+                    </Agent>
+                    <studyTherapyType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                      xsi:type="java:java.lang.String">DRUG_ADMINISTRATION
+                    </studyTherapyType>
+                </StudyAgent>
+                <StudyAgent>
+                    <Agent>
+                        <name>AMG 386</name>
+                        <description>AMG 386</description>
+                        <nscNumber>751173</nscNumber>
+                    </Agent>
+                    <studyTherapyType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                      xsi:type="java:java.lang.String">DRUG_ADMINISTRATION
+                    </studyTherapyType>
+                </StudyAgent>
+                <StudyAgent>
+                    <Agent>
+                        <name>AMG 479</name>
+                        <description>AMG 479</description>
+                        <nscNumber>750008</nscNumber>
+                    </Agent>
+                    <studyTherapyType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                      xsi:type="java:java.lang.String">DRUG_ADMINISTRATION
+                    </studyTherapyType>
+                </StudyAgent>
+                <StudyAgent>
+                    <Agent>
+                        <name>Metformin hydrochloride</name>
+                        <description>Metformin hydrochloride</description>
+                        <nscNumber>91485</nscNumber>
+                    </Agent>
+                    <studyTherapyType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                      xsi:type="java:java.lang.String">DRUG_ADMINISTRATION
+                    </studyTherapyType>
+                </StudyAgent>
+                <StudyAgent>
+                    <Agent>
+                        <name>MK-2206</name>
+                        <description>MK-2206</description>
+                        <nscNumber>749607</nscNumber>
+                    </Agent>
+                    <studyTherapyType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                      xsi:type="java:java.lang.String">DRUG_ADMINISTRATION
+                    </studyTherapyType>
+                </StudyAgent>
                 <StudyAgent>
                     <Agent>
                         <name>Trastuzumab (Herceptin)</name>
                         <description>Trastuzumab (Herceptin)</description>
                         <nscNumber>688097</nscNumber>
                     </Agent>
-                    <INDType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
-                        IND_EXEMPT
-                    </INDType>
-                    <studyTherapyType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                                      xsi:type="java:java.lang.String">DRUG_ADMINISTRATION
-                    </studyTherapyType>
-                </StudyAgent>
-                <StudyAgent>
-                    <INDType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
-                        IND_EXEMPT
-                    </INDType>
-                    <otherAgent>Taxane</otherAgent>
                     <studyTherapyType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                                       xsi:type="java:java.lang.String">DRUG_ADMINISTRATION
                     </studyTherapyType>
                 </StudyAgent>
                 <StudyAgent>
                     <Agent>
-                        <name>Pertuzumab</name>
-                        <description>Pertuzumab</description>
-                        <nscNumber>740102</nscNumber>
+                        <name>Paclitaxel (Taxol)</name>
+                        <description>Paclitaxel (Taxol)</description>
+                        <nscNumber>673089</nscNumber>
                     </Agent>
-                    <INDType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
-                        OTHER
-                    </INDType>
-                    <studyTherapyType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                                      xsi:type="java:java.lang.String">DRUG_ADMINISTRATION
-                    </studyTherapyType>
-                </StudyAgent>
-                <StudyAgent>
-                    <INDType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
-                        IND_EXEMPT
-                    </INDType>
-                    <otherAgent>Anthracycline</otherAgent>
                     <studyTherapyType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                                       xsi:type="java:java.lang.String">DRUG_ADMINISTRATION
                     </studyTherapyType>
                 </StudyAgent>
                 <StudyAgent>
                     <Agent>
-                        <name>GW572016 (lapatinib, Tykerb)</name>
-                        <description>GW572016 (lapatinib, Tykerb)</description>
-                        <nscNumber>727989</nscNumber>
+                        <name>Doxorubicin hydrochloride</name>
+                        <description>Doxorubicin hydrochloride</description>
+                        <nscNumber>123127</nscNumber>
                     </Agent>
-                    <INDType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
-                        OTHER
-                    </INDType>
                     <studyTherapyType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                                       xsi:type="java:java.lang.String">DRUG_ADMINISTRATION
                     </studyTherapyType>
                 </StudyAgent>
                 <StudyAgent>
                     <Agent>
-                        <name>GW786034 (pazopanib, Votrient)</name>
-                        <description>GW786034 (pazopanib, Votrient)</description>
-                        <nscNumber>737754</nscNumber>
+                        <name>Cyclophosphamide</name>
+                        <description>Cyclophosphamide</description>
+                        <nscNumber>26271</nscNumber>
                     </Agent>
-                    <INDType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
-                        OTHER
-                    </INDType>
                     <studyTherapyType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                                       xsi:type="java:java.lang.String">DRUG_ADMINISTRATION
                     </studyTherapyType>
                 </StudyAgent>
                 <StudyAgent>
-                    <INDType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
-                        IND_EXEMPT
-                    </INDType>
-                    <otherAgent>Demo Agent</otherAgent>
+                    <Agent>
+                        <name>Neratinib</name>
+                        <nscNumber>Neratinib</nscNumber>
+                    </Agent>
+                    <studyTherapyType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                      xsi:type="java:java.lang.String">DRUG_ADMINISTRATION
+                    </studyTherapyType>
+                </StudyAgent>
+                <StudyAgent>
+                    <otherAgent>test</otherAgent>
                     <studyTherapyType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                                       xsi:type="java:java.lang.String">DRUG_ADMINISTRATION
                     </studyTherapyType>
                 </StudyAgent>
                 <MeddraStudyDisease>
-                    <id>106</id>
+                    <id>1712</id>
                     <LowLevelTerm>
-                        <id>106</id>
-                        <meddraCode>10006177</meddraCode>
-                        <meddraTerm>Breast adenocarcinoma stage III</meddraTerm>
-                        <fullName>Breast adenocarcinoma stage III</fullName>
+                        <id>1712</id>
+                        <meddraCode>10006279</meddraCode>
+                        <meddraTerm>Breast neoplasm</meddraTerm>
+                        <fullName>Breast neoplasm</fullName>
                     </LowLevelTerm>
                 </MeddraStudyDisease>
+                <studyPurpose>Treatment</studyPurpose>
             </Study>
             <Organization>
-                <id>104094</id>
-                <name>Johns Hopkins University</name>
-                <nciInstituteCode>MD017</nciInstituteCode>
-                <descriptionText>600 North Wolfe Street</descriptionText>
+                <id>102138</id>
+                <name>University of California Davis Cancer Center</name>
+                <nciInstituteCode>CA578</nciInstituteCode>
                 <SiteInvestigator>
-                    <id>48</id>
+                    <id>314</id>
                     <Investigator>
-                        <id>30048</id>
-                        <firstName>Judith</firstName>
-                        <lastName>Karp</lastName>
-                        <nciIdentifier>8140</nciIdentifier>
-                        <emailAddress>default@abc.com</emailAddress>
-                        <phoneNumber>(000)000-0000</phoneNumber>
-                        <faxNumber>(000)000-0000</faxNumber>
+                        <id>103349</id>
+                        <firstName>Physician</firstName>
+                        <lastName>Two</lastName>
+                        <emailAddress>site.investigator2@semanticbits.com</emailAddress>
                     </Investigator>
                 </SiteInvestigator>
                 <SiteInvestigator>
-                    <id>60</id>
+                    <id>315</id>
                     <Investigator>
-                        <id>30057</id>
-                        <firstName>Steven</firstName>
-                        <lastName>Gore</lastName>
-                        <nciIdentifier>15984</nciIdentifier>
-                        <emailAddress>default@abc.com</emailAddress>
-                        <phoneNumber>(410) 614-1005</phoneNumber>
-                        <faxNumber>(410)955-8781</faxNumber>
-                    </Investigator>
-                </SiteInvestigator>
-                <SiteInvestigator>
-                    <id>68</id>
-                    <Investigator>
-                        <id>30065</id>
-                        <firstName>Roberto</firstName>
-                        <lastName>Pili</lastName>
-                        <nciIdentifier>31509</nciIdentifier>
-                        <emailAddress>default@abc.com</emailAddress>
-                        <phoneNumber>(000)000-0000</phoneNumber>
-                        <faxNumber>(000)000-0000</faxNumber>
-                    </Investigator>
-                </SiteInvestigator>
-                <SiteInvestigator>
-                    <id>75</id>
-                    <Investigator>
-                        <id>30071</id>
-                        <firstName>Ross</firstName>
-                        <lastName>Donehower</lastName>
-                        <nciIdentifier>9973</nciIdentifier>
-                        <emailAddress>default@abc.com</emailAddress>
-                        <phoneNumber>(000)000-0000</phoneNumber>
-                        <faxNumber>(000)000-0000</faxNumber>
-                    </Investigator>
-                </SiteInvestigator>
-                <SiteInvestigator>
-                    <id>19</id>
-                    <Investigator>
-                        <id>30019</id>
-                        <firstName>Manuel</firstName>
-                        <lastName>Hidalgo</lastName>
-                        <nciIdentifier>26783</nciIdentifier>
-                        <emailAddress>default@abc.com</emailAddress>
-                        <phoneNumber>(000)000-0000</phoneNumber>
-                        <faxNumber>(000)000-0000</faxNumber>
-                    </Investigator>
-                </SiteInvestigator>
-                <SiteInvestigator>
-                    <id>152</id>
-                    <Investigator>
-                        <id>30144</id>
-                        <firstName>Stuart</firstName>
-                        <lastName>Grossman</lastName>
-                        <nciIdentifier>12345</nciIdentifier>
-                        <emailAddress>default@abc.com</emailAddress>
-                        <phoneNumber>410-955-8837</phoneNumber>
-                    </Investigator>
-                </SiteInvestigator>
-                <SiteInvestigator>
-                    <id>171</id>
-                    <Investigator>
-                        <id>100042</id>
-                        <firstName>Ion</firstName>
-                        <lastName>Olaru</lastName>
-                        <emailAddress>ion.olaru@semanticbits.com</emailAddress>
-                        <phoneNumber>312-555-6666</phoneNumber>
-                    </Investigator>
-                </SiteInvestigator>
-                <SiteInvestigator>
-                    <id>155</id>
-                    <Investigator>
-                        <id>100007</id>
-                        <firstName>Site</firstName>
-                        <lastName>Physician</lastName>
-                        <emailAddress>site.physician@gmail.com</emailAddress>
-                        <phoneNumber>555-555-5555</phoneNumber>
-                        <faxNumber>555-555-5555</faxNumber>
+                        <id>103331</id>
+                        <firstName>AE</firstName>
+                        <lastName>Reporter</lastName>
+                        <emailAddress>aer@email.com</emailAddress>
                     </Investigator>
                 </SiteInvestigator>
             </Organization>
         </StudySite>
         <Participant>
-            <firstName>Lance</firstName>
-            <lastName>Armstrong</lastName>
+            <firstName>bj</firstName>
+            <lastName>p</lastName>
             <dateOfBirth>
-                <dayString>17</dayString>
-                <monthString>10</monthString>
+                <dayString>03</dayString>
+                <monthString>12</monthString>
                 <yearString>2012</yearString>
             </dateOfBirth>
             <gender>Male</gender>
@@ -316,72 +315,679 @@
             <ethnicity>Hispanic or Latino</ethnicity>
             <Identifier>
                 <type>Other</type>
-                <value>la-22</value>
+                <value>bjp-23</value>
                 <primaryIndicator>true</primaryIndicator>
             </Identifier>
         </Participant>
-        <studySubjectIdentifier>spy-la-22</studySubjectIdentifier>
+        <studySubjectIdentifier>mrn-bjp-23</studySubjectIdentifier>
     </StudyParticipantAssignment>
+    <ConcomitantMedication>
+        <name>kidney</name>
+        <startDate>
+            <dayString>03</dayString>
+            <monthString>12</monthString>
+            <yearString>2012</yearString>
+        </startDate>
+        <endDate>
+            <dayString>03</dayString>
+            <monthString>12</monthString>
+            <yearString>2012</yearString>
+        </endDate>
+        <stillTakingMedications>false</stillTakingMedications>
+    </ConcomitantMedication>
     <AdverseEvent>
-        <gridId>PRY51d33853-8421-4c42-beae-1b8177090bf1</gridId>
-        <startDate>2012-11-14T00:00:00.000-05:00</startDate>
-        <detailsForOther>va</detailsForOther>
-        <CourseAgentAttribution>
-            <id>1313</id>
-            <attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">4:
-                Probable
+        <gridId>PRY4106acb9-5fb0-4503-9f48-21a265d44f16</gridId>
+        <startDate>2012-05-13T00:00:00.000-04:00</startDate>
+        <endDate>2012-05-15T00:00:00.000-04:00</endDate>
+        <detailsForOther>drugged</detailsForOther>
+        <expected>false</expected>
+        <ConcomitantMedicationAttribution>
+            <id>1104</id>
+            <ConcomitantMedication>
+                <name>kidney</name>
+                <startDate>
+                    <dayString>03</dayString>
+                    <monthString>12</monthString>
+                    <yearString>2012</yearString>
+                </startDate>
+                <endDate>
+                    <dayString>03</dayString>
+                    <monthString>12</monthString>
+                    <yearString>2012</yearString>
+                </endDate>
+                <stillTakingMedications>false</stillTakingMedications>
+            </ConcomitantMedication>
+        </ConcomitantMedicationAttribution>
+        <OtherCauseAttribution>
+            <OtherCause>
+                <text>Asthma</text>
+            </OtherCause>
+        </OtherCauseAttribution>
+        <OtherCauseAttribution>
+            <OtherCause>
+                <text>Peptic ulcer</text>
+            </OtherCause>
+        </OtherCauseAttribution>
+        <DiseaseAttribution>
+            <id>1100</id>
+            <attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">2:
+                Unlikely
             </attribution>
-            <CourseAgent>
-                <id>320</id>
-                <firstAdministeredDate>2012-12-03T00:00:00.000-05:00</firstAdministeredDate>
-                <lastAdministeredDate>2012-12-03T00:00:00.000-05:00</lastAdministeredDate>
-                <Dose>
-                    <amount>1</amount>
-                    <units>BVP</units>
-                </Dose>
-                <StudyAgent>
-                    <Agent>
-                        <id>1113</id>
-                        <name>Trastuzumab (Herceptin)</name>
-                        <description>Trastuzumab (Herceptin)</description>
-                        <nscNumber>688097</nscNumber>
-                    </Agent>
-                    <INDType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
-                        IND_EXEMPT
-                    </INDType>
-                    <studyTherapyType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                                      xsi:type="java:java.lang.String">DRUG_ADMINISTRATION
-                    </studyTherapyType>
-                </StudyAgent>
-                <lotNumber>1</lotNumber>
-                <formulation>1</formulation>
-            </CourseAgent>
-        </CourseAgentAttribution>
+            <DiseaseHistory>
+                <id>224</id>
+                <diagnosisDate>
+                    <dayString>03</dayString>
+                    <monthString>12</monthString>
+                    <yearString>2012</yearString>
+                </diagnosisDate>
+                <MeddraStudyDisease>
+                    <id>1712</id>
+                    <LowLevelTerm>
+                        <id>10118290</id>
+                        <meddraCode>10006279</meddraCode>
+                        <meddraTerm>Breast neoplasm</meddraTerm>
+                        <fullName>Breast neoplasm</fullName>
+                    </LowLevelTerm>
+                </MeddraStudyDisease>
+                <AnatomicSite>
+                    <id>42</id>
+                    <name>Testicle</name>
+                    <category>Genitourinary</category>
+                </AnatomicSite>
+                <MetastaticDiseaseSite>
+                    <id>80</id>
+                    <AnatomicSite>
+                        <id>111</id>
+                        <name>Adrenal Gland</name>
+                        <category>Other</category>
+                    </AnatomicSite>
+                </MetastaticDiseaseSite>
+                <MetastaticDiseaseSite>
+                    <id>81</id>
+                    <AnatomicSite>
+                        <id>70</id>
+                        <name>Back</name>
+                        <category>Musculoskeletal</category>
+                    </AnatomicSite>
+                </MetastaticDiseaseSite>
+                <MetastaticDiseaseSite>
+                    <id>82</id>
+                    <AnatomicSite>
+                        <id>38</id>
+                        <name>Kidney</name>
+                        <category>Genitourinary</category>
+                    </AnatomicSite>
+                </MetastaticDiseaseSite>
+            </DiseaseHistory>
+        </DiseaseAttribution>
         <AdverseEventCtcTerm other-required="false" med-dRA="false">
             <ctc-term>
-                <id>4767</id>
-                <term>Vaginal discharge</term>
-                <ctepTerm>Vaginal discharge</ctepTerm>
-                <ctepCode>10046901</ctepCode>
+                <id>4154</id>
+                <term>Tinnitus</term>
+                <ctepTerm>Tinnitus</ctepTerm>
+                <ctepCode>10043882</ctepCode>
                 <otherRequired>false</otherRequired>
                 <CtcCategory>
-                    <id>421</id>
-                    <name>Reproductive system and breast disorders</name>
+                    <id>404</id>
+                    <name>Ear and labyrinth disorders</name>
                 </CtcCategory>
             </ctc-term>
-            <universal-term>Vaginal discharge: va: null</universal-term>
+            <universal-term>Tinnitus: drugged: null</universal-term>
             <term xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="CtcTerm">
-                <id>4767</id>
-                <term>Vaginal discharge</term>
-                <ctepTerm>Vaginal discharge</ctepTerm>
-                <ctepCode>10046901</ctepCode>
+                <id>4154</id>
+                <term>Tinnitus</term>
+                <ctepTerm>Tinnitus</ctepTerm>
+                <ctepCode>10043882</ctepCode>
                 <otherRequired>false</otherRequired>
                 <CtcCategory>
-                    <id>421</id>
-                    <name>Reproductive system and breast disorders</name>
+                    <id>404</id>
+                    <name>Ear and labyrinth disorders</name>
                 </CtcCategory>
             </term>
-            <full-name>Vaginal discharge</full-name>
+            <full-name>Tinnitus</full-name>
+        </AdverseEventCtcTerm>
+        <AdverseEventMeddraLowLevelTerm/>
+        <LowLevelTerm/>
+        <attributionSummary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">4:
+            Probable
+        </attributionSummary>
+        <grade xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3: Severe or
+            medically significant but not immediately life-threatening; hospitalization or prolongation of
+            hospitalization indicated; disabling; limiting self care ADL.
+        </grade>
+        <hospitalization xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">0:
+            Please select
+        </hospitalization>
+        <eventApproximateTime>
+            <hour>11</hour>
+            <type>0</type>
+        </eventApproximateTime>
+        <eventLocation>nn</eventLocation>
+        <Outcome>
+            <id>568</id>
+            <OutcomeType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
+                CONGENITAL_ANOMALY
+            </OutcomeType>
+        </Outcome>
+    </AdverseEvent>
+    <AdverseEvent>
+        <gridId>PRN13d7724d-a800-480e-a107-f47b7d84d28f</gridId>
+        <startDate>2012-05-08T00:00:00.000-04:00</startDate>
+        <endDate>2012-05-10T00:00:00.000-04:00</endDate>
+        <detailsForOther>pain</detailsForOther>
+        <expected>false</expected>
+        <ConcomitantMedicationAttribution>
+            <id>1119</id>
+            <ConcomitantMedication>
+                <name>kidney</name>
+                <startDate>
+                    <dayString>03</dayString>
+                    <monthString>12</monthString>
+                    <yearString>2012</yearString>
+                </startDate>
+                <endDate>
+                    <dayString>03</dayString>
+                    <monthString>12</monthString>
+                    <yearString>2012</yearString>
+                </endDate>
+                <stillTakingMedications>false</stillTakingMedications>
+            </ConcomitantMedication>
+        </ConcomitantMedicationAttribution>
+        <OtherCauseAttribution>
+            <OtherCause>
+                <text>Asthma</text>
+            </OtherCause>
+        </OtherCauseAttribution>
+        <OtherCauseAttribution>
+            <OtherCause>
+                <text>Peptic ulcer</text>
+            </OtherCause>
+        </OtherCauseAttribution>
+        <DiseaseAttribution>
+            <id>1085</id>
+            <attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">2:
+                Unlikely
+            </attribution>
+            <DiseaseHistory>
+                <id>224</id>
+                <diagnosisDate>
+                    <dayString>03</dayString>
+                    <monthString>12</monthString>
+                    <yearString>2012</yearString>
+                </diagnosisDate>
+                <MeddraStudyDisease>
+                    <id>1712</id>
+                    <LowLevelTerm>
+                        <id>10118290</id>
+                        <meddraCode>10006279</meddraCode>
+                        <meddraTerm>Breast neoplasm</meddraTerm>
+                        <fullName>Breast neoplasm</fullName>
+                    </LowLevelTerm>
+                </MeddraStudyDisease>
+                <AnatomicSite>
+                    <id>42</id>
+                    <name>Testicle</name>
+                    <category>Genitourinary</category>
+                </AnatomicSite>
+                <MetastaticDiseaseSite>
+                    <id>80</id>
+                    <AnatomicSite>
+                        <id>111</id>
+                        <name>Adrenal Gland</name>
+                        <category>Other</category>
+                    </AnatomicSite>
+                </MetastaticDiseaseSite>
+                <MetastaticDiseaseSite>
+                    <id>81</id>
+                    <AnatomicSite>
+                        <id>70</id>
+                        <name>Back</name>
+                        <category>Musculoskeletal</category>
+                    </AnatomicSite>
+                </MetastaticDiseaseSite>
+                <MetastaticDiseaseSite>
+                    <id>82</id>
+                    <AnatomicSite>
+                        <id>38</id>
+                        <name>Kidney</name>
+                        <category>Genitourinary</category>
+                    </AnatomicSite>
+                </MetastaticDiseaseSite>
+            </DiseaseHistory>
+        </DiseaseAttribution>
+        <AdverseEventCtcTerm other-required="false" med-dRA="false">
+            <ctc-term>
+                <id>4216</id>
+                <term>Diarrhea</term>
+                <ctepTerm>Diarrhea</ctepTerm>
+                <ctepCode>10012727</ctepCode>
+                <otherRequired>false</otherRequired>
+                <CtcCategory>
+                    <id>407</id>
+                    <name>Gastrointestinal disorders</name>
+                </CtcCategory>
+            </ctc-term>
+            <universal-term>Diarrhea: pain: null</universal-term>
+            <term xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="CtcTerm">
+                <id>4216</id>
+                <term>Diarrhea</term>
+                <ctepTerm>Diarrhea</ctepTerm>
+                <ctepCode>10012727</ctepCode>
+                <otherRequired>false</otherRequired>
+                <CtcCategory>
+                    <id>407</id>
+                    <name>Gastrointestinal disorders</name>
+                </CtcCategory>
+            </term>
+            <full-name>Diarrhea</full-name>
+        </AdverseEventCtcTerm>
+        <AdverseEventMeddraLowLevelTerm/>
+        <LowLevelTerm/>
+        <attributionSummary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3:
+            Possible
+        </attributionSummary>
+        <grade xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3: Severe or
+            medically significant but not immediately life-threatening; hospitalization or prolongation of
+            hospitalization indicated; disabling; limiting self care ADL.
+        </grade>
+        <hospitalization xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">0:
+            Please select
+        </hospitalization>
+        <eventApproximateTime>
+            <hour>7</hour>
+            <minute>11</minute>
+            <type>0</type>
+        </eventApproximateTime>
+        <eventLocation>nn</eventLocation>
+        <Outcome>
+            <id>564</id>
+            <OutcomeType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
+                DISABILITY
+            </OutcomeType>
+        </Outcome>
+    </AdverseEvent>
+    <AdverseEvent>
+        <gridId>PRN7d6efc17-6744-4de4-84bb-c7b467b6d8d6</gridId>
+        <startDate>2012-05-11T00:00:00.000-04:00</startDate>
+        <endDate>2012-05-12T00:00:00.000-04:00</endDate>
+        <detailsForOther>stomach pain</detailsForOther>
+        <expected>false</expected>
+        <ConcomitantMedicationAttribution>
+            <id>1122</id>
+            <ConcomitantMedication>
+                <name>kidney</name>
+                <startDate>
+                    <dayString>03</dayString>
+                    <monthString>12</monthString>
+                    <yearString>2012</yearString>
+                </startDate>
+                <endDate>
+                    <dayString>03</dayString>
+                    <monthString>12</monthString>
+                    <yearString>2012</yearString>
+                </endDate>
+                <stillTakingMedications>false</stillTakingMedications>
+            </ConcomitantMedication>
+        </ConcomitantMedicationAttribution>
+        <OtherCauseAttribution>
+            <OtherCause>
+                <text>Asthma</text>
+            </OtherCause>
+        </OtherCauseAttribution>
+        <OtherCauseAttribution>
+            <OtherCause>
+                <text>Peptic ulcer</text>
+            </OtherCause>
+        </OtherCauseAttribution>
+        <DiseaseAttribution>
+            <id>1086</id>
+            <attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">1:
+                Unrelated
+            </attribution>
+            <DiseaseHistory>
+                <id>224</id>
+                <diagnosisDate>
+                    <dayString>03</dayString>
+                    <monthString>12</monthString>
+                    <yearString>2012</yearString>
+                </diagnosisDate>
+                <MeddraStudyDisease>
+                    <id>1712</id>
+                    <LowLevelTerm>
+                        <id>10118290</id>
+                        <meddraCode>10006279</meddraCode>
+                        <meddraTerm>Breast neoplasm</meddraTerm>
+                        <fullName>Breast neoplasm</fullName>
+                    </LowLevelTerm>
+                </MeddraStudyDisease>
+                <AnatomicSite>
+                    <id>42</id>
+                    <name>Testicle</name>
+                    <category>Genitourinary</category>
+                </AnatomicSite>
+                <MetastaticDiseaseSite>
+                    <id>80</id>
+                    <AnatomicSite>
+                        <id>111</id>
+                        <name>Adrenal Gland</name>
+                        <category>Other</category>
+                    </AnatomicSite>
+                </MetastaticDiseaseSite>
+                <MetastaticDiseaseSite>
+                    <id>81</id>
+                    <AnatomicSite>
+                        <id>70</id>
+                        <name>Back</name>
+                        <category>Musculoskeletal</category>
+                    </AnatomicSite>
+                </MetastaticDiseaseSite>
+                <MetastaticDiseaseSite>
+                    <id>82</id>
+                    <AnatomicSite>
+                        <id>38</id>
+                        <name>Kidney</name>
+                        <category>Genitourinary</category>
+                    </AnatomicSite>
+                </MetastaticDiseaseSite>
+            </DiseaseHistory>
+        </DiseaseAttribution>
+        <AdverseEventCtcTerm other-required="false" med-dRA="false">
+            <ctc-term>
+                <id>4158</id>
+                <term>Adrenal insufficiency</term>
+                <ctepTerm>Adrenal insufficiency</ctepTerm>
+                <ctepCode>10001367</ctepCode>
+                <otherRequired>false</otherRequired>
+                <CtcCategory>
+                    <id>405</id>
+                    <name>Endocrine disorders</name>
+                </CtcCategory>
+            </ctc-term>
+            <universal-term>Adrenal insufficiency: stomach pain: null</universal-term>
+            <term xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="CtcTerm">
+                <id>4158</id>
+                <term>Adrenal insufficiency</term>
+                <ctepTerm>Adrenal insufficiency</ctepTerm>
+                <ctepCode>10001367</ctepCode>
+                <otherRequired>false</otherRequired>
+                <CtcCategory>
+                    <id>405</id>
+                    <name>Endocrine disorders</name>
+                </CtcCategory>
+            </term>
+            <full-name>Adrenal insufficiency</full-name>
+        </AdverseEventCtcTerm>
+        <AdverseEventMeddraLowLevelTerm/>
+        <LowLevelTerm/>
+        <attributionSummary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3:
+            Possible
+        </attributionSummary>
+        <grade xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3: Severe or
+            medically significant but not immediately life-threatening; hospitalization or prolongation of
+            hospitalization indicated; disabling; limiting self care ADL.
+        </grade>
+        <hospitalization xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">0:
+            Please select
+        </hospitalization>
+        <eventApproximateTime>
+            <hour>7</hour>
+            <minute>8</minute>
+            <type>0</type>
+        </eventApproximateTime>
+        <eventLocation>jj</eventLocation>
+        <Outcome>
+            <id>565</id>
+            <OutcomeType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
+                DISABILITY
+            </OutcomeType>
+        </Outcome>
+    </AdverseEvent>
+    <AdverseEvent>
+        <gridId>PRN788c1f38-c029-483c-b10c-29d465878472</gridId>
+        <startDate>2012-05-11T00:00:00.000-04:00</startDate>
+        <endDate>2012-05-12T00:00:00.000-04:00</endDate>
+        <detailsForOther>stomach pain</detailsForOther>
+        <expected>false</expected>
+        <ConcomitantMedicationAttribution>
+            <id>1125</id>
+            <ConcomitantMedication>
+                <name>kidney</name>
+                <startDate>
+                    <dayString>03</dayString>
+                    <monthString>12</monthString>
+                    <yearString>2012</yearString>
+                </startDate>
+                <endDate>
+                    <dayString>03</dayString>
+                    <monthString>12</monthString>
+                    <yearString>2012</yearString>
+                </endDate>
+                <stillTakingMedications>false</stillTakingMedications>
+            </ConcomitantMedication>
+        </ConcomitantMedicationAttribution>
+        <OtherCauseAttribution>
+            <OtherCause>
+                <text>Asthma</text>
+            </OtherCause>
+        </OtherCauseAttribution>
+        <OtherCauseAttribution>
+            <OtherCause>
+                <text>Peptic ulcer</text>
+            </OtherCause>
+        </OtherCauseAttribution>
+        <DiseaseAttribution>
+            <id>1087</id>
+            <attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">1:
+                Unrelated
+            </attribution>
+            <DiseaseHistory>
+                <id>224</id>
+                <diagnosisDate>
+                    <dayString>03</dayString>
+                    <monthString>12</monthString>
+                    <yearString>2012</yearString>
+                </diagnosisDate>
+                <MeddraStudyDisease>
+                    <id>1712</id>
+                    <LowLevelTerm>
+                        <id>10118290</id>
+                        <meddraCode>10006279</meddraCode>
+                        <meddraTerm>Breast neoplasm</meddraTerm>
+                        <fullName>Breast neoplasm</fullName>
+                    </LowLevelTerm>
+                </MeddraStudyDisease>
+                <AnatomicSite>
+                    <id>42</id>
+                    <name>Testicle</name>
+                    <category>Genitourinary</category>
+                </AnatomicSite>
+                <MetastaticDiseaseSite>
+                    <id>80</id>
+                    <AnatomicSite>
+                        <id>111</id>
+                        <name>Adrenal Gland</name>
+                        <category>Other</category>
+                    </AnatomicSite>
+                </MetastaticDiseaseSite>
+                <MetastaticDiseaseSite>
+                    <id>81</id>
+                    <AnatomicSite>
+                        <id>70</id>
+                        <name>Back</name>
+                        <category>Musculoskeletal</category>
+                    </AnatomicSite>
+                </MetastaticDiseaseSite>
+                <MetastaticDiseaseSite>
+                    <id>82</id>
+                    <AnatomicSite>
+                        <id>38</id>
+                        <name>Kidney</name>
+                        <category>Genitourinary</category>
+                    </AnatomicSite>
+                </MetastaticDiseaseSite>
+            </DiseaseHistory>
+        </DiseaseAttribution>
+        <AdverseEventCtcTerm other-required="false" med-dRA="false">
+            <ctc-term>
+                <id>4571</id>
+                <term>Tumor lysis syndrome</term>
+                <ctepTerm>Tumor lysis syndrome</ctepTerm>
+                <ctepCode>10045152</ctepCode>
+                <otherRequired>false</otherRequired>
+                <CtcCategory>
+                    <id>414</id>
+                    <name>Metabolism and nutrition disorders</name>
+                </CtcCategory>
+            </ctc-term>
+            <universal-term>Tumor lysis syndrome: stomach pain: null</universal-term>
+            <term xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="CtcTerm">
+                <id>4571</id>
+                <term>Tumor lysis syndrome</term>
+                <ctepTerm>Tumor lysis syndrome</ctepTerm>
+                <ctepCode>10045152</ctepCode>
+                <otherRequired>false</otherRequired>
+                <CtcCategory>
+                    <id>414</id>
+                    <name>Metabolism and nutrition disorders</name>
+                </CtcCategory>
+            </term>
+            <full-name>Tumor lysis syndrome</full-name>
+        </AdverseEventCtcTerm>
+        <AdverseEventMeddraLowLevelTerm/>
+        <LowLevelTerm/>
+        <attributionSummary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3:
+            Possible
+        </attributionSummary>
+        <grade xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3: Severe or
+            medically significant but not immediately life-threatening; hospitalization or prolongation of
+            hospitalization indicated; disabling; limiting self care ADL.
+        </grade>
+        <hospitalization xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">0:
+            Please select
+        </hospitalization>
+        <eventApproximateTime>
+            <hour>9</hour>
+            <minute>23</minute>
+            <type>0</type>
+        </eventApproximateTime>
+        <eventLocation>yr</eventLocation>
+        <Outcome>
+            <id>566</id>
+            <OutcomeType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
+                DISABILITY
+            </OutcomeType>
+        </Outcome>
+    </AdverseEvent>
+    <AdverseEvent>
+        <gridId>PRNe3a2129d-3181-4c1e-94ee-326a821ce667</gridId>
+        <startDate>2012-05-15T00:00:00.000-04:00</startDate>
+        <endDate>2012-05-16T00:00:00.000-04:00</endDate>
+        <detailsForOther>blue left finger nails</detailsForOther>
+        <expected>false</expected>
+        <ConcomitantMedicationAttribution>
+            <id>1128</id>
+            <ConcomitantMedication>
+                <name>kidney</name>
+                <startDate>
+                    <dayString>03</dayString>
+                    <monthString>12</monthString>
+                    <yearString>2012</yearString>
+                </startDate>
+                <endDate>
+                    <dayString>03</dayString>
+                    <monthString>12</monthString>
+                    <yearString>2012</yearString>
+                </endDate>
+                <stillTakingMedications>false</stillTakingMedications>
+            </ConcomitantMedication>
+        </ConcomitantMedicationAttribution>
+        <OtherCauseAttribution>
+            <OtherCause>
+                <text>Asthma</text>
+            </OtherCause>
+        </OtherCauseAttribution>
+        <OtherCauseAttribution>
+            <OtherCause>
+                <text>Peptic ulcer</text>
+            </OtherCause>
+        </OtherCauseAttribution>
+        <DiseaseAttribution>
+            <id>1088</id>
+            <attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">2:
+                Unlikely
+            </attribution>
+            <DiseaseHistory>
+                <id>224</id>
+                <diagnosisDate>
+                    <dayString>03</dayString>
+                    <monthString>12</monthString>
+                    <yearString>2012</yearString>
+                </diagnosisDate>
+                <MeddraStudyDisease>
+                    <id>1712</id>
+                    <LowLevelTerm>
+                        <id>10118290</id>
+                        <meddraCode>10006279</meddraCode>
+                        <meddraTerm>Breast neoplasm</meddraTerm>
+                        <fullName>Breast neoplasm</fullName>
+                    </LowLevelTerm>
+                </MeddraStudyDisease>
+                <AnatomicSite>
+                    <id>42</id>
+                    <name>Testicle</name>
+                    <category>Genitourinary</category>
+                </AnatomicSite>
+                <MetastaticDiseaseSite>
+                    <id>80</id>
+                    <AnatomicSite>
+                        <id>111</id>
+                        <name>Adrenal Gland</name>
+                        <category>Other</category>
+                    </AnatomicSite>
+                </MetastaticDiseaseSite>
+                <MetastaticDiseaseSite>
+                    <id>81</id>
+                    <AnatomicSite>
+                        <id>70</id>
+                        <name>Back</name>
+                        <category>Musculoskeletal</category>
+                    </AnatomicSite>
+                </MetastaticDiseaseSite>
+                <MetastaticDiseaseSite>
+                    <id>82</id>
+                    <AnatomicSite>
+                        <id>38</id>
+                        <name>Kidney</name>
+                        <category>Genitourinary</category>
+                    </AnatomicSite>
+                </MetastaticDiseaseSite>
+            </DiseaseHistory>
+        </DiseaseAttribution>
+        <AdverseEventCtcTerm other-required="false" med-dRA="false">
+            <ctc-term>
+                <id>4523</id>
+                <term>CD4 lymphocytes decreased</term>
+                <ctepTerm>CD4 lymphocytes decreased</ctepTerm>
+                <ctepCode>10007839</ctepCode>
+                <otherRequired>false</otherRequired>
+                <CtcCategory>
+                    <id>413</id>
+                    <name>Investigations</name>
+                </CtcCategory>
+            </ctc-term>
+            <universal-term>CD4 lymphocytes decreased: blue left finger nails: null</universal-term>
+            <term xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="CtcTerm">
+                <id>4523</id>
+                <term>CD4 lymphocytes decreased</term>
+                <ctepTerm>CD4 lymphocytes decreased</ctepTerm>
+                <ctepCode>10007839</ctepCode>
+                <otherRequired>false</otherRequired>
+                <CtcCategory>
+                    <id>413</id>
+                    <name>Investigations</name>
+                </CtcCategory>
+            </term>
+            <full-name>CD4 lymphocytes decreased</full-name>
         </AdverseEventCtcTerm>
         <AdverseEventMeddraLowLevelTerm/>
         <LowLevelTerm/>
@@ -391,35 +997,1677 @@
         <grade xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">2: Moderate;
             minimal, local or noninvasive intervention indicated; limiting age-appropriate instrumental ADL.
         </grade>
-        <hospitalization xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">1: Yes
+        <hospitalization xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">0:
+            Please select
         </hospitalization>
         <eventApproximateTime>
+            <hour>12</hour>
+            <minute>12</minute>
             <type>0</type>
         </eventApproximateTime>
+        <eventLocation>ur</eventLocation>
         <Outcome>
-            <id>798</id>
+            <id>561</id>
             <OutcomeType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
-                HOSPITALIZATION
+                DISABILITY
             </OutcomeType>
         </Outcome>
     </AdverseEvent>
+    <AdverseEvent>
+        <gridId>PRNcb297c0b-b29b-47c6-8318-ad61bc320bd9</gridId>
+        <startDate>2012-05-06T00:00:00.000-04:00</startDate>
+        <endDate>2012-05-08T00:00:00.000-04:00</endDate>
+        <detailsForOther>Experienced abdominal pain</detailsForOther>
+        <expected>false</expected>
+        <ConcomitantMedicationAttribution>
+            <id>1131</id>
+            <ConcomitantMedication>
+                <name>kidney</name>
+                <startDate>
+                    <dayString>03</dayString>
+                    <monthString>12</monthString>
+                    <yearString>2012</yearString>
+                </startDate>
+                <endDate>
+                    <dayString>03</dayString>
+                    <monthString>12</monthString>
+                    <yearString>2012</yearString>
+                </endDate>
+                <stillTakingMedications>false</stillTakingMedications>
+            </ConcomitantMedication>
+        </ConcomitantMedicationAttribution>
+        <OtherCauseAttribution>
+            <OtherCause>
+                <text>Asthma</text>
+            </OtherCause>
+        </OtherCauseAttribution>
+        <OtherCauseAttribution>
+            <OtherCause>
+                <text>Peptic ulcer</text>
+            </OtherCause>
+        </OtherCauseAttribution>
+        <DiseaseAttribution>
+            <id>1089</id>
+            <attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">4:
+                Probable
+            </attribution>
+            <DiseaseHistory>
+                <id>224</id>
+                <diagnosisDate>
+                    <dayString>03</dayString>
+                    <monthString>12</monthString>
+                    <yearString>2012</yearString>
+                </diagnosisDate>
+                <MeddraStudyDisease>
+                    <id>1712</id>
+                    <LowLevelTerm>
+                        <id>10118290</id>
+                        <meddraCode>10006279</meddraCode>
+                        <meddraTerm>Breast neoplasm</meddraTerm>
+                        <fullName>Breast neoplasm</fullName>
+                    </LowLevelTerm>
+                </MeddraStudyDisease>
+                <AnatomicSite>
+                    <id>42</id>
+                    <name>Testicle</name>
+                    <category>Genitourinary</category>
+                </AnatomicSite>
+                <MetastaticDiseaseSite>
+                    <id>80</id>
+                    <AnatomicSite>
+                        <id>111</id>
+                        <name>Adrenal Gland</name>
+                        <category>Other</category>
+                    </AnatomicSite>
+                </MetastaticDiseaseSite>
+                <MetastaticDiseaseSite>
+                    <id>81</id>
+                    <AnatomicSite>
+                        <id>70</id>
+                        <name>Back</name>
+                        <category>Musculoskeletal</category>
+                    </AnatomicSite>
+                </MetastaticDiseaseSite>
+                <MetastaticDiseaseSite>
+                    <id>82</id>
+                    <AnatomicSite>
+                        <id>38</id>
+                        <name>Kidney</name>
+                        <category>Genitourinary</category>
+                    </AnatomicSite>
+                </MetastaticDiseaseSite>
+            </DiseaseHistory>
+        </DiseaseAttribution>
+        <AdverseEventCtcTerm other-required="false" med-dRA="false">
+            <ctc-term>
+                <id>4158</id>
+                <term>Adrenal insufficiency</term>
+                <ctepTerm>Adrenal insufficiency</ctepTerm>
+                <ctepCode>10001367</ctepCode>
+                <otherRequired>false</otherRequired>
+                <CtcCategory>
+                    <id>405</id>
+                    <name>Endocrine disorders</name>
+                </CtcCategory>
+            </ctc-term>
+            <universal-term>Adrenal insufficiency: Experienced abdominal pain: null</universal-term>
+            <term xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="CtcTerm">
+                <id>4158</id>
+                <term>Adrenal insufficiency</term>
+                <ctepTerm>Adrenal insufficiency</ctepTerm>
+                <ctepCode>10001367</ctepCode>
+                <otherRequired>false</otherRequired>
+                <CtcCategory>
+                    <id>405</id>
+                    <name>Endocrine disorders</name>
+                </CtcCategory>
+            </term>
+            <full-name>Adrenal insufficiency</full-name>
+        </AdverseEventCtcTerm>
+        <AdverseEventMeddraLowLevelTerm/>
+        <LowLevelTerm/>
+        <attributionSummary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3:
+            Possible
+        </attributionSummary>
+        <grade xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">2: Moderate;
+            minimal, local or noninvasive intervention indicated; limiting age-appropriate instrumental ADL.
+        </grade>
+        <hospitalization xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">0:
+            Please select
+        </hospitalization>
+        <eventApproximateTime>
+            <hour>11</hour>
+            <minute>13</minute>
+            <type>0</type>
+        </eventApproximateTime>
+        <eventLocation>uuuu</eventLocation>
+        <Outcome>
+            <id>562</id>
+            <OutcomeType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
+                DISABILITY
+            </OutcomeType>
+        </Outcome>
+    </AdverseEvent>
+    <!--<AdverseEvent>-->
+        <!--<gridId>PRN78e7d5f1-fa28-4453-855c-8d7806d2ced7</gridId>-->
+        <!--<startDate>2012-05-07T00:00:00.000-04:00</startDate>-->
+        <!--<endDate>2012-05-08T00:00:00.000-04:00</endDate>-->
+        <!--<detailsForOther>Experienced abdominal pain</detailsForOther>-->
+        <!--<expected>false</expected>-->
+        <!--<ConcomitantMedicationAttribution>-->
+            <!--<id>1134</id>-->
+            <!--<ConcomitantMedication>-->
+                <!--<name>kidney</name>-->
+                <!--<startDate>-->
+                    <!--<dayString>03</dayString>-->
+                    <!--<monthString>12</monthString>-->
+                    <!--<yearString>2012</yearString>-->
+                <!--</startDate>-->
+                <!--<endDate>-->
+                    <!--<dayString>03</dayString>-->
+                    <!--<monthString>12</monthString>-->
+                    <!--<yearString>2012</yearString>-->
+                <!--</endDate>-->
+                <!--<stillTakingMedications>false</stillTakingMedications>-->
+            <!--</ConcomitantMedication>-->
+        <!--</ConcomitantMedicationAttribution>-->
+        <!--<OtherCauseAttribution>-->
+            <!--<OtherCause>-->
+                <!--<text>Asthma</text>-->
+            <!--</OtherCause>-->
+        <!--</OtherCauseAttribution>-->
+        <!--<OtherCauseAttribution>-->
+            <!--<OtherCause>-->
+                <!--<text>Peptic ulcer</text>-->
+            <!--</OtherCause>-->
+        <!--</OtherCauseAttribution>-->
+        <!--<DiseaseAttribution>-->
+            <!--<id>1090</id>-->
+            <!--<attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">2:-->
+                <!--Unlikely-->
+            <!--</attribution>-->
+            <!--<DiseaseHistory>-->
+                <!--<id>224</id>-->
+                <!--<diagnosisDate>-->
+                    <!--<dayString>03</dayString>-->
+                    <!--<monthString>12</monthString>-->
+                    <!--<yearString>2012</yearString>-->
+                <!--</diagnosisDate>-->
+                <!--<MeddraStudyDisease>-->
+                    <!--<id>1712</id>-->
+                    <!--<LowLevelTerm>-->
+                        <!--<id>10118290</id>-->
+                        <!--<meddraCode>10006279</meddraCode>-->
+                        <!--<meddraTerm>Breast neoplasm</meddraTerm>-->
+                        <!--<fullName>Breast neoplasm</fullName>-->
+                    <!--</LowLevelTerm>-->
+                <!--</MeddraStudyDisease>-->
+                <!--<AnatomicSite>-->
+                    <!--<id>42</id>-->
+                    <!--<name>Testicle</name>-->
+                    <!--<category>Genitourinary</category>-->
+                <!--</AnatomicSite>-->
+                <!--<MetastaticDiseaseSite>-->
+                    <!--<id>80</id>-->
+                    <!--<AnatomicSite>-->
+                        <!--<id>111</id>-->
+                        <!--<name>Adrenal Gland</name>-->
+                        <!--<category>Other</category>-->
+                    <!--</AnatomicSite>-->
+                <!--</MetastaticDiseaseSite>-->
+                <!--<MetastaticDiseaseSite>-->
+                    <!--<id>81</id>-->
+                    <!--<AnatomicSite>-->
+                        <!--<id>70</id>-->
+                        <!--<name>Back</name>-->
+                        <!--<category>Musculoskeletal</category>-->
+                    <!--</AnatomicSite>-->
+                <!--</MetastaticDiseaseSite>-->
+                <!--<MetastaticDiseaseSite>-->
+                    <!--<id>82</id>-->
+                    <!--<AnatomicSite>-->
+                        <!--<id>38</id>-->
+                        <!--<name>Kidney</name>-->
+                        <!--<category>Genitourinary</category>-->
+                    <!--</AnatomicSite>-->
+                <!--</MetastaticDiseaseSite>-->
+            <!--</DiseaseHistory>-->
+        <!--</DiseaseAttribution>-->
+        <!--<AdverseEventCtcTerm other-required="false" med-dRA="false">-->
+            <!--<ctc-term>-->
+                <!--<id>4790</id>-->
+                <!--<term>Cough</term>-->
+                <!--<ctepTerm>Cough</ctepTerm>-->
+                <!--<ctepCode>10011224</ctepCode>-->
+                <!--<otherRequired>false</otherRequired>-->
+                <!--<CtcCategory>-->
+                    <!--<id>422</id>-->
+                    <!--<name>Respiratory, thoracic and mediastinal disorders</name>-->
+                <!--</CtcCategory>-->
+            <!--</ctc-term>-->
+            <!--<universal-term>Cough: Experienced abdominal pain: null</universal-term>-->
+            <!--<term xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="CtcTerm">-->
+                <!--<id>4790</id>-->
+                <!--<term>Cough</term>-->
+                <!--<ctepTerm>Cough</ctepTerm>-->
+                <!--<ctepCode>10011224</ctepCode>-->
+                <!--<otherRequired>false</otherRequired>-->
+                <!--<CtcCategory>-->
+                    <!--<id>422</id>-->
+                    <!--<name>Respiratory, thoracic and mediastinal disorders</name>-->
+                <!--</CtcCategory>-->
+            <!--</term>-->
+            <!--<full-name>Cough</full-name>-->
+        <!--</AdverseEventCtcTerm>-->
+        <!--<AdverseEventMeddraLowLevelTerm/>-->
+        <!--<LowLevelTerm/>-->
+        <!--<attributionSummary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3:-->
+            <!--Possible-->
+        <!--</attributionSummary>-->
+        <!--<grade xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">2: Moderate;-->
+            <!--minimal, local or noninvasive intervention indicated; limiting age-appropriate instrumental ADL.-->
+        <!--</grade>-->
+        <!--<hospitalization xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">0:-->
+            <!--Please select-->
+        <!--</hospitalization>-->
+        <!--<eventApproximateTime>-->
+            <!--<hour>1</hour>-->
+            <!--<minute>1</minute>-->
+            <!--<type>0</type>-->
+        <!--</eventApproximateTime>-->
+        <!--<eventLocation>kk</eventLocation>-->
+        <!--<Outcome>-->
+            <!--<id>563</id>-->
+            <!--<OutcomeType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">-->
+                <!--DISABILITY-->
+            <!--</OutcomeType>-->
+        <!--</Outcome>-->
+    <!--</AdverseEvent>-->
+    <!--<AdverseEvent>-->
+        <!--<gridId>PRNae7ef119-c7b8-4d1d-afac-3d5f4918dd4e</gridId>-->
+        <!--<startDate>2012-05-11T00:00:00.000-04:00</startDate>-->
+        <!--<endDate>2012-05-12T00:00:00.000-04:00</endDate>-->
+        <!--<detailsForOther>red blood cell count was low in patient</detailsForOther>-->
+        <!--<expected>false</expected>-->
+        <!--<ConcomitantMedicationAttribution>-->
+            <!--<id>1137</id>-->
+            <!--<ConcomitantMedication>-->
+                <!--<name>kidney</name>-->
+                <!--<startDate>-->
+                    <!--<dayString>03</dayString>-->
+                    <!--<monthString>12</monthString>-->
+                    <!--<yearString>2012</yearString>-->
+                <!--</startDate>-->
+                <!--<endDate>-->
+                    <!--<dayString>03</dayString>-->
+                    <!--<monthString>12</monthString>-->
+                    <!--<yearString>2012</yearString>-->
+                <!--</endDate>-->
+                <!--<stillTakingMedications>false</stillTakingMedications>-->
+            <!--</ConcomitantMedication>-->
+        <!--</ConcomitantMedicationAttribution>-->
+        <!--<OtherCauseAttribution>-->
+            <!--<OtherCause>-->
+                <!--<text>Asthma</text>-->
+            <!--</OtherCause>-->
+        <!--</OtherCauseAttribution>-->
+        <!--<OtherCauseAttribution>-->
+            <!--<OtherCause>-->
+                <!--<text>Peptic ulcer</text>-->
+            <!--</OtherCause>-->
+        <!--</OtherCauseAttribution>-->
+        <!--<DiseaseAttribution>-->
+            <!--<id>1091</id>-->
+            <!--<attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">2:-->
+                <!--Unlikely-->
+            <!--</attribution>-->
+            <!--<DiseaseHistory>-->
+                <!--<id>224</id>-->
+                <!--<diagnosisDate>-->
+                    <!--<dayString>03</dayString>-->
+                    <!--<monthString>12</monthString>-->
+                    <!--<yearString>2012</yearString>-->
+                <!--</diagnosisDate>-->
+                <!--<MeddraStudyDisease>-->
+                    <!--<id>1712</id>-->
+                    <!--<LowLevelTerm>-->
+                        <!--<id>10118290</id>-->
+                        <!--<meddraCode>10006279</meddraCode>-->
+                        <!--<meddraTerm>Breast neoplasm</meddraTerm>-->
+                        <!--<fullName>Breast neoplasm</fullName>-->
+                    <!--</LowLevelTerm>-->
+                <!--</MeddraStudyDisease>-->
+                <!--<AnatomicSite>-->
+                    <!--<id>42</id>-->
+                    <!--<name>Testicle</name>-->
+                    <!--<category>Genitourinary</category>-->
+                <!--</AnatomicSite>-->
+                <!--<MetastaticDiseaseSite>-->
+                    <!--<id>80</id>-->
+                    <!--<AnatomicSite>-->
+                        <!--<id>111</id>-->
+                        <!--<name>Adrenal Gland</name>-->
+                        <!--<category>Other</category>-->
+                    <!--</AnatomicSite>-->
+                <!--</MetastaticDiseaseSite>-->
+                <!--<MetastaticDiseaseSite>-->
+                    <!--<id>81</id>-->
+                    <!--<AnatomicSite>-->
+                        <!--<id>70</id>-->
+                        <!--<name>Back</name>-->
+                        <!--<category>Musculoskeletal</category>-->
+                    <!--</AnatomicSite>-->
+                <!--</MetastaticDiseaseSite>-->
+                <!--<MetastaticDiseaseSite>-->
+                    <!--<id>82</id>-->
+                    <!--<AnatomicSite>-->
+                        <!--<id>38</id>-->
+                        <!--<name>Kidney</name>-->
+                        <!--<category>Genitourinary</category>-->
+                    <!--</AnatomicSite>-->
+                <!--</MetastaticDiseaseSite>-->
+            <!--</DiseaseHistory>-->
+        <!--</DiseaseAttribution>-->
+        <!--<AdverseEventCtcTerm other-required="false" med-dRA="false">-->
+            <!--<ctc-term>-->
+                <!--<id>4825</id>-->
+                <!--<term>Retinoic acid syndrome</term>-->
+                <!--<ctepTerm>Retinoic acid syndrome</ctepTerm>-->
+                <!--<ctepCode>10038921</ctepCode>-->
+                <!--<otherRequired>false</otherRequired>-->
+                <!--<CtcCategory>-->
+                    <!--<id>422</id>-->
+                    <!--<name>Respiratory, thoracic and mediastinal disorders</name>-->
+                <!--</CtcCategory>-->
+            <!--</ctc-term>-->
+            <!--<universal-term>Retinoic acid syndrome: red blood cell count was low in patient: null</universal-term>-->
+            <!--<term xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="CtcTerm">-->
+                <!--<id>4825</id>-->
+                <!--<term>Retinoic acid syndrome</term>-->
+                <!--<ctepTerm>Retinoic acid syndrome</ctepTerm>-->
+                <!--<ctepCode>10038921</ctepCode>-->
+                <!--<otherRequired>false</otherRequired>-->
+                <!--<CtcCategory>-->
+                    <!--<id>422</id>-->
+                    <!--<name>Respiratory, thoracic and mediastinal disorders</name>-->
+                <!--</CtcCategory>-->
+            <!--</term>-->
+            <!--<full-name>Retinoic acid syndrome</full-name>-->
+        <!--</AdverseEventCtcTerm>-->
+        <!--<AdverseEventMeddraLowLevelTerm/>-->
+        <!--<LowLevelTerm/>-->
+        <!--<attributionSummary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3:-->
+            <!--Possible-->
+        <!--</attributionSummary>-->
+        <!--<grade xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">2: Moderate;-->
+            <!--minimal, local or noninvasive intervention indicated; limiting age-appropriate instrumental ADL.-->
+        <!--</grade>-->
+        <!--<hospitalization xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">0:-->
+            <!--Please select-->
+        <!--</hospitalization>-->
+        <!--<eventApproximateTime>-->
+            <!--<hour>1</hour>-->
+            <!--<minute>1</minute>-->
+            <!--<type>0</type>-->
+        <!--</eventApproximateTime>-->
+        <!--<eventLocation>e</eventLocation>-->
+        <!--<Outcome>-->
+            <!--<id>567</id>-->
+            <!--<OutcomeType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">-->
+                <!--DISABILITY-->
+            <!--</OutcomeType>-->
+        <!--</Outcome>-->
+    <!--</AdverseEvent>-->
+    <!--<AdverseEvent>-->
+        <!--<gridId>PRN60bef90f-829a-4155-abba-b70f4f6d9a0b</gridId>-->
+        <!--<startDate>2012-05-06T00:00:00.000-04:00</startDate>-->
+        <!--<endDate>2012-05-06T00:00:00.000-04:00</endDate>-->
+        <!--<detailsForOther>drugged</detailsForOther>-->
+        <!--<ConcomitantMedicationAttribution>-->
+            <!--<id>1140</id>-->
+            <!--<ConcomitantMedication>-->
+                <!--<name>kidney</name>-->
+                <!--<startDate>-->
+                    <!--<dayString>03</dayString>-->
+                    <!--<monthString>12</monthString>-->
+                    <!--<yearString>2012</yearString>-->
+                <!--</startDate>-->
+                <!--<endDate>-->
+                    <!--<dayString>03</dayString>-->
+                    <!--<monthString>12</monthString>-->
+                    <!--<yearString>2012</yearString>-->
+                <!--</endDate>-->
+                <!--<stillTakingMedications>false</stillTakingMedications>-->
+            <!--</ConcomitantMedication>-->
+        <!--</ConcomitantMedicationAttribution>-->
+        <!--<OtherCauseAttribution>-->
+            <!--<OtherCause>-->
+                <!--<text>Asthma</text>-->
+            <!--</OtherCause>-->
+        <!--</OtherCauseAttribution>-->
+        <!--<OtherCauseAttribution>-->
+            <!--<OtherCause>-->
+                <!--<text>Peptic ulcer</text>-->
+            <!--</OtherCause>-->
+        <!--</OtherCauseAttribution>-->
+        <!--<DiseaseAttribution>-->
+            <!--<id>1092</id>-->
+            <!--<attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">1:-->
+                <!--Unrelated-->
+            <!--</attribution>-->
+            <!--<DiseaseHistory>-->
+                <!--<id>224</id>-->
+                <!--<diagnosisDate>-->
+                    <!--<dayString>03</dayString>-->
+                    <!--<monthString>12</monthString>-->
+                    <!--<yearString>2012</yearString>-->
+                <!--</diagnosisDate>-->
+                <!--<MeddraStudyDisease>-->
+                    <!--<id>1712</id>-->
+                    <!--<LowLevelTerm>-->
+                        <!--<id>10118290</id>-->
+                        <!--<meddraCode>10006279</meddraCode>-->
+                        <!--<meddraTerm>Breast neoplasm</meddraTerm>-->
+                        <!--<fullName>Breast neoplasm</fullName>-->
+                    <!--</LowLevelTerm>-->
+                <!--</MeddraStudyDisease>-->
+                <!--<AnatomicSite>-->
+                    <!--<id>42</id>-->
+                    <!--<name>Testicle</name>-->
+                    <!--<category>Genitourinary</category>-->
+                <!--</AnatomicSite>-->
+                <!--<MetastaticDiseaseSite>-->
+                    <!--<id>80</id>-->
+                    <!--<AnatomicSite>-->
+                        <!--<id>111</id>-->
+                        <!--<name>Adrenal Gland</name>-->
+                        <!--<category>Other</category>-->
+                    <!--</AnatomicSite>-->
+                <!--</MetastaticDiseaseSite>-->
+                <!--<MetastaticDiseaseSite>-->
+                    <!--<id>81</id>-->
+                    <!--<AnatomicSite>-->
+                        <!--<id>70</id>-->
+                        <!--<name>Back</name>-->
+                        <!--<category>Musculoskeletal</category>-->
+                    <!--</AnatomicSite>-->
+                <!--</MetastaticDiseaseSite>-->
+                <!--<MetastaticDiseaseSite>-->
+                    <!--<id>82</id>-->
+                    <!--<AnatomicSite>-->
+                        <!--<id>38</id>-->
+                        <!--<name>Kidney</name>-->
+                        <!--<category>Genitourinary</category>-->
+                    <!--</AnatomicSite>-->
+                <!--</MetastaticDiseaseSite>-->
+            <!--</DiseaseHistory>-->
+        <!--</DiseaseAttribution>-->
+        <!--<AdverseEventCtcTerm other-required="false" med-dRA="false">-->
+            <!--<ctc-term>-->
+                <!--<id>4129</id>-->
+                <!--<term>Myocarditis</term>-->
+                <!--<ctepTerm>Myocarditis</ctepTerm>-->
+                <!--<ctepCode>10028606</ctepCode>-->
+                <!--<otherRequired>false</otherRequired>-->
+                <!--<CtcCategory>-->
+                    <!--<id>402</id>-->
+                    <!--<name>Cardiac disorders</name>-->
+                <!--</CtcCategory>-->
+            <!--</ctc-term>-->
+            <!--<universal-term>Myocarditis: drugged: null</universal-term>-->
+            <!--<term xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="CtcTerm">-->
+                <!--<id>4129</id>-->
+                <!--<term>Myocarditis</term>-->
+                <!--<ctepTerm>Myocarditis</ctepTerm>-->
+                <!--<ctepCode>10028606</ctepCode>-->
+                <!--<otherRequired>false</otherRequired>-->
+                <!--<CtcCategory>-->
+                    <!--<id>402</id>-->
+                    <!--<name>Cardiac disorders</name>-->
+                <!--</CtcCategory>-->
+            <!--</term>-->
+            <!--<full-name>Myocarditis</full-name>-->
+        <!--</AdverseEventCtcTerm>-->
+        <!--<AdverseEventMeddraLowLevelTerm/>-->
+        <!--<LowLevelTerm/>-->
+        <!--<attributionSummary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">5:-->
+            <!--Definite-->
+        <!--</attributionSummary>-->
+        <!--<grade xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3: Severe or-->
+            <!--medically significant but not immediately life-threatening; hospitalization or prolongation of-->
+            <!--hospitalization indicated; disabling; limiting self care ADL.-->
+        <!--</grade>-->
+        <!--<hospitalization xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">0:-->
+            <!--Please select-->
+        <!--</hospitalization>-->
+        <!--<eventApproximateTime>-->
+            <!--<type>0</type>-->
+        <!--</eventApproximateTime>-->
+    <!--</AdverseEvent>-->
+    <!--<AdverseEvent>-->
+        <!--<gridId>PRN62a235ee-8465-4843-ae5e-f988a3f51c08</gridId>-->
+        <!--<startDate>2012-05-05T00:00:00.000-04:00</startDate>-->
+        <!--<endDate>2012-05-07T00:00:00.000-04:00</endDate>-->
+        <!--<detailsForOther>drugged</detailsForOther>-->
+        <!--<expected>true</expected>-->
+        <!--<ConcomitantMedicationAttribution>-->
+            <!--<id>1107</id>-->
+            <!--<ConcomitantMedication>-->
+                <!--<name>kidney</name>-->
+                <!--<startDate>-->
+                    <!--<dayString>03</dayString>-->
+                    <!--<monthString>12</monthString>-->
+                    <!--<yearString>2012</yearString>-->
+                <!--</startDate>-->
+                <!--<endDate>-->
+                    <!--<dayString>03</dayString>-->
+                    <!--<monthString>12</monthString>-->
+                    <!--<yearString>2012</yearString>-->
+                <!--</endDate>-->
+                <!--<stillTakingMedications>false</stillTakingMedications>-->
+            <!--</ConcomitantMedication>-->
+        <!--</ConcomitantMedicationAttribution>-->
+        <!--<OtherCauseAttribution>-->
+            <!--<OtherCause>-->
+                <!--<text>Asthma</text>-->
+            <!--</OtherCause>-->
+        <!--</OtherCauseAttribution>-->
+        <!--<OtherCauseAttribution>-->
+            <!--<OtherCause>-->
+                <!--<text>Peptic ulcer</text>-->
+            <!--</OtherCause>-->
+        <!--</OtherCauseAttribution>-->
+        <!--<DiseaseAttribution>-->
+            <!--<id>1093</id>-->
+            <!--<attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">2:-->
+                <!--Unlikely-->
+            <!--</attribution>-->
+            <!--<DiseaseHistory>-->
+                <!--<id>224</id>-->
+                <!--<diagnosisDate>-->
+                    <!--<dayString>03</dayString>-->
+                    <!--<monthString>12</monthString>-->
+                    <!--<yearString>2012</yearString>-->
+                <!--</diagnosisDate>-->
+                <!--<MeddraStudyDisease>-->
+                    <!--<id>1712</id>-->
+                    <!--<LowLevelTerm>-->
+                        <!--<id>10118290</id>-->
+                        <!--<meddraCode>10006279</meddraCode>-->
+                        <!--<meddraTerm>Breast neoplasm</meddraTerm>-->
+                        <!--<fullName>Breast neoplasm</fullName>-->
+                    <!--</LowLevelTerm>-->
+                <!--</MeddraStudyDisease>-->
+                <!--<AnatomicSite>-->
+                    <!--<id>42</id>-->
+                    <!--<name>Testicle</name>-->
+                    <!--<category>Genitourinary</category>-->
+                <!--</AnatomicSite>-->
+                <!--<MetastaticDiseaseSite>-->
+                    <!--<id>80</id>-->
+                    <!--<AnatomicSite>-->
+                        <!--<id>111</id>-->
+                        <!--<name>Adrenal Gland</name>-->
+                        <!--<category>Other</category>-->
+                    <!--</AnatomicSite>-->
+                <!--</MetastaticDiseaseSite>-->
+                <!--<MetastaticDiseaseSite>-->
+                    <!--<id>81</id>-->
+                    <!--<AnatomicSite>-->
+                        <!--<id>70</id>-->
+                        <!--<name>Back</name>-->
+                        <!--<category>Musculoskeletal</category>-->
+                    <!--</AnatomicSite>-->
+                <!--</MetastaticDiseaseSite>-->
+                <!--<MetastaticDiseaseSite>-->
+                    <!--<id>82</id>-->
+                    <!--<AnatomicSite>-->
+                        <!--<id>38</id>-->
+                        <!--<name>Kidney</name>-->
+                        <!--<category>Genitourinary</category>-->
+                    <!--</AnatomicSite>-->
+                <!--</MetastaticDiseaseSite>-->
+            <!--</DiseaseHistory>-->
+        <!--</DiseaseAttribution>-->
+        <!--<AdverseEventCtcTerm other-required="false" med-dRA="false">-->
+            <!--<ctc-term>-->
+                <!--<id>4541</id>-->
+                <!--<term>Platelet count decreased</term>-->
+                <!--<ctepTerm>Platelet count decreased</ctepTerm>-->
+                <!--<ctepCode>10035528</ctepCode>-->
+                <!--<otherRequired>false</otherRequired>-->
+                <!--<CtcCategory>-->
+                    <!--<id>413</id>-->
+                    <!--<name>Investigations</name>-->
+                <!--</CtcCategory>-->
+            <!--</ctc-term>-->
+            <!--<universal-term>Platelet count decreased: drugged: null</universal-term>-->
+            <!--<term xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="CtcTerm">-->
+                <!--<id>4541</id>-->
+                <!--<term>Platelet count decreased</term>-->
+                <!--<ctepTerm>Platelet count decreased</ctepTerm>-->
+                <!--<ctepCode>10035528</ctepCode>-->
+                <!--<otherRequired>false</otherRequired>-->
+                <!--<CtcCategory>-->
+                    <!--<id>413</id>-->
+                    <!--<name>Investigations</name>-->
+                <!--</CtcCategory>-->
+            <!--</term>-->
+            <!--<full-name>Platelet count decreased</full-name>-->
+        <!--</AdverseEventCtcTerm>-->
+        <!--<AdverseEventMeddraLowLevelTerm/>-->
+        <!--<LowLevelTerm/>-->
+        <!--<attributionSummary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">4:-->
+            <!--Probable-->
+        <!--</attributionSummary>-->
+        <!--<grade xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3: Severe or-->
+            <!--medically significant but not immediately life-threatening; hospitalization or prolongation of-->
+            <!--hospitalization indicated; disabling; limiting self care ADL.-->
+        <!--</grade>-->
+        <!--<hospitalization xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">0:-->
+            <!--Please select-->
+        <!--</hospitalization>-->
+        <!--<eventApproximateTime>-->
+            <!--<hour>1</hour>-->
+            <!--<minute>1</minute>-->
+            <!--<type>0</type>-->
+        <!--</eventApproximateTime>-->
+        <!--<eventLocation>r</eventLocation>-->
+    <!--</AdverseEvent>-->
+    <!--<AdverseEvent>-->
+        <!--<gridId>PRN60e0223b-7365-45de-86b9-80ec34cffe94</gridId>-->
+        <!--<startDate>2012-05-08T00:00:00.000-04:00</startDate>-->
+        <!--<endDate>2012-05-09T00:00:00.000-04:00</endDate>-->
+        <!--<detailsForOther>redness in belley</detailsForOther>-->
+        <!--<expected>false</expected>-->
+        <!--<ConcomitantMedicationAttribution>-->
+            <!--<id>1143</id>-->
+            <!--<ConcomitantMedication>-->
+                <!--<name>kidney</name>-->
+                <!--<startDate>-->
+                    <!--<dayString>03</dayString>-->
+                    <!--<monthString>12</monthString>-->
+                    <!--<yearString>2012</yearString>-->
+                <!--</startDate>-->
+                <!--<endDate>-->
+                    <!--<dayString>03</dayString>-->
+                    <!--<monthString>12</monthString>-->
+                    <!--<yearString>2012</yearString>-->
+                <!--</endDate>-->
+                <!--<stillTakingMedications>false</stillTakingMedications>-->
+            <!--</ConcomitantMedication>-->
+        <!--</ConcomitantMedicationAttribution>-->
+        <!--<OtherCauseAttribution>-->
+            <!--<OtherCause>-->
+                <!--<text>Asthma</text>-->
+            <!--</OtherCause>-->
+        <!--</OtherCauseAttribution>-->
+        <!--<OtherCauseAttribution>-->
+            <!--<OtherCause>-->
+                <!--<text>Peptic ulcer</text>-->
+            <!--</OtherCause>-->
+        <!--</OtherCauseAttribution>-->
+        <!--<DiseaseAttribution>-->
+            <!--<id>1094</id>-->
+            <!--<attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">2:-->
+                <!--Unlikely-->
+            <!--</attribution>-->
+            <!--<DiseaseHistory>-->
+                <!--<id>224</id>-->
+                <!--<diagnosisDate>-->
+                    <!--<dayString>03</dayString>-->
+                    <!--<monthString>12</monthString>-->
+                    <!--<yearString>2012</yearString>-->
+                <!--</diagnosisDate>-->
+                <!--<MeddraStudyDisease>-->
+                    <!--<id>1712</id>-->
+                    <!--<LowLevelTerm>-->
+                        <!--<id>10118290</id>-->
+                        <!--<meddraCode>10006279</meddraCode>-->
+                        <!--<meddraTerm>Breast neoplasm</meddraTerm>-->
+                        <!--<fullName>Breast neoplasm</fullName>-->
+                    <!--</LowLevelTerm>-->
+                <!--</MeddraStudyDisease>-->
+                <!--<AnatomicSite>-->
+                    <!--<id>42</id>-->
+                    <!--<name>Testicle</name>-->
+                    <!--<category>Genitourinary</category>-->
+                <!--</AnatomicSite>-->
+                <!--<MetastaticDiseaseSite>-->
+                    <!--<id>80</id>-->
+                    <!--<AnatomicSite>-->
+                        <!--<id>111</id>-->
+                        <!--<name>Adrenal Gland</name>-->
+                        <!--<category>Other</category>-->
+                    <!--</AnatomicSite>-->
+                <!--</MetastaticDiseaseSite>-->
+                <!--<MetastaticDiseaseSite>-->
+                    <!--<id>81</id>-->
+                    <!--<AnatomicSite>-->
+                        <!--<id>70</id>-->
+                        <!--<name>Back</name>-->
+                        <!--<category>Musculoskeletal</category>-->
+                    <!--</AnatomicSite>-->
+                <!--</MetastaticDiseaseSite>-->
+                <!--<MetastaticDiseaseSite>-->
+                    <!--<id>82</id>-->
+                    <!--<AnatomicSite>-->
+                        <!--<id>38</id>-->
+                        <!--<name>Kidney</name>-->
+                        <!--<category>Genitourinary</category>-->
+                    <!--</AnatomicSite>-->
+                <!--</MetastaticDiseaseSite>-->
+            <!--</DiseaseHistory>-->
+        <!--</DiseaseAttribution>-->
+        <!--<AdverseEventCtcTerm other-required="false" med-dRA="false">-->
+            <!--<ctc-term>-->
+                <!--<id>4552</id>-->
+                <!--<term>Anorexia</term>-->
+                <!--<ctepTerm>Anorexia</ctepTerm>-->
+                <!--<ctepCode>10002646</ctepCode>-->
+                <!--<otherRequired>false</otherRequired>-->
+                <!--<CtcCategory>-->
+                    <!--<id>414</id>-->
+                    <!--<name>Metabolism and nutrition disorders</name>-->
+                <!--</CtcCategory>-->
+            <!--</ctc-term>-->
+            <!--<universal-term>Anorexia: redness in belley: null</universal-term>-->
+            <!--<term xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="CtcTerm">-->
+                <!--<id>4552</id>-->
+                <!--<term>Anorexia</term>-->
+                <!--<ctepTerm>Anorexia</ctepTerm>-->
+                <!--<ctepCode>10002646</ctepCode>-->
+                <!--<otherRequired>false</otherRequired>-->
+                <!--<CtcCategory>-->
+                    <!--<id>414</id>-->
+                    <!--<name>Metabolism and nutrition disorders</name>-->
+                <!--</CtcCategory>-->
+            <!--</term>-->
+            <!--<full-name>Anorexia</full-name>-->
+        <!--</AdverseEventCtcTerm>-->
+        <!--<AdverseEventMeddraLowLevelTerm/>-->
+        <!--<LowLevelTerm/>-->
+        <!--<attributionSummary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3:-->
+            <!--Possible-->
+        <!--</attributionSummary>-->
+        <!--<grade xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3: Severe or-->
+            <!--medically significant but not immediately life-threatening; hospitalization or prolongation of-->
+            <!--hospitalization indicated; disabling; limiting self care ADL.-->
+        <!--</grade>-->
+        <!--<hospitalization xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">0:-->
+            <!--Please select-->
+        <!--</hospitalization>-->
+        <!--<eventApproximateTime>-->
+            <!--<hour>1</hour>-->
+            <!--<minute>1</minute>-->
+            <!--<type>0</type>-->
+        <!--</eventApproximateTime>-->
+        <!--<eventLocation>1</eventLocation>-->
+    <!--</AdverseEvent>-->
+    <!--<AdverseEvent>-->
+        <!--<gridId>PRNada325e2-d6ce-4b9b-bbbf-9c2e961a07db</gridId>-->
+        <!--<startDate>2012-05-08T00:00:00.000-04:00</startDate>-->
+        <!--<endDate>2012-05-09T00:00:00.000-04:00</endDate>-->
+        <!--<detailsForOther>v5</detailsForOther>-->
+        <!--<expected>false</expected>-->
+        <!--<ConcomitantMedicationAttribution>-->
+            <!--<id>1110</id>-->
+            <!--<ConcomitantMedication>-->
+                <!--<name>kidney</name>-->
+                <!--<startDate>-->
+                    <!--<dayString>03</dayString>-->
+                    <!--<monthString>12</monthString>-->
+                    <!--<yearString>2012</yearString>-->
+                <!--</startDate>-->
+                <!--<endDate>-->
+                    <!--<dayString>03</dayString>-->
+                    <!--<monthString>12</monthString>-->
+                    <!--<yearString>2012</yearString>-->
+                <!--</endDate>-->
+                <!--<stillTakingMedications>false</stillTakingMedications>-->
+            <!--</ConcomitantMedication>-->
+        <!--</ConcomitantMedicationAttribution>-->
+        <!--<OtherCauseAttribution>-->
+            <!--<OtherCause>-->
+                <!--<text>Asthma</text>-->
+            <!--</OtherCause>-->
+        <!--</OtherCauseAttribution>-->
+        <!--<OtherCauseAttribution>-->
+            <!--<OtherCause>-->
+                <!--<text>Peptic ulcer</text>-->
+            <!--</OtherCause>-->
+        <!--</OtherCauseAttribution>-->
+        <!--<DiseaseAttribution>-->
+            <!--<id>1095</id>-->
+            <!--<attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">5:-->
+                <!--Definite-->
+            <!--</attribution>-->
+            <!--<DiseaseHistory>-->
+                <!--<id>224</id>-->
+                <!--<diagnosisDate>-->
+                    <!--<dayString>03</dayString>-->
+                    <!--<monthString>12</monthString>-->
+                    <!--<yearString>2012</yearString>-->
+                <!--</diagnosisDate>-->
+                <!--<MeddraStudyDisease>-->
+                    <!--<id>1712</id>-->
+                    <!--<LowLevelTerm>-->
+                        <!--<id>10118290</id>-->
+                        <!--<meddraCode>10006279</meddraCode>-->
+                        <!--<meddraTerm>Breast neoplasm</meddraTerm>-->
+                        <!--<fullName>Breast neoplasm</fullName>-->
+                    <!--</LowLevelTerm>-->
+                <!--</MeddraStudyDisease>-->
+                <!--<AnatomicSite>-->
+                    <!--<id>42</id>-->
+                    <!--<name>Testicle</name>-->
+                    <!--<category>Genitourinary</category>-->
+                <!--</AnatomicSite>-->
+                <!--<MetastaticDiseaseSite>-->
+                    <!--<id>80</id>-->
+                    <!--<AnatomicSite>-->
+                        <!--<id>111</id>-->
+                        <!--<name>Adrenal Gland</name>-->
+                        <!--<category>Other</category>-->
+                    <!--</AnatomicSite>-->
+                <!--</MetastaticDiseaseSite>-->
+                <!--<MetastaticDiseaseSite>-->
+                    <!--<id>81</id>-->
+                    <!--<AnatomicSite>-->
+                        <!--<id>70</id>-->
+                        <!--<name>Back</name>-->
+                        <!--<category>Musculoskeletal</category>-->
+                    <!--</AnatomicSite>-->
+                <!--</MetastaticDiseaseSite>-->
+                <!--<MetastaticDiseaseSite>-->
+                    <!--<id>82</id>-->
+                    <!--<AnatomicSite>-->
+                        <!--<id>38</id>-->
+                        <!--<name>Kidney</name>-->
+                        <!--<category>Genitourinary</category>-->
+                    <!--</AnatomicSite>-->
+                <!--</MetastaticDiseaseSite>-->
+            <!--</DiseaseHistory>-->
+        <!--</DiseaseAttribution>-->
+        <!--<AdverseEventCtcTerm other-required="false" med-dRA="false">-->
+            <!--<ctc-term>-->
+                <!--<id>4714</id>-->
+                <!--<term>Proteinuria</term>-->
+                <!--<ctepTerm>Proteinuria</ctepTerm>-->
+                <!--<ctepCode>10037032</ctepCode>-->
+                <!--<otherRequired>false</otherRequired>-->
+                <!--<CtcCategory>-->
+                    <!--<id>420</id>-->
+                    <!--<name>Renal and urinary disorders</name>-->
+                <!--</CtcCategory>-->
+            <!--</ctc-term>-->
+            <!--<universal-term>Proteinuria: v5: null</universal-term>-->
+            <!--<term xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="CtcTerm">-->
+                <!--<id>4714</id>-->
+                <!--<term>Proteinuria</term>-->
+                <!--<ctepTerm>Proteinuria</ctepTerm>-->
+                <!--<ctepCode>10037032</ctepCode>-->
+                <!--<otherRequired>false</otherRequired>-->
+                <!--<CtcCategory>-->
+                    <!--<id>420</id>-->
+                    <!--<name>Renal and urinary disorders</name>-->
+                <!--</CtcCategory>-->
+            <!--</term>-->
+            <!--<full-name>Proteinuria</full-name>-->
+        <!--</AdverseEventCtcTerm>-->
+        <!--<AdverseEventMeddraLowLevelTerm/>-->
+        <!--<LowLevelTerm/>-->
+        <!--<attributionSummary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3:-->
+            <!--Possible-->
+        <!--</attributionSummary>-->
+        <!--<grade xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3: Severe or-->
+            <!--medically significant but not immediately life-threatening; hospitalization or prolongation of-->
+            <!--hospitalization indicated; disabling; limiting self care ADL.-->
+        <!--</grade>-->
+        <!--<hospitalization xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">0:-->
+            <!--Please select-->
+        <!--</hospitalization>-->
+        <!--<eventApproximateTime>-->
+            <!--<hour>1</hour>-->
+            <!--<minute>1</minute>-->
+            <!--<type>0</type>-->
+        <!--</eventApproximateTime>-->
+        <!--<eventLocation>1</eventLocation>-->
+    <!--</AdverseEvent>-->
+    <!--<AdverseEvent>-->
+        <!--<gridId>PRNc20433bd-ccd4-4ac3-bf93-9cef6cd4205a</gridId>-->
+        <!--<startDate>2012-05-08T00:00:00.000-04:00</startDate>-->
+        <!--<detailsForOther>v4</detailsForOther>-->
+        <!--<expected>false</expected>-->
+        <!--<ConcomitantMedicationAttribution>-->
+            <!--<id>1113</id>-->
+            <!--<ConcomitantMedication>-->
+                <!--<name>kidney</name>-->
+                <!--<startDate>-->
+                    <!--<dayString>03</dayString>-->
+                    <!--<monthString>12</monthString>-->
+                    <!--<yearString>2012</yearString>-->
+                <!--</startDate>-->
+                <!--<endDate>-->
+                    <!--<dayString>03</dayString>-->
+                    <!--<monthString>12</monthString>-->
+                    <!--<yearString>2012</yearString>-->
+                <!--</endDate>-->
+                <!--<stillTakingMedications>false</stillTakingMedications>-->
+            <!--</ConcomitantMedication>-->
+        <!--</ConcomitantMedicationAttribution>-->
+        <!--<OtherCauseAttribution>-->
+            <!--<OtherCause>-->
+                <!--<text>Asthma</text>-->
+            <!--</OtherCause>-->
+        <!--</OtherCauseAttribution>-->
+        <!--<OtherCauseAttribution>-->
+            <!--<OtherCause>-->
+                <!--<text>Peptic ulcer</text>-->
+            <!--</OtherCause>-->
+        <!--</OtherCauseAttribution>-->
+        <!--<DiseaseAttribution>-->
+            <!--<id>1101</id>-->
+            <!--<attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">2:-->
+                <!--Unlikely-->
+            <!--</attribution>-->
+            <!--<DiseaseHistory>-->
+                <!--<id>224</id>-->
+                <!--<diagnosisDate>-->
+                    <!--<dayString>03</dayString>-->
+                    <!--<monthString>12</monthString>-->
+                    <!--<yearString>2012</yearString>-->
+                <!--</diagnosisDate>-->
+                <!--<MeddraStudyDisease>-->
+                    <!--<id>1712</id>-->
+                    <!--<LowLevelTerm>-->
+                        <!--<id>10118290</id>-->
+                        <!--<meddraCode>10006279</meddraCode>-->
+                        <!--<meddraTerm>Breast neoplasm</meddraTerm>-->
+                        <!--<fullName>Breast neoplasm</fullName>-->
+                    <!--</LowLevelTerm>-->
+                <!--</MeddraStudyDisease>-->
+                <!--<AnatomicSite>-->
+                    <!--<id>42</id>-->
+                    <!--<name>Testicle</name>-->
+                    <!--<category>Genitourinary</category>-->
+                <!--</AnatomicSite>-->
+                <!--<MetastaticDiseaseSite>-->
+                    <!--<id>80</id>-->
+                    <!--<AnatomicSite>-->
+                        <!--<id>111</id>-->
+                        <!--<name>Adrenal Gland</name>-->
+                        <!--<category>Other</category>-->
+                    <!--</AnatomicSite>-->
+                <!--</MetastaticDiseaseSite>-->
+                <!--<MetastaticDiseaseSite>-->
+                    <!--<id>81</id>-->
+                    <!--<AnatomicSite>-->
+                        <!--<id>70</id>-->
+                        <!--<name>Back</name>-->
+                        <!--<category>Musculoskeletal</category>-->
+                    <!--</AnatomicSite>-->
+                <!--</MetastaticDiseaseSite>-->
+                <!--<MetastaticDiseaseSite>-->
+                    <!--<id>82</id>-->
+                    <!--<AnatomicSite>-->
+                        <!--<id>38</id>-->
+                        <!--<name>Kidney</name>-->
+                        <!--<category>Genitourinary</category>-->
+                    <!--</AnatomicSite>-->
+                <!--</MetastaticDiseaseSite>-->
+            <!--</DiseaseHistory>-->
+        <!--</DiseaseAttribution>-->
+        <!--<AdverseEventCtcTerm other-required="false" med-dRA="false">-->
+            <!--<ctc-term>-->
+                <!--<id>4272</id>-->
+                <!--<term>Nausea</term>-->
+                <!--<ctepTerm>Nausea</ctepTerm>-->
+                <!--<ctepCode>10028813</ctepCode>-->
+                <!--<otherRequired>false</otherRequired>-->
+                <!--<CtcCategory>-->
+                    <!--<id>407</id>-->
+                    <!--<name>Gastrointestinal disorders</name>-->
+                <!--</CtcCategory>-->
+            <!--</ctc-term>-->
+            <!--<universal-term>Nausea: v4: null</universal-term>-->
+            <!--<term xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="CtcTerm">-->
+                <!--<id>4272</id>-->
+                <!--<term>Nausea</term>-->
+                <!--<ctepTerm>Nausea</ctepTerm>-->
+                <!--<ctepCode>10028813</ctepCode>-->
+                <!--<otherRequired>false</otherRequired>-->
+                <!--<CtcCategory>-->
+                    <!--<id>407</id>-->
+                    <!--<name>Gastrointestinal disorders</name>-->
+                <!--</CtcCategory>-->
+            <!--</term>-->
+            <!--<full-name>Nausea</full-name>-->
+        <!--</AdverseEventCtcTerm>-->
+        <!--<AdverseEventMeddraLowLevelTerm/>-->
+        <!--<LowLevelTerm/>-->
+        <!--<attributionSummary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3:-->
+            <!--Possible-->
+        <!--</attributionSummary>-->
+        <!--<grade xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3: Severe or-->
+            <!--medically significant but not immediately life-threatening; hospitalization or prolongation of-->
+            <!--hospitalization indicated; disabling; limiting self care ADL.-->
+        <!--</grade>-->
+        <!--<hospitalization xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">0:-->
+            <!--Please select-->
+        <!--</hospitalization>-->
+        <!--<eventApproximateTime>-->
+            <!--<hour>1</hour>-->
+            <!--<minute>1</minute>-->
+            <!--<type>0</type>-->
+        <!--</eventApproximateTime>-->
+        <!--<eventLocation>1</eventLocation>-->
+    <!--</AdverseEvent>-->
+    <!--<AdverseEvent>-->
+        <!--<gridId>PRN8935030c-ec9b-412a-aa1c-18e5ffeef091</gridId>-->
+        <!--<startDate>2012-05-08T00:00:00.000-04:00</startDate>-->
+        <!--<detailsForOther>v3</detailsForOther>-->
+        <!--<expected>false</expected>-->
+        <!--<ConcomitantMedicationAttribution>-->
+            <!--<id>1146</id>-->
+            <!--<ConcomitantMedication>-->
+                <!--<name>kidney</name>-->
+                <!--<startDate>-->
+                    <!--<dayString>03</dayString>-->
+                    <!--<monthString>12</monthString>-->
+                    <!--<yearString>2012</yearString>-->
+                <!--</startDate>-->
+                <!--<endDate>-->
+                    <!--<dayString>03</dayString>-->
+                    <!--<monthString>12</monthString>-->
+                    <!--<yearString>2012</yearString>-->
+                <!--</endDate>-->
+                <!--<stillTakingMedications>false</stillTakingMedications>-->
+            <!--</ConcomitantMedication>-->
+        <!--</ConcomitantMedicationAttribution>-->
+        <!--<OtherCauseAttribution>-->
+            <!--<OtherCause>-->
+                <!--<text>Asthma</text>-->
+            <!--</OtherCause>-->
+        <!--</OtherCauseAttribution>-->
+        <!--<OtherCauseAttribution>-->
+            <!--<OtherCause>-->
+                <!--<text>Peptic ulcer</text>-->
+            <!--</OtherCause>-->
+        <!--</OtherCauseAttribution>-->
+        <!--<DiseaseAttribution>-->
+            <!--<id>1096</id>-->
+            <!--<attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">2:-->
+                <!--Unlikely-->
+            <!--</attribution>-->
+            <!--<DiseaseHistory>-->
+                <!--<id>224</id>-->
+                <!--<diagnosisDate>-->
+                    <!--<dayString>03</dayString>-->
+                    <!--<monthString>12</monthString>-->
+                    <!--<yearString>2012</yearString>-->
+                <!--</diagnosisDate>-->
+                <!--<MeddraStudyDisease>-->
+                    <!--<id>1712</id>-->
+                    <!--<LowLevelTerm>-->
+                        <!--<id>10118290</id>-->
+                        <!--<meddraCode>10006279</meddraCode>-->
+                        <!--<meddraTerm>Breast neoplasm</meddraTerm>-->
+                        <!--<fullName>Breast neoplasm</fullName>-->
+                    <!--</LowLevelTerm>-->
+                <!--</MeddraStudyDisease>-->
+                <!--<AnatomicSite>-->
+                    <!--<id>42</id>-->
+                    <!--<name>Testicle</name>-->
+                    <!--<category>Genitourinary</category>-->
+                <!--</AnatomicSite>-->
+                <!--<MetastaticDiseaseSite>-->
+                    <!--<id>80</id>-->
+                    <!--<AnatomicSite>-->
+                        <!--<id>111</id>-->
+                        <!--<name>Adrenal Gland</name>-->
+                        <!--<category>Other</category>-->
+                    <!--</AnatomicSite>-->
+                <!--</MetastaticDiseaseSite>-->
+                <!--<MetastaticDiseaseSite>-->
+                    <!--<id>81</id>-->
+                    <!--<AnatomicSite>-->
+                        <!--<id>70</id>-->
+                        <!--<name>Back</name>-->
+                        <!--<category>Musculoskeletal</category>-->
+                    <!--</AnatomicSite>-->
+                <!--</MetastaticDiseaseSite>-->
+                <!--<MetastaticDiseaseSite>-->
+                    <!--<id>82</id>-->
+                    <!--<AnatomicSite>-->
+                        <!--<id>38</id>-->
+                        <!--<name>Kidney</name>-->
+                        <!--<category>Genitourinary</category>-->
+                    <!--</AnatomicSite>-->
+                <!--</MetastaticDiseaseSite>-->
+            <!--</DiseaseHistory>-->
+        <!--</DiseaseAttribution>-->
+        <!--<AdverseEventCtcTerm other-required="false" med-dRA="false">-->
+            <!--<ctc-term>-->
+                <!--<id>4878</id>-->
+                <!--<term>Hypertension</term>-->
+                <!--<ctepTerm>Hypertension</ctepTerm>-->
+                <!--<ctepCode>10020772</ctepCode>-->
+                <!--<otherRequired>false</otherRequired>-->
+                <!--<CtcCategory>-->
+                    <!--<id>426</id>-->
+                    <!--<name>Vascular disorders</name>-->
+                <!--</CtcCategory>-->
+            <!--</ctc-term>-->
+            <!--<universal-term>Hypertension: v3: null</universal-term>-->
+            <!--<term xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="CtcTerm">-->
+                <!--<id>4878</id>-->
+                <!--<term>Hypertension</term>-->
+                <!--<ctepTerm>Hypertension</ctepTerm>-->
+                <!--<ctepCode>10020772</ctepCode>-->
+                <!--<otherRequired>false</otherRequired>-->
+                <!--<CtcCategory>-->
+                    <!--<id>426</id>-->
+                    <!--<name>Vascular disorders</name>-->
+                <!--</CtcCategory>-->
+            <!--</term>-->
+            <!--<full-name>Hypertension</full-name>-->
+        <!--</AdverseEventCtcTerm>-->
+        <!--<AdverseEventMeddraLowLevelTerm/>-->
+        <!--<LowLevelTerm/>-->
+        <!--<attributionSummary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3:-->
+            <!--Possible-->
+        <!--</attributionSummary>-->
+        <!--<grade xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3: Severe or-->
+            <!--medically significant but not immediately life-threatening; hospitalization or prolongation of-->
+            <!--hospitalization indicated; disabling; limiting self care ADL.-->
+        <!--</grade>-->
+        <!--<hospitalization xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">0:-->
+            <!--Please select-->
+        <!--</hospitalization>-->
+        <!--<eventApproximateTime>-->
+            <!--<hour>1</hour>-->
+            <!--<minute>1</minute>-->
+            <!--<type>0</type>-->
+        <!--</eventApproximateTime>-->
+        <!--<eventLocation>1</eventLocation>-->
+    <!--</AdverseEvent>-->
+    <!--<AdverseEvent>-->
+        <!--<gridId>PRN354aba10-d967-48fd-b4d4-0509ceda207f</gridId>-->
+        <!--<startDate>2012-05-08T00:00:00.000-04:00</startDate>-->
+        <!--<detailsForOther>v2</detailsForOther>-->
+        <!--<expected>false</expected>-->
+        <!--<ConcomitantMedicationAttribution>-->
+            <!--<id>1116</id>-->
+            <!--<ConcomitantMedication>-->
+                <!--<name>kidney</name>-->
+                <!--<startDate>-->
+                    <!--<dayString>03</dayString>-->
+                    <!--<monthString>12</monthString>-->
+                    <!--<yearString>2012</yearString>-->
+                <!--</startDate>-->
+                <!--<endDate>-->
+                    <!--<dayString>03</dayString>-->
+                    <!--<monthString>12</monthString>-->
+                    <!--<yearString>2012</yearString>-->
+                <!--</endDate>-->
+                <!--<stillTakingMedications>false</stillTakingMedications>-->
+            <!--</ConcomitantMedication>-->
+        <!--</ConcomitantMedicationAttribution>-->
+        <!--<OtherCauseAttribution>-->
+            <!--<OtherCause>-->
+                <!--<text>Asthma</text>-->
+            <!--</OtherCause>-->
+        <!--</OtherCauseAttribution>-->
+        <!--<OtherCauseAttribution>-->
+            <!--<OtherCause>-->
+                <!--<text>Peptic ulcer</text>-->
+            <!--</OtherCause>-->
+        <!--</OtherCauseAttribution>-->
+        <!--<DiseaseAttribution>-->
+            <!--<id>1097</id>-->
+            <!--<DiseaseHistory>-->
+                <!--<id>224</id>-->
+                <!--<diagnosisDate>-->
+                    <!--<dayString>03</dayString>-->
+                    <!--<monthString>12</monthString>-->
+                    <!--<yearString>2012</yearString>-->
+                <!--</diagnosisDate>-->
+                <!--<MeddraStudyDisease>-->
+                    <!--<id>1712</id>-->
+                    <!--<LowLevelTerm>-->
+                        <!--<id>10118290</id>-->
+                        <!--<meddraCode>10006279</meddraCode>-->
+                        <!--<meddraTerm>Breast neoplasm</meddraTerm>-->
+                        <!--<fullName>Breast neoplasm</fullName>-->
+                    <!--</LowLevelTerm>-->
+                <!--</MeddraStudyDisease>-->
+                <!--<AnatomicSite>-->
+                    <!--<id>42</id>-->
+                    <!--<name>Testicle</name>-->
+                    <!--<category>Genitourinary</category>-->
+                <!--</AnatomicSite>-->
+                <!--<MetastaticDiseaseSite>-->
+                    <!--<id>80</id>-->
+                    <!--<AnatomicSite>-->
+                        <!--<id>111</id>-->
+                        <!--<name>Adrenal Gland</name>-->
+                        <!--<category>Other</category>-->
+                    <!--</AnatomicSite>-->
+                <!--</MetastaticDiseaseSite>-->
+                <!--<MetastaticDiseaseSite>-->
+                    <!--<id>81</id>-->
+                    <!--<AnatomicSite>-->
+                        <!--<id>70</id>-->
+                        <!--<name>Back</name>-->
+                        <!--<category>Musculoskeletal</category>-->
+                    <!--</AnatomicSite>-->
+                <!--</MetastaticDiseaseSite>-->
+                <!--<MetastaticDiseaseSite>-->
+                    <!--<id>82</id>-->
+                    <!--<AnatomicSite>-->
+                        <!--<id>38</id>-->
+                        <!--<name>Kidney</name>-->
+                        <!--<category>Genitourinary</category>-->
+                    <!--</AnatomicSite>-->
+                <!--</MetastaticDiseaseSite>-->
+            <!--</DiseaseHistory>-->
+        <!--</DiseaseAttribution>-->
+        <!--<AdverseEventCtcTerm other-required="false" med-dRA="false">-->
+            <!--<ctc-term>-->
+                <!--<id>4697</id>-->
+                <!--<term>Insomnia</term>-->
+                <!--<ctepTerm>Insomnia</ctepTerm>-->
+                <!--<ctepCode>10022437</ctepCode>-->
+                <!--<otherRequired>false</otherRequired>-->
+                <!--<CtcCategory>-->
+                    <!--<id>419</id>-->
+                    <!--<name>Psychiatric disorders</name>-->
+                <!--</CtcCategory>-->
+            <!--</ctc-term>-->
+            <!--<universal-term>Insomnia: v2: null</universal-term>-->
+            <!--<term xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="CtcTerm">-->
+                <!--<id>4697</id>-->
+                <!--<term>Insomnia</term>-->
+                <!--<ctepTerm>Insomnia</ctepTerm>-->
+                <!--<ctepCode>10022437</ctepCode>-->
+                <!--<otherRequired>false</otherRequired>-->
+                <!--<CtcCategory>-->
+                    <!--<id>419</id>-->
+                    <!--<name>Psychiatric disorders</name>-->
+                <!--</CtcCategory>-->
+            <!--</term>-->
+            <!--<full-name>Insomnia</full-name>-->
+        <!--</AdverseEventCtcTerm>-->
+        <!--<AdverseEventMeddraLowLevelTerm/>-->
+        <!--<LowLevelTerm/>-->
+        <!--<attributionSummary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3:-->
+            <!--Possible-->
+        <!--</attributionSummary>-->
+        <!--<grade xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3: Severe or-->
+            <!--medically significant but not immediately life-threatening; hospitalization or prolongation of-->
+            <!--hospitalization indicated; disabling; limiting self care ADL.-->
+        <!--</grade>-->
+        <!--<hospitalization xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">0:-->
+            <!--Please select-->
+        <!--</hospitalization>-->
+        <!--<eventApproximateTime>-->
+            <!--<hour>1</hour>-->
+            <!--<minute>1</minute>-->
+            <!--<type>0</type>-->
+        <!--</eventApproximateTime>-->
+        <!--<eventLocation>1</eventLocation>-->
+    <!--</AdverseEvent>-->
+    <!--<AdverseEvent>-->
+        <!--<gridId>PRNf32c4595-cb46-4895-bbbd-1e54efa82f1b</gridId>-->
+        <!--<startDate>2012-05-08T00:00:00.000-04:00</startDate>-->
+        <!--<endDate>2012-05-09T00:00:00.000-04:00</endDate>-->
+        <!--<detailsForOther>blue sea</detailsForOther>-->
+        <!--<expected>false</expected>-->
+        <!--<ConcomitantMedicationAttribution>-->
+            <!--<id>1149</id>-->
+            <!--<ConcomitantMedication>-->
+                <!--<name>kidney</name>-->
+                <!--<startDate>-->
+                    <!--<dayString>03</dayString>-->
+                    <!--<monthString>12</monthString>-->
+                    <!--<yearString>2012</yearString>-->
+                <!--</startDate>-->
+                <!--<endDate>-->
+                    <!--<dayString>03</dayString>-->
+                    <!--<monthString>12</monthString>-->
+                    <!--<yearString>2012</yearString>-->
+                <!--</endDate>-->
+                <!--<stillTakingMedications>false</stillTakingMedications>-->
+            <!--</ConcomitantMedication>-->
+        <!--</ConcomitantMedicationAttribution>-->
+        <!--<OtherCauseAttribution>-->
+            <!--<OtherCause>-->
+                <!--<text>Asthma</text>-->
+            <!--</OtherCause>-->
+        <!--</OtherCauseAttribution>-->
+        <!--<OtherCauseAttribution>-->
+            <!--<OtherCause>-->
+                <!--<text>Peptic ulcer</text>-->
+            <!--</OtherCause>-->
+        <!--</OtherCauseAttribution>-->
+        <!--<DiseaseAttribution>-->
+            <!--<id>1098</id>-->
+            <!--<attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3:-->
+                <!--Possible-->
+            <!--</attribution>-->
+            <!--<DiseaseHistory>-->
+                <!--<id>224</id>-->
+                <!--<diagnosisDate>-->
+                    <!--<dayString>03</dayString>-->
+                    <!--<monthString>12</monthString>-->
+                    <!--<yearString>2012</yearString>-->
+                <!--</diagnosisDate>-->
+                <!--<MeddraStudyDisease>-->
+                    <!--<id>1712</id>-->
+                    <!--<LowLevelTerm>-->
+                        <!--<id>10118290</id>-->
+                        <!--<meddraCode>10006279</meddraCode>-->
+                        <!--<meddraTerm>Breast neoplasm</meddraTerm>-->
+                        <!--<fullName>Breast neoplasm</fullName>-->
+                    <!--</LowLevelTerm>-->
+                <!--</MeddraStudyDisease>-->
+                <!--<AnatomicSite>-->
+                    <!--<id>42</id>-->
+                    <!--<name>Testicle</name>-->
+                    <!--<category>Genitourinary</category>-->
+                <!--</AnatomicSite>-->
+                <!--<MetastaticDiseaseSite>-->
+                    <!--<id>80</id>-->
+                    <!--<AnatomicSite>-->
+                        <!--<id>111</id>-->
+                        <!--<name>Adrenal Gland</name>-->
+                        <!--<category>Other</category>-->
+                    <!--</AnatomicSite>-->
+                <!--</MetastaticDiseaseSite>-->
+                <!--<MetastaticDiseaseSite>-->
+                    <!--<id>81</id>-->
+                    <!--<AnatomicSite>-->
+                        <!--<id>70</id>-->
+                        <!--<name>Back</name>-->
+                        <!--<category>Musculoskeletal</category>-->
+                    <!--</AnatomicSite>-->
+                <!--</MetastaticDiseaseSite>-->
+                <!--<MetastaticDiseaseSite>-->
+                    <!--<id>82</id>-->
+                    <!--<AnatomicSite>-->
+                        <!--<id>38</id>-->
+                        <!--<name>Kidney</name>-->
+                        <!--<category>Genitourinary</category>-->
+                    <!--</AnatomicSite>-->
+                <!--</MetastaticDiseaseSite>-->
+            <!--</DiseaseHistory>-->
+        <!--</DiseaseAttribution>-->
+        <!--<AdverseEventCtcTerm other-required="false" med-dRA="false">-->
+            <!--<ctc-term>-->
+                <!--<id>4508</id>-->
+                <!--<term>Wound dehiscence</term>-->
+                <!--<ctepTerm>Wound dehiscence</ctepTerm>-->
+                <!--<ctepCode>10048031</ctepCode>-->
+                <!--<otherRequired>false</otherRequired>-->
+                <!--<CtcCategory>-->
+                    <!--<id>412</id>-->
+                    <!--<name>Injury, poisoning and procedural complications</name>-->
+                <!--</CtcCategory>-->
+            <!--</ctc-term>-->
+            <!--<universal-term>Wound dehiscence: blue sea: null</universal-term>-->
+            <!--<term xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="CtcTerm">-->
+                <!--<id>4508</id>-->
+                <!--<term>Wound dehiscence</term>-->
+                <!--<ctepTerm>Wound dehiscence</ctepTerm>-->
+                <!--<ctepCode>10048031</ctepCode>-->
+                <!--<otherRequired>false</otherRequired>-->
+                <!--<CtcCategory>-->
+                    <!--<id>412</id>-->
+                    <!--<name>Injury, poisoning and procedural complications</name>-->
+                <!--</CtcCategory>-->
+            <!--</term>-->
+            <!--<full-name>Wound dehiscence</full-name>-->
+        <!--</AdverseEventCtcTerm>-->
+        <!--<AdverseEventMeddraLowLevelTerm/>-->
+        <!--<LowLevelTerm/>-->
+        <!--<attributionSummary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">2:-->
+            <!--Unlikely-->
+        <!--</attributionSummary>-->
+        <!--<grade xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">2: Moderate;-->
+            <!--minimal, local or noninvasive intervention indicated; limiting age-appropriate instrumental ADL.-->
+        <!--</grade>-->
+        <!--<hospitalization xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">0:-->
+            <!--Please select-->
+        <!--</hospitalization>-->
+        <!--<eventApproximateTime>-->
+            <!--<hour>1</hour>-->
+            <!--<minute>1</minute>-->
+            <!--<type>0</type>-->
+        <!--</eventApproximateTime>-->
+        <!--<eventLocation>1</eventLocation>-->
+    <!--</AdverseEvent>-->
+    <!--<AdverseEvent>-->
+        <!--<gridId>PRNf71f88ac-2b18-44c1-8dd8-e1df073452d9</gridId>-->
+        <!--<startDate>2012-05-14T00:00:00.000-04:00</startDate>-->
+        <!--<detailsForOther>v1</detailsForOther>-->
+        <!--<expected>false</expected>-->
+        <!--<ConcomitantMedicationAttribution>-->
+            <!--<id>1152</id>-->
+            <!--<ConcomitantMedication>-->
+                <!--<name>kidney</name>-->
+                <!--<startDate>-->
+                    <!--<dayString>03</dayString>-->
+                    <!--<monthString>12</monthString>-->
+                    <!--<yearString>2012</yearString>-->
+                <!--</startDate>-->
+                <!--<endDate>-->
+                    <!--<dayString>03</dayString>-->
+                    <!--<monthString>12</monthString>-->
+                    <!--<yearString>2012</yearString>-->
+                <!--</endDate>-->
+                <!--<stillTakingMedications>false</stillTakingMedications>-->
+            <!--</ConcomitantMedication>-->
+        <!--</ConcomitantMedicationAttribution>-->
+        <!--<OtherCauseAttribution>-->
+            <!--<OtherCause>-->
+                <!--<text>Asthma</text>-->
+            <!--</OtherCause>-->
+        <!--</OtherCauseAttribution>-->
+        <!--<OtherCauseAttribution>-->
+            <!--<OtherCause>-->
+                <!--<text>Peptic ulcer</text>-->
+            <!--</OtherCause>-->
+        <!--</OtherCauseAttribution>-->
+        <!--<DiseaseAttribution>-->
+            <!--<id>1099</id>-->
+            <!--<attribution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3:-->
+                <!--Possible-->
+            <!--</attribution>-->
+            <!--<DiseaseHistory>-->
+                <!--<id>224</id>-->
+                <!--<diagnosisDate>-->
+                    <!--<dayString>03</dayString>-->
+                    <!--<monthString>12</monthString>-->
+                    <!--<yearString>2012</yearString>-->
+                <!--</diagnosisDate>-->
+                <!--<MeddraStudyDisease>-->
+                    <!--<id>1712</id>-->
+                    <!--<LowLevelTerm>-->
+                        <!--<id>10118290</id>-->
+                        <!--<meddraCode>10006279</meddraCode>-->
+                        <!--<meddraTerm>Breast neoplasm</meddraTerm>-->
+                        <!--<fullName>Breast neoplasm</fullName>-->
+                    <!--</LowLevelTerm>-->
+                <!--</MeddraStudyDisease>-->
+                <!--<AnatomicSite>-->
+                    <!--<id>42</id>-->
+                    <!--<name>Testicle</name>-->
+                    <!--<category>Genitourinary</category>-->
+                <!--</AnatomicSite>-->
+                <!--<MetastaticDiseaseSite>-->
+                    <!--<id>80</id>-->
+                    <!--<AnatomicSite>-->
+                        <!--<id>111</id>-->
+                        <!--<name>Adrenal Gland</name>-->
+                        <!--<category>Other</category>-->
+                    <!--</AnatomicSite>-->
+                <!--</MetastaticDiseaseSite>-->
+                <!--<MetastaticDiseaseSite>-->
+                    <!--<id>81</id>-->
+                    <!--<AnatomicSite>-->
+                        <!--<id>70</id>-->
+                        <!--<name>Back</name>-->
+                        <!--<category>Musculoskeletal</category>-->
+                    <!--</AnatomicSite>-->
+                <!--</MetastaticDiseaseSite>-->
+                <!--<MetastaticDiseaseSite>-->
+                    <!--<id>82</id>-->
+                    <!--<AnatomicSite>-->
+                        <!--<id>38</id>-->
+                        <!--<name>Kidney</name>-->
+                        <!--<category>Genitourinary</category>-->
+                    <!--</AnatomicSite>-->
+                <!--</MetastaticDiseaseSite>-->
+            <!--</DiseaseHistory>-->
+        <!--</DiseaseAttribution>-->
+        <!--<AdverseEventCtcTerm other-required="false" med-dRA="false">-->
+            <!--<ctc-term>-->
+                <!--<id>4521</id>-->
+                <!--<term>Cardiac troponin I increased</term>-->
+                <!--<ctepTerm>Cardiac troponin I increased</ctepTerm>-->
+                <!--<ctepCode>10007612</ctepCode>-->
+                <!--<otherRequired>false</otherRequired>-->
+                <!--<CtcCategory>-->
+                    <!--<id>413</id>-->
+                    <!--<name>Investigations</name>-->
+                <!--</CtcCategory>-->
+            <!--</ctc-term>-->
+            <!--<universal-term>Cardiac troponin I increased: v1: null</universal-term>-->
+            <!--<term xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="CtcTerm">-->
+                <!--<id>4521</id>-->
+                <!--<term>Cardiac troponin I increased</term>-->
+                <!--<ctepTerm>Cardiac troponin I increased</ctepTerm>-->
+                <!--<ctepCode>10007612</ctepCode>-->
+                <!--<otherRequired>false</otherRequired>-->
+                <!--<CtcCategory>-->
+                    <!--<id>413</id>-->
+                    <!--<name>Investigations</name>-->
+                <!--</CtcCategory>-->
+            <!--</term>-->
+            <!--<full-name>Cardiac troponin I increased</full-name>-->
+        <!--</AdverseEventCtcTerm>-->
+        <!--<AdverseEventMeddraLowLevelTerm/>-->
+        <!--<LowLevelTerm/>-->
+        <!--<attributionSummary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">3:-->
+            <!--Possible-->
+        <!--</attributionSummary>-->
+        <!--<grade xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">1: Mild;-->
+            <!--asymptomatic or mild symptoms; clinical or diagnostic observations only; intervention not indicated.-->
+        <!--</grade>-->
+        <!--<hospitalization xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">0:-->
+            <!--Please select-->
+        <!--</hospitalization>-->
+        <!--<eventApproximateTime>-->
+            <!--<hour>1</hour>-->
+            <!--<minute>1</minute>-->
+            <!--<type>0</type>-->
+        <!--</eventApproximateTime>-->
+        <!--<eventLocation>1</eventLocation>-->
+    <!--</AdverseEvent>-->
+    <Lab>
+        <id>33</id>
+        <labTerm>
+            <term>Oxygen saturation</term>
+            <category>
+                <name>Respiratory</name>
+            </category>
+        </labTerm>
+        <units>U/L</units>
+        <normalRange>br1</normalRange>
+        <baseline>
+            <value>1</value>
+            <date>2012-12-05T00:00:00.000-05:00</date>
+        </baseline>
+        <nadir>
+            <value>1</value>
+            <date>2012-12-05T00:00:00.000-05:00</date>
+        </nadir>
+        <recovery>
+            <value>1</value>
+            <date>2012-12-05T00:00:00.000-05:00</date>
+        </recovery>
+    </Lab>
+    <Lab>
+        <id>34</id>
+        <labTerm>
+            <term>Bone Marrow Cellularity</term>
+            <category>
+                <name>Bone Marrow Biopsy</name>
+            </category>
+        </labTerm>
+        <units>mmHg</units>
+        <normalRange>br2</normalRange>
+        <baseline>
+            <value>1</value>
+            <date>2012-12-05T00:00:00.000-05:00</date>
+        </baseline>
+        <nadir>
+            <value>1</value>
+            <date>2012-12-05T00:00:00.000-05:00</date>
+        </nadir>
+        <recovery>
+            <value>1</value>
+            <date>2012-12-05T00:00:00.000-05:00</date>
+        </recovery>
+    </Lab>
+    <Lab>
+        <id>35</id>
+        <labTerm>
+            <term>Bacterial infection NOS</term>
+            <category>
+                <name>Microbiology</name>
+            </category>
+        </labTerm>
+        <units>mmol/L</units>
+        <normalRange>br3</normalRange>
+        <baseline/>
+        <nadir/>
+        <recovery/>
+        <site>b</site>
+        <infectiousAgent>test</infectiousAgent>
+        <labDate>2012-12-05T00:00:00.000-05:00</labDate>
+    </Lab>
+    <SAEReportPriorTherapy>
+        <id>179</id>
+        <PriorTherapy>
+            <id>11</id>
+            <text>Hormonal Therapy</text>
+            <meddraTerm></meddraTerm>
+            <meddraCode>10065646</meddraCode>
+        </PriorTherapy>
+        <startDate/>
+        <endDate/>
+    </SAEReportPriorTherapy>
     <Summary id="Study">
-        <value>(I-SPY 2) I-SPY 2 Trial</value>
+        <value>(I-SPY 2) I-SPY 2 Trial (Investigation of Serial Studies to Predict Your Therapeutic Response With
+            Imaging And moLecular Analysis 2)
+        </value>
     </Summary>
     <Summary id="Participant">
-        <value>spy-la-22</value>
+        <value>mrn-bjp-23</value>
     </Summary>
     <Summary id="Report created at">
-        <value>2012-11-14 17:37:34.729</value>
+        <value>2012-12-03 16:04:10.873</value>
     </Summary>
     <Summary id="Primary AE">
-        <value>Vaginal discharge: va: null</value>
+        <value>Tinnitus: drugged: null</value>
     </Summary>
     <Summary id="AE count">
-        <value>1</value>
+        <value>17</value>
     </Summary>
     <Summary id="Public identifier">
-        <value>MD017-MD017</value>
+        <value>CA578-CA578</value>
     </Summary>
     <Summary id="Ticket number"/>
     <Summary id="Next report due"/>
@@ -427,76 +2675,65 @@
         <value>Other</value>
     </Summary>
     <TreatmentInformation>
-        <firstCourseDate>2012-11-14T00:00:00.000-05:00</firstCourseDate>
         <TreatmentAssignment>
-            <code>TAC4</code>
-            <description>Taxane + Herceptin and Lapatanib + Pazopanib (12 weekly cycles) followed by Anthracycline
-                (4-cycles) and Surgery
+            <code>Experimental: Neratinib</code>
+            <description>Drug: Neratinib&#xd;
+                240 mg po every week during the 12 weekly treatment cycles post-randomization
             </description>
         </TreatmentAssignment>
-        <investigationalAgentAdministered>false</investigationalAgentAdministered>
-        <AdverseEventCourse>
-            <date>2012-11-14T00:00:00.000-05:00</date>
-        </AdverseEventCourse>
-        <CourseAgent>
-            <id>320</id>
-            <firstAdministeredDate>2012-12-03T00:00:00.000-05:00</firstAdministeredDate>
-            <lastAdministeredDate>2012-12-03T00:00:00.000-05:00</lastAdministeredDate>
-            <Dose>
-                <amount>1</amount>
-                <units>BVP</units>
-            </Dose>
-            <StudyAgent>
-                <Agent>
-                    <name>Trastuzumab (Herceptin)</name>
-                    <description>Trastuzumab (Herceptin)</description>
-                    <nscNumber>688097</nscNumber>
-                </Agent>
-                <INDType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
-                    IND_EXEMPT
-                </INDType>
-                <studyTherapyType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                                  xsi:type="java:java.lang.String">DRUG_ADMINISTRATION
-                </studyTherapyType>
-            </StudyAgent>
-            <lotNumber>1</lotNumber>
-            <formulation>1</formulation>
-        </CourseAgent>
+        <AdverseEventCourse/>
     </TreatmentInformation>
+    <SAEReportPreExistingCondition>
+        <id>107</id>
+        <PreExistingCondition>
+            <id>5</id>
+            <text>Asthma</text>
+        </PreExistingCondition>
+    </SAEReportPreExistingCondition>
+    <SAEReportPreExistingCondition>
+        <id>108</id>
+        <PreExistingCondition>
+            <id>19</id>
+            <text>Peptic ulcer</text>
+        </PreExistingCondition>
+    </SAEReportPreExistingCondition>
+    <OtherCause>
+        <text>Asthma</text>
+    </OtherCause>
+    <OtherCause>
+        <text>Peptic ulcer</text>
+    </OtherCause>
     <AdditionalInformation>
-        <id>303</id>
-        <autopsyReport>false</autopsyReport>
-        <consults>false</consults>
-        <dischargeSummary>false</dischargeSummary>
-        <flowCharts>false</flowCharts>
-        <labReports>false</labReports>
-        <obaForm>false</obaForm>
-        <other>false</other>
-        <pathologyReport>false</pathologyReport>
-        <progressNotes>false</progressNotes>
-        <radiologyReports>false</radiologyReports>
-        <referralLetters>false</referralLetters>
-        <irbReport>false</irbReport>
+        <id>224</id>
     </AdditionalInformation>
     <Report>
-        <id>446</id>
+        <id>416</id>
         <adeersReportTypeIndicator>Regular report</adeersReportTypeIndicator>
         <ReportDefinition>
-            <id>4</id>
-            <duration>48</duration>
-            <label>48-Hour SAE Report to Pfizer</label>
+            <id>47</id>
+            <duration>2</duration>
+            <label>SAE Report Form</label>
             <Group>
-                <code>RT_INST</code>
-                <name>Local Institution</name>
+                <code>RT_FDA</code>
+                <name>FDA Report</name>
             </Group>
             <timeScaleUnitType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:java.lang.String">
-                HOUR
+                DAY
             </timeScaleUnitType>
             <ReportDeliveryDefinition>
-                <entityName>Reporter</entityName>
+                <entityName>ae_expedited_report_reviewer</entityName>
             </ReportDeliveryDefinition>
             <ReportDeliveryDefinition>
-                <entityName>ae_expedited_report_reviewer</entityName>
+                <entityName>SPI</entityName>
+            </ReportDeliveryDefinition>
+            <ReportDeliveryDefinition>
+                <entityName>SUB</entityName>
+            </ReportDeliveryDefinition>
+            <ReportDeliveryDefinition>
+                <entityName>PHY</entityName>
+            </ReportDeliveryDefinition>
+            <ReportDeliveryDefinition>
+                <entityName>study_medical_monitor</entityName>
             </ReportDeliveryDefinition>
         </ReportDefinition>
         <ReportVersion>
@@ -505,46 +2742,44 @@
                 PENDING
             </ReportStatus>
         </ReportVersion>
-        <applicableField>additionalInformation.flowCharts</applicableField>
-        <applicableField>additionalInformation.labReports</applicableField>
-        <applicableField>additionalInformation.obaForm</applicableField>
-        <applicableField>additionalInformation.pathologyReport</applicableField>
-        <applicableField>additionalInformation.progressNotes</applicableField>
-        <applicableField>additionalInformation.radiologyReports</applicableField>
+        <applicableField>concomitantMedications[].startDate</applicableField>
+        <applicableField>responseDescription.eventDescription</applicableField>
+        <applicableField>diseaseHistory.metastaticDiseaseSites[]</applicableField>
+        <applicableField>diseaseHistory.metastaticDiseaseSites[].codedSite</applicableField>
+        <applicableField>additionalInformation</applicableField>
+        <applicableField>additionalInformation.autopsyReport</applicableField>
+        <applicableField>additionalInformation.consults</applicableField>
+        <applicableField>adverseEvents[]</applicableField>
+        <applicableField>adverseEvents[].grade</applicableField>
         <applicableField>additionalInformation.referralLetters</applicableField>
         <applicableField>additionalInformation.irbReport</applicableField>
         <applicableField>additionalInformation.other</applicableField>
-        <applicableField>additionalInformation.otherInformation</applicableField>
-        <applicableField>labs[].nadir</applicableField>
-        <applicableField>concomitantMedications[].startDate.year</applicableField>
-        <applicableField>concomitantMedications[].startDate.month</applicableField>
-        <applicableField>concomitantMedications[].startDate.day</applicableField>
-        <applicableField>concomitantMedications[].endDate.year</applicableField>
-        <applicableField>concomitantMedications[].endDate.month</applicableField>
-        <applicableField>concomitantMedications[].endDate.day</applicableField>
-        <applicableField>diseaseHistory.abstractStudyDisease</applicableField>
-        <applicableField>diseaseHistory.diagnosisDate.year</applicableField>
-        <applicableField>diseaseHistory.diagnosisDate.month</applicableField>
         <applicableField>diseaseHistory.diagnosisDate.day</applicableField>
-        <applicableField>physician.contactMechanisms[e-mail]</applicableField>
-        <applicableField>physician.contactMechanisms[phone]</applicableField>
-        <applicableField>physician.contactMechanisms[fax]</applicableField>
-        <applicableField>physician.address</applicableField>
-        <applicableField>physician.address.street</applicableField>
-        <applicableField>physician.address.city</applicableField>
-        <applicableField>physician.address.state</applicableField>
-        <applicableField>physician.address.zip</applicableField>
-        <applicableField>radiationInterventions[]</applicableField>
-        <applicableField>radiationInterventions[].administration</applicableField>
-        <applicableField>radiationInterventions[].dosage</applicableField>
-        <applicableField>radiationInterventions[].dosageUnit</applicableField>
-        <applicableField>radiationInterventions[].lastTreatmentDate</applicableField>
-        <applicableField>radiationInterventions[].fractionNumber</applicableField>
-        <applicableField>radiationInterventions[].daysElapsed</applicableField>
-        <applicableField>radiationInterventions[].adjustment</applicableField>
-        <applicableField>surgeryInterventions[]</applicableField>
-        <applicableField>surgeryInterventions[].interventionSite</applicableField>
-        <applicableField>surgeryInterventions[].interventionDate</applicableField>
+        <applicableField>adverseEvents[].eventLocation</applicableField>
+        <applicableField>adverseEvents[].eventApproximateTime.hourString</applicableField>
+        <applicableField>adverseEvents[].outcomes</applicableField>
+        <applicableField>treatmentInformation</applicableField>
+        <applicableField>medicalDevices[].otherNumber</applicableField>
+        <applicableField>medicalDevices[].deviceOperator</applicableField>
+        <applicableField>saeReportPriorTherapies[].endDate.day</applicableField>
+        <applicableField>saeReportPriorTherapies[].priorTherapyAgents[]</applicableField>
+        <applicableField>saeReportPriorTherapies[].priorTherapyAgents[].agent</applicableField>
+        <applicableField>saeReportPreExistingConditions[]</applicableField>
+        <applicableField>responseDescription.dateRemovedFromProtocol</applicableField>
+        <applicableField>responseDescription.primaryTreatmentApproximateTime.hourString</applicableField>
+        <applicableField>saeReportPriorTherapies[].priorTherapy</applicableField>
+        <applicableField>saeReportPriorTherapies[].other</applicableField>
+        <applicableField>saeReportPriorTherapies[].startDate</applicableField>
+        <applicableField>saeReportPriorTherapies[].startDate.year</applicableField>
+        <applicableField>responseDescription.eventAbate</applicableField>
+        <applicableField>responseDescription.eventReappear</applicableField>
+        <applicableField>treatmentInformation.courseAgents[]</applicableField>
+        <applicableField>treatmentInformation.courseAgents[].studyAgent</applicableField>
+        <applicableField>treatmentInformation.courseAgents[].formulation</applicableField>
+        <applicableField>responseDescription.presentStatus</applicableField>
+        <applicableField>responseDescription.recoveryDate</applicableField>
+        <applicableField>otherAEInterventions[]</applicableField>
+        <applicableField>investigationalDeviceAdministered</applicableField>
         <applicableField>medicalDevices[]</applicableField>
         <applicableField>medicalDevices[].brandName</applicableField>
         <applicableField>medicalDevices[].commonName</applicableField>
@@ -557,143 +2792,128 @@
         <applicableField>medicalDevices[].catalogNumber</applicableField>
         <applicableField>medicalDevices[].expirationDate</applicableField>
         <applicableField>medicalDevices[].serialNumber</applicableField>
-        <applicableField>medicalDevices[].otherNumber</applicableField>
-        <applicableField>medicalDevices[].deviceOperator</applicableField>
         <applicableField>medicalDevices[].otherDeviceOperator</applicableField>
         <applicableField>medicalDevices[].implantedDate</applicableField>
+        <applicableField>labs[]</applicableField>
+        <applicableField>additionalInformation.flowCharts</applicableField>
         <applicableField>medicalDevices[].explantedDate</applicableField>
-        <applicableField>medicalDevices[].deviceReprocessed</applicableField>
-        <applicableField>medicalDevices[].reprocessorName</applicableField>
-        <applicableField>diseaseHistory.diagnosisDate</applicableField>
-        <applicableField>adverseEvents[].participantAtRisk</applicableField>
-        <applicableField>adverseEvents[].eventApproximateTime.hourString</applicableField>
-        <applicableField>responseDescription.primaryTreatmentApproximateTime.hourString</applicableField>
-        <applicableField>treatmentInformation.investigationalAgentAdministered</applicableField>
+        <applicableField>responseDescription</applicableField>
+        <applicableField>treatmentInformation.courseAgents[].lastAdministeredDate</applicableField>
+        <applicableField>treatmentInformation.courseAgents[].administrationDelayAmount</applicableField>
+        <applicableField>treatmentInformation.courseAgents[].administrationDelayUnits</applicableField>
         <applicableField>treatmentInformation.courseAgents[].agentAdjustment</applicableField>
-        <applicableField>treatmentInformation</applicableField>
-        <applicableField>saeReportPriorTherapies[].startDate.year</applicableField>
-        <applicableField>saeReportPriorTherapies[].startDate.month</applicableField>
-        <applicableField>saeReportPriorTherapies[].startDate.day</applicableField>
-        <applicableField>saeReportPriorTherapies[].endDate.year</applicableField>
-        <applicableField>saeReportPriorTherapies[].endDate.month</applicableField>
-        <applicableField>saeReportPriorTherapies[].endDate.day</applicableField>
-        <applicableField>labs[].baseline.date</applicableField>
-        <applicableField>labs[].nadir.value</applicableField>
-        <applicableField>labs[].nadir.date</applicableField>
+        <applicableField>treatmentInformation.treatmentAssignment</applicableField>
+        <applicableField>treatmentInformation.firstCourseDate</applicableField>
+        <applicableField>treatmentInformation.adverseEventCourse</applicableField>
         <applicableField>labs[].recovery</applicableField>
-        <applicableField>labs[].recovery.value</applicableField>
-        <applicableField>labs[].recovery.date</applicableField>
-        <applicableField>labs[].site</applicableField>
+        <applicableField>additionalInformation.labReports</applicableField>
+        <applicableField>additionalInformation.obaForm</applicableField>
+        <applicableField>additionalInformation.pathologyReport</applicableField>
+        <applicableField>additionalInformation.progressNotes</applicableField>
+        <applicableField>reporter</applicableField>
+        <applicableField>additionalInformation.dischargeSummary</applicableField>
+        <applicableField>reporter.contactMechanisms[phone]</applicableField>
+        <applicableField>reporter.contactMechanisms[fax]</applicableField>
+        <applicableField>reporter.address</applicableField>
+        <applicableField>physician</applicableField>
+        <applicableField>physician.firstName</applicableField>
+        <applicableField>physician.middleName</applicableField>
+        <applicableField>physician.lastName</applicableField>
+        <applicableField>physician.contactMechanisms[e-mail]</applicableField>
+        <applicableField>physician.contactMechanisms[phone]</applicableField>
+        <applicableField>physician.contactMechanisms[fax]</applicableField>
+        <applicableField>physician.address</applicableField>
+        <applicableField>physician.address.street</applicableField>
+        <applicableField>dietaryInterventions[]</applicableField>
         <applicableField>labs[].labDate</applicableField>
         <applicableField>labs[].infectiousAgent</applicableField>
         <applicableField>otherCauses[]</applicableField>
         <applicableField>otherCauses[].text</applicableField>
         <applicableField>saeReportPriorTherapies[]</applicableField>
-        <applicableField>saeReportPriorTherapies[].priorTherapy</applicableField>
-        <applicableField>saeReportPriorTherapies[].other</applicableField>
-        <applicableField>saeReportPriorTherapies[].startDate</applicableField>
-        <applicableField>saeReportPriorTherapies[].endDate</applicableField>
-        <applicableField>saeReportPriorTherapies[].priorTherapyAgents[]</applicableField>
-        <applicableField>saeReportPreExistingConditions[]</applicableField>
         <applicableField>saeReportPreExistingConditions[].preExistingCondition</applicableField>
-        <applicableField>concomitantMedications[]</applicableField>
         <applicableField>concomitantMedications[].agentName</applicableField>
         <applicableField>concomitantMedications[].stillTakingMedications</applicableField>
-        <applicableField>concomitantMedications[].startDate</applicableField>
+        <applicableField>saeReportPriorTherapies[].startDate.month</applicableField>
+        <applicableField>saeReportPriorTherapies[].startDate.day</applicableField>
+        <applicableField>saeReportPriorTherapies[].endDate</applicableField>
+        <applicableField>saeReportPriorTherapies[].endDate.year</applicableField>
+        <applicableField>saeReportPriorTherapies[].endDate.month</applicableField>
+        <applicableField>additionalInformation.radiologyReports</applicableField>
+        <applicableField>reporter.firstName</applicableField>
+        <applicableField>reporter.middleName</applicableField>
+        <applicableField>reporter.lastName</applicableField>
+        <applicableField>reporter.contactMechanisms[e-mail]</applicableField>
+        <applicableField>physician.address.city</applicableField>
+        <applicableField>physician.address.state</applicableField>
+        <applicableField>physician.address.zip</applicableField>
+        <applicableField>radiationInterventions[]</applicableField>
+        <applicableField>radiationInterventions[].administration</applicableField>
+        <applicableField>radiationInterventions[].dosage</applicableField>
+        <applicableField>radiationInterventions[].dosageUnit</applicableField>
+        <applicableField>radiationInterventions[].lastTreatmentDate</applicableField>
+        <applicableField>radiationInterventions[].fractionNumber</applicableField>
+        <applicableField>radiationInterventions[].adjustment</applicableField>
+        <applicableField>surgeryInterventions[]</applicableField>
+        <applicableField>surgeryInterventions[].interventionSite</applicableField>
+        <applicableField>surgeryInterventions[].interventionDate</applicableField>
+        <applicableField>behavioralInterventions[]</applicableField>
+        <applicableField>biologicalInterventions[]</applicableField>
+        <applicableField>geneticInterventions[]</applicableField>
+        <applicableField>medicalDevices[].deviceReprocessed</applicableField>
+        <applicableField>medicalDevices[].reprocessorName</applicableField>
+        <applicableField>concomitantMedications[].startDate.year</applicableField>
+        <applicableField>concomitantMedications[].startDate.month</applicableField>
+        <applicableField>concomitantMedications[].startDate.day</applicableField>
         <applicableField>concomitantMedications[].endDate</applicableField>
-        <applicableField>participantHistory</applicableField>
-        <applicableField>participantHistory.height</applicableField>
-        <applicableField>participantHistory.height.quantity</applicableField>
-        <applicableField>participantHistory.height.unit</applicableField>
-        <applicableField>participantHistory.weight</applicableField>
-        <applicableField>participantHistory.weight.quantity</applicableField>
+        <applicableField>labs[].units</applicableField>
+        <applicableField>labs[].baseline</applicableField>
+        <applicableField>labs[].nadir</applicableField>
+        <applicableField>labs[].nadir.value</applicableField>
+        <applicableField>labs[].nadir.date</applicableField>
+        <applicableField>concomitantMedications[].endDate.year</applicableField>
+        <applicableField>treatmentInformation.courseAgents[].lotNumber</applicableField>
+        <applicableField>treatmentInformation.courseAgents[].dose</applicableField>
+        <applicableField>treatmentInformation.courseAgents[].dose.amount</applicableField>
+        <applicableField>treatmentInformation.courseAgents[].dose.units</applicableField>
+        <applicableField>labs[].site</applicableField>
+        <applicableField>radiationInterventions[].daysElapsed</applicableField>
+        <applicableField>labs[].labTerm</applicableField>
+        <applicableField>responseDescription.retreated</applicableField>
+        <applicableField>responseDescription.studyDrugInterrupted</applicableField>
+        <applicableField>responseDescription.reducedDose</applicableField>
+        <applicableField>responseDescription.reducedDate</applicableField>
+        <applicableField>responseDescription.daysNotGiven</applicableField>
         <applicableField>participantHistory.weight.unit</applicableField>
         <applicableField>participantHistory.baselinePerformanceStatus</applicableField>
+        <applicableField>diseaseHistory</applicableField>
+        <applicableField>diseaseHistory.abstractStudyDisease</applicableField>
         <applicableField>diseaseHistory.codedPrimaryDiseaseSite</applicableField>
-        <applicableField>diseaseHistory.metastaticDiseaseSites[]</applicableField>
-        <applicableField>diseaseHistory.metastaticDiseaseSites[].codedSite</applicableField>
-        <applicableField>adverseEvents[]</applicableField>
-        <applicableField>adverseEvents[].grade</applicableField>
+        <applicableField>diseaseHistory.diagnosisDate</applicableField>
+        <applicableField>diseaseHistory.diagnosisDate.year</applicableField>
+        <applicableField>diseaseHistory.diagnosisDate.month</applicableField>
+        <applicableField>additionalInformation.otherInformation</applicableField>
         <applicableField>adverseEvents[].adverseEventCtcTerm</applicableField>
         <applicableField>adverseEvents[].adverseEventCtcTerm.term</applicableField>
         <applicableField>adverseEvents[].detailsForOther</applicableField>
         <applicableField>adverseEvents[].startDate</applicableField>
         <applicableField>adverseEvents[].endDate</applicableField>
         <applicableField>adverseEvents[].attributionSummary</applicableField>
-        <applicableField>adverseEvents[].hospitalization</applicableField>
         <applicableField>adverseEvents[].expected</applicableField>
-        <applicableField>adverseEvents[].eventLocation</applicableField>
-        <applicableField>adverseEvents[].outcomes</applicableField>
-        <applicableField>reporter</applicableField>
-        <applicableField>reporter.title</applicableField>
-        <applicableField>reporter.firstName</applicableField>
-        <applicableField>reporter.middleName</applicableField>
-        <applicableField>reporter.lastName</applicableField>
-        <applicableField>reporter.contactMechanisms[e-mail]</applicableField>
-        <applicableField>reporter.contactMechanisms[phone]</applicableField>
-        <applicableField>reporter.contactMechanisms[fax]</applicableField>
-        <applicableField>reporter.address</applicableField>
-        <applicableField>reporter.address.street</applicableField>
-        <applicableField>reporter.address.city</applicableField>
-        <applicableField>reporter.address.state</applicableField>
-        <applicableField>reporter.address.zip</applicableField>
-        <applicableField>physician</applicableField>
-        <applicableField>physician.title</applicableField>
-        <applicableField>physician.firstName</applicableField>
-        <applicableField>physician.middleName</applicableField>
-        <applicableField>physician.lastName</applicableField>
-        <applicableField>diseaseHistory</applicableField>
+        <applicableField>concomitantMedications[]</applicableField>
+        <applicableField>participantHistory.weight</applicableField>
+        <applicableField>participantHistory.weight.quantity</applicableField>
+        <applicableField>concomitantMedications[].endDate.month</applicableField>
+        <applicableField>concomitantMedications[].endDate.day</applicableField>
+        <applicableField>participantHistory</applicableField>
+        <applicableField>participantHistory.height</applicableField>
+        <applicableField>participantHistory.height.quantity</applicableField>
+        <applicableField>participantHistory.height.unit</applicableField>
         <applicableField>medicalDevices[].reprocessorAddress</applicableField>
         <applicableField>medicalDevices[].evaluationAvailability</applicableField>
         <applicableField>medicalDevices[].returnedDate</applicableField>
-        <applicableField>responseDescription</applicableField>
-        <applicableField>responseDescription.eventDescription</applicableField>
-        <applicableField>responseDescription.dateRemovedFromProtocol</applicableField>
-        <applicableField>responseDescription.presentStatus</applicableField>
-        <applicableField>responseDescription.recoveryDate</applicableField>
-        <applicableField>responseDescription.retreated</applicableField>
-        <applicableField>responseDescription.blindBroken</applicableField>
-        <applicableField>responseDescription.studyDrugInterrupted</applicableField>
-        <applicableField>responseDescription.reducedDose</applicableField>
-        <applicableField>responseDescription.reducedDate</applicableField>
-        <applicableField>responseDescription.daysNotGiven</applicableField>
-        <applicableField>responseDescription.autopsyPerformed</applicableField>
-        <applicableField>responseDescription.causeOfDeath</applicableField>
-        <applicableField>responseDescription.eventAbate</applicableField>
-        <applicableField>responseDescription.eventReappear</applicableField>
-        <applicableField>treatmentInformation.treatmentAssignment</applicableField>
-        <applicableField>treatmentInformation.firstCourseDate</applicableField>
-        <applicableField>treatmentInformation.adverseEventCourse</applicableField>
-        <applicableField>treatmentInformation.adverseEventCourse.date</applicableField>
-        <applicableField>treatmentInformation.adverseEventCourse.number</applicableField>
-        <applicableField>treatmentInformation.totalCourses</applicableField>
-        <applicableField>treatmentInformation.courseAgents[]</applicableField>
-        <applicableField>treatmentInformation.courseAgents[].studyAgent</applicableField>
-        <applicableField>treatmentInformation.courseAgents[].formulation</applicableField>
-        <applicableField>treatmentInformation.courseAgents[].lotNumber</applicableField>
-        <applicableField>treatmentInformation.courseAgents[].dose</applicableField>
-        <applicableField>treatmentInformation.courseAgents[].dose.amount</applicableField>
-        <applicableField>treatmentInformation.courseAgents[].dose.units</applicableField>
-        <applicableField>treatmentInformation.courseAgents[].lastAdministeredDate</applicableField>
-        <applicableField>treatmentInformation.courseAgents[].administrationDelayAmount</applicableField>
-        <applicableField>treatmentInformation.courseAgents[].administrationDelayUnits</applicableField>
-        <applicableField>treatmentInformation.courseAgents[].comments</applicableField>
-        <applicableField>labs[]</applicableField>
-        <applicableField>labs[].labTerm</applicableField>
-        <applicableField>labs[].units</applicableField>
-        <applicableField>labs[].baseline</applicableField>
-        <applicableField>labs[].baseline.value</applicableField>
-        <applicableField>behavioralInterventions[]</applicableField>
-        <applicableField>biologicalInterventions[]</applicableField>
-        <applicableField>geneticInterventions[]</applicableField>
-        <applicableField>dietaryInterventions[]</applicableField>
-        <applicableField>otherAEInterventions[]</applicableField>
-        <applicableField>investigationalDeviceAdministered</applicableField>
-        <applicableField>saeReportPriorTherapies[].priorTherapyAgents[].agent</applicableField>
-        <applicableField>additionalInformation</applicableField>
-        <applicableField>additionalInformation.autopsyReport</applicableField>
-        <applicableField>additionalInformation.consults</applicableField>
-        <applicableField>additionalInformation.dischargeSummary</applicableField>
+        <applicableField>treatmentInformation.courseAgents[].firstAdministeredDate</applicableField>
+        <applicableField>reports[]</applicableField>
+        <applicableField>reports[].caseNumber</applicableField>
         <submittedToFDA>No</submittedToFDA>
     </Report>
 </AdverseEventReport>
