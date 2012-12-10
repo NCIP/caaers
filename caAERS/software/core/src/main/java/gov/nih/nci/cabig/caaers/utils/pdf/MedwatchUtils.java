@@ -120,9 +120,9 @@ public class MedwatchUtils {
             setContinueDescription();
             return "";
         }
-        for(int i = 0; i < linesLeft; i++) {
-            incrementDescription();
-        }
+//        for(int i = 0; i < linesLeft; i++) {
+//            incrementDescription();
+//        }
 
         int charsPossible = linesLeft * charPerLine;
         if(charsPossible > length) charsPossible = length;
