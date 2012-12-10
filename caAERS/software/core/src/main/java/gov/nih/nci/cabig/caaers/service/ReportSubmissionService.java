@@ -66,8 +66,14 @@ public class ReportSubmissionService {
     	ReportTracking reportTracking = context.report.getLastVersion().getLastReportTracking();
     	
     	//1. generate caaers xml
-    	try {    		
-    		context.caaersXML = adeersReportGenerator.generateCaaersXml(report.getAeReport(),report);
+    	try {    
+    		ExpeditedAdverseEventReport aeReport = report.getAeReport();
+    		if (report.getLastVersion().getReportStatus().equals(ReportStatus.COMPLETED) || report.getLastVersion().getReportStatus().equals(ReportStatus.AMENDED)) {
+            	//TODO - get the submitted reviewer
+            } else {
+            	aeReport.setReviewer(aeReport.getReporter());
+            }
+    		context.caaersXML = adeersReportGenerator.generateCaaersXml(aeReport,report);
     		Tracker.logXmlGeneration(reportTracking, true, "", nowFactory.getNow());
     	} catch (Exception e ) {
     		Tracker.logXmlGeneration(reportTracking, false, e.getMessage(),nowFactory.getNow());

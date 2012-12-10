@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.esb.client;
 import gov.nih.nci.cabig.caaers.api.AdeersReportGenerator;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
@@ -219,7 +220,13 @@ public class MessageNotificationService {
             subject = messageSource.getMessage("submission.success.subject", new Object[]{report.getLabel(),String.valueOf(report.getLastVersion().getId())}, Locale.getDefault());  
             
             //          generating pdf again to get PDF with ticket number ....
-            String caaersXML = adeersReportGenerator.generateCaaersXml(report.getAeReport(),report);
+            ExpeditedAdverseEventReport aeReport = report.getAeReport();
+            if (report.getLastVersion().getReportStatus().equals(ReportStatus.COMPLETED) || report.getLastVersion().getReportStatus().equals(ReportStatus.AMENDED)) {
+            	//TODO - get the submitted reviewer
+            } else {
+            	aeReport.setReviewer(aeReport.getReporter());
+            }
+            String caaersXML = adeersReportGenerator.generateCaaersXml(aeReport,report);
             String[] pdfReportPaths = adeersReportGenerator.generateExternalReports(report, caaersXML,report.getLastVersion().getId()); 
             
             attachment = pdfReportPaths[0] ; //tempDir + "/expeditedAdverseEventReport-" + reportVersion.getId() + ".pdf";

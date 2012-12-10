@@ -115,6 +115,8 @@ public class GenerateExpeditedPdfController extends AbstractCommandController {
                    }
                } else {
                    //obtain newly generated caaers xml
+            	   
+                   	aeReport.setReviewer(aeReport.getReporter());
                    xml = adeersReportGenerator.generateCaaersXml(aeReport, report);
                }
     			

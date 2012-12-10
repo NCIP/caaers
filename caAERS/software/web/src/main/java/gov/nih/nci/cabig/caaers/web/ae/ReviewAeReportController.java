@@ -8,11 +8,14 @@ import gov.nih.nci.cabig.caaers.domain.AdditionalInformationDocument;
 import gov.nih.nci.cabig.caaers.domain.AdditionalInformationDocumentType;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportType;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportValidationService;
+import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
@@ -45,6 +48,8 @@ public class ReviewAeReportController extends SimpleFormController{
 	private ReportValidationService reportValidationService;
     private AdeersReportGenerator adeersReportGenerator;
     private AdditionalInformationDocumentService additionalInformationDocumentService;
+    private UserRepository userRepository;
+    
     String tempDir = System.getProperty("java.io.tmpdir");
 
 	public ReviewAeReportController(){
@@ -69,11 +74,17 @@ public class ReviewAeReportController extends SimpleFormController{
         ExpeditedAdverseEventReport aeReport = expeditedAdverseEventReportDao.getById(Integer.parseInt(aeReportId));
        
         Report report = reportDao.getById(Integer.parseInt(reportId));
+        
+        if (report.getLastVersion().getReportStatus().equals(ReportStatus.COMPLETED) || report.getLastVersion().getReportStatus().equals(ReportStatus.AMENDED)) {
+        	//TODO - get the submitted reviewer
+        } else {
+        	aeReport.setReviewer(aeReport.getReporter());
+        }
+        
         String xml = adeersReportGenerator.generateCaaersXml(aeReport, report);
         String pngOutFile = WebUtils.getBaseFileName(aeReportId ,reportId);
 
          //CAAERS-5904, see report as per the report definition format
-        //List<String> list = adeersReportGenerator.generateImage(xml, tempDir + File.separator + pngOutFile);
         List<String> list = adeersReportGenerator.generateImage(xml, tempDir + File.separator + pngOutFile, report);
         command.addFiles(aeReportId, reportId, list);
 
@@ -203,4 +214,14 @@ public class ReviewAeReportController extends SimpleFormController{
     public void setAdditionalInformationDocumentService(AdditionalInformationDocumentService additionalInformationDocumentService) {
         this.additionalInformationDocumentService = additionalInformationDocumentService;
     }
+
+	public UserRepository getUserRepository() {
+		return userRepository;
+	}
+
+	public void setUserRepository(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
+    
+    
 }

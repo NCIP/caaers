@@ -104,16 +104,7 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
     private String submittedToFDA = "No";
     
     private String caseNumber;
-
-    public String getCaseNumber() {
-		return caseNumber;
-	}
-
-
-	public void setCaseNumber(String caseNumber) {
-		this.caseNumber = caseNumber;
-	}
-
+    
 
 	/**
      * Instantiates a new report.
@@ -124,8 +115,18 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
     
   
     // //// LOGIC
+    
+    public String getCaseNumber() {
+		return caseNumber;
+	}
 
-    /**
+
+	public void setCaseNumber(String caseNumber) {
+		this.caseNumber = caseNumber;
+	}
+		
+
+	/**
      * Adds the report version.
      *
      * @param reportVersion the report version

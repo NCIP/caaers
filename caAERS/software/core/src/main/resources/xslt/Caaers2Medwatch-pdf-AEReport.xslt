@@ -21,7 +21,7 @@
     <xsl:variable name="_descPossible" select="number(16)" />
 
      <!--<xsl:variable name="_aePossible" select="number(3)" />-->
-     <xsl:variable name="_cmPossible" select="number(4)" />
+     <xsl:variable name="_cmPossible" select="number(7)" />
      <xsl:variable name="_attPossible" select="number(2)" />
      <xsl:variable name="_cmdPossible" select="number(3)" />
      <xsl:variable name="_tacPossible" select="number(40)" />
@@ -1806,13 +1806,32 @@
                                                 <fo:table-row xsl:use-attribute-sets="tr-height-1">
                                                     <fo:table-cell number-columns-spanned="4" number-rows-spanned="2"
                                                                    xsl:use-attribute-sets="full-border">
-                                                        <fo:block xsl:use-attribute-sets="label" padding-bottom="15mm">
+                                                        <fo:block xsl:use-attribute-sets="label" >
                                                             1. Contact Office - Name/Address (and manufacturing Site for Devices)
+                                                        </fo:block>
+                                                        <fo:block xsl:use-attribute-sets="normal">
+                                                        	<xsl:if test="AdverseEventReport/Reviewer/firstName">
+                                                                <xsl:value-of select="AdverseEventReport/Reviewer/firstName"/>
+                                                                <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
+                                                                <xsl:value-of select="AdverseEventReport/Reviewer/lastName"/>
+                                                            </xsl:if>
+                                                        </fo:block>
+                                                        <fo:block xsl:use-attribute-sets="normal">
+                                                        	<xsl:if test="AdverseEventReport/Reviewer/address">
+                                                                <xsl:value-of select="AdverseEventReport/Reviewer/address"/>
+                                                            </xsl:if>
                                                         </fo:block>
                                                     </fo:table-cell>
                                                     <fo:table-cell number-columns-spanned="2"
                                                                    xsl:use-attribute-sets="full-border">
-                                                        <fo:block xsl:use-attribute-sets="label" padding-bottom="7mm">2.  Phone number  </fo:block>
+                                                        <fo:block xsl:use-attribute-sets="label" >2.  Phone number  </fo:block>
+                                                        <fo:block xsl:use-attribute-sets="normal">
+                                                        	<xsl:for-each select="AdverseEventReport/Reviewer/ContactMechanism">
+                                                                <xsl:if test="key = 'phone'">
+                                                                    <xsl:value-of select="value"/>
+                                                                </xsl:if>
+                                                            </xsl:for-each>
+                                                        </fo:block>
                                                     </fo:table-cell>
                                                 </fo:table-row>
                                                 <fo:table-row xsl:use-attribute-sets="tr-height-1">
@@ -1825,7 +1844,7 @@
                                                         </fo:block>
                                                         <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Foreign
                                                         </fo:block>
-                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Study
+                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[X] Study
                                                         </fo:block>
                                                         <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[ ] Literature
                                                         </fo:block>
@@ -1998,7 +2017,11 @@
                                                                         </fo:block>
                                                                     </fo:table-cell>
                                                                     <fo:table-cell text-align="left">
-                                                                        <fo:block xsl:use-attribute-sets="normal"  padding-bottom="2px">[ ] Initial
+                                                                        <fo:block xsl:use-attribute-sets="normal"  padding-bottom="2px">[ 
+                                                                        	<xsl:if test="AdverseEventReport/Report/ReportVersion/ReportStatus != 'AMENDED'">
+                                                                                x
+                                                                            </xsl:if>
+                                                                        ] Initial
                                                                         </fo:block>
                                                                     </fo:table-cell>
                                                                 </fo:table-row>
@@ -2012,7 +2035,11 @@
                                                                         </fo:block>
                                                                     </fo:table-cell>
                                                                     <fo:table-cell text-align="left">
-                                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px"  text-align="left" >[ ] Follow-up #
+                                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px"  text-align="left" >[
+                                                                        	<xsl:if test="AdverseEventReport/Report/ReportVersion/ReportStatus = 'AMENDED'">
+                                                                                x
+                                                                            </xsl:if>
+                                                                            ] Follow-up # 
                                                                             <fo:leader leader-length="25%" leader-pattern="rule" rule-thickness="0.5pt"/>
                                                                         </fo:block>
                                                                     </fo:table-cell>
@@ -2976,10 +3003,23 @@
     <xsl:template match="ConcomitantMedication">
         <fo:block xsl:use-attribute-sets="normal">
             CM :
-            <xsl:value-of select="name"/>
-            <xsl:if test="startDate/monthString">
-                (<xsl:value-of select="startDate/monthString"/>/<xsl:value-of select="startDate/yearString"/>)
-            </xsl:if>
+            <xsl:value-of select="name"/>			
+			<xsl:choose>
+				<xsl:when test="stillTakingMedications='true'">
+					<xsl:choose>
+						<xsl:when test="startDate/monthString">(<xsl:value-of select="startDate/monthString"/>/<xsl:value-of select="startDate/yearString"/></xsl:when>
+						<xsl:otherwise>(</xsl:otherwise>
+					</xsl:choose>
+					<xsl:text disable-output-escaping="yes">-ongoing)</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:if test="startDate/monthString or endDate/monthString">(</xsl:if>
+					<xsl:if test="startDate/monthString"><xsl:value-of select="startDate/monthString"/>/<xsl:value-of select="startDate/yearString"/></xsl:if>
+					<xsl:if test="startDate/monthString or endDate/monthString">-</xsl:if>
+					<xsl:if test="endDate/monthString"><xsl:value-of select="endDate/monthString"/>/<xsl:value-of select="endDate/yearString"/></xsl:if>
+					<xsl:if test="startDate/monthString or endDate/monthString">)</xsl:if>
+				</xsl:otherwise>
+			</xsl:choose>
         </fo:block>
     </xsl:template>
 

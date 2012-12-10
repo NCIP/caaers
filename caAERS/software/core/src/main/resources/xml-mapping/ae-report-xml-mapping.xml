@@ -34,6 +34,9 @@
     <field name="reporter" type="gov.nih.nci.cabig.caaers.domain.Reporter">
       <bind-xml name="Reporter"/>
     </field>
+	 <field name="reviewer" type="gov.nih.nci.cabig.caaers.domain.Reporter">
+      <bind-xml name="Reviewer"/>
+    </field>	
     <field name="diseaseHistory" type="gov.nih.nci.cabig.caaers.domain.DiseaseHistory">
       <bind-xml name="DiseaseHistory"/>
     </field>
@@ -457,7 +460,6 @@
       <bind-xml name="ContactMechanism"/>
     </field>
   </class>
-
 
   <!--   
   <class name="gov.nih.nci.cabig.caaers.domain.Person">

@@ -138,6 +138,9 @@ public class AdverseEventReportSerializer {
 
 	    	//build Physician
 	    	aer.setPhysician(getPhysician(hibernateAdverseEventReport.getPhysician()));
+	    	
+	    	//build reviewer
+	    	aer.setReviewer(getReviewer(hibernateAdverseEventReport.getReviewer()));
 
 	    	//build AdverseEventResponseDescription
 	    	aer.setResponseDescription(getAdverseEventResponseDescription(hibernateAdverseEventReport.getResponseDescription(), notApplicableFieldPaths));
@@ -593,6 +596,23 @@ public class AdverseEventReportSerializer {
 	    	}
 
 	    	return physician;
+	    }
+	    
+	    private Reporter getReviewer(Reporter psn) throws Exception {
+	    	Reporter reviewer = new Reporter();
+	    	if(psn == null) return reviewer;
+	    	try {
+	    		reviewer.setFirstName(psn.getFirstName());
+	    		reviewer.setLastName(psn.getLastName());
+	    		reviewer.setMiddleName(psn.getMiddleName());
+	    		reviewer.setTitle(psn.getTitle());
+	    		reviewer.setPhoneNumber(psn.getPhoneNumber());
+	    		reviewer.setEmailAddress(psn.getEmailAddress());
+	    	} catch (Exception e) {
+	    		throw new Exception ("Error building getReviewer() "+e.getMessage() , e);
+	    	}
+
+	    	return reviewer;
 	    }
 
 	    private ParticipantHistory getParticipantHistory(ParticipantHistory ph) throws Exception {
@@ -1174,13 +1194,14 @@ public class AdverseEventReportSerializer {
 				ph.setHeight(h);
 				ph.setWeight(w);
 				e.setParticipantHistory(ph);
+				
 
 				AdverseEventReportSerializer ser = new AdverseEventReportSerializer();
-//				String xml = ser.serialize(e);
+				String xml = ser.serialize(e, null);
 				//String xml = marshaller.toXML(e,"xml-mapping/ae-report-xml-mapping.xml");
-//				System.out.println(xml);
+				System.out.println(xml);
 
-
+					
 
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

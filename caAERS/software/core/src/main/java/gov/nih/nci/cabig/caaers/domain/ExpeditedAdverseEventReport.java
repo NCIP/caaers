@@ -60,7 +60,6 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     /** The additional information. */
     private AdditionalInformation additionalInformation;
 
-
     /** The reporter. */
     private Reporter reporter;
     
@@ -78,6 +77,9 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
 
     /** The reports. */
     private List<Report> reports;
+    
+    //transient field to be used in adding reviewer information in report generation
+    private Reporter reviewer;
     
     /** The Constant log. */
     private static final Log log = LogFactory.getLog(ExpeditedAdverseEventReport.class);
@@ -148,8 +150,17 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
                     "Cannot create notification message until primary AE is filled in");
         }
     }
+    
+    @Transient
+    public Reporter getReviewer() {
+		return reviewer;
+	}
 
-    /**
+	public void setReviewer(Reporter reviewer) {
+		this.reviewer = reviewer;
+	}
+
+	/**
      * Checks if is notification message possible.
      *
      * @return true, if is notification message possible
