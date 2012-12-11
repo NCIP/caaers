@@ -1,14 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
-import gov.nih.nci.cabig.caaers.domain.AbstractStudyInterventionExpectedAE;
-import gov.nih.nci.cabig.caaers.domain.AgentSpecificTerm;
-import gov.nih.nci.cabig.caaers.domain.INDType;
-import gov.nih.nci.cabig.caaers.domain.OtherIntervention;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyAgent;
-import gov.nih.nci.cabig.caaers.domain.StudyDevice;
-import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
-import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.service.AgentSpecificAdverseEventListService;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
@@ -69,13 +61,18 @@ public class AgentsTab extends StudyTab {
 				as.getTreatmentAssignmentAgents().size();
 			}
         }
+        //initialize the study agent INDs also
         for(StudyAgent sa : command.getStudy().getStudyAgents()){
         	if(sa.getAgent()!=null){
         		sa.getAgent().getAgentSpecificTerms().size();
         		sa.getTreatmentAssignmentAgents().size();
+                sa.getStudyAgentINDAssociations().size();
+                for(StudyAgentINDAssociation saa : sa.getStudyAgentINDAssociations()){
+                    saa.getInvestigationalNewDrug();
+                }
         	}
         }
-        
+
         return rd; 
     }
 
