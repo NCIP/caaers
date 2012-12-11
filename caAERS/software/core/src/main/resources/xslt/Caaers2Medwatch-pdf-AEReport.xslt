@@ -2645,13 +2645,15 @@
                                                 </fo:table-cell>
                                             </fo:table-row>
                                             <fo:table-row>
-                                                <fo:table-cell>
-                                                    <xsl:for-each select="/AdverseEventReport/AdverseEvent">
+                                                 <fo:table-cell xsl:use-attribute-sets="continue-table-border">
+                                                    <fo:block xsl:use-attribute-sets="continue">
+                                                      <xsl:for-each select="/AdverseEventReport/AdverseEvent">
                                                                 <xsl:if test="(  $_aePossible &lt; position())">
 	                                                                	#<xsl:number format="1" value="position()"/><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
 	                                                                	<xsl:value-of select="AdverseEventCtcTerm/ctc-term/ctepTerm"/>
                                                                 </xsl:if>
                                                         </xsl:for-each>
+                                                    </fo:block>
                                                 </fo:table-cell>
                                             </fo:table-row>
                                         </xsl:if>
