@@ -360,7 +360,7 @@ public class StudyAgent extends StudyIntervention {
         if(BooleanUtils.isNotTrue(getPartOfLeadIND())) return false;
         if(getStudyAgentINDAssociations() == null || getStudyAgentINDAssociations().isEmpty()) return false;
         for(StudyAgentINDAssociation a : getStudyAgentINDAssociations())  {
-           if(a.getInvestigationalNewDrug().getINDHolder() instanceof  OrganizationHeldIND) {
+           if(a.getInvestigationalNewDrug() != null && a.getInvestigationalNewDrug().getINDHolder() instanceof  OrganizationHeldIND) {
                boolean isCTEP = ((OrganizationHeldIND)a.getInvestigationalNewDrug().getINDHolder()).getOrganization().isCtep()  ;
                if(isCTEP) return true;
            }
