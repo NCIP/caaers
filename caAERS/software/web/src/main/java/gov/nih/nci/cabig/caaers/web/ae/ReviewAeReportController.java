@@ -75,7 +75,7 @@ public class ReviewAeReportController extends SimpleFormController{
        
         Report report = reportDao.getById(Integer.parseInt(reportId));
         
-        if (report.getLastVersion().getReportStatus().equals(ReportStatus.COMPLETED) || report.getLastVersion().getReportStatus().equals(ReportStatus.AMENDED)) {
+        if (report.isWorkflowEnabled() && report.getLastVersion().getReportStatus().equals(ReportStatus.COMPLETED)) {
         	//TODO - get the submitted reviewer
         } else {
         	aeReport.setReviewer(aeReport.getReporter());

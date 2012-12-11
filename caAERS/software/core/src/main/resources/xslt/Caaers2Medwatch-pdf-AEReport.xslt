@@ -20,8 +20,8 @@
     <xsl:variable name="_mhPossible" select="number(11)" />
     <xsl:variable name="_descPossible" select="number(16)" />
 
-     <!--<xsl:variable name="_aePossible" select="number(3)" />-->
-     <xsl:variable name="_cmPossible" select="number(7)" />
+     <xsl:variable name="_aePossible" select="number(3)" />
+     <xsl:variable name="_cmPossible" select="number(3)" />
      <xsl:variable name="_attPossible" select="number(2)" />
      <xsl:variable name="_cmdPossible" select="number(3)" />
      <xsl:variable name="_tacPossible" select="number(40)" />
@@ -45,7 +45,7 @@
     <xsl:variable name="_attCount" select="($_agntAttCount + $_otherInvAttCount)" />
 
 
-    <!--<xsl:variable name="_aeContinue" select="$_aeCount &gt;= $_aePossible" />-->
+    <xsl:variable name="_aeContinue" select="$_aeCount &gt; $_aePossible" />
     <xsl:variable name="_preCondContinue" select="$_pcCount &gt;= $_pcPossible" />
     <xsl:variable name="_ptContinue" select="$_ptCount &gt;= $_ptPossible" />
     <xsl:variable name="_msdsContinue" select="$_msdsCount &gt;= $_msdsPossible" />
@@ -61,7 +61,8 @@
     <xsl:variable name="_cTenContinue" select="$_cmContinue or $_ptContinue or $_cmContinue" />
     <xsl:variable name="_showNextPage" select="$_tacContinue or  $_cTenContinue or $_attContinue" />
 
-
+	<xsl:variable name="reportVersionId" select="AdverseEventReport/Report/ReportVersion/reportVersionId"/>
+	
     <xsl:attribute-set name="tr-height-1">
         <xsl:attribute name="height">4mm</xsl:attribute>
     </xsl:attribute-set>
@@ -547,11 +548,18 @@
                                                             <fo:inline xsl:use-attribute-sets="label">Date of This Report </fo:inline>
                                                             <fo:inline font-size="6.5">(mm/dd/yyyy)</fo:inline>
                                                             <fo:block xsl:use-attribute-sets="normal">
-                                                                <xsl:if test="AdverseEventReport/Report/ReportVersion/submittedOn != ''">
-                                                                    <xsl:call-template name="standard_date">
-                                                                        <xsl:with-param name="date" select="AdverseEventReport/Report/ReportVersion/submittedOn"/>
-                                                                    </xsl:call-template>
-                                                                </xsl:if>
+                                                            	<xsl:choose>
+	                                                                <xsl:when test="AdverseEventReport/Report/ReportVersion/submittedOn != ''">
+	                                                                    <xsl:call-template name="standard_date">
+	                                                                        <xsl:with-param name="date" select="AdverseEventReport/Report/ReportVersion/submittedOn"/>
+	                                                                    </xsl:call-template>
+	                                                                </xsl:when>
+	                                                                <xsl:otherwise>
+	                                                                    <xsl:call-template name="standard_date">
+	                                                                        <xsl:with-param name="date" select="AdverseEventReport/createdAt"/>
+	                                                                    </xsl:call-template>
+	                                                                </xsl:otherwise>
+                                                                </xsl:choose>
                                                             </fo:block>
                                                         </fo:block>
                                                     </fo:table-cell>
@@ -647,21 +655,17 @@
                                                             <fo:inline xsl:use-attribute-sets="normal">1.</fo:inline> <fo:inline xsl:use-attribute-sets="label">Name</fo:inline>
                                                             <fo:inline xsl:use-attribute-sets="normal" font-style="italic">(Give labeled strength and mfr/labeler)</fo:inline>
                                                         </fo:block>
-                                                        <xsl:for-each select="/AdverseEventReport/AdverseEvent[1]//attribution">
-                                                            <xsl:sort select="." order="descending"/>
-                                                            <fo:block xsl:use-attribute-sets="normal">
-
-                                                                <xsl:if test="(position() &lt;= $_attPossible) and (contains(., '3') or contains(.,'4') or contains(.,'5'))">
-                                                                    #<xsl:number format="1" value="position()"/> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
-                                                                    <xsl:value-of select="../CourseAgent/StudyAgent/Agent/name"/>
-                                                                    <xsl:value-of select="../CourseAgent/StudyAgent/otherAgent"/>
-                                                                    <xsl:value-of select="..//OtherIntervention/name"/>
-                                                                    <xsl:value-of select="../DiseaseHistory/DiseaseTerm/term"/>
-
+                                                        <xsl:for-each select="/AdverseEventReport/AdverseEvent[starts-with(gridId,'PRY')]/CourseAgentAttribution[starts-with(attribution, '3:') or starts-with(attribution, '4:') or starts-with(attribution, '5:')]">
+                                                            <xsl:sort select="./attribution" order="descending"/>
+                                                                <xsl:if test="(position() &lt;= $_attPossible)">
+	                                                                <fo:block xsl:use-attribute-sets="normal">
+	                                                                    #<xsl:number format="1" value="position()"/> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
+	                                                                    <xsl:value-of select="./CourseAgent/StudyAgent/Agent/name"/>
+	                                                                    <xsl:value-of select="./CourseAgent/StudyAgent/otherAgent"/>
+	                                                                    <xsl:value-of select=".//OtherIntervention/name"/>
+	                                                                    <xsl:value-of select="./DiseaseHistory/DiseaseTerm/term"/>
+																	</fo:block>								
                                                                 </xsl:if>
-
-                                                            </fo:block>
-
                                                         </xsl:for-each>
                                                          <xsl:if test="$_attContinue = true()">
                                                             <fo:block text-align="right" xsl:use-attribute-sets="normal">
@@ -704,37 +708,25 @@
                                                         <fo:block font-size="6.5pt" font-style="italic">
                                                             <fo:inline font-size="6.5pt" font-style="normal">3.</fo:inline>
                                                             <fo:inline xsl:use-attribute-sets="label" font-style="normal">Therapy Dates</fo:inline>
-                                                            <fo:inline font-size="6.5pt" font-style="italic">(If unknown, give </fo:inline>
-                                                            <fo:block/>
-                                                            duration) from/to (or best estimate)
+                                                            <fo:inline font-size="6.5pt" font-style="italic">(If unknown, give duration) from/to (or best estimate)</fo:inline>
                                                         </fo:block>
-                                                        <xsl:for-each select="AdverseEventReport/TreatmentInformation/CourseAgent">
-                                                            <fo:block>
-                                                                <fo:inline font-size="6.5pt">#
-                                                                    <xsl:number format="1 "/>
-                                                                </fo:inline>
-                                                                <fo:inline font-size="6.5pt">
-                                                                    <xsl:choose>
-                                                                        <xsl:when test="firstAdministeredDate">
-                                                                            <xsl:call-template name="standard_date">
-                                                                                <xsl:with-param name="date"  select="firstAdministeredDate"/>
-                                                                            </xsl:call-template>
-                                                                        </xsl:when>
-                                                                        <xsl:otherwise>Unknown</xsl:otherwise>
-                                                                    </xsl:choose>
-                                                                    to
-                                                                    <xsl:choose>
-                                                                        <xsl:when test="lastAdministeredDate">
-                                                                            <xsl:call-template name="standard_date">
-                                                                                <xsl:with-param name="date"  select="lastAdministeredDate"/>
-                                                                            </xsl:call-template>
-                                                                        </xsl:when>
-                                                                        <xsl:otherwise>Unknown</xsl:otherwise>
-                                                                    </xsl:choose>
-                                                                </fo:inline>
-                                                            </fo:block>
+                                                        <xsl:for-each select="/AdverseEventReport/AdverseEvent[starts-with(gridId,'PRY')]/CourseAgentAttribution[starts-with(attribution, '3:') or starts-with(attribution, '4:') or starts-with(attribution, '5:')]">
+                                                            <xsl:sort select="./attribution" order="descending"/>
+                                                                <xsl:if test="(position() &lt;= $_attPossible)">                                                                
+	                                                                <fo:block xsl:use-attribute-sets="normal">	                                                                    
+	                                                                    <xsl:call-template name="courseAgentTherapyDate">
+	                                                                    	<xsl:with-param name="courseAgentId" select="./CourseAgent/id"/>
+	                                                                    </xsl:call-template>
+																	</fo:block>								
+                                                                </xsl:if>
                                                         </xsl:for-each>
-
+                                                         
+                                                         <xsl:if test="$_attContinue = true()">
+                                                            <fo:block text-align="right" xsl:use-attribute-sets="normal">
+                                                                <xsl:text disable-output-escaping="yes">&amp;#160; Continued... </xsl:text>
+                                                            </fo:block>
+                                                        </xsl:if>
+                                                        
                                                     </fo:table-cell>
                                                 </fo:table-row>
                                                 <fo:table-row height="14mm">
@@ -893,19 +885,22 @@
                                                     <fo:table-cell xsl:use-attribute-sets="full-border"
                                                                    number-columns-spanned="1">
                                                         <fo:block/>
-                                                        <xsl:for-each
-                                                                select="AdverseEventReport/TreatmentInformation/CourseAgent">
-                                                            <fo:block>
-                                                                <xsl:if test="lotNumber">
-                                                                    <fo:inline font-size="6.5pt">#
-                                                                        <xsl:number format="1 "/>
-                                                                        <xsl:value-of select="lotNumber"/>
-                                                                    </fo:inline>
-                                                                    <fo:inline width="10mm"
-                                                                               font-size="6.5pt"></fo:inline>
+                                                        <xsl:for-each select="/AdverseEventReport/AdverseEvent[starts-with(gridId,'PRY')]/CourseAgentAttribution[starts-with(attribution, '3:') or starts-with(attribution, '4:') or starts-with(attribution, '5:')]">
+                                                            <xsl:sort select="./attribution" order="descending"/>
+                                                                <xsl:if test="(position() &lt;= $_attPossible)">                                                                
+	                                                                <fo:block xsl:use-attribute-sets="normal">
+	                                                                    <xsl:call-template name="courseAgentLotNumber">
+	                                                                    	<xsl:with-param name="courseAgentId" select="./CourseAgent/id"/>
+	                                                                    </xsl:call-template>
+																	</fo:block>								
                                                                 </xsl:if>
-                                                            </fo:block>
                                                         </xsl:for-each>
+                                                         
+                                                         <xsl:if test="$_attContinue = true()">
+                                                            <fo:block text-align="right" xsl:use-attribute-sets="normal">
+                                                                <xsl:text disable-output-escaping="yes">&amp;#160; Continued... </xsl:text>
+                                                            </fo:block>
+                                                        </xsl:if>
                                                     </fo:table-cell>
                                                     <fo:table-cell xsl:use-attribute-sets="full-border"
                                                                    number-columns-spanned="2">
@@ -977,16 +972,27 @@
                                                             <fo:inline xsl:use-attribute-sets="label">NDC# or Unique ID
                                                             </fo:inline>
                                                         </fo:block>
-                                                        <fo:block xsl:use-attribute-sets="normal">
-                                                            <xsl:for-each
-                                                                    select="AdverseEventReport/TreatmentInformation/CourseAgent">
-                                                                <xsl:value-of select="StudyAgent/Agent/nscNumber"/>
-                                                                <fo:block/>
-                                                            </xsl:for-each>
-                                                        </fo:block>
+                                                        
+                                                        <xsl:for-each select="/AdverseEventReport/AdverseEvent[starts-with(gridId,'PRY')]/CourseAgentAttribution[starts-with(attribution, '3:') or starts-with(attribution, '4:') or starts-with(attribution, '5:')]">
+                                                            <xsl:sort select="./attribution" order="descending"/>
+                                                                <xsl:if test="(position() &lt;= $_attPossible)">                                                                
+	                                                                <fo:block xsl:use-attribute-sets="normal">
+	                                                                    <xsl:call-template name="courseAgentNscNumber">
+	                                                                    	<xsl:with-param name="courseAgentId" select="./CourseAgent/id"/>
+	                                                                    </xsl:call-template>
+																	</fo:block>								
+                                                                </xsl:if>
+                                                        </xsl:for-each>
+                                                         
+                                                         <xsl:if test="$_attContinue = true()">
+                                                            <fo:block text-align="right" xsl:use-attribute-sets="normal">
+                                                                <xsl:text disable-output-escaping="yes">&amp;#160; Continued... </xsl:text>
+                                                            </fo:block>
+                                                        </xsl:if>
+                                                        
                                                     </fo:table-cell>
                                                 </fo:table-row>
-                                                <fo:table-row height="28mm">
+                                                <fo:table-row height="16mm">
                                                     <fo:table-cell xsl:use-attribute-sets="cell-with-right-border" number-columns-spanned="5">
                                                         <fo:block>
                                                             <fo:inline font-size="6.5pt">10.</fo:inline>
@@ -1578,18 +1584,19 @@
                                                     <fo:table-cell number-columns-spanned="2"
                                                                    xsl:use-attribute-sets="full-border">
                                                         <fo:block xsl:use-attribute-sets="label">7. Type of Report
-                                                        </fo:block>
-                                                        <xsl:variable name="reportStatus"
-                                                                      select="AdverseEventReport/Report/ReportVersion/ReportStatus"/>
+                                                        </fo:block>                                                        
                                                         <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[
-                                                            <xsl:if test="$reportStatus != 'AMENDED'">x</xsl:if>]
-                                                            Initial
+                                                            <xsl:if test="$reportVersionId = '0'">x</xsl:if>] Initial
                                                         </fo:block>
-                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">[
-                                                            <xsl:if test="$reportStatus = 'AMENDED'">x</xsl:if>]
-                                                            Follow-up #
-                                                            <fo:leader leader-length="40%" leader-pattern="rule"
-                                                                       rule-thickness="0.5pt"/>
+                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px">
+                                                        	<xsl:choose>
+                                                             		<xsl:when test="$reportVersionId != '0'">
+                                                             			[x] Follow-up # <fo:inline border-bottom="0.5pt solid black"><xsl:value-of select="$reportVersionId"/></fo:inline>
+                                                             		</xsl:when>
+                                                             		<xsl:otherwise>
+                                                             			[ ] Follow-up # <fo:inline border-bottom="0.5pt solid black"><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:inline>
+                                                             		</xsl:otherwise>
+                                                              	</xsl:choose>
                                                         </fo:block>
                                                     </fo:table-cell>
                                                     <fo:table-cell number-columns-spanned="2"
@@ -1803,8 +1810,8 @@
                                                         </fo:block>
                                                     </fo:table-cell>
                                                 </fo:table-row>
-                                                <fo:table-row xsl:use-attribute-sets="tr-height-1">
-                                                    <fo:table-cell number-columns-spanned="4" number-rows-spanned="2"
+                                                <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+                                                    <fo:table-cell number-columns-spanned="4" number-rows-spanned="2" 
                                                                    xsl:use-attribute-sets="full-border">
                                                         <fo:block xsl:use-attribute-sets="label" >
                                                             1. Contact Office - Name/Address (and manufacturing Site for Devices)
@@ -1821,8 +1828,15 @@
                                                                 <xsl:value-of select="AdverseEventReport/Reviewer/address"/>
                                                             </xsl:if>
                                                         </fo:block>
+                                                        <fo:block xsl:use-attribute-sets="normal">
+                                                        	<xsl:for-each select="AdverseEventReport/Reviewer/ContactMechanism">
+                                                                <xsl:if test="key = 'e-mail'">
+                                                                    E-mail:<xsl:value-of select="value"/>
+                                                                </xsl:if>
+                                                            </xsl:for-each>
+                                                        </fo:block>
                                                     </fo:table-cell>
-                                                    <fo:table-cell number-columns-spanned="2"
+                                                    <fo:table-cell number-columns-spanned="2" 
                                                                    xsl:use-attribute-sets="full-border">
                                                         <fo:block xsl:use-attribute-sets="label" >2.  Phone number  </fo:block>
                                                         <fo:block xsl:use-attribute-sets="normal">
@@ -1970,6 +1984,8 @@
                                                             <fo:inline font-style="italic" font-weight="normal">(Check all that apply) </fo:inline>
                                                         </fo:block>
                                                         <fo:table>
+                                                        	<fo:table-column column-width="35%"/>
+                                                            <fo:table-column column-width="65%"/>
                                                             <fo:table-body>
                                                                 <fo:table-row>
                                                                     <fo:table-cell text-align="left">
@@ -2018,10 +2034,7 @@
                                                                     </fo:table-cell>
                                                                     <fo:table-cell text-align="left">
                                                                         <fo:block xsl:use-attribute-sets="normal"  padding-bottom="2px">[ 
-                                                                        	<xsl:if test="AdverseEventReport/Report/ReportVersion/ReportStatus != 'AMENDED'">
-                                                                                x
-                                                                            </xsl:if>
-                                                                        ] Initial
+                                                                        	<xsl:if test="$reportVersionId = '0'">x</xsl:if>] Initial
                                                                         </fo:block>
                                                                     </fo:table-cell>
                                                                 </fo:table-row>
@@ -2035,12 +2048,15 @@
                                                                         </fo:block>
                                                                     </fo:table-cell>
                                                                     <fo:table-cell text-align="left">
-                                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px"  text-align="left" >[
-                                                                        	<xsl:if test="AdverseEventReport/Report/ReportVersion/ReportStatus = 'AMENDED'">
-                                                                                x
-                                                                            </xsl:if>
-                                                                            ] Follow-up # 
-                                                                            <fo:leader leader-length="25%" leader-pattern="rule" rule-thickness="0.5pt"/>
+                                                                        <fo:block xsl:use-attribute-sets="normal" padding-bottom="2px"  text-align="left" >                                                                        	
+                                                                        	<xsl:choose>
+                                                                        		<xsl:when test="$reportVersionId != '0'">
+                                                                        			[x] Follow-up # <fo:inline border-bottom="0.5pt solid black"><xsl:value-of select="$reportVersionId"/></fo:inline>
+                                                                        		</xsl:when>
+                                                                        		<xsl:otherwise>
+                                                                        			[ ] Follow-up # <fo:inline border-bottom="0.5pt solid black"><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text></fo:inline>
+                                                                        		</xsl:otherwise>
+                                                                        	</xsl:choose>
                                                                         </fo:block>
                                                                     </fo:table-cell>
                                                                 </fo:table-row>
@@ -2055,6 +2071,20 @@
                                                     </fo:table-cell>
                                                     <fo:table-cell number-columns-spanned="3" xsl:use-attribute-sets="full-border">
                                                         <fo:block xsl:use-attribute-sets="label">8. Adverse Event Term(s) </fo:block>
+                                                        <xsl:for-each select="/AdverseEventReport/AdverseEvent">
+                                                                <xsl:if test="(position() &lt;= $_aePossible)">
+	                                                                <fo:block xsl:use-attribute-sets="normal">
+	                                                                	#<xsl:number format="1" value="position()"/><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
+	                                                                	<xsl:value-of select="AdverseEventCtcTerm/ctc-term/ctepTerm"/>
+	                                                                </fo:block>								
+                                                                </xsl:if>
+                                                        </xsl:for-each>
+                                                         
+                                                         <xsl:if test="$_aeContinue = true()">
+                                                            <fo:block text-align="right" xsl:use-attribute-sets="normal">
+                                                                <xsl:text disable-output-escaping="yes">&amp;#160; Continued... </xsl:text>
+                                                            </fo:block>
+                                                        </xsl:if>
                                                     </fo:table-cell>
                                                 </fo:table-row>
                                             </fo:table-body>
@@ -2466,28 +2496,23 @@
                                             </fo:table-row>
                                             <fo:table-row>
                                                 <fo:table-cell>
-                                                    <xsl:for-each select="/AdverseEventReport/AdverseEvent[1]//attribution">
-                                                            <xsl:sort select="." order="descending"/>
-                                                            <fo:block font-size="6.5pt">
-
-                                                                <xsl:if test="($_attPossible &lt; position() ) and (contains(., '3') or contains(.,'4') or contains(.,'5'))">
-
-                                                                    #<xsl:number format="1" value="position()"/>
-                                                                     <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
-                                                                    <xsl:value-of select="../CourseAgent/StudyAgent/Agent/name"/>
-                                                                    <xsl:value-of select="../CourseAgent/StudyAgent/otherAgent"/>
-                                                                    <xsl:value-of select="..//OtherIntervention/name"/>
-
+                                                    <xsl:for-each select="/AdverseEventReport/AdverseEvent[starts-with(gridId,'PRY')]/CourseAgentAttribution[starts-with(attribution, '3:') or starts-with(attribution, '4:') or starts-with(attribution, '5:')]">
+                                                            <xsl:sort select="./attribution" order="descending"/>
+                                                                <xsl:if test="(  $_attPossible &lt; position())">
+	                                                                <fo:block xsl:use-attribute-sets="normal">
+	                                                                    #<xsl:number format="1" value="position()"/> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
+	                                                                    <xsl:value-of select="./CourseAgent/StudyAgent/Agent/name"/>
+	                                                                    <xsl:value-of select="./CourseAgent/StudyAgent/otherAgent"/>
+	                                                                    <xsl:value-of select=".//OtherIntervention/name"/>
+	                                                                    <xsl:value-of select="./DiseaseHistory/DiseaseTerm/term"/>
+																	</fo:block>								
                                                                 </xsl:if>
-
-                                                            </fo:block>
-
                                                         </xsl:for-each>
                                                 </fo:table-cell>
                                             </fo:table-row>
                                         </xsl:if>
                                         <!--Intervention econtinue (End) -->
-
+                                        
                                         <!-- tac -->
                                         <xsl:if test="$_tacContinue = true()">
                                             <fo:table-row>
@@ -2504,6 +2529,7 @@
                                                                 select="mu:after(AdverseEventReport/TreatmentInformation/treatmentDescription, $_tacPossible)"/>
 
                                                     	<xsl:for-each select="AdverseEventReport/TreatmentInformation/CourseAgent">
+                                                                <fo:block>#<xsl:number format="1" value="position()"/><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text><xsl:value-of select="StudyAgent/Agent/name"/></fo:block>
                                                                 <fo:block><xsl:value-of select="Dose/amount"/><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text><xsl:value-of select="Dose/units"/></fo:block>
                                                                 <fo:block><xsl:value-of select="formulation"/></fo:block>
                                                                 <fo:block><xsl:value-of select="administrationDelayAmount"/><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text><xsl:value-of select="administrationDelayUnits"/></fo:block>
@@ -2515,7 +2541,81 @@
                                             </fo:table-row>
                                         </xsl:if>
                                         <!-- end tac -->
-                                        <!-- conmed -->
+                                        
+                                        <!-- Therapy Dates continue -->
+                                        <xsl:if test="$_attContinue = true()">
+                                            <fo:table-row>
+                                                <fo:table-cell>
+                                                    <fo:block xsl:use-attribute-sets="label" font-style="italic" background-color='silver'>C. 3. Continued...</fo:block>
+                                                </fo:table-cell>
+                                            </fo:table-row>
+                                            <fo:table-row>
+                                                <fo:table-cell>
+                                                    <xsl:for-each select="/AdverseEventReport/AdverseEvent[starts-with(gridId,'PRY')]/CourseAgentAttribution[starts-with(attribution, '3:') or starts-with(attribution, '4:') or starts-with(attribution, '5:')]">
+                                                            <xsl:sort select="./attribution" order="descending"/>
+                                                                <xsl:if test="(  $_attPossible &lt; position())">
+	                                                                <fo:block xsl:use-attribute-sets="normal">
+	                                                                    <xsl:call-template name="courseAgentTherapyDate">
+	                                                                    	<xsl:with-param name="courseAgentId" select="./CourseAgent/id"/>
+	                                                                    </xsl:call-template>
+																	</fo:block>							
+                                                                </xsl:if>
+                                                        </xsl:for-each>
+                                                </fo:table-cell>
+                                            </fo:table-row>
+                                        </xsl:if>
+                                        <!--Therapy Dates econtinue (End) -->
+                                        
+                                        <!-- Lot Number continue -->
+                                        <xsl:if test="$_attContinue = true()">
+                                            <fo:table-row>
+                                                <fo:table-cell>
+                                                    <fo:block xsl:use-attribute-sets="label" font-style="italic" background-color='silver'>C. 6. Continued...</fo:block>
+                                                </fo:table-cell>
+                                            </fo:table-row>
+                                            <fo:table-row>
+                                                <fo:table-cell>
+                                                    <xsl:for-each select="/AdverseEventReport/AdverseEvent[starts-with(gridId,'PRY')]/CourseAgentAttribution[starts-with(attribution, '3:') or starts-with(attribution, '4:') or starts-with(attribution, '5:')]">
+                                                            <xsl:sort select="./attribution" order="descending"/>
+                                                                <xsl:if test="(  $_attPossible &lt; position())">
+	                                                                <fo:block xsl:use-attribute-sets="normal">
+	                                                                    <xsl:call-template name="courseAgentLotNumber">
+	                                                                    	<xsl:with-param name="courseAgentId" select="./CourseAgent/id"/>
+	                                                                    </xsl:call-template>
+																	</fo:block>							
+                                                                </xsl:if>
+                                                        </xsl:for-each>
+                                                </fo:table-cell>
+                                            </fo:table-row>
+                                        </xsl:if>
+                                        <!--Lot Number econtinue (End) -->
+                                        
+                                        <!-- NSC Number continue -->
+                                        <xsl:if test="$_attContinue = true()">
+                                            <fo:table-row>
+                                                <fo:table-cell>
+                                                    <fo:block xsl:use-attribute-sets="label" font-style="italic" background-color='silver'>C. 9. Continued...</fo:block>
+                                                </fo:table-cell>
+                                            </fo:table-row>
+                                            <fo:table-row>
+                                                <fo:table-cell>
+                                                    <xsl:for-each select="/AdverseEventReport/AdverseEvent[starts-with(gridId,'PRY')]/CourseAgentAttribution[starts-with(attribution, '3:') or starts-with(attribution, '4:') or starts-with(attribution, '5:')]">
+                                                            <xsl:sort select="./attribution" order="descending"/>
+                                                                <xsl:if test="(  $_attPossible &lt; position())">
+	                                                                <fo:block xsl:use-attribute-sets="normal">	                                                                    
+	                                                                    <xsl:call-template name="courseAgentNscNumber">
+	                                                                    	<xsl:with-param name="courseAgentId" select="./CourseAgent/id"/>
+	                                                                    </xsl:call-template>
+																	</fo:block>							
+                                                                </xsl:if>
+                                                        </xsl:for-each>
+                                                </fo:table-cell>
+                                            </fo:table-row>
+                                        </xsl:if>
+                                        <!--NSC Number econtinue (End) -->
+
+                                        
+                                        <!-- conmed continue-->
                                         <xsl:if test="$_cmContinue = true()">
                                             <fo:table-row>
                                                 <fo:table-cell>
@@ -2535,6 +2635,27 @@
                                             </fo:table-row>
                                         </xsl:if>
                                         <!-- end conmed -->
+                                        
+                                        
+                                        <!-- AE continue -->
+                                        <xsl:if test="$_aeContinue = true()">
+                                            <fo:table-row>
+                                                <fo:table-cell>
+                                                    <fo:block xsl:use-attribute-sets="label" font-style="italic" background-color='silver'>G. 8. Continued...</fo:block>
+                                                </fo:table-cell>
+                                            </fo:table-row>
+                                            <fo:table-row>
+                                                <fo:table-cell>
+                                                    <xsl:for-each select="/AdverseEventReport/AdverseEvent">
+                                                                <xsl:if test="(  $_aePossible &lt; position())">
+	                                                                	#<xsl:number format="1" value="position()"/><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
+	                                                                	<xsl:value-of select="AdverseEventCtcTerm/ctc-term/ctepTerm"/>
+                                                                </xsl:if>
+                                                        </xsl:for-each>
+                                                </fo:table-cell>
+                                            </fo:table-row>
+                                        </xsl:if>
+                                        <!--AE econtinue (End) -->
 
                                 </fo:table-body>
                             </fo:table>
@@ -3021,6 +3142,59 @@
 				</xsl:otherwise>
 			</xsl:choose>
         </fo:block>
+    </xsl:template>
+    
+    <!-- Print Therapy date for a course agent id -->
+    <xsl:template name="courseAgentTherapyDate">
+    	<xsl:param name="courseAgentId"/>
+    	<xsl:variable name="courseAgentPostn" select="position()"/>
+    	<xsl:for-each select="/AdverseEventReport/TreatmentInformation/CourseAgent[id=$courseAgentId]">
+			   #<xsl:number format="1" value="$courseAgentPostn"/> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
+               <xsl:choose>
+                   <xsl:when test="firstAdministeredDate">
+                       <xsl:call-template name="standard_date">
+                           <xsl:with-param name="date"  select="firstAdministeredDate"/>
+                       </xsl:call-template>
+                   </xsl:when>
+                   <xsl:otherwise>Unknown</xsl:otherwise>
+               </xsl:choose>
+               to
+               <xsl:choose>
+                   <xsl:when test="lastAdministeredDate">
+                       <xsl:call-template name="standard_date">
+                           <xsl:with-param name="date"  select="lastAdministeredDate"/>
+                       </xsl:call-template>
+                   </xsl:when>
+                   <xsl:otherwise>Unknown</xsl:otherwise>
+               </xsl:choose>
+       </xsl:for-each>
+                                                        
+    </xsl:template>
+    
+    <!-- Print NSC Number for a course agent id -->
+    <xsl:template name="courseAgentNscNumber">
+    	<xsl:param name="courseAgentId"/>
+    	<xsl:variable name="courseAgentPostn" select="position()"/>
+    	<xsl:for-each select="/AdverseEventReport/TreatmentInformation/CourseAgent[id=$courseAgentId]">
+            <xsl:if test="StudyAgent/Agent/nscNumber">
+            	#<xsl:number format="1" value="$courseAgentPostn"/> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
+            	<xsl:value-of select="StudyAgent/Agent/nscNumber"/>
+            </xsl:if>
+       </xsl:for-each>
+                                                        
+    </xsl:template>
+    
+    <!-- Print Lot Number for a course agent id -->
+    <xsl:template name="courseAgentLotNumber">
+    	<xsl:param name="courseAgentId"/>
+    	<xsl:variable name="courseAgentPostn" select="position()"/>
+    	<xsl:for-each select="/AdverseEventReport/TreatmentInformation/CourseAgent[id=$courseAgentId]">
+            <xsl:if test="lotNumber">
+            	#<xsl:number format="1" value="$courseAgentPostn"/> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
+            	<xsl:value-of select="lotNumber"/>
+            </xsl:if>
+       </xsl:for-each>
+                                                        
     </xsl:template>
 
 

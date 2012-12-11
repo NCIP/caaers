@@ -221,7 +221,7 @@ public class MessageNotificationService {
             
             //          generating pdf again to get PDF with ticket number ....
             ExpeditedAdverseEventReport aeReport = report.getAeReport();
-            if (report.getLastVersion().getReportStatus().equals(ReportStatus.COMPLETED) || report.getLastVersion().getReportStatus().equals(ReportStatus.AMENDED)) {
+            if (report.isWorkflowEnabled() && report.getLastVersion().getReportStatus().equals(ReportStatus.COMPLETED)) {
             	//TODO - get the submitted reviewer
             } else {
             	aeReport.setReviewer(aeReport.getReporter());

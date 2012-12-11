@@ -220,8 +220,11 @@ public class AdeersReportGenerator extends BasePDFGenerator {
         try {
 //        	String file = "C:\\vin\\caAERS\\caAERS\\software\\expeditedAdverseEventReport-416.xml";
 //        	String pdf = "C:\\vin\\caAERS\\caAERS\\software\\expeditedAdverseEventReport-416.pdf";
-        	String file = "C:\\vin\\caAERS\\caAERS\\software\\med1.xml";
-        	String pdf = "C:\\vin\\caAERS\\caAERS\\software\\med1.pdf";
+//        	String file = "C:\\vin\\caAERS\\caAERS\\software\\med1.xml";
+//        	String pdf = "C:\\vin\\caAERS\\caAERS\\software\\med1.pdf";
+        	String file = "C:\\vin\\caAERS\\tmp\\sample-msgs\\expeditedAdverseEventReport-374.xml";
+        	String pdf = "C:\\vin\\caAERS\\tmp\\sample-msgs\\expeditedAdverseEventReport-374.pdf";
+        	
             AdeersReportGenerator aeg = new AdeersReportGenerator();
             FileReader input = new FileReader(file);
             BufferedReader bufRead = new BufferedReader(input);
