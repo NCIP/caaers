@@ -1662,8 +1662,10 @@ div#createNew h3, div.section h3 {
 										path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value"
 										id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value"
 										multiple="false">
-                                <form:option value="">Please select value</form:option>
                               </form:select>
+                              <script>
+                              	$('ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value').options.add(new Option("Please select value", ""));
+                              </script>
                               <tags:errors path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value" />
                             </c:when>
                             <c:otherwise>
