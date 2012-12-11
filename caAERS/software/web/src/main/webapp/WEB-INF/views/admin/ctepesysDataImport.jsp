@@ -1,8 +1,8 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp"%>
-<tags:dwrJavascriptLink objects="ctepDataInitialization"/>
+
 <html>
 <head>
-
+    <tags:dwrJavascriptLink objects="ctepDataInitialization"/>
 <style type="text/css">
         input.autocomplete {
             width: 450px;
