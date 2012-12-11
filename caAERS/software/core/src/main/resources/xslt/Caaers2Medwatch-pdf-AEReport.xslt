@@ -51,7 +51,7 @@
     <xsl:variable name="_msdsContinue" select="$_msdsCount &gt;= $_msdsPossible" />
     <xsl:variable name="_cmContinue" select="$_cmCount &gt;= $_cmPossible" />
     <xsl:variable name="_cmdContinue" select="$_cmdCount &gt;= $_cmdPossible" />
-    <xsl:variable name="_attContinue" select="$_attCount &gt;= $_attPossible" />
+    <xsl:variable name="_attContinue" select="$_attCount &gt; $_attPossible" />
 
     <xsl:variable name="_tacContinue" select="mu:after(AdverseEventReport/TreatmentInformation/TreatmentAssignment/description, $_tacPossible) != '' or
     mu:after(AdverseEventReport/TreatmentInformation/treatmentDescription, $_tacPossible) != '' or $_caCount &gt;= $_caPossible"></xsl:variable>
