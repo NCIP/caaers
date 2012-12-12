@@ -19,6 +19,7 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -515,6 +516,11 @@ public abstract class Organization extends AbstractMutableRetireableDomainObject
         return true;
     }
     
+   
+    @Transient
+    public String getEscapedXmlName() {
+    	return StringEscapeUtils.escapeXml(name);
+    }
 
     /* (non-Javadoc)
      * @see java.lang.Object#hashCode()

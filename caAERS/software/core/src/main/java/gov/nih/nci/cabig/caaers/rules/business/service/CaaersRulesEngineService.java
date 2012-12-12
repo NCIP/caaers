@@ -676,7 +676,7 @@ public class CaaersRulesEngineService {
         column.setObjectType(gov.nih.nci.cabig.caaers.domain.Study.class.getName());
         column.setIdentifier("studySDO");
         String expression = "factResolver.assertFact(studySDO,"
-                        + "\"gov.nih.nci.cabig.caaers.domain.Organization" + "\"," + "\"name"
+                        + "\"gov.nih.nci.cabig.caaers.domain.Organization" + "\"," + "\"escapedXmlName"
                         + "\"," + "\"" + criteriaValue + "\",\"==\"" + ")";
 
         column.setExpression(expression);
@@ -739,7 +739,7 @@ public class CaaersRulesEngineService {
         Column column = BRXMLHelper.newColumn();
         column.setObjectType(gov.nih.nci.cabig.caaers.domain.Organization.class.getName());
         column.setIdentifier("organizationSDO");
-        String expression = "factResolver.assertFact(organizationSDO,null," + "\"name" + "\","
+        String expression = "factResolver.assertFact(organizationSDO,null," + "\"escapedXmlName" + "\","
                         + "\"" + criteriaValue + "\",\"==\"" + ")";
 
         column.setExpression(expression);
