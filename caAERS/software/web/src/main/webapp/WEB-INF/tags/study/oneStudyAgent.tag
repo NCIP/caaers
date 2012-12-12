@@ -139,7 +139,7 @@
 	</jsp:attribute>
 </ui:row>
 <!--  Beg of IND fields -->
-<span id="_SA-IND-${index}"></span>
+<span id="_SA-IND-${index}">
 <c:forEach items="${fieldGroups[indGroup].fields}" var="_indField" varStatus="status">
   <ui:row path="${_indField.propertyName}">
 	<jsp:attribute name="label">
@@ -174,11 +174,10 @@
 	</jsp:attribute>
 </ui:row>
 </c:forEach>
-
+</span>
 <!--  end of IND fields -->
-
-<c:set var="_leadINDStyle" value="${( (empty sa.indType) or (sa.indType eq INDType.NA) or (sa.indType eq INDType.NA_COMMERCIAL) or (sa.indType eq INDType.IND_EXEMPT) ) ? 'display:none' : ''}" />
-<ui:row path="${_leadINDField.propertyName}" style="_leadINDStyle">
+<c:set var="_leadINDStyle" value="${( (empty studyAgent.indType) or (studyAgent.indType.code eq 0) or (studyAgent.indType.code eq 3) or (studyAgent.indType.code eq 4) ) ? 'display:none' : ''}" />
+<ui:row path="${_leadINDField.propertyName}" style="${_leadINDStyle}">
 	<jsp:attribute name="label">
 		<ui:label path="${_leadINDField.propertyName}" text="${_leadINDField.displayName}" 
 			required="${_leadINDField.required}" />
