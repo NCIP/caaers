@@ -29,6 +29,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -309,7 +310,7 @@ public class CaaersRulesEngineService {
             rule.getMetaData().setDescription("Setting Description since its mandatory by JBoss Repository config");
             if(ruleLevel != null){
                 
-                String organizationName = ( domainRuleSet.getOrganization() != null) ? domainRuleSet.getOrganization().getName() : null;
+                String organizationName = ( domainRuleSet.getOrganization() != null) ? StringEscapeUtils.escapeXml(domainRuleSet.getOrganization().getName()) : null;
                 String sponsorName =  null;
                 String institutionName = null;
 
