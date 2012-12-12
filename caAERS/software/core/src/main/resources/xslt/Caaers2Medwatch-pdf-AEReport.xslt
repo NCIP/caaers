@@ -40,9 +40,12 @@
     <xsl:variable name="_cmdCount" select="count(AdverseEventReport/ConcomitantMedication)" />
     <xsl:variable name="_mdCount" select="count(AdverseEventReport/MedicalDevice)" />
     <xsl:variable name="_caCount" select="count(AdverseEventReport/TreatmentInformation/CourseAgent)" />
-    <xsl:variable name="_agntAttCount" select="count(AdverseEventReport/AdverseEvent[1]/CourseAgentAttribution/attribution[contains(., '3') or contains(.,'4') or contains(.,'5')])" />
+    
+    <!-- <xsl:variable name="_agntAttCount" select="count(AdverseEventReport/AdverseEvent[1]/CourseAgentAttribution/attribution[contains(., '3') or contains(.,'4') or contains(.,'5')])" />
     <xsl:variable name="_otherInvAttCount" select="count(AdverseEventReport/AdverseEvent[1]/CourseAgentAttribution/attribution[contains(., '3') or contains(.,'4') or contains(.,'5')])" />
-    <xsl:variable name="_attCount" select="($_agntAttCount + $_otherInvAttCount)" />
+    <xsl:variable name="_attCount" select="($_agntAttCount + $_otherInvAttCount)" /> -->
+    
+    <xsl:variable name="_attCount" select="count(AdverseEventReport/AdverseEvent[starts-with(gridId,'PRY')]/CourseAgentAttribution[starts-with(attribution, '3:') or starts-with(attribution, '4:') or starts-with(attribution, '5:')])"/>
 
 
     <xsl:variable name="_aeContinue" select="$_aeCount &gt; $_aePossible" />
