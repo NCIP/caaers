@@ -102,6 +102,9 @@ public class PatientDetailsTab extends AeTab {
    	   refData.put("_priorTherapy_radiation_id", PriorTherapy.RADIATION);
    	   refData.put("_priorTherapy_nopriortherapy_id", PriorTherapy.NO_PRIOR_THERAPY);
    	   
+   	 //initializing some stuff
+       command.getAeReport().getAdverseEventAttributions();
+   	   
    	   return refData;
    }
     
