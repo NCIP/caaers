@@ -38,7 +38,7 @@
    });
 
    //populate the name of the associated organization in 'organization-input' field
-   $('reportDefinition.organization-input').value = '${command.reportDefinition.organization.fullName}';
+   $('reportDefinition.organization-input').value = '${caaers:escapeJS(command.reportDefinition.organization.fullName)}';
 
 
 	//observe change event on config type, so that the parent can be fliped. 
