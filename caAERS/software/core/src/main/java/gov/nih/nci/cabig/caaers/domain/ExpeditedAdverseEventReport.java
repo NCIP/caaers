@@ -11,20 +11,33 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
-import javax.persistence.*;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.IndexColumn;
 import org.hibernate.annotations.Parameter;
-import org.springframework.beans.BeanUtils;
 
  
 /**
@@ -1765,7 +1778,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     			hasWorkflowOnActiveReports = true;
     	return hasWorkflowOnActiveReports;
     }
-
+    
     /**
      * Will create other cause from PreExistingCondition.
      */
@@ -1787,7 +1800,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
      * @param cause  - The cause to find. 
      * @return  OtherCause if found, otherwise null. 
      */
-    private OtherCause findOtherCauseByCause(String cause){
+    public OtherCause findOtherCauseByCause(String cause){
         for(OtherCause otherCause : getOtherCauses()) {
             String otherCauseText = otherCause.getText();
             if(StringUtils.equals(cause, otherCauseText)) return otherCause;
@@ -1800,7 +1813,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         if(otherCause != null) return getOtherCauses().remove(otherCause);
         return false;
     }
-
+    
     @Transient
     public List<StudyTherapyType> getInterventionTypes(){
         List<StudyTherapyType> interventionTypes = new ArrayList<StudyTherapyType>();

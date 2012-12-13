@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
 import gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite;
+import gov.nih.nci.cabig.caaers.domain.OtherCause;
 import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
 import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.PriorTherapyAgent;
@@ -422,7 +423,14 @@ public class PatientDetailsTab extends AeTab {
         SAEReportPreExistingCondition preCondition = preConditions.get(command.getIndex());
     	preConditions.remove(preCondition); //remove the element
     	if(preCondition.getName() != null){
-           command.getAeReport().removeOtherCause(preCondition.getName()); 
+    		OtherCause otherCause = command.getAeReport().findOtherCauseByCause(preCondition.getName());
+    		if(otherCause != null){
+    			// delete other cause attributions
+    			command.deleteAttribution(otherCause);
+    			// now remove other cause
+    			command.getAeReport().removeOtherCause(preCondition.getName()); 
+    		}
+          
         }
 
     	//create the indexes in reverse order
@@ -437,7 +445,8 @@ public class PatientDetailsTab extends AeTab {
     	modelAndView.getModel().put("indexes", indexes);
     	
     	return modelAndView;
-    }    
+    }   
+    
     
     public ModelAndView addConcomitantMedication(HttpServletRequest request , Object cmd, Errors errors){
     	AbstractExpeditedAdverseEventInputCommand command =(AbstractExpeditedAdverseEventInputCommand)cmd;
