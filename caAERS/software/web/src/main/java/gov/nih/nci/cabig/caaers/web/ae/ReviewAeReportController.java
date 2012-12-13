@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.domain.AdditionalInformationDocumentType;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.domain.Reporter;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
@@ -20,6 +21,7 @@ import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import gov.nih.nci.cabig.caaers.service.adverseevent.AdditionalInformationDocumentService;
+import gov.nih.nci.cabig.caaers.service.workflow.WorkflowService;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.validation.ValidationError;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
@@ -48,7 +50,7 @@ public class ReviewAeReportController extends SimpleFormController{
 	private ReportValidationService reportValidationService;
     private AdeersReportGenerator adeersReportGenerator;
     private AdditionalInformationDocumentService additionalInformationDocumentService;
-    private UserRepository userRepository;
+    private WorkflowService workflowService;
     
     String tempDir = System.getProperty("java.io.tmpdir");
 
@@ -75,8 +77,14 @@ public class ReviewAeReportController extends SimpleFormController{
        
         Report report = reportDao.getById(Integer.parseInt(reportId));
         
-        if (report.isWorkflowEnabled() && report.getLastVersion().getReportStatus().equals(ReportStatus.COMPLETED)) {
-        	//TODO - get the submitted reviewer
+        if (report.isWorkflowEnabled() && report.getLastVersion().getReportStatus().equals(ReportStatus.COMPLETED)
+        		&& report.getWorkflowId() != null) {
+        	User user = workflowService.findCoordinatingCenterReviewer(report.getWorkflowId());
+        	if(user != null) {
+	        	Reporter r = new Reporter();
+	        	r.copy(user);
+	        	aeReport.setReviewer(r);
+        	}
         } else {
         	aeReport.setReviewer(aeReport.getReporter());
         }
@@ -215,13 +223,15 @@ public class ReviewAeReportController extends SimpleFormController{
         this.additionalInformationDocumentService = additionalInformationDocumentService;
     }
 
-	public UserRepository getUserRepository() {
-		return userRepository;
+	public WorkflowService getWorkflowService() {
+		return workflowService;
+	}
+	@Required
+	public void setWorkflowService(WorkflowService workflowService) {
+		this.workflowService = workflowService;
 	}
 
-	public void setUserRepository(UserRepository userRepository) {
-		this.userRepository = userRepository;
-	}
+	
     
     
 }

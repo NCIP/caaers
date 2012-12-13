@@ -10,7 +10,9 @@ import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.PersonContact;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.domain.Reporter;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportContent;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
@@ -18,6 +20,7 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportTracking;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.esb.client.impl.CaaersAdeersMessageBroadcastServiceImpl;
+import gov.nih.nci.cabig.caaers.service.workflow.WorkflowService;
 import gov.nih.nci.cabig.caaers.tools.mail.CaaersJavaMailSender;
 import gov.nih.nci.cabig.caaers.utils.Tracker;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
@@ -52,6 +55,7 @@ public class ReportSubmissionService {
     private AdeersReportGenerator adeersReportGenerator;
     private SchedulerService schedulerService;
     private ReportRepository reportRepository;
+    private WorkflowService workflowService;
     
     private ReportDao reportDao;
     private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
@@ -68,8 +72,14 @@ public class ReportSubmissionService {
     	//1. generate caaers xml
     	try {    
     		ExpeditedAdverseEventReport aeReport = report.getAeReport();
-    		if (report.isWorkflowEnabled() && report.getLastVersion().getReportStatus().equals(ReportStatus.COMPLETED)) {
-            	//TODO - get the submitted reviewer
+    		if (report.isWorkflowEnabled() && report.getLastVersion().getReportStatus().equals(ReportStatus.COMPLETED)
+    				&& report.getWorkflowId() != null) {
+    			User user = workflowService.findCoordinatingCenterReviewer(report.getWorkflowId());
+    			if(user != null) {
+    	        	Reporter r = new Reporter();
+    	        	r.copy(user);
+    	        	aeReport.setReviewer(r);
+            	}
             } else {
             	aeReport.setReviewer(aeReport.getReporter());
             }
@@ -366,6 +376,18 @@ public class ReportSubmissionService {
 		this.messageSource = messageSource;
 	}
     
+    
+    
+	public WorkflowService getWorkflowService() {
+		return workflowService;
+	}
+	@Required
+	public void setWorkflowService(WorkflowService workflowService) {
+		this.workflowService = workflowService;
+	}
+
+
+
 	/**
 	 * This class maintains the submission context, across various template methods.
 	 * @author Biju Joseph

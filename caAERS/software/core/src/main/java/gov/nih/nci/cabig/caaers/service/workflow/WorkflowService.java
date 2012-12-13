@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.service.workflow;
 
 import gov.nih.nci.cabig.caaers.domain.Person;
 import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
+import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.workflow.TaskConfig;
 import gov.nih.nci.cabig.caaers.workflow.callback.CreateTaskJbpmCallback;
 import org.jbpm.graph.def.Transition;
@@ -139,5 +140,12 @@ public interface WorkflowService{
 	 * @return
 	 */
 	public List<ReviewStatus> allowedReviewStatuses(String loginId);
+	
+    /**
+     * Finds the caAERS User that completed DCC review task
+     * @param wfId workflow instance id
+     * @return User instance
+     */
+	public User findCoordinatingCenterReviewer(Integer wfId);
 
 }

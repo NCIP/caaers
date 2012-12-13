@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.query.NativeSQLQuery;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.dao.workflow.WorkflowConfigDao;
 import gov.nih.nci.cabig.caaers.domain.*;
@@ -25,19 +26,27 @@ import gov.nih.nci.cabig.caaers.tools.mail.CaaersJavaMailSender;
 import gov.nih.nci.cabig.caaers.workflow.PossibleTransitionsResolver;
 import gov.nih.nci.cabig.caaers.workflow.callback.CreateTaskJbpmCallback;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.type.StandardBasicTypes;
+import org.jbpm.JbpmContext;
+import org.jbpm.JbpmException;
 import org.jbpm.graph.def.*;
 import org.jbpm.graph.exe.*;
 import org.jbpm.taskmgmt.exe.*;
 import org.springframework.mail.MailException;
+import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springmodules.workflow.jbpm31.*;
@@ -344,6 +353,48 @@ public class WorkflowServiceImpl implements WorkflowService {
 	 */
 	public List<TaskInstance> fetchTaskInstances(String actorId){
 		return (List<TaskInstance>)jbpmTemplate.findPooledTaskInstances(actorId);
+	}
+	
+	/**
+	 * Find DCC reviewer from the workflow
+	 * @param wfId
+	 * @return User instance
+	 */
+	public User findCoordinatingCenterReviewer(Integer wfId) {
+		String strQuery = "SELECT jbpm_pooledactor.actorid_ " +
+				"FROM public.jbpm_pooledactor, public.jbpm_taskactorpool, public.jbpm_taskinstance " +
+				"WHERE jbpm_pooledactor.id_ = jbpm_taskactorpool.pooledactor_ " +
+				"AND jbpm_taskactorpool.taskinstance_= jbpm_taskinstance.id_ " +
+				"AND jbpm_taskinstance.name_ IN ('Coordinating Center Review', 'Data Coordinator Review') " +
+				"AND jbpm_taskinstance.procinst_= :wfId";
+		final NativeSQLQuery query = new NativeSQLQuery(strQuery);
+		query.setParameter("wfId", wfId.intValue());
+		query.setScalar("actorid_", StandardBasicTypes.STRING);
+		List userList = 
+		jbpmTemplate.getHibernateTemplate().executeFind(new HibernateCallback() {		
+			
+			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+				org.hibernate.SQLQuery nativeQuery = session.createSQLQuery(query.getQueryString());
+                Map<String, org.hibernate.type.Type> scalarMap = ((NativeSQLQuery) query).getScalarMap();
+                for(String key : scalarMap.keySet()){
+                   nativeQuery.addScalar(key, scalarMap.get(key));
+                }
+                Map<String, Object> queryParameterMap = query.getParameterMap();
+                for (String key : queryParameterMap.keySet()) {
+                    Object value = queryParameterMap.get(key);
+                    nativeQuery.setParameter(key, value);
+                }
+                return nativeQuery.list();
+			}
+		});
+		
+		User reviewer = null;
+        if(CollectionUtils.isNotEmpty(userList)){
+            reviewer = userRepository.getUserByLoginName((String) userList.get(0));
+        }
+        
+        return reviewer;
+		
 	}
 	
 	/**

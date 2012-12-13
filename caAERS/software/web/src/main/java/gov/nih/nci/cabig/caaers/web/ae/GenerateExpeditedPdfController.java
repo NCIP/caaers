@@ -6,6 +6,8 @@ import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.domain.Reporter;
+import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportContent;
@@ -18,8 +20,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
+import gov.nih.nci.cabig.caaers.service.workflow.WorkflowService;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractCommandController;
@@ -31,6 +36,7 @@ public class GenerateExpeditedPdfController extends AbstractCommandController {
 	private ReportDao reportDao;
 	private ExpeditedAdverseEventReportDao aeReportDao;
 	private AdeersReportGenerator adeersReportGenerator;
+	private WorkflowService workflowService;
 	
 	public GenerateExpeditedPdfController() {
 		setCommandClass(GenerateExpeditedPdfCommand.class);
@@ -109,6 +115,16 @@ public class GenerateExpeditedPdfController extends AbstractCommandController {
                        reportContent = reportDao.getReportContent(report);
                    }
                    if (reportContent == null) {
+                	   if(report.isWorkflowEnabled() && report.getWorkflowId() != null) {
+	                	   User user = workflowService.findCoordinatingCenterReviewer(report.getWorkflowId());
+	                	   if(user != null) {
+		           	        	Reporter r = new Reporter();
+		           	        	r.copy(user);
+		           	        	aeReport.setReviewer(r);
+	                	   }
+                	   } else {
+                		   aeReport.setReviewer(report.getReporter());
+                	   }
                        xml = adeersReportGenerator.generateCaaersXml(aeReport, report);
                    } else {
                        xml = new String(reportContent.getContent());
@@ -195,5 +211,15 @@ public class GenerateExpeditedPdfController extends AbstractCommandController {
 	public void setAdeersReportGenerator(AdeersReportGenerator adeersReportGenerator) {
 		this.adeersReportGenerator = adeersReportGenerator;
 	}
+
+	public WorkflowService getWorkflowService() {
+		return workflowService;
+	}
+	@Required
+	public void setWorkflowService(WorkflowService workflowService) {
+		this.workflowService = workflowService;
+	}
+	
+	
    
 }

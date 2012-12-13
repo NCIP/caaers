@@ -5,6 +5,8 @@ import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.domain.Reporter;
+import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
@@ -13,6 +15,7 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.service.SchedulerService;
 import gov.nih.nci.cabig.caaers.service.ReportSubmissionService.ReportSubmissionContext;
+import gov.nih.nci.cabig.caaers.service.workflow.WorkflowService;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.tools.mail.CaaersJavaMailSender;
 import gov.nih.nci.cabig.caaers.utils.Tracker;
@@ -28,6 +31,7 @@ import javax.mail.internet.MimeMessage;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.MessageSource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -66,6 +70,8 @@ public class MessageNotificationService {
     private MessageSource messageSource;
     
     private AdeersReportGenerator adeersReportGenerator;
+    
+    private WorkflowService workflowService;
     
     
     private void doPostSubmitReport(ReportSubmissionContext context){
@@ -221,8 +227,14 @@ public class MessageNotificationService {
             
             //          generating pdf again to get PDF with ticket number ....
             ExpeditedAdverseEventReport aeReport = report.getAeReport();
-            if (report.isWorkflowEnabled() && report.getLastVersion().getReportStatus().equals(ReportStatus.COMPLETED)) {
-            	//TODO - get the submitted reviewer
+            if (report.isWorkflowEnabled() && report.getLastVersion().getReportStatus().equals(ReportStatus.COMPLETED)
+            		&& report.getWorkflowId() != null) {
+            	User user = workflowService.findCoordinatingCenterReviewer(report.getWorkflowId());
+            	if(user != null) {
+    	        	Reporter r = new Reporter();
+    	        	r.copy(user);
+    	        	aeReport.setReviewer(r);
+            	}
             } else {
             	aeReport.setReviewer(aeReport.getReporter());
             }
@@ -319,7 +331,14 @@ public class MessageNotificationService {
 	public void setAdeersReportGenerator(AdeersReportGenerator adeersReportGenerator) {
 		this.adeersReportGenerator = adeersReportGenerator;
 	}
-	
 
+	public WorkflowService getWorkflowService() {
+		return workflowService;
+	}
+	@Required
+	public void setWorkflowService(WorkflowService workflowService) {
+		this.workflowService = workflowService;
+	}
+	
 
 }
