@@ -73,7 +73,7 @@ public class ReportSubmissionService {
     	try {    
     		ExpeditedAdverseEventReport aeReport = report.getAeReport();
     		if (report.isWorkflowEnabled() && report.getLastVersion().getReportStatus().equals(ReportStatus.COMPLETED)
-    				&& report.getWorkflowId() != null) {
+    				&& report.getWorkflowId() != null && workflowService != null) {
     			User user = workflowService.findCoordinatingCenterReviewer(report.getWorkflowId());
     			if(user != null) {
     	        	Reporter r = new Reporter();
@@ -381,7 +381,7 @@ public class ReportSubmissionService {
 	public WorkflowService getWorkflowService() {
 		return workflowService;
 	}
-	@Required
+	
 	public void setWorkflowService(WorkflowService workflowService) {
 		this.workflowService = workflowService;
 	}
