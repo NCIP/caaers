@@ -130,8 +130,7 @@ public class AdverseEventReportSerializer {
 	    	aer.setCreatedAt(hibernateAdverseEventReport.getCreatedAt());
 	    	aer.setId(hibernateAdverseEventReport.getId());
 	    	
-	    	//aer.setStatus(hibernateAdverseEventReport.getStatus());
-	    	
+	    	//aer.setStatus(hibernateAdverseEventReport.getStatus());	    	
 
 	    	//build Reporter
 	    	aer.setReporter(getReporter(hibernateAdverseEventReport.getReporter()));
@@ -569,6 +568,7 @@ public class AdverseEventReportSerializer {
     
 	   private Reporter getReporter(Reporter rptr) throws Exception {
 	    	Reporter reporter = new Reporter();
+	    	if(rptr == null) return reporter;
 	    	try {
 		    	reporter.setFirstName(rptr.getFirstName());
 		    	reporter.setLastName(rptr.getLastName());
@@ -585,6 +585,7 @@ public class AdverseEventReportSerializer {
 
 	    private Physician getPhysician(Physician psn) throws Exception {
 	    	Physician physician = new Physician();
+	    	if(psn == null) return physician;
 	    	try {
 	    		physician.setFirstName(psn.getFirstName());
 	    		physician.setLastName(psn.getLastName());
@@ -618,6 +619,7 @@ public class AdverseEventReportSerializer {
 
 	    private ParticipantHistory getParticipantHistory(ParticipantHistory ph) throws Exception {
 	    	ParticipantHistory participantHistory = new ParticipantHistory();
+	    	if(ph == null) return participantHistory;
 	    	try {
 		    	participantHistory.getHeight().setQuantity(ph.getHeight().getQuantity());
 		    	participantHistory.getHeight().setUnit(ph.getHeight().getUnit());
@@ -634,6 +636,12 @@ public class AdverseEventReportSerializer {
 
 	    private AdverseEventResponseDescription getAdverseEventResponseDescription(AdverseEventResponseDescription aerd,List<String> notApplicableFieldPaths) throws Exception {
 	    	AdverseEventResponseDescription adverseEventResponseDescription = new AdverseEventResponseDescription();
+	    	if(aerd == null) {
+	    		adverseEventResponseDescription.setEventAbate(EventStatus.NA);
+	    		adverseEventResponseDescription.setEventReappear(EventStatus.NA);
+	    		return adverseEventResponseDescription;
+	    	}
+	    	
 	    	try {
 		    	adverseEventResponseDescription.setEventDescription(aerd.getEventDescription());
 		    	if (!notApplicableFieldPaths.contains("responseDescription.dateRemovedFromProtocol")) {
@@ -690,6 +698,7 @@ public class AdverseEventReportSerializer {
 
 	    private DiseaseHistory getDiseaseHistory(DiseaseHistory dh,List<String> notApplicableFieldPaths) throws Exception {
 	    	DiseaseHistory diseaseHistory = new DiseaseHistory();
+	    	if(dh == null) return diseaseHistory;
 	    	try {
 
                 diseaseHistory.setOtherPrimaryDisease(dh.getOtherPrimaryDisease());
@@ -718,6 +727,7 @@ public class AdverseEventReportSerializer {
 	    }
 	    private AnatomicSite getAnatomicSite(AnatomicSite ash) {
 	    	AnatomicSite site = new AnatomicSite();
+	    	if(ash == null) return site;
 	    	site.setId(ash.getId());
 	    	site.setName(ash.getName());
 	    	site.setCategory(ash.getCategory());
@@ -726,6 +736,7 @@ public class AdverseEventReportSerializer {
 	    
 	    private StudyParticipantAssignment getStudyParticipantAssignment(StudyParticipantAssignment spa) throws Exception {
 	    	StudyParticipantAssignment studyParticipantAssignment = new StudyParticipantAssignment();
+	    	if(spa == null) return spa; 
 	    	try {
 		    	studyParticipantAssignment.setParticipant(getParticipant(spa.getParticipant()));
 		    	studyParticipantAssignment.setDateOfEnrollment(spa.getDateOfEnrollment());
@@ -740,6 +751,7 @@ public class AdverseEventReportSerializer {
 
 	    private Participant getParticipant(Participant p) throws Exception {
 	    	Participant participant = new Participant();
+	    	if(p == null) return participant;
 	    	try {
 		    	participant.setInstitutionalPatientNumber(p.getInstitutionalPatientNumber());
 		    	participant.setInstitution(p.getInstitution());
@@ -760,8 +772,9 @@ public class AdverseEventReportSerializer {
 	    	}
 	    	return participant;
 	    }
-	    private Identifier getIdentifier(Identifier id) {
+	    private Identifier getIdentifier(Identifier id) {	    	
 	    	Identifier identifier = new Identifier();
+	    	if(id == null) return identifier;
 	    	identifier.setPrimaryIndicator(id.getPrimaryIndicator());
 	    	identifier.setType(id.getType());
 	    	identifier.setValue(id.getValue());
@@ -769,6 +782,8 @@ public class AdverseEventReportSerializer {
 	    }
 	    private StudySite getStudySite(StudySite ss) throws Exception {
 	    	StudySite studySite = new StudySite();
+	    	
+	    	if(ss == null) return studySite;
 	    	//studySite.setIrbApprovalDate(ss.getIrbApprovalDate());
 	    	//studySite.setRoleCode(ss.getRoleCode());
 	    	try { 
@@ -846,7 +861,11 @@ public class AdverseEventReportSerializer {
 
 
         private CtepStudyDisease getCtepStudyDisease(CtepStudyDisease hcsd){
+        	CtepStudyDisease csd = new CtepStudyDisease();
+        	if(hcsd == null) return csd;
+        	
             DiseaseTerm diseaseTerm = new DiseaseTerm();
+            
             diseaseTerm.setCtepTerm(hcsd.getTerm().getCtepTerm());
             diseaseTerm.setId(hcsd.getTerm().getId());
             diseaseTerm.setMeddraCode(hcsd.getTerm().getMeddraCode());
@@ -854,15 +873,17 @@ public class AdverseEventReportSerializer {
             DiseaseCategory dc = new DiseaseCategory();
             dc.setName(hcsd.getTerm().getCategory().getName());
             diseaseTerm.setCategory(dc);
-
-            CtepStudyDisease csd = new CtepStudyDisease();
+            
             csd.setDiseaseTerm(diseaseTerm);
             csd.setLeadDisease(hcsd.getLeadDisease());
             csd.setId(hcsd.getId());
             return csd;
         }
-        private MeddraStudyDisease getMeddraStudyDisease(MeddraStudyDisease hmsd){
-            LowLevelTerm l = new LowLevelTerm();
+        private MeddraStudyDisease getMeddraStudyDisease(MeddraStudyDisease hmsd){    
+        	MeddraStudyDisease md = new MeddraStudyDisease();
+        	if(hmsd == null) return md;
+        	
+            LowLevelTerm l = new LowLevelTerm();            
             l.setId(hmsd.getId());
             l.setMeddraCode(hmsd.getTerm().getMeddraCode());
             l.setMeddraTerm(hmsd.getTerm().getMeddraTerm());
@@ -871,7 +892,7 @@ public class AdverseEventReportSerializer {
             mv.setId(hmsd.getTerm().getMeddraVersion().getId());
             l.setMeddraVersion(mv);
 
-            MeddraStudyDisease md = new MeddraStudyDisease();
+            
             md.setTerm(l);
             md.setLeadDisease(hmsd.getLeadDisease());
             md.setId(hmsd.getId());
@@ -879,10 +900,14 @@ public class AdverseEventReportSerializer {
 
         }
         private StudyCondition getStudyCondition(StudyCondition hsc){
-            Condition c = new Condition();
+        	StudyCondition sc = new StudyCondition();
+        	if(hsc == null) return sc;
+        	
+        	Condition c = new Condition();
+            
             c.setConditionName(hsc.getTerm().getConditionName());
             c.setId(hsc.getTerm().getId());
-            StudyCondition sc = new StudyCondition();
+                        
             sc.setTerm(c);
             sc.setLeadDisease(hsc.getLeadDisease());
             sc.setId(hsc.getId());
@@ -891,6 +916,8 @@ public class AdverseEventReportSerializer {
     
 	    private StudyAgent getStudyAgent(StudyAgent sa) {
 	    	StudyAgent studyAgent = new StudyAgent();
+	    	if(sa == null) return studyAgent;
+	    	
 	    	studyAgent.setIndType(sa.getIndType());
 	    	studyAgent.setAgent(getAgent(sa.getAgent()));
 	    	studyAgent.setAgentAsString(sa.getAgentAsString());
@@ -910,6 +937,8 @@ public class AdverseEventReportSerializer {
         }
 	    private Organization getOrganization(Organization org) {
 	    	Organization organization = new LocalOrganization();
+	    	if(org == null) return organization;
+	    	
 	    	organization.setId(org.getId());
 	    	organization.setName(org.getName());
 	    	organization.setNciInstituteCode(org.getNciInstituteCode());
@@ -926,6 +955,7 @@ public class AdverseEventReportSerializer {
 	    }
 	    protected AdverseEvent getAdverseEvent(AdverseEvent ae , int seq) throws Exception {
 	    	AdverseEvent adverseEvent = new AdverseEvent();
+	    	if(ae == null) return adverseEvent;
 	    	try {
 		    	adverseEvent.setDetailsForOther(ae.getDetailsForOther());
 		    	adverseEvent.setExpected(ae.getExpected());
@@ -1003,6 +1033,8 @@ public class AdverseEventReportSerializer {
 	     */
 	    private CtcTerm getCtcTerm(CtcTerm ctcTerm){
 	    	CtcTerm term = new CtcTerm();
+	    	if(ctcTerm == null) return term;
+	    	
             CtcCategory category = new CtcCategory();
             term.setCategory(category);
             if(ctcTerm != null){
@@ -1052,6 +1084,8 @@ public class AdverseEventReportSerializer {
 
 	    private OtherCauseAttribution getOtherCauseAttribution(OtherCauseAttribution oca) throws Exception {
 	    	OtherCauseAttribution otherCauseAttribution = new OtherCauseAttribution();
+	    	
+	    	if(oca == null) return otherCauseAttribution;
 	    	try {
 	    		otherCauseAttribution.setAttribution(oca.getAttribution());
 	    		otherCauseAttribution.setCause(getOtherCause(oca.getCause()));
@@ -1064,6 +1098,7 @@ public class AdverseEventReportSerializer {
 
 	    private OtherCause getOtherCause(OtherCause oc) throws Exception {
 	    	OtherCause otherCause = new OtherCause();
+	    	if(oc == null) return otherCause;
 		    try {
 		    	otherCause.setText(oc.getText());
 	    	} catch (Exception e) {
@@ -1076,6 +1111,8 @@ public class AdverseEventReportSerializer {
 	    private TreatmentInformation getTreatmentInformation(TreatmentInformation trtInf,List<String> notApplicableFieldPaths) throws Exception {
 	    	TreatmentInformation treatmentInformation = new TreatmentInformation();
 	    	// String field = "treatmentInformation";
+	    	
+	    	if(trtInf == null) return treatmentInformation;
 	    	
 	    	try {
 
