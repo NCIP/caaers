@@ -37,7 +37,9 @@
         long_title="Lengthy Title" description="Different description"
         grid_id=""
         load_status="1"/>
-        
+    
+    <participants/>
+    
     <IDENTIFIERS
         id="-1"
         stu_id="-1"
@@ -127,6 +129,5 @@
     <DISEASE_TERMINOLOGIES/>
     <research_staffs />
 	<SITE_INVESTIGATORS />
-	<participants/>
     <ind_holders />
 </dataset>
