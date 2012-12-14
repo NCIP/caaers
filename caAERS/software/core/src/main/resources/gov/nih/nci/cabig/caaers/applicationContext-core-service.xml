@@ -368,7 +368,7 @@ default-lazy-init="true">
 	</bean>
 	
 	<bean id="adeersReportGenerator" autowire="byType" lazy-init="true"	class="gov.nih.nci.cabig.caaers.api.AdeersReportGenerator"/>
-	<bean id="reportSubmissionService" lazy-init="true" class="gov.nih.nci.cabig.caaers.service.ReportSubmissionService">
+	<bean id="reportSubmissionService"  lazy-init="true" class="gov.nih.nci.cabig.caaers.service.ReportSubmissionService">
 	    	<property name="caaersJavaMailSender" ref="mailer" />
 	    	<property name="adeersReportGenerator" ref="adeersReportGenerator" />
 	    	<property name="messageBroadcastService" ref="messageBroadcaster" />
@@ -378,6 +378,7 @@ default-lazy-init="true">
 	    	<property name="nowFactory" ref="nowFactory" />
 			<property name="expeditedAdverseEventReportDao" ref="expeditedAdverseEventReportDao" />
 			<property name="messageSource" ref="messageSource" />
+			<property name="workflowService" ref="workflowService"/>
 	</bean>
 	<bean id="reportWithdrawalService" class="gov.nih.nci.cabig.caaers.service.ReportWithdrawalService" autowire="byType" lazy-init="true" />
 	<bean id="adverseEventReportSerializer" class="gov.nih.nci.cabig.caaers.api.AdverseEventReportSerializer" />

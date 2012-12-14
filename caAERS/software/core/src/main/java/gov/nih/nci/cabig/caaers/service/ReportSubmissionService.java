@@ -72,13 +72,15 @@ public class ReportSubmissionService {
     	//1. generate caaers xml
     	try {    
     		ExpeditedAdverseEventReport aeReport = report.getAeReport();
-    		if (report.isWorkflowEnabled() && report.getLastVersion().getReportStatus().equals(ReportStatus.COMPLETED)
-    				&& report.getWorkflowId() != null && workflowService != null) {
+    		if (report.isWorkflowEnabled() 
+    				&& report.getWorkflowId() != null ) {
     			User user = workflowService.findCoordinatingCenterReviewer(report.getWorkflowId());
     			if(user != null) {
     	        	Reporter r = new Reporter();
     	        	r.copy(user);
     	        	aeReport.setReviewer(r);
+            	} else{
+            		aeReport.setReviewer(aeReport.getReporter());
             	}
             } else {
             	aeReport.setReviewer(aeReport.getReporter());
