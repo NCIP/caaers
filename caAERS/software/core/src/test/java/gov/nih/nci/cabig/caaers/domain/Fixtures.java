@@ -83,6 +83,14 @@ public class Fixtures {
         Study s = new LocalStudy();
         s.setShortTitle(shortTitle);
         s.setLongTitle(shortTitle);
+        return s;
+    }
+    
+    
+    public static Study createCTEPStudy(final String shortTitle) {
+        Study s = new LocalStudy();
+        s.setShortTitle(shortTitle);
+        s.setLongTitle(shortTitle);
         SystemAssignedIdentifier id = new SystemAssignedIdentifier();
         id.setType(SystemAssignedIdentifier.CTEP_ESYS_NAME);
         id.setSystemName(SystemAssignedIdentifier.CTEP_ESYS_NAME);

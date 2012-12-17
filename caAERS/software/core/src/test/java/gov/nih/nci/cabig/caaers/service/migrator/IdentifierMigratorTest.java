@@ -80,8 +80,8 @@ public class IdentifierMigratorTest extends AbstractTestCase {
 		assertEquals("No error message when migrating identifiers", 0,outcome.getMessages().size());
 		assertEquals("Identifiers size should be same", src.getIdentifiers().size(), dest.getIdentifiers().size());
 		
-		assertTrue("Src - Identifiers size should be 3", src.getIdentifiers().size() == 4 );
-		assertTrue("Dest - Identifiers size should be 3", dest.getIdentifiers().size() == 4 );
+		assertTrue("Src - Identifiers size should be 3", src.getIdentifiers().size() == 3 );
+		assertTrue("Dest - Identifiers size should be 3", dest.getIdentifiers().size() == 3 );
 	}
 
 	public void testMigrate_OnlySystemAssignedIdentifier() {
@@ -97,20 +97,17 @@ public class IdentifierMigratorTest extends AbstractTestCase {
 		assertEquals("No error message when migrating identifiers", 0,outcome.getMessages().size());
 		assertEquals("Identifiers size should be same", src.getIdentifiers().size(), dest.getIdentifiers().size());
 		
-		assertTrue("Src - Identifiers size should be 3", src.getIdentifiers().size() == 3 );
-		assertTrue("Dest - Identifiers size should be 3", dest.getIdentifiers().size() == 3 );
+		assertTrue("Src - Identifiers size should be 2", src.getIdentifiers().size() == 2 );
+		assertTrue("Dest - Identifiers size should be 2", dest.getIdentifiers().size() == 2 );
 		
-		assertEquals("Identifier value should be 'value:abcd'", "value:abcd", dest.getIdentifiers().get(1).getValue());
+		assertEquals("Identifier value should be 'value:abcd'", "value:abcd", dest.getIdentifiers().get(0).getValue());
 	}
 	
 	
 	public void testMigrate_NoIdentifier() {
 		
 		Study dest = new LocalStudy();
-		src = new LocalStudy();
-		src.setShortTitle("Test");
-		src.setLongTitle("Test");
-	    
+		
 		replayMocks();
 		migrator.migrate(src, dest, outcome);
 		verifyMocks();
