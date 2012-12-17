@@ -132,7 +132,7 @@ public abstract class AbstractBusinessRulesExecutionTestCase extends RulesTestCa
 
     public ExpeditedAdverseEventReport createAEReport() {
         Participant p = Fixtures.createParticipant("John", "Doe");
-        Study s = Fixtures.createStudy("Test");
+        Study s = Fixtures.createCTEPStudy("Test");
         Organization org = Fixtures.createOrganization("Test Organization");
         StudyParticipantAssignment assignment = Fixtures.assignParticipant(p, s, org);
         ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
