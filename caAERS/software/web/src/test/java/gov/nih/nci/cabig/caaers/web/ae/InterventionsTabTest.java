@@ -52,7 +52,7 @@ public class InterventionsTabTest extends AeTabTestCase {
     @SuppressWarnings( { "unchecked" })
     public void testDelayUnitsInField() throws Exception {
         replayMocks();
-        InputField delayComposite = getFieldGroup("courseAgent0").getFields().get(6);
+        InputField delayComposite = getFieldGroup("courseAgent0").getFields().get(7);
 
         Map<Object, Object> actualOptions = getActualSelectFieldOptions((List<InputField>) delayComposite.getAttributes().get(InputField.SUBFIELDS), "aeReport.treatmentInformation.courseAgents[0].administrationDelayUnits");
         assertEquals("Wrong number of options: " + actualOptions, DelayUnits.values().length, actualOptions.size());
@@ -77,6 +77,7 @@ public class InterventionsTabTest extends AeTabTestCase {
                         "aeReport.treatmentInformation.courseAgents[2].lotNumber",
                         "aeReport.treatmentInformation.courseAgents[2].dose.amount",
                         "aeReport.treatmentInformation.courseAgents[2].dose.units",
+                        "aeReport.treatmentInformation.courseAgents[2].firstAdministeredDate",
                         "aeReport.treatmentInformation.courseAgents[2].lastAdministeredDate",
                         "aeReport.treatmentInformation.courseAgents[2]", // administration delay
                                                                             // doesn't have a base
@@ -96,7 +97,7 @@ public class InterventionsTabTest extends AeTabTestCase {
     @SuppressWarnings( { "unchecked" })
     public void testAdminDelaySubfields() throws Exception {
         replayMocks();
-        InputField delayField = getFieldGroup("courseAgent7").getFields().get(6); // admindelay
+        InputField delayField = getFieldGroup("courseAgent7").getFields().get(7); // admindelay
         List<InputField> subfields = (List<InputField>) delayField.getAttributes().get(InputField.SUBFIELDS);
         assertNotNull("Dose isn't a composite field", subfields);
         assertEquals("Wrong number of subfields", 2, subfields.size());
