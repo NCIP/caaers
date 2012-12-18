@@ -70,6 +70,15 @@ public abstract class AeTabTestCase extends AeWebTestCase {
     	 assertEquals("Wrong default message for " + fieldName + " error", errorMsg, fieldError.getDefaultMessage());
     }
     
+    
+    protected void assertNoFieldError(String fieldName){
+    	assertEquals("Wrong number of errors for " + fieldName, 0, errors.getFieldErrorCount(fieldName));
+    }
+    
+    protected void assertNoFieldRequiredErrorRaised(String fieldName, String displayName) {
+    	assertNoFieldError(fieldName);
+    }
+    
     protected void assertFieldRequiredErrorRaised(String fieldName, String displayName) {
     	assertFieldError(fieldName, "REQUIRED", "<b>Missing:</b> &quot;" + displayName + "&quot;");
     }

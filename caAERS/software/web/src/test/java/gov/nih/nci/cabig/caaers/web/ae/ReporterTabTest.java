@@ -113,29 +113,29 @@ public class ReporterTabTest extends AeTabTestCase {
                         "aeReport.physician.address.zip");
     }
 
-    public void testReporterFirstNameRequired() throws Exception {
+    public void testReporterFirstNameNotRequired() throws Exception {
         command.getAeReport().getReporter().setFirstName(null);
         doValidate();
-        assertFieldRequiredErrorRaised("aeReport.reporter.firstName", "First name");
+        assertNoFieldRequiredErrorRaised("aeReport.reporter.firstName", "First name");
     }
 
-    public void testReporterLastNameRequired() throws Exception {
+    public void testReporterLastNameNotRequired() throws Exception {
         command.getAeReport().getReporter().setLastName(null);
         doValidate();
-        assertFieldRequiredErrorRaised("aeReport.reporter.lastName", "Last name");
+        assertNoFieldRequiredErrorRaised("aeReport.reporter.lastName", "Last name");
     }
 
 
-    public void testPhysicianFirstNameRequired() throws Exception {
+    public void testPhysicianFirstNameNotRequired() throws Exception {
         command.getAeReport().getPhysician().setFirstName(null);
         doValidate();
-        assertFieldRequiredErrorRaised("aeReport.physician.firstName", "First name");
+        assertNoFieldRequiredErrorRaised("aeReport.physician.firstName", "First name");
     }
 
-    public void testPhysicianLastNameRequired() throws Exception {
+    public void testPhysicianLastNameNotRequired() throws Exception {
         command.getAeReport().getPhysician().setLastName(null);
         doValidate();
-        assertFieldRequiredErrorRaised("aeReport.physician.lastName", "Last name");
+        assertNoFieldRequiredErrorRaised("aeReport.physician.lastName", "Last name");
     }
 
 
