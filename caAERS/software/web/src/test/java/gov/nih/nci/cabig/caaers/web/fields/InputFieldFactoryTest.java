@@ -45,13 +45,13 @@ public class InputFieldFactoryTest extends AbstractTestCase {
 
     public void testCreateZipCodeFieldIfZipCodeIsRequired() {
         InputField field = InputFieldFactory.createZipCodeField("propertyName", "value", true);
-        assertEquals("commons-validations.js need css validate-NOTEMPTY$$ZIPCODE class", "validate-NOTEMPTY$$ZIPCODE$$MAXLENGTH2000", field.getValidatorClassName());
+        assertEquals("commons-validations.js need css validate-NOTEMPTY$$ZIP_POSTAL_CODE class", "validate-NOTEMPTY$$ZIP_POSTAL_CODE$$MAXLENGTH2000", field.getValidatorClassName());
         assertEquals("field must be text field", InputField.Category.TEXT, field.getCategory());
     }
 
     public void testCreateZipCodeFieldIfZipCodeIsNotRequired() {
         InputField field = InputFieldFactory.createZipCodeField("propertyName", "value", false);
-        assertEquals("commons-validations.js need css validate-ZIPCODE class", "validate-ZIPCODE$$MAXLENGTH2000", field.getValidatorClassName());
+        assertEquals("commons-validations.js need css validate-ZIP_POSTAL_CODE class", "validate-ZIP_POSTAL_CODE$$MAXLENGTH2000", field.getValidatorClassName());
         assertEquals("field must be text field", InputField.Category.TEXT, field.getCategory());
 
     }
