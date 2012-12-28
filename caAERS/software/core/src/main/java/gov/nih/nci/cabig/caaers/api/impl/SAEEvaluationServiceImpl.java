@@ -20,10 +20,12 @@ import gov.nih.nci.cabig.caaers.integration.schema.common.WsError;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.AdverseEventType;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.AdverseEvents;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.RecommendedReports;
+import gov.nih.nci.cabig.caaers.integration.schema.saerules.ReportType;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.migrator.adverseevent.SAEEvaluationAdverseEventConverter;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -126,8 +128,6 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 			ae.setReportingPeriod(period);
 		}
 		
-		
-		
 		fireSAERules(period, study, mapAE2DTO, response);
 		
 		return response;
@@ -152,35 +152,47 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 			int rdCount = 0; 
 			for (AdverseEvent ae: mapAE2DTO.keySet() ) {
 
-				List<ReportDefinitionWrapper> rds = new ArrayList<ReportDefinitionWrapper>();
+				//List<ReportDefinitionWrapper> rds = new ArrayList<ReportDefinitionWrapper>();
 				
-				// Add the Reporting Definitions from Maps.
+				Map<AdverseEvent, Set<ReportDefinition>> aeIndexMap = dto.getAdverseEventIndexMap().get(rdCount);
 				
-				rds.addAll(dto.getCreateMap().get(0));
-				rds.addAll(dto.getEditMap().get(0));
-				rds.addAll(dto.getAmendmentMap().get(0));
+				if (aeIndexMap != null) {
+					Set<ReportDefinition> rds = aeIndexMap.get(ae); // Assuming
+																	// only one
+																	// row for
 
-				// Get the Response DTO and populate that object Accordingly.
-				AdverseEventType aeDTO = mapAE2DTO.get(ae);
+					// Get the Response DTO and populate that object
+					// Accordingly.
+					AdverseEventType aeDTO = mapAE2DTO.get(ae);
+					String dueString = "";
 
-				// Now the process the Report Definitions 
-				if ( rds != null  && rds.size() > 0 ) {
-					
-					List<String> reportDefNames = new ArrayList<String>();
-				
-					for (ReportDefinitionWrapper rdw: rds ) {
-						reportDefNames.add(rdw.getDef().getName());
+					// Now the process the Report Definitions
+					if (rds != null && rds.size() > 0) {
+
+						RecommendedReports recommendedRpts = new RecommendedReports();
+						List<ReportType> rptTypeArr = new ArrayList<ReportType>();
+						for (ReportDefinition rd : rds) {
+							ReportType rpt = new ReportType();
+							rpt.setReportName(rd.getName());
+							rpt.setReportOrganizationId(rd.getOrganization().getNciInstituteCode());
+							rpt.setReportOrganizationName(rd.getOrganization().getName());
+							dueString = rd.getExpectedDisplayDueDate(aeDTO.getDateFirstLearned().toGregorianCalendar().getTime());
+							rptTypeArr.add(rpt);
+
+						}
+
+						// Set the due value
+
+						recommendedRpts.setDueIn(dueString);
+						// Recommended Reports
+						recommendedRpts.setReports(rptTypeArr);
+						// Set the output
+						aeDTO.setRequiresReporting(true);
+						aeDTO.setRecommendedReports(recommendedRpts);
+
+					} else {
+						aeDTO.setRequiresReporting(false);
 					}
-					
-					// Set the output
-					aeDTO.setRequiresReporting(true);
-					RecommendedReports rpts = new RecommendedReports();
-					rpts.setReports(reportDefNames);
-					aeDTO.setRecommendedReports(rpts);
-					
-				} else {
-					
-					aeDTO.setRequiresReporting(false);
 				}
 				
 				rdCount++;
