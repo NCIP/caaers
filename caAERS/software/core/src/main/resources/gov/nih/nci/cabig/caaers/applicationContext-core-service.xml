@@ -53,6 +53,7 @@ default-lazy-init="true">
 		<property name="messageBroadcastService" ref="webSSOmessageBroadcastService" />
 	</bean>
 	<bean id="adverseEventConverter" autowire="byType" class="gov.nih.nci.cabig.caaers.service.migrator.adverseevent.AdverseEventConverter"/>
+	<bean id="SAEEvaluationAdverseEventConverter" autowire="byType" class="gov.nih.nci.cabig.caaers.service.migrator.adverseevent.SAEEvaluationAdverseEventConverter"/>
 	<bean id="passwordManagerService" class="gov.nih.nci.cabig.caaers.service.security.PasswordManagerServiceImpl" autowire="byName"/>
 	<bean id="passwordPolicyService" class="gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicyServiceImpl" autowire="byName"/>
 	<bean id="organizationRepository" lazy-init="true" class="gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl" autowire="byType">

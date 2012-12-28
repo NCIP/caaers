@@ -236,6 +236,7 @@
                 gov.nih.nci.cabig.caaers.domain.repository.StudyRepository.*=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl.create*=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl.delete*=CSM_AUTHN_CHECK
+                gov.nih.nci.cabig.caaers.api.impl.SAEEvaluationServiceImpl.process*=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.api.impl.DefaultResearchStaffMigratorService.saveResearchStaff=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.api.impl.DefaultInvestigatorMigratorService.saveInvestigator=CSM_AUTHN_CHECK
             </value>

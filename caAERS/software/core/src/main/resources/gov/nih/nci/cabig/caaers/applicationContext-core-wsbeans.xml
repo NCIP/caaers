@@ -48,6 +48,8 @@
 
     <bean id="adverseEventManagementServiceImpl" autowire="byType" class="gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl"/>
     
+    <bean id="SAEEvaluationServiceImpl" autowire="byType" class="gov.nih.nci.cabig.caaers.api.impl.SAEEvaluationServiceImpl"/>
+    
     <bean id="messageFactory" class="org.springframework.ws.soap.saaj.SaajSoapMessageFactory"/>
     <bean id="webServiceTemplate" class="org.springframework.ws.client.core.WebServiceTemplate">
 	    <constructor-arg ref="messageFactory"/>
