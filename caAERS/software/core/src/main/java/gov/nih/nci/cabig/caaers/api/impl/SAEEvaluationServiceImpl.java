@@ -164,7 +164,7 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 				AdverseEventType aeDTO = mapAE2DTO.get(ae);
 
 				// Now the process the Report Definitions 
-				if ( rds != null ) {
+				if ( rds != null  && rds.size() > 0 ) {
 					
 					List<String> reportDefNames = new ArrayList<String>();
 				
