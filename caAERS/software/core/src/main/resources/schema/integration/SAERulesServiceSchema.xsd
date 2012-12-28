@@ -71,6 +71,7 @@
  	<xs:complexType name="RecommendedReports">
         <xs:sequence>
         	<xs:element minOccurs="0" maxOccurs="unbounded" name="reports" type="cct:CustomStringType"/>
+			<xs:element minOccurs="0" name="dueIn" type="xs:string"/>
         </xs:sequence>
     </xs:complexType>
 
