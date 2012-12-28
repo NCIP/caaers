@@ -1,0 +1,81 @@
+
+<dataset>
+
+    <ctc_versions id="3" name="3.0" />
+    <meddra_versions id="9" name="MedDRA v9.0" />
+
+    <CTC_CATEGORIES id="302" name="auditory/ear" version_id="3" />
+    <CTC_TERMS id="3012" category_id="302" term="Tinnitus1" ctep_term="Tinnitus1" ctep_code="10043882" other_required="0" />
+    <CTC_TERMS id="3010" category_id="302" term="Tinnitus2" ctep_term="Tinnitus2" ctep_code="10043883" other_required="1" />
+    <MEDDRA_LLT id="-11" meddra_code="2" meddra_term="Hello World" />
+
+    <ORGANIZATIONS id="-1001" version="1" name="National Cancer Institute" description_text="NCI" nci_institute_code="NCI" />
+    <ORGANIZATIONS id="-1002" version="1" name="CALGB" description_text="CALGB" nci_institute_code="DEFAULT" />
+    <ORGANIZATIONS id="-1003" version="1" name="CTEP" description_text="CTEP" nci_institute_code="CTEP" />
+    <ORGANIZATIONS id="-1004" version="1" name="MN026" description_text="MN026" nci_institute_code="MN026" />
+
+    <STUDIES id="-2" multi_institution_indicator="0" short_title="Study A100" long_title="Study A100 Long Title" description="Description" grid_id="" load_status="1" />
+
+    <study_organizations id="-1" site_id="-1003" study_id="-2" type="SCC" />
+    <study_organizations id="-2" site_id="-1003" study_id="-2" type="SFS" />
+    <study_organizations id="-3" site_id="-1004" study_id="-2" type="SST" />
+
+    <DISEASE_TERMINOLOGIES id="-11" term_code="1" study_id="-2" />
+    <TERMINOLOGIES id="-11" term_code="1" ctc_id="3" study_id="-3" />
+    <IDENTIFIERS id="-16" stu_id="-2" value="12345-ABC" type="Coordinating Center Identifier" organization_id="-1003" discriminator_column="1"/>
+    <IDENTIFIERS id="-17" stu_id="-2" value="12345-XYZ" type="Protocol Authority Identifier" organization_id="-1003" discriminator_column="1"/>
+
+    <ctc_grades/>
+
+    <agents id="-100" name="Calcium carbonate" nsc="725280" />
+
+	<TREATMENT_ASSIGNMENT id="-11" code="TAC1"
+                          study_id="-2" dose_level_order="22" description="description"
+                          comments="comments" version="0" grid_id="TAC333"/>
+
+
+  	<!--  ======================== Study participant assignment ============================== -->
+    <PARTICIPANT_ASSIGNMENTS id="-14"
+                             study_site_id="-1004" participant_id="-101" date_of_enrollment="2006-09-30"
+                             load_status="1"/>
+
+	<study_agents />
+    <ind_holders/>
+    <study_agent_inds/>
+    <epochs/>
+    <arms/>
+    <solicited_events/>
+    <study_diseases />
+
+    <workflow_configuration id="1000" workflow_definition_name="reportingperiod_coordinating_center" name="Evaluation Period Coordinating Center Workflow" default_assignee="system_admin" enabled="1" />
+   	<workflow_configuration id="2000" workflow_definition_name="expedited_domestic" name="Expedited Reporting Domestic Workflow" default_assignee="system_admin" enabled="1" />
+    <workflow_configuration id="-1"/>
+
+    <study_site_wf_cfgs study_organization_id="-3" workflow_cfg_id="-1" id="-333"/>
+
+    <spa_disease_histories/>
+    <SPA_PRIOR_THERAPIES/>
+    <SPA_CONCOMITANT_MEDICATIONS/>
+    <SPA_PRE_EXISTING_CONDS/>
+
+    <devices id="-1" common_name="Common name 01" brand_name="Brand name 01" device_type="Type 01" ctep_db_identifier="-1" retired_indicator="0" />
+    <devices id="-2" common_name="Common name 02" brand_name="Brand name 02" device_type="Type 02" ctep_db_identifier="-2" retired_indicator="0" />
+    <devices id="-11" common_name="Common name 11" brand_name="Brand name 11" device_type="Type 11" ctep_db_identifier="-11" retired_indicator="0" />
+
+    <study_devices id="-1" study_id="-2" retired_indicator="0" study_therapy_type="4" device_id="-1"/>
+    <study_devices id="-2" study_id="-2"  retired_indicator="0" study_therapy_type="4" device_id="-2"/>
+
+    <investigators id="-1" first_name="Silvio" last_name="Berlusconi" email_address="sb@la-piovra.it"/>
+    <research_staffs id="-1" first_name="Andrei" last_name="Abramovich" email_address="aa@la-piovra.ru"/>
+
+    <site_investigators id="-1001" site_id="-1003" investigator_id="-1" />
+    <site_research_staffs id="-1002" site_id="-1003" researchstaff_id="-1" />
+
+    <disease_categories id="-1" />
+    <disease_terms id="-1" term="Tinnitus1" category_id="-1" />
+
+    <task_configuration />
+    <wf_assignees />
+    <wf_transition_configs />
+    <wf_transition_owners />
+</dataset>
