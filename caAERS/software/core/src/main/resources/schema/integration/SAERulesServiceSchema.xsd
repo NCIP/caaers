@@ -67,11 +67,22 @@
     </xs:complexType>  
     
     <xs:element name="recommendedReports" type="RecommendedReports"/>   
-
+ 	
  	<xs:complexType name="RecommendedReports">
+ 		<xs:annotation>
+            <xs:documentation>List of recommended reports and its due.</xs:documentation>
+        </xs:annotation>
         <xs:sequence>
-        	<xs:element minOccurs="0" maxOccurs="unbounded" name="reports" type="cct:CustomStringType"/>
-			<xs:element minOccurs="0" name="dueIn" type="xs:string"/>
+        	<xs:element minOccurs="0" maxOccurs="unbounded" name="reports" type="ReportType"/>        	
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="ReportType">
+        <xs:sequence>
+        	<xs:element minOccurs="1" name="reportName" type="cct:CustomStringType"/>
+        	<xs:element minOccurs="1" name="reportOrganizationId" type="cct:CustomStringType"/>
+        	<xs:element minOccurs="1" name="reportOrganizationName" type="cct:CustomStringType"/>	
+        	<xs:element minOccurs="0" name="dueIn" type="xs:string"/>		
         </xs:sequence>
     </xs:complexType>
 
@@ -109,7 +120,7 @@
                     <xs:element maxOccurs="unbounded" minOccurs="0" name="outcome" type="OutcomeType"/>                   
                     <xs:element minOccurs="1" name="dateFirstLearned" type="xs:date"/>
                     <xs:element minOccurs="0" name="requiresReporting" type="xs:boolean"/>
-                    <xs:element minOccurs="0" name="recommendedReports" type="RecommendedReports"/>
+                    <xs:element minOccurs="1" name="recommendedReports" type="RecommendedReports"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>

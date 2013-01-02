@@ -6,11 +6,13 @@ import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.Outcome;
 import gov.nih.nci.cabig.caaers.domain.TimeValue;
-import gov.nih.nci.cabig.caaers.integration.schema.saerules.*;
+import gov.nih.nci.cabig.caaers.integration.schema.saerules.AdverseEventType;
+import gov.nih.nci.cabig.caaers.integration.schema.saerules.HospitalizationType;
+import gov.nih.nci.cabig.caaers.integration.schema.saerules.OutComeEnumType;
+import gov.nih.nci.cabig.caaers.integration.schema.saerules.OutcomeType;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -40,14 +42,14 @@ public class SAEEvaluationAdverseEventConverter {
 				//check for future date .
 				int dateCompare = DateUtils.compareDate(new Date(), adverseEventDto.getStartDate().toGregorianCalendar().getTime());
 				if (dateCompare == -1) {
-					throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_031", new String[]{adverseEventDto.getStartDate()+""},"",Locale.getDefault()));
+					throw new CaaersSystemException ("WS_SAE_003", messageSource.getMessage("WS_SAE_003", new String[]{adverseEventDto.getStartDate()+""},"",Locale.getDefault()));
 				}
 				adverseEvent.setStartDate(adverseEventDto.getStartDate().toGregorianCalendar().getTime());
 			}
 			if(adverseEventDto.getEndDate() != null){
 				int dateCompare = DateUtils.compareDate(new Date(), adverseEventDto.getEndDate().toGregorianCalendar().getTime());
 				if (dateCompare == -1) {
-					throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_031", new String[]{adverseEventDto.getEndDate()+""},"",Locale.getDefault()));
+					throw new CaaersSystemException ("WS_SAE_003", messageSource.getMessage("WS_SAE_003", new String[]{adverseEventDto.getEndDate()+""},"",Locale.getDefault()));
 				}
 				adverseEvent.setEndDate(adverseEventDto.getEndDate().toGregorianCalendar().getTime());
 			}	
@@ -71,7 +73,10 @@ public class SAEEvaluationAdverseEventConverter {
 			}
 			
 		}catch(Exception e){
-			throw new CaaersSystemException(e);
+			if(e instanceof CaaersSystemException) {
+				throw (CaaersSystemException)e;
+			}
+			throw new CaaersSystemException("WS_GEN_001", e);
 		}
 		return adverseEvent;
 	}
@@ -126,7 +131,7 @@ public class SAEEvaluationAdverseEventConverter {
 				gdate = DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
 				adverseEventDto.setStartDate(gdate);
 			} catch (DatatypeConfigurationException e) {
-				throw new CaaersSystemException(e);
+				throw new CaaersSystemException("WS_GEN_001", e);
 			}
 		}
 		
@@ -138,7 +143,7 @@ public class SAEEvaluationAdverseEventConverter {
 				gdate = DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
 				adverseEventDto.setEndDate(gdate);
 			} catch (DatatypeConfigurationException e) {
-				throw new CaaersSystemException(e);
+				throw new CaaersSystemException("WS_GEN_001", e);
 			}
 		}
 		
@@ -155,7 +160,7 @@ public class SAEEvaluationAdverseEventConverter {
 				gdate = DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
 				adverseEventDto.setDateFirstLearned(gdate);
 			} catch (DatatypeConfigurationException e) {
-				throw new CaaersSystemException(e);
+				throw new CaaersSystemException("WS_GEN_001", e);
 			}
 			
 		}
