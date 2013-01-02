@@ -217,7 +217,7 @@ public class ReportValidationServiceImpl implements ReportValidationService{
     }
 
     /**
-     * Applicablity criteria :-
+     * Applicability criteria :-
      *   1. Lab category micro-biology (then baseline and
      * @param section
      * @param property
@@ -225,7 +225,9 @@ public class ReportValidationServiceImpl implements ReportValidationService{
      */
     public boolean isErrorApplicable(BeanWrapper bw, ExpeditedReportSection section, UnsatisfiedProperty property){
         String propertyPath =  property.getBeanPropertyName();
-        String parentEntityPath = propertyPath.substring(0, propertyPath.indexOf('.'));
+        int dotIndex = propertyPath.indexOf('.');
+        
+        String parentEntityPath = dotIndex == -1 ? propertyPath : propertyPath.substring(0, dotIndex);
 
          if(section == LABS_SECTION){
              Lab lab =  (Lab)bw.getPropertyValue(parentEntityPath);
