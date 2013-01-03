@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.caaers.integration.schema.saerules.OutcomeType;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -150,11 +151,15 @@ public class SAEEvaluationAdverseEventConverter {
 		if ( adverseEvent.getEventApproximateTime() != null ) {
 			GregorianCalendar cal = new GregorianCalendar();
 			
-			Date date = new Date();
-			date.setHours(adverseEvent.getEventApproximateTime().getHour());
-			date.setMinutes(adverseEvent.getEventApproximateTime().getMinute());
+			Calendar c = Calendar.getInstance();
+			c.set(c.HOUR, adverseEvent.getEventApproximateTime().getHour());
+			c.set(c.MINUTE, adverseEvent.getEventApproximateTime().getMinute());
+			if ( adverseEvent.getEventApproximateTime().isAM() ) 
+				c.set(c.AM_PM, 0);
+			else 
+				c.set(c.AM_PM, 1);
 			
-			cal.setTime(date);
+			cal.setTime(c.getTime());
 			XMLGregorianCalendar gdate;
 			try {
 				gdate = DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);

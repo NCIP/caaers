@@ -159,7 +159,7 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 						// Get the Response DTO and populate that object
 						// Accordingly.
 						AdverseEventType aeDTO = mapAE2DTO.get(ae);
-
+						aeDTO.setRequiresReporting(false);
 						// Now the process the Report Definitions
 						if (rds != null && rds.size() > 0) {
 	
@@ -178,20 +178,11 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 							// Set the output
 							aeDTO.setRequiresReporting(true);
 							aeDTO.setRecommendedReports(recommendedRpts);
-						} else {
-							aeDTO.setRequiresReporting(false);
-						}//end of rds
+						}
 					}//end of for AEs
 				}//end of for reports
 			}//end of if
 			
-			//set requires reporting as false, if not set from the evaluation result
-			for (AdverseEventType adverseEventType : dtoValues) {
-				if(adverseEventType.isRequiresReporting() != null) {
-					adverseEventType.setRequiresReporting(false);
-				}
-			}	
-
 			AdverseEvents respEventsObj = new AdverseEvents();
 			respEventsObj.setAdverseEvent(dtoValues);
 
