@@ -85,7 +85,7 @@ public class SAEEvaluationAdverseEventConverterTest extends AbstractTestCase {
 		dto.setDateFirstLearned(dateFirstReported);
 
 		
-		AdverseEvent advEvent = converter.convertAdverseEventDtoToAdverseEventDomain(dto);
+		AdverseEvent advEvent = converter.convertAdverseEventDtoToAdverseEventDomain(dto,null);
 		
 		assertEquals(1,advEvent.getOutcomes().size());
 		assertEquals("Vomiting",advEvent.getOutcomes().get(0).getOther());

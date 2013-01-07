@@ -7,7 +7,13 @@
 
 
     <xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" schemaLocation="caAERSCommonTypes.xsd"/>
-
+    
+    <xs:annotation>
+        <xs:documentation> 
+        	This service requires list of Adverse Events along with StudyIdentifer and Returns the CaaersServiceResponse with requireReporting , reportName and other related attributes.             	
+        </xs:documentation>
+    </xs:annotation>
+    
     <xs:element name="EvaluateAEsInputMessage">
         <xs:annotation>
             <xs:documentation> The top level (typically root) element. Allows the definition of
@@ -15,15 +21,12 @@
             </xs:documentation>
         </xs:annotation>
         <xs:complexType>
-            <xs:sequence> 
-            	<xs:choice>         	
-	                <xs:element ref="adverseEvents">
+            <xs:sequence>         	
+	                <xs:element ref="adverseEvents" minOccurs="0">
 	                        <xs:annotation>
 					            <xs:documentation>List of Adverse Events to be evaluated for SAE reporting.</xs:documentation>
 					        </xs:annotation>
-	                </xs:element>
-
-                </xs:choice>  
+	                </xs:element>  
                 <xs:element ref="study">
                         <xs:annotation>
 				            <xs:documentation>Info related to Study for evaluating based on study related details, like,
@@ -54,7 +57,6 @@
         	<xs:element minOccurs="1" name="studyIdentifier" type="cct:CustomStringType"/>
         	<xs:element minOccurs="0" name="treatmentAssignmentCode" type="cct:CustomStringType"/>
         	<xs:element minOccurs="0" name="participantSiteIdentifier" type="cct:CustomStringType"/>
-        	<xs:element minOccurs="0" name="lastIndAdministeredDate" type="cct:CustomDateType"/>
         </xs:sequence>
     </xs:complexType> 
     
@@ -62,7 +64,7 @@
 
  	<xs:complexType name="Participant">
         <xs:sequence>
-        	<xs:element minOccurs="0" name="dateIndLastAdministered" type="cct:CustomDateType"/>
+        	<xs:element minOccurs="0" name="dateIndLastAdministered" type="xs:date"/>
         </xs:sequence>
     </xs:complexType>  
     
@@ -118,9 +120,9 @@
                     <xs:element minOccurs="0" name="expected" type="xs:boolean"/>                    
                     <xs:element minOccurs="0" name="increasedRisk" type="xs:boolean"/>
                     <xs:element maxOccurs="unbounded" minOccurs="0" name="outcome" type="OutcomeType"/>                   
-                    <xs:element minOccurs="1" name="dateFirstLearned" type="xs:date"/>
+                    <xs:element minOccurs="1" name="dateFirstLearned" type="xs:dateTime"/>
                     <xs:element minOccurs="0" name="requiresReporting" type="xs:boolean"/>
-                    <xs:element minOccurs="1" name="recommendedReports" type="RecommendedReports"/>
+                    <xs:element minOccurs="0" name="recommendedReports" type="RecommendedReports"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>

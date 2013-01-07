@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.domain.AeTerminology;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
@@ -71,14 +72,17 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 		TreatmentAssignment tas = null;
 
 		try {
+			
+			// Fetch the study from Database
+			study = fetchStudy(studyId);
+			
+			AeTerminology terminology = study.getAeTerminology();
+		
 			for (AdverseEventType adverseEventDto : adverseEvents.getAdverseEvent()) {
-				AdverseEvent ae = converter.convertAdverseEventDtoToAdverseEventDomain(adverseEventDto);
+				AdverseEvent ae = converter.convertAdverseEventDtoToAdverseEventDomain(adverseEventDto, terminology);
 				aes.add(ae);
 				mapAE2DTO.put(ae, adverseEventDto);
 			}
-
-			// Fetch the study from Database
-			study = fetchStudy(studyId);
 
 			if (tacCode != null) {
 				tas = resolveTreatmentAssignment(tacCode, study);
@@ -91,16 +95,16 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 
 		// Populate AdverseEventReporting Period
 		AdverseEventReportingPeriod period = new AdverseEventReportingPeriod();
-
+		
 		period.setAdverseEvents(aes);
 		period.setAssignment(assignment);
 		period.setTreatmentAssignment(tas);
-
+		
 		if (assignment.getStudySite() != null) {
 			assignment.getStudySite().setStudy(study);
 		}
 		/**
-		 * Fill the reporting period into aes.
+		 * Fill the reporting period into ae's.
 		 */
 		for (AdverseEvent ae : aes) {
 			ae.setReportingPeriod(period);
@@ -112,7 +116,7 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 	}
 
 	/**
-	 * Retreive TreatmentAssignment from the Study for the
+	 * Retrieve TreatmentAssignment from the Study for the
 	 * TreatmentAssignmentCode
 	 * 
 	 * @param tacCode
@@ -147,6 +151,11 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 			
 			// Convert the map to respond with only Type Values
 			List<AdverseEventType> dtoValues = new ArrayList<AdverseEventType>(mapAE2DTO.values());
+			
+			// Initialize the dtoValues to false;
+			for (AdverseEventType aeDTO: dtoValues) {
+				aeDTO.setRequiresReporting(false);
+			}
 						
 			Map<Integer, Map<AdverseEvent, Set<ReportDefinition>>> repAEIndexMap = dto.getAdverseEventIndexMap();
 			if(repAEIndexMap !=null) {
@@ -159,7 +168,7 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 						// Get the Response DTO and populate that object
 						// Accordingly.
 						AdverseEventType aeDTO = mapAE2DTO.get(ae);
-						aeDTO.setRequiresReporting(false);
+						
 						// Now the process the Report Definitions
 						if (rds != null && rds.size() > 0) {
 	
@@ -259,6 +268,14 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 
 	public void setAdverseEventEvaluationService(EvaluationService evaluationService) {
 		this.evaluationService = evaluationService;
+	}
+
+	public MessageSource getMessageSource() {
+		return messageSource;
+	}
+
+	public void setMessageSource(MessageSource messageSource) {
+		this.messageSource = messageSource;
 	}
 
 }
