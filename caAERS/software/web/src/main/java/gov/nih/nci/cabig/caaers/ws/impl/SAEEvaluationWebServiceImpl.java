@@ -1,26 +1,13 @@
 package gov.nih.nci.cabig.caaers.ws.impl;
 
-import java.util.ArrayList;
-import java.util.Locale;
-
-import gov.nih.nci.cabig.caaers.api.impl.Helper;
 import gov.nih.nci.cabig.caaers.api.impl.SAEEvaluationServiceImpl;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.integration.schema.common.*;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.EvaluateAEsInputMessage;
-import gov.nih.nci.cabig.caaers.integration.schema.saerules.Study;
 import gov.nih.nci.cabig.caaers.ws.SAEEvaluationService;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
-
-import org.springframework.context.MessageSource;
-
 
 /**
  * API to evaluate adverse events for SAE reporting using caAERS System. 
@@ -35,7 +22,6 @@ import org.springframework.context.MessageSource;
 @WebService(name="SAEEvaluationServiceInterface",targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/saerules")
 public class SAEEvaluationWebServiceImpl implements SAEEvaluationService {
 	private SAEEvaluationServiceImpl svcImpl;
-	private MessageSource messageSource;
 	
 	// Getters/Setters.
 	public SAEEvaluationServiceImpl getSvcImpl() {
@@ -43,13 +29,6 @@ public class SAEEvaluationWebServiceImpl implements SAEEvaluationService {
 	}
 	public void setSvcImpl(SAEEvaluationServiceImpl svcImpl) {
 		this.svcImpl = svcImpl;
-	}
-	
-	public MessageSource getMessageSource() {
-		return messageSource;
-	}
-	public void setMessageSource(MessageSource messageSource) {
-		this.messageSource = messageSource;
 	}
 	/**
 	 *  Evaluate Adverse Events for a Study from an external system.<br/>
@@ -62,25 +41,7 @@ public class SAEEvaluationWebServiceImpl implements SAEEvaluationService {
 	 */
 	@WebMethod
 	public CaaersServiceResponse evaluateAEs(@WebParam(name="EvaluateAEsInputMessage", targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/saerules") EvaluateAEsInputMessage evaluateAEsInputMessage) {
-		Study study = evaluateAEsInputMessage.getStudy();
-		
-		if ( study == null ) {
-			CaaersServiceResponse response = new CaaersServiceResponse();
-			Helper.populateError(response, "WS_SAE_005",
-					messageSource.getMessage("WS_SAE_005", new String[]{},  "", Locale.getDefault())
-					);
-			return response;
-		}
-		
-		StudyParticipantAssignment spa = new StudyParticipantAssignment();
-		StudySite studySite = new StudySite();
-		Organization siteOrg = new LocalOrganization();
-		siteOrg.setNciInstituteCode(study.getParticipantSiteIdentifier());		
-		studySite.setOrganization(siteOrg);
-		spa.setStudySite(studySite);
-		
-		return svcImpl.processAdverseEvents(evaluateAEsInputMessage.getStudy().getStudyIdentifier(),evaluateAEsInputMessage.getAdverseEvents(),spa,evaluateAEsInputMessage.getStudy().getTreatmentAssignmentCode());
+		return svcImpl.processAdverseEvents(evaluateAEsInputMessage);
 	}
-	
-	
+		
 }

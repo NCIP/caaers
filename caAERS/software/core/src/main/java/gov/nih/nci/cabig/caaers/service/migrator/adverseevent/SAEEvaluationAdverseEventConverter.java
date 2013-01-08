@@ -94,7 +94,7 @@ public class SAEEvaluationAdverseEventConverter {
 			}
 			
 		}catch(Exception e){
-			if(e instanceof CaaersSystemException) {
+			if ( e instanceof CaaersSystemException) {
 				throw (CaaersSystemException)e;
 			}
 			throw new CaaersSystemException("WS_GEN_001", e);
@@ -141,7 +141,7 @@ public class SAEEvaluationAdverseEventConverter {
 			
 			LowLevelTerm lowLevelTerm = getLowLevelTerm(xmlLowLevelTerm.getMeddraCode(),xmlLowLevelTerm.getMeddraTerm());
 			if (lowLevelTerm == null) {
-				throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_021", new String[]{xmlLowLevelTerm.getMeddraCode().toString()},"",Locale.getDefault()));
+				throw new CaaersSystemException ("WS_AEMS_021",messageSource.getMessage("WS_AEMS_021", new String[]{xmlLowLevelTerm.getMeddraCode().toString()},"",Locale.getDefault()));
 			} else {	
 				//for update, lowlevelterm already exists
 				AdverseEventMeddraLowLevelTerm adverseEventMeddraLowLevelTerm = adverseEvent.getAdverseEventMeddraLowLevelTerm();
@@ -161,23 +161,23 @@ public class SAEEvaluationAdverseEventConverter {
 			CtcTerm ctcTerm = ctcTermDao.getByCtepCodeandVersion(adverseEventDto.getAdverseEventCtepTerm().getCtepCode(), ctc);
 
 			if (ctcTerm == null) {
-				throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_020", new String[]{adverseEventDto.getAdverseEventCtepTerm().getCtepCode()},"",Locale.getDefault()));
+				throw new CaaersSystemException ("WS_AEMS_020",messageSource.getMessage("WS_AEMS_020", new String[]{adverseEventDto.getAdverseEventCtepTerm().getCtepCode()},"",Locale.getDefault()));
 			} else {
 				if (ctcTerm.isOtherRequired()) {
 					if (adverseEventDto.getAdverseEventCtepTerm().getOtherMeddra() != null) {
 						LowLevelTerm lowLevelTerm = getLowLevelTerm(adverseEventDto.getAdverseEventCtepTerm().getOtherMeddra().getMeddraCode(),adverseEventDto.getAdverseEventCtepTerm().getOtherMeddra().getMeddraTerm());
 						if (lowLevelTerm == null) {
-							throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_021", new String[]{adverseEventDto.getAdverseEventCtepTerm().getOtherMeddra().getMeddraCode().toString()},"",Locale.getDefault()));
+							throw new CaaersSystemException ("WS_AEMS_021",messageSource.getMessage("WS_AEMS_021", new String[]{adverseEventDto.getAdverseEventCtepTerm().getOtherMeddra().getMeddraCode().toString()},"",Locale.getDefault()));
 							
 						} else {
 							adverseEvent.setLowLevelTerm(lowLevelTerm);
 						}
 					} else {
-						throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_022", new String[]{},"",Locale.getDefault()));
+						throw new CaaersSystemException ("WS_AEMS_022",messageSource.getMessage("WS_AEMS_022", new String[]{},"",Locale.getDefault()));
 					}
 				} else {
 					if (adverseEventDto.getAdverseEventCtepTerm().getOtherMeddra() != null) {
-						throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_023", new String[]{adverseEventDto.getAdverseEventCtepTerm().getCtepCode()},"",Locale.getDefault()));
+						throw new CaaersSystemException ("WS_AEMS_023",messageSource.getMessage("WS_AEMS_023", new String[]{adverseEventDto.getAdverseEventCtepTerm().getCtepCode()},"",Locale.getDefault()));
 					}
 				}
 				List<CtcGrade> ctcGrades = ctcTerm.getContextualGrades();
@@ -189,7 +189,7 @@ public class SAEEvaluationAdverseEventConverter {
 					}
 				}
 				if (!gradeAllowed) {
-					throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_030", new String[]{adverseEventDto.getGrade()+"",adverseEventDto.getAdverseEventCtepTerm().getCtepCode()},"",Locale.getDefault()));
+					throw new CaaersSystemException ("WS_AEMS_030",messageSource.getMessage("WS_AEMS_030", new String[]{adverseEventDto.getGrade()+"",adverseEventDto.getAdverseEventCtepTerm().getCtepCode()},"",Locale.getDefault()));
 				}
 				//for update AECtcTerm already exists
 				AdverseEventCtcTerm adverseEventCtcTerm = (AdverseEventCtcTerm) adverseEvent.getAdverseEventTerm();

@@ -7,8 +7,11 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.AeTerminology;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.dto.EvaluationResultDTO;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
@@ -19,6 +22,7 @@ import gov.nih.nci.cabig.caaers.integration.schema.common.Status;
 import gov.nih.nci.cabig.caaers.integration.schema.common.WsError;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.AdverseEventType;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.AdverseEvents;
+import gov.nih.nci.cabig.caaers.integration.schema.saerules.EvaluateAEsInputMessage;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.RecommendedReports;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.ReportType;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
@@ -58,6 +62,36 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 	private SAEEvaluationAdverseEventConverter converter;
 
 	private static Log logger = LogFactory.getLog(SAEEvaluationServiceImpl.class);
+	
+	public CaaersServiceResponse processAdverseEvents(EvaluateAEsInputMessage evaluateAEsInputMessage) {
+		if ( evaluateAEsInputMessage == null ) {
+			CaaersServiceResponse response =  Helper.createResponse();
+			Helper.populateError(response, "WS_GEN_001",
+					messageSource.getMessage("WS_GEN_001", new String[]{},  "", Locale.getDefault())
+					);
+			return response;
+		}
+		
+		gov.nih.nci.cabig.caaers.integration.schema.saerules.Study study = evaluateAEsInputMessage.getStudy();
+		
+		if ( study == null ) {
+			CaaersServiceResponse response =  Helper.createResponse();
+			response.setServiceResponse(new ServiceResponse());
+			Helper.populateError(response, "WS_GEN_001",
+					messageSource.getMessage("WS_GEN_001", new String[]{},  "", Locale.getDefault())
+					);
+			return response;
+		}
+		
+		StudyParticipantAssignment spa = new StudyParticipantAssignment();
+		StudySite studySite = new StudySite();
+		Organization siteOrg = new LocalOrganization();
+		siteOrg.setNciInstituteCode(study.getParticipantSiteIdentifier());		
+		studySite.setOrganization(siteOrg);
+		spa.setStudySite(studySite);
+		
+		return processAdverseEvents(evaluateAEsInputMessage.getStudy().getStudyIdentifier(),evaluateAEsInputMessage.getAdverseEvents(),spa,evaluateAEsInputMessage.getStudy().getTreatmentAssignmentCode());
+	}
 
 	public CaaersServiceResponse processAdverseEvents(String studyId, AdverseEvents adverseEvents,
 			StudyParticipantAssignment assignment, String tacCode) {
@@ -196,7 +230,7 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 			respEventsObj.setAdverseEvent(dtoValues);
 
 			// Set the Response	
-			ServiceResponse resp = new ServiceResponse();
+			ServiceResponse resp = caaersServiceResponse.getServiceResponse();
 			ResponseDataType respType = new ResponseDataType();
 			respType.setAny(respEventsObj);
 			resp.setResponseData(respType);
