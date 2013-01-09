@@ -75,7 +75,7 @@
             <xs:documentation>List of recommended reports and its due.</xs:documentation>
         </xs:annotation>
         <xs:sequence>
-        	<xs:element minOccurs="0" maxOccurs="unbounded" name="reports" type="ReportType"/>        	
+        	<xs:element minOccurs="0" maxOccurs="unbounded" name="reportType" type="ReportType"/>        	
         </xs:sequence>
     </xs:complexType>
     

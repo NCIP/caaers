@@ -83,6 +83,15 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 			return response;
 		}
 		
+		if ( evaluateAEsInputMessage.getAdverseEvents() == null || evaluateAEsInputMessage.getAdverseEvents().getAdverseEvent() == null || evaluateAEsInputMessage.getAdverseEvents().getAdverseEvent().size() == 0 ) {
+			CaaersServiceResponse response =  Helper.createResponse();
+			response.setServiceResponse(new ServiceResponse());
+			Helper.populateError(response, "WS_SAE_006",
+					messageSource.getMessage("WS_SAE_006", new String[]{},  "", Locale.getDefault())
+					);
+			return response;
+		}
+		
 		StudyParticipantAssignment spa = new StudyParticipantAssignment();
 		StudySite studySite = new StudySite();
 		Organization siteOrg = new LocalOrganization();
@@ -207,7 +216,7 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 						if (rds != null && rds.size() > 0) {
 	
 							RecommendedReports recommendedRpts = new RecommendedReports();
-							List<ReportType> rprtTypLst = recommendedRpts.getReports();
+							List<ReportType> rprtTypLst = recommendedRpts.getReportType();
 							for (ReportDefinition rd : rds) {
 								ReportType rpt = new ReportType();
 								rpt.setReportName(rd.getName());
