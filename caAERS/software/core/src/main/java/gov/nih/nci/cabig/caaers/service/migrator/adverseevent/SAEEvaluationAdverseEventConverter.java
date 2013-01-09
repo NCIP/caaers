@@ -55,14 +55,14 @@ public class SAEEvaluationAdverseEventConverter {
 			if(adverseEventDto.getStartDate() != null){
 				//check for future date .
 				int dateCompare = DateUtils.compareDate(new Date(), adverseEventDto.getStartDate().toGregorianCalendar().getTime());
-				if (dateCompare == -1) {
+				if (dateCompare <= -1) {
 					throw new CaaersSystemException ("WS_SAE_003", messageSource.getMessage("WS_SAE_003", new String[]{adverseEventDto.getStartDate()+""},"",Locale.getDefault()));
 				}
 				adverseEvent.setStartDate(adverseEventDto.getStartDate().toGregorianCalendar().getTime());
 			}
 			if(adverseEventDto.getEndDate() != null){
-				int dateCompare = DateUtils.compareDate(new Date(), adverseEventDto.getEndDate().toGregorianCalendar().getTime());
-				if (dateCompare == -1) {
+				int dateCompare = DateUtils.compareDate(adverseEventDto.getEndDate().toGregorianCalendar().getTime(), new Date());
+				if (dateCompare <= -1) {
 					throw new CaaersSystemException ("WS_SAE_003", messageSource.getMessage("WS_SAE_003", new String[]{adverseEventDto.getEndDate()+""},"",Locale.getDefault()));
 				}
 				adverseEvent.setEndDate(adverseEventDto.getEndDate().toGregorianCalendar().getTime());
