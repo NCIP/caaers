@@ -16,6 +16,7 @@ import java.util.List;
  */
 public abstract class CompositeMigrator<E extends AbstractMutableDomainObject> implements Migrator<E>{
 	List<Migrator<E>> children;
+    private boolean stopOnError;
 	
 	
 	public void add(Migrator<E> o){
@@ -32,14 +33,23 @@ public abstract class CompositeMigrator<E extends AbstractMutableDomainObject> i
 	public void setChildren(List<Migrator<E>> children) {
 		this.children = children;
 	}
-	
-	/**
+
+    public boolean getStopOnError() {
+        return stopOnError;
+    }
+
+    public void setStopOnError(boolean stopOnError) {
+        this.stopOnError = stopOnError;
+    }
+
+    /**
 	 * The realized migrate method is purposely made final. The preMigrate template method is must be specialized.
 	 */
 	public  void migrate(E src, E dest, DomainObjectImportOutcome<E> outcome) {
 		preMigrate(src, dest, outcome);
 		if(children != null){
 			for(Migrator<E> migrator : children){
+                if(stopOnError) return;
 				migrator.migrate(src, dest, outcome);
 			}
 		}

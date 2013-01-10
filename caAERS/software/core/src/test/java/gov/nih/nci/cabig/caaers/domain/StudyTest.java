@@ -301,4 +301,16 @@ public class StudyTest extends AbstractTestCase {
         study.addIdentifier(id);
         assertTrue(study.hasCtepEsysIdentifier());
     }
+
+    public void testFindStudyAgentByNscOrName() {
+        assertNull(study.findStudyAgentByNscOrName("junk"));
+        StudyAgent sa = Fixtures.createStudyAgent("abc");
+        sa.getAgent().setNscNumber("abc");
+        study.addStudyAgent(sa);
+        assertNull(study.findStudyAgentByNscOrName("junk"));
+
+        assertSame(sa, study.findStudyAgentByNscOrName("abc"));
+        sa.retire();
+        assertNull( study.findStudyAgentByNscOrName("abc"));
+    }
 }

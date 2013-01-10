@@ -173,6 +173,15 @@ public class Fixtures {
         agent.getAgent().setName(agentName);
         return agent;
     }
+
+    public static CourseAgent createCourseAgent(String nsc){
+        CourseAgent ca = new CourseAgent();
+        if(nsc == null) return ca;
+        StudyAgent sa = createStudyAgent(nsc);
+        sa.getAgent().setNscNumber(nsc);
+        ca.setStudyAgent(sa);
+        return ca;
+    }
     
     public static StudyAgentINDAssociation createStudyAgentIndAssociation(String number, String nciCode){
         StudyAgentINDAssociation saa = new StudyAgentINDAssociation();

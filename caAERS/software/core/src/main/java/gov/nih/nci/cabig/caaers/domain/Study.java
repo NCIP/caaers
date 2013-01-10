@@ -827,7 +827,16 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
        }
        return ois;
    }
-    
+
+    public StudyAgent findStudyAgentByNscOrName(String nsc){
+        for(StudyAgent studyAgent : getStudyAgents()){
+            if(studyAgent.isRetired()) continue;
+            if(studyAgent.getAgent() != null && ObjectUtils.equals(studyAgent.getAgent().getNscNumber(), nsc)) return studyAgent;
+            if(ObjectUtils.equals(studyAgent.getOtherAgent(),  nsc )) return studyAgent;
+        }
+        return null;
+    }
+
     public StudyAgent findStudyAgentById(Integer id){
         for(StudyAgent studyAgent : getStudyAgents()){
             if(ObjectUtils.equals(id, studyAgent.getId())) return studyAgent;

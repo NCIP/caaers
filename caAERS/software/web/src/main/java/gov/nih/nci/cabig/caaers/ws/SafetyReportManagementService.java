@@ -9,5 +9,5 @@ import javax.jws.WebService;
 @WebService(name="SafetyReportManagementServiceInterface", targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/icsr")
 public interface SafetyReportManagementService {
 
-    public Object submitSafetyReport(@WebParam(name = "report") Object icsr);
+    public Object submitSafetyReport(@WebParam(name = "report",targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/icsr") Object report);
 }
