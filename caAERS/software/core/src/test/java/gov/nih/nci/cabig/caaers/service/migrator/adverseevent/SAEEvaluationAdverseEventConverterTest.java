@@ -2,10 +2,14 @@ package gov.nih.nci.cabig.caaers.service.migrator.adverseevent;
 
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.AeTerminology;
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Outcome;
+import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.AdverseEventType;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.OutComeEnumType;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.OutcomeType;
+import gov.nih.nci.cabig.caaers.integration.schema.study.AeTerminologyType;
 
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 
@@ -68,7 +72,7 @@ public class SAEEvaluationAdverseEventConverterTest extends AbstractTestCase {
 		outcomes.add(outcomeType);
 		dto.setOutcome(outcomes);
 		
-		Date date = DateUtils.parseDate("12/31/2012");
+		Date date = new Date();
 		GregorianCalendar c = new GregorianCalendar();
 		c.setTime(date);
 
@@ -84,8 +88,9 @@ public class SAEEvaluationAdverseEventConverterTest extends AbstractTestCase {
 		XMLGregorianCalendar dateFirstReported = DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
 		dto.setDateFirstLearned(dateFirstReported);
 
+		AeTerminology terminology = Fixtures.createAeTerminology(Term.CTC);
 		
-		AdverseEvent advEvent = converter.convertAdverseEventDtoToAdverseEventDomain(dto,null);
+		AdverseEvent advEvent = converter.convertAdverseEventDtoToAdverseEventDomain(dto,terminology);
 		
 		assertEquals(1,advEvent.getOutcomes().size());
 		assertEquals("Vomiting",advEvent.getOutcomes().get(0).getOther());
