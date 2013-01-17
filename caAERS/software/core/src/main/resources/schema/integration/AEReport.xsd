@@ -6,8 +6,36 @@
 	elementFormDefault="qualified" attributeFormDefault="unqualified">
 
 	<xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" schemaLocation="caAERSCommonTypes.xsd" />
+		<xs:element name="AdverseEventReport">
+			 <xs:complexType>
+				<xs:sequence>
+					<xs:element type="xs:string" name="createdAt" />
+					<xs:element type="AdverseEventResponseDescriptionType" name="adverseEventResponseDescription" />
+					<xs:element type="AdverseEventReportingPeriodType" name="adverseEventReportingPeriod" />
+					<xs:element type="PhysicianType" name="physician" />
+					<xs:element type="ReporterType" name="reporter" />
+					<xs:element type="ReviewerType" name="reviewer" />
+					<xs:element type="DiseaseHistoryType" name="diseaseHistory"  minOccurs="0"  />
+					<xs:element type="ParticipantHistoryType" name="participantHistory" minOccurs="0"  />
+					<xs:element type="StudyParticipantAssignmentType" name="studyParticipantAssignment" minOccurs="0"  />
+					<xs:element type="RadiationInterventionType" name="radiationIntervention" minOccurs="0"  />
+					<xs:element type="SurgeryInterventionType" name="surgeryIntervention" minOccurs="0"  />
+					<xs:element type="BiologicalInterventionType" name="biologicalIntervention"  minOccurs="0" />
+					<xs:element type="DietarySupplementInterventionType" name="dietarySupplementIntervention" minOccurs="0"  />
+					<xs:element type="MedicalDeviceType" name="medicalDevice" minOccurs="0" />
+					<xs:element type="ConcomitantMedicationType" name="concomitantMedication" maxOccurs="unbounded" minOccurs="0" />
+					<xs:element type="AdverseEventType" name="adverseEvent"	maxOccurs="unbounded" minOccurs="0" />
+					<xs:element type="LabType" name="lab" />
+					<xs:element type="SAEReportPriorTherapyType" name="sAEReportPriorTherapy" maxOccurs="unbounded" minOccurs="0" />
+					<xs:element type="TreatmentInformationType" name="treatmentInformation" minOccurs="0"  />
+					<xs:element type="SAEReportPreExistingConditionType" name="sAEReportPreExistingCondition" maxOccurs="unbounded" minOccurs="0" />
+					<xs:element type="OtherCauseType" name="otherCause"	maxOccurs="unbounded" minOccurs="0" />
+					<xs:element type="AdditionalInformationType" name="additionalInformation" minOccurs="0" />
+					<xs:element type="ReportType" name="report" />
+				</xs:sequence>
+		</xs:complexType>
+	</xs:element>
 	
-	<xs:element name="AdverseEventReport" type="AdverseEventReportType" />
 	<xs:complexType name="TimeValueType">
 		<xs:sequence>
 			<xs:element type="xs:integer" name="hour" minOccurs="0"/>
@@ -754,33 +782,6 @@
 			<xs:element type="ReportVersionType" name="aeportVersion" />
 			<xs:element type="xs:string" name="applicableField" maxOccurs="unbounded" minOccurs="0" />
 			<xs:element type="xs:string" name="submittedToFDA" />
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="AdverseEventReportType">
-		<xs:sequence>
-			<xs:element type="xs:string" name="createdAt" />
-			<xs:element type="AdverseEventResponseDescriptionType" name="adverseEventResponseDescription" />
-			<xs:element type="AdverseEventReportingPeriodType" name="adverseEventReportingPeriod" />
-			<xs:element type="PhysicianType" name="physician" />
-			<xs:element type="ReporterType" name="reporter" />
-			<xs:element type="ReviewerType" name="reviewer" />
-			<xs:element type="DiseaseHistoryType" name="diseaseHistory"  minOccurs="0"  />
-			<xs:element type="ParticipantHistoryType" name="participantHistory" minOccurs="0"  />
-			<xs:element type="StudyParticipantAssignmentType" name="studyParticipantAssignment" minOccurs="0"  />
-			<xs:element type="RadiationInterventionType" name="radiationIntervention" minOccurs="0"  />
-			<xs:element type="SurgeryInterventionType" name="surgeryIntervention" minOccurs="0"  />
-			<xs:element type="BiologicalInterventionType" name="biologicalIntervention"  minOccurs="0" />
-			<xs:element type="DietarySupplementInterventionType" name="dietarySupplementIntervention" minOccurs="0"  />
-			<xs:element type="MedicalDeviceType" name="medicalDevice" minOccurs="0" />
-			<xs:element type="ConcomitantMedicationType" name="concomitantMedication" maxOccurs="unbounded" minOccurs="0" />
-			<xs:element type="AdverseEventType" name="adverseEvent"	maxOccurs="unbounded" minOccurs="0" />
-			<xs:element type="LabType" name="lab" />
-			<xs:element type="SAEReportPriorTherapyType" name="sAEReportPriorTherapy" maxOccurs="unbounded" minOccurs="0" />
-			<xs:element type="TreatmentInformationType" name="treatmentInformation" minOccurs="0"  />
-			<xs:element type="SAEReportPreExistingConditionType" name="sAEReportPreExistingCondition" maxOccurs="unbounded" minOccurs="0" />
-			<xs:element type="OtherCauseType" name="otherCause"	maxOccurs="unbounded" minOccurs="0" />
-			<xs:element type="AdditionalInformationType" name="additionalInformation" minOccurs="0" />
-			<xs:element type="ReportType" name="report" />
 		</xs:sequence>
 	</xs:complexType>
 	
