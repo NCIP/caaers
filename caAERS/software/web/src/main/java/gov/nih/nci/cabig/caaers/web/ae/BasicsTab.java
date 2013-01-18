@@ -15,13 +15,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -72,6 +66,7 @@ public abstract class BasicsTab extends AeTab {
 
         creator.createRepeatingFieldGroup(MAIN_FIELD_GROUP, "adverseEvents", otherVerbatimField,
                 InputFieldFactory.createLongSelectField("grade", "Grade", "aeReport.adverseEvents.grade", true, WebUtils.collectOptions(EXPEDITED_GRADES, "name", null)),
+                InputFieldFactory.createPastDateField("gradedDate", "Awareness date", "aeReport.adverseEvents.gradedDate", false),
                 InputFieldFactory.createPastDateField("startDate", "Start date", "aeReport.adverseEvents.startDate", false),
                 InputFieldFactory.createPastDateField("endDate", "End date", "aeReport.adverseEvents.endDate", false),
                 attributionField,
@@ -122,6 +117,32 @@ public abstract class BasicsTab extends AeTab {
         if (ae.getDetailsForOther() != null && ae.getDetailsForOther().length() > VERBATIM_MAX_SIZE) {
             InputField verbatimField = groups.get(MAIN_FIELD_GROUP + index).getFields().get(0);
             errors.rejectValue(verbatimField.getPropertyName(), "SAE_021", new Object[] {VERBATIM_MAX_SIZE}, "The size of the verbatim value should not exceed " +  VERBATIM_MAX_SIZE + " characters.");
+        }
+
+        //validate Awareness date, start date and end date
+        Date awarenessDate = ae.getGradedDate();
+        Date startDate = ae.getStartDate();
+        Date endDate = ae.getEndDate();
+
+        if(awarenessDate != null && startDate != null){
+            InputField awarenessDateField = groups.get(MAIN_FIELD_GROUP + index).getFields().get(2);
+            if(DateUtils.compareDate(awarenessDate, startDate) > 0) {
+                errors.rejectValue(awarenessDateField.getPropertyName(), "CAE_021", new Object[]{}, "The Awareness date must not be later than the start date.");
+            }
+        }
+
+        if(awarenessDate != null && endDate != null){
+            InputField awarenessDateField = groups.get(MAIN_FIELD_GROUP + index).getFields().get(2);
+            if(DateUtils.compareDate(awarenessDate, endDate) < 0) {
+                errors.rejectValue(awarenessDateField.getPropertyName(), "CAE_022",  "The Awareness date must not be later than End date.");
+            }
+        }
+
+        if(startDate != null && endDate != null){
+            InputField endDateField = groups.get(MAIN_FIELD_GROUP + index).getFields().get(4);
+            if(DateUtils.compareDate(startDate, endDate) > 0){
+                errors.rejectValue(endDateField.getPropertyName(), "CAE_014" , "Start Date must not be later than End date.");
+            }
         }
     }
 

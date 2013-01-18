@@ -683,20 +683,7 @@ public class ExpeditedAdverseEventReportTest extends AbstractTestCase {
         assertSame(rep, report.getPendingReports().get(0));
         
     }
-    
-    public void testUpdateAdverseEventGradedDate(){
-    	for(AdverseEvent ae : report.getAdverseEvents()){
-    		assertNull(ae.getGradedDate());
-    	}
-    	Date now = new Date();
-    	String strDate = DateUtils.formatDate(now);
-    	report.updateAdverseEventGradedDate();
-    	for(AdverseEvent ae : report.getAdverseEvents()){
-    		assertNotNull(ae.getGradedDate());
-    		assertEquals(strDate, DateUtils.formatDate(ae.getGradedDate()));
-    	}
-    	
-    }
+
     
     public void testFindLastAmendedReport(){
     	

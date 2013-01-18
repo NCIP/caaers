@@ -70,6 +70,7 @@ public class ExpeditedReportTree extends PropertylessNode {
                                         property("grade", getMessage("LBL_aeReport.adverseEvents.grade", "Grade_")),
                                         property("adverseEventCtcTerm", property("term", getMessage("LBL_aeReport.adverseEvents.ctcTerm", "CTC term"))),
                                         property("detailsForOther", getMessage("LBL_aeReport.adverseEvents.detailsForOther", "Verbatim")),
+                                        property("gradedDate", getMessage("LBL_aeReport.adverseEvents.gradedDate", "Awareness date")),
                                         property("startDate", getMessage("LBL_aeReport.adverseEvents.startDate", "Start date")),
                                         property("endDate", getMessage("LBL_aeReport.adverseEvents.endDate", "End date")),
                                         property("attributionSummary", getMessage("LBL_aeReport.adverseEvents.attributionSummary", "Attribution to study intervention")),

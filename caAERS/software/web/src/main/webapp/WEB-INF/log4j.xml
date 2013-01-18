@@ -15,7 +15,7 @@
     </appender>
 
 	<root>
-	  <level value="ERROR"/>
+	  <level value="DEBUG"/>
 	  	<appender-ref ref="caAERSLogFile"/>
 	</root>
 

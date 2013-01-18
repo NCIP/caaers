@@ -9,11 +9,7 @@ import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
 import gov.nih.nci.cabig.caaers.web.validation.validator.AdverseEventReportingPeriodValidator;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -83,6 +79,7 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
             AdverseEvent ae = new AdverseEvent();
             ae.setSolicited(false);
             ae.setRequiresReporting(false);
+            ae.setGradedDate(new Date());
 
             if (isMeddra) {
                 //populate MedDRA term
@@ -130,6 +127,7 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
         ae.setSolicited(false);
         ae.setRequiresReporting(false);
         ae.setDetailsForOther(verbatim);
+        ae.setGradedDate(new Date());
 
         if (isMeddra) {
             // LowLevelTerm llt = new LowLevelTerm();

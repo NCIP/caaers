@@ -201,24 +201,26 @@
 		</script>
 	<div class="row" style="margin-top:0;margin-bottom:0;">
 		<div class="leftpanel">
+            <%-- Graded Date --%>
+            <tags:renderRow field="${fieldGroups[mainGroup].fields[2 + indexCorrection]}" />
 			<%-- Start Date --%>
-			<tags:renderRow field="${fieldGroups[mainGroup].fields[2 + indexCorrection]}" />
+			<tags:renderRow field="${fieldGroups[mainGroup].fields[3 + indexCorrection]}" />
 			<%-- Attribution --%>
-			<tags:renderRow field="${fieldGroups[mainGroup].fields[4 + indexCorrection]}" />
-			<%-- Event time --%>
-			<tags:renderRow field="${fieldGroups[mainGroup].fields[7 + indexCorrection]}" />
-			<%-- Hospitalization --%>
 			<tags:renderRow field="${fieldGroups[mainGroup].fields[5 + indexCorrection]}" />
+			<%-- Event time --%>
+			<tags:renderRow field="${fieldGroups[mainGroup].fields[8 + indexCorrection]}" />
+			<%-- Hospitalization --%>
+			<tags:renderRow field="${fieldGroups[mainGroup].fields[6 + indexCorrection]}" />
 		</div>
 		<div class="rightpanel">
 			<%-- End Date --%>
-			<tags:renderRow field="${fieldGroups[mainGroup].fields[3 + indexCorrection]}" />
+			<tags:renderRow field="${fieldGroups[mainGroup].fields[4 + indexCorrection]}" />
 			<%-- Expectedness --%>
-			<tags:renderRow field="${fieldGroups[mainGroup].fields[6 + indexCorrection]}" />
+			<tags:renderRow field="${fieldGroups[mainGroup].fields[7 + indexCorrection]}" />
 			<%-- Location --%>
-			<tags:renderRow field="${fieldGroups[mainGroup].fields[9 + indexCorrection]}" />
+			<tags:renderRow field="${fieldGroups[mainGroup].fields[10 + indexCorrection]}" />
 			<%-- Risk --%>
-			<tags:renderRow field="${fieldGroups[mainGroup].fields[8 + indexCorrection]}" />
+			<tags:renderRow field="${fieldGroups[mainGroup].fields[9 + indexCorrection]}" />
 		</div>
 	</div>
 	

@@ -82,24 +82,26 @@
 		<tags:renderRow field="${fieldGroups[mainGroup].fields[1]}"/>
 		<div class="row">
 			<div class="leftpanel">
+                    <%-- Awareness Date --%>
+                <tags:renderRow field="${fieldGroups[mainGroup].fields[2]}" />
 				<%-- Start Date --%>
-				<tags:renderRow field="${fieldGroups[mainGroup].fields[2]}" />
+				<tags:renderRow field="${fieldGroups[mainGroup].fields[3]}" />
 				<%-- Attribution --%>
-				<tags:renderRow field="${fieldGroups[mainGroup].fields[4]}" />
+				<tags:renderRow field="${fieldGroups[mainGroup].fields[5]}" />
                 <%-- Event Time --%>
-                <tags:renderRow field="${fieldGroups[mainGroup].fields[5]}"/>
+                <tags:renderRow field="${fieldGroups[mainGroup].fields[6]}"/>
                 <%-- Hospitalization --%>
-				<tags:renderRow field="${fieldGroups[mainGroup].fields[7]}"/>
+				<tags:renderRow field="${fieldGroups[mainGroup].fields[8]}"/>
             </div>
 			<div class="rightpanel">
 				<%-- End Date --%>
-				<tags:renderRow field="${fieldGroups[mainGroup].fields[3]}" />
+				<tags:renderRow field="${fieldGroups[mainGroup].fields[4]}" />
 				<%-- Expected --%>
-				<tags:renderRow field="${fieldGroups[mainGroup].fields[8]}"/>
-    			<%-- Location --%>
-                <tags:renderRow field="${fieldGroups[mainGroup].fields[6]}"/>
-				<%-- Risk --%>
 				<tags:renderRow field="${fieldGroups[mainGroup].fields[9]}"/>
+    			<%-- Location --%>
+                <tags:renderRow field="${fieldGroups[mainGroup].fields[7]}"/>
+				<%-- Risk --%>
+				<tags:renderRow field="${fieldGroups[mainGroup].fields[10]}"/>
             </div>
 		</div>
 

@@ -1506,15 +1506,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	return d;
     }
     
-    /**
-     * This method will set the graded date of adverse events to today.
-     */
-    public void updateAdverseEventGradedDate(){
-    	Date now = new Date();
-    	for(AdverseEvent ae: getAdverseEvents()){
-    		ae.setGradedDate(now);
-    	}
-    }
+
     
     /**
      * This method will set the reported flag on adverse events.

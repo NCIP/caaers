@@ -43,14 +43,15 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
      *    0. Other(MedDRA) - [conditional, only appear for CTC studies, if term is otherspecify].
      *    1. Verbatim
      *    2. Grade
-     *    3. StartDate
-     *    4. End Date
-     *    5. Attribution To Study
-     *    6. Time Of Event
-     *    7. Event Location
-     *    8. Hospitalization
-     *    9. Expectedness
-     *   10. Outcome
+     *    3. GradedDate
+     *    4. StartDate
+     *    5. End Date
+     *    6. Attribution To Study
+     *    7. Time Of Event
+     *    8. Event Location
+     *    9. Hospitalization
+     *    10. Expectedness
+     *   11. Outcome
      * Note:- We should run the adverse events against the index fixed list, since that list will have null items in it, we should skip if 'AdverseEvent' is null.
      */
 
@@ -102,7 +103,10 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
                 //grade
                 InputField gradeField = InputFieldFactory.createLongSelectField("grade","Grade", "aeReport.adverseEvents.grade", unRetired && isFieldRequired(ae, "adverseEvents[].grade"), createGradeOptions(ae, isMeddraStudy ? "Meddra" : "Ctc"));
                 mainFieldFactory.addField(gradeField);
-                
+
+                //graded date
+                InputField gradedDateField = InputFieldFactory.createPastDateField("gradedDate", "Awareness date", "aeReport.adverseEvents.gradedDate", unRetired && isFieldRequired(ae, "adverseEvents[].gradedDate"));
+                mainFieldFactory.addField(gradedDateField);
                 //startDate
                 InputField startDateField = InputFieldFactory.createPastDateField("startDate", "Start date", "aeReport.adverseEvents.startDate", unRetired && isFieldRequired(ae, "adverseEvents[].startDate"));
                 mainFieldFactory.addField(startDateField);
@@ -320,7 +324,25 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
             if (ae.getDetailsForOther() != null && ae.getDetailsForOther().length() > VERBATIM_MAX_SIZE) {
                 errors.rejectValue("adverseEvents[" + i + "].detailsForOther", "SAE_021", new Object[] {VERBATIM_MAX_SIZE}, "The size of the verbatim value should not exceed " +  VERBATIM_MAX_SIZE + " characters.");
             }
-            
+
+            if(caaersFieldConfigurationManager.isFieldApplicable(TAB_NAME, "adverseEvents[].gradedDate") && ae.getGradedDate() == null){
+                errors.rejectValue("adverseEvents[" + i + "].gradedDate" , "CAE_023", "The \"Awareness date\" can not be blank. It should be either be the same day as \"Start date\" or today when \"Start date\" is unknown.");
+            }
+
+            //Check if Graded Date is lesser than Start Date
+            if(caaersFieldConfigurationManager.isFieldApplicable(TAB_NAME, "adverseEvents[].startDate") && caaersFieldConfigurationManager.isFieldApplicable(TAB_NAME, "adverseEvents[].gradedDate")){
+                if(ae.getStartDate() != null && ae.getGradedDate() != null &&  (DateUtils.compareDate(ae.getGradedDate(), ae.getStartDate())  > 0) ){
+                    errors.rejectValue("adverseEvents[" + i + "].gradedDate" , "CAE_021", "The \"Awareness date\" can not be after the \"Start date\". It should be either be the same day or earlier.");
+                }
+            }
+
+            //Check if End Date must be earlier than Graded Date
+            if(caaersFieldConfigurationManager.isFieldApplicable(TAB_NAME, "adverseEvents[].endDate") && caaersFieldConfigurationManager.isFieldApplicable(TAB_NAME, "adverseEvents[].gradedDate")){
+                if(ae.getEndDate() != null && ae.getGradedDate() != null &&  (DateUtils.compareDate(ae.getGradedDate(), ae.getEndDate())  > 0) ){
+                    errors.rejectValue("adverseEvents[" + i + "].gradedDate" , "CAE_022", "The \"Awareness date\" can not be after the \"End date\". It should be either be the same day or earlier.");
+                }
+            }
+
             // Check if end date is greater than the start date
             if(caaersFieldConfigurationManager.isFieldApplicable(TAB_NAME, "adverseEvents[].startDate") && caaersFieldConfigurationManager.isFieldApplicable(TAB_NAME, "adverseEvents[].endDate"))
             	if(ae.getEndDate() != null && ae.getStartDate() != null && DateUtils.compareDate(ae.getStartDate(), ae.getEndDate()) > 0)

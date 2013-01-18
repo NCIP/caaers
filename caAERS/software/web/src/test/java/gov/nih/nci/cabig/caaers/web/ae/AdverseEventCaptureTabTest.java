@@ -14,15 +14,13 @@ import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
 import gov.nih.nci.cabig.caaers.domain.report.RequirednessIndicator;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.validation.CaaersFieldConfigurationManager;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
@@ -83,6 +81,7 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
 		map.put("adverseEvents[].adverseEventCtcTerm.term", Mandatory.MANDATORY);
 		map.put("adverseEvents[].detailsForOther", Mandatory.OPTIONAL);
 		map.put("adverseEvents[].startDate", Mandatory.OPTIONAL);
+		map.put("adverseEvents[].gradedDate", Mandatory.OPTIONAL);
 		map.put("adverseEvents[].endDate", Mandatory.OPTIONAL);
 		map.put("adverseEvents[].attributionSummary", Mandatory.OPTIONAL);
 		map.put("adverseEvents[].hospitalization", Mandatory.OPTIONAL);
@@ -212,6 +211,52 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
         Map<String, InputFieldGroup> fieldMap = tab.createFieldGroups(command);
         tab.validate(command, commandWrapper, fieldMap, errors);
         assertFalse(errors.hasErrors());
+    }
+
+
+    public void testValidate_Graded_Start_EndDates(){
+        command.initializeOutcomes();
+        command.getStudy().setAeTermUnique(false);
+        command.getAdverseEventReportingPeriod().getAdverseEvents().get(0).setGradedDate(new Date());
+        command.getAdverseEventReportingPeriod().getAdverseEvents().get(1).setGradedDate(new Date());
+        command.getAdverseEventReportingPeriod().getAdverseEvents().get(2).setGradedDate(new Date());
+        command.getAdverseEventReportingPeriod().getAdverseEvents().get(3).setGradedDate(new Date());
+        command.getAdverseEventReportingPeriod().getAdverseEvents().get(4).setGradedDate(new Date());
+
+        Map<String, InputFieldGroup> fieldMap = tab.createFieldGroups(command);
+
+        command.getAdverseEventReportingPeriod().getAdverseEvents().get(0).setStartDate(null);
+        command.getAdverseEventReportingPeriod().getAdverseEvents().get(0).setEndDate(null);
+        command.getAdverseEventReportingPeriod().getAdverseEvents().get(0).setGradedDate(new Date());
+        tab.validate(command, commandWrapper, fieldMap, errors);
+        assertFalse(errors.hasErrors());
+
+
+        command.getAdverseEventReportingPeriod().getAdverseEvents().get(0).setStartDate(new Date());
+        command.getAdverseEventReportingPeriod().getAdverseEvents().get(0).setEndDate(new Date());
+        command.getAdverseEventReportingPeriod().getAdverseEvents().get(0).setGradedDate(new Date());
+        tab.validate(command, commandWrapper, fieldMap, errors);
+        assertFalse(errors.hasErrors());
+
+        command.getAdverseEventReportingPeriod().getAdverseEvents().get(0).setStartDate(new Date());
+        command.getAdverseEventReportingPeriod().getAdverseEvents().get(0).setEndDate(null);
+        command.getAdverseEventReportingPeriod().getAdverseEvents().get(0).setGradedDate(DateUtils.tomorrow());
+        tab.validate(command, commandWrapper, fieldMap, errors);
+        assertTrue(errors.hasErrors());
+
+
+        command.getAdverseEventReportingPeriod().getAdverseEvents().get(0).setStartDate(null);
+        command.getAdverseEventReportingPeriod().getAdverseEvents().get(0).setEndDate(DateUtils.yesterday());
+        command.getAdverseEventReportingPeriod().getAdverseEvents().get(0).setGradedDate(new Date());
+        tab.validate(command, commandWrapper, fieldMap, errors);
+        assertTrue(errors.hasErrors());
+
+
+        command.getAdverseEventReportingPeriod().getAdverseEvents().get(0).setStartDate(new Date());
+        command.getAdverseEventReportingPeriod().getAdverseEvents().get(0).setEndDate(DateUtils.yesterday());
+        command.getAdverseEventReportingPeriod().getAdverseEvents().get(0).setGradedDate(DateUtils.tomorrow());
+        tab.validate(command, commandWrapper, fieldMap, errors);
+        assertTrue(errors.hasErrors());
     }
 
 
