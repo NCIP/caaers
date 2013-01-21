@@ -53,8 +53,8 @@ import org.springframework.context.MessageSource;
 
 public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 
-	protected StudyDao studyDao;
-	protected TreatmentAssignmentDao treatmentAssignmentDao;
+	private StudyDao studyDao;
+	private TreatmentAssignmentDao treatmentAssignmentDao;
 
 	private EvaluationService evaluationService;
 	private ApplicationContext applicationContext;

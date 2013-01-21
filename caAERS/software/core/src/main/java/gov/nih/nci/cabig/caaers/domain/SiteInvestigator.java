@@ -332,4 +332,25 @@ public class SiteInvestigator extends AbstractMutableDomainObject implements Com
     public int compareTo(SiteInvestigator siteInvestigator) {
         return getInvestigator().getFullName().compareTo(siteInvestigator.getInvestigator().getFullName());
     }
+    
+    @Transient
+    public String getFirstName() {
+    	return investigator.getFirstName();
+    }
+    
+    @Transient
+    public String getLastName() {
+    	return investigator.getLastName();
+    }
+    
+    @Transient
+    public String getMiddleName() {
+    	return investigator.getMiddleName();
+    }
+    
+    @Transient
+    public String getTitle() {
+    	return investigator.getTitle();
+    }
+    
 }

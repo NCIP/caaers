@@ -175,5 +175,83 @@ public class StudySite extends StudyOrganization {
     	}
 		return null;
 	}
+
+	@Transient
+	public SiteInvestigator findSiteInvestigatorByIdentifier(String identifier) {
+		for (StudyInvestigator investigator: this.getActiveStudyInvestigators()) {
+			if ( investigator.getSiteInvestigator() != null && investigator.getSiteInvestigator().getInvestigator() != null) {
+				if ( identifier.equals(investigator.getSiteInvestigator().getInvestigator().getPrimaryIdentifierValue())) {
+					// Found a match and return the Investigator Object.
+					return investigator.getSiteInvestigator();
+				}
+			}
+		}
+		return null;
+	}
 	
+	@Transient
+	public SiteInvestigator findSiteInvestigatorByEmail(String email) {
+		for (StudyInvestigator investigator: this.getActiveStudyInvestigators()) {
+			if ( investigator.getSiteInvestigator() != null) {
+				if ( email.equals(investigator.getSiteInvestigator().getEmailAddress())) {
+					// Found a match and return the Investigator Object.
+					return investigator.getSiteInvestigator();
+				}
+			}
+		}
+		return null;
+	}
+	
+	@Transient
+	public SiteInvestigator findSiteInvestigatorByName(String fName,String lName) {
+		for (StudyInvestigator investigator: this.getActiveStudyInvestigators()) {
+			if ( investigator.getSiteInvestigator() != null) {
+				if ( fName.equals(investigator.getSiteInvestigator().getFirstName()) && lName.equals(investigator.getSiteInvestigator().getLastName())) {
+					// Found a match and return the Investigator Object.
+					return investigator.getSiteInvestigator();
+				}
+			}
+		}
+		return null;
+	}
+	
+	@Transient
+	public SiteResearchStaff findSiteResearchStaffByIdentifier(String identifier) {
+		for (StudyPersonnel rs: this.getActiveStudyPersonnel()) {
+			if ( rs.getSiteResearchStaff() != null && rs.getSiteResearchStaff().getResearchStaff() != null) {
+				if ( identifier.equals(rs.getSiteResearchStaff().getResearchStaff().getPrimaryIdentifierValue())) {
+					// Found a match and return the Investigator Object.
+					return rs.getSiteResearchStaff();
+				}
+			}
+		}
+		return null;
+	}
+	
+	@Transient
+	public SiteResearchStaff findSiteResearchStaffByEmail(String email) {
+		for (StudyPersonnel rs: this.getActiveStudyPersonnel()) {
+			if ( rs.getSiteResearchStaff() != null && rs.getSiteResearchStaff().getResearchStaff() != null) {
+				if ( email.equals(rs.getSiteResearchStaff().getEmailAddress())) {
+					// Found a match and return the Investigator Object.
+					return rs.getSiteResearchStaff();
+				}
+			}
+		}
+		return null;
+	}
+	
+	@Transient
+	public SiteResearchStaff findSiteResearchStaffByName(String firstName,String lastName) {
+		for (StudyPersonnel rs: this.getActiveStudyPersonnel()) {
+			if ( rs.getSiteResearchStaff() != null && rs.getSiteResearchStaff().getResearchStaff() != null) {
+				if ( (firstName.equals(rs.getSiteResearchStaff().getFirstName()) && lastName.equals(rs.getSiteResearchStaff().getLastName()) )) {
+					// Found a match and return the Investigator Object.
+					return rs.getSiteResearchStaff();
+				}
+			}
+		}
+		return null;
+	}
+
 }

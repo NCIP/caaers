@@ -2572,4 +2572,5 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
       if(StringUtils.isNotEmpty(getPrimaryIdentifierValue()))  return "(" + getPrimaryIdentifierValue() + ") " + getShortTitle();
       return getShortTitle();
     }
+    
 }

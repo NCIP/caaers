@@ -497,4 +497,25 @@ public class SiteResearchStaff extends AbstractMutableRetireableDomainObject imp
         return getResearchStaff().getFullName().compareTo(siteResearchStaff.getResearchStaff().getFullName());
 
     }
+    
+    @Transient
+    public String getFirstName() {
+    	return researchStaff.getFirstName();
+    }
+    
+    @Transient
+    public String getLastName() {
+    	return researchStaff.getLastName();
+    }
+    
+    @Transient
+    public String getMiddleName() {
+    	return researchStaff.getMiddleName();
+    }
+    
+    @Transient
+    public String getTitle() {
+    	return researchStaff.getTitle();
+    }
+    
 }
