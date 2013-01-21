@@ -52,29 +52,49 @@ public class AdverseEventConverter {
 	
 			populateAttributionSummary(adverseEventDto,adverseEvent);
 			adverseEvent.setComments(adverseEventDto.getComments());
-			if(adverseEventDto.getStartDate() != null){
-				//check for future date .
-				int dateCompare = DateUtils.compareDate(new Date(), adverseEventDto.getStartDate().toGregorianCalendar().getTime());
-				if (dateCompare == -1) {
-					throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_031", new String[]{adverseEventDto.getStartDate()+""},"",Locale.getDefault()));
-				}
-				adverseEvent.setStartDate(adverseEventDto.getStartDate().toGregorianCalendar().getTime());
-			}
-			if(adverseEventDto.getEndDate() != null){
-				int dateCompare = DateUtils.compareDate(new Date(), adverseEventDto.getEndDate().toGregorianCalendar().getTime());
-				if (dateCompare == -1) {
-					throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_031", new String[]{adverseEventDto.getEndDate()+""},"",Locale.getDefault()));
-				}
-				adverseEvent.setEndDate(adverseEventDto.getEndDate().toGregorianCalendar().getTime());
-			}	
-	        // Check if the start date is equal to or before the end date.
-			if(adverseEventDto.getStartDate() != null && startDateOfFirstCourse != null){
-				int dateCompare = DateUtils.compareDate(adverseEventDto.getStartDate().toGregorianCalendar().getTime(),startDateOfFirstCourse);
-				if (dateCompare < 0) {
-					throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_059", new String[]{adverseEventDto.getStartDate()+"",startDateOfFirstCourse+""},"",Locale.getDefault()));
-				}
-			}
-	  
+
+            Date today = new Date();
+
+            if(adverseEventDto.getStartDate() != null){
+                adverseEvent.setStartDate(adverseEventDto.getStartDate().toGregorianCalendar().getTime());
+                //start date cannot be in future.
+                if(DateUtils.compareDate(today, adverseEvent.getStartDate()) < 0){
+                    throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_031", new String[]{adverseEventDto.getStartDate()+""},"",Locale.getDefault()));
+                }
+                //start date cannot be earlier than start date of the course.
+                if(startDateOfFirstCourse != null && (DateUtils.compareDate(adverseEvent.getStartDate(), startDateOfFirstCourse) < 0) ){
+                    throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_059", new String[]{adverseEventDto.getStartDate()+"",startDateOfFirstCourse+""},"",Locale.getDefault()));
+                }
+            }
+            if(adverseEventDto.getEndDate() != null){
+                adverseEvent.setEndDate(adverseEventDto.getEndDate().toGregorianCalendar().getTime());
+                //end date cannot be in future
+                if(DateUtils.compareDate(today, adverseEvent.getEndDate()) < 0){
+                    throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_031", new String[]{adverseEventDto.getEndDate()+""},"",Locale.getDefault()));
+                }
+                //end date cannot be earlier than start date.
+                if(adverseEvent.getStartDate() != null && (DateUtils.compareDate(adverseEvent.getEndDate(), adverseEvent.getStartDate()) < 0)){
+                    throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_015", new String[]{adverseEventDto.getEndDate()+""},"",Locale.getDefault()));
+                }
+            }
+
+            if(adverseEventDto.getAwarenessDate() != null){
+                adverseEvent.setGradedDate(adverseEventDto.getAwarenessDate().toGregorianCalendar().getTime());
+                //awareness date cannot be in future.
+                if(DateUtils.compareDate(today, adverseEvent.getGradedDate()) < 0){
+                    throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_031", new String[]{adverseEventDto.getAwarenessDate()+""},"",Locale.getDefault()));
+                }
+
+                if(adverseEvent.getStartDate() != null && DateUtils.compareDate(adverseEvent.getStartDate(), adverseEvent.getGradedDate()) < 0){
+                    throw new CaaersSystemException(messageSource.getMessage("WS_AEMS_073", new String[]{adverseEventDto.getAwarenessDate().toString()}, "Awareness date should not be after Start date", Locale.getDefault()));
+                }
+
+                if(adverseEvent.getEndDate() != null && DateUtils.compareDate(adverseEvent.getEndDate(), adverseEvent.getGradedDate()) < 0){
+                    throw new CaaersSystemException(messageSource.getMessage("WS_AEMS_074", new String[]{adverseEventDto.getAwarenessDate().toString()}, "Awareness date should not be after End date", Locale.getDefault()));
+                }
+
+            }
+
 
 			if (operation.equals(AdverseEventManagementServiceImpl.CREATE) || operation.equals(AdverseEventManagementServiceImpl.UPDATE)) {
 				if (terminology.getCtcVersion() != null && adverseEventDto.getAdverseEventCtepTerm() != null && adverseEventDto.getAdverseEventCtepTerm().getCtepCode()!=null) {

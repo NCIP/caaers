@@ -588,34 +588,17 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 				term = adverseEvent.getDetailsForOther();
 			}
 
-			ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
+            // SAVE AE
+            adverseEventReportingPeriod.addAdverseEvent(adverseEvent);
 
-			aeReport.addAdverseEventUnidirectional(adverseEvent);
-
-			ValidationErrors errors = fireRules(aeReport, "gov.nih.nci.cabig.caaers.rules.reporting_basics_section");
-			if (errors.getErrorCount() > 0) {
-				// FIXME: do we need this
-				Helper.populateError(caaersServiceResponse, "WS_GEN_000",
-				 "Unable to process the request");
-				String valErrmsg = null;
-				for (ValidationError error : errors.getErrors()) {
-					valErrmsg = error.getMessage() + " (" + term + ")";
-					Helper.populateErrorOutcome(caaersServiceResponse, null, null, pairs.getKey() + "", Arrays
-							.asList(new String[] { valErrmsg }));
-				}
-			} else {
-				// SAVE AE				
-				adverseEventReportingPeriod.addAdverseEvent(adverseEvent);
-
-				try {
-					adverseEventReportingPeriodDao.save(adverseEventReportingPeriod);
-				} catch (Exception e) {
-					String message = messageSource.getMessage("WS_AEMS_061", new String[] { term, e.getMessage() }, "",
-							Locale.getDefault());
-					Helper.populateErrorOutcome(caaersServiceResponse, null, adverseEvent.getId().toString(), pairs
-							.getKey().toString(), Arrays.asList(new String[] { message }));
-				}
-			}
+            try {
+                adverseEventReportingPeriodDao.save(adverseEventReportingPeriod);
+            } catch (Exception e) {
+                String message = messageSource.getMessage("WS_AEMS_061", new String[] { term, e.getMessage() }, "",
+                        Locale.getDefault());
+                Helper.populateErrorOutcome(caaersServiceResponse, null, adverseEvent.getId().toString(), pairs
+                        .getKey().toString(), Arrays.asList(new String[] { message }));
+            }
 			String message = messageSource.getMessage("WS_AEMS_006", new String[] { term, operation + "d" }, "", Locale
 					.getDefault());
 			ProcessingOutcome po = Helper.createOutcome(AdverseEvent.class, null, false, message);
@@ -912,8 +895,8 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 				Date sDate = aerp.getStartDate();
 				Date eDate = aerp.getEndDate();
 
-				if (DateUtils.compateDateAndTime(xmlStartDate, sDate) == 0) {
-					if ((xmlEndDate != null && DateUtils.compateDateAndTime(xmlEndDate, eDate) == 0)
+				if (DateUtils.compareDate(xmlStartDate, sDate) == 0) {
+					if ((xmlEndDate != null && DateUtils.compareDate(xmlEndDate, eDate) == 0)
 							|| (xmlEndDate == null && eDate == null)) {
 						adverseEventReportingPeriod = aerp;
 						break;
@@ -1031,21 +1014,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 
 		AdverseEvent adverseEvent = null;
 
-		boolean adeersReportingRequired = dbStudy.getAdeersReporting();
-		if (adeersReportingRequired) {
-			if (xmlAdverseEvent.getOutcome().size() > 0) {
-				throw new CaaersSystemException("WS_AEMS_011", messageSource.getMessage("WS_AEMS_011",
-						new String[] { "Outcomes" }, "", Locale.getDefault()));
-			}
-			if (xmlAdverseEvent.getEventApproximateTime() != null) {
-				throw new CaaersSystemException("WS_AEMS_011", messageSource.getMessage("WS_AEMS_011",
-						new String[] { "EventApproximateTime" }, "", Locale.getDefault()));
-			}
-			if (xmlAdverseEvent.getEventLocation() != null) {
-				throw new CaaersSystemException("WS_AEMS_011", messageSource.getMessage("WS_AEMS_011",
-						new String[] { "EventLocation" }, "", Locale.getDefault()));
-			}
-		}
+
 		// if update get the adverse event to update ..
 		
 		if (xmlAdverseEvent.getId() != null) {
@@ -1139,9 +1108,9 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 	private boolean matchAdverseEventForReportingPeriod(AdverseEvent dbAdverseEvent,
 			AdverseEventReportingPeriod adverseEventReportingPeriod) {
 		boolean match = false;
-		if (DateUtils.compateDateAndTime(adverseEventReportingPeriod.getStartDate(), dbAdverseEvent
+		if (DateUtils.compareDate(adverseEventReportingPeriod.getStartDate(), dbAdverseEvent
 				.getReportingPeriod().getStartDate()) == 0) {
-			if ((adverseEventReportingPeriod.getEndDate() != null && DateUtils.compateDateAndTime(
+			if ((adverseEventReportingPeriod.getEndDate() != null && DateUtils.compareDate(
 					adverseEventReportingPeriod.getEndDate(), dbAdverseEvent.getReportingPeriod().getEndDate()) == 0)
 					|| (adverseEventReportingPeriod.getEndDate() == null && dbAdverseEvent.getReportingPeriod()
 							.getEndDate() == null)) {
@@ -1243,17 +1212,6 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 
 	}
 	
-	private ValidationErrors fireRules(ExpeditedAdverseEventReport aeReport, String bindUri) {
-
-		List<Object> input = new ArrayList<Object>();
-		input.add(aeReport);
-		ValidationErrors errors = new ValidationErrors();
-		input.add(errors);
-
-		List<Object> output = executionService.fireRules(bindUri, input);
-		errors = retrieveValidationErrors(output);
-		return errors;
-	}
 
 	private ValidationErrors retrieveValidationErrors(List<Object> list) {
 		for (Object o : list)

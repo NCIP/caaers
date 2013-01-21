@@ -31,4 +31,12 @@ public class CaaersSystemException extends RuntimeException {
     public String getErrorCode() {
         return errorCode;
     }
+
+    public String toString(){
+        String s = "";
+        if(errorCode != null) s = errorCode;
+        if(!s.isEmpty()) s = s + " : ";
+        if(getMessage() != null) s = s + getMessage();
+        return s;
+    }
 }

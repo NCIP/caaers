@@ -107,8 +107,9 @@
                     <xs:element minOccurs="0" name="expected" type="xs:boolean"/>
                     <xs:element minOccurs="0" name="attributionSummary" type="AttributionType"/>
                     <xs:element minOccurs="0" name="comments" type="xs:string"/>
+                    <xs:element minOccurs="0" name="awarenessDate" type="xs:date"/>
                     <xs:element minOccurs="0" name="startDate" type="xs:date"/>
-                    <xs:element minOccurs="0" name="endDate" type="xs:date"/>  
+                    <xs:element minOccurs="0" name="endDate" type="xs:date"/>
                   	<xs:choice>
                   		<xs:element minOccurs="0" name="adverseEventCtepTerm" type="AdverseEventCtepTermType"/>
 	                 	<xs:element minOccurs="0" name="adverseEventMeddraLowLevelTerm" type="AdverseEventMeddraLowLevelTermType"/>

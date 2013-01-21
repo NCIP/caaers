@@ -1250,6 +1250,7 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
      * @return the graded date
      */
     @Temporal(TemporalType.TIMESTAMP)
+    @NotNullConstraint(groups=AdverseEventGroup.class, fieldPath="adverseEvents[].gradedDate")
     public Date getGradedDate() {
 		return gradedDate;
 	}
