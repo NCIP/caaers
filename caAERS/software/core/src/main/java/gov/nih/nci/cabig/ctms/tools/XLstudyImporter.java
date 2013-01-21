@@ -175,7 +175,6 @@ public class XLstudyImporter {
         study.setDiseaseTerminology(diseaseTerminology);
         study.setMultiInstitutionIndicator(true);
         study.setStatus(gov.nih.nci.cabig.caaers.domain.Study.STATUS_ACTIVE);
-        study.setAdeersReporting(Boolean.TRUE);
         study.setPhaseCode(phaseCode);
 
     }

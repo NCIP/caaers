@@ -29,7 +29,6 @@ public class SolicitedAECheckBoxesTest extends TestCase {
 		newStudy.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
 		newStudy.setMultiInstitutionIndicator(Boolean.FALSE);
 		newStudy.setLoadStatus(LoadStatus.INPROGRESS.getCode());
-		newStudy.setAdeersReporting(Boolean.TRUE);
 
   	    Epoch epoch1 = new Epoch(Epoch.NAME_PRETREATMENT, 1);
 	    epoch1.setDescriptionText("Pre-Treatment description");

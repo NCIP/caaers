@@ -85,7 +85,6 @@ public class StudySynchronizer extends CompositeMigrator<Study>{
 
 		dbStudy.setStatus(xmlStudy.getStatus());
 		dbStudy.setMultiInstitutionIndicator(xmlStudy.getMultiInstitutionIndicator());
-		dbStudy.setAdeersReporting(xmlStudy.getAdeersReporting());
 		if(xmlStudy.getDesign() != null){
 			dbStudy.setDesign(xmlStudy.getDesign());
 		}

@@ -38,7 +38,6 @@ public class StudySynchronizerTest extends AbstractTestCase{
 		xmlStudy.setPhaseCode("UpdatedPhaseCode");
 		xmlStudy.setStatus("UpdatedStatus");
 		xmlStudy.setMultiInstitutionIndicator(new Boolean("false"));
-		xmlStudy.setAdeersReporting(new Boolean("false"));
 		xmlStudy.setDesign(Design.BLIND);
 		
 		
@@ -49,7 +48,6 @@ public class StudySynchronizerTest extends AbstractTestCase{
 		assertEquals("Updated PhaseCode", "UpdatedPhaseCode", dbStudy.getPhaseCode());
 		assertEquals("Updated Status", "UpdatedStatus", dbStudy.getStatus());
 		assertFalse(dbStudy.getMultiInstitutionIndicator());
-		assertFalse(dbStudy.getAdeersReporting());
 	}
 	
 	public void testNullAttributesPreMigrateStudySynchronizer() {
@@ -60,7 +58,6 @@ public class StudySynchronizerTest extends AbstractTestCase{
 		xmlStudy.setPhaseCode("UpdatedPhaseCode");
 		xmlStudy.setStatus("UpdatedStatus");
 		xmlStudy.setMultiInstitutionIndicator(new Boolean("false"));
-		xmlStudy.setAdeersReporting(new Boolean("false"));
 		xmlStudy.setDesign(Design.BLIND);
 		
 		
@@ -72,14 +69,12 @@ public class StudySynchronizerTest extends AbstractTestCase{
 		assertEquals("Updated PhaseCode", "UpdatedPhaseCode", dbStudy.getPhaseCode());
 		assertEquals("Updated Status", "UpdatedStatus", dbStudy.getStatus());
 		assertFalse(dbStudy.getMultiInstitutionIndicator());
-		assertFalse(dbStudy.getAdeersReporting());
-		
+
 		xmlStudy.setDescription("");
 		xmlStudy.setPrecis("");
 		xmlStudy.setPhaseCode("UpdatedPhaseCode");
 		xmlStudy.setStatus("UpdatedStatus");
 		xmlStudy.setMultiInstitutionIndicator(new Boolean("false"));
-		xmlStudy.setAdeersReporting(new Boolean("false"));
 		xmlStudy.setDesign(null);
 		
 		

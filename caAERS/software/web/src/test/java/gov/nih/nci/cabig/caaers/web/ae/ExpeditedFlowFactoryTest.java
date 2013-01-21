@@ -22,7 +22,6 @@ public class ExpeditedFlowFactoryTest extends AbstractTestCase {
         super.setUp();
         study = Fixtures.createStudy("Kilo");
         study.getAeTerminology().setTerm(Term.CTC);
-        study.setAdeersReporting(Boolean.TRUE);
         term = Term.CTC;
 
         command = registerMockFor(ExpeditedAdverseEventInputCommand.class);

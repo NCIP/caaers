@@ -218,7 +218,6 @@ public class StudyConverterTest extends AbstractTestCase {
         study.setPhaseCode("Phase I Trial");
         study.setStatus("Administratively Complete");
         study.setMultiInstitutionIndicator(true);
-        study.setAdeersReporting(true);
         study.setAeTermUnique(true);
       
         study.setDesign(Design.PARTIAL);

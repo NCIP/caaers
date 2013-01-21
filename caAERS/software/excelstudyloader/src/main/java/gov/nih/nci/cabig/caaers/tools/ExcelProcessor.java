@@ -180,8 +180,7 @@ public class ExcelProcessor {
         study.setDiseaseTerminology(diseaseTerminology);
         study.setMultiInstitutionIndicator(true);
         study.setStatus(gov.nih.nci.cabig.caaers.domain.Study.STATUS_ACTIVE);
-        study.setAdeersReporting(Boolean.TRUE);
-        
+
         if("I".equals(phaseCode)){
         	study.setPhaseCode("Phase I Trial");
         }

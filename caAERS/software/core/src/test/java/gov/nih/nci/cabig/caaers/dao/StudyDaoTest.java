@@ -103,7 +103,6 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
             newStudy.setAeTerminology(aeT);
             newStudy.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
             newStudy.setMultiInstitutionIndicator(Boolean.FALSE);
-            newStudy.setAdeersReporting(Boolean.TRUE);
             newStudy.setAeTermUnique(Boolean.TRUE);
             getDao().save(newStudy);
             assertNotNull("No ID for newly saved study", newStudy.getId());
@@ -131,7 +130,6 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
             newStudy.setAeTerminology(Fixtures.createMedDRATerminology(newStudy));
             newStudy.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
             newStudy.setMultiInstitutionIndicator(Boolean.FALSE);
-            newStudy.setAdeersReporting(Boolean.TRUE);
             getDao().save(newStudy);
             assertNotNull("No ID for newly saved study", newStudy.getId());
             savedId = newStudy.getId();
@@ -166,7 +164,6 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
             newStudy.setLongTitle("Long Title Inserted");
             newStudy.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.OTHER);
             newStudy.setMultiInstitutionIndicator(Boolean.FALSE);
-            newStudy.setAdeersReporting(Boolean.TRUE);
             getDao().save(newStudy);
             assertNotNull("No ID for newly saved study", newStudy.getId());
             assertEquals(1, newStudy.getStudyConditions().size());
@@ -200,7 +197,6 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
             newStudy.setLongTitle("Long Title Inserted");
             newStudy.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.OTHER);
             newStudy.setMultiInstitutionIndicator(Boolean.FALSE);
-            newStudy.setAdeersReporting(Boolean.TRUE);
             getDao().save(newStudy);
             assertNotNull("No ID for newly saved study", newStudy.getId());
             savedId = newStudy.getId();
@@ -371,7 +367,6 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
             aeT.setCtcVersion(ctcDao.getByName("3.0"));
             study.setAeTerminology(aeT);
             study.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
-            study.setAdeersReporting(Boolean.TRUE);
 
             // Study Site
             StudySite studySite = new StudySite();
@@ -421,7 +416,6 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
             aeT.setCtcVersion(ctcDao.getByName("3.0"));
             study.setAeTerminology(aeT);
             study.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
-            study.setAdeersReporting(Boolean.TRUE);
 
             // Study Site
             StudySite studySite = new StudySite();
@@ -472,7 +466,6 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
             AeTerminology aeT = Fixtures.createCtcV3Terminology(study);
             aeT.setCtcVersion(ctcDao.getByName("3.0"));
             study.setAeTerminology(aeT);
-            study.setAdeersReporting(Boolean.TRUE);
             // study.setCtcVersion(ctc);
 
             // Study Site
@@ -532,7 +525,6 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
             AeTerminology aeT = Fixtures.createCtcV3Terminology(study);
             aeT.setCtcVersion(ctcDao.getByName("3.0"));
             study.setAeTerminology(aeT);
-            study.setAdeersReporting(Boolean.TRUE);
             // study.setCtcVersion(ctc);
 
             // Study Site
@@ -599,7 +591,6 @@ assertTrue(true);
             aeT.setCtcVersion(ctcDao.getByName("3.0"));
             newStudy.setAeTerminology(aeT);
             newStudy.setMultiInstitutionIndicator(Boolean.FALSE);
-            newStudy.setAdeersReporting(Boolean.TRUE);
             // study agent
             Agent agent = agentDao.getById(-990);
             assertNotNull(agent);
@@ -657,7 +648,6 @@ assertTrue(true);
             newStudy.setAeTerminology(aeT);
             newStudy.setMultiInstitutionIndicator(Boolean.FALSE);
             newStudy.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
-            newStudy.setAdeersReporting(Boolean.TRUE);
 
             TreatmentAssignment ta = new TreatmentAssignment();
             ta.setCode("111");
@@ -735,7 +725,6 @@ assertTrue(true);
         newStudy.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
         newStudy.setMultiInstitutionIndicator(Boolean.FALSE);
         newStudy.setLoadStatus(LoadStatus.INPROGRESS.getCode());
-        newStudy.setAdeersReporting(Boolean.TRUE);
         getDao().save(newStudy);
         assertNotNull("No ID for newly saved study", newStudy.getId());
         savedId = newStudy.getId();
@@ -786,7 +775,6 @@ assertTrue(true);
             newStudy.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
             newStudy.setMultiInstitutionIndicator(Boolean.FALSE);
             newStudy.setLoadStatus(LoadStatus.INPROGRESS.getCode());
-            newStudy.setAdeersReporting(Boolean.TRUE);
             //getDao().save(newStudy);
             //	assertNotNull("No ID for newly saved study", newStudy.getId());
             //	Integer savedId = newStudy.getId();

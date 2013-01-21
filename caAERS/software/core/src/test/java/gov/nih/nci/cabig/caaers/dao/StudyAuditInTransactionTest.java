@@ -47,7 +47,6 @@ public class StudyAuditInTransactionTest extends DaoNoSecurityTestCase<StudyDao>
                     newStudy.setAeTerminology(Fixtures.createCtcV3Terminology(newStudy));
                     newStudy.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
                     newStudy.setMultiInstitutionIndicator(Boolean.FALSE);
-                    newStudy.setAdeersReporting(Boolean.TRUE);
                     studyDao.save(newStudy);
                     status.setRollbackOnly();
                 }

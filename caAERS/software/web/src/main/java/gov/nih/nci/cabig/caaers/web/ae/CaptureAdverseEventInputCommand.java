@@ -108,15 +108,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		
 	}
 	
-	/**
-	 * This method will check if the study is AdEERS submittable.
-	 * @return
-	 */
-	public boolean isNonAdeersStudy(){
-		if(study == null) return false;
-		return !study.getAdeersReporting();
-	}
-	
+
 	/**
 	 * Will return true, if the primary sponsor of this study is DCP.
 	 * @return

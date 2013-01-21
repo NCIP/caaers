@@ -83,7 +83,6 @@ public class StudyProcessorTest_II extends CaaersDbNoSecurityTestCase {
         assertEquals("OPEN_UNBLIND", createdStudy.getDesign().name());
 
         assertTrue(createdStudy.getMultiInstitutionIndicator());
-        assertTrue(createdStudy.getAdeersReporting());
 
         assertTrue(createdStudy.hasTherapyOfType(StudyTherapyType.DRUG_ADMINISTRATION));
         assertTrue(createdStudy.hasTherapyOfType(StudyTherapyType.RADIATION));
@@ -129,7 +128,6 @@ public class StudyProcessorTest_II extends CaaersDbNoSecurityTestCase {
         assertEquals("OPEN_UNBLIND", createdStudy.getDesign().name());
 
         assertTrue(createdStudy.getMultiInstitutionIndicator());
-        assertTrue(createdStudy.getAdeersReporting());
 
         assertTrue(createdStudy.hasTherapyOfType(StudyTherapyType.DRUG_ADMINISTRATION));
         assertTrue(createdStudy.hasTherapyOfType(StudyTherapyType.RADIATION));

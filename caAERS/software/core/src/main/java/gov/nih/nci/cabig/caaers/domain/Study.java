@@ -99,9 +99,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     
     /** The multi institution indicator. */
     @Deprecated Boolean multiInstitutionIndicator;
-    
-    /** The adeers reporting. */
-    @Deprecated protected Boolean adeersReporting;
+
 
     // TODO: Remove
     /** The randomized indicator. */
@@ -1757,25 +1755,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         this.fundingSponsor = fundingSponsor;
     }
 
-    /**
-     * Gets the adeers reporting.
-     *
-     * @return the adeers reporting
-     */
-    @Deprecated
-    public Boolean getAdeersReporting() {
-        return adeersReporting;
-    }
 
-    /**
-     * Sets the adeers reporting.
-     *
-     * @param adeersSubmission the new adeers reporting
-     */
-    @Deprecated
-    public void setAdeersReporting(Boolean adeersSubmission) {
-        this.adeersReporting = adeersSubmission;
-    }
 
     /**
      * Gets the design.

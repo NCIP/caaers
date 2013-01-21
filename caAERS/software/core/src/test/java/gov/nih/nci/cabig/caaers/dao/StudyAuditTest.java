@@ -44,7 +44,6 @@ public class StudyAuditTest extends DaoNoSecurityTestCase<StudyDao>  {
                     newStudy.getAeTerminology().setCtcVersion(ctcDao.getByName("3.0"));
                     newStudy.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
                     newStudy.setMultiInstitutionIndicator(Boolean.FALSE);
-                    newStudy.setAdeersReporting(Boolean.TRUE);
                     studyDao.save(newStudy);
                     assertNotNull("No ID for newly saved study", newStudy.getId());
                     id = newStudy.getId();
