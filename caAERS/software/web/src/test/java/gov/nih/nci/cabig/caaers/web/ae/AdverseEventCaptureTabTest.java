@@ -146,6 +146,7 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
 		
 		correctMainGroupFields(fieldMap.get("main0"), "adverseEvents[0].", "detailsForOther",
 				"grade",
+				"gradedDate",
 				"startDate",
 				"endDate",
 				"attributionSummary",
@@ -158,6 +159,7 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
 		
 		correctMainGroupFields(fieldMap.get("main1"), "adverseEvents[1].", "detailsForOther",
 				"grade",
+				"gradedDate",
 				"startDate",
 				"endDate",
 				"attributionSummary",
@@ -170,6 +172,7 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
 		
 		correctMainGroupFields(fieldMap.get("main2"), "adverseEvents[2].", "detailsForOther",
 				"grade",
+				"gradedDate",
 				"startDate",
 				"endDate",
 				"attributionSummary",
@@ -210,6 +213,7 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
         command.getStudy().setAeTermUnique(false);
         Map<String, InputFieldGroup> fieldMap = tab.createFieldGroups(command);
         tab.validate(command, commandWrapper, fieldMap, errors);
+        System.out.println(errors);
         assertFalse(errors.hasErrors());
     }
 

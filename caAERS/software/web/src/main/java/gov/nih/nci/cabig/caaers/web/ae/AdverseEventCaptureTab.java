@@ -325,7 +325,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
                 errors.rejectValue("adverseEvents[" + i + "].detailsForOther", "SAE_021", new Object[] {VERBATIM_MAX_SIZE}, "The size of the verbatim value should not exceed " +  VERBATIM_MAX_SIZE + " characters.");
             }
 
-            if(caaersFieldConfigurationManager.isFieldApplicable(TAB_NAME, "adverseEvents[].gradedDate") && ae.getGradedDate() == null){
+            if(caaersFieldConfigurationManager.isFieldMandatory(TAB_NAME, "adverseEvents[].gradedDate") && ae.getGradedDate() == null){
                 errors.rejectValue("adverseEvents[" + i + "].gradedDate" , "CAE_023", "The \"Awareness date\" can not be blank. It should be either be the same day as \"Start date\" or today when \"Start date\" is unknown.");
             }
 
