@@ -2,7 +2,9 @@ package gov.nih.nci.cabig.caaers.service.migrator.report;
 
 import org.apache.axis.utils.StringUtils;
 
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
 
@@ -12,14 +14,24 @@ import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
  */
 public class ReporterMigrator implements Migrator<ExpeditedAdverseEventReport> {
 	
-    public void migrate(ExpeditedAdverseEventReport aeReportSrc, ExpeditedAdverseEventReport aeReportDest, DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome) {
+    private UserRepository userRepository;
+	
+    public UserRepository getUserRepository() {
+		return userRepository;
+	}
+
+	public void setUserRepository(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
+
+	public void migrate(ExpeditedAdverseEventReport aeReportSrc, ExpeditedAdverseEventReport aeReportDest, DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome) {
     	
     	Reporter srcReporter = aeReportSrc.getReporter();
     	if ( aeReportDest.getPhysician() == null ) aeReportDest.setReporter(new Reporter());
     	
     	 if(srcReporter == null ||  (StringUtils.isEmpty(srcReporter.getPrimaryIdentifierValue())  && StringUtils.isEmpty(srcReporter.getEmailAddress()) 
     			 && StringUtils.isEmpty(srcReporter.getFirstName()) && StringUtils.isEmpty(srcReporter.getLastName())))  {
-             outcome.addWarning("ER-RM-1", "Physician is missing in the source");
+             outcome.addError("ER-RM-1", "Physician is missing in the source");
              return;
          }
        
@@ -33,11 +45,12 @@ public class ReporterMigrator implements Migrator<ExpeditedAdverseEventReport> {
         }
         
         if ( site == null ) {
-        	 outcome.addWarning("ER-PM-2", "Study Site is missing in the source");
+        	 outcome.addError("ER-RM-2", "Study Site is missing in the source");
              return;
         }
         
-        	
+        // A reporter can be Research Staff or Investigator. The ResearchStaff is considered only when he is a ae_reporter. 
+        
         // 2. Retrieve the Research Staff from Study Site.
         SiteResearchStaff siteResearchStaff = null; 
     	
@@ -53,12 +66,48 @@ public class ReporterMigrator implements Migrator<ExpeditedAdverseEventReport> {
 
        	if ( siteResearchStaff != null) {
         	// Copy the investigator details
-        	copyFromSiteResearchStaffDetails(siteResearchStaff, aeReportDest.getReporter());
+       			
+       		 if(siteResearchStaff.getResearchStaff().isUser()){
+                 try{
+                    User user = userRepository.getUserByLoginName(siteResearchStaff.getResearchStaff().getCaaersUser().getLoginName());
+                    if(user.hasRole(UserGroupType.ae_reporter)) {
+                    	copyFromSiteResearchStaffDetails(siteResearchStaff, aeReportDest.getReporter());
+                    } else {
+                    	
+                    }
+                 }catch(CaaersSystemException ignore){
+                	 outcome.addError("ER-RM-3", "User is not able to connect to userRepository.");
+                 }
+       		}
+        	
         		
         } else {
-        		  outcome.addWarning("WR-PM-1", "Given Physician is no longer associated to the study");
+        
+        	//3. If the Reporter is not a SiteResearchStaff, Then he could be a investigator.
+        	
+        	SiteInvestigator siteInvestigator = null;
+            
+            if ( srcReporter.getPrimaryIdentifierValue() != null ) {
+            	siteInvestigator = site.findSiteInvestigatorByIdentifier(srcReporter.getPrimaryIdentifierValue());
+            }
+            	
+            if ( siteInvestigator == null  && srcReporter.getEmailAddress() != null) {
+            	siteInvestigator = site.findSiteInvestigatorByEmail(srcReporter.getEmailAddress());
+            }
+
+            if ( siteInvestigator == null  && srcReporter.getFirstName() != null && srcReporter.getLastName() != null) {
+            	siteInvestigator = site.findSiteInvestigatorByName(srcReporter.getFirstName(), srcReporter.getLastName());
+            }
+
+            if ( siteInvestigator != null) {
+            	// Copy the investigator details
+            	copyFromSiteInvestigatorDetails(siteInvestigator, aeReportDest.getPhysician());
+            } else {
+            		  outcome.addWarning("WR-PM-1", "Given Physician is no longer associated to the study");
+            }
+        	
         }
-     	
+       	
         // 3. if investigator is not found create a new physician and do a Manual copy.
        	copyReporterDetails(srcReporter, aeReportDest.getReporter());	
     }
@@ -109,6 +158,27 @@ public class ReporterMigrator implements Migrator<ExpeditedAdverseEventReport> {
      destReporter.setAddress(siteResearchStaff.getAddress());
      
      destReporter.setResearchStaff(siteResearchStaff.getResearchStaff());
+         
+    }
+    
+    /**
+     *  Manual copy from Input object to Domain Model.
+     * @param srcPhysician
+     * @param destPhysician
+     */
+    
+    public void copyFromSiteInvestigatorDetails(SiteInvestigator siteInvestigator, Physician destPhysician) {
+    	 destPhysician.setTitle( (siteInvestigator.getTitle() != null ? siteInvestigator.getTitle() : siteInvestigator.getInvestigator().getTitle())  );
+         destPhysician.setVersion((siteInvestigator.getVersion() != null ? siteInvestigator.getVersion() : siteInvestigator.getInvestigator().getVersion()));
+         destPhysician.setMiddleName((siteInvestigator.getMiddleName() != null ? siteInvestigator.getMiddleName() : siteInvestigator.getInvestigator().getMiddleName()));
+         destPhysician.setLastName((siteInvestigator.getLastName() != null ? siteInvestigator.getLastName() : siteInvestigator.getInvestigator().getLastName()));
+         destPhysician.setFirstName((siteInvestigator.getFirstName() != null ? siteInvestigator.getFirstName() : siteInvestigator.getInvestigator().getFirstName()));
+         destPhysician.setEmailAddress((siteInvestigator.getEmailAddress() != null ? siteInvestigator.getEmailAddress() : siteInvestigator.getInvestigator().getEmailAddress()));
+         destPhysician.setPhoneNumber((siteInvestigator.getPhoneNumber() != null ? siteInvestigator.getPhoneNumber() : siteInvestigator.getInvestigator().getPhoneNumber()));
+         destPhysician.setFaxNumber((siteInvestigator.getFaxNumber() != null ? siteInvestigator.getFaxNumber() : siteInvestigator.getInvestigator().getFaxNumber()));
+         destPhysician.setAddress(siteInvestigator.getAddress());
+         
+         destPhysician.setInvestigator(siteInvestigator.getInvestigator());
          
     }
     
