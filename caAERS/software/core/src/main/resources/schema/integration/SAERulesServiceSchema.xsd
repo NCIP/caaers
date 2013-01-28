@@ -3,14 +3,16 @@
            xmlns:xs="http://www.w3.org/2001/XMLSchema"
            elementFormDefault="unqualified"
            targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/saerules"
-           xmlns:cct="http://schema.integration.caaers.cabig.nci.nih.gov/common">
-
-
-    <xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" schemaLocation="caAERSCommonTypes.xsd"/>
-    
+           xmlns:cct="http://schema.integration.caaers.cabig.nci.nih.gov/common"
+		   xmlns:ae="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent">
+	
+    <xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" schemaLocation="caAERSCommonDataTypes.xsd"/>
+	<xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" schemaLocation="caAERSCommonWsTypes.xsd"/>	
+	<xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent" schemaLocation="caAERSAeTypes.xsd"/>
+	
     <xs:annotation>
         <xs:documentation> 
-        	This service requires list of Adverse Events along with StudyIdentifer and Returns the CaaersServiceResponse with requireReporting , reportName and other related attributes.             	
+        	This service requires list of Adverse Events along with StudyIdentifer and returns the CaaersServiceResponse with requireReporting , reportName and other related attributes.             	
         </xs:documentation>
     </xs:annotation>
     
@@ -45,6 +47,23 @@
 				            </xs:documentation>
 				        </xs:annotation>
                 </xs:element>
+            </xs:sequence>
+        </xs:complexType>        
+    </xs:element>
+	
+	<xs:element name="EvaluateAEsOutputMessage">
+        <xs:annotation>
+            <xs:documentation> The top level (typically root) element. Allows the definition of
+                default values for all nested bean definitions.             	
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>         	
+	                <xs:element ref="evaluatedAdverseEventResults" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>List of Adverse Events evaluated for SAE reporting and their result</xs:documentation>
+						</xs:annotation>
+	                </xs:element>                  
             </xs:sequence>
         </xs:complexType>        
     </xs:element>
@@ -87,7 +106,9 @@
         	<xs:element minOccurs="0" name="dueIn" type="xs:string"/>		
         </xs:sequence>
     </xs:complexType>
-
+	
+	<xs:element name="adverseEvent" type="ae:AdverseEventType"/>
+	
     <xs:element name="adverseEvents">
         <xs:annotation>
             <xs:documentation>List of adverse events to be evaluated.</xs:documentation>
@@ -98,145 +119,26 @@
             </xs:sequence>
         </xs:complexType>
     </xs:element>
-    
-    
-    <xs:element name="adverseEvent" type="AdverseEventType"/>
-    
-    <xs:complexType name="AdverseEventType">
-        <xs:complexContent>
-            <xs:extension base="cct:MutableDomainObjectType">
-                <xs:sequence>
-                	<xs:element minOccurs="0" name="verbatim" type="xs:string"/>
-                	<xs:choice>
-                  		<xs:element minOccurs="0" name="adverseEventCtepTerm" type="AdverseEventCtepTermType"/>
-	                 	<xs:element minOccurs="0" name="adverseEventMeddraLowLevelTerm" type="AdverseEventMeddraLowLevelTermType"/>
-	                </xs:choice> 
-                    <xs:element minOccurs="0" name="grade" type="GradeType"/>
-                    <xs:element minOccurs="0" name="startDate" type="xs:date"/>
-                    <xs:element minOccurs="0" name="startTime" type="TimeType"/>
-                    <xs:element minOccurs="0" name="endDate" type="xs:date"/>
-                    <xs:element minOccurs="0" name="attribution" type="AttributionType"/>
-                    <xs:element minOccurs="0" name="hospitalization" type="HospitalizationType"/>
-                    <xs:element minOccurs="0" name="expected" type="xs:boolean"/>                    
-                    <xs:element minOccurs="0" name="increasedRisk" type="xs:boolean"/>
-                    <xs:element maxOccurs="unbounded" minOccurs="0" name="outcome" type="OutcomeType"/>                   
-                    <xs:element minOccurs="1" name="dateFirstLearned" type="xs:dateTime"/>
-                    <xs:element minOccurs="0" name="requiresReporting" type="xs:boolean"/>
-                    <xs:element minOccurs="0" name="recommendedReports" type="RecommendedReports"/>
-                </xs:sequence>
-            </xs:extension>
-        </xs:complexContent>
-   </xs:complexType>  
-    <xs:complexType name="TimeType">
-                <xs:sequence>
-                  <xs:element minOccurs="1" name="hour" type="xs:integer"/>
-                  <xs:element minOccurs="1" name="minute" type="xs:integer"/>
-                  <xs:element minOccurs="1" name="ampm" type="AMPM"/>
-                </xs:sequence>
-    </xs:complexType>
-
-    <xs:complexType name="AdverseEventCtcTermType">
-                <xs:sequence>
-                  <xs:element name="ctep-term" type="cct:CustomStringType"/>
-                  <!--
-                  <xs:element name="ctep-code" type="xs:string"/>
-                  <xs:element name="ctc-version" type="CtcVersionEnum"/>-->
-                </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="EpochType">
-                <xs:sequence>
-                  <xs:element name="name" type="xs:string"/>
-                  <xs:element name="descriptionText" type="xs:string"/>
-                </xs:sequence>
-    </xs:complexType> 
-           
-    <xs:complexType name="AdverseEventMeddraLowLevelTermType">
-                <xs:sequence>
-                  <xs:element minOccurs="1" name="meddraCode" type="xs:string"/>
-                  <xs:element minOccurs="1" name="meddraTerm" type="xs:string"/>
-                </xs:sequence>
-    </xs:complexType> 
-    
-    
-     <xs:complexType name="AdverseEventCtepTermType">
-                <xs:sequence>
-                 	<xs:element minOccurs="1" name="ctepCode" type="xs:string"/>
-                   	 <xs:choice>  
-	                    <xs:element minOccurs="0" name="otherMeddra" type="AdverseEventMeddraLowLevelTermType"/>
-	                    <xs:element minOccurs="0" name="otherSpecify" type="xs:string"/>
-                   </xs:choice>
-                </xs:sequence>
-    </xs:complexType> 
-        
-
-    <xs:complexType name="OutcomeType">
-                <xs:sequence>
-                  <xs:element minOccurs="1" name="outComeEnumType" type="OutComeEnumType"/>
-                  <xs:element minOccurs="0" name="other" type="xs:string"/>
-                </xs:sequence>
-    </xs:complexType> 
-    
-	<!-- FIXED Types  --> 
-    <xs:simpleType name="AMPM">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="AM"/>
-            <xs:enumeration value="PM"/>
-        </xs:restriction>
-    </xs:simpleType>
-    	
-    <xs:simpleType name="CtcVersionEnum">
-        <xs:restriction base="xs:int">
-            <xs:enumeration value="2"/>
-            <xs:enumeration value="3"/>
-        </xs:restriction>
-    </xs:simpleType> 	
-	      
-     
-    <xs:simpleType name="OutComeEnumType">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="DEATH"/>
-            <xs:enumeration value="HOSPITALIZATION"/>
-            <xs:enumeration value="LIFE_THREATENING"/>
-            <xs:enumeration value="DISABILITY"/>
-            <xs:enumeration value="CONGENITAL_ANOMALY"/>
-            <xs:enumeration value="REQUIRED_INTERVENTION"/>
-            <xs:enumeration value="OTHER_SERIOUS"/>
-        </xs:restriction>
-    </xs:simpleType>   
-          
-    <xs:simpleType name="GradeType">
-        <xs:restriction base="xs:int">
-            <xs:enumeration value="0"/>
-            <xs:enumeration value="1"/>
-            <xs:enumeration value="2"/>
-            <xs:enumeration value="3"/>
-            <xs:enumeration value="4"/>
-            <xs:enumeration value="5"/>
-        </xs:restriction>
-    </xs:simpleType>     
-    <xs:simpleType name="HospitalizationType">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="NONE"/>
-            <xs:enumeration value="YES"/>
-            <xs:enumeration value="NO"/>
-        </xs:restriction>
-    </xs:simpleType>    
-    <xs:simpleType name="AttributionType">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="UNRELATED"/>
-            <xs:enumeration value="UNLIKELY"/>
-            <xs:enumeration value="POSSIBLE"/>
-            <xs:enumeration value="PROBABLE"/>
-            <xs:enumeration value="DEFINITE"/>
-        </xs:restriction>
-    </xs:simpleType>  
-    <xs:simpleType name="EpochNameEnum">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="Baseline"/>
-            <xs:enumeration value="Pre-Treatment"/>
-            <xs:enumeration value="Treatment"/>
-            <xs:enumeration value="Post-treatment"/>
-        </xs:restriction>
-    </xs:simpleType>    
+	
+	<xs:element name="evaluatedAdverseEventResults">
+        <xs:annotation>
+            <xs:documentation>List of adverse events evaluated and its result.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="adverseEventResult"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+   
+   <xs:element name="adverseEventResult">    
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element minOccurs="1" ref="adverseEvent"/>			  
+				<xs:element minOccurs="0" name="requiresReporting" type="xs:boolean"/>
+				<xs:element minOccurs="0" name="recommendedReports" type="RecommendedReports"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
 
 </xs:schema>

@@ -3,20 +3,10 @@
     targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common"
     xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/common"
     elementFormDefault="unqualified">
-
-    <xs:complexType name="DomainObjectType">
-        <xs:attribute name="id" type="xs:integer"/>
-    </xs:complexType>
-
-    <xs:complexType name="MutableDomainObjectType">
-        <xs:complexContent>
-            <xs:extension base="DomainObjectType">
-                <xs:attribute name="version" type="xs:positiveInteger"/>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
-
-
+	
+	<xs:include schemaLocation="caAERSCommonDataTypes.xsd"/>
+	<xs:include schemaLocation="caAERSCommonWsTypes.xsd"/>
+	
     <xs:element name="treatmentAssignment" type="TreatmentAssignmentType"/>
     <xs:complexType name="TreatmentAssignmentType">
         <xs:complexContent>
@@ -473,26 +463,6 @@
         </xs:restriction>
     </xs:simpleType>
 
-    <xs:simpleType name="CustomStringType">
-        <xs:restriction base="xs:normalizedString">
-            <xs:minLength value="1"/>
-            <xs:whiteSpace value="collapse"/>
-        </xs:restriction>
-    </xs:simpleType>
-
-    <xs:simpleType name="CustomDateType">
-        <xs:restriction base="xs:integer">
-            <xs:pattern value="[1-2][0-9][0-9][0-9]"></xs:pattern>
-            <xs:whiteSpace value="collapse"/>
-        </xs:restriction>
-    </xs:simpleType>
-
-    <xs:simpleType name="CustomMonthType">
-        <xs:restriction base="xs:integer">
-            <xs:pattern value="((0[1-9])|(1[0-2]))"></xs:pattern>
-            <xs:whiteSpace value="collapse"/>
-        </xs:restriction>
-    </xs:simpleType>
     <xs:complexType name="DeviceType">
         <xs:complexContent>
             <xs:extension base="MutableDomainObjectType">
@@ -566,108 +536,5 @@
           </xs:enumeration>
 	    </xs:restriction>
   	</xs:simpleType>
-
-    <xs:element name="ConfigProperties">
-       <xs:complexType>
-         <xs:sequence>
-             <xs:element name="name" type="CustomStringType" />
-             <xs:element name="ConfigProperty" type="ConfigPropertyType" minOccurs="1" maxOccurs="unbounded"/>
-         </xs:sequence>
-       </xs:complexType>
-    </xs:element>
-
-    <xs:complexType name="ConfigPropertyType">
-        <xs:sequence>
-            <xs:element name="code" type="CustomStringType" minOccurs="1"/>
-            <xs:element name="name" type="xs:string" minOccurs="1"/>
-            <xs:element name="description" type="xs:string" minOccurs="0"/>
-        </xs:sequence>
-    </xs:complexType>
-	
-	<xs:complexType name="WsError">
-		<xs:sequence>
-			<xs:element name="exception" type="xs:string"/>
-			<xs:element name="errorDesc" type="xs:string"/>
-            <xs:element name="errorCode" type="xs:string"/>
-		</xs:sequence>
-	</xs:complexType>
-	
-	<xs:simpleType name="Status">
-		<xs:restriction base="xs:string">
-			<xs:enumeration value="Processed"/>
-			<xs:enumeration value="Partially Processed"/>
-			<xs:enumeration value="Failed to Process"/>
-		</xs:restriction>
-	</xs:simpleType>
-	
-	<xs:element name="entityProcessingOutcomes">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="entityProcessingOutcome" minOccurs="0" maxOccurs="unbounded"> </xs:element>
-			</xs:sequence>
-		
-		</xs:complexType>
-	</xs:element>
-	
-	<xs:element name="entityProcessingOutcome" type="EntityProcessingOutcomeType"></xs:element>
-    <xs:complexType name="EntityProcessingOutcomeType">
-        <xs:sequence>
-        	<xs:element name="klassName" type="xs:string" minOccurs="0" maxOccurs="1"/>
-            <xs:element name="businessIdentifier" type="xs:string" minOccurs="1" maxOccurs="1"/>
-            <xs:element name="message" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
-            <xs:element name="dataBaseId" type="xs:string" minOccurs="0"/>
-            <xs:element name="correlationId" type="xs:string" minOccurs="0"/>
-            <xs:element name="correlationDescription" type="xs:string" minOccurs="0"/>
-            <xs:element name="failed" type="xs:boolean" minOccurs="0" default="false"/>
-        </xs:sequence>
-    </xs:complexType>
-
-    <xs:simpleType name="ResponseCodeType">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="0"/>
-            <xs:enumeration value="1"/>
-        </xs:restriction>
-    </xs:simpleType>
-	<xs:element name="ServiceResponse" type="ServiceResponse" />
-    <xs:complexType name="ServiceResponse">
-    	<xs:sequence>
-    		<xs:element name="status" type="Status"  minOccurs="0"></xs:element>
-    		<xs:element name="wsError" type="WsError" minOccurs="0" maxOccurs="unbounded"></xs:element>
-    		<xs:element ref="entityProcessingOutcomes" minOccurs="0"></xs:element>
-            <xs:element name="message" type="xs:string"  minOccurs="0"></xs:element>
-            <xs:element ref="responseData" minOccurs="0"/>
-    	</xs:sequence>
-        <!-- migrated from study xsd -->
-        <xs:attribute name="responsecode" type="ResponseCodeType"></xs:attribute>
-    </xs:complexType>
-    
-    <xs:element name="responseData" type="responseDataType"></xs:element>
-    <xs:complexType name="responseDataType">
-    		<xs:sequence>
-   				<xs:any minOccurs="0" maxOccurs="1"/>
-   			</xs:sequence>
-    </xs:complexType>
-    
-    <xs:element name="CaaersServiceResponse">
-	    <xs:complexType>
-	        <xs:sequence>
-	            <xs:element ref="ServiceResponse" />
-	        </xs:sequence>
-	    </xs:complexType>
-    </xs:element>
-    
-    <!-- Common faults. -->
-	<xs:element name="SecurityExceptionFault" type="SecurityExceptionFault"/>
-	
-	<xs:complexType name="BaseFault">
-		<xs:sequence>
-			<xs:element name="message" type="xs:string"  />
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="SecurityExceptionFault">
-		<xs:complexContent>
-			<xs:extension base="BaseFault"/>
-		</xs:complexContent>
-	</xs:complexType>
 
 </xs:schema>

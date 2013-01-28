@@ -1,14 +1,13 @@
 package gov.nih.nci.cabig.caaers.api.impl;
 
 import gov.nih.nci.cabig.caaers.CaaersDbNoSecurityTestCase;
-import gov.nih.nci.cabig.caaers.api.impl.SAEEvaluationServiceImpl;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.integration.schema.saerules.AdverseEventType;
+import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AdverseEventType;
+import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.OutComeEnumType;
+import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.OutcomeType;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.AdverseEvents;
-import gov.nih.nci.cabig.caaers.integration.schema.saerules.OutComeEnumType;
-import gov.nih.nci.cabig.caaers.integration.schema.saerules.OutcomeType;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -52,7 +51,12 @@ public class SAEEvaluationServiceTest extends CaaersDbNoSecurityTestCase {
 		assignment.setStudySite(Fixtures.createStudySite(Fixtures.createOrganization("Mayo Clinic"), 1));
 		assignment.setId(1);
 		
-		SAEEvaluationService.processAdverseEvents("12345-ABC", event, assignment, "TAC1");
+		try {
+			SAEEvaluationService.processAdverseEvents("12345-ABC", event, assignment, "TAC1");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 

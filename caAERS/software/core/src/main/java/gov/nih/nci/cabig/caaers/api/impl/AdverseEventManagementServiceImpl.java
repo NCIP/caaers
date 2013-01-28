@@ -21,7 +21,6 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.AeTerminology;
 import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.Epoch;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ExternalAEReviewStatus;
 import gov.nih.nci.cabig.caaers.domain.ExternalAdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExternalAdverseEventReportingPeriod;
@@ -46,7 +45,6 @@ import gov.nih.nci.cabig.caaers.service.migrator.adverseevent.AdverseEventConver
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.validation.AdverseEventGroup;
-import gov.nih.nci.cabig.caaers.validation.ValidationError;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
 import java.util.ArrayList;
@@ -74,9 +72,9 @@ import org.springframework.context.MessageSource;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.semanticbits.rules.impl.BusinessRulesExecutionServiceImpl;
-import org.springframework.transaction.annotation.Transactional;
 
 public class AdverseEventManagementServiceImpl extends AbstractImportService implements ApplicationContextAware {
 
@@ -1047,13 +1045,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 						new String[] { term }, "", Locale.getDefault()));
 			}
 		}
-		/*
-		 * if (operation.equals(DELETE)) { adverseEvent =
-		 * checkIfAEExists(adverseEventReportingPeriod , xmlAdverseEvent); if
-		 * (adverseEvent == null) { throw new
-		 * CaaersSystemException(messageSource.getMessage("WS_AEMS_013", new
-		 * String[]{},"",Locale.getDefault())); } return adverseEvent; }
-		 */
+		
 		try {
 			adverseEventConverter.convertAdverseEventDtoToAdverseEventDomain(xmlAdverseEvent, adverseEvent,
 					terminology, adverseEventReportingPeriod.getAssignment().getStartDateOfFirstCourse(),

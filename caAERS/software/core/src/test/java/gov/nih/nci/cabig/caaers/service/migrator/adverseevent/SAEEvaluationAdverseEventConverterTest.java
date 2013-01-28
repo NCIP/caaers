@@ -6,11 +6,9 @@ import gov.nih.nci.cabig.caaers.domain.AeTerminology;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Outcome;
 import gov.nih.nci.cabig.caaers.domain.Term;
-import gov.nih.nci.cabig.caaers.integration.schema.saerules.AdverseEventType;
-import gov.nih.nci.cabig.caaers.integration.schema.saerules.OutComeEnumType;
-import gov.nih.nci.cabig.caaers.integration.schema.saerules.OutcomeType;
-import gov.nih.nci.cabig.caaers.integration.schema.study.AeTerminologyType;
-
+import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AdverseEventType;
+import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.OutComeEnumType;
+import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.OutcomeType;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 
 import java.util.ArrayList;

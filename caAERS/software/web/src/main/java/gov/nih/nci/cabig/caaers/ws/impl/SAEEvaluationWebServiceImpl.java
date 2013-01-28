@@ -1,9 +1,10 @@
 package gov.nih.nci.cabig.caaers.ws.impl;
 
 import gov.nih.nci.cabig.caaers.api.impl.SAEEvaluationServiceImpl;
-import gov.nih.nci.cabig.caaers.integration.schema.common.*;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.EvaluateAEsInputMessage;
+import gov.nih.nci.cabig.caaers.integration.schema.saerules.EvaluateAEsOutputMessage;
 import gov.nih.nci.cabig.caaers.ws.SAEEvaluationService;
+import gov.nih.nci.cabig.caaers.ws.faults.CaaersFault;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -40,7 +41,10 @@ public class SAEEvaluationWebServiceImpl implements SAEEvaluationService {
 	 * @return gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse
 	 */
 	@WebMethod
-	public CaaersServiceResponse evaluateAEs(@WebParam(name="EvaluateAEsInputMessage", targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/saerules") EvaluateAEsInputMessage evaluateAEsInputMessage) {
+	public EvaluateAEsOutputMessage evaluateAEs
+		(@WebParam(name="EvaluateAEsInputMessage", 
+			targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/saerules") 
+		EvaluateAEsInputMessage evaluateAEsInputMessage) throws CaaersFault {
 		return svcImpl.processAdverseEvents(evaluateAEsInputMessage);
 	}
 		

@@ -1,7 +1,6 @@
 package gov.nih.nci.cabig.caaers.service.migrator.adverseevent;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
@@ -78,32 +77,29 @@ public class AdverseEventConverter {
                 }
             }
 
-            if(adverseEventDto.getAwarenessDate() != null){
-                adverseEvent.setGradedDate(adverseEventDto.getAwarenessDate().toGregorianCalendar().getTime());
+            if(adverseEventDto.getDateFirstLearned() != null){
+                adverseEvent.setGradedDate(adverseEventDto.getDateFirstLearned().toGregorianCalendar().getTime());
                 //awareness date cannot be in future.
                 if(DateUtils.compareDate(today, adverseEvent.getGradedDate()) < 0){
-                    throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_031", new String[]{adverseEventDto.getAwarenessDate()+""},"",Locale.getDefault()));
+                    throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_031", new String[]{adverseEventDto.getDateFirstLearned()+""},"",Locale.getDefault()));
                 }
 
                 if(adverseEvent.getStartDate() != null && DateUtils.compareDate(adverseEvent.getStartDate(), adverseEvent.getGradedDate()) < 0){
-                    throw new CaaersSystemException(messageSource.getMessage("WS_AEMS_073", new String[]{adverseEventDto.getAwarenessDate().toString()}, "Awareness date should not be after Start date", Locale.getDefault()));
+                    throw new CaaersSystemException(messageSource.getMessage("WS_AEMS_073", new String[]{adverseEventDto.getDateFirstLearned().toString()}, "Awareness date should not be after Start date", Locale.getDefault()));
                 }
 
                 if(adverseEvent.getEndDate() != null && DateUtils.compareDate(adverseEvent.getEndDate(), adverseEvent.getGradedDate()) < 0){
-                    throw new CaaersSystemException(messageSource.getMessage("WS_AEMS_074", new String[]{adverseEventDto.getAwarenessDate().toString()}, "Awareness date should not be after End date", Locale.getDefault()));
+                    throw new CaaersSystemException(messageSource.getMessage("WS_AEMS_074", new String[]{adverseEventDto.getDateFirstLearned().toString()}, "Awareness date should not be after End date", Locale.getDefault()));
                 }
-
             }
 
 
-			if (operation.equals(AdverseEventManagementServiceImpl.CREATE) || operation.equals(AdverseEventManagementServiceImpl.UPDATE)) {
-				if (terminology.getCtcVersion() != null && adverseEventDto.getAdverseEventCtepTerm() != null && adverseEventDto.getAdverseEventCtepTerm().getCtepCode()!=null) {
-					populateCtcTerm(adverseEventDto,adverseEvent,terminology.getCtcVersion());
-				}
-				
-				if (terminology.getMeddraVersion() != null && adverseEventDto.getAdverseEventMeddraLowLevelTerm() != null) {
-					populateLowLevelTerm(adverseEventDto.getAdverseEventMeddraLowLevelTerm() ,adverseEvent); 
-				}				
+			if (terminology.getCtcVersion() != null && adverseEventDto.getAdverseEventCtepTerm() != null && adverseEventDto.getAdverseEventCtepTerm().getCtepCode()!=null) {
+				populateCtcTerm(adverseEventDto,adverseEvent,terminology.getCtcVersion());
+			}
+			
+			if (terminology.getMeddraVersion() != null && adverseEventDto.getAdverseEventMeddraLowLevelTerm() != null) {
+				populateLowLevelTerm(adverseEventDto.getAdverseEventMeddraLowLevelTerm() ,adverseEvent); 
 			}
 			
 			if (adverseEventDto.getEventApproximateTime() != null) { 
@@ -124,22 +120,10 @@ public class AdverseEventConverter {
 			if (adverseEventDto.getOutcome() != null) {
 				populateOutcomes(adverseEventDto,adverseEvent);
 			}
-			/*
-			if(adverseEventDto.getGradedDate() != null){
-				adverseEvent.setGradedDate(adverseEventDto.getGradedDate().toGregorianCalendar().getTime());
-			}
-						
-			if (adverseEventDto.isReported() != null) {
-				adverseEvent.setReported(adverseEventDto.isReported());
-			}
 			
-			if (adverseEventDto.isSolicited() != null){
-				adverseEvent.setSolicited(adverseEventDto.isSolicited());
-			}			
-			
-			if (adverseEventDto.isRequiresReporting() != null) {
-				adverseEvent.setRequiresReporting(adverseEventDto.isRequiresReporting());
-			}*/			
+			if(adverseEventDto.isIncreasedRisk() != null){
+				adverseEvent.setParticipantAtRisk(adverseEventDto.isIncreasedRisk());
+			}		
 			
 		}catch(Exception e){
 			throw new CaaersSystemException(e);

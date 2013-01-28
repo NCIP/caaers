@@ -1,14 +1,17 @@
 package gov.nih.nci.cabig.caaers.api.impl;
 
 import gov.nih.nci.cabig.caaers.api.ProcessingOutcome;
+import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersFaultInfo;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.EntityProcessingOutcomeType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.EntityProcessingOutcomes;
+import gov.nih.nci.cabig.caaers.integration.schema.common.Fault;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.Status;
 import gov.nih.nci.cabig.caaers.integration.schema.common.WsError;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Message;
+import gov.nih.nci.cabig.caaers.ws.faults.CaaersFault;
 import gov.nih.nci.cabig.ctms.domain.MutableDomainObject;
 
 import java.util.ArrayList;
@@ -155,5 +158,35 @@ public class Helper {
 
         return sb.toString();
         
+    }
+    
+    public static CaaersFault createCaaersFault(String message, String errorCode, String desc){        
+        return createCaaersFault(message, errorCode, desc, null);
+    }
+    
+    public static CaaersFault createCaaersFault(String message, String errorCode, String desc, String exception){     
+    	CaaersFault caaersFault = new CaaersFault(message, new CaaersFaultInfo());
+        populateCaaersFault(caaersFault, errorCode, desc, exception);
+        return caaersFault;
+    }
+    
+    public static void populateCaaersFault(CaaersFault caaersFault, String errorCode, String desc){        
+        populateCaaersFault(caaersFault, errorCode, desc, null);
+    }
+    
+    public static void populateCaaersFault(CaaersFault caaersFault, String errorCode, String desc, String exception){        
+        List<Fault> faults = caaersFault.getFaultInfo().getFault();
+        faults.add(createFault(errorCode, desc, exception));
+    }
+    
+    public static Fault createFault(String errorCode, String desc, String exception){
+    	String description = desc == null ? "Processing failure" : desc;
+    	
+    	Fault fault = new Fault();
+    	fault.setCode(errorCode);
+        fault.setMessage(description);
+        fault.setException(description);
+        
+        return fault;
     }
 }

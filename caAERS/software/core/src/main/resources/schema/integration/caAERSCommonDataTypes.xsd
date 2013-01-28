@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common"
+    xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/common"
+    elementFormDefault="unqualified">
+	
+    <xs:complexType name="DomainObjectType">
+        <xs:attribute name="id" type="xs:integer"/>
+    </xs:complexType>
+
+    <xs:complexType name="MutableDomainObjectType">
+        <xs:complexContent>
+            <xs:extension base="DomainObjectType">
+                <xs:attribute name="version" type="xs:positiveInteger"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:simpleType name="CustomStringType">
+        <xs:restriction base="xs:normalizedString">
+            <xs:minLength value="1"/>
+            <xs:whiteSpace value="collapse"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="CustomDateType">
+        <xs:restriction base="xs:integer">
+            <xs:pattern value="[1-2][0-9][0-9][0-9]"></xs:pattern>
+            <xs:whiteSpace value="collapse"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="CustomMonthType">
+        <xs:restriction base="xs:integer">
+            <xs:pattern value="((0[1-9])|(1[0-2]))"></xs:pattern>
+            <xs:whiteSpace value="collapse"/>
+        </xs:restriction>
+    </xs:simpleType>
+   
+    <xs:element name="ConfigProperties">
+       <xs:complexType>
+         <xs:sequence>
+             <xs:element name="name" type="CustomStringType" />
+             <xs:element name="ConfigProperty" type="ConfigPropertyType" minOccurs="1" maxOccurs="unbounded"/>
+         </xs:sequence>
+       </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="ConfigPropertyType">
+        <xs:sequence>
+            <xs:element name="code" type="CustomStringType" minOccurs="1"/>
+            <xs:element name="name" type="xs:string" minOccurs="1"/>
+            <xs:element name="description" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+	
+	
+	<xs:complexType name="TimeType">
+		<xs:sequence>
+		  <xs:element minOccurs="1" name="hour" type="xs:integer"/>
+		  <xs:element minOccurs="1" name="minute" type="xs:integer"/>
+		  <xs:element minOccurs="1" name="ampm" type="AMPM"/>
+		</xs:sequence>
+    </xs:complexType>
+	
+	<xs:simpleType name="AMPM">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="AM"/>
+            <xs:enumeration value="PM"/>
+        </xs:restriction>
+    </xs:simpleType>
+	
+</xs:schema>

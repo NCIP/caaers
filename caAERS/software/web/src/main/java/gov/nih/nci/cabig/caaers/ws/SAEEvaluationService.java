@@ -1,7 +1,8 @@
 package gov.nih.nci.cabig.caaers.ws;
 
-import gov.nih.nci.cabig.caaers.integration.schema.common.*;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.EvaluateAEsInputMessage;
+import gov.nih.nci.cabig.caaers.integration.schema.saerules.EvaluateAEsOutputMessage;
+import gov.nih.nci.cabig.caaers.ws.faults.CaaersFault;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -18,7 +19,8 @@ import javax.jws.WebService;
  * @author chandrasekaravr
  *
  */
-@WebService(name="SAEEvaluationServiceInterface",targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/saerules")
+@WebService(name="SAEEvaluationServiceInterface",
+			targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/saerules")
 public interface SAEEvaluationService {
 	/**
 	 *  Evaluate Adverse Events for a Study from an external system.<br/>
@@ -29,8 +31,8 @@ public interface SAEEvaluationService {
 	 * @param adverseEventsInputMessage
 	 * @return gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse
 	 */
-	@WebMethod
-	public CaaersServiceResponse evaluateAEs(@WebParam(name="EvaluateAEsInputMessage", targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/saerules") EvaluateAEsInputMessage evaluateAEsInputMessage) ;
+	@WebMethod	
+	public EvaluateAEsOutputMessage evaluateAEs(@WebParam(name="EvaluateAEsInputMessage", targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/saerules") EvaluateAEsInputMessage evaluateAEsInputMessage) throws CaaersFault ;
 	
 	
 }

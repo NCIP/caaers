@@ -15,11 +15,11 @@ import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.Outcome;
 import gov.nih.nci.cabig.caaers.domain.TimeValue;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
-import gov.nih.nci.cabig.caaers.integration.schema.saerules.AdverseEventMeddraLowLevelTermType;
-import gov.nih.nci.cabig.caaers.integration.schema.saerules.AdverseEventType;
-import gov.nih.nci.cabig.caaers.integration.schema.saerules.HospitalizationType;
-import gov.nih.nci.cabig.caaers.integration.schema.saerules.OutComeEnumType;
-import gov.nih.nci.cabig.caaers.integration.schema.saerules.OutcomeType;
+import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AdverseEventMeddraLowLevelTermType;
+import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AdverseEventType;
+import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.HospitalizationType;
+import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.OutComeEnumType;
+import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.OutcomeType;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 
 import java.util.ArrayList;
