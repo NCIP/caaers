@@ -12,18 +12,8 @@ import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
  * User:medaV
  * Date: 1/17/13
  */
-public class ReporterMigrator implements Migrator<ExpeditedAdverseEventReport> {
+public class SubmitterMigrator implements Migrator<ExpeditedAdverseEventReport> {
 	
-    private UserRepository userRepository;
-	
-    public UserRepository getUserRepository() {
-		return userRepository;
-	}
-
-	public void setUserRepository(UserRepository userRepository) {
-		this.userRepository = userRepository;
-	}
-
 	public void migrate(ExpeditedAdverseEventReport aeReportSrc, ExpeditedAdverseEventReport aeReportDest, DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome) {
     	
     	Reporter srcReporter = aeReportSrc.getReporter();
@@ -31,7 +21,7 @@ public class ReporterMigrator implements Migrator<ExpeditedAdverseEventReport> {
     	
     	 if(srcReporter == null ||  (StringUtils.isEmpty(srcReporter.getPrimaryIdentifierValue())  && StringUtils.isEmpty(srcReporter.getEmailAddress()) 
     			 && StringUtils.isEmpty(srcReporter.getFirstName()) && StringUtils.isEmpty(srcReporter.getLastName())))  {
-             outcome.addError("ER-RM-1", "Physician is missing in the source");
+             outcome.addError("ER-SM-1", "Physician is missing in the source");
              return;
          }
        
@@ -45,7 +35,7 @@ public class ReporterMigrator implements Migrator<ExpeditedAdverseEventReport> {
         }
         
         if ( site == null ) {
-        	 outcome.addError("ER-RM-2", "Study Site is missing in the source");
+        	 outcome.addError("ER-SM-2", "Study Site is missing in the source");
              return;
         }
         
@@ -68,18 +58,8 @@ public class ReporterMigrator implements Migrator<ExpeditedAdverseEventReport> {
         	// Copy the investigator details
        			
        		 if(siteResearchStaff.getResearchStaff().isUser()){
-                 try{
-                    User user = userRepository.getUserByLoginName(siteResearchStaff.getResearchStaff().getCaaersUser().getLoginName());
-                    if(user.hasRole(UserGroupType.ae_reporter)) {
-                    	copyFromSiteResearchStaffDetails(siteResearchStaff, aeReportDest.getReporter());
-                    } else {
-                    	
-                    }
-                 }catch(CaaersSystemException ignore){
-                	 outcome.addError("ER-RM-3", "User is not able to connect to userRepository.");
-                 }
+       			copyFromSiteResearchStaffDetails(siteResearchStaff, aeReportDest.getReporter());
        		}
-        	
         		
         } else {
         
@@ -103,7 +83,7 @@ public class ReporterMigrator implements Migrator<ExpeditedAdverseEventReport> {
             	// Copy the investigator details
             	copyFromSiteInvestigatorDetails(siteInvestigator, aeReportDest.getPhysician());
             } else {
-            		  outcome.addWarning("WR-RM-1", "Given Physician is no longer associated to the study");
+            		  outcome.addWarning("WR-SM-1", "Given Physician is no longer associated to the study");
             }
         	
         }

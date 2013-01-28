@@ -18,8 +18,9 @@ public class LabMigrator implements Migrator<ExpeditedAdverseEventReport> {
 		List<Lab> srcLabs = aeReportSrc.getLabs();
 		List<Lab> destLabs = aeReportDest.getLabs();
     	
-    	if ( srcLabs == null) {
-    		outcome.addWarning("WR_LM_1", "Input doesn't contain any Lab Values.");
+    	if ( srcLabs == null || srcLabs.size() == 0) {
+    		outcome.addWarning("WR-LM-1", "Input doesn't contain any Lab Values.");
+    		return;
     	}
 		
     	if ( destLabs == null ) {
@@ -29,6 +30,7 @@ public class LabMigrator implements Migrator<ExpeditedAdverseEventReport> {
     	for ( Lab lab : srcLabs) {
     		Lab destLab = new Lab();
     		copyProperties(lab, destLab);
+    		destLab.setReport(aeReportDest);
     		destLabs.add(destLab);
     	}
 	}    	 

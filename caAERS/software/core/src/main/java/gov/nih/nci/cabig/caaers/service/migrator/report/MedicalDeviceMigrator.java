@@ -18,8 +18,9 @@ public class MedicalDeviceMigrator implements Migrator<ExpeditedAdverseEventRepo
 		List<MedicalDevice> srcMedicalDevices = aeReportSrc.getMedicalDevices();
 		List<MedicalDevice> destMedicalDevices = aeReportDest.getMedicalDevices();
     	
-    	if ( srcMedicalDevices == null) {
-    		outcome.addWarning("WR_LM_1", "Input doesn't contain any Lab Values.");
+    	if ( srcMedicalDevices == null || srcMedicalDevices.size() == 0) {
+    		outcome.addWarning("WR-MDM-1", "Input doesn't contain any Lab Values.");
+    		return;
     	}
 		
     	if ( destMedicalDevices == null ) {
@@ -29,6 +30,8 @@ public class MedicalDeviceMigrator implements Migrator<ExpeditedAdverseEventRepo
     	for ( MedicalDevice dev : srcMedicalDevices) {
     		MedicalDevice destDev = new MedicalDevice();
     		copyFromSource(dev, destDev);
+    		destDev.setReport(aeReportDest);
+    		destMedicalDevices.add(destDev);
     	}
 	}
 	

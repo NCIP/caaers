@@ -14,8 +14,7 @@ public class DiseaseHistoryMigrator implements Migrator<ExpeditedAdverseEventRep
     
 		DiseaseHistory srcDisHis = aeReportSrc.getDiseaseHistory();
 		DiseaseHistory destDisHis = aeReportDest.getDiseaseHistory();
-    	
-    	
+		
     	if ( destDisHis == null ) {
     		destDisHis = new DiseaseHistory();
     	}
