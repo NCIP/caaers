@@ -73,7 +73,7 @@ public class AdverseEventConverter {
                 }
                 //end date cannot be earlier than start date.
                 if(adverseEvent.getStartDate() != null && (DateUtils.compareDate(adverseEvent.getEndDate(), adverseEvent.getStartDate()) < 0)){
-                    throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_015", new String[]{adverseEventDto.getEndDate()+""},"",Locale.getDefault()));
+                    throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_075", new String[]{adverseEventDto.getEndDate()+""},"",Locale.getDefault()));
                 }
             }
 
