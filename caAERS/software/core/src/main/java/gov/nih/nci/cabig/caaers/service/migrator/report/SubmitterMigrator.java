@@ -21,7 +21,7 @@ public class SubmitterMigrator implements Migrator<ExpeditedAdverseEventReport> 
     	
     	 if(srcReporter == null ||  (StringUtils.isEmpty(srcReporter.getPrimaryIdentifierValue())  && StringUtils.isEmpty(srcReporter.getEmailAddress()) 
     			 && StringUtils.isEmpty(srcReporter.getFirstName()) && StringUtils.isEmpty(srcReporter.getLastName())))  {
-             outcome.addError("ER-SM-1", "Physician is missing in the source");
+             outcome.addError("ER-SM-1", "Submitter is missing in the source");
              return;
          }
        

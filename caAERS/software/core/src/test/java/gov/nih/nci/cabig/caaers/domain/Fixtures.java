@@ -2,6 +2,8 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import com.semanticbits.rules.brxml.*;
 import com.semanticbits.rules.brxml.Condition;
+
+import gov.nih.nci.cabig.caaers.domain.ParticipantHistory.Measure;
 import gov.nih.nci.cabig.caaers.domain.dto.AdverseEventDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.AeMergeDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.TaskNotificationDTO;
@@ -34,6 +36,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+
+import org.apache.commons.lang.math.RandomUtils;
 
 /**
  * @author Rhett Sutphin
@@ -1178,4 +1182,130 @@ public class Fixtures {
         conMed.setStillTakingMedications(stillTakingMedication);
         return conMed;
     }
+    
+    public static BehavioralIntervention createBehavioralIntervention(String desc, OtherIntervention oi) {
+    	BehavioralIntervention bi = new BehavioralIntervention();
+    	bi.setDescription(desc);
+    	bi.setStudyIntervention(oi);
+    	bi.setId(RandomUtils.nextInt());
+    	return bi;
+    }
+    
+    public static OtherIntervention createOtherIntervention(String name, String desc, Study study, StudyTherapyType type, boolean retiredIndicator) {
+    	OtherIntervention oi = new OtherIntervention();
+    	oi.setName(name);
+    	oi.setId(RandomUtils.nextInt());
+    	oi.setDescription(desc);
+    	oi.setStudy(study);
+    	oi.setStudyTherapyType(type);
+    	oi.setRetiredIndicator(retiredIndicator);
+    	return oi;
+    }
+    public static BiologicalIntervention createBiologicalIntervention(String desc, OtherIntervention oi) {
+    	BiologicalIntervention bi = new BiologicalIntervention();
+    	bi.setDescription(desc);
+    	bi.setStudyIntervention(oi);
+    	bi.setId(RandomUtils.nextInt());
+    	return bi;
+    }
+    
+    public static DietarySupplementIntervention createDietarySupplementIntervention(String desc, OtherIntervention oi) {
+    	DietarySupplementIntervention dt = new DietarySupplementIntervention();
+    	dt.setDescription(desc);
+    	dt.setStudyIntervention(oi);
+    	dt.setId(RandomUtils.nextInt());
+    	return dt;
+    }
+    
+    public static GeneticIntervention createGeneticIntervention(String desc, OtherIntervention oi) {
+    	GeneticIntervention gt = new GeneticIntervention();
+    	gt.setDescription(desc);
+    	gt.setStudyIntervention(oi);
+    	gt.setId(RandomUtils.nextInt());
+    	return gt;
+    }
+    
+    public static OtherAEIntervention createOtherAEIntervention(String desc, OtherIntervention oi) {
+    	OtherAEIntervention oai = new OtherAEIntervention();
+    	oai.setDescription(desc);
+    	oai.setStudyIntervention(oi);
+    	oai.setId(RandomUtils.nextInt());
+    	return oai;
+    }
+    
+    public static RadiationIntervention  createRadiationIntervention(String desc, OtherIntervention oi,Date lastTreatmentDate, String treatmentArm, String daysElapsed,String dosage,String dosageUnit,
+    		String fractionNumber,RadiationAdministration administration, String adjustment) {
+    	RadiationIntervention ri = new RadiationIntervention();
+		ri.setStudyRadiation(oi);
+		ri.setAdministration(administration);
+		ri.setLastTreatmentDate(lastTreatmentDate);
+		ri.setFractionNumber(fractionNumber);
+		ri.setDosageUnit(dosageUnit);
+		ri.setDosage(dosage);
+		ri.setDaysElapsed(daysElapsed);
+		ri.setAdjustment(adjustment);
+		ri.setDescription(desc);
+		ri.setTreatmentArm(treatmentArm);
+    	ri.setId(RandomUtils.nextInt());
+    	return ri;
+    }
+
+    public static SAEReportPreExistingCondition createSAEReportPreExistingCondition(String other, boolean linkedToOtherCause, PreExistingCondition preCond) {
+    	
+    	SAEReportPreExistingCondition pc = new SAEReportPreExistingCondition();
+    	
+    	pc.setLinkedToOtherCause(linkedToOtherCause);
+    	pc.setOther(other);
+    	pc.setPreExistingCondition(preCond);
+    	
+    	return pc;
+    	
+    }
+    
+    public static SurgeryIntervention createSurgeryIntervention(String desc, InterventionSite interventionSite, String treatmentArm, OtherIntervention oi) {
+    	SurgeryIntervention st = new SurgeryIntervention();
+    	st.setDescription(desc);
+    	st.setTreatmentArm(treatmentArm);
+    	st.setDescription(desc);
+    	st.setInterventionSite(interventionSite);
+    	st.setStudySurgery(oi);
+    	st.setId(RandomUtils.nextInt());
+    	
+    	return st;
+    }
+    
+    public static SAEReportPriorTherapy createSAEReportPriorTherapy(String other, DateValue startDate, DateValue endDate, PriorTherapy priorTherapy) {
+    	
+    	SAEReportPriorTherapy rpt = new SAEReportPriorTherapy();
+    	
+    	rpt.setOther(other);
+    	rpt.setPriorTherapy(priorTherapy);
+    	rpt.setStartDate(startDate);
+    	rpt.setEndDate(endDate);
+    	
+    	return rpt;
+    	
+    }
+ 
+    public static OtherCause createOtherCause(String desc) {
+    	OtherCause oc = new OtherCause();
+    	oc.setText(desc);
+    	oc.setId(RandomUtils.nextInt());
+    	return oc;
+    }
+    
+    public static ParticipantHistory createParticipantHistory(String baselinePerformance, String bsa,Measure height, Measure weight  ) {
+    	ParticipantHistory ph = new ParticipantHistory();
+    	
+    	ph.setBaselinePerformanceStatus(baselinePerformance);
+    	ph.setBsa(bsa);
+    	ph.setHeight(height);
+    	ph.setWeight(weight);
+    	ph.setId(RandomUtils.nextInt());
+
+    	return ph;
+    }
+    
+ 
+    
 }
