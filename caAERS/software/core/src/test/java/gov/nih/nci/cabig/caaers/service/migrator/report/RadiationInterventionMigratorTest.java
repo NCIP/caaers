@@ -2,12 +2,15 @@ package gov.nih.nci.cabig.caaers.service.migrator.report;
 
 
 
+import java.util.Date;
+
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.OtherAEIntervention;
 import gov.nih.nci.cabig.caaers.domain.OtherIntervention;
+import gov.nih.nci.cabig.caaers.domain.RadiationIntervention;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
@@ -44,16 +47,16 @@ public class RadiationInterventionMigratorTest extends TestCase {
         oi.setStudy(study);
         String desc = "Testing Radiation Intervention Migrator";
         
-        OtherAEIntervention oai = Fixtures.createOtherAEIntervention(desc, oi);
-        src.getOtherAEInterventions().add(oai);
+        RadiationIntervention ri = Fixtures.createRadiationIntervention(desc, oi, new Date(), "treatment arm","1","Normal Dosage","mg","1",null,"adjustment");
+        src.getRadiationInterventions().add(ri);
                
     }
 
     public void testMigrateWithValues() throws Exception {
     	
     	migrator.migrate(src,dest,new DomainObjectImportOutcome<ExpeditedAdverseEventReport>());
-    	assertEquals(1, dest.getOtherAEInterventions().size());
-    	assertEquals("Testing OtherAE Intervention Migrator", dest.getOtherAEInterventions().get(0).getDescription());
-    	
+    	assertEquals(1, dest.getRadiationInterventions().size());
+    	assertEquals("Testing Radiation Intervention Migrator", dest.getRadiationInterventions().get(0).getDescription());
+    	assertEquals("mg", dest.getRadiationInterventions().get(0).getDosageUnit());
     }
 }
