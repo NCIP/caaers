@@ -5,44 +5,78 @@ import gov.nih.nci.cabig.caaers.domain.Address;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription;
 import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
+import gov.nih.nci.cabig.caaers.domain.Availability;
+import gov.nih.nci.cabig.caaers.domain.BiologicalIntervention;
+import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 import gov.nih.nci.cabig.caaers.domain.DateValue;
+import gov.nih.nci.cabig.caaers.domain.Device;
+import gov.nih.nci.cabig.caaers.domain.DeviceOperator;
+import gov.nih.nci.cabig.caaers.domain.DietarySupplementIntervention;
 import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
 import gov.nih.nci.cabig.caaers.domain.EventStatus;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.InterventionSite;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
+import gov.nih.nci.cabig.caaers.domain.Lab;
+import gov.nih.nci.cabig.caaers.domain.LabCategory;
+import gov.nih.nci.cabig.caaers.domain.LabTerm;
+import gov.nih.nci.cabig.caaers.domain.LabValue;
 import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
 import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.LocalStudy;
+import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
 import gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.domain.OtherIntervention;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.ParticipantHistory;
+import gov.nih.nci.cabig.caaers.domain.ParticipantHistory.Measure;
 import gov.nih.nci.cabig.caaers.domain.Physician;
 import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
+import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
+import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
+import gov.nih.nci.cabig.caaers.domain.RadiationIntervention;
 import gov.nih.nci.cabig.caaers.domain.Reporter;
+import gov.nih.nci.cabig.caaers.domain.ReprocessedDevice;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition;
+import gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyDevice;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
 import gov.nih.nci.cabig.caaers.domain.TimeValue;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.AdverseEventReport;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.AdverseEventReportingPeriodType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.AdverseEventResponseDescriptionType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.AdverseEventType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.BiologicalInterventionType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.ConcomitantMedicationType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.ContactMechanismType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.DateValueType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.DietarySupplementInterventionType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.DiseaseHistoryType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.LabType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.MedicalDeviceType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.MetastaticDiseaseSiteType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.OrganizationAssignedIdentifierType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.ParticipantHistoryType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.ParticipantType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.ParticipantType.Identifiers;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.PhysicianType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.RadiationInterventionType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.ReporterType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.SAEReportPreExistingConditionType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.SAEReportPriorTherapyType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.StudyParticipantAssignmentType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.StudySiteType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.StudyType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.SurgeryInterventionType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationType;
 
 import java.sql.Timestamp;
@@ -85,17 +119,304 @@ public class ExpeditedAdverseEventReportConverter {
 		
 		domainAdverseEventReport.setReporter(convertToDomainReporter(xmlAdverseEventReport.getReporter()));
 		domainAdverseEventReport.setPhysician(convertToDomainPhysician(xmlAdverseEventReport.getPhysician()));
+		if(xmlAdverseEventReport.getParticipantHistory() != null){
+			domainAdverseEventReport.setParticipantHistory(convertToDomainParticipantHistory(xmlAdverseEventReport.getParticipantHistory()));
+		}
 		
 		if(xmlAdverseEventReport.getStudyParticipantAssignment() != null){
 			domainAdverseEventReport.getReportingPeriod().setAssignment(convertToDomainStudyParticipantAssignment(xmlAdverseEventReport.getStudyParticipantAssignment()));
+		}
+		
+		for(RadiationInterventionType xmlRadiationInterventionType : xmlAdverseEventReport.getRadiationIntervention()){
+			domainAdverseEventReport.getRadiationInterventions().add(convertToDomainRadiationIntervention(xmlRadiationInterventionType));
+		}
+	
+		for(SurgeryInterventionType xmlSurgeryInterventionType : xmlAdverseEventReport.getSurgeryIntervention()){
+			domainAdverseEventReport.getSurgeryInterventions().add(convertToDomainSurgeryIntervention(xmlSurgeryInterventionType));
+		}
+	
+		for(BiologicalInterventionType xmlBiologicalInterventionType : xmlAdverseEventReport.getBiologicalIntervention()){
+			domainAdverseEventReport.getBiologicalInterventions().add(convertToDomainBiologicalIntervention(xmlBiologicalInterventionType));
+		}
+	
+		for(DietarySupplementInterventionType xmlDietarySupplementInterventionType : xmlAdverseEventReport.getDietarySupplementIntervention()){
+			domainAdverseEventReport.getDietaryInterventions().add(convertToDomainDietarySupplementIntervention(xmlDietarySupplementInterventionType));
 		}
 		
 		for(AdverseEventType xmlAdverseEventType : xmlAdverseEventReport.getAdverseEvent()){
 			domainAdverseEventReport.addAdverseEvent(aeReportAdverseEventConverter.convertAdverseEventDtoToAdverseEventDomain(
 					xmlAdverseEventType, dbStudy.getAeTerminology(), domainAdverseEventReport.getReportingPeriod().getAssignment().getStartDateOfFirstCourse()));
 		}
+		
+		for(MedicalDeviceType xmlMedicalDeviceType : xmlAdverseEventReport.getMedicalDevice()){
+			domainAdverseEventReport.addMedicalDevice(convertToDomainMedicalDevice(xmlMedicalDeviceType));
+		}
+		
+		for(ConcomitantMedicationType xmlConcomitantMedicationType : xmlAdverseEventReport.getConcomitantMedication()){
+			domainAdverseEventReport.addConcomitantMedication(convertToDomainConcomitantMedication(xmlConcomitantMedicationType));
+		}
+		
+		for(LabType xmlLabType : xmlAdverseEventReport.getLab()){
+			domainAdverseEventReport.addLab(convertToDomainLab(xmlLabType));
+		}
+		
+		for(SAEReportPreExistingConditionType saeReportPreExistingConditionType : xmlAdverseEventReport.getSAEReportPreExistingCondition()){
+			domainAdverseEventReport.addSaeReportPreExistingCondition(convertToDomainSAEReportPreExistingCondition(saeReportPreExistingConditionType));
+		}
+		
+		for(SAEReportPriorTherapyType saeReportPriorTherapyType : xmlAdverseEventReport.getSAEReportPriorTherapy()){
+			domainAdverseEventReport.addSaeReportPriorTherapies(convertToDomainSAEReportPriorTherapy(saeReportPriorTherapyType));
+		}
 
 		return domainAdverseEventReport;
+	}
+	
+	protected SAEReportPriorTherapy convertToDomainSAEReportPriorTherapy(SAEReportPriorTherapyType xmlSaeReportPriorTherapyType){
+		SAEReportPriorTherapy saeReportPriorTherapy = new SAEReportPriorTherapy();
+		if(xmlSaeReportPriorTherapyType.getStartDate() != null){
+			saeReportPriorTherapy.setStartDate((convertToDomainDateValue(xmlSaeReportPriorTherapyType.getStartDate())));
+		}
+		
+		if(xmlSaeReportPriorTherapyType.getEndDate() != null) {
+			saeReportPriorTherapy.setEndDate((convertToDomainDateValue(xmlSaeReportPriorTherapyType.getEndDate())));
+		}
+		saeReportPriorTherapy.setOther(xmlSaeReportPriorTherapyType.getOther());
+		if(xmlSaeReportPriorTherapyType.getPriorTherapy() != null){
+			PriorTherapy priorTherapy = new PriorTherapy();
+			priorTherapy.setText(xmlSaeReportPriorTherapyType.getPriorTherapy().getText());
+			priorTherapy.setMeddraCode((xmlSaeReportPriorTherapyType.getPriorTherapy().getMeddraCode()));
+			saeReportPriorTherapy.setPriorTherapy(priorTherapy);
+		}
+		
+		return saeReportPriorTherapy;
+	}
+	
+	
+	protected SAEReportPreExistingCondition convertToDomainSAEReportPreExistingCondition(SAEReportPreExistingConditionType xmlSaeReportPreExistingConditionType){
+		SAEReportPreExistingCondition saeReportPreExistingCondition = new SAEReportPreExistingCondition();
+		saeReportPreExistingCondition.setOther(xmlSaeReportPreExistingConditionType.getOther());
+		saeReportPreExistingCondition.setLinkedToOtherCause(xmlSaeReportPreExistingConditionType.isLinkedToOtherCause());
+		if(xmlSaeReportPreExistingConditionType.getPreExistingCondition() != null){
+			PreExistingCondition preExistingCondition = new PreExistingCondition();
+			preExistingCondition.setText(xmlSaeReportPreExistingConditionType.getPreExistingCondition().getText());
+			preExistingCondition.setMeddraHlgt(xmlSaeReportPreExistingConditionType.getPreExistingCondition().getMeddraHlgt());
+			preExistingCondition.setMeddraLlt(xmlSaeReportPreExistingConditionType.getPreExistingCondition().getMeddraLlt());
+			preExistingCondition.setMeddraLltCode(xmlSaeReportPreExistingConditionType.getPreExistingCondition().getMeddraLltCode());
+		}
+		
+		return saeReportPreExistingCondition;
+	}
+	
+	
+	protected Lab convertToDomainLab(LabType xmlLabType){
+		Lab lab = new Lab();
+		lab.setUnits(xmlLabType.getUnits());
+		lab.setNormalRange(xmlLabType.getNormalRange());
+		
+		if(xmlLabType.getBaseline() != null){
+			LabValue baseline = new LabValue();
+			baseline.setValue(xmlLabType.getBaseline().getValue());
+			if(xmlLabType.getBaseline().getDate() != null){
+				baseline.setDate(xmlLabType.getBaseline().getDate().toGregorianCalendar().getTime());
+			}
+			lab.setBaseline(baseline);
+		}
+		if(xmlLabType.getNadir() != null){
+			LabValue nadir = new LabValue();
+			nadir.setValue(xmlLabType.getNadir().getValue());
+			if(xmlLabType.getNadir().getDate() != null){
+				nadir.setDate(xmlLabType.getNadir().getDate().toGregorianCalendar().getTime());
+			}
+			lab.setNadir(nadir);
+		}
+		if(xmlLabType.getRecovery() != null){
+			LabValue recovery = new LabValue();
+			recovery.setValue(xmlLabType.getRecovery().getValue());
+			if(xmlLabType.getRecovery().getDate() != null){
+				recovery.setDate(xmlLabType.getRecovery().getDate().toGregorianCalendar().getTime());
+			}
+			lab.setRecovery(recovery);
+		}
+		
+		if(xmlLabType.getLabTerm() != null){
+			
+			LabTerm labTerm = new LabTerm();
+			labTerm.setTerm(xmlLabType.getLabTerm().getTerm());
+			if(xmlLabType.getLabTerm().getCategory() != null){
+				LabCategory labCategory = new LabCategory();
+				labCategory.setName(xmlLabType.getLabTerm().getCategory().getName());
+				labTerm.setCategory(labCategory);
+			}
+			lab.setLabTerm(labTerm);
+		}
+		
+		
+		return lab;
+	}
+	
+	
+	
+	protected ConcomitantMedication convertToDomainConcomitantMedication(ConcomitantMedicationType xmlConcomitantMedicationType){
+		ConcomitantMedication concomitantMedication = new ConcomitantMedication();
+		concomitantMedication.setAgentName(xmlConcomitantMedicationType.getName().toString());
+		if(xmlConcomitantMedicationType.getStartDate() != null){
+			concomitantMedication.setStartDate(convertToDomainDateValue(xmlConcomitantMedicationType.getStartDate()));
+		}
+		
+		if(xmlConcomitantMedicationType.getEndDate()!= null){
+			concomitantMedication.setEndDate(convertToDomainDateValue(xmlConcomitantMedicationType.getEndDate()));
+		}
+		concomitantMedication.setStillTakingMedications(xmlConcomitantMedicationType.isStillTakingMedications());
+		
+		return concomitantMedication;		
+	}
+	
+	protected MedicalDevice convertToDomainMedicalDevice(MedicalDeviceType xmlMedicalDeviceType){
+		MedicalDevice medicalDevice = new MedicalDevice();
+		medicalDevice.setBrandName(xmlMedicalDeviceType.getBrandName());
+		medicalDevice.setCatalogNumber(xmlMedicalDeviceType.getCatalogNumber());
+		medicalDevice.setCommonName(xmlMedicalDeviceType.getCommonName());
+		if(xmlMedicalDeviceType.getDeviceOperator() != null){
+			medicalDevice.setDeviceOperator(DeviceOperator.valueOf(xmlMedicalDeviceType.getDeviceOperator().name()));
+		}
+		
+		medicalDevice.setDeviceType(xmlMedicalDeviceType.getDeviceType());
+		medicalDevice.setManufacturerName(xmlMedicalDeviceType.getManufacturerName());
+		medicalDevice.setManufacturerCity(xmlMedicalDeviceType.getManufacturerCity());
+		medicalDevice.setManufacturerState(xmlMedicalDeviceType.getManufacturerState());
+		medicalDevice.setModelNumber(xmlMedicalDeviceType.getModelNumber());
+		medicalDevice.setSerialNumber(xmlMedicalDeviceType.getSerialNumber());
+		medicalDevice.setOtherNumber(xmlMedicalDeviceType.getOtherNumber());
+		if(xmlMedicalDeviceType.getExplantedDate() != null){
+			medicalDevice.setExplantedDate(xmlMedicalDeviceType.getExplantedDate().toGregorianCalendar().getTime());
+		}
+		
+		if(xmlMedicalDeviceType.getDeviceReprocessed() != null){
+			medicalDevice.setDeviceReprocessed(ReprocessedDevice.valueOf(xmlMedicalDeviceType.getDeviceReprocessed().name()));
+		}
+		if(xmlMedicalDeviceType.getEvaluationAvailability() != null){
+			medicalDevice.setEvaluationAvailability(Availability.valueOf(xmlMedicalDeviceType.getEvaluationAvailability().name()));
+		}
+		
+		if(xmlMedicalDeviceType.getStudyDevice() != null){
+			StudyDevice studyDevice = new StudyDevice();
+			if(xmlMedicalDeviceType.getStudyDevice().getDevice() != null){
+				Device device = new Device();
+				device.setType(xmlMedicalDeviceType.getStudyDevice().getDevice().getType());
+				device.setBrandName(xmlMedicalDeviceType.getStudyDevice().getDevice().getBrandName());
+				device.setCommonName(xmlMedicalDeviceType.getStudyDevice().getDevice().getCommonName());
+				
+				studyDevice.setCatalogNumber(xmlMedicalDeviceType.getStudyDevice().getCatalogNumber());
+				studyDevice.setModelNumber(xmlMedicalDeviceType.getStudyDevice().getModelNumber());
+				studyDevice.setManufacturerName(xmlMedicalDeviceType.getStudyDevice().getManufacturerName());
+				studyDevice.setManufacturerCity(xmlMedicalDeviceType.getStudyDevice().getManufacturerCity());
+				studyDevice.setManufacturerState(xmlMedicalDeviceType.getStudyDevice().getManufacturerState());
+			} else {
+				studyDevice.setOtherBrandName(xmlMedicalDeviceType.getStudyDevice().getOtherBrandName());
+				studyDevice.setOtherCommonName(xmlMedicalDeviceType.getStudyDevice().getOtherCommonName());
+				studyDevice.setOtherDeviceType(xmlMedicalDeviceType.getStudyDevice().getOtherDeviceType());
+			}
+			medicalDevice.setStudyDevice(studyDevice);
+		}
+		
+		return medicalDevice;
+	}
+	
+	protected ParticipantHistory convertToDomainParticipantHistory(ParticipantHistoryType xmlParticipantHistoryType){
+		ParticipantHistory history = new ParticipantHistory();
+		history.setBaselinePerformanceStatus(xmlParticipantHistoryType.getBaselinePerformanceStatus());
+		if(xmlParticipantHistoryType.getHeight() != null){
+			Measure height = new Measure();
+			height.setCode(xmlParticipantHistoryType.getHeight().getCode());
+			height.setQuantity(xmlParticipantHistoryType.getHeight().getQuantity());
+			height.setUnit(xmlParticipantHistoryType.getHeight().getUnit());
+			history.setHeight(height);
+		}
+		
+		if(xmlParticipantHistoryType.getWeight() != null){
+			Measure weight = new Measure();
+			weight.setCode(xmlParticipantHistoryType.getWeight().getCode());
+			weight.setQuantity(xmlParticipantHistoryType.getWeight().getQuantity());
+			weight.setUnit(xmlParticipantHistoryType.getWeight().getUnit());
+			history.setWeight(weight);
+		}
+		
+		return history;
+	}
+	
+	// convert interventions
+	
+	protected RadiationIntervention convertToDomainRadiationIntervention(RadiationInterventionType xmlRadiationInterventionType){
+		RadiationIntervention intervention = new RadiationIntervention();
+		intervention.setAdjustment(xmlRadiationInterventionType.getAdjustment());
+		intervention.setDaysElapsed(String.valueOf(xmlRadiationInterventionType.getDaysElapsed()));
+		intervention.setDosage(String.valueOf(xmlRadiationInterventionType.getDosage()));
+		intervention.setDosageUnit(String.valueOf(xmlRadiationInterventionType.getDosageUnit()));
+		if(xmlRadiationInterventionType.getLastTreatmentDate() != null){
+			intervention.setLastTreatmentDate(xmlRadiationInterventionType.getLastTreatmentDate().toGregorianCalendar().getTime());
+		}
+		intervention.setFractionNumber(String.valueOf(xmlRadiationInterventionType.getFractionNumber()));
+		intervention.setAdjustment(xmlRadiationInterventionType.getAdjustment());
+		if(xmlRadiationInterventionType.getOtherIntervention() != null){
+			OtherIntervention otherIntervention = new OtherIntervention();
+			otherIntervention.setName(xmlRadiationInterventionType.getOtherIntervention().getName());
+			otherIntervention.setDescription(xmlRadiationInterventionType.getOtherIntervention().getDescription());
+			intervention.setStudyRadiation(otherIntervention);
+		}
+		
+		
+		return intervention;
+	}
+	
+	
+	protected SurgeryIntervention convertToDomainSurgeryIntervention(SurgeryInterventionType xmlSurgeryInterventionType){
+		SurgeryIntervention intervention = new SurgeryIntervention();
+		if(xmlSurgeryInterventionType.getInterventionDate() != null){
+			intervention.setInterventionDate(xmlSurgeryInterventionType.getInterventionDate().toGregorianCalendar().getTime());
+		}
+		
+		if(xmlSurgeryInterventionType.getInterventionSite() != null){
+			InterventionSite interventionSite = new InterventionSite();
+			interventionSite.setName(xmlSurgeryInterventionType.getInterventionSite().getName());
+			intervention.setInterventionSite(interventionSite);
+		}
+		
+		if(xmlSurgeryInterventionType.getOtherIntervention() != null){
+			OtherIntervention otherIntervention = new OtherIntervention();
+			otherIntervention.setName(xmlSurgeryInterventionType.getOtherIntervention().getName());
+			otherIntervention.setDescription(xmlSurgeryInterventionType.getOtherIntervention().getDescription());
+			intervention.setStudySurgery(otherIntervention);
+		}
+		
+		return intervention;
+	}
+	
+	protected BiologicalIntervention convertToDomainBiologicalIntervention(BiologicalInterventionType xmlBiologicalInterventionType){
+		BiologicalIntervention intervention = new BiologicalIntervention();
+		intervention.setDescription(xmlBiologicalInterventionType.getDescription());
+		
+		if(xmlBiologicalInterventionType.getOtherIntervention() != null){
+			OtherIntervention otherIntervention = new OtherIntervention();
+			otherIntervention.setName(xmlBiologicalInterventionType.getOtherIntervention().getName());
+			otherIntervention.setDescription(xmlBiologicalInterventionType.getOtherIntervention().getDescription());
+			intervention.setStudyIntervention(otherIntervention);
+		}
+		
+		return intervention;
+	}
+	
+	protected DietarySupplementIntervention convertToDomainDietarySupplementIntervention(DietarySupplementInterventionType xmlDietarySupplementInterventionType){
+		DietarySupplementIntervention intervention = new DietarySupplementIntervention();
+		intervention.setDescription(xmlDietarySupplementInterventionType.getDescription());
+		
+		if(xmlDietarySupplementInterventionType.getOtherIntervention() != null){
+			OtherIntervention otherIntervention = new OtherIntervention();
+			otherIntervention.setName(xmlDietarySupplementInterventionType.getOtherIntervention().getName());
+			otherIntervention.setDescription(xmlDietarySupplementInterventionType.getOtherIntervention().getDescription());
+			intervention.setStudyIntervention(otherIntervention);
+		}
+		
+		return intervention;
 	}
 	
 	protected DiseaseHistory convertToDomainDiseaseHistory(DiseaseHistoryType xmlDiseaseHistoryType){
@@ -107,15 +428,20 @@ public class ExpeditedAdverseEventReportConverter {
 		}
 		
 		if(xmlDiseaseHistoryType.getDiagnosisDate() != null){
-			DateValue diagnosisDate = new DateValue();
-			diagnosisDate.setDay(xmlDiseaseHistoryType.getDiagnosisDate().getDay());
-			diagnosisDate.setMonth(xmlDiseaseHistoryType.getDiagnosisDate().getMonth());
-			diagnosisDate.setYear(xmlDiseaseHistoryType.getDiagnosisDate().getYear());
-			diagnosisDate.setZone(xmlDiseaseHistoryType.getDiagnosisDate().getZone());
-			diseaseHistory.setDiagnosisDate(diagnosisDate);
+			diseaseHistory.setDiagnosisDate(convertToDomainDateValue(xmlDiseaseHistoryType.getDiagnosisDate()));
 		}
 		
 		return diseaseHistory;
+	}
+	
+	protected DateValue convertToDomainDateValue(DateValueType xmlDateValueType){
+		DateValue dateValue = new DateValue();
+		dateValue.setDay(xmlDateValueType.getDay());
+		dateValue.setMonth(xmlDateValueType.getMonth());
+		dateValue.setYear(xmlDateValueType.getYear());
+		dateValue.setZone(xmlDateValueType.getZone());
+		
+		return dateValue;
 	}
 	
 	protected MetastaticDiseaseSite convertToDomainMestastaticDiseaseSite(MetastaticDiseaseSiteType xmlMetastaticDiseaseSiteType){
@@ -150,7 +476,7 @@ public class ExpeditedAdverseEventReportConverter {
 		adverseEventResponseDescription.setRetreated(xmlAdverseEventResponseDescriptionType.isRetreated());
 		
 		if(xmlAdverseEventResponseDescriptionType.getPresentStatus() != null){
-			adverseEventResponseDescription.setPresentStatus(PostAdverseEventStatus.valueOf(xmlAdverseEventResponseDescriptionType.getPresentStatus()));
+			adverseEventResponseDescription.setPresentStatus(PostAdverseEventStatus.valueOf(xmlAdverseEventResponseDescriptionType.getPresentStatus().name()));
 		}
 		if(xmlAdverseEventResponseDescriptionType.getEventAbate() != null){
 			adverseEventResponseDescription.setEventAbate(EventStatus.valueOf(xmlAdverseEventResponseDescriptionType.getEventAbate()));
@@ -249,7 +575,7 @@ public class ExpeditedAdverseEventReportConverter {
 		}
 		
 		if(xmlReportingPeriodType.getCycleNumber() != null){
-		//	reportingPeriod.setCycleNumber(xmlReportingPeriodType.getCycleNumber());
+			reportingPeriod.setCycleNumber(xmlReportingPeriodType.getCycleNumber());
 		}
 		
 		
@@ -308,7 +634,6 @@ public class ExpeditedAdverseEventReportConverter {
 	
 	protected void convertIdentifierTypesToDomainIdentifiers(Identifiers identifierTypes, List<Identifier> identifiers) throws Exception{
 		
-		//BJ: fixed  	 CAAERS-2900
 		if(identifierTypes != null){
 			List<OrganizationAssignedIdentifierType> orgAssignedIdList = identifierTypes.getOrganizationAssignedIdentifier();
 			if(orgAssignedIdList != null && !orgAssignedIdList.isEmpty()){
@@ -325,7 +650,7 @@ public class ExpeditedAdverseEventReportConverter {
 		orgIdentifier.setType(organizationAssignedIdentifierType.getType().value());
 		orgIdentifier.setValue(organizationAssignedIdentifierType.getValue());
 		orgIdentifier.setPrimaryIndicator(organizationAssignedIdentifierType.isPrimaryIndicator());
-	//	organization.setName(organizationAssignedIdentifierType.getOrganizationRef().getName());
+		organization.setName(organizationAssignedIdentifierType.getOrganizationRef().getName());
 		organization.setNciInstituteCode(organizationAssignedIdentifierType.getOrganizationRef().getNciInstituteCode());
 		orgIdentifier.setOrganization(organization);
 		return orgIdentifier;
