@@ -39,31 +39,31 @@ public class DomainObjectImportOutcome<T extends MutableDomainObject> {
         ERROR, WARNING
     }
 
-    public void addWarning(String code){
-        addWarning(code, null);
+    public void addWarning(String code, Object... replacements){
+        addWarning(code, null, replacements);
     }
-    public void addWarning(String code, String msg){
-        addErrorMessage(code, msg, Severity.WARNING);
+    public void addWarning(String code, String msg, Object... replacements){
+        addErrorMessage(code, msg, Severity.WARNING, replacements);
     }
-    public void addError(String code){
-        addError(code, null);
+    public void addError(String code, Object... replacements){
+        addError(code, null, replacements);
     }
-    public void addError(String code, String msg){
-        addErrorMessage(code, msg, Severity.ERROR);
+    public void addError(String code, String msg, Object... replacements){
+        addErrorMessage(code, msg, Severity.ERROR, replacements);
     }
 
-    public void addErrorMessage(String msg, Severity severity) {
+    public void addErrorMessage(String msg, Severity severity, Object... replacements) {
         if (severity == Severity.ERROR) {
             isSavable = false;
         }
-        messages.add(new Message(msg, severity));
+        messages.add(new Message(msg, severity, replacements));
     }
 
-    public void addErrorMessage(String code, String msg, Severity severity) {
+    public void addErrorMessage(String code, String msg, Severity severity, Object... replacements) {
         if (severity == Severity.ERROR) {
             isSavable = false;
         }
-        messages.add(new Message(msg, severity));
+        messages.add(new Message(msg, severity, replacements));
     }
 
     public boolean hasErrors() {
@@ -97,14 +97,16 @@ public class DomainObjectImportOutcome<T extends MutableDomainObject> {
 
     public static class Message {
         private String message;
+        private Object[] replacements;
 
         private Severity severity;
 
         private String code;
 
-        public Message(String message, Severity severity) {
+        public Message(String message, Severity severity, Object... replacements) {
             this.message = message;
             this.severity = severity;
+            this.replacements = replacements;
         }
 
         public String getMessage() {
