@@ -31,7 +31,7 @@
 					<xs:element type="SAEReportPreExistingConditionType" name="sAEReportPreExistingCondition" maxOccurs="unbounded" minOccurs="0" />
 					<xs:element type="OtherCauseType" name="otherCause"	maxOccurs="unbounded" minOccurs="0" />
 					<xs:element type="AdditionalInformationType" name="additionalInformation" minOccurs="0" />
-					<xs:element type="ReportType" name="report" />
+					<xs:element type="ReportType" name="report" maxOccurs="unbounded" minOccurs="1" />
 				</xs:sequence>
 		</xs:complexType>
 	</xs:element>
@@ -146,8 +146,8 @@
 	
 	<xs:complexType name="AgentType">
 	  <xs:sequence>
-  		<xs:element name="name" type="xs:string"/>
-  		<xs:element name="description" type="xs:string"/>
+  		<xs:element name="name" type="xs:string" minOccurs="0"/>
+  		<xs:element name="description" type="xs:string" minOccurs="0"/>
   		<xs:element name="nscNumber" type="xs:string"/>
 	  </xs:sequence>
   </xs:complexType>
@@ -424,51 +424,22 @@
 	</xs:complexType>
 	<xs:complexType name="OtherCauseType">
 		<xs:sequence>
-			<xs:element name="text">
-				<xs:simpleType>
-					<xs:restriction base="xs:string">
-						<xs:enumeration value="Diabetes mellitus" />
-						<xs:enumeration value="Bronchospasm" />
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:element>
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="DoseType">
-		<xs:sequence>
-			<xs:element name="amount">
-				<xs:simpleType>
-					<xs:restriction base="xs:short">
-						<xs:enumeration value="2" />
-						<xs:enumeration value="454" />
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:element>
-			<xs:element name="units">
-				<xs:simpleType>
-					<xs:restriction base="xs:string">
-						<xs:enumeration value="BVP" />
-						<xs:enumeration value="g" />
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:element>
+			<xs:element name="text" type="xs:string"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="CourseAgentType">
 		<xs:sequence>
-			<xs:element name="lastAdministeredDate" type="xs:date" />
-			<xs:element name="totalDoseAdministeredThisCourse" type="xs:decimal" />
-			<xs:element name="administrationDelayAmount" type="xs:decimal" />
-			<xs:element name="administrationDelayUnits" type="xs:string" />
-			<xs:element name="durationAndSchedule" type="xs:string" />
-
-			<xs:element name="Dose" type="Dose" />
-			<xs:element name="ModifiedDose" type="Dose" />
-
-			<xs:element name="StudyAgent" type="StudyAgentType" />
+			<xs:element name="lastAdministeredDate" type="xs:date" minOccurs="0" />
+			<xs:element name="totalDoseAdministeredThisCourse" type="xs:decimal"  minOccurs="0" />
+			<xs:element name="administrationDelayAmount" type="xs:decimal"   minOccurs="0"/>
+			<xs:element name="administrationDelayUnits" type="DelayUnitsType"  minOccurs="0"/>
+			<xs:element name="durationAndSchedule" type="xs:string"  minOccurs="0" />
+			<xs:element name="dose" type="DoseType"  minOccurs="0"/>
+			<xs:element name="modifiedDose" type="DoseType"  minOccurs="0"/>
+			<xs:element name="studyAgent" type="StudyAgentType"  minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:complexType name="Dose">
+	<xs:complexType name="DoseType">
 		<xs:sequence>
 			<xs:element name="amount" type="xs:string" />
 			<xs:element name="units" type="xs:string" />
@@ -718,10 +689,10 @@
 	</xs:complexType>
 	<xs:complexType name="TreatmentInformationType">
 		<xs:sequence>
-			<xs:element type="xs:date" name="firstCourseDate" />
-			<xs:element type="TreatmentAssignmentType" name="treatmentAssignment" />
-			<xs:element type="xs:int" name="totalCourses" />
-			<xs:element type="AdverseEventCourseType" name="adverseEventCourse" />
+			<xs:element type="xs:date" name="firstCourseDate" minOccurs="0" />
+			<xs:element type="TreatmentAssignmentType" name="treatmentAssignment" minOccurs="0" />
+			<xs:element type="xs:int" name="totalCourses" minOccurs="0" />
+			<xs:element type="AdverseEventCourseType" name="adverseEventCourse" minOccurs="0"  />
 			<xs:element type="CourseAgentType" name="courseAgent"
 				maxOccurs="unbounded" minOccurs="0" />
 		</xs:sequence>
@@ -735,20 +706,36 @@
  	</xs:complexType>	
 	<xs:complexType name="AdditionalInformationType">
 		<xs:sequence>
-			<xs:element type="xs:string" name="autopsyReport" />
-			<xs:element type="xs:string" name="consults" />
-			<xs:element type="xs:string" name="dischargeSummary" />
-			<xs:element type="xs:string" name="flowCharts" />
-			<xs:element type="xs:string" name="labReports" />
-			<xs:element type="xs:string" name="obaForm" />
-			<xs:element type="xs:string" name="other" />
-			<xs:element type="xs:string" name="pathologyReport" />
-			<xs:element type="xs:string" name="progressNotes" />
-			<xs:element type="xs:string" name="radiologyReports" />
-			<xs:element type="xs:string" name="referralLetters" />
-			<xs:element type="xs:string" name="irbReport" />
+			<xs:element type="xs:boolean" name="autopsyReport"  minOccurs="0"/>
+			<xs:element type="xs:boolean" name="consults"  minOccurs="0"/>
+			<xs:element type="xs:boolean" name="dischargeSummary"  minOccurs="0"/>
+			<xs:element type="xs:boolean" name="flowCharts"  minOccurs="0"/>
+			<xs:element type="xs:boolean" name="labReports"  minOccurs="0"/>
+			<xs:element type="xs:boolean" name="obaForm"  minOccurs="0"/>
+			<xs:element type="xs:boolean" name="other"  minOccurs="0" />
+			<xs:element type="xs:boolean" name="pathologyReport"  minOccurs="0" />
+			<xs:element type="xs:boolean" name="progressNotes"  minOccurs="0"/>
+			<xs:element type="xs:boolean" name="radiologyReports"  minOccurs="0"/>
+			<xs:element type="xs:boolean" name="referralLetters"  minOccurs="0"/>
+			<xs:element type="xs:boolean" name="irbReport"  minOccurs="0"/>
+			<xs:element type="xs:string" name="otherInformation"  minOccurs="0"/>
+			<xs:element type="AdditionalInformationDocumentType" name="additionalInformationDocuments"  
+			minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
+	
+	<xs:complexType name="AdditionalInformationDocumentType">
+		<xs:sequence>
+			<xs:element type="xs:string" name="fileId"  minOccurs="0"/>
+			<xs:element type="xs:string" name="fileName"  minOccurs="0"/>
+			<xs:element type="xs:string" name="originalFileName"  minOccurs="0"/>
+			<xs:element type="xs:string" name="filePath"  minOccurs="0"/>
+			<xs:element type="xs:long" name="fileSize"  minOccurs="0"/>
+			<xs:element type="xs:string" name="relativePath"  minOccurs="0"/>
+			<xs:element type="AdditionalInformationDocumentTypeType" name="additionalInformationDocumentType"  minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	
 	<xs:complexType name="GroupType">
 		<xs:sequence>
 			<xs:element type="xs:string" name="code" />
@@ -757,24 +744,22 @@
 	</xs:complexType>
 	<xs:complexType name="ReportDeliveryDefinitionType">
 		<xs:sequence>
-			<xs:element name="entityName">
-				<xs:simpleType>
-					<xs:restriction base="xs:string">
-						<xs:enumeration value="AdEERS Beta System" />
-						<xs:enumeration value="SUB" />
-						<xs:enumeration value="REP" />
-						<xs:enumeration value="PHY" />
-						<xs:enumeration value="PI" />
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:element>
+			<xs:element type="xs:string" name="entityName"/>
+			<xs:element type="xs:string" name="entityDescription" minOccurs="0" />
+			<xs:element type="xs:int" name="entityType"/>
+			<xs:element type="xs:string" name="endPoint"/>
+			<xs:element type="xs:string" name="endPointType"/>
+			<xs:element type="xs:string" name="userName" minOccurs="0" />
+			<xs:element type="xs:string" name="password" minOccurs="0" />
+			<xs:element type="ReportFormatType" name="format"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="ReportDefinitionType">
 		<xs:sequence>
+			<xs:element type="xs:string" name="name" />
 			<xs:element type="xs:int" name="duration" />
-			<xs:element type="xs:string" name="label" />
-			<xs:element type="GroupType" name="Group" />
+			<xs:element type="xs:string" name="label" minOccurs="0" />
+			<xs:element type="GroupType" name="Group" minOccurs="0"/>
 			<xs:element type="TimeScaleUnitType" name="timeScaleUnitType" />
 			<xs:element type="ReportDeliveryDefinitionType" name="reportDeliveryDefinition"
 				maxOccurs="unbounded" minOccurs="0" />
@@ -814,15 +799,15 @@
 			<xs:element type="xs:string" name="submissionUrl" minOccurs="0" />
 			<xs:element type="xs:string" name="email" minOccurs="0" />
 			<xs:element type="xs:string" name="submissionMessage" minOccurs="0" />
-			<xs:element type="ReportStatusType" name="ReportStatus" />
+			<xs:element type="ReportStatusType" name="ReportStatus" minOccurs="0" />
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="ReportType">
 		<xs:sequence>
-			<xs:element type="xs:string" name="adeersReportTypeIndicator" />
+			<xs:element type="xs:boolean" name="required" />
+			<xs:element type="xs:boolean" name="manuallySelected" minOccurs="0" />
 			<xs:element type="ReportDefinitionType" name="aeReportDefinition" />
-			<xs:element type="ReportVersionType" name="aeReportVersion" />
-			<xs:element type="xs:string" name="applicableField" maxOccurs="unbounded" minOccurs="0" />
+			<xs:element type="ReportVersionType" name="aeReportVersion" maxOccurs="unbounded" minOccurs="0" />
 			<xs:element type="ReviewStatusType" name="reviewStatus" minOccurs="0" />
 		</xs:sequence>
 	</xs:complexType>
@@ -938,6 +923,37 @@
 			<xs:enumeration value="NO" />
 			<xs:enumeration value="UNKNOWN" />
 			<xs:enumeration value="RETURNED" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DelayUnitsType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="MINUTES" />
+			<xs:enumeration value="HOURS" />
+			<xs:enumeration value="DAYS" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ReportFormatType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="TEXT" />
+			<xs:enumeration value="XML" />
+			<xs:enumeration value="PDF" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AdditionalInformationDocumentTypeType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="AUTOPSY_REPORT" />
+			<xs:enumeration value="CONSULTS" />
+			<xs:enumeration value="DISCHARGE_SUMMARY" />
+			<xs:enumeration value="FLOW_CHARTS" />
+			<xs:enumeration value="LAB_REPORTS" />
+			<xs:enumeration value="OBA_FORM" />
+			<xs:enumeration value="OTHER" />
+			<xs:enumeration value="PATHOLOGY_REPORT" />
+			<xs:enumeration value="PROGRESS_NOTES" />
+			<xs:enumeration value="RADIOLOGY_REPORTS" />
+			<xs:enumeration value="REFERRAL_LETTERS" />
+			<xs:enumeration value="IRB_REPORT" />
+			<xs:enumeration value="OTHER_INFORMATION" />
 		</xs:restriction>
 	</xs:simpleType>
 </xs:schema>
