@@ -1,18 +1,25 @@
 package gov.nih.nci.cabig.caaers.service.migrator;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.domain.AdditionalInformation;
+import gov.nih.nci.cabig.caaers.domain.AdditionalInformationDocument;
 import gov.nih.nci.cabig.caaers.domain.Address;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription;
+import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
 import gov.nih.nci.cabig.caaers.domain.Availability;
 import gov.nih.nci.cabig.caaers.domain.BiologicalIntervention;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
+import gov.nih.nci.cabig.caaers.domain.ConfigProperty;
+import gov.nih.nci.cabig.caaers.domain.CourseAgent;
 import gov.nih.nci.cabig.caaers.domain.DateValue;
+import gov.nih.nci.cabig.caaers.domain.DelayUnits;
 import gov.nih.nci.cabig.caaers.domain.Device;
 import gov.nih.nci.cabig.caaers.domain.DeviceOperator;
 import gov.nih.nci.cabig.caaers.domain.DietarySupplementIntervention;
 import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
+import gov.nih.nci.cabig.caaers.domain.Dose;
 import gov.nih.nci.cabig.caaers.domain.EventStatus;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
@@ -30,6 +37,7 @@ import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
 import gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.domain.OtherCause;
 import gov.nih.nci.cabig.caaers.domain.OtherIntervention;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.ParticipantHistory;
@@ -39,18 +47,30 @@ import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
 import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
 import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.RadiationIntervention;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Reporter;
 import gov.nih.nci.cabig.caaers.domain.ReprocessedDevice;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
 import gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition;
 import gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudyDevice;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
 import gov.nih.nci.cabig.caaers.domain.TimeValue;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
+import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportFormat;
+import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
+import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.AdditionalInformationDocumentType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.AdditionalInformationType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.AdverseEventReport;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.AdverseEventReportingPeriodType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.AdverseEventResponseDescriptionType;
@@ -58,18 +78,24 @@ import gov.nih.nci.cabig.caaers.integration.schema.aereport.AdverseEventType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.BiologicalInterventionType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.ConcomitantMedicationType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.ContactMechanismType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.CourseAgentType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.DateValueType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.DietarySupplementInterventionType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.DiseaseHistoryType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.DoseType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.LabType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.MedicalDeviceType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.MetastaticDiseaseSiteType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.OrganizationAssignedIdentifierType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.OtherCauseType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.ParticipantHistoryType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.ParticipantType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.ParticipantType.Identifiers;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.PhysicianType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.RadiationInterventionType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.ReportDeliveryDefinitionType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.ReportType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.ReportVersionType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.ReporterType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.SAEReportPreExistingConditionType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.SAEReportPriorTherapyType;
@@ -77,6 +103,7 @@ import gov.nih.nci.cabig.caaers.integration.schema.aereport.StudyParticipantAssi
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.StudySiteType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.StudyType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.SurgeryInterventionType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.TreatmentInformationType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationType;
 
 import java.sql.Timestamp;
@@ -167,8 +194,190 @@ public class ExpeditedAdverseEventReportConverter {
 		for(SAEReportPriorTherapyType saeReportPriorTherapyType : xmlAdverseEventReport.getSAEReportPriorTherapy()){
 			domainAdverseEventReport.addSaeReportPriorTherapies(convertToDomainSAEReportPriorTherapy(saeReportPriorTherapyType));
 		}
+		
+		if(xmlAdverseEventReport.getTreatmentInformation() != null){
+			domainAdverseEventReport.setTreatmentInformation(convertToDomainTreatmentInformation(xmlAdverseEventReport.getTreatmentInformation()));
+		}
+		
+		for(OtherCauseType xmlOtherCauseType : xmlAdverseEventReport.getOtherCause()){
+			domainAdverseEventReport.addOtherCause(convertToDomainOtherCause(xmlOtherCauseType));
+		}
+		
+		if(xmlAdverseEventReport.getAdditionalInformation() != null){
+			domainAdverseEventReport.setAdditionalInformation(convertToDomainAdditionalInformation(xmlAdverseEventReport.getAdditionalInformation()));
+		}
+		
+		for(ReportType xmlReportType : xmlAdverseEventReport.getReport()){
+			domainAdverseEventReport.addReport(convertToDomainReport(xmlReportType));
+		}
 
 		return domainAdverseEventReport;
+	}
+	
+	
+	protected Report convertToDomainReport(ReportType xmlReportType){
+		Report report = new Report();
+		report.setRequired(xmlReportType.isRequired());
+		report.setManuallySelected(xmlReportType.isManuallySelected());
+		if(xmlReportType.getReviewStatus() != null){
+			report.setReviewStatus(ReviewStatus.valueOf(xmlReportType.getReviewStatus().name()));
+		}
+		
+		for(ReportVersionType xmlReportVersionType: xmlReportType.getAeReportVersion()){
+			ReportVersion reportVersion = new ReportVersion();
+			if(xmlReportVersionType.getAmendedOn() != null){
+				reportVersion.setAmendedOn(xmlReportVersionType.getAmendedOn().toGregorianCalendar().getTime());
+			}
+			if(xmlReportVersionType.getDueOn() != null){
+				reportVersion.setDueOn(xmlReportVersionType.getDueOn().toGregorianCalendar().getTime());
+			}
+			if(xmlReportVersionType.getWithdrawnOn() != null){
+				reportVersion.setWithdrawnOn(xmlReportVersionType.getWithdrawnOn().toGregorianCalendar().getTime());
+			}
+			if(xmlReportVersionType.getSubmittedOn() != null){
+				reportVersion.setSubmittedOn(xmlReportVersionType.getSubmittedOn().toGregorianCalendar().getTime());
+			}
+			if(xmlReportVersionType.getCreatedOn() != null){
+				reportVersion.setCreatedOn(xmlReportVersionType.getCreatedOn().toGregorianCalendar().getTime());
+			}
+			
+			reportVersion.setPhysicianSignoff(xmlReportVersionType.isPhysicianSignoff());
+			reportVersion.setReportVersionId((xmlReportVersionType.getReportVersionId()));
+			reportVersion.setSubmissionMessage(xmlReportVersionType.getSubmissionMessage());
+			reportVersion.setSubmissionUrl(xmlReportVersionType.getSubmissionUrl());
+			reportVersion.setCcEmails(xmlReportVersionType.getEmail());
+			if(xmlReportVersionType.getReportStatus() != null){
+				reportVersion.setReportStatus(ReportStatus.valueOf(xmlReportVersionType.getReportStatus().name()));
+			}
+			
+			report.addReportVersion(reportVersion);
+		}
+		
+		ReportDefinition reportDefinition = new ReportDefinition();
+		reportDefinition.setName(xmlReportType.getAeReportDefinition().getName());
+		reportDefinition.setLabel(xmlReportType.getAeReportDefinition().getLabel());
+		reportDefinition.setDuration(xmlReportType.getAeReportDefinition().getDuration());
+		if(xmlReportType.getAeReportDefinition().getGroup() != null){
+			ConfigProperty group = new ConfigProperty();
+			group.setCode(xmlReportType.getAeReportDefinition().getGroup().getCode());
+			group.setName(xmlReportType.getAeReportDefinition().getGroup().getName());
+			reportDefinition.setGroup(group);
+		}
+		
+		
+		reportDefinition.setTimeScaleUnitType(TimeScaleUnit.valueOf(xmlReportType.getAeReportDefinition().getTimeScaleUnitType().name()));
+		report.setReportDefinition(reportDefinition);
+		for(ReportDeliveryDefinitionType xmlReportDeliveryDefinitionType : xmlReportType.getAeReportDefinition().getReportDeliveryDefinition()){
+			ReportDeliveryDefinition reportDeliveryDefinition = new ReportDeliveryDefinition();
+			reportDeliveryDefinition.setEndPoint(xmlReportDeliveryDefinitionType.getEndPoint());
+			reportDeliveryDefinition.setEndPointType(xmlReportDeliveryDefinitionType.getEndPointType());
+			reportDeliveryDefinition.setEntityDescription(xmlReportDeliveryDefinitionType.getEntityDescription());
+			reportDeliveryDefinition.setEntityName(xmlReportDeliveryDefinitionType.getEntityName());
+			reportDeliveryDefinition.setEntityType(xmlReportDeliveryDefinitionType.getEntityType());
+			reportDeliveryDefinition.setPassword(xmlReportDeliveryDefinitionType.getPassword());
+			reportDeliveryDefinition.setUserName(xmlReportDeliveryDefinitionType.getUserName());
+			reportDeliveryDefinition.setFormat(ReportFormat.valueOf(xmlReportDeliveryDefinitionType.getFormat().name()));
+			
+			reportDefinition.addReportDeliveryDefinition(reportDeliveryDefinition);
+			
+		}
+		
+		return report;
+	}
+	
+	protected AdditionalInformation convertToDomainAdditionalInformation(AdditionalInformationType xmlAdditionalInformationType){
+		AdditionalInformation additionalInformation = new AdditionalInformation();
+		additionalInformation.setAutopsyReport(xmlAdditionalInformationType.isAutopsyReport());
+		additionalInformation.setConsults(xmlAdditionalInformationType.isConsults());
+		additionalInformation.setDischargeSummary(xmlAdditionalInformationType.isDischargeSummary());
+		additionalInformation.setFlowCharts(xmlAdditionalInformationType.isFlowCharts());
+		additionalInformation.setIrbReport(xmlAdditionalInformationType.isIrbReport());
+		additionalInformation.setLabReports(xmlAdditionalInformationType.isLabReports());
+		additionalInformation.setObaForm(xmlAdditionalInformationType.isObaForm());
+		additionalInformation.setOther(xmlAdditionalInformationType.isOther());
+		additionalInformation.setPathologyReport(xmlAdditionalInformationType.isPathologyReport());
+		additionalInformation.setProgressNotes(xmlAdditionalInformationType.isProgressNotes());
+		additionalInformation.setRadiologyReports(xmlAdditionalInformationType.isRadiologyReports());
+		additionalInformation.setReferralLetters(xmlAdditionalInformationType.isReferralLetters());
+		additionalInformation.setOtherInformation(xmlAdditionalInformationType.getOtherInformation());
+		
+		for(AdditionalInformationDocumentType xmlAdditionalInformationDocumentType: xmlAdditionalInformationType.getAdditionalInformationDocuments()){
+			AdditionalInformationDocument document = new AdditionalInformationDocument();
+			document.setFileId(xmlAdditionalInformationDocumentType.getFileId());
+			document.setFileName(xmlAdditionalInformationDocumentType.getFileName());
+			document.setFilePath(xmlAdditionalInformationDocumentType.getFilePath());
+			document.setFileSize(xmlAdditionalInformationDocumentType.getFileSize());
+			document.setOriginalFileName(xmlAdditionalInformationDocumentType.getOriginalFileName());
+			document.setRelativePath(xmlAdditionalInformationDocumentType.getRelativePath());
+			if(xmlAdditionalInformationDocumentType.getAdditionalInformationDocumentType() != null){
+				document.setAdditionalInformationDocumentType(gov.nih.nci.cabig.caaers.domain.AdditionalInformationDocumentType.valueOf
+						(xmlAdditionalInformationDocumentType.getAdditionalInformationDocumentType().name()));
+			}
+		}
+		
+		return additionalInformation;
+	}
+	
+	protected OtherCause convertToDomainOtherCause(OtherCauseType xmlOtherCauseType){
+		OtherCause otherCause = new OtherCause();
+		otherCause.setText(xmlOtherCauseType.getText());
+		
+		return otherCause;
+	}
+	
+	protected TreatmentInformation convertToDomainTreatmentInformation(TreatmentInformationType xmlTreatmentInformationType){
+		TreatmentInformation treatmentInformation = new TreatmentInformation();
+		if(xmlTreatmentInformationType.getFirstCourseDate() != null){
+			treatmentInformation.setFirstCourseDate(xmlTreatmentInformationType.getFirstCourseDate().toGregorianCalendar().getTime());
+		}
+		
+		treatmentInformation.setTotalCourses(xmlTreatmentInformationType.getTotalCourses());
+		for (CourseAgentType xmlCourseAgentType : xmlTreatmentInformationType.getCourseAgent()){
+			treatmentInformation.addCourseAgent(convertToDomainCourseAgent(xmlCourseAgentType));
+		}
+		return treatmentInformation;
+	}
+	
+	protected CourseAgent convertToDomainCourseAgent(CourseAgentType xmlCourseAgentType){
+		CourseAgent courseAgent = new CourseAgent();
+		courseAgent.setAdministrationDelay(xmlCourseAgentType.getAdministrationDelayAmount());
+		if(courseAgent.getAdministrationDelayUnits() != null){
+				courseAgent.setAdministrationDelayUnits(DelayUnits.valueOf(xmlCourseAgentType.getAdministrationDelayUnits().name()));
+		}
+		if(xmlCourseAgentType.getDose() != null){
+			courseAgent.setDose(convertToDomainDose(xmlCourseAgentType.getDose()));
+		}
+		
+		if(xmlCourseAgentType.getModifiedDose() != null){
+			courseAgent.setModifiedDose(convertToDomainDose(xmlCourseAgentType.getModifiedDose()));
+		}
+		
+		courseAgent.setDurationAndSchedule(xmlCourseAgentType.getDurationAndSchedule());
+		courseAgent.setTotalDoseAdministeredThisCourse(xmlCourseAgentType.getTotalDoseAdministeredThisCourse());
+		if(xmlCourseAgentType.getLastAdministeredDate() != null){
+			courseAgent.setLastAdministeredDate(xmlCourseAgentType.getLastAdministeredDate().toGregorianCalendar().getTime());
+		}
+		
+		if(xmlCourseAgentType.getStudyAgent() != null){
+			StudyAgent studyAgent = new StudyAgent();
+			Agent agent = new Agent();
+			agent.setName(xmlCourseAgentType.getStudyAgent().getAgent().getName());
+			agent.setDescription(xmlCourseAgentType.getStudyAgent().getAgent().getDescription());
+			agent.setNscNumber(xmlCourseAgentType.getStudyAgent().getAgent().getNscNumber());
+			studyAgent.setAgent(agent);
+			courseAgent.setStudyAgent(studyAgent);
+		}
+		
+		return courseAgent;
+	}
+	
+	protected Dose convertToDomainDose(DoseType xmlDoseType){
+		Dose dose = new Dose();
+		dose.setAmount(xmlDoseType.getAmount());
+		dose.setUnits(xmlDoseType.getUnits());
+		dose.setRoute(xmlDoseType.getRoute());
+		
+		return dose;
 	}
 	
 	protected SAEReportPriorTherapy convertToDomainSAEReportPriorTherapy(SAEReportPriorTherapyType xmlSaeReportPriorTherapyType){
