@@ -17,7 +17,7 @@
 					<xs:element type="ReviewerType" name="reviewer" minOccurs="0"/>
 					<xs:element type="DiseaseHistoryType" name="diseaseHistory"  minOccurs="0"  />
 					<xs:element type="ParticipantHistoryType" name="participantHistory" minOccurs="0"  />
-					<xs:element type="StudyParticipantAssignmentType" name="studyParticipantAssignment" minOccurs="1"  />
+					<xs:element type="StudyParticipantAssignmentType" name="studyParticipantAssignment" minOccurs="0"  />
 					<xs:element type="RadiationInterventionType" name="radiationIntervention" minOccurs="0" maxOccurs="unbounded" />
 					<xs:element type="SurgeryInterventionType" name="surgeryIntervention" minOccurs="0"  maxOccurs="unbounded"/>
 					<xs:element type="BiologicalInterventionType" name="biologicalIntervention"  minOccurs="0" maxOccurs="unbounded"/>
@@ -59,7 +59,7 @@
 		<xs:sequence>
 			<xs:element type="xs:int" name="cycleNumber" minOccurs="0" />
 			<xs:element type="xs:date" name="startDate" minOccurs="0"/>
-			<xs:element type="StudyParticipantAssignmentType" name="StudyParticipantAssignment" />
+			<xs:element type="StudyParticipantAssignmentType" name="StudyParticipantAssignment" minOccurs="0"/>
 			<xs:element type="TreatmentAssignmentType" name="TreatmentAssignment" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
@@ -129,7 +129,7 @@
 
 	<xs:complexType name="DiseaseHistoryType">
 		<xs:sequence>
-			<xs:element type="DateValueType" name="diagnosisDate" />
+			<xs:element type="DateValueType" name="diagnosisDate" minOccurs="0" />
 			<xs:element type="MetastaticDiseaseSiteType" name="metastaticDiseaseSite" maxOccurs="unbounded" minOccurs="0" />
 		</xs:sequence>
 	</xs:complexType>
@@ -152,9 +152,10 @@
 	  </xs:sequence>
   </xs:complexType>
 	<xs:complexType name="StudyAgentType">
-		<xs:sequence>
+		<xs:choice>
 			<xs:element name="Agent" type="AgentType" />
-		</xs:sequence>
+			<xs:element name="otherAgent" type="xs:string" />
+		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="DiseaseTermType">
         <xs:complexContent>
@@ -324,6 +325,8 @@
 			<xs:element type="StudySiteType" name="StudySite" />
 			<xs:element type="ParticipantType" name="Participant" />
 			<xs:element type="xs:string" name="studySubjectIdentifier" />
+			<xs:element type="ConcomitantMedicationType" name="concomitantMedications"  minOccurs="0"
+				maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="RadiationInterventionType">
@@ -379,9 +382,9 @@
 	<xs:complexType name="StudyDeviceType">
            <xs:choice>
            		<xs:sequence>
-					<xs:element name="otherBrandName" type="xs:string"/>
-                   	<xs:element name="otherCommonName" type="xs:string"/>
-                   	<xs:element name="otherDeviceType" type="xs:string"/>
+					<xs:element name="otherBrandName" type="xs:string" minOccurs="0" />
+                   	<xs:element name="otherCommonName" type="xs:string" minOccurs="0" />
+                   	<xs:element name="otherDeviceType" type="xs:string" minOccurs="0" />
 				</xs:sequence>
 				<xs:sequence>
 					<xs:element name="device" type="DeviceType" minOccurs="0"/>
@@ -683,8 +686,8 @@
 	</xs:complexType>
 	<xs:complexType name="AdverseEventCourseType">
 		<xs:sequence>
-			<xs:element type="xs:int" name="number" />
-			<xs:element type="xs:date" name="date" />
+			<xs:element type="xs:int" name="number" minOccurs="0" />
+			<xs:element type="xs:date" name="date" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="TreatmentInformationType">
