@@ -58,6 +58,7 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudyDevice;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantConcomitantMedication;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
 import gov.nih.nci.cabig.caaers.domain.TimeValue;
@@ -168,6 +169,10 @@ public class ExpeditedAdverseEventReportConverter {
 	
 		for(DietarySupplementInterventionType xmlDietarySupplementInterventionType : xmlAdverseEventReport.getDietarySupplementIntervention()){
 			domainAdverseEventReport.getDietaryInterventions().add(convertToDomainDietarySupplementIntervention(xmlDietarySupplementInterventionType));
+		}
+		
+		if(xmlAdverseEventReport.getDiseaseHistory() != null){
+			domainAdverseEventReport.setDiseaseHistory(convertToDomainDiseaseHistory(xmlAdverseEventReport.getDiseaseHistory()));
 		}
 		
 		for(AdverseEventType xmlAdverseEventType : xmlAdverseEventReport.getAdverseEvent()){
@@ -360,11 +365,15 @@ public class ExpeditedAdverseEventReportConverter {
 		
 		if(xmlCourseAgentType.getStudyAgent() != null){
 			StudyAgent studyAgent = new StudyAgent();
-			Agent agent = new Agent();
-			agent.setName(xmlCourseAgentType.getStudyAgent().getAgent().getName());
-			agent.setDescription(xmlCourseAgentType.getStudyAgent().getAgent().getDescription());
-			agent.setNscNumber(xmlCourseAgentType.getStudyAgent().getAgent().getNscNumber());
-			studyAgent.setAgent(agent);
+			if(xmlCourseAgentType.getStudyAgent().getAgent() != null){
+				Agent agent = new Agent();
+				agent.setName(xmlCourseAgentType.getStudyAgent().getAgent().getName());
+				agent.setDescription(xmlCourseAgentType.getStudyAgent().getAgent().getDescription());
+				agent.setNscNumber(xmlCourseAgentType.getStudyAgent().getAgent().getNscNumber());
+				studyAgent.setAgent(agent);
+			} else {
+				studyAgent.setOtherAgent(xmlCourseAgentType.getStudyAgent().getOtherAgent());
+			}
 			courseAgent.setStudyAgent(studyAgent);
 		}
 		
@@ -463,6 +472,20 @@ public class ExpeditedAdverseEventReportConverter {
 		return lab;
 	}
 	
+	protected StudyParticipantConcomitantMedication convertToDomainStudyParticipantConcomitantMedication(ConcomitantMedicationType xmlConcomitantMedicationType){
+		StudyParticipantConcomitantMedication concomitantMedication = new StudyParticipantConcomitantMedication();
+		concomitantMedication.setAgentName(xmlConcomitantMedicationType.getName().toString());
+		if(xmlConcomitantMedicationType.getStartDate() != null){
+			concomitantMedication.setStartDate(convertToDomainDateValue(xmlConcomitantMedicationType.getStartDate()));
+		}
+		
+		if(xmlConcomitantMedicationType.getEndDate()!= null){
+			concomitantMedication.setEndDate(convertToDomainDateValue(xmlConcomitantMedicationType.getEndDate()));
+		}
+		concomitantMedication.setStillTakingMedications(xmlConcomitantMedicationType.isStillTakingMedications());
+		
+		return concomitantMedication;		
+	}
 	
 	
 	protected ConcomitantMedication convertToDomainConcomitantMedication(ConcomitantMedicationType xmlConcomitantMedicationType){
@@ -794,12 +817,16 @@ public class ExpeditedAdverseEventReportConverter {
 	
 	protected StudyParticipantAssignment convertToDomainStudyParticipantAssignment(StudyParticipantAssignmentType xmlAssignmentType) {
 		StudyParticipantAssignment assignment=  new StudyParticipantAssignment();
+		assignment.setParticipant(convertToDomainParticipant(xmlAssignmentType.getParticipant()));
 		assignment.setStudySubjectIdentifier(xmlAssignmentType.getStudySubjectIdentifier());
 		
 		assignment.setStudySite(convertToDomainStudySite(xmlAssignmentType.getStudySite()));
 		assignment.setDateOfEnrollment(xmlAssignmentType.getDateOfEnrollment().toGregorianCalendar().getTime());
 		if(xmlAssignmentType.getStartDateOfFirstCourse() != null){
 			assignment.setStartDateOfFirstCourse(xmlAssignmentType.getStartDateOfFirstCourse().toGregorianCalendar().getTime());
+		}
+		for(ConcomitantMedicationType xmlConcomitantMedicationType : xmlAssignmentType.getConcomitantMedications()){
+			assignment.addConcomitantMedication(convertToDomainStudyParticipantConcomitantMedication(xmlConcomitantMedicationType));
 		}
 
 		return assignment;
@@ -924,6 +951,5 @@ public class ExpeditedAdverseEventReportConverter {
 		
 		return null;
 	}
-
 
 }
