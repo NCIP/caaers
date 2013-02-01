@@ -23,6 +23,7 @@ import javax.persistence.Transient;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections15.functors.InstantiateFactory;
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Fetch;
@@ -589,5 +590,14 @@ public class Participant extends Person {
     @UniqueObjectInCollection(message = "Duplicate OrganizationAssignedIdentifer found in Identifiers list")
     public List<OrganizationAssignedIdentifier> getOrganizationIdentifiers() {
         return new ProjectedList(this.getIdentifiers(), OrganizationAssignedIdentifier.class);  
+    }
+
+
+    public StudyParticipantAssignment findAssignemtByStudySubjectIdentifier(String ssi){
+        if(getAssignments() == null || getAssignments().isEmpty()) return null;
+        for(StudyParticipantAssignment assignment : getAssignments()) {
+            if(StringUtils.equals(assignment.getStudySubjectIdentifier(), ssi)) return assignment;
+        }
+        return null;
     }
 }

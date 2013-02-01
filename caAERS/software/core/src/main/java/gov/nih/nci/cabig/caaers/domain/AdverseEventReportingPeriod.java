@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.domain.comparator.AdverseEventComprator;
+import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowAware;
@@ -164,8 +165,19 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
      */
     @Transient
     public Study getStudy() {
-        StudySite ss = getAssignment() == null ? null : getAssignment().getStudySite();
+        StudySite ss = getStudySite();
         return ss == null ? null : ss.getStudy();
+    }
+
+    /**
+     * Gets the StudySite.
+     *
+     * @return the study site
+     */
+    @Transient
+    public StudySite getStudySite() {
+        StudySite ss = getAssignment() == null ? null : getAssignment().getStudySite();
+        return ss;
     }
     
     /**
@@ -855,6 +867,44 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
     	}
     	return d;
     }
+
+    public AdverseEvent findAdverseEventByIdTermAndDates(AdverseEvent thatAe){
+        for(AdverseEvent thisAe : getAdverseEvents()){
+            //are Ids matching ?
+            if(thatAe.getId() != null && thisAe.getId() != null && thisAe.getId().equals(thatAe.getId()) ) return thatAe;
+            if(thatAe.getExternalId() != null && thisAe.getExternalId() != null && thisAe.getExternalId().equals(thatAe.getExternalId()) ) return thatAe;
+
+            //are dates matching ?
+            if(DateUtils.compareDate(thisAe.getStartDate(), thatAe.getStartDate()) != 0)  continue;
+            if(DateUtils.compareDate(thisAe.getEndDate(), thatAe.getEndDate()) != 0)  continue;
+
+            //is the term matching ?
+            if(thisAe.getAdverseEventCtcTerm() != null){
+                //ctc terminology
+                AdverseEventCtcTerm thisCtcTerm = thisAe.getAdverseEventCtcTerm();
+                AdverseEventCtcTerm thatCtcTerm = thatAe.getAdverseEventCtcTerm();
+                if ( (thisCtcTerm == null && thatCtcTerm != null) || (thatCtcTerm == null && thisCtcTerm != null) ) continue;
+                if(thisCtcTerm.getTerm().getId() != thatCtcTerm.getTerm().getId()) continue;
+                if(!StringUtils.equals(thisAe.getOtherSpecify(), thatAe.getOtherSpecify())) continue;
+
+                LowLevelTerm thisLLT = thisAe.getLowLevelTerm();
+                LowLevelTerm thatLLT = thatAe.getLowLevelTerm();
+                if((thisLLT == null && thatLLT != null ) || (thatLLT == null && thisLLT != null)) continue;
+                if(thisLLT.getId() != thatLLT.getId()) continue;
+
+            } else {
+                //MedDRA terminology
+                AdverseEventMeddraLowLevelTerm thisMedDRATerm = thisAe.getAdverseEventMeddraLowLevelTerm();
+                AdverseEventMeddraLowLevelTerm thatMedDRATerm = thatAe.getAdverseEventMeddraLowLevelTerm();
+                if((thisMedDRATerm == null && thatMedDRATerm != null) && (thatMedDRATerm == null && thisMedDRATerm != null)) continue;
+                if(thisMedDRATerm.getLowLevelTerm().getId() != thatMedDRATerm.getLowLevelTerm().getId()) continue;
+            }
+            //found a match
+            return thisAe;
+        }
+        return null;
+    }
+
     
     /**
      * This method finds the adverse event, defined in this reporting period, identified by the ID.
@@ -897,5 +947,36 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
     			ae.setRetiredIndicator(retiredIndicator);
     		}
     	}
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AdverseEventReportingPeriod)) return false;
+
+        AdverseEventReportingPeriod that = (AdverseEventReportingPeriod) o;
+
+        if (getId() != null && that.getId() != null && that.getId().equals(this.getId())) return true;
+        if (externalId != null && that.externalId != null && StringUtils.equals(externalId, that.externalId)) return true;
+
+        if (startDate != null && that.startDate != null && DateUtils.compareDate(this.startDate, that.startDate) != 0) return false;
+        if (endDate != null && that.endDate != null && DateUtils.compareDate(this.endDate, that.endDate) != 0) return false;
+        if (getEpoch() != null && that.getEpoch() != null && !this.getEpoch().equals(that.getEpoch())) return false;
+        if (getTreatmentAssignment() != null && that.getTreatmentAssignment() != null && !this.getTreatmentAssignment().getCode().equals(that.getTreatmentAssignment().getCode())) return false;
+        if (getTreatmentAssignmentDescription() != null && that.getTreatmentAssignmentDescription() != null && !this.getTreatmentAssignmentDescription().equals(that.getTreatmentAssignmentDescription())) return false;
+
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = treatmentAssignment != null ? treatmentAssignment.hashCode() : 0;
+        result = 31 * result + (getId() != null ? getId().hashCode() : 0);
+        result = 31 * result + (epoch != null ? epoch.hashCode() : 0);
+        result = 31 * result + (startDate != null ? startDate.hashCode() : 0);
+        result = 31 * result + (endDate != null ? endDate.hashCode() : 0);
+        result = 31 * result + (externalId != null ? externalId.hashCode() : 0);
+        return result;
     }
 }

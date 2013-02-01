@@ -267,7 +267,11 @@ public abstract class AbstractQuery {
     public void filterByStudyId(final Integer id,String operator) {
         andWhere("s.id "+operator+" :ID");
         setParameter("ID", id);
-    } 
+    }
+
+    public void filterByStudyId(Integer id){
+        filterByStudyId(id, "=");
+    }
     
     // shortTitle
     public void filterByStudyShortTitle(final String shortTitleText , String operator) {

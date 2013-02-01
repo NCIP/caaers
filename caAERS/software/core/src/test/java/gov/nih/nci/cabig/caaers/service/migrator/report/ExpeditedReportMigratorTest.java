@@ -1,6 +1,7 @@
-package gov.nih.nci.cabig.caaers.service.migrator;
+package gov.nih.nci.cabig.caaers.service.migrator.report;
 
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.service.migrator.report.ExpeditedReportMigrator;
 import junit.framework.TestCase;
 
 import java.sql.Timestamp;

@@ -313,4 +313,14 @@ public class StudyTest extends AbstractTestCase {
         sa.retire();
         assertNull( study.findStudyAgentByNscOrName("abc"));
     }
+
+    public void testFindActiveStudySiteByNciInstituteCode(){
+        StudySite ss = study.findActiveStudySiteByNciInstituteCode("xxx");
+        assertNull(ss);
+        StudySite s1 = Fixtures.createStudySite(Fixtures.createOrganization("x", "xxx"), 1);
+        study.addStudySite(s1);
+        ss = study.findActiveStudySiteByNciInstituteCode("xxx");
+        assertSame(ss, s1);
+
+    }
 }
