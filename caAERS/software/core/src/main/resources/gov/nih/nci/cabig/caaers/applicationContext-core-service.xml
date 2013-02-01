@@ -532,6 +532,9 @@ default-lazy-init="true">
 			</list>
 		</property>
         <property name="stopOnError" value="true" />
+        <property name="studyDao" value="studyDao" />
+        <property name="organizationDao" value="organizationDao" />
+        <property name="participantDao" value="participantDao" />
 	</bean>
 	
 

@@ -21,7 +21,6 @@ public class ExpeditedReportMigrator extends CompositeMigrator<ExpeditedAdverseE
     private OrganizationDao organizationDao;
     private StudyDao studyDao;
     private ParticipantDao participantDao;
-    private SafetyReportParticipantMigrator safetyReportParticipantMigrator;
 
     public void setOrganizationDao(OrganizationDao organizationDao) {
         this.organizationDao = organizationDao;
@@ -35,9 +34,6 @@ public class ExpeditedReportMigrator extends CompositeMigrator<ExpeditedAdverseE
         this.studyDao = studyDao;
     }
 
-    public void setSafetyReportParticipantMigrator(SafetyReportParticipantMigrator safetyReportParticipantMigrator) {
-        this.safetyReportParticipantMigrator = safetyReportParticipantMigrator;
-    }
 
     @Override
     public void preMigrate(ExpeditedAdverseEventReport src, ExpeditedAdverseEventReport dest, DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome) {
