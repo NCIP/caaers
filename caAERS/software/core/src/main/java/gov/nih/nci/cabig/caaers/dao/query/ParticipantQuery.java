@@ -67,6 +67,10 @@ public class ParticipantQuery extends AbstractQuery {
         
     }
 
+    public void filterByStudySubjectIdentifier(String studySubjectIdentifier) {
+       filterByStudySubjectIdentifier(studySubjectIdentifier, "=");
+    }
+
     public void filterByIdentifierValue(final String value) {
         String searchString = "%" + value.toLowerCase() + "%";
         andWhere("lower(identifier.value) LIKE :" + IDENTIFIER_VALUE);
@@ -108,6 +112,12 @@ public class ParticipantQuery extends AbstractQuery {
     public void filterByOrganizationId(Integer organizationId){
     	andWhere("p.id in (select assignments.participant.id from StudyParticipantAssignment assignments where assignments.studySite.organization.id=:orgId)");
     	setParameter("orgId", organizationId);
-    }   
+    }
+
+    public void filterByStudySiteNciCode(String nciCode){
+        joinStudySite();
+        andWhere("studySite.organization.nciInstituteCode=:siteNCICode");
+        setParameter("siteNCICode", nciCode);
+    }
 
 }

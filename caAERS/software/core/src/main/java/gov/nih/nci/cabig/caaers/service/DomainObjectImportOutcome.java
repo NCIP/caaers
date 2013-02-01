@@ -13,6 +13,8 @@ import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
+import gov.nih.nci.cabig.caaers.validation.ValidationError;
+import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 import gov.nih.nci.cabig.ctms.domain.MutableDomainObject;
 
 import java.util.ArrayList;
@@ -66,10 +68,24 @@ public class DomainObjectImportOutcome<T extends MutableDomainObject> {
         messages.add(new Message(msg, severity, replacements));
     }
 
+    public List<Message> getErrorMessages(){
+        List<Message> errors = new ArrayList<Message>();
+        for(Message m : getMessages()) {
+            if(m.getSeverity() == Severity.ERROR) errors.add(m);
+        }
+        return errors;
+    }
     public boolean hasErrors() {
-        return messages.size() > 0;
+        return !getErrorMessages().isEmpty();
     }
 
+    public ValidationErrors getValidationErrors(){
+        ValidationErrors errors = new ValidationErrors();
+        for(Message msg : getErrorMessages()){
+           errors.addValidationError(msg.getCode(), msg.getMessage(), msg.getReplacements()) ;
+        }
+        return errors;
+    }
     @Override
     public String toString() {
         return messages.toString();
@@ -133,9 +149,17 @@ public class DomainObjectImportOutcome<T extends MutableDomainObject> {
             this.code = code;
         }
 
+        public Object[] getReplacements() {
+            return replacements;
+        }
+
+        public void setReplacements(Object[] replacements) {
+            this.replacements = replacements;
+        }
+
         @Override
         public String toString() {
-            return message + ", " + code;
+            return code + " : " + message;
         }
     }
 

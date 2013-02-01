@@ -34,6 +34,74 @@ public class AdverseEventConverter {
 	private LowLevelTermDao lowLevelTermDao = null;
 	private MessageSource messageSource;
 
+    public AdverseEvent convert(AdverseEventType adverseEventDto){
+        AdverseEvent adverseEvent = new AdverseEvent();
+        if (adverseEventDto.getVerbatim() != null) {
+            adverseEvent.setDetailsForOther(adverseEventDto.getVerbatim());
+        }
+        adverseEvent.setExternalId(adverseEventDto.getExternalId());
+        populateHospitalization(adverseEventDto,adverseEvent);
+        populateGrade(adverseEventDto,adverseEvent);
+        adverseEvent.setExpected(adverseEventDto.isExpected());
+        populateAttributionSummary(adverseEventDto,adverseEvent);
+        adverseEvent.setComments(adverseEventDto.getComments());
+
+        if(adverseEventDto.getStartDate() != null) adverseEvent.setStartDate(adverseEventDto.getStartDate().toGregorianCalendar().getTime());
+        if(adverseEventDto.getEndDate() != null) adverseEvent.setEndDate(adverseEventDto.getEndDate().toGregorianCalendar().getTime());
+        if(adverseEventDto.getDateFirstLearned() != null) adverseEvent.setGradedDate(adverseEventDto.getDateFirstLearned().toGregorianCalendar().getTime());
+
+        if(adverseEventDto.getAdverseEventCtepTerm() != null && adverseEventDto.getAdverseEventCtepTerm().getCtepCode() != null){
+            adverseEvent.setOtherSpecify(adverseEventDto.getAdverseEventCtepTerm().getOtherSpecify());
+            AdverseEventCtcTerm ctcTerm = new AdverseEventCtcTerm();
+            adverseEvent.setAdverseEventCtcTerm(ctcTerm);
+            ctcTerm.setCtcTerm(new CtcTerm());
+            ctcTerm.getCtcTerm().setCtepCode(adverseEventDto.getAdverseEventCtepTerm().getCtepCode());
+            ctcTerm.getCtcTerm().setOtherRequired(adverseEventDto.getAdverseEventCtepTerm().getOtherSpecify() != null);
+            if(adverseEventDto.getAdverseEventCtepTerm().getOtherMeddra() != null){
+                LowLevelTerm lowLevelTerm = new LowLevelTerm();
+                lowLevelTerm.setMeddraCode(adverseEventDto.getAdverseEventCtepTerm().getOtherMeddra().getMeddraCode());
+                lowLevelTerm.setMeddraTerm(adverseEventDto.getAdverseEventCtepTerm().getOtherMeddra().getMeddraTerm());
+                adverseEvent.setMeddraTerm(lowLevelTerm);
+            }
+        }
+
+        if(adverseEventDto.getAdverseEventMeddraLowLevelTerm() != null && adverseEventDto.getAdverseEventMeddraLowLevelTerm().getMeddraCode() != null){
+            LowLevelTerm lowLevelTerm = new LowLevelTerm();
+            lowLevelTerm.setMeddraCode(adverseEventDto.getAdverseEventMeddraLowLevelTerm().getMeddraCode());
+            lowLevelTerm.setMeddraTerm(adverseEventDto.getAdverseEventMeddraLowLevelTerm().getMeddraTerm());
+            AdverseEventMeddraLowLevelTerm aeMeddraLowLevelTerm = new AdverseEventMeddraLowLevelTerm();
+            aeMeddraLowLevelTerm.setTerm(lowLevelTerm);
+            adverseEvent.setAdverseEventMeddraLowLevelTerm(aeMeddraLowLevelTerm);
+        }
+
+        if (adverseEventDto.getEventApproximateTime() != null) {
+            TimeValue tv = new TimeValue();
+            tv.setHour(adverseEventDto.getEventApproximateTime().getHour().intValue());
+            tv.setMinute(adverseEventDto.getEventApproximateTime().getMinute().intValue());
+            if (adverseEventDto.getEventApproximateTime().getAmpm().equals("AM")) {
+                tv.setType(0);
+            } else {
+                tv.setType(1);
+            }
+            adverseEvent.setEventApproximateTime(tv);
+        }
+
+        if (adverseEventDto.getEventLocation() != null) {
+            adverseEvent.setEventLocation(adverseEventDto.getEventLocation());
+        }
+        if (adverseEventDto.getOutcome() != null) {
+            populateOutcomes(adverseEventDto,adverseEvent);
+        }
+
+        if(adverseEventDto.isIncreasedRisk() != null){
+            adverseEvent.setParticipantAtRisk(adverseEventDto.isIncreasedRisk());
+        }
+
+        populateOutcomes(adverseEventDto, adverseEvent);
+
+        return adverseEvent;
+    }
+
 	public void convertAdverseEventDtoToAdverseEventDomain(AdverseEventType adverseEventDto, 
 			AdverseEvent adverseEvent, AeTerminology terminology  , Date startDateOfFirstCourse, String operation) throws CaaersSystemException{
 		if(adverseEvent == null){

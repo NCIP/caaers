@@ -86,6 +86,7 @@ public class DateUtils {
      */
     public static int compareDate(Date d1, Date d2) {
 
+        if(d1 == null && d2 == null) return 0;
         if (d1 == null && d2 != null) return -1;
         if (d1 != null && d2 == null) return 1;
 

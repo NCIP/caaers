@@ -11,8 +11,8 @@ import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.ReportSubmissionService;
 import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import gov.nih.nci.cabig.caaers.service.migrator.ExpeditedAdverseEventReportConverter;
-import gov.nih.nci.cabig.caaers.service.migrator.ExpeditedReportMigrator;
 
+import gov.nih.nci.cabig.caaers.service.migrator.report.ExpeditedReportMigrator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.transaction.annotation.Transactional;

@@ -17,6 +17,9 @@ public class ValidationErrors {
         errors.add(ve);
         return ve;
     }
+    public void addValidationErrors(List<ValidationError> errorList){
+        for(ValidationError e : errorList) errors.add(e);
+    }
 
     public String toString() {
         return errors.toString();

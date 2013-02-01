@@ -3,6 +3,8 @@ package gov.nih.nci.cabig.caaers.service.migrator;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.util.List;
 
@@ -15,6 +17,7 @@ import java.util.List;
  * @param <E>
  */
 public abstract class CompositeMigrator<E extends AbstractMutableDomainObject> implements Migrator<E>{
+    private static Log logger = LogFactory.getLog(CompositeMigrator.class);
 	List<Migrator<E>> children;
     private boolean stopOnError;
 	
@@ -48,8 +51,12 @@ public abstract class CompositeMigrator<E extends AbstractMutableDomainObject> i
 	public  void migrate(E src, E dest, DomainObjectImportOutcome<E> outcome) {
 		preMigrate(src, dest, outcome);
 		if(children != null){
-			for(Migrator<E> migrator : children){
-                if(stopOnError) return;
+			for(Migrator<E> migrator : getChildren()){
+                if(getStopOnError() && outcome.hasErrors()) {
+                    logger.error("Stopping migration due to error");
+                    logger.error(outcome.getValidationErrors());
+                    return;
+                }
 				migrator.migrate(src, dest, outcome);
 			}
 		}

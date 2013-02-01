@@ -1,4 +1,3 @@
-
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.CollectionUtil;
@@ -857,7 +856,26 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     }
 
 
+    public StudySite findActiveStudySiteByNciInstituteCode(String nciCode){
+        for(StudySite ss : getActiveStudySites()) {
+            if(StringUtils.equals(ss.getOrganization().getNciInstituteCode(), nciCode)) return ss;
+        }
+        return null;
+    }
 
+    public TreatmentAssignment findActiveTreatmentAssignment(String tac){
+        for(TreatmentAssignment ta : getActiveTreatmentAssignments()){
+            if(StringUtils.equals(ta.getCode(), tac)) return ta;
+        }
+        return null;
+    }
+
+    public Epoch findActiveEpoch(String epochName){
+        for(Epoch e : getActiveEpochs()){
+           if(StringUtils.equals(epochName, e.getName())) return e;
+        }
+        return null;
+    }
 
     /**
      * Will return the {@link StudyDevice}s that are not retired.

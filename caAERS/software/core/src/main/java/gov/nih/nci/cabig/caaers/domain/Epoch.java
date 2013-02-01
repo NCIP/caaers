@@ -191,4 +191,21 @@ public class Epoch extends AbstractMutableRetireableDomainObject {
     	return super.toString();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Epoch)) return false;
+
+        Epoch epoch = (Epoch) o;
+        if(getId() != null && epoch.getId() != null && epoch.getId().equals(getId())) return true;
+
+        if (name != null && epoch.getName() != null && epoch.getName().equals(name)) return true;
+
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return name != null ? name.hashCode() : 0;
+    }
 }

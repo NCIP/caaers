@@ -52,6 +52,7 @@ default-lazy-init="true">
 		<property name="aeNotificationFactory" ref="aeNotificationFactory" />
 		<property name="messageBroadcastService" ref="webSSOmessageBroadcastService" />
 	</bean>
+    <bean id="adverseEventReportingPeriodConverter" autowire="byType" class="gov.nih.nci.cabig.caaers.service.migrator.adverseevent.AdverseEventReportingPeriodConverter" />
 	<bean id="adverseEventConverter" autowire="byType" class="gov.nih.nci.cabig.caaers.service.migrator.adverseevent.AdverseEventConverter"/>
 	<bean id="SAEEvaluationAdverseEventConverter" autowire="byType" class="gov.nih.nci.cabig.caaers.service.migrator.adverseevent.SAEEvaluationAdverseEventConverter"/>
 	<bean id="passwordManagerService" class="gov.nih.nci.cabig.caaers.service.security.PasswordManagerServiceImpl" autowire="byName"/>
@@ -240,7 +241,17 @@ default-lazy-init="true">
 			</list>
 		</property>
 	</bean>
-	
+
+    <bean id="adverseEventMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.adverseevent.AdverseEventMigrator" autowire="byType" />
+    <bean id="reportingPeriodMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.adverseevent.AdverseEventReportingPeriodMigrator" autowire="byType">
+        <property name="children">
+            <list>
+                <ref bean="adverseEventMigrator" />
+            </list>
+        </property>
+        <property name="stopOnError" value="true" />
+    </bean>
+
 	<bean id="organizationMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.OrganizationMigrator"/>
 	<bean id="agentMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.AgentMigrator"/>
 	<bean id="deviceMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.DeviceMigrator"/>
@@ -255,7 +266,7 @@ default-lazy-init="true">
 		<property name="ctcTermDao" ref="ctcTermDao"/>
 		<property name="lowLevelTermDao" ref="lowLevelTermDao"/>
 	</bean>	
-	
+	<bean id="reportingPeriodSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.adverseevent.AdverseEventReportingPeriodSynchronizer" autowire="byType" />
 	<bean id="identifierSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.IdentifierSynchronizer"/>
 	<bean id="treatmentAssignmentSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.TreatmentAssignmentSynchronizer"/>
 	<bean id="studyDiseasesSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.StudyDiseasesSynchronizer"/>
@@ -495,7 +506,7 @@ default-lazy-init="true">
     
     
 	    
-	<bean id="expeditedReportMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.ExpeditedReportMigrator">
+	<bean id="expeditedReportMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.ExpeditedReportMigrator">
 		<property name="children">
 			<list>
 				<ref bean="behavioralInterventionMigrator"/>
@@ -520,6 +531,7 @@ default-lazy-init="true">
 				<ref bean="treatmentInformationMigrator"/>	
 			</list>
 		</property>
+        <property name="stopOnError" value="true" />
 	</bean>
 	
 

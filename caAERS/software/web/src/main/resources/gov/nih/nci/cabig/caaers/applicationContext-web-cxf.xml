@@ -17,7 +17,8 @@
     <import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
 
     <context:annotation-config/>
-
+    <bean id="logIn" class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+    <bean id="logOut" class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
     <bean id="wsAuditInfoInterceptor" class="gov.nih.nci.cabig.caaers.ws.AuditInfoPopulatorWSInterceptor"  />
     <bean id="authenticationWSHandler" class="gov.nih.nci.cabig.caaers.ws.AuthenticationWSHandler">
         <property name="authenticationManager" ref="authenticationManager" />
@@ -88,6 +89,9 @@
 			<entry key="schema-validation-enabled" value="true" />
 		</jaxws:properties>
         <jaxws:inInterceptors>
+            <ref bean="logIn" />
+            <ref bean="logOut" />
+            <ref bean="WSS4JInInterceptor" />
             <ref bean="WSS4JInInterceptor" />
             <ref bean="wsAuditInfoInterceptor" />
         </jaxws:inInterceptors>

@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import gov.nih.nci.cabig.ctms.domain.DomainObjectTools;
 
@@ -19,7 +20,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateUtils;
 import org.hibernate.annotations.*;
 
  
@@ -744,11 +744,25 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 	@Transient
 	public AdverseEventReportingPeriod getReportingPeriod(Date courseStartDate) {
 		for (AdverseEventReportingPeriod p : getActiveReportingPeriods()) {
-			if (p.getStartDate()!=null && DateUtils.isSameDay(courseStartDate, p.getStartDate())) {
+			if (p.getStartDate() != null && courseStartDate != null && DateUtils.compareDate(courseStartDate, p.getStartDate()) == 0) {
 				return p;
 			}
 		}
 		return null;
 	}
+
+    public AdverseEventReportingPeriod findReportingPeriod(String externalId, Date startDate, Date endDate, Integer cycleNumber, String epochName, String tac){
+        for (AdverseEventReportingPeriod p : getActiveReportingPeriods()) {
+            if(externalId != null && (p.getExternalId() == null || !StringUtils.equals(externalId, p.getExternalId()))) continue;
+            if(startDate != null && (p.getStartDate() == null || DateUtils.compareDate(startDate, p.getStartDate()) != 0) )continue;
+            if(endDate != null && (p.getEndDate() == null || DateUtils.compareDate(endDate, p.getEndDate()) != 0) ) continue;
+            if(cycleNumber != null && (p.getCycleNumber() == null || p.getCycleNumber() != cycleNumber) ) continue;
+            if(epochName != null && (p.getEpoch() == null || !StringUtils.equals(p.getEpoch().getName(), epochName)) ) continue;
+            String currentTac = p.getTreatmentAssignment() != null ? p.getTreatmentAssignment().getCode() : p.getTreatmentAssignmentDescription();
+            if(tac != null && (currentTac == null || !StringUtils.equals(currentTac, tac)) ) continue;
+            return p;
+        }
+        return null;
+    }
 
 }

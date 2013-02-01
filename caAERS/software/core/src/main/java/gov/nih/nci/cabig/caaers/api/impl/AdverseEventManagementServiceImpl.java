@@ -41,10 +41,16 @@ import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationService;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.service.AdverseEventReportingPeriodService;
+import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.migrator.adverseevent.AdverseEventConverter;
+import gov.nih.nci.cabig.caaers.service.migrator.adverseevent.AdverseEventReportingPeriodConverter;
+import gov.nih.nci.cabig.caaers.service.migrator.adverseevent.AdverseEventReportingPeriodMigrator;
+import gov.nih.nci.cabig.caaers.service.synchronizer.adverseevent.AdverseEventReportingPeriodSynchronizer;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.validation.AdverseEventGroup;
+import gov.nih.nci.cabig.caaers.validation.CaaersFieldConfigurationManager;
+import gov.nih.nci.cabig.caaers.validation.ValidationError;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
 import java.util.ArrayList;
@@ -97,6 +103,9 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 	protected TreatmentAssignmentDao treatmentAssignmentDao;
 	protected CtcTermDao ctcTermDao;
 
+    private AdverseEventReportingPeriodSynchronizer reportingPeriodSynchronizer;
+    private AdverseEventReportingPeriodMigrator reportingPeriodMigrator;
+    private AdverseEventReportingPeriodConverter reportingPeriodConverter;
 	private AdverseEventConverter adverseEventConverter;
 	private AdverseEventEvaluationService adverseEventEvaluationService;
 	private AdverseEventReportingPeriodService adverseEventReportingPeriodService;
@@ -114,15 +123,173 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 			return Helper.populateError(response, "WS_AEMS_026", messageSource.getMessage("WS_AEMS_026",
 					new String[] {}, "", Locale.getDefault()));
 		}
-		return saveAdverseEvent(adverseEventsInputMessage, DELETE);
+        AdverseEventReportingPeriod rpSrc =  reportingPeriodConverter.convert(adverseEventsInputMessage);
+        ValidationErrors errors = new ValidationErrors();
+        CaaersServiceResponse caaersServiceResponse = Helper.createResponse();
+        try{
+            AdverseEventReportingPeriod theReportingPeriod = deleteAdverseEvents(rpSrc, errors);
+            if(errors.hasErrors()){
+                for(ValidationError ve : errors.getErrors())  {
+                    String message = messageSource.getMessage(ve.getCode(),  ve.getReplacementVariables(), ve.getMessage(), Locale.getDefault());
+                    Helper.populateError(caaersServiceResponse, ve.getCode(), message);
+                }
+            } else {
+                ProcessingOutcome processingOutcome = new ProcessingOutcome();
+                processingOutcome.setCaaersDBId(theReportingPeriod.getId().toString());
+                processingOutcome.setBusinessId(theReportingPeriod.getExternalId());
+                processingOutcome.setFailed(false);
+                Helper.populateProcessingOutcome(caaersServiceResponse, processingOutcome);
+            }
+        }catch (CaaersSystemException sysEx){
+            logger.error("Error while deleting the adverse events", sysEx);
+            String message = messageSource.getMessage(sysEx.getErrorCode(),  new Object[]{}, sysEx.getMessage(), Locale.getDefault());
+            Helper.populateError(caaersServiceResponse, sysEx.getErrorCode(), message);
+        }catch(Exception e){
+            logger.error("Error while deleting the adverse events", e);
+            String message = messageSource.getMessage("WS_GEN_000",  new Object[] {}, "Unable to delete adverse events", Locale.getDefault());
+            Helper.populateError(caaersServiceResponse, "WS_GEN_000", message);
+        }
+        return caaersServiceResponse;
 	}
+
+    public AdverseEventReportingPeriod deleteAdverseEvents(AdverseEventReportingPeriod rpSrc, ValidationErrors errors){
+        //migrate the domain object
+        AdverseEventReportingPeriod rpDest = new AdverseEventReportingPeriod();
+        DomainObjectImportOutcome<AdverseEventReportingPeriod> rpOutcome = new DomainObjectImportOutcome<AdverseEventReportingPeriod>();
+        reportingPeriodMigrator.migrate(rpSrc, rpDest, rpOutcome);
+        logger.info("Reporting period migration result :" + String.valueOf(rpOutcome.getMessages()));
+        if(rpOutcome.hasErrors()){
+            //translate error and create a response.
+            logger.error("Errors while migrating :" + String.valueOf(rpOutcome.getErrorMessages()));
+            errors.addValidationErrors(rpOutcome.getValidationErrors().getErrors());
+            return null;
+        }
+        //check if we need the create path or update path.
+        String tac = rpDest.getTreatmentAssignment() != null ? rpDest.getTreatmentAssignment().getCode() : rpDest.getTreatmentAssignmentDescription();
+        String epochName = rpDest.getEpoch() != null ? rpDest.getEpoch().getName() : null;
+        AdverseEventReportingPeriod rpFound = rpDest.getAssignment().findReportingPeriod(rpDest.getExternalId(), rpDest.getStartDate(),rpDest.getEndDate(), rpDest.getCycleNumber(), epochName, tac);
+        if(rpFound == null){
+            logger.error("Reporting period not found");
+            errors.addValidationError("WS_AEMS_062", "Reporting period not found", new String[]{rpSrc.getStudy().getFundingSponsorIdentifierValue(), rpSrc.getAssignment().getStudySubjectIdentifier()});
+            return null;
+        }
+        int i = -1;
+        for(AdverseEvent ae : rpDest.getAdverseEvents()){
+           i++;
+           AdverseEvent aeFound = rpFound.findAdverseEventByIdTermAndDates(ae);
+           if(aeFound == null){
+              errors.addValidationError("WS_AEMS_079", "Did not find the AE to delete ", new String[]{ae.getAdverseEventTerm().getFullName(), String.valueOf(ae.getStartDate()), String.valueOf(ae.getEndDate())})  ;
+              return null;
+           }
+           if(aeFound.getSolicited() != null && aeFound.getSolicited()) {
+               errors.addValidationError("WS_AEMS_024", "Cannot delete solicited AE ", new String[]{rpSrc.getStudy().getFundingSponsorIdentifierValue() , rpSrc.getAssignment().getStudySubjectIdentifier()})  ;
+               return null;
+           }
+           if(aeFound.getReport() != null) {
+               logger.info("Retiring the adverse event id :" + aeFound.getId() + " , term :" + ae.getAdverseEventTerm().getFullName() );
+               aeFound.retire();
+           } else {
+               rpFound.getAdverseEvents().remove(aeFound);
+               aeFound.setReportingPeriod(null);
+           }
+        }
+        return rpFound;
+    }
 
 	public CaaersServiceResponse createOrUpdateAdverseEvent(AdverseEventsInputMessage adverseEventsInputMessage) {
-		return saveAdverseEvent(adverseEventsInputMessage, UPDATE);
+        //convert the domain object
+        AdverseEventReportingPeriod rpSrc =  reportingPeriodConverter.convert(adverseEventsInputMessage);
+        ValidationErrors errors = new ValidationErrors();
+        CaaersServiceResponse caaersServiceResponse = Helper.createResponse();
+
+        try{
+            AdverseEventReportingPeriod theReportingPeriod = createOrUpdateAdverseEvents(rpSrc, errors);
+            if(errors.hasErrors()){
+                for(ValidationError ve : errors.getErrors())  {
+                    String message = messageSource.getMessage(ve.getCode(),  ve.getReplacementVariables(), ve.getMessage(), Locale.getDefault());
+                    Helper.populateError(caaersServiceResponse, ve.getCode(), message);
+                }
+            } else {
+                ProcessingOutcome processingOutcome = new ProcessingOutcome();
+                processingOutcome.setCaaersDBId(theReportingPeriod.getId().toString());
+                processingOutcome.setBusinessId(theReportingPeriod.getExternalId());
+                processingOutcome.setFailed(false);
+                Helper.populateProcessingOutcome(caaersServiceResponse, processingOutcome);
+            }
+        }catch (CaaersSystemException sysEx){
+            logger.error("Error while saving/updating the adverse events", sysEx);
+            String message = messageSource.getMessage(sysEx.getErrorCode(),  new Object[]{}, sysEx.getMessage(), Locale.getDefault());
+            Helper.populateError(caaersServiceResponse, sysEx.getErrorCode(), message);
+        }catch(Exception e){
+            logger.error("Error while saving/updating the adverse events", e);
+            String message = messageSource.getMessage("WS_GEN_000",  new Object[] {}, "Unable to create or update adverse events", Locale.getDefault());
+            Helper.populateError(caaersServiceResponse, "WS_GEN_000", message);
+        }
+        return caaersServiceResponse;
 	}
 
+    public AdverseEventReportingPeriod createOrUpdateAdverseEvents(AdverseEventReportingPeriod rpSrc, ValidationErrors errors){
+        //migrate the domain object
+        AdverseEventReportingPeriod rpDest = new AdverseEventReportingPeriod();
+        DomainObjectImportOutcome<AdverseEventReportingPeriod> rpOutcome = new DomainObjectImportOutcome<AdverseEventReportingPeriod>();
+        reportingPeriodMigrator.migrate(rpSrc, rpDest, rpOutcome);
+        logger.info("Reporting period migration result :" + String.valueOf(rpOutcome.getMessages()));
+        if(rpOutcome.hasErrors()){
+            //translate error and create a response.
+            logger.error("Errors while migrating :" + String.valueOf(rpOutcome.getErrorMessages()));
+            errors.addValidationErrors(rpOutcome.getValidationErrors().getErrors());
+            return null;
+        }
+        //check if we need the create path or update path.
+        String tac = rpDest.getTreatmentAssignment() != null ? rpDest.getTreatmentAssignment().getCode() : rpDest.getTreatmentAssignmentDescription();
+        String epochName = rpDest.getEpoch() != null ? rpDest.getEpoch().getName() : null;
+        AdverseEventReportingPeriod rpFound = rpDest.getAssignment().findReportingPeriod(rpDest.getExternalId(), rpDest.getStartDate(),rpDest.getEndDate(), rpDest.getCycleNumber(), epochName, tac);
+        ArrayList reportingPeriodList = new ArrayList<AdverseEventReportingPeriod>(rpDest.getAssignment().getActiveReportingPeriods());
+        if(rpFound != null) reportingPeriodList.remove(rpFound);
+
+        ValidationErrors dateValidationErrors = validateRepPeriodDates(rpDest, reportingPeriodList, rpDest.getAssignment().getStartDateOfFirstCourse(), rpDest.getEpoch());
+        logger.info("Reporting period validation result :" + String.valueOf(dateValidationErrors));
+        if(dateValidationErrors.hasErrors()){
+            //translate errors and create a response
+            logger.error("Errors while migrating :" + String.valueOf(dateValidationErrors));
+            errors.addValidationErrors(dateValidationErrors.getErrors());
+            return null;
+        }
+
+        //validate adverse events
+        int i = -1;
+        for(AdverseEvent adverseEvent : rpDest.getAdverseEvents()){
+            i++;
+            Set<ConstraintViolation<AdverseEvent>> constraintViolations = validator.validate(adverseEvent, AdverseEventGroup.class, Default.class);
+            if(!constraintViolations.isEmpty()){
+                //translate errors to repsonse.
+                for(ConstraintViolation<AdverseEvent> v : constraintViolations){
+                    errors.addValidationError("NO-CODE", v.getMessage(), v.getPropertyPath());
+                }
+                return null;
+            }
+        }
+
+        if(rpFound == null){
+            //new reporting period
+            rpFound = rpDest;
+            rpFound.getAssignment().addReportingPeriod(rpFound);
+            adverseEventReportingPeriodDao.save(rpFound);
+            if(isWorkflowEnabled()){
+                Long wfId = adverseEventRoutingAndReviewRepository.enactReportingPeriodWorkflow(rpFound);
+                logger.debug("Enacted workflow : " + wfId);
+            }
+        } else {
+            //existing reporting period.
+            reportingPeriodSynchronizer.migrate(rpDest, rpFound, rpOutcome);
+            adverseEventReportingPeriodDao.save(rpFound);
+
+        }
+        return rpDest;
+    }
+
 	public CaaersServiceResponse createAdverseEvent(AdverseEventsInputMessage adverseEventsInputMessage) {
-		return saveAdverseEvent(adverseEventsInputMessage, CREATE);
+		return createOrUpdateAdverseEvent(adverseEventsInputMessage);
 	}
 	
 	private boolean validateAdverseEventInputMessage(AdverseEventsInputMessage adverseEventsInputMessage, CaaersServiceResponse caaersServiceResponse){
@@ -167,7 +334,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 	private AdverseEventReportingPeriod createDomainReportingPeriodIfNotExists(Criteria criteria, StudyParticipantAssignment assignment, String externalId) throws CaaersSystemException {
 		List<AdverseEventReportingPeriod> rPeriodList = adverseEventReportingPeriodDao.getByAssignment(assignment);
 		
-		String treatmentAssignmentCode = null;
+		String treatmentAssignmentCode;
 		String otherTreatmentAssignmentDescription = null; 
 		if((treatmentAssignmentCode = criteria.getCourse().getTreatmentAssignmentCode()) != null){
 			// compare TAC and treatment type to determine if matchingDomainAdverseEventReportingPeriod exists.
@@ -219,12 +386,12 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 		// get the externalId from the message and set here.
 		newAeReportingPeriod.setExternalId(externalId);
 		
-		Map<String, String> errors = validateRepPeriodDates(newAeReportingPeriod, rPeriodList,
+		ValidationErrors errors = validateRepPeriodDates(newAeReportingPeriod, rPeriodList,
 				assignment.getStartDateOfFirstCourse(),epochToSave);
 		
 		// update workflow to DCC
 	//	adverseEventRoutingAndReviewRepository.advanceReportingPeriodWorkflow(newAeReportingPeriod.getWorkflowId(), null, newAeReportingPeriod, getUserId());
-		if (errors.size() == 0) {
+		if (!errors.hasErrors()) {
 			try {
 				assignment.addReportingPeriod(newAeReportingPeriod);
 				newAeReportingPeriod.setEpoch(epochToSave);
@@ -250,8 +417,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 			}
 			
 		} else {
-			String keys[] = errors.keySet().toArray(new String[] {});
-			throw new CaaersSystemException(keys[0], errors.get(keys[0]));
+			throw new CaaersSystemException(errors.getErrorAt(0).getCode(), errors.getErrorAt(0).getMessage());
 		}
 		
 			
@@ -341,9 +507,6 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
         
 		return caaersServiceResponse;
 	}
-	
-
-	
 	public void saveExternalAdverseEventReportingPeriod(ExternalAdverseEventReportingPeriod externalAdverseEventReportingPeriod, CaaersServiceResponse caaersServiceResponse){
 		try{
 			externalAdverseEventReportingPeriodDao.save(externalAdverseEventReportingPeriod);
@@ -357,8 +520,6 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 		}
 		
 	}
-	
-	
 	private ExternalAdverseEventReportingPeriod buildExternalReportingPeriod(AdverseEventsInputMessage adverseEventsInputMessage, CaaersServiceResponse caaersServiceResponse, StudyParticipantAssignment assignment,String externalId) throws CaaersSystemException {
 		
 		Criteria criteria = adverseEventsInputMessage.getCriteria();
@@ -397,9 +558,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 		
 		return externalAeReportingPeriod;
 	}
-	
-	private void processExternalAdverseEvents(AdverseEventsInputMessage adverseEventsInputMessage, CaaersServiceResponse caaersServiceResponse, 
-			Study study, StudyParticipantAssignment assignment,	ExternalAdverseEventReportingPeriod externalAdverseEventReportingPeriod){
+	private void processExternalAdverseEvents(AdverseEventsInputMessage adverseEventsInputMessage, CaaersServiceResponse caaersServiceResponse, Study study, StudyParticipantAssignment assignment,	ExternalAdverseEventReportingPeriod externalAdverseEventReportingPeriod){
 		AdverseEvents xmlAdverseEvents = adverseEventsInputMessage.getAdverseEvents();
 		int index =1;
 		for(AdverseEventType adverseEventDto : xmlAdverseEvents.getAdverseEvent()){
@@ -532,8 +691,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 	 * @param dbStudy
 	 * @param caaersServiceResponse
 	 */
-	private void fireSAERules(AdverseEventReportingPeriod adverseEventReportingPeriod, Study dbStudy,
-			CaaersServiceResponse caaersServiceResponse) {
+	private void fireSAERules(AdverseEventReportingPeriod adverseEventReportingPeriod, Study dbStudy, CaaersServiceResponse caaersServiceResponse) {
 
 		for (AdverseEvent ae : adverseEventReportingPeriod.getAdverseEvents()) {
 			String sae = "";
@@ -568,8 +726,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 	 * @param operation
 	 * @param caaersServiceResponse
 	 */
-	private void saveAEs(Map<Integer, AdverseEvent> aesToSave, AdverseEventReportingPeriod adverseEventReportingPeriod,
-			String operation, CaaersServiceResponse caaersServiceResponse) {
+	private void saveAEs(Map<Integer, AdverseEvent> aesToSave, AdverseEventReportingPeriod adverseEventReportingPeriod, String operation, CaaersServiceResponse caaersServiceResponse) {
 
 		Set<Entry<Integer, AdverseEvent>> entries = aesToSave.entrySet();
 
@@ -966,36 +1123,23 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 			if (epochToSave != null) {
 				adverseEventReportingPeriod.setEpoch(epochToSave);
 			}
-			//
-			/*
-			 * if (epochToSave == null) { throw new
-			 * CaaersSystemException(messageSource.getMessage("WS_AEMS_010",
-			 * new
-			 * String[]{criteria.getCourse().getTreatmentType()},"",Locale
-			 * .getDefault())); } else {
-			 * adverseEventReportingPeriod.setEpoch(epochToSave); }
-			 */
 
 			adverseEventReportingPeriod.setAssignment(assignment);
-			Map<String, String> errors = validateRepPeriodDates(adverseEventReportingPeriod, rPeriodList,
-					assignment.getStartDateOfFirstCourse(),epochToSave);
-			if (errors.size() == 0) {
+			ValidationErrors errors = validateRepPeriodDates(adverseEventReportingPeriod, rPeriodList, assignment.getStartDateOfFirstCourse(),epochToSave);
+			if (errors.hasErrors()) {
 				try {
 					studyParticipantAssignmentDao.save(assignment);
 				} catch (Exception e) {
-					throw new CaaersSystemException("WS_AEMS_067", messageSource.getMessage("WS_AEMS_067",
-							new String[] { }, "", Locale.getDefault()));
+					throw new CaaersSystemException("WS_AEMS_067", messageSource.getMessage("WS_AEMS_067", new String[] { }, "", Locale.getDefault()));
 				}
 				try {
 					adverseEventReportingPeriodDao.save(adverseEventReportingPeriod);
 				} catch (Exception e) {
-					throw new CaaersSystemException("WS_AEMS_068", messageSource.getMessage("WS_AEMS_068",
-							new String[] { }, "", Locale.getDefault()));
+					throw new CaaersSystemException("WS_AEMS_068", messageSource.getMessage("WS_AEMS_068", new String[] { }, "", Locale.getDefault()));
 				}
 				
 			} else {
-				String keys[] = errors.keySet().toArray(new String[] {});
-				throw new CaaersSystemException(keys[0], errors.get(keys[0]));
+				throw new CaaersSystemException(errors.getErrorAt(0).getCode(), errors.getErrorAt(0).getMessage());
 			}
 		} else {
 			//
@@ -1112,22 +1256,19 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 		return match;
 	}
 
-	private Map<String, String> validateRepPeriodDates(AdverseEventReportingPeriod rPeriod,
-			List<AdverseEventReportingPeriod> rPeriodList, Date firstCourseDate, Epoch epoch) {
+	private ValidationErrors validateRepPeriodDates(AdverseEventReportingPeriod rPeriod, List<AdverseEventReportingPeriod> rPeriodList, Date firstCourseDate, Epoch epoch) {
 
-		Date startDate = rPeriod.getStartDate();
+		ValidationErrors errors = new ValidationErrors();
+        Date startDate = rPeriod.getStartDate();
 		Date endDate = rPeriod.getEndDate();
-		Map<String, String> errors = new HashMap<String, String>();
 
 		// Check if the start date is equal to or before the end date.
 		if (firstCourseDate != null && startDate != null && (firstCourseDate.getTime() - startDate.getTime() > 0)) {
-			errors.put("WS_AEMS_014", messageSource.getMessage("WS_AEMS_014", new String[] {}, "", Locale
-							.getDefault()));
+			errors.addValidationError("WS_AEMS_014", "Start date of this course/cycle cannot be earlier than the Start date of first course/cycle");
 		}
 
 		if (startDate != null && endDate != null && (endDate.getTime() - startDate.getTime() < 0)) {
-			errors.put("WS_AEMS_015", messageSource.getMessage("WS_AEMS_015", new String[] {}, "", Locale
-							.getDefault()));
+            errors.addValidationError("WS_AEMS_015", "Course End date cannot be earlier than Start date.");
 		}
 
 		// Check if the start date is equal to end date.
@@ -1136,8 +1277,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 
 		if (epoch != null && !epoch.getName().equals("Baseline")) {
 			if (endDate != null && startDate.equals(endDate)) {
-				errors.put("WS_AEMS_016", messageSource.getMessage("WS_AEMS_016", new String[] {}, "", Locale
-						.getDefault()));
+                errors.addValidationError("WS_AEMS_016", "For Non-Baseline treatment type Start date cannot be equal to End date.");
 			}
 
 		}
@@ -1154,13 +1294,11 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 				// date falls, in-between these dates.
 				if (startDate != null && endDate != null) {
 					if (DateUtils.compareDate(sDate, startDate) >= 0 && DateUtils.compareDate(sDate, endDate) < 0) {
-						errors.put("WS_AEMS_017", messageSource.getMessage("WS_AEMS_017", new String[] {}, "", Locale
-								.getDefault()));
+                        errors.addValidationError("WS_AEMS_017", "Course/cycle cannot overlap with an existing course/cycle.");
 						break;
 					}
 				} else if (startDate != null && DateUtils.compareDate(sDate, startDate) == 0) {
-					errors.put("WS_AEMS_017", messageSource.getMessage("WS_AEMS_017", new String[] {}, "", Locale
-							.getDefault()));
+                    errors.addValidationError("WS_AEMS_017", "Course/cycle cannot overlap with an existing course/cycle.");
 					break;
 				}
 
@@ -1168,13 +1306,11 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 				// within any other existing reporting periods
 				if (sDate != null && eDate != null) {
 					if (DateUtils.compareDate(sDate, startDate) <= 0 && DateUtils.compareDate(startDate, eDate) < 0) {
-						errors.put("WS_AEMS_017", messageSource.getMessage("WS_AEMS_017", new String[] {}, "", Locale
-								.getDefault()));
+                        errors.addValidationError("WS_AEMS_017", "Course/cycle cannot overlap with an existing course/cycle.");
 						break;
 					}
 				} else if (sDate != null && DateUtils.compareDate(sDate, startDate) == 0) {
-					errors.put("WS_AEMS_017", messageSource.getMessage("WS_AEMS_017", new String[] {}, "", Locale
-							.getDefault()));
+                    errors.addValidationError("WS_AEMS_017", "Course/cycle cannot overlap with an existing course/cycle.");
 					break;
 				}
 			}
@@ -1184,16 +1320,14 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 			if (epoch != null && epoch.getName().equals("Baseline")) {
 				if (!aerp.getEpoch().getName().equals("Baseline")) {
 					if (DateUtils.compareDate(sDate, startDate) < 0) {
-						errors.put("WS_AEMS_018", messageSource.getMessage("WS_AEMS_018", new String[] {}, "", Locale
-								.getDefault()));
+                        errors.addValidationError("WS_AEMS_018", "Baseline treatment type cannot start after an existing Non-Baseline treatment type.");
 						return errors;
 					}
 				}
 			} else {
 				if (aerp.getEpoch() != null && aerp.getEpoch().getName().equals("Baseline")) {
 					if (DateUtils.compareDate(startDate, sDate) < 0) {
-						errors.put("WS_AEMS_019", messageSource.getMessage("WS_AEMS_019", new String[] {}, "", Locale
-								.getDefault()));
+						errors.addValidationError("WS_AEMS_019", "Non-Baseline treatment type cannot start before an existing Baseline treatment type.");
 						return errors;
 					}
 				}
@@ -1203,15 +1337,8 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 		return errors;
 
 	}
-	
 
-	private ValidationErrors retrieveValidationErrors(List<Object> list) {
-		for (Object o : list)
-			if (o instanceof ValidationErrors)
-				return (ValidationErrors) o;
-		return null;
-	}
-	
+
 	private void convertConstraintViolationsToProcessOutcomes( 
 			AdverseEvent adverseEvent, String index, Set<ConstraintViolation<AdverseEvent>> constraintViolations, 
 			CaaersServiceResponse caaersServiceResponse) {
@@ -1239,34 +1366,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 					.asList(new String[] { valErrmsg }));
 		}
 	}
-	
- 	private void notifyStudyPersonnel(StudyParticipantAssignment assignment) throws MailException {
-		List<String> emails = new ArrayList<String>();
-		MailException mailException = null;
-		List<StudyPersonnel> studyPersonnel = assignment.getStudySite().getStudyPersonnels();
-		for (StudyPersonnel sp : studyPersonnel) {
-			String email = sp.getEmailAddress();
-			emails.add(email);
-		}
 
-		try {
-			sendUserEmail(emails.toArray(new String[0]), "Reporting required for exported Adverse Events",
-					"Reporting required for exported Adverse Events");
-		} catch (MailException e) {
-			mailException = e;
-		}
-		if (mailException != null)
-			throw mailException;
-	}
-
-	public void sendUserEmail(String[] emailAddress, String subject, String text) {
-		SimpleMailMessage message = new SimpleMailMessage();
-		message.setTo(emailAddress);
-		message.setSubject(subject);
-		message.setText(text);
-		mailSender.send(message);
-
-	}
 	
 	public void setAdverseEventDao(AdverseEventDao adverseEventDao) {
 		this.adverseEventDao = adverseEventDao;
@@ -1323,21 +1423,6 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 
 	}
 
-	private static String correlationStr(AdverseEventType adverseEventDto) {
-		String code = null;
-		if (adverseEventDto.getId() != null) {
-			code = adverseEventDto.getId() + "";
-		} else if (adverseEventDto.getAdverseEventCtepTerm() != null && adverseEventDto.getAdverseEventCtepTerm().getCtepCode() != null) {
-			code = adverseEventDto.getAdverseEventCtepTerm().getCtepCode();
-		} else if (adverseEventDto.getAdverseEventMeddraLowLevelTerm() != null) {
-			code = adverseEventDto.getAdverseEventMeddraLowLevelTerm().getMeddraCode();
-		} else if (adverseEventDto.getVerbatim() != null) {
-			code = adverseEventDto.getVerbatim();
-		}
-
-		return "Adverse Event with code , verbatim or ID : " + code;
-
-	}
 
 	public void setMessageSource(MessageSource messageSource) {
 		this.messageSource = messageSource;
@@ -1393,30 +1478,61 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
         this.adverseEventRoutingAndReviewRepository = adverseEventRoutingAndReviewRepository;
     }
 
-    /*
-      * private Study processStudyCriteria(StudyType xmlStudy) throws
-      * CaaersSystemException{logger.info(
-      * "Entering processStudyCriteria() in AdverseEventManagementServiceImpl");
-      *
-      * Study study = new Study();
-      *
-      * try{ studyCriteriaConverter.convertStudyDtoToStudyDomain(xmlStudy,
-      * study); }catch(CaaersSystemException caEX){ throw new
-      * CaaersSystemException("Study Criteria to StudyDomain Conversion Failed ",
-      * caEX); } return study; } private Participant
-      * processParticipantCriteria(ParticipantType xmlParticipant) throws
-      * CaaersSystemException{logger.info(
-      * "Entering processParticipant() in AdverseEventManagementServiceImpl");
-      *
-      * Participant participant = new Participant();
-      *
-      * try{
-      * participantCriteriaConverter.convertParticipantDtoToParticipantDomain
-      * (xmlParticipant, participant); }catch(CaaersSystemException caEX){ throw
-      * newCaaersSystemException(
-      * "Participant Criteria to ParticipantDomain Conversion Failed ", caEX); }
-      * return participant; }
-      */
+    public AdverseEventReportingPeriodConverter getAdverseEventReportingPeriodConverter() {
+        return reportingPeriodConverter;
+    }
+
+    public void setAdverseEventReportingPeriodConverter(AdverseEventReportingPeriodConverter reportingPeriodConverter) {
+        this.reportingPeriodConverter = reportingPeriodConverter;
+    }
+
+    public AdverseEventReportingPeriodSynchronizer getReportingPeriodSynchronizer() {
+        return reportingPeriodSynchronizer;
+    }
+
+    public void setReportingPeriodSynchronizer(AdverseEventReportingPeriodSynchronizer reportingPeriodSynchronizer) {
+        this.reportingPeriodSynchronizer = reportingPeriodSynchronizer;
+    }
+
+    public AdverseEventReportingPeriodMigrator getReportingPeriodMigrator() {
+        return reportingPeriodMigrator;
+    }
+
+    public void setReportingPeriodMigrator(AdverseEventReportingPeriodMigrator reportingPeriodMigrator) {
+        this.reportingPeriodMigrator = reportingPeriodMigrator;
+    }
+
+    public AdverseEventReportingPeriodConverter getReportingPeriodConverter() {
+        return reportingPeriodConverter;
+    }
+
+    public void setReportingPeriodConverter(AdverseEventReportingPeriodConverter reportingPeriodConverter) {
+        this.reportingPeriodConverter = reportingPeriodConverter;
+    }
+/*
+    * private Study processStudyCriteria(StudyType xmlStudy) throws
+    * CaaersSystemException{logger.info(
+    * "Entering processStudyCriteria() in AdverseEventManagementServiceImpl");
+    *
+    * Study study = new Study();
+    *
+    * try{ studyCriteriaConverter.convertStudyDtoToStudyDomain(xmlStudy,
+    * study); }catch(CaaersSystemException caEX){ throw new
+    * CaaersSystemException("Study Criteria to StudyDomain Conversion Failed ",
+    * caEX); } return study; } private Participant
+    * processParticipantCriteria(ParticipantType xmlParticipant) throws
+    * CaaersSystemException{logger.info(
+    * "Entering processParticipant() in AdverseEventManagementServiceImpl");
+    *
+    * Participant participant = new Participant();
+    *
+    * try{
+    * participantCriteriaConverter.convertParticipantDtoToParticipantDomain
+    * (xmlParticipant, participant); }catch(CaaersSystemException caEX){ throw
+    * newCaaersSystemException(
+    * "Participant Criteria to ParticipantDomain Conversion Failed ", caEX); }
+    * return participant; }
+    */
 	
 	/*
 	 * private boolean enableAuthorization(boolean on) { AuthorizationSwitch sw
