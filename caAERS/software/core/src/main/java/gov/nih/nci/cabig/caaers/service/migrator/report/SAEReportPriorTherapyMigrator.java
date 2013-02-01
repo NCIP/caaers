@@ -28,11 +28,13 @@ public class SAEReportPriorTherapyMigrator implements Migrator<ExpeditedAdverseE
     	}
     	// Copy the SAEReportPriorTherapys Information from Source to Destination.
     	for ( SAEReportPriorTherapy spt : srcSAEReportPriorTherapys) {
+    		validateSAEREportPriorTherapyDates(spt, outcome);
     		SAEReportPriorTherapy destSAEReportPriorTherapy = new SAEReportPriorTherapy();
     		copyProperties(spt, destSAEReportPriorTherapy);
     		destSAEReportPriorTherapys.add(destSAEReportPriorTherapy);
     	}
-	}    	 
+	}   
+	
 	
 	/**
 	 * Copy the Details from the UserInput.
@@ -45,5 +47,18 @@ public class SAEReportPriorTherapyMigrator implements Migrator<ExpeditedAdverseE
 		dest.setOther(src.getOther());
 		dest.setPriorTherapy(src.getPriorTherapy());
 		dest.setPriorTherapyAgentsInternal(src.getPriorTherapyAgentsInternal());
+	}
+	
+	/**
+	 * Validate SAEREportPriorTherapy Dates.
+	 * @param saeReportPriorTherapy
+	 * @param domainObjectImportOutcome
+	 */
+	private void validateSAEREportPriorTherapyDates(SAEReportPriorTherapy saeReportPriorTherapy,  DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome){
+		if(saeReportPriorTherapy.getStartDate() != null && saeReportPriorTherapy.getEndDate() != null){
+			if(saeReportPriorTherapy.getStartDate().toDate().after(saeReportPriorTherapy.getEndDate().toDate())){
+				 outcome.addError("PAT_PTY1_ERR", "Report PriorTherapy 'end date' cannot be before 'start date'' ");
+			}
+		}
 	}
 }

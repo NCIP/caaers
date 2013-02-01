@@ -1,11 +1,13 @@
 package gov.nih.nci.cabig.caaers.service.migrator.report;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * User:medaV
@@ -27,6 +29,7 @@ public class SurgeryInterventionMigrator implements Migrator<ExpeditedAdverseEve
     	}
     	// Copy the SurgeryInterventions Information from Source to Destination.
     	for ( SurgeryIntervention surIntervention : srcSurgeryInterventions) {
+    		validateSurgeyInterventionDates(surIntervention, outcome);
     		SurgeryIntervention destSurgeryIntervention = new SurgeryIntervention();
     		copyProperties(surIntervention, destSurgeryIntervention);
     		destSurgeryInterventions.add(destSurgeryIntervention);
@@ -44,5 +47,16 @@ public class SurgeryInterventionMigrator implements Migrator<ExpeditedAdverseEve
 		dest.setInterventionSite(src.getInterventionSite());
 		dest.setStudySurgery(src.getStudySurgery());
 		dest.setTreatmentArm(src.getTreatmentArm());
+	}
+	
+	/**
+	 * Validate SurgeyIntervention Dates.
+	 * @param surgeryIntervention
+	 * @param domainObjectImportOutcome
+	 */
+	private void validateSurgeyInterventionDates(SurgeryIntervention surgeryIntervention,  DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome){
+		if(surgeryIntervention.getInterventionDate() != null && surgeryIntervention.getInterventionDate().after(new Date())){
+			outcome.addError("SUR_INTV1_ERR", "'Surgery Intervention date' cannot be a future date.");
+		}
 	}
 }

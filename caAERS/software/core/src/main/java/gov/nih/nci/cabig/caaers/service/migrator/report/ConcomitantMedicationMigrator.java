@@ -45,9 +45,10 @@ public class ConcomitantMedicationMigrator implements Migrator<ExpeditedAdverseE
 	        }
 	        
 	    	// Copy the ConcomitantMedications Information from Source to Destination.
-	    	for ( ConcomitantMedication bioIntervention : srcConcomitantMedications) {
+	    	for ( ConcomitantMedication concomitantMedication : srcConcomitantMedications) {
+	    		validateConcomitantMedicationDates(concomitantMedication, outcome);
 	    		ConcomitantMedication destConcomitantMedication = new ConcomitantMedication();
-	    		copyProperties(bioIntervention, destConcomitantMedication);
+	    		copyProperties(concomitantMedication, destConcomitantMedication);
 	    		destConcomitantMedications.add(destConcomitantMedication);
 	    		destConcomitantMedication.setReport(aeReportDest);
 	    	}
@@ -76,5 +77,18 @@ public class ConcomitantMedicationMigrator implements Migrator<ExpeditedAdverseE
 		dest.setEndDate(src.getEndDate()); 
 		dest.setStartDate(src.getStartDate());
 		dest.setStillTakingMedications(src.getStillTakingMedications());
+	}
+	
+	/**
+	 * Validate Concomitant Medication Dates.
+	 * @param concomitantMedication
+	 * @param domainObjectImportOutcome
+	 */
+	private void validateConcomitantMedicationDates(ConcomitantMedication concomitantMedication,  DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome){
+		if(concomitantMedication.getStartDate() != null && concomitantMedication.getEndDate() != null){
+			if(concomitantMedication.getStartDate().toDate().after(concomitantMedication.getEndDate().toDate())){
+				 outcome.addError("PAT_CCM1_ERR", "Concomitant Medication 'End date' cannot be before 'Start date' ");
+			}
+		}
 	}
 }
