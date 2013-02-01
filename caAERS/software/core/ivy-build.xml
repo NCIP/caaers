@@ -151,7 +151,10 @@
             <arg line="-npa
 	    			   -Xcollection-setter-injector"/>
             <schema dir="${main.src.resources}/schema/integration">
+            	<include name="caAERSCommonDataTypes.xsd"/>
             	<include name="caAERSCommonTypes.xsd"/>
+            	<include name="caAERSCommonWsTypes.xsd"/>
+            	<include name="caAERSAeTypes.xsd"/>
                 <include name="StudySchema.xsd"/>
             	<include name="ParticipantSchema.xsd"/>
             	<include name="ReportDefinition.xsd"/>
