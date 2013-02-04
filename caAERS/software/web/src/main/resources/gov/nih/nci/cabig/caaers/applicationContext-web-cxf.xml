@@ -96,10 +96,6 @@
             <ref bean="wsAuditInfoInterceptor" />
         </jaxws:inInterceptors>
         <jaxws:schemaLocations>
-            <jaxws:schemaLocation>/schema/integration/caAERSCommonDataTypes.xsd</jaxws:schemaLocation>
-            <jaxws:schemaLocation>/schema/integration/caAERSCommonWsTypes.xsd</jaxws:schemaLocation>
-			<jaxws:schemaLocation>/schema/integration/caAERSCommonTypes.xsd</jaxws:schemaLocation>
-			<jaxws:schemaLocation>/schema/integration/caAERSAeTypes.xsd</jaxws:schemaLocation>
             <jaxws:schemaLocation>/schema/integration/ManageAdverseEventsSchema.xsd</jaxws:schemaLocation>
         </jaxws:schemaLocations>
     </jaxws:endpoint>

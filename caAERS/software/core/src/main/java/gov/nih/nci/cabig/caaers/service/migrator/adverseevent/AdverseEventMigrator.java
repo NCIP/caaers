@@ -82,6 +82,7 @@ public class AdverseEventMigrator implements Migrator<AdverseEventReportingPerio
                 }
                 aeCtcTermDest.setTerm(ctcTerm);
                 aeDest.setAdverseEventCtcTerm(aeCtcTermDest);
+                aeCtcTermDest.setAdverseEvent(aeDest);
                 if(ctcTerm.isOtherRequired()){
                     if(dest.getStudy().getOtherMeddra() != null){
                         //must have other Meddra
@@ -123,6 +124,7 @@ public class AdverseEventMigrator implements Migrator<AdverseEventReportingPerio
                     return;
                 }
                 meddraTerm.setTerm(lowLevelTerm);
+                meddraTerm.setAdverseEvent(aeDest);
                 aeDest.setAdverseEventMeddraLowLevelTerm(meddraTerm);
             }
 
