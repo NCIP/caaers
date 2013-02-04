@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.domain;
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ import java.util.List;
  * @author Biju Joseph
  *
  */
-public class AdverseEventReportingPeriodTest extends AbstractNoSecurityTestCase {
+public class AdverseEventReportingPeriodTest extends AbstractTestCase {
 	
 	AdverseEventReportingPeriod reportingPeriod1;
 	AdverseEventReportingPeriod reportingPeriod2;
@@ -23,6 +24,7 @@ public class AdverseEventReportingPeriodTest extends AbstractNoSecurityTestCase 
 	
 	protected void setUp() throws Exception {
 		super.setUp();
+        SecurityTestUtils.switchToSuperuser();
 		TreatmentAssignment tac1 = new TreatmentAssignment();
 		tac1.setCode("acd");
 		
@@ -408,4 +410,38 @@ public class AdverseEventReportingPeriodTest extends AbstractNoSecurityTestCase 
 		assertTrue("RetiredIndicator of adverse events are not being set to true", reportingPeriod1.getAdverseEvents().get(0).getRetiredIndicator());
 		assertTrue("RetiredIndicator of adverse events are not being set to true", reportingPeriod1.getAdverseEvents().get(1).getRetiredIndicator());
 	}
+
+    public void testFindAdverseEventByIdTermAndDates(){
+         reportingPeriod1.getAdverseEvents().clear();
+         CtcTerm ctcTerm = Fixtures.createCtcTerm("abcd", "123");
+         ctcTerm.setId(9);
+         AdverseEventCtcTerm aeCtcTerm1 = new AdverseEventCtcTerm();
+         aeCtcTerm1.setCtcTerm(ctcTerm);
+         aeCtcTerm1.setId(9);
+
+        AdverseEventCtcTerm aeCtcTerm2 = new AdverseEventCtcTerm();
+        aeCtcTerm2.setCtcTerm(ctcTerm);
+        aeCtcTerm2.setId(19);
+
+         Date startDate = DateUtils.yesterday();
+         Date endDate = DateUtils.tomorrow();
+         AdverseEvent ae1 = Fixtures.createAdverseEvent(2, Grade.MILD, ctcTerm);
+         ae1.setAdverseEventCtcTerm(aeCtcTerm1);
+         ae1.setStartDate(startDate);
+         ae1.setEndDate(endDate);
+
+         AdverseEvent ae2 = Fixtures.createAdverseEvent(12, Grade.SEVERE, ctcTerm);
+         ae2.setAdverseEventCtcTerm(aeCtcTerm2);
+         ae2.setStartDate(startDate);
+         ae2.setEndDate(endDate);
+
+         reportingPeriod1.addAdverseEvent(ae1);
+         AdverseEvent ae3 = reportingPeriod1.findAdverseEventByIdTermAndDates(ae2);
+         assertSame(ae1, ae3);
+
+         ae2.setStartDate(DateUtils.today());
+         ae3 = reportingPeriod1.findAdverseEventByIdTermAndDates(ae2);
+         assertNull(ae3);
+
+    }
 }
