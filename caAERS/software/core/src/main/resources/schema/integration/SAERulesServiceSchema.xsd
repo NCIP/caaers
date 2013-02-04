@@ -6,8 +6,7 @@
            xmlns:cct="http://schema.integration.caaers.cabig.nci.nih.gov/common"
 		   xmlns:ae="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent">
 	
-    <xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" schemaLocation="caAERSCommonDataTypes.xsd"/>
-	<xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" schemaLocation="caAERSCommonWsTypes.xsd"/>	
+	<xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" schemaLocation="caAERSCommonDataTypes.xsd"/>
 	<xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent" schemaLocation="caAERSAeTypes.xsd"/>
 	
     <xs:annotation>
