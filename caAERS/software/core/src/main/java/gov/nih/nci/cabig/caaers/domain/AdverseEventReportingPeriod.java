@@ -884,20 +884,20 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
                 AdverseEventCtcTerm thisCtcTerm = thisAe.getAdverseEventCtcTerm();
                 AdverseEventCtcTerm thatCtcTerm = thatAe.getAdverseEventCtcTerm();
                 if ( (thisCtcTerm == null && thatCtcTerm != null) || (thatCtcTerm == null && thisCtcTerm != null) ) continue;
-                if(thisCtcTerm.getTerm().getId() != thatCtcTerm.getTerm().getId()) continue;
+                if( (thisCtcTerm != null && thatCtcTerm != null )&& thisCtcTerm.getTerm().getId() != thatCtcTerm.getTerm().getId()) continue;
                 if(!StringUtils.equals(thisAe.getOtherSpecify(), thatAe.getOtherSpecify())) continue;
 
                 LowLevelTerm thisLLT = thisAe.getLowLevelTerm();
                 LowLevelTerm thatLLT = thatAe.getLowLevelTerm();
                 if((thisLLT == null && thatLLT != null ) || (thatLLT == null && thisLLT != null)) continue;
-                if(thisLLT.getId() != thatLLT.getId()) continue;
+                if((thisLLT != null && thatLLT != null ) && thisLLT.getId() != thatLLT.getId()) continue;
 
             } else {
                 //MedDRA terminology
                 AdverseEventMeddraLowLevelTerm thisMedDRATerm = thisAe.getAdverseEventMeddraLowLevelTerm();
                 AdverseEventMeddraLowLevelTerm thatMedDRATerm = thatAe.getAdverseEventMeddraLowLevelTerm();
                 if((thisMedDRATerm == null && thatMedDRATerm != null) && (thatMedDRATerm == null && thisMedDRATerm != null)) continue;
-                if(thisMedDRATerm.getLowLevelTerm().getId() != thatMedDRATerm.getLowLevelTerm().getId()) continue;
+                if((thisMedDRATerm != null && thatMedDRATerm != null) && thisMedDRATerm.getLowLevelTerm().getId() != thatMedDRATerm.getLowLevelTerm().getId()) continue;
             }
             //found a match
             return thisAe;
