@@ -595,290 +595,290 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 		return ta;
 	}
 
-	private CaaersServiceResponse saveAdverseEvent(AdverseEventsInputMessage adverseEventsInputMessage, String operation) {
-		// boolean authorizationOnByDefault = enableAuthorization(false);
-		// switchUser("SYSTEM_ADMIN", "caaers_super_user");
-		// WebRequest stubWebRequest = preProcess();
-		CaaersServiceResponse caaersServiceResponse = Helper.createResponse();
+//	private CaaersServiceResponse saveAdverseEvent(AdverseEventsInputMessage adverseEventsInputMessage, String operation) {
+//		// boolean authorizationOnByDefault = enableAuthorization(false);
+//		// switchUser("SYSTEM_ADMIN", "caaers_super_user");
+//		// WebRequest stubWebRequest = preProcess();
+//		CaaersServiceResponse caaersServiceResponse = Helper.createResponse();
+//
+//		if (operation.equals(AdverseEventManagementServiceImpl.CREATE)
+//				|| operation.equals(AdverseEventManagementServiceImpl.UPDATE)) {
+//			if (adverseEventsInputMessage.getAdverseEvents() == null) {
+//				return Helper.populateError(caaersServiceResponse, "WS_AEMS_025", messageSource.getMessage(
+//						"WS_AEMS_025", new String[] {}, "", Locale.getDefault()));
+//			}
+//		}
+//
+//		Criteria criteria = adverseEventsInputMessage.getCriteria();
+//		String studyIdentifier = criteria.getStudyIdentifier();
+//		String studySubjectIdentifier = criteria.getStudySubjectIdentifier();
+//		// fetch study
+//		Study dbStudy = fetchStudy(studyIdentifier, caaersServiceResponse);
+//		if (dbStudy == null) {
+//			//response must be populated with appropriate errors that lead to one of these being null
+//			return caaersServiceResponse;
+//		}
+//		// fetch participant
+//		Participant dbParticipant = fetchParticipant(studySubjectIdentifier, dbStudy.getId(), studyIdentifier, caaersServiceResponse);
+//		if (dbParticipant == null) {
+//			//response must be populated with appropriate errors that lead to one of these being null
+//			return caaersServiceResponse;
+//		}
+//
+//		// fetch study participant assignment
+//		StudyParticipantAssignment assignment = fetchAssignment(caaersServiceResponse, studyIdentifier,
+//				studySubjectIdentifier, dbStudy, dbParticipant);
+//		if (assignment == null) {
+//			//response must be populated with appropriate errors that lead to one of these being null
+//			return caaersServiceResponse;
+//		}
+//
+//		// fetch AE reporting period
+//		AdverseEventReportingPeriod adverseEventReportingPeriod = fetchAEReportingPeriod(criteria, assignment,
+//				operation, caaersServiceResponse);
+//
+//		// set default response message
+//		caaersServiceResponse.getServiceResponse().setMessage("Completed the request processing sucessfully");
+//
+//		if (adverseEventReportingPeriod == null) {
+//			//response must be populated with appropriate errors that lead to one of these being null
+//			return caaersServiceResponse;
+//		}
+//
+//		AeTerminology terminology = dbStudy.getAeTerminology();
+//
+//		//fetch AEs in DB
+//		List<AdverseEvent> dbAdverseEvents = null;
+//		try {
+//			dbAdverseEvents = getAdverseEventDao().getByAssignment(
+//					adverseEventReportingPeriod.getAssignment());
+//		} catch (Exception e) {
+//			String message = messageSource.getMessage("WS_AEMS_069", new String[] { studyIdentifier, studySubjectIdentifier }, "", Locale
+//					.getDefault());
+//			logger.error(message, e);
+//			Helper.populateError(caaersServiceResponse, "WS_AEMS_069", message);
+//			return caaersServiceResponse;
+//		}
+//		// process adverse events ...
+//
+//		// handle delete adverse events
+//		if (operation.equals(AdverseEventManagementServiceImpl.DELETE)) {
+//			handleAEsDeletion(adverseEventsInputMessage, terminology, adverseEventReportingPeriod, dbAdverseEvents,
+//					caaersServiceResponse);
+//			return caaersServiceResponse;
+//		}
+//
+//		// proceeds further only to handle CREATE or UPDATE
+//		AdverseEvents xmlAdverseEvents = adverseEventsInputMessage.getAdverseEvents();
+//		Map<Integer, AdverseEvent> aesToSave = new HashMap<Integer, AdverseEvent>();
+//
+//		// process and build list of AEs to be saved
+//		processAEsToSave(xmlAdverseEvents, adverseEventReportingPeriod, terminology, aesToSave, operation, dbStudy,
+//				dbAdverseEvents, caaersServiceResponse);
+//
+//		if (operation.equals(CREATE) || operation.equals(UPDATE)) {
+//			saveAEs(aesToSave, adverseEventReportingPeriod, operation, caaersServiceResponse);
+//		}
+//
+//		// FIRE SAE RULES ..
+//		fireSAERules(adverseEventReportingPeriod, dbStudy, caaersServiceResponse);
+//
+//		return caaersServiceResponse;
+//	}
 
-		if (operation.equals(AdverseEventManagementServiceImpl.CREATE)
-				|| operation.equals(AdverseEventManagementServiceImpl.UPDATE)) {
-			if (adverseEventsInputMessage.getAdverseEvents() == null) {
-				return Helper.populateError(caaersServiceResponse, "WS_AEMS_025", messageSource.getMessage(
-						"WS_AEMS_025", new String[] {}, "", Locale.getDefault()));
-			}
-		}
+//	/**
+//	 * @param adverseEventReportingPeriod
+//	 * @param dbStudy
+//	 * @param caaersServiceResponse
+//	 */
+//	private void fireSAERules(AdverseEventReportingPeriod adverseEventReportingPeriod, Study dbStudy, CaaersServiceResponse caaersServiceResponse) {
+//
+//		for (AdverseEvent ae : adverseEventReportingPeriod.getAdverseEvents()) {
+//			String sae = "";
+//
+//			try {
+//
+//				sae = adverseEventEvaluationService.assesAdverseEvent(ae, dbStudy);
+//				if (sae.equals("SERIOUS_ADVERSE_EVENT")) {
+//					caaersServiceResponse.getServiceResponse().setMessage(
+//							"Rules enabled for this study , Reporting required for exported Adverse Events");
+//				}
+//
+//			} catch (Exception e) {
+//				Helper.populateError(caaersServiceResponse, "WS_GEN_000", "Error :  " + e.getMessage());
+//			}
+//			/*
+//			 * try { notifyStudyPersonnel(assignment);
+//			 * messages.add("Email Sent .."); } catch (MailException e) {
+//			 * messages
+//			 * .add("Error sending email to Study Personnel . "+e.getMessage());
+//			 * adverseEventResponse.setMessage(messages);
+//			 * caaersServiceResponse.setResponse(adverseEventResponse); return
+//			 * caaersServiceResponse; }
+//			 */
+//
+//		}
+//	}
 
-		Criteria criteria = adverseEventsInputMessage.getCriteria();
-		String studyIdentifier = criteria.getStudyIdentifier();
-		String studySubjectIdentifier = criteria.getStudySubjectIdentifier();
-		// fetch study
-		Study dbStudy = fetchStudy(studyIdentifier, caaersServiceResponse);
-		if (dbStudy == null) {
-			//response must be populated with appropriate errors that lead to one of these being null
-			return caaersServiceResponse;
-		}
-		// fetch participant
-		Participant dbParticipant = fetchParticipant(studySubjectIdentifier, dbStudy.getId(), studyIdentifier, caaersServiceResponse);
-		if (dbParticipant == null) {
-			//response must be populated with appropriate errors that lead to one of these being null
-			return caaersServiceResponse;
-		}
-		
-		// fetch study participant assignment
-		StudyParticipantAssignment assignment = fetchAssignment(caaersServiceResponse, studyIdentifier,
-				studySubjectIdentifier, dbStudy, dbParticipant);
-		if (assignment == null) {
-			//response must be populated with appropriate errors that lead to one of these being null
-			return caaersServiceResponse;
-		}
+//	/**
+//	 * @param aesToSave
+//	 * @param adverseEventReportingPeriod
+//	 * @param operation
+//	 * @param caaersServiceResponse
+//	 */
+//	private void saveAEs(Map<Integer, AdverseEvent> aesToSave, AdverseEventReportingPeriod adverseEventReportingPeriod, String operation, CaaersServiceResponse caaersServiceResponse) {
+//
+//		Set<Entry<Integer, AdverseEvent>> entries = aesToSave.entrySet();
+//
+//		// perform saveAEs
+//		for (Entry<Integer, AdverseEvent> pairs : entries) {
+//
+//			AdverseEvent adverseEvent = (AdverseEvent) pairs.getValue();
+//
+//			// get term
+//			String term = "";
+//			if (adverseEvent.getAdverseEventTerm() != null) {
+//				term = adverseEvent.getAdverseEventTerm().getFullName();
+//			} else {
+//				term = adverseEvent.getDetailsForOther();
+//			}
+//
+//            // SAVE AE
+//            adverseEventReportingPeriod.addAdverseEvent(adverseEvent);
+//
+//            try {
+//                adverseEventReportingPeriodDao.save(adverseEventReportingPeriod);
+//            } catch (Exception e) {
+//                String message = messageSource.getMessage("WS_AEMS_061", new String[] { term, e.getMessage() }, "",
+//                        Locale.getDefault());
+//                Helper.populateErrorOutcome(caaersServiceResponse, null, adverseEvent.getId().toString(), pairs
+//                        .getKey().toString(), Arrays.asList(new String[] { message }));
+//            }
+//			String message = messageSource.getMessage("WS_AEMS_006", new String[] { term, operation + "d" }, "", Locale
+//					.getDefault());
+//			ProcessingOutcome po = Helper.createOutcome(AdverseEvent.class, null, false, message);
+//			Helper.populateProcessingOutcome(caaersServiceResponse, po);
+//		}// end of for
+//
+//	}
 
-		// fetch AE reporting period
-		AdverseEventReportingPeriod adverseEventReportingPeriod = fetchAEReportingPeriod(criteria, assignment,
-				operation, caaersServiceResponse);
-
-		// set default response message
-		caaersServiceResponse.getServiceResponse().setMessage("Completed the request processing sucessfully");
-
-		if (adverseEventReportingPeriod == null) {
-			//response must be populated with appropriate errors that lead to one of these being null
-			return caaersServiceResponse;
-		}
-		
-		AeTerminology terminology = dbStudy.getAeTerminology();
-		
-		//fetch AEs in DB
-		List<AdverseEvent> dbAdverseEvents = null;
-		try {
-			dbAdverseEvents = getAdverseEventDao().getByAssignment(
-					adverseEventReportingPeriod.getAssignment());
-		} catch (Exception e) {
-			String message = messageSource.getMessage("WS_AEMS_069", new String[] { studyIdentifier, studySubjectIdentifier }, "", Locale
-					.getDefault());
-			logger.error(message, e);
-			Helper.populateError(caaersServiceResponse, "WS_AEMS_069", message);
-			return caaersServiceResponse;
-		}
-		// process adverse events ...
-
-		// handle delete adverse events
-		if (operation.equals(AdverseEventManagementServiceImpl.DELETE)) {
-			handleAEsDeletion(adverseEventsInputMessage, terminology, adverseEventReportingPeriod, dbAdverseEvents, 
-					caaersServiceResponse);
-			return caaersServiceResponse;
-		}
-
-		// proceeds further only to handle CREATE or UPDATE
-		AdverseEvents xmlAdverseEvents = adverseEventsInputMessage.getAdverseEvents();
-		Map<Integer, AdverseEvent> aesToSave = new HashMap<Integer, AdverseEvent>();
-
-		// process and build list of AEs to be saved
-		processAEsToSave(xmlAdverseEvents, adverseEventReportingPeriod, terminology, aesToSave, operation, dbStudy,
-				dbAdverseEvents, caaersServiceResponse);
-
-		if (operation.equals(CREATE) || operation.equals(UPDATE)) {
-			saveAEs(aesToSave, adverseEventReportingPeriod, operation, caaersServiceResponse);
-		}
-
-		// FIRE SAE RULES ..
-		fireSAERules(adverseEventReportingPeriod, dbStudy, caaersServiceResponse);
-
-		return caaersServiceResponse;
-	}
-
-	/**
-	 * @param adverseEventReportingPeriod
-	 * @param dbStudy
-	 * @param caaersServiceResponse
-	 */
-	private void fireSAERules(AdverseEventReportingPeriod adverseEventReportingPeriod, Study dbStudy, CaaersServiceResponse caaersServiceResponse) {
-
-		for (AdverseEvent ae : adverseEventReportingPeriod.getAdverseEvents()) {
-			String sae = "";
-
-			try {
-
-				sae = adverseEventEvaluationService.assesAdverseEvent(ae, dbStudy);
-				if (sae.equals("SERIOUS_ADVERSE_EVENT")) {
-					caaersServiceResponse.getServiceResponse().setMessage(
-							"Rules enabled for this study , Reporting required for exported Adverse Events");
-				}
-
-			} catch (Exception e) {
-				Helper.populateError(caaersServiceResponse, "WS_GEN_000", "Error :  " + e.getMessage());
-			}
-			/*
-			 * try { notifyStudyPersonnel(assignment);
-			 * messages.add("Email Sent .."); } catch (MailException e) {
-			 * messages
-			 * .add("Error sending email to Study Personnel . "+e.getMessage());
-			 * adverseEventResponse.setMessage(messages);
-			 * caaersServiceResponse.setResponse(adverseEventResponse); return
-			 * caaersServiceResponse; }
-			 */
-
-		}
-	}
-
-	/**
-	 * @param aesToSave
-	 * @param adverseEventReportingPeriod
-	 * @param operation
-	 * @param caaersServiceResponse
-	 */
-	private void saveAEs(Map<Integer, AdverseEvent> aesToSave, AdverseEventReportingPeriod adverseEventReportingPeriod, String operation, CaaersServiceResponse caaersServiceResponse) {
-
-		Set<Entry<Integer, AdverseEvent>> entries = aesToSave.entrySet();
-
-		// perform saveAEs
-		for (Entry<Integer, AdverseEvent> pairs : entries) {
-
-			AdverseEvent adverseEvent = (AdverseEvent) pairs.getValue();
-
-			// get term
-			String term = "";
-			if (adverseEvent.getAdverseEventTerm() != null) {
-				term = adverseEvent.getAdverseEventTerm().getFullName();
-			} else {
-				term = adverseEvent.getDetailsForOther();
-			}
-
-            // SAVE AE
-            adverseEventReportingPeriod.addAdverseEvent(adverseEvent);
-
-            try {
-                adverseEventReportingPeriodDao.save(adverseEventReportingPeriod);
-            } catch (Exception e) {
-                String message = messageSource.getMessage("WS_AEMS_061", new String[] { term, e.getMessage() }, "",
-                        Locale.getDefault());
-                Helper.populateErrorOutcome(caaersServiceResponse, null, adverseEvent.getId().toString(), pairs
-                        .getKey().toString(), Arrays.asList(new String[] { message }));
-            }
-			String message = messageSource.getMessage("WS_AEMS_006", new String[] { term, operation + "d" }, "", Locale
-					.getDefault());
-			ProcessingOutcome po = Helper.createOutcome(AdverseEvent.class, null, false, message);
-			Helper.populateProcessingOutcome(caaersServiceResponse, po);
-		}// end of for
-
-	}
-
-	/**
-	 * @param xmlAdverseEvents
-	 * @param adverseEventReportingPeriod
-	 * @param terminology
-	 * @param aesToSave
-	 * @param operation
-	 * @param dbStudy
-	 * @param caaersServiceResponse
-	 */
-	private void processAEsToSave(AdverseEvents xmlAdverseEvents,
-			AdverseEventReportingPeriod adverseEventReportingPeriod, AeTerminology terminology,
-			Map<Integer, AdverseEvent> aesToSave, String operation, Study dbStudy, List<AdverseEvent> dbAdverseEvents,
-			CaaersServiceResponse caaersServiceResponse) {
-		int index = 0;
-		for (AdverseEventType adverseEventType : xmlAdverseEvents.getAdverseEvent()) {
-			index++;
-			try {
-
-				AdverseEvent adverseEvent = processAdverseEvent(adverseEventType, adverseEventReportingPeriod,
-						operation, dbStudy, terminology, dbAdverseEvents);
-				
-				Set<ConstraintViolation<AdverseEvent>> constraintViolations = validator.validate(adverseEvent, AdverseEventGroup.class, Default.class);
-				convertConstraintViolationsToProcessOutcomes(
-						adverseEvent, String.valueOf(index), constraintViolations, caaersServiceResponse);
-				// build list of aes that can be saved ...
-				if(constraintViolations.isEmpty()) {
-					aesToSave.put(index, adverseEvent);
-				}
-			} catch (CaaersSystemException e) {
-				Helper.populateErrorOutcome(caaersServiceResponse, null, null, (index) + "", Arrays
-						.asList(new String[] { e.getMessage() }));
-			}
-		}
-	}
+//	/**
+//	 * @param xmlAdverseEvents
+//	 * @param adverseEventReportingPeriod
+//	 * @param terminology
+//	 * @param aesToSave
+//	 * @param operation
+//	 * @param dbStudy
+//	 * @param caaersServiceResponse
+//	 */
+//	private void processAEsToSave(AdverseEvents xmlAdverseEvents,
+//			AdverseEventReportingPeriod adverseEventReportingPeriod, AeTerminology terminology,
+//			Map<Integer, AdverseEvent> aesToSave, String operation, Study dbStudy, List<AdverseEvent> dbAdverseEvents,
+//			CaaersServiceResponse caaersServiceResponse) {
+//		int index = 0;
+//		for (AdverseEventType adverseEventType : xmlAdverseEvents.getAdverseEvent()) {
+//			index++;
+//			try {
+//
+//				AdverseEvent adverseEvent = processAdverseEvent(adverseEventType, adverseEventReportingPeriod,
+//						operation, dbStudy, terminology, dbAdverseEvents);
+//
+//				Set<ConstraintViolation<AdverseEvent>> constraintViolations = validator.validate(adverseEvent, AdverseEventGroup.class, Default.class);
+//				convertConstraintViolationsToProcessOutcomes(
+//						adverseEvent, String.valueOf(index), constraintViolations, caaersServiceResponse);
+//				// build list of aes that can be saved ...
+//				if(constraintViolations.isEmpty()) {
+//					aesToSave.put(index, adverseEvent);
+//				}
+//			} catch (CaaersSystemException e) {
+//				Helper.populateErrorOutcome(caaersServiceResponse, null, null, (index) + "", Arrays
+//						.asList(new String[] { e.getMessage() }));
+//			}
+//		}
+//	}
+//
+//	/**
+//	 * @param adverseEventsInputMessage
+//	 * @param caaersServiceResponse
+//	 * @param terminology
+//	 * @param adverseEventReportingPeriod
+//	 */
+//	private void handleAEsDeletion(AdverseEventsInputMessage adverseEventsInputMessage, AeTerminology terminology,
+//			AdverseEventReportingPeriod adverseEventReportingPeriod, List<AdverseEvent> dbAdverseEvents,
+//			CaaersServiceResponse caaersServiceResponse) {
+//
+//		String errorCode = "";
+//
+//		AdverseEvents adverseEvents = adverseEventsInputMessage.getAdverseEvents();
+//
+//		for (AdverseEventType aeType : adverseEvents.getAdverseEvent()) {
+//			AdverseEvent adverseEvent = null;
+//			String code = null;
+//
+//			try {
+//				if (aeType.getId() != null) {
+//					code = String.valueOf(aeType.getId());
+//					adverseEvent = this.getAdverseEventDao().getById(aeType.getId().intValue());
+//				} else if (aeType.getAdverseEventCtepTerm() != null && (aeType.getAdverseEventCtepTerm().getCtepCode() != null)) {
+//					code = aeType.getAdverseEventCtepTerm().getCtepCode();
+//					adverseEvent = checkIfCtcTermExists(adverseEventReportingPeriod, aeType.getAdverseEventCtepTerm().getCtepCode(), terminology
+//							.getCtcVersion(), dbAdverseEvents);
+//				} else if (aeType.getAdverseEventMeddraLowLevelTerm() != null) {
+//					code = aeType.getAdverseEventMeddraLowLevelTerm().getMeddraCode();
+//					adverseEvent = checkIfMeddraTermExists(adverseEventReportingPeriod, aeType
+//							.getAdverseEventMeddraLowLevelTerm(), dbAdverseEvents);
+//				}
+//			} catch (Exception e) {
+//				  String message = messageSource.getMessage("WS_AEMS_069", new
+//						  String[] { adverseEventsInputMessage.getCriteria().getStudyIdentifier()
+//						  , adverseEventsInputMessage.getCriteria().getStudySubjectIdentifier()},
+//						  "", Locale.getDefault());
+//				  logger.error(message, e);
+//				  Helper.populateError(caaersServiceResponse, "WS_AEMS_069", message);
+//
+//			}
+//
+//			try {
+//				if (adverseEvent != null) {
+//					String message = "";
+//					if (adverseEvent.getSolicited()) {
+//						message = messageSource.getMessage("WS_AEMS_024", new String[] { code }, "", Locale
+//								.getDefault());
+//						errorCode = "WS_AEMS_024";
+//						Helper.populateError(caaersServiceResponse, errorCode, message);
+//					} else {
+//						deleteAdverseEvent(adverseEvent, adverseEventReportingPeriod);
+//						message = messageSource.getMessage("WS_AEMS_006", new String[] {
+//								adverseEvent.getAdverseEventTerm().getFullName(), "deleted" }, "", Locale.getDefault());
+//						errorCode = "WS_AEMS_006";
+//
+//						ProcessingOutcome po = Helper.createOutcome(AdverseEvent.class, adverseEvent.getId().toString(), false, message);
+//						Helper.populateProcessingOutcome(caaersServiceResponse, po);
+//					}
+//				}
+//			} catch (Exception e) {
+//				 String message = messageSource.getMessage("WS_AEMS_060", new
+//						 String[] { e.getMessage() }, "", Locale.getDefault());
+//				  logger.error(message, e);
+//				  Helper.populateError(caaersServiceResponse, "WS_AEMS_060", message);
+//			}
+//		}// end of for
+//	}
 	
-	/**
-	 * @param adverseEventsInputMessage
-	 * @param caaersServiceResponse
-	 * @param terminology
-	 * @param adverseEventReportingPeriod
-	 */
-	private void handleAEsDeletion(AdverseEventsInputMessage adverseEventsInputMessage, AeTerminology terminology,
-			AdverseEventReportingPeriod adverseEventReportingPeriod, List<AdverseEvent> dbAdverseEvents, 
-			CaaersServiceResponse caaersServiceResponse) {
-
-		String errorCode = "";
-
-		AdverseEvents adverseEvents = adverseEventsInputMessage.getAdverseEvents();
-
-		for (AdverseEventType aeType : adverseEvents.getAdverseEvent()) {
-			AdverseEvent adverseEvent = null;
-			String code = null;
-
-			try {
-				if (aeType.getId() != null) {
-					code = String.valueOf(aeType.getId());
-					adverseEvent = this.getAdverseEventDao().getById(aeType.getId().intValue());
-				} else if (aeType.getAdverseEventCtepTerm() != null && (aeType.getAdverseEventCtepTerm().getCtepCode() != null)) {
-					code = aeType.getAdverseEventCtepTerm().getCtepCode();
-					adverseEvent = checkIfCtcTermExists(adverseEventReportingPeriod, aeType.getAdverseEventCtepTerm().getCtepCode(), terminology
-							.getCtcVersion(), dbAdverseEvents);
-				} else if (aeType.getAdverseEventMeddraLowLevelTerm() != null) {
-					code = aeType.getAdverseEventMeddraLowLevelTerm().getMeddraCode();
-					adverseEvent = checkIfMeddraTermExists(adverseEventReportingPeriod, aeType
-							.getAdverseEventMeddraLowLevelTerm(), dbAdverseEvents);
-				}
-			} catch (Exception e) {				
-				  String message = messageSource.getMessage("WS_AEMS_069", new
-						  String[] { adverseEventsInputMessage.getCriteria().getStudyIdentifier()
-						  , adverseEventsInputMessage.getCriteria().getStudySubjectIdentifier()},
-						  "", Locale.getDefault());
-				  logger.error(message, e);
-				  Helper.populateError(caaersServiceResponse, "WS_AEMS_069", message);
-				 
-			}
-			
-			try {
-				if (adverseEvent != null) {
-					String message = "";
-					if (adverseEvent.getSolicited()) {
-						message = messageSource.getMessage("WS_AEMS_024", new String[] { code }, "", Locale
-								.getDefault());
-						errorCode = "WS_AEMS_024";
-						Helper.populateError(caaersServiceResponse, errorCode, message);
-					} else {
-						deleteAdverseEvent(adverseEvent, adverseEventReportingPeriod);
-						message = messageSource.getMessage("WS_AEMS_006", new String[] {
-								adverseEvent.getAdverseEventTerm().getFullName(), "deleted" }, "", Locale.getDefault());
-						errorCode = "WS_AEMS_006";
-					
-						ProcessingOutcome po = Helper.createOutcome(AdverseEvent.class, adverseEvent.getId().toString(), false, message);
-						Helper.populateProcessingOutcome(caaersServiceResponse, po);
-					}
-				}
-			} catch (Exception e) {				
-				 String message = messageSource.getMessage("WS_AEMS_060", new
-						 String[] { e.getMessage() }, "", Locale.getDefault());
-				  logger.error(message, e);
-				  Helper.populateError(caaersServiceResponse, "WS_AEMS_060", message);				 
-			}
-		}// end of for
-	}
-	
-	private void deleteAdverseEvent(AdverseEvent adverseEvent, AdverseEventReportingPeriod adverseEventReportingPeriod) {
-		List<AdverseEvent> dbAdverseEvents = adverseEventReportingPeriod.getAdverseEvents();
-
-		for (Iterator<AdverseEvent> iterator = dbAdverseEvents.iterator(); iterator.hasNext();) {
-			AdverseEvent dbAE = iterator.next();
-			if (dbAE.getId() == adverseEvent.getId()) {
-				adverseEventIndexDao.deleteByEntityIdColumn(dbAE.getId() + "");
-				iterator.remove();
-			}
-		}
-		adverseEventReportingPeriod.setAdverseEvents(dbAdverseEvents);
-
-		adverseEventReportingPeriodDao.save(adverseEventReportingPeriod);
-	}
+//	private void deleteAdverseEvent(AdverseEvent adverseEvent, AdverseEventReportingPeriod adverseEventReportingPeriod) {
+//		List<AdverseEvent> dbAdverseEvents = adverseEventReportingPeriod.getAdverseEvents();
+//
+//		for (Iterator<AdverseEvent> iterator = dbAdverseEvents.iterator(); iterator.hasNext();) {
+//			AdverseEvent dbAE = iterator.next();
+//			if (dbAE.getId() == adverseEvent.getId()) {
+//				adverseEventIndexDao.deleteByEntityIdColumn(dbAE.getId() + "");
+//				iterator.remove();
+//			}
+//		}
+//		adverseEventReportingPeriod.setAdverseEvents(dbAdverseEvents);
+//
+//		adverseEventReportingPeriodDao.save(adverseEventReportingPeriod);
+//	}
 
 	
 	/**
@@ -1002,244 +1002,244 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 		return studyDao.getByIdentifier(si);
 	}
 
+//
+//	/**
+//	 * @param criteria
+//	 * @param assignment
+//	 * @param operation
+//	 * @param caaersServiceResponse
+//	 * @return AdverseEventReportingPeriod
+//	 */
+//	private AdverseEventReportingPeriod fetchAEReportingPeriod(Criteria criteria,
+//			StudyParticipantAssignment assignment, String operation, CaaersServiceResponse caaersServiceResponse) {
+//		AdverseEventReportingPeriod adverseEventReportingPeriod = null;
+//		if (criteria.getCourse() != null) {
+//			try {
+//				adverseEventReportingPeriod = fetchReportingPeriod(criteria, assignment, operation);
+//			} catch (CaaersSystemException e) {
+//				logger.error(e);
+//				Helper.populateError(caaersServiceResponse, e.getErrorCode(), e.getMessage());
+//			}
+//		}
+//		return adverseEventReportingPeriod;
+//	}
 	
-	/**
-	 * @param criteria
-	 * @param assignment
-	 * @param operation
-	 * @param caaersServiceResponse
-	 * @return AdverseEventReportingPeriod
-	 */
-	private AdverseEventReportingPeriod fetchAEReportingPeriod(Criteria criteria,
-			StudyParticipantAssignment assignment, String operation, CaaersServiceResponse caaersServiceResponse) {
-		AdverseEventReportingPeriod adverseEventReportingPeriod = null;
-		if (criteria.getCourse() != null) {
-			try {
-				adverseEventReportingPeriod = fetchReportingPeriod(criteria, assignment, operation);
-			} catch (CaaersSystemException e) {
-				logger.error(e);
-				Helper.populateError(caaersServiceResponse, e.getErrorCode(), e.getMessage());
-			}
-		}
-		return adverseEventReportingPeriod;
-	}
+//	private AdverseEventReportingPeriod fetchReportingPeriod(Criteria criteria, StudyParticipantAssignment assignment,
+//			String operation) throws CaaersSystemException {
+//		AdverseEventReportingPeriod adverseEventReportingPeriod = null;
+//
+//		if (criteria.getCourse() == null) {
+//			throw new CaaersSystemException("WS_AEMS_065",
+//					messageSource.getMessage("WS_AEMS_065",
+//					new String[] { }, "", Locale.getDefault()));
+//		}
+//
+//		Date xmlStartDate = null;
+//		if(criteria.getCourse().getStartDateOfThisCourse() != null){
+//			xmlStartDate = criteria.getCourse().getStartDateOfThisCourse().toGregorianCalendar().getTime();
+//		}
+//		Date xmlEndDate = null;
+//		if (criteria.getCourse().getEndDateOfThisCourse() != null) {
+//			xmlEndDate = criteria.getCourse().getEndDateOfThisCourse().toGregorianCalendar().getTime();
+//		}
+//
+//		List<AdverseEventReportingPeriod> rPeriodList;
+//		try {
+//			rPeriodList = adverseEventReportingPeriodDao.getByAssignment(assignment);
+//			for (AdverseEventReportingPeriod aerp : rPeriodList) {
+//				Date sDate = aerp.getStartDate();
+//				Date eDate = aerp.getEndDate();
+//
+//				if (DateUtils.compareDate(xmlStartDate, sDate) == 0) {
+//					if ((xmlEndDate != null && DateUtils.compareDate(xmlEndDate, eDate) == 0)
+//							|| (xmlEndDate == null && eDate == null)) {
+//						adverseEventReportingPeriod = aerp;
+//						break;
+//					}
+//				}
+//			}
+//		} catch (Exception e) {
+//			throw new CaaersSystemException("WS_AEMS_062",
+//					messageSource.getMessage("WS_AEMS_062",
+//					new String[] { criteria.getStudyIdentifier(), criteria.getStudySubjectIdentifier() }, "", Locale
+//							.getDefault()));
+//		}
+//
+//		// incase of update , the reporting period should be existing in database .
+//
+//		Study study = assignment.getStudySite().getStudy();
+//		if (adverseEventReportingPeriod == null) {
+//
+//			if (operation.equals(DELETE)) {
+//				throw new CaaersSystemException("WS_AEMS_008", messageSource.getMessage("WS_AEMS_008",
+//						new String[] {}, "", Locale.getDefault()));
+//			}
+//			if (criteria.getCourse().getStartDateOfFirstCourse() != null) {
+//				assignment.setStartDateOfFirstCourse(xmlStartDate);
+//			}
+//			// create one
+//			adverseEventReportingPeriod = new AdverseEventReportingPeriod();
+//
+//			adverseEventReportingPeriod.setStartDate(xmlStartDate);
+//			adverseEventReportingPeriod.setEndDate(xmlEndDate);
+//
+//			if (criteria.getCourse().getCycleNumber() != null) {
+//				adverseEventReportingPeriod.setCycleNumber(criteria.getCourse().getCycleNumber().intValue());
+//			}
+//
+//			if (criteria.getCourse().getTreatmentAssignmentCode() == null) {
+//				adverseEventReportingPeriod.setTreatmentAssignmentDescription(criteria.getCourse()
+//						.getOtherTreatmentAssignmentDescription());
+//			} else {
+//				TreatmentAssignment ta = resolveTreamtmentAssignment(criteria, study);
+//				if (ta != null) {
+//					adverseEventReportingPeriod.setTreatmentAssignment(ta);
+//				} else {
+//					throw new CaaersSystemException("WS_AEMS_009", messageSource.getMessage("WS_AEMS_009",
+//							new String[] { criteria.getCourse().getTreatmentAssignmentCode() }, "", Locale
+//									.getDefault()));
+//				}
+//			}
+//
+//			List<Epoch> epochs = study.getEpochs();
+//			Epoch epochToSave = null;
+//
+//			if (StringUtils.isNotEmpty(criteria.getCourse().getTreatmentType())) {
+//				for (Epoch epoch : epochs) {
+//					if (epoch.getName().equals(criteria.getCourse().getTreatmentType())) {
+//						epochToSave = epoch;
+//						break;
+//					}
+//				}
+//
+//				// CAAERS-2813
+//				if (epochToSave == null) {
+//					throw new CaaersSystemException("WS_AEMS_010", messageSource.getMessage("WS_AEMS_010",
+//							new String[] { criteria.getCourse().getTreatmentType() }, "", Locale.getDefault()));
+//				}
+//			}
+//
+//
+//			if (epochToSave != null) {
+//				adverseEventReportingPeriod.setEpoch(epochToSave);
+//			}
+//
+//			adverseEventReportingPeriod.setAssignment(assignment);
+//			ValidationErrors errors = validateRepPeriodDates(adverseEventReportingPeriod, rPeriodList, assignment.getStartDateOfFirstCourse(),epochToSave);
+//			if (errors.hasErrors()) {
+//				try {
+//					studyParticipantAssignmentDao.save(assignment);
+//				} catch (Exception e) {
+//					throw new CaaersSystemException("WS_AEMS_067", messageSource.getMessage("WS_AEMS_067", new String[] { }, "", Locale.getDefault()));
+//				}
+//				try {
+//					adverseEventReportingPeriodDao.save(adverseEventReportingPeriod);
+//				} catch (Exception e) {
+//					throw new CaaersSystemException("WS_AEMS_068", messageSource.getMessage("WS_AEMS_068", new String[] { }, "", Locale.getDefault()));
+//				}
+//
+//			} else {
+//				throw new CaaersSystemException(errors.getErrorAt(0).getCode(), errors.getErrorAt(0).getMessage());
+//			}
+//		} else {
+//			//
+//			adverseEventReportingPeriodService.synchronizeReports(adverseEventReportingPeriod);
+//		}
+//
+//		return adverseEventReportingPeriod;
+//	}
 	
-	private AdverseEventReportingPeriod fetchReportingPeriod(Criteria criteria, StudyParticipantAssignment assignment,
-			String operation) throws CaaersSystemException {
-		AdverseEventReportingPeriod adverseEventReportingPeriod = null;
-
-		if (criteria.getCourse() == null) {			
-			throw new CaaersSystemException("WS_AEMS_065", 
-					messageSource.getMessage("WS_AEMS_065",
-					new String[] { }, "", Locale.getDefault()));
-		}
-		
-		Date xmlStartDate = null;
-		if(criteria.getCourse().getStartDateOfThisCourse() != null){
-			xmlStartDate = criteria.getCourse().getStartDateOfThisCourse().toGregorianCalendar().getTime();
-		}
-		Date xmlEndDate = null;
-		if (criteria.getCourse().getEndDateOfThisCourse() != null) {
-			xmlEndDate = criteria.getCourse().getEndDateOfThisCourse().toGregorianCalendar().getTime();
-		}
-
-		List<AdverseEventReportingPeriod> rPeriodList;
-		try {
-			rPeriodList = adverseEventReportingPeriodDao.getByAssignment(assignment);
-			for (AdverseEventReportingPeriod aerp : rPeriodList) {
-				Date sDate = aerp.getStartDate();
-				Date eDate = aerp.getEndDate();
-
-				if (DateUtils.compareDate(xmlStartDate, sDate) == 0) {
-					if ((xmlEndDate != null && DateUtils.compareDate(xmlEndDate, eDate) == 0)
-							|| (xmlEndDate == null && eDate == null)) {
-						adverseEventReportingPeriod = aerp;
-						break;
-					}
-				}
-			}
-		} catch (Exception e) {
-			throw new CaaersSystemException("WS_AEMS_062", 
-					messageSource.getMessage("WS_AEMS_062",
-					new String[] { criteria.getStudyIdentifier(), criteria.getStudySubjectIdentifier() }, "", Locale
-							.getDefault()));
-		}
-
-		// incase of update , the reporting period should be existing in database .
-
-		Study study = assignment.getStudySite().getStudy();
-		if (adverseEventReportingPeriod == null) {
-
-			if (operation.equals(DELETE)) {
-				throw new CaaersSystemException("WS_AEMS_008", messageSource.getMessage("WS_AEMS_008",
-						new String[] {}, "", Locale.getDefault()));
-			}
-			if (criteria.getCourse().getStartDateOfFirstCourse() != null) {
-				assignment.setStartDateOfFirstCourse(xmlStartDate);
-			}
-			// create one
-			adverseEventReportingPeriod = new AdverseEventReportingPeriod();
-			
-			adverseEventReportingPeriod.setStartDate(xmlStartDate);
-			adverseEventReportingPeriod.setEndDate(xmlEndDate);
-
-			if (criteria.getCourse().getCycleNumber() != null) {
-				adverseEventReportingPeriod.setCycleNumber(criteria.getCourse().getCycleNumber().intValue());
-			}
-
-			if (criteria.getCourse().getTreatmentAssignmentCode() == null) {
-				adverseEventReportingPeriod.setTreatmentAssignmentDescription(criteria.getCourse()
-						.getOtherTreatmentAssignmentDescription());
-			} else {
-				TreatmentAssignment ta = resolveTreamtmentAssignment(criteria, study);
-				if (ta != null) {
-					adverseEventReportingPeriod.setTreatmentAssignment(ta);
-				} else {
-					throw new CaaersSystemException("WS_AEMS_009", messageSource.getMessage("WS_AEMS_009",
-							new String[] { criteria.getCourse().getTreatmentAssignmentCode() }, "", Locale
-									.getDefault()));
-				}
-			}
-
-			List<Epoch> epochs = study.getEpochs();
-			Epoch epochToSave = null;
-
-			if (StringUtils.isNotEmpty(criteria.getCourse().getTreatmentType())) {
-				for (Epoch epoch : epochs) {
-					if (epoch.getName().equals(criteria.getCourse().getTreatmentType())) {
-						epochToSave = epoch;
-						break;
-					}
-				}
-				
-				// CAAERS-2813
-				if (epochToSave == null) {
-					throw new CaaersSystemException("WS_AEMS_010", messageSource.getMessage("WS_AEMS_010",
-							new String[] { criteria.getCourse().getTreatmentType() }, "", Locale.getDefault()));
-				}
-			}
-			
-
-			if (epochToSave != null) {
-				adverseEventReportingPeriod.setEpoch(epochToSave);
-			}
-
-			adverseEventReportingPeriod.setAssignment(assignment);
-			ValidationErrors errors = validateRepPeriodDates(adverseEventReportingPeriod, rPeriodList, assignment.getStartDateOfFirstCourse(),epochToSave);
-			if (errors.hasErrors()) {
-				try {
-					studyParticipantAssignmentDao.save(assignment);
-				} catch (Exception e) {
-					throw new CaaersSystemException("WS_AEMS_067", messageSource.getMessage("WS_AEMS_067", new String[] { }, "", Locale.getDefault()));
-				}
-				try {
-					adverseEventReportingPeriodDao.save(adverseEventReportingPeriod);
-				} catch (Exception e) {
-					throw new CaaersSystemException("WS_AEMS_068", messageSource.getMessage("WS_AEMS_068", new String[] { }, "", Locale.getDefault()));
-				}
-				
-			} else {
-				throw new CaaersSystemException(errors.getErrorAt(0).getCode(), errors.getErrorAt(0).getMessage());
-			}
-		} else {
-			//
-			adverseEventReportingPeriodService.synchronizeReports(adverseEventReportingPeriod);
-		}
-			
-		return adverseEventReportingPeriod;
-	}
-	
-	private AdverseEvent processAdverseEvent(AdverseEventType xmlAdverseEvent,
-			AdverseEventReportingPeriod adverseEventReportingPeriod, String operation, Study dbStudy,
-			AeTerminology terminology, List<AdverseEvent> dbAdverseEvents) throws CaaersSystemException {
-		logger.info("Entering processAdverseEvent() in AdverseEventManagementServiceImpl");
-
-		AdverseEvent adverseEvent = null;
-
-
-		// if update get the adverse event to update ..
-		
-		if (xmlAdverseEvent.getId() != null) {
-			adverseEvent = getAdverseEventDao().getById(xmlAdverseEvent.getId().intValue());
-		} else if (xmlAdverseEvent.getAdverseEventCtepTerm() != null && xmlAdverseEvent.getAdverseEventCtepTerm().getCtepCode()!=null) {
-			adverseEvent = checkIfCtcTermExists(adverseEventReportingPeriod, xmlAdverseEvent.getAdverseEventCtepTerm().getCtepCode(), terminology
-					.getCtcVersion(), dbAdverseEvents);
-		} else if (xmlAdverseEvent.getAdverseEventMeddraLowLevelTerm() != null) {
-			adverseEvent = checkIfMeddraTermExists(adverseEventReportingPeriod, xmlAdverseEvent
-					.getAdverseEventMeddraLowLevelTerm(), dbAdverseEvents);
-		}
-		
-		String operationOnThisAE = operation;
-		if (operation.equals(UPDATE)) {
-			// if doesn't exist create ...
-			if (adverseEvent == null) {
-				adverseEvent = new AdverseEvent();
-				adverseEvent.setReportingPeriod(adverseEventReportingPeriod);
-				operationOnThisAE = CREATE;
-			}
-		} else if (operation.equals(CREATE)) {
-			// if AE exists , should not be able to create AE with same term ...
-			if (adverseEvent == null) {
-				adverseEvent = new AdverseEvent();
-				adverseEvent.setReportingPeriod(adverseEventReportingPeriod);
-				operationOnThisAE = CREATE;
-			} else {
-				String term = adverseEvent.getAdverseEventTerm().getFullName();
-				throw new CaaersSystemException("WS_AEMS_012", messageSource.getMessage("WS_AEMS_012",
-						new String[] { term }, "", Locale.getDefault()));
-			}
-		}
-		
-		try {
-			adverseEventConverter.convertAdverseEventDtoToAdverseEventDomain(xmlAdverseEvent, adverseEvent,
-					terminology, adverseEventReportingPeriod.getAssignment().getStartDateOfFirstCourse(),
-					operationOnThisAE);
-		} catch (CaaersSystemException caEX) {
-			throw new CaaersSystemException(caEX);
-		}
-		return adverseEvent;
-	}
-	
-	private AdverseEvent checkIfCtcTermExists(AdverseEventReportingPeriod adverseEventReportingPeriod, String ctepCode,
-			Ctc ctc, List<AdverseEvent> dbAdverseEvents) {
-		AdverseEvent adverseEvent = null;
-		
-		for (AdverseEvent dbAdverseEvent : dbAdverseEvents) {
-			if (matchAdverseEventForReportingPeriod(dbAdverseEvent, adverseEventReportingPeriod)) {
-				if (dbAdverseEvent.getAdverseEventTerm() instanceof AdverseEventCtcTerm) {
-					AdverseEventCtcTerm aeCtcTerm = (AdverseEventCtcTerm) dbAdverseEvent.getAdverseEventTerm();
-					if (aeCtcTerm.getCtcTerm().getCtepCode().equals(ctepCode)
-							&& aeCtcTerm.getCtcTerm().getCategory().getCtc().getId().equals(ctc.getId())) {
-						adverseEvent = dbAdverseEvent;
-						break;
-					}
-				}
-			}// end of match
-		}// end of for
-		return adverseEvent;
-	}
-
-	private AdverseEvent checkIfMeddraTermExists(AdverseEventReportingPeriod adverseEventReportingPeriod,
-			AdverseEventMeddraLowLevelTermType xmlAdverseEventMeddraLowLevelTerm, List<AdverseEvent> dbAdverseEvents) {
-		AdverseEvent adverseEvent = null;
-
-		for (AdverseEvent dbAdverseEvent : dbAdverseEvents) {
-			if (matchAdverseEventForReportingPeriod(dbAdverseEvent, adverseEventReportingPeriod)) {
-				if (dbAdverseEvent.getAdverseEventTerm() instanceof AdverseEventMeddraLowLevelTerm) {
-					AdverseEventMeddraLowLevelTerm aeMeddraLowLevelTerm = (AdverseEventMeddraLowLevelTerm) dbAdverseEvent
-							.getAdverseEventTerm();
-					if (aeMeddraLowLevelTerm.getLowLevelTerm().getMeddraCode().equals(
-							xmlAdverseEventMeddraLowLevelTerm.getMeddraCode())
-							&& aeMeddraLowLevelTerm.getLowLevelTerm().getMeddraTerm().equals(
-									xmlAdverseEventMeddraLowLevelTerm.getMeddraTerm())) {
-						adverseEvent = dbAdverseEvent;
-						break;
-					}
-				}
-			}// end of match
-		}// end of for
-		return adverseEvent;
-	}
+//	private AdverseEvent processAdverseEvent(AdverseEventType xmlAdverseEvent,
+//			AdverseEventReportingPeriod adverseEventReportingPeriod, String operation, Study dbStudy,
+//			AeTerminology terminology, List<AdverseEvent> dbAdverseEvents) throws CaaersSystemException {
+//		logger.info("Entering processAdverseEvent() in AdverseEventManagementServiceImpl");
+//
+//		AdverseEvent adverseEvent = null;
+//
+//
+//		// if update get the adverse event to update ..
+//
+//		if (xmlAdverseEvent.getId() != null) {
+//			adverseEvent = getAdverseEventDao().getById(xmlAdverseEvent.getId().intValue());
+//		} else if (xmlAdverseEvent.getAdverseEventCtepTerm() != null && xmlAdverseEvent.getAdverseEventCtepTerm().getCtepCode()!=null) {
+//			adverseEvent = checkIfCtcTermExists(adverseEventReportingPeriod, xmlAdverseEvent.getAdverseEventCtepTerm().getCtepCode(), terminology
+//					.getCtcVersion(), dbAdverseEvents);
+//		} else if (xmlAdverseEvent.getAdverseEventMeddraLowLevelTerm() != null) {
+//			adverseEvent = checkIfMeddraTermExists(adverseEventReportingPeriod, xmlAdverseEvent
+//					.getAdverseEventMeddraLowLevelTerm(), dbAdverseEvents);
+//		}
+//
+//		String operationOnThisAE = operation;
+//		if (operation.equals(UPDATE)) {
+//			// if doesn't exist create ...
+//			if (adverseEvent == null) {
+//				adverseEvent = new AdverseEvent();
+//				adverseEvent.setReportingPeriod(adverseEventReportingPeriod);
+//				operationOnThisAE = CREATE;
+//			}
+//		} else if (operation.equals(CREATE)) {
+//			// if AE exists , should not be able to create AE with same term ...
+//			if (adverseEvent == null) {
+//				adverseEvent = new AdverseEvent();
+//				adverseEvent.setReportingPeriod(adverseEventReportingPeriod);
+//				operationOnThisAE = CREATE;
+//			} else {
+//				String term = adverseEvent.getAdverseEventTerm().getFullName();
+//				throw new CaaersSystemException("WS_AEMS_012", messageSource.getMessage("WS_AEMS_012",
+//						new String[] { term }, "", Locale.getDefault()));
+//			}
+//		}
+//
+//		try {
+//			adverseEventConverter.convertAdverseEventDtoToAdverseEventDomain(xmlAdverseEvent, adverseEvent,
+//					terminology, adverseEventReportingPeriod.getAssignment().getStartDateOfFirstCourse(),
+//					operationOnThisAE);
+//		} catch (CaaersSystemException caEX) {
+//			throw new CaaersSystemException(caEX);
+//		}
+//		return adverseEvent;
+//	}
+//
+//	private AdverseEvent checkIfCtcTermExists(AdverseEventReportingPeriod adverseEventReportingPeriod, String ctepCode,
+//			Ctc ctc, List<AdverseEvent> dbAdverseEvents) {
+//		AdverseEvent adverseEvent = null;
+//
+//		for (AdverseEvent dbAdverseEvent : dbAdverseEvents) {
+//			if (matchAdverseEventForReportingPeriod(dbAdverseEvent, adverseEventReportingPeriod)) {
+//				if (dbAdverseEvent.getAdverseEventTerm() instanceof AdverseEventCtcTerm) {
+//					AdverseEventCtcTerm aeCtcTerm = (AdverseEventCtcTerm) dbAdverseEvent.getAdverseEventTerm();
+//					if (aeCtcTerm.getCtcTerm().getCtepCode().equals(ctepCode)
+//							&& aeCtcTerm.getCtcTerm().getCategory().getCtc().getId().equals(ctc.getId())) {
+//						adverseEvent = dbAdverseEvent;
+//						break;
+//					}
+//				}
+//			}// end of match
+//		}// end of for
+//		return adverseEvent;
+//	}
+//
+//	private AdverseEvent checkIfMeddraTermExists(AdverseEventReportingPeriod adverseEventReportingPeriod,
+//			AdverseEventMeddraLowLevelTermType xmlAdverseEventMeddraLowLevelTerm, List<AdverseEvent> dbAdverseEvents) {
+//		AdverseEvent adverseEvent = null;
+//
+//		for (AdverseEvent dbAdverseEvent : dbAdverseEvents) {
+//			if (matchAdverseEventForReportingPeriod(dbAdverseEvent, adverseEventReportingPeriod)) {
+//				if (dbAdverseEvent.getAdverseEventTerm() instanceof AdverseEventMeddraLowLevelTerm) {
+//					AdverseEventMeddraLowLevelTerm aeMeddraLowLevelTerm = (AdverseEventMeddraLowLevelTerm) dbAdverseEvent
+//							.getAdverseEventTerm();
+//					if (aeMeddraLowLevelTerm.getLowLevelTerm().getMeddraCode().equals(
+//							xmlAdverseEventMeddraLowLevelTerm.getMeddraCode())
+//							&& aeMeddraLowLevelTerm.getLowLevelTerm().getMeddraTerm().equals(
+//									xmlAdverseEventMeddraLowLevelTerm.getMeddraTerm())) {
+//						adverseEvent = dbAdverseEvent;
+//						break;
+//					}
+//				}
+//			}// end of match
+//		}// end of for
+//		return adverseEvent;
+//	}
 	
 	private boolean matchAdverseEventForReportingPeriod(AdverseEvent dbAdverseEvent,
 			AdverseEventReportingPeriod adverseEventReportingPeriod) {
@@ -1338,21 +1338,21 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 
 	}
 
-
-	private void convertConstraintViolationsToProcessOutcomes( 
-			AdverseEvent adverseEvent, String index, Set<ConstraintViolation<AdverseEvent>> constraintViolations, 
-			CaaersServiceResponse caaersServiceResponse) {
-		String valErrmsg = null;
-		for (ConstraintViolation violation : constraintViolations) {
-			valErrmsg = violation.getMessage() 
-				+ " (" + violation.getPropertyPath() 
-				+ ") in " + adverseEvent.getClass().getSimpleName() 
-				+ "(" + adverseEvent.getDisplayName() + ")";
-			Helper.populateErrorOutcome(caaersServiceResponse, null, null, index, Arrays
-					.asList(new String[] { valErrmsg }));
-		}
-	}
-	
+//
+//	private void convertConstraintViolationsToProcessOutcomes(
+//			AdverseEvent adverseEvent, String index, Set<ConstraintViolation<AdverseEvent>> constraintViolations,
+//			CaaersServiceResponse caaersServiceResponse) {
+//		String valErrmsg = null;
+//		for (ConstraintViolation violation : constraintViolations) {
+//			valErrmsg = violation.getMessage()
+//				+ " (" + violation.getPropertyPath()
+//				+ ") in " + adverseEvent.getClass().getSimpleName()
+//				+ "(" + adverseEvent.getDisplayName() + ")";
+//			Helper.populateErrorOutcome(caaersServiceResponse, null, null, index, Arrays
+//					.asList(new String[] { valErrmsg }));
+//		}
+//	}
+//
 	private void convertConstraintViolationsToProcessOutcomes( 
 			ExternalAdverseEvent adverseEvent, String index, Set<ConstraintViolation<ExternalAdverseEvent>> constraintViolations, 
 			CaaersServiceResponse caaersServiceResponse) {
