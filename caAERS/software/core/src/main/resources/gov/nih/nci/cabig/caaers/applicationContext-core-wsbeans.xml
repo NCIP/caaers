@@ -50,6 +50,19 @@
     
     <bean id="SAEEvaluationServiceImpl" autowire="byType" class="gov.nih.nci.cabig.caaers.api.impl.SAEEvaluationServiceImpl"/>
     
+    <bean id="safetyServiceImpl" class="gov.nih.nci.cabig.caaers.api.impl.SafetyReportServiceImpl">
+    	<property name="eaeConverter" ref="eaeConverter"/>
+        <property name="aeReportMigrator" ref="expeditedReportMigrator" />
+        <property name="aeReportValidator" ref="aeReportValidator" />
+        <property name="adverseEventManagementService" ref="adverseEventManagementServiceImpl" />
+        <property name="participantService" ref="participantServiceImpl" />
+        <property name="studyDao" ref="studyDao" />
+        <property name="participantDao" ref="participantDao" />
+        <property name="expeditedAdverseEventReportDao" ref="expeditedAdverseEventReportDao" />
+    </bean>
+    
+    
+    
     <bean id="messageFactory" class="org.springframework.ws.soap.saaj.SaajSoapMessageFactory"/>
     <bean id="webServiceTemplate" class="org.springframework.ws.client.core.WebServiceTemplate">
 	    <constructor-arg ref="messageFactory"/>

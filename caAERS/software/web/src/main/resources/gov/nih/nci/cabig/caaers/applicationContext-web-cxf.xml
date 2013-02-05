@@ -305,6 +305,7 @@
 
 
     <bean id="safetyReportManagementServiceBean"  class="gov.nih.nci.cabig.caaers.ws.impl.SafetyReportManagementServiceImpl">
+    	<property name="safetySvcImpl" ref="safetyServiceImpl"/>
     </bean>
     <jaxws:endpoint
             id="safetyReportManagementService"

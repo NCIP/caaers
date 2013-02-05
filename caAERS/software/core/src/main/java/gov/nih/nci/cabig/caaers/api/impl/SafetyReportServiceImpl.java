@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery;
 import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.validation.ExpeditedAdverseEventReportValidator;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.AdverseEventReport;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.WsError;
@@ -20,12 +21,14 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindException;
+import org.springframework.validation.Errors;
 
 import java.util.List;
 import java.util.Locale;
 
-public class SafetyReportManagementServiceImpl {
-	private static Log logger = LogFactory.getLog(SafetyReportManagementServiceImpl.class);
+public class SafetyReportServiceImpl {
+	private static Log logger = LogFactory.getLog(SafetyReportServiceImpl.class);
 	
 	/**	Expedited Report Converter. **/
 	private ExpeditedAdverseEventReportConverter eaeConverter;
@@ -35,9 +38,15 @@ public class SafetyReportManagementServiceImpl {
     private ParticipantDao participantDao;
 
     private StudyDao studyDao;
+    
     private AdverseEventManagementServiceImpl adverseEventManagementService;
+    
     private MessageSource messageSource;
+    
     private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
+    
+    /** Validator Service. **/
+	private ExpeditedAdverseEventReportValidator aeReportValidator;
 	
 	/** Expedited Report Migrator. **/
 	private ExpeditedReportMigrator aeReportMigrator;
@@ -193,6 +202,15 @@ public class SafetyReportManagementServiceImpl {
            //2. Run the validation (basic)
            ValidationErrors errors = validateInput(aeSrcReport);
            if(errors.hasErrors()) return populateErrors(response, errors);
+           
+           // 2. Call the GenericValidator to make sure input is correct.
+		   Errors reportValidatorErrors = new BindException(aeSrcReport, "ExpeditedAdverseEventReport");
+		   aeReportValidator.validate( aeSrcReport, reportValidatorErrors);
+		   
+		   if ( reportValidatorErrors.hasErrors()) {
+			   Helper.populateError(response, "GEN_ORH_001", "Error(s) occured during Valdation step.");
+			   return response;
+		   }
 
            //TODO : below call will change based on create or Amend flow
            //3. Save the report
@@ -269,4 +287,13 @@ public class SafetyReportManagementServiceImpl {
     public void setAeReportMigrator(ExpeditedReportMigrator aeReportMigrator) {
         this.aeReportMigrator = aeReportMigrator;
     }
+
+	public ExpeditedAdverseEventReportValidator getAeReportValidator() {
+		return aeReportValidator;
+	}
+
+	public void setAeReportValidator(
+			ExpeditedAdverseEventReportValidator aeReportValidator) {
+		this.aeReportValidator = aeReportValidator;
+	}
 }

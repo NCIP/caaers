@@ -481,7 +481,8 @@ default-lazy-init="true">
     <!-- Safety Management Service. -->
     <!--  Converter  -->
     <bean id="eaeConverter" class="gov.nih.nci.cabig.caaers.service.migrator.ExpeditedAdverseEventReportConverter" autowire="byType"/>
- 
+    <bean id="aeReportValidator" class="gov.nih.nci.cabig.caaers.domain.validation.ExpeditedAdverseEventReportValidator" autowire="byType"/>
+     
     <!--  Migrators -->
     <bean id="behavioralInterventionMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.BehavioralInterventionMigrator" autowire="byType"/>
     <bean id="biologicalInterventionMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.BiologicalInterventionMigrator" autowire="byType"/>
@@ -503,9 +504,7 @@ default-lazy-init="true">
     <bean id="submitterMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.SubmitterMigrator" autowire="byType"/>
     <bean id="surgeryInterventionMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.SurgeryInterventionMigrator" autowire="byType"/>
     <bean id="treatmentInformationMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.TreatmentInformationMigrator" autowire="byType"/>
-    
-    
-	    
+        
 	<bean id="expeditedReportMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.ExpeditedReportMigrator">
 		<property name="children">
 			<list>
@@ -532,10 +531,8 @@ default-lazy-init="true">
 			</list>
 		</property>
         <property name="stopOnError" value="true" />
-        <property name="studyDao" value="studyDao" />
-        <property name="organizationDao" value="organizationDao" />
-        <property name="participantDao" value="participantDao" />
+        <property name="studyDao" ref="studyDao" />
+        <property name="organizationDao" ref="organizationDao" />
+        <property name="participantDao" ref="participantDao" />
 	</bean>
-	
-
 </beans>
