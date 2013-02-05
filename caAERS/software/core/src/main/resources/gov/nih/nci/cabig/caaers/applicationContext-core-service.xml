@@ -480,8 +480,8 @@ default-lazy-init="true">
            
     <!-- Safety Management Service. -->
     <!--  Converter  -->
-    <bean id="eaeConverter" class="gov.nih.nci.cabig.caaers.service.migrator.ExpeditedAdverseEventReportConverter" autowire="byType"/>
-    <bean id="aeReportValidator" class="gov.nih.nci.cabig.caaers.domain.validation.ExpeditedAdverseEventReportValidator" autowire="byType"/>
+    <bean id="eaeConverter" class="gov.nih.nci.cabig.caaers.service.migrator.ExpeditedAdverseEventReportConverter"/>
+    <bean id="aeReportValidator" class="gov.nih.nci.cabig.caaers.domain.validation.ExpeditedAdverseEventReportValidator"/>
      
     <!--  Migrators -->
     <bean id="behavioralInterventionMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.BehavioralInterventionMigrator" autowire="byType"/>
