@@ -201,8 +201,10 @@ public class ExpeditedAdverseEventReportConverter {
 		}
 		
 		for(AdverseEventType xmlAdverseEventType : xmlAdverseEventReport.getAdverseEvent()){
-			domainAdverseEventReport.addAdverseEvent(aeReportAdverseEventConverter.convertAdverseEventDtoToAdverseEventDomain(
+			if ( domainAdverseEventReport.getReportingPeriod() != null) {
+				domainAdverseEventReport.getReportingPeriod().addAdverseEvent(aeReportAdverseEventConverter.convertAdverseEventDtoToAdverseEventDomain(
 					xmlAdverseEventType, dbStudy.getAeTerminology(), domainAdverseEventReport.getReportingPeriod().getAssignment().getStartDateOfFirstCourse()));
+			}
 		}
 		
 		for(MedicalDeviceType xmlMedicalDeviceType : xmlAdverseEventReport.getMedicalDevice()){
