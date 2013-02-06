@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.service.migrator;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.AdditionalInformation;
 import gov.nih.nci.cabig.caaers.domain.AdditionalInformationDocument;
 import gov.nih.nci.cabig.caaers.domain.Address;
@@ -109,6 +110,10 @@ import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationType;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Locale;
+
+import org.apache.commons.lang.StringUtils;
+import org.springframework.context.MessageSource;
 
 /**
  * @author Ramakrishna Gundala
@@ -125,14 +130,32 @@ public class ExpeditedAdverseEventReportConverter {
 
     /** The Constant PHONE. {@link #getContactMechanisms} key for the phone number */
     protected static final String PHONE = "phone";
-	Study dbStudy = null;
-
-	public Study getDbStudy() {
-		return dbStudy;
+    
+    private MessageSource messageSource;
+	
+    private StudyDao studyDao;
+    
+	private Study dbStudy;
+    
+    public void setDbStudy(Study dbStudy) {
+		this.dbStudy = dbStudy;
 	}
 
-	public void setDbStudy(Study dbStudy) {
-		this.dbStudy = dbStudy;
+	public StudyDao getStudyDao() {
+		return studyDao;
+	}
+
+	public void setStudyDao(StudyDao studyDao) {
+		this.studyDao = studyDao;
+	}
+
+
+	public MessageSource getMessageSource() {
+		return messageSource;
+	}
+
+	public void setMessageSource(MessageSource messageSource) {
+		this.messageSource = messageSource;
 	}
 
 	public ExpeditedAdverseEventReport convert(
@@ -152,7 +175,9 @@ public class ExpeditedAdverseEventReportConverter {
 		}
 		
 		if(xmlAdverseEventReport.getStudyParticipantAssignment() != null){
-			domainAdverseEventReport.getReportingPeriod().setAssignment(convertToDomainStudyParticipantAssignment(xmlAdverseEventReport.getStudyParticipantAssignment()));
+			if ( domainAdverseEventReport.getReportingPeriod().getAssignment() == null ) {
+				domainAdverseEventReport.getReportingPeriod().setAssignment(convertToDomainStudyParticipantAssignment(xmlAdverseEventReport.getStudyParticipantAssignment()));
+			}
 		}
 		
 		for(RadiationInterventionType xmlRadiationInterventionType : xmlAdverseEventReport.getRadiationIntervention()){
@@ -215,7 +240,8 @@ public class ExpeditedAdverseEventReportConverter {
 		for(ReportType xmlReportType : xmlAdverseEventReport.getReport()){
 			domainAdverseEventReport.addReport(convertToDomainReport(xmlReportType));
 		}
-
+		
+		// Set the study Information to the Source Report.
 		return domainAdverseEventReport;
 	}
 	
@@ -223,7 +249,10 @@ public class ExpeditedAdverseEventReportConverter {
 	protected Report convertToDomainReport(ReportType xmlReportType){
 		Report report = new Report();
 		report.setRequired(xmlReportType.isRequired());
-		report.setManuallySelected(xmlReportType.isManuallySelected());
+		if ( xmlReportType.isManuallySelected() != null ) {
+			report.setManuallySelected(xmlReportType.isManuallySelected());
+		}
+		
 		if(xmlReportType.getReviewStatus() != null){
 			report.setReviewStatus(ReviewStatus.valueOf(xmlReportType.getReviewStatus().name()));
 		}
@@ -911,12 +940,14 @@ public class ExpeditedAdverseEventReportConverter {
 	}
 	
 	protected Study convertToDomainStudy(StudyType xmlStudyType) {
-		Study study =  new LocalStudy();
 		Identifier identifier = new Identifier();
-		
-		identifier.setType(xmlStudyType.getIdentifiers().getIdentifier().getType().value());
+		if ( xmlStudyType.getIdentifiers().getIdentifier().getType() != null) {
+			identifier.setType(xmlStudyType.getIdentifiers().getIdentifier().getType().value());
+		}
 		identifier.setValue(xmlStudyType.getIdentifiers().getIdentifier().getValue());
-		study.addIdentifier(identifier);
+		
+		Study study = fetchStudy(identifier);
+		setDbStudy(study);
 
 		return study;
 	}
@@ -951,5 +982,23 @@ public class ExpeditedAdverseEventReportConverter {
 		
 		return null;
 	}
-
+	
+	private Study fetchStudy(Identifier identifier) {
+		if (StringUtils.isEmpty(identifier.getValue())) {
+			throw new CaaersSystemException("WS_SAE_004", messageSource.getMessage("WS_SAE_004", new String[] {}, "",
+					Locale.getDefault()));
+		}
+		Study study = null;
+		try {
+			study = studyDao.getByIdentifier(identifier);
+		} catch (Exception e) {
+			throw new CaaersSystemException("WS_GEN_001", messageSource.getMessage("WS_GEN_001", new String[] {}, "",
+					Locale.getDefault()));
+		}
+		if (study == null) {
+			//throw new CaaersSystemException("WS_SAE_005", messageSource.getMessage("WS_SAE_005",
+				//	new String[] { identifier.getValue() }, "", Locale.getDefault()));
+		}
+		return study;
+	}
 }

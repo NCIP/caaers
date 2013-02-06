@@ -59,6 +59,7 @@
         <property name="studyDao" ref="studyDao" />
         <property name="participantDao" ref="participantDao" />
         <property name="expeditedAdverseEventReportDao" ref="expeditedAdverseEventReportDao" />
+        <property name="messageSource" ref="messageSource" />
     </bean>
     
     

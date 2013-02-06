@@ -132,18 +132,20 @@ public class SafetyReportServiceImpl {
         StudyParticipantAssignment srcAssignment = subjectSrc.getAssignments().get(0);
 
         //does the study exist ?
-        Study study = studyDao.getByIdentifier(studySrc.getFundingSponsorIdentifier());
-        if(study == null){
-            logger.error("Study not present in caAERS with the sponsor identifier : " + studySrc.getFundingSponsorIdentifierValue());
-            errors.addValidationError("WS_AEMS_003", "Study with sponsor identifier " + studySrc.getFundingSponsorIdentifierValue() +" does not exist in caAERS");
-            return null;
+        if ( studySrc == null ) {
+        	studySrc = studyDao.getByIdentifier(studySrc.getFundingSponsorIdentifier());
+	        if(studySrc == null){
+	            logger.error("Study not present in caAERS with the sponsor identifier : " + studySrc.getFundingSponsorIdentifierValue());
+	            errors.addValidationError("WS_AEMS_003", "Study with sponsor identifier " + studySrc.getFundingSponsorIdentifierValue() +" does not exist in caAERS");
+	            return null;
+	        }
         }
 
         //Does the subject exist ?
         //NOTE :- With this logic, the participant will be recreated for every assignment.
         ParticipantQuery pq = new ParticipantQuery();
         pq.filterByStudySubjectIdentifier(srcAssignment.getStudySubjectIdentifier());
-        pq.filterByStudyId(study.getId());
+        pq.filterByStudyId(studySrc.getId());
 
         List<Participant> dbParticipants = participantDao.searchParticipant(pq);
         if(dbParticipants == null || dbParticipants.isEmpty()){
@@ -195,10 +197,10 @@ public class SafetyReportServiceImpl {
 	   CaaersServiceResponse response = Helper.createResponse();
 	   
 	   try {
-
+		   
            // 1. Call the Converter(s) to construct the domain object.
            ExpeditedAdverseEventReport aeSrcReport = eaeConverter.convert(adverseEventReport);
-
+           
            //2. Run the validation (basic)
            ValidationErrors errors = validateInput(aeSrcReport);
            if(errors.hasErrors()) return populateErrors(response, errors);
