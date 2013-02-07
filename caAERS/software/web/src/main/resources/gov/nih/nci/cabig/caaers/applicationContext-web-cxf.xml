@@ -46,6 +46,9 @@
             <ref bean="wsAuditInfoInterceptor" />
         </jaxws:inInterceptors>
         <jaxws:schemaLocations>
+            <jaxws:schemaLocation>/schema/integration/caAERSCommonDataTypes.xsd</jaxws:schemaLocation>
+            <jaxws:schemaLocation>/schema/integration/caAERSCommonWsTypes.xsd</jaxws:schemaLocation>
+			<jaxws:schemaLocation>/schema/integration/caAERSCommonTypes.xsd</jaxws:schemaLocation>
             <jaxws:schemaLocation>/schema/integration/Device.xsd</jaxws:schemaLocation>
         </jaxws:schemaLocations>
     </jaxws:endpoint>
@@ -63,6 +66,9 @@
             <ref bean="wsAuditInfoInterceptor"/>
         </jaxws:inInterceptors>
          <jaxws:schemaLocations>
+             <jaxws:schemaLocation>/schema/integration/caAERSCommonDataTypes.xsd</jaxws:schemaLocation>
+            <jaxws:schemaLocation>/schema/integration/caAERSCommonWsTypes.xsd</jaxws:schemaLocation>
+			<jaxws:schemaLocation>/schema/integration/caAERSCommonTypes.xsd</jaxws:schemaLocation>
              <jaxws:schemaLocation>/schema/integration/ASAEL.xsd</jaxws:schemaLocation>
          </jaxws:schemaLocations>
     </jaxws:endpoint>
@@ -109,6 +115,9 @@
             <ref bean="wsAuditInfoInterceptor" />
         </jaxws:inInterceptors>
         <jaxws:schemaLocations>
+            <jaxws:schemaLocation>/schema/integration/caAERSCommonDataTypes.xsd</jaxws:schemaLocation>
+            <jaxws:schemaLocation>/schema/integration/caAERSCommonWsTypes.xsd</jaxws:schemaLocation>
+			<jaxws:schemaLocation>/schema/integration/caAERSCommonTypes.xsd</jaxws:schemaLocation>
             <jaxws:schemaLocation>/schema/integration/StudySchema.xsd</jaxws:schemaLocation>
         </jaxws:schemaLocations>
     </jaxws:endpoint>
@@ -128,6 +137,9 @@
             <ref bean="wsAuditInfoInterceptor" />
         </jaxws:inInterceptors>
         <jaxws:schemaLocations>
+            <jaxws:schemaLocation>/schema/integration/caAERSCommonDataTypes.xsd</jaxws:schemaLocation>
+            <jaxws:schemaLocation>/schema/integration/caAERSCommonWsTypes.xsd</jaxws:schemaLocation>
+			<jaxws:schemaLocation>/schema/integration/caAERSCommonTypes.xsd</jaxws:schemaLocation>
             <jaxws:schemaLocation>/schema/integration/ParticipantSchema.xsd</jaxws:schemaLocation>
         </jaxws:schemaLocations>
     </jaxws:endpoint>
@@ -147,6 +159,9 @@
             <ref bean="wsAuditInfoInterceptor" />
         </jaxws:inInterceptors>
         <jaxws:schemaLocations>
+            <jaxws:schemaLocation>/schema/integration/caAERSCommonDataTypes.xsd</jaxws:schemaLocation>
+            <jaxws:schemaLocation>/schema/integration/caAERSCommonWsTypes.xsd</jaxws:schemaLocation>
+			<jaxws:schemaLocation>/schema/integration/caAERSCommonTypes.xsd</jaxws:schemaLocation>
             <jaxws:schemaLocation>/schema/integration/Investigator.xsd</jaxws:schemaLocation>
         </jaxws:schemaLocations>
     </jaxws:endpoint>
@@ -166,6 +181,9 @@
             <ref bean="wsAuditInfoInterceptor" />
         </jaxws:inInterceptors>
         <jaxws:schemaLocations>
+            <jaxws:schemaLocation>/schema/integration/caAERSCommonDataTypes.xsd</jaxws:schemaLocation>
+            <jaxws:schemaLocation>/schema/integration/caAERSCommonWsTypes.xsd</jaxws:schemaLocation>
+			<jaxws:schemaLocation>/schema/integration/caAERSCommonTypes.xsd</jaxws:schemaLocation>
             <jaxws:schemaLocation>/schema/integration/ResearchStaff.xsd</jaxws:schemaLocation>
         </jaxws:schemaLocations>
     </jaxws:endpoint>
@@ -186,6 +204,9 @@
             <ref bean="wsAuditInfoInterceptor" />
         </jaxws:inInterceptors>
         <jaxws:schemaLocations>
+            <jaxws:schemaLocation>/schema/integration/caAERSCommonDataTypes.xsd</jaxws:schemaLocation>
+            <jaxws:schemaLocation>/schema/integration/caAERSCommonWsTypes.xsd</jaxws:schemaLocation>
+			<jaxws:schemaLocation>/schema/integration/caAERSCommonTypes.xsd</jaxws:schemaLocation>
             <jaxws:schemaLocation>/schema/integration/Organization.xsd</jaxws:schemaLocation>
         </jaxws:schemaLocations>
     </jaxws:endpoint>
@@ -225,6 +246,8 @@
             <ref bean="wsAuditInfoInterceptor" />
         </jaxws:inInterceptors>
         <jaxws:schemaLocations>
+            <jaxws:schemaLocation>/schema/integration/caAERSCommonDataTypes.xsd</jaxws:schemaLocation>
+            <jaxws:schemaLocation>/schema/integration/caAERSCommonWsTypes.xsd</jaxws:schemaLocation>
 			<jaxws:schemaLocation>/schema/integration/caAERSCommonTypes.xsd</jaxws:schemaLocation>
         </jaxws:schemaLocations>
     </jaxws:endpoint>
@@ -244,6 +267,8 @@
             <ref bean="wsAuditInfoInterceptor" />
         </jaxws:inInterceptors>
         <jaxws:schemaLocations>
+            <jaxws:schemaLocation>/schema/integration/caAERSCommonDataTypes.xsd</jaxws:schemaLocation>
+            <jaxws:schemaLocation>/schema/integration/caAERSCommonWsTypes.xsd</jaxws:schemaLocation>
 			<jaxws:schemaLocation>/schema/integration/caAERSCommonTypes.xsd</jaxws:schemaLocation>
         </jaxws:schemaLocations>
     </jaxws:endpoint>
@@ -263,6 +288,8 @@
             <ref bean="wsAuditInfoInterceptor" />
         </jaxws:inInterceptors>
         <jaxws:schemaLocations>
+            <jaxws:schemaLocation>/schema/integration/caAERSCommonDataTypes.xsd</jaxws:schemaLocation>
+            <jaxws:schemaLocation>/schema/integration/caAERSCommonWsTypes.xsd</jaxws:schemaLocation>
 			<jaxws:schemaLocation>/schema/integration/caAERSCommonTypes.xsd</jaxws:schemaLocation>
         </jaxws:schemaLocations>
     </jaxws:endpoint>
@@ -298,6 +325,8 @@
             <ref bean="wsAuditInfoInterceptor" />
         </jaxws:inInterceptors>
         <jaxws:schemaLocations>
+            <jaxws:schemaLocation>/schema/integration/caAERSCommonDataTypes.xsd</jaxws:schemaLocation>
+            <jaxws:schemaLocation>/schema/integration/caAERSCommonWsTypes.xsd</jaxws:schemaLocation>
 			<jaxws:schemaLocation>/schema/integration/caAERSCommonTypes.xsd</jaxws:schemaLocation>
         </jaxws:schemaLocations>
     </jaxws:endpoint>
@@ -319,6 +348,10 @@
             <ref bean="wsAuditInfoInterceptor" />
         </jaxws:inInterceptors>
         <jaxws:schemaLocations>
+            <jaxws:schemaLocation>/schema/integration/caAERSCommonDataTypes.xsd</jaxws:schemaLocation>
+            <jaxws:schemaLocation>/schema/integration/caAERSCommonWsTypes.xsd</jaxws:schemaLocation>
+            <jaxws:schemaLocation>/schema/integration/caAERSCommonTypes.xsd</jaxws:schemaLocation>
+            <jaxws:schemaLocation>/schema/integration/caAERSAeTypes.xsd</jaxws:schemaLocation>
             <jaxws:schemaLocation>/schema/integration/AEReport.xsd</jaxws:schemaLocation>
         </jaxws:schemaLocations>
     </jaxws:endpoint>

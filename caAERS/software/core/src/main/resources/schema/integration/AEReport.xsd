@@ -3,9 +3,12 @@
 	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
 	targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/aereport"
 	xmlns:cct="http://schema.integration.caaers.cabig.nci.nih.gov/common"
+	xmlns:ae="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent"
 	elementFormDefault="qualified" attributeFormDefault="unqualified">
 
-	<xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" schemaLocation="caAERSCommonTypes.xsd" />
+    <xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" schemaLocation="caAERSCommonTypes.xsd" />
+    <xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent" schemaLocation="caAERSAeTypes.xsd"/>
+
 		<xs:element name="AdverseEventReport">
 			 <xs:complexType>
 				<xs:sequence>
@@ -24,7 +27,7 @@
 					<xs:element type="DietarySupplementInterventionType" name="dietarySupplementIntervention" minOccurs="0" maxOccurs="unbounded" />
 					<xs:element type="MedicalDeviceType" name="medicalDevice" minOccurs="0"  maxOccurs="unbounded"/>
 					<xs:element type="ConcomitantMedicationType" name="concomitantMedication" maxOccurs="unbounded" minOccurs="0" />
-					<xs:element type="AdverseEventType" name="adverseEvent"	maxOccurs="unbounded" minOccurs="1" />
+					<xs:element  type="AdverseEventType" name="adverseEvent"	maxOccurs="unbounded" minOccurs="1"/>
 					<xs:element type="LabType" name="lab" minOccurs="0" maxOccurs="unbounded" />
 					<xs:element type="SAEReportPriorTherapyType" name="sAEReportPriorTherapy" maxOccurs="unbounded" minOccurs="0" />
 					<xs:element type="TreatmentInformationType" name="treatmentInformation" minOccurs="0"  />
@@ -35,7 +38,22 @@
 				</xs:sequence>
 		</xs:complexType>
 	</xs:element>
-	
+	<xs:complexType name="AdverseEventType">
+        <xs:complexContent>
+            <xs:extension base="ae:AdverseEventType">
+                <xs:sequence>
+                    <xs:element type="ConcomitantMedicationAttributionType" name="concomitantMedicationAttribution" maxOccurs="unbounded" minOccurs="0" />
+                    <xs:element type="OtherCauseAttributionType" name="otherCauseAttribution" maxOccurs="unbounded" minOccurs="0" />
+                    <xs:element type="CourseAgentAttributionType" name="courseAgentAttribution"	maxOccurs="unbounded" minOccurs="0" />
+                    <xs:element type="SurgeryAttributionType" name="surgeryAttribution"	minOccurs="0" />
+                    <xs:element type="RadiationAttributionType" name="radiationAttribution"	minOccurs="0" />
+                    <xs:element type="DeviceAttributionType" name="deviceAttribution" minOccurs="0" />
+                    <xs:element type="BiologicalInterventionAttributionType" name="biologicalInterventionAttribution" minOccurs="0" />
+                    <xs:element type="DietarySupplementInterventionAttributionType"	name="dietarySupplementInterventionAttribution" minOccurs="0" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
 	<xs:complexType name="TimeValueType">
 		<xs:sequence>
 			<xs:element type="xs:int" name="hour" minOccurs="0"/>
@@ -479,43 +497,43 @@
 	</xs:complexType>
 	<xs:complexType name="RadiationAttributionType">
 		<xs:sequence>
-			<xs:element name="attribution" type="xs:string" />
+            <xs:element type="AttributionType" name="attribution"/>
 			<xs:element name="cause" type="RadiationInterventionType" />
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="DeviceAttributionType">
 		<xs:sequence>
-			<xs:element name="attribution" type="xs:string" />
+            <xs:element type="AttributionType" name="attribution"/>
 			<xs:element name="cause" type="MedicalDeviceType" />
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="BiologicalInterventionAttributionType">
 		<xs:sequence>
-			<xs:element name="attribution" type="xs:string" />
+            <xs:element type="AttributionType" name="attribution"/>
 			<xs:element name="cause" type="BiologicalInterventionType" />
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="DietarySupplementInterventionAttributionType">
 		<xs:sequence>
-			<xs:element name="attribution" type="xs:string" />
+            <xs:element type="AttributionType" name="attribution"/>
 			<xs:element name="cause" type="DietarySupplementInterventionType" />
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="ConcomitantMedicationAttributionType">
 		<xs:sequence>
-			<xs:element name="attribution" type="xs:string" />
+            <xs:element type="AttributionType" name="attribution"/>
 			<xs:element name="cause" type="ConcomitantMedicationType" />
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="CourseAgentAttributionType">
 		<xs:sequence>
-			<xs:element name="attribution" type="xs:string" />
+            <xs:element type="AttributionType" name="attribution"/>
 			<xs:element name="cause" type="CourseAgentType" />
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="OtherCauseAttributionType">
 		<xs:sequence>
-			<xs:element name="attribution" type="xs:string" />
+            <xs:element type="AttributionType" name="attribution"/>
 			<xs:element name="cause" type="OtherCauseType" />
 		</xs:sequence>
 	</xs:complexType>
@@ -533,24 +551,6 @@
 			<xs:element name="code" type="xs:int" />
 			<xs:element name="quantity" type="xs:double" />
 			<xs:element name="unit" type="xs:string" />
-		</xs:sequence>
-	</xs:complexType>
-
-	<xs:complexType name="CtcTermType">
-		<xs:sequence>
-			<xs:element name="term" type="xs:string" />
-			<xs:element name="select" type="xs:string" />
-			<xs:element name="ctepTerm" type="xs:string" />
-			<xs:element name="ctepCode" type="xs:int" />
-			<xs:element name="otherRequired" type="xs:boolean" />
-			<xs:element name="CtcCategory" type="CtcCategoryType" />
-			<!--<xs:element name="CtcGrade" type="CtcGrade" maxOccurs="unbounded"/> -->
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="CtcCategoryType">
-		<xs:sequence>
-			<xs:element name="name" type="xs:string" />
-			<xs:element name="Ctc" type="CtcType" />
 		</xs:sequence>
 	</xs:complexType>
 
@@ -577,80 +577,7 @@
 			<xs:element name="date" type="xs:date" />
 		</xs:sequence>
 	</xs:complexType>
-	<xs:complexType name="AdverseEventType">
-		<xs:sequence>
-			<xs:element minOccurs="0" name="verbatim" type="xs:string" />
-			<xs:element minOccurs="1" name="grade" type="GradeType" />
-			<xs:element minOccurs="0" name="hospitalization" type="HospitalizationType" />
-			<xs:element minOccurs="0" name="expected" type="xs:boolean" />
-			<xs:element minOccurs="0" name="attributionSummary" type="AttributionType" />
-			<xs:element minOccurs="0" name="comments" type="xs:string" />
-			<xs:element type="xs:date" name="startDate" minOccurs="0" />
-			<xs:element type="xs:date" name="endDate" minOccurs="0" />
-			<xs:choice>
-				<xs:element minOccurs="0" name="adverseEventCtepTerm" type="AdverseEventCtepTermType" />
-				<xs:element minOccurs="0" name="adverseEventMeddraLowLevelTerm"	type="AdverseEventMeddraLowLevelTermType" />
-			</xs:choice>
-			<xs:element minOccurs="0" name="detailsForOther" type="xs:string" />
-			<xs:element type="ConcomitantMedicationAttributionType" name="concomitantMedicationAttribution" maxOccurs="unbounded" minOccurs="0" />
-			<xs:element type="OtherCauseAttributionType" name="otherCauseAttribution" maxOccurs="unbounded" minOccurs="0" />
-			<xs:element type="CourseAgentAttributionType" name="courseAgentAttribution"	maxOccurs="unbounded" minOccurs="0" />
-			<xs:element type="SurgeryAttributionType" name="surgeryAttribution"	minOccurs="0" />
-			<xs:element type="RadiationAttributionType" name="radiationAttribution"	minOccurs="0" />
-			<xs:element type="DeviceAttributionType" name="deviceAttribution" minOccurs="0" />
-			<xs:element type="BiologicalInterventionAttributionType" name="biologicalInterventionAttribution" minOccurs="0" />
-			<xs:element type="DietarySupplementInterventionAttributionType"	name="dietarySupplementInterventionAttribution" minOccurs="0" />
-			<xs:element type="AdverseEventCtcTermType" name="adverseEventCtcTerm" minOccurs="0" />
-			<xs:element type="xs:string" name="lowLevelTerm" minOccurs="0" />
-			<xs:element type="OutcomeType" name="outcome" maxOccurs="unbounded"	minOccurs="0" />
-			<xs:element minOccurs="0" name="eventApproximateTime" type="TimeType" />
-			<xs:element minOccurs="0" name="eventLocation" type="xs:string" />
-			<xs:element minOccurs="0" name="externalId" type="xs:string" />
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="TimeType">
-		<xs:sequence>
-			<xs:element minOccurs="1" name="hour" type="xs:int" />
-			<xs:element minOccurs="1" name="minute" type="xs:int" />
-			<xs:element minOccurs="1" name="ampm" type="AMPM" />
-		</xs:sequence>
-	</xs:complexType>
 
-	<xs:complexType name="AdverseEventCtcTermType">
-		<xs:sequence>
-			<xs:element name="ctep-term" type="cct:CustomStringType" />
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="EpochType">
-		<xs:sequence>
-			<xs:element name="name" type="xs:string" />
-			<xs:element name="descriptionText" type="xs:string" />
-		</xs:sequence>
-	</xs:complexType>
-
-	<xs:complexType name="AdverseEventMeddraLowLevelTermType">
-		<xs:sequence>
-			<xs:element minOccurs="1" name="meddraCode" type="xs:string" />
-			<xs:element minOccurs="1" name="meddraTerm" type="xs:string" />
-		</xs:sequence>
-	</xs:complexType>
-
-	<xs:complexType name="AdverseEventCtepTermType">
-		<xs:sequence>
-			<xs:element minOccurs="1" name="ctepCode" type="xs:string" />
-			<xs:choice>
-				<xs:element minOccurs="0" name="otherMeddra" type="AdverseEventMeddraLowLevelTermType" />
-				<xs:element minOccurs="0" name="otherSpecify" type="xs:string" />
-			</xs:choice>
-		</xs:sequence>
-	</xs:complexType>
-
-	<xs:complexType name="OutcomeType">
-		<xs:sequence>
-			<xs:element minOccurs="1" name="outComeEnumType" type="OutComeEnumType" />
-			<xs:element minOccurs="0" name="other" type="xs:string" />
-		</xs:sequence>
-	</xs:complexType>
 	<xs:complexType name="categoryType">
 		<xs:sequence>
 			<xs:element type="xs:string" name="name" />
@@ -859,60 +786,18 @@
 			<xs:enumeration value="OTHER" />
 		</xs:restriction>
 	</xs:simpleType>
-	
-	<xs:simpleType name="AMPM">
-		<xs:restriction base="xs:string">
-			<xs:enumeration value="AM" />
-			<xs:enumeration value="PM" />
-		</xs:restriction>
-	</xs:simpleType>
 
-	<xs:simpleType name="OutComeEnumType">
-		<xs:restriction base="xs:string">
-			<xs:enumeration value="DEATH" />
-			<xs:enumeration value="HOSPITALIZATION" />
-			<xs:enumeration value="LIFE_THREATENING" />
-			<xs:enumeration value="DISABILITY" />
-			<xs:enumeration value="CONGENITAL_ANOMALY" />
-			<xs:enumeration value="REQUIRED_INTERVENTION" />
-			<xs:enumeration value="OTHER_SERIOUS" />
-		</xs:restriction>
-	</xs:simpleType>
+    <xs:simpleType name="AttributionType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="UNRELATED" />
+            <xs:enumeration value="UNLIKELY" />
+            <xs:enumeration value="POSSIBLE" />
+            <xs:enumeration value="PROBABLE" />
+            <xs:enumeration value="DEFINITE" />
+        </xs:restriction>
+    </xs:simpleType>
 
-	<xs:simpleType name="GradeType">
-		<xs:restriction base="xs:int">
-			<xs:enumeration value="0" />
-			<xs:enumeration value="1" />
-			<xs:enumeration value="2" />
-			<xs:enumeration value="3" />
-			<xs:enumeration value="4" />
-			<xs:enumeration value="5" />
-		</xs:restriction>
-	</xs:simpleType>
-	<xs:simpleType name="HospitalizationType">
-		<xs:restriction base="xs:string">
-			<xs:enumeration value="NONE" />
-			<xs:enumeration value="YES" />
-			<xs:enumeration value="NO" />
-		</xs:restriction>
-	</xs:simpleType>
-	<xs:simpleType name="AttributionType">
-		<xs:restriction base="xs:string">
-			<xs:enumeration value="UNRELATED" />
-			<xs:enumeration value="UNLIKELY" />
-			<xs:enumeration value="POSSIBLE" />
-			<xs:enumeration value="PROBABLE" />
-			<xs:enumeration value="DEFINITE" />
-		</xs:restriction>
-	</xs:simpleType>
-	<xs:simpleType name="EpochNameEnum">
-		<xs:restriction base="xs:string">
-			<xs:enumeration value="Baseline" />
-			<xs:enumeration value="Pre-Treatment" />
-			<xs:enumeration value="Treatment" />
-			<xs:enumeration value="Post-treatment" />
-		</xs:restriction>
-	</xs:simpleType>
+
 	<xs:simpleType name="ReprocessedDeviceType">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="YES" />

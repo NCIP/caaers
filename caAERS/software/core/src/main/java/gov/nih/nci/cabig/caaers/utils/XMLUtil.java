@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.utils;
 
+import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
 import gov.nih.nci.cabig.caaers.integration.schema.study.Studies;
 import gov.nih.nci.cagrid.caxchange.client.CaXchangeRequestProcessorClient;
 import gov.nih.nci.cagrid.common.Utils;
@@ -9,11 +10,15 @@ import gov.nih.nci.caxchange.Statuses;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.apache.axis.message.MessageElement;
 import org.apache.log4j.Logger;
@@ -107,6 +112,24 @@ public class XMLUtil {
             }
 
         return objList;
+    }
+
+    public static Date toDate(XMLGregorianCalendar xmlDate){
+        if(xmlDate == null) return null;
+        return xmlDate.toGregorianCalendar().getTime();
+    }
+
+    public static Timestamp toTimestamp(XMLGregorianCalendar xmlDate){
+        if(xmlDate == null) return null;
+        return new Timestamp(xmlDate.toGregorianCalendar().getTime().getTime());
+    }
+
+
+    public static XMLGregorianCalendar toXMLDate(Date date){
+        if(date == null) return null;
+        GregorianCalendar c = (GregorianCalendar)GregorianCalendar.getInstance();
+        c.setTime(date);
+        return new XMLGregorianCalendarImpl(c);
     }
     
     /*
