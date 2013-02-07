@@ -753,7 +753,9 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 
     public AdverseEventReportingPeriod findReportingPeriod(String externalId, Date startDate, Date endDate, Integer cycleNumber, String epochName, String tac){
         for (AdverseEventReportingPeriod p : getActiveReportingPeriods()) {
-            if(externalId != null && (p.getExternalId() == null || !StringUtils.equals(externalId, p.getExternalId()))) continue;
+            if(externalId != null && StringUtils.equals(externalId, p.getExternalId())) return p; //special case, when external ID is the same.
+
+            //check other attributes to find a match.
             if(startDate != null && (p.getStartDate() == null || DateUtils.compareDate(startDate, p.getStartDate()) != 0) )continue;
             if(endDate != null && (p.getEndDate() == null || DateUtils.compareDate(endDate, p.getEndDate()) != 0) ) continue;
             if(cycleNumber != null && (p.getCycleNumber() == null || p.getCycleNumber() != cycleNumber) ) continue;

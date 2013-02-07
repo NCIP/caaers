@@ -38,8 +38,11 @@ public class AdverseEventReportingPeriodSynchronizer implements Migrator<Adverse
                 aeFound.setEventLocation(aeSrc.getEventLocation());
 
                 aeFound.setGrade(aeSrc.getGrade());
-                aeFound.setExpected(aeSrc.getExpected());
                 if(aeFound.getGradedDate() == null) aeFound.setGradedDate(new Date());
+
+                aeFound.setDetailsForOther(aeSrc.getDetailsForOther());
+                aeFound.setComments(aeSrc.getComments());
+
                 aeFound.getOutcomes().clear();
                 for(Outcome outcomeSrc : aeSrc.getOutcomes()) aeFound.addOutComeIfNecessary(outcomeSrc);
             }

@@ -285,7 +285,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
             adverseEventReportingPeriodDao.save(rpFound);
 
         }
-        return rpDest;
+        return rpFound;
     }
 
 	public CaaersServiceResponse createAdverseEvent(AdverseEventsInputMessage adverseEventsInputMessage) {

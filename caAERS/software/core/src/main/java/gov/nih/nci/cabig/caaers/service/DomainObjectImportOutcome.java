@@ -55,17 +55,16 @@ public class DomainObjectImportOutcome<T extends MutableDomainObject> {
     }
 
     public void addErrorMessage(String msg, Severity severity, Object... replacements) {
-        if (severity == Severity.ERROR) {
-            isSavable = false;
-        }
-        messages.add(new Message(msg, severity, replacements));
+        addErrorMessage(null, msg, severity, replacements);
     }
 
     public void addErrorMessage(String code, String msg, Severity severity, Object... replacements) {
         if (severity == Severity.ERROR) {
             isSavable = false;
         }
-        messages.add(new Message(msg, severity, replacements));
+        Message m = new Message(msg, severity, replacements);
+        m.setCode(code);
+        messages.add(m);
     }
 
     public List<Message> getErrorMessages(){
