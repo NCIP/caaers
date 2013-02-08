@@ -27,7 +27,7 @@ public class ReporterMigrator implements Migrator<ExpeditedAdverseEventReport> {
 	public void migrate(ExpeditedAdverseEventReport aeReportSrc, ExpeditedAdverseEventReport aeReportDest, DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome) {
     	
     	Reporter srcReporter = aeReportSrc.getReporter();
-    	if ( aeReportDest.getPhysician() == null ) aeReportDest.setReporter(new Reporter());
+    	if ( aeReportDest.getReporter() == null) aeReportDest.setReporter(new Reporter());
     	
     	 if(srcReporter == null ||  (StringUtils.isEmpty(srcReporter.getPrimaryIdentifierValue())  && StringUtils.isEmpty(srcReporter.getEmailAddress()) 
     			 && StringUtils.isEmpty(srcReporter.getFirstName()) && StringUtils.isEmpty(srcReporter.getLastName())))  {
@@ -54,14 +54,18 @@ public class ReporterMigrator implements Migrator<ExpeditedAdverseEventReport> {
         // 2. Retrieve the Research Staff from Study Site.
         SiteResearchStaff siteResearchStaff = null; 
     	
-        siteResearchStaff = site.findSiteResearchStaffByIdentifier(srcReporter.getPrimaryIdentifierValue());
+        if ( srcReporter.getPrimaryIdentifierValue() != null) {
+        	siteResearchStaff = site.findSiteResearchStaffByIdentifier(srcReporter.getPrimaryIdentifierValue());
+        }
         	
         if ( siteResearchStaff == null ) {
-        	siteResearchStaff = site.findSiteResearchStaffByEmail(srcReporter.getEmailAddress());
+        	if ( srcReporter.getEmailAddress() != null)
+        		siteResearchStaff = site.findSiteResearchStaffByEmail(srcReporter.getEmailAddress());
         }
 
         if ( siteResearchStaff == null ) {
-        	siteResearchStaff = site.findSiteResearchStaffByName(srcReporter.getFirstName(), srcReporter.getLastName());
+        	if ( srcReporter.getFirstName() != null && srcReporter.getLastName() != null)
+        		siteResearchStaff = site.findSiteResearchStaffByName(srcReporter.getFirstName(), srcReporter.getLastName());
         }
 
        	if ( siteResearchStaff != null) {

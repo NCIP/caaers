@@ -218,7 +218,7 @@ public class StudySite extends StudyOrganization {
 	@Transient
 	public SiteResearchStaff findSiteResearchStaffByIdentifier(String identifier) {
 		for (StudyPersonnel rs: this.getActiveStudyPersonnel()) {
-			if ( rs.getSiteResearchStaff() != null && rs.getSiteResearchStaff().getResearchStaff() != null) {
+			if ( rs.getSiteResearchStaff() != null && rs.getSiteResearchStaff().getResearchStaff() != null && rs.getSiteResearchStaff().getResearchStaff().getPrimaryIdentifierValue() != null) {
 				if ( identifier.equals(rs.getSiteResearchStaff().getResearchStaff().getPrimaryIdentifierValue())) {
 					// Found a match and return the Investigator Object.
 					return rs.getSiteResearchStaff();

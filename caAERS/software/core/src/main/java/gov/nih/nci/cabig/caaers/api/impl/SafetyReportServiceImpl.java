@@ -101,19 +101,11 @@ public class SafetyReportServiceImpl {
 
         //do I have subject details ?
         Participant subjectSrc = rpSrc.getParticipant();
-        if(subjectSrc == null || subjectSrc.getAssignments() == null || subjectSrc.getAssignments().isEmpty()){
+        if(subjectSrc == null ){
             errors.addValidationError("ER-SUB-1", "Subject information is missing in input message");
             return errors;
         }
-        StudyParticipantAssignment srcAssignment = subjectSrc.getAssignments().get(0);
-        if(srcAssignment == null|| srcAssignment.getStudySubjectIdentifier() == null){
-            logger.error("Missing assignment or study subject identifier");
-            errors.addValidationError("WS_AEMS_032", "Missing study subject identifier in the input");
-            return errors;
-        }
-
-
-
+        
         return errors;
     }
 
@@ -144,6 +136,7 @@ public class SafetyReportServiceImpl {
         //Does the subject exist ?
         //NOTE :- With this logic, the participant will be recreated for every assignment.
         ParticipantQuery pq = new ParticipantQuery();
+        pq.joinStudy();
         pq.filterByStudySubjectIdentifier(srcAssignment.getStudySubjectIdentifier());
         pq.filterByStudyId(studySrc.getId());
 

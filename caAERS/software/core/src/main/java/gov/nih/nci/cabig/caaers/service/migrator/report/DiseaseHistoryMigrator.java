@@ -35,7 +35,9 @@ public class DiseaseHistoryMigrator implements Migrator<ExpeditedAdverseEventRep
     	if ( participant != null ) {
     		StudyParticipantAssignment assignment = participant.getStudyParticipantAssignment(site);
     		StudyParticipantDiseaseHistory history = assignment.getDiseaseHistory();
-    		CopyFromStudyParticipantDiseaseHistory(history, destDisHis);
+    		if ( history != null ) {
+    			CopyFromStudyParticipantDiseaseHistory(history, destDisHis);
+    		}
     	}
     	
     	if ( srcDisHis != null ) {

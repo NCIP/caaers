@@ -17,7 +17,6 @@ public class SubmitterMigrator implements Migrator<ExpeditedAdverseEventReport> 
 	public void migrate(ExpeditedAdverseEventReport aeReportSrc, ExpeditedAdverseEventReport aeReportDest, DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome) {
     	
     	Reporter srcReporter = aeReportSrc.getReporter();
-    	if ( aeReportDest.getPhysician() == null ) aeReportDest.setReporter(new Reporter());
     	
     	 if(srcReporter == null ||  (StringUtils.isEmpty(srcReporter.getPrimaryIdentifierValue())  && StringUtils.isEmpty(srcReporter.getEmailAddress()) 
     			 && StringUtils.isEmpty(srcReporter.getFirstName()) && StringUtils.isEmpty(srcReporter.getLastName())))  {
@@ -44,13 +43,15 @@ public class SubmitterMigrator implements Migrator<ExpeditedAdverseEventReport> 
         // 2. Retrieve the Research Staff from Study Site.
         SiteResearchStaff siteResearchStaff = null; 
     	
-        siteResearchStaff = site.findSiteResearchStaffByIdentifier(srcReporter.getPrimaryIdentifierValue());
+        if ( srcReporter.getPrimaryIdentifierValue() != null) {
+        	siteResearchStaff = site.findSiteResearchStaffByIdentifier(srcReporter.getPrimaryIdentifierValue());
+        }
         	
-        if ( siteResearchStaff == null ) {
+        if ( siteResearchStaff == null && srcReporter.getEmailAddress() != null) {
         	siteResearchStaff = site.findSiteResearchStaffByEmail(srcReporter.getEmailAddress());
         }
 
-        if ( siteResearchStaff == null ) {
+        if ( siteResearchStaff == null  && ( srcReporter.getFirstName() != null && srcReporter.getLastName() != null )) {
         	siteResearchStaff = site.findSiteResearchStaffByName(srcReporter.getFirstName(), srcReporter.getLastName());
         }
 
@@ -58,6 +59,7 @@ public class SubmitterMigrator implements Migrator<ExpeditedAdverseEventReport> 
         	// Copy the investigator details
        			
        		 if(siteResearchStaff.getResearchStaff().isUser()){
+       			if ( aeReportDest.getReporter() != null) aeReportDest.setReporter(new Reporter());
        			copyFromSiteResearchStaffDetails(siteResearchStaff, aeReportDest.getReporter());
        		}
         		
@@ -81,15 +83,13 @@ public class SubmitterMigrator implements Migrator<ExpeditedAdverseEventReport> 
 
             if ( siteInvestigator != null) {
             	// Copy the investigator details
+            	if ( aeReportDest.getPhysician() != null) aeReportDest.setPhysician(new Physician());
             	copyFromSiteInvestigatorDetails(siteInvestigator, aeReportDest.getPhysician());
             } else {
             		  outcome.addWarning("WR-SM-1", "Given Physician is no longer associated to the study");
             }
         	
         }
-       	
-        // 3. if investigator is not found create a new physician and do a Manual copy.
-       	copyReporterDetails(srcReporter, aeReportDest.getReporter());	
     }
     
     /**

@@ -43,7 +43,7 @@ public class ExpeditedReportMigrator extends CompositeMigrator<ExpeditedAdverseE
         if(dest.getCreatedAt() == null && src.getCreatedAt() != null) dest.setCreatedAt(src.getCreatedAt());
 
         //identify the reporting period, participant and study to use.
-        if(true) return; //DELETE THIS LINE
+       
         AdverseEventReportingPeriod  rpSrc = src.getReportingPeriod();
         if(rpSrc == null){
             outcome.addError("ER-RP-1", "Missing Reporting period and Adverse event in input message");

@@ -852,8 +852,11 @@ public class ExpeditedAdverseEventReportConverter {
         assignment.setDateOfEnrollment(XMLUtil.toDate(assignmentType.getDateOfEnrollment()));
         assignment.setStartDateOfFirstCourse(XMLUtil.toDate(assignmentType.getStartDateOfFirstCourse()));
 
-        if(assignmentType.getParticipant() != null)
+        if(assignmentType.getParticipant() != null) {
 		    assignment.setParticipant(convertParticipant(assignmentType.getParticipant()));
+		    assignment.getParticipant().getAssignments().add(assignment);
+        }
+        	
 
         if(assignmentType.getStudySite() != null)
             assignment.setStudySite(convertStudySite(assignmentType.getStudySite()));

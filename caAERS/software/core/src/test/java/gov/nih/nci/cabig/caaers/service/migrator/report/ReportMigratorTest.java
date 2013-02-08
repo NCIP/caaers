@@ -1,10 +1,14 @@
 package gov.nih.nci.cabig.caaers.service.migrator.report;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import junit.framework.TestCase;
 
@@ -28,6 +32,10 @@ public class ReportMigratorTest extends TestCase {
 	        ReportDefinition rptDef = Fixtures.createReportDefinition("CTEP 24 hour Report Definition", org, null);
 	        rpt.setReportDefinition(rptDef);
 	        
+	        ReportDeliveryDefinition deliveryDef =  Fixtures.createReportDeliveryDefinition("url", 2);
+	        List<ReportDeliveryDefinition> deliveryDefinitions = new ArrayList<ReportDeliveryDefinition>();
+	        deliveryDefinitions.add(deliveryDef);
+	        rptDef.setDeliveryDefinitionsInternal(deliveryDefinitions);
 	    }
 
 
