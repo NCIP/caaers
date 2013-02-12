@@ -99,7 +99,7 @@ function showDashboardSubjectsAssignmentsMenuOptions(_element, _roles, _subjectI
         });
 }
 
-function showOrganizationMenuOptions(_element, strId, rt, un, active, locked) {
+function showUserMenuOptions(_element, strId, rt, un, active) {
     var _el = jQuery(_element);
     var html_start = "<div><ul style='font-family:tahoma;'>";
     var html_end = "</ul></div>";
@@ -108,16 +108,12 @@ function showOrganizationMenuOptions(_element, strId, rt, un, active, locked) {
     if (active == "Active") {
         _action = "Deactivate"
     }
+
+
+    var _activateAction = "<li><a class='submitter-blue' href='#' onclick='javascript:doActivate(#{strId}, \"#{rt}\", \"#{un}\", \"#{active}\")'>" + _action + "</a></li>";
     
-    var _lockAction = "Lock";
-    if (locked == "true") {
-        _lockAction = "Unlock"
-    }
-    var _activateAction = "<li><a class='submitter-blue' href='#' onclick='javascript:doActivate(#{strId}, \"#{rt}\", \"#{un}\", \"#{active}\", \"#{locked}\")'>" + _action + "</a></li>";
-    
-    var _lockHtml = "<li><a class='submitter-blue' href='#' onclick='javascript:doLockUnlock(#{strId}, \"#{rt}\", \"#{un}\", \"#{active}\", \"#{locked}\")'>" + _lockAction + "</a></li>";
-    var html = html_start + _editAction + (un != "" ? _activateAction : "") + (un != "" ? _lockHtml : "") + html_end;
-    var html = html.interpolate({strId:strId, rt:rt, un:un, active:active, locked:locked});
+    var html = html_start + _editAction + (un != "" ? _activateAction : "") + html_end;
+    var html = html.interpolate({strId:strId, rt:rt, un:un, active:active});
 
      _el.menu({
         content: html,

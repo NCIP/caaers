@@ -124,14 +124,13 @@
                 })
             }
 
-            var actionsRow = "<img onmouseover='showOrganizationMenuOptions(this, #{id}, \"#{rt}\", \"#{un}\", \"#{active}\", \"#{locked}\")' src='<c:url value="/images/orange-actions.gif" />' border='0' onmouseover='' style='cursor: pointer;'>";
+            var actionsRow = "<img onmouseover='showUserMenuOptions(this, #{id}, \"#{rt}\", \"#{un}\", \"#{active}\")' src='<c:url value="/images/orange-actions.gif" />' border='0' onmouseover='' style='cursor: pointer;'>";
 			var actionsFormatter = function(elCell, oRecord, oColumn, oData) {
                 var _id = oRecord.getData("id");
                 var _rt = oRecord.getData("recordType");
                 var _un = oRecord.getData("userName");
                 var _active = oRecord.getData("active");
-                var _locked = oRecord.getData("locked");
-		        elCell.innerHTML = "<span id='_span" + _id + "'>" + actionsRow.interpolate({id:_id, rt:_rt, un:_un, active:_active, locked:_locked}) + "</span>";
+		        elCell.innerHTML = "<span id='_span" + _id + "'>" + actionsRow.interpolate({id:_id, rt:_rt, un:_un, active:_active}) + "</span>";
 			};
 
 			var fullNameFormatter = function(elCell, oRecord, oColumn, oData) {
@@ -160,8 +159,7 @@
                 {key:'recordType',   	parser:"string"},
                 {key:'id',           	parser:"integer"},
                 {key:'externalId',   	parser:"string"},
-                {key:'active',   	    parser:"string"},
-                {key:'locked',   	    parser:"boolean"}
+                {key:'active',   	    parser:"string"}
             ];
             
             

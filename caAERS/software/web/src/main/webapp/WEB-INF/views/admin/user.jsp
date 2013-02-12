@@ -283,9 +283,25 @@
 
             function unlockUserPassword(){
                user.unlockUserPassword(function(){
-                   alert('<caaers:message code="MSG_user.unlocked" text="User account unlocked" />');
-                   $('unlock-btn-div').hide();
+                   alert('<caaers:message code="MSG_user.pwd.locked" text="User password unlocked" />');
+                   $('unlock-password-btn-div').hide();
                });
+            }
+
+            function doLock(loginName){
+                user.lockUnlockUser(loginName, function(){
+                    alert('<caaers:message code="MSG_user.locked" text="User account locked" />');
+                    $('unlock-user-btn-div').show();
+                    $('lock-user-btn-div').hide();
+                });
+            }
+            function doUnlock(loginName){
+                user.lockUnlockUser(loginName, function(){
+                    alert('<caaers:message code="MSG_user.unlocked" text="User account unlocked" />');
+                    $('lock-user-btn-div').show();
+                    $('unlock-user-btn-div').hide();
+                });
+                user.unlockUserPassword(function(){});
             }
 
         //updates the forms action, by chopping off the query string in action.
@@ -357,20 +373,24 @@
                                             </div>
                                         </div>
                                     </c:if>
-
                                     <c:if test="${not empty command.user and not empty command.user.id}">
                                         <form:hidden path="createAsUser" />
                                         <div class="row">
                                             <div class="value">
                                                 <c:if test="${command.UA}">
-                                                <c:if test="${command.user.locked}">
-                                                  <div id="unlock-btn-div"><tags:button value="Unlock User" color="blue" type="button" size="small" onclick="unlockUserPassword()" /></div>
+                                                        <c:if test="${not command.user.locked and command.user.passwordLocked}">
+                                                            <div id="unlock-password-btn-div"><tags:button value="Unlock Password" color="green" type="button" size="small" onclick="unlockUserPassword()" /></div>
+                                                        </c:if>
+                                                        <c:if test="${command.user.locked}">
+                                                          <div id="unlock-user-btn-div"><tags:button value="Unlock User" color="green" type="button" size="small" onclick="doUnlock('${command.user.loginName}')" /></div>
+                                                        </c:if>
+                                                        <c:if test="${not command.user.locked}">
+                                                            <div id="lock-user-btn-div"><tags:button value="Lock User" color="red" type="button" size="small" onclick="doLock('${command.user.loginName}')" /></div>
+                                                        </c:if>
+                                                        <c:if test="${command.user.active}">
+                                                          <%--<tags:button value="Deactivate User" color="red" type="button" size="small" onclick="deActivateUser()" />--%>
+                                                        </c:if>
                                                 </c:if>
-                                                <c:if test="${command.user.active}">
-                                                  <%--<tags:button value="Deactivate User" color="red" type="button" size="small" onclick="deActivateUser()" />--%>
-                                                </c:if>
-
-                                            </c:if>
                                             </div>
                                         </div>
                                     </c:if>

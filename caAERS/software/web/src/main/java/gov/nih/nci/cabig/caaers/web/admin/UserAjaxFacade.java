@@ -223,10 +223,10 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
                 rsado.setNumber(srs.getResearchStaff().getNciIdentifier() != null ? srs.getResearchStaff().getNciIdentifier() : "");
                 rsado.setExternalId(srs.getResearchStaff().getExternalId() != null ? srs.getResearchStaff().getExternalId().trim() : "");
                 rsado.setActive(srs.isActive() ? "Active" : "Inactive");
-                if(srs.getResearchStaff().getCaaersUser() != null){
-                	User user = userRepository.getUserByLoginName(srs.getResearchStaff().getCaaersUser().getLoginName());
-                	if(user != null) rsado.setLocked(user.isLocked());
-                }
+//                if(srs.getResearchStaff().getCaaersUser() != null){
+//                	User user = userRepository.getUserByLoginName(srs.getResearchStaff().getCaaersUser().getLoginName());
+//                	if(user != null) rsado.setLocked(user.isLocked());
+//                }
                 set.add(rsado);
             } 
         }
