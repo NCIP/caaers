@@ -291,15 +291,15 @@
             function doLock(loginName){
                 user.lockUnlockUser(loginName, function(){
                     alert('<caaers:message code="MSG_user.locked" text="User account locked" />');
-                    $('unlock-user-btn-div').show();
-                    $('lock-user-btn-div').hide();
+                    if($('unlock-user-btn-div')) $('unlock-user-btn-div').show();
+                    if($('lock-user-btn-div')) $('lock-user-btn-div').hide();
                 });
             }
             function doUnlock(loginName){
                 user.lockUnlockUser(loginName, function(){
                     alert('<caaers:message code="MSG_user.unlocked" text="User account unlocked" />');
-                    $('lock-user-btn-div').show();
-                    $('unlock-user-btn-div').hide();
+                    if($('lock-user-btn-div')) $('lock-user-btn-div').show();
+                    if($('unlock-user-btn-div')) $('unlock-user-btn-div').hide();
                 });
                 user.unlockUserPassword(function(){});
             }
@@ -381,15 +381,12 @@
                                                         <c:if test="${not command.user.locked and command.user.passwordLocked}">
                                                             <div id="unlock-password-btn-div"><tags:button value="Unlock Password" color="green" type="button" size="small" onclick="unlockUserPassword()" /></div>
                                                         </c:if>
-                                                        <c:if test="${command.user.locked}">
-                                                          <div id="unlock-user-btn-div"><tags:button value="Unlock User" color="green" type="button" size="small" onclick="doUnlock('${command.user.loginName}')" /></div>
-                                                        </c:if>
-                                                        <c:if test="${not command.user.locked}">
-                                                            <div id="lock-user-btn-div"><tags:button value="Lock User" color="red" type="button" size="small" onclick="doLock('${command.user.loginName}')" /></div>
-                                                        </c:if>
-                                                        <c:if test="${command.user.active}">
-                                                          <%--<tags:button value="Deactivate User" color="red" type="button" size="small" onclick="deActivateUser()" />--%>
-                                                        </c:if>
+                                                        <div id="unlock-user-btn-div"  style="${command.user.locked ? '' : 'display:none' }" >
+                                                            <tags:button value="Unlock User" color="green" type="button" size="small" onclick="doUnlock('${command.user.loginName}')" />
+                                                        </div>
+                                                        <div id="lock-user-btn-div" style="${command.user.locked ? 'display:none' : ''}">
+                                                            <tags:button value="Lock User" color="red" type="button" size="small" onclick="doLock('${command.user.loginName}')" />
+                                                        </div>
                                                 </c:if>
                                             </div>
                                         </div>
