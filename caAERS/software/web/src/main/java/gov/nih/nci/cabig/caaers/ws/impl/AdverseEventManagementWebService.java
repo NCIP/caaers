@@ -1,12 +1,13 @@
 package gov.nih.nci.cabig.caaers.ws.impl;
 
-import gov.nih.nci.cabig.caaers.ws.AdverseEventManagementService;
 import gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl;
-import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.*;
-import gov.nih.nci.cabig.caaers.integration.schema.common.*;
+import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.manageae.AdverseEventsInputMessage;
+import gov.nih.nci.cabig.caaers.ws.AdverseEventManagementService;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
+import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
@@ -14,7 +15,7 @@ import javax.jws.soap.SOAPBinding;
  * This is a webservice wrapper, that internally calls the @see AdverseEventManagementServiceImpl
  */
 
-@WebService(endpointInterface = "gov.nih.nci.cabig.caaers.ws.AdverseEventManagementService", serviceName = "AdverseEventManagementService", targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent")
+@WebService(endpointInterface = "gov.nih.nci.cabig.caaers.ws.AdverseEventManagementService", serviceName = "AdverseEventManagementService", targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/manageae")
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE)
 public class AdverseEventManagementWebService implements AdverseEventManagementService {
 
@@ -37,7 +38,7 @@ public class AdverseEventManagementWebService implements AdverseEventManagementS
      * @return gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse
      */
     @WebMethod
-    public CaaersServiceResponse createAdverseEvent(@WebParam(name = "AdverseEventsInputMessage", targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent") AdverseEventsInputMessage adverseEventsInputMessage) {
+    public @WebResult(name="CaaersServiceResponse", targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common") CaaersServiceResponse createAdverseEvent(@WebParam(name = "AdverseEventsInputMessage", targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/manageae") AdverseEventsInputMessage adverseEventsInputMessage) {
         return impl.createAdverseEvent(adverseEventsInputMessage);
     }
     
@@ -58,7 +59,7 @@ public class AdverseEventManagementWebService implements AdverseEventManagementS
      * @return gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse
      */
     @WebMethod
-    public CaaersServiceResponse createProvisionalAdverseEvents(@WebParam(name = "AdverseEventsInputMessage", targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent") AdverseEventsInputMessage adverseEventsInputMessage) {
+    public @WebResult(name="CaaersServiceResponse", targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common") CaaersServiceResponse createProvisionalAdverseEvents(@WebParam(name = "AdverseEventsInputMessage", targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/manageae") AdverseEventsInputMessage adverseEventsInputMessage) {
     	return impl.createProvisionalAdverseEvents(adverseEventsInputMessage);
 	}
     /**
@@ -68,7 +69,7 @@ public class AdverseEventManagementWebService implements AdverseEventManagementS
      * @return gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse
      */
     @WebMethod
-    public CaaersServiceResponse createOrUpdateAdverseEvent(@WebParam(name = "AdverseEventsInputMessage", targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent") AdverseEventsInputMessage adverseEventsInputMessage) {
+    public @WebResult(name="CaaersServiceResponse", targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common") CaaersServiceResponse createOrUpdateAdverseEvent(@WebParam(name = "AdverseEventsInputMessage", targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/manageae") AdverseEventsInputMessage adverseEventsInputMessage) {
         return impl.createOrUpdateAdverseEvent(adverseEventsInputMessage);
     }
 
@@ -79,7 +80,7 @@ public class AdverseEventManagementWebService implements AdverseEventManagementS
      * @return gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse
      */
     @WebMethod
-    public CaaersServiceResponse deleteAdverseEvent(@WebParam(name = "AdverseEventsInputMessage", targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent") AdverseEventsInputMessage adverseEventsInputMessage) {
+    public @WebResult(name="CaaersServiceResponse", targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common") CaaersServiceResponse deleteAdverseEvent(@WebParam(name = "AdverseEventsInputMessage", targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/manageae") AdverseEventsInputMessage adverseEventsInputMessage) {
         return impl.deleteAdverseEvent(adverseEventsInputMessage);
     }
 

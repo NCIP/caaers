@@ -25,7 +25,6 @@ import gov.nih.nci.cabig.caaers.integration.schema.saerules.RecommendedReports;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.ReportType;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.migrator.adverseevent.AdverseEventConverter;
-import gov.nih.nci.cabig.caaers.service.migrator.adverseevent.SAEEvaluationAdverseEventConverter;
 import gov.nih.nci.cabig.caaers.ws.faults.CaaersFault;
 
 import java.util.ArrayList;
@@ -59,7 +58,6 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 	private EvaluationService evaluationService;
 	private ApplicationContext applicationContext;
 	private MessageSource messageSource;
-//	private SAEEvaluationAdverseEventConverter converter;
 	private AdverseEventConverter converter;
 	
 	private static String DEF_ERR_MSG= "Error evaluating adverse events with SAE rules";
@@ -117,7 +115,6 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 			AeTerminology terminology = study.getAeTerminology();
 		
 			for (AdverseEventType adverseEventDto : adverseEvents.getAdverseEvent()) {
-//				AdverseEvent ae = converter.convertAdverseEventDtoToAdverseEventDomain(adverseEventDto, terminology);
 				AdverseEvent ae = new AdverseEvent();
 				converter.convertAdverseEventDtoToAdverseEventDomain(adverseEventDto, ae,
 						terminology, null, null);

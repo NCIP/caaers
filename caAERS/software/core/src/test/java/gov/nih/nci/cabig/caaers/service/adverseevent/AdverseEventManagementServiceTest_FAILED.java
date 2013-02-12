@@ -7,8 +7,8 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm;
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AdverseEventType;
-import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AdverseEventsInputMessage;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.manageae.AdverseEventsInputMessage;
 
 import java.io.BufferedReader;
 import java.io.File;

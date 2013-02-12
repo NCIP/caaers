@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<xs:schema xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent"
+<xs:schema xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/manageae"
            xmlns:xs="http://www.w3.org/2001/XMLSchema"
            elementFormDefault="unqualified"
-           targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent"
-           xmlns:cct="http://schema.integration.caaers.cabig.nci.nih.gov/common">
+           targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/manageae"
+           xmlns:cct="http://schema.integration.caaers.cabig.nci.nih.gov/common"
+		   xmlns:ae="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent">
 
-	<xs:include schemaLocation="caAERSAeTypes.xsd"/>
-    <xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" schemaLocation="caAERSCommonTypes.xsd"/>
+	<xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent" schemaLocation="caAERSAeTypes.xsd"/>
+    <!--<xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" schemaLocation="caAERSCommonDataAndWsTypes.xsd"/>-->
+	<xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" schemaLocation="caAERSCommonTypes.xsd"/>
 	
 
     <xs:element name="AdverseEventsInputMessage">
@@ -87,7 +89,7 @@
         </xs:annotation>
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="adverseEvent" maxOccurs="unbounded" type="AdverseEventType"/>
+                <xs:element name="adverseEvent" maxOccurs="unbounded" type="ae:AdverseEventType"/>
             </xs:sequence>
         </xs:complexType>
         <xs:unique name="UniqueAdverseEvents">

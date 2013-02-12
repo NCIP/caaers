@@ -1,10 +1,20 @@
 package gov.nih.nci.cabig.caaers.service.migrator.adverseevent;
 
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.domain.Epoch;
+import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.LocalStudy;
+import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AdverseEventType;
-import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AdverseEventsInputMessage;
-import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.CourseType;
-import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.Criteria;
+import gov.nih.nci.cabig.caaers.integration.schema.manageae.AdverseEventsInputMessage;
+import gov.nih.nci.cabig.caaers.integration.schema.manageae.CourseType;
+import gov.nih.nci.cabig.caaers.integration.schema.manageae.Criteria;
 
 import java.util.ArrayList;
 

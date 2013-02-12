@@ -6,9 +6,9 @@
 	xmlns:ae="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent"
 	elementFormDefault="qualified" attributeFormDefault="unqualified">
 
-    <xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" schemaLocation="caAERSCommonTypes.xsd" />
     <xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent" schemaLocation="caAERSAeTypes.xsd"/>
-
+	<xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" schemaLocation="caAERSCommonTypes.xsd" />
+    
 		<xs:element name="AdverseEventReport">
 			 <xs:complexType>
 				<xs:sequence>

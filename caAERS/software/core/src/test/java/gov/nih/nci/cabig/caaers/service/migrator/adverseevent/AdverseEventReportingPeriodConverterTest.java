@@ -1,16 +1,28 @@
 package gov.nih.nci.cabig.caaers.service.migrator.adverseevent;
 
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.*;
+import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AdverseEventCtepTermType;
+import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AdverseEventMeddraLowLevelTermType;
+import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AdverseEventType;
+import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AttributionType;
+import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.HospitalizationType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.AMPM;
 import gov.nih.nci.cabig.caaers.integration.schema.common.TimeType;
+import gov.nih.nci.cabig.caaers.integration.schema.manageae.AdverseEvents;
+import gov.nih.nci.cabig.caaers.integration.schema.manageae.AdverseEventsInputMessage;
+import gov.nih.nci.cabig.caaers.integration.schema.manageae.CourseType;
+import gov.nih.nci.cabig.caaers.integration.schema.manageae.Criteria;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
-import junit.framework.TestCase;
+
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
-import java.math.BigInteger;
-import java.util.*;
+
+import junit.framework.TestCase;
 
 /**
  * User: Biju Joseph

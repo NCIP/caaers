@@ -5,8 +5,9 @@
            targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent"
            xmlns:cct="http://schema.integration.caaers.cabig.nci.nih.gov/common">
 		   
-    <xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" schemaLocation="caAERSCommonDataTypes.xsd"/>
-   	
+    <!--<xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" schemaLocation="caAERSCommonDataTypes.xsd"/>-->
+   	<xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" schemaLocation="caAERSCommonTypes.xsd"/>
+	
     <xs:complexType name="AdverseEventType">
         <xs:complexContent>
             <xs:extension base="cct:MutableDomainObjectType">
