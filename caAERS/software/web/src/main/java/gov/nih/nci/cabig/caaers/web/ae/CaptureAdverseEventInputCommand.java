@@ -313,7 +313,11 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	public void setTermCode(Integer ignore){}
 	
     public StudyParticipantAssignment getAssignment() {
-        return adverseEventReportingPeriod.getAssignment();
+    	if(adverseEventReportingPeriod == null) {
+    		return null;
+    	} else {
+    		return adverseEventReportingPeriod.getAssignment();
+    	}
     }
 	public boolean getIgnoreCompletedStudy() {
 		return false;
