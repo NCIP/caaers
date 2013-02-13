@@ -5,14 +5,22 @@ import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.ReportValidationService;
 import gov.nih.nci.cabig.caaers.domain.validation.ExpeditedAdverseEventReportValidator;
+import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.AdverseEventReport;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.WsError;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.ParticipantType;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.Participants;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
+import gov.nih.nci.cabig.caaers.service.EvaluationService;
+import gov.nih.nci.cabig.caaers.service.ReportSubmissionService;
+import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import gov.nih.nci.cabig.caaers.service.migrator.ExpeditedAdverseEventReportConverter;
 import gov.nih.nci.cabig.caaers.service.migrator.report.ExpeditedReportMigrator;
 import gov.nih.nci.cabig.caaers.validation.ValidationError;
@@ -24,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -51,6 +60,27 @@ public class SafetyReportServiceImpl {
 	/** Expedited Report Migrator. **/
 	private ExpeditedReportMigrator aeReportMigrator;
 
+    /** The report Repository. */
+    private ReportRepository reportRepository;
+
+    public EventFactory getEventFactory() {
+        return eventFactory;
+    }
+
+    public void setEventFactory(EventFactory eventFactory) {
+        this.eventFactory = eventFactory;
+    }
+
+    private EventFactory eventFactory;
+
+
+    public ReportRepository getReportRepository() {
+        return reportRepository;
+    }
+
+    public void setReportRepository(ReportRepository reportRepository) {
+        this.reportRepository = reportRepository;
+    }
 
     /**
      * Does the validation of the input message
@@ -89,7 +119,7 @@ public class SafetyReportServiceImpl {
         //do I have study details ?
         Study studySrc = rpSrc.getStudy();
         if(studySrc == null || studySrc.getFundingSponsorIdentifierValue() == null){
-            logger.error("Missing study identifier");
+           logger.error("Missing study identifier");
             errors.addValidationError("WS_AEMS_034",  "Missing Study Identifier" );
             return errors;
         }
@@ -181,6 +211,13 @@ public class SafetyReportServiceImpl {
         //Call the ExpediteReportDao and save this report.
         expeditedAdverseEventReportDao.save(aeDestReport);
 
+        // Deep copy the reports as it is throwing ConcurrentModification Exception.
+        List<Report> reports = new ArrayList(aeDestReport.getReports());
+        // Save the report(s) after Migration.
+        for ( Report rpt: reports )    {
+             Report newReport = reportRepository.createReport(rpt.getReportDefinition(), aeDestReport) ;
+            if (getEventFactory() != null) getEventFactory().publishEntityModifiedEvent(newReport.getAeReport());
+        }
         return aeDestReport;
     }
 
@@ -211,8 +248,8 @@ public class SafetyReportServiceImpl {
            //3. Save the report
            ExpeditedAdverseEventReport aeReport = createSafetyReport(aeSrcReport, errors);
            if(errors.hasErrors()) return populateErrors(response, errors);
-	       
-	   }catch(Exception e) {
+
+       }catch(Exception e) {
 		   logger.error("Unable to Create a Report from Safety Management Service", e);
 		   Helper.populateError(response, "WS_GEN_000",e.getMessage() );
 	   }

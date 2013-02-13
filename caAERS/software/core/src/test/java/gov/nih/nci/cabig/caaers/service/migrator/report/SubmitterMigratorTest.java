@@ -101,9 +101,8 @@ public class SubmitterMigratorTest extends TestCase {
 
     public void testMigrateWithValues() throws Exception {
         src.setReporter(reporter);
-        dest.setReporter(new Reporter());
-        migrator.migrate(src,dest,new DomainObjectImportOutcome<ExpeditedAdverseEventReport>());
-        assertNotNull(dest.getReporter().getEmailAddress());
-        assertEquals("first name", dest.getReporter().getFirstName());
+        DomainObjectImportOutcome<ExpeditedAdverseEventReport> outCome = new DomainObjectImportOutcome<ExpeditedAdverseEventReport>();
+        migrator.migrate(src, dest, outCome);
+        assertTrue(outCome.getMessages().size() > 0);
     }
 }

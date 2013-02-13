@@ -998,8 +998,8 @@ public class ExpeditedAdverseEventReportConverter {
 					Locale.getDefault()));
 		}
 		if (study == null) {
-			//throw new CaaersSystemException("WS_SAE_005", messageSource.getMessage("WS_SAE_005",
-				//	new String[] { identifier.getValue() }, "", Locale.getDefault()));
+			throw new CaaersSystemException("WS_SAE_005", messageSource.getMessage("WS_SAE_005",
+					new String[] { identifier.getValue() }, "", Locale.getDefault()));
 		}
 		return study;
 	}

@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.service.migrator.report;
 
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.migrator.report.ExpeditedReportMigrator;
 import junit.framework.TestCase;
 
@@ -24,7 +25,8 @@ public class ExpeditedReportMigratorTest extends TestCase {
     }
 
     public void testPreMigrate() throws Exception {
-        expeditedReportMigrator.preMigrate(src, dest , null);
+        DomainObjectImportOutcome<ExpeditedAdverseEventReport> outCome = new DomainObjectImportOutcome<ExpeditedAdverseEventReport>();
+        expeditedReportMigrator.preMigrate(src, dest , outCome);
         assertNull(dest.getCreatedAt());
         assertNull(src.getCreatedAt());
 
@@ -32,11 +34,11 @@ public class ExpeditedReportMigratorTest extends TestCase {
         assertNull(src.getInvestigationalDeviceAdministered());
 
         src.setCreatedAt(new Timestamp(new Date().getTime()));
-        expeditedReportMigrator.preMigrate(src, dest , null);
+        expeditedReportMigrator.preMigrate(src, dest , outCome);
         assertSame(src.getCreatedAt(), dest.getCreatedAt());
 
         dest.setCreatedAt(new Timestamp(new Date().getTime()));
-        expeditedReportMigrator.preMigrate(src, dest , null);
+        expeditedReportMigrator.preMigrate(src, dest , outCome);
         assertNotNull(dest.getCreatedAt());
         assertNotSame(src.getCreatedAt(), dest.getCreatedAt());
 

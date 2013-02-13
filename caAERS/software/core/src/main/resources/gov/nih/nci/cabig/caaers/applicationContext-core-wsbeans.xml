@@ -55,10 +55,12 @@
         <property name="aeReportMigrator" ref="expeditedReportMigrator" />
         <property name="aeReportValidator" ref="aeReportValidator" />
         <property name="adverseEventManagementService" ref="adverseEventManagementServiceImpl" />
+        <property name="reportRepository" ref="reportRepository"/>
         <property name="participantService" ref="participantServiceImpl" />
         <property name="studyDao" ref="studyDao" />
         <property name="participantDao" ref="participantDao" />
         <property name="expeditedAdverseEventReportDao" ref="expeditedAdverseEventReportDao" />
+        <property name="eventFactory" ref="eventFactory"/>
         <property name="messageSource" ref="messageSource" />
     </bean>
     

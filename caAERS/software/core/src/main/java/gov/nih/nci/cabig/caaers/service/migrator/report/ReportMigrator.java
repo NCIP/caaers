@@ -76,20 +76,16 @@ public class ReportMigrator implements Migrator<ExpeditedAdverseEventReport> {
     		ReportDefinition repDef = loadReportDefinition(rpt, org.getId());
     		
     		if ( repDef == null ) {
-    			try {
-					repDef = getReportDefinition(rpt, rpt.getReportDefinition());
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+                outcome.addError("ER-RM-4", "Unable to Load Report Definition for " +  rpt.getReportDefinition().getName()  + " Org Id : " + org.getId());
+                break;
     		}
     		if ( repDef != null ) {
-    			Report newReport = reportFactory.createReport(repDef, aeReportDest, repDef.getBaseDate());
+    			Report newReport = repDef.createReport();
     			 if ( newReport != null ) {
     				 copyReportDetailsFromInput(rpt, newReport);
     				 aeReportDest.addReport(newReport);
     			 } else {
-    				 outcome.addError("ER-RM-5", "Unable to find Report Definition for " +  rpt.getReportDefinition().getName()  + " Org Id : " + org.getId());
+    				 outcome.addError("ER-RM-5", "Unable to create a New Report for " +  rpt.getReportDefinition().getName()  + " Org Id : " + org.getId());
     	    		break; 
     			 }
     			

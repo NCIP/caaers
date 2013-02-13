@@ -86,7 +86,7 @@ public class SubmitterMigrator implements Migrator<ExpeditedAdverseEventReport> 
             	if ( aeReportDest.getPhysician() != null) aeReportDest.setPhysician(new Physician());
             	copyFromSiteInvestigatorDetails(siteInvestigator, aeReportDest.getPhysician());
             } else {
-            		  outcome.addWarning("WR-SM-1", "Given Physician is no longer associated to the study");
+            		  outcome.addWarning("WR-SM-1", "Given Submitter is no longer associated to the study");
             }
         	
         }
