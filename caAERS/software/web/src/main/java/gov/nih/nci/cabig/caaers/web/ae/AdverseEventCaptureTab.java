@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -356,8 +357,10 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
             // Special validation for outcomes as it cannot be validated through the fieldgroup framework.
             
             if(caaersFieldConfigurationManager.isFieldMandatory(TAB_NAME, "adverseEvents[].outcomes") && !ae.getSolicited()){
-            	if(ae.getOutcomes() == null || ae.getOutcomes().isEmpty())
+            	LinkedHashMap<Integer, Boolean> oneOutcomeMap = (LinkedHashMap<Integer, Boolean>) command.getOutcomes().get(i);
+            	if(oneOutcomeMap == null || !oneOutcomeMap.containsValue(Boolean.TRUE)) {  
             		errors.rejectValue("adverseEvents[" + i + "].outcomes", "CAE_016", "Missing outcomes.");
+            	}
             }
             
             if(caaersFieldConfigurationManager.isFieldMandatory(TAB_NAME, "adverseEvents[].eventApproximateTime.hourString") && !ae.getSolicited()){

@@ -197,10 +197,15 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	 * This method will initialize the outcomes and outcomeOtherDetails, in the command. 
 	 */
 	public void initializeOutcomes() {
-		outcomeOtherDetails.clear();
-    	outcomes.clear();
-    	int i = 0;
-    	//This method will populate the outcome map and the outcomeSerious details map.
+		//CAAERS-6244 removed the clearing of outcomes to retain the user selection 
+		//for error page
+    	
+    	//This method will populate the outcome map and the outcomeSerious details map
+    	//only if it is not already populated, like, enter capture AE flow
+		if(!outcomes.isEmpty() && outcomes.size() == getAdverseEvents().size()) {
+			return;
+		}
+		int i = 0;
     	for(AdverseEvent ae : getAdverseEvents()){
     	
     		//update the command bounded variables with default values
