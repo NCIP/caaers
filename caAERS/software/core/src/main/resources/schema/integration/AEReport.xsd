@@ -50,6 +50,10 @@
                     <xs:element type="DeviceAttributionType" name="deviceAttribution" minOccurs="0" />
                     <xs:element type="BiologicalInterventionAttributionType" name="biologicalInterventionAttribution" minOccurs="0" />
                     <xs:element type="DietarySupplementInterventionAttributionType"	name="dietarySupplementInterventionAttribution" minOccurs="0" />
+                    <xs:element type="DiseaseAttributionType" name="diseaseAttribution"	minOccurs="0" />
+                    <xs:element type="OtherInterventionAttributionType" name="otherInterventionAttribution" minOccurs="0" />
+                    <xs:element type="BehavioralInterventionAttributionType" name="behavioralInterventionAttribution" minOccurs="0" />
+                    <xs:element type="GeneticInterventionAttributionType"	name="geneticInterventionAttribution" minOccurs="0" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -535,6 +539,55 @@
 		<xs:sequence>
             <xs:element type="AttributionType" name="attribution"/>
 			<xs:element name="cause" type="OtherCauseType" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="DiseaseAttributionType">
+		<xs:sequence>
+            <xs:element type="AttributionType" name="attribution"/>
+			<xs:element name="cause" type="DiseaseHistoryType" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="OtherInterventionAttributionType">
+		<xs:sequence>
+            <xs:element type="AttributionType" name="attribution"/>
+			<xs:element name="cause" type="OtherAEInterventionType" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="BehavioralInterventionAttributionType">
+		<xs:sequence>
+            <xs:element type="AttributionType" name="attribution"/>
+			<xs:element name="cause" type="BehavioralInterventionType" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="GeneticInterventionAttributionType">
+		<xs:sequence>
+            <xs:element type="AttributionType" name="attribution"/>
+			<xs:element name="cause" type="GeneticInterventionType" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="OtherAEInterventionType">
+		<xs:sequence>
+            <xs:element name="description" type="xs:string" minOccurs="0"/>
+			<xs:element name="studyIntervention" type="OtherInterventionType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="BehavioralInterventionType">
+		<xs:sequence>
+            <xs:element name="description" type="xs:string" minOccurs="0"/>
+			<xs:element name="studyIntervention" type="OtherInterventionType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="GeneticInterventionType">
+		<xs:sequence>
+            <xs:element name="description" type="xs:string" minOccurs="0"/>
+			<xs:element name="studyIntervention" type="OtherInterventionType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 
