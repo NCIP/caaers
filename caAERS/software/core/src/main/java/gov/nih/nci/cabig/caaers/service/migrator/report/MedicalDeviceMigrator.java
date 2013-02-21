@@ -26,9 +26,18 @@ public class MedicalDeviceMigrator implements Migrator<ExpeditedAdverseEventRepo
     	if ( destMedicalDevices == null ) {
     		destMedicalDevices = new ArrayList<MedicalDevice>();
     	}
+        Study study = aeReportDest.getStudy();
+        List<StudyDevice>  studyDeviceList = study.getActiveStudyDevices();
+
     	// Copy the Labs Information from Source to Destination.
     	for ( MedicalDevice dev : srcMedicalDevices) {
+            StudyDevice device = findStudyDevice(studyDeviceList, dev.getStudyDevice());
+            if ( device == null) {
+                outcome.addError("ER-MDM-1", "Study doesn't contain the value provided from the Input." );
+                break;
+            }
     		MedicalDevice destDev = new MedicalDevice();
+            destDev.setStudyDevice(device);
     		copyFromSource(dev, destDev);
     		destDev.setReport(aeReportDest);
     		destMedicalDevices.add(destDev);
@@ -36,7 +45,6 @@ public class MedicalDeviceMigrator implements Migrator<ExpeditedAdverseEventRepo
 	}
 	
 	private void copyFromSource(MedicalDevice src, MedicalDevice dest) {
-		dest.setStudyDevice(src.getStudyDevice());
 		dest.setCatalogNumber(src.getCatalogNumber());
 		dest.setCommonName(src.getCommonName());
 		dest.setDeviceReprocessed(src.getDeviceReprocessed());
@@ -56,8 +64,7 @@ public class MedicalDeviceMigrator implements Migrator<ExpeditedAdverseEventRepo
 		dest.setReprocessorName(src.getReprocessorName());
 		dest.setReturnedDate(src.getReturnedDate());
 		dest.setSerialNumber(src.getSerialNumber());
-		dest.setOtherDeviceOperator(src.getOtherDeviceOperator());		
-		dest.setStudyDevice(src.getStudyDevice());
+		dest.setOtherDeviceOperator(src.getOtherDeviceOperator());
 		dest.setCatalogNumber(src.getCatalogNumber());
 		dest.setCommonName(src.getCommonName());
 		dest.setDeviceReprocessed(src.getDeviceReprocessed());
@@ -79,4 +86,19 @@ public class MedicalDeviceMigrator implements Migrator<ExpeditedAdverseEventRepo
 		dest.setSerialNumber(src.getSerialNumber());
 		dest.setOtherDeviceOperator(src.getOtherDeviceOperator());
 	}
+
+    private StudyDevice findStudyDevice(List<StudyDevice>  studyDeviceList, StudyDevice device) {
+        StudyDevice result = null;
+        for (StudyDevice sd:studyDeviceList) {
+            if ( sd.getDevice() != null && device.getDevice() != null && sd.getDevice().getBrandName().equals(device.getDevice().getBrandName())  &&  sd.getDevice().getCommonName().equals(device.getDevice().getCommonName())||
+                    (sd.getOtherBrandName() != null && device.getOtherBrandName() != null && sd.getOtherBrandName().equals(device.getOtherBrandName())) ||
+                    (sd.getOtherCommonName() != null && device.getOtherCommonName() != null && sd.getOtherCommonName().equals(device.getOtherCommonName())) ||
+                    (sd.getOtherDeviceType() != null && device.getOtherDeviceType() != null && sd.getOtherDeviceType().equals(device.getOtherDeviceType()))) {
+                  result = sd;
+                break;
+            }
+        }
+
+        return result;
+    }
 }

@@ -81,7 +81,7 @@
 		<xs:sequence>
 			<xs:element type="xs:int" name="cycleNumber" minOccurs="0" />
 			<xs:element type="xs:date" name="startDate" minOccurs="0"/>
-			<xs:element type="StudyParticipantAssignmentType" name="StudyParticipantAssignment" minOccurs="0"/>
+			<xs:element type="StudyParticipantAssignmentType" name="studyParticipantAssignment" minOccurs="0"/>
 			<xs:element type="TreatmentAssignmentType" name="TreatmentAssignment" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
@@ -354,15 +354,29 @@
 	<xs:complexType name="RadiationInterventionType">
 		<xs:sequence>
 			<xs:element type="xs:int" name="dosage" />
-			<xs:element type="xs:string" name="dosageUnit" />
-			<xs:element type="xs:date" name="lastTreatmentDate" />
-			<xs:element type="xs:int" name="fractionNumber" />
-			<xs:element type="xs:int" name="daysElapsed" />
-			<xs:element type="xs:string" name="adjustment" />
-			<xs:element type="xs:string" name="administration" />
-			<xs:element type="OtherInterventionType" name="OtherIntervention" />
-		</xs:sequence>
+        <xs:element type="xs:string" name="dosageUnit" />
+        <xs:element type="xs:date" name="lastTreatmentDate" />
+        <xs:element type="xs:int" name="fractionNumber" />
+        <xs:element type="xs:int" name="daysElapsed" />
+        <xs:element type="xs:string" name="adjustment" />
+        <xs:element type="RadiationAdministrationType" name="administration" />
+        <xs:element type="OtherInterventionType" name="OtherIntervention" />
+    </xs:sequence>
 	</xs:complexType>
+    <xs:simpleType name="RadiationAdministrationType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Brachytherapy HDR" />
+            <xs:enumeration value="Brachytherapy LDR" />
+            <xs:enumeration value="Brachytherapy NOS" />
+            <xs:enumeration value="External Beam NOS" />
+            <xs:enumeration value="External Beam, 2D" />
+            <xs:enumeration value="External Beam, 3D" />
+            <xs:enumeration value="SUBMIT_TO_SPONSOR" />
+            <xs:enumeration value="External Beam, IMRT" />
+            <xs:enumeration value="External Beam, Proton" />
+            <xs:enumeration value="Systemic radiotherapy" />
+        </xs:restriction>
+    </xs:simpleType>
 	<xs:complexType name="InterventionSiteType">
 		<xs:sequence>
 			<xs:element type="xs:string" name="name" />
@@ -397,7 +411,7 @@
 		<xs:sequence>
 			<xs:element type="xs:string" name="brandName" />
 			<xs:element type="xs:string" name="commonName" />
-			<xs:element type="xs:string" name="type" />
+			<xs:element type="xs:string" name="type"  minOccurs="0" />
 		</xs:sequence>
 	</xs:complexType>
 	
@@ -769,7 +783,7 @@
 			<xs:enumeration value="FINALIZE_REPORT_AND_SUBMIT" />
 		</xs:restriction>
 	</xs:simpleType>
-	
+
 	<xs:complexType name="ReportVersionType">
 		<xs:sequence>
 			<xs:element type="xs:string" name="reportVersionId" />

@@ -2,72 +2,8 @@ package gov.nih.nci.cabig.caaers.service.migrator;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.domain.AdditionalInformation;
-import gov.nih.nci.cabig.caaers.domain.AdditionalInformationDocument;
-import gov.nih.nci.cabig.caaers.domain.Address;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription;
-import gov.nih.nci.cabig.caaers.domain.Agent;
-import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
-import gov.nih.nci.cabig.caaers.domain.Attribution;
-import gov.nih.nci.cabig.caaers.domain.Availability;
-import gov.nih.nci.cabig.caaers.domain.BehavioralIntervention;
-import gov.nih.nci.cabig.caaers.domain.BiologicalIntervention;
-import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
-import gov.nih.nci.cabig.caaers.domain.ConfigProperty;
-import gov.nih.nci.cabig.caaers.domain.CourseAgent;
-import gov.nih.nci.cabig.caaers.domain.DateValue;
-import gov.nih.nci.cabig.caaers.domain.DelayUnits;
-import gov.nih.nci.cabig.caaers.domain.Device;
-import gov.nih.nci.cabig.caaers.domain.DeviceOperator;
-import gov.nih.nci.cabig.caaers.domain.DietarySupplementIntervention;
-import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
-import gov.nih.nci.cabig.caaers.domain.Dose;
-import gov.nih.nci.cabig.caaers.domain.EventStatus;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.GeneticIntervention;
-import gov.nih.nci.cabig.caaers.domain.Identifier;
-import gov.nih.nci.cabig.caaers.domain.InterventionSite;
-import gov.nih.nci.cabig.caaers.domain.Investigator;
-import gov.nih.nci.cabig.caaers.domain.Lab;
-import gov.nih.nci.cabig.caaers.domain.LabCategory;
-import gov.nih.nci.cabig.caaers.domain.LabTerm;
-import gov.nih.nci.cabig.caaers.domain.LabValue;
-import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
-import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
-import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
-import gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
-import gov.nih.nci.cabig.caaers.domain.OtherAEIntervention;
-import gov.nih.nci.cabig.caaers.domain.OtherCause;
-import gov.nih.nci.cabig.caaers.domain.OtherIntervention;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.ParticipantHistory;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.ParticipantHistory.Measure;
-import gov.nih.nci.cabig.caaers.domain.Physician;
-import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
-import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
-import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
-import gov.nih.nci.cabig.caaers.domain.RadiationIntervention;
-import gov.nih.nci.cabig.caaers.domain.ReportStatus;
-import gov.nih.nci.cabig.caaers.domain.Reporter;
-import gov.nih.nci.cabig.caaers.domain.ReprocessedDevice;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
-import gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition;
-import gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyAgent;
-import gov.nih.nci.cabig.caaers.domain.StudyDevice;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
-import gov.nih.nci.cabig.caaers.domain.TimeValue;
-import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
-import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.attribution.BehavioralInterventionAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.BiologicalInterventionAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
@@ -730,7 +666,9 @@ public class ExpeditedAdverseEventReportConverter {
 				device.setType(xmlMedicalDeviceType.getStudyDevice().getDevice().getType());
 				device.setBrandName(xmlMedicalDeviceType.getStudyDevice().getDevice().getBrandName());
 				device.setCommonName(xmlMedicalDeviceType.getStudyDevice().getDevice().getCommonName());
-				
+
+                studyDevice.setDevice(device);
+
 				studyDevice.setCatalogNumber(xmlMedicalDeviceType.getStudyDevice().getCatalogNumber());
 				studyDevice.setModelNumber(xmlMedicalDeviceType.getStudyDevice().getModelNumber());
 				studyDevice.setManufacturerName(xmlMedicalDeviceType.getStudyDevice().getManufacturerName());
@@ -741,6 +679,7 @@ public class ExpeditedAdverseEventReportConverter {
 				studyDevice.setOtherCommonName(xmlMedicalDeviceType.getStudyDevice().getOtherCommonName());
 				studyDevice.setOtherDeviceType(xmlMedicalDeviceType.getStudyDevice().getOtherDeviceType());
 			}
+
 			medicalDevice.setStudyDevice(studyDevice);
 		}
 		
@@ -771,7 +710,8 @@ public class ExpeditedAdverseEventReportConverter {
 	
 	// convert interventions
 	
-	protected RadiationIntervention convertRadiationIntervention(RadiationInterventionType xmlRadiationInterventionType){
+	protected RadiationIntervention
+    convertRadiationIntervention(RadiationInterventionType xmlRadiationInterventionType){
 		RadiationIntervention intervention = new RadiationIntervention();
 		intervention.setAdjustment(xmlRadiationInterventionType.getAdjustment());
 		intervention.setDaysElapsed(String.valueOf(xmlRadiationInterventionType.getDaysElapsed()));
@@ -786,7 +726,7 @@ public class ExpeditedAdverseEventReportConverter {
 			OtherIntervention otherIntervention =convertOtherIntervention(xmlRadiationInterventionType.getOtherIntervention());
 			intervention.setStudyRadiation(otherIntervention);
 		}
-		
+		intervention.setAdministration(RadiationAdministration.findByDisplayName(xmlRadiationInterventionType.getAdministration().value()));
 		
 		return intervention;
 	}

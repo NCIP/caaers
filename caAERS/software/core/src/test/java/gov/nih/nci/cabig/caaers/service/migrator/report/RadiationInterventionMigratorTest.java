@@ -4,16 +4,7 @@ package gov.nih.nci.cabig.caaers.service.migrator.report;
 
 import java.util.Date;
 
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.Fixtures;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.OtherAEIntervention;
-import gov.nih.nci.cabig.caaers.domain.OtherIntervention;
-import gov.nih.nci.cabig.caaers.domain.RadiationIntervention;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import junit.framework.TestCase;
 
@@ -41,10 +32,23 @@ public class RadiationInterventionMigratorTest extends TestCase {
         AdverseEventReportingPeriod period = Fixtures.createReportingPeriod();
         StudyParticipantAssignment assignment = Fixtures.createAssignment();
         period.setAssignment(assignment);
+        assignment.setStudySite(site);
+        assignment.getStudySite().setStudy(study);
+
+        //Set the destination.
+
         dest.setReportingPeriod(period);
      
         OtherIntervention oi = new OtherIntervention();
-        oi.setStudy(study);
+        oi.setId(-100);
+        oi.setName("Other Radiation Name");
+        oi.setDescription("Other Radiation Description");
+        oi.setRetiredIndicator(false);
+
+        oi.setStudyTherapyType(StudyTherapyType.RADIATION);
+
+        study.getOtherInterventions().add(oi);
+
         String desc = "Testing Radiation Intervention Migrator";
         
         RadiationIntervention ri = Fixtures.createRadiationIntervention(desc, oi, new Date(), "treatment arm","1","Normal Dosage","mg","1",null,"adjustment");

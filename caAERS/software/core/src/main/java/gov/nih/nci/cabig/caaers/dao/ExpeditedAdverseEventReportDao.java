@@ -91,7 +91,7 @@ public class ExpeditedAdverseEventReportDao extends
             lie.printStackTrace();
         }
     }
-    
+
     /**
      * This method will reassociate the domain object to hibernate session. With a lock mode none.
      * 

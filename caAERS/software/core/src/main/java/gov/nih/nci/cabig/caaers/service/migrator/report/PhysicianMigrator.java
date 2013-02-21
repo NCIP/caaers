@@ -93,7 +93,7 @@ public class PhysicianMigrator implements Migrator<ExpeditedAdverseEventReport> 
     
     /**
      *  Manual copy from Input object to Domain Model.
-     * @param srcPhysician
+     * @param siteInvestigator
      * @param destPhysician
      */
     

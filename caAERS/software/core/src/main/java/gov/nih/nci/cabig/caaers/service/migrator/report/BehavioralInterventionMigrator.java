@@ -26,12 +26,22 @@ public class BehavioralInterventionMigrator implements Migrator<ExpeditedAdverse
     	if ( destBehavioralInterventions == null ) {
     		destBehavioralInterventions = new ArrayList<BehavioralIntervention>();
     	}
+        Study study = aeReportDest.getStudy();
+        List<OtherIntervention> otherBehaviorList = study.getActiveStudyBehavioralInterventions();
+
     	// Copy the BehavioralInterventions Information from Source to Destination.
     	for ( BehavioralIntervention behavioralIntervention : srcBehavioralInterventions) {
-    		BehavioralIntervention destBehavioralIntervention = new BehavioralIntervention();
-    		copyProperties(behavioralIntervention, destBehavioralIntervention);
-    		destBehavioralInterventions.add(destBehavioralIntervention);
-    		destBehavioralIntervention.setReport(aeReportDest);
+    		BehavioralIntervention destBI = new BehavioralIntervention();
+            OtherIntervention oi =  findActiveBehavioralOnStudy(otherBehaviorList,behavioralIntervention.getStudyIntervention() );
+            if ( oi == null ) {
+                outcome.addError("ER-BIM-1", "Study doesn't contain the value provided from the Input." );
+                break;
+            }
+            destBI.setReport(aeReportDest);
+            destBI.setStudyIntervention(oi);
+    		copyProperties(behavioralIntervention, destBI);
+    		destBehavioralInterventions.add(destBI);
+
     	}
 	}    	 
 	
@@ -40,8 +50,30 @@ public class BehavioralInterventionMigrator implements Migrator<ExpeditedAdverse
 	 * @param src
 	 * @param dest
 	 */
-	private void copyProperties(AbstractAEIntervention src, AbstractAEIntervention dest) {
-		dest.setDescription(src.getDescription());
-		dest.setStudyIntervention(src.getStudyIntervention());
+	private void copyProperties(BehavioralIntervention src, BehavioralIntervention dest) {
+        if ( src.getDescription() != null)
+		    dest.setDescription(src.getDescription());
+        if (src.getStudyIntervention() != null)
+		    dest.setStudyIntervention(src.getStudyIntervention());
+        if (src.getVersion() != null)
+            dest.setVersion(src.getVersion());
 	}
+
+    /**
+     *  find the Active Radiation on Study.
+     * @param otherBehaviorList
+     * @param oi
+     * @return
+     */
+    private OtherIntervention findActiveBehavioralOnStudy(List<OtherIntervention> otherBehaviorList, OtherIntervention oi) {
+
+        OtherIntervention result = null;
+        for( OtherIntervention iter: otherBehaviorList) {
+            if ( iter.getName().equals(oi.getName()) && iter.getDescription().equals(oi.getDescription())) {
+                result = iter;
+                break;
+            }
+        }
+        return result;
+    }
 }

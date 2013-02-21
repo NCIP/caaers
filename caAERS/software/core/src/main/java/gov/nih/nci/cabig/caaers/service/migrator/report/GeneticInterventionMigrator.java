@@ -26,15 +26,46 @@ public class GeneticInterventionMigrator implements Migrator<ExpeditedAdverseEve
     	if ( destGeneticInterventions == null ) {
     		destGeneticInterventions = new ArrayList<GeneticIntervention>();
     	}
-    	// Copy the GeneticInterventions Information from Source to Destination.
-    	for ( GeneticIntervention bioIntervention : srcGeneticInterventions) {
-    		GeneticIntervention destGeneticIntervention = new GeneticIntervention();
-    		copyProperties(bioIntervention, destGeneticIntervention);
+        // 1. Load the study.
+        Study study = aeReportDest.getStudy();
+
+        List<OtherIntervention> otherGeneticInterventionList = study.getActiveStudyGeneticInterventions();
+
+        // Copy the GeneticInterventions Information from Source to Destination.
+    	for ( GeneticIntervention geIntervention : srcGeneticInterventions) {
+
+            OtherIntervention oi = findActiveGIOnStudy(otherGeneticInterventionList, geIntervention.getStudyIntervention());
+            if ( oi == null ) {
+                outcome.addError("ER-GIM-1", "Input doesn't contain valid values" );
+                break;
+            }
+            GeneticIntervention destGeneticIntervention = new GeneticIntervention();
+            destGeneticIntervention.setStudyIntervention(oi);
+            destGeneticIntervention.setReport(aeReportDest);
+    		copyProperties(geIntervention, destGeneticIntervention);
     		destGeneticInterventions.add(destGeneticIntervention);
-    		destGeneticIntervention.setReport(aeReportDest);
+
     	}	
 
-	}    	 
+	}
+
+    /**
+     *  find the Active GI on Study.
+     * @param otherGeneticInterventionList
+     * @param oi
+     * @return
+     */
+    private OtherIntervention findActiveGIOnStudy(List<OtherIntervention> otherGeneticInterventionList, OtherIntervention oi) {
+
+        OtherIntervention result = null;
+        for( OtherIntervention iter: otherGeneticInterventionList) {
+            if ( iter.getName().equals(oi.getName()) && iter.getDescription().equals(oi.getDescription())) {
+                result = iter;
+                break;
+            }
+        }
+        return result;
+    }
 	
 	/**
 	 * Copy the Details from the UserInput.
@@ -43,6 +74,5 @@ public class GeneticInterventionMigrator implements Migrator<ExpeditedAdverseEve
 	 */
 	private void copyProperties(AbstractAEIntervention src, AbstractAEIntervention dest) {
 		dest.setDescription(src.getDescription());
-		dest.setStudyIntervention(src.getStudyIntervention());
 	}
 }

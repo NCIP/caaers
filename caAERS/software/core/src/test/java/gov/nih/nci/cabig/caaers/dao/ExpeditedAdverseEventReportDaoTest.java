@@ -205,6 +205,20 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
     	assertTrue(true);
     }
 
+    public void testSaveDiseaseHistory() throws Exception {
+        DiseaseHistory ds = new DiseaseHistory();
+        ds.setDiagnosisDate(new Date());
+
+        List<AnatomicSite> anatomicSites = anatomicSiteDao.getBySubnames(new String[] {"Rolling"});
+        MetastaticDiseaseSite mds = new MetastaticDiseaseSite();
+        mds.setCodedSite(anatomicSites.get(0));
+
+        List<MetastaticDiseaseSite> metastaticDiseaseSites = new ArrayList<MetastaticDiseaseSite>();
+        metastaticDiseaseSites.add(mds);
+
+        ds.setMetastaticDiseaseSitesInternal(metastaticDiseaseSites);
+    }
+
     public void testGetParticipantHistory() throws Exception {
         ParticipantHistory actual = getDao().getById(-1).getParticipantHistory();
         assertNotNull("No participant history", actual);
@@ -502,8 +516,12 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
                 OtherIntervention rad1 = new OtherIntervention();
                 rad1.setId(-1);
                 rad1.setVersion(0);
-                report.getRadiationInterventions().get(0).setStudyRadiation(rad1);
-                report.getRadiationInterventions().get(0).setDaysElapsed("120");
+                RadiationIntervention ri = new RadiationIntervention();
+                ri.setAdministration(RadiationAdministration.BT_HDR);
+                ri.setStudyRadiation(rad1);
+                ri.setDaysElapsed("120");
+                report.getRadiationInterventions().add(ri);
+               // report.getRadiationInterventions().get(0).setDaysElapsed("120");
             }
 
             public void assertCorrect(ExpeditedAdverseEventReport loaded) {

@@ -86,4 +86,15 @@ public enum RadiationAdministration implements CodedEnum<Integer> {
     public String getDisplayName() {
         return displayName == null ? sentenceCasedName(this) : displayName;
     }
+
+    public static RadiationAdministration findByDisplayName(String displayName) {
+        RadiationAdministration result = null;
+        for (RadiationAdministration r : values()) {
+            if ( r.getDisplayName().equals(displayName) ) {
+                result = r;
+                break;
+            }
+        }
+       return result;
+    }
 }

@@ -5,22 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.Availability;
-import gov.nih.nci.cabig.caaers.domain.BehavioralIntervention;
-import gov.nih.nci.cabig.caaers.domain.BiologicalIntervention;
-import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
-import gov.nih.nci.cabig.caaers.domain.DeviceOperator;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.Fixtures;
-import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.OtherIntervention;
-import gov.nih.nci.cabig.caaers.domain.ReprocessedDevice;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantConcomitantMedication;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import junit.framework.TestCase;
 
@@ -38,26 +23,45 @@ public class MedicalDeviceMigratorTest extends TestCase {
         migrator = new MedicalDeviceMigrator();
         src = new ExpeditedAdverseEventReport();
         dest = new ExpeditedAdverseEventReport();
-        
+
         Study study = Fixtures.createStudy("CTEP");
         Organization org = Fixtures.createOrganization("Mayo Clinic");
-        
+
         StudySite site = Fixtures.createStudySite(org, 26);
         study.addStudySite(site);
-        
+
         AdverseEventReportingPeriod period = Fixtures.createReportingPeriod();
         StudyParticipantAssignment assignment = Fixtures.createAssignment();
         period.setAssignment(assignment);
+        assignment.setStudySite(site);
+        assignment.getStudySite().setStudy(study);
+
+        //Set the destination.
+
         dest.setReportingPeriod(period);
-     
-        
+        //Set the destination.
+
+        dest.setReportingPeriod(period);
+
+        StudyDevice  studyDevice = new StudyDevice();
+        studyDevice.setRetiredIndicator(false);
+        Device d =new Device();
+        d.setBrandName("Brad");
+        d.setCommonName("Brad Common Name");
+        studyDevice.setDevice(d);
+        d.setId(-100);
+        d.setVersion(1);
+
+       study.addStudyDevice(studyDevice);
+
+
         MedicalDevice medicalDevice = new MedicalDevice(Fixtures.createStudyDevice());
 
-        String brandName = "brand name";
+        String brandName = "Brad";
         medicalDevice.getStudyDevice().getDevice().setBrandName(brandName);
         String catalogNumber = "catalong number";
         medicalDevice.getStudyDevice().setCatalogNumber(catalogNumber);
-        String commonName = "common name";
+        String commonName = "Brad Common Name";
         medicalDevice.getStudyDevice().getDevice().setCommonName(commonName);
         DeviceOperator other = DeviceOperator.OTHER;
         medicalDevice.setDeviceOperator(other);
@@ -72,8 +76,7 @@ public class MedicalDeviceMigratorTest extends TestCase {
         medicalDevice.setExpirationDate(expirationDate);
         Date explantedDate = new Date();
         medicalDevice.setExplantedDate(explantedDate);
-        medicalDevice.setGridId("grid id");
-        medicalDevice.setId(1);
+
         
         src.getMedicalDevices().add(medicalDevice);
                
@@ -85,7 +88,7 @@ public class MedicalDeviceMigratorTest extends TestCase {
     	migrator.migrate(src,dest,new DomainObjectImportOutcome<ExpeditedAdverseEventReport>());
     	assertEquals(1, dest.getMedicalDevices().size());
     	assertEquals(Availability.YES, dest.getMedicalDevices().get(0).getEvaluationAvailability());
-    	assertEquals("common name", dest.getMedicalDevices().get(0).getCommonName());
+    	assertEquals("Brad Common Name", dest.getMedicalDevices().get(0).getCommonName());
     	
     }
 }

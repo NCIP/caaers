@@ -208,16 +208,32 @@ public class SafetyReportServiceImpl {
             return null;
         }
 
+        // Associate the updated information to adverse events.
+        for ( AdverseEvent ae: reportingPeriod.getAdverseEvents() ) {
+            aeDestReport.addAdverseEvent(ae);
+        }
+
         //Call the ExpediteReportDao and save this report.
         expeditedAdverseEventReportDao.save(aeDestReport);
 
+        //Associate the Report to AE's
+        for ( AdverseEvent ae: reportingPeriod.getAdverseEvents() ) {
+            ae.setReport(aeDestReport);
+        }
+
         // Deep copy the reports as it is throwing ConcurrentModification Exception.
         List<Report> reports = new ArrayList(aeDestReport.getReports());
+        aeDestReport.getReports().clear();
+        List<Report> newReports = new ArrayList<Report>();
         // Save the report(s) after Migration.
         for ( Report rpt: reports )    {
              Report newReport = reportRepository.createReport(rpt.getReportDefinition(), aeDestReport) ;
+             newReports.add(newReport);
             if (getEventFactory() != null) getEventFactory().publishEntityModifiedEvent(newReport.getAeReport());
         }
+
+        aeDestReport.setReports(newReports);
+
         return aeDestReport;
     }
 

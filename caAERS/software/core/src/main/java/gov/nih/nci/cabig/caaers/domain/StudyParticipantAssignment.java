@@ -251,6 +251,9 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     @Transient
     public List<AdverseEventReportingPeriod> getActiveReportingPeriods(){
     	List<AdverseEventReportingPeriod> activeReportingPeriods = new ArrayList<AdverseEventReportingPeriod>();
+
+        if (getReportingPeriods() == null) return activeReportingPeriods;
+
     	for(AdverseEventReportingPeriod reportingPeriod: getReportingPeriods()){
     		if(!reportingPeriod.isRetired())
     			activeReportingPeriods.add(reportingPeriod);

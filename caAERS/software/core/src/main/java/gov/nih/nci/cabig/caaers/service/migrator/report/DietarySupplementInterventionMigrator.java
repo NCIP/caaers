@@ -26,22 +26,53 @@ public class DietarySupplementInterventionMigrator implements Migrator<Expedited
     	if ( destDietarySupplementInterventions == null ) {
     		destDietarySupplementInterventions = new ArrayList<DietarySupplementIntervention>();
     	}
+
+        Study study = aeReportDest.getStudy();
+        List<OtherIntervention> studyDietaryInterventionList =  study.getActiveStudyDietaryInterventions();
     	// Copy the DietarySupplementInterventions Information from Source to Destination.
-    	for ( DietarySupplementIntervention bioIntervention : srcDietarySupplementInterventions) {
+    	for ( DietarySupplementIntervention dsi : srcDietarySupplementInterventions) {
     		DietarySupplementIntervention destDietarySupplementIntervention = new DietarySupplementIntervention();
-    		copyProperties(bioIntervention, destDietarySupplementIntervention);
+            OtherIntervention oi = findActiveDietariesOnStudy(studyDietaryInterventionList, dsi.getStudyIntervention() );
+            if ( oi == null ) {
+                outcome.addError("ER_DIM_1", "Study doesn't contain the value provided from the Input." );
+                break;
+            }
+            destDietarySupplementIntervention.setStudyIntervention(oi);
+            destDietarySupplementIntervention.setReport(aeReportDest);
+    		copyProperties(dsi, destDietarySupplementIntervention);
     		destDietarySupplementInterventions.add(destDietarySupplementIntervention);
-    		destDietarySupplementIntervention.setReport(aeReportDest);
+
     	}	
-	}    	 
+	}
+
+    /**
+     *  find the Active Radiation on Study.
+     * @param studyDietaryInterventionList
+     * @param oi
+     * @return
+     */
+    private OtherIntervention findActiveDietariesOnStudy(List<OtherIntervention> studyDietaryInterventionList, OtherIntervention oi) {
+
+        OtherIntervention result = null;
+        for( OtherIntervention iter: studyDietaryInterventionList) {
+            if ( iter.getName().equals(oi.getName()) && iter.getDescription().equals(oi.getDescription())) {
+                result = iter;
+                break;
+            }
+        }
+        return result;
+    }
+
 	/**
 	 * Copy the Details from the UserInput.
 	 * @param src
 	 * @param dest
 	 */
 	private void copyProperties(AbstractAEIntervention src, AbstractAEIntervention dest) {
-		dest.setDescription(src.getDescription());
-		dest.setStudyIntervention(src.getStudyIntervention());
+        if (src.getDescription() != null)
+		    dest.setDescription(src.getDescription());
+        if(src.getVersion() != null)
+            dest.setVersion(src.getVersion());
 	}
 
 }

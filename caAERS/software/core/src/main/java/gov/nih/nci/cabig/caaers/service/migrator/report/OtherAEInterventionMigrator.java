@@ -25,12 +25,26 @@ public class OtherAEInterventionMigrator implements Migrator<ExpeditedAdverseEve
     	if ( destOtherAEInterventions == null ) {
     		destOtherAEInterventions = new ArrayList<OtherAEIntervention>();
     	}
+
+        // 1. Load the study.
+        Study study = aeReportDest.getStudy();
+
+        List<OtherIntervention> otherAEInterventionList = study.getActiveStudyOtherInterventions();
+
     	// Copy the OtherAEInterventions Information from Source to Destination.
-    	for ( OtherAEIntervention bioIntervention : srcOtherAEInterventions) {
+    	for ( OtherAEIntervention otherAE : srcOtherAEInterventions) {
+
+            OtherIntervention oi = findActiveOtherAEOnStudy(otherAEInterventionList, otherAE.getStudyIntervention());
+            if ( oi == null ) {
+                outcome.addError("ER-OAI-1", "Input doesn't contain valid values" );
+                break;
+            }
+
     		OtherAEIntervention destOtherAEIntervention = new OtherAEIntervention();
-    		copyProperties(bioIntervention, destOtherAEIntervention);
+            destOtherAEIntervention.setStudyIntervention(oi);
+            destOtherAEIntervention.setReport(aeReportDest);
+    		copyProperties(otherAE, destOtherAEIntervention);
     		destOtherAEInterventions.add(destOtherAEIntervention);
-    		destOtherAEIntervention.setReport(aeReportDest);
     	}	
 	}    	 
 	
@@ -41,6 +55,17 @@ public class OtherAEInterventionMigrator implements Migrator<ExpeditedAdverseEve
 	 */
 	private void copyProperties(AbstractAEIntervention src, AbstractAEIntervention dest) {
 		dest.setDescription(src.getDescription());
-		dest.setStudyIntervention(src.getStudyIntervention());
 	}
+
+    private OtherIntervention findActiveOtherAEOnStudy(List<OtherIntervention> otherAEInterventionList, OtherIntervention oi) {
+
+        OtherIntervention result = null;
+        for( OtherIntervention iter: otherAEInterventionList) {
+            if ( iter.getName().equals(oi.getName()) && iter.getDescription().equals(oi.getDescription())) {
+                result = iter;
+                break;
+            }
+        }
+        return result;
+    }
 }

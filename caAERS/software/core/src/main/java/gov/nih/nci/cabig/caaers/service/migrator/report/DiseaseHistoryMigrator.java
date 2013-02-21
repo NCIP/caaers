@@ -1,14 +1,28 @@
 package gov.nih.nci.cabig.caaers.service.migrator.report;
 
+import gov.nih.nci.cabig.caaers.dao.AnatomicSiteDao;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * User:medaV
  * Date: 1/21/13
  */
 public class DiseaseHistoryMigrator implements Migrator<ExpeditedAdverseEventReport> {
+
+    public AnatomicSiteDao getAnatomicSiteDao() {
+        return anatomicSiteDao;
+    }
+
+    public void setAnatomicSiteDao(AnatomicSiteDao anatomicSiteDao) {
+        this.anatomicSiteDao = anatomicSiteDao;
+    }
+
+    private AnatomicSiteDao anatomicSiteDao ;
     
 	public void migrate(ExpeditedAdverseEventReport aeReportSrc, ExpeditedAdverseEventReport aeReportDest, DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome) {
     
@@ -20,7 +34,7 @@ public class DiseaseHistoryMigrator implements Migrator<ExpeditedAdverseEventRep
     	}
     	
     	Participant participant = aeReportDest.getParticipant();
-    	
+
     	 StudySite site = null;
      	
          if ( aeReportDest.getReportingPeriod() != null && aeReportDest.getReportingPeriod().getAssignment() != null ) {
@@ -51,20 +65,41 @@ public class DiseaseHistoryMigrator implements Migrator<ExpeditedAdverseEventRep
 	 */
     
     private void copyDiseaseHistory(DiseaseHistory srcDisHis, DiseaseHistory destDisHis) {
-    	if ( srcDisHis.getOtherPrimaryDisease() != null) 
-    	destDisHis.setOtherPrimaryDisease(srcDisHis.getOtherPrimaryDisease());
-    	
-    	if(srcDisHis.getMeddraStudyDisease() != null) 
-    	destDisHis.setMeddraStudyDisease(srcDisHis.getMeddraStudyDisease());
-    	
+
+        List<String> anatomicSites = new ArrayList<String>();
+        int counter = 0;
     	for ( MetastaticDiseaseSite diseaseSite : srcDisHis.getMetastaticDiseaseSites()) {
-    		destDisHis.addMetastaticDiseaseSite(diseaseSite);
+            if ( diseaseSite.getCodedSite() != null ) {
+                anatomicSites.add(diseaseSite.getCodedSite().getName());
+            }
+            counter++;
     	}
-    	
+         String[] anatomicSitesArr =   anatomicSites.toArray(new String[anatomicSites.size()]);
+         List<AnatomicSite> anaSites =  anatomicSiteDao.getBySubnames(anatomicSitesArr);
+
+        for ( MetastaticDiseaseSite diseaseSite : srcDisHis.getMetastaticDiseaseSites()) {
+            if ( diseaseSite.getCodedSite() != null) {
+                AnatomicSite result =  findAnatomicSiteByName(anaSites, diseaseSite.getCodedSite());
+                MetastaticDiseaseSite mds = new MetastaticDiseaseSite();
+                mds.setCodedSite(result);
+                destDisHis.getMetastaticDiseaseSites().add(mds);
+            }
+        }
+
     	destDisHis.setDiagnosisDate(srcDisHis.getDiagnosisDate());
-    	destDisHis.setCodedPrimaryDiseaseSite(srcDisHis.getCodedPrimaryDiseaseSite());
-    	destDisHis.setCtepStudyDisease(srcDisHis.getCtepStudyDisease());
-    	destDisHis.setAbstractStudyDisease(srcDisHis.getAbstractStudyDisease());
+
+    }
+
+    private AnatomicSite findAnatomicSiteByName(List<AnatomicSite> anaSites, AnatomicSite site) {
+        AnatomicSite result = null;
+
+        for ( AnatomicSite anaSite : anaSites) {
+                if  ( anaSite.getName().equals(site.getName()) ) {
+                    result = anaSite;
+                    break;
+                }
+        }
+        return result;
 
     }
     
@@ -74,7 +109,9 @@ public class DiseaseHistoryMigrator implements Migrator<ExpeditedAdverseEventRep
      * @param destHistory
      */
     private void CopyFromStudyParticipantDiseaseHistory(StudyParticipantDiseaseHistory history, DiseaseHistory destHistory) {
-    	
+
+        destHistory.setId(history.getId());
+        destHistory.setVersion(history.getVersion());
     	destHistory.setOtherPrimaryDisease(history.getOtherPrimaryDisease());
     	destHistory.setOtherPrimaryDiseaseSite(history.getOtherPrimaryDiseaseSite());
     	destHistory.setMeddraStudyDisease(history.getMeddraStudyDisease());
