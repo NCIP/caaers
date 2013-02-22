@@ -565,6 +565,7 @@ public class ExpeditedAdverseEventReportConverter {
 			preExistingCondition.setMeddraHlgt(preCondType.getPreExistingCondition().getMeddraHlgt());
 			preExistingCondition.setMeddraLlt(preCondType.getPreExistingCondition().getMeddraLlt());
 			preExistingCondition.setMeddraLltCode(preCondType.getPreExistingCondition().getMeddraLltCode());
+            saeReportPreExistingCondition.setPreExistingCondition(preExistingCondition);
 		}
 		
 		return saeReportPreExistingCondition;
