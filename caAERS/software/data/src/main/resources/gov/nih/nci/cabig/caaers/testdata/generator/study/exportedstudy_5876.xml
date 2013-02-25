@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<ns2:studies xmlns:ns2="http://webservice.caaers.cabig.nci.nih.gov">
+<ns2:studies xmlns:ns2="http://schema.integration.caaers.cabig.nci.nih.gov/study">
     <ns2:study>
         <shortTitle>Phase II Trial of Flavopiridol and Cisplatin in Advanced Epithelial Ovarian and Primary Peritoneal Carcinomas</shortTitle>
         <longTitle>Phase II Trial of Flavopiridol and Cisplatin in Advanced Epithelial Ovarian and Primary Peritoneal Carcinomas</longTitle>

@@ -2,13 +2,14 @@ package gov.nih.nci.cabig.caaers.testdata.loader.participant;
 
 import gov.nih.nci.cabig.caaers.api.impl.ParticipantServiceImpl;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.integration.schema.common.WsError;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.testdata.TestDataFileUtils;
 import gov.nih.nci.cabig.caaers.testdata.loader.DataLoader;
 import gov.nih.nci.cabig.caaers.utils.XmlValidator;
-import gov.nih.nci.cabig.caaers.webservice.participant.CaaersServiceResponse;
-import gov.nih.nci.cabig.caaers.webservice.participant.ParticipantType;
-import gov.nih.nci.cabig.caaers.webservice.participant.Participants;
+import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.participant.ParticipantType;
+import gov.nih.nci.cabig.caaers.integration.schema.participant.Participants;
 import org.springframework.context.ApplicationContext;
 
 import java.io.File;
@@ -29,7 +30,7 @@ public class ParticipantLoader extends DataLoader {
     }
 
     public ParticipantLoader(ApplicationContext appContext, String loc, boolean updateMode) throws Exception {
-        super(appContext, loc, "gov.nih.nci.cabig.caaers.webservice.participant");
+        super(appContext, loc, "gov.nih.nci.cabig.caaers.integration.schema.participant");
         service = (ParticipantServiceImpl) appContext.getBean("participantServiceImpl");
         this.updateMode = updateMode;
     }
@@ -39,9 +40,9 @@ public class ParticipantLoader extends DataLoader {
 
         boolean loadStatus = true;
         CaaersServiceResponse response = updateMode ? service.updateParticipant(getParticipants(f)) : service.createParticipant(getParticipants(f));
-        for(String wsError : response.getResponse().getMessage()){
+        for(WsError wsError : response.getServiceResponse().getWsError()){
             loadStatus=false;
-            detailsBuffer.append(wsError).append("\n");
+            detailsBuffer.append(wsError.getErrorDesc()).append("\n");
         }
 
         return loadStatus;

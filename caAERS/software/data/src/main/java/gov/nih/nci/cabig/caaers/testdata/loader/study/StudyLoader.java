@@ -6,9 +6,9 @@ import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.testdata.TestDataFileUtils;
 import gov.nih.nci.cabig.caaers.testdata.loader.DataLoader;
 import gov.nih.nci.cabig.caaers.utils.XmlValidator;
-import gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse;
-import gov.nih.nci.cabig.caaers.webservice.Studies;
-import gov.nih.nci.cabig.caaers.webservice.Study;
+import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.study.Studies;
+import gov.nih.nci.cabig.caaers.integration.schema.study.Study;
 import org.springframework.context.ApplicationContext;
 
 import java.io.File;
@@ -27,7 +27,7 @@ public class StudyLoader extends DataLoader {
     }
 
     public StudyLoader(ApplicationContext appContext, String loc) throws Exception{
-        super(appContext, loc, "gov.nih.nci.cabig.caaers.webservice");
+        super(appContext, loc, "gov.nih.nci.cabig.caaers.integration.schema.study");
         processor = (StudyProcessorImpl) appContext.getBean("studyProcessorImpl");
     }
 
@@ -40,14 +40,13 @@ public class StudyLoader extends DataLoader {
 
        CaaersServiceResponse response = processor.createStudy(getStudies(f));
        boolean loadStatus = true;
-       for(String wsError : response.getResponse().getMessage()){
+       for(WsError wsError : response.getServiceResponse().getWsError()){
             loadStatus=false;
-            detailsBuffer.append(wsError).append("\n");
+            detailsBuffer.append(wsError.getErrorDesc()).append("\n");
         }
        return loadStatus;
 
     }
-
 
 	/**
 	 *
@@ -58,7 +57,5 @@ public class StudyLoader extends DataLoader {
 		return (Studies)unmarshaller.unmarshal(new FileInputStream(f));
 
     }
-
-
 
 }

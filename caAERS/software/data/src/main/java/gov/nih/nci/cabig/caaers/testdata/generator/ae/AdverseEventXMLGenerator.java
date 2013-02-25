@@ -4,10 +4,10 @@ import gov.nih.nci.cabig.caaers.integration.schema.investigator.ObjectFactory;
 import gov.nih.nci.cabig.caaers.testdata.NCICode;
 import gov.nih.nci.cabig.caaers.testdata.TestDataFileUtils;
 import gov.nih.nci.cabig.caaers.testdata.generator.XMLGenerator;
-import gov.nih.nci.cabig.caaers.webservice.adverseevent.AdverseEventCtcTermType;
-import gov.nih.nci.cabig.caaers.webservice.adverseevent.AdverseEventType;
-import gov.nih.nci.cabig.caaers.webservice.adverseevent.AdverseEvents;
-import gov.nih.nci.cabig.caaers.webservice.adverseevent.AdverseEventsInputMessage;
+import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AdverseEventCtcTermType;
+import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AdverseEventType;
+import gov.nih.nci.cabig.caaers.integration.schema.manageae.AdverseEvents;
+import gov.nih.nci.cabig.caaers.integration.schema.manageae.AdverseEventsInputMessage;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -146,7 +146,7 @@ public class AdverseEventXMLGenerator extends XMLGenerator {
 
 	public AdverseEventXMLGenerator() throws Exception {
 		jaxbContext = JAXBContext
-				.newInstance("gov.nih.nci.cabig.caaers.webservice.adverseevent");
+				.newInstance("gov.nih.nci.cabig.caaers.integration.schema.manageae");
 		unmarshaller = jaxbContext.createUnmarshaller();
 		marshaller = jaxbContext.createMarshaller();
 		objectFactory = new ObjectFactory();
@@ -181,7 +181,7 @@ public class AdverseEventXMLGenerator extends XMLGenerator {
 	 */
 	public void modifyAdverseEvenInput(AdverseEventsInputMessage msg,
 			String studyPrimaryId, String subjectPrimaryId) {
-		msg.getCriteria().setParticipantIdentifier(subjectPrimaryId);
+	//	msg.getCriteria().setParticipantIdentifier(subjectPrimaryId);
 		msg.getCriteria().setStudyIdentifier(studyPrimaryId);
 		addAdverseEvents(msg);
 	}
@@ -207,7 +207,7 @@ public class AdverseEventXMLGenerator extends XMLGenerator {
 		newAdversEventType.setExpected(templateAdversEventType.isExpected());
 		AdverseEventCtcTermType adverseEventCtcTermType = new AdverseEventCtcTermType();
 		adverseEventCtcTermType.setCtepTerm(ctepTerm);
-		newAdversEventType.setAdverseEventCtcTerm(adverseEventCtcTermType);
+		//newAdversEventType.setAdverseEventCtcTerm(adverseEventCtcTermType);
 		return newAdversEventType;
 	}
 

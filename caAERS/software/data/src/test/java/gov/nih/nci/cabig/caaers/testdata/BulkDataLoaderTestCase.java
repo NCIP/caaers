@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.testdata;
 
+import edu.nwu.bioinformatics.commons.testing.DbTestCase;
 import gov.nih.nci.cabig.caaers.CaaersDbNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.testdata.generator.XMLGenerator;
 import gov.nih.nci.cabig.caaers.testdata.generator.ae.AdverseEventXMLGenerator;
@@ -28,6 +29,7 @@ public class BulkDataLoaderTestCase extends CaaersDbNoSecurityTestCase{
      * Generate and load investigator
      */
     public void testLoadInvestigators(){
+
        try{
            TestDataFileUtils.deleteDirectory(TestDataFileUtils.getInvestigatorTestDataFolder());
            new GeneratorExecuter(new InvestigatorXMLGenerator(), "Investigator").execute();
@@ -116,7 +118,7 @@ public class BulkDataLoaderTestCase extends CaaersDbNoSecurityTestCase{
        }
     }
 
-    class GeneratorExecuter {
+    public class GeneratorExecuter {
         XMLGenerator generator;
         String name;
         public GeneratorExecuter(XMLGenerator generator, String name){
@@ -130,7 +132,7 @@ public class BulkDataLoaderTestCase extends CaaersDbNoSecurityTestCase{
         }
     }
 
-    class DataLoadExecuter {
+    public class DataLoadExecuter {
         DataLoader loader;
         String name;
 

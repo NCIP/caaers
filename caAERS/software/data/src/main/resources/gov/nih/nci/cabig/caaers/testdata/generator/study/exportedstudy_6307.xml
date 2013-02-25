@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<ns2:studies xmlns:ns2="http://webservice.caaers.cabig.nci.nih.gov">
+<ns2:studies xmlns:ns2="http://schema.integration.caaers.cabig.nci.nih.gov">
     <ns2:study>
         <shortTitle>A Phase II Trial of Gemcitabine in Combination with 17-Allylaminogeldanamycin (17-AAG) in Advanced Epithelial Ovarian and Primary Peritoneal Carcinoma</shortTitle>
         <longTitle>A Phase II Trial of Gemcitabine in Combination with 17-Allylaminogeldanamycin (17-AAG) in Advanced Epithelial Ovarian and Primary Peritoneal Carcinoma</longTitle>

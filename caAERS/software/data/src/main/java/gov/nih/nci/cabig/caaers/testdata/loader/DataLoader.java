@@ -3,7 +3,6 @@ package gov.nih.nci.cabig.caaers.testdata.loader;
 import gov.nih.nci.cabig.caaers.dao.CaaersDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.testdata.TestDataFileUtils;
-import gov.nih.nci.cabig.caaers.webservice.ObjectFactory;
 import org.springframework.context.ApplicationContext;
 
 import javax.xml.bind.JAXBContext;
@@ -18,13 +17,11 @@ public abstract class DataLoader {
     protected String dataFileLocation;
     protected JAXBContext jaxbContext = null;
     protected Unmarshaller unmarshaller = null;
-    protected ObjectFactory objectFactory;
     protected ApplicationContext appContext;
 
     public DataLoader(ApplicationContext appContext, String loc, String jaxbPackageUrl) throws Exception {
         this.appContext = appContext;
         this.dataFileLocation = loc;
-        objectFactory = new ObjectFactory();
         jaxbContext = JAXBContext.newInstance(jaxbPackageUrl);
         unmarshaller = jaxbContext.createUnmarshaller();
     }
