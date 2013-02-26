@@ -447,7 +447,7 @@ public class AdverseEventReportSerializer {
 		   l.setId(lab.getId());
 		   l.setLabTerm(lab.getLabTerm());
 		   l.setOther(lab.getOther());
-		   l.setUnits(lab.getUnits());
+
 		   l.setBaseline(lab.getBaseline());
 		   l.setNadir(lab.getNadir());
 		   l.setRecovery(lab.getRecovery());
@@ -455,6 +455,11 @@ public class AdverseEventReportSerializer {
 		   l.setSite(lab.getSite());
            l.setNormalRange(lab.getNormalRange());
 		   l.setInfectiousAgent(lab.getInfectiousAgent());
+           //quick fix for
+           if(lab.getNadir().getValue() != null || lab.getRecovery().getValue() != null || lab.getBaseline().getValue() != null || lab.getNormalRange()!= null  ){
+               l.setUnits(lab.getUnits());
+           }
+
 		   
 		   return l;
 	   }

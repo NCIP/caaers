@@ -258,8 +258,23 @@ public class AdverseEventReportSerializerTest extends AbstractTestCase {
         aeReport.getLabs().get(0).setId(1);
         aeReport.getLabs().get(0).setNormalRange("1122");
         aeReport.getLabs().get(0).setSite("xxx");
-        aeReport.getLabs().get(0).setUnits("mg");
+        aeReport.getLabs().get(0).setUnits("bj-cm");
         String xml = serializer.serialize(aeReport, null);
         assertTrue(xml.contains("<normalRange>1122</normalRange>"));
+        assertTrue( xml.indexOf("bj-cm") > 0);
     }
+
+    public void testSerializeLabsWithOnlyUnit() throws Exception{
+        String xmlFileName = "expedited_report_caaers_complete.xml";
+        ExpeditedAdverseEventReport aeReport = generateExpeditedReport(xmlFileName);
+        aeReport.getLabs().clear();
+        Lab l = new Lab();
+        l.setUnits("bj-cm");
+        aeReport.addLab(l);
+        String xml = serializer.serialize(aeReport, null);
+        assertEquals(-1, xml.indexOf("bj-cm"));
+
+
+    }
+
 }
