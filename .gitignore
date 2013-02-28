@@ -2,7 +2,6 @@
 build
 repository
 bin
-caAERS/software/bootstrap/src/main/resources/
 caAERS/software/web/src/main/webapp/WEB-INF/classes/
 caAERS/software/web/src/main/webapp/WEB-INF/error_messages.properties
 caAERS/software/web/src/main/webapp/WEB-INF/help.properties
