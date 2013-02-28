@@ -1,3 +1,9 @@
+<%--
+Copyright SemanticBits, Northwestern University and Akaza Research
+
+Distributed under the OSI-approved BSD 3-Clause License.
+See http://ncip.github.com/caaers/LICENSE.txt for details.
+--%>
 <%@include file="/WEB-INF/views/taglibs.jsp" %>
 <c:set var="commentsIcon"><img src="<chrome:imageUrl name="../editComment.png" />" /></c:set>
 <c:if test="${not empty roles.ae_reporter or not empty roles.ae_expedited_report_reviewer}">

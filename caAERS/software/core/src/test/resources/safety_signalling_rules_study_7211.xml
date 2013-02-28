@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+  Copyright SemanticBits, Northwestern University and Akaza Research
+  
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caaers/LICENSE.txt for details.
+-->
 <ruleSet xmlns="http://semanticbits.com/rules/brxml">
 	<name>gov.nih.nci.cabig.caaers.rules.STU_9.safety_signalling_rules
 	</name>

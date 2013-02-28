@@ -1,3 +1,9 @@
+<!--
+  Copyright SemanticBits, Northwestern University and Akaza Research
+  
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caaers/LICENSE.txt for details.
+-->
 <?xml version="1.0" encoding="UTF-8"?><payload xmlns:ser="http://services.ctep.nci.nih.gov/" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"><system>adeers</system><response>
     <entity>preexistingcondition</entity><operation name="getPreExistingConditionsLOV">
     <data><PreExistingConditions xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns2="http://services.ctep.nci.nih.gov/">

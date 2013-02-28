@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
+<!--
+  Copyright SemanticBits, Northwestern University and Akaza Research
+  
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caaers/LICENSE.txt for details.
+-->
 <root-container name="reportingperiod_mainmember" width="958" height="686">
   <node name="Start Reporting Period Flow" x="76" y="33" width="277" height="36">
     <edge>

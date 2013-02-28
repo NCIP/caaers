@@ -1,3 +1,9 @@
+<%--
+Copyright SemanticBits, Northwestern University and Akaza Research
+
+Distributed under the OSI-approved BSD 3-Clause License.
+See http://ncip.github.com/caaers/LICENSE.txt for details.
+--%>
 <%@include file="/WEB-INF/views/taglibs.jsp" %>
 <c:set var="widthTerm" value="22%" scope="request" />
 <c:set var="widthGrade" value="14%" scope="request" />

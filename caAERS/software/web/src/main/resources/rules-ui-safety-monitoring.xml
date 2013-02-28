@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
+<!--
+  Copyright SemanticBits, Northwestern University and Akaza Research
+  
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caaers/LICENSE.txt for details.
+-->
 <rule-ui xmlns="http://semanticbits.com/rules/ui">
     <condition>
         <domain-object identifier="adverseEvent" class-name="gov.nih.nci.cabig.caaers.domain.ObservedAdverseEventProfile" display-uri="Adverse Event">

@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright SemanticBits, Northwestern University and Akaza Research
+  
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caaers/LICENSE.txt for details.
+-->
 <con:soapui-project name="aems" resourceRoot="" soapui-version="2.5.1" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="ProjectSettings@projectRoot">/Users/sakkala/tech/ae-management-service-soapUI-projects</con:setting></con:settings><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="AdverseEventManagementServiceHttpBinding" type="wsdl" bindingName="{http://webservice.caaers.cabig.nci.nih.gov/adverseevent}AdverseEventManagementServiceHttpBinding" soapVersion="1_1" anonymous="optional" definition="file:/Users/sakkala/Desktop/AdverseEventManagementService.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="file:/Users/sakkala/Desktop/AdverseEventManagementService.wsdl"><con:part><con:url>file:/Users/sakkala/Desktop/AdverseEventManagementService.wsdl</con:url><con:content><![CDATA[<wsdl:definitions targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/adverseevent" xmlns:tns="http://webservice.caaers.cabig.nci.nih.gov/adverseevent" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenc11="http://schemas.xmlsoap.org/soap/encoding/" xmlns:soapenc12="http://www.w3.org/2003/05/soap-encoding" xmlns:soap11="http://schemas.xmlsoap.org/soap/envelope/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:types>
     <xs:schema elementFormDefault="unqualified" targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/adverseevent" xmlns="http://webservice.caaers.cabig.nci.nih.gov/adverseevent" xmlns:xs="http://www.w3.org/2001/XMLSchema">

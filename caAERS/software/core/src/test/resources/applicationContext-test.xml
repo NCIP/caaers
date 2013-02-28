@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--
-  Purpose : Testing in IDE (Eclipse/IDEA) has an issue, Default compilation in IDE will not 
-  replace @databaseConfiguration@ filter. To overcome this, all CaaersDBTestCase#getConfigLocations() and 
-  CaaersTestCase#getConfigLocations() method will include 
-  applicationContext-test.xml, as the last entry, will allow overriding of the following beans. 
-  	dataSource and mainPropertyConfigurer.
-  	
- Note:- 
- Since the name test is hardcoded in the properties file, it is mandatory that you have test.properties (read DATABASE.readme).
- Also the ANT build, will skip this file, so that the original build, and test build will not conflict. 
- -->
-
+  Copyright SemanticBits, Northwestern University and Akaza Research
+  
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caaers/LICENSE.txt for details.
+-->
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:tx="http://www.springframework.org/schema/tx"

@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+  Copyright SemanticBits, Northwestern University and Akaza Research
+  
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caaers/LICENSE.txt for details.
+-->
 <ns2:studies xmlns:ns2="http://schema.integration.caaers.cabig.nci.nih.gov/study" xmlns:ns4="http://schema.integration.caaers.cabig.nci.nih.gov/investigator" xmlns:ns3="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:ns5="http://schema.integration.caaers.cabig.nci.nih.gov/researchstaff" xmlns:ns6="http://schema.integration.caaers.cabig.nci.nih.gov/participant">
     <ns2:study>
         <shortTitle>Phase II Trial of Flavopiridol and Cisplatin in Advanced Epithelial Ovarian and Primary Peritoneal Carcinomas smpl 2</shortTitle>
