@@ -1,1 +1,0 @@
-<span class="required-for-submit">&#167;</span>

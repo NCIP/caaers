@@ -1,6 +1,0 @@
-NSC|NAME|CTCAE_VERSION|CTCAE_CATEGORY|TOXICITY|AE_TERM|SELECT_AE|IMT_CODE|CTEP_PREFERRED_TERM|SHORT_NAME|SUB_CATEGORY|EXPECTED_TOXICITY_FLAG|OTHER_TOXICITY
-
-726190|Agent Name – 01|4|Gastrointestinal disorders|Abdominal distension|Abdominal distension||10000060|Abdominal distension|Abdominal distension||No|
-726191|Agent Name – 02|4|Gastrointestinal disorders|Abdominal pain|Abdominal pain|||||||
-726191|Agent Name – 02|4|Gastrointestinal disorders|Vomiting|Vomiting|||||||
-726191|Agent Name – 02|4|Gastrointestinal disorders|Headache|Headache|||||||

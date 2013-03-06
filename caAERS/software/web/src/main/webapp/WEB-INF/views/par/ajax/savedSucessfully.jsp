@@ -1,3 +1,0 @@
-<script>
-mHistory.closePopup();
-</script>
