@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
+<!--
+  Copyright SemanticBits, Northwestern University and Akaza Research
+  
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caaers/LICENSE.txt for details.
+-->
 <root-container name="expedited_domestic" width="1270" height="817">
   <node name="Start Expedited Domestic Flow" x="475" y="25" width="268" height="36">
     <edge>

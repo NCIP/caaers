@@ -1,3 +1,9 @@
+<!--
+  Copyright SemanticBits, Northwestern University and Akaza Research
+  
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caaers/LICENSE.txt for details.
+-->
 <AdverseEventReport>
     <WITHDRAW>true</WITHDRAW><id>156</id><StudyParticipantAssignment><StudySite><Study><Identifier><type>Protocol Authority Identifier</type><value>ANBL09P1</value><primaryIndicator>true</primaryIndicator></Identifier><Identifier>
                 <type>Coordinating Center Identifier</type>

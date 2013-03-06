@@ -1,1 +1,11 @@
-﻿<?xml version="1.0" encoding="UTF-8"?> <com:LimitOffset xmlns:com="http://common.coppa.nci.nih.gov" xmlns="http://monish.com">     <limit>5</limit>      <offset>0</offset> </com:LimitOffset>
+<!--
+  Copyright SemanticBits, Northwestern University and Akaza Research
+  
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caaers/LICENSE.txt for details.
+-->
+﻿<?xml version="1.0" encoding="UTF-8"?>
+ <com:LimitOffset xmlns:com="http://common.coppa.nci.nih.gov" xmlns="http://monish.com">
+     <limit>5</limit> 
+     <offset>0</offset> 
+</com:LimitOffset>

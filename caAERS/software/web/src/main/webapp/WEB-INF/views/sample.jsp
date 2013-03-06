@@ -1,3 +1,9 @@
+<%--
+Copyright SemanticBits, Northwestern University and Akaza Research
+
+Distributed under the OSI-approved BSD 3-Clause License.
+See http://ncip.github.com/caaers/LICENSE.txt for details.
+--%>
 <!-- This page is the view for a JSP & tags version of docs/Visual Design/new_template. -->
 
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
