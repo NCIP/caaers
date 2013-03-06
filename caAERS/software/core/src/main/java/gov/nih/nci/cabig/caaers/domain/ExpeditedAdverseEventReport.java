@@ -1026,7 +1026,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
      * @return the physician
      */
     @OneToOne(mappedBy = "expeditedReport", fetch=FetchType.LAZY)
-    @Cascade(value = {CascadeType.DELETE, CascadeType.EVICT, CascadeType.LOCK, CascadeType.REMOVE})
+    @Cascade(value = {CascadeType.DELETE, CascadeType.EVICT, CascadeType.LOCK, CascadeType.REMOVE, CascadeType.MERGE})
     public Physician getPhysician() {
         return physician;
     }
