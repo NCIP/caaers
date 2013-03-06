@@ -177,4 +177,21 @@ public class ReportDeliveryDefinition extends AbstractMutableDomainObject {
     public void setStatus(String status) {
         this.status = status;
     }
+
+
+    /**
+     * Will copy the content into the
+     * @param template
+     */
+    public static ReportDeliveryDefinition copy(ReportDeliveryDefinition template){
+        ReportDeliveryDefinition rd = new ReportDeliveryDefinition();
+        rd.format = template.format;
+        rd.entityName = template.entityName;
+        rd.entityDescription = template.entityDescription;
+        rd.entityType = template.entityType;
+        rd.endPoint = template.endPoint;
+        rd.status = template.status;
+        return rd;
+    }
+
 }

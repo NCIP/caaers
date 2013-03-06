@@ -153,6 +153,7 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
 
                    ResearchStaffQuery rsQuery = new ResearchStaffQuery();
                    rsQuery.filterByExactLoginId(userMap.keySet().toArray(new String[]{}));
+                   rsQuery.setFiltered(true);
 
                    List<ResearchStaff> staffs = personRepository.searchLocalResearchStaff(rsQuery);
                    for(ResearchStaff rs : staffs){
@@ -161,6 +162,7 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
 
                    InvestigatorQuery invQuery = new InvestigatorQuery();
                    invQuery.filterByExactLoginId(userMap.keySet().toArray(new String[]{}));
+                   invQuery.setFiltered(true);
                    List<Investigator> investigators = personRepository.searchLocalInvestigator(invQuery);
                    for(Investigator inv : investigators){
                        userMap.remove(inv.getLoginId());
@@ -228,6 +230,7 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
 
         List<SiteResearchStaff> siteResearchStaffs = new ArrayList<SiteResearchStaff>();
         SiteResearchStaffQuery query = new SiteResearchStaffQuery();
+        query.setFiltered(true);
         
         if(StringUtils.isNotEmpty((String)searchCriteriaMap.get("firstName"))){
         	query.filterByFirstName((String)searchCriteriaMap.get("firstName"));
@@ -298,6 +301,7 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
 
         List<Investigator> investigators = new ArrayList<Investigator>();
         InvestigatorQuery investigatorQuery = new InvestigatorQuery();
+        investigatorQuery.setFiltered(true);
         
         if(StringUtils.isNotEmpty((String)searchCriteriaMap.get("firstName"))){
         	investigatorQuery.filterByFirstName((String)searchCriteriaMap.get("firstName"));

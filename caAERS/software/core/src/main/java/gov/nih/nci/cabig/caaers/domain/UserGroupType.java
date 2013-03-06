@@ -71,7 +71,7 @@ public enum UserGroupType implements CodedEnum<Integer> {
     //will return all the roles that are site scoped.
     public static List<UserGroupType> getSiteScopedRoles(){
         return Arrays.asList(new UserGroupType[]{
-             subject_manager, registration_qa_manager, data_importer, study_site_participation_administrator,
+             subject_manager, registration_qa_manager, study_site_participation_administrator,
              study_team_administrator, supplemental_study_information_manager, study_creator, study_qa_manager,
              user_administrator, person_and_organization_information_manager
         });

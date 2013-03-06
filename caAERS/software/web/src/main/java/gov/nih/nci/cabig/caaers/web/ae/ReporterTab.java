@@ -107,7 +107,7 @@ public class ReporterTab extends AeTab {
         Person reporter = command.getAeReport().getReporter().getPerson();
         Person physician = command.getAeReport().getPhysician().getPerson();
 
-        int reporterPersonId = (reporter != null) ? reporter.getId(): loggedInPerson.getId();
+        int reporterPersonId = (reporter != null) ? reporter.getId(): (loggedInPerson != null ? loggedInPerson.getId() : 0);
         refData.put("reporterPersonId", reporterPersonId);
         
         refData.put("reporterIsResearchStaff", reporter != null && reporter instanceof ResearchStaff);

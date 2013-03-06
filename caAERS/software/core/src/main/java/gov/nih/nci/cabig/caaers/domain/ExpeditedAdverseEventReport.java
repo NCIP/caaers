@@ -40,13 +40,13 @@ import org.springframework.beans.BeanUtils;
  * @author Rhett Sutphin
  * @author Biju Joseph
  * @author Ion C. Olaru
- * 
+ *
  */
 @Entity
 @Table(name = "ae_reports")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_ae_reports_id")})
 public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject implements  Serializable{
-   
+
 	private static final long serialVersionUID = -3747213703166595074L;
 	private Timestamp createdAt;
     private LazyListHelper lazyListHelper;
@@ -65,7 +65,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     private List<Report> reports;
     private static final Log log = LogFactory.getLog(ExpeditedAdverseEventReport.class);
 
-    
+
     // TODO
     // private List<MedicalDevice> medicalDevices;
 
@@ -130,19 +130,23 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         StudySite ss = getAssignment() == null ? null : getAssignment().getStudySite();
         return ss == null ? null : ss.getStudy();
     }
-    
+
     @Transient
     public StudySite getStudySite() {
         StudySite ss = getAssignment() == null ? null : getAssignment().getStudySite();
         return ss;
     }
 
-    
     @Transient
     public Map<String, String> getSummary() {
+        return getSummary(true);
+    }
+
+    @Transient
+    public Map<String, String> getSummary(boolean unIdentifiedMode) {
         Map<String, String> summary = new LinkedHashMap<String, String>();
         summary.put("Study", summaryLine(getStudy()));
-        summary.put("Participant", summaryLine(getParticipant()));
+        summary.put("Participant",unIdentifiedMode ? summaryLine(getAssignment()) : summaryLine(getParticipant()));
         summary.put("Report created at", getCreatedAt() == null ? null : getCreatedAt().toString());
         String primaryAeLine = null;
         if (getAdverseEvents().size() > 0 && getAdverseEvents().get(0).getAdverseEventTerm() != null && getAdverseEvents().get(0).getAdverseEventTerm().getUniversalTerm() != null) {
@@ -169,6 +173,19 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         return sb.toString();
     }
 
+     private String summaryLine(StudyParticipantAssignment assignment) {
+        if (assignment == null) return null;
+        StringBuilder sb = new StringBuilder();
+        sb.append(assignment.getStudySubjectIdentifier());
+        return sb.toString();
+    }
+
+    /**
+     * Summary line.
+     *
+     * @param study the study
+     * @return the string
+     */
     private String summaryLine(Study study) {
         if (study == null) return null;
         StringBuilder sb = new StringBuilder();
@@ -195,7 +212,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     public List<AdverseEvent> getAdverseEvents() {
         return lazyListHelper.getLazyList(AdverseEvent.class);
     }
-    
+
     /**
      * List of adverse events that are not retired
      * @return
@@ -209,7 +226,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	}
     	return activeEvents;
     }
-    
+
     /**
      * List of active adverse events, that are modified.
      * @return
@@ -224,7 +241,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	}
     	return adverseEvents;
     }
-    
+
     /**
      * This method will return all the adverse events,which got modified.
      * It is obtained by comparing the saved signature and newly calculated signature.
@@ -240,7 +257,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	}
     	return adverseEvents;
     }
-    
+
     /**
      * @author Ion C. Olaru
      * This method will return all the adverse events, which have at least one ruleable field modified
@@ -559,7 +576,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         this.reporter = reporter;
         if (reporter != null) reporter.setExpeditedReport(this);
     }
-    
+
 
 
     // non-total cascade allows us to skip saving if the physician hasn't been filled in yet
@@ -606,7 +623,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         if (reports == null) reports = new ArrayList<Report>();
         return reports;
     }
-    
+
     /**
      * True,when at least one Report is active
      * @return
@@ -634,7 +651,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         }
         return activeReports;
     }
-    
+
     /**
      * Returns all the pending reports, that are in PENDING
      * @return
@@ -647,9 +664,9 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	}
     	return pendingReports;
     }
-    
+
     /**
-     * Tells whether an active report (ie. in PENDING, INPROCESS, FAILED) status, beloing to the same report definition is present. 
+     * Tells whether an active report (ie. in PENDING, INPROCESS, FAILED) status, beloing to the same report definition is present.
      * @param reportType
      * @return
      */
@@ -660,9 +677,9 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	}
     	return false;
     }
-    
+
     /**
-     * Lists the reports that are completed and is amendable. 
+     * Lists the reports that are completed and is amendable.
      * @return
      */
     public List<Report> findCompletedAmendableReports(){
@@ -673,7 +690,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	}
     	return amendableReports;
     }
-    
+
     public void setReports(List<Report> reports) {
         this.reports = reports;
     }
@@ -682,8 +699,8 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         getReports().add(report);
         report.setAeReport(this);
     }
-    
-   
+
+
 
     public Timestamp getCreatedAt() {
         return createdAt;
@@ -716,7 +733,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     public void setPublicIdentifier(String strId) {
     }
 
- 
+
     @Transient
     List<String> findPhoneNumbers(String role) {
         assert false : "Not implemented";
@@ -808,8 +825,8 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         }
 
     }
-    
-    
+
+
     /**
      * This method returns true if any of the reports associated to this data-collection was submitted
      * successfully.
@@ -822,7 +839,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	}
     	return false;
     }
-    
+
     /**
      * This method returns true if the data-collection has atleast one amendable report. It returns false otherwise.
      */
@@ -835,25 +852,25 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	}
     	return hasAmendableReport;
     }
-    
+
     /**
-     * Returns true if all of the active {@link Report} associated to this data collection, says attribution is requried.  
+     * Returns true if all of the active {@link Report} associated to this data collection, says attribution is requried.
      * @return
      */
     @Transient
     public boolean isAttributionRequired(){
     	boolean attributionRequired = true;
-    	int activeCount = 0; 
+    	int activeCount = 0;
     	for(Report report : getReports()){
     		if(!report.isActive()) continue;
     		activeCount++;
     		attributionRequired &= report.isAttributionRequired();
     	}
     	return activeCount > 0 && attributionRequired;
-    	
+
     }
     /**
-     * This method will update the signatures in all the adverse events associated to 
+     * This method will update the signatures in all the adverse events associated to
      * this expedited data collection.
      */
     public void updateSignatureOfAdverseEvents(){
@@ -861,8 +878,8 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     		ae.setSignature(ae.getCurrentSignature());
     	}
     }
-    
-    
+
+
     /**
      * This method will return the earliest graded date, of  adverse events
      * @return
@@ -880,7 +897,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	}
     	return d;
     }
-    
+
     /**
      * This method will set the graded date of adverse events to today.
      */
@@ -890,7 +907,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     		ae.setGradedDate(now);
     	}
     }
-    
+
     /**
      * This method will set the reported flag on adverse events.
      */
@@ -899,9 +916,9 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     		ae.setReported(true);
     	}
     }
-    
+
     /**
-     * This method will clear the reportedFlag, set on previously reported adverse events, 
+     * This method will clear the reportedFlag, set on previously reported adverse events,
      * which got modified.
      */
     public void clearReportedFlagOnModifiedAdverseEvents(){
@@ -910,16 +927,16 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     		modifiedAdverseEvent.setReported(false);
     	}
     }
-    
+
     /**
-     * This method will clear the post submission updated date on each of the adverse events. 
+     * This method will clear the post submission updated date on each of the adverse events.
      */
     public void clearPostSubmissionUpdatedDate(){
     	for(AdverseEvent ae : getAdverseEvents()){
     		ae.setPostSubmissionUpdatedDate(null);
     	}
     }
-    
+
     @Transient
     public boolean isPhysicianSignOffRequired(){
     	boolean physicianSignOffRequired = false;
@@ -929,7 +946,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	}
     	return physicianSignOffRequired;
     }
-    
+
     @Transient
     public Boolean getPhysicianSignOff(){
     	Boolean physicianSignOff = true;
@@ -941,15 +958,15 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	}
     	return physicianSignOff;
     }
-    
+
     @Transient
     public void setPhysicianSignOff(Boolean physicianSignOff){
     	for(Report report: getReports())
     		report.setPhysicianSignoff(physicianSignOff);
     }
-    
+
     /**
-     * List all the reports that were created manually. 
+     * List all the reports that were created manually.
      * @return - all {@link Report}s whose manuallySelected flag is set.
      */
     @Transient
@@ -960,9 +977,9 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	}
     	return manuallySelectedReports;
     }
-    
-    
-    
+
+
+
     /**
      * Lists out the report that completed, belonging to the same group and organization
      * of the {@link ReportDefinition} param rd.
@@ -978,12 +995,12 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     		if(!rdOther.getAmendable()) continue;
     		if(!rdOther.getOrganization().getId().equals(rd.getOrganization().getId())) continue;
     		if(!rdOther.getGroup().getCode().equals(rd.getGroup().getCode())) continue;
-    		
+
     		reportsToAmmend.add(report);
     	}
     	return reportsToAmmend;
     }
-    
+
     public List<Report> findReportsToWitdraw(ReportDefinition rd){
     	List<Report> reports = listReportsHavingStatus(ReportStatus.PENDING, ReportStatus.FAILED, ReportStatus.INPROCESS);
     	List<Report> reportsToWitdraw = new ArrayList<Report>();
@@ -999,11 +1016,11 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	}
     	return reportsToWitdraw;
     }
-    
+
     public List<Report> findReportsToEdit(ReportDefinition rd){
     	List<Report> reports = listReportsHavingStatus(ReportStatus.PENDING, ReportStatus.FAILED, ReportStatus.INPROCESS);
     	List<Report> reportsToEdit = new ArrayList<Report>();
-    	//check if they belong to the same report definition. 
+    	//check if they belong to the same report definition.
     	for(Report report :reports){
     		if(report.getReportDefinition().getId().equals(rd.getId())){
     			reportsToEdit.add(report);
@@ -1011,7 +1028,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	}
     	return reportsToEdit;
     }
-    
+
     /**
      * This method will find the recently amended report, that belongs to the same group and organization.
      */
@@ -1031,7 +1048,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	}
     	return theReport;
     }
-    
+
     /**
      * The report that is instantiated last, and is belonging to same organization and type.
      * @param rd
@@ -1053,7 +1070,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	}
     	return theReport;
     }
-    
+
     public List<Report> listReportsHavingStatus(ReportStatus... statuses){
     	List<Report> reports = new ArrayList<Report>();
     	for(Report report : getReports()){
@@ -1061,10 +1078,10 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	}
     	return reports;
     }
-    
+
     /**
-     * Will return true, if there is an organization of same group and type is already instantiated 
-     * on this expedited report. 
+     * Will return true, if there is an organization of same group and type is already instantiated
+     * on this expedited report.
      * @param rd
      * @return
      */
@@ -1074,8 +1091,8 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	}
     	return false;
     }
-    
-    
+
+
     /**
      * This method will return the AdverseEvent that is associated with this data collection, identified by ID
      * @param id
@@ -1087,7 +1104,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	}
     	return null;
     }
-    
+
     /**
      * This method will return the Report associated to this data collection, identified by ID
      * @param id
@@ -1099,7 +1116,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	}
     	return null;
     }
-    
+
     /**
      * This method returns is used to determine if there are any active reports which are in a workflow
      * @return boolean
@@ -1111,5 +1128,5 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     			hasWorkflowOnActiveReports = true;
     	return hasWorkflowOnActiveReports;
     }
-    
+
 }

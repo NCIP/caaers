@@ -69,7 +69,7 @@
 	    <tags:tabForm tab="${tab}" flow="${flow}"  hideErrorDetails="false">
 	   	 	<jsp:attribute name="header">
 	   	 		<div class="summary">
-    			<caaers:message code="header.reportdefinition.reportdelivery" arguments="${command.reportDefinition.name},${command.reportDefinition.organization.name}" />
+    			<caaers:message  htmlEscape="false" code="header.reportdefinition.reportdelivery" arguments="${command.reportDefinition.name},${command.reportDefinition.organization.name}" />
     			</div>
 			</jsp:attribute>
 			<jsp:attribute name="singleFields">

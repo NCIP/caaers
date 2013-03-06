@@ -250,6 +250,7 @@ public abstract class StudyOrganization extends AbstractMutableRetireableDomainO
      */
     public StudyPersonnel findStudyPersonnel(SiteResearchStaff siteResearchStaff){
     	for(StudyPersonnel studyPersonnel : this.getStudyPersonnelsInternal()){
+            if(studyPersonnel.getSiteResearchStaff() == null || siteResearchStaff == null) continue;
     		if(studyPersonnel.getSiteResearchStaff().equals(siteResearchStaff)){
 				return studyPersonnel;
     		}

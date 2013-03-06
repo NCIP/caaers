@@ -352,7 +352,7 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaffCommand> {
      */
     public ModelAndView unlockUser(HttpServletRequest request , Object cmd, Errors errors){
     	ResearchStaffCommand command = (ResearchStaffCommand)cmd;
-    	researchStaffRepository.unlockResearchStaff(command.getResearchStaff());
+//    	researchStaffRepository.unlockResearchStaff(command.getResearchStaff());
     	
     	ModelAndView modelAndView = new ModelAndView("");
     	//modelAndView.getModel().get(getFreeTextModelName());

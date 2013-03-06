@@ -2,10 +2,8 @@ package gov.nih.nci.cabig.caaers.domain.repository;
 
 import gov.nih.nci.cabig.caaers.dao.PersonDao;
 import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
-import gov.nih.nci.cabig.caaers.domain.Investigator;
-import gov.nih.nci.cabig.caaers.domain.Person;
+import gov.nih.nci.cabig.caaers.domain.*;
 
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -27,7 +25,22 @@ public class PersonRepository {
      */
 	public void save(Person person){
 		personDao.save(person);
+        if(person instanceof ResearchStaff){
+           List<SiteResearchStaff> inactiveSiteResearchStaffs = ((ResearchStaff)person).getInActiveSiteResearchStaff();
+           for(SiteResearchStaff srs : inactiveSiteResearchStaffs){
+                personDao.deactivateStudyPersonnel(srs);
+           }
+
+        }else if(person instanceof Investigator){
+           List<SiteInvestigator> siteInvestigators = ((Investigator)person).getSiteInvestigators();
+           for(SiteInvestigator si : siteInvestigators){
+               if(si.isInActive()){
+                    personDao.deactivateStudyInvestigator(si);
+               }
+           }
+        }
 	}
+    
 	
 	
 	public Person getByLoginId(String loginName) {

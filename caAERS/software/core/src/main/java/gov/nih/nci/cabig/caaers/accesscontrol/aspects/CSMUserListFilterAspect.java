@@ -24,7 +24,6 @@ public class CSMUserListFilterAspect {
             csmUserList.clear();
         }else if(!roleMembership.isAllSite()){
             //BJ: need to filter the records correctly rather than removing everything.
-            csmUserList.clear();
         }
 
         

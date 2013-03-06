@@ -87,18 +87,6 @@ public class CaaersSecurityFacadeTest extends CaaersDaoTestCase{
 	}
 	
 	
-	public void testCacheManager () throws Exception {
-		String loginId = "-1";
-		// shud be null , nothing in cache
-		Set<ProtectionElementPrivilegeContext> contexts = CSMCacheManager.getContextFromCache(loginId, loginId, CSMCacheManager.PROTECTION_ELEMENT_PRIVILEGE_CONTEXT);
-		assertNull(contexts);
-		caaersSecurityFacade.getProtectionElementPrivilegeContextForUser(loginId);
-		// now data is in cache 
-		contexts = CSMCacheManager.getContextFromCache(loginId, loginId, CSMCacheManager.PROTECTION_ELEMENT_PRIVILEGE_CONTEXT);
-		assertNotNull(contexts);
-		assertEquals(0,contexts.toArray().length);
-	}
- 
 	
 
 	
@@ -143,58 +131,6 @@ public class CaaersSecurityFacadeTest extends CaaersDaoTestCase{
     }
     
 
-    public void testProvisionRoleMemberships(){
-		
-		List<SuiteRoleMembership> roleMemberships = new ArrayList<SuiteRoleMembership>();
-		roleMemberships.add(provisioningSessionFactory.createSuiteRoleMembership(SuiteRole.SYSTEM_ADMINISTRATOR));
-		roleMemberships.add(provisioningSessionFactory.createSuiteRoleMembership(SuiteRole.BUSINESS_ADMINISTRATOR));
-		roleMemberships.add(provisioningSessionFactory.createSuiteRoleMembership(SuiteRole.AE_REPORTER).forAllSites().forAllStudies());
-		roleMemberships.add(provisioningSessionFactory.createSuiteRoleMembership(SuiteRole.SUBJECT_MANAGER).forSites("MAYO"));
-		roleMemberships.add(provisioningSessionFactory.createSuiteRoleMembership(SuiteRole.REGISTRAR).forSites("WAKE").forStudies("5876","1234","54321"));
-		
-		csmUser = userProvisioningManager.getUser("testuser2");
-		
-		caaersSecurityFacade.provisionRoleMemberships(csmUser, roleMemberships);
-		
-		List<UserGroupType> userGroups = userRepository.getUserGroups("testuser2");
-		assertEquals(5,userGroups.size());
-		
-		ProvisioningSession session = provisioningSessionFactory.createSession(csmUser.getUserId());
-		SuiteRoleMembership sysAd = session.getProvisionableRoleMembership(SuiteRole.SYSTEM_ADMINISTRATOR);
-		assertNotNull(sysAd);
-		assertTrue(!sysAd.getRole().isScoped());
-		
-		SuiteRoleMembership bizAd = session.getProvisionableRoleMembership(SuiteRole.BUSINESS_ADMINISTRATOR);
-		assertNotNull(bizAd);
-		assertTrue(!bizAd.getRole().isScoped());
-
-		SuiteRoleMembership aeRep = session.getProvisionableRoleMembership(SuiteRole.AE_REPORTER);
-		assertNotNull(aeRep);
-		assertTrue(aeRep.getRole().isSiteScoped());
-		assertTrue(aeRep.getRole().isStudyScoped());
-		assertTrue(aeRep.isAllSites());
-		assertTrue(aeRep.isAllStudies());
-		
-		SuiteRoleMembership subMgr = session.getProvisionableRoleMembership(SuiteRole.SUBJECT_MANAGER);
-		assertNotNull(subMgr);
-		assertTrue(subMgr.getRole().isSiteScoped());
-		assertFalse(subMgr.getRole().isStudyScoped());
-		assertEquals(1,subMgr.getSiteIdentifiers().size());
-		assertTrue(subMgr.getSiteIdentifiers().contains("MAYO"));
-		
-		SuiteRoleMembership reg = session.getProvisionableRoleMembership(SuiteRole.REGISTRAR);
-		assertNotNull(reg);
-		assertTrue(reg.getRole().isSiteScoped());
-		assertTrue(reg.getRole().isStudyScoped());
-		assertEquals(1,reg.getSiteIdentifiers().size());
-		assertTrue(reg.getSiteIdentifiers().contains("WAKE"));
-		assertEquals(3,reg.getStudyIdentifiers().size());
-		assertTrue(reg.getStudyIdentifiers().contains("5876"));
-		assertTrue(reg.getStudyIdentifiers().contains("1234"));
-		assertTrue(reg.getStudyIdentifiers().contains("54321"));
-
-	}
-    
     
 	private Authentication buildAuthentication(String userName, String... roles) {
         GrantedAuthority[] authorities = new GrantedAuthority[roles.length];

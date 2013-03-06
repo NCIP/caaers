@@ -26,13 +26,6 @@ import org.acegisecurity.Authentication;
 public interface CaaersSecurityFacade {
 
     /**
-     * Will provision user in CSM, ie. will only populate the role associations and protection group association.
-     * 
-     * @param user - The logged-in user.
-     */
-    void provisionUser(User user);
-
-    /**
      * Will check the authorization status.
      * @param auth - The acegi authentication object
      * @param objectId - The secure object Id
@@ -49,13 +42,6 @@ public interface CaaersSecurityFacade {
      */
     boolean checkAuthorization(Authentication auth, String objectPrivilege);
 
-
-    /**
-     * Will get the accessible protection element Ids (ObjectIDs) for the login. 
-     * @param loginId - The loginId
-     * @return
-     */
-    List<String> getAccessibleProtectionElements(String loginId);
 
     /**
      * Will the caAERS database IDs of Study that one can access. 
@@ -86,52 +72,10 @@ public interface CaaersSecurityFacade {
 	 * @return
 	 */
 	Collection<String> getRoles(String userLoginName, Study study);
-	
-	/**
-     * Will get all ProtectionGroupRoleContext for the user 
-     * @param loginId
-     * @return
-     * @throws CSObjectNotFoundException
-     */
-    Set<ProtectionGroupRoleContext> getProtectionGroupRoleContextForUser(String loginId) throws CSObjectNotFoundException ;
-    
-    /**
-     * Will get all ProtectionElementPrivilegeContext for the user 
-     * @param loginId
-     * @return
-     * @throws CSObjectNotFoundException
-     */
-    Set<ProtectionElementPrivilegeContext> getProtectionElementPrivilegeContextForUser(String loginId) throws CSObjectNotFoundException ;
-    
+
     /*
      * Clears user cache by login Name 
      */
     void clearUserCache(String userName);
-    /**
-     * Will provision studies for ResearchStaff in CSM.
-     * @param researchStaff
-     */
-    void provisionStudies(StudyPersonnel studyPersonnel);
-    
-    /**
-     * Will provision studies for Investigator in CSM.
-     * @param investigator
-     */
-    void provisionStudies(StudyInvestigator studyInvestigator);
-    
-    /**
-     * This method will create or update an user in CSM.
-     * @param user
-     * @param changeURL
-     * @return
-     */
-    gov.nih.nci.security.authorization.domainobjects.User createOrUpdateCSMUser(User user,String changeURL);
-    
-    /**
-     * This method provisions all the SuiteRoleMemebrships for a given User in CSM.
-     * @param csmUser
-     * @param roleMemberships
-     */
-    void provisionRoleMemberships(gov.nih.nci.security.authorization.domainobjects.User csmUser, List<SuiteRoleMembership> roleMemberships);
-
+   
 }

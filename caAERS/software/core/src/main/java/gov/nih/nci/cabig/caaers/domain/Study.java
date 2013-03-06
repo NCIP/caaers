@@ -333,12 +333,16 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     
     @Transient
     public String getFundingSponsorIdentifierValue() {
-        return getFundingSponsorIdentifier().getValue();
+        Identifier id =  getFundingSponsorIdentifier();
+        if(id == null) return null;
+        return id.getValue();
     }
     
     @Transient
     public String getCoordinatingCenterIdentifierValue() {
-        return getCoordinatingCenterIdentifier().getValue();
+        Identifier id =  getCoordinatingCenterIdentifier();
+        if(id == null) return null;
+        return id.getValue();
     }
     
     @Transient

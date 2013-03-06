@@ -39,7 +39,6 @@ public class InvestigatorRepositoryImplTest extends AbstractTestCase {
 		
 		expect(investigatorDao.merge(inv)).andReturn(inv).anyTimes();
 		
-		expect(caaersSecurityFacade.createOrUpdateCSMUser(inv, changeUrl)).andReturn(null);
 		
 		replayMocks();
 		repositoryImpl.save(inv, changeUrl);

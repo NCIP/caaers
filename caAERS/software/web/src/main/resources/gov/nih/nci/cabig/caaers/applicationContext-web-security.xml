@@ -116,6 +116,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <!--========== TASK PAGE ===========-->
         <entry key="/pages/task" value="gov.nih.nci.cabig.caaers.Task:ACCESS"/>
         <entry key="/pages/dashboard" value="gov.nih.nci.cabig.caaers.Task:ACCESS"/>
+        <entry key="/pages/dashboard/study" value="gov.nih.nci.cabig.caaers.Task:ACCESS"/>
+        <entry key="/pages/dashboard/subject" value="gov.nih.nci.cabig.caaers.Task:ACCESS"/>
 
         <!--========== PARTICIPANT ===========-->
 		<entry key="/pages/participant/create" value="gov.nih.nci.cabig.caaers.domain.Participant:CREATE &amp;&amp; gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment:CREATE" />

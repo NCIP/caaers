@@ -151,6 +151,11 @@
 		<property name="authenticationFailureUrl"><value>/decorated-error.jsp</value></property>
 		<property name="defaultTargetUrl"><value>/</value></property>
 		<property name="filterProcessesUrl"><value>/j_acegi_cas_security_check</value></property>
+		<property name="exceptionMappings">
+      		<props>
+        		<prop key="org.acegisecurity.userdetails.UsernameNotFoundException">/csmuser-notfound-error.jsp</prop>
+      		</props>
+    	</property>
 	</bean>
 
 	<bean id="webSSOAuthenticationProcessingFilterEntryPoint" class="org.acegisecurity.ui.cas.CasProcessingFilterEntryPoint" lazy-init="true">

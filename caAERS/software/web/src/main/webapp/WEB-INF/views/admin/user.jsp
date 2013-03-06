@@ -27,6 +27,11 @@
 
         <script type="text/javascript">
 
+            Event.observe(window, "load", function() {
+		        //remove the query string from form url
+		        removeQueryStringFromForm('command');
+             });
+
 			ajaxCRUD = new AJAX_CRUD_HELPER();
 			var sitesCount = new Array();
 			var studiesCount = new Array();
@@ -185,12 +190,25 @@
                     recenterAuto:true});
                 AE.popupWin.showCenter(true);
             }
+            //Will show the ajax loading indicator
+            function showLoadingIndicator(){
+                try {
+                     var elIndicator =  $('ajax-loading-indictor');
+                     if(elIndicator)
+                        elIndicator.show();
+                } catch(e) {
+                }
+            }
             
             /* Will refresh the page after linking */
             function updateAfterLinking(_linkedId, _linkedUserName, _linkedRecordType, _linkType){
+                showLoadingIndicator();
                 var _id = ${param.id} + '';
                 var _recordType = '${param.recordType}';
                 var _userName = '${param.userName}';
+                if(_linkType == 'user'){
+                    _userName = _linkedUserName;
+                }
                 var url = "editUser?id=#{id}&linkType=#{linkType}&userName=#{userName}&recordType=#{recordType}&linkedId=#{linkedId}&linkedRecordType=#{linkedRecordType}&linkedUserName=#{linkedUserName}".interpolate(
                  {
                      id:_id,
@@ -238,6 +256,17 @@
                    $('unlock-btn-div').hide();
                });
             }
+
+        //updates the forms action, by chopping off the query string in action.
+        function removeQueryStringFromForm(frm){
+            var frmObj = $(frm)
+            var _action = frmObj.action;
+            var queryIndex = _action.indexOf('?');
+            if(queryIndex > 0){
+                var _newAction = _action.substring(0, queryIndex);
+                frmObj.action = _newAction;
+            }
+        }
     	</script>
 
     
@@ -334,6 +363,7 @@
 							<jsp:attribute name="label"><ui:label path="nciIdentifier" text="" labelProperty="personIdentifier" required="false"/></jsp:attribute>
 							<jsp:attribute name="value"><ui:text path="nciIdentifier" title="Person Identifier" required="false" readonly="${not command.PO}"/>
                                 <c:if test="${command.editMode and  empty command.person and command.PO}">
+                                     <caaers:message code="LBL_Or" text="| OR |" />
                                      <caaers:message code="LBL_link.person" var="linkaperson" text="Link a person" />
                                      <tags:button value="${linkaperson}" color="blue" icon="search" onclick="showLinkPopup('person')" size="small" type="button"/>
                                 </c:if>
@@ -359,9 +389,10 @@
     					<tags:instructions code="userRolesForUA" />
     					<ui:row path="loginName">
     						<jsp:attribute name="label"><ui:label path="userName" text="" labelProperty="loginId" required="${command.createAsUser}"/></jsp:attribute>
-    						<jsp:attribute name="value"><ui:text path="userName" required="${command.createAsUser}" title="Username" readonly="${ (command.editMode and (not empty command.userName) ) or  (not command.UA)}"/>
+    						<jsp:attribute name="value"><ui:text path="userName" required="${command.createAsUser}" title="Username" readonly="${ (command.editMode and (not empty command.user.id) ) or  (not command.UA)}"/>
 
                                 <c:if test="${command.editMode and (empty command.userName) and command.PO}">
+                                    <caaers:message code="LBL_Or" text="| OR |" />
                                     <caaers:message code="LBL_link.user" var="linkauser" text="Link a user" />
                                     <tags:button value="${linkauser}" color="blue" icon="search" onclick="showLinkPopup('user')" size="small" type="button"/>
                                 </c:if>
@@ -412,7 +443,7 @@
 									<div id="membershipDiv-${index.index}" style="display:${roleMembership.checked ? '' : 'none'}">
 									<c:if test="${roleMembership.scoped}">
 
-										<ui:checkbox path="roleMembershipHelper[${index.index}].allSiteAccess" onclick="showHideDiv(${index.index},'siteSelector')" disabled="${not command.UA}" />&nbsp;&nbsp;All Site access.<br><br>
+										<ui:checkbox path="roleMembershipHelper[${index.index}].allSiteAccess" onclick="showHideDiv(${index.index},'siteSelector')" disabled="${not command.UA || not command.UAAllSite}" />&nbsp;&nbsp;All Site access.<br><br>
 											<div class="row" id="roleMembershipHelper[${index.index}]-siteSelector" style="display:${roleMembership.allSiteAccess ? 'none' : ''}">
 												<c:if test="${command.UA}">
                                                 <div class="label"><caaers:message code="LBL_organization"/>&nbsp; </div>

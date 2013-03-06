@@ -124,13 +124,6 @@ public class SecurityTestUtils {
        }
 
 
-        public void provisionUser(User user){
-           if(_new != null) _new.provisionUser(user);
-        }
-        public gov.nih.nci.security.authorization.domainobjects.User createOrUpdateCSMUser(User user, String changeURL ){
-            if(_new != null) return _new.createOrUpdateCSMUser(user, changeURL);
-            return null;
-        }
         public boolean checkAuthorization(Authentication auth, String objectId, String privilege){
             if(_new != null) return _new.checkAuthorization(auth, objectId, privilege);
             return true;
@@ -139,10 +132,7 @@ public class SecurityTestUtils {
            if(_new != null) return _new.checkAuthorization(auth, objectPrivilege);
             return true;
         }
-        public List<String> getAccessibleProtectionElements(String loginId){
-          if(_new != null) return _new.getAccessibleProtectionElements(loginId);
-          return null;
-        }
+
         public List<IndexEntry> getAccessibleStudyIds(String loginId){
           if(_new != null) return _new.getAccessibleStudyIds(loginId);
           return null;
@@ -159,22 +149,10 @@ public class SecurityTestUtils {
           if(_new != null) return _new.getRoles(userLoginName, study);
           return null;
         }
-        public Set<ProtectionGroupRoleContext> getProtectionGroupRoleContextForUser(String loginId) throws CSObjectNotFoundException{
-            if(_new != null) return _new.getProtectionGroupRoleContextForUser(loginId);
-          return null;
-        }
-        public Set<ProtectionElementPrivilegeContext> getProtectionElementPrivilegeContextForUser(String loginId) throws CSObjectNotFoundException{
-          if(_new != null) return _new.getProtectionElementPrivilegeContextForUser(loginId);
-          return null;
-        }
+
+   
         public void clearUserCache(String userName){
              if(_new != null) _new.clearUserCache(userName);
-        }
-        public void provisionStudies(StudyPersonnel studyPersonnel){
-            if(_new != null) _new.provisionStudies(studyPersonnel);
-        }
-        public void provisionStudies(StudyInvestigator studyInvestigator){
-            if(_new != null) _new.provisionStudies(studyInvestigator);       
         }
 
         public void reset(){

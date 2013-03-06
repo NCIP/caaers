@@ -23,7 +23,7 @@
                     <td valign="top">${task.studyShortTitle}</td>
                     <td valign="top">${task.status}</td>
                     <td valign="top">${task.task}</td>
-                    <td valign="top" align="center"><a style="cursor:pointer;" onClick="displayPopup('reportingPeriod', ${task.reportingPeriodId});"><img src="<chrome:imageUrl name="../editComment.png" />" /></a></td>
+                    <td valign="top" align="center"><a style="cursor:pointer; border-bottom: none" onClick="displayPopup('reportingPeriod', ${task.reportingPeriodId});"><img src="<chrome:imageUrl name="../editComment.png" />" /></a></td>
                     <%--<td valign="top"><select name="s101"><option value="-">Please select</select></td>--%>
                 </tr>
             </c:forEach>
@@ -85,27 +85,14 @@
 
         <jsp:useBean id="now" class="java.util.Date" scope="request" />
 
-        // -1 - Past Due
-        // 1  - Submitted
-        // 2  - Due on (future)
         var ACTIVITYDATES = {
             <c:forEach items="${reportActivity}" var="rvDTO" varStatus="index">
-            <c:if test="${rvDTO.rv.submittedOn ne null}">'<tags:formatDate value="${rvDTO.rv.submittedOn}" />':1,</c:if>
-            <c:if test="${rvDTO.rv.submittedOn eq null && rvDTO.rv.dueOn ne null}">
-<%--
-                <c:set var="_t"><jsp:attribute name="value"><fmt:formatDate value="${now}" pattern="yyyy/MM/dd" /></jsp:attribute></c:set>
-                <c:set var="_due"><jsp:attribute name="value"><fmt:formatDate value="${rvDTO.rv.dueOn}" pattern="yyyy/MM/dd" /></jsp:attribute></c:set>
-                <c:if test="${_due le _t}">"<tags:formatDate value="${rvDTO.rv.dueOn}" />":-1,</c:if>
-                <c:if test="${_due gt _t}">"<tags:formatDate value="${rvDTO.rv.dueOn}" />":2,</c:if>
---%>
-                "<tags:formatDate value="${rvDTO.rv.dueOn}" />":-1,
-            </c:if>
-<%--
-            "<tags:formatDate value="${rvDTO.rv.dueOn}" />":-1,</c:if>
-            <c:if test="${rvDTO.rv.submittedOn eq null && rvDTO.rv.dueOn ne null && rvDTO.rv.dueOn gt now}">"<tags:formatDate value="${rvDTO.rv.dueOn}" />":2,</c:if>
---%>
+                <c:set var="_s" value="${rvDTO.rv.reportStatus}" />
+                <c:choose>
+                    <c:when test="${_s eq 'COMPLETED' or _s eq 'AMENDED'}">'<tags:formatDate value="${rvDTO.rv.submittedOn}" />':1,</c:when>
+                    <c:when test="${_s eq 'PENDING' or _s eq 'INPROCESS' or _s eq 'FAILED'}">'<tags:formatDate value="${rvDTO.rv.dueOn}" />':-1,</c:when>
+                </c:choose>
             </c:forEach>"0000/00/00":false}
-        // var AA = {"05/01/2010":1, "05/05/2010":1, "05/10/2010":1,  "05/30/2010":1, "09/27/2008":-1}
 
         function scrollByDate(y, m, d) {
             if (m < 10) m = '0' + m;
@@ -264,21 +251,40 @@
                 <b style="color:yellow;">Course: </b> Cycle #: ${rvDTO.periodCycle}&nbsp;<c:if test="${not empty rvDTO.periodStartDate}">(<fmt:formatDate value="${rvDTO.periodStartDate}" />)</c:if><br>
             </span>
             <tr class="${ALT}" style="border-bottom:1px #eeeeee solid;" id="AB_${_ID}">
-                <td>&nbsp;<a onmouseover="showToolTip($('_Description${rvDTO.rv.id}').innerHTML, '');" onmouseout="tt_Hide();" href="<c:url value="/pages/ae/edit?rvID=${rvDTO.rv.id}&aeReport=${rvDTO.aeReportID}&report=${rvDTO.reportID}" />" style="text-decoration:underline; color:blue; font-weight:normal;">${rvDTO.reportName}</a></td>
-                <c:if test="${rvDTO.rv.submittedOn eq null and rvDTO.rv.dueOn ne null}">
+                <c:set var="_s" value="${rvDTO.rv.reportStatus}" />
+
+                <td>&nbsp;<a <c:if test="${_s eq 'COMPLETED' or _s eq 'WITHDRAWN'}"></c:if> onmouseover="showToolTip($('_Description${rvDTO.rv.id}').innerHTML, '');" onmouseout="tt_Hide();" <c:if test="${_s ne 'COMPLETED' and _s ne 'WITHDRAWN'}">href="<c:url value="/pages/ae/edit?rvID=${rvDTO.rv.id}&aeReport=${rvDTO.aeReportID}&report=${rvDTO.reportID}" />"</c:if><c:if test="${_s eq 'COMPLETED' or _s eq 'WITHDRAWN'}">href="<c:url value="/pages/ae/list?assignment=${rvDTO.assignmentID}" />"</c:if> >${rvDTO.reportName}</a></td>
+                <%--<td>${rvDTO.rv.reportStatus}</td>--%>
+                <c:choose>
+                    <c:when test="${_s eq 'PENDING' or _s eq 'INPROCESS' or _s eq 'FAILED'}">
+                        <td><i>Due on:</i></td>
+                        <td><span style="color:#e74f4f"><tags:formatDate value="${rvDTO.rv.dueOn}" /></span></td>
+                    </c:when>
+                    <c:when test="${_s eq 'WITHDRAWN' or _s eq 'REPLACED'}">
+                        <td><i>Withdrawn on:</i></td>
+                        <td><span style="color:#2e83bb;"><tags:formatDate value="${rvDTO.rv.withdrawnOn}" /></span></td>
+                    </c:when>
+                    <c:when test="${_s eq 'COMPLETED' or _s eq 'AMENDED'}">
+                        <td><i>Submited on:</i></td>
+                        <td><span style="color:#66a811;"><tags:formatDate value="${rvDTO.rv.submittedOn}" /></span></td>
+                    </c:when>
+                </c:choose>
+<%--
+                <c:if test="${(rvDTO.rv.submittedOn eq null or rvDTO.rv.reportStatus ne 'COMPLETED') and rvDTO.rv.dueOn ne null}">
                     <td align="right"><i>Due on:</i></td>
                     <td align="left">
-                        <span style="color:#ea4b4b"><tags:formatDate value="${rvDTO.rv.dueOn}" /></span>
+                        <span style="color:#e74f4f"><tags:formatDate value="${rvDTO.rv.dueOn}" /></span>
                     </td>
                 </c:if>
-                <c:if test="${rvDTO.rv.submittedOn ne null}">
+                <c:if test="${rvDTO.rv.submittedOn ne null and rvDTO.rv.reportStatus eq 'COMPLETED'}">
                     <td align="right" width="100px"><i>Submited on:</i></td>
-                    <td align="left" width="70px"><span style="color:green;"><tags:formatDate value="${rvDTO.rv.submittedOn}" /></span></td>
+                    <td align="left" width="70px"><span style="color:#66a811;"><tags:formatDate value="${rvDTO.rv.submittedOn}" /></span></td>
                 </c:if>
                 <c:if test="${rvDTO.rv.submittedOn eq null and rvDTO.rv.dueOn eq null}">
                     <td align="right" width="100px"><i>Withdrawn on:</i></td>
-                    <td align="left" width="70px"><span style="color:blue;"><tags:formatDate value="${rvDTO.rv.withdrawnOn}" /></span></td>
+                    <td align="left" width="70px"><span style="color:#2e83bb;"><tags:formatDate value="${rvDTO.rv.withdrawnOn}" /></span></td>
                 </c:if>
+--%>
             </tr>
         </c:forEach>
     </table>

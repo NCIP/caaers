@@ -11,6 +11,7 @@ import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain._User;
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSession;
 import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRole;
 import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRoleMembership;
@@ -47,11 +48,10 @@ public class EditUserController extends UserController<UserCommand> {
             _User user = command.getUser();
             Person person = command.getPerson();
 
-
-            boolean willCreatePerson = (person != null && person.getId() == null);
-            boolean willUpdatePerson = (person != null) && person.getId() != null;
-            boolean willCreateUser = user != null && user.getId() == null;
-            boolean willUpdateUser = user != null && user.getId() != null;
+            boolean willCreatePerson = person != null && person.getId() == null;
+            boolean willUpdatePerson = person != null && person.getId() != null;
+            boolean willCreateUser = user != null && user.getCsmUser().getUserId() == null;
+            boolean willUpdateUser = user != null && user.getCsmUser().getUserId() != null;
 
             if(user != null){
                 try {
@@ -98,6 +98,9 @@ public class EditUserController extends UserController<UserCommand> {
 
 		
 		UserCommand command = new UserCommand();
+		String loggedInPersonUserName = SecurityUtils.getUserLoginName();
+		_User loggedinUser =  userRepository.getUserByLoginName(loggedInPersonUserName);
+		command.setLoggedInUser(loggedinUser);
 		command.setCreateMode(Boolean.FALSE);
 		command.setEditMode(Boolean.TRUE);
 
@@ -144,9 +147,10 @@ public class EditUserController extends UserController<UserCommand> {
 		        populateSiteMap(command);
 		        populateStudyMap(command);
             }
-            command.buildRolesHelper();
-
         }
+        
+        command.buildRolesHelper();
+
         if(person != null){
             command.setCreateAsPerson(true);
             command.setPerson(person);

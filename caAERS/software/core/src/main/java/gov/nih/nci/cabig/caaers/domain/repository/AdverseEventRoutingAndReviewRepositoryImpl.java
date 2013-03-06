@@ -511,7 +511,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
                 dto.setTask(task.getName());
                 dto.setDescription(task.getDescription());
                 dto.setDate(task.getCreate());
-                dto.setStatus(reportingPeriod.getReviewStatus().getDisplayName());
+                if (reportingPeriod.getReviewStatus() != null) dto.setStatus(reportingPeriod.getReviewStatus().getDisplayName());
                 dto.setReportingPeriodId(reportingPeriod.getId());
                 // dto.setPossibleActions(this.nextTransitionNames(reportingPeriod.getWorkflowId(), userLogin));
                 dtos.add(dto);

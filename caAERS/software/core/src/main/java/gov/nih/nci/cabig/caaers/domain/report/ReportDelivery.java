@@ -28,6 +28,25 @@ public class ReportDelivery extends AbstractMutableDomainObject {
 
     private Report report;
 
+    /**
+     * Will return a copy of the ReportDelivery.
+     * @param template
+     * @return
+     */
+    public static ReportDelivery copy(ReportDelivery template){
+        ReportDelivery rd = new ReportDelivery();
+        rd.endPoint = template.endPoint;
+        rd.deliveryStatus = template.deliveryStatus;
+        rd.template = ReportDeliveryDefinition.copy(template.template);
+        return rd;
+    }
+
+
+    /**
+     * Gets the report delivery definition.
+     *
+     * @return the report delivery definition
+     */
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rdd_id")
     public ReportDeliveryDefinition getReportDeliveryDefinition() {

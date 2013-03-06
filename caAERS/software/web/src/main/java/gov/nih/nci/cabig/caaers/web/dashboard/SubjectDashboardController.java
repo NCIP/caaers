@@ -14,10 +14,15 @@ import java.util.List;
 public class SubjectDashboardController extends DashboardController {
 
     ParticipantRepository participantRepository;
+    int MAX_RESULTS = 20;
 
     public ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
         ModelAndView mv = new ModelAndView("dashboard/dashboard_Subject");
-        List<Participant> subjectList = participantRepository.getAll();
+        List<Participant> subjectList = null;
+        if (request.getParameter("loadAll") != null)
+            subjectList = participantRepository.getAll();
+        else
+            subjectList = participantRepository.getAll(0, MAX_RESULTS);
         mv.addObject("subjectList", subjectList);
         return mv;
     }

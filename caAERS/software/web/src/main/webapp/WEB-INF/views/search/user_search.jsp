@@ -49,7 +49,12 @@
 		        var _userName = oRecord.getData("userName");
 		        elCell.title = _recordType;
 		        if(oData){
-		        	elCell.innerHTML = "<a href='editUser?id=" + _id + "&userName=" + _userName + "&recordType=" + _recordType + "'>" + oData + "</a>";
+                    if(_userName){
+                       elCell.innerHTML = "<a href='editUser?id=" + _id + "&userName=" + _userName + "&recordType=" + _recordType + "'>" + oData + "</a>";
+                    }else{
+                        elCell.innerHTML = "<a href='editUser?id=" + _id + "&recordType=" + _recordType + "'>" + oData + "</a>";
+                    }
+
 		        }
 			};
 
@@ -105,6 +110,7 @@
     		</div>
     		
     		<div class="content">
+    			<tags:instructions code="personUserSearchInstructions" />
     			<form:form name="searchForm" id="searchForm" method="post">
     				<caaers:message code="user.search.criteriaSection" var="criteriaSectionTitle"/>
     				<chrome:box title="Search Criteria" cssClass="mpaired" autopad="false">

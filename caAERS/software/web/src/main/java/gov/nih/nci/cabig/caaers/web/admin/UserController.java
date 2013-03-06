@@ -125,12 +125,12 @@ public abstract class UserController<C extends UserCommand> extends AutomaticSav
 	}
 	
 	/**
-	 * This method delegates the call to CaaersSecurityFacade to provision all the RoleMemberships for the given User in CSM.
+	 * This method delegates the call to UserRepository to provision all the RoleMemberships for the given User in CSM.
 	 * @param csmUser
 	 * @param roleMemberships
 	 */
 	protected void processRoleMemberships(User csmUser, List<SuiteRoleMembership> roleMemberships){
-		caaersSecurityFacade.provisionRoleMemberships(csmUser, roleMemberships);
+		userRepository.provisionRoleMemberships(csmUser, roleMemberships);
 	}
 	
 	//Setter & Getters.

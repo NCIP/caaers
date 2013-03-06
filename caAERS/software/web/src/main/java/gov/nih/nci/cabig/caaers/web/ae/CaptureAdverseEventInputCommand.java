@@ -915,6 +915,9 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
         			
         			row.setGrpDue("Submitted on " + DateUtils.formatDate(wrapper.getSubmittedOn()));
         			row.setOtherDue("");
+
+                    //preselect the other one
+                    rowMap.get(wrapper.getSubstitute().getId()).setPreSelected(true);
     			}
 
     		}

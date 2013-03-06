@@ -35,7 +35,11 @@
         <pattern>/pages/search/advancedSearch</pattern>
         <pattern>/pages/search/listSearch</pattern>
     </decorator>
-    <decorator name="nullDecorator" page="nullDecorator.jsp"/>
+
+    <decorator name="nullDecorator" page="nullDecorator.jsp">
+        <pattern>/pages/dashboard/study</pattern>
+        <pattern>/pages/dashboard/subject</pattern>
+    </decorator>
 
     <excludes>
         <pattern>/*/image/*</pattern>

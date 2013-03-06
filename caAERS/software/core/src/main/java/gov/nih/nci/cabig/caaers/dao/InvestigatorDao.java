@@ -2,10 +2,7 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
-import gov.nih.nci.cabig.caaers.domain.Investigator;
-import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
-import gov.nih.nci.cabig.caaers.domain.RemoteInvestigator;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
 import java.sql.SQLException;
@@ -184,7 +181,7 @@ public class InvestigatorDao extends GridIdentifiableDao<Investigator> implement
     @SuppressWarnings("unchecked")
 	public Investigator getByLoginId(String loginId) {
         List<Investigator> results = getHibernateTemplate().find(
-                        "from Investigator where loginId= ?", loginId);
+                        "from Investigator inv where inv.caaersUser.loginName= ?", loginId);
         Investigator investigator =  results.size() > 0 ? results.get(0) : null;
         if(investigator != null) initialize(investigator);
         return investigator;
@@ -222,6 +219,35 @@ public class InvestigatorDao extends GridIdentifiableDao<Investigator> implement
         Investigator investigator =  results.size() > 0 ? results.get(0) : null;
         if(investigator != null) initialize(investigator);
         return investigator;
+    }
+
+    @Transactional(readOnly = false)
+    public void deactivateStudyInvestigators(SiteInvestigator siteInvestigator){
+
+
+        if(siteInvestigator.getStartDate() == null){
+            getHibernateTemplate().bulkUpdate("update StudyInvestigator si set si.startDate = null where si.siteInvestigator.id = ?", new Object[]{
+                     siteInvestigator.getId()
+            });
+
+        }else{
+            getHibernateTemplate().bulkUpdate("update StudyInvestigator si set si.startDate = ? where si.siteInvestigator.id = ?", new Object[]{
+                siteInvestigator.getStartDate(), siteInvestigator.getId()
+            });
+        }
+
+
+        if(siteInvestigator.getEndDate() == null){
+           getHibernateTemplate().bulkUpdate("update StudyInvestigator si set si.endDate = null where si.siteInvestigator.id = ?", new Object[]{
+                 siteInvestigator.getId()
+           });
+        }else{
+           getHibernateTemplate().bulkUpdate("update StudyInvestigator si set si.endDate = ? where si.siteInvestigator.id = ? and si.endDate > ?", new Object[]{
+                siteInvestigator.getEndDate(), siteInvestigator.getId(), siteInvestigator.getEndDate()
+           });
+        }
+
+
     }
 
 }

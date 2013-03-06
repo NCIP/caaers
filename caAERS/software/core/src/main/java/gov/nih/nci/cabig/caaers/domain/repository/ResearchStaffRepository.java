@@ -16,7 +16,6 @@ import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
 import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
-import gov.nih.nci.security.util.StringUtilities;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,20 +66,11 @@ public class ResearchStaffRepository {
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, noRollbackFor = MailException.class)
     public void save(ResearchStaff researchStaff, String changeURL) {
 
-    	boolean createMode = researchStaff.getId() == null;
-    	boolean webSSOAuthentication = authenticationMode.equals("webSSO");
-    	
-    	//update the loginId to email address if this is not webSSO mode
-    	if(createMode && !webSSOAuthentication && StringUtilities.isBlank(researchStaff.getLoginId())) {
-    		researchStaff.setLoginId(researchStaff.getEmailAddress());
-    	}
-    	
-    	
     	try{
     		researchStaff = (ResearchStaff)researchStaffDao.merge(researchStaff);
     	}catch(Exception e){
     		logger.error("error while saving research staff", e);
-			throw new CaaersSystemException("Failed to create researchstaff", e);
+			throw new CaaersSystemException("Failed to save researchstaff", e);
 		}
 
 		try{
@@ -89,17 +79,8 @@ public class ResearchStaffRepository {
 			throw new CaaersSystemException("Failed to associte researchstaff to all studies", e);
 		}
     	
-		//create user groups  - Note : RemoteResearchStaff fetched from PO will not have a loginId/Username.  
-		if(StringUtils.isNotEmpty(researchStaff.getLoginId())){
-			caaersSecurityFacade.createOrUpdateCSMUser(researchStaff, changeURL);
-		}
     }
     
-    //TODO:MONISH -- No longer need this method. Will have to be removed.
-    public void unlockResearchStaff(ResearchStaff researchStaff) {
-//    	researchStaff.unlock();
-//    	researchStaffDao.save(researchStaff);
-    }
     
     public void evict(ResearchStaff researchStaff){
     	researchStaffDao.evict(researchStaff);

@@ -141,7 +141,14 @@
    	      <text property="ccts.password" 
    		  		displayText="Admin Password" 
    		  		defaultValue="system_admin" 
-   	          	explanatoryText="The password for logging into caAERS" />    
+   	          	explanatoryText="The password for logging into caAERS" />
+
+
+          <text property="ccts.admin.email"
+    		  	displayText="Admin User Email"
+    		  	defaultValue="" 
+    	        explanatoryText="The email address is required if you need reset the administrator password later." />
+
    	          	              	
         </page>
     

@@ -485,9 +485,9 @@
 		<sql driver="${datasource.driver}" userid="${database.userid}" password="${database.password}" url="${datasource.url}"
 			classpathref="bering.classpath" onerror="abort" autocommit="true" rdbms="postgresql">
 
-            INSERT INTO csm_user(user_id, login_name, first_name, last_name,"password", email_id)
+            INSERT INTO csm_user(user_id, login_name, first_name, last_name,"password", email_id, start_date)
             VALUES ((select nextval('csm_user_user_id_seq')),
-                    '${user.username}','${user.username}','${user.username}','${user.password}','admin@caaersapp.com' );
+                    '${user.username}','${user.username}','${user.username}','${user.password}','${ccts.admin.email}', now() );
 
             INSERT INTO csm_user_group(user_group_id, user_id, group_id)
             VALUES ((select nextval('csm_user_grou_user_group_i_seq')),
@@ -605,28 +605,8 @@
                 VALUES ((select nextval('csm_user_grou_user_group_r_seq')),
                         (select user_id from csm_user where login_name = '${user.username}'),
                         (select protection_group_id from csm_protection_group where protection_group_name = 'HealthcareSite'),
-                        (select role_id from csm_role where role_name = 'system_administrator'),'2010-10-01');
-
-            INSERT INTO csm_user_group_role_pg(
-                        user_group_role_pg_id, user_id, protection_group_id, role_id,update_date)
-                VALUES ((select nextval('csm_user_grou_user_group_r_seq')),
-                        (select user_id from csm_user where login_name = '${user.username}'),
-                        (select protection_group_id from csm_protection_group where protection_group_name = 'HealthcareSite'),
-                        (select role_id from csm_role where role_name = 'business_administrator'),'2010-10-01');
-
-            INSERT INTO csm_user_group_role_pg(
-                        user_group_role_pg_id, user_id, protection_group_id, role_id,update_date)
-                VALUES ((select nextval('csm_user_grou_user_group_r_seq')),
-                        (select user_id from csm_user where login_name = '${user.username}'),
-                        (select protection_group_id from csm_protection_group where protection_group_name = 'HealthcareSite'),
                         (select role_id from csm_role where role_name = 'person_and_organization_information_manager'),'2010-10-01');
 
-            INSERT INTO csm_user_group_role_pg(
-                        user_group_role_pg_id, user_id, protection_group_id, role_id,update_date)
-                VALUES ((select nextval('csm_user_grou_user_group_r_seq')),
-                        (select user_id from csm_user where login_name = '${user.username}'),
-                        (select protection_group_id from csm_protection_group where protection_group_name = 'HealthcareSite'),
-                        (select role_id from csm_role where role_name = 'data_importer'),'2010-10-01');
 
             INSERT INTO csm_user_group_role_pg(
                         user_group_role_pg_id, user_id, protection_group_id, role_id,update_date)
@@ -669,13 +649,6 @@
                         (select user_id from csm_user where login_name = '${user.username}'),
                         (select protection_group_id from csm_protection_group where protection_group_name = 'HealthcareSite'),
                         (select role_id from csm_role where role_name = 'study_site_participation_administrator'),'2010-10-01');
-
-            INSERT INTO csm_user_group_role_pg(
-                        user_group_role_pg_id, user_id, protection_group_id, role_id,update_date)
-                VALUES ((select nextval('csm_user_grou_user_group_r_seq')),
-                        (select user_id from csm_user where login_name = '${user.username}'),
-                        (select protection_group_id from csm_protection_group where protection_group_name = 'HealthcareSite'),
-                        (select role_id from csm_role where role_name = 'ae_rule_and_report_manager'),'2010-10-01');
 
             INSERT INTO csm_user_group_role_pg(
                         user_group_role_pg_id, user_id, protection_group_id, role_id,update_date)
@@ -739,9 +712,9 @@
         <sql driver="${datasource.driver}" userid="${database.userid}" password="${database.password}" url="${datasource.url}"
             classpathref="bering.classpath" onerror="abort" autocommit="true" rdbms="oracle">
 
-            INSERT INTO csm_user(user_id, login_name, first_name, last_name,password, email_id)
+            INSERT INTO csm_user(user_id, login_name, first_name, last_name,password, email_id, start_date)
             VALUES (csm_user_user_id_seq.nextval,
-                    '${user.username}','${user.username}','${user.username}','${user.password}','admin@caaersapp.com' );
+                    '${user.username}','${user.username}','${user.username}','${user.password}','${ccts.admin.email}' , sysdate);
 
             INSERT INTO csm_user_group(user_group_id, user_id, group_id)
             VALUES (csm_user_grou_user_group_i_seq.nextval,
@@ -854,19 +827,6 @@
                     (select protection_element_id from csm_protection_element where protection_element_name = 'HealthcareSite'),
                     SYSDATE);
 
-            INSERT INTO csm_user_group_role_pg(
-                        user_group_role_pg_id, user_id, protection_group_id, role_id,update_date)
-                VALUES (csm_user_grou_user_group_r_seq.nextval,
-                        (select user_id from csm_user where login_name = '${user.username}'),
-                        (select protection_group_id from csm_protection_group where protection_group_name = 'HealthcareSite'),
-                        (select role_id from csm_role where role_name = 'system_administrator'),SYSDATE);
-
-            INSERT INTO csm_user_group_role_pg(
-                        user_group_role_pg_id, user_id, protection_group_id, role_id,update_date)
-                VALUES (csm_user_grou_user_group_r_seq.nextval,
-                        (select user_id from csm_user where login_name = '${user.username}'),
-                        (select protection_group_id from csm_protection_group where protection_group_name = 'HealthcareSite'),
-                        (select role_id from csm_role where role_name = 'business_administrator'),SYSDATE);
 
             INSERT INTO csm_user_group_role_pg(
                         user_group_role_pg_id, user_id, protection_group_id, role_id,update_date)
@@ -874,13 +834,6 @@
                         (select user_id from csm_user where login_name = '${user.username}'),
                         (select protection_group_id from csm_protection_group where protection_group_name = 'HealthcareSite'),
                         (select role_id from csm_role where role_name = 'person_and_organization_information_manager'),SYSDATE);
-
-            INSERT INTO csm_user_group_role_pg(
-                        user_group_role_pg_id, user_id, protection_group_id, role_id,update_date)
-                VALUES (csm_user_grou_user_group_r_seq.nextval,
-                        (select user_id from csm_user where login_name = '${user.username}'),
-                        (select protection_group_id from csm_protection_group where protection_group_name = 'HealthcareSite'),
-                        (select role_id from csm_role where role_name = 'data_importer'),SYSDATE);
 
             INSERT INTO csm_user_group_role_pg(
                         user_group_role_pg_id, user_id, protection_group_id, role_id,update_date)
@@ -924,12 +877,6 @@
                         (select protection_group_id from csm_protection_group where protection_group_name = 'HealthcareSite'),
                         (select role_id from csm_role where role_name = 'study_site_participation_administrator'),SYSDATE);
 
-            INSERT INTO csm_user_group_role_pg(
-                        user_group_role_pg_id, user_id, protection_group_id, role_id,update_date)
-                VALUES (csm_user_grou_user_group_r_seq.nextval,
-                        (select user_id from csm_user where login_name = '${user.username}'),
-                        (select protection_group_id from csm_protection_group where protection_group_name = 'HealthcareSite'),
-                        (select role_id from csm_role where role_name = 'ae_rule_and_report_manager'),SYSDATE);
 
             INSERT INTO csm_user_group_role_pg(
                         user_group_role_pg_id, user_id, protection_group_id, role_id,update_date)
