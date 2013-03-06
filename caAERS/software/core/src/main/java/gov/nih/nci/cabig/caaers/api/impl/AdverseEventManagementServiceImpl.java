@@ -1030,22 +1030,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 		logger.info("Entering processAdverseEvent() in AdverseEventManagementServiceImpl");
 
 		AdverseEvent adverseEvent = null;
-
-		boolean adeersReportingRequired = dbStudy.getAdeersReporting();
-		if (adeersReportingRequired) {
-			if (xmlAdverseEvent.getOutcome().size() > 0) {
-				throw new CaaersSystemException("WS_AEMS_011", messageSource.getMessage("WS_AEMS_011",
-						new String[] { "Outcomes" }, "", Locale.getDefault()));
-			}
-			if (xmlAdverseEvent.getEventApproximateTime() != null) {
-				throw new CaaersSystemException("WS_AEMS_011", messageSource.getMessage("WS_AEMS_011",
-						new String[] { "EventApproximateTime" }, "", Locale.getDefault()));
-			}
-			if (xmlAdverseEvent.getEventLocation() != null) {
-				throw new CaaersSystemException("WS_AEMS_011", messageSource.getMessage("WS_AEMS_011",
-						new String[] { "EventLocation" }, "", Locale.getDefault()));
-			}
-		}
+		
 		// if update get the adverse event to update ..
 		
 		if (xmlAdverseEvent.getId() != null) {
