@@ -1,0 +1,11 @@
+.metadata
+build
+repository
+bin
+caAERS/software/web/src/main/webapp/WEB-INF/classes/
+caAERS/software/web/src/main/webapp/WEB-INF/error_messages.properties
+caAERS/software/web/src/main/webapp/WEB-INF/help.properties
+caAERS/software/web/src/main/webapp/WEB-INF/label.properties
+caAERS/software/web/src/main/webapp/WEB-INF/lib/
+caAERS/software/.classpath
+caAERS/software/.project
