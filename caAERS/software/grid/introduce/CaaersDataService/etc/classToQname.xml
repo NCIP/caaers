@@ -1,3 +1,9 @@
+<!--
+  Copyright SemanticBits, Northwestern University and Akaza Research
+  
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caaers/LICENSE.txt for details.
+-->
 <ns1:ClassMappings xmlns:ns1="http://gov.nih.nci.cagrid.data">
  <ns2:mapping className="gov.nih.nci.cagrid.caaers.stubs.types.CaaersDataServiceReference" qname="{http://caaers.cagrid.nci.nih.gov/CaaersDataService/types}CaaersDataServiceReference" xsi:type="ns2:classToQname" xmlns:ns2="http://gov.nih.nci.cagrid.data/ClassMappings" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
  <ns3:mapping className="gov.nih.nci.cagrid.metadata.security.ServiceSecurityMetadata" qname="{gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security}ServiceSecurityMetadata" xsi:type="ns3:classToQname" xmlns:ns3="http://gov.nih.nci.cagrid.data/ClassMappings" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>

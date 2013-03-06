@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright SemanticBits, Northwestern University and Akaza Research
+  
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caaers/LICENSE.txt for details.
+-->
 <jndiConfig xmlns="http://wsrf.globus.org/jndi/config">
   <service name="SERVICE-INSTANCE-PREFIX/StudyService">
     <resource name="configuration" type="gov.nih.nci.cabig.caaers.grid.service.globus.resource.ResourceConfiguration">

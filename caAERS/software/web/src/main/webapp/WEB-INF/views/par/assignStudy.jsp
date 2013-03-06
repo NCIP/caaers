@@ -1,3 +1,9 @@
+<%--
+Copyright SemanticBits, Northwestern University and Akaza Research
+
+Distributed under the OSI-approved BSD 3-Clause License.
+See http://ncip.github.com/caaers/LICENSE.txt for details.
+--%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>

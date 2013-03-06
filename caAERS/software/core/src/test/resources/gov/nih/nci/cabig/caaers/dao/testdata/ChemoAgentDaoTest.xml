@@ -1,3 +1,9 @@
+<!--
+  Copyright SemanticBits, Northwestern University and Akaza Research
+  
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caaers/LICENSE.txt for details.
+-->
 <dataset>
 
     <chemo_agents id="1001" name="Test1" generic_name="hello"/>

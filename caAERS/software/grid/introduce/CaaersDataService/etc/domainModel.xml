@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright SemanticBits, Northwestern University and Akaza Research
+  
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caaers/LICENSE.txt for details.
+-->
 <ns1:DomainModel xmlns:ns1="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.dataservice" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" projectDescription="caAERS application is based on this model." projectLongName="caAERS" projectShortName="caAERS" projectVersion="1" xsi:type="ns1:DomainModel">
  <ns1:exposedUMLAssociationCollection>
   <ns1:UMLAssociation bidirectional="true" xsi:type="ns1:UMLAssociation">

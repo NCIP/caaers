@@ -1,3 +1,9 @@
+<!--
+  Copyright SemanticBits, Northwestern University and Akaza Research
+  
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caaers/LICENSE.txt for details.
+-->
 <beans xmlns:jms="http://servicemix.apache.org/jms/1.0"
        xmlns:ctmscaaers="http://semanticbits.com/esb/ctmscaaers"
        xmlns:amq="http://activemq.org/config/1.0">

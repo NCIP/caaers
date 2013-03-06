@@ -1,3 +1,9 @@
+<!--
+  Copyright SemanticBits, Northwestern University and Akaza Research
+  
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caaers/LICENSE.txt for details.
+-->
 <ns13:HealthCareProvider xmlns:ns13="http://po.coppa.nci.nih.gov">
       <ns13:identifier>
        <ns14:item displayable="true" extension="178630" identifierName="NCI health care provider identifier" reliability="ISS" root="2.16.840.1.113883.3.26.4.4.2" scope="OBJ" xmlns:ns14="uri:iso.org:21090"/>
