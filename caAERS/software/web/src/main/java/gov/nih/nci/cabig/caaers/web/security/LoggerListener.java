@@ -1,3 +1,9 @@
+/*******************************************************************************
+ * Copyright SemanticBits, Northwestern University and Akaza Research
+ * 
+ * Distributed under the OSI-approved BSD 3-Clause License.
+ * See http://ncip.github.com/caaers/LICENSE.txt for details.
+ ******************************************************************************/
 /* Copyright 2004, 2005, 2006 Acegi Technology Pty Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");

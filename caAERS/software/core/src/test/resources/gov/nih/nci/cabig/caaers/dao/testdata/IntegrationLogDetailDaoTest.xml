@@ -1,3 +1,9 @@
+<!--
+  Copyright SemanticBits, Northwestern University and Akaza Research
+  
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caaers/LICENSE.txt for details.
+-->
 <dataset>
 
 	<integration_logs id="1000" version="0"  logged_on="2012-04-23" correlation_id="-1" synch_status="REQUEST_RECEIVED" notes="caAERS sent request to Servicemix"

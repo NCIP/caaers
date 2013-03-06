@@ -1,3 +1,9 @@
+<!--
+  Copyright SemanticBits, Northwestern University and Akaza Research
+  
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caaers/LICENSE.txt for details.
+-->
 <dataset>
 
     <devices id="-4" ctep_db_identifier="ctepId-A" common_name="ABC" brand_name="DEF" device_type="GHI" />

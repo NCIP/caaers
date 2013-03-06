@@ -1,3 +1,9 @@
+<!--
+  Copyright SemanticBits, Northwestern University and Akaza Research
+  
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caaers/LICENSE.txt for details.
+-->
 <dataset>
     <anatomic_sites id="-11" name="AS-01"       category="C-01" />
     <anatomic_sites id="-12" name="AS-02-Test"  category="C-01" />

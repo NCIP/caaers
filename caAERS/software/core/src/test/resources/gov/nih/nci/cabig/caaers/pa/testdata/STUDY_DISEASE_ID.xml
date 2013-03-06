@@ -1,2 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright SemanticBits, Northwestern University and Akaza Research
+  
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caaers/LICENSE.txt for details.
+-->
 <pa:Id root="2.16.840.1.113883.3.26.4.3.11" identifierName="Study Disease identifier" extension="27543"  xmlns:pa="http://pa.services.coppa.nci.nih.gov"/>

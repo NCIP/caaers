@@ -1,3 +1,9 @@
+<%--
+Copyright SemanticBits, Northwestern University and Akaza Research
+
+Distributed under the OSI-approved BSD 3-Clause License.
+See http://ncip.github.com/caaers/LICENSE.txt for details.
+--%>
 <%@page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%@taglib prefix="decorator" uri="http://www.opensymphony.com/sitemesh/decorator"%>

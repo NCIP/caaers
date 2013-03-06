@@ -1,3 +1,9 @@
+<!--
+  Copyright SemanticBits, Northwestern University and Akaza Research
+  
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caaers/LICENSE.txt for details.
+-->
 <dataset>
     <pre_existing_conditions id="-1" condition_text="Nausea" meddra_llt_code="111" meddra_llt="Nausea"  meddra_hlgt="Nausea" />
 </dataset>

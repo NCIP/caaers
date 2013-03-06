@@ -1,3 +1,9 @@
+<!--
+  Copyright SemanticBits, Northwestern University and Akaza Research
+  
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caaers/LICENSE.txt for details.
+-->
 <dataset>
     <prior_therapies id="-1" version="0" therapy_text="Nausea" meddra_code="111" meddra_term="Nausea or Fatigue" therapy_type="OYT" />
     <prior_therapies id="-2" version="0" therapy_text="Headace" meddra_code="112" meddra_term="Head Pain" therapy_type="OYT"/>

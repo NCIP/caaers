@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<!-- 
-    TODO: the structure and assumptions implied by this file are no good.  Everything in here
-    should be represented in a different way - either in code, in a lookup table, or in an enum.
-    RMS20070523.
+<!--
+  Copyright SemanticBits, Northwestern University and Akaza Research
+  
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caaers/LICENSE.txt for details.
 -->
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">

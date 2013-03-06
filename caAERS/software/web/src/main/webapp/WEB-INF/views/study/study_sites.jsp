@@ -1,3 +1,9 @@
+<%--
+Copyright SemanticBits, Northwestern University and Akaza Research
+
+Distributed under the OSI-approved BSD 3-Clause License.
+See http://ncip.github.com/caaers/LICENSE.txt for details.
+--%>
 <%@ include file="/WEB-INF/views/taglibs.jsp" %>
 
 <csmauthz:accesscontrol var="_isSSPAonCC" scope="request" domainObject="${command.study.studyCoordinatingCenter.organization}" authorizationCheckName="siteAuthorizationCheck" hasPrivileges="study_site_participation_administrator" />

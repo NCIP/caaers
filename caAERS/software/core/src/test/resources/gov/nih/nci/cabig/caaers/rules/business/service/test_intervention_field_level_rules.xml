@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+  Copyright SemanticBits, Northwestern University and Akaza Research
+  
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caaers/LICENSE.txt for details.
+-->
 <ruleSet xmlns="http://semanticbits.com/rules/brxml">
     <id>c6ba9244-a5ff-4bf4-9ea6-8203bb3c9d8d</id>
     <name>gov.nih.nci.cabig.caaers.rules.field_rules</name>

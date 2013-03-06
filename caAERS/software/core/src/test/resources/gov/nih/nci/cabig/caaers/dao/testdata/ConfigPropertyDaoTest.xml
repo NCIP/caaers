@@ -1,3 +1,9 @@
+<!--
+  Copyright SemanticBits, Northwestern University and Akaza Research
+  
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caaers/LICENSE.txt for details.
+-->
 <dataset>
 	<config_properties id="-1" code="EXP1" name="Expedited Report" description="Expedited Report category" config_type="1" />
 	<config_properties id="-2" code="TET1" name="Test Report" description="Test Report category" config_type="1" />
