@@ -1,3 +1,9 @@
+<!--
+  Copyright SemanticBits, Northwestern University and Akaza Research
+  
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caaers/LICENSE.txt for details.
+-->
 <dataset>
     <ORGANIZATIONS id="-1003" version="1" name="Cancer and Leukemia Group B" description_text="NUCC" nci_institute_code="CALGB"/>
     <INVESTIGATORS id="-3004" first_name="Aaron" last_name="Burr" email_address="ab@nci.com" phone_number="312-555-0102" nci_identifier="NCI_ID-01"/>

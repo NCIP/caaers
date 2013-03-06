@@ -1,3 +1,9 @@
+<!--
+  Copyright SemanticBits, Northwestern University and Akaza Research
+  
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caaers/LICENSE.txt for details.
+-->
 <ns1:caXchangeResponseMessage xmlns:ns1="http://caXchange.nci.nih.gov/messaging">
  <ns1:responseMetadata>
   <ns1:externalIdentifier>externalId</ns1:externalIdentifier>

@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright SemanticBits, Northwestern University and Akaza Research
+  
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caaers/LICENSE.txt for details.
+-->
 <package  xmlns="http://drools.org/drools-4.0" xmlns:drools="http://drools.org/drools-4.0" xmlns:rules="http://drools.org/drools-4.0" 
 	xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:schemaLocation="http://drools.org/drools-4.0 drools-4.0.xsd"
 	name="gov.nih.nci.cabig.caaers.rules.reporting_basics_section">

@@ -1,3 +1,9 @@
+<%--
+Copyright SemanticBits, Northwestern University and Akaza Research
+
+Distributed under the OSI-approved BSD 3-Clause License.
+See http://ncip.github.com/caaers/LICENSE.txt for details.
+--%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="commons" uri="http://bioinformatics.northwestern.edu/taglibs/commons"%>
