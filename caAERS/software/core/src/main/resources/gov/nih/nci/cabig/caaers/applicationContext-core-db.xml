@@ -21,7 +21,7 @@
 
     <bean id="localPoolDataSource" lazy-init="true" class="org.apache.commons.dbcp.BasicDataSource"
         p:driverClassName="s[datasource.driver]"
-        p:maxActive="25" p:maxIdle="4"
+        p:maxActive="50" p:maxIdle="4"
         p:maxWait="180000"
         p:removeAbandoned="true"
         p:removeAbandonedTimeout="1200"
@@ -45,7 +45,7 @@
 
     <bean id="csmLocalPoolDataSource" lazy-init="true" class="org.apache.commons.dbcp.BasicDataSource"
         p:driverClassName="s[datasource.driver]"
-        p:maxActive="5" p:maxIdle="2"
+        p:maxActive="25" p:maxIdle="2"
         p:maxWait="180000"
         p:removeAbandoned="true"
         p:removeAbandonedTimeout="300"
