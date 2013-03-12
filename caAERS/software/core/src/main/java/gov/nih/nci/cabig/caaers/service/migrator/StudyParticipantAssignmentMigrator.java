@@ -72,15 +72,19 @@ public class StudyParticipantAssignmentMigrator implements Migrator<Participant>
                 	studySite.setOrganization(organization);
                 	studySite.setStartDate(new Date());
                 	studySite.setEndDate(srcSite.getEndDate());
+                    studySite.setStudy(study);
                 	if(study == null){
                 		outcome.ifNullObject(study, DomainObjectImportOutcome.Severity.ERROR,
                                 "The Study with Identifier \" " + identifierValue
                                         + " \" is nonexistant");
                 	}else{
+                		//
                 		study.addStudySite(studySite);
+                        studySiteDao.save(studySite);
+                        studyRepository.associateSiteToWorkflowConfig(study.getStudySites());
                 	//	studyDao.updateStudyForServiceUseOnly(study);
                 		//Introduced this call  
-                		studyRepository.save(study);
+                		//studyRepository.save(study);
                 	}
                 }
                 StudyParticipantAssignment studParticipantAssignment = new StudyParticipantAssignment(dest, studySite);

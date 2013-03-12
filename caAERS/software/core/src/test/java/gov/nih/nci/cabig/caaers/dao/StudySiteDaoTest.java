@@ -7,11 +7,15 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.DaoTestCase;
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.workflow.StudySiteWorkflowConfig;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
+import org.apache.poi.util.SystemOutLogger;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -56,6 +60,37 @@ public class StudySiteDaoTest extends DaoTestCase<StudySiteDao> {
 		assertNotNull(site.getStudySiteWorkflowConfigs());
 		assertNotNull(site.getReportingPeriodWorkflowConfig());
 	}
+
+    public void testinsertNewStudySite() {
+
+        {
+            StudySite site = getDao().getById(-1000);
+
+            Study study = site.getStudy();
+
+            StudySite studySite = new StudySite();
+            studySite.setOrganization(site.getOrganization());
+            studySite.setStartDate(site.getStartDate());
+            studySite.setStudy(site.getStudy());
+            getDao().save(studySite);
+        }
+
+
+        interruptSession();
+        {
+            StudySite site = getDao().getById(-1000);
+
+            Study study = site.getStudy();
+            assert(study.getVersion() == 0 );
+            assertNotNull(study);
+            assert(study.getStudySites().size() == 2);
+        }
+        //java.util.Date endDate = new Date().setTime(new Date().getTime() + 86400 * 10);
+        //studySite.setEndDate(endDate);
+
+    }
+
+
 	public void testSaveSiteWorkflowConfigAssociation(){
 		{
 			StudySite site = getDao().getById(-1000);
@@ -89,6 +124,7 @@ public class StudySiteDaoTest extends DaoTestCase<StudySiteDao> {
 			assertEquals("MyTest", site.findWorkflowConfig("mytest").getName());
 		}
 	}
+
 
 /*
     public void test2() {
