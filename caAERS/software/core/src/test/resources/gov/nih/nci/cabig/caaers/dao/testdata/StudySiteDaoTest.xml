@@ -20,6 +20,7 @@
             long_title="Event Lengthier Title"
             description="Yet another different description"
             load_status="1"
+            version="0"
             />
     <IDENTIFIERS
             id="-1001"

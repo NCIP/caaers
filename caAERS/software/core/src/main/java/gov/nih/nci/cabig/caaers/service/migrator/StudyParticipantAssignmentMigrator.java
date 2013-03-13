@@ -22,6 +22,7 @@ import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.security.util.StringUtilities;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -79,9 +80,10 @@ public class StudyParticipantAssignmentMigrator implements Migrator<Participant>
                                         + " \" is nonexistant");
                 	}else{
                 		//
-                		study.addStudySite(studySite);
+                        List<StudySite> sites = new ArrayList(study.getStudySites());
                         studySiteDao.save(studySite);
-                        studyRepository.associateSiteToWorkflowConfig(study.getStudySites());
+                        sites.add(studySite);
+                        studyRepository.associateSiteToWorkflowConfig(sites);
                 	//	studyDao.updateStudyForServiceUseOnly(study);
                 		//Introduced this call  
                 		//studyRepository.save(study);

@@ -81,8 +81,8 @@ public class StudySiteDaoTest extends DaoTestCase<StudySiteDao> {
             StudySite site = getDao().getById(-1000);
 
             Study study = site.getStudy();
-            assert(study.getVersion() == 0 );
             assertNotNull(study);
+            assert(study.getVersion() == 0 );
             assert(study.getStudySites().size() == 2);
         }
         //java.util.Date endDate = new Date().setTime(new Date().getTime() + 86400 * 10);
