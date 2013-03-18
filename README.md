@@ -19,7 +19,7 @@ Please see the NOTICE and LICENSE files for details.
  * [Issue tracker](https://tracker.nci.nih.gov/browse/SUITE)
  * [Documentation wiki](https://wiki.nci.nih.gov/display/caAERS/caAERS+Documentation)
  * [Documentation Git repo](https://github.com/NCIP/caaers-docs)
- * https://github.com/NCIP/caaers
+ * [Development Git repo](https://github.com/NCIP/caaers)
 
 
 Please join us in further developing and improving caAERS.
