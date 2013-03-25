@@ -15,8 +15,8 @@ Please see the NOTICE and LICENSE files for details.
 
  * [Community wiki](https://wiki.nci.nih.gov/display/caAERS/caAERS)
  * [NCI OSDI Home](https://github.com/NCIP)
- * [Forums](https://cabig-kc.nci.nih.gov/CTMS/forums/viewforum.php?f=9&sid=341356a57f096cb3d65ec7b98fba6145)
- * [Issue tracker](https://tracker.nci.nih.gov/browse/SUITE)
+ * [Forums](https://cabig-kc.nci.nih.gov/CTMS/forums/viewforum.php?sid=9580407309499276f76e4aeff745f814)
+ * [Issue tracker](https://tracker.nci.nih.gov/browse/CAAERS)
  * [Documentation wiki](https://wiki.nci.nih.gov/display/caAERS/caAERS+Documentation)
  * [Documentation Git repo](https://github.com/NCIP/caaers-docs)
  * [Development Git repo](https://github.com/NCIP/caaers)
