@@ -49,38 +49,9 @@
         <xs:sequence>
         	<xs:element minOccurs="1" name="studySubjectIdentifier" type="cct:CustomStringType"/>
         	<xs:element minOccurs="1" name="studyIdentifier" type="cct:CustomStringType"/>
-        	<xs:element minOccurs="1" name="course" type="CourseType"/>
+        	<xs:element minOccurs="1" name="course" type="ae:CourseType"/>
         </xs:sequence>
     </xs:complexType>         	
-
-
-    <xs:complexType name="CourseType">
-                <xs:sequence>
-                	<xs:annotation>
-				            <xs:documentation>
-				            	Course Criteria Conditions enforced in service Implementation.
-				            	1. Start date of this course/cycle cannot be earlier than the Start date of first course/cycle.
-				            	2. Course End date cannot be earlier than Start date.
-				            	3. For Non-Baseline treatment type Start date cannot be equal to End date.
-				            	4. Course/cycle cannot overlap with an existing course/cycle.
-								5. Baseline treatment type cannot start after an existing Non-Baseline treatment type.
-								6. Non-Baseline treatment type cannot start before an existing Baseline treatment type.
-				            	
-				            </xs:documentation>
-				     </xs:annotation>
-                    <xs:element minOccurs="0" name="startDateOfFirstCourse" type="xs:date"/>
-                    <xs:element minOccurs="0" name="startDateOfThisCourse" type="xs:date"/>
-                    <xs:element minOccurs="0" name="endDateOfThisCourse" type="xs:date"/>
-                    <xs:element minOccurs="0" name="treatmentType" type="xs:string"/>
-                    <xs:element minOccurs="0" name="cycleNumber" type="xs:integer"/>
-                    <xs:choice>
-	                    <xs:element minOccurs="1" name="treatmentAssignmentCode" type="xs:string"/>
-	                    <xs:element minOccurs="1" name="otherTreatmentAssignmentDescription" type="xs:string"/>
-                    </xs:choice>
-                    <xs:element minOccurs="0" name="externalId" type="xs:string"/>
-                </xs:sequence>
-    </xs:complexType>
-
 
     <xs:element name="adverseEvents">
         <xs:annotation>

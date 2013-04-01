@@ -16,7 +16,7 @@ import gov.nih.nci.cabig.caaers.integration.schema.common.AMPM;
 import gov.nih.nci.cabig.caaers.integration.schema.common.TimeType;
 import gov.nih.nci.cabig.caaers.integration.schema.manageae.AdverseEvents;
 import gov.nih.nci.cabig.caaers.integration.schema.manageae.AdverseEventsInputMessage;
-import gov.nih.nci.cabig.caaers.integration.schema.manageae.CourseType;
+import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.CourseType;
 import gov.nih.nci.cabig.caaers.integration.schema.manageae.Criteria;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 

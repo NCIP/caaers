@@ -9,6 +9,8 @@ package gov.nih.nci.cabig.caaers.ws.impl;
 import gov.nih.nci.cabig.caaers.api.impl.SAEEvaluationServiceImpl;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.EvaluateAEsInputMessage;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.EvaluateAEsOutputMessage;
+import gov.nih.nci.cabig.caaers.integration.schema.saerules.SaveAndEvaluateAEsInputMessage;
+import gov.nih.nci.cabig.caaers.integration.schema.saerules.SaveAndEvaluateAEsOutputMessage;
 import gov.nih.nci.cabig.caaers.ws.SAEEvaluationService;
 import gov.nih.nci.cabig.caaers.ws.faults.CaaersFault;
 
@@ -53,5 +55,22 @@ public class SAEEvaluationWebServiceImpl implements SAEEvaluationService {
 		EvaluateAEsInputMessage evaluateAEsInputMessage) throws CaaersFault {
 		return svcImpl.processAdverseEvents(evaluateAEsInputMessage);
 	}
-		
+
+    /**
+     *  Evaluate Adverse Events for a Study from an external system.<br/>
+     *  Refer to SAERulesServiceSchema.xsd for schema definition.<br/>
+     * Few rules to enforce in implementation , return messages to client in CaaersServiceResponse.<br/>
+     *	1. Study should be existing in caAERS.<br/>
+     *  2. Site should exist in caAERS but need not be study site
+     * @param adverseEventsInputMessage
+     * @return gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse
+     */
+    @WebMethod
+    public SaveAndEvaluateAEsOutputMessage saveAndEvaluateAEs
+    (@WebParam(name="SaveAndEvaluateAEsInputMessage",
+            targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/saerules")
+     SaveAndEvaluateAEsInputMessage saveAndEvaluateAEsInputMessage) throws CaaersFault {
+        return svcImpl.processAndSaveAdverseEvents(saveAndEvaluateAEsInputMessage);
+    }
+
 }

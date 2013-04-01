@@ -19,7 +19,7 @@ import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AdverseEventType;
 import gov.nih.nci.cabig.caaers.integration.schema.manageae.AdverseEventsInputMessage;
-import gov.nih.nci.cabig.caaers.integration.schema.manageae.CourseType;
+import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.CourseType;
 import gov.nih.nci.cabig.caaers.integration.schema.manageae.Criteria;
 
 import java.util.ArrayList;

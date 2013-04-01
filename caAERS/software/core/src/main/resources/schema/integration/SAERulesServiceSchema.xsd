@@ -50,6 +50,18 @@
             </xs:sequence>
         </xs:complexType>        
     </xs:element>
+
+
+    <xs:complexType  name="AEsOutputMessage" abstract="true">
+            <xs:sequence>
+                <xs:element ref="evaluatedAdverseEventResults" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>List of Adverse Events evaluated for SAE reporting and their result</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:sequence>
+    </xs:complexType>
+
 	
 	<xs:element name="EvaluateAEsOutputMessage">
         <xs:annotation>
@@ -58,14 +70,11 @@
             </xs:documentation>
         </xs:annotation>
         <xs:complexType>
-            <xs:sequence>         	
-	                <xs:element ref="evaluatedAdverseEventResults" minOccurs="0">
-						<xs:annotation>
-							<xs:documentation>List of Adverse Events evaluated for SAE reporting and their result</xs:documentation>
-						</xs:annotation>
-	                </xs:element>                  
-            </xs:sequence>
-        </xs:complexType>        
+            <xs:complexContent>
+                <xs:extension base="AEsOutputMessage">
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
     </xs:element>
 
 	                
@@ -140,5 +149,66 @@
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
+
+    <xs:annotation>
+        <xs:documentation>
+            This service requires list of Adverse Events along with StudyIdentifer and returns the CaaersServiceResponse with requireReporting , reportName and other related attributes.
+        </xs:documentation>
+    </xs:annotation>
+
+    <xs:element name="criteria" type="Criteria"/>
+
+    <xs:complexType name="Criteria">
+        <xs:sequence>
+            <xs:element minOccurs="1" name="studySubjectIdentifier" type="cct:CustomStringType"/>
+            <xs:element minOccurs="1" name="studyIdentifier" type="cct:CustomStringType"/>
+            <xs:element minOccurs="1" name="course" type="ae:CourseType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="SaveAndEvaluateAEsInputMessage">
+        <xs:annotation>
+            <xs:documentation> The top level (typically root) element. Allows the definition of
+                default values for all nested bean definitions.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="adverseEvents" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>List of Adverse Events to be evaluated for SAE reporting.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element ref="criteria">
+                    <xs:annotation>
+                        <xs:documentation>Adverse Event Creation Criteria .
+                            Required Criteria : StudySubject Identifier, Study Identifier, course/cycle information.
+                            Conditions enforced in service implementation.
+                            1. Participant and Study should be existing in caAERS.
+                            2. Participant should be registered in that study.
+                            3. Adverse Event Management Service creates course if course is not present in caAERS System.
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="SaveAndEvaluateAEsOutputMessage">
+        <xs:annotation>
+            <xs:documentation> The top level (typically root) element. Allows the definition of
+                default values for all nested bean definitions.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+        <xs:complexContent>
+            <xs:extension base="AEsOutputMessage">
+                <xs:sequence minOccurs="1">
+                    <xs:element  name="hasSAE" type="xs:boolean"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
 
 </xs:schema>

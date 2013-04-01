@@ -7,39 +7,25 @@
 package gov.nih.nci.cabig.caaers.api.impl;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.AeTerminology;
-import gov.nih.nci.cabig.caaers.domain.Identifier;
-import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
-import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.dao.*;
+import gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery;
+import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.dto.EvaluationResultDTO;
+import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AdverseEventType;
-import gov.nih.nci.cabig.caaers.integration.schema.saerules.AdverseEventResult;
-import gov.nih.nci.cabig.caaers.integration.schema.saerules.AdverseEvents;
-import gov.nih.nci.cabig.caaers.integration.schema.saerules.EvaluateAEsInputMessage;
-import gov.nih.nci.cabig.caaers.integration.schema.saerules.EvaluateAEsOutputMessage;
-import gov.nih.nci.cabig.caaers.integration.schema.saerules.EvaluatedAdverseEventResults;
-import gov.nih.nci.cabig.caaers.integration.schema.saerules.RecommendedReports;
-import gov.nih.nci.cabig.caaers.integration.schema.saerules.ReportType;
+import gov.nih.nci.cabig.caaers.integration.schema.saerules.*;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.migrator.adverseevent.AdverseEventConverter;
+import gov.nih.nci.cabig.caaers.service.migrator.adverseevent.SAEAdverseEventReportingPeriodConverter;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
+import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 import gov.nih.nci.cabig.caaers.ws.faults.CaaersFault;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -60,23 +46,114 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 
 	private StudyDao studyDao;
 	private TreatmentAssignmentDao treatmentAssignmentDao;
+    private ParticipantDao participantDao;
+    private StudyParticipantAssignmentDao studyParticipantAssignmentDao;
+    private SAEAdverseEventReportingPeriodConverter reportingPeriodConverter;
 
+    private AdverseEventManagementServiceImpl adverseEventManagementService;
 	private EvaluationService evaluationService;
 	private ApplicationContext applicationContext;
 	private MessageSource messageSource;
 	private AdverseEventConverter converter;
-	
-	private static String DEF_ERR_MSG= "Error evaluating adverse events with SAE rules";
+    private enum RequestType{SaveEvaluate, Evaluate};
+	private static String DEF_ERR_MSG = "Error evaluating adverse events with SAE rules";
 
 	private static Log logger = LogFactory.getLog(SAEEvaluationServiceImpl.class);
-	
+
+    /**
+     * Process and Save the Adverse Events.
+     *
+     * @param saveAndEvaluateAEsInputMessage
+     * @return
+     * @throws CaaersFault
+     */
+
+    public SaveAndEvaluateAEsOutputMessage processAndSaveAdverseEvents(SaveAndEvaluateAEsInputMessage saveAndEvaluateAEsInputMessage) throws CaaersFault {
+        Map<AdverseEvent, AdverseEventResult> mapAE2DTO = new HashMap<AdverseEvent, AdverseEventResult>();
+        List<AdverseEvent> aes = new ArrayList<AdverseEvent>();
+
+        if ( saveAndEvaluateAEsInputMessage == null ) {
+            throw Helper.createCaaersFault(DEF_ERR_MSG, "WS_GEN_001",
+                    messageSource.getMessage("WS_GEN_001", new String[]{},  "", Locale.getDefault())
+            );
+        }
+
+        // 0. Load the study required.
+        String studyIdentifier = saveAndEvaluateAEsInputMessage.getCriteria().getStudyIdentifier();
+        Study study = fetchStudy(studyIdentifier);
+        if ( study == null ) {
+            throw Helper.createCaaersFault("Unable to found the Study " + studyIdentifier, "WS_GEN_001",
+                    messageSource.getMessage("WS_GEN_001", new String[]{},  "", Locale.getDefault())
+            );
+        }
+
+        // create adverse Events.
+        AeTerminology terminology = study.getAeTerminology();
+
+        for (AdverseEventType adverseEventDto : saveAndEvaluateAEsInputMessage.getAdverseEvents().getAdverseEvent()) {
+            AdverseEvent ae = new AdverseEvent();
+            converter.convertAdverseEventDtoToAdverseEventDomain(adverseEventDto, ae,
+                    terminology, null, null);
+            aes.add(ae);
+
+            AdverseEventResult result = new AdverseEventResult();
+            result.setAdverseEvent(adverseEventDto);
+            result.setRequiresReporting(false);
+
+            mapAE2DTO.put(ae, result);
+        }
+
+        // 1. Participant Query to create a Participant.
+        String studySubjectId  = saveAndEvaluateAEsInputMessage.getCriteria().getStudySubjectIdentifier(); // assign the value, retrieve from your newly defined input schema.
+        ParticipantQuery pq = new ParticipantQuery();
+        pq.joinStudy();
+        pq.filterByStudySubjectIdentifier(studySubjectId);
+        pq.filterByStudyId(study.getId());
+
+        List<Participant> dbParticipants = participantDao.searchParticipant(pq);
+
+        //Assuming the matching criteria returns only a value.
+        Participant par = null;
+
+        if ( dbParticipants.size() > 0 )     par =  dbParticipants.get(0);
+        if ( par == null ) {
+            throw Helper.createCaaersFault("Unable to find participant", "WS_GEN_001",
+                    messageSource.getMessage("WS_GEN_001", new String[]{},  "", Locale.getDefault()));
+        }
+
+        // 3. Call the converter and make the required object.
+
+        AdverseEventReportingPeriod reportingPeriod = reportingPeriodConverter.convert(saveAndEvaluateAEsInputMessage);
+
+
+         // 4. Persist AdverseEvents.
+        ValidationErrors errors = new ValidationErrors();
+        reportingPeriod = adverseEventManagementService.createOrUpdateAdverseEvents(reportingPeriod, errors);
+
+     //   logger.info("Created or Updated reporting period returned :" + reportingPeriod == null ? "NULL" : reportingPeriod.getId());
+        if(errors.hasErrors()){
+           logger.error("Adverse Event Management Service create or update call failed :" + String.valueOf(errors));
+           return null;
+        }
+
+        // 5. fire Adverse events ( create a Root level response message with indicating reporting is required or not ? ).
+        SaveAndEvaluateAEsOutputMessage saveAndEvaluateAEsOutputMessage = (SaveAndEvaluateAEsOutputMessage)fireSAERules(reportingPeriod, study, mapAE2DTO,RequestType.SaveEvaluate);
+
+        return saveAndEvaluateAEsOutputMessage;
+    }
+
+    /**
+     * Process the adverse Events.
+     * @param evaluateAEsInputMessage
+     * @return
+     * @throws CaaersFault
+     */
 	public EvaluateAEsOutputMessage processAdverseEvents(EvaluateAEsInputMessage evaluateAEsInputMessage) throws CaaersFault {
 		if ( evaluateAEsInputMessage == null ) {
 			throw Helper.createCaaersFault(DEF_ERR_MSG, "WS_GEN_001",
 					messageSource.getMessage("WS_GEN_001", new String[]{},  "", Locale.getDefault())
 					);
 		}
-		
 		
 		gov.nih.nci.cabig.caaers.integration.schema.saerules.Study study = evaluateAEsInputMessage.getStudy();
 		
@@ -158,7 +235,7 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 			ae.setReportingPeriod(period);
 		}
 
-		return fireSAERules(period, study, mapAE2DTO);
+		return (EvaluateAEsOutputMessage)fireSAERules(period, study, mapAE2DTO, RequestType.Evaluate);
 	}
 
 	/**
@@ -183,15 +260,18 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 		return ta;
 	}
 
-	/**
-	 * @param adverseEventReportingPeriod
-	 * @param dbStudy
-	 * @param caaersServiceResponse
-	 */
+    /**
+     * Fire the SAE on the Reporting Period Adverse Events.
+     * @param reportingPeriod
+     * @param study
+     * @param mapAE2DTO
+     * @return
+     * @throws CaaersFault
+     */
 
-	private EvaluateAEsOutputMessage fireSAERules(AdverseEventReportingPeriod reportingPeriod, Study study,
-			Map<AdverseEvent, AdverseEventResult> mapAE2DTO)  throws CaaersFault {
-		EvaluateAEsOutputMessage response = new EvaluateAEsOutputMessage();
+	private AEsOutputMessage fireSAERules(AdverseEventReportingPeriod reportingPeriod, Study study,
+			Map<AdverseEvent, AdverseEventResult> mapAE2DTO, RequestType requestType)  throws CaaersFault {
+        AEsOutputMessage response = createResponseObject(requestType);
 		try {
 			EvaluatedAdverseEventResults results = new EvaluatedAdverseEventResults();
 			response.setEvaluatedAdverseEventResults(results);
@@ -209,9 +289,17 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 						AdverseEvent ae = entry.getKey();
 						Set<ReportDefinition> rds = entry.getValue();
 
-						// Get the Response DTO and populate that object
-						// Accordingly.
-						AdverseEventResult aeDTO = mapAE2DTO.get(ae);
+						// find DTO object corresponding to Adverse Event.
+						AdverseEventResult aeDTO = null ;
+                        if ( requestType.equals(RequestType.SaveEvaluate)) {
+                            aeDTO = findAdverseEvent(ae,mapAE2DTO);
+                        }   else {
+                            aeDTO = mapAE2DTO.get(ae);
+                        }
+
+                        if ( aeDTO == null ) {
+                            continue;
+                        }
 						
 						// Now the process the Report Definitions
 						if (rds != null && rds.size() > 0) {
@@ -230,6 +318,10 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 
 							// Set the output
 							aeDTO.setRequiresReporting(true);
+                            if ( requestType.equals(RequestType.SaveEvaluate)) {
+                                ((SaveAndEvaluateAEsOutputMessage)response).setHasSAE(true);
+                            }
+
 							aeDTO.setRecommendedReports(recommendedRpts);
 						}
 					}//end of for AEs
@@ -246,8 +338,58 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 
 		return response;
 	}
-	
-	
+
+    public AdverseEventResult findAdverseEvent(AdverseEvent thatAe,Map<AdverseEvent, AdverseEventResult> mapAE2DTO){
+        for(AdverseEvent thisAe : mapAE2DTO.keySet()){
+            //are Ids matching ?
+            if(thatAe.getExternalId() != null && thisAe.getExternalId() != null && StringUtils.equals(thisAe.getExternalId(), thatAe.getExternalId()) ) return mapAE2DTO.get(thisAe);
+
+            //Compare Grade
+            if(thatAe.getGrade() != null && thisAe.getGrade() != null && !thisAe.getGrade().equals(thatAe.getGrade()) ) continue;
+
+            //are dates matching ?
+            if(DateUtils.compareDate(thisAe.getStartDate(), thatAe.getStartDate()) != 0)  continue;
+            if(DateUtils.compareDate(thisAe.getEndDate(), thatAe.getEndDate()) != 0)  continue;
+            if(thisAe.getEventApproximateTime() != null && thatAe.getEventApproximateTime()!= null && !(thisAe.getEventApproximateTime().equals(thatAe.getEventApproximateTime())))  continue;
+
+            //is the term matching ?
+            if(thisAe.getAdverseEventCtcTerm() != null){
+                //ctc terminology
+                AdverseEventCtcTerm thisCtcTerm = thisAe.getAdverseEventCtcTerm();
+                AdverseEventCtcTerm thatCtcTerm = thatAe.getAdverseEventCtcTerm();
+                if ( (thisCtcTerm == null && thatCtcTerm != null) || (thatCtcTerm == null && thisCtcTerm != null) ) continue;
+                if( (thisCtcTerm != null && thatCtcTerm != null )&& thisCtcTerm.getTerm().getId() != thatCtcTerm.getTerm().getId()) continue;
+                if(!StringUtils.equals(thisAe.getOtherSpecify(), thatAe.getOtherSpecify())) continue;
+
+                LowLevelTerm thisLLT = thisAe.getLowLevelTerm();
+                LowLevelTerm thatLLT = thatAe.getLowLevelTerm();
+                if((thisLLT == null && thatLLT != null ) || (thatLLT == null && thisLLT != null)) continue;
+                if((thisLLT != null && thatLLT != null ) && thisLLT.getId() != thatLLT.getId()) continue;
+
+            } else {
+                //MedDRA terminology
+                AdverseEventMeddraLowLevelTerm thisMedDRATerm = thisAe.getAdverseEventMeddraLowLevelTerm();
+                AdverseEventMeddraLowLevelTerm thatMedDRATerm = thatAe.getAdverseEventMeddraLowLevelTerm();
+                if((thisMedDRATerm == null && thatMedDRATerm != null) && (thatMedDRATerm == null && thisMedDRATerm != null)) continue;
+                if((thisMedDRATerm != null && thatMedDRATerm != null) && thisMedDRATerm.getLowLevelTerm().getId() != thatMedDRATerm.getLowLevelTerm().getId()) continue;
+            }
+            //found a match
+            return mapAE2DTO.get(thisAe);
+        }
+        return null;
+    }
+
+    private   AEsOutputMessage createResponseObject(RequestType requestType) {
+        AEsOutputMessage response = null;
+        if ( requestType.equals(RequestType.Evaluate)) {
+            response = new EvaluateAEsOutputMessage();
+        }   else {
+            response = new SaveAndEvaluateAEsOutputMessage();
+        }
+        return response;
+    }
+
+
 
 	public AdverseEventConverter getConverter() {
 		return converter;
@@ -277,6 +419,23 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 		}
 		return study;
 	}
+
+
+    public ParticipantDao getParticipantDao() {
+        return participantDao;
+    }
+
+    public void setParticipantDao(ParticipantDao participantDao) {
+        this.participantDao = participantDao;
+    }
+
+    public AdverseEventManagementServiceImpl getAdverseEventManagementService() {
+        return adverseEventManagementService;
+    }
+
+    public void setAdverseEventManagementService(AdverseEventManagementServiceImpl adverseEventManagementService) {
+        this.adverseEventManagementService = adverseEventManagementService;
+    }
 
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;
@@ -314,4 +473,19 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 		this.messageSource = messageSource;
 	}
 
+    public StudyParticipantAssignmentDao getStudyParticipantAssignmentDao() {
+        return studyParticipantAssignmentDao;
+    }
+
+    public void setStudyParticipantAssignmentDao(StudyParticipantAssignmentDao studyParticipantAssignmentDao) {
+        this.studyParticipantAssignmentDao = studyParticipantAssignmentDao;
+    }
+
+    public SAEAdverseEventReportingPeriodConverter getReportingPeriodConverter() {
+        return reportingPeriodConverter;
+    }
+
+    public void setReportingPeriodConverter(SAEAdverseEventReportingPeriodConverter reportingPeriodConverter) {
+        this.reportingPeriodConverter = reportingPeriodConverter;
+    }
 }
