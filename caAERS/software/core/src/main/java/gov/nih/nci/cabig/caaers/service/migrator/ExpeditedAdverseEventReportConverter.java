@@ -8,8 +8,73 @@ package gov.nih.nci.cabig.caaers.service.migrator;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.AdditionalInformation;
+import gov.nih.nci.cabig.caaers.domain.AdditionalInformationDocument;
+import gov.nih.nci.cabig.caaers.domain.Address;
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription;
+import gov.nih.nci.cabig.caaers.domain.Agent;
+import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
+import gov.nih.nci.cabig.caaers.domain.Attribution;
+import gov.nih.nci.cabig.caaers.domain.Availability;
+import gov.nih.nci.cabig.caaers.domain.BehavioralIntervention;
+import gov.nih.nci.cabig.caaers.domain.BiologicalIntervention;
+import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
+import gov.nih.nci.cabig.caaers.domain.ConfigProperty;
+import gov.nih.nci.cabig.caaers.domain.CourseAgent;
+import gov.nih.nci.cabig.caaers.domain.DateValue;
+import gov.nih.nci.cabig.caaers.domain.DelayUnits;
+import gov.nih.nci.cabig.caaers.domain.Device;
+import gov.nih.nci.cabig.caaers.domain.DeviceOperator;
+import gov.nih.nci.cabig.caaers.domain.DietarySupplementIntervention;
+import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
+import gov.nih.nci.cabig.caaers.domain.Dose;
+import gov.nih.nci.cabig.caaers.domain.EventStatus;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.GeneticIntervention;
+import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.InterventionSite;
+import gov.nih.nci.cabig.caaers.domain.Investigator;
+import gov.nih.nci.cabig.caaers.domain.Lab;
+import gov.nih.nci.cabig.caaers.domain.LabCategory;
+import gov.nih.nci.cabig.caaers.domain.LabTerm;
+import gov.nih.nci.cabig.caaers.domain.LabValue;
+import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
+import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
+import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
+import gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite;
+import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.domain.OtherAEIntervention;
+import gov.nih.nci.cabig.caaers.domain.OtherCause;
+import gov.nih.nci.cabig.caaers.domain.OtherIntervention;
+import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.ParticipantHistory;
 import gov.nih.nci.cabig.caaers.domain.ParticipantHistory.Measure;
+import gov.nih.nci.cabig.caaers.domain.Physician;
+import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
+import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
+import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
+import gov.nih.nci.cabig.caaers.domain.RadiationAdministration;
+import gov.nih.nci.cabig.caaers.domain.RadiationIntervention;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.domain.Reporter;
+import gov.nih.nci.cabig.caaers.domain.ReprocessedDevice;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
+import gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition;
+import gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyAgent;
+import gov.nih.nci.cabig.caaers.domain.StudyDevice;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
+import gov.nih.nci.cabig.caaers.domain.TimeValue;
+import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
+import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.attribution.BehavioralInterventionAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.BiologicalInterventionAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
@@ -34,7 +99,9 @@ import gov.nih.nci.cabig.caaers.integration.schema.aereport.AdverseEventReport;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.AdverseEventReportingPeriodType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.AdverseEventResponseDescriptionType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.AdverseEventType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.BehavioralInterventionAttributionType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.BehavioralInterventionType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.BiologicalInterventionAttributionType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.BiologicalInterventionType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.ConcomitantMedicationAttributionType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.ConcomitantMedicationType;
@@ -42,9 +109,14 @@ import gov.nih.nci.cabig.caaers.integration.schema.aereport.ContactMechanismType
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.CourseAgentAttributionType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.CourseAgentType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.DateValueType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.DeviceAttributionType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.DietarySupplementInterventionAttributionType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.DietarySupplementInterventionType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.DiseaseAttributionType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.DiseaseHistoryType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.DoseType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.GeneticInterventionAttributionType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.GeneticInterventionType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.LabType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.MedicalDeviceType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.MetastaticDiseaseSiteType;
@@ -52,11 +124,13 @@ import gov.nih.nci.cabig.caaers.integration.schema.aereport.OrganizationAssigned
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.OtherAEInterventionType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.OtherCauseAttributionType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.OtherCauseType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.OtherInterventionAttributionType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.OtherInterventionType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.ParticipantHistoryType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.ParticipantType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.ParticipantType.Identifiers;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.PhysicianType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.RadiationAttributionType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.RadiationInterventionType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.ReportDeliveryDefinitionType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.ReportType;
@@ -67,6 +141,7 @@ import gov.nih.nci.cabig.caaers.integration.schema.aereport.SAEReportPriorTherap
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.StudyParticipantAssignmentType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.StudySiteType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.StudyType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.SurgeryAttributionType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.SurgeryInterventionType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.TreatmentInformationType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationType;
@@ -159,76 +234,75 @@ public class ExpeditedAdverseEventReportConverter {
                     ae.getOtherCauseAttributions().add(attribution);
                 }
 
-                if(aeType.getSurgeryAttribution() != null){
+                for(SurgeryAttributionType surgeryAttributionType : aeType.getSurgeryAttribution() ){
                     SurgeryAttribution attribution = new SurgeryAttribution();
-                    attribution.setAttribution(Attribution.valueOf(aeType.getSurgeryAttribution().getAttribution().value()));
-                    attribution.setCause(convertSurgeryIntervention(aeType.getSurgeryAttribution().getCause()));
+                    attribution.setAttribution(Attribution.valueOf(surgeryAttributionType.getAttribution().value()));
+                    attribution.setCause(convertSurgeryIntervention(surgeryAttributionType.getCause()));
                     attribution.setAdverseEvent(ae);
                     ae.getSurgeryAttributions().add(attribution);
                 }
 
-
-                if(aeType.getRadiationAttribution() != null){
+                for(RadiationAttributionType radiationAttributionType : aeType.getRadiationAttribution() ){
                     RadiationAttribution attribution = new RadiationAttribution();
-                    attribution.setAttribution(Attribution.valueOf(aeType.getRadiationAttribution().getAttribution().value()));
-                    attribution.setCause(convertRadiationIntervention(aeType.getRadiationAttribution().getCause()));
+                    attribution.setAttribution(Attribution.valueOf(radiationAttributionType.getAttribution().value()));
+                    attribution.setCause(convertRadiationIntervention(radiationAttributionType.getCause()));
                     attribution.setAdverseEvent(ae);
                     ae.getRadiationAttributions().add(attribution);
                 }
 
-
-                if(aeType.getDeviceAttribution() != null){
+                for(DeviceAttributionType deviceAttributionType : aeType.getDeviceAttribution() ){
                     DeviceAttribution attribution = new DeviceAttribution();
-                    attribution.setAttribution(Attribution.valueOf(aeType.getDeviceAttribution().getAttribution().value()));
-                    attribution.setCause(convertMedicalDevice(aeType.getDeviceAttribution().getCause()));
+                    attribution.setAttribution(Attribution.valueOf(deviceAttributionType.getAttribution().value()));
+                    attribution.setCause(convertMedicalDevice(deviceAttributionType.getCause()));
                     attribution.setAdverseEvent(ae);
                     ae.getDeviceAttributions().add(attribution);
                 }
-
-                if(aeType.getBiologicalInterventionAttribution() != null){
+                
+                for(BiologicalInterventionAttributionType biologicalInterventionAttributionType : aeType.getBiologicalInterventionAttribution() ){
                     BiologicalInterventionAttribution attribution = new BiologicalInterventionAttribution();
-                    attribution.setAttribution(Attribution.valueOf(aeType.getBiologicalInterventionAttribution().getAttribution().value()));
-                    attribution.setCause(convertBiologicalIntervention(aeType.getBiologicalInterventionAttribution().getCause()));
+                    attribution.setAttribution(Attribution.valueOf(biologicalInterventionAttributionType.getAttribution().value()));
+                    attribution.setCause(convertBiologicalIntervention(biologicalInterventionAttributionType.getCause()));
                     attribution.setAdverseEvent(ae);
                     ae.getBiologicalInterventionAttributions().add(attribution);
                 }
 
-                if(aeType.getDietarySupplementInterventionAttribution() != null){
+                for(DietarySupplementInterventionAttributionType dietarySupplementInterventionAttributionType : aeType.getDietarySupplementInterventionAttribution() ){
                     DietarySupplementInterventionAttribution attribution = new DietarySupplementInterventionAttribution();
-                    attribution.setAttribution(Attribution.valueOf(aeType.getDietarySupplementInterventionAttribution().getAttribution().value()));
-                    attribution.setCause(convertDietarySupplementIntervention(aeType.getDietarySupplementInterventionAttribution().getCause()));
+                    attribution.setAttribution(Attribution.valueOf(dietarySupplementInterventionAttributionType.getAttribution().value()));
+                    attribution.setCause(convertDietarySupplementIntervention(dietarySupplementInterventionAttributionType.getCause()));
                     attribution.setAdverseEvent(ae);
                     ae.getDietarySupplementInterventionAttributions().add(attribution);
                 }
                 
-                if(aeType.getDiseaseAttribution() != null){
+                
+                for(DiseaseAttributionType diseaseAttributionType : aeType.getDiseaseAttribution() ){
                     DiseaseAttribution attribution = new DiseaseAttribution();
-                    attribution.setAttribution(Attribution.valueOf(aeType.getDiseaseAttribution().getAttribution().value()));
-                	attribution.setCause(convertDiseaseHistory(aeType.getDiseaseAttribution().getCause()));
+                    attribution.setAttribution(Attribution.valueOf(diseaseAttributionType.getAttribution().value()));
+                	attribution.setCause(convertDiseaseHistory(diseaseAttributionType.getCause()));
                     attribution.setAdverseEvent(ae);
                     ae.getDiseaseAttributions().add(attribution);
                 }
                
-                if(aeType.getOtherInterventionAttribution() != null){
+                for(OtherInterventionAttributionType otherInterventionAttributionType : aeType.getOtherInterventionAttribution() ){
                     OtherInterventionAttribution attribution = new OtherInterventionAttribution();
-                    attribution.setAttribution(Attribution.valueOf(aeType.getOtherInterventionAttribution().getAttribution().value()));
-                    attribution.setCause( convertOtherAEIntervention(aeType.getOtherInterventionAttribution().getCause(), aeReport));	
+                    attribution.setAttribution(Attribution.valueOf(otherInterventionAttributionType.getAttribution().value()));
+                    attribution.setCause( convertOtherAEIntervention(otherInterventionAttributionType.getCause(), aeReport));	
                     attribution.setAdverseEvent(ae);
                     ae.getOtherInterventionAttributions().add(attribution);
                 }
                 
-                if(aeType.getBehavioralInterventionAttribution() != null){
+                for(BehavioralInterventionAttributionType behavioralInterventionAttributionType : aeType.getBehavioralInterventionAttribution() ){                
                     BehavioralInterventionAttribution attribution = new BehavioralInterventionAttribution();
-                    attribution.setAttribution(Attribution.valueOf(aeType.getBehavioralInterventionAttribution().getAttribution().value()));
-                    attribution.setCause(convertBehavioralIntervention(aeType.getBehavioralInterventionAttribution().getCause(), aeReport));	
+                    attribution.setAttribution(Attribution.valueOf(behavioralInterventionAttributionType.getAttribution().value()));
+                    attribution.setCause(convertBehavioralIntervention(behavioralInterventionAttributionType.getCause(), aeReport));	
                     attribution.setAdverseEvent(ae);
                     ae.getBehavioralInterventionAttributions().add(attribution);
                 }
                 
-                if(aeType.getGeneticInterventionAttribution() != null){
+                for(GeneticInterventionAttributionType geneticInterventionAttributionType : aeType.getGeneticInterventionAttribution() ){                
                 	GeneticInterventionAttribution attribution = new GeneticInterventionAttribution();
-                    attribution.setAttribution(Attribution.valueOf(aeType.getGeneticInterventionAttribution().getAttribution().value()));
-                    attribution.setCause(convertGeneticIntervention(aeType.getBehavioralInterventionAttribution().getCause(), aeReport));	
+                    attribution.setAttribution(Attribution.valueOf(geneticInterventionAttributionType.getAttribution().value()));
+                    attribution.setCause(convertGeneticIntervention(geneticInterventionAttributionType.getCause(), aeReport));	
                     attribution.setAdverseEvent(ae);
                     ae.getGeneticInterventionAttributions().add(attribution);
                 }
@@ -315,8 +389,6 @@ public class ExpeditedAdverseEventReportConverter {
 			aeReport.addLab(convertLab(xmlLabType));
 		}
 
-
-
         //Other cause
 		for(OtherCauseType xmlOtherCauseType : aeReportDto.getOtherCause()){
 			aeReport.addOtherCause(convertOtherCause(xmlOtherCauseType));
@@ -358,7 +430,7 @@ public class ExpeditedAdverseEventReportConverter {
 		return behavioralIntervention;
 	}
 	
-	protected GeneticIntervention convertGeneticIntervention(BehavioralInterventionType xmlGeneticInterventionType, ExpeditedAdverseEventReport report){
+	protected GeneticIntervention convertGeneticIntervention(GeneticInterventionType xmlGeneticInterventionType, ExpeditedAdverseEventReport report){
 		GeneticIntervention geneticIntervention= new GeneticIntervention();
 		geneticIntervention.setDescription(xmlGeneticInterventionType.getDescription());
 		if(xmlGeneticInterventionType.getStudyIntervention() != null){

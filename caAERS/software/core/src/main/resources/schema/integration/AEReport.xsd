@@ -45,15 +45,15 @@
                     <xs:element type="ConcomitantMedicationAttributionType" name="concomitantMedicationAttribution" maxOccurs="unbounded" minOccurs="0" />
                     <xs:element type="OtherCauseAttributionType" name="otherCauseAttribution" maxOccurs="unbounded" minOccurs="0" />
                     <xs:element type="CourseAgentAttributionType" name="courseAgentAttribution"	maxOccurs="unbounded" minOccurs="0" />
-                    <xs:element type="SurgeryAttributionType" name="surgeryAttribution"	minOccurs="0" />
-                    <xs:element type="RadiationAttributionType" name="radiationAttribution"	minOccurs="0" />
-                    <xs:element type="DeviceAttributionType" name="deviceAttribution" minOccurs="0" />
-                    <xs:element type="BiologicalInterventionAttributionType" name="biologicalInterventionAttribution" minOccurs="0" />
-                    <xs:element type="DietarySupplementInterventionAttributionType"	name="dietarySupplementInterventionAttribution" minOccurs="0" />
-                    <xs:element type="DiseaseAttributionType" name="diseaseAttribution"	minOccurs="0" />
-                    <xs:element type="OtherInterventionAttributionType" name="otherInterventionAttribution" minOccurs="0" />
-                    <xs:element type="BehavioralInterventionAttributionType" name="behavioralInterventionAttribution" minOccurs="0" />
-                    <xs:element type="GeneticInterventionAttributionType"	name="geneticInterventionAttribution" minOccurs="0" />
+                    <xs:element type="SurgeryAttributionType" name="surgeryAttribution"	maxOccurs="unbounded" minOccurs="0"/>
+                    <xs:element type="RadiationAttributionType" name="radiationAttribution"	maxOccurs="unbounded" minOccurs="0" />
+                    <xs:element type="DeviceAttributionType" name="deviceAttribution" maxOccurs="unbounded" minOccurs="0"/>
+                    <xs:element type="BiologicalInterventionAttributionType" name="biologicalInterventionAttribution" maxOccurs="unbounded" minOccurs="0" />
+                    <xs:element type="DietarySupplementInterventionAttributionType"	name="dietarySupplementInterventionAttribution" maxOccurs="unbounded" minOccurs="0" />
+                    <xs:element type="DiseaseAttributionType" name="diseaseAttribution"	maxOccurs="unbounded" minOccurs="0" />
+                    <xs:element type="OtherInterventionAttributionType" name="otherInterventionAttribution" maxOccurs="unbounded" minOccurs="0" />
+                    <xs:element type="BehavioralInterventionAttributionType" name="behavioralInterventionAttribution" maxOccurs="unbounded" minOccurs="0"/>
+                    <xs:element type="GeneticInterventionAttributionType" name="geneticInterventionAttribution" maxOccurs="unbounded" minOccurs="0" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>

@@ -23,6 +23,7 @@ import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.WsError;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.ParticipantType;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.Participants;
+import gov.nih.nci.cabig.caaers.integration.schema.participant.ParticipantRef.ParticipantAssignment;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.ReportSubmissionService;
@@ -192,11 +193,13 @@ public class SafetyReportServiceImpl {
                 }
                 return null;
             }
+            
         }
-
-
+        
+        updateReportingPeriodWithdbStudy(aeReport,studySrc);
 
         //Call Ae Management
+        
         AdverseEventReportingPeriod reportingPeriod = adverseEventManagementService.createOrUpdateAdverseEvents(aeReport.getReportingPeriod(), errors);
         logger.info("Created or Updated reporting period returned :" + reportingPeriod == null ? "NULL" : reportingPeriod.getId());
         if(errors.hasErrors()){
@@ -277,6 +280,25 @@ public class SafetyReportServiceImpl {
 	   }
        return response;
 	}
+	
+	
+	private void updateReportingPeriodWithdbStudy(ExpeditedAdverseEventReport aeReport, Study studySrc){
+		 
+        StudyParticipantAssignment assignment = aeReport.getReportingPeriod().getAssignment();
+        if(assignment == null){
+        	assignment = new StudyParticipantAssignment();
+        	StudySite site = new StudySite();
+        	site.setStudy(studySrc);
+        	aeReport.getReportingPeriod().setAssignment(assignment);
+        } else if(assignment.getStudySite() == null){
+        	StudySite site = new StudySite();
+        	site.setStudy(studySrc);
+        	assignment.setStudySite(site);
+        } else {
+        	aeReport.getReportingPeriod().getAssignment().getStudySite().setStudy(studySrc);
+        }
+	}
+	
 
     public ExpeditedAdverseEventReportConverter getEaeConverter() {
         return eaeConverter;

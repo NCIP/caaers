@@ -1,7 +1,7 @@
 Welcome to the caAERS Project!
 =====================================
 
-The caBIG® Adverse Event Reporting System (caAERS) is an Open Source project that is used to record and report
+The Cancer Adverse Event Reporting System (caAERS) is an Open Source project that is used to record and report
 adverse events that occur during clinical trials.
 It is a JSP based web application written in Java using Hibernate and Spring technologies.
 The goal of caAERS is to support regulatory and protocol compliance for adverse event reporting and allow local collection, management, 
