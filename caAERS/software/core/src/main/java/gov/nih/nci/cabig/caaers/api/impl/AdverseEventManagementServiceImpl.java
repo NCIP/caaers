@@ -49,6 +49,7 @@ import gov.nih.nci.cabig.caaers.service.synchronizer.adverseevent.AdverseEventRe
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.validation.AdverseEventGroup;
+import gov.nih.nci.cabig.caaers.validation.CourseCycleGroup;
 import gov.nih.nci.cabig.caaers.validation.ValidationError;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
@@ -63,6 +64,8 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.validation.groups.Default;
 
+import gov.nih.nci.cabig.caaers.validation.validator.AdverseEventValidatior;
+import gov.nih.nci.cabig.caaers.ws.faults.CaaersFault;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -107,6 +110,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 	private MessageSource messageSource;
     private Configuration configuration;
     private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
+    private AdverseEventValidatior adverseEventValidatior;
 
 	private static Log logger = LogFactory.getLog(AdverseEventManagementServiceImpl.class);
 
@@ -262,6 +266,15 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
                 return null;
             }
         }
+        // validate Reporting Period.
+        Set<ConstraintViolation<AdverseEventReportingPeriod>> constraintViolations = validator.validate(rpFound, CourseCycleGroup.class, Default.class);
+        if(!constraintViolations.isEmpty()){
+            //translate errors to repsonse.
+            for(ConstraintViolation<AdverseEventReportingPeriod> v : constraintViolations){
+                errors.addValidationError("NO-CODE", v.getMessage(), v.getPropertyPath());
+            }
+            return null;
+        }
 
         if(rpFound == null){
             //new reporting period
@@ -275,6 +288,13 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
         } else {
             //existing reporting period.
             reportingPeriodSynchronizer.migrate(rpDest, rpFound, rpOutcome);
+            // Validate the Reporting Period before saving.
+           adverseEventValidatior.validate(rpFound, rpFound.getStudy(),errors);
+            if ( errors.hasErrors()) {
+                logger.error("Error(s) while validating with Adverse Event " + String.valueOf(errors.getErrorCount()));
+                return null;
+            }
+
             adverseEventReportingPeriodDao.save(rpFound);
 
         }
@@ -1501,6 +1521,15 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 
     public void setReportingPeriodConverter(AdverseEventReportingPeriodConverter reportingPeriodConverter) {
         this.reportingPeriodConverter = reportingPeriodConverter;
+    }
+
+
+    public AdverseEventValidatior getAdverseEventValidatior() {
+        return adverseEventValidatior;
+    }
+
+    public void setAdverseEventValidatior(AdverseEventValidatior adverseEventValidatior) {
+        this.adverseEventValidatior = adverseEventValidatior;
     }
 /*
     * private Study processStudyCriteria(StudyType xmlStudy) throws

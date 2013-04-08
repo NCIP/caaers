@@ -113,6 +113,8 @@ public class AdverseEventMigrator implements Migrator<AdverseEventReportingPerio
             aeDest.setEventApproximateTime(aeSrc.getEventApproximateTime());
             aeDest.setEventLocation(aeSrc.getEventLocation());
 
+            aeDest.setParticipantAtRisk(aeSrc.getParticipantAtRisk());
+
             aeDest.setOutcomes(aeSrc.getOutcomes());
 
             aeDest.setDetailsForOther(aeSrc.getDetailsForOther());

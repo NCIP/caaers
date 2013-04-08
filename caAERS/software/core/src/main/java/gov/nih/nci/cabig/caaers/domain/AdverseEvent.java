@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.validation.AdverseEventGroup;
+import gov.nih.nci.cabig.caaers.validation.fields.validators.NotEmptyCollectionConstraint;
 import gov.nih.nci.cabig.caaers.validation.fields.validators.NotNullConstraint;
 import gov.nih.nci.cabig.caaers.validation.fields.validators.NumberRangeConstraint;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
@@ -1215,7 +1216,7 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     @JoinColumn(name = "adverse_event_id", nullable=false)
     @Cascade(value = {CascadeType.ALL})
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
-    @NotNullConstraint(groups=AdverseEventGroup.class, fieldPath="adverseEvents[].outcomes")
+    @NotEmptyCollectionConstraint(groups=AdverseEventGroup.class, fieldPath="adverseEvents[].outcomes")
     public List<Outcome> getOutcomes() {
         if (outcomes == null) outcomes = new ArrayList<Outcome>();
         return outcomes;
@@ -1688,6 +1689,7 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
 	 *
 	 * @return the participant at risk
 	 */
+    @Column(name="participant_at_risk")
 	@NotNullConstraint(groups=AdverseEventGroup.class, fieldPath="adverseEvents[].participantAtRisk")
 	public Boolean getParticipantAtRisk() {
 		return participantAtRisk;

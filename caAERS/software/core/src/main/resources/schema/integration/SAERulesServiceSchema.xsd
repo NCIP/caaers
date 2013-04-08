@@ -127,6 +127,10 @@
                 <xs:element maxOccurs="unbounded" ref="adverseEvent"/>
             </xs:sequence>
         </xs:complexType>
+        <xs:unique name="UniqueAdverseEvents">
+            <xs:selector xpath="adverseevent"/>
+            <xs:field xpath="@externalId" />
+        </xs:unique>
     </xs:element>
 	
 	<xs:element name="evaluatedAdverseEventResults">

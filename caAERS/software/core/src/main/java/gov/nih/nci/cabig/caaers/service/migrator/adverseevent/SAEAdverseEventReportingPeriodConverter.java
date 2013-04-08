@@ -9,10 +9,12 @@ package gov.nih.nci.cabig.caaers.service.migrator.adverseevent;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AdverseEventType;
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.CourseType;
+import gov.nih.nci.cabig.caaers.integration.schema.saerules.AdverseEventResult;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.SaveAndEvaluateAEsInputMessage;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.Criteria;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * User: Vijendhar Meda
@@ -35,7 +37,7 @@ public class SAEAdverseEventReportingPeriodConverter {
      * @param aeiMsg
      * @return
      */
-    public AdverseEventReportingPeriod convert(SaveAndEvaluateAEsInputMessage aeiMsg){
+    public AdverseEventReportingPeriod convert(SaveAndEvaluateAEsInputMessage aeiMsg,Map<AdverseEvent, AdverseEventResult> mapAE2DTO){
         Criteria criteria = aeiMsg.getCriteria();
         AdverseEventReportingPeriod rp = new AdverseEventReportingPeriod();
         Study study = new LocalStudy();
@@ -91,6 +93,13 @@ public class SAEAdverseEventReportingPeriodConverter {
         if(aeiMsg.getAdverseEvents() != null && aeiMsg.getAdverseEvents().getAdverseEvent() != null){
           for(AdverseEventType aeType : aeiMsg.getAdverseEvents().getAdverseEvent()) {
               AdverseEvent ae = aeConverter.convert(aeType);
+
+              // Create a Map to convert given ae to result object.
+              AdverseEventResult result = new AdverseEventResult();
+              result.setAdverseEvent(aeType);
+              result.setRequiresReporting(false);
+              mapAE2DTO.put(ae, result);
+
               rp.addAdverseEvent(ae);
           }
         }

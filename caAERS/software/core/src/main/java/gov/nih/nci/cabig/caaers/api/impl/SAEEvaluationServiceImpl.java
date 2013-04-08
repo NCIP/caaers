@@ -73,71 +73,38 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
         List<AdverseEvent> aes = new ArrayList<AdverseEvent>();
 
         if ( saveAndEvaluateAEsInputMessage == null ) {
-            throw Helper.createCaaersFault(DEF_ERR_MSG, "WS_GEN_001",
-                    messageSource.getMessage("WS_GEN_001", new String[]{},  "", Locale.getDefault())
+            throw Helper.createCaaersFault(DEF_ERR_MSG, "WS_SAE_007",
+                    messageSource.getMessage("WS_SAE_007", new String[]{},  "", Locale.getDefault())
             );
         }
+        SaveAndEvaluateAEsOutputMessage saveAndEvaluateAEsOutputMessage = (SaveAndEvaluateAEsOutputMessage)createResponseObject(RequestType.SaveEvaluate);
 
-        // 0. Load the study required.
-        String studyIdentifier = saveAndEvaluateAEsInputMessage.getCriteria().getStudyIdentifier();
-        Study study = fetchStudy(studyIdentifier);
-        if ( study == null ) {
-            throw Helper.createCaaersFault("Unable to found the Study " + studyIdentifier, "WS_GEN_001",
-                    messageSource.getMessage("WS_GEN_001", new String[]{},  "", Locale.getDefault())
-            );
+        try {
+            // 0. Load the study required.
+            String studyIdentifier = saveAndEvaluateAEsInputMessage.getCriteria().getStudyIdentifier();
+            Study study = fetchStudy(studyIdentifier);
+
+            // 1. Call the converter and make the required object.
+            AdverseEventReportingPeriod reportingPeriod = reportingPeriodConverter.convert(saveAndEvaluateAEsInputMessage,mapAE2DTO);
+
+             // 2. Persist AdverseEvents.
+            ValidationErrors errors = new ValidationErrors();
+            reportingPeriod = adverseEventManagementService.createOrUpdateAdverseEvents(reportingPeriod, errors);
+
+            if(errors.hasErrors()){
+               logger.error("Adverse Event Management Service create or update call failed :" + String.valueOf(errors));
+                if ( errors.getErrorAt(0).getCode().equals("NO-CODE"))
+                    throw Helper.createCaaersFault(DEF_ERR_MSG, errors.getErrorAt(0).getCode(), errors.getErrorAt(0).getMessage() + " "  +errors.getErrorAt(0).getReplacementVariables()[0]);
+                else
+                    throw Helper.createCaaersFault(DEF_ERR_MSG, errors.getErrorAt(0).getCode(), errors.getErrorAt(0).getMessage());
+            }
+
+            // 3. fire Evaluation Service to identify SAE or not ?
+            saveAndEvaluateAEsOutputMessage = (SaveAndEvaluateAEsOutputMessage)fireSAERules(reportingPeriod, study, mapAE2DTO,RequestType.SaveEvaluate,saveAndEvaluateAEsOutputMessage);
         }
-
-        // create adverse Events.
-        AeTerminology terminology = study.getAeTerminology();
-
-        for (AdverseEventType adverseEventDto : saveAndEvaluateAEsInputMessage.getAdverseEvents().getAdverseEvent()) {
-            AdverseEvent ae = new AdverseEvent();
-            converter.convertAdverseEventDtoToAdverseEventDomain(adverseEventDto, ae,
-                    terminology, null, null);
-            aes.add(ae);
-
-            AdverseEventResult result = new AdverseEventResult();
-            result.setAdverseEvent(adverseEventDto);
-            result.setRequiresReporting(false);
-
-            mapAE2DTO.put(ae, result);
+        catch(CaaersSystemException ex) {
+            throw Helper.createCaaersFault(DEF_ERR_MSG, ex.getErrorCode(), ex.getMessage());
         }
-
-        // 1. Participant Query to create a Participant.
-        String studySubjectId  = saveAndEvaluateAEsInputMessage.getCriteria().getStudySubjectIdentifier(); // assign the value, retrieve from your newly defined input schema.
-        ParticipantQuery pq = new ParticipantQuery();
-        pq.joinStudy();
-        pq.filterByStudySubjectIdentifier(studySubjectId);
-        pq.filterByStudyId(study.getId());
-
-        List<Participant> dbParticipants = participantDao.searchParticipant(pq);
-
-        //Assuming the matching criteria returns only a value.
-        Participant par = null;
-
-        if ( dbParticipants.size() > 0 )     par =  dbParticipants.get(0);
-        if ( par == null ) {
-            throw Helper.createCaaersFault("Unable to find participant", "WS_GEN_001",
-                    messageSource.getMessage("WS_GEN_001", new String[]{},  "", Locale.getDefault()));
-        }
-
-        // 3. Call the converter and make the required object.
-
-        AdverseEventReportingPeriod reportingPeriod = reportingPeriodConverter.convert(saveAndEvaluateAEsInputMessage);
-
-
-         // 4. Persist AdverseEvents.
-        ValidationErrors errors = new ValidationErrors();
-        reportingPeriod = adverseEventManagementService.createOrUpdateAdverseEvents(reportingPeriod, errors);
-
-     //   logger.info("Created or Updated reporting period returned :" + reportingPeriod == null ? "NULL" : reportingPeriod.getId());
-        if(errors.hasErrors()){
-           logger.error("Adverse Event Management Service create or update call failed :" + String.valueOf(errors));
-           return null;
-        }
-
-        // 5. fire Adverse events ( create a Root level response message with indicating reporting is required or not ? ).
-        SaveAndEvaluateAEsOutputMessage saveAndEvaluateAEsOutputMessage = (SaveAndEvaluateAEsOutputMessage)fireSAERules(reportingPeriod, study, mapAE2DTO,RequestType.SaveEvaluate);
 
         return saveAndEvaluateAEsOutputMessage;
     }
@@ -150,8 +117,8 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
      */
 	public EvaluateAEsOutputMessage processAdverseEvents(EvaluateAEsInputMessage evaluateAEsInputMessage) throws CaaersFault {
 		if ( evaluateAEsInputMessage == null ) {
-			throw Helper.createCaaersFault(DEF_ERR_MSG, "WS_GEN_001",
-					messageSource.getMessage("WS_GEN_001", new String[]{},  "", Locale.getDefault())
+			throw Helper.createCaaersFault(DEF_ERR_MSG, "WS_SAE_007",
+					messageSource.getMessage("WS_SAE_007", new String[]{},  "", Locale.getDefault())
 					);
 		}
 		
@@ -235,7 +202,10 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 			ae.setReportingPeriod(period);
 		}
 
-		return (EvaluateAEsOutputMessage)fireSAERules(period, study, mapAE2DTO, RequestType.Evaluate);
+        // Create the response Object.
+        EvaluateAEsOutputMessage response = (EvaluateAEsOutputMessage)createResponseObject(RequestType.Evaluate);
+
+		return (EvaluateAEsOutputMessage)fireSAERules(period, study, mapAE2DTO, RequestType.Evaluate, response);
 	}
 
 	/**
@@ -270,8 +240,7 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
      */
 
 	private AEsOutputMessage fireSAERules(AdverseEventReportingPeriod reportingPeriod, Study study,
-			Map<AdverseEvent, AdverseEventResult> mapAE2DTO, RequestType requestType)  throws CaaersFault {
-        AEsOutputMessage response = createResponseObject(requestType);
+			Map<AdverseEvent, AdverseEventResult> mapAE2DTO, RequestType requestType,AEsOutputMessage response)  throws CaaersFault {
 		try {
 			EvaluatedAdverseEventResults results = new EvaluatedAdverseEventResults();
 			response.setEvaluatedAdverseEventResults(results);

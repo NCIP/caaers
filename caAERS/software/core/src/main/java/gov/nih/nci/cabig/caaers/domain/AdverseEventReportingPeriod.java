@@ -33,6 +33,9 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import gov.nih.nci.cabig.caaers.validation.AdverseEventGroup;
+import gov.nih.nci.cabig.caaers.validation.CourseCycleGroup;
+import gov.nih.nci.cabig.caaers.validation.fields.validators.NotNullConstraint;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
@@ -394,6 +397,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
      *
      * @return the end date
      */
+    @NotNullConstraint(groups=CourseCycleGroup.class, fieldPath="reportingPeriod.endDate")
     public Date getEndDate() {
         return endDate;
     }
@@ -412,6 +416,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
      *
      * @return the start date
      */
+    @NotNullConstraint(groups=CourseCycleGroup.class, fieldPath="reportingPeriod.startDate")
     public Date getStartDate() {
         return startDate;
     }
@@ -438,6 +443,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
      *
      * @return the treatment assignment
      */
+    @NotNullConstraint(groups=CourseCycleGroup.class, fieldPath="reportingPeriod.treatmentAssignment")
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "treatment_assignment_id")
     @Cascade(value = { CascadeType.LOCK })
@@ -477,6 +483,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
      *
      * @return the cycle number
      */
+    @NotNullConstraint(groups=CourseCycleGroup.class, fieldPath="reportingPeriod.cycleNumber")
     public Integer getCycleNumber() {
 		return cycleNumber;
 	}
@@ -525,6 +532,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
      *
      * @return the epoch
      */
+    @NotNullConstraint(groups=CourseCycleGroup.class, fieldPath="reportingPeriod.epoch")
     @ManyToOne(fetch = FetchType.LAZY)
     public Epoch getEpoch(){
     	return epoch;

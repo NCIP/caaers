@@ -280,7 +280,7 @@ public class AdverseEventConverter {
 			Grade grade = Grade.getByCode(adverseEventDto.getGrade());
 			adverseEvent.setGrade(grade);
 		} else {
-			adverseEvent.setGrade(Grade.NOT_EVALUATED);
+			adverseEvent.setGrade(null);
 		}
 	}
 	private void populateHospitalization(AdverseEventType adverseEventDto, AdverseEvent adverseEvent){		

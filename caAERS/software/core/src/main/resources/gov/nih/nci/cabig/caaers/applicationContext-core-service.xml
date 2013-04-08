@@ -485,7 +485,8 @@ default-lazy-init="true">
     	<property name="studyDao" ref="studyDao" />
     </bean>
     <bean id="aeReportValidator" class="gov.nih.nci.cabig.caaers.domain.validation.ExpeditedAdverseEventReportValidatorImpl"/>
-     
+    <bean id="adverseEventValidatior" class="gov.nih.nci.cabig.caaers.validation.validator.AdverseEventValidatior" autowire="byType"/>
+
     <!--  Migrators -->
     <bean id="behavioralInterventionMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.BehavioralInterventionMigrator" autowire="byType"/>
     <bean id="biologicalInterventionMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.BiologicalInterventionMigrator" autowire="byType"/>

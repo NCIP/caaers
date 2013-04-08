@@ -48,6 +48,10 @@ public class AdverseEventReportingPeriodSynchronizer implements Migrator<Adverse
 
                 aeFound.setDetailsForOther(aeSrc.getDetailsForOther());
                 aeFound.setComments(aeSrc.getComments());
+                aeFound.setParticipantAtRisk(aeSrc.getParticipantAtRisk());
+                aeFound.setRequiresReporting(aeSrc.getRequiresReporting());
+                aeFound.setReported(aeSrc.getReported());
+                aeFound.setSignature(aeSrc.getSignature());
 
                 aeFound.getOutcomes().clear();
                 for(Outcome outcomeSrc : aeSrc.getOutcomes()) aeFound.addOutComeIfNecessary(outcomeSrc);

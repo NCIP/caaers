@@ -8,6 +8,8 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
+import gov.nih.nci.cabig.caaers.validation.CourseCycleGroup;
+import gov.nih.nci.cabig.caaers.validation.fields.validators.NotNullConstraint;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import gov.nih.nci.cabig.ctms.domain.DomainObjectTools;
 
@@ -409,6 +411,7 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
      *
      * @return the start date of first course
      */
+    @NotNullConstraint(groups=CourseCycleGroup.class, fieldPath= "assignment.startDateOfFirstCourse")
     @Column(name = "first_course_date")
     public Date getStartDateOfFirstCourse() {
         return startDateOfFirstCourse;
