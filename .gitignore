@@ -11,3 +11,9 @@ caAERS/software/.classpath
 caAERS/software/.project
 RemoteSystemsTempFiles
 .iml
+.settings
+target
+.project
+.classpath
+caAERS/software/web/${env.CATALINA_HOME}/
+caAERS/software/jbi/caaers2adeers-sync/core-camel-su/data/

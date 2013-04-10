@@ -24,8 +24,8 @@
         <xs:complexContent>
             <xs:extension base="cct:MutableDomainObjectType">
                 <xs:sequence>
-                    <xs:element name="firstName" type="FirstAndLastNameType" minOccurs="1" maxOccurs="1"/>
-                    <xs:element name="lastName"  type="FirstAndLastNameType" minOccurs="1" maxOccurs="1"/>
+                    <xs:element name="firstName" type="FirstAndLastNameType" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="lastName"  type="FirstAndLastNameType" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="maidenName" type="MiddleAndMaidenNameType"  minOccurs="0"/>
                     <xs:element name="middleName" type="MiddleAndMaidenNameType"  minOccurs="0"/>
                     

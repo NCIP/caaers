@@ -4,8 +4,7 @@
   
   Distributed under the OSI-approved BSD 3-Clause License.
   See http://ncip.github.com/caaers/LICENSE.txt for details.
--->
-<con:soapui-project name="caAERSSoapUITestSuite" soapui-version="4.0.1.1" abortOnError="false" runType="SEQUENTIAL" resourceRoot="" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="AdverseEventManagementServiceSoapBinding" type="wsdl" bindingName="{http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent}AdverseEventManagementServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="https://localhost:8443/caaers/services/AdverseEventManagementService?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="https://localhost:8443/caaers/services/AdverseEventManagementService?wsdl"><con:part><con:url>https://localhost:8443/caaers/services/AdverseEventManagementService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="AdverseEventManagementService" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+--><con:soapui-project name="caAERSSoapUITestSuite" soapui-version="4.5.0" abortOnError="false" runType="SEQUENTIAL" resourceRoot="" activeEnvironment="Default" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="AdverseEventManagementServiceSoapBinding" type="wsdl" bindingName="{http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent}AdverseEventManagementServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="https://localhost:8443/caaers/services/AdverseEventManagementService?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="https://localhost:8443/caaers/services/AdverseEventManagementService?wsdl"><con:part><con:url>https://localhost:8443/caaers/services/AdverseEventManagementService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="AdverseEventManagementService" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <wsdl:types>
     <xs:schema elementFormDefault="unqualified" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:xs="http://www.w3.org/2001/XMLSchema">
       <xs:complexType name="DomainObjectType">
@@ -115604,17 +115603,24 @@ xmlns:dev="http://schema.integration.caaers.cabig.nci.nih.gov/device">
       <soap:address location="https://dev.semanticbits.com/caaers/services/ParticipantService"/>
     </wsdl:port>
   </wsdl:service>
-</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>https://dev.semanticbits.com/caaers/services/ParticipantService</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="createParticipant" bindingOperationName="createParticipant" type="Request-Response" outputName="createParticipantResponse" inputName="createParticipant" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="valid_request" outgoingWss="caaers"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://dev.semanticbits.com/caaers/services/ParticipantService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:par="http://schema.integration.caaers.cabig.nci.nih.gov/participant">
-   <soapenv:Header/>
-   <soapenv:Body>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>https://dev.semanticbits.com/caaers/services/ParticipantService</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="createParticipant" bindingOperationName="createParticipant" type="Request-Response" outputName="createParticipantResponse" inputName="createParticipant" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="valid_request" outgoingWss=""><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://dev.semanticbits.com/caaers/services/ParticipantService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" 
+xmlns:par="http://schema.integration.caaers.cabig.nci.nih.gov/participant"
+xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+    <soapenv:Header>
+     <wsse:Security>
+        <wsse:UsernameToken>
+          <wsse:Username>mayo-super-user</wsse:Username> 
+          <wsse:Password>Hello-12</wsse:Password> 
+        </wsse:UsernameToken>
+      </wsse:Security> 
+   </soapenv:Header>
+    <soapenv:Body>
       <par:createParticipant>
          <!--Optional:-->
          <par:participants>
       <par:participant>
 					<firstName>Richard</firstName>
 					<lastName>Herd</lastName>
-					<maidenName>maidenName</maidenName>
-					<middleName>Leing</middleName>
 					<birthDate>2001-01-01</birthDate>
 					<gender>Male</gender>
 					<race>Asian</race>
@@ -115649,7 +115655,7 @@ xmlns:dev="http://schema.integration.caaers.cabig.nci.nih.gov/device">
 									</identifiers>
 								</par:study>
 								<par:organization>
-									<name>QU</name>
+									<name></name>
 									<nciInstituteCode>DCP</nciInstituteCode>
 								</par:organization>
 							</par:studySite>
@@ -115855,4 +115861,4 @@ xmlns:dev="http://schema.integration.caaers.cabig.nci.nih.gov/device">
          </com:CaaersServiceResponse>
       </com:createOrUpdateASAELResponse>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/common/ASAELServiceInterface/createOrUpdateASAELResponse"/></con:response><con:dispatchConfig/></con:mockOperation><con:properties/></con:mockService><con:properties/><con:wssContainer><con:outgoing><con:name>caaers</con:name><con:entry type="Username" username="SYSTEM" password="Hello-12"><con:configuration><addCreated>true</addCreated><addNonce>true</addNonce><passwordType>PasswordText</passwordType></con:configuration></con:entry></con:outgoing><con:outgoing><con:name>vinodh</con:name><con:entry type="Username" username="SYSTEM" password="Hello-12"><con:configuration><addCreated>false</addCreated><addNonce>false</addNonce><passwordType>PasswordText</passwordType></con:configuration></con:entry></con:outgoing></con:wssContainer><con:sensitiveInformation/></con:soapui-project>
+</soapenv:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/common/ASAELServiceInterface/createOrUpdateASAELResponse"/></con:response><con:dispatchConfig/></con:mockOperation><con:properties/></con:mockService><con:properties/><con:wssContainer><con:outgoing><con:name>caaers</con:name><con:entry type="Username" username="mayo-super-user" password="Hello-12"><con:configuration><addCreated>true</addCreated><addNonce>true</addNonce><passwordType>PasswordText</passwordType></con:configuration></con:entry></con:outgoing><con:outgoing><con:name>vinodh</con:name><con:entry type="Username" username="SYSTEM" password="Hello-12"><con:configuration><addCreated>false</addCreated><addNonce>false</addNonce><passwordType>PasswordText</passwordType></con:configuration></con:entry></con:outgoing></con:wssContainer><con:sensitiveInformation/></con:soapui-project>
