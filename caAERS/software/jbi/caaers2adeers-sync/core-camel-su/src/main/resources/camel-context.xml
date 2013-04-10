@@ -72,6 +72,8 @@
         <property name="adeersWSUser" value="s[ADEERS_WS_USERNAME]" />
         <property name="adeersWSPassword" value="s[ADEERS_WS_PASSWORD]" />
     </bean>
+    <bean id="participantODMMessageProcessor" class="gov.nih.nci.cabig.open2caaers.exchange.ParticipantODMMessageProcessor"/>
+    <bean id="participantODMMessageBinding" class="gov.nih.nci.cabig.open2caaers.binding.ParticipantODMMessageBinding"/>
     <bean id="xslt" class="gov.nih.nci.cabig.caaers2adeers.xslt.CustomXsltComponent" />
     
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
@@ -131,6 +133,7 @@
     <bean id="toAdeersRouteBuilder" class="gov.nih.nci.cabig.caaers2adeers.ToAdeersRouteBuilder"/>
     <bean id="toCaaersClientRouteBuilder" class="gov.nih.nci.cabig.caaers2adeers.ToCaaersClientRouteBuilder"/>
     <bean id="toCaaersWebserviceRouteBuilder" class="gov.nih.nci.cabig.caaers2adeers.ToCaaersWebserviceRouteBuilder"/>
+    <bean id="toCaaersParticipantWSRouteBuilder" class="gov.nih.nci.cabig.open2caaers.ToCaaersParticipantWSRouteBuilder"/>
     <bean id="cronJobRouteBuilder" class="gov.nih.nci.cabig.caaers2adeers.CronJobRouteBuilder">
     	<property name="cronExpressions">
     		<map>

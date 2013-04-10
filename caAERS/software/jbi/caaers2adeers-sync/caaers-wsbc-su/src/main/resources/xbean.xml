@@ -4,8 +4,9 @@
     xmlns:cxfbc="http://servicemix.apache.org/cxfbc/1.0" 
     xmlns:caaers="http://schema.integration.caaers.cabig.nci.nih.gov/common"
     xmlns:stud="http://schema.integration.caaers.cabig.nci.nih.gov/study"
+    xmlns:part="http://schema.integration.caaers.cabig.nci.nih.gov/participant"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://servicemix.apache.org/cxfbc/1.0 http://servicemix.apache.org/schema/servicemix-cxfbc-2011.02.xsd
+    xsi:schemaLocation="http://servicemix.apache.org/cxfbc/1.0 http://servicemix.apache.org/cxfbc/1.0/servicemix-cxf-bc.xsd
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
     <!-- 
@@ -272,6 +273,27 @@
                     endpoint="StudyManagementWebServicePort"
                     wsdl="classpath:StudyService.wsdl"
                     locationURI="s[STUDY_WS_BINDING_URL]" useJBIWrapper="false"
+                    useSOAPEnvelope="true" schemaValidationEnabled="false">
+        <cxfbc:inInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+        </cxfbc:inInterceptors>
+        <cxfbc:outInterceptors>
+            <ref local="wss4jOutInterceptor" />
+            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+        </cxfbc:outInterceptors>
+        <cxfbc:inFaultInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+        </cxfbc:inFaultInterceptors>
+        <cxfbc:outFaultInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+        </cxfbc:outFaultInterceptors>
+    </cxfbc:provider>
+    
+    <!-- ================== Participant Webservice Provider ==================================-->
+    <cxfbc:provider interfaceName="part:ParticipantServiceInterface"  service="part:ParticipantService"
+                    endpoint="ParticipantManagementWebServicePort"
+                    wsdl="classpath:ParticipantService.wsdl"
+                    locationURI="s[PARTICIPANT_WS_BINDING_URL]" useJBIWrapper="false"
                     useSOAPEnvelope="true" schemaValidationEnabled="false">
         <cxfbc:inInterceptors>
             <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
