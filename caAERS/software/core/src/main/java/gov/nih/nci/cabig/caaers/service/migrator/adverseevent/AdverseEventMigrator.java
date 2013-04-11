@@ -124,7 +124,7 @@ public class AdverseEventMigrator implements Migrator<AdverseEventReportingPerio
                 AdverseEventCtcTerm aeSrcTerm = aeSrc.getAdverseEventCtcTerm();
                 if(aeSrcTerm == null || aeSrcTerm.getCtcTerm() == null || aeSrcTerm.getCtcTerm().getCtepCode() == null){
                     logger.error("The AE terminology on the study is CTC, but there is no CTC term (CtepCode) present in the adverse event");
-                    outcome.addError("WS_AEMS_020", "CTC term/Ctep code not found");
+                    outcome.addError("WS_AEMS_020", "CTC term/Ctep code not found ");
                     return;
                 }
                 AdverseEventCtcTerm aeCtcTermDest = new AdverseEventCtcTerm();

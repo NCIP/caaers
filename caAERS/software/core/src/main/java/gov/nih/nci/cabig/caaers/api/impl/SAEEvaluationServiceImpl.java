@@ -289,6 +289,7 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 							aeDTO.setRequiresReporting(true);
                             if ( requestType.equals(RequestType.SaveEvaluate)) {
                                 ((SaveAndEvaluateAEsOutputMessage)response).setHasSAE(true);
+                                ((SaveAndEvaluateAEsOutputMessage)response).setLinkToReport(constructLinkToReport(study.getId(),reportingPeriod.getParticipant().getId(), reportingPeriod.getId()));
                             }
 
 							aeDTO.setRecommendedReports(recommendedRpts);
@@ -346,6 +347,11 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
             return mapAE2DTO.get(thisAe);
         }
         return null;
+    }
+
+    private String constructLinkToReport(int studyId, int participantId, int rpId) {
+        String linkToReport = "https://localhost:8443/caaers/pages/ae/captureRoutine?study=" + studyId + "&participant="+ participantId + "&adverseEventReportingPeriod="+ rpId +"&_page=0&_target2=2&displayReportingPeriod=true&addReportingPeriodBinder=true";
+        return linkToReport;
     }
 
     private   AEsOutputMessage createResponseObject(RequestType requestType) {

@@ -66,7 +66,8 @@ public class AdverseEventValidatior {
 
             if(ae.getGrade() != null && ae.getGrade().equals(Grade.DEATH)){
               if (foundGrade5) {
-                  addValidationError(errors, "SAE_033", "Only one adverse event with grade DEATH is allowed in a course.");
+                  addValidationError(errors, "WS_AEMS_080", messageSource.getMessage("WS_AEMS_080",
+                          new String[] {}, "", Locale.getDefault()));
                   break;
               }
                 foundGrade5 = true;
@@ -79,7 +80,8 @@ public class AdverseEventValidatior {
         for (AdverseEvent ae : reportingPeriod.getAdverseEvents()) {
             if (ae.getDetailsForOther() != null && ae.getDetailsForOther().length() > VERBATIM_MAX_SIZE ) {
                 String len = String.valueOf(ae.getDetailsForOther().length());
-                addValidationError(errors,"SAE_021", "The size of the verbatim value should not exceed " + VERBATIM_MAX_SIZE  +  " characters" ) ;
+                addValidationError(errors,"WS_AEMS_081", messageSource.getMessage("WS_AEMS_081",
+                        new String[] {String.valueOf(VERBATIM_MAX_SIZE)}, "", Locale.getDefault()) ) ;
                 break;
             }
         }
@@ -98,7 +100,8 @@ public class AdverseEventValidatior {
             AdverseEvent adverseEvent = validateAEUniqueness(reportingPeriod, study, errors);
             if (adverseEvent != null) {
                String name = adverseEvent.getDisplayName();
-               addValidationError(errors, "DUPLICATE_EXPECTED_AE", "The AE Term " + name +   " occurred more than once in this list");
+               addValidationError(errors,"WS_AEMS_082", messageSource.getMessage("WS_AEMS_082",
+                        new String[] {name}, "", Locale.getDefault()) ) ;
             }
         }
         validateOnlyOneDeath(reportingPeriod, errors);

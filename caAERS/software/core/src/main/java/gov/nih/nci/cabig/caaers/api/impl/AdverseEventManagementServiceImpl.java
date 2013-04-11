@@ -261,17 +261,20 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
             if(!constraintViolations.isEmpty()){
                 //translate errors to repsonse.
                 for(ConstraintViolation<AdverseEvent> v : constraintViolations){
-                    errors.addValidationError("NO-CODE", v.getMessage(), v.getPropertyPath());
+                    errors.addValidationError("WS_GEN_006", v.getMessage(), v.getPropertyPath());
                 }
                 return null;
             }
         }
         // validate Reporting Period.
-        Set<ConstraintViolation<AdverseEventReportingPeriod>> constraintViolations = validator.validate(rpFound, CourseCycleGroup.class, Default.class);
+        AdverseEventReportingPeriod rpTarget = rpFound;
+        if (rpTarget == null ) rpTarget=rpDest;
+
+        Set<ConstraintViolation<AdverseEventReportingPeriod>> constraintViolations = validator.validate(rpTarget, CourseCycleGroup.class, Default.class);
         if(!constraintViolations.isEmpty()){
             //translate errors to repsonse.
             for(ConstraintViolation<AdverseEventReportingPeriod> v : constraintViolations){
-                errors.addValidationError("NO-CODE", v.getMessage(), v.getPropertyPath());
+                errors.addValidationError("WS_GEN_006", v.getMessage(), v.getPropertyPath());
             }
             return null;
         }

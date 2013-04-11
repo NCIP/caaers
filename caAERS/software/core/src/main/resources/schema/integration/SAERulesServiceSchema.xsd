@@ -207,8 +207,9 @@
         <xs:complexType>
         <xs:complexContent>
             <xs:extension base="AEsOutputMessage">
-                <xs:sequence minOccurs="1">
-                    <xs:element  name="hasSAE" type="xs:boolean"/>
+                <xs:sequence>
+                    <xs:element minOccurs="1"  name="hasSAE" type="xs:boolean"/>
+                    <xs:element minOccurs="0" name="linkToReport" type="xs:string"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
