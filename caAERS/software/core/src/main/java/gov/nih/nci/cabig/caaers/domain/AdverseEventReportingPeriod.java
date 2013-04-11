@@ -884,9 +884,17 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
 
     public AdverseEvent findAdverseEventByIdTermAndDates(AdverseEvent thatAe){
         for(AdverseEvent thisAe : getAdverseEvents()){
+            if ( thisAe.getRetiredIndicator()) continue; // if the adverse Event is retired then continue;
             //are Ids matching ?
             if(thatAe.getId() != null && thisAe.getId() != null && thisAe.getId().equals(thatAe.getId()) ) return thisAe;
-            if(thatAe.getExternalId() != null && thisAe.getExternalId() != null && StringUtils.equals(this.getExternalId(), thatAe.getExternalId()) ) return thisAe;
+            if(thatAe.getExternalId() != null && thisAe.getExternalId() != null && StringUtils.equals(thisAe.getExternalId(), thatAe.getExternalId()) )
+                return thisAe;
+            else
+                if(thatAe.getExternalId() != null || thisAe.getExternalId() != null) {
+                 continue;
+                }
+
+
 
             //are dates matching ?
             if(DateUtils.compareDate(thisAe.getStartDate(), thatAe.getStartDate()) != 0)  continue;
