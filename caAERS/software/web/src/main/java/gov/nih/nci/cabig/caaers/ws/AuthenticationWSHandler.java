@@ -58,7 +58,7 @@ public class AuthenticationWSHandler implements CallbackHandler {
             logger.debug(authz);
         }catch(AuthenticationException e) {
             logger.error("Invalid Username/Password.", e);
-            throw new SoapFault("Invalid Username/Password [", Fault.FAULT_CODE_SERVER);
+            throw new SoapFault("Invalid Username/Password ", Fault.FAULT_CODE_SERVER);
         }catch(Exception e) {
             logger.error(e.getMessage());
             throw new SoapFault(e.getMessage(), Fault.FAULT_CODE_SERVER);
