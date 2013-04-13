@@ -443,7 +443,6 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
      *
      * @return the treatment assignment
      */
-    @NotNullConstraint(groups=CourseCycleGroup.class, fieldPath="reportingPeriod.treatmentAssignment")
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "treatment_assignment_id")
     @Cascade(value = { CascadeType.LOCK })
