@@ -6,14 +6,20 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers2adeers;
 
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.*;
+import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.NO_DATA_AVAILABLE;
+import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.PRE_PROCESS_OPEN_ODM_MSG;
+import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.REQUEST_COMPLETION;
+import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.REQUEST_RECEIVED;
+import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.REQUST_PROCESSING_ERROR;
+import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.ROUTED_TO_ADEERS_REQUEST_SINK;
+import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.ROUTED_TO_CAAERS_REQUEST_SINK;
 import static gov.nih.nci.cabig.caaers2adeers.track.Tracker.track;
-
-import javax.xml.transform.dom.DOMSource;
-
 import gov.nih.nci.cabig.caaers2adeers.track.FileTracker;
 import gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage;
+import gov.nih.nci.cabig.open2caaers.ToCaaersParticipantWSRouteBuilder;
+import gov.nih.nci.cabig.open2caaers.exchange.ParticipantODMMessageProcessor;
 
+import org.apache.camel.Exchange;
 import org.apache.camel.ExchangePattern;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.builder.xml.Namespaces;
@@ -45,6 +51,8 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
     private ToCaaersWebserviceRouteBuilder toCaaersWebserviceRouteBuilder;
     @Autowired
     private FileTracker fileTracker;
+    @Autowired
+    private ToCaaersParticipantWSRouteBuilder toCaaersParticipantWSRouteBuilder;
 
 	/**
 	 * Will create a route that calls a webservice with before-call and after-call transformations
@@ -87,6 +95,46 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
         
         onException(Throwable.class)
                 .to("direct:morgue");
+        
+        // route for Participant Service
+        
+        from("jetty:https://0.0.0.0:7700/caaers/participantService?httpBindingRef=participantODMMessageBinding")
+        .streamCaching()
+        .process(track(REQUEST_RECEIVED))
+        .process(new ParticipantODMMessageProcessor())
+        .to("direct:participantOpenOdmMessageSink");
+        
+//process OPEN ODM msg to add security header and correlation id
+        
+    	from("direct:participantOpenOdmMessageSink")
+            .processRef("oDMexchangePreProcessor").processRef("headerGeneratorProcessor")
+                .process(track(REQUEST_RECEIVED))
+                .to(fileTracker.fileURI(REQUEST_RECEIVED))
+                .process(track(PRE_PROCESS_OPEN_ODM_MSG))
+            .to("direct:processedOpenOdmMessageSink");
+
+        //configure route towards caAERS Webservices
+    	toCaaersParticipantWSRouteBuilder.configure(this);
+
+    	//need to process caAERS results
+		from("direct:caAERSParticipantServiceResponseSink")
+                .choice()
+                    .when().xpath("//operation/errors/error")
+                        .to("direct:morgue")
+                    .when().xpath("//soap:Fault", ns)
+                        .to("direct:morgue")
+                    .otherwise()
+                    	.convertBodyTo(String.class)
+                        .to("direct:oDMoutputSink");
+
+
+        //BELOW one is the response to OPEN.
+        from("direct:oDMoutputSink")
+                .to("log:gov.nih.nci.cabig.open2caaers.from-oDMoutputSink?showAll=true&level=TRACE&showException=true&showStackTrace=true")
+                .process(track(REQUEST_COMPLETION))
+                .to(fileTracker.fileURI(REQUEST_COMPLETION))
+                .to("direct:openResponseSink");
+
 
         //just for testing generic webservice
         

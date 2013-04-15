@@ -8,6 +8,7 @@ package gov.nih.nci.cabig.open2caaers;
 
 import static gov.nih.nci.cabig.caaers2adeers.track.Tracker.track;
 import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.*;
+import gov.nih.nci.cabig.caaers2adeers.Caaers2AdeersRouteBuilder;
 
 public class ToCaaersParticipantWSRouteBuilder {
 
@@ -16,9 +17,9 @@ private String caAERSParticipantServiceJBIURL = "jbi:service:http://schema.integ
 	private String requestXSLBase = "xslt/caaers/request/";
 	private String responseXSLBase = "xslt/caaers/response/";
 	
-	private OpenToCaeersRouteBuilder routeBuilder;
+	private Caaers2AdeersRouteBuilder routeBuilder;
 
-	public void configure(OpenToCaeersRouteBuilder rb){
+	public void configure(Caaers2AdeersRouteBuilder rb){
         this.routeBuilder = rb;
 
 		//content based router

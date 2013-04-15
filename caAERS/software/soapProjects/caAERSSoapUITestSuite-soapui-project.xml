@@ -115610,7 +115610,7 @@ xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-s
      <wsse:Security>
         <wsse:UsernameToken>
           <wsse:Username>mayo-super-user</wsse:Username> 
-          <wsse:Password>Hello-12</wsse:Password> 
+          <wsse:Password>Hello-11</wsse:Password> 
         </wsse:UsernameToken>
       </wsse:Security> 
    </soapenv:Header>
@@ -115655,7 +115655,7 @@ xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-s
 									</identifiers>
 								</par:study>
 								<par:organization>
-									<name></name>
+									<name>DCP</name>
 									<nciInstituteCode>DCP</nciInstituteCode>
 								</par:organization>
 							</par:studySite>
