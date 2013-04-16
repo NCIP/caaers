@@ -4,6 +4,7 @@
 	version='2.0'>
 	
 	<xsl:output method="xml" indent="yes"/>
+	<xsl:variable name="map" select="document('lookup.xml')"/>
 	
 	<xsl:template match="/">
 		<soapenv:Envelope>
@@ -12,38 +13,68 @@
 					<par:participants>
 						<par:participant>
 							 <xsl:variable name="sub" select='ODM/ClinicalData/SubjectData/StudyEventData[@StudyEventOID="ENROLLMENT_FORMS"]/FormData[@FormOID="DEMOGRAPHY"]/ItemGroupData[@ItemGroupOID="DEMOGRAPHY"]/ItemData [@ItemOID="PT_INITIALS_NAME"]/@Value'/>
-							<firstName>
-								<xsl:value-of
-									select='substring($sub,1,1)' />
-							</firstName>
-							<lastName>
-								<xsl:value-of
-									select='substring($sub,2,2)' />
-							</lastName>
-							<middleName>
-								<xsl:value-of
-										select='substring($sub,3,3)' />
-							</middleName>
-							<birthMonth></birthMonth>
-							<birthDay></birthDay>
-							<birthYear></birthYear>
+							 <xsl:if test="substring($sub,1,1) !='-' ">
+								<firstName>
+									<xsl:value-of
+										select='substring($sub,1,1)' />
+								</firstName>
+							</xsl:if>
+							<xsl:if test="substring($sub,2,1) !='-' ">
+								<lastName>
+									<xsl:value-of
+										select='substring($sub,2,1)' />
+								</lastName>
+							</xsl:if>
+							<xsl:if test="substring($sub,3,1) !='-' ">
+								<middleName>
+									<xsl:value-of
+											select='substring($sub,3,1)' />
+								</middleName>
+							</xsl:if>
 							<birthDate>
 								 <xsl:variable name="birthDate" select='ODM/ClinicalData/SubjectData/StudyEventData[@StudyEventOID="ENROLLMENT_FORMS"]/FormData[@FormOID="DEMOGRAPHY"]/ItemGroupData[@ItemGroupOID="DEMOGRAPHY"]/ItemData [@ItemOID="PER_BIR_DT"]/@Value'/>
-								 <xsl:variable name="vMonth" select="substring-before($birthDate, '/')"/>
+								 <xsl:variable name="vDay" select="substring-before($birthDate, ' ')"/>
 
-							     <xsl:variable name="vDay" select=
-							     "substring-before(substring-after($birthDate, '/'), '/')"/>
+							     <xsl:variable name="vMonthName" select=
+							     "substring-before(substring-after($birthDate, ' '), ' ')"/>
 							
 							     <xsl:variable name="vYear" select=
-							     "substring-before(substring-after(substring-after($birthDate, '/'), '/'), ' ')"/>
+							     "substring-after(substring-after($birthDate, ' '), ' ')"/>
+							     
+							     <xsl:variable name="vMonth">
+							     <xsl:choose>
+							     	<xsl:when test="$vMonthName = 'Jan'">01</xsl:when>
+							     	<xsl:when test="$vMonthName = 'Feb'">02</xsl:when>
+							     	<xsl:when test="$vMonthName = 'Mar'">03</xsl:when>
+							     	<xsl:when test="$vMonthName = 'Apr'">04</xsl:when>
+							     	<xsl:when test="$vMonthName = 'May'">05</xsl:when>
+							     	<xsl:when test="$vMonthName = 'Jun'">06</xsl:when>
+							     	<xsl:when test="$vMonthName = 'Jul'">07</xsl:when>
+							     	<xsl:when test="$vMonthName = 'Aug'">08</xsl:when>
+							     	<xsl:when test="$vMonthName = 'Sep'">09</xsl:when>
+							     	<xsl:when test="$vMonthName = 'Oct'">10</xsl:when>
+							     	<xsl:when test="$vMonthName = 'Nov'">11</xsl:when>
+							     	<xsl:when test="$vMonthName = 'Dec'">12</xsl:when>
+							     </xsl:choose>
+							     </xsl:variable>
 							
 							     <xsl:value-of select=
 							      "concat($vYear,'-',$vMonth,'-',$vDay)"/>
 								
 							</birthDate>
 							<gender>
-								<xsl:value-of
-									select='ODM/ClinicalData/SubjectData/StudyEventData[@StudyEventOID="ENROLLMENT_FORMS"]/FormData[@FormOID="DEMOGRAPHY"]/ItemGroupData[@ItemGroupOID="DEMOGRAPHY"]/ItemData [@ItemOID="PERSON_GENDER"]/@Value' />
+								 <xsl:variable name="odmGender" select='ODM/ClinicalData/SubjectData/StudyEventData[@StudyEventOID="ENROLLMENT_FORMS"]/FormData[@FormOID="DEMOGRAPHY"]/ItemGroupData[@ItemGroupOID="DEMOGRAPHY"]/ItemData [@ItemOID="PERSON_GENDER"]/@Value'/>
+
+							     <xsl:variable name="caAERSGender">
+							     <xsl:choose>
+							     	<xsl:when test="$odmGender = 'Male Gender'">Male</xsl:when>
+							     	<xsl:when test="$odmGender = 'Female Gender'">Female</xsl:when>
+							     	<xsl:otherwise>$odmGender</xsl:otherwise>
+							     </xsl:choose>
+							     </xsl:variable>
+							
+							     <xsl:value-of select="$caAERSGender"/>
+							     
 							</gender>
 							<race>
 								<xsl:value-of
@@ -82,7 +113,7 @@
 										<par:study>
 											<identifiers>
 												<identifier>
-													<type>CTEP-ESYS-IDENTIFIERr</type>
+													<type>Other</type>
 													<value>
 														<xsl:value-of select='ODM/ClinicalData/@StudyOID' />
 													</value>

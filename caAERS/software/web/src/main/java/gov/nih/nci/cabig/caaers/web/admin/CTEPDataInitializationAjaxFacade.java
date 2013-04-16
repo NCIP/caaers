@@ -318,6 +318,7 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
     	if(serviceName.equalsIgnoreCase("GetStudyDetails")) return "study";
     	if(serviceName.equalsIgnoreCase("GetMergedOrganization")) return "mergedorganization";
     	if(serviceName.equalsIgnoreCase("GetAgentDoseUOMLOV")) return "agentDoseUOM";
+    	if(serviceName.equalsIgnoreCase("OPENParticipantService")) return "participant";
 
         return null;
     }
@@ -341,6 +342,7 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
     	if(serviceName.equalsIgnoreCase("GetStudyDetails")) return "updateStudy";
     	if(serviceName.equalsIgnoreCase("GetMergedOrganization")) return "getMergedOrganization";
     	if(serviceName.equalsIgnoreCase("GetAgentDoseUOMLOV")) return "getAgentDoseUOMLOV";
+    	if(serviceName.equalsIgnoreCase("OPENParticipantService")) return "createParticipant";
 
         return null;
     }

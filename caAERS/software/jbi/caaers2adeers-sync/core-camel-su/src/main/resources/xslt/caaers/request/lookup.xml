@@ -54,10 +54,24 @@
         <race><code>Not Reported</code><value>Not Reported</value></race>
         <race><code>Unknown</code><value>Unknown</value></race>
     </races>
-     <ethnicities>
+    <ethnicities>
         <ethnicity><code>Hispanic or Latino</code><value>Hispanic or Latino</value></ethnicity>
         <ethnicity><code>Not Hispanic or Latino</code><value>Not Hispanic or Latino</value></ethnicity>
         <ethnicity><code>Not Reported</code><value>Not Reported</value></ethnicity>
         <ethnicity><code>Unknown</code><value>Unknown</value></ethnicity>
     </ethnicities>
+    <months>
+        <month><code>Jan</code><value>01</value></month>
+        <month><code>Feb</code><value>02</value></month>
+        <month><code>Mar</code><value>03</value></month>
+        <month><code>Apr</code><value>04</value></month>
+        <month><code>May</code><value>05</value></month>
+        <month><code>Jun</code><value>06</value></month>
+        <month><code>Jul</code><value>07</value></month>
+        <month><code>Aug</code><value>08</value></month>
+        <month><code>Sep</code><value>09</value></month>
+        <month><code>Oct</code><value>10</value></month>
+        <month><code>Nov</code><value>11</value></month>
+        <month><code>Dec</code><value>12</value></month>
+    </months>
 </lookup>
