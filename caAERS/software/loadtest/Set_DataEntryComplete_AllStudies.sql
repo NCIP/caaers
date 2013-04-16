@@ -1,0 +1,1 @@
+update studies set data_entry_status = TRUE
