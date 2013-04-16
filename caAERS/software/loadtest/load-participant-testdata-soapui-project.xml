@@ -1,0 +1,1428 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project activeEnvironment="Default" name="ParticipantService2" resourceRoot="${projectDir}" soapui-version="4.5.0" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="ParticipantServiceSoapBinding" type="wsdl" bindingName="{http://schema.integration.caaers.cabig.nci.nih.gov/participant}ParticipantServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="https://sbhost08-vm09.semanticbits.com:8443/caaers/services/ParticipantService?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="https://sbhost08-vm09.semanticbits.com:8443/caaers/services/ParticipantService?wsdl"><con:part><con:url>https://sbhost08-vm09.semanticbits.com:8443/caaers/services/ParticipantService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="ParticipantService" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/participant" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/participant" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+    <xs:schema elementFormDefault="unqualified" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="treatmentAssignment" type="TreatmentAssignmentType"/>
+      <xs:complexType name="TreatmentAssignmentType">
+        <xs:complexContent>
+          <xs:extension base="DomainObjectType">
+            <xs:sequence>
+              <xs:element name="code" type="CustomStringType"/>
+              <xs:element minOccurs="0" name="doseLevelOrder" type="CustomStringType"/>
+              <xs:element name="description" type="CustomStringType"/>
+              <xs:element minOccurs="0" name="comments" type="CustomStringType"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="agentRef" type="AgentRefType"/>
+      <xs:complexType name="AgentRefType">
+        <xs:sequence>
+          <xs:element name="nscNumber" type="CustomStringType"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="agent" type="AgentType"/>
+      <xs:complexType name="AgentType">
+        <xs:complexContent>
+          <xs:extension base="DomainObjectType">
+            <xs:sequence>
+              <xs:element name="name" type="CustomStringType"/>
+              <xs:element minOccurs="0" name="descriptionText" type="CustomStringType"/>
+              <xs:element name="nscNumber" type="CustomStringType"/>
+              <xs:element maxOccurs="1" minOccurs="0" name="status" type="ActiveInactiveStatusType"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="Agents">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" ref="agent"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="lab" type="LabTermType"/>
+      <xs:complexType name="LabTermType">
+        <xs:complexContent>
+          <xs:extension base="DomainObjectType">
+            <xs:sequence>
+              <xs:element name="term" type="CustomStringType"/>
+              <xs:element maxOccurs="1" minOccurs="0" name="status" type="ActiveInactiveStatusType"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="labs">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" ref="lab"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="labCategory" type="LabCategoryType"/>
+      <xs:complexType name="LabCategoryType">
+        <xs:sequence>
+          <xs:element name="category" type="CustomStringType"/>
+          <xs:element ref="labs"/>
+          <xs:element maxOccurs="1" minOccurs="0" name="status" type="ActiveInactiveStatusType"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="labCategories">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" ref="labCategory"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="preExistingCondition" type="PreExistingConditionType"/>
+      <xs:complexType name="PreExistingConditionType">
+        <xs:complexContent>
+          <xs:extension base="DomainObjectType">
+            <xs:sequence>
+              <xs:element minOccurs="1" name="text" type="CustomStringType"/>
+              <xs:element minOccurs="1" name="meddraLltCode" type="xs:string"/>
+              <xs:element minOccurs="0" name="meddraLlt" type="xs:string"/>
+              <xs:element minOccurs="0" name="meddraHlgt" type="xs:string"/>
+              <xs:element maxOccurs="1" minOccurs="0" name="status" type="ActiveInactiveStatusType"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="PreExistingConditions">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" ref="preExistingCondition"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="priorTherapy" type="PriorTherapyType"/>
+      <xs:complexType name="PriorTherapyType">
+        <xs:complexContent>
+          <xs:extension base="DomainObjectType">
+            <xs:sequence>
+              <xs:element minOccurs="1" name="text" type="CustomStringType"/>
+              <xs:element minOccurs="1" name="meddraCode" type="CustomStringType"/>
+              <xs:element name="meddraTerm" type="xs:string"/>
+              <xs:element name="therapyType" type="xs:string"/>
+              <xs:element maxOccurs="1" minOccurs="0" name="status" type="ActiveInactiveStatusType"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="PriorTherapies">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" ref="priorTherapy"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="investigationalNewDrug" type="InvestigationalNewDrugType"/>
+      <xs:complexType name="InvestigationalNewDrugType">
+        <xs:complexContent>
+          <xs:extension base="DomainObjectType">
+            <xs:sequence>
+              <xs:element name="indHolder" type="IndHolderType"/>
+              <xs:element name="indNumber" type="xs:integer"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="indHolder" type="IndHolderType"/>
+      <xs:complexType name="IndHolderType">
+        <xs:complexContent>
+          <xs:extension base="DomainObjectType">
+            <xs:choice>
+              <xs:element ref="investigatorRef"/>
+              <xs:element ref="organizationRef"/>
+            </xs:choice>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="diseaseTerm" type="DiseaseTermType"/>
+      <xs:complexType name="DiseaseTermType">
+        <xs:complexContent>
+          <xs:extension base="DomainObjectType">
+            <xs:choice>
+              <xs:element name="term" type="CustomStringType"/>
+              <xs:element name="meddraCode" type="CustomStringType"/>
+            </xs:choice>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="organization" type="OrganizationType"/>
+      <xs:complexType name="OrganizationType">
+        <xs:complexContent>
+          <xs:extension base="MutableDomainObjectType">
+            <xs:sequence>
+              <xs:element maxOccurs="1" minOccurs="0" name="descriptionText" type="xs:string"/>
+              <xs:element maxOccurs="1" minOccurs="1" name="name" type="CustomStringType"/>
+              <xs:element maxOccurs="1" minOccurs="1" name="nciInstituteCode" type="CustomStringType"/>
+              <xs:element maxOccurs="1" minOccurs="0" name="city" type="xs:string"/>
+              <xs:element maxOccurs="1" minOccurs="0" name="state" type="xs:string"/>
+              <xs:element maxOccurs="1" minOccurs="0" name="country" type="xs:string"/>
+              <xs:element maxOccurs="1" minOccurs="0" name="status" type="ActiveInactiveStatusType"/>
+              <xs:element maxOccurs="1" minOccurs="0" name="mergedOrganization" type="OrganizationType"/>
+              <xs:element maxOccurs="1" minOccurs="0" name="type" type="xs:string"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="organizationRef" type="OrganizationRefType"/>
+      <xs:complexType name="OrganizationRefType">
+        <xs:sequence>
+          <xs:element maxOccurs="1" minOccurs="1" name="nciInstituteCode" type="CustomStringType"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="person" type="PersonType"/>
+      <xs:complexType name="PersonType">
+        <xs:complexContent>
+          <xs:extension base="DomainObjectType">
+            <xs:sequence>
+              <xs:element maxOccurs="1" minOccurs="1" name="firstName" type="CustomStringType"/>
+              <xs:element maxOccurs="1" minOccurs="1" name="lastName" type="CustomStringType"/>
+              <xs:element maxOccurs="1" minOccurs="0" name="middleName" type="xs:string"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="researchStaffRef" type="ResearchStaffRefType"/>
+      <xs:complexType name="ResearchStaffRefType">
+        <xs:sequence>
+          <xs:element maxOccurs="1" minOccurs="0" name="nciIdentifier" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="researchStaff" type="ResearchStaffType"/>
+      <xs:complexType name="ResearchStaffType">
+        <xs:complexContent>
+          <xs:extension base="PersonType">
+            <xs:sequence>
+              <xs:element maxOccurs="1" minOccurs="1" name="emailAddress" type="CustomStringType"/>
+              <xs:element maxOccurs="1" minOccurs="0" name="faxNumber" type="xs:string"/>
+              <xs:element maxOccurs="1" minOccurs="1" name="nciIdentifier" type="xs:string"/>
+              <xs:element name="phoneNumber" type="CustomStringType"/>
+              <xs:element name="loginId" type="xs:string"/>
+              <xs:element maxOccurs="1" minOccurs="0" name="street" type="xs:string"/>
+              <xs:element maxOccurs="1" minOccurs="0" name="city" type="xs:string"/>
+              <xs:element maxOccurs="1" minOccurs="0" name="state" type="xs:string"/>
+              <xs:element maxOccurs="1" minOccurs="0" name="zip" type="xs:string"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="siteInvestigator" type="SiteInvestigatorType"/>
+      <xs:complexType name="SiteInvestigatorType">
+        <xs:complexContent>
+          <xs:extension base="DomainObjectType">
+            <xs:sequence>
+              <xs:element name="emailAddress" type="CustomStringType"/>
+              <xs:element name="statusCode" type="ActiveInactiveStatusType"/>
+              <xs:element maxOccurs="1" minOccurs="0" name="phoneNumber" type="xs:string"/>
+              <xs:element maxOccurs="1" minOccurs="0" name="faxNumber" type="xs:string"/>
+              <xs:element maxOccurs="1" minOccurs="0" name="street" type="xs:string"/>
+              <xs:element maxOccurs="1" minOccurs="0" name="city" type="xs:string"/>
+              <xs:element maxOccurs="1" minOccurs="0" name="state" type="xs:string"/>
+              <xs:element maxOccurs="1" minOccurs="0" name="zip" type="xs:string"/>
+              <xs:element maxOccurs="1" minOccurs="0" name="country" type="xs:string"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="siteResearchStaff" type="SiteResearchStaffType"/>
+      <xs:complexType name="SiteResearchStaffType">
+        <xs:complexContent>
+          <xs:extension base="DomainObjectType">
+            <xs:sequence>
+              <xs:element maxOccurs="1" minOccurs="0" name="emailAddress" type="xs:string"/>
+              <xs:element maxOccurs="1" minOccurs="0" name="phoneNumber" type="xs:string"/>
+              <xs:element maxOccurs="1" minOccurs="0" name="faxNumber" type="xs:string"/>
+              <xs:element maxOccurs="1" minOccurs="0" name="street" type="xs:string"/>
+              <xs:element maxOccurs="1" minOccurs="0" name="city" type="xs:string"/>
+              <xs:element maxOccurs="1" minOccurs="0" name="state" type="xs:string"/>
+              <xs:element maxOccurs="1" minOccurs="0" name="zip" type="xs:string"/>
+              <xs:element maxOccurs="1" minOccurs="0" name="country" type="xs:string"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="investigatorRef" type="InvestigatorRefType"/>
+      <xs:complexType name="InvestigatorRefType">
+        <xs:sequence>
+          <xs:element name="nciIdentifier" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="investigator" type="InvestigatorType"/>
+      <xs:complexType name="InvestigatorType">
+        <xs:complexContent>
+          <xs:extension base="PersonType">
+            <xs:sequence>
+              <xs:element name="emailAddress" type="CustomStringType"/>
+              <xs:element maxOccurs="1" minOccurs="0" name="faxNumber" type="xs:string"/>
+              <xs:element maxOccurs="1" minOccurs="1" name="nciIdentifier" type="xs:string"/>
+              <xs:element maxOccurs="1" minOccurs="1" name="phoneNumber" type="CustomStringType"/>
+              <xs:element name="allowedToLogin" type="xs:boolean"/>
+              <xs:element name="loginId" type="xs:string"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:simpleType name="RoleCodeType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="SPI">
+            <xs:annotation>
+              <xs:documentation>Site Principal Investigator</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="SI">
+            <xs:annotation>
+              <xs:documentation>Site Investigator</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="PI">
+            <xs:annotation>
+              <xs:documentation>Principal Investigator</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="PersonnelRoleCodeType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="system_administrator">
+            <xs:annotation>
+              <xs:documentation>System Administrator</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="business_administrator">
+            <xs:annotation>
+              <xs:documentation>Business Administrator</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="person_and_organization_information_manager">
+            <xs:annotation>
+              <xs:documentation>Person and Organization Information Manager</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="data_importer">
+            <xs:annotation>
+              <xs:documentation>Data Importer</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="user_administrator">
+            <xs:annotation>
+              <xs:documentation>User Admin</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="study_qa_manager">
+            <xs:annotation>
+              <xs:documentation>Study QA Manager</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="study_creator">
+            <xs:annotation>
+              <xs:documentation>Study Creator</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="supplemental_study_information_manager">
+            <xs:annotation>
+              <xs:documentation>Supplemantal Study Information Manager</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="study_team_administrator">
+            <xs:annotation>
+              <xs:documentation>Study Team Admin</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="study_site_participation_administrator">
+            <xs:annotation>
+              <xs:documentation>Study Site Participation Admin</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="ae_rule_and_report_manager">
+            <xs:annotation>
+              <xs:documentation>AE Rule and Report Manager</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="study_calendar_template_builder">
+            <xs:annotation>
+              <xs:documentation>Study Calendar Template Builder</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="registration_qa_manager">
+            <xs:annotation>
+              <xs:documentation>Registration QA Manager</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="subject_manager">
+            <xs:annotation>
+              <xs:documentation>Subject Manager</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="study_subject_calendar_manager">
+            <xs:annotation>
+              <xs:documentation>Study Subject Calendar Manager</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="registrar">
+            <xs:annotation>
+              <xs:documentation>Registrar</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="ae_reporter">
+            <xs:annotation>
+              <xs:documentation>AE Reporter</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="ae_expedited_report_reviewer">
+            <xs:annotation>
+              <xs:documentation>AE Expedited Report Reviewer</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="ae_study_data_reviewer">
+            <xs:annotation>
+              <xs:documentation>AE Study Data Reviewer</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="lab_impact_calendar_notifier">
+            <xs:annotation>
+              <xs:documentation>Lab Impact Calendar Notifier</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="lab_data_user">
+            <xs:annotation>
+              <xs:documentation>Lab Data User</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="data_reader">
+            <xs:annotation>
+              <xs:documentation>Data Reader</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="data_analyst">
+            <xs:annotation>
+              <xs:documentation>Data Analyst</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="study_medical_monitor">
+            <xs:annotation>
+              <xs:documentation>Study Medical Monitor</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="DesignCodeType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="BLIND"/>
+          <xs:enumeration value="OPEN_UNBLIND"/>
+          <xs:enumeration value="PARTIAL"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="IndType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="NA"/>
+          <xs:enumeration value="NA_COMMERCIAL"/>
+          <xs:enumeration value="IND_EXEMPT"/>
+          <xs:enumeration value="DCP_IND"/>
+          <xs:enumeration value="OTHER"/>
+          <xs:enumeration value="CTEP_IND"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:complexType name="DeviceType">
+        <xs:complexContent>
+          <xs:extension base="MutableDomainObjectType">
+            <xs:sequence>
+              <xs:element minOccurs="1" name="commonName" type="xs:string"/>
+              <xs:element minOccurs="1" name="brandName" type="xs:string"/>
+              <xs:element minOccurs="0" name="type" type="xs:string"/>
+              <xs:element minOccurs="0" name="ctepDbIdentifier" type="xs:string">
+                <xs:annotation>
+                  <xs:documentation>An identifier issued by CTEP for the device, which at the moment is the DB ID of AdEERS.</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element maxOccurs="1" minOccurs="0" name="status" type="ActiveInactiveStatusType"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:simpleType name="TherapyType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Drug"/>
+          <xs:enumeration value="Radiation"/>
+          <xs:enumeration value="Procedure/Surgery"/>
+          <xs:enumeration value="Device"/>
+          <xs:enumeration value="Behavioral"/>
+          <xs:enumeration value="Biological/Vaccine"/>
+          <xs:enumeration value="Genetic"/>
+          <xs:enumeration value="Dietary Supplement"/>
+          <xs:enumeration value="Other"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="StudyIdentifierType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Site Identifier"/>
+          <xs:enumeration value="Site IRB Identifier"/>
+          <xs:enumeration value="ClinicalTrails.gov Identifier"/>
+          <xs:enumeration value="Grid Identifier"/>
+          <xs:enumeration value="C3D Identifier"/>
+          <xs:enumeration value="Protocol Authority Identifier"/>
+          <xs:enumeration value="Coordinating Center Identifier"/>
+          <xs:enumeration value="NCI Assigned Identifier"/>
+          <xs:enumeration value="Other"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="ParticipantIdentifierType">
+        <xs:annotation>
+          <xs:documentation>Medical Record Number - MRN, Cooperative Group Identifier - CC</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="MRN"/>
+          <xs:enumeration value="CC"/>
+          <xs:enumeration value="Other"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="ActiveInactiveStatusType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Active">
+            <xs:annotation>
+              <xs:documentation>Active</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="Inactive">
+            <xs:annotation>
+              <xs:documentation>InActive</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+      <!--Common Data types start here-->
+      <xs:complexType name="DomainObjectType">
+        <xs:attribute name="id" type="xs:integer"/>
+      </xs:complexType>
+      <xs:complexType name="MutableDomainObjectType">
+        <xs:complexContent>
+          <xs:extension base="DomainObjectType">
+            <xs:attribute name="version" type="xs:positiveInteger"/>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:simpleType name="CustomStringType">
+        <xs:restriction base="xs:normalizedString">
+          <xs:minLength value="1"/>
+          <xs:whiteSpace value="collapse"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="CustomDateType">
+        <xs:restriction base="xs:integer">
+          <xs:pattern value="[1-2][0-9][0-9][0-9]"/>
+          <xs:whiteSpace value="collapse"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="CustomMonthType">
+        <xs:restriction base="xs:integer">
+          <xs:pattern value="((0[1-9])|(1[0-2]))"/>
+          <xs:whiteSpace value="collapse"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="ConfigProperties">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="name" type="CustomStringType"/>
+            <xs:element maxOccurs="unbounded" minOccurs="1" name="ConfigProperty" type="ConfigPropertyType"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="ConfigPropertyType">
+        <xs:sequence>
+          <xs:element minOccurs="1" name="code" type="CustomStringType"/>
+          <xs:element minOccurs="1" name="name" type="xs:string"/>
+          <xs:element minOccurs="0" name="description" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="TimeType">
+        <xs:sequence>
+          <xs:element minOccurs="1" name="hour" type="xs:integer"/>
+          <xs:element minOccurs="1" name="minute" type="xs:integer"/>
+          <xs:element minOccurs="1" name="ampm" type="AMPM"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:simpleType name="AMPM">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="AM"/>
+          <xs:enumeration value="PM"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <!--WS Types start here-->
+      <xs:complexType name="WsError">
+        <xs:sequence>
+          <xs:element name="exception" type="xs:string"/>
+          <xs:element name="errorDesc" type="xs:string"/>
+          <xs:element name="errorCode" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:simpleType name="Status">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Processed"/>
+          <xs:enumeration value="Partially Processed"/>
+          <xs:enumeration value="Failed to Process"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="entityProcessingOutcomes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" ref="entityProcessingOutcome"></xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="entityProcessingOutcome" type="EntityProcessingOutcomeType"/>
+      <xs:complexType name="EntityProcessingOutcomeType">
+        <xs:sequence>
+          <xs:element maxOccurs="1" minOccurs="0" name="klassName" type="xs:string"/>
+          <xs:element maxOccurs="1" minOccurs="1" name="businessIdentifier" type="xs:string"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="message" type="xs:string"/>
+          <xs:element minOccurs="0" name="dataBaseId" type="xs:string"/>
+          <xs:element minOccurs="0" name="correlationId" type="xs:string"/>
+          <xs:element minOccurs="0" name="correlationDescription" type="xs:string"/>
+          <xs:element default="false" minOccurs="0" name="failed" type="xs:boolean"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:simpleType name="ResponseCodeType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="0"/>
+          <xs:enumeration value="1"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="ServiceResponse" type="ServiceResponse"/>
+      <xs:complexType name="ServiceResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="status" type="Status"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="wsError" type="WsError"/>
+          <xs:element minOccurs="0" ref="entityProcessingOutcomes"/>
+          <xs:element minOccurs="0" name="message" type="xs:string"/>
+          <xs:element minOccurs="0" ref="responseData"/>
+        </xs:sequence>
+        <!--migrated from study xsd-->
+        <xs:attribute name="responsecode" type="ResponseCodeType"/>
+      </xs:complexType>
+      <xs:element name="responseData" type="responseDataType"/>
+      <xs:complexType name="responseDataType">
+        <xs:sequence>
+          <xs:any maxOccurs="1" minOccurs="0"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="CaaersServiceResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="ServiceResponse"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <!--Common faults.-->
+      <xs:element name="SecurityExceptionFault" type="SecurityExceptionFault"/>
+      <xs:complexType name="BaseFault">
+        <xs:sequence>
+          <xs:element name="message" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="SecurityExceptionFault">
+        <xs:complexContent>
+          <xs:extension base="BaseFault"/>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="Fault">
+        <xs:sequence>
+          <xs:element name="code" type="xs:string"/>
+          <xs:element name="message" type="xs:string"/>
+          <xs:element name="exception" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="CaaersFaultInfo">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="1" name="fault" type="Fault"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:schema>
+    <xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/participant" xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/participant" xmlns:cct="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common"/>
+      <xs:element name="participants">
+        <xs:annotation>
+          <xs:documentation>The top level (typically root) element. Allows the definition of
+                default values for all nested bean definitions.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" ref="participant"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="participant" type="ParticipantType"/>
+      <xs:complexType name="ParticipantType">
+        <xs:complexContent>
+          <xs:extension base="cct:MutableDomainObjectType">
+            <xs:sequence>
+              <xs:element name="firstName" type="FirstAndLastNameType"/>
+              <xs:element name="lastName" type="FirstAndLastNameType"/>
+              <xs:element minOccurs="0" name="maidenName" type="MiddleAndMaidenNameType"/>
+              <xs:element minOccurs="0" name="middleName" type="MiddleAndMaidenNameType"/>
+              <xs:choice>
+                <xs:element name="birthDate" type="xs:date"/>
+                <xs:sequence>
+                  <xs:element name="birthMonth" type="cct:CustomMonthType"/>
+                  <xs:element name="birthYear" type="cct:CustomDateType"/>
+                </xs:sequence>
+              </xs:choice>
+              <xs:element name="gender" type="GenderType"/>
+              <xs:element name="race" type="RaceType"/>
+              <xs:element name="ethnicity" type="EthnicityType"/>
+              <xs:element name="identifiers">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element maxOccurs="unbounded" ref="organizationAssignedIdentifier"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" ref="systemAssignedIdentifier"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="assignments">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element maxOccurs="unbounded" ref="assignment"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="study" type="StudyType"/>
+      <xs:complexType name="StudyType">
+        <xs:complexContent>
+          <xs:extension base="cct:MutableDomainObjectType">
+            <xs:sequence>
+              <xs:element name="identifiers">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="identifier" type="ReducedIdentifierType"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="assignment" type="AssignmentType"/>
+      <xs:complexType name="AssignmentType">
+        <xs:complexContent>
+          <xs:extension base="cct:MutableDomainObjectType">
+            <xs:sequence>
+              <xs:element name="studySubjectIdentifier" type="xs:string"/>
+              <xs:element ref="studySite"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="studySite" type="StudySiteType"/>
+      <xs:complexType name="StudySiteType">
+        <xs:complexContent>
+          <xs:extension base="cct:MutableDomainObjectType">
+            <xs:sequence>
+              <xs:element ref="study"/>
+              <xs:element ref="organization"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="organization" type="cct:OrganizationType"/>
+      <xs:element name="organizationAssignedIdentifier" type="OrganizationAssignedIdentifierType"/>
+      <xs:complexType name="OrganizationAssignedIdentifierType">
+        <xs:complexContent>
+          <xs:extension base="IdentifierType">
+            <xs:sequence>
+              <xs:element ref="organization"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="systemAssignedIdentifier" type="SystemAssignedIdentifierType"/>
+      <xs:complexType name="SystemAssignedIdentifierType">
+        <xs:complexContent>
+          <xs:extension base="IdentifierType">
+            <xs:sequence>
+              <xs:element name="systemName" type="xs:string"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="IdentifierType">
+        <xs:complexContent>
+          <xs:extension base="cct:MutableDomainObjectType">
+            <xs:sequence>
+              <xs:element name="type" type="cct:ParticipantIdentifierType"/>
+              <xs:element name="value" type="cct:CustomStringType"/>
+              <xs:element name="primaryIndicator" type="xs:boolean"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="ReducedIdentifierType">
+        <xs:complexContent>
+          <xs:extension base="cct:MutableDomainObjectType">
+            <xs:sequence>
+              <xs:element name="type" type="cct:StudyIdentifierType"/>
+              <xs:element name="value" type="xs:string"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:simpleType name="GenderType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Male"/>
+          <xs:enumeration value="Female"/>
+          <xs:enumeration value="Not Reported"/>
+          <xs:enumeration value="Unknown"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="EthnicityType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Hispanic or Latino"/>
+          <xs:enumeration value="Not Hispanic or Latino"/>
+          <xs:enumeration value="Not Reported"/>
+          <xs:enumeration value="Unknown"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="FirstAndLastNameType">
+        <xs:restriction base="xs:normalizedString">
+          <xs:minLength value="1"/>
+          <xs:pattern value="[a-zA-Z0-9_ ]*"/>
+          <xs:whiteSpace value="collapse"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="MiddleAndMaidenNameType">
+        <xs:restriction base="xs:normalizedString">
+          <xs:pattern value="[a-zA-Z0-9_ ]*"/>
+          <xs:whiteSpace value="collapse"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="RaceType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Asian"/>
+          <xs:enumeration value="White"/>
+          <xs:enumeration value="Black or African American"/>
+          <xs:enumeration value="American Indian or Alaska Native"/>
+          <xs:enumeration value="Native Hawaiian or Other PacificIslander"/>
+          <xs:enumeration value="Not Reported"/>
+          <xs:enumeration value="Unknown"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="participantRef">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:choice>
+              <xs:element name="identifiers">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element maxOccurs="unbounded" ref="organizationAssignedIdentifier"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" ref="systemAssignedIdentifier"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="participantAssignment">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="studySubjectIdentifier" type="xs:string"/>
+                    <xs:element name="studyIdentifier" type="ReducedIdentifierType"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="createParticipant" type="createParticipant"/>
+      <xs:complexType name="createParticipant">
+        <xs:sequence>
+          <xs:element minOccurs="0" ref="participants"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="createParticipantResponse" type="createParticipantResponse"/>
+      <xs:complexType name="createParticipantResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" ref="cct:CaaersServiceResponse"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="deleteParticipant" type="deleteParticipant"/>
+      <xs:complexType name="deleteParticipant">
+        <xs:sequence>
+          <xs:element minOccurs="0" ref="participants"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="deleteParticipantResponse" type="deleteParticipantResponse"/>
+      <xs:complexType name="deleteParticipantResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" ref="cct:CaaersServiceResponse"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="updateParticipant" type="updateParticipant"/>
+      <xs:complexType name="updateParticipant">
+        <xs:sequence>
+          <xs:element minOccurs="0" ref="participants"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="updateParticipantResponse" type="updateParticipantResponse"/>
+      <xs:complexType name="updateParticipantResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" ref="cct:CaaersServiceResponse"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="getParticipant" type="getParticipant"/>
+      <xs:complexType name="getParticipant">
+        <xs:sequence>
+          <xs:element minOccurs="0" ref="participantRef"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="getParticipantResponse" type="getParticipantResponse"/>
+      <xs:complexType name="getParticipantResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" ref="cct:CaaersServiceResponse"/>
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="createParticipant">
+    <wsdl:part element="tns:createParticipant" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteParticipantResponse">
+    <wsdl:part element="tns:deleteParticipantResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateParticipantResponse">
+    <wsdl:part element="tns:updateParticipantResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteParticipant">
+    <wsdl:part element="tns:deleteParticipant" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createParticipantResponse">
+    <wsdl:part element="tns:createParticipantResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getParticipant">
+    <wsdl:part element="tns:getParticipant" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateParticipant">
+    <wsdl:part element="tns:updateParticipant" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getParticipantResponse">
+    <wsdl:part element="tns:getParticipantResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="ParticipantServiceInterface">
+    <wsdl:operation name="createParticipant">
+      <wsdl:input message="tns:createParticipant" name="createParticipant"></wsdl:input>
+      <wsdl:output message="tns:createParticipantResponse" name="createParticipantResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteParticipant">
+      <wsdl:input message="tns:deleteParticipant" name="deleteParticipant"></wsdl:input>
+      <wsdl:output message="tns:deleteParticipantResponse" name="deleteParticipantResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateParticipant">
+      <wsdl:input message="tns:updateParticipant" name="updateParticipant"></wsdl:input>
+      <wsdl:output message="tns:updateParticipantResponse" name="updateParticipantResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getParticipant">
+      <wsdl:input message="tns:getParticipant" name="getParticipant"></wsdl:input>
+      <wsdl:output message="tns:getParticipantResponse" name="getParticipantResponse"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ParticipantServiceSoapBinding" type="tns:ParticipantServiceInterface">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="createParticipant">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="createParticipant">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="createParticipantResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteParticipant">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="deleteParticipant">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="deleteParticipantResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateParticipant">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="updateParticipant">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="updateParticipantResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getParticipant">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getParticipant">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getParticipantResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ParticipantService">
+    <wsdl:port binding="tns:ParticipantServiceSoapBinding" name="ParticipantManagementWebServicePort">
+      <soap:address location="https://sbhost08-vm09.semanticbits.com:8443/caaers/services/ParticipantService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>https://localhost:8443/caaers/services/ParticipantService</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="createParticipant" bindingOperationName="createParticipant" type="Request-Response" outputName="createParticipantResponse" inputName="createParticipant" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>https://localhost:8443/caaers/services/ParticipantService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:par="http://schema.integration.caaers.cabig.nci.nih.gov/participant">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <par:createParticipant>
+         <!--Optional:-->
+         <par:participants>
+            <!--1 or more repetitions:-->
+            <par:participant id="?" version="?">
+               <firstName>?</firstName>
+               <lastName>?</lastName>
+               <!--Optional:-->
+               <maidenName>?</maidenName>
+               <!--Optional:-->
+               <middleName>?</middleName>
+               <!--You have a CHOICE of the next 2 items at this level-->
+               <birthDate>?</birthDate>
+               <birthMonth>?</birthMonth>
+               <birthYear>?</birthYear>
+               <gender>?</gender>
+               <race>?</race>
+               <ethnicity>?</ethnicity>
+               <identifiers>
+                  <!--1 or more repetitions:-->
+                  <par:organizationAssignedIdentifier id="?" version="?">
+                     <type>?</type>
+                     <value>?</value>
+                     <primaryIndicator>?</primaryIndicator>
+                     <par:organization id="?" version="?">
+                        <!--Optional:-->
+                        <descriptionText>?</descriptionText>
+                        <name>?</name>
+                        <nciInstituteCode>?</nciInstituteCode>
+                        <!--Optional:-->
+                        <city>?</city>
+                        <!--Optional:-->
+                        <state>?</state>
+                        <!--Optional:-->
+                        <country>?</country>
+                        <!--Optional:-->
+                        <status>?</status>
+                        <!--Optional:-->
+                        <mergedOrganization/>
+                        <!--Optional:-->
+                        <type>?</type>
+                     </par:organization>
+                  </par:organizationAssignedIdentifier>
+                  <!--Zero or more repetitions:-->
+                  <par:systemAssignedIdentifier id="?" version="?">
+                     <type>?</type>
+                     <value>?</value>
+                     <primaryIndicator>?</primaryIndicator>
+                     <systemName>?</systemName>
+                  </par:systemAssignedIdentifier>
+               </identifiers>
+               <assignments>
+                  <!--1 or more repetitions:-->
+                  <par:assignment id="?" version="?">
+                     <studySubjectIdentifier>?</studySubjectIdentifier>
+                     <par:studySite id="?" version="?">
+                        <par:study id="?" version="?">
+                           <identifiers>
+                              <identifier id="?" version="?">
+                                 <type>?</type>
+                                 <value>?</value>
+                              </identifier>
+                           </identifiers>
+                        </par:study>
+                        <par:organization id="?" version="?">
+                           <!--Optional:-->
+                           <descriptionText>?</descriptionText>
+                           <name>?</name>
+                           <nciInstituteCode>?</nciInstituteCode>
+                           <!--Optional:-->
+                           <city>?</city>
+                           <!--Optional:-->
+                           <state>?</state>
+                           <!--Optional:-->
+                           <country>?</country>
+                           <!--Optional:-->
+                           <status>?</status>
+                           <!--Optional:-->
+                           <mergedOrganization/>
+                           <!--Optional:-->
+                           <type>?</type>
+                        </par:organization>
+                     </par:studySite>
+                  </par:assignment>
+               </assignments>
+            </par:participant>
+         </par:participants>
+      </par:createParticipant>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/participant/ParticipantServiceInterface/createParticipant"/></con:call></con:operation><con:operation isOneWay="false" action="" name="deleteParticipant" bindingOperationName="deleteParticipant" type="Request-Response" outputName="deleteParticipantResponse" inputName="deleteParticipant" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>https://localhost:8443/caaers/services/ParticipantService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:par="http://schema.integration.caaers.cabig.nci.nih.gov/participant">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <par:deleteParticipant>
+         <!--Optional:-->
+         <par:participants>
+            <!--1 or more repetitions:-->
+            <par:participant id="?" version="?">
+               <firstName>?</firstName>
+               <lastName>?</lastName>
+               <!--Optional:-->
+               <maidenName>?</maidenName>
+               <!--Optional:-->
+               <middleName>?</middleName>
+               <!--You have a CHOICE of the next 2 items at this level-->
+               <birthDate>?</birthDate>
+               <birthMonth>?</birthMonth>
+               <birthYear>?</birthYear>
+               <gender>?</gender>
+               <race>?</race>
+               <ethnicity>?</ethnicity>
+               <identifiers>
+                  <!--1 or more repetitions:-->
+                  <par:organizationAssignedIdentifier id="?" version="?">
+                     <type>?</type>
+                     <value>?</value>
+                     <primaryIndicator>?</primaryIndicator>
+                     <par:organization id="?" version="?">
+                        <!--Optional:-->
+                        <descriptionText>?</descriptionText>
+                        <name>?</name>
+                        <nciInstituteCode>?</nciInstituteCode>
+                        <!--Optional:-->
+                        <city>?</city>
+                        <!--Optional:-->
+                        <state>?</state>
+                        <!--Optional:-->
+                        <country>?</country>
+                        <!--Optional:-->
+                        <status>?</status>
+                        <!--Optional:-->
+                        <mergedOrganization/>
+                        <!--Optional:-->
+                        <type>?</type>
+                     </par:organization>
+                  </par:organizationAssignedIdentifier>
+                  <!--Zero or more repetitions:-->
+                  <par:systemAssignedIdentifier id="?" version="?">
+                     <type>?</type>
+                     <value>?</value>
+                     <primaryIndicator>?</primaryIndicator>
+                     <systemName>?</systemName>
+                  </par:systemAssignedIdentifier>
+               </identifiers>
+               <assignments>
+                  <!--1 or more repetitions:-->
+                  <par:assignment id="?" version="?">
+                     <studySubjectIdentifier>?</studySubjectIdentifier>
+                     <par:studySite id="?" version="?">
+                        <par:study id="?" version="?">
+                           <identifiers>
+                              <identifier id="?" version="?">
+                                 <type>?</type>
+                                 <value>?</value>
+                              </identifier>
+                           </identifiers>
+                        </par:study>
+                        <par:organization id="?" version="?">
+                           <!--Optional:-->
+                           <descriptionText>?</descriptionText>
+                           <name>?</name>
+                           <nciInstituteCode>?</nciInstituteCode>
+                           <!--Optional:-->
+                           <city>?</city>
+                           <!--Optional:-->
+                           <state>?</state>
+                           <!--Optional:-->
+                           <country>?</country>
+                           <!--Optional:-->
+                           <status>?</status>
+                           <!--Optional:-->
+                           <mergedOrganization/>
+                           <!--Optional:-->
+                           <type>?</type>
+                        </par:organization>
+                     </par:studySite>
+                  </par:assignment>
+               </assignments>
+            </par:participant>
+         </par:participants>
+      </par:deleteParticipant>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/participant/ParticipantServiceInterface/deleteParticipant"/></con:call></con:operation><con:operation isOneWay="false" action="" name="getParticipant" bindingOperationName="getParticipant" type="Request-Response" outputName="getParticipantResponse" inputName="getParticipant" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>https://localhost:8443/caaers/services/ParticipantService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:par="http://schema.integration.caaers.cabig.nci.nih.gov/participant">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <par:getParticipant>
+         <!--Optional:-->
+         <par:participantRef>
+            <!--You have a CHOICE of the next 2 items at this level-->
+            <identifiers>
+               <!--1 or more repetitions:-->
+               <par:organizationAssignedIdentifier id="?" version="?">
+                  <type>?</type>
+                  <value>?</value>
+                  <primaryIndicator>?</primaryIndicator>
+                  <par:organization id="?" version="?">
+                     <!--Optional:-->
+                     <descriptionText>?</descriptionText>
+                     <name>?</name>
+                     <nciInstituteCode>?</nciInstituteCode>
+                     <!--Optional:-->
+                     <city>?</city>
+                     <!--Optional:-->
+                     <state>?</state>
+                     <!--Optional:-->
+                     <country>?</country>
+                     <!--Optional:-->
+                     <status>?</status>
+                     <!--Optional:-->
+                     <mergedOrganization/>
+                     <!--Optional:-->
+                     <type>?</type>
+                  </par:organization>
+               </par:organizationAssignedIdentifier>
+               <!--Zero or more repetitions:-->
+               <par:systemAssignedIdentifier id="?" version="?">
+                  <type>?</type>
+                  <value>?</value>
+                  <primaryIndicator>?</primaryIndicator>
+                  <systemName>?</systemName>
+               </par:systemAssignedIdentifier>
+            </identifiers>
+            <participantAssignment>
+               <studySubjectIdentifier>?</studySubjectIdentifier>
+               <studyIdentifier id="?" version="?">
+                  <type>?</type>
+                  <value>?</value>
+               </studyIdentifier>
+            </participantAssignment>
+         </par:participantRef>
+      </par:getParticipant>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/participant/ParticipantServiceInterface/getParticipant"/></con:call></con:operation><con:operation isOneWay="false" action="" name="updateParticipant" bindingOperationName="updateParticipant" type="Request-Response" outputName="updateParticipantResponse" inputName="updateParticipant" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>https://localhost:8443/caaers/services/ParticipantService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:par="http://schema.integration.caaers.cabig.nci.nih.gov/participant">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <par:updateParticipant>
+         <!--Optional:-->
+         <par:participants>
+            <!--1 or more repetitions:-->
+            <par:participant id="?" version="?">
+               <firstName>?</firstName>
+               <lastName>?</lastName>
+               <!--Optional:-->
+               <maidenName>?</maidenName>
+               <!--Optional:-->
+               <middleName>?</middleName>
+               <!--You have a CHOICE of the next 2 items at this level-->
+               <birthDate>?</birthDate>
+               <birthMonth>?</birthMonth>
+               <birthYear>?</birthYear>
+               <gender>?</gender>
+               <race>?</race>
+               <ethnicity>?</ethnicity>
+               <identifiers>
+                  <!--1 or more repetitions:-->
+                  <par:organizationAssignedIdentifier id="?" version="?">
+                     <type>?</type>
+                     <value>?</value>
+                     <primaryIndicator>?</primaryIndicator>
+                     <par:organization id="?" version="?">
+                        <!--Optional:-->
+                        <descriptionText>?</descriptionText>
+                        <name>?</name>
+                        <nciInstituteCode>?</nciInstituteCode>
+                        <!--Optional:-->
+                        <city>?</city>
+                        <!--Optional:-->
+                        <state>?</state>
+                        <!--Optional:-->
+                        <country>?</country>
+                        <!--Optional:-->
+                        <status>?</status>
+                        <!--Optional:-->
+                        <mergedOrganization/>
+                        <!--Optional:-->
+                        <type>?</type>
+                     </par:organization>
+                  </par:organizationAssignedIdentifier>
+                  <!--Zero or more repetitions:-->
+                  <par:systemAssignedIdentifier id="?" version="?">
+                     <type>?</type>
+                     <value>?</value>
+                     <primaryIndicator>?</primaryIndicator>
+                     <systemName>?</systemName>
+                  </par:systemAssignedIdentifier>
+               </identifiers>
+               <assignments>
+                  <!--1 or more repetitions:-->
+                  <par:assignment id="?" version="?">
+                     <studySubjectIdentifier>?</studySubjectIdentifier>
+                     <par:studySite id="?" version="?">
+                        <par:study id="?" version="?">
+                           <identifiers>
+                              <identifier id="?" version="?">
+                                 <type>?</type>
+                                 <value>?</value>
+                              </identifier>
+                           </identifiers>
+                        </par:study>
+                        <par:organization id="?" version="?">
+                           <!--Optional:-->
+                           <descriptionText>?</descriptionText>
+                           <name>?</name>
+                           <nciInstituteCode>?</nciInstituteCode>
+                           <!--Optional:-->
+                           <city>?</city>
+                           <!--Optional:-->
+                           <state>?</state>
+                           <!--Optional:-->
+                           <country>?</country>
+                           <!--Optional:-->
+                           <status>?</status>
+                           <!--Optional:-->
+                           <mergedOrganization/>
+                           <!--Optional:-->
+                           <type>?</type>
+                        </par:organization>
+                     </par:studySite>
+                  </par:assignment>
+               </assignments>
+            </par:participant>
+         </par:participants>
+      </par:updateParticipant>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/participant/ParticipantServiceInterface/updateParticipant"/></con:call></con:operation></con:interface><con:testSuite name="ParticipantServiceSoapBinding TestSuite"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="createParticipant TestCase" searchProperties="true"><con:settings/><con:testStep type="properties" name="Properties"><con:settings/><con:config xsi:type="con:PropertiesStep" saveFirst="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>studyId</con:name><con:value>6304</con:value></con:property><con:property><con:name>nciCode</con:name><con:value>12001</con:value></con:property><con:property><con:name>studySubjectId</con:name><con:value>6304.0.1363295677239</con:value></con:property><con:property><con:name>sex</con:name><con:value>Male</con:value></con:property><con:property><con:name>dob</con:name><con:value>1967-01-31</con:value></con:property><con:property><con:name>participantIndex</con:name><con:value>0</con:value></con:property><con:property><con:name>study</con:name><con:value>6304</con:value></con:property><con:property><con:name>offsetSite</con:name><con:value>0</con:value></con:property><con:property><con:name>userSpecifiedThreads</con:name><con:value>2</con:value></con:property><con:property><con:name>updateThreads</con:name><con:value>0</con:value></con:property></con:properties></con:config></con:testStep><con:testStep type="groovy" name="updateValues"><con:settings/><con:config><script>//log.info('ctxt-nm in script step ' + context.name);
+//log.info('test case ctxt in script step ' + testRunner.runContext);
+def loadTestContext = testRunner.runContext.getProperty('LoadTestContext');
+
+def studyArr = loadTestContext.getProperty('studyIds');
+def orgsArr = loadTestContext.getProperty('siteIds');
+def dobArr = loadTestContext.getProperty('dobArr');
+def sexArr = loadTestContext.getProperty('sexArr');
+
+log.info('studyArr=' + studyArr);
+log.info('orgsArr=' + orgsArr);
+
+String offsiteIndex = testRunner.testCase.testSteps["Properties"].getPropertyValue("offsetSite");
+int offSite = Integer.parseInt(offsiteIndex);
+if ( context.RunCount == 3489 ) { // Thread completed its cycle.
+	
+	// update how many are completed its cycles
+	String updateThreads = testRunner.testCase.testSteps["Properties"].getPropertyValue("updateThreads");
+	int updateThreadsVal  = Integer.parseInt(updateThreads);
+	updateThreadsVal = updateThreadsVal + 1;
+	
+	 testRunner.testCase.testSteps["Properties"].setPropertyValue("updateThreads",String.valueOf(updateThreadsVal) );
+
+	String userSpecifiedThreads = testRunner.testCase.testSteps["Properties"].getPropertyValue("userSpecifiedThreads");
+	int userSpecifiedThreadsVal = Integer.parseInt(userSpecifiedThreads);
+	
+	if (updateThreadsVal == userSpecifiedThreadsVal ) {
+		 testRunner.testCase.testSteps["Properties"].setPropertyValue("updateThreads","0");
+		  testRunner.testCase.testSteps["Properties"].setPropertyValue("offsetSite",String.valueOf(offSite+userSpecifiedThreadsVal) );
+	}
+}
+
+int participantIndex = context.RunCount/studyArr.size;
+int studyIndex = context.RunCount%studyArr.size;
+
+int dobIndex = context.RunCount%dobArr.size;
+int sexIndex = context.RunCount%sexArr.size;
+
+String study = studyArr[studyIndex].replaceAll("[,.\\-\\s+\\n\\t+]", "");
+String StudySubjectId = study + "." + participantIndex + "." + System.currentTimeMillis() ;
+
+testRunner.testCase.testSteps["Properties"].setPropertyValue("studyId",studyArr[studyIndex]);
+testRunner.testCase.testSteps["Properties"].setPropertyValue("nciCode",orgsArr[offSite+context.ThreadIndex]);
+testRunner.testCase.testSteps["Properties"].setPropertyValue("dob",dobArr[dobIndex]);
+testRunner.testCase.testSteps["Properties"].setPropertyValue("sex",sexArr[sexIndex]);
+testRunner.testCase.testSteps["Properties"].setPropertyValue("StudySubjectId",StudySubjectId);
+testRunner.testCase.testSteps["Properties"].setPropertyValue("participantIndex",String.valueOf(participantIndex));
+testRunner.testCase.testSteps["Properties"].setPropertyValue("study",study);
+
+</script></con:config></con:testStep><con:testStep type="request" name="createParticipant"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>ParticipantServiceSoapBinding</con:interface><con:operation>createParticipant</con:operation><con:request name="createParticipant"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://localhost:8443/caaers/services/ParticipantService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" 
+xmlns:par="http://schema.integration.caaers.cabig.nci.nih.gov/participant"
+xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+  <soapenv:Header>
+     <wsse:Security>
+        <wsse:UsernameToken>
+          <wsse:Username>SYSTEM</wsse:Username> 
+          <wsse:Password>system_admin</wsse:Password> 
+        </wsse:UsernameToken>
+      </wsse:Security> 
+   </soapenv:Header>
+   <soapenv:Body>
+      <par:createParticipant>
+         <!--Optional:-->
+         <par:participants>
+            <!--1 or more repetitions:-->
+            <par:participant>
+			<firstName>F${participantIndex}P${study}</firstName>
+			<lastName>L${participantIndex}P${study}</lastName>
+			<maidenName />
+			<middleName />
+			<birthDate>${dob}</birthDate>
+			<gender>${sex}</gender>
+			<race>White</race>
+			<ethnicity>Not Hispanic or Latino</ethnicity>
+			<identifiers>
+				<par:organizationAssignedIdentifier
+					id="1" version="1">
+					<type>MRN</type>
+					<value>${studySubjectId}</value>
+					<primaryIndicator>true</primaryIndicator>
+					<par:organization id="1" version="1">
+						<name>${nciCode}</name>
+						<nciInstituteCode>${nciCode}</nciInstituteCode>
+					</par:organization>
+				</par:organizationAssignedIdentifier>
+				<par:systemAssignedIdentifier id="1"
+					version="1">
+					<type>MRN</type>
+					<value>${studySubjectId}</value>
+					<primaryIndicator>true</primaryIndicator>
+					<systemName>MRN</systemName>
+				</par:systemAssignedIdentifier>
+			</identifiers>
+			<assignments>
+				<par:assignment id="1" version="1">
+					<studySubjectIdentifier>${studySubjectId}</studySubjectIdentifier>
+					<par:studySite id="1" version="1">
+						<par:study id="1" version="1">
+							<identifiers>
+								<identifier id="1" version="1">
+									<type>Other</type>
+									<value>${studyId}</value>
+								</identifier>
+							</identifiers>
+						</par:study>
+						<par:organization id="1" version="1">
+							<name>${nciCode}</name>
+							<nciInstituteCode>${nciCode}</nciInstituteCode>
+						</par:organization>
+					</par:studySite>
+				</par:assignment>
+			</assignments>
+            </par:participant>
+         </par:participants>
+      </par:createParticipant>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig action="http://schema.integration.caaers.cabig.nci.nih.gov/participant/ParticipantServiceInterface/createParticipant" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:loadTest name="LoadTest 1"><con:settings><con:setting id="HttpSettings@close-connections">false</con:setting></con:settings><con:threadCount>1</con:threadCount><con:startDelay>0</con:startDelay><con:sampleInterval>250</con:sampleInterval><con:calculateTPSOnTimePassed>true</con:calculateTPSOnTimePassed><con:resetStatisticsOnThreadCountChange>true</con:resetStatisticsOnThreadCountChange><con:historyLimit>-1</con:historyLimit><con:testLimit>2</con:testLimit><con:limitType>COUNT_PER_THREAD</con:limitType><con:loadStrategy><con:type>Simple</con:type><con:config><testDelay>3000</testDelay><randomFactor>0.0</randomFactor></con:config></con:loadStrategy><con:assertion type="Step Status" name="Step Status"/><con:maxAssertionErrors>100</con:maxAssertionErrors><con:cancelExcessiveThreads>true</con:cancelExcessiveThreads><con:strategyInterval>500</con:strategyInterval><con:setupScript>def studyIds = ['6304','ANHL04B1','7251','AHOD04B1','7540','MA.17ICSC','N0574','AALL06B1','7759','E1496T1','ALTE05N1','8131','E2607','ALTE07C1','AEWS08B1','S0702','CALGB-150607','MDA-2008-0005','8333','8258','8329','CALGB-100701','ARST08P1','N0849','CALGB-30801','AREN10B1','AAML10B4','8331','8518','E7208','CALGB-80702','GOG-0233','N093B','RTOG-1014','8445','AALL10B2','CALGB-50901','ADVL0918','WFU-08-08-09','8760','RTOG-1010','AALL04B1','E2809','8856','GOG-0170Q','8610','8811','8866','NSABP-NCIC-CTG-MA.32.F','RTOG-1012','RTOG-0933','8783','GOG-0241','ACNS0821','ADVL1112','E2108','GOG-0271','8976','8877','RTOG-1005','CALGB-40903','AAML11B8','8045','AAML09B2','NSABP-B-47','CALGB-50801','RTOG-0925','E2410','ANZGOG-0902-GOG-0274','S1106','CALGB-151102','N1048','ARST12B1','N057K','GOG-0270','AALL12B2','AALL12B3','AREN12B5','ARST12B5','ARAR12B2','ANBL12B7','ABTR01B1','6413','CALGB-20206','CALGB-50303','E3A05','ACNS0334','E1305','AOST06B1','SCUSF-0402','RTOG-0436','RTOG-0622','AAML05P1','CALGB-20801','6620','8231','NCCTG-N08C1','E6508','8296','ACRIN-6684','E1208','GOG-0261','8420','CALGB-150803','AAML10B5','S9031-S9126-S9333-S9500-B','8614','GOG-9924','8274','AALL08B1','8491','E1908','AAML10B16','8446','PBTC-N11','8692','8556','8735','8740','8695','8747','8803','8457','8603','8842','CALGB-11001','S0927','ACCL1031','GOG-0227G','S1011','AAML11B1','ACCL1032','8444','8476','RTOG-1102','AAML11B9','AAML10B11','8474','8269','PBTC-029','S1008','SWOG-S9313B-ICSC','ANBL11B2','ANHL11B1','ANBL11B3','9031','9119','CALGB-11002','NSABP-B28-ICSC-A','RTOG-1106','ANBL11B4','AEPI10N1','9091','S1200','E2810','GOG-0280','ARST12B3','NCCTG-94-72-53','GOG-0187','ANBL00B1','AREN04B1','AREN03B2','E3805','RTOG-0433','ACCRN07','ARAR0332','NCCTG N9831-ICSC','7916','AALL0631','7968','CALGB-30607','AMC-053','7998','S0711','7888','S9916-S0111-S9510','RTOG-0534','BCDM 8235','E2906','E1906','AEPI07N1','8217','GOG-8009','PBTC-025B','8463','8342','CALGB-150603','8147','8238','8309','RTOG-0837','AMC-070','AAML10B8','RTOG-0839','NCCTG-N07C4','AOST10B2','NCIC-MA.32','S0931','8597','CALGB-70305','CALGB-80701','8249','E2208','S0820','8752','8729','E2997T2','ADVL1013','8698','RTOG-1008','CALGB-10801','AAML11B4','ANBL1021','8868','8876','8865','8875','CALGB-80803','CALGB-10701','8980','8872','RTOG-0938','N0572','ACNS0822','GLNE010','NSABP-B-43','ARST0921','9022','8850','ANBL11B1','8984','S1001','AAML11B10','GOG-9926','CALGB-151107','N107C','AAML11B12','9111','RTOG-0524','RTOG-0937','AREN12B1','GOG-0186J','ADVL1121','GOG-0237','8515','9012','D9902','CALGB-140202','AEWS0331','6040','NSABP-B-39','ARET0321','ABTR04B1','S8814A-ICSC','N0477','7627','7678','BMTCTN-0401','E3503T1','AEPI05N1','S0713','8210','RTOG-0539','ACOSOG-Z3081','N0874','CALGB-90601','8283','RTOG-0834','7997','NSABP-P-5','CALGB-50604','AOST08B1','AMC-064','S0800','ADVL0912','CALGB-150901','AALL08B2','GOG-8011','MDA-2009-0288','8516','8406','8490','GOG-8012','CALGB-80802','8351','RTOG-0926','8627','7870','8792','ACRIN-6691','8604','8609','8739','8762','CALGB-150905','GOG-8199','8786','8628','ADVL0921','8821','ADVL1014','CALGB-151004','8867','AAML10B9','AALL1131','8945','ANBL06B1','ANBL09B1','8321','MDA-2007-0914A','GOG-0265','GOG-0267','S1013','ARST11B2','8986','ADVL1114','AEWS11B1','ARST11B4','ABTC-1002','ACOSOG-Z1071','NSABP-B31-ICSC-A','AAML11B11','8972','ACCL1033','ARST11B5','RTOG-1115','ANBL12B2','ANBL12B5','NSABP-B-49','AREN12B2','8810','AREN12B4','ABTR12B3','8167','CALGB-20203','GOG-0212','7309','S0337','E3205','7427','S0221A-ICSC','7834','E3F05','AEWS07B1','8076','GOG-0214','7354','ANBL0032','E3200T2','CALGB-9741A-ICSC','ACCL0431','8226','ACOSOG-Z9081','S0709','CALGB-40603','RTOG-0813','8273','8277','ANBL08B1','AAML08B1','8192','8340','RTOG-0920','ADVL0911','GOG-0250','NCCTG-N9831(C)-NCCTG-ICSC','GOG-0186G','S0806','N0923','CALGB-150809','AOST10B1','E2A08','8264','CALGB-90203','E4A08','7606','ACNS0927','8632','8784','AAML10B17','8602','CALGB-100801','8728','AMC-076','8298','8826','8832','8804','AAML1031','8511','AAML11B6','NSABP-C07-CS1','CALGB-151006','8871','GOG-0186I','AREN03B1','8601','WFU-97609','AREN11B1','8282','SCUSF-0806','8354','8412','8709','8761','ARST11B1','9101','GOG-9927','AREN11B2','AHOD11B1','RTOG-1114','CALGB-50904','E2903','ACOSOG-Z4099','AAML11B13','AEWS11B2','AAML12B1','ACNS1022','S1105','S1201','AHOD12B1','ANBL12B4','AAML12B4','ARAR12B1','8992','ANBL12B6','S0518','GOG-0264','9127','ABTC-1101','E1199B-E2197C-ICSC','Q9403','GOG-8015','AMC-079','GOG-0076HH','8731','CALGB-150201','8323','RTOG-0848','8449','8977','8985','8417','PBTC-026','AHEP0731','8834','6837','8316','GOG-0259','8818','CALGB-140503','CALGB-150807','S0925','ACNS0831','BMTCTN-0702','AREN09B1','N1085','S1108','NCCTG-N10C2','ACOSOG-Z6051','BMT-CTN 0701','ACNS11B1','ACNS0332','AALL12B5','GOG-9925','8335','8468','SCUSF-0502','CALGB-150705-ICSC','NSABP-DMP-1','8828','8860','8788','S0809','AALL12B1','AOST10B4','CALGB-20502','8311','8598','CALGB-151111','CALGB-150806','8983','8046','8727','CALGB-8461','7080','AAML0631','E1A10','NCCTG-N08CB','AMC-058','CALGB-20202','RTOG-0815','CALGB-159905','AEWS1031','8461','9041','ALTE03N1','MDA-CCC-01-06','GOG-8005','S0910','8506','AAML10B3','9076','7967','NABTT-0703','8703','9030','ARST12B2','8155','AAML10B1','RTOG-1016','8799','7832','ARST0531','9068','SWOG-8897-ICSC','9174','8732','8456','S0812','N2008-02','5987','AAML12B3','GOG-0258','8029','8836','8297','8854','N0877','CALGB-70807','8414','7977','S0000D','RTOG-0924','8484','8813','WFU-99211','N1087','CALGB-10403','CALGB-90802','GOG-0229L','ABTR02B1','GOG-0235','8880','CALGB-30610','CALGB-21001','8472','S9313A-ICSC','ACOSOG-Z1072','AREN11B3','GOG-0213','8890','AOST11B1','URCC-09005','ACNS1021','NCCTG-N10C1','CALGB-10404','AALL0434','S0816','S1014','ANBL00P3','8052','AREN10B2','8357','AAML11B7','E2496T1','NSABP-MC083I','AALL06N1','8215','GOG-0242','E2805T1','CALGB-151003','N0872','AALL07P1','GOG-0273','ACRIN-6685','S0805','ACRIN-6690','8993','GOG-0262','8489','AREN12B6','8348','CALGB-150802','GOG-0268','S0535','7435','AAML10B7','8418','GOG-8008','8317','NCCTG-N09C6','PBTC-033','AAML10B18','AALL12B4','E2408','ARST12B4','8324','AMC-072','URCC-10055','ANBL10B1','AREN0532','GOG-0221','GOG-0263','7444','GOG-0131H','N0949','SCUSF-0703','E1201T1','E2905','GOG-0229K','AAML12B2','CALGB-20501','SCUSF-0901','WFU-08-03-06','8844','AAML10B2','8272','AMC-063','AAML10B19','AREN0534','N0871','GOG-0127W','8620','8064','CALGB-30901','N1088','ADVL1011','8485','8846','AAML11B2','AMC-075','S0703','GOG-0238','9177','8305','8808','RTOG-0712','8281','CALGB-70806','7416','AREN12B3','AAML12B8','ADVL1115','ACNS0333','AOST10B5','SCUSF-0803','CALGB-31102','NCIC CTG OV.21','E3903','RTOG-0631','AALL04B2','ANBL07B1','GOG-8010','S1117','E1808','E5508','ANUR1131','AAML12B5','7458','8508','URCC-0701','8814','8639','E3108','N0543','8455','RTOG-0724','CALGB-9862','8822','6528','GOG-0186H','ACCL0934','AAML11B3','E3508','ABTC-0906','GOG-9923','RTOG-0929','E1609','8539','N0879','ANBL09P1','8054','S0905','ACCL0933','7958','GOG-0249','AREN0533','AALL10B1','8242','AMC-078','9374','NCCTG-N08C9','PBTC-032','7358','AREN0321','AAML10B14','8873'];
+def siteIds = ['12001','15001','15006','17001','19004','19006','21002','25015','25022','25039','25042','25051','25077','APM','APP','AQB','AR001','AR028','AR047','ARC','ARQ','CA139','CA143','CA144','CA145','CA154','CA161','CA162','CA172','CA185','CA202','CA220','CA230','CA232','CA238','HBV','GA045','GA063','GA068','GA076','GA078','IA097','IA103','ICS','ID001','ID003','ID008','ID012','IL039','IL048'];
+def dobArr = ['1967-01-31','1974-03-12','1973-05-22','1966-04-21','1969-03-14'];
+def sexArr = ['Male','Female'];
+
+context.setProperty('studyIds',studyIds);
+context.setProperty('siteIds',siteIds);
+context.setProperty('dobArr',dobArr);
+context.setProperty('sexArr',sexArr);
+
+//log.info('ctxt-nm in setup ' + context.name);
+//log.info('ctxt in setup ' + context);</con:setupScript></con:loadTest><con:properties/></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer/><con:sensitiveInformation/></con:soapui-project>

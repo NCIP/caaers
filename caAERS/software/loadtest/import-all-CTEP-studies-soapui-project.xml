@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project activeEnvironment="Default" name="GenericProcessorService" resourceRoot="${projectDir}" soapui-version="4.5.0" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="GenericProcessorSOAP" type="wsdl" bindingName="{http://webservice.caaers.cabig.nci.nih.gov/GenericProcessor/}GenericProcessorSOAP" soapVersion="1_1" anonymous="optional" definition="https://sbhost08-vm09.semanticbits.com:8196/GenericProcessorService?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="https://sbhost08-vm09.semanticbits.com:8196/GenericProcessorService?wsdl"><con:part><con:url>https://sbhost08-vm09.semanticbits.com:8196/GenericProcessorService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="GenericProcessor" targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/GenericProcessor/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://webservice.caaers.cabig.nci.nih.gov/GenericProcessor/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://webservice.caaers.cabig.nci.nih.gov/GenericProcessor/">
+      <xsd:element name="GenericRequest">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="payload">
+              <xsd:complexType>
+                <xsd:sequence>
+                  <xsd:element maxOccurs="1" minOccurs="1" name="system" type="xsd:string"/>
+                  <xsd:element maxOccurs="1" minOccurs="1" name="request" type="tns:Request"/>
+                </xsd:sequence>
+                <xsd:attribute name="correlationId" type="xsd:string"/>
+              </xsd:complexType>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GenericResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="payload">
+              <xsd:complexType>
+                <xsd:sequence>
+                  <xsd:element maxOccurs="1" minOccurs="1" name="system" type="xsd:string"/>
+                  <xsd:element maxOccurs="1" minOccurs="1" name="response" type="tns:Response"/>
+                </xsd:sequence>
+                <xsd:attribute name="correlationId" type="xsd:string"/>
+              </xsd:complexType>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="Request">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="entity" type="xsd:string"/>
+          <xsd:element name="operation">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="criteria">
+                  <xsd:complexType>
+                    <xsd:sequence>
+                      <xsd:element maxOccurs="unbounded" minOccurs="1" name="criterion">
+                        <xsd:complexType>
+                          <xsd:simpleContent>
+                            <xsd:extension base="xsd:string">
+                              <xsd:attribute name="name" type="xsd:string"/>
+                            </xsd:extension>
+                          </xsd:simpleContent>
+                        </xsd:complexType>
+                      </xsd:element>
+                    </xsd:sequence>
+                  </xsd:complexType>
+                </xsd:element>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string"/>
+              <xsd:attribute name="mode" type="xsd:string"/>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Response">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="entity" type="xsd:string"/>
+          <xsd:element name="operation">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="errors">
+                  <xsd:complexType>
+                    <xsd:sequence>
+                      <xsd:element maxOccurs="unbounded" minOccurs="1" name="error" type="xsd:string"/>
+                    </xsd:sequence>
+                  </xsd:complexType>
+                </xsd:element>
+                <xsd:element maxOccurs="1" minOccurs="0" name="data" type="xsd:string"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string"/>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="GenericResponseMessage">
+    <wsdl:part element="tns:GenericResponse" name="response"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GenericRequestMessage">
+    <wsdl:part element="tns:GenericRequest" name="request"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="GenericProcessor">
+    <wsdl:operation name="Process">
+      <wsdl:input message="tns:GenericRequestMessage"></wsdl:input>
+      <wsdl:output message="tns:GenericResponseMessage"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="GenericProcessorSOAP" type="tns:GenericProcessor">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="Process">
+      <soap:operation soapAction="http://webservice.caaers.cabig.nci.nih.gov/GenericProcessor/Process"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="GenericProcessor">
+    <wsdl:port binding="tns:GenericProcessorSOAP" name="GenericProcessorSOAP">
+      <soap:address location="https://localhost:8196/GenericProcessorService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>https://sbhost08-vm09.semanticbits.com:8196/GenericProcessorService</con:endpoint></con:endpoints><con:operation isOneWay="false" action="http://webservice.caaers.cabig.nci.nih.gov/GenericProcessor/Process" name="Process" bindingOperationName="Process" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://sbhost08-vm09.semanticbits.com:8196/GenericProcessorService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+xmlns:com="http://schema.integration.caaers.cabig.nci.nih.gov/common"
+xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+   <soapenv:Header>
+     <wsse:Security>
+        <wsse:UsernameToken>
+          <wsse:Username>SYSTEM</wsse:Username> 
+          <wsse:Password>system_admin</wsse:Password> 
+        </wsse:UsernameToken>
+      </wsse:Security> 
+   </soapenv:Header>
+   <soapenv:Body>
+        <gen:GenericRequest xmlns:gen="http://webservice.caaers.cabig.nci.nih.gov/GenericProcessor/">
+            <payload correlationId="lbRCA8VYbMGg3La" xmlns="">
+                <system xmlns="">adeers</system>
+                <request xmlns="">
+                    <!--Optional:-->
+                    <entity xmlns="">study</entity>
+                    <operation mode="async" name="createStudy" xmlns="">
+                        <criteria xmlns="">
+                            <criterion name="nciDocumentNumber" xmlns="">SWOG-7738</criterion>
+                        </criteria>
+                    </operation>
+                </request>
+            </payload>
+        </gen:GenericRequest>
+  </soapenv:Body>
+</soapenv:Envelope>
+]]></con:request><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://webservice.caaers.cabig.nci.nih.gov/GenericProcessor/Process"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:testSuite name="TestSuite 1"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="TestCase 1" searchProperties="true"><con:settings/><con:testStep type="properties" name="Properties"><con:settings/><con:config xsi:type="con:PropertiesStep" saveFirst="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>index</con:name><con:value>0</con:value></con:property><con:property><con:name>studyIdentifier</con:name><con:value/></con:property><con:property><con:name>runStudyIds</con:name><con:value>5694^6537^6809^70-30-22^7029^7223^76-C-203^77-77-02^7832^7958^8029^8052^8201^8333^8336^8340^8443^8468^8617^8701^8842^8844^8986^9031^A09712^ACR-6883^ACRIN-6651^ACRIN-6652^ACRIN-6654^ACRIN-6655^ACRIN-6656^ACRIN-6657^ACRIN-6658^ACRIN-6659^ACRIN-6660^ACRIN-6661^ACRIN-6662^ACRIN-6666^ACRIN-6667^ACRIN-6668^ACRIN-6673^ACRIN-6678^ACRIN-6682^ACRIN-6684^ACRIN-6685^ACRIN-6687^ACRIN-6690^ACRIN-6691^ACRIN-6701^ADVL0018^B95-0002^BCDM 8235^BMT-CTN 0501^BMT-CTN 0701^BTCG-83-01^BTCG-84-20^BTCG-87-01^BTCG-87-30^BTCG-89-01^BTSG-7201^BTSG-7220^BTSG-7501^BTSG-7620^BTSG-7701^BTSG-7702^BTSG-7820^BTSG-8001^BTSG-8120^CALGB-151108^CCG-S9704^CDEP-019^CDEP-460^CDEP-510^CDEP-920^COG-630^COG-7010^COG-7031^COG-7040^COG-7110^COG-7121^COG-7123^COG-7231^COG-7320^COG-7321^COG-7340^COG-7441^COG-7442^COG-7522^D81-0936^E2197^ECOG E2100D-ECOG-ICSC^ECOG E5194A-ECOG-ICSC^GITSG-4C85^GITSG-4H85^GITSG-5377^GITSG-6175^GITSG-6178^GITSG-6179^GITSG-6380^GITSG-6384^GITSG-6584^GITSG-7175^GITSG-7180^GITSG-7276^GITSG-8174^GITSG-8180^GITSG-8274^GITSG-8281^GITSG-8376^GITSG-8380^GITSG-8477^GITSG-8480^GITSG-9173^GITSG-9273^GITSG-9277^GITSG-9283^GITSG-9374^GITSG-9376^GITSG-9382^GITSG-9482^GITSG-9485^GITSG-9982^GITSG-P-1^GOG-0233^GOG-9901^IBMC-6884^IND 2461^IND 2960^IND 2973^IND 3159^IND 32,630^IND 3286^IND 33,509^IND 33,849^IND 34,284^IND 34,353^IND 36,788^IND 36,985^IND 39,298^IND 41,824^IND 4197^IND 45,333^IND 47,281^IND 4703^IND 48,677^IND 51,202^IND 52,312^IND 5561^IND 5686^IND 5887^N0434 (MA.27D)^NANT N2002-01^NCCTG-95-92-58^NCIC CTG OV.21^NCIC-MA.27 (NON-COMPANION)^NPCTG-800^NSABP-B-23 QOL^POG-9341^POG-9680(NO AUDIT)^POG-9907^PROG-85-26^PROG-92-13^PROG-92-14^PROG-92-15^PROG-95-09^RTOG 0123^RTOG 0514^RTOG S-0124^RTOG-99-04^RTOG-99-13^S9832^SEG-213^SEG-GI-P17^SWOG 8897B-SWOG-ICSC^SWOG-7525^SWOG-9054^T83-1408^T83-1410^T84-0220^T84-0363^T85-0009^T85-0056^T85-0199^T85-0236^T85-0262^T86-0041^T86-0108^T88-0134^T90-0186^T91-0228^T92-0059^T92-0066^T92-0079^T92-0132^T92-0163^T92-0172^T92-0183^T93-0009^T93-0064^T93-0091^T93-0121^T94-0037^T94-0097^T94-0127^T94-0141^T94-0187^T94-0193^T94-0198^T95-0018^T95-0093^T95-0099^T96-0015^T97-0038^T97-0062^T97-0100^T98-0038^T98-0051^T99-0002^TP-98-01^WCG-144^WFU 01-03</con:value></con:property></con:properties></con:config></con:testStep><con:testStep type="groovy" name="updateStudyIds"><con:settings/><con:config><script>String[] stringArr = testRunner.testCase.testSteps["Properties"].getPropertyValue( "runStudyIds").split("\\^") ;
+String indexVal = testRunner.testCase.testSteps["Properties"].getPropertyValue( "index") ;
+int intVal = Integer.parseInt(indexVal);
+
+testRunner.testCase.testSteps["Properties"].setPropertyValue("studyIdentifier",stringArr[intVal]); 
+intVal++;
+testRunner.testCase.testSteps["Properties"].setPropertyValue("index",intVal.toString()); </script></con:config></con:testStep><con:testStep type="request" name="GenericProcessorinputRequest"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>GenericProcessorSOAP</con:interface><con:operation>Process</con:operation><con:request name="GenericProcessorinputRequest"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://sbhost08-vm09.semanticbits.com:8196/GenericProcessorService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+xmlns:com="http://schema.integration.caaers.cabig.nci.nih.gov/common"
+xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+   <soapenv:Header>
+     <wsse:Security>
+        <wsse:UsernameToken>
+          <wsse:Username>SYSTEM</wsse:Username> 
+          <wsse:Password>system_admin</wsse:Password> 
+        </wsse:UsernameToken>
+      </wsse:Security> 
+   </soapenv:Header>
+   <soapenv:Body>
+        <gen:GenericRequest xmlns:gen="http://webservice.caaers.cabig.nci.nih.gov/GenericProcessor/">
+            <payload correlationId="${=System.currentTimeMillis()}" xmlns="">
+                <system xmlns="">adeers</system>
+                <request xmlns="">
+                    <!--Optional:-->
+                    <entity xmlns="">study</entity>
+                    <operation mode="async" name="createStudy" xmlns="">
+                        <criteria xmlns="">
+                            <criterion name="nciDocumentNumber" xmlns="">${studyIdentifier}</criterion>
+                        </criteria>
+                    </operation>
+                </request>
+            </payload>
+        </gen:GenericRequest>
+  </soapenv:Body>
+</soapenv:Envelope>
+]]></con:request><con:assertion type="SOAP Response"/><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:loadTest name="LoadTest 1"><con:settings><con:setting id="HttpSettings@close-connections">false</con:setting></con:settings><con:threadCount>1</con:threadCount><con:startDelay>0</con:startDelay><con:sampleInterval>250</con:sampleInterval><con:calculateTPSOnTimePassed>true</con:calculateTPSOnTimePassed><con:resetStatisticsOnThreadCountChange>true</con:resetStatisticsOnThreadCountChange><con:historyLimit>-1</con:historyLimit><con:testLimit>146</con:testLimit><con:limitType>COUNT</con:limitType><con:loadStrategy><con:type>Simple</con:type><con:config><testDelay>0</testDelay><randomFactor>0.0</randomFactor></con:config></con:loadStrategy><con:assertion type="Step Status" name="Step Status"/><con:maxAssertionErrors>100</con:maxAssertionErrors><con:cancelExcessiveThreads>true</con:cancelExcessiveThreads><con:strategyInterval>500</con:strategyInterval><con:setupScript/></con:loadTest><con:properties><con:property><con:name>studyIds</con:name><con:value/></con:property></con:properties></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer/></con:soapui-project>
