@@ -78,9 +78,13 @@ public class ExpeditedReportMigrator extends CompositeMigrator<ExpeditedAdverseE
         }
 
         StudyParticipantAssignment assignmentSrc = subjectSrc.getAssignments().get(0);
+
+        // DB - Participant Query.
         ParticipantQuery pq = new ParticipantQuery();
+        pq.joinStudy();
         pq.filterByStudySubjectIdentifier(assignmentSrc.getStudySubjectIdentifier());
-        pq.filterByStudySiteNciCode(studySiteSrc.getOrganization().getNciInstituteCode());
+        pq.filterByStudyId(studySrc.getId());
+        //pq.filterByStudySiteNciCode(studySiteSrc.getOrganization().getNciInstituteCode());
 
         List<Participant> dbParticipants = participantDao.searchParticipant(pq);
         if(dbParticipants == null || dbParticipants.isEmpty()){
