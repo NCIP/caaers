@@ -131,12 +131,8 @@ public class ParticipantServiceImpl extends AbstractImportService implements App
 	}
 	public List<StudySearchableAjaxableDomainObject> getAuthorizedStudies(Identifier identifier) {
 		List<StudySearchableAjaxableDomainObject> authorizedStudies = new ArrayList<StudySearchableAjaxableDomainObject>();
-		Study study = fetchStudy(identifier);
-		if (study!=null) {
-			authorizedStudies = getAuthorizedStudies(identifier.getValue());
-			return authorizedStudies;
-		}
-		return authorizedStudies;		
+		authorizedStudies = getAuthorizedStudies(identifier.getValue());
+		return authorizedStudies;
 	}
 
 	private String checkAuthorizedOrganizations (ParticipantType xmlParticipant) {
@@ -172,6 +168,11 @@ public class ParticipantServiceImpl extends AbstractImportService implements App
 			CaaersServiceResponse caaersServiceResponse) {		
 		
 		if (studyIdentifier != null ) {
+			Study study = fetchStudy(studyIdentifier);
+			if(study == null){
+				createNoStudyFoundResponse(caaersServiceResponse,studyIdentifier);
+				return null;
+			}
 			List<StudySearchableAjaxableDomainObject> authorizedStudies = getAuthorizedStudies(studyIdentifier);
 			if(authorizedStudies.size() == 0) {
 				createNoStudyAuthorizationResponse(caaersServiceResponse, studyIdentifier);
@@ -452,6 +453,11 @@ public class ParticipantServiceImpl extends AbstractImportService implements App
 	
 	private CaaersServiceResponse createNoStudyAuthorizationResponse(CaaersServiceResponse caaersServiceResponse, Identifier identifier){
 		populateError(caaersServiceResponse, "WS_GEN_003", messageSource.getMessage("WS_GEN_003", new String[]{identifier.getValue()},"",Locale.getDefault()));
+		return caaersServiceResponse;
+	}
+	
+	private CaaersServiceResponse createNoStudyFoundResponse(CaaersServiceResponse caaersServiceResponse, Identifier identifier){
+		populateError(caaersServiceResponse, "WS_PMS_002", messageSource.getMessage("WS_PMS_002", new String[]{identifier.getValue()},"",Locale.getDefault()));
 		return caaersServiceResponse;
 	}
 	
