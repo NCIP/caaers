@@ -72,10 +72,6 @@
         <property name="adeersWSUser" value="s[ADEERS_WS_USERNAME]" />
         <property name="adeersWSPassword" value="s[ADEERS_WS_PASSWORD]" />
     </bean>
-    <bean id="oDMexchangePreProcessor" class="gov.nih.nci.cabig.caaers2adeers.exchnage.ODMExchangePreProcessor">
-        <property name="caaersWSUser" value="s[CAAERS_WS_USERNAME]" />
-        <property name="caaersWSPassword" value="s[CAAERS_WS_PASSWORD]" />
-    </bean>
     <bean id="participantODMMessageProcessor" class="gov.nih.nci.cabig.open2caaers.exchange.ParticipantODMMessageProcessor"/>
     <bean id="participantODMMessageBinding" class="gov.nih.nci.cabig.open2caaers.binding.ParticipantODMMessageBinding"/>
     <bean id="xslt" class="gov.nih.nci.cabig.caaers2adeers.xslt.CustomXsltComponent" />
@@ -160,39 +156,19 @@
     
     <!-- Jetty Security handling -->
     
-    	<bean id="jetty" class="org.apache.camel.component.jetty.JettyHttpComponent">
-		    <property name="sslSocketConnectors">
-		        <map>
-		            <entry key="7700">
-		                <bean class="org.mortbay.jetty.security.SslSocketConnector">
-		                    <property name="password" value="s[OPEN-caaers.jetty.ssl.password]"/>
-		                    <property name="keyPassword" value="s[OPEN-caaers.jetty.ssl.keypassword]"/>
-		                    <property name="keystore" value="s[OPEN-caaers.keyStorePath]"/>
-		                    <property name="needClientAuth" value="false"/>
-		                </bean>
-		            </entry>
-		        </map>
-		    </property>
-		</bean>
-    <!--  
-	<bean id="userRealm" class="org.mortbay.jetty.plus.jaas.JAASUserRealm">
-	    <property name="name" value="tracker-users"/>
-	    <property name="loginModuleName" value="ldaploginmodule"/>
+   	<bean id="jetty" class="org.apache.camel.component.jetty.JettyHttpComponent">
+	    <property name="sslSocketConnectors">
+	        <map>
+	            <entry key="7700">
+	                <bean class="org.mortbay.jetty.security.SslSocketConnector">
+	                    <property name="password" value="s[OPEN-caaers.jetty.ssl.password]"/>
+	                    <property name="keyPassword" value="s[OPEN-caaers.jetty.ssl.keypassword]"/>
+	                    <property name="keystore" value="s[OPEN-caaers.keyStorePath]"/>
+	                    <property name="needClientAuth" value="false"/>
+	                </bean>
+	            </entry>
+	        </map>
+	    </property>
 	</bean>
 	
-	<bean id="constraint" class="org.mortbay.jetty.security.Constraint">
-	    <property name="name" value="BASIC"/>
-	    <property name="roles" value="tracker-users"/>
-	    <property name="authenticate" value="true"/>
-	</bean>
-	
-	<bean id="constraintMapping" class="org.mortbay.jetty.security.ConstraintMapping">
-	    <property name="constraint" ref="constraint"/>
-	    <property name="pathSpec" value="/*"/>
-	</bean>
-	
-	<bean id="securityHandler" class="org.mortbay.jetty.security.SecurityHandler">
-	    <property name="userRealm" ref="userRealm"/>
-	    <property name="constraintMappings" ref="constraintMapping"/>
-	</bean>  -->
 </beans>

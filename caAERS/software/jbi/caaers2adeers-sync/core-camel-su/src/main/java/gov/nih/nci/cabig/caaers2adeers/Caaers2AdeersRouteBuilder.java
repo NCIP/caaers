@@ -107,7 +107,7 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
 //process OPEN ODM msg to add security header and correlation id
         
     	from("direct:participantOpenOdmMessageSink")
-            .processRef("oDMexchangePreProcessor").processRef("headerGeneratorProcessor")
+            .processRef("headerGeneratorProcessor")
                 .process(track(REQUEST_RECEIVED))
                 .to(fileTracker.fileURI(REQUEST_RECEIVED))
                 .process(track(PRE_PROCESS_OPEN_ODM_MSG))

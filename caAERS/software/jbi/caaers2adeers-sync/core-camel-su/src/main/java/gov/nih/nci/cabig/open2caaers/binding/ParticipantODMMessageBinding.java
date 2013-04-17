@@ -5,13 +5,13 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.camel.Exchange;
-import org.apache.camel.Message;
 import org.apache.camel.component.http.DefaultHttpBinding;
 import org.apache.camel.component.http.HttpEndpoint;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class ParticipantODMMessageBinding extends DefaultHttpBinding{
-	private static Logger log = Logger.getLogger(ParticipantODMMessageBinding.class);
+	private static Log log = LogFactory.getLog(ParticipantODMMessageBinding.class);
     public ParticipantODMMessageBinding(HttpEndpoint ep) {
         super();
     }
@@ -21,17 +21,13 @@ public class ParticipantODMMessageBinding extends DefaultHttpBinding{
     }
     
     @Override
-    public void doWriteResponse(Message message, HttpServletResponse response,
-    		Exchange exchange) throws IOException {
-    	// TODO Auto-generated method stub
-    	super.doWriteResponse(message, response, exchange);
-    //	 String caaersErrorCode = XPathBuilder.xpath("//errMessage/Response/@ReasonCode").evaluate(exchange,  String.class);
-    //	 response.setStatus(getStatus(caaersErrorCode));
-     //  String code = (String)exchange.getOut().getHeader(Exchange.HTTP_RESPONSE_CODE);
-    	 exchange.getOut().setHeader(Exchange.HTTP_RESPONSE_CODE, 308);
-    	log.debug("writing response to Participant ODM request....");
-    	 
+    public void writeResponse(Exchange exchange, HttpServletResponse response)
+    		throws IOException {
+    // get the status code from the mapping and set it here
+    //	exchange.getOut().setHeader(Exchange.HTTP_RESPONSE_CODE, 308);
+    	super.writeResponse(exchange, response);
     }
+    
     
     @Override
     public void doWriteExceptionResponse(Throwable exception, HttpServletResponse response) throws IOException {
