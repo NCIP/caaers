@@ -130,6 +130,7 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
 
         //BELOW one is the response to OPEN.
         from("direct:oDMoutputSink")
+        .streamCaching()
                 .to("log:gov.nih.nci.cabig.open2caaers.from-oDMoutputSink?showAll=true&level=TRACE&showException=true&showStackTrace=true")
                 .process(track(REQUEST_COMPLETION))
                 .to(fileTracker.fileURI(REQUEST_COMPLETION))
