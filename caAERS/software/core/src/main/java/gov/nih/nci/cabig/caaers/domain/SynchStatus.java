@@ -32,7 +32,9 @@ public enum SynchStatus implements CodedEnum<Integer> {
 
      REQUST_PROCESSING_ERROR(900, "Error while processing request"),
      NO_DATA_AVAILABLE(998, "No data available"),
-     REQUEST_COMPLETION(999, "Message processing complete");
+     REQUEST_COMPLETION(999, "Message processing complete"),
+     
+     PRE_PROCESS_OPEN_ODM_MSG(12, "Add Exchange headers to OPEN ODM participant message");
 
 // need more fine grained stages in caAERS?. Rename Stage.
     private Integer code;
