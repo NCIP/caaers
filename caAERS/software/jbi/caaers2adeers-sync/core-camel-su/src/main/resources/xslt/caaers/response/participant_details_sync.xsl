@@ -4,7 +4,7 @@
                 xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
                 exclude-result-prefixes="com par soapenv">
                 
-    <xsl:output method="text/xml" indent="yes" omit-xml-declaration="yes"/>
+    <xsl:output method="xml" indent="yes" omit-xml-declaration="yes"/>
     <xsl:param name="c2a_correlation_id" />
     <xsl:template match="/">
    		<Response>

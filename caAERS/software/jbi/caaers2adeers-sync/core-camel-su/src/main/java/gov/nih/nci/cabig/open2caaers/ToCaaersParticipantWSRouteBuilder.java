@@ -16,7 +16,7 @@ private String caAERSParticipantServiceJBIURL = "jbi:service:http://schema.integ
 	
 	private String requestXSLBase = "xslt/caaers/request/";
 	private String responseXSLBase = "xslt/caaers/response/";
-	
+		
 	private Caaers2AdeersRouteBuilder routeBuilder;
 
 	public void configure(Caaers2AdeersRouteBuilder rb){
@@ -38,7 +38,7 @@ private String caAERSParticipantServiceJBIURL = "jbi:service:http://schema.integ
 				requestXSLBase + xslFileName, 
 				serviceURI, 
 				responseXSLBase + xslFileName, 
-				"direct:caAERSParticipantServiceResponseSink", 
+				"direct:odmOutSink", 
 				CAAERS_WS_IN_TRANSFORMATION, CAAERS_WS_INVOCATION_INITIATED, CAAERS_WS_INVOCATION_COMPLETED, CAAERS_WS_OUT_TRANSFORMATION, ROUTED_TO_CAAERS_RESPONSE_SINK);
 	}
 	

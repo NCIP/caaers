@@ -98,43 +98,25 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
         
         // route for Participant Service
         
-        from("jetty:https://0.0.0.0:7700/caaers/participantService?httpBindingRef=participantODMMessageBinding")
-        .streamCaching()
-        .process(track(REQUEST_RECEIVED))
-        .process(new ParticipantODMMessageProcessor())
-        .to("direct:participantOpenOdmMessageSink");
-        
-//process OPEN ODM msg to add security header and correlation id
-        
-    	from("direct:participantOpenOdmMessageSink")
-            .processRef("headerGeneratorProcessor")
-                .process(track(REQUEST_RECEIVED))
-                .to(fileTracker.fileURI(REQUEST_RECEIVED))
-                .process(track(PRE_PROCESS_OPEN_ODM_MSG))
-            .to("direct:processedOpenOdmMessageSink");
+        from("jetty:https://0.0.0.0:7700/caaers/ParticipantInitialization?httpBindingRef=participantODMMessageBinding")
+	        .streamCaching()
+	        .process(track(REQUEST_RECEIVED))
+	        .process(new ParticipantODMMessageProcessor())
+	        .processRef("headerGeneratorProcessor")
+	        .to(fileTracker.fileURI(REQUEST_RECEIVED))
+	        .to("xslt:" + "xslt/caaers/request/strip_namespaces.xsl")
+	        .process(track(PRE_PROCESS_OPEN_ODM_MSG))
+	        .to("direct:processedOpenOdmMessageSink");
 
         //configure route towards caAERS Webservices
     	toCaaersParticipantWSRouteBuilder.configure(this);
 
-    	//need to process caAERS results
-		from("direct:caAERSParticipantServiceResponseSink")
-                .choice()
-                    .when().xpath("//operation/errors/error")
-                        .to("direct:morgue")
-                    .when().xpath("//soap:Fault", ns)
-                        .to("direct:morgue")
-                    .otherwise()
-                    	.convertBodyTo(String.class)
-                        .to("direct:oDMoutputSink");
-
-
-        //BELOW one is the response to OPEN.
-        from("direct:oDMoutputSink")
-        .streamCaching()
-                .to("log:gov.nih.nci.cabig.open2caaers.from-oDMoutputSink?showAll=true&level=TRACE&showException=true&showStackTrace=true")
-                .process(track(REQUEST_COMPLETION))
-                .to(fileTracker.fileURI(REQUEST_COMPLETION))
-                .to("direct:openResponseSink");
+      //check for errors 
+        from("direct:odmOutSink")
+	        .streamCaching()
+	        .to("log:gov.nih.nci.cabig.open2caaers.from-oDMoutputSink?showAll=true&level=TRACE&showException=true&showStackTrace=true")
+        	.process(track(REQUEST_COMPLETION))
+        	.to(fileTracker.fileURI(REQUEST_COMPLETION));
 
 
         //just for testing generic webservice
