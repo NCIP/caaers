@@ -16,12 +16,12 @@ import java.io.IOException;
 public class BrowserCacheInvalidationRequestFilter implements Filter {
     FilterConfig config;
 
-    @Override
+
     public void init(FilterConfig filterConfig) throws ServletException {
        config = filterConfig;
     }
 
-    @Override
+
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         String buildName = servletRequest.getAttribute("buildInfo") != null ? ((BuildInfo)servletRequest.getAttribute("buildInfo")).getBuildName() : "unknown";
         if(servletRequest instanceof HttpServletRequest){
@@ -44,7 +44,7 @@ public class BrowserCacheInvalidationRequestFilter implements Filter {
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
-    @Override
+
     public void destroy() {
 
     }
