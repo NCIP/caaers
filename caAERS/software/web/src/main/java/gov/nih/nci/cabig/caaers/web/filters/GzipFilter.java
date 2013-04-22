@@ -115,9 +115,8 @@ public class GzipFilter extends net.sf.ehcache.constructs.web.filter.GzipFilter 
 		boolean acceptsEncoding = super.acceptsEncoding(request, name);
 		String userAgent = request.getHeader("User-Agent");
 		return acceptsEncoding
-				&& (userAgent.contains("Firefox") || userAgent.contains("MSIE 6.0")
-						|| userAgent.contains("MSIE 7.0") || userAgent
-						.contains("MSIE 8.0"));
+				&& (userAgent.contains("Firefox") || userAgent.contains("MSIE")) ;
+
 	}
     
     /**

@@ -180,7 +180,59 @@
 		<filter-name>Acegi Filter Chain Proxy</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	<filter>
+
+    <filter>
+        <filter-name>BeansInRequestFilter</filter-name>
+        <filter-class>gov.nih.nci.cabig.ctms.web.filters.BeansInRequestFilter</filter-class>
+        <init-param>
+            <param-name>beanNames</param-name>
+            <param-value>configuration, buildInfo</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>BeansInRequestFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+
+    <filter>
+        <filter-name>BrowserCacheInvalidationRequestFilter</filter-name>
+        <filter-class>gov.nih.nci.cabig.caaers.web.filters.BrowserCacheInvalidationRequestFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>BrowserCacheInvalidationRequestFilter</filter-name>
+        <url-pattern>/pages/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>BrowserCacheInvalidationRequestFilter</filter-name>
+        <url-pattern>/public/*</url-pattern>
+    </filter-mapping>
+    <filter>
+        <filter-name>CachingFilter</filter-name>
+        <filter-class>gov.nih.nci.cabig.caaers.web.filters.CachingFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>CachingFilter</filter-name>
+        <url-pattern>*.js</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>CachingFilter</filter-name>
+        <url-pattern>*.zjs</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>CachingFilter</filter-name>
+        <url-pattern>*.css</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>CachingFilter</filter-name>
+        <url-pattern>*.zcss</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>CachingFilter</filter-name>
+        <url-pattern>/images/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
   		<filter-name>GzipFilter</filter-name>
   		<filter-class>gov.nih.nci.cabig.caaers.web.filters.GzipFilter</filter-class>
  	</filter>
@@ -210,18 +262,6 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    <filter>
-        <filter-name>BeansInRequestFilter</filter-name>
-        <filter-class>gov.nih.nci.cabig.ctms.web.filters.BeansInRequestFilter</filter-class>
-        <init-param>
-            <param-name>beanNames</param-name>
-            <param-value>configuration, buildInfo</param-value>
-        </init-param>
-    </filter>
-    <filter-mapping>
-        <filter-name>BeansInRequestFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
 
     <filter>
   		<filter-name>AuditInfoFilter</filter-name>

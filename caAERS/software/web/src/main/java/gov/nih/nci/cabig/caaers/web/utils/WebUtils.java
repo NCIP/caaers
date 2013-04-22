@@ -7,27 +7,28 @@
 package gov.nih.nci.cabig.caaers.web.utils;
 
 
-import java.util.*;
-
-import javax.servlet.http.HttpServletRequest;
-
+import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.validation.ValidationError;
+import gov.nih.nci.cabig.ctms.domain.CodedEnum;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.drools.util.StringUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import gov.nih.nci.cabig.caaers.validation.ValidationError;
-import gov.nih.nci.cabig.caaers.validation.fields.validators.FieldValidator;
-import gov.nih.nci.cabig.caaers.domain.*;
-import gov.nih.nci.cabig.ctms.domain.CodedEnum;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.util.*;
 
 public class WebUtils {
 
     private static final Log logger = LogFactory.getLog(WebUtils.class);
-    
+    public static String BUILD_INFO_COOKIE = "buildInfo";
+
     /**
      * This method will create, options from an enumeration.
      * @param codedEnum
@@ -333,6 +334,20 @@ public class WebUtils {
             orgs.add(si.getOrganization());
         }
         return orgs;
+    }
+
+
+    public static String getBuildInfoCookie(HttpServletRequest request){
+        Cookie[] cookies = request.getCookies();
+        if(cookies == null) return null;
+        for(Cookie c : cookies){
+            if(c.getName().equals(BUILD_INFO_COOKIE)) return c.getValue();
+        }
+        return null;
+    }
+
+    public static void setBuildInfoCookie(HttpServletResponse response, String buildName){
+        response.addCookie(new Cookie(BUILD_INFO_COOKIE, buildName));
     }
 
 
