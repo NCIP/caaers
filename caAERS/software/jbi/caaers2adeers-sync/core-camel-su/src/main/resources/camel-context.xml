@@ -156,6 +156,7 @@
     
     <!-- Jetty Security handling -->
     
+    <!--  
    	<bean id="jetty" class="org.apache.camel.component.jetty.JettyHttpComponent">
 	    <property name="sslSocketConnectors">
 	        <map>
@@ -169,6 +170,6 @@
 	            </entry>
 	        </map>
 	    </property>
-	</bean>
+	</bean>  -->
 	
 </beans>

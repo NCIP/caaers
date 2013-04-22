@@ -98,7 +98,7 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
         
         // route for Participant Service
         
-        from("jetty:https://0.0.0.0:7700/caaers/ParticipantInitialization?httpBindingRef=participantODMMessageBinding")
+        from("jetty:http://0.0.0.0:7700/caaers/ParticipantInitialization?httpBindingRef=participantODMMessageBinding")
 	        .streamCaching()
 	        .process(track(REQUEST_RECEIVED))
 	        .process(new ParticipantODMMessageProcessor())
