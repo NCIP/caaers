@@ -26,9 +26,9 @@ public class ParticipantODMMessageProcessor implements Processor {
 	public static final String CAAERS_WS_USERNAME = "c2a_caaers_ws_username";
 	public static final String CAAERS_WS_PASSWORD = "c2a_caaers_ws_password";
 
-	private final String caaersWSUser = "mayo-super-user";
+	private final String caaersWSUser = "registrar";
 
-	private final String caaersWSPassword = "Hello-12";
+	private final String caaersWSPassword = "rartsigermai-11";
 
 	protected static final Log log = LogFactory
 			.getLog(ParticipantODMMessageProcessor.class);

@@ -40,18 +40,17 @@ public class ParticipantODMMessageBinding extends DefaultHttpBinding{
         codeMap.put("WS_GEN_007",400); // invalid xml
         codeMap.put("WS_GEN_008",401);  // authentication not found
         codeMap.put("WS_GEN_009",401);  // wrong username/password
-        codeMap.put("WS_GEN_010",500);  // code for something went wrong
+        codeMap.put("WS_GEN_010",500);  // something went wrong
         codeMap.put("WS_PMS_002",404);
         codeMap.put("WS_PMS_003",200);
         codeMap.put("WS_PMS_004",409);
-        codeMap.put("WS_PMS_005",200);
+        codeMap.put("WS_PMS_005",500);
         codeMap.put("WS_PMS_006",200);
-        codeMap.put("WS_PMS_007",200);
-        codeMap.put("WS_PMS_013",200);
+        codeMap.put("WS_PMS_007",500);
+        codeMap.put("WS_PMS_013",400);
         codeMap.put("WS_PMS_014",400);
-        codeMap.put("WS_PMS_015",200);
-        codeMap.put("WS_PMS_016",200);
-        codeMap.put("WS_PMS_017",200);
+        codeMap.put("WS_PMS_015",400);
+        codeMap.put("WS_PMS_017",400);
     }
     
     @Override
@@ -110,13 +109,13 @@ public class ParticipantODMMessageBinding extends DefaultHttpBinding{
         
         if(exception.getMessage().contains("Invalid Authentication")){
         	response.setStatus(401);
-        	response.getWriter().write("<Response ReferenceNumber=\"" + referenceNumber + "\" IsTransactionSuccessful=\"0\" ReasonCode=\"WS_GEN009\" ErrorClientResponseMessage=\"Wrong Username/Password\"/>");
+        	response.getWriter().write("<Response ReferenceNumber=\"" + referenceNumber + "\" IsTransactionSuccessful=\"0\" ReasonCode=\"WS_GEN_009\" ErrorClientResponseMessage=\"Wrong Username/Password\"/>");
         	return;
         } 
     	
     	// return HTTP 500 to signify something went wrong
         response.setStatus(500);
-        response.getWriter().write("<Response ReferenceNumber=\"" + referenceNumber + "\" IsTransactionSuccessful=\"0\" ReasonCode=\"WS_GEN0010\" ErrorClientResponseMessage=\"Unexpected internal error\"/>");
+        response.getWriter().write("<Response ReferenceNumber=\"" + referenceNumber + "\" IsTransactionSuccessful=\"0\" ReasonCode=\"WS_GEN_010\" ErrorClientResponseMessage=\"Unexpected internal error\"/>");
         log.debug("exception in ODM participant service " + exception.getMessage());
     }
 }
