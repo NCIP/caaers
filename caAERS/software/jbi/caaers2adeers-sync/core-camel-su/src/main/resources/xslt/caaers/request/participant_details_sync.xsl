@@ -113,7 +113,7 @@
 										<par:study>
 											<identifiers>
 												<identifier>
-													<type>Other</type>
+													<type>Protocol Authority Identifier</type>
 													<value>
 														<xsl:value-of select='ODM/ClinicalData/@StudyOID' />
 													</value>
