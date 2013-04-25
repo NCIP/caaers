@@ -69,7 +69,8 @@
 							     <xsl:choose>
 							     	<xsl:when test="$odmGender = 'Male Gender'">Male</xsl:when>
 							     	<xsl:when test="$odmGender = 'Female Gender'">Female</xsl:when>
-							     	<xsl:otherwise>$odmGender</xsl:otherwise>
+							     	<xsl:when test="$odmGender = 'Unspecified'">Not Reported</xsl:when>
+							     	<xsl:otherwise><xsl:value-of select="$odmGender"/></xsl:otherwise>
 							     </xsl:choose>
 							     </xsl:variable>
 							

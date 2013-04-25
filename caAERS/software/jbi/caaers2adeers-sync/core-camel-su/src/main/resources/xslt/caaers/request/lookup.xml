@@ -44,6 +44,7 @@
         <gender><code>Male Gender</code><value>Male</value></gender>
         <gender><code>Female Gender</code><value>Female</value></gender>
         <gender><code>Unknown</code><value>Unknown</value></gender>
+        <gender><code>Unspecified</code><value>Not Reported</value></gender>
     </genders>
      <races>
         <race><code>Asian</code><value>Asian</value></race>

@@ -85,7 +85,7 @@ public class ParticipantODMMessageBinding extends DefaultHttpBinding{
 			reasonCode="WS_GEN_007";
 			long referenceNumber = System.currentTimeMillis();
 			response.setStatus(codeMap.get(reasonCode));
-			response.getWriter().write("<Response ReferenceNumber=\"" + referenceNumber + "\" IsTransactionSuccessful=\"0\" ReasonCode=\"" + reasonCode + "\" ErrorClientResponseMessage=\"" + errorMessage + "\"/>");
+			response.getWriter().write("<Response ReferenceNumber=\"" + referenceNumber + "\" IsTransactionSuccessful=\"0\" ReasonCode=\"" + reasonCode + "\" ErrorClientResponseMessage=\"" + "Schema validation failed as required by caAERS Participant Service: " + errorMessage + "\"/>");
 			
 		} else {
 	       exchange.getOut().setHeader(Exchange.HTTP_RESPONSE_CODE,codeMap.get(reasonCode));
@@ -102,14 +102,14 @@ public class ParticipantODMMessageBinding extends DefaultHttpBinding{
     	 // and return this fixed text
         if(exception.getMessage().contains("No Authentication found")){
         	response.setStatus(401);
-        	response.getWriter().write("<Response ReferenceNumber=\"" + referenceNumber + "\" IsTransactionSuccessful=\"0\" ReasonCode=\"WS_GEN_008\" ErrorClientResponseMessage=\"No Authentication found in request\"/>");
+        	response.getWriter().write("<Response ReferenceNumber=\"" + referenceNumber + "\" IsTransactionSuccessful=\"0\" ReasonCode=\"WS_GEN_008\" ErrorClientResponseMessage=\"Username/Password not provided\"/>");
         	return;
         } 
         
         
         if(exception.getMessage().contains("Invalid Authentication")){
         	response.setStatus(401);
-        	response.getWriter().write("<Response ReferenceNumber=\"" + referenceNumber + "\" IsTransactionSuccessful=\"0\" ReasonCode=\"WS_GEN_009\" ErrorClientResponseMessage=\"Wrong Username/Password\"/>");
+        	response.getWriter().write("<Response ReferenceNumber=\"" + referenceNumber + "\" IsTransactionSuccessful=\"0\" ReasonCode=\"WS_GEN_009\" ErrorClientResponseMessage=\"Incorrect Username/Password\"/>");
         	return;
         } 
     	
