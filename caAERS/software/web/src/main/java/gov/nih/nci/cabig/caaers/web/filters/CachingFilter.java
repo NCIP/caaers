@@ -61,6 +61,7 @@ public class CachingFilter implements Filter {
         HttpServletResponse httpRes = (HttpServletResponse) servletResponse;
 
         String uri = httpReq.getRequestURI();
+        httpRes.setHeader("Pragma", "cache");
         httpRes.setHeader("Expires", expires);
         httpRes.setHeader("Last-Modified", lastModified);
         httpRes.setHeader("Cache-Control", cacheControl);
