@@ -74,7 +74,7 @@
     <STUDY_ORGANIZATIONS
     	id="-1001"
     	version="1"
-    	sstart_date="2006-10-10"
+    	start_date="2006-10-10"
     	study_id="-1"
     	site_id="-1003"
     	type="SFS"/>

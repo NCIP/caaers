@@ -31,6 +31,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
+import org.hibernate.CacheMode;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
@@ -97,6 +98,8 @@ public class ParticipantServiceTest extends CaaersDbNoSecurityTestCase {
             assertEquals("Male", createdParticipant.getGender());
             assertEquals("Asian", createdParticipant.getRace());
             assertEquals("Hispanic or Latino", createdParticipant.getEthnicity());
+            
+            interruptSession();
             
             Study study = studyDao.getById(-1);
             assertNotNull(study);
