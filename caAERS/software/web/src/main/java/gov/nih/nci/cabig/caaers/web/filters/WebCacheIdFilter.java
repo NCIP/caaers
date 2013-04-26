@@ -14,7 +14,7 @@ public class WebCacheIdFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         Calendar calendar = Calendar.getInstance();
-        webCacheId = "v=" + new SimpleDateFormat("yyyyMMdd").format(calendar.getTime());
+        webCacheId = "v=v" + new SimpleDateFormat("yyyyMMdd").format(calendar.getTime());
     }
 
     @Override

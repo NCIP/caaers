@@ -36,8 +36,9 @@ import org.apache.commons.logging.LogFactory;
 public class CachingFilter implements Filter {
 
     private static final Log log = LogFactory.getLog(CachingFilter.class.getName());
-    private String expiryDate;
-    private String lastModifiedDate;
+    private String expires = "Sun, 01 Jan 2051 00:00:00 GMT";
+    private String lastModified = "Fri, 01 Jan 2010 00:00:00 GMT";
+    private String cacheControl = "max-age=1576800000,public";
 
     protected boolean isIE(HttpServletRequest request) {
         return request.getHeader("User-Agent").contains("MSIE");
@@ -45,19 +46,6 @@ public class CachingFilter implements Filter {
 
 
     public void init(FilterConfig filterConfig) throws ServletException {
-        //set far future expiry date
-        Calendar calendar = Calendar.getInstance();
-
-        calendar.add(Calendar.YEAR, 30);
-        expiryDate = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z").format(calendar.getTime());
-
-        Calendar lastModified = Calendar.getInstance();
-        lastModified.add(Calendar.YEAR, -2);
-
-        lastModifiedDate = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z").format(lastModified.getTime());
-
-        log.info(String.format("Initializing caching filter with expiry date of %s ", expiryDate));
-        log.info(String.format("Initializing caching filter with lastModifiedDate of %s ", lastModifiedDate));
 
     }
 
@@ -73,13 +61,9 @@ public class CachingFilter implements Filter {
         HttpServletResponse httpRes = (HttpServletResponse) servletResponse;
 
         String uri = httpReq.getRequestURI();
-
-        String lastModified = lastModifiedDate;
-        String expires = expiryDate;
-        String cacheControl = String.format("public,max-age=1261440000");  //max-age=60 * 60 * 24 * 365 * 40  (40 years)
         httpRes.setHeader("Expires", expires);
         httpRes.setHeader("Last-Modified", lastModified);
-        httpRes.setHeader("Cache-Control", cacheControl);  //max-age=60 * 60 * 24 * 365 * 40  (40 years)
+        httpRes.setHeader("Cache-Control", cacheControl);
 
         if(isIE(httpReq)){
             //add the ETag header
@@ -88,7 +72,6 @@ public class CachingFilter implements Filter {
             final String etTag = build + "-" + uri.substring(uri.lastIndexOf('/') + 1);
             httpRes.setHeader("ETag", etTag);
 
-            if(log.isDebugEnabled()) log.debug("URI : " + uri + ", ETag : " + etTag + ", expiry : " + expiryDate + " lastModified : " + lastModifiedDate);
             String previousETag =  httpReq.getHeader("If-None-Match");
             //if ETag is not modified, return SC_NOT_MODIFIED error
             if(StringUtils.equals(previousETag, etTag)){
@@ -104,12 +87,11 @@ public class CachingFilter implements Filter {
             @Override
             public void setHeader(String name, String value) {
                 //ignore known headers
-               if(name.equals("ETag") || name.equals("Last-Modified") || name.equals("Expires") || name.equals("Cache-Control") ) return;
+               if(name.equals("ETag") || name.equals("Last-Modified") || name.equals("Expires") || name.equals("Cache-Control") || name.equals("Pragma") ) return;
                super.setHeader(name, value);
             }
         };
 
-        if(log.isDebugEnabled()) log.debug("URI : " + uri + ", expiry : " + expiryDate + " lastModified : " + lastModifiedDate);
 
         //continue the filter chain.
         filterChain.doFilter(servletRequest, wrappedRes);
