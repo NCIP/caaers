@@ -80,7 +80,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 	</span>
 	
 	<a href="javascript:removeCondition(${ruleCount}, ${columnCount})">
-		<img id="remove-column-${ruleCount}" src="<c:url value="/images/rule/remove_condition.gif"/>" align="absmiddle" style="cursor:hand;  border:0px"/>
+		<img id="remove-column-${ruleCount}" src="<c:url value="/images/rule/remove_condition.gif"/>?${requestScope.webCacheId}" align="absmiddle" style="cursor:hand;  border:0px"/>
 	</a>
 	
 </div>

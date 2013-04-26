@@ -31,15 +31,6 @@ import java.util.Map;
  *         rules
  */
 public interface AdverseEventEvaluationService {
-    /**
-     * Assess a particular adverse event, by evaluating the rules defined.
-     * @param ae - The AdverseEvent  to evaluate
-     * @param study - The Study in context
-     * @return
-     * @throws Exception
-     */
-    String assesAdverseEvent(AdverseEvent ae, Study study) throws Exception;
-
 
     /**
      * Evaluate the Rules defined in the context of the report and for the specified adverse events. 

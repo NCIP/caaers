@@ -330,7 +330,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
       <tbody>
         <tr class="titleRow">
           <td align="left" class="title">Select :</td>
-          <td align="right"><a href="javascript:hideShowAllTable()"><img src="<c:url value="/images/rule/window-close.gif" />" id="close-image"/></a></td>
+          <td align="right"><a href="javascript:hideShowAllTable()"><img src="<c:url value="/images/rule/window-close.gif" />?${requestScope.webCacheId}" id="close-image"/></a></td>
         </tr>
         <tr>
           <td colspan="2"><div id="showAllDropDownContent"/></td>

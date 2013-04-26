@@ -100,7 +100,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
                     },
                     onComplete:function (id, fileName, responseJSON) {
                         if (responseJSON.success) {
-                            var deleteIcon = "<img src='<c:url value="/images/buttons/button_icons/small/x_icon_small.png" />'>";
+                            var deleteIcon = "<img src='<c:url value="/images/buttons/button_icons/small/x_icon_small.png" />?${requestScope.webCacheId}'>";
 
                             var downloadURL = '<a target="_blank" href="additionalInformationDocumentDownload?fileId=' + responseJSON.fileId + '">' + fileName + '</a>';
                             var deleteURL = '<a href="javascript:deleteDocument(\'' + responseJSON.fileId + '\',\'file-' + id + '\')">' + deleteIcon + '</a>';

@@ -126,7 +126,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
                         <tr>
                             <td class="l"></td>
                             <td class="m">
-                                <img alt="" src="/caaers/images/buttons/button_icons/back_icon.png">
+                                <img alt="" src="/caaers/images/buttons/button_icons/back_icon.png?${requestScope.webCacheId}">
                                 <span id="flow-prev-value">Back</span>
                             </td>
                             <td class="r"></td>
@@ -144,7 +144,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
                             <td class="l"></td>
                             <td class="m">
                                 <span id="flow-next-value">Save</span>
-                                <img alt="" src="/caaers/images/buttons/button_icons/disk_icon.png">
+                                <img alt="" src="/caaers/images/buttons/button_icons/disk_icon.png?${requestScope.webCacheId}">
                             </td>
                             <td class="r"></td>
                         </tr>

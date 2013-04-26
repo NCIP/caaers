@@ -188,7 +188,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
             <div class="value" style="margin-left: 100px;">
                 <input type="text" size="25" onkeydown="onKey(event);" value="${command.searchText}" id="searchText_">
                 <tags:button color="blue" type="button" value="Search" size="small" icon="search" onclick="sync(); buildTable('assembler', true);"/>
-                <img src="<c:url value="/images/alphacube/progress.gif" />" style="display:none;" id="indicator">
+                <img src="<c:url value="/images/alphacube/progress.gif" />?${requestScope.webCacheId}" style="display:none;" id="indicator">
                 <c:set var="targetPage" value="${assignType == 'study' ? '_target0' : '_target1'}"/>
             </div>
         </div>

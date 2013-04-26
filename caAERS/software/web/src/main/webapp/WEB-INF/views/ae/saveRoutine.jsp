@@ -91,7 +91,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
             		<td>
             			<c:if test="${ae.report == null }" >
             			<a href="javascript:fireAction('removeTerm',${status.index});">
-								<img src="<c:url value="/images/checkno.gif"/>" border="0" alt="Delete"></a>
+								<img src="<c:url value="/images/checkno.gif"/>?${requestScope.webCacheId}" border="0" alt="Delete"></a>
 						</c:if>
 						<c:if test="${ae.report != null }" >
             				<c:out value="SAE" />

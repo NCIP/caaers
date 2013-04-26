@@ -59,7 +59,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
                         "<option value=\"\">Please select</option>" +
                         "<option value=\"\">View/Edit</option>" +
                       "</select>"
-            <%--nfAction: "<span id='studyLink${nf.id}'><img src='<c:url value="/images/orange-import.gif" />' border='0' onclick='handleEditAction(\"${nf.id}\")' id='_study${nf.id}' style='cursor: pointer;'></span>"--%>
+            <%--nfAction: "<span id='studyLink${nf.id}'><img src='<c:url value="/images/orange-import.gif" />?${requestScope.webCacheId}' border='0' onclick='handleEditAction(\"${nf.id}\")' id='_study${nf.id}' style='cursor: pointer;'></span>"--%>
         }
         <c:if test="${!status.last}">,</c:if>
         </c:forEach>

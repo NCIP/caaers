@@ -9,8 +9,8 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 <html>
 <head>
 <title>CTEP-ESYS Data Integration Logs</title>
-<link rel="stylesheet" type="text/css" href="/caaers/css/slider.css" />
-<link rel="stylesheet" type="text/css" href="/caaers/css/ae.css" />
+<link rel="stylesheet" type="text/css" href="/caaers/css/slider.css?${requestScope.webCacheId}" />
+<link rel="stylesheet" type="text/css" href="/caaers/css/ae.css?${requestScope.webCacheId}" />
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <tags:dwrJavascriptLink objects="ctepDataInitialization"/>
 
@@ -145,9 +145,9 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 			str += (i % 2 == 0) ? '<tr class="alt">' : '<tr>';
 			str += '<td>' + key + '</td>';
 			if(objArray[key] == 'Success'){
-				str += '<td> <img src="<c:url value="/images/chrome/../check.png" />"> </td>';
+				str += '<td> <img src="<c:url value="/images/chrome/../check.png" />?${requestScope.webCacheId}"> </td>';
 			} else {
-				str += '<td> <img src="<c:url value="/images/chrome/../checkno.gif" />"> </td>';
+				str += '<td> <img src="<c:url value="/images/chrome/../checkno.gif" />?${requestScope.webCacheId}"> </td>';
 			}
 		    str += '</tr>';
 			i = i +1;
@@ -282,7 +282,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 </head>
 
 <body>
-<script type="text/javascript" src="<c:url value="/js/wz_tooltip/wz_tooltip.js" />"></script>
+<script type="text/javascript" src="<c:url value="/js/wz_tooltip/wz_tooltip.js" />?${requestScope.webCacheId}"></script>
 
      <div class="workflow-tabs2">
 	  <ul id="" class="tabs autoclear">
@@ -325,7 +325,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
         			<td></td>
             		<td>
             				<tags:button color="blue" type="button" value="Find" size="small" icon="search" onclick="buildTable();"/>
-            				<img class="indicator" src="<c:url value="/images/alphacube/progress.gif" />" id="indicator"></td>
+            				<img class="indicator" src="<c:url value="/images/alphacube/progress.gif" />?${requestScope.webCacheId}" id="indicator"></td>
             		</td>
             	</tr>
          </table>	

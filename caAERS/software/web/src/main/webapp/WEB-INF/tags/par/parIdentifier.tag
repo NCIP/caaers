@@ -64,7 +64,7 @@
     
     <c:if test="${not disableDelete}">
         <td align="center">
-            <a href="javascript:${removeAction}('${containerName}', '<c:out value="${index}" />');"><img src="<c:url value="/images/checkno.gif" />" border="0" alt="delete" ></a>
+            <a href="javascript:${removeAction}('${containerName}', '<c:out value="${index}" />');"><img src="<c:url value="/images/checkno.gif" />?${requestScope.webCacheId}" border="0" alt="delete" ></a>
         </td>
     </c:if>
     <c:if test="${disableDelete}">

@@ -136,7 +136,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
             var _id = oRecord.getData("id");
             var _ssi = oRecord.getData("fundingSponsorIdentifierValue");
             var _active = oRecord.getData("dataEntryStatus");
-            elCell.innerHTML = "<img src='<c:url value="/images/orange-actions.gif" />' border='0' onmouseover=\"showDashboardStudiesMenuOptions(this, roles_map, '" + _ssi + "', " + _id + ", '" + _active + "')\" style=\"cursor: pointer; margin-right: 15px;\">";
+            elCell.innerHTML = "<img src='<c:url value="/images/orange-actions.gif" />?${requestScope.webCacheId}' border='0' onmouseover=\"showDashboardStudiesMenuOptions(this, roles_map, '" + _ssi + "', " + _id + ", '" + _active + "')\" style=\"cursor: pointer; margin-right: 15px;\">";
         };
 
         var myColumnDefs = [
@@ -201,7 +201,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
             <div class="value">
                 <input type="text" size="25" onkeydown="onKey(event);" value="${command.searchText}" id="searchText_">&nbsp;
                 <tags:button color="blue" type="button" value="Search" size="small" icon="search" onclick="buildTable('assembler', true);"/>
-                <img src="<c:url value="/images/alphacube/progress.gif" />" style="display:none;" id="indicator"></td>
+                <img src="<c:url value="/images/alphacube/progress.gif" />?${requestScope.webCacheId}" style="display:none;" id="indicator"></td>
             </div>
         </div>
 

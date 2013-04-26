@@ -6,6 +6,7 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
@@ -40,5 +41,12 @@ public class OtherCausesTab extends AeTab {
     	boolean hasEmptyFields =  super.hasEmptyMandatoryFields(command, request);
     	hasEmptyFields |= CollectionUtils.isEmpty(command.getAeReport().getOtherCauses());
     	return hasEmptyFields;
+    }
+
+    @Override
+    public void beforeBind(HttpServletRequest request, ExpeditedAdverseEventInputCommand command) {
+        for(AdverseEvent ae : command.getAeReport().getAdverseEvents()){
+            ae.getOtherCauseAttributions().size();
+        }
     }
 }

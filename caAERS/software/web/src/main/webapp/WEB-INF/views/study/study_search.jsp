@@ -77,7 +77,7 @@ function ajaxCallBack(jsonResult) {
         var _id = oRecord.getData("id");
         var _ssi = oRecord.getData("fundingSponsorIdentifierValue");
         var _active = oRecord.getData("dataEntryStatus");
-        elCell.innerHTML = "<img src='<c:url value="/images/orange-actions.gif" />' border='0' onmouseover=\"showDashboardStudiesMenuOptions(this, roles_map, '" + _ssi + "', " + _id + ", '" + _active + "')\" style=\"cursor: pointer; margin-right: 15px;\">";
+        elCell.innerHTML = "<img src='<c:url value="/images/orange-actions.gif" />?${requestScope.webCacheId}' border='0' onmouseover=\"showDashboardStudiesMenuOptions(this, roles_map, '" + _ssi + "', " + _id + ", '" + _active + "')\" style=\"cursor: pointer; margin-right: 15px;\">";
     };
 
 

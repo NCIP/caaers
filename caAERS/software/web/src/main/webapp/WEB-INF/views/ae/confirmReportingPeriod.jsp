@@ -34,7 +34,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 	<table width="100%" height="100%">
 		<tr>
 			<td width="100%" align="center">
-				Refreshing <img src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator"/>
+				Refreshing <img src="<c:url value="/images/indicator.white.gif"/>?${requestScope.webCacheId}" alt="activity indicator"/>
 			</td>
 		</tr>
 	</table>

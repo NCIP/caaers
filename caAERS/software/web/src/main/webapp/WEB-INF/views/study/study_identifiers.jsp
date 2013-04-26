@@ -70,7 +70,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
         	siteSelector: function(organization) {
         	    var image;            	
             	if (organization.externalId != null) {
-                    image = '&nbsp;<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>';
+                    image = '&nbsp;<img src="<chrome:imageUrl name="nci_icon_22.png"/>?${requestScope.webCacheId}" alt="NCI data" width="17" height="16" border="0" align="middle"/>';
                 } else {
                     image = '';
                 }

@@ -39,7 +39,7 @@
 		<td align="center" id="value-td-${index }">
 		</td>
 		<td align="center" id="delete-td-${index }">
-			<img src="<c:url value="/images/checkno.gif" />" id="delete-${index}" onClick="javascript:deleteCriteria(${index });"/>
+			<img src="<c:url value="/images/checkno.gif" />?${requestScope.webCacheId}" id="delete-${index}" onClick="javascript:deleteCriteria(${index });"/>
 		</td>
 	</tr>
 </c:if>
@@ -130,7 +130,7 @@
 			</c:if>
 		</td>
 		<td align="center" id="delete-td-${index }">
-			<img src="<c:url value="/images/checkno.gif" />" id="delete-${index}" onClick="javascript:deleteCriteria(${index });"/>
+			<img src="<c:url value="/images/checkno.gif" />?${requestScope.webCacheId}" id="delete-${index}" onClick="javascript:deleteCriteria(${index });"/>
 		</td>
 	</tr>
 </c:if>

@@ -28,7 +28,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
                          		<td>${study.primaryIdentifier}</td>
                                 <td><span title="<c:out value="${study.shortTitle}" escapeXml="true" />"><tags:substring s="${study.shortTitle}" l="100" /></span></td>
                                 <td align="RIGHT">
-                                    <img src="<c:url value="/images/orange-actions.gif" />"
+                                    <img src="<c:url value="/images/orange-actions.gif" />?${requestScope.webCacheId}"
                                          border="0"
                                          onmouseover='showDashboardStudiesMenuOptions(this, roles_map, "${study.fundingSponsorIdentifierValue}", "${study.id}","${not empty study.dataEntryStatus ? study.dataEntryStatus : false}")'
                                          id='_d_study_${study.primaryIdentifier}'

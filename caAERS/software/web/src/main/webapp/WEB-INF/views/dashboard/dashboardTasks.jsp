@@ -13,7 +13,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
         <c:set var="_regularTasksVisible" value="${true}" />
             <c:forEach items="${taskGroup.taskList}" var="task">
                 <csmauthz:accesscontrol domainObject="${task}" authorizationCheckName="taskAuthorizationCheck">
-                <tr><td class="taskItemImage"><img src="<c:url value="/images/blue/icons/${task.linkName}_icon2.png" />"></td><td width="100%" class="taskItem" style="margin-right:1px;"><a href="<c:url value="${task.url}"/>">${task.displayName}</a></td></tr>
+                <tr><td class="taskItemImage"><img src="<c:url value="/images/blue/icons/${task.linkName}_icon2.png" />?${requestScope.webCacheId}"></td><td width="100%" class="taskItem" style="margin-right:1px;"><a href="<c:url value="${task.url}"/>">${task.displayName}</a></td></tr>
                 </csmauthz:accesscontrol>
             </c:forEach>
         </csmauthz:accesscontrol>
@@ -25,7 +25,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
         <td align="center" valign="top">
             <c:forEach items="${taskGroup.taskList}" var="task">
                 <csmauthz:accesscontrol domainObject="${task}" authorizationCheckName="taskAuthorizationCheck">
-                <tr><td class="taskItemImage"><img src="<c:url value="/images/blue/icons/${task.linkName}_icon2.png"/>"></td><td width="100%" class="taskItem"><a href="<c:url value="${task.url}"/>">${task.displayName}</a></td></tr>
+                <tr><td class="taskItemImage"><img src="<c:url value="/images/blue/icons/${task.linkName}_icon2.png"/>?${requestScope.webCacheId}"></td><td width="100%" class="taskItem"><a href="<c:url value="${task.url}"/>">${task.displayName}</a></td></tr>
                 </csmauthz:accesscontrol>
             </c:forEach>
         </csmauthz:accesscontrol>

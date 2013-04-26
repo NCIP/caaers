@@ -75,7 +75,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 				var _tableId = el+"-sitesTable";
 				var _sitesFldName = el + '.sites';
 				var _trId = el + '-site-' +_nciCode;
-				var _deleteBtn = "<a href=\"javascript:removeSite('" + el + "-site-" +_nciCode + "','" +index+ "');\"><img src='<c:url value="/images/buttons/button_icons/small/x_icon_small.png" />' border='1' alt='delete'></a>"
+				var _deleteBtn = "<a href=\"javascript:removeSite('" + el + "-site-" +_nciCode + "','" +index+ "');\"><img src='<c:url value="/images/buttons/button_icons/small/x_icon_small.png" />?${requestScope.webCacheId}' border='1' alt='delete'></a>"
 				
 				$(_tableId).down('tr').insert({
 					after: tableRow.interpolate({selectedChoiceForDisplay:_selectedSiteForDisplay, identifier : _nciCode ,fldName : _sitesFldName, deleteBtn : _deleteBtn, trId : _trId })
@@ -93,7 +93,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 				var _tableId = el+"-studiesTable";
 				var _studiesFldName = el + '.studies';
 				var _trId = el + '-study-' +_studyId;
-				var _deleteBtn = "<a href=\"javascript:removeStudy('" + el + "-study-" +_studyId + "','" +index+ "');\"><img src='<c:url value="/images/buttons/button_icons/small/x_icon_small.png" />' border='0' alt='delete'></a>"
+				var _deleteBtn = "<a href=\"javascript:removeStudy('" + el + "-study-" +_studyId + "','" +index+ "');\"><img src='<c:url value="/images/buttons/button_icons/small/x_icon_small.png" />?${requestScope.webCacheId}' border='0' alt='delete'></a>"
 
 				$(_tableId).down('tr').insert({
 					after: tableRow.interpolate({selectedChoiceForDisplay : _selectedStudyForDisplay, identifier:_studyId, fldName : _studiesFldName, deleteBtn : _deleteBtn, trId : _trId })
@@ -165,7 +165,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 					var nSiteSummary = '';
 					var nStudySummary = '';
 					var nRoleSummary = '';
-					var selectedImg = "&nbsp;&nbsp;&nbsp;&nbsp;<img src='<c:url value="/images/check.png" />' border='0'>";
+					var selectedImg = "&nbsp;&nbsp;&nbsp;&nbsp;<img src='<c:url value="/images/check.png" />?${requestScope.webCacheId}' border='0'>";
 					var eRoleSummary = $('summary-'+index).innerHTML;
 					
 					if(eRoleSummary.blank()){
@@ -498,7 +498,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
                                             <c:url value="/images/check.png" var="chkPng" />
 											${_roleSummary}
 											<c:if test="${roleMembership.checked}">
-                                                &nbsp;&nbsp;&nbsp;&nbsp;<img src="<c:url value="/images/check.png" />" border="0">
+                                                &nbsp;&nbsp;&nbsp;&nbsp;<img src="<c:url value="/images/check.png" />?${requestScope.webCacheId}" border="0">
 											</c:if>
 
 										</span>
@@ -563,7 +563,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 																	<td>
                                                                         <c:if test="${command.UA}">
 																		<a href="javascript:removeSite('roleMembershipHelper[${index.index}]-site-${site}','${index.index}');">
-       																	<img src="<c:url value="/images/buttons/button_icons/small/x_icon_small.png" />" border="0" alt="delete"></a>
+       																	<img src="<c:url value="/images/buttons/button_icons/small/x_icon_small.png" />?${requestScope.webCacheId}" border="0" alt="delete"></a>
        																	</c:if>
 																	</td>
 																</tr>	
@@ -637,7 +637,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 																		<td>
                                                                         <c:if test="${command.UA}">
 																			<a href="javascript:removeStudy('roleMembershipHelper[${index.index}]-study-${study}','${index.index}');">
-	       																	<img src="<c:url value="/images/buttons/button_icons/small/x_icon_small.png" />" border="0" alt="delete"></a>
+	       																	<img src="<c:url value="/images/buttons/button_icons/small/x_icon_small.png" />?${requestScope.webCacheId}" border="0" alt="delete"></a>
                                                                         </c:if>
 																		</td>
 																	</tr>	

@@ -9,7 +9,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 <html>
 	<head>
 	<tags:dwrJavascriptLink objects="advSearch"/>
-		<link rel="stylesheet" type="text/css" href="/caaers/css/ae.css" />
+		<link rel="stylesheet" type="text/css" href="/caaers/css/ae.css?${requestScope.webCacheId}" />
 		<style>
 			.yui-tt { background:#CCC;}
 		</style>

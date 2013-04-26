@@ -30,45 +30,45 @@
 			<td>
 				<c:if test="${isFirstPage == false}">
 					<a href="javascript:firePaginationAction('firstPage')">
-						<img alt="First" src="<c:url value="/images/table/firstPage.gif"/>" style="border:0pt none;"/>
+						<img alt="First" src="<c:url value="/images/table/firstPage.gif"/>?${requestScope.webCacheId}" style="border:0pt none;"/>
 					</a>
 				</c:if>
 				<c:if test="${isFirstPage == true}">
-					<img alt="First" src="<c:url value="/images/table/firstPageDisabled.gif"/>" style="border:0pt none;"/>
+					<img alt="First" src="<c:url value="/images/table/firstPageDisabled.gif"/>?${requestScope.webCacheId}" style="border:0pt none;"/>
 				</c:if>
 			</td>
 			<td>
 				<c:if test="${isFirstPage == false}">
 					<a href="javascript:firePaginationAction('prevPage')">
-						<img alt="Prev" src="<c:url value="/images/table/prevPage.gif"/>" style="border:0pt none;"/>
+						<img alt="Prev" src="<c:url value="/images/table/prevPage.gif"/>?${requestScope.webCacheId}" style="border:0pt none;"/>
 					</a>
 				</c:if>
 				<c:if test="${isFirstPage == true}">
-					<img alt="First" src="<c:url value="/images/table/prevPageDisabled.gif"/>" style="border:0pt none;"/>
+					<img alt="First" src="<c:url value="/images/table/prevPageDisabled.gif"/>?${requestScope.webCacheId}" style="border:0pt none;"/>
 				</c:if> 
 			</td>
 			<td>
 				<c:if test="${isLastPage == false}">
 					<a href="javascript:firePaginationAction('nextPage')">
-						<img alt="Next" src="<c:url value="/images/table/nextPage.gif"/>" style="border:0pt none;"/>
+						<img alt="Next" src="<c:url value="/images/table/nextPage.gif"/>?${requestScope.webCacheId}" style="border:0pt none;"/>
 					</a>
 				</c:if>
 				<c:if test="${isLastPage == true}">
-					<img alt="First" src="<c:url value="/images/table/nextPageDisabled.gif"/>" style="border:0pt none;"/>
+					<img alt="First" src="<c:url value="/images/table/nextPageDisabled.gif"/>?${requestScope.webCacheId}" style="border:0pt none;"/>
 				</c:if>
 			</td>
 			<td>
 				<c:if test="${isLastPage == false}">
 					<a href="javascript:firePaginationAction('lastPage')">
-						<img alt="Last" src="<c:url value="/images/table/lastPage.gif"/>" style="border:0pt none;"/>
+						<img alt="Last" src="<c:url value="/images/table/lastPage.gif"/>?${requestScope.webCacheId}" style="border:0pt none;"/>
 					</a>
 				</c:if>
 				<c:if test="${isLastPage == true}">
-					<img alt="First" src="<c:url value="/images/table/lastPageDisabled.gif"/>" style="border:0pt none;"/>
+					<img alt="First" src="<c:url value="/images/table/lastPageDisabled.gif"/>?${requestScope.webCacheId}" style="border:0pt none;"/>
 				</c:if>
 			</td>
 			<td>
-				<img alt="Separator" src="<c:url value="/images/table/separator.gif"/>" style="border:0pt none;"></img>
+				<img alt="Separator" src="<c:url value="/images/table/separator.gif"/>?${requestScope.webCacheId}" style="border:0pt none;"></img>
 			</td>
 			<td style="width:20px;">
 				<select id="resultsPerPage" onChange="javascript:firePaginationAction('numberOfResultsPerPage')">
@@ -76,7 +76,7 @@
 					<option value="50" <c:if test="${numberOfResultsPerPage == 50}">selected</c:if>>50</option>
 					<option value="100" <c:if test="${numberOfResultsPerPage == 100}">selected</c:if>>100</option>
 				</select>
-				<img alt="Rows Displayed" src="<c:url value="/images/table/rowsDisplayed.gif"/>" style="border:0pt none;"></img>
+				<img alt="Rows Displayed" src="<c:url value="/images/table/rowsDisplayed.gif"/>?${requestScope.webCacheId}" style="border:0pt none;"></img>
 			</td>
 		</tr>
 	</tbody>

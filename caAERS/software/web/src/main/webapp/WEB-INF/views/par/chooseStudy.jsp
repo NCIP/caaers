@@ -14,7 +14,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 <%@ taglib uri="http://www.extremecomponents.org" prefix="ec" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <link rel="stylesheet" type="text/css"
-      href="<c:url value="/css/extremecomponents.css"/>">
+      href="<c:url value="/css/extremecomponents.css"/>?${requestScope.webCacheId}">
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">

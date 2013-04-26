@@ -120,18 +120,18 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
   </style>
 </head>
 <body>
-<a href="<c:url value="/public/login" />"><img src="<c:url value="/images/blue/login-logo.png" />" id="logo" alt="Cancer Adverse Event Reporting System"></a>
+<a href="<c:url value="/public/login" />"><img src="<c:url value="/images/blue/login-logo.png" />?${requestScope.webCacheId}" id="logo" alt="Cancer Adverse Event Reporting System"></a>
   <h2>Please enter your username: </h2>
   You will be sent an email to reset your password.
   <c:if test="${noSuchUser}">
-  <br><br><img src="../../images/error-yellow.png" style="margin-right:10px"><span class="errors">Invalid username</span>
+  <br><br><img src="../../images/error-yellow.png?${requestScope.webCacheId}" style="margin-right:10px"><span class="errors">Invalid username</span>
   </c:if>
   <c:url value="/public/user/resetPassword" var="action"/>
     <form:form action="${action}">
     	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
          <c:if test="${not empty param.login_error}">
              <p class="errors">
-                  <img src="../../images/error-yellow.png" style="margin-right:10px">Password is too old. Please reset your password.
+                  <img src="../../images/error-yellow.png?${requestScope.webCacheId}" style="margin-right:10px">Password is too old. Please reset your password.
              </p>
          </c:if>
       <p class="errors">${reset_pwd_error}</p>

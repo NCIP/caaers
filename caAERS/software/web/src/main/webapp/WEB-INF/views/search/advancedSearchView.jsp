@@ -254,9 +254,9 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 		        <tbody>
         <tr bgcolor="#E4E4E4">
             <td align="left" width="35%"><h2 class="title">Search objects</h2></td>
-            <td align="left" width="1px"><img src="<c:url value="/images/chrome/spacer.gif" />"></td>
+            <td align="left" width="1px"><img src="<c:url value="/images/chrome/spacer.gif" />?${requestScope.webCacheId}"></td>
             <td align="left" width="35%"><h2 class="title">Attributes&nbsp;<span style='font-size:12px;'>(Click to add)</span></h2></td>
-            <td align="left" width="1px"><img src="<c:url value="/images/chrome/spacer.gif" />"></td>
+            <td align="left" width="1px"><img src="<c:url value="/images/chrome/spacer.gif" />?${requestScope.webCacheId}"></td>
             <td align="left" width="30%"><h2 class="title">Selected attributes</h2></td>
         </tr>
         <tr>

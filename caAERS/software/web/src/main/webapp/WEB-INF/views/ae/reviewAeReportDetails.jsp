@@ -226,8 +226,8 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 						<tr>
 							<td width="50%" align="right">
 								<a name="allBtnCtrl"></a>
-								<a href="#allBtnCtrl" onClick="javascript:expandAllComments('${command.reportId }');" ><img src="<c:url value="/images/b-plus.gif"/>" alt=""  /> Expand All</a>
-								<a href="#allBtnCtrl"  onClick="javascript:collapseAllComments('${command.reportId }');"><img src="<c:url value="/images/b-minus.gif"/>" alt=""/> Collapse All</a>
+								<a href="#allBtnCtrl" onClick="javascript:expandAllComments('${command.reportId }');" ><img src="<c:url value="/images/b-plus.gif"/>?${requestScope.webCacheId}" alt=""  /> Expand All</a>
+								<a href="#allBtnCtrl"  onClick="javascript:collapseAllComments('${command.reportId }');"><img src="<c:url value="/images/b-minus.gif"/>?${requestScope.webCacheId}" alt=""/> Collapse All</a>
 							</td>
 							<td>
 								<div id="add-a-comment-${command.reportId }"><b>Add a Comment</b></div>
@@ -242,13 +242,13 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 								<textarea id="enter-comment-text-${command.reportId }" style="width:392px;height:60%"></textarea>
 								<input type="hidden" id="edit_comment_id-${command.reportId }" name="edit_comment_id" value="" />
 								<a href="javascript:addComment('${command.reportId }');" id="add-btn-${command.reportId }">
-									<img src="<c:url value="/images/sidebar/add_btn.png"/>" alt="Add" />
+									<img src="<c:url value="/images/sidebar/add_btn.png"/>?${requestScope.webCacheId}" alt="Add" />
 								</a>
 								<a href="javascript:saveEditedComment('${command.reportId }');" id="edit-btn-${command.reportId }" style="display:none">
-									<img src="<c:url value="/images/sidebar/edit_btn.png"/>" alt="Edit" />
+									<img src="<c:url value="/images/sidebar/edit_btn.png"/>?${requestScope.webCacheId}" alt="Edit" />
 								</a>
 								<a href="javascript:cancelEdit('${command.reportId }');" id="cancel-btn-${command.reportId }" style="display:none">
-									<img src="<c:url value="/images/sidebar/cancel_btn.png"/>" alt="Cancel" />
+									<img src="<c:url value="/images/sidebar/cancel_btn.png"/>?${requestScope.webCacheId}" alt="Cancel" />
 								</a>
 								<tags:indicator id="ajax_wait"/>
 								<br><br>

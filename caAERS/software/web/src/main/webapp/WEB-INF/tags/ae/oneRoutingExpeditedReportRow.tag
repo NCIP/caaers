@@ -26,7 +26,7 @@
 						 <img border="0" style="cursor: pointer;
        					   margin-right: 15px;" id="course_routingreview_reportcycle_${report.id }"  onmouseover="showRoutingReviewCourseMenuOptions( ${report.workflowId}, ${report.id}, 'report',${aeReport.id},'${report.reviewStatus.displayName}')" src="/caaers/images/orange-actions.gif">
 						 
-						<img id="report-${report.id}-indicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator" style="display:none;"/>
+						<img id="report-${report.id}-indicator" src="<c:url value="/images/indicator.white.gif"/>?${requestScope.webCacheId}" alt="activity indicator" style="display:none;"/>
 					</td>
 				</tr>
 		</c:forEach>

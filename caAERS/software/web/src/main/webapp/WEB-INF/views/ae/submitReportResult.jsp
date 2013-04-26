@@ -81,7 +81,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
     <![endif]-->
 	</head>
 	<body>
-		<script type="text/javascript" src="<c:url value="/js/wz_tooltip/wz_tooltip.js" />"></script>
+		<script type="text/javascript" src="<c:url value="/js/wz_tooltip/wz_tooltip.js" />?${requestScope.webCacheId}"></script>
 		<tags:tabForm tab="${tab}" flow="${flow}">
             <jsp:attribute name="instructions">
                 <tags:instructions code="instruction_ae_submit_results" />
@@ -139,7 +139,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 
 					<c:if test="${exportOptionsCount > 0}">
 						<div style="text-align:right;">
-                            <img id="export-menu" class="actionsButton" src='<c:url value="/images/orange-export.gif" />' border='0' style='cursor:pointer;'>
+                            <img id="export-menu" class="actionsButton" src='<c:url value="/images/orange-export.gif" />?${requestScope.webCacheId}' border='0' style='cursor:pointer;'>
 						</div>
 					</c:if>
                         <div id="reportStatusRowId">

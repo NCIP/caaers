@@ -102,7 +102,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
     </head>
     <body>
     <div style="overflow:auto; margin-bottom:10px;">
-        <img src="<c:url value="/images/blue/error.png" />" style="float:left; margin:10px;">
+        <img src="<c:url value="/images/blue/error.png" />?${requestScope.webCacheId}" style="float:left; margin:10px;">
         <div style="float:left; padding-left:20px; padding-top:12px;">
             <div class="error">
                 Oops! We thought we squashed that bug.

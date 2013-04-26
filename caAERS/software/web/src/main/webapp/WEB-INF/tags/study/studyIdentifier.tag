@@ -62,5 +62,5 @@
 
 	</c:forEach>
             <td align="right">
-        	<a href="javascript:fireAction(${deleteParams},'${sectionClass}-${index}','${cssClass}');"><img src="<c:url value="/images/checkno.gif" />" border="0" alt="delete"></a></td>
+        	<a href="javascript:fireAction(${deleteParams},'${sectionClass}-${index}','${cssClass}');"><img src="<c:url value="/images/checkno.gif" />?${requestScope.webCacheId}" border="0" alt="delete"></a></td>
 </tr>

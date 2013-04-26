@@ -51,7 +51,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
               <div class="value">${command.study.phaseCode}</div>
            </div>
            <div>
- 			<img src="<c:url value="/images/chrome/spacer.gif" />" width="900" height="1" />
+ 			<img src="<c:url value="/images/chrome/spacer.gif" />?${requestScope.webCacheId}" width="900" height="1" />
  		  </div>
        </div>
 </chrome:division>

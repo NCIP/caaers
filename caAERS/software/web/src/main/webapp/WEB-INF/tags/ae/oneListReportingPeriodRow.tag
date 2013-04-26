@@ -60,7 +60,7 @@
 	<td width="10%" onclick="expandImageClick('collapseElement${reportingPeriod.id}', 'table${reportingPeriod.id}');">${fn:length(reportingPeriod.evaluatedAdverseEvents)}</td>
 	<td align="left" onclick="expandImageClick('collapseElement${reportingPeriod.id}', 'table${reportingPeriod.id}');"><span class="${reportingPeriod.reportStatus eq 'Reports Due' ? 'reportsDue' : reportingPeriod.reportStatus eq 'Report Submission Failed' ? 'reportsFailed' : reportingPeriod.reportStatus eq 'Reports Completed' ? 'reportsCompleted' : reportingPeriod.reportStatus eq 'Reports Overdue' ? 'reportsOverdue' : 'reportsNone' }" >${reportingPeriod.reportStatus}</span></td>
 	<td width="20%" align="center" onclick="expandImageClick('collapseElement${reportingPeriod.id}', 'table${reportingPeriod.id}');">
-        <img src='<c:url value="/images/orange-actions.gif" />' border='0' onmouseover='showAEMenuOptions(this, ${reportingPeriod.id})' style='cursor:pointer;'>
+        <img src='<c:url value="/images/orange-actions.gif" />?${requestScope.webCacheId}' border='0' onmouseover='showAEMenuOptions(this, ${reportingPeriod.id})' style='cursor:pointer;'>
 <%--
         <SELECT style="" id="actions-${reportingPeriod.id}" name="actions" onChange="javascript:executeReportingPeriodActions(${reportingPeriod.id})" >
 				<OPTION selected value="none">Please select</OPTION>

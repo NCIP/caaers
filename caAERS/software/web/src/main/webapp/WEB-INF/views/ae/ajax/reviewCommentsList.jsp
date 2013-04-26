@@ -11,8 +11,8 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 <tags:noform>
 	<c:set var="noOfComments" value="${fn:length(command.previousComments) - 1}">
 	</c:set>
-	<c:set var="editImage"><c:url value="/images/edit.png"/></c:set>
-	<c:set var="deleteImage"><c:url value="/images/checkno.gif"/></c:set>
+	<c:set var="editImage"><c:url value="/images/edit.png"/>?${requestScope.webCacheId}</c:set>
+	<c:set var="deleteImage"><c:url value="/images/checkno.gif"/>?${requestScope.webCacheId}</c:set>
 	<div>
 		<div class="eXtremeTable" >
 		<c:forEach items="${command.previousComments}" var="comment" varStatus="cIndex">

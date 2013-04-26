@@ -51,37 +51,16 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
 
     private static final Log log = LogFactory.getLog(AdverseEventEvaluationServiceImpl.class);
 
-    /**
-     * This method will asses adverse event and will return one of the following vlue 1. Routine AE
-     * 2. SAE 3. Can't be determined Calling this method again and again will not affect the rules
-     * firing adversly as nothing gets fires subsequently
-     * 
-     * fire the rules at sponsor defined defined study level.. if not rules specified , then fire
-     * sponsor level rules.
-     * 
-     */
-    public String assesAdverseEvent(AdverseEvent ae, Study study) throws Exception {
-        
-
-
-        ExpeditedAdverseEventReport aer = ae.getReport();
-        AdverseEventEvaluationResult adverseEventEvaluationResult = evaluateSponsorTarget(ae, study, null, aer, RuleType.REPORT_SCHEDULING_RULES);
-
-        if (!adverseEventEvaluationResult.isCannotDetermine()) {
-            if (adverseEventEvaluationResult.getMessage().indexOf("IGNORE") < 0) {
-                return SERIOUS_ADVERSE_EVENT;
-            }
+    private RuleSet findRuleSet(List<RuleSet> ruleSets, RuleLevel level, Integer orgId, Integer studyId){
+        if(ruleSets == null || ruleSets.isEmpty()) return null;
+        for(RuleSet rs : ruleSets){
+            if(!rs.getOrganization().getId().equals(orgId)) continue;
+            if(level != rs.getRuleLevel()) continue;
+            if(level == RuleLevel.Sponsor || level == RuleLevel.Institution) return rs;
+            if(rs.getStudy() == null) continue;
+            if(rs.getStudy().getId().equals(studyId)) return rs;
         }
-
-        for (StudyOrganization so : study.getStudyOrganizations()) {
-            adverseEventEvaluationResult = evaluateInstitutionTarget(ae, study, so.getOrganization(), null, aer, RuleType.REPORT_SCHEDULING_RULES);
-            if (!adverseEventEvaluationResult.isCannotDetermine()) {
-                if (adverseEventEvaluationResult.getMessage().indexOf("IGNORE") < 0) {
-                    return SERIOUS_ADVERSE_EVENT;
-                }
-            }
-        }
-        return AdverseEventEvaluationResult.cannotDetermine(null).getMessage();
+        return  null;
     }
 
     /**
@@ -98,12 +77,28 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
         Map<AdverseEvent, List<AdverseEventEvaluationResult>> map = new HashMap<AdverseEvent, List<AdverseEventEvaluationResult>>();
 
         List<AdverseEventEvaluationResult> adverseEventEvaluationResults;
-        
-        // Determine the studysite where the assignment belongs.
-        StudySite assignmentStudySite = null;
-        if(aes != null && aes.size() > 0)
-        	assignmentStudySite = aes.get(0).getReportingPeriod().getAssignment().getStudySite();
-        	
+
+        Organization sponsorOrg = study.getPrimaryFundingSponsor().getOrganization();
+        Organization coordinatingOrg = study.getStudyCoordinatingCenter().getOrganization();
+        Organization siteOrg = study.findStudyOrganizationById(aes.get(0).getReportingPeriod().getStudySite().getId()).getOrganization();
+        Set<Integer> orgIdSet = new HashSet<Integer>();
+        orgIdSet.add(sponsorOrg.getId());
+        orgIdSet.add(coordinatingOrg.getId());
+        orgIdSet.add(siteOrg.getId());
+
+        RuleSetQuery query = new RuleSetQuery();
+        query.filterByStatus(gov.nih.nci.cabig.caaers.domain.RuleSet.STATUS_ENABLED);
+        query.filterByRuleType(RuleType.REPORT_SCHEDULING_RULES);
+        query.filterByOrganizationId(orgIdSet);
+
+
+        List<gov.nih.nci.cabig.caaers.domain.RuleSet> ruleSets = caaersRulesEngineService.searchRuleSets(query);
+        RuleSet sponsorStudyLevelRuleSet = findRuleSet(ruleSets, RuleLevel.SponsorDefinedStudy, sponsorOrg.getId(), study.getId());
+        RuleSet sponsorLevelRuleSet = findRuleSet(ruleSets, RuleLevel.Sponsor, sponsorOrg.getId(), study.getId());
+        RuleSet coordinatingOrgStudyLevelRuleSet = findRuleSet(ruleSets, RuleLevel.InstitutionDefinedStudy, coordinatingOrg.getId(), study.getId());
+        RuleSet coordinatingOrgLevelRuleSet = findRuleSet(ruleSets, RuleLevel.Institution, coordinatingOrg.getId(), study.getId());
+        RuleSet siteOrgStudyLevelRuleSet = findRuleSet(ruleSets, RuleLevel.InstitutionDefinedStudy, siteOrg.getId(), study.getId());
+        RuleSet siteOrgLevelRuleSet = findRuleSet(ruleSets, RuleLevel.Institution, siteOrg.getId(), study.getId());
 
         for (AdverseEvent ae : aes) {
         	
@@ -115,17 +110,20 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
         	}
         	
         	//evaluate sponsor rules
-            AdverseEventEvaluationResult message = evaluateSponsorTarget(ae, study, null, aeReport, RuleType.REPORT_SCHEDULING_RULES);
+            AdverseEventEvaluationResult message = evaluateSponsorTarget(ae, study, null, aeReport, sponsorLevelRuleSet, sponsorStudyLevelRuleSet);
             adverseEventEvaluationResults.add(message);
-            
-            //evaluate institution rules
-            // TO-DO get orgs like FDA, CALGB and add to this list (BJ: this comment was there before refactoring)
-            for (StudyOrganization so : study.getStudyOrganizations()) {
-            	//If the organization is a studySite and its not the site to which the assignment belongs, ignore it.
-            	if(so instanceof StudySite && assignmentStudySite != null && !so.getId().equals(assignmentStudySite.getId())) continue;
-            	message = evaluateInstitutionTarget(ae, study, so.getOrganization(), null,  aeReport, RuleType.REPORT_SCHEDULING_RULES);
+
+            if(coordinatingOrgLevelRuleSet != null || coordinatingOrgStudyLevelRuleSet != null){
+                message = evaluateInstitutionTarget(ae, study, coordinatingOrg, null,  aeReport, coordinatingOrgLevelRuleSet,coordinatingOrgStudyLevelRuleSet );
                 adverseEventEvaluationResults.add(message);
             }
+
+            if(siteOrgLevelRuleSet != null || siteOrgStudyLevelRuleSet != null){
+                message = evaluateInstitutionTarget(ae, study, siteOrg, null,  aeReport, siteOrgLevelRuleSet,siteOrgStudyLevelRuleSet );
+                adverseEventEvaluationResults.add(message);
+            }
+
+
         }
 
 
@@ -144,29 +142,50 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
         Study study = aeReport.getStudy();
         Set<String> sections = new HashSet<String>();
         AdverseEventEvaluationResult adverseEventEvaluationResult = null;
-        String[] sectionNames = null;
 
-        // for every AE evaluate, sponsor & organization level rules
-        for (AdverseEvent ae : adverseEvents) {
+        Organization reportOwnerOrg = reportDefinition.getOrganization();
+        RuleSetQuery query = new RuleSetQuery();
+        query.filterByStatus(gov.nih.nci.cabig.caaers.domain.RuleSet.STATUS_ENABLED);
+        query.filterByRuleType(RuleType.MANDATORY_SECTIONS_RULES);
+        query.filterByOrganizationId(reportOwnerOrg.getId());
 
-            // evaluate sponsor level rules
-            adverseEventEvaluationResult = evaluateSponsorTarget(ae, study, reportDefinition,  aeReport, RuleType.MANDATORY_SECTIONS_RULES);
+
+        List<gov.nih.nci.cabig.caaers.domain.RuleSet> ruleSets = caaersRulesEngineService.searchRuleSets(query);
+        RuleSet sponsorStudyLevelRuleSet = findRuleSet(ruleSets, RuleLevel.SponsorDefinedStudy, reportOwnerOrg.getId(), study.getId());
+        RuleSet sponsorLevelRuleSet = findRuleSet(ruleSets, RuleLevel.Sponsor, reportOwnerOrg.getId(), study.getId());
+        if(sponsorStudyLevelRuleSet != null){
+            if(log.isInfoEnabled()) log.info("Evaluating mandatory section rules @ sponsor study level [bindURI:" + sponsorStudyLevelRuleSet.getRuleBindURI() + "]");
+            adverseEventEvaluationResult = getEvaluationObject(study, reportOwnerOrg, reportDefinition, sponsorStudyLevelRuleSet.getRuleBindURI(), aeReport, adverseEvents.toArray(new AdverseEvent[0]));
             if (!adverseEventEvaluationResult.isCannotDetermine()) {
                 sections.addAll(adverseEventEvaluationResult.getRuleEvaluationResult().getResponses());
             }
-
-            // evaluate organization level rules
-            for (StudyOrganization so : study.getStudyOrganizations()) {
-                adverseEventEvaluationResult = evaluateInstitutionTarget(ae, study, so.getOrganization(), reportDefinition,aeReport, RuleType.MANDATORY_SECTIONS_RULES);
-                if (!adverseEventEvaluationResult.isCannotDetermine()) {
-                    sections.addAll(adverseEventEvaluationResult.getRuleEvaluationResult().getResponses());
-                }
+        }else if(sponsorLevelRuleSet != null){
+            if(log.isInfoEnabled()) log.info("Evaluating mandatory section rules @ sponsor level [bindURI:" + sponsorLevelRuleSet.getRuleBindURI() + "]");
+            adverseEventEvaluationResult = getEvaluationObject(study, reportOwnerOrg, reportDefinition, sponsorLevelRuleSet.getRuleBindURI(), aeReport, adverseEvents.toArray(new AdverseEvent[0]));
+            if (!adverseEventEvaluationResult.isCannotDetermine()) {
+                sections.addAll(adverseEventEvaluationResult.getRuleEvaluationResult().getResponses());
             }
-
         }
 
-        if (log.isDebugEnabled()) {
-            log.debug("Determined " + sections + " are mandatory for " + reportDefinition.getName());
+
+        RuleSet siteOrgStudyLevelRuleSet = findRuleSet(ruleSets, RuleLevel.InstitutionDefinedStudy, reportOwnerOrg.getId(), study.getId());
+        RuleSet siteOrgLevelRuleSet = findRuleSet(ruleSets, RuleLevel.Institution, reportOwnerOrg.getId(), study.getId());
+        if(siteOrgStudyLevelRuleSet != null){
+            if(log.isInfoEnabled()) log.info("Evaluating mandatory section rules @ institution study level [bindURI:" + siteOrgStudyLevelRuleSet.getRuleBindURI() + "]");
+            adverseEventEvaluationResult = getEvaluationObject(study, reportOwnerOrg, reportDefinition, siteOrgStudyLevelRuleSet.getRuleBindURI(), aeReport, adverseEvents.toArray(new AdverseEvent[0]));
+            if (!adverseEventEvaluationResult.isCannotDetermine()) {
+                sections.addAll(adverseEventEvaluationResult.getRuleEvaluationResult().getResponses());
+            }
+        }else if(siteOrgLevelRuleSet != null){
+            if(log.isInfoEnabled()) log.info("Evaluating mandatory section rules @ institution level [bindURI:" + siteOrgLevelRuleSet.getRuleBindURI() + "]");
+            adverseEventEvaluationResult = getEvaluationObject(study, reportOwnerOrg, reportDefinition, siteOrgLevelRuleSet.getRuleBindURI(), aeReport, adverseEvents.toArray(new AdverseEvent[0]));
+            if (!adverseEventEvaluationResult.isCannotDetermine()) {
+                sections.addAll(adverseEventEvaluationResult.getRuleEvaluationResult().getResponses());
+            }
+        }
+
+        if (log.isInfoEnabled()) {
+            log.info("Determined " + sections + " are mandatory for " + reportDefinition.getName());
         }
 
         return sectionNamesToSections(sections);
@@ -212,9 +231,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
      * sponsor level rules.
      * 
      */
-    private AdverseEventEvaluationResult evaluateSponsorTarget(AdverseEvent ae, Study study,
-                    ReportDefinition reportDefinition, 
-                    ExpeditedAdverseEventReport aer, RuleType ruleType) throws Exception {
+    private AdverseEventEvaluationResult evaluateSponsorTarget(AdverseEvent ae, Study study, ReportDefinition reportDefinition, ExpeditedAdverseEventReport aer, RuleSet sponsorLevelRuleSet, RuleSet sponsorStudyLevelRuleSet) throws Exception {
 
 
         AdverseEventEvaluationResult sponsor_define_study_level_evaluation = null;
@@ -224,7 +241,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
         /**
          * get and fire study level rules
          */
-        sponsor_define_study_level_evaluation = sponsorDefinedStudyLevelRules(ae, study, reportDefinition, aer, ruleType);
+        sponsor_define_study_level_evaluation = sponsorDefinedStudyLevelRules(ae, study, reportDefinition, aer, sponsorStudyLevelRuleSet);
 
         // if study level rule exist and null message...
         if (sponsor_define_study_level_evaluation == null) {
@@ -232,7 +249,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
 
             // if study level rules not found , then get to sponsor rules..
         } else if (sponsor_define_study_level_evaluation.isNoRulesFound()) {
-            sponsor_level_evaluation = sponsorLevelRules(ae, study, reportDefinition, aer, ruleType);
+            sponsor_level_evaluation = sponsorLevelRules(ae, study, reportDefinition, aer, sponsorLevelRuleSet);
             final_result = sponsor_level_evaluation;
             // if study level rules exist and returned a message..
         } else {
@@ -252,8 +269,8 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
     }
 
     private AdverseEventEvaluationResult evaluateInstitutionTarget(AdverseEvent ae, Study study,
-                    Organization organization, ReportDefinition reportDefinition,
-                     ExpeditedAdverseEventReport aer, RuleType ruleType) throws Exception {
+                                                                   Organization organization, ReportDefinition reportDefinition,
+                                                                   ExpeditedAdverseEventReport aer, RuleSet institutionLevelRuleSet, RuleSet institutionStudyLevelRuleSet) throws Exception {
         AdverseEventEvaluationResult institution_define_study_level_evaluation = null;
         AdverseEventEvaluationResult institution_level_evaluation = null;
         AdverseEventEvaluationResult final_result = null;
@@ -261,7 +278,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
         /**
          * get and fire study level rules
          */
-        institution_define_study_level_evaluation = institutionDefinedStudyLevelRules(ae, study, organization, reportDefinition, aer, ruleType);
+        institution_define_study_level_evaluation = institutionDefinedStudyLevelRules(ae, study, organization, reportDefinition, aer, institutionStudyLevelRuleSet);
 
         // if study level rule exist and null message...
         if (institution_define_study_level_evaluation == null) {
@@ -269,7 +286,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
 
             // if study level rules not found , then get to sponsor rules..
         } else if (institution_define_study_level_evaluation.isNoRulesFound()) {
-            institution_level_evaluation = institutionLevelRules(ae, study, organization, reportDefinition, aer, ruleType);
+            institution_level_evaluation = institutionLevelRules(ae, study, organization, reportDefinition, aer, institutionLevelRuleSet);
             final_result = institution_level_evaluation;
             // if study level rules exist and returned a message..
         } else {
@@ -337,14 +354,14 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
      * @param study - Study on which the AdverseEvent occured
      * @param reportDefinition - The Reoprt in context
      * @param aer - The ExpeditedAdverseEventReport in context
-     * @param ruleType - The rule  type
+     * @param sponsorLevelRuleSet - The ruleset defined by sponsor
      * @return  - the evaluation result.
      * @throws Exception
      */
     private AdverseEventEvaluationResult sponsorLevelRules(AdverseEvent ae, Study study,
                     ReportDefinition reportDefinition, 
-                    ExpeditedAdverseEventReport aer, RuleType ruleType) throws Exception {
-        String bindURI = fetchBindURI(ruleType, RuleLevel.Sponsor, study.getPrimaryFundingSponsorOrganization().getId() , null) ;
+                    ExpeditedAdverseEventReport aer, RuleSet sponsorLevelRuleSet) throws Exception {
+        String bindURI = sponsorLevelRuleSet != null ? sponsorLevelRuleSet.getRuleBindURI() : null;
 
         if (bindURI == null) {
             return AdverseEventEvaluationResult.noRulesFound(bindURI).populateRuleMetaData(RuleLevel.Sponsor, study.getPrimaryFundingSponsorOrganization(), null);
@@ -352,7 +369,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
 
 
         try {
-            return  this.getEvaluationObject(ae, study, study.getPrimaryFundingSponsorOrganization(), reportDefinition, bindURI, aer)
+            return  this.getEvaluationObject(study, study.getPrimaryFundingSponsorOrganization(), reportDefinition, bindURI, aer, ae)
                     .populateRuleMetaData(RuleLevel.Sponsor, study.getPrimaryFundingSponsorOrganization(), null);
         } catch (Exception e) {
             throw new Exception(e.getMessage(), e);
@@ -367,25 +384,22 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
      * @param study - Study on which the AdverseEvent occured
      * @param reportDefinition - The Reoprt in context
      * @param aer - The ExpeditedAdverseEventReport in context
-     * @param ruleType - The rule type.
+     * @param sponsorStudyLevelRuleSet - The ruleset by sponsor at study level.
      * @return  - the evaluation result. 
      * @throws Exception
      */
-    private AdverseEventEvaluationResult sponsorDefinedStudyLevelRules(AdverseEvent ae, Study study,
-                    ReportDefinition reportDefinition,ExpeditedAdverseEventReport aer, RuleType ruleType) throws Exception {
+    private AdverseEventEvaluationResult sponsorDefinedStudyLevelRules(AdverseEvent ae, Study study, ReportDefinition reportDefinition,ExpeditedAdverseEventReport aer, RuleSet sponsorStudyLevelRuleSet) throws Exception {
 
 
         //check if sponsor-study has rules ?
-        String bindURI = fetchBindURI(ruleType, RuleLevel.SponsorDefinedStudy,
-                study.getPrimaryFundingSponsorOrganization().getId(), study.getId());
+        String bindURI = sponsorStudyLevelRuleSet != null ? sponsorStudyLevelRuleSet.getRuleBindURI() : null;
 
-        if(bindURI == null)  return AdverseEventEvaluationResult.noRulesFound(bindURI).populateRuleMetaData(RuleLevel.SponsorDefinedStudy,
-                study.getPrimaryFundingSponsorOrganization(), study);
+        if(bindURI == null)  return AdverseEventEvaluationResult.noRulesFound(bindURI).populateRuleMetaData(RuleLevel.SponsorDefinedStudy, study.getPrimaryFundingSponsorOrganization(), study);
 
         //evaluate the rules. 
 
         try {
-            return this.getEvaluationObject(ae, study, study.getPrimaryFundingSponsorOrganization(), reportDefinition, bindURI, aer)
+            return this.getEvaluationObject( study, study.getPrimaryFundingSponsorOrganization(), reportDefinition, bindURI, aer, ae)
                     .populateRuleMetaData(RuleLevel.SponsorDefinedStudy, study.getPrimaryFundingSponsorOrganization(), study);
         } catch (Exception e) {
             throw new Exception(e.getMessage(), e);
@@ -400,24 +414,23 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
      * @param organization - The site on which AE occured. 
      * @param reportDefinition - The Reoprt in context
      * @param aer - The ExpeditedAdverseEventReport in context
-     * @param ruleType - The ruletype
+     * @param institutionStudyLevelRuleSet - The ruleset
      * @return  - the evaluation result.
      * @throws Exception
      */
     private AdverseEventEvaluationResult institutionDefinedStudyLevelRules(AdverseEvent ae, Study study,
                     Organization organization, ReportDefinition reportDefinition,
-                     ExpeditedAdverseEventReport aer, RuleType ruleType) throws Exception {
+                     ExpeditedAdverseEventReport aer, RuleSet institutionStudyLevelRuleSet) throws Exception {
 
 
-        String bindURI = fetchBindURI(ruleType, RuleLevel.InstitutionDefinedStudy, organization.getId(), study.getId());
+        String bindURI = institutionStudyLevelRuleSet != null ? institutionStudyLevelRuleSet.getRuleBindURI() : null;
         if (bindURI == null) {
             return AdverseEventEvaluationResult.noRulesFound(bindURI).populateRuleMetaData(RuleLevel.InstitutionDefinedStudy, organization, study);
         }
 
 
         try {
-            return this.getEvaluationObject(ae, study,
-                    organization, reportDefinition, bindURI, aer).populateRuleMetaData(RuleLevel.InstitutionDefinedStudy, organization, study);
+            return this.getEvaluationObject( study, organization, reportDefinition, bindURI, aer, ae).populateRuleMetaData(RuleLevel.InstitutionDefinedStudy, organization, study);
         } catch (Exception e) {
             throw new Exception(e.getMessage(), e);
         }
@@ -432,21 +445,20 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
      * @param organization - The site on which AE occured.
      * @param reportDefinition - The Reoprt in context
      * @param aer - The ExpeditedAdverseEventReport in context
-     * @param ruleType - The ruletype
+     * @param institutionLevelRuleSet - The rule set
      * @return  - the evaluation result.
      * @throws Exception
      */
     private AdverseEventEvaluationResult institutionLevelRules(AdverseEvent ae, Study study, Organization organization,
                     ReportDefinition reportDefinition,
-                    ExpeditedAdverseEventReport aer, RuleType ruleType) throws Exception {
+                    ExpeditedAdverseEventReport aer, RuleSet institutionLevelRuleSet) throws Exception {
 
-        String bindURI = fetchBindURI(ruleType, RuleLevel.Institution, organization.getId(), null);
+        String bindURI = institutionLevelRuleSet != null ? institutionLevelRuleSet.getRuleBindURI() : null;
         if(bindURI == null) return AdverseEventEvaluationResult.noRulesFound(bindURI).populateRuleMetaData(RuleLevel.Institution, organization, null);
 
 
         try {
-            return this.getEvaluationObject(ae, study, organization,
-                    reportDefinition, bindURI, aer).populateRuleMetaData(RuleLevel.Institution, organization, null);
+            return this.getEvaluationObject(study, organization,  reportDefinition, bindURI, aer, ae).populateRuleMetaData(RuleLevel.Institution, organization, null);
         } catch (Exception e) {
             throw new CaaersSystemException(e.getMessage(), e);
         }
@@ -457,26 +469,23 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
     /*
      * Generate the input objects for the rules engine. 
      */
-    private List<Object> generateInput(ExpeditedAdverseEventReport aeReport, ReportDefinition reportDefinition, AdverseEvent ae, Study study, Organization org){
+    private List<Object> generateInput(ExpeditedAdverseEventReport aeReport, ReportDefinition reportDefinition, Study study, Organization org, AdverseEvent... aes){
         List<Object> inputObjects = new ArrayList<Object>();
 
         if(aeReport != null) inputObjects.add(aeReport);
         if(reportDefinition != null) inputObjects.add(reportDefinition);
-        if(ae != null) inputObjects.add(ae);
+        if(aes != null) {
+            for(AdverseEvent ae : aes) inputObjects.add(ae);
+        }
         if(study != null) inputObjects.add(study);
         if(org != null) inputObjects.add(org);
 
         //add treatment information
-        if(aeReport != null || ae != null){
-            TreatmentInformation ti = null;
-            if(aeReport != null){
-             ti = aeReport.getTreatmentInformation();
-            }else{
-              if(ae.getReport() != null) ti = ae.getReport().getTreatmentInformation();
-            }
-            if(ti != null) inputObjects.add(ti);
+        ExpeditedAdverseEventReport theAeReport = aeReport != null ? aeReport : (  (aes != null && aes.length > 0) ? aes[0].getReport()  : null);
+        if(theAeReport != null){
+            if(theAeReport.getTreatmentInformation() != null) inputObjects.add(theAeReport.getTreatmentInformation());
         }
-        
+
         //add a fact resolver by default
         FactResolver f = new FactResolver();
         inputObjects.add(f);
@@ -486,7 +495,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
 
     /**
      * Will fire the rules and get the evaluation object
-     * @param ae
+     * @param aes
      * @param study
      * @param organization
      * @param reportDefinition
@@ -495,15 +504,14 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
      * @return
      * @throws Exception
      */
-    private AdverseEventEvaluationResult getEvaluationObject(AdverseEvent ae, Study study,
-                    Organization organization, ReportDefinition reportDefinition, String bindURI,
-                    ExpeditedAdverseEventReport aer) throws Exception {
+    private AdverseEventEvaluationResult getEvaluationObject(Study study, Organization organization, ReportDefinition reportDefinition, String bindURI,
+                    ExpeditedAdverseEventReport aer, AdverseEvent... aes) throws Exception {
         // holder for the returned object
         AdverseEventEvaluationResult eventEvaluationResult = new AdverseEventEvaluationResult();
 
 
         // fire the rules and AdverseEventEvaluationResult from the output.
-        RuleEvaluationResult ruleEvaluationResult = fireRules(generateInput(aer, reportDefinition, ae, study, organization), bindURI);
+        RuleEvaluationResult ruleEvaluationResult = fireRules(generateInput(aer, reportDefinition, study, organization, aes), bindURI);
         eventEvaluationResult.setRuleEvaluationResult(ruleEvaluationResult);
 
         return eventEvaluationResult;

@@ -17,8 +17,8 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
     	</div>
     </jsp:attribute>
 </tags:slider>
-    <link rel="stylesheet" type="text/css" href="/caaers/css/slider.css" />
-<link rel="stylesheet" type="text/css" href="/caaers/css/ae.css" />
+    <link rel="stylesheet" type="text/css" href="/caaers/css/slider.css?${requestScope.webCacheId}" />
+<link rel="stylesheet" type="text/css" href="/caaers/css/ae.css?${requestScope.webCacheId}" />
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 
 <script type="text/javascript">

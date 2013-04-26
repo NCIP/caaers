@@ -9,7 +9,7 @@
 
 <c:if test="${msgText ne 'NA' && msgText ne ''}">
 <a id="${path}-help-control" onmouseover="$('${path}-help-content').style.display='inline'"	onmouseout="$('${path}-help-content').style.display='none'">
-    <img src="<c:url value="/images/q.gif"/>" alt="Help">
+    <img src="<c:url value="/images/q.gif"/>?${requestScope.webCacheId}" alt="Help">
 </a>&nbsp;&nbsp;&nbsp;
 <span id="${path}-help-content" class="hint">${msgText}<span class="hint-pointer">&nbsp;</span></span>
 </c:if>

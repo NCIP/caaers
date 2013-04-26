@@ -130,7 +130,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
             var _id = oRecord.getData("id");
             var _assId = oRecord.getData("assignmentId");
             var _stId = oRecord.getData("studyId");
-            elCell.innerHTML = "<img src='<c:url value="/images/orange-actions.gif" />' border='0' onmouseover='showDashboardSubjectsAssignmentsMenuOptions(this, roles_map, " + _id + ", " + _stId + ", " + _assId + ")' style='cursor: pointer; margin-right: 15px;'>";
+            elCell.innerHTML = "<img src='<c:url value="/images/orange-actions.gif" />?${requestScope.webCacheId}' border='0' onmouseover='showDashboardSubjectsAssignmentsMenuOptions(this, roles_map, " + _id + ", " + _stId + ", " + _assId + ")' style='cursor: pointer; margin-right: 15px;'>";
         };
 
         var myColumnDefs = [

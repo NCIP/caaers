@@ -9,6 +9,9 @@ package gov.nih.nci.cabig.caaers.dao.query;
 import gov.nih.nci.cabig.caaers.rules.common.RuleLevel;
 import gov.nih.nci.cabig.caaers.rules.common.RuleType;
 
+import java.util.ArrayList;
+import java.util.Set;
+
 /**
  * Will retrieve RuleSet objects
  * @author Biju Joseph.
@@ -34,6 +37,12 @@ public class RuleSetQuery extends AbstractQuery {
         joinOrganization();
         andWhere("o.id = :orgId");
         setParameter("orgId", orgId);
+    }
+
+    public void filterByOrganizationId(Set<Integer> organizationIds){
+        joinOrganization();
+        andWhere("o.id in(:oIds)");
+        setParameterList("oIds", new ArrayList(organizationIds));
     }
     public void filterByStudyId(Integer studyId){
         joinStudy();

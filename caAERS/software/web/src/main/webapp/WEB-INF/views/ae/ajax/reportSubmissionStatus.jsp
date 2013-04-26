@@ -9,7 +9,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<script type="text/javascript" src="<c:url value="/js/wz_tooltip/wz_tooltip.js" />"></script>
+<script type="text/javascript" src="<c:url value="/js/wz_tooltip/wz_tooltip.js" />?${requestScope.webCacheId}"></script>
 
 <script>
     function showToolTip(text, title) {
@@ -45,7 +45,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 		<span class="dueOn" >
 			<i>Submission to AdEERS in process</i>
 		</span>
-		<img id="reportStatus-indicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator" style=""/>           			
+		<img id="reportStatus-indicator" src="<c:url value="/images/indicator.white.gif"/>?${requestScope.webCacheId}" alt="activity indicator" style=""/>
 	</c:if>
 </div>
 </div>

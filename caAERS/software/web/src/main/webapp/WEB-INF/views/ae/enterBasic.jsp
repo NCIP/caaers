@@ -6,7 +6,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 --%>
 <%@include file="/WEB-INF/views/taglibs.jsp"%>
 
-<link rel="stylesheet" type="text/css" href="<c:url value="/css/extremecomponents.css"/>">
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/extremecomponents.css"/>?${requestScope.webCacheId}">
 <%@page contentType="text/html;charset=UTF-8" language="java"%>
 <html>
 <head>

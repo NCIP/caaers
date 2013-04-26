@@ -196,15 +196,15 @@
 
 
     <filter>
-        <filter-name>BrowserCacheInvalidationRequestFilter</filter-name>
-        <filter-class>gov.nih.nci.cabig.caaers.web.filters.BrowserCacheInvalidationRequestFilter</filter-class>
+        <filter-name>WebCacheIdFilter</filter-name>
+        <filter-class>gov.nih.nci.cabig.caaers.web.filters.WebCacheIdFilter</filter-class>
     </filter>
     <filter-mapping>
-        <filter-name>BrowserCacheInvalidationRequestFilter</filter-name>
+        <filter-name>WebCacheIdFilter</filter-name>
         <url-pattern>/pages/*</url-pattern>
     </filter-mapping>
     <filter-mapping>
-        <filter-name>BrowserCacheInvalidationRequestFilter</filter-name>
+        <filter-name>WebCacheIdFilter</filter-name>
         <url-pattern>/public/*</url-pattern>
     </filter-mapping>
     <filter>

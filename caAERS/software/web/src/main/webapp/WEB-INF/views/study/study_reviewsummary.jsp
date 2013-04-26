@@ -8,7 +8,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="/caaers/css/solicited_ae.css" />
+<link rel="stylesheet" type="text/css" href="/caaers/css/solicited_ae.css?${requestScope.webCacheId}" />
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <tags:dwrJavascriptLink objects="createStudy"/>
 <title>${tab.longTitle}</title>
@@ -86,7 +86,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 <c:if test="${command.study.id > 0}">
     <div class="instructions row">
     	<div class="value">
-    		<a href='<c:url value="/pages/study/export?id=${command.study.id}" />'><img src="<c:url value="/images/blue/xml-icon.png"/> " border=""> Export XML</a>
+    		<a href='<c:url value="/pages/study/export?id=${command.study.id}" />'><img src="<c:url value="/images/blue/xml-icon.png"/>?${requestScope.webCacheId}" border=""> Export XML</a>
     	</div>
     </div>
 </c:if>

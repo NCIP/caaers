@@ -32,7 +32,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
                                         <td><c:out value="${subject.firstName}" escapeXml="true"/>&nbsp;<c:out value="${subject.lastName}" escapeXml="true"/></td>
                                         <td><span title="${assignment.studySite.study.shortTitle}"><c:out value="${assignment.studySite.study.primaryIdentifier}" escapeXml="true"/></span><td><span title="${assignment.studySite.study.shortTitle}"><c:out value="${assignment.studySubjectIdentifier}" escapeXml="true"/></span></td>
                                         <td align="RIGHT">
-                                            <img src="<c:url value="/images/orange-actions.gif" />"
+                                            <img src="<c:url value="/images/orange-actions.gif" />?${requestScope.webCacheId}"
                                                  border="0"
                                                  onmouseover='showDashboardSubjectsAssignmentsMenuOptions(this, roles_map, ${subject.id}, ${assignment.studySite.study.id}, ${assignment.id})'
                                                  id='_d_assignment_${assignment.id}'

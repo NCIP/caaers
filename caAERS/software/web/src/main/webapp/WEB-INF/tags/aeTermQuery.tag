@@ -270,9 +270,9 @@
         <table width="100%" border="0" cellspacing="0" cellpadding="5">
         <tr bgcolor="#E4E4E4">
             <td align="left" width="35%"><h2 class="title">AE Categories</h2></td>
-            <td align="left" width="1px"><img src="<c:url value="/images/chrome/spacer.gif" />"></td>
+            <td align="left" width="1px"><img src="<c:url value="/images/chrome/spacer.gif" />?${requestScope.webCacheId}"></td>
             <td align="left" width="35%"><h2 class="title">AE Terms&nbsp;<span style='font-size:12px;'>(Click to add)</span></h2></td>
-            <td align="left" width="1px"><img src="<c:url value="/images/chrome/spacer.gif" />"></td>
+            <td align="left" width="1px"><img src="<c:url value="/images/chrome/spacer.gif" />?${requestScope.webCacheId}"></td>
             <td align="left" width="30%"><h2 class="title">Selected Terms</h2></td>
         </tr>
         <tr>

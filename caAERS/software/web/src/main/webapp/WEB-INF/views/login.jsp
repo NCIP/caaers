@@ -180,16 +180,16 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
         </SCRIPT>
         <!--[if lte IE 6]>
             <div id="ie6">
-            <img src="../images/blue/no-ie-warning.png" alt="Internet Explorer" style="position:absolute; top:20px; left:20px;">
+            <img src="../images/blue/no-ie-warning.png?${requestScope.webCacheId}" alt="Internet Explorer" style="position:absolute; top:20px; left:20px;">
             <div style="position:absolute; top:20px; left:160px; color:black;">
             <div style="font-size:20px; margin-bottom:5px;">You are using an outdated web browser.</div>
             <div>We cannot guarantee that caAERS will function completely in this browser.</div>
             <div>Please upgrade (or ask your systems administrator to upgrade) to one of the following FREE browsers:</div>
-            <a href="http://www.mozilla.com/firefox/" target="_blank" class="get-browser" style="margin-left:5px"><img src="../images/blue/FF3-logo.png" alt="" />Firefox 3.5</a>
-            <a href="http://www.microsoft.com/windows/internet-explorer/default.aspx" target="_blank" class="get-browser" style="margin-left:40px"><img src="../images/blue/ie7-logo.png" alt="" />Internet Explorer 8</a>
+            <a href="http://www.mozilla.com/firefox/" target="_blank" class="get-browser" style="margin-left:5px"><img src="../images/blue/FF3-logo.png?${requestScope.webCacheId}" alt="" />Firefox 3.5</a>
+            <a href="http://www.microsoft.com/windows/internet-explorer/default.aspx" target="_blank" class="get-browser" style="margin-left:40px"><img src="../images/blue/ie7-logo.png?${requestScope.webCacheId}" alt="" />Internet Explorer 8</a>
             </div>
-            <img src="../images/blue/ie-warning-BL.png" alt="" style="position:absolute; bottom:-1px; left:0;">
-            <img src="../images/blue/ie-warning-BR.png" alt="" style="position:absolute; bottom:-1px; right:0;">
+            <img src="../images/blue/ie-warning-BL.png?${requestScope.webCacheId}" alt="" style="position:absolute; bottom:-1px; left:0;">
+            <img src="../images/blue/ie-warning-BR.png?${requestScope.webCacheId}" alt="" style="position:absolute; bottom:-1px; right:0;">
             </div>
         <![endif]-->
         <noscript>
@@ -235,7 +235,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
                 </style>
             <![endif]-->
             <div id="nojs">
-                <img src="../images/blue/no-js-warning.png" alt="JavaScript" style="position:absolute; top:20px; left:20px;">
+                <img src="../images/blue/no-js-warning.png?${requestScope.webCacheId}" alt="JavaScript" style="position:absolute; top:20px; left:20px;">
                 <div style="position:absolute; top:20px; left:160px; color:black;">
                     <div style="font-size:20px; margin-bottom:5px;">
                         caAERS requires JavaScript in order to function.
@@ -247,17 +247,17 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
                         Please enable JavaScript or use a browser that has JavaScript functionality.
                     </div>
                 </div>
-                <img src="../images/blue/js-warning-TL.png" alt="" style="position:absolute; top:0px; left:0;"><img src="../images/blue/js-warning-TR.png" alt="" style="position:absolute; top:0px; right:0px;"><img id="jsBL" src="../images/blue/js-warning-BL.png" alt=""><img id="jsBR" src="../images/blue/js-warning-BR.png" alt="">
+                <img src="../images/blue/js-warning-TL.png?${requestScope.webCacheId}" alt="" style="position:absolute; top:0px; left:0;"><img src="../images/blue/js-warning-TR.png?${requestScope.webCacheId}" alt="" style="position:absolute; top:0px; right:0px;"><img id="jsBL" src="../images/blue/js-warning-BL.png?${requestScope.webCacheId}" alt=""><img id="jsBR" src="../images/blue/js-warning-BR.png?${requestScope.webCacheId}" alt="">
             </div>
         </noscript>
         <div id="all-login">
             <div class="left">
-                <img src="../images/blue/login-logo.png" id="logo" alt="Cancer Adverse Event Reporting System"><h2>Please Log in:</h2>
+                <img src="../images/blue/login-logo.png?${requestScope.webCacheId}" id="logo" alt="Cancer Adverse Event Reporting System"><h2>Please Log in:</h2>
                 <form method="POST" id="login" action='<c:url value="/j_acegi_security_check"/>?rand=${_today.time}'>
                 	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
                     <c:if test="${not empty param.login_error}">
                         <p class="errors">
-                             <img src="../images/error-yellow.png" style="margin-right:10px">${sessionScope['ACEGI_SECURITY_LAST_EXCEPTION'].message}
+                             <img src="../images/error-yellow.png?${requestScope.webCacheId}" style="margin-right:10px">${sessionScope['ACEGI_SECURITY_LAST_EXCEPTION'].message}
                         </p>
                     </c:if>
                     

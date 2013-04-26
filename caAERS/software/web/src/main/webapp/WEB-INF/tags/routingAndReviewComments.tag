@@ -16,8 +16,8 @@
 <div>
 	<div id="collapse-all-comments">
 		<a name="allBtnCtrl"></a>
-		<a href="#allBtnCtrl" onClick="javascript:expandAllComments('${entity.id }');" ><img src="<c:url value="/images/b-plus.gif"/>" alt=""  /> Expand All</a>
-		<a href="#allBtnCtrl"  onClick="javascript:collapseAllComments('${entity.id }');"><img src="<c:url value="/images/b-minus.gif"/>" alt=""/> Collapse All</a>
+		<a href="#allBtnCtrl" onClick="javascript:expandAllComments('${entity.id }');" ><img src="<c:url value="/images/b-plus.gif"/>?${requestScope.webCacheId}" alt=""  /> Expand All</a>
+		<a href="#allBtnCtrl"  onClick="javascript:collapseAllComments('${entity.id }');"><img src="<c:url value="/images/b-minus.gif"/>?${requestScope.webCacheId}" alt=""/> Collapse All</a>
 	</div>
 	<div id="comments-window">
 		 <div id="scrollbar_container">  
@@ -32,9 +32,9 @@
 		<textarea id="enter-comment-text-${entity.id }" style="width:392px;height:60%"></textarea>
 		<input type="hidden" id="edit_comment_id-${entity.id }" name="edit_comment_id" value="" />
 		<a href="javascript:addComment('${entity.id }');" id="add-btn-${entity.id }">
-		<img src="<c:url value="/images/sidebar/add_btn.png"/>" alt="Add" /></a>
-		<a href="javascript:saveEditedComment('${entity.id }');" id="edit-btn-${entity.id }" style="display:none"><img src="<c:url value="/images/sidebar/edit_btn.png"/>" alt="Edit" /></a>
-		<a href="javascript:cancelEdit('${entity.id }');" id="cancel-btn-${entity.id }" style="display:none"><img src="<c:url value="/images/sidebar/cancel_btn.png"/>" alt="Cancel" /></a>
+		<img src="<c:url value="/images/sidebar/add_btn.png"/>?${requestScope.webCacheId}" alt="Add" /></a>
+		<a href="javascript:saveEditedComment('${entity.id }');" id="edit-btn-${entity.id }" style="display:none"><img src="<c:url value="/images/sidebar/edit_btn.png"/>?${requestScope.webCacheId}" alt="Edit" /></a>
+		<a href="javascript:cancelEdit('${entity.id }');" id="cancel-btn-${entity.id }" style="display:none"><img src="<c:url value="/images/sidebar/cancel_btn.png"/>?${requestScope.webCacheId}" alt="Cancel" /></a>
 		<tags:indicator id="ajax_wait"/>
 	</div>
 </div>

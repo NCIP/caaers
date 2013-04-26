@@ -18,7 +18,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
         </style>
 
         <title><caaers:message code="user.search.pageTitle"/></title>
-		<script type="text/javascript" src="/caaers/js/extremecomponents.js"></script>
+		<script type="text/javascript" src="/caaers/js/extremecomponents.js?${requestScope.webCacheId}"></script>
 			<tags:dwrJavascriptLink objects="user"/>
 		<script language="JavaScript">
 
@@ -80,7 +80,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 		        var _nr = oRecord.getData("externalId");
 		        var _recordType = oRecord.getData("recordType");
 		        var _s = "";
-		        if (_nr != '') _s = '<img src="<c:url value="/images/chrome/nci_icon_22.png" />">';
+		        if (_nr != '') _s = '<img src="<c:url value="/images/chrome/nci_icon_22.png" />?${requestScope.webCacheId}">';
 		        elCell.innerHTML = _s;
 		        elCell.title = _recordType;
 			};						
@@ -130,7 +130,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
                 })
             }
 
-            var actionsRow = "<img onmouseover='showUserMenuOptions(this, #{id}, \"#{rt}\", \"#{un}\", \"#{active}\")' src='<c:url value="/images/orange-actions.gif" />' border='0' onmouseover='' style='cursor: pointer;'>";
+            var actionsRow = "<img onmouseover='showUserMenuOptions(this, #{id}, \"#{rt}\", \"#{un}\", \"#{active}\")' src='<c:url value="/images/orange-actions.gif" />?${requestScope.webCacheId}' border='0' onmouseover='' style='cursor: pointer;'>";
 			var actionsFormatter = function(elCell, oRecord, oColumn, oData) {
                 var _id = oRecord.getData("id");
                 var _rt = oRecord.getData("recordType");

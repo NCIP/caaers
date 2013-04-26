@@ -72,7 +72,7 @@
         <ui:value propertyName="${field.propertyName}"/>
     </c:when>
 
-    <c:when test="${field.categoryName == 'image'}"><img src="<c:url value="/images/chrome/spacer.gif" />"/></c:when>
+    <c:when test="${field.categoryName == 'image'}"><img src="<c:url value="/images/chrome/spacer.gif"/>?${requestScope.webCacheId}"/></c:when>
 
     <c:when test="${field.categoryName == 'radio'}">
         <form:radiobutton path="${field.propertyName}" id="${field.propertyName}"

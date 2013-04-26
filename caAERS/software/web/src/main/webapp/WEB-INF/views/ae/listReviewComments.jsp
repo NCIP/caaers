@@ -80,11 +80,11 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 			</ui:row>
 			<div class="content standard-buttons autoclear">
 					<div class="standard-nav-buttons">
-						<c:set var="editImage"><c:url value="/images/editComment.png"/></c:set>
-						<c:set var="editButton"><c:url value="/images/blue/edit.png"/></c:set>
-						<c:set var="deleteImage"><c:url value="/images/checkno.gif"/></c:set>
-						<c:set var="saveButton"><c:url value="/images/blue/save_btn.png"/></c:set>
-						<c:set var="clearButton"><c:url value="/images/blue/cancel.png"/></c:set>
+						<c:set var="editImage"><c:url value="/images/editComment.png"/>?${requestScope.webCacheId}</c:set>
+						<c:set var="editButton"><c:url value="/images/blue/edit.png"/>?${requestScope.webCacheId}</c:set>
+						<c:set var="deleteImage"><c:url value="/images/checkno.gif"/>?${requestScope.webCacheId}</c:set>
+						<c:set var="saveButton"><c:url value="/images/blue/save_btn.png"/>?${requestScope.webCacheId}</c:set>
+						<c:set var="clearButton"><c:url value="/images/blue/cancel.png"/>?${requestScope.webCacheId}</c:set>
 						
 						<a href="javascript:clear()" id="clear-button">
         					<img src="${clearButton }"  alt="Cancel" title="Cancel" style="border:0"/>

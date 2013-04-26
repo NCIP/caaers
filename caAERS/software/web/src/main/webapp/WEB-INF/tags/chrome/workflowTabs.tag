@@ -31,8 +31,8 @@
 
      -->
 
-     <c:set var="tickMarkImage"><c:url value="/images/buttons/button_icons/small/blue_checkmark.png" /></c:set>
-     <c:if test="${selected}"><c:set var="tickMarkImage"><c:url value="/images/buttons/button_icons/small/check_icon_small.png" /></c:set></c:if>
+     <c:set var="tickMarkImage"><c:url value="/images/buttons/button_icons/small/blue_checkmark.png" />?${requestScope.webCacheId}</c:set>
+     <c:if test="${selected}"><c:set var="tickMarkImage"><c:url value="/images/buttons/button_icons/small/check_icon_small.png" />?${requestScope.webCacheId}</c:set></c:if>
 
     <li class="tab ${selected ? 'selected' : ''} ${status.last ? 'last' : ''}" id="thirdlevelnav"><div>
      <c:if test="${_isM}"><font style="color: red; text-shadow:0 1px white;vertical-align: top">*</font></c:if>

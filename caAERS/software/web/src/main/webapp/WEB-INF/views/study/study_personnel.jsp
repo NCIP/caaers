@@ -203,7 +203,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
                             <b>(${fn:length(studySite.studyPersonnels)})</b>
                         </div>
     				</c:forEach>
-    				<div><img src="<c:url value="/images/chrome/spacer.gif" />" width="1" height="150" /></div>
+    				<div><img src="<c:url value="/images/chrome/spacer.gif" />?${requestScope.webCacheId}" width="1" height="150" /></div>
     			</chrome:division>
    		</td>
 

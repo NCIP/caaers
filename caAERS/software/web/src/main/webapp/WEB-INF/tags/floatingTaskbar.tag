@@ -49,7 +49,7 @@
             var _string = "<ul id='secondLevelTaskbar'>";
             for (i=3; i<sz; i++) {
                 var _length = TASKS[index][i][0].length;
-                _string += "<li class='" + ((sz - 3 > 4) ? "gt4" : "lte4") + "'><a href='" + TASKS[index][i][1] + "' id='" + TASKS[index][i][3] + "' class='" + (_length > 21 ? "gt18" : "") + "'><img class='" + (_length > 21 ? "imagegt18" : "") + "' alt='' src='" + TASKS[index][i][2] + "'/><span class='spangt18'>" + TASKS[index][i][0] + "</span></a>";
+                _string += "<li class='" + ((sz - 3 > 4) ? "gt4" : "lte4") + "'><a href='" + TASKS[index][i][1] + "' id='" + TASKS[index][i][3] + "' class='" + (_length > 21 ? "gt18" : "") + "'><img class='" + (_length > 21 ? "imagegt18" : "") + "' alt='' src='" + TASKS[index][i][2] + "?${requestScope.webCacheId}'/><span class='spangt18'>" + TASKS[index][i][0] + "</span></a>";
             }
             _string += "</ul>";
 

@@ -17,7 +17,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 <head>
 
     <link rel="stylesheet" type="text/css"
-          href="<c:url value="/css/extremecomponents.css"/>">
+          href="<c:url value="/css/extremecomponents.css"/>?${requestScope.webCacheId}">
 
     <script type="text/javascript">
 

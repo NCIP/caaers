@@ -36,7 +36,7 @@ var options_${reportingPeriod.id} = [];
 		<img border="0" style="cursor: pointer;
           margin-right: 15px;" id="course_routingreview_cycle_${reportingPeriod.id}"  onmouseover="showRoutingReviewCourseMenuOptions( ${reportingPeriod.workflowId}, ${reportingPeriod.id}, 'reportingPeriod','','')" src="/caaers/images/orange-actions.gif">
           
-		<img id="reportingPeriod-${reportingPeriod.id}-indicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator" style="display:none;"/>
+		<img id="reportingPeriod-${reportingPeriod.id}-indicator" src="<c:url value="/images/indicator.white.gif"/>?${requestScope.webCacheId}" alt="activity indicator" style="display:none;"/>
 	</td>
 	</c:if>
 	<c:if test="${reportingPeriod.workflowId == null}">

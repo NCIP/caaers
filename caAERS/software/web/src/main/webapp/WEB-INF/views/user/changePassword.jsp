@@ -119,7 +119,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
       </style>
 </head>
 <body>
-<a href="<c:url value="/public/login" />"><img src="<c:url value="/images/blue/login-logo.png" />" id="logo"></a>
+<a href="<c:url value="/public/login" />"><img src="<c:url value="/images/blue/login-logo.png" />?${requestScope.webCacheId}" id="logo"></a>
 <c:if test="${updated}">
     <c:url value="/public/login" var="login"/>
     <h2>Password changed successfully.</h2><br/>You can now <a href="${login}"><span style="color: #99FFCC;text-decoration: underline;text-transform: uppercase">login</span></a>.

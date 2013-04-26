@@ -70,7 +70,7 @@
                                 <c:if test="${canDeleteFiles}">
                                     <td valign="top">
                                         <a href="javascript:deleteDocument('${additionalInformationDocument.fileId}','document_${additionalInformationDocument.id}');">
-                                            <img src='<c:url value="/images/buttons/button_icons/small/x_icon_small.png" />'
+                                            <img src='<c:url value="/images/buttons/button_icons/small/x_icon_small.png" />?${requestScope.webCacheId}'
                                                  alt="Delete attachment">
                                         </a>
 

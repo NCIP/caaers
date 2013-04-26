@@ -31,7 +31,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
                     <td valign="top"><c:out value="${task.status}" escapeXml="true" /></td>
                     <td valign="top"><c:out value="${task.task}" escapeXml="true" /></td>
                     <td align="RIGHT">
-                        <img src="<c:url value="/images/orange-actions.gif" />"
+                        <img src="<c:url value="/images/orange-actions.gif" />?${requestScope.webCacheId}"
                              border="0"  id="report_${index}"
                              onmouseover='showDashboardTaskPortletMenuOptions(this, ${task.entityId}, "${task.entityType}", "${task.aeReportId}", "${task.status}","${index}")'
                              style="cursor: pointer;

@@ -49,7 +49,7 @@ function ajaxCallBack(jsonResult) {
 var linkFormatterWithNCI = function(elCell, oRecord, oColumn, oData) {
         var _nr = oRecord.getData("externalId");
         var _s = "";
-        if (_nr != '') _s = '<img src="<c:url value="/images/chrome/nci_icon_22.png" />">';
+        if (_nr != '') _s = '<img src="<c:url value="/images/chrome/nci_icon_22.png" />?${requestScope.webCacheId}">';
         elCell.innerHTML = _s;
 };
 

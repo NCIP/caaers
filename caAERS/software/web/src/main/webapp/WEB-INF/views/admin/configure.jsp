@@ -9,7 +9,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 <html>
 <head>
     <title>Configure caAERS</title>
-    <script type="text/javascript" src="<c:url value="/js/jquery/jquery.cookie.js" />"></script>
+    <script type="text/javascript" src="<c:url value="/js/jquery/jquery.cookie.js" />?${requestScope.webCacheId}"></script>
     <script type="text/javascript" language="javascript">
         jQuery(function() {
             jQuery( "#ctabs" ).tabs({cookie:{expires:1}});
@@ -37,7 +37,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
     </style>
     
     <!--[if IE lt 9]>
-        <link rel="stylesheet" type="text/css" media="screen" href="/caaers/css/ie7.css"></link>
+        <link rel="stylesheet" type="text/css" media="screen" href="/caaers/css/ie7.css?${requestScope.webCacheId}"></link>
     <![endif]-->
 </head>
 <body>

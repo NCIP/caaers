@@ -842,7 +842,7 @@ div#createNew h3, div.section h3 {
 																	
 															
 					var inputArea = '<input type="text" id="' + newId + '" name="' + newId +'" size="35" class="autocomplete"/>';
-					inputArea += '<img alt="activity indicator" src="<c:url value="/images/indicator.white.gif" />" class="indicator" id="ind-indicator"/>';
+					inputArea += '<img alt="activity indicator" src="<c:url value="/images/indicator.white.gif" />?${requestScope.webCacheId}" class="indicator" id="ind-indicator"/>';
 					
 
 					var hiddenArea = '<input type="hidden" id="' + hiddenId + '" name="' + hiddenId +'" size="35"/>';
@@ -875,7 +875,7 @@ div#createNew h3, div.section h3 {
 				var hiddenId = selectId + '.literalRestriction[0].readableValue'
 				
 				var inputArea = '<textarea id="' + newId + '" name="' + newId +'" ></textarea>';
-				inputArea += '<img alt="activity indicator" src="<c:url value="/images/indicator.white.gif" />" class="indicator" id="ind-indicator"/>';
+				inputArea += '<img alt="activity indicator" src="<c:url value="/images/indicator.white.gif" />?${requestScope.webCacheId}" class="indicator" id="ind-indicator"/>';
 					
 				var hiddenArea = '<input type="hidden" id="' + hiddenId + '" name="' + hiddenId +'" cols=40 rows=8/>';
 				
@@ -890,7 +890,7 @@ div#createNew h3, div.section h3 {
                 var hiddenId = selectId + '.literalRestriction[0].readableValue'
 
                 var inputArea = '<input id="' + newId + '" name="' + newId +'" onblur="handleValueOntextNonValidValues(this)" ></input>';
-                inputArea += '<img alt="activity indicator" src="<c:url value="/images/indicator.white.gif" />" class="indicator" id="ind-indicator"/>';
+                inputArea += '<img alt="activity indicator" src="<c:url value="/images/indicator.white.gif" />?${requestScope.webCacheId}" class="indicator" id="ind-indicator"/>';
 
                 var hiddenArea = '<input type="hidden" id="' + hiddenId + '" name="' + hiddenId +'" cols=40 rows=8/>';
 
@@ -1518,7 +1518,7 @@ div#createNew h3, div.section h3 {
 																	
 																	
 																	var inputArea = '<input type="text" id="' + newId + '" name="' + newId +'" value = "'+ fieldValue + '" size="35" class="autocomplete"/>';
-																	inputArea += '<img alt="activity indicator" src="<c:url value="/images/indicator.white.gif" />" class="indicator" id="ind-indicator"/>';
+																	inputArea += '<img alt="activity indicator" src="<c:url value="/images/indicator.white.gif" />?${requestScope.webCacheId}" class="indicator" id="ind-indicator"/>';
 																	
 																	var hiddenArea = '<input type="hidden" id="' + hiddenId + '" name="' + hiddenId +'" value = "'+ fieldValue + '" size="35" />';
 																	
@@ -1559,7 +1559,7 @@ div#createNew h3, div.section h3 {
 										
 																	
 										var inputArea = '<textarea id="' + newId + '" name="' + newId +'" >'+ fieldValue.replace(/\,/,'') + '</textarea>';
-										inputArea += '<img alt="activity indicator" src="<c:url value="/images/indicator.white.gif" />" class="indicator" id="ind-indicator"/>';
+										inputArea += '<img alt="activity indicator" src="<c:url value="/images/indicator.white.gif" />?${requestScope.webCacheId}" class="indicator" id="ind-indicator"/>';
 					
 										var hiddenArea = '<input type="hidden" id="' + hiddenId + '" name="' + hiddenId +'" cols=40 rows=8/>';
 				
@@ -1584,7 +1584,7 @@ div#createNew h3, div.section h3 {
 
 
                                 var inputArea = '<input id="' + newId + '" name="' + newId +'" value="'+ fieldValue.replace(/\,/,'') + '" />';
-                                inputArea += '<img alt="activity indicator" src="<c:url value="/images/indicator.white.gif" />" class="indicator" id="ind-indicator"/>';
+                                inputArea += '<img alt="activity indicator" src="<c:url value="/images/indicator.white.gif" />?${requestScope.webCacheId}" class="indicator" id="ind-indicator"/>';
 
                                 var hiddenArea = '<input type="hidden" id="' + hiddenId + '" name="' + hiddenId +'" value="' + fieldValue + '" cols=40 rows=8/>';
 

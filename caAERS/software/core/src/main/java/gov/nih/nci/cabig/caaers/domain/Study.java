@@ -869,6 +869,13 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         return null;
     }
 
+    public StudyOrganization findStudyOrganizationById(Integer id){
+        for(StudyOrganization so : getStudyOrganizations()){
+            if(so.getId().equals(id)) return so;
+        }
+        return null;
+    }
+
     public TreatmentAssignment findActiveTreatmentAssignment(String tac){
         for(TreatmentAssignment ta : getActiveTreatmentAssignments()){
             if(StringUtils.equals(ta.getCode(), tac)) return ta;

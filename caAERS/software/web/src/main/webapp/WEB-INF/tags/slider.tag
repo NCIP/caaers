@@ -19,7 +19,7 @@
 
 <div id="entire-slider" style="top:200px; z-index:1; display:${display}">
 
-	<a id="sideBarTab"><img src="<c:url value="/images/sidebar/main_tab.png" />" alt="" title="sideBar" /></a>
+	<a id="sideBarTab"><img src="<c:url value="/images/sidebar/main_tab.png" />?${requestScope.webCacheId}" alt="" title="sideBar" /></a>
 	<!--BEGIN Slider -->
 		<div id="slider-pane" style="display:none;">
 			<ul id="slider-tabs" class="subsection_tabs">

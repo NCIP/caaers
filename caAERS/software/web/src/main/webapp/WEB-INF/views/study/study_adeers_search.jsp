@@ -16,7 +16,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 </style>
 <script language="JavaScript">
 
-    var _ajaxIndicatorHtml= '<img height="13px" width="13px" src="<c:url value="/images/indicator.gif" />" alt="activity indicator" width="20px" height="20px"/>';
+    var _ajaxIndicatorHtml= '<img height="13px" width="13px" src="<c:url value="/images/indicator.gif" />?${requestScope.webCacheId}" alt="activity indicator" width="20px" height="20px"/>';
     var popupDiv;
 
     <%--ToDo  THIS METHOS HAS TO BE MOVED TO A COMMON PLACE FOR REUSE --%>
@@ -105,7 +105,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
                     flashText = "<caaers:message code="LBL_study.created" />";
                 }
 //                jQuery('#studyLink' + _index).html("<b>" + text + "</b>");
-                var _s = "<img src='<c:url value="/images/orange-actions.gif" />' border='0' onmouseover='showMenuOptions(#{index}, \"#{action}\", \"#{fsid}\", \"#{ncic}\", \"#{studyId}\")' id='_study#{index}' style='cursor:pointer;'>";
+                var _s = "<img src='<c:url value="/images/orange-actions.gif" />?${requestScope.webCacheId}' border='0' onmouseover='showMenuOptions(#{index}, \"#{action}\", \"#{fsid}\", \"#{ncic}\", \"#{studyId}\")' id='_study#{index}' style='cursor:pointer;'>";
                 _s = _s.interpolate({index:_index, action:"UPDATE", fsid:id, ncic:nciCode, studyId:_dbId})
                 jQuery('#studyLink' + _index).html(_s);
                 var _p = showSuccessPopup(flashText);
@@ -188,8 +188,8 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
                 });
         }
 
-        var actionsRow = "<span id='studyLink#{index}'><img src='<c:url value="/images/orange-actions.gif" />' border='0' onmouseover='showMenuOptions(#{index}, \"#{action}\", \"#{fsid}\", \"#{ncic}\", \"#{studyId}\")' id='_study#{index}' style='cursor: pointer;'></span>";
-        var actionsRowOneItem = "<span id='studyLink#{index}'><img src='<c:url value="/images/orange-import.gif" />' border='0' onclick='doUpdate(\"please_wait_importing\",\"#{fsid}\", \"#{index}\", \"#{ncic}\", \"CREATE\")' id='_study#{index}' style='cursor: pointer;'></span>";
+        var actionsRow = "<span id='studyLink#{index}'><img src='<c:url value="/images/orange-actions.gif" />?${requestScope.webCacheId}' border='0' onmouseover='showMenuOptions(#{index}, \"#{action}\", \"#{fsid}\", \"#{ncic}\", \"#{studyId}\")' id='_study#{index}' style='cursor: pointer;'></span>";
+        var actionsRowOneItem = "<span id='studyLink#{index}'><img src='<c:url value="/images/orange-import.gif" />?${requestScope.webCacheId}' border='0' onclick='doUpdate(\"please_wait_importing\",\"#{fsid}\", \"#{index}\", \"#{ncic}\", \"CREATE\")' id='_study#{index}' style='cursor: pointer;'></span>";
 
         var actionFormatter = function(elCell, oRecord, oColumn, oData) {
             var _index = this.getRecordIndex(oRecord);

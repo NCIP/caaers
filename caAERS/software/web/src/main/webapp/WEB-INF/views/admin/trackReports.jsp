@@ -11,8 +11,8 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 <title>Track Reports</title>
 <tags:dwrJavascriptLink objects="reportDef"/>
 
-<link rel="stylesheet" type="text/css" href="/caaers/css/slider.css" />
-<link rel="stylesheet" type="text/css" href="/caaers/css/ae.css" />
+<link rel="stylesheet" type="text/css" href="/caaers/css/slider.css?${requestScope.webCacheId}" />
+<link rel="stylesheet" type="text/css" href="/caaers/css/ae.css?${requestScope.webCacheId}" />
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 
 <script type="text/javascript">
@@ -56,7 +56,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 
 
 <body>
-<script type="text/javascript" src="<c:url value="/js/wz_tooltip/wz_tooltip.js" />"></script>
+<script type="text/javascript" src="<c:url value="/js/wz_tooltip/wz_tooltip.js" />?${requestScope.webCacheId}"></script>
 <div class="workflow-tabs2">
     <ul id="" class="tabs autoclear">
         <li id="thirdlevelnav" class="tab"><div><a href="ctepesysDataImport">CTEP-ESYS Data Import</a></div></li>

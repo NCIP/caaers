@@ -102,7 +102,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 </head>
 <body>
 
-<a href="<c:url value="/public/login" />"><img src="<c:url value="/images/blue/login-logo.png" />" id="logo" alt="Cancer Adverse Event Reporting System"></a>
+<a href="<c:url value="/public/login" />"><img src="<c:url value="/images/blue/login-logo.png" />?${requestScope.webCacheId}" id="logo" alt="Cancer Adverse Event Reporting System"></a>
 An email containing instructions for reseting the password has been sent to the specified user.
 </body>
 </html>

@@ -18,7 +18,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
     }
 </style>
 
-<script src="<c:url value="/js/ui/ajaxCRUD.js"/>"></script>
+<script src="<c:url value="/js/ui/ajaxCRUD.js"/>?${requestScope.webCacheId}"></script>
 <script language="JavaScript" type="text/JavaScript">
 
     jQuery(document).ready(function() {

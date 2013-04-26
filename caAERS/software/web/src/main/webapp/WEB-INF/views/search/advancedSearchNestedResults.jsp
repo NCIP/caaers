@@ -9,7 +9,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 <html>
 	<head>
 	<tags:dwrJavascriptLink objects="advSearch"/>
-		<link rel="stylesheet" type="text/css" href="/caaers/css/ae.css" />
+		<link rel="stylesheet" type="text/css" href="/caaers/css/ae.css?${requestScope.webCacheId}" />
 		<script>
 			var advancedSearchHelper = new AdvancedSearchHelper(advSearch);
 			var rowList;
@@ -145,7 +145,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 								<c:forEach items="${command.advancedSearchRowList }" var="row" varStatus="rowStatus">
 									<tr>
 										<td>
-											<img id="expand-1-${rowStatus.index }" src="<c:url value="/images/arrow-right.png"/>" onclick="javascript:expandTable(${rowStatus.index }, 1)" style='cursor:pointer;'>
+											<img id="expand-1-${rowStatus.index }" src="<c:url value="/images/arrow-right.png"/>?${requestScope.webCacheId}" onclick="javascript:expandTable(${rowStatus.index }, 1)" style='cursor:pointer;'>
 										</td>
 										<c:forEach items="${row.columnList }" var="col" varStatus="colStatus">
 											<td>${col.value }</td>
@@ -168,7 +168,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 								</tr>
 								<tr>
 									<td>
-										<img id="expand-2-1" src="<c:url value="/images/arrow-right.png"/>" onclick="javascript:expandTable(1, 1)" style='cursor:pointer;'>
+										<img id="expand-2-1" src="<c:url value="/images/arrow-right.png"/>?${requestScope.webCacheId}" onclick="javascript:expandTable(1, 1)" style='cursor:pointer;'>
 									</td>
 									<td>short title 1</td>
 									<td>long title 1 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</td>
@@ -177,7 +177,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 								</tr>
 								<tr>
 									<td>
-										<img id="expand-2-1" src="<c:url value="/images/arrow-right.png"/>" onclick="javascript:expandTable(1, 1)" style='cursor:pointer;'>
+										<img id="expand-2-1" src="<c:url value="/images/arrow-right.png"/>?${requestScope.webCacheId}" onclick="javascript:expandTable(1, 1)" style='cursor:pointer;'>
 									</td>
 									<td>short title 2</td>
 									<td>long title 2gagasgasrgasrgaasgsssssssssssssssssssssssssssgggggggggggggggggggggggg</td>
@@ -186,7 +186,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 								</tr>
 								<tr>
 									<td>
-										<img id="expand-2-1" src="<c:url value="/images/arrow-right.png"/>" onclick="javascript:expandTable(1, 1)" style='cursor:pointer;'>
+										<img id="expand-2-1" src="<c:url value="/images/arrow-right.png"/>?${requestScope.webCacheId}" onclick="javascript:expandTable(1, 1)" style='cursor:pointer;'>
 									</td>
 									<td>short title 3</td>
 									<td>long title 3asrgrgggggggggggggggggggggggggggggggggggggggggggggggggggggggggg</td>

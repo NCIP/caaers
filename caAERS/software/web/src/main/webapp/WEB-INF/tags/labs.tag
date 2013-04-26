@@ -34,7 +34,7 @@
    		                 	<td>${fn:substring(alab.labDate, 0, 10)}</td>
    	   		              	<td>${alab.result}</td>
    	   		              	<td>${alab.units}</td>
-           		         	<td align="center"><a onClick="dismissLab(${alab.id})" style="cursor:pointer;"><img src="<c:url value="/images/checkno.gif" />" border="0"></a></td>
+           		         	<td align="center"><a onClick="dismissLab(${alab.id})" style="cursor:pointer;"><img src="<c:url value="/images/checkno.gif" />?${requestScope.webCacheId}" border="0"></a></td>
                 		</tr>                           
 					</c:if>
 				</c:forEach>

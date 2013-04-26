@@ -129,7 +129,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 									<OPTION value="${searchTargetObject.className }">${searchTargetObject.displayName }</OPTION>
 								</c:forEach>
 							</SELECT>
-						<img src="<c:url value="/images/alphacube/progress.gif" />" style="display:none;" id="targetObjectProgessIndicator">
+						<img src="<c:url value="/images/alphacube/progress.gif" />?${requestScope.webCacheId}" style="display:none;" id="targetObjectProgessIndicator">
 					</div>
 					<br><br>
 					<div id="criteria-section-id">
@@ -144,7 +144,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 								<OPTION value="${searchTargetObject.className }" <c:if test="${searchTargetObject.className == command.searchTargetObject.className }"> selected </c:if>>${searchTargetObject.displayName }</OPTION>
 							</c:forEach>
 						</SELECT>
-						<img src="<c:url value="/images/alphacube/progress.gif" />" style="display:none;" id="targetObjectProgessIndicator">
+						<img src="<c:url value="/images/alphacube/progress.gif" />?${requestScope.webCacheId}" style="display:none;" id="targetObjectProgessIndicator">
 					</div>
 					<br><br>
 					<div id="criteria-section-id">
