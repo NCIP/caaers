@@ -6,8 +6,6 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.service.migrator;
 
-import java.util.HashMap;
-
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
@@ -22,9 +20,11 @@ import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
-import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Message;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.easymock.classextension.EasyMock;
 
@@ -105,14 +105,15 @@ public class StudyParticipantAssignmentMigratorTest extends AbstractNoSecurityTe
         StudyParticipantAssignment studyParticipantAssignment = Fixtures.assignParticipant(xstreamParticipant, study, organization);
 
         StudySite studySite = new StudySite();
-        studySite.setId(123);
         EasyMock.expect(organizationDao.getByName(organization.getName())).andReturn(organization);
         EasyMock.expect(studySiteDao.matchByStudyAndOrg(organization.getName(), organizationAssignedIdentifier.getValue(),
                 organizationAssignedIdentifier.getType())).andReturn(null);
          EasyMock.expect(studyDao.getByIdentifier(organizationAssignedIdentifier)).andReturn(study);
-        studySiteDao.save(studySite);
-        //studyDao.updateStudyForServiceUseOnly(study);
-        studyRepository.save(study);
+        studySiteDao.save((StudySite)EasyMock.anyObject());
+        List<StudySite> sites = new ArrayList<StudySite>();
+        sites.add((StudySite)EasyMock.anyObject());
+        sites.add(studySite);
+        studyRepository.associateSiteToWorkflowConfig(sites);
         replayMocks();
 
         migrator.migrate(xstreamParticipant, participant, outcome);

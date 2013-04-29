@@ -203,14 +203,20 @@ public class ParticipantImportServiceIntegrationTest extends AbstractNoSecurityT
         // migrate assignments when study has  identifiers
         study.addIdentifier(organizationAssignedIdentifier);
         studyParticipantAssignment = Fixtures.assignParticipant(xstreamParticipant, study, organization);
-
+        StudySite studySite = new StudySite();
         EasyMock.expect(studySiteDao.matchByStudyAndOrg(organization.getName(), organizationAssignedIdentifier.getValue(),
                 organizationAssignedIdentifier.getType())).andReturn(null);
-        //EasyMock.expect(participantRepository.checkIfParticipantExistsForGivenIdentifiers(xstreamParticipant.getIdentifiers())).andReturn(false);
         EasyMock.expect(organizationDao.getByName(organization.getName())).andReturn(organization);
         EasyMock.expect(studyDao.getByIdentifier(organizationAssignedIdentifier)).andReturn(study);
-        //studyDao.updateStudyForServiceUseOnly(study);
-        studyRepository.save(study);
+        studySiteDao.save((StudySite)EasyMock.anyObject());
+        List<StudySite> sites = new ArrayList<StudySite>();
+        sites.add((StudySite)EasyMock.anyObject());
+        sites.add(studySite);
+        studyRepository.associateSiteToWorkflowConfig(sites);
+        
+        
+        
+        
         replayMocks();
         DomainObjectImportOutcome<Participant> participantDomainObjectImportOutcome = participantImportService.importParticipant(xstreamParticipant);
         verifyMocks();
