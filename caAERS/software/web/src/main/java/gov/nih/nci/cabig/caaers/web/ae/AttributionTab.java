@@ -141,6 +141,8 @@ public class AttributionTab extends AeTab {
     @Override
     public boolean hasEmptyMandatoryFields(ExpeditedAdverseEventInputCommand command,HttpServletRequest request) {
     	boolean hasEmptyFields = super.hasEmptyMandatoryFields(command, request);
+        if(hasEmptyFields) return hasEmptyFields;
+
     	if(command.getAeReport().getId() != null && (request.getParameter("subview") == null)){
     		try {
 				ValidationErrors validationErrors = evaluationService.validateReportingBusinessRules(command.getAeReport(), section());

@@ -105,6 +105,8 @@ public class AdditionalInformationTab extends AeTab {
     @Override
     public boolean hasEmptyMandatoryFields(ExpeditedAdverseEventInputCommand command, HttpServletRequest request) {
         boolean emptyMandatoryField = super.hasEmptyMandatoryFields(command, request);
+        if(emptyMandatoryField) return true;
+
         boolean allFieldsUnfilled = true;
 
         TreeNode aiNode = expeditedReportTree.find("additionalInformation");

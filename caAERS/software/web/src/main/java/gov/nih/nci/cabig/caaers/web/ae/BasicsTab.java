@@ -244,7 +244,8 @@ public abstract class BasicsTab extends AeTab {
     	if(adverseEvents != null && adverseEvents.size() > 0){
     		primaryAEStartDateNotFilled = adverseEvents.get(0).getStartDate() == null;
     	}
-    	return super.hasEmptyMandatoryFields(command, request) || primaryAEStartDateNotFilled;
+        if(primaryAEStartDateNotFilled) return true;
+    	return super.hasEmptyMandatoryFields(command, request);
     }
 
     

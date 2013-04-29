@@ -136,8 +136,9 @@ public class LabsTab extends AeTab {
     @Override
     public boolean hasEmptyMandatoryFields(ExpeditedAdverseEventInputCommand command, HttpServletRequest request) {
     	boolean hasEmptyFields =  super.hasEmptyMandatoryFields(command, request);
-    	hasEmptyFields |= CollectionUtils.isEmpty(command.getAeReport().getLabs());
-    	return hasEmptyFields;
+        if(hasEmptyFields) return hasEmptyFields;
+
+    	return  CollectionUtils.isEmpty(command.getAeReport().getLabs());
     }
 
     @Override

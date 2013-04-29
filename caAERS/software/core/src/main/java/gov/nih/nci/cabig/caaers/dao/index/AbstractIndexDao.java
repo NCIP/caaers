@@ -262,8 +262,7 @@ public abstract class AbstractIndexDao extends JdbcDaoSupport {
                 .append(" from ")
                 .append(indexTableName())
                 .append(" where login_id = '")
-                .append(loginId)
-                .append("' order by ").append(entityIdColumnName());
+                .append(loginId).append("'") ;
 
         final List<IndexEntry> entries = new ArrayList<IndexEntry>();
         final String[] roleColumnNames = UserGroupType.getAllRoleColumnsArray();
