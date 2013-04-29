@@ -11,19 +11,19 @@ import java.util.Calendar;
  */
 public class WebCacheIdFilter implements Filter {
     private String webCacheId;
-    @Override
+
     public void init(FilterConfig filterConfig) throws ServletException {
         Calendar calendar = Calendar.getInstance();
         webCacheId = "v=v" + new SimpleDateFormat("yyyyMMdd").format(calendar.getTime());
     }
 
-    @Override
+
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         servletRequest.setAttribute("webCacheId", webCacheId);
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
-    @Override
+
     public void destroy() {
 
     }
