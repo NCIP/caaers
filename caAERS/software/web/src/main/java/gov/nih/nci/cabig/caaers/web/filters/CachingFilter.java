@@ -65,6 +65,8 @@ public class CachingFilter implements Filter {
         httpRes.setHeader("Expires", expires);
         httpRes.setHeader("Last-Modified", lastModified);
         httpRes.setHeader("Cache-Control", cacheControl);
+        httpRes.setHeader("Connection", "Keep-Alive");
+        httpRes.setHeader("Keep-Alive", "timeout=15, max=40");
 
         if(isIE(httpReq)){
             //add the ETag header
@@ -88,7 +90,7 @@ public class CachingFilter implements Filter {
             @Override
             public void setHeader(String name, String value) {
                 //ignore known headers
-               if(name.equals("ETag") || name.equals("Last-Modified") || name.equals("Expires") || name.equals("Cache-Control") || name.equals("Pragma") ) return;
+               if(name.equals("ETag") || name.equals("Last-Modified") || name.equals("Expires") || name.equals("Cache-Control") || name.equals("Pragma") || name.equalsIgnoreCase("Keep-Alive") ) return;
                super.setHeader(name, value);
             }
         };

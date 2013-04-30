@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.filters;
 
 import javax.servlet.*;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -20,6 +21,13 @@ public class WebCacheIdFilter implements Filter {
 
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         servletRequest.setAttribute("webCacheId", webCacheId);
+        if(servletResponse instanceof HttpServletResponse){
+            HttpServletResponse httpRes = (HttpServletResponse) servletResponse;
+            httpRes.setHeader("Connection", "Keep-Alive");
+            httpRes.setHeader("Keep-Alive", "timeout=15, max=40");
+
+        }
+
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
