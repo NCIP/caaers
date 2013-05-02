@@ -13,7 +13,6 @@ class CreateIndexesTwo extends edu.northwestern.bioinformatics.bering.Migration 
         execute('create index "idx_assgmnt_par_id" on participant_assignments(participant_id)')
         execute('create index "idx_assgmnt_ss_id" on participant_assignments(study_site_id)')
         execute('create index "idx_assgmnt_ssi_id" on participant_assignments(study_subject_identifier)')
-        execute('create index idx_ae_rp_prd_id on adverse_events(reporting_period_id)')
         execute('create index "idx_ae_attribs_cause" on ae_attributions(cause_id)')
         execute('create index "idx_crs_agnts_st_ag_id" on course_agents(study_agent_id)')
         execute('create index "idx_sa_ag_id" on study_agents(agent_id)')
