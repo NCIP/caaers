@@ -51,6 +51,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.MessageSource;
+import org.springframework.transaction.annotation.Transactional;
 
 public class ParticipantServiceImpl extends AbstractImportService implements ApplicationContextAware {
 	
@@ -244,6 +245,7 @@ public class ParticipantServiceImpl extends AbstractImportService implements App
 		return participantImportOutcome;
 	}
 	
+	@Transactional(readOnly=false)
 	public CaaersServiceResponse createParticipant(
 			Participants xmlParticipants) {
 		
@@ -297,7 +299,8 @@ public class ParticipantServiceImpl extends AbstractImportService implements App
 		return caaersServiceResponse;
 	}
 
-
+	
+	@Transactional(readOnly=false)
 	public CaaersServiceResponse updateParticipant(
 			Participants xmlParticipants) {
 		
@@ -374,6 +377,7 @@ public class ParticipantServiceImpl extends AbstractImportService implements App
 		}
 	}
 	
+	@Transactional(readOnly=false)
 	public CaaersServiceResponse deleteParticipant(Participants xmlParticipants) {
 		
 		CaaersServiceResponse caaersServiceResponse = Helper.createResponse();
