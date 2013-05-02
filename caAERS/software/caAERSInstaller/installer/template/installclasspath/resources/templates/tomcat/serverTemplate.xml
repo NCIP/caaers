@@ -5,9 +5,8 @@
   Distributed under the OSI-approved BSD 3-Clause License.
   See http://ncip.github.com/caaers/LICENSE.txt for details.
 -->
-<Connector protocol="org.apache.coyote.http11.Http11Protocol" port="8443" SSLEnabled="true"
-           maxHttpHeaderSize="8192" maxThreads="150" minSpareThreads="25" maxSpareThreads="75"
-           enableLookups="true" disableUploadTimeout="true" acceptCount="100" debug="0"
-           scheme="https" secure="true" clientAuth="false" sslProtocol="TLS"
+<Connector SSLEnabled="true" port="8443" protocol="org.apache.coyote.http11.Http11Protocol" scheme="https" secure="true" sslProtocol="TLS"
+           maxSpareThreads="25" maxThreads="500" minSpareThreads="5" acceptCount="100" maxHttpHeaderSize="8192"   maxKeepAliveRequests="50"
+           clientAuth="false"  disableUploadTimeout="true" enableLookups="false"
            keystoreFile="conf/cabig/caaers_keystore" keystorePass="changeit" />
 
