@@ -79,7 +79,16 @@
 		<%-- Verbatim --%>
 		<tags:renderRow field="${fieldGroups[mainGroup].fields[0]}"/>
 		<%-- Grade --%>
-		<tags:renderRow field="${fieldGroups[mainGroup].fields[1]}"/>
+        <ui:row path="${fieldGroups[mainGroup].fields[1].propertyName}">
+            <jsp:attribute name="label">
+                <ui:label path="${fieldGroups[mainGroup].fields[1].propertyName}" labelProperty="${fieldGroups[mainGroup].fields[1].attributes.labelProperty}" text="${fieldGroups[mainGroup].fields[1].displayName}" mandatory="${fieldGroups[mainGroup].fields[1].attributes.mandatory}" required="${fieldGroups[mainGroup].fields[1].required}"/>
+            </jsp:attribute>
+            <jsp:attribute name="value">
+                <c:set var="grdOptions" value="${command.aeGradeOptionsMap[adverseEvent.id]}"/>
+                <!-- grdOptions : ${grdOptions}-->
+                <ui:longSelect path="${fieldGroups[mainGroup].fields[1].propertyName}" options="${grdOptions}" />
+            </jsp:attribute>
+        </ui:row>
 		<div class="row">
 			<div class="leftpanel">
                     <%-- Awareness Date --%>

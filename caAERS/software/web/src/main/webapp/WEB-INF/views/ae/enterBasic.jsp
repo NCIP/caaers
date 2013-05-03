@@ -6,7 +6,6 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 --%>
 <%@include file="/WEB-INF/views/taglibs.jsp"%>
 
-<link rel="stylesheet" type="text/css" href="<c:url value="/css/extremecomponents.css"/>?${requestScope.webCacheId}">
 <%@page contentType="text/html;charset=UTF-8" language="java"%>
 <html>
 <head>
@@ -209,28 +208,28 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
                 },
 
             updateGrades: function(ctcTermId) {
-                createAE.getTermGrades(ctcTermId, function(grades) {
-                    // Note that row index is 0 to 4, while grade is 1 to 5
-
-                    // update text
-                    grades.each(function(grade) {
-                        var text = $(this._aeProperty() + ".grade-text-" + (grade.code - 1))
-                        text.update(grade.code + ": " + grade.displayName.escapeHTML().gsub("(\\r\\n)|(\\n)|(\\r)", "<br>\n"))
-                    }.bind(this))
-
-                    // show & hide
-                    var validCodes = grades.collect(function(g) { return g.code })
-                    for (var i = 0 ; i <= 4 ; i++) {
-                        var row = $(this._aeProperty() + ".grade-row-" + i)
-                        if (validCodes.include(i + 1)) {
-                            row.enableDescendants()
-                            row.show()
-                        } else {
-                            row.hide()
-                            row.disableDescendants()
-                        }
-                    }
-                }.bind(this))
+//                createAE.getTermGrades(ctcTermId, function(grades) {
+//                    // Note that row index is 0 to 4, while grade is 1 to 5
+//
+//                    // update text
+//                    grades.each(function(grade) {
+//                        var text = $(this._aeProperty() + ".grade-text-" + (grade.code - 1))
+//                        text.update(grade.code + ": " + grade.displayName.escapeHTML().gsub("(\\r\\n)|(\\n)|(\\r)", "<br>\n"))
+//                    }.bind(this))
+//
+//                    // show & hide
+//                    var validCodes = grades.collect(function(g) { return g.code })
+//                    for (var i = 0 ; i <= 4 ; i++) {
+//                        var row = $(this._aeProperty() + ".grade-row-" + i)
+//                        if (validCodes.include(i + 1)) {
+//                            row.enableDescendants()
+//                            row.show()
+//                        } else {
+//                            row.hide()
+//                            row.disableDescendants()
+//                        }
+//                    }
+//                }.bind(this))
             },
 
             termPopulator: function(autocompleter, text) {

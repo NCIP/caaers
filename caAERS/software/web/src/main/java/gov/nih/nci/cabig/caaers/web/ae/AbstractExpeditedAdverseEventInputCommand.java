@@ -119,6 +119,8 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
 
     private boolean studyOutOfSync = true;
 
+    private Map<Integer, Map<Object, Object>> aeGradeOptionsMap;
+
     public AbstractExpeditedAdverseEventInputCommand(){
     		aeReport = new ExpeditedAdverseEventReport();
     }
@@ -628,5 +630,13 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
 
     public void setRuleableFields(List<String> ruleableFields) {
         this.ruleableFields = ruleableFields;
+    }
+
+    public Map<Integer, Map<Object, Object>> getAeGradeOptionsMap() {
+        return aeGradeOptionsMap;
+    }
+
+    public void setAeGradeOptionsMap(Map<Integer, Map<Object, Object>> aeGradeOptionsMap) {
+        this.aeGradeOptionsMap = aeGradeOptionsMap;
     }
 }

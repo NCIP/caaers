@@ -6,12 +6,7 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.Attribution;
-import gov.nih.nci.cabig.caaers.domain.Grade;
-import gov.nih.nci.cabig.caaers.domain.Hospitalization;
-import gov.nih.nci.cabig.caaers.domain.Outcome;
-import gov.nih.nci.cabig.caaers.domain.OutcomeType;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
@@ -58,7 +53,25 @@ public abstract class BasicsTab extends AeTab {
         attributionOptions.putAll(WebUtils.collectOptions(Arrays.asList(Attribution.values()), "name", null));
         return attributionOptions;
     }
-    
+
+    @Override
+    public void onDisplay(HttpServletRequest request, ExpeditedAdverseEventInputCommand command) {
+        super.onDisplay(request, command);
+        AbstractExpeditedAdverseEventInputCommand expeditedCommand = (AbstractExpeditedAdverseEventInputCommand) command;
+        Map<Object , Object> genericGradeOptions =  WebUtils.collectOptions(EXPEDITED_GRADES, "name", null);
+        Map<Integer, Map<Object, Object>> aeGradeOptions = new HashMap<Integer, Map<Object, Object>>();
+        for(AdverseEvent ae : command.getAeReport().getActiveAdverseEvents()){
+            Integer key = ae.getId() != null ? ae.getId() : -1;
+            Map<Object, Object> options = genericGradeOptions;
+            if(ae.getAdverseEventTerm() instanceof AdverseEventCtcTerm){
+                CtcTerm ctcTerm = ((AdverseEventCtcTerm) ae.getAdverseEventTerm()).getCtcTerm();
+                List<CtcGrade> ctcGrades = ctcTerm != null ? ctcTerm.getContextualGrades() : null;
+                if(ctcGrades != null && !ctcGrades.isEmpty()) options = WebUtils.collectCustomOptions(ctcGrades, "name", "code", "displayName", ":  ") ;
+            }
+            aeGradeOptions.put(key, options );
+        }
+        expeditedCommand.setAeGradeOptionsMap(aeGradeOptions);
+    }
 
     @Override
     protected void createFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) {
