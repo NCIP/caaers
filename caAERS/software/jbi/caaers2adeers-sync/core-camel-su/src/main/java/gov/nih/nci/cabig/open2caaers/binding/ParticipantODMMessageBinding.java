@@ -94,7 +94,6 @@ public class ParticipantODMMessageBinding extends DefaultHttpBinding{
 		
     }
     
-    
     @Override
     public void doWriteExceptionResponse(Throwable exception, HttpServletResponse response) throws IOException {
     	
@@ -112,6 +111,14 @@ public class ParticipantODMMessageBinding extends DefaultHttpBinding{
         	response.getWriter().write("<Response ReferenceNumber=\"" + referenceNumber + "\" IsTransactionSuccessful=\"0\" ReasonCode=\"WS_GEN_009\" ErrorClientResponseMessage=\"Incorrect Username/Password\"/>");
         	return;
         } 
+        
+        if(exception instanceof ClassCastException){
+        	// signifies the input xml is not valid
+        	 response.setStatus(400);
+             response.getWriter().write("<Response ReferenceNumber=\"" + referenceNumber + "\" IsTransactionSuccessful=\"0\" " +
+             		"ReasonCode=\"WS_GEN_007\" ErrorClientResponseMessage=\"Invalid XML\"/>");
+             return;
+        }
     	
     	// return HTTP 500 to signify something went wrong
         response.setStatus(500);
