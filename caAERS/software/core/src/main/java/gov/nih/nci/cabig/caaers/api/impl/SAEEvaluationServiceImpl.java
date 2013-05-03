@@ -24,6 +24,7 @@ import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 import gov.nih.nci.cabig.caaers.ws.faults.CaaersFault;
 
+import java.net.UnknownHostException;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -247,6 +248,9 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 			List<AdverseEventResult> aeResultList = results.getAdverseEventResult();
 			//populate the output list with the AdverseEventResult objects created for each AdverseEventType
 			aeResultList.addAll(mapAE2DTO.values());
+            if ( requestType.equals(RequestType.SaveEvaluate)) {
+                ((SaveAndEvaluateAEsOutputMessage)response).setLinkToReport(constructLinkToReport(study.getId(),reportingPeriod.getParticipant().getId(), reportingPeriod.getId()));
+            }
 			
 			EvaluationResultDTO dto = evaluationService.evaluateSAERules(reportingPeriod);
 									
@@ -289,7 +293,6 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 							aeDTO.setRequiresReporting(true);
                             if ( requestType.equals(RequestType.SaveEvaluate)) {
                                 ((SaveAndEvaluateAEsOutputMessage)response).setHasSAE(true);
-                                ((SaveAndEvaluateAEsOutputMessage)response).setLinkToReport(constructLinkToReport(study.getId(),reportingPeriod.getParticipant().getId(), reportingPeriod.getId()));
                             }
 
 							aeDTO.setRecommendedReports(recommendedRpts);
@@ -350,7 +353,24 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
     }
 
     private String constructLinkToReport(int studyId, int participantId, int rpId) {
-        String linkToReport = "https://localhost:8443/caaers/pages/ae/captureRoutine?study=" + studyId + "&participant="+ participantId + "&adverseEventReportingPeriod="+ rpId +"&_page=0&_target2=2&displayReportingPeriod=true&addReportingPeriodBinder=true";
+        String hostname = messageSource.getMessage("rules.hostname",
+                new String[] {}, "", Locale.getDefault());
+        if ( hostname == "" || hostname == null || hostname.contains("<hostname>")) {
+            try {
+                hostname = java.net.InetAddress.getLocalHost().getHostName();
+            }catch(UnknownHostException ue) {
+                hostname = "localhost";
+            }
+        }
+
+        String port = messageSource.getMessage("rules.port",
+                new String[] {}, "", Locale.getDefault());
+        if ( port == "" || port == null ) {
+            port = "8443";
+        }
+
+        String linkToReport = "https://" + hostname + ":" + port + "/caaers/pages/ae/captureRoutine?study=" + studyId + "&participant="+ participantId
+                + "&adverseEventReportingPeriod="+ rpId +"&_page=0&_target2=2&displayReportingPeriod=true&addReportingPeriodBinder=true";
         return linkToReport;
     }
 
@@ -363,8 +383,6 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
         }
         return response;
     }
-
-
 
 	public AdverseEventConverter getConverter() {
 		return converter;
