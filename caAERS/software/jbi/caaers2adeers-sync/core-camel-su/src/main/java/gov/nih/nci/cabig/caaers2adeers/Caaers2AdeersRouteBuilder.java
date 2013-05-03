@@ -92,16 +92,24 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
 	
     public void configure() {
         Namespaces ns = new Namespaces("soap",  "http://schemas.xmlsoap.org/soap/envelope/");
-        
         onException(Throwable.class)
                 .to("direct:morgue");
         
+        onException(ClassCastException.class)
+        // create a custom failure response
+        .transform(constant("<Response ReferenceNumber=\"" + System.currentTimeMillis() + "\" IsTransactionSuccessful=\"0\" " +
+        		"ReasonCode=\"WS_GEN_007\" ErrorClientResponseMessage=\"Invalid XML\"/>"))
+        // remember not to set as handled(true) to make camel think it's OK response, 
+        // this error would be caught in the binding component, which will determine correct response
+        .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(400))
+        .process(track(REQUST_PROCESSING_ERROR, "Error"))
+        .to(fileTracker.fileURI(REQUST_PROCESSING_ERROR)) ;
         // route for Participant Service
         
         from("jetty:http://0.0.0.0:7700/caaers/ParticipantInitialization?httpBindingRef=participantODMMessageBinding")
 	        .streamCaching()
 	        .process(track(REQUEST_RECEIVED))
-	        .process(new ParticipantODMMessageProcessor())
+	        .processRef("participantODMMessageProcessor")
 	        .processRef("headerGeneratorProcessor")
 	        .to(fileTracker.fileURI(REQUEST_RECEIVED))
 	        .to("xslt:" + "xslt/caaers/request/strip_namespaces.xsl")
@@ -113,7 +121,6 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
 
       //check for errors 
         from("direct:odmOutSink")
-	        .streamCaching()
 	        .to("log:gov.nih.nci.cabig.open2caaers.from-oDMoutputSink?showAll=true&level=TRACE&showException=true&showStackTrace=true")
         	.process(track(REQUEST_COMPLETION))
         	.to(fileTracker.fileURI(REQUEST_COMPLETION));

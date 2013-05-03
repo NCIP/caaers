@@ -62,7 +62,7 @@ public class LoginPolicyValidatorTest extends TestCase {
 		}
 	}
 	public void testForFailedLoginAttempts_CheckingFailure2() {		
-		user.setFailedLoginAttempts(3);
+		user.setFailedLoginAttempts(4);
 		try {
 			loginPolicyValidator.validateAllowedFailedLoginAttempts(loginPolicy, credential);
 			fail("Testcase Failed: AllowedFailedLoginAttemps limit reached but exception was not thrown");

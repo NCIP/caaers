@@ -18,7 +18,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.commons.codec.binary.Base64;
 
 public class ParticipantODMMessageProcessor implements Processor {
-
+	
 	public static final String SYNC_HEADER = "sync_mode";
 	public static final String CORRELATION_ID = "c2a_correlation_id";
 	public static final String OPERATION_NAME = "c2a_operation";
@@ -26,9 +26,24 @@ public class ParticipantODMMessageProcessor implements Processor {
 	public static final String CAAERS_WS_USERNAME = "c2a_caaers_ws_username";
 	public static final String CAAERS_WS_PASSWORD = "c2a_caaers_ws_password";
 
-	private final String caaersWSUser = "registrar";
+	private String caaersWSUser;
+	public String getCaaersWSUser() {
+		return caaersWSUser;
+	}
 
-	private final String caaersWSPassword = "rartsigermai-11";
+	public void setCaaersWSUser(String caaersWSUser) {
+		this.caaersWSUser = caaersWSUser;
+	}
+
+	public String getCaaersWSPassword() {
+		return caaersWSPassword;
+	}
+
+	public void setCaaersWSPassword(String caaersWSPassword) {
+		this.caaersWSPassword = caaersWSPassword;
+	}
+
+	private String caaersWSPassword;
 
 	protected static final Log log = LogFactory
 			.getLog(ParticipantODMMessageProcessor.class);

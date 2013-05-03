@@ -72,7 +72,10 @@
         <property name="adeersWSUser" value="s[ADEERS_WS_USERNAME]" />
         <property name="adeersWSPassword" value="s[ADEERS_WS_PASSWORD]" />
     </bean>
-    <bean id="participantODMMessageProcessor" class="gov.nih.nci.cabig.open2caaers.exchange.ParticipantODMMessageProcessor"/>
+    <bean id="participantODMMessageProcessor" class="gov.nih.nci.cabig.open2caaers.exchange.ParticipantODMMessageProcessor">
+    	<property name="caaersWSUser" value="s[PART_IS_USERNAME]" />
+        <property name="caaersWSPassword" value="s[PART_IS_PASSWORD]" />
+    </bean>  
     <bean id="participantODMMessageBinding" class="gov.nih.nci.cabig.open2caaers.binding.ParticipantODMMessageBinding"/>
     <bean id="xslt" class="gov.nih.nci.cabig.caaers2adeers.xslt.CustomXsltComponent" />
     
