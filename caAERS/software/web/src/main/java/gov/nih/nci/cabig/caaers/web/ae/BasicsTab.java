@@ -6,6 +6,7 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
@@ -29,6 +30,7 @@ import org.springframework.validation.Errors;
  *
  */
 public abstract class BasicsTab extends AeTab {
+    protected CtcTermDao ctcTermDao;
     protected static final String MAIN_FIELD_GROUP = "main";
 
     protected static final Collection<Grade> EXPEDITED_GRADES = new ArrayList<Grade>(5);
@@ -65,8 +67,10 @@ public abstract class BasicsTab extends AeTab {
             Map<Object, Object> options = genericGradeOptions;
             if(ae.getAdverseEventTerm() instanceof AdverseEventCtcTerm){
                 CtcTerm ctcTerm = ((AdverseEventCtcTerm) ae.getAdverseEventTerm()).getCtcTerm();
-                List<CtcGrade> ctcGrades = ctcTerm != null ? ctcTerm.getContextualGrades() : null;
-                if(ctcGrades != null && !ctcGrades.isEmpty()) options = WebUtils.collectCustomOptions(ctcGrades, "name", "code", "displayName", ":  ") ;
+                if(ctcTermDao != null && ctcTerm != null){
+                    List<CtcGrade> ctcGrades = ctcTermDao.getById(ctcTerm.getId()).getContextualGrades();
+                    if(ctcGrades != null && !ctcGrades.isEmpty()) options = WebUtils.collectCustomOptions(ctcGrades, "name", "code", "displayName", ":  ") ;
+                }
             }
             aeGradeOptions.put(key, options );
         }
@@ -261,5 +265,11 @@ public abstract class BasicsTab extends AeTab {
     	return super.hasEmptyMandatoryFields(command, request);
     }
 
-    
+    public CtcTermDao getCtcTermDao() {
+        return ctcTermDao;
+    }
+
+    public void setCtcTermDao(CtcTermDao ctcTermDao) {
+        this.ctcTermDao = ctcTermDao;
+    }
 }

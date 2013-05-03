@@ -569,11 +569,14 @@ public Map<Integer, Set<ReportDefinitionWrapper>> getAmendmentMap() {
 	public List<AdverseEvent> getSeriousAdverseEvents(Integer aeReportId){
 		List<AdverseEvent> seriousAdverseEvents = new ArrayList<AdverseEvent>();
 		Map<AdverseEvent, Set<String>> aeMap = processedRulesEngineResultMap.get(aeReportId);
-		for(AdverseEvent adverseEvent : aeMap.keySet()){
-			if(CollectionUtils.isNotEmpty(aeMap.get(adverseEvent))){
-				seriousAdverseEvents.add(adverseEvent);
-			}
-		}
+        if(aeMap != null)      {
+            for(AdverseEvent adverseEvent : aeMap.keySet()){
+                if(CollectionUtils.isNotEmpty(aeMap.get(adverseEvent))){
+                    seriousAdverseEvents.add(adverseEvent);
+                }
+            }
+        }
+
 		return seriousAdverseEvents;
 	}
 	

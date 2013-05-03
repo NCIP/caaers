@@ -78,7 +78,7 @@ public class EvaluationServiceImpl implements EvaluationService {
     	List<AdverseEvent> newlyAddedAdverseEvents = reportingPeriod.getNonExpeditedAdverseEvents();
     	
     	//find the evaluation for default (new data collection)
-    	findRequiredReportDefinitions(null, newlyAddedAdverseEvents, reportingPeriod.getStudy(), result);
+        if(!newlyAddedAdverseEvents.isEmpty()) findRequiredReportDefinitions(null, newlyAddedAdverseEvents, reportingPeriod.getStudy(), result);
     	result.addAllAdverseEvents(new Integer(0), newlyAddedAdverseEvents);
     	
     	//for each data collection (existing) find the evaluation
