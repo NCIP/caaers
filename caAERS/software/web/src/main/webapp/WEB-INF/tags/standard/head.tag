@@ -5,7 +5,7 @@
 
 <meta http-equiv="X-UA-Compatible" content="IE=7">
 
-<tags:js name="compressed/prototype_jquery_scriptaclous_accordion" />
+<%--<tags:js name="compressed/prototype_jquery_scriptaclous_accordion" />--%>
 <%-- 
 <tags:js name="prototype"/>
 <tags:js name="jquery/jquery-1.3.2.min"/>
@@ -14,22 +14,22 @@
 <tags:js name="compressed/co_scriptaculous_files"/>
 <tags:js name="compressed/co_accordion"/>
 --%>
-<tags:js name="fg.menu"/>
+<%--<tags:js name="fg.menu"/>--%>
 <jwr:style src="/csslib/caaers.zcss" />
-<tags:js name="compressed/co_calendar" />
-<tags:js name="common" />
-<tags:js name="dropDownActions" />
+<%--<tags:js name="compressed/co_calendar" />--%>
+<%--<tags:js name="common" />--%>
+<%--<tags:js name="dropDownActions" />--%>
 <jwr:script src="/jslib/caaers.zjs" useRandomParam="false"/>
-<tags:js name="advancedSearch"/>
-<tags:js name="side-bar/side-bar"/>
+<%--<tags:js name="advancedSearch"/>--%>
+<%--<tags:js name="side-bar/side-bar"/>--%>
 
-<tags:js name="compressed/co_date"/>
-<tags:js name="compressed/extremeComponents_dropdownMenu"/>
+<%--<tags:js name="compressed/co_date"/>--%>
+<%--<tags:js name="compressed/extremeComponents_dropdownMenu"/>--%>
 
-<tags:js name="routing_and_review"/>
+<%--<tags:js name="routing_and_review"/>--%>
 
-<tags:js name='jquery/scroll/jquery.scrollTo-min' />
-<tags:js name='jquery/scroll/jquery.serialScroll-min' />
+<%--<tags:js name='jquery/scroll/jquery.scrollTo-min' />--%>
+<%--<tags:js name='jquery/scroll/jquery.serialScroll-min' />--%>
 
 <!--[if IE]>
 <tags:js name='jquery/jquery.caret.ie' />
