@@ -1124,6 +1124,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
      */
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "study", orphanRemoval = true)
     @Cascade(value = {CascadeType.ALL})
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public DiseaseTerminology getDiseaseTerminology() {
         if (diseaseTerminology == null) {
             diseaseTerminology = new DiseaseTerminology();
@@ -1148,6 +1149,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
      */
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "study", orphanRemoval = true)
     @Cascade(value = {CascadeType.ALL})
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
     public AeTerminology getAeTerminology() {
         if (aeTerminology == null) {
             aeTerminology = new AeTerminology();
