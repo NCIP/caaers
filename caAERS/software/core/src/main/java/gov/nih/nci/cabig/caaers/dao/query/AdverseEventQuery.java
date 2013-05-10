@@ -108,6 +108,11 @@ public class AdverseEventQuery extends AbstractQuery {
 		joinReportingPeriod();
 		leftOuterJoin (AE_REPORTING_PERIOD_ALIAS +".treatmentAssignment "+TAC);
 	}
+
+    public void filterByAeReportId(Integer id){
+        andWhere("report.id=:aeReportId");
+        setParameter("aeReportId", id);
+    }
 	/**
 	public void joinIdentifiers() {
 		joinStudy();

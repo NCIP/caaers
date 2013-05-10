@@ -36,6 +36,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -122,6 +123,8 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
     protected UserRepository userRepository;
 
     protected PersonRepository personRepository;
+
+    protected AdverseEventDao adverseEventDao;
 
 
 
@@ -296,7 +299,14 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
 
         ExpeditedAdverseEventReport aeReport = expeditedCommand.getAeReport();
         if(aeReport != null && aeReport.getId() != null){
+            List<AdverseEvent> aes = adverseEventDao.getByAeReport(expeditedCommand.getAeReport());
+            for(AdverseEvent ae: aes) {
+                ae.getOutcomes().size();
+                ae.getAdverseEventTerm();
+                ae.getAdverseEventAttributions();
+            }
             expeditedCommand.setAeReport(expeditedAdverseEventReportDao.getById(aeReport.getId()));
+
             //initializing the review comments collection
             for(Report r: expeditedCommand.getAeReport().getActiveReports()){
             	r.getReviewCommentsInternal().size();
@@ -567,5 +577,13 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
 
     public void setPersonDao(PersonDao personDao) {
         this.personDao = personDao;
+    }
+
+    public AdverseEventDao getAdverseEventDao() {
+        return adverseEventDao;
+    }
+
+    public void setAdverseEventDao(AdverseEventDao adverseEventDao) {
+        this.adverseEventDao = adverseEventDao;
     }
 }
