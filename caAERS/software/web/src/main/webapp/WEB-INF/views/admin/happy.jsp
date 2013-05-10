@@ -144,7 +144,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 <chrome:division title="Events">
     <c:forEach var="e" items="${command.events}">
         <div class="row">
-            <div>(${e.name} , ${e.threadName})[${e.displayName}]</div>
+            <div>${e.displayName}</div>
         </div>
     </c:forEach>
 

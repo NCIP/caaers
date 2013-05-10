@@ -245,9 +245,9 @@ This applicationContext contains the definition of the DAOs
 				<value>gov.nih.nci.cabig.caaers.domain.ReconciledAdverseEvent</value>
             </list>
         </property>
-        <property name="entityInterceptor">
-            <ref local="chainedInterceptor"/>
-        </property>
+        <!--<property name="entityInterceptor">-->
+            <!--<ref local="chainedInterceptor"/>-->
+        <!--</property>-->
     </bean>
 
     <bean id="chainedInterceptor" class="gov.nih.nci.cabig.ctms.audit.ChainedInterceptor" autowire="byType">

@@ -15,7 +15,10 @@ import java.util.*;
  */
 public class EventMonitor {
     private LinkedHashMap<String, Event> lru;
+    private Map<String, Event> activeMap;
+
     public EventMonitor() {
+        activeMap = new HashMap<String, Event>();
         lru = new LinkedHashMap<String, Event>(){
             @Override
             protected boolean removeEldestEntry(Map.Entry eldest) {
@@ -25,21 +28,42 @@ public class EventMonitor {
     }
 
     
-    public String addEvent(String name, String eventType){
-       Event e = new Event();
-       e.setCreateOn(new Date());
-       e.setEventType(eventType);
-       e.setName(name);
-       e.setThreadName(Thread.currentThread().getName());
-       
-       String id = System.currentTimeMillis() + "-" + e.getThreadName();
-       lru.put(id, e);
-       return id;
+    public Event addEvent(String loginName, String eventType, int entityId){
+        StringBuilder sb = new StringBuilder(loginName).append(":").append(eventType).append(':').append(entityId);
+        String eventKey = sb.toString();
+
+        String thread = Thread.currentThread().getName();
+        Date now = new Date();
+        String id = sb.append(':').append(now.getTime()).toString();
+
+        Event e = new Event(eventKey, loginName, thread, now, eventType, "NEW", entityId, id);
+        Event active = activeMap.get(eventKey);
+        if(active != null){
+            e.complete("IGNORED for |" + active.getEventKey() + "|");
+        }else{
+            activeMap.put(eventKey, e);
+        }
+
+        lru.put(id, e);
+        return e;
     }
     
-    public void markCompletion(String id){
-        Event e = (Event)lru.get(id);
-        if(e != null) e.complete();
+    public void markSuccess(String id){
+        synchronized (activeMap){
+            Event e = lru.get(id);
+            if(e == null) return;
+            e.complete("SUCCESS");
+            activeMap.remove(e.getEventKey());
+        }
+    }
+
+    public void markFailure(String id){
+        synchronized (activeMap){
+            Event e = lru.get(id);
+            if(e == null) return;
+            e.complete("FAILED");
+            activeMap.remove(e.getEventKey());
+        }
     }
     
     public Collection<Event> getAllEvents(){

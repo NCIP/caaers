@@ -46,33 +46,6 @@ public class AbstractEventListenerTest extends AbstractTestCase {
         assertFalse(listener.isSupported(new StudyModificationEvent(SecurityUtils.getAuthentication(), new LocalStudy())));
     }
 
-    public void testPreProcessAndPostProcess() throws Exception {
-        ApplicationEvent e1 = new StudyModificationEvent(SecurityUtils.getAuthentication(), new LocalStudy());
-        listener.preProcess(e1);
-        assertNotNull(listener.correlationId);
-        listener.postProcess(e1);
-        AuthenticationSuccessEvent e2 = new AuthenticationSuccessEvent(SecurityUtils.getAuthentication());
-        listener.preProcess(e2);
-        assertNotNull(listener.correlationId);
-        listener.postProcess(e2);
-    }
-
-    public void testPreProcessAndPostProcessWithoutEventMonitor() throws Exception {
-        
-        assertNotNull(listener.getEventMonitor());
-        listener.setEventMonitor(null);
-        assertNull(listener.getEventMonitor());
-
-        ApplicationEvent e1 = new StudyModificationEvent(SecurityUtils.getAuthentication(), new LocalStudy());
-        listener.preProcess(e1);
-        assertNull(listener.correlationId);
-        listener.postProcess(e1);
-        AuthenticationSuccessEvent e2 = new AuthenticationSuccessEvent(SecurityUtils.getAuthentication());
-        listener.preProcess(e2);
-        assertNull(listener.correlationId);
-        listener.postProcess(e2);
-    }
-
     public void testIsSupportedForAllListeners(){
 
 
