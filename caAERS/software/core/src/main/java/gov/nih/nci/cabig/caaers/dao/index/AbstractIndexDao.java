@@ -70,12 +70,7 @@ public abstract class AbstractIndexDao extends JdbcDaoSupport {
      * @return
      */
     public abstract String sequenceName();
-    
-    public void deleteByEntityIdColumn(String id) {
-    	String sql = "delete from "+indexTableName() + " where "+entityIdColumnName() + " = " + id;
-    	//System.out.println(sql);
-    	getJdbcTemplate().execute(sql);
-    }
+
 
     /**
      * Lists out at what capacity a login have access to a particular entity.
@@ -85,30 +80,31 @@ public abstract class AbstractIndexDao extends JdbcDaoSupport {
      * @return   - a list of distinct rolenames
      */
     public List<String> findAssociatedRoleNames(String loginId, Integer id){
-    	final String columns = UserGroupType.getAllRoleColumns();
-        final String[] columnsArray = UserGroupType.getAllRoleColumnsArray();
+        List<String> roleNames = new ArrayList<String>();
+        int  role = findAssociatedRole(loginId, id);
+        if(role <= 0 ) return roleNames;
+        List<UserGroupType> groups =  UserGroupType.roles(role);
+        for(UserGroupType group : groups) roleNames.add(group.getCsmName());
+        return roleNames;
+    }
 
-        StringBuffer sb = new StringBuffer("select " +  columns + " from ")
+    public int findAssociatedRole(String loginId, Integer entityId){
+        final int[] roleValue = new int[]{0};
+        StringBuffer sb = new StringBuffer("select role from ")
                 .append(indexTableName())
                 .append(" where login_id = '").append(loginId)
                 .append("' and ")
                 .append(entityIdColumnName())
                 .append(" = ")
-                .append(String.valueOf(id));
-        final List<String> roleNames = new ArrayList<String>();
+                .append(String.valueOf(entityId));
+
         getJdbcTemplate().query(sb.toString(), new RowMapper(){
             public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
-            	for ( String column : columnsArray) {
-            		boolean val = rs.getBoolean(column);
-            		if ( val ) {
-            			roleNames.add(UserGroupType.getByColumnName(column).getCsmName());
-            		}
-            	}
-                return null;
+                roleValue[0] = rs.getInt(1);
+               return null;
             }
         });
-        
-        return roleNames;
+        return roleValue[0];
     }
 
     public Map<String ,List<IndexEntry>> diff(final String userName, List<IndexEntry> newEntries){
@@ -124,7 +120,7 @@ public abstract class AbstractIndexDao extends JdbcDaoSupport {
         List<IndexEntry> existingEntries = queryAllIndexEntries(userName);
         if(CollectionUtils.isEmpty(newEntries)){
               if(!CollectionUtils.isEmpty(existingEntries)) entriesToDelete.addAll(existingEntries);
-        }   else {
+        } else {
              if(CollectionUtils.isEmpty(existingEntries)) {
                  entriesToInsert.addAll(newEntries);
              } else {
@@ -180,10 +176,7 @@ public abstract class AbstractIndexDao extends JdbcDaoSupport {
                     IndexEntry entry = toInsert.get(index);
                     ps.setString(1, userName);
                     ps.setInt(2, entry.getEntityId());
-                    String[] roleCols = UserGroupType.getAllRoleColumnsArray();
-                    for(int i = 0; i < roleCols.length; i++){
-                        ps.setBoolean(i+3 , entry.hasRole(UserGroupType.getByColumnName(roleCols[i])));
-                    }
+                    ps.setInt(3, entry.getPrivilege());
                 }
 
                 public int getBatchSize() {
@@ -205,12 +198,9 @@ public abstract class AbstractIndexDao extends JdbcDaoSupport {
 
                 public void setValues(PreparedStatement ps, int index) throws SQLException {
                     IndexEntry entry = toUpdate.get(index);
-                    String[] roleCols = UserGroupType.getAllRoleColumnsArray();
-                    for(int i = 0; i < roleCols.length; i++){
-                        ps.setBoolean(i+1 , entry.hasRole(UserGroupType.getByColumnName(roleCols[i])));
-                    }
-                    ps.setString(roleCols.length + 1 , userName);
-                    ps.setInt(roleCols.length + 2 , entry.getEntityId());
+                    ps.setInt(1, entry.getPrivilege());
+                    ps.setString(2, userName);
+                    ps.setInt(3 , entry.getEntityId());
                 }
 
                 public int getBatchSize() {
@@ -258,22 +248,17 @@ public abstract class AbstractIndexDao extends JdbcDaoSupport {
 
     public List<IndexEntry> queryAllIndexEntries(String loginId){
         StringBuffer sb = new StringBuffer("select ")
-                .append(entityIdColumnName()).append(",").append(UserGroupType.getAllRoleColumns())
+                .append(entityIdColumnName()).append(", role")
                 .append(" from ")
                 .append(indexTableName())
                 .append(" where login_id = '")
                 .append(loginId).append("'") ;
 
         final List<IndexEntry> entries = new ArrayList<IndexEntry>();
-        final String[] roleColumnNames = UserGroupType.getAllRoleColumnsArray();
         getJdbcTemplate().query(sb.toString(), new RowMapper(){
             public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
-                IndexEntry entry = new IndexEntry(rs.getInt(1));
-                for(String roleColumnName : roleColumnNames){
-                    boolean state = rs.getBoolean(roleColumnName);
-                    if(state) entry.addRole(UserGroupType.getByColumnName(roleColumnName));
-                }
-                if(entry.hasRoles()) entries.add(entry);
+                IndexEntry entry = new IndexEntry(rs.getInt(1), rs.getInt(2));
+                entries.add(entry);
                 return null;
             }
 
@@ -287,7 +272,7 @@ public abstract class AbstractIndexDao extends JdbcDaoSupport {
         Map<Integer, IndexEntry> map = new HashMap<Integer, IndexEntry>();
         for(IndexEntry entry : entries){
             if(map.containsKey(entry.getEntityId()) ) {
-               map.get(entry.getEntityId()).addRoles(entry.getRoles());
+               map.get(entry.getEntityId()).orPrivilege(entry.getPrivilege());
             } else {
                 map.put(entry.getEntityId(), entry);
             }
@@ -301,25 +286,17 @@ public abstract class AbstractIndexDao extends JdbcDaoSupport {
                 .append("(").append(isOracle ? "id, ": "")
                 .append("login_id,")
                 .append(entityIdColumnName()).append(",")
-                .append(UserGroupType.getAllRoleColumns()).append(")")
+                .append("role").append(")")
                 .append(" values (").append(isOracle ? sequenceName() + ".NEXTVAL," : "")
-                .append("?,?");
-        for(int i =0; i< UserGroupType.getAllRoleColumnsArray().length; i++) {
-            sb.append(",?");
-        }
-        sb.append(")");
+                .append("?,?,?)");
         return sb.toString();
     }
 
     public String generateSQLUpdateTemplate(boolean isOracle){
         StringBuilder sb = new StringBuilder("update ")
                 .append(indexTableName())
-                .append(" set ");
-        for(int i = 0; i < UserGroupType.getAllRoleColumnsArray().length; i++){
-            if(i > 0) sb.append(" , ");
-            sb.append(UserGroupType.getAllRoleColumnsArray()[i]).append(" = ? ");
-        }
-        sb.append(" where login_id = ? and ").append(entityIdColumnName()).append(" = ?");
+                .append(" set role = ? ")
+                .append(" where login_id = ? and ").append(entityIdColumnName()).append(" = ?");
         return sb.toString();
     }
 
@@ -333,5 +310,6 @@ public abstract class AbstractIndexDao extends JdbcDaoSupport {
 
         return null;
     }
+
 
 }

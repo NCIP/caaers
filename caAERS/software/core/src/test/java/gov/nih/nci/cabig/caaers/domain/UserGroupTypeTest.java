@@ -55,9 +55,5 @@ public class UserGroupTypeTest extends TestCase {
         assertEquals("Registration QA Manager", UserGroupType.registration_qa_manager.getDisplayName());
     }
 
-    public void testGetByColumnName(){
-        assertNull(UserGroupType.getByColumnName("junk"));
-        assertSame(UserGroupType.ae_reporter, UserGroupType.getByColumnName("r_117"));
-        assertSame(UserGroupType.ae_reporter, UserGroupType.getByColumnName("R_117"));
-    }
+
 }

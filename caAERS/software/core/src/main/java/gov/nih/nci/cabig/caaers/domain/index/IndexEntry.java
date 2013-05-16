@@ -9,7 +9,6 @@ package gov.nih.nci.cabig.caaers.domain.index;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
  
@@ -22,11 +21,11 @@ import java.util.List;
 
 public class IndexEntry {
 
-    /** The role. */
-    private List<UserGroupType> roles;
-    
+
     /** The entity ids. */
     private Integer entityId;
+
+    private Integer privilege;
 
     /**
      * Instantiates a new index entry.
@@ -34,65 +33,52 @@ public class IndexEntry {
      * @param entityId the entity ID
      */
     public IndexEntry(Integer entityId){
-
+        this(entityId, 0);
+    }
+    public IndexEntry(Integer entityId, int privilege){
         this.entityId = entityId;
-        this.roles = new ArrayList<UserGroupType>();
+        this.privilege = privilege;
     }
 
-    public List<UserGroupType> getRoles() {
-        return roles;
-    }
 
     public Integer getEntityId() {
         return entityId;
     }
 
+    public Integer getPrivilege() {
+        return privilege;
+    }
+
+    public void orPrivilege(int newPrivilege){privilege = privilege | newPrivilege; }
+
     public void addRole(UserGroupType... roles){
         for(UserGroupType role : roles)  {
-            if(!this.roles.contains(role)) this.roles.add(role);
+            privilege = privilege | role.getPrivilege();
         }
     }
 
-    public void addRoles(List<UserGroupType> roles){
-        addRole(roles.toArray(new UserGroupType[]{}));
-    }
-
-    public boolean hasAnyOfTheRoles(UserGroupType... roles){
-        for(UserGroupType role : roles) if(hasRole(role)) return true;
-        return false;
-    }
-
-    public boolean hasRole(UserGroupType role){
-        return roles.contains(role);
-    }
     public boolean  hasRoles()   {
-        return !roles.isEmpty();
+        return privilege > 0;
     }
 
-    public boolean isAllSiteOrAllStudy(){
-        return Integer.MIN_VALUE == entityId;
-    }
 
-    public List<UserGroupType> commonRoles(List<UserGroupType> someRoles){
-        List<UserGroupType> commonRoles = new ArrayList<UserGroupType>();
-        for(UserGroupType role : someRoles){
-            if(hasRole(role)) commonRoles.add(role);
-        }
-        return commonRoles;
-    }
 
     /* (non-Javadoc)
     * @see java.lang.Object#toString()
     */
     @Override
     public String toString() {
-        return String.valueOf(entityId) + ", [" + String.valueOf(roles) + "]\r\n";
+        return String.valueOf(entityId) + " : " + privilege + ", [" + String.valueOf(UserGroupType.roles(privilege)) + "]\r\n";
     }
 
+    /**
+     * Similar to Object equals, will tell whether this IndexEntry is qual to the supplied one.
+     * @param other
+     * @return
+     */
     public boolean equals(IndexEntry other){
         if(!this.getEntityId().equals(other.getEntityId())) return false;
-        if(!other.getRoles().containsAll(this.getRoles())) return false;
-        if(!this.getRoles().containsAll(other.getRoles())) return false;
+        if( other.privilege !=  this.privilege) return false;
         return true;
     }
 }

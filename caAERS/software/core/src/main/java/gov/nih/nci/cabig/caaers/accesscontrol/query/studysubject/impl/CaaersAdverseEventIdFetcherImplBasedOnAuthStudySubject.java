@@ -42,8 +42,7 @@ public class CaaersAdverseEventIdFetcherImplBasedOnAuthStudySubject extends Abst
     private String baseHQL = "select distinct ae.id from  ReportingPeriodIndex ri join ri.reportingPeriod rp join rp.adverseEvents ae where ri.loginId = :LOGIN_ID ";
 
     public String getSiteScopedHQL(UserGroupType role){
-        if(role != null) return baseHQL + " and ri." + role.hqlAlias() + " = :" + role.hqlAlias();
-        return baseHQL;
+        return baseHQL + " and bitand(ri.role," + role.getPrivilege() + ") > 0";
     }
 
     public String getStudyScopedHQL(UserGroupType role){

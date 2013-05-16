@@ -6,16 +6,19 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.accesscontrol.query.impl;
 
+import com.aparzev.lang.StringUtils;
 import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
 import gov.nih.nci.cabig.caaers.dao.query.HQLQuery;
 import gov.nih.nci.cabig.caaers.dao.query.NativeSQLQuery;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.index.IndexEntry;
+import gov.nih.nci.cabig.caaers.domain.index.OrganizationIndex;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
 
 import java.sql.SQLException;
 import java.util.*;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Hibernate;
@@ -36,11 +39,24 @@ import com.semanticbits.security.contentfilter.IdFetcher;
 public abstract class AbstractIdFetcher extends HibernateDaoSupport implements IdFetcher {
 
     protected final Log log = LogFactory.getLog(AbstractIdFetcher.class);
-
+    private static final String DB_NAME  = "databaseName";
     protected CaaersSecurityFacade caaersSecurityFacade;
     private UserGroupType[] applicableSiteScopedRoles ; 
     private UserGroupType[] applicableStudyScopedRoles ;
+    private Properties properties;
+    private String dbName;
 
+
+    public String getDbName(){
+        if(dbName == null){
+            dbName = properties.getProperty(DB_NAME);
+        }
+        return dbName;
+    }
+
+    public boolean isPostgeSQL(){
+        return StringUtils.equals("postgres", getDbName());
+    }
 
     /**
      * Will return the Site scoped HQL query
@@ -64,7 +80,7 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
      * Will return the Site scoped SQL query
      * @return
      */
-    public String getSiteScopedSQL(UserGroupType role) {
+    public String getSiteScopedSQL(UserGroupType role ) {
     	return null;
     }
 
@@ -72,7 +88,7 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
      * Will return the Study scoped SQL query
      * @return
      */
-    public String getStudyScopedSQL(UserGroupType role) {
+    public String getStudyScopedSQL(UserGroupType role ) {
     	return null;
     }
 
@@ -98,12 +114,11 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
     /**
      * Generates the query
      * @param loginId
-     * @param role
      * @param sql
      * @param nativeQuery
      * @return
      */
-    private AbstractQuery createQuery(String loginId, UserGroupType role, String sql, boolean nativeQuery){
+    protected AbstractQuery createQuery(String loginId, String sql, boolean nativeQuery){
        AbstractQuery query;
        if(nativeQuery){
          query = new NativeSQLQuery(sql);
@@ -114,74 +129,101 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
         
        if(loginId != null) query.getParameterMap().put("LOGIN_ID", loginId);
 
-       //TODO : implement the role split logic
-
-       if(role != null) query.getParameterMap().put(role.hqlAlias(), Boolean.TRUE) ;
        return query;
 
     }
 
+    protected Integer getOrganizationAllSiteAccessRoles(String loginId ){
+        AbstractQuery query = new HQLQuery("select role from OrganizationIndex oi where loginId=:LOGIN_ID and organization.id = " + Integer.MIN_VALUE);
+        query.getParameterMap().put("LOGIN_ID", loginId);
+        List<Integer> ids = (List<Integer>) search(query);
+        if(!ids.isEmpty()) return ids.get(0) ;
+        return 0;
+    }
+
+
+    protected Integer getStudyAllSiteAccessRoles(String loginId ){
+        AbstractQuery query = new HQLQuery("select role from StudyIndex oi where loginId=:LOGIN_ID and study.id = " + Integer.MIN_VALUE);
+        query.getParameterMap().put("LOGIN_ID", loginId);
+        List<Integer> ids = (List<Integer>) search(query);
+        if(!ids.isEmpty()) return ids.get(0) ;
+        return 0;
+    }
+
+
     /**
-     * Will fetch all the accessible subjectIds per-role
+     * Will fetch all the accessible investigators per-role
      * @param loginId - username
      * @return
      */
-	public List fetch(String loginId){
+    public List fetch(String loginId){
 
-       Map<Integer, IndexEntry> indexEntryMap = new LinkedHashMap<Integer, IndexEntry>();
+        IndexEntry allSiteEntry = new IndexEntry(Integer.MIN_VALUE,0);
+
+        Map<Integer, IndexEntry> indexEntryMap = new LinkedHashMap<Integer, IndexEntry>();
+        int orgAllSiteBit = getOrganizationAllSiteAccessRoles(loginId);
+
+
 
         //for all site scoped roles
         UserGroupType[] siteScopedRoles = getApplicableSiteScopedRoles();
         if(siteScopedRoles != null){
-              for(UserGroupType role : siteScopedRoles){
-                  String sql = getSiteScopedSQL(role);
-                  boolean nativeSQL = sql != null;
-                  String hql = nativeSQL ? sql : getSiteScopedHQL(role);
-                  if(hql != null){
-                      AbstractQuery query = createQuery(loginId, role, hql, nativeSQL);
-                      List<Integer> ids = (List<Integer>) search(query);
-                      for(Integer id : ids){
-                          IndexEntry entry = indexEntryMap.get(id);
-                          if(entry == null){
-                              entry = new IndexEntry(id);
-                              indexEntryMap.put(id, entry);
-                          }
-                          entry.addRole(role);
-                      }
-                  }
-              }
+            for(UserGroupType role : siteScopedRoles){
+                if(role.isSelected(orgAllSiteBit)){
+                    allSiteEntry.addRole(role); continue;
+                }
+
+                //fetch the organization specific investigators
+                String sql = getSiteScopedSQL(role);
+                boolean nativeSql = sql != null;
+                String hql = nativeSql ? sql : getSiteScopedHQL(role);
+                AbstractQuery query = createQuery(loginId, hql, nativeSql);
+                List<Integer> ids = (List<Integer>) search(query);
+                if(CollectionUtils.isEmpty(ids)) continue;
+                for(Integer id : ids){
+                    if(!indexEntryMap.containsKey(id)) indexEntryMap.put(id, new IndexEntry(id,0));
+                    indexEntryMap.get(id).addRole(role);
+                }
+            }
         }
 
         //for all study scoped roles
-        UserGroupType[] studyScopedRolse = getApplicableStudyScopedRoles();
-        if(studyScopedRolse != null){
+        UserGroupType[] studyScopedRoles = getApplicableStudyScopedRoles();
+        if(studyScopedRoles != null){
 
-          for(UserGroupType role : studyScopedRolse){
-            String sql = getStudyScopedSQL(role);
-            boolean nativeSQL = sql != null;
-            String hql = nativeSQL ? sql : getStudyScopedHQL(role);
+            int studyAllSiteRoleBit = getStudyAllSiteAccessRoles(loginId);
 
-            if(hql != null){
-                AbstractQuery query = createQuery(loginId, role, hql, nativeSQL);
+            for(UserGroupType role : studyScopedRoles){
+                //is all site all study ?  - all entities in the system
+                if(role.isSelected(orgAllSiteBit) && role.isSelected(studyAllSiteRoleBit)){
+                    allSiteEntry.addRole(role); continue;
+                }
+
+                //all other cases - I can access entities on the study-sites I manage .
+                //What are study-site ? - study-orgs that I have access-to via orgainzation and study indexes.
+                String sql = getStudyScopedSQL(role);
+                boolean nativeSql = sql != null;
+                String hql = nativeSql ? sql : getStudyScopedHQL(role);
+                AbstractQuery query = createQuery(loginId, hql, nativeSql);
                 List<Integer> ids = (List<Integer>) search(query);
+                if(CollectionUtils.isEmpty(ids)) continue;
                 for(Integer id : ids){
-                    IndexEntry entry = indexEntryMap.get(id);
-                    if(entry == null){
-                        entry = new IndexEntry(id);
-                        indexEntryMap.put(id, entry);
-                    }
-                    entry.addRole(role);
+                    if(!indexEntryMap.containsKey(id)) indexEntryMap.put(id, new IndexEntry(id,0));
+                    indexEntryMap.get(id).addRole(role);
                 }
             }
-          }
         }
 
-        List<IndexEntry> list = new ArrayList<IndexEntry>(indexEntryMap.values());
+        List<IndexEntry> list = new ArrayList<IndexEntry>();
+
+        if(allSiteEntry.hasRoles()) list.add(allSiteEntry);
+
+        list.addAll(indexEntryMap.values());
         if(log.isInfoEnabled()){
-           log.info("Fetcher (" + getClass().getName() + " fetched " + String.valueOf(list));
+            log.info("Fetcher (" + getClass().getName() + " fetched " + String.valueOf(list));
         }
         return list;
-	}
+    }
 
     @SuppressWarnings("unchecked")
 	public List<?> search(final AbstractQuery query){
@@ -239,6 +281,11 @@ public abstract class AbstractIdFetcher extends HibernateDaoSupport implements I
 		this.applicableStudyScopedRoles = applicableStudyScopedRoles;
 	}
 
+    public Properties getProperties() {
+        return properties;
+    }
 
-
+    public void setProperties(Properties properties) {
+        this.properties = properties;
+    }
 }

@@ -106,40 +106,10 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
 
 
     /* (non-Javadoc)
-     * @see gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository#getOrganizationsHavingStudySites(gov.nih.nci.cabig.caaers.dao.query.OrganizationFromStudySiteQuery)
-     */
-    public List<Organization> getOrganizationsHavingStudySites() {
-    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String userName = SecurityUtils.getUserLoginName(authentication);
-		
-		// Prepare the condition
-        StringBuffer roleCond = new StringBuffer("(");
-        UserGroupType[] roles = SecurityUtils.getRoles();
-        int size = roles.length;
-        for ( UserGroupType role: roles) {                	
-        	roleCond.append( role.dbAlias() +  "=:" + role.dbAlias());
-        	size--;
-        	if ( size > 0 )
-        		roleCond.append(" OR ");
-        }
-        roleCond.append(")");
-        
-		String ORGS_FETCH_HQL = "from Organization o where o.id in (select distinct oi.organization.id from " +
-				"OrganizationIndex oi where oi.loginId = :loginName and " +
-				 roleCond.toString() +  " and oi.organization.id in (select distinct ss.organization.id " +
-				"from StudySite ss where ss.study.id in (select s.id from Study s where s.dataEntryStatus = true)) ) order by o.name";
-		
-		
-    	List<Organization> resultList = new ArrayList<Organization>();
-
-		EnrollingSiteOganizationsQuery query = new EnrollingSiteOganizationsQuery(ORGS_FETCH_HQL);
-        query.setParameter("loginName", userName);
-		for(UserGroupType ugType : roles){
-			query.setParameter(ugType.dbAlias(), true);
-		}
-
-        resultList = (List<Organization>) search(query);
-		return resultList;
+        * @see gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository#getOrganizationsHavingStudySites(gov.nih.nci.cabig.caaers.dao.query.OrganizationFromStudySiteQuery)
+        */
+    public List<Organization> getOrganizationsHavingStudySites(OrganizationFromStudySiteQuery query ) {
+        return organizationDao.getOrganizationsHavingStudySites(query);
     }
     
     private List<?> search(final AbstractQuery query){

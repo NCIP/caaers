@@ -57,8 +57,8 @@ public class OrganizationIndexDaoIntegrationTest extends CaaersDbTestCase {
         
 
         assertTrue( iList.size() == 2 );
-        assertTrue(i0.getRoles().size() == 2);
-        assertTrue ( i0.getRoles().contains(UserGroupType.ae_reporter));
+        assertTrue(UserGroupType.roles(i0.getPrivilege()).size() == 2);
+        assertTrue ( UserGroupType.roles(i0.getPrivilege()).contains(UserGroupType.ae_reporter));
         assertNotNull ( findRole(UserGroupType.ae_reporter, i0));
 
         
@@ -76,7 +76,7 @@ public class OrganizationIndexDaoIntegrationTest extends CaaersDbTestCase {
 
 
     public UserGroupType findRole(UserGroupType ug, IndexEntry entries){
-        for(UserGroupType e : entries.getRoles()) if(e == ug) return e;
+        for(UserGroupType e :UserGroupType.roles( entries.getPrivilege())) if(e == ug) return e;
         return null;
     }
         

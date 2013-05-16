@@ -144,7 +144,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 <chrome:division title="Events">
     <c:forEach var="e" items="${command.events}">
         <div class="row">
-            <div>${e.displayName}</div>
+            <div>${e}</div>
         </div>
     </c:forEach>
 

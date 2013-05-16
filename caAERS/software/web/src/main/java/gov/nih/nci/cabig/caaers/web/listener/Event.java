@@ -41,7 +41,7 @@ public class Event{
         sb.append(threadName)
             .append(" : ").append(loginName)
             .append(" for ").append(eventType).append("(").append(entityId).append(")");
-        if(createOn != null) sb.append(", on  : ").append(DateUtils.formatDate(createOn, "MMM-dd at HH:mm:ss a"));
+        if(createOn != null) sb.append(", on  : ").append(DateUtils.formatDate(createOn, "MMM-dd - HH:mm:ss a"));
         sb.append(", took ").append(runningTime()) .append(" ").append(status) ;
         return sb.toString() ;
     }

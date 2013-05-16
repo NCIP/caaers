@@ -11,6 +11,7 @@ import static gov.nih.nci.cabig.ctms.domain.CodedEnumHelper.register;
 import gov.nih.nci.cabig.ctms.domain.CodedEnum;
 import gov.nih.nci.cabig.ctms.domain.EnumHelper;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -25,96 +26,96 @@ import java.util.regex.Pattern;
 public enum UserGroupType implements CodedEnum<Integer> {
 	// check *SecurityFilterer classes and RoutingAndReviewResolverController when adding new group . Need to change those classes accordingly
     /** The caaers_super_user. */
-	caaers_super_user(-3,"caaers_super_user"),  //DO not throw away super user entry
+	caaers_super_user(-3,0, "caaers_super_user"),  //DO not throw away super user entry
     /** The caaers_study_cd. */
-  caaers_study_cd(-4, "caaers_study_cd"), 
+  caaers_study_cd(-4, 0, "caaers_study_cd"),
     
     /** The caaers_participant_cd. */
-    caaers_participant_cd(-5, "caaers_participant_cd"), 
+    caaers_participant_cd(-5, 0,"caaers_participant_cd"),
     
     /** The caaers_ae_cd. */
-    caaers_ae_cd(-13, "caaers_ae_cd"), 
+    caaers_ae_cd(-13,0, "caaers_ae_cd"),
     
     /** The caaers_site_cd. */
-    caaers_site_cd(-14, "caaers_site_cd"), 
+    caaers_site_cd(-14,0, "caaers_site_cd"),
     
     /** The caaers_physician. */
-    caaers_physician(-8, "caaers_physician"),
+    caaers_physician(-8, 0,"caaers_physician"),
     
     /** The caaers_central_office_sae_cd. */
-    caaers_central_office_sae_cd(-7943, "caaers_central_office_sae_cd"),
+    caaers_central_office_sae_cd(-7943, 2^23, "caaers_central_office_sae_cd"),
     
     /** The caaers_data_cd. */
-    caaers_data_cd(-7942, "caaers_data_cd"),
+    caaers_data_cd(-7942, 2^24, "caaers_data_cd"),
     
     /** The system_administrator. */
-    system_administrator(-101, "system_administrator"),
+    system_administrator(-101, 1,"system_administrator"),
     
     /** The business_administrator. */
-    business_administrator(-102, "business_administrator"),
+    business_administrator(-102, 2, "business_administrator"),
     
     /** The person_and_organization_information_manager. */
-    person_and_organization_information_manager(-103, "person_and_organization_information_manager"),
+    person_and_organization_information_manager(-103, 2^2, "person_and_organization_information_manager"),
     
     /** The data_importer. */
-    data_importer(-104, "data_importer"),
+    data_importer(-104, 2^3, "data_importer"),
     
     /** The user_administrator. */
-    user_administrator(-105, "user_administrator"),
+    user_administrator(-105, 2^4, "user_administrator"),
     
     /** The study_qa_manager. */
-    study_qa_manager(-106, "study_qa_manager"),
+    study_qa_manager(-106, 2^5,"study_qa_manager"),
     
     /** The study_creator. */
-    study_creator(-107, "study_creator"),
+    study_creator(-107, 2^6, "study_creator"),
     
     /** The supplemental_study_information_manager. */
-    supplemental_study_information_manager(-108, "supplemental_study_information_manager"),
+    supplemental_study_information_manager(-108, 2^7,"supplemental_study_information_manager"),
     
     /** The study_team_administrator. */
-    study_team_administrator(-109, "study_team_administrator"),
+    study_team_administrator(-109, 2^8, "study_team_administrator"),
     
     /** The study_site_participation_administrator. */
-    study_site_participation_administrator(-110, "study_site_participation_administrator"),
+    study_site_participation_administrator(-110, 2^9, "study_site_participation_administrator"),
     
     /** The ae_rule_and_report_manager. */
-    ae_rule_and_report_manager(-111, "ae_rule_and_report_manager"),
+    ae_rule_and_report_manager(-111, 2^10, "ae_rule_and_report_manager"),
     
     /** The study_calendar_template_builder. */
-    study_calendar_template_builder(-112, "study_calendar_template_builder"),
+    study_calendar_template_builder(-112, 2^11, "study_calendar_template_builder"),
     
     /** The registration_qa_manager. */
-    registration_qa_manager(-113, "registration_qa_manager"),
+    registration_qa_manager(-113, 2^12,"registration_qa_manager"),
     
     /** The subject_manager. */
-    subject_manager(-114, "subject_manager"),
+    subject_manager(-114, 2^13, "subject_manager"),
     
     /** The study_subject_calendar_manager. */
-    study_subject_calendar_manager(-115, "study_subject_calendar_manager"),
+    study_subject_calendar_manager(-115,2^14, "study_subject_calendar_manager"),
     
     /** The registrar. */
-    registrar(-116, "registrar"),
+    registrar(-116, 2^15,"registrar"),
     
     /** The ae_reporter. */
-    ae_reporter(-117, "ae_reporter"),
+    ae_reporter(-117, 2^16,"ae_reporter"),
     
     /** The ae_expedited_report_reviewer. */
-    ae_expedited_report_reviewer(-118, "ae_expedited_report_reviewer"),
+    ae_expedited_report_reviewer(-118, 2^17,"ae_expedited_report_reviewer"),
     
     /** The ae_study_data_reviewer. */
-    ae_study_data_reviewer(-119, "ae_study_data_reviewer"),
+    ae_study_data_reviewer(-119,2^18, "ae_study_data_reviewer"),
     
     /** The lab_impact_calendar_notifier. */
-    lab_impact_calendar_notifier(-120, "lab_impact_calendar_notifier"),
+    lab_impact_calendar_notifier(-120, 2^19,"lab_impact_calendar_notifier"),
     
     /** The lab_data_user. */
-    lab_data_user(-121, "lab_data_user"),
+    lab_data_user(-121, 2^20, "lab_data_user"),
     
     /** The data_reader. */
-    data_reader(-122, "data_reader"),
+    data_reader(-122, 2^21,"data_reader"),
     
     /** The data_analyst. */
-    data_analyst(-123, "data_analyst");
+    data_analyst(-123, 2^22,"data_analyst");
 	    
     /** The study_medical_monitor. */
     private String csmName;
@@ -125,8 +126,7 @@ public enum UserGroupType implements CodedEnum<Integer> {
     /** The code. */
     private int code;
 
-    private static String cols = "R_101,R_102,R_103,R_104,R_105,R_106,R_107,R_108,R_109,R_110,R_111,R_112,R_113,R_114,R_115,R_116,R_117,R_118,R_119,R_120,R_121,R_122,R_123,R_7942,R_7943";
-    private static String[] colsArray = cols.split(",");
+    private int privilege;
 
     /**
      * Instantiates a new user group type.
@@ -134,11 +134,16 @@ public enum UserGroupType implements CodedEnum<Integer> {
      * @param code the code
      * @param name the name
      */
-    UserGroupType(final int code, final String name) {
+    UserGroupType(final int code, int privilege, final String name) {
         this.code = code;
         this.csmName = name;
+        this.privilege = privilege;
         register(this);
 
+    }
+
+    public boolean isSelected(int bitCode){
+       return (this.privilege & bitCode) > 0;
     }
 
     //will return all the roles that are not scoped. 
@@ -181,12 +186,6 @@ public enum UserGroupType implements CodedEnum<Integer> {
         });
     }
 
-   public static String getAllRoleColumns() {
-	   return cols;
-   }
-    public static String[] getAllRoleColumnsArray() {
-        return colsArray;
-    }
 
     /** 
      * Gets the csm name.
@@ -217,6 +216,12 @@ public enum UserGroupType implements CodedEnum<Integer> {
         return code;
     }
 
+
+    public int getPrivilege() {
+        return privilege;
+    }
+
+
     /**
      * Gets the by code.
      *
@@ -227,19 +232,7 @@ public enum UserGroupType implements CodedEnum<Integer> {
         return getByClassAndCode(UserGroupType.class, code);
     }
 
-    /**
-     * Gets the by code.
-     *
-     * @param code the code
-     * @return the by code
-     */
-    public static UserGroupType getByColumnName(final String columnName) {
-        for(UserGroupType role : values()){
-            if(role.dbAlias().equalsIgnoreCase(columnName)) return role;
-        }
 
-    	return null;
-    }
     
     /**
      * Gets the by csm name.
@@ -270,39 +263,18 @@ public enum UserGroupType implements CodedEnum<Integer> {
     	return csmName;
     }
 
+
     /**
-     * Str values.
-     *
-     * @return the string[]
+     * Will return the roles represented by the privilege
+     * @param privilege
+     * @return
      */
-    public static final String[] strValues() {
-        UserGroupType[] groupTypes = UserGroupType.values();
-        String[] strUserGroupTypes = new String[groupTypes.length];
-        for (int i = 0; i < groupTypes.length; i++) {
-            strUserGroupTypes[i] = groupTypes[i].toString();
+    public static List<UserGroupType> roles(int privilege){
+        List<UserGroupType> roles = new ArrayList<UserGroupType>();
+        for(UserGroupType ugt : UserGroupType.values()) {
+            if((ugt.getPrivilege() & privilege)> 0) roles.add(ugt);
         }
-        return strUserGroupTypes;
-    }
-    
-    /**
-     * Codes.
-     *
-     * @return the int[]
-     */
-    public static final int[] codes(){
-    	UserGroupType[] groupTypes = UserGroupType.values();
-    	int[] codes = new int[groupTypes.length];
-    	for(int i =0; i < codes.length; i++){
-    		codes[i] = groupTypes[i].code;
-    	}
-    	return codes;
+        return roles;
     }
 
-    public String dbAlias(){
-        return "R_" + Math.abs(this.getCode());
-    }
-
-    public String hqlAlias(){
-        return "roleCode" + Math.abs(this.getCode());
-    }
 }

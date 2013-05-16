@@ -210,7 +210,7 @@ public class ParticipantServiceTest extends CaaersDbNoSecurityTestCase {
             participantIndex.setParticipant(dbParticipant);
          //   participantIndex.setRoleCode(1);
             
-            IndexEntry e1 = new IndexEntry(dbParticipant.getId());
+            IndexEntry e1 = new IndexEntry(dbParticipant.getId(),0);
             e1.addRole(UserGroupType.system_administrator);
 
             List<IndexEntry> l = new ArrayList<IndexEntry>();
@@ -259,7 +259,7 @@ public class ParticipantServiceTest extends CaaersDbNoSecurityTestCase {
             
             
 
-            IndexEntry e1 = new IndexEntry(dbParticipant.getId());
+            IndexEntry e1 = new IndexEntry(dbParticipant.getId(),0);
             e1.addRole(UserGroupType.system_administrator);
 
             List<IndexEntry> l = new ArrayList<IndexEntry>();

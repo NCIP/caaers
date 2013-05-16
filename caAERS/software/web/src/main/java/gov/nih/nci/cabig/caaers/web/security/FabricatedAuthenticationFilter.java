@@ -100,8 +100,7 @@ public final class FabricatedAuthenticationFilter implements Filter {
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
         HttpSession httpSession = httpRequest.getSession();
-		final SecurityContext contextBeforeExec = SecurityContextHolder
-				.getContext();
+		final SecurityContext contextBeforeExec = SecurityContextHolder.getContext();
 		Authentication authBeforeExec = contextBeforeExec.getAuthentication();
 
 		OriginalAuthenticationHolder.setAuthentication(authBeforeExec);
@@ -195,8 +194,7 @@ public final class FabricatedAuthenticationFilter implements Filter {
 		if (authentication != null) {
 			GrantedAuthority[] authorities = authentication.getAuthorities();
 			GrantedAuthority[] adjustedAuthorities = findAdjustedAuthorities(authorities, request);
-            FabricatedAuthentication fabricatedAuthentication = new FabricatedAuthentication(authentication,
-                    adjustedAuthorities);
+            FabricatedAuthentication fabricatedAuthentication = new FabricatedAuthentication(authentication, adjustedAuthorities);
             SecurityContextHolder.setContext(new SecurityContextImpl());
 		    SecurityContextHolder.getContext().setAuthentication(fabricatedAuthentication);
 
@@ -273,8 +271,7 @@ public final class FabricatedAuthenticationFilter implements Filter {
 	 * @return
 	 * @throws ClassNotFoundException
 	 */
-	private GrantedAuthority[] filterAuthorities(
-			GrantedAuthority[] authorities, HttpServletRequest request) {
+	private GrantedAuthority[] filterAuthorities(GrantedAuthority[] authorities, HttpServletRequest request) {
 
 		List<GrantedAuthority> list = new ArrayList<GrantedAuthority>();
 		if (authorities != null) {

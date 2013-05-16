@@ -14,14 +14,14 @@ import junit.framework.TestCase;
  */
 public class IndexEntryTest extends TestCase {
     public void testHasRoles() throws Exception {
-        IndexEntry e = new IndexEntry(0);
+        IndexEntry e = new IndexEntry(0,0);
         assertFalse(e.hasRoles());
         e.addRole(UserGroupType.ae_reporter);
         assertTrue(e.hasRoles());
     }
 
     public void testEquals(){
-        assertTrue(new IndexEntry(0).equals(new IndexEntry(0)));
+        assertTrue(new IndexEntry(0,0).equals(new IndexEntry(0,0)));
         assertFalse(new IndexEntry(0).equals(new IndexEntry(10)));
 
         IndexEntry i1 = new IndexEntry(0) ;

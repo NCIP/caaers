@@ -312,12 +312,12 @@
     <bean id="abstractIdFetcher" abstract="true">
         <property name="hibernateTemplate" ref="hibernateTemplate"/>
         <property name="caaersSecurityFacade" ref="caaersSecurityFacade"/>
+        <property name="properties" ref="caaersDatasourceFactoryBean"/>
     </bean>
 	
 	<!-- ORGANIZATION , STUDY  FETCHERS IMPLEMENTATIONS -->
     <bean id="organizationIdFetcher" class="gov.nih.nci.cabig.caaers.accesscontrol.query.impl.CaaersOrganizationIdFetcherImpl"
           parent="abstractIdFetcher">
-        <property name="studyIndexDao" ref="studyIndexDao" />
     </bean>
 
     
@@ -487,43 +487,43 @@
 
     <bean id="studyQuerySecurityFilterer"
           class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer" p:entityAssociation="study"
-          p:entityName="Study" p:indexName="StudyIndex" p:indexAlias="sIndx"/>
+          p:entityName="Study" p:indexName="StudyIndex" p:indexAlias="sIndx" p:indexDao-ref="studyIndexDao"/>
     <bean id="participantQuerySecurityFilterer"
           class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer" p:entityAssociation="participant"
-          p:entityName="Participant" p:indexName="ParticipantIndex" p:indexAlias="pIndx"/>
+          p:entityName="Participant" p:indexName="ParticipantIndex" p:indexAlias="pIndx" p:indexDao-ref="participantIndexDao"/>
     <bean id="participantAjaxableQuerySecurityFilterer"
           class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer" p:entityAssociation="participant" 
-          p:entityName="Participant" p:indexName="ParticipantIndex" p:indexAlias="pIndx"/>
+          p:entityName="Participant" p:indexName="ParticipantIndex" p:indexAlias="pIndx" p:indexDao-ref="participantIndexDao"/>
     <bean id="adverseEventReportingPeriodForReviewQuerySecurityFilterer"
           class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer"
           p:entityAssociation="reportingPeriod" p:entityName="AdverseEventReportingPeriod"
-          p:indexName="ReportingPeriodIndex" p:indexAlias="rpIndx"/>
+          p:indexName="ReportingPeriodIndex" p:indexAlias="rpIndx" p:indexDao-ref="reportingPeriodIndexDao"/>
     <bean id="organizationQuerySecurityFilterer"
           class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer"
           p:entityAssociation="organization" p:entityName="Organization" p:indexName="OrganizationIndex"
-          p:indexAlias="orgIndx" p:rolesNotNeedFiltering="caaers_study_cd,caaers_site_cd"/>
+          p:indexAlias="orgIndx" p:rolesNotNeedFiltering="caaers_study_cd,caaers_site_cd" p:indexDao-ref="organizationIndexDao"/>
     <bean id="reportVersionQuerySecurityFilterer"
           class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer"
           p:entityAssociation="expeditedAdverseEventReport" p:entityName="ExpeditedAdverseEventReport"
-          p:indexName="ExpeditedAdverseEventReportIndex" p:indexAlias="reportIndx"/>
+          p:indexName="ExpeditedAdverseEventReportIndex" p:indexAlias="reportIndx" p:indexDao-ref="expeditedAdverseEventReportIndexDao"/>
     <bean id="siteResearchStaffQuerySecurityFilterer"
           class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer"
           p:entityAssociation="researchStaff.siteResearchStaffsInternal" p:entityName="SiteResearchStaff"
-          p:indexName="ResearchStaffIndex" p:indexAlias="rsIndx"/>
+          p:indexName="ResearchStaffIndex" p:indexAlias="rsIndx" p:indexDao-ref="researchStaffIndexDao"/>
     <bean id="investigatorQuerySecurityFilterer"
           class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer"
           p:entityAssociation="investigator" p:entityName="Investigator"
-          p:indexName="InvestigatorIndex" p:indexAlias="invIndx"/>
+          p:indexName="InvestigatorIndex" p:indexAlias="invIndx" p:indexDao-ref="investigatorIndexDao"/>
     <bean id="studySiteQuerySecurityFilterer"
           class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer"
           p:entityAssociation="study.studySite" p:entityName="StudySite"
-          p:indexName="StudyIndex" p:indexAlias="stuIndx"/>
+          p:indexName="StudyIndex" p:indexAlias="stuIndx" p:indexDao-ref="studyIndexDao"/>
    <bean id="adverseEventQuerySecurityFilterer"
           class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer" p:entityAssociation="adverseEvent"
-          p:entityName="AdverseEvent" p:indexName="AdverseEventIndex" p:indexAlias="aeIndx"/>   
+          p:entityName="AdverseEvent" p:indexName="AdverseEventIndex" p:indexAlias="aeIndx" p:indexDao-ref="adverseEventIndexDao"/>
    <bean id="reportQuerySecurityFilterer"
           class="gov.nih.nci.cabig.caaers.accesscontrol.filter.query.QuerySecurityFilterer" p:entityAssociation="report"
-          p:entityName="Report" p:indexName="ReportIndex" p:indexAlias="repIndx"/>           
+          p:entityName="Report" p:indexName="ReportIndex" p:indexAlias="repIndx" p:indexDao-ref="reportIndexDao"/>
     <bean id="eventFactory" class="gov.nih.nci.cabig.caaers.event.EventFactory" />
 
 </beans>

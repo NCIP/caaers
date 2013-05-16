@@ -42,24 +42,24 @@ public class CaaersParticipantIdFetcherImpl extends AbstractIdFetcher implements
     private final String siteScopedSQL = "select distinct a.participant_id as id from participant_assignments a "
             + "join study_organizations so on so.id = a.study_site_id "
             + "join organization_index oi on   so.site_id = oi.organization_id "
-            + "where oi.login_id = :LOGIN_ID  " ;
+            + "where oi.login_id = :LOGIN_ID " ;
 
     private final String studyScopedSQL = "select distinct a.participant_id as id from participant_assignments  a "
             + "join study_organizations so on so.id = a.study_site_id  "
             + "join organization_index oi on oi.organization_id = so.site_id "
             + "join study_index si on si.study_id =  so.study_id "
-            + "where oi.login_id = :LOGIN_ID "
-            + "and si.login_id = oi.login_id "  ;
+            + "where si.login_id = :LOGIN_ID "
+            + "and oi.login_id = :LOGIN_ID " ;
+
 
     public String getSiteScopedSQL(UserGroupType role){
-        if(role != null) return siteScopedSQL + " and oi." + role.dbAlias() + " = :" + role.hqlAlias();
-        return siteScopedSQL;
+        if(isPostgeSQL()) return siteScopedSQL + " and oi.role & " + role.getPrivilege() + " > 0";
+        return siteScopedSQL + " and bitand(oi.role, " + role.getPrivilege() + ") > 0";
     }
 
     public String getStudyScopedSQL(UserGroupType role){
-        if(role != null) return studyScopedSQL +  " and si." + role.dbAlias() + " = oi." + role.dbAlias()  + " and oi." + role.dbAlias() + " = :" + role.hqlAlias();
-        return studyScopedSQL;
+        if(isPostgeSQL()) return studyScopedSQL +  " and si.role & " + role.getPrivilege() + " > 0 and  oi.role & " + role.getPrivilege()  + " > 0 ";
+        return studyScopedSQL +  " and bitand(si.role , " + role.getPrivilege() + ") > 0 and  bitand(oi.role ," + role.getPrivilege()  + ") > 0 ";
     }
-
 
 }

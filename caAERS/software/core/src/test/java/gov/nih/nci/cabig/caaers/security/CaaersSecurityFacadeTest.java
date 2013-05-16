@@ -61,7 +61,7 @@ public class CaaersSecurityFacadeTest extends CaaersDaoTestCase{
 		session.replaceRole(provisioningSessionFactory.createSuiteRoleMembership(SuiteRole.AE_REPORTER).forAllSites());
 		List<IndexEntry> list = caaersSecurityFacade.getAccessibleOrganizationIds("testuser1");
 		assertEquals(1,list.size());
-		System.out.println( " size " +  list.get(0).getRoles().size());
+		System.out.println( " size " +  UserGroupType.roles(list.get(0).getPrivilege()).size());
 	//	assertEquals(1,list.get(0).getEntityIds().size());
 	//	assertTrue(list.get(0).getEntityIds().get(0).equals(Integer.MIN_VALUE));
 		
