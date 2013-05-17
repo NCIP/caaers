@@ -93,14 +93,18 @@ public abstract class AbstractIndexDao extends JdbcDaoSupport {
         StringBuffer sb = new StringBuffer("select role from ")
                 .append(indexTableName())
                 .append(" where login_id = '").append(loginId)
-                .append("' and ")
+                .append("' and (")
                 .append(entityIdColumnName())
                 .append(" = ")
                 .append(String.valueOf(entityId));
+        if(entityId > Integer.MIN_VALUE){
+            sb.append(" or ").append(entityIdColumnName()).append(" = ").append(Integer.MIN_VALUE);
+        }
+        sb.append(")");
 
         getJdbcTemplate().query(sb.toString(), new RowMapper(){
             public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
-                roleValue[0] = rs.getInt(1);
+                roleValue[0] |= rs.getInt(1);
                return null;
             }
         });
