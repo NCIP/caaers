@@ -38,10 +38,24 @@ public class IndexEntryTest extends TestCase {
         IndexEntry i4 = new IndexEntry(0) ;
         i4.addRole(UserGroupType.ae_reporter, UserGroupType.ae_expedited_report_reviewer, UserGroupType.ae_rule_and_report_manager);
 
+        System.out.println(i1);
+        System.out.println(i2);
         assertTrue(i1.equals(i2));
         assertTrue(i2.equals(i1));
         assertFalse(i2.equals(i3));
         assertFalse(i2.equals(i4));
         assertFalse(i3.equals(i4));
+    }
+
+
+    public void testAddRole(){
+        IndexEntry i = new IndexEntry(-1);
+        i.addRole(UserGroupType.business_administrator);
+        i.addRole(UserGroupType.ae_expedited_report_reviewer);
+
+        assertTrue((i.getPrivilege() & UserGroupType.business_administrator.getPrivilege()) > 0);
+        assertTrue((i.getPrivilege() & UserGroupType.ae_expedited_report_reviewer.getPrivilege()) > 0);
+        assertTrue((i.getPrivilege() & UserGroupType.ae_reporter.getPrivilege()) <= 0);
+
     }
 }

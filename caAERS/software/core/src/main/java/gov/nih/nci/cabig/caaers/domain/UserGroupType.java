@@ -43,10 +43,10 @@ public enum UserGroupType implements CodedEnum<Integer> {
     caaers_physician(-8, 0,"caaers_physician"),
     
     /** The caaers_central_office_sae_cd. */
-    caaers_central_office_sae_cd(-7943, 2^23, "caaers_central_office_sae_cd"),
+    caaers_central_office_sae_cd(-7943, 65536 * 256, "caaers_central_office_sae_cd"),
     
     /** The caaers_data_cd. */
-    caaers_data_cd(-7942, 2^24, "caaers_data_cd"),
+    caaers_data_cd(-7942, 65536 * 512, "caaers_data_cd"),
     
     /** The system_administrator. */
     system_administrator(-101, 1,"system_administrator"),
@@ -55,67 +55,67 @@ public enum UserGroupType implements CodedEnum<Integer> {
     business_administrator(-102, 2, "business_administrator"),
     
     /** The person_and_organization_information_manager. */
-    person_and_organization_information_manager(-103, 2^2, "person_and_organization_information_manager"),
+    person_and_organization_information_manager(-103, 4, "person_and_organization_information_manager"),
     
     /** The data_importer. */
-    data_importer(-104, 2^3, "data_importer"),
+    data_importer(-104,8, "data_importer"),
     
     /** The user_administrator. */
-    user_administrator(-105, 2^4, "user_administrator"),
+    user_administrator(-105, 16, "user_administrator"),
     
     /** The study_qa_manager. */
-    study_qa_manager(-106, 2^5,"study_qa_manager"),
+    study_qa_manager(-106, 32,"study_qa_manager"),
     
     /** The study_creator. */
-    study_creator(-107, 2^6, "study_creator"),
+    study_creator(-107, 64, "study_creator"),
     
     /** The supplemental_study_information_manager. */
-    supplemental_study_information_manager(-108, 2^7,"supplemental_study_information_manager"),
+    supplemental_study_information_manager(-108, 128,"supplemental_study_information_manager"),
     
     /** The study_team_administrator. */
-    study_team_administrator(-109, 2^8, "study_team_administrator"),
+    study_team_administrator(-109, 256, "study_team_administrator"),
     
     /** The study_site_participation_administrator. */
-    study_site_participation_administrator(-110, 2^9, "study_site_participation_administrator"),
+    study_site_participation_administrator(-110, 512, "study_site_participation_administrator"),
     
     /** The ae_rule_and_report_manager. */
-    ae_rule_and_report_manager(-111, 2^10, "ae_rule_and_report_manager"),
+    ae_rule_and_report_manager(-111, 1024, "ae_rule_and_report_manager"),
     
     /** The study_calendar_template_builder. */
-    study_calendar_template_builder(-112, 2^11, "study_calendar_template_builder"),
+    study_calendar_template_builder(-112, 2048, "study_calendar_template_builder"),
     
     /** The registration_qa_manager. */
-    registration_qa_manager(-113, 2^12,"registration_qa_manager"),
+    registration_qa_manager(-113, 4096,"registration_qa_manager"),
     
     /** The subject_manager. */
-    subject_manager(-114, 2^13, "subject_manager"),
+    subject_manager(-114, 8192, "subject_manager"),
     
     /** The study_subject_calendar_manager. */
-    study_subject_calendar_manager(-115,2^14, "study_subject_calendar_manager"),
+    study_subject_calendar_manager(-115,16384, "study_subject_calendar_manager"),
     
     /** The registrar. */
-    registrar(-116, 2^15,"registrar"),
+    registrar(-116, 32768,"registrar"),
     
     /** The ae_reporter. */
-    ae_reporter(-117, 2^16,"ae_reporter"),
+    ae_reporter(-117, 65536,"ae_reporter"),
     
     /** The ae_expedited_report_reviewer. */
-    ae_expedited_report_reviewer(-118, 2^17,"ae_expedited_report_reviewer"),
+    ae_expedited_report_reviewer(-118, 65536 * 2,"ae_expedited_report_reviewer"),
     
     /** The ae_study_data_reviewer. */
-    ae_study_data_reviewer(-119,2^18, "ae_study_data_reviewer"),
+    ae_study_data_reviewer(-119,65536 * 4, "ae_study_data_reviewer"),
     
     /** The lab_impact_calendar_notifier. */
-    lab_impact_calendar_notifier(-120, 2^19,"lab_impact_calendar_notifier"),
+    lab_impact_calendar_notifier(-120, 65536 * 8,"lab_impact_calendar_notifier"),
     
     /** The lab_data_user. */
-    lab_data_user(-121, 2^20, "lab_data_user"),
+    lab_data_user(-121, 65536 * 16, "lab_data_user"),
     
     /** The data_reader. */
-    data_reader(-122, 2^21,"data_reader"),
+    data_reader(-122, 65536 * 32,"data_reader"),
     
     /** The data_analyst. */
-    data_analyst(-123, 2^22,"data_analyst");
+    data_analyst(-123, 65536 * 64,"data_analyst");
 	    
     /** The study_medical_monitor. */
     private String csmName;

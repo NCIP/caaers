@@ -7,6 +7,7 @@
 package gov.nih.nci.cabig.caaers.domain.index;
 
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
+import org.apache.commons.lang.math.NumberUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,15 +72,26 @@ public class IndexEntry {
         return String.valueOf(entityId) + " : " + privilege + ", [" + String.valueOf(UserGroupType.roles(privilege)) + "]\r\n";
     }
 
-    /**
-     * Similar to Object equals, will tell whether this IndexEntry is qual to the supplied one.
-     * @param other
-     * @return
-     */
-    public boolean equals(IndexEntry other){
-        if(!this.getEntityId().equals(other.getEntityId())) return false;
-        if( other.privilege !=  this.privilege) return false;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        IndexEntry that = (IndexEntry) o;
+
+        if (!entityId.equals(that.entityId)) return false;
+        if (!privilege.equals(that.privilege)) return false;
+
         return true;
     }
+
+    @Override
+    public int hashCode() {
+        int result = entityId.hashCode();
+        result = 31 * result + privilege.hashCode();
+        return result;
+    }
+
+
 }
 
