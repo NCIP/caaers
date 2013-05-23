@@ -35,78 +35,10 @@ public class CaaersStudyIdFetcherImpl extends AbstractIdFetcher implements IdFet
     
 	@Override
 	public List fetch(String loginId) {
+		//what set by the Security Role Membership is the final one for Study.
+        List<IndexEntry> resultList = getCaaersSecurityFacade().getAccessibleStudyIds(loginId);
+		if(log.isDebugEnabled()) log.debug("Index Entries for Study : " + String.valueOf(resultList));
+        return resultList;
 
-		List<IndexEntry> resultList = getCaaersSecurityFacade().getAccessibleStudyIds(loginId);
-		if(CollectionUtils.isEmpty(resultList)) return resultList;
-		
-        if(log.isInfoEnabled()){
-            log.info("Study Fetcher fetched : " + String.valueOf(resultList) );
-        }
-
-        List<IndexEntry> allStudyEntries = new ArrayList<IndexEntry>();
-        for(IndexEntry entry : resultList){
-            if(entry.isAllSiteOrAllStudy()) allStudyEntries.add(entry);
-        }
-
-        if(allStudyEntries.isEmpty()) return resultList;
-        resultList.removeAll(allStudyEntries);
-
-        Map<Integer, IndexEntry> studiesMap = new LinkedHashMap<Integer, IndexEntry>();
-        for(IndexEntry entry : resultList) {
-            studiesMap.put(entry.getEntityId(), entry);
-        }
-
-        List<IndexEntry> orgIndexEntries = getCaaersSecurityFacade().getAccessibleOrganizationIds(loginId);
-        if(CollectionUtils.isNotEmpty(orgIndexEntries)){
-            for(IndexEntry allStudyEntry : allStudyEntries){
-                List<Integer> orgIdList = new ArrayList<Integer>();
-                for(IndexEntry orgIndexEntry : orgIndexEntries){
-
-                    if(orgIndexEntry.hasAnyOfTheRoles(allStudyEntry.getRoles().toArray(new UserGroupType[]{}))){
-                         if(orgIndexEntry.isAllSiteOrAllStudy()){
-                             List<Integer> allStudyId = (List<Integer>) search(new HQLQuery("select s.id from Study s"));
-                             if(CollectionUtils.isNotEmpty(allStudyId)){
-                                 for(Integer studyId : allStudyId){
-                                     updateIndexEntry(studiesMap, studyId, allStudyEntry.getRoles() );
-                                 }
-                             }
-                             break;
-                         } else {
-                             orgIdList.add(orgIndexEntry.getEntityId());
-                         }
-                    }
-
-
-                }
-
-                if(!orgIdList.isEmpty()) {
-                    NativeSQLQuery studyQuery = new NativeSQLQuery("select distinct so.study_id as study_id from study_organizations so where so.site_id in (:orgIds) and so.retired_indicator = :ri");
-                    studyQuery.setParameter("ri", false);
-                    studyQuery.setParameterList("orgIds", orgIdList);
-                    studyQuery.setScalar("study_id", StandardBasicTypes.INTEGER);
-                    List<Object[]> studyIdList = (List<Object[]>) search(studyQuery);
-                    if(CollectionUtils.isNotEmpty(studyIdList)){
-                        for(Object[] id : studyIdList)  {
-                            updateIndexEntry(studiesMap, (Integer)id[0], allStudyEntry.getRoles());
-                        }
-                    }
-                }
-            }
-        }
-
-        
-		return  new ArrayList<IndexEntry>(studiesMap.values());
 	}
-
-
-
-    private void updateIndexEntry(Map<Integer, IndexEntry> entryMap, Integer entityId, List<UserGroupType> roles){
-        IndexEntry entry = entryMap.get(entityId);
-        if(entry == null){
-            entry = new IndexEntry(entityId);
-            entryMap.put(entityId, entry);
-        }
-        entry.addRoles(roles);
-    }
-
 }

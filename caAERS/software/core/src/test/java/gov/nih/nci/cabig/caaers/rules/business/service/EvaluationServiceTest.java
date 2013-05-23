@@ -918,8 +918,7 @@ public class EvaluationServiceTest extends AbstractTestCase {
         map1.put(ae1, Arrays.asList(new AdverseEventEvaluationResult[] { Fixtures.createAdverseEventEvaluationResult("RD2" )}));
 
 
-		expect(adverseEventEvaluationService.evaluateSAEReportSchedule(null, aeList2, study)).andReturn(map0);
-		
+
 		expect(adverseEventEvaluationService.evaluateSAEReportSchedule(aeReport1, Arrays.asList(ae1), study)).andReturn(map1);
 		
 		expect(reportDefinitionDao.getByName("RD2")).andReturn(rd2).anyTimes();
@@ -937,14 +936,9 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		EvaluationResultDTO result = service.evaluateSAERules(reportingPeriod);
 		
 		//alert
-		assertFalse(result.getAeReportAlertMap().get(ZERO));
 		assertTrue(result.getAeReportAlertMap().get(aeReport1.getId()));
 		
-		assertTrue(result.getCreateMap().get(ZERO).isEmpty());
-		assertTrue(result.getEditMap().get(ZERO).isEmpty());
-		assertTrue(result.getAmendmentMap().get(ZERO).isEmpty());
-		assertTrue(result.getWithdrawalMap().get(ZERO).isEmpty());
-	    
+
 		assertTrue(result.getEditMap().get(aeReport1.getId()).isEmpty());
 		assertTrue(result.getWithdrawalMap().get(aeReport1.getId()).isEmpty());
 		
@@ -1158,8 +1152,7 @@ public class EvaluationServiceTest extends AbstractTestCase {
 
 		expect(reportDefinitionDao.getByName("RDX")).andReturn(rdx).anyTimes();
 		
-		expect(adverseEventEvaluationService.evaluateSAEReportSchedule(null, new ArrayList<AdverseEvent>(), study)).andReturn(map0);
-		
+
 		expect(adverseEventEvaluationService.evaluateSAEReportSchedule(aeReport1, Arrays.asList(ae1, ae2), study)).andReturn(map1);
 		
 		expect(aeReport1.listReportsHavingStatus(ReportStatus.COMPLETED)).andReturn(Arrays.asList(r1)).times(2);
@@ -1176,13 +1169,8 @@ public class EvaluationServiceTest extends AbstractTestCase {
     	EvaluationResultDTO result = service.evaluateSAERules(reportingPeriod);
     	assertTrue(result.isAlertRecommended());
     	assertTrue(result.getAeReportAlertMap().get(new Integer(1))); //aeReport1
-    	assertFalse(result.getAeReportAlertMap().get(new Integer(0)));
-    	
-    	// - aeReportId - 0
-    	assertTrue(result.getAmendmentMap().get(new Integer(0)).isEmpty());
-    	assertTrue(result.getEditMap().get(new Integer(0)).isEmpty());
-    	assertTrue(result.getWithdrawalMap().get(new Integer(0)).isEmpty());
-    	assertTrue(result.getCreateMap().get(new Integer(0)).isEmpty());
+
+
     	
     	//aeReportId 1
     	assertTrue(result.getWithdrawalMap().get(aeReport1.getId()).isEmpty());

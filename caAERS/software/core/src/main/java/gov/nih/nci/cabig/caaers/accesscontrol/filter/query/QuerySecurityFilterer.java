@@ -6,6 +6,7 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.accesscontrol.filter.query;
 
+import gov.nih.nci.cabig.caaers.dao.index.AbstractIndexDao;
 import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
@@ -32,6 +33,8 @@ public class QuerySecurityFilterer {
     
     private String[] rolesNotNeedFiltering;
 
+    private AbstractIndexDao indexDao;
+
 
     public void filter(AbstractQuery query){
     	
@@ -57,8 +60,9 @@ public class QuerySecurityFilterer {
      * @return - true - if the logged in user is not global 
      */
     public boolean shouldFilter(){
-    	//if global scoped user- ignore filtering.
-		if(SecurityUtils.hasGlobalScopedRoles()) return false;
+		if(SecurityUtils.hasGlobalScopedRoles()) return false;    //if global scoped user- ignore filtering.
+        int role = indexDao.findAssociatedRole(getLoginId(), Integer.MIN_VALUE);
+        if((role & getRole()) > 0)  return false; //has a role that is ALL-SITE
 		return true;
     }
   
@@ -97,19 +101,10 @@ public class QuerySecurityFilterer {
         query.modifyQueryString(newQuery);
 
         //issue joins with index and extra conditions.
-       query.join(getIndexAlias() + "." + getEntityAssociation() + " " + entityAlias, 0);
+       query.join(getIndexAlias() + "." + getEntityAssociation() + " " +  entityAlias, 0);
        query.andWhere(getIndexAlias() + ".loginId = :loginId");
+       query.andWhere("bitand(" + getIndexAlias() + ".role, " + getRole()+") > 0");
        query.setParameter("loginId", getLoginId());
-       if(SecurityUtils.getRoles().length > 0){
-           StringBuilder orConds = new StringBuilder("(");
-           for(UserGroupType role  : SecurityUtils.getRoles()){
-              if(orConds.length() > 3) orConds.append(" OR ");
-              orConds.append(getIndexAlias()).append(".").append(role.hqlAlias()).append("=").append(":").append(role.hqlAlias());
-              query.setParameter(role.hqlAlias(), true);
-           }
-           orConds.append(")");
-           query.andWhere(orConds.toString());
-       }
        query.setFiltered(true);
     }
 
@@ -120,6 +115,16 @@ public class QuerySecurityFilterer {
     public String getLoginId(){
         return SecurityUtils.getUserLoginName();
     }
+
+
+    public int getRole(){
+       int role = 0;
+       for(UserGroupType group : SecurityUtils.getRoles()){
+           role = role | group.getPrivilege();
+       }
+       return role;
+    }
+
     /**
      * The association name of the entity from the index.
      * Eg:- ParticipantIndex  to Participant the association is "participant".
@@ -175,5 +180,13 @@ public class QuerySecurityFilterer {
 
     public void setRolesNotNeedFiltering(String[] rolesNotNeedFiltering) {
         this.rolesNotNeedFiltering = rolesNotNeedFiltering;
+    }
+
+    public AbstractIndexDao getIndexDao() {
+        return indexDao;
+    }
+
+    public void setIndexDao(AbstractIndexDao indexDao) {
+        this.indexDao = indexDao;
     }
 }

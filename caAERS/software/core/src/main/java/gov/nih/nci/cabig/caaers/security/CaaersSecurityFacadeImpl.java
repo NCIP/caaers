@@ -11,7 +11,6 @@ import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
 import gov.nih.nci.cabig.caaers.dao.query.HQLQuery;
 import gov.nih.nci.cabig.caaers.dao.security.RolePrivilegeDao;
 import gov.nih.nci.cabig.caaers.domain.*;
-import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.index.IndexEntry;
 import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
 import gov.nih.nci.cabig.caaers.utils.ObjectPrivilegeParser;
@@ -19,17 +18,13 @@ import gov.nih.nci.cabig.caaers.utils.el.EL;
 import gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSessionFactory;
 import gov.nih.nci.security.UserProvisioningManager;
 import gov.nih.nci.security.util.StringUtilities;
-
-import java.util.*;
-
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.CacheManager;
-
 import org.acegisecurity.Authentication;
 import org.acegisecurity.GrantedAuthority;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import java.util.*;
 
 /**
  * The Facade Layer to CSM. 
@@ -53,7 +48,31 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
     private String studyIdByOrgNCICodeHQL =" select distinct s.id from Study s " +
                                      " join s.studyOrganizations so " +
                                      " join so.organization o " +
-                                     " where o.nciInstituteCode in (:identifiers)";
+                                     " where so.retiredIndicator = false and " +
+                                     " o.nciInstituteCode in (:identifiers)";
+
+    //all organizations conducting the specific studies
+    private String studySiteHQL = new StringBuilder("select distinct so.organization.id from StudyOrganization so ")
+            .append("where so.study.id in (:studyIds) ")
+            .append("and so.retiredIndicator <> true ").toString();
+
+    //sites that the specified organizations are managing
+    private String allStudySiteOrgIdHQL = new StringBuilder("select distinct ss.organization.id from StudyOrganization so, StudySite ss ")
+            .append("where ss.study = so.study ")
+            .append("and so.organization.id in (:orgIds) ")
+            .append("and ss.retiredIndicator <> true ")
+            .append("and so.retiredIndicator <> true ")
+            .append("and so.class in ('SFS', 'SCC') ").toString();
+
+    //site the specified organizations are managing - which belongs to a specific set of study
+    private String studySiteOrgIdHQL = new StringBuilder("select distinct ss.organization.id from StudyOrganization so, StudySite ss ")
+            .append("where ss.study = so.study ")
+            .append("and so.organization.id in (:orgIds) ")
+            .append("and ss.retiredIndicator <> true ")
+            .append("and so.retiredIndicator <> true ")
+            .append("and so.study.id in (:studyIds) ")
+            .append("and so.class in ('SFS', 'SCC') ").toString();
+
     public CaaersSecurityFacadeImpl() {
         instance = this;
     }
@@ -210,54 +229,51 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
     //BJ - Refactored to use the RoleMembership
     public List<IndexEntry> getAccessibleStudyIds(String userName){
         Map<Integer, IndexEntry> indexMap = new HashMap<Integer, IndexEntry>() ;
-        IndexEntry allSiteIndexEntry = new IndexEntry(ALL_IDS_FABRICATED_ID);
+        IndexEntry allSiteIndexEntry = new IndexEntry(ALL_IDS_FABRICATED_ID,0);
 
         List<IndexEntry> entries = new ArrayList<IndexEntry>();
         
         User user = userRepository.getUserByLoginName(userName);
         for(RoleMembership roleMembership : user.getRoleMembershipMap().values()){
             if(roleMembership.isGlobalScoped()) continue;
-            if((roleMembership.isAllSite() && roleMembership.isAllStudy()) ||
-                    (roleMembership.isSiteScoped() && roleMembership.isAllSite()) ){
-                //can access all studies
-                allSiteIndexEntry.addRole(roleMembership.getRole());
-                continue;
+
+             //is all site all study ? - all study
+            if(roleMembership.isAllSite() && roleMembership.isAllStudy()) {
+                allSiteIndexEntry.addRole(roleMembership.getRole()); continue;
+            }
+            //is site scoped and & all site ? - all study
+            if(roleMembership.isSiteScoped() && roleMembership.isAllSite()){
+                allSiteIndexEntry.addRole(roleMembership.getRole()); continue;
             }
 
+            //Study Scoped - specific studies - //can access only specific studies
+            if(roleMembership.isStudyScoped() && !roleMembership.isAllStudy()) {
 
-           if(roleMembership.isStudyScoped() && !roleMembership.isAllStudy()){
-              //can access only specific studies
-              if(CollectionUtils.isNotEmpty(roleMembership.getStudyIdentifiers())){
-                  List<String> studyIdentifiers = new ArrayList<String>(roleMembership.getStudyIdentifiers());
-                  List<Integer> studyIds = getStudyIdsByIdentifiersFromDB(studyIdentifiers);
-                  if(studyIds == null ) continue;
-                  for(Integer studyId : studyIds){
-                      IndexEntry entry = indexMap.get(studyId);
-                      if(entry == null){
-                          entry = new IndexEntry(studyId);
-                          indexMap.put(studyId, entry);
-                      }
-                      entry.addRole(roleMembership.getRole());
-                  }
+                if(CollectionUtils.isEmpty(roleMembership.getStudyIdentifiers())) continue;
+                List<String> studyIdentifiers = new ArrayList<String>(roleMembership.getStudyIdentifiers());
+                List<Integer> studyIds = getStudyIdsByIdentifiersFromDB(studyIdentifiers);
+                if(CollectionUtils.isEmpty(studyIds)) continue;
+                for(Integer studyId : studyIds){
+                    if(!indexMap.containsKey(studyId)) indexMap.put(studyId, new IndexEntry(studyId,0));
+                    indexMap.get(studyId).addRole(roleMembership.getRole());
+                }
+                continue;
 
-                  continue;
-              }
            }
-           //site-scoped specific sites OR study-scoped all-study roles can access all studies associated to specified organizations.
-           if(CollectionUtils.isNotEmpty(roleMembership.getOrganizationNCICodes())){
-               List<String> orgIdentifiers = new ArrayList<String>(roleMembership.getOrganizationNCICodes());
-               List<Integer> studyIds = getStudyIdsByOrganizationNCICodesFromDB(orgIdentifiers);
-               if(studyIds == null ) continue;
-               for(Integer studyId : studyIds){
-                   IndexEntry entry = indexMap.get(studyId);
-                   if(entry == null){
-                       entry = new IndexEntry(studyId);
-                       indexMap.put(studyId, entry);
-                   }
-                   entry.addRole(roleMembership.getRole());
-               }
+
+           //Site scoped but specific studies ? -  can access all the studies this organization is part of.
+           //Study scoped  - all Studies ?   -  can access all the studies this organization is part of.
+           //Any other case - can access all the studies this organization is part of.
+           if(CollectionUtils.isEmpty(roleMembership.getOrganizationNCICodes())) continue;
+           List<String> orgIdentifiers = new ArrayList<String>(roleMembership.getOrganizationNCICodes());
+           List<Integer> studyIds = getStudyIdsByOrganizationNCICodesFromDB(orgIdentifiers);
+           if(CollectionUtils.isEmpty(studyIds)) continue;
+           for(Integer studyId : studyIds){
+                if(!indexMap.containsKey(studyId)) indexMap.put(studyId, new IndexEntry(studyId,0));
+                indexMap.get(studyId).addRole(roleMembership.getRole());
            }
-        }
+
+        } //for
 
 
         if(allSiteIndexEntry.hasRoles()){
@@ -277,33 +293,88 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
     //BJ - Refactored to use the RoleMembership
     public List<IndexEntry> getAccessibleOrganizationIds(String userName){
         Map<Integer, IndexEntry> indexMap = new HashMap<Integer, IndexEntry>() ;
-        IndexEntry allSiteIndexEntry = new IndexEntry(ALL_IDS_FABRICATED_ID);
-        List<IndexEntry> entries = new ArrayList<IndexEntry>();
+        IndexEntry allSiteIndexEntry = new IndexEntry(ALL_IDS_FABRICATED_ID,0);
+
         User user = userRepository.getUserByLoginName(userName);
         for(RoleMembership roleMembership : user.getRoleMembershipMap().values()){
             if(roleMembership.isGlobalScoped()) continue;
-            if(roleMembership.isAllSite()) {
-                allSiteIndexEntry.addRole(roleMembership.getRole());
-            } else{
-                if(CollectionUtils.isEmpty(roleMembership.getOrganizationNCICodes())) continue;
 
-                List<String> orgIdentifiers = new ArrayList<String>(roleMembership.getOrganizationNCICodes());
-                List<Integer> orgIds = getOrganizationIdsByIdentifiersFromDB(orgIdentifiers);
-                for(Integer orgId : orgIds){
-                    IndexEntry entry = indexMap.get(orgId);
-                    if(entry == null){
-                        entry = new IndexEntry(orgId);
-                        indexMap.put(orgId, entry);
-                    }
-                    entry.addRole(roleMembership.getRole());
-                }
+
+            //if site scoped and all site ?
+            //if study scoped and all site all study ?
+            if ( (roleMembership.isSiteScoped() && roleMembership.isAllSite()) ||
+                 (roleMembership.isStudyScoped() && roleMembership.isAllSite() && roleMembership.isAllStudy())){
+                allSiteIndexEntry.addRole(roleMembership.getRole()); continue;
             }
 
-        }
 
-        if(allSiteIndexEntry.hasRoles()){
-            entries.add(allSiteIndexEntry);
-        }
+
+            //can access all organizations where the specified studies are conducted.
+            if(roleMembership.isStudyScoped() && roleMembership.isAllSite() && !roleMembership.isAllStudy()){
+                if(CollectionUtils.isEmpty(roleMembership.getStudyIdentifiers())) continue;
+                List<String> studyIdentifiers = new ArrayList<String>(roleMembership.getStudyIdentifiers());
+                List<Integer> studyIds = getStudyIdsByIdentifiersFromDB(studyIdentifiers);
+                if(CollectionUtils.isEmpty(studyIds)) continue;
+
+                HQLQuery query = new HQLQuery(studySiteHQL);
+                query.setParameterList("studyIds", studyIds);
+                List<Integer> additionalOrgIds = (List<Integer>) search(query);
+                if (CollectionUtils.isEmpty(additionalOrgIds)) continue;
+                for(Integer orgId : additionalOrgIds ){
+                    if(!indexMap.containsKey(orgId)) indexMap.put(orgId, new IndexEntry(orgId,0));
+                    indexMap.get(orgId).addRole(roleMembership.getRole());
+                }
+                continue;
+            }
+
+
+
+            //site scoped ? - specific sites  - can access also transitive study based dependencies
+            //study scoped ? - specific sites and all study - also transitive based on the study
+            //study scoped ? - specific sites and specific study -  transitive based on the specific study
+            if(CollectionUtils.isEmpty(roleMembership.getOrganizationNCICodes())) continue;
+            List<String> orgIdentifiers = new ArrayList<String>(roleMembership.getOrganizationNCICodes());
+            List<Integer> orgIds = getOrganizationIdsByIdentifiersFromDB(orgIdentifiers);
+            if(CollectionUtils.isEmpty(orgIds)) continue;
+            for(Integer orgId : orgIds){
+                if(!indexMap.containsKey(orgId)) indexMap.put(orgId, new IndexEntry(orgId,0));
+                indexMap.get(orgId).addRole(roleMembership.getRole());
+            }
+
+            //workout the transitive dependencies
+            List<Integer> additionalOrgIds = null;
+            if ( (roleMembership.isSiteScoped() && !roleMembership.isAllSite())  ||  (roleMembership.isStudyScoped() && roleMembership.isAllStudy()) )   {
+                //for all the study sites these organizations manage
+                HQLQuery query = new HQLQuery(allStudySiteOrgIdHQL);
+                query.setParameterList("orgIds", orgIds);
+                additionalOrgIds = (List<Integer>) search(query);
+            }
+
+            if(roleMembership.isStudyScoped() && !roleMembership.isAllStudy()){
+                //for specific study sites belonging to the study that this organizations manage.
+                if(CollectionUtils.isEmpty(roleMembership.getStudyIdentifiers())) continue;
+                List<String> studyIdentifiers = new ArrayList<String>(roleMembership.getStudyIdentifiers());
+                List<Integer> studyIds = getStudyIdsByIdentifiersFromDB(studyIdentifiers);
+                if(CollectionUtils.isEmpty(studyIds)) continue;
+
+                HQLQuery query = new HQLQuery(studySiteOrgIdHQL);
+                query.setParameterList("orgIds", orgIds);
+                query.setParameterList("studyIds", studyIds);
+                additionalOrgIds = (List<Integer>) search(query);
+            }
+
+            if(CollectionUtils.isEmpty(additionalOrgIds)) continue;
+            for(Integer orgId : additionalOrgIds){
+                if(!indexMap.containsKey(orgId)) indexMap.put(orgId, new IndexEntry(orgId,0));
+                indexMap.get(orgId).addRole(roleMembership.getRole());
+            }
+
+
+        } //for
+
+
+        List<IndexEntry> entries = new ArrayList<IndexEntry>();
+        if(allSiteIndexEntry.hasRoles()) entries.add(allSiteIndexEntry);
         entries.addAll(indexMap.values());
         return entries;
     }
@@ -333,32 +404,12 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
     }
 
 	public void clearUserCache(String userName) {
-		log.debug("IN clearUserCache - " + userName);
+		if(log.isDebugEnabled()) log.debug("Clearing cache for user :" + userName);
 		if (StringUtilities.isBlank(userName)) {
 			return;
 		}
-        
-		User user = userRepository.getUserByLoginName(userName);
-		gov.nih.nci.security.authorization.domainobjects.User csmUser = user.getCsmUser();
-        if(csmUser == null) return;
-
-		Long id = csmUser.getUserId();
-		if (id != null ) {
-
-			String loginId = id.toString();
-
-			//loginId is cacheKey , remove the cache for that user .. 
-			CacheManager cacheManager = CSMCacheManager.getCacheManager() ;
-			
-			Cache cache = cacheManager.getCache(loginId);
-			if (cache == null) {
-				return;
-			} else {
-				cacheManager.removeCache(loginId);
-				log.debug("Cleared cache for user - " + userName);
-			}
-		}
-		return;
+        //delegate the remove call to the CSM Cache Manager
+       CSMCacheManager.removeUserFromCache(userName);
 			
 	}
 	

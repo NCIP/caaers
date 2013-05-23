@@ -211,15 +211,9 @@
        start_date="2006-10-01"
        site_research_staffs_id="-9001"
             />
-    <organization_index id="1" organization_id="-999" login_id="1000@def.com" r_117 = "1" r_123 = "0" />
-    <organization_index id="2" organization_id="-1001" login_id="1000@def.com" r_117 = "1" r_123 = "0" />
-    <organization_index id="3" organization_id="-999" login_id="1000@def.com" r_117 = "0" r_123 = "1" />
-     
-    <study_index id="1" study_id = "-1" login_id="1000@def.com" r_117 = "1" r_123 = "0" />
-	<study_index id="2" study_id = "-4" login_id="1000@def.com" r_117 = "1" r_123 = "0" />
+    <organization_index  />
 
-	<study_index id="3" study_id = "-4" login_id="1000@def.com" r_117 = "0" r_123 = "1" />
-	<study_index id="4" study_id = "-5" login_id="1000@def.com" r_117 = "0" r_123 = "1" />    
+	<study_index  />
                       
     <investigational_new_drugs/>
     <ind_holders/>

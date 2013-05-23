@@ -51,8 +51,7 @@ public class CaaersReportingPeriodIdFetcherImplBasedOnAuthStudySubject extends A
 
 
     public String getSiteScopedHQL(UserGroupType role){
-        if(role != null) return baseHQL + " and pi." + role.hqlAlias() + " = :" + role.hqlAlias();
-        return baseHQL;
+        return baseHQL + " and bitand(pi.role , " + role.getPrivilege() + ") > 0"  ;
     }
 
     public String getStudyScopedHQL(UserGroupType role){

@@ -7,11 +7,6 @@
 package gov.nih.nci.cabig.caaers.accesscontrol.query.studysubject.impl;
 
 import gov.nih.nci.cabig.caaers.accesscontrol.query.impl.AbstractIdFetcher;
-import gov.nih.nci.cabig.caaers.dao.query.HQLQuery;
-import gov.nih.nci.cabig.caaers.domain.Investigator;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-
-import java.util.List;
 
 import com.semanticbits.security.contentfilter.IdFetcher;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
@@ -52,8 +47,7 @@ public class CaaersExpeditedAEReportIdFetcherImplBasedOnAuthStudySubject extends
             " where ri.loginId = :LOGIN_ID" ;
 
     public String getSiteScopedHQL(UserGroupType role){
-        if(role != null) return baseHQL + " and ri." + role.hqlAlias() + " = :" + role.hqlAlias();
-        return baseHQL;
+        return baseHQL + " and bitand(ri.role ," + role.getPrivilege() + ") > 0"  ;
     }
 
     public String getStudyScopedHQL(UserGroupType role){

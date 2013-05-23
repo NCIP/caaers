@@ -10,7 +10,6 @@ import gov.nih.nci.cabig.caaers.accesscontrol.query.impl.AbstractIdFetcher;
 
 import com.semanticbits.security.contentfilter.IdFetcher;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
-import gov.nih.nci.security.dao.hibernate.UserGroup;
 
 public class CaaersReportIdFetcherImplBasedOnAuthStudySubject extends AbstractIdFetcher implements IdFetcher {
 
@@ -23,8 +22,7 @@ public class CaaersReportIdFetcherImplBasedOnAuthStudySubject extends AbstractId
 
 
     public String getSiteScopedHQL(UserGroupType role){
-        if(role != null) return baseHQL + " and ei." + role.hqlAlias() + " = :" +role.hqlAlias();
-        return baseHQL;
+        return baseHQL + " and bitand(ei.role, " + role.getPrivilege() + ") > 0"  ;
     }
 
     public String getStudyScopedHQL(UserGroupType role){

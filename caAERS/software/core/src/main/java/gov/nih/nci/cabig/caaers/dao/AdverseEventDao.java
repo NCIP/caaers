@@ -6,12 +6,9 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.dao;
 
+import gov.nih.nci.cabig.caaers.dao.query.AdverseEventQuery;
 import gov.nih.nci.cabig.caaers.dao.query.SafetySignalingQuery;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 
 import java.util.List;
@@ -141,6 +138,12 @@ public class AdverseEventDao extends CaaersDao<AdverseEvent> {
 		
 		return getHibernateTemplate().findByCriteria(criteria);
 	}
+
+    public List<AdverseEvent> getByAeReport(ExpeditedAdverseEventReport aeReport){
+        AdverseEventQuery query = new AdverseEventQuery();
+        query.filterByAeReportId(aeReport.getId());
+        return (List<AdverseEvent> )search(query);
+    }
 
 
 	public List<AdverseEvent> findByExample(AdverseEvent caaersAe) {

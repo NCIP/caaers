@@ -28,6 +28,6 @@ public class InvestigatorIdFetcherTest extends CaaersDaoTestCase {
 		assertEquals(1,list.size());
 		
 		list = ( List<IndexEntry> )investigatorIdFetcher.fetch("test-user2");
-		assertEquals(1,list.size());
+		assertEquals(0,list.size());
 	}
 }

@@ -6,6 +6,7 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.accesscontrol.query.impl;
 
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.CaaersDbNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.index.IndexEntry;
@@ -21,30 +22,29 @@ import java.util.List;
  * @author medav
  * 
  */
-public class CaaersStudyIdFetcherImplTest extends CaaersDbNoSecurityTestCase {
+public class CaaersStudyIdFetcherImplTest extends AbstractTestCase {
 
     CaaersStudyIdFetcherImpl fetcher;
 
-    CaaersSecurityFacade facade;
     
     public void setUp() throws Exception {
         super.setUp();
-        fetcher = (CaaersStudyIdFetcherImpl) getDeployedApplicationContext().getBean("studyIdFetcher");
-        facade = fetcher.getCaaersSecurityFacade();
+        fetcher =  new CaaersStudyIdFetcherImpl();
+
 
         fetcher.setCaaersSecurityFacade(new CaaersSecurityFacadeTestAdapter(){
             @Override
             public List<IndexEntry> getAccessibleStudyIds(String loginId) {
                 List<IndexEntry> entries =  super.getAccessibleStudyIds(loginId);
                 
-                IndexEntry e1 = new IndexEntry(Integer.MIN_VALUE);
+                IndexEntry e1 = new IndexEntry(Integer.MIN_VALUE,0);
                 e1.addRole(UserGroupType.ae_reporter);
                 e1.addRole(UserGroupType.data_analyst);
                 entries.add(e1);
                 
-                IndexEntry e = new IndexEntry(-2);
-                e.addRole(UserGroupType.ae_reporter);
-                e.addRole(UserGroupType.data_analyst);
+                IndexEntry e = new IndexEntry(-2,0);
+                e.addRole(UserGroupType.ae_expedited_report_reviewer);
+                e.addRole(UserGroupType.caaers_central_office_sae_cd);
                 
                 
                 entries.add(e);
@@ -56,12 +56,8 @@ public class CaaersStudyIdFetcherImplTest extends CaaersDbNoSecurityTestCase {
 
     public void testFetch(){
         List<IndexEntry> entries = fetcher.fetch("1000@def.com");
-        assertEquals(1, entries.size());
+        assertEquals(2, entries.size());
     }
 
-    public void tearDown() throws Exception {
-        fetcher.setCaaersSecurityFacade(facade);
-        super.tearDown();
-    }
 
 }

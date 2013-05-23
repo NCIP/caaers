@@ -76,7 +76,7 @@ public class CaaersOrganizationIdFetcherImplTest extends CaaersDbNoSecurityTestC
 
     public void testFetch(){
         List<IndexEntry> entries = fetcher.fetch("1000@def.com");
-        assertEquals(3, entries.size());
+        assertEquals(2, entries.size());
     }
 
     public void tearDown() throws Exception {

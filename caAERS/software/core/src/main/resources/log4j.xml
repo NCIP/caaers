@@ -36,7 +36,7 @@
     </appender>
 
     <root>
-        <priority value="ERROR"/>
+        <priority value="DEBUG"/>
         <appender-ref ref="stdout"/>
         <appender-ref ref="file"/>
     </root>

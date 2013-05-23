@@ -10,34 +10,39 @@ import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import java.util.Date;
 
 public class Event{
-    private String name;
+    private String eventKey;
+    private String loginName;
     private String threadName;
     private Date createOn;
     private Date completedOn;
     private String eventType;
+    private String status;
+    private int entityId;
+    private String eventId;
+
+    public Event(String eventKey, String loginName, String threadName, Date createOn, String eventType, String status, int entityId, String eventId) {
+        this.eventKey = eventKey;
+        this.loginName = loginName;
+        this.threadName = threadName;
+        this.createOn = createOn;
+        this.eventType = eventType;
+        this.status = status;
+        this.entityId = entityId;
+        this.eventId = eventId;
+    }
 
     @Override
     public String toString() {
-        return "Event {" +
-                "name: '" + name + '\'' +
-                ", threadName: '" + threadName + '\'' +
-                ", createOn: " + DateUtils.formatDate(createOn, DateUtils.WS_DATE_PATTERN) +
-                ", completedOn: " + completedOn == null ? "---" : DateUtils.formatDate(completedOn, DateUtils.WS_DATE_PATTERN) +
-                ", eventType: '" + eventType + '\'' +
-                ", time: '" + runningTime() + '\'' +
-                '}';
+        return getDisplayName();
     }
     
     public String getDisplayName(){
         StringBuilder sb = new StringBuilder();
-        sb.append("Event [ ");
-        sb.append("name : ").append(name).append(",");
-        sb.append("threadName : ").append(threadName).append(",");
-        sb.append("entity : ").append(eventType).append(",");
-        if(createOn != null) sb.append("createdON : ").append(DateUtils.formatDate(createOn, DateUtils.WS_DATE_PATTERN)).append(",");
-        if(completedOn != null) sb.append("completedOn : ").append(DateUtils.formatDate(completedOn, DateUtils.WS_DATE_PATTERN)).append(",");
-        sb.append("time : ").append(runningTime());
-        sb.append("]");
+        sb.append(threadName)
+            .append(" : ").append(loginName)
+            .append(" for ").append(eventType).append("(").append(entityId).append(")");
+        if(createOn != null) sb.append(", on  : ").append(DateUtils.formatDate(createOn, "MMM-dd - HH:mm:ss a"));
+        sb.append(", took ").append(runningTime()) .append(" ").append(status) ;
         return sb.toString() ;
     }
 
@@ -47,47 +52,22 @@ public class Event{
         if(l < 1000) return l + " ms";
         return (l/1000) + " seconds";
     }
-    public void complete(){
-        setCompletedOn(new Date());
+    public void complete(String status){
+        completedOn = new Date();
+        this.status = status;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getThreadName() {
-        return threadName;
-    }
-
-    public void setThreadName(String threadName) {
-        this.threadName = threadName;
-    }
-
-    public Date getCreateOn() {
-        return createOn;
-    }
-
-    public void setCreateOn(Date createOn) {
-        this.createOn = createOn;
-    }
 
     public Date getCompletedOn() {
         return completedOn;
     }
 
-    public void setCompletedOn(Date completedOn) {
-        this.completedOn = completedOn;
+    public String getEventKey(){
+        return eventKey;
+    }
+    public String getEventId() {
+        return eventId;
     }
 
-    public String getEventType() {
-        return eventType;
-    }
 
-    public void setEventType(String eventType) {
-        this.eventType = eventType;
-    }
 }

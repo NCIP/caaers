@@ -26,35 +26,32 @@ public class EventMonitorTest extends AbstractTestCase {
         Date createdOn = DateUtils.parseDate("12/28/2011");
         Date completedOn = DateUtils.parseDate("12/29/2011");
 
-        Event e = new Event();
-        e.setName("n");
-        e.setCreateOn(createdOn);
-        e.setEventType("x");
-        e.setThreadName("j");
-        e.setCompletedOn(completedOn);
-        assertEquals("2011-12-29T00:00:00, eventType: 'x', time: '86400 seconds'}", e.toString());
-        assertNotNull(e.getDisplayName());
-        String id = monitor.addEvent("x", "y");
+        Event e = new Event("x", "n", "j" , createdOn, "T", "NEW", 1, "xxx");
+        e.complete("SUCCESS");
+        System.out.println(e.toString()) ;
+
+
+        monitor.addEvent("x", "y", 1);
+
         int i = monitor.getAllEvents().size();
         assertEquals(1,i);
 
     }
 
     public void testMarkCompletion() throws Exception {
-        String id = monitor.addEvent("x", "y");
-        assertTrue(monitor.getAllEvents().toArray(new Event[]{})[0].getCompletedOn() == null);
-        monitor.markCompletion(id);
-        assertFalse(monitor.getAllEvents().toArray(new Event[]{})[0].getCompletedOn() == null);
+       Event e = monitor.addEvent("x", "y", 1);
+       monitor.markSuccess(e.getEventId());
+       assertNotNull(e.getCompletedOn()  );
     }
 
     public void testGetAllEvents() throws Exception {
-        String id = monitor.addEvent("x", "y");
+        Event e = monitor.addEvent("x", "y",1);
         int i = monitor.getAllEvents().size();
         assertEquals(1,i);
 
         //check LRU behaviour
         for(int j = 0; j < 60; j++){
-          String x = monitor.addEvent("x" + j, "y" + j) ;
+          e = monitor.addEvent("x" + j, "y" + j, j) ;
           Thread.sleep(2);
         }
         i = monitor.getAllEvents().size();

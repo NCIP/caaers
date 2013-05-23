@@ -6,11 +6,7 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.accesscontrol.query.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
-import gov.nih.nci.cabig.caaers.domain.index.IndexEntry;
 
 import com.semanticbits.security.contentfilter.IdFetcher;
 
@@ -51,8 +47,7 @@ public class CaaersResearchStaffIdFetcherImpl extends AbstractIdFetcher implemen
             " join study_index si on so.study_id = si.study_id " +
             " join organization_index oi on  oi.organization_id = sr.site_id  " +
             " where si.login_id = :LOGIN_ID " +
-
-            " and si.login_id = oi.login_id  ";
+            " and oi.login_id = :LOGIN_ID "  ;
 
 
     /**
@@ -62,8 +57,8 @@ public class CaaersResearchStaffIdFetcherImpl extends AbstractIdFetcher implemen
      */
     @Override
     public String getSiteScopedSQL(UserGroupType role) {
-        if(role != null) return siteScopedSQL + " and oi." + role.dbAlias() + " = :" + role.hqlAlias();
-        return siteScopedSQL;
+        if(isPostgeSQL()) return siteScopedSQL + " and oi.role & " + role.getPrivilege() + " > 0";
+        return siteScopedSQL + " and bitand(oi.role , " + role.getPrivilege() + ") > 0";
     }
 
     /**
@@ -73,8 +68,8 @@ public class CaaersResearchStaffIdFetcherImpl extends AbstractIdFetcher implemen
      */
     @Override
     public String getStudyScopedSQL(UserGroupType role) {
-        if(role != null) return studyScopedSQL +  " and si." + role.dbAlias() + " = oi." + role.dbAlias()  + " and si." + role.dbAlias() + " = :" + role.hqlAlias();
-        return studyScopedSQL;
+        if(isPostgeSQL()) return studyScopedSQL +  " and si.role & " + role.getPrivilege() + " > 0 and oi.role & " + role.getPrivilege()  + " > 0 ";
+        return studyScopedSQL +  " and bitand(si.role, " + role.getPrivilege() + ") > 0 and bitand(oi.role, " + role.getPrivilege()  + ") > 0 ";
     }
 
 	

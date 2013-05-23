@@ -45,8 +45,8 @@ public class CSMCacheManager {
        CacheManager cacheManager = getCacheManager();
        if(cacheManager.getCache(USER_CACHE_KEY) == null){
            synchronized (cacheManager){
-               //why 40, BJ is anticipating that there will only be 20 concurrent sessions. 
-               Cache cache = new Cache(USER_CACHE_KEY, 40, false, false, TIME_TO_LIVEINCACHE_INSECONDS, IDLE_TIME_INSECONDS_FOR_USER);
+               //why 40, BJ is anticipating that there will only be 100 concurrent sessions.
+               Cache cache = new Cache(USER_CACHE_KEY, 260, false, false, TIME_TO_LIVEINCACHE_INSECONDS, IDLE_TIME_INSECONDS_FOR_USER);
                cacheManager.addCache(cache);
            }
        }
@@ -60,14 +60,12 @@ public class CSMCacheManager {
 	 * @param objectId
 	 * @param privilege
 	 */
-	public static void addRolePrivilegeMappingToCache(String objectId,
-			String privilege, List<String> roles) {
+	public static void addRolePrivilegeMappingToCache(String objectId, String privilege, List<String> roles) {
 		CacheManager cacheManager = getCacheManager();
 		if (cacheManager.getCache(ROLE_PRIVILEGE_MAPPING_CACHE_KEY) == null) {
 			synchronized (cacheManager) {
 				if (cacheManager.getCache(ROLE_PRIVILEGE_MAPPING_CACHE_KEY) == null) {
-					Cache cache = new Cache(ROLE_PRIVILEGE_MAPPING_CACHE_KEY, 600, true, false, TIME_TO_LIVEINCACHE_INSECONDS,
-							IDLE_TIME_INSECONDS);
+					Cache cache = new Cache(ROLE_PRIVILEGE_MAPPING_CACHE_KEY, 600, true, false, TIME_TO_LIVEINCACHE_INSECONDS, IDLE_TIME_INSECONDS);
 					cacheManager.addCache(cache);					
 				}
 			}
@@ -85,8 +83,8 @@ public class CSMCacheManager {
     public static User getUserFromCache(String loginName){
         Cache cache = getCacheManager().getCache(USER_CACHE_KEY);
         if(cache != null){
-            Element e = cache.get(loginName);
-            if(e != null) return (User) e.getObjectValue();
+            Element userElement = cache.get(loginName);
+            if(userElement != null) return (User) userElement.getObjectValue();
         }
 
        
@@ -100,7 +98,8 @@ public class CSMCacheManager {
     public static void removeUserFromCache(String loginName){       
        Cache cache = getCacheManager().getCache(USER_CACHE_KEY);
         if(cache != null){
-            cache.remove(loginName);
+            Element userElement = cache.get(loginName);
+            if(userElement != null)  cache.removeElement(userElement);
         }
     }
 
@@ -109,8 +108,7 @@ public class CSMCacheManager {
 	 * @param privilege
 	 * @return
 	 */
-	public static List<String> getRolesFromCache(String objectId,
-			String privilege) {
+	public static List<String> getRolesFromCache(String objectId, String privilege) {
 		List<String> list = null;
 		CacheManager cacheManager = getCacheManager();
 		Cache cache = cacheManager.getCache(ROLE_PRIVILEGE_MAPPING_CACHE_KEY);
@@ -122,25 +120,5 @@ public class CSMCacheManager {
 		}
 		return list;
 	}
-	
-	/**
-	 * 
-	 * @param cacheKey - ex: SessionID 
-	 * @param loginName- 
-	 * @return
-	 */
-	public static Set getContextFromCache(String cacheKey , String loginId , String context) {
-		CacheManager cacheManager = getCacheManager() ;
-		Cache cache = cacheManager.getCache(cacheKey);
-		if (cache == null) {
-			return null;
-		}		
-		Element ele = cache.get(loginId+"_"+context);
-		if (ele == null) {
-			return null;
-		}
-		return (Set)ele.getObjectValue();
-	}
-
 
 }
