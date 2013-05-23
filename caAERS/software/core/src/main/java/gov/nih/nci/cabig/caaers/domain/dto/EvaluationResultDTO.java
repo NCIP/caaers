@@ -579,6 +579,30 @@ public Map<Integer, Set<ReportDefinitionWrapper>> getAmendmentMap() {
 
 		return seriousAdverseEvents;
 	}
+
+    /**
+     *   join the amend, withdraw, edit and create maps.
+     *
+     */
+
+    public List<ReportDefinitionWrapper> getJoinAllMaps(Integer aeReportId) {
+
+        List<ReportDefinitionWrapper> wrappers = new ArrayList<ReportDefinitionWrapper>();
+
+        Set<ReportDefinitionWrapper> ammendWrappers = getAmendmentMap().get(aeReportId);
+        if(ammendWrappers != null) wrappers.addAll(ammendWrappers);
+
+        Set<ReportDefinitionWrapper> withdrawWrappers = getWithdrawalMap().get(aeReportId);
+        if(withdrawWrappers != null) wrappers.addAll(withdrawWrappers);
+
+        Set<ReportDefinitionWrapper> editWrappers = getEditMap().get(aeReportId);
+        if(editWrappers != null) wrappers.addAll(editWrappers);
+
+        Set<ReportDefinitionWrapper> createWrappers = getCreateMap().get(aeReportId);
+        if(createWrappers != null) wrappers.addAll(createWrappers);
+
+        return wrappers;
+    }
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()

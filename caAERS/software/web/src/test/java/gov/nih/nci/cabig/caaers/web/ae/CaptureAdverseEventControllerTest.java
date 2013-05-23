@@ -14,6 +14,7 @@ import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
+import gov.nih.nci.cabig.caaers.service.RecommendedActionService;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.validation.CaaersFieldConfigurationManager;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManagerFactoryBean;
@@ -67,6 +68,7 @@ public class CaptureAdverseEventControllerTest extends WebTestCase {
     StudyParticipantAssignment assignment;
 
     ReviewAndReportResult result;
+    RecommendedActionService recommendedActionService;
 
     public void setUp() throws Exception {
         super.setUp();
@@ -111,6 +113,7 @@ public class CaptureAdverseEventControllerTest extends WebTestCase {
         renderDecisionManagerFactoryBean = registerMockFor(RenderDecisionManagerFactoryBean.class);
         caaersFieldConfigurationManager = registerMockFor(CaaersFieldConfigurationManager.class);
         configuration = registerMockFor(Configuration.class);
+        recommendedActionService = registerMockFor(RecommendedActionService.class);
 
         controller = new CaptureAdverseEventController();
         controller.setParticipantDao(participantDao);
@@ -159,7 +162,7 @@ public class CaptureAdverseEventControllerTest extends WebTestCase {
 
 
 
-        command = new CaptureAdverseEventInputCommand(adverseEventReportingPeriodDao, evaluationService, reportDefinitionDao, studyDao, expeditedAdverseEventReportDao);
+        command = new CaptureAdverseEventInputCommand(adverseEventReportingPeriodDao, evaluationService, recommendedActionService, reportDefinitionDao, studyDao, expeditedAdverseEventReportDao);
         command.setAdverseEventReportingPeriod(adverseEventReportingPeriod);
         command.setStudy(assignment.getStudySite().getStudy());
         command.setParticipant(assignment.getParticipant());

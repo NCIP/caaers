@@ -4,14 +4,12 @@
  * Distributed under the OSI-approved BSD 3-Clause License.
  * See http://ncip.github.com/caaers/LICENSE.txt for details.
  ******************************************************************************/
-package gov.nih.nci.cabig.caaers.web.ae;
+package gov.nih.nci.cabig.caaers.domain;
 
-import java.util.Date;
-
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper;
 import gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper.ActionType;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+
+import java.util.Date;
 
 /**
  * This is a ValueObject used for UI rendering easynes.

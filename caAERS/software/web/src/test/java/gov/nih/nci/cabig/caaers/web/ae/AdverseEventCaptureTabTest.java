@@ -71,7 +71,7 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
 	}
 	
     private void setUpCommand(AdverseEventReportingPeriod reportingPeriod){
-        command = new CaptureAdverseEventInputCommand(null, null, reportDefinitionDao, null, reportDao);
+        command = new CaptureAdverseEventInputCommand(null, null,null, reportDefinitionDao, null, reportDao);
         command.setAdverseEventReportingPeriod(reportingPeriod);
         command.setParticipant(reportingPeriod.getParticipant());
         command.setStudy(reportingPeriod.getStudy());

@@ -225,6 +225,19 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
         return caaersServiceResponse;
 	}
 
+    private int findIndexFromReportPeriodList(List<AdverseEventReportingPeriod> reportingPeriodList, AdverseEventReportingPeriod rpFound) {
+        int i = 0 ;
+        for ( AdverseEventReportingPeriod rp: reportingPeriodList) {
+            if ( rp.getId().equals(rpFound.getId())) {
+                 return i;
+            }
+            i++;
+        }
+
+        return -1;
+
+    }
+
     public AdverseEventReportingPeriod createOrUpdateAdverseEvents(AdverseEventReportingPeriod rpSrc, ValidationErrors errors){
         //migrate the domain object
         AdverseEventReportingPeriod rpDest = new AdverseEventReportingPeriod();
@@ -242,7 +255,10 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
         String epochName = rpDest.getEpoch() != null ? rpDest.getEpoch().getName() : null;
         AdverseEventReportingPeriod rpFound = rpDest.getAssignment().findReportingPeriod(rpDest.getExternalId(), rpDest.getStartDate(),rpDest.getEndDate(), rpDest.getCycleNumber(), epochName, tac);
         ArrayList reportingPeriodList = new ArrayList<AdverseEventReportingPeriod>(rpDest.getAssignment().getActiveReportingPeriods());
-        if(rpFound != null) reportingPeriodList.remove(rpFound);
+        if(rpFound != null) {
+            int i = findIndexFromReportPeriodList(reportingPeriodList, rpFound);
+            if  ( i > 0 ) reportingPeriodList.remove(i);
+        }
 
         ValidationErrors dateValidationErrors = validateRepPeriodDates(rpDest, reportingPeriodList, rpDest.getAssignment().getStartDateOfFirstCourse(), rpDest.getEpoch());
         logger.info("Reporting period validation result :" + String.valueOf(dateValidationErrors));
@@ -1314,7 +1330,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 						break;
 					}
 				} else if (startDate != null && DateUtils.compareDate(sDate, startDate) == 0) {
-                    errors.addValidationError("WS_AEMS_017", "Course/cycle cannot overlap with an existing course/cycle.");
+                       errors.addValidationError("WS_AEMS_017", "Course/cycle cannot overlap with an existing course/cycle.");
 					break;
 				}
 
@@ -1326,7 +1342,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 						break;
 					}
 				} else if (sDate != null && DateUtils.compareDate(sDate, startDate) == 0) {
-                    errors.addValidationError("WS_AEMS_017", "Course/cycle cannot overlap with an existing course/cycle.");
+                     errors.addValidationError("WS_AEMS_017", "Course/cycle cannot overlap with an existing course/cycle.");
 					break;
 				}
 			}
@@ -1334,7 +1350,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 			// If the epoch of reportingPeriod is not - Baseline , then it
 			// cannot be earlier than a Baseline
 			if (epoch != null && epoch.getName().equals("Baseline")) {
-				if (!aerp.getEpoch().getName().equals("Baseline")) {
+				if ( aerp.getEpoch() != null && (!aerp.getEpoch().getName().equals("Baseline"))) {
 					if (DateUtils.compareDate(sDate, startDate) < 0) {
                         errors.addValidationError("WS_AEMS_018", "Baseline treatment type cannot start after an existing Non-Baseline treatment type.");
 						return errors;

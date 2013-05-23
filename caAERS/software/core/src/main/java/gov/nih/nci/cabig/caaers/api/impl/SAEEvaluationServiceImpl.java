@@ -13,14 +13,17 @@ import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.dto.EvaluationResultDTO;
+import gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AdverseEventType;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.*;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
+import gov.nih.nci.cabig.caaers.service.RecommendedActionService;
 import gov.nih.nci.cabig.caaers.service.migrator.adverseevent.AdverseEventConverter;
 import gov.nih.nci.cabig.caaers.service.migrator.adverseevent.SAEAdverseEventReportingPeriodConverter;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
+import gov.nih.nci.cabig.caaers.utils.DurationUtils;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 import gov.nih.nci.cabig.caaers.ws.faults.CaaersFault;
 
@@ -28,6 +31,7 @@ import java.net.UnknownHostException;
 import java.util.*;
 import java.util.Map.Entry;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -56,6 +60,7 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 	private ApplicationContext applicationContext;
 	private MessageSource messageSource;
 	private AdverseEventConverter converter;
+    private RecommendedActionService recommendedActionService;
     private enum RequestType{SaveEvaluate, Evaluate};
 	private static String DEF_ERR_MSG = "Error evaluating adverse events with SAE rules";
 
@@ -246,6 +251,7 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 			EvaluatedAdverseEventResults results = new EvaluatedAdverseEventResults();
 			response.setEvaluatedAdverseEventResults(results);
 			List<AdverseEventResult> aeResultList = results.getAdverseEventResult();
+
 			//populate the output list with the AdverseEventResult objects created for each AdverseEventType
 			aeResultList.addAll(mapAE2DTO.values());
             if ( requestType.equals(RequestType.SaveEvaluate)) {
@@ -253,6 +259,8 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
             }
 			
 			EvaluationResultDTO dto = evaluationService.evaluateSAERules(reportingPeriod);
+
+            findRecommendedActions(dto, reportingPeriod, response);
 									
 			Map<Integer, Map<AdverseEvent, Set<ReportDefinition>>> repAEIndexMap = dto.getAdverseEventIndexMap();
 			if(repAEIndexMap !=null) {
@@ -276,26 +284,11 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 						
 						// Now the process the Report Definitions
 						if (rds != null && rds.size() > 0) {
-	
-							RecommendedReports recommendedRpts = new RecommendedReports();
-							List<ReportType> rprtTypLst = recommendedRpts.getReportType();
-							for (ReportDefinition rd : rds) {
-								ReportType rpt = new ReportType();
-								rpt.setReportName(rd.getName());
-								rpt.setReportOrganizationId(rd.getOrganization().getNciInstituteCode());
-								rpt.setReportOrganizationName(rd.getOrganization().getName());
-								rpt.setDueIn(rd.getExpectedDisplayDueDate(aeDTO.getAdverseEvent().getDateFirstLearned().toGregorianCalendar()
-										.getTime()));
-								rprtTypLst.add(rpt);	
-							}
-
 							// Set the output
 							aeDTO.setRequiresReporting(true);
                             if ( requestType.equals(RequestType.SaveEvaluate)) {
                                 ((SaveAndEvaluateAEsOutputMessage)response).setHasSAE(true);
                             }
-
-							aeDTO.setRecommendedReports(recommendedRpts);
 						}
 					}//end of for AEs
 				}//end of for reports
@@ -311,6 +304,59 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 
 		return response;
 	}
+
+    private void  refreshReportIndexMap(Map<Integer, ExpeditedAdverseEventReport> aeReportIndexMap) {
+        Integer ZERO = new Integer(0);
+        aeReportIndexMap.put(ZERO, null);
+    }
+
+    /**
+     * Find the Actions to be recommended to the client
+     * @param evaluationResult
+     * @param reportingPeriod
+     * @param response
+     */
+    private void findRecommendedActions(EvaluationResultDTO evaluationResult, AdverseEventReportingPeriod reportingPeriod, AEsOutputMessage response) {
+
+        List<RecommendedActions> recommendedActions = new ArrayList<RecommendedActions>();
+
+        ((SaveAndEvaluateAEsOutputMessage)response).setRecommendedActions(recommendedActions);
+
+        Map<Integer, ExpeditedAdverseEventReport> aeReportIndexMap =  reportingPeriod.populateAeReportIndexMap();
+
+        refreshReportIndexMap(aeReportIndexMap);
+
+        Map<Integer, List<ReportTableRow>> recommendedReportTableMap = new LinkedHashMap<Integer, List<ReportTableRow>>();
+
+        recommendedActionService.generateRecommendedReportTable(evaluationResult, aeReportIndexMap, recommendedReportTableMap);
+
+        for ( Integer aeReportId :recommendedReportTableMap.keySet() ) {
+
+            List<ReportTableRow> rows = recommendedReportTableMap.get(aeReportId);
+
+            for( ReportTableRow row : rows) {
+                RecommendedActions action = new RecommendedActions();
+
+                action.setReport(row.getReportDefinition().getLabel());
+                action.setAction(row.getAction().getDisplayName());
+                action.setStatus(row.getStatus());
+                action.setDue(row.getDue());
+
+                if (row.getAction().equals(ReportDefinitionWrapper.ActionType.AMEND)) {
+                    action.setStatus("Being amended");
+                    action.setDue(row.getStatus());
+                }
+
+                if (row.getAction().equals(ReportDefinitionWrapper.ActionType.WITHDRAW)) {
+                    action.setStatus("Being withdrawn");
+                    action.setDue("");
+                }
+
+                recommendedActions.add(action);
+            }
+
+        }
+    }
 
     public AdverseEventResult findAdverseEvent(AdverseEvent thatAe,Map<AdverseEvent, AdverseEventResult> mapAE2DTO){
         for(AdverseEvent thisAe : mapAE2DTO.keySet()){
@@ -480,5 +526,13 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 
     public void setReportingPeriodConverter(SAEAdverseEventReportingPeriodConverter reportingPeriodConverter) {
         this.reportingPeriodConverter = reportingPeriodConverter;
+    }
+
+    public RecommendedActionService getRecommendedActionService() {
+        return recommendedActionService;
+    }
+
+    public void setRecommendedActionService(RecommendedActionService recommendedActionService) {
+        this.recommendedActionService = recommendedActionService;
     }
 }

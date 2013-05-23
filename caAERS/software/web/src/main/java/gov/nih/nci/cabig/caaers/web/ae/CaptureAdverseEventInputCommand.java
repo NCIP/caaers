@@ -10,18 +10,7 @@ import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.Ctc;
-import gov.nih.nci.cabig.caaers.domain.CtcCategory;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.LabLoad;
-import gov.nih.nci.cabig.caaers.domain.Outcome;
-import gov.nih.nci.cabig.caaers.domain.OutcomeType;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.ReportStatus;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.dto.ApplicableReportDefinitionsDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.EvaluationResultDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper;
@@ -29,6 +18,7 @@ import gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper.ActionType;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
+import gov.nih.nci.cabig.caaers.service.RecommendedActionService;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.utils.DurationUtils;
 
@@ -90,6 +80,8 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	private String reportingMethod;
 	protected HashMap<String, Boolean> errorsForFields;
 	protected String verbatim;
+
+    private RecommendedActionService recommendedActionService;
 	
 	public CaptureAdverseEventInputCommand(){
 
@@ -103,7 +95,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	}
 	
 	public CaptureAdverseEventInputCommand(AdverseEventReportingPeriodDao adverseEventReportingPeriodDao, 
-				 EvaluationService evaluationService, ReportDefinitionDao reportDefinitionDao, StudyDao studyDao, ExpeditedAdverseEventReportDao aeReportDao){
+				 EvaluationService evaluationService, RecommendedActionService recommendedActionService, ReportDefinitionDao reportDefinitionDao, StudyDao studyDao, ExpeditedAdverseEventReportDao aeReportDao){
 		
 		this();
 		this.adverseEventReportingPeriodDao = adverseEventReportingPeriodDao;
@@ -111,6 +103,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		this.reportDefinitionDao = reportDefinitionDao;
 		this.studyDao = studyDao;
 		this.aeReportDao = aeReportDao;
+        this.recommendedActionService = recommendedActionService;
 		
 	}
 	
@@ -616,75 +609,8 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
      * This method will create the value objects that needs to be displayed on the UI for recommended options.
      */
     public void refreshRecommendedReportTable(){
-
     	recommendedReportTableMap.clear();
-    	
-    	//for every report id (including ZERO)
-    	for(Integer aeReportId : aeReportIndexMap.keySet()){
-
-        	//do for the default (new data collection).
-        	List<ReportTableRow> tableRows = new ArrayList<ReportTableRow>();
-        	
-        	//for the default data collection (which will be new)
-        	List<AdverseEvent> seriousAdverseEvents = evaluationResult.getSeriousAdverseEvents(aeReportId);
-        	Date updatedDate = null;
-        	Date gradedDate = null;
-        	if(CollectionUtils.isNotEmpty(seriousAdverseEvents)){
-        		updatedDate = AdverseEventReportingPeriod.findEarliestPostSubmissionUpdatedDate(seriousAdverseEvents);
-        		gradedDate = AdverseEventReportingPeriod.findEarliestGradedDate(seriousAdverseEvents);
-            	
-        	}
-        		
-        	if(updatedDate == null) updatedDate = new Date();
-        	if(gradedDate == null) gradedDate = new Date();
-        	
-        	//join the amend, withdraw, edit and create maps. 
-    		List<ReportDefinitionWrapper> wrappers = new ArrayList<ReportDefinitionWrapper>();
-    		
-    		Set<ReportDefinitionWrapper> ammendWrappers = evaluationResult.getAmendmentMap().get(aeReportId);
-    		if(ammendWrappers != null) wrappers.addAll(ammendWrappers);
-    		
-    		Set<ReportDefinitionWrapper> withdrawWrappers = evaluationResult.getWithdrawalMap().get(aeReportId);
-    		if(withdrawWrappers != null) wrappers.addAll(withdrawWrappers);
-    		
-    		Set<ReportDefinitionWrapper> editWrappers = evaluationResult.getEditMap().get(aeReportId);
-    		if(editWrappers != null) wrappers.addAll(editWrappers);
-    		
-    		Set<ReportDefinitionWrapper> createWrappers = evaluationResult.getCreateMap().get(aeReportId);
-    		if(createWrappers != null) wrappers.addAll(createWrappers);
-    		
-    		
-    		for(ReportDefinitionWrapper wrapper: wrappers){
-    			
-    			//if there is already a report created from the same group. use updated date.
-    			Date baseDate =  gradedDate;
-    			if(wrapper.getAction() == ActionType.CREATE){
-    				ExpeditedAdverseEventReport aeReport = aeReportIndexMap.get(aeReportId);
-    				if(aeReport != null){
-    					if(aeReport.hasExistingReportsOfSameOrganizationAndType(wrapper.getDef())){
-    						baseDate = updatedDate;
-    					}
-    				}
-    			}
-    			
-        		ReportTableRow row  = ReportTableRow.createReportTableRow(wrapper.getDef(), baseDate, wrapper.getAction());
-        		row.setAeReportId(aeReportId);
-        		
-        		if(wrapper.getAction() == ActionType.AMEND){
-        			row.setStatus(wrapper.getStatus());
-        			row.setDue("");
-        		}else if(wrapper.getAction() == ActionType.WITHDRAW || wrapper.getAction() == ActionType.EDIT) {
-        			row.setDue(DurationUtils.formatDuration(wrapper.getDueOn().getTime() - new Date().getTime(), wrapper.getDef().getTimeScaleUnitType().getFormat()));
-        			row.setStatus(wrapper.getStatus());
-        		}else {
-        			row.setStatus(wrapper.getStatus());
-        		}
-        		
-        		tableRows.add(row);
-        	}
-    		recommendedReportTableMap.put(aeReportId, tableRows);
-    	}
-    	
+        recommendedActionService.generateRecommendedReportTable(evaluationResult, aeReportIndexMap, recommendedReportTableMap);
     }
     
     
@@ -986,4 +912,13 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     public void setVerbatim(String verbatim) {
         this.verbatim = verbatim;
     }
+
+    public RecommendedActionService getRecommendedActionService() {
+        return recommendedActionService;
+    }
+
+    public void setRecommendedActionService(RecommendedActionService recommendedActionService) {
+        this.recommendedActionService = recommendedActionService;
+    }
+
 }

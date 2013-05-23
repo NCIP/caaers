@@ -15,12 +15,7 @@ import gov.nih.nci.cabig.caaers.utils.DateUtils;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -879,6 +874,20 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
     		}
     	}
     	return d;
+    }
+
+    /** Create a Map with aeReportID as key, and ExpeditedAdverseEventReport as value
+     *
+     * @return aeReportIndexMap
+     */
+
+    public Map<Integer, ExpeditedAdverseEventReport> populateAeReportIndexMap() {
+        Map<Integer, ExpeditedAdverseEventReport> aeReportIndexMap = new HashMap<Integer, ExpeditedAdverseEventReport>();
+        for(ExpeditedAdverseEventReport aeReport : this.getAeReports()){
+            aeReportIndexMap.put(aeReport.getId(), aeReport);
+        }
+
+        return aeReportIndexMap;
     }
 
     public AdverseEvent findAdverseEventByIdTermAndDates(AdverseEvent thatAe){
