@@ -287,7 +287,7 @@ public class ParticipantServiceImpl extends AbstractImportService implements App
 			Participant importedDomainObject = participantImportOutcome.getImportedDomainObject();
 			participantDao.save(importedDomainObject);
 			String message = messageSource.getMessage("WS_PMS_006", 
-					new String[] { importedDomainObject.getFirstName(), importedDomainObject.getLastName(), studySubjectIdentifier },
+					new String[] { importedDomainObject.getFirstName(), importedDomainObject.getLastName(),importedDomainObject.getPrimaryIdentifier().getValue(), studySubjectIdentifier },
 					"", Locale.getDefault());    
 			Helper.populateMessage(caaersServiceResponse, message);
 			logger.info(message);
