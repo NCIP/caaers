@@ -6,12 +6,13 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 --%>
 <%@include file="/WEB-INF/views/taglibs.jsp" %>
 <c:set var="commentsIcon"><img src="<chrome:imageUrl name="../editComment.png" />" /></c:set>
+<jsp:useBean id="now" class="java.util.Date" scope="request" />
 <c:if test="${not empty roles.ae_reporter or not empty roles.ae_expedited_report_reviewer}">
 
 <chrome:boxIPhone style="width:700px;">
 <jsp:attribute name="title"><caaers:message code="dashboard.taskNotifications" /></jsp:attribute>
 <jsp:body>
-    <div id="tasksNotifications" class="<c:if test="${fn:length(taskNotifications) > 4}">scrollerTask</c:if>">
+    <div id="tasksNotifications" class="${fn:length(taskNotifications) gt 4 ? 'scrollerTask' : ''}">
         <table border="0" cellpadding="0" cellspacing="0" class="dashboard_table" width="99%">
             <tr class="taskTitleRow">
                 <th nowrap>Date Created</th>
@@ -39,7 +40,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
                     <%--<td valign="top"><select name="s101"><option value="-">Please select</select></td>--%>
                 </tr>
             </c:forEach>
-            <c:if test="${fn:length(taskNotifications) == 0}">
+            <c:if test="${fn:length(taskNotifications) eq 0}">
                 <tr><td colspan="5"><caaers:message code="dashboard.noResults" /></td></tr>
             </c:if>
         </table>
@@ -149,9 +150,9 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 </script>
 
 <chrome:boxIPhone style="width:700px;">
-    <jsp:attribute name="title"><caaers:message code="dashboard.safetyReports" /> (${fn:length(reportActivity)})</jsp:attribute>
+    <jsp:attribute name="title"><caaers:message code="dashboard.safetyReports" /> (<span id="safety-rep-cnt">0</span>)</jsp:attribute>
 <jsp:body>
-<c:if test="${fn:length(reportActivity) > 0}">
+
 <table width="100%">
 <tr>
     <td valign="top">
@@ -181,6 +182,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
         }
 
         function dateChanged(calendar) {
+
             // Beware that this function is called even if the end-user only
             // changed the month/year.  In order to determine if a date was
             // clicked you can use the dateClicked property of the calendar:
@@ -188,100 +190,110 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
                 var y = calendar.date.getFullYear();
                 var m = calendar.date.getMonth() + 1;     // integer, 1..12
                 var d = calendar.date.getDate();      // integer, 1..31
-                scrollByDate(y, m, d);
+                var dKey =  ((m < 10 ? '0' : '') + m) + '/' + ( ( d < 10 ? '0' : '') + d ) + '/' + y
+                jQuery('#reportActivity').scrollTo(dKey)
             }
         };
 
-        <jsp:useBean id="now" class="java.util.Date" scope="request" />
 
-        var ACTIVITYDATES = {
-            <c:forEach items="${reportActivity}" var="rvDTO" varStatus="index">
-                <c:set var="_s" value="${rvDTO.rv.reportStatus}" />
-                <c:choose>
-                    <c:when test="${_s eq 'COMPLETED' or _s eq 'AMENDED'}">'<tags:formatDate value="${rvDTO.rv.submittedOn}" />':1,</c:when>
-                    <c:when test="${_s eq 'PENDING' or _s eq 'INPROCESS' or _s eq 'FAILED'}">'<tags:formatDate value="${rvDTO.rv.dueOn}" />':-1,</c:when>
-                </c:choose>
-            </c:forEach>"0000/00/00":false}
 
-        function scrollByDate(y, m, d) {
-            if (m < 10) m = '0' + m;
-            if (d < 10) d = '0' + d;
-            // $('CC').innerHTML = y + '-' + m + '-' + d;
 
-            var _el1 = 'AB_' +  m + '_' + d + '_' + y;
-            var _el2 = 'CD_' +  m + '_' + d + '_' + y;
-            // alert(_el1 + '/' + _el2);
-            if ($(_el2)) {
-                jQuery('#dueReports').scrollTo(jQuery('#' + _el2));
-            } else {
-                var cdClosestRed = findClosestTo(-1, y, m - 1, d);
-                cdClosestRed = "CD_" + cdClosestRed.replace(/\//gi, "_");
-                jQuery('#dueReports').scrollTo(jQuery('#' + cdClosestRed));
-                // $('CC').innerHTML = cdClosestRed;
-            }
+        AE.safetyTblTemplate = '<table border="0" cellpadding="0" cellspacing="0" class="dashboard_table" width="99%">  <tr> <th>Report name</th>  <th>Study/Subject</th>  <th>Status</th>  </tr> #{sfDataRows}</table>';
+        AE.safetyTblDataRowTemplate = '<tr class="#{trCss}" style="border-bottom:1px #eeeeee solid;" ><td><a href="#{href}" onmouseover="showToolTip(#{toolTip});" onmouseout="tt_Hide();" >#{sfReportName}</a></td><td>#{sfStudySubject}</td><td><i>#{statusType}</i><span style="#{statusCss}">#{statusDate}</span></td></tr>';
+        AE.noSafetyDataTblDataRowTemplate = '<tr><td colspan="3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<caaers:message code="dashboard.noResults" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>' +
+                '<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>' +
+                '<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>' +
+                '<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>'
+        AE.indicatorSafetyDataTblDataRowTemplate = '<tr><td colspan="3"><img src="<tags:imageUrl name="indicator.gif" />" /></td></tr>'
+        AE.safetyReportTootipTemplate = '<span>' +
+        '<b style="color:yellow;">Report Name: </b>#{sfReportName}<br> '  +
+        '<b style="color:yellow;">Study: </b>#{studyShortTitle} <br> ' +
+        '<b style="color:yellow;">Participant: </b>#{subjectName}<br>' +
+        '<b style="color:yellow;">Study Site: </b> #{studySiteName} <br>' +
+        '<b style="color:yellow;">Course: </b> Cycle #: #{courseName}<br>' +
+        '</span>'
 
-            if ($(_el1)) {
-                jQuery('#reportActivity').scrollTo(jQuery('#' + _el1))
-            } else {
-                var abClosestGreen = findClosestTo(0, y, m - 1, d);
-                abClosestGreen = "AB_" + abClosestGreen.replace(/\//gi, "_");
-                jQuery('#reportActivity').scrollTo(jQuery('#' + abClosestGreen))
-            };
-        }
-        /*
-        *
-        * */
-        function days_between(date1, date2) {
-            // The number of milliseconds in one day
-            var ONE_DAY = 1000 * 60 * 60 * 24
-
-            // Convert both dates to milliseconds
-            var date1_ms = date1.getTime()
-            var date2_ms = date2.getTime()
-
-            // Calculate the difference in milliseconds
-            var difference_ms = Math.abs(date1_ms - date2_ms)
-
-            // Convert back to days and return
-            return Math.round(difference_ms/ONE_DAY)
-        }
-
-        /*
-        * lookupValue - 0 for SKIP, -1 PastDueDate, 1 - Submitted
-        *
-        * */
-        function findClosestTo(lookupValue, y, m, d) {
-            var diff = 0;
-            var closest = "";
-            var selectedDate = new Date(y, m, d);
-            var selectedTime = selectedDate.getTime();
-            var compared = false;
-
-            $H(ACTIVITYDATES).each(function(pair) {
-                if (pair.value == lookupValue || lookupValue == 0) {
-                    var d = new Date(pair.key);
-                    var _time = d.getTime();
-
-                    if (!compared || Math.abs(selectedTime - _time) < diff) {
-                        compared =  true;
-                        closest = pair.key;
-                        diff = (selectedTime - _time);
-                    }
-                }
-            });
-
-            return closest;
-        }
-
+        AE.reportEditLinkTemplate = '<c:url value="/pages/ae/reviewResolver"/>?rvID=#{rvId}&aeReport=#{aeReportId}&report=#{reportId}&src=RoutingReview';
+        AE.reportViewLinkTemplate = '<c:url value="/pages/ae/list" />?assignment=#{assignmentId}';
         function ourDateStatusFunc(date, year, month, day) {
-            var _m = month + 1; var _d = day; var _y = year;
-            if (_m < 10) _m = '0' + _m; if (_d < 10) _d = '0' + _d;
-            if (ACTIVITYDATES[_m + '/' + _d + '/' + _y] == 1) return "reportActivity";
-            if (ACTIVITYDATES[_m + '/' + _d + '/' + _y] == -1) return "pastDue";
-            return false;
-            // other dates are enabled
-            // return true if you want to disable other dates
-        };
+            var y = '_' + year
+            var d = (day < 10 ?  '_0': '_') + day
+            var m = (month < 9 ? '0' : '') + (month + 1)
+
+
+            var dKey = 'd_'+ m + d + y;
+
+            if(day == 1)  {
+                AE.safetyReportIndexMap = $H();
+                AE.safetyReportDateIndexMap = $H();
+                var dataRows =  ''
+                $('reportActivity').innerHTML = AE.safetyTblTemplate.interpolate({sfDataRows:AE.indicatorSafetyDataTblDataRowTemplate})
+                createAE.fetchSafetyReports(date,{ async:false, callback: function(safetyReports){
+                    var i = 0;
+
+                    //fetch the safety reports from server
+                    if(safetyReports.length > 0) {
+
+                        var trCss = ''
+                        $A(safetyReports).each(function(rv){
+
+                            AE.safetyReportIndexMap.set(rv.id, rv)
+                            var rvKey = 'd_' + rv.statusDisplayDate.replace('/', '_').replace('/' , '_')
+                            var rvCurrState =  AE.safetyReportDateIndexMap.get(rvKey)
+                            if(rvCurrState == null){rvCurrState = false}
+                            AE.safetyReportDateIndexMap.set(rvKey, rvCurrState || rv.due)
+
+                            var stDate = rv.statusDisplayDate.escapeHTML()
+                            var stType = ''
+                            var stCss = '';
+                            var reportName = rv.reportName.escapeHTML()
+                            var studyId = rv.studyPrimaryIdentifier != null ? rv.studyPrimaryIdentifier.escapeHTML():''
+                            var subjectId = rv.subjectPrimaryIdentifier != null ? rv.subjectPrimaryIdentifier.escapeHTML():''
+                            var studyTitle = rv.studyShortTitle.escapeHTML()
+                            var subjectName = rv.subjectDisplayName.escapeHTML()
+                            var studySiteName = rv.studySiteDisplayName.escapeHTML()
+                            var courseName = rv.courseDisplayName.escapeHTML()
+                            var assignmentId = rv.assignmentID;
+                            var reportId= rv.reportID;
+                            var aeReportId = rv.aeReportID;
+                            var toolTip = rv.id
+                            var href = ""
+                            trCss = rvKey + (i%2 > 0 ? ' ' : ' alt')
+                            if(rv.due){  stType = 'Due on: ';stCss='color:#e74f4f'; href=AE.reportEditLinkTemplate.interpolate({rvId:rv.id, reportId:reportId, assignmentId:assignmentId, aeReportId: aeReportId}); }
+                            if(rv.withdrawn) { stType = 'Withdrawn on: '; stCss='color:#2e83bb'; href=AE.reportViewLinkTemplate.interpolate({rvId:rv.id, reportId:reportId, assignmentId:assignmentId, aeReportId: aeReportId});}
+                            if(rv.complete) { stType = 'Submitted on: ';stCss='color:#66a811'; href=AE.reportViewLinkTemplate.interpolate({rvId:rv.id, reportId:reportId, assignmentId:assignmentId, aeReportId: aeReportId});}
+                            dataRows =  dataRows + AE.safetyTblDataRowTemplate.interpolate({sfReportName: reportName,
+                                sfStudySubject : studyId + '<br/>' + subjectId,
+                                statusDate: stDate,
+                                trCss: trCss,
+                                statusCss: stCss,
+                                toolTip: toolTip ,
+                                href:href,
+                                statusType:stType
+                            })
+                            i++
+                        });
+                        var abcd =     AE.safetyReportDateIndexMap.toJSON()
+
+                    } else {
+                        dataRows =  AE.noSafetyDataTblDataRowTemplate
+                    }
+
+                    $('reportActivity').innerHTML = AE.safetyTblTemplate.interpolate({sfDataRows:dataRows})
+                    $('safety-rep-cnt').innerHTML = safetyReports.length;
+                }
+            }
+                );
+            }
+            if( AE.safetyReportDateIndexMap == null) return false;
+            var xxx =     AE.safetyReportDateIndexMap.toJSON()
+
+            var  hasDue = AE.safetyReportDateIndexMap.get(dKey)
+            if(hasDue == null) return false;
+            if(hasDue) return  "pastDue"; else return 'reportActivity';
+            return false
+        }
+
 
         function initCalendar() {
             Calendar.setup({
@@ -296,7 +308,6 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 
         Event.observe(window, 'load', function() {
             initCalendar();
-            scrollByDate(<fmt:formatDate value="${now}" pattern="yyyy"/>, <fmt:formatDate value="${now}" pattern="MM"/>, <fmt:formatDate value="${now}" pattern="dd"/>);
 
             jQuery("td.quickLinkBGon").mouseover(function() {
                 jQuery(this).removeClass('quickLinkBGon');
@@ -309,10 +320,22 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
             });
         });
 
-        function showToolTip(text, title) {
+        function showToolTip(rvId) {
+
+            var rv =  AE.safetyReportIndexMap.get(rvId)
+
+            var reportName = rv.reportName.escapeHTML()
+            var studyTitle = rv.studyShortTitle.escapeHTML()
+            var subjectName = rv.subjectDisplayName.escapeHTML()
+            var studySiteName = rv.studySiteDisplayName.escapeHTML()
+            var courseName = rv.courseDisplayName.escapeHTML()
+            var text = AE.safetyReportTootipTemplate.interpolate({
+                sfReportName: reportName, studyShortTitle :  studyTitle,   subjectName :  subjectName, studySiteName: studySiteName,courseName: courseName
+            })
+
             Tip(text,
                     WIDTH, 300,
-                    TITLE, title,
+                    TITLE, '',
                     SHADOW, false,
                     FADEIN, 300,
                     FADEOUT, 300,
@@ -328,78 +351,11 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
             );
         }
 
+
     </script>
 
 <div id="ticker-container">
 <div id="reportActivity" class="scroller">
-
-    <c:set var="_DATE" value="" />
-    <table border="0" cellpadding="0" cellspacing="0" class="dashboard_table" width="99%">
-        <tr>
-            <th>Report name
-            <th>Study/Subject
-            <th>Status
-        </tr>
-        <c:forEach items="${reportActivity}" var="rvDTO" varStatus="index">
-            <c:set var="ALT" value="${index.count % 2 == 0 ? 'alt' : ''}"></c:set>
-            <%--<c:if test="${index.first}"> first</c:if><c:if test="${index.last}"> last</c:if>--%>
-
-            <%--
-                Computing the ID of the row
-                id the date is the same as previews row them display the ID based on index
-                otherwise ID is based on date's value, for scrolling by ID
-            --%>
-            <c:set var="_dateString"><jsp:attribute name="value"><c:if test="${rvDTO.rv.submittedOn ne null}"><tags:formatDate value="${rvDTO.rv.submittedOn}" /></c:if><c:if test="${rvDTO.rv.submittedOn eq null}"><tags:formatDate value="${rvDTO.rv.dueOn}" /></c:if></jsp:attribute></c:set>
-            <c:set var="_ID" value="tr_RA_${index.index}" />
-
-            <c:if test="${_DATE ne _dateString}">
-                <c:set var="_ID" value="${fn:replace(_dateString, '/', '_')}" />
-                <c:set var="_DATE" value="${_dateString}" />
-            </c:if>
-
-            <span id="_Description${rvDTO.rv.id}" style="display:none;">
-                <b style="color:yellow;">Report Name: </b><c:out value="${rvDTO.reportName}" escapeXml="true" /> <br>
-                <b style="color:yellow;">Study: </b><c:out value="${rvDTO.studyShortTitle}" escapeXml="true" /> <br>
-                <b style="color:yellow;">Participant: </b><c:out value="${rvDTO.subjectFirstName}" escapeXml="true" /> &nbsp;<c:out value="${rvDTO.subjectLastName}" escapeXml="true" /> &nbsp(<c:out value="${rvDTO.subjectPrimaryIdentifier}" escapeXml="true" /> )<br>
-                <b style="color:yellow;">Study Site: </b><c:out value="${rvDTO.studySiteName}" escapeXml="true" />&nbsp;(${rvDTO.studySiteCode})<br>
-                <b style="color:yellow;">Course: </b> Cycle #: <c:out value="${rvDTO.periodCycle}" escapeXml="true" />&nbsp;<c:if test="${not empty rvDTO.periodStartDate}">(<fmt:formatDate value="${rvDTO.periodStartDate}" />)</c:if><br>
-            </span>
-            <tr class="${ALT}" style="border-bottom:1px #eeeeee solid;" id="AB_${_ID}">
-                <c:set var="_s" value="${rvDTO.rv.reportStatus}" />
-
-                <td>&nbsp;<a <c:if test="${_s eq 'COMPLETED' or _s eq 'WITHDRAWN'}"></c:if> onmouseover="showToolTip($('_Description${rvDTO.rv.id}').innerHTML, '');" onmouseout="tt_Hide();" <c:if test="${_s ne 'COMPLETED' and _s ne 'WITHDRAWN'}">href="<c:url value="/pages/ae/reviewResolver?rvID=${rvDTO.rv.id}&aeReport=${rvDTO.aeReportID}&report=${rvDTO.reportID}&src=RoutingReview" />"</c:if><c:if test="${_s eq 'COMPLETED' or _s eq 'WITHDRAWN'}">href="<c:url value="/pages/ae/list?assignment=${rvDTO.assignmentID}" />"</c:if> >${rvDTO.reportName}</a></td>
-                <td width="130px">${rvDTO.studyPrimaryIdentifier}<br>${rvDTO.subjectPrimaryIdentifier}</td>
-                <%--<td>${rvDTO.rv.reportStatus}</td>--%>
-                <c:choose>
-                    <c:when test="${_s eq 'PENDING' or _s eq 'INPROCESS' or _s eq 'FAILED'}">
-                        <td><i>Due on:</i><br><span style="color:#e74f4f"><tags:formatDate value="${rvDTO.rv.dueOn}" /></span></td>
-                    </c:when>
-                    <c:when test="${_s eq 'WITHDRAWN' or _s eq 'REPLACED'}">
-                        <td><i>Withdrawn on:</i><br><span style="color:#2e83bb;"><tags:formatDate value="${rvDTO.rv.withdrawnOn}" /></span></td>
-                    </c:when>
-                    <c:when test="${_s eq 'COMPLETED' or _s eq 'AMENDED'}">
-                        <td><i>Submitted on:</i><br><span style="color:#66a811;"><tags:formatDate value="${rvDTO.rv.submittedOn}" /></span></td>
-                    </c:when>
-                </c:choose>
-<%--
-                <c:if test="${(rvDTO.rv.submittedOn eq null or rvDTO.rv.reportStatus ne 'COMPLETED') and rvDTO.rv.dueOn ne null}">
-                    <td align="right"><i>Due on:</i></td>
-                    <td align="left">
-                        <span style="color:#e74f4f"><tags:formatDate value="${rvDTO.rv.dueOn}" /></span>
-                    </td>
-                </c:if>
-                <c:if test="${rvDTO.rv.submittedOn ne null and rvDTO.rv.reportStatus eq 'COMPLETED'}">
-                    <td align="right" width="100px"><i>Submitted on:</i></td>
-                    <td align="left" width="70px"><span style="color:#66a811;"><tags:formatDate value="${rvDTO.rv.submittedOn}" /></span></td>
-                </c:if>
-                <c:if test="${rvDTO.rv.submittedOn eq null and rvDTO.rv.dueOn eq null}">
-                    <td align="right" width="100px"><i>Withdrawn on:</i></td>
-                    <td align="left" width="70px"><span style="color:#2e83bb;"><tags:formatDate value="${rvDTO.rv.withdrawnOn}" /></span></td>
-                </c:if>
---%>
-            </tr>
-        </c:forEach>
-    </table>
 
 </div>
 </div>
@@ -407,10 +363,8 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
     </td>
 <tr>
 </table>
-</c:if>
-<c:if test="${fn:length(reportActivity) == 0}">
-    <table border="0" cellpadding="0" cellspacing="0" class="dashboard_table" width="99%"><tr><td colspan="5"><caaers:message code="dashboard.noResults" /></td></tr></table>
-</c:if>
+
+
 </jsp:body>
 </chrome:boxIPhone>
 

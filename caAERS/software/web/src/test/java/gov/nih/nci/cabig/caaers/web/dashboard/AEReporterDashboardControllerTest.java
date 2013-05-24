@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.caaers.domain.dto.TaskNotificationDTO;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersionDTO;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepositoryImpl;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportVersionRepository;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
 import junit.framework.TestCase;
 import org.easymock.EasyMock;
@@ -49,12 +50,12 @@ public class AEReporterDashboardControllerTest extends WebTestCase {
     public void testHandleRequestInternal() throws Exception {
         assertSame(rrRepositry, controller.getRrRepositry());
         assertSame(reportVersionRepository, controller.getReportVersionRepository());
-        EasyMock.expect(reportVersionRepository.getReportActivity()).andReturn(reportActivity);
-        EasyMock.expect(rrRepositry.getTaskNotificationByUserLogin("SYSTEM_ADMIN")).andReturn(taskNotifications);
-        EasyMock.expect(personDao.getByLoginId("SYSTEM_ADMIN")).andReturn(new LocalResearchStaff());
+        EasyMock.expect(rrRepositry.getTaskNotificationByUserLogin("SYSTEM_ADMIN")).andReturn(taskNotifications).anyTimes();
+        EasyMock.expect(rrRepositry.getTaskNotificationByUserLogin("SYSTEM")).andReturn(taskNotifications).anyTimes();
+        EasyMock.expect(personDao.getByLoginId("SYSTEM_ADMIN")).andReturn(new LocalResearchStaff()).anyTimes();
+        EasyMock.expect(personDao.getByLoginId("SYSTEM")).andReturn(new LocalResearchStaff()).anyTimes();
         replayMocks();
         ModelAndView mv = controller.handleRequestInternal(request, response);
-        assertSame(reportActivity, mv.getModel().get("reportActivity"));
         assertSame(taskNotifications, mv.getModel().get("taskNotifications"));
         verifyMocks();
     }

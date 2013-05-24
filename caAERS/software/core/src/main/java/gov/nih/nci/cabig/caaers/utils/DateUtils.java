@@ -81,6 +81,37 @@ public class DateUtils {
 		return c.getTime();
 	}
 
+    public static Date firstDayOfThisMonth(){
+        return firstDayOfThisMonth(today());
+    }
+
+    /**
+     * Will return the date representing the first day of this month
+     * @param currDate
+     * @return
+     */
+    public static Date firstDayOfThisMonth(Date currDate){
+        Calendar c = Calendar.getInstance();
+        c.setTime(currDate);
+        c.set(Calendar.DAY_OF_MONTH, c.getActualMinimum(Calendar.DAY_OF_MONTH));
+        return c.getTime();
+    }
+
+    public static Date lastDayOfThisMonth(){
+        return lastDayOfThisMonth(today());
+    }
+    /**
+     * Will return the date representing the last day of this month
+     * @param currDate
+     * @return
+     */
+    public static Date lastDayOfThisMonth(Date currDate){
+        Calendar c = Calendar.getInstance();
+        c.setTime(currDate);
+        c.set(Calendar.DAY_OF_MONTH, c.getActualMaximum(Calendar.DAY_OF_MONTH));
+        return c.getTime();
+    }
+
     /**
      * Compares two dates. The time fields are ignored.
      * 

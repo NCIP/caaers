@@ -15,11 +15,13 @@ import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRe
 import gov.nih.nci.cabig.caaers.domain.repository.ReportVersionRepository;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -38,9 +40,12 @@ public class AEReporterDashboardController extends DashboardController {
 
 	public ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String loginId = SecurityUtils.getUserLoginName();
-        List<ReportVersionDTO> reportActivity = reportVersionRepository.getReportActivity();
+        Date startDate = DateUtils.firstDayOfThisMonth();
+        Date endDate = DateUtils.lastDayOfThisMonth();
+
+//        List<ReportVersionDTO> reportActivity = reportVersionRepository.getReportActivity(startDate, endDate);
         ModelAndView mv = new ModelAndView("dashboard/dashboard_AEReporter");
-        mv.addObject("reportActivity", reportActivity);
+//        mv.addObject("reportActivity", reportActivity);
 
         List<TaskNotificationDTO> taskNotifications = rrRepositry.getTaskNotificationByUserLogin(loginId);
         for (TaskNotificationDTO dto : taskNotifications) {

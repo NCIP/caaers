@@ -22,8 +22,10 @@ import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.report.ReportVersionDTO;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.ReportVersionRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
@@ -31,6 +33,7 @@ import gov.nih.nci.cabig.caaers.service.AdeersIntegrationFacade;
 import gov.nih.nci.cabig.caaers.service.InteroperationService;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.caaers.utils.ranking.RankBasedSorterUtils;
 import gov.nih.nci.cabig.caaers.utils.ranking.Serializer;
@@ -114,6 +117,7 @@ public class CreateAdverseEventAjaxFacade {
     private AdeersIntegrationFacade proxyWebServiceFacade;
     private SiteInvestigatorDao siteInvestigatorDao;
     private SiteResearchStaffDao siteResearchStaffDao;
+    private ReportVersionRepository reportVersionRepository;
 
     public Class<?>[] controllers() {
         return CONTROLLERS;
@@ -553,6 +557,21 @@ public class CreateAdverseEventAjaxFacade {
             category.setTerms(null);
         }
         return categories;
+    }
+
+    /**
+     * Returns the Safety reports to be displayed on the AEReporter Dashboard
+     * @param date
+     * @return
+     */
+    public List<ReportVersionDTO> fetchSafetyReports(Date date){
+        Date startDate = DateUtils.firstDayOfThisMonth(date);
+        Date endDate = DateUtils.lastDayOfThisMonth(date);
+        List<ReportVersionDTO> reportVersionDTOs = reportVersionRepository.getReportActivity(startDate, endDate);
+        if(reportVersionDTOs != null){
+            for(ReportVersionDTO rv: reportVersionDTOs) rv.setRv(null);
+        }
+        return reportVersionDTOs;
     }
 
     //will return the labTestNamesRefData Lov's matching the testName.
@@ -1518,5 +1537,13 @@ public class CreateAdverseEventAjaxFacade {
     @Required
     public void setSiteResearchStaffDao(SiteResearchStaffDao siteResearchStaffDao) {
         this.siteResearchStaffDao = siteResearchStaffDao;
+    }
+
+    public ReportVersionRepository getReportVersionRepository() {
+        return reportVersionRepository;
+    }
+
+    public void setReportVersionRepository(ReportVersionRepository reportVersionRepository) {
+        this.reportVersionRepository = reportVersionRepository;
     }
 }

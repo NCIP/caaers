@@ -6,7 +6,10 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.domain.report;
 
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
+import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -20,7 +23,27 @@ import java.util.Date;
  * The Class ReportVersionDTO.
  */
 public class ReportVersionDTO implements Serializable {
-    
+
+    //When we seralize this via DWR, we will throw away ReportVersion --
+    /** The created on. */
+    private Date createdOn;
+
+    /** The due on. */
+    private Date dueOn;
+
+    /** The submitted on. */
+    private Date submittedOn;
+
+    /** The withdrawn on. */
+    private Date withdrawnOn;
+
+    /** The amended on. */
+    private Date amendedOn;
+
+    private String reportStatus;
+    private Integer id;
+    //--- up till above attrivutes are added for smooth DWR seraialization ----
+
     /** The rv. */
     protected ReportVersion rv;
     
@@ -94,6 +117,18 @@ public class ReportVersionDTO implements Serializable {
         this.studySiteCode = ssCode;
         this.assignmentID = assignmentID;
         this.studyPrimaryIdentifier = studyPrimaryIdentifier;
+        copyReportVersionAttributes(rv);
+    }
+
+    public void copyReportVersionAttributes(ReportVersion rv){
+        if(rv == null) return;
+        dueOn = rv.getDueOn();
+        createdOn = rv.getCreatedOn();
+        submittedOn = rv.getSubmittedOn();
+        withdrawnOn = rv.getWithdrawnOn();
+        amendedOn = rv.getAmendedOn();
+        if(rv.getReportStatus() != null)   reportStatus = rv.getReportStatus().name();
+        id = rv.getId();
     }
 
     /**
@@ -103,6 +138,10 @@ public class ReportVersionDTO implements Serializable {
      */
     public ReportVersion getRv() {
         return this.rv;
+    }
+
+    public  void setRv(ReportVersion rv){
+        this.rv = rv;
     }
 
     /**
@@ -236,5 +275,98 @@ public class ReportVersionDTO implements Serializable {
 
     public void setStudyPrimaryIdentifier(String studyPrimaryIdentifier) {
         this.studyPrimaryIdentifier = studyPrimaryIdentifier;
+    }
+
+    public Date getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(Date createdOn) {
+        this.createdOn = createdOn;
+    }
+
+    public Date getDueOn() {
+        return dueOn;
+    }
+
+    public void setDueOn(Date dueOn) {
+        this.dueOn = dueOn;
+    }
+
+    public Date getSubmittedOn() {
+        return submittedOn;
+    }
+
+    public void setSubmittedOn(Date submittedOn) {
+        this.submittedOn = submittedOn;
+    }
+
+    public Date getWithdrawnOn() {
+        return withdrawnOn;
+    }
+
+    public void setWithdrawnOn(Date withdrawnOn) {
+        this.withdrawnOn = withdrawnOn;
+    }
+
+    public Date getAmendedOn() {
+        return amendedOn;
+    }
+
+    public void setAmendedOn(Date amendedOn) {
+        this.amendedOn = amendedOn;
+    }
+
+    public String getReportStatus() {
+        return reportStatus;
+    }
+
+    public void setReportStatus(String reportStatus) {
+        this.reportStatus = reportStatus;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public boolean isDue(){
+        return StringUtils.equals("PENDING", reportStatus) ||
+                StringUtils.equals("INPROCESS", reportStatus)|| StringUtils.equals(reportStatus, "FAILED");
+    }
+    public boolean isWithdrawn(){return StringUtils.equals("REPLACED", reportStatus) || StringUtils.equals("WITHDRAWN", reportStatus);}
+
+    public boolean isComplete(){return StringUtils.equals("COMPLETED", reportStatus) || StringUtils.equals("AMENDED", reportStatus);}
+
+    public String getStatusDisplayDate(){
+        if(isDue() && dueOn != null) return DateUtils.formatDate(dueOn);
+        if(isWithdrawn() && withdrawnOn != null) return DateUtils.formatDate(withdrawnOn);
+        if(isComplete() && submittedOn != null) return DateUtils.formatDate(submittedOn);
+        return "";
+    }
+
+    public String getSubjectDisplayName(){
+        String s = "";
+        if(subjectFirstName != null) s  = getSubjectFirstName();
+        if(subjectLastName != null) s  =  s + " " + getSubjectLastName();
+        if(subjectPrimaryIdentifier != null) s  =  s + " (" + getSubjectPrimaryIdentifier() + ")";
+        return  s;
+    }
+
+    public String getStudySiteDisplayName(){
+        String s = "";
+        if(studySiteName != null) s = getStudySiteName();
+        if(studySiteCode != null) s = s + " (" + getStudySiteCode() + ")";
+        return s;
+    }
+
+    public String getCourseDisplayName(){
+        String s = "";
+        if(periodCycle != null) s = "" + getPeriodCycle();
+        if(periodStartDate != null) s = s + " (" + DateUtils.formatDate(periodStartDate)+ ")";
+        return s;
     }
 }

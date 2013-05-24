@@ -57,14 +57,14 @@ public class ReportVersionRepository {
     }
 
 
-
     /**
      * Gets the report activity.
      *
      * @return the report activity
      */
-    public List<ReportVersionDTO> getReportActivity() {
+    public List<ReportVersionDTO> getReportActivity(Date startDate, Date endDate) {
         ReportVersionDTOQuery q = new ReportVersionDTOQuery();
+        q.filterByDatesBetween(startDate, endDate);
         q.orderBy("coalesce(rv.dueOn, rv.submittedOn,rv.withdrawnOn)");
         
 /*
