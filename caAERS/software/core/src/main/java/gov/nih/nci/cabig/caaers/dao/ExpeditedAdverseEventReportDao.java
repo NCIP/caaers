@@ -6,6 +6,7 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.dao;
 
+import edu.nwu.bioinformatics.commons.CollectionUtils;
 import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.*;
@@ -223,5 +224,9 @@ public class ExpeditedAdverseEventReportDao extends
 
         newAttribution.setAdverseEvent(ae);
         attributions.add(newAttribution);
+    }
+    public ExpeditedAdverseEventReport getByExternalId(String gridId) {
+        Object[] params = { gridId };
+        return (ExpeditedAdverseEventReport)CollectionUtils.firstElement(getHibernateTemplate().find("from ExpeditedAdverseEventReport aer where aer.externalId = ?", params));
     }
 }

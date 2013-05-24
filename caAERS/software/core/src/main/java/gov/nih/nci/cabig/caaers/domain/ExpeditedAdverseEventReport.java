@@ -103,7 +103,8 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     /** The Constant log. */
     private static final Log log = LogFactory.getLog(ExpeditedAdverseEventReport.class);
 
-    
+    private String externalId;
+
     // TODO
     // private List<MedicalDevice> medicalDevices;
 
@@ -1274,6 +1275,13 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         this.reportingPeriod = reportingPeriod;
     }
 
+    public String getExternalId() {
+        return externalId;
+    }
+
+    public void setExternalId(String externalId) {
+        this.externalId = externalId;
+    }
 
     /**
      * Gets the public identifier.

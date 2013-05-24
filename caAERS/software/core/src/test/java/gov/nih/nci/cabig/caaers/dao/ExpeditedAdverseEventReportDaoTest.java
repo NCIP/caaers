@@ -70,6 +70,13 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
         CoreTestCase.assertTimeOfDate("Wrong created at (time)", 13, 15, 30, 0, loaded
                         .getCreatedAt());
     }
+    public void testGetByExternalId(){
+        ExpeditedAdverseEventReport loaded = getDao().getByExternalId("15");
+        assertNotNull(loaded) ;
+        loaded = getDao().getByExternalId("unknown");
+        assertNull(loaded) ;
+
+    }
 
     public void testGetLabs() throws Exception {
         ExpeditedAdverseEventReport loaded = getDao().getById(-1);
