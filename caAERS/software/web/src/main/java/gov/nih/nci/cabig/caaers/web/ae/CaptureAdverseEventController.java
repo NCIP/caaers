@@ -28,6 +28,7 @@ import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.service.AdverseEventReportingPeriodService;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
+import gov.nih.nci.cabig.caaers.service.RecommendedActionService;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.validation.CaaersFieldConfigurationManager;
@@ -86,6 +87,8 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	
 	private RenderDecisionManagerFactoryBean renderDecisionManagerFactoryBean;
 	private CaaersFieldConfigurationManager caaersFieldConfigurationManager;
+
+    private RecommendedActionService recommendedActionService;
 	
 	private Configuration configuration;
 
@@ -258,7 +261,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	
 	@Override
 	protected Object formBackingObject(HttpServletRequest request)	throws Exception {
-		CaptureAdverseEventInputCommand cmd = new CaptureAdverseEventInputCommand(adverseEventReportingPeriodDao, evaluationService, reportDefinitionDao, studyDao, expeditedAdverseEventReportDao);
+		CaptureAdverseEventInputCommand cmd = new CaptureAdverseEventInputCommand(adverseEventReportingPeriodDao, evaluationService, recommendedActionService, reportDefinitionDao, studyDao, expeditedAdverseEventReportDao);
 
 		cmd.setWorkflowEnabled(configuration.get(Configuration.ENABLE_WORKFLOW));
 
@@ -547,4 +550,12 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	public void setCaaersFieldConfigurationManager(CaaersFieldConfigurationManager caaersFieldConfigurationManager){
 		this.caaersFieldConfigurationManager = caaersFieldConfigurationManager;
 	}
+
+    public RecommendedActionService getRecommendedActionService() {
+        return recommendedActionService;
+    }
+
+    public void setRecommendedActionService(RecommendedActionService recommendedActionService) {
+        this.recommendedActionService = recommendedActionService;
+    }
 }

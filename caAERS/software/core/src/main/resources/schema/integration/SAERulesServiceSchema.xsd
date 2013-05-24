@@ -149,7 +149,7 @@
 			<xs:sequence>
 				<xs:element minOccurs="1" ref="adverseEvent"/>			  
 				<xs:element minOccurs="0" name="requiresReporting" type="xs:boolean"/>
-				<xs:element minOccurs="0" name="recommendedReports" type="RecommendedReports"/>
+				<!--<xs:element minOccurs="0" name="recommendedReports" type="RecommendedReports"/> -->
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
@@ -167,6 +167,17 @@
             <xs:element minOccurs="1" name="studySubjectIdentifier" type="cct:CustomStringType"/>
             <xs:element minOccurs="1" name="studyIdentifier" type="cct:CustomStringType"/>
             <xs:element minOccurs="1" name="course" type="ae:CourseType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+
+    <xs:complexType name="RecommendedActions">
+        <xs:sequence>
+            <xs:element minOccurs="1" name="action" type="xs:string"/>
+            <xs:element minOccurs="1" name="report" type="xs:string"/>
+            <xs:element minOccurs="1" name="status" type="xs:string"/>
+            <xs:element minOccurs="1" name="due" type="xs:string"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -210,6 +221,7 @@
                 <xs:sequence>
                     <xs:element minOccurs="1"  name="hasSAE" type="xs:boolean"/>
                     <xs:element minOccurs="1" name="linkToReport" type="xs:string"/>
+                    <xs:element  minOccurs="0"  maxOccurs="unbounded" name="recommendedActions" type="RecommendedActions"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>

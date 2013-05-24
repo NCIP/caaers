@@ -21,10 +21,12 @@ import java.util.Date;
 public class AdverseEventReportingPeriodSynchronizer implements Migrator<AdverseEventReportingPeriod> {
 
     public void migrate(AdverseEventReportingPeriod src, AdverseEventReportingPeriod dest, DomainObjectImportOutcome<AdverseEventReportingPeriod> outcome) {
+
          dest.setStartDate(src.getStartDate());
          dest.setEndDate(src.getEndDate());
          dest.setCycleNumber(src.getCycleNumber());
          dest.setEpoch(src.getEpoch());
+         dest.setExternalId(src.getExternalId());
 
          int i = -1;
          for(AdverseEvent aeSrc : src.getAdverseEvents()){
@@ -39,11 +41,14 @@ public class AdverseEventReportingPeriodSynchronizer implements Migrator<Adverse
                 aeFound.setExpected(aeSrc.getExpected());
                 aeFound.setHospitalization(aeSrc.getHospitalization());
                 aeFound.setAttributionSummary(aeSrc.getAttributionSummary());
+                aeFound.setStartDate(aeSrc.getStartDate());
+                aeFound.setEndDate(aeSrc.getEndDate());
 
                 aeFound.setEventApproximateTime(aeSrc.getEventApproximateTime());
                 aeFound.setEventLocation(aeSrc.getEventLocation());
 
                 aeFound.setGrade(aeSrc.getGrade());
+                aeFound.setGradedDate(aeSrc.getGradedDate());
                 if(aeFound.getGradedDate() == null) aeFound.setGradedDate(new Date());
 
                 aeFound.setDetailsForOther(aeSrc.getDetailsForOther());

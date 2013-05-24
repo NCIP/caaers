@@ -28,6 +28,7 @@ import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
+import gov.nih.nci.cabig.caaers.service.RecommendedActionService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +47,7 @@ public class CaptureAdverseEventInputCommandTest extends AbstractTestCase {
 	private EvaluationService evaluationService;
 	private StudyDao studyDao;
 	private ExpeditedAdverseEventReportDao aeReportDao;
+    private RecommendedActionService recommendedActionService;
 	
 	List<AdverseEvent> aes;
 	List<ReportDefinition> reportdefs;
@@ -61,7 +63,8 @@ public class CaptureAdverseEventInputCommandTest extends AbstractTestCase {
 		evaluationService = registerMockFor(EvaluationService.class);
 		studyDao = registerDaoMockFor(StudyDao.class);
 		aeReportDao = registerDaoMockFor(ExpeditedAdverseEventReportDao.class);
-		command = new CaptureAdverseEventInputCommand(adverseEventReportingPeriodDao, evaluationService, reportDefinitionDao, studyDao,aeReportDao );
+        recommendedActionService = registerMockFor(RecommendedActionService.class);
+		command = new CaptureAdverseEventInputCommand(adverseEventReportingPeriodDao, evaluationService, recommendedActionService, reportDefinitionDao, studyDao,aeReportDao );
 		
 		reportingPeriod = Fixtures.createReportingPeriod();
 		

@@ -108,13 +108,16 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
         
         from("jetty:http://0.0.0.0:7700/caaers/ParticipantInitialization?httpBindingRef=participantODMMessageBinding")
 	        .streamCaching()
-	        .process(track(REQUEST_RECEIVED))
-	        .processRef("participantODMMessageProcessor")
-	        .processRef("headerGeneratorProcessor")
-	        .to(fileTracker.fileURI(REQUEST_RECEIVED))
-	        .to("xslt:" + "xslt/caaers/request/strip_namespaces.xsl")
-	        .process(track(PRE_PROCESS_OPEN_ODM_MSG))
-	        .to("direct:processedOpenOdmMessageSink");
+	        .choice() 
+		        .when(header("CamelHttpMethod").isEqualTo("POST"))
+		         	.process(track(REQUEST_RECEIVED))
+			        .processRef("participantODMMessageProcessor")
+			        .processRef("headerGeneratorProcessor")
+			        .to(fileTracker.fileURI(REQUEST_RECEIVED))
+			        .to("xslt:" + "xslt/caaers/request/strip_namespaces.xsl")
+			        .process(track(PRE_PROCESS_OPEN_ODM_MSG))
+			        .to("direct:processedOpenOdmMessageSink") 
+		         .otherwise().end();
 
         //configure route towards caAERS Webservices
     	toCaaersParticipantWSRouteBuilder.configure(this);

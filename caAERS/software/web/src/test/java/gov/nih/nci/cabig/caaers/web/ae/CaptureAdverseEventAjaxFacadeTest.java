@@ -19,6 +19,7 @@ import gov.nih.nci.cabig.caaers.domain.ajax.AdverseEventReportingPeriodAjaxableD
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepositoryImpl;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
+import gov.nih.nci.cabig.caaers.service.RecommendedActionService;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.web.DwrFacadeTestCase;
 import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
@@ -52,6 +53,7 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
     StudyParticipantAssignmentDao assignmentDao;
     StudyParticipantAssignment assignment;
     ParticipantDao participantDao;
+    private RecommendedActionService recommendedActionService;
 	
 	
 	@Override
@@ -70,6 +72,7 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
         studySite  = registerMockFor(StudySite.class);
         study  = registerMockFor(Study.class);
         assignment = registerMockFor(StudyParticipantAssignment.class);
+        recommendedActionService = registerMockFor(RecommendedActionService.class);
 
         participant = registerMockFor(Participant.class);
         
@@ -118,7 +121,7 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
 	
 	private CaptureAdverseEventInputCommand setupCaptureAdverseEventCommand(Term term) {
 		CaptureAdverseEventInputCommand command = new CaptureAdverseEventInputCommand(adverseEventReportingPeriodDao
-                , evaluationService, reportDefinitionDao , studyDao, aeReportDao);
+                , evaluationService, recommendedActionService, reportDefinitionDao , studyDao, aeReportDao);
 	
 		AdverseEventReportingPeriod reportingPeriod = Fixtures.createReportingPeriod(1,
                 DateUtils.formatDate(DateUtils.yesterday()),

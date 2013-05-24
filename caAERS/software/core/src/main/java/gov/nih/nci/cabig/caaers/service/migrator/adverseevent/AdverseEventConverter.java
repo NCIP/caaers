@@ -25,6 +25,7 @@ import gov.nih.nci.cabig.caaers.domain.TimeValue;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AdverseEventMeddraLowLevelTermType;
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AdverseEventType;
+import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.HospitalizationType;
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.OutcomeType;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 
@@ -95,8 +96,18 @@ public class AdverseEventConverter {
         if (adverseEventDto.getEventLocation() != null) {
             adverseEvent.setEventLocation(adverseEventDto.getEventLocation());
         }
+
+
         if (adverseEventDto.getOutcome() != null) {
             populateOutcomes(adverseEventDto,adverseEvent);
+        }
+        if ( adverseEventDto.getHospitalization().equals(HospitalizationType.YES)) {
+
+             if ( !(adverseEvent.getOutcomes().contains(gov.nih.nci.cabig.caaers.domain.OutcomeType.HOSPITALIZATION))){
+                 Outcome outCome = new Outcome();
+                 outCome.setOutcomeType(gov.nih.nci.cabig.caaers.domain.OutcomeType.HOSPITALIZATION);
+                 adverseEvent.getOutcomes().add(outCome);
+             }
         }
 
         if(adverseEventDto.isIncreasedRisk() != null){
