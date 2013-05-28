@@ -95,6 +95,17 @@ public class AdverseEventValidatior {
 
     }
 
+    private void validateDateFirstLearned(AdverseEventReportingPeriod reportingPeriod,ValidationErrors errors) {
+        for (AdverseEvent ae : reportingPeriod.getAdverseEvents()) {
+            if (ae.getGradedDate().after(ae.getStartDate())) {
+                addValidationError(errors,"CAE_021", messageSource.getMessage("CAE_021",
+                        new String[] {}, "", Locale.getDefault()) ) ;
+                break;
+            }
+        }
+
+    }
+
     public void validate(AdverseEventReportingPeriod reportingPeriod, Study study, ValidationErrors errors){
         if ( study.getAeTermUnique()) {
             AdverseEvent adverseEvent = validateAEUniqueness(reportingPeriod, study, errors);
@@ -106,6 +117,7 @@ public class AdverseEventValidatior {
         }
         validateOnlyOneDeath(reportingPeriod, errors);
         validateVerbatimMaxSize(reportingPeriod, errors);
+        validateDateFirstLearned(reportingPeriod,errors);
     }
 
 }
