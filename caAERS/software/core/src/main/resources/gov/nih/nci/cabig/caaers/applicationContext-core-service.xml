@@ -75,6 +75,13 @@ default-lazy-init="true">
 	<bean id="localmessageBroadcastService" class="gov.nih.nci.cabig.caaers.esb.client.impl.CaaersNonGridCaXchangeMessageBroadcastServiceImpl">
 		<property name="clientFactory" ref="clientFactory"/>
 	</bean>
+
+    <!--
+
+    <bean id="CTEPIAMmessageBroadcastService" class="gov.nih.nci.cabig.caaers.esb.client.impl.CaaersNonGridCaXchangeMessageBroadcastServiceImpl">
+        <property name="clientFactory" ref="clientFactory"/>
+    </bean>
+    -->
 	
 	
 	<bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
@@ -486,6 +493,8 @@ default-lazy-init="true">
     </bean>
     <bean id="aeReportValidator" class="gov.nih.nci.cabig.caaers.domain.validation.ExpeditedAdverseEventReportValidatorImpl"/>
     <bean id="adverseEventValidatior" class="gov.nih.nci.cabig.caaers.validation.validator.AdverseEventValidatior" autowire="byType"/>
+    <bean id="recommendedActionService" class="gov.nih.nci.cabig.caaers.service.RecommendedActionServiceImpl" autowire="byType"/>
+
 
     <!--  Migrators -->
     <bean id="additionalInformationMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.AdditionalInformationMigrator" autowire="byType"/>

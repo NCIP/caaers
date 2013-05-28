@@ -6,9 +6,7 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.service.synchronizer.adverseevent;
 
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.Outcome;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
 
@@ -43,6 +41,26 @@ public class AdverseEventReportingPeriodSynchronizer implements Migrator<Adverse
                 aeFound.setAttributionSummary(aeSrc.getAttributionSummary());
                 aeFound.setStartDate(aeSrc.getStartDate());
                 aeFound.setEndDate(aeSrc.getEndDate());
+
+
+                // Ensuring that previous and new are CTC terms.
+                if ( aeFound.getAdverseEventTerm() instanceof AdverseEventCtcTerm && aeSrc.getAdverseEventTerm() instanceof AdverseEventCtcTerm ) {     // Refers to CTC terminology.
+                    // Copy the CTC values from the Src.
+                    aeFound.getAdverseEventTerm().setTerm(aeSrc.getAdverseEventTerm().getTerm());
+                    ((AdverseEventCtcTerm) aeFound.getAdverseEventTerm()).setCtcTerm(((AdverseEventCtcTerm) aeSrc.getAdverseEventTerm()).getCtcTerm());
+
+                    if ( aeSrc.getAdverseEventTerm().isOtherRequired()) {
+                        aeFound.getAdverseEventMeddraLowLevelTerm().setTerm(aeSrc.getAdverseEventMeddraLowLevelTerm().getTerm());
+                        aeFound.getAdverseEventMeddraLowLevelTerm().setLowLevelTerm(aeSrc.getAdverseEventMeddraLowLevelTerm().getLowLevelTerm());
+                    }
+                } else { // Refers to MEDRAA terminology.
+                    if ( aeFound.getAdverseEventTerm() instanceof AdverseEventMeddraLowLevelTerm && aeSrc.getAdverseEventTerm() instanceof AdverseEventMeddraLowLevelTerm ) {
+                        aeFound.setLowLevelTerm(aeSrc.getLowLevelTerm());
+                        aeFound.getAdverseEventMeddraLowLevelTerm().setTerm(aeSrc.getAdverseEventMeddraLowLevelTerm().getTerm());
+                        aeFound.getAdverseEventMeddraLowLevelTerm().setLowLevelTerm(aeSrc.getAdverseEventMeddraLowLevelTerm().getLowLevelTerm());
+                    }
+
+                }
 
                 aeFound.setEventApproximateTime(aeSrc.getEventApproximateTime());
                 aeFound.setEventLocation(aeSrc.getEventLocation());
