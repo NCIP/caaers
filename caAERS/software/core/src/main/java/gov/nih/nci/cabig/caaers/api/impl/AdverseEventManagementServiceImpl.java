@@ -257,7 +257,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
         ArrayList reportingPeriodList = new ArrayList<AdverseEventReportingPeriod>(rpDest.getAssignment().getActiveReportingPeriods());
         if(rpFound != null) {
             int i = findIndexFromReportPeriodList(reportingPeriodList, rpFound);
-            if  ( i > 0 ) reportingPeriodList.remove(i);
+            if  ( i >= 0 ) reportingPeriodList.remove(i);
         }
 
         ValidationErrors dateValidationErrors = validateRepPeriodDates(rpDest, reportingPeriodList, rpDest.getAssignment().getStartDateOfFirstCourse(), rpDest.getEpoch());
