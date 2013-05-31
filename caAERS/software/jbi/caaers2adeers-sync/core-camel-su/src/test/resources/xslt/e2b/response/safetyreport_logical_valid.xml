@@ -1,0 +1,37 @@
+<!--
+  Copyright SemanticBits, Northwestern University and Akaza Research
+  
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caaers/LICENSE.txt for details.
+-->
+<soapenv:Envelope
+        xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+        xmlns:aer="http://schema.integration.caaers.cabig.nci.nih.gov/aereport"
+        xmlns:com="http://schema.integration.caaers.cabig.nci.nih.gov/common">
+    <soapenv:Body>
+        <aer:submitSafetyReportResponse>
+            <!--Optional:-->
+            <com:CaaersServiceResponse>
+                <com:ServiceResponse responsecode="0">
+                    <status>PROCESSED</status>
+                    <com:entityProcessingOutcomes>
+                        <com:entityProcessingOutcome>
+                            <klassName>gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport</klassName>
+                            <businessIdentifier>rave-22</businessIdentifier>
+                            <message>Report created in caAERS</message>
+                            <dataBaseId>122</dataBaseId>
+                            <!--<correlationId>?</correlationId>-->
+                            <!--<correlationDescription>?</correlationDescription>-->
+                            <!--Optional:-->
+                            <failed>false</failed>
+                        </com:entityProcessingOutcome>
+                    </com:entityProcessingOutcomes>
+                    <!--Optional:-->
+                    <message>Report updated in caAERS</message>
+
+                </com:ServiceResponse>
+            </com:CaaersServiceResponse>
+        </aer:submitSafetyReportResponse>
+
+    </soapenv:Body>
+</soapenv:Envelope>

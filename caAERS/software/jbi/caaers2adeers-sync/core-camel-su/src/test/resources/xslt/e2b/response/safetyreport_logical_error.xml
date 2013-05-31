@@ -1,0 +1,30 @@
+<!--
+  Copyright SemanticBits, Northwestern University and Akaza Research
+  
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caaers/LICENSE.txt for details.
+-->
+<soapenv:Envelope
+        xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+        xmlns:aer="http://schema.integration.caaers.cabig.nci.nih.gov/aereport"
+        xmlns:com="http://schema.integration.caaers.cabig.nci.nih.gov/common">
+
+    <soapenv:Header/>
+    <soapenv:Body>
+        <aer:submitSafetyReportResponse>
+            <!--Optional:-->
+            <com:CaaersServiceResponse>
+                <com:ServiceResponse responsecode="0">
+                    <status>failed</status>
+                    <!--Zero or more repetitions:-->
+                    <wsError>
+                        <exception>Nullpointer</exception>
+                        <errorDesc>Agent information is NULL</errorDesc>
+                        <errorCode>ERR1</errorCode>
+                    </wsError>
+                </com:ServiceResponse>
+            </com:CaaersServiceResponse>
+        </aer:submitSafetyReportResponse>
+
+    </soapenv:Body>
+</soapenv:Envelope>
