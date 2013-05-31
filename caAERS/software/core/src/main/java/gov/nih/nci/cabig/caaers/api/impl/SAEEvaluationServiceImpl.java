@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.dto.ApplicableReportDefinitionsDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.EvaluationResultDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
@@ -328,35 +329,90 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 
         Map<Integer, List<ReportTableRow>> recommendedReportTableMap = new LinkedHashMap<Integer, List<ReportTableRow>>();
 
+        Map<Integer, List<ReportTableRow>> applicableReportTableMap = new LinkedHashMap<Integer, List<ReportTableRow>>();
+
         recommendedActionService.generateRecommendedReportTable(evaluationResult, aeReportIndexMap, recommendedReportTableMap);
 
-        for ( Integer aeReportId :recommendedReportTableMap.keySet() ) {
+        ApplicableReportDefinitionsDTO applicableReportDefinitions = evaluationService.applicableReportDefinitions(reportingPeriod.getStudy(), reportingPeriod.getAssignment());
 
-            List<ReportTableRow> rows = recommendedReportTableMap.get(aeReportId);
+        recommendedActionService.refreshApplicableReportTable(evaluationResult, aeReportIndexMap, applicableReportTableMap, applicableReportDefinitions);
 
-            for( ReportTableRow row : rows) {
-                RecommendedActions action = new RecommendedActions();
+        for ( Integer aeReportId : recommendedReportTableMap.keySet()){
 
-                action.setReport(row.getReportDefinition().getLabel());
-                action.setAction(row.getAction().getDisplayName());
-                action.setStatus(row.getStatus());
-                action.setDue(row.getDue());
+            if (aeReportId == 0) continue;
 
-                if (row.getAction().equals(ReportDefinitionWrapper.ActionType.AMEND)) {
-                    action.setStatus("Being amended");
-                    action.setDue(row.getStatus());
+            List<ReportTableRow> applicableRows = applicableReportTableMap.get(aeReportId);
+
+            if ( applicableRows != null) {
+                findMatchingRecommendations(applicableRows, recommendedReportTableMap.get(aeReportId),recommendedActions) ;
+            }
+        }
+    }
+
+    private ReportTableRow findApplicableRow(List<ReportTableRow> applicableRows, ReportTableRow recommRow) {
+
+            for ( ReportTableRow row: applicableRows) {
+                if ( row.getReportDefinition().getId().intValue() == recommRow.getReportDefinition().getId().intValue()) {
+                    return row;
+                }
+            }
+
+        return null;
+    }
+
+    private ReportTableRow findPreSelectedRow(List<ReportTableRow> applicableRows) {
+
+        for ( ReportTableRow row: applicableRows) {
+            if ( row.isPreSelected()) {
+                return row;
+            }
+        }
+
+        return null;
+    }
+
+    private   RecommendedActions returnActionFromRow(ReportTableRow row) {
+        RecommendedActions action = new RecommendedActions();
+
+        action.setReport(row.getReportDefinition().getLabel());
+        action.setAction(row.getAction().getDisplayName());
+        action.setStatus(row.getStatus());
+        if ( row.isPreSelected()) {
+            action.setDue(row.getDue());
+        }
+        else  {
+            if (StringUtils.isNotEmpty(row.getGrpDue())) {
+                action.setDue(row.getGrpDue());
+            } else {
+                action.setDue(row.getOtherDue());
+            }
+        }
+        return action;
+    }
+
+
+    private void findMatchingRecommendations(List<ReportTableRow> applicableRows, List<ReportTableRow> recommRows, List<RecommendedActions> recommendedActions)  {
+
+
+        for (ReportTableRow recommRow : recommRows) {
+            ReportTableRow row = findApplicableRow(applicableRows, recommRow);
+
+            if ( row == null) continue;
+
+            RecommendedActions action = returnActionFromRow(row);
+            recommendedActions.add(action);
+
+            if (row.getAction().equals(ReportDefinitionWrapper.ActionType.AMEND) || row.getAction().equals(ReportDefinitionWrapper.ActionType.WITHDRAW)) {
+                ReportTableRow preselectedRow = findPreSelectedRow(applicableRows);
+                if ( preselectedRow != null ) {
+                    recommendedActions.add(returnActionFromRow(preselectedRow));
                 }
 
-                if (row.getAction().equals(ReportDefinitionWrapper.ActionType.WITHDRAW)) {
-                    action.setStatus("Being withdrawn");
-                    action.setDue("");
-                }
-
-                recommendedActions.add(action);
             }
 
         }
     }
+
 
     public AdverseEventResult findAdverseEvent(AdverseEvent thatAe,Map<AdverseEvent, AdverseEventResult> mapAE2DTO){
         for(AdverseEvent thisAe : mapAE2DTO.keySet()){
