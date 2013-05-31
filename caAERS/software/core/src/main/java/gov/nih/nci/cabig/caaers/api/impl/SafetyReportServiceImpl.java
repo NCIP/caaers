@@ -55,8 +55,7 @@ public class SafetyReportServiceImpl {
 
     private StudyDao studyDao;
     
-    private AdverseEventManagementServiceImpl adverseEventManagementService;
-    
+
     private MessageSource messageSource;
     
     private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
@@ -336,13 +335,6 @@ public class SafetyReportServiceImpl {
         this.studyDao = studyDao;
     }
 
-    public AdverseEventManagementServiceImpl getAdverseEventManagementService() {
-        return adverseEventManagementService;
-    }
-
-    public void setAdverseEventManagementService(AdverseEventManagementServiceImpl adverseEventManagementService) {
-        this.adverseEventManagementService = adverseEventManagementService;
-    }
 
     public MessageSource getMessageSource() {
         return messageSource;

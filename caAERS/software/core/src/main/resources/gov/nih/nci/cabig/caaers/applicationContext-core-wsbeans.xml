@@ -60,7 +60,6 @@
     	<property name="eaeConverter" ref="eaeConverter"/>
         <property name="aeReportMigrator" ref="expeditedReportMigrator" />
         <property name="aeReportValidator" ref="aeReportValidator" />
-        <property name="adverseEventManagementService" ref="adverseEventManagementServiceImpl" />
         <property name="reportRepository" ref="reportRepository"/>
         <property name="participantService" ref="participantServiceImpl" />
         <property name="studyDao" ref="studyDao" />
