@@ -339,12 +339,10 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 
         for ( Integer aeReportId : recommendedReportTableMap.keySet()){
 
-            if (aeReportId == 0) continue;
-
             List<ReportTableRow> applicableRows = applicableReportTableMap.get(aeReportId);
 
             if ( applicableRows != null) {
-                findMatchingRecommendations(applicableRows, recommendedReportTableMap.get(aeReportId),recommendedActions) ;
+                findMatchingRecommendations(applicableRows, recommendedReportTableMap.get(aeReportId), recommendedActions) ;
             }
         }
     }
@@ -377,7 +375,7 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
         action.setReport(row.getReportDefinition().getLabel());
         action.setAction(row.getAction().getDisplayName());
         action.setStatus(row.getStatus());
-        if ( row.isPreSelected()) {
+        if ( row.isPreSelected() && !row.getAction().getDisplayName().equals("Amend")) {
             action.setDue(row.getDue());
         }
         else  {
@@ -405,7 +403,19 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
             if (row.getAction().equals(ReportDefinitionWrapper.ActionType.AMEND) || row.getAction().equals(ReportDefinitionWrapper.ActionType.WITHDRAW)) {
                 ReportTableRow preselectedRow = findPreSelectedRow(applicableRows);
                 if ( preselectedRow != null ) {
-                    recommendedActions.add(returnActionFromRow(preselectedRow));
+                    if (preselectedRow.getReportDefinition().getId().equals(row.getReportDefinition().getId())){
+                        // Create a New Row.
+                        RecommendedActions preSelectedAction = new RecommendedActions();
+
+                        preSelectedAction.setAction("Create"); // Make it Create.
+                        preSelectedAction.setStatus("Not Started");
+                        preSelectedAction.setReport(row.getReportDefinition().getLabel());
+                        preSelectedAction.setDue(row.getDue());
+
+                        recommendedActions.add(preSelectedAction);
+                    }   else {
+                        recommendedActions.add(returnActionFromRow(preselectedRow));
+                    }
                 }
 
             }
