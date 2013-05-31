@@ -200,12 +200,6 @@ public class SafetyReportServiceImpl {
 
         //Call Ae Management
         
-        AdverseEventReportingPeriod reportingPeriod = adverseEventManagementService.createOrUpdateAdverseEvents(aeReport.getReportingPeriod(), errors);
-        logger.info("Created or Updated reporting period returned :" + reportingPeriod == null ? "NULL" : reportingPeriod.getId());
-        if(errors.hasErrors()){
-            logger.error("Adverse Event Management Service create or update call failed :" + String.valueOf(errors));
-            return null;
-        }
 
         //Call the Migration
         ExpeditedAdverseEventReport aeDestReport = new ExpeditedAdverseEventReport();
@@ -217,18 +211,28 @@ public class SafetyReportServiceImpl {
             return null;
         }
 
+        AdverseEventReportingPeriod reportingPeriod = aeDestReport.getReportingPeriod();
+
         // Associate the updated information to adverse events.
-        for ( AdverseEvent ae: reportingPeriod.getAdverseEvents() ) {
+        for ( AdverseEvent inAE: aeReport.getAdverseEvents() ) {
+            AdverseEvent ae = reportingPeriod.findAdverseEventByIdTermAndDates(inAE);   //TODO: BJ - May be we must pick unreported AEs here (see the big problem comment below)
+            if(ae == null ){
+                errors.addValidationError("WS_AEMS_079", "Could not find the AE linked to Safety report", inAE.getAdverseEventTerm()!=null? inAE.getAdverseEventTerm().getFullName() : "",
+                        String.valueOf(inAE.getStartDate()), String.valueOf(inAE.getEndDate()), String.valueOf(inAE.getExternalId()));
+                return null;
+            }
+
+            if(ae.getReport() != null){
+                //TODO: BJ - Remove me when update flow is implemented. (Big problem here - we need another transient Holder for the AEs)
+                errors.addValidationError("WS_AEMS_013", "Adverse Event is already reported, so cannot be associated to another Safety report",ae.getAdverseEventTerm()!=null? ae.getAdverseEventTerm().getFullName() : "",
+                        String.valueOf(ae.getStartDate()), String.valueOf(ae.getEndDate()), String.valueOf(ae.getExternalId()));
+            }
+            //TODO: BJ - we need another transient holder of AE
             aeDestReport.addAdverseEvent(ae);
         }
 
         //Call the ExpediteReportDao and save this report.
         expeditedAdverseEventReportDao.save(aeDestReport);
-
-        //Associate the Report to AE's
-        for ( AdverseEvent ae: reportingPeriod.getAdverseEvents() ) {
-            ae.setReport(aeDestReport);
-        }
 
         // Deep copy the reports as it is throwing ConcurrentModification Exception.
         List<Report> reports = new ArrayList(aeDestReport.getReports());
