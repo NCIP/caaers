@@ -97,7 +97,7 @@ public class AdverseEventValidatior {
 
     private void validateDateFirstLearned(AdverseEventReportingPeriod reportingPeriod,ValidationErrors errors) {
         for (AdverseEvent ae : reportingPeriod.getAdverseEvents()) {
-            if (ae.getGradedDate().after(ae.getStartDate())) {
+            if (ae.getGradedDate().before(ae.getStartDate())) {
                 addValidationError(errors,"CAE_021", messageSource.getMessage("CAE_021",
                         new String[] {}, "", Locale.getDefault()) ) ;
                 break;

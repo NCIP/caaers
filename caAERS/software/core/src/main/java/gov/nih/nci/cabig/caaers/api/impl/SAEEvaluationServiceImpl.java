@@ -339,8 +339,6 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 
         for ( Integer aeReportId : recommendedReportTableMap.keySet()){
 
-            if ( recommendedReportTableMap.size() > 1 && aeReportId.intValue() == 0 ) continue;
-
             List<ReportTableRow> applicableRows = applicableReportTableMap.get(aeReportId);
 
             if ( applicableRows != null) {
@@ -421,24 +419,26 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
         List<ReportTableRow> preselectedRows = findPreSelectedRows(applicableRows);
 
         for (ReportTableRow recommRow : recommRows) {
-            ReportTableRow row = findApplicableRow(applicableRows, recommRow);
+            ReportTableRow applicableRow = findApplicableRow(applicableRows, recommRow);
 
-            if ( row == null) continue;
+            if ( applicableRow == null) continue;
 
-            RecommendedActions action = returnActionFromRow(row, preselectedRows);
+            RecommendedActions action = returnActionFromRow(applicableRow, preselectedRows);
             recommendedActions.add(action);
 
-            if (row.getAction().equals(ReportDefinitionWrapper.ActionType.AMEND) || row.getAction().equals(ReportDefinitionWrapper.ActionType.WITHDRAW)) {
+            if (applicableRow.getAction().equals(ReportDefinitionWrapper.ActionType.AMEND) || applicableRow.getAction().equals(ReportDefinitionWrapper.ActionType.WITHDRAW)) {
                 for (ReportTableRow preselectedRow: preselectedRows ) {
                     if ( preselectedRow != null ) {
-                        if (preselectedRow.getReportDefinition().getId().equals(row.getReportDefinition().getId())){
+                        if (preselectedRow.getReportDefinition().getId().equals(applicableRow.getReportDefinition().getId())){
+                            // Update the Group Due.
+                            action.setDue(applicableRow.getGrpDue());
                             // Create a New Row.
                             RecommendedActions preSelectedAction = new RecommendedActions();
 
                             preSelectedAction.setAction("Create"); // Make it Create.
                             preSelectedAction.setStatus("Not Started");
-                            preSelectedAction.setReport(row.getReportDefinition().getLabel());
-                            preSelectedAction.setDue(row.getDue());
+                            preSelectedAction.setReport(applicableRow.getReportDefinition().getLabel());
+                            preSelectedAction.setDue(applicableRow.getDue());
 
                             recommendedActions.add(preSelectedAction);
                         }   else {

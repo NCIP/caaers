@@ -252,7 +252,7 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
         command.getAdverseEventReportingPeriod().getAdverseEvents().get(0).setEndDate(null);
         command.getAdverseEventReportingPeriod().getAdverseEvents().get(0).setGradedDate(DateUtils.tomorrow());
         tab.validate(command, commandWrapper, fieldMap, errors);
-        assertTrue(errors.hasErrors());
+        assertFalse(errors.hasErrors());
 
 
         command.getAdverseEventReportingPeriod().getAdverseEvents().get(0).setStartDate(null);
