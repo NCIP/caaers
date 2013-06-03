@@ -90,7 +90,7 @@ public class EvaluationServiceImpl implements EvaluationService {
         		
         		List<AdverseEvent> allAdverseEvents = new ArrayList<AdverseEvent>(newlyAddedAdverseEvents);
         		allAdverseEvents.addAll(aeReport.getAdverseEvents());
-        		findRequiredReportDefinitions(aeReport, evaluatableAdverseEvents, reportingPeriod.getStudy(), result);
+        		if(!evaluatableAdverseEvents.isEmpty()) findRequiredReportDefinitions(aeReport, evaluatableAdverseEvents, reportingPeriod.getStudy(), result);
         		result.addAllAdverseEvents(aeReport.getId(), allAdverseEvents);
         		
         		//populate the reported adverse event - report definition map.
