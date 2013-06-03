@@ -339,6 +339,8 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 
         for ( Integer aeReportId : recommendedReportTableMap.keySet()){
 
+            if ( recommendedReportTableMap.size() > 1 && aeReportId.intValue() == 0 ) continue;
+
             List<ReportTableRow> applicableRows = applicableReportTableMap.get(aeReportId);
 
             if ( applicableRows != null) {
@@ -350,7 +352,7 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
     private ReportTableRow findApplicableRow(List<ReportTableRow> applicableRows, ReportTableRow recommRow) {
 
             for ( ReportTableRow row: applicableRows) {
-                if ( row.getReportDefinition().getId().intValue() == recommRow.getReportDefinition().getId().intValue()) {
+                if ( row.getReportDefinition().getId().equals(recommRow.getReportDefinition().getId())) {
                     return row;
                 }
             }
@@ -358,63 +360,90 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
         return null;
     }
 
-    private ReportTableRow findPreSelectedRow(List<ReportTableRow> applicableRows) {
-
+    private List<ReportTableRow> findPreSelectedRows(List<ReportTableRow> applicableRows) {
+        List<ReportTableRow> preSelectedRows = new ArrayList<ReportTableRow>();
         for ( ReportTableRow row: applicableRows) {
             if ( row.isPreSelected()) {
-                return row;
+              preSelectedRows.add(row);
             }
         }
 
-        return null;
+        return preSelectedRows;
     }
 
-    private   RecommendedActions returnActionFromRow(ReportTableRow row) {
+    private boolean isAnyInGroupChecked(ReportTableRow row,List<ReportTableRow> preselectedRows) {
+        boolean isfound = false;
+        for (ReportTableRow preSelectedRow: preselectedRows) {
+            if ( preSelectedRow.getReportDefinition() != null && row.getReportDefinition() != null &&
+                    preSelectedRow.getReportDefinition().getGroup() != null && row.getReportDefinition().getGroup() != null &&
+                        preSelectedRow.getReportDefinition().getGroup().getName().equals(row.getReportDefinition().getGroup().getName())) {
+                isfound = true;
+                break;
+            }
+        }
+
+        return isfound;
+
+    }
+
+    private   RecommendedActions returnActionFromRow(ReportTableRow row, List<ReportTableRow> preselectedRows) {
         RecommendedActions action = new RecommendedActions();
 
         action.setReport(row.getReportDefinition().getLabel());
-        action.setAction(row.getAction().getDisplayName());
-        action.setStatus(row.getStatus());
-        if ( row.isPreSelected() && !row.getAction().getDisplayName().equals("Amend")) {
+        if ( row.isPreSelected()) {  // If the row is pre-selected.
+
+            action.setAction(row.getAction().getDisplayName());
             action.setDue(row.getDue());
-        }
-        else  {
-            if (StringUtils.isNotEmpty(row.getGrpDue())) {
+            action.setStatus(row.getStatus());
+
+        } else {
+            if ( isAnyInGroupChecked(row, preselectedRows)) {     // If the any one of the Report in the group is selected.
+
+                action.setAction(row.getGrpAction().getDisplayName());
                 action.setDue(row.getGrpDue());
-            } else {
+                action.setStatus(row.getGrpStatus());
+
+            } else  { // Other Actions.
+
+                action.setAction(row.getOtherAction().getDisplayName());
                 action.setDue(row.getOtherDue());
+                action.setStatus(row.getOtherStatus());
             }
+
         }
+
         return action;
     }
 
 
     private void findMatchingRecommendations(List<ReportTableRow> applicableRows, List<ReportTableRow> recommRows, List<RecommendedActions> recommendedActions)  {
-
+        // Find the report group of the pre-selected row.
+        List<ReportTableRow> preselectedRows = findPreSelectedRows(applicableRows);
 
         for (ReportTableRow recommRow : recommRows) {
             ReportTableRow row = findApplicableRow(applicableRows, recommRow);
 
             if ( row == null) continue;
 
-            RecommendedActions action = returnActionFromRow(row);
+            RecommendedActions action = returnActionFromRow(row, preselectedRows);
             recommendedActions.add(action);
 
             if (row.getAction().equals(ReportDefinitionWrapper.ActionType.AMEND) || row.getAction().equals(ReportDefinitionWrapper.ActionType.WITHDRAW)) {
-                ReportTableRow preselectedRow = findPreSelectedRow(applicableRows);
-                if ( preselectedRow != null ) {
-                    if (preselectedRow.getReportDefinition().getId().equals(row.getReportDefinition().getId())){
-                        // Create a New Row.
-                        RecommendedActions preSelectedAction = new RecommendedActions();
+                for (ReportTableRow preselectedRow: preselectedRows ) {
+                    if ( preselectedRow != null ) {
+                        if (preselectedRow.getReportDefinition().getId().equals(row.getReportDefinition().getId())){
+                            // Create a New Row.
+                            RecommendedActions preSelectedAction = new RecommendedActions();
 
-                        preSelectedAction.setAction("Create"); // Make it Create.
-                        preSelectedAction.setStatus("Not Started");
-                        preSelectedAction.setReport(row.getReportDefinition().getLabel());
-                        preSelectedAction.setDue(row.getDue());
+                            preSelectedAction.setAction("Create"); // Make it Create.
+                            preSelectedAction.setStatus("Not Started");
+                            preSelectedAction.setReport(row.getReportDefinition().getLabel());
+                            preSelectedAction.setDue(row.getDue());
 
-                        recommendedActions.add(preSelectedAction);
-                    }   else {
-                        recommendedActions.add(returnActionFromRow(preselectedRow));
+                            recommendedActions.add(preSelectedAction);
+                        }   else {
+                            recommendedActions.add(returnActionFromRow(preselectedRow, preselectedRows));
+                        }
                     }
                 }
 
