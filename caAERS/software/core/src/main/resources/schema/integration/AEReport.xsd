@@ -115,6 +115,7 @@
 		<xs:sequence>
 			<xs:element type="xs:string" name="firstName" />
 			<xs:element type="xs:string" name="lastName" />
+			<xs:element type="xs:string" name="middleName"  minOccurs="0"/>
 			<xs:element type="xs:string" name="nciIdentifier" minOccurs="0"/>
 			<xs:element name="street" type="xs:string" minOccurs="0" maxOccurs="1"/>
             <xs:element name="city" type="xs:string" minOccurs="0" maxOccurs="1"/>
@@ -156,7 +157,7 @@
 	<xs:complexType name="AnatomicSiteType">	  
 	  <xs:sequence>
 	  	<xs:element name="name" type="xs:string"/>
-	  	<xs:element name="category" type="xs:string"/>
+	  	<xs:element name="category" type="xs:string" minOccurs="0"/>
 	  </xs:sequence>
    </xs:complexType>
 
@@ -170,9 +171,9 @@
 	<xs:complexType name="DiseaseHistoryType">
 		<xs:sequence>
             <xs:element type="DateValueType" name="diagnosisDate" minOccurs="0" />
-			<xs:element type="MetastaticDiseaseSiteType" name="metastaticDiseaseSite" maxOccurs="unbounded" minOccurs="0" />
-            <xs:element type="xs:string" name="primaryDisease" minOccurs="0"/>
+			<xs:element type="xs:string" name="primaryDisease" minOccurs="0"/>
             <xs:element type="xs:string" name="otherPrimaryDisease" minOccurs="0"/>
+            <xs:element type="MetastaticDiseaseSiteType" name="metastaticDiseaseSite" maxOccurs="unbounded" minOccurs="0" />
             <xs:element type="xs:string" name="codedPrimaryDiseaseSite" minOccurs="0"/>
             <xs:element type="xs:string" name="otherPrimaryDiseaseSite" minOccurs="0"/>
 
@@ -726,7 +727,7 @@
 	</xs:complexType>
 	<xs:complexType name="SAEReportPreExistingConditionType">
 	  	<xs:sequence>
-	  		<xs:element name="preExistingCondition" type="cct:PreExistingConditionType"/>
+	  		<xs:element name="preExistingCondition" type="cct:PreExistingConditionType" minOccurs="0"/>
 	   		<xs:element name="other" type="xs:string" minOccurs="0"/>
 	  		<xs:element name="linkedToOtherCause" type="xs:boolean" minOccurs="0"/>
   		</xs:sequence>
@@ -784,10 +785,10 @@
 	<xs:complexType name="ReportDefinitionType">
 		<xs:sequence>
 			<xs:element type="xs:string" name="name" />
-			<xs:element type="xs:int" name="duration" />
+			<xs:element type="xs:int" name="duration"  minOccurs="0"/>
 			<xs:element type="xs:string" name="label" minOccurs="0" />
 			<xs:element type="GroupType" name="Group" minOccurs="0"/>
-			<xs:element type="TimeScaleUnitType" name="timeScaleUnitType" />
+			<xs:element type="TimeScaleUnitType" name="timeScaleUnitType" minOccurs="0"/>
 			<xs:element type="ReportDeliveryDefinitionType" name="reportDeliveryDefinition"
 				maxOccurs="unbounded" minOccurs="0" />
 		</xs:sequence>
