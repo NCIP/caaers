@@ -101,7 +101,8 @@ public class AdverseEventConverter {
         if (adverseEventDto.getOutcome() != null) {
             populateOutcomes(adverseEventDto,adverseEvent);
         }
-        if ( adverseEventDto.getHospitalization().equals(HospitalizationType.YES)) {
+        
+        if ( adverseEventDto.getHospitalization() != null && adverseEventDto.getHospitalization().equals(HospitalizationType.YES)) {
 
              if ( !(adverseEvent.getOutcomes().contains(gov.nih.nci.cabig.caaers.domain.OutcomeType.HOSPITALIZATION))){
                  Outcome outCome = new Outcome();
