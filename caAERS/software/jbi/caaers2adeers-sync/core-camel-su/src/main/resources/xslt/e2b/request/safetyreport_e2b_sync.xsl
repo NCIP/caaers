@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright SemanticBits, Northwestern University and Akaza Research
+  
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caaers/LICENSE.txt for details.
+-->
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
 	xmlns:cct="http://schema.integration.caaers.cabig.nci.nih.gov/common"
-	xmlns:ae="http://schema.integration.caaers.cabig.nci.nih.gov/aereport"
+	xmlns:ae="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent"
 	xmlns:func="http://exslt.org/functions"
 	extension-element-prefixes="func">
 	<xsl:output method="xml" encoding="UTF-8" indent="yes"/>
@@ -14,24 +20,34 @@
 	<xsl:template match="safetyreport" name="safetyreport">
 		<soapenv:Envelope>
 			<soapenv:Body>
-			<ae:submitSafetyReport>
-		<ae:AdverseEventReport >
+		<ae:submitSafetyReport>
+
+		<ae:AdverseEventReport>
 			<xsl:call-template name="responseDescription"/>
             <ae:adverseEventReportingPeriod>
                <ae:externalId>
 						<xsl:value-of select = "/ichicsr/safetyreport/safetyreportid" /> 
 				</ae:externalId>
             </ae:adverseEventReportingPeriod>
-            <xsl:call-template name="physician"/>
-			<xsl:call-template name="reporter"/>
-			<xsl:call-template name="submitter"/>
+
+			 <xsl:for-each select="//primarysource">
+				<xsl:if test="qualification = 1">
+					 <xsl:call-template name="physician"/>
+				</xsl:if>
+				<xsl:if test="qualification = 3">
+					 <xsl:call-template name="reporter"/>
+				</xsl:if>
+			 </xsl:for-each>
+			<xsl:if test="/ichicsr/safetyreport/sender/sendergivename">          
+				<xsl:call-template name="submitter"/>
+			</xsl:if>
             <!--Optional:-->
             <ae:diseaseHistory>
                <!--Optional:-->
 			   <xsl:if test="/ichicsr/safetyreport/patient/medicalhistoryepisode[patientmedicalcomment = 'Study Disease']/patientmedicalstartdate != ''">
 				 <ae:diagnosisDate>
 					<xsl:call-template name="splitDateYYYYMMDD">
-					         <xsl:with-param name="date" select="/ichicsr/safetyreport/patient/medicalhistoryepisode/patientmedicalstartdate" /> 
+					         <xsl:with-param name="date" select="/ichicsr/safetyreport/patient/medicalhistoryepisode[patientmedicalcomment = 'Study Disease']/patientmedicalstartdate" /> 
 					</xsl:call-template>
 				 </ae:diagnosisDate>
 			    </xsl:if>
@@ -44,25 +60,20 @@
             </ae:diseaseHistory>
            <xsl:call-template name="participantHistory" select="/ichicsr/safetyreport/patient"/>
            <!--Zero or more repetitions:-->
-            <xsl:for-each select="//drug">
-				<xsl:if test="radiationadjustment">
-					<xsl:call-template name="radiationIntervention"/>
-				</xsl:if>
+            <xsl:for-each select="//drug[drugadditional = 'Radiation']">
+				<xsl:call-template name="radiationIntervention"/>
+			</xsl:for-each>
+			<!--Zero or more repetitions:-->
+            <xsl:for-each select="//drug[drugadditional = 'Surgery']">
+				<xsl:call-template name="surgeryIntervention"/>
 			</xsl:for-each>
             <!--Zero or more repetitions:-->
-            <xsl:for-each select="//drug">
-				<xsl:if test="surgerystartdate">
-					<xsl:call-template name="surgeryIntervention"/>
-				</xsl:if>
+             <xsl:for-each select="//drug[drugadditional = 'Device']">
+				<xsl:call-template name="medicalDevice"/>
 			</xsl:for-each>
             <!--Zero or more repetitions:-->
-             <xsl:for-each select="//drug">
-				<xsl:if test="devicenamecommon">
-					<xsl:call-template name="medicalDevice"/>
-				</xsl:if>
-			</xsl:for-each>
-            <!--Zero or more repetitions:-->
-            <xsl:for-each select="//drug[drugcharacterization = '2']">
+			
+            <xsl:for-each select="//drug[drugadditional != 'Radiation' and  drugadditional != 'Surgery' and drugadditional != 'Device' and drugcharacterization = '2']">
 					<xsl:call-template name="concomitantMedication"/>
 			</xsl:for-each>
             <!--1 or more repetitions:-->
@@ -72,310 +83,17 @@
 				</xsl:if>
 			</xsl:for-each>
 						
-            <ae:adverseEvent>
-				<externalId><xsl:value-of select="aeexternalid"/></externalId>
-				<isPrimary><xsl:value-of select="primaryaeflag"/></isPrimary>
-			
-				<endDate><xsl:value-of select="reactionenddate"/></endDate>
-				 
-			   <!--Optional:-->
-               <!--Zero or more repetitions:-->
-               <ae:concomitantMedicationAttribution>
-                  <ae:attribution>?</ae:attribution>
-                  <ae:cause>
-                     <ae:name>?</ae:name>
-                     <!--Optional:-->
-                     <ae:startDate>
-                        <!--Optional:-->
-                        <ae:day>?</ae:day>
-                        <!--Optional:-->
-                        <ae:month>?</ae:month>
-                        <!--Optional:-->
-                        <ae:year>?</ae:year>
-                        <!--Optional:-->
-                        <ae:zone>?</ae:zone>
-                     </ae:startDate>
-                     <!--Optional:-->
-                     <ae:endDate>
-                        <!--Optional:-->
-                        <ae:day>?</ae:day>
-                        <!--Optional:-->
-                        <ae:month>?</ae:month>
-                        <!--Optional:-->
-                        <ae:year>?</ae:year>
-                        <!--Optional:-->
-                        <ae:zone>?</ae:zone>
-                     </ae:endDate>
-                     <!--Optional:-->
-                     <ae:stillTakingMedications>?</ae:stillTakingMedications>
-                  </ae:cause>
-               </ae:concomitantMedicationAttribution>
-               <!--Zero or more repetitions:-->
-               <ae:otherCauseAttribution>
-                  <ae:attribution>?</ae:attribution>
-                  <ae:cause>
-                     <ae:text>?</ae:text>
-                  </ae:cause>
-               </ae:otherCauseAttribution>
-               <!--Zero or more repetitions:-->
-               <ae:courseAgentAttribution>
-                  <ae:attribution>?</ae:attribution>
-                  <ae:cause>
-                     <!--Optional:-->
-                     <ae:lastAdministeredDate>?</ae:lastAdministeredDate>
-                     <!--Optional:-->
-                     <ae:totalDoseAdministeredThisCourse>?</ae:totalDoseAdministeredThisCourse>
-                     <!--Optional:-->
-                     <ae:administrationDelayAmount>?</ae:administrationDelayAmount>
-                     <!--Optional:-->
-                     <ae:administrationDelayUnits>?</ae:administrationDelayUnits>
-                     <!--Optional:-->
-                     <ae:durationAndSchedule>?</ae:durationAndSchedule>
-                     <!--Optional:-->
-                     <ae:dose>
-                        <ae:amount>?</ae:amount>
-                        <ae:units>?</ae:units>
-                        <ae:route>?</ae:route>
-                     </ae:dose>
-                     <!--Optional:-->
-                     <ae:modifiedDose>
-                        <ae:amount>?</ae:amount>
-                        <ae:units>?</ae:units>
-                        <ae:route>?</ae:route>
-                     </ae:modifiedDose>
-                     <!--Optional:-->
-                     <ae:studyAgent>
-                        <!--You have a CHOICE of the next 2 items at this level-->
-                        <ae:Agent>
-                           <!--Optional:-->
-                           <ae:name>?</ae:name>
-                           <!--Optional:-->
-                           <ae:description>?</ae:description>
-                           <ae:nscNumber>?</ae:nscNumber>
-                        </ae:Agent>
-                        <ae:otherAgent>?</ae:otherAgent>
-                     </ae:studyAgent>
-                  </ae:cause>
-               </ae:courseAgentAttribution>
-               <!--Zero or more repetitions:-->
-               <ae:surgeryAttribution>
-                  <ae:attribution>?</ae:attribution>
-                  <ae:cause>
-                     <ae:interventionDate>?</ae:interventionDate>
-                     <ae:InterventionSite>
-                        <ae:name>?</ae:name>
-                     </ae:InterventionSite>
-                     <ae:OtherIntervention>
-                        <ae:name>?</ae:name>
-                        <!--Optional:-->
-                        <ae:description>?</ae:description>
-                     </ae:OtherIntervention>
-                  </ae:cause>
-               </ae:surgeryAttribution>
-               <!--Zero or more repetitions:-->
-               <ae:radiationAttribution>
-                  <ae:attribution>?</ae:attribution>
-                  <ae:cause>
-                     <ae:dosage>?</ae:dosage>
-                     <ae:dosageUnit>?</ae:dosageUnit>
-                     <ae:lastTreatmentDate>?</ae:lastTreatmentDate>
-                     <ae:fractionNumber>?</ae:fractionNumber>
-                     <ae:daysElapsed>?</ae:daysElapsed>
-                     <ae:adjustment>?</ae:adjustment>
-                     <ae:administration>?</ae:administration>
-                     <ae:OtherIntervention>
-                        <ae:name>?</ae:name>
-                        <!--Optional:-->
-                        <ae:description>?</ae:description>
-                     </ae:OtherIntervention>
-                  </ae:cause>
-               </ae:radiationAttribution>
-               <!--Zero or more repetitions:-->
-               <ae:deviceAttribution>
-                  <ae:attribution>?</ae:attribution>
-                  <ae:cause>
-                     <!--Optional:-->
-                     <ae:brandName>?</ae:brandName>
-                     <!--Optional:-->
-                     <ae:commonName>?</ae:commonName>
-                     <!--Optional:-->
-                     <ae:deviceType>?</ae:deviceType>
-                     <!--Optional:-->
-                     <ae:manufacturerName>?</ae:manufacturerName>
-                     <!--Optional:-->
-                     <ae:manufacturerCity>?</ae:manufacturerCity>
-                     <!--Optional:-->
-                     <ae:manufacturerState>?</ae:manufacturerState>
-                     <!--Optional:-->
-                     <ae:modelNumber>?</ae:modelNumber>
-                     <!--Optional:-->
-                     <ae:catalogNumber>?</ae:catalogNumber>
-                     <!--Optional:-->
-                     <ae:serialNumber>?</ae:serialNumber>
-                     <!--Optional:-->
-                     <ae:otherNumber>?</ae:otherNumber>
-                     <!--Optional:-->
-                     <ae:explantedDate>?</ae:explantedDate>
-                     <!--Optional:-->
-                     <ae:DeviceOperator>?</ae:DeviceOperator>
-                     <!--Optional:-->
-                     <ae:DeviceReprocessed>?</ae:DeviceReprocessed>
-                     <!--Optional:-->
-                     <ae:EvaluationAvailability>?</ae:EvaluationAvailability>
-                     <!--Optional:-->
-                     <ae:StudyDevice>
-                        <!--You have a CHOICE of the next 2 items at this level-->
-                        <!--Optional:-->
-                        <ae:otherBrandName>?</ae:otherBrandName>
-                        <!--Optional:-->
-                        <ae:otherCommonName>?</ae:otherCommonName>
-                        <!--Optional:-->
-                        <ae:otherDeviceType>?</ae:otherDeviceType>
-                        <!--Optional:-->
-                        <ae:device>
-                           <ae:brandName>?</ae:brandName>
-                           <ae:commonName>?</ae:commonName>
-                           <!--Optional:-->
-                           <ae:type>?</ae:type>
-                        </ae:device>
-                        <!--Optional:-->
-                        <ae:catalogNumber>?</ae:catalogNumber>
-                        <!--Optional:-->
-                        <ae:manufacturerName>?</ae:manufacturerName>
-                        <!--Optional:-->
-                        <ae:manufacturerCity>?</ae:manufacturerCity>
-                        <!--Optional:-->
-                        <ae:manufacturerState>?</ae:manufacturerState>
-                        <!--Optional:-->
-                        <ae:modelNumber>?</ae:modelNumber>
-                     </ae:StudyDevice>
-                  </ae:cause>
-               </ae:deviceAttribution>
-               <!--Zero or more repetitions:-->
-               <ae:biologicalInterventionAttribution>
-                  <ae:attribution>?</ae:attribution>
-                  <ae:cause>
-                     <ae:description>?</ae:description>
-                     <ae:OtherIntervention>
-                        <ae:name>?</ae:name>
-                        <!--Optional:-->
-                        <ae:description>?</ae:description>
-                     </ae:OtherIntervention>
-                  </ae:cause>
-               </ae:biologicalInterventionAttribution>
-               <!--Zero or more repetitions:-->
-               <ae:dietarySupplementInterventionAttribution>
-                  <ae:attribution>?</ae:attribution>
-                  <ae:cause>
-                     <ae:description>?</ae:description>
-                     <ae:otherIntervention>
-                        <ae:name>?</ae:name>
-                        <!--Optional:-->
-                        <ae:description>?</ae:description>
-                     </ae:otherIntervention>
-                  </ae:cause>
-               </ae:dietarySupplementInterventionAttribution>
-               <!--Zero or more repetitions:-->
-               <ae:diseaseAttribution>
-                  <ae:attribution>?</ae:attribution>
-                  <ae:cause>
-                     <!--Optional:-->
-                     <ae:diagnosisDate>
-                        <!--Optional:-->
-                        <ae:day>?</ae:day>
-                        <!--Optional:-->
-                        <ae:month>?</ae:month>
-                        <!--Optional:-->
-                        <ae:year>?</ae:year>
-                        <!--Optional:-->
-                        <ae:zone>?</ae:zone>
-                     </ae:diagnosisDate>
-                     <!--Zero or more repetitions:-->
-                     <ae:metastaticDiseaseSite>
-                        <ae:otherMetastaticDiseaseSite>?</ae:otherMetastaticDiseaseSite>
-                        <ae:AnatomicSite>
-                           <ae:name>?</ae:name>
-                           <ae:category>?</ae:category>
-                        </ae:AnatomicSite>
-                     </ae:metastaticDiseaseSite>
-                  </ae:cause>
-               </ae:diseaseAttribution>
-               <!--Zero or more repetitions:-->
-               <ae:otherInterventionAttribution>
-                  <ae:attribution>?</ae:attribution>
-                  <ae:cause>
-                     <!--Optional:-->
-                     <ae:description>?</ae:description>
-                     <!--Optional:-->
-                     <ae:studyIntervention>
-                        <ae:name>?</ae:name>
-                        <!--Optional:-->
-                        <ae:description>?</ae:description>
-                     </ae:studyIntervention>
-                  </ae:cause>
-               </ae:otherInterventionAttribution>
-               <!--Zero or more repetitions:-->
-               <ae:behavioralInterventionAttribution>
-                  <ae:attribution>?</ae:attribution>
-                  <ae:cause>
-                     <!--Optional:-->
-                     <ae:description>?</ae:description>
-                     <!--Optional:-->
-                     <ae:studyIntervention>
-                        <ae:name>?</ae:name>
-                        <!--Optional:-->
-                        <ae:description>?</ae:description>
-                     </ae:studyIntervention>
-                  </ae:cause>
-               </ae:behavioralInterventionAttribution>
-               <!--Zero or more repetitions:-->
-               <ae:geneticInterventionAttribution>
-                  <ae:attribution>?</ae:attribution>
-                  <ae:cause>
-                     <!--Optional:-->
-                     <ae:description>?</ae:description>
-                     <!--Optional:-->
-                     <ae:studyIntervention>
-                        <ae:name>?</ae:name>
-                        <!--Optional:-->
-                        <ae:description>?</ae:description>
-                     </ae:studyIntervention>
-                  </ae:cause>
-               </ae:geneticInterventionAttribution>
-            </ae:adverseEvent>
             <!--Zero or more repetitions:-->
 			
 			<xsl:for-each select="//medicalhistoryepisode[patientmedicalcomment = 'Prior Therapy' or patientmedicalcomment = 'Other Prior Therapy']">
 					<xsl:call-template name="priorTherapy"/>
 			</xsl:for-each>
-            
-            <!--Optional:-->
-            <ae:treatmentInformation>
-               <!--Optional:-->
-               <ae:firstCourseDate>?</ae:firstCourseDate>
-               <!--Optional:-->
-               <ae:treatmentAssignment>
-                  <ae:code>?</ae:code>
-                  <!--Optional:-->
-                  <ae:doseLevelOrder>?</ae:doseLevelOrder>
-                  <ae:description>?</ae:description>
-                  <!--Optional:-->
-                  <ae:comments>?</ae:comments>
-               </ae:treatmentAssignment>
-               <!--Optional:-->
-               <ae:totalCourses>?</ae:totalCourses>
-               <!--Optional:-->
-               <ae:adverseEventCourse>
-                  <!--Optional:-->
-                  <ae:number>?</ae:number>
-                  <!--Optional:-->
-                  <ae:date>?</ae:date>
-               </ae:adverseEventCourse>
-               <!--Zero or more repetitions:-->
-                <xsl:for-each select="//drug[drugcharacterization = '1']">
+			<ae:treatmentInformation>
+				<xsl:for-each select="//drug[drugadditional != 'Radiation' and  drugadditional != 'Surgery' and drugadditional != 'Device' and drugcharacterization = '1']">
 					<xsl:call-template name="courseAgent"/>
 				</xsl:for-each>
             </ae:treatmentInformation>
+                                 
             <!--Zero or more repetitions:-->
             <xsl:for-each select="//medicalhistoryepisode[patientmedicalcomment = 'Pre-existing Condition' or patientmedicalcomment = 'Other Pre-existing Condition']">
 					<xsl:call-template name="preexistingCondition"/>
@@ -384,112 +102,20 @@
 			<xsl:for-each select="//medicalhistoryepisode[patientmedicalcomment = 'Other Cause']">
 					<xsl:call-template name="otherCause"/>
 			</xsl:for-each>
-            <!--Optional:-->
-            <ae:additionalInformation>
-               <!--Optional:-->
-               <ae:autopsyReport>?</ae:autopsyReport>
-               <!--Optional:-->
-               <ae:consults>?</ae:consults>
-               <!--Optional:-->
-               <ae:dischargeSummary>?</ae:dischargeSummary>
-               <!--Optional:-->
-               <ae:flowCharts>?</ae:flowCharts>
-               <!--Optional:-->
-               <ae:labReports>?</ae:labReports>
-               <!--Optional:-->
-               <ae:obaForm>?</ae:obaForm>
-               <!--Optional:-->
-               <ae:other>?</ae:other>
-               <!--Optional:-->
-               <ae:pathologyReport>?</ae:pathologyReport>
-               <!--Optional:-->
-               <ae:progressNotes>?</ae:progressNotes>
-               <!--Optional:-->
-               <ae:radiologyReports>?</ae:radiologyReports>
-               <!--Optional:-->
-               <ae:referralLetters>?</ae:referralLetters>
-               <!--Optional:-->
-               <ae:irbReport>?</ae:irbReport>
-               <!--Optional:-->
-               <ae:otherInformation>?</ae:otherInformation>
-               <!--Zero or more repetitions:-->
-               <ae:additionalInformationDocuments>
-                  <!--Optional:-->
-                  <ae:fileId>?</ae:fileId>
-                  <!--Optional:-->
-                  <ae:fileName>?</ae:fileName>
-                  <!--Optional:-->
-                  <ae:originalFileName>?</ae:originalFileName>
-                  <!--Optional:-->
-                  <ae:filePath>?</ae:filePath>
-                  <!--Optional:-->
-                  <ae:fileSize>?</ae:fileSize>
-                  <!--Optional:-->
-                  <ae:relativePath>?</ae:relativePath>
-                  <!--Optional:-->
-                  <ae:additionalInformationDocumentType>?</ae:additionalInformationDocumentType>
-               </ae:additionalInformationDocuments>
-            </ae:additionalInformation>
+                     
             <!--1 or more repetitions:-->
             <ae:report>
-               <ae:required>?</ae:required>
-               <!--Optional:-->
-               <ae:manuallySelected>?</ae:manuallySelected>
+			   <ae:caseNumber><xsl:value-of select ="/ichicsr/safetyreport/companynumb"/></ae:caseNumber>
                <ae:aeReportDefinition>
-                  <ae:name>?</ae:name>
-                  <ae:duration>?</ae:duration>
-                  <!--Optional:-->
-                  <ae:label>?</ae:label>
-                  <!--Optional:-->
-                  <ae:Group>
-                     <ae:code>?</ae:code>
-                     <ae:name>?</ae:name>
-                  </ae:Group>
-                  <ae:timeScaleUnitType>?</ae:timeScaleUnitType>
-                  <!--Zero or more repetitions:-->
-                  <ae:reportDeliveryDefinition>
-                     <ae:entityName>?</ae:entityName>
-                     <!--Optional:-->
-                     <ae:entityDescription>?</ae:entityDescription>
-                     <ae:entityType>?</ae:entityType>
-                     <ae:endPoint>?</ae:endPoint>
-                     <ae:endPointType>?</ae:endPointType>
-                     <!--Optional:-->
-                     <ae:userName>?</ae:userName>
-                     <!--Optional:-->
-                     <ae:password>?</ae:password>
-                     <ae:format>?</ae:format>
-                  </ae:reportDeliveryDefinition>
-               </ae:aeReportDefinition>
+                  <ae:name><xsl:value-of select ="/ichicsr/safetyreport/reportname"/></ae:name>
+				</ae:aeReportDefinition>
                <!--Zero or more repetitions:-->
                <ae:aeReportVersion>
-                  <ae:reportVersionId>?</ae:reportVersionId>
-                  <!--Optional:-->
-                  <ae:createdOn>?</ae:createdOn>
-                  <!--Optional:-->
-                  <ae:dueOn>?</ae:dueOn>
-                  <!--Optional:-->
-                  <ae:submittedOn>?</ae:submittedOn>
-                  <!--Optional:-->
-                  <ae:withdrawnOn>?</ae:withdrawnOn>
-                  <!--Optional:-->
-                  <ae:amendedOn>?</ae:amendedOn>
-                  <!--Optional:-->
-                  <ae:physicianSignoff>?</ae:physicianSignoff>
-                  <!--Optional:-->
-                  <ae:submissionUrl>?</ae:submissionUrl>
-                  <!--Optional:-->
-                  <ae:email>?</ae:email>
-                  <!--Optional:-->
-                  <ae:submissionMessage>?</ae:submissionMessage>
-                  <!--Optional:-->
-                  <ae:ReportStatus>?</ae:ReportStatus>
+                  <ae:reportVersionId><xsl:value-of select ="/ichicsr/safetyreport/safetyreportversion"/></ae:reportVersionId>
                </ae:aeReportVersion>
-               <!--Optional:-->
-               <ae:reviewStatus>?</ae:reviewStatus>
             </ae:report>
         </ae:AdverseEventReport>
-		<ae:submitSafetyReport>
+		</ae:submitSafetyReport>
 		</soapenv:Body>
 		</soapenv:Envelope>
 	</xsl:template>
@@ -622,10 +248,10 @@
 	<xsl:template name="courseAgent">
 		<ae:courseAgent>
                   <!--Optional:-->
-				 <xsl:if test="./drugenddate != '' ">
+				 <xsl:if test="drugenddate != '' ">
 				 <ae:lastAdministeredDate>
-					 <xsl:call-template name="splitDateYYYYMMDD">
-							 <xsl:with-param name="date" select="./drugenddate" /> 
+					 <xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">
+							 <xsl:with-param name="date" select="drugenddate" /> 
 					</xsl:call-template>
 				   </ae:lastAdministeredDate>
 				</xsl:if>
@@ -633,15 +259,6 @@
                 <ae:totalDoseAdministeredThisCourse>
 					<xsl:value-of select="drugcumulativedosagenumb"/>
 				</ae:totalDoseAdministeredThisCourse>
-                  <!--Optional:-->
-                 <ae:administrationDelayAmount>
-					<xsl:value-of select="drugdelayvalue"/>
-				</ae:administrationDelayAmount>
-                  <!--Optional:-->
-                <ae:administrationDelayUnits>
-					<xsl:value-of select="drugdelayunit"/>
-				</ae:administrationDelayUnits>
-                 <!--Optional:-->
                   <ae:dose>
                      <ae:units>
 						<xsl:value-of select="drugcumulativedosageunit"/>
@@ -685,8 +302,11 @@
                <ae:serialNumber><xsl:value-of select="devicenumberserial"/></ae:serialNumber>
                <!--Optional:-->
                <ae:otherNumber><xsl:value-of select="devicenumberother"/></ae:otherNumber>
-               <!--Optional:-->
-               <ae:explantedDate><xsl:value-of select="devicedateexplanted"/></ae:explantedDate>
+        	   <ae:explantedDate>
+					 <xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">
+							 <xsl:with-param name="date" select="devicedateexplanted" /> 
+					</xsl:call-template>
+				</ae:explantedDate>	
                <!--Optional:-->
                <ae:DeviceOperator><xsl:value-of select="deviceoperator"/></ae:DeviceOperator>
                <!--Optional:-->
@@ -720,10 +340,10 @@
                <ae:dosageUnit><xsl:value-of select="radiationcumulativedoseunit"/></ae:dosageUnit>
                <xsl:if test="./radiationlasttreatmentdate != '' ">
 				<ae:lastTreatmentDate>
-					 <xsl:call-template name="splitDateYYYYMMDD">
-							 <xsl:with-param name="date" select="./radiationlasttreatmentdate" /> 
+					 <xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">
+							 <xsl:with-param name="date" select="radiationlasttreatmentdate" /> 
 					</xsl:call-template>
-				</ae:lastTreatmentDate>
+				</ae:lastTreatmentDate>							
 			   </xsl:if>
                <ae:fractionNumber><xsl:value-of select="radiationnumberfractions"/></ae:fractionNumber>
                <ae:daysElapsed><xsl:value-of select="radiationnumberelapseddays"/></ae:daysElapsed>
@@ -733,10 +353,10 @@
 	</xsl:template>
 	<xsl:template name="surgeryIntervention">
 		<ae:surgeryIntervention>
-				<xsl:if test="./surgerystartdate != '' ">
+				<xsl:if test="surgerystartdate != '' ">
 				 <ae:interventionDate>
-					 <xsl:call-template name="splitDateYYYYMMDD">
-							 <xsl:with-param name="date" select="./surgerystartdate" /> 
+					 <xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">
+							 <xsl:with-param name="date" select="surgerystartdate" /> 
 					</xsl:call-template>
 				   </ae:interventionDate>
 				</xsl:if>
@@ -794,6 +414,12 @@
 		<ae:adverseEventResponseDescription>
                <ae:eventDescription><xsl:value-of select="/ichicsr/safetyreport/patient/summary/narrativeincludeclinical"/></ae:eventDescription>
                <ae:presentStatus><xsl:value-of select="/ichicsr/safetyreport/patient/summary/presentstatus"/></ae:presentStatus>
+			    <xsl:if test="/ichicsr/safetyreport/patient/summary/retreatedflag = '1'">
+				 <ae:retreatedflag>true</ae:retreatedflag>
+				</xsl:if>
+				<xsl:if test="/ichicsr/safetyreport/patient/summary/retreatedflag = '2'">
+				 <ae:retreatedflag>false</ae:retreatedflag>
+				</xsl:if>
                <xsl:if test="/ichicsr/safetyreport/patient/patientdeath/patientautopsyyesno = '1'">
 				 <ae:autopsyPerformed>true</ae:autopsyPerformed>
 				</xsl:if>
@@ -817,7 +443,7 @@
 	
 	<xsl:template name="physician">
 		<ae:physician>
-               <ae:firstName><xsl:value-of select="reportergivenname"/></ae:firstName>
+               <ae:firstName><xsl:value-of select="reportergivename"/></ae:firstName>
                <ae:lastName><xsl:value-of select="reporterfamilyname"/></ae:lastName>
 			   <ae:middleName><xsl:value-of select="reportermiddlename"/></ae:middleName>
 			   <xsl:if test="reporteremail">
@@ -837,7 +463,7 @@
 	
 	<xsl:template name="reporter">
 		<ae:reporter>
-               <ae:firstName><xsl:value-of select="reportergivenname"/></ae:firstName>
+               <ae:firstName><xsl:value-of select="reportergivename"/></ae:firstName>
                <ae:lastName><xsl:value-of select="reporterfamilyname"/></ae:lastName>
 			   <ae:middleName><xsl:value-of select="reportermiddlename"/></ae:middleName>
 			   <xsl:if test="reporteremail">
@@ -862,7 +488,7 @@
 	</xsl:template>
 	
 	<xsl:template name="submitter">
-		<ae:reporter>
+		<ae:submitter>
                <ae:firstName><xsl:value-of select="sendergivename"/></ae:firstName>
                <ae:lastName><xsl:value-of select="senderfamilyname"/></ae:lastName>
 			   <ae:middleName><xsl:value-of select="sendermiddlename"/></ae:middleName>
@@ -884,7 +510,7 @@
 						  <ae:value><xsl:value-of select="senderfax"/></ae:value>
 					</ae:ContactMechanism>
 				</xsl:if>
-        </ae:reporter>
+        </ae:submitter>
 	</xsl:template>
 	
 	<xsl:template name="participantHistory">
@@ -907,7 +533,14 @@
 	<xsl:template name="adverseEvent">
 		<ae:adverseEvent>
 				<externalId><xsl:value-of select="aeexternalid"/></externalId>
-				<isPrimary><xsl:value-of select="primaryaeflag"/></isPrimary>
+				<xsl:if test="primaryaeflag">
+					<isPrimary>				
+						<xsl:call-template name="convertYESNO2Boolean">
+							<xsl:with-param name="yesNoValue" select="primaryaeflag"/>
+						</xsl:call-template>
+					</isPrimary>
+										
+				</xsl:if>
 			   <startDate>
 					<xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">
 						<xsl:with-param name="date" select="reactionstartdate"/>
@@ -917,8 +550,14 @@
 					<xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">
 						<xsl:with-param name="date" select="reactionenddate"/>
 					</xsl:call-template>
-				</endDate>
+				</endDate>						
 		</ae:adverseEvent>
+	</xsl:template>
+	
+	<xsl:template name="convertYESNO2Boolean">
+		<xsl:param name="yesNoValue" />
+		<xsl:if test="$yesNoValue = 'YES'">true</xsl:if>
+		<xsl:if test="$yesNoValue = 'NO'">false</xsl:if>
 	</xsl:template>
 	
 	<xsl:template name="dateConverterYYYYMMDDtoYY-MM-DD">
