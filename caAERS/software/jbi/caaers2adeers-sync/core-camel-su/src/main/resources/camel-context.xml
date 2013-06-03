@@ -77,6 +77,11 @@
         <property name="caaersWSPassword" value="s[PART_IS_PASSWORD]" />
     </bean>  
     <bean id="participantODMMessageBinding" class="gov.nih.nci.cabig.open2caaers.binding.ParticipantODMMessageBinding"/>
+    
+    <bean id="removeEDIHeadersAndFootersProcessor" class="gov.nih.nci.cabig.report2caaers.exchange.SafetyReportRemoveEDIHeadersAndFootersProcessor"/>
+    
+    <bean id="addEDIHeadersAndFootersProcessor" class="gov.nih.nci.cabig.report2caaers.exchange.SafetyReportAddEDIHeadersAndFootersProcessor"/>
+    
     <bean id="xslt" class="gov.nih.nci.cabig.caaers2adeers.xslt.CustomXsltComponent" />
     
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
@@ -137,10 +142,14 @@
     <bean id="toCaaersClientRouteBuilder" class="gov.nih.nci.cabig.caaers2adeers.ToCaaersClientRouteBuilder"/>
     <bean id="toCaaersWebserviceRouteBuilder" class="gov.nih.nci.cabig.caaers2adeers.ToCaaersWebserviceRouteBuilder"/>
     <bean id="toCaaersParticipantWSRouteBuilder" class="gov.nih.nci.cabig.open2caaers.ToCaaersParticipantWSRouteBuilder"/>
+    <bean id="toCaaersReportWSRouteBuilder" class="gov.nih.nci.cabig.report2caaers.ToCaaersReportWSRouteBuilder">
+    	<property name="inputEDIDir" value="s[safetyReportEDIInputDir]"/>
+    	<property name="outputEDIDir" value="s[safetyReportEDIOutputDir]"/>
+    </bean>
     <bean id="cronJobRouteBuilder" class="gov.nih.nci.cabig.caaers2adeers.CronJobRouteBuilder">
-    	<property name="cronExpressions">
+    	 <property name="cronExpressions">
     		<map>
-    			<entry><key><value>AGENT</value></key><value>s[agentLovCronExpression]</value></entry>
+    			<!--<entry><key><value>AGENT</value></key><value>s[agentLovCronExpression]</value></entry>
     			<entry><key><value>AGENT_UOM</value></key><value>s[agentDoseLovCronExpression]</value></entry>
     			<entry><key><value>ASAEL</value></key><value>s[asaelLovCronExpression]</value></entry>
     			<entry><key><value>DEVICE</value></key><value>s[deviceLovCronExpression]</value></entry>
@@ -149,9 +158,9 @@
     			<entry><key><value>PRE_EXISTING_CONDITION</value></key><value>s[preExistingConditionLovCronExpression]</value></entry>
     			<entry><key><value>ORGANIZATION</value></key><value>s[organizationLovCronExpression]</value></entry>
     			<entry><key><value>MERGED_ORGANIZATION</value></key><value>s[mergedOrganizationCronExpression]</value></entry>
-    			<entry><key><value>CTCAE</value></key><value>s[ctcaeLovCronExpression]</value></entry>
+    			<entry><key><value>CTCAE</value></key><value>s[ctcaeLovCronExpression]</value></entry>-->
     		</map>
-    	</property>
+    	</property> 
     	<property name="garbageCollectionCronExpression" value="s[garbageCollectionCronExpression]"/>
     </bean>
     <bean id="payloadGenerator" class="gov.nih.nci.cabig.caaers2adeers.cronjob.PayloadGenerator" />

@@ -5,9 +5,12 @@
     xmlns:caaers="http://schema.integration.caaers.cabig.nci.nih.gov/common"
     xmlns:stud="http://schema.integration.caaers.cabig.nci.nih.gov/study"
     xmlns:part="http://schema.integration.caaers.cabig.nci.nih.gov/participant"
+	xmlns:aereport="http://schema.integration.caaers.cabig.nci.nih.gov/aereport"
+	xmlns:sec="http://cxf.apache.org/configuration/security" 	
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://servicemix.apache.org/cxfbc/1.0 http://servicemix.apache.org/cxfbc/1.0/servicemix-cxf-bc.xsd
-       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+         http://servicemix.apache.org/config/1.0 http://servicemix.apache.org/schema/servicemix-core-3.2.xsd">
 
     <!-- 
         A provider endpoint is a client side JBI endpoint which can receive requests from the NMR and send
@@ -26,7 +29,7 @@
             schemaValidationEnabled : specifies if the endpoint use schema validation for the incoming/outgoing message
             properties              : sets arbitrary properties that are added to the CXF content at endpoint level
     -->
-
+		
     <bean id="propertyConfigurer"
           class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="location">
@@ -295,6 +298,27 @@
                     wsdl="classpath:ParticipantService.wsdl"
                     locationURI="s[PARTICIPANT_WS_BINDING_URL]" useJBIWrapper="false"
                     useSOAPEnvelope="true" schemaValidationEnabled="false">
+        <cxfbc:inInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+        </cxfbc:inInterceptors>
+        <cxfbc:outInterceptors>
+            <ref local="wss4jOutInterceptor" />
+            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+        </cxfbc:outInterceptors>
+        <cxfbc:inFaultInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+        </cxfbc:inFaultInterceptors>
+        <cxfbc:outFaultInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+        </cxfbc:outFaultInterceptors>
+    </cxfbc:provider>
+		
+	<!-- ================== SafetyReport Webservice Provider ==================================-->
+    <cxfbc:provider interfaceName="aereport:SafetyReportManagementServiceInterface"  service="aereport:SafetyReportManagementService"
+                    endpoint="SafetyReportManagementServiceImplPort"
+                    wsdl="classpath:SafetyReportService.wsdl"
+                    locationURI="s[SAFETYREPORT_WS_BINDING_URL]" useJBIWrapper="false"
+                    useSOAPEnvelope="true" schemaValidationEnabled="false">		
         <cxfbc:inInterceptors>
             <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
         </cxfbc:inInterceptors>

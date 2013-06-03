@@ -1,28 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  Copyright SemanticBits, Northwestern University and Akaza Research
-  
-  Distributed under the OSI-approved BSD 3-Clause License.
-  See http://ncip.github.com/caaers/LICENSE.txt for details.
--->
+<!-- Copyright SemanticBits, Northwestern University and Akaza Research Distributed 
+	under the OSI-approved BSD 3-Clause License. See http://ncip.github.com/caaers/LICENSE.txt 
+	for details. -->
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:sm="http://servicemix.apache.org/config/1.0"
-       xsi:schemaLocation="
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sm="http://servicemix.apache.org/config/1.0"	
+	xsi:schemaLocation="
          http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
          http://servicemix.apache.org/config/1.0 http://servicemix.apache.org/schema/servicemix-core-3.2.xsd">
+	
+	<sm:container generateRootDir="true">
 
-    <sm:container generateRootDir="true">
+		<sm:deployments>
+			<sm:installSharedLibrary groupId="org.apache.servicemix"
+				artifactId="servicemix-shared" version="2010.01" />
+			<sm:installComponent groupId="org.apache.servicemix"
+				artifactId="servicemix-camel" version="2010.01" />
+			<sm:installComponent groupId="org.apache.servicemix"
+				artifactId="servicemix-quartz" version="2010.01" />
+			<sm:installComponent groupId="org.apache.servicemix"
+				artifactId="servicemix-cxf-bc" version="2010.01" />
+			<sm:deployServiceAssembly groupId="gov.nih.nci.cabig.caaers2adeers"
+				artifactId="caaers-adeers-sync-sa" version="2.7-SNAPSHOT" />
+		</sm:deployments>
 
-            <sm:deployments>
-                <sm:installSharedLibrary groupId="org.apache.servicemix" artifactId="servicemix-shared" version="2010.01" />
-                <sm:installComponent groupId="org.apache.servicemix" artifactId="servicemix-camel" version="2010.01"/>
-                <sm:installComponent groupId="org.apache.servicemix" artifactId="servicemix-quartz" version="2010.01"/>
-                <sm:installComponent groupId="org.apache.servicemix" artifactId="servicemix-cxf-bc" version="2010.01"/>
-                <sm:deployServiceAssembly groupId="gov.nih.nci.cabig.caaers2adeers" artifactId="caaers-adeers-sync-sa" version="2.7-SNAPSHOT"/>
-            </sm:deployments>
 
-
-    </sm:container>
+	</sm:container>
 
 </beans>
