@@ -2,7 +2,7 @@
                 xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:aer="http://schema.integration.caaers.cabig.nci.nih.gov/aereport"
-                xmlns:com="http://schema.integration.caaers.cabig.nci.nih.gov/common" >
+                xmlns:com="http://schema.integration.caaers.cabig.nci.nih.gov/common">
 
     <!-- Assuming that the following Parameters are derived runtime from header -->
     <xsl:param name="c2r_msg_id" /> <!-- a UUID -->
