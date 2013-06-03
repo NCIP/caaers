@@ -44,43 +44,57 @@
                     02 = ICSR Error, not all reports loaded into the database, check section B
                     03= SGML parsing error, no data extracted
                     -->
-                    <transmissionacknowledgmentcode>01</transmissionacknowledgmentcode>
-                    <!--Optional:-->
-                    <parsingerrormessage>No errors</parsingerrormessage>
+                    <xsl:if test="//soapenv:Fault">
+                        <transmissionacknowledgmentcode>02</transmissionacknowledgmentcode>
+                        <!--Optional:-->
+                        <parsingerrormessage><xsl:value-of select="//soapenv:Fault/faultcode"/> : <xsl:value-of select="//soapenv:Fault/faultstring"/></parsingerrormessage>
+                    </xsl:if>
+                    <xsl:if test="//com:CaaersServiceResponse/com:ServiceResponse/wsError">
+                        <transmissionacknowledgmentcode>02</transmissionacknowledgmentcode>
+                        <!--Optional:-->
+                        <parsingerrormessage><xsl:value-of select="//com:CaaersServiceResponse/com:ServiceResponse/wsError/errorCode"/> : <xsl:value-of select="//com:CaaersServiceResponse/com:ServiceResponse/wsError/errorDesc"/></parsingerrormessage>
+                    </xsl:if>
+                    <xsl:if test="//com:ServiceResponse/com:entityProcessingOutcomes/com:entityProcessingOutcome">
+                        <transmissionacknowledgmentcode>01</transmissionacknowledgmentcode>
+                    </xsl:if>
                 </messageacknowledgment>
-                <!--Zero or more repetitions:-->
-                <reportacknowledgment>
-                    <safetyreportid><xsl:value-of select="//com:ServiceResponse/com:entityProcessingOutcomes/com:entityProcessingOutcome/businessIdentifier" /></safetyreportid>
-                    <!-- obtained from (safetyreport/safetyreportid) of the input safety report message-->
-                    <!--Optional:-->
-                    <safetyreportversion>2.1</safetyreportversion>
-                    <!-- ICSR input message version -->
-                    <!--Optional:-->
-                    <localreportnumb><xsl:value-of select="//com:ServiceResponse/com:entityProcessingOutcomes/com:entityProcessingOutcome/dataBaseId" /></localreportnumb>
-                    <!-- can be Database ID of DC or Report (if multiple reports possible per DC)-->
-                    <!-- ****** *******************************************
-                    authoritynumb or companynumb     only one of them is allowed in the incoming message and should follow a specific pattern.
-                    Note :- AdEERS ticket number do not follow the country-company-message-id pattern.
-                    ****** *********************************** -->
-                    <!--Optional:-->
-                    <authoritynumb><xsl:value-of select="//com:ServiceResponse/com:entityProcessingOutcomes/com:entityProcessingOutcome/dataBaseId" /></authoritynumb>
-                    <!-- Identifier assigned by other regulatory authority for this Report-->
-                    <!--Optional:-->
-                    <!--<companynumb>AdEERS Ticket Number? Case Number ?</companynumb>-->
-                    <!--(Refer section B.1.5) Not sure, either this can be Case number or AdEERS ticket number. -->
-                    <!--Optional:-->
-                    <receiptdateformat>102</receiptdateformat>
-                    <!--Optional:-->
-                    <receiptdate><xsl:value-of select="$c2r_report_received_on_102" /></receiptdate>
-                    <!-- Date on which input safety reprot message was received  : in CCYYMMDD format-->
-                    <!--
-                    01 = Report Loaded Successfully
-                    02 = Report Not Loaded
-                    -->
-                    <reportacknowledgmentcode>01</reportacknowledgmentcode>
-                    <!--Optional:-->
-                    <errormessagecomment>No comments or error</errormessagecomment>
-                </reportacknowledgment>
+                <xsl:if test="//com:ServiceResponse/com:entityProcessingOutcomes/com:entityProcessingOutcome">
+
+                    <!--Zero or more repetitions:-->
+                    <reportacknowledgment>
+                        <safetyreportid><xsl:value-of select="//com:ServiceResponse/com:entityProcessingOutcomes/com:entityProcessingOutcome/businessIdentifier" /></safetyreportid>
+                        <!-- obtained from (safetyreport/safetyreportid) of the input safety report message-->
+                        <!--Optional:-->
+                        <safetyreportversion>2.1</safetyreportversion>
+                        <!-- ICSR input message version -->
+                        <!--Optional:-->
+                        <localreportnumb><xsl:value-of select="//com:ServiceResponse/com:entityProcessingOutcomes/com:entityProcessingOutcome/dataBaseId" /></localreportnumb>
+                        <!-- can be Database ID of DC or Report (if multiple reports possible per DC)-->
+                        <!-- ****** *******************************************
+                        authoritynumb or companynumb     only one of them is allowed in the incoming message and should follow a specific pattern.
+                        Note :- AdEERS ticket number do not follow the country-company-message-id pattern.
+                        ****** *********************************** -->
+                        <!--Optional:-->
+                        <authoritynumb><xsl:value-of select="//com:ServiceResponse/com:entityProcessingOutcomes/com:entityProcessingOutcome/dataBaseId" /></authoritynumb>
+                        <!-- Identifier assigned by other regulatory authority for this Report-->
+                        <!--Optional:-->
+                        <!--<companynumb>AdEERS Ticket Number? Case Number ?</companynumb>-->
+                        <!--(Refer section B.1.5) Not sure, either this can be Case number or AdEERS ticket number. -->
+                        <!--Optional:-->
+                        <receiptdateformat>102</receiptdateformat>
+                        <!--Optional:-->
+                        <receiptdate><xsl:value-of select="$c2r_report_received_on_102" /></receiptdate>
+                        <!-- Date on which input safety reprot message was received  : in CCYYMMDD format-->
+                        <!--
+                        01 = Report Loaded Successfully
+                        02 = Report Not Loaded
+                        -->
+                        <reportacknowledgmentcode>01</reportacknowledgmentcode>
+                        <!--Optional:-->
+                        <!--<errormessagecomment>No comments or error</errormessagecomment>-->
+                    </reportacknowledgment>
+                </xsl:if>
+
             </acknowledgment>
         </ichicsrack>
     </xsl:template>
