@@ -6,6 +6,10 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers2adeers;
 
+import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.CAAERS_WS_INVOCATION_COMPLETED;
+import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.CAAERS_WS_INVOCATION_INITIATED;
+import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.CAAERS_WS_IN_TRANSFORMATION;
+import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.CAAERS_WS_OUT_TRANSFORMATION;
 import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.NO_DATA_AVAILABLE;
 import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.PRE_PROCESS_OPEN_ODM_MSG;
 import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.REQUEST_COMPLETION;
@@ -13,11 +17,13 @@ import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.REQUEST
 import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.REQUST_PROCESSING_ERROR;
 import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.ROUTED_TO_ADEERS_REQUEST_SINK;
 import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.ROUTED_TO_CAAERS_REQUEST_SINK;
+import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.ROUTED_TO_CAAERS_RESPONSE_SINK;
 import static gov.nih.nci.cabig.caaers2adeers.track.Tracker.track;
 import gov.nih.nci.cabig.caaers2adeers.track.FileTracker;
 import gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage;
 import gov.nih.nci.cabig.open2caaers.ToCaaersParticipantWSRouteBuilder;
 import gov.nih.nci.cabig.open2caaers.exchange.ParticipantODMMessageProcessor;
+import gov.nih.nci.cabig.report2caaers.ToCaaersReportWSRouteBuilder;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.ExchangePattern;
@@ -53,6 +59,16 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
     private FileTracker fileTracker;
     @Autowired
     private ToCaaersParticipantWSRouteBuilder toCaaersParticipantWSRouteBuilder;
+    @Autowired
+    private ToCaaersReportWSRouteBuilder toCaaersReportWSRouteBuilder;
+    
+	public FileTracker getFileTracker() {
+		return fileTracker;
+	}
+
+	public void setFileTracker(FileTracker fileTracker) {
+		this.fileTracker = fileTracker;
+	}
 
 	/**
 	 * Will create a route that calls a webservice with before-call and after-call transformations
@@ -78,7 +94,8 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
         .process(track(toSinkStage))
 		.to(toSink);
 	}
-
+	
+	
     /**
      * Will create a sub route for transformation.
      * @param fromSink - From channel
@@ -141,13 +158,15 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
     	
 
         //configure all the Quartz cron jobs
-        cronJobRouteBuilder.configure(this);
+        //cronJobRouteBuilder.configure(this);
         //configure routes towards adeers
     	toAdeersRouteBuilder.configure(this);
         //configure route towards caAERS Webservices
     	toCaaersWebserviceRouteBuilder.configure(this);
         //configure routes towards caAERS client
     	toCaaersClientRouteBuilder.configure(this);
+    	//configure routes towards caAERS safety report service with E2B input
+    	toCaaersReportWSRouteBuilder.configure(this);
 
     	//need to process AdEERS results, may be the SyncComponent...  
     	from("direct:adEERSResponseSink")
