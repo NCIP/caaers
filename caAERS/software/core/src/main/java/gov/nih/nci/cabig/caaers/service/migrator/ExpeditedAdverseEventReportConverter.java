@@ -148,6 +148,7 @@ import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationType;
 import gov.nih.nci.cabig.caaers.service.migrator.adverseevent.AdverseEventConverter;
 import gov.nih.nci.cabig.caaers.utils.XMLUtil;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -190,7 +191,7 @@ public class ExpeditedAdverseEventReportConverter {
 	public ExpeditedAdverseEventReport convert( AdverseEventReport aeReportDto) {
 		ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
 
-        aeReport.setCreatedAt(XMLUtil.toTimestamp(aeReportDto.getCreatedAt()));
+		 aeReport.setCreatedAt(XMLUtil.toTimestamp(aeReportDto.getCreatedAt()));
         aeReport.setExternalId(aeReportDto.getExternalId());
         //reporting period
         if(aeReportDto.getAdverseEventReportingPeriod() != null) {
@@ -202,7 +203,7 @@ public class ExpeditedAdverseEventReportConverter {
         if(aeReportDto.getStudyParticipantAssignment() != null && aeReport.getAssignment() == null){
             aeReport.getReportingPeriod().setAssignment(convertStudyParticipantAssignment(aeReportDto.getStudyParticipantAssignment()));
         }
-
+        
         //Adverse Events
         for(AdverseEventType aeType : aeReportDto.getAdverseEvent()){
             if ( aeReport.getReportingPeriod() != null) {
@@ -444,7 +445,7 @@ public class ExpeditedAdverseEventReportConverter {
 	
 	protected Report convertReport(ReportType xmlReportType){
 		Report report = new Report();
-		report.setRequired(xmlReportType.isRequired());
+	//	report.setRequired(xmlReportType.isRequired());
 		if ( xmlReportType.isManuallySelected() != null ) {
 			report.setManuallySelected(xmlReportType.isManuallySelected());
 		}
@@ -599,6 +600,10 @@ public class ExpeditedAdverseEventReportConverter {
 				studyAgent.setOtherAgent(courseAgentType.getStudyAgent().getOtherAgent());
 			}
 			courseAgent.setStudyAgent(studyAgent);
+		}
+		
+		if(courseAgentType.getLotNumber() != null){
+			courseAgent.setLotNumber(courseAgentType.getLotNumber());
 		}
 		
 		return courseAgent;
@@ -762,6 +767,10 @@ public class ExpeditedAdverseEventReportConverter {
 			medicalDevice.setStudyDevice(studyDevice);
 		}
 		
+		if(xmlMedicalDeviceType.getLotNumber() != null){
+			medicalDevice.setLotNumber(xmlMedicalDeviceType.getLotNumber());
+		}
+		
 		return medicalDevice;
 	}
 	
@@ -889,15 +898,15 @@ public class ExpeditedAdverseEventReportConverter {
 	
 	protected MetastaticDiseaseSite convertMestastaticDiseaseSite(MetastaticDiseaseSiteType xmlMetastaticDiseaseSiteType){
 		MetastaticDiseaseSite site = new MetastaticDiseaseSite();
-		if (xmlMetastaticDiseaseSiteType.getAnatomicSite() != null){
+		if (xmlMetastaticDiseaseSiteType.getCodedSite() != null){
 			AnatomicSite anatomicSite = new AnatomicSite();
-			anatomicSite.setName(xmlMetastaticDiseaseSiteType.getAnatomicSite().getName());
-			anatomicSite.setCategory(xmlMetastaticDiseaseSiteType.getAnatomicSite().getCategory());
+			anatomicSite.setName(xmlMetastaticDiseaseSiteType.getCodedSite().getName());
+			anatomicSite.setCategory(xmlMetastaticDiseaseSiteType.getCodedSite().getCategory());
 			site.setCodedSite(anatomicSite);
 		}
 		
-		if(xmlMetastaticDiseaseSiteType.getOtherMetastaticDiseaseSite() != null){
-			site.setOtherSite(xmlMetastaticDiseaseSiteType.getOtherMetastaticDiseaseSite());
+		if(xmlMetastaticDiseaseSiteType.getOtherSite() != null){
+			site.setOtherSite(xmlMetastaticDiseaseSiteType.getOtherSite());
 		}
 		
 		return site;
@@ -905,6 +914,14 @@ public class ExpeditedAdverseEventReportConverter {
 	
 	protected AdverseEventResponseDescription convertAdverseEventResponseDescription(AdverseEventResponseDescriptionType xmlAdverseEventResponseDescriptionType){
 		AdverseEventResponseDescription adverseEventResponseDescription = new AdverseEventResponseDescription();
+		
+		if(xmlAdverseEventResponseDescriptionType.isRetreated() != null){
+			adverseEventResponseDescription.setRetreated(xmlAdverseEventResponseDescriptionType.isRetreated());
+		}
+		
+		if(xmlAdverseEventResponseDescriptionType.isAutopsyPerformed() != null){
+			adverseEventResponseDescription.setAutopsyPerformed(xmlAdverseEventResponseDescriptionType.isAutopsyPerformed());
+		}
 		adverseEventResponseDescription.setEventDescription(xmlAdverseEventResponseDescriptionType.getEventDescription());
 		if(xmlAdverseEventResponseDescriptionType.getRecoveryDate() != null){
 			adverseEventResponseDescription.setRecoveryDate(xmlAdverseEventResponseDescriptionType.getRecoveryDate().toGregorianCalendar().getTime());
@@ -994,7 +1011,8 @@ public class ExpeditedAdverseEventReportConverter {
 	
 	protected AdverseEventReportingPeriod convertAdverseEventReportingPeriod(AdverseEventReportingPeriodType reportingPeriodType){
 		AdverseEventReportingPeriod reportingPeriod = new AdverseEventReportingPeriod();
-
+		if(reportingPeriodType.getExternalId() != null)	reportingPeriod.setExternalId(reportingPeriodType.getExternalId());
+		
 		if(reportingPeriodType.getStudyParticipantAssignment() != null){
 			reportingPeriod.setAssignment(convertStudyParticipantAssignment(reportingPeriodType.getStudyParticipantAssignment()));
 		}

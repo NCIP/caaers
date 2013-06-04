@@ -22,7 +22,7 @@
                     <xs:element minOccurs="0" name="expected" type="xs:boolean"/>
                     <xs:element minOccurs="0" name="attributionSummary" type="AttributionType"/>
                     <xs:element minOccurs="0" name="comments" type="xs:string"/>
-                    <xs:element minOccurs="0" name="dateFirstLearned" type="xs:dateTime"/>
+                    <xs:element minOccurs="0" name="dateFirstLearned" type="xs:date"/>
                     <xs:element minOccurs="0" name="startDate" type="xs:date"/>
 					<xs:element minOccurs="0" name="eventApproximateTime" type="cct:TimeType"/>
                     <xs:element minOccurs="0" name="eventLocation" type="xs:string"/>
