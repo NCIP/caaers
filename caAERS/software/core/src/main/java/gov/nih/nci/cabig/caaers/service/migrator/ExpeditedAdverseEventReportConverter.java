@@ -495,8 +495,9 @@ public class ExpeditedAdverseEventReportConverter {
 			reportDefinition.setGroup(group);
 		}
 		
-		
-		reportDefinition.setTimeScaleUnitType(TimeScaleUnit.valueOf(xmlReportType.getAeReportDefinition().getTimeScaleUnitType().name()));
+		if(xmlReportType.getAeReportDefinition().getTimeScaleUnitType() != null && xmlReportType.getAeReportDefinition().getTimeScaleUnitType().name() != null){
+			reportDefinition.setTimeScaleUnitType(TimeScaleUnit.valueOf(xmlReportType.getAeReportDefinition().getTimeScaleUnitType().name()));
+		}
 		report.setReportDefinition(reportDefinition);
 		for(ReportDeliveryDefinitionType xmlReportDeliveryDefinitionType : xmlReportType.getAeReportDefinition().getReportDeliveryDefinition()){
 			ReportDeliveryDefinition reportDeliveryDefinition = new ReportDeliveryDefinition();
@@ -779,7 +780,9 @@ public class ExpeditedAdverseEventReportConverter {
 		history.setBaselinePerformanceStatus(xmlParticipantHistoryType.getBaselinePerformanceStatus());
 		if(xmlParticipantHistoryType.getHeight() != null){
 			Measure height = new Measure();
-			height.setCode(xmlParticipantHistoryType.getHeight().getCode());
+			if(xmlParticipantHistoryType.getHeight().getCode() != null){
+				height.setCode(xmlParticipantHistoryType.getHeight().getCode());
+			}
 			height.setQuantity(xmlParticipantHistoryType.getHeight().getQuantity());
 			height.setUnit(xmlParticipantHistoryType.getHeight().getUnit());
 			history.setHeight(height);
@@ -787,7 +790,9 @@ public class ExpeditedAdverseEventReportConverter {
 		
 		if(xmlParticipantHistoryType.getWeight() != null){
 			Measure weight = new Measure();
-			weight.setCode(xmlParticipantHistoryType.getWeight().getCode());
+			if(xmlParticipantHistoryType.getWeight().getCode() != null){
+				weight.setCode(xmlParticipantHistoryType.getWeight().getCode());
+			}			
 			weight.setQuantity(xmlParticipantHistoryType.getWeight().getQuantity());
 			weight.setUnit(xmlParticipantHistoryType.getWeight().getUnit());
 			history.setWeight(weight);
@@ -891,7 +896,9 @@ public class ExpeditedAdverseEventReportConverter {
 		dateValue.setDay(xmlDateValueType.getDay());
 		dateValue.setMonth(xmlDateValueType.getMonth());
 		dateValue.setYear(xmlDateValueType.getYear());
-		dateValue.setZone(xmlDateValueType.getZone());
+		if(xmlDateValueType.getZone() != null){
+			dateValue.setZone(xmlDateValueType.getZone());
+		}
 		
 		return dateValue;
 	}
@@ -901,7 +908,9 @@ public class ExpeditedAdverseEventReportConverter {
 		if (xmlMetastaticDiseaseSiteType.getCodedSite() != null){
 			AnatomicSite anatomicSite = new AnatomicSite();
 			anatomicSite.setName(xmlMetastaticDiseaseSiteType.getCodedSite().getName());
-			anatomicSite.setCategory(xmlMetastaticDiseaseSiteType.getCodedSite().getCategory());
+			if(xmlMetastaticDiseaseSiteType.getCodedSite().getCategory() != null){
+				anatomicSite.setCategory(xmlMetastaticDiseaseSiteType.getCodedSite().getCategory());
+			}
 			site.setCodedSite(anatomicSite);
 		}
 		

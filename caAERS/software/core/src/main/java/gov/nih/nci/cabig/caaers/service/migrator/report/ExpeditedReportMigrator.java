@@ -6,17 +6,24 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.service.migrator.report;
 
+import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery;
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.migrator.CompositeMigrator;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import java.util.List;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * User: Biju Joseph
@@ -27,8 +34,14 @@ public class ExpeditedReportMigrator extends CompositeMigrator<ExpeditedAdverseE
     private OrganizationDao organizationDao;
     private StudyDao studyDao;
     private ParticipantDao participantDao;
+    private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
 
-    public void setOrganizationDao(OrganizationDao organizationDao) {
+    public void setAdverseEventReportingPeriodDao(
+			AdverseEventReportingPeriodDao adverseEventReportingPeriodDao) {
+		this.adverseEventReportingPeriodDao = adverseEventReportingPeriodDao;
+	}
+
+	public void setOrganizationDao(OrganizationDao organizationDao) {
         this.organizationDao = organizationDao;
     }
 
@@ -43,6 +56,18 @@ public class ExpeditedReportMigrator extends CompositeMigrator<ExpeditedAdverseE
 
     @Override
     public void preMigrate(ExpeditedAdverseEventReport src, ExpeditedAdverseEventReport dest, DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome) {
+    	
+    	if(src.getReportingPeriod().getExternalId() != null){
+    		AdverseEventReportingPeriod arp = adverseEventReportingPeriodDao.getByExternalId(src.getReportingPeriod().getExternalId());
+    		if(arp == null){
+    			 outcome.addError("ER-RP-1", "Reporting period not found", src.getReportingPeriod().getExternalId());
+    	            return;
+    			
+    		}
+    		
+    		 dest.setReportingPeriod(arp);
+    		 return;
+    	}
 
         if(src.getInvestigationalDeviceAdministered() != null) dest.setInvestigationalDeviceAdministered(src.getInvestigationalDeviceAdministered());
         //set the created date is not present and is available in the source

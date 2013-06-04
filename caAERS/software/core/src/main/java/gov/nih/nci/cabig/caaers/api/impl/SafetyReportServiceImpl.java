@@ -155,7 +155,7 @@ public class SafetyReportServiceImpl {
     }
 
     public ExpeditedAdverseEventReport createSafetyReport(ExpeditedAdverseEventReport aeReport, ValidationErrors errors){
-        Study studySrc = aeReport.getStudy();
+       /* Study studySrc = aeReport.getStudy();
         Participant subjectSrc = aeReport.getParticipant();
         StudyParticipantAssignment srcAssignment = subjectSrc.getAssignments().get(0);
 
@@ -195,7 +195,7 @@ public class SafetyReportServiceImpl {
             
         }
         
-        updateReportingPeriodWithdbStudy(aeReport,studySrc);
+        updateReportingPeriodWithdbStudy(aeReport,studySrc);*/
 
         //Call Ae Management
         
@@ -260,22 +260,23 @@ public class SafetyReportServiceImpl {
            ExpeditedAdverseEventReport aeSrcReport = eaeConverter.convert(adverseEventReport);
            
            //2. Run the validation (basic)
-           ValidationErrors errors = validateInput(aeSrcReport);
-           if(errors.hasErrors()) return populateErrors(response, errors);
+       //    ValidationErrors errors = validateInput(aeSrcReport);
+       //    if(errors.hasErrors()) return populateErrors(response, errors);
            
            // 2. Call the GenericValidator to make sure input is correct.
-		   Errors reportValidatorErrors = new BindException(aeSrcReport, "ExpeditedAdverseEventReport");
-		   aeReportValidator.validate( aeSrcReport, reportValidatorErrors);
+		//   Errors reportValidatorErrors = new BindException(aeSrcReport, "ExpeditedAdverseEventReport");
+		//   aeReportValidator.validate( aeSrcReport, reportValidatorErrors);
 		   
-		   if ( reportValidatorErrors.hasErrors()) {
+		/*   if ( reportValidatorErrors.hasErrors()) {
 			   Helper.populateError(response, "GEN_ORH_001", "Error(s) occured during Valdation step.");
 			   return response;
-		   }
+		   }*/
 
            //TODO : below call will change based on create or Amend flow
            //3. Save the report
+           ValidationErrors errors = new ValidationErrors();
            ExpeditedAdverseEventReport aeReport = createSafetyReport(aeSrcReport, errors);
-           if(errors.hasErrors()) return populateErrors(response, errors);
+   //        if(errors.hasErrors()) return populateErrors(response, errors);
 
        }catch(Exception e) {
 		   logger.error("Unable to Create a Report from Safety Management Service", e);
