@@ -30,10 +30,12 @@ Please join us in further developing and improving caAERS.
  * PostgreSQL 9.0
  * Tomcat 6  (SSL enabled)
  * ServiceMix 3.3.2\#
- * apache ant 1.7.1\* 
  * maven 3.0.4\*
+ * apache ant 1.7.1\* 
+
  
  \* This software is needed for building the project from the source-code.
+
  \# This software is also neeed for building caAERS ServiceMix assembly
  
 # Installation
@@ -52,12 +54,14 @@ The caaers.war file will be available in $caAERS/software/web/build/dist
 ###To build caaers-adeers service assembly
  * cd $caAERS/software/jbi/caaers-adeers-service-assembly 
  * ant all
-The service assembly will be availabe under $caAERS/software/jbi/caaers-adeers-service-assembly/build/assembly
+ 
+  The service assembly will be availabe under $caAERS/software/jbi/caaers-adeers-service-assembly/build/assembly
 
 ###To build caaers-adeers-sync service assembly
  * cd $caAERS/software/jbi/caaers2adeers-sync 
  * mvn install -Dmaven.test.skip=true
-The caaers-adders-sync service assembly will available in $caAERS/software/jbi/caaers2adeers-sync/caaers-adeers-sync-sa/target
+ 
+  The caaers-adders-sync service assembly will available in $caAERS/software/jbi/caaers2adeers-sync/caaers-adeers-sync-sa/target
 
 ###Hot Deploy
  * ant sync-classpath (will setup the eclipse project)
