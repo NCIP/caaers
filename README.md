@@ -26,10 +26,14 @@ Please join us in further developing and improving caAERS.
 
 # Prerequisites
  * [Installation guide](https://wiki.nci.nih.gov/display/caAERS/caAERS+2.6-M1+Quick+Start+Installation+and+Configuration+Guide#caAERS26-M1QuickStartInstallationandConfigurationGuide-InstallationandUpgradeProcedures)
- * JDK 1.6
+ * JDK 1.6 \*
  * PostgreSQL 9.0
  * Tomcat 6  (SSL enabled)
  * ServiceMix 3.3.2
+ * maven-3.0.4 \*
+ * apache-ant-1.7.1 \*
+ 
+ \* - This software is needed for building the project from the source-code.
  
 # Installation
  * ant publish-all ([build notes]
