@@ -33,16 +33,16 @@ Please join us in further developing and improving caAERS.
  * apache-ant-1.7.1 \* 
  * maven-3.0.4 \*
  
- \* - This software is needed for building the project from the source-code.
- \# - This software is also neeed for building caAERS ServiceMix assembly
+ \* This software is needed for building the project from the source-code.
+ \# This software is also neeed for building caAERS ServiceMix assembly
  
 # Installation
 ##Setup 
-* Add jdk, ant and maven to the system PATH and set the following environment variables
- ### ANT_HOME  - must point to ant install folder
- ### JAVA_HOME - install folder of java
- ### SERVICEMIX_HOME - install folder of ServiceMix 3.3.2
- ###ANT_OPTS=-Xms128m -Xmx2048m -XX:MaxPermSize=512m
+  * Add jdk, ant and maven to the system PATH and set the following environment variables
+    - ANT_HOME  - must point to ant install folder
+    - JAVA_HOME - install folder of java
+    - SERVICEMIX_HOME - install folder of ServiceMix 3.3.2
+    - ANT_OPTS=-Xms128m -Xmx2048m -XX:MaxPermSize=512m
 
 To build caAERS WAR file
  * cd $caAERS/software   
