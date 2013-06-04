@@ -67,6 +67,7 @@ public class ExpeditedAdverseEventReportConverterTest extends CaaersDbTestCase {
 		report.setAdverseEventReportingPeriod(createReportingPeriod());
 	 	report.setReporter(createReporter(new ReporterType()));
 	 	report.setPhysician(createPhysician(new PhysicianType()));
+        report.setExternalId("123456");
         return report;
     }
 	 
@@ -202,7 +203,8 @@ public class ExpeditedAdverseEventReportConverterTest extends CaaersDbTestCase {
 		assertNotNull(domainReport.getReportingPeriod().getAssignment().getParticipant());
 		assertNotNull(domainReport.getReportingPeriod().getAssignment().getStudySite());
 		assertNotNull(domainReport.getReportingPeriod().getAssignment().getStudySite().getStudy());
-		
+
+        assertTrue(domainReport.getExternalId().equals("123456"));
 		assertEquals("wrong physician first name","Frank", domainReport.getPhysician().getFirstName());
 		assertEquals("wrong physician phone","712-123-9081", domainReport.getPhysician().getPhoneNumber());
 		assertEquals("wrong reporter last name","Nobel", domainReport.getReporter().getLastName());

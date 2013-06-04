@@ -191,7 +191,7 @@ public class ExpeditedAdverseEventReportConverter {
 		ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
 
         aeReport.setCreatedAt(XMLUtil.toTimestamp(aeReportDto.getCreatedAt()));
-
+        aeReport.setExternalId(aeReportDto.getExternalId());
         //reporting period
         if(aeReportDto.getAdverseEventReportingPeriod() != null) {
             AdverseEventReportingPeriod reportingPeriod = convertAdverseEventReportingPeriod(aeReportDto.getAdverseEventReportingPeriod());

@@ -35,6 +35,7 @@
 					<xs:element type="OtherCauseType" name="otherCause"	maxOccurs="unbounded" minOccurs="0" />
 					<xs:element type="AdditionalInformationType" name="additionalInformation" minOccurs="0" />
 					<xs:element type="ReportType" name="report" maxOccurs="unbounded" minOccurs="1" />
+                    <xs:element minOccurs="0" name="externalId" type="xs:string"/>
 				</xs:sequence>
 		</xs:complexType>
 	</xs:element>
