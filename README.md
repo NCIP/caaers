@@ -37,29 +37,29 @@ Please join us in further developing and improving caAERS.
  \# This software is also neeed for building caAERS ServiceMix assembly
  
 # Installation
-##Setup 
+###Setup 
   * Add jdk, ant and maven to the system PATH and set the following environment variables
     - ANT_HOME  - must point to ant install folder
     - JAVA_HOME - install folder of java
     - SERVICEMIX_HOME - install folder of ServiceMix 3.3.2
     - ANT_OPTS=-Xms128m -Xmx2048m -XX:MaxPermSize=512m
 
-To build caAERS WAR file
+###To build caAERS WAR file
  * cd $caAERS/software   
  * ant publish-all -Dskip.test=true ([build notes] (https://wiki.nci.nih.gov/display/caAERS/2008+IVY+integration+Notes))
 The caaers.war file will be available in $caAERS/software/web/build/dist
 
-To build caaers-adeers service assembly
+###To build caaers-adeers service assembly
  * cd $caAERS/software/jbi/caaers-adeers-service-assembly 
  * ant all
 The service assembly will be availabe under $caAERS/software/jbi/caaers-adeers-service-assembly/build/assembly
 
-To build caaers-adeers-sync service assembly
+###To build caaers-adeers-sync service assembly
  * cd $caAERS/software/jbi/caaers2adeers-sync 
  * mvn install -Dmaven.test.skip=true
 The caaers-adders-sync service assembly will available in $caAERS/software/jbi/caaers2adeers-sync/caaers-adeers-sync-sa/target
 
-# Hot Deploy
+###Hot Deploy
  * ant sync-classpath (will setup the eclipse project)
  * If using intellij, Import eclipse project into idea.
  * Go to web folder and run "go.bat"  (this will set up your tomcat hot-deployment)
