@@ -6,6 +6,7 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.service.migrator.report;
 
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.migrator.report.ExpeditedReportMigrator;
@@ -28,6 +29,8 @@ public class ExpeditedReportMigratorTest extends TestCase {
          expeditedReportMigrator = new ExpeditedReportMigrator();
          src = new ExpeditedAdverseEventReport();
          dest = new ExpeditedAdverseEventReport();
+         AdverseEventReportingPeriod aerp = new AdverseEventReportingPeriod();
+         src.setReportingPeriod(aerp);
     }
 
     public void testPreMigrate() throws Exception {
