@@ -64,6 +64,10 @@ public class ExpeditedReportMigrator extends CompositeMigrator<ExpeditedAdverseE
     @Override
     public void preMigrate(ExpeditedAdverseEventReport src, ExpeditedAdverseEventReport dest, DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome) {
     	
+    	   if(src.getInvestigationalDeviceAdministered() != null) dest.setInvestigationalDeviceAdministered(src.getInvestigationalDeviceAdministered());
+           //set the created date is not present and is available in the source
+           if(dest.getCreatedAt() == null && src.getCreatedAt() != null) dest.setCreatedAt(src.getCreatedAt());
+    	
     	if(src.getReportingPeriod().getExternalId() != null){
     		AdverseEventReportingPeriod arp = adverseEventReportingPeriodDao.getByExternalId(src.getReportingPeriod().getExternalId());
     		if(arp == null){
@@ -79,11 +83,7 @@ public class ExpeditedReportMigrator extends CompositeMigrator<ExpeditedAdverseE
     		 return;
     	}
 
-        if(src.getInvestigationalDeviceAdministered() != null) dest.setInvestigationalDeviceAdministered(src.getInvestigationalDeviceAdministered());
-        //set the created date is not present and is available in the source
-        if(dest.getCreatedAt() == null && src.getCreatedAt() != null) dest.setCreatedAt(src.getCreatedAt());
-
-        //identify the reporting period, participant and study to use.
+       //identify the reporting period, participant and study to use.
        
         AdverseEventReportingPeriod  rpSrc = src.getReportingPeriod();
         if(rpSrc == null){

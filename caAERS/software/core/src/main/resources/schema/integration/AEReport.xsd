@@ -12,7 +12,7 @@
 		<xs:element name="AdverseEventReport">
 			 <xs:complexType>
 				<xs:sequence>
-					<xs:element type="xs:time" name="createdAt" minOccurs="0"/>
+					<xs:element type="xs:dateTime" name="createdAt"/>
 					<xs:element type="AdverseEventResponseDescriptionType" name="adverseEventResponseDescription" minOccurs="0"/>
 					<xs:element type="AdverseEventReportingPeriodType" name="adverseEventReportingPeriod" />
 					<xs:element type="PhysicianType" name="physician" />

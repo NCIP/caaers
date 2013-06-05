@@ -17,8 +17,13 @@
 		<soapenv:Envelope>
 			<soapenv:Body>
 				<ae:submitSafetyReport>
-
 					<ae:AdverseEventReport>
+						<ae:createdAt>
+							<xsl:call-template name="dateTimeConverter">
+										<xsl:with-param name="date"
+											select="/ichicsr/ichicsrmessageheader/messagedate" />
+									</xsl:call-template>
+						</ae:createdAt>
 						<xsl:call-template name="responseDescription" />
 						<ae:adverseEventReportingPeriod>
 							<ae:externalId>
@@ -222,7 +227,7 @@
 		</ae:sAEReportPreExistingCondition>
 	</xsl:template>
 
-	<xsl:template name="splitDateYYYYMMDD">
+	<xsl:template name="splitDateYYYYMMDD">  
 		<xsl:param name="date" />
 		<xsl:variable name="valueLength" select="string-length($date)-1" />
 		<xsl:if test="$valueLength > 6">
@@ -237,6 +242,24 @@
 			<xsl:value-of select='substring($date,1,4)' />
 		</ae:year>
 	</xsl:template>
+	
+	<xsl:template name="dateTimeConverter">  
+		<xsl:param name="date" />
+		<xsl:variable name="valueLength" select="string-length($date)-1" />
+			<xsl:variable name="vDay" select='substring($date,7,2)' />
+			<xsl:variable name="vMonth" select='substring($date,5,2)' />
+			<xsl:variable name="vYear" select='substring($date,1,4)' />
+			
+			<xsl:variable name="vHour" select='substring($date,9,2)' />
+			<xsl:variable name="vMin" select='substring($date,11,2)' />
+			<xsl:variable name="vSec" select='substring($date,3,2)' />
+		
+		<xsl:variable name="dateTime"
+			select="concat($vYear,'-',$vMonth,'-',$vDay,'T',$vHour,':',$vMin,':',$vSec)" />
+		<xsl:value-of select="$dateTime" />
+	</xsl:template>
+	
+	
 
 
 	<xsl:template name="concomitantMedication">

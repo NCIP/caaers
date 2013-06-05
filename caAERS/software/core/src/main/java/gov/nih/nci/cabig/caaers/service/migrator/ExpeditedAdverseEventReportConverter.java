@@ -210,6 +210,7 @@ public class ExpeditedAdverseEventReportConverter {
 
                 AdverseEvent ae = aeConverter.convert(aeType);
                 aeReport.getReportingPeriod().addAdverseEvent(ae);
+                aeReport.addAdverseEvent(ae);
 
                 for(CourseAgentAttributionType courseAgentAttributionType : aeType.getCourseAgentAttribution() ){
                     CourseAgentAttribution attribution = new CourseAgentAttribution();
