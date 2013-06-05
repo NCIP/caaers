@@ -91,6 +91,7 @@ public class AdverseEventReportingPeriodDao extends GridIdentifiableDao<AdverseE
 	public AdverseEventReportingPeriod getByExternalId(String externalId) {
         List<AdverseEventReportingPeriod> results = getHibernateTemplate().find("from AdverseEventReportingPeriod where external_id like ? order by start_date desc", externalId);
         if(results != null && !results.isEmpty()){
+        	results.get(0).getAssignment().getId();
         	return results.get(0);
         }
         return null;

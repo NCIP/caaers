@@ -25,6 +25,7 @@ public class StudyParticipantAssignmentDaoTest extends DaoNoSecurityTestCase<Stu
     private PreExistingConditionDao pecDao = (PreExistingConditionDao) getApplicationContext().getBean("preExistingConditionDao");
     private AnatomicSiteDao anatomicSiteDao = (AnatomicSiteDao) getApplicationContext().getBean("anatomicSiteDao");
     private PriorTherapyDao priorTherapyDao = (PriorTherapyDao) getApplicationContext().getBean("priorTherapyDao");
+    private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao = (AdverseEventReportingPeriodDao) getApplicationContext().getBean("adverseEventReportingPeriodDao");
 
     public void testGetById() throws Exception {
         StudyParticipantAssignment assignment = getDao().getById(-13);
@@ -173,5 +174,17 @@ public class StudyParticipantAssignmentDaoTest extends DaoNoSecurityTestCase<Stu
     
     public void testGetCountByTAC() throws Exception {
     	assertEquals(1, getDao().getCountByTAC(-1003).intValue());
+    }
+    
+    public void testGetByReportingPeriod(){
+    	AdverseEventReportingPeriod rp = adverseEventReportingPeriodDao.getByExternalId("1232");
+    	assertNotNull(rp);
+    	assertNotNull(rp.getAssignment());
+    	assertNotNull(rp.getAssignment().getId());
+    	StudyParticipantAssignment assignment = getDao().getAssignment(rp);
+    	assertNotNull(assignment);
+    	assertNotNull(assignment.getStudySite().getId());
+    	assertNotNull(assignment.getId());
+    	
     }
 }

@@ -204,9 +204,9 @@ public class SafetyReportServiceImpl {
         ExpeditedAdverseEventReport aeDestReport = new ExpeditedAdverseEventReport();
         DomainObjectImportOutcome<ExpeditedAdverseEventReport> outCome = new DomainObjectImportOutcome<ExpeditedAdverseEventReport>();
         aeReportMigrator.migrate(aeReport, aeDestReport, outCome);
-        errors = outCome.getValidationErrors();
-        if(errors.hasErrors()){
-            errors.addValidationErrors(errors.getErrors());
+        ValidationErrors outcomeValErrs = outCome.getValidationErrors();
+        if(outcomeValErrs .hasErrors()){
+            errors.addValidationErrors(outcomeValErrs .getErrors());
             return null;
         }
 
@@ -276,7 +276,7 @@ public class SafetyReportServiceImpl {
            //3. Save the report
            ValidationErrors errors = new ValidationErrors();
            ExpeditedAdverseEventReport aeReport = createSafetyReport(aeSrcReport, errors);
-   //        if(errors.hasErrors()) return populateErrors(response, errors);
+           if(errors.hasErrors()) return populateErrors(response, errors);
 
        }catch(Exception e) {
 		   logger.error("Unable to Create a Report from Safety Management Service", e);

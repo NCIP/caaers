@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
@@ -35,8 +36,14 @@ public class ExpeditedReportMigrator extends CompositeMigrator<ExpeditedAdverseE
     private StudyDao studyDao;
     private ParticipantDao participantDao;
     private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
+    private StudyParticipantAssignmentDao studyParticipantAssignmentDao;
 
-    public void setAdverseEventReportingPeriodDao(
+    public void setStudyParticipantAssignmentDao(
+			StudyParticipantAssignmentDao studyParticipantAssignmentDao) {
+		this.studyParticipantAssignmentDao = studyParticipantAssignmentDao;
+	}
+
+	public void setAdverseEventReportingPeriodDao(
 			AdverseEventReportingPeriodDao adverseEventReportingPeriodDao) {
 		this.adverseEventReportingPeriodDao = adverseEventReportingPeriodDao;
 	}
@@ -64,6 +71,9 @@ public class ExpeditedReportMigrator extends CompositeMigrator<ExpeditedAdverseE
     	            return;
     			
     		}
+    		
+    		StudyParticipantAssignment assignment = studyParticipantAssignmentDao.getAssignment(arp);
+    		arp.setAssignment(assignment);
     		
     		 dest.setReportingPeriod(arp);
     		 return;

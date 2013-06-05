@@ -7,6 +7,7 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import edu.nwu.bioinformatics.commons.CollectionUtils;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
@@ -68,6 +69,12 @@ public class StudyParticipantAssignmentDao extends GridIdentifiableDao<StudyPart
     @SuppressWarnings("unchecked")
     public StudyParticipantAssignment getAssignment(Participant participant, StudySite studySite) {
         return CollectionUtils.firstElement((List<StudyParticipantAssignment>) getHibernateTemplate().find("from StudyParticipantAssignment a where a.participant = ? and a.studySite = ?", new Object[] { participant, studySite }));
+    }
+    
+    
+    @SuppressWarnings("unchecked")
+    public StudyParticipantAssignment getAssignment(AdverseEventReportingPeriod rp) {
+        return CollectionUtils.firstElement((List<StudyParticipantAssignment>) getHibernateTemplate().find("Select a from StudyParticipantAssignment a, AdverseEventReportingPeriod rp where rp.externalId = ? and rp = any elements (a.reportingPeriods) ", new Object[] {rp.getExternalId()}));
     }
 
     /**
