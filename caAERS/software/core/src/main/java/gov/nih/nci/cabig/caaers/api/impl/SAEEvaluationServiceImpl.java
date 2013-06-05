@@ -337,15 +337,25 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 
         recommendedActionService.refreshApplicableReportTable(evaluationResult, aeReportIndexMap, applicableReportTableMap, applicableReportDefinitions);
 
+        // This data structure is used for handling Create/Edit Scneario.
+        List<ReportTableRow> ignoredRows = getListOfIgnoredRows(recommendedReportTableMap);
+
         for ( Integer aeReportId : recommendedReportTableMap.keySet()){
 
             List<ReportTableRow> applicableRows = applicableReportTableMap.get(aeReportId);
 
             if ( applicableRows != null) {
-                findMatchingRecommendations(applicableRows, recommendedReportTableMap.get(aeReportId), recommendedActions) ;
+                findMatchingRecommendations(applicableRows, recommendedReportTableMap.get(aeReportId), recommendedActions, ignoredRows) ;
             }
         }
     }
+
+    /**
+     * Find the corresponding applicable report table value of the recommended table value.
+     * @param applicableRows
+     * @param recommRow
+     * @return
+     */
 
     private ReportTableRow findApplicableRow(List<ReportTableRow> applicableRows, ReportTableRow recommRow) {
 
@@ -358,6 +368,11 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
         return null;
     }
 
+    /**
+     * Maintain the list of rows with preSelectedFlag is true.
+     * @param applicableRows
+     * @return
+     */
     private List<ReportTableRow> findPreSelectedRows(List<ReportTableRow> applicableRows) {
         List<ReportTableRow> preSelectedRows = new ArrayList<ReportTableRow>();
         for ( ReportTableRow row: applicableRows) {
@@ -368,6 +383,13 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 
         return preSelectedRows;
     }
+
+    /**
+     * Return true ifAny of the report of the Group is checked.
+     * @param row
+     * @param preselectedRows
+     * @return
+     */
 
     private boolean isAnyInGroupChecked(ReportTableRow row,List<ReportTableRow> preselectedRows) {
         boolean isfound = false;
@@ -384,6 +406,13 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 
     }
 
+
+    /**
+     * Convert the Report Table Row to Action object for webservice to send the output.
+     * @param row
+     * @param preselectedRows
+     * @return
+     */
     private   RecommendedActions returnActionFromRow(ReportTableRow row, List<ReportTableRow> preselectedRows) {
         RecommendedActions action = new RecommendedActions();
 
@@ -413,15 +442,84 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
         return action;
     }
 
+    /**
+     * Return the matched is true only when the Action is Edit.
+     * @param recommendedReportTableMap
+     * @param ignoredRow
+     * @return
+     */
+    private boolean findMatchingRecommendedRow(Map<Integer, List<ReportTableRow>> recommendedReportTableMap, ReportTableRow ignoredRow) {
+        boolean isFound = false;
 
-    private void findMatchingRecommendations(List<ReportTableRow> applicableRows, List<ReportTableRow> recommRows, List<RecommendedActions> recommendedActions)  {
+        for ( Integer aeReportId :recommendedReportTableMap.keySet() ) {
+            if ( aeReportId == 0 )  continue;
+
+            for (  ReportTableRow row : recommendedReportTableMap.get(aeReportId)) {
+                if ( row.getReportDefinition().getName().equals(ignoredRow.getReportDefinition().getName()) && row.getAction().getDisplayName().equals("Edit")) {
+                    isFound = true;
+                    break;
+                }
+            }
+
+            if ( isFound)
+                break;
+
+        }
+
+        return isFound;
+    }
+
+    /**
+     * This is to handle the special case of Create-Edit Scenario.
+     *
+     */
+    private List<ReportTableRow> getListOfIgnoredRows(Map<Integer, List<ReportTableRow>> recommendedReportTableMap) {
+        List<ReportTableRow> ignoredRows = new ArrayList<ReportTableRow>();
+        Integer Zero = new Integer(0);
+        List<ReportTableRow> rows = recommendedReportTableMap.get(Zero);
+
+        if ( rows == null )
+            return ignoredRows;
+
+        for ( ReportTableRow row : rows ) {
+            boolean isFound = findMatchingRecommendedRow(recommendedReportTableMap, row);
+            if ( isFound ) ignoredRows.add(row);
+        }
+
+
+        return ignoredRows;
+
+    }
+
+    private boolean isMatchedIgnoredRow(List<ReportTableRow> ignoredRows,ReportTableRow recommRow) {
+        boolean isFound = false;
+
+        for ( ReportTableRow row: ignoredRows ) {
+            if ( row.getAction().equals(recommRow.getAction()) && row.getReportDefinition().getName().equals(recommRow.getReportDefinition().getName())) {
+                isFound = true;
+                break;
+            }
+        }
+
+        return isFound;
+    }
+
+    /**
+     * Return the Recommendations required report group. ( AMend/WithDraw/Create/Edit).
+     *
+     * @param applicableRows
+     * @param recommRows
+     * @param recommendedActions
+     */
+
+    private void findMatchingRecommendations(List<ReportTableRow> applicableRows, List<ReportTableRow> recommRows, List<RecommendedActions> recommendedActions,  List<ReportTableRow> ignoredRows)  {
         // Find the report group of the pre-selected row.
         List<ReportTableRow> preselectedRows = findPreSelectedRows(applicableRows);
 
         for (ReportTableRow recommRow : recommRows) {
             ReportTableRow applicableRow = findApplicableRow(applicableRows, recommRow);
 
-            if ( applicableRow == null) continue;
+            if ( applicableRow == null || isMatchedIgnoredRow(ignoredRows, recommRow)) continue;
 
             RecommendedActions action = returnActionFromRow(applicableRow, preselectedRows);
             recommendedActions.add(action);

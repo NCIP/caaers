@@ -97,9 +97,15 @@ public class AdverseEventValidatior {
 
     private void validateDateFirstLearned(AdverseEventReportingPeriod reportingPeriod,ValidationErrors errors) {
         for (AdverseEvent ae : reportingPeriod.getAdverseEvents()) {
-            if (ae.getGradedDate().before(ae.getStartDate())) {
+            if (ae.getGradedDate() != null && ae.getStartDate() != null && ae.getGradedDate().before(ae.getStartDate())) {
                 addValidationError(errors,"CAE_021", messageSource.getMessage("CAE_021",
-                        new String[] {}, "", Locale.getDefault()) ) ;
+                        new String[] {}, "The Awareness date must be later than Start date", Locale.getDefault()) ) ;
+                break;
+            }
+
+            if (ae.getGradedDate() != null && ae.getEndDate() != null &&ae.getGradedDate().after(ae.getEndDate())) {
+                addValidationError(errors,"CAE_022", messageSource.getMessage("CAE_022",
+                        new String[] {}, "The Awareness date must not be later than End date", Locale.getDefault()) ) ;
                 break;
             }
         }
