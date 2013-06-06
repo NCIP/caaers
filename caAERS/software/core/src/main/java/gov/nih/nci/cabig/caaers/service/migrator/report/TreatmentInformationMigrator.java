@@ -29,7 +29,7 @@ public class TreatmentInformationMigrator implements Migrator<ExpeditedAdverseEv
 
 
         //migrate course agents
-        for(CourseAgent caSrc : src.getCourseAgentsInternal()){
+        for(CourseAgent caSrc : src.getCourseAgents()){
 
             migrateCourseAgent(caSrc, aeReportDest, outcome);
         }
