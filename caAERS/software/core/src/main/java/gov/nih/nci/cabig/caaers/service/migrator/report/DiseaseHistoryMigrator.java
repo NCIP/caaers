@@ -116,7 +116,6 @@ public class DiseaseHistoryMigrator implements Migrator<ExpeditedAdverseEventRep
      */
     private void CopyFromStudyParticipantDiseaseHistory(StudyParticipantDiseaseHistory history, DiseaseHistory destHistory) {
 
-        destHistory.setId(history.getId());
         destHistory.setVersion(history.getVersion());
     	destHistory.setOtherPrimaryDisease(history.getOtherPrimaryDisease());
     	destHistory.setOtherPrimaryDiseaseSite(history.getOtherPrimaryDiseaseSite());
