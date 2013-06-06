@@ -225,6 +225,7 @@ public class SafetyReportServiceImpl {
                 //TODO: BJ - Remove me when update flow is implemented. (Big problem here - we need another transient Holder for the AEs)
                 errors.addValidationError("WS_AEMS_013", "Adverse Event is already reported, so cannot be associated to another Safety report",ae.getAdverseEventTerm()!=null? ae.getAdverseEventTerm().getFullName() : "",
                         String.valueOf(ae.getStartDate()), String.valueOf(ae.getEndDate()), String.valueOf(ae.getExternalId()));
+                return null;
             }
             //TODO: BJ - we need another transient holder of AE
             aeDestReport.addAdverseEvent(ae);
