@@ -26,7 +26,20 @@ public class TreatmentInformationMigrator implements Migrator<ExpeditedAdverseEv
         dest.setTreatmentAssignmentDescription(src.getTreatmentAssignmentDescription());
         dest.setInvestigationalAgentAdministered(src.getInvestigationalAgentAdministered());
 
-
+        AdverseEventReportingPeriod reportingPeriod = aeReportDest.getReportingPeriod();
+        if(!StringUtils.isEmpty(src.getTreatmentAssignment().getCode())){
+            //find the tac from study
+            TreatmentAssignment treatmentAssignment = reportingPeriod.getStudy().findActiveTreatmentAssignment(src.getTreatmentAssignment().getCode());
+            if(treatmentAssignment == null){
+                outcome.addError("WS_SAE_002", "Treatment assignment is no longer active " + src.getTreatmentAssignment().getCode(), src.getTreatmentAssignment().getCode());
+                return;
+            }
+            dest.setTreatmentAssignment(treatmentAssignment);
+        } else {
+            //default it to what it is there in reporting period
+            dest.setTreatmentAssignment(reportingPeriod.getTreatmentAssignment());
+            dest.setTreatmentDescription(reportingPeriod.getTreatmentAssignmentDescription());
+        }
 
         //migrate course agents
         for(CourseAgent caSrc : src.getCourseAgents()){

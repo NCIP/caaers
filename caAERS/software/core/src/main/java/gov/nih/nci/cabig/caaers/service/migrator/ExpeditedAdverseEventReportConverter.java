@@ -144,6 +144,7 @@ import gov.nih.nci.cabig.caaers.integration.schema.aereport.StudyType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.SurgeryAttributionType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.SurgeryInterventionType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.TreatmentInformationType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.TreatmentAssignmentType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationType;
 import gov.nih.nci.cabig.caaers.service.migrator.adverseevent.AdverseEventConverter;
 import gov.nih.nci.cabig.caaers.utils.XMLUtil;
@@ -562,6 +563,7 @@ public class ExpeditedAdverseEventReportConverter {
 		TreatmentInformation treatmentInformation = new TreatmentInformation();
         treatmentInformation.setFirstCourseDate(XMLUtil.toDate(treatmentInfoType.getFirstCourseDate()));
 		treatmentInformation.setTotalCourses(treatmentInfoType.getTotalCourses());
+        treatmentInformation.setTreatmentAssignment(convertTreatmentAssignment(treatmentInfoType.getTreatmentAssignment()));
 
         //Intervention - Agents
 		for (CourseAgentType courseAgentType : treatmentInfoType.getCourseAgent()){
@@ -569,6 +571,17 @@ public class ExpeditedAdverseEventReportConverter {
 		}
 		return treatmentInformation;
 	}
+
+    protected TreatmentAssignment convertTreatmentAssignment(TreatmentAssignmentType tacType){
+        TreatmentAssignment tac = new TreatmentAssignment();
+        if(tacType != null){
+            tac.setCode(tacType.getCode());
+            tac.setDescription(tacType.getDescription());
+            tac.setDoseLevelOrder(tacType.getDoseLevelOrder());
+            tac.setComments(tacType.getComments());
+        }
+        return tac;
+    }
 	
 	protected CourseAgent convertCourseAgent(CourseAgentType courseAgentType){
 		CourseAgent courseAgent = new CourseAgent();
