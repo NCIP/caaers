@@ -551,5 +551,7 @@ default-lazy-init="true">
         <property name="studyDao" ref="studyDao" />
         <property name="organizationDao" ref="organizationDao" />
         <property name="participantDao" ref="participantDao" />
+        <property name="adverseEventReportingPeriodDao" ref="adverseEventReportingPeriodDao" />
+        <property name="studyParticipantAssignmentDao" ref="studyParticipantAssignmentDao" />
 	</bean>
 </beans>

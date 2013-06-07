@@ -58,7 +58,7 @@ public class ReportMigrator implements Migrator<ExpeditedAdverseEventReport> {
              return;
          }
     	 // Load site to which the study belongs. 
-    	 StudySite site = null;
+    	 /*StudySite site = null;
      	
          if ( aeReportDest.getReportingPeriod() != null && aeReportDest.getReportingPeriod().getAssignment() != null ) {
          	site = aeReportDest.getReportingPeriod().getAssignment().getStudySite();
@@ -74,15 +74,15 @@ public class ReportMigrator implements Migrator<ExpeditedAdverseEventReport> {
          if ( org == null ) {
         	 outcome.addError("ER-RM-3", "Organization is missing in the Study Site.");
         	 return;
-         }
+         }*/
     	 
     	 // Iterate through the Source Reports.
     	 for ( Report rpt : srcReports ) {
     		 
-    		ReportDefinition repDef = loadReportDefinition(rpt, org.getId());
+    		ReportDefinition repDef = loadReportDefinition(rpt);
     		
     		if ( repDef == null ) {
-                outcome.addError("ER-RM-4", "Unable to Load Report Definition for " +  rpt.getReportDefinition().getName()  + " Org Id : " + org.getId());
+                outcome.addError("ER-RM-4", "Unable to Load Report Definition for " +  rpt.getReportDefinition().getName());
                 break;
     		}
     		if ( repDef != null ) {
@@ -91,7 +91,7 @@ public class ReportMigrator implements Migrator<ExpeditedAdverseEventReport> {
     				 copyReportDetailsFromInput(rpt, newReport);
     				 aeReportDest.addReport(newReport);
     			 } else {
-    				 outcome.addError("ER-RM-5", "Unable to create a New Report for " +  rpt.getReportDefinition().getName()  + " Org Id : " + org.getId());
+    				 outcome.addError("ER-RM-5", "Unable to create a New Report for " +  rpt.getReportDefinition().getName());
     	    		break; 
     			 }
     			
@@ -139,8 +139,8 @@ public class ReportMigrator implements Migrator<ExpeditedAdverseEventReport> {
 	 * @param orgId
 	 * @return
 	 */
-	private ReportDefinition loadReportDefinition(Report report, int orgId) {
-		  ReportDefinition reportDefinition =  rdDao.getByName(report.getReportDefinition().getName(), orgId);
+	private ReportDefinition loadReportDefinition(Report report) {
+		  ReportDefinition reportDefinition =  rdDao.getByName(report.getReportDefinition().getName());
 		  return reportDefinition;
 	}
 	

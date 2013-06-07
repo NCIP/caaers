@@ -155,7 +155,7 @@ public class SafetyReportServiceImpl {
     }
 
     public ExpeditedAdverseEventReport createSafetyReport(ExpeditedAdverseEventReport aeReport, ValidationErrors errors){
-        Study studySrc = aeReport.getStudy();
+       /* Study studySrc = aeReport.getStudy();
         Participant subjectSrc = aeReport.getParticipant();
         StudyParticipantAssignment srcAssignment = subjectSrc.getAssignments().get(0);
 
@@ -195,7 +195,7 @@ public class SafetyReportServiceImpl {
             
         }
         
-        updateReportingPeriodWithdbStudy(aeReport,studySrc);
+        updateReportingPeriodWithdbStudy(aeReport,studySrc);*/
 
         //Call Ae Management
         
@@ -204,9 +204,9 @@ public class SafetyReportServiceImpl {
         ExpeditedAdverseEventReport aeDestReport = new ExpeditedAdverseEventReport();
         DomainObjectImportOutcome<ExpeditedAdverseEventReport> outCome = new DomainObjectImportOutcome<ExpeditedAdverseEventReport>();
         aeReportMigrator.migrate(aeReport, aeDestReport, outCome);
-        errors = outCome.getValidationErrors();
-        if(errors.hasErrors()){
-            errors.addValidationErrors(errors.getErrors());
+        ValidationErrors outcomeValErrs = outCome.getValidationErrors();
+        if(outcomeValErrs .hasErrors()){
+            errors.addValidationErrors(outcomeValErrs .getErrors());
             return null;
         }
 
@@ -225,6 +225,7 @@ public class SafetyReportServiceImpl {
                 //TODO: BJ - Remove me when update flow is implemented. (Big problem here - we need another transient Holder for the AEs)
                 errors.addValidationError("WS_AEMS_013", "Adverse Event is already reported, so cannot be associated to another Safety report",ae.getAdverseEventTerm()!=null? ae.getAdverseEventTerm().getFullName() : "",
                         String.valueOf(ae.getStartDate()), String.valueOf(ae.getEndDate()), String.valueOf(ae.getExternalId()));
+                return null;
             }
             //TODO: BJ - we need another transient holder of AE
             aeDestReport.addAdverseEvent(ae);
@@ -260,20 +261,21 @@ public class SafetyReportServiceImpl {
            ExpeditedAdverseEventReport aeSrcReport = eaeConverter.convert(adverseEventReport);
            
            //2. Run the validation (basic)
-           ValidationErrors errors = validateInput(aeSrcReport);
-           if(errors.hasErrors()) return populateErrors(response, errors);
+       //    ValidationErrors errors = validateInput(aeSrcReport);
+       //    if(errors.hasErrors()) return populateErrors(response, errors);
            
            // 2. Call the GenericValidator to make sure input is correct.
-		   Errors reportValidatorErrors = new BindException(aeSrcReport, "ExpeditedAdverseEventReport");
-		   aeReportValidator.validate( aeSrcReport, reportValidatorErrors);
+		//   Errors reportValidatorErrors = new BindException(aeSrcReport, "ExpeditedAdverseEventReport");
+		//   aeReportValidator.validate( aeSrcReport, reportValidatorErrors);
 		   
-		   if ( reportValidatorErrors.hasErrors()) {
+		/*   if ( reportValidatorErrors.hasErrors()) {
 			   Helper.populateError(response, "GEN_ORH_001", "Error(s) occured during Valdation step.");
 			   return response;
-		   }
+		   }*/
 
            //TODO : below call will change based on create or Amend flow
            //3. Save the report
+           ValidationErrors errors = new ValidationErrors();
            ExpeditedAdverseEventReport aeReport = createSafetyReport(aeSrcReport, errors);
            if(errors.hasErrors()) return populateErrors(response, errors);
 

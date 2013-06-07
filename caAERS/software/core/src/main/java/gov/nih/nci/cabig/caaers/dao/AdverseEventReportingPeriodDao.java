@@ -80,6 +80,22 @@ public class AdverseEventReportingPeriodDao extends GridIdentifiableDao<AdverseE
         List<AdverseEventReportingPeriod> results = getHibernateTemplate().find("from AdverseEventReportingPeriod where assignment_id= ? order by start_date desc", assignment.getId());
         return results;
     }
+    
+    
+    /**
+     * Gets the list of AdverseEventReportingPeriods based on the Assignment.
+     * @param assignment - A StudyParticipantAssignment
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+	public AdverseEventReportingPeriod getByExternalId(String externalId) {
+        List<AdverseEventReportingPeriod> results = getHibernateTemplate().find("from AdverseEventReportingPeriod where external_id like ? order by start_date desc", externalId);
+        if(results != null && !results.isEmpty()){
+        	results.get(0).getAssignment().getId();
+        	return results.get(0);
+        }
+        return null;
+    }
 
     /**
      * Will reassociate an AdverseEventReportingPeriod object to the running Hibernate Session. 

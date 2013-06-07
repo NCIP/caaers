@@ -88,7 +88,7 @@
             <xs:extension base="DomainObjectType">
                 <xs:sequence>
                     <xs:element minOccurs="1" name="text" type="CustomStringType"></xs:element>
-                    <xs:element minOccurs="1" name="meddraLltCode" type="xs:string"></xs:element>
+                    <xs:element minOccurs="0" name="meddraLltCode" type="xs:string"></xs:element>
                     <xs:element minOccurs="0" name="meddraLlt" type="xs:string"></xs:element>
                     <xs:element minOccurs="0" name="meddraHlgt" type="xs:string"></xs:element>
                     <xs:element maxOccurs="1" minOccurs="0" name="status" type="ActiveInactiveStatusType"></xs:element>
@@ -724,7 +724,7 @@
                     <xs:element minOccurs="0" name="expected" type="xs:boolean"></xs:element>
                     <xs:element minOccurs="0" name="attributionSummary" type="AttributionType"></xs:element>
                     <xs:element minOccurs="0" name="comments" type="xs:string"></xs:element>
-                    <xs:element minOccurs="0" name="dateFirstLearned" type="xs:dateTime"></xs:element>
+                    <xs:element minOccurs="0" name="dateFirstLearned" type="xs:date"></xs:element>
                     <xs:element minOccurs="0" name="startDate" type="xs:date"></xs:element>
 					<xs:element minOccurs="0" name="eventApproximateTime" type="cct:TimeType"></xs:element>
                     <xs:element minOccurs="0" name="eventLocation" type="xs:string"></xs:element>
@@ -865,12 +865,12 @@
 <xs:element name="AdverseEventReport">
 <xs:complexType>
 <xs:sequence>
-<xs:element name="createdAt" type="xs:time"></xs:element>
+<xs:element name="createdAt" type="xs:dateTime"></xs:element>
 <xs:element minOccurs="0" name="adverseEventResponseDescription" type="AdverseEventResponseDescriptionType"></xs:element>
 <xs:element name="adverseEventReportingPeriod" type="AdverseEventReportingPeriodType"></xs:element>
 <xs:element name="physician" type="PhysicianType"></xs:element>
 <xs:element name="reporter" type="ReporterType"></xs:element>
-<xs:element minOccurs="0" name="reviewer" type="ReviewerType"></xs:element>
+<xs:element minOccurs="0" name="submitter" type="SubmitterType"></xs:element>
 <xs:element minOccurs="0" name="diseaseHistory" type="DiseaseHistoryType"></xs:element>
 <xs:element minOccurs="0" name="participantHistory" type="ParticipantHistoryType"></xs:element>
 <xs:element minOccurs="0" name="studyParticipantAssignment" type="StudyParticipantAssignmentType"></xs:element>
@@ -895,6 +895,7 @@
 <xs:complexContent>
 <xs:extension base="ae:AdverseEventType">
 <xs:sequence>
+<xs:element minOccurs="0" name="isPrimary" type="xs:boolean"></xs:element>
 <xs:element maxOccurs="unbounded" minOccurs="0" name="concomitantMedicationAttribution" type="ConcomitantMedicationAttributionType"></xs:element>
 <xs:element maxOccurs="unbounded" minOccurs="0" name="otherCauseAttribution" type="OtherCauseAttributionType"></xs:element>
 <xs:element maxOccurs="unbounded" minOccurs="0" name="courseAgentAttribution" type="CourseAgentAttributionType"></xs:element>
@@ -922,7 +923,8 @@
 <xs:sequence>
 <xs:element name="eventDescription" type="xs:string"></xs:element>
 <xs:element name="presentStatus" type="PostAdverseEventStatusType"></xs:element>
-<xs:element name="retreated" type="xs:boolean"></xs:element>
+<xs:element minOccurs="0" name="retreated" type="xs:boolean"></xs:element>
+<xs:element minOccurs="0" name="autopsyPerformed" type="xs:boolean"></xs:element>
 <xs:element minOccurs="0" name="recoveryDate" type="xs:date"></xs:element>
 <xs:element minOccurs="0" name="dateRemovedFromProtocol" type="xs:date"></xs:element>
 <xs:element minOccurs="0" name="eventAbate" type="xs:string"></xs:element>
@@ -936,6 +938,7 @@
 <xs:element minOccurs="0" name="startDate" type="xs:date"></xs:element>
 <xs:element minOccurs="0" name="studyParticipantAssignment" type="StudyParticipantAssignmentType"></xs:element>
 <xs:element minOccurs="0" name="TreatmentAssignment" type="TreatmentAssignmentType"></xs:element>
+<xs:element minOccurs="0" name="externalId" type="xs:string"></xs:element>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="ContactMechanismType">
@@ -948,6 +951,7 @@
 <xs:sequence>
 <xs:element name="firstName" type="xs:string"></xs:element>
 <xs:element name="lastName" type="xs:string"></xs:element>
+<xs:element name="middleName" type="xs:string"></xs:element>
 <xs:element minOccurs="0" name="nciIdentifier" type="xs:string"></xs:element>
 <xs:element minOccurs="0" name="street" type="xs:string"></xs:element>
 <xs:element minOccurs="0" name="city" type="xs:string"></xs:element>
@@ -958,6 +962,20 @@
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="ReporterType">
+<xs:sequence>
+<xs:element name="firstName" type="xs:string"></xs:element>
+<xs:element name="lastName" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="middleName" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="nciIdentifier" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="street" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="city" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="state" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="zip" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="country" type="xs:string"></xs:element>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="ContactMechanism" type="ContactMechanismType"></xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="SubmitterType">
 <xs:sequence>
 <xs:element name="firstName" type="xs:string"></xs:element>
 <xs:element name="lastName" type="xs:string"></xs:element>
@@ -986,19 +1004,23 @@
 <xs:complexType name="AnatomicSiteType">
 <xs:sequence>
 <xs:element name="name" type="xs:string"></xs:element>
-<xs:element name="category" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="category" type="xs:string"></xs:element>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="MetastaticDiseaseSiteType">
 <xs:sequence>
-<xs:element name="otherMetastaticDiseaseSite" type="xs:string"></xs:element>
-<xs:element name="AnatomicSite" type="AnatomicSiteType"></xs:element>
+<xs:element minOccurs="0" name="otherSite" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="codedSite" type="AnatomicSiteType"></xs:element>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="DiseaseHistoryType">
 <xs:sequence>
 <xs:element minOccurs="0" name="diagnosisDate" type="DateValueType"></xs:element>
+<xs:element minOccurs="0" name="primaryDisease" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="otherPrimaryDisease" type="xs:string"></xs:element>
 <xs:element maxOccurs="unbounded" minOccurs="0" name="metastaticDiseaseSite" type="MetastaticDiseaseSiteType"></xs:element>
+<xs:element minOccurs="0" name="codedPrimaryDiseaseSite" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="otherPrimaryDiseaseSite" type="xs:string"></xs:element>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="DateValueType">
@@ -1187,7 +1209,7 @@
 <xs:element name="daysElapsed" type="xs:int"></xs:element>
 <xs:element name="adjustment" type="xs:string"></xs:element>
 <xs:element name="administration" type="RadiationAdministrationType"></xs:element>
-<xs:element name="OtherIntervention" type="OtherInterventionType"></xs:element>
+<xs:element minOccurs="0" name="OtherIntervention" type="OtherInterventionType"></xs:element>
 </xs:sequence>
 </xs:complexType>
 <xs:simpleType name="RadiationAdministrationType">
@@ -1213,7 +1235,7 @@
 <xs:sequence>
 <xs:element name="interventionDate" type="xs:date"></xs:element>
 <xs:element name="InterventionSite" type="InterventionSiteType"></xs:element>
-<xs:element name="OtherIntervention" type="OtherInterventionType"></xs:element>
+<xs:element minOccurs="0" name="OtherIntervention" type="OtherInterventionType"></xs:element>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="BiologicalInterventionType">
@@ -1273,8 +1295,12 @@
 <xs:element minOccurs="0" name="explantedDate" type="xs:date"></xs:element>
 <xs:element minOccurs="0" name="DeviceOperator" type="DeviceOperatorType"></xs:element>
 <xs:element minOccurs="0" name="DeviceReprocessed" type="ReprocessedDeviceType"></xs:element>
+<xs:element minOccurs="0" name="reprocessedName" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="reprocessedAddress" type="xs:string"></xs:element>
 <xs:element minOccurs="0" name="EvaluationAvailability" type="EvaluationAvailabilityType"></xs:element>
 <xs:element minOccurs="0" name="StudyDevice" type="StudyDeviceType"></xs:element>
+<xs:element minOccurs="0" name="otherDeviceOperator" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="lotNumber" type="xs:string"></xs:element>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="ConcomitantMedicationType">
@@ -1300,13 +1326,15 @@
 <xs:element minOccurs="0" name="dose" type="DoseType"></xs:element>
 <xs:element minOccurs="0" name="modifiedDose" type="DoseType"></xs:element>
 <xs:element minOccurs="0" name="studyAgent" type="StudyAgentType"></xs:element>
+<xs:element minOccurs="0" name="lotNumber" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="comments" type="xs:string"></xs:element>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="DoseType">
 <xs:sequence>
-<xs:element name="amount" type="xs:string"></xs:element>
-<xs:element name="units" type="xs:string"></xs:element>
-<xs:element name="route" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="amount" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="units" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="route" type="xs:string"></xs:element>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="TreatmentInformation">
@@ -1329,74 +1357,74 @@
 </xs:complexType>
 <xs:complexType name="SurgeryAttributionType">
 <xs:sequence>
-<xs:element name="attribution" type="AttributionType"></xs:element>
-<xs:element name="cause" type="SurgeryInterventionType"></xs:element>
+<xs:element minOccurs="0" name="attribution" type="AttributionType"></xs:element>
+<xs:element minOccurs="0" name="cause" type="SurgeryInterventionType"></xs:element>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="RadiationAttributionType">
 <xs:sequence>
-<xs:element name="attribution" type="AttributionType"></xs:element>
-<xs:element name="cause" type="RadiationInterventionType"></xs:element>
+<xs:element minOccurs="0" name="attribution" type="AttributionType"></xs:element>
+<xs:element minOccurs="0" name="cause" type="RadiationInterventionType"></xs:element>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="DeviceAttributionType">
 <xs:sequence>
-<xs:element name="attribution" type="AttributionType"></xs:element>
-<xs:element name="cause" type="MedicalDeviceType"></xs:element>
+<xs:element minOccurs="0" name="attribution" type="AttributionType"></xs:element>
+<xs:element minOccurs="0" name="cause" type="MedicalDeviceType"></xs:element>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="BiologicalInterventionAttributionType">
 <xs:sequence>
-<xs:element name="attribution" type="AttributionType"></xs:element>
-<xs:element name="cause" type="BiologicalInterventionType"></xs:element>
+<xs:element minOccurs="0" name="attribution" type="AttributionType"></xs:element>
+<xs:element minOccurs="0" name="cause" type="BiologicalInterventionType"></xs:element>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="DietarySupplementInterventionAttributionType">
 <xs:sequence>
-<xs:element name="attribution" type="AttributionType"></xs:element>
-<xs:element name="cause" type="DietarySupplementInterventionType"></xs:element>
+<xs:element minOccurs="0" name="attribution" type="AttributionType"></xs:element>
+<xs:element minOccurs="0" name="cause" type="DietarySupplementInterventionType"></xs:element>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="ConcomitantMedicationAttributionType">
 <xs:sequence>
-<xs:element name="attribution" type="AttributionType"></xs:element>
-<xs:element name="cause" type="ConcomitantMedicationType"></xs:element>
+<xs:element minOccurs="0" name="attribution" type="AttributionType"></xs:element>
+<xs:element minOccurs="0" name="cause" type="ConcomitantMedicationType"></xs:element>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="CourseAgentAttributionType">
 <xs:sequence>
-<xs:element name="attribution" type="AttributionType"></xs:element>
-<xs:element name="cause" type="CourseAgentType"></xs:element>
+<xs:element minOccurs="0" name="attribution" type="AttributionType"></xs:element>
+<xs:element minOccurs="0" name="cause" type="CourseAgentType"></xs:element>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="OtherCauseAttributionType">
 <xs:sequence>
-<xs:element name="attribution" type="AttributionType"></xs:element>
-<xs:element name="cause" type="OtherCauseType"></xs:element>
+<xs:element minOccurs="0" name="attribution" type="AttributionType"></xs:element>
+<xs:element minOccurs="0" name="cause" type="OtherCauseType"></xs:element>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="DiseaseAttributionType">
 <xs:sequence>
-<xs:element name="attribution" type="AttributionType"></xs:element>
-<xs:element name="cause" type="DiseaseHistoryType"></xs:element>
+<xs:element minOccurs="0" name="attribution" type="AttributionType"></xs:element>
+<xs:element minOccurs="0" name="cause" type="DiseaseHistoryType"></xs:element>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="OtherInterventionAttributionType">
 <xs:sequence>
-<xs:element name="attribution" type="AttributionType"></xs:element>
-<xs:element name="cause" type="OtherAEInterventionType"></xs:element>
+<xs:element minOccurs="0" name="attribution" type="AttributionType"></xs:element>
+<xs:element minOccurs="0" name="cause" type="OtherAEInterventionType"></xs:element>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="BehavioralInterventionAttributionType">
 <xs:sequence>
-<xs:element name="attribution" type="AttributionType"></xs:element>
-<xs:element name="cause" type="BehavioralInterventionType"></xs:element>
+<xs:element minOccurs="0" name="attribution" type="AttributionType"></xs:element>
+<xs:element minOccurs="0" name="cause" type="BehavioralInterventionType"></xs:element>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="GeneticInterventionAttributionType">
 <xs:sequence>
-<xs:element name="attribution" type="AttributionType"></xs:element>
-<xs:element name="cause" type="GeneticInterventionType"></xs:element>
+<xs:element minOccurs="0" name="attribution" type="AttributionType"></xs:element>
+<xs:element minOccurs="0" name="cause" type="GeneticInterventionType"></xs:element>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="OtherAEInterventionType">
@@ -1426,7 +1454,7 @@
 </xs:complexType>
 <xs:complexType name="MeasureType">
 <xs:sequence>
-<xs:element name="code" type="xs:int"></xs:element>
+<xs:element minOccurs="0" name="code" type="xs:int"></xs:element>
 <xs:element name="quantity" type="xs:double"></xs:element>
 <xs:element name="unit" type="xs:string"></xs:element>
 </xs:sequence>
@@ -1444,6 +1472,8 @@
 <xs:element minOccurs="0" name="baseline" type="LabValueType"></xs:element>
 <xs:element minOccurs="0" name="nadir" type="LabValueType"></xs:element>
 <xs:element minOccurs="0" name="recovery" type="LabValueType"></xs:element>
+<xs:element minOccurs="0" name="infectiousAgent" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="site" type="xs:string"></xs:element>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="LabValueType">
@@ -1460,7 +1490,7 @@
 <xs:complexType name="LabTermType">
 <xs:sequence>
 <xs:element name="term" type="xs:string"></xs:element>
-<xs:element name="category" type="categoryType"></xs:element>
+<xs:element minOccurs="0" name="category" type="categoryType"></xs:element>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="SAEReportPriorTherapyType">
@@ -1502,7 +1532,7 @@
 </xs:complexType>
 <xs:complexType name="SAEReportPreExistingConditionType">
 <xs:sequence>
-<xs:element name="preExistingCondition" type="cct:PreExistingConditionType"></xs:element>
+<xs:element minOccurs="0" name="preExistingCondition" type="cct:PreExistingConditionType"></xs:element>
 <xs:element minOccurs="0" name="other" type="xs:string"></xs:element>
 <xs:element minOccurs="0" name="linkedToOtherCause" type="xs:boolean"></xs:element>
 </xs:sequence>
@@ -1557,10 +1587,10 @@
 <xs:complexType name="ReportDefinitionType">
 <xs:sequence>
 <xs:element name="name" type="xs:string"></xs:element>
-<xs:element name="duration" type="xs:int"></xs:element>
+<xs:element minOccurs="0" name="duration" type="xs:int"></xs:element>
 <xs:element minOccurs="0" name="label" type="xs:string"></xs:element>
 <xs:element minOccurs="0" name="Group" type="GroupType"></xs:element>
-<xs:element name="timeScaleUnitType" type="TimeScaleUnitType"></xs:element>
+<xs:element minOccurs="0" name="timeScaleUnitType" type="TimeScaleUnitType"></xs:element>
 <xs:element maxOccurs="unbounded" minOccurs="0" name="reportDeliveryDefinition" type="ReportDeliveryDefinitionType"></xs:element>
 </xs:sequence>
 </xs:complexType>
@@ -1601,7 +1631,8 @@
 </xs:complexType>
 <xs:complexType name="ReportType">
 <xs:sequence>
-<xs:element name="required" type="xs:boolean"></xs:element>
+<xs:element name="caseNumber" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="required" type="xs:boolean"></xs:element>
 <xs:element minOccurs="0" name="manuallySelected" type="xs:boolean"></xs:element>
 <xs:element name="aeReportDefinition" type="ReportDefinitionType"></xs:element>
 <xs:element maxOccurs="unbounded" minOccurs="0" name="aeReportVersion" type="ReportVersionType"></xs:element>
@@ -1746,7 +1777,7 @@
   </wsdl:binding>
   <wsdl:service name="SafetyReportManagementService">
     <wsdl:port binding="tns:SafetyReportManagementServiceSoapBinding" name="SafetyReportManagementServiceImplPort">
-      <soap:address location="https://dev.semanticbits.com/caaers/services/SafetyReportService"></soap:address>
+      <soap:address location="https://localhost:9443/caaers/services/SafetyReportService"></soap:address>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>
