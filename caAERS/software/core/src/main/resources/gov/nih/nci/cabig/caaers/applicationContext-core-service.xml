@@ -519,12 +519,14 @@ default-lazy-init="true">
     <bean id="submitterMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.SubmitterMigrator" autowire="byType"/>
     <bean id="surgeryInterventionMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.SurgeryInterventionMigrator" autowire="byType"/>
     <bean id="treatmentInformationMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.TreatmentInformationMigrator" autowire="byType"/>
-        
+    <bean id="expeditedAdverseEventMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.ExpeditedAdverseEventMigrator" autowire="byType"/>
+
 	<bean id="expeditedReportMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.ExpeditedReportMigrator">
 		<property name="children">
 			<list>
+				<ref bean="expeditedAdverseEventMigrator"/>
 				<ref bean="additionalInformationMigrator"/>
-				<ref bean="adverseEventResponseDescriptionMigrator"/>	
+				<ref bean="adverseEventResponseDescriptionMigrator"/>
 				<ref bean="behavioralInterventionMigrator"/>
 				<ref bean="biologicalInterventionMigrator"/>	
 				<ref bean="concomitantMedicationMigrator"/>	
