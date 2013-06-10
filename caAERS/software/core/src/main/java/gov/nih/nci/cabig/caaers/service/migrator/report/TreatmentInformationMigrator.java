@@ -27,7 +27,7 @@ public class TreatmentInformationMigrator implements Migrator<ExpeditedAdverseEv
         dest.setInvestigationalAgentAdministered(src.getInvestigationalAgentAdministered());
 
         AdverseEventReportingPeriod reportingPeriod = aeReportDest.getReportingPeriod();
-        if(!StringUtils.isEmpty(src.getTreatmentAssignment().getCode())){
+        if(src.getTreatmentAssignment() != null && !StringUtils.isEmpty(src.getTreatmentAssignment().getCode())){
             //find the tac from study
             TreatmentAssignment treatmentAssignment = reportingPeriod.getStudy().findActiveTreatmentAssignment(src.getTreatmentAssignment().getCode());
             if(treatmentAssignment == null){

@@ -6,8 +6,10 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.service.migrator.report;
 
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import junit.framework.TestCase;
 
 import java.util.Date;
@@ -16,7 +18,7 @@ import java.util.Date;
  * User: Biju Joseph
  * Date: 1/9/13
  */
-public class TreatmentInformationMigratorTest extends TestCase {
+public class TreatmentInformationMigratorTest extends AbstractTestCase {
     ExpeditedAdverseEventReport src;
     ExpeditedAdverseEventReport dest;
     TreatmentInformationMigrator migrator;
@@ -68,5 +70,29 @@ public class TreatmentInformationMigratorTest extends TestCase {
         System.out.println(outcome.getMessages());
         assertEquals(1, dest.getTreatmentInformation().getCourseAgents().size());
         assertEquals(new Integer(2), dest.getTreatmentInformation().getCourseAgents().get(0).getStudyAgent().getId());
-}
+    }
+
+    public void testTreatmentAssignmentDefaultValue() throws Exception {
+        TreatmentAssignment ta = Fixtures.createTreatmentAssignment("abcd");
+        adverseEventReportingPeriod.setTreatmentAssignment(ta);
+        src.getTreatmentInformation().setTotalCourses(1);
+        Date yesterday = DateUtils.yesterday();
+        src.getTreatmentInformation().setFirstCourseDate(yesterday);
+        migrator.migrate(src,dest,outcome);
+        assertFalse(outcome.hasErrors());
+        assertSame(dest.getTreatmentInformation().getTreatmentAssignment(), ta);
+    }
+
+    public void testTreatmentAssignmentOverridenValue() throws Exception {
+        TreatmentAssignment ta = Fixtures.createTreatmentAssignment("abcd");
+        TreatmentAssignment taOverriden = Fixtures.createTreatmentAssignment("efg");
+        TreatmentAssignment studyTac1 = Fixtures.createTreatmentAssignment("efg");
+        adverseEventReportingPeriod.setTreatmentAssignment(ta);
+        adverseEventReportingPeriod.getStudy().addTreatmentAssignment(studyTac1);
+        src.getTreatmentInformation().setTreatmentAssignment(taOverriden);
+        migrator.migrate(src,dest,outcome);
+        assertFalse(outcome.hasErrors());
+        assertSame(dest.getTreatmentInformation().getTreatmentAssignment(), studyTac1);
+
+    }
 }
