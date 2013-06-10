@@ -95,4 +95,16 @@ public class TreatmentInformationMigratorTest extends AbstractTestCase {
         assertSame(dest.getTreatmentInformation().getTreatmentAssignment(), studyTac1);
 
     }
+
+    public void testTreatmentAssignmentOverridenValueNotPresentInStudy() throws Exception {
+        TreatmentAssignment ta = Fixtures.createTreatmentAssignment("abcd");
+        TreatmentAssignment taOverriden = Fixtures.createTreatmentAssignment("unknown");
+        TreatmentAssignment studyTac1 = Fixtures.createTreatmentAssignment("efg");
+        adverseEventReportingPeriod.setTreatmentAssignment(ta);
+        adverseEventReportingPeriod.getStudy().addTreatmentAssignment(studyTac1);
+        src.getTreatmentInformation().setTreatmentAssignment(taOverriden);
+        migrator.migrate(src,dest,outcome);
+        assertTrue(outcome.hasErrors());
+
+    }
 }
