@@ -9,7 +9,6 @@ import gov.nih.nci.cabig.caaers.service.migrator.CompositeMigrator;
  * @since 1.5
  */
 public class ExpeditedAdverseEventReportSynchronizer extends CompositeMigrator<ExpeditedAdverseEventReport> {
-    @Override
     public void preMigrate(ExpeditedAdverseEventReport src, ExpeditedAdverseEventReport dest, DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome) {
 
     }

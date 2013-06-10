@@ -14,7 +14,6 @@ import java.util.List;
  * @since 1.5
  */
 public class ExpeditedAdverseEventSynchronizer implements Migrator<ExpeditedAdverseEventReport> {
-    @Override
     public void migrate(ExpeditedAdverseEventReport xmlAeReport, ExpeditedAdverseEventReport dbAeReport, DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome) {
 
         List<AdverseEvent> newlyFoundAEs = new ArrayList<AdverseEvent>();
