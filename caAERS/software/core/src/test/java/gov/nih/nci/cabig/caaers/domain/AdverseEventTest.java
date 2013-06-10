@@ -132,13 +132,7 @@ public class AdverseEventTest extends AbstractTestCase {
         adverseEvent.setEndDate(endDate);
         adverseEvent.setReport(report);
         adverseEvent.setReportingPeriod(reportingPeriod);
-        adverseEvent.addAdverseEventAttribution(deviceAttribution);
-        adverseEvent.addAdverseEventAttribution(radiationAttribution);
-        adverseEvent.addAdverseEventAttribution(concomitantMedicationAttribution);
-        adverseEvent.addAdverseEventAttribution(otherCauseAttribution);
-        adverseEvent.addAdverseEventAttribution(diseaseAttribution);
-        adverseEvent.addAdverseEventAttribution(surgeryAttribution);
-        adverseEvent.addAdverseEventAttribution(courseAgentAttribution);
+
 
 
     }

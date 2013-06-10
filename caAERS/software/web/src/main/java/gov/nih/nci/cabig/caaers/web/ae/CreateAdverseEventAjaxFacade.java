@@ -865,7 +865,7 @@ public class CreateAdverseEventAjaxFacade {
         }
         List<IndexChange> changes = createDeleteChangeList(indexToDelete, list.size());
         Object removedObject = list.get(indexToDelete);
-        aeReportDao.cascaeDeleteToAttributions((DomainObject) removedObject, command.getAeReport());
+        command.getAeReport().cascaeDeleteToAttributions((DomainObject) removedObject);
         list.remove(indexToDelete);
 
         if (removedObject instanceof ExpeditedAdverseEventReportChild) {

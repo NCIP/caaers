@@ -1466,26 +1466,7 @@ public class ExpeditedAdverseEventReportTest extends AbstractTestCase {
         report.addSurgeryIntervention(sg);
         assertTrue(report.getInterventionTypes().contains(StudyTherapyType.SURGERY));
     }
-    
-    public void testGetAdverseEventAttributions()
-    {
-        List<AdverseEventAttribution> l = report.getAdverseEventAttributions();
-        assertTrue(l.isEmpty());
-       
-        CourseAgent cause = new CourseAgent();
-        CourseAgentAttribution courseAgentAttribution = new CourseAgentAttribution();
 
-
-        courseAgentAttribution.setId(1);
-        courseAgentAttribution.setGridId("grid id");
-        courseAgentAttribution.setCause(cause);
-        courseAgentAttribution.setVersion(2);
-        courseAgentAttribution.setAttribution(Attribution.POSSIBLE);
-        report.getAdverseEvents().get(0).addAdverseEventAttribution(courseAgentAttribution);
-
-        l = report.getAdverseEventAttributions();
-        assertTrue(l.size() == 1);
-    }
 
     public void testGetHasNciIndAgent(){
         assertFalse(report.getHasNciIndAgent());

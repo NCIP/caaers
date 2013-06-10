@@ -517,11 +517,11 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
 		return parentIndex;
 	}
     public void deleteAttribution(DomainObject o){
-    	reportDao.cascaeDeleteToAttributions(o, getAeReport());
+    	getAeReport().cascaeDeleteToAttributions(o);
     }
 
     public void addAttribution(DomainObject o){
-    	reportDao.addAttributionsToAEs(o, getAeReport());
+    	getAeReport().addAttributionsToAEs(o);
     }
 
     public AdverseEventRoutingAndReviewRepository getAdverseEventRoutingAndReviewRepository(){

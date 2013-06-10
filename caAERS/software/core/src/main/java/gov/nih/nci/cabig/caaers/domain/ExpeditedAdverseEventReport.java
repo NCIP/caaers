@@ -7,10 +7,11 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.*;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
+import gov.nih.nci.cabig.caaers.utils.ObjectUtils;
 import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
@@ -34,6 +35,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import gov.nih.nci.cabig.ctms.domain.DomainObject;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -335,10 +337,10 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
 	 * @param adverseEvent
 	 */
 	public void removeAdverseEvent(AdverseEvent adverseEvent) {
+        adverseEvent.deleteAttributions();
 		getAdverseEventsInternal().remove(adverseEvent);
-		if (adverseEvent != null)
-			adverseEvent.setReport(null);
-	}    
+        adverseEvent.setReport(null);
+	}
     
     /**
      * @param aeId
@@ -1758,7 +1760,61 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	}
     	return null;
     }
-    
+
+
+    /**
+     * Will find the Adverse Event that has matching
+     *  - externalId
+     *  - term
+     *  - dates
+     * @param thatAe
+     * @return
+     */
+    public AdverseEvent findAdverseEventByIdTermAndDates(AdverseEvent thatAe){
+        for(AdverseEvent thisAe : getAdverseEvents()){
+            //are Ids matching ?
+            if(ObjectUtils.equals(thisAe.getId(), thatAe.getId())) return thisAe;
+            if(ObjectUtils.equals(thisAe.getExternalId(), thatAe.getExternalId())) return thisAe;
+
+            AbstractAdverseEventTerm thisTerm = thisAe.getAdverseEventTerm();
+            AbstractAdverseEventTerm thatTerm = thatAe.getAdverseEventTerm();
+            if(thisTerm != null && thatTerm != null)
+
+            //are dates matching ?
+            if(DateUtils.compareDate(thisAe.getStartDate(), thatAe.getStartDate()) != 0)  continue;
+            if(DateUtils.compareDate(thisAe.getEndDate(), thatAe.getEndDate()) != 0)  continue;
+
+            DomainObject thisAeTerm = thisAe.getAdverseEventTerm() != null ? thisAe.getAdverseEventTerm().getTerm() : null;
+            DomainObject thatAeTerm = thatAe.getAdverseEventTerm() != null ? thatAe.getAdverseEventTerm().getTerm() :  null;
+            if((thisAeTerm == null && thatAeTerm != null ) || (thisAeTerm != null && thatAeTerm == null)) continue;
+
+            if(thisAeTerm == null && thatAeTerm == null){
+                //verbatim only AE entry
+                if(!StringUtils.equals(thisAe.getDetailsForOther(), thatAe.getDetailsForOther())) continue;
+            }else {
+
+                //check terms
+                if(!ObjectUtils.equals(thisAeTerm.getId(), thatAeTerm.getId())) continue;
+
+                if(thisAeTerm instanceof AdverseEventCtcTerm){
+                    //check other specify
+                    if(!StringUtils.equals(thisAe.getOtherSpecify(), thatAe.getOtherSpecify())) continue;
+
+                    //check other MedDRA
+                    Integer thisLltId = thisAe.getLowLevelTerm() != null ? thisAe.getLowLevelTerm().getId() : Integer.MIN_VALUE;
+                    Integer thatLltId = thatAe.getLowLevelTerm() != null ? thatAe.getLowLevelTerm().getId() : Integer.MIN_VALUE;
+                    if(!ObjectUtils.equals(thisLltId, thatLltId)) continue;
+
+                }
+            }
+
+            //found a match
+            return thisAe;
+        }
+        return null;
+    }
+
+
     /**
      * This method will return the Report associated to this data collection, identified by ID.
      *
@@ -1864,4 +1920,77 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         return false;
     }
 
+
+    /**
+     * When we delete an element which has been attributed, the attribution also needs to be deleted.
+     * @param o
+     */
+    public boolean cascaeDeleteToAttributions(DomainObject o){
+    	for(AdverseEvent ae : getAdverseEvents()){
+            if (o instanceof RadiationIntervention) {
+                ae.deleteAttribution(o, ae.getRadiationAttributions());
+            } else if (o instanceof MedicalDevice) {
+                ae.deleteAttribution(o, ae.getDeviceAttributions());
+            } else if (o instanceof SurgeryIntervention) {
+                ae.deleteAttribution(o, ae.getSurgeryAttributions());
+            } else if (o instanceof CourseAgent) {
+                ae.deleteAttribution(o, ae.getCourseAgentAttributions());
+            } else if (o instanceof ConcomitantMedication) {
+                ae.deleteAttribution(o, ae.getConcomitantMedicationAttributions());
+            } else if (o instanceof OtherCause) {
+                ae.deleteAttribution(o, ae.getOtherCauseAttributions());
+            } else if (o instanceof DiseaseHistory) {
+                ae.deleteAttribution(o, ae.getDiseaseAttributions());
+            } else if (o instanceof OtherAEIntervention) {
+                ae.deleteAttribution(o, ae.getOtherInterventionAttributions());
+            } else if (o instanceof BehavioralIntervention) {
+                ae.deleteAttribution(o, ae.getBehavioralInterventionAttributions());
+            } else if (o instanceof BiologicalIntervention) {
+                ae.deleteAttribution(o, ae.getBiologicalInterventionAttributions());
+            } else if (o instanceof DietarySupplementIntervention) {
+                ae.deleteAttribution(o, ae.getDietarySupplementInterventionAttributions());
+            } else if (o instanceof GeneticIntervention) {
+                ae.deleteAttribution(o, ae.getGeneticInterventionAttributions());
+            }
+        }
+    	return true;
+    }
+
+
+    /**
+     * Insert a new Attribution for the a new Object
+     *
+     * @param o
+     * @return
+     */
+    public boolean addAttributionsToAEs(DomainObject o) {
+        for (AdverseEvent ae : getAdverseEvents()) {
+            if (o instanceof RadiationIntervention) {
+                ae.addAttribution(new RadiationAttribution((RadiationIntervention) o), ae.getRadiationAttributions());
+            } else if (o instanceof OtherAEIntervention) {
+                ae.addAttribution(new OtherInterventionAttribution((OtherAEIntervention) o), ae.getOtherInterventionAttributions());
+            } else if (o instanceof BehavioralIntervention) {
+                ae.addAttribution(new BehavioralInterventionAttribution((BehavioralIntervention) o), ae.getBehavioralInterventionAttributions());
+            } else if (o instanceof BiologicalIntervention) {
+                ae.addAttribution(new BiologicalInterventionAttribution((BiologicalIntervention) o), ae.getBiologicalInterventionAttributions());
+            } else if (o instanceof DietarySupplementIntervention) {
+                ae.addAttribution(new DietarySupplementInterventionAttribution((DietarySupplementIntervention) o), ae.getDietarySupplementInterventionAttributions());
+            } else if (o instanceof GeneticIntervention) {
+                ae.addAttribution(new GeneticInterventionAttribution((GeneticIntervention) o), ae.getGeneticInterventionAttributions());
+            } else if (o instanceof MedicalDevice) {
+                ae.addAttribution(new DeviceAttribution((MedicalDevice) o), ae.getDeviceAttributions());
+            } else if (o instanceof SurgeryIntervention) {
+                ae.addAttribution(new SurgeryAttribution((SurgeryIntervention) o), ae.getSurgeryAttributions());
+            } else if (o instanceof CourseAgent) {
+                ae.addAttribution(new CourseAgentAttribution((CourseAgent) o), ae.getCourseAgentAttributions());
+            } else if (o instanceof ConcomitantMedication) {
+                ae.addAttribution(new ConcomitantMedicationAttribution((ConcomitantMedication) o), ae.getConcomitantMedicationAttributions());
+            } else if (o instanceof OtherCause) {
+                ae.addAttribution(new OtherCauseAttribution((OtherCause) o), ae.getOtherCauseAttributions());
+            } else if (o instanceof DiseaseHistory) {
+                ae.addAttribution(new DiseaseAttribution((DiseaseHistory) o), ae.getDiseaseAttributions());
+            }
+        }
+        return true;
+    }
 }

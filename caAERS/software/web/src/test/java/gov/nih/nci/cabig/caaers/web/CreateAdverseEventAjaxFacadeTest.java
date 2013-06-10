@@ -19,7 +19,6 @@ import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
-import gov.nih.nci.cabig.caaers.dao.SiteResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
@@ -551,7 +550,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
         // mock - expectations
         AdverseEvent ae = command.getAeReport().getAdverseEvents().get(3);
-        expect(aeReportDao.cascaeDeleteToAttributions(ae, command.getAeReport())).andReturn(true);
+        expect(command.getAeReport().cascaeDeleteToAttributions(ae)).andReturn(true);
         replayMocks();
         List<IndexChange> actual = facade.remove("aeReport.adverseEvents", 3).getChanges();
         verifyMocks();
@@ -564,7 +563,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
         // mock - expectations
         AdverseEvent ae = command.getAeReport().getAdverseEvents().get(0);
-        expect(aeReportDao.cascaeDeleteToAttributions(ae, command.getAeReport())).andReturn(true);
+        expect(command.getAeReport().cascaeDeleteToAttributions(ae)).andReturn(true);
         replayMocks();
         List<IndexChange> actual = facade.remove("aeReport.adverseEvents", 0).getChanges();
         verifyMocks();
@@ -581,7 +580,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
         // mock - expectations
         AdverseEvent ae = command.getAeReport().getAdverseEvents().get(2);
-        expect(aeReportDao.cascaeDeleteToAttributions(ae, command.getAeReport())).andReturn(true);
+        expect(command.getAeReport().cascaeDeleteToAttributions(ae)).andReturn(true);
         replayMocks();
         List<IndexChange> actual = facade.remove("aeReport.adverseEvents", 2).getChanges();
         verifyMocks();

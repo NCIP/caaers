@@ -708,12 +708,12 @@ public class StudyInterventionsTab extends AeTab {
     }
 
     public void deleteAttributions(ExpeditedAdverseEventReportChild child, ExpeditedAdverseEventInputCommand command) {
-        expeditedAdverseEventReportDao.cascaeDeleteToAttributions((DomainObject) child, command.getAeReport());
+        command.getAeReport().cascaeDeleteToAttributions((DomainObject) child);
         child.setReport(null);
     }
 
     public void insertAttributions(ExpeditedAdverseEventReportChild child, ExpeditedAdverseEventInputCommand command) {
-        expeditedAdverseEventReportDao.addAttributionsToAEs((DomainObject) child, command.getAeReport());
+        command.getAeReport().addAttributionsToAEs((DomainObject) child);
     }
 
     public ExpeditedAdverseEventReportDao getExpeditedAdverseEventReportDao() {

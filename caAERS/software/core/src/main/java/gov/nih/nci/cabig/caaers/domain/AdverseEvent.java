@@ -14,7 +14,6 @@ import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.validation.AdverseEventGroup;
 import gov.nih.nci.cabig.caaers.validation.fields.validators.NotEmptyCollectionConstraint;
 import gov.nih.nci.cabig.caaers.validation.fields.validators.NotNullConstraint;
-import gov.nih.nci.cabig.caaers.validation.fields.validators.NumberRangeConstraint;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.io.Serializable;
@@ -1310,72 +1309,22 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
 		}
 	}
 
-	/**
-	 * Copy.
-	 *
-	 * @return the adverse event
-	 */
-	public AdverseEvent copy() {
-        AdverseEvent adverseEvent = new AdverseEvent();
-        org.springframework.beans.BeanUtils.copyProperties(this, adverseEvent,
-                new String[]{"id", "gridId", "outcomes", "version", "report",
-                        "deviceAttributions", "biologicalInterventionAttributions", "behavioralInterventionAttributions", "geneticInterventionAttributions", "dietarySupplementInterventionAttributions", "otherInterventionAttributions", "otherCauseAttributions", "courseAgentAttributions", "diseaseAttributions" ,
-                        "surgeryAttributions", "concomitantMedicationAttributions", "radiationAttributions",
-                        "adverseEventTerm", "adverseEventCtcTerm", "adverseEventMeddraLowLevelTerm", "ctcTerm", "startDateAsString", "meddraTerm"});
-
-        //outcomes object must not be same. i.e. they should refer to different objects;
-        for (Outcome outcome : getOutcomes()) {
-            adverseEvent.addOutcome(outcome.copy());
-        }
-
-        for (AdverseEventAttribution adverseEventAttribution : getAdverseEventAttributions()) {
-            adverseEvent.addAdverseEventAttribution(adverseEventAttribution.copy());
-        }
-        if (getAdverseEventTerm() != null) {
-            AbstractAdverseEventTerm copiedAbstractAdverseEventTerm = getAdverseEventTerm().copy();
-            copiedAbstractAdverseEventTerm.setAdverseEvent(adverseEvent);
-            adverseEvent.setAdverseEventTerm(copiedAbstractAdverseEventTerm);
-        }
-
-        return adverseEvent;
-    }
-
 
     /**
-     * Adds the adverse event attribution.
-     *
-     * @param adverseEventAttribution the adverse event attribution
+     * Will add a new attribution to the AdverseEvent
+     * @param newAttribution
+     * @param attributions
      */
-    public void addAdverseEventAttribution(AdverseEventAttribution adverseEventAttribution) {
-        if (adverseEventAttribution != null) {
+    public void addAttribution(AdverseEventAttribution<? extends DomainObject> newAttribution, List attributions) {
+        if (newAttribution == null || newAttribution.getCause() == null || newAttribution.getCause().getId() == null) return;
 
-            adverseEventAttribution.setAdverseEvent(this);
-            if (adverseEventAttribution instanceof RadiationAttribution) {
-                getRadiationAttributions().add((RadiationAttribution) adverseEventAttribution);
-            } else if (adverseEventAttribution instanceof DeviceAttribution) {
-                getDeviceAttributions().add((DeviceAttribution) adverseEventAttribution);
-            } else if (adverseEventAttribution instanceof SurgeryAttribution) {
-                getSurgeryAttributions().add((SurgeryAttribution) adverseEventAttribution);
-            } else if (adverseEventAttribution instanceof OtherCauseAttribution) {
-                getOtherCauseAttributions().add((OtherCauseAttribution) adverseEventAttribution);
-            } else if (adverseEventAttribution instanceof ConcomitantMedicationAttribution) {
-                getConcomitantMedicationAttributions().add((ConcomitantMedicationAttribution) adverseEventAttribution);
-            } else if (adverseEventAttribution instanceof DiseaseAttribution) {
-                getDiseaseAttributions().add((DiseaseAttribution) adverseEventAttribution);
-            } else if (adverseEventAttribution instanceof CourseAgentAttribution) {
-                getCourseAgentAttributions().add((CourseAgentAttribution) adverseEventAttribution);
-            } else if (adverseEventAttribution instanceof OtherInterventionAttribution) {
-                getOtherInterventionAttributions().add((OtherInterventionAttribution) adverseEventAttribution);
-            } else if (adverseEventAttribution instanceof BehavioralInterventionAttribution) {
-                getBehavioralInterventionAttributions().add((BehavioralInterventionAttribution) adverseEventAttribution);
-            } else if (adverseEventAttribution instanceof BiologicalInterventionAttribution) {
-                getBiologicalInterventionAttributions().add((BiologicalInterventionAttribution) adverseEventAttribution);
-            } else if (adverseEventAttribution instanceof GeneticInterventionAttribution) {
-                getGeneticInterventionAttributions().add((GeneticInterventionAttribution) adverseEventAttribution);
-            } else if (adverseEventAttribution instanceof DietarySupplementInterventionAttribution) {
-                getDietarySupplementInterventionAttributions().add((DietarySupplementInterventionAttribution) adverseEventAttribution);
-            }
+        for (Object o : attributions) {
+            AdverseEventAttribution a = (AdverseEventAttribution)o;
+            if (a.getCause().getId().equals(newAttribution.getCause().getId())) return;
         }
+
+        newAttribution.setAdverseEvent(this);
+        attributions.add(newAttribution);
     }
     
     /**
@@ -1739,6 +1688,45 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
             Outcome o = getOutcomeOfType(t);
             if(o != null) getOutcomes().remove(o);
         }
+    }
+
+    /**
+     * Will delete the attributions of an adverse event
+     * @param cause
+     * @param attributions
+     */
+    public void deleteAttribution(DomainObject cause, List<? extends AdverseEventAttribution<? extends DomainObject>> attributions) {
+        if (cause == null || cause.getId() == null) return;
+        AdverseEventAttribution<? extends DomainObject> unwantedAttribution = null;
+        for (AdverseEventAttribution<? extends DomainObject> attribution : attributions) {
+            if (cause.getId().equals(attribution.getCause().getId())) {
+                unwantedAttribution = attribution;
+                break;
+            }
+
+        }
+        if (unwantedAttribution != null) {
+            attributions.remove(unwantedAttribution);
+            unwantedAttribution.setAdverseEvent(null);
+        }
+    }
+
+    /**
+     * Will remove all attributions of an AdverseEvent
+     */
+    public void deleteAttributions(){
+        getRadiationAttributions().clear();
+        getDeviceAttributions().clear();
+        getSurgeryAttributions().clear();
+        getCourseAgentAttributions().clear();
+        getConcomitantMedicationAttributions().clear();
+        getOtherCauseAttributions().clear();
+        getDiseaseAttributions().clear();
+        getOtherInterventionAttributions().clear();
+        getBehavioralInterventionAttributions().clear();
+        getBiologicalInterventionAttributions().clear();
+        getDietarySupplementInterventionAttributions().clear();
+        getGeneticInterventionAttributions().clear();
     }
 
 }

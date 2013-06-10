@@ -24,7 +24,6 @@ import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.RadiationAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.SurgeryAttribution;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
-import gov.nih.nci.cabig.caaers.domain.workflow.ReportReviewComment;
 import gov.nih.nci.cabig.ctms.lang.DateTools;
 
 import java.io.BufferedReader;
@@ -35,11 +34,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
 
 /**
@@ -779,6 +775,9 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
     }
     
     public void testDeleteAttribution(){
+
+        ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
+        aeReport.addAdverseEvent(Fixtures.createAdverseEvent(-1000, Grade.DEATH));
     	
     	RadiationAttribution rAttribution1 = new RadiationAttribution();
     	RadiationIntervention cause = new RadiationIntervention();
@@ -795,7 +794,7 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
     	list.add(rAttribution2);
     	
     	
-    	getDao().deleteAttribution(rAttribution1.getCause(), list, null);
+    	aeReport.getAdverseEvent(-1000).deleteAttribution(rAttribution1.getCause(), list);
     	
     	assertEquals(1,list.size());
     }
@@ -819,7 +818,7 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
     	ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
     	aeReport.getAdverseEvents().get(0).setRadiationAttributions(list);
 
-    	boolean returnVal = getDao().cascaeDeleteToAttributions(cause2, aeReport);
+    	boolean returnVal = aeReport.cascaeDeleteToAttributions(cause2);
     	assertTrue(returnVal);
     	assertEquals(1, list.size());
     }
@@ -835,8 +834,8 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
         assertEquals(0, aeReport.getAdverseEvents().get(0).getOtherInterventionAttributions().size());
         assertEquals(0, aeReport.getAdverseEvents().get(0).getRadiationAttributions().size());
 
-        getDao().addAttributionsToAEs(ri, aeReport);
-        getDao().addAttributionsToAEs(oi, aeReport);
+        aeReport.addAttributionsToAEs(ri);
+        aeReport.addAttributionsToAEs(oi);
         assertEquals(1, aeReport.getAdverseEvents().get(0).getOtherInterventionAttributions().size());
         assertEquals(1, aeReport.getAdverseEvents().get(0).getRadiationAttributions().size());
 
@@ -860,7 +859,7 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
 	   ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
    	   aeReport.getAdverseEvents().get(0).setDiseaseAttributions(list);
    	   
-   	boolean returnVal = getDao().cascaeDeleteToAttributions(dh2, aeReport);
+   	boolean returnVal = aeReport.cascaeDeleteToAttributions(dh2);
 	assertTrue(returnVal);
 	assertEquals(1, list.size());
 	   
@@ -884,7 +883,7 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
 	   list.add(a1);
 	   list.add(a2);
 	   
-	   	boolean returnVal = getDao().cascaeDeleteToAttributions(c1, aeReport);
+	   	boolean returnVal = aeReport.cascaeDeleteToAttributions(c1);
 		assertTrue(returnVal);
 		assertEquals(1, list.size());
 	  
@@ -910,7 +909,7 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
 	   list.add(a1);
 	   list.add(a2);
 	   
-	   	boolean returnVal = getDao().cascaeDeleteToAttributions(c1, aeReport);
+	   	boolean returnVal = aeReport.cascaeDeleteToAttributions(c1);
 		assertTrue(returnVal);
 		assertEquals(1, list.size());
    }
@@ -932,7 +931,7 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
 	   list.add(a1);
 	   list.add(a2);
 	   
-	   	boolean returnVal = getDao().cascaeDeleteToAttributions(c1, aeReport);
+	   	boolean returnVal = aeReport.cascaeDeleteToAttributions(c1);
 		assertTrue(returnVal);
 		assertEquals(1, list.size());
    }
@@ -954,7 +953,7 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
 	   list.add(a1);
 	   list.add(a2);
 	   
-   	boolean returnVal = getDao().cascaeDeleteToAttributions(c1, aeReport);
+   	boolean returnVal = aeReport.cascaeDeleteToAttributions(c1);
 	assertTrue(returnVal);
 	assertEquals(1, list.size());
    }
@@ -977,7 +976,7 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
 	   list.add(a1);
 	   list.add(a2);
 	   
-   	boolean returnVal = getDao().cascaeDeleteToAttributions(c1, aeReport);
+   	boolean returnVal = aeReport.cascaeDeleteToAttributions(c1);
 	assertTrue(returnVal);
 	assertEquals(1, list.size());
    }

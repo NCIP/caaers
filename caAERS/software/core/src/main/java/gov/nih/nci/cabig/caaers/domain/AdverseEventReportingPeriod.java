@@ -28,9 +28,11 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import gov.nih.nci.cabig.caaers.utils.ObjectUtils;
 import gov.nih.nci.cabig.caaers.validation.AdverseEventGroup;
 import gov.nih.nci.cabig.caaers.validation.CourseCycleGroup;
 import gov.nih.nci.cabig.caaers.validation.fields.validators.NotNullConstraint;
+import gov.nih.nci.cabig.ctms.domain.DomainObject;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
@@ -890,45 +892,53 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
         return aeReportIndexMap;
     }
 
+
+    /**
+     * Will find the Adverse Event that has matching
+     *  - externalId
+     *  - term
+     *  - dates
+     * @param thatAe
+     * @return
+     */
     public AdverseEvent findAdverseEventByIdTermAndDates(AdverseEvent thatAe){
         for(AdverseEvent thisAe : getAdverseEvents()){
-            if ( thisAe.getRetiredIndicator()) continue; // if the adverse Event is retired then continue;
             //are Ids matching ?
-            if(thatAe.getId() != null && thisAe.getId() != null && thisAe.getId().equals(thatAe.getId()) ) return thisAe;
-            if(thatAe.getExternalId() != null && thisAe.getExternalId() != null && StringUtils.equals(thisAe.getExternalId(), thatAe.getExternalId()) )
-                return thisAe;
-            else
-                if(thatAe.getExternalId() != null || thisAe.getExternalId() != null) {
-                 continue;
-                }
+            if(ObjectUtils.equals(thisAe.getId(), thatAe.getId())) return thisAe;
+            if(ObjectUtils.equals(thisAe.getExternalId(), thatAe.getExternalId())) return thisAe;
 
+            AbstractAdverseEventTerm thisTerm = thisAe.getAdverseEventTerm();
+            AbstractAdverseEventTerm thatTerm = thatAe.getAdverseEventTerm();
+            if(thisTerm != null && thatTerm != null)
 
-
-            //are dates matching ?
-            if(DateUtils.compareDate(thisAe.getStartDate(), thatAe.getStartDate()) != 0)  continue;
+                //are dates matching ?
+                if(DateUtils.compareDate(thisAe.getStartDate(), thatAe.getStartDate()) != 0)  continue;
             if(DateUtils.compareDate(thisAe.getEndDate(), thatAe.getEndDate()) != 0)  continue;
 
-            //is the term matching ?
-            if(thisAe.getAdverseEventCtcTerm() != null){
-                //ctc terminology
-                AdverseEventCtcTerm thisCtcTerm = thisAe.getAdverseEventCtcTerm();
-                AdverseEventCtcTerm thatCtcTerm = thatAe.getAdverseEventCtcTerm();
-                if ( (thisCtcTerm == null && thatCtcTerm != null) || (thatCtcTerm == null && thisCtcTerm != null) ) continue;
-                if( (thisCtcTerm != null && thatCtcTerm != null )&& thisCtcTerm.getTerm().getId() != thatCtcTerm.getTerm().getId()) continue;
-                if(!StringUtils.equals(thisAe.getOtherSpecify(), thatAe.getOtherSpecify())) continue;
+            DomainObject thisAeTerm = thisAe.getAdverseEventTerm() != null ? thisAe.getAdverseEventTerm().getTerm() : null;
+            DomainObject thatAeTerm = thatAe.getAdverseEventTerm() != null ? thatAe.getAdverseEventTerm().getTerm() :  null;
+            if((thisAeTerm == null && thatAeTerm != null ) || (thisAeTerm != null && thatAeTerm == null)) continue;
 
-                LowLevelTerm thisLLT = thisAe.getLowLevelTerm();
-                LowLevelTerm thatLLT = thatAe.getLowLevelTerm();
-                if((thisLLT == null && thatLLT != null ) || (thatLLT == null && thisLLT != null)) continue;
-                if((thisLLT != null && thatLLT != null ) && thisLLT.getId() != thatLLT.getId()) continue;
+            if(thisAeTerm == null && thatAeTerm == null){
+                //verbatim only AE entry
+                if(!StringUtils.equals(thisAe.getDetailsForOther(), thatAe.getDetailsForOther())) continue;
+            }else {
 
-            } else {
-                //MedDRA terminology
-                AdverseEventMeddraLowLevelTerm thisMedDRATerm = thisAe.getAdverseEventMeddraLowLevelTerm();
-                AdverseEventMeddraLowLevelTerm thatMedDRATerm = thatAe.getAdverseEventMeddraLowLevelTerm();
-                if((thisMedDRATerm == null && thatMedDRATerm != null) && (thatMedDRATerm == null && thisMedDRATerm != null)) continue;
-                if((thisMedDRATerm != null && thatMedDRATerm != null) && thisMedDRATerm.getLowLevelTerm().getId() != thatMedDRATerm.getLowLevelTerm().getId()) continue;
+                //check terms
+                if(!ObjectUtils.equals(thisAeTerm.getId(), thatAeTerm.getId())) continue;
+
+                if(thisAeTerm instanceof AdverseEventCtcTerm){
+                    //check other specify
+                    if(!StringUtils.equals(thisAe.getOtherSpecify(), thatAe.getOtherSpecify())) continue;
+
+                    //check other MedDRA
+                    Integer thisLltId = thisAe.getLowLevelTerm() != null ? thisAe.getLowLevelTerm().getId() : Integer.MIN_VALUE;
+                    Integer thatLltId = thatAe.getLowLevelTerm() != null ? thatAe.getLowLevelTerm().getId() : Integer.MIN_VALUE;
+                    if(!ObjectUtils.equals(thisLltId, thatLltId)) continue;
+
+                }
             }
+
             //found a match
             return thisAe;
         }
