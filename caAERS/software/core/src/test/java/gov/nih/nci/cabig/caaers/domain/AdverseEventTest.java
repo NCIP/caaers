@@ -67,7 +67,8 @@ public class AdverseEventTest extends AbstractTestCase {
 
         adverseEventTerm = new AdverseEventCtcTerm();
         adverseEventTerm.setId(1);
-        deviceAttribution = new DeviceAttribution();
+        deviceAttribution = new DeviceAttribution(Fixtures.createMedicalDevice(false , false));
+        deviceAttribution.getCause().setId(-1);
         deviceAttribution.setAttribution(Attribution.DEFINITE);
 
         radiationAttribution = new RadiationAttribution();
@@ -132,7 +133,13 @@ public class AdverseEventTest extends AbstractTestCase {
         adverseEvent.setEndDate(endDate);
         adverseEvent.setReport(report);
         adverseEvent.setReportingPeriod(reportingPeriod);
-
+        adverseEvent.addAttribution(deviceAttribution, adverseEvent.getDeviceAttributions());
+        adverseEvent.addAttribution(radiationAttribution, adverseEvent.getRadiationAttributions());
+        adverseEvent.addAttribution(concomitantMedicationAttribution, adverseEvent.getConcomitantMedicationAttributions());
+        adverseEvent.addAttribution(otherCauseAttribution, adverseEvent.getOtherCauseAttributions());
+        adverseEvent.addAttribution(diseaseAttribution, adverseEvent.getDiseaseAttributions());
+        adverseEvent.addAttribution(surgeryAttribution, adverseEvent.getSurgeryAttributions());
+        adverseEvent.addAttribution(courseAgentAttribution, adverseEvent.getCourseAgentAttributions());
 
 
     }
