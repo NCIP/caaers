@@ -445,6 +445,16 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     }
 
     /**
+     * Adds the lab.
+     *
+     * @param lab the lab
+     */
+    public void removeLab(Lab lab) {
+        getLabsInternal().remove(lab);
+        lab.setReport(null);
+    }
+
+    /**
      * Gets the labs.
      *
      * @return a wrapped list which will never throw an {@link IndexOutOfBoundsException}
@@ -1761,6 +1771,21 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	return null;
     }
 
+    /**
+     * Will find the labs with matching ID or Term otherwise treat it as new lab.
+     *
+     */
+
+    public Lab findLabsByIDTerm(Lab thatLab) {
+
+       for( Lab l : getLabs()) {
+           if ( ObjectUtils.equals(l.getId(), thatLab.getId()) ) return l; // Compare ID.
+           if ( ObjectUtils.equals(l.getLabTerm().getTerm(), thatLab.getLabTerm().getTerm()) ) return l; // Compare Term.
+       }
+
+       return null;
+
+    }
 
     /**
      * Will find the Adverse Event that has matching
