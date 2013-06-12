@@ -28,26 +28,26 @@ public class LabSynchronizer implements Migrator<ExpeditedAdverseEventReport> {
             return;
         }
 
-        //create an index of AEs
+        //create an index of Labs
         HashMap<Integer, Lab> labsIndex = new HashMap<Integer, Lab>();
         for(Lab lab : dbAeReport.getLabs()){ labsIndex.put(lab.getId(), lab);}
 
-        //try to find the AE in source , if found synchronize it.
+        //try to find the Lab in source , if found synchronize it.
         for(Lab lab : xmlAeReport.getLabs()){
-            Lab labFound = dbAeReport.findLabsByIDTerm(lab);
+            Lab labFound = dbAeReport.findLabsByTerm(lab);
             if(labFound != null) {
                 synchronizeLab(lab, labFound);
-                labsIndex.remove(lab.getId());
+                labsIndex.remove(labFound.getId());
             }else {
                 newlyFoundLabs.add(lab);
             }
         }
 
-        //delete the AE in destination, which are not present in source
+        //delete the Lab in destination, which are not present in source
         for(Lab lab : labsIndex.values()){
             dbAeReport.removeLab(lab);
         }
-        //add the new AEs that are present in source.
+        //add the new Lab that are present in source.
         for(Lab lab : newlyFoundLabs){
             dbAeReport.addLab(lab);
         }

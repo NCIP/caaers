@@ -1776,11 +1776,10 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
      *
      */
 
-    public Lab findLabsByIDTerm(Lab thatLab) {
+    public Lab findLabsByTerm(Lab thatLab) {
 
        for( Lab l : getLabs()) {
-           if ( ObjectUtils.equals(l.getId(), thatLab.getId()) ) return l; // Compare ID.
-           if ( ObjectUtils.equals(l.getLabTerm().getTerm(), thatLab.getLabTerm().getTerm()) ) return l; // Compare Term.
+           if ( l.getLabTerm() != null && thatLab.getLabTerm() != null && ObjectUtils.equals(l.getLabTerm().getTerm(), thatLab.getLabTerm().getTerm()) ) return l; // Compare Term.
        }
 
        return null;

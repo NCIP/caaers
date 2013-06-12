@@ -49,9 +49,10 @@ public class LabynchronizerTest extends AbstractTestCase {
 
     public void testMigrateSyncScenario() throws Exception {
         Lab xmlLab = Fixtures.createLab("Bone Marrow blasts","Bone Marrow Biopsy");
-        xmlLab.setId(1);
+        xmlLab.setSite("Mayo Clinic");
 
-        Lab dbLab = Fixtures.createLab("Bone Marrow Cellularity","Bone Marrow Biopsy");
+        Lab dbLab = Fixtures.createLab("Bone Marrow blasts","Bone Marrow Biopsy");
+        dbLab.setSite("Mayo Clinic 2");
         dbLab.setId(1);
 
         src.addLab(xmlLab);
@@ -60,6 +61,6 @@ public class LabynchronizerTest extends AbstractTestCase {
         synchronizer.migrate(src, dest, outcome);
         assertFalse(outcome.hasErrors());
 
-        assertEquals(xmlLab.getLabTerm().getTerm(), dbLab.getLabTerm().getTerm());
+        assertEquals(xmlLab.getSite(), dbLab.getSite());
     }
 }
