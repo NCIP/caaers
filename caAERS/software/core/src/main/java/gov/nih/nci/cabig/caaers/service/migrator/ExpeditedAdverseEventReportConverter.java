@@ -656,7 +656,7 @@ public class ExpeditedAdverseEventReportConverter {
 	protected SAEReportPreExistingCondition convertPreExistingCondition(SAEReportPreExistingConditionType preCondType){
 		SAEReportPreExistingCondition saeReportPreExistingCondition = new SAEReportPreExistingCondition();
 		saeReportPreExistingCondition.setOther(preCondType.getOther());
-		saeReportPreExistingCondition.setLinkedToOtherCause(preCondType.isLinkedToOtherCause());
+		saeReportPreExistingCondition.setLinkedToOtherCause(preCondType.isLinkedToOtherCause() == null ? Boolean.FALSE : preCondType.isLinkedToOtherCause());
 		if(preCondType.getPreExistingCondition() != null){
 			PreExistingCondition preExistingCondition = new PreExistingCondition();
 			preExistingCondition.setText(preCondType.getPreExistingCondition().getText());

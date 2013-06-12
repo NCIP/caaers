@@ -342,12 +342,36 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 
         for ( Integer aeReportId : recommendedReportTableMap.keySet()){
 
-            List<ReportTableRow> applicableRows = applicableReportTableMap.get(aeReportId);
+            List<ReportTableRow> applicableRows = findApplicableRows(aeReportId, applicableReportTableMap);
 
             if ( applicableRows != null) {
                 findMatchingRecommendations(applicableRows, recommendedReportTableMap.get(aeReportId), recommendedActions, ignoredRows) ;
             }
         }
+    }
+
+    /**
+     *  Returns the applicable Rows for the report.
+     * @param aeReportId
+     * @param applicableReportTableMap
+     * @return
+     */
+
+    private List<ReportTableRow> findApplicableRows(Integer aeReportId, Map<Integer, List<ReportTableRow>> applicableReportTableMap) {
+
+        if ( aeReportId == 0){
+            if ( applicableReportTableMap.size() == 1) {
+                return applicableReportTableMap.get(aeReportId);
+            } else {
+                for (Integer rptId : applicableReportTableMap.keySet() ) {
+                        if ( rptId == 0) continue;
+                      return applicableReportTableMap.get(rptId);
+                }
+            }
+        }
+
+        return applicableReportTableMap.get(aeReportId);
+
     }
 
     /**
@@ -360,7 +384,7 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
     private ReportTableRow findApplicableRow(List<ReportTableRow> applicableRows, ReportTableRow recommRow) {
 
             for ( ReportTableRow row: applicableRows) {
-                if ( row.getReportDefinition().getId().equals(recommRow.getReportDefinition().getId())) {
+                if ( row.getReportDefinition().getName().equals(recommRow.getReportDefinition().getName())) {
                     return row;
                 }
             }
@@ -416,7 +440,7 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
     private   RecommendedActions returnActionFromRow(ReportTableRow row, List<ReportTableRow> preselectedRows) {
         RecommendedActions action = new RecommendedActions();
 
-        action.setReport(row.getReportDefinition().getLabel());
+        action.setReport(row.getReportDefinition().getName());
         if ( row.isPreSelected()) {  // If the row is pre-selected.
 
             action.setAction(row.getAction().getDisplayName());
