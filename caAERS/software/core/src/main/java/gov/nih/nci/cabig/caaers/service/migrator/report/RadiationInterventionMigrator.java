@@ -61,14 +61,8 @@ public class RadiationInterventionMigrator implements Migrator<ExpeditedAdverseE
      */
     private OtherIntervention findActiveRadiationOnStudy(List<OtherIntervention> otherStudyRadiationList, OtherIntervention oi) {
 
-        OtherIntervention result = null;
-        for( OtherIntervention iter: otherStudyRadiationList) {
-            if ( iter.getName().equals(oi.getName()) && iter.getDescription().equals(oi.getDescription())) {
-                result = iter;
-                break;
-            }
-        }
-        return result;
+        return ReportUtil.findActiveInterventionOnStudy(otherStudyRadiationList, oi);
+
     }
 
     /**

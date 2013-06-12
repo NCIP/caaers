@@ -58,15 +58,7 @@ public class DietarySupplementInterventionMigrator implements Migrator<Expedited
      * @return
      */
     private OtherIntervention findActiveDietariesOnStudy(List<OtherIntervention> studyDietaryInterventionList, OtherIntervention oi) {
-
-        OtherIntervention result = null;
-        for( OtherIntervention iter: studyDietaryInterventionList) {
-            if ( iter.getName().equals(oi.getName()) && iter.getDescription().equals(oi.getDescription())) {
-                result = iter;
-                break;
-            }
-        }
-        return result;
+        return ReportUtil.findActiveInterventionOnStudy(studyDietaryInterventionList, oi);
     }
 
 	/**

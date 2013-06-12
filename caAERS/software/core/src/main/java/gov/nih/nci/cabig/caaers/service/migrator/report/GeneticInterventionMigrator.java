@@ -62,15 +62,7 @@ public class GeneticInterventionMigrator implements Migrator<ExpeditedAdverseEve
      * @return
      */
     private OtherIntervention findActiveGIOnStudy(List<OtherIntervention> otherGeneticInterventionList, OtherIntervention oi) {
-
-        OtherIntervention result = null;
-        for( OtherIntervention iter: otherGeneticInterventionList) {
-            if ( iter.getName().equals(oi.getName()) && iter.getDescription().equals(oi.getDescription())) {
-                result = iter;
-                break;
-            }
-        }
-        return result;
+        return ReportUtil.findActiveInterventionOnStudy(otherGeneticInterventionList, oi);
     }
 	
 	/**

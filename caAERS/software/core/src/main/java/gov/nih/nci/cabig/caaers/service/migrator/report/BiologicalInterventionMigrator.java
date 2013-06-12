@@ -61,15 +61,7 @@ public class BiologicalInterventionMigrator implements Migrator<ExpeditedAdverse
      * @return
      */
     private OtherIntervention findActiveBiologicalInterventionOnStudy(List<OtherIntervention> otherStudyBiologicalList, OtherIntervention oi) {
-
-        OtherIntervention result = null;
-        for( OtherIntervention iter: otherStudyBiologicalList) {
-            if ( iter.getName().equals(oi.getName()) && iter.getDescription().equals(oi.getDescription())) {
-                result = iter;
-                break;
-            }
-        }
-        return result;
+        return ReportUtil.findActiveInterventionOnStudy(otherStudyBiologicalList, oi);
     }
 	
 	/**

@@ -64,14 +64,6 @@ public class OtherAEInterventionMigrator implements Migrator<ExpeditedAdverseEve
 	}
 
     private OtherIntervention findActiveOtherAEOnStudy(List<OtherIntervention> otherAEInterventionList, OtherIntervention oi) {
-
-        OtherIntervention result = null;
-        for( OtherIntervention iter: otherAEInterventionList) {
-            if ( iter.getName().equals(oi.getName()) && iter.getDescription().equals(oi.getDescription())) {
-                result = iter;
-                break;
-            }
-        }
-        return result;
+        return ReportUtil.findActiveInterventionOnStudy(otherAEInterventionList, oi);
     }
 }

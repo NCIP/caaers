@@ -72,14 +72,6 @@ public class BehavioralInterventionMigrator implements Migrator<ExpeditedAdverse
      * @return
      */
     private OtherIntervention findActiveBehavioralOnStudy(List<OtherIntervention> otherBehaviorList, OtherIntervention oi) {
-
-        OtherIntervention result = null;
-        for( OtherIntervention iter: otherBehaviorList) {
-            if ( iter.getName().equals(oi.getName()) && iter.getDescription().equals(oi.getDescription())) {
-                result = iter;
-                break;
-            }
-        }
-        return result;
+        return ReportUtil.findActiveInterventionOnStudy(otherBehaviorList, oi);
     }
 }
