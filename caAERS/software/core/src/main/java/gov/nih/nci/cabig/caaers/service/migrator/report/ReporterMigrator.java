@@ -145,8 +145,8 @@ public class ReporterMigrator implements Migrator<ExpeditedAdverseEventReport> {
             destReporter.setEmailAddress(srcReporter.getEmailAddress());
        	 if (srcReporter.getPhoneNumber() != null)
             destReporter.setPhoneNumber(srcReporter.getPhoneNumber());
-       	 if (srcReporter.getFaxNumber() != null)
-            destReporter.setFaxNumber(srcReporter.getFaxNumber());
+       	 if (srcReporter.getFax() != null)
+            destReporter.setFax(srcReporter.getFax());
     }
     
     /**
@@ -164,7 +164,7 @@ public class ReporterMigrator implements Migrator<ExpeditedAdverseEventReport> {
      destReporter.setFirstName((siteResearchStaff.getFirstName() != null ? siteResearchStaff.getFirstName() : siteResearchStaff.getResearchStaff().getFirstName()));
      destReporter.setEmailAddress((siteResearchStaff.getEmailAddress() != null ? siteResearchStaff.getEmailAddress() : siteResearchStaff.getResearchStaff().getEmailAddress()));
      destReporter.setPhoneNumber((siteResearchStaff.getPhoneNumber() != null ? siteResearchStaff.getPhoneNumber() : siteResearchStaff.getResearchStaff().getPhoneNumber()));
-     destReporter.setFaxNumber((siteResearchStaff.getFaxNumber() != null ? siteResearchStaff.getFaxNumber() : siteResearchStaff.getResearchStaff().getFaxNumber()));
+     destReporter.setFax((siteResearchStaff.getFaxNumber() != null ? siteResearchStaff.getFaxNumber() : siteResearchStaff.getResearchStaff().getFaxNumber()));
      destReporter.setAddress(siteResearchStaff.getAddress());
      
      destReporter.setResearchStaff(siteResearchStaff.getResearchStaff());
@@ -185,7 +185,7 @@ public class ReporterMigrator implements Migrator<ExpeditedAdverseEventReport> {
          destPhysician.setFirstName((siteInvestigator.getFirstName() != null ? siteInvestigator.getFirstName() : siteInvestigator.getInvestigator().getFirstName()));
          destPhysician.setEmailAddress((siteInvestigator.getEmailAddress() != null ? siteInvestigator.getEmailAddress() : siteInvestigator.getInvestigator().getEmailAddress()));
          destPhysician.setPhoneNumber((siteInvestigator.getPhoneNumber() != null ? siteInvestigator.getPhoneNumber() : siteInvestigator.getInvestigator().getPhoneNumber()));
-         destPhysician.setFaxNumber((siteInvestigator.getFaxNumber() != null ? siteInvestigator.getFaxNumber() : siteInvestigator.getInvestigator().getFaxNumber()));
+         destPhysician.setFax((siteInvestigator.getFaxNumber() != null ? siteInvestigator.getFaxNumber() : siteInvestigator.getInvestigator().getFaxNumber()));
          destPhysician.setAddress(siteInvestigator.getAddress());
          
          destPhysician.setInvestigator(siteInvestigator.getInvestigator());
