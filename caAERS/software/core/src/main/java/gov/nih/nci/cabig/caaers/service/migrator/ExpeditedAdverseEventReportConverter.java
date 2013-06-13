@@ -428,13 +428,13 @@ public class ExpeditedAdverseEventReportConverter {
 			if(map.get(lab.getLabTerm().getTerm()) == null){
 				map.put(lab.getLabTerm().getTerm(),lab);
 			} else {
-				if(lab.getBaseline() != null && map.get(lab.getLabTerm().getTerm()).getBaseline() == null){
+				if(lab.getBaseline().getValue() != null && map.get(lab.getLabTerm().getTerm()).getBaseline().getValue() == null){
 					addBaseline(lab, map.get(lab.getLabTerm().getTerm()));
 				}
-				if(lab.getNadir() != null && map.get(lab.getLabTerm().getTerm()).getNadir() == null){
+				if(lab.getNadir().getValue() != null && map.get(lab.getLabTerm().getTerm()).getNadir().getValue() == null){
 					addNadir(lab, map.get(lab.getLabTerm().getTerm()));
 				}
-				if(lab.getRecovery() != null && map.get(lab.getLabTerm().getTerm()).getRecovery() == null){
+				if(lab.getRecovery().getValue() != null && map.get(lab.getLabTerm().getTerm()).getRecovery().getValue() == null){
 					addRecovery(lab, map.get(lab.getLabTerm().getTerm()));
 				}
 			}
@@ -447,30 +447,24 @@ public class ExpeditedAdverseEventReportConverter {
 	}
 	
 	private void addBaseline(Lab labSrc,Lab labTarget){
-		LabValue baseline = new LabValue();
-		baseline.setValue(labSrc.getBaseline().getValue());
+		labTarget.getBaseline().setValue(labSrc.getBaseline().getValue());
 		if(labSrc.getBaseline().getDate() != null){
-			baseline.setDate(labSrc.getBaseline().getDate());
+			labTarget.getBaseline().setDate(labSrc.getBaseline().getDate());
 		}
-		labTarget.setBaseline(baseline);
 	}
 	
 	private void addNadir(Lab labSrc,Lab labTarget){
-		LabValue nadir = new LabValue();
-		nadir.setValue(labSrc.getNadir().getValue());
+		labTarget.getNadir().setValue(labSrc.getNadir().getValue());
 		if(labSrc.getNadir().getDate() != null){
-			nadir.setDate(labSrc.getNadir().getDate());
+			labTarget.getNadir().setDate(labSrc.getNadir().getDate());
 		}
-		labTarget.setNadir(nadir);
 	}
 	
 	private void addRecovery(Lab labSrc,Lab labTarget){
-		LabValue recovery = new LabValue();
-		recovery.setValue(labSrc.getRecovery().getValue());
+		labTarget.getRecovery().setValue(labSrc.getRecovery().getValue());
 		if(labSrc.getRecovery().getDate() != null){
-			recovery.setDate(labSrc.getRecovery().getDate());
+			labTarget.getRecovery().setDate(labSrc.getRecovery().getDate());
 		}
-		labTarget.setRecovery(recovery);
 	}
 	
 	protected OtherAEIntervention convertOtherAEIntervention(OtherAEInterventionType xmlOtherAEInterventionType, ExpeditedAdverseEventReport report){
@@ -899,7 +893,9 @@ public class ExpeditedAdverseEventReportConverter {
 			OtherIntervention otherIntervention =convertOtherIntervention(xmlRadiationInterventionType.getOtherIntervention());
 			intervention.setStudyRadiation(otherIntervention);
 		}
-		intervention.setAdministration(RadiationAdministration.findByDisplayName(xmlRadiationInterventionType.getAdministration().value()));
+		if(xmlRadiationInterventionType.getAdministration() != null) {
+			intervention.setAdministration(RadiationAdministration.findByDisplayName(xmlRadiationInterventionType.getAdministration().value()));
+		}
 		
 		return intervention;
 	}

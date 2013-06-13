@@ -377,13 +377,13 @@
 	</xs:complexType>
 	<xs:complexType name="RadiationInterventionType">
 		<xs:sequence>
-		<xs:element type="xs:int" name="dosage" />
-        <xs:element type="xs:string" name="dosageUnit" />
-        <xs:element type="xs:date" name="lastTreatmentDate" />
-        <xs:element type="xs:int" name="fractionNumber" />
-        <xs:element type="xs:int" name="daysElapsed" />
-        <xs:element type="xs:string" name="adjustment" />
-        <xs:element type="RadiationAdministrationType" name="administration" />
+		<xs:element type="xs:int" name="dosage" minOccurs="0" />
+        <xs:element type="xs:string" name="dosageUnit" minOccurs="0" />
+        <xs:element type="xs:date" name="lastTreatmentDate" minOccurs="0" />
+        <xs:element type="xs:int" name="fractionNumber" minOccurs="0" />
+        <xs:element type="xs:int" name="daysElapsed" minOccurs="0" />
+        <xs:element type="xs:string" name="adjustment" minOccurs="0" />
+        <xs:element type="RadiationAdministrationType" name="administration" minOccurs="0" />
         <xs:element type="OtherInterventionType" name="OtherIntervention" minOccurs="0" />
     </xs:sequence>
 	</xs:complexType>
@@ -408,7 +408,7 @@
 	</xs:complexType>
 	<xs:complexType name="SurgeryInterventionType">
 		<xs:sequence>
-			<xs:element type="xs:date" name="interventionDate" />
+			<xs:element type="xs:date" name="interventionDate"/>
 			<xs:element type="InterventionSiteType" name="InterventionSite" />
 			<xs:element type="OtherInterventionType" name="OtherIntervention" minOccurs="0" />
 		</xs:sequence>
