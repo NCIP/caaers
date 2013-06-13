@@ -633,7 +633,7 @@
 			</xsl:if>
 			<xsl:if test="reporterfax">
 				<ae:ContactMechanism>
-					<ae:type>e-mail</ae:type>
+					<ae:type>fax</ae:type>
 					<ae:value>
 						<xsl:value-of select="reporterfax" />
 					</ae:value>
@@ -671,7 +671,7 @@
 			</xsl:if>
 			<xsl:if test="senderfax">
 				<ae:ContactMechanism>
-					<ae:type>e-mail</ae:type>
+					<ae:type>fax</ae:type>
 					<ae:value>
 						<xsl:value-of select="senderfax" />
 					</ae:value>
