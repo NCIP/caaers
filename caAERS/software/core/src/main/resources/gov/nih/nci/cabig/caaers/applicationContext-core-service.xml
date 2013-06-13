@@ -524,7 +524,6 @@ default-lazy-init="true">
 	<bean id="expeditedReportMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.ExpeditedReportMigrator">
 		<property name="children">
 			<list>
-				<ref bean="expeditedAdverseEventMigrator"/>
 				<ref bean="additionalInformationMigrator"/>
 				<ref bean="adverseEventResponseDescriptionMigrator"/>
 				<ref bean="behavioralInterventionMigrator"/>
@@ -546,7 +545,8 @@ default-lazy-init="true">
 				<ref bean="saeReportPriorTherapyMigrator"/>	
 				<ref bean="submitterMigrator"/>
 				<ref bean="surgeryInterventionMigrator"/>	
-				<ref bean="treatmentInformationMigrator"/>	
+				<ref bean="treatmentInformationMigrator"/>
+				<ref bean="expeditedAdverseEventMigrator"/>	
 			</list>
 		</property>
         <property name="stopOnError" value="true" />
