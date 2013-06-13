@@ -103,7 +103,7 @@ public class LabMigrator implements Migrator<ExpeditedAdverseEventReport> {
     private LabTerm findLabTerm(List<LabTerm> labTermList, LabTerm labTerm) {
         LabTerm result  = null;
         for (LabTerm lt :  labTermList) {
-            if ( lt.getTerm().equals(labTerm.getTerm()) && lt.getCategory().getName().equals(labTerm.getCategory().getName())) {
+            if ( lt.getTerm() != null && labTerm.getTerm() != null && lt.getTerm().equals(labTerm.getTerm()) ) {
                 result = lt;
                 break;
             }
