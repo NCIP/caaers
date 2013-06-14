@@ -52,7 +52,10 @@ public class TreatmentInformationSynchronizer implements Migrator<ExpeditedAdver
         }
 
         //remove unwanted ones
-        for(CourseAgent ca : existingCourseAgents) dbTi.removeCourseAgent(ca);
+        for(CourseAgent ca : existingCourseAgents){
+            dest.cascaeDeleteToAttributions(ca);
+            dbTi.removeCourseAgent(ca);
+        }
         //add newly added course agent
         for(CourseAgent ca : newlyAddedCourseAgents) dbTi.addCourseAgent(ca);
     }
