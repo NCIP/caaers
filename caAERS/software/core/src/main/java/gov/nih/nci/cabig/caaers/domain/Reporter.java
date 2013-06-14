@@ -61,4 +61,6 @@ public class Reporter extends ReportPerson {
     	this.setEmailAddress(user.getEmailAddress());
         this.setCaaersUser(user);
     }
+
+
 }

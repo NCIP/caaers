@@ -119,36 +119,9 @@ public class ReporterMigrator implements Migrator<ExpeditedAdverseEventReport> {
         }
        	
         // 3. if investigator is not found create a new physician and do a Manual copy.
-       	copyReporterDetails(srcReporter, aeReportDest.getReporter());	
+       	aeReportDest.getReporter().copy(srcReporter);
     }
-    
-    /**
-     *  Manual copy from Input object to Domain Model.
-     * @param srcPhysician
-     * @param destPhysician
-     */
-    
-    public void copyReporterDetails(Reporter srcReporter, Reporter destReporter) {
-         if (srcReporter.getTitle() != null) 
-       	    destReporter.setTitle(srcReporter.getTitle());
-       	 if (srcReporter.getVersion() != null)
-            destReporter.setVersion(srcReporter.getVersion());
-       	 if (srcReporter.getMiddleName() != null)
-            destReporter.setMiddleName(srcReporter.getMiddleName());
-       	 if (srcReporter.getLastName() != null)
-            destReporter.setLastName(srcReporter.getLastName());
-       	 if (srcReporter.getFirstName() != null)
-            destReporter.setFirstName(srcReporter.getFirstName());
-       	 if (srcReporter.getAddress() != null)
-            destReporter.setAddress(srcReporter.getAddress());
-       	 if (srcReporter.getEmailAddress() != null)
-            destReporter.setEmailAddress(srcReporter.getEmailAddress());
-       	 if (srcReporter.getPhoneNumber() != null)
-            destReporter.setPhoneNumber(srcReporter.getPhoneNumber());
-       	 if (srcReporter.getFax() != null)
-            destReporter.setFax(srcReporter.getFax());
-    }
-    
+
     /**
      *  Manual copy from Input object to Domain Model.
      * @param srcPhysician
