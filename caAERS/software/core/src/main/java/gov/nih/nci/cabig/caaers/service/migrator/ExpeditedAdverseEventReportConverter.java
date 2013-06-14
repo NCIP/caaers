@@ -143,15 +143,17 @@ import gov.nih.nci.cabig.caaers.integration.schema.aereport.StudySiteType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.StudyType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.SurgeryAttributionType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.SurgeryInterventionType;
-import gov.nih.nci.cabig.caaers.integration.schema.aereport.TreatmentInformationType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.TreatmentAssignmentType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.TreatmentInformationType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationType;
 import gov.nih.nci.cabig.caaers.service.migrator.adverseevent.AdverseEventConverter;
 import gov.nih.nci.cabig.caaers.utils.XMLUtil;
 
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.context.MessageSource;
@@ -388,8 +390,16 @@ public class ExpeditedAdverseEventReportConverter {
 		}
 
         //Lab
+		List<Lab> allLabs = new ArrayList<Lab>();
 		for(LabType xmlLabType : aeReportDto.getLab()){
-			aeReport.addLab(convertLab(xmlLabType));
+			allLabs.add(convertLab(xmlLabType));
+		}
+		
+		if(!allLabs.isEmpty()){
+			List<Lab> reportLabs = mergeLabs(allLabs);
+			for(Lab lab : reportLabs){
+				aeReport.addLab(lab);
+			}
 		}
 
         //Other cause
@@ -409,6 +419,52 @@ public class ExpeditedAdverseEventReportConverter {
 		
 		// Set the study Information to the Source Report.
 		return aeReport;
+	}
+	
+	private List<Lab> mergeLabs(List<Lab> allLabs){
+		List<Lab> mergedLabs = new ArrayList<Lab>();
+		Map<String,Lab> map = new HashMap<String,Lab>();
+		for(Lab lab :allLabs){
+			if(map.get(lab.getLabTerm().getTerm()) == null){
+				map.put(lab.getLabTerm().getTerm(),lab);
+			} else {
+				if(lab.getBaseline().getValue() != null && map.get(lab.getLabTerm().getTerm()).getBaseline().getValue() == null){
+					addBaseline(lab, map.get(lab.getLabTerm().getTerm()));
+				}
+				if(lab.getNadir().getValue() != null && map.get(lab.getLabTerm().getTerm()).getNadir().getValue() == null){
+					addNadir(lab, map.get(lab.getLabTerm().getTerm()));
+				}
+				if(lab.getRecovery().getValue() != null && map.get(lab.getLabTerm().getTerm()).getRecovery().getValue() == null){
+					addRecovery(lab, map.get(lab.getLabTerm().getTerm()));
+				}
+			}
+		}
+		
+		mergedLabs.addAll(map.values());
+		
+		
+		return mergedLabs;
+	}
+	
+	private void addBaseline(Lab labSrc,Lab labTarget){
+		labTarget.getBaseline().setValue(labSrc.getBaseline().getValue());
+		if(labSrc.getBaseline().getDate() != null){
+			labTarget.getBaseline().setDate(labSrc.getBaseline().getDate());
+		}
+	}
+	
+	private void addNadir(Lab labSrc,Lab labTarget){
+		labTarget.getNadir().setValue(labSrc.getNadir().getValue());
+		if(labSrc.getNadir().getDate() != null){
+			labTarget.getNadir().setDate(labSrc.getNadir().getDate());
+		}
+	}
+	
+	private void addRecovery(Lab labSrc,Lab labTarget){
+		labTarget.getRecovery().setValue(labSrc.getRecovery().getValue());
+		if(labSrc.getRecovery().getDate() != null){
+			labTarget.getRecovery().setDate(labSrc.getRecovery().getDate());
+		}
 	}
 	
 	protected OtherAEIntervention convertOtherAEIntervention(OtherAEInterventionType xmlOtherAEInterventionType, ExpeditedAdverseEventReport report){
@@ -753,6 +809,10 @@ public class ExpeditedAdverseEventReportConverter {
 		
 		if(xmlMedicalDeviceType.getDeviceReprocessed() != null){
 			medicalDevice.setDeviceReprocessed(ReprocessedDevice.valueOf(xmlMedicalDeviceType.getDeviceReprocessed().name()));
+			if(xmlMedicalDeviceType.getDeviceReprocessed().name().equals("YES")){	
+				medicalDevice.setReprocessorName(xmlMedicalDeviceType.getReprocessedName());
+				medicalDevice.setReprocessorAddress(xmlMedicalDeviceType.getReprocessedAddress());
+			}
 		}
 		if(xmlMedicalDeviceType.getEvaluationAvailability() != null){
 			medicalDevice.setEvaluationAvailability(Availability.valueOf(xmlMedicalDeviceType.getEvaluationAvailability().name()));
@@ -833,7 +893,9 @@ public class ExpeditedAdverseEventReportConverter {
 			OtherIntervention otherIntervention =convertOtherIntervention(xmlRadiationInterventionType.getOtherIntervention());
 			intervention.setStudyRadiation(otherIntervention);
 		}
-		intervention.setAdministration(RadiationAdministration.findByDisplayName(xmlRadiationInterventionType.getAdministration().value()));
+		if(xmlRadiationInterventionType.getAdministration() != null) {
+			intervention.setAdministration(RadiationAdministration.findByDisplayName(xmlRadiationInterventionType.getAdministration().value()));
+		}
 		
 		return intervention;
 	}

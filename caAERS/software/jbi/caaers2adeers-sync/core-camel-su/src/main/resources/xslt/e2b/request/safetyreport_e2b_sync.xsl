@@ -87,6 +87,10 @@
 								<xsl:call-template name="adverseEvent" />
 							</xsl:if>
 						</xsl:for-each>
+						
+						<xsl:for-each select="//test">
+							<xsl:call-template name="lab" />
+						</xsl:for-each>
 
 						<!--Zero or more repetitions: -->
 
@@ -259,9 +263,6 @@
 		<xsl:value-of select="$dateTime" />
 	</xsl:template>
 	
-	
-
-
 	<xsl:template name="concomitantMedication">
 		<ae:concomitantMedication>
 			<ae:name>
@@ -468,50 +469,63 @@
 				<xsl:value-of select="testunit" />
 			</ae:units>
 			<!--Optional: -->
-			<ae:baseline>
-				<ae:value>
-					<xsl:value-of select="testresult" />
-				</ae:value>
-				<xsl:if test="./testdate != '' ">
-					<ae:date>
-						<xsl:call-template name="splitDateYYYYMMDD">
-							<xsl:with-param name="date" select="./testdate" />
-						</xsl:call-template>
-					</ae:date>
-				</xsl:if>
-			</ae:baseline>
+			<xsl:if test="testtype = 'Baseline'">
+				<ae:baseline>
+					<ae:value>
+						<xsl:value-of select="testresult" />
+					</ae:value>
+					<xsl:if test="./testdate != '' ">
+						<ae:date>
+							<xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">
+								<xsl:with-param name="date" select="./testdate" />
+							</xsl:call-template>
+						</ae:date>
+					</xsl:if>
+				</ae:baseline>
+			</xsl:if>
 			<!--Optional: -->
-			<ae:nadir>
-				<ae:value>
-					<xsl:value-of select="testresult" />
-				</ae:value>
-				<xsl:if test="./testdate != '' ">
-					<ae:date>
-						<xsl:call-template name="splitDateYYYYMMDD">
-							<xsl:with-param name="date" select="./testdate" />
-						</xsl:call-template>
-					</ae:date>
-				</xsl:if>
-			</ae:nadir>
+			<xsl:if test="testtype = 'Worst'">
+				<ae:nadir>
+					<ae:value>
+						<xsl:value-of select="testresult" />
+					</ae:value>
+					<xsl:if test="./testdate != '' ">
+						<ae:date>
+							<xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">
+								<xsl:with-param name="date" select="./testdate" />
+							</xsl:call-template>
+						</ae:date>
+					</xsl:if>
+				</ae:nadir>
+			</xsl:if>
 			<!--Optional: -->
-			<ae:recovery>
-				<ae:value>
+			<xsl:if test="testtype = 'Recovery'">
+				<ae:recovery>
+					<ae:value>
+						<xsl:value-of select="testresult" />
+					</ae:value>
+					<xsl:if test="./testdate != '' ">
+						<ae:date>
+							<xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">
+								<xsl:with-param name="date" select="./testdate" />
+							</xsl:call-template>
+						</ae:date>
+					</xsl:if>
+				</ae:recovery>
+			</xsl:if>
+			<xsl:if test="testname = 'Bacterial infection NOS' or testname = 'Fungal infection NOS' or testname = 'Viral infection NOS'">
+				<ae:infectiousAgent>
 					<xsl:value-of select="testresult" />
-				</ae:value>
-				<xsl:if test="./testdate != '' ">
-					<ae:date>
-						<xsl:call-template name="splitDateYYYYMMDD">
-							<xsl:with-param name="date" select="./testdate" />
-						</xsl:call-template>
-					</ae:date>
-				</xsl:if>
-			</ae:recovery>
-			<ae:infectiousAgent>
-				<xsl:value-of select="testresult" />
-			</ae:infectiousAgent>
-			<ae:site>
-				<xsl:value-of select="infectionsite" />
-			</ae:site>
+				</ae:infectiousAgent>
+				<ae:site>
+					<xsl:value-of select="infectionsite" />
+				</ae:site>
+				<ae:labDate>
+					<xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">
+								<xsl:with-param name="date" select="./testdate" />
+					</xsl:call-template>
+				</ae:labDate>
+			</xsl:if>
 		</ae:lab>
 	</xsl:template>
 	<xsl:template name="responseDescription">
@@ -540,7 +554,7 @@
 			<xsl:if
 				test="/ichicsr/safetyreport/patient/patientdeath/patientdeathdate != '' ">
 				<ae:recoveryDate>
-					<xsl:call-template name="splitDateYYYYMMDD">
+					<xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">
 						<xsl:with-param name="date"
 							select="/ichicsr/safetyreport/patient/patientdeath/patientdeathdate" />
 					</xsl:call-template>
@@ -619,7 +633,7 @@
 			</xsl:if>
 			<xsl:if test="reporterfax">
 				<ae:ContactMechanism>
-					<ae:type>e-mail</ae:type>
+					<ae:type>fax</ae:type>
 					<ae:value>
 						<xsl:value-of select="reporterfax" />
 					</ae:value>
@@ -657,7 +671,7 @@
 			</xsl:if>
 			<xsl:if test="senderfax">
 				<ae:ContactMechanism>
-					<ae:type>e-mail</ae:type>
+					<ae:type>fax</ae:type>
 					<ae:value>
 						<xsl:value-of select="senderfax" />
 					</ae:value>
@@ -690,6 +704,7 @@
 	</xsl:template>
 
 	<xsl:template name="adverseEvent">
+		<xsl:variable name="adverseEventId" select="aeexternalid"/>
 		<ae:adverseEvent>
 			<startDate>
 				<xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">
@@ -702,7 +717,7 @@
 				</xsl:call-template>
 			</endDate>
 			<externalId>
-				<xsl:value-of select="aeexternalid" />
+				<xsl:value-of select="$adverseEventId" />
 			</externalId>
 			<xsl:if test="primaryaeflag">
 				<ae:isPrimary>
@@ -710,6 +725,146 @@
 						<xsl:with-param name="yesNoValue" select="primaryaeflag" />
 					</xsl:call-template>
 				</ae:isPrimary>
+			</xsl:if>
+			<xsl:if test="//drug[drugadditional != 'Radiation' and  drugadditional != 'Surgery' and drugadditional != 'Device' and drugcharacterization = '2']/drugreactionrelatedness/drugreactionasses[aeexternalid = $adverseEventId]">
+				   <ae:concomitantMedicationAttribution>	
+					  <ae:attribution>
+						 <xsl:call-template name="convertAttribution">
+								<xsl:with-param name="numericValue" select="//drug[drugadditional != 'Radiation' and  drugadditional != 'Surgery' and drugadditional != 'Device' and drugcharacterization = '2']/drugreactionrelatedness/drugreactionasses[aeexternalid = $adverseEventId]/drugresult" />
+						</xsl:call-template>
+					 </ae:attribution>
+					  <ae:cause>
+						   	<ae:name>
+								<xsl:value-of select="//drug[drugadditional != 'Radiation' and  drugadditional != 'Surgery' and drugadditional != 'Device' and drugcharacterization = '2'and drugreactionrelatedness/drugreactionasses/aeexternalid = $adverseEventId]/medicinalproduct" />
+							</ae:name>
+					  </ae:cause>
+				   </ae:concomitantMedicationAttribution>
+			</xsl:if>
+			<xsl:if test="//medicalhistoryepisode[patientmedicalcomment = 'Other Cause']/medicalepisodeassess[aeexternalid = $adverseEventId]">
+				   <ae:otherCauseAttribution>
+					  <ae:attribution>
+						<xsl:call-template name="convertAttribution">
+								<xsl:with-param name="numericValue" select="//medicalhistoryepisode[patientmedicalcomment = 'Other Cause']/medicalepisodeassess[aeexternalid = $adverseEventId]/othercauseresult" />
+						</xsl:call-template>
+					  </ae:attribution>
+					  <ae:cause>
+					
+							 <ae:text>
+								<xsl:value-of select="//medicalhistoryepisode[patientmedicalcomment = 'Other Cause' and medicalepisodeassess/aeexternalid = $adverseEventId]/patientepisodename" />
+							 </ae:text>
+						
+					  </ae:cause>
+				   </ae:otherCauseAttribution>
+			</xsl:if>
+			<xsl:if test="//drug[drugadditional != 'Radiation' and  drugadditional != 'Surgery' and drugadditional != 'Device' and drugcharacterization = '1']/drugreactionrelatedness/drugreactionasses[aeexternalid = $adverseEventId]">
+				   <ae:courseAgentAttribution>	
+					  <ae:attribution>
+					    <xsl:call-template name="convertAttribution">
+								<xsl:with-param name="numericValue" select="//drug[drugadditional != 'Radiation' and  drugadditional != 'Surgery' and drugadditional != 'Device' and drugcharacterization = '1']/drugreactionrelatedness/drugreactionasses[aeexternalid = $adverseEventId]/drugresult" />
+						</xsl:call-template>
+					  </ae:attribution>
+					  <ae:cause>
+							<ae:studyAgent>
+								<ae:Agent>
+									<ae:nscNumber>
+										<xsl:value-of select="//drug[drugadditional != 'Radiation' and  drugadditional != 'Surgery' and drugadditional != 'Device' and drugcharacterization = '1'and drugreactionrelatedness/drugreactionasses/aeexternalid = $adverseEventId]/medicinalproduct" />
+									</ae:nscNumber>
+								</ae:Agent>						
+							</ae:studyAgent>
+					 </ae:cause>
+				   </ae:courseAgentAttribution>
+			</xsl:if> 
+			<xsl:if test="//drug[drugadditional = 'Surgery']/drugreactionrelatedness/drugreactionasses[aeexternalid = $adverseEventId]">
+				   <ae:surgeryAttribution>	
+					  <ae:attribution>
+					    <xsl:call-template name="convertAttribution">
+								<xsl:with-param name="numericValue" select="//drug[drugadditional = 'Surgery']/drugreactionrelatedness/drugreactionasses[aeexternalid = $adverseEventId]/drugresult" />
+						</xsl:call-template>
+					  </ae:attribution>
+					  <ae:cause>
+						  <ae:interventionDate>
+							<xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">
+								<xsl:with-param name="date" select="//drug[drugadditional = 'Surgery' and drugreactionrelatedness/drugreactionasses/aeexternalid = $adverseEventId]/surgerystartdate" />
+							</xsl:call-template>
+						  </ae:interventionDate>
+						  <ae:InterventionSite>
+								<ae:name>
+									<xsl:value-of select="//drug[drugadditional = 'Surgery' and drugreactionrelatedness/drugreactionasses/aeexternalid = $adverseEventId]/surgerysite" />
+								</ae:name>
+							</ae:InterventionSite>
+					  </ae:cause>
+				   </ae:surgeryAttribution>
+			</xsl:if>
+			<xsl:if test="//drug[drugadditional = 'Radiation']/drugreactionrelatedness/drugreactionasses[aeexternalid = $adverseEventId]">
+				   <ae:radiationAttribution>	
+					  <ae:attribution>
+					    <xsl:call-template name="convertAttribution">
+								<xsl:with-param name="numericValue" select="//drug[drugadditional = 'Radiation']/drugreactionrelatedness/drugreactionasses[aeexternalid = $adverseEventId]/drugresult"  />
+						</xsl:call-template>
+					  </ae:attribution>
+					  <ae:cause>
+						 <ae:OtherIntervention>
+								 <ae:name>
+									<xsl:value-of select="//drug[drugadditional = 'Radiation' and drugreactionrelatedness/drugreactionasses/aeexternalid = $adverseEventId]/medicinalproduct" />
+								</ae:name>
+							</ae:OtherIntervention>
+					  </ae:cause>
+				   </ae:radiationAttribution>
+			</xsl:if>
+		<xsl:if test="//drug[drugadditional = 'Device']/drugreactionrelatedness/drugreactionasses[aeexternalid = $adverseEventId]">
+				   <ae:deviceAttribution>
+					  <ae:attribution>
+					  <xsl:call-template name="convertAttribution">
+								<xsl:with-param name="numericValue" select="//drug[drugadditional = 'Device']/drugreactionrelatedness/drugreactionasses[aeexternalid = $adverseEventId]/drugresult" />
+						</xsl:call-template>					
+					  </ae:attribution>
+					  <ae:cause>
+						 <ae:StudyDevice>
+						 	<ae:device>
+								<ae:brandName>
+									<xsl:value-of select="//drug[drugadditional = 'Device' and drugreactionrelatedness/drugreactionasses/aeexternalid = $adverseEventId]/devicenamebrand" />
+								</ae:brandName>
+								<ae:commonName>
+									<xsl:value-of select="//drug[drugadditional = 'Device' and drugreactionrelatedness/drugreactionasses/aeexternalid = $adverseEventId]/devicenamecommon" />
+								</ae:commonName>
+								<xsl:if test ="//drug[drugadditional = 'Device' and drugreactionrelatedness/drugreactionasses/aeexternalid = $adverseEventId]/devicetype">
+									<ae:type>
+										<xsl:value-of select="//drug[drugadditional = 'Device' and drugreactionrelatedness/drugreactionasses/aeexternalid = $adverseEventId]/devicetype" />
+									</ae:type>
+								</xsl:if>
+							</ae:device>
+						 </ae:StudyDevice>
+					  </ae:cause>
+				   </ae:deviceAttribution>
+			</xsl:if> 
+				
+			<xsl:if test="//medicalhistoryepisode[patientmedicalcomment = 'Study Disease']/medicalepisodeassess[aeexternalid = $adverseEventId]">
+				<ae:diseaseAttribution>
+					  <ae:attribution>
+						<xsl:call-template name="convertAttribution">
+								<xsl:with-param name="numericValue" select="//medicalhistoryepisode[patientmedicalcomment = 'Study Disease']/medicalepisodeassess[aeexternalid = $adverseEventId]/diseaseresult" />
+						</xsl:call-template>
+					  </ae:attribution>
+					  <ae:cause>
+						 <ae:primaryDisease>
+								<xsl:value-of select="//medicalhistoryepisode[patientmedicalcomment = 'Study Disease' and medicalepisodeassess/aeexternalid = $adverseEventId]/patientepisodename" />
+							</ae:primaryDisease>
+					    </ae:cause>
+				   </ae:diseaseAttribution>
+			</xsl:if>
+			<xsl:if test="//medicalhistoryepisode[patientmedicalcomment = 'Other Study Disease']/medicalepisodeassess[aeexternalid = $adverseEventId]">
+				<ae:diseaseAttribution>
+					  <ae:attribution>
+							<xsl:call-template name="convertAttribution">
+								<xsl:with-param name="numericValue" select="//medicalhistoryepisode[patientmedicalcomment = 'Other Study Disease']/medicalepisodeassess[aeexternalid = $adverseEventId]/diseaseresult" />
+							</xsl:call-template>
+					  </ae:attribution>
+					  <ae:cause>
+							<ae:otherPrimaryDisease>
+								<xsl:value-of select="//medicalhistoryepisode[patientmedicalcomment = 'Other Study Disease' and medicalepisodeassess/aeexternalid = $adverseEventId]/patientepisodename" />
+							</ae:otherPrimaryDisease>
+					   </ae:cause>
+				   </ae:diseaseAttribution>
 			</xsl:if>
 		</ae:adverseEvent>
 	</xsl:template>
@@ -732,6 +887,17 @@
 		<xsl:variable name="outputDate"
 			select="concat($vYear,'-',$vMonth,'-',substring($date,7,2))" />
 		<xsl:value-of select="$outputDate" />
+	</xsl:template>
+	
+	<xsl:template name="convertAttribution">
+		<xsl:param name="numericValue" />
+		  <xsl:choose>
+			<xsl:when test="$numericValue = '1'">UNRELATED</xsl:when>
+			<xsl:when test="$numericValue = '2'">UNLIKELY</xsl:when>
+			<xsl:when test="$numericValue = '3'">POSSIBLE</xsl:when>
+			<xsl:when test="$numericValue = '4'">PROBABLE</xsl:when>
+			<xsl:when test="$numericValue = '5'">DEFINITE</xsl:when>
+		 </xsl:choose>
 	</xsl:template>
 
 </xsl:stylesheet>
