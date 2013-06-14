@@ -782,7 +782,7 @@ public class ExpeditedAdverseEventReportConverter {
 		if(xmlConcomitantMedicationType.getEndDate()!= null){
 			concomitantMedication.setEndDate(convertDateValue(xmlConcomitantMedicationType.getEndDate()));
 		}
-		concomitantMedication.setStillTakingMedications(xmlConcomitantMedicationType.isStillTakingMedications());
+		concomitantMedication.setStillTakingMedications(xmlConcomitantMedicationType.isStillTakingMedications() != null ? xmlConcomitantMedicationType.isStillTakingMedications() : Boolean.FALSE );
 		
 		return concomitantMedication;		
 	}
