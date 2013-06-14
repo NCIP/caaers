@@ -1292,6 +1292,20 @@ public class Fixtures {
     	return rpt;
     	
     }
+
+
+    public static SAEReportPriorTherapy createSAEReportPriorTherapy(String therapyName) {
+        PriorTherapy pt = Fixtures.createPriorTherapy(therapyName);
+        DateValue st = new DateValue(DateUtils.yesterday());
+        DateValue ed = new DateValue(DateUtils.today());
+        return createSAEReportPriorTherapy(null, st, ed, pt);
+    }
+
+    public static PriorTherapyAgent createPriorTherapyAgent(String agentName){
+        PriorTherapyAgent a = new PriorTherapyAgent();
+        a.setAgent(createAgent(agentName));
+        return a;
+    }
  
     public static OtherCause createOtherCause(String desc) {
     	OtherCause oc = new OtherCause();

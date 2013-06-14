@@ -151,6 +151,11 @@ public class SAEReportPriorTherapy extends AbstractExpeditedReportCollectionElem
         if (priorTherapyAgent != null) priorTherapyAgent.setSaeReportPriorTherapy(this);
     }
 
+    public void removePriorTherapyAgent(PriorTherapyAgent unwanted){
+        boolean successful = getPriorTherapyAgentsInternal().remove(unwanted);
+        if(successful) unwanted.setSaeReportPriorTherapy(null);
+    }
+
     /**
      * Gets the prior therapy agents.
      *
@@ -259,7 +264,7 @@ public class SAEReportPriorTherapy extends AbstractExpeditedReportCollectionElem
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null) return false;
-        if (getClass() != obj.getClass()) return false;
+        if (!(obj instanceof SAEReportPriorTherapy)) return false;
 
         final SAEReportPriorTherapy other = (SAEReportPriorTherapy) obj;
         if (endDate == null) {
