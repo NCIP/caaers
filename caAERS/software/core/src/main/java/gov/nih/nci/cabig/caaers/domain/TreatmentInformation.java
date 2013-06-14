@@ -104,6 +104,11 @@ public class TreatmentInformation extends AbstractExpeditedReportSingleChild imp
         getCourseAgents().add(courseAgent);
     }
 
+    public void removeCourseAgent(CourseAgent unwanted){
+        boolean deleted = getCourseAgentsInternal().remove(unwanted);
+        if(deleted) unwanted.setTreatmentInformation(null);
+    }
+
     /**
      * Gets the course agents.
      *

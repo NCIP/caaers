@@ -62,10 +62,11 @@ public class PriorTherapySynchronizer implements Migrator<ExpeditedAdverseEventR
         dbPriorTherapy.setEndDate(xmlPriorTherapy.getEndDate());
         dbPriorTherapy.setPriorTherapy(xmlPriorTherapy.getPriorTherapy());
 
+        List<PriorTherapyAgent> existingAgents = new ArrayList<PriorTherapyAgent>();
+        if(dbPriorTherapy.getPriorTherapyAgents()!= null) existingAgents.addAll(dbPriorTherapy.getPriorTherapyAgents());
+        List<PriorTherapyAgent> newlyAddedAgents = new ArrayList<PriorTherapyAgent>();
+
         if(xmlPriorTherapy.getPriorTherapyAgents() != null){
-            List<PriorTherapyAgent> existingAgents = new ArrayList<PriorTherapyAgent>();
-            if(dbPriorTherapy.getPriorTherapyAgents()!= null) existingAgents.addAll(dbPriorTherapy.getPriorTherapyAgents());
-            List<PriorTherapyAgent> newlyAddedAgents = new ArrayList<PriorTherapyAgent>();
 
             for(PriorTherapyAgent a : xmlPriorTherapy.getPriorTherapyAgents()){
                 final PriorTherapyAgent xmlAgent = a;
@@ -86,14 +87,15 @@ public class PriorTherapySynchronizer implements Migrator<ExpeditedAdverseEventR
                 }
             }
 
-            //remove the agents that are not present in the xmlPriorTherapy
-            for(PriorTherapyAgent unwanted : existingAgents){
-                dbPriorTherapy.removePriorTherapyAgent(unwanted);
-            }
-            //add the newly added agents
-            for(PriorTherapyAgent newAgent : newlyAddedAgents){
-                dbPriorTherapy.addPriorTherapyAgent(newAgent);
-            }
+        }
+
+        //remove the agents that are not present in the xmlPriorTherapy
+        for(PriorTherapyAgent unwanted : existingAgents){
+            dbPriorTherapy.removePriorTherapyAgent(unwanted);
+        }
+        //add the newly added agents
+        for(PriorTherapyAgent newAgent : newlyAddedAgents){
+            dbPriorTherapy.addPriorTherapyAgent(newAgent);
         }
 
     }
