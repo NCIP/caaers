@@ -540,6 +540,14 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         if (i != null) i.setReport(this);
     }
 
+    public void addAbstractAEIntervention(AbstractAEIntervention i){
+        if(i instanceof BehavioralIntervention) addBehavioralIntervention((BehavioralIntervention)i);
+        if(i instanceof DietarySupplementIntervention) addDietarySupplementalIntervention((DietarySupplementIntervention)i);
+        if(i instanceof GeneticIntervention) addGeneticIntervention((GeneticIntervention)i);
+        if(i instanceof BiologicalIntervention) addBilogicalIntervention((BiologicalIntervention)i);
+        if(i instanceof OtherAEIntervention) addOtherAEIntervention((OtherAEIntervention)i);
+    }
+
     /**
      * Gets the surgery interventions.
      *
