@@ -294,11 +294,11 @@
 					</xsl:call-template>
 				</ae:lastAdministeredDate>
 			</xsl:if>
-
-			<ae:totalDoseAdministeredThisCourse>
-				<xsl:value-of select="drugcumulativedosagenumb" />
-			</ae:totalDoseAdministeredThisCourse>
+		
 			<ae:dose>
+				<ae:amount>
+					<xsl:value-of select="drugcumulativedosagenumb" />
+				</ae:amount>
 				<ae:units>
 					<xsl:value-of select="drugcumulativedosageunit" />
 				</ae:units>
@@ -414,29 +414,29 @@
 	<xsl:template name="radiationIntervention">
 		<ae:radiationIntervention>
 			<ae:dosage>
-				<xsl:value-of select="radiationcumulativedosevalue" />
+				<xsl:value-of select="drugcumulativedosagenumb" />
 			</ae:dosage>
 			<ae:dosageUnit>
-				<xsl:value-of select="radiationcumulativedoseunit" />
+				<xsl:value-of select="drugcumulativedosageunit" />
 			</ae:dosageUnit>
-			<xsl:if test="./radiationlasttreatmentdate != '' ">
+			<xsl:if test="./drugcumulativedosagenumb != '' ">
 				<ae:lastTreatmentDate>
 					<xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">
-						<xsl:with-param name="date" select="radiationlasttreatmentdate" />
+						<xsl:with-param name="date" select="drugcumulativedosagenumb" />
 					</xsl:call-template>
 				</ae:lastTreatmentDate>
 			</xsl:if>
 			<ae:fractionNumber>
-				<xsl:value-of select="radiationnumberfractions" />
+				<xsl:value-of select="drugseparatedosagenumb" />
 			</ae:fractionNumber>
 			<ae:daysElapsed>
-				<xsl:value-of select="radiationnumberelapseddays" />
+				<xsl:value-of select="drugintervaldosageunitnumb" />
 			</ae:daysElapsed>
 			<ae:adjustment>
-				<xsl:value-of select="radiationadjustment" />
+				<xsl:value-of select="actiondrug" />
 			</ae:adjustment>
 			<ae:administration>
-				<xsl:value-of select="radiationtype" />
+				<xsl:value-of select="medicinalproduct" />
 			</ae:administration>
 		</ae:radiationIntervention>
 	</xsl:template>
@@ -633,7 +633,7 @@
 			</xsl:if>
 			<xsl:if test="reporterfax">
 				<ae:ContactMechanism>
-					<ae:type>fax</ae:type>
+					<ae:type>e-mail</ae:type>
 					<ae:value>
 						<xsl:value-of select="reporterfax" />
 					</ae:value>
@@ -671,7 +671,7 @@
 			</xsl:if>
 			<xsl:if test="senderfax">
 				<ae:ContactMechanism>
-					<ae:type>fax</ae:type>
+					<ae:type>e-mail</ae:type>
 					<ae:value>
 						<xsl:value-of select="senderfax" />
 					</ae:value>
@@ -711,11 +711,13 @@
 					<xsl:with-param name="date" select="reactionstartdate" />
 				</xsl:call-template>
 			</startDate>
-			<endDate>
-				<xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">
-					<xsl:with-param name="date" select="reactionenddate" />
-				</xsl:call-template>
-			</endDate>
+			<xsl:if test="reactionenddate">
+				<endDate>
+					<xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">
+						<xsl:with-param name="date" select="reactionenddate" />
+					</xsl:call-template>
+				</endDate>
+			</xsl:if>
 			<externalId>
 				<xsl:value-of select="$adverseEventId" />
 			</externalId>
