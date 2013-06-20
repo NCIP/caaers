@@ -889,12 +889,12 @@
 	</xs:simpleType>
 
     <xs:simpleType name="AttributionType">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="UNRELATED" />
-            <xs:enumeration value="UNLIKELY" />
-            <xs:enumeration value="POSSIBLE" />
-            <xs:enumeration value="PROBABLE" />
-            <xs:enumeration value="DEFINITE" />
+        <xs:restriction base="xs:int">
+            <xs:enumeration value="1" /><!-- UNRELATED -->
+            <xs:enumeration value="2" /><!-- UNLIKELY -->
+            <xs:enumeration value="3" /><!-- POSSIBLE -->
+            <xs:enumeration value="4" /><!-- PROBABLE -->
+            <xs:enumeration value="5" /><!-- DEFINITE -->
         </xs:restriction>
     </xs:simpleType>
 

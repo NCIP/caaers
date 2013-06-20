@@ -217,7 +217,7 @@ public class ExpeditedAdverseEventReportConverter {
 
                 for(CourseAgentAttributionType courseAgentAttributionType : aeType.getCourseAgentAttribution() ){
                     CourseAgentAttribution attribution = new CourseAgentAttribution();
-                    attribution.setAttribution(Attribution.valueOf(courseAgentAttributionType.getAttribution().value() ));
+                    attribution.setAttribution(Attribution.getByCode(courseAgentAttributionType.getAttribution() ));
                     attribution.setCause(convertCourseAgent(courseAgentAttributionType.getCause()));
                     attribution.setAdverseEvent(ae);
                     ae.getCourseAgentAttributions().add(attribution);
@@ -225,7 +225,7 @@ public class ExpeditedAdverseEventReportConverter {
 
                 for(ConcomitantMedicationAttributionType conMedAttributionType : aeType.getConcomitantMedicationAttribution() ){
                     ConcomitantMedicationAttribution attribution = new ConcomitantMedicationAttribution();
-                    attribution.setAttribution(Attribution.valueOf(conMedAttributionType.getAttribution().value() ));
+                    attribution.setAttribution(Attribution.getByCode(conMedAttributionType.getAttribution() ));
                     attribution.setCause(convertConcomitantMedication(conMedAttributionType.getCause()));
                     attribution.setAdverseEvent(ae);
                     ae.getConcomitantMedicationAttributions().add(attribution);
@@ -233,7 +233,7 @@ public class ExpeditedAdverseEventReportConverter {
 
                 for(OtherCauseAttributionType otherCauseAttributionType : aeType.getOtherCauseAttribution() ){
                     OtherCauseAttribution attribution = new OtherCauseAttribution();
-                    attribution.setAttribution(Attribution.valueOf(otherCauseAttributionType.getAttribution().value() ));
+                    attribution.setAttribution(Attribution.getByCode(otherCauseAttributionType.getAttribution() ));
                     attribution.setCause(convertOtherCause(otherCauseAttributionType.getCause()));
                     attribution.setAdverseEvent(ae);
                     ae.getOtherCauseAttributions().add(attribution);
@@ -241,7 +241,7 @@ public class ExpeditedAdverseEventReportConverter {
 
                 for(SurgeryAttributionType surgeryAttributionType : aeType.getSurgeryAttribution() ){
                     SurgeryAttribution attribution = new SurgeryAttribution();
-                    attribution.setAttribution(Attribution.valueOf(surgeryAttributionType.getAttribution().value()));
+                    attribution.setAttribution(Attribution.getByCode(surgeryAttributionType.getAttribution()));
                     attribution.setCause(convertSurgeryIntervention(surgeryAttributionType.getCause()));
                     attribution.setAdverseEvent(ae);
                     ae.getSurgeryAttributions().add(attribution);
@@ -249,7 +249,7 @@ public class ExpeditedAdverseEventReportConverter {
 
                 for(RadiationAttributionType radiationAttributionType : aeType.getRadiationAttribution() ){
                     RadiationAttribution attribution = new RadiationAttribution();
-                    attribution.setAttribution(Attribution.valueOf(radiationAttributionType.getAttribution().value()));
+                    attribution.setAttribution(Attribution.getByCode(radiationAttributionType.getAttribution()));
                     attribution.setCause(convertRadiationIntervention(radiationAttributionType.getCause()));
                     attribution.setAdverseEvent(ae);
                     ae.getRadiationAttributions().add(attribution);
@@ -257,7 +257,7 @@ public class ExpeditedAdverseEventReportConverter {
 
                 for(DeviceAttributionType deviceAttributionType : aeType.getDeviceAttribution() ){
                     DeviceAttribution attribution = new DeviceAttribution();
-                    attribution.setAttribution(Attribution.valueOf(deviceAttributionType.getAttribution().value()));
+                    attribution.setAttribution(Attribution.getByCode(deviceAttributionType.getAttribution()));
                     attribution.setCause(convertMedicalDevice(deviceAttributionType.getCause()));
                     attribution.setAdverseEvent(ae);
                     ae.getDeviceAttributions().add(attribution);
@@ -265,7 +265,7 @@ public class ExpeditedAdverseEventReportConverter {
                 
                 for(BiologicalInterventionAttributionType biologicalInterventionAttributionType : aeType.getBiologicalInterventionAttribution() ){
                     BiologicalInterventionAttribution attribution = new BiologicalInterventionAttribution();
-                    attribution.setAttribution(Attribution.valueOf(biologicalInterventionAttributionType.getAttribution().value()));
+                    attribution.setAttribution(Attribution.getByCode(biologicalInterventionAttributionType.getAttribution()));
                     attribution.setCause(convertBiologicalIntervention(biologicalInterventionAttributionType.getCause()));
                     attribution.setAdverseEvent(ae);
                     ae.getBiologicalInterventionAttributions().add(attribution);
@@ -273,7 +273,7 @@ public class ExpeditedAdverseEventReportConverter {
 
                 for(DietarySupplementInterventionAttributionType dietarySupplementInterventionAttributionType : aeType.getDietarySupplementInterventionAttribution() ){
                     DietarySupplementInterventionAttribution attribution = new DietarySupplementInterventionAttribution();
-                    attribution.setAttribution(Attribution.valueOf(dietarySupplementInterventionAttributionType.getAttribution().value()));
+                    attribution.setAttribution(Attribution.getByCode(dietarySupplementInterventionAttributionType.getAttribution()));
                     attribution.setCause(convertDietarySupplementIntervention(dietarySupplementInterventionAttributionType.getCause()));
                     attribution.setAdverseEvent(ae);
                     ae.getDietarySupplementInterventionAttributions().add(attribution);
@@ -282,7 +282,7 @@ public class ExpeditedAdverseEventReportConverter {
                 
                 for(DiseaseAttributionType diseaseAttributionType : aeType.getDiseaseAttribution() ){
                     DiseaseAttribution attribution = new DiseaseAttribution();
-                    attribution.setAttribution(Attribution.valueOf(diseaseAttributionType.getAttribution().value()));
+                    attribution.setAttribution(Attribution.getByCode(diseaseAttributionType.getAttribution()));
                 	attribution.setCause(convertDiseaseHistory(diseaseAttributionType.getCause()));
                     attribution.setAdverseEvent(ae);
                     ae.getDiseaseAttributions().add(attribution);
@@ -290,7 +290,7 @@ public class ExpeditedAdverseEventReportConverter {
                
                 for(OtherInterventionAttributionType otherInterventionAttributionType : aeType.getOtherInterventionAttribution() ){
                     OtherInterventionAttribution attribution = new OtherInterventionAttribution();
-                    attribution.setAttribution(Attribution.valueOf(otherInterventionAttributionType.getAttribution().value()));
+                    attribution.setAttribution(Attribution.getByCode(otherInterventionAttributionType.getAttribution()));
                     attribution.setCause( convertOtherAEIntervention(otherInterventionAttributionType.getCause(), aeReport));	
                     attribution.setAdverseEvent(ae);
                     ae.getOtherInterventionAttributions().add(attribution);
@@ -298,7 +298,7 @@ public class ExpeditedAdverseEventReportConverter {
                 
                 for(BehavioralInterventionAttributionType behavioralInterventionAttributionType : aeType.getBehavioralInterventionAttribution() ){                
                     BehavioralInterventionAttribution attribution = new BehavioralInterventionAttribution();
-                    attribution.setAttribution(Attribution.valueOf(behavioralInterventionAttributionType.getAttribution().value()));
+                    attribution.setAttribution(Attribution.getByCode(behavioralInterventionAttributionType.getAttribution()));
                     attribution.setCause(convertBehavioralIntervention(behavioralInterventionAttributionType.getCause(), aeReport));	
                     attribution.setAdverseEvent(ae);
                     ae.getBehavioralInterventionAttributions().add(attribution);
@@ -306,7 +306,7 @@ public class ExpeditedAdverseEventReportConverter {
                 
                 for(GeneticInterventionAttributionType geneticInterventionAttributionType : aeType.getGeneticInterventionAttribution() ){                
                 	GeneticInterventionAttribution attribution = new GeneticInterventionAttribution();
-                    attribution.setAttribution(Attribution.valueOf(geneticInterventionAttributionType.getAttribution().value()));
+                    attribution.setAttribution(Attribution.getByCode(geneticInterventionAttributionType.getAttribution()));
                     attribution.setCause(convertGeneticIntervention(geneticInterventionAttributionType.getCause(), aeReport));	
                     attribution.setAdverseEvent(ae);
                     ae.getGeneticInterventionAttributions().add(attribution);
