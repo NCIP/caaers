@@ -8,73 +8,8 @@ package gov.nih.nci.cabig.caaers.service.migrator;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.domain.AdditionalInformation;
-import gov.nih.nci.cabig.caaers.domain.AdditionalInformationDocument;
-import gov.nih.nci.cabig.caaers.domain.Address;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription;
-import gov.nih.nci.cabig.caaers.domain.Agent;
-import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
-import gov.nih.nci.cabig.caaers.domain.Attribution;
-import gov.nih.nci.cabig.caaers.domain.Availability;
-import gov.nih.nci.cabig.caaers.domain.BehavioralIntervention;
-import gov.nih.nci.cabig.caaers.domain.BiologicalIntervention;
-import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
-import gov.nih.nci.cabig.caaers.domain.ConfigProperty;
-import gov.nih.nci.cabig.caaers.domain.CourseAgent;
-import gov.nih.nci.cabig.caaers.domain.DateValue;
-import gov.nih.nci.cabig.caaers.domain.DelayUnits;
-import gov.nih.nci.cabig.caaers.domain.Device;
-import gov.nih.nci.cabig.caaers.domain.DeviceOperator;
-import gov.nih.nci.cabig.caaers.domain.DietarySupplementIntervention;
-import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
-import gov.nih.nci.cabig.caaers.domain.Dose;
-import gov.nih.nci.cabig.caaers.domain.EventStatus;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.GeneticIntervention;
-import gov.nih.nci.cabig.caaers.domain.Identifier;
-import gov.nih.nci.cabig.caaers.domain.InterventionSite;
-import gov.nih.nci.cabig.caaers.domain.Investigator;
-import gov.nih.nci.cabig.caaers.domain.Lab;
-import gov.nih.nci.cabig.caaers.domain.LabCategory;
-import gov.nih.nci.cabig.caaers.domain.LabTerm;
-import gov.nih.nci.cabig.caaers.domain.LabValue;
-import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
-import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
-import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
-import gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
-import gov.nih.nci.cabig.caaers.domain.OtherAEIntervention;
-import gov.nih.nci.cabig.caaers.domain.OtherCause;
-import gov.nih.nci.cabig.caaers.domain.OtherIntervention;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.ParticipantHistory;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.ParticipantHistory.Measure;
-import gov.nih.nci.cabig.caaers.domain.Physician;
-import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
-import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
-import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
-import gov.nih.nci.cabig.caaers.domain.RadiationAdministration;
-import gov.nih.nci.cabig.caaers.domain.RadiationIntervention;
-import gov.nih.nci.cabig.caaers.domain.ReportStatus;
-import gov.nih.nci.cabig.caaers.domain.Reporter;
-import gov.nih.nci.cabig.caaers.domain.ReprocessedDevice;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
-import gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition;
-import gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyAgent;
-import gov.nih.nci.cabig.caaers.domain.StudyDevice;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
-import gov.nih.nci.cabig.caaers.domain.TimeValue;
-import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
-import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.attribution.BehavioralInterventionAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.BiologicalInterventionAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
@@ -217,7 +152,7 @@ public class ExpeditedAdverseEventReportConverter {
 
                 for(CourseAgentAttributionType courseAgentAttributionType : aeType.getCourseAgentAttribution() ){
                     CourseAgentAttribution attribution = new CourseAgentAttribution();
-                    attribution.setAttribution(Attribution.getByCode(courseAgentAttributionType.getAttribution() ));
+                    attribution.setAttribution(Attribution.getByCode(courseAgentAttributionType.getAttribution()));
                     attribution.setCause(convertCourseAgent(courseAgentAttributionType.getCause()));
                     attribution.setAdverseEvent(ae);
                     ae.getCourseAgentAttributions().add(attribution);
@@ -225,7 +160,7 @@ public class ExpeditedAdverseEventReportConverter {
 
                 for(ConcomitantMedicationAttributionType conMedAttributionType : aeType.getConcomitantMedicationAttribution() ){
                     ConcomitantMedicationAttribution attribution = new ConcomitantMedicationAttribution();
-                    attribution.setAttribution(Attribution.getByCode(conMedAttributionType.getAttribution() ));
+                    attribution.setAttribution(Attribution.getByCode(conMedAttributionType.getAttribution()));
                     attribution.setCause(convertConcomitantMedication(conMedAttributionType.getCause()));
                     attribution.setAdverseEvent(ae);
                     ae.getConcomitantMedicationAttributions().add(attribution);
@@ -233,7 +168,7 @@ public class ExpeditedAdverseEventReportConverter {
 
                 for(OtherCauseAttributionType otherCauseAttributionType : aeType.getOtherCauseAttribution() ){
                     OtherCauseAttribution attribution = new OtherCauseAttribution();
-                    attribution.setAttribution(Attribution.getByCode(otherCauseAttributionType.getAttribution() ));
+                    attribution.setAttribution(Attribution.getByCode(otherCauseAttributionType.getAttribution()));
                     attribution.setCause(convertOtherCause(otherCauseAttributionType.getCause()));
                     attribution.setAdverseEvent(ae);
                     ae.getOtherCauseAttributions().add(attribution);
@@ -951,22 +886,39 @@ public class ExpeditedAdverseEventReportConverter {
 		
 		return intervention;
 	}
-	
-	protected DiseaseHistory convertDiseaseHistory(DiseaseHistoryType xmlDiseaseHistoryType){
-		DiseaseHistory diseaseHistory = new DiseaseHistory();
-		if (xmlDiseaseHistoryType.getMetastaticDiseaseSite() != null){
-			for(MetastaticDiseaseSiteType metastaticDiseaseSite : xmlDiseaseHistoryType.getMetastaticDiseaseSite()){
-				diseaseHistory.addMetastaticDiseaseSite(convertMestastaticDiseaseSite(metastaticDiseaseSite));
-			}
-		}
-		
-		if(xmlDiseaseHistoryType.getDiagnosisDate() != null){
-			diseaseHistory.setDiagnosisDate(convertDateValue(xmlDiseaseHistoryType.getDiagnosisDate()));
-		}
-		
-		return diseaseHistory;
-	}
-	
+
+    protected DiseaseHistory convertDiseaseHistory(DiseaseHistoryType xmlDiseaseHistoryType){
+        DiseaseHistory diseaseHistory = new DiseaseHistory();
+
+        Study study = null;
+        DiseaseTerm dt = new DiseaseTerm();
+        dt.setTerm(xmlDiseaseHistoryType.getPrimaryDisease());
+
+        // Setting the Abstract study Disease as Ctep Study as the Study details are not provided in the input.
+        diseaseHistory.setAbstractStudyDisease(new CtepStudyDisease());
+
+        diseaseHistory.getAbstractStudyDisease().setTerm(dt) ;
+        diseaseHistory.setOtherPrimaryDisease(xmlDiseaseHistoryType.getOtherPrimaryDisease());
+
+        if (xmlDiseaseHistoryType.getMetastaticDiseaseSite() != null){
+            for(MetastaticDiseaseSiteType metastaticDiseaseSite : xmlDiseaseHistoryType.getMetastaticDiseaseSite()){
+                diseaseHistory.addMetastaticDiseaseSite(convertMestastaticDiseaseSite(metastaticDiseaseSite));
+            }
+        }
+
+        AnatomicSite anatomicSite = new AnatomicSite();
+        anatomicSite.setName(xmlDiseaseHistoryType.getCodedPrimaryDiseaseSite());
+        diseaseHistory.setCodedPrimaryDiseaseSite(anatomicSite);
+        diseaseHistory.setOtherPrimaryDiseaseSite(xmlDiseaseHistoryType.getOtherPrimaryDiseaseSite());
+
+        if(xmlDiseaseHistoryType.getDiagnosisDate() != null){
+            diseaseHistory.setDiagnosisDate(convertDateValue(xmlDiseaseHistoryType.getDiagnosisDate()));
+        }
+
+        return diseaseHistory;
+    }
+
+
 	protected DateValue convertDateValue(DateValueType xmlDateValueType){
 		DateValue dateValue = new DateValue();
 		dateValue.setDay(xmlDateValueType.getDay());
@@ -1060,6 +1012,7 @@ public class ExpeditedAdverseEventReportConverter {
 			reporter.setEmailAddress(getEmail(xmlReporterType.getContactMechanism()));
 			reporter.setPhoneNumber(getPhone(xmlReporterType.getContactMechanism()));
 			reporter.setFax(getFax(xmlReporterType.getContactMechanism()));
+            reporter.setFaxNumber(getFax(xmlReporterType.getContactMechanism()));
 		}
 		
 		return reporter;
