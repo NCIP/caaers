@@ -6,6 +6,7 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.service.migrator.report;
 
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import org.apache.axis.utils.StringUtils;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
@@ -21,7 +22,7 @@ import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
 public class SubmitterMigrator implements Migrator<ExpeditedAdverseEventReport> {
 	
 	public void migrate(ExpeditedAdverseEventReport aeReportSrc, ExpeditedAdverseEventReport aeReportDest, DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome) {
-    	
+
     	Reporter srcReporter = aeReportSrc.getReporter();
     	
     	 if(srcReporter == null ||  (StringUtils.isEmpty(srcReporter.getPrimaryIdentifierValue())  && StringUtils.isEmpty(srcReporter.getEmailAddress()) 

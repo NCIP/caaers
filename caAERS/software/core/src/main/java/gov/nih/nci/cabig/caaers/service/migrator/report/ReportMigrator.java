@@ -9,6 +9,7 @@ package gov.nih.nci.cabig.caaers.service.migrator.report;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.aparzev.util.CollectionUtils;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.factory.ReportFactory;
@@ -48,33 +49,14 @@ public class ReportMigrator implements Migrator<ExpeditedAdverseEventReport> {
 		this.rdDao = rdDao;
 	}
 
-	public void migrate(ExpeditedAdverseEventReport aeReportSrc, ExpeditedAdverseEventReport aeReportDest, 
-			DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome) {
+	public void migrate(ExpeditedAdverseEventReport aeReportSrc, ExpeditedAdverseEventReport aeReportDest, DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome) {
     	
 		List<Report> srcReports = aeReportSrc.getReports();
     	
-    	 if(srcReports == null || srcReports.size() == 0 )  {
+    	 if(CollectionUtils.isEmpty(srcReports) )  {
              outcome.addError("ER-RM-1", "Report Definitions are missing from the Source.");
              return;
          }
-    	 // Load site to which the study belongs. 
-    	 /*StudySite site = null;
-     	
-         if ( aeReportDest.getReportingPeriod() != null && aeReportDest.getReportingPeriod().getAssignment() != null ) {
-         	site = aeReportDest.getReportingPeriod().getAssignment().getStudySite();
-         }
-         
-         if ( site == null ) {
-         	 outcome.addError("ER-RM-2", "Study Site is missing in the source.");
-              return;
-         }
-         
-         Organization org = site.getOrganization();
-         
-         if ( org == null ) {
-        	 outcome.addError("ER-RM-3", "Organization is missing in the Study Site.");
-        	 return;
-         }*/
     	 
     	 // Iterate through the Source Reports.
     	 for ( Report rpt : srcReports ) {
@@ -104,39 +86,9 @@ public class ReportMigrator implements Migrator<ExpeditedAdverseEventReport> {
     }
 	
 
-	   private ReportDefinition getReportDefinition(Report report, ReportDefinition rd) throws Exception {
-		   ReportDefinition reportDefinition = new ReportDefinition();
-		   reportDefinition.setId(rd.getId());
-		   reportDefinition.setDuration(rd.getDuration());
-		   reportDefinition.setDescription(rd.getDescription());
-		   reportDefinition.setLabel(rd.getLabel());
-		   reportDefinition.setHeader(rd.getHeader());
-		   reportDefinition.setFooter(rd.getFooter());
-		   reportDefinition.setTimeScaleUnitType(rd.getTimeScaleUnitType());
-		   reportDefinition.setGroup(rd.getGroup());
-        reportDefinition.setDeliveryDefinitionsInternal(adjustDeliveryDefinitions(report, rd.getDeliveryDefinitions()));
-		   return reportDefinition;
-	   }
-
-     /**
-      * This method adds the deliveryStatus to every Delivery definition
-      * The delivery status is computed from Report.deliveries.deliveryStatus
-      * with delivery.reportDeliveryDefinition = current ReportDeliveryDefinition
-      *
-      * */
-     private List<ReportDeliveryDefinition> adjustDeliveryDefinitions(Report report, List<ReportDeliveryDefinition> ddl) {
-         if (report == null) return ddl;
-         List<ReportDeliveryDefinition> rddList = new ArrayList<ReportDeliveryDefinition>();
-         for (ReportDeliveryDefinition rdd : ddl) {
-             rddList.add(ReportDeliveryDefinition.copy(rdd));
-         }
-         return rddList;
-     }
-	
 	/**
 	 *  load existing report definition from database.
 	 * @param report
-	 * @param orgId
 	 * @return
 	 */
 	private ReportDefinition loadReportDefinition(Report report) {
@@ -150,16 +102,17 @@ public class ReportMigrator implements Migrator<ExpeditedAdverseEventReport> {
 	 * @param dest
 	 */
 	private void copyReportDetailsFromInput(Report src, Report dest) {
-			if ( src.getSubmissionMessage() != null )
-		   dest.setSubmissionMessage(src.getSubmissionMessage());
-			if ( src.getSubmittedOn() != null )
-           dest.setSubmittedOn(src.getSubmittedOn());
-			if ( src.getStatus() != null )
-           dest.setStatus(src.getStatus());
-			if ( src.getReportDefinition().getReportType() != null && src.deriveAdeersReportTypeIndicator() != null )
-				dest.setAdeersReportTypeIndicator(src.deriveAdeersReportTypeIndicator());
-			if ( src.getEmailRecipients() != null)
-		   dest.setEmailAddresses(src.getEmailRecipients());		
+            dest.setReviewStatus(src.getReviewStatus());
+            dest.setManuallySelected(src.isManuallySelected());
+            dest.setPhysicianSignoff(src.getPhysicianSignoff());
+            dest.setCaseNumber(src.getCaseNumber());
+            dest.setEmailAddresses(src.getEmailAddresses());
+            dest.setAssignedIdentifer(src.getAssignedIdentifer());
+            dest.getLastVersion().setCcEmails(src.getLastVersion().getCcEmails());
 	}
+
+    private void copySubmitterDetails(Report src, Report dest){
+
+    }
 	
 }

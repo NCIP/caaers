@@ -148,4 +148,15 @@ public abstract class ReportPerson extends PersonContact {
 
     }
 
+    @Override
+    public void copy(SiteResearchStaff siteResearchStaff) {
+        super.copy(siteResearchStaff);
+        setResearchStaff(siteResearchStaff.getResearchStaff());
+    }
+
+    @Override
+    public void copy(SiteInvestigator siteInvestigator) {
+        super.copy(siteInvestigator);
+        setInvestigator(siteInvestigator.getInvestigator());
+    }
 }
