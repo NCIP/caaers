@@ -41,8 +41,11 @@
         p:participantIndexDao-ref="participantIndexDao"
         p:investigatorIndexDao-ref="investigatorIndexDao"
     	/>
-        
-    
+
+    <bean id="ctepIAMAuthenEntryPoint" class="gov.nih.nci.cabig.caaers.security.CTEPIAMAuthenEntryPoint" autowire-candidate="false"
+        p:userRepository-ref="userRepository"
+    />
+
     <bean id="httpSessionContextIntegrationFilter" class="org.acegisecurity.context.HttpSessionContextIntegrationFilter"/>
     <bean id="localLogoutFilter" class="org.acegisecurity.ui.logout.LogoutFilter">
         <constructor-arg value="/index.jsp"/>
@@ -54,6 +57,18 @@
             </list>
         </constructor-arg>
     </bean>
+
+    <bean id="CTEPIAMLogoutFilter" class="org.acegisecurity.ui.logout.LogoutFilter">
+        <constructor-arg value="/index.jsp"/>
+        <!-- URL redirected to after logout -->
+        <constructor-arg>
+            <list>
+                <bean class="gov.nih.nci.cabig.caaers.web.security.HttpSessionPurgeLogoutHandler" />
+                <bean class="org.acegisecurity.ui.logout.SecurityContextLogoutHandler"/>
+            </list>
+        </constructor-arg>
+    </bean>
+
     <bean id="localAuthenticationProcessingFilter" class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilter">
         <property name="authenticationManager" ref="authenticationManager"/>
         <property name="authenticationFailureUrl" value="/public/login?login_error=1"/>
@@ -69,6 +84,26 @@
         <property name="loginFormUrl" value="/public/login"/>
         <property name="forceHttps" value="false"/>
     </bean>
+    <bean id="CTEPIAMAuthenticationProcessingFilterEntryPoint" class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilterEntryPoint">
+        <property name="loginFormUrl" value="/public/login"/>
+        <property name="forceHttps" value="false"/>
+    </bean>
+
+
+    <bean id="CTEPIAMAuthenticationProcessingFilter" class="gov.nih.nci.cabig.caaers.security.CTEPIAMAuthenticationProcessingFilter">
+        <property name="authenticationManager" ref="authenticationManager"/>
+        <property name="authenticationFailureUrl" value="/public/login?login_error=1"/>
+        <property name="exceptionMappings">
+            <props>
+                <prop key="org.acegisecurity.CredentialsExpiredException">/public/user/resetPassword?login_error=1</prop>
+            </props>
+        </property>
+        <property name="defaultTargetUrl" value="/"/>
+        <property name="filterProcessesUrl" value="/j_acegi_security_check"/>
+        <property name="userRepository" ref="userRepository"/>
+    </bean>
+
+
     <bean id="securityContextHolderAwareRequestFilter" class="org.acegisecurity.wrapper.SecurityContextHolderAwareRequestFilter"/>
     <bean id="anonymousProcessingFilter" class="org.acegisecurity.providers.anonymous.AnonymousProcessingFilter">
         <property name="key" value="anonymousAuthKey"/>

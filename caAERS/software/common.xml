@@ -132,6 +132,9 @@
 		<fileset dir="${lib.dir}">
 			<include name="**/*.jar" />
 		</fileset>
+		<fileset dir="${basedir}/../ssolib">
+			<include name="**/*.jar" />
+		</fileset>
 	</path>
 	
 	<!-- This path will contain all the classes that are required to 

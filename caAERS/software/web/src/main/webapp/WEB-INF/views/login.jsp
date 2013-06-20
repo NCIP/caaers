@@ -178,6 +178,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
                 return true;
             }
         </SCRIPT>
+
         <!--[if lte IE 6]>
             <div id="ie6">
             <img src="../images/blue/no-ie-warning.png?${requestScope.webCacheId}" alt="Internet Explorer" style="position:absolute; top:20px; left:20px;">
@@ -253,6 +254,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
         <div id="all-login">
             <div class="left">
                 <img src="../images/blue/login-logo.png?${requestScope.webCacheId}" id="logo" alt="Cancer Adverse Event Reporting System"><h2>Please Log in:</h2>
+
                 <form method="POST" id="login" action='<c:url value="/j_acegi_security_check"/>?rand=${_today.time}'>
                 	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
                     <c:if test="${not empty param.login_error}">
@@ -287,6 +289,14 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
                         <input type="image" src="../images/blue/power-btn-up.png" value="Log in" alt="Log in" id="power_btn" onMouseOver="return changeImage()" onMouseOut="return changeImageBack()" onMouseDown="return handleMDown()" onMouseUp="return handleMUp()"/>
                     </div>
                 </form>
+
+                <!--
+                <div id="login" align="center">
+                    <iframe id="loginFrame" align="center" style="float:center;width:500px;height:350px"
+                            src="/caaers/ctepLogin" >
+                    </iframe>
+                </div>
+                -->
             </div>
         </div>
     </body>

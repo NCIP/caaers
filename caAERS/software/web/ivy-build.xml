@@ -66,7 +66,7 @@
          <move file="${war.dir}/WEB-INF/classes/label.properties" todir="${war.dir}/WEB-INF" />
          <move file="${war.dir}/WEB-INF/classes/help.properties" todir="${war.dir}/WEB-INF" />
          <move file="${war.dir}/WEB-INF/classes/error_messages.properties" todir="${war.dir}/WEB-INF" />
-
+		 <copy file="${war.dir}/WEB-INF/ctsusso-2.4.jar" todir="${war.dir}/WEB-INF" />
 
 	 	<war destfile="${dist.dir}/${war.filename}" basedir="${war.dir}" level="9"
 	 		webxml="${main.src}/../webapp/WEB-INF/web.xml">	 		
