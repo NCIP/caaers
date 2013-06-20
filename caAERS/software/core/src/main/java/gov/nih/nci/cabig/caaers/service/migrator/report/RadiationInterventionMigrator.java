@@ -39,12 +39,18 @@ public class RadiationInterventionMigrator implements Migrator<ExpeditedAdverseE
     	}
     	// Copy the Labs Information from Source to Destination.
     	for ( RadiationIntervention ri : srcRadiations) {
-    		RadiationIntervention destRI = new RadiationIntervention();
-            OtherIntervention oi = findActiveRadiationOnStudy(otherStudyRadiationList, ri.getStudyRadiation());
+            // NOTE: As per discussion, Always pick the first Radiation Intervention defined on Study. -- To be Fixed.
+
+            OtherIntervention oi = null ;
+            if ( otherStudyRadiationList.size() > 0) {
+                oi = otherStudyRadiationList.get(0);
+            }
+
             if ( oi == null ) {
-                outcome.addError("ER-RIM-1", "Input doesn't contain valid values" );
+                outcome.addError("ER-RIM-1", "Study doesn't contain any Active Radiation Intervention." );
                 break;
             }
+            RadiationIntervention destRI = new RadiationIntervention();
             destRI.setStudyRadiation(oi);
             destRI.setReport(aeReportDest);
     		copyRadiationInterventionDetails(ri, destRI);
@@ -52,18 +58,6 @@ public class RadiationInterventionMigrator implements Migrator<ExpeditedAdverseE
         }
 
 	}
-
-    /**
-     *  find the Active Radiation on Study.
-     * @param otherStudyRadiationList
-     * @param oi
-     * @return
-     */
-    private OtherIntervention findActiveRadiationOnStudy(List<OtherIntervention> otherStudyRadiationList, OtherIntervention oi) {
-
-        return ReportUtil.findActiveInterventionOnStudy(otherStudyRadiationList, oi);
-
-    }
 
     /**
      *  Copy Radiation Details from UserInput.
