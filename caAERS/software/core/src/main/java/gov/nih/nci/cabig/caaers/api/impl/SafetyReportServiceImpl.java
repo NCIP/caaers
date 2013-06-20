@@ -257,7 +257,10 @@ public class SafetyReportServiceImpl {
            //3. Save the report
            ValidationErrors errors = new ValidationErrors();
            ExpeditedAdverseEventReport aeReport = createSafetyReport(aeSrcReport, errors);
-           if(errors.hasErrors()) return populateErrors(response, errors);
+           if(errors.hasErrors()) {
+        	   expeditedAdverseEventReportDao.clearSession();
+        	   return populateErrors(response, errors);
+           }
 
        }catch(Exception e) {
 		   logger.error("Unable to Create a Report from Safety Management Service", e);
