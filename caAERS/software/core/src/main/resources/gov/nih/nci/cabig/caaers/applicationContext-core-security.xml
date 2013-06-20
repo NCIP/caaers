@@ -337,13 +337,6 @@
         <property name="userCache" ref="userCache"/>
     </bean>
 
-    <bean id="CTEPIAMAuthenticationProvider" class="gov.nih.nci.cabig.ctms.acegi.csm.authentication.CSMAuthenticationProvider"
-          lazy-init="true">
-        <property name="csmAuthenticationManager" ref="csmAuthenticationManager"/>
-        <property name="userDetailsService" ref="csmUserDetailsService"/>
-        <property name="userCache" ref="userCache"/>
-    </bean>
-
     <bean id="csmUserDetailsService" class="gov.nih.nci.cabig.caaers.security.CaaersCSMUserDetailsService"
           lazy-init="true">
         <property name="csmUserProvisioningManager" ref="csmUserProvisioningManager"/>

@@ -34,8 +34,4 @@ public class StudyAgentDao extends CaaersDao<StudyAgent> {
         return getHibernateTemplate().find("from StudyAgent s where s.agent.id = ?", new Object[] {agentID});
     }
 
-    public List<StudyAgent> getAgentByNscNumber(String nscNumber) {
-        return getHibernateTemplate().find("from StudyAgent s where s.agent.nscNumber = ?", new Object[] {nscNumber});
-    }
-
 }

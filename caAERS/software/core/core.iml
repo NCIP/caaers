@@ -1,14 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module type="JAVA_MODULE" version="4">
-  <component name="NewModuleRootManager" inherit-compiler-output="true">
+<module relativePaths="true" type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="Spring" name="Spring">
+      <configuration>
+        <fileset id="fileset1" name="My Fileset" removed="false">
+          <file>file://$MODULE_DIR$/src/main/resources/gov/nih/nci/cabig/caaers/applicationContext-caXchange.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/gov/nih/nci/cabig/caaers/applicationContext-configProperties.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/gov/nih/nci/cabig/caaers/applicationContext-coppa.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/gov/nih/nci/cabig/caaers/applicationContext-core-api.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/gov/nih/nci/cabig/caaers/applicationContext-core-dao.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/gov/nih/nci/cabig/caaers/applicationContext-core-db.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/gov/nih/nci/cabig/caaers/applicationContext-core-domain.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/gov/nih/nci/cabig/caaers/applicationContext-core-logging.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/gov/nih/nci/cabig/caaers/applicationContext-core-security.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/gov/nih/nci/cabig/caaers/applicationContext-core-service.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/gov/nih/nci/cabig/caaers/applicationContext-core-spring.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/gov/nih/nci/cabig/caaers/applicationContext-core-workflow.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/gov/nih/nci/cabig/caaers/applicationContext-rules-jcr.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/gov/nih/nci/cabig/caaers/applicationContext-rules-services.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/gov/nih/nci/cabig/caaers/applicationContext-scheduler-quartz.xml</file>
+          <file>file://$MODULE_DIR$/src/test/resources/gov/nih/nci/cabig/caaers/applicationContext-test-security.xml</file>
+          <file>file://$MODULE_DIR$/src/test/resources/applicationContext-test.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/gov/nih/nci/cabig/caaers/applicationContext-xfire.xml</file>
+          <file>file://$MODULE_DIR$/src/test/resources/gov/nih/nci/cabig/caaers/testApplicationContext-reportservice.xml</file>
+          <file>file://$MODULE_DIR$/src/test/resources/gov/nih/nci/cabig/caaers/testApplicationContext-scheduler.xml</file>
+          <file>file://$MODULE_DIR$/../web/src/main/webapp/WEB-INF/applicationContext-acegi-security.xml</file>
+          <file>file://$MODULE_DIR$/../web/src/main/resources/gov/nih/nci/cabig/caaers/applicationContext-web-dwr.xml</file>
+          <file>file://$MODULE_DIR$/../web/src/main/resources/gov/nih/nci/cabig/caaers/applicationContext-web-security.xml</file>
+          <file>file://$MODULE_DIR$/../web/src/main/resources/gov/nih/nci/cabig/caaers/applicationContext-web-sso.xml</file>
+          <file>file://$MODULE_DIR$/../web/src/test/resources/gov/nih/nci/cabig/caaers/applicationContext-web-test-security.xml</file>
+          <file>file://$MODULE_DIR$/../web/src/main/webapp/WEB-INF/pages-servlet.xml</file>
+          <file>file://$MODULE_DIR$/../web/src/main/webapp/WEB-INF/public-servlet.xml</file>
+          <file>file://$MODULE_DIR$/../web/src/main/webapp/WEB-INF/special-views.xml</file>
+        </fileset>
+      </configuration>
+    </facet>
+  </component>
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_5" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/../../../out/production" />
+    <output-test url="file://$MODULE_DIR$/../../../out/production" />
     <exclude-output />
     <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/build/generated-sources/xjc" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated-sources" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/src/test/resources" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated-sources/xjc" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/resources" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/build/classes" />
       <excludeFolder url="file://$MODULE_DIR$/build/dist" />
       <excludeFolder url="file://$MODULE_DIR$/build/instrumented-classes" />
@@ -16,11 +53,12 @@
       <excludeFolder url="file://$MODULE_DIR$/build/test-classes" />
       <excludeFolder url="file://$MODULE_DIR$/build/testlib" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="1.6" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="bootstrap" />
-    <orderEntry type="library" name="Caaers_lib" level="project" />
-    <orderEntry type="library" name="Caaers_test_lib" level="project" />
+    <orderEntry type="library" name="IvyLib" level="project" />
+  </component>
+  <component name="RSpecModuleSettingsStorage">
+    <RSPEC_MODULE_SETTINGS_STORAGE_ID NAME="RSPEC_SUPPORT_TYPE" VALUE="NONE" />
   </component>
 </module>
 
