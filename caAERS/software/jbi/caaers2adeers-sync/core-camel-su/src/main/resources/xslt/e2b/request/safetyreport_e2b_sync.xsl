@@ -455,16 +455,16 @@
 	</xsl:template>
 	<xsl:template name="surgeryIntervention">
 		<ae:surgeryIntervention>
-			<xsl:if test="surgerystartdate != '' ">
+			<xsl:if test="drugstartdate != '' ">
 				<ae:interventionDate>
 					<xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">
-						<xsl:with-param name="date" select="surgerystartdate" />
+						<xsl:with-param name="date" select="drugstartdate" />
 					</xsl:call-template>
 				</ae:interventionDate>
 			</xsl:if>
 			<ae:InterventionSite>
 				<ae:name>
-					<xsl:value-of select="surgerysite" />
+					<xsl:value-of select="medicinalproduct" />
 				</ae:name>
 			</ae:InterventionSite>
 		</ae:surgeryIntervention>
@@ -553,7 +553,7 @@
 			<ae:presentStatus>
 				<xsl:call-template name="lookup">
 					<xsl:with-param name="_map" select="$map//aepresentstatuses" />
-					<xsl:with-param name="_code" select='/ichicsr/safetyreport/patient/summary/presentstatus' />
+					<xsl:with-param name="_code" select='/ichicsr/safetyreport/patient/reaction/reactionoutcome' />
 				</xsl:call-template>
 			</ae:presentStatus>
 			<ae:retreated>
@@ -562,12 +562,14 @@
 					<xsl:with-param name="_code" select='/ichicsr/safetyreport/patient/summary/retreatedflag' />
 				</xsl:call-template>
 			</ae:retreated>
-			<ae:autopsyPerformed>
-				<xsl:call-template name="lookup">
-					<xsl:with-param name="_map" select="$map//e2byesnos" />
-					<xsl:with-param name="_code" select='/ichicsr/safetyreport/patient/patientdeath/patientautopsyyesno' />
-				</xsl:call-template>
-			</ae:autopsyPerformed>
+			<xsl:if test = '/ichicsr/safetyreport/patient/patientdeath/patientautopsyyesno'>
+				<ae:autopsyPerformed>
+					<xsl:call-template name="lookup">
+						<xsl:with-param name="_map" select="$map//e2byesnos" />
+						<xsl:with-param name="_code" select='/ichicsr/safetyreport/patient/patientdeath/patientautopsyyesno' />
+					</xsl:call-template>
+				</ae:autopsyPerformed>
+			</xsl:if>
 			<xsl:if
 				test="/ichicsr/safetyreport/patient/patientdeath/patientdeathdate != '' ">
 				<ae:recoveryDate>
@@ -795,12 +797,12 @@
 					  <ae:cause>
 						  <ae:interventionDate>
 							<xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">
-								<xsl:with-param name="date" select="//drug[drugadditional = 'Surgery' and drugreactionrelatedness/drugreactionasses/aeexternalid = $adverseEventId]/surgerystartdate" />
+								<xsl:with-param name="date" select="//drug[drugadditional = 'Surgery' and drugreactionrelatedness/drugreactionasses/aeexternalid = $adverseEventId]/drugstartdate" />
 							</xsl:call-template>
 						  </ae:interventionDate>
 						  <ae:InterventionSite>
 								<ae:name>
-									<xsl:value-of select="//drug[drugadditional = 'Surgery' and drugreactionrelatedness/drugreactionasses/aeexternalid = $adverseEventId]/surgerysite" />
+									<xsl:value-of select="//drug[drugadditional = 'Surgery' and drugreactionrelatedness/drugreactionasses/aeexternalid = $adverseEventId]/medicinalproduct" />
 								</ae:name>
 							</ae:InterventionSite>
 					  </ae:cause>
