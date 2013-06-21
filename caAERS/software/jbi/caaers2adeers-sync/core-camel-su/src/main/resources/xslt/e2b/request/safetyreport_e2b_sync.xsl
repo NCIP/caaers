@@ -432,10 +432,10 @@
 					<xsl:with-param name="_code" select='drugcumulativedosageunit' />
 				</xsl:call-template>
 			</ae:dosageUnit>
-			<xsl:if test="./drugcumulativedosagenumb != '' ">
+			<xsl:if test="./drugenddate != '' ">
 				<ae:lastTreatmentDate>
 					<xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">
-						<xsl:with-param name="date" select="drugcumulativedosagenumb" />
+						<xsl:with-param name="date" select="drugenddate" />
 					</xsl:call-template>
 				</ae:lastTreatmentDate>
 			</xsl:if>
