@@ -516,7 +516,6 @@ default-lazy-init="true">
     <bean id="reportMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.ReportMigrator" autowire="byType"/>
     <bean id="saeReportPreExistingConditionMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.SAEReportPreExistingConditionMigrator" autowire="byType"/>
     <bean id="saeReportPriorTherapyMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.SAEReportPriorTherapyMigrator" autowire="byType"/>
-    <bean id="submitterMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.SubmitterMigrator" autowire="byType"/>
     <bean id="surgeryInterventionMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.SurgeryInterventionMigrator" autowire="byType"/>
     <bean id="treatmentInformationMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.TreatmentInformationMigrator" autowire="byType"/>
     <bean id="expeditedAdverseEventMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.ExpeditedAdverseEventMigrator" autowire="byType"/>
@@ -543,8 +542,7 @@ default-lazy-init="true">
 				<ref bean="reportMigrator"/>	
 				<ref bean="saeReportPreExistingConditionMigrator"/>	
 				<ref bean="saeReportPriorTherapyMigrator"/>	
-				<ref bean="submitterMigrator"/>
-				<ref bean="surgeryInterventionMigrator"/>	
+				<ref bean="surgeryInterventionMigrator"/>
 				<ref bean="treatmentInformationMigrator"/>
 				<ref bean="expeditedAdverseEventMigrator"/>	
 			</list>
