@@ -510,13 +510,12 @@ default-lazy-init="true">
     <bean id="otherAEInterventionMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.OtherAEInterventionMigrator" autowire="byType"/>
     <bean id="otherCauseMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.OtherCauseMigrator" autowire="byType"/>
     <bean id="participantHistoryMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.ParticipantHistoryMigrator" autowire="byType"/>
-    <bean id="PhysicianMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.PhysicianMigrator" autowire="byType"/>
+    <bean id="physicianMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.PhysicianMigrator" autowire="byType"/>
     <bean id="radiationInterventionMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.RadiationInterventionMigrator" autowire="byType"/>
     <bean id="reporterMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.ReporterMigrator" autowire="byType"/>
     <bean id="reportMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.ReportMigrator" autowire="byType"/>
     <bean id="saeReportPreExistingConditionMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.SAEReportPreExistingConditionMigrator" autowire="byType"/>
     <bean id="saeReportPriorTherapyMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.SAEReportPriorTherapyMigrator" autowire="byType"/>
-    <bean id="submitterMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.SubmitterMigrator" autowire="byType"/>
     <bean id="surgeryInterventionMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.SurgeryInterventionMigrator" autowire="byType"/>
     <bean id="treatmentInformationMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.TreatmentInformationMigrator" autowire="byType"/>
     <bean id="expeditedAdverseEventMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.ExpeditedAdverseEventMigrator" autowire="byType"/>
@@ -537,14 +536,13 @@ default-lazy-init="true">
 				<ref bean="otherAEInterventionMigrator"/>
 				<ref bean="otherCauseMigrator"/>
 				<ref bean="participantHistoryMigrator"/>
-				<ref bean="PhysicianMigrator"/>
+				<ref bean="physicianMigrator"/>
 				<ref bean="radiationInterventionMigrator"/>	
 				<ref bean="reporterMigrator"/>	
 				<ref bean="reportMigrator"/>	
 				<ref bean="saeReportPreExistingConditionMigrator"/>	
 				<ref bean="saeReportPriorTherapyMigrator"/>	
-				<ref bean="submitterMigrator"/>
-				<ref bean="surgeryInterventionMigrator"/>	
+				<ref bean="surgeryInterventionMigrator"/>
 				<ref bean="treatmentInformationMigrator"/>
 				<ref bean="expeditedAdverseEventMigrator"/>	
 			</list>

@@ -57,9 +57,15 @@ public class SurgeryInterventionMigrator implements Migrator<ExpeditedAdverseEve
 
     	// Copy the SurgeryInterventions Information from Source to Destination.
     	for ( SurgeryIntervention surIntervention : srcSurgeryInterventions) {
-            OtherIntervention oi =  findActiveSurgeryOnStudy(otherSurgeryList, surIntervention.getStudySurgery());
+            // NOTE: As per discussion, Always pick the first Surgery Intervention defined on Study. -- To be Fixed.
+
+            OtherIntervention oi = null;
+            if ( otherSurgeryList.size() > 0) {
+                oi =  otherSurgeryList.get(0);
+            }
+
             if ( oi == null ) {
-                outcome.addError("ER-SIM-1", "Study doesn't contain the value provided from the Input." );
+                outcome.addError("ER-SIM-1", "Study doesn't contain any Active Surgery Radiation." );
                 break;
             }
             InterventionSite resultSite =   findInterventionSite(interventionSitesList,surIntervention.getInterventionSite().getName());
@@ -104,16 +110,6 @@ public class SurgeryInterventionMigrator implements Migrator<ExpeditedAdverseEve
            return result;
     }
 
-    /**
-     *  find the Active Radiation on Study.
-     * @param otherStudySurgeryList
-     * @param oi
-     * @return
-     */
-    private OtherIntervention findActiveSurgeryOnStudy(List<OtherIntervention> otherStudySurgeryList, OtherIntervention oi) {
-        return ReportUtil.findActiveInterventionOnStudy(otherStudySurgeryList, oi);
-    }
-
 
     /**
 	 * Copy the Details from the UserInput.
@@ -136,7 +132,7 @@ public class SurgeryInterventionMigrator implements Migrator<ExpeditedAdverseEve
 	 */
 	private void validateSurgeyInterventionDates(SurgeryIntervention surgeryIntervention,  DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome){
 		if(surgeryIntervention.getInterventionDate() != null && surgeryIntervention.getInterventionDate().after(new Date())){
-			outcome.addError("SUR_INTV1_ERR", "'Surgery Intervention date' cannot be a future date.");
+			outcome.addError("ER-SIM-3", "'Surgery Intervention date' cannot be a future date.");
 		}
 	}
 }

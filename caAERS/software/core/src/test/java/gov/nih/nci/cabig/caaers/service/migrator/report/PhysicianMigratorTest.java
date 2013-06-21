@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.domain.Address;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
@@ -29,7 +30,7 @@ import junit.framework.TestCase;
  * User: medav
  * Date: 1/14/13
  */
-public class PhysicianMigratorTest extends TestCase {
+public class PhysicianMigratorTest extends AbstractTestCase {
 
     PhysicianMigrator migrator;
     ExpeditedAdverseEventReport src;

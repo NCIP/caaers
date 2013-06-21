@@ -231,6 +231,45 @@ public abstract class PersonContact extends Person {
     }
 
     /**
+     * This method will copy details from the given SiteResearchStaff into the reporter.
+     *
+     * @param siteResearchStaff the person
+     */
+    public void copy(SiteResearchStaff siteResearchStaff){
+    	if(siteResearchStaff == null) return;
+
+    	this.setFirstName(siteResearchStaff.getFirstName());
+    	this.setLastName(siteResearchStaff.getLastName());
+    	this.setMiddleName(siteResearchStaff.getMiddleName());
+    	this.setTitle(siteResearchStaff.getTitle());
+    	this.setFax(siteResearchStaff.getFaxNumber());
+    	this.setPhoneNumber(siteResearchStaff.getPhoneNumber());
+    	this.setEmailAddress(siteResearchStaff.getEmailAddress());
+        this.setAddress(siteResearchStaff.getAddress());
+        if(siteResearchStaff.getResearchStaff() != null && siteResearchStaff.getResearchStaff().isUser()) setCaaersUser(siteResearchStaff.getResearchStaff().getCaaersUser());
+    }
+
+    /**
+     * This method will copy details from the given SiteInvestigator into the reporter.
+     *
+     * @param siteInvestigator the person
+     */
+    public void copy(SiteInvestigator siteInvestigator){
+        if(siteInvestigator == null) return;
+
+        this.setFirstName(siteInvestigator.getFirstName());
+        this.setLastName(siteInvestigator.getLastName());
+        this.setMiddleName(siteInvestigator.getMiddleName());
+        this.setTitle(siteInvestigator.getTitle());
+        this.setFax(siteInvestigator.getFaxNumber());
+        this.setPhoneNumber(siteInvestigator.getPhoneNumber());
+        this.setEmailAddress(siteInvestigator.getEmailAddress());
+        this.setAddress(siteInvestigator.getAddress());
+        if(siteInvestigator.getInvestigator() != null && siteInvestigator.getInvestigator().isUser()) setCaaersUser(siteInvestigator.getInvestigator().getCaaersUser());
+    }
+
+
+    /**
      * Will copy the details from the supplied user.
      * @param user - A user in caAERS.
      */
