@@ -41,41 +41,17 @@
 							     <xsl:variable name="vYear" select=
 							     "substring-after(substring-after($birthDate, ' '), ' ')"/>
 							     
-							     <xsl:variable name="vMonth">
-							     <xsl:choose>
-							     	<xsl:when test="$vMonthName = 'Jan'">01</xsl:when>
-							     	<xsl:when test="$vMonthName = 'Feb'">02</xsl:when>
-							     	<xsl:when test="$vMonthName = 'Mar'">03</xsl:when>
-							     	<xsl:when test="$vMonthName = 'Apr'">04</xsl:when>
-							     	<xsl:when test="$vMonthName = 'May'">05</xsl:when>
-							     	<xsl:when test="$vMonthName = 'Jun'">06</xsl:when>
-							     	<xsl:when test="$vMonthName = 'Jul'">07</xsl:when>
-							     	<xsl:when test="$vMonthName = 'Aug'">08</xsl:when>
-							     	<xsl:when test="$vMonthName = 'Sep'">09</xsl:when>
-							     	<xsl:when test="$vMonthName = 'Oct'">10</xsl:when>
-							     	<xsl:when test="$vMonthName = 'Nov'">11</xsl:when>
-							     	<xsl:when test="$vMonthName = 'Dec'">12</xsl:when>
-							     </xsl:choose>
-							     </xsl:variable>
+							     <xsl:variable name="vMonth"><xsl:call-template name="lookup"><xsl:with-param name="_map" select="$map//months" /><xsl:with-param name="_code" select="$vMonthName" /></xsl:call-template></xsl:variable>
 							
 							     <xsl:value-of select=
 							      "concat($vYear,'-',$vMonth,'-',$vDay)"/>
 								
 							</birthDate>
 							<gender>
-								 <xsl:variable name="odmGender" select='ODM/ClinicalData/SubjectData/StudyEventData[@StudyEventOID="ENROLLMENT_FORMS"]/FormData[@FormOID="DEMOGRAPHY"]/ItemGroupData[@ItemGroupOID="DEMOGRAPHY"]/ItemData [@ItemOID="PERSON_GENDER"]/@Value'/>
-
-							     <xsl:variable name="caAERSGender">
-							     <xsl:choose>
-							     	<xsl:when test="$odmGender = 'Male Gender'">Male</xsl:when>
-							     	<xsl:when test="$odmGender = 'Female Gender'">Female</xsl:when>
-							     	<xsl:when test="$odmGender = 'Unspecified'">Not Reported</xsl:when>
-							     	<xsl:otherwise><xsl:value-of select="$odmGender"/></xsl:otherwise>
-							     </xsl:choose>
-							     </xsl:variable>
-							
-							     <xsl:value-of select="$caAERSGender"/>
-							     
+								<xsl:call-template name="lookup">
+									<xsl:with-param name="_map" select="$map//genders" />
+									<xsl:with-param name="_code" select='ODM/ClinicalData/SubjectData/StudyEventData[@StudyEventOID="ENROLLMENT_FORMS"]/FormData[@FormOID="DEMOGRAPHY"]/ItemGroupData[@ItemGroupOID="DEMOGRAPHY"]/ItemData [@ItemOID="PERSON_GENDER"]/@Value' />
+								</xsl:call-template>
 							</gender>
 							<race>
 								<xsl:value-of
@@ -140,4 +116,10 @@
 		</soapenv:Envelope>
 	</xsl:template>
 	
+	<xsl:template name="lookup">
+        <xsl:param name="_map" />
+        <xsl:param name="_code" />        
+        <xsl:value-of select="$_map//code[text() = $_code]/parent::node()/value"/>
+    </xsl:template>
+    
 </xsl:stylesheet>

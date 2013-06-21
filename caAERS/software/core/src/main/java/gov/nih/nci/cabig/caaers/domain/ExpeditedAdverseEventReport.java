@@ -2025,4 +2025,61 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         }
         return true;
     }
+    
+    public CourseAgent findReportCourseAgentByNscNumber(String nscNumber){
+    	for(CourseAgent ca : getTreatmentInformation().getCourseAgents()){
+    		if(ca.getStudyAgent().isRetired()) continue;
+    		if(ca.getStudyAgent().getAgent() != null && ca.getStudyAgent().getAgent().getNscNumber().equals(nscNumber)){
+    			return ca;
+    		} else  if(ca.getStudyAgent().getAgent() == null){
+    			if(ca.getStudyAgent().getOtherAgent().equals(nscNumber)){
+    				return ca;
+    			}
+    		}
+    	}
+    	
+    	return null;
+    }
+    
+    public ConcomitantMedication findReportConcomitantMedication(ConcomitantMedication inputConcomitantMedication){
+    	for(ConcomitantMedication cm : getConcomitantMedications()){
+    		if(cm.equals(inputConcomitantMedication)){
+    			return cm;
+    		}
+    	}
+    	
+    	return null;
+    }
+    
+    public SurgeryIntervention findReportSurgeryInterventionBySiteAndDate(SurgeryIntervention sIntervention){
+    	for(SurgeryIntervention si : getSurgeryInterventions()){
+    		if(si.getInterventionDate() != null && si.getInterventionDate().equals(sIntervention.getInterventionDate())) {
+	    		if( si.getInterventionSite().getName().equals(sIntervention.getInterventionSite().getName())){
+	    			return si;
+	    		}
+    		}
+    	}
+    	
+    	return null;
+    }
+    
+    public RadiationIntervention findReportRadiationInterventionByStudyRaditionName(OtherIntervention studyRadiation){
+    	for(RadiationIntervention ri : getRadiationInterventions()){
+    		if(ri.getStudyRadiation() != null && ri.getStudyRadiation().getName().equals(studyRadiation.getName())) {
+	    			return ri;
+	    	}
+    	}
+    	
+    	return null;
+    }
+    
+    public MedicalDevice findReportMedicalDevice(MedicalDevice medicalDevice){
+    	for(MedicalDevice md : getMedicalDevices()){
+    		if(md.getStudyDevice().getBrandName().equals(medicalDevice.getBrandName()) && md.getStudyDevice().getCommonName().equals(medicalDevice.getCommonName())) {
+	    			return md;
+    		}
+    	}
+    	
+    	return null;
+    }
 }

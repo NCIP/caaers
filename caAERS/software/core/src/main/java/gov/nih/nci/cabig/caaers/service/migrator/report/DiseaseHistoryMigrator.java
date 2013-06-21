@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.dao.AnatomicSiteDao;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,10 +60,12 @@ public class DiseaseHistoryMigrator implements Migrator<ExpeditedAdverseEventRep
     			CopyFromStudyParticipantDiseaseHistory(history, destDisHis);
     		}
     	}
-    	
-    	if ( srcDisHis != null ) {
-    		copyDiseaseHistory(srcDisHis, destDisHis);
-    	}
+
+        // After copying it from the patient make sure we have removed it from the srcDisHis object to remove the duplicates.
+        removeDuplicateMetaStaticSites(srcDisHis, destDisHis);
+
+       	copyDiseaseHistory(srcDisHis, destDisHis, outcome);
+
     }
 	/**
 	 * Copy Disease History details from Input to the Domain Object.
@@ -70,31 +73,125 @@ public class DiseaseHistoryMigrator implements Migrator<ExpeditedAdverseEventRep
 	 * @param destDisHis
 	 */
     
-    private void copyDiseaseHistory(DiseaseHistory srcDisHis, DiseaseHistory destDisHis) {
+    private void copyDiseaseHistory(DiseaseHistory srcDisHis, DiseaseHistory destDisHis, DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome) {
 
-        List<String> anatomicSites = new ArrayList<String>();
-        int counter = 0;
-    	for ( MetastaticDiseaseSite diseaseSite : srcDisHis.getMetastaticDiseaseSites()) {
-            if ( diseaseSite.getCodedSite() != null ) {
-                anatomicSites.add(diseaseSite.getCodedSite().getName());
-            }
-            counter++;
-    	}
-         String[] anatomicSitesArr =   anatomicSites.toArray(new String[anatomicSites.size()]);
-         List<AnatomicSite> anaSites =  anatomicSiteDao.getBySubnames(anatomicSitesArr);
 
-        for ( MetastaticDiseaseSite diseaseSite : srcDisHis.getMetastaticDiseaseSites()) {
-            if ( diseaseSite.getCodedSite() != null) {
-                AnatomicSite result =  findAnatomicSiteByName(anaSites, diseaseSite.getCodedSite());
-                MetastaticDiseaseSite mds = new MetastaticDiseaseSite();
-                mds.setCodedSite(result);
-                destDisHis.getMetastaticDiseaseSites().add(mds);
+       if ( srcDisHis.getMetastaticDiseaseSites().size() > 0) {
+            List<String> anatomicSites = new ArrayList<String>();
+
+            for ( MetastaticDiseaseSite diseaseSite : srcDisHis.getMetastaticDiseaseSites()) {
+                if ( diseaseSite.getCodedSite() != null ) {
+                    anatomicSites.add(diseaseSite.getCodedSite().getName());
+                }
+
             }
+             String[] anatomicSitesArr =   anatomicSites.toArray(new String[anatomicSites.size()]);
+             List<AnatomicSite> anaSites =  anatomicSiteDao.getBySubnames(anatomicSitesArr);
+
+            for ( MetastaticDiseaseSite diseaseSite : srcDisHis.getMetastaticDiseaseSites()) {
+                if ( diseaseSite.getCodedSite() != null ) {
+                    AnatomicSite result =  findAnatomicSiteByName(anaSites, diseaseSite.getCodedSite());
+                    MetastaticDiseaseSite mds = new MetastaticDiseaseSite();
+                    mds.setCodedSite(result);
+                    destDisHis.getMetastaticDiseaseSites().add(mds);
+
+                }
+            }
+       }
+
+
+        if (StringUtils.isNotEmpty(srcDisHis.getCodedPrimaryDiseaseSite().getName()) ) {
+                AnatomicSite anatomicSite = srcDisHis.getCodedPrimaryDiseaseSite();
+                String[] codedPrimaryAnatomicSite = new String[1];
+                codedPrimaryAnatomicSite[0] = anatomicSite.getName();
+
+                List<AnatomicSite> codedPrimaryAnaSites =  anatomicSiteDao.getBySubnames(codedPrimaryAnatomicSite);
+                AnatomicSite result =  findAnatomicSiteByName(codedPrimaryAnaSites, anatomicSite);
+
+                if ( result != null) {
+                    destDisHis.setCodedPrimaryDiseaseSite(result);
+                }  else {
+                    // Output with Error.
+                    outcome.addError("ER-DHM-2", "Primary Site of  Disease is not found " + anatomicSite.getName() );
+                    return;
+                }
+
+              // Copy the other Disease site if provided.
+                if (StringUtils.isNotBlank(srcDisHis.getOtherPrimaryDiseaseSite()))
+                    destDisHis.setOtherPrimaryDiseaseSite(srcDisHis.getOtherPrimaryDiseaseSite());
+
         }
+
 
     	destDisHis.setDiagnosisDate(srcDisHis.getDiagnosisDate());
 
+        if (  destDisHis.getReport().getStudy().hasCtepEsysIdentifier() && StringUtils.isNotEmpty( ((DiseaseTerm)srcDisHis.getAbstractStudyDisease().getTerm()).getTerm()) )  {
+            List<CtepStudyDisease> ctepStudyDiseases = destDisHis.getReport().getStudy().getActiveCtepStudyDiseases();
+
+            boolean studyDiesaseFound = false;
+            for ( CtepStudyDisease disease : ctepStudyDiseases) {
+                if ( disease.getTermName().equals(srcDisHis.getAbstractStudyDisease().getTermName())) {
+                    destDisHis.setAbstractStudyDisease(disease);
+                    studyDiesaseFound = true;
+                    break;
+                }
+            }
+
+            if ( !studyDiesaseFound ) { // If not found throw the error back to user.
+                outcome.addError("ER-DHM-3", "Primary Disease is not found on the Study " + srcDisHis.getAbstractStudyDisease().getTermName() );
+                return;
+            }
+        }   else {
+
+            List<MeddraStudyDisease> meddraStudyDiseases = destDisHis.getReport().getStudy().getActiveMeddraStudyDiseases();
+
+            boolean studyDiesaseFound = false;
+            for ( MeddraStudyDisease disease : meddraStudyDiseases) {
+                if ( disease.getTermName().equals(srcDisHis.getAbstractStudyDisease().getTermName())) {
+                    destDisHis.setAbstractStudyDisease(disease);
+                    studyDiesaseFound = true;
+                    break;
+                }
+            }
+
+            if ( !studyDiesaseFound ) { // If not found throw the error back to user.
+                outcome.addError("ER-DHM-3", "Primary Disease is not found on the Study " + srcDisHis.getAbstractStudyDisease().getTermName() );
+                return;
+            }
+
+        }
+
+        // Copy the other Primary disease site.
+       if (StringUtils.isNotBlank(srcDisHis.getOtherPrimaryDisease()) )
+           destDisHis.setOtherPrimaryDisease(srcDisHis.getOtherPrimaryDisease());
     }
+
+    private  void removeDuplicateMetaStaticSites(DiseaseHistory srcDisHis, DiseaseHistory destDisHis) {
+
+        for (MetastaticDiseaseSite destSite: destDisHis.getMetastaticDiseaseSites()) {
+
+              int index = findIndexMetastaticSite(srcDisHis.getMetastaticDiseaseSites(), destSite);
+
+             if ( index >= 0 ) srcDisHis.getMetastaticDiseaseSites().remove(index);
+
+        }
+
+    }
+
+    private int findIndexMetastaticSite(List<MetastaticDiseaseSite> srcMetaStaticSites, MetastaticDiseaseSite destSite) {
+        int index = -1;
+
+        for ( MetastaticDiseaseSite site: srcMetaStaticSites ) {
+            index ++;
+            if ( site.getCodedSite().getName().equals(destSite.getCodedSite().getName())) { // Found a duplicate.
+                     break;
+            }
+         }
+
+        return  index;
+    }
+
+
 
     private AnatomicSite findAnatomicSiteByName(List<AnatomicSite> anaSites, AnatomicSite site) {
         AnatomicSite result = null;
