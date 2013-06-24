@@ -7,16 +7,13 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
-import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
+
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
-import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
-import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.lang.DateTools;
 
 import java.sql.Timestamp;
@@ -1239,25 +1236,25 @@ public class ExpeditedAdverseEventReportTest extends AbstractTestCase {
     	
     	aeReport.addReport(r1);
     	
-    	List<Report> reportsToWithdraw = aeReport.findReportsToWitdraw(rd2);
+    	List<Report> reportsToWithdraw = aeReport.findReportsToWithdraw(rd2);
     	assertFalse(reportsToWithdraw.isEmpty());
     	assertEquals(1, reportsToWithdraw.size());
     	assertEquals(rd1, reportsToWithdraw.get(0).getReportDefinition());
     	
-    	reportsToWithdraw = aeReport.findReportsToWitdraw(rd1);
+    	reportsToWithdraw = aeReport.findReportsToWithdraw(rd1);
     	assertTrue(reportsToWithdraw.isEmpty());
 
-    	reportsToWithdraw = aeReport.findReportsToWitdraw(rd3);
+    	reportsToWithdraw = aeReport.findReportsToWithdraw(rd3);
     	assertFalse(reportsToWithdraw.isEmpty());
     	assertEquals(1, reportsToWithdraw.size());
     	assertEquals(rd1, reportsToWithdraw.get(0).getReportDefinition());
     	
-    	reportsToWithdraw = aeReport.findReportsToWitdraw(rd4);
+    	reportsToWithdraw = aeReport.findReportsToWithdraw(rd4);
     	assertFalse(reportsToWithdraw.isEmpty());
     	assertEquals(1, reportsToWithdraw.size());
     	assertEquals(rd1, reportsToWithdraw.get(0).getReportDefinition());
     	
-    	reportsToWithdraw = aeReport.findReportsToWitdraw(rdx);
+    	reportsToWithdraw = aeReport.findReportsToWithdraw(rdx);
     	assertTrue(reportsToWithdraw.isEmpty());
     	
     	

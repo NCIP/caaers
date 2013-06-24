@@ -82,15 +82,18 @@ public class ReportRepositoryImpl implements ReportRepository {
     
     /** The now factory. */
     private NowFactory nowFactory;
-    
-    /** The configuration. */
-    private Configuration configuration;
+
     
     /** The adverse event routing and review repository. */
     private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
 
+    @Transactional(readOnly = false)
+    public Report save(Report report) {
+        reportDao.save(report);
+        return report;
+    }
 
-	/**
+    /**
 	 * This method will amend/unamend/withdraw/create the reports.
 	 *
 	 * @param aeReport the ae report
@@ -189,7 +192,7 @@ public class ReportRepositoryImpl implements ReportRepository {
         report.setWithdrawnOn(nowFactory.getNow());
         report.setDueOn(null);
         schedulerService.unScheduleNotification(report);
-        reportDao.save(report);
+        save(report);
     }
     
 
@@ -233,7 +236,7 @@ public class ReportRepositoryImpl implements ReportRepository {
         report.setManuallySelected(reportDefinition.isManuallySelected());
        
         //save the report
-        reportDao.save(report);
+        save(report);
         
 
         //schedule the report, if there are scheduled notifications.
@@ -274,38 +277,7 @@ public class ReportRepositoryImpl implements ReportRepository {
     	return instantiatedReports;
     }
 
-    /**
-     * Creates the and amend report.
-     *
-     * @param repDef the rep def
-     * @param toAmend the to amend
-     * @param useDefaultVersion the use default version
-     * {@inheritDoc}
-     * This method will amend the toAmend report,by making its status to {@link ReportStatus#AMENDED}.
-     * Then creates a new report, based on the {@link ReportDefinition}, also copies the external ticket number
-     * from toAmend to the newly created report.
-     */
-    public void createAndAmendReport(ReportDefinition repDef, Report toAmend,Boolean useDefaultVersion) {
-//    	------ BJ : throw away this method --------------
-//    	 Report report = reportFactory.createReport(repDef, toAmend.getAeReport(), null);
-//    	 
-//    	 //copy the assigned identifier (in case of AdEERS the ticket number)
-//         //report.copySubmissionDetails(toAmend);
-//         
-//         //amend the toAmend Report, by updating its status
-//         toAmend.setStatus(ReportStatus.AMENDED);
-//         toAmend.getLastVersion().setAmendedOn(nowFactory.getNow());
-//         
-//         //save the amended report
-//         reportDao.save(toAmend);
-//         
-//         //save the report
-//         reportDao.save(report);
-//
-//         //schedule the report, if there are scheduled notifications.
-//         if (report.hasScheduledNotifications()) schedulerService.scheduleNotification(report);
-    	
-    }
+
     
     /**
      * Find report deliveries.
@@ -377,7 +349,7 @@ public class ReportRepositoryImpl implements ReportRepository {
     	//increment the reportVersionId - CAAERS-3016
     	report.getLastVersion().incrementReportVersion();
     	
-    	reportDao.save(report);
+    	save(report);
     }
     
     
@@ -391,7 +363,7 @@ public class ReportRepositoryImpl implements ReportRepository {
     	report.setStatus(ReportStatus.AMENDED);
     	report.setAmendedOn(nowFactory.getNow());
     	
-    	reportDao.save(report);
+    	save(report);
     }
     
     
@@ -465,15 +437,7 @@ public class ReportRepositoryImpl implements ReportRepository {
 		this.reportWithdrawalService = reportWithdrawalService;
 	}
     
-    /**
-     * Sets the configuration.
-     *
-     * @param configuration the new configuration
-     */
-    @Required
-	public void setConfiguration(Configuration configuration) {
-		this.configuration = configuration;
-	}
+
     
     /**
      * Sets the adverse event routing and review repository.

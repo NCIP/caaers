@@ -83,8 +83,7 @@ public class ReportRepositoryTest extends AbstractNoSecurityTestCase {
         reportRepository.setNowFactory(nowFactory);
         reportRepository.setReportDefinitionDao(reportDefinitionDao);
         reportRepository.setStudyDao(studyDao);
-        reportRepository.setConfiguration(configuration);
-        
+
         
         expeditedData = new ExpeditedAdverseEventReport();
         CtcTerm ctcTerm = new CtcTerm();

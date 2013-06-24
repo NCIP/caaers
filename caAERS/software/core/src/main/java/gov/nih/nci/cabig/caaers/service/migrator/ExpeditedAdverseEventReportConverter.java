@@ -349,7 +349,11 @@ public class ExpeditedAdverseEventReportConverter {
 
         //Reports
 		for(ReportType xmlReportType : aeReportDto.getReport()){
-			aeReport.addReport(convertReport(xmlReportType));
+            Report report = convertReport(xmlReportType);
+			aeReport.addReport(report);
+
+            //special case if external data collection do not have external Id, add case number
+            if(StringUtils.isEmpty(aeReport.getExternalId())) aeReport.setExternalId(report.getCaseNumber());
 		}
 		
 		// Set the study Information to the Source Report.
@@ -506,7 +510,8 @@ public class ExpeditedAdverseEventReportConverter {
 			reportDefinition.addReportDeliveryDefinition(reportDeliveryDefinition);
 			
 		}
-		
+        report.setCaseNumber(xmlReportType.getCaseNumber());
+
 		return report;
 	}
 	

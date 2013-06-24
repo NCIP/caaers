@@ -48,8 +48,7 @@ public class ReportMigrator implements Migrator<ExpeditedAdverseEventReport> {
                 return;
     		}
             Report newReport = repDef.createReport();
-            copyReportDetailsFromInput(rpt, newReport);
-            copySubmitterDetails(rpt, newReport);
+            newReport.copy(rpt);
             aeReportDest.addReport(newReport);
     	 }
 
@@ -65,26 +64,5 @@ public class ReportMigrator implements Migrator<ExpeditedAdverseEventReport> {
         if(StringUtils.isEmpty(reportDefinitionName)) return null;
 	    return reportDefinitionDao.getByName(reportDefinitionName);
 	}
-	
-	/**
-	 * Copy the Report Details from Input to Output.
-	 * @param src
-	 * @param dest
-	 */
-	private void copyReportDetailsFromInput(Report src, Report dest) {
-            dest.setReviewStatus(src.getReviewStatus());
-            dest.setManuallySelected(src.isManuallySelected());
-            dest.setPhysicianSignoff(src.getPhysicianSignoff());
-            dest.setCaseNumber(src.getCaseNumber());
-            dest.setEmailAddresses(src.getEmailAddresses());
-            dest.setAssignedIdentifer(src.getAssignedIdentifer());
-            dest.getLastVersion().setCcEmails(src.getLastVersion().getCcEmails());
-	}
 
-    private void copySubmitterDetails(Report src, Report dest){
-        if(src.getSubmitter() == null) return;
-        dest.getLastVersion().addSubmitter();
-        dest.getSubmitter().copy(src.getSubmitter());
-    }
-	
 }

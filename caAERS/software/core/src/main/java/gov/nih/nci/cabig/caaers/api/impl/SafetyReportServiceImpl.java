@@ -10,38 +10,25 @@ package gov.nih.nci.cabig.caaers.api.impl;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery;
-import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
-import gov.nih.nci.cabig.caaers.domain.repository.ReportValidationService;
 import gov.nih.nci.cabig.caaers.domain.validation.ExpeditedAdverseEventReportValidator;
 import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.AdverseEventReport;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
-import gov.nih.nci.cabig.caaers.integration.schema.common.WsError;
-import gov.nih.nci.cabig.caaers.integration.schema.participant.ParticipantType;
-import gov.nih.nci.cabig.caaers.integration.schema.participant.Participants;
-import gov.nih.nci.cabig.caaers.integration.schema.participant.ParticipantRef.ParticipantAssignment;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
-import gov.nih.nci.cabig.caaers.service.EvaluationService;
-import gov.nih.nci.cabig.caaers.service.ReportSubmissionService;
-import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import gov.nih.nci.cabig.caaers.service.migrator.ExpeditedAdverseEventReportConverter;
 import gov.nih.nci.cabig.caaers.service.migrator.report.ExpeditedReportMigrator;
+import gov.nih.nci.cabig.caaers.service.synchronizer.report.ExpeditedAdverseEventReportSynchronizer;
 import gov.nih.nci.cabig.caaers.validation.ValidationError;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.BindException;
-import org.springframework.validation.Errors;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 public class SafetyReportServiceImpl {
 	private static Log logger = LogFactory.getLog(SafetyReportServiceImpl.class);
@@ -65,9 +52,11 @@ public class SafetyReportServiceImpl {
 	
 	/** Expedited Report Migrator. **/
 	private ExpeditedReportMigrator aeReportMigrator;
+	private ExpeditedAdverseEventReportSynchronizer aeReportSynchronizer;
 
     /** The report Repository. */
     private ReportRepository reportRepository;
+    private EventFactory eventFactory;
 
     public EventFactory getEventFactory() {
         return eventFactory;
@@ -77,7 +66,6 @@ public class SafetyReportServiceImpl {
         this.eventFactory = eventFactory;
     }
 
-    private EventFactory eventFactory;
 
 
     public ReportRepository getReportRepository() {
@@ -154,9 +142,14 @@ public class SafetyReportServiceImpl {
         return response;
     }
 
-    public ExpeditedAdverseEventReport createSafetyReport(ExpeditedAdverseEventReport aeReport, ValidationErrors errors){
-       /* Study studySrc = aeReport.getStudy();
-        Participant subjectSrc = aeReport.getParticipant();
+    public void migrate(ExpeditedAdverseEventReport aeSrcReport, ExpeditedAdverseEventReport aeDestReport, ValidationErrors errors){
+        DomainObjectImportOutcome<ExpeditedAdverseEventReport> outCome = new DomainObjectImportOutcome<ExpeditedAdverseEventReport>();
+        aeReportMigrator.migrate(aeSrcReport, aeDestReport, outCome);
+        if(outCome.hasErrors()) errors.addValidationErrors(outCome.getValidationErrors().getErrors());
+    }
+    public void createSafetyReport(ExpeditedAdverseEventReport aeSrcReport, ExpeditedAdverseEventReport aeDestReport, ValidationErrors errors){
+       /* Study studySrc = aeSrcReport.getStudy();
+        Participant subjectSrc = aeSrcReport.getParticipant();
         StudyParticipantAssignment srcAssignment = subjectSrc.getAssignments().get(0);
 
         //does the study exist ?
@@ -195,20 +188,14 @@ public class SafetyReportServiceImpl {
             
         }
         
-        updateReportingPeriodWithdbStudy(aeReport,studySrc);*/
+        updateReportingPeriodWithdbStudy(aeSrcReport,studySrc);*/
 
         //Call Ae Management
         
 
         //Call the Migration
-        ExpeditedAdverseEventReport aeDestReport = new ExpeditedAdverseEventReport();
-        DomainObjectImportOutcome<ExpeditedAdverseEventReport> outCome = new DomainObjectImportOutcome<ExpeditedAdverseEventReport>();
-        aeReportMigrator.migrate(aeReport, aeDestReport, outCome);
-        ValidationErrors outcomeValErrs = outCome.getValidationErrors();
-        if(outcomeValErrs .hasErrors()){
-            errors.addValidationErrors(outcomeValErrs .getErrors());
-            return null;
-        }
+       migrate(aeSrcReport, aeDestReport, errors);
+       if(errors.hasErrors()) return;
 
 
         //Call the ExpediteReportDao and save this report.
@@ -220,25 +207,102 @@ public class SafetyReportServiceImpl {
         List<Report> newReports = new ArrayList<Report>();
         // Save the report(s) after Migration.
         for ( Report rpt: reports )    {
-             Report newReport = reportRepository.createReport(rpt.getReportDefinition(), aeDestReport) ;
-             newReports.add(newReport);
-            if (getEventFactory() != null) getEventFactory().publishEntityModifiedEvent(newReport.getAeReport());
+            createReport(rpt, aeDestReport);
         }
 
-        aeDestReport.setReports(newReports);
+        if(getEventFactory() != null) getEventFactory().publishEntityModifiedEvent(aeDestReport);
+    }
 
-        return aeDestReport;
+    public Report createReport(Report report, ExpeditedAdverseEventReport aeReport){
+        Report newReport = reportRepository.createReport(report.getReportDefinition(), aeReport) ;
+        newReport.copy(report);
+        reportRepository.save(report);
+        return newReport;
+    }
+
+    public Report withdrawReport(Report report, ExpeditedAdverseEventReport aeReport){
+        reportRepository.withdrawReport(report);
+        reportRepository.withdrawExternalReport(aeReport, report);
+        return report;
+    }
+
+    public Report amendReport(Report report, ExpeditedAdverseEventReport aeReport){
+        reportRepository.amendReport(report);
+        return report;
+    }
+    public Report unAmendReport(Report report, ExpeditedAdverseEventReport aeReport){
+        reportRepository.unAmendReport(report);
+        return report;
+    }
+
+    public void updateSafetyReport(ExpeditedAdverseEventReport aeSrcReport, ExpeditedAdverseEventReport dbReport, ValidationErrors errors){
+        ExpeditedAdverseEventReport aeDestReport = new ExpeditedAdverseEventReport();
+        migrate(aeSrcReport, aeDestReport, errors);
+        if(errors.hasErrors()) return;
+        DomainObjectImportOutcome<ExpeditedAdverseEventReport> outCome = new DomainObjectImportOutcome<ExpeditedAdverseEventReport>();
+        aeReportSynchronizer.migrate(aeDestReport, dbReport, outCome);
+        if(outCome.hasErrors()) errors.addValidationErrors(outCome.getValidationErrors().getErrors());
+
+        expeditedAdverseEventReportDao.save(dbReport);
+
+        if(aeDestReport.getReports() == null || aeDestReport.getReports().isEmpty()) {
+            //withdraw active reports
+            List<Report> reportsToWithdraw = dbReport.getActiveReports();
+            for(Report srcReport : reportsToWithdraw){
+                withdrawReport(srcReport, dbReport);
+            }
+        } else {
+            //create amend or withdraw reports
+            for(Report srcReport : aeDestReport.getReports()){
+                List<Report> reportsToAmend = dbReport.findReportsToAmmend(srcReport.getReportDefinition());
+                for(Report  report: reportsToAmend){
+                    amendReport(report, dbReport);
+                }
+                List<Report> reportsToWithdraw = dbReport.findReportsToWithdraw(srcReport.getReportDefinition());
+                for(Report  report: reportsToWithdraw){
+                    withdrawReport(report, dbReport);
+                }
+                List<Report> reportsToEdit = dbReport.findReportsToEdit(srcReport.getReportDefinition());
+                if(reportsToEdit.isEmpty()) createReport(srcReport, dbReport);
+
+                //TODO : BJ implement unammend feature
+            }
+        }
+
+        if(getEventFactory() != null) getEventFactory().publishEntityModifiedEvent(aeDestReport);
     }
 
 	@Transactional(readOnly=false)
 	public CaaersServiceResponse submitSafetyReport(AdverseEventReport adverseEventReport) {
 
+       ValidationErrors errors = new ValidationErrors();
 	   CaaersServiceResponse response = Helper.createResponse();
-	   
+
 	   try {
 		   
            // 1. Call the Converter(s) to construct the domain object.
            ExpeditedAdverseEventReport aeSrcReport = eaeConverter.convert(adverseEventReport);
+           //2. Do some basic validations (if needed)
+           
+
+
+
+           //3. Determine the flow, create vs update
+           String externalId = aeSrcReport.getExternalId();
+           ExpeditedAdverseEventReport dbAeReport = externalId != null ? expeditedAdverseEventReportDao.getByExternalId(externalId) : null;
+
+           if(dbAeReport == null){
+               //create flow
+                createSafetyReport(aeSrcReport,new ExpeditedAdverseEventReport(), errors);
+           }else{
+               //update flow
+                updateSafetyReport(aeSrcReport, dbAeReport, errors);
+           }
+
+           if(errors.hasErrors()) {
+               expeditedAdverseEventReportDao.clearSession();
+               return populateErrors(response, errors);
+           }
            
            //2. Run the validation (basic)
        //    ValidationErrors errors = validateInput(aeSrcReport);
@@ -255,38 +319,17 @@ public class SafetyReportServiceImpl {
 
            //TODO : below call will change based on create or Amend flow
            //3. Save the report
-           ValidationErrors errors = new ValidationErrors();
-           ExpeditedAdverseEventReport aeReport = createSafetyReport(aeSrcReport, errors);
-           if(errors.hasErrors()) {
-        	   expeditedAdverseEventReportDao.clearSession();
-        	   return populateErrors(response, errors);
-           }
+
+
 
        }catch(Exception e) {
+           expeditedAdverseEventReportDao.clearSession();
 		   logger.error("Unable to Create a Report from Safety Management Service", e);
 		   Helper.populateError(response, "WS_GEN_000",e.getMessage() );
 	   }
        return response;
 	}
-	
-	
-	private void updateReportingPeriodWithdbStudy(ExpeditedAdverseEventReport aeReport, Study studySrc){
-		 
-        StudyParticipantAssignment assignment = aeReport.getReportingPeriod().getAssignment();
-        if(assignment == null){
-        	assignment = new StudyParticipantAssignment();
-        	StudySite site = new StudySite();
-        	site.setStudy(studySrc);
-        	aeReport.getReportingPeriod().setAssignment(assignment);
-        } else if(assignment.getStudySite() == null){
-        	StudySite site = new StudySite();
-        	site.setStudy(studySrc);
-        	assignment.setStudySite(site);
-        } else {
-        	aeReport.getReportingPeriod().getAssignment().getStudySite().setStudy(studySrc);
-        }
-	}
-	
+
 
     public ExpeditedAdverseEventReportConverter getEaeConverter() {
         return eaeConverter;
@@ -353,4 +396,12 @@ public class SafetyReportServiceImpl {
 			ExpeditedAdverseEventReportValidator aeReportValidator) {
 		this.aeReportValidator = aeReportValidator;
 	}
+
+    public ExpeditedAdverseEventReportSynchronizer getAeReportSynchronizer() {
+        return aeReportSynchronizer;
+    }
+
+    public void setAeReportSynchronizer(ExpeditedAdverseEventReportSynchronizer aeReportSynchronizer) {
+        this.aeReportSynchronizer = aeReportSynchronizer;
+    }
 }
