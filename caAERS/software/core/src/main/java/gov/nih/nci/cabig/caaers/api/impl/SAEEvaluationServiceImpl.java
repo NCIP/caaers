@@ -96,7 +96,7 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 
              // 2. Persist AdverseEvents.
             ValidationErrors errors = new ValidationErrors();
-            reportingPeriod = adverseEventManagementService.createOrUpdateAdverseEvents(reportingPeriod, errors);
+            reportingPeriod = adverseEventManagementService.createOrUpdateAdverseEvents(reportingPeriod, errors, true);
 
             if(errors.hasErrors()){
                logger.error("Adverse Event Management Service create or update call failed :" + String.valueOf(errors));

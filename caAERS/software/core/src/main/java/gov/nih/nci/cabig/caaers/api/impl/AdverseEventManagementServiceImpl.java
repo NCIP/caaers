@@ -238,7 +238,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 
     }
 
-    public AdverseEventReportingPeriod createOrUpdateAdverseEvents(AdverseEventReportingPeriod rpSrc, ValidationErrors errors){
+    public AdverseEventReportingPeriod createOrUpdateAdverseEvents(AdverseEventReportingPeriod rpSrc, ValidationErrors errors, boolean syncFlag){
         //migrate the domain object
         AdverseEventReportingPeriod rpDest = new AdverseEventReportingPeriod();
         DomainObjectImportOutcome<AdverseEventReportingPeriod> rpOutcome = new DomainObjectImportOutcome<AdverseEventReportingPeriod>();
@@ -256,6 +256,10 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
         AdverseEventReportingPeriod rpFound = rpDest.getAssignment().findReportingPeriod(rpDest.getExternalId(), rpDest.getStartDate(),rpDest.getEndDate(), rpDest.getCycleNumber(), epochName, tac);
         ArrayList reportingPeriodList = new ArrayList<AdverseEventReportingPeriod>(rpDest.getAssignment().getActiveReportingPeriods());
         if(rpFound != null) {
+            // This is used only incase of SAE Evaluation Service.
+            if ( syncFlag ) {
+                syncAdverseEventWithSrc(rpFound, rpSrc);
+            }
             int i = findIndexFromReportPeriodList(reportingPeriodList, rpFound);
             if  ( i >= 0 ) reportingPeriodList.remove(i);
         }
@@ -319,6 +323,32 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
         }
         return rpFound;
     }
+
+    /**
+     * Overloading the method to handle the Trascend I-Hub flow for partial updates and SAE Evaluation Service updates.
+     * @param rpSrc
+     * @param errors
+     * @return
+     */
+    public AdverseEventReportingPeriod createOrUpdateAdverseEvents(AdverseEventReportingPeriod rpSrc, ValidationErrors errors){
+       return createOrUpdateAdverseEvents(rpSrc,errors, false);
+    }
+
+    /**
+     * Sync the adverse Events with Input source, as SAE service expects the complete list of adverse events.
+     * @param rpFound
+     * @param rpSrc
+     */
+    private void syncAdverseEventWithSrc(AdverseEventReportingPeriod rpFound, AdverseEventReportingPeriod rpSrc) {
+
+        for( AdverseEvent ae: rpFound.getAdverseEvents()) {
+            if ( rpSrc.findAdverseEventByIdTermAndDates(ae)  == null ) { // If the reporting period is not found in  the source
+                   ae.setRetiredIndicator(true);
+            }
+        }
+
+    }
+
 
 	public CaaersServiceResponse createAdverseEvent(AdverseEventsInputMessage adverseEventsInputMessage) {
 		return createOrUpdateAdverseEvent(adverseEventsInputMessage);
