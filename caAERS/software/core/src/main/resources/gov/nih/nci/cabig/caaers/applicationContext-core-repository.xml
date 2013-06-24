@@ -85,7 +85,6 @@
         <property name="schedulerService" ref="schedulerService"/>
         <property name="studyDao" ref="studyDao"/>
 		<property name="reportWithdrawalService" ref="reportWithdrawalService" />
-		<property name="configuration" ref="configuration" />
 		<property name="adverseEventRoutingAndReviewRepository" ref="adverseEventRoutingAndReviewRepository" />
 		
     </bean>

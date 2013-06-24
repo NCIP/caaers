@@ -1657,7 +1657,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
      * @param rd the rd
      * @return the list
      */
-    public List<Report> findReportsToWitdraw(ReportDefinition rd){
+    public List<Report> findReportsToWithdraw(ReportDefinition rd){
     	List<Report> reports = listReportsHavingStatus(ReportStatus.PENDING, ReportStatus.FAILED, ReportStatus.INPROCESS);
     	List<Report> reportsToWitdraw = new ArrayList<Report>();
     	//check if they belong to same group/organization and rd is less than rdOther

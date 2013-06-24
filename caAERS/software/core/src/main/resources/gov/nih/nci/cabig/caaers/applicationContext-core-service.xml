@@ -2,8 +2,8 @@
 <!--
 This applicationContext contains the definition of the concrete services
 -->
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:tx="http://www.springframework.org/schema/tx" 
-xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:tx="http://www.springframework.org/schema/tx"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd"
 default-lazy-init="true">
 	<tx:annotation-driven proxy-target-class="true"/>
@@ -520,6 +520,7 @@ default-lazy-init="true">
     <bean id="treatmentInformationMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.TreatmentInformationMigrator" autowire="byType"/>
     <bean id="expeditedAdverseEventMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.ExpeditedAdverseEventMigrator" autowire="byType"/>
 
+
 	<bean id="expeditedReportMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.ExpeditedReportMigrator">
 		<property name="children">
 			<list>
@@ -554,4 +555,49 @@ default-lazy-init="true">
         <property name="adverseEventReportingPeriodDao" ref="adverseEventReportingPeriodDao" />
         <property name="studyParticipantAssignmentDao" ref="studyParticipantAssignmentDao" />
 	</bean>
+
+    <!-- Synchronizer -->
+    <bean id="expeditedAdverseEventSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.report.ExpeditedAdverseEventSynchronizer" />
+    <bean id="adverseEventResponseDescriptionSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.report.AdverseEventResponseDescriptionSynchronizer" />
+    <bean id="labSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.report.LabSynchronizer" />
+    <bean id="treatmentInformationSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.report.TreatmentInformationSynchronizer" />
+    <bean id="behavioralInterventionSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.report.BehavioralInterventionSynchronizer" />
+    <bean id="biologicalInterventionSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.report.BiologicalInterventionSynchronizer" />
+    <bean id="dietarySupplementInterventionSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.report.DietarySupplementInterventionSynchronizer" />
+    <bean id="geneticInterventionSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.report.GeneticInterventionSynchronizer" />
+    <bean id="medicalDeviceSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.report.MedicalDeviceSynchronizer" />
+    <bean id="otherAEInterventionSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.report.OtherAEInterventionSynchronizer" />
+    <bean id="otherCauseSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.report.OtherCauseSynchronizer" />
+    <bean id="participantHistorySynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.report.ParticipantHistorySynchronizer" />
+    <bean id="physicianSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.report.PhysicianSynchronizer" />
+    <bean id="preExistingConditionSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.report.PreExistingConditionSynchronizer" />
+    <bean id="priorTherapySynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.report.PriorTherapySynchronizer" />
+    <bean id="reporterSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.report.ReporterSynchronizer" />
+    <bean id="concomitantMedicationSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.report.ConcomitantMedicationSynchronizer" autowire="byType"/>
+    <bean id="diseaseHistorySynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.report.DiseaseHistorySynchronizer" autowire="byType"/>
+
+    <bean id="aeReportSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.report.ExpeditedAdverseEventReportSynchronizer">
+        <property name="children">
+            <list>
+                <ref bean="adverseEventResponseDescriptionSynchronizer" />
+                <ref bean="labSynchronizer" />
+                <ref bean="treatmentInformationSynchronizer" />
+                <ref bean="behavioralInterventionSynchronizer" />
+                <ref bean="biologicalInterventionSynchronizer" />
+                <ref bean="dietarySupplementInterventionSynchronizer" />
+                <ref bean="geneticInterventionSynchronizer" />
+                <ref bean="medicalDeviceSynchronizer" />
+                <ref bean="otherAEInterventionSynchronizer" />
+                <ref bean="physicianSynchronizer" />
+                <ref bean="reporterSynchronizer" />
+                <ref bean="diseaseHistorySynchronizer" />
+                <ref bean="participantHistorySynchronizer" />
+                <ref bean="preExistingConditionSynchronizer" />
+                <ref bean="priorTherapySynchronizer" />
+                <ref bean="concomitantMedicationSynchronizer" />
+                <ref bean="otherCauseSynchronizer" />
+                <ref bean="expeditedAdverseEventSynchronizer" />
+            </list>
+        </property>
+    </bean>
 </beans>

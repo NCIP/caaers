@@ -7,7 +7,7 @@
 package gov.nih.nci.cabig.caaers.rules.business.service;
 
 import static org.easymock.EasyMock.expect;
-import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
+
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
@@ -504,7 +504,7 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		expect(reportDefinitionDao.getByName("RD2")).andReturn(rd2).anyTimes();
 		expect(aeReport1.findReportsToAmmend(rd2)).andReturn(Arrays.asList(r1));
 		expect(aeReport1.findReportsToEdit(rd2)).andReturn(new ArrayList<Report>()).times(2);
-		expect(aeReport1.findReportsToWitdraw(rd2)).andReturn(new ArrayList<Report>());
+		expect(aeReport1.findReportsToWithdraw(rd2)).andReturn(new ArrayList<Report>());
 		
 		replayMocks();
 
@@ -629,7 +629,7 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		expect(reportingPeriod.getStudy()).andReturn(study).anyTimes();
 		expect(aeReport1.findReportsToAmmend(rd2)).andReturn(Arrays.asList(r1));
 		expect(aeReport1.findReportsToEdit(rd2)).andReturn(new ArrayList<Report>()).times(2);
-		expect(aeReport1.findReportsToWitdraw(rd2)).andReturn(new ArrayList<Report>());
+		expect(aeReport1.findReportsToWithdraw(rd2)).andReturn(new ArrayList<Report>());
 
         Map<AdverseEvent, List<AdverseEventEvaluationResult>> map0 = new HashMap<AdverseEvent, List<AdverseEventEvaluationResult>>();
         map0.put(ae2, Arrays.asList(new AdverseEventEvaluationResult[] { Fixtures.createAdverseEventEvaluationResult("RD2" )}));
@@ -785,7 +785,7 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		expect(reportDefinitionDao.getByName("RD1")).andReturn(rd1).times(2);
 		expect(aeReport1.findReportsToAmmend(rd2)).andReturn(new ArrayList<Report>());
 		expect(aeReport1.findReportsToEdit(rd2)).andReturn(Arrays.asList(r2)).times(2);
-		expect(aeReport1.findReportsToWitdraw(rd2)).andReturn(new ArrayList<Report>());
+		expect(aeReport1.findReportsToWithdraw(rd2)).andReturn(new ArrayList<Report>());
 		expect(aeReport1.listReportsHavingStatus(ReportStatus.COMPLETED)).andReturn(EMPTY_REPORT_LIST);
 		expect(aeReport1.findCompletedAmendableReports()).andReturn(EMPTY_REPORT_LIST);
 		
@@ -925,11 +925,11 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		expect(aeReport1.findReportsToAmmend(rd2)).andReturn(Arrays.asList(r1));
 		expect(aeReport1.findReportsToEdit(rd2)).andReturn(new ArrayList<Report>()).times(2);
 		expect(aeReport1.findReportsToEdit(rdz)).andReturn(new ArrayList<Report>());
-		expect(aeReport1.findReportsToWitdraw(rd2)).andReturn(new ArrayList<Report>());
+		expect(aeReport1.findReportsToWithdraw(rd2)).andReturn(new ArrayList<Report>());
 		
 		expect(aeReport1.findReportsToAmmend(rdz)).andReturn(Arrays.asList(rz));
 		expect(aeReport1.findReportsToEdit(rdz)).andReturn(new ArrayList<Report>());
-		expect(aeReport1.findReportsToWitdraw(rdz)).andReturn(new ArrayList<Report>());
+		expect(aeReport1.findReportsToWithdraw(rdz)).andReturn(new ArrayList<Report>());
 		
 		replayMocks();
 
@@ -1029,7 +1029,7 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		
 		expect(aeReport1.findReportsToAmmend(rd1)).andReturn(Arrays.asList(r1));
 		expect(aeReport1.findReportsToEdit(rd1)).andReturn(new ArrayList<Report>()).times(2);
-		expect(aeReport1.findReportsToWitdraw(rd1)).andReturn(new ArrayList<Report>());
+		expect(aeReport1.findReportsToWithdraw(rd1)).andReturn(new ArrayList<Report>());
 		replayMocks();
 
 		EvaluationResultDTO result = service.evaluateSAERules(reportingPeriod);
@@ -1159,11 +1159,11 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		expect(aeReport1.findCompletedAmendableReports()).andReturn(Arrays.asList(r1));
 		expect(aeReport1.findReportsToAmmend(rd1)).andReturn(Arrays.asList(r1));
 		expect(aeReport1.findReportsToEdit(rd1)).andReturn(new ArrayList<Report>()).times(2);
-		expect(aeReport1.findReportsToWitdraw(rd1)).andReturn(new ArrayList<Report>());
+		expect(aeReport1.findReportsToWithdraw(rd1)).andReturn(new ArrayList<Report>());
 		
 		expect(aeReport1.findReportsToAmmend(rdx)).andReturn(new ArrayList<Report>());
 		expect(aeReport1.findReportsToEdit(rdx)).andReturn(Arrays.asList(rx)).times(2);
-		expect(aeReport1.findReportsToWitdraw(rdx)).andReturn(new ArrayList<Report>());
+		expect(aeReport1.findReportsToWithdraw(rdx)).andReturn(new ArrayList<Report>());
     	
     	replayMocks();
     	EvaluationResultDTO result = service.evaluateSAERules(reportingPeriod);
@@ -1275,7 +1275,7 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		expect(reportDefinitionDao.getByName("RD1")).andReturn(rd1).anyTimes();
 		expect(aeReport1.findReportsToAmmend(rd1)).andReturn(new ArrayList<Report>());
 		expect(aeReport1.findReportsToEdit(rd1)).andReturn(Arrays.asList(r1)).times(2);
-		expect(aeReport1.findReportsToWitdraw(rd1)).andReturn(new ArrayList<Report>());
+		expect(aeReport1.findReportsToWithdraw(rd1)).andReturn(new ArrayList<Report>());
 		replayMocks();
 
 		EvaluationResultDTO result = service.evaluateSAERules(reportingPeriod);
@@ -1493,7 +1493,7 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		
 		expect(aeReport1.findReportsToAmmend(rd1)).andReturn(new ArrayList<Report>());
 		expect(aeReport1.findReportsToEdit(rd1)).andReturn(Arrays.asList(r1)).times(2);
-		expect(aeReport1.findReportsToWitdraw(rd1)).andReturn(new ArrayList<Report>());
+		expect(aeReport1.findReportsToWithdraw(rd1)).andReturn(new ArrayList<Report>());
 		replayMocks();
 
 		EvaluationResultDTO result = service.evaluateSAERules(reportingPeriod);

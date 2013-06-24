@@ -93,16 +93,7 @@ public interface ReportRepository {
     
     void unAmendReport(Report report);
     
-    /**
-     * This method will
-     * - Amend existing reports, by creating a new report instance.
-     *
-     * @param repDef the rep def
-     * @param toAmend the to amend
-     * @param useDefaultVersion the use default version
-     */
-    void createAndAmendReport(ReportDefinition repDef, Report toAmend, Boolean useDefaultVersion);
-    
+
     /**
      * Will find the report deliveries for this report.
      * Note:- This will directly calculate the current deliveries, instead of what is available in report.
@@ -111,5 +102,12 @@ public interface ReportRepository {
      * @return the list
      */
     List<ReportDelivery> findReportDeliveries(Report report);
+
+    /**
+    * Will save a report
+    * @param report
+    * @return
+    */
+    public Report save(Report report);
     
 }

@@ -24,7 +24,7 @@ public class ConcomitantMedicationMigrator implements Migrator<ExpeditedAdverseE
 		List<ConcomitantMedication> destConcomitantMedications = aeReportDest.getConcomitantMedications();
 	    	
 	    	if ( srcConcomitantMedications == null || srcConcomitantMedications.size() == 0) {
-	    		outcome.addWarning("WR-OAI-1", "Input doesn't contain any ConcomitantMedication Values.");
+	    		outcome.addWarning("ER-CM-1", "Input doesn't contain any ConcomitantMedication Values.");
 	    		return;
 	    	}
 			
@@ -39,7 +39,7 @@ public class ConcomitantMedicationMigrator implements Migrator<ExpeditedAdverseE
 	        }
 	        
 	        if ( assignment == null ) {
-	        	 outcome.addWarning("ER-PM-1", "Assignment is missing in the Reporting Period.");
+	        	 outcome.addWarning("ER-CM-1", "Assignment is missing in the Reporting Period.");
 	             return;
 	        }
 	    	

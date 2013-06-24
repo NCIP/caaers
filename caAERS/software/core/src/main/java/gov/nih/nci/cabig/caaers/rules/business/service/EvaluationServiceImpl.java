@@ -27,7 +27,6 @@ import org.apache.commons.collections15.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
@@ -404,7 +403,7 @@ public class EvaluationServiceImpl implements EvaluationService {
 	        	  }
 	        	  
 	        	  //find reports getting withdrawn
-	        	  List<Report> reportsWithdrawn = expeditedData.findReportsToWitdraw(rd);
+	        	  List<Report> reportsWithdrawn = expeditedData.findReportsToWithdraw(rd);
 	        	  for(Report report : reportsWithdrawn){
 	        		  wrapper = new ReportDefinitionWrapper(report.getReportDefinition(), rd, ActionType.WITHDRAW);
 	        		  wrapper.setStatus("In process");

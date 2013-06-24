@@ -1219,4 +1219,21 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
     public void setSubmittedToFDA(String submittedToFDA) {
         this.submittedToFDA = submittedToFDA;
     }
+
+    /**
+     * Copy the Report Details from Input to Output.
+     *
+     * @param src
+     */
+    public void copy(Report src) {
+        if(src.getReviewStatus() != null) setReviewStatus(src.getReviewStatus());
+        if(src.getPhysicianSignoff() != null) setPhysicianSignoff(src.getPhysicianSignoff());
+        if(src.getCaseNumber() != null) setCaseNumber(src.getCaseNumber());
+        if(src.getEmailAddresses() != null && !src.getEmailAddresses().isEmpty())setEmailAddresses(src.getEmailAddresses());
+        if(src.getAssignedIdentifer() != null) setAssignedIdentifer(src.getAssignedIdentifer()); //ticket number (if any)
+        if(src.getLastVersion().getCcEmails() != null) getLastVersion().setCcEmails(src.getLastVersion().getCcEmails());
+        if(src.getSubmitter() == null) return;
+        if (getSubmitter() == null) getLastVersion().addSubmitter();
+        getSubmitter().copy(src.getSubmitter());
+    }
 }
