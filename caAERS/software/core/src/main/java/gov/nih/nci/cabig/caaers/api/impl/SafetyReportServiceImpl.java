@@ -216,7 +216,7 @@ public class SafetyReportServiceImpl {
     public Report createReport(Report report, ExpeditedAdverseEventReport aeReport){
         Report newReport = reportRepository.createReport(report.getReportDefinition(), aeReport) ;
         newReport.copy(report);
-        reportRepository.save(report);
+        reportRepository.save(newReport);
         return newReport;
     }
 
