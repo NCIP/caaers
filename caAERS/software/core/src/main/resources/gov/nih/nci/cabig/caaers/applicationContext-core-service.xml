@@ -520,6 +520,7 @@ default-lazy-init="true">
     <bean id="treatmentInformationMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.TreatmentInformationMigrator" autowire="byType"/>
     <bean id="expeditedAdverseEventMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.ExpeditedAdverseEventMigrator" autowire="byType"/>
 
+
 	<bean id="expeditedReportMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.ExpeditedReportMigrator">
 		<property name="children">
 			<list>
@@ -572,7 +573,7 @@ default-lazy-init="true">
     <bean id="preExistingConditionSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.report.PreExistingConditionSynchronizer" />
     <bean id="priorTherapySynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.report.PriorTherapySynchronizer" />
     <bean id="reporterSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.report.ReporterSynchronizer" />
-
+    <bean id="concomitantMedicationSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.report.ConcomitantMedicationSynchronizer" autowire="byType"/>
 
     <bean id="aeReportSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.report.ExpeditedAdverseEventReportSynchronizer">
         <property name="children">
@@ -591,6 +592,7 @@ default-lazy-init="true">
                 <ref bean="participantHistorySynchronizer" />
                 <ref bean="preExistingConditionSynchronizer" />
                 <ref bean="priorTherapySynchronizer" />
+                <ref bean="concomitantMedicationSynchronizer" />
                 <ref bean="otherCauseSynchronizer" />
                 <ref bean="expeditedAdverseEventSynchronizer" />
             </list>

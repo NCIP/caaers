@@ -24,7 +24,7 @@ public class OtherAEInterventionMigrator implements Migrator<ExpeditedAdverseEve
 		List<OtherAEIntervention> destOtherAEInterventions = aeReportDest.getOtherAEInterventions();
     	
     	if ( srcOtherAEInterventions == null || srcOtherAEInterventions.size() == 0) {
-    		outcome.addWarning("WR-OAI-1", "Input doesn't contain any OtherAEIntervention Values.");
+    		outcome.addWarning("ER-OAI-1", "Input doesn't contain any OtherAEIntervention Values.");
     		return;
     	}
 		

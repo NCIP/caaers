@@ -1100,7 +1100,7 @@ public class Fixtures {
         return m    ;
     }
     
-    public ConcomitantMedication createConcomitantMedication(String agentName){
+    public static ConcomitantMedication createConcomitantMedication(String agentName){
         ConcomitantMedication c = new ConcomitantMedication();
         c.setAgentName(agentName);
         return c;
