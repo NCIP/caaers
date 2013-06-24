@@ -67,7 +67,8 @@ public class ExpeditedReportMigrator extends CompositeMigrator<ExpeditedAdverseE
     	   if(src.getInvestigationalDeviceAdministered() != null) dest.setInvestigationalDeviceAdministered(src.getInvestigationalDeviceAdministered());
            //set the created date is not present and is available in the source
            if(dest.getCreatedAt() == null && src.getCreatedAt() != null) dest.setCreatedAt(src.getCreatedAt());
-    	
+    	   if(src.getExternalId() != null) dest.setExternalId(src.getExternalId());
+
     	if(src.getReportingPeriod().getExternalId() != null){
     		AdverseEventReportingPeriod arp = adverseEventReportingPeriodDao.getByExternalId(src.getReportingPeriod().getExternalId());
     		if(arp == null){
