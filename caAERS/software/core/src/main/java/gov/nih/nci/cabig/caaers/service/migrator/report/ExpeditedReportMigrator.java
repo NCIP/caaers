@@ -70,15 +70,18 @@ public class ExpeditedReportMigrator extends CompositeMigrator<ExpeditedAdverseE
     	   if(src.getExternalId() != null) dest.setExternalId(src.getExternalId());
 
     	if(src.getReportingPeriod().getExternalId() != null){
-    		AdverseEventReportingPeriod arp = adverseEventReportingPeriodDao.getByExternalId(src.getReportingPeriod().getExternalId());
+    		//AdverseEventReportingPeriod arp = adverseEventReportingPeriodDao.getByExternalId(src.getReportingPeriod().getExternalId());
+    		AdverseEventReportingPeriod arp = adverseEventReportingPeriodDao.getByStudySubjectIdAndStudyIdAndExternalId
+    				(src.getReportingPeriod().getExternalId(), src.getReportingPeriod().getAssignment().getStudySubjectIdentifier(),  src.
+    						getReportingPeriod().getAssignment().getStudySite().getStudy().getPrimaryIdentifier().getValue());
     		if(arp == null){
     			 outcome.addError("ER-RP-1", "Reporting period not found", src.getReportingPeriod().getExternalId());
     	            return;
     			
     		}
     		
-    		StudyParticipantAssignment assignment = studyParticipantAssignmentDao.getAssignment(arp);
-    		arp.setAssignment(assignment);
+    	/*	StudyParticipantAssignment assignment = studyParticipantAssignmentDao.getAssignment(arp);
+    		arp.setAssignment(assignment);*/
     		
     		 dest.setReportingPeriod(arp);
     		 return;

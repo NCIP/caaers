@@ -139,6 +139,7 @@
         study_site_id="1003"
         participant_id="1004"
         date_of_enrollment="2006-09-30"
+        study_subject_identifier="SUBJECT-001"
         load_status="1"
         />
 
@@ -222,6 +223,7 @@
 		assignment_id="-14"
 		epoch_id="-1010" 
 		review_status_code="1"
+		external_id="1232"
 		/>
 		
 	 <ADVERSE_EVENTS
@@ -430,5 +432,11 @@
 	 <SPA_DISEASE_HISTORIES />
 	 <wf_review_comments />
     <arms />
-    <identifiers />
+     <IDENTIFIERS
+            id="-15"
+            stu_id="1001"
+            value="1138-42"
+            type="Protocol Authority Identifier"
+            organization_id="1002"
+            discriminator_column="1"/>
 </dataset>

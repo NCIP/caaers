@@ -374,4 +374,22 @@ public class AdverseEventReportingPeriodDaoTest extends DaoNoSecurityTestCase<Ad
         assertEquals(-74, rp.getAdverseEvents().get(0).getId().intValue());
         assertEquals(-50, rp.getAdverseEvents().get(1).getId().intValue());
     }
+    
+    public void testGetByReportingPeriod(){
+    	AdverseEventReportingPeriod rp = getDao().getByStudySubjectIdAndStudyIdAndExternalId
+    			("1232", "SUBJECT-001", "1138-42u");
+    	assertNull(rp);
+    	rp = getDao().getByStudySubjectIdAndStudyIdAndExternalId
+    			("1232", "SUBJECT-001u", "1138-42");
+    	assertNull(rp);
+    	rp = getDao().getByStudySubjectIdAndStudyIdAndExternalId
+    			("1232u", "SUBJECT-001", "1138-42");
+    	assertNull(rp);
+    	rp = getDao().getByStudySubjectIdAndStudyIdAndExternalId
+    			("1232", "SUBJECT-001", "1138-42");
+    	assertNotNull(rp);
+    	assertNotNull(rp.getAssignment());
+    	assertNotNull(rp.getAssignment().getId());
+    	
+    }
 }

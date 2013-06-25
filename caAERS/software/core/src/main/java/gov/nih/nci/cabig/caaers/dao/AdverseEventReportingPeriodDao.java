@@ -6,6 +6,7 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.dao;
 
+import edu.nwu.bioinformatics.commons.CollectionUtils;
 import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
 import gov.nih.nci.cabig.caaers.dao.query.AdverseEventExistQuery;
 import gov.nih.nci.cabig.caaers.dao.query.AdverseEventReportingPeriodForReviewQuery;
@@ -83,7 +84,7 @@ public class AdverseEventReportingPeriodDao extends GridIdentifiableDao<AdverseE
     
     
     /**
-     * Gets the list of AdverseEventReportingPeriods based on the Assignment.
+     * Gets the list of AdverseEventReportingPeriods based on the external id, study identifier and study subject identifier.
      * @param assignment - A StudyParticipantAssignment
      * @return
      */
@@ -96,6 +97,20 @@ public class AdverseEventReportingPeriodDao extends GridIdentifiableDao<AdverseE
         }
         return null;
     }
+    
+    
+    /**
+     * Gets the list of AdverseEventReportingPeriods based on the external id, study identifier and study subject identifier.
+     * @param assignment - A StudyParticipantAssignment
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+	public AdverseEventReportingPeriod getByStudySubjectIdAndStudyIdAndExternalId(String externalId, String studySubjectId, String studyId) {
+    	return CollectionUtils.firstElement((List<AdverseEventReportingPeriod>) getHibernateTemplate().find("Select aerp from AdverseEventReportingPeriod aerp, Identifier i where aerp.externalId like ? and " +
+        		"aerp.assignment.studySubjectIdentifier = ? and i = any elements (aerp.assignment.studySite.study.identifiers) and i.value = ? " +
+        		"and i.type like 'Protocol Authority Identifier'", new Object[]{externalId,studySubjectId,studyId}));
+    }
+    
 
     /**
      * Will reassociate an AdverseEventReportingPeriod object to the running Hibernate Session. 

@@ -20,9 +20,9 @@ import gov.nih.nci.cabig.caaers.integration.schema.aereport.PhysicianType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.RaceType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.ReducedIdentifierType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.ReporterType;
-import gov.nih.nci.cabig.caaers.integration.schema.aereport.StudyParticipantAssignmentType;
-import gov.nih.nci.cabig.caaers.integration.schema.aereport.StudySiteType;
-import gov.nih.nci.cabig.caaers.integration.schema.aereport.StudyType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.StudyParticipantAssignmentRefType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.StudyRefType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.StudySiteRefType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ParticipantIdentifierType;
 
@@ -80,29 +80,22 @@ public class ExpeditedAdverseEventReportConverterTest extends CaaersDbTestCase {
 		} catch (DatatypeConfigurationException e) {
 			e.printStackTrace();
 		}
-		reportingPeriod.setStudyParticipantAssignment(createStudyParticipantAssignmentType());
+		reportingPeriod.setStudyParticipantAssignmentRef(createStudyParticipantAssignmentType());
         return reportingPeriod;
 	    }
 	 
-	 protected StudyParticipantAssignmentType createStudyParticipantAssignmentType(){
-		 StudyParticipantAssignmentType studyParticipantAssignmentType = new StudyParticipantAssignmentType();
-		 studyParticipantAssignmentType.setStudySite(createStudySiteType());
-		 studyParticipantAssignmentType.setParticipant(createParticipantType());
-		 try {
-			studyParticipantAssignmentType.setDateOfEnrollment(getXMLDate(new Date()));
-		} catch (DatatypeConfigurationException e) {
-			e.printStackTrace();
-		}
+	 protected StudyParticipantAssignmentRefType createStudyParticipantAssignmentType(){
+		 StudyParticipantAssignmentRefType studyParticipantAssignmentType = new StudyParticipantAssignmentRefType();
+		 studyParticipantAssignmentType.setStudySiteRef(createStudySiteType());
 		 
 		 studyParticipantAssignmentType.setStudySubjectIdentifier(STUDY_SUBJECT_IDENTIFIER);
 		 
 		 return studyParticipantAssignmentType;
 	 }
 	 
-	 protected StudySiteType createStudySiteType(){
-		 StudySiteType studySiteType = new StudySiteType();
-		 studySiteType.setStudy(createStudyType());
-		 studySiteType.setOrganization(createOrganizationType(ORG_NAME, ORG_NCI_CODE));
+	 protected StudySiteRefType createStudySiteType(){
+		 StudySiteRefType studySiteType = new StudySiteRefType();
+		 studySiteType.setStudyRef(createStudyType());
 		 
 		 return studySiteType;
 	 }
@@ -115,14 +108,14 @@ public class ExpeditedAdverseEventReportConverterTest extends CaaersDbTestCase {
 		 return organizationType;
 	 }
 	 
-	 protected StudyType createStudyType(){
-		 StudyType studyType = new StudyType();
+	 protected StudyRefType createStudyType(){
+		 StudyRefType studyType = new StudyRefType();
 		 
 		 ReducedIdentifierType identifier = new ReducedIdentifierType();
 		 identifier.setType(gov.nih.nci.cabig.caaers.integration.schema.common.StudyIdentifierType.PROTOCOL_AUTHORITY_IDENTIFIER);
 		 identifier.setValue(STUDY_IDENTIFIER);
 		 
-		 StudyType.Identifiers identifiers = new StudyType.Identifiers();
+		 StudyRefType.Identifiers identifiers = new StudyRefType.Identifiers();
 		 identifiers.setIdentifier(identifier);
 		 
 		 studyType.setIdentifiers(identifiers);
@@ -200,7 +193,7 @@ public class ExpeditedAdverseEventReportConverterTest extends CaaersDbTestCase {
 		assertNotNull(domainReport.getReporter());
 		assertNotNull(domainReport.getPhysician());
 		assertNotNull(domainReport.getReportingPeriod().getAssignment());
-		assertNotNull(domainReport.getReportingPeriod().getAssignment().getParticipant());
+	//	assertNotNull(domainReport.getReportingPeriod().getAssignment().getParticipant());
 		assertNotNull(domainReport.getReportingPeriod().getAssignment().getStudySite());
 		assertNotNull(domainReport.getReportingPeriod().getAssignment().getStudySite().getStudy());
 
@@ -214,12 +207,8 @@ public class ExpeditedAdverseEventReportConverterTest extends CaaersDbTestCase {
 				getStudySite().getStudy().getIdentifiers().get(0).getValue());
 		assertEquals("wrong study short title","dummy", domainReport.getReportingPeriod().getAssignment().
 				getStudySite().getStudy().getShortTitle());
-		assertEquals("wrong subject identifier",SUBJECT_IDENTIFIER, domainReport.getReportingPeriod().getAssignment()
-				.getParticipant().getIdentifiers().get(0).getValue());
-		assertEquals("wrong study site",ORG_NCI_CODE, domainReport.getReportingPeriod().getAssignment().getStudySite().getOrganization().getNciInstituteCode());
-		assertEquals("wrong participant birth date", BIRTH_DATE.getTime(),  domainReport.getReportingPeriod().getAssignment()
-				.getParticipant().getDateOfBirth().toDate());
-		
+		assertEquals("wrong subject identifier",STUDY_SUBJECT_IDENTIFIER, domainReport.getReportingPeriod().getAssignment()
+				.getStudySubjectIdentifier());
 		
 	}
 }
