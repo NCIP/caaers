@@ -34,6 +34,23 @@
 						</ae:createdAt>
 						<xsl:call-template name="responseDescription" />
 						<ae:adverseEventReportingPeriod>
+							<ae:studyParticipantAssignmentRef>
+							  <ae:studySiteRef>
+								 <ae:studyRef>
+									<ae:identifiers>
+									   <ae:identifier>
+										  <ae:type>Protocol Authority Identifier</ae:type>
+										  <ae:value>
+											<xsl:value-of select="/ichicsr/safetyreport/primarysource/sponsorstudynumb"/>
+										  </ae:value>
+									   </ae:identifier>
+									</ae:identifiers>
+								 </ae:studyRef>
+							  </ae:studySiteRef>
+							  <ae:studySubjectIdentifier>
+								<xsl:value-of select="/ichicsr/safetyreport/patient/patientinvestigationnumb"/>
+							  </ae:studySubjectIdentifier>
+						   </ae:studyParticipantAssignmentRef>
 							<ae:externalId>
 								<xsl:value-of select="/ichicsr/safetyreport/safetyreportid" />
 							</ae:externalId>
@@ -550,18 +567,22 @@
 				<xsl:value-of
 					select="/ichicsr/safetyreport/patient/summary/narrativeincludeclinical" />
 			</ae:eventDescription>
-			<ae:presentStatus>
-				<xsl:call-template name="lookup">
-					<xsl:with-param name="_map" select="$map//aepresentstatuses" />
-					<xsl:with-param name="_code" select='/ichicsr/safetyreport/patient/reaction/reactionoutcome' />
-				</xsl:call-template>
-			</ae:presentStatus>
-			<ae:retreated>
-				<xsl:call-template name="lookup">
-					<xsl:with-param name="_map" select="$map//e2byesnos" />
-					<xsl:with-param name="_code" select='/ichicsr/safetyreport/patient/summary/retreatedflag' />
-				</xsl:call-template>
-			</ae:retreated>
+			<xsl:if test = '/ichicsr/safetyreport/patient/reaction[primaryaeflag=1]/reactionoutcome'>
+				<ae:presentStatus>
+					<xsl:call-template name="lookup">
+						<xsl:with-param name="_map" select="$map//aepresentstatuses" />
+						<xsl:with-param name="_code" select='/ichicsr/safetyreport/patient/reaction[primaryaeflag=1]/reactionoutcome' />
+					</xsl:call-template>
+				</ae:presentStatus>
+			</xsl:if>
+			<xsl:if test = '/ichicsr/safetyreport/patient/summary/retreatedflag'>
+				<ae:retreated>
+					<xsl:call-template name="lookup">
+						<xsl:with-param name="_map" select="$map//e2byesnos" />
+						<xsl:with-param name="_code" select='/ichicsr/safetyreport/patient/summary/retreatedflag' />
+					</xsl:call-template>
+				</ae:retreated>
+			</xsl:if>
 			<xsl:if test = '/ichicsr/safetyreport/patient/patientdeath/patientautopsyyesno'>
 				<ae:autopsyPerformed>
 					<xsl:call-template name="lookup">
@@ -603,20 +624,20 @@
 				</ae:middleName>
 			</xsl:if>
 			<xsl:if test="reporteremail">
-				<ae:ContactMechanism>
+				<ae:contactMechanism>
 					<ae:type>e-mail</ae:type>
 					<ae:value>
 						<xsl:value-of select="reporteremail" />
 					</ae:value>
-				</ae:ContactMechanism>
+				</ae:contactMechanism>
 			</xsl:if>
 			<xsl:if test="reporterphone">
-				<ae:ContactMechanism>
+				<ae:contactMechanism>
 					<ae:type>phone</ae:type>
 					<ae:value>
 						<xsl:value-of select="reporterphone" />
 					</ae:value>
-				</ae:ContactMechanism>
+				</ae:contactMechanism>
 			</xsl:if>
 		</ae:physician>
 	</xsl:template>
@@ -635,28 +656,28 @@
 				</ae:middleName>
 			</xsl:if>
 			<xsl:if test="reporteremail">
-				<ae:ContactMechanism>
+				<ae:contactMechanism>
 					<ae:type>e-mail</ae:type>
 					<ae:value>
 						<xsl:value-of select="reporteremail" />
 					</ae:value>
-				</ae:ContactMechanism>
+				</ae:contactMechanism>
 			</xsl:if>
 			<xsl:if test="reporterphone">
-				<ae:ContactMechanism>
+				<ae:contactMechanism>
 					<ae:type>phone</ae:type>
 					<ae:value>
 						<xsl:value-of select="reporterphone" />
 					</ae:value>
-				</ae:ContactMechanism>
+				</ae:contactMechanism>
 			</xsl:if>
 			<xsl:if test="reporterfax">
-				<ae:ContactMechanism>
+				<ae:contactMechanism>
 					<ae:type>e-mail</ae:type>
 					<ae:value>
 						<xsl:value-of select="reporterfax" />
 					</ae:value>
-				</ae:ContactMechanism>
+				</ae:contactMechanism>
 			</xsl:if>
 		</ae:reporter>
 	</xsl:template>
@@ -742,8 +763,8 @@
 			</externalId>
 			<xsl:if test="primaryaeflag">
 				<ae:isPrimary>
-					<xsl:call-template name="convertYESNO2Boolean">
-						<xsl:with-param name="yesNoValue" select="primaryaeflag" />
+					<xsl:call-template name="convertOneTwotoBoolean">
+						<xsl:with-param name="oneTwoType" select="primaryaeflag" />
 					</xsl:call-template>
 				</ae:isPrimary>
 			</xsl:if>
@@ -880,6 +901,16 @@
 			true
 		</xsl:if>
 		<xsl:if test="$yesNoValue = 'NO'">
+			false
+		</xsl:if>
+	</xsl:template>
+	
+	<xsl:template name="convertOneTwotoBoolean">
+		<xsl:param name="oneTwoType" />
+		<xsl:if test="$oneTwoType = '1'">
+			true
+		</xsl:if>
+		<xsl:if test="$oneTwoType = '2'">
 			false
 		</xsl:if>
 	</xsl:template>
