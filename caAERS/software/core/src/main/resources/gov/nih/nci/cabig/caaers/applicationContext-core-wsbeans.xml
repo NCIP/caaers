@@ -67,6 +67,7 @@
         <property name="expeditedAdverseEventReportDao" ref="expeditedAdverseEventReportDao" />
         <property name="eventFactory" ref="eventFactory"/>
         <property name="messageSource" ref="messageSource" />
+        <property name="aeReportSynchronizer" ref="aeReportSynchronizer" />
     </bean>
     
     
