@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
 import org.apache.commons.collections15.CollectionUtils;
 import org.apache.commons.collections15.Predicate;
+import org.apache.commons.lang.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,11 @@ public class DiseaseHistorySynchronizer implements Migrator<ExpeditedAdverseEven
         DiseaseHistory src = aeReportSrc.getDiseaseHistory();
         DiseaseHistory dest = aeReportDest.getDiseaseHistory();
 
-        dest.setAbstractStudyDisease(src.getAbstractStudyDisease());
+        if(!ObjectUtils.equals(dest.getAbstractStudyDisease(), src.getAbstractStudyDisease())){
+            if(dest.getAbstractStudyDisease() != null) aeReportDest.cascaeDeleteToAttributions(dest.getAbstractStudyDisease());
+            dest.setAbstractStudyDisease(src.getAbstractStudyDisease());
+        }
+
         dest.setCodedPrimaryDiseaseSite(src.getCodedPrimaryDiseaseSite());
         dest.setDiagnosisDate(src.getDiagnosisDate());
         dest.setOtherPrimaryDisease(src.getOtherPrimaryDisease());
