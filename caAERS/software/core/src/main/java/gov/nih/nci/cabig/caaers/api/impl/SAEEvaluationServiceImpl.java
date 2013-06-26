@@ -551,7 +551,7 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
             if (applicableRow.getAction().equals(ReportDefinitionWrapper.ActionType.AMEND) || applicableRow.getAction().equals(ReportDefinitionWrapper.ActionType.WITHDRAW)) {
                 for (ReportTableRow preselectedRow: preselectedRows ) {
                     if ( preselectedRow != null ) {
-                        if (preselectedRow.getReportDefinition().getId().equals(applicableRow.getReportDefinition().getId())){
+                        if (preselectedRow.getReportDefinition().getName().equals(applicableRow.getReportDefinition().getName())){
                             // Update the Group Due.
                             action.setDue(applicableRow.getGrpDue());
                             // Create a New Row.
@@ -563,9 +563,6 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
                             preSelectedAction.setDue(applicableRow.getDue());
 
                             recommendedActions.add(preSelectedAction);
-                        }   else {
-                            recommendedActions.add(returnActionFromRow(preselectedRow, preselectedRows));
-                        }
                     }
                 }
 
