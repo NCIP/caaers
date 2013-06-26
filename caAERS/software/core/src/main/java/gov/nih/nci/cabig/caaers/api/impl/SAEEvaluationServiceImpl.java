@@ -566,9 +566,10 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
                     }
                 }
 
+               }
             }
-
         }
+
     }
 
 
