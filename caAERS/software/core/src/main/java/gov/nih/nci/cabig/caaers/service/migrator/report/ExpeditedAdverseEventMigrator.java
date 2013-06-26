@@ -63,17 +63,17 @@ public class ExpeditedAdverseEventMigrator implements Migrator<ExpeditedAdverseE
      * Populate the Intervention Sites.
      * @param srcSurgeryInterventions
      */
-    private List<InterventionSite> populateInterventionSites(List<SurgeryAttribution> srcSurgeryInterventions) {
+    private List<InterventionSite> populateInterventionSites(List<SurgeryIntervention> surgeryInterventions) {
 
         /**
          * Populate the Intervention Sites.
          */
-        List<String> iSites = new ArrayList<String>() ;
-        for ( SurgeryAttribution surIntervention : srcSurgeryInterventions) {
-            iSites.add(surIntervention.getCause().getInterventionSite().getName());
+        List<InterventionSite> iSites = new ArrayList<InterventionSite>() ;
+        for ( SurgeryIntervention surIntervention : surgeryInterventions) {
+            iSites.add(surIntervention.getInterventionSite());
         }
 
-        return loadInterventionSites(iSites);
+        return iSites;
 
     }
 
@@ -153,7 +153,7 @@ public class ExpeditedAdverseEventMigrator implements Migrator<ExpeditedAdverseE
          }
 
         // Populate the intervention Sites.
-        List<InterventionSite> resultSites = populateInterventionSites(aeSrc.getSurgeryAttributions());
+        List<InterventionSite> resultSites = populateInterventionSites(dest.getSurgeryInterventions());
      
      // migrate surgery attributions
      
@@ -205,7 +205,7 @@ public class ExpeditedAdverseEventMigrator implements Migrator<ExpeditedAdverseE
          RadiationAttribution attribution = new RadiationAttribution();
          attribution.setAttribution(srcRadiationAttribution.getAttribution());
          
-         RadiationIntervention intervention = dest.findReportRadiationInterventionByStudyRaditionName(srcRadiationAttribution.getCause().getStudyRadiation());
+         RadiationIntervention intervention = dest.findReportRadiationInterventionByAdministrationAndLastTreatmentDate(srcRadiationAttribution.getCause());
          
          if(intervention == null){
              outcome.addError("ER-RI-1", "Error migrating Radiation Intervention Attribution. Could not find matching Radiation Intervention in report" );
