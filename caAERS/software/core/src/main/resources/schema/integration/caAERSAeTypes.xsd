@@ -22,7 +22,7 @@
                     <xs:element minOccurs="0" name="expected" type="xs:boolean"/>
                     <xs:element minOccurs="0" name="attributionSummary" type="AttributionType"/>
                     <xs:element minOccurs="0" name="comments" type="xs:string"/>
-                    <xs:element minOccurs="0" name="dateFirstLearned" type="xs:date"/>
+                    <xs:element minOccurs="0" name="dateFirstLearned" type="xs:dateTime"/>
                     <xs:element minOccurs="0" name="startDate" type="xs:date"/>
 					<xs:element minOccurs="0" name="eventApproximateTime" type="cct:TimeType"/>
                     <xs:element minOccurs="0" name="eventLocation" type="xs:string"/>
@@ -140,7 +140,9 @@
                     4. Course/cycle cannot overlap with an existing course/cycle.
                     5. Baseline treatment type cannot start after an existing Non-Baseline treatment type.
                     6. Non-Baseline treatment type cannot start before an existing Baseline treatment type.
-
+                    7. In Choosing the Treatment Assignment codes the following are scenarios are possible.
+                        a) When treatmentAssignmentCode is specified then the otherTreatementAssignmentDescription code should be N/A.
+                        b) When otherTreatementAssignmentDescription code is specified then the treatmentAssignmentCode should be Other.
                 </xs:documentation>
             </xs:annotation>
             <xs:element minOccurs="0" name="startDateOfFirstCourse" type="xs:date"/>
@@ -148,10 +150,8 @@
             <xs:element minOccurs="0" name="endDateOfThisCourse" type="xs:date"/>
             <xs:element minOccurs="0" name="treatmentType" type="xs:string"/>
             <xs:element minOccurs="0" name="cycleNumber" type="xs:integer"/>
-            <xs:choice>
-                <xs:element minOccurs="1" name="treatmentAssignmentCode" type="xs:string"/>
-                <xs:element minOccurs="1" name="otherTreatmentAssignmentDescription" type="xs:string"/>
-            </xs:choice>
+            <xs:element minOccurs="1" name="treatmentAssignmentCode" type="xs:string"/>
+            <xs:element minOccurs="1" name="otherTreatmentAssignmentDescription" type="xs:string"/>
             <xs:element minOccurs="0" name="externalId" type="xs:string"/>
         </xs:sequence>
     </xs:complexType>

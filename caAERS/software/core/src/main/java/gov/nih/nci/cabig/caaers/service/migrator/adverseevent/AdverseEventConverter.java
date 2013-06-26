@@ -32,6 +32,7 @@ import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.context.MessageSource;
@@ -55,7 +56,14 @@ public class AdverseEventConverter {
 
         if(adverseEventDto.getStartDate() != null) adverseEvent.setStartDate(adverseEventDto.getStartDate().toGregorianCalendar().getTime());
         if(adverseEventDto.getEndDate() != null) adverseEvent.setEndDate(adverseEventDto.getEndDate().toGregorianCalendar().getTime());
-        if(adverseEventDto.getDateFirstLearned() != null) adverseEvent.setGradedDate(adverseEventDto.getDateFirstLearned().toGregorianCalendar().getTime());
+
+
+        if(adverseEventDto.getDateFirstLearned() != null) {
+            // Convert the timezone Server timezone but user can  send it any timezone.
+            TimeZone timeZone = TimeZone.getDefault();
+            adverseEventDto.getDateFirstLearned().toGregorianCalendar().setTimeZone(timeZone);
+            adverseEvent.setGradedDate(adverseEventDto.getDateFirstLearned().toGregorianCalendar().getTime());
+        }
 
         if(adverseEventDto.getAdverseEventCtepTerm() != null && adverseEventDto.getAdverseEventCtepTerm().getCtepCode() != null){
             adverseEvent.setOtherSpecify(adverseEventDto.getAdverseEventCtepTerm().getOtherSpecify());

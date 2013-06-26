@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.migrator.CompositeMigrator;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -50,6 +51,22 @@ public class AdverseEventReportingPeriodMigrator extends CompositeMigrator<Adver
            outcome.addError("WS_AEMS_025", "Missing adverse events data");
            return;
        }
+
+        // Check for Treatment Assignment Codes.
+        if ( !((src.getTreatmentAssignment().getCode().equalsIgnoreCase("Other") && StringUtils.isNotBlank(src.getTreatmentAssignmentDescription()) && !src.getTreatmentAssignmentDescription().equalsIgnoreCase("N/A") ) ||
+                (src.getTreatmentAssignmentDescription().equalsIgnoreCase("N/A") && StringUtils.isNotBlank(src.getTreatmentAssignment().getCode())) && !src.getTreatmentAssignment().getCode().equalsIgnoreCase("Other"))
+            ) {
+            outcome.addError("WS_AEMS_083", "Treatment Assignment code and other treatment assignment description doesn't contain valid values.");
+            return;
+        }  else {
+               if ( ( src.getTreatmentAssignment() != null && src.getTreatmentAssignment().getCode() != null && src.getTreatmentAssignment().getCode().equalsIgnoreCase("Other") )) {
+                    src.setTreatmentAssignment(null);
+               }
+               if ( (src.getTreatmentAssignmentDescription() != null && src.getTreatmentAssignmentDescription().equalsIgnoreCase("N/A") )) {
+                    src.setTreatmentAssignmentDescription(null);
+               }
+        }
+
        //fetch the study
        Study studySrc = src.getStudy();
        if(studySrc == null || studySrc.getFundingSponsorIdentifierValue() == null){

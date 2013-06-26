@@ -70,7 +70,7 @@ public class SAEEvaluationWebServiceImpl implements SAEEvaluationService {
     (@WebParam(name="SaveAndEvaluateAEsInputMessage",
             targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/saerules")
      SaveAndEvaluateAEsInputMessage saveAndEvaluateAEsInputMessage) throws CaaersFault {
-        return svcImpl.processAndSaveAdverseEvents(saveAndEvaluateAEsInputMessage);
+        return svcImpl.saveAndProcessAdverseEvents(saveAndEvaluateAEsInputMessage);
     }
 
 }

@@ -75,7 +75,7 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
      * @throws CaaersFault
      */
 
-    public SaveAndEvaluateAEsOutputMessage processAndSaveAdverseEvents(SaveAndEvaluateAEsInputMessage saveAndEvaluateAEsInputMessage) throws CaaersFault {
+    public SaveAndEvaluateAEsOutputMessage saveAndProcessAdverseEvents(SaveAndEvaluateAEsInputMessage saveAndEvaluateAEsInputMessage) throws CaaersFault {
         Map<AdverseEvent, AdverseEventResult> mapAE2DTO = new HashMap<AdverseEvent, AdverseEventResult>();
         List<AdverseEvent> aes = new ArrayList<AdverseEvent>();
 
