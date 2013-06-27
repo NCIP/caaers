@@ -48,13 +48,13 @@ public class ConcomitantMedicationMigrator implements Migrator<ExpeditedAdverseE
 	    	
 	        	        	        
 	    	// Copy the ConcomitantMedications Information from Source to Destination.
-	        // if it is already present in study participant assignment, then continue
 	        // if it is not already present in study participant assignment, add it to SPA
 	    	for ( ConcomitantMedication concomitantMedication : srcConcomitantMedications) {
 	    		validateConcomitantMedicationDates(concomitantMedication, outcome);
 	    		if (!isPresentInAssignment(assignment.getConcomitantMedications(), concomitantMedication)) {	    			
-	    			assignment.getConcomitantMedications().add(
-	    					StudyParticipantConcomitantMedication.createAssignmentConcomitantMedication(concomitantMedication));
+	    			StudyParticipantConcomitantMedication spcm = StudyParticipantConcomitantMedication.createAssignmentConcomitantMedication(concomitantMedication);
+	    			spcm.setAssignment(assignment);
+	    			assignment.getConcomitantMedications().add(spcm	);
 	    		}
 	    		ConcomitantMedication destConcomitantMedication = new ConcomitantMedication();
 	    		copyProperties(concomitantMedication, destConcomitantMedication);
