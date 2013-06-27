@@ -70,7 +70,7 @@ public class DiseaseHistoryMigrator implements Migrator<ExpeditedAdverseEventRep
        	copyDiseaseHistory(srcDisHis, destDisHis, outcome);
        	
        	//copy new ones to the SPA
-       	copyToStudyParticipantDiseaseHistory(srcDisHis, history);
+        copyToStudyParticipantDiseaseHistory(destDisHis, history);
        	
     }
 	/**
