@@ -928,11 +928,16 @@
 					select="drugreactionrelatedness/drugreactionasses[aeexternalid = $adverseEventId]/drugresult" />
 			</ae:attribution>
 			<ae:cause>
-				<ae:OtherIntervention>
-					<ae:name>
-						<xsl:value-of select="medicinalproduct" />
-					</ae:name>
-				</ae:OtherIntervention>
+				<xsl:if test="drugenddate != '' ">
+					<ae:lastTreatmentDate>
+						<xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">
+							<xsl:with-param name="date" select="drugenddate" />
+						</xsl:call-template>
+					</ae:lastTreatmentDate>
+				</xsl:if>
+				<ae:administration>
+					<xsl:value-of select="medicinalproduct" />
+				</ae:administration>
 			</ae:cause>
 		</ae:radiationAttribution>
 	</xsl:template>
