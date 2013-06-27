@@ -87,38 +87,35 @@
 		<delayuom><code>806</code><value>MINUTES</value></delayuom>
 	</delayuoms>
     <uoms>
-    	<uom><code>001</code><value>kg kilogram(s)</value></uom>
-		<uom><code>002</code><value>G gram(s)</value></uom>
-		<uom><code>003</code><value>Mg milligram(s)</value></uom>
-		<uom><code>004</code><value>mg microgram(s)</value></uom>
-		<uom><code>005</code><value>ng nanogram(s)</value></uom>
-		<uom><code>006</code><value>pg picogram(s)</value></uom>
-		<uom><code>007</code><value>mg/kg milligram(s)/kilogram</value></uom>
-		<uom><code>008</code><value>mg/kg microgram(s)/kilogram</value></uom>
-		<uom><code>009</code><value>mg/m 2 milligram(s)/sq. meter</value></uom>
-		<uom><code>010</code><value>mg/ m 2 microgram(s)/ sq. Meter</value></uom>
-		<uom><code>011</code><value>l litre(s)</value></uom>
-		<uom><code>012</code><value>ml millilitre(s)</value></uom>
-		<uom><code>013</code><value>ml microlitre(s)</value></uom>
-		<uom><code>014</code><value>Bq becquerel(s)</value></uom>
-		<uom><code>015</code><value>GBq gigabecquerel(s)</value></uom>
-		<uom><code>016</code><value>MBq megabecquerel(s)</value></uom>
-		<uom><code>017</code><value>Kbq kilobecquerel(s)</value></uom>
-		<uom><code>018</code><value>Ci curie(s)</value></uom>
-		<uom><code>019</code><value>MCi millicurie(s)</value></uom>
-		<uom><code>020</code><value>mCi microcurie(s)</value></uom>
-		<uom><code>021</code><value>NCi nanocurie(s)</value></uom>
-		<uom><code>022</code><value>Mol mole(s)</value></uom>
-		<uom><code>023</code><value>Mmol millimole(s)</value></uom>
-		<uom><code>024</code><value>mmol micromole(s)</value></uom>
-		<uom><code>025</code><value>Iu international unit(s)</value></uom>
-		<uom><code>026</code><value>Kiu iu(1000s)</value></uom>
-		<uom><code>027</code><value>Miu iu(1,000,000s)</value></uom>
-		<uom><code>028</code><value>iu/kg iu/kilogram</value></uom>
-		<uom><code>029</code><value>Meq milliequivalent(s)</value></uom>
-		<uom><code>030</code><value>% percent</value></uom>
-		<uom><code>031</code><value>Gtt drop(s)</value></uom>
-		<uom><code>032</code><value>DF dosage form)</value></uom>    	
+    	<uom><code>001</code><value>kg</value></uom>
+		<uom><code>002</code><value>g</value></uom>
+		<uom><code>003</code><value>mg</value></uom>
+		<uom><code>004</code><value>mcg</value></uom>
+		<uom><code>005</code><value>ng</value></uom>
+		<uom><code>006</code><value>pg</value></uom>
+		<uom><code>009</code><value>mg/m 2</value></uom>
+		<uom><code>010</code><value>mg/ m 2</value></uom>
+		<uom><code>011</code><value>l</value></uom>
+		<uom><code>012</code><value>ml</value></uom>
+		<uom><code>013</code><value>mcl</value></uom>
+		<uom><code>014</code><value>Bq</value></uom>
+		<uom><code>015</code><value>GBq</value></uom>
+		<uom><code>016</code><value>MBq</value></uom>
+		<uom><code>017</code><value>Kbq</value></uom>
+		<uom><code>018</code><value>Ci</value></uom>
+		<uom><code>019</code><value>MCi</value></uom>
+		<uom><code>020</code><value>mcCi</value></uom>
+		<uom><code>021</code><value>NCi</value></uom>
+		<uom><code>022</code><value>mol</value></uom>
+		<uom><code>023</code><value>mmol</value></uom>
+		<uom><code>024</code><value>mcmol</value></uom>
+		<uom><code>025</code><value>IU</value></uom>
+		<uom><code>026</code><value>Kiu</value></uom>
+		<uom><code>027</code><value>million iu</value></uom>
+		<uom><code>029</code><value>mEq</value></uom>
+		<uom><code>030</code><value>Percent</value></uom>
+		<uom><code>031</code><value>Gtt</value></uom>
+		<uom><code>032</code><value>DF</value></uom>    	
     </uoms>
     <adjustments>
     	<adjustment><code>1</code><value>Discontinue Radiation</value></adjustment>

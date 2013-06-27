@@ -54,7 +54,11 @@ public class ConcomitantMedicationMigatorTest extends TestCase {
         cms.add(StudyParticipantConcomitantMedication.createAssignmentConcomitantMedication(cm));
         assignment.setConcomitantMedications(cms);
         
+        ConcomitantMedication cmDiff = Fixtures.createConcomitantMedication(Boolean.FALSE);
+        cmDiff.setAgentName("testAgent");
+        
         src.getConcomitantMedications().add(cm);
+        src.getConcomitantMedications().add(cmDiff);
         
         StudySite site = Fixtures.createStudySite(org, 26);
         study.addStudySite(site);       
