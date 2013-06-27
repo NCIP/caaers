@@ -53,19 +53,25 @@ public class DiseaseHistoryMigrator implements Migrator<ExpeditedAdverseEventRep
               return;
          }
     	
-    	if ( participant != null ) {
-    		StudyParticipantAssignment assignment = participant.getStudyParticipantAssignment(site);
-    		StudyParticipantDiseaseHistory history = assignment.getDiseaseHistory();
-    		if ( history != null ) {
-    			CopyFromStudyParticipantDiseaseHistory(history, destDisHis);
-    		}
+    	if ( participant == null ) {
+    		 outcome.addError("ER-DHM-2", "Participant is missing in the destination");
+             return;
     	}
+    	
+		StudyParticipantAssignment assignment = participant.getStudyParticipantAssignment(site);
+		StudyParticipantDiseaseHistory history = assignment.getDiseaseHistory();
+		if ( history != null ) {
+			copyFromStudyParticipantDiseaseHistory(history, destDisHis);
+		}
 
         // After copying it from the patient make sure we have removed it from the srcDisHis object to remove the duplicates.
         removeDuplicateMetaStaticSites(srcDisHis, destDisHis);
 
        	copyDiseaseHistory(srcDisHis, destDisHis, outcome);
-
+       	
+       	//copy new ones to the SPA
+       	copyToStudyParticipantDiseaseHistory(srcDisHis, history);
+       	
     }
 	/**
 	 * Copy Disease History details from Input to the Domain Object.
@@ -166,8 +172,7 @@ public class DiseaseHistoryMigrator implements Migrator<ExpeditedAdverseEventRep
            destDisHis.setOtherPrimaryDisease(srcDisHis.getOtherPrimaryDisease());
     }
 
-    private  void removeDuplicateMetaStaticSites(DiseaseHistory srcDisHis, DiseaseHistory destDisHis) {
-
+    private  void removeDuplicateMetaStaticSites(DiseaseHistory srcDisHis, DiseaseHistory destDisHis) {    	
         for (MetastaticDiseaseSite destSite: destDisHis.getMetastaticDiseaseSites()) {
 
               int index = findIndexMetastaticSite(srcDisHis.getMetastaticDiseaseSites(), destSite);
@@ -211,7 +216,7 @@ public class DiseaseHistoryMigrator implements Migrator<ExpeditedAdverseEventRep
      * @param history
      * @param destHistory
      */
-    private void CopyFromStudyParticipantDiseaseHistory(StudyParticipantDiseaseHistory history, DiseaseHistory destHistory) {
+    private void copyFromStudyParticipantDiseaseHistory(StudyParticipantDiseaseHistory history, DiseaseHistory destHistory) {
 
         destHistory.setVersion(history.getVersion());
     	destHistory.setOtherPrimaryDisease(history.getOtherPrimaryDisease());
@@ -219,6 +224,26 @@ public class DiseaseHistoryMigrator implements Migrator<ExpeditedAdverseEventRep
     	destHistory.setMeddraStudyDisease(history.getMeddraStudyDisease());
     	for (StudyParticipantMetastaticDiseaseSite studyParticipantMetastaticDiseaseSite :  history.getMetastaticDiseaseSites()) {
     		destHistory.addMetastaticDiseaseSite(MetastaticDiseaseSite.createReportMetastaticDiseaseSite(studyParticipantMetastaticDiseaseSite));
+    	}
+    	destHistory.setDiagnosisDate(history.getDiagnosisDate());
+    	destHistory.setCodedPrimaryDiseaseSite(history.getCodedPrimaryDiseaseSite());
+    	destHistory.setCtepStudyDisease(history.getCtepStudyDisease());
+    	destHistory.setAbstractStudyDisease(history.getAbstractStudyDisease());
+    }
+    
+    /**
+     * Copy the Details from the Participant Object. 
+     * @param history
+     * @param destHistory
+     */
+    private void copyToStudyParticipantDiseaseHistory(DiseaseHistory history, StudyParticipantDiseaseHistory destHistory) {
+
+        destHistory.setVersion(history.getVersion());
+    	destHistory.setOtherPrimaryDisease(history.getOtherPrimaryDisease());
+    	destHistory.setOtherPrimaryDiseaseSite(history.getOtherPrimaryDiseaseSite());
+    	destHistory.setMeddraStudyDisease(history.getMeddraStudyDisease());
+    	for (MetastaticDiseaseSite metastaticDiseaseSite :  history.getMetastaticDiseaseSites()) {
+    		destHistory.addMetastaticDiseaseSite(StudyParticipantMetastaticDiseaseSite.createAssignmentMetastaticDiseaseSite(metastaticDiseaseSite));
     	}
     	destHistory.setDiagnosisDate(history.getDiagnosisDate());
     	destHistory.setCodedPrimaryDiseaseSite(history.getCodedPrimaryDiseaseSite());
