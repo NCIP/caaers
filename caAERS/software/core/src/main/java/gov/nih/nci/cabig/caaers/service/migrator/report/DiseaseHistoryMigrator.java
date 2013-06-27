@@ -259,6 +259,13 @@ public class DiseaseHistoryMigrator implements Migrator<ExpeditedAdverseEventRep
                 }
 
             }
+            
+            if(history.getCodedPrimaryDiseaseSite() != null){
+            	 List<AnatomicSite> primaryDiseaseSites = anatomicSiteDao.getBySubnames(new String[]{history.getCodedPrimaryDiseaseSite().getName()});
+            	 if(primaryDiseaseSites != null && !primaryDiseaseSites.isEmpty()){
+            		 destHistory.setCodedPrimaryDiseaseSite(primaryDiseaseSites.get(0));
+            	 }
+            }
              String[] anatomicSitesArr =   anatomicSites.toArray(new String[anatomicSites.size()]);
              List<AnatomicSite> anaSites =  anatomicSiteDao.getBySubnames(anatomicSitesArr);
 
