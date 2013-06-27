@@ -70,7 +70,7 @@ public class DiseaseHistoryMigrator implements Migrator<ExpeditedAdverseEventRep
        	copyDiseaseHistory(srcDisHis, destDisHis, outcome);
        	
        	//copy new ones to the SPA
-       	copyToStudyParticipantDiseaseHistory(srcDisHis, history);
+       	copyToStudyParticipantDiseaseHistory(destDisHis, history);
        	
     }
 	/**
@@ -237,17 +237,29 @@ public class DiseaseHistoryMigrator implements Migrator<ExpeditedAdverseEventRep
      * @param destHistory
      */
     private void copyToStudyParticipantDiseaseHistory(DiseaseHistory history, StudyParticipantDiseaseHistory destHistory) {
+       
+    	if ( history.getMetastaticDiseaseSites().size() > 0) {
+            List<String> anatomicSites = new ArrayList<String>();
 
-        destHistory.setVersion(history.getVersion());
-    	destHistory.setOtherPrimaryDisease(history.getOtherPrimaryDisease());
-    	destHistory.setOtherPrimaryDiseaseSite(history.getOtherPrimaryDiseaseSite());
-    	destHistory.setMeddraStudyDisease(history.getMeddraStudyDisease());
-    	for (MetastaticDiseaseSite metastaticDiseaseSite :  history.getMetastaticDiseaseSites()) {
-    		destHistory.addMetastaticDiseaseSite(StudyParticipantMetastaticDiseaseSite.createAssignmentMetastaticDiseaseSite(metastaticDiseaseSite));
-    	}
-    	destHistory.setDiagnosisDate(history.getDiagnosisDate());
-    	destHistory.setCodedPrimaryDiseaseSite(history.getCodedPrimaryDiseaseSite());
-    	destHistory.setCtepStudyDisease(history.getCtepStudyDisease());
-    	destHistory.setAbstractStudyDisease(history.getAbstractStudyDisease());
+            for ( MetastaticDiseaseSite diseaseSite : history.getMetastaticDiseaseSites()) {
+                if ( diseaseSite.getCodedSite() != null ) {
+                    anatomicSites.add(diseaseSite.getCodedSite().getName());
+                }
+
+            }
+             String[] anatomicSitesArr =   anatomicSites.toArray(new String[anatomicSites.size()]);
+             List<AnatomicSite> anaSites =  anatomicSiteDao.getBySubnames(anatomicSitesArr);
+
+            for ( MetastaticDiseaseSite diseaseSite : history.getMetastaticDiseaseSites()) {
+                if ( diseaseSite.getCodedSite() != null ) {
+                    AnatomicSite result =  findAnatomicSiteByName(anaSites, diseaseSite.getCodedSite());
+                    MetastaticDiseaseSite mds = new MetastaticDiseaseSite();
+                    mds.setCodedSite(result);
+                    destHistory.addMetastaticDiseaseSite(StudyParticipantMetastaticDiseaseSite.createAssignmentMetastaticDiseaseSite(mds));
+
+                }
+            }
+       }
+    	
     }
 }
