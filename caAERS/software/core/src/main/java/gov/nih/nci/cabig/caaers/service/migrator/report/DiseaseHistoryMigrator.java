@@ -69,7 +69,7 @@ public class DiseaseHistoryMigrator implements Migrator<ExpeditedAdverseEventRep
 
        	copyDiseaseHistory(srcDisHis, destDisHis, outcome);
        	
-       	//copy new ones to the SPA
+       	//copy new ones to the SPA after checking for duplicates       	
        	copyToStudyParticipantDiseaseHistory(destDisHis, history);
        	
     }
@@ -177,7 +177,7 @@ public class DiseaseHistoryMigrator implements Migrator<ExpeditedAdverseEventRep
 
               int index = findIndexMetastaticSite(srcDisHis.getMetastaticDiseaseSites(), destSite);
 
-             if ( index >= 0 ) srcDisHis.getMetastaticDiseaseSites().remove(index);
+             if ( index > -1 ) srcDisHis.getMetastaticDiseaseSites().remove(index);
 
         }
 
@@ -189,11 +189,24 @@ public class DiseaseHistoryMigrator implements Migrator<ExpeditedAdverseEventRep
         for ( MetastaticDiseaseSite site: srcMetaStaticSites ) {
             index ++;
             if ( site.getCodedSite().getName().equals(destSite.getCodedSite().getName())) { // Found a duplicate.
-                     break;
+                     return index;
             }
          }
 
-        return  index;
+        return  -1;
+    }
+    
+    private int findIndexStudyParticipantMetastaticSite(List<StudyParticipantMetastaticDiseaseSite> srcMetaStaticSites, MetastaticDiseaseSite destSite) {
+        int index = -1;
+
+        for ( StudyParticipantMetastaticDiseaseSite site: srcMetaStaticSites ) {
+            index ++;
+            if ( site.getCodedSite().getName().equals(destSite.getCodedSite().getName())) { // Found a duplicate.
+            	 return index;
+            }
+         }
+
+        return  -1;
     }
 
 
@@ -236,8 +249,7 @@ public class DiseaseHistoryMigrator implements Migrator<ExpeditedAdverseEventRep
      * @param history
      * @param destHistory
      */
-    private void copyToStudyParticipantDiseaseHistory(DiseaseHistory history, StudyParticipantDiseaseHistory destHistory) {
-       
+    private void copyToStudyParticipantDiseaseHistory(DiseaseHistory history, StudyParticipantDiseaseHistory destHistory) {       
     	if ( history.getMetastaticDiseaseSites().size() > 0) {
             List<String> anatomicSites = new ArrayList<String>();
 
@@ -255,8 +267,10 @@ public class DiseaseHistoryMigrator implements Migrator<ExpeditedAdverseEventRep
                     AnatomicSite result =  findAnatomicSiteByName(anaSites, diseaseSite.getCodedSite());
                     MetastaticDiseaseSite mds = new MetastaticDiseaseSite();
                     mds.setCodedSite(result);
-                    destHistory.addMetastaticDiseaseSite(StudyParticipantMetastaticDiseaseSite.createAssignmentMetastaticDiseaseSite(mds));
-
+                    if(findIndexStudyParticipantMetastaticSite(destHistory.getMetastaticDiseaseSites(), mds) == -1) {
+                    	destHistory.addMetastaticDiseaseSite(
+                    			StudyParticipantMetastaticDiseaseSite.createAssignmentMetastaticDiseaseSite(mds));
+                    }
                 }
             }
        }
