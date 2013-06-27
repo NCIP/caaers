@@ -453,6 +453,27 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         getLabsInternal().remove(lab);
         lab.setReport(null);
     }
+    
+    /**
+     * Adds the RaditionIntervention.
+     *
+     * @param radiationIntervention the radiationIntervention
+     */
+    public void removeRadiaitonIntervention(RadiationIntervention radiationIntervention) {
+        getRadiationInterventionsInternal().remove(radiationIntervention);
+        radiationIntervention.setReport(null);
+    }
+    
+    /**
+     * Adds the SurgeryIntervention.
+     *
+     * @param surgeryIntervention the surgeryIntervention
+     */
+    public void removeSurgeryIntervention(SurgeryIntervention surgeryIntervention) {
+        getSurgeryInterventionsInternal().remove(surgeryIntervention);
+        surgeryIntervention.setReport(null);
+    }
+
 
     /**
      * Gets the labs.
@@ -2046,6 +2067,18 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     		if(cm.equals(inputConcomitantMedication)){
     			return cm;
     		}
+    	}
+    	
+    	return null;
+    }
+    
+    
+    public SurgeryIntervention findReportSurgeryInterventionBySiteAndDate(SurgeryIntervention radiationIntervention){
+    	for(SurgeryIntervention ri : getSurgeryInterventions()){
+    		if(ri.getInterventionSite().getName().equals(radiationIntervention.getInterventionSite().getName()) && ri.getInterventionDate().
+    				equals(radiationIntervention.getInterventionDate())) {
+	    		return ri;
+	    	}
     	}
     	
     	return null;
