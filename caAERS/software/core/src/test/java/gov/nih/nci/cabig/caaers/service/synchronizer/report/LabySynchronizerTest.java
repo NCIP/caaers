@@ -14,7 +14,7 @@ import gov.nih.nci.cabig.caaers.utils.DateUtils;
 /**
  * @author medaV
  */
-public class LabynchronizerTest extends AbstractTestCase {
+public class LabySynchronizerTest extends AbstractTestCase {
 
     ExpeditedAdverseEventReport src;
     ExpeditedAdverseEventReport dest;

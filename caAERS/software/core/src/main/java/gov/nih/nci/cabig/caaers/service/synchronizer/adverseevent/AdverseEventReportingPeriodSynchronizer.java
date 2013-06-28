@@ -43,6 +43,8 @@ public class AdverseEventReportingPeriodSynchronizer implements Migrator<Adverse
                 aeFound.setStartDate(aeSrc.getStartDate());
                 aeFound.setEndDate(aeSrc.getEndDate());
 
+                // Reactivating the AE, incase deactivated.
+                aeFound.setRetiredIndicator(false);
 
                 // Ensuring that previous and new are CTC terms.
                 if ( aeFound.getAdverseEventTerm() instanceof AdverseEventCtcTerm && aeSrc.getAdverseEventTerm() instanceof AdverseEventCtcTerm ) {     // Refers to CTC terminology.
