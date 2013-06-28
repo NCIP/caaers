@@ -197,6 +197,10 @@ public class SafetyReportServiceImpl {
        migrate(aeSrcReport, aeDestReport, errors);
        if(errors.hasErrors()) return;
 
+       for(AdverseEvent ae : aeDestReport.getAdverseEvents()){
+           ae.setReport(aeDestReport);
+       }
+
 
         //Call the ExpediteReportDao and save this report.
         expeditedAdverseEventReportDao.save(aeDestReport);

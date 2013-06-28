@@ -23,7 +23,7 @@ public class ExpeditedAdverseEventSynchronizer implements Migrator<ExpeditedAdve
         for(AdverseEvent ae : dbAeReport.getAdverseEvents()){ aeIndex.put(ae.getId(), ae);}
 
         //try to find the AE in source , if found synchronize it.
-        for(AdverseEvent ae : xmlAeReport.getAdverseEvents()){
+        for(AdverseEvent ae : xmlAeReport.getAdverseEventsInternal()){
             AdverseEvent aeFound = dbAeReport.findAdverseEventByIdTermAndDates(ae);
             if(aeFound != null) {
                 synchronizeAdverseEvent(ae, aeFound);

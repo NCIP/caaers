@@ -733,7 +733,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
             CascadeType.DELETE, CascadeType.DETACH, CascadeType.LOCK, CascadeType.MERGE,
             CascadeType.REFRESH})
     @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
-    protected List<AdverseEvent> getAdverseEventsInternal() {
+    public List<AdverseEvent> getAdverseEventsInternal() {
         return lazyListHelper.getInternalList(AdverseEvent.class);
     }
 
@@ -743,7 +743,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
      * @param adverseEvents the new adverse events internal
      */
     @SuppressWarnings("unchecked")
-    protected void setAdverseEventsInternal(List<AdverseEvent> adverseEvents) {
+    public void setAdverseEventsInternal(List<AdverseEvent> adverseEvents) {
         lazyListHelper.setInternalList(AdverseEvent.class, adverseEvents);
     }
 
