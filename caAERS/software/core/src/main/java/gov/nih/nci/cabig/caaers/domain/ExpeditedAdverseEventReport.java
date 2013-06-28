@@ -2073,7 +2073,10 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     
     public MedicalDevice findReportMedicalDevice(MedicalDevice medicalDevice){
     	for(MedicalDevice md : getMedicalDevices()){
-    		if(md.equals(medicalDevice)) return md;
+            if(StringUtils.equals(md.getCommonName(), medicalDevice.getCommonName()) &&
+                    StringUtils.equals(md.getBrandName(), medicalDevice.getBrandName()) &&
+                    StringUtils.equals(md.getDeviceType(), medicalDevice.getDeviceType())) return md;
+
     	}
     	
     	return null;
