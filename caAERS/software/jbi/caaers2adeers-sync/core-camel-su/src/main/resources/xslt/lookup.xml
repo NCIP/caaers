@@ -103,7 +103,7 @@
 		<uom><code>016</code><value>MBq</value></uom>
 		<uom><code>017</code><value>Kbq</value></uom>
 		<uom><code>018</code><value>Ci</value></uom>
-		<uom><code>019</code><value>MCi</value></uom>
+		<uom><code>019</code><value>mCi</value></uom>
 		<uom><code>020</code><value>mcCi</value></uom>
 		<uom><code>021</code><value>NCi</value></uom>
 		<uom><code>022</code><value>mol</value></uom>

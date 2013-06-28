@@ -42,11 +42,8 @@ public class MedicalDeviceMigratorTest extends TestCase {
         assignment.setStudySite(site);
         assignment.getStudySite().setStudy(study);
 
+        
         //Set the destination.
-
-        dest.setReportingPeriod(period);
-        //Set the destination.
-
         dest.setReportingPeriod(period);
 
         StudyDevice  studyDevice = new StudyDevice();
@@ -54,6 +51,7 @@ public class MedicalDeviceMigratorTest extends TestCase {
         Device d =new Device();
         d.setBrandName("Brad");
         d.setCommonName("Brad Common Name");
+        d.setType("device type");
         studyDevice.setDevice(d);
         d.setId(-100);
         d.setVersion(1);
