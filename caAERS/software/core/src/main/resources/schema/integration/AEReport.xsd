@@ -174,9 +174,9 @@
             <xs:element type="DateValueType" name="diagnosisDate" minOccurs="0" />
 			<xs:element type="xs:string" name="primaryDisease" minOccurs="0"/>
             <xs:element type="xs:string" name="otherPrimaryDisease" minOccurs="0"/>
-            <xs:element type="MetastaticDiseaseSiteType" name="metastaticDiseaseSite" maxOccurs="unbounded" minOccurs="0" />
             <xs:element type="xs:string" name="codedPrimaryDiseaseSite" minOccurs="0"/>
             <xs:element type="xs:string" name="otherPrimaryDiseaseSite" minOccurs="0"/>
+            <xs:element type="MetastaticDiseaseSiteType" name="metastaticDiseaseSite" maxOccurs="unbounded" minOccurs="0" />
 		</xs:sequence>
 	</xs:complexType>
 
