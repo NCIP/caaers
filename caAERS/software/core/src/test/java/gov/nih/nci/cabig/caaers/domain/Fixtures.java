@@ -6,16 +6,26 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.domain;
 
-import com.semanticbits.rules.brxml.*;
-import com.semanticbits.rules.brxml.Condition;
-
 import gov.nih.nci.cabig.caaers.domain.ParticipantHistory.Measure;
 import gov.nih.nci.cabig.caaers.domain.dto.AdverseEventDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.AeMergeDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.TaskNotificationDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.TermDTO;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
-import gov.nih.nci.cabig.caaers.domain.report.*;
+import gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus;
+import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
+import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryField;
+import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportTracking;
+import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
+import gov.nih.nci.cabig.caaers.domain.report.ReportedAdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.report.RequirednessIndicator;
+import gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification;
+import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.CombinationPolicy;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.LoginPolicy;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordCreationPolicy;
@@ -24,8 +34,14 @@ import gov.nih.nci.cabig.caaers.domain.workflow.ReportReviewComment;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment;
 import gov.nih.nci.cabig.caaers.domain.workflow.TaskConfig;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
-import gov.nih.nci.cabig.caaers.integration.schema.common.*;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.RadiationAdministrationType;
+import gov.nih.nci.cabig.caaers.integration.schema.common.ActiveInactiveStatusType;
+import gov.nih.nci.cabig.caaers.integration.schema.common.ConfigProperties;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ConfigPropertyType;
+import gov.nih.nci.cabig.caaers.integration.schema.common.DeviceType;
+import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationType;
+import gov.nih.nci.cabig.caaers.integration.schema.common.PreExistingConditionType;
+import gov.nih.nci.cabig.caaers.integration.schema.common.PriorTherapyType;
 import gov.nih.nci.cabig.caaers.integration.schema.study.InvestigationalNewDrugType;
 import gov.nih.nci.cabig.caaers.integration.schema.study.StudyDeviceINDAssociationType;
 import gov.nih.nci.cabig.caaers.integration.schema.study.StudyDeviceType;
@@ -45,12 +61,21 @@ import java.util.List;
 
 import org.apache.commons.lang.math.RandomUtils;
 
+import com.semanticbits.rules.brxml.Column;
+import com.semanticbits.rules.brxml.Condition;
+import com.semanticbits.rules.brxml.FieldConstraint;
+import com.semanticbits.rules.brxml.LiteralRestriction;
+import com.semanticbits.rules.brxml.MetaData;
+import com.semanticbits.rules.brxml.Rule;
+
 /**
  * @author Rhett Sutphin
  */
 public class Fixtures {
 
     public static final Organization SITE = Fixtures.createOrganization("Round abouts here", 1);
+    
+    public static final Date today = new Date();
 
     public static Organization createOrganization(final String organizationName, final int organizationId) {
         final Organization organization = createOrganization(organizationName);
@@ -1104,6 +1129,33 @@ public class Fixtures {
         ConcomitantMedication c = new ConcomitantMedication();
         c.setAgentName(agentName);
         return c;
+    }
+    
+    public static RadiationIntervention createRadiationIntervention(){
+    	
+    	RadiationIntervention ri = new RadiationIntervention();
+        ri.setAdjustment("Decrease Total Dose");
+        ri.setAdministration(RadiationAdministration.BT_NOS);
+        ri.setDaysElapsed("11");
+        ri.setDescription("description");
+        ri.setDosage("111");
+        ri.setDosageUnit("mg microgram(s)");
+        ri.setFractionNumber("23");
+        ri.setLastTreatmentDate(today);
+        
+        return ri;
+    }
+    
+ public static SurgeryIntervention createSurgeryIntervention(){
+    	
+	 	SurgeryIntervention si = new SurgeryIntervention();
+        si.setDescription("minor");
+        si.setInterventionDate(today);
+        InterventionSite site = new InterventionSite();
+        site.setName("Conjunctiva");
+        si.setInterventionSite(site);
+        
+        return si;
     }
     
     public static StudyParticipantConcomitantMedication createStudyParticipantConcomitantMedication(String n){
