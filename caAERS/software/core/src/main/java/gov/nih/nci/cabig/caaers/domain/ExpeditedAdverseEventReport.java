@@ -2018,31 +2018,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
      */
     public boolean addAttributionsToAEs(DomainObject o) {
         for (AdverseEvent ae : getAdverseEvents()) {
-            if (o instanceof RadiationIntervention) {
-                ae.addAttribution(new RadiationAttribution((RadiationIntervention) o), ae.getRadiationAttributions());
-            } else if (o instanceof OtherAEIntervention) {
-                ae.addAttribution(new OtherInterventionAttribution((OtherAEIntervention) o), ae.getOtherInterventionAttributions());
-            } else if (o instanceof BehavioralIntervention) {
-                ae.addAttribution(new BehavioralInterventionAttribution((BehavioralIntervention) o), ae.getBehavioralInterventionAttributions());
-            } else if (o instanceof BiologicalIntervention) {
-                ae.addAttribution(new BiologicalInterventionAttribution((BiologicalIntervention) o), ae.getBiologicalInterventionAttributions());
-            } else if (o instanceof DietarySupplementIntervention) {
-                ae.addAttribution(new DietarySupplementInterventionAttribution((DietarySupplementIntervention) o), ae.getDietarySupplementInterventionAttributions());
-            } else if (o instanceof GeneticIntervention) {
-                ae.addAttribution(new GeneticInterventionAttribution((GeneticIntervention) o), ae.getGeneticInterventionAttributions());
-            } else if (o instanceof MedicalDevice) {
-                ae.addAttribution(new DeviceAttribution((MedicalDevice) o), ae.getDeviceAttributions());
-            } else if (o instanceof SurgeryIntervention) {
-                ae.addAttribution(new SurgeryAttribution((SurgeryIntervention) o), ae.getSurgeryAttributions());
-            } else if (o instanceof CourseAgent) {
-                ae.addAttribution(new CourseAgentAttribution((CourseAgent) o), ae.getCourseAgentAttributions());
-            } else if (o instanceof ConcomitantMedication) {
-                ae.addAttribution(new ConcomitantMedicationAttribution((ConcomitantMedication) o), ae.getConcomitantMedicationAttributions());
-            } else if (o instanceof OtherCause) {
-                ae.addAttribution(new OtherCauseAttribution((OtherCause) o), ae.getOtherCauseAttributions());
-            } else if (o instanceof DiseaseHistory) {
-                ae.addAttribution(new DiseaseAttribution((DiseaseHistory) o), ae.getDiseaseAttributions());
-            }
+            ae.addAttribution(o, null);
         }
         return true;
     }
@@ -2097,9 +2073,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     
     public MedicalDevice findReportMedicalDevice(MedicalDevice medicalDevice){
     	for(MedicalDevice md : getMedicalDevices()){
-    		if(md.getStudyDevice().getBrandName().equals(medicalDevice.getBrandName()) && md.getStudyDevice().getCommonName().equals(medicalDevice.getCommonName())) {
-	    			return md;
-    		}
+    		if(md.equals(medicalDevice)) return md;
     	}
     	
     	return null;

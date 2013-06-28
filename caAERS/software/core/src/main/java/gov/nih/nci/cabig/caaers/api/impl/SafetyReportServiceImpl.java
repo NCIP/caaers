@@ -148,52 +148,7 @@ public class SafetyReportServiceImpl {
         if(outCome.hasErrors()) errors.addValidationErrors(outCome.getValidationErrors().getErrors());
     }
     public void createSafetyReport(ExpeditedAdverseEventReport aeSrcReport, ExpeditedAdverseEventReport aeDestReport, ValidationErrors errors){
-       /* Study studySrc = aeSrcReport.getStudy();
-        Participant subjectSrc = aeSrcReport.getParticipant();
-        StudyParticipantAssignment srcAssignment = subjectSrc.getAssignments().get(0);
-
-        //does the study exist ?
-        if ( studySrc == null ) {
-        	studySrc = studyDao.getByIdentifier(studySrc.getFundingSponsorIdentifier());
-	        if(studySrc == null){
-	            logger.error("Study not present in caAERS with the sponsor identifier : " + studySrc.getFundingSponsorIdentifierValue());
-	            errors.addValidationError("WS_AEMS_003", "Study with sponsor identifier " + studySrc.getFundingSponsorIdentifierValue() +" does not exist in caAERS");
-	            return null;
-	        }
-        }
-
-        //Does the subject exist ?
-        //NOTE :- With this logic, the participant will be recreated for every assignment.
-        ParticipantQuery pq = new ParticipantQuery();
-        pq.joinStudy();
-        pq.filterByStudySubjectIdentifier(srcAssignment.getStudySubjectIdentifier());
-        pq.filterByStudyId(studySrc.getId());
-
-        List<Participant> dbParticipants = participantDao.searchParticipant(pq);
-        if(dbParticipants == null || dbParticipants.isEmpty()){
-            //create the participant.
-            ParticipantType xmlParticipant = new ParticipantType();
-            participantService.getParticipantConverter().convertDomainParticipantToParticipantDto(subjectSrc, xmlParticipant);
-            Participants participants = new Participants();
-            participants.getParticipant().add(xmlParticipant);
-            CaaersServiceResponse participantResponse = participantService.createParticipant(participants);
-            logger.info("Response from Participant Service " + String.valueOf(participantResponse));
-            if(!participantResponse.getServiceResponse().getWsError().isEmpty()){
-                logger.error("Error thrown by Participant Service " + String.valueOf(participantResponse.getServiceResponse().getWsError()));
-                for(WsError wsError : participantResponse.getServiceResponse().getWsError()) {
-                    errors.addValidationError(wsError.getErrorCode(), wsError.getErrorDesc());
-                }
-                return null;
-            }
-            
-        }
-        
-        updateReportingPeriodWithdbStudy(aeSrcReport,studySrc);*/
-
-        //Call Ae Management
-        
-
-        //Call the Migration
+       //Call the Migration
        migrate(aeSrcReport, aeDestReport, errors);
        if(errors.hasErrors()) return;
 
@@ -246,8 +201,7 @@ public class SafetyReportServiceImpl {
         DomainObjectImportOutcome<ExpeditedAdverseEventReport> outCome = new DomainObjectImportOutcome<ExpeditedAdverseEventReport>();
         aeReportSynchronizer.migrate(aeDestReport, dbReport, outCome);
         if(outCome.hasErrors()) errors.addValidationErrors(outCome.getValidationErrors().getErrors());
-        expeditedAdverseEventReportDao.evict(aeDestReport); //aeDestReport = null;
-        expeditedAdverseEventReportDao.evict(aeSrcReport); aeSrcReport = null;
+
         expeditedAdverseEventReportDao.save(dbReport);
 
         if(aeDestReport.getReports() == null || aeDestReport.getReports().isEmpty()) {
@@ -332,7 +286,6 @@ public class SafetyReportServiceImpl {
 		   logger.error("Unable to Create a Report from Safety Management Service", e);
 		   Helper.populateError(response, "WS_GEN_000",e.getMessage() );
 	   }
-	   expeditedAdverseEventReportDao.clearSession();
        return response;
 	}
 

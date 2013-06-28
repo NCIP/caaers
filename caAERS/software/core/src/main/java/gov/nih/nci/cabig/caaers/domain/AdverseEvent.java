@@ -1315,16 +1315,71 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
      * @param newAttribution
      * @param attributions
      */
-    public void addAttribution(AdverseEventAttribution<? extends DomainObject> newAttribution, List attributions) {
-        if (newAttribution == null || newAttribution.getCause() == null || newAttribution.getCause().getId() == null) return;
+    public AdverseEventAttribution addAttribution(AdverseEventAttribution<? extends DomainObject> newAttribution, List attributions) {
+        if (newAttribution == null || newAttribution.getCause() == null || newAttribution.getCause().getId() == null) return null;
 
         for (Object o : attributions) {
             AdverseEventAttribution a = (AdverseEventAttribution)o;
-            if (a.getCause().getId().equals(newAttribution.getCause().getId())) return;
+            if (a.getCause().getId().equals(newAttribution.getCause().getId())) return a;
         }
 
         newAttribution.setAdverseEvent(this);
         attributions.add(newAttribution);
+        return newAttribution;
+    }
+
+    public void addAttribution(DomainObject cause, Attribution attribution) {
+        AdverseEventAttribution adverseEventAttribution = null;
+        if(cause instanceof CourseAgent) {
+            adverseEventAttribution = new CourseAgentAttribution((CourseAgent) cause);
+            getCourseAgentAttributions().add((CourseAgentAttribution)adverseEventAttribution);
+        }
+        if(cause instanceof DiseaseHistory){
+            adverseEventAttribution = new DiseaseAttribution((DiseaseHistory) cause);
+            getDiseaseAttributions().add((DiseaseAttribution) adverseEventAttribution);
+        }
+        if(cause instanceof RadiationIntervention) {
+            adverseEventAttribution = new RadiationAttribution((RadiationIntervention) cause);
+            getRadiationAttributions().add((RadiationAttribution)adverseEventAttribution);
+        }
+        if(cause instanceof OtherAEIntervention){
+            adverseEventAttribution = new OtherInterventionAttribution((OtherAEIntervention) cause);
+            getOtherInterventionAttributions().add((OtherInterventionAttribution) adverseEventAttribution);
+        }
+        if(cause instanceof BehavioralIntervention){
+            adverseEventAttribution = new BehavioralInterventionAttribution((BehavioralIntervention) cause);
+            getBehavioralInterventionAttributions().add((BehavioralInterventionAttribution) adverseEventAttribution);
+        }
+        if(cause instanceof BiologicalIntervention) {
+            adverseEventAttribution = new BiologicalInterventionAttribution((BiologicalIntervention) cause);
+            getBiologicalInterventionAttributions().add((BiologicalInterventionAttribution) adverseEventAttribution);
+        }
+        if(cause instanceof DietarySupplementIntervention) {
+            adverseEventAttribution = new DietarySupplementInterventionAttribution((DietarySupplementIntervention) cause);
+            getDietarySupplementInterventionAttributions().add((DietarySupplementInterventionAttribution) adverseEventAttribution);
+        }
+        if(cause instanceof GeneticIntervention) {
+            adverseEventAttribution = new GeneticInterventionAttribution((GeneticIntervention) cause);
+            getGeneticInterventionAttributions().add((GeneticInterventionAttribution) adverseEventAttribution);
+        }
+        if(cause instanceof MedicalDevice) {
+            adverseEventAttribution = new DeviceAttribution((MedicalDevice) cause);
+            getDeviceAttributions().add((DeviceAttribution) adverseEventAttribution);
+        }
+        if(cause instanceof SurgeryIntervention) {
+            adverseEventAttribution = new SurgeryAttribution((SurgeryIntervention) cause);
+            getSurgeryAttributions().add((SurgeryAttribution)adverseEventAttribution);
+        }
+        if(cause instanceof OtherCause) {
+            adverseEventAttribution = new OtherCauseAttribution((OtherCause) cause);
+            getOtherCauseAttributions().add((OtherCauseAttribution) adverseEventAttribution);
+        }
+        if(cause instanceof ConcomitantMedication) {
+            adverseEventAttribution = new ConcomitantMedicationAttribution((ConcomitantMedication) cause);
+            getConcomitantMedicationAttributions().add((ConcomitantMedicationAttribution) adverseEventAttribution);
+        }
+        adverseEventAttribution.setAdverseEvent(this);
+        if(attribution != null)  adverseEventAttribution.setAttribution(attribution);
     }
     
     /**

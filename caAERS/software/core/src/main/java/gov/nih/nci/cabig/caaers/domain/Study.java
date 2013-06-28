@@ -854,6 +854,13 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         return null;
     }
 
+    public StudyDevice findStudyDeviceByNameAndType(String commonName, String brandName, String type){
+       for(StudyDevice studyDevice : getActiveStudyDevices()){
+            if(studyDevice.isHavingSameNameAndType(commonName, brandName, type)) return studyDevice;
+       }
+       return null;
+    }
+
     public OtherIntervention findOtherInterventionById(Integer id){
         for(OtherIntervention otherIntervention : getOtherInterventions()){
             if(ObjectUtils.equals(id, otherIntervention.getId())) return otherIntervention;

@@ -1,25 +1,13 @@
 package gov.nih.nci.cabig.caaers.service.migrator.report;
 
 import gov.nih.nci.cabig.caaers.dao.InterventionSiteDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
-import gov.nih.nci.cabig.caaers.domain.CourseAgent;
-import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
-import gov.nih.nci.cabig.caaers.domain.OtherCause;
-import gov.nih.nci.cabig.caaers.domain.RadiationIntervention;
-import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
-import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.DeviceAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.DiseaseAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.RadiationAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.SurgeryAttribution;
+import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.attribution.*;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
+import org.apache.commons.collections15.CollectionUtils;
+import org.apache.commons.collections15.Predicate;
+import org.apache.cxf.common.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +34,9 @@ public class ExpeditedAdverseEventMigrator implements Migrator<ExpeditedAdverseE
 
             aeDest.setStartDate(aeSrc.getStartDate());
             aeDest.setEndDate(aeSrc.getEndDate());
-            
+             migrateCourseAgentAttributions(src,dest,aeSrc, aeDest, outcome);
+             migrateDeviceAttributions(src,dest,aeSrc, aeDest, outcome);
+
 //            migrateAttributions(src, dest, aeSrc, aeDest, outcome);
             destAdverseEvents.add(aeDest);
         }
@@ -56,25 +46,158 @@ public class ExpeditedAdverseEventMigrator implements Migrator<ExpeditedAdverseE
 
     }
 
+
+
+    private void migrateCourseAgentAttributions(ExpeditedAdverseEventReport src, ExpeditedAdverseEventReport dest, AdverseEvent aeSrc, AdverseEvent aeDest, DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome){
+
+        //  migrate course attributions
+        if(aeSrc.getCourseAgentAttributions().isEmpty()){
+            aeDest.getCourseAgentAttributions().clear();
+            return;
+        }
+
+        //take a local copy
+        List<CourseAgentAttribution> existingAdverseEventAttributions = new ArrayList<CourseAgentAttribution>(aeDest.getCourseAgentAttributions());
+
+
+        for(CourseAgentAttribution srcAdverseEventAttribution : aeSrc.getCourseAgentAttributions()){
+            //check if the attribution is present in destination
+            StudyAgent srcStudyAgent = srcAdverseEventAttribution.getCause().getStudyAgent();
+            if(srcStudyAgent == null){
+                outcome.addError("ER-CA-1", "Error migrating Course Agent Attribution. Could not find matching Agent information" );
+                return;
+            }
+            String agentToSearch = srcStudyAgent.getAgent() != null ? srcStudyAgent.getAgent().getNscNumber() : srcStudyAgent.getOtherAgent();
+            if(StringUtils.isEmpty(agentToSearch)){
+                outcome.addError("ER-CA-1", "Error migrating Course Agent Attribution. Could not find matching Agent information" );
+                return;
+            }
+            //check if the Cause is present in the destination report?
+            final CourseAgent existingCourseAgent = dest.findReportCourseAgentByNscNumber(agentToSearch);
+            if(existingCourseAgent == null){
+                outcome.addError("ER-CA-1", "Error migrating Course Agent Attribution. Could not find matching Agent in report" );
+                break;
+            }
+            //find if any attribution for this agent exist.
+            AdverseEventAttribution existingAttribution = CollectionUtils.find(existingAdverseEventAttributions, new Predicate<CourseAgentAttribution>() {
+                public boolean evaluate(CourseAgentAttribution adverseEventAttribution) {
+                    return adverseEventAttribution.getCause() != null && adverseEventAttribution.getCause().getStudyAgent().getId().equals(existingCourseAgent.getStudyAgent().getId());
+                }
+            });
+
+            if(existingAttribution != null){
+                existingAttribution.setAttribution(srcAdverseEventAttribution.getAttribution());
+                existingAdverseEventAttributions.remove(existingAttribution);
+            } else {
+                aeDest.addAttribution(existingCourseAgent, srcAdverseEventAttribution.getAttribution());
+            }
+        }
+
+        //remove unwanted attributions
+        for(CourseAgentAttribution unwantedAdverseEventAttribution : existingAdverseEventAttributions){
+            aeDest.getCourseAgentAttributions().remove(unwantedAdverseEventAttribution);
+        }
+    }
+
+
+    private void migrateDeviceAttributions(ExpeditedAdverseEventReport src, ExpeditedAdverseEventReport dest, AdverseEvent aeSrc, AdverseEvent aeDest, DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome){
+
+        //  migrate device attributions
+        if(aeSrc.getDeviceAttributions().isEmpty()){
+            aeDest.getDeviceAttributions().clear();
+            return;
+        }
+
+        //take a local copy
+        List<DeviceAttribution> existingAdverseEventAttributions = new ArrayList<DeviceAttribution>(aeDest.getDeviceAttributions());
+
+
+        for(DeviceAttribution srcAdverseEventAttribution : aeSrc.getDeviceAttributions()){
+            //check if the attribution is present in destination
+            MedicalDevice srcMedicalDevice = srcAdverseEventAttribution.getCause();
+            if(srcMedicalDevice == null){
+                outcome.addError("ER-CA-1", "Error migrating Device Attribution. Could not find matching Device information" );
+                return;
+            }
+
+            //check if the Cause is present in the destination report?
+            final MedicalDevice existingMedicalDevice = dest.findReportMedicalDevice(srcMedicalDevice);
+            if(existingMedicalDevice == null){
+                outcome.addError("ER-CA-1", "Error migrating MedicalDevice Attribution. Could not find matching Medical Device in report" );
+                break;
+            }
+            //find if any attribution for this agent exist.
+            AdverseEventAttribution existingAttribution = CollectionUtils.find(existingAdverseEventAttributions, new Predicate<DeviceAttribution>() {
+                public boolean evaluate(DeviceAttribution adverseEventAttribution) {
+                    return adverseEventAttribution.getCause() != null && adverseEventAttribution.getCause().getStudyDevice().getId().equals(existingMedicalDevice.getStudyDevice().getId());
+                }
+            });
+
+            if(existingAttribution != null){
+                existingAttribution.setAttribution(srcAdverseEventAttribution.getAttribution());
+                existingAdverseEventAttributions.remove(existingAttribution);
+            } else {
+                aeDest.addAttribution(existingMedicalDevice, srcAdverseEventAttribution.getAttribution());
+            }
+        }
+
+        //remove unwanted attributions
+        for(DeviceAttribution unwantedAdverseEventAttribution : existingAdverseEventAttributions){
+            aeDest.getDeviceAttributions().remove(unwantedAdverseEventAttribution);
+        }
+    }
+
+
     private void migrateAttributions(ExpeditedAdverseEventReport src, ExpeditedAdverseEventReport dest, AdverseEvent aeSrc, AdverseEvent aeDest, DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome){
     
     //  migrate course attributions
-     if(!aeSrc.getCourseAgentAttributions().isEmpty()){
-     	for(CourseAgentAttribution srcCAAttribution : aeSrc.getCourseAgentAttributions()){
-     		 CourseAgentAttribution attribution = new CourseAgentAttribution();
-              attribution.setAttribution(srcCAAttribution.getAttribution());
-              CourseAgent ca = dest.findReportCourseAgentByNscNumber(srcCAAttribution.getCause().getStudyAgent().getAgent().getNscNumber());
-              if(ca == null){
-                  outcome.addError("ER-CA-1", "Error migrating Course Agent Attribution. Could not find matching Agent in report" );
-                  break;
-              }
-              
-              attribution.setCause(ca);
-              attribution.setAdverseEvent(aeDest);
-     		 aeDest.getCourseAgentAttributions().add(attribution);
-     	}
-     	
+     if(aeSrc.getCourseAgentAttributions().isEmpty()){
+        aeDest.getCourseAgentAttributions().clear();
+        return;
      }
+
+        //take a local copy
+     List<CourseAgentAttribution> existingAdverseEventAttributions = new ArrayList<CourseAgentAttribution>(aeDest.getCourseAgentAttributions());
+
+
+     for(CourseAgentAttribution srcAdverseEventAttribution : aeSrc.getCourseAgentAttributions()){
+         //check if the attribution is present in destination
+         StudyAgent srcStudyAgent = srcAdverseEventAttribution.getCause().getStudyAgent();
+         if(srcStudyAgent == null){
+             outcome.addError("ER-CA-1", "Error migrating Course Agent Attribution. Could not find matching Agent information" );
+             return;
+         }
+         String agentToSearch = srcStudyAgent.getAgent() != null ? srcStudyAgent.getAgent().getNscNumber() : srcStudyAgent.getOtherAgent();
+         if(StringUtils.isEmpty(agentToSearch)){
+             outcome.addError("ER-CA-1", "Error migrating Course Agent Attribution. Could not find matching Agent information" );
+             return;
+         }
+         //check if the Cause is present in the destination report?
+         final CourseAgent existingCourseAgent = dest.findReportCourseAgentByNscNumber(srcAdverseEventAttribution.getCause().getStudyAgent().getAgent().getNscNumber());
+         if(existingCourseAgent == null){
+            outcome.addError("ER-CA-1", "Error migrating Course Agent Attribution. Could not find matching Agent in report" );
+            break;
+         }
+        //find if any attribution for this agent exist.
+         AdverseEventAttribution existingAttribution = CollectionUtils.find(existingAdverseEventAttributions, new Predicate<CourseAgentAttribution>() {
+             public boolean evaluate(CourseAgentAttribution adverseEventAttribution) {
+                 return adverseEventAttribution.getCause() != null && adverseEventAttribution.getCause().getStudyAgent().getId().equals(existingCourseAgent.getStudyAgent().getId());
+             }
+         });
+
+         if(existingAttribution != null){
+             existingAttribution.setAttribution(srcAdverseEventAttribution.getAttribution());
+             existingAdverseEventAttributions.remove(existingAttribution);
+         } else {
+             aeDest.addAttribution(existingCourseAgent, srcAdverseEventAttribution.getAttribution());
+         }
+     }
+
+        //remove unwanted attributions
+     for(CourseAgentAttribution courseAgentAttribution : existingAdverseEventAttributions){
+         aeDest.getCourseAgentAttributions().remove(courseAgentAttribution);
+     }
+
      
      // migrate concomitant medications attributions
      

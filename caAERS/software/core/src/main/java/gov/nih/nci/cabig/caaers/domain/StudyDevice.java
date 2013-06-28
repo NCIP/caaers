@@ -404,6 +404,15 @@ public class StudyDevice extends StudyIntervention {
         setStudyDeviceINDAssociationsInternal(StudyDeviceINDAssociations);
     }
 
+    public boolean isHavingSameNameAndType(String commonName, String brandName, String deviceType){
+        if(StringUtils.equals(commonName,  getCommonName()) &&
+                StringUtils.equals(brandName, getBrandName()) &&
+                StringUtils.equals(deviceType,  getDeviceType())) return true;
+
+        return false;
+
+    }
+
 
     /* (non-Javadoc)
      * @see gov.nih.nci.cabig.caaers.domain.StudyIntervention#equals(java.lang.Object)
