@@ -2062,7 +2062,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
 
     public RadiationIntervention findReportRadiationInterventionByAdministrationAndLastTreatmentDate(RadiationIntervention radiationIntervention){
     	for(RadiationIntervention ri : getRadiationInterventions()){
-    		if(ri.getLastTreatmentDate().equals(radiationIntervention.getLastTreatmentDate()) && ri.getAdministration().
+    		if(DateUtils.compareDate(ri.getLastTreatmentDate(),radiationIntervention.getLastTreatmentDate()) ==0 && ri.getAdministration().
     				equals(radiationIntervention.getAdministration())) {
 	    		return ri;
 	    	}
