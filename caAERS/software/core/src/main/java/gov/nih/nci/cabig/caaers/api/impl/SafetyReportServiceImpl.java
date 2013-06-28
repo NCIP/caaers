@@ -246,7 +246,8 @@ public class SafetyReportServiceImpl {
         DomainObjectImportOutcome<ExpeditedAdverseEventReport> outCome = new DomainObjectImportOutcome<ExpeditedAdverseEventReport>();
         aeReportSynchronizer.migrate(aeDestReport, dbReport, outCome);
         if(outCome.hasErrors()) errors.addValidationErrors(outCome.getValidationErrors().getErrors());
-
+        expeditedAdverseEventReportDao.evict(aeDestReport); //aeDestReport = null;
+        expeditedAdverseEventReportDao.evict(aeSrcReport); aeSrcReport = null;
         expeditedAdverseEventReportDao.save(dbReport);
 
         if(aeDestReport.getReports() == null || aeDestReport.getReports().isEmpty()) {
@@ -331,6 +332,7 @@ public class SafetyReportServiceImpl {
 		   logger.error("Unable to Create a Report from Safety Management Service", e);
 		   Helper.populateError(response, "WS_GEN_000",e.getMessage() );
 	   }
+	   expeditedAdverseEventReportDao.clearSession();
        return response;
 	}
 
