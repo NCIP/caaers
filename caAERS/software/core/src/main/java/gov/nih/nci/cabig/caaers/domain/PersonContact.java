@@ -224,6 +224,7 @@ public abstract class PersonContact extends Person {
     	this.setMiddleName(person.getMiddleName());
     	this.setTitle(person.getTitle());
     	this.setFax(person.getFaxNumber());
+    	this.setFaxNumber(person.getFaxNumber());
     	this.setPhoneNumber(person.getPhoneNumber());
     	this.setEmailAddress(person.getEmailAddress());
         if(person.isUser()) setCaaersUser(person.getCaaersUser());
@@ -243,6 +244,7 @@ public abstract class PersonContact extends Person {
     	this.setMiddleName(siteResearchStaff.getMiddleName());
     	this.setTitle(siteResearchStaff.getTitle());
     	this.setFax(siteResearchStaff.getFaxNumber());
+    	this.setFaxNumber(siteResearchStaff.getFaxNumber());
     	this.setPhoneNumber(siteResearchStaff.getPhoneNumber());
     	this.setEmailAddress(siteResearchStaff.getEmailAddress());
         this.setAddress(siteResearchStaff.getAddress());
@@ -262,6 +264,7 @@ public abstract class PersonContact extends Person {
         this.setMiddleName(siteInvestigator.getMiddleName());
         this.setTitle(siteInvestigator.getTitle());
         this.setFax(siteInvestigator.getFaxNumber());
+        this.setFaxNumber(siteInvestigator.getFaxNumber());
         this.setPhoneNumber(siteInvestigator.getPhoneNumber());
         this.setEmailAddress(siteInvestigator.getEmailAddress());
         this.setAddress(siteInvestigator.getAddress());
@@ -280,6 +283,7 @@ public abstract class PersonContact extends Person {
     	this.setMiddleName(user.getMiddleName());
     	this.setTitle(user.getTitle());
     	this.setFax(user.getFaxNumber());
+    	this.setFaxNumber(user.getFaxNumber());
     	this.setPhoneNumber(user.getPhoneNumber());
     	this.setEmailAddress(user.getEmailAddress());
         this.setCaaersUser(user);
