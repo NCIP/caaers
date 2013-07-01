@@ -67,6 +67,14 @@ public class AdverseEventReportingPeriodMigrator extends CompositeMigrator<Adver
                }
         }
 
+        // The first course of the Study cannot be greater than start date of the course associated with Expedited report.
+
+        if  ( src.getAssignment() != null && src.getAssignment().getStartDateOfFirstCourse() != null && src.getStartDate() != null &&
+                src.getAssignment().getStartDateOfFirstCourse().after(src.getStartDate()) ){
+            outcome.addError("WS_AEMS_084", "The first course of the Study cannot be greater than start date of the course associated with Expedited report.");
+            return;
+        }
+
        //fetch the study
        Study studySrc = src.getStudy();
        if(studySrc == null || studySrc.getFundingSponsorIdentifierValue() == null){
@@ -140,6 +148,7 @@ public class AdverseEventReportingPeriodMigrator extends CompositeMigrator<Adver
         dest.setEndDate(src.getEndDate());
         dest.setDescription(src.getDescription());
 
+
         //migrate TAC
         dest.setTreatmentAssignmentDescription(src.getTreatmentAssignmentDescription());
         if(src.getTreatmentAssignment() != null){
@@ -165,6 +174,9 @@ public class AdverseEventReportingPeriodMigrator extends CompositeMigrator<Adver
 
         //assignment
         dest.setAssignment(assignment);
+
+        //migrate the first course details.
+        dest.getAssignment().setStartDateOfFirstCourse(src.getAssignment().getStartDateOfFirstCourse());
 
 
     }
