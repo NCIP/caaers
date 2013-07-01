@@ -83,6 +83,16 @@ public class TreatmentTab extends AeTab {
         return map;
     }
 
+    public  void  postProcess(javax.servlet.http.HttpServletRequest request,ExpeditedAdverseEventInputCommand command, org.springframework.validation.Errors errors) {
+
+        if ( command.getAeReport().getTreatmentInformation().getFirstCourseDate() != null &&
+                command.getAeReport().getTreatmentInformation().getAdverseEventCourse().getDate() != null &&
+                command.getAeReport().getTreatmentInformation().getFirstCourseDate().after(command.getAeReport().getTreatmentInformation().getAdverseEventCourse().getDate())) {
+            errors.reject("The first course of the Study cannot be greater than start date of the course associated with Expedited report.");
+        }
+
+    }
+
     public ConfigProperty getConfigurationProperty() {
         return configurationProperty;
     }
