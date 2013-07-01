@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.service.synchronizer.report;
 
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.attribution.DiseaseAttribution;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
 
@@ -27,9 +28,11 @@ public class ExpeditedAdverseEventSynchronizer implements Migrator<ExpeditedAdve
             AdverseEvent aeFound = dbAeReport.findAdverseEventByIdTermAndDates(ae);
             if(aeFound != null) {
                 synchronizeAdverseEvent(ae, aeFound);
+                synchronizeDiseaseAttributions(xmlAeReport, dbAeReport, ae, aeFound);
                 aeIndex.remove(aeFound.getId());
             }else {
                 newlyFoundAEs.add(ae);
+                synchronizeDiseaseAttributions(xmlAeReport, dbAeReport, ae, ae);
             }
         }
 
@@ -46,5 +49,11 @@ public class ExpeditedAdverseEventSynchronizer implements Migrator<ExpeditedAdve
     public void synchronizeAdverseEvent(AdverseEvent xmlAe, AdverseEvent dbAe){
         dbAe.setStartDate(xmlAe.getStartDate());
         dbAe.setEndDate(xmlAe.getEndDate());
+    }
+
+    public void synchronizeDiseaseAttributions(ExpeditedAdverseEventReport xmlAeReport, ExpeditedAdverseEventReport dbAeReport, AdverseEvent xmlAe, AdverseEvent dbAe){
+        for(DiseaseAttribution attribution : dbAe.getDiseaseAttributions()){
+            attribution.setCause(dbAeReport.getDiseaseHistory());
+        }
     }
 }

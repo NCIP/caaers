@@ -41,7 +41,7 @@ public class ExpeditedAdverseEventMigrator implements Migrator<ExpeditedAdverseE
             migrateSurgeryAttributions(src,dest,aeSrc, aeDest, outcome);
             migrateRadiationAttributions(src,dest,aeSrc, aeDest, outcome);
             migrateConcomitantMedicationAttributions(src,dest,aeSrc, aeDest, outcome);
-//            migrateDiseaseAttributions(src,dest,aeSrc, aeDest, outcome);
+            migrateDiseaseAttributions(src,dest,aeSrc, aeDest, outcome);
             migrateOtherCauseAttributions(src,dest,aeSrc, aeDest, outcome);
             migrateOtherAdverseEventInterventionAttributions(src.getBehavioralInterventions(), dest.getBehavioralInterventions(), aeSrc.getBehavioralInterventionAttributions(), aeDest.getBehavioralInterventionAttributions(), aeDest, outcome);
             migrateOtherAdverseEventInterventionAttributions(src.getBiologicalInterventions(), dest.getBiologicalInterventions(), aeSrc.getBiologicalInterventionAttributions(), aeDest.getBiologicalInterventionAttributions(), aeDest, outcome);
