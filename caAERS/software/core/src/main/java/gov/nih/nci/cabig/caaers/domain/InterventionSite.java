@@ -40,4 +40,21 @@ public class InterventionSite extends AbstractImmutableDomainObject {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || !(o instanceof InterventionSite)) return false;
+
+        InterventionSite that = (InterventionSite) o;
+
+        if (!name.equals(that.name)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
+    }
 }
