@@ -31,7 +31,7 @@ public class StudyOrganizationsQuery extends AbstractQuery {
     	setParameter(ORGANIZATION_ID, orgId);
     }
 
-    public void filterByStudyId(int studyId) {
+    public void filterByStudyId(Integer studyId) {
     	andWhere(" so.retiredIndicator <> true ");
     	andWhere(" so.study.id = :" + STUDY_ID);
     	setParameter(STUDY_ID, studyId);
