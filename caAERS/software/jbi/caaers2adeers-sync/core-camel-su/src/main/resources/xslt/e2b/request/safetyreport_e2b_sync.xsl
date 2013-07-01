@@ -81,11 +81,30 @@
 									</xsl:call-template>
 								</ae:diagnosisDate>
 							</xsl:if>
-
 							<!--Zero or more repetitions: -->
-							<xsl:for-each select="//medicalhistoryepisode">
-								<xsl:call-template name="metastaticDiseaseSite" />
-								<xsl:call-template name="disease_diseaseSite" />
+							<xsl:for-each
+								select="//medicalhistoryepisode[patientmedicalcomment = 'Study Disease']">
+								<xsl:call-template name="studyDiseaseTemplate" />
+							</xsl:for-each>
+							<xsl:for-each
+								select="//medicalhistoryepisode[patientmedicalcomment = 'Other Study Disease']">
+								<xsl:call-template name="otherStudyDiseaseTemplate" />
+							</xsl:for-each>
+							<xsl:for-each
+								select="//medicalhistoryepisode[patientmedicalcomment = 'Disease Site']">
+								<xsl:call-template name="diseaseSiteTemplate" />
+							</xsl:for-each>
+							<xsl:for-each
+								select="//medicalhistoryepisode[patientmedicalcomment = 'Other Disease Site']">
+								<xsl:call-template name="otherDiseaseSiteTemplate" />
+							</xsl:for-each>
+							<xsl:for-each
+								select="//medicalhistoryepisode[patientmedicalcomment = 'Other Metastatic Site']">
+								<xsl:call-template name="otherMetastaticSiteTemplate" />
+							</xsl:for-each>
+							<xsl:for-each
+								select="//medicalhistoryepisode[patientmedicalcomment = 'Metastatic Site']">
+								<xsl:call-template name="metastaticSiteTemplate" />
 							</xsl:for-each>
 						</ae:diseaseHistory>
 						<xsl:call-template name="participantHistory"
@@ -166,22 +185,32 @@
 		</soapenv:Envelope>
 	</xsl:template>
 
-	<xsl:template name="disease_diseaseSite">
+
+	<xsl:template name="studyDiseaseTemplate">
 		<xsl:if test="./patientmedicalcomment = 'Study Disease' ">
 			<ae:primaryDisease>
 				<xsl:value-of select="patientepisodename" />
 			</ae:primaryDisease>
 		</xsl:if>
+	</xsl:template>
+
+	<xsl:template name="diseaseSiteTemplate">
 		<xsl:if test="./patientmedicalcomment = 'Disease Site' ">
 			<ae:codedPrimaryDiseaseSite>
 				<xsl:value-of select="patientepisodename" />
 			</ae:codedPrimaryDiseaseSite>
 		</xsl:if>
+	</xsl:template>
+
+	<xsl:template name="otherDiseaseSiteTemplate">
 		<xsl:if test="./patientmedicalcomment = 'Other Disease Site' ">
 			<ae:otherPrimaryDiseaseSite>
 				<xsl:value-of select="patientepisodename" />
 			</ae:otherPrimaryDiseaseSite>
 		</xsl:if>
+	</xsl:template>
+
+	<xsl:template name="otherStudyDiseaseTemplate">
 		<xsl:if test="./patientmedicalcomment = 'Other Study Disease' ">
 			<ae:otherPrimaryDisease>
 				<xsl:value-of select="patientepisodename" />
@@ -189,7 +218,7 @@
 		</xsl:if>
 	</xsl:template>
 
-	<xsl:template name="metastaticDiseaseSite">
+	<xsl:template name="metastaticSiteTemplate">
 		<xsl:if test="./patientmedicalcomment = 'Metastatic Site' ">
 			<ae:metastaticDiseaseSite>
 				<ae:codedSite>
@@ -200,6 +229,9 @@
 				</ae:codedSite>
 			</ae:metastaticDiseaseSite>
 		</xsl:if>
+	</xsl:template>
+
+	<xsl:template name="otherMetastaticSiteTemplate">
 		<xsl:if test="./patientmedicalcomment = 'Other Metastatic Site' ">
 			<ae:metastaticDiseaseSite>
 				<ae:otherSite>
