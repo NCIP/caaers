@@ -47,14 +47,12 @@ public class LabMigrator implements Migrator<ExpeditedAdverseEventReport> {
     		destLabs = new ArrayList<Lab>();
     	}
 
-        List<String> labNames  = new ArrayList<String>();
-
-        for ( Lab lab : srcLabs) {
-            labNames.add(lab.getLabTerm().getTerm());
-        }
-        List<LabTerm> labTermList = loadLabTerms(labNames);
     	// Copy the Labs Information from Source to Destination.
     	for ( Lab lab : srcLabs) {
+			 List<String> labNames  = new ArrayList<String>();
+			 labNames.add(lab.getLabTerm().getTerm());
+			 List<LabTerm> labTermList = loadLabTerms(labNames);
+    		  
             LabTerm result = findLabTerm(labTermList, lab.getLabTerm());
             if ( result == null) {
                 outcome.addError("ER-LM-1", "Lab term is not found for " + lab.getLabTerm().getTerm());
