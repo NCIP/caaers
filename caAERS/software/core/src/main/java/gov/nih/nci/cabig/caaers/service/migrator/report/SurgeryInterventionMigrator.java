@@ -37,7 +37,12 @@ public class SurgeryInterventionMigrator implements Migrator<ExpeditedAdverseEve
 		List<SurgeryIntervention> destSurgeryInterventions = aeReportDest.getSurgeryInterventions();
     	
     	if ( srcSurgeryInterventions == null || srcSurgeryInterventions.size() == 0) {
-    		outcome.addWarning("WR-SIM-1", "Input doesn't contain any SurgeryIntervention Values.");
+    		outcome.addWarning("WR-SIM-1", "Input doesn't contain any Surgery Intervention Values.");
+    		return;
+    	}
+    	
+    	if ( srcSurgeryInterventions.size() > 1) {
+    		outcome.addError("ER-SIM-1", "Input contains more than one Surgery Intervention");
     		return;
     	}
 		
@@ -48,8 +53,8 @@ public class SurgeryInterventionMigrator implements Migrator<ExpeditedAdverseEve
         Study study = aeReportDest.getStudy();
 
         List<OtherIntervention> otherSurgeryList = study.getActiveStudySurgeries();
-        if ( otherSurgeryList == null || otherSurgeryList.isEmpty() ) {
-            outcome.addError("ER-SIM-1", "Study doesn't contain any Active Surgery Radiation." );
+        if ( srcSurgeryInterventions.size() > 0 && ( otherSurgeryList == null || otherSurgeryList.isEmpty() ) ) {
+            outcome.addError("ER-SIM-2", "Study doesn't contain any Active Surgery Intervention." );
             return;
         } 
         
@@ -79,11 +84,11 @@ public class SurgeryInterventionMigrator implements Migrator<ExpeditedAdverseEve
                       
            List<InterventionSite> resultLst = interventionSiteDao.searchByExample(site, false);
            if(resultLst == null || resultLst.isEmpty()) {
-           	outcome.addError("ER-SIM-2", "Matching intervention site is not found for " + site.getName());
+           	outcome.addError("ER-SIM-3", "Matching surgery intervention site is not found for " + site.getName());
            	return null;
            }
            if(resultLst.size() > 1 ) {
-           	outcome.addError("ER-SIM-3", "Multiple matching intervention sites found for " + site.getName());
+           	outcome.addError("ER-SIM-4", "Multiple matching suregery intervention sites found for " + site.getName());
            	return null;
            }
            return resultLst.get(0);
@@ -111,7 +116,7 @@ public class SurgeryInterventionMigrator implements Migrator<ExpeditedAdverseEve
 	 */
 	private void validateSurgeyInterventionDates(SurgeryIntervention surgeryIntervention,  DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome){
 		if(surgeryIntervention.getInterventionDate() != null && surgeryIntervention.getInterventionDate().after(new Date())){
-			outcome.addError("ER-SIM-4", "'Surgery Intervention date' cannot be a future date.");
+			outcome.addError("ER-SIM-5", "'Surgery Intervention date' cannot be a future date.");
 		}
 	}
 }
