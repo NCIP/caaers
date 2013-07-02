@@ -48,15 +48,10 @@ public class LabMigrator implements Migrator<ExpeditedAdverseEventReport> {
     	}
 
     	// Copy the Labs Information from Source to Destination.
-    	for ( Lab lab : srcLabs) {
-			 List<String> labNames  = new ArrayList<String>();
-			 labNames.add(lab.getLabTerm().getTerm());
-			 List<LabTerm> labTermList = loadLabTerms(labNames);
-    		  
-            LabTerm result = findLabTerm(labTermList, lab.getLabTerm());
-            if ( result == null) {
-                outcome.addError("ER-LM-1", "Lab term is not found for " + lab.getLabTerm().getTerm());
-                break;
+    	for ( Lab lab : srcLabs) {			     		  
+            LabTerm result = findLabTerm(lab.getLabTerm(), outcome);
+            if ( outcome.hasErrors()) {
+                return;
             }
     		Lab destLab = new Lab();
             destLab.setLabTerm(result);
@@ -82,30 +77,21 @@ public class LabMigrator implements Migrator<ExpeditedAdverseEventReport> {
 		dest.setSite(src.getSite());
 		dest.setNormalRange(src.getNormalRange());
 	}
-
-    /**
-     * Load Labterm values.
-     */
-    private  List<LabTerm> loadLabTerms(List<String> labNames) {
-
-        String[] labsArr = labNames.toArray(new String[labNames.size()]);
-        List<LabTerm> resultSites = labTermDao.getBySubname(labsArr, null);
-
-        return resultSites;
-
-    }
-
+    
     /**
      * find LabTerm value for given input.
      */
-    private LabTerm findLabTerm(List<LabTerm> labTermList, LabTerm labTerm) {
-        LabTerm result  = null;
-        for (LabTerm lt :  labTermList) {
-            if ( lt.getTerm() != null && labTerm.getTerm() != null && lt.getTerm().equals(labTerm.getTerm()) ) {
-                result = lt;
-                break;
-            }
+    private LabTerm findLabTerm(LabTerm labTerm, DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome) {        
+        
+        List<LabTerm> resultLst = labTermDao.searchByExample(labTerm, false);
+        if(resultLst == null || resultLst.isEmpty()) {
+        	outcome.addError("ER-LM-1", "Matching lab term is not found for " + labTerm.getTerm());
+        	return null;
         }
-        return result;
+        if(resultLst.size() > 1 ) {
+        	outcome.addError("ER-LM-2", "Multiple matching lab terms found for " + labTerm.getTerm() );
+        	return null;
+        }
+        return resultLst.get(0);
     }
 }
