@@ -43,19 +43,11 @@ public class SAEReportPreExistingConditionMigrator implements Migrator<Expedited
     	if ( destPreExistingConditions == null ) {
     		destPreExistingConditions = new ArrayList<SAEReportPreExistingCondition>();
     	}
-
-        List<String> pcs = new ArrayList<String>();
-
-        for ( SAEReportPreExistingCondition spc : srcPreExistingConditions) {
-            pcs.add(spc.getPreExistingCondition().getText());
-        }
-        List<PreExistingCondition> preExistingConditionList =    loadPreExistingConditions(pcs);
-
+        
     	// Copy the SAEReportPriorTherapys Information from Source to Destination.
     	for ( SAEReportPreExistingCondition spc : srcPreExistingConditions) {
-            PreExistingCondition pc =  findPreconditions(preExistingConditionList, spc.getPreExistingCondition());
-            if ( pc == null) {
-                outcome.addError("ER-SPM-1", "SAE report pre-existing conditions are not matching.");
+            PreExistingCondition pc =  findPreconditions(spc.getPreExistingCondition(), outcome);
+            if ( outcome.hasErrors()) {
                 return;
             }
     		SAEReportPreExistingCondition destPreExistingCondition = new SAEReportPreExistingCondition();
@@ -79,24 +71,18 @@ public class SAEReportPreExistingConditionMigrator implements Migrator<Expedited
     /**
      *   find the Pre Existing Condition from the List.
      */
-     private PreExistingCondition findPreconditions(List<PreExistingCondition> preExistingConditionList, PreExistingCondition pc) {
-         PreExistingCondition result = null;
-         for (PreExistingCondition iter : preExistingConditionList) {
-              if(iter.getText().equals(pc.getText())) {
-                  result = iter;
-                  break;
-              }
+     private PreExistingCondition findPreconditions(PreExistingCondition pc, DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome) {         
+         
+         List<PreExistingCondition> resultLst = preExistingConditionDao.searchByExample(pc, false);
+         if(resultLst == null || resultLst.isEmpty()) {
+         	outcome.addError("ER-SPM-1", "Matching preExisting condition is not found for " + pc.getText());
+         	return null;
          }
-         return result;
+         if(resultLst.size() > 1 ) {
+         	outcome.addError("ER-SPM-2", "Multiple matching preExisting conditions found for " + pc.getText() );
+         	return null;
+         }
+         return resultLst.get(0);
      }
-    /**
-     * query the existing pre conditions from the database.
-     * @param pcs
-     * @return
-     */
-    private List<PreExistingCondition> loadPreExistingConditions(List<String> pcs) {
-        String[] pcsArr = pcs.toArray(new String[pcs.size()]);
-        return preExistingConditionDao.getBySubnames(pcsArr);
-
-    }
+    
 }

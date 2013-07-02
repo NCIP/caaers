@@ -28,28 +28,28 @@ public class RadiationInterventionMigrator implements Migrator<ExpeditedAdverseE
     		outcome.addWarning("WR-RIM-1", "Input doesn't contain any Radiation values, so skipping this step.");
     		return;
     	}
+    	
+    	if ( srcRadiations.size() > 1) {
+    		outcome.addError("ER-RIM-1", "Input contains more than one Radiation Intervention");
+    		return;
+    	}
 
         // 1. Load the study.
         Study study = aeReportDest.getStudy();
 
         List<OtherIntervention> otherStudyRadiationList = study.getActiveStudyRadiations();
+        if ( srcRadiations.size() > 0 && (otherStudyRadiationList == null || otherStudyRadiationList.isEmpty()) ) {
+            outcome.addError("ER-RIM-2", "Study doesn't contain any Active Radiation Intervention." );
+            return;
+        } 
+        
+        OtherIntervention oi = otherStudyRadiationList.get(0);
 
     	if ( destRadiations == null ) {
     		destRadiations = new ArrayList<RadiationIntervention>();
     	}
     	// Copy the Labs Information from Source to Destination.
     	for ( RadiationIntervention ri : srcRadiations) {
-            // NOTE: As per discussion, Always pick the first Radiation Intervention defined on Study. -- To be Fixed.
-
-            OtherIntervention oi = null ;
-            if ( otherStudyRadiationList.size() > 0) {
-                oi = otherStudyRadiationList.get(0);
-            }
-
-            if ( oi == null ) {
-                outcome.addError("ER-RIM-1", "Study doesn't contain any Active Radiation Intervention." );
-                break;
-            }
             RadiationIntervention destRI = new RadiationIntervention();
             destRI.setStudyRadiation(oi);
             destRI.setReport(aeReportDest);
