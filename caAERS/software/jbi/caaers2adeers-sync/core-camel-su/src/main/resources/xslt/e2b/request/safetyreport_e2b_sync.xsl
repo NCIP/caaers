@@ -162,6 +162,110 @@
 							<xsl:call-template name="otherCause" />
 						</xsl:for-each>
 
+						<ae:additionalInformation>
+							<xsl:if test="/ichicsr/safetyreport/autopsyreportflag">
+								<ae:autopsyReport>
+									<xsl:call-template name="convertOneTwotoBoolean">
+										<xsl:with-param name="oneTwoType"
+											select="/ichicsr/safetyreport/autopsyreportflag" />
+									</xsl:call-template>
+								</ae:autopsyReport>
+							</xsl:if>
+							<xsl:if test="/ichicsr/safetyreport/consultsflag">
+								<ae:consults>
+									<xsl:call-template name="convertOneTwotoBoolean">
+										<xsl:with-param name="oneTwoType"
+											select="/ichicsr/safetyreport/consultsflag" />
+									</xsl:call-template>
+								</ae:consults>
+							</xsl:if>
+							<xsl:if test="/ichicsr/safetyreport/dischargesummaryflag">
+								<ae:dischargeSummary>
+									<xsl:call-template name="convertOneTwotoBoolean">
+										<xsl:with-param name="oneTwoType"
+											select="/ichicsr/safetyreport/dischargesummaryflag" />
+									</xsl:call-template>
+								</ae:dischargeSummary>
+							</xsl:if>
+							<xsl:if test="/ichicsr/safetyreport/flowsheetscrfsflag">
+								<ae:flowCharts>
+									<xsl:call-template name="convertOneTwotoBoolean">
+										<xsl:with-param name="oneTwoType"
+											select="/ichicsr/safetyreport/flowsheetscrfsflag" />
+									</xsl:call-template>
+								</ae:flowCharts>
+							</xsl:if>
+							<xsl:if test="/ichicsr/safetyreport/labreportsflag">
+								<ae:labReports>
+									<xsl:call-template name="convertOneTwotoBoolean">
+										<xsl:with-param name="oneTwoType"
+											select="/ichicsr/safetyreport/labreportsflag" />
+									</xsl:call-template>
+								</ae:labReports>
+							</xsl:if>
+							<xsl:if test="/ichicsr/safetyreport/obaformsflag">
+								<ae:obaForm>
+									<xsl:call-template name="convertOneTwotoBoolean">
+										<xsl:with-param name="oneTwoType"
+											select="/ichicsr/safetyreport/obaformsflag" />
+									</xsl:call-template>
+								</ae:obaForm>
+							</xsl:if>
+							<xsl:if test="/ichicsr/safetyreport/otheradditionalflag">
+								<ae:other>
+									<xsl:call-template name="convertOneTwotoBoolean">
+										<xsl:with-param name="oneTwoType"
+											select="/ichicsr/safetyreport/otheradditionalflag" />
+									</xsl:call-template>
+								</ae:other>
+							</xsl:if>
+							<xsl:if test="/ichicsr/safetyreport/pathologyreportflag">
+								<ae:pathologyReport>
+									<xsl:call-template name="convertOneTwotoBoolean">
+										<xsl:with-param name="oneTwoType"
+											select="/ichicsr/safetyreport/pathologyreportflag" />
+									</xsl:call-template>
+								</ae:pathologyReport>
+							</xsl:if>
+							<xsl:if test="/ichicsr/safetyreport/progressnotesflag">
+								<ae:progressNotes>
+									<xsl:call-template name="convertOneTwotoBoolean">
+										<xsl:with-param name="oneTwoType"
+											select="/ichicsr/safetyreport/progressnotesflag" />
+									</xsl:call-template>
+								</ae:progressNotes>
+							</xsl:if>
+							<xsl:if test="/ichicsr/safetyreport/radiologyreportflag">
+								<ae:radiologyReports>
+									<xsl:call-template name="convertOneTwotoBoolean">
+										<xsl:with-param name="oneTwoType"
+											select="/ichicsr/safetyreport/radiologyreportflag" />
+									</xsl:call-template>
+								</ae:radiologyReports>
+							</xsl:if>
+							<xsl:if test="/ichicsr/safetyreport/referrallettersflag">
+								<ae:referralLetters>
+									<xsl:call-template name="convertOneTwotoBoolean">
+										<xsl:with-param name="oneTwoType"
+											select="/ichicsr/safetyreport/referrallettersflag" />
+									</xsl:call-template>
+								</ae:referralLetters>
+							</xsl:if>
+							<xsl:if test="/ichicsr/safetyreport/irbsummaryreportflag">
+								<ae:irbReport>
+									<xsl:call-template name="convertOneTwotoBoolean">
+										<xsl:with-param name="oneTwoType"
+											select="/ichicsr/safetyreport/irbsummaryreportflag" />
+									</xsl:call-template>
+								</ae:irbReport>
+							</xsl:if>
+							<xsl:if test="/ichicsr/safetyreport/documentlist">
+								<ae:otherInformation>
+									<xsl:value-of select="/ichicsr/safetyreport/documentlist" />
+								</ae:otherInformation>
+							</xsl:if>
+						</ae:additionalInformation>
+
 						<!--1 or more repetitions: -->
 						<ae:report>
 							<ae:caseNumber>
@@ -225,7 +329,6 @@
 					<ae:name>
 						<xsl:value-of select="patientepisodename" />
 					</ae:name>
-					<!-- <aer:category>?</aer:category> -->
 				</ae:codedSite>
 			</ae:metastaticDiseaseSite>
 		</xsl:if>
