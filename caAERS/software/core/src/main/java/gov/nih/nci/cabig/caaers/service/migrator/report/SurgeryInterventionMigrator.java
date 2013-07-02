@@ -48,15 +48,14 @@ public class SurgeryInterventionMigrator implements Migrator<ExpeditedAdverseEve
         Study study = aeReportDest.getStudy();
 
         List<OtherIntervention> otherSurgeryList = study.getActiveStudySurgeries();
-        List<String> iSites = new ArrayList<String>() ;
-        for ( SurgeryIntervention surIntervention : srcSurgeryInterventions) {
-            iSites.add(surIntervention.getInterventionSite().getName());
-        }
-
-        List<InterventionSite> interventionSitesList = loadInterventionSites(iSites);
+       
 
     	// Copy the SurgeryInterventions Information from Source to Destination.
     	for ( SurgeryIntervention surIntervention : srcSurgeryInterventions) {
+    		 List<String> iSites = new ArrayList<String>() ;
+    	     iSites.add(surIntervention.getInterventionSite().getName());
+
+    	        List<InterventionSite> interventionSitesList = loadInterventionSites(iSites);
             // NOTE: As per discussion, Always pick the first Surgery Intervention defined on Study. -- To be Fixed.
 
             OtherIntervention oi = null;
