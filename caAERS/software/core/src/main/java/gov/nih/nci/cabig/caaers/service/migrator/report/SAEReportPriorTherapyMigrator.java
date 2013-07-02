@@ -43,18 +43,10 @@ public class SAEReportPriorTherapyMigrator implements Migrator<ExpeditedAdverseE
     		destSAEReportPriorTherapys = new ArrayList<SAEReportPriorTherapy>();
     	}
 
-        List<String> pTherapies = new ArrayList<String>();
-
-        for ( SAEReportPriorTherapy spt : srcSAEReportPriorTherapys) {
-            pTherapies.add(spt.getPriorTherapy().getText());
-        }
-        List<PriorTherapy> priorTherapyList = loadPriorTherapies(pTherapies);
-
     	// Copy the SAEReportPriorTherapys Information from Source to Destination.
     	for ( SAEReportPriorTherapy spt : srcSAEReportPriorTherapys) {
-            PriorTherapy pt = findPriorTherapies(priorTherapyList, spt.getPriorTherapy());
-            if (pt == null) {
-                outcome.addWarning("ER-SPT-1", "SAE Report Prior Therapy Values are not matching.");
+            PriorTherapy pt = findPriorTherapy(spt.getPriorTherapy(), outcome);
+            if (outcome.hasErrors()) {
                 return;
             }
     		validateSAEREportPriorTherapyDates(spt, outcome);
@@ -81,26 +73,20 @@ public class SAEReportPriorTherapyMigrator implements Migrator<ExpeditedAdverseE
     /**
      *  find the Prior Therapy from List.
      */
-    private PriorTherapy findPriorTherapies(List<PriorTherapy> priorTherapyList, PriorTherapy pt) {
-        PriorTherapy result = null;
-        for ( PriorTherapy iter: priorTherapyList) {
-            if (iter.getText().equals(pt.getText())) {
-                result = iter;
-                break;
-            }
+    private PriorTherapy findPriorTherapy(PriorTherapy pt, DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome) {
+                
+        List<PriorTherapy> resultLst = priorTherapyDao.searchByExample(pt, false);
+        if(resultLst == null || resultLst.isEmpty()) {
+        	outcome.addError("ER-SPT-1", "Matching prior therapy is not found for " + pt.getText() );
+        	return null;
         }
-        return result;
+        if(resultLst.size() > 1 ) {
+        	outcome.addError("ER-SPT-2", "Multiple matching prior therapies found for " + pt.getText() );
+        	return null;
+        }
+        return resultLst.get(0);
     }
 
-
-    /**
-     *   Load the Prior Therapies.
-     */
-    private List<PriorTherapy> loadPriorTherapies(List<String> pTherapies) {
-        String[] pTherapiesArr = pTherapies.toArray(new String[pTherapies.size()]) ;
-        return priorTherapyDao.getBySubnames(pTherapiesArr);
-    }
-	
 	/**
 	 * Validate SAEREportPriorTherapy Dates.
 	 * @param saeReportPriorTherapy
