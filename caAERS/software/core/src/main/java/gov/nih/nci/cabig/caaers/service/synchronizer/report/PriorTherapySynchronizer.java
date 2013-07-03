@@ -38,6 +38,7 @@ public class PriorTherapySynchronizer implements Migrator<ExpeditedAdverseEventR
                    existingPriorTherapies.remove(found);
                    synchronize(xmlPt, found);
                }else{
+            	   xmlPt.setReport(dbAeReport);
                    newlyAddedPriorTherapies.add(xmlPt);
                }
            }
@@ -50,7 +51,7 @@ public class PriorTherapySynchronizer implements Migrator<ExpeditedAdverseEventR
         }
         //add newly added
         for(SAEReportPriorTherapy newPt : newlyAddedPriorTherapies){
-            dbAeReport.getSaeReportPriorTherapies().add(newPt);
+            dbAeReport.addSaeReportPriorTherapies(newPt);
         }
 
     }
