@@ -36,7 +36,7 @@ public class DiseaseHistorySynchronizer implements Migrator<ExpeditedAdverseEven
         List<MetastaticDiseaseSite> destMetastaticDiseases = dest.getMetastaticDiseaseSites();
         List<MetastaticDiseaseSite> newMetastaticDiseases = new ArrayList<MetastaticDiseaseSite>();
         List<MetastaticDiseaseSite> existingMetastaticDiseases = new ArrayList<MetastaticDiseaseSite>();
-        if(src.getMetastaticDiseaseSites() != null) existingMetastaticDiseases.addAll(src.getMetastaticDiseaseSites());
+        if(dest.getMetastaticDiseaseSites() != null) existingMetastaticDiseases.addAll(dest.getMetastaticDiseaseSites());
         for(MetastaticDiseaseSite mds : src.getMetastaticDiseaseSites()){
             final MetastaticDiseaseSite mdSrc = mds;
             MetastaticDiseaseSite found = CollectionUtils.find(destMetastaticDiseases, new Predicate<MetastaticDiseaseSite>() {
