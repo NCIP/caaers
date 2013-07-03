@@ -283,7 +283,7 @@ public class SafetyReportServiceImpl {
 
        }catch(Exception e) {
            expeditedAdverseEventReportDao.clearSession();
-		   logger.error("Unable to Create a Report from Safety Management Service", e);
+		   logger.error("Unable to Create/Update a Report from Safety Management Service", e);
 		   Helper.populateError(response, "WS_GEN_000",e.getMessage() );
 	   }
        return response;
