@@ -88,7 +88,7 @@ public class TreatmentTab extends AeTab {
         if ( command.getAeReport().getTreatmentInformation().getFirstCourseDate() != null &&
                 command.getAeReport().getTreatmentInformation().getAdverseEventCourse().getDate() != null &&
                 command.getAeReport().getTreatmentInformation().getFirstCourseDate().after(command.getAeReport().getTreatmentInformation().getAdverseEventCourse().getDate())) {
-            errors.reject("The first course of the Study cannot be greater than start date of the course associated with Expedited report.");
+            errors.reject("WS_AEMS_084","The first course of the Study cannot be greater than start date of the course associated with Expedited report.");
         }
 
     }
