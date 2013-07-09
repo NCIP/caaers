@@ -1309,18 +1309,23 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
 		}
 	}
 
-
-    /**
+	
+	/**
      * Will add a new attribution to the AdverseEvent
      * @param newAttribution
      * @param attributions
      */
-    public AdverseEventAttribution addAttribution(AdverseEventAttribution<? extends DomainObject> newAttribution, List attributions) {
+    public AdverseEventAttribution<? extends DomainObject> addAttribution(AdverseEventAttribution<? extends DomainObject> newAttribution, List attributions) {
         if (newAttribution == null || newAttribution.getCause() == null || newAttribution.getCause().getId() == null) return null;
 
         for (Object o : attributions) {
-            AdverseEventAttribution a = (AdverseEventAttribution)o;
-            if (a.getCause().getId().equals(newAttribution.getCause().getId())) return a;
+        	AdverseEventAttribution<? extends DomainObject> a = (AdverseEventAttribution)o;
+        	
+        	//compare by 'id' will not be correct, if the cause is not persisted yet
+        	//but 2 diff AdverseEventAttribution should not have the cause, this code is to find that duplication
+        	//so, we should do equals on the cause instance to find it is same
+        	
+        	if (a.getCause().equals(newAttribution.getCause())) return a;
         }
 
         newAttribution.setAdverseEvent(this);
@@ -1329,54 +1334,54 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     }
 
     public void addAttribution(DomainObject cause, Attribution attribution) {
-        AdverseEventAttribution adverseEventAttribution = null;
+    	AdverseEventAttribution<? extends DomainObject> adverseEventAttribution = null;
         if(cause instanceof CourseAgent) {
             adverseEventAttribution = new CourseAgentAttribution((CourseAgent) cause);
-            getCourseAgentAttributions().add((CourseAgentAttribution)adverseEventAttribution);
+            adverseEventAttribution = addAttribution(adverseEventAttribution, getCourseAgentAttributions());
         }
-        if(cause instanceof DiseaseHistory){
+        else if(cause instanceof DiseaseHistory){
             adverseEventAttribution = new DiseaseAttribution((DiseaseHistory) cause);
-            getDiseaseAttributions().add((DiseaseAttribution) adverseEventAttribution);
+            adverseEventAttribution = addAttribution(adverseEventAttribution, getDiseaseAttributions());
         }
-        if(cause instanceof RadiationIntervention) {
+        else if(cause instanceof RadiationIntervention) {
             adverseEventAttribution = new RadiationAttribution((RadiationIntervention) cause);
-            getRadiationAttributions().add((RadiationAttribution)adverseEventAttribution);
+            adverseEventAttribution = addAttribution(adverseEventAttribution, getRadiationAttributions());
         }
-        if(cause instanceof OtherAEIntervention){
+        else if(cause instanceof OtherAEIntervention){
             adverseEventAttribution = new OtherInterventionAttribution((OtherAEIntervention) cause);
-            getOtherInterventionAttributions().add((OtherInterventionAttribution) adverseEventAttribution);
+            adverseEventAttribution = addAttribution(adverseEventAttribution, getOtherInterventionAttributions());
         }
-        if(cause instanceof BehavioralIntervention){
+        else if(cause instanceof BehavioralIntervention){
             adverseEventAttribution = new BehavioralInterventionAttribution((BehavioralIntervention) cause);
-            getBehavioralInterventionAttributions().add((BehavioralInterventionAttribution) adverseEventAttribution);
+            adverseEventAttribution = addAttribution(adverseEventAttribution, getBehavioralInterventionAttributions());
         }
-        if(cause instanceof BiologicalIntervention) {
+        else if(cause instanceof BiologicalIntervention) {
             adverseEventAttribution = new BiologicalInterventionAttribution((BiologicalIntervention) cause);
-            getBiologicalInterventionAttributions().add((BiologicalInterventionAttribution) adverseEventAttribution);
+            adverseEventAttribution = addAttribution(adverseEventAttribution, getBiologicalInterventionAttributions());
         }
-        if(cause instanceof DietarySupplementIntervention) {
+        else if(cause instanceof DietarySupplementIntervention) {
             adverseEventAttribution = new DietarySupplementInterventionAttribution((DietarySupplementIntervention) cause);
-            getDietarySupplementInterventionAttributions().add((DietarySupplementInterventionAttribution) adverseEventAttribution);
+            adverseEventAttribution = addAttribution(adverseEventAttribution, getDietarySupplementInterventionAttributions());
         }
-        if(cause instanceof GeneticIntervention) {
+        else if(cause instanceof GeneticIntervention) {
             adverseEventAttribution = new GeneticInterventionAttribution((GeneticIntervention) cause);
-            getGeneticInterventionAttributions().add((GeneticInterventionAttribution) adverseEventAttribution);
+            adverseEventAttribution = addAttribution(adverseEventAttribution, getGeneticInterventionAttributions());
         }
-        if(cause instanceof MedicalDevice) {
+        else if(cause instanceof MedicalDevice) {
             adverseEventAttribution = new DeviceAttribution((MedicalDevice) cause);
-            getDeviceAttributions().add((DeviceAttribution) adverseEventAttribution);
+            adverseEventAttribution = addAttribution(adverseEventAttribution, getDeviceAttributions());
         }
-        if(cause instanceof SurgeryIntervention) {
+        else if(cause instanceof SurgeryIntervention) {
             adverseEventAttribution = new SurgeryAttribution((SurgeryIntervention) cause);
-            getSurgeryAttributions().add((SurgeryAttribution)adverseEventAttribution);
+            adverseEventAttribution = addAttribution(adverseEventAttribution, getSurgeryAttributions());
         }
-        if(cause instanceof OtherCause) {
+        else if(cause instanceof OtherCause) {
             adverseEventAttribution = new OtherCauseAttribution((OtherCause) cause);
-            getOtherCauseAttributions().add((OtherCauseAttribution) adverseEventAttribution);
+            adverseEventAttribution = addAttribution(adverseEventAttribution, getOtherCauseAttributions());
         }
-        if(cause instanceof ConcomitantMedication) {
+        else if(cause instanceof ConcomitantMedication) {
             adverseEventAttribution = new ConcomitantMedicationAttribution((ConcomitantMedication) cause);
-            getConcomitantMedicationAttributions().add((ConcomitantMedicationAttribution) adverseEventAttribution);
+            adverseEventAttribution = addAttribution(adverseEventAttribution, getConcomitantMedicationAttributions());
         }
         adverseEventAttribution.setAdverseEvent(this);
         if(attribution != null)  adverseEventAttribution.setAttribution(attribution);
