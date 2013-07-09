@@ -39,7 +39,7 @@
 
     <property name="caaers-adders.sa.build.dir" value="${build.dir}/sync"/>
 
-    <property name="caeers-adders.sa.archive" value="caaers-adders-sa-2.7-M4.zip"/>
+    <property name="caeers-adders.sa.archive" value="caaers-adders-sa-2.7-SNAPSHOT.zip"/>
 
     <property name="src.resources.dir" value="src/main/resources"/>
     <property name="src.java.dir" value="src/main/java"/>
@@ -89,21 +89,21 @@
             <fileset dir="adeers-wsbc-su/${src.resources.dir}"/>
         </copy>
 
-        <zip destfile="${su.build.dir}/caaers-adders-sa-2.7-M4.zip">
+        <zip destfile="${su.build.dir}/caaers-adders-sa-2.7-SNAPSHOT.zip">
             <fileset dir="${adeers-wsbc.su.comp.build.dir}"/>
         </zip>
         <copy todir="${caaers-wsbc.su.comp.build.dir}">
             <fileset dir="caaers-wsbc-su/${src.resources.dir}"/>
         </copy>
 
-        <zip destfile="${su.build.dir}/caaers-adders-sa-2.7-M4.zip">
+        <zip destfile="${su.build.dir}/caaers-adders-sa-2.7-SNAPSHOT.zip">
             <fileset dir="${caaers-wsbc.su.comp.build.dir}"/>
         </zip>
          <copy todir="${core-camel.su.comp.build.dir}">
             <fileset dir="core-camel-su/${src.resources.dir}"/>
         </copy>
 
-        <zip destfile="${su.build.dir}/caaers-adders-sa-2.7-M4.zip">
+        <zip destfile="${su.build.dir}/caaers-adders-sa-2.7-SNAPSHOT.zip">
             <fileset dir="${core-camel.su.comp.build.dir}"/>
         </zip>
     </target>
