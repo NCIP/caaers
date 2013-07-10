@@ -106,20 +106,24 @@ import gov.nih.nci.cabig.caaers.integration.schema.aereport.BehavioralInterventi
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.BiologicalInterventionAttributionType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.BiologicalInterventionType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.ConcomitantMedicationAttributionType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.ConcomitantMedicationRefType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.ConcomitantMedicationType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.ContactMechanismType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.CourseAgentAttributionType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.CourseAgentRefType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.CourseAgentType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.DateValueType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.DeviceAttributionType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.DietarySupplementInterventionAttributionType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.DietarySupplementInterventionType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.DiseaseAttributionType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.DiseaseHistoryRefType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.DiseaseHistoryType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.DoseType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.GeneticInterventionAttributionType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.GeneticInterventionType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.LabType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.MedicalDeviceRefType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.MedicalDeviceType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.MetastaticDiseaseSiteType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.OrganizationAssignedIdentifierType;
@@ -133,6 +137,7 @@ import gov.nih.nci.cabig.caaers.integration.schema.aereport.ParticipantType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.ParticipantType.Identifiers;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.PhysicianType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.RadiationAttributionType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.RadiationInterventionRefType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.RadiationInterventionType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.ReportDeliveryDefinitionType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.ReportType;
@@ -222,7 +227,7 @@ public class ExpeditedAdverseEventReportConverter {
                 for(CourseAgentAttributionType courseAgentAttributionType : aeType.getCourseAgentAttribution() ){
                     CourseAgentAttribution attribution = new CourseAgentAttribution();
                     attribution.setAttribution(Attribution.getByCode(courseAgentAttributionType.getAttribution()));
-                    attribution.setCause(convertCourseAgent(courseAgentAttributionType.getCause()));
+                    attribution.setCause(convertCourseAgentRef(courseAgentAttributionType.getCause()));
                     attribution.setAdverseEvent(ae);
                     ae.getCourseAgentAttributions().add(attribution);
                 }
@@ -230,7 +235,7 @@ public class ExpeditedAdverseEventReportConverter {
                 for(ConcomitantMedicationAttributionType conMedAttributionType : aeType.getConcomitantMedicationAttribution() ){
                     ConcomitantMedicationAttribution attribution = new ConcomitantMedicationAttribution();
                     attribution.setAttribution(Attribution.getByCode(conMedAttributionType.getAttribution()));
-                    attribution.setCause(convertConcomitantMedication(conMedAttributionType.getCause()));
+                    attribution.setCause(convertConcomitantMedicationRef(conMedAttributionType.getCause()));
                     attribution.setAdverseEvent(ae);
                     ae.getConcomitantMedicationAttributions().add(attribution);
                 }
@@ -254,7 +259,7 @@ public class ExpeditedAdverseEventReportConverter {
                 for(RadiationAttributionType radiationAttributionType : aeType.getRadiationAttribution() ){
                     RadiationAttribution attribution = new RadiationAttribution();
                     attribution.setAttribution(Attribution.getByCode(radiationAttributionType.getAttribution()));
-                    attribution.setCause(convertRadiationIntervention(radiationAttributionType.getCause()));
+                    attribution.setCause(convertRadiationInterventionRef(radiationAttributionType.getCause()));
                     attribution.setAdverseEvent(ae);
                     ae.getRadiationAttributions().add(attribution);
                 }
@@ -262,7 +267,7 @@ public class ExpeditedAdverseEventReportConverter {
                 for(DeviceAttributionType deviceAttributionType : aeType.getDeviceAttribution() ){
                     DeviceAttribution attribution = new DeviceAttribution();
                     attribution.setAttribution(Attribution.getByCode(deviceAttributionType.getAttribution()));
-                    attribution.setCause(convertMedicalDevice(deviceAttributionType.getCause()));
+                    attribution.setCause(convertMedicalDeviceRef(deviceAttributionType.getCause()));
                     attribution.setAdverseEvent(ae);
                     ae.getDeviceAttributions().add(attribution);
                 }
@@ -287,7 +292,7 @@ public class ExpeditedAdverseEventReportConverter {
                 for(DiseaseAttributionType diseaseAttributionType : aeType.getDiseaseAttribution() ){
                     DiseaseAttribution attribution = new DiseaseAttribution();
                     attribution.setAttribution(Attribution.getByCode(diseaseAttributionType.getAttribution()));
-                	attribution.setCause(convertDiseaseHistory(diseaseAttributionType.getCause()));
+                	attribution.setCause(convertDiseaseHistoryRef(diseaseAttributionType.getCause()));
                     attribution.setAdverseEvent(ae);
                     ae.getDiseaseAttributions().add(attribution);
                 }
@@ -649,7 +654,17 @@ public class ExpeditedAdverseEventReportConverter {
         }
         return tac;
     }
-	
+    protected CourseAgent convertCourseAgentRef(CourseAgentRefType courseAgentRefType){
+		CourseAgent courseAgent = new CourseAgent();
+		StudyAgent studyAgent = new StudyAgent();
+		Agent agent = new Agent();
+		agent.setNscNumber(courseAgentRefType.getStudyAgentRef().getAgent().getNscNumber());
+		studyAgent.setAgent(agent);
+		courseAgent.setStudyAgent(studyAgent);
+		
+		
+		return courseAgent;
+	}
 	protected CourseAgent convertCourseAgent(CourseAgentType courseAgentType){
 		CourseAgent courseAgent = new CourseAgent();
 		courseAgent.setAdministrationDelay(courseAgentType.getAdministrationDelayAmount());
@@ -798,6 +813,20 @@ public class ExpeditedAdverseEventReportConverter {
 		return concomitantMedication;		
 	}
 	
+	protected ConcomitantMedication convertConcomitantMedicationRef(ConcomitantMedicationRefType xmlConcomitantMedicationRefType){
+		ConcomitantMedication concomitantMedication = new ConcomitantMedication();
+		concomitantMedication.setAgentName(xmlConcomitantMedicationRefType.getName().toString());
+		if(xmlConcomitantMedicationRefType.getStartDate() != null){
+			concomitantMedication.setStartDate(convertDateValue(xmlConcomitantMedicationRefType.getStartDate()));
+		}
+		
+		if(xmlConcomitantMedicationRefType.getEndDate()!= null){
+			concomitantMedication.setEndDate(convertDateValue(xmlConcomitantMedicationRefType.getEndDate()));
+		}
+		
+		return concomitantMedication;		
+	}
+	
 	protected MedicalDevice convertMedicalDevice(MedicalDeviceType xmlMedicalDeviceType){
 		MedicalDevice medicalDevice = new MedicalDevice();
 		medicalDevice.setBrandName(xmlMedicalDeviceType.getBrandName());
@@ -860,6 +889,24 @@ public class ExpeditedAdverseEventReportConverter {
 		return medicalDevice;
 	}
 	
+	protected MedicalDevice convertMedicalDeviceRef(MedicalDeviceRefType xmlMedicalDeviceRefType){
+		MedicalDevice medicalDevice = new MedicalDevice();
+		
+		StudyDevice studyDevice = new StudyDevice();
+		Device device = new Device();
+		if(xmlMedicalDeviceRefType.getStudyDeviceRef().getDeviceRef().getType() != null){
+			device.setType(xmlMedicalDeviceRefType.getStudyDeviceRef().getDeviceRef().getType());
+		}
+		device.setBrandName(xmlMedicalDeviceRefType.getStudyDeviceRef().getDeviceRef().getBrandName());
+		device.setCommonName(xmlMedicalDeviceRefType.getStudyDeviceRef().getDeviceRef().getCommonName());
+
+        studyDevice.setDevice(device);
+
+		medicalDevice.setStudyDevice(studyDevice);
+	
+		return medicalDevice;
+	}
+	
 	protected ParticipantHistory convertParticipantHistory(ParticipantHistoryType xmlParticipantHistoryType){
 		ParticipantHistory history = new ParticipantHistory();
 		history.setBaselinePerformanceStatus(xmlParticipantHistoryType.getBaselinePerformanceStatus());
@@ -888,8 +935,7 @@ public class ExpeditedAdverseEventReportConverter {
 	
 	// convert interventions
 	
-	protected RadiationIntervention
-    convertRadiationIntervention(RadiationInterventionType xmlRadiationInterventionType){
+	protected RadiationIntervention convertRadiationIntervention(RadiationInterventionType xmlRadiationInterventionType){
 		RadiationIntervention intervention = new RadiationIntervention();
 		intervention.setAdjustment(xmlRadiationInterventionType.getAdjustment());
 		intervention.setDaysElapsed(String.valueOf(xmlRadiationInterventionType.getDaysElapsed()));
@@ -907,6 +953,14 @@ public class ExpeditedAdverseEventReportConverter {
 		if(xmlRadiationInterventionType.getAdministration() != null) {
 			intervention.setAdministration(RadiationAdministration.findByDisplayName(xmlRadiationInterventionType.getAdministration().value()));
 		}
+		
+		return intervention;
+	}
+	
+	protected RadiationIntervention convertRadiationInterventionRef(RadiationInterventionRefType xmlRadiationInterventionRefType){
+		RadiationIntervention intervention = new RadiationIntervention();
+		intervention.setLastTreatmentDate(xmlRadiationInterventionRefType.getLastTreatmentDate().toGregorianCalendar().getTime());
+		intervention.setAdministration(RadiationAdministration.findByDisplayName(xmlRadiationInterventionRefType.getAdministration().value()));
 		
 		return intervention;
 	}
@@ -929,11 +983,6 @@ public class ExpeditedAdverseEventReportConverter {
 			InterventionSite interventionSite = new InterventionSite();
 			interventionSite.setName(xmlSurgeryInterventionType.getInterventionSite().getName());
 			intervention.setInterventionSite(interventionSite);
-		}
-		
-		if(xmlSurgeryInterventionType.getOtherIntervention() != null){
-			OtherIntervention otherIntervention = convertOtherIntervention(xmlSurgeryInterventionType.getOtherIntervention());
-			intervention.setStudySurgery(otherIntervention);
 		}
 		
 		return intervention;
@@ -966,7 +1015,6 @@ public class ExpeditedAdverseEventReportConverter {
     protected DiseaseHistory convertDiseaseHistory(DiseaseHistoryType xmlDiseaseHistoryType){
         DiseaseHistory diseaseHistory = new DiseaseHistory();
 
-        Study study = null;
         DiseaseTerm dt = new DiseaseTerm();
         dt.setTerm(xmlDiseaseHistoryType.getPrimaryDisease());
 
@@ -991,6 +1039,23 @@ public class ExpeditedAdverseEventReportConverter {
             diseaseHistory.setDiagnosisDate(convertDateValue(xmlDiseaseHistoryType.getDiagnosisDate()));
         }
 
+        return diseaseHistory;
+    }
+    
+    protected DiseaseHistory convertDiseaseHistoryRef(DiseaseHistoryRefType xmlDiseaseHistoryRefType){
+        DiseaseHistory diseaseHistory = new DiseaseHistory();
+       
+        if(xmlDiseaseHistoryRefType.getPrimaryDisease() != null){
+        	 DiseaseTerm dt = new DiseaseTerm();
+        	 dt.setTerm(xmlDiseaseHistoryRefType.getPrimaryDisease());
+        	 diseaseHistory.setAbstractStudyDisease(new CtepStudyDisease());
+
+             diseaseHistory.getAbstractStudyDisease().setTerm(dt) ;
+        } else if (xmlDiseaseHistoryRefType.getOtherPrimaryDisease() != null){
+        	 diseaseHistory.setOtherPrimaryDisease(xmlDiseaseHistoryRefType.getOtherPrimaryDisease());
+        	
+        }
+       
         return diseaseHistory;
     }
 

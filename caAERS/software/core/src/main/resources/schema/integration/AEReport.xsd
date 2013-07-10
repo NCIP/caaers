@@ -179,6 +179,13 @@
             <xs:element type="MetastaticDiseaseSiteType" name="metastaticDiseaseSite" maxOccurs="unbounded" minOccurs="0" />
 		</xs:sequence>
 	</xs:complexType>
+	
+	<xs:complexType name="DiseaseHistoryRefType">
+		<xs:choice>
+			<xs:element type="xs:string" name="primaryDisease"/>
+			<xs:element type="xs:string" name="otherPrimaryDisease"/>
+		</xs:choice>
+	</xs:complexType>
 
    	<xs:complexType name="DateValueType">
 		<xs:sequence>
@@ -196,10 +203,23 @@
   		<xs:element name="nscNumber" type="xs:string"/>
 	  </xs:sequence>
   </xs:complexType>
+  
+  <xs:complexType name="AgentRefType">
+	  <xs:sequence>
+  		<xs:element name="nscNumber" type="xs:string"/>
+	  </xs:sequence>
+  </xs:complexType>
+  
 	<xs:complexType name="StudyAgentType">
 		<xs:choice>
 			<xs:element name="Agent" type="AgentType" />
 			<xs:element name="otherAgent" type="xs:string" />
+		</xs:choice>
+	</xs:complexType>
+	
+	<xs:complexType name="StudyAgentRefType">
+		<xs:choice>
+			<xs:element name="Agent" type="AgentRefType" />
 		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="DiseaseTermType">
@@ -386,6 +406,12 @@
         <xs:element type="OtherInterventionType" name="OtherIntervention" minOccurs="0" />
     </xs:sequence>
 	</xs:complexType>
+	<xs:complexType name="RadiationInterventionRefType">
+		<xs:sequence>
+        <xs:element type="xs:date" name="lastTreatmentDate" />
+        <xs:element type="RadiationAdministrationType" name="administration" />
+    </xs:sequence>
+	</xs:complexType>
     <xs:simpleType name="RadiationAdministrationType">
         <xs:restriction base="xs:string">
             <xs:enumeration value="Brachytherapy HDR" />
@@ -409,7 +435,6 @@
 		<xs:sequence>
 			<xs:element type="xs:date" name="interventionDate"/>
 			<xs:element type="InterventionSiteType" name="InterventionSite" />
-			<xs:element type="OtherInterventionType" name="OtherIntervention" minOccurs="0" />
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="BiologicalInterventionType">
@@ -456,6 +481,14 @@
            	</xs:choice>
     </xs:complexType>
     
+    <xs:complexType name="StudyDeviceRefType">
+           <xs:choice>
+				<xs:sequence>
+					<xs:element name="device" type="DeviceType"/>
+				</xs:sequence>
+           	</xs:choice>
+    </xs:complexType>
+    
 	<xs:complexType name="MedicalDeviceType">
 		<xs:sequence>
 			<xs:element type="xs:string" name="brandName" minOccurs="0"/>
@@ -480,6 +513,12 @@
 		</xs:sequence>
 	</xs:complexType>
 	
+	<xs:complexType name="MedicalDeviceRefType">
+		<xs:sequence>
+			<xs:element type="StudyDeviceRefType" name="studyDeviceRef" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	
 	<xs:complexType name="ConcomitantMedicationType">
 		<xs:sequence>
 			<xs:element name="name" type="xs:string"/>
@@ -488,6 +527,15 @@
 			<xs:element name="stillTakingMedications" type="xs:boolean" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
+	
+	<xs:complexType name="ConcomitantMedicationRefType">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element minOccurs="0" name="startDate" type="DateValueType" />
+			<xs:element minOccurs="0" name="endDate" type="DateValueType" />
+		</xs:sequence>
+	</xs:complexType>
+	
 	<xs:complexType name="OtherCauseType">
 		<xs:sequence>
 			<xs:element name="text" type="xs:string"/>
@@ -507,6 +555,13 @@
 			<xs:element name="comments" type="xs:string"  minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
+	
+	<xs:complexType name="CourseAgentRefType">
+		<xs:sequence>
+			<xs:element name="studyAgentRef" type="StudyAgentRefType"  minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	
 	<xs:complexType name="DoseType">
 		<xs:sequence>
 			<xs:element name="amount" type="xs:string" minOccurs="0"/>
@@ -538,78 +593,78 @@
 	</xs:complexType>
 	<xs:complexType name="SurgeryAttributionType">
 		<xs:sequence>
-			<xs:element type="AttributionType" name="attribution" minOccurs="0"/>
-			<xs:element type="SurgeryInterventionType" name="cause" minOccurs="0" />
+			<xs:element type="AttributionType" name="attribution"/>
+			<xs:element type="SurgeryInterventionType" name="cause"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="RadiationAttributionType">
 		<xs:sequence>
-            <xs:element type="AttributionType" name="attribution" minOccurs="0"/>
-			<xs:element name="cause" type="RadiationInterventionType" minOccurs="0"/>
+            <xs:element type="AttributionType" name="attribution"/>
+			<xs:element name="cause" type="RadiationInterventionRefType"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="DeviceAttributionType">
 		<xs:sequence>
-            <xs:element type="AttributionType" name="attribution" minOccurs="0"/>
-			<xs:element name="cause" type="MedicalDeviceType" minOccurs="0"/>
+            <xs:element type="AttributionType" name="attribution"/>
+			<xs:element name="cause" type="MedicalDeviceRefType"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="BiologicalInterventionAttributionType">
 		<xs:sequence>
-            <xs:element type="AttributionType" name="attribution" minOccurs="0"/>
-			<xs:element name="cause" type="BiologicalInterventionType" minOccurs="0"/>
+            <xs:element type="AttributionType" name="attribution"/>
+			<xs:element name="cause" type="BiologicalInterventionType"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="DietarySupplementInterventionAttributionType">
 		<xs:sequence>
-            <xs:element type="AttributionType" name="attribution" minOccurs="0"/>
-			<xs:element name="cause" type="DietarySupplementInterventionType" minOccurs="0"/>
+            <xs:element type="AttributionType" name="attribution"/>
+			<xs:element name="cause" type="DietarySupplementInterventionType"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="ConcomitantMedicationAttributionType">
 		<xs:sequence>
-            <xs:element type="AttributionType" name="attribution" minOccurs="0"/>
-			<xs:element name="cause" type="ConcomitantMedicationType" minOccurs="0"/>
+            <xs:element type="AttributionType" name="attribution"/>
+			<xs:element name="cause" type="ConcomitantMedicationRefType"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="CourseAgentAttributionType">
 		<xs:sequence>
-            <xs:element type="AttributionType" name="attribution" minOccurs="0"/>
-			<xs:element name="cause" type="CourseAgentType" minOccurs="0"/>
+            <xs:element type="AttributionType" name="attribution"/>
+			<xs:element name="cause" type="CourseAgentRefType"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="OtherCauseAttributionType">
 		<xs:sequence>
-            <xs:element type="AttributionType" name="attribution" minOccurs="0"/>
-			<xs:element name="cause" type="OtherCauseType" minOccurs="0"/>
+            <xs:element type="AttributionType" name="attribution"/>
+			<xs:element name="cause" type="OtherCauseType"/>
 		</xs:sequence>
 	</xs:complexType>
 	
 	<xs:complexType name="DiseaseAttributionType">
 		<xs:sequence>
-            <xs:element type="AttributionType" name="attribution" minOccurs="0"/>
-			<xs:element name="cause" type="DiseaseHistoryType" minOccurs="0"/>
+            <xs:element type="AttributionType" name="attribution"/>
+			<xs:element name="cause" type="DiseaseHistoryRefType"/>
 		</xs:sequence>
 	</xs:complexType>
 	
 	<xs:complexType name="OtherInterventionAttributionType">
 		<xs:sequence>
-            <xs:element type="AttributionType" name="attribution" minOccurs="0"/>
-			<xs:element name="cause" type="OtherAEInterventionType" minOccurs="0"/>
+            <xs:element type="AttributionType" name="attribution"/>
+			<xs:element name="cause" type="OtherAEInterventionType"/>
 		</xs:sequence>
 	</xs:complexType>
 	
 	<xs:complexType name="BehavioralInterventionAttributionType">
 		<xs:sequence>
-            <xs:element type="AttributionType" name="attribution" minOccurs="0"/>
-			<xs:element name="cause" type="BehavioralInterventionType" minOccurs="0"/>
+            <xs:element type="AttributionType" name="attribution"/>
+			<xs:element name="cause" type="BehavioralInterventionType"/>
 		</xs:sequence>
 	</xs:complexType>
 	
 	<xs:complexType name="GeneticInterventionAttributionType">
 		<xs:sequence>
-            <xs:element type="AttributionType" name="attribution" minOccurs="0"/>
-			<xs:element name="cause" type="GeneticInterventionType" minOccurs="0"/>
+            <xs:element type="AttributionType" name="attribution"/>
+			<xs:element name="cause" type="GeneticInterventionType"/>
 		</xs:sequence>
 	</xs:complexType>
 	

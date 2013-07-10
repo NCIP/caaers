@@ -1022,13 +1022,13 @@
 					select="drugreactionrelatedness/drugreactionasses[aeexternalid = $adverseEventId]/drugresult" />
 			</ae:attribution>
 			<ae:cause>
-				<ae:studyAgent>
+				<ae:studyAgentRef>
 					<ae:Agent>
 						<ae:nscNumber>
 							<xsl:value-of select="medicinalproduct" />
 						</ae:nscNumber>
 					</ae:Agent>
-				</ae:studyAgent>
+				</ae:studyAgentRef>
 			</ae:cause>
 		</ae:courseAgentAttribution>
 	</xsl:template>
@@ -1085,7 +1085,7 @@
 					select="drugreactionrelatedness/drugreactionasses[aeexternalid = $adverseEventId]/drugresult" />
 			</ae:attribution>
 			<ae:cause>
-				<ae:StudyDevice>
+				<ae:studyDeviceRef>
 					<ae:device>
 						<ae:brandName>
 							<xsl:value-of select="devicenamebrand" />
@@ -1099,7 +1099,7 @@
 							</ae:type>
 						</xsl:if>
 					</ae:device>
-				</ae:StudyDevice>
+				</ae:studyDeviceRef>
 			</ae:cause>
 		</ae:deviceAttribution>
 	</xsl:template>
