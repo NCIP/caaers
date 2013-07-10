@@ -155,7 +155,8 @@ public class SafetyReportServiceImpl {
        for(AdverseEvent ae : aeDestReport.getAdverseEvents()){
            ae.setReport(aeDestReport);
        }
-
+        // Set the signature for the AE.
+        aeDestReport.updateAESignatures();
 
         //Call the ExpediteReportDao and save this report.
         expeditedAdverseEventReportDao.save(aeDestReport);
@@ -201,6 +202,8 @@ public class SafetyReportServiceImpl {
         DomainObjectImportOutcome<ExpeditedAdverseEventReport> outCome = new DomainObjectImportOutcome<ExpeditedAdverseEventReport>();
         aeReportSynchronizer.migrate(aeDestReport, dbReport, outCome);
         if(outCome.hasErrors()) errors.addValidationErrors(outCome.getValidationErrors().getErrors());
+        // Update AE Signatures.
+        aeDestReport.updateAESignatures();
 
         expeditedAdverseEventReportDao.save(dbReport);
 
