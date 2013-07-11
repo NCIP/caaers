@@ -894,11 +894,11 @@ public class ExpeditedAdverseEventReportConverter {
 		
 		StudyDevice studyDevice = new StudyDevice();
 		Device device = new Device();
-		if(xmlMedicalDeviceRefType.getStudyDeviceRef().getDeviceRef().getType() != null){
-			device.setType(xmlMedicalDeviceRefType.getStudyDeviceRef().getDeviceRef().getType());
+		if(xmlMedicalDeviceRefType.getStudyDeviceRef().getDevice().getType() != null){
+			device.setType(xmlMedicalDeviceRefType.getStudyDeviceRef().getDevice().getType());
 		}
-		device.setBrandName(xmlMedicalDeviceRefType.getStudyDeviceRef().getDeviceRef().getBrandName());
-		device.setCommonName(xmlMedicalDeviceRefType.getStudyDeviceRef().getDeviceRef().getCommonName());
+		device.setBrandName(xmlMedicalDeviceRefType.getStudyDeviceRef().getDevice().getBrandName());
+		device.setCommonName(xmlMedicalDeviceRefType.getStudyDeviceRef().getDevice().getCommonName());
 
         studyDevice.setDevice(device);
 
