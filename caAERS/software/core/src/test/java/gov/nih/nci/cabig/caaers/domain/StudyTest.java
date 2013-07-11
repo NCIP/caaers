@@ -126,8 +126,8 @@ public class StudyTest extends AbstractTestCase {
 	 * This method tests {@link Study#getActiveStudyDiseases()}
 	 */
 	public void testGetActiveStudyDiseases_CtepStudyDisease(){
-		CtepStudyDisease d1 = Fixtures.createCtepStudyDisease(study, null);
-		CtepStudyDisease d2 = Fixtures.createCtepStudyDisease(study, null);
+		CtepStudyDisease d1 = Fixtures.createCtepStudyDisease(study);
+		CtepStudyDisease d2 = Fixtures.createCtepStudyDisease(study);
 		d2.retire();
 		
 		List<CtepStudyDisease> diseases = new ArrayList<CtepStudyDisease>();
@@ -327,6 +327,18 @@ public class StudyTest extends AbstractTestCase {
         study.addStudySite(s1);
         ss = study.findActiveStudySiteByNciInstituteCode("xxx");
         assertSame(ss, s1);
+
+    }
+
+    public void testFindactiveStudyDisease(){
+        Fixtures.createCtepStudyDisease(study, Fixtures.createDiseaseTerm("x", "y"));
+        Fixtures.createCtepStudyDisease(study, Fixtures.createDiseaseTerm("a", "b"));
+        study.setDiseaseTerminology(Fixtures.createDiseaseTerminology(study));
+        assertEquals(2, study.getActiveStudyDiseases().size());
+
+        assertNotNull(study.findActiveStudyDisease("x"));
+        assertNotNull(study.findActiveStudyDisease("y"));
+        assertNull(study.findActiveStudyDisease("zz"));
 
     }
 }

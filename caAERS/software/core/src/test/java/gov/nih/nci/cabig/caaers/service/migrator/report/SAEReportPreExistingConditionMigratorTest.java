@@ -8,6 +8,7 @@ package gov.nih.nci.cabig.caaers.service.migrator.report;
 
 
 
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
@@ -27,7 +28,7 @@ import junit.framework.TestCase;
  * User: medav
  * Date: 1/28/13
  */
-public class SAEReportPreExistingConditionMigratorTest extends TestCase {
+public class SAEReportPreExistingConditionMigratorTest extends AbstractTestCase {
 
 	SAEReportPreExistingConditionMigrator migrator;
     ExpeditedAdverseEventReport src;

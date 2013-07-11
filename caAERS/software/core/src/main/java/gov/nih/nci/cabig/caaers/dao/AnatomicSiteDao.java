@@ -50,6 +50,18 @@ public class AnatomicSiteDao extends CaaersDao<AnatomicSite> {
         return findBySubname(subnames, null, EXTRA_PARAMS, SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
     }
 
+    public AnatomicSite findByName(String name){
+        List<AnatomicSite> list =  findBySubname(new String[]{name}, null, Arrays.asList("name"));
+        if(list != null && !list.isEmpty()) return list.get(0);
+        return null;
+    }
+
+    public AnatomicSite findByNameAndCategory(String name, String category){
+        List<AnatomicSite> list =  findBySubname(new String[]{name, category}, null, Arrays.asList("name", "category"));
+        if(list != null && !list.isEmpty()) return list.get(0);
+        return null;
+    }
+
     /**
      * Get the list of all anatomic sites.
      * 

@@ -63,6 +63,7 @@ public class CtepStudyDisease extends AbstractStudyDisease<DiseaseTerm> {
     @Transient
     @Override
     public String getTermName() {
+        if(getTerm() == null) return null;
         return getTerm().getFullName();
     }
     

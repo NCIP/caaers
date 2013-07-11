@@ -10,6 +10,7 @@ package gov.nih.nci.cabig.caaers.api.impl;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
@@ -46,6 +47,7 @@ public class SafetyReportServiceImpl {
     private MessageSource messageSource;
     
     private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
+    private StudyParticipantAssignmentDao studyParticipantAssignmentDao;
     
     /** Validator Service. **/
 	private ExpeditedAdverseEventReportValidator aeReportValidator;
@@ -161,6 +163,9 @@ public class SafetyReportServiceImpl {
         //Call the ExpediteReportDao and save this report.
         expeditedAdverseEventReportDao.save(aeDestReport);
 
+        aeDestReport.getAssignment().synchronizeMedicalHistoryFromReportToAssignment(aeDestReport);
+        studyParticipantAssignmentDao.save(aeDestReport.getAssignment());
+
         // Deep copy the reports as it is throwing ConcurrentModification Exception.
         List<Report> reports = new ArrayList(aeDestReport.getReports());
         aeDestReport.getReports().clear();
@@ -206,6 +211,10 @@ public class SafetyReportServiceImpl {
         aeDestReport.updateAESignatures();
 
         expeditedAdverseEventReportDao.save(dbReport);
+
+        dbReport.getAssignment().synchronizeMedicalHistoryFromReportToAssignment(dbReport);
+        studyParticipantAssignmentDao.save(dbReport.getAssignment());
+
 
         if(aeDestReport.getReports() == null || aeDestReport.getReports().isEmpty()) {
             //withdraw active reports
@@ -365,5 +374,13 @@ public class SafetyReportServiceImpl {
 
     public void setAeReportSynchronizer(ExpeditedAdverseEventReportSynchronizer aeReportSynchronizer) {
         this.aeReportSynchronizer = aeReportSynchronizer;
+    }
+
+    public StudyParticipantAssignmentDao getStudyParticipantAssignmentDao() {
+        return studyParticipantAssignmentDao;
+    }
+
+    public void setStudyParticipantAssignmentDao(StudyParticipantAssignmentDao studyParticipantAssignmentDao) {
+        this.studyParticipantAssignmentDao = studyParticipantAssignmentDao;
     }
 }

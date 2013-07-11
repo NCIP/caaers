@@ -636,7 +636,10 @@ public class Fixtures {
     	for(StudyAgent sa : studyAgents) sa.setAgent(agent);
     	return agent;
     }
-    
+
+    public static CtepStudyDisease createCtepStudyDisease(Study s){
+       return createCtepStudyDisease(s, createDiseaseTerm("x", "y"));
+    }
     public static CtepStudyDisease createCtepStudyDisease(Study s, DiseaseTerm term){
     	CtepStudyDisease d = new CtepStudyDisease();
     	d.setDiseaseTerm(term);
@@ -644,6 +647,13 @@ public class Fixtures {
     	s.addCtepStudyDisease(d);
     	d.setLeadDisease(true);
     	return d;
+    }
+
+    public static DiseaseTerm createDiseaseTerm(String meddraCode, String ternName){
+        DiseaseTerm term = new DiseaseTerm();
+       term.setMeddraCode(meddraCode);
+       term.setTerm(ternName);
+       return term;
     }
     
     public static MeddraStudyDisease createMeddraStudyDisease(Study s, LowLevelTerm lowLevelTerm){

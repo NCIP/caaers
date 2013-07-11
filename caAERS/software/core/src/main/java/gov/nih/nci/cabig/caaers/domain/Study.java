@@ -898,6 +898,28 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     }
 
     /**
+     * Will find the active study disease, associated with this study
+     * @param codeOrName
+     * @return
+     */
+    public AbstractStudyDisease findActiveStudyDisease(String codeOrName){
+        if(StringUtils.isEmpty(codeOrName)) return null;
+        List<? extends AbstractStudyDisease<? extends DomainObject>>  diseases = getActiveStudyDiseases();
+        for(AbstractStudyDisease d : diseases){
+            if(d instanceof CtepStudyDisease){
+                CtepStudyDisease ctepDisease = (CtepStudyDisease) d;
+                if(StringUtils.equals(ctepDisease.getTerm().getMeddraCode(), codeOrName) || StringUtils.equals(ctepDisease.getTermName(), codeOrName)) return ctepDisease;
+            }
+            if(d instanceof MeddraStudyDisease){
+                MeddraStudyDisease meddraDisease = (MeddraStudyDisease) d;
+                if(StringUtils.equals(meddraDisease.getTerm().getMeddraCode(), codeOrName) || StringUtils.equals(meddraDisease.getTerm().getMeddraTerm(), codeOrName)) return meddraDisease;
+            }
+            if(d instanceof StudyCondition && StringUtils.equals(d.getTermName(), codeOrName)) return d;
+        }
+        return null;
+    }
+
+    /**
      * Will return the {@link StudyDevice}s that are not retired.
      *
      * @return the active study surgeries

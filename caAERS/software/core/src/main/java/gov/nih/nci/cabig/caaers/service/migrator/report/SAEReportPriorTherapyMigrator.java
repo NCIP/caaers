@@ -32,17 +32,12 @@ public class SAEReportPriorTherapyMigrator implements Migrator<ExpeditedAdverseE
 	public void migrate(ExpeditedAdverseEventReport aeReportSrc, ExpeditedAdverseEventReport aeReportDest, DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome) {
     
 		List<SAEReportPriorTherapy> srcSAEReportPriorTherapys = aeReportSrc.getSaeReportPriorTherapies();
-		List<SAEReportPriorTherapy> destSAEReportPriorTherapys = aeReportDest.getSaeReportPriorTherapies();
-    	
-    	if ( srcSAEReportPriorTherapys == null || srcSAEReportPriorTherapys.size() == 0) {
+
+    	if ( srcSAEReportPriorTherapys == null || srcSAEReportPriorTherapys.isEmpty() ) {
     		outcome.addWarning("WR-SPT-1", "Input doesn't contain any SAEReportPriorTherapy Values.");
     		return;
     	}
 		
-    	if ( destSAEReportPriorTherapys == null ) {
-    		destSAEReportPriorTherapys = new ArrayList<SAEReportPriorTherapy>();
-    	}
-
     	// Copy the SAEReportPriorTherapys Information from Source to Destination.
     	for ( SAEReportPriorTherapy spt : srcSAEReportPriorTherapys) {
             PriorTherapy pt = findPriorTherapy(spt.getPriorTherapy(), outcome);
@@ -54,7 +49,7 @@ public class SAEReportPriorTherapyMigrator implements Migrator<ExpeditedAdverseE
             destSAEReportPriorTherapy.setPriorTherapy(pt);
             destSAEReportPriorTherapy.setReport(aeReportDest);
     		copyProperties(spt, destSAEReportPriorTherapy);
-    		destSAEReportPriorTherapys.add(destSAEReportPriorTherapy);
+    		aeReportDest.addSaeReportPriorTherapies(destSAEReportPriorTherapy);
     	}
 	}   
 	

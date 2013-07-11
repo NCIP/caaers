@@ -33,17 +33,12 @@ public class SAEReportPreExistingConditionMigrator implements Migrator<Expedited
 	public void migrate(ExpeditedAdverseEventReport aeReportSrc, ExpeditedAdverseEventReport aeReportDest, DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome) {
     
 		List<SAEReportPreExistingCondition> srcPreExistingConditions = aeReportSrc.getSaeReportPreExistingConditions();
-		List<SAEReportPreExistingCondition> destPreExistingConditions = aeReportDest.getSaeReportPreExistingConditions();
-    	
-    	if ( srcPreExistingConditions == null || srcPreExistingConditions.size() == 0) {
-    		outcome.addWarning("WR-SPM-1", "Input doesn't contain any SAE report pre-existing Values.");
+
+    	if ( srcPreExistingConditions == null || srcPreExistingConditions.isEmpty()) {
     		return;
     	}
     	
-    	if ( destPreExistingConditions == null ) {
-    		destPreExistingConditions = new ArrayList<SAEReportPreExistingCondition>();
-    	}
-        
+
     	// Copy the SAEReportPriorTherapys Information from Source to Destination.
     	for ( SAEReportPreExistingCondition spc : srcPreExistingConditions) {
             PreExistingCondition pc =  findPreconditions(spc.getPreExistingCondition(), outcome);
@@ -52,9 +47,8 @@ public class SAEReportPreExistingConditionMigrator implements Migrator<Expedited
             }
     		SAEReportPreExistingCondition destPreExistingCondition = new SAEReportPreExistingCondition();
             destPreExistingCondition.setPreExistingCondition(pc);
-            destPreExistingCondition.setReport(aeReportDest);
-    		copyProperties(spc, destPreExistingCondition);
-    		destPreExistingConditions.add(destPreExistingCondition);
+            copyProperties(spc, destPreExistingCondition);
+    		aeReportDest.addSaeReportPreExistingCondition(destPreExistingCondition);
     	}
 	}    	 
 	
@@ -66,14 +60,15 @@ public class SAEReportPreExistingConditionMigrator implements Migrator<Expedited
 	private void copyProperties(SAEReportPreExistingCondition src, SAEReportPreExistingCondition dest) {
 		dest.setLinkedToOtherCause(src.getLinkedToOtherCause());
 		dest.setOther(src.getOther());
-		dest.setVersion(src.getVersion());
 	}
     /**
      *   find the Pre Existing Condition from the List.
      */
      private PreExistingCondition findPreconditions(PreExistingCondition pc, DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome) {         
-         
-         List<PreExistingCondition> resultLst = preExistingConditionDao.searchByExample(pc, false);
+
+         if(pc == null) return null;
+
+         List<PreExistingCondition> resultLst = getPreExistingConditionDao().searchByExample(pc, false);
          if(resultLst == null || resultLst.isEmpty()) {
          	outcome.addError("ER-SPM-1", "Matching preExisting condition is not found for " + pc.getText());
          	return null;

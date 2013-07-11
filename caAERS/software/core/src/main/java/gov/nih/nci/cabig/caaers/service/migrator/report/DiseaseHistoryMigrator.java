@@ -33,153 +33,45 @@ public class DiseaseHistoryMigrator implements Migrator<ExpeditedAdverseEventRep
     
 	public void migrate(ExpeditedAdverseEventReport aeReportSrc, ExpeditedAdverseEventReport aeReportDest, DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome) {
     
-		DiseaseHistory srcDisHis = aeReportSrc.getDiseaseHistory();
-		DiseaseHistory destDisHis = aeReportDest.getDiseaseHistory();
-		
-    	if ( destDisHis == null ) {
-    		destDisHis = new DiseaseHistory();
-    	}
-    	
-    	Participant participant = aeReportDest.getParticipant();
+		DiseaseHistory src = aeReportSrc.getDiseaseHistory();
+		DiseaseHistory dest = aeReportDest.getDiseaseHistory();
 
-    	 StudySite site = null;
-     	
-         if ( aeReportDest.getReportingPeriod() != null && aeReportDest.getReportingPeriod().getAssignment() != null ) {
-         	site = aeReportDest.getReportingPeriod().getAssignment().getStudySite();
-         }
-         
-         if ( site == null ) {
-         	 outcome.addError("ER-DHM-1", "Study Site is missing in the source");
-              return;
-         }
-    	
-    	if ( participant == null ) {
-    		 outcome.addError("ER-DHM-2", "Participant is missing in the destination");
-             return;
-    	}
-    	    	
-		StudyParticipantAssignment assignment = participant.getStudyParticipantAssignment(site);
-		StudyParticipantDiseaseHistory history = assignment.getDiseaseHistory();
-		
-       	copyDiseaseHistory(srcDisHis, destDisHis, history, outcome);
-       	if(outcome.hasErrors()) return;	
-    }
-	/**
-	 * Copy Disease History details from Input to the Domain Object.
-	 * @param srcDisHis
-	 * @param destDisHis
-	 * @param history
-	 * @param outcome
-	 */
-    
-    private void copyDiseaseHistory(DiseaseHistory srcDisHis, DiseaseHistory destDisHis, StudyParticipantDiseaseHistory history, DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome) {
-    	
-    	if (StringUtils.isNotEmpty(srcDisHis.getCodedPrimaryDiseaseSite().getName()) ) {
-            AnatomicSite anatomicSite = srcDisHis.getCodedPrimaryDiseaseSite();
-            AnatomicSite result =  findAnatomicSiteByName(anatomicSite, outcome);
-            
+        dest.setOtherPrimaryDisease(src.getOtherPrimaryDisease());
+        dest.setOtherPrimaryDiseaseSite(src.getOtherPrimaryDiseaseSite());
+        dest.setDiagnosisDate(src.getDiagnosisDate());
+
+        AbstractStudyDisease abstractStudyDisease = null;
+        if(src.getAbstractStudyDisease() != null && src.getAbstractStudyDisease().getTerm() != null && src.getAbstractStudyDisease().getTermName() != null) {
+            abstractStudyDisease = aeReportDest.getStudy().findActiveStudyDisease(src.getAbstractStudyDisease().getTermName());
+            if(abstractStudyDisease == null) outcome.addError("ER-DHM-5", "Primary Disease is not found on the Study " + src.getAbstractStudyDisease().getTermName() );
+        }
+        dest.setAbstractStudyDisease(abstractStudyDisease);
+
+        dest.setCodedPrimaryDiseaseSite(findAnatomicSite(src.getCodedPrimaryDiseaseSite(), outcome));
+
+        for(MetastaticDiseaseSite diseaseSite : src.getMetastaticDiseaseSites()){
+            MetastaticDiseaseSite metastaticDiseaseSite = new MetastaticDiseaseSite();
+            AnatomicSite anatomicSite = findAnatomicSite(diseaseSite.getCodedSite(), outcome);
+            metastaticDiseaseSite.setCodedSite(anatomicSite);
+            if(anatomicSite != null) metastaticDiseaseSite.setOtherSite(diseaseSite.getOtherSite());
             if(outcome.hasErrors()) return;
-            //set in the report
-            destDisHis.setCodedPrimaryDiseaseSite(result);
-            //set in the participant medical history
-            history.setCodedPrimaryDiseaseSite(result);
-
-          // Copy the other Disease site if provided.
-            if (StringUtils.isNotBlank(srcDisHis.getOtherPrimaryDiseaseSite()))
-                destDisHis.setOtherPrimaryDiseaseSite(srcDisHis.getOtherPrimaryDiseaseSite());
-
-    	}
-
-       if ( srcDisHis.getMetastaticDiseaseSites().size() > 0) {            
-
-            for ( MetastaticDiseaseSite diseaseSite : srcDisHis.getMetastaticDiseaseSites()) {
-                if ( diseaseSite.getCodedSite() != null ) {
-                    AnatomicSite result =  findAnatomicSiteByName(diseaseSite.getCodedSite(), outcome);
-                    if(outcome.hasErrors()) return;
-                    MetastaticDiseaseSite mds = new MetastaticDiseaseSite();
-                    mds.setCodedSite(result);
-                    //set the metastatic site in report
-                    destDisHis.getMetastaticDiseaseSites().add(mds);
-                    
-                    //if new, add the metastatic site to the participant medical history
-                    if(findIndexStudyParticipantMetastaticSite(history.getMetastaticDiseaseSites(), mds) == -1) {
-                    	history.addMetastaticDiseaseSite(
-                    			StudyParticipantMetastaticDiseaseSite.createAssignmentMetastaticDiseaseSite(mds));
-                    }
-
-                }
-            }
-       }
-
-    	destDisHis.setDiagnosisDate(srcDisHis.getDiagnosisDate());
-
-        if (  destDisHis.getReport().getStudy().hasCtepEsysIdentifier() && StringUtils.isNotEmpty( ((DiseaseTerm)srcDisHis.getAbstractStudyDisease().getTerm()).getTerm()) )  {
-            List<CtepStudyDisease> ctepStudyDiseases = destDisHis.getReport().getStudy().getActiveCtepStudyDiseases();
-
-            boolean studyDiesaseFound = false;
-            for ( CtepStudyDisease disease : ctepStudyDiseases) {
-                if ( disease.getTermName().equals(srcDisHis.getAbstractStudyDisease().getTermName())) {
-                    destDisHis.setAbstractStudyDisease(disease);
-                    studyDiesaseFound = true;
-                    break;
-                }
-            }
-
-            if ( !studyDiesaseFound ) { // If not found throw the error back to user.
-                outcome.addError("ER-DHM-5", "Primary Disease is not found on the Study " + srcDisHis.getAbstractStudyDisease().getTermName() );
-                return;
-            }
-        }   else {
-
-            List<MeddraStudyDisease> meddraStudyDiseases = destDisHis.getReport().getStudy().getActiveMeddraStudyDiseases();
-
-            boolean studyDiesaseFound = false;
-            for ( MeddraStudyDisease disease : meddraStudyDiseases) {
-                if ( disease.getTermName().equals(srcDisHis.getAbstractStudyDisease().getTermName())) {
-                    destDisHis.setAbstractStudyDisease(disease);
-                    studyDiesaseFound = true;
-                    break;
-                }
-            }
-
-            if ( !studyDiesaseFound ) { // If not found throw the error back to user.
-                outcome.addError("ER-DHM-5", "Primary Disease is not found on the Study " + srcDisHis.getAbstractStudyDisease().getTermName() );
-                return;
-            }
-
+            dest.addMetastaticDiseaseSite(metastaticDiseaseSite);
         }
-
-        // Copy the other Primary disease site.
-       if (StringUtils.isNotBlank(srcDisHis.getOtherPrimaryDisease()) )
-           destDisHis.setOtherPrimaryDisease(srcDisHis.getOtherPrimaryDisease());
-    }
-   
-    
-    private int findIndexStudyParticipantMetastaticSite(List<StudyParticipantMetastaticDiseaseSite> srcMetaStaticSites, MetastaticDiseaseSite destSite) {
-        int index = -1;
-
-        for ( StudyParticipantMetastaticDiseaseSite site: srcMetaStaticSites ) {
-            index ++;
-            if ( site.getCodedSite().getName().equals(destSite.getCodedSite().getName())) { // Found a match.
-            	 return index;
-            }
-         }
-
-        return  -1;
     }
 
 
-    private AnatomicSite findAnatomicSiteByName(AnatomicSite site, DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome) {
-        List<AnatomicSite> resultLst = anatomicSiteDao.searchByExample(site, false);
-        if(resultLst == null || resultLst.isEmpty()) {
-        	outcome.addError("ER-DHM-3", "Matching disease site is not found for " + site.getName() );
-        	return null;
+    private AnatomicSite findAnatomicSite(AnatomicSite site, DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome) {
+        if(site == null || site.getName() == null) return null;
+        String name = site.getName();
+        String category = site.getCategory();
+
+
+        AnatomicSite anatomicSite = category != null ?  getAnatomicSiteDao().findByNameAndCategory(name,category) :  getAnatomicSiteDao().findByName(name);
+        if(anatomicSite == null){
+            outcome.addError("ER-DHM-3", "Matching disease site is not found for " + site.getName());
         }
-        if(resultLst.size() > 1 ) {
-        	outcome.addError("ER-DHM-4", "Multiple matching disease sites found for " + site.getName() );
-        	return null;
-        }
-        return resultLst.get(0);
-    }   
-           
+
+        return anatomicSite;
+    }
+
 }

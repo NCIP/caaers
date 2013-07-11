@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantConcomitantMedication;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,88 +25,28 @@ public class ConcomitantMedicationMigrator implements Migrator<ExpeditedAdverseE
     
 	public void migrate(ExpeditedAdverseEventReport aeReportSrc, ExpeditedAdverseEventReport aeReportDest, DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome) {
 		List<ConcomitantMedication> srcConcomitantMedications = aeReportSrc.getConcomitantMedications();
-		List<ConcomitantMedication> destConcomitantMedications = aeReportDest.getConcomitantMedications();
-	    	
+
 	    	if ( srcConcomitantMedications == null || srcConcomitantMedications.size() == 0) {
 	    		outcome.addWarning("ER-CM-1", "Input doesn't contain any ConcomitantMedication Values.");
 	    		return;
 	    	}
-			
-	    	if ( destConcomitantMedications == null ) {
-	    		destConcomitantMedications = new ArrayList<ConcomitantMedication>();
-	    	}
-	    	
-	        StudyParticipantAssignment  assignment = null;
-	        	
-	        if ( aeReportDest != null && aeReportDest.getReportingPeriod() != null ) {
-	        	assignment = aeReportDest.getReportingPeriod().getAssignment();
-	        }
-	        
-	        if ( assignment == null ) {
-	        	 outcome.addWarning("ER-CM-1", "Assignment is missing in the Reporting Period.");
-	             return;
-	        }
-	    	
-	        	        	        
+
 	    	// Copy the ConcomitantMedications Information from Source to Destination.
 	        // if it is not already present in study participant assignment, add it to SPA
 	    	for ( ConcomitantMedication concomitantMedication : srcConcomitantMedications) {
 	    		validateConcomitantMedicationDates(concomitantMedication, outcome);
-	    		if (!isPresentInAssignment(assignment.getConcomitantMedications(), concomitantMedication)) {	    			
-	    			StudyParticipantConcomitantMedication spcm = StudyParticipantConcomitantMedication.createAssignmentConcomitantMedication(concomitantMedication);
-	    			spcm.setAssignment(assignment);
-	    			assignment.getConcomitantMedications().add(spcm	);
-	    		}
 	    		ConcomitantMedication destConcomitantMedication = new ConcomitantMedication();
 	    		copyProperties(concomitantMedication, destConcomitantMedication);
-	    		destConcomitantMedications.add(destConcomitantMedication);
-	    		destConcomitantMedication.setReport(aeReportDest);
+	    	    aeReportDest.addConcomitantMedication(destConcomitantMedication);
 	    	}
-	}    	 
-	
-	
-	private boolean isPresentInAssignment(
-			List<StudyParticipantConcomitantMedication> concomitantMedications,
-			ConcomitantMedication concomitantMedication) {
-		for (StudyParticipantConcomitantMedication spc : concomitantMedications) {
-			//check agentname
-			if (spc.getAgentName() == null ) {
-				if (concomitantMedication.getAgentName() != null) {			
-					continue;
-				}
-			} else if (!spc.getAgentName().equals(concomitantMedication.getAgentName())) {
-				continue;
-			}
-			
-			//check enddate
-			if (spc.getEndDate() == null) {
-				if (concomitantMedication.getEndDate() != null) {
-					continue;
-				}				
-			} else if (!spc.getEndDate().equals(concomitantMedication.getEndDate())) {
-				continue;
-			}
-			
-			//check startdate
-			if (spc.getStartDate() == null) {
-				if (concomitantMedication.getStartDate() != null) {		
-					continue;
-				}
-			} else if (!spc.getStartDate().equals(concomitantMedication.getStartDate())) {
-				continue;
-			}
-			
-			return true;
-		}
-		return false;
 	}
-			
-	
-	/**
-	 * Copy the Details from the UserInput.
-	 * @param bioIntervention
-	 * @param destConcomitantMedication
-	 */
+
+
+    /**
+     * Will copy the startdate, endDate and agent details from src to dest
+     * @param src  - ConcomitantMedication
+     * @param dest - ConcomitantMedication
+     */
 	private void copyProperties(ConcomitantMedication src, ConcomitantMedication dest) {
 		dest.setAgentName(src.getAgentName());
 		dest.setEndDate(src.getEndDate()); 
@@ -116,11 +57,11 @@ public class ConcomitantMedicationMigrator implements Migrator<ExpeditedAdverseE
 	/**
 	 * Validate Concomitant Medication Dates.
 	 * @param concomitantMedication
-	 * @param domainObjectImportOutcome
+	 * @param outcome
 	 */
 	private void validateConcomitantMedicationDates(ConcomitantMedication concomitantMedication,  DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome){
 		if(concomitantMedication.getStartDate() != null && concomitantMedication.getEndDate() != null){
-			if(concomitantMedication.getStartDate().toDate().after(concomitantMedication.getEndDate().toDate())){
+            if(DateUtils.compareDate(concomitantMedication.getStartDate().toDate() , concomitantMedication.getEndDate().toDate()) > 0){
 				 outcome.addError("PAT_CCM1_ERR", "Concomitant Medication 'End date' cannot be before 'Start date' ");
 			}
 		}

@@ -44,6 +44,7 @@ public class MeddraStudyDisease extends AbstractStudyDisease<LowLevelTerm> {
     @Override
     @Transient
     public String getTermName() {
+        if(getTerm() == null) return null;
         return getTerm().getFullName();
     }
     

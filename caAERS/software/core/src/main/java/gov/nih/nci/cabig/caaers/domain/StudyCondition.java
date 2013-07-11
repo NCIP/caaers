@@ -43,6 +43,7 @@ public class StudyCondition extends AbstractStudyDisease<Condition> {
     @Override
     @Transient
     public String getTermName() {
+        if(getTerm() == null) return null;
         return getTerm().getConditionName();
     }
 
