@@ -777,8 +777,8 @@
 			<xs:element type="TreatmentAssignmentType" name="treatmentAssignment" minOccurs="0" />
 			<xs:element type="xs:int" name="totalCourses" minOccurs="0" />
 			<xs:element type="AdverseEventCourseType" name="adverseEventCourse" minOccurs="0"  />
-			<xs:element type="CourseAgentType" name="courseAgent"
-				maxOccurs="unbounded" minOccurs="0" />
+			<xs:element type="xs:boolean" name="investigationalAgentAdministered"/>
+			<xs:element type="CourseAgentType" name="courseAgent" maxOccurs="unbounded" minOccurs="0" />
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="SAEReportPreExistingConditionType">

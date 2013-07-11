@@ -145,6 +145,12 @@
 							<xsl:call-template name="priorTherapy" />
 						</xsl:for-each>
 						<ae:treatmentInformation>
+							<ae:investigationalAgentAdministered>
+								<xsl:call-template name="convertOneTwotoBoolean">
+									<xsl:with-param name="oneTwoType"
+										select="/ichicsr/safetyreport/patient/summary/indadminflag" />
+								</xsl:call-template>
+							</ae:investigationalAgentAdministered>
 							<xsl:for-each
 								select="//drug[drugadditional != 'Radiation' and  drugadditional != 'Surgery' and drugadditional != 'Device' and drugcharacterization = '1']">
 								<xsl:call-template name="courseAgent" />

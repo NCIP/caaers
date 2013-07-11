@@ -633,6 +633,7 @@ public class ExpeditedAdverseEventReportConverter {
 	
 	protected TreatmentInformation convertTreatmentInformation(TreatmentInformationType treatmentInfoType){
 		TreatmentInformation treatmentInformation = new TreatmentInformation();
+		treatmentInformation.setInvestigationalAgentAdministered(treatmentInfoType.isInvestigationalAgentAdministered());
         treatmentInformation.setFirstCourseDate(XMLUtil.toDate(treatmentInfoType.getFirstCourseDate()));
 		treatmentInformation.setTotalCourses(treatmentInfoType.getTotalCourses());
         treatmentInformation.setTreatmentAssignment(convertTreatmentAssignment(treatmentInfoType.getTreatmentAssignment()));
