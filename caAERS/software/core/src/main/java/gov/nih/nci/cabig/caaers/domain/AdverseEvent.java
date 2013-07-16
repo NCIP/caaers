@@ -1316,7 +1316,7 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
      * @param attributions
      */
     public AdverseEventAttribution<? extends DomainObject> addAttribution(AdverseEventAttribution<? extends DomainObject> newAttribution, List attributions) {
-        if (newAttribution == null || newAttribution.getCause() == null || newAttribution.getCause().getId() == null) return null;
+        if (newAttribution == null || newAttribution.getCause() == null) return null;
 
         for (Object o : attributions) {
         	AdverseEventAttribution<? extends DomainObject> a = (AdverseEventAttribution)o;
