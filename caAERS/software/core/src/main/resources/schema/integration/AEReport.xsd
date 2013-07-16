@@ -570,15 +570,6 @@
 		</xs:sequence>
 	</xs:complexType>
 
-	<xs:complexType name="TreatmentInformation">
-		<xs:sequence>
-			<xs:element name="firstCourseDate" type="xs:date" />
-			<xs:element name="courseDate" type="CourseDate" />
-			<xs:element name="courseAgent" type="CourseAgentType"
-				maxOccurs="unbounded" />
-		</xs:sequence>
-	</xs:complexType>
-
 	<xs:complexType name="CourseDate">
 		<xs:sequence>
 			<xs:element name="number" type="xs:int" />
