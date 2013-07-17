@@ -6,7 +6,8 @@
 */
 
 /*
-This sql script file will pull all the information related one specific SAEReport based on its external id multiple csv files, one for each section of the report
+This sql script file will pull all the information related to a specific SAEReport based on its external id.
+It will create multiple csv files, one for each section of the report.
 
 How to use:
 1) 'cd' to PostgreSql bin folder
