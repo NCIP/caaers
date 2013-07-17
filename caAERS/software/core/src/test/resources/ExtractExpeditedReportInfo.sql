@@ -21,7 +21,7 @@ How to use:
 	Pattern:
 	psql -h <<dn_server_name>> -p <<db_server_port>> -d <<db_name>> -U <<db_user_name>> -v rep_ext_id='<<SAEReport_external_id>>' -f "<<path_to_this_sql_script_file>>"
 	Example:
-	C:\Program Files\PostgreSQL\9.0\bin>psql -h localhost -p 5432 -d caaers_duncan -U postgres -e -v rep_ext_id='0625-77' -f "C:\tmp\ExtractExpeditedReportInfo.sql"
+	/usr/local/postgresql/bin>psql -h localhost -p 5432 -d caaers_duncan -U postgres -e -v rep_ext_id='0625-77' -f "/tmp/ExtractExpeditedReportInfo.sql"
 
 */
 
