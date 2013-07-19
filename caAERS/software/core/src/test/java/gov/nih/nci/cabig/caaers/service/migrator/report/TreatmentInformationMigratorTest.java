@@ -12,7 +12,9 @@ import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import junit.framework.TestCase;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * User: Biju Joseph
@@ -47,12 +49,22 @@ public class TreatmentInformationMigratorTest extends AbstractTestCase {
 
     public void testMigrate() throws Exception {
         Date d = new Date();
+
+        StudyParticipantAssignment spa = Fixtures.createAssignment();
+        spa.setStartDateOfFirstCourse(d);
+        List<AdverseEventReportingPeriod> rpList = new ArrayList<AdverseEventReportingPeriod>();
+        AdverseEventReportingPeriod rp = Fixtures.createReportingPeriod();
+        rp.setCycleNumber(1);
+        rpList.add(rp);
+        spa.setReportingPeriods(rpList);
+        dest.setAssignment(spa);
+
         TreatmentInformation ti = src.getTreatmentInformation();
         ti.setTotalCourses(1);
         ti.setFirstCourseDate(d);
         ti.setInvestigationalAgentAdministered(true);
          migrator.migrate(src,dest,outcome);
-        //assertSame(d, dest.getTreatmentInformation().getFirstCourseDate());
+        assertSame(d, dest.getTreatmentInformation().getFirstCourseDate());
         assertEquals(new Integer(1), dest.getTreatmentInformation().getTotalCourses());
         assertTrue(dest.getTreatmentInformation().getCourseAgentsInternal().isEmpty());
 
