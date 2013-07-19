@@ -18,7 +18,26 @@ import javax.jws.WebService;
  */
 @WebService(name="SafetyReportManagementServiceInterface", targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/aereport")
 public interface SafetyReportManagementService {
-	  @WebResult(targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common",
+
+    /**
+     * Will create/update/amend ExpeditedAdverseEvent report and will submit the associated Report to the external recipients. The external recipient details will be picked
+     * from the associated report definition.
+     * @param xmlAdverseEventReport - The XML version of ExpeditedAdverseEventReport
+     * @return
+     */
+	@WebResult(targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common",
 			     name="CaaersServiceResponse")
     public CaaersServiceResponse submitSafetyReport(@WebParam(name = "AdverseEventReport",targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/aereport") AdverseEventReport xmlAdverseEventReport);
+
+    /**
+     * Will create/update/amend ExpeditedAdverseEvent report.
+     * from the associated report definition.
+     * @param xmlAdverseEventReport - The XML version of ExpeditedAdverseEventReport
+     * @return
+     */
+    @WebResult(targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common",
+			     name="CaaersServiceResponse")
+    public CaaersServiceResponse saveSafetyReport(@WebParam(name = "AdverseEventReport",targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/aereport") AdverseEventReport xmlAdverseEventReport);
+
+
 }

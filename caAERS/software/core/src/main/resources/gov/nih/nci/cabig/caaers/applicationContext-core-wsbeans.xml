@@ -69,6 +69,7 @@
         <property name="messageSource" ref="messageSource" />
         <property name="aeReportSynchronizer" ref="aeReportSynchronizer" />
         <property name="studyParticipantAssignmentDao"  ref="studyParticipantAssignmentDao" />
+        <property name="reportSubmissionService"  ref="reportSubmissionService" />
     </bean>
     
     

@@ -54,5 +54,17 @@ public class SafetyReportManagementServiceImpl implements SafetyReportManagement
 		}
 		
     }
+    @WebMethod
+    public CaaersServiceResponse saveSafetyReport(@WebParam(name = "AdverseEventReport", targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/aereport") AdverseEventReport xmlAdverseEventReport){
+		try {
+			return safetySvcImpl.saveSafetyReport(xmlAdverseEventReport);
+		} catch (Exception e) {
+            logger.error(e);
+            CaaersServiceResponse caaersResponse = Helper.createResponse();
+            Helper.populateError(caaersResponse, "WS_GEN_000", "Unable to process the request :" + e.getMessage());
+            return caaersResponse;
+		}
+
+    }
 
 }

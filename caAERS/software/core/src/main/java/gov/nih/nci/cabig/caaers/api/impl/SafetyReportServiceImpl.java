@@ -19,6 +19,7 @@ import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.AdverseEventReport;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
+import gov.nih.nci.cabig.caaers.service.ReportSubmissionService;
 import gov.nih.nci.cabig.caaers.service.migrator.ExpeditedAdverseEventReportConverter;
 import gov.nih.nci.cabig.caaers.service.migrator.report.ExpeditedReportMigrator;
 import gov.nih.nci.cabig.caaers.service.synchronizer.report.ExpeditedAdverseEventReportSynchronizer;
@@ -58,6 +59,8 @@ public class SafetyReportServiceImpl {
 
     /** The report Repository. */
     private ReportRepository reportRepository;
+    private ReportSubmissionService reportSubmissionService;
+
     private EventFactory eventFactory;
 
     public EventFactory getEventFactory() {
@@ -76,6 +79,10 @@ public class SafetyReportServiceImpl {
 
     public void setReportRepository(ReportRepository reportRepository) {
         this.reportRepository = reportRepository;
+    }
+
+    public void setReportSubmissionService(ReportSubmissionService reportSubmissionService) {
+        this.reportSubmissionService = reportSubmissionService;
     }
 
     /**
@@ -149,35 +156,13 @@ public class SafetyReportServiceImpl {
         aeReportMigrator.migrate(aeSrcReport, aeDestReport, outCome);
         if(outCome.hasErrors()) errors.addValidationErrors(outCome.getValidationErrors().getErrors());
     }
-    public void createSafetyReport(ExpeditedAdverseEventReport aeSrcReport, ExpeditedAdverseEventReport aeDestReport, ValidationErrors errors){
-       //Call the Migration
-       migrate(aeSrcReport, aeDestReport, errors);
-       if(errors.hasErrors()) return;
 
-       for(AdverseEvent ae : aeDestReport.getAdverseEvents()){
-           ae.setReport(aeDestReport);
-       }
-        // Set the signature for the AE.
-        aeDestReport.updateAESignatures();
-
-        //Call the ExpediteReportDao and save this report.
-        expeditedAdverseEventReportDao.save(aeDestReport);
-
-        aeDestReport.getAssignment().synchronizeMedicalHistoryFromReportToAssignment(aeDestReport);
-        studyParticipantAssignmentDao.save(aeDestReport.getAssignment());
-
-        // Deep copy the reports as it is throwing ConcurrentModification Exception.
-        List<Report> reports = new ArrayList(aeDestReport.getReports());
-        aeDestReport.getReports().clear();
-        List<Report> newReports = new ArrayList<Report>();
-        // Save the report(s) after Migration.
-        for ( Report rpt: reports )    {
-            createReport(rpt, aeDestReport);
-        }
-
-        if(getEventFactory() != null) getEventFactory().publishEntityModifiedEvent(aeDestReport);
-    }
-
+    /**
+     * Will create a Report and associate it to the ExpeditedAdverseEventReport
+     * @param report
+     * @param aeReport
+     * @return
+     */
     public Report createReport(Report report, ExpeditedAdverseEventReport aeReport){
         Report newReport = reportRepository.createReport(report.getReportDefinition(), aeReport) ;
         newReport.copy(report);
@@ -185,25 +170,53 @@ public class SafetyReportServiceImpl {
         return newReport;
     }
 
+    /**
+     * Will update a Report associated it to the ExpeditedAdverseEventReport and in parallel withdraw any Notifications
+     * that are submitted previously for the Report being withdrawn.
+     * @param report
+     * @param aeReport
+     * @return
+     */
     public Report withdrawReport(Report report, ExpeditedAdverseEventReport aeReport){
         reportRepository.withdrawReport(report);
         reportRepository.withdrawExternalReport(aeReport, report);
         return report;
     }
 
+    /**
+     * Will amend the Report
+     * @param report
+     * @param aeReport
+     * @return
+     */
     public Report amendReport(Report report, ExpeditedAdverseEventReport aeReport){
         reportRepository.amendReport(report);
         return report;
     }
+
+    /**
+     * Will unamend an older version when a new revision of the report is withdrawn.
+     * @param report
+     * @param aeReport
+     * @return
+     */
     public Report unAmendReport(Report report, ExpeditedAdverseEventReport aeReport){
         reportRepository.unAmendReport(report);
         return report;
     }
 
-    public void updateSafetyReport(ExpeditedAdverseEventReport aeSrcReport, ExpeditedAdverseEventReport dbReport, ValidationErrors errors){
+    /**
+     * Will update an ExpeditedAdverseEventReport, and return the list of Reports that got updated.
+     * @param aeSrcReport
+     * @param dbReport
+     * @param errors
+     * @return
+     */
+    public List<Report> updateSafetyReport(ExpeditedAdverseEventReport aeSrcReport, ExpeditedAdverseEventReport dbReport, ValidationErrors errors){
+        List<Report> reportsAffected = new ArrayList<Report>();
         ExpeditedAdverseEventReport aeDestReport = new ExpeditedAdverseEventReport();
         migrate(aeSrcReport, aeDestReport, errors);
-        if(errors.hasErrors()) return;
+        if(errors.hasErrors()) return reportsAffected;
         DomainObjectImportOutcome<ExpeditedAdverseEventReport> outCome = new DomainObjectImportOutcome<ExpeditedAdverseEventReport>();
         aeReportSynchronizer.migrate(aeDestReport, dbReport, outCome);
         if(outCome.hasErrors()) errors.addValidationErrors(outCome.getValidationErrors().getErrors());
@@ -227,36 +240,123 @@ public class SafetyReportServiceImpl {
             for(Report srcReport : aeDestReport.getReports()){
                 List<Report> reportsToAmend = dbReport.findReportsToAmmend(srcReport.getReportDefinition());
                 for(Report  report: reportsToAmend){
-                    amendReport(report, dbReport);
+                    reportsAffected.add(amendReport(report, dbReport));
                 }
                 List<Report> reportsToWithdraw = dbReport.findReportsToWithdraw(srcReport.getReportDefinition());
                 for(Report  report: reportsToWithdraw){
                     withdrawReport(report, dbReport);
                 }
                 List<Report> reportsToEdit = dbReport.findReportsToEdit(srcReport.getReportDefinition());
-                if(reportsToEdit.isEmpty()) createReport(srcReport, dbReport);
+                if(reportsToEdit.isEmpty()) {
+                    reportsAffected.add(createReport(srcReport, dbReport));
+                }
 
                 //TODO : BJ implement unammend feature
             }
         }
 
         if(getEventFactory() != null) getEventFactory().publishEntityModifiedEvent(aeDestReport);
+        return reportsAffected;
     }
 
-	@Transactional(readOnly=false)
-	public CaaersServiceResponse submitSafetyReport(AdverseEventReport adverseEventReport) {
+    /**
+     * Will create an ExpeditedAdverseEventReport, then will return all the Reports that got created.
+     * @param aeSrcReport
+     * @param aeDestReport
+     * @param errors
+     * @return
+     */
+    public  List<Report> createSafetyReport(ExpeditedAdverseEventReport aeSrcReport, ExpeditedAdverseEventReport aeDestReport, ValidationErrors errors){
+        List<Report> reportsAffected = new ArrayList<Report>();
 
+        //Call the Migration
+        migrate(aeSrcReport, aeDestReport, errors);
+        if(errors.hasErrors()) return reportsAffected;
+
+        for(AdverseEvent ae : aeDestReport.getAdverseEvents()){
+            ae.setReport(aeDestReport);
+        }
+        // Set the signature for the AE.
+        aeDestReport.updateAESignatures();
+
+        //Call the ExpediteReportDao and save this report.
+        expeditedAdverseEventReportDao.save(aeDestReport);
+
+        aeDestReport.getAssignment().synchronizeMedicalHistoryFromReportToAssignment(aeDestReport);
+        studyParticipantAssignmentDao.save(aeDestReport.getAssignment());
+
+        // Deep copy the reports as it is throwing ConcurrentModification Exception.
+        List<Report> reports = new ArrayList(aeDestReport.getReports());
+        aeDestReport.getReports().clear();
+        List<Report> newReports = new ArrayList<Report>();
+        // Save the report(s) after Migration.
+        for ( Report rpt: reports )    {
+            reportsAffected.add(createReport(rpt, aeDestReport));
+        }
+
+        if(getEventFactory() != null) getEventFactory().publishEntityModifiedEvent(aeDestReport);
+        return reportsAffected;
+    }
+
+
+    /**
+     * Will create/update the ExpeditedAdverseEventReport and then will submit the Reports modified to external agency.
+     * @param adverseEventReport
+     * @return
+     */
+    @Transactional(readOnly=false)
+    public CaaersServiceResponse submitSafetyReport(AdverseEventReport adverseEventReport) {
+        CaaersServiceResponse response = Helper.createResponse();
+        try{
+            List<Report> reportsAffected = new ArrayList<Report>();
+            ValidationErrors errors = createOrUpdateSafetyReport(adverseEventReport, reportsAffected);
+            if(errors.hasErrors()) populateErrors(response, errors);
+
+            //submit report
+            for(Report report : reportsAffected){
+                reportSubmissionService.submitReport(report);
+            }
+        }catch (Exception e){
+            logger.error("Unable to Create/Update a Report from Safety Management Service", e);
+            Helper.populateError(response, "WS_GEN_000",e.getMessage() );
+        }
+        return response;
+    }
+
+    /**
+     * Will save the ExpeditedAdverseEventReport
+     * @param adverseEventReport
+     * @return
+     */
+    @Transactional(readOnly=false)
+	public CaaersServiceResponse saveSafetyReport(AdverseEventReport adverseEventReport) {
+        CaaersServiceResponse response = Helper.createResponse();
+        try{
+            ValidationErrors errors = createOrUpdateSafetyReport(adverseEventReport, new ArrayList<Report>());
+            if(errors.hasErrors()) populateErrors(response, errors);
+        }catch (Exception e){
+            logger.error("Unable to Create/Update a Report from Safety Management Service", e);
+            Helper.populateError(response, "WS_GEN_000",e.getMessage() );
+        }
+        return response;
+    }
+
+    /**
+     * Will create or update an ExpeditedAdverseEventReport, and updates the reportsAffected with the Reports that
+     * got amended/edited/created.
+     * @param adverseEventReport
+     * @param reportsAffected
+     * @return
+     * @throws Exception
+     */
+    public ValidationErrors createOrUpdateSafetyReport(AdverseEventReport adverseEventReport, List<Report> reportsAffected) throws Exception {
        ValidationErrors errors = new ValidationErrors();
-	   CaaersServiceResponse response = Helper.createResponse();
 
 	   try {
 		   
            // 1. Call the Converter(s) to construct the domain object.
            ExpeditedAdverseEventReport aeSrcReport = eaeConverter.convert(adverseEventReport);
            //2. Do some basic validations (if needed)
-           
-
-
 
            //3. Determine the flow, create vs update
            String externalId = aeSrcReport.getExternalId();
@@ -264,41 +364,23 @@ public class SafetyReportServiceImpl {
 
            if(dbAeReport == null){
                //create flow
-                createSafetyReport(aeSrcReport,new ExpeditedAdverseEventReport(), errors);
+                reportsAffected.addAll(createSafetyReport(aeSrcReport, new ExpeditedAdverseEventReport(), errors));
            }else{
                //update flow
-                updateSafetyReport(aeSrcReport, dbAeReport, errors);
+               reportsAffected.addAll(updateSafetyReport(aeSrcReport, dbAeReport, errors));
            }
 
-           if(errors.hasErrors()) {
+           if(errors.hasErrors())  {
                expeditedAdverseEventReportDao.clearSession();
-               return populateErrors(response, errors);
+               return errors;
            }
-           
-           //2. Run the validation (basic)
-       //    ValidationErrors errors = validateInput(aeSrcReport);
-       //    if(errors.hasErrors()) return populateErrors(response, errors);
-           
-           // 2. Call the GenericValidator to make sure input is correct.
-		//   Errors reportValidatorErrors = new BindException(aeSrcReport, "ExpeditedAdverseEventReport");
-		//   aeReportValidator.validate( aeSrcReport, reportValidatorErrors);
-		   
-		/*   if ( reportValidatorErrors.hasErrors()) {
-			   Helper.populateError(response, "GEN_ORH_001", "Error(s) occured during Valdation step.");
-			   return response;
-		   }*/
-
-           //TODO : below call will change based on create or Amend flow
-           //3. Save the report
-
-
 
        }catch(Exception e) {
            expeditedAdverseEventReportDao.clearSession();
 		   logger.error("Unable to Create/Update a Report from Safety Management Service", e);
-		   Helper.populateError(response, "WS_GEN_000",e.getMessage() );
+
 	   }
-       return response;
+       return errors;
 	}
 
 
