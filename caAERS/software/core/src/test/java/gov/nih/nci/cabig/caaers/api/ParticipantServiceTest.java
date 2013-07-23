@@ -8,10 +8,13 @@ package gov.nih.nci.cabig.caaers.api;
 
 import gov.nih.nci.cabig.caaers.CaaersDbNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.api.impl.ParticipantServiceImpl;
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.index.ParticipantIndexDao;
 import gov.nih.nci.cabig.caaers.domain.DateValue;
+import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
@@ -19,8 +22,8 @@ import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.index.IndexEntry;
 import gov.nih.nci.cabig.caaers.domain.index.ParticipantIndex;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
-import gov.nih.nci.cabig.caaers.integration.schema.participant.ParticipantType;
 import gov.nih.nci.cabig.caaers.integration.schema.participant.Participants;
+import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,7 +34,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import org.hibernate.CacheMode;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
@@ -48,6 +50,7 @@ public class ParticipantServiceTest extends CaaersDbNoSecurityTestCase {
     private ParticipantDao participantDao;
     private ParticipantIndexDao participantIndexDao;
 	private StudyDao studyDao;
+	private OrganizationDao organizationDao;
     Participant updatedParticipant = null;
     Participant dbParticipant = null;
 
@@ -61,6 +64,7 @@ public class ParticipantServiceTest extends CaaersDbNoSecurityTestCase {
         participantDao = (ParticipantDao) getDeployedApplicationContext().getBean("participantDao");
         studyDao = (StudyDao) getDeployedApplicationContext().getBean("studyDao");
         participantIndexDao = (ParticipantIndexDao) getDeployedApplicationContext().getBean("participantIndexDao");
+        organizationDao = (OrganizationDao) getDeployedApplicationContext().getBean("organizationDao");
 
     }
 
@@ -189,7 +193,7 @@ public class ParticipantServiceTest extends CaaersDbNoSecurityTestCase {
     }
     
     
-    public void testDeleteParticipant() {
+    /*public void testDeleteParticipant() {
 
         try {
 
@@ -236,7 +240,7 @@ public class ParticipantServiceTest extends CaaersDbNoSecurityTestCase {
                 participantDao.delete(updatedParticipant);
             }
         }
-    }
+    }*/
     
     
     public void testGetParticipant() {
@@ -388,6 +392,44 @@ public class ParticipantServiceTest extends CaaersDbNoSecurityTestCase {
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         Resource[] resources = resolver.getResources(pattern);
         return resources;
+    }
+    
+    public void testTransferPatient() throws Exception{
+        Participant dbParticipant = participantDao.getById(-99);
+        
+        assertEquals(dbParticipant.getAssignments().get(0).getStudySite().getOrganization().getNciInstituteCode(), "DEFAULT");
+        
+     //   Organization organizationTransferredTo = organizationDao.getByNCIcode("WAKE");
+        
+        
+        Organization organizationTransferredTo = new LocalOrganization();
+        organizationTransferredTo.setNciInstituteCode("WAKE");
+        
+        
+    	participantService.transferParticipant(dbParticipant, dbParticipant.getAssignments().get(0).getStudySite(), organizationTransferredTo, new ValidationErrors());
+    	
+    	interruptSession();
+    	
+        Participant transferredParticipant =participantDao.getById(-99);
+    	
+    	assertEquals("patient not transferred to new site", transferredParticipant.getAssignments().get(0).getStudySite().getOrganization().getNciInstituteCode(), "WAKE");
+    }
+    
+    
+    public void testTransferPatientToNewStudySite() throws Exception{
+        Participant dbParticipant = participantDao.getById(-99);
+        
+        assertEquals(dbParticipant.getAssignments().get(0).getStudySite().getOrganization().getNciInstituteCode(), "DEFAULT");
+        
+        Organization organizationTransferredTo = organizationDao.getByNCIcode("WAKE");
+        
+    	participantService.transferParticipant(dbParticipant, dbParticipant.getAssignments().get(0).getStudySite(), organizationTransferredTo, new ValidationErrors());
+    	
+    	interruptSession();
+    	
+        Participant transferredParticipant =participantDao.getById(-99);
+    	
+    	assertEquals("patient not transferred to new site", transferredParticipant.getAssignments().get(0).getStudySite().getOrganization().getNciInstituteCode(), "WAKE");
     }
 
 }

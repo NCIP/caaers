@@ -47,6 +47,10 @@
 											</ae:identifier>
 										</ae:identifiers>
 									</ae:studyRef>
+									<ae:nciInstituteCode>
+										<xsl:value-of
+											select="/ichicsr/safetyreport/patient/subjectstudysiteid" />
+									</ae:nciInstituteCode>
 								</ae:studySiteRef>
 								<ae:studySubjectIdentifier>
 									<xsl:value-of

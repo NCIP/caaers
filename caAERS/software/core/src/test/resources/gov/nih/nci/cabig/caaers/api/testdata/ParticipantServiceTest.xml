@@ -44,7 +44,37 @@
         grid_id=""
         load_status="1"/>
     
-    <participants/>
+     <PARTICIPANTS
+        id="-99"
+        instituitional_patient_number="P001"
+        institution="Hospital"
+        first_name="John"
+        last_name="Scott"
+       	birth_day="02"
+        birth_month="01"
+        birth_year="2006"
+        gender="Female"
+        ethnicity="ethnicity"
+        race="race"
+        middle_name="m"
+        maiden_name="m" 
+        load_status="1" /> 
+        
+         <PARTICIPANTS
+        id="-100"
+        instituitional_patient_number="P002"
+        institution="Hospital"
+        first_name="John"
+        last_name="Jessey"
+       	birth_day="06"
+        birth_month="01"
+        birth_year="1906"
+        gender="Unknown"
+        ethnicity="ethnicity"
+        race="race"
+        middle_name="m"
+        maiden_name="m" 
+        load_status="1" /> 
     <participant_index/>
     
     <IDENTIFIERS
@@ -52,7 +82,8 @@
         stu_id="-1"
         value="WFCCC001"
         type="Coordinating Center Identifier"
-        organization_id="-1003"
+        participant_id="-100"
+        organization_id="-1002"
         discriminator_column="1"	/>
         
     <IDENTIFIERS
@@ -60,8 +91,16 @@
         stu_id="-2"
         value="E3200"
         type="Coordinating Center Identifier"
-        organization_id="-1003"
+        organization_id="-1002"
         discriminator_column="1"/>
+        
+     <IDENTIFIERS
+        id="-210"
+        value="11111"
+        type="MRN"
+        participant_id="-99"
+        organization_id="-1002"
+        discriminator_column="2"/>	
         
     <STUDY_ORGANIZATIONS
     	id="-1000"
@@ -110,6 +149,15 @@
     	study_id="-2"
     	site_id="-1002"
     	type="SCC"/>
+    	
+    	
+     <PARTICIPANT_ASSIGNMENTS
+        id="-11"
+        date_of_enrollment="2006-12-12"
+        participant_id="-99"
+        study_site_id="-1000" 
+        load_status="1" 
+        study_subject_identifier="1234"/>
 		
 	<workflow_configuration
 		id="1000"

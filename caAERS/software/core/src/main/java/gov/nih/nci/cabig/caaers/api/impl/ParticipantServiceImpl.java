@@ -8,14 +8,17 @@ package gov.nih.nci.cabig.caaers.api.impl;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.api.AbstractImportService;
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
@@ -33,6 +36,7 @@ import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Message;
 import gov.nih.nci.cabig.caaers.service.ParticipantImportServiceImpl;
 import gov.nih.nci.cabig.caaers.service.migrator.ParticipantConverter;
 import gov.nih.nci.cabig.caaers.service.synchronizer.ParticipantSynchronizer;
+import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 import gov.nih.nci.security.util.StringUtilities;
 
 import java.util.ArrayList;
@@ -60,7 +64,12 @@ public class ParticipantServiceImpl extends AbstractImportService implements App
 	private MessageSource messageSource;
     private ParticipantDao participantDao;
     private StudyDao studyDao;
-    private ParticipantImportServiceImpl participantImportServiceImpl;
+    private OrganizationDao organizationDao;
+    public void setOrganizationDao(OrganizationDao organizationDao) {
+		this.organizationDao = organizationDao;
+	}
+
+	private ParticipantImportServiceImpl participantImportServiceImpl;
     private ParticipantConverter participantConverter;
     private ParticipantSynchronizer participantSynchronizer;
     //private DomainObjectValidator domainObjectValidator;
@@ -552,6 +561,62 @@ public class ParticipantServiceImpl extends AbstractImportService implements App
 			dbParticipant = null;
 		}
 		return dbParticipant;
+	}
+	
+	public ValidationErrors transferParticipant(Participant dbParticipant, StudySite siteTransferredFrom, Organization organizationTransferredTo, ValidationErrors errors){
+		
+		 Organization dbOrgToBeTransferredTo = organizationDao.getByNCIcode(organizationTransferredTo.getNciInstituteCode());
+		  if(dbOrgToBeTransferredTo == null){
+			  errors.addValidationError( "ORG-NF-1", "Cannot find organization with NCI code :" + organizationTransferredTo.getNciInstituteCode());
+	            return errors;
+		  }
+		
+		if(!dbParticipant.isAssignedToStudySite(siteTransferredFrom)){
+			 errors.addValidationError( "PT-NF-1", "Cannot transfer patient from the site :" + siteTransferredFrom.getOrganization().getName()
+	    				+ " as the patient is not registered on this site.");
+	            return errors;
+		}
+		
+		migrateSiteIdentifierToNewSite(dbParticipant, siteTransferredFrom.getOrganization(), dbOrgToBeTransferredTo, errors);
+		if(errors.hasErrors()) return errors;
+		
+		List<StudyParticipantAssignment> assignments = dbParticipant.getStudyParticipantAssignments(siteTransferredFrom.getOrganization());
+		
+		for(StudyParticipantAssignment assignment : assignments){
+			//StudyParticipantAssignment assignment = dbParticipant.getStudyParticipantAssignment(siteTransferredFrom);
+		    	Study study = assignment.getStudySite().getStudy();
+		    	StudySite studySiteToBeTransferredTo = study.getStudySite(dbOrgToBeTransferredTo);
+		    	if(studySiteToBeTransferredTo == null){
+		    		studySiteToBeTransferredTo = new StudySite();
+		    		studySiteToBeTransferredTo.setOrganization(dbOrgToBeTransferredTo);
+		    		study.addStudySite(studySiteToBeTransferredTo);
+		    		studyDao.save(study);
+		    	}
+		    	
+		    	assignment.setStudySite(studySiteToBeTransferredTo);
+		}
+    	participantDao.save(dbParticipant);
+    	
+    	return errors;
+	}
+	
+	
+	 public ValidationErrors migrateSiteIdentifierToNewSite(Participant participant, Organization orgTransferredFrom, Organization orgTransferredTo, ValidationErrors errors){
+		 List<Identifier> identifiers = participantDao.getSiteIdentifiers(orgTransferredTo.getId());
+		 for(OrganizationAssignedIdentifier oai : participant.getOrganizationIdentifiers()){
+			//check if another patient has been assigned this MRN by the new site. 
+			 for(Identifier id : identifiers){
+	    		if(oai.getOrganization().equals(((OrganizationAssignedIdentifier)id).getOrganization()) && oai.getValue().equalsIgnoreCase(id.getValue())){
+	    			 errors.addValidationError( "PT-ID-DUP-1", "Cannot transfer patient from the site :" + orgTransferredFrom.getName() + " to " + orgTransferredTo.getName()
+	 	    				+ " as the identifier " + id.getValue() + " is already assigned by the site ");
+	 	            return errors;
+	    		}
+			 }
+    		if(oai.getOrganization().equals(orgTransferredFrom)){
+    			oai.setOrganization(orgTransferredTo);
+    		}
+	    	}
+		 return errors;
 	}
 	
 	private void populateError(CaaersServiceResponse caaersServiceResponse, String errorCode, String message) {
