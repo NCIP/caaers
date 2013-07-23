@@ -193,7 +193,7 @@ public class ParticipantServiceTest extends CaaersDbNoSecurityTestCase {
     }
     
     
-    /*public void testDeleteParticipant() {
+    public void testDeleteParticipant() {
 
         try {
 
@@ -240,7 +240,7 @@ public class ParticipantServiceTest extends CaaersDbNoSecurityTestCase {
                 participantDao.delete(updatedParticipant);
             }
         }
-    }*/
+    }
     
     
     public void testGetParticipant() {
