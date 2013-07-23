@@ -122,7 +122,7 @@
 			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core" conf="test->test(default)" rev="latest.integration">
               <exclude org="pull-parser" />
             </dependency>
-			<dependency org="org.springframework" name="spring-mock" rev="3.0.7.RELEASE" conf="test->default(*)" />
+            
              <dependency org="org.springframework" name="spring-test" rev="3.0.7.RELEASE"  conf="test->default" />
         	<dependency org="edu.northwestern.bioinformatics" name="core-commons-testing" rev="77" conf="test->default(*)" />
 			

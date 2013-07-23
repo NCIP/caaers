@@ -27,10 +27,13 @@
         </filesystem>
 
         <!-- The caAERS repository, all the JARs that are not available elsewhere are moved here -->
+		<!-- [vc] removing sb repo to keep only nci repo -->
+		<!--
         <url name="semanticbits-repo-caAERS-http">
             <ivy pattern="http://repo.semanticbits.com/ivy-repo/caAERS/[organisation]/[module]/ivy-[revision].xml" />
             <artifact pattern="http://repo.semanticbits.com/ivy-repo/caAERS/[organisation]/[module]/[type]s/[artifact]-[revision].[ext]" />
         </url>
+		-->
         <!-- NCI IVY repository -->
         <url name="nci-ivy-repo" >
           <ivy pattern="https://ncisvn.nci.nih.gov/svn/deprecated-cbiit-ivy-repo/trunk/[organisation]/[module]/[revision]/ivy.xml" />
@@ -54,21 +57,25 @@
 
 
 		<!--  Semanticbits shared repository [using http] -->
-
+		<!-- [vc] removing sb repo to keep only nci repo -->
+		<!--
 		<url name="semanticbits-repo-http">
 			<ivy pattern="http://repo.semanticbits.com/ivy-repo/[organisation]/[module]/[revision]/ivy.xml" />
             <ivy pattern="http://repo.semanticbits.com/ivy-repo/[organisation]/[module]/[revision]/ivy-[revision].xml" />
   			<artifact pattern="http://repo.semanticbits.com/ivy-repo/[organisation]/[module]/[revision]/[artifact].[ext]" />
   			<artifact pattern="http://repo.semanticbits.com/ivy-repo/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]" />
 		</url>
-
+		-->
+		
 		<!-- Maven 2 -->	
 		<ibiblio name="maven2" m2compatible="true"/>
 	    
 	    <!--  Northwestern RHLCCC Bioinformatics  -->
+		<!--
 		<ibiblio name="maven2-northwestern" m2compatible="true"
 				root="http://download.bioinformatics.northwestern.edu/download/maven2"
 				changingPattern=".*SNAPSHOT" />
+		-->
 
         <!-- Nexus NCI -->
         <ibiblio name="maven2-NCI-3rdparty" m2compatible="true"
@@ -96,7 +103,10 @@
 		
 	</resolvers>
     <modules>
+	<!-- [vc] removing sb repo to keep only nci repo -->
+		<!--
         <module org="org.drools" revision="4.0.6" resolver="semanticbits-repo-caAERS-http" />
+		-->
     </modules>
 
 </ivysettings>
