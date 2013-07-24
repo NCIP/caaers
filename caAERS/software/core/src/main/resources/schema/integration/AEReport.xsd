@@ -300,6 +300,7 @@
 	<xs:complexType name="StudySiteRefType">
 		<xs:sequence>
 			<xs:element type="StudyRefType" name="studyRef"/>
+			<xs:element type="xs:string" name="nciInstituteCode"/>
 		</xs:sequence>
 	</xs:complexType>
 	

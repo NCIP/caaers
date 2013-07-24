@@ -1325,6 +1325,10 @@ public class ExpeditedAdverseEventReportConverter {
 		StudySite studySite =  new StudySite();
 		
 		studySite.setStudy(convertStudy(studySiteType.getStudyRef()));
+		Organization organization = new LocalOrganization();
+		organization.setNciInstituteCode(studySiteType.getNciInstituteCode());
+		
+		studySite.setOrganization(organization);
 
 		return studySite;
 	}

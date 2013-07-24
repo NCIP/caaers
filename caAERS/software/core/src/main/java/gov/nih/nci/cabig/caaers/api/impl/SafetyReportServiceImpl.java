@@ -156,6 +156,21 @@ public class SafetyReportServiceImpl {
         aeReportMigrator.migrate(aeSrcReport, aeDestReport, outCome);
         if(outCome.hasErrors()) errors.addValidationErrors(outCome.getValidationErrors().getErrors());
     }
+    
+    private void transferStudySubjectIfRequired(ExpeditedAdverseEventReport aeSrcReport, ExpeditedAdverseEventReport aeDestReport,ValidationErrors errors){
+    	try {
+			StudySite originalSite = aeDestReport.getAssignment().getStudySite();
+			Participant dbParticipant = aeDestReport.getAssignment().getParticipant();
+			Organization organizationTransferredTo = aeSrcReport.getAssignment().getStudySite().getOrganization();
+			  if(!aeDestReport.getAssignment().getStudySite().getOrganization().getNciInstituteCode().
+				   equals(aeSrcReport.getAssignment().getStudySite().getOrganization().getNciInstituteCode())){
+			  participantService.transferParticipant(dbParticipant, originalSite, organizationTransferredTo, errors);
+			  }
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
+		}
+    }
 
     /**
      * Will create a Report and associate it to the ExpeditedAdverseEventReport
@@ -222,7 +237,8 @@ public class SafetyReportServiceImpl {
         if(outCome.hasErrors()) errors.addValidationErrors(outCome.getValidationErrors().getErrors());
         // Update AE Signatures.
         aeDestReport.updateAESignatures();
-
+        
+        transferStudySubjectIfRequired(aeSrcReport, aeDestReport, errors);
         expeditedAdverseEventReportDao.save(dbReport);
 
         dbReport.getAssignment().synchronizeMedicalHistoryFromReportToAssignment(dbReport);
@@ -272,12 +288,16 @@ public class SafetyReportServiceImpl {
         //Call the Migration
         migrate(aeSrcReport, aeDestReport, errors);
         if(errors.hasErrors()) return reportsAffected;
-
+        
         for(AdverseEvent ae : aeDestReport.getAdverseEvents()){
             ae.setReport(aeDestReport);
         }
         // Set the signature for the AE.
         aeDestReport.updateAESignatures();
+        
+        // transfer the study subject if required.
+        transferStudySubjectIfRequired(aeSrcReport, aeDestReport, errors);
+
 
         //Call the ExpediteReportDao and save this report.
         expeditedAdverseEventReportDao.save(aeDestReport);

@@ -47,6 +47,10 @@
 											</ae:identifier>
 										</ae:identifiers>
 									</ae:studyRef>
+									<ae:nciInstituteCode>
+										<xsl:value-of
+											select="/ichicsr/safetyreport/patient/subjectstudysiteid" />
+									</ae:nciInstituteCode>
 								</ae:studySiteRef>
 								<ae:studySubjectIdentifier>
 									<xsl:value-of
@@ -834,37 +838,34 @@
 	<xsl:template name="submitter">
 		<ae:submitter>
 			<ae:firstName>
-				<xsl:value-of select="sendergivename" />
+				<xsl:value-of select="/ichicsr/safetyreport/sender/sendergivename" />
 			</ae:firstName>
 			<ae:lastName>
-				<xsl:value-of select="senderfamilyname" />
+				<xsl:value-of select="/ichicsr/safetyreport/sender/senderfamilyname" />
 			</ae:lastName>
-			<ae:middleName>
-				<xsl:value-of select="sendermiddlename" />
-			</ae:middleName>
-			<xsl:if test="senderemailaddress">
-				<ae:ContactMechanism>
+			<xsl:if test="/ichicsr/safetyreport/sender/senderemailaddress">
+				<ae:contactMechanism>
 					<ae:type>e-mail</ae:type>
 					<ae:value>
-						<xsl:value-of select="senderemailaddress" />
+						<xsl:value-of select="/ichicsr/safetyreport/sender/senderemailaddress" />
 					</ae:value>
-				</ae:ContactMechanism>
+				</ae:contactMechanism>
 			</xsl:if>
-			<xsl:if test="senderphone">
-				<ae:ContactMechanism>
+			<xsl:if test="/ichicsr/safetyreport/sender/senderphone">
+				<ae:contactMechanism>
 					<ae:type>phone</ae:type>
 					<ae:value>
-						<xsl:value-of select="senderphone" />
+						<xsl:value-of select="/ichicsr/safetyreport/sender/senderphone" />
 					</ae:value>
-				</ae:ContactMechanism>
+				</ae:contactMechanism>
 			</xsl:if>
-			<xsl:if test="senderfax">
-				<ae:ContactMechanism>
-					<ae:type>e-mail</ae:type>
+			<xsl:if test="/ichicsr/safetyreport/sender/senderfax">
+				<ae:contactMechanism>
+					<ae:type>fax</ae:type>
 					<ae:value>
-						<xsl:value-of select="senderfax" />
+						<xsl:value-of select="/ichicsr/safetyreport/sender/senderfax" />
 					</ae:value>
-				</ae:ContactMechanism>
+				</ae:contactMechanism>
 			</xsl:if>
 		</ae:submitter>
 	</xsl:template>

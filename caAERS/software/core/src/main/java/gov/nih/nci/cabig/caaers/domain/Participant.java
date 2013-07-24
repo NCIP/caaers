@@ -7,6 +7,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.utils.ProjectedList;
+import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
 import gov.nih.nci.cabig.caaers.validation.fields.validators.NotNullConstraint;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
@@ -223,7 +224,23 @@ public class Participant extends Person {
         }
         return null;
     }
-
+    
+    
+    /**
+     * Gets all study participant assignments at a given organization.
+     *
+     * @param organization the organization
+     * @return list containing study participant assignment
+     */
+    public List<StudyParticipantAssignment> getStudyParticipantAssignments(Organization organization) {
+    	List<StudyParticipantAssignment> assignments = new ArrayList<StudyParticipantAssignment>();
+        for (StudyParticipantAssignment assignment : getAssignments()) {
+            if (assignment.getStudySite().getOrganization().getNciInstituteCode().equals(organization.getNciInstituteCode())) 
+            	assignments.add(assignment);
+        }
+        return assignments;
+    }
+    
     // //// BEAN PROPERTIES
 
     /**
@@ -606,4 +623,5 @@ public class Participant extends Person {
         }
         return null;
     }
+    
 }

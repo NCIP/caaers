@@ -2631,4 +2631,17 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
       return getShortTitle();
     }
     
+    
+    
+    @Transient
+    public StudySite getStudySite(Organization site){
+    	
+    	for(StudySite ss : getStudySites()){
+    		if(ss.getOrganization().equals(site)){
+    			return ss;
+    		}
+    	}
+    	return null;
+    }
+    
 }
