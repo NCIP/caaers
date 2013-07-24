@@ -165,7 +165,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
                                 <jsp:attribute name="value">
 
                                     <ui:autocompleter path="caaersRuleSet.study" enableClearButton="true" required="false" title="Study"
-                                    	initialDisplayValue="${empty command.caaersRuleSet.study ? 'Begin typing here' : command.caaersRuleSet.study.shortTitle}">
+                                    	initialDisplayValue="${empty command.caaersRuleSet.study ? 'Begin typing here' : caaers:escapeJS(command.caaersRuleSet.study.shortTitle)}">
                                     <jsp:attribute name="populatorJS">
                                     	function(autocompleter, text){
                                            if($F('caaersRuleSet.ruleTypeName')  == 'Safety Signalling Rules'){

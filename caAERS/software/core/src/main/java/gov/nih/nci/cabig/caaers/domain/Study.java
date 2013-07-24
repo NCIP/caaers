@@ -37,6 +37,7 @@ import javax.persistence.Transient;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections15.functors.InstantiateFactory;
 import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -45,6 +46,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.Where;
+import java.net.URLEncoder;
 
  
 /**
@@ -1509,6 +1511,22 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     @Transient
     public String getShortTitle() {
         return shortTitle;
+    }
+
+    /**
+     * Gets the short title.
+     *
+     * @return the short title
+     */
+    @Transient
+    public String getEscapeUrlEncodeShortTitle() {
+        try {
+            return URLEncoder.encode(shortTitle,"UTF-16" );
+        }
+        catch(Exception e) {
+            return shortTitle;
+        }
+
     }
 
     /**

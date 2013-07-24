@@ -43,6 +43,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -714,8 +715,15 @@ public class CaaersRulesEngineService {
         column.setObjectType(gov.nih.nci.cabig.caaers.domain.Study.class.getName());
         column.setIdentifier("studySDO");
 
-        String expression = "factResolver.assertFact(studySDO,null," + "\"shortTitle" + "\","
-                        + "\"" + criteriaValue + "\",\"==\"" + ")";
+        // FIX: Drools allowed escaping functions.
+        String expression = "";
+        try {
+             expression = "factResolver.assertFact(studySDO,null," + "\"escapeUrlEncodeShortTitle" + "\","
+                    + "\"" + URLEncoder.encode(criteriaValue, "UTF-16") + "\",\"==\"" + ")";
+        }   catch(Exception e){
+             expression = "factResolver.assertFact(studySDO,null," + "\"shortTitle" + "\","
+                    + "\"" + criteriaValue + "\",\"==\"" + ")";
+        }
 
         column.setExpression(expression);
 
