@@ -73,6 +73,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudyDevice;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.Submitter;
 import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
 import gov.nih.nci.cabig.caaers.domain.TimeValue;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
@@ -150,6 +151,7 @@ import gov.nih.nci.cabig.caaers.integration.schema.aereport.StudyParticipantAssi
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.StudyRefType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.StudySiteRefType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.StudySiteType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.SubmitterType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.SurgeryAttributionType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.SurgeryInterventionType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.TreatmentAssignmentType;
@@ -332,7 +334,7 @@ public class ExpeditedAdverseEventReportConverter {
 
         //reporter
         if(aeReportDto.getReporter() != null){
-            aeReport.setReporter(converterReporter(aeReportDto.getReporter()));
+            aeReport.setReporter(convertReporter(aeReportDto.getReporter()));
         }
 
 
@@ -423,7 +425,7 @@ public class ExpeditedAdverseEventReportConverter {
 
         //Reports
 		for(ReportType xmlReportType : aeReportDto.getReport()){
-            Report report = convertReport(xmlReportType);
+            Report report = convertReport(xmlReportType, aeReportDto.getSubmitter() );
 			aeReport.addReport(report);
 
             //special case if external data collection do not have external Id, add case number
@@ -514,7 +516,7 @@ public class ExpeditedAdverseEventReportConverter {
 	}
 	
 	
-	protected Report convertReport(ReportType xmlReportType){
+	protected Report convertReport(ReportType xmlReportType, SubmitterType xmlSubmitterType){
 		Report report = new Report();
 	//	report.setRequired(xmlReportType.isRequired());
 		if(xmlReportType.getCaseNumber() != null){
@@ -553,6 +555,11 @@ public class ExpeditedAdverseEventReportConverter {
 			reportVersion.setCcEmails(xmlReportVersionType.getEmail());
 			if(xmlReportVersionType.getReportStatus() != null){
 				reportVersion.setReportStatus(ReportStatus.valueOf(xmlReportVersionType.getReportStatus().name()));
+			}
+			
+			if(xmlSubmitterType != null){
+				Submitter submitter = convertSubmitter(xmlSubmitterType);
+				reportVersion.setSubmitter(submitter);
 			}
 			
 			report.addReportVersion(reportVersion);
@@ -1133,7 +1140,7 @@ public class ExpeditedAdverseEventReportConverter {
 		return adverseEventResponseDescription;
 	}
 	
-	protected Reporter converterReporter(ReporterType xmlReporterType){
+	protected Reporter convertReporter(ReporterType xmlReporterType){
 		Reporter reporter = new Reporter();
 		reporter.setFirstName(xmlReporterType.getFirstName());
 		reporter.setLastName(xmlReporterType.getLastName());
@@ -1158,6 +1165,34 @@ public class ExpeditedAdverseEventReportConverter {
 		}
 		
 		return reporter;
+		
+	}
+	
+	protected Submitter convertSubmitter(SubmitterType xmlSubmitterType){
+		Submitter submitter = new Submitter();
+		submitter.setFirstName(xmlSubmitterType.getFirstName());
+		submitter.setLastName(xmlSubmitterType.getLastName());
+		if(xmlSubmitterType.getNciIdentifier() != null){
+			ResearchStaff staff = new LocalResearchStaff();
+			staff.setNciIdentifier(xmlSubmitterType.getNciIdentifier());
+		}
+		
+		Address address = new Address();
+		address.setStreet(xmlSubmitterType.getStreet());
+		address.setCity(xmlSubmitterType.getCity());
+		address.setCountry(xmlSubmitterType.getCountry());
+		address.setState(xmlSubmitterType.getState());
+		address.setZip(xmlSubmitterType.getZip());
+		
+		submitter.setAddress(address);
+		if(xmlSubmitterType.getContactMechanism() != null){
+			submitter.setEmailAddress(getEmail(xmlSubmitterType.getContactMechanism()));
+			submitter.setPhoneNumber(getPhone(xmlSubmitterType.getContactMechanism()));
+			submitter.setFax(getFax(xmlSubmitterType.getContactMechanism()));
+			submitter.setFaxNumber(getFax(xmlSubmitterType.getContactMechanism()));
+		}
+		
+		return submitter;
 		
 	}
 
