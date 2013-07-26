@@ -17,6 +17,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -66,6 +67,25 @@ public class AdverseEventReportingPeriodMigrator extends CompositeMigrator<Adver
                     src.setTreatmentAssignmentDescription(null);
                }
         }
+
+        // Check for AdverseEvents StartDate and DateFirstLearned Cannot be in future.
+        Date now = new Date();
+        boolean dateValidationFlag = false;
+        for ( AdverseEvent ae: src.getAdverseEvents()) {
+
+            if ( ae.getStartDate().after(now) ) {      // StartDate of AE cannot be in future.
+                outcome.addError("WS_AEMS_031", "Invalid future Date for StartDate");
+                dateValidationFlag = true;
+                break;
+            }
+            if ( ae.getGradedDate().after(now)){       // DateFirstLearned of AE cannot be in future.
+                outcome.addError("WS_AEMS_031", "Invalid future Date for Date First Learned");
+                dateValidationFlag = true;
+                break;
+            }
+        }
+
+        if ( dateValidationFlag ) return;
 
         // The first course of the Study cannot be greater than start date of the course associated with Expedited report.
 

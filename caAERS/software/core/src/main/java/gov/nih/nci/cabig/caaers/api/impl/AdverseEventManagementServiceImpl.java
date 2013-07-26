@@ -238,6 +238,15 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 
     }
 
+    /**
+     * To Create or Update Advese Events.
+     * Sync Flag is used only incase of SAE Evaluation service, As service can soft-delete the Adverse Events.
+     * @param rpSrc
+     * @param errors
+     * @param syncFlag
+     * @return
+     */
+
     public AdverseEventReportingPeriod createOrUpdateAdverseEvents(AdverseEventReportingPeriod rpSrc, ValidationErrors errors, boolean syncFlag){
         //migrate the domain object
         AdverseEventReportingPeriod rpDest = new AdverseEventReportingPeriod();
@@ -1394,6 +1403,20 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 					}
 				}
 			}
+
+           // Duplicate Baseline check
+            if ( epoch != null && epoch.getName().equals("Baseline") ) {
+                // Iterating through the already anything exists with the treatment type Baseline.
+                for ( AdverseEventReportingPeriod rp : rPeriodList ) {
+
+                    if ( rp.getEpoch() != null && rp.getEpoch().getName()  != null && rp.getEpoch().getName().equals("Baseline") )  {
+                        errors.addValidationError("WS_AEMS_085", "A Baseline treatment type already exists");
+                        break;
+                    }
+                }
+
+            }
+
 
 		}
 		return errors;

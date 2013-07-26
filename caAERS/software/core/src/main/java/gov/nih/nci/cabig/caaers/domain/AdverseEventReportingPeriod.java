@@ -905,7 +905,19 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
         for(AdverseEvent thisAe : getAdverseEvents()){
             //are Ids matching ?
             if(ObjectUtils.equals(thisAe.getId(), thatAe.getId())) return thisAe;
-            if(ObjectUtils.equals(thisAe.getExternalId(), thatAe.getExternalId())) return thisAe;
+
+            // If the both external Id's are present, if they are matching then return else continue.
+            if ( StringUtils.isNotEmpty(thisAe.getExternalId())&&  StringUtils.isNotEmpty(thatAe.getExternalId())) {
+                if(ObjectUtils.equals(thisAe.getExternalId(), thatAe.getExternalId()))
+                    return thisAe;
+                else
+                    continue;
+            } else {
+                // If one of the adverse events external id is not NULL then they are different so continuing find matching.
+                if ( (thisAe.getExternalId() == null &&  StringUtils.isNotEmpty(thatAe.getExternalId())) || (StringUtils.isNotEmpty(thisAe.getExternalId()) &&  thatAe.getExternalId() == null)) {
+                    continue;
+                }
+            }
 
             AbstractAdverseEventTerm thisTerm = thisAe.getAdverseEventTerm();
             AbstractAdverseEventTerm thatTerm = thatAe.getAdverseEventTerm();
