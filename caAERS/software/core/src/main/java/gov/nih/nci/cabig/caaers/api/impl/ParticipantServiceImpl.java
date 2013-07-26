@@ -583,7 +583,6 @@ public class ParticipantServiceImpl extends AbstractImportService implements App
 		List<StudyParticipantAssignment> assignments = dbParticipant.getStudyParticipantAssignments(siteTransferredFrom.getOrganization());
 		
 		for(StudyParticipantAssignment assignment : assignments){
-			//StudyParticipantAssignment assignment = dbParticipant.getStudyParticipantAssignment(siteTransferredFrom);
 		    	Study study = assignment.getStudySite().getStudy();
 		    	StudySite studySiteToBeTransferredTo = study.getStudySite(dbOrgToBeTransferredTo);
 		    	if(studySiteToBeTransferredTo == null){

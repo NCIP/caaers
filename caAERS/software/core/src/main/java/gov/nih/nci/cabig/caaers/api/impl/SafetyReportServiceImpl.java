@@ -238,8 +238,9 @@ public class SafetyReportServiceImpl {
         // Update AE Signatures.
         aeDestReport.updateAESignatures();
         
-        transferStudySubjectIfRequired(aeSrcReport, aeDestReport, errors);
         expeditedAdverseEventReportDao.save(dbReport);
+        
+        transferStudySubjectIfRequired(aeSrcReport, aeDestReport, errors);
 
         dbReport.getAssignment().synchronizeMedicalHistoryFromReportToAssignment(dbReport);
         studyParticipantAssignmentDao.save(dbReport.getAssignment());
@@ -295,12 +296,11 @@ public class SafetyReportServiceImpl {
         // Set the signature for the AE.
         aeDestReport.updateAESignatures();
         
-        // transfer the study subject if required.
-        transferStudySubjectIfRequired(aeSrcReport, aeDestReport, errors);
-
-
         //Call the ExpediteReportDao and save this report.
         expeditedAdverseEventReportDao.save(aeDestReport);
+        
+        // transfer the study subject if required.
+        transferStudySubjectIfRequired(aeSrcReport, aeDestReport, errors);
 
         aeDestReport.getAssignment().synchronizeMedicalHistoryFromReportToAssignment(aeDestReport);
         studyParticipantAssignmentDao.save(aeDestReport.getAssignment());
