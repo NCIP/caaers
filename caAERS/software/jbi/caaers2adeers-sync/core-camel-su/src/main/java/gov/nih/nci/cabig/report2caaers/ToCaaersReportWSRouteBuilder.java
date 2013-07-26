@@ -32,7 +32,7 @@ public class ToCaaersReportWSRouteBuilder {
 			.processRef("removeEDIHeadersAndFootersProcessor")
 			.process(track(PRE_PROCESS_EDI_MSG))
 			.to(routeBuilder.getFileTracker().fileURI(PRE_PROCESS_EDI_MSG))
-			.to("direct:caaers-reportSubmit-sync");
+			.to("direct:e2bStudySink", "direct:caaers-reportSubmit-sync");
         
 		//content based router
 		routeBuilder.from("direct:processedE2BMessageSink")
@@ -45,6 +45,13 @@ public class ToCaaersReportWSRouteBuilder {
 		
         //caAERS - createParticipant
         configureWSCallRoute("direct:caaers-reportSubmit-sync", "safetyreport_e2b_sync.xsl", caAERSSafetyReportJBIURL + "submitSafetyReport" );
+
+        //route to invoke study sync
+        routeBuilder.from("direct:e2bStudySink")
+                .to("xslt:" + requestXSLBase + "study_sync_request.xsl")
+                .processRef("exchangePreProcessor").processRef("headerGeneratorProcessor")
+                .to("direct:adEERSRequestSink");
+
 	}
 	
 
