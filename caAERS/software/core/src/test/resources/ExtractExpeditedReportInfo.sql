@@ -51,13 +51,13 @@ inner join other_interventions on ( ae_biological_interventions.study_interventi
 where report_id in  ( select id as report_id from ae_reports where external_id = :rep_ext_id )) TO '/tmp/output/biological_interventions.csv' (format csv, delimiter ',', header true, FORCE_QUOTE *); 
 
 -- Retrieve all the fields for Behavioral Attributions.
-COPY (select name, attribution_code  from adverse_events  inner join ae_attributions on (adverse_events.id = ae_attributions.adverse_event_id) 
+COPY (select description, attribution_code  from adverse_events  inner join ae_attributions on (adverse_events.id = ae_attributions.adverse_event_id)
 inner join ae_cause_types on ( ae_attributions.cause_type = ae_cause_types.code)
 inner join ae_behavioral_interventions on ( adverse_events.report_id =  ae_behavioral_interventions.report_id )
 where ae_cause_types.code = 'HI' and adverse_events.report_id in  ( select id as report_id from ae_reports where external_id = :rep_ext_id )) TO '/tmp/output/BehavAttributions.csv' (format csv, delimiter ',', header true, FORCE_QUOTE *); 
 
 -- Retrieve all the fields for Biological Attributions.
-COPY (select name, attribution_code  from adverse_events  inner join ae_attributions on (adverse_events.id = ae_attributions.adverse_event_id) 
+COPY (select description, attribution_code  from adverse_events  inner join ae_attributions on (adverse_events.id = ae_attributions.adverse_event_id)
 inner join ae_cause_types on ( ae_attributions.cause_type = ae_cause_types.code)
 inner join ae_biological_interventions on ( adverse_events.report_id =  ae_biological_interventions.report_id )
 where  ae_cause_types.code = 'BI' and adverse_events.report_id in  ( select id as report_id from ae_reports where external_id = :rep_ext_id )) TO '/tmp/output/BioAttributions.csv' (format csv, delimiter ',', header true, FORCE_QUOTE *); 
@@ -69,14 +69,14 @@ inner join concomitant_medications on ( adverse_events.report_id =  concomitant_
 where   ae_cause_types.code = 'CM' and adverse_events.report_id in  ( select id as report_id from ae_reports where external_id = :rep_ext_id )) TO '/tmp/output/CMAttributions.csv' (format csv, delimiter ',', header true, FORCE_QUOTE *); 
 
 -- Dietary Attributions
-COPY (select name, attribution_code  from adverse_events  
+COPY (select description, attribution_code  from adverse_events
 inner join ae_attributions on (adverse_events.id = ae_attributions.adverse_event_id) 
 inner join ae_cause_types on ( ae_attributions.cause_type = ae_cause_types.code)
 inner join ae_dietary_interventions on ( adverse_events.report_id =  ae_dietary_interventions.report_id )
 where ae_cause_types.code = 'DI' and adverse_events.report_id in  ( select id as report_id from ae_reports where external_id = :rep_ext_id )) TO '/tmp/output/DIAttributions.csv' (format csv, delimiter ',', header true, FORCE_QUOTE *); 
 
 --Genetic Attributions.
-COPY (select name, attribution_code  from adverse_events  inner join ae_attributions on (adverse_events.id = ae_attributions.adverse_event_id) 
+COPY (select description, attribution_code  from adverse_events  inner join ae_attributions on (adverse_events.id = ae_attributions.adverse_event_id)
 inner join ae_cause_types on ( ae_attributions.cause_type = ae_cause_types.code)
 inner join ae_genetic_interventions on ( adverse_events.report_id =  ae_genetic_interventions.report_id )
 where ae_cause_types.code = 'GI' and adverse_events.report_id in  ( select id as report_id from ae_reports where external_id = :rep_ext_id )) TO '/tmp/output/GIAttributions.csv' (format csv, delimiter ',', header true, FORCE_QUOTE *); 
