@@ -70,6 +70,7 @@
         <property name="aeReportSynchronizer" ref="aeReportSynchronizer" />
         <property name="studyParticipantAssignmentDao"  ref="studyParticipantAssignmentDao" />
         <property name="reportSubmissionService"  ref="reportSubmissionService" />
+        <property name="adeersIntegrationFacade"  ref="proxyWebServiceFacade" />
     </bean>
     
     

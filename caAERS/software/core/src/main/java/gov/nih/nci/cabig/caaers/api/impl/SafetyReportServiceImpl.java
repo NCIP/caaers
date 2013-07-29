@@ -18,6 +18,7 @@ import gov.nih.nci.cabig.caaers.domain.validation.ExpeditedAdverseEventReportVal
 import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.AdverseEventReport;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
+import gov.nih.nci.cabig.caaers.service.AdeersIntegrationFacade;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.ReportSubmissionService;
 import gov.nih.nci.cabig.caaers.service.migrator.ExpeditedAdverseEventReportConverter;
@@ -61,6 +62,8 @@ public class SafetyReportServiceImpl {
     private ReportRepository reportRepository;
     private ReportSubmissionService reportSubmissionService;
 
+    private AdeersIntegrationFacade adeersIntegrationFacade;
+
     private EventFactory eventFactory;
 
     public EventFactory getEventFactory() {
@@ -71,7 +74,13 @@ public class SafetyReportServiceImpl {
         this.eventFactory = eventFactory;
     }
 
+    public AdeersIntegrationFacade getAdeersIntegrationFacade() {
+        return adeersIntegrationFacade;
+    }
 
+    public void setAdeersIntegrationFacade(AdeersIntegrationFacade adeersIntegrationFacade) {
+        this.adeersIntegrationFacade = adeersIntegrationFacade;
+    }
 
     public ReportRepository getReportRepository() {
         return reportRepository;
@@ -152,6 +161,11 @@ public class SafetyReportServiceImpl {
     }
 
     public void migrate(ExpeditedAdverseEventReport aeSrcReport, ExpeditedAdverseEventReport aeDestReport, ValidationErrors errors){
+        try{
+             adeersIntegrationFacade.updateStudy(aeSrcReport.getStudy().getId(), true);
+        }catch (Exception e){
+            logger.warn("Study synchronization failed.", e);
+        }
         DomainObjectImportOutcome<ExpeditedAdverseEventReport> outCome = new DomainObjectImportOutcome<ExpeditedAdverseEventReport>();
         aeReportMigrator.migrate(aeSrcReport, aeDestReport, outCome);
         if(outCome.hasErrors()) errors.addValidationErrors(outCome.getValidationErrors().getErrors());

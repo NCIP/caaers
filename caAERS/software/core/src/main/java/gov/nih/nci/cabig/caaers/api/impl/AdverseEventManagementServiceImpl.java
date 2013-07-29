@@ -20,17 +20,7 @@ import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.index.AdverseEventIndexDao;
 import gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.Epoch;
-import gov.nih.nci.cabig.caaers.domain.ExternalAEReviewStatus;
-import gov.nih.nci.cabig.caaers.domain.ExternalAdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.ExternalAdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.Identifier;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AdverseEventType;
@@ -40,6 +30,7 @@ import gov.nih.nci.cabig.caaers.integration.schema.manageae.AdverseEventsInputMe
 import gov.nih.nci.cabig.caaers.integration.schema.manageae.Criteria;
 import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationService;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
+import gov.nih.nci.cabig.caaers.service.AdeersIntegrationFacade;
 import gov.nih.nci.cabig.caaers.service.AdverseEventReportingPeriodService;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.migrator.adverseevent.AdverseEventConverter;
@@ -111,7 +102,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
     private Configuration configuration;
     private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
     private AdverseEventValidatior adverseEventValidatior;
-
+    private AdeersIntegrationFacade adeersIntegrationFacade;
 	private static Log logger = LogFactory.getLog(AdverseEventManagementServiceImpl.class);
 
 	public CaaersServiceResponse deleteAdverseEvent(AdverseEventsInputMessage adverseEventsInputMessage) {
@@ -248,6 +239,19 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
      */
 
     public AdverseEventReportingPeriod createOrUpdateAdverseEvents(AdverseEventReportingPeriod rpSrc, ValidationErrors errors, boolean syncFlag){
+
+        Study study = fetchStudy(rpSrc.getStudy().getFundingSponsorIdentifierValue());
+        if(study == null){
+            logger.error("Study not present in caAERS with the sponsor identifier : " + rpSrc.getStudy().getFundingSponsorIdentifierValue());
+            errors.addValidationError("WS_AEMS_003", "Study with sponsor identifier " + rpSrc.getStudy().getFundingSponsorIdentifierValue() +" does not exist in caAERS",
+                    new String[]{rpSrc.getStudy().getFundingSponsorIdentifierValue()});
+            return null;
+        }
+        try{
+            adeersIntegrationFacade.updateStudy(study.getId(), true);
+        }catch (Exception e){
+            logger.warn("Study synchronization failed.", e);
+        }
         //migrate the domain object
         AdverseEventReportingPeriod rpDest = new AdverseEventReportingPeriod();
         DomainObjectImportOutcome<AdverseEventReportingPeriod> rpOutcome = new DomainObjectImportOutcome<AdverseEventReportingPeriod>();
@@ -1068,7 +1072,8 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 
 	
 	private Study fetchStudy(String identifier) {
-		Identifier si = new Identifier();
+		Identifier si = new OrganizationAssignedIdentifier();
+        si.setType(OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE);
 		si.setValue(identifier);
 		return studyDao.getByIdentifier(si);
 	}
@@ -1603,7 +1608,12 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
     public void setAdverseEventValidatior(AdverseEventValidatior adverseEventValidatior) {
         this.adverseEventValidatior = adverseEventValidatior;
     }
-/*
+
+    public void setAdeersIntegrationFacade(AdeersIntegrationFacade adeersIntegrationFacade) {
+        this.adeersIntegrationFacade = adeersIntegrationFacade;
+    }
+
+    /*
     * private Study processStudyCriteria(StudyType xmlStudy) throws
     * CaaersSystemException{logger.info(
     * "Entering processStudyCriteria() in AdverseEventManagementServiceImpl");
