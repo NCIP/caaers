@@ -342,36 +342,12 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 
         for ( Integer aeReportId : recommendedReportTableMap.keySet()){
 
-            List<ReportTableRow> applicableRows = findApplicableRows(aeReportId, applicableReportTableMap);
+            List<ReportTableRow> applicableRows = applicableReportTableMap.get(aeReportId);
 
             if ( applicableRows != null) {
                 findMatchingRecommendations(applicableRows, recommendedReportTableMap.get(aeReportId), recommendedActions, ignoredRows) ;
             }
         }
-    }
-
-    /**
-     *  Returns the applicable Rows for the report.
-     * @param aeReportId
-     * @param applicableReportTableMap
-     * @return
-     */
-
-    private List<ReportTableRow> findApplicableRows(Integer aeReportId, Map<Integer, List<ReportTableRow>> applicableReportTableMap) {
-
-        if ( aeReportId == 0){
-            if ( applicableReportTableMap.size() == 1) {
-                return applicableReportTableMap.get(aeReportId);
-            } else {
-                for (Integer rptId : applicableReportTableMap.keySet() ) {
-                        if ( rptId == 0) continue;
-                      return applicableReportTableMap.get(rptId);
-                }
-            }
-        }
-
-        return applicableReportTableMap.get(aeReportId);
-
     }
 
     /**
@@ -555,14 +531,25 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
                             // Update the Group Due.
                             action.setDue(applicableRow.getGrpDue());
                             // Create a New Row.
-                            RecommendedActions preSelectedAction = new RecommendedActions();
+
+                            // Add a action for Create or Update the existing one.
+                            RecommendedActions preSelectedAction = null;
+                            for (RecommendedActions actionIter: recommendedActions) {
+
+                                if ( actionIter.getAction().equals("Create")) {
+                                    preSelectedAction = actionIter;
+                                    break;
+                                }
+                            }
+                            if ( preSelectedAction == null){
+                                preSelectedAction = new RecommendedActions();
+                                recommendedActions.add(preSelectedAction);
+                            }
 
                             preSelectedAction.setAction("Create"); // Make it Create.
                             preSelectedAction.setStatus("Not Started");
-                            preSelectedAction.setReport(applicableRow.getReportDefinition().getLabel());
+                            preSelectedAction.setReport(applicableRow.getReportDefinition().getName());
                             preSelectedAction.setDue(applicableRow.getDue());
-
-                            recommendedActions.add(preSelectedAction);
                     }
                 }
 
