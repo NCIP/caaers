@@ -357,10 +357,10 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
      * @return
      */
 
-    private ReportTableRow findApplicableRow(List<ReportTableRow> applicableRows, ReportTableRow recommRow) {
+    private ReportTableRow findApplicableRow(List<ReportTableRow> applicableRows,String reportName) {
 
             for ( ReportTableRow row: applicableRows) {
-                if ( row.getReportDefinition().getName().equals(recommRow.getReportDefinition().getName())) {
+                if ( row.getReportDefinition().getName().equals(reportName) ) {
                     return row;
                 }
             }
@@ -517,7 +517,7 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
         List<ReportTableRow> preselectedRows = findPreSelectedRows(applicableRows);
 
         for (ReportTableRow recommRow : recommRows) {
-            ReportTableRow applicableRow = findApplicableRow(applicableRows, recommRow);
+            ReportTableRow applicableRow = findApplicableRow(applicableRows, recommRow.getReportDefinition().getName());
 
             if ( applicableRow == null || isMatchedIgnoredRow(ignoredRows, recommRow)) continue;
 
@@ -527,31 +527,34 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
             if (applicableRow.getAction().equals(ReportDefinitionWrapper.ActionType.AMEND) || applicableRow.getAction().equals(ReportDefinitionWrapper.ActionType.WITHDRAW)) {
                 for (ReportTableRow preselectedRow: preselectedRows ) {
                     if ( preselectedRow != null ) {
-                        if (preselectedRow.getReportDefinition().getName().equals(applicableRow.getReportDefinition().getName())){
+
                             // Update the Group Due.
                             action.setDue(applicableRow.getGrpDue());
-                            // Create a New Row.
 
                             // Add a action for Create or Update the existing one.
                             RecommendedActions preSelectedAction = null;
                             for (RecommendedActions actionIter: recommendedActions) {
 
-                                if ( actionIter.getAction().equals("Create")) {
+                                if ( actionIter.getAction().equals(ReportDefinitionWrapper.ActionType.CREATE)) {
                                     preSelectedAction = actionIter;
                                     break;
                                 }
                             }
-                            if ( preSelectedAction == null){
+                            if ( preSelectedAction == null){      // If the Create Action is not occured before, Create one manually.
                                 preSelectedAction = new RecommendedActions();
+                                preSelectedAction.setAction(ReportDefinitionWrapper.ActionType.CREATE.toString()); // Make it Create.
+                                preSelectedAction.setStatus("Not Started");
+                                preSelectedAction.setReport(preselectedRow.getReportDefinition().getName());
+                                preSelectedAction.setDue(preselectedRow.getDue());
+
                                 recommendedActions.add(preSelectedAction);
+                            }   else { // If it is already occured, Update the due time.
+
+                                ReportTableRow createAction = findApplicableRow(applicableRows, preSelectedAction.getAction()) ;
+                                preSelectedAction.setDue(createAction.getDue());
                             }
 
-                            preSelectedAction.setAction("Create"); // Make it Create.
-                            preSelectedAction.setStatus("Not Started");
-                            preSelectedAction.setReport(applicableRow.getReportDefinition().getName());
-                            preSelectedAction.setDue(applicableRow.getDue());
-                    }
-                }
+                  }
 
                }
             }
