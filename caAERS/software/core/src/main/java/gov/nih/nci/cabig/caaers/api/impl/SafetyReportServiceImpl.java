@@ -347,9 +347,9 @@ public class SafetyReportServiceImpl {
             if(errors.hasErrors()) populateErrors(response, errors);
 
             //submit report
-            for(Report report : reportsAffected){
+          /*  for(Report report : reportsAffected){
                 reportSubmissionService.submitReport(report);
-            }
+            }*/
         }catch (Exception e){
             logger.error("Unable to Create/Update a Report from Safety Management Service", e);
             Helper.populateError(response, "WS_GEN_000",e.getMessage() );
