@@ -27,20 +27,14 @@
               <artifact pattern="${user.home}/.ivy2/caAERS/[organisation]/[module]/[type]s/[artifact]-[revision].[ext]"/>
         </filesystem>
 		
-		<!-- The caAERS repository, all the JARs that are not available elsewhere are moved here -->
-		<!-- [vc] removing sb repo to keep only nci repo -->
-		<!--
-        <url name="semanticbits-repo-caAERS-http">
-            <ivy pattern="http://repo.semanticbits.com/ivy-repo/caAERS/[organisation]/[module]/ivy-[revision].xml" />
-            <artifact pattern="http://repo.semanticbits.com/ivy-repo/caAERS/[organisation]/[module]/[type]s/[artifact]-[revision].[ext]" />
-        </url>
-		-->
         <!-- NCI IVY repository -->
+        <!--  
         <url name="nci-ivy-repo" >
           <ivy pattern="https://ncisvn.nci.nih.gov/svn/deprecated-cbiit-ivy-repo/trunk/[organisation]/[module]/[revision]/ivy.xml" />
           <artifact pattern="https://ncisvn.nci.nih.gov/svn/deprecated-cbiit-ivy-repo/trunk/[organisation]/[module]/[revision]/[module]-[revision].[ext]" />
           <artifact pattern="https://ncisvn.nci.nih.gov/svn/deprecated-cbiit-ivy-repo/trunk/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]" />
-        </url>
+        </url>  
+        -->
 
         <!-- caGrid 1.3 repository -->
         <url name="nci-cagrid13-repo">
@@ -56,29 +50,12 @@
             <artifact pattern="http://software.cagrid.org/repository-1.4/[organisation]/[module]/[revision]/[artifact].[ext]" />
         </url>
 
-
-		<!--  Semanticbits shared repository [using http] -->
-		<!-- [vc] removing sb repo to keep only nci repo -->
-		<!--
-		<url name="semanticbits-repo-http">
-			<ivy pattern="http://repo.semanticbits.com/ivy-repo/[organisation]/[module]/[revision]/ivy.xml" />
-            <ivy pattern="http://repo.semanticbits.com/ivy-repo/[organisation]/[module]/[revision]/ivy-[revision].xml" />
-  			<artifact pattern="http://repo.semanticbits.com/ivy-repo/[organisation]/[module]/[revision]/[artifact].[ext]" />
-  			<artifact pattern="http://repo.semanticbits.com/ivy-repo/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]" />
-		</url>
-		-->
 		
 		<!-- Maven 2 -->	
 		<ibiblio name="maven2" m2compatible="true"/>
 	    
-	    <!--  Northwestern RHLCCC Bioinformatics  -->
-		<!--
-		<ibiblio name="maven2-northwestern" m2compatible="true"
-				root="http://download.bioinformatics.northwestern.edu/download/maven2"
-				changingPattern=".*SNAPSHOT" />
-		-->
-
         <!-- Nexus NCI -->
+        <!-- 
         <ibiblio name="maven2-NCI-3rdparty" m2compatible="true"
                  root="https://ncimvn.nci.nih.gov/nexus/content/repositories/thirdparty"
                  changingPattern="SNAPSHOT"/>
@@ -90,31 +67,10 @@
                  changingPattern="SNAPSHOT"/>
 		<ibiblio name="maven2-NCI-releases"  m2compatible="true" root="https://ncimvn.nci.nih.gov/nexus/content/repositories/releases"
 				 changingPattern="SNAPSHOT"/>
-		
-		<!-- Local .m2 Cache -->
-		<filesystem name="local-maven2" m2compatible="true" >
-			<artifact pattern="${m2-pattern}"/>
-			<ivy pattern="${user.home}/.m2/repository/[organisation]/[module]/[revision]/[module]-[revision](-[classifier]).pom"/>
-		</filesystem>
-
-
-			<!--  SemanticBits shared repository [using sftp] -->
-<!--
-	 		<sftp name="semanticbits-repo-sftp" user="userivy" userPassword="userivy" host="10.10.10.21">
-		  		<ivy pattern="/usr/local/tomcats/apache-tomcat-5.5.23-8090/webapps/ivy-repo/[organisation]/[module]/[revision]/ivy.xml"/>
-		  		<artifact pattern="/usr/local/tomcats/apache-tomcat-5.5.23-8090/webapps/ivy-repo/[organisation]/[module]/[revision]/[artifact].[ext]"/>
-			</sftp>
--->
+				 -->
 
         </chain>
 		
 	</resolvers>
-    <modules>
-	<!-- [vc] removing sb repo to keep only nci repo -->
-		<!--
-        <module org="org.drools" revision="4.0.6" resolver="semanticbits-repo-caAERS-http" />
-		-->
-    </modules>
-
 </ivysettings>
 
