@@ -339,7 +339,7 @@ public class SafetyReportServiceImpl {
      * @return
      */
     @Transactional(readOnly=false)
-    public CaaersServiceResponse submitSafetyReport(AdverseEventReport adverseEventReport) {
+    public CaaersServiceResponse submitSafetyReport(AdverseEventReport adverseEventReport) throws Exception {
         CaaersServiceResponse response = Helper.createResponse();
         try{
             List<Report> reportsAffected = new ArrayList<Report>();
@@ -347,12 +347,19 @@ public class SafetyReportServiceImpl {
             if(errors.hasErrors()) populateErrors(response, errors);
 
             //submit report
-          /*  for(Report report : reportsAffected){
-                reportSubmissionService.submitReport(report);
-            }*/
+            try {
+				for(Report report : reportsAffected){
+				    reportSubmissionService.submitReport(report);
+				}
+			} catch (Exception e) {
+				System.out.println("*RK --------" +  e.getMessage() + "--------------------- *RK ");
+				e.printStackTrace();
+				throw e;
+			}
         }catch (Exception e){
             logger.error("Unable to Create/Update a Report from Safety Management Service", e);
             Helper.populateError(response, "WS_GEN_000",e.getMessage() );
+            throw e;
         }
         return response;
     }

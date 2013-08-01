@@ -1778,6 +1778,9 @@
   <wsdl:service name="SafetyReportManagementService">
     <wsdl:port binding="tns:SafetyReportManagementServiceSoapBinding" name="SafetyReportManagementServiceImplPort">
       <soap:address location="https://localhost:9443/caaers/services/SafetyReportService"></soap:address>
+      <http-conf:client ReceiveTimeout="300000"/>
+      <http-conf:client ConnectionTimeout="400000"/>
+      <http-conf:client CacheControl="no-cache" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>
