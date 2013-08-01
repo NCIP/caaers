@@ -96,6 +96,7 @@
                 <exclude org="gov.nih.nci.cabig.ctms" module="ctms-commons-testing-unit"     />
                 <exclude org="org.hibernate" />
 				<exclude org="jdom" module="jdom" />
+				<exclude org="junit" />
             </dependency>
             <dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-acegi-grid" rev="${ctms.version}"
                         conf="build,dist,distGrid->default" >
@@ -105,10 +106,11 @@
                 <exclude org="org.hibernate" />
 				<exclude module="jta" />
 				<exclude org="jdom" module="jdom" />
+				<exclude org="junit" />
             </dependency>
 
             <!--Home grown infrastructure jar for COPPA  -->
-            <dependency org="com.semanticbits.remoteentitymanager" name="remoteentitymanager" rev="1.2.1" conf="*->publish,distGrid">
+            <dependency org="com.semanticbits.remoteentitymanager" name="remoteentitymanager" rev="1.2.1" conf="build,dist,distGrid->default">
                 <exclude org="org.slf4j" />
                 
                 <!-- adding excludes on for older versions -->
@@ -118,9 +120,10 @@
                 <exclude org="commons-discovery"/>
                 <exclude org="antlr"/>
                 <exclude org="org.springframework"/>
+				<exclude org="junit" />
             </dependency>
             <!-- C3PR esb client -->
-            <dependency org="edu.duke.cabig.c3pr" name="c3pr-esb-client" rev="2.9.6_M2" conf="build,dist,distGrid->distGrid">
+            <dependency org="edu.duke.cabig.c3pr" name="c3pr-esb-client" rev="2.9.6_M2" conf="build,dist,distGrid->default">
                 <exclude org="org.slf4j"     />
             </dependency>
 
@@ -128,11 +131,12 @@
             <dependency org="caGrid" name="cds" rev="1.4" >
                 <artifact name="caGrid-cds-client" conf="*->client" />
                 <exclude module="jta"/>
+				<exclude org="junit" />
             </dependency>
 
             <!--caXchange -->
-            <dependency org="gov.nih.nci.caxchange"  name="caXchange-cxf-stubs-jar" rev="2.0">
-                <artifact name="caXchange-cxf-stubs-jar" />
+            <dependency org="gov.nih.nci.caxchange"  name="caxchange-cxf-stubs-jar" rev="2.0">
+                <artifact name="caxchange-cxf-stubs-jar" />
             </dependency>
 
             <!-- Connection Pool  -->
@@ -171,9 +175,11 @@
             <!-- should upgrade ehcache, when we upgrade hibernate -->
             <dependency org="org.hibernate" name="hibernate-core" rev="3.6.4.Final">
                 <exclude org="cglib" />
+				<exclude org="antlr" />
             </dependency>
             <dependency org="org.hibernate" name="hibernate-ehcache" rev="3.6.4.Final">
                 <exclude org="net.sf.ehcache" />
+				<exclude org="antlr" />
             </dependency>
 
             <!-- Caching -->
@@ -300,7 +306,7 @@
 			<dependency org="org.easymock" name="easymockclassextension" rev="2.2.1" conf="test->default(*)" >
                 <exclude org="cglib"/>
             </dependency>
-        	<dependency org="junit" name="junit" rev="4.4" conf="test->default(*)"/>
+        	<dependency org="junit" name="junit" rev="4.4" conf="default,test->default(*)"/>
         	<dependency org="cobertura" name="cobertura" rev="1.8" conf="test->default(*)">
                 <exclude org="log4j"/>
                 <exclude org="asm"/>

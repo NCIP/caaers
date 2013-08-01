@@ -6,6 +6,7 @@
 -->
 <ivysettings>
     <property name="ivy.checksums" value=""/>
+	<property name="m2-pattern" value="${user.home}/.m2/repository/[organisation]/[module]/[revision]/[module]-[revision](-[classifier]).[ext]" override="false" />
     <settings defaultResolver="caaers-resolver" validate="false" />
     <caches default="caAERSCache">
         <cache name="caAERSCache" basedir="${user.home}/.ivy2/caAERS"/>
@@ -25,8 +26,8 @@
               <ivy pattern="${user.home}/.ivy2/caAERS/[organisation]/[module]/ivy-[revision].xml"/>
               <artifact pattern="${user.home}/.ivy2/caAERS/[organisation]/[module]/[type]s/[artifact]-[revision].[ext]"/>
         </filesystem>
-
-        <!-- The caAERS repository, all the JARs that are not available elsewhere are moved here -->
+		
+		<!-- The caAERS repository, all the JARs that are not available elsewhere are moved here -->
 		<!-- [vc] removing sb repo to keep only nci repo -->
 		<!--
         <url name="semanticbits-repo-caAERS-http">
@@ -87,8 +88,14 @@
         <ibiblio name="maven2-NCI-jboss" m2compatible="true"
                  root="https://ncimvn.nci.nih.gov/nexus/content/repositories/jboss"
                  changingPattern="SNAPSHOT"/>
-	<ibiblio name="maven2-NCI-releases"  m2compatible="true" root="https://ncimvn.nci.nih.gov/nexus/content/repositories/releases"
-               changingPattern="SNAPSHOT"/>
+		<ibiblio name="maven2-NCI-releases"  m2compatible="true" root="https://ncimvn.nci.nih.gov/nexus/content/repositories/releases"
+				 changingPattern="SNAPSHOT"/>
+		
+		<!-- Local .m2 Cache -->
+		<filesystem name="local-maven2" m2compatible="true" >
+			<artifact pattern="${m2-pattern}"/>
+			<ivy pattern="${user.home}/.m2/repository/[organisation]/[module]/[revision]/[module]-[revision](-[classifier]).pom"/>
+		</filesystem>
 
 
 			<!--  SemanticBits shared repository [using sftp] -->
