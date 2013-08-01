@@ -63,6 +63,8 @@ public class AdverseEventConverter {
             TimeZone timeZone = TimeZone.getDefault();
             adverseEventDto.getDateFirstLearned().toGregorianCalendar().setTimeZone(timeZone);
             adverseEvent.setGradedDate(adverseEventDto.getDateFirstLearned().toGregorianCalendar().getTime());
+        }  else {
+            adverseEvent.setGradedDate(new Date()); // Set the default date as now.
         }
 
         if(adverseEventDto.getAdverseEventCtepTerm() != null && adverseEventDto.getAdverseEventCtepTerm().getCtepCode() != null){
