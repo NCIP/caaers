@@ -73,12 +73,12 @@ public class AdverseEventReportingPeriodMigrator extends CompositeMigrator<Adver
         boolean dateValidationFlag = false;
         for ( AdverseEvent ae: src.getAdverseEvents()) {
 
-            if ( ae.getStartDate().after(now) ) {      // StartDate of AE cannot be in future.
+            if ( ae.getStartDate() != null && ae.getStartDate().after(now) ) {      // StartDate of AE cannot be in future.
                 outcome.addError("WS_AEMS_031", "Invalid future Date for StartDate");
                 dateValidationFlag = true;
                 break;
             }
-            if ( ae.getGradedDate().after(now)){       // DateFirstLearned of AE cannot be in future.
+            if ( ae.getGradedDate() != null && ae.getGradedDate().after(now)){       // DateFirstLearned of AE cannot be in future.
                 outcome.addError("WS_AEMS_031", "Invalid future Date for Date First Learned");
                 dateValidationFlag = true;
                 break;
