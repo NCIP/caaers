@@ -531,11 +531,11 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
                             // Update the Group Due.
                             action.setDue(applicableRow.getGrpDue());
 
-                            // Add a action for Create or Update the existing one.
+                            // find if the report already exists.
                             RecommendedActions preSelectedAction = null;
                             for (RecommendedActions actionIter: recommendedActions) {
 
-                                if ( actionIter.getAction().equals(ReportDefinitionWrapper.ActionType.CREATE)) {
+                                if ( actionIter.getReport().equals(preselectedRow.getReportDefinition().getName()) ) {
                                     preSelectedAction = actionIter;
                                     break;
                                 }
