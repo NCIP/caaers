@@ -51,6 +51,7 @@
             <exclude org="cacore" module="csm" />
             <exclude org="cacore" module="clm" />
             <exclude org="cobertura" />
+            <exclude org="drools"/>
 
 			<!-- exclusion based on class loading -->
 

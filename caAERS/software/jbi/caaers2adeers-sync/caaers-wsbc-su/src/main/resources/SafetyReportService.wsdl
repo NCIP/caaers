@@ -1,4 +1,11 @@
-<?xml version="1.0" ?><wsdl:definitions name="SafetyReportManagementService" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/aereport" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/aereport" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<?xml version="1.0" ?><wsdl:definitions name="SafetyReportManagementService"
+										targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/aereport" 
+										xmlns:ns1="http://schemas.xmlsoap.org/soap/http" 
+										xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+										xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/aereport"
+										xmlns:http-conf="http://cxf.apache.org/transports/http/configuration"
+										xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+										xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <wsdl:types>
 <xs:schema elementFormDefault="unqualified" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	

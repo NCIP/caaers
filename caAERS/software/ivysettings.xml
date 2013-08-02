@@ -68,6 +68,12 @@
 		<ibiblio name="maven2-NCI-releases"  m2compatible="true" root="https://ncimvn.nci.nih.gov/nexus/content/repositories/releases"
 				 changingPattern="SNAPSHOT"/>
 				 -->
+				 
+		 <!-- Local .m2 Cache -->
+		<filesystem name="local-maven2" m2compatible="true" >
+			<artifact pattern="${m2-pattern}"/>
+			<ivy pattern="${user.home}/.m2/repository/[organisation]/[module]/[revision]/[module]-[revision](-[classifier]).pom"/>
+		</filesystem>
 
         </chain>
 		
