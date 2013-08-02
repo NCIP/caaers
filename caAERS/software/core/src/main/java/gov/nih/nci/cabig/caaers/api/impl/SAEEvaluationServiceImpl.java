@@ -535,7 +535,7 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
                             RecommendedActions preSelectedAction = null;
                             for (RecommendedActions actionIter: recommendedActions) {
 
-                                if ( actionIter.getReport().equals(preselectedRow.getReportDefinition().getName()) ) {
+                                if ( actionIter.getReport().equals(preselectedRow.getReportDefinition().getName()) && actionIter.getAction().equals("Create") ) {
                                     preSelectedAction = actionIter;
                                     break;
                                 }
@@ -550,7 +550,7 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
                                 recommendedActions.add(preSelectedAction);
                             }   else { // If it is already occured, Update the due time.
 
-                                ReportTableRow createAction = findApplicableRow(applicableRows, preSelectedAction.getAction()) ;
+                                ReportTableRow createAction = findApplicableRow(applicableRows, preSelectedAction.getReport()) ;
                                 preSelectedAction.setDue(createAction.getDue());
                             }
 
