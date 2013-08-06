@@ -23,6 +23,7 @@ import gov.nih.nci.cabig.caaers2adeers.track.FileTracker;
 import gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage;
 import gov.nih.nci.cabig.open2caaers.ToCaaersParticipantWSRouteBuilder;
 import gov.nih.nci.cabig.open2caaers.exchange.ParticipantODMMessageProcessor;
+import gov.nih.nci.cabig.report2caaers.AdeersResponseToE2BAckRouteBuilder;
 import gov.nih.nci.cabig.report2caaers.ToCaaersReportWSRouteBuilder;
 
 import org.apache.camel.Exchange;
@@ -61,6 +62,8 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
     private ToCaaersParticipantWSRouteBuilder toCaaersParticipantWSRouteBuilder;
     @Autowired
     private ToCaaersReportWSRouteBuilder toCaaersReportWSRouteBuilder;
+    @Autowired
+    private AdeersResponseToE2BAckRouteBuilder adeersResponseToE2BAckRouteBuilder;
     
 	public FileTracker getFileTracker() {
 		return fileTracker;
@@ -167,8 +170,11 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
     	toCaaersClientRouteBuilder.configure(this);
     	//configure routes towards caAERS safety report service with E2B input
     	toCaaersReportWSRouteBuilder.configure(this);
-
+    	//process adeers response and generate E2B ACK
+    	adeersResponseToE2BAckRouteBuilder.configure(this);
+    	
     	//need to process AdEERS results, may be the SyncComponent...  
+    	    	
     	from("direct:adEERSResponseSink")
                 .to("log:gov.nih.nci.cabig.caaers2adeers.synch-comp?showHeaders=true&level=TRACE&showException=true&showStackTrace=true")
                 .choice()

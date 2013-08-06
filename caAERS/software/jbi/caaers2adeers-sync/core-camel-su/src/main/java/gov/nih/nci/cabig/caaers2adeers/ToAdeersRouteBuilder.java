@@ -47,6 +47,7 @@ public class ToAdeersRouteBuilder {
                 .when().xpath(xpathPredicate("study", "createStudy")).to("direct:adeers-study-details")
                 .when().xpath(xpathPredicate("study", "updateStudy")).to("direct:adeers-study-details")
     			.when().xpath(xpathPredicate("study", "searchStudy")).to("direct:adeers-study-search")
+    			.when().xpath(xpathPredicate("AdeersSubmissionResponse", "routeReportSubmissionResponse")).to("direct:routeAdEERSResponseSink")
     			.otherwise().to("direct:morgue");
 		
 		//LOV - Agents

@@ -33,6 +33,8 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public class AdeersSubmissionResponseMessageProcessor extends ResponseMessageProcessor{
 	
+	private static final String RESPONSE_MSG_END_TAG = "</submitAEDataXMLAsAttachmentResponse>";
+	private static final String RESPONSE_MSG_ST_TAG = "<submitAEDataXMLAsAttachmentResponse";
 	protected final Log log = LogFactory.getLog(getClass());
 	
 	
@@ -112,8 +114,14 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
             e.printStackTrace();
         }
 
-       
-
+       //Send to response back to ESB to further routing if necessary
+       //like sending an E2B ack message
+        int stInd = message.indexOf(RESPONSE_MSG_ST_TAG);
+        int endInd = message.indexOf(RESPONSE_MSG_END_TAG);
+        String trimmedMessage = message.substring(stInd, endInd) + RESPONSE_MSG_END_TAG;
+        String routedRes = getProxyWebServiceFacade().routeAdeersReportSubmissionResponse(trimmedMessage, r);
+        log.debug("Routed response is " + routedRes);
+        
         // Notify submitter
         try {
         	 String messages = sb.toString();

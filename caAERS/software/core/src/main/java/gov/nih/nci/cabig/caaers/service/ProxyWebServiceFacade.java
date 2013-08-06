@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.caaers.domain.LocalStudy;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.integration.schema.study.Studies;
 import gov.nih.nci.cabig.caaers.service.migrator.StudyConverter;
@@ -363,5 +364,14 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
         }
         return syncStudy(UPDATE_STUDY_OPERATION_NAME, idText);
     }
+
+	public String routeAdeersReportSubmissionResponse(String response, Report r) {
+		Map<String, String> criteriaMap = new HashMap<String, String>();
+		criteriaMap.put("routeAdeersResponse", response);
+		String message = buildMessage(r.getCaseNumber(), "caAERS", "AdeersSubmissionResponse", "routeReportSubmissionResponse", "sync", criteriaMap);
+		return simpleSendAndReceive(message);
+	}
+    
+    
     
 }

@@ -8,6 +8,7 @@ package gov.nih.nci.cabig.caaers.service;
 
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 
 import java.util.List;
 
@@ -100,5 +101,13 @@ public interface AdeersIntegrationFacade {
      * @return the correlation Id
      */
     String mergeOrganizations();
+    
+    /**
+     * Will route back the Adeers Report submission response back to ESB for further routing
+     * @param response - Adeers submission response as String
+     * @param r - Report instance
+     * @return the correlation Id
+     */
+    String routeAdeersReportSubmissionResponse(String response, Report r);
    
 }

@@ -8,6 +8,7 @@ package gov.nih.nci.cabig.caaers.esb.client;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
+import gov.nih.nci.cabig.caaers.service.ProxyWebServiceFacade;
 
 import java.io.Reader;
 import java.io.StringReader;
@@ -29,6 +30,8 @@ public abstract class ResponseMessageProcessor {
 	protected final Log log = LogFactory.getLog(getClass());
 	private MessageNotificationService messageNotificationService;
 	protected ReportDao reportDao;
+	
+	protected ProxyWebServiceFacade proxyWebServiceFacade;
 	
 	 //will be used to obtain resource bundle messages
     protected MessageSource messageSource;
@@ -77,6 +80,14 @@ public abstract class ResponseMessageProcessor {
 	@Required
 	public void setReportDao(ReportDao reportDao) {
 		this.reportDao = reportDao;
+	}
+	
+	public ProxyWebServiceFacade getProxyWebServiceFacade() {
+		return proxyWebServiceFacade;
+	}
+	@Required
+	public void setProxyWebServiceFacade(ProxyWebServiceFacade proxyWebServiceFacade) {
+		this.proxyWebServiceFacade = proxyWebServiceFacade;
 	}
 	public abstract void processMessage(String message) throws CaaersSystemException;
 	
