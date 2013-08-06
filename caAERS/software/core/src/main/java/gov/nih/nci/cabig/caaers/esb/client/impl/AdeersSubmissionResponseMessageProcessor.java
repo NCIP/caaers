@@ -119,6 +119,7 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
         int stInd = message.indexOf(RESPONSE_MSG_ST_TAG);
         int endInd = message.indexOf(RESPONSE_MSG_END_TAG);
         String trimmedMessage = message.substring(stInd, endInd) + RESPONSE_MSG_END_TAG;
+        trimmedMessage = trimmedMessage.replaceAll(RESPONSE_MSG_ST_TAG, RESPONSE_MSG_ST_TAG + " xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"");
         String routedRes = getProxyWebServiceFacade().routeAdeersReportSubmissionResponse(trimmedMessage, r);
         log.debug("Routed response is " + routedRes);
         
