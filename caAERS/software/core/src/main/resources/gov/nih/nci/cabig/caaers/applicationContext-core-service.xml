@@ -427,6 +427,7 @@ default-lazy-init="true">
    		<property name="messageNotificationService" ref="messageNotificationService" />
 		<property name="messageSource" ref="messageSource" />
 		<property name="reportDao" ref="reportDao" />
+		<property name="proxyWebServiceFacade" ref="proxyWebServiceFacade"/>
    </bean>
    
    	<bean id="submitAEDataXMLAsAttachmentResponse" class="org.springframework.aop.framework.ProxyFactoryBean"> 
@@ -445,6 +446,7 @@ default-lazy-init="true">
 	   	<property name="messageNotificationService" ref="messageNotificationService" />
 		<property name="messageSource" ref="messageSource" />
 		<property name="reportDao" ref="reportDao" />
+		<property name="proxyWebServiceFacade" ref="proxyWebServiceFacade"/>
    </bean>
    
   <bean id="withdrawAEReportResponse" class="org.springframework.aop.framework.ProxyFactoryBean"> 
