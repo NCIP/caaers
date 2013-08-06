@@ -271,7 +271,8 @@ public class SafetyReportServiceImpl {
             for(Report srcReport : aeDestReport.getReports()){
                 List<Report> reportsToAmend = dbReport.findReportsToAmmend(srcReport.getReportDefinition());
                 for(Report  report: reportsToAmend){
-                    reportsAffected.add(amendReport(report, dbReport));
+                	amendReport(report, dbReport);
+                    reportsAffected.add(createReport(srcReport, dbReport));
                 }
                 List<Report> reportsToWithdraw = dbReport.findReportsToWithdraw(srcReport.getReportDefinition());
                 for(Report  report: reportsToWithdraw){
