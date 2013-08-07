@@ -6,8 +6,8 @@
 	<!-- set global properties for this build -->
 	<property file="${user.home}/.gridenv.properties" />
 	<property name="tomcat.download.url" value="@TOMCAT_DOWNLOAD_URL@" />
-	<property name="tomcat.file.name" value="apache-tomcat-6.0.33.zip" />
-	<property name="tomcat.version" value="apache-tomcat-6.0.33" />
+	<property name="tomcat.file.name" value="apache-tomcat-6.0.37.zip" />
+	<property name="tomcat.version" value="apache-tomcat-6.0.37" />
     <property name="servicemix.download.url.windows" value="@SERVICEMIX_DOWNLOAD_URL_WINDOWS@" />
     <property name="servicemix.download.url.unix" value="@SERVICEMIX_DOWNLOAD_URL_UNIX@" />
     <property name="servicemix.file.name" value="apache-servicemix-3.3.2.zip" />
