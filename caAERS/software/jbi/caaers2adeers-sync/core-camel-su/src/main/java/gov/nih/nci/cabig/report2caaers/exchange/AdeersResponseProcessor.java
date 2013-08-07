@@ -37,9 +37,9 @@ public class AdeersResponseProcessor implements Processor {
 		String correlationId = XPathBuilder.xpath("//payload/@"+CORRELATION_ID_ATTR_NAME).evaluate(exchange, String.class);
         if(StringUtils.isBlank(correlationId)){
         	log.debug("No correlationId found in payload. Adding current time as correlationId.");
-        	correlationId = System.currentTimeMillis()+"";
+        	correlationId = System.currentTimeMillis()+"##"+System.currentTimeMillis();
         }
-		properties.put(CORRELATION_ID, correlationId + "-" + System.currentTimeMillis());
+		properties.put(CORRELATION_ID, correlationId);
 		properties.put(TODAY_DT, cDt.toString());
 				
 		exchange.getOut().setBody(body);

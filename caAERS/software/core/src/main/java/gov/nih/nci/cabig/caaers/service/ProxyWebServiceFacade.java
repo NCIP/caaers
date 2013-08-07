@@ -368,7 +368,7 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
 	public String routeAdeersReportSubmissionResponse(String response, Report r) {
 		Map<String, String> criteriaMap = new HashMap<String, String>();
 		criteriaMap.put("routeAdeersResponse", response);
-		String message = buildMessage(r.getCaseNumber(), "caAERS", "AdeersSubmissionResponse", "routeReportSubmissionResponse", "sync", criteriaMap);
+		String message = buildMessage(r.getCaseNumber()+"##"+System.currentTimeMillis(), "caAERS", "AdeersSubmissionResponse", "routeReportSubmissionResponse", "sync", criteriaMap);
 		return simpleSendAndReceive(message);
 	}
     

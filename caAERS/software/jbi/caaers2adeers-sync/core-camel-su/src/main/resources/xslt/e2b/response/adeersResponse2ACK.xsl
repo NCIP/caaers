@@ -11,6 +11,7 @@
 
     <xsl:template match="/">
 		<xsl:variable name="c2r_correlation_id" select="//payload/@correlationId"/>
+		<xsl:variable name="report_id" select="substring-before($c2r_correlation_id, '##')"/>
         <ichicsrack lang="en">
             <ichicsrmessageheader>
                 <messagetype>ichicsrack</messagetype>
@@ -60,7 +61,7 @@
 
                     <!--Zero or more repetitions:-->
                     <reportacknowledgment>
-                        <safetyreportid><xsl:value-of select="$c2r_correlation_id" /></safetyreportid>
+                        <safetyreportid><xsl:value-of select="$report_id" /></safetyreportid>
                         <!-- obtained from (safetyreport/safetyreportid) of the input safety report message-->
                         <!--Optional:-->
                         <safetyreportversion>2.1</safetyreportversion>
