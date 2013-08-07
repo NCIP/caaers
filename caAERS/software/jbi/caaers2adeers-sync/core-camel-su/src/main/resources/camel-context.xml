@@ -154,7 +154,6 @@
     <bean id="cronJobRouteBuilder" class="gov.nih.nci.cabig.caaers2adeers.CronJobRouteBuilder">
     	 <property name="cronExpressions">
     		<map>
-    		<!-- 
     			<entry><key><value>AGENT</value></key><value>s[agentLovCronExpression]</value></entry>
     			<entry><key><value>AGENT_UOM</value></key><value>s[agentDoseLovCronExpression]</value></entry>
     			<entry><key><value>ASAEL</value></key><value>s[asaelLovCronExpression]</value></entry>
@@ -165,8 +164,7 @@
     			<entry><key><value>ORGANIZATION</value></key><value>s[organizationLovCronExpression]</value></entry>
     			<entry><key><value>MERGED_ORGANIZATION</value></key><value>s[mergedOrganizationCronExpression]</value></entry>
     			<entry><key><value>CTCAE</value></key><value>s[ctcaeLovCronExpression]</value></entry>
-    		 -->
-    		</map>
+    		 </map>
     	</property> 
     	<property name="garbageCollectionCronExpression" value="s[garbageCollectionCronExpression]"/>
     </bean>
