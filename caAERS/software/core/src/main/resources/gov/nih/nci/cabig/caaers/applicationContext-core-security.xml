@@ -83,6 +83,14 @@
         <constructor-arg index="1" ref="csmApplicationContextName"/>
     </bean>
 
+    <bean id="CTEPIAMAuthenticationProvider" class="gov.nih.nci.cabig.ctms.acegi.csm.authentication.CSMAuthenticationProvider"
+          lazy-init="true">
+        <property name="csmAuthenticationManager" ref="csmAuthenticationManager"/>
+        <property name="userDetailsService" ref="csmUserDetailsService"/>
+        <property name="userCache" ref="userCache"/>
+    </bean>
+
+
     <bean id="csmUserProvisioningManager" class="gov.nih.nci.security.provisioning.AuthorizationManagerImpl">
         <constructor-arg index="0" ref="csmApplicationContextName"/>
         <constructor-arg index="1" ref="connectionProperties"/>

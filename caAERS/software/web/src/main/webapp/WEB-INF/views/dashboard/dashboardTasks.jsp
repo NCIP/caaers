@@ -5,6 +5,12 @@ Distributed under the OSI-approved BSD 3-Clause License.
 See http://ncip.github.com/caaers/LICENSE.txt for details.
 --%>
 <%@include file="/WEB-INF/views/taglibs.jsp" %>
+<!-- This is for loading home page in main window instead of the iframe -->
+<script language="JavaScript">
+    if (self != top) {
+        window.parent.location.href = window.location.href;
+    }
+</script>
 <chrome:boxIPhone title="Quick Links" style="width:240px;">
 <div style="padding-left:1pt">
 <table width="100%" cellpadding="0" cellspacing="0" border="0">

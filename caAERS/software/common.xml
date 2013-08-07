@@ -126,10 +126,14 @@
 		</fileset>
 	</path>
 	
+	
 	<!-- This path will contain all the libraries required to compile
 		the main application -->
 	<path id="main.classpath">
 		<fileset dir="${lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${basedir}/../ssolib">
 			<include name="**/*.jar" />
 		</fileset>
 	</path>

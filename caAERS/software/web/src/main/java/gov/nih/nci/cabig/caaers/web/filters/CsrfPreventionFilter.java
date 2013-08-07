@@ -64,7 +64,7 @@ public class CsrfPreventionFilter implements Filter {
         
         if (request.getMethod().toUpperCase().equals("POST") && !isAllowedURI(request.getRequestURI())) {
             boolean isValidRequest = isValidCsrfToken(request);
-            if (!isValidRequest) {
+           if (!isValidRequest) {
                 response.sendError(403);
                 return;
             }
@@ -107,6 +107,9 @@ public class CsrfPreventionFilter implements Filter {
     	if(!StringUtils.isEmpty(request.getHeader(CSRF_TOKEN_HEADER))){
     		return request.getHeader(CSRF_TOKEN_HEADER);
     	}
+        if ( request.getParameter("SAMLResponse") !=null) {
+            return request.getSession().getAttribute(CSRF_TOKEN).toString();
+        }
     	//process multipart form for imports
     	/*try {
             List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
