@@ -176,7 +176,7 @@ public class BadInputFilter implements Filter {
         //quotesHashMap.put(Pattern.compile("\""), "&quot;");
         //quotesHashMap.put(Pattern.compile("\'"), "&#39;");
 
-        quotesHashMap.put(Pattern.compile("`"), "&#96;");
+       // quotesHashMap.put(Pattern.compile("`"), "&#96;");
         angleBracketsHashMap.put(Pattern.compile("<"), "&lt;");
         angleBracketsHashMap.put(Pattern.compile(">"), "&gt;");
     	javaScriptHashMap.put(Pattern.compile("<(\\s*)(/\\s*)?script(\\s*)>"), "<$2script-disabled>");

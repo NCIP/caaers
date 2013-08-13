@@ -6,7 +6,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 --%>
 <%@include file="/WEB-INF/views/taglibs.jsp"%>
 
-<%@page contentType="text/html;charset=UTF-8" language="java"%>
+<%@page contentType="text/html;charset=iso-8859-1" language="java"%>
 <html>
 <head>
 <title>Enter basic AE information</title>

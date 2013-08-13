@@ -10,7 +10,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 <%@taglib prefix="rd" tagdir="/WEB-INF/tags/report" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="csmauthz" uri="http://csm.ncicb.nci.nih.gov/authz" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=iso-8859-1" language="java" %>
 
 <html>
 <head>

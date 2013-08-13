@@ -1519,14 +1519,8 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
      * @return the short title
      */
     @Transient
-    public String getEscapeUrlEncodeShortTitle() {
-        try {
-            return URLEncoder.encode(shortTitle,"UTF-16" );
-        }
-        catch(Exception e) {
-            return shortTitle;
-        }
-
+    public String getEscapeXmlShortTitle() {
+        return StringEscapeUtils.escapeXml(shortTitle);
     }
 
     /**

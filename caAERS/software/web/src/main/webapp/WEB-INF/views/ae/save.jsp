@@ -9,7 +9,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=iso-8859-1" language="java" %>
 <html>
 <body>
     <tags:tabForm tab="${tab}" flow="${flow}">

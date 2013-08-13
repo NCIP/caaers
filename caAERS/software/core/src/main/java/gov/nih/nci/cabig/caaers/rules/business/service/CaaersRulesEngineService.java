@@ -682,6 +682,8 @@ public class CaaersRulesEngineService {
         Column column = BRXMLHelper.newColumn();
         column.setObjectType(gov.nih.nci.cabig.caaers.domain.Study.class.getName());
         column.setIdentifier("studySDO");
+
+        criteriaValue = StringEscapeUtils.escapeXml(criteriaValue);
         String expression = "factResolver.assertFact(studySDO,"
                         + "\"gov.nih.nci.cabig.caaers.domain.Organization" + "\"," + "\"escapedXmlName"
                         + "\"," + "\"" + criteriaValue + "\",\"==\"" + ")";
@@ -707,6 +709,7 @@ public class CaaersRulesEngineService {
 
     }
 
+
     /*
      * This method creates criteria column with study short title as the criteria
      */
@@ -715,15 +718,10 @@ public class CaaersRulesEngineService {
         column.setObjectType(gov.nih.nci.cabig.caaers.domain.Study.class.getName());
         column.setIdentifier("studySDO");
 
-        // FIX: Drools allowed escaping functions.
-        String expression = "";
-        try {
-             expression = "factResolver.assertFact(studySDO,null," + "\"escapeUrlEncodeShortTitle" + "\","
-                    + "\"" + URLEncoder.encode(criteriaValue, "UTF-16") + "\",\"==\"" + ")";
-        }   catch(Exception e){
-             expression = "factResolver.assertFact(studySDO,null," + "\"shortTitle" + "\","
-                    + "\"" + criteriaValue + "\",\"==\"" + ")";
-        }
+        criteriaValue = StringEscapeUtils.escapeXml(criteriaValue);
+
+        String expression = "factResolver.assertFact(studySDO,null," + "\"escapeXmlShortTitle" + "\","
+                + "\"" + criteriaValue + "\",\"==\"" + ")";
 
         column.setExpression(expression);
 
