@@ -52,7 +52,7 @@ public class OrganizationManagementWebServiceImpl implements OrganizationManagem
 
             for(OrganizationType organizationDto: xmlOrganizations.getOrganization()){
 
-                if ( ! (organizationDto.getStatus().equalsIgnoreCase(ActiveInactiveStatus.AC.getDisplayName())  || organizationDto.getStatus().equalsIgnoreCase(ActiveInactiveStatus.AC.getDisplayName()))) {
+                if ( ! (organizationDto.getStatus().equalsIgnoreCase(ActiveInactiveStatus.AC.getCode())  || organizationDto.getStatus().equalsIgnoreCase(ActiveInactiveStatus.IN.getCode()))) {
                     Helper.populateError(caaersResponse, "WS_OS_01", "Organization status must be either Active or InActive. Problem with Organization : " + organizationDto.getNciInstituteCode());
                     return caaersResponse;
                 }
@@ -82,7 +82,7 @@ public class OrganizationManagementWebServiceImpl implements OrganizationManagem
 		try {
 			for(OrganizationType organizationDto: xmlOrganizations.getOrganization()){
 
-                if ( ! (organizationDto.getStatus().equalsIgnoreCase(ActiveInactiveStatus.AC.getDisplayName())  || organizationDto.getStatus().equalsIgnoreCase(ActiveInactiveStatus.AC.getDisplayName()))) {
+                if ( ! (organizationDto.getStatus().equalsIgnoreCase(ActiveInactiveStatus.AC.getCode())  || organizationDto.getStatus().equalsIgnoreCase(ActiveInactiveStatus.IN.getCode()))) {
                     Helper.populateError(caaersResponse, "WS_OS_01", "Organization status must be either Active or InActive. Problem with Organization : " + organizationDto.getNciInstituteCode());
                     return caaersResponse;
                 }
