@@ -66,7 +66,7 @@ public class TreatmentInformationSynchronizer implements Migrator<ExpeditedAdver
         dbCourseAgent.setFormulation(xmlCourseAgent.getFormulation());
         dbCourseAgent.setDose(xmlCourseAgent.getDose());
         dbCourseAgent.setDurationAndSchedule(xmlCourseAgent.getDurationAndSchedule());
-        dbCourseAgent.setAdministrationDelay(xmlCourseAgent.getAdministrationDelay());
+        dbCourseAgent.setAdministrationDelayAmount(xmlCourseAgent.getAdministrationDelayAmount());
         dbCourseAgent.setAdministrationDelayUnits(xmlCourseAgent.getAdministrationDelayUnits());
         dbCourseAgent.setAgentAdjustment(xmlCourseAgent.getAgentAdjustment());
         dbCourseAgent.setModifiedDose(xmlCourseAgent.getModifiedDose());

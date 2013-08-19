@@ -6,13 +6,17 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.service.migrator.report;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.Agent;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
+import gov.nih.nci.cabig.caaers.domain.PriorTherapyAgent;
+import gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
+
+import java.util.List;
 
 /**
  * User:medaV
@@ -28,6 +32,12 @@ public class SAEReportPriorTherapyMigrator implements Migrator<ExpeditedAdverseE
     }
 
     private PriorTherapyDao priorTherapyDao;
+    
+    private AgentDao agentDao;
+
+	public void setAgentDao(AgentDao agentDao) {
+		this.agentDao = agentDao;
+	}
 
 	public void migrate(ExpeditedAdverseEventReport aeReportSrc, ExpeditedAdverseEventReport aeReportDest, DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome) {
     
@@ -49,9 +59,24 @@ public class SAEReportPriorTherapyMigrator implements Migrator<ExpeditedAdverseE
             destSAEReportPriorTherapy.setPriorTherapy(pt);
             destSAEReportPriorTherapy.setReport(aeReportDest);
     		copyProperties(spt, destSAEReportPriorTherapy);
+    		
+    		for(PriorTherapyAgent pta : spt.getPriorTherapyAgents()){
+    			PriorTherapyAgent priorTherapyAgent = migratePriorTherapyAgent(pta,destSAEReportPriorTherapy);
+    			destSAEReportPriorTherapy.addPriorTherapyAgent(priorTherapyAgent);
+    		}
+    		
     		aeReportDest.addSaeReportPriorTherapies(destSAEReportPriorTherapy);
     	}
 	}   
+	
+	
+	private PriorTherapyAgent migratePriorTherapyAgent(PriorTherapyAgent src, SAEReportPriorTherapy dest){
+		PriorTherapyAgent priorTherapyAgent = new PriorTherapyAgent();
+		Agent agent = agentDao.getByNscNumber(src.getAgent().getNscNumber());
+		priorTherapyAgent.setAgent(agent);
+		priorTherapyAgent.setSaeReportPriorTherapy(dest);
+		return priorTherapyAgent;
+	}
 	
 	
 	/**
