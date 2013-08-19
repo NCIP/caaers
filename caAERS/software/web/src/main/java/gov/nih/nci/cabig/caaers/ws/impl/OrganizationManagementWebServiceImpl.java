@@ -9,6 +9,7 @@ package gov.nih.nci.cabig.caaers.ws.impl;
 import gov.nih.nci.cabig.caaers.api.ProcessingOutcome;
 import gov.nih.nci.cabig.caaers.api.OrganizationManagementService;
 import gov.nih.nci.cabig.caaers.api.impl.Helper;
+import gov.nih.nci.cabig.caaers.domain.ActiveInactiveStatus;
 import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
@@ -50,6 +51,12 @@ public class OrganizationManagementWebServiceImpl implements OrganizationManagem
 		try {
 
             for(OrganizationType organizationDto: xmlOrganizations.getOrganization()){
+
+                if ( ! (organizationDto.getStatus().equalsIgnoreCase(ActiveInactiveStatus.AC.getDisplayName())  || organizationDto.getStatus().equalsIgnoreCase(ActiveInactiveStatus.AC.getDisplayName()))) {
+                    Helper.populateError(caaersResponse, "WS_OS_01", "Organization status must be either Active or InActive. Problem with Organization : " + organizationDto.getNciInstituteCode());
+                    return caaersResponse;
+                }
+
 				Organization organization = new LocalOrganization();
 				organizationConverter.convertOrganizationDtoToDomainOrganization(organizationDto, organization);
 				domainOrganizations.add(organization);
@@ -74,7 +81,14 @@ public class OrganizationManagementWebServiceImpl implements OrganizationManagem
 		List<Organization> domainOrganizations = new ArrayList<Organization>();
 		try {
 			for(OrganizationType organizationDto: xmlOrganizations.getOrganization()){
-				Organization organization = new LocalOrganization();
+
+                if ( ! (organizationDto.getStatus().equalsIgnoreCase(ActiveInactiveStatus.AC.getDisplayName())  || organizationDto.getStatus().equalsIgnoreCase(ActiveInactiveStatus.AC.getDisplayName()))) {
+                    Helper.populateError(caaersResponse, "WS_OS_01", "Organization status must be either Active or InActive. Problem with Organization : " + organizationDto.getNciInstituteCode());
+                    return caaersResponse;
+                }
+
+
+                Organization organization = new LocalOrganization();
 				organizationConverter.convertOrganizationDtoToDomainOrganization(organizationDto, organization);
 				domainOrganizations.add(organization);
 			}

@@ -1196,7 +1196,7 @@ public class Fixtures {
         o.setName(n);
         o.setCity(n);
         o.setNciInstituteCode(n);
-        o.setStatus(ActiveInactiveStatusType.ACTIVE);
+        o.setStatus(ActiveInactiveStatusType.ACTIVE.value());
         return o;
     }
     

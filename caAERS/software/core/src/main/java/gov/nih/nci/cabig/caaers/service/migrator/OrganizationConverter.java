@@ -19,7 +19,7 @@ public class OrganizationConverter {
 		organization.setNciInstituteCode(organizationDto.getNciInstituteCode());
 		organization.setDescriptionText(organizationDto.getDescriptionText());
 		if(organizationDto.getStatus() != null){
-			organization.setRetiredIndicator(organizationDto.getStatus().equals(ActiveInactiveStatusType.ACTIVE) ? false:true);
+			organization.setRetiredIndicator(organizationDto.getStatus().equals(ActiveInactiveStatusType.ACTIVE.value()) ? false:true);
 		}
 		
 		if(organizationDto.getMergedOrganization() != null){
