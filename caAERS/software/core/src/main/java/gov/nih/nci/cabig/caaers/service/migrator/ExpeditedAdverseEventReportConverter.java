@@ -59,6 +59,7 @@ import gov.nih.nci.cabig.caaers.domain.Physician;
 import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
 import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
 import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
+import gov.nih.nci.cabig.caaers.domain.PriorTherapyAgent;
 import gov.nih.nci.cabig.caaers.domain.RadiationAdministration;
 import gov.nih.nci.cabig.caaers.domain.RadiationIntervention;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
@@ -137,6 +138,7 @@ import gov.nih.nci.cabig.caaers.integration.schema.aereport.ParticipantHistoryTy
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.ParticipantType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.ParticipantType.Identifiers;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.PhysicianType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.PriorTherapyAgentType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.RadiationAttributionType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.RadiationInterventionRefType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.RadiationInterventionType;
@@ -552,7 +554,7 @@ public class ExpeditedAdverseEventReportConverter {
 			reportVersion.setReportVersionId((xmlReportVersionType.getReportVersionId()));
 			reportVersion.setSubmissionMessage(xmlReportVersionType.getSubmissionMessage());
 			reportVersion.setSubmissionUrl(xmlReportVersionType.getSubmissionUrl());
-			reportVersion.setCcEmails(xmlReportVersionType.getEmail());
+			reportVersion.setCcEmails(xmlReportVersionType.getCcEmails());
 			if(xmlReportVersionType.getReportStatus() != null){
 				reportVersion.setReportStatus(ReportStatus.valueOf(xmlReportVersionType.getReportStatus().name()));
 			}
@@ -740,6 +742,16 @@ public class ExpeditedAdverseEventReportConverter {
 			saeReportPriorTherapy.setPriorTherapy(priorTherapy);
 		}
 		
+		if(priorTherapyType.getPriorTherapyAgent() != null &&  ! priorTherapyType.getPriorTherapyAgent().isEmpty()){
+			for(PriorTherapyAgentType xmlPriorTherapyAgent : priorTherapyType.getPriorTherapyAgent()){
+				PriorTherapyAgent priorTherapyAgent = new PriorTherapyAgent();
+				Agent agent = new Agent();
+				agent.setNscNumber(xmlPriorTherapyAgent.getAgent().getNscNumber());
+				priorTherapyAgent.setAgent(agent);
+				saeReportPriorTherapy.getPriorTherapyAgents().add(priorTherapyAgent);
+			}
+		}
+		
 		return saeReportPriorTherapy;
 	}
 
@@ -892,6 +904,14 @@ public class ExpeditedAdverseEventReportConverter {
 		
 		if(xmlMedicalDeviceType.getLotNumber() != null){
 			medicalDevice.setLotNumber(xmlMedicalDeviceType.getLotNumber());
+		}
+		
+		if(xmlMedicalDeviceType.getReturnedDate() != null){
+			medicalDevice.setReturnedDate(xmlMedicalDeviceType.getReturnedDate().toGregorianCalendar().getTime());
+		}
+		
+		if(xmlMedicalDeviceType.getExpirationDate() != null){
+			medicalDevice.setExpirationDate(xmlMedicalDeviceType.getExpirationDate().toGregorianCalendar().getTime());
 		}
 		
 		return medicalDevice;
@@ -1172,6 +1192,7 @@ public class ExpeditedAdverseEventReportConverter {
 		Submitter submitter = new Submitter();
 		submitter.setFirstName(xmlSubmitterType.getFirstName());
 		submitter.setLastName(xmlSubmitterType.getLastName());
+		submitter.setMiddleName(xmlSubmitterType.getMiddleName());
 		if(xmlSubmitterType.getNciIdentifier() != null){
 			ResearchStaff staff = new LocalResearchStaff();
 			staff.setNciIdentifier(xmlSubmitterType.getNciIdentifier());

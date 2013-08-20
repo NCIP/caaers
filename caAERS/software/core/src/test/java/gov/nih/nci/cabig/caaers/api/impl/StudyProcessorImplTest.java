@@ -212,7 +212,7 @@ public class StudyProcessorImplTest extends DaoTestCase {
         sst.setOrganization(new OrganizationType());
         sst.getOrganization().setName("NEW ORGANIZATION");
         sst.getOrganization().setNciInstituteCode("NEW-001");
-        sst.getOrganization().setStatus(ActiveInactiveStatusType.ACTIVE);
+        sst.getOrganization().setStatus(ActiveInactiveStatusType.ACTIVE.value());
         ss.getStudy().get(0).getStudyOrganizations().getStudySite().add(sst);
 
         CaaersServiceResponse csr =  studyProcessor.updateStudy(ss);
@@ -248,7 +248,7 @@ public class StudyProcessorImplTest extends DaoTestCase {
         sst.setOrganization(new OrganizationType());
         sst.getOrganization().setName("NEW ORGANIZATION NAME");
         sst.getOrganization().setNciInstituteCode("NCI");
-        sst.getOrganization().setStatus(ActiveInactiveStatusType.ACTIVE);
+        sst.getOrganization().setStatus(ActiveInactiveStatusType.ACTIVE.value());
         ss.getStudy().get(0).getStudyOrganizations().getStudySite().add(sst);
 
         CaaersServiceResponse csr =  studyProcessor.updateStudy(ss);

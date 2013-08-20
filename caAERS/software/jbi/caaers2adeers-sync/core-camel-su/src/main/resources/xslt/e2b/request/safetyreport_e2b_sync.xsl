@@ -145,7 +145,7 @@
 						<!--Zero or more repetitions: -->
 
 						<xsl:for-each
-							select="//medicalhistoryepisode[patientmedicalcomment = 'Prior Therapy' or patientmedicalcomment = 'Other Prior Therapy']">
+							select="//medicalhistoryepisode[patientmedicalcomment = 'Prior Therapy']">
 							<xsl:call-template name="priorTherapy" />
 						</xsl:for-each>
 						<ae:treatmentInformation>
@@ -291,6 +291,11 @@
 								<ae:reportVersionId>
 									<xsl:value-of select="/ichicsr/safetyreport/safetyreportversion" />
 								</ae:reportVersionId>
+								<xsl:if test="/ichicsr/safetyreport/sender/recipientemails">
+									<ae:ccEmails>
+										<xsl:value-of select="/ichicsr/safetyreport/sender/recipientemails" />
+									</ae:ccEmails>
+								</xsl:if>
 							</ae:aeReportVersion>
 						</ae:report>
 					</ae:AdverseEventReport>
@@ -357,17 +362,14 @@
 	<xsl:template name="priorTherapy">
 		<ae:sAEReportPriorTherapy>
 			<ae:priorTherapy>
-				<xsl:if test="./patientmedicalcomment = 'Prior Therapy' ">
-					<ae:text>
-						<xsl:value-of select="patientepisodename" />
-					</ae:text>
-				</xsl:if>
-			</ae:priorTherapy>
-			<xsl:if test="./patientmedicalcomment = 'Other Prior Therapy' ">
-				<ae:other>
+				<ae:text>
 					<xsl:value-of select="patientepisodename" />
-				</ae:other>
-			</xsl:if>
+				</ae:text>
+			</ae:priorTherapy>
+
+			<ae:other>
+				<xsl:value-of select="priortherapycomment" />
+			</ae:other>
 
 			<xsl:if test="./patientmedicalstartdate != '' ">
 				<ae:startDate>
@@ -383,6 +385,16 @@
 					</xsl:call-template>
 				</ae:endDate>
 			</xsl:if>
+
+			<xsl:for-each select="priortherapyagent">
+				<ae:priorTherapyAgent>
+					<ae:agent>
+						<ae:nscNumber>
+							<xsl:value-of select="." />
+						</ae:nscNumber>
+					</ae:agent>
+				</ae:priorTherapyAgent>
+			</xsl:for-each>
 		</ae:sAEReportPriorTherapy>
 	</xsl:template>
 
@@ -466,7 +478,12 @@
 					</xsl:call-template>
 				</ae:lastAdministeredDate>
 			</xsl:if>
-
+			<ae:administrationDelayAmount>
+				<xsl:value-of select="drugtreatmentduration" />
+			</ae:administrationDelayAmount>
+			<ae:administrationDelayUnits>
+				<xsl:value-of select="drugtreatmentdurationunit" />
+			</ae:administrationDelayUnits>
 			<ae:dose>
 				<ae:amount>
 					<xsl:value-of select="drugcumulativedosagenumb" />
@@ -525,8 +542,14 @@
 				<xsl:value-of select="devicenumbermodel" />
 			</ae:modelNumber>
 			<!--Optional: -->
+			<xsl:if test="devicedateexpiration">
+				<ae:expirationDate>
+					<xsl:value-of select="devicedateexpiration" />
+				</ae:expirationDate>
+			</xsl:if>
+			<!--Optional: -->
 			<ae:catalogNumber>
-				<xsl:value-of select="devicenumbercatalog" />
+				<xsl:value-of select="devicedateexpiration" />
 			</ae:catalogNumber>
 			<!--Optional: -->
 			<ae:serialNumber>
@@ -542,13 +565,18 @@
 				</xsl:call-template>
 			</ae:explantedDate>
 			<!--Optional: -->
-			<ae:DeviceOperator>
+			<ae:deviceOperator>
 				<xsl:value-of select="deviceoperator" />
-			</ae:DeviceOperator>
+			</ae:deviceOperator>
 			<!--Optional: -->
+			<xsl:if test="devicereturndate">
+				<ae:returnedDate>
+					<xsl:value-of select="devicereturndate" />
+				</ae:returnedDate>
+			</xsl:if>
 
 			<xsl:if test="devicereprocessedflag = '1'">
-				<ae:DeviceReprocessed>YES</ae:DeviceReprocessed>
+				<ae:deviceReprocessed>YES</ae:deviceReprocessed>
 				<ae:reprocessedName>
 					<xsl:value-of select="devicereprocessorname" />
 				</ae:reprocessedName>
@@ -557,13 +585,13 @@
 				</ae:reprocessedAddress>
 			</xsl:if>
 			<xsl:if test="devicereprocessedflag = '2'">
-				<ae:DeviceReprocessed>NO</ae:DeviceReprocessed>
+				<ae:deviceReprocessed>NO</ae:deviceReprocessed>
 			</xsl:if>
 
-			<ae:EvaluationAvailability>
+			<ae:evaluationAvailability>
 				<xsl:value-of select="deviceavailableflag" />
-			</ae:EvaluationAvailability>
-			<ae:StudyDevice>
+			</ae:evaluationAvailability>
+			<ae:studyDevice>
 				<ae:device>
 					<ae:brandName>
 						<xsl:value-of select="devicenamebrand" />
@@ -576,7 +604,7 @@
 						<xsl:value-of select="devicetype" />
 					</ae:type>
 				</ae:device>
-			</ae:StudyDevice>
+			</ae:studyDevice>
 			<ae:otherDeviceOperator>
 				<xsl:value-of select="deviceoperatorother" />
 			</ae:otherDeviceOperator>
@@ -609,6 +637,12 @@
 			<ae:daysElapsed>
 				<xsl:value-of select="drugintervaldosageunitnumb" />
 			</ae:daysElapsed>
+			<ae:administrationDelayAmount>
+				<xsl:value-of select="drugtreatmentduration" />
+			</ae:administrationDelayAmount>
+			<ae:administrationDelayUnits>
+				<xsl:value-of select="drugtreatmentdurationunit" />
+			</ae:administrationDelayUnits>
 			<ae:adjustment>
 				<xsl:value-of select="actiondrug" />
 			</ae:adjustment>
@@ -724,6 +758,14 @@
 							select='/ichicsr/safetyreport/patient/reaction[primaryaeflag=1]/reactionoutcome' />
 					</xsl:call-template>
 				</ae:presentStatus>
+			</xsl:if>
+			<xsl:if test="/ichicsr/safetyreport/patient/summary/dateremoved != '' ">
+				<ae:dateRemovedFromProtocol>
+					<xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">
+						<xsl:with-param name="date"
+							select="/ichicsr/safetyreport/patient/summary/dateremoved" />
+					</xsl:call-template>
+				</ae:dateRemovedFromProtocol>
 			</xsl:if>
 			<xsl:if test='/ichicsr/safetyreport/patient/summary/retreatedflag'>
 				<ae:retreated>
@@ -843,6 +885,9 @@
 			<ae:lastName>
 				<xsl:value-of select="/ichicsr/safetyreport/sender/senderfamilyname" />
 			</ae:lastName>
+			<ae:middleName>
+				<xsl:value-of select="/ichicsr/safetyreport/sender/sendermiddlename" />
+			</ae:middleName>
 			<xsl:if test="/ichicsr/safetyreport/sender/senderemailaddress">
 				<ae:contactMechanism>
 					<ae:type>e-mail</ae:type>
