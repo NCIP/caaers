@@ -53,4 +53,11 @@ public class InvestigatorHeldIND extends INDHolder {
         if (investigator != null) return investigator.getFullName();
         return null;
     }
+
+    @Override
+    @Transient
+    public String getNciIdentifier() {
+        if(getInvestigator() != null) return getInvestigator().getNciIdentifier() ;
+        return null;
+    }
 }

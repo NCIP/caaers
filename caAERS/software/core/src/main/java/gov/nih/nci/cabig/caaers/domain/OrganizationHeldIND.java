@@ -62,4 +62,12 @@ public class OrganizationHeldIND extends INDHolder {
         }
         return super.isNciAffiliate();
     }
+
+
+    @Override
+    @Transient
+    public String getNciIdentifier() {
+        if(getOrganization() != null) return getOrganization().getNciInstituteCode();
+        return null;
+    }
 }

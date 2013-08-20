@@ -18,4 +18,9 @@ public class OrganizationHeldINDTest extends TestCase {
         oind = Fixtures.createOrganizationINDHolder(Fixtures.createOrganization("CIPx", "CIPx"));
         assertFalse(oind.isNciAffiliate());
     }
+
+    public void testGetNciIdentifier(){
+        INDHolder holder = Fixtures.createOrganizationINDHolder(Fixtures.createOrganization("abcd"))   ;
+        assertEquals("NCI333:abcd", holder.getNciIdentifier());
+    }
 }

@@ -63,6 +63,7 @@ public class InvestigationalNewDrug extends AbstractMutableDomainObject {
 
     /** The holder name. */
     private transient String holderName;
+    private transient String holderNciIdentifier;
 
     /**
      * Gets the ind number.
@@ -101,6 +102,7 @@ public class InvestigationalNewDrug extends AbstractMutableDomainObject {
     public void setINDHolder(INDHolder holder) {
         iNDHolder = holder;
         holderName = holder.getName();
+        holderNciIdentifier = holder.getNciIdentifier();
     }
 
     public String getStatus() {

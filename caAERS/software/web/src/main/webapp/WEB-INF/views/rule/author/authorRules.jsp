@@ -97,7 +97,7 @@ div#createNew h3, div.section h3 {
 					});
 
 				} catch(e) {
-					//alert(e)
+					alert(e)
 				}
 		}
 
@@ -576,7 +576,7 @@ div#createNew h3, div.section h3 {
 	}
 				function orgValueSelector(organization) 
 			{
-				return organization.name;
+				return organization.fullName;
 			}
 			
 	function handleFieldOnchange(fieldDropDown, ruleCount, columnCount) 
@@ -638,7 +638,7 @@ div#createNew h3, div.section h3 {
 			return;
 		}
 		
-		try 
+		try
 		{
 			// Get the domain object
 			
@@ -834,12 +834,13 @@ div#createNew h3, div.section h3 {
 			}
 			else if (selectedField.value == 'investigationalNewDrugIndicator' || selectedField.value == 'investigationalNewDeviceIndicator') {
 
-							var newId = validValueField.id; 
-							var spanId = newId + '.span';
-								
-							
-					var hiddenId = 'ruleSet.rule[' + ruleCount + '].condition.column[' + columnCount + '].fieldConstraint[0].literalRestriction[0].readableValue'; 
-																	
+				    var newId = validValueField.id;
+                    var spanId = newId + '.span';
+					var hiddenId = 'ruleSet.rule[' + ruleCount + '].condition.column[' + columnCount + '].fieldConstraint[0].literalRestriction[0].readableValue';
+                    var swap = newId;
+                    newId = hiddenId
+                    hiddenId = swap;
+
 															
 					var inputArea = '<input type="text" id="' + newId + '" name="' + newId +'" size="35" class="autocomplete"/>';
 					inputArea += '<img alt="activity indicator" src="<c:url value="/images/indicator.white.gif" />?${requestScope.webCacheId}" class="indicator" id="ind-indicator"/>';
@@ -857,7 +858,7 @@ div#createNew h3, div.section h3 {
                 	orgsPopulator, {
                 	valueSelector: orgValueSelector,
                 	afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {                		
-                		document.getElementById(hiddenId).value = orgValueSelector(selectedChoice);
+                		document.getElementById(hiddenId).value = selectedChoice.nciInstituteCode;
                 	},
                 	indicator: "ind-indicator",
                 	minChars : AE.autocompleterChars , 
@@ -984,7 +985,7 @@ div#createNew h3, div.section h3 {
 			}
 		
 		}
-		catch(e) 
+		catch(e)
 		{
 			alert('Exception');
 			alert(e);
@@ -1510,14 +1511,20 @@ div#createNew h3, div.section h3 {
 														loadOrgs();
 												function loadOrgs() {
 	
-																		var newId = 'ruleSet.rule[' + ${ruleCount} + '].condition.column[' + ${columnCount} + '].fieldConstraint[0].literalRestriction[0].value'; 
-																		var hiddenId = 'ruleSet.rule[' + ${ruleCount} + '].condition.column[' + ${columnCount} + '].fieldConstraint[0].literalRestriction[0].readableValue'; 
-																		var spanId = newId + '.span';
-																		var fieldValue = '${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].literalRestriction[0].value[0]}';
+																		var newId = 'ruleSet.rule[' + ${ruleCount} + '].condition.column[' + ${columnCount} + '].fieldConstraint[0].literalRestriction[0].value';
+                                                                        var spanId = newId + '.span';
+																		var hiddenId = 'ruleSet.rule[' + ${ruleCount} + '].condition.column[' + ${columnCount} + '].fieldConstraint[0].literalRestriction[0].readableValue';
+                                                                        var fieldValue = "${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].literalRestriction[0].value[0]}";
+                                                                        var fieldReadableValue = "${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].literalRestriction[0].readableValue}";
+
+                                                                        var swap = newId;
+                                                                        newId = hiddenId
+                                                                        hiddenId = swap;
+
+
 																	
 																	
-																	
-																	var inputArea = '<input type="text" id="' + newId + '" name="' + newId +'" value = "'+ fieldValue + '" size="35" class="autocomplete"/>';
+																	var inputArea = '<input type="text" id="' + newId + '" name="' + newId +'" value = "'+ fieldReadableValue + '" size="35" class="autocomplete"/>';
 																	inputArea += '<img alt="activity indicator" src="<c:url value="/images/indicator.white.gif" />?${requestScope.webCacheId}" class="indicator" id="ind-indicator"/>';
 																	
 																	var hiddenArea = '<input type="hidden" id="' + hiddenId + '" name="' + hiddenId +'" value = "'+ fieldValue + '" size="35" />';
@@ -1530,7 +1537,7 @@ div#createNew h3, div.section h3 {
                 														orgsPopulator, {
                 														valueSelector: orgValueSelector,
                 															afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
-																					document.getElementById(hiddenId).value = orgValueSelector(selectedChoice);
+																					document.getElementById(hiddenId).value =  selectedChoice.nciInstituteCode;
                 																},
                 																indicator: "ind-indicator",
                 																minChars : AE.autocompleterChars , 
