@@ -6,7 +6,9 @@
     <xsl:include href="adeers_req_common.xsl"  />
     <xsl:template match="operation[@name='getMergedOrganization']/criteria">
 		<ser:getMergedOrganization>
-		   <CTEPId><xsl:value-of select="criterion[@name = 'CTEPId']"/></CTEPId>
+		   <xsl:if test="criterion[@name = 'ctepId']">
+               <ctepId><xsl:value-of select="criterion[@name = 'ctepId']"/></ctepId>
+           </xsl:if>
 		</ser:getMergedOrganization>
     </xsl:template>
 
