@@ -64,7 +64,10 @@ public class DateUtils {
 	public static Date yesterday(){
 		Calendar c = Calendar.getInstance();
 		c.add(Calendar.DATE, -1);
-		return c.getTime();
+		Date d = c.getTime();
+		d.setHours(0);
+		d.setMinutes(0);
+		return d;
 	}
 	
 	/**
@@ -74,12 +77,22 @@ public class DateUtils {
 	public static Date tomorrow(){
 		Calendar c = Calendar.getInstance();
 		c.add(Calendar.DATE, 1);
-		return c.getTime();
+		
+		Date d = c.getTime();
+		d.setHours(0);
+		d.setMinutes(0);
+		
+		return d;
 	}
 	
 	public static Date today(){
 		Calendar c = Calendar.getInstance();
-		return c.getTime();
+		
+		Date d = c.getTime();
+		d.setHours(0);
+		d.setMinutes(0);
+		
+		return d;
 	}
 
     public static Date firstDayOfThisMonth(){
