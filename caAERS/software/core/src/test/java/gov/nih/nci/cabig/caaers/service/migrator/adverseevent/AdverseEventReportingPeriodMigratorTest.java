@@ -10,6 +10,9 @@ import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import junit.framework.TestCase;
 
@@ -35,10 +38,20 @@ public class AdverseEventReportingPeriodMigratorTest extends AbstractTestCase {
        replayMocks();
        AdverseEventReportingPeriod src = new AdverseEventReportingPeriod();
        AdverseEventReportingPeriod dest = new AdverseEventReportingPeriod();
+       TreatmentAssignment assignment = Fixtures.createTreatmentAssignment();
+       src.setTreatmentAssignment(assignment);
+       
+       src.getTreatmentAssignment().setCode("A");
+       src.setTreatmentAssignmentDescription("O");
+       //
+       
        DomainObjectImportOutcome<AdverseEventReportingPeriod> outcome = new DomainObjectImportOutcome<AdverseEventReportingPeriod>();
        migrator.preMigrate(src, dest, outcome);
        assertTrue(outcome.hasErrors());
-       assertEquals("WS_AEMS_025", outcome.getValidationErrors().getErrors().get(0).getCode());
+       // Removed this validation in the Source as the Adverse Events can be empty.
+       // assertEquals("WS_AEMS_025", outcome.getValidationErrors().getErrors().get(0).getCode());
+       
+       assertEquals("WS_AEMS_083", outcome.getValidationErrors().getErrors().get(0).getCode());
 
        verifyMocks();
     }
