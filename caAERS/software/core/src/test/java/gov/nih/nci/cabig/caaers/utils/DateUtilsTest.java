@@ -68,7 +68,10 @@ public class DateUtilsTest extends TestCase {
 	public void testFormatDate() {
 		Calendar cal = GregorianCalendar.getInstance();
 		cal.set(2002, Calendar.FEBRUARY, 12);
-		String formatedDate = DateUtils.formatDate(cal.getTime());
+		Date d = cal.getTime();
+		d.setHours(0);
+		d.setMinutes(0);
+		String formatedDate = DateUtils.formatDate(d);
 		assertEquals("02/12/2002", formatedDate);
 	}
 

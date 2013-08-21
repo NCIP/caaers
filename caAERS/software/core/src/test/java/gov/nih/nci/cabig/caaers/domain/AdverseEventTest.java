@@ -129,6 +129,8 @@ public class AdverseEventTest extends AbstractTestCase {
         adverseEvent.setRequiresReporting(requiresReporting);
         startDate = DateUtils.createDate(2008, Calendar.NOVEMBER, 2);
         endDate = DateUtils.createDate(2008, Calendar.NOVEMBER, 3);
+        startDate.setHours(0); // The Time needs to set to zero as time should be 0.
+        endDate.setHours(0);
         adverseEvent.setStartDate(startDate);
         adverseEvent.setEndDate(endDate);
         adverseEvent.setReport(report);
