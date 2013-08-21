@@ -98,17 +98,25 @@ AE.registerCalendarPopups = function(containerId) {
     if (containerId) sel = "#" + containerId + " " + sel
     $$(sel).each(function(input) {
         var anchorId = input.id + "-calbutton"
-        Calendar.setup(
+
+          Calendar.setup(
             {
                 inputField  : input.id,
                 button      : anchorId,
-                ifFormat    : "%m/%d/%Y", // TODO: get this from the configuration
+                ifFormat    : input.className.indexOf("DTIME") < 0 ? "%m/%d/%Y" : "%m/%d/%YT%H:%M:%S", // TODO: get this from the configuration
                 weekNumbers : false,
+                showsTime :  input.className.indexOf("DTIME") < 0 ? false : true,
                 onSelect    : function(cal) {
-                    input.value = cal.date.print('%m') + "/" + cal.date.print('%d') + "/" + cal.date.print('%Y');
+                    if ( input.className.indexOf("DTIME") < 0 ) {
+                        input.value = cal.date.print('%m') + "/" + cal.date.print('%d') + "/" + cal.date.print('%Y');
+                    } else {
+                        input.value = cal.date.print('%m') + "/" + cal.date.print('%d') + "/" + cal.date.print('%Y') + " " + cal.date.print('%H') + ":" + cal.date.print('%M');
+
+                    }
+
                     ValidationManager.setNormalState(input);
                     if(cal.dateClicked)
-	                    cal.callCloseHandler();
+                    cal.callCloseHandler();
                 }
             }
         );
@@ -132,6 +140,7 @@ AE.registerCalendarPopups = function(containerId) {
                 button        : anchorId,
                 ifFormat      : "%m/%d/%Y", // TODO: get this from the configuration
                 weekNumbers   : false,
+                showsTime : true,
                 onSelect      : function(cal){
                 	$(cal.params['dayInputId']).value = cal.date.print('%d');
                 	$(cal.params['monthInputId']).value = cal.date.print('%m');
@@ -160,6 +169,33 @@ AE.registerCalendarPopups = function(containerId) {
     })    
 }
 
+
+
+
+AE.registerCalendarDateTimePopups = function(containerId) {
+    alert('Iam here') ;
+    var sel = "input.date"
+    if (containerId) sel = "#" + containerId + " " + sel
+    $$(sel).each(function(input) {
+        var anchorId = input.id + "-calbutton"
+        Calendar.setup(
+            {
+                inputField  : input.id,
+                button      : anchorId,
+                ifFormat    : "%m/%d/%YT%H:%M:%S", // TODO: get this from the configuration
+                weekNumbers : false,
+                timeFormat : 12,
+                showsTime : true,
+                onSelect    : function(cal) {
+                    input.value = cal.date.print('%m') + "/" + cal.date.print('%d') + "/" + cal.date.print('%Y');
+                    ValidationManager.setNormalState(input);
+                    if(cal.dateClicked)
+                        cal.callCloseHandler();
+                }
+            }
+        );
+    })
+}
 
 ////// FORM EDITING
 

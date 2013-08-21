@@ -30,7 +30,7 @@
 		<div class="row">
 			<div class="leftpanel">
                 <!-- Awareness Date -->
-                <tags:renderRow field="${fieldGroups[mainGroup].fields[2]}"/>
+
 				<!-- Start Date -->
 				<tags:renderRow field="${fieldGroups[mainGroup].fields[3]}"/>
 				<!-- Attribution -->

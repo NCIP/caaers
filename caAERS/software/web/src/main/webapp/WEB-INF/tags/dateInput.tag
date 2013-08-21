@@ -28,7 +28,17 @@
 		<a id="${path}-calbutton" style="cursor:pointer;">
     		<img src="<chrome:imageUrl name="b-calendar.gif"/>" alt="Calendar" width="17" height="16" border="0" align="absmiddle"/>
 		</a>
-		<i>(mm/dd/yyyy)</i>	
+
+        <c:set var = "dTime" value=" validate-DTIME"/>
+        <c:choose>
+            <c:when test="${cssClass eq dTime}">
+                <i>(mm/dd/yyyy HH:MM)</i>
+            </c:when>
+            <c:otherwise>
+                <i>(mm/dd/yyyy)</i>
+            </c:otherwise>
+        </c:choose>
+
 	</c:otherwise>
 </c:choose>
 

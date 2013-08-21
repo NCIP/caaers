@@ -27,6 +27,7 @@ public abstract class FieldValidator<A extends Annotation, T> extends AbstractCo
     public static final FieldValidator PAST_DATE_VALIDATOR;
     public static final FieldValidator FUTURE_DATE_VALIDATOR;
     public static final FieldValidator DATE_VALUE_VALIDATOR;
+    public static final FieldValidator DATE_TIME_VALUE_VALIDATOR;
     public static final FieldValidator DATE_VALIDATOR;
     public static final FieldValidator NUMBER_VALIDATOR;
     public static final FieldValidator HOUR_VALIDATOR;
@@ -46,6 +47,7 @@ public abstract class FieldValidator<A extends Annotation, T> extends AbstractCo
         PHONE_VALIDATOR = new PhoneNumberValidator();
         PAST_DATE_VALIDATOR = new PastDateValidator();
         DATE_VALUE_VALIDATOR = new DateValueValidator();
+        DATE_TIME_VALUE_VALIDATOR = new DateTimeValueValidator();
         NUMBER_VALIDATOR = new NumberValidator();
         HOUR_VALIDATOR = createNumberRangeValidator(1, 12);
         MINUTE_VALIDATOR = createNumberRangeValidator(0, 59);

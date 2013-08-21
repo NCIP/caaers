@@ -25,6 +25,7 @@ public class DateUtils {
     public static final String WS_DATE_PATTERN= "yyyy-MM-dd'T'HH:mm:ss";
     public static final String DATE_PATTERN_WITH_TZ= "EEE MMM dd yyyy h:mm:ss a z";
     public static final String DATE_WITH_HYPHENS= "MM-dd-yyyy";
+    public static final String DATE_WITH_DATETIME= "MM/dd/yyyy HH:mm";
     
     /**
      * Will return the difference in minutes between the two dates
@@ -159,6 +160,8 @@ public class DateUtils {
     	return 0;
     }
     public static String formatDate(Date d){
+        if ( d.getHours() > 0 || d.getMinutes() > 0)
+            return formatDate(d, DATE_WITH_DATETIME);
         return formatDate(d, DATE_PATTERN);
     }
     public static String formatDateForWS(Date d){
@@ -170,7 +173,7 @@ public class DateUtils {
     }
 
     public static Date parseDate(String strDate) throws ParseException{
-        return parseDate(strDate, "MM/dd/yyyy","MM/dd/yy","M/dd/yyyy", "M/dd/yy","M/d/yyyy","M/d/yy","MM/d/yy","MM/d/yyyy");
+        return parseDate(strDate, "MM/dd/yyyy","MM/dd/yy","M/dd/yyyy", "M/dd/yy","M/d/yyyy","M/d/yy","MM/d/yy","MM/d/yyyy",DATE_WITH_DATETIME);
     }
 
     public static Date parseDate(String dateStr, String... parsePatterns) throws ParseException{
@@ -188,7 +191,7 @@ public class DateUtils {
 
        String yStr = parts[2];
 
-       if(!(yStr.length() == 4 || yStr.length() == 2)) throw new ParseException("Unable to parse the date "+ strDate , -1);
+       if(!(yStr.length() == 4 || yStr.length() == 2 || yStr.length() == 10)) throw new ParseException("Unable to parse the date "+ strDate , -1);
        if(yStr.length() == 2 && StringUtils.isNumeric(yStr)){
 
            if(Integer.parseInt(yStr) < 50)
