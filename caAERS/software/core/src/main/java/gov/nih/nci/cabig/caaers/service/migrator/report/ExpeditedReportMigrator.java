@@ -64,28 +64,24 @@ public class ExpeditedReportMigrator extends CompositeMigrator<ExpeditedAdverseE
     @Override
     public void preMigrate(ExpeditedAdverseEventReport src, ExpeditedAdverseEventReport dest, DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome) {
     	
-    	   if(src.getInvestigationalDeviceAdministered() != null) dest.setInvestigationalDeviceAdministered(src.getInvestigationalDeviceAdministered());
-           //set the created date is not present and is available in the source
-           if(dest.getCreatedAt() == null && src.getCreatedAt() != null) dest.setCreatedAt(src.getCreatedAt());
-    	   if(src.getExternalId() != null) dest.setExternalId(src.getExternalId());
+	   if(src.getInvestigationalDeviceAdministered() != null) dest.setInvestigationalDeviceAdministered(src.getInvestigationalDeviceAdministered());
+       //set the created date is not present and is available in the source
+       if(dest.getCreatedAt() == null && src.getCreatedAt() != null) dest.setCreatedAt(src.getCreatedAt());
 
-    	if(src.getReportingPeriod().getExternalId() != null){
-    		//AdverseEventReportingPeriod arp = adverseEventReportingPeriodDao.getByExternalId(src.getReportingPeriod().getExternalId());
-    		AdverseEventReportingPeriod arp = adverseEventReportingPeriodDao.getByStudySubjectIdAndStudyIdAndExternalId
-    				(src.getReportingPeriod().getExternalId(), src.getReportingPeriod().getAssignment().getStudySubjectIdentifier(),  src.
-    						getReportingPeriod().getAssignment().getStudySite().getStudy().getPrimaryIdentifier().getValue());
+       if(src.getReportingPeriod().getTreatmentAssignment() != null && src.getReportingPeriod().getTreatmentAssignment().getCode() != null){
+    		StudyParticipantAssignment spa = studyParticipantAssignmentDao.getByStudySubjectIdAndStudyId(src.getReportingPeriod().getAssignment().
+    				getStudySubjectIdentifier(),  src.getReportingPeriod().getAssignment().getStudySite().getStudy().getPrimaryIdentifier().getValue());
+    		AdverseEventReportingPeriod arp = spa.findReportingPeriod(null, src.getReportingPeriod().getStartDate(), null, 
+    				src.getReportingPeriod().getCycleNumber(), null, src.getReportingPeriod().getTreatmentAssignment().getCode());
     		if(arp == null){
-    			 outcome.addError("ER-RP-1", "Reporting period not found", src.getReportingPeriod().getExternalId());
+    			 outcome.addError("ER-RP-1", "Didn't find Reporting period with TAC: ", src.getReportingPeriod().getTreatmentAssignment().getCode());
     	            return;
     			
     		}
     		
-    	/*	StudyParticipantAssignment assignment = studyParticipantAssignmentDao.getAssignment(arp);
-    		arp.setAssignment(assignment);*/
-    		
     		 dest.setReportingPeriod(arp);
     		 return;
-    	}
+    	} 
 
        //identify the reporting period, participant and study to use.
        
