@@ -310,7 +310,7 @@
 						<!--1 or more repetitions: -->
 						<ae:report>
 							<ae:caseNumber>
-								<xsl:value-of select="/ichicsr/safetyreport/companynumb" />
+								<xsl:value-of select="/ichicsr/safetyreport/safetyreportid" />
 							</ae:caseNumber>
 							<ae:aeReportDefinition>
 								<ae:name>
@@ -920,19 +920,23 @@
 	<xsl:template name="participantHistory">
 		<ae:participantHistory>
 			<!--Optional: -->
-			<ae:weight>
-				<ae:quantity>
-					<xsl:value-of select="/ichicsr/safetyreport/patient/patientweight" />
-				</ae:quantity>
-				<ae:unit>kg</ae:unit>
-			</ae:weight>
+			<xsl:if test="/ichicsr/safetyreport/patient/patientweight">
+				<ae:weight>
+					<ae:quantity>
+						<xsl:value-of select="/ichicsr/safetyreport/patient/patientweight" />
+					</ae:quantity>
+					<ae:unit>kg</ae:unit>
+				</ae:weight>
+			</xsl:if>
 			<!--Optional: -->
-			<ae:height>
-				<ae:quantity>
-					<xsl:value-of select="/ichicsr/safetyreport/patient/patientheight" />
-				</ae:quantity>
-				<ae:unit>cm</ae:unit>
-			</ae:height>
+			<xsl:if test="/ichicsr/safetyreport/patient/patientheight">
+				<ae:height>
+					<ae:quantity>
+						<xsl:value-of select="/ichicsr/safetyreport/patient/patientheight" />
+					</ae:quantity>
+					<ae:unit>cm</ae:unit>
+				</ae:height>
+			</xsl:if>
 			<!--Optional: -->
 			<ae:baselinePerformanceStatus>
 				<xsl:value-of select="/ichicsr/safetyreport/patient/baselinestatus" />
