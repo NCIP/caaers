@@ -59,7 +59,7 @@ public class ToCaaersReportWSRouteBuilder {
 			.choice()
                 .when().xpath("/soap:Envelope/soap:Body/ns1:saveSafetyReportResponse", nss) 
                 	.to("direct:morgue")
-                .when().xpath("/soap:Envelope/soap:Body/ns1:submitSafetyReportResponse/ns3:CaaersServiceResponse/ns3:ServiceResponse/status/text()='Processed'", nss) 
+                .when().xpath("/soap:Envelope/soap:Body/ns1:submitSafetyReportResponse/ns3:CaaersServiceResponse/ns3:ServiceResponse/status = 'Processed'", nss) 
                 	.to("direct:morgue")
                 .otherwise()
                  	.to("direct:sendE2BAckSink");
