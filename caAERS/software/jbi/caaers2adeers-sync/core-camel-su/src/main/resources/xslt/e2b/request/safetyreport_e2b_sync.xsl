@@ -511,12 +511,16 @@
 					</xsl:call-template>
 				</ae:lastAdministeredDate>
 			</xsl:if>
-			<ae:administrationDelayAmount>
-					<xsl:value-of select="drugtreatmentduration" />
-			</ae:administrationDelayAmount>
-			<ae:administrationDelayUnits>
-					<xsl:value-of select="drugtreatmentdurationunit" />
-			</ae:administrationDelayUnits>
+			<xsl:if test="drugtreatmentduration">
+				<ae:administrationDelayAmount>
+						<xsl:value-of select="drugtreatmentduration" />
+				</ae:administrationDelayAmount>
+			</xsl:if>
+			<xsl:if test="drugtreatmentdurationunit">
+				<ae:administrationDelayUnits>
+						<xsl:value-of select="drugtreatmentdurationunit" />
+				</ae:administrationDelayUnits>
+			</xsl:if>
 			<ae:dose>
 				<ae:amount>
 					<xsl:value-of select="drugcumulativedosagenumb" />
