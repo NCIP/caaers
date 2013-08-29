@@ -59,10 +59,10 @@ public class ToCaaersReportWSRouteBuilder {
 			.choice()
                 .when().xpath("/soap:Envelope/soap:Body/ns1:saveSafetyReportResponse", nss) 
                 	.to("direct:morgue")
-                .when().xpath("/ichicsrack/acknowledgment/messageacknowledgment", nss)
-                	.to("direct:morgue")     	
+                .when().xpath("/ichicsrack/acknowledgment/messageacknowledgment/parsingerrormessage", nss)
+                	.to("direct:sendE2BAckSink")
                 .otherwise()
-                	.to("direct:sendE2BAckSink");
+                	.to("direct:morgue");
 
         
         routeBuilder.from("direct:sendE2BAckSink")                
