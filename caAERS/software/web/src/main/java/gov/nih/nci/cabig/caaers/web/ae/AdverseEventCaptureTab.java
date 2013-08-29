@@ -112,7 +112,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
                 mainFieldFactory.addField(gradeField);
 
                 //graded date
-                InputField gradedDateField = InputFieldFactory.createPastDateField("gradedDate", "Awareness date", "aeReport.adverseEvents.gradedDate", unRetired && isFieldRequired(ae, "adverseEvents[].gradedDate"));
+                InputField gradedDateField = InputFieldFactory.createDateTimeField("gradedDate", "Awareness date", "aeReport.adverseEvents.gradedDate", unRetired && isFieldRequired(ae, "adverseEvents[].gradedDate"));
                 mainFieldFactory.addField(gradedDateField);
                 //startDate
                 InputField startDateField = InputFieldFactory.createPastDateField("startDate", "Start date", "aeReport.adverseEvents.startDate", unRetired && isFieldRequired(ae, "adverseEvents[].startDate"));

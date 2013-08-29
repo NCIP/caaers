@@ -551,7 +551,11 @@ public class ExpeditedAdverseEventReportConverter {
 			}
 			
 			reportVersion.setPhysicianSignoff(xmlReportVersionType.isPhysicianSignoff());
-			reportVersion.setReportVersionId((xmlReportVersionType.getReportVersionId()));
+			if(xmlReportVersionType.getReportVersionId() == null){
+				reportVersion.setReportVersionId("0");
+			} else {
+				reportVersion.setReportVersionId((xmlReportVersionType.getReportVersionId()));
+			}
 			reportVersion.setSubmissionMessage(xmlReportVersionType.getSubmissionMessage());
 			reportVersion.setSubmissionUrl(xmlReportVersionType.getSubmissionUrl());
 			reportVersion.setCcEmails(xmlReportVersionType.getCcEmails());
@@ -1247,7 +1251,6 @@ public class ExpeditedAdverseEventReportConverter {
 	
 	protected AdverseEventReportingPeriod convertAdverseEventReportingPeriod(AdverseEventReportingPeriodType reportingPeriodType){
 		AdverseEventReportingPeriod reportingPeriod = new AdverseEventReportingPeriod();
-		if(reportingPeriodType.getExternalId() != null)	reportingPeriod.setExternalId(reportingPeriodType.getExternalId());
 		
 		if(reportingPeriodType.getStudyParticipantAssignmentRef() != null){
 			reportingPeriod.setAssignment(convertStudyParticipantAssignmentRef(reportingPeriodType.getStudyParticipantAssignmentRef()));
@@ -1263,6 +1266,10 @@ public class ExpeditedAdverseEventReportConverter {
 			treatmentAssignment.setDoseLevelOrder(reportingPeriodType.getTreatmentAssignment().getDoseLevelOrder());
 			
 			reportingPeriod.setTreatmentAssignment(treatmentAssignment);
+		}
+		
+		if(reportingPeriodType.getTreatmentAssignmentDescription() != null){
+			reportingPeriod.setTreatmentAssignmentDescription(reportingPeriodType.getTreatmentAssignmentDescription());
 		}
 		
 		if(reportingPeriodType.getStartDate() != null){

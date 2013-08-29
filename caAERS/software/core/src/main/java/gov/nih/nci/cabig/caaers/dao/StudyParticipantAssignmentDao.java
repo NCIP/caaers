@@ -87,6 +87,20 @@ public class StudyParticipantAssignmentDao extends GridIdentifiableDao<StudyPart
     public void reassociate(StudyParticipantAssignment assignment) {
         getHibernateTemplate().lock(assignment, LockMode.NONE);
     }
+    
+    
+    /**
+     * Gets the StudyParticipantAssignment based on study identifier and study subject identifier.
+     * @param assignment - A StudyParticipantAssignment
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+	public StudyParticipantAssignment getByStudySubjectIdAndStudyId(String studySubjectId, String studyId) {
+    	return CollectionUtils.firstElement((List<StudyParticipantAssignment>) getHibernateTemplate().find("Select a from StudyParticipantAssignment a, Identifier i where " +
+    			"a.studySubjectIdentifier = ? and i = any elements (a.studySite.study.identifiers) and i.value = ? " +
+        		"and i.type like 'Protocol Authority Identifier'", new Object[]{studySubjectId,studyId}));
+    }
+    
 
     /**
      * TODO kkk

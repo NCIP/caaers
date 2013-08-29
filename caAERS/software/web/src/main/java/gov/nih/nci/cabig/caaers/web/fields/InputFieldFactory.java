@@ -79,6 +79,16 @@ public class InputFieldFactory {
         return createInputField(DATE, propertyName, displayName, labelProperty, validators);
     }
 
+    public static InputField createDateTimeField(String propertyName, String displayName, String labelProperty, boolean required) {
+        FieldValidator validators[] = null;
+        if (required) {
+            validators = new FieldValidator[]{FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.DATE_TIME_VALUE_VALIDATOR};
+        } else {
+            validators = new FieldValidator[]{FieldValidator.DATE_TIME_VALUE_VALIDATOR};
+        }
+        return createInputField(DATE, propertyName, displayName, labelProperty, validators);
+    }
+
     public static InputField createFutureDateField(String propertyName, String displayName, boolean required) {
         return createFutureDateField(propertyName, displayName, null, required);
     }

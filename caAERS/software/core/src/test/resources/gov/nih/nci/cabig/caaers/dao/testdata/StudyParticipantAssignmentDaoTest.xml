@@ -55,6 +55,7 @@
         participant_id="-5"
         date_of_enrollment="2004-09-30"
         load_status="1"
+        study_subject_identifier="SUBJ-STU-01-01"
         />
            <PARTICIPANTS
         id="-99"
@@ -87,11 +88,11 @@
         />
     <treatment_assignment
      	id="-1003"
-     	code="adverseEventReportingPeriodCode"
+     	code="tac1"
      	study_id="-4" />
     <treatment_assignment
      	id="-1004"
-     	code="adverseEventReportingPeriodCode"
+     	code="tac2"
      	study_id="-4" />   
      	
      <ae_reporting_periods
@@ -103,6 +104,7 @@
 		assignment_id="-13"
 		epoch_id="-1010"
 		external_id="1232"
+		cycle_number="11"
 		/>
 	<ae_reporting_periods
 		id="-1002"
@@ -210,5 +212,14 @@
     <investigational_new_drugs />    
     <ind_holders />
     <study_devices />
+    
+     <IDENTIFIERS
+        id="-1"
+        stu_id="-4"
+        value="STUDY-01"
+        type="Protocol Authority Identifier"
+        participant_id="-9"
+        organization_id="-1"
+        discriminator_column="1"	/>    
     
 </dataset>

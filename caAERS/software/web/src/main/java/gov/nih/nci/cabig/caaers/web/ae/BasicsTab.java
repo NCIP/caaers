@@ -89,7 +89,7 @@ public abstract class BasicsTab extends AeTab {
 
         creator.createRepeatingFieldGroup(MAIN_FIELD_GROUP, "adverseEvents", otherVerbatimField,
                 InputFieldFactory.createLongSelectField("grade", "Grade", "aeReport.adverseEvents.grade", true, WebUtils.collectOptions(EXPEDITED_GRADES, "name", null)),
-                InputFieldFactory.createPastDateField("gradedDate", "Awareness date", "aeReport.adverseEvents.gradedDate", false),
+                InputFieldFactory.createDateTimeField("gradedDate", "Awareness date", "aeReport.adverseEvents.gradedDate", false),
                 InputFieldFactory.createPastDateField("startDate", "Start date", "aeReport.adverseEvents.startDate", false),
                 InputFieldFactory.createPastDateField("endDate", "End date", "aeReport.adverseEvents.endDate", false),
                 attributionField,

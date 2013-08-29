@@ -316,7 +316,7 @@ function refreshGrades(index) {
 			
       		<div id="detailSection">
 				<c:if test="${not empty command.adverseEventReportingPeriod}">
-				
+
 					<%--  Begining Of Observed AE section --%>
 					<chrome:box title="Adverse Events" collapsable="true" id="observedID" autopad="true">
                         <div align="right"><a style="text-decoration:none; color:black; font-weight:bold;" href="<c:url value="/pages/ae/blankForm?st=${command.study.id}&sb=${command.participant.id}&cs=${command.adverseEventReportingPeriod.id}&ep=${command.adverseEventReportingPeriod.epoch.id}" />"><img src="<c:url value='/images/pdf.gif'></c:url>?${requestScope.webCacheId}" border="0">&nbsp;</a></div>
@@ -337,7 +337,7 @@ function refreshGrades(index) {
                              <%--<div class="instructions row" style="position:relative; top:-20px;"><div class="label"></div><div class="value">${command.adverseEventReportingPeriod.epoch.descriptionText}</div></div>--%>
 
                         <%--</c:if>--%>
-                        
+
                         <c:if test="${command.study.verbatimFirst}">
                             <ui:row path="verbatim">
                                 <jsp:attribute name="label"><ui:label path="verbatim" text="" labelProperty="captureAdverseEventsVerbatim" required="true"></ui:label></jsp:attribute>
@@ -349,21 +349,21 @@ function refreshGrades(index) {
                                  <jsp:attribute name="embededJS">
 			  						if(${not readOnly}){
 			  							Event.observe($('verbatim'), 'keydown', function(e){
-											var keynum;                                 
-						                    if(window.event) // IE                              
+											var keynum;
+						                    if(window.event) // IE
 						                    {
 						                            keynum = e.keyCode
 						                    }
 						                    else if(e.which) // Netscape/Firefox/Opera
 						                    {
 						                            keynum = e.which
-						                    }                   
-						
-						                    if (keynum == 13) 
+						                    }
+
+						                    if (keynum == 13)
 						                    {
 						                    	   Event.stop(e)
 						                    	  addByVerbatim()
-						                    	   
+
 						                    }
 										})
 			 					 	}
@@ -381,7 +381,7 @@ function refreshGrades(index) {
                        			version="${not empty command.study.aeTerminology.meddraVersion ? command.study.aeTerminology.meddraVersion.id : command.study.aeTerminology.ctcVersion.id}"
                        		    title=""
                                 versionName="${command.study.aeTerminology.term eq 'CTC' ? command.study.aeTerminology.ctcVersion.name : command.study.aeTerminology.meddraVersion.name}"
-                                study="${command.study}"    
+                                study="${command.study}"
                              >
             			</tags:aeTermQuery>
                         </c:if>
@@ -405,16 +405,16 @@ function refreshGrades(index) {
 							<p><tags:instructions code="instruction_ae_sae"/></p>
 							<c:forEach items="${command.adverseEventReportingPeriod.adverseEvents}" varStatus="status" var="ae">
             				<c:if test="${ae.solicited and not ae.retired}">
-            					<ae:oneRoutineAdverseEvent index="${status.index}" adverseEvent="${ae}" collapsed="true" 
+            					<ae:oneRoutineAdverseEvent index="${status.index}" adverseEvent="${ae}" collapsed="true"
             					enableDelete="false" isSolicited="true" hasOtherMeddra="${not empty command.study.otherMeddra}"/>
-            				</c:if> 
-            			</c:forEach>   
+            				</c:if>
+            			</c:forEach>
  						</chrome:box>
 					</c:if>
 					<%--  End of Solicited AE section --%>
 				</c:if>
 			</div>
-      		
+
 					
        </jsp:attribute>
        <jsp:attribute name="tabControls">

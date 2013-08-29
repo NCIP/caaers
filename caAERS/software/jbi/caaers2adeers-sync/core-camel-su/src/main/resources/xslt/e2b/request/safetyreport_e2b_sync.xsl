@@ -34,6 +34,23 @@
 						</ae:createdAt>
 						<xsl:call-template name="responseDescription" />
 						<ae:adverseEventReportingPeriod>
+							<xsl:if test="/ichicsr/safetyreport/patient/drug[drugcharacterization = '3']/ drugindication">
+								<ae:treatmentAssignmentDescription>
+									<xsl:value-of select="/ichicsr/safetyreport/patient/drug[drugcharacterization = '3']/drugindication" />
+								</ae:treatmentAssignmentDescription>
+							</xsl:if>
+							<xsl:if test="/ichicsr/safetyreport/patient/drug[drugcharacterization = '3']/drugstartperiod">
+								<ae:cycleNumber>
+									<xsl:value-of select="/ichicsr/safetyreport/patient/drug[drugcharacterization = '3']/drugstartperiod" />
+								</ae:cycleNumber>
+							</xsl:if>
+							<xsl:if test="/ichicsr/safetyreport/patient/drug[drugcharacterization = '3']/drugenddate">
+								<ae:startDate>
+									<xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">
+										<xsl:with-param name="date" select="/ichicsr/safetyreport/patient/drug[drugcharacterization = '3']/drugenddate" />
+									</xsl:call-template>
+								</ae:startDate>								
+							</xsl:if>
 							<ae:studyParticipantAssignmentRef>
 								<ae:studySiteRef>
 									<ae:studyRef>
@@ -48,8 +65,7 @@
 										</ae:identifiers>
 									</ae:studyRef>
 									<ae:nciInstituteCode>
-										<xsl:value-of
-											select="/ichicsr/safetyreport/patient/subjectstudysiteid" />
+										<xsl:value-of select="/ichicsr/safetyreport/patient/subjectstudysiteid" />
 									</ae:nciInstituteCode>
 								</ae:studySiteRef>
 								<ae:studySubjectIdentifier>
@@ -57,18 +73,52 @@
 										select="/ichicsr/safetyreport/patient/patientinvestigationnumb" />
 								</ae:studySubjectIdentifier>
 							</ae:studyParticipantAssignmentRef>
-							<ae:externalId>
-								<xsl:value-of select="/ichicsr/safetyreport/safetyreportid" />
-							</ae:externalId>
-						</ae:adverseEventReportingPeriod>
+							<ae:treatmentAssignment>
+								<ae:code>
+									<xsl:value-of select="/ichicsr/safetyreport/patient/drug[drugcharacterization = '3']/medicinalproduct" />
+								</ae:code>
+							</ae:treatmentAssignment>
+						</ae:adverseEventReportingPeriod>						
+						<ae:physician>
+							<ae:firstName>
+								<xsl:value-of select="/ichicsr/safetyreport/physiciangivename" />
+							</ae:firstName>
+							<ae:lastName>
+								<xsl:value-of select="/ichicsr/safetyreport/physicianfamilyname" />
+							</ae:lastName>
+							<xsl:if test="/ichicsr/safetyreport/physicianmiddlename">
+								<ae:middleName>
+									<xsl:value-of select="/ichicsr/safetyreport/physicianmiddlename" />
+								</ae:middleName>
+							</xsl:if>
+							<xsl:if test="/ichicsr/safetyreport/physicianemail">
+								<ae:contactMechanism>
+									<ae:type>e-mail</ae:type>
+									<ae:value>
+										<xsl:value-of select="/ichicsr/safetyreport/physicianemail" />
+									</ae:value>
+								</ae:contactMechanism>
+							</xsl:if>
+							<xsl:if test="/ichicsr/safetyreport/physicianphone">
+								<ae:contactMechanism>
+									<ae:type>phone</ae:type>
+									<ae:value>
+										<xsl:value-of select="/ichicsr/safetyreport/physicianphone" />
+									</ae:value>
+								</ae:contactMechanism>
+							</xsl:if>
+							<xsl:if test="/ichicsr/safetyreport/physicianfax">
+								<ae:contactMechanism>
+									<ae:type>fax</ae:type>
+									<ae:value>
+										<xsl:value-of select="/ichicsr/safetyreport/physicianfax" />
+									</ae:value>
+								</ae:contactMechanism>
+							</xsl:if>
+						</ae:physician>
 
 						<xsl:for-each select="//primarysource">
-							<xsl:if test="qualification = 1">
-								<xsl:call-template name="physician" />
-							</xsl:if>
-							<xsl:if test="qualification = 3">
-								<xsl:call-template name="reporter" />
-							</xsl:if>
+							<xsl:call-template name="reporter" />					
 						</xsl:for-each>
 						<xsl:if test="/ichicsr/safetyreport/sender/sendergivename">
 							<xsl:call-template name="submitter" />
@@ -86,28 +136,22 @@
 								</ae:diagnosisDate>
 							</xsl:if>
 							<!--Zero or more repetitions: -->
-							<xsl:for-each
-								select="//medicalhistoryepisode[patientmedicalcomment = 'Study Disease']">
-								<xsl:call-template name="studyDiseaseTemplate" />
+							<xsl:for-each select="//medicalhistoryepisode[patientmedicalcomment = 'Study Disease']">
+									<xsl:call-template name="studyDiseaseTemplate" />
 							</xsl:for-each>
-							<xsl:for-each
-								select="//medicalhistoryepisode[patientmedicalcomment = 'Other Study Disease']">
+							<xsl:for-each select="//medicalhistoryepisode[patientmedicalcomment = 'Other Study Disease']">
 								<xsl:call-template name="otherStudyDiseaseTemplate" />
 							</xsl:for-each>
-							<xsl:for-each
-								select="//medicalhistoryepisode[patientmedicalcomment = 'Disease Site']">
+							<xsl:for-each select="//medicalhistoryepisode[patientmedicalcomment = 'Disease Site']">
 								<xsl:call-template name="diseaseSiteTemplate" />
 							</xsl:for-each>
-							<xsl:for-each
-								select="//medicalhistoryepisode[patientmedicalcomment = 'Other Disease Site']">
+							<xsl:for-each select="//medicalhistoryepisode[patientmedicalcomment = 'Other Disease Site']">
 								<xsl:call-template name="otherDiseaseSiteTemplate" />
 							</xsl:for-each>
-							<xsl:for-each
-								select="//medicalhistoryepisode[patientmedicalcomment = 'Other Metastatic Site']">
+							<xsl:for-each select="//medicalhistoryepisode[patientmedicalcomment = 'Other Metastatic Site']">
 								<xsl:call-template name="otherMetastaticSiteTemplate" />
 							</xsl:for-each>
-							<xsl:for-each
-								select="//medicalhistoryepisode[patientmedicalcomment = 'Metastatic Site']">
+							<xsl:for-each select="//medicalhistoryepisode[patientmedicalcomment = 'Metastatic Site']">
 								<xsl:call-template name="metastaticSiteTemplate" />
 							</xsl:for-each>
 						</ae:diseaseHistory>
@@ -149,12 +193,13 @@
 							<xsl:call-template name="priorTherapy" />
 						</xsl:for-each>
 						<ae:treatmentInformation>
-							<ae:investigationalAgentAdministered>
-								<xsl:call-template name="convertOneTwotoBoolean">
-									<xsl:with-param name="oneTwoType"
-										select="/ichicsr/safetyreport/patient/summary/indadminflag" />
-								</xsl:call-template>
-							</ae:investigationalAgentAdministered>
+							<xsl:if test="/ichicsr/safetyreport/patient/summary/indadminflag">
+								<ae:investigationalAgentAdministered>
+									<xsl:call-template name="convertOneTwotoBoolean">
+										<xsl:with-param name="oneTwoType" select="/ichicsr/safetyreport/patient/summary/indadminflag" />
+									</xsl:call-template>
+								</ae:investigationalAgentAdministered>
+							</xsl:if>
 							<xsl:for-each
 								select="//drug[drugadditional != 'Radiation' and  drugadditional != 'Surgery' and drugadditional != 'Device' and drugcharacterization = '1']">
 								<xsl:call-template name="courseAgent" />
@@ -171,115 +216,101 @@
 							select="//medicalhistoryepisode[patientmedicalcomment = 'Other Cause']">
 							<xsl:call-template name="otherCause" />
 						</xsl:for-each>
-
+						
 						<ae:additionalInformation>
-							<xsl:if test="/ichicsr/safetyreport/autopsyreportflag">
-								<ae:autopsyReport>
+						   <xsl:if test="/ichicsr/safetyreport/autopsyreportflag">
+							   <ae:autopsyReport>
 									<xsl:call-template name="convertOneTwotoBoolean">
-										<xsl:with-param name="oneTwoType"
-											select="/ichicsr/safetyreport/autopsyreportflag" />
+										<xsl:with-param name="oneTwoType" select="/ichicsr/safetyreport/autopsyreportflag" />
 									</xsl:call-template>
-								</ae:autopsyReport>
+							   </ae:autopsyReport>
 							</xsl:if>
-							<xsl:if test="/ichicsr/safetyreport/consultsflag">
-								<ae:consults>
+						  <xsl:if test="/ichicsr/safetyreport/consultsflag">
+							   <ae:consults>
 									<xsl:call-template name="convertOneTwotoBoolean">
-										<xsl:with-param name="oneTwoType"
-											select="/ichicsr/safetyreport/consultsflag" />
+										<xsl:with-param name="oneTwoType" select="/ichicsr/safetyreport/consultsflag" />
 									</xsl:call-template>
-								</ae:consults>
+							   </ae:consults>
 							</xsl:if>
-							<xsl:if test="/ichicsr/safetyreport/dischargesummaryflag">
-								<ae:dischargeSummary>
+						   <xsl:if test="/ichicsr/safetyreport/dischargesummaryflag">
+							   <ae:dischargeSummary>
 									<xsl:call-template name="convertOneTwotoBoolean">
-										<xsl:with-param name="oneTwoType"
-											select="/ichicsr/safetyreport/dischargesummaryflag" />
+										<xsl:with-param name="oneTwoType" select="/ichicsr/safetyreport/dischargesummaryflag" />
 									</xsl:call-template>
-								</ae:dischargeSummary>
+							   </ae:dischargeSummary>
 							</xsl:if>
-							<xsl:if test="/ichicsr/safetyreport/flowsheetscrfsflag">
-								<ae:flowCharts>
+						   <xsl:if test="/ichicsr/safetyreport/flowsheetscrfsflag">
+							   <ae:flowCharts>
 									<xsl:call-template name="convertOneTwotoBoolean">
-										<xsl:with-param name="oneTwoType"
-											select="/ichicsr/safetyreport/flowsheetscrfsflag" />
+										<xsl:with-param name="oneTwoType" select="/ichicsr/safetyreport/flowsheetscrfsflag" />
 									</xsl:call-template>
-								</ae:flowCharts>
+							   </ae:flowCharts>
 							</xsl:if>
-							<xsl:if test="/ichicsr/safetyreport/labreportsflag">
-								<ae:labReports>
+						   <xsl:if test="/ichicsr/safetyreport/labreportsflag">
+							   <ae:labReports>
 									<xsl:call-template name="convertOneTwotoBoolean">
-										<xsl:with-param name="oneTwoType"
-											select="/ichicsr/safetyreport/labreportsflag" />
+										<xsl:with-param name="oneTwoType" select="/ichicsr/safetyreport/labreportsflag" />
 									</xsl:call-template>
-								</ae:labReports>
+							   </ae:labReports>
 							</xsl:if>
-							<xsl:if test="/ichicsr/safetyreport/obaformsflag">
-								<ae:obaForm>
+						   <xsl:if test="/ichicsr/safetyreport/obaformsflag">
+							   <ae:obaForm>
 									<xsl:call-template name="convertOneTwotoBoolean">
-										<xsl:with-param name="oneTwoType"
-											select="/ichicsr/safetyreport/obaformsflag" />
+										<xsl:with-param name="oneTwoType" select="/ichicsr/safetyreport/obaformsflag" />
 									</xsl:call-template>
-								</ae:obaForm>
+							   </ae:obaForm>
 							</xsl:if>
-							<xsl:if test="/ichicsr/safetyreport/otheradditionalflag">
-								<ae:other>
+						    <xsl:if test="/ichicsr/safetyreport/otheradditionalflag">
+							   <ae:other>
 									<xsl:call-template name="convertOneTwotoBoolean">
-										<xsl:with-param name="oneTwoType"
-											select="/ichicsr/safetyreport/otheradditionalflag" />
+										<xsl:with-param name="oneTwoType" select="/ichicsr/safetyreport/otheradditionalflag" />
 									</xsl:call-template>
-								</ae:other>
+							   </ae:other>
 							</xsl:if>
-							<xsl:if test="/ichicsr/safetyreport/pathologyreportflag">
-								<ae:pathologyReport>
+						    <xsl:if test="/ichicsr/safetyreport/pathologyreportflag">
+							   <ae:pathologyReport>
 									<xsl:call-template name="convertOneTwotoBoolean">
-										<xsl:with-param name="oneTwoType"
-											select="/ichicsr/safetyreport/pathologyreportflag" />
+										<xsl:with-param name="oneTwoType" select="/ichicsr/safetyreport/pathologyreportflag" />
 									</xsl:call-template>
-								</ae:pathologyReport>
+							   </ae:pathologyReport>
 							</xsl:if>
-							<xsl:if test="/ichicsr/safetyreport/progressnotesflag">
-								<ae:progressNotes>
+						    <xsl:if test="/ichicsr/safetyreport/progressnotesflag">
+							   <ae:progressNotes>
 									<xsl:call-template name="convertOneTwotoBoolean">
-										<xsl:with-param name="oneTwoType"
-											select="/ichicsr/safetyreport/progressnotesflag" />
+										<xsl:with-param name="oneTwoType" select="/ichicsr/safetyreport/progressnotesflag" />
 									</xsl:call-template>
-								</ae:progressNotes>
+							   </ae:progressNotes>
 							</xsl:if>
-							<xsl:if test="/ichicsr/safetyreport/radiologyreportflag">
-								<ae:radiologyReports>
+						    <xsl:if test="/ichicsr/safetyreport/radiologyreportflag">
+							   <ae:radiologyReports>
 									<xsl:call-template name="convertOneTwotoBoolean">
-										<xsl:with-param name="oneTwoType"
-											select="/ichicsr/safetyreport/radiologyreportflag" />
+										<xsl:with-param name="oneTwoType" select="/ichicsr/safetyreport/radiologyreportflag" />
 									</xsl:call-template>
-								</ae:radiologyReports>
+							   </ae:radiologyReports>
 							</xsl:if>
-							<xsl:if test="/ichicsr/safetyreport/referrallettersflag">
-								<ae:referralLetters>
+						    <xsl:if test="/ichicsr/safetyreport/referrallettersflag">
+							   <ae:referralLetters>
 									<xsl:call-template name="convertOneTwotoBoolean">
-										<xsl:with-param name="oneTwoType"
-											select="/ichicsr/safetyreport/referrallettersflag" />
+										<xsl:with-param name="oneTwoType" select="/ichicsr/safetyreport/referrallettersflag" />
 									</xsl:call-template>
-								</ae:referralLetters>
+							   </ae:referralLetters>
 							</xsl:if>
-							<xsl:if test="/ichicsr/safetyreport/irbsummaryreportflag">
-								<ae:irbReport>
+						    <xsl:if test="/ichicsr/safetyreport/irbsummaryreportflag">
+							   <ae:irbReport>
 									<xsl:call-template name="convertOneTwotoBoolean">
-										<xsl:with-param name="oneTwoType"
-											select="/ichicsr/safetyreport/irbsummaryreportflag" />
+										<xsl:with-param name="oneTwoType" select="/ichicsr/safetyreport/irbsummaryreportflag" />
 									</xsl:call-template>
-								</ae:irbReport>
-							</xsl:if>
-							<xsl:if test="/ichicsr/safetyreport/documentlist">
-								<ae:otherInformation>
-									<xsl:value-of select="/ichicsr/safetyreport/documentlist" />
-								</ae:otherInformation>
+							   </ae:irbReport>
+							</xsl:if>						  
+						    <xsl:if test="/ichicsr/safetyreport/documentlist">
+							   <ae:otherInformation><xsl:value-of select="/ichicsr/safetyreport/documentlist" /></ae:otherInformation>
 							</xsl:if>
 						</ae:additionalInformation>
 
 						<!--1 or more repetitions: -->
 						<ae:report>
 							<ae:caseNumber>
-								<xsl:value-of select="/ichicsr/safetyreport/companynumb" />
+								<xsl:value-of select="/ichicsr/safetyreport/safetyreportid" />
 							</ae:caseNumber>
 							<ae:aeReportDefinition>
 								<ae:name>
@@ -288,10 +319,12 @@
 							</ae:aeReportDefinition>
 							<!--Zero or more repetitions: -->
 							<ae:aeReportVersion>
-								<ae:reportVersionId>
-									<xsl:value-of select="/ichicsr/safetyreport/safetyreportversion" />
-								</ae:reportVersionId>
-								<xsl:if test="/ichicsr/safetyreport/sender/recipientemails">
+								<xsl:if test="/ichicsr/safetyreport/safetyreportversion">
+									<ae:reportVersionId>
+										<xsl:value-of select="/ichicsr/safetyreport/safetyreportversion" />
+									</ae:reportVersionId>
+								</xsl:if>
+								 <xsl:if test="/ichicsr/safetyreport/sender/recipientemails">
 									<ae:ccEmails>
 										<xsl:value-of select="/ichicsr/safetyreport/sender/recipientemails" />
 									</ae:ccEmails>
@@ -312,7 +345,7 @@
 			</ae:primaryDisease>
 		</xsl:if>
 	</xsl:template>
-
+	
 	<xsl:template name="diseaseSiteTemplate">
 		<xsl:if test="./patientmedicalcomment = 'Disease Site' ">
 			<ae:codedPrimaryDiseaseSite>
@@ -320,7 +353,7 @@
 			</ae:codedPrimaryDiseaseSite>
 		</xsl:if>
 	</xsl:template>
-
+	
 	<xsl:template name="otherDiseaseSiteTemplate">
 		<xsl:if test="./patientmedicalcomment = 'Other Disease Site' ">
 			<ae:otherPrimaryDiseaseSite>
@@ -328,7 +361,7 @@
 			</ae:otherPrimaryDiseaseSite>
 		</xsl:if>
 	</xsl:template>
-
+	
 	<xsl:template name="otherStudyDiseaseTemplate">
 		<xsl:if test="./patientmedicalcomment = 'Other Study Disease' ">
 			<ae:otherPrimaryDisease>
@@ -336,7 +369,7 @@
 			</ae:otherPrimaryDisease>
 		</xsl:if>
 	</xsl:template>
-
+	
 	<xsl:template name="metastaticSiteTemplate">
 		<xsl:if test="./patientmedicalcomment = 'Metastatic Site' ">
 			<ae:metastaticDiseaseSite>
@@ -348,7 +381,7 @@
 			</ae:metastaticDiseaseSite>
 		</xsl:if>
 	</xsl:template>
-
+	
 	<xsl:template name="otherMetastaticSiteTemplate">
 		<xsl:if test="./patientmedicalcomment = 'Other Metastatic Site' ">
 			<ae:metastaticDiseaseSite>
@@ -364,13 +397,13 @@
 			<ae:priorTherapy>
 				<ae:text>
 					<xsl:value-of select="patientepisodename" />
-				</ae:text>
+				</ae:text>				
 			</ae:priorTherapy>
-
+			
 			<ae:other>
 				<xsl:value-of select="priortherapycomment" />
 			</ae:other>
-
+			
 			<xsl:if test="./patientmedicalstartdate != '' ">
 				<ae:startDate>
 					<xsl:call-template name="splitDateYYYYMMDD">
@@ -385,7 +418,7 @@
 					</xsl:call-template>
 				</ae:endDate>
 			</xsl:if>
-
+			
 			<xsl:for-each select="priortherapyagent">
 				<ae:priorTherapyAgent>
 					<ae:agent>
@@ -478,12 +511,16 @@
 					</xsl:call-template>
 				</ae:lastAdministeredDate>
 			</xsl:if>
-			<ae:administrationDelayAmount>
-				<xsl:value-of select="drugtreatmentduration" />
-			</ae:administrationDelayAmount>
-			<ae:administrationDelayUnits>
-				<xsl:value-of select="drugtreatmentdurationunit" />
-			</ae:administrationDelayUnits>
+			<xsl:if test="drugtreatmentduration">
+				<ae:administrationDelayAmount>
+						<xsl:value-of select="drugtreatmentduration" />
+				</ae:administrationDelayAmount>
+			</xsl:if>
+			<xsl:if test="drugtreatmentdurationunit">
+				<ae:administrationDelayUnits>
+						<xsl:value-of select="drugtreatmentdurationunit" />
+				</ae:administrationDelayUnits>
+			</xsl:if>
 			<ae:dose>
 				<ae:amount>
 					<xsl:value-of select="drugcumulativedosagenumb" />
@@ -759,7 +796,8 @@
 					</xsl:call-template>
 				</ae:presentStatus>
 			</xsl:if>
-			<xsl:if test="/ichicsr/safetyreport/patient/summary/dateremoved != '' ">
+			<xsl:if
+				test="/ichicsr/safetyreport/patient/summary/dateremoved != '' ">
 				<ae:dateRemovedFromProtocol>
 					<xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">
 						<xsl:with-param name="date"
@@ -803,38 +841,6 @@
 				<xsl:value-of select="patientepisodename" />
 			</ae:text>
 		</ae:otherCause>
-	</xsl:template>
-
-	<xsl:template name="physician">
-		<ae:physician>
-			<ae:firstName>
-				<xsl:value-of select="reportergivename" />
-			</ae:firstName>
-			<ae:lastName>
-				<xsl:value-of select="reporterfamilyname" />
-			</ae:lastName>
-			<xsl:if test="reportermiddlename">
-				<ae:middleName>
-					<xsl:value-of select="reportermiddlename" />
-				</ae:middleName>
-			</xsl:if>
-			<xsl:if test="reporteremail">
-				<ae:contactMechanism>
-					<ae:type>e-mail</ae:type>
-					<ae:value>
-						<xsl:value-of select="reporteremail" />
-					</ae:value>
-				</ae:contactMechanism>
-			</xsl:if>
-			<xsl:if test="reporterphone">
-				<ae:contactMechanism>
-					<ae:type>phone</ae:type>
-					<ae:value>
-						<xsl:value-of select="reporterphone" />
-					</ae:value>
-				</ae:contactMechanism>
-			</xsl:if>
-		</ae:physician>
 	</xsl:template>
 
 	<xsl:template name="reporter">
@@ -918,19 +924,23 @@
 	<xsl:template name="participantHistory">
 		<ae:participantHistory>
 			<!--Optional: -->
-			<ae:weight>
-				<ae:quantity>
-					<xsl:value-of select="/ichicsr/safetyreport/patient/patientweight" />
-				</ae:quantity>
-				<ae:unit>kg</ae:unit>
-			</ae:weight>
+			<xsl:if test="/ichicsr/safetyreport/patient/patientweight">
+				<ae:weight>
+					<ae:quantity>
+						<xsl:value-of select="/ichicsr/safetyreport/patient/patientweight" />
+					</ae:quantity>
+					<ae:unit>kg</ae:unit>
+				</ae:weight>
+			</xsl:if>
 			<!--Optional: -->
-			<ae:height>
-				<ae:quantity>
-					<xsl:value-of select="/ichicsr/safetyreport/patient/patientheight" />
-				</ae:quantity>
-				<ae:unit>cm</ae:unit>
-			</ae:height>
+			<xsl:if test="/ichicsr/safetyreport/patient/patientheight">
+				<ae:height>
+					<ae:quantity>
+						<xsl:value-of select="/ichicsr/safetyreport/patient/patientheight" />
+					</ae:quantity>
+					<ae:unit>cm</ae:unit>
+				</ae:height>
+			</xsl:if>
 			<!--Optional: -->
 			<ae:baselinePerformanceStatus>
 				<xsl:value-of select="/ichicsr/safetyreport/patient/baselinestatus" />
@@ -941,11 +951,13 @@
 	<xsl:template name="adverseEvent">
 		<xsl:variable name="adverseEventId" select="aeexternalid" />
 		<ae:adverseEvent>
-			<startDate>
-				<xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">
-					<xsl:with-param name="date" select="reactionstartdate" />
-				</xsl:call-template>
-			</startDate>
+			<xsl:if test="reactionstartdate">
+				<startDate>
+					<xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">
+						<xsl:with-param name="date" select="reactionstartdate" />
+					</xsl:call-template>
+				</startDate>
+			</xsl:if>
 			<xsl:if test="reactionenddate">
 				<endDate>
 					<xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">

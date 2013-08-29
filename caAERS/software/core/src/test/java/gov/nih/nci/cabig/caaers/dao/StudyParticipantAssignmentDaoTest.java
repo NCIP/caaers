@@ -9,9 +9,21 @@ package gov.nih.nci.cabig.caaers.dao;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.ASSIGN_PARTICIPANT;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoNoSecurityTestCase;
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.domain.DateValue;
+import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantConcomitantMedication;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantDiseaseHistory;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantPreExistingCondition;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantPriorTherapy;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * @author Rhett Sutphin
@@ -185,6 +197,46 @@ public class StudyParticipantAssignmentDaoTest extends DaoNoSecurityTestCase<Stu
     	assertNotNull(assignment);
     	assertNotNull(assignment.getStudySite().getId());
     	assertNotNull(assignment.getId());
+    	
+    }
+    
+    public void testGetByStudySubjectIdAndStudyId(){
+    	StudyParticipantAssignment spa = getDao().getByStudySubjectIdAndStudyId("SUBJ-STU-01-01", "STUDY-01");
+    	assertNotNull(spa);
+    	
+    	Integer cycleNumber= 11;
+    	String tac = "tac1";    	
+    	Calendar cal = GregorianCalendar.getInstance();
+    	cal.set(GregorianCalendar.YEAR, 2008);
+    	cal.set(GregorianCalendar.MONTH, 4);
+    	cal.set(GregorianCalendar.DAY_OF_MONTH, 23);
+    	
+    	AdverseEventReportingPeriod arp = null;
+    	
+    	arp = spa.findReportingPeriod(null, cal.getTime(), null, cycleNumber, null, tac);
+    	assertNotNull(arp);
+    	assertEquals("didn't find correct reporting period",-1001, arp.getId().intValue());
+    	
+    	// check if start date is wrong
+    	cal.set(GregorianCalendar.MONTH, 5);
+    	arp = spa.findReportingPeriod(null, cal.getTime(), null, cycleNumber, null, tac);
+    	assertNull(arp);
+    	
+    	// check if cycle number is wrong
+    	cal.set(GregorianCalendar.MONTH, 4);
+    	cycleNumber = 12;
+    	arp = spa.findReportingPeriod(null, cal.getTime(), null, cycleNumber, null, tac);
+    	assertNull(arp);
+    	
+    	// check get only by TAC
+    	arp = spa.findReportingPeriod(null, null, null, null, null, tac);
+    	assertNotNull(arp);
+    	assertEquals("didn't find correct reporting period",-1001, arp.getId().intValue());
+    	
+    	// check for wrong cycle number
+    	arp = spa.findReportingPeriod(null, null, null, 12, null, tac);
+    	assertNull(arp);
+    	
     	
     }
 }
