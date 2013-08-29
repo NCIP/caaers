@@ -73,7 +73,7 @@
         <property name="adeersIntegrationFacade"  ref="proxyWebServiceFacade" />
     </bean>
     
-    
+    <bean id="idServiceImpl" autowire="byType" class="gov.nih.nci.cabig.caaers.api.impl.IDServiceImpl"/>
     
     <bean id="messageFactory" class="org.springframework.ws.soap.saaj.SaajSoapMessageFactory"/>
     <bean id="webServiceTemplate" class="org.springframework.ws.client.core.WebServiceTemplate">

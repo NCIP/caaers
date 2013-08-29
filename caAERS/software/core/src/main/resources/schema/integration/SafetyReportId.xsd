@@ -1,0 +1,28 @@
+<xs:schema xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/aereportid"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/aereportid"
+	elementFormDefault="qualified">
+
+	<!-- the criteria may not be used at all -->
+	<xs:element name="ReportIdCriteria">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="studyId" type="xs:string" minOccurs="0" />
+				<xs:element name="organizationId" type="xs:string"
+					minOccurs="0" />
+				<xs:element name="tac" type="xs:string" minOccurs="0" />
+				<xs:element name="studySubjectId" type="xs:string"
+					minOccurs="0" />
+				<xs:element name="revision" type="xs:string" minOccurs="0" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="SafetyReportIdentifer">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="newSafetyReportId" type="xs:string" minOccurs="0" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+</xs:schema>

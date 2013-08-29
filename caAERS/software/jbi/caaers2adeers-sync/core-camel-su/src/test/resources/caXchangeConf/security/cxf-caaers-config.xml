@@ -24,6 +24,10 @@
 
 	<!--<bean id="cxf" class="org.apache.cxf.bus.CXFBusImpl" />-->
 	
+	<http:conduit name="*.http-conduit">
+    	<http:tlsClientParameters disableCNCheck="true"/>
+  	</http:conduit>
+  
 	<http:destination
 		name="{https://127.0.0.1:8196/}GenericProcessorService.http-destination">
 	</http:destination>

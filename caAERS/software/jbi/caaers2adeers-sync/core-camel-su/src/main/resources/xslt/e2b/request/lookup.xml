@@ -1,0 +1,133 @@
+<!--
+  Copyright SemanticBits, Northwestern University and Akaza Research
+  
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caaers/LICENSE.txt for details.
+-->
+<lookup>
+    <phases>
+        <phase><code>0</code><value>Phase 0 Trial</value></phase>
+        <phase><code>I</code><value>Phase I Trial</value></phase>
+        <phase><code>I/II</code><value>Phase I/II Trial</value></phase>
+        <phase><code>II</code><value>Phase II Trial</value></phase>
+        <phase><code>II/III</code><value>Phase II/III Trial</value></phase>
+        <phase><code>III</code><value>Phase III Trial</value></phase>
+        <phase><code>IV</code><value>Phase IV Trial</value></phase>
+        <phase><code>Pilot</code><value>Pilot</value></phase>
+        <phase><code>Null</code><value>Null</value></phase>
+        <phase><code>Other</code><value>Other</value></phase>
+    </phases>
+    <statuses>
+         <status><code>Active</code><value>Active - Trial is open to accrual</value></status>
+         <status><code>Complete</code><value>Administratively Complete</value></status>
+    </statuses>
+    <studypurposes>
+        <purpose><code>Treatment</code><value>Treatment</value></purpose>
+        <purpose><code>Prevention</code><value>Prevention</value></purpose>
+    </studypurposes>
+    <indtypes>
+        <indtype><code>Investigational</code><value>OTHER</value></indtype>
+        <indtype><code>Commercial</code><value>NA_COMMERCIAL</value></indtype>
+    </indtypes>
+    <yesnos>
+        <yesno><code>Yes</code><value>true</value></yesno>
+        <yesno><code>No</code><value>false</value></yesno>
+    </yesnos>
+    <interventions>
+        <intervention><code>Radiation Therapy</code><value>RADIATION</value></intervention>
+        <intervention><code>Surgery</code><value>SURGERY</value></intervention>
+        <intervention><code>Gene Transfer</code><value>OTHER</value></intervention>
+        <intervention><code>Image Directed Local Therapy</code><value>OTHER</value></intervention>
+        <intervention><code>Hematopoietic Stem Cell Transplantation</code><value>OTHER</value></intervention>
+    </interventions>
+    <genders>
+        <gender><code>Male Gender</code><value>Male</value></gender>
+        <gender><code>Female Gender</code><value>Female</value></gender>
+        <gender><code>Unknown</code><value>Unknown</value></gender>
+        <gender><code>Unspecified</code><value>Not Reported</value></gender>
+    </genders>
+     <races>
+        <race><code>Asian</code><value>Asian</value></race>
+        <race><code>White</code><value>White</value></race>
+        <race><code>Black or African American</code><value>Black or African American</value></race>
+        <race><code>American Indian or Alaska Native</code><value>American Indian or Alaska Native</value></race>
+        <race><code>Native Hawaiian or Other Pacific Islander</code><value>Native Hawaiian or Other Pacific Islander</value></race>
+        <race><code>Not Reported</code><value>Not Reported</value></race>
+        <race><code>Unknown</code><value>Unknown</value></race>
+    </races>
+    <ethnicities>
+        <ethnicity><code>Hispanic or Latino</code><value>Hispanic or Latino</value></ethnicity>
+        <ethnicity><code>Not Hispanic or Latino</code><value>Not Hispanic or Latino</value></ethnicity>
+        <ethnicity><code>Not Reported</code><value>Not Reported</value></ethnicity>
+        <ethnicity><code>Unknown</code><value>Unknown</value></ethnicity>
+    </ethnicities>
+    <months>
+        <month><code>Jan</code><value>01</value></month>
+        <month><code>Feb</code><value>02</value></month>
+        <month><code>Mar</code><value>03</value></month>
+        <month><code>Apr</code><value>04</value></month>
+        <month><code>May</code><value>05</value></month>
+        <month><code>Jun</code><value>06</value></month>
+        <month><code>Jul</code><value>07</value></month>
+        <month><code>Aug</code><value>08</value></month>
+        <month><code>Sep</code><value>09</value></month>
+        <month><code>Oct</code><value>10</value></month>
+        <month><code>Nov</code><value>11</value></month>
+        <month><code>Dec</code><value>12</value></month>
+    </months>
+	<!-- E2B related lookup -->
+	<e2byesnos>
+        <yesno><code>1</code><value>true</value></yesno>
+        <yesno><code>2</code><value>false</value></yesno>
+        <yesno><code>3</code><value>false</value></yesno><!-- 3 is UNKNOWN will be mapped as false -->
+    </e2byesnos>
+    <delayuoms>
+    	<delayuom><code>804</code><value>DAYS</value></delayuom>
+		<delayuom><code>805</code><value>HOURS</value></delayuom>
+		<delayuom><code>806</code><value>MINUTES</value></delayuom>
+	</delayuoms>
+    <uoms>
+    	<uom><code>001</code><value>kg</value></uom>
+		<uom><code>002</code><value>g</value></uom>
+		<uom><code>003</code><value>mg</value></uom>
+		<uom><code>004</code><value>mcg</value></uom>
+		<uom><code>005</code><value>ng</value></uom>
+		<uom><code>006</code><value>pg</value></uom>
+		<uom><code>009</code><value>mg/m 2</value></uom>
+		<uom><code>010</code><value>mg/ m 2</value></uom>
+		<uom><code>011</code><value>l</value></uom>
+		<uom><code>012</code><value>ml</value></uom>
+		<uom><code>013</code><value>mcl</value></uom>
+		<uom><code>014</code><value>Bq</value></uom>
+		<uom><code>015</code><value>GBq</value></uom>
+		<uom><code>016</code><value>MBq</value></uom>
+		<uom><code>017</code><value>Kbq</value></uom>
+		<uom><code>018</code><value>Ci</value></uom>
+		<uom><code>019</code><value>mCi</value></uom>
+		<uom><code>020</code><value>mcCi</value></uom>
+		<uom><code>021</code><value>NCi</value></uom>
+		<uom><code>022</code><value>mol</value></uom>
+		<uom><code>023</code><value>mmol</value></uom>
+		<uom><code>024</code><value>mcmol</value></uom>
+		<uom><code>025</code><value>IU</value></uom>
+		<uom><code>026</code><value>Kiu</value></uom>
+		<uom><code>027</code><value>million iu</value></uom>
+		<uom><code>029</code><value>mEq/L</value></uom>
+		<uom><code>030</code><value>Percent</value></uom>
+		<uom><code>031</code><value>Gtt</value></uom>
+		<uom><code>032</code><value>DF</value></uom>    	
+    </uoms>
+    <adjustments>
+    	<adjustment><code>1</code><value>Discontinue Radiation</value></adjustment>
+    	<adjustment><code>2</code><value>Decrease Total Dose</value></adjustment>
+    	<adjustment><code>4</code><value>Continue Radiation as planned</value></adjustment>
+    </adjustments>
+    <aepresentstatuses>
+    	<presentstatus><code>1</code><value>RECOVERED_WITHOUT_SEQUELAE</value></presentstatus>
+    	<presentstatus><code>2</code><value>RECOVERING</value></presentstatus>
+    	<presentstatus><code>3</code><value>NOT_RECOVERED</value></presentstatus>
+    	<presentstatus><code>4</code><value>RECOVERED_WITH_SEQUELAE</value></presentstatus>
+    	<presentstatus><code>5</code><value>DEAD</value></presentstatus>
+    	<presentstatus><code>6</code><value>INTERVENTION_CONTINUES</value></presentstatus>
+    </aepresentstatuses>
+</lookup>

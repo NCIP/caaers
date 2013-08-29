@@ -183,9 +183,9 @@ public class ObservedAdverseEventProfile extends AbstractMutableDomainObject {
 		if(totalNoOfRegistrations == null || totalNoOfRegistrations == 0){
 			throw new IllegalStateException("totalNoOfRegistrations cannot be null or 0.");
 		}
-		double effectiveExpectedFrequency = expectedFrequency;
-		if(expectedFrequency == null || expectedFrequency == 0.0){
-			effectiveExpectedFrequency = NULL_ZERO_VALUE;
+		double effectiveExpectedFrequency = NULL_ZERO_VALUE;
+		if(expectedFrequency != null && expectedFrequency.doubleValue() == 0.0){
+			effectiveExpectedFrequency = expectedFrequency;
 		}
 		if(observedNoOfAE == null){
 			observedNoOfAE = 0;

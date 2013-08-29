@@ -27,7 +27,11 @@
 	<http:destination
 		name="{http://webservice.caaers.cabig.nci.nih.gov/GenericProcessor/}GenericProcessorSOAP.http-destination">
 	</http:destination>
-
+	
+	<http:conduit name="*.http-conduit">
+    	<http:tlsClientParameters disableCNCheck="true"/>
+  	</http:conduit>
+  	
 	<httpj:engine-factory>
 		<httpj:engine port="8196">
 			<httpj:tlsServerParameters>

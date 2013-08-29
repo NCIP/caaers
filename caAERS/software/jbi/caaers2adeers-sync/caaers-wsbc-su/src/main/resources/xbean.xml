@@ -8,9 +8,11 @@
 	xmlns:aereport="http://schema.integration.caaers.cabig.nci.nih.gov/aereport"
 	xmlns:sec="http://cxf.apache.org/configuration/security" 	
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://servicemix.apache.org/cxfbc/1.0 http://servicemix.apache.org/cxfbc/1.0/servicemix-cxf-bc.xsd
-      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
-         http://servicemix.apache.org/config/1.0 http://servicemix.apache.org/schema/servicemix-core-3.2.xsd">
+    xmlns:http-conf="http://cxf.apache.org/transports/http/configuration"
+    xsi:schemaLocation="http://cxf.apache.org/transports/http/configuration http://cxf.apache.org/schemas/configuration/http-conf.xsd 
+           http://servicemix.apache.org/cxfbc/1.0 http://servicemix.apache.org/cxfbc/1.0/servicemix-cxf-bc.xsd
+      	   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+           http://servicemix.apache.org/config/1.0 http://servicemix.apache.org/schema/servicemix-core-3.2.xsd">
 
     <!-- 
         A provider endpoint is a client side JBI endpoint which can receive requests from the NMR and send
@@ -29,7 +31,7 @@
             schemaValidationEnabled : specifies if the endpoint use schema validation for the incoming/outgoing message
             properties              : sets arbitrary properties that are added to the CXF content at endpoint level
     -->
-		
+    
     <bean id="propertyConfigurer"
           class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="location">
@@ -82,7 +84,8 @@
                     endpoint="AgentManagementWebServiceImplPort"
 			wsdl="classpath:AgentService.wsdl" 
 			locationURI="s[AGENT_WS_BINDING_URL]" useJBIWrapper="false"
-            useSOAPEnvelope="true" schemaValidationEnabled="false">
+            useSOAPEnvelope="true" schemaValidationEnabled="false"
+                    busCfg="s[http.conduit.config]">
 		<cxfbc:inInterceptors>
 		  <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
 		</cxfbc:inInterceptors>
@@ -103,7 +106,8 @@
                     endpoint="ConfigPropertiesWebServiceImplPort"
                     wsdl="classpath:ConfigPropertyService.wsdl"
                     locationURI="s[AGENT_DOSE_UOM_WS_BINDING_URL]" useJBIWrapper="false"
-                    useSOAPEnvelope="true" schemaValidationEnabled="false">
+                    useSOAPEnvelope="true" schemaValidationEnabled="false"
+                    busCfg="s[http.conduit.config]">
         <cxfbc:inInterceptors>
             <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
         </cxfbc:inInterceptors>
@@ -124,7 +128,8 @@
                     endpoint="ASAELWebServicePort"
                     wsdl="classpath:ASAELService.wsdl"
                     locationURI="s[ASAEL_WS_BINDING_URL]" useJBIWrapper="false"
-                    useSOAPEnvelope="true" schemaValidationEnabled="false">
+                    useSOAPEnvelope="true" schemaValidationEnabled="false"
+                    busCfg="s[http.conduit.config]">
         <cxfbc:inInterceptors>
             <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
         </cxfbc:inInterceptors>
@@ -146,7 +151,8 @@
                     endpoint="DevicesWebServicePort"
                     wsdl="classpath:DevicesService.wsdl"
                     locationURI="s[DEVICE_WS_BINDING_URL]" useJBIWrapper="false"
-                    useSOAPEnvelope="true" schemaValidationEnabled="false">
+                    useSOAPEnvelope="true" schemaValidationEnabled="false"
+                    busCfg="s[http.conduit.config]">
         <cxfbc:inInterceptors>
             <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
         </cxfbc:inInterceptors>
@@ -167,7 +173,8 @@
                     endpoint="CtcsWebServicePort"
                     wsdl="classpath:CtcsService.wsdl"
                     locationURI="s[CTC_WS_BINDING_URL]" useJBIWrapper="false"
-                    useSOAPEnvelope="true" schemaValidationEnabled="false">
+                    useSOAPEnvelope="true" schemaValidationEnabled="false"
+                    busCfg="s[http.conduit.config]">
         <cxfbc:inInterceptors>
             <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
         </cxfbc:inInterceptors>
@@ -190,7 +197,8 @@
                     endpoint="OrganizationManagementWebServiceImplPort"
                     wsdl="classpath:OrganizationService.wsdl"
                     locationURI="s[ORGANIZATION_WS_BINDING_URL]" useJBIWrapper="false"
-                    useSOAPEnvelope="true" schemaValidationEnabled="false">
+                    useSOAPEnvelope="true" schemaValidationEnabled="false"
+                    busCfg="s[http.conduit.config]">
         <cxfbc:inInterceptors>
             <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
         </cxfbc:inInterceptors>
@@ -212,7 +220,8 @@
                     endpoint="PreExistingConditionManagementWebServiceImplPort"
                     wsdl="classpath:PreExistingConditionLOVService.wsdl"
                     locationURI="s[PRE_CONDITION_WS_BINDING_URL]" useJBIWrapper="false"
-                    useSOAPEnvelope="true" schemaValidationEnabled="false">
+                    useSOAPEnvelope="true" schemaValidationEnabled="false"
+                    busCfg="s[http.conduit.config]">
         <cxfbc:inInterceptors>
             <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
         </cxfbc:inInterceptors>
@@ -234,7 +243,8 @@
                     endpoint="LabManagementWebServiceImplPort"
                     wsdl="classpath:LabService.wsdl"
                     locationURI="s[LAB_WS_BINDING_URL]" useJBIWrapper="false"
-                    useSOAPEnvelope="true" schemaValidationEnabled="false">
+                    useSOAPEnvelope="true" schemaValidationEnabled="false"
+                    busCfg="s[http.conduit.config]">
         <cxfbc:inInterceptors>
             <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
         </cxfbc:inInterceptors>
@@ -255,7 +265,8 @@
                     endpoint="PriorTherapyManagementWebServiceImplPort"
                     wsdl="classpath:PriorTherapyLOVService.wsdl"
                     locationURI="s[PRIOR_THERAPY_WS_BINDING_URL]" useJBIWrapper="false"
-                    useSOAPEnvelope="true" schemaValidationEnabled="false">
+                    useSOAPEnvelope="true" schemaValidationEnabled="false"
+                    busCfg="s[http.conduit.config]">
         <cxfbc:inInterceptors>
             <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
         </cxfbc:inInterceptors>
@@ -276,7 +287,8 @@
                     endpoint="StudyManagementWebServicePort"
                     wsdl="classpath:StudyService.wsdl"
                     locationURI="s[STUDY_WS_BINDING_URL]" useJBIWrapper="false"
-                    useSOAPEnvelope="true" schemaValidationEnabled="false">
+                    useSOAPEnvelope="true" schemaValidationEnabled="false"
+                    busCfg="s[http.conduit.config]">
         <cxfbc:inInterceptors>
             <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
         </cxfbc:inInterceptors>
@@ -297,7 +309,8 @@
                     endpoint="ParticipantManagementWebServicePort"
                     wsdl="classpath:ParticipantService.wsdl"
                     locationURI="s[PARTICIPANT_WS_BINDING_URL]" useJBIWrapper="false"
-                    useSOAPEnvelope="true" schemaValidationEnabled="false">
+                    useSOAPEnvelope="true" schemaValidationEnabled="false"
+                    busCfg="s[http.conduit.config]">
         <cxfbc:inInterceptors>
             <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
         </cxfbc:inInterceptors>
@@ -318,7 +331,8 @@
                     endpoint="SafetyReportManagementServiceImplPort"
                     wsdl="classpath:SafetyReportService.wsdl"
                     locationURI="s[SAFETYREPORT_WS_BINDING_URL]" useJBIWrapper="false"
-                    useSOAPEnvelope="true" schemaValidationEnabled="false">		
+                    useSOAPEnvelope="true" schemaValidationEnabled="false"
+                    busCfg="s[http.conduit.config]">		
         <cxfbc:inInterceptors>
             <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
         </cxfbc:inInterceptors>
