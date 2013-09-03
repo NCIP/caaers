@@ -78,48 +78,90 @@
 									<xsl:value-of select="/ichicsr/safetyreport/patient/drug[drugcharacterization = '3']/medicinalproduct" />
 								</ae:code>
 							</ae:treatmentAssignment>
-						</ae:adverseEventReportingPeriod>						
-						<ae:physician>
-							<ae:firstName>
-								<xsl:value-of select="/ichicsr/safetyreport/physiciangivename" />
-							</ae:firstName>
-							<ae:lastName>
-								<xsl:value-of select="/ichicsr/safetyreport/physicianfamilyname" />
-							</ae:lastName>
-							<xsl:if test="/ichicsr/safetyreport/physicianmiddlename">
-								<ae:middleName>
-									<xsl:value-of select="/ichicsr/safetyreport/physicianmiddlename" />
-								</ae:middleName>
-							</xsl:if>
-							<xsl:if test="/ichicsr/safetyreport/physicianemail">
-								<ae:contactMechanism>
-									<ae:type>e-mail</ae:type>
-									<ae:value>
-										<xsl:value-of select="/ichicsr/safetyreport/physicianemail" />
-									</ae:value>
-								</ae:contactMechanism>
-							</xsl:if>
-							<xsl:if test="/ichicsr/safetyreport/physicianphone">
-								<ae:contactMechanism>
-									<ae:type>phone</ae:type>
-									<ae:value>
-										<xsl:value-of select="/ichicsr/safetyreport/physicianphone" />
-									</ae:value>
-								</ae:contactMechanism>
-							</xsl:if>
-							<xsl:if test="/ichicsr/safetyreport/physicianfax">
-								<ae:contactMechanism>
-									<ae:type>fax</ae:type>
-									<ae:value>
-										<xsl:value-of select="/ichicsr/safetyreport/physicianfax" />
-									</ae:value>
-								</ae:contactMechanism>
-							</xsl:if>
-						</ae:physician>
+						</ae:adverseEventReportingPeriod>	
+						
+						<xsl:if test="/ichicsr/safetyreport/physiciangivename">
+							<ae:physician>
+								<ae:firstName>
+									<xsl:value-of select="/ichicsr/safetyreport/physiciangivename" />
+								</ae:firstName>
+								<ae:lastName>
+									<xsl:value-of select="/ichicsr/safetyreport/physicianfamilyname" />
+								</ae:lastName>
+								<xsl:if test="/ichicsr/safetyreport/physicianmiddlename">
+									<ae:middleName>
+										<xsl:value-of select="/ichicsr/safetyreport/physicianmiddlename" />
+									</ae:middleName>
+								</xsl:if>
+								<xsl:if test="/ichicsr/safetyreport/physicianemail">
+									<ae:contactMechanism>
+										<ae:type>e-mail</ae:type>
+										<ae:value>
+											<xsl:value-of select="/ichicsr/safetyreport/physicianemail" />
+										</ae:value>
+									</ae:contactMechanism>
+								</xsl:if>
+								<xsl:if test="/ichicsr/safetyreport/physicianphone">
+									<ae:contactMechanism>
+										<ae:type>phone</ae:type>
+										<ae:value>
+											<xsl:value-of select="/ichicsr/safetyreport/physicianphone" />
+										</ae:value>
+									</ae:contactMechanism>
+								</xsl:if>
+								<xsl:if test="/ichicsr/safetyreport/physicianfax">
+									<ae:contactMechanism>
+										<ae:type>fax</ae:type>
+										<ae:value>
+											<xsl:value-of select="/ichicsr/safetyreport/physicianfax" />
+										</ae:value>
+									</ae:contactMechanism>
+								</xsl:if>
+							</ae:physician>
+						</xsl:if>
 
-						<xsl:for-each select="//primarysource">
-							<xsl:call-template name="reporter" />					
-						</xsl:for-each>
+						
+						<xsl:if test="/ichicsr/safetyreport/primarysource/reportergivename">
+							<ae:reporter>
+								<ae:firstName>
+									<xsl:value-of select="/ichicsr/safetyreport/primarysource/reportergivename" />
+								</ae:firstName>
+								<ae:lastName>
+									<xsl:value-of select="/ichicsr/safetyreport/primarysource/reporterfamilyname" />
+								</ae:lastName>
+								<xsl:if test="/ichicsr/safetyreport/primarysource/reportermiddlename">
+									<ae:middleName>
+										<xsl:value-of select="/ichicsr/safetyreport/primarysource/reportermiddlename" />
+									</ae:middleName>
+								</xsl:if>
+								<xsl:if test="/ichicsr/safetyreport/reporteremail">
+									<ae:contactMechanism>
+										<ae:type>e-mail</ae:type>
+										<ae:value>
+											<xsl:value-of select="/ichicsr/safetyreport/reporteremail" />
+										</ae:value>
+									</ae:contactMechanism>
+								</xsl:if>
+								<xsl:if test="/ichicsr/safetyreport/reporterphone">
+									<ae:contactMechanism>
+										<ae:type>phone</ae:type>
+										<ae:value>
+											<xsl:value-of select="/ichicsr/safetyreport/reporterphone" />
+										</ae:value>
+									</ae:contactMechanism>
+								</xsl:if>
+								<xsl:if test="/ichicsr/safetyreport/reporterfax">
+									<ae:contactMechanism>
+										<ae:type>fax</ae:type>
+										<ae:value>
+											<xsl:value-of select="/ichicsr/safetyreport/reporterfax" />
+										</ae:value>
+									</ae:contactMechanism>
+								</xsl:if>
+							</ae:reporter>
+						</xsl:if>	
+					
+						
 						<xsl:if test="/ichicsr/safetyreport/sender/sendergivename">
 							<xsl:call-template name="submitter" />
 						</xsl:if>
@@ -842,47 +884,7 @@
 			</ae:text>
 		</ae:otherCause>
 	</xsl:template>
-
-	<xsl:template name="reporter">
-		<ae:reporter>
-			<ae:firstName>
-				<xsl:value-of select="reportergivename" />
-			</ae:firstName>
-			<ae:lastName>
-				<xsl:value-of select="reporterfamilyname" />
-			</ae:lastName>
-			<xsl:if test="reportermiddlename">
-				<ae:middleName>
-					<xsl:value-of select="reportermiddlename" />
-				</ae:middleName>
-			</xsl:if>
-			<xsl:if test="reporteremail">
-				<ae:contactMechanism>
-					<ae:type>e-mail</ae:type>
-					<ae:value>
-						<xsl:value-of select="reporteremail" />
-					</ae:value>
-				</ae:contactMechanism>
-			</xsl:if>
-			<xsl:if test="reporterphone">
-				<ae:contactMechanism>
-					<ae:type>phone</ae:type>
-					<ae:value>
-						<xsl:value-of select="reporterphone" />
-					</ae:value>
-				</ae:contactMechanism>
-			</xsl:if>
-			<xsl:if test="reporterfax">
-				<ae:contactMechanism>
-					<ae:type>fax</ae:type>
-					<ae:value>
-						<xsl:value-of select="reporterfax" />
-					</ae:value>
-				</ae:contactMechanism>
-			</xsl:if>
-		</ae:reporter>
-	</xsl:template>
-
+	
 	<xsl:template name="submitter">
 		<ae:submitter>
 			<ae:firstName>
@@ -951,6 +953,11 @@
 	<xsl:template name="adverseEvent">
 		<xsl:variable name="adverseEventId" select="aeexternalid" />
 		<ae:adverseEvent>
+			<xsl:if test="primarysourcereaction">
+				<verbatim>
+					<xsl:value-of select="primarysourcereaction" />
+				</verbatim>
+			</xsl:if>
 			<xsl:if test="reactionstartdate">
 				<startDate>
 					<xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">
@@ -975,7 +982,7 @@
 					</xsl:call-template>
 				</ae:isPrimary>
 			</xsl:if>
-
+			
 			<xsl:for-each
 				select="//drug[drugadditional != 'Radiation' and  drugadditional != 'Surgery' and drugadditional != 'Device' and drugcharacterization = '2' and drugreactionrelatedness/drugreactionasses[aeexternalid = $adverseEventId]]">
 				<xsl:call-template name="concomitantMedicationAttributionTemplate">
