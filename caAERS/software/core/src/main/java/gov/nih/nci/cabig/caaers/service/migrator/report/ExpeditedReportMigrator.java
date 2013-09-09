@@ -71,10 +71,18 @@ public class ExpeditedReportMigrator extends CompositeMigrator<ExpeditedAdverseE
        if(src.getReportingPeriod().getTreatmentAssignment() != null && src.getReportingPeriod().getTreatmentAssignment().getCode() != null){
     		StudyParticipantAssignment spa = studyParticipantAssignmentDao.getByStudySubjectIdAndStudyId(src.getReportingPeriod().getAssignment().
     				getStudySubjectIdentifier(),  src.getReportingPeriod().getAssignment().getStudySite().getStudy().getPrimaryIdentifier().getValue());
+    		if(spa == null){
+   			 	outcome.addError("ER-SPA-1", "Didn't find Participant Assignment with the combination of Study identifier: " + src.getReportingPeriod().getAssignment().getStudySite().getStudy().getPrimaryIdentifier().getValue()
+   			 			+ " and Subject identifier: " + src.getReportingPeriod().getAssignment().
+   	    				getStudySubjectIdentifier());
+   	            return;   			
+   		}
     		AdverseEventReportingPeriod arp = spa.findReportingPeriod(null, src.getReportingPeriod().getStartDate(), null, 
     				src.getReportingPeriod().getCycleNumber(), null, src.getReportingPeriod().getTreatmentAssignment().getCode());
     		if(arp == null){
-    			 outcome.addError("ER-RP-1", "Didn't find Reporting period with TAC: ", src.getReportingPeriod().getTreatmentAssignment().getCode());
+    			 outcome.addError("ER-RP-1", "Didn't find Reporting period with TAC: " + src.getReportingPeriod().getTreatmentAssignment().getCode() + 
+    					 src.getReportingPeriod().getStartDate() != null? " Start date of course: " +  src.getReportingPeriod().getStartDate() :"" +
+    							 src.getReportingPeriod().getCycleNumber() != null? " Course number: " +  src.getReportingPeriod().getCycleNumber() :"");
     	            return;
     			
     		}
