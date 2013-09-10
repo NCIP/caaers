@@ -68,7 +68,7 @@ public class SAEReportPreExistingConditionMigrator implements Migrator<Expedited
 
          if(pc == null) return null;
 
-         List<PreExistingCondition> resultLst = getPreExistingConditionDao().searchByExample(pc, false);
+         List<PreExistingCondition> resultLst = getPreExistingConditionDao().searchByExampleIgnoreCase(pc, false);
          if(resultLst == null || resultLst.isEmpty()) {
          	outcome.addError("ER-SPM-1", "Matching preExisting condition is not found for " + pc.getText());
          	return null;

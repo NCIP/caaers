@@ -271,6 +271,26 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
     public List<T> searchByExample(T example) {
         return searchByExample(example, true);
     }
+    
+    /**
+     * This method is to enable the case Insensitive matches.   
+     * @param sample
+     * @param inexactMatches
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public List<T> searchByExampleIgnoreCase(final T sample, final boolean inexactMatches) {
+        return (List<T>) getHibernateTemplate().execute(new HibernateCallback() {
+            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+            	 Example example = Example.create(sample).ignoreCase().excludeZeroes();
+                 if (inexactMatches) {
+                     example.ignoreCase().enableLike(MatchMode.ANYWHERE);
+                 }
+
+                 return session.createCriteria(domainClass()).add(example).list();
+            }
+        });
+    }
 
     /**
      * Helper for DAOs which support domain classes with multiple identifiers.
