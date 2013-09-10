@@ -83,7 +83,7 @@ public class LabMigrator implements Migrator<ExpeditedAdverseEventReport> {
      */
     private LabTerm findLabTerm(LabTerm labTerm, DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome) {        
         
-        List<LabTerm> resultLst = labTermDao.searchByExample(labTerm, false);
+        List<LabTerm> resultLst = labTermDao.searchByExampleIgnoreCase(labTerm, false);
         if(resultLst == null || resultLst.isEmpty()) {
         	outcome.addError("ER-LM-1", "Matching lab term is not found for " + labTerm.getTerm());
         	return null;

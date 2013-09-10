@@ -82,7 +82,7 @@ public class SurgeryInterventionMigrator implements Migrator<ExpeditedAdverseEve
      */
     private InterventionSite findInterventionSite(InterventionSite site, DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome) {
                       
-           List<InterventionSite> resultLst = interventionSiteDao.searchByExample(site, false);
+           List<InterventionSite> resultLst = interventionSiteDao.searchByExampleIgnoreCase(site, false);
            if(resultLst == null || resultLst.isEmpty()) {
            	outcome.addError("ER-SIM-3", "Matching surgery intervention site is not found for " + site.getName());
            	return null;

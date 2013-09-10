@@ -95,7 +95,7 @@ public class SAEReportPriorTherapyMigrator implements Migrator<ExpeditedAdverseE
      */
     private PriorTherapy findPriorTherapy(PriorTherapy pt, DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome) {
                 
-        List<PriorTherapy> resultLst = priorTherapyDao.searchByExample(pt, false);
+        List<PriorTherapy> resultLst = priorTherapyDao.searchByExampleIgnoreCase(pt, false);
         if(resultLst == null || resultLst.isEmpty()) {
         	outcome.addError("ER-SPT-1", "Matching prior therapy is not found for " + pt.getText() );
         	return null;
