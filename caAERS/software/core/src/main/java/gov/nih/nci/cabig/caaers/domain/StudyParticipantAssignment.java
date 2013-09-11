@@ -768,15 +768,15 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 
     public AdverseEventReportingPeriod findReportingPeriod(String externalId, Date startDate, Date endDate, Integer cycleNumber, String epochName, String tac){
         for (AdverseEventReportingPeriod p : getActiveReportingPeriods()) {
-            if(externalId != null && StringUtils.equals(externalId, p.getExternalId())) return p; //special case, when external ID is the same.
+            if(externalId != null && StringUtils.equalsIgnoreCase(externalId, p.getExternalId())) return p; //special case, when external ID is the same.
 
             //check other attributes to find a match.
             if(startDate != null && (p.getStartDate() == null || DateUtils.compareDate(startDate, p.getStartDate()) != 0) )continue;
             if(endDate != null && (p.getEndDate() == null || DateUtils.compareDate(endDate, p.getEndDate()) != 0) ) continue;
             if(cycleNumber != null && (p.getCycleNumber() == null || p.getCycleNumber() != cycleNumber) ) continue;
-            if(epochName != null && (p.getEpoch() == null || !StringUtils.equals(p.getEpoch().getName(), epochName)) ) continue;
+            if(epochName != null && (p.getEpoch() == null || !StringUtils.equalsIgnoreCase(p.getEpoch().getName(), epochName)) ) continue;
             String currentTac = p.getTreatmentAssignment() != null ? p.getTreatmentAssignment().getCode() : p.getTreatmentAssignmentDescription();
-            if(tac != null && (currentTac == null || !StringUtils.equals(currentTac, tac)) ) continue;
+            if(tac != null && (currentTac == null || !StringUtils.equalsIgnoreCase(currentTac, tac)) ) continue;
             return p;
         }
         return null;

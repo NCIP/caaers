@@ -65,25 +65,14 @@ public class RadiationInterventionMigrator implements Migrator<ExpeditedAdverseE
      * @param dest
      */
 	private void copyRadiationInterventionDetails(RadiationIntervention src, RadiationIntervention dest) {
-
-		if (src.getAdministration() != null)
-		    dest.setAdministration(src.getAdministration());
-        if (src.getLastTreatmentDate() != null)
-		    dest.setLastTreatmentDate(src.getLastTreatmentDate());
-        if (src.getFractionNumber() != null)
-		    dest.setFractionNumber(src.getFractionNumber());
-        if (src.getDosageUnit() != null)
-		    dest.setDosageUnit(src.getDosageUnit());
-        if (src.getDosage() != null)
-		    dest.setDosage(src.getDosage());
-        if (src.getDaysElapsed() != null)
-		    dest.setDaysElapsed(src.getDaysElapsed());
-        if (src.getAdjustment() != null)
-		    dest.setAdjustment(src.getAdjustment());
-        if (src.getDescription() != null)
-		    dest.setDescription(src.getDescription());
-        if (src.getTreatmentArm() != null)
-		    dest.setTreatmentArm(src.getTreatmentArm());
-		
+		dest.setAdministration(src.getAdministration());
+        dest.setLastTreatmentDate(src.getLastTreatmentDate());
+		dest.setFractionNumber(src.getFractionNumber());
+		dest.setDosageUnit(src.getDosageUnit());
+		dest.setDosage(src.getDosage());
+		dest.setDaysElapsed(src.getDaysElapsed());
+		dest.setAdjustment(src.getAdjustment());
+		dest.setDescription(src.getDescription());
+		dest.setTreatmentArm(src.getTreatmentArm());
 	}
 }

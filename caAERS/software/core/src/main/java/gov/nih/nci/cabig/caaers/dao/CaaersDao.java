@@ -315,6 +315,30 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
                             }
                         }));
     }
+    
+    /**
+     * Helper for DAOs which support domain classes with multiple identifiers.
+     */
+    @SuppressWarnings("unchecked")
+    protected T findByIgnoreCaseIdentifier(final Identifier identifier) {
+        return (T) CollectionUtils.firstElement(getHibernateTemplate().executeFind(
+                        new HibernateCallback() {
+                            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+                                Criteria criteria = session.createCriteria(domainClass())
+                                                .createCriteria("identifiers");
+
+                                if (identifier.getType() != null) {
+                                    criteria.add(Restrictions.eq("type", identifier.getType()));
+                                }
+
+                                if (identifier.getValue() != null) {
+                                    criteria.add(Restrictions.eq("value", identifier.getValue()).ignoreCase());
+                                }
+
+                                return criteria.list();
+                            }
+                        }));
+    }
 
     /**
      * This method will reassociate the domain object to hibernate session. With a lock mode none.

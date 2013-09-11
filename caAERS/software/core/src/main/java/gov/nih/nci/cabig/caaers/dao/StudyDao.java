@@ -270,6 +270,17 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
     public Study getByIdentifier(final Identifier identifier) {
         return findByIdentifier(identifier);
     }
+    
+    /**
+     * Gets the study by id. This initializes the study and loads all
+     * the objects.
+     *
+     * @param id the id.
+     * @return the study by id.
+     */
+    public Study getByIgnoreCaseIdentifier(final Identifier identifier) {
+        return findByIgnoreCaseIdentifier(identifier);
+    }
 
     /**
      * This will do an exact match on the <code>shortTitle</code>, and will return the first available Study. Note:- Biz rule should be

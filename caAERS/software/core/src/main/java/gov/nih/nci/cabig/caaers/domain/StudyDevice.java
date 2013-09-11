@@ -405,9 +405,9 @@ public class StudyDevice extends StudyIntervention {
     }
 
     public boolean isHavingSameNameAndType(String commonName, String brandName, String deviceType){
-        if(StringUtils.equals(commonName,  getCommonName()) &&
-                StringUtils.equals(brandName, getBrandName()) &&
-                StringUtils.equals(deviceType,  getDeviceType())) return true;
+        if(StringUtils.equalsIgnoreCase(commonName,  getCommonName()) &&
+                StringUtils.equalsIgnoreCase(brandName, getBrandName()) &&
+                StringUtils.equalsIgnoreCase(deviceType,  getDeviceType())) return true;
 
         return false;
 

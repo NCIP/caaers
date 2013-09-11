@@ -112,7 +112,8 @@ public class ExpeditedAdverseEventReportDao extends
 
 
     public ExpeditedAdverseEventReport getByExternalId(String gridId) {
+    	gridId = gridId.toLowerCase();
         Object[] params = { gridId };
-        return (ExpeditedAdverseEventReport)CollectionUtils.firstElement(getHibernateTemplate().find("from ExpeditedAdverseEventReport aer where aer.externalId = ?", params));
+        return (ExpeditedAdverseEventReport)CollectionUtils.firstElement(getHibernateTemplate().find("from ExpeditedAdverseEventReport aer where lower(aer.externalId) = ?", params));
     }
 }
