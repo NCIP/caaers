@@ -96,8 +96,11 @@ public class StudyParticipantAssignmentDao extends GridIdentifiableDao<StudyPart
      */
     @SuppressWarnings("unchecked")
 	public StudyParticipantAssignment getByStudySubjectIdAndStudyId(String studySubjectId, String studyId) {
+    	studySubjectId = studySubjectId.toLowerCase();
+    	studyId = studyId.toLowerCase();
+    	
     	return CollectionUtils.firstElement((List<StudyParticipantAssignment>) getHibernateTemplate().find("Select a from StudyParticipantAssignment a, Identifier i where " +
-    			"a.studySubjectIdentifier = ? and i = any elements (a.studySite.study.identifiers) and i.value = ? " +
+    			"lower(a.studySubjectIdentifier) = ? and i = any elements (a.studySite.study.identifiers) and lower(i.value) = ? " +
         		"and i.type like 'Protocol Authority Identifier'", new Object[]{studySubjectId,studyId}));
     }
     
