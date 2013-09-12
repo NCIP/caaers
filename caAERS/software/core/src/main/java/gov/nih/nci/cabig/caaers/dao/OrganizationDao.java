@@ -136,7 +136,7 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
      */
     @SuppressWarnings("unchecked")
 	public Organization getByNCIcode(final String code) {
-        List<Organization> results = getHibernateTemplate().find("from Organization where nci_institute_code = ?",code);
+        List<Organization> results = getHibernateTemplate().find("from Organization where lower(nci_institute_code) = ?",code.toLowerCase());
         if (results != null && !results.isEmpty()) {
         	return results.get(0);
         }
