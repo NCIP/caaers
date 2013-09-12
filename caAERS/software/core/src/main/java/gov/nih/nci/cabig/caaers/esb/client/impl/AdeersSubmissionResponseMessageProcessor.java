@@ -103,7 +103,8 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
             }
             
             if (jobInfo.getChild("comments") != null) {
-           	 String commentsMessage = messageSource.getMessage("comments.reportSubmission.message", new Object[]{jobInfo.getChild("comments").getValue()}, Locale.getDefault());
+           	 	String commentsMessage = messageSource.getMessage("comments.reportSubmission.message", new Object[]{jobInfo.getChild("comments").getValue()}, Locale.getDefault());
+           	 	sb.append("\n"); // Move comments section to NextLine.
                 sb.append(commentsMessage);
             }
 
