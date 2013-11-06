@@ -95,7 +95,7 @@ public class AdeersReportGenerator extends BasePDFGenerator {
     
     public String generateE2BXml(String adverseEventReportXml) throws Exception {
     	XsltTransformer xsltTrans = new XsltTransformer();
-        return xsltTrans.toText(adverseEventReportXml, xslFOMedWatchXsltFile);
+        return xsltTrans.toText(adverseEventReportXml, xslE2BXsltFile);
     }
     
     /**

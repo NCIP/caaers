@@ -33,6 +33,8 @@ import javax.xml.transform.stream.StreamSource;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
 import gov.nih.nci.cabig.caaers.service.workflow.WorkflowService;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -188,7 +190,7 @@ public class GenerateExpeditedPdfController extends AbstractCommandController {
                    	String resultXml = adeersReportGenerator.generateE2BXml(xml);
                     
                     // Write the E2B contents to the output file.
-                	String xmlOutFile = "E2BReport" + report.getCaseNumber() != null ? "-" + report.getCaseNumber() : "" + "-" + reportVersionId  + ".xml";
+                	String xmlOutFile = "E2BReport" + (StringUtils.isNotEmpty(report.getCaseNumber()) ? ("-" + report.getCaseNumber()) : "" ) + "-" + reportVersionId  + ".xml";
 	    			BufferedWriter outw = new BufferedWriter(new FileWriter(tempDir+File.separator+xmlOutFile));
 	    			outw.write(resultXml);
 	    			outw.close();
