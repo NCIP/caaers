@@ -234,7 +234,7 @@
 				<primaryaeflag>1</primaryaeflag>
 			</xsl:when>
 			<xsl:otherwise>
-				<primaryaeflag>0</primaryaeflag>
+				<primaryaeflag>2</primaryaeflag>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
