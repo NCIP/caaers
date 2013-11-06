@@ -24,6 +24,11 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamSource;
 
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
 import gov.nih.nci.cabig.caaers.service.workflow.WorkflowService;
@@ -34,6 +39,7 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractCommandController;
+import org.springframework.xml.transform.StringResult;
 
 public class GenerateExpeditedPdfController extends AbstractCommandController {
 
@@ -177,7 +183,19 @@ public class GenerateExpeditedPdfController extends AbstractCommandController {
                     adeersReportGenerator.generateCustomPDF(xml, tempDir + File.separator + customPDFFile);
                     generateOutput(customPDFFile, response, aeReportId);
                     
-                } else  {
+                } else if (format.equals("e2b")) {
+                		
+                   	String resultXml = adeersReportGenerator.generateE2BXml(xml);
+                    
+                    // Write the E2B contents to the output file.
+                	String xmlOutFile = "E2BReport" + report.getCaseNumber() != null ? "-" + report.getCaseNumber() : "" + "-" + reportVersionId  + ".xml";
+	    			BufferedWriter outw = new BufferedWriter(new FileWriter(tempDir+File.separator+xmlOutFile));
+	    			outw.write(resultXml);
+	    			outw.close();
+	    			generateOutput(xmlOutFile,response,aeReportId);
+                	
+                }	else  {
+                
 	    			String xmlOutFile = "expeditedAdverseEventReport-" + reportVersionId + ".xml";
 	    			BufferedWriter outw = new BufferedWriter(new FileWriter(tempDir+File.separator+xmlOutFile));
 	    			outw.write(xml);

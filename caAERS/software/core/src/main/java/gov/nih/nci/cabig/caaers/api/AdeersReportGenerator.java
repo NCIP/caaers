@@ -37,6 +37,7 @@ public class AdeersReportGenerator extends BasePDFGenerator {
     private String xslFOCIOMSTypeFormXsltFile = "xslt/Caaers2CIOMS-pdf-TypeForm.xslt";
     private String xslFOCIOMSXsltFile = "xslt/Caaers2CIOMS-pdf.xslt";
     private String xslFOCustomXsltFile = "xslt/CaaersCustom.xslt";
+    private String xslE2BXsltFile = "xslt/CaaersToE2b.xslt";
 //    private String xslFOCustomXsltFile = "/SB/caAERS/trunk/caAERS/software/core/src/main/resources/xslt/CaaersCustom.xslt";
 
     protected  AdverseEventReportSerializer adverseEventReportSerializer;
@@ -90,6 +91,11 @@ public class AdeersReportGenerator extends BasePDFGenerator {
     public void generateMedwatchPdf(String adverseEventReportXml, String pdfOutFileName) throws Exception {
         XsltTransformer xsltTrans = new XsltTransformer();
         xsltTrans.toPdf(adverseEventReportXml, pdfOutFileName, xslFOMedWatchXsltFile);
+    }
+    
+    public String generateE2BXml(String adverseEventReportXml) throws Exception {
+    	XsltTransformer xsltTrans = new XsltTransformer();
+        return xsltTrans.toText(adverseEventReportXml, xslFOMedWatchXsltFile);
     }
     
     /**
@@ -168,6 +174,9 @@ public class AdeersReportGenerator extends BasePDFGenerator {
 			case CUSTOM_REPORT:
 				xslTFile = xslFOCustomXsltFile;
 				break;
+			case E2BXML:
+				xslTFile = xslE2BXsltFile;
+				
 			default: //adders
 				xslTFile = xslFOXsltFile;
 				break;

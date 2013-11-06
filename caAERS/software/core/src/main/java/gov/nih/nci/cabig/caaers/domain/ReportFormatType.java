@@ -37,7 +37,10 @@ public enum ReportFormatType implements CodedEnum<Integer> {
     CIOMSSAEFORM(6, "CIOMS SAE Form"),
     
     /** The CUSTO m_ report. */
-    CUSTOM_REPORT(7, "caAERS Custom Report PDF");
+    CUSTOM_REPORT(7, "caAERS Custom Report PDF"),
+    
+    /** E2B Format */
+    E2BXML(8, "E2B XML");
 
     /** The code. */
     private int code;
