@@ -15,18 +15,26 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+
+import org.apache.commons.configuration.PropertiesConfiguration;
+
 import java.io.*;
+import java.util.Properties;
 
 public abstract class AdeersIntegrationTestCase extends TestCase{
-	private String adeersWebServiceAddress = "https://betapps-ctep.nci.nih.gov/adeerswsbeta/services/AEReportXMLService";
-   	private String adeersUserName = "iaminternal";
-   	private String adeersPassword = "ecmwsdev_1";
+	private String adeersWebServiceAddress = "";
+   	private String adeersUserName = "";
+   	private String adeersPassword = "";
 	private String caaersAdeersXslt = "caaers-adeers-xslt-su/src/main/resources/adeers-transformer.xsl";
 //	private String trustStore = "caaers-adeers-webservice-su/src/main/resources/caAERs-AdEERS";
 
 	@Override
 	public void setUp() throws Exception{
 		super.setUp();
+		PropertiesConfiguration testprops = new PropertiesConfiguration("test-caaers-adeers-ws-su.properties");
+		adeersWebServiceAddress = (String) testprops.getProperty("adeers.report.service.url");
+		adeersUserName= (String) testprops.getProperty("adeers.username");
+		adeersPassword= (String) testprops.getProperty("adeers.password");
 	}
 	protected void displayErrors(Error[] errors) {
        if (errors != null ) {

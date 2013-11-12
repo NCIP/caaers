@@ -41,7 +41,23 @@
     </repository>
   </repositories>
   <build>
-    <defaultGoal>install</defaultGoal>
+    <defaultGoal>install</defaultGoal>		
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<filtering>false</filtering>
+				<excludes>
+					<exclude>caxchange.properties</exclude>
+				</excludes>
+			</testResource>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>caxchange.properties</include>
+				</includes>
+			</testResource>
+		</testResources>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
