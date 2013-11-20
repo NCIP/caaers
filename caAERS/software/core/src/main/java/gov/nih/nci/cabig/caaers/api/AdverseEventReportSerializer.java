@@ -322,7 +322,8 @@ public class AdverseEventReportSerializer {
 		   Report r = new Report();
 		   r.setId(report.getId());
 		   r.setSubmissionMessage(report.getSubmissionMessage());
-           r.setSubmittedOn(report.getSubmittedOn());
+           r.setSubmittedOn(report.getSubmittedOn());           
+           r.setSubmitter(getSubmitter(report.getSubmitter()));
            r.setStatus(report.getStatus());
 		   r.setAdeersReportTypeIndicator(report.deriveAdeersReportTypeIndicator());
 		   r.setAssignedIdentifer(report.getAssignedIdentifer());
@@ -335,7 +336,6 @@ public class AdverseEventReportSerializer {
                 r.addReportDelivery(ReportDelivery.copy(rd));
               } 
            }
-
 
            // determine the FDA delivery
            if (report.getReportDefinition().getGroup().getCode().equals("RT_FDA")) {
@@ -626,6 +626,24 @@ public class AdverseEventReportSerializer {
 	    	}
 
 	    	return reviewer;
+	    }
+	    
+	    private Submitter getSubmitter(Submitter sbmtr) throws Exception {
+	    	Submitter submitter = new Submitter();
+	    	if(sbmtr == null) return submitter;
+	    	try {
+	    		submitter.setFirstName(sbmtr.getFirstName());
+	    		submitter.setLastName(sbmtr.getLastName());
+	    		submitter.setMiddleName(sbmtr.getMiddleName());
+	    		submitter.setTitle(sbmtr.getTitle());
+	    		submitter.setAddress(sbmtr.getAddress());
+	    		submitter.setContactMechanisms(sbmtr.getContactMechanisms());
+	    	} catch (Exception e) {
+	    		throw new Exception ("Error building getSubmitter() "+e.getMessage() , e);
+	    	}
+
+
+	    	return submitter;
 	    }
 
 	    private ParticipantHistory getParticipantHistory(ParticipantHistory ph) throws Exception {

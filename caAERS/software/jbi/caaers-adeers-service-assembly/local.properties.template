@@ -1,0 +1,5 @@
+## Local build properties
+adeers.username=<your adeers username>
+adeers.password=<your adeers password>
+
+adeers.report.service.url=<your adeers report service url>

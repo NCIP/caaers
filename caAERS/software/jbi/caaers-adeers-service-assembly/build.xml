@@ -32,9 +32,8 @@
     <property name="jms.comp.build.dir" value="${comp.build.dir}/jms"/>
 	<property name="junit.results.dir" value="${build.dir}/test-result"/>
 	<property name="test.src.dir" value="${basedir}/caaers-adeers-webservice-su/src/test/java"/>
+	<property name="test.resources.dir" value="${basedir}/caaers-adeers-webservice-su/src/test/resources"/>
 	<property name="tests.jar" value="caaers-adeers-sa-tests.jar"/>
-	
-	
 
     <property name="servicemix.toolkit.dir" value="${env.SERVICEMIX_HOME}"/>
 
@@ -45,6 +44,7 @@
     <property name="src.resources.dir" value="src/main/resources"/>
     <property name="src.java.dir" value="src/main/java"/>
     <property name="sa.dir" value="caaers-adeers-sa"/>
+
 
     <path id="build.classpath">
         <pathelement path="${servicemix.toolkit.dir}/conf"/>
@@ -199,8 +199,17 @@
 	<target name="jarTests" depends="compileTests">
 		<mkdir dir="${build.dir}/test-jar" />
         <copy todir="${build.dir}/test-classes" file="caaers-adeers-xslt-su/src/main/resources/adeers-transformer.xsl">
-            <fileset dir="caaers-adeers-webservice-su/src/test/resources"/>
         </copy>
+		
+		<copy toDir="${build.dir}/test-classes">
+		  <fileset dir="${test.resources.dir}">
+		    <include name="**/*"/>
+		  </fileset>
+		  <filterset begintoken="~" endtoken="~">
+		    <filtersfile file="local.properties"/>
+		  </filterset>
+		</copy>
+		
 		<jar jarfile="${build.dir}/test-jar/${tests.jar}" basedir="${build.dir}/test-classes"/>
 	</target>	
 
