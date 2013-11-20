@@ -276,6 +276,15 @@ public class ReportRepositoryImpl implements ReportRepository {
     	
     	return instantiatedReports;
     }
+    
+    public List<ReportDefinition> getChildReports(Report report) {
+    	
+    	ReportDefinitionQuery query = new ReportDefinitionQuery();
+    	query.filterByParent(report.getReportDefinition().getId());
+    	List<ReportDefinition> rdChildren = (List<ReportDefinition>) reportDefinitionDao.search(query);
+    	
+    	return rdChildren;  	
+    }
 
 
     

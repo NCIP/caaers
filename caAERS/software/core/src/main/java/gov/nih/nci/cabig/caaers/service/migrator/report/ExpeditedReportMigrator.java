@@ -65,6 +65,10 @@ public class ExpeditedReportMigrator extends CompositeMigrator<ExpeditedAdverseE
     public void preMigrate(ExpeditedAdverseEventReport src, ExpeditedAdverseEventReport dest, DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome) {
     	
 	   if(src.getInvestigationalDeviceAdministered() != null) dest.setInvestigationalDeviceAdministered(src.getInvestigationalDeviceAdministered());
+	   
+       //Copy the External Id.
+       dest.setExternalId(src.getExternalId());
+       
        //set the created date is not present and is available in the source
        if(dest.getCreatedAt() == null && src.getCreatedAt() != null) dest.setCreatedAt(src.getCreatedAt());
 
@@ -150,6 +154,8 @@ public class ExpeditedReportMigrator extends CompositeMigrator<ExpeditedAdverseE
             return;
         }
         dest.setReportingPeriod(rpFound);
+        
+
     }
 
 }

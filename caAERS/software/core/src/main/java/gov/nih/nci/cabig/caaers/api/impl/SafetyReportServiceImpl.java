@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.domain.validation.ExpeditedAdverseEventReportValidator;
 import gov.nih.nci.cabig.caaers.event.EventFactory;
@@ -26,6 +27,7 @@ import gov.nih.nci.cabig.caaers.service.migrator.report.ExpeditedReportMigrator;
 import gov.nih.nci.cabig.caaers.service.synchronizer.report.ExpeditedAdverseEventReportSynchronizer;
 import gov.nih.nci.cabig.caaers.validation.ValidationError;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.MessageSource;
@@ -267,24 +269,59 @@ public class SafetyReportServiceImpl {
                 withdrawReport(srcReport, dbReport);
             }
         } else {
-            //create amend or withdraw reports
-            for(Report srcReport : aeDestReport.getReports()){
-                List<Report> reportsToAmend = dbReport.findReportsToAmmend(srcReport.getReportDefinition());
-                for(Report  report: reportsToAmend){
-                	amendReport(report, dbReport);
-                    reportsAffected.add(createReport(srcReport, dbReport));
-                }
-                List<Report> reportsToWithdraw = dbReport.findReportsToWithdraw(srcReport.getReportDefinition());
-                for(Report  report: reportsToWithdraw){
-                    withdrawReport(report, dbReport);
-                }
-                List<Report> reportsToEdit = dbReport.findReportsToEdit(srcReport.getReportDefinition());
-                if(reportsToEdit.isEmpty()) {
-                    reportsAffected.add(createReport(srcReport, dbReport));
-                }
-
-                //TODO : BJ implement unammend feature
-            }
+        
+        	// Find a relationship between parent and child exists. check if the parent report is already submitted.
+        	Report parentCompletedReport = null;
+        	
+            for(Report srcReport : dbReport.getReports()){
+        		 if (srcReport.getStatus().equals(ReportStatus.COMPLETED) && srcReport.getReportDefinition().getName().equals(aeSrcReport.getReports().get(0).getReportDefinition().getName())) {
+        			 // Check if the child record exists.
+        			 parentCompletedReport = srcReport;
+        		 }
+        	 }
+        	 
+        	 
+        	 if ( parentCompletedReport != null ) {
+        		 for(Report srcReport : dbReport.getReports()){
+        			 if ( ! ( srcReport.getStatus().equals(ReportStatus.INPROCESS) || srcReport.getStatus().equals(ReportStatus.PENDING) )) continue; // If the Report is completed then skip it.
+        			 ReportDefinition parentReportDef = srcReport.getReportDefinition().getParent();
+        			 if (parentReportDef != null && parentReportDef.getName().equals(parentCompletedReport.getName()) ) {
+        				 
+        				 // Override the Report Definition of the Source to Child since child Report is active.
+        				 
+        				 if ( aeDestReport.getReports().size() != 0 ) {
+                			 aeDestReport.getReports().get(0).setReportDefinition(srcReport.getReportDefinition());
+        				 }
+        				 
+        			 }
+        		 }
+        	 }
+        	        
+	            //create amend or withdraw reports
+	        for(Report srcReport : aeDestReport.getReports()){
+	                List<Report> reportsToAmend = dbReport.findReportsToAmmend(srcReport.getReportDefinition());
+	                for(Report  report: reportsToAmend){
+	                	amendReport(report, dbReport);
+	                    //reportsAffected.add(createReport(srcReport, dbReport));
+	                }
+	                List<Report> reportsToWithdraw = dbReport.findReportsToWithdraw(srcReport.getReportDefinition());
+	                for(Report  report: reportsToWithdraw){
+	                    withdrawReport(report, dbReport);
+	                }
+	                List<Report> reportsToEdit = dbReport.findReportsToEdit(srcReport.getReportDefinition());
+	                if(reportsToEdit.isEmpty()) {
+	                    reportsAffected.add(createReport(srcReport, dbReport));
+	                } else {
+	                	for(Report  report: reportsToEdit){
+	                		reportsAffected.add(report);
+	                		// Copy the Submitter Information from the Input Source.
+	                		report.setSubmitter(srcReport.getSubmitter());
+		                }
+	                	
+	                }
+	
+	                //TODO : BJ implement unammend feature
+	            }
         }
 
         if(getEventFactory() != null) getEventFactory().publishEntityModifiedEvent(aeDestReport);
@@ -408,6 +445,7 @@ public class SafetyReportServiceImpl {
                //create flow
                 reportsAffected.addAll(createSafetyReport(aeSrcReport, new ExpeditedAdverseEventReport(), errors));
            }else{
+        	   
                //update flow
                reportsAffected.addAll(updateSafetyReport(aeSrcReport, dbAeReport, errors));
            }

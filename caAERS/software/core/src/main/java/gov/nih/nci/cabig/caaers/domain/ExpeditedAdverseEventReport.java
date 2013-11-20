@@ -375,7 +375,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     public List<AdverseEvent> getActiveAdverseEvents(){
     	List<AdverseEvent> activeEvents = new ArrayList<AdverseEvent>();
     	for(AdverseEvent ae: getAdverseEvents()){
-    		if(ae.isRetired()) continue;
+    		if(ae == null || ae.isRetired()) continue;
     		activeEvents.add(ae);
     	}
     	return activeEvents;

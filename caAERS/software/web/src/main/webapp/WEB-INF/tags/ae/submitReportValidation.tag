@@ -148,6 +148,8 @@
 	                    <%--<c:if test="${command.study.caaersXMLType}">--%>
 	                        <li><a href="#" onclick="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=xml'/>','_self')"><img src="<chrome:imageUrl name="../blue/xml-icon.png"/>" alt=""/> Export caAERS XML</a></li>
 	                    	<c:set var="exportOptionsCount" value="${exportOptionsCount + 1}"/>
+	                    	<li><a href="#" onclick="javascript:window.open('<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}&reportId=${report.id}&format=e2b'/>','_self')"><img src="<chrome:imageUrl name="../blue/xml-icon.png"/>" alt=""/> Export E2B</a></li>
+	                    	<c:set var="exportOptionsCount" value="${exportOptionsCount + 1}"/>
 <%--
 						</c:if>
 	                    <c:if test="${command.study.adeersPDFType}">
