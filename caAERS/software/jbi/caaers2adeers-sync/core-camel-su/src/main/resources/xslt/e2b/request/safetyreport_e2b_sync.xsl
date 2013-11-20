@@ -198,7 +198,7 @@
 							</xsl:for-each>
 						</ae:diseaseHistory>
 						<xsl:call-template name="participantHistory"
-							select="/ichicsr/safetyreport/patient" />
+/>
 						<!--Zero or more repetitions: -->
 						<xsl:for-each select="//drug[drugadditional = 'Radiation']">
 							<xsl:call-template name="radiationIntervention" />
@@ -931,7 +931,7 @@
 					<ae:quantity>
 						<xsl:value-of select="/ichicsr/safetyreport/patient/patientweight" />
 					</ae:quantity>
-					<ae:unit>kg</ae:unit>
+					<ae:unit>kilogram</ae:unit>
 				</ae:weight>
 			</xsl:if>
 			<!--Optional: -->
@@ -940,12 +940,16 @@
 					<ae:quantity>
 						<xsl:value-of select="/ichicsr/safetyreport/patient/patientheight" />
 					</ae:quantity>
-					<ae:unit>cm</ae:unit>
+					<ae:unit>centimeter</ae:unit>
 				</ae:height>
 			</xsl:if>
 			<!--Optional: -->
 			<ae:baselinePerformanceStatus>
-				<xsl:value-of select="/ichicsr/safetyreport/patient/baselinestatus" />
+				<xsl:call-template name="lookup">
+					<xsl:with-param name="_map" select="$map//baselinestatuses" />
+					<xsl:with-param name="_code"
+							select='/ichicsr/safetyreport/patient/baselinestatus' />
+				</xsl:call-template>
 			</ae:baselinePerformanceStatus>
 		</ae:participantHistory>
 	</xsl:template>
