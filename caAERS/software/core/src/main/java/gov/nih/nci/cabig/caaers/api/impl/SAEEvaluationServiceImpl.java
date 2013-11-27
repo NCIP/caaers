@@ -455,7 +455,7 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
             if ( aeReportId == 0 )  continue;
 
             for (  ReportTableRow row : recommendedReportTableMap.get(aeReportId)) {
-                if ( row.getReportDefinition().getName().equals(ignoredRow.getReportDefinition().getName()) && row.getAction().getDisplayName().equals("Edit")) {
+                if (  (recommendedReportTableMap.size() == 2) && row.getAction().getDisplayName().equals("Edit")) { // Condition will Evaluate 
                     isFound = true;
                     break;
                 }
