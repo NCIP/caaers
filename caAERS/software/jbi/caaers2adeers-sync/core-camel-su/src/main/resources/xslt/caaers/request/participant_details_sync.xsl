@@ -54,8 +54,10 @@
 								</xsl:call-template>
 							</gender>
 							<race>
-								<xsl:value-of
-									select='ODM/ClinicalData/SubjectData/StudyEventData[@StudyEventOID="ENROLLMENT_FORMS"]/FormData[@FormOID="DEMOGRAPHY"]/ItemGroupData[@ItemGroupOID="DEMOGRAPHY"]/ItemData [@ItemOID="RACE_CAT_TXT"]/@Value' />
+								<xsl:call-template name="lookup">
+									<xsl:with-param name="_map" select="$map//races" />
+									<xsl:with-param name="_code" select='ODM/ClinicalData/SubjectData/StudyEventData[@StudyEventOID="ENROLLMENT_FORMS"]/FormData[@FormOID="DEMOGRAPHY"]/ItemGroupData[@ItemGroupOID="DEMOGRAPHY"]/ItemData [@ItemOID="RACE_CAT_TXT"]/@Value' />
+								</xsl:call-template>
 							</race>
 							<ethnicity>
 								<xsl:value-of
