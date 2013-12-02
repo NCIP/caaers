@@ -7,12 +7,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import static gov.nih.nci.cabig.caaers.web.fields.InputField.Category.TEXT;
-
-import java.util.Map;
-
-import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.ReportPerson;
-import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.validation.fields.validators.FieldValidator;
 import gov.nih.nci.cabig.caaers.validation.fields.validators.TextSizeValidator;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
@@ -24,8 +19,6 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.validation.Errors;
 
 /**
  * @author Kulasekaran
@@ -73,13 +66,13 @@ public class SubmitterTab extends TabWithFields<SubmitExpeditedAdverseEventComma
         String propertyName = base + "contactMechanisms[" + contactType + "]";
         FieldValidator validators[] = null;
        if (required) {
-           validators = new TextSizeValidator[]{(TextSizeValidator)FieldValidator.NOT_NULL_VALIDATOR, new TextSizeValidator(20)};
+           validators = new FieldValidator[]{FieldValidator.NOT_NULL_VALIDATOR, new TextSizeValidator(20)};
        } else {
-       	 validators = new TextSizeValidator[]{new TextSizeValidator(20)};
+       	 validators = new FieldValidator[]{new TextSizeValidator(20)};
        }
        return InputFieldFactory.createInputField(TEXT, propertyName, contactType, displayName, validators);
    }
-
+    
 
     private InputField createContactField(String base, String contactType, String displayName, FieldValidator ... validator) {
         return InputFieldFactory.createTextField(base + "contactMechanisms[" + contactType + ']', displayName, validator);

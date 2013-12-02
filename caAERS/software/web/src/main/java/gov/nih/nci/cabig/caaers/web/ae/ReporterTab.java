@@ -177,9 +177,9 @@ public class ReporterTab extends AeTab {
          String propertyName = base + "contactMechanisms[" + contactType + "]";
          FieldValidator validators[] = null;
         if (required) {
-            validators = new TextSizeValidator[]{(TextSizeValidator)FieldValidator.NOT_NULL_VALIDATOR, new TextSizeValidator(20)};
+            validators = new FieldValidator[]{FieldValidator.NOT_NULL_VALIDATOR, new TextSizeValidator(20)};
         } else {
-        	 validators = new TextSizeValidator[]{new TextSizeValidator(20)};
+            validators = new FieldValidator[]{new TextSizeValidator(20)};
         }
         return InputFieldFactory.createInputField(TEXT, propertyName, contactType, validators);
     }
