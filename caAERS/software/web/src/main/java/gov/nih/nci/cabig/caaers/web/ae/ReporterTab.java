@@ -6,12 +6,25 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import static gov.nih.nci.cabig.caaers.web.fields.InputField.Category.TEXT;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.domain.repository.*;
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Investigator;
+import gov.nih.nci.cabig.caaers.domain.Person;
+import gov.nih.nci.cabig.caaers.domain.ReportPerson;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
+import gov.nih.nci.cabig.caaers.domain.SiteResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
+import gov.nih.nci.cabig.caaers.domain.User;
+import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
+import gov.nih.nci.cabig.caaers.domain.repository.PersonRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
 import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
+import gov.nih.nci.cabig.caaers.validation.fields.validators.FieldValidator;
+import gov.nih.nci.cabig.caaers.validation.fields.validators.TextSizeValidator;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
@@ -19,7 +32,6 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -136,11 +148,11 @@ public class ReporterTab extends AeTab {
         InputField emailField = createContactField(base, ReportPerson.EMAIL, "E-mail address", false);
         InputFieldAttributes.setSize(emailField, 50);
 
-        InputField phoneField = createContactField(base, ReportPerson.PHONE, false);
-        phoneField.getAttributes().put(InputField.EXTRA_VALUE_PARAMS, "phone-number");
+        InputField phoneField = createCustomPhoneTextField(base, ReportPerson.PHONE, false);
+        InputFieldAttributes.setSize(phoneField, 21);
 
-        InputField faxField = createContactField(base, ReportPerson.FAX, false);
-        faxField.getAttributes().put(InputField.EXTRA_VALUE_PARAMS, "phone-number");
+        InputField faxField = createCustomPhoneTextField(base, ReportPerson.FAX, false);
+        InputFieldAttributes.setSize(faxField, 21);
 
         InputField streetField = InputFieldFactory.createTextField(base + "address.street", "Street");
         InputFieldAttributes.setColumns(streetField, 50);
@@ -159,6 +171,17 @@ public class ReporterTab extends AeTab {
 
     private InputField createContactField(String base, String contactType, boolean required) {
         return createContactField(base, contactType, StringUtils.capitalize(contactType), required);
+    }
+    
+    private InputField createCustomPhoneTextField(String base, String contactType, boolean required) {
+         String propertyName = base + "contactMechanisms[" + contactType + "]";
+         FieldValidator validators[] = null;
+        if (required) {
+            validators = new TextSizeValidator[]{(TextSizeValidator)FieldValidator.NOT_NULL_VALIDATOR, new TextSizeValidator(20)};
+        } else {
+        	 validators = new TextSizeValidator[]{new TextSizeValidator(20)};
+        }
+        return InputFieldFactory.createInputField(TEXT, propertyName, contactType, validators);
     }
 
     private InputField createContactField(String base, String contactType, String displayName, boolean required) {

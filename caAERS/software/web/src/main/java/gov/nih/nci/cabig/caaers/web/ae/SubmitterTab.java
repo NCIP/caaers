@@ -6,14 +6,18 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import static gov.nih.nci.cabig.caaers.web.fields.InputField.Category.TEXT;
+
 import java.util.Map;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.ReportPerson;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.validation.fields.validators.FieldValidator;
+import gov.nih.nci.cabig.caaers.validation.fields.validators.TextSizeValidator;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
@@ -52,9 +56,10 @@ public class SubmitterTab extends TabWithFields<SubmitExpeditedAdverseEventComma
         group.getFields().add(InputFieldFactory.createTextField(base + "lastName", "Last name", true));
 
         group.getFields().add(createContactField(base, ReportPerson.EMAIL, "E-mail address", FieldValidator.EMAIL_VALIDATOR, FieldValidator.NOT_NULL_VALIDATOR));
-        InputField phoneField = createContactField(base, ReportPerson.PHONE, "Phone", FieldValidator.PHONE_VALIDATOR, FieldValidator.NOT_NULL_VALIDATOR);
-        phoneField.getAttributes().put(InputField.EXTRA_VALUE_PARAMS, "phone-number");
-        InputField faxField = createContactField(base, ReportPerson.FAX, "Fax", FieldValidator.PHONE_VALIDATOR, FieldValidator.NOT_NULL_VALIDATOR);
+        InputField phoneField = createCustomPhoneTextField(base, ReportPerson.PHONE, "Phone", true);
+        InputFieldAttributes.setSize(phoneField, 21);
+        InputField faxField = createCustomPhoneTextField(base, ReportPerson.FAX, "Fax", true);
+        InputFieldAttributes.setSize(faxField, 21);
 
         faxField.getAttributes().put(InputField.EXTRA_VALUE_PARAMS, "phone-number");
         
@@ -63,6 +68,17 @@ public class SubmitterTab extends TabWithFields<SubmitExpeditedAdverseEventComma
         
         return group;
     }
+    
+    private InputField createCustomPhoneTextField(String base, String contactType, String displayName, boolean required) {
+        String propertyName = base + "contactMechanisms[" + contactType + "]";
+        FieldValidator validators[] = null;
+       if (required) {
+           validators = new TextSizeValidator[]{(TextSizeValidator)FieldValidator.NOT_NULL_VALIDATOR, new TextSizeValidator(20)};
+       } else {
+       	 validators = new TextSizeValidator[]{new TextSizeValidator(20)};
+       }
+       return InputFieldFactory.createInputField(TEXT, propertyName, contactType, displayName, validators);
+   }
 
 
     private InputField createContactField(String base, String contactType, String displayName, FieldValidator ... validator) {
