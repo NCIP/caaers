@@ -9,47 +9,33 @@
 	<xsl:template match="/">
 		<xsl:call-template name="e2b" />
 	</xsl:template>
+	
+	<xsl:variable name="map" select="document('../conf/caaers/lookup.xml')" />
 
-	<xsl:template name="ConvertOutcomeToCode">
-		<xsl:param name="code" />
-		 <xsl:choose>
-			<xsl:when test="$code='DEATH'">
-				<reactionoutcome>5</reactionoutcome>
-			</xsl:when>
-			<xsl:when test="$code='HOSPITALIZATION'">
-				<reactionoutcome>4</reactionoutcome>
-			</xsl:when>
-			<xsl:when test="$code='REQUIRED_INTERVENTION'">
-				<reactionoutcome>3</reactionoutcome>
-			</xsl:when>
-			<xsl:otherwise>
-            	<reactionoutcome>1</reactionoutcome>
-          </xsl:otherwise>
-		</xsl:choose>
+	<xsl:template name="lookup">
+		<xsl:param name="_map" />
+		<xsl:param name="_code" />
+		<xsl:value-of select="$_map//code[text() = $_code]/parent::node()/value" />
 	</xsl:template>
 	
-	<xsl:template name="ConvertReactionOutcomeToCode">
+	<xsl:template name="ConvertOutcomeToCode">
+		<xsl:param name="code" />	
+		<reactionoutcome>
+			<xsl:call-template name="lookup">
+						<xsl:with-param name="_map" select="$map//aeoutcomes" />
+						<xsl:with-param name="_code" select="$code" />
+			</xsl:call-template>
+		</reactionoutcome>
+	</xsl:template>
+
+	<xsl:template name="ConvertPresentStatusToCode">
 		<xsl:param name="code" />
-		 <xsl:choose>
-		 <xsl:when test="$code='RECOVERED'">
-				<presentstatus>1</presentstatus>
-			</xsl:when>
-			<xsl:when test="$code='RECOVERING'">
-				<presentstatus>2</presentstatus>
-			</xsl:when>
-			<xsl:when test="$code='NOT_RECOVERED'">
-				<presentstatus>3</presentstatus>
-			</xsl:when>
-			<xsl:when test="$code='RESOLVED'">
-				<presentstatus>4</presentstatus>
-			</xsl:when>
-			<xsl:when test="$code='FATAL'">
-				<presentstatus>5</presentstatus>
-			</xsl:when>
-			<xsl:otherwise>
-            	<presentstatus>6</presentstatus>
-			</xsl:otherwise>
-		</xsl:choose>
+		<presentstatus>
+			<xsl:call-template name="lookup">
+						<xsl:with-param name="_map" select="$map//aee2bpresentstatuses" />
+						<xsl:with-param name="_code" select="$code" />
+			</xsl:call-template>
+		</presentstatus>
 	</xsl:template>
 	
 	<xsl:template name="ConvertRetreatedToCode">
@@ -252,10 +238,7 @@
 		<safetyreport>
 			<reportname><xsl:value-of select="/AdverseEventReport/Report/ReportDefinition/label" /></reportname>
 			<safetyreportid><xsl:value-of select="/AdverseEventReport/Report/caseNumber"/></safetyreportid> 
-			<xsl:for-each select="AdverseEventReport/Physician">
-
-					 <sponsorstudynumb><xsl:value-of select="/AdverseEventReport/StudyParticipantAssignment/StudySite/Study/Identifier[type='Protocol Authority Identifier']/value"/></sponsorstudynumb>
-					 
+			<xsl:for-each select="AdverseEventReport/Physician">				 
 					 <physiciangivename><xsl:value-of select="/AdverseEventReport/Physician/firstName" /></physiciangivename>
 					 <xsl:if test="/AdverseEventReport/Physician/middleName">
 						<physicianmiddlename><xsl:value-of select="/AdverseEventReport/Physician/middleName" /></physicianmiddlename>
@@ -270,7 +253,7 @@
 			</xsl:for-each>
 			<xsl:for-each select="AdverseEventReport/Reporter">
 				<primarysource>
-				<!--<sponsorstudynumb><xsl:value-of select="/AdverseEventReport/StudyParticipantAssignment/StudySite/Study/Identifier[type='Other']/value"/></sponsorstudynumb> -->
+					 <sponsorstudynumb><xsl:value-of select="/AdverseEventReport/StudyParticipantAssignment/StudySite/Study/Identifier[type='Protocol Authority Identifier']/value"/></sponsorstudynumb>
 				     <reportergivename><xsl:value-of select="/AdverseEventReport/Reporter/firstName" /></reportergivename>
 					 <reportermiddlename><xsl:value-of select="/AdverseEventReport/Reporter/middleName" /></reportermiddlename>
 					 <reporterfamilyname><xsl:value-of select="/AdverseEventReport/Reporter/lastName" /></reporterfamilyname>
@@ -287,18 +270,18 @@
 			
 		<patient>
 			<subjectstudysiteid><xsl:value-of select="/AdverseEventReport/StudyParticipantAssignment/StudySite/Organization/nciInstituteCode"/></subjectstudysiteid> <!-- study site NCI id-->	  
-			<patientinvestigationnumb><xsl:value-of select="/AdverseEventReport/StudyParticipantAssignment/Participant/Identifier[type='MRN']/value" /></patientinvestigationnumb> <!-- study subject id-->	  
+			<patientinvestigationnumb><xsl:value-of select="/AdverseEventReport/StudyParticipantAssignment/studySubjectIdentifier" /></patientinvestigationnumb> <!-- study subject id-->	  
 			
 			<drug>		
 				<drugcharacterization>3</drugcharacterization>	<!-- drugcharacterization = 3 identifies the "drug" as the reporting period -->		
 				<medicinalproduct><xsl:value-of select="/AdverseEventReport/TreatmentInformation/TreatmentAssignment/code"/></medicinalproduct> <!-- Treatment Assignment Code -->		
 				<drugstartdateformat>102</drugstartdateformat> 
 					<!-- Start Date of course associated with this Expedited Report -->	
-				<drugstartdate>
+				<drugenddate>
 					<xsl:call-template name="getDate"> 
 							<xsl:with-param name="givenDate" select="/AdverseEventReport/TreatmentInformation/AdverseEventCourse/date"/>	
 					</xsl:call-template>
-				</drugstartdate> 			
+				</drugenddate> 			
 				<drugstartperiod><xsl:value-of select="/AdverseEventReport/TreatmentInformation/AdverseEventCourse/number"/></drugstartperiod> <!-- Optional, but will likely be provided. This is the course number on which event occurred -->
 			</drug>
 			
@@ -443,12 +426,14 @@
 					<deviceoperator><xsl:value-of select="DeviceOperator"/></deviceoperator>
 					<deviceoperatorother><xsl:value-of select="DeviceOperatorOther"/></deviceoperatorother>
 					<devicereturndate><xsl:value-of select="DeviceReturnDate"/></devicereturndate>
+					<drugadditional>Device</drugadditional>
 				 </drug> 
 			</xsl:for-each>	 
 		
 			<!-- Concomitant Medication -->
 			<xsl:for-each select="/AdverseEventReport/ConcomitantMedication">
 			  <drug>
+			    <drugcharacterization>2</drugcharacterization>
 				<medicinalproduct><xsl:value-of select="name"/></medicinalproduct>
 				<drugstartdateformat>102</drugstartdateformat>
 				<drugstartdate><xsl:value-of select="startDate/yearString"/><xsl:value-of select="startDate/monthString"/><xsl:value-of select="startDate/dayString"/></drugstartdate>
@@ -502,6 +487,32 @@
 					</medicalhistoryepisode>	
 			</xsl:if>		
 			
+			<!--  Course Agent -->
+			<xsl:for-each select="/AdverseEventReport/TreatmentInformation/CourseAgent">
+				<drug>
+		            <drugcharacterization>1</drugcharacterization> 
+						<!-- Agent NSC Number.  This is the identifier of the Agent. -->
+		            <medicinalproduct><xsl:value-of select="StudyAgent/Agent/nscNumber"/></medicinalproduct> 
+						<!-- Total Dose Administered this Course -->
+					<drugcumulativedosagenumb><xsl:value-of select="Dose/amount"/></drugcumulativedosagenumb>  
+						<!-- Dosage unit per E2B code -->   
+					<drugcumulativedosageunit>
+						<xsl:call-template name="lookup">
+							<xsl:with-param name="_map" select="$map//uomse2b" />
+							<xsl:with-param name="_code" select="Dose/units" />
+						</xsl:call-template>
+					</drugcumulativedosageunit>       
+					<drugenddateformat>102</drugenddateformat>
+						<!-- Date last administered -->
+					<drugenddate>
+						<xsl:call-template name="getDate"> 
+								<xsl:with-param name="givenDate" select="lastAdministeredDate"/>	
+						</xsl:call-template>
+					</drugenddate>  
+		           <drugadditional>Agent</drugadditional> 
+	           </drug> 	
+	         </xsl:for-each>
+			
 		 <summary>
 		 
 			 <xsl:if test="/AdverseEventReport/AdverseEventResponseDescription">
@@ -515,7 +526,7 @@
 					<ideadminflag><xsl:value-of select="/AdverseEventReport/TreatmentInformation/investigationalDeviceAdministered"/></ideadminflag>
 				</xsl:if>
 				<narrativeincludeclinical><xsl:value-of select="/AdverseEventReport/AdverseEventResponseDescription/eventDescription"/></narrativeincludeclinical>
-				<xsl:call-template name="ConvertReactionOutcomeToCode"> 
+				<xsl:call-template name="ConvertPresentStatusToCode"> 
 					<xsl:with-param name="code" select="/AdverseEventReport/AdverseEventResponseDescription/presentStatus"/>
 				</xsl:call-template>
 				<xsl:if test="/AdverseEventReport/AdverseEventResponseDescription/deathDate">

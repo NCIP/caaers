@@ -152,6 +152,9 @@
         <field name="emailAddresses" type="string" collection="arraylist"><bind-xml name="emailRecipient"/></field>
         <field name="pathOfApplicableFields" type="string" collection="arraylist"><bind-xml name="applicableField"/></field>
         <field name="submittedToFDA" type="string"><bind-xml name="submittedToFDA" node="element"/></field>
+        <field name="submitter" type="gov.nih.nci.cabig.caaers.domain.Submitter">
+        	<bind-xml name="Submitter"/>
+        </field>
     </class>
 
     <class name="gov.nih.nci.cabig.caaers.domain.report.ReportDefinition">
@@ -166,6 +169,8 @@
         <field name="timeScaleUnitType" type="gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit"><bind-xml name="timeScaleUnitType"/></field>
         <field name="deliveryDefinitions" type="gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition" collection="arraylist"><bind-xml name="ReportDeliveryDefinition" /></field>
     </class>
+    
+    
 
     <class name="gov.nih.nci.cabig.caaers.domain.ConfigProperty">
         <map-to xml="Group" />
@@ -461,6 +466,14 @@
   <class name="gov.nih.nci.cabig.caaers.domain.Reporter"
     extends="gov.nih.nci.cabig.caaers.domain.PersonContact">
     <map-to xml="Reporter"/>
+    <field name="contactMechanisms" type="java.lang.String" collection="map">
+      <bind-xml name="ContactMechanism"/>
+    </field>
+  </class>
+  
+   <class name="gov.nih.nci.cabig.caaers.domain.Submitter"
+    extends="gov.nih.nci.cabig.caaers.domain.PersonContact">
+    <map-to xml="Submitter"/>
     <field name="contactMechanisms" type="java.lang.String" collection="map">
       <bind-xml name="ContactMechanism"/>
     </field>
