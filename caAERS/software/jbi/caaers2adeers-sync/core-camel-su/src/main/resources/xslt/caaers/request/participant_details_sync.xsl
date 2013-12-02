@@ -13,18 +13,19 @@
 					<par:participants>
 						<par:participant>
 							 <xsl:variable name="sub" select='ODM/ClinicalData/SubjectData/StudyEventData[@StudyEventOID="ENROLLMENT_FORMS"]/FormData[@FormOID="DEMOGRAPHY"]/ItemGroupData[@ItemGroupOID="DEMOGRAPHY"]/ItemData [@ItemOID="PT_INITIALS_NAME"]/@Value'/>
-							 <xsl:if test="substring($sub,1,1) !='-' ">
+							 <xsl:if test="substring($sub,2,1) !='-' ">
 								<firstName>
 									<xsl:value-of
-										select='substring($sub,1,1)' />
+										select='substring($sub,2,1)' />
 								</firstName>
 							</xsl:if>
-							<xsl:if test="substring($sub,2,1) !='-' ">
+							 <xsl:if test="substring($sub,1,1) !='-' ">
 								<lastName>
 									<xsl:value-of
-										select='substring($sub,2,1)' />
+										select='substring($sub,1,1)' />
 								</lastName>
 							</xsl:if>
+							
 							<xsl:if test="substring($sub,3,1) !='-' ">
 								<middleName>
 									<xsl:value-of
