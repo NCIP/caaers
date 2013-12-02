@@ -2,4 +2,4 @@
 adeers.username=<your adeers username>
 adeers.password=<your adeers password>
 
-adeers.report.service.url=<your adeers report service url>
+adeers.report.service.url=https://betapps-ctep.nci.nih.gov/adeerswsbeta/services/AEReportXMLService
