@@ -24,6 +24,18 @@ This applicationContext contains the definition of the DAOs
         </property>
         <property name="properties" ref="caaersDatasourceFactoryBean"/>
     </bean>
+    <bean id="safetyReportIDDao" class="gov.nih.nci.cabig.caaers.dao.SafetyReportIDDao">
+        <property name="jdbcTemplate">
+            <ref bean="jdbcTemplate"/>
+        </property>
+        <property name="properties" ref="caaersDatasourceFactoryBean"/>
+        <property name="queries">
+        	<map>
+        		<entry key="postgres" value="select pseudo_encrypt(cast(nextval('safety_report_id_gen_seq') as int))"/>
+        		<entry key="oracle" value="select pseudo_encrypt(safety_report_id_gen_seq.nextval) from dual"/>
+        	</map>
+        </property>
+    </bean>
     <!-- HIBERNATE CONFIGURATION -->
      <bean id="wonderfulNamingStrategy" class="gov.nih.nci.cabig.caaers.tools.hibernate.WonderfulNamingStrategy">
       <property name="uppercaseColumnNames">

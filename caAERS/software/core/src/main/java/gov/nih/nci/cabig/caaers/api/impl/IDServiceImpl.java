@@ -6,8 +6,7 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.api.impl;
 
-import java.util.UUID;
-
+import gov.nih.nci.cabig.caaers.dao.SafetyReportIDDao;
 import gov.nih.nci.cabig.caaers.integration.schema.aereportid.ReportIdCriteria;
 import gov.nih.nci.cabig.caaers.integration.schema.aereportid.SafetyReportIdentifer;
 
@@ -29,16 +28,26 @@ public class IDServiceImpl implements ApplicationContextAware {
 	private static Log logger = LogFactory.getLog(IDServiceImpl.class);
 	
 	private ApplicationContext applicationContext;
+	
+	private SafetyReportIDDao safetyReportIDDao;
 
 	public void setApplicationContext(ApplicationContext arg0)
 			throws BeansException {
 		this.applicationContext = applicationContext;
-		
 	}
 	
+	public SafetyReportIDDao getSafetyReportIDDao() {
+		return safetyReportIDDao;
+	}
+
+	public void setSafetyReportIDDao(SafetyReportIDDao safetyReportIDDao) {
+		this.safetyReportIDDao = safetyReportIDDao;
+	}
+
 	public SafetyReportIdentifer generateSafetyReportId(ReportIdCriteria reportIdCriteria) {
 		final SafetyReportIdentifer sri = new SafetyReportIdentifer();
-		sri.setNewSafetyReportId(UUID.randomUUID().toString());
+		sri.setSafetyReportId(safetyReportIDDao.getNewID());
+		sri.setCaseNumber(reportIdCriteria.getCaseNumber());
 		return sri;
 	}
 
