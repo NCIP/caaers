@@ -41,7 +41,8 @@ public class ToCaaersReportWSRouteBuilder {
         	.to("log:gov.nih.nci.cabig.report2caaers.caaers-ws-request?showHeaders=true&level=TRACE")
         	.processRef("removeEDIHeadersAndFootersProcessor")
 			.process(track(REQUEST_RECEIVED))
-			.to(routeBuilder.getFileTracker().fileURI(REQUEST_RECEIVED))			
+			.to(routeBuilder.getFileTracker().fileURI(REQUEST_RECEIVED))
+			.processRef("eDIMessagePreProcessor")
 			.process(track(PRE_PROCESS_EDI_MSG))
 			.to(routeBuilder.getFileTracker().fileURI(PRE_PROCESS_EDI_MSG))
 			.to("direct:caaers-reportSubmit-sync");
