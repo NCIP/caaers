@@ -37,7 +37,9 @@ import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.service.migrator.StudyConverter;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.tools.configuration.ConfigurationProperty;
+
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.interceptor.LoggingInInterceptor;
@@ -171,7 +173,7 @@ public class ProxyWebServiceFacadeUnitTest extends AbstractTestCase {
         final List<Study> studyList = new ArrayList<Study>();
         Study s1 = Fixtures.createStudy("test");
         s1.setId(99);
-        s1.setLastSynchedDate(new Date());
+        s1.setLastSynchedDate(DateUtils.today());
         studyList.add(s1);
 
         proxyWebServiceFacade.setStudyDao(studyDao);
