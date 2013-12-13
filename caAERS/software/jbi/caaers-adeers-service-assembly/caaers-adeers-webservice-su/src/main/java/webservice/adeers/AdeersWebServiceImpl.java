@@ -70,7 +70,7 @@ public class AdeersWebServiceImpl implements AdeersWebService {
 	        reponseStr = binding._getCall().getMessageContext().getResponseMessage().getSOAPPartAsString();
             log.info("Actual Response Received from adEERS: ======================================================\n" + reponseStr + "\n===================================================");
 	        //attach the id to the returned message
-	        reponseStr=reponseStr.replaceAll("</ns1:AEReportCancelInfo>","<CAEERS_AEREPORT_ID>"+serviceContext.caaersAeReportId+"</CAEERS_AEREPORT_ID><REPORT_ID>"+serviceContext.reportId+"</REPORT_ID><SUBMITTER_EMAIL>"+serviceContext.submitterEmail+"</SUBMITTER_EMAIL></ns1:AEReportCancelInfo>");
+	        reponseStr=reponseStr.replaceAll("</ns1:AEReportCancelInfo>","<CAEERS_AEREPORT_ID>"+serviceContext.caaersAeReportId+"</CAEERS_AEREPORT_ID><REPORT_ID>"+serviceContext.reportId+"</REPORT_ID><SUBMITTER_EMAIL>"+serviceContext.submitterEmail+"</SUBMITTER_EMAIL><MESSAGE_COMBO_ID>"+serviceContext.messageComboId+"</MESSAGE_COMBO_ID></ns1:AEReportCancelInfo>");
 	        log.info("Processed Response Received from adEERS: ======================================================\n" + reponseStr + "\n===================================================");
         } else {
 	        log.info("Submitting to adEERS...");
@@ -82,7 +82,7 @@ public class AdeersWebServiceImpl implements AdeersWebService {
             log.info("Actual Response Received from adEERS: ======================================================\n" + reponseStr + "\n===================================================");
 
             //attach the id to the returned message
-	        reponseStr=reponseStr.replaceAll("</ns1:AEReportJobInfo>","<CAEERS_AEREPORT_ID>"+serviceContext.caaersAeReportId+"</CAEERS_AEREPORT_ID><REPORT_ID>"+serviceContext.reportId+"</REPORT_ID><SUBMITTER_EMAIL>"+serviceContext.submitterEmail+"</SUBMITTER_EMAIL></ns1:AEReportJobInfo>");
+	        reponseStr=reponseStr.replaceAll("</ns1:AEReportJobInfo>","<CAEERS_AEREPORT_ID>"+serviceContext.caaersAeReportId+"</CAEERS_AEREPORT_ID><REPORT_ID>"+serviceContext.reportId+"</REPORT_ID><SUBMITTER_EMAIL>"+serviceContext.submitterEmail+"</SUBMITTER_EMAIL><MESSAGE_COMBO_ID>"+serviceContext.messageComboId+"</MESSAGE_COMBO_ID></ns1:AEReportJobInfo>");
             log.info("Processed Response Received from adEERS: ======================================================\n" + reponseStr + "\n===================================================");
         }
         return reponseStr;
@@ -108,6 +108,10 @@ public class AdeersWebServiceImpl implements AdeersWebService {
 		ei = aeReportWithCaaersId.indexOf("</SUBMITTER_EMAIL>");
 		serviceContext.submitterEmail = aeReportWithCaaersId.substring(si+17, ei);
 		
+		si = aeReportWithCaaersId.indexOf("<MESSAGE_COMBO_ID>");
+		ei = aeReportWithCaaersId.indexOf("</MESSAGE_COMBO_ID>");
+		serviceContext.messageComboId = aeReportWithCaaersId.substring(si+18, ei);
+		
 		int withdrawIndex = aeReportWithCaaersId.indexOf("<WITHDRAW>true</WITHDRAW>");
 		if (withdrawIndex > 0 ) {
 			serviceContext.withdraw = true;
@@ -117,6 +121,7 @@ public class AdeersWebServiceImpl implements AdeersWebService {
 		aeReport = aeReport.replaceAll("<EXTERNAL_SYSTEMS>"+serviceContext.externalEPRs+"</EXTERNAL_SYSTEMS>", "");
 		aeReport = aeReport.replaceAll("<REPORT_ID>"+serviceContext.reportId+"</REPORT_ID>", "");
 		aeReport = aeReport.replaceAll("<SUBMITTER_EMAIL>"+serviceContext.submitterEmail+"</SUBMITTER_EMAIL>", "");
+		aeReport = aeReport.replaceAll("<MESSAGE_COMBO_ID>"+serviceContext.messageComboId+"</MESSAGE_COMBO_ID>", "");
 		aeReport = aeReport.replaceAll("<ADDITIONAL_INFORMATION/>", "");
 		aeReport = aeReport.replaceAll("<WITHDRAW>true</WITHDRAW>", "");
 		return aeReport;
@@ -128,6 +133,7 @@ public class AdeersWebServiceImpl implements AdeersWebService {
 		public String externalEPRs = "";
 		public String reportId = "";
 		public String submitterEmail = "";
+		public String messageComboId = "";
 		public boolean withdraw = false;
 		
 

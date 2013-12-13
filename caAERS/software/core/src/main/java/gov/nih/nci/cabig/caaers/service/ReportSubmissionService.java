@@ -32,6 +32,7 @@ import gov.nih.nci.cabig.caaers.utils.Tracker;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
@@ -54,6 +55,8 @@ public class ReportSubmissionService {
 	
     
     protected final Log log = LogFactory.getLog(getClass());
+    
+    protected final static SimpleDateFormat msgDF = new SimpleDateFormat("yyyyMMddhhmmss");
 
     private NowFactory nowFactory;
     protected CaaersAdeersMessageBroadcastServiceImpl messageBroadcastService;
@@ -317,6 +320,10 @@ public class ReportSubmissionService {
 
         String submitterEmail = report.getLastVersion().getSubmitter().getContactMechanisms().get(PersonContact.EMAIL);
         sb.append("<SUBMITTER_EMAIL>" + submitterEmail + "</SUBMITTER_EMAIL>");
+        
+        String msgComboId = report.getAeReport().getExternalId() + "|" + msgDF.format(report.getAeReport().getCreatedAt());
+        sb.append("<MESSAGE_COMBO_ID>" + msgComboId + "</MESSAGE_COMBO_ID>");
+        
         //if there are external systems, send message via service mix
     	String externalXml = xml.replaceAll("<AdverseEventReport>", "<AdverseEventReport>" + sb.toString());
     	

@@ -35,6 +35,9 @@
         <SUBMITTER_EMAIL>
             <xsl:value-of select="SUBMITTER_EMAIL"/>
         </SUBMITTER_EMAIL>
+        <MESSAGE_COMBO_ID>
+            <xsl:value-of select="MESSAGE_COMBO_ID"/>
+        </MESSAGE_COMBO_ID>
         <WITHDRAW>true</WITHDRAW>
         
      </xsl:when>
@@ -64,7 +67,9 @@
         <SUBMITTER_EMAIL>
             <xsl:value-of select="SUBMITTER_EMAIL"/>
         </SUBMITTER_EMAIL>
-
+		<MESSAGE_COMBO_ID>
+            <xsl:value-of select="MESSAGE_COMBO_ID"/>
+        </MESSAGE_COMBO_ID>
 
 		
         <REPORTER_INFORMATION>

@@ -37,19 +37,21 @@ public class Tracker implements Processor{
  	
  	boolean caputureLogDetails = false; 
  	
-	public Tracker(Stage stage, String notes, boolean caputureLogDetails) {
+ 	boolean captureLogMessage = false;
+ 	
+ 	String[] messageComboIdPaths;
+ 	
+	public Tracker(Stage stage, String notes, boolean caputureLogDetails, String[] messageComboIdPaths) {
 		super();
 		this.stage = stage;
 		this.notes = notes;
 		this.caputureLogDetails = caputureLogDetails;
+		this.messageComboIdPaths = messageComboIdPaths;
 	}
 	
-//	public Tracker(Stage stage, String notes, boolean caputureLogDetails) {
-//		this(stage, null, null, notes, caputureLogDetails);
-//	}
 	
 	public static Tracker track(Stage stage, String notes, boolean caputureLogDetails){
-		return new Tracker(stage, notes, caputureLogDetails);
+		return new Tracker(stage, notes, caputureLogDetails, null);
     }
 	
 	public static Tracker track(Stage stage, boolean caputureLogDetails){
@@ -59,8 +61,14 @@ public class Tracker implements Processor{
     public static Tracker track(Stage stage, String notes){
         return track(stage, notes, false);
     }
+    
+    
     public static Tracker track(Stage stage){
         return track(stage, false);
+    }
+    
+    public static Tracker track(Stage stage, String[] messageComboIdPaths){
+    	return new Tracker(stage, null, false, messageComboIdPaths);
     }
     
 	public void process(Exchange exchange) throws Exception {
@@ -85,7 +93,17 @@ public class Tracker implements Processor{
         }
 
         IntegrationLogDao integrationLogDao = (IntegrationLogDao)exchange.getContext().getRegistry().lookup("integrationLogDao");
-        if(caputureLogDetails){
+        captureLogDetails(exchange, integrationLog);
+        captureLogMessage(exchange, integrationLog);
+        
+        integrationLogDao.save(integrationLog);
+        
+	}
+
+
+	private void captureLogDetails(Exchange exchange,
+			IntegrationLog integrationLog) {
+		if(caputureLogDetails){
         	//Check for soap fault
         	String faultString = XPathBuilder.xpath("//faultstring").evaluate(exchange, String.class);
         	if(!StringUtils.isBlank(faultString)){
@@ -133,9 +151,22 @@ public class Tracker implements Processor{
 	        	}
         	}
         }
-        
-        integrationLogDao.save(integrationLog);
-        
+	}
+	
+	private void captureLogMessage(Exchange exchange,
+			IntegrationLog integrationLog) {
+		if(messageComboIdPaths !=null && messageComboIdPaths.length>0){
+			StringBuffer mIdB = new StringBuffer();
+			for (String path : messageComboIdPaths) {
+				String value = XPathBuilder.xpath(path).evaluate(exchange, String.class);
+				if(StringUtils.isNotBlank(value)){
+	        		mIdB.append(value).append("|");
+	        	}
+			}
+			String msgId = mIdB.substring(0, mIdB.length()-1); //remove the last '|' char
+			String message = exchange.getIn().getBody(String.class);
+			integrationLog.addIntegrationLogMessage(new IntegrationLogMessage(msgId, message, stage));
+		}
 	}
     
     

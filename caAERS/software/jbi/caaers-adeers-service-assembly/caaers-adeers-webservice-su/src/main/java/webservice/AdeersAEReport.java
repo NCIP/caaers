@@ -44,6 +44,7 @@ public class AdeersAEReport extends ComponentSupport implements MessageExchangeL
     private String caaersAeReportId = "";
     private String reportId = "";
     private String submitterEmail = "";
+    private String messageComboId = "";
     private StringBuilder exceptionXmlBuilder = null;
     
     public void setAdeersWebService(AdeersWebService adeersWebService) {
@@ -133,6 +134,10 @@ public class AdeersAEReport extends ComponentSupport implements MessageExchangeL
 		si = inXml.indexOf("<SUBMITTER_EMAIL>");
 		ei = inXml.indexOf("</SUBMITTER_EMAIL>");
 		submitterEmail = inXml.substring(si+17, ei);
+		
+		si = inXml.indexOf("<MESSAGE_COMBO_ID>");
+		ei = inXml.indexOf("</MESSAGE_COMBO_ID>");
+		messageComboId = inXml.substring(si+18, ei);
     	
 		exceptionXmlBuilder = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\"?>").append("\n");
 		exceptionXmlBuilder.append("<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\"").append("\n");
@@ -150,6 +155,7 @@ public class AdeersAEReport extends ComponentSupport implements MessageExchangeL
 			exceptionXmlBuilder.append("<REPORT_ID>").append(reportId).append("</REPORT_ID>").append("\n");
 			exceptionXmlBuilder.append("<CAEERS_AEREPORT_ID>").append(caaersAeReportId).append("</CAEERS_AEREPORT_ID>").append("\n");
 			exceptionXmlBuilder.append("<SUBMITTER_EMAIL>").append(submitterEmail).append("</SUBMITTER_EMAIL>").append("\n");
+			exceptionXmlBuilder.append("<MESSAGE_COMBO_ID>").append(messageComboId).append("</MESSAGE_COMBO_ID>").append("\n");
 		exceptionXmlBuilder.append("</ns1:AEReportJobInfo>").append("\n");		
 		exceptionXmlBuilder.append("</submitAEDataXMLAsAttachmentResponse>").append("\n");
 		exceptionXmlBuilder.append("</soapenv:Body>").append("\n");

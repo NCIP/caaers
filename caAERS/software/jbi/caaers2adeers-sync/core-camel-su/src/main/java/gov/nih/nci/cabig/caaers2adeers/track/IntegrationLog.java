@@ -46,6 +46,8 @@ public class IntegrationLog{
  	
  	private List<IntegrationLogDetail> integrationLogDetails = new ArrayList<IntegrationLogDetail>();
  	
+ 	private List<IntegrationLogMessage> integrationLogMessages = new ArrayList<IntegrationLogMessage>();
+ 	
  	public IntegrationLog(String correlationId, Stage stage, String entity,
 			String operation, String notes) {
 		super();
@@ -145,6 +147,23 @@ public class IntegrationLog{
 	public void addIntegrationLogDetail(IntegrationLogDetail integrationLogDetail){
 		integrationLogDetail.setIntegrationLog(this);
 		getIntegrationLogDetails().add(integrationLogDetail);
+	}
+	
+	@OneToMany(mappedBy = "integrationLog", fetch = FetchType.LAZY)
+    @Cascade(value = {CascadeType.ALL})
+    @Fetch(value = org.hibernate.annotations.FetchMode.SUBSELECT)
+	public List<IntegrationLogMessage> getIntegrationLogMessages() {
+		return integrationLogMessages;
+	}
+
+	public void setIntegrationLogMessages(
+			List<IntegrationLogMessage> integrationLogMessages) {
+		this.integrationLogMessages = integrationLogMessages;
+	}
+	
+	public void addIntegrationLogMessage(IntegrationLogMessage integrationLogMessage){
+		integrationLogMessage.setIntegrationLog(this);
+		getIntegrationLogMessages().add(integrationLogMessage);
 	}
 	
 	public static enum Stage{

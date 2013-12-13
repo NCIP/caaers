@@ -65,6 +65,10 @@
     <bean id="integrationLogDao" class="gov.nih.nci.cabig.caaers2adeers.track.IntegrationLogDao">
        <property name="hibernateTemplate" ref="hibernateTemplate" />
     </bean>
+    <bean id="integrationLogMessageDao" class="gov.nih.nci.cabig.caaers2adeers.track.IntegrationLogMessageDao">
+       <property name="hibernateTemplate" ref="hibernateTemplate" />
+    </bean>
+    
     <bean id="headerGeneratorProcessor" class="gov.nih.nci.cabig.caaers2adeers.exchnage.HeaderGeneratorProcessor"/>
     <bean id="exchangePreProcessor" class="gov.nih.nci.cabig.caaers2adeers.exchnage.ExchangePreProcessor">
         <property name="caaersWSUser" value="s[CAAERS_WS_USERNAME]" />
@@ -86,6 +90,8 @@
     
     <bean id="adeersResponseProcessor" class="gov.nih.nci.cabig.report2caaers.exchange.AdeersResponseProcessor"/>
     
+    <bean id="safetyReportServiceResponseProcessor" class="gov.nih.nci.cabig.report2caaers.exchange.SafetyReportServiceResponseProcessor"/>
+    
     <bean id="xslt" class="gov.nih.nci.cabig.caaers2adeers.xslt.CustomXsltComponent" />
     
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
@@ -95,6 +101,7 @@
             <list>
                 <value>gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog</value>
                 <value>gov.nih.nci.cabig.caaers2adeers.track.IntegrationLogDetail</value>
+                <value>gov.nih.nci.cabig.caaers2adeers.track.IntegrationLogMessage</value>
             </list>
 		</property>
 		<property name="hibernateProperties" ref="hibernateProperties" /> 

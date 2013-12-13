@@ -515,7 +515,7 @@
 
 		<xsl:variable name="vHour" select='substring($date,9,2)' />
 		<xsl:variable name="vMin" select='substring($date,11,2)' />
-		<xsl:variable name="vSec" select='substring($date,3,2)' />
+		<xsl:variable name="vSec" select='substring($date,13,2)' />
 
 		<xsl:variable name="dateTime"
 			select="concat($vYear,'-',$vMonth,'-',$vDay,'T',$vHour,':',$vMin,':',$vSec)" />

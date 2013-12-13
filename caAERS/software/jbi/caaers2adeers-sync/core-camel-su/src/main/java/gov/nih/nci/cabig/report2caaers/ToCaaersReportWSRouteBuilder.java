@@ -29,6 +29,9 @@ public class ToCaaersReportWSRouteBuilder {
 	private static String requestXSLBase = "xslt/e2b/request/";
 	private static String responseXSLBase = "xslt/e2b/response/";
 	
+	private static String[] msgComboIdPaths = { "//safetyreportid",
+												"//messagedate"};
+	
 	private String inputEDIDir;
 	private String outputEDIDir;	
 		
@@ -40,7 +43,7 @@ public class ToCaaersReportWSRouteBuilder {
         routeBuilder.from("file://"+inputEDIDir+"?preMove=inprogress&move=done&moveFailed=movefailed")
         	.to("log:gov.nih.nci.cabig.report2caaers.caaers-ws-request?showHeaders=true&level=TRACE")
         	.processRef("removeEDIHeadersAndFootersProcessor")
-			.process(track(REQUEST_RECEIVED))
+			.process(track(REQUEST_RECEIVED, msgComboIdPaths))
 			.to(routeBuilder.getFileTracker().fileURI(REQUEST_RECEIVED))
 			.processRef("eDIMessagePreProcessor")
 			.process(track(PRE_PROCESS_EDI_MSG))
@@ -68,6 +71,7 @@ public class ToCaaersReportWSRouteBuilder {
         
         routeBuilder.from("direct:sendE2BAckSink")                
 			.process(track(ROUTED_TO_CAAERS_WS_INVOCATION_CHANNEL))
+			.processRef("safetyReportServiceResponseProcessor")
 			.processRef("addEDIHeadersAndFootersProcessor")
 			.process(track(POST_PROCESS_EDI_MSG))
 			.to(routeBuilder.getFileTracker().fileURI(POST_PROCESS_EDI_MSG))

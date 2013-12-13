@@ -9,7 +9,10 @@
     <xsl:param name="c2r_correlation_id" />
     <xsl:param name="c2r_today_204" />
     <xsl:param name="c2r_report_received_on_102" />
-    <xsl:param name="c2r_rave_icsrmessagenumb" />
+    <xsl:param name="c2r_msg_number" />
+    <xsl:param name="c2r_msg_date" />
+    <xsl:param name="c2r_msg_sender_id" />
+    <xsl:param name="c2r_msg_receiver_id" />
 
     <xsl:template match="/">
         <ichicsrack lang="en">
@@ -22,22 +25,22 @@
                 <!-- release of dtd is 1.0 -->
                 <messagenumb><xsl:value-of select="$c2r_msg_id" /></messagenumb>
                 <!-- caAERS's unique message number, for this ACK message -->
-                <messagesenderidentifier>caAERS</messagesenderidentifier>
-                <messagereceiveridentifier>RAVE</messagereceiveridentifier>
+                <messagesenderidentifier><xsl:value-of select="$c2r_msg_receiver_id" /></messagesenderidentifier>
+                <messagereceiveridentifier><xsl:value-of select="$c2r_msg_sender_id" /></messagereceiveridentifier>
                 <messagedateformat>204</messagedateformat>
                 <messagedate><xsl:value-of select="$c2r_today_204" /></messagedate>
                 <!-- Date on which ack got created : in CCYYMMDDHHMMSS format-->
             </ichicsrmessageheader>
             <acknowledgment>
                 <messageacknowledgment>
-                    <icsrmessagenumb><xsl:value-of select="c2r_rave_icsrmessagenumb" /></icsrmessagenumb>
+                    <icsrmessagenumb><xsl:value-of select="c2r_msg_number" /></icsrmessagenumb>
                     <!-- obtained as part of the input safety report message -->
                     <localmessagenumb><xsl:value-of select="//com:ServiceResponse/com:entityProcessingOutcomes/com:entityProcessingOutcome/dataBaseId" /></localmessagenumb>
                     <!-- optional, might not be present if there was processing error. This number was assigned to the input safety Message by caAERS -->
-                    <icsrmessagesenderidentifier>Rave</icsrmessagesenderidentifier>
-                    <icsrmessagereceiveridentifier>caAERS</icsrmessagereceiveridentifier>
+                    <icsrmessagesenderidentifier><xsl:value-of select="$c2r_msg_sender_id" /></icsrmessagesenderidentifier>
+                    <icsrmessagereceiveridentifier><xsl:value-of select="$c2r_msg_receiver_id" /></icsrmessagereceiveridentifier>
                     <icsrmessagedateformat>204</icsrmessagedateformat>
-                    <icsrmessagedate>20130530110000</icsrmessagedate>
+                    <icsrmessagedate><xsl:value-of select="$c2r_msg_date" /></icsrmessagedate>
                     <!-- Date in CCYYMMDDHHMMSS -->
                     <!--
                     01= All Reports loaded into database

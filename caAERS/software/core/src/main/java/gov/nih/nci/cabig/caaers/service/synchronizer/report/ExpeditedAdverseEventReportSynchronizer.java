@@ -13,7 +13,7 @@ public class ExpeditedAdverseEventReportSynchronizer extends CompositeMigrator<E
 
         if(src.getInvestigationalDeviceAdministered() != null) dest.setInvestigationalDeviceAdministered(src.getInvestigationalDeviceAdministered());
         //set the created date is not present and is available in the source
-        if(dest.getCreatedAt() == null && src.getCreatedAt() != null) dest.setCreatedAt(src.getCreatedAt());
+        if(src.getCreatedAt() != null) dest.setCreatedAt(src.getCreatedAt());
 
     }
 }

@@ -7,6 +7,7 @@
 package gov.nih.nci.cabig.caaers.utils;
 
 import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
+
 import gov.nih.nci.cabig.caaers.integration.schema.study.Studies;
 import gov.nih.nci.cagrid.caxchange.client.CaXchangeRequestProcessorClient;
 import gov.nih.nci.cagrid.common.Utils;
@@ -17,6 +18,7 @@ import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -136,6 +138,14 @@ public class XMLUtil {
         GregorianCalendar c = (GregorianCalendar)GregorianCalendar.getInstance();
         c.setTime(date);
         return new XMLGregorianCalendarImpl(c);
+    }
+    
+    public static void main (String[] args ) throws Exception {
+    	String dtStr = "20131126105200";
+    	SimpleDateFormat msgDF = new SimpleDateFormat("yyyyMMddhhmmss");
+    	Date dt  = msgDF.parse(dtStr);
+    	System.out.println(dt);
+    	System.out.println(XMLUtil.toTimestamp(XMLUtil.toXMLDate(dt)));
     }
     
     /*

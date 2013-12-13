@@ -27,7 +27,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.xml.sax.InputSource;
 
-public class AdeersResponseProcessor implements Processor {
+public class SafetyReportServiceResponseProcessor implements Processor {
 
     public static final String CORRELATION_ID_ATTR_NAME = "correlationId";
 	public static final String CORRELATION_ID = "c2r_correlation_id";
@@ -36,11 +36,12 @@ public class AdeersResponseProcessor implements Processor {
 	public static final String MSG_DT = "c2r_msg_date";
 	public static final String MSG_SNDR_ID = "c2r_msg_sender_id";
 	public static final String MSG_RCVR_ID = "c2r_msg_receiver_id";
+	private static final String MSG_COMBO_ID = "msg_combo_id";
 	
 	XPathFactory factory = XPathFactory.newInstance();
 	
 	protected static final Log log = LogFactory
-			.getLog(AdeersResponseProcessor.class);
+			.getLog(SafetyReportServiceResponseProcessor.class);
 
 	public void process(Exchange exchange) throws Exception {
 		// just get the body as a string
@@ -50,7 +51,8 @@ public class AdeersResponseProcessor implements Processor {
 		// set the properties in the exchange
 		Map<String, Object> properties = exchange.getProperties();
 		
-		String msgComboId = XPathBuilder.xpath("//MESSAGE_COMBO_ID").evaluate(exchange, String.class);
+		String msgComboId = (String) properties.get(MSG_COMBO_ID);
+		
 		IntegrationLogMessageDao integrationLogMessageDao = (IntegrationLogMessageDao)exchange.getContext().getRegistry().lookup("integrationLogMessageDao");
 		log.info("MESSAGE_COMBO_ID is " + msgComboId);
 		IntegrationLogMessage integrationLogMessage = integrationLogMessageDao.findByComboId(msgComboId, Stage.REQUEST_RECEIVED);
