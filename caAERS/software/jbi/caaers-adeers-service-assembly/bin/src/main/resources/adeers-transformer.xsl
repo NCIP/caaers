@@ -63,27 +63,27 @@
         </PHYSICIAN_INFORMATION>
         <SUBMITTER_INFORMATION>
             <xsl:attribute name="FIRST_NAME">
-                <xsl:value-of select="Reporter/firstName"/>
+                <xsl:value-of select="Submitter/firstName"/>
             </xsl:attribute>
             <xsl:attribute name="LAST_NAME">
-                <xsl:value-of select="Reporter/lastName"/>
+                <xsl:value-of select="Submitter/lastName"/>
             </xsl:attribute>
             <xsl:attribute name="PHONE">
-                <xsl:for-each select="Reporter/ContactMechanism">
+                <xsl:for-each select="Submitter/ContactMechanism">
                     <xsl:if test="key = 'phone'">
                         <xsl:value-of select="value"/>
                     </xsl:if>
                 </xsl:for-each>
             </xsl:attribute>
             <xsl:attribute name="EMAIL">
-                <xsl:for-each select="Reporter/ContactMechanism">
+                <xsl:for-each select="Submitter/ContactMechanism">
                     <xsl:if test="key = 'e-mail'">
                         <xsl:value-of select="value"/>
                     </xsl:if>
                 </xsl:for-each>
             </xsl:attribute>
             <xsl:attribute name="FAX">
-                <xsl:for-each select="Reporter/ContactMechanism">
+                <xsl:for-each select="Submitter/ContactMechanism">
                     <xsl:if test="key = 'fax'">
                         <xsl:value-of select="value"/>
                     </xsl:if>
