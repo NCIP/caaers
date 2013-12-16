@@ -321,7 +321,7 @@ public class ReportSubmissionService {
         String submitterEmail = report.getLastVersion().getSubmitter().getContactMechanisms().get(PersonContact.EMAIL);
         sb.append("<SUBMITTER_EMAIL>" + submitterEmail + "</SUBMITTER_EMAIL>");
         
-        String msgComboId = report.getAeReport().getExternalId() + "|" + msgDF.format(report.getAeReport().getCreatedAt());
+        String msgComboId = report.getAeReport().getExternalId() + "::" + msgDF.format(report.getAeReport().getCreatedAt());
         sb.append("<MESSAGE_COMBO_ID>" + msgComboId + "</MESSAGE_COMBO_ID>");
         
         //if there are external systems, send message via service mix

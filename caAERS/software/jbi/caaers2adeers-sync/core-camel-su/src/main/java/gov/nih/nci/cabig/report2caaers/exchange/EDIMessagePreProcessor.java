@@ -52,10 +52,10 @@ public class EDIMessagePreProcessor implements Processor {
 		for (String path : msgComboIdPaths) {
 			String value = XPathBuilder.xpath(path).evaluate(exchange, String.class);
 			if(StringUtils.isNotBlank(value)){
-        		mIdB.append(value).append("|");
+        		mIdB.append(value).append("::");
         	}
 		}
-		String msgComboId = mIdB.substring(0, mIdB.length()-1); //remove the last '|' char
+		String msgComboId = mIdB.substring(0, mIdB.length()-2); //remove the last '::' char
 		
 		// set the properties in the exchange
 		Map<String, Object> properties = exchange.getProperties();
