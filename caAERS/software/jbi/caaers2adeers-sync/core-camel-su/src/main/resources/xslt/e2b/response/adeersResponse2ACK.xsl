@@ -85,7 +85,7 @@
                         <!--Optional:-->
                         <receiptdateformat>102</receiptdateformat>
                         <!--Optional:-->
-                        <receiptdate><xsl:value-of select="$c2r_report_received_on_102" /></receiptdate>
+                        <receiptdate><xsl:value-of select="$c2r_msg_date" /></receiptdate>
                         <!-- Date on which input safety reprot message was received  : in CCYYMMDD format-->
                         <!--
                         01 = Report Loaded Successfully

@@ -161,7 +161,7 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
     	
 
         //configure all the Quartz cron jobs
-        //cronJobRouteBuilder.configure(this);
+        cronJobRouteBuilder.configure(this);
         //configure routes towards adeers
     	toAdeersRouteBuilder.configure(this);
         //configure route towards caAERS Webservices

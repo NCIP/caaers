@@ -71,7 +71,6 @@ public class ToCaaersReportWSRouteBuilder {
         
         routeBuilder.from("direct:sendE2BAckSink")                
 			.process(track(ROUTED_TO_CAAERS_WS_INVOCATION_CHANNEL))
-			.processRef("safetyReportServiceResponseProcessor")
 			.processRef("addEDIHeadersAndFootersProcessor")
 			.process(track(POST_PROCESS_EDI_MSG))
 			.to(routeBuilder.getFileTracker().fileURI(POST_PROCESS_EDI_MSG))

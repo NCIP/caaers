@@ -6,9 +6,7 @@
 
     <!-- Assuming that the following Parameters are derived runtime from header -->
     <xsl:param name="c2r_msg_id" /> <!-- a UUID -->
-    <xsl:param name="c2r_correlation_id" />
     <xsl:param name="c2r_today_204" />
-    <xsl:param name="c2r_report_received_on_102" />
     <xsl:param name="c2r_msg_number" />
     <xsl:param name="c2r_msg_date" />
     <xsl:param name="c2r_msg_sender_id" />
@@ -33,7 +31,7 @@
             </ichicsrmessageheader>
             <acknowledgment>
                 <messageacknowledgment>
-                    <icsrmessagenumb><xsl:value-of select="c2r_msg_number" /></icsrmessagenumb>
+                    <icsrmessagenumb><xsl:value-of select="$c2r_msg_number" /></icsrmessagenumb>
                     <!-- obtained as part of the input safety report message -->
                     <localmessagenumb><xsl:value-of select="//com:ServiceResponse/com:entityProcessingOutcomes/com:entityProcessingOutcome/dataBaseId" /></localmessagenumb>
                     <!-- optional, might not be present if there was processing error. This number was assigned to the input safety Message by caAERS -->
@@ -84,9 +82,9 @@
                         <!--<companynumb>AdEERS Ticket Number? Case Number ?</companynumb>-->
                         <!--(Refer section B.1.5) Not sure, either this can be Case number or AdEERS ticket number. -->
                         <!--Optional:-->
-                        <receiptdateformat>102</receiptdateformat>
+                        <receiptdateformat>204</receiptdateformat>
                         <!--Optional:-->
-                        <receiptdate><xsl:value-of select="$c2r_report_received_on_102" /></receiptdate>
+                        <receiptdate><xsl:value-of select="$c2r_msg_date" /></receiptdate>
                         <!-- Date on which input safety reprot message was received  : in CCYYMMDD format-->
                         <!--
                         01 = Report Loaded Successfully

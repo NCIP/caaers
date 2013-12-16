@@ -11,8 +11,10 @@ import gov.nih.nci.cabig.caaers2adeers.track.IntegrationLogMessage;
 import gov.nih.nci.cabig.caaers2adeers.track.IntegrationLogMessageDao;
 
 import java.io.StringReader;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
@@ -28,9 +30,10 @@ import org.apache.commons.logging.LogFactory;
 import org.xml.sax.InputSource;
 
 public class AdeersResponseProcessor implements Processor {
-
-    public static final String CORRELATION_ID_ATTR_NAME = "correlationId";
-	public static final String CORRELATION_ID = "c2r_correlation_id";
+    
+	public final static SimpleDateFormat msgDF = new SimpleDateFormat("yyyyMMddhhmmss");
+	
+	public static final String MSG_ID = "c2r_msg_id";
 	public static final String TODAY_DT = "c2r_today_204";
 	public static final String MSG_NUMB = "c2r_msg_number";
 	public static final String MSG_DT = "c2r_msg_date";
@@ -68,13 +71,9 @@ public class AdeersResponseProcessor implements Processor {
 		
 		log.debug("adding correlationId.");
 		Date cDt = new Date();
-		String correlationId = XPathBuilder.xpath("//payload/@"+CORRELATION_ID_ATTR_NAME).evaluate(exchange, String.class);
-        if(StringUtils.isBlank(correlationId)){
-        	log.debug("No correlationId found in payload. Adding current time as correlationId.");
-        	correlationId = System.currentTimeMillis()+"##"+System.currentTimeMillis();
-        }
-		properties.put(CORRELATION_ID, correlationId);
-		properties.put(TODAY_DT, cDt.toString());
+		
+		properties.put(MSG_ID, UUID.randomUUID().toString());
+		properties.put(TODAY_DT, msgDF.format(cDt));
 		
 		log.info("properties in exchange are " + properties);
 				
