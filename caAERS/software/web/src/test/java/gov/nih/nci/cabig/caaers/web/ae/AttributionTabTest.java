@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 
 import java.sql.Date;
@@ -308,7 +309,7 @@ public class AttributionTabTest extends AeTabTestCase {
     private void ensureSurgeryInterventionCount(int count) {
         while (command.getAeReport().getSurgeryInterventions().size() < count) {
             SurgeryIntervention si = new SurgeryIntervention();
-            si.setInterventionDate(new Date(System.currentTimeMillis()));
+            si.setInterventionDate(new java.util.Date());
             si.setInterventionSite(new InterventionSite());
             command.getAeReport().addSurgeryIntervention(si);
         }
