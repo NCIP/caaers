@@ -103,7 +103,7 @@ public class ReportSubmissionServiceTest extends AbstractNoSecurityTestCase {
 			@Override
 			public void broadcast(String message) throws BroadcastException {
 				assertEquals("<AdverseEventReport><EXTERNAL_SYSTEMS>www.biju.com::myusername::password</EXTERNAL_SYSTEMS><REPORT_ID>110</REPORT_ID>" +
-						"<SUBMITTER_EMAIL>just@frank.net</SUBMITTER_EMAIL><id>110</id><biju>Joseph</biju></AdverseEventReport>", message);
+						"<SUBMITTER_EMAIL>just@frank.net</SUBMITTER_EMAIL><MESSAGE_COMBO_ID>abc1234|19691231070000</MESSAGE_COMBO_ID><id>110</id><biju>Joseph</biju></AdverseEventReport>", message);
 			}
 			@Override
 			public void initialize() throws BroadcastException, JMSException {
@@ -112,11 +112,13 @@ public class ReportSubmissionServiceTest extends AbstractNoSecurityTestCase {
 		
 		report = Fixtures.createReport("Test");
 		report.setId(110);
+	
 		ReportVersion lastVersion =  report.getLastVersion();
 		lastVersion.setSubmitter(Fixtures.createSubmitter());
 		lastVersion.setCcEmails("joel@gmail.com");
 		
 		aeReport = Fixtures.createSavableExpeditedReport();
+		aeReport.setExternalId("abc1234");
 		report.setAeReport(aeReport);
 		
 		ae1 = Fixtures.createAdverseEvent(1, Grade.DEATH);
