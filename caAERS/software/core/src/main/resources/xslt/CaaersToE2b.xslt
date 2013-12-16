@@ -451,7 +451,43 @@
 					<devicereturndate><xsl:value-of select="DeviceReturnDate"/></devicereturndate>
 					<drugadditional>Device</drugadditional>
 				 </drug> 
+			</xsl:for-each>	
+			
+			<!-- Radiation -->
+			<xsl:for-each select="/AdverseEventReport/RadiationIntervention">
+				 <drug>
+					<medicinalproduct><xsl:value-of select="administration"/></medicinalproduct>
+					<drugcumulativedosagenumb><xsl:value-of select="dosage"/></drugcumulativedosagenumb>
+					<drugcumulativedosageunit><xsl:value-of select="dosageUnit"/></drugcumulativedosageunit>
+					<drugintervaldosageunitnumb><xsl:value-of select="daysElapsed"/></drugintervaldosageunitnumb>
+					<drugenddateformat>102</drugenddateformat>
+						<!-- Date last administered -->
+					<drugenddate>
+						<xsl:call-template name="getDate"> 
+								<xsl:with-param name="givenDate" select="lastTreatmentDate"/>	
+						</xsl:call-template>
+					</drugenddate> 
+					<drugseparatedosagenumb><xsl:value-of select="fractionNumber"/></drugseparatedosagenumb>
+					<actiondrug><xsl:value-of select="adjustment"/></actiondrug>
+					<drugadditional>Radiation</drugadditional>
+			      </drug>
 			</xsl:for-each>	 
+			
+			<!-- Surgery -->
+			<xsl:for-each select="/AdverseEventReport/SurgeryIntervention">
+				  <drug>
+					<medicinalproduct><xsl:value-of select="interventionSite"/></medicinalproduct>
+					<drugstartdateformat>102</drugstartdateformat>
+						<!-- Date last administered -->
+					<drugstartdate>
+						<xsl:call-template name="getDate"> 
+								<xsl:with-param name="givenDate" select="interventionDate"/>	
+						</xsl:call-template>
+					</drugstartdate> 
+					<drugadditional>Surgery</drugadditional>
+				  </drug>
+			</xsl:for-each>	   
+			
 		
 			<!-- Concomitant Medication -->
 			<xsl:for-each select="/AdverseEventReport/ConcomitantMedication">
