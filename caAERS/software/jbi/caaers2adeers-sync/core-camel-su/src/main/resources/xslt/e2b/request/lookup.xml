@@ -51,7 +51,7 @@
         <race><code>White</code><value>White</value></race>
         <race><code>Black or African American</code><value>Black or African American</value></race>
         <race><code>American Indian or Alaska Native</code><value>American Indian or Alaska Native</value></race>
-        <race><code>Native Hawaiian or Other Pacific Islander</code><value>Native Hawaiian or Other Pacific Islander</value></race>
+        <race><code>Native Hawaiian or other Pacific Islander</code><value>Native Hawaiian or Other Pacific Islander</value></race>
         <race><code>Not Reported</code><value>Not Reported</value></race>
         <race><code>Unknown</code><value>Unknown</value></race>
     </races>
