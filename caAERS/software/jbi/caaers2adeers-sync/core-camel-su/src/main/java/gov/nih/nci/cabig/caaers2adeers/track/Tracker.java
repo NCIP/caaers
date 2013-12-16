@@ -160,10 +160,10 @@ public class Tracker implements Processor{
 			for (String path : messageComboIdPaths) {
 				String value = XPathBuilder.xpath(path).evaluate(exchange, String.class);
 				if(StringUtils.isNotBlank(value)){
-	        		mIdB.append(value).append("|");
+	        		mIdB.append(value).append("::");
 	        	}
 			}
-			String msgId = mIdB.substring(0, mIdB.length()-1); //remove the last '|' char
+			String msgId = mIdB.substring(0, mIdB.length()-2); //remove the last '::' char
 			String message = exchange.getIn().getBody(String.class);
 			integrationLog.addIntegrationLogMessage(new IntegrationLogMessage(msgId, message, stage));
 		}
