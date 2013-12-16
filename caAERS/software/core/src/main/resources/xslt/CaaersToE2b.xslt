@@ -476,7 +476,7 @@
 			<!-- Surgery -->
 			<xsl:for-each select="/AdverseEventReport/SurgeryIntervention">
 				  <drug>
-					<medicinalproduct><xsl:value-of select="interventionSite"/></medicinalproduct>
+					<medicinalproduct><xsl:value-of select="InterventionSite/name"/></medicinalproduct>
 					<drugstartdateformat>102</drugstartdateformat>
 						<!-- Date last administered -->
 					<drugstartdate>
