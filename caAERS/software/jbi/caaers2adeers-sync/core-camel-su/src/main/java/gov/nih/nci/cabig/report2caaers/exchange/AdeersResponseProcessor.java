@@ -59,15 +59,17 @@ public class AdeersResponseProcessor implements Processor {
 		IntegrationLogMessage integrationLogMessage = integrationLogMessageDao.findByComboId(msgComboId, Stage.REQUEST_RECEIVED);
 		log.info("integrationLogMessage is " + integrationLogMessage.getMessage());
 		
-		String msgNumb = evaluateXPath("//messagenumb", integrationLogMessage.getMessage());
-		String msgDt = evaluateXPath("//messagedate", integrationLogMessage.getMessage());
-		String msgSndrId = evaluateXPath("//messagesenderidentifier", integrationLogMessage.getMessage());
-		String msgRcvrId = evaluateXPath("//messagereceiveridentifier", integrationLogMessage.getMessage());
-		
-		properties.put(MSG_NUMB, msgNumb);
-		properties.put(MSG_DT, msgDt);
-		properties.put(MSG_SNDR_ID, msgSndrId);
-		properties.put(MSG_RCVR_ID, msgRcvrId);
+		if(StringUtils.isNotBlank(integrationLogMessage.getMessage())) {
+			String msgNumb = evaluateXPath("//messagenumb", integrationLogMessage.getMessage());
+			String msgDt = evaluateXPath("//messagedate", integrationLogMessage.getMessage());
+			String msgSndrId = evaluateXPath("//messagesenderidentifier", integrationLogMessage.getMessage());
+			String msgRcvrId = evaluateXPath("//messagereceiveridentifier", integrationLogMessage.getMessage());
+			
+			properties.put(MSG_NUMB, msgNumb);
+			properties.put(MSG_DT, msgDt);
+			properties.put(MSG_SNDR_ID, msgSndrId);
+			properties.put(MSG_RCVR_ID, msgRcvrId);			
+		}
 		
 		log.debug("adding correlationId.");
 		Date cDt = new Date();
