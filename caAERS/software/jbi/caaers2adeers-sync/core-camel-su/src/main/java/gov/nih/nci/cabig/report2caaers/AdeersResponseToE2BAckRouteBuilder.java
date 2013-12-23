@@ -22,6 +22,13 @@ public class AdeersResponseToE2BAckRouteBuilder {
         this.routeBuilder = rb;
         
         routeBuilder.from("direct:routeAdEERSResponseSink")
+        	.choice()
+        		.when().xpath("starts-with(//MESSAGE_COMBO_ID, 'null::')")
+        			.to("direct:donothing")
+                .otherwise()
+                	.to("direct:processAdEERSResponse");
+        
+        routeBuilder.from("direct:processAdEERSResponse")
 	        .process(track(ADEERS_REPORT_SUBMISSION_RESPONSE))	        
 			.to(routeBuilder.getFileTracker().fileURI(ADEERS_REPORT_SUBMISSION_RESPONSE))
 			.processRef("adeersResponseProcessor")
