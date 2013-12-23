@@ -244,7 +244,7 @@
                 <exclude module="axis-ant" />
                 <exclude module="junit" />
             </dependency>
-            <dependency org="org.opensaml" name="opensaml" rev="1.1"/>
+            
             <dependency org="wsdl4j" name="wsdl4j" rev="1.5.2">
                   <exclude module="pull-parser" />
             </dependency>
@@ -289,6 +289,25 @@
                 <exclude org="com.sun.xml.bind"/>
                 <exclude module="hibernate" />
             </dependency>
+            
+            <!-- CTEPIAM -->
+            <dependency org="com.westat.ctsu.sso" name="ctsusso" rev="2.4"  />
+            <dependency org="org.opensaml" name="opensaml" rev="2.2.3"/>
+            <dependency org="org.opensaml" name="openws" rev="1.4.2"/>
+            <dependency org="org.apache.struts.xwork" name="xwork-core" rev="2.2.1"/>
+            <dependency org="org.opensaml" name="xmltooling" rev="1.3.2">
+            	<exclude org="org.slf4j" name="slf4j-api" />
+            	<exclude org="org.bouncycastle" name="bcprov-jdk15"/>
+            	<exclude org="xerces" name="xml-apis" />
+            	<exclude org="xerces" name="xercesImpl" />
+            	<exclude org="xml-resolver" name="xml-resolver"  />
+                <exclude org="xalan" name="xalan"  />
+                <exclude org="junit" name="junit"  />
+                <exclude org="xmlunit" name="xmlunit"  />
+            </dependency>            
+            <dependency org="xerces" name="xercesImpl" rev="2.8.1" force="true"/>
+            <!-- added to local repo -->
+            <dependency org="com.westat.kjdk" name="kjdk" rev="1.0"  />
 			
             <!-- Test/Runtime dependencies -->
             <dependency org="org.dbunit" name="dbunit" rev="2.4.8" conf="build->default;test->default">

@@ -75,13 +75,10 @@ default-lazy-init="true">
 	<bean id="localmessageBroadcastService" class="gov.nih.nci.cabig.caaers.esb.client.impl.CaaersNonGridCaXchangeMessageBroadcastServiceImpl">
 		<property name="clientFactory" ref="clientFactory"/>
 	</bean>
-
-    <!--
-
+	
     <bean id="CTEPIAMmessageBroadcastService" class="gov.nih.nci.cabig.caaers.esb.client.impl.CaaersNonGridCaXchangeMessageBroadcastServiceImpl">
         <property name="clientFactory" ref="clientFactory"/>
     </bean>
-    -->
 	
 	
 	<bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">

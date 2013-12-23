@@ -30,8 +30,7 @@ public class CTEPIAMAuthenFilter  implements Filter {
 
             if ( isSAMLResponse(((HttpServletRequest)req))) {
                 CTEPIAMAuthenEntryPoint ctepIAMAuthenEntryPoint = new CTEPIAMAuthenEntryPoint();
-                ctepIAMAuthenEntryPoint.receiveResponse(((HttpServletRequest)req), (HttpServletResponse)res);
-                chainFlag = true;
+                chainFlag = ctepIAMAuthenEntryPoint.receiveResponse(((HttpServletRequest)req), (HttpServletResponse)res);
             }
 
             if ( chainFlag )

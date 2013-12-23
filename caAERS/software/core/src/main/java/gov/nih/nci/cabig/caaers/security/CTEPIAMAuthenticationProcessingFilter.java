@@ -84,6 +84,15 @@ public class CTEPIAMAuthenticationProcessingFilter extends AuthenticationProcess
 
             // Create the Equivalent User in the CSM.
             user = new User();
+            
+            gov.nih.nci.security.authorization.domainobjects.User csmUser = new gov.nih.nci.security.authorization.domainobjects.User();
+            csmUser.setFirstName(ssoUser.getFirstName());
+            csmUser.setLastName(ssoUser.getLastName());
+            csmUser.setLoginName(ssoUser.getUserName());
+            csmUser.setEmailId(ssoUser.getEmailAddress());
+            user.setCsmUser(csmUser);
+
+        }
 
             user.setFirstName(ssoUser.getFirstName());
             user.setLastName(ssoUser.getLastName());
@@ -103,23 +112,22 @@ public class CTEPIAMAuthenticationProcessingFilter extends AuthenticationProcess
             RoleMembership rm = new RoleMembership(UserGroupType.ae_reporter);
             rm.setOrganizationNCICodes(nciCodes);
             rm.setAllStudy(true);
+            RoleMembership rm1 = new RoleMembership(UserGroupType.system_administrator);
+            rm.setOrganizationNCICodes(nciCodes);
+            rm.setAllStudy(true);
+            RoleMembership rm2 = new RoleMembership(UserGroupType.user_administrator);
+            rm.setOrganizationNCICodes(nciCodes);
+            rm.setAllStudy(true);
+            
             roleMembershipMap.put(UserGroupType.ae_reporter, rm);
+            roleMembershipMap.put(UserGroupType.system_administrator, rm1);
+            roleMembershipMap.put(UserGroupType.user_administrator, rm2);
 
             user.setRoleMembershipMap(roleMembershipMap);
-
-            gov.nih.nci.security.authorization.domainobjects.User csmUser = new gov.nih.nci.security.authorization.domainobjects.User();
-            csmUser.setFirstName(ssoUser.getFirstName());
-            csmUser.setLastName(ssoUser.getLastName());
-            csmUser.setLoginName(ssoUser.getUserName());
-            //csmUser.setDepartment("Test Department");
-            csmUser.setEmailId(ssoUser.getEmailAddress());
-            user.setCsmUser(csmUser);
-
 
             userRepository.createOrUpdateUser(user, null);
             userRepository.userChangePassword(user,"dummyPassword",1);
             userRepository.provisionUser(user);
-        }
 
     }
 

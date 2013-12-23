@@ -72,9 +72,10 @@ public class CTEPIAMAuthenEntryPoint {
 
     }
 
-    public void  receiveResponse(HttpServletRequest request,
+    public boolean  receiveResponse(HttpServletRequest request,
                                  HttpServletResponse response) throws IOException{
-        try {
+        boolean retval = true;
+    	try {
 
              CTEPSSOAuthenticator sso = new CTEPSSOAuthenticator();
             CTEPSAMLResponse samlResponse = sso.getSAMLResponse(request);
@@ -89,11 +90,14 @@ public class CTEPIAMAuthenEntryPoint {
             }else{
                 request.getSession().setAttribute("loginErrorMessage","Error during CTEP login, contact Caaers help desk for assistance!");
                 response.sendRedirect(CaaersURL+"/login");
+                retval = false;
             }
         } catch (ZException ze) {
             request.getSession().setAttribute("loginErrorMessage","Error loading CTEP login page, contact Caaers help desk for assistance!");
             response.sendRedirect(CaaersURL+"/login");
+            retval = false;
         }
+    	return retval;
 
     }
 
