@@ -130,11 +130,23 @@
     	<presentstatus><code>5</code><value>DEAD</value></presentstatus>
     	<presentstatus><code>6</code><value>INTERVENTION_CONTINUES</value></presentstatus>
     </aepresentstatuses>
-    <baselinestatuses>	
+    <ecog-zubrod-baselinestatuses>	
     	<baselinestatus><code>0</code><value>0 = Normal Activity, asymptomatic</value></baselinestatus>
     	<baselinestatus><code>1</code><value>1 = Symptomatic, fully ambulatory</value></baselinestatus>
     	<baselinestatus><code>2</code><value>2 = Symptomatic, in bed less than 50% of time</value></baselinestatus>
     	<baselinestatus><code>3</code><value>3 = Symptomatic, in bed more than 50% of time</value></baselinestatus>
     	<baselinestatus><code>4</code><value>4 = 100% bedridden</value></baselinestatus>
-    </baselinestatuses>
+    </ecog-zubrod-baselinestatuses>
+    <karnofsky-lansky-baselinestatuses>	
+    	<baselinestatus><code>100</code><value>0 = Normal Activity, asymptomatic</value></baselinestatus>
+    	<baselinestatus><code>90</code><value>0 = Normal Activity, asymptomatic</value></baselinestatus>
+    	<baselinestatus><code>80</code><value>1 = Symptomatic, fully ambulatory</value></baselinestatus>
+    	<baselinestatus><code>70</code><value>1 = Symptomatic, fully ambulatory</value></baselinestatus>
+    	<baselinestatus><code>60</code><value>2 = Symptomatic, in bed less than 50% of time</value></baselinestatus>
+    	<baselinestatus><code>50</code><value>2 = Symptomatic, in bed less than 50% of time</value></baselinestatus>
+    	<baselinestatus><code>40</code><value>3 = Symptomatic, in bed more than 50% of time</value></baselinestatus>
+    	<baselinestatus><code>30</code><value>3 = Symptomatic, in bed more than 50% of time</value></baselinestatus>
+    	<baselinestatus><code>20</code><value>4 = 100% bedridden</value></baselinestatus>
+    	<baselinestatus><code>10</code><value>4 = 100% bedridden</value></baselinestatus>
+    </karnofsky-lansky-baselinestatuses>
 </lookup>
