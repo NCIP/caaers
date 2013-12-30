@@ -698,10 +698,7 @@
 				<xsl:value-of select="drugcumulativedosagenumb" />
 			</ae:dosage>
 			<ae:dosageUnit>
-				<xsl:call-template name="lookup">
-					<xsl:with-param name="_map" select="$map//uoms" />
-					<xsl:with-param name="_code" select='drugcumulativedosageunit' />
-				</xsl:call-template>
+				<xsl:value-of select="radiationdoseunit" />
 			</ae:dosageUnit>
 			<xsl:if test="./drugenddate != '' ">
 				<ae:lastTreatmentDate>

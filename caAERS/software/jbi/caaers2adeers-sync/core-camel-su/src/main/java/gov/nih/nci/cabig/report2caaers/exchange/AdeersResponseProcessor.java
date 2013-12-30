@@ -31,7 +31,7 @@ import org.xml.sax.InputSource;
 
 public class AdeersResponseProcessor implements Processor {
     
-	public final static SimpleDateFormat msgDF = new SimpleDateFormat("yyyyMMddhhmmss");
+	public final static SimpleDateFormat msgDF = new SimpleDateFormat("yyyyMMddHHmmss");
 	
 	public static final String MSG_ID = "c2r_msg_id";
 	public static final String TODAY_DT = "c2r_today_204";

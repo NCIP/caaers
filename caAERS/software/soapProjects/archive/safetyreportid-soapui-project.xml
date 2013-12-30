@@ -1344,6 +1344,9 @@
                   <outcome>
                      <outComeEnumType>HOSPITALIZATION</outComeEnumType>
                   </outcome>
+                  <outcome>
+                     <outComeEnumType>HOSPITALIZATION</outComeEnumType>
+                  </outcome>
                   <!--Optional:-->
                   <increasedRisk>1</increasedRisk>
                   <externalId>000001</externalId>

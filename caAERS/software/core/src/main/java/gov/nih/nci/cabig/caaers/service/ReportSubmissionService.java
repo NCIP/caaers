@@ -56,7 +56,7 @@ public class ReportSubmissionService {
     
     protected final Log log = LogFactory.getLog(getClass());
     
-    protected final static SimpleDateFormat msgDF = new SimpleDateFormat("yyyyMMddhhmmss");
+    protected final static SimpleDateFormat msgDF = new SimpleDateFormat("yyyyMMddHHmmss");
 
     private NowFactory nowFactory;
     protected CaaersAdeersMessageBroadcastServiceImpl messageBroadcastService;
