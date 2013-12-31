@@ -71,4 +71,13 @@ public class AdverseEventCtcTermTest extends AbstractNoSecurityTestCase {
         term.setCtcTerm(null);
         assertNull(term.getUniversalTerm());
     }
+    
+    public void testUniversalTermWithDetailsForOtherAndLowLevelTerm() throws Exception {
+    	CtcTerm ctcterm = new CtcTerm();
+    	ctcterm.setTerm("headache");
+    	ctcterm.setSelect("select");
+        term.setCtcTerm(ctcterm);
+        term.getAdverseEvent().setDetailsForOther("other deails");
+        assertFalse(term.getUniversalTerm().contains("null"));
+    }
 }
