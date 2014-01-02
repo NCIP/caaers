@@ -67,7 +67,9 @@ public class AdverseEventCtcTerm extends AbstractAdverseEventTerm<CtcTerm> {
                 sb.delete(otherAt + 5, sb.length());
             }
             if (getAdverseEvent().getDetailsForOther() != null) sb.append(": ").append(getAdverseEvent().getDetailsForOther());
-            if (getAdverseEvent().getLowLevelTerm() != null) sb.append(": ").append(getAdverseEvent().getLowLevelTerm().getMeddraTerm());
+            if (getAdverseEvent().getLowLevelTerm() != null && getAdverseEvent().getLowLevelTerm().getMeddraTerm() != null) {
+            	sb.append(": ").append(getAdverseEvent().getLowLevelTerm().getMeddraTerm());
+            }
             return sb.toString();
         } else {
             return getTerm().getFullName();
