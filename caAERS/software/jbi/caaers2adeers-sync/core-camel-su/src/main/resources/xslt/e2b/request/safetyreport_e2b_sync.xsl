@@ -908,11 +908,11 @@
 					</ae:value>
 				</ae:contactMechanism>
 			</xsl:if>
-			<xsl:if test="/ichicsr/safetyreport/sender/sendertel">
+			<xsl:if test="/ichicsr/safetyreport/senderphone">
 				<ae:contactMechanism>
 					<ae:type>phone</ae:type>
 					<ae:value>
-						<xsl:value-of select="/ichicsr/safetyreport/sender/sendertel" />
+						<xsl:value-of select="/ichicsr/safetyreport/senderphone" />
 					</ae:value>
 				</ae:contactMechanism>
 			</xsl:if>

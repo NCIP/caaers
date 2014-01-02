@@ -238,6 +238,9 @@
 		<safetyreport>
 			<reportname><xsl:value-of select="/AdverseEventReport/Report/ReportDefinition/label" /></reportname>
 			<safetyreportid><xsl:value-of select="/AdverseEventReport/Report/caseNumber"/></safetyreportid> 
+			<xsl:if test="/AdverseEventReport/Report/Submitter/ContactMechanism[key = 'phone']/value">
+				<senderphone><xsl:value-of select="/AdverseEventReport/Report/Submitter/ContactMechanism[key = 'phone']/value" /></senderphone>
+			</xsl:if>
 			<xsl:for-each select="AdverseEventReport/Physician">				 
 					 <physiciangivename><xsl:value-of select="/AdverseEventReport/Physician/firstName" /></physiciangivename>
 					 <xsl:if test="/AdverseEventReport/Physician/middleName">
@@ -274,10 +277,7 @@
 				     </xsl:if>
 					 <senderfamilyname><xsl:value-of select="lastName" /></senderfamilyname>
 					 <xsl:if test="ContactMechanism">
-						<xsl:for-each select="ContactMechanism"> 
-							<xsl:if test="key = 'phone'">
-								<sendertel><xsl:value-of select="value" /></sendertel>	
-							</xsl:if>
+						<xsl:for-each select="ContactMechanism">
 							<xsl:if test="key = 'fax'">
 								<senderfax><xsl:value-of select="value" /></senderfax>	
 							</xsl:if>
