@@ -6,7 +6,7 @@ class CreateReportIdSequence extends edu.northwestern.bioinformatics.bering.Migr
         }
 
         if (databaseMatches('postgresql')) {
-            execute('ALTER SEQUENCE safety_report_id_gen_seq RESTART WITH 1;')
+            execute('CREATE SEQUENCE safety_report_id_gen_seq INCREMENT 1 START 1;')
         }
     }
 
