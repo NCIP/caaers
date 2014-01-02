@@ -235,6 +235,13 @@
 							<xsl:call-template name="priorTherapy" />
 						</xsl:for-each>
 						<ae:treatmentInformation>
+							<xsl:if test="/ichicsr/safetyreport/patient/drug[drugcharacterization = '3']/drugstartdate">
+								<ae:firstCourseDate>
+									<xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">
+										<xsl:with-param name="date" select="/ichicsr/safetyreport/patient/drug[drugcharacterization = '3']/drugstartdate" />
+									</xsl:call-template>
+								</ae:firstCourseDate>
+							</xsl:if>
 							<xsl:if test="/ichicsr/safetyreport/patient/summary/indadminflag">
 								<ae:investigationalAgentAdministered>
 									<xsl:call-template name="convertOneTwotoBoolean">
@@ -901,11 +908,11 @@
 					</ae:value>
 				</ae:contactMechanism>
 			</xsl:if>
-			<xsl:if test="/ichicsr/safetyreport/sender/senderphone">
+			<xsl:if test="/ichicsr/safetyreport/sender/sendertel">
 				<ae:contactMechanism>
 					<ae:type>phone</ae:type>
 					<ae:value>
-						<xsl:value-of select="/ichicsr/safetyreport/sender/senderphone" />
+						<xsl:value-of select="/ichicsr/safetyreport/sender/sendertel" />
 					</ae:value>
 				</ae:contactMechanism>
 			</xsl:if>

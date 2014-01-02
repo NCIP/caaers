@@ -276,7 +276,7 @@
 					 <xsl:if test="ContactMechanism">
 						<xsl:for-each select="ContactMechanism"> 
 							<xsl:if test="key = 'phone'">
-								<senderphone><xsl:value-of select="value" /></senderphone>	
+								<sendertel><xsl:value-of select="value" /></sendertel>	
 							</xsl:if>
 							<xsl:if test="key = 'fax'">
 								<senderfax><xsl:value-of select="value" /></senderfax>	
@@ -299,6 +299,12 @@
 				<drugcharacterization>3</drugcharacterization>	<!-- drugcharacterization = 3 identifies the "drug" as the reporting period -->		
 				<medicinalproduct><xsl:value-of select="/AdverseEventReport/TreatmentInformation/TreatmentAssignment/code"/></medicinalproduct> <!-- Treatment Assignment Code -->		
 				<drugstartdateformat>102</drugstartdateformat> 
+				<!-- Start Date of first course -->
+				<drugstartdate>
+					<xsl:call-template name="getDate"> 
+							<xsl:with-param name="givenDate" select="/AdverseEventReport/TreatmentInformation/firstCourseDate"/>	
+					</xsl:call-template>
+				</drugstartdate>
 					<!-- Start Date of course associated with this Expedited Report -->	
 				<drugenddate>
 					<xsl:call-template name="getDate"> 
@@ -458,7 +464,7 @@
 				 <drug>
 					<medicinalproduct><xsl:value-of select="administration"/></medicinalproduct>
 					<drugcumulativedosagenumb><xsl:value-of select="dosage"/></drugcumulativedosagenumb>
-					<drugcumulativedosageunit><xsl:value-of select="dosageUnit"/></drugcumulativedosageunit>
+					<radiationdoseunit><xsl:value-of select="dosageUnit"/></radiationdoseunit>
 					<drugintervaldosageunitnumb><xsl:value-of select="daysElapsed"/></drugintervaldosageunitnumb>
 					<drugenddateformat>102</drugenddateformat>
 						<!-- Date last administered -->
