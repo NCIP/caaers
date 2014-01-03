@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<con:soapui-project activeEnvironment="Default" name="safetyreportid_local" soapui-version="4.6.1" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="SafetyReportIdServiceSoapBinding" type="wsdl" bindingName="{http://schema.integration.caaers.cabig.nci.nih.gov/aereportid}SafetyReportIdServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="https://localhost:8443/caaers/services/SafetyReportIdService?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="https://localhost:8443/caaers/services/SafetyReportIdService?wsdl"><con:part><con:url>https://localhost:8443/caaers/services/SafetyReportIdService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="SafetyReportIdService" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/aereportid" xmlns:ns1="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:ns2="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/aereportid" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<con:soapui-project activeEnvironment="Default" name="safetyreportid_local" soapui-version="4.6.1" abortOnError="false" runType="SEQUENTIAL" resourceRoot="" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="SafetyReportIdServiceSoapBinding" type="wsdl" bindingName="{http://schema.integration.caaers.cabig.nci.nih.gov/aereportid}SafetyReportIdServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="https://localhost:8443/caaers/services/SafetyReportIdService?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="https://localhost:8443/caaers/services/SafetyReportIdService?wsdl"><con:part><con:url>https://localhost:8443/caaers/services/SafetyReportIdService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="SafetyReportIdService" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/aereportid" xmlns:ns1="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:ns2="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/aereportid" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <wsdl:types>
     <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/aereportid" xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/aereportid" xmlns:xs="http://www.w3.org/2001/XMLSchema">
       <xs:element name="ReportIdCriteria">
@@ -1122,7 +1122,7 @@
       <soap:address location="https://localhost:8443/caaers/services/SAEEvaluationService"/>
     </wsdl:port>
   </wsdl:service>
-</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>https://localhost:8443/caaers/services/SAEEvaluationService</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="evaluateAEs" bindingOperationName="evaluateAEs" type="Request-Response" outputName="evaluateAEsResponse" inputName="evaluateAEs" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>https://localhost:8443/caaers/services/SAEEvaluationService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:saer="http://schema.integration.caaers.cabig.nci.nih.gov/saerules">
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>https://localhost:8443/caaers/services/SAEEvaluationService</con:endpoint><con:endpoint>https://dev.semanticbits.com/caaers/services/SAEEvaluationService</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="evaluateAEs" bindingOperationName="evaluateAEs" type="Request-Response" outputName="evaluateAEsResponse" inputName="evaluateAEs" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>https://localhost:8443/caaers/services/SAEEvaluationService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:saer="http://schema.integration.caaers.cabig.nci.nih.gov/saerules">
    <soapenv:Header/>
    <soapenv:Body>
       <saer:evaluateAEs>
@@ -1369,4 +1369,76 @@
          </saer:SaveAndEvaluateAEsInputMessage>
       </saer:saveAndEvaluateAEs>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" name="SOAP Response"/><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/saerules/SAEEvaluationServiceInterface/saveAndEvaluateAEs"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer><con:outgoing><con:name>caaers</con:name><con:entry type="Username" username="mayo-super-user" password="Hello-12"><con:configuration><addCreated>true</addCreated><addNonce>true</addNonce><passwordType>PasswordText</passwordType></con:configuration></con:entry></con:outgoing><con:outgoing><con:name>caaers.integ</con:name><con:entry type="Username" username="sb-admin" password="Hello-12"><con:configuration><addCreated>true</addCreated><addNonce>true</addNonce><passwordType>PasswordText</passwordType></con:configuration></con:entry></con:outgoing></con:wssContainer><con:sensitiveInformation/></con:soapui-project>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" name="SOAP Response"/><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/saerules/SAEEvaluationServiceInterface/saveAndEvaluateAEs"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="saveAndEvaluateAEs - vivekreq1"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SAEEvaluationWebServiceImplServiceSoapBinding</con:interface><con:operation>saveAndEvaluateAEs</con:operation><con:request name="saveAndEvaluateAEs - vivekreq1" outgoingWss="caaers.dev" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType=""><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://dev.semanticbits.com/caaers/services/SAEEvaluationService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+xmlns:saer="http://schema.integration.caaers.cabig.nci.nih.gov/saerules"
+xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+  <soapenv:Header>
+     
+   </soapenv:Header>
+  <soapenv:Body>
+         <saer:saveAndEvaluateAEs>
+         <!--Optional:-->
+         <saer:SaveAndEvaluateAEsInputMessage>
+            <!--Optional:-->
+            <saer:adverseEvents>
+               <!--1 or more repetitions:-->
+               <saer:adverseEvent>
+                  <!--Optional:-->
+                  <verbatim>Abdominal infection</verbatim>
+                  <!--You have a CHOICE of the next 2 items at this level-->
+                  <!--Optional:-->
+                  <adverseEventCtepTerm>
+                     <ctepCode>10056519</ctepCode>
+                     <!--You have a CHOICE of the next 2 items at this level-->
+                     <!--Optional:-->
+                  </adverseEventCtepTerm>
+                  <grade>4</grade>
+                  <!--Optional:-->
+                  <hospitalization>YES</hospitalization>
+                  <!--Optional:-->
+                  <expected>1</expected>      
+                  <!--Optional:-->
+                  <dateFirstLearned>2013-09-02T14:31:21</dateFirstLearned>
+                  <!--Optional:-->
+                  <startDate>2013-09-01</startDate>
+                  <!--Optional:-->
+                  <!--<eventApproximateTime>
+                     <hour>1</hour>
+                     <minute>1</minute>
+                     <ampm>AM</ampm>
+                  </eventApproximateTime>-->
+                  <!--Optional:-->               
+                  <!--Zero or more repetitions:-->
+                  <outcome>
+                    <outComeEnumType>HOSPITALIZATION</outComeEnumType>                   
+                  </outcome>
+                  <!--Optional:-->
+                  <increasedRisk>1</increasedRisk>
+                  <!--Optional:-->
+                  <externalId>reaction-5</externalId>
+               </saer:adverseEvent>
+            </saer:adverseEvents>
+            <saer:criteria>
+               <studySubjectIdentifier>SUB57-5876</studySubjectIdentifier>
+               <studyIdentifier>5876</studyIdentifier>
+               <course>
+                  <!--You have a CHOICE of the next 2 items at this level-->
+                  <startDateOfFirstCourse>2013-07-08</startDateOfFirstCourse>
+                  <!--Optional:-->
+                  <startDateOfThisCourse>2013-09-01</startDateOfThisCourse>
+                  <!--Optional:-->
+                  <endDateOfThisCourse>2013-09-05</endDateOfThisCourse>
+                  <!--Optional:-->
+                  <treatmentType>Baseline</treatmentType>
+                  <!--Optional:-->
+                  <cycleNumber>15</cycleNumber>
+                  <!--You have a CHOICE of the next 2 items at this level-->
+                  <treatmentAssignmentCode>A</treatmentAssignmentCode>
+                  <otherTreatmentAssignmentDescription>N/A</otherTreatmentAssignmentDescription>
+                  
+               </course>
+            </saer:criteria>
+         </saer:SaveAndEvaluateAEsInputMessage>
+      </saer:saveAndEvaluateAEs>   
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" name="SOAP Response"/><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/saerules/SAEEvaluationServiceInterface/saveAndEvaluateAEs"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer><con:outgoing><con:name>caaers</con:name><con:entry type="Username" username="mayo-super-user" password="Hello-12"><con:configuration><addCreated>true</addCreated><addNonce>true</addNonce><passwordType>PasswordText</passwordType></con:configuration></con:entry></con:outgoing><con:outgoing><con:name>caaers.integ</con:name><con:entry type="Username" username="sb-admin" password="Hello-12"><con:configuration><addCreated>true</addCreated><addNonce>true</addNonce><passwordType>PasswordText</passwordType></con:configuration></con:entry></con:outgoing><con:outgoing><con:name>caaers.dev</con:name><con:entry type="Username" username="mayo-super-user" password="Hello-12"><con:configuration><addCreated>true</addCreated><addNonce>true</addNonce><passwordType>PasswordText</passwordType></con:configuration></con:entry></con:outgoing></con:wssContainer><con:sensitiveInformation/></con:soapui-project>
