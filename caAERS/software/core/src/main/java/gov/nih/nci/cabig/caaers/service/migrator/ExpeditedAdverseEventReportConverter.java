@@ -207,17 +207,12 @@ public class ExpeditedAdverseEventReportConverter {
 	public ExpeditedAdverseEventReport convert( AdverseEventReport aeReportDto) {
 		ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
 
-		 aeReport.setCreatedAt(XMLUtil.toTimestamp(aeReportDto.getCreatedAt()));
+		aeReport.setCreatedAt(XMLUtil.toTimestamp(aeReportDto.getCreatedAt()));
         aeReport.setExternalId(aeReportDto.getExternalId());
         //reporting period
         if(aeReportDto.getAdverseEventReportingPeriod() != null) {
             AdverseEventReportingPeriod reportingPeriod = convertAdverseEventReportingPeriod(aeReportDto.getAdverseEventReportingPeriod());
             reportingPeriod.addAeReport(aeReport);
-        }
-
-        //Study Participant Assignment
-        if(aeReportDto.getStudyParticipantAssignmentRef() != null && aeReport.getAssignment() == null){
-            aeReport.getReportingPeriod().setAssignment(convertStudyParticipantAssignmentRef(aeReportDto.getStudyParticipantAssignmentRef()));
         }
         
         //Adverse Events
@@ -374,6 +369,7 @@ public class ExpeditedAdverseEventReportConverter {
         //Intervention - Course Agent - Treatment information
         if(aeReportDto.getTreatmentInformation() != null){
             aeReport.setTreatmentInformation(convertTreatmentInformation(aeReportDto.getTreatmentInformation()));
+            aeReport.getAssignment().setStartDateOfFirstCourse(aeReport.getTreatmentInformation().getFirstCourseDate());
         }
 
         //Intervention - Device
