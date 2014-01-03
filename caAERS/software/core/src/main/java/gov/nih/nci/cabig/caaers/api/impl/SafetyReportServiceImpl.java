@@ -315,7 +315,9 @@ public class SafetyReportServiceImpl {
 	                	for(Report  report: reportsToEdit){
 	                		reportsAffected.add(report);
 	                		// Copy the Submitter Information from the Input Source.
+	                		//TODO : need to check if we should call the report.copy() to get all the info
 	                		report.setSubmitter(srcReport.getSubmitter());
+	                		report.setCaseNumber(srcReport.getCaseNumber());
 		                }
 	                	
 	                }
