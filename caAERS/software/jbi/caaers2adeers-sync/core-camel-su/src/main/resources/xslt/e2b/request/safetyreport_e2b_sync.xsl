@@ -9,6 +9,8 @@
 	<xsl:output method="xml" encoding="UTF-8" indent="yes" />
 
 	<xsl:variable name="map" select="document('lookup.xml')" />
+	<xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyz'" />
+	<xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
 
 	<xsl:template name="lookup">
 		<xsl:param name="_map" />
@@ -949,14 +951,14 @@
 			</xsl:if>
 			<!--Optional: -->
 			<ae:baselinePerformanceStatus>
-				<xsl:if test="/ichicsr/safetyreport/patient/baselineperformancescale = 'ECOG' or /ichicsr/safetyreport/patient/baselineperformancescale = 'ZUBROD'">
+				<xsl:if test="translate(/ichicsr/safetyreport/patient/baselineperformancescale, $smallcase, $uppercase) = 'ECOG' or translate(/ichicsr/safetyreport/patient/baselineperformancescale, $smallcase, $uppercase) = 'ZUBROD'">
 					<xsl:call-template name="lookup">
 						<xsl:with-param name="_map" select="$map//ecog-zubrod-baselinestatuses" />
 						<xsl:with-param name="_code"
 								select='/ichicsr/safetyreport/patient/baselineperformancenumber' />
 					</xsl:call-template>
 				</xsl:if>
-				<xsl:if test="/ichicsr/safetyreport/patient/baselineperformancescale = 'LANSKY' or /ichicsr/safetyreport/patient/baselineperformancescale = 'KARNOFSKY'">
+				<xsl:if test="translate(/ichicsr/safetyreport/patient/baselineperformancescale, $smallcase, $uppercase) = 'LANSKY' or translate(/ichicsr/safetyreport/patient/baselineperformancescale,$smallcase, $uppercase) = 'KARNOFSKY'">
 					<xsl:call-template name="lookup">
 						<xsl:with-param name="_map" select="$map//karnofsky-lansky-baselinestatuses" />
 						<xsl:with-param name="_code"
