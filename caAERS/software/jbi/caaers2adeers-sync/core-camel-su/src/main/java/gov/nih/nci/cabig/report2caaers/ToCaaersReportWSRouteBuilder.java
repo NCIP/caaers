@@ -58,8 +58,6 @@ public class ToCaaersReportWSRouteBuilder {
 			.process(track(PRE_PROCESS_EDI_MSG))
 			.to(routeBuilder.getFileTracker().fileURI(PRE_PROCESS_EDI_MSG))
 			.to("direct:performSchematronValidation");
-	        
-        
         
         //perform schematron validation
         routeBuilder.from("direct:performSchematronValidation")                
@@ -72,7 +70,12 @@ public class ToCaaersReportWSRouteBuilder {
                 	.to("xslt:" + responseXSLBase + "E2BSchematronErrors2ACK.xsl")
                 	.to("direct:sendE2BAckSink")
                 .otherwise()
-                	.to("direct:caaers-reportSubmit-sync");
+                	.to("direct:processE2B");
+        
+        routeBuilder.from("direct:processE2B")   
+        	.to("log:gov.nih.nci.cabig.report2caaers.caaers-ws-request?showHeaders=true&level=TRACE")
+        	.processRef("resetOriginalMessageProcessor")
+            .to("direct:caaers-reportSubmit-sync");
         
         nss = new HashMap<String, String>();
         nss.put("soap", "http://schemas.xmlsoap.org/soap/envelope/");

@@ -90,6 +90,8 @@
     
     <bean id="adeersResponseProcessor" class="gov.nih.nci.cabig.report2caaers.exchange.AdeersResponseProcessor"/>
     
+    <bean id="resetOriginalMessageProcessor" class="gov.nih.nci.cabig.report2caaers.exchange.ResetOriginalMessageProcessor"/>
+    
     <bean id="xslt" class="gov.nih.nci.cabig.caaers2adeers.xslt.CustomXsltComponent" />
     
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">

@@ -30,6 +30,7 @@ public class EDIMessagePreProcessor implements Processor {
 	public static final String MSG_SNDR_ID = "c2r_msg_sender_id";
 	public static final String MSG_RCVR_ID = "c2r_msg_receiver_id";
 	private static final String MSG_COMBO_ID = "msg_combo_id";
+	private static final String ORIGINAL_MSG = "original_message";
 
 	private static String[] msgComboIdPaths = { "//safetyreportid",
 										"//messagedate"};
@@ -79,6 +80,7 @@ public class EDIMessagePreProcessor implements Processor {
 		properties.put(CORRELATION_ID, correlationId);
 		properties.put(MSG_ID, UUID.randomUUID().toString());
 		properties.put(TODAY_DT, msgDF.format(cDt));
+		properties.put(ORIGINAL_MSG, replacedDoubleHash);
 				
 		exchange.getOut().setBody(replacedDoubleHash);
 	}
