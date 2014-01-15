@@ -12,6 +12,8 @@
     <xsl:param name="c2r_msg_sender_id" />
     <xsl:param name="c2r_msg_receiver_id" />
     <xsl:param name="report_id" />
+    
+    <xsl:output method="xml" omit-xml-declaration="yes" indent="yes"/>
 
     <xsl:template match="/">
         <ichicsrack lang="en">

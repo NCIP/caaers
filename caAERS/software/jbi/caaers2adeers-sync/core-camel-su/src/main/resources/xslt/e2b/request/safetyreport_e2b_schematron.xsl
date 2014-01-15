@@ -6,7 +6,7 @@
                 xmlns:iso="http://purl.oclc.org/dsdl/schematron"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 				xmlns:caaers="http://caaers"
-                version="1.0">
+                version="2.0">
 	<!--Implementers: please note that overriding process-prolog or process-root is 
     the preferred method for meta-stylesheets to use where possible. -->
 	<xsl:param name="archiveDirParameter"/>
@@ -20,9 +20,7 @@
 	<!--PHASES-->
 	<!--PROLOG-->
 	<xsl:output xmlns:svrl="http://purl.oclc.org/dsdl/svrl" method="xml"
-               omit-xml-declaration="no"
-               standalone="yes"
-               indent="yes"/>
+               omit-xml-declaration="yes" indent="yes"/>
 
 	<!--XSD TYPES FOR XSLT2-->
 

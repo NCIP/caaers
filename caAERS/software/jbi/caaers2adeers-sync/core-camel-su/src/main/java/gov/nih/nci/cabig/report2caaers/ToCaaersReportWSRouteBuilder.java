@@ -20,6 +20,11 @@ import static gov.nih.nci.cabig.caaers2adeers.track.Tracker.track;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
+import org.apache.camel.Exchange;
+import org.apache.camel.Processor;
 
 import gov.nih.nci.cabig.caaers2adeers.Caaers2AdeersRouteBuilder;
 
@@ -41,6 +46,9 @@ public class ToCaaersReportWSRouteBuilder {
 	public void configure(Caaers2AdeersRouteBuilder rb){
         this.routeBuilder = rb;
         
+        Map<String, String> nss = new HashMap<String, String>();
+        nss.put("svrl", "http://purl.oclc.org/dsdl/svrl");
+        
         routeBuilder.from("file://"+inputEDIDir+"?preMove=inprogress&move=done&moveFailed=movefailed")
         	.to("log:gov.nih.nci.cabig.report2caaers.caaers-ws-request?showHeaders=true&level=TRACE")
         	.processRef("removeEDIHeadersAndFootersProcessor")
@@ -50,17 +58,16 @@ public class ToCaaersReportWSRouteBuilder {
 			.process(track(PRE_PROCESS_EDI_MSG))
 			.to(routeBuilder.getFileTracker().fileURI(PRE_PROCESS_EDI_MSG))
 			.to("direct:performSchematronValidation");
+	        
         
-        Map<String, String> nss = new HashMap<String, String>();
-        nss.put("svrl", "http://purl.oclc.org/dsdl/svrl");
         
         //perform schematron validation
         routeBuilder.from("direct:performSchematronValidation")                
 			.process(track(E2B_SCHEMATRON_VALIDATION))
-			.to("xslt:" + requestXSLBase + "safetyreport_e2b_schematron.xsl")
+			.to("xslt:" + requestXSLBase + "safetyreport_e2b_schematron.xsl?transformerFactoryClass=net.sf.saxon.TransformerFactoryImpl") //for XSLT2.0 support
 			.to(routeBuilder.getFileTracker().fileURI(E2B_SCHEMATRON_VALIDATION))
 			.choice()
-                .when().xpath("//payload/svrl:failed-assert", nss) 
+                .when().xpath("//svrl:failed-assert", nss) 
                 	.to("xslt:" + responseXSLBase + "extract-failures.xsl")
                 	.to("xslt:" + responseXSLBase + "E2BSchematronErrors2ACK.xsl")
                 	.to("direct:sendE2BAckSink")

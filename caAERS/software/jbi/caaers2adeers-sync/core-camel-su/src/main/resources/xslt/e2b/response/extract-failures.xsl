@@ -7,13 +7,15 @@
 
 	<xsl:strip-space elements="*"/>
 
-	<xsl:output method="text" indent="no" />
+	<xsl:output method="xml" omit-xml-declaration="yes" indent="yes"/>
 
 	<xsl:template match="svrl:schematron-output">
-		<xsl:if test="count(svrl:failed-assert) > 0">
+		<payload>
+		<xsl:if test="count(svrl:failed-assert) > 0">		
 			Failed Schematron Validation.
-			<xsl:apply-templates />
+			<xsl:apply-templates />		
 		</xsl:if>
+		</payload>
 	</xsl:template>
 
 	<!-- Set the output to be XML with an XML declaration and use indentation -->
