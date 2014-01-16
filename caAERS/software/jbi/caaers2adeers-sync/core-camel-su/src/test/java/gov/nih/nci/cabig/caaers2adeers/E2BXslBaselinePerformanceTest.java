@@ -6,7 +6,7 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers2adeers;
 
-public class E2BXslBaselinePerormanceTest extends SafetyReportE2BXslTest {
+public class E2BXslBaselinePerformanceTest extends SafetyReportE2BXslTest {
 
 	public void testBaselinePerformanceTransformation() throws Exception{
 
