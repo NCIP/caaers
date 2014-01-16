@@ -722,12 +722,6 @@
 			<ae:daysElapsed>
 				<xsl:value-of select="drugintervaldosageunitnumb" />
 			</ae:daysElapsed>
-			<ae:administrationDelayAmount>
-				<xsl:value-of select="drugtreatmentduration" />
-			</ae:administrationDelayAmount>
-			<ae:administrationDelayUnits>
-				<xsl:value-of select="drugtreatmentdurationunit" />
-			</ae:administrationDelayUnits>
 			<ae:adjustment>
 				<xsl:value-of select="actiondrug" />
 			</ae:adjustment>
