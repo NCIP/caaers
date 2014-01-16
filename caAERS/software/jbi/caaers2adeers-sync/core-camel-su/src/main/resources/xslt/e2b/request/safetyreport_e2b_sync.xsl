@@ -1023,26 +1023,29 @@
 				</xsl:call-template>
 			</xsl:for-each>
 
-		<!--	<xsl:for-each
-				select="//reaction[aeexternalid = $adverseEventId and attribution and factortype = 'surgery']">
+			<xsl:for-each
+				select="//reaction[aeexternalid = $adverseEventId and attribution and translate(factortype, $smallcase, $uppercase) = 'SURGERY']">
 				<xsl:call-template name="surgeryAttributionTemplate">
 					<xsl:with-param name="adverseEventId" select="$adverseEventId" />
+					<xsl:with-param name="factor" select="factor" />
 				</xsl:call-template>
-			</xsl:for-each> -->
+			</xsl:for-each> 
 
-		<!--	<xsl:for-each
-				select="//reaction[aeexternalid = $adverseEventId and attribution and factortype = 'radiation']">
+			<xsl:for-each
+				select="//reaction[aeexternalid = $adverseEventId and attribution and translate(factortype, $smallcase, $uppercase) = 'RADIATION']">
 				<xsl:call-template name="radiationAttributionTemplate">
 					<xsl:with-param name="adverseEventId" select="$adverseEventId" />
+					<xsl:with-param name="factor" select="factor" />
 				</xsl:call-template>
-			</xsl:for-each> -->
+			</xsl:for-each> 
 
-		<!--	<xsl:for-each
-				select="//reaction[aeexternalid = $adverseEventId and attribution and factortype = 'device']">
+			<xsl:for-each
+				select="//reaction[aeexternalid = $adverseEventId and attribution and translate(factortype, $smallcase, $uppercase) = 'DEVICE']">
 				<xsl:call-template name="deviceAttributionTemplate">
 					<xsl:with-param name="adverseEventId" select="$adverseEventId" />
+					<xsl:with-param name="factor" select="factor" />
 				</xsl:call-template>
-			</xsl:for-each> -->
+			</xsl:for-each> 
 
 			<xsl:for-each
 				select="//reaction[aeexternalid = $adverseEventId and attribution and factortype = 'primary disease']">
@@ -1125,20 +1128,23 @@
 
 	<xsl:template name="surgeryAttributionTemplate">
 		<xsl:param name="adverseEventId" />
+		<xsl:param name="factor" />
+		<xsl:variable name="siteString" select="substring-before($factor,'^^' )" />
+		<xsl:variable name="dateString" select="substring-before(substring-after($factor,'^^'),'^^')" />
 		<ae:surgeryAttribution>
 			<ae:attribution>
 				<xsl:value-of
-					select="drugreactionrelatedness/drugreactionasses[aeexternalid = $adverseEventId]/drugresult" />
+					select="attribution" />
 			</ae:attribution>
 			<ae:cause>
 				<ae:interventionDate>
-					<xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">
-						<xsl:with-param name="date" select="drugstartdate" />
+					<xsl:call-template name="dateConverterMMslashDDslashYYYYtoYY-MM-DD">
+						<xsl:with-param name="date" select="substring-after($dateString,'DATE=')" />
 					</xsl:call-template>
 				</ae:interventionDate>
 				<ae:InterventionSite>
 					<ae:name>
-						<xsl:value-of select="medicinalproduct" />
+						<xsl:value-of select="substring-after($siteString,'SITE=')" />
 					</ae:name>
 				</ae:InterventionSite>
 			</ae:cause>
@@ -1147,53 +1153,62 @@
 
 	<xsl:template name="radiationAttributionTemplate">
 		<xsl:param name="adverseEventId" />
+		<xsl:param name="factor" />
+		<xsl:variable name="typeString" select="substring-before($factor,'^^' )" />
+		<xsl:variable name="dateString" select="substring-before(substring-after($factor,'^^'),'^^')" />
 		<ae:radiationAttribution>
 			<ae:attribution>
 				<xsl:value-of
-					select="drugreactionrelatedness/drugreactionasses[aeexternalid = $adverseEventId]/drugresult" />
+					select="attribution" />
 			</ae:attribution>
 			<ae:cause>
-				<xsl:if test="drugenddate != '' ">
+				<xsl:if test="$dateString != '' ">
 					<ae:lastTreatmentDate>
-						<xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">
-							<xsl:with-param name="date" select="drugenddate" />
+						<xsl:call-template name="dateConverterMMslashDDslashYYYYtoYY-MM-DD">
+							<xsl:with-param name="date" select="substring-after($dateString,'DATE=')" />
 						</xsl:call-template>
 					</ae:lastTreatmentDate>
 				</xsl:if>
-				<ae:administration>
-					<xsl:value-of select="medicinalproduct" />
-				</ae:administration>
+				<xsl:if test="$typeString != '' ">
+					<ae:administration>
+						<xsl:value-of select="substring-after($typeString,'TYPE=')" />
+					</ae:administration>
+				</xsl:if>
 			</ae:cause>
 		</ae:radiationAttribution>
 	</xsl:template>
 
 	<xsl:template name="deviceAttributionTemplate">
 		<xsl:param name="adverseEventId" />
+		<xsl:param name="factor" />
+		<xsl:variable name="cNString" select="substring-before($factor,'^^' )" />
+		<xsl:variable name="bNString" select="substring-before(substring-after($factor,'^^'),'^^')" />
+		<xsl:variable name="typeString" select="substring-before(substring-after(substring-after($factor,'^^'),'^^'),'^^')" />
 		<ae:deviceAttribution>
 			<ae:attribution>
 				<xsl:value-of
-					select="drugreactionrelatedness/drugreactionasses[aeexternalid = $adverseEventId]/drugresult" />
+					select="attribution" />
 			</ae:attribution>
 			<ae:cause>
 				<ae:studyDeviceRef>
 					<ae:device>
 						<ae:brandName>
-							<xsl:value-of select="devicenamebrand" />
+							<xsl:value-of select="substring-after($bNString,'BN=')" />
 						</ae:brandName>
 						<ae:commonName>
-							<xsl:value-of select="devicenamecommon" />
+							<xsl:value-of select="substring-after($cNString,'CN=')" />
 						</ae:commonName>
-						<xsl:if test="devicetype">
+						<xsl:if test="$typeString">
 							<ae:type>
-								<xsl:value-of select="devicetype" />
+								<xsl:value-of select="substring-after($typeString,'TYPE=')" />
 							</ae:type>
 						</xsl:if>
 					</ae:device>
 				</ae:studyDeviceRef>
 			</ae:cause>
 		</ae:deviceAttribution>
-	</xsl:template>
-
+	</xsl:template> 
+	
 	<xsl:template name="primaryDiseaseAttributionTemplate">
 		<xsl:param name="adverseEventId" />
 		<ae:diseaseAttribution>
@@ -1253,5 +1268,17 @@
 			select="concat($vYear,'-',$vMonth,'-',substring($date,7,2))" />
 		<xsl:value-of select="$outputDate" />
 	</xsl:template>
+	
+	<xsl:template name="dateConverterMMslashDDslashYYYYtoYY-MM-DD">
+		<xsl:param name="date" />
+		<xsl:if test="$date != ''">
+			<xsl:variable name="vMonth" select="substring($date,1,2)" />
+			<xsl:variable name="vYear" select="substring($date,7,4)" />
+			<xsl:variable name="vDate" select="substring($date,4,2)" />
+			<xsl:variable name="outputDate"
+				select="concat($vYear,'-',$vMonth,'-',$vDate)" />
+			<xsl:value-of select="$outputDate" />
+		</xsl:if>
+	</xsl:template> 
 
 </xsl:stylesheet>

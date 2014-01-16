@@ -409,8 +409,8 @@
 	</xs:complexType>
 	<xs:complexType name="RadiationInterventionRefType">
 		<xs:sequence>
-			<xs:element type="xs:date" name="lastTreatmentDate" />
-			<xs:element type="RadiationAdministrationType" name="administration" />
+			<xs:element type="xs:date" name="lastTreatmentDate" minOccurs="0"/>
+			<xs:element type="RadiationAdministrationType" name="administration" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:simpleType name="RadiationAdministrationType">
@@ -434,8 +434,8 @@
 	</xs:complexType>
 	<xs:complexType name="SurgeryInterventionType">
 		<xs:sequence>
-			<xs:element type="xs:date" name="interventionDate" />
-			<xs:element type="InterventionSiteType" name="InterventionSite" />
+			<xs:element type="xs:date" name="interventionDate" minOccurs="0"/>
+			<xs:element type="InterventionSiteType" name="InterventionSite" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="BiologicalInterventionType">

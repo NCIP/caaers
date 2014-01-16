@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ichicsr lang="en">
+
+  <ichicsrmessageheader>
+	<!-- report creation time -->
+     <messagedate>20130212104827</messagedate> 
+  </ichicsrmessageheader>
+
+  <safetyreport>
+	<!-- report definition name  -->
+	<reportname>CTEP 10 Calendar Day SAE Report</reportname> 
+	<!-- This is the report id that will be assigned by the caAERS Report ID Service once available. NOTE: this is no longer the Reporting Period ID. -->
+    <safetyreportid>CN0509447</safetyreportid> 
+	<!-- Physician information-->
+	<physiciangivename>Joe</physiciangivename>
+	<physicianfamilyname>Montona</physicianfamilyname>
+	<physicianemail>joe.montona@semanticbits.com</physicianemail>
+	<physicianphone>703-121-1221</physicianphone>	
+		<!-- Reporter extended elements-->
+	<reporteremail>tom.brady@semanticbits.com</reporteremail>
+	<reporterphone>703-111-1221</reporterphone>
+	<reporterfax>703-111-1231</reporterfax>	
+	
+	<!-- Reporter information -->
+    <primarysource>	
+		<!-- NOTE: qualification is removed-->		
+		<!-- study identifier -->
+		<sponsorstudynumb>S1117</sponsorstudynumb>	
+    	<reportergivename>tom</reportergivename>
+		<reporterfamilyname>brady</reporterfamilyname>
+    </primarysource>
+
+	<!-- Submitter information-->
+	<sender> 
+		<sendergivename>Alfred</sendergivename>
+		<senderfamilyname>Nobel</senderfamilyname>
+		<senderemailaddress>alfred.nobel@dynamite.com</senderemailaddress>
+    </sender>
+
+    <patient>	 
+		<!-- study site NCI id-->
+      <subjectstudysiteid>MN008</subjectstudysiteid> 	  
+		<!-- study subject id-->
+	  <patientinvestigationnumb>SUB01-S1117</patientinvestigationnumb> 	
+	  <patientweight>75</patientweight> 
+      <patientheight>175</patientheight> 	  
+	  <!-- Adverse Event information. If more than one reaction is present, each should have a different aeexternalid and exactly one should be marked primary -->
+	   <reaction> 
+			<!-- external id of adverse event-->
+		 <aeexternalid>000001</aeexternalid> 
+			<!-- A single E2B message can have multiple AEs. The AE that has this flag set as 1 will be the primary AE.	One E2B may have only one AE with this flag set to 1 -->
+		 <primaryaeflag>1</primaryaeflag> 
+			<!-- Verbatim -->
+		 <primarysourcereaction>Pounding head pain</primarysourcereaction> 
+		 <reactionstartdateformat>102</reactionstartdateformat>
+			<!--Start date of the adverse event. Mandatory only for the AE with Primary flag = 1 -->
+		 <reactionstartdate>20130704</reactionstartdate> 
+			<!-- Present status. Only applicable for the AE with Primary flag = 1 -->
+		 <reactionoutcome>3</reactionoutcome> 
+      </reaction>
+	  	       	  
+	  <!-- The following sections identifies the attributions for the ae 000001 -->  
+	  
+	   <!-- Disease history attribution -->  
+	  <reaction>
+        <aeexternalid>000001</aeexternalid>
+        <factor>Myelodysplastic syndrome, NOS</factor>        
+		<factortype>primary disease</factortype>
+        <attribution>4</attribution>
+	  </reaction>	   
+	    <!-- Course Agent attribution -->  
+	  <reaction>
+        <aeexternalid>000001</aeexternalid>  
+		<!-- drug NSC number -->		
+        <factor>703813</factor> 
+        <factortype>course agent</factortype>
+        <attribution>4</attribution>
+	  </reaction>	
+
+	  <reaction>
+		<aeexternalid>000001</aeexternalid>
+		<factor>CN=CommonName^^BN=BrandName^^TYPE=Type^^</factor>
+		<factortype>device</factortype>
+		<attribution>1</attribution>
+	 </reaction>
+
+	 <reaction>
+		<aeexternalid>000001</aeexternalid>
+		<factor>SITE=Pelvis NOS^^DATE=01/03/2014^^</factor>
+		<factortype>surgery</factortype>
+		<attribution>2</attribution>
+	 </reaction>
+	 
+	 <reaction>
+		<aeexternalid>000001</aeexternalid>
+		<factortype>surgery</factortype>
+		<attribution>3</attribution>
+	 </reaction>
+	 
+	 <reaction>
+		<aeexternalid>000001</aeexternalid>
+		<factor>TYPE=Brachytherapy HDR^^DATE=01/03/2014^^</factor>
+		<factortype>radIaTion</factortype>
+		<attribution>5</attribution>
+	 </reaction>
+
+	 
+
+	  <!-- The following section identifies the reporting period -->
+
+	  <drug>		
+		<drugcharacterization>3</drugcharacterization>	<!-- drugcharacterization = 3 identifies this as the reporting period information -->		
+			<!-- Treatment Assignment Code -->	
+        <medicinalproduct>ARM 1</medicinalproduct> 
+		<drugstartdateformat>102</drugstartdateformat> 
+					<!-- Start Date of course associated with this Expedited Report -->	
+		<drugstartdate>20130704</drugstartdate> 			
+			<!-- The course number on which event occurred -->
+		<drugstartperiod>6</drugstartperiod> 			
+      </drug>
+	  
+	  <!-- Required. This is the prior therapy section. A single E2B file can contain multiple prior therapies.-->
+       <medicalhistoryepisode>
+				<!-- Prior Therapy For Primary Disease -->
+			<patientepisodename>Antisense</patientepisodename> 
+				<!-- patientmedicalcomment = "Prior Therapy" identifies this as prior therapy information -->
+			<patientmedicalcomment>Prior Therapy</patientmedicalcomment> 
+        </medicalhistoryepisode>	  
+
+	 	 <!-- This is the Study disease. It should be accompanied by an attribution (<medicalepisodeassess>).-->
+		<medicalhistoryepisode>	
+            <patientepisodename>Myelodysplastic syndrome, NOS</patientepisodename>            
+				<!-- patientmedicalcomment = "Study Disease" identifies this as the study disease information -->
+            <patientmedicalcomment>Study Disease</patientmedicalcomment> 
+         </medicalhistoryepisode>		 
+
+		 <!--This is the Study disease site.  -->
+
+		  <medicalhistoryepisode>
+            <patientepisodename>Appendix</patientepisodename>
+				<!-- patientmedicalcomment = "Disease Site" identifies this as the study disease site information -->
+            <patientmedicalcomment>Disease Site</patientmedicalcomment> 
+         </medicalhistoryepisode>       
+
+		 <!--This is the Study Intervention (e.g. Drug, Device, Radiation, Surgery). There could be multiple interventions -->
+		 <drug>
+            <drugcharacterization>1</drugcharacterization> 
+				<!-- Agent NSC Number.  This is the identifier of the Agent. -->
+            <medicinalproduct>703813</medicinalproduct> 
+				<!-- Total Dose Administered this Course -->
+			<drugcumulativedosagenumb>111</drugcumulativedosagenumb>  
+				<!-- Dosage unit per E2B code -->   
+			<drugcumulativedosageunit>003</drugcumulativedosageunit>       
+			<drugenddateformat>102</drugenddateformat>
+				<!-- Date last administered -->
+			<drugenddate>20130211</drugenddate>  
+            <drugadditional>Agent</drugadditional>
+         </drug> 	
+		 
+	     <summary>
+				<!-- This corresponds to "Was an investigational agent(s) administered on this protocol" in Study interventions. -->	
+			<indadminflag>1</indadminflag> 		
+				<!-- This is the description of the event -->
+			<narrativeincludeclinical>the description or narrative of the event</narrativeincludeclinical> 
+				<!-- Retreated to-date -->	
+			<!-- <retreatedflag>1</retreatedflag> -->
+		 </summary>
+     </patient>
+  </safetyreport>
+</ichicsr>

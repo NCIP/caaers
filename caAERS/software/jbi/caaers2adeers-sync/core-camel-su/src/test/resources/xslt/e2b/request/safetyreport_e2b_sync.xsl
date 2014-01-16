@@ -1024,7 +1024,7 @@
 			</xsl:for-each>
 
 			<xsl:for-each
-				select="//reaction[aeexternalid = $adverseEventId and attribution and factortype = 'surgery']">
+				select="//reaction[aeexternalid = $adverseEventId and attribution and translate(factortype, $smallcase, $uppercase) = 'SURGERY']">
 				<xsl:call-template name="surgeryAttributionTemplate">
 					<xsl:with-param name="adverseEventId" select="$adverseEventId" />
 					<xsl:with-param name="factor" select="factor" />
@@ -1032,7 +1032,7 @@
 			</xsl:for-each> 
 
 			<xsl:for-each
-				select="//reaction[aeexternalid = $adverseEventId and attribution and factortype = 'radiation']">
+				select="//reaction[aeexternalid = $adverseEventId and attribution and translate(factortype, $smallcase, $uppercase) = 'RADIATION']">
 				<xsl:call-template name="radiationAttributionTemplate">
 					<xsl:with-param name="adverseEventId" select="$adverseEventId" />
 					<xsl:with-param name="factor" select="factor" />
@@ -1040,7 +1040,7 @@
 			</xsl:for-each> 
 
 			<xsl:for-each
-				select="//reaction[aeexternalid = $adverseEventId and attribution and factortype = 'device']">
+				select="//reaction[aeexternalid = $adverseEventId and attribution and translate(factortype, $smallcase, $uppercase) = 'DEVICE']">
 				<xsl:call-template name="deviceAttributionTemplate">
 					<xsl:with-param name="adverseEventId" select="$adverseEventId" />
 					<xsl:with-param name="factor" select="factor" />
@@ -1169,9 +1169,11 @@
 						</xsl:call-template>
 					</ae:lastTreatmentDate>
 				</xsl:if>
-				<ae:administration>
-					<xsl:value-of select="substring-after($typeString,'TYPE=')" />
-				</ae:administration>
+				<xsl:if test="$typeString != '' ">
+					<ae:administration>
+						<xsl:value-of select="substring-after($typeString,'TYPE=')" />
+					</ae:administration>
+				</xsl:if>
 			</ae:cause>
 		</ae:radiationAttribution>
 	</xsl:template>
