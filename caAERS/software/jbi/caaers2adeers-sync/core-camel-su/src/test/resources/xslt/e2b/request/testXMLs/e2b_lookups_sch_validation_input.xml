@@ -1,0 +1,148 @@
+<ichicsr lang="en">
+
+  <ichicsrmessageheader>
+	<!-- report creation time -->
+     <messagedate>20131126105200</messagedate> 
+  </ichicsrmessageheader>
+
+  <safetyreport>
+	<!-- report definition name  -->
+	<reportname>CTEP 24 Hour SAE Notification</reportname> 
+	<!-- This is the report id that will be assigned by the caAERS Report ID Service once available. NOTE: this is no longer the Reporting Period ID. -->
+    <safetyreportid>20131204-01</safetyreportid> 
+	<!-- Physician information-->
+	<physiciangivename>Joe</physiciangivename>
+	<physicianfamilyname>Montona</physicianfamilyname>
+	<physicianemail>joe.montona@semanticbits.com</physicianemail>
+	<physicianphone>703-121-1221</physicianphone>	
+		<!-- Reporter extended elements-->
+	<reporteremail>tom.brady@semanticbits.com</reporteremail>
+	<reporterphone>703-111-1221</reporterphone>
+	<reporterfax>703-111-1231</reporterfax>	
+	
+	<!-- Reporter information -->
+    <primarysource>	
+		<!-- NOTE: qualification is removed-->		
+		<!-- study identifier -->
+		<sponsorstudynumb>5876</sponsorstudynumb>	
+    	<reportergivename>tom</reportergivename>
+		<reporterfamilyname>brady</reporterfamilyname>
+    </primarysource>
+
+	<!-- Submitter information-->
+	<sender> 
+		<sendergivename>Alfred</sendergivename>
+		<senderfamilyname>Nobel</senderfamilyname>
+		<senderphone>703-111-1231</senderphone>
+		<senderemailaddress>alfred.nobel@dynamite.com</senderemailaddress>
+    </sender>
+
+    <patient>	 
+		<!-- study site NCI id-->
+      <subjectstudysiteid>SUB57-5876</subjectstudysiteid> 	  
+		<!-- study subject id-->
+	  <patientinvestigationnumb>SUB57-5876</patientinvestigationnumb> 	
+	  <patientweight>75</patientweight> 
+      <patientheight>175</patientheight> 	  
+	  <!-- Adverse Event information. If more than one reaction is present, each should have a different aeexternalid and exactly one should be marked primary -->
+	   <reaction> 
+			<!-- external id of adverse event-->
+		 <aeexternalid>reaction-5</aeexternalid> 
+			<!-- A single E2B message can have multiple AEs. The AE that has this flag set as 1 will be the primary AE.	One E2B may have only one AE with this flag set to 1 -->
+		 <primaryaeflag>1</primaryaeflag> 
+			<!-- Verbatim -->
+		 <primarysourcereaction>Abdominal infection</primarysourcereaction> 
+		 <reactionstartdateformat>102</reactionstartdateformat>
+			<!--Start date of the adverse event. Mandatory only for the AE with Primary flag = 1 -->
+		 <reactionstartdate>20130901</reactionstartdate> 
+			<!-- Present status. Only applicable for the AE with Primary flag = 1 -->
+		 <reactionoutcome>10</reactionoutcome> <!-- SETTING INVALID AE OUTCOME VALUE FOR SCH VALIDATION -->
+      </reaction>
+	  
+	  	       	  
+	  <!-- The following sections identifies the attributions for the ae 000001 -->  
+	  
+	   <!-- Disease history attribution -->  
+	  <reaction>
+        <aeexternalid>reaction-5</aeexternalid>
+        <factor>MYELODYSPLASTIC SYNDROME, NOS</factor>        
+		<factortype>primary disease</factortype>
+        <attribution>4</attribution>
+	  </reaction>	   
+	    <!-- Course Agent attribution -->  
+	  <reaction>
+        <aeexternalid>reaction-5</aeexternalid>  
+		<!-- drug NSC number -->		
+        <factor>649890</factor> 
+        <factortype>course agent</factortype>
+        <attribution>4</attribution>
+	  </reaction>	  
+	 
+
+
+	  <!-- The following section identifies the reporting period -->
+	  <drug>		
+		<drugcharacterization>3</drugcharacterization>	<!-- drugcharacterization = 3 identifies this as the reporting period information -->		
+			<!-- Treatment Assignment Code -->	
+        <medicinalproduct>A</medicinalproduct> 
+<drugenddateformat>102</drugenddateformat> 
+					<!-- Start Date of course associated with this Expedited Report -->	
+<drugenddate>20130901</drugenddate>				
+		<drugstartperiod>15</drugstartperiod> <!-- The course number on which event occurred -->						
+      </drug>
+	 	  
+	  <!-- Required. This is the prior therapy section. A single E2B file can contain multiple prior therapies.-->
+       <medicalhistoryepisode>
+				<!-- Prior Therapy For Primary Disease -->
+			<patientepisodename>Antisense</patientepisodename> 
+				<!-- patientmedicalcomment = "Prior Therapy" identifies this as prior therapy information -->
+			<patientmedicalcomment>Prior Therapy</patientmedicalcomment> 
+        </medicalhistoryepisode>	  
+
+	 	 <!-- This is the Study disease. It should be accompanied by an attribution (<medicalepisodeassess>).-->
+		<medicalhistoryepisode>	
+            <patientepisodename>OVARIAN EPITHELIAL CANCER</patientepisodename>            
+				<!-- patientmedicalcomment = "Study Disease" identifies this as the study disease information -->
+            <patientmedicalcomment>Study Disease</patientmedicalcomment> 
+         </medicalhistoryepisode>		 
+
+		 <!--This is the Study disease site.  -->
+
+		  <medicalhistoryepisode>
+            <patientepisodename>APPENDIX</patientepisodename>
+				<!-- patientmedicalcomment = "Disease Site" identifies this as the study disease site information -->
+            <patientmedicalcomment>Disease Site</patientmedicalcomment> 
+         </medicalhistoryepisode>       
+
+		 <!--This is the Study Intervention (e.g. Drug, Device, Radiation, Surgery). There could be multiple interventions -->
+		 <drug>
+            <drugcharacterization>1</drugcharacterization> 
+				<!-- Agent NSC Number.  This is the identifier of the Agent. -->
+            <medicinalproduct>649890</medicinalproduct> 
+				<!-- Total Dose Administered this Course -->
+			<drugcumulativedosagenumb>111</drugcumulativedosagenumb>  
+				<!-- Dosage unit per E2B code -->   
+			<drugcumulativedosageunit>999</drugcumulativedosageunit>    <!-- SETTING INVALID DOSAGE UNIT CODE FOR SCH VALIDATION -->   
+			<drugenddateformat>102</drugenddateformat>
+				<!-- Date last administered -->
+			<drugenddate>20131216</drugenddate>  
+           <drugadditional>Agent</drugadditional> 
+         </drug> 	
+		 
+	     <summary>
+				<!-- This corresponds to "Was an investigational agent(s) administered on this protocol" in Study interventions. -->	
+			<indadminflag>1</indadminflag> 		
+				<!-- This is the description of the event -->
+			<narrativeincludeclinical>the description or narrative of the event 1</narrativeincludeclinical> 
+				<!-- Retreated to-date -->	
+			<retreatedflag>5</retreatedflag>
+		 </summary>
+		 <!-- SETTING INVALID PATIENT AUTOPSY FLAG FOR SCH VALIDATION --> 
+		 <patientdeath>
+		 	<patientautopsyyesno>5</patientautopsyyesno>
+		 </patientdeath>
+		 <baselineperformancescale>ecog</baselineperformancescale> <!-- PUTTING IN LOWER CASE TO TEST SUPPORT CASE INSENSITIVITY -->
+		 <baselineperformancenumber>10</baselineperformancenumber> 
+     </patient>
+  </safetyreport>
+</ichicsr>
