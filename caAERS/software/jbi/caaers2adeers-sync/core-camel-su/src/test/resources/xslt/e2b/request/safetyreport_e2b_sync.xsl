@@ -607,7 +607,7 @@
 			</ae:brandName>
 			<!--Optional: -->
 			<ae:commonName>
-				<xsl:value-of select="devicenamecommon" />
+				<xsl:value-of select="medicinalproduct" />
 			</ae:commonName>
 			<!--Optional: -->
 			<ae:deviceType>
@@ -690,7 +690,7 @@
 						<xsl:value-of select="devicenamebrand" />
 					</ae:brandName>
 					<ae:commonName>
-						<xsl:value-of select="devicenamecommon" />
+						<xsl:value-of select="medicinalproduct" />
 					</ae:commonName>
 					<!--Optional: -->
 					<ae:type>
@@ -728,7 +728,10 @@
 				<xsl:value-of select="drugintervaldosageunitnumb" />
 			</ae:daysElapsed>
 			<ae:adjustment>
-				<xsl:value-of select="actiondrug" />
+				<xsl:call-template name="lookup">
+					<xsl:with-param name="_map" select="$map//adjustments" />
+					<xsl:with-param name="_code" select='actiondrug' />
+				</xsl:call-template>
 			</ae:adjustment>
 			<ae:administration>
 				<xsl:value-of select="medicinalproduct" />
