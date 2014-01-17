@@ -647,11 +647,13 @@
 			<ae:otherNumber>
 				<xsl:value-of select="devicenumberother" />
 			</ae:otherNumber>
-			<ae:explantedDate>
-				<xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">
-					<xsl:with-param name="date" select="devicedateexplanted" />
-				</xsl:call-template>
-			</ae:explantedDate>
+			<xsl:if test="devicedateexplanted">
+				<ae:explantedDate>
+					<xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">
+						<xsl:with-param name="date" select="devicedateexplanted" />
+					</xsl:call-template>
+				</ae:explantedDate>
+			</xsl:if>
 			<!--Optional: -->
 			<ae:deviceOperator>
 				<xsl:value-of select="deviceoperator" />
@@ -675,10 +677,13 @@
 			<xsl:if test="devicereprocessedflag = '2'">
 				<ae:deviceReprocessed>NO</ae:deviceReprocessed>
 			</xsl:if>
-
-			<ae:evaluationAvailability>
-				<xsl:value-of select="deviceavailableflag" />
-			</ae:evaluationAvailability>
+	        
+	        <xsl:if test="deviceavailableflag">
+				<ae:evaluationAvailability>
+					<xsl:value-of select="deviceavailableflag" />
+				</ae:evaluationAvailability>
+			</xsl:if>
+			
 			<ae:studyDevice>
 				<ae:device>
 					<ae:brandName>
