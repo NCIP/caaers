@@ -44,7 +44,7 @@
         <gender><code>Male Gender</code><value>Male</value></gender>
         <gender><code>Female Gender</code><value>Female</value></gender>
         <gender><code>Unknown</code><value>Unknown</value></gender>
-        <gender><code>Unspecified</code><value>Not Reported</value></gender>
+        <gender><code>Unspecified</code><value>Unknown</value></gender>
     </genders>
      <races>
         <race><code>Asian</code><value>Asian</value></race>
@@ -58,7 +58,7 @@
     <ethnicities>
         <ethnicity><code>Hispanic or Latino</code><value>Hispanic or Latino</value></ethnicity>
         <ethnicity><code>Not Hispanic or Latino</code><value>Not Hispanic or Latino</value></ethnicity>
-        <ethnicity><code>Not Reported</code><value>Not Reported</value></ethnicity>
+        <ethnicity><code>Not reported</code><value>Not Reported</value></ethnicity>
         <ethnicity><code>Unknown</code><value>Unknown</value></ethnicity>
     </ethnicities>
     <months>
