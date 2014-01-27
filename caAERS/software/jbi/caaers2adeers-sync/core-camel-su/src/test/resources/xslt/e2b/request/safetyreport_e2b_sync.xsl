@@ -846,15 +846,6 @@
 					</xsl:call-template>
 				</ae:presentStatus>
 			</xsl:if>
-			<xsl:if
-				test="/ichicsr/safetyreport/patient/summary/dateremoved != '' ">
-				<ae:dateRemovedFromProtocol>
-					<xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">
-						<xsl:with-param name="date"
-							select="/ichicsr/safetyreport/patient/summary/dateremoved" />
-					</xsl:call-template>
-				</ae:dateRemovedFromProtocol>
-			</xsl:if>
 			<xsl:if test='/ichicsr/safetyreport/patient/summary/retreatedflag'>
 				<ae:retreated>
 					<xsl:call-template name="lookup">
@@ -863,6 +854,15 @@
 							select='/ichicsr/safetyreport/patient/summary/retreatedflag' />
 					</xsl:call-template>
 				</ae:retreated>
+			</xsl:if>
+			<xsl:if
+				test="/ichicsr/safetyreport/patient/summary/dateremoved != '' ">
+				<ae:dateRemovedFromProtocol>
+					<xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">
+						<xsl:with-param name="date"
+							select="/ichicsr/safetyreport/patient/summary/dateremoved" />
+					</xsl:call-template>
+				</ae:dateRemovedFromProtocol>
 			</xsl:if>
 			<xsl:if
 				test='/ichicsr/safetyreport/patient/patientdeath/patientautopsyyesno'>
