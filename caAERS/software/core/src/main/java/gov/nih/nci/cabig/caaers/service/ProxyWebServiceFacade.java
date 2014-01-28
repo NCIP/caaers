@@ -182,7 +182,7 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
     private static String buildMessage(String corelationId, String system, String entity, String operationName, String operationMode, Map<String, String> criteria) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<gen:GenericRequest xmlns:gen=\"http://webservice.caaers.cabig.nci.nih.gov/GenericProcessor/\">");
-		sb.append("<payload correlationId=\""+corelationId+"\">");
+		sb.append("<payload correlationId=\""+corelationId+"\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">");
 		sb.append("<system>"+system+"</system>");
 		sb.append("<request>");
 		sb.append("<!--Optional:-->");
