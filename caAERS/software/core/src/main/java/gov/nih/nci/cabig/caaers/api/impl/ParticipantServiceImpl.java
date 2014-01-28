@@ -40,6 +40,7 @@ import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 import gov.nih.nci.security.util.StringUtilities;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -195,7 +196,40 @@ public class ParticipantServiceImpl extends AbstractImportService implements App
 			createNoOrganizationAuthorizationResponse(caaersServiceResponse, errorMsg);
 			return null;
 		}
+		String subjectId = xmlParticipant.getIdentifiers().getOrganizationAssignedIdentifier().get(0).getValue();
+		OrganizationType regSite = xmlParticipant.getAssignments().getAssignment().get(0).getStudySite().getOrganization();
+		
+		// Get the participant if exists
+		Participant dbParticipant = fetchParticipantBySubjectIdAndSite(subjectId,regSite.getNciInstituteCode());		
+		if(dbParticipant != null && dbParticipant.getAssignments().size() > 0){
+			// Check if there are registrations on this study already 
+			StudyParticipantAssignment studyAssignment = dbParticipant.getAssignments().get(0);
+			logger.debug("Participant with subject id "+subjectId+" exists, checking for exisint registration on study "+studyIdentifier.getValue());
+			if (getStudyIdentifier(studyAssignment.getStudySite().getStudy()).equals(studyIdentifier.getValue()) && 
+				!studySubjectIdentifier.equals(studyAssignment.getStudySubjectIdentifier())){
+				logger.error("Subject subject identifier "+ studyAssignment.getStudySubjectIdentifier()+" already exists on study "+ studyIdentifier.getValue()+" returning error WS_PMS_019");
+				populateError(caaersServiceResponse, "WS_PMS_019", messageSource.getMessage("WS_PMS_019", new String[]{subjectId,studyIdentifier.getValue(),studyAssignment.getStudySubjectIdentifier()},"",Locale.getDefault()));
+				return null;
+			}
+		}
+		
 		return fetchParticipantByAssignment(studySubjectIdentifier, studyIdentifier, caaersServiceResponse);		
+	}
+	
+	/**
+	 * Get the study protocol authority identifier for the study
+	 * @param study
+	 * @return
+	 */
+	private String getStudyIdentifier(Study study){
+		List<Identifier> identifiers = study.getIdentifiers();
+		for (Iterator iterator = identifiers.iterator(); iterator.hasNext();) {
+			Identifier identifier = (Identifier) iterator.next();
+			if(identifier.getType().equals("Protocol Authority Identifier")){
+				return identifier.getValue();
+			}
+		}
+		return null;
 	}
 	
 	/**
@@ -491,6 +525,27 @@ public class ParticipantServiceImpl extends AbstractImportService implements App
 		return dbParticipant;
 	}
 	
+	/**
+	 * Fetch a participant from DB by subject id and registration site
+	 * @param subjectId
+	 * @param regSite
+	 */
+	private Participant fetchParticipantBySubjectIdAndSite(String subjectId, String regSiteCode){
+		ParticipantQuery pq = new ParticipantQuery();
+		pq.joinOnIdentifiers();
+		pq.joinAssignment();
+		pq.joinStudySite();
+		pq.filterByIdentifierValueExactMatch(subjectId);
+		pq.filterByStudySiteNciCode(regSiteCode);
+		
+		List<Participant> dbParticipants = participantDao.searchParticipant(pq);			
+		if (dbParticipants != null && dbParticipants.size() > 0) {
+			logger.debug("Found "+dbParticipants.size()+" participant with the give id and site, returning the first one");
+			return  dbParticipants.get(0);
+		} 
+		return null;		
+	}
+	
 	private Participant fetchParticipantByAssignment(Participant participant,
 			CaaersServiceResponse caaersServiceResponse) {
 		Participant dbParticipant = null;
@@ -510,7 +565,7 @@ public class ParticipantServiceImpl extends AbstractImportService implements App
 	private Participant fetchParticipantByAssignment(String studySubjectIdentifier,
 			Identifier studyIdentifier, CaaersServiceResponse caaersServiceResponse) {
 		Participant dbParticipant = null;
-		
+				
 		if (StringUtils.isEmpty(studySubjectIdentifier)) {
 			String message = messageSource.getMessage("WS_PMS_014", new String[] { studySubjectIdentifier }, "", Locale
 					.getDefault());
@@ -536,7 +591,7 @@ public class ParticipantServiceImpl extends AbstractImportService implements App
 				populateError(caaersServiceResponse, "WS_PMS_002", message);	
 				return dbParticipant;
 			}
-			
+						
 			ParticipantQuery pq = new ParticipantQuery();
 			pq.joinStudy();
 			pq.filterByStudySubjectIdentifier(studySubjectIdentifier, "=");
