@@ -25,8 +25,10 @@ public class TreatmentInformationMigrator implements Migrator<ExpeditedAdverseEv
         adverseEventCourseDate.setDate(dest.getReport().getReportingPeriod().getStartDate());
         adverseEventCourseDate.setNumber(dest.getReport().getReportingPeriod().getCycleNumber());
         dest.setAdverseEventCourse(adverseEventCourseDate);
-
-        dest.setFirstCourseDate(aeReportDest.getAssignment().getStartDateOfFirstCourse());
+        
+        if(aeReportSrc.getAssignment().getStartDateOfFirstCourse() != null) {
+        	dest.setFirstCourseDate(aeReportSrc.getAssignment().getStartDateOfFirstCourse());
+        }
         dest.setTotalCourses(aeReportDest.getAssignment().getMaxCycleNumber());
         dest.setTreatmentAssignmentDescription(src.getTreatmentAssignmentDescription());
         dest.setInvestigationalAgentAdministered(src.getInvestigationalAgentAdministered());

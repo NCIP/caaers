@@ -85,8 +85,8 @@ public class ExpeditedReportMigrator extends CompositeMigrator<ExpeditedAdverseE
     				src.getReportingPeriod().getCycleNumber(), null, src.getReportingPeriod().getTreatmentAssignment().getCode());
     		if(arp == null){
     			 outcome.addError("ER-RP-1", "Didn't find Reporting period with TAC: " + src.getReportingPeriod().getTreatmentAssignment().getCode() + 
-    					 src.getReportingPeriod().getStartDate() != null? " Start date of course: " +  src.getReportingPeriod().getStartDate() :"" +
-    							 src.getReportingPeriod().getCycleNumber() != null? " Course number: " +  src.getReportingPeriod().getCycleNumber() :"");
+    					 (src.getReportingPeriod().getStartDate() != null? " Start date of course: " +  src.getReportingPeriod().getStartDate() :"") +
+    							 (src.getReportingPeriod().getCycleNumber() != null? " Course number: " +  src.getReportingPeriod().getCycleNumber() :""));
     	            return;
     			
     		}

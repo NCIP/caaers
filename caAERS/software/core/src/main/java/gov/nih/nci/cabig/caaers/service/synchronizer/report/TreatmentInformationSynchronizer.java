@@ -23,6 +23,7 @@ public class TreatmentInformationSynchronizer implements Migrator<ExpeditedAdver
 
         dbTi.setTreatmentAssignment(xmlTi.getTreatmentAssignment());
         dbTi.setTreatmentAssignmentDescription(xmlTi.getTreatmentAssignmentDescription());
+        dbTi.setFirstCourseDate(xmlTi.getFirstCourseDate());
         dbTi.setTotalCourses(xmlTi.getTotalCourses());
         dbTi.setAdverseEventCourse(xmlTi.getAdverseEventCourse());
         dbTi.setInvestigationalAgentAdministered(xmlTi.getInvestigationalAgentAdministered());
