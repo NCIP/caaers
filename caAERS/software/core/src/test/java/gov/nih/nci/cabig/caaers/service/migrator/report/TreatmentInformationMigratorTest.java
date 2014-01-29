@@ -34,6 +34,8 @@ public class TreatmentInformationMigratorTest extends AbstractTestCase {
 
     public void setUp() throws Exception {
         src = new ExpeditedAdverseEventReport();
+        adverseEventReportingPeriod = Fixtures.createReportingPeriod();
+        src.setReportingPeriod(adverseEventReportingPeriod);
         dest = new ExpeditedAdverseEventReport();
         migrator = new TreatmentInformationMigrator();
         outcome = new DomainObjectImportOutcome<ExpeditedAdverseEventReport>();
@@ -49,7 +51,7 @@ public class TreatmentInformationMigratorTest extends AbstractTestCase {
 
     public void testMigrate() throws Exception {
         Date d = new Date();
-
+        
         StudyParticipantAssignment spa = Fixtures.createAssignment();
         spa.setStartDateOfFirstCourse(d);
         List<AdverseEventReportingPeriod> rpList = new ArrayList<AdverseEventReportingPeriod>();
@@ -62,6 +64,7 @@ public class TreatmentInformationMigratorTest extends AbstractTestCase {
         TreatmentInformation ti = src.getTreatmentInformation();
         ti.setTotalCourses(1);
         ti.setFirstCourseDate(d);
+        src.getAssignment().setStartDateOfFirstCourse(d);
         ti.setInvestigationalAgentAdministered(true);
          migrator.migrate(src,dest,outcome);
         assertSame(d, dest.getTreatmentInformation().getFirstCourseDate());
