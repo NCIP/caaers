@@ -117,6 +117,37 @@
 		<uom><code>031</code><value>Gtt</value></uom>
 		<uom><code>032</code><value>DF</value></uom>    	
     </uoms>
+    <uomse2b>
+    	<uom><code>kg</code><value>001</value></uom>
+		<uom><code>g</code><value>002</value></uom>
+		<uom><code>mg</code><value>003</value></uom>
+		<uom><code>mcg</code><value>004</value></uom>
+		<uom><code>ng</code><value>005</value></uom>
+		<uom><code>pg</code><value>006</value></uom>
+		<uom><code>mg/m 2</code><value>009</value></uom>
+		<uom><code>mg/ m 2</code><value>010</value></uom>
+		<uom><code>l011</code><value></value></uom>
+		<uom><code>ml</code><value>012</value></uom>
+		<uom><code>mcl</code><value>013</value></uom>
+		<uom><code>Bq</code><value>014</value></uom>
+		<uom><code>GBq</code><value>015</value></uom>
+		<uom><code>MBq</code><value>016</value></uom>
+		<uom><code>Kbq</code><value>017</value></uom>
+		<uom><code>Ci</code><value>018</value></uom>
+		<uom><code>mCi</code><value>019</value></uom>
+		<uom><code>mcCi</code><value>020</value></uom>
+		<uom><code>NCi</code><value>021</value></uom>
+		<uom><code>mol</code><value>022</value></uom>
+		<uom><code>mmol</code><value>023</value></uom>
+		<uom><code>mcmol</code><value>024</value></uom>
+		<uom><code>IU</code><value>025</value></uom>
+		<uom><code>Kiu</code><value>026</value></uom>
+		<uom><code>million iu</code><value>027</value></uom>
+		<uom><code>mEq/L</code><value>029</value></uom>
+		<uom><code>Percent</code><value>030</value></uom>
+		<uom><code>Gtt</code><value>031</value></uom>
+		<uom><code>DF</code><value>032</value></uom>    	
+    </uomse2b>
     <adjustments>
     	<adjustment><code>1</code><value>Discontinue Radiation</value></adjustment>
     	<adjustment><code>2</code><value>Decrease Total Dose</value></adjustment>
@@ -130,6 +161,24 @@
     	<presentstatus><code>5</code><value>DEAD</value></presentstatus>
     	<presentstatus><code>6</code><value>INTERVENTION_CONTINUES</value></presentstatus>
     </aepresentstatuses>
+    <aee2bpresentstatuses>
+		<outcome><code>RECOVERED_WITHOUT_SEQUELAE</code><value>1</value></outcome>
+		<outcome><code>RECOVERING</code><value>2</value></outcome>
+		<outcome><code>NOT_RECOVERED</code><value>3</value></outcome>
+		<outcome><code>RECOVERED_WITH_SEQUELAE</code><value>4</value></outcome>
+		<outcome><code>DEAD</code><value>5</value></outcome>
+		<outcome><code>INTERVENTION_CONTINUES</code><value>6</value></outcome>
+	</aee2bpresentstatuses>
+	<aeoutcomes>
+		<outcome><code>REQUIRED_INTERVENTION</code><value>0</value></outcome>
+    	<outcome><code>CONGENITAL_ANOMALY</code><value>1</value></outcome>
+    	<outcome><code>RECOVERING</code><value>2</value></outcome>
+    	<outcome><code>LIFE_THREATENING</code><value>3</value></outcome>
+    	<outcome><code>HOSPITALIZATION</code><value>4</value></outcome>
+    	<outcome><code>DEATH</code><value>5</value></outcome>
+    	<outcome><code>OTHER_SERIOUS</code><value>6</value></outcome>
+    </aeoutcomes>
+	
     <ecog-zubrod-baselinestatuses>	
     	<baselinestatus><code>0</code><value>0 = Normal Activity, asymptomatic</value></baselinestatus>
     	<baselinestatus><code>1</code><value>1 = Symptomatic, fully ambulatory</value></baselinestatus>
@@ -149,4 +198,12 @@
     	<baselinestatus><code>20</code><value>4 = 100% bedridden</value></baselinestatus>
     	<baselinestatus><code>10</code><value>4 = 100% bedridden</value></baselinestatus>
     </karnofsky-lansky-baselinestatuses>
+    <baselinestatustoe2b>	
+    	<baselinestatus><code>0 = Normal Activity, asymptomatic</code><value>0</value></baselinestatus>
+    	<baselinestatus><code>1 = Symptomatic, fully ambulatory</code><value>1</value></baselinestatus>
+    	<baselinestatus><code>2 = Symptomatic, in bed less than 50% of time</code><value>2</value></baselinestatus>
+    	<baselinestatus><code>3 = Symptomatic, in bed more than 50% of time</code><value>3</value></baselinestatus>
+    	<baselinestatus><code>4 = 100% bedridden</code><value>4</value></baselinestatus>
+    </baselinestatustoe2b>
+    
 </lookup>

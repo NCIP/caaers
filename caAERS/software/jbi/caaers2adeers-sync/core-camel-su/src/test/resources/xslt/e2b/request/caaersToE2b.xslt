@@ -72,7 +72,7 @@
 	
 	<xsl:template name="populateAttributions">
 		<xsl:for-each select="/AdverseEventReport/AdverseEvent">
-				<xsl:variable name="externalId" select="gridId"/>
+				<xsl:variable name="externalId" select="externalId"/>
 			 
 			 <!-- Disease Attribution -->
 			<xsl:for-each select="DiseaseAttribution">
@@ -323,7 +323,21 @@
 		<patient>
 			<subjectstudysiteid><xsl:value-of select="/AdverseEventReport/StudyParticipantAssignment/StudySite/Organization/nciInstituteCode"/></subjectstudysiteid> <!-- study site NCI id-->	  
 			<patientinvestigationnumb><xsl:value-of select="/AdverseEventReport/StudyParticipantAssignment/studySubjectIdentifier" /></patientinvestigationnumb> <!-- study subject id-->	  
-			
+			<xsl:if test="/AdverseEventReport/ParticipantHistory/weight">
+				<patientweight><xsl:value-of select="/AdverseEventReport/ParticipantHistory/weight/quantity"/></patientweight>
+			</xsl:if>
+			<xsl:if test="/AdverseEventReport/ParticipantHistory/height">
+				<patientheight><xsl:value-of select="/AdverseEventReport/ParticipantHistory/height/quantity"/></patientheight>
+			</xsl:if>
+			<xsl:if test="/AdverseEventReport/ParticipantHistory/baselinePerformanceStatus">
+				<baselineperformancescale>ECOG</baselineperformancescale>
+				<baselineperformancenumber>
+					<xsl:call-template name="lookup">
+							<xsl:with-param name="_map" select="$map//baselinestatustoe2b" />
+							<xsl:with-param name="_code" select="/AdverseEventReport/ParticipantHistory/baselinePerformanceStatus" />
+					</xsl:call-template>
+				</baselineperformancenumber>	
+			</xsl:if>
 			<drug>		
 				<drugcharacterization>3</drugcharacterization>	<!-- drugcharacterization = 3 identifies the "drug" as the reporting period -->		
 				<medicinalproduct><xsl:value-of select="/AdverseEventReport/TreatmentInformation/TreatmentAssignment/code"/></medicinalproduct> <!-- Treatment Assignment Code -->		
@@ -429,7 +443,7 @@
 			<!-- Adverse Events -->
 			<xsl:for-each select="/AdverseEventReport/AdverseEvent">	
 			  <reaction>
-				<aeexternalid><xsl:value-of select="gridId"/></aeexternalid>
+				<aeexternalid><xsl:value-of select="externalId"/></aeexternalid>
 				
 					<xsl:call-template name="isPrimaryAE"> 
 						<xsl:with-param name="verbatim" select="detailsForOther"/>
