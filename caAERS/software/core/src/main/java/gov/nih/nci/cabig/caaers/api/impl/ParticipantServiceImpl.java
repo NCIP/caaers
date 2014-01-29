@@ -202,10 +202,10 @@ public class ParticipantServiceImpl extends AbstractImportService implements App
 		// Get the participant if exists
 		Participant dbParticipant = fetchParticipantBySubjectIdAndSite(subjectId,regSite.getNciInstituteCode());		
 		if(dbParticipant != null && dbParticipant.getAssignments().size() > 0){
-			// Check if there are registrations on this study already 
-			StudyParticipantAssignment studyAssignment = dbParticipant.getAssignments().get(0);
 			logger.debug("Participant with subject id "+subjectId+" exists, checking for exisint registration on study "+studyIdentifier.getValue());
-			if (getStudyIdentifier(studyAssignment.getStudySite().getStudy()).equals(studyIdentifier.getValue()) && 
+			// Check if there are registrations on this study already 
+			StudyParticipantAssignment studyAssignment = dbParticipant.getAssignments().get(0);			
+			if (checkStudyId(studyAssignment.getStudySite().getStudy(),studyIdentifier) && 
 				!studySubjectIdentifier.equals(studyAssignment.getStudySubjectIdentifier())){
 				logger.error("Subject subject identifier "+ studyAssignment.getStudySubjectIdentifier()+" already exists on study "+ studyIdentifier.getValue()+" returning error WS_PMS_019");
 				populateError(caaersServiceResponse, "WS_PMS_019", messageSource.getMessage("WS_PMS_019", new String[]{subjectId,studyIdentifier.getValue(),studyAssignment.getStudySubjectIdentifier()},"",Locale.getDefault()));
@@ -217,19 +217,20 @@ public class ParticipantServiceImpl extends AbstractImportService implements App
 	}
 	
 	/**
-	 * Get the study protocol authority identifier for the study
-	 * @param study
+	 * Check whether the study has the given identifier
+	 * @param study to check
+	 * @param id 
 	 * @return
 	 */
-	private String getStudyIdentifier(Study study){
+	private boolean checkStudyId(Study study, Identifier id){
 		List<Identifier> identifiers = study.getIdentifiers();
-		for (Iterator iterator = identifiers.iterator(); iterator.hasNext();) {
+		for (Iterator<Identifier> iterator = identifiers.iterator(); iterator.hasNext();) {
 			Identifier identifier = (Identifier) iterator.next();
-			if(identifier.getType().equals("Protocol Authority Identifier")){
-				return identifier.getValue();
+			if(id.getType().equals(identifier.getType()) && id.getValue().equals(identifier.getValue())){
+				return true;
 			}
 		}
-		return null;
+		return false;
 	}
 	
 	/**
