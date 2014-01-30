@@ -178,4 +178,11 @@
 		<outcome><code>DEAD</code><value>5</value></outcome>
 		<outcome><code>INTERVENTION_CONTINUES</code><value>6</value></outcome>
 	</aee2bpresentstatuses>
+	<baselinestatustoe2b>	
+    	<baselinestatus><code>0 = Normal Activity, asymptomatic</code><value>0</value></baselinestatus>
+    	<baselinestatus><code>1 = Symptomatic, fully ambulatory</code><value>1</value></baselinestatus>
+    	<baselinestatus><code>2 = Symptomatic, in bed less than 50% of time</code><value>2</value></baselinestatus>
+    	<baselinestatus><code>3 = Symptomatic, in bed more than 50% of time</code><value>3</value></baselinestatus>
+    	<baselinestatus><code>4 = 100% bedridden</code><value>4</value></baselinestatus>
+    </baselinestatustoe2b>
 </lookup>
