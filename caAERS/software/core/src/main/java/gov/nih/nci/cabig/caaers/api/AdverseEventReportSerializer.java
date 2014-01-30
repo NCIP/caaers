@@ -986,6 +986,7 @@ public class AdverseEventReportSerializer {
 	    	AdverseEvent adverseEvent = new AdverseEvent();
 	    	if(ae == null) return adverseEvent;
 	    	try {
+	    		adverseEvent.setExternalId(ae.getExternalId());
 		    	adverseEvent.setDetailsForOther(ae.getDetailsForOther());
 		    	adverseEvent.setExpected(ae.getExpected());
 		    	adverseEvent.setComments(ae.getComments());
