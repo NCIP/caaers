@@ -204,6 +204,10 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		if(!outcomes.isEmpty() && outcomes.size() == getAdverseEvents().size()) {
 			return;
 		}
+		
+		// Fix for CAAERS-6704 : the current outcomes in the command have to be cleared before initializing,
+		// otherwise the outcomes list keeps on growing
+		outcomes.clear();
 		int i = 0;
     	for(AdverseEvent ae : getAdverseEvents()){
     	
