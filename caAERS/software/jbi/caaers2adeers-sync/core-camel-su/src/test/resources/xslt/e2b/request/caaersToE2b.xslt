@@ -478,8 +478,8 @@
 			<xsl:for-each select="/AdverseEventReport/MedicalDevice">
 				<drug>
 					<devicetype><xsl:value-of select="deviceType"/></devicetype>
-					<devicenamecommon><xsl:value-of select="brandName"/></devicenamecommon>
-					<devicenamebrand><xsl:value-of select="commonName"/></devicenamebrand>
+					<devicenamecommon><xsl:value-of select="commonName"/></devicenamecommon>
+					<devicenamebrand><xsl:value-of select="brandName"/></devicenamebrand>
 					<devicenumbercatalog><xsl:value-of select="catalogNumber"/></devicenumbercatalog>
 					<deviceavailableflag><xsl:value-of select="EvaluationAvailability"/></deviceavailableflag>
 					<devicedateexpiration><xsl:value-of select="expiredDate"/></devicedateexpiration>
