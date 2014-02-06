@@ -338,6 +338,23 @@
 					</xsl:call-template>
 				</baselineperformancenumber>	
 			</xsl:if>
+			
+			
+			<xsl:if test="/AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'DEAD'">
+				<patientdeath>
+					<patientdeathdate>
+						<xsl:call-template name="getDate"> 
+							<xsl:with-param name="givenDate" select="/AdverseEventReport/AdverseEventResponseDescription/recoveryDate"/>	
+						</xsl:call-template>
+					</patientdeathdate>	 
+					<patientautopsyyesno>
+						<xsl:call-template name="convertBooleantoOneTwo"> 
+							<xsl:with-param name="boolType" select="/AdverseEventReport/AdverseEventResponseDescription/autopsyPerformed"/>
+						</xsl:call-template>
+					</patientautopsyyesno>
+				</patientdeath>
+			</xsl:if>
+			
 			<drug>		
 				<drugcharacterization>3</drugcharacterization>	<!-- drugcharacterization = 3 identifies the "drug" as the reporting period -->		
 				<medicinalproduct><xsl:value-of select="/AdverseEventReport/TreatmentInformation/TreatmentAssignment/code"/></medicinalproduct> <!-- Treatment Assignment Code -->		
@@ -644,16 +661,21 @@
 				<xsl:call-template name="ConvertPresentStatusToCode"> 
 					<xsl:with-param name="code" select="/AdverseEventReport/AdverseEventResponseDescription/presentStatus"/>
 				</xsl:call-template>
-				<xsl:if test="/AdverseEventReport/AdverseEventResponseDescription/deathDate">
-					<patientdeathdate><xsl:value-of select="/AdverseEventReport/AdverseEventResponseDescription/deathDate"/></patientdeathdate>
-				</xsl:if>
 				<xsl:call-template name="ConvertRetreatedToCode"> 
 					<xsl:with-param name="code" select="/AdverseEventReport/AdverseEventResponseDescription/retreated"/>
 				</xsl:call-template>
+				
+				<xsl:if test="/AdverseEventReport/AdverseEventResponseDescription/dateRemovedFromProtocol">
+					<removedflag>1</removedflag>
+					<dateremoved>
+						<xsl:call-template name="getDate"> 
+							<xsl:with-param name="givenDate" select="/AdverseEventReport/AdverseEventResponseDescription/dateRemovedFromProtocol"/>	
+						</xsl:call-template>
+					</dateremoved>
+				</xsl:if>
 			 </xsl:if>
-		 
 		 </summary>
-		
+	
 		 </patient>
 		</safetyreport>
 		</ichicsr>	
