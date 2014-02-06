@@ -205,5 +205,15 @@
     	<baselinestatus><code>3 = Symptomatic, in bed more than 50% of time</code><value>3</value></baselinestatus>
     	<baselinestatus><code>4 = 100% bedridden</code><value>4</value></baselinestatus>
     </baselinestatustoe2b>
-    
+    <radiationAdministration>
+		<administration><code>BT_HDR</code><value>Brachytherapy HDR</value></administration>
+		<administration><code>BT_LDR</code><value>Brachytherapy LDR</value></administration>
+		<administration><code>BT_NOS</code><value>Brachytherapy NOS</value></administration>
+		<administration><code>EB_NOS</code><value>External Beam NOS</value></administration>
+		<administration><code>EB_2D</code><value>External Beam, 2D</value></administration>
+		<administration><code>EB_3D</code><value>External Beam, 3D</value></administration>
+		<administration><code>EB_IMRT</code><value>External Beam, IMRT</value></administration>
+		<administration><code>EB_PROTON</code><value>External Beam, Proton</value></administration>
+		<administration><code>SYSTEMIC_RADIOTHERAPY</code><value>Systemic radiotherapy</value></administration>
+    </radiationAdministration>
 </lookup>

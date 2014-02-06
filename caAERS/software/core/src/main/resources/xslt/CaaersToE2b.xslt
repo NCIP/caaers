@@ -507,7 +507,12 @@
 			<xsl:for-each select="/AdverseEventReport/RadiationIntervention">
 				 <drug>
 					<drugcharacterization>1</drugcharacterization>
-					<medicinalproduct><xsl:value-of select="administration"/></medicinalproduct>
+					<medicinalproduct>
+						<xsl:call-template name="lookup">
+							<xsl:with-param name="_map" select="$map//radiationAdministration" />
+							<xsl:with-param name="_code" select="administration" />
+						</xsl:call-template>
+					</medicinalproduct>
 					<drugcumulativedosagenumb><xsl:value-of select="dosage"/></drugcumulativedosagenumb>
 					<radiationdoseunit><xsl:value-of select="dosageUnit"/></radiationdoseunit>
 					<drugintervaldosageunitnumb><xsl:value-of select="daysElapsed"/></drugintervaldosageunitnumb>
