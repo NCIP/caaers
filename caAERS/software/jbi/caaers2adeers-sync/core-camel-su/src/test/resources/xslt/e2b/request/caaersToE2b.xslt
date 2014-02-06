@@ -477,6 +477,7 @@
 			<!-- Medical Device -->
 			<xsl:for-each select="/AdverseEventReport/MedicalDevice">
 				<drug>
+					<drugcharacterization>1</drugcharacterization>
 					<devicetype><xsl:value-of select="deviceType"/></devicetype>
 					<devicenamecommon><xsl:value-of select="commonName"/></devicenamecommon>
 					<devicenamebrand><xsl:value-of select="brandName"/></devicenamebrand>
@@ -505,6 +506,7 @@
 			<!-- Radiation -->
 			<xsl:for-each select="/AdverseEventReport/RadiationIntervention">
 				 <drug>
+				 	<drugcharacterization>1</drugcharacterization>
 					<medicinalproduct><xsl:value-of select="administration"/></medicinalproduct>
 					<drugcumulativedosagenumb><xsl:value-of select="dosage"/></drugcumulativedosagenumb>
 					<radiationdoseunit><xsl:value-of select="dosageUnit"/></radiationdoseunit>
