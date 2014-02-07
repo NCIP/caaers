@@ -118,6 +118,7 @@ public class AdverseEventMigrator implements Migrator<AdverseEventReportingPerio
             aeDest.setOutcomes(aeSrc.getOutcomes());
 
             aeDest.setDetailsForOther(aeSrc.getDetailsForOther());
+            aeDest.setReporterEmail(aeSrc.getReporterEmail());
 
             if(aeTerminology.getTerm() == Term.CTC){
 

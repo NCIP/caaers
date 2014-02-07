@@ -53,6 +53,7 @@ public class AdverseEventConverter {
         adverseEvent.setExpected(adverseEventDto.isExpected());
         populateAttributionSummary(adverseEventDto,adverseEvent);
         adverseEvent.setComments(adverseEventDto.getComments());
+        adverseEvent.setReporterEmail(adverseEventDto.getReporterEmail());
 
         if(adverseEventDto.getStartDate() != null) adverseEvent.setStartDate(adverseEventDto.getStartDate().toGregorianCalendar().getTime());
         if(adverseEventDto.getEndDate() != null) adverseEvent.setEndDate(adverseEventDto.getEndDate().toGregorianCalendar().getTime());

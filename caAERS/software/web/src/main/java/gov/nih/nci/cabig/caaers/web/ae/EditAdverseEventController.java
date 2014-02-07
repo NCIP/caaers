@@ -7,18 +7,33 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Grade;
+import gov.nih.nci.cabig.caaers.domain.Person;
+import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
+import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.repository.PersonRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
-import gov.nih.nci.cabig.caaers.service.AdeersIntegrationFacade;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 import gov.nih.nci.cabig.caaers.web.validation.validator.WebControllerValidator;
 import gov.nih.nci.cabig.ctms.web.chrome.Task;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
+
+import java.util.Map;
+
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Required;
@@ -27,12 +42,6 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.util.Map;
 
 /**
  * The Webflow for ExpeditedAdverseEventReport modification is maintained by this controller. 
@@ -47,8 +56,26 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
 	private static final String ACTION_PARAMETER = "action";
 
     private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
+    private PersonRepository personRepository;
+    private UserRepository userRepository;
 
-    public EditAdverseEventController() {
+    public PersonRepository getPersonRepository() {
+		return personRepository;
+	}
+
+	public void setPersonRepository(PersonRepository personRepository) {
+		this.personRepository = personRepository;
+	}
+
+	public UserRepository getUserRepository() {
+		return userRepository;
+	}
+
+	public void setUserRepository(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
+
+	public EditAdverseEventController() {
         setCommandClass(EditExpeditedAdverseEventCommand.class);
         setBindOnNewForm(true);
     }
@@ -88,7 +115,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     	RenderDecisionManager renderDecisionManager = renderDecisionManagerFactoryBean.getRenderDecisionManager();
     	EditExpeditedAdverseEventCommand command = new EditExpeditedAdverseEventCommand(expeditedAdverseEventReportDao,studyDao, reportDefinitionDao,
     				assignmentDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager, reportRepository,
-                adverseEventRoutingAndReviewRepository, evaluationService);
+                adverseEventRoutingAndReviewRepository, evaluationService, personRepository, userRepository);
     	command.setWorkflowEnabled(getConfiguration().get(getConfiguration().ENABLE_WORKFLOW));
     	
         if(request.getParameter("aeReport") != null){

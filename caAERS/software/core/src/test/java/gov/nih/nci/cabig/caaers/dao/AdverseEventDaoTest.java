@@ -380,4 +380,24 @@ public class AdverseEventDaoTest extends CaaersDbNoSecurityTestCase {
     	return (AdverseEventDao) getDeployedApplicationContext().getBean("adverseEventDao");
     }
     
+    public void testSaveAndRetrieveReporterEmail(){
+    	 AdverseEvent loaded = getDao().getById(-2);
+         assertNotNull("AE not found", loaded);
+         assertNull(loaded.getReporterEmail());
+         
+         String reporterEmail = "abc@def.com";
+         loaded.setReporterEmail(reporterEmail);
+         
+         getDao().save(loaded);
+         
+         interruptSession();
+         
+         AdverseEvent aeWithReporterEmail = getDao().getById(-2);
+         assertNotNull("AE not found", aeWithReporterEmail);
+         assertNotNull(aeWithReporterEmail.getReporterEmail());
+         assertEquals("wrong reporter email found in adverse event" ,reporterEmail, aeWithReporterEmail.getReporterEmail());
+         
+         
+    }
+    
 }
