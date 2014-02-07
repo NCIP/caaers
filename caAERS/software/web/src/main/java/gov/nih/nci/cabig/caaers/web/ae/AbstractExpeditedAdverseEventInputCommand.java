@@ -34,7 +34,9 @@ import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryField;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.PersonRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
@@ -82,6 +84,36 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     protected ExpeditedReportTree expeditedReportTree;
     protected Map<String, Boolean> mandatoryFieldMap = new HashMap<String, Boolean>();
     protected ReportRepository reportRepository;
+    
+    protected String loggedInUserEmail;
+    
+    public String getLoggedInUserEmail() {
+		return fetchLoggedInUserEmail();
+	}
+
+	public void setLoggedInUserEmail(String loggedInUserEmail) {
+		this.loggedInUserEmail = loggedInUserEmail;
+	}
+
+	protected PersonRepository personRepository;
+    
+    public PersonRepository getPersonRepository() {
+		return personRepository;
+	}
+
+	public void setPersonRepository(PersonRepository personRepository) {
+		this.personRepository = personRepository;
+	}
+
+	public UserRepository getUserRepository() {
+		return userRepository;
+	}
+
+	public void setUserRepository(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
+
+	protected UserRepository userRepository;
 
     private String treatmentDescriptionType;
 
@@ -128,7 +160,8 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     public AbstractExpeditedAdverseEventInputCommand(ExpeditedAdverseEventReportDao reportDao, 
     		ReportDefinitionDao reportDefinitionDao, AdverseEventReportingPeriodDao reportingPeriodDao, 
     		ExpeditedReportTree expeditedReportTree, RenderDecisionManager renderDecisionManager, ReportRepository reportRepository,
-    		StudyParticipantAssignmentDao assignmentDao, AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository) {
+    		StudyParticipantAssignmentDao assignmentDao, AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository, 
+    		PersonRepository personRepository, UserRepository userRepository) {
     	this.assignmentDao = assignmentDao;
     	this.reportingPeriodDao = reportingPeriodDao;
         this.reportDao = reportDao;
@@ -144,6 +177,8 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
         this.newlySelectedReportDefinitions = new ArrayList<ReportDefinition>();
         this.applicableReportDefinitions = new ArrayList<ReportDefinition>();
         this.chemoAgents = new ArrayList<String>(); // new ArrayList<ChemoAgent>();
+        this.personRepository = personRepository;
+        this.userRepository = userRepository;
     }
 
     public abstract StudyParticipantAssignment getAssignment();

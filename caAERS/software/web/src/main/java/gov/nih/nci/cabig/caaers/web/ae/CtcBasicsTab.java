@@ -82,6 +82,8 @@ public class CtcBasicsTab extends BasicsTab {
     @Override
     public void postProcess(HttpServletRequest request,	ExpeditedAdverseEventInputCommand command, Errors errors) {
     	super.postProcessOutcomes(command);
+    	super.postProcessAdverseEvents(command);
+    	
     }
 
     @Override

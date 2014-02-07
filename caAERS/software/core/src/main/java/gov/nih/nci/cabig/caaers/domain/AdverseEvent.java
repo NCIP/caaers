@@ -174,6 +174,16 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
 	public void setOtherSpecify(String otherSpecify) {
 		this.otherSpecify = otherSpecify;
 	}
+	
+	private String reporterEmail;
+
+	public String getReporterEmail() {
+		return reporterEmail;
+	}
+
+	public void setReporterEmail(String reporterEmail) {
+		this.reporterEmail = reporterEmail;
+	}
 
 	/**
      * Instantiates a new adverse event.

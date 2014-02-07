@@ -13,7 +13,6 @@ import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
@@ -24,9 +23,9 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.OutcomeType;
-import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.repository.PersonRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
-import gov.nih.nci.cabig.caaers.service.AdverseEventReportingPeriodService;
+import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.RecommendedActionService;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
@@ -40,10 +39,8 @@ import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -54,13 +51,10 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.ServletRequestDataBinder;
-import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 
 public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormController<CaptureAdverseEventInputCommand, AdverseEventReportingPeriod, AdverseEventReportingPeriodDao> {
@@ -84,7 +78,17 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	private ReportDefinitionDao reportDefinitionDao;
 	private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
 	private ReportRepository reportRepository;
+	private UserRepository userRepository;
+	private PersonRepository personRepository;
 	
+	public void setUserRepository(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
+
+	public void setPersonRepository(PersonRepository personRepository) {
+		this.personRepository = personRepository;
+	}
+
 	private RenderDecisionManagerFactoryBean renderDecisionManagerFactoryBean;
 	private CaaersFieldConfigurationManager caaersFieldConfigurationManager;
 
@@ -261,7 +265,8 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	
 	@Override
 	protected Object formBackingObject(HttpServletRequest request)	throws Exception {
-		CaptureAdverseEventInputCommand cmd = new CaptureAdverseEventInputCommand(adverseEventReportingPeriodDao, evaluationService, recommendedActionService, reportDefinitionDao, studyDao, expeditedAdverseEventReportDao);
+		CaptureAdverseEventInputCommand cmd = new CaptureAdverseEventInputCommand(adverseEventReportingPeriodDao, evaluationService, recommendedActionService, 
+				reportDefinitionDao, studyDao, expeditedAdverseEventReportDao, personRepository, userRepository);
 
 		cmd.setWorkflowEnabled(configuration.get(Configuration.ENABLE_WORKFLOW));
 

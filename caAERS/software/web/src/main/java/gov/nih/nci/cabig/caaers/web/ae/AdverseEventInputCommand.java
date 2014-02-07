@@ -37,4 +37,6 @@ public interface AdverseEventInputCommand {
     public boolean getWorkflowEnabled();
     
     public String getCommandType();
+    
+    public String fetchLoggedInUserEmail();
 }

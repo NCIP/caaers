@@ -13,13 +13,20 @@ import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.Person;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.PersonRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
  * @author Rhett Sutphin
@@ -45,7 +52,23 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
             RenderDecisionManager renderDecisionManager, ReportRepository reportRepository,
             AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository,
             EvaluationService evaluationService) {
-    	super(expeditedAeReportDao, reportDefinitionDao, reportingPeriodDao, expeditedReportTree , renderDecisionManager, reportRepository, assignmentDao, adverseEventRoutingAndReviewRepository);
+    	super(expeditedAeReportDao, reportDefinitionDao, reportingPeriodDao, expeditedReportTree , renderDecisionManager, reportRepository,
+    			assignmentDao, adverseEventRoutingAndReviewRepository, null, null);
+    		this.evaluationService = evaluationService;
+    }
+    
+    public EditExpeditedAdverseEventCommand(ExpeditedAdverseEventReportDao expeditedAeReportDao, StudyDao studyDao,
+            ReportDefinitionDao reportDefinitionDao,
+            StudyParticipantAssignmentDao assignmentDao,
+            AdverseEventReportingPeriodDao reportingPeriodDao,
+            ExpeditedReportTree expeditedReportTree, 
+            RenderDecisionManager renderDecisionManager, ReportRepository reportRepository,
+            AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository,
+            EvaluationService evaluationService,
+            PersonRepository personRepository,
+            UserRepository userRepository) {
+    	super(expeditedAeReportDao, reportDefinitionDao, reportingPeriodDao, expeditedReportTree , renderDecisionManager, reportRepository, 
+    			assignmentDao, adverseEventRoutingAndReviewRepository, personRepository, userRepository);
     		this.evaluationService = evaluationService;
     }
 
@@ -108,6 +131,28 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
 		if(getAeReport() != null)
 			return getAeReport().getReportingPeriod();
 		return null;
+	}
+
+	public String fetchLoggedInUserEmail() {
+		
+		if ( !StringUtils.isBlank(loggedInUserEmail)){
+				return loggedInUserEmail;
+		}
+		//set the default reporter as the logged-in person
+		String loginId = SecurityUtils.getUserLoginName();
+        if(loginId != null){
+           Person loggedInPerson = getPersonRepository().getByLoginId(loginId);
+           if(loggedInPerson != null && !StringUtils.isBlank(loggedInPerson.getEmailAddress())){
+        	   loggedInUserEmail =  loggedInPerson.getEmailAddress();
+           } else {
+               User loggedInUser = getUserRepository().getUserByLoginName(loginId);
+               if(loggedInUser != null){
+            	   loggedInUserEmail = loggedInUser.getEmailAddress();
+               }
+           }
+        }
+        
+        return loggedInUserEmail;
 	}
 
 }

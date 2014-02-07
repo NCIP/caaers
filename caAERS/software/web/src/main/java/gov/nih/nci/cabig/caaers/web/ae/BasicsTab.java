@@ -227,6 +227,13 @@ public abstract class BasicsTab extends AeTab {
         o.setOther(otherString);
         outcomes.add(o);
     }
+    
+    protected void postProcessAdverseEvents(ExpeditedAdverseEventInputCommand command){
+    	// update all adverse events to set reporter email
+    	 for (AdverseEvent ae : command.getAeReport().getAdverseEvents()) {
+    		 ae.setReporterEmail(((AbstractExpeditedAdverseEventInputCommand)command).getLoggedInUserEmail());
+         }
+    }
 
     protected void postProcessOutcomes(ExpeditedAdverseEventInputCommand command) {
         int i = 0;
