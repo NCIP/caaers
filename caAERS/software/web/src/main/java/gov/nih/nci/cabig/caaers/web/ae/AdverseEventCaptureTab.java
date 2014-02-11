@@ -219,7 +219,9 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         
      // update all adverse events to set reporter email
     	for(AdverseEvent adverseEvent : command.getAdverseEvents()){
-    		adverseEvent.setReporterEmail(command.getLoggedInUserEmail());
+    		 if(StringUtils.isBlank(adverseEvent.getReporterEmail())){
+    			 adverseEvent.setReporterEmail(command.getLoggedInUserEmail());
+    		 }
     	}
         
         //reset the reporting method and action
