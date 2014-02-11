@@ -43,7 +43,7 @@ public class AdverseEventReportingPeriodSynchronizer implements Migrator<Adverse
                 aeFound.setAttributionSummary(aeSrc.getAttributionSummary());
                 aeFound.setStartDate(aeSrc.getStartDate());
                 aeFound.setEndDate(aeSrc.getEndDate());
-                if(!StringUtils.isBlank(aeSrc.getReporterEmail())){
+                if(StringUtils.isBlank(aeFound.getReporterEmail())){
                 	aeFound.setReporterEmail(aeSrc.getReporterEmail());
                 }
 
@@ -81,7 +81,7 @@ public class AdverseEventReportingPeriodSynchronizer implements Migrator<Adverse
                 aeFound.setParticipantAtRisk(aeSrc.getParticipantAtRisk());
                 aeFound.setRequiresReporting(aeSrc.getRequiresReporting());
                 aeFound.setReported(aeSrc.getReported());
-                aeFound.setSignature(aeSrc.getSignature());
+                aeFound.setSignature(aeSrc.getCurrentSignature());
 
                 aeFound.getOutcomes().clear();
                 for(Outcome outcomeSrc : aeSrc.getOutcomes()) aeFound.addOutComeIfNecessary(outcomeSrc);

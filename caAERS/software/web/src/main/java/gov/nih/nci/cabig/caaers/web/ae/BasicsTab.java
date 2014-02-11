@@ -16,6 +16,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
+import gov.nih.nci.logging.api.util.StringUtils;
 
 import java.util.*;
 
@@ -231,7 +232,9 @@ public abstract class BasicsTab extends AeTab {
     protected void postProcessAdverseEvents(ExpeditedAdverseEventInputCommand command){
     	// update all adverse events to set reporter email
     	 for (AdverseEvent ae : command.getAeReport().getAdverseEvents()) {
-    		 ae.setReporterEmail(((AbstractExpeditedAdverseEventInputCommand)command).getLoggedInUserEmail());
+    		 if(StringUtils.isBlank(ae.getReporterEmail())){
+    				 ae.setReporterEmail(((AbstractExpeditedAdverseEventInputCommand)command).getLoggedInUserEmail());
+    		 }
          }
     }
 
