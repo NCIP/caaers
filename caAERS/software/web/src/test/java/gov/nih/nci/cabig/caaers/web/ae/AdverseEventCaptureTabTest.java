@@ -15,9 +15,14 @@ import static gov.nih.nci.cabig.caaers.domain.OutcomeType.OTHER_SERIOUS;
 import static gov.nih.nci.cabig.caaers.domain.OutcomeType.REQUIRED_INTERVENTION;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.Grade;
+import gov.nih.nci.cabig.caaers.domain.Outcome;
+import gov.nih.nci.cabig.caaers.domain.OutcomeType;
+import gov.nih.nci.cabig.caaers.domain.TimeValue;
 import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
-import gov.nih.nci.cabig.caaers.domain.report.RequirednessIndicator;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
@@ -26,7 +31,11 @@ import gov.nih.nci.cabig.caaers.web.WebTestCase;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
@@ -48,7 +57,6 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
 	ReportRepository reportRepository;
 	AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
 	CaaersFieldConfigurationManager caaersFieldConfigurationManager;
-	
 	
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -197,11 +205,13 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
 	    command.setPrimaryAdverseEventId(3);
 		
 	    request.setAttribute("_action", "test");
+	    command.setLoggedInUserEmail("abc.def@gmail.com");
 		tab.postProcess(request, command, errors);
 		
 		assertNull(command.get_action());
 		assertNull(command.getReportingMethod());
 		assertNull(command.getPrimaryAdverseEventId());
+		
 		
 	}
 
