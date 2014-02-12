@@ -17,6 +17,9 @@ import gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper;
 import gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper.ActionType;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.repository.PersonRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.RecommendedActionService;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
@@ -82,7 +85,37 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	protected String verbatim;
 
     private RecommendedActionService recommendedActionService;
+    
+    private String loggedInUserEmail;
+    
+    public void setLoggedInUserEmail(String loggedInUserEmail) {
+		this.loggedInUserEmail = loggedInUserEmail;
+	}
+
+	public String getLoggedInUserEmail() {
+		return fetchLoggedInUserEmail();
+	}
+
+	protected PersonRepository personRepository;
+    
+    protected UserRepository userRepository;
 	
+	public UserRepository getUserRepository() {
+		return userRepository;
+	}
+
+	public void setUserRepository(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
+
+	public PersonRepository getPersonRepository() {
+		return personRepository;
+	}
+
+	public void setPersonRepository(PersonRepository personRepository) {
+		this.personRepository = personRepository;
+	}
+
 	public CaptureAdverseEventInputCommand(){
 
         this.outcomes = new ArrayList<Map<Integer,Boolean>>();
@@ -106,6 +139,16 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
         this.recommendedActionService = recommendedActionService;
 		
 	}
+	
+	
+	public CaptureAdverseEventInputCommand(AdverseEventReportingPeriodDao adverseEventReportingPeriodDao, 
+			 EvaluationService evaluationService, RecommendedActionService recommendedActionService, ReportDefinitionDao reportDefinitionDao, StudyDao studyDao, ExpeditedAdverseEventReportDao aeReportDao,
+			 PersonRepository personRepository, UserRepository userRepository){
+
+		this(adverseEventReportingPeriodDao,evaluationService,recommendedActionService, reportDefinitionDao, studyDao, aeReportDao);
+		this.personRepository = personRepository;
+		this.userRepository = userRepository;
+}
 	
 
 	/**
@@ -204,6 +247,10 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		if(!outcomes.isEmpty() && outcomes.size() == getAdverseEvents().size()) {
 			return;
 		}
+		
+		// Fix for CAAERS-6704 : the current outcomes in the command have to be cleared before initializing,
+		// otherwise the outcomes list keeps on growing
+		outcomes.clear();
 		int i = 0;
     	for(AdverseEvent ae : getAdverseEvents()){
     	
@@ -750,5 +797,27 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     public void setRecommendedActionService(RecommendedActionService recommendedActionService) {
         this.recommendedActionService = recommendedActionService;
     }
+
+	public String fetchLoggedInUserEmail() {
+		
+		if ( !StringUtils.isBlank(loggedInUserEmail)){
+				return loggedInUserEmail;
+		}
+		//set the default reporter as the logged-in person
+		String loginId = SecurityUtils.getUserLoginName();
+        if(loginId != null){
+           Person loggedInPerson = getPersonRepository().getByLoginId(loginId);
+           if(loggedInPerson != null && !StringUtils.isBlank(loggedInPerson.getEmailAddress())){
+        	   loggedInUserEmail = loggedInPerson.getEmailAddress();
+           } else {
+               User loggedInUser = getUserRepository().getUserByLoginName(loginId);
+               if(loggedInUser != null){
+            	   loggedInUserEmail = loggedInUser.getEmailAddress();
+               }
+           }
+        }
+        
+        return loggedInUserEmail;
+	}
 
 }

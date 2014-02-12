@@ -36,6 +36,7 @@ public class ExpeditedAdverseEventMigrator implements Migrator<ExpeditedAdverseE
 
             aeDest.setStartDate(aeSrc.getStartDate());
             aeDest.setEndDate(aeSrc.getEndDate());
+            aeDest.setReporterEmail(aeSrc.getReporterEmail());
             migrateCourseAgentAttributions(src,dest,aeSrc, aeDest, outcome);
             migrateDeviceAttributions(src,dest,aeSrc, aeDest, outcome);
             migrateSurgeryAttributions(src,dest,aeSrc, aeDest, outcome);

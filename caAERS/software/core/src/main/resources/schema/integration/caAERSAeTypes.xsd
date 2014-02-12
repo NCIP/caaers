@@ -30,6 +30,7 @@
                    	<xs:element minOccurs="0" name="outcome" type="OutcomeType" maxOccurs="unbounded"/>     
 					<xs:element minOccurs="0" name="increasedRisk" type="xs:boolean"/>
                     <xs:element minOccurs="0" name="externalId" type="xs:string"/>
+                    <xs:element minOccurs="0" name="reporterEmail" type="xs:string"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -53,7 +54,7 @@
                   <xs:element minOccurs="1" name="meddraTerm" type="xs:string"/>
                 </xs:sequence>
     </xs:complexType> 
-    
+   
     
      <xs:complexType name="AdverseEventCtepTermType">
                 <xs:sequence>

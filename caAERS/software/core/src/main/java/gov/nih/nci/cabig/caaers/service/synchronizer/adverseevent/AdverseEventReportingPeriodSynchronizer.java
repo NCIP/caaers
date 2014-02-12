@@ -9,6 +9,7 @@ package gov.nih.nci.cabig.caaers.service.synchronizer.adverseevent;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
+import gov.nih.nci.logging.api.util.StringUtils;
 
 import java.util.Date;
 
@@ -42,6 +43,9 @@ public class AdverseEventReportingPeriodSynchronizer implements Migrator<Adverse
                 aeFound.setAttributionSummary(aeSrc.getAttributionSummary());
                 aeFound.setStartDate(aeSrc.getStartDate());
                 aeFound.setEndDate(aeSrc.getEndDate());
+                if(StringUtils.isBlank(aeFound.getReporterEmail())){
+                	aeFound.setReporterEmail(aeSrc.getReporterEmail());
+                }
 
                 // Reactivating the AE, incase deactivated.
                 aeFound.setRetiredIndicator(false);
@@ -77,7 +81,7 @@ public class AdverseEventReportingPeriodSynchronizer implements Migrator<Adverse
                 aeFound.setParticipantAtRisk(aeSrc.getParticipantAtRisk());
                 aeFound.setRequiresReporting(aeSrc.getRequiresReporting());
                 aeFound.setReported(aeSrc.getReported());
-                aeFound.setSignature(aeSrc.getSignature());
+                aeFound.setSignature(aeSrc.getCurrentSignature());
 
                 aeFound.getOutcomes().clear();
                 for(Outcome outcomeSrc : aeSrc.getOutcomes()) aeFound.addOutComeIfNecessary(outcomeSrc);

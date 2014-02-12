@@ -217,6 +217,13 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
             return; 
         }
         
+     // update all adverse events to set reporter email
+    	for(AdverseEvent adverseEvent : command.getAdverseEvents()){
+    		 if(StringUtils.isBlank(adverseEvent.getReporterEmail())){
+    			 adverseEvent.setReporterEmail(command.getLoggedInUserEmail());
+    		 }
+    	}
+        
         //reset the reporting method and action
         command.set_action(null);
         command.setReportingMethod(null);
@@ -226,8 +233,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         command.synchronizeOutcome();
         
     }
-
-
+    
 
     public AdverseEvent checkAEsUniqueness(CaptureAdverseEventInputCommand command) {
     	if(CollectionUtils.isEmpty(command.getAdverseEventReportingPeriod().getAdverseEvents())){

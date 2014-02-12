@@ -338,6 +338,21 @@
 					</xsl:call-template>
 				</baselineperformancenumber>	
 			</xsl:if>
+		
+			<xsl:if test="/AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'DEAD'">
+				<patientdeath>
+					<patientdeathdate>
+						<xsl:call-template name="getDate"> 
+							<xsl:with-param name="givenDate" select="/AdverseEventReport/AdverseEventResponseDescription/recoveryDate"/>	
+						</xsl:call-template>
+					</patientdeathdate>	 
+					<patientautopsyyesno>
+						<xsl:call-template name="convertBooleantoOneTwo"> 
+							<xsl:with-param name="boolType" select="/AdverseEventReport/AdverseEventResponseDescription/autopsyPerformed"/>
+						</xsl:call-template>
+					</patientautopsyyesno>
+				</patientdeath>
+			</xsl:if>
 			<drug>		
 				<drugcharacterization>3</drugcharacterization>	<!-- drugcharacterization = 3 identifies the "drug" as the reporting period -->		
 				<medicinalproduct><xsl:value-of select="/AdverseEventReport/TreatmentInformation/TreatmentAssignment/code"/></medicinalproduct> <!-- Treatment Assignment Code -->		
@@ -477,9 +492,10 @@
 			<!-- Medical Device -->
 			<xsl:for-each select="/AdverseEventReport/MedicalDevice">
 				<drug>
+					<drugcharacterization>1</drugcharacterization>
 					<devicetype><xsl:value-of select="deviceType"/></devicetype>
-					<devicenamecommon><xsl:value-of select="brandName"/></devicenamecommon>
-					<devicenamebrand><xsl:value-of select="commonName"/></devicenamebrand>
+					<devicenamecommon><xsl:value-of select="commonName"/></devicenamecommon>
+					<devicenamebrand><xsl:value-of select="brandName"/></devicenamebrand>
 					<devicenumbercatalog><xsl:value-of select="catalogNumber"/></devicenumbercatalog>
 					<deviceavailableflag><xsl:value-of select="EvaluationAvailability"/></deviceavailableflag>
 					<devicedateexpiration><xsl:value-of select="expiredDate"/></devicedateexpiration>
@@ -505,7 +521,13 @@
 			<!-- Radiation -->
 			<xsl:for-each select="/AdverseEventReport/RadiationIntervention">
 				 <drug>
-					<medicinalproduct><xsl:value-of select="administration"/></medicinalproduct>
+				 	<drugcharacterization>1</drugcharacterization>
+					<medicinalproduct>
+						<xsl:call-template name="lookup">
+							<xsl:with-param name="_map" select="$map//radiationAdministration" />
+							<xsl:with-param name="_code" select="administration" />
+						</xsl:call-template>
+					</medicinalproduct>
 					<drugcumulativedosagenumb><xsl:value-of select="dosage"/></drugcumulativedosagenumb>
 					<radiationdoseunit><xsl:value-of select="dosageUnit"/></radiationdoseunit>
 					<drugintervaldosageunitnumb><xsl:value-of select="daysElapsed"/></drugintervaldosageunitnumb>
@@ -637,14 +659,19 @@
 				<xsl:call-template name="ConvertPresentStatusToCode"> 
 					<xsl:with-param name="code" select="/AdverseEventReport/AdverseEventResponseDescription/presentStatus"/>
 				</xsl:call-template>
-				<xsl:if test="/AdverseEventReport/AdverseEventResponseDescription/deathDate">
-					<patientdeathdate><xsl:value-of select="/AdverseEventReport/AdverseEventResponseDescription/deathDate"/></patientdeathdate>
-				</xsl:if>
 				<xsl:call-template name="ConvertRetreatedToCode"> 
 					<xsl:with-param name="code" select="/AdverseEventReport/AdverseEventResponseDescription/retreated"/>
 				</xsl:call-template>
+				
+				<xsl:if test="/AdverseEventReport/AdverseEventResponseDescription/dateRemovedFromProtocol">
+					<removedflag>1</removedflag>
+					<dateremoved>
+						<xsl:call-template name="getDate"> 
+							<xsl:with-param name="givenDate" select="/AdverseEventReport/AdverseEventResponseDescription/dateRemovedFromProtocol"/>	
+						</xsl:call-template>
+					</dateremoved>
+				</xsl:if>
 			 </xsl:if>
-		 
 		 </summary>
 		
 		 </patient>
