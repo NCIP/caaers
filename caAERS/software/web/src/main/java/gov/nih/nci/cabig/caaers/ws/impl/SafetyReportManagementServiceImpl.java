@@ -9,6 +9,7 @@ package gov.nih.nci.cabig.caaers.ws.impl;
 import gov.nih.nci.cabig.caaers.api.impl.Helper;
 import gov.nih.nci.cabig.caaers.api.impl.SafetyReportServiceImpl;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.AdverseEventReport;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.BaseAdverseEventReport;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.ws.SafetyReportManagementService;
 
@@ -40,7 +41,20 @@ public class SafetyReportManagementServiceImpl implements SafetyReportManagement
 	public void setSafetySvcImpl(SafetyReportServiceImpl safetySvcImpl) {
 		this.safetySvcImpl = safetySvcImpl;
 	}
-
+	
+	@WebMethod
+    public CaaersServiceResponse initiateSafetyReportAction(@WebParam(name = "AdverseEventReport", targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/aereport") BaseAdverseEventReport xmlAdverseEventReport){
+		try {
+			return safetySvcImpl.initiateSafetyReportAction(xmlAdverseEventReport);
+		} catch (Exception e) {
+            logger.error(e);
+            CaaersServiceResponse caaersResponse = Helper.createResponse();
+            Helper.populateError(caaersResponse, "WS_GEN_000", "Unable to process the request :" + e.getMessage());
+            return caaersResponse;
+		}
+		
+    }
+	
 
 	@WebMethod
     public CaaersServiceResponse submitSafetyReport(@WebParam(name = "AdverseEventReport", targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/aereport") AdverseEventReport xmlAdverseEventReport){

@@ -7,7 +7,29 @@
 
 	<xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent" schemaLocation="caAERSAeTypes.xsd" />
 	<xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" schemaLocation="caAERSCommonTypes.xsd" />
-
+	
+	<xs:element name="BaseAdverseEventReport">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element type="xs:dateTime" name="createdAt" />
+				<xs:element type="AdverseEventReportingPeriodType" name="adverseEventReportingPeriod" />
+				<xs:element type="PhysicianType" name="physician" />
+				<xs:element type="ReporterType" name="reporter" />
+				<xs:element type="ReportedAE" name="reportedAE" maxOccurs="unbounded" minOccurs="1" />
+				<xs:element type="ReportType" name="report" maxOccurs="unbounded" minOccurs="1" />
+				<xs:element minOccurs="0" name="externalId" type="xs:string" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="BaseReport">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ReportID" type="xs:string"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
 	<xs:element name="AdverseEventReport">
 		<xs:complexType>
 			<xs:sequence>
@@ -38,6 +60,11 @@
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
+	<xs:complexType name="ReportedAE">
+		<xs:sequence>
+			<xs:element minOccurs="0" name="externalId" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
 	<xs:complexType name="AdverseEventType">
 		<xs:complexContent>
 			<xs:extension base="ae:AdverseEventType">

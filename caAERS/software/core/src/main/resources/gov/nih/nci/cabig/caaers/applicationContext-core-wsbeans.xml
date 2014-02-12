@@ -57,6 +57,7 @@
     <bean id="SAEEvaluationServiceImpl" autowire="byType" class="gov.nih.nci.cabig.caaers.api.impl.SAEEvaluationServiceImpl"/>
     
     <bean id="safetyServiceImpl" class="gov.nih.nci.cabig.caaers.api.impl.SafetyReportServiceImpl">
+    	<property name="baseEaeConverter" ref="baseEaeConverter"/>
     	<property name="eaeConverter" ref="eaeConverter"/>
         <property name="aeReportMigrator" ref="expeditedReportMigrator" />
         <property name="aeReportValidator" ref="aeReportValidator" />
@@ -70,6 +71,7 @@
         <property name="aeReportSynchronizer" ref="aeReportSynchronizer" />
         <property name="studyParticipantAssignmentDao"  ref="studyParticipantAssignmentDao" />
         <property name="reportSubmissionService"  ref="reportSubmissionService" />
+        <property name="idServiceImpl"  ref="idServiceImpl" />
         <property name="adeersIntegrationFacade"  ref="proxyWebServiceFacade" />
     </bean>
     
