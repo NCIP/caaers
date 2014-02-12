@@ -494,7 +494,7 @@
 				<drug>
 					<drugcharacterization>1</drugcharacterization>
 					<devicetype><xsl:value-of select="deviceType"/></devicetype>
-					<devicenamecommon><xsl:value-of select="commonName"/></devicenamecommon>
+					<medicinalproduct><xsl:value-of select="commonName"/></medicinalproduct>
 					<devicenamebrand><xsl:value-of select="brandName"/></devicenamebrand>
 					<devicenumbercatalog><xsl:value-of select="catalogNumber"/></devicenumbercatalog>
 					<deviceavailableflag><xsl:value-of select="EvaluationAvailability"/></deviceavailableflag>
@@ -547,6 +547,7 @@
 			<!-- Surgery -->
 			<xsl:for-each select="/AdverseEventReport/SurgeryIntervention">
 				  <drug>
+					<drugcharacterization>1</drugcharacterization>
 					<medicinalproduct><xsl:value-of select="InterventionSite/name"/></medicinalproduct>
 					<drugstartdateformat>102</drugstartdateformat>
 						<!-- Date last administered -->
