@@ -487,6 +487,7 @@ public class SafetyReportServiceImpl {
             	ResponseDataType rdType = new ResponseDataType();
             	rdType.setAny(baseReport);
             	response.getServiceResponse().setResponseData(rdType);
+            	response.getServiceResponse().setMessage("Initiated safety report action for the safety report, " + baseAadverseEventReport.getExternalId());
             }
             
         }catch (Exception e){
