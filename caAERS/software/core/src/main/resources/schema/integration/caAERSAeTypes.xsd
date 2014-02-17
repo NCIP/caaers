@@ -51,7 +51,6 @@
     <xs:complexType name="AdverseEventMeddraLowLevelTermType">
                 <xs:sequence>
                   <xs:element minOccurs="1" name="meddraCode" type="xs:string"/>
-                  <xs:element minOccurs="1" name="meddraTerm" type="xs:string"/>
                 </xs:sequence>
     </xs:complexType> 
    
