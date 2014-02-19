@@ -154,7 +154,14 @@
 								<xsl:with-param name="date"	select="RadiationIntervention/lastTreatmentDate" />
 							</xsl:call-template>
 				</xsl:variable>
-				<factor><xsl:value-of select="concat('TYPE=',RadiationIntervention/administration,'^^','DATE=',$date,'^^')"/></factor> 
+				<factor>
+					<xsl:text>TYPE=</xsl:text>
+					<xsl:call-template name="lookup">
+							<xsl:with-param name="_map" select="$map//radiationAdministration" />
+							<xsl:with-param name="_code" select="RadiationIntervention/administration" />
+					</xsl:call-template>
+					<xsl:value-of select="concat('^^DATE=',$date,'^^')"/>
+				</factor> 
 				
 			<!--  	<factor><xsl:value-of select="RadiationIntervention/administration"/></factor> -->
 				<factortype>radiation</factortype>
