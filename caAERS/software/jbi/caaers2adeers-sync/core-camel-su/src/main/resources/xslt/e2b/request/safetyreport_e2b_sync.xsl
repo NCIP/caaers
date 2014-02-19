@@ -569,7 +569,10 @@
 			</xsl:if>
 			<xsl:if test="drugtreatmentdurationunit and drugtreatmentduration != '0'">
 				<ae:administrationDelayUnits>
-						<xsl:value-of select="drugtreatmentdurationunit" />
+					<xsl:call-template name="lookup">
+						<xsl:with-param name="_map" select="$map//delayuoms" />
+						<xsl:with-param name="_code" select='drugtreatmentdurationunit' />
+					</xsl:call-template>
 				</ae:administrationDelayUnits>
 			</xsl:if>
 			<ae:dose>
