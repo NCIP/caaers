@@ -199,8 +199,7 @@
 								<xsl:call-template name="metastaticSiteTemplate" />
 							</xsl:for-each>
 						</ae:diseaseHistory>
-						<xsl:call-template name="participantHistory"
-/>
+						<xsl:call-template name="participantHistory"/>
 						<!--Zero or more repetitions: -->
 						<xsl:for-each select="//drug[drugadditional = 'Radiation']">
 							<xsl:call-template name="radiationIntervention" />
@@ -633,15 +632,15 @@
 				<xsl:value-of select="devicenumbermodel" />
 			</ae:modelNumber>
 			<!--Optional: -->
+			<ae:catalogNumber>
+				<xsl:value-of select="devicedateexpiration" />
+			</ae:catalogNumber>
+			<!--Optional: -->
 			<xsl:if test="devicedateexpiration">
 				<ae:expirationDate>
 					<xsl:value-of select="devicedateexpiration" />
 				</ae:expirationDate>
 			</xsl:if>
-			<!--Optional: -->
-			<ae:catalogNumber>
-				<xsl:value-of select="devicedateexpiration" />
-			</ae:catalogNumber>
 			<!--Optional: -->
 			<ae:serialNumber>
 				<xsl:value-of select="devicenumberserial" />
@@ -688,18 +687,16 @@
 			</xsl:if>
 			
 			<ae:studyDevice>
-				<ae:device>
-					<ae:brandName>
-						<xsl:value-of select="devicenamebrand" />
-					</ae:brandName>
-					<ae:commonName>
-						<xsl:value-of select="medicinalproduct" />
-					</ae:commonName>
-					<!--Optional: -->
-					<ae:type>
-						<xsl:value-of select="devicetype" />
-					</ae:type>
-				</ae:device>
+				<ae:otherBrandName>
+					<xsl:value-of select="devicenamebrand" />
+				</ae:otherBrandName>
+				<ae:otherCommonName>
+					<xsl:value-of select="medicinalproduct" />
+				</ae:otherCommonName>
+				<!--Optional: -->
+				<ae:otherDeviceType>
+					<xsl:value-of select="devicetype" />
+				</ae:otherDeviceType>
 			</ae:studyDevice>
 			<ae:otherDeviceOperator>
 				<xsl:value-of select="deviceoperatorother" />
@@ -904,9 +901,11 @@
 			<ae:lastName>
 				<xsl:value-of select="/ichicsr/safetyreport/sender/senderfamilyname" />
 			</ae:lastName>
-			<ae:middleName>
-				<xsl:value-of select="/ichicsr/safetyreport/sender/sendermiddlename" />
-			</ae:middleName>
+			<xsl:if test="/ichicsr/safetyreport/sender/sendermiddlename">
+				<ae:middleName> 
+					<xsl:value-of select="/ichicsr/safetyreport/sender/sendermiddlename" />
+				</ae:middleName>
+			</xsl:if>
 			<xsl:if test="/ichicsr/safetyreport/sender/senderemailaddress">
 				<ae:contactMechanism>
 					<ae:type>e-mail</ae:type>
