@@ -228,7 +228,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
         return -1;
 
     }
-
+    
     /**
      * To Create or Update Advese Events.
      * Sync Flag is used only incase of SAE Evaluation service, As service can soft-delete the Adverse Events.
@@ -335,6 +335,17 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 
         }
         return rpFound;
+    }
+    
+    /**
+     * Method to save the reporting period from outside the API methods. This can be used for re-saving the reporting period
+     * as in the case of Adverse Event / requiresReporting flag.
+     * @param reportingPeriod
+     * @return
+     */
+    
+    public void saveReportingPeriod(AdverseEventReportingPeriod reportingPeriod){
+    	adverseEventReportingPeriodDao.save(reportingPeriod);
     }
 
     /**
