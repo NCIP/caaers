@@ -1331,9 +1331,9 @@
                   <expected>1</expected>
                   <!--Optional:-->
                   <!--Optional:-->
-                  <dateFirstLearned>2013-12-11T16:26:00</dateFirstLearned>
+                  <dateFirstLearned>2013-01-05T16:26:00</dateFirstLearned>
                   <!--Optional:-->
-                  <startDate>2013-12-11</startDate>
+                  <startDate>2013-01-05</startDate>
                   <!--Optional:-->
                   <eventApproximateTime>
                      <hour>10</hour>
@@ -1353,13 +1353,13 @@
                </saer:adverseEvent>
             </saer:adverseEvents>
 		  <saer:criteria>
-               <studySubjectIdentifier>SUB57-5876</studySubjectIdentifier>
+               <studySubjectIdentifier>ssi-sub58-5876</studySubjectIdentifier>
                <studyIdentifier>5876</studyIdentifier>
                <course>
                   <!--Optional:-->
-                  <startDateOfFirstCourse>2013-10-01</startDateOfFirstCourse>
-                  <startDateOfThisCourse>2013-12-11</startDateOfThisCourse>
-                  <cycleNumber>5</cycleNumber>
+                  <startDateOfFirstCourse>2013-01-01</startDateOfFirstCourse>
+                  <startDateOfThisCourse>2013-01-05</startDateOfThisCourse>
+                  <cycleNumber>1</cycleNumber>
                   <!--You have a CHOICE of the next 2 items at this level-->
                   <treatmentAssignmentCode>A</treatmentAssignmentCode>
                   <otherTreatmentAssignmentDescription>N/A</otherTreatmentAssignmentDescription>

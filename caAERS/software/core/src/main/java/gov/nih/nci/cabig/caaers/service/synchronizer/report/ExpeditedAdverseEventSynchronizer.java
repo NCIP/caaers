@@ -57,8 +57,10 @@ public class ExpeditedAdverseEventSynchronizer implements Migrator<ExpeditedAdve
     }
 
     public void synchronizeAdverseEvent(AdverseEvent xmlAe, AdverseEvent dbAe){
-        dbAe.setStartDate(xmlAe.getStartDate());
-        dbAe.setEndDate(xmlAe.getEndDate());
+    	if(xmlAe.getStartDate() != null)
+    		dbAe.setStartDate(xmlAe.getStartDate());
+    	if(xmlAe.getEndDate() != null)	
+    		dbAe.setEndDate(xmlAe.getEndDate());
         if(StringUtils.isBlank(dbAe.getReporterEmail())) {
         	dbAe.setReporterEmail(xmlAe.getReporterEmail());
         }
