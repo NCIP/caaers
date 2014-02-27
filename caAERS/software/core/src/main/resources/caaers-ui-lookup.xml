@@ -82,9 +82,9 @@
         <yesno><code>3</code><value>false</value></yesno><!-- 3 is UNKNOWN will be mapped as false -->
     </e2byesnos>
     <delayuoms>
-    	<delayuom><code>804</code><value>DAYS</value></delayuom>
-		<delayuom><code>805</code><value>HOURS</value></delayuom>
-		<delayuom><code>806</code><value>MINUTES</value></delayuom>
+    	<delayuom><code>DAYS</code><value>804</value></delayuom>
+		<delayuom><code>HOURS</code><value>805</value></delayuom>
+		<delayuom><code>MINUTES</code><value>806</value></delayuom>
 	</delayuoms>
     <uoms>
     	<uom><code>001</code><value>kg</value></uom>
