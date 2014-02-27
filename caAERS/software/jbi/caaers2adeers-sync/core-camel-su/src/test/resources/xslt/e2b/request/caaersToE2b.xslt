@@ -345,7 +345,8 @@
 					</xsl:call-template>
 				</baselineperformancenumber>	
 			</xsl:if>
-		
+			
+			
 			<xsl:if test="/AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'DEAD'">
 				<patientdeath>
 					<patientdeathdate>
@@ -360,6 +361,7 @@
 					</patientautopsyyesno>
 				</patientdeath>
 			</xsl:if>
+			
 			<drug>		
 				<drugcharacterization>3</drugcharacterization>	<!-- drugcharacterization = 3 identifies the "drug" as the reporting period -->		
 				<medicinalproduct><xsl:value-of select="/AdverseEventReport/TreatmentInformation/TreatmentAssignment/code"/></medicinalproduct> <!-- Treatment Assignment Code -->		
@@ -505,15 +507,35 @@
 					<devicenamebrand><xsl:value-of select="brandName"/></devicenamebrand>
 					<devicenumbercatalog><xsl:value-of select="catalogNumber"/></devicenumbercatalog>
 					<deviceavailableflag><xsl:value-of select="EvaluationAvailability"/></deviceavailableflag>
-					<devicedateexpiration><xsl:value-of select="expiredDate"/></devicedateexpiration>
-					<devicedateexplanted><xsl:value-of select="explantedDate"/></devicedateexplanted>
-					<devicedateimplanted><xsl:value-of select="implantedDate"/></devicedateimplanted>
+					<xsl:if test="expirationDate">
+						<devicedateexpiration>
+							<xsl:call-template name="getDate"> 
+								<xsl:with-param name="givenDate" select="expirationDate"/>	
+							</xsl:call-template>
+						</devicedateexpiration>
+					</xsl:if>
+					<xsl:if test="explantedDate">
+						<drugenddateformat>102</drugenddateformat> 
+						<drugenddate>
+							<xsl:call-template name="getDate"> 
+								<xsl:with-param name="givenDate" select="explantedDate"/>	
+							</xsl:call-template>
+						</drugenddate>
+					</xsl:if>
+					<xsl:if test="implantedDate">
+						<drugstartdateformat>102</drugstartdateformat>
+						<drugstartdate>
+							<xsl:call-template name="getDate"> 
+								<xsl:with-param name="givenDate" select="implantedDate"/>	
+							</xsl:call-template>
+						</drugstartdate>
+					</xsl:if>
 					<devicereprocessedflag><xsl:value-of select="DeviceReprocessed"/></devicereprocessedflag>
 					<devicereprocessorname><xsl:value-of select="DeviceReprocessedName"/></devicereprocessorname>
 					<devicereprocessoraddress><xsl:value-of select="DeviceReprocessorAddress"/></devicereprocessoraddress>
 					<devicemanufacturername><xsl:value-of select="manufacturerName"/></devicemanufacturername>
 					<devicemanufacturercity><xsl:value-of select="manufacturerCity"/></devicemanufacturercity>
-					<devicemanufacturerstate><xsl:value-of select="manufacturerName"/></devicemanufacturerstate>
+					<devicemanufacturerstate><xsl:value-of select="manufacturerState"/></devicemanufacturerstate>
 					<devicenumberlot><xsl:value-of select="lotNumber"/></devicenumberlot>
 					<devicenumbermodel><xsl:value-of select="modelNumber"/></devicenumbermodel>
 					<devicenumberserial><xsl:value-of select="serialNumber"/></devicenumberserial>
@@ -528,7 +550,7 @@
 			<!-- Radiation -->
 			<xsl:for-each select="/AdverseEventReport/RadiationIntervention">
 				 <drug>
-				 	<drugcharacterization>1</drugcharacterization>
+					<drugcharacterization>1</drugcharacterization>
 					<medicinalproduct>
 						<xsl:call-template name="lookup">
 							<xsl:with-param name="_map" select="$map//radiationAdministration" />
@@ -646,7 +668,16 @@
 						<xsl:call-template name="getDate"> 
 								<xsl:with-param name="givenDate" select="lastAdministeredDate"/>	
 						</xsl:call-template>
-					</drugenddate>  
+					</drugenddate>
+					<xsl:if test="administrationDelayAmount">
+						<drugtreatmentduration><xsl:value-of select="administrationDelayAmount"/></drugtreatmentduration>
+						<drugtreatmentdurationunit>
+							<xsl:call-template name="lookup">
+								<xsl:with-param name="_map" select="$map//delayuoms" />
+								<xsl:with-param name="_code" select="administrationDelayUnits" />
+							</xsl:call-template>
+						</drugtreatmentdurationunit>
+					</xsl:if>  
 		           <drugadditional>Agent</drugadditional> 
 	           </drug> 	
 	         </xsl:for-each>
@@ -681,7 +712,7 @@
 				</xsl:if>
 			 </xsl:if>
 		 </summary>
-		
+	
 		 </patient>
 		</safetyreport>
 		</ichicsr>	
