@@ -1,6 +1,5 @@
 .metadata
 build
-repository
 bin
 caAERS/software/web/src/main/webapp/WEB-INF/classes/
 caAERS/software/web/src/main/webapp/WEB-INF/error_messages.properties

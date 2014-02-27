@@ -54,6 +54,7 @@ public class AdverseEventReportingPeriodSynchronizer implements Migrator<Adverse
                 if ( aeFound.getAdverseEventTerm() instanceof AdverseEventCtcTerm && aeSrc.getAdverseEventTerm() instanceof AdverseEventCtcTerm ) {     // Refers to CTC terminology.
                     // Copy the CTC values from the Src.
                     aeFound.getAdverseEventTerm().setTerm(aeSrc.getAdverseEventTerm().getTerm());
+                    aeFound.setOtherSpecify(aeSrc.getOtherSpecify());
                     ((AdverseEventCtcTerm) aeFound.getAdverseEventTerm()).setCtcTerm(((AdverseEventCtcTerm) aeSrc.getAdverseEventTerm()).getCtcTerm());
 
                     if ( aeSrc.getAdverseEventTerm().isOtherRequired()) {

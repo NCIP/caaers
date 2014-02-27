@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.validation.validator;
 import gov.nih.nci.cabig.caaers.api.impl.Helper;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.domain.CtcGrade;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.validation.ValidationError;
@@ -124,6 +125,35 @@ public class AdverseEventValidatior {
         validateOnlyOneDeath(reportingPeriod, errors);
         validateVerbatimMaxSize(reportingPeriod, errors);
         validateDateFirstLearned(reportingPeriod,errors);
+        validateGradeValues(reportingPeriod, errors);
     }
+    
+    /**
+	 * This method validates if all the AEs of the Reporting Period are graded. 
+	 * @param adverseEventReportingPeriod
+	 * @return boolean
+	 */
+	public void validateGradeValues(AdverseEventReportingPeriod adverseEventReportingPeriod, ValidationErrors errors){
+           for(AdverseEvent ae: adverseEventReportingPeriod.getAdverseEvents()){
+			   if(ae.isRetired()) continue;
+		       if(ae.getGrade() == null || (ae.getGrade() == Grade.NOT_EVALUATED && (!ae.getSolicited())) ) { 
+		    	   addValidationError(errors,"WS_AEMS_086", messageSource.getMessage("WS_AEMS_086", new String[] {},"", Locale.getDefault()) ) ;
+		       }
+		       if(!validateGradeRange(ae)) {
+		    	   addValidationError(errors,"WS_SAE_030", messageSource.getMessage("WS_SAE_030",
+	                        new String[] {ae.getGrade().getCode().toString(),  ae.getAdverseEventCtcTerm().getCtcTerm().getCtepCode()}, "", Locale.getDefault()) ) ;
+		       }
+           }
+	}
+	
+	public boolean validateGradeRange(AdverseEvent ae){
+		 for(CtcGrade ctcGrade : ae.getAdverseEventCtcTerm().getCtcTerm().getContextualGrades()) {
+         	if(ctcGrade.getGrade() == ae.getGrade()){
+         		return true;
+         	}
+         } 
+		 
+		 return false;
+	}
 
 }

@@ -41,6 +41,7 @@ public class ReportMigrator implements Migrator<ExpeditedAdverseEventReport> {
     	 // Iterate through the Source Reports.
     	 for ( Report rpt : srcReports ) {
     		String reportDefinitionName = rpt.getReportDefinition() != null ? rpt.getName() : null;
+    		if(StringUtils.isEmpty(reportDefinitionName)) continue;
     		ReportDefinition repDef = loadReportDefinition(reportDefinitionName);
     		
     		if ( repDef == null ) {

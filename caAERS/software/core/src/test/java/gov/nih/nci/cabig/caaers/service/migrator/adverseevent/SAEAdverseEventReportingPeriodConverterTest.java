@@ -120,7 +120,6 @@ public class SAEAdverseEventReportingPeriodConverterTest extends TestCase {
         }else{
             ae1.getAdverseEventCtepTerm().setOtherMeddra(new AdverseEventMeddraLowLevelTermType());
             ae1.getAdverseEventCtepTerm().getOtherMeddra().setMeddraCode("111");
-            ae1.getAdverseEventCtepTerm().getOtherMeddra().setMeddraTerm("meddra term");
         }
 
 

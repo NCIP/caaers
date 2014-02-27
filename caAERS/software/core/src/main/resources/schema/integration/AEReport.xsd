@@ -577,8 +577,10 @@
 		<xs:sequence>
 			<xs:element name="lastAdministeredDate" type="xs:date" minOccurs="0" />
 			<xs:element name="totalDoseAdministeredThisCourse" type="xs:decimal" minOccurs="0" />
-			<xs:element name="administrationDelayAmount" type="xs:decimal" minOccurs="0" />
-			<xs:element name="administrationDelayUnits" type="DelayUnitsType" minOccurs="0" />
+			<xs:sequence minOccurs="0">
+				<xs:element name="administrationDelayAmount" type="xs:decimal" minOccurs="1" />
+				<xs:element name="administrationDelayUnits" type="DelayUnitsType" minOccurs="1" />
+			</xs:sequence>
 			<xs:element name="durationAndSchedule" type="xs:string" minOccurs="0" />
 			<xs:element name="dose" type="DoseType" minOccurs="0" />
 			<xs:element name="modifiedDose" type="DoseType" minOccurs="0" />

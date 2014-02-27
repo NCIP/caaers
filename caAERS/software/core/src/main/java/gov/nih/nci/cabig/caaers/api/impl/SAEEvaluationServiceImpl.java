@@ -108,6 +108,23 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 
             // 3. fire Evaluation Service to identify SAE or not ?
             saveAndEvaluateAEsOutputMessage = (SaveAndEvaluateAEsOutputMessage)fireSAERules(reportingPeriod, study, mapAE2DTO,RequestType.SaveEvaluate,saveAndEvaluateAEsOutputMessage);
+             
+            // CAAERS-6613 re-save the AEs with the requiresReporting flag 
+            if(reportingPeriod != null){
+	            for(AdverseEvent ae : reportingPeriod.getAdverseEvents()){
+	            	AdverseEventResult aeResult = findAdverseEvent(ae, mapAE2DTO);
+	            	if(aeResult == null){
+	            		continue;
+	            	} else if(aeResult.isRequiresReporting()){
+	            			ae.setRequiresReporting(true);
+	            	}
+	            }
+	            
+	            // save the updated reporting period
+	            adverseEventManagementService.saveReportingPeriod(reportingPeriod);
+	            
+            }
+            
         }
         catch(CaaersSystemException ex) {
             throw Helper.createCaaersFault(DEF_ERR_MSG, ex.getErrorCode(), ex.getMessage());

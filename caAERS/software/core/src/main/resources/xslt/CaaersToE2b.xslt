@@ -154,7 +154,14 @@
 								<xsl:with-param name="date"	select="RadiationIntervention/lastTreatmentDate" />
 							</xsl:call-template>
 				</xsl:variable>
-				<factor><xsl:value-of select="concat('TYPE=',RadiationIntervention/administration,'^^','DATE=',$date,'^^')"/></factor> 
+				<factor>
+					<xsl:text>TYPE=</xsl:text>
+					<xsl:call-template name="lookup">
+							<xsl:with-param name="_map" select="$map//radiationAdministration" />
+							<xsl:with-param name="_code" select="RadiationIntervention/administration" />
+					</xsl:call-template>
+					<xsl:value-of select="concat('^^DATE=',$date,'^^')"/>
+				</factor> 
 				
 			<!--  	<factor><xsl:value-of select="RadiationIntervention/administration"/></factor> -->
 				<factortype>radiation</factortype>
@@ -496,7 +503,7 @@
 				<drug>
 					<drugcharacterization>1</drugcharacterization>
 					<devicetype><xsl:value-of select="deviceType"/></devicetype>
-					<devicenamecommon><xsl:value-of select="commonName"/></devicenamecommon>
+					<medicinalproduct><xsl:value-of select="commonName"/></medicinalproduct>
 					<devicenamebrand><xsl:value-of select="brandName"/></devicenamebrand>
 					<devicenumbercatalog><xsl:value-of select="catalogNumber"/></devicenumbercatalog>
 					<deviceavailableflag><xsl:value-of select="EvaluationAvailability"/></deviceavailableflag>
@@ -549,6 +556,7 @@
 			<!-- Surgery -->
 			<xsl:for-each select="/AdverseEventReport/SurgeryIntervention">
 				  <drug>
+					<drugcharacterization>1</drugcharacterization>
 					<medicinalproduct><xsl:value-of select="InterventionSite/name"/></medicinalproduct>
 					<drugstartdateformat>102</drugstartdateformat>
 						<!-- Date last administered -->
