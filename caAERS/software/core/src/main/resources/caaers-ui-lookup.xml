@@ -112,7 +112,7 @@
 		<uom><code>025</code><value>IU</value></uom>
 		<uom><code>026</code><value>Kiu</value></uom>
 		<uom><code>027</code><value>million iu</value></uom>
-		<uom><code>029</code><value>mEq/L</value></uom>
+		<uom><code>029</code><value>mEq</value></uom>
 		<uom><code>030</code><value>Percent</value></uom>
 		<uom><code>031</code><value>Gtt</value></uom>
 		<uom><code>032</code><value>DF</value></uom>    	
