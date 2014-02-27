@@ -172,7 +172,6 @@
 				<xsl:value-of select="$fileDirParameter"/>
 			</xsl:comment>
 			<svrl:text>Validates a E2B safety report message</svrl:text>
-			<svrl:text>2014-Jan-11 Vinodh Chandrasekaran</svrl:text>
 			<svrl:text>(c) Copyright SemanticBits, Northwestern University and Akaza Research</svrl:text>
 			<svrl:ns-prefix-in-attribute-values uri="http://www.w3.org/2001/XMLSchema-instance" prefix="xsi"/>
 			<svrl:active-pattern>
