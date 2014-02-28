@@ -413,7 +413,8 @@
 					<patientmedicalenddate><xsl:value-of select="endDate/yearString"/><xsl:value-of select="endDate/monthString"/><xsl:value-of select="endDate/dayString"/></patientmedicalenddate>
 					<xsl:for-each select="PriorTherapyAgent/Agent">
 						<priortherapyagent><xsl:value-of select="nscNumber"/></priortherapyagent>
-					</xsl:for-each>	
+					</xsl:for-each>						
+					<priortherapycomment><xsl:value-of select="other"/></priortherapycomment>
 					<patientmedicalcomment>Prior Therapy</patientmedicalcomment>
                 </medicalhistoryepisode>
 			</xsl:for-each>
@@ -536,7 +537,7 @@
 					<devicemanufacturername><xsl:value-of select="manufacturerName"/></devicemanufacturername>
 					<devicemanufacturercity><xsl:value-of select="manufacturerCity"/></devicemanufacturercity>
 					<devicemanufacturerstate><xsl:value-of select="manufacturerState"/></devicemanufacturerstate>
-					<devicenumberlot><xsl:value-of select="lotNumber"/></devicenumberlot>
+					<drugbatchnumb><xsl:value-of select="lotNumber"/></drugbatchnumb>
 					<devicenumbermodel><xsl:value-of select="modelNumber"/></devicenumbermodel>
 					<devicenumberserial><xsl:value-of select="serialNumber"/></devicenumberserial>
 					<devicenumberother><xsl:value-of select="otherNumber"/></devicenumberother>
@@ -595,9 +596,6 @@
 			  <drug>
 			    <drugcharacterization>2</drugcharacterization>
 				<medicinalproduct><xsl:value-of select="name"/></medicinalproduct>
-				<drugstartdateformat>102</drugstartdateformat>
-				<drugstartdate><xsl:value-of select="startDate/yearString"/><xsl:value-of select="startDate/monthString"/><xsl:value-of select="startDate/dayString"/></drugstartdate>
-				<drugenddate><xsl:value-of select="endDate/yearString"/><xsl:value-of select="endDate/monthString"/><xsl:value-of select="endDate/dayString"/></drugenddate>
 			   </drug>
 			 </xsl:for-each>
 			 
