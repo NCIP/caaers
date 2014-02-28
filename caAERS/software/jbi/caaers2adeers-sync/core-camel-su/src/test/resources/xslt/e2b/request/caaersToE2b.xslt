@@ -712,6 +712,95 @@
 		 </summary>
 	
 		 </patient>
+		 <xsl:if test="/AdverseEventReport/AdditionalInformation/autopsyReport">
+		     <autopsyreportflag>
+		     	<xsl:call-template name="convertBooleantoOneTwo"> 
+					<xsl:with-param name="boolType" select="/AdverseEventReport/AdditionalInformation/autopsyReport"/>
+				</xsl:call-template>
+		     </autopsyreportflag>
+		 </xsl:if>
+		 <xsl:if test="/AdverseEventReport/AdditionalInformation/consults">	     
+		     <consultsflag>
+		     	<xsl:call-template name="convertBooleantoOneTwo"> 
+					<xsl:with-param name="boolType" select="/AdverseEventReport/AdditionalInformation/consults"/>
+				</xsl:call-template>
+		     </consultsflag>
+	     </xsl:if>
+	     <xsl:if test="/AdverseEventReport/AdditionalInformation/dischargeSummary">
+		     <dischargesummaryflag>
+		     	<xsl:call-template name="convertBooleantoOneTwo"> 
+					<xsl:with-param name="boolType" select="/AdverseEventReport/AdditionalInformation/dischargeSummary"/>
+				</xsl:call-template>
+		     </dischargesummaryflag>
+	     </xsl:if>
+	     <xsl:if test="/AdverseEventReport/AdditionalInformation/flowCharts">
+		     <flowsheetscrfsflag>
+		     	<xsl:call-template name="convertBooleantoOneTwo"> 
+					<xsl:with-param name="boolType" select="/AdverseEventReport/AdditionalInformation/flowCharts"/>
+				</xsl:call-template>
+		     </flowsheetscrfsflag>
+	     </xsl:if>
+	     <xsl:if test="/AdverseEventReport/AdditionalInformation/labReports">
+		     <labreportsflag>
+		     	<xsl:call-template name="convertBooleantoOneTwo"> 
+					<xsl:with-param name="boolType" select="/AdverseEventReport/AdditionalInformation/labReports"/>
+				</xsl:call-template>
+		     </labreportsflag>
+	     </xsl:if>
+	     <xsl:if test="/AdverseEventReport/AdditionalInformation/obaForm">
+		     <obaformsflag>
+		     	<xsl:call-template name="convertBooleantoOneTwo"> 
+					<xsl:with-param name="boolType" select="/AdverseEventReport/AdditionalInformation/obaForm"/>
+				</xsl:call-template>
+		     </obaformsflag>
+	     </xsl:if>
+	     <xsl:if test="/AdverseEventReport/AdditionalInformation/pathologyReport">
+		     <pathologyreportflag>
+		     	<xsl:call-template name="convertBooleantoOneTwo"> 
+					<xsl:with-param name="boolType" select="/AdverseEventReport/AdditionalInformation/pathologyReport"/>
+				</xsl:call-template>
+		     </pathologyreportflag>
+	     </xsl:if>
+	     <xsl:if test="/AdverseEventReport/AdditionalInformation/progressNotes">
+		     <progressnotesflag>
+		     	<xsl:call-template name="convertBooleantoOneTwo"> 
+					<xsl:with-param name="boolType" select="/AdverseEventReport/AdditionalInformation/progressNotes"/>
+				</xsl:call-template>
+		     </progressnotesflag>
+	     </xsl:if>
+	     <xsl:if test="/AdverseEventReport/AdditionalInformation/radiologyReports">
+		     <radiologyreportflag>
+		     	<xsl:call-template name="convertBooleantoOneTwo"> 
+					<xsl:with-param name="boolType" select="/AdverseEventReport/AdditionalInformation/radiologyReports"/>
+				</xsl:call-template>
+		     </radiologyreportflag>
+	     </xsl:if>
+	     <xsl:if test="/AdverseEventReport/AdditionalInformation/referralLetters">
+		     <referrallettersflag>
+		     	<xsl:call-template name="convertBooleantoOneTwo"> 
+					<xsl:with-param name="boolType" select="/AdverseEventReport/AdditionalInformation/referralLetters"/>
+				</xsl:call-template>
+		     </referrallettersflag>
+	     </xsl:if>
+	     <xsl:if test="/AdverseEventReport/AdditionalInformation/irbReport">
+		     <irbsummaryreportflag>
+		     	<xsl:call-template name="convertBooleantoOneTwo"> 
+					<xsl:with-param name="boolType" select="/AdverseEventReport/AdditionalInformation/irbReport"/>
+				</xsl:call-template>
+		     </irbsummaryreportflag>
+	     </xsl:if>
+	     <xsl:if test="/AdverseEventReport/AdditionalInformation/other">
+		     <otheradditionalflag>
+		     	<xsl:call-template name="convertBooleantoOneTwo"> 
+					<xsl:with-param name="boolType" select="/AdverseEventReport/AdditionalInformation/other"/>
+				</xsl:call-template>
+		     </otheradditionalflag>
+	     </xsl:if>
+	     <xsl:if test="/AdverseEventReport/AdditionalInformation/otherInformation">
+		     <documentlist>	     	 
+				<xsl:value-of select="/AdverseEventReport/AdditionalInformation/otherInformation"/>
+		     </documentlist>
+	     </xsl:if>
 		</safetyreport>
 		</ichicsr>	
 	</xsl:template>
