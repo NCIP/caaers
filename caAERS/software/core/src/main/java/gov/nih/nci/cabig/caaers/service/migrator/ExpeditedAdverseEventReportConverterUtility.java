@@ -14,6 +14,7 @@ import gov.nih.nci.cabig.caaers.domain.Address;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription;
 import gov.nih.nci.cabig.caaers.domain.Agent;
+import gov.nih.nci.cabig.caaers.domain.AgentAdjustment;
 import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
 import gov.nih.nci.cabig.caaers.domain.Availability;
 import gov.nih.nci.cabig.caaers.domain.BehavioralIntervention;
@@ -430,6 +431,10 @@ public class ExpeditedAdverseEventReportConverterUtility {
 			courseAgent.setModifiedDose(convertDose(courseAgentType.getModifiedDose()));
 		}
 		
+		if(courseAgentType.getAgentAdjustment() != null){
+			courseAgent.setAgentAdjustment(AgentAdjustment.valueOf(courseAgentType.getAgentAdjustment().value()));
+		}
+		
 		courseAgent.setDurationAndSchedule(courseAgentType.getDurationAndSchedule());
 		courseAgent.setTotalDoseAdministeredThisCourse(courseAgentType.getTotalDoseAdministeredThisCourse());
 		if(courseAgentType.getLastAdministeredDate() != null){
@@ -606,6 +611,9 @@ public class ExpeditedAdverseEventReportConverterUtility {
 		medicalDevice.setOtherNumber(xmlMedicalDeviceType.getOtherNumber());
 		if(xmlMedicalDeviceType.getExplantedDate() != null){
 			medicalDevice.setExplantedDate(xmlMedicalDeviceType.getExplantedDate().toGregorianCalendar().getTime());
+		}
+		if(xmlMedicalDeviceType.getImplantedDate() != null){
+			medicalDevice.setImplantedDate(xmlMedicalDeviceType.getImplantedDate().toGregorianCalendar().getTime());
 		}
 		
 		if(xmlMedicalDeviceType.getDeviceReprocessed() != null){

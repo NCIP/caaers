@@ -531,6 +531,7 @@
 			<xs:element type="xs:string" name="serialNumber" minOccurs="0" />
 			<xs:element type="xs:string" name="otherNumber" minOccurs="0" />
 			<xs:element type="xs:date" name="explantedDate" minOccurs="0" />
+			<xs:element type="xs:date" name="implantedDate" minOccurs="0" />
 			<xs:element type="DeviceOperatorType" name="deviceOperator" minOccurs="0" />
 			<xs:element type="xs:date" name="returnedDate" minOccurs="0" />
 			<xs:element type="ReprocessedDeviceType" name="deviceReprocessed" minOccurs="0" />
@@ -587,8 +588,19 @@
 			<xs:element name="studyAgent" type="StudyAgentType" minOccurs="0" />
 			<xs:element name="lotNumber" type="xs:string" minOccurs="0" />
 			<xs:element name="comments" type="xs:string" minOccurs="0" />
+			<xs:element name="agentAdjustment" type="AgentAdjustmentType" minOccurs="0" />
 		</xs:sequence>
 	</xs:complexType>
+	
+	<xs:simpleType name="AgentAdjustmentType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="DOSE_INCREASED" />
+			<xs:enumeration value="DOSE_NOTCHANGED" />
+			<xs:enumeration value="DOSE_REDUCED" />
+			<xs:enumeration value="DRUG_WITHDRAWN" />
+			<xs:enumeration value="NA" />
+		</xs:restriction>
+	</xs:simpleType>
 
 	<xs:complexType name="CourseAgentRefType">
 		<xs:sequence>

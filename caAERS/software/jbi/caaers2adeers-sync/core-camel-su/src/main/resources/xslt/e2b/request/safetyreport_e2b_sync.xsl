@@ -215,7 +215,7 @@
 						<!--Zero or more repetitions: -->
 
 						<xsl:for-each
-							select="//drug[drugadditional != 'Radiation' and  drugadditional != 'Surgery' and drugadditional != 'Device' and drugcharacterization = '2']">
+							select="//drug[drugcharacterization = '2']">
 							<xsl:call-template name="concomitantMedication" />
 						</xsl:for-each>
 						<!--1 or more repetitions: -->
@@ -599,6 +599,12 @@
 			<ae:comments>
 				<xsl:value-of select="drugadditional" />
 			</ae:comments>
+			<ae:agentAdjustment>
+				<xsl:call-template name="lookup">
+					<xsl:with-param name="_map" select="$map//agent-dose-modifications" />
+					<xsl:with-param name="_code" select='actiondrug' />
+				</xsl:call-template>
+			</ae:agentAdjustment>
 		</ae:courseAgent>
 	</xsl:template>
 	<xsl:template name="medicalDevice">
@@ -633,12 +639,14 @@
 			</ae:modelNumber>
 			<!--Optional: -->
 			<ae:catalogNumber>
-				<xsl:value-of select="devicedateexpiration" />
+				<xsl:value-of select="devicenumbercatalog" />
 			</ae:catalogNumber>
 			<!--Optional: -->
 			<xsl:if test="devicedateexpiration">
 				<ae:expirationDate>
-					<xsl:value-of select="devicedateexpiration" />
+					<xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">
+						<xsl:with-param name="date" select="devicedateexpiration" />
+					</xsl:call-template>
 				</ae:expirationDate>
 			</xsl:if>
 			<!--Optional: -->
@@ -649,12 +657,19 @@
 			<ae:otherNumber>
 				<xsl:value-of select="devicenumberother" />
 			</ae:otherNumber>
-			<xsl:if test="devicedateexplanted">
+			<xsl:if test="drugenddate">
 				<ae:explantedDate>
 					<xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">
-						<xsl:with-param name="date" select="devicedateexplanted" />
+						<xsl:with-param name="date" select="drugenddate" />
 					</xsl:call-template>
 				</ae:explantedDate>
+			</xsl:if>
+			<xsl:if test="drugstartdate">
+				<ae:implantedDate>
+					<xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">
+						<xsl:with-param name="date" select="drugstartdate" />
+					</xsl:call-template>
+				</ae:implantedDate>
 			</xsl:if>
 			<!--Optional: -->
 			<ae:deviceOperator>
@@ -663,7 +678,9 @@
 			<!--Optional: -->
 			<xsl:if test="devicereturndate">
 				<ae:returnedDate>
-					<xsl:value-of select="devicereturndate" />
+					<xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">
+						<xsl:with-param name="date" select="devicereturndate" />
+					</xsl:call-template>
 				</ae:returnedDate>
 			</xsl:if>
 
@@ -702,7 +719,7 @@
 				<xsl:value-of select="deviceoperatorother" />
 			</ae:otherDeviceOperator>
 			<ae:lotNumber>
-				<xsl:value-of select="devicenumberlot" />
+				<xsl:value-of select="drugbatchnumb" />
 			</ae:lotNumber>
 		</ae:medicalDevice>
 	</xsl:template>

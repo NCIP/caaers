@@ -149,4 +149,11 @@
     	<baselinestatus><code>20</code><value>4 = 100% bedridden</value></baselinestatus>
     	<baselinestatus><code>10</code><value>4 = 100% bedridden</value></baselinestatus>
     </karnofsky-lansky-baselinestatuses>
+    <agent-dose-modifications>
+    	<agent-dose-modification><code>1</code><value>DRUG_WITHDRAWN</value></agent-dose-modification>
+    	<agent-dose-modification><code>2</code><value>DOSE_REDUCED</value></agent-dose-modification>
+    	<agent-dose-modification><code>3</code><value>DOSE_INCREASED</value></agent-dose-modification>
+    	<agent-dose-modification><code>4</code><value>DOSE_NOTCHANGED</value></agent-dose-modification>
+    	<agent-dose-modification><code>6</code><value>NA</value></agent-dose-modification>
+    </agent-dose-modifications>
 </lookup>
