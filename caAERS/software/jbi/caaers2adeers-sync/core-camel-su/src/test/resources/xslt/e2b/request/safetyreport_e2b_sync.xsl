@@ -599,12 +599,14 @@
 			<ae:comments>
 				<xsl:value-of select="drugadditional" />
 			</ae:comments>
-			<ae:agentAdjustment>
-				<xsl:call-template name="lookup">
-					<xsl:with-param name="_map" select="$map//agent-dose-modifications" />
-					<xsl:with-param name="_code" select='actiondrug' />
-				</xsl:call-template>
-			</ae:agentAdjustment>
+			<xsl:if test="actiondrug">
+				<ae:agentAdjustment>
+					<xsl:call-template name="lookup">
+						<xsl:with-param name="_map" select="$map//agent-dose-modifications" />
+						<xsl:with-param name="_code" select='actiondrug' />
+					</xsl:call-template>
+				</ae:agentAdjustment>
+			</xsl:if>
 		</ae:courseAgent>
 	</xsl:template>
 	<xsl:template name="medicalDevice">
