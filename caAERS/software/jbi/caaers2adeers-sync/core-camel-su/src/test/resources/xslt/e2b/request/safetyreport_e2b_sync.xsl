@@ -80,7 +80,7 @@
 									<xsl:value-of select="/ichicsr/safetyreport/patient/drug[drugcharacterization = '3']/medicinalproduct" />
 								</ae:code>
 							</ae:treatmentAssignment>
-						</ae:adverseEventReportingPeriod>	
+						</ae:adverseEventReportingPeriod>
 						
 						<xsl:if test="/ichicsr/safetyreport/physiciangivename">
 							<ae:physician>
@@ -161,10 +161,9 @@
 									</ae:contactMechanism>
 								</xsl:if>
 							</ae:reporter>
-						</xsl:if>	
-					
+						</xsl:if>		
 						
-						<xsl:if test="/ichicsr/safetyreport/sender/sendergivename">
+						<xsl:if test="/ichicsr/safetyreport/patient/summary/senderfirstname">
 							<xsl:call-template name="submitter" />
 						</xsl:if>
 						<!--Optional: -->
@@ -364,7 +363,7 @@
 							</ae:caseNumber>
 							<ae:aeReportDefinition>
 								<ae:name>
-									<xsl:value-of select="/ichicsr/safetyreport/reportname" />
+									<xsl:value-of select="/ichicsr/safetyreport/patient/summary/nameofreport" />
 								</ae:name>
 							</ae:aeReportDefinition>
 							<!--Zero or more repetitions: -->
@@ -667,11 +666,11 @@
 				</ae:explantedDate>
 			</xsl:if>
 			<xsl:if test="drugstartdate">
-		         <ae:implantedDate>
-		                 <xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">
-		                         <xsl:with-param name="date" select="drugstartdate" />
-		                 </xsl:call-template>
-		         </ae:implantedDate>
+				<ae:implantedDate>
+					<xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">
+						<xsl:with-param name="date" select="drugstartdate" />
+					</xsl:call-template>
+				</ae:implantedDate>
 			</xsl:if>
 			<!--Optional: -->
 			<ae:deviceOperator>
@@ -915,37 +914,37 @@
 	<xsl:template name="submitter">
 		<ae:submitter>
 			<ae:firstName>
-				<xsl:value-of select="/ichicsr/safetyreport/sender/sendergivename" />
+				<xsl:value-of select="/ichicsr/safetyreport/patient/summary/senderfirstname" />
 			</ae:firstName>
 			<ae:lastName>
-				<xsl:value-of select="/ichicsr/safetyreport/sender/senderfamilyname" />
+				<xsl:value-of select="/ichicsr/safetyreport/patient/summary/senderlastname" />
 			</ae:lastName>
-			<xsl:if test="/ichicsr/safetyreport/sender/sendermiddlename">
+			<xsl:if test="/ichicsr/safetyreport/patient/summary/sendermidname">
 				<ae:middleName> 
-					<xsl:value-of select="/ichicsr/safetyreport/sender/sendermiddlename" />
+					<xsl:value-of select="/ichicsr/safetyreport/patient/summary/sendermidname" />
 				</ae:middleName>
 			</xsl:if>
-			<xsl:if test="/ichicsr/safetyreport/sender/senderemailaddress">
+			<xsl:if test="/ichicsr/safetyreport/patient/summary/senderemailid">
 				<ae:contactMechanism>
 					<ae:type>e-mail</ae:type>
 					<ae:value>
-						<xsl:value-of select="/ichicsr/safetyreport/sender/senderemailaddress" />
+						<xsl:value-of select="/ichicsr/safetyreport/patient/summary/senderemailid" />
 					</ae:value>
 				</ae:contactMechanism>
 			</xsl:if>
-			<xsl:if test="/ichicsr/safetyreport/senderphone">
+			<xsl:if test="/ichicsr/safetyreport/patient/summary/senderphonenumber">
 				<ae:contactMechanism>
 					<ae:type>phone</ae:type>
 					<ae:value>
-						<xsl:value-of select="/ichicsr/safetyreport/senderphone" />
+						<xsl:value-of select="/ichicsr/safetyreport/patient/summary/senderphonenumber" />
 					</ae:value>
 				</ae:contactMechanism>
 			</xsl:if>
-			<xsl:if test="/ichicsr/safetyreport/sender/senderfax">
+			<xsl:if test="/ichicsr/safetyreport/patient/summary/senderfaxnumber">
 				<ae:contactMechanism>
 					<ae:type>fax</ae:type>
 					<ae:value>
-						<xsl:value-of select="/ichicsr/safetyreport/sender/senderfax" />
+						<xsl:value-of select="/ichicsr/safetyreport/patient/summary/senderfaxnumber" />
 					</ae:value>
 				</ae:contactMechanism>
 			</xsl:if>
@@ -955,19 +954,19 @@
 	<xsl:template name="participantHistory">
 		<ae:participantHistory>
 			<!--Optional: -->
-			<xsl:if test="/ichicsr/safetyreport/patient/patientweight">
+			<xsl:if test="/ichicsr/safetyreport/patient/summary/ptweight">
 				<ae:weight>
 					<ae:quantity>
-						<xsl:value-of select="/ichicsr/safetyreport/patient/patientweight" />
+						<xsl:value-of select="/ichicsr/safetyreport/patient/summary/ptweight" />
 					</ae:quantity>
 					<ae:unit>kilogram</ae:unit>
 				</ae:weight>
 			</xsl:if>
 			<!--Optional: -->
-			<xsl:if test="/ichicsr/safetyreport/patient/patientheight">
+			<xsl:if test="/ichicsr/safetyreport/patient/summary/ptheight">
 				<ae:height>
 					<ae:quantity>
-						<xsl:value-of select="/ichicsr/safetyreport/patient/patientheight" />
+						<xsl:value-of select="/ichicsr/safetyreport/patient/summary/ptheight" />
 					</ae:quantity>
 					<ae:unit>centimeter</ae:unit>
 				</ae:height>

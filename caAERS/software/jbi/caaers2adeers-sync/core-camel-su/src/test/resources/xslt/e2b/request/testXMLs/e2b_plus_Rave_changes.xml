@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ichicsr lang="en">
+
+	<ichicsrmessageheader>
+		<messagetype>ichicsr</messagetype>
+		<messageformatversion>2.1</messageformatversion>
+		<messageformatrelease>2.0</messageformatrelease>
+		<messagenumb>116206</messagenumb>
+		<messagesenderidentifier>2012.2.0 Sender</messagesenderidentifier>
+		<messagereceiveridentifier>2012.2.0 Receiver</messagereceiveridentifier>
+		<messagedateformat>204</messagedateformat>
+		<messagedate>20140122212228</messagedate>
+	</ichicsrmessageheader>
+
+	<safetyreport>
+
+		<safetyreportid>CNMAR3-235</safetyreportid> 
+	
+		<!-- Physician information-->
+		<physiciangivename>Joe</physiciangivename>
+		<physicianfamilyname>Montona</physicianfamilyname>
+		<physicianemail>joe.montona@semanticbits.com</physicianemail>
+		<physicianphone>703-121-1221</physicianphone>	
+
+		<!-- Reporter extended elements-->
+		<reporteremail>tom.brady@semanticbits.com</reporteremail>
+		<reporterphone>703-111-1221</reporterphone>
+		<reporterfax>703-111-1231</reporterfax>	
+		<senderphone>703-787-9656</senderphone>
+
+		<!-- Reporter information -->
+		<primarysource>	
+			<sponsorstudynumb>RTOG-1106</sponsorstudynumb>	
+			<reportergivename>tom</reportergivename>
+			<reporterfamilyname>brady</reporterfamilyname>
+		</primarysource>
+
+		<patient>	 
+			<!-- study site NCI id-->
+			<subjectstudysiteid>MN026</subjectstudysiteid> 	  
+			<!-- study subject id-->
+			<patientinvestigationnumb>SUB01-RTOG-1106</patientinvestigationnumb> 
+			<baselineperformancescale>lansky</baselineperformancescale>
+			<baselineperformancenumber>70</baselineperformancenumber>			
+			
+
+			<!-- Adverse Event information. If more than one reaction is present, each should have a different aeexternalid and exactly one should be marked primary -->
+			<reaction> 
+				<!-- external id of adverse event-->
+				<aeexternalid>reaction-5</aeexternalid> 
+				<primaryaeflag>1</primaryaeflag> 
+				<!-- Verbatim -->
+				<primarysourcereaction>Appendicitis</primarysourcereaction> 
+				<reactionstartdateformat>102</reactionstartdateformat>
+				<!--Start date of the adverse event. Mandatory only for the AE with Primary flag = 1 -->
+				<reactionstartdate>20140108</reactionstartdate>
+				<!-- Present status. Only applicable for the AE with Primary flag = 1 -->
+				<reactionoutcome>3</reactionoutcome> 
+			</reaction>
+
+			<!-- The following sections identifies the attributions for the ae reaction-5 -->  
+
+			<!-- Disease history attribution -->  
+			<reaction>
+				<aeexternalid>reaction-5</aeexternalid>
+				<factor>Non-small cell lung cancer@@ NOS</factor>        
+				<factortype>primary disease</factortype>
+				<attribution>4</attribution>
+			</reaction>	   
+			
+			<reaction>
+				<aeexternalid>reaction-5</aeexternalid>
+				<factor>Convulsions</factor>
+				<factortype>other cause</factortype>
+				<attribution>4</attribution>
+			</reaction>
+			<reaction>
+				<aeexternalid>reaction-5</aeexternalid>
+				<factor>Another cause</factor>
+				<factortype>other cause</factortype>
+				<attribution>4</attribution>
+			</reaction>
+			<reaction>
+				<aeexternalid>reaction-5</aeexternalid>
+				<factor>CN=PET-CT^^BN=^^TYPE=Imaging Device^^</factor>
+				<factortype>Device</factortype>
+				<attribution>4</attribution>
+			</reaction>
+
+			<reaction>
+				<aeexternalid>reaction-5</aeexternalid> 		
+				<factor>TYPE=Brachytherapy LDR^^DATE=01/03/2014^^</factor> 
+				<factortype>Radiation</factortype>
+				<attribution>4</attribution>
+			</reaction>			
+
+			<medicalhistoryepisode>
+				<patientepisodename>Convulsions</patientepisodename>
+				<patientmedicalcomment>Pre-existing Condition</patientmedicalcomment>
+			</medicalhistoryepisode>
+			<medicalhistoryepisode>
+				<patientepisodename>Hormonal Therapy</patientepisodename>
+				<patientmedicalstartdateformat>102</patientmedicalstartdateformat>
+				<patientmedicalstartdate>20140225</patientmedicalstartdate>
+				<patientmedicalenddateformat>102</patientmedicalenddateformat>
+				<patientmedicalenddate>20140225</patientmedicalenddate>
+				<priortherapyagent>1026</priortherapyagent>
+				<priortherapyagent>5416</priortherapyagent>
+				<patientmedicalcomment>Prior Therapy</patientmedicalcomment>
+			</medicalhistoryepisode>
+
+			<test>
+				<testdateformat>String</testdateformat>
+				<testdate>20140225</testdate>
+				<testname>Ammonia</testname>
+				<testresult>10</testresult>
+				<testunit>029</testunit>
+				<testtype>Baseline</testtype>
+			</test>
+			<test>
+				<testdateformat>String</testdateformat>
+				<testdate>20140225</testdate>
+				<testname>Ammonia</testname>
+				<testresult>121</testresult>
+				<testunit>029</testunit>
+				<testtype>Worst</testtype>
+			</test>
+			<test>
+				<testdateformat>String</testdateformat>
+				<testdate>20140225</testdate>
+				<testname>Ammonia</testname>
+				<testresult>12</testresult>
+				<testunit>029</testunit>
+				<testtype>Recovery</testtype>
+			</test>
+
+			<!-- The following section identifies the reporting period -->
+
+			<drug>		
+				<drugcharacterization>3</drugcharacterization>
+				<!-- drugcharacterization = 3 identifies this as the reporting period information -->		
+				<!-- Treatment Assignment Code -->	
+				<medicinalproduct>TAC 1</medicinalproduct> 
+				<drugstartdateformat>102</drugstartdateformat> 
+
+				<drugstartdate>20140106</drugstartdate>			
+				<!-- The course number on which event occurred -->
+				<drugenddateformat>102</drugenddateformat> 		
+				<drugenddate>20140212</drugenddate>
+				<!-- Start Date of course associated with this Expedited Report-->		
+				<drugstartperiod>21</drugstartperiod>
+				<!-- The course number on which event occurred -->						
+			</drug>
+
+			<!-- Required. This is the prior therapy section. A single E2B file can contain multiple prior therapies.-->
+			<medicalhistoryepisode>
+				<!-- Prior Therapy For Primary Disease -->
+				<patientepisodename>ANTISENSE</patientepisodename> 
+				<!-- patientmedicalcomment = "Prior Therapy" identifies this as prior therapy information -->
+				<patientmedicalcomment>Prior Therapy</patientmedicalcomment> 
+			</medicalhistoryepisode>	  
+
+			<!-- This is the Study disease. It should be accompanied by an attribution (<medicalepisodeassess>).-->
+			<medicalhistoryepisode>	
+				<patientepisodename>Non-small cell lung cancer@@ NOS</patientepisodename>            
+				<!-- patientmedicalcomment = "Study Disease" identifies this as the study disease information -->
+				<patientmedicalcomment>Study Disease</patientmedicalcomment> 
+			</medicalhistoryepisode>		 
+
+			<!--This is the Study disease site.  -->
+
+			<medicalhistoryepisode>
+				<patientepisodename>APPENDIX</patientepisodename>
+				<!-- patientmedicalcomment = "Disease Site" identifies this as the study disease site information -->
+				<patientmedicalcomment>Disease Site</patientmedicalcomment> 
+			</medicalhistoryepisode>       
+			
+			<medicalhistoryepisode>
+				<patientepisodename>Convulsions</patientepisodename>
+				<patientmedicalcomment>Other Cause</patientmedicalcomment>
+			</medicalhistoryepisode>
+			<medicalhistoryepisode>
+				<patientepisodename>Another cause</patientepisodename>
+				<patientmedicalcomment>Other Cause</patientmedicalcomment>
+			</medicalhistoryepisode>
+
+			<medicalhistoryepisode>
+				<patientepisodename>Cerebrum</patientepisodename>
+				<patientmedicalcomment>Metastatic Site</patientmedicalcomment>
+			</medicalhistoryepisode>
+
+			<!--This is the Study Intervention (e.g. Drug, Device, Radiation, Surgery). There could be multiple interventions -->
+
+
+			<drug>
+				<drugcharacterization>1</drugcharacterization>
+				<devicetype>Imaging Device</devicetype> 				
+				<medicinalproduct>PET-CT</medicinalproduct> 					
+				<deviceoperator>PATIENT</deviceoperator>  
+				<drugadditional>Device</drugadditional> 
+			</drug>
+
+
+			<drug>
+				<drugcharacterization>1</drugcharacterization>
+				<medicinalproduct>Brachytherapy LDR</medicinalproduct>
+				<drugenddate>20140103</drugenddate>
+				<drugintervaldosageunitnumb>23</drugintervaldosageunitnumb>
+				<drugseparatedosagenumb>10</drugseparatedosagenumb>
+				<drugcumulativedosagenumb>111</drugcumulativedosagenumb>
+				<radiationdoseunit>(60)CO</radiationdoseunit>				
+				<actiondrug>2</actiondrug>            
+				<drugadditional>Radiation</drugadditional>
+			</drug> 
+
+
+			<summary>
+				<!-- This corresponds to "Was an investigational agent(s) administered on this protocol" in Study interventions. -->	
+				<indadminflag>2</indadminflag> 
+				<!-- This is the description of the event -->
+				<narrativeincludeclinical>the description or narrative of the event</narrativeincludeclinical> 
+				<!-- Retreated to-date -->	
+				<retreatedflag>1</retreatedflag> 
+				
+				<!-- Reporter information-->
+				
+			<!--<repoterfirstname>tom</repoterfirstname>
+				<reporterlastname>brady</reporterlastname>
+				<reporteremailid>tom.brady@semanticbits.com</reporteremailid>
+				<reporterphonenumber>703-111-1221</reporterphonenumber>
+				<reporterfaxnumber>703-111-1231</reporterfaxnumber>	-->
+				
+				<!-- Submitter information-->
+		
+				<senderfirstname>Alfred-sender</senderfirstname>
+				<senderlastname>Nobel-sender</senderlastname>
+				<sendermidname>C-sender</sendermidname>
+				<senderphonenumber>703-787-9656-sender</senderphonenumber>				
+				<senderfax>703-787-9656-sender</senderfax> -->
+				<senderemailid>alfred.nobel.sender@dynamite.com</senderemailid>
+				
+				<!-- Report name -->
+				<nameofreport>CTEP 24 Hour SAE Notification</nameofreport>
+
+             	<!-- Physician information-->
+			<!--<physicianfirstname>Joe</physicianfirstname>
+				<physicianlastname>Montona</physicianlastname>
+				<physicianemailid>joe.montona@semanticbits.com</physicianemailid>
+				<physicianphonenumber>703-121-1221</physicianphonenumber>	-->
+
+			<!-- Patient height and weight -->	
+
+				<ptweight>74</ptweight> 
+				<ptheight>183</ptheight>  
+		
+			</summary>
+		</patient>
+		<autopsyreportflag>1</autopsyreportflag>
+		<consultsflag>1</consultsflag>
+	</safetyreport>
+</ichicsr>
