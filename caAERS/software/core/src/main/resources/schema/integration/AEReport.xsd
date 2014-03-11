@@ -36,8 +36,8 @@
 				<xs:element type="xs:dateTime" name="createdAt" />
 				<xs:element type="AdverseEventResponseDescriptionType" name="adverseEventResponseDescription" minOccurs="0" />
 				<xs:element type="AdverseEventReportingPeriodType" name="adverseEventReportingPeriod" />
-				<xs:element type="PhysicianType" name="physician" />
-				<xs:element type="ReporterType" name="reporter" />
+				<xs:element type="PhysicianType" name="physician" minOccurs="0" />
+				<xs:element type="ReporterType" name="reporter" minOccurs="0" />
 				<xs:element type="SubmitterType" name="submitter"	minOccurs="0" />
 				<xs:element type="DiseaseHistoryType" name="diseaseHistory" minOccurs="0" />
 				<xs:element type="ParticipantHistoryType" name="participantHistory" minOccurs="0" />
