@@ -16,7 +16,13 @@ public class PhysicianSynchronizer implements Migrator<ExpeditedAdverseEventRepo
     public void migrate(ExpeditedAdverseEventReport src, ExpeditedAdverseEventReport dest, DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome) {
         Physician xmlPhysician = src.getPhysician();
         Physician dbPhysician = dest.getPhysician();
-        if(dbPhysician == null || xmlPhysician == null){
+        
+        //  CAAERS-6848 if physician in input message is null, don't override the one in db
+        if(xmlPhysician == null){
+        	return;
+        }
+        
+        if(dbPhysician == null){
             dest.setPhysician(xmlPhysician);
             return;
         }

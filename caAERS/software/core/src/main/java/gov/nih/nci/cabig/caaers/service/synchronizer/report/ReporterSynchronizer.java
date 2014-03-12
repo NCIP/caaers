@@ -13,7 +13,12 @@ public class ReporterSynchronizer implements Migrator<ExpeditedAdverseEventRepor
     public void migrate(ExpeditedAdverseEventReport src, ExpeditedAdverseEventReport dest, DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome) {
         Reporter xmlReporter = src.getReporter();
         Reporter dbReporter = dest.getReporter();
-        if(dbReporter == null || xmlReporter == null){
+        
+        //  CAAERS-6848 if reporter in input message is null, don't override the one in db
+        if(xmlReporter == null){
+        	return;
+        }
+        if(dbReporter == null){
             dest.setReporter(xmlReporter);
             return;
         }
