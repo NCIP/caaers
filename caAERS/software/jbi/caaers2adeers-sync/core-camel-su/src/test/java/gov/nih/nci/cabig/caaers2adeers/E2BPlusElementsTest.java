@@ -27,8 +27,8 @@ public class E2BPlusElementsTest extends SafetyReportE2BXslTest {
 		assertTrue(result.contains("<ae:firstName>Alfred-sender</ae:firstName>"));
 		assertTrue(result.contains("<ae:lastName>Nobel-sender</ae:lastName>"));
 		assertTrue(result.contains("<ae:middleName>C-sender</ae:middleName>"));
-		assertTrue(result.contains("<ae:value>703-787-9656-sender</ae:value>"));
-		assertTrue(result.contains("<ae:value>703-787-9656-sender</ae:value>"));
+		assertTrue(result.contains("<ae:value>703-787-9656-sender-ph</ae:value>"));
+		assertTrue(result.contains("<ae:value>703-787-9656-sender-fax</ae:value>"));
 		assertTrue(result.contains("<ae:value>alfred.nobel.sender@dynamite.com</ae:value>"));
 
 	}

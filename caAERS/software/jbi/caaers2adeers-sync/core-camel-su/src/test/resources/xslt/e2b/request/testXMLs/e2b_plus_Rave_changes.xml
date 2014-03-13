@@ -236,8 +236,8 @@
 				<senderfirstname>Alfred-sender</senderfirstname>
 				<senderlastname>Nobel-sender</senderlastname>
 				<sendermidname>C-sender</sendermidname>
-				<senderphonenumber>703-787-9656-sender</senderphonenumber>				
-				<senderfax>703-787-9656-sender</senderfax> -->
+				<senderphonenumber>703-787-9656-sender-ph</senderphonenumber>				
+				<senderfaxnumber>703-787-9656-sender-fax</senderfaxnumber> -->
 				<senderemailid>alfred.nobel.sender@dynamite.com</senderemailid>
 				
 				<!-- Report name -->
