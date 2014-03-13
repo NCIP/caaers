@@ -156,4 +156,18 @@
     	<agent-dose-modification><code>4</code><value>DOSE_NOTCHANGED</value></agent-dose-modification>
     	<agent-dose-modification><code>6</code><value>NA</value></agent-dose-modification>
     </agent-dose-modifications>
+    <yes-no-lov>
+    	<yes-no-value><code>1</code><value>YES</value></yes-no-value>
+    	<yes-no-value><code>2</code><value>NO</value></yes-no-value>
+    </yes-no-lov>
+    <factor-types>
+    	<factor-type><code>concomitant medication</code><value>concomitant medication</value></factor-type>
+    	<factor-type><code>other cause</code><value>other cause</value></factor-type>
+    	<factor-type><code>course agent</code><value>course agent</value></factor-type>
+    	<factor-type><code>SURGERY</code><value>SURGERY</value></factor-type>
+    	<factor-type><code>RADIATION</code><value>RADIATION</value></factor-type>
+    	<factor-type><code>DEVICE</code><value>DEVICE</value></factor-type>
+    	<factor-type><code>primary disease</code><value>primary disease</value></factor-type>
+    	<factor-type><code>other disease</code><value>other disease</value></factor-type>
+    </factor-types>
 </lookup>

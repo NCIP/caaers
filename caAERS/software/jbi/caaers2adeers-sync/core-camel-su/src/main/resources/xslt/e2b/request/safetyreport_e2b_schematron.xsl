@@ -237,6 +237,24 @@
 				<xsl:apply-templates/>
 			</svrl:active-pattern>
 			<xsl:apply-templates select="/" mode="M12"/>
+			<svrl:active-pattern>
+				<xsl:attribute name="document">
+					<xsl:value-of select="document-uri(/)"/>
+				</xsl:attribute>
+				<xsl:attribute name="id">Adverse Event primary flag</xsl:attribute>
+				<xsl:attribute name="name">AE: validate AE primary flag</xsl:attribute>
+				<xsl:apply-templates/>
+			</svrl:active-pattern>
+			<xsl:apply-templates select="/" mode="M13"/>
+			<svrl:active-pattern>
+				<xsl:attribute name="document">
+					<xsl:value-of select="document-uri(/)"/>
+				</xsl:attribute>
+				<xsl:attribute name="id">Adverse Event attribution factor-type</xsl:attribute>
+				<xsl:attribute name="name">AE Attribution: validate AE attribution factor-type</xsl:attribute>
+				<xsl:apply-templates/>
+			</svrl:active-pattern>
+			<xsl:apply-templates select="/" mode="M14"/>
 		</svrl:schematron-output>
 	</xsl:template>
 
@@ -430,6 +448,60 @@
 	<xsl:template match="text()" priority="-1" mode="M12"/>
 	<xsl:template match="@*|node()" priority="-2" mode="M12">
 		<xsl:apply-templates select="*|comment()|processing-instruction()" mode="M12"/>
+	</xsl:template>
+	
+		<!--PATTERN flag: validate AE primary flag -->
+	<svrl:text xmlns:svrl="http://purl.oclc.org/dsdl/svrl">Present Status: validate AE primary flag </svrl:text>
+
+	<!--RULE -->
+	<xsl:template match="/ichicsr/safetyreport/patient/reaction/primaryaeflag" priority="1001" mode="M13">
+		<svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/ichicsr/safetyreport/patient/reaction/primaryaeflag"/>
+
+		<!--ASSERT -->
+		<xsl:choose>
+			<xsl:when test="caaers:lookup(., $map//yes-no-lov)!=''"/>
+			<xsl:otherwise>
+				<svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="primaryaeflag">
+					<xsl:attribute name="location">
+						<xsl:apply-templates select="." mode="schematron-select-full-path"/>
+					</xsl:attribute>
+					<svrl:text>Unavailable matching AE primary flag</svrl:text>
+				</svrl:failed-assert>
+			</xsl:otherwise>
+		</xsl:choose>
+		<xsl:apply-templates select="*|comment()|processing-instruction()" mode="M13"/>
+	</xsl:template>
+	<xsl:template match="text()" priority="-1" mode="M13"/>
+	<xsl:template match="@*|node()" priority="-2" mode="M13">
+		<xsl:apply-templates select="*|comment()|processing-instruction()" mode="M13"/>
+	</xsl:template>
+	
+	<!--PATTERN flag: validate AE attribution factor-type -->
+	<svrl:text xmlns:svrl="http://purl.oclc.org/dsdl/svrl">Present Status: validate AE primary flag </svrl:text>
+
+	<!--RULE -->
+	<xsl:template match="/ichicsr/safetyreport/patient/reaction/factortype" priority="1001" mode="M14">
+		<svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/ichicsr/safetyreport/patient/reaction/factortype"/>
+
+		<!--ASSERT -->
+		<xsl:choose>
+			<xsl:when test="caaers:lookup(., $map//factor-types)!=''"/>
+			<xsl:otherwise>
+				<svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="factortype">
+					<xsl:attribute name="location">
+						<xsl:apply-templates select="." mode="schematron-select-full-path"/>
+					</xsl:attribute>
+					<svrl:text>Unavailable matching attribution factor type</svrl:text>
+				</svrl:failed-assert>
+			</xsl:otherwise>
+		</xsl:choose>
+		<xsl:apply-templates select="*|comment()|processing-instruction()" mode="M14"/>
+	</xsl:template>
+	<xsl:template match="text()" priority="-1" mode="M14"/>
+	<xsl:template match="@*|node()" priority="-2" mode="M14">
+		<xsl:apply-templates select="*|comment()|processing-instruction()" mode="M14"/>
 	</xsl:template>
 
 </xsl:stylesheet>
