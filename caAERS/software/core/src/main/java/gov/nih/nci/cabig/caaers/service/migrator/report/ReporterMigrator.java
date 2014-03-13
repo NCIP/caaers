@@ -38,7 +38,8 @@ public class ReporterMigrator implements Migrator<ExpeditedAdverseEventReport> {
      * @param outcome
      */
     public void migrate(ExpeditedAdverseEventReport aeReportSrc, ExpeditedAdverseEventReport aeReportDest, DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome) {
-        aeReportDest.setReporter(new Reporter());
+       if(aeReportSrc.getReporter() == null) return;
+    	aeReportDest.setReporter(new Reporter());
         ReportPerson srcReportPerson = aeReportSrc.getReporter();
         ReportPerson destReportPerson = aeReportDest.getReporter();
         

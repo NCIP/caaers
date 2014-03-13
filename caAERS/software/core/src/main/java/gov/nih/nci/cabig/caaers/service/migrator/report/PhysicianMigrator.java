@@ -37,7 +37,8 @@ public class PhysicianMigrator implements Migrator<ExpeditedAdverseEventReport> 
      * @param outcome
      */
     public void migrate(ExpeditedAdverseEventReport aeReportSrc, ExpeditedAdverseEventReport aeReportDest, DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome) {
-        aeReportDest.setPhysician(new Physician());
+        if(aeReportSrc.getPhysician() == null) return;
+    	aeReportDest.setPhysician(new Physician());
         ReportPerson srcReportPerson = aeReportSrc.getPhysician();
         ReportPerson destReportPerson = aeReportDest.getPhysician();
        
