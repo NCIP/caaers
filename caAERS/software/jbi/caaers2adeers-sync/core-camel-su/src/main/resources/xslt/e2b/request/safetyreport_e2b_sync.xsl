@@ -579,12 +579,11 @@
 				<ae:amount>
 					<xsl:value-of select="drugcumulativedosagenumb" />
 				</ae:amount>
-				<ae:units>
-					<xsl:call-template name="lookup">
-						<xsl:with-param name="_map" select="$map//uoms" />
-						<xsl:with-param name="_code" select='drugcumulativedosageunit' />
-					</xsl:call-template>
-				</ae:units>
+				<xsl:if test="drugcumulativedosageunitextended">
+					<ae:units>
+						<xsl:value-of select="drugcumulativedosageunitextended" />
+					</ae:units>
+				</xsl:if>
 			</ae:dose>
 			<ae:studyAgent>
 				<!--You have a CHOICE of the next 2 items at this level -->

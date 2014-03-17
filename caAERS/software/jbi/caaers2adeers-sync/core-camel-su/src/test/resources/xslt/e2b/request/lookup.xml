@@ -87,35 +87,35 @@
 		<delayuom><code>806</code><value>MINUTES</value></delayuom>
 	</delayuoms>
     <uoms>
-    	<uom><code>001</code><value>kg</value></uom>
-		<uom><code>002</code><value>g</value></uom>
-		<uom><code>003</code><value>mg</value></uom>
-		<uom><code>004</code><value>mcg</value></uom>
-		<uom><code>005</code><value>ng</value></uom>
-		<uom><code>006</code><value>pg</value></uom>
-		<uom><code>009</code><value>mg/m 2</value></uom>
-		<uom><code>010</code><value>mg/ m 2</value></uom>
-		<uom><code>011</code><value>l</value></uom>
-		<uom><code>012</code><value>ml</value></uom>
-		<uom><code>013</code><value>mcl</value></uom>
-		<uom><code>014</code><value>Bq</value></uom>
-		<uom><code>015</code><value>GBq</value></uom>
-		<uom><code>016</code><value>MBq</value></uom>
-		<uom><code>017</code><value>Kbq</value></uom>
-		<uom><code>018</code><value>Ci</value></uom>
-		<uom><code>019</code><value>mCi</value></uom>
-		<uom><code>020</code><value>mcCi</value></uom>
-		<uom><code>021</code><value>NCi</value></uom>
-		<uom><code>022</code><value>mol</value></uom>
-		<uom><code>023</code><value>mmol</value></uom>
-		<uom><code>024</code><value>mcmol</value></uom>
-		<uom><code>025</code><value>IU</value></uom>
-		<uom><code>026</code><value>Kiu</value></uom>
-		<uom><code>027</code><value>million iu</value></uom>
-		<uom><code>029</code><value>mEq/L</value></uom>
-		<uom><code>030</code><value>Percent</value></uom>
-		<uom><code>031</code><value>Gtt</value></uom>
-		<uom><code>032</code><value>DF</value></uom>    	
+    	<uom><code>kg</code><value>kg</value></uom>
+		<uom><code>g</code><value>g</value></uom>
+		<uom><code>mg</code><value>mg</value></uom>
+		<uom><code>mcg</code><value>mcg</value></uom>
+		<uom><code>ng</code><value>ng</value></uom>
+		<uom><code>pg</code><value>pg</value></uom>
+		<uom><code>mg/m 2</code><value>mg/m 2</value></uom>
+		<uom><code>mg/ m 2</code><value>mg/ m 2</value></uom>
+		<uom><code>l</code><value>l</value></uom>
+		<uom><code>ml</code><value>ml</value></uom>
+		<uom><code>mcl</code><value>mcl</value></uom>
+		<uom><code>Bq</code><value>Bq</value></uom>
+		<uom><code>GBq</code><value>GBq</value></uom>
+		<uom><code>MBq</code><value>MBq</value></uom>
+		<uom><code>Kbq</code><value>Kbq</value></uom>
+		<uom><code>Ci</code><value>Ci</value></uom>
+		<uom><code>mCi</code><value>mCi</value></uom>
+		<uom><code>mcCi</code><value>mcCi</value></uom>
+		<uom><code>NCi</code><value>NCi</value></uom>
+		<uom><code>mol</code><value>mol</value></uom>
+		<uom><code>mmol</code><value>mmol</value></uom>
+		<uom><code>mcmol</code><value>mcmol</value></uom>
+		<uom><code>IU</code><value>IU</value></uom>
+		<uom><code>Kiu</code><value>Kiu</value></uom>
+		<uom><code>million iu</code><value>million iu</value></uom>
+		<uom><code>mEq</code><value>mEq</value></uom>
+		<uom><code>Percent</code><value>Percent</value></uom>
+		<uom><code>Gtt</code><value>Gtt</value></uom>
+		<uom><code>DF</code><value>DF</value></uom>    	
     </uoms>
     <uomse2b>
     	<uom><code>kg</code><value>001</value></uom>

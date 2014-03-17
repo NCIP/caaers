@@ -43,5 +43,15 @@ public class E2BPlusElementsTest extends SafetyReportE2BXslTest {
 		assertTrue(result.contains("<ae:quantity>74</ae:quantity>"));
 	}
 	
+	public void testDrugCumulativeDosage() throws Exception{
+
+		String result = null;
+		result = transform("xslt/e2b/request/testXMLs/e2b_plus_Rave_changes.xml", "xslt/e2b/request/safetyreport_e2b_sync.xsl");
+		assertNotNull(result);
+		assertNotSame("", result);
+		assertTrue(result.contains("<ae:units>million iu</ae:units>"));
+		assertTrue(result.contains("<ae:units>Gtt</ae:units>"));
+	}
+	
 
 }

@@ -58,6 +58,15 @@
 				<!-- Present status. Only applicable for the AE with Primary flag = 1 -->
 				<reactionoutcome>3</reactionoutcome> 
 			</reaction>
+			
+			 <!-- Course Agent attribution -->  
+	 	 	<reaction>
+        		<aeexternalid>reaction-5</aeexternalid>  
+				<!-- drug NSC number -->		
+        		<factor>649890</factor> 
+        		<factortype>course agent</factortype>
+        		<attribution>4</attribution>
+	  		</reaction>
 
 			<!-- The following sections identifies the attributions for the ae reaction-5 -->  
 
@@ -191,7 +200,38 @@
 			</medicalhistoryepisode>
 
 			<!--This is the Study Intervention (e.g. Drug, Device, Radiation, Surgery). There could be multiple interventions -->
-
+			
+			<drug>
+				<drugcharacterization>1</drugcharacterization> 
+				<!-- Agent NSC Number.  This is the identifier of the Agent. -->
+				<medicinalproduct>649890</medicinalproduct> 
+				<!-- Total Dose Administered this Course -->
+				<drugcumulativedosagenumb>111</drugcumulativedosagenumb>  
+				<!-- Dosage unit per E2B code -->   
+				<drugcumulativedosageunitextended>million iu</drugcumulativedosageunitextended>      
+				<drugenddateformat>102</drugenddateformat>
+				<!-- Date last administered -->
+				<drugenddate>20130211</drugenddate>  
+				<drugtreatmentduration>30</drugtreatmentduration>
+				<drugtreatmentdurationunit>806</drugtreatmentdurationunit>
+				<drugadditional>Agent</drugadditional> 
+			</drug> 
+			
+			<drug>
+				<drugcharacterization>1</drugcharacterization> 
+				<!-- Agent NSC Number.  This is the identifier of the Agent. -->
+				<medicinalproduct>649890</medicinalproduct> 
+				<!-- Total Dose Administered this Course -->
+				<drugcumulativedosagenumb>111</drugcumulativedosagenumb>  
+				<!-- Dosage unit per E2B code -->   
+				<drugcumulativedosageunitextended>Gtt</drugcumulativedosageunitextended>      
+				<drugenddateformat>102</drugenddateformat>
+				<!-- Date last administered -->
+				<drugenddate>20130211</drugenddate>  
+				<drugtreatmentduration>30</drugtreatmentduration>
+				<drugtreatmentdurationunit>806</drugtreatmentdurationunit>
+				<drugadditional>Agent</drugadditional> 
+			</drug>
 
 			<drug>
 				<drugcharacterization>1</drugcharacterization>

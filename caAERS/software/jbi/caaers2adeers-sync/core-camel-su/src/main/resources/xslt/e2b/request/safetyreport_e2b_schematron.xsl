@@ -297,10 +297,10 @@
 
 		<!--ASSERT -->
 		<xsl:choose>
-			<xsl:when test="caaers:lookup(./drugcumulativedosageunit, $map//uoms)!=''"/>
+			<xsl:when test="caaers:lookup(./drugcumulativedosageunitextended, $map//uoms)!=''"/>
 			<xsl:otherwise>
 				<svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
-                                test="drugcumulativedosageunit">
+                                test="drugcumulativedosageunitextended">
 					<xsl:attribute name="location">
 						<xsl:apply-templates select="." mode="schematron-select-full-path"/>
 					</xsl:attribute>
