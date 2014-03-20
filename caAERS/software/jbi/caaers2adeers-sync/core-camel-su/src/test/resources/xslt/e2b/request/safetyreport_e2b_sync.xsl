@@ -851,7 +851,7 @@
 		<ae:adverseEventResponseDescription>
 			<ae:eventDescription>
 				<xsl:value-of
-					select="/ichicsr/safetyreport/patient/summary/narrativeincludeclinical" />
+					select="concat(/ichicsr/safetyreport/patient/summary/narrativeincludeclinical,/ichicsr/safetyreport/patient/summary/narrativeincludeclinicalextended)" />
 			</ae:eventDescription>
 			<xsl:if
 				test='/ichicsr/safetyreport/patient/reaction[primaryaeflag=1]/reactionoutcome'>

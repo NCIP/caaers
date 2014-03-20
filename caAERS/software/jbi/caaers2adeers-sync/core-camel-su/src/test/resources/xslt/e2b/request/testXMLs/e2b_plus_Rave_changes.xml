@@ -260,6 +260,7 @@
 				<indadminflag>2</indadminflag> 
 				<!-- This is the description of the event -->
 				<narrativeincludeclinical>the description or narrative of the event</narrativeincludeclinical> 
+				<narrativeincludeclinicalextended> extended</narrativeincludeclinicalextended> 
 				<!-- Retreated to-date -->	
 				<retreatedflag>1</retreatedflag> 
 				
