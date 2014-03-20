@@ -255,6 +255,15 @@
 				<xsl:apply-templates/>
 			</svrl:active-pattern>
 			<xsl:apply-templates select="/" mode="M14"/>
+			<svrl:active-pattern>
+				<xsl:attribute name="document">
+					<xsl:value-of select="document-uri(/)"/>
+				</xsl:attribute>
+				<xsl:attribute name="id">Participant History baseline performance scale</xsl:attribute>
+				<xsl:attribute name="name">Participant History: validate baseline performance scale</xsl:attribute>
+				<xsl:apply-templates/>
+			</svrl:active-pattern>
+			<xsl:apply-templates select="/" mode="M15"/>
 		</svrl:schematron-output>
 	</xsl:template>
 
@@ -502,6 +511,33 @@
 	<xsl:template match="text()" priority="-1" mode="M14"/>
 	<xsl:template match="@*|node()" priority="-2" mode="M14">
 		<xsl:apply-templates select="*|comment()|processing-instruction()" mode="M14"/>
+	</xsl:template>
+	
+	<!--PATTERN flag: validate AE attribution factor-type -->
+	<svrl:text xmlns:svrl="http://purl.oclc.org/dsdl/svrl">Participant History: validate baseline performance scale </svrl:text>
+
+	<!--RULE -->
+	<xsl:template match="/ichicsr/safetyreport/patient/baselineperformancescale" priority="1001" mode="M15">
+		<svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/ichicsr/safetyreport/patient/baselineperformancescale"/>
+
+		<!--ASSERT -->
+		<xsl:choose>
+			<xsl:when test="caaers:lookup(., $map//baseline-performance-scales)!=''"/>
+			<xsl:otherwise>
+				<svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="baselineperformancescale">
+					<xsl:attribute name="location">
+						<xsl:apply-templates select="." mode="schematron-select-full-path"/>
+					</xsl:attribute>
+					<svrl:text>Unavailable matching baseline performance scale</svrl:text>
+				</svrl:failed-assert>
+			</xsl:otherwise>
+		</xsl:choose>
+		<xsl:apply-templates select="*|comment()|processing-instruction()" mode="M15"/>
+	</xsl:template>
+	<xsl:template match="text()" priority="-1" mode="M15"/>
+	<xsl:template match="@*|node()" priority="-2" mode="M15">
+		<xsl:apply-templates select="*|comment()|processing-instruction()" mode="M15"/>
 	</xsl:template>
 
 </xsl:stylesheet>

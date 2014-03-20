@@ -170,4 +170,10 @@
     	<factor-type><code>primary disease</code><value>primary disease</value></factor-type>
     	<factor-type><code>other disease</code><value>other disease</value></factor-type>
     </factor-types>
+    <baseline-performance-scales>
+    	<baseline-performance-scale><code>ECOG</code><value>ECOG</value></baseline-performance-scale>
+    	<baseline-performance-scale><code>ZUBROD</code><value>ZUBROD</value></baseline-performance-scale>
+    	<baseline-performance-scale><code>LANSKY</code><value>LANSKY</value></baseline-performance-scale>
+    	<baseline-performance-scale><code>KARNOFSKY</code><value>KARNOFSKY</value></baseline-performance-scale>
+    </baseline-performance-scales>
 </lookup>
