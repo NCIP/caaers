@@ -913,6 +913,7 @@ public class ExpeditedAdverseEventReportConverterUtility {
 		Reporter reporter = new Reporter();
 		reporter.setFirstName(xmlReporterType.getFirstName());
 		reporter.setLastName(xmlReporterType.getLastName());
+		reporter.setMiddleName(xmlReporterType.getMiddleName());
 		if(xmlReporterType.getNciIdentifier() != null){
 			ResearchStaff staff = new LocalResearchStaff();
 			staff.setNciIdentifier(xmlReporterType.getNciIdentifier());
@@ -970,6 +971,7 @@ public class ExpeditedAdverseEventReportConverterUtility {
 		Physician physician = new Physician();
 		physician.setFirstName(xmlPhysicianType.getFirstName());
 		physician.setLastName(xmlPhysicianType.getLastName());
+		physician.setMiddleName(xmlPhysicianType.getMiddleName());
 		if(xmlPhysicianType.getNciIdentifier() != null){
 			Investigator investigator = new LocalInvestigator();
 			investigator.setNciIdentifier(xmlPhysicianType.getNciIdentifier());
