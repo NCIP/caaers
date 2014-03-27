@@ -202,7 +202,11 @@ public class ObservedAdverseEventProfile extends AbstractMutableDomainObject {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
+    public boolean isValid() {
+        return expectedFrequency != null &&   treatmentAssignment != null;
+    }
+
 	@Override
 	public String toString() {
 		return "ObservedProfile [term=" + getTerm() + ", grade=" + grade + ", expectedFrequency=" + expectedFrequency + ", totalNoOfRegistrations="

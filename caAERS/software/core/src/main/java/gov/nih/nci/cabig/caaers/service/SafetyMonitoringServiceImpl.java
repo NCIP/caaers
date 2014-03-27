@@ -77,12 +77,13 @@ public class SafetyMonitoringServiceImpl implements SafetyMonitoringService {
 			for(DomainObject term : safetySignallingAEHelper.getTerms(treatmentAssignment)){
 				for (Grade grade: getValidGrades(term)){
 					ObservedAdverseEventProfile observedAdverseEventProfile = getObservedAdverseEventProfile(safetySignallingAEHelper, treatmentAssignment, term, grade);
-					if(isNotifiable(observedAdverseEventProfile)){
+
+					if(observedAdverseEventProfile.isValid() && isNotifiable(observedAdverseEventProfile)){
 						notifiables.add(observedAdverseEventProfile);
 					}
 				}
 				ObservedAdverseEventProfile observedAdverseEventProfile = getObservedAdverseEventProfile(safetySignallingAEHelper, treatmentAssignment, term, null);
-				if(isNotifiable(observedAdverseEventProfile)){
+				if(observedAdverseEventProfile.isValid() && isNotifiable(observedAdverseEventProfile)){
 					notifiables.add(observedAdverseEventProfile);
 				}
 			}
