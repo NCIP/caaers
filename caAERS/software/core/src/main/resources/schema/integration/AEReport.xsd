@@ -26,6 +26,11 @@
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element name="ReportID" type="xs:string"/>
+				<xs:element minOccurs="0" name="caseNumber" type="xs:string"/> 
+				<xs:element minOccurs="0" name="reportName" type="xs:string"/>
+	            <xs:element minOccurs="0" name="action" type="xs:string"/>
+	            <xs:element minOccurs="0" name="amendmentNumber" type="xs:string"/>
+	            <xs:element minOccurs="0" name="dueDate" type="xs:string"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
@@ -1042,4 +1047,5 @@
 			<xs:enumeration value="OTHER_INFORMATION" />
 		</xs:restriction>
 	</xs:simpleType>
+	
 </xs:schema>
