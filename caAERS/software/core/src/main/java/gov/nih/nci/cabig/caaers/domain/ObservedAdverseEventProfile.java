@@ -203,6 +203,7 @@ public class ObservedAdverseEventProfile extends AbstractMutableDomainObject {
 		}
 	}
 
+	@Transient
     public boolean isValid() {
         return expectedFrequency != null &&   treatmentAssignment != null;
     }
