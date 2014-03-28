@@ -28,6 +28,8 @@ import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.AdverseEventReport;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.BaseAdverseEventReport;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.BaseReport;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.BaseReportType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.BaseReports;
 import gov.nih.nci.cabig.caaers.integration.schema.aereportid.ReportIdCriteria;
 import gov.nih.nci.cabig.caaers.integration.schema.aereportid.SafetyReportIdentifer;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
@@ -501,6 +503,7 @@ public class SafetyReportServiceImpl {
             // initialize the service response
             ResponseDataType rdType = new ResponseDataType();
             caaersServiceResponse.getServiceResponse().setResponseData(rdType);
+            rdType.setAny(new BaseReports());
 
             ExpeditedAdverseEventReport aeDestReport = initiateSafetyReportAction(aeSrcReport, caaersServiceResponse, errors);
 
@@ -570,9 +573,8 @@ public class SafetyReportServiceImpl {
     
     
     private void buildReportInformationOutput(Report report, CaaersServiceResponse caaersServiceResponse, ActionType actionType){
-    	 BaseReport baseReport = new BaseReport();
+    	 BaseReportType baseReport = new BaseReportType();
     	 baseReport.setReportID(report.getAeReport().getExternalId());
-    	 caaersServiceResponse.getServiceResponse().getResponseData().setAny(baseReport);
     	 
     	 baseReport.setAction(actionType.getDisplayName());
     	 baseReport.setAmendmentNumber(report.getLastVersion().getAmendmentNumber().toString());
@@ -582,6 +584,8 @@ public class SafetyReportServiceImpl {
         		 report.getStatus() == ReportStatus.INPROCESS){
         	 baseReport.setDueDate(report.getDueOn().toString());
          }
+         
+         ((BaseReports)(caaersServiceResponse.getServiceResponse().getResponseData().getAny())).getBaseReport().add(baseReport);
     }
 
     /**
