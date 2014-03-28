@@ -240,7 +240,6 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
 
         // mandatory, so that the lazy-projected list is created/managed properly.
         setStudyOrganizations(new ArrayList<StudyOrganization>());
-        setAeTermUnique(true);
     }
 
     public Date getLastSynchedDate() {
