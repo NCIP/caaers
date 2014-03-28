@@ -428,7 +428,7 @@ public class SafetyReportServiceImpl {
 	                	Report createdReport = createReport(srcReport, dbReport);
 	                    reportsAffected.add(createdReport);
 	                    if(caaersServiceResponse != null){
-	                    	buildReportInformationOutput(createdReport, caaersServiceResponse, ActionType.WITHDRAW);
+	                    	buildReportInformationOutput(createdReport, caaersServiceResponse, ActionType.CREATE);
 	                    }
 	                } else {
 	                	for(Report  report: reportsToEdit){
