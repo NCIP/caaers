@@ -212,8 +212,7 @@ public class SafetyReportServiceImpl {
 			  participantService.transferParticipant(dbParticipant, originalSite, organizationTransferredTo, errors);
 			  }
 		} catch (Exception e) {
-			logger.error(e.getMessage());
-			e.printStackTrace();
+			logger.error("Error while transferring the StudySubject", e);
 		}
     }
 
@@ -473,9 +472,17 @@ public class SafetyReportServiceImpl {
     public CaaersServiceResponse initiateSafetyReportAction(BaseAdverseEventReport baseAadverseEventReport) throws Exception {
         CaaersServiceResponse response = Helper.createResponse();
         ValidationErrors errors = new ValidationErrors();
-        try{
+        ExpeditedAdverseEventReport aeSrcReport = null;
+        try {
         	// 1. Call the Converter(s) to construct the domain object.
-            ExpeditedAdverseEventReport aeSrcReport = baseEaeConverter.convert(baseAadverseEventReport);
+            aeSrcReport = baseEaeConverter.convert(baseAadverseEventReport);
+        }catch (Exception e){
+            logger.error("Unable to convert the XML report to domain object", e);
+            Helper.populateError(response, "WS_GEN_000","Error while converting XML to domain object:" + e.getMessage() );
+            throw e;
+        }
+
+        try{
             ExpeditedAdverseEventReport aeDestReport = initiateSafetyReportAction(aeSrcReport, errors);
            
             if(errors.hasErrors())  {
@@ -491,7 +498,7 @@ public class SafetyReportServiceImpl {
             }
             
         }catch (Exception e){
-            logger.error("Unable to iniate a safety report action from Safety Management Service", e);
+            logger.error("Unable to initiate a safety report action from Safety Management Service", e);
             Helper.populateError(response, "WS_GEN_000",e.getMessage() );
             throw e;
         }
@@ -557,11 +564,22 @@ public class SafetyReportServiceImpl {
      */
     public ValidationErrors createOrUpdateSafetyReport(AdverseEventReport adverseEventReport, List<Report> reportsAffected) throws Exception {
        ValidationErrors errors = new ValidationErrors();
+        ExpeditedAdverseEventReport aeSrcReport = null;
 
-	   try {
+        try {
+
+            // 1. Call the Converter(s) to construct the domain object.
+           aeSrcReport = eaeConverter.convert(adverseEventReport);
+
+        }catch(Exception e) {
+            logger.error("Error while converting AdverseEvent XML to domain object", e);
+            errors.addValidationError( "WS_GEN_000","Error while converting XML to domain object:" + e.getMessage() );
+            return errors;
+        }
+
+        try {
 		   
-           // 1. Call the Converter(s) to construct the domain object.
-           ExpeditedAdverseEventReport aeSrcReport = eaeConverter.convert(adverseEventReport);
+
            //2. Do some basic validations (if needed)
 
            //3. Determine the flow, create vs update
@@ -584,7 +602,7 @@ public class SafetyReportServiceImpl {
        }catch(Exception e) {
            expeditedAdverseEventReportDao.clearSession();
 		   logger.error("Unable to Create/Update a Report from Safety Management Service", e);
-
+           errors.addValidationError( "WS_GEN_000","Error while creating or updating safety report:" + e.getMessage() );
 	   }
        return errors;
 	}
