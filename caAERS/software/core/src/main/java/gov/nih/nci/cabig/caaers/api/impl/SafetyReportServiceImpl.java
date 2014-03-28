@@ -27,14 +27,12 @@ import gov.nih.nci.cabig.caaers.domain.validation.ExpeditedAdverseEventReportVal
 import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.AdverseEventReport;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.BaseAdverseEventReport;
-import gov.nih.nci.cabig.caaers.integration.schema.aereport.BaseReport;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.BaseReportType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.BaseReports;
 import gov.nih.nci.cabig.caaers.integration.schema.aereportid.ReportIdCriteria;
 import gov.nih.nci.cabig.caaers.integration.schema.aereportid.SafetyReportIdentifer;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ResponseDataType;
-import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
 import gov.nih.nci.cabig.caaers.service.AdeersIntegrationFacade;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.ReportSubmissionService;
