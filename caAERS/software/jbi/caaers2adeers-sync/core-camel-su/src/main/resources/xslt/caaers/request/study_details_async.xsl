@@ -34,6 +34,7 @@
                 <adeersReporting>true</adeersReporting>
                 <studyPurpose><xsl:value-of select="primaryStudyType"/></studyPurpose>
                 <participationType><xsl:value-of select="participationType" /></participationType>
+                <aeTermUnique>false</aeTermUnique>
                 <stud:aeTerminology>
                     <stud:ctcVersion><name><xsl:value-of select="ctcVersion" /></name></stud:ctcVersion>
                 </stud:aeTerminology>
