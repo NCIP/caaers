@@ -592,9 +592,9 @@ public class SafetyReportServiceImpl {
     	 baseReport.setAmendmentNumber(report.getLastVersion().getAmendmentNumber().toString());
     	 baseReport.setReportName(report.getReportDefinition().getName());
     	 baseReport.setCaseNumber(report.getCaseNumber());
-         if(report.getStatus() == ReportStatus.AMENDED || report.getStatus() == ReportStatus.PENDING || report.getStatus() == ReportStatus.FAILED || 
-        		 report.getStatus() == ReportStatus.INPROCESS){
-        	 baseReport.setDueDate(report.getDueOn().toString());
+         if((report.getStatus() == ReportStatus.AMENDED || report.getStatus() == ReportStatus.PENDING || report.getStatus() == ReportStatus.FAILED || 
+        		 report.getStatus() == ReportStatus.INPROCESS) && report.getDueOn() != null){
+        	baseReport.setDueDate(report.getDueOn().toString());
          }
          
          ((BaseReports)(caaersServiceResponse.getServiceResponse().getResponseData().getAny())).getBaseReport().add(baseReport);
