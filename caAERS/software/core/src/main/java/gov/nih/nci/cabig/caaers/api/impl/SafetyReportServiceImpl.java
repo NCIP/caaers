@@ -19,6 +19,7 @@ import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper.ActionType;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
@@ -31,6 +32,7 @@ import gov.nih.nci.cabig.caaers.integration.schema.aereportid.ReportIdCriteria;
 import gov.nih.nci.cabig.caaers.integration.schema.aereportid.SafetyReportIdentifer;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ResponseDataType;
+import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
 import gov.nih.nci.cabig.caaers.service.AdeersIntegrationFacade;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.ReportSubmissionService;
@@ -190,6 +192,7 @@ public class SafetyReportServiceImpl {
         }
         return response;
     }
+    
 
     public void migrate(ExpeditedAdverseEventReport aeSrcReport, ExpeditedAdverseEventReport aeDestReport, ValidationErrors errors){
         try{
@@ -212,8 +215,7 @@ public class SafetyReportServiceImpl {
 			  participantService.transferParticipant(dbParticipant, originalSite, organizationTransferredTo, errors);
 			  }
 		} catch (Exception e) {
-			logger.error(e.getMessage());
-			e.printStackTrace();
+			logger.error("Error while transferring the StudySubject", e);
 		}
     }
 
@@ -272,7 +274,7 @@ public class SafetyReportServiceImpl {
      * @param errors
      * @return
      */
-    public ExpeditedAdverseEventReport initiateSafetyReportAction(ExpeditedAdverseEventReport aeSrcReport, ValidationErrors errors){
+    public ExpeditedAdverseEventReport initiateSafetyReportAction(ExpeditedAdverseEventReport aeSrcReport, CaaersServiceResponse caaersServiceResponse, ValidationErrors errors){
     	
     	//Determine the flow, create vs update
         String externalId = aeSrcReport.getExternalId();
@@ -312,12 +314,14 @@ public class SafetyReportServiceImpl {
             aeDestReport.getReports().clear();
             // Save the report(s) after Migration.
             for ( Report rpt: reports )    {
-                reportsAffected.add(createReport(rpt, aeDestReport));
+            	Report createdReport = createReport(rpt, aeDestReport);
+                reportsAffected.add(createdReport);
+                buildReportInformationOutput(createdReport, caaersServiceResponse, ActionType.CREATE);
             }
         }else{
             //update flow
         	expeditedAdverseEventReportDao.save(dbReport);
-        	inferReportingAction(aeSrcReport, dbReport,	aeDestReport, reportsAffected);
+        	inferReportingAction(aeSrcReport, dbReport,	aeDestReport, reportsAffected, caaersServiceResponse);
         }
 
         if(getEventFactory() != null) getEventFactory().publishEntityModifiedEvent(aeDestReport);
@@ -349,7 +353,7 @@ public class SafetyReportServiceImpl {
         dbReport.getAssignment().synchronizeMedicalHistoryFromReportToAssignment(dbReport);
         studyParticipantAssignmentDao.save(dbReport.getAssignment());
 
-        inferReportingAction(aeSrcReport, dbReport,	aeDestReport, reportsAffected);
+        inferReportingAction(aeSrcReport, dbReport,	aeDestReport, reportsAffected, null);
 
         if(getEventFactory() != null) getEventFactory().publishEntityModifiedEvent(aeDestReport);
         return reportsAffected;
@@ -358,12 +362,13 @@ public class SafetyReportServiceImpl {
 	private void inferReportingAction(ExpeditedAdverseEventReport aeSrcReport,
 			ExpeditedAdverseEventReport dbReport, 
 			ExpeditedAdverseEventReport aeDestReport,
-			List<Report> reportsAffected) {
+			List<Report> reportsAffected, CaaersServiceResponse caaersServiceResponse) {
 		if(aeDestReport.getReports() == null || aeDestReport.getReports().isEmpty()) {
             //withdraw active reports
             List<Report> reportsToWithdraw = dbReport.getActiveReports();
             for(Report srcReport : reportsToWithdraw){
                 withdrawReport(srcReport, dbReport);
+                buildReportInformationOutput(srcReport, caaersServiceResponse, ActionType.WITHDRAW);
             }
         } else {
         
@@ -388,6 +393,7 @@ public class SafetyReportServiceImpl {
         				 
         				 if ( aeDestReport.getReports().size() != 0 ) {
                 			 aeDestReport.getReports().get(0).setReportDefinition(srcReport.getReportDefinition());
+                			 buildReportInformationOutput(aeDestReport.getReports().get(0), caaersServiceResponse, ActionType.EDIT);
         				 }
         				 
         			 }
@@ -400,14 +406,18 @@ public class SafetyReportServiceImpl {
 	                for(Report  report: reportsToAmend){
 	                	amendReport(report, dbReport);
 	                    //reportsAffected.add(createReport(srcReport, dbReport));
+	                	buildReportInformationOutput(report, caaersServiceResponse, ActionType.AMEND);
 	                }
 	                List<Report> reportsToWithdraw = dbReport.findReportsToWithdraw(srcReport.getReportDefinition());
 	                for(Report  report: reportsToWithdraw){
 	                    withdrawReport(report, dbReport);
+	                    buildReportInformationOutput(report, caaersServiceResponse, ActionType.WITHDRAW);
 	                }
 	                List<Report> reportsToEdit = dbReport.findReportsToEdit(srcReport.getReportDefinition());
 	                if(reportsToEdit.isEmpty()) {
-	                    reportsAffected.add(createReport(srcReport, dbReport));
+	                	Report createdReport = createReport(srcReport, dbReport);
+	                    reportsAffected.add(createdReport);
+	                    buildReportInformationOutput(createdReport, caaersServiceResponse, ActionType.WITHDRAW);
 	                } else {
 	                	for(Report  report: reportsToEdit){
 	                		reportsAffected.add(report);
@@ -415,6 +425,7 @@ public class SafetyReportServiceImpl {
 	                		//TODO : need to check if we should call the report.copy() to get all the info
 	                		report.setSubmitter(srcReport.getSubmitter());
 	                		report.setCaseNumber(srcReport.getCaseNumber());
+	                		buildReportInformationOutput(report, caaersServiceResponse, ActionType.EDIT);
 		                }
 	                }
 	
@@ -471,31 +482,41 @@ public class SafetyReportServiceImpl {
      */
     @Transactional(readOnly=false)
     public CaaersServiceResponse initiateSafetyReportAction(BaseAdverseEventReport baseAadverseEventReport) throws Exception {
-        CaaersServiceResponse response = Helper.createResponse();
+        CaaersServiceResponse caaersServiceResponse = Helper.createResponse();
+        
         ValidationErrors errors = new ValidationErrors();
-        try{
+        ExpeditedAdverseEventReport aeSrcReport = null;
+        try {
         	// 1. Call the Converter(s) to construct the domain object.
-            ExpeditedAdverseEventReport aeSrcReport = baseEaeConverter.convert(baseAadverseEventReport);
-            ExpeditedAdverseEventReport aeDestReport = initiateSafetyReportAction(aeSrcReport, errors);
-           
+            aeSrcReport = baseEaeConverter.convert(baseAadverseEventReport);
+
+        }catch (Exception e){
+            logger.error("Unable to convert the XML report to domain object", e);
+            Helper.populateError(caaersServiceResponse, "WS_GEN_000","Error while converting XML to domain object:" + e.getMessage() );
+            throw e;
+        }
+
+        try{
+
+            // initialize the service response
+            ResponseDataType rdType = new ResponseDataType();
+            caaersServiceResponse.getServiceResponse().setResponseData(rdType);
+
+            ExpeditedAdverseEventReport aeDestReport = initiateSafetyReportAction(aeSrcReport, caaersServiceResponse, errors);
+
             if(errors.hasErrors())  {
                 expeditedAdverseEventReportDao.clearSession();
-                populateErrors(response, errors);
+                populateErrors(caaersServiceResponse, errors);
             } else {
-            	BaseReport baseReport = new BaseReport();
-            	baseReport.setReportID(aeDestReport.getExternalId());
-            	ResponseDataType rdType = new ResponseDataType();
-            	rdType.setAny(baseReport);
-            	response.getServiceResponse().setResponseData(rdType);
-            	response.getServiceResponse().setMessage("Initiated safety report action for the safety report, " + baseAadverseEventReport.getExternalId());
+            	caaersServiceResponse.getServiceResponse().setMessage("Initiated safety report action for the safety report, " + baseAadverseEventReport.getExternalId());
             }
             
         }catch (Exception e){
-            logger.error("Unable to iniate a safety report action from Safety Management Service", e);
-            Helper.populateError(response, "WS_GEN_000",e.getMessage() );
+            logger.error("Unable to initiate a safety report action from Safety Management Service", e);
+            Helper.populateError(caaersServiceResponse, "WS_GEN_000",e.getMessage() );
             throw e;
         }
-        return response;
+        return caaersServiceResponse;
     }
 
     /**
@@ -517,7 +538,7 @@ public class SafetyReportServiceImpl {
 				    reportSubmissionService.submitReport(report);
 				}
 			} catch (Exception e) {
-				System.out.println("*RK --------" +  e.getMessage() + "--------------------- *RK ");
+				System.out.println( e.getMessage() );
 				e.printStackTrace();
 				throw e;
 			}
@@ -546,6 +567,22 @@ public class SafetyReportServiceImpl {
         }
         return response;
     }
+    
+    
+    private void buildReportInformationOutput(Report report, CaaersServiceResponse caaersServiceResponse, ActionType actionType){
+    	 BaseReport baseReport = new BaseReport();
+    	 baseReport.setReportID(report.getAeReport().getExternalId());
+    	 caaersServiceResponse.getServiceResponse().getResponseData().setAny(baseReport);
+    	 
+    	 baseReport.setAction(actionType.getDisplayName());
+    	 baseReport.setAmendmentNumber(report.getLastVersion().getAmendmentNumber().toString());
+    	 baseReport.setReportName(report.getReportDefinition().getName());
+    	 baseReport.setCaseNumber(report.getCaseNumber());
+         if(report.getStatus() == ReportStatus.AMENDED || report.getStatus() == ReportStatus.PENDING || report.getStatus() == ReportStatus.FAILED || 
+        		 report.getStatus() == ReportStatus.INPROCESS){
+        	 baseReport.setDueDate(report.getDueOn().toString());
+         }
+    }
 
     /**
      * Will create or update an ExpeditedAdverseEventReport, and updates the reportsAffected with the Reports that
@@ -557,11 +594,22 @@ public class SafetyReportServiceImpl {
      */
     public ValidationErrors createOrUpdateSafetyReport(AdverseEventReport adverseEventReport, List<Report> reportsAffected) throws Exception {
        ValidationErrors errors = new ValidationErrors();
+        ExpeditedAdverseEventReport aeSrcReport = null;
 
-	   try {
+        try {
+
+            // 1. Call the Converter(s) to construct the domain object.
+           aeSrcReport = eaeConverter.convert(adverseEventReport);
+
+        }catch(Exception e) {
+            logger.error("Error while converting AdverseEvent XML to domain object", e);
+            errors.addValidationError( "WS_GEN_000","Error while converting XML to domain object:" + e.getMessage() );
+            return errors;
+        }
+
+        try {
 		   
-           // 1. Call the Converter(s) to construct the domain object.
-           ExpeditedAdverseEventReport aeSrcReport = eaeConverter.convert(adverseEventReport);
+
            //2. Do some basic validations (if needed)
 
            //3. Determine the flow, create vs update
@@ -584,7 +632,7 @@ public class SafetyReportServiceImpl {
        }catch(Exception e) {
            expeditedAdverseEventReportDao.clearSession();
 		   logger.error("Unable to Create/Update a Report from Safety Management Service", e);
-
+           errors.addValidationError( "WS_GEN_000","Error while creating or updating safety report:" + e.getMessage() );
 	   }
        return errors;
 	}
