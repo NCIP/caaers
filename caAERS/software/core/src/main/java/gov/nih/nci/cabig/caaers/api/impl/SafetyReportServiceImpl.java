@@ -489,12 +489,7 @@ public class SafetyReportServiceImpl {
         try {
         	// 1. Call the Converter(s) to construct the domain object.
             aeSrcReport = baseEaeConverter.convert(baseAadverseEventReport);
-            // initialize the service response
-      		ResponseDataType rdType = new ResponseDataType();
-        	caaersServiceResponse.getServiceResponse().setResponseData(rdType);
-          
-            ExpeditedAdverseEventReport aeDestReport = initiateSafetyReportAction(aeSrcReport, caaersServiceResponse, errors);
-            
+
         }catch (Exception e){
             logger.error("Unable to convert the XML report to domain object", e);
             Helper.populateError(caaersServiceResponse, "WS_GEN_000","Error while converting XML to domain object:" + e.getMessage() );
@@ -502,8 +497,13 @@ public class SafetyReportServiceImpl {
         }
 
         try{
-            ExpeditedAdverseEventReport aeDestReport = initiateSafetyReportAction(aeSrcReport, errors);
-           
+
+            // initialize the service response
+            ResponseDataType rdType = new ResponseDataType();
+            caaersServiceResponse.getServiceResponse().setResponseData(rdType);
+
+            ExpeditedAdverseEventReport aeDestReport = initiateSafetyReportAction(aeSrcReport, caaersServiceResponse, errors);
+
             if(errors.hasErrors())  {
                 expeditedAdverseEventReportDao.clearSession();
                 populateErrors(caaersServiceResponse, errors);
