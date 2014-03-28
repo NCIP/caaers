@@ -10,7 +10,6 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 
 import java.util.Date;
-import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 public class StudyMigrator extends CompositeMigrator<Study> {
@@ -23,7 +22,9 @@ public class StudyMigrator extends CompositeMigrator<Study> {
 	public void preMigrate(Study src, Study dest, DomainObjectImportOutcome<Study> outcome) {
         dest.setShortTitle(StringUtils.isNotEmpty(src.getShortTitle()) ? src.getShortTitle() : "NA");
         dest.setPhaseCode(src.getPhaseCode());
-//        dest.setAeTermUnique(src.getAeTermUnique() == null ? false : src.getAeTermUnique());
+//        if(dest.getAeTermUnique() == null) {
+//        	dest.setAeTermUnique(src.getAeTermUnique() == null ? true : src.getAeTermUnique());
+//        }
         dest.setVerbatimFirst(src.getVerbatimFirst() == null ? false : src.getVerbatimFirst());
         dest.setStudyPurpose(src.getStudyPurpose());
         dest.setParticipationType(src.getParticipationType());
