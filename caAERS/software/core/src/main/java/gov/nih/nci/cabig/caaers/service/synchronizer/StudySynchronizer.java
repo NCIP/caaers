@@ -70,7 +70,9 @@ public class StudySynchronizer extends CompositeMigrator<Study>{
 		DomainObjectImportOutcome<Study> outcome) {
 		
 		dbStudy.setShortTitle(StringUtils.isNotEmpty(xmlStudy.getShortTitle()) ? xmlStudy.getShortTitle() : "NA");
-        dbStudy.setAeTermUnique(xmlStudy.getAeTermUnique());
+		if(dbStudy.getAeTermUnique() == null) {
+			dbStudy.setAeTermUnique(xmlStudy.getAeTermUnique());
+		}
         dbStudy.setVerbatimFirst(xmlStudy.getVerbatimFirst());
         dbStudy.setParticipationType(xmlStudy.getParticipationType());
         dbStudy.setStudyPurpose(xmlStudy.getStudyPurpose());

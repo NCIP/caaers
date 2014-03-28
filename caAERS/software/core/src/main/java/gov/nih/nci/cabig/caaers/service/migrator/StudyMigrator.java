@@ -22,9 +22,9 @@ public class StudyMigrator extends CompositeMigrator<Study> {
 	public void preMigrate(Study src, Study dest, DomainObjectImportOutcome<Study> outcome) {
         dest.setShortTitle(StringUtils.isNotEmpty(src.getShortTitle()) ? src.getShortTitle() : "NA");
         dest.setPhaseCode(src.getPhaseCode());
-//        if(dest.getAeTermUnique() == null) {
-//        	dest.setAeTermUnique(src.getAeTermUnique() == null ? true : src.getAeTermUnique());
-//        }
+        if(src.getAeTermUnique() != null) {
+        	dest.setAeTermUnique(src.getAeTermUnique());
+        }
         dest.setVerbatimFirst(src.getVerbatimFirst() == null ? false : src.getVerbatimFirst());
         dest.setStudyPurpose(src.getStudyPurpose());
         dest.setParticipationType(src.getParticipationType());

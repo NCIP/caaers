@@ -107,7 +107,9 @@ public class StudyConverter {
 			study.setShortTitle(studyDto.getShortTitle());
             study.setVerbatimFirst(studyDto.isVerbatimFirst());
             study.setParticipationType(studyDto.getParticipationType());
-            study.setAeTermUnique(studyDto.isAeTermUnique());
+            if(studyDto.isAeTermUnique() != null) {
+            	study.setAeTermUnique(studyDto.isAeTermUnique());
+            }
 			if(studyDto.getPhaseCode() != null) study.setPhaseCode(studyDto.getPhaseCode().value());
             study.setStudyPurpose(studyDto.getStudyPurpose());
 
