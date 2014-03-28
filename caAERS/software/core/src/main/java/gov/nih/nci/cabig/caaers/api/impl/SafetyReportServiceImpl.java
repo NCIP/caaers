@@ -316,7 +316,9 @@ public class SafetyReportServiceImpl {
             for ( Report rpt: reports )    {
             	Report createdReport = createReport(rpt, aeDestReport);
                 reportsAffected.add(createdReport);
-                buildReportInformationOutput(createdReport, caaersServiceResponse, ActionType.CREATE);
+                if(caaersServiceResponse != null){
+                	buildReportInformationOutput(createdReport, caaersServiceResponse, ActionType.CREATE);
+                }
             }
         }else{
             //update flow
@@ -368,7 +370,9 @@ public class SafetyReportServiceImpl {
             List<Report> reportsToWithdraw = dbReport.getActiveReports();
             for(Report srcReport : reportsToWithdraw){
                 withdrawReport(srcReport, dbReport);
-                buildReportInformationOutput(srcReport, caaersServiceResponse, ActionType.WITHDRAW);
+                if(caaersServiceResponse != null){
+                	buildReportInformationOutput(srcReport, caaersServiceResponse, ActionType.WITHDRAW);
+                }
             }
         } else {
         
@@ -393,7 +397,9 @@ public class SafetyReportServiceImpl {
         				 
         				 if ( aeDestReport.getReports().size() != 0 ) {
                 			 aeDestReport.getReports().get(0).setReportDefinition(srcReport.getReportDefinition());
-                			 buildReportInformationOutput(aeDestReport.getReports().get(0), caaersServiceResponse, ActionType.EDIT);
+                			 if(caaersServiceResponse != null){
+                				 buildReportInformationOutput(aeDestReport.getReports().get(0), caaersServiceResponse, ActionType.EDIT);
+                			 }
         				 }
         				 
         			 }
@@ -406,18 +412,24 @@ public class SafetyReportServiceImpl {
 	                for(Report  report: reportsToAmend){
 	                	amendReport(report, dbReport);
 	                    //reportsAffected.add(createReport(srcReport, dbReport));
-	                	buildReportInformationOutput(report, caaersServiceResponse, ActionType.AMEND);
+	                	if(caaersServiceResponse != null){
+	                		buildReportInformationOutput(report, caaersServiceResponse, ActionType.AMEND);
+	                	}
 	                }
 	                List<Report> reportsToWithdraw = dbReport.findReportsToWithdraw(srcReport.getReportDefinition());
 	                for(Report  report: reportsToWithdraw){
 	                    withdrawReport(report, dbReport);
-	                    buildReportInformationOutput(report, caaersServiceResponse, ActionType.WITHDRAW);
+	                    if(caaersServiceResponse != null){
+	                    	buildReportInformationOutput(report, caaersServiceResponse, ActionType.WITHDRAW);
+	                    }
 	                }
 	                List<Report> reportsToEdit = dbReport.findReportsToEdit(srcReport.getReportDefinition());
 	                if(reportsToEdit.isEmpty()) {
 	                	Report createdReport = createReport(srcReport, dbReport);
 	                    reportsAffected.add(createdReport);
-	                    buildReportInformationOutput(createdReport, caaersServiceResponse, ActionType.WITHDRAW);
+	                    if(caaersServiceResponse != null){
+	                    	buildReportInformationOutput(createdReport, caaersServiceResponse, ActionType.WITHDRAW);
+	                    }
 	                } else {
 	                	for(Report  report: reportsToEdit){
 	                		reportsAffected.add(report);
@@ -425,7 +437,9 @@ public class SafetyReportServiceImpl {
 	                		//TODO : need to check if we should call the report.copy() to get all the info
 	                		report.setSubmitter(srcReport.getSubmitter());
 	                		report.setCaseNumber(srcReport.getCaseNumber());
-	                		buildReportInformationOutput(report, caaersServiceResponse, ActionType.EDIT);
+	                		if(caaersServiceResponse != null){
+	                			buildReportInformationOutput(report, caaersServiceResponse, ActionType.EDIT);
+	                		}
 		                }
 	                }
 	
