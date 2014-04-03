@@ -46,6 +46,7 @@
 
     <bean id="reportVersionRepository" class="gov.nih.nci.cabig.caaers.domain.repository.ReportVersionRepository">
         <property name="reportVersionDao" ref="reportVersionDao"/>
+        <property name="responseMessageProcessor" ref="submitAEDataXMLAsAttachmentResponse" />
     </bean>
 
 
