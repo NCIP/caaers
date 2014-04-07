@@ -36,7 +36,7 @@
 	<xs:element name="BaseReports">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="baseReport" type="BaseReportType" maxOccurs="unbounded"/>
+				<xs:element name="baseReport" type="BaseReportType" minOccurs="0" maxOccurs="unbounded"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
@@ -924,6 +924,7 @@
 			<xs:element type="xs:string" name="caseNumber" />
 			<xs:element type="xs:boolean" name="required" minOccurs="0" />
 			<xs:element type="xs:boolean" name="manuallySelected" minOccurs="0" />
+			<xs:element type="xs:boolean" name="withdraw" minOccurs="0" />
 			<xs:element type="ReportDefinitionType" name="aeReportDefinition" />
 			<xs:element type="ReportVersionType" name="aeReportVersion" maxOccurs="unbounded" minOccurs="0" />
 			<xs:element type="ReviewStatusType" name="reviewStatus" minOccurs="0" />

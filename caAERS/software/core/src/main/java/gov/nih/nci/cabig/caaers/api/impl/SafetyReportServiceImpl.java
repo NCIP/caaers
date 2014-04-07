@@ -360,92 +360,106 @@ public class SafetyReportServiceImpl {
         if(getEventFactory() != null) getEventFactory().publishEntityModifiedEvent(aeDestReport);
         return reportsAffected;
     }
+    
 
 	private void inferReportingAction(ExpeditedAdverseEventReport aeSrcReport,
 			ExpeditedAdverseEventReport dbReport, 
 			ExpeditedAdverseEventReport aeDestReport,
 			List<Report> reportsAffected, CaaersServiceResponse caaersServiceResponse) {
-		if(aeDestReport.getReports() == null || aeDestReport.getReports().isEmpty()) {
-            //withdraw active reports
-            List<Report> reportsToWithdraw = dbReport.getActiveReports();
-            for(Report srcReport : reportsToWithdraw){
-                withdrawReport(srcReport, dbReport);
-                if(caaersServiceResponse != null){
-                	buildReportInformationOutput(srcReport, caaersServiceResponse, ActionType.WITHDRAW);
-                }
-            }
-        } else {
+		
+		 //Withdraw active reports
+		 //find active reports that are eligible for withdraw
+        List<Report> withdrawableReports = dbReport.getActiveReports();
+		List<Report> reportsToBeWithdrawn = new ArrayList<Report>();
+	    for(Report report : aeDestReport.getReports()){
+	    	if(report.getWithdrawnOn() != null){
+	    		 // add the withdrawn report to withdraw list
+				 reportsToBeWithdrawn.add(report);
+	    		for(Report withdrawableReport : withdrawableReports){
+	    			if(withdrawableReport.isSameReportByCaseNumberOrReportDefinition(report)){
+	    				 withdrawReport(withdrawableReport, dbReport);
+	    	                if(caaersServiceResponse != null){
+	    	                	buildReportInformationOutput(withdrawableReport, caaersServiceResponse, ActionType.WITHDRAW);
+	    	                }
+	    			}
+	    		}
+	    	}
+	    }
+	    
+	    // remove reports that are withdrawn
+	    for(Report withdrawnreport : reportsToBeWithdrawn){
+	    	aeDestReport.getReports().remove(withdrawnreport);
+	    }
         
-        	// Find a relationship between parent and child exists. check if the parent report is already submitted.
-        	Report parentCompletedReport = null;
-        	
-            for(Report srcReport : dbReport.getReports()){
-        		 if (srcReport.getStatus().equals(ReportStatus.COMPLETED) && srcReport.getReportDefinition().getName().equals(aeSrcReport.getReports().get(0).getReportDefinition().getName())) {
-        			 // Check if the child record exists.
-        			 parentCompletedReport = srcReport;
-        		 }
-        	 }
-        	 
-        	 //if parent report is completed, change the updateReport definition to match the child report, ie, followup report
-        	 if ( parentCompletedReport != null ) {
-        		 for(Report srcReport : dbReport.getReports()){
-        			 if ( ! ( srcReport.getStatus().equals(ReportStatus.INPROCESS) || srcReport.getStatus().equals(ReportStatus.PENDING) )) continue; // If the Report is completed then skip it.
-        			 ReportDefinition parentReportDef = srcReport.getReportDefinition().getParent();
-        			 if (parentReportDef != null && parentReportDef.getName().equals(parentCompletedReport.getName()) ) {
-        				 
-        				 // Override the Report Definition of the Source to Child since child Report is active.
-        				 
-        				 if ( aeDestReport.getReports().size() != 0 ) {
-                			 aeDestReport.getReports().get(0).setReportDefinition(srcReport.getReportDefinition());
-                			 if(caaersServiceResponse != null){
-                				 buildReportInformationOutput(aeDestReport.getReports().get(0), caaersServiceResponse, ActionType.EDIT);
-                			 }
-        				 }
-        				 
-        			 }
-        		 }
-        	 }
-        	        
-	            //create, amend or withdraw reports
-	        for(Report srcReport : aeDestReport.getReports()){
-	                List<Report> reportsToAmend = dbReport.findReportsToAmmend(srcReport.getReportDefinition());
-	                for(Report  report: reportsToAmend){
-	                	amendReport(report, dbReport);
-	                    //reportsAffected.add(createReport(srcReport, dbReport));
-	                	if(caaersServiceResponse != null){
-	                		buildReportInformationOutput(report, caaersServiceResponse, ActionType.AMEND);
-	                	}
+    	// Find a relationship between parent and child exists. check if the parent report is already submitted.
+    	Report parentCompletedReport = null;
+    	
+        for(Report srcReport : dbReport.getReports()){
+    		 if (srcReport.getStatus().equals(ReportStatus.COMPLETED) && srcReport.getReportDefinition().getName().equals(aeSrcReport.getReports().get(0).getReportDefinition().getName())) {
+    			 // Check if the child record exists.
+    			 parentCompletedReport = srcReport;
+    		 }
+    	 }
+    	 
+    	 //if parent report is completed, change the updateReport definition to match the child report, ie, followup report
+    	 if ( parentCompletedReport != null ) {
+    		 for(Report srcReport : dbReport.getReports()){
+    			 if ( ! ( srcReport.getStatus().equals(ReportStatus.INPROCESS) || srcReport.getStatus().equals(ReportStatus.PENDING) )) continue; // If the Report is completed then skip it.
+    			 ReportDefinition parentReportDef = srcReport.getReportDefinition().getParent();
+    			 if (parentReportDef != null && parentReportDef.getName().equals(parentCompletedReport.getName()) ) {
+    				 
+    				 // Override the Report Definition of the Source to Child since child Report is active.
+    				 
+    				 if ( aeDestReport.getReports().size() != 0 ) {
+            			 aeDestReport.getReports().get(0).setReportDefinition(srcReport.getReportDefinition());
+            			 if(caaersServiceResponse != null){
+            				 buildReportInformationOutput(aeDestReport.getReports().get(0), caaersServiceResponse, ActionType.EDIT);
+            			 }
+    				 }
+    				 
+    			 }
+    		 }
+    	 }
+    	        
+            //create, amend or withdraw reports
+        for(Report srcReport : aeDestReport.getReports()){
+                List<Report> reportsToAmend = dbReport.findReportsToAmmend(srcReport.getReportDefinition());
+                for(Report  report: reportsToAmend){
+                	amendReport(report, dbReport);
+                    //reportsAffected.add(createReport(srcReport, dbReport));
+                	if(caaersServiceResponse != null){
+                		buildReportInformationOutput(report, caaersServiceResponse, ActionType.AMEND);
+                	}
+                }
+                List<Report> reportsToWithdraw = dbReport.findReportsToWithdraw(srcReport.getReportDefinition());
+                for(Report  report: reportsToWithdraw){
+                    withdrawReport(report, dbReport);
+                    if(caaersServiceResponse != null){
+                    	buildReportInformationOutput(report, caaersServiceResponse, ActionType.WITHDRAW);
+                    }
+                }
+                List<Report> reportsToEdit = dbReport.findReportsToEdit(srcReport.getReportDefinition());
+                if(reportsToEdit.isEmpty()) {
+                	Report createdReport = createReport(srcReport, dbReport);
+                    reportsAffected.add(createdReport);
+                    if(caaersServiceResponse != null){
+                    	buildReportInformationOutput(createdReport, caaersServiceResponse, ActionType.CREATE);
+                    }
+                } else {
+                	for(Report  report: reportsToEdit){
+                		reportsAffected.add(report);
+                		// Copy the Submitter Information from the Input Source.
+                		//TODO : need to check if we should call the report.copy() to get all the info
+                		report.setSubmitter(srcReport.getSubmitter());
+                		report.setCaseNumber(srcReport.getCaseNumber());
+                		if(caaersServiceResponse != null){
+                			buildReportInformationOutput(report, caaersServiceResponse, ActionType.EDIT);
+                		}
 	                }
-	                List<Report> reportsToWithdraw = dbReport.findReportsToWithdraw(srcReport.getReportDefinition());
-	                for(Report  report: reportsToWithdraw){
-	                    withdrawReport(report, dbReport);
-	                    if(caaersServiceResponse != null){
-	                    	buildReportInformationOutput(report, caaersServiceResponse, ActionType.WITHDRAW);
-	                    }
-	                }
-	                List<Report> reportsToEdit = dbReport.findReportsToEdit(srcReport.getReportDefinition());
-	                if(reportsToEdit.isEmpty()) {
-	                	Report createdReport = createReport(srcReport, dbReport);
-	                    reportsAffected.add(createdReport);
-	                    if(caaersServiceResponse != null){
-	                    	buildReportInformationOutput(createdReport, caaersServiceResponse, ActionType.CREATE);
-	                    }
-	                } else {
-	                	for(Report  report: reportsToEdit){
-	                		reportsAffected.add(report);
-	                		// Copy the Submitter Information from the Input Source.
-	                		//TODO : need to check if we should call the report.copy() to get all the info
-	                		report.setSubmitter(srcReport.getSubmitter());
-	                		report.setCaseNumber(srcReport.getCaseNumber());
-	                		if(caaersServiceResponse != null){
-	                			buildReportInformationOutput(report, caaersServiceResponse, ActionType.EDIT);
-	                		}
-		                }
-	                }
-	
-	                //TODO : BJ implement unammend feature
-	            }
-        }
+                }
+
+                //TODO : BJ implement unammend feature
+            }
 	}
 
     /**

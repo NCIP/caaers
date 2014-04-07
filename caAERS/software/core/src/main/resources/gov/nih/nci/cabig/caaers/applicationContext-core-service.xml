@@ -491,8 +491,17 @@ default-lazy-init="true">
     <!-- Safety Management Service. -->
     <!--  Converter  -->
     <bean id="baseEaeConverter" class="gov.nih.nci.cabig.caaers.service.migrator.BaseExpeditedAdverseEventReportConverter">
-    	<property name="studyDao" ref="studyDao" />
+    	<property name="expeditedAdverseEventReportConverterUtility" ref="expeditedAdverseEventReportConverterUtility" />
     </bean>
+    
+     <!--  Converter Utility  -->
+    <bean id="expeditedAdverseEventReportConverterUtility" class="gov.nih.nci.cabig.caaers.service.migrator.ExpeditedAdverseEventReportConverterUtility">
+    	<property name="studyDao" ref="studyDao" />
+    	<property name="nowFactory" ref="nowFactory" />
+    	<property name="messageSource" ref="messageSource" />
+    </bean>
+    
+    
     <bean id="eaeConverter" class="gov.nih.nci.cabig.caaers.service.migrator.ExpeditedAdverseEventReportConverter">
     	<property name="studyDao" ref="studyDao" />
     </bean>

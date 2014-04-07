@@ -133,6 +133,7 @@ import gov.nih.nci.cabig.caaers.integration.schema.aereport.TreatmentAssignmentT
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.TreatmentInformationType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationType;
 import gov.nih.nci.cabig.caaers.utils.XMLUtil;
+import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -159,8 +160,20 @@ public class ExpeditedAdverseEventReportConverterUtility {
     protected static final String PHONE = "phone";
     
     private MessageSource messageSource;
+    
+    /** The now factory. */
+    private NowFactory nowFactory;
 	
-    private StudyDao studyDao;
+    public NowFactory getNowFactory() {
+		return nowFactory;
+	}
+
+
+	public void setNowFactory(NowFactory nowFactory) {
+		this.nowFactory = nowFactory;
+	}
+
+	private StudyDao studyDao;
     
 	public void setStudyDao(StudyDao studyDao) {
 		this.studyDao = studyDao;
@@ -259,6 +272,10 @@ public class ExpeditedAdverseEventReportConverterUtility {
 	protected Report convertReport(ReportType xmlReportType, SubmitterType xmlSubmitterType){
 		Report report = new Report();
 	//	report.setRequired(xmlReportType.isRequired());
+		if(xmlReportType.isWithdraw()){
+			report.setWithdrawnOn(nowFactory.getNow());
+		}
+		
 		if(xmlReportType.getCaseNumber() != null){
 			report.setCaseNumber(xmlReportType.getCaseNumber());
 		}

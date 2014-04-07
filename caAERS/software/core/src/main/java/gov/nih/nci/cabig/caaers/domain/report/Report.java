@@ -1232,8 +1232,25 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
         if(src.getEmailAddresses() != null && !src.getEmailAddresses().isEmpty())setEmailAddresses(src.getEmailAddresses());
         if(src.getAssignedIdentifer() != null) setAssignedIdentifer(src.getAssignedIdentifer()); //ticket number (if any)
         if(src.getLastVersion().getCcEmails() != null) getLastVersion().setCcEmails(src.getLastVersion().getCcEmails());
+        if(src.getLastVersion().getWithdrawnOn() != null) getLastVersion().setWithdrawnOn(src.getLastVersion().getWithdrawnOn());
         if(src.getSubmitter() == null) return;
         if (getSubmitter() == null) getLastVersion().addSubmitter();
         getSubmitter().copy(src.getSubmitter());
+    }
+   
+    @Transient
+    public Boolean isSameReportByCaseNumberOrReportDefinition(Report report){
+    	
+    	// check if case number is same
+		if(this.getCaseNumber() != null && this.getCaseNumber().equalsIgnoreCase(report.getCaseNumber())){
+			return true;
+		}
+    	
+    	//check if they belong to the same report definition. 
+		if(this.getReportDefinition().getName().equals(report.getReportDefinition().getName())){
+			return true;
+		}
+    	
+    	return false;
     }
 }
