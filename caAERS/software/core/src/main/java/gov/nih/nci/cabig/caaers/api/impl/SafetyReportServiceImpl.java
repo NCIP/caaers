@@ -300,12 +300,14 @@ public class SafetyReportServiceImpl {
 	        DomainObjectImportOutcome<ExpeditedAdverseEventReport> outCome = new DomainObjectImportOutcome<ExpeditedAdverseEventReport>();
 	        aeReportSynchronizer.migrate(aeDestReport, dbReport, outCome);
 	        if(outCome.hasErrors()) errors.addValidationErrors(outCome.getValidationErrors().getErrors());
+            if(errors.hasErrors()) return aeDestReport;
         }
         // Update AE Signatures.
         aeDestReport.updateAESignatures();
         
         transferStudySubjectIfRequired(aeSrcReport, aeDestReport, errors);
-        
+        if(errors.hasErrors()) return aeDestReport;
+
         if(dbReport == null){
             //create flow
         	// Deep copy the reports as it is throwing ConcurrentModification Exception.
@@ -342,15 +344,19 @@ public class SafetyReportServiceImpl {
         ExpeditedAdverseEventReport aeDestReport = new ExpeditedAdverseEventReport();
         migrate(aeSrcReport, aeDestReport, errors);
         if(errors.hasErrors()) return reportsAffected;
+
         DomainObjectImportOutcome<ExpeditedAdverseEventReport> outCome = new DomainObjectImportOutcome<ExpeditedAdverseEventReport>();
         aeReportSynchronizer.migrate(aeDestReport, dbReport, outCome);
         if(outCome.hasErrors()) errors.addValidationErrors(outCome.getValidationErrors().getErrors());
+        if(errors.hasErrors()) return reportsAffected;
+
         // Update AE Signatures.
         aeDestReport.updateAESignatures();
         
         expeditedAdverseEventReportDao.save(dbReport);
         
         transferStudySubjectIfRequired(aeSrcReport, aeDestReport, errors);
+        if(errors.hasErrors()) return reportsAffected;
 
         dbReport.getAssignment().synchronizeMedicalHistoryFromReportToAssignment(dbReport);
         studyParticipantAssignmentDao.save(dbReport.getAssignment());
@@ -487,6 +493,7 @@ public class SafetyReportServiceImpl {
         
         // transfer the study subject if required.
         transferStudySubjectIfRequired(aeSrcReport, aeDestReport, errors);
+        if(errors.hasErrors()) return reportsAffected;
 
         aeDestReport.getAssignment().synchronizeMedicalHistoryFromReportToAssignment(aeDestReport);
         studyParticipantAssignmentDao.save(aeDestReport.getAssignment());
@@ -559,18 +566,16 @@ public class SafetyReportServiceImpl {
         try{
             List<Report> reportsAffected = new ArrayList<Report>();
             ValidationErrors errors = createOrUpdateSafetyReport(adverseEventReport, reportsAffected);
-            if(errors.hasErrors()) populateErrors(response, errors);
+            if(errors.hasErrors()) {
+                populateErrors(response, errors);
+                return response;
+            }
 
             //submit report
-            try {
-				for(Report report : reportsAffected){
-				    reportSubmissionService.submitReport(report);
-				}
-			} catch (Exception e) {
-				System.out.println( e.getMessage() );
-				e.printStackTrace();
-				throw e;
-			}
+            for(Report report : reportsAffected){
+                reportSubmissionService.submitReport(report);
+            }
+
         }catch (Exception e){
             logger.error("Unable to Create/Update a Report from Safety Management Service", e);
             Helper.populateError(response, "WS_GEN_000",e.getMessage() );
