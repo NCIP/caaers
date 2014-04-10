@@ -272,7 +272,7 @@ public class ExpeditedAdverseEventReportConverterUtility {
 	protected Report convertReport(ReportType xmlReportType, SubmitterType xmlSubmitterType){
 		Report report = new Report();
 	//	report.setRequired(xmlReportType.isRequired());
-		if(xmlReportType.isWithdraw()){
+		if(xmlReportType.isWithdraw() != null && xmlReportType.isWithdraw()){
 			report.setWithdrawnOn(nowFactory.getNow());
 		}
 		
