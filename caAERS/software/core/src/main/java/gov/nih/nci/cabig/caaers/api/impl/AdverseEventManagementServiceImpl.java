@@ -316,6 +316,8 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
             //new reporting period
             rpFound = rpDest;
             rpFound.getAssignment().addReportingPeriod(rpFound);
+            // Validate the Reporting Period before saving.
+            adverseEventValidatior.validate(rpFound, rpFound.getStudy(),errors);
             adverseEventReportingPeriodDao.save(rpFound);
             if(isWorkflowEnabled()){
                 Long wfId = adverseEventRoutingAndReviewRepository.enactReportingPeriodWorkflow(rpFound);
