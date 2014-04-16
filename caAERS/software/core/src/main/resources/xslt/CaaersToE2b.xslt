@@ -18,16 +18,6 @@
 		<xsl:value-of select="$_map//code[text() = $_code]/parent::node()/value" />
 	</xsl:template>
 	
-	<xsl:template name="ConvertOutcomeToCode">
-		<xsl:param name="code" />	
-		<reactionoutcome>
-			<xsl:call-template name="lookup">
-						<xsl:with-param name="_map" select="$map//aeoutcomes" />
-						<xsl:with-param name="_code" select="$code" />
-			</xsl:call-template>
-		</reactionoutcome>
-	</xsl:template>
-
 	<xsl:template name="ConvertPresentStatusToCode">
 		<xsl:param name="code" />
 		<presentstatus>
@@ -490,11 +480,14 @@
 						</xsl:call-template>
 					</reactionenddate>
 				</xsl:if>
-				<xsl:for-each select="Outcome">
-					<xsl:call-template name="ConvertOutcomeToCode"> 
-						<xsl:with-param name="code" select="OutcomeType"/>
-					</xsl:call-template>
-				</xsl:for-each>
+				<xsl:if test="contains(/AdverseEventReport/Summary[@id='Primary AE']/value, detailsForOther)">
+					<reactionoutcome>
+					 	<xsl:call-template name="lookup">
+							<xsl:with-param name="_map" select="$map//aee2bpresentstatuses" />
+							<xsl:with-param name="_code" select="/AdverseEventReport/AdverseEventResponseDescription/presentStatus" />
+						</xsl:call-template>
+					</reactionoutcome>
+				</xsl:if>
 			  </reaction>
 
 			</xsl:for-each>
