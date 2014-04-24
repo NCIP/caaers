@@ -7,10 +7,11 @@
 package gov.nih.nci.cabig.caaers.api.impl;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.dao.*;
-import gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery;
+import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
+import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
 import gov.nih.nci.cabig.caaers.domain.*;
-import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.dto.ApplicableReportDefinitionsDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.EvaluationResultDTO;
@@ -24,15 +25,8 @@ import gov.nih.nci.cabig.caaers.service.RecommendedActionService;
 import gov.nih.nci.cabig.caaers.service.migrator.adverseevent.AdverseEventConverter;
 import gov.nih.nci.cabig.caaers.service.migrator.adverseevent.SAEAdverseEventReportingPeriodConverter;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
-import gov.nih.nci.cabig.caaers.utils.DurationUtils;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 import gov.nih.nci.cabig.caaers.ws.faults.CaaersFault;
-
-import java.net.UnknownHostException;
-import java.util.*;
-import java.util.Map.Entry;
-
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -40,6 +34,13 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.MessageSource;
+
+import java.net.UnknownHostException;
+import java.util.*;
+import java.util.Map.Entry;
+
+import static gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper.ActionType.AMEND;
+import static gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper.ActionType.WITHDRAW;
 
 /**
  * EvaluationService evaluate rules on the given AE's submitted by Web service.
@@ -541,7 +542,10 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
             RecommendedActions action = returnActionFromRow(applicableRow, preselectedRows);
             recommendedActions.add(action);
 
-            if (applicableRow.getAction().equals(ReportDefinitionWrapper.ActionType.AMEND) || applicableRow.getAction().equals(ReportDefinitionWrapper.ActionType.WITHDRAW)) {
+
+            boolean withdrawOrAmend = StringUtils.equals(action.getAction(), WITHDRAW.getDisplayName()) ||    StringUtils.equals(action.getAction(), AMEND.getDisplayName()) ;
+
+            if (withdrawOrAmend) {
                 for (ReportTableRow preselectedRow: preselectedRows ) {
                     if ( preselectedRow != null ) {
 
