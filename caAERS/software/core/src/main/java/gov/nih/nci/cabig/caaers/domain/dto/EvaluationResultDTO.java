@@ -580,6 +580,14 @@ public Map<Integer, Set<ReportDefinitionWrapper>> getAmendmentMap() {
 		return seriousAdverseEvents;
 	}
 
+    public Set<AdverseEvent> getAllSeriousAdverseEvents() {
+        HashSet<AdverseEvent> aes = new HashSet<AdverseEvent>();
+        for(Integer aeReportId : processedRulesEngineResultMap.keySet()) {
+            aes.addAll(getSeriousAdverseEvents(aeReportId));
+        }
+        return aes;
+    }
+
     /**
      *   join the amend, withdraw, edit and create maps.
      *

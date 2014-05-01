@@ -280,39 +280,30 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 			EvaluationResultDTO dto = evaluationService.evaluateSAERules(reportingPeriod);
 
             findRecommendedActions(dto, reportingPeriod, response);
-									
-			Map<Integer, Map<AdverseEvent, Set<ReportDefinition>>> repAEIndexMap = dto.getAdverseEventIndexMap();
-			if(repAEIndexMap !=null) {
-				for (Map<AdverseEvent, Set<ReportDefinition>> aeIndexMap : repAEIndexMap.values()) {
-					for (Entry<AdverseEvent, Set<ReportDefinition>> entry : aeIndexMap.entrySet()) {
-						
-						AdverseEvent ae = entry.getKey();
-						Set<ReportDefinition> rds = entry.getValue();
 
-						// find DTO object corresponding to Adverse Event.
-						AdverseEventResult aeDTO = null ;
-                        if ( requestType.equals(RequestType.SaveEvaluate)) {
-                            aeDTO = findAdverseEvent(ae,mapAE2DTO);
-                        }   else {
-                            aeDTO = mapAE2DTO.get(ae);
-                        }
+            //retrieve all the SAEs identified by rules engine.
+            Set<AdverseEvent> seriousAdverseEvents = dto.getAllSeriousAdverseEvents();
 
-                        if ( aeDTO == null ) {
-                            continue;
-                        }
-						
-						// Now the process the Report Definitions
-						if (rds != null && rds.size() > 0) {
-							// Set the output
-							aeDTO.setRequiresReporting(true);
-                            if ( requestType.equals(RequestType.SaveEvaluate)) {
-                                ((SaveAndEvaluateAEsOutputMessage)response).setHasSAE(true);
-                            }
-						}
-					}//end of for AEs
-				}//end of for reports
-			}//end of if
-			
+            //has at least one SAE ? - mark hasSAE flag in the response
+            if(requestType.equals(RequestType.SaveEvaluate)) {
+                ((SaveAndEvaluateAEsOutputMessage)response).setHasSAE(seriousAdverseEvents.size() > 0);
+            }
+
+            //Mark the Requires reporting flag on AE
+            for(AdverseEvent ae : seriousAdverseEvents) {
+
+                // find DTO object corresponding to Adverse Event.
+                AdverseEventResult aeDTO = null ;
+                if ( requestType.equals(RequestType.SaveEvaluate)) {
+                    aeDTO = findAdverseEvent(ae,mapAE2DTO);
+                }   else {
+                    aeDTO = mapAE2DTO.get(ae);
+                }
+                if(aeDTO != null) {
+                    aeDTO.setRequiresReporting(true);
+                }
+            }
+
 
 		} catch (Exception e) {
 			logger.error(" Exception Occured when processing rules" + e.toString());
