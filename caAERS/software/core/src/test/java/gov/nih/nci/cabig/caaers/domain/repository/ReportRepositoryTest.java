@@ -6,11 +6,12 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.domain.repository;
 
-import java.util.Arrays;
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.dao.AdverseEventRecommendedReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventRecommendedReport;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.ConfigProperty;
@@ -39,6 +40,8 @@ import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 import org.easymock.EasyMock;
@@ -62,6 +65,7 @@ public class ReportRepositoryTest extends AbstractNoSecurityTestCase {
     private ReportDefinitionDao reportDefinitionDao;
     private StudyDao studyDao;
     private Configuration configuration;
+    private AdverseEventRecommendedReportDao adverseEventRecommendedReportDao;
 
     
     @Override
@@ -70,6 +74,7 @@ public class ReportRepositoryTest extends AbstractNoSecurityTestCase {
         reportRepository = new ReportRepositoryImpl();
         reportDao = registerDaoMockFor(ReportDao.class);
         reportDefinitionDao = registerDaoMockFor(ReportDefinitionDao.class);
+        adverseEventRecommendedReportDao = registerDaoMockFor(AdverseEventRecommendedReportDao.class);
         reportFactory = registerMockFor(ReportFactory.class);
         schedulerService = registerMockFor(SchedulerService.class);
         studyDao = registerDaoMockFor(StudyDao.class);
@@ -83,6 +88,7 @@ public class ReportRepositoryTest extends AbstractNoSecurityTestCase {
         reportRepository.setNowFactory(nowFactory);
         reportRepository.setReportDefinitionDao(reportDefinitionDao);
         reportRepository.setStudyDao(studyDao);
+        reportRepository.setAdverseEventRecommendedReportDao(adverseEventRecommendedReportDao);
 
         
         expeditedData = new ExpeditedAdverseEventReport();
@@ -181,6 +187,8 @@ public class ReportRepositoryTest extends AbstractNoSecurityTestCase {
         
 
         EasyMock.expect(reportFactory.createReport(rd1,expeditedData, rd1.getBaseDate())).andReturn(report);
+        EasyMock.expect(adverseEventRecommendedReportDao.getAllAdverseEventsGivenReportDefinition(rd1)).
+        andReturn(new ArrayList<AdverseEventRecommendedReport>());
 //        reportDefinitionDao.lock(rd1);
         reportDao.save(report);
         schedulerService.scheduleNotification(report);
@@ -221,6 +229,8 @@ public class ReportRepositoryTest extends AbstractNoSecurityTestCase {
         
 
         EasyMock.expect(reportFactory.createReport(rd1,expeditedData, rd1.getBaseDate())).andReturn(report);
+        EasyMock.expect(adverseEventRecommendedReportDao.getAllAdverseEventsGivenReportDefinition(rd1)).
+        andReturn(new ArrayList<AdverseEventRecommendedReport>());
 //        reportDefinitionDao.lock(rd1);
         reportDao.save(report);
         schedulerService.scheduleNotification(report);
@@ -253,6 +263,8 @@ public class ReportRepositoryTest extends AbstractNoSecurityTestCase {
         
 
         EasyMock.expect(reportFactory.createReport(rd1,expeditedData, rd1.getBaseDate())).andReturn(report);
+        EasyMock.expect(adverseEventRecommendedReportDao.getAllAdverseEventsGivenReportDefinition(rd1)).
+        andReturn(new ArrayList<AdverseEventRecommendedReport>());
         
 //        reportDefinitionDao.lock(rd1);
         reportDao.save(report);
