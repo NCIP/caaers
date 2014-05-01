@@ -6,6 +6,7 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.domain.report;
 
+import gov.nih.nci.cabig.caaers.domain.ReportDefinitionNotificationType;
 import gov.nih.nci.cabig.caaers.utils.ProjectedList;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
@@ -60,6 +61,19 @@ public abstract class PlannedNotification extends AbstractMutableDomainObject im
 
     /** The attachments. */
     private List<NotificationAttachment> attachments;
+    
+    private ReportDefinitionNotificationType reportDefinitionNotificationType;
+
+    @Type(type = "reportDefinitionNotificationType")
+    @Column(name = "rpt_def_notification_type")
+    public ReportDefinitionNotificationType getReportDefinitionNotificationType() {
+		return reportDefinitionNotificationType;
+	}
+
+	public void setReportDefinitionNotificationType(
+			ReportDefinitionNotificationType reportDefinitionNotificationType) {
+		this.reportDefinitionNotificationType = reportDefinitionNotificationType;
+	}
 
     // TODO: this signature may be insufficient
     /**

@@ -8,6 +8,7 @@ package gov.nih.nci.cabig.caaers.domain.report;
 
 import gov.nih.nci.cabig.caaers.domain.ConfigProperty;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.ReportDefinitionNotificationType;
 import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.rules.business.service.ReportDefinitionComparator;
@@ -946,4 +947,20 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     public void setIncludeNonSeriousAes(boolean includeNonSeriousAes) {
         this.includeNonSeriousAes = includeNonSeriousAes;
     }
+    
+    // return unreported planned notifications
+    @Transient
+    public List<PlannedNotification> getUnreportedAePlannedNotification(){
+    	List<PlannedNotification> unreportedAePlannedNotifications = new ArrayList<PlannedNotification>();
+    	for(PlannedNotification pn : getPlannedNotifications()){
+    		if(pn.getReportDefinitionNotificationType() != null && pn.getReportDefinitionNotificationType() 
+    				== ReportDefinitionNotificationType.UNREPORTERD_SAE){
+    			unreportedAePlannedNotifications.add(pn);
+    		}
+    	}
+    	
+    	return unreportedAePlannedNotifications;
+    }
+    
+    
 }

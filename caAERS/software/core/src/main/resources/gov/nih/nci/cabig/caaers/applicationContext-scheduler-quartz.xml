@@ -34,12 +34,14 @@
 			<list>
 			<ref bean="reportStatusResetJob" />
 			<ref bean="safetySignallingReportJob" /> 
+			<ref bean="unreportedAENotificationsJob" /> 
 			</list>
 		</property>
     	 <property name="triggers">
         	<list> 
         		<ref bean="reportStatusResetTrigger" />
         		<ref bean="safetySignallingReportTrigger" /> 
+        		<ref bean="unreportedAENotificationsTrigger" /> 
         	</list>
      	</property>
 	</bean>
@@ -74,6 +76,31 @@
 	    <property name="misfireInstruction" value="0" />
 		<!-- run every midnight -->
 		<property name="cronExpression" value="0 0/15 * * * ?"/>
+	</bean>
+	
+	
+<!--  	<bean id="unreportedAENotificationsTrigger" class="gov.nih.nci.cabig.caaers.scheduler.runtime.trigger.UnreportedAENotificationsTrigger">
+  		<property name="name" value="unreportedAENotificationsTrigger"/>
+		<property name="jobName" value="unreportedAENotificationsJob"/>
+		<property name="jobGroup" value="DEFAULT" />
+	    <property name="misfireInstruction" value="0" />
+		<property name="cronExpression" value="0 0/15 * * * ?"/>
+	</bean>  -->
+	
+	
+	<!--  This bean that implements the service  -->
+	<bean id="unreportedAENotificationsJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+  		<property name="jobClass" value="gov.nih.nci.cabig.caaers.scheduler.runtime.job.UnreportedAEsNotificationsJob" />
+  		<property name="group" value="DEFAULT"/>
+  		<property name="name" value="unreportedAENotificationsJob"/>
+  	</bean>
+	
+	<!-- trigger every 5 minutes -->
+	<bean id="unreportedAENotificationsTrigger" class="gov.nih.nci.cabig.caaers.scheduler.runtime.trigger.UnreportedAENotificationsTrigger">
+	    <property name="jobName" value="unreportedAENotificationsJob" />
+	    <property name="jobGroup" value="DEFAULT" />
+	    <property name="volatility" value="true" />
+	    <property name="misfireInstruction" value="0" />
 	</bean>
 
 </beans>

@@ -19,8 +19,10 @@ import gov.nih.nci.cabig.ctms.domain.DomainObject;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -1797,6 +1799,25 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
         getBiologicalInterventionAttributions().clear();
         getDietarySupplementInterventionAttributions().clear();
         getGeneticInterventionAttributions().clear();
+    }
+    
+    /**
+     * Gets the context variables.
+     *
+     * @return the context variables
+     */
+    @Transient
+    public Map<Object, Object> getContextVariables() {
+        Map<Object, Object> map = new HashMap<Object, Object>();
+
+        map.put("adverseEventID", externalId);//external ID
+        map.put("adverseEventTerm", adverseEventTerm.getFullName());//ae term
+        map.put("aeStartDate", startDate);//start date
+        
+        map.put("patientId", getReportingPeriod().getParticipant().getPrimaryIdentifierValue());//external ID
+        map.put("studyId",  getReportingPeriod().getStudy().getPrimaryIdentifierValue());//study ID
+        
+        return map;
     }
 
 }

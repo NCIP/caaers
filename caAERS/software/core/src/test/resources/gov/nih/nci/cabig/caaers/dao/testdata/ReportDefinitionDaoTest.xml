@@ -73,6 +73,7 @@
 		dtype="email"
 		rct_id="-222"
 		version="0"
+		rpt_def_notification_type="2"
 		/>
 	
 	<recipients

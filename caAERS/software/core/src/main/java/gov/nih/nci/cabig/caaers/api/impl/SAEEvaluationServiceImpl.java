@@ -7,6 +7,7 @@
 package gov.nih.nci.cabig.caaers.api.impl;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.dao.AdverseEventRecommendedReportDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
@@ -51,6 +52,7 @@ import static gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper.Action
 
 public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 
+	private AdverseEventRecommendedReportDao adverseEventRecommendedReportDao;
 	private StudyDao studyDao;
 	private TreatmentAssignmentDao treatmentAssignmentDao;
     private ParticipantDao participantDao;
@@ -280,6 +282,8 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 			EvaluationResultDTO dto = evaluationService.evaluateSAERules(reportingPeriod);
 
             findRecommendedActions(dto, reportingPeriod, response);
+            // create/update/delete AE recommended reports
+            manageAdverseEventRecommendedReports(mapAE2DTO, requestType, dto);
 
             //retrieve all the SAEs identified by rules engine.
             Set<AdverseEvent> seriousAdverseEvents = dto.getAllSeriousAdverseEvents();
@@ -315,7 +319,7 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 		return response;
 	}
 
-    private void  refreshReportIndexMap(Map<Integer, ExpeditedAdverseEventReport> aeReportIndexMap) {
+	private void  refreshReportIndexMap(Map<Integer, ExpeditedAdverseEventReport> aeReportIndexMap) {
         Integer ZERO = new Integer(0);
         aeReportIndexMap.put(ZERO, null);
     }
@@ -675,6 +679,64 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 		}
 		return study;
 	}
+	
+	private void manageAdverseEventRecommendedReports(Map<AdverseEvent, AdverseEventResult> mapAE2DTO, RequestType requestType,EvaluationResultDTO dto ){
+		Map<Integer, Map<AdverseEvent, Set<ReportDefinition>>> repAEIndexMap = dto.getAdverseEventIndexMap();
+		if(repAEIndexMap !=null) {
+			for (Map<AdverseEvent, Set<ReportDefinition>> aeIndexMap : repAEIndexMap.values()) {
+				for (Entry<AdverseEvent, Set<ReportDefinition>> entry : aeIndexMap.entrySet()) {
+					
+					AdverseEvent ae = entry.getKey();
+					Set<ReportDefinition> rds = entry.getValue();
+					
+					// find DTO object corresponding to Adverse Event.
+					AdverseEventResult aeDTO = null ;
+                    if ( requestType.equals(RequestType.SaveEvaluate)) {
+                        aeDTO = findAdverseEvent(ae,mapAE2DTO);
+                    }   else {
+                        aeDTO = mapAE2DTO.get(ae);
+                    }
+
+                    if ( aeDTO == null ) {
+                        continue;
+                    }
+					
+					// Find out if the AE is serious
+					if (rds != null && rds.size() > 0) {
+						// update existing AE recommendation report or create new one 
+						Iterator<ReportDefinition> reportDefinitionIterator = rds.iterator();
+						while(reportDefinitionIterator.hasNext()){
+							ReportDefinition reportDefinition = reportDefinitionIterator.next();;
+							AdverseEventRecommendedReport aeRecomReport;
+							List<AdverseEventRecommendedReport> dbAeRecomReports = adverseEventRecommendedReportDao.
+									searchAdverseEventRecommendedReportsByAdverseEvent(ae);
+							if(dbAeRecomReports != null && !dbAeRecomReports.isEmpty()){
+								// AE recommendation report already exists
+								aeRecomReport = dbAeRecomReports.get(0);
+							} else {
+								// create AE recommendation report
+								aeRecomReport = new AdverseEventRecommendedReport();
+								aeRecomReport.setAdverseEvent(ae);
+							}
+							
+							aeRecomReport.setReportDefinition(reportDefinition);
+							aeRecomReport.setAeReported(false);
+							aeRecomReport.setDueDate(reportDefinition.getExpectedDueDate(ae.getGradedDate()));
+							adverseEventRecommendedReportDao.save(aeRecomReport);
+						}
+					} else {
+						// delete old serious AE recommendation reports that are no longer serious in current evaluation
+						List<AdverseEventRecommendedReport> dbAeRecomReports = adverseEventRecommendedReportDao.
+								searchAdverseEventRecommendedReportsByAdverseEvent(ae);
+						if(dbAeRecomReports != null && !dbAeRecomReports.isEmpty()){
+							AdverseEventRecommendedReport aeRecomReport = dbAeRecomReports.get(0);
+							adverseEventRecommendedReportDao.delete(aeRecomReport);
+						}
+					}
+				}
+			}
+		}
+	}
 
 
     public ParticipantDao getParticipantDao() {
@@ -752,4 +814,9 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
     public void setRecommendedActionService(RecommendedActionService recommendedActionService) {
         this.recommendedActionService = recommendedActionService;
     }
+    
+    public void setAdverseEventRecommendedReportDao(
+			AdverseEventRecommendedReportDao adverseEventRecommendedReportDao) {
+		this.adverseEventRecommendedReportDao = adverseEventRecommendedReportDao;
+	}
 }

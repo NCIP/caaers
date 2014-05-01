@@ -28,6 +28,19 @@ public class DateUtils {
     public static final String DATE_WITH_DATETIME= "MM/dd/yyyy HH:mm";
     
     /**
+     * Will return the difference in days between the two dates
+     * @param d1
+     * @param d2
+     * @return
+     */
+    public static long differenceInDays(Date d1, Date d2){
+         if(d1 == null  || d2 == null) return Long.MAX_VALUE;
+         long  l1 = d1.getTime();
+         long l2 = d2.getTime();
+         return ( l1 - l2) / (1000 * 60 * 60 * 24);
+    }
+    
+    /**
      * Will return the difference in minutes between the two dates
      * @param d1
      * @param d2

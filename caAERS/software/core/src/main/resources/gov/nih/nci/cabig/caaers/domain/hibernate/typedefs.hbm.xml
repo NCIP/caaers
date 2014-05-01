@@ -94,4 +94,7 @@
     <typedef class="gov.nih.nci.cabig.caaers.tools.CodedEnumType" name="notificationStatus">
         <param name="enumClass">gov.nih.nci.cabig.caaers.domain.NotificationStatus</param>
     </typedef>
+     <typedef class="gov.nih.nci.cabig.caaers.tools.CodedEnumType" name="reportDefinitionNotificationType">
+        <param name="enumClass">gov.nih.nci.cabig.caaers.domain.ReportDefinitionNotificationType</param>
+    </typedef>
 </hibernate-mapping>

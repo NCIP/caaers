@@ -6,39 +6,27 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.domain.repository;
 
-import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
+import gov.nih.nci.cabig.caaers.dao.AdverseEventRecommendedReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.ReportDefinitionQuery;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.Attribution;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventRecommendedReport;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
-import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
-import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
-import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
-import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
-import gov.nih.nci.cabig.caaers.domain.expeditedfields.UnsatisfiedProperty;
 import gov.nih.nci.cabig.caaers.domain.factory.ReportFactory;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportType;
-import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import gov.nih.nci.cabig.caaers.service.ReportWithdrawalService;
 import gov.nih.nci.cabig.caaers.service.SchedulerService;
-import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.RoleUtils;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -82,9 +70,15 @@ public class ReportRepositoryImpl implements ReportRepository {
     
     /** The now factory. */
     private NowFactory nowFactory;
-
     
-    /** The adverse event routing and review repository. */
+    private AdverseEventRecommendedReportDao adverseEventRecommendedReportDao;
+
+    public void setAdverseEventRecommendedReportDao(
+			AdverseEventRecommendedReportDao adverseEventRecommendedReportDao) {
+		this.adverseEventRecommendedReportDao = adverseEventRecommendedReportDao;
+	}
+
+	/** The adverse event routing and review repository. */
     private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
 
     @Transactional(readOnly = false)
@@ -238,6 +232,19 @@ public class ReportRepositoryImpl implements ReportRepository {
         //save the report
         save(report);
         
+        // update AE recommended reports flag to reported
+        List<AdverseEventRecommendedReport> aeRecomReports = adverseEventRecommendedReportDao.
+        		getAllAdverseEventsGivenReportDefinition(reportDefinition);
+        
+        for(AdverseEvent aeInReport : aeReport.getActiveAdverseEvents()){
+        	for(AdverseEventRecommendedReport aeRecomReport : aeRecomReports){
+        		if(aeRecomReport.getAdverseEvent().getId().equals(aeInReport.getId())){
+        			aeRecomReport.setAeReported(true);
+        			adverseEventRecommendedReportDao.save(aeRecomReport);
+        			continue;
+        		}
+        	}
+        }
 
         //schedule the report, if there are scheduled notifications.
         if (report.hasScheduledNotifications()) schedulerService.scheduleNotification(report);

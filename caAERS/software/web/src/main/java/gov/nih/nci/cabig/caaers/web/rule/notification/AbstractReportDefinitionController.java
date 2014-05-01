@@ -6,13 +6,11 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.web.rule.notification;
 
-import com.semanticbits.rules.brxml.RuleSet;
-import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ConfigPropertyDao;
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
+import gov.nih.nci.cabig.caaers.domain.ReportDefinitionNotificationType;
 import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
-import gov.nih.nci.cabig.caaers.domain.ConfigPropertyType;
-import gov.nih.nci.cabig.caaers.domain.repository.ConfigPropertyRepositoryImpl;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
@@ -20,27 +18,24 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportFormat;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportType;
 import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
+import gov.nih.nci.cabig.caaers.domain.repository.ConfigPropertyRepositoryImpl;
 import gov.nih.nci.cabig.caaers.rules.business.service.CaaersRulesEngineService;
-import gov.nih.nci.cabig.caaers.rules.common.RuleType;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
-import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
-import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 
 import java.util.List;
 import java.util.Map;
-import java.util.LinkedHashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.semanticbits.rules.brxml.RuleSet;
 
 public abstract class AbstractReportDefinitionController extends AutomaticSaveAjaxableFormController<ReportDefinitionCommand, ReportDefinition, ReportDefinitionDao> {
     public static final String AJAX_SUBVIEW_PARAMETER = "subview";
@@ -69,6 +64,7 @@ public abstract class AbstractReportDefinitionController extends AutomaticSaveAj
         ControllerTools.registerEnumEditor(binder, ReportFormatType.class);
         ControllerTools.registerEnumEditor(binder, Mandatory.class);
         ControllerTools.registerEnumEditor(binder, ReportType.class);
+        ControllerTools.registerEnumEditor(binder, ReportDefinitionNotificationType.class);
     }
 
     @Override

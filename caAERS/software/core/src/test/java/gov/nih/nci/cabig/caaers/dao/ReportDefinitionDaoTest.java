@@ -11,6 +11,7 @@ import gov.nih.nci.cabig.caaers.dao.query.ReportDefinitionExistsQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ReportDefinitionQuery;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.ReportDefinitionNotificationType;
 import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
 import gov.nih.nci.cabig.caaers.domain.report.*;
 
@@ -76,6 +77,7 @@ public class ReportDefinitionDaoTest extends DaoTestCase<ReportDefinitionDao> {
         pen.setGridId("90890d99dke");
         pen.setIndexOnTimeScale(2);
         pen.setSubjectLine("MySubjectline");
+        pen.setReportDefinitionNotificationType(ReportDefinitionNotificationType.REPORT_REMINDER);
 
         List<Recipient> rlist = new ArrayList<Recipient>();
         RoleBasedRecipient r = new RoleBasedRecipient();
@@ -145,6 +147,8 @@ public class ReportDefinitionDaoTest extends DaoTestCase<ReportDefinitionDao> {
                 assertEquals("SubjectLine Equality failed:", "MySubjectline", nf.getSubjectLine());
                 assertEquals("Body Content Equality Failed", "This is my body", nf
                                 .getNotificationBodyContent().getBody());
+                assertEquals("Wrong report definition notification type:", ReportDefinitionNotificationType.REPORT_REMINDER, 
+                		nf.getReportDefinitionNotificationType());
 
                 ReportDeliveryDefinition rdd2 = rctLoaded.getDeliveryDefinitionsInternal().get(0);
                 assertEquals("Report delivery definiton name must be same", rdd2.getEndPoint(), rdd

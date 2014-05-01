@@ -255,6 +255,7 @@ This applicationContext contains the definition of the DAOs
 				<value>gov.nih.nci.cabig.caaers.domain.ExternalAdverseEventReportingPeriod</value>
 				<value>gov.nih.nci.cabig.caaers.domain.ReconciliationReport</value>
 				<value>gov.nih.nci.cabig.caaers.domain.ReconciledAdverseEvent</value>
+				<value>gov.nih.nci.cabig.caaers.domain.AdverseEventRecommendedReport</value>
             </list>
         </property>
         <property name="entityInterceptor">
@@ -685,6 +686,7 @@ This applicationContext contains the definition of the DAOs
 	<bean id="ruleSetDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.RuleSetDao" />
 	<bean id="integrationLogDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.IntegrationLogDao"/>
 	<bean id="integrationLogDetailDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.IntegrationLogDetailDao"/>
+	<bean id="adverseEventRecommendedReportDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AdverseEventRecommendedReportDao"/>
 	
 
     <!-- Factory beans end here-->

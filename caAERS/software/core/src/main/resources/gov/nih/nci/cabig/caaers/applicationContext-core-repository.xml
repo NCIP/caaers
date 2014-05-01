@@ -87,7 +87,7 @@
         <property name="studyDao" ref="studyDao"/>
 		<property name="reportWithdrawalService" ref="reportWithdrawalService" />
 		<property name="adverseEventRoutingAndReviewRepository" ref="adverseEventRoutingAndReviewRepository" />
-		
+		<property name="adverseEventRecommendedReportDao" ref="adverseEventRecommendedReportDao" />
     </bean>
 
     <bean id="labLoadRepository" class="gov.nih.nci.cabig.caaers.domain.repository.LabLoadRepository">
