@@ -18,16 +18,6 @@
 		<xsl:value-of select="$_map//code[text() = $_code]/parent::node()/value" />
 	</xsl:template>
 	
-	<xsl:template name="ConvertPresentStatusToCode">
-		<xsl:param name="code" />
-		<presentstatus>
-			<xsl:call-template name="lookup">
-						<xsl:with-param name="_map" select="$map//aee2bpresentstatuses" />
-						<xsl:with-param name="_code" select="$code" />
-			</xsl:call-template>
-		</presentstatus>
-	</xsl:template>
-	
 	<xsl:template name="ConvertRetreatedToCode">
 		<xsl:param name="code" />
 		 <xsl:choose>
@@ -686,9 +676,6 @@
 					<ideadminflag><xsl:value-of select="/AdverseEventReport/TreatmentInformation/investigationalDeviceAdministered"/></ideadminflag>
 				</xsl:if>
 				<narrativeincludeclinical><xsl:value-of select="/AdverseEventReport/AdverseEventResponseDescription/eventDescription"/></narrativeincludeclinical>
-				<xsl:call-template name="ConvertPresentStatusToCode"> 
-					<xsl:with-param name="code" select="/AdverseEventReport/AdverseEventResponseDescription/presentStatus"/>
-				</xsl:call-template>
 				<xsl:call-template name="ConvertRetreatedToCode"> 
 					<xsl:with-param name="code" select="/AdverseEventReport/AdverseEventResponseDescription/retreated"/>
 				</xsl:call-template>
