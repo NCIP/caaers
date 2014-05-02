@@ -65,75 +65,72 @@ public class UnreportedAEsNotificationsJob implements Job, Serializable {
 			
 			List<AdverseEventRecommendedReport> unreportedAERecomeReports = adverseEventRecommendedReportDao.getAllUnreportedRecords();
 			
-			for(AdverseEventRecommendedReport recomReport : unreportedAERecomeReports){
-				// get all the distinct reporting periods
-				List<ReportDefinition> rds = adverseEventRecommendedReportDao.getAllRecommendedReportsNotReported();
-				
-				// get planned notifications of the report definitions
-				for(ReportDefinition rd1 : rds){
-					for(PlannedNotification plannedNotification : rd1.getUnreportedAePlannedNotification()){
-							Set<String> emailAddresses = new HashSet<String>();
-				            //find emails of direct recipients
-				            if(CollectionUtils.isNotEmpty(plannedNotification.getContactMechanismBasedRecipients())){
-				          	  for(ContactMechanismBasedRecipient recipient : plannedNotification.getContactMechanismBasedRecipients()){
-				          		  String contact = recipient.getContact();
-				          		  if(GenericValidator.isEmail(contact)) emailAddresses.add(contact);  
-				    	      }
-				            }
-				            
-			            	 //now process the notifications. 
-			        		PlannedEmailNotification plannedemailNotification = (PlannedEmailNotification) plannedNotification;
-			                String rawSubjectLine = plannedemailNotification.getSubjectLine();
-			                String rawBody = plannedNotification.getNotificationBodyContent().getBody();
-			                Integer dayOfNotification = plannedemailNotification.getIndexOnTimeScale();
-			                List<AdverseEventRecommendedReport> aeRecomReports = adverseEventRecommendedReportDao.getAllAdverseEventsGivenReportDefinition(rd1);
-			                for(AdverseEventRecommendedReport aeRecomReport : aeRecomReports){
-			                	if(aeRecomReport.getAdverseEvent().getGradedDate() != null){
-			                		long daysPassedSinceGradedDate = DateUtils.differenceInDays(new Date(),aeRecomReport.getAdverseEvent().getGradedDate());
-			                		if(daysPassedSinceGradedDate != dayOfNotification){
-			                			continue;
-			                		}
-			                	}
-			                	// add adverse event reporter email for email notification
-			                	if(aeRecomReport.getAdverseEvent().getReporterEmail() != null){
-			                		emailAddresses.add(aeRecomReport.getAdverseEvent().getReporterEmail());
-			                	}
-			                	// get the graded date and compare with the day of notification to check if notificatino is configured on this day
-			                	
-			                	
-			                	  Map<Object, Object> contextVariableMap = aeRecomReport.getAdverseEvent().getContextVariables();
-					                //get the AE reporting deadline
-					                contextVariableMap.put("aeReportingDeadline", aeRecomReport.getDueDate().toString());
-					                
-					                //apply the replacements. 
-					                String subjectLine = freeMarkerService.applyRuntimeReplacementsForReport(rawSubjectLine, contextVariableMap);
-					                String body = freeMarkerService.applyRuntimeReplacementsForReport(rawBody, contextVariableMap);
-					                
-					                //create the message
-					                SimpleMailMessage mailMsg = new SimpleMailMessage();
-					                mailMsg.setSentDate(new Date());
-					                mailMsg.setSubject(subjectLine);
-					                mailMsg.setText(body);
-					                
-					                //send email to each recipient
-					                for(String email : emailAddresses){
-					                	mailMsg.setTo(email);
-					                	
-					                	try{
-					                		caaersJavaMailSender.send(mailMsg);
-					                	}catch(Exception e){
-					                		//no need to throw and rollback
-					                		logger.warn("Error while emailing to [" + email + "]", e);
-					                	}
-					                }
-			                }
-			                
-					}
-				
+			// get all the distinct reporting periods
+			List<ReportDefinition> rds = adverseEventRecommendedReportDao.getAllRecommendedReportsNotReported();
+			
+			// get planned notifications of the report definitions
+			for(ReportDefinition rd1 : rds){
+				for(PlannedNotification plannedNotification : rd1.getUnreportedAePlannedNotification()){
+						Set<String> emailAddresses = new HashSet<String>();
+			            //find emails of direct recipients
+			            if(CollectionUtils.isNotEmpty(plannedNotification.getContactMechanismBasedRecipients())){
+			          	  for(ContactMechanismBasedRecipient recipient : plannedNotification.getContactMechanismBasedRecipients()){
+			          		  String contact = recipient.getContact();
+			          		  if(GenericValidator.isEmail(contact)) emailAddresses.add(contact);  
+			    	      }
+			            }
+			            
+		            	 //now process the notifications. 
+		        		PlannedEmailNotification plannedemailNotification = (PlannedEmailNotification) plannedNotification;
+		                String rawSubjectLine = plannedemailNotification.getSubjectLine();
+		                String rawBody = plannedNotification.getNotificationBodyContent().getBody();
+		                Integer dayOfNotification = plannedemailNotification.getIndexOnTimeScale();
+		                List<AdverseEventRecommendedReport> aeRecomReports = adverseEventRecommendedReportDao.getAllAdverseEventsGivenReportDefinition(rd1);
+		                for(AdverseEventRecommendedReport aeRecomReport : aeRecomReports){
+		                	if(aeRecomReport.getAdverseEvent().getGradedDate() != null){
+		                		long daysPassedSinceGradedDate = DateUtils.differenceInDays(new Date(),aeRecomReport.getAdverseEvent().getGradedDate());
+		                		if(daysPassedSinceGradedDate != dayOfNotification){
+		                			continue;
+		                		}
+		                	}
+		                	// add adverse event reporter email for email notification
+		                	if(aeRecomReport.getAdverseEvent().getReporterEmail() != null){
+		                		emailAddresses.add(aeRecomReport.getAdverseEvent().getReporterEmail());
+		                	}
+		                	// get the graded date and compare with the day of notification to check if notificatino is configured on this day
+		                	
+		                	
+		                	  Map<Object, Object> contextVariableMap = aeRecomReport.getAdverseEvent().getContextVariables();
+				                //get the AE reporting deadline
+				                contextVariableMap.put("aeReportingDeadline", aeRecomReport.getDueDate().toString());
+				                
+				                //apply the replacements. 
+				                String subjectLine = freeMarkerService.applyRuntimeReplacementsForReport(rawSubjectLine, contextVariableMap);
+				                String body = freeMarkerService.applyRuntimeReplacementsForReport(rawBody, contextVariableMap);
+				                
+				                //create the message
+				                SimpleMailMessage mailMsg = new SimpleMailMessage();
+				                mailMsg.setSentDate(new Date());
+				                mailMsg.setSubject(subjectLine);
+				                mailMsg.setText(body);
+				                
+				                //send email to each recipient
+				                for(String email : emailAddresses){
+				                	mailMsg.setTo(email);
+				                	
+				                	try{
+				                		caaersJavaMailSender.send(mailMsg);
+				                	}catch(Exception e){
+				                		//no need to throw and rollback
+				                		logger.warn("Error while emailing to [" + email + "]", e);
+				                	}
+				                }
+		                }
+		                
 				}
-				  
+			
 			}
-		//	scheduledNotificationProcessService.process(reportId, scheduledNFId);
+				  
 			
 			if(logger.isDebugEnabled()) logger.debug("Processing Unreported AEs Notifications Job.... [ended]");
 			
