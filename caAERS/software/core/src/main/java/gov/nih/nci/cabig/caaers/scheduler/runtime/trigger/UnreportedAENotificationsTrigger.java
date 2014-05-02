@@ -14,7 +14,7 @@ import org.quartz.SimpleTrigger;
  */
 @SuppressWarnings("serial")
 public class UnreportedAENotificationsTrigger extends SimpleTrigger{
-	private static int DEFAULT_INTERVAL = 1000 * 60 * 5;
+	private static int DEFAULT_INTERVAL = 1000 * 60 * 15;
 	public UnreportedAENotificationsTrigger() {
 		this( DEFAULT_INTERVAL);
 	}
