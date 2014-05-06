@@ -71,6 +71,7 @@
     
     <xs:complexType name="PlannedNotification">
         <xs:sequence>
+            <xs:element name="notificationType" type="ReportDefinitionNotificationType" minOccurs="0"/>
             <xs:element name="indexOnTimeScale" type="xs:int"/>
             <xs:element name="recipients" type="Recipient" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element name="bodyContent" type="NotificationBodyContent"/>
@@ -123,6 +124,14 @@
         <xs:restriction base="xs:string">
             <xs:enumeration value="NOTIFICATION"/>
             <xs:enumeration value="REPORT"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+      <!--  Notification Type -->
+    <xs:simpleType name="ReportDefinitionNotificationType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="REPORT_REMINDER"/>
+            <xs:enumeration value="UNREPORTERD_SAE"/>
         </xs:restriction>
     </xs:simpleType>
 </xs:schema>

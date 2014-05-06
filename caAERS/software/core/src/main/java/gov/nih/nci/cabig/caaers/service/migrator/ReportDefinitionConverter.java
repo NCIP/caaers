@@ -11,6 +11,7 @@ import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.ConfigPropertyType;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.ReportDefinitionNotificationType;
 import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
 import gov.nih.nci.cabig.caaers.domain.report.ContactMechanismBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.report.NotificationBodyContent;
@@ -32,6 +33,7 @@ import gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.ParentType;
 import gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.RecipientType;
 import gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.ReportDefinitionType;
 import gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.ReportDefinitions;
+import gov.nih.nci.cabig.caaers.service.synchronizer.ReportNotificationDefinitionSynchronizer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -208,6 +210,7 @@ public class ReportDefinitionConverter {
 		for(gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.PlannedNotification plannedNotification : reportDefinitionDto.getPlannedNotificaiton()){
 			plannedEmailNotification = new PlannedEmailNotification();
 			plannedEmailNotification.setIndexOnTimeScale(plannedNotification.getIndexOnTimeScale());
+			plannedEmailNotification.setReportDefinitionNotificationType(ReportDefinitionNotificationType.valueOf(plannedNotification.getNotificationType().name()));
 			
 			for(gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.Recipient recipientDto : plannedNotification.getRecipients()){
 				if("ROLE".equals(recipientDto.getType())){
@@ -338,7 +341,11 @@ public class ReportDefinitionConverter {
 				plannedNotificationDto = objectFactory.createPlannedNotification();
 				plannedNotificationDto.setIndexOnTimeScale(plannedEmailNotification.getIndexOnTimeScale());
 				plannedNotificationDto.setSubject(plannedEmailNotification.getSubjectLine());
-				
+				if(plannedEmailNotification.getReportDefinitionNotificationType() != null){
+					plannedNotificationDto.setNotificationType(gov.nih.nci.cabig.caaers.integration.schema.
+							reportdefinition.ReportDefinitionNotificationType.valueOf(
+							plannedEmailNotification.getReportDefinitionNotificationType().name()));
+				}
 				for(Recipient recipient : plannedEmailNotification.getRecipients()){
 					recipientDto = objectFactory.createRecipient();
 					if(recipient instanceof ContactMechanismBasedRecipient){
