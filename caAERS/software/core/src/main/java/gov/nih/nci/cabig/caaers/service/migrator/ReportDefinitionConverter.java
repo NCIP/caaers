@@ -204,21 +204,21 @@ public class ReportDefinitionConverter {
 		//Populate PlannedNotifications.
 		PlannedEmailNotification plannedEmailNotification = null;
 		NotificationBodyContent notificationBodyContentDomain = null;
-		List<Recipient> recipients = new ArrayList<Recipient>();
 		List<PlannedNotification> plannedNotifications = new ArrayList<PlannedNotification>();
 		
 		for(gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.PlannedNotification plannedNotification : reportDefinitionDto.getPlannedNotificaiton()){
 			plannedEmailNotification = new PlannedEmailNotification();
+			List<Recipient> recipients = new ArrayList<Recipient>();
 			plannedEmailNotification.setIndexOnTimeScale(plannedNotification.getIndexOnTimeScale());
 			plannedEmailNotification.setReportDefinitionNotificationType(ReportDefinitionNotificationType.valueOf(plannedNotification.getNotificationType().name()));
 			
 			for(gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.Recipient recipientDto : plannedNotification.getRecipients()){
-				if("ROLE".equals(recipientDto.getType())){
+				if("ROLE".equals(recipientDto.getType().toString())){
 					RoleBasedRecipient roleBasedrecipient = new RoleBasedRecipient();
 					roleBasedrecipient.setRoleName(recipientDto.getValue());
 					recipients.add(roleBasedrecipient);
 				}
-				if("CONTACT".equals(recipientDto.getType())){
+				if("CONTACT".equals(recipientDto.getType().toString())){
 					ContactMechanismBasedRecipient contactMechanismBasedRecipient = new ContactMechanismBasedRecipient();
 					contactMechanismBasedRecipient.setContactName(recipientDto.getValue());
 					recipients.add(contactMechanismBasedRecipient);
