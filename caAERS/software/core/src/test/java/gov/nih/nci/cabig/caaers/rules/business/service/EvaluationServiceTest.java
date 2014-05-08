@@ -277,9 +277,9 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		EasyMock.expect(reportingPeriod.getStudy()).andReturn(study);
 
 		EasyMock.expect(adverseEventEvaluationService.evaluateSAEReportSchedule(null,aeList, study)).andReturn(map);
-		EasyMock.expect(reportDefinitionDao.getByName("rd1")).andReturn(rd1);
-		EasyMock.expect(reportDefinitionDao.getByName("rd2")).andReturn(rd2);
-		EasyMock.expect(reportDefinitionDao.getByName("rd3")).andReturn(rd3);
+		EasyMock.expect(reportDefinitionDao.getByName("rd1")).andReturn(rd1).times(3);
+		EasyMock.expect(reportDefinitionDao.getByName("rd2")).andReturn(rd2).times(3);
+		EasyMock.expect(reportDefinitionDao.getByName("rd3")).andReturn(rd3).times(2);
 
 		replayMocks();
 
@@ -363,9 +363,9 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		EasyMock.expect(reportingPeriod.getStudy()).andReturn(study);
 
 		EasyMock.expect(adverseEventEvaluationService.evaluateSAEReportSchedule(null,aeList, study)).andReturn(map);
-		EasyMock.expect(reportDefinitionDao.getByName("one")).andReturn(rd1);
-		EasyMock.expect(reportDefinitionDao.getByName("two")).andReturn(rd2);
-		EasyMock.expect(reportDefinitionDao.getByName("three")).andReturn(rd3);
+		EasyMock.expect(reportDefinitionDao.getByName("one")).andReturn(rd1).times(3);
+		EasyMock.expect(reportDefinitionDao.getByName("two")).andReturn(rd2).times(3);
+		EasyMock.expect(reportDefinitionDao.getByName("three")).andReturn(rd3).times(2);
 
 		replayMocks();
 
@@ -782,7 +782,7 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		
 		expect(adverseEventEvaluationService.evaluateSAEReportSchedule(aeReport1, aeList, study)).andReturn(map1);
 		
-		expect(reportDefinitionDao.getByName("RD1")).andReturn(rd1).times(2);
+		expect(reportDefinitionDao.getByName("RD1")).andReturn(rd1).times(4);
 		expect(aeReport1.findReportsToAmmend(rd2)).andReturn(new ArrayList<Report>());
 		expect(aeReport1.findReportsToEdit(rd2)).andReturn(Arrays.asList(r2)).times(2);
 		expect(aeReport1.findReportsToWithdraw(rd2)).andReturn(new ArrayList<Report>());

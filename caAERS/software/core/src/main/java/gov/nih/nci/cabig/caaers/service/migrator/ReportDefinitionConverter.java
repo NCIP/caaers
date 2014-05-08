@@ -210,7 +210,10 @@ public class ReportDefinitionConverter {
 			plannedEmailNotification = new PlannedEmailNotification();
 			List<Recipient> recipients = new ArrayList<Recipient>();
 			plannedEmailNotification.setIndexOnTimeScale(plannedNotification.getIndexOnTimeScale());
-			plannedEmailNotification.setReportDefinitionNotificationType(ReportDefinitionNotificationType.valueOf(plannedNotification.getNotificationType().name()));
+			if(plannedNotification.getNotificationType() != null) {
+				plannedEmailNotification.setReportDefinitionNotificationType(ReportDefinitionNotificationType.
+						valueOf(plannedNotification.getNotificationType().name()));
+			}
 			
 			for(gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.Recipient recipientDto : plannedNotification.getRecipients()){
 				if("ROLE".equals(recipientDto.getType().toString())){
