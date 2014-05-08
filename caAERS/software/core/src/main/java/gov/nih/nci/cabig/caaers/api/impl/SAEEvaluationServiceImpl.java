@@ -6,21 +6,44 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.api.impl;
 
+import static gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper.ActionType.AMEND;
+import static gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper.ActionType.WITHDRAW;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventRecommendedReportDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventRecommendedReport;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.domain.AeTerminology;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
+import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.ReportTableRow;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.dto.ApplicableReportDefinitionsDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.EvaluationResultDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AdverseEventType;
-import gov.nih.nci.cabig.caaers.integration.schema.saerules.*;
+import gov.nih.nci.cabig.caaers.integration.schema.saerules.AEsOutputMessage;
+import gov.nih.nci.cabig.caaers.integration.schema.saerules.AdverseEventResult;
+import gov.nih.nci.cabig.caaers.integration.schema.saerules.AdverseEvents;
+import gov.nih.nci.cabig.caaers.integration.schema.saerules.EvaluateAEsInputMessage;
+import gov.nih.nci.cabig.caaers.integration.schema.saerules.EvaluateAEsOutputMessage;
+import gov.nih.nci.cabig.caaers.integration.schema.saerules.EvaluatedAdverseEventResults;
+import gov.nih.nci.cabig.caaers.integration.schema.saerules.RecommendedActions;
+import gov.nih.nci.cabig.caaers.integration.schema.saerules.SaveAndEvaluateAEsInputMessage;
+import gov.nih.nci.cabig.caaers.integration.schema.saerules.SaveAndEvaluateAEsOutputMessage;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.RecommendedActionService;
 import gov.nih.nci.cabig.caaers.service.migrator.adverseevent.AdverseEventConverter;
@@ -28,6 +51,18 @@ import gov.nih.nci.cabig.caaers.service.migrator.adverseevent.SAEAdverseEventRep
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 import gov.nih.nci.cabig.caaers.ws.faults.CaaersFault;
+
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -35,13 +70,6 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.MessageSource;
-
-import java.net.UnknownHostException;
-import java.util.*;
-import java.util.Map.Entry;
-
-import static gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper.ActionType.AMEND;
-import static gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper.ActionType.WITHDRAW;
 
 /**
  * EvaluationService evaluate rules on the given AE's submitted by Web service.
@@ -682,25 +710,10 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 	
 	private void manageAdverseEventRecommendedReports(Map<AdverseEvent, AdverseEventResult> mapAE2DTO, RequestType requestType,EvaluationResultDTO dto ){
 		Map<Integer, Map<AdverseEvent, Set<ReportDefinition>>> repAEIndexMap = dto.getAdverseEventIndexMap();
-		if(repAEIndexMap !=null) {
-			for (Map<AdverseEvent, Set<ReportDefinition>> aeIndexMap : repAEIndexMap.values()) {
-				for (Entry<AdverseEvent, Set<ReportDefinition>> entry : aeIndexMap.entrySet()) {
-					
+		 Map<AdverseEvent,List<ReportDefinition>> adverseEventReportDefinitionMap = evaluationService.getAdverseEventRecommendedReportsMap();
+		 for (Map.Entry<AdverseEvent, List<ReportDefinition>> entry : adverseEventReportDefinitionMap.entrySet()) {
 					AdverseEvent ae = entry.getKey();
-					Set<ReportDefinition> rds = entry.getValue();
-					
-					// find DTO object corresponding to Adverse Event.
-					AdverseEventResult aeDTO = null ;
-                    if ( requestType.equals(RequestType.SaveEvaluate)) {
-                        aeDTO = findAdverseEvent(ae,mapAE2DTO);
-                    }   else {
-                        aeDTO = mapAE2DTO.get(ae);
-                    }
-
-                    if ( aeDTO == null ) {
-                        continue;
-                    }
-					
+					List<ReportDefinition> rds = entry.getValue();
 					// Find out if the AE is serious
 					if (rds != null && rds.size() > 0) {
 						// update existing AE recommendation report or create new one 
@@ -734,8 +747,6 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 						}
 					}
 				}
-			}
-		}
 	}
 
 

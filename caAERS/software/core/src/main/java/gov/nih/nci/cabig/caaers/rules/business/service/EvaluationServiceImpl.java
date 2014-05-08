@@ -6,30 +6,57 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.rules.business.service;
 
+import edu.emory.mathcs.backport.java.util.Collections;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.NotificationStatus;
+import gov.nih.nci.cabig.caaers.domain.ObservedAdverseEventProfile;
+import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.dto.ApplicableReportDefinitionsDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.EvaluationResultDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper;
 import gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper.ActionType;
 import gov.nih.nci.cabig.caaers.domain.dto.SafetyRuleEvaluationResultDTO;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
-import gov.nih.nci.cabig.caaers.domain.report.*;
+import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryField;
+import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.RequirednessIndicator;
+import gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.ReportDefinitions;
 import gov.nih.nci.cabig.caaers.rules.common.AdverseEventEvaluationResult;
 import gov.nih.nci.cabig.caaers.rules.common.CaaersRuleUtil;
 import gov.nih.nci.cabig.caaers.rules.common.RuleType;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+
 import org.apache.commons.collections15.Closure;
 import org.apache.commons.collections15.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.*;
 
 /**
  *
@@ -49,7 +76,13 @@ public class EvaluationServiceImpl implements EvaluationService {
 
     private OrganizationDao organizationDao;
     
-    ReportDefinitionFilter reportDefinitionFilter;
+    private Map<AdverseEvent,List<ReportDefinition>> adverseEventRecommendedReportsMap = new HashMap<AdverseEvent, List<ReportDefinition>>();
+    
+    public Map<AdverseEvent, List<ReportDefinition>> getAdverseEventRecommendedReportsMap() {
+		return adverseEventRecommendedReportsMap;
+	}
+
+	ReportDefinitionFilter reportDefinitionFilter;
     
     public EvaluationServiceImpl() {
     	reportDefinitionFilter = new ReportDefinitionFilter();
@@ -150,10 +183,26 @@ public class EvaluationServiceImpl implements EvaluationService {
             evaluationResult.getRulesEngineRawResultMap().put(aeReportId, adverseEventEvaluationResultMap);
             map = new HashMap<AdverseEvent, List<String>>();
             
+            // clear the recommended reports map
+            adverseEventRecommendedReportsMap.clear();
+            
             //clean up - by eliminating the deleted report definitions.
             for(Map.Entry<AdverseEvent, List<AdverseEventEvaluationResult>> entry : adverseEventEvaluationResultMap.entrySet()){
                 Set<String> rdNameSet = new HashSet<String>();
                 AdverseEvent adverseEvent = entry.getKey();
+                Set<ReportDefinition> recommendedAeReports = new HashSet<ReportDefinition>();
+                for(AdverseEventEvaluationResult aeEvalResult : entry.getValue()){
+                	for(String response : aeEvalResult.getRuleEvaluationResult().getResponses()){
+                		if(!StringUtils.isBlank(response)){
+                			ReportDefinition rd = reportDefinitionDao.getByName(response);
+                			if(rd != null){
+                				recommendedAeReports.add(rd);
+                			}
+                		}
+                	}
+                }
+                adverseEventRecommendedReportsMap.put(adverseEvent, new ArrayList<ReportDefinition>(recommendedAeReports));
+                
 
                 List<String> validReportDefNames   = new ArrayList<String>();
                 map.put(adverseEvent, validReportDefNames);
@@ -202,6 +251,11 @@ public class EvaluationServiceImpl implements EvaluationService {
                 evaluationResult.addProcessingStep(aeReportId, "caAERS : Plausible suggestions :", validReportDefNames.toString() );
                 evaluationResult.addProcessingStep(aeReportId, " ", null );
 
+            }
+            
+            for(Map.Entry<AdverseEvent,List<ReportDefinition>> entry : adverseEventRecommendedReportsMap.entrySet()){
+            	List<ReportDefinition> filteredRdList = reportDefinitionFilter.filter(entry.getValue());
+            	entry.setValue(filteredRdList);
             }
 
 
