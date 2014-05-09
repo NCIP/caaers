@@ -877,8 +877,12 @@ public class ExpeditedAdverseEventReportConverterUtility {
 			site.setCodedSite(anatomicSite);
 		}
 		
-		if(xmlMetastaticDiseaseSiteType.getOtherSite() != null){
+		if(StringUtils.isNotEmpty(xmlMetastaticDiseaseSiteType.getOtherSite())){
 			site.setOtherSite(xmlMetastaticDiseaseSiteType.getOtherSite());
+            //add by default Other, specify
+            AnatomicSite anatomicSite = new AnatomicSite();
+            anatomicSite.setName("Other, specify");
+            site.setCodedSite(anatomicSite);
 		}
 		
 		return site;
