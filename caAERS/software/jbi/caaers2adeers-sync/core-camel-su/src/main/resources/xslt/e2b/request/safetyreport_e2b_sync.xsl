@@ -422,7 +422,7 @@
 	</xsl:template>
 	
 	<xsl:template name="metastaticSiteTemplate">
-		<xsl:if test="./patientmedicalcomment = 'Metastatic Site' ">
+		<xsl:if test="./patientmedicalcomment = 'Metastatic Site' and ./patientepisodename != 'Other, specify'">
 			<ae:metastaticDiseaseSite>
 				<ae:codedSite>
 					<ae:name>
