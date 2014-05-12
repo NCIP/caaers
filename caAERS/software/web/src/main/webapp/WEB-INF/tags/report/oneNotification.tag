@@ -49,7 +49,7 @@ id="nf-${index}" cssClass="nf-section" >
 <div class="row">
  <div class="label">Notification Type</div>
  <div class="value">
-   <form:select cssStyle="width: 165px;" path="emailNotifications[${index}].reportDefinitionNotificationType" size="1">
+   <form:select cssStyle="width: 165px;" path="emailNotifications[${index}].reportDefinitionNotificationType" size="1" onchange="javascript:updateSubstitutionVarOptions(this, ${index})">
        <form:option value="REPORT_REMINDER">Report Reminder</form:option>
        <form:option value="UNREPORTERD_SAE">Unreported SAE</form:option>
    </form:select>
@@ -58,7 +58,7 @@ id="nf-${index}" cssClass="nf-section" >
 <div class="row">
  <div class="label">Insert a substitution variable</div>
  <div class="value">
-  <select name="substitutions" id="substitutions" onchange="insertReplacement(this, ${index})">
+  <select name="substitutions" id="substitutions-${index}" onchange="insertReplacement(this, ${index})">
    <option value="">Substitution....</option>
    <%--
     <option value="nCIProtocolNumber">NCI Protocol Number</option> 
@@ -66,16 +66,20 @@ id="nf-${index}" cssClass="nf-section" >
     <option value="amendmentNumber">Amendment Number</option>
     <option value="reportId">Report ID</option>
    --%>
-   
-   <option value="patientId">Patient ID</option>
-   <option value="reportURL">URL To Report</option>
-   <option value="study.shortTitle">Study Short Title</option>
-   <option value="study.primaryIdentifier.value">Study Primary Identifier</option>
-   <option value="studyId">Study ID</option>
-   <option value="aeReportingDeadline">Report the AE by</option>
-   <option value="adverseEventID">Adverse event ID</option>
-   <option value="adverseEventTerm">Adverse event term</option>
-   <option value="aeStartDate">Adverse event start date</option>
+   <c:if test = "${command.emailNotifications[index].reportDefinitionNotificationType.name == 'Report Reminder'}">
+	   <option value="patientId">Patient ID</option>
+	   <option value="reportURL">URL To Report</option>
+	   <option value="study.shortTitle">Study Short Title</option>
+	   <option value="study.primaryIdentifier.value">Study Primary Identifier</option>
+   </c:if>
+   <c:if test = "${command.emailNotifications[index].reportDefinitionNotificationType.name == 'Unreported SAE'}">
+	   <option value="studyId">Study ID</option>
+	   <option value="patientId">Patient ID</option>
+	   <option value="aeReportingDeadline">Report the AE by</option>
+	   <option value="adverseEventID">Adverse event ID</option>
+	   <option value="adverseEventTerm">Adverse event term</option>
+	   <option value="aeStartDate">Adverse event start date</option>
+   </c:if>
   </select>
  </div>
 </div>

@@ -128,6 +128,35 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 			frm.submit();
 		}
 		
+		function removeOptions(selectbox)
+		{
+		    var i;
+		    for(i=selectbox.options.length-1;i>=0;i--)
+		    {
+		        selectbox.remove(i);
+		    }
+		}
+		
+		function updateSubstitutionVarOptions(selNotificationType, nfIndex){
+			var substitutionOptions = $('substitutions-' + nfIndex);
+			removeOptions(substitutionOptions);
+			substitutionOptions.options[substitutionOptions.options.length] = new Option("Substitution....", "");
+			if(selNotificationType.value == 'REPORT_REMINDER'){
+				substitutionOptions.options[substitutionOptions.options.length] = new Option("Patient ID", "patientId");
+				substitutionOptions.options[substitutionOptions.options.length] = new Option("URL To Report", "reportURL");
+				substitutionOptions.options[substitutionOptions.options.length] = new Option("Study Short Title", "study.shortTitle");
+				substitutionOptions.options[substitutionOptions.options.length] = new Option("Study Primary Identifier", "study.primaryIdentifier.value");
+			} else if(selNotificationType.value == 'UNREPORTERD_SAE'){
+				substitutionOptions.options[substitutionOptions.options.length] = new Option("Study ID", "studyId");
+				substitutionOptions.options[substitutionOptions.options.length] = new Option("Patient ID", "patientId");
+				substitutionOptions.options[substitutionOptions.options.length] = new Option("Report the AE by", "aeReportingDeadline");
+				substitutionOptions.options[substitutionOptions.options.length] = new Option("Adverse event ID", "adverseEventID");
+				substitutionOptions.options[substitutionOptions.options.length] = new Option("Adverse event term", "adverseEventTerm");
+				substitutionOptions.options[substitutionOptions.options.length] = new Option("Adverse event start date", "aeStartDate");
+				
+			}
+		}
+		
 	--></script> 
 <link type="image/x-icon" href="../../../images/caaers.ico" rel="shortcut icon"/>
 </head>
