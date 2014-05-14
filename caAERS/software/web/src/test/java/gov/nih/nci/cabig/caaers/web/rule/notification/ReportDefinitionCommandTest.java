@@ -68,11 +68,12 @@ public class ReportDefinitionCommandTest extends AbstractTestCase {
 		replayMocks();
 		Map<Object, Object> options = command.collectRecipientRoleOptions();
 		
-		assertEquals(4, options.size());
+		assertEquals(5, options.size());
 		assertEquals("Please select", options.get(""));
 		assertEquals("cp-name1", options.get("cp1"));
 		assertEquals("cp-name2", options.get("cp2"));
 		assertEquals("cp-name3", options.get("cp3"));
+		assertEquals("SAE Reporter", options.get("SAE Reporter"));
 		
 		assertSame(options, command.collectRecipientRoleOptions());
 		
