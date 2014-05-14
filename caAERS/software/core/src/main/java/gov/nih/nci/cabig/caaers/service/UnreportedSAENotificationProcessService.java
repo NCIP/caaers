@@ -89,7 +89,10 @@ public class UnreportedSAENotificationProcessService {
 			            if(CollectionUtils.isNotEmpty(roleRecipients)){
 			    	      	List<String> emails = null;
 			    	      	for(RoleBasedRecipient recipient : roleRecipients){
-			    	      		if(ArrayUtils.contains(RoleUtils.reportSpecificRoles, recipient.getRoleName())){
+			    	      		if("SAE Reporter".equals(recipient.getRoleName()) && aeRecomReport.getAdverseEvent().getReporterEmail() != null){
+			    	      			// add adverse event reporter email for email notification
+			    	      			emailAddresses.add(aeRecomReport.getAdverseEvent().getReporterEmail());
+			    	      		}else if(ArrayUtils.contains(RoleUtils.reportSpecificRoles, recipient.getRoleName())){
 			    	      			// since there is no report yet, skip if the role is report specific
 			    	      			continue;
 			    	      		}else if(ArrayUtils.contains(RoleUtils.sponsorAndCoordinatingCenterSpecificRoles, recipient.getRoleName())){
@@ -118,10 +121,7 @@ public class UnreportedSAENotificationProcessService {
 	                			continue;
 	                		}
 	                	}
-	                	// add adverse event reporter email for email notification
-	                	if(aeRecomReport.getAdverseEvent().getReporterEmail() != null){
-	                		emailAddresses.add(aeRecomReport.getAdverseEvent().getReporterEmail());
-	                	}
+	                	
 	                	// get the graded date and compare with the day of notification to check if notification is configured on this day
 	                	
 	                	

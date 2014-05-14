@@ -116,6 +116,7 @@ public class ReportDefinitionCommand {
     		recipientRoleOptions.putAll(WebUtils.collectOptions(cpRepository.getByType(ConfigPropertyType.REPORT_ROLE_TYPE), "code", "name"));
     		recipientRoleOptions.putAll(WebUtils.collectOptions(cpRepository.getByType(ConfigPropertyType.RESEARCH_STAFF_ROLE_TYPE), "code", "name"));
     		recipientRoleOptions.putAll(WebUtils.collectOptions(cpRepository.getByType(ConfigPropertyType.INVESTIGATOR_ROLE_TYPE), "code", "name"));
+    		recipientRoleOptions.put("SAE Reporter", "SAE Reporter");
     	}
         return recipientRoleOptions;
     }
