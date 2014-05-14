@@ -1799,6 +1799,12 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
         getBiologicalInterventionAttributions().clear();
         getDietarySupplementInterventionAttributions().clear();
         getGeneticInterventionAttributions().clear();
+    } 
+    
+    @Transient
+    
+    public Study getStudy(){
+    	return reportingPeriod.getStudy();
     }
     
     /**
@@ -1816,6 +1822,9 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
         
         map.put("patientId", getReportingPeriod().getParticipant().getPrimaryIdentifierValue());//external ID
         map.put("studyId",  getReportingPeriod().getStudy().getPrimaryIdentifierValue());//study ID
+        
+        map.put("reportURL",  "");//report URL
+        map.put("study",  getStudy());
         
         return map;
     }
