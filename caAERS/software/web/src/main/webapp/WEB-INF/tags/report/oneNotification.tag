@@ -66,7 +66,7 @@ id="nf-${index}" cssClass="nf-section" >
     <option value="amendmentNumber">Amendment Number</option>
     <option value="reportId">Report ID</option>
    --%>
-   <c:if test = "${command.emailNotifications[index].reportDefinitionNotificationType.name == 'Report Reminder'}">
+   <c:if test = "${command.emailNotifications[index].reportDefinitionNotificationType.name == 'Report Reminder' or empty ommand.emailNotifications[index].reportDefinitionNotificationType.name}">
 	   <option value="patientId">Patient ID</option>
 	   <option value="reportURL">URL To Report</option>
 	   <option value="study.shortTitle">Study Short Title</option>
