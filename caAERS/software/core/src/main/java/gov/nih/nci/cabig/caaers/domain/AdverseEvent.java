@@ -1818,7 +1818,7 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
 
         map.put("adverseEventID", externalId);//external ID
         map.put("adverseEventTerm", adverseEventTerm.getFullName());//ae term
-        map.put("aeStartDate", startDate);//start date
+        map.put("aeStartDate", startDate == null ? "": startDate);//start date
         
         map.put("patientId", getReportingPeriod().getParticipant().getPrimaryIdentifierValue());//external ID
         map.put("studyId",  getReportingPeriod().getStudy().getPrimaryIdentifierValue());//study ID
