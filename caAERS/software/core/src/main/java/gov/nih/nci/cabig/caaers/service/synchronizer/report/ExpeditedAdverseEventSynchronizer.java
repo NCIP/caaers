@@ -64,6 +64,9 @@ public class ExpeditedAdverseEventSynchronizer implements Migrator<ExpeditedAdve
         if(StringUtils.isBlank(dbAe.getReporterEmail())) {
         	dbAe.setReporterEmail(xmlAe.getReporterEmail());
         }
+        if(!StringUtils.isBlank(xmlAe.getDetailsForOther())) {
+        	dbAe.setDetailsForOther(xmlAe.getDetailsForOther());
+        }
     }
 
     public void synchronizeDiseaseAttributions( ExpeditedAdverseEventReport aeReport,  AdverseEvent ae){
