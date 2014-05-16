@@ -115,11 +115,10 @@ public class AdverseEventConverter {
         
         if ( adverseEventDto.getHospitalization() != null && adverseEventDto.getHospitalization().equals(HospitalizationType.YES)) {
 
-             if ( !(adverseEvent.getOutcomes().contains(gov.nih.nci.cabig.caaers.domain.OutcomeType.HOSPITALIZATION))){
-                 Outcome outCome = new Outcome();
-                 outCome.setOutcomeType(gov.nih.nci.cabig.caaers.domain.OutcomeType.HOSPITALIZATION);
-                 adverseEvent.getOutcomes().add(outCome);
-             }
+            Outcome hOutcome = new Outcome();
+            hOutcome.setOutcomeType(gov.nih.nci.cabig.caaers.domain.OutcomeType.HOSPITALIZATION);
+            adverseEvent.addOutComeIfNecessary(hOutcome);
+
         }
 
         if(adverseEventDto.isIncreasedRisk() != null){
@@ -397,14 +396,14 @@ public class AdverseEventConverter {
 
 	public void populateOutcomes(AdverseEventType adverseEventDto, AdverseEvent adverseEvent) {
 		for (OutcomeType xmlOutcome:adverseEventDto.getOutcome()) {
-			String xmlOc = xmlOutcome.getOutComeEnumType().name();
-			gov.nih.nci.cabig.caaers.domain.OutcomeType oct = gov.nih.nci.cabig.caaers.domain.OutcomeType.valueOf(xmlOc);
-			Outcome outCome = new Outcome();
-			outCome.setOutcomeType(oct);
-			if (oct.equals(gov.nih.nci.cabig.caaers.domain.OutcomeType.OTHER_SERIOUS) && xmlOutcome.getOther() !=null) {
-				outCome.setOther(xmlOutcome.getOther());
-			}
-			adverseEvent.addOutcome(outCome);
+			String xmlOutcomeTypeName = xmlOutcome.getOutComeEnumType().name();
+
+            Outcome outcome = new Outcome();
+            outcome.setOutcomeType(gov.nih.nci.cabig.caaers.domain.OutcomeType.valueOf(xmlOutcomeTypeName));
+            if(outcome.getOutcomeType() == gov.nih.nci.cabig.caaers.domain.OutcomeType.OTHER_SERIOUS) {
+                outcome.setOther(xmlOutcome.getOther());
+            }
+            adverseEvent.addOutComeIfNecessary(outcome);
 		}
 	}
 
