@@ -269,92 +269,92 @@
 						</xsl:for-each>
 						
 						<ae:additionalInformation>
-						   <xsl:if test="/ichicsr/safetyreport/autopsyreportflag">
+						   <xsl:if test="//medicalhistoryepisode/autopsyreportflag">
 							   <ae:autopsyReport>
 									<xsl:call-template name="convertOneTwotoBoolean">
-										<xsl:with-param name="oneTwoType" select="/ichicsr/safetyreport/autopsyreportflag" />
+										<xsl:with-param name="oneTwoType" select="//medicalhistoryepisode/autopsyreportflag" />
 									</xsl:call-template>
 							   </ae:autopsyReport>
 							</xsl:if>
-						  <xsl:if test="/ichicsr/safetyreport/consultsflag">
+						  <xsl:if test="//medicalhistoryepisode/consultsflag">
 							   <ae:consults>
 									<xsl:call-template name="convertOneTwotoBoolean">
-										<xsl:with-param name="oneTwoType" select="/ichicsr/safetyreport/consultsflag" />
+										<xsl:with-param name="oneTwoType" select="//medicalhistoryepisode/consultsflag" />
 									</xsl:call-template>
 							   </ae:consults>
 							</xsl:if>
-						   <xsl:if test="/ichicsr/safetyreport/dischargesummaryflag">
+						   <xsl:if test="//medicalhistoryepisode/dischargesummaryflag">
 							   <ae:dischargeSummary>
 									<xsl:call-template name="convertOneTwotoBoolean">
-										<xsl:with-param name="oneTwoType" select="/ichicsr/safetyreport/dischargesummaryflag" />
+										<xsl:with-param name="oneTwoType" select="//medicalhistoryepisode/dischargesummaryflag" />
 									</xsl:call-template>
 							   </ae:dischargeSummary>
 							</xsl:if>
-						   <xsl:if test="/ichicsr/safetyreport/flowsheetscrfsflag">
+						   <xsl:if test="//medicalhistoryepisode/flowsheetscrfsflag">
 							   <ae:flowCharts>
 									<xsl:call-template name="convertOneTwotoBoolean">
-										<xsl:with-param name="oneTwoType" select="/ichicsr/safetyreport/flowsheetscrfsflag" />
+										<xsl:with-param name="oneTwoType" select="//medicalhistoryepisode/flowsheetscrfsflag" />
 									</xsl:call-template>
 							   </ae:flowCharts>
 							</xsl:if>
-						   <xsl:if test="/ichicsr/safetyreport/labreportsflag">
+						   <xsl:if test="//medicalhistoryepisode/labreportsflag">
 							   <ae:labReports>
 									<xsl:call-template name="convertOneTwotoBoolean">
-										<xsl:with-param name="oneTwoType" select="/ichicsr/safetyreport/labreportsflag" />
+										<xsl:with-param name="oneTwoType" select="//medicalhistoryepisode/labreportsflag" />
 									</xsl:call-template>
 							   </ae:labReports>
 							</xsl:if>
-						   <xsl:if test="/ichicsr/safetyreport/obaformsflag">
+						   <xsl:if test="//medicalhistoryepisode/obaformsflag">
 							   <ae:obaForm>
 									<xsl:call-template name="convertOneTwotoBoolean">
-										<xsl:with-param name="oneTwoType" select="/ichicsr/safetyreport/obaformsflag" />
+										<xsl:with-param name="oneTwoType" select="//medicalhistoryepisode/obaformsflag" />
 									</xsl:call-template>
 							   </ae:obaForm>
 							</xsl:if>
-						    <xsl:if test="/ichicsr/safetyreport/otheradditionalflag">
+						    <xsl:if test="//medicalhistoryepisode/otheradditionalflag">
 							   <ae:other>
 									<xsl:call-template name="convertOneTwotoBoolean">
-										<xsl:with-param name="oneTwoType" select="/ichicsr/safetyreport/otheradditionalflag" />
+										<xsl:with-param name="oneTwoType" select="//medicalhistoryepisode/otheradditionalflag" />
 									</xsl:call-template>
 							   </ae:other>
 							</xsl:if>
-						    <xsl:if test="/ichicsr/safetyreport/pathologyreportflag">
+						    <xsl:if test="//medicalhistoryepisode/pathologyreportflag">
 							   <ae:pathologyReport>
 									<xsl:call-template name="convertOneTwotoBoolean">
-										<xsl:with-param name="oneTwoType" select="/ichicsr/safetyreport/pathologyreportflag" />
+										<xsl:with-param name="oneTwoType" select="//medicalhistoryepisode/pathologyreportflag" />
 									</xsl:call-template>
 							   </ae:pathologyReport>
 							</xsl:if>
-						    <xsl:if test="/ichicsr/safetyreport/progressnotesflag">
+						    <xsl:if test="//medicalhistoryepisode/progressnotesflag">
 							   <ae:progressNotes>
 									<xsl:call-template name="convertOneTwotoBoolean">
-										<xsl:with-param name="oneTwoType" select="/ichicsr/safetyreport/progressnotesflag" />
+										<xsl:with-param name="oneTwoType" select="//medicalhistoryepisode/progressnotesflag" />
 									</xsl:call-template>
 							   </ae:progressNotes>
 							</xsl:if>
-						    <xsl:if test="/ichicsr/safetyreport/radiologyreportflag">
+						    <xsl:if test="//medicalhistoryepisode/radiologyreportflag">
 							   <ae:radiologyReports>
 									<xsl:call-template name="convertOneTwotoBoolean">
-										<xsl:with-param name="oneTwoType" select="/ichicsr/safetyreport/radiologyreportflag" />
+										<xsl:with-param name="oneTwoType" select="//medicalhistoryepisode/radiologyreportflag" />
 									</xsl:call-template>
 							   </ae:radiologyReports>
 							</xsl:if>
-						    <xsl:if test="/ichicsr/safetyreport/referrallettersflag">
+						    <xsl:if test="//medicalhistoryepisode/referrallettersflag">
 							   <ae:referralLetters>
 									<xsl:call-template name="convertOneTwotoBoolean">
-										<xsl:with-param name="oneTwoType" select="/ichicsr/safetyreport/referrallettersflag" />
+										<xsl:with-param name="oneTwoType" select="//medicalhistoryepisode/referrallettersflag" />
 									</xsl:call-template>
 							   </ae:referralLetters>
 							</xsl:if>
-						    <xsl:if test="/ichicsr/safetyreport/irbsummaryreportflag">
+						    <xsl:if test="//medicalhistoryepisode/irbsummaryreportflag">
 							   <ae:irbReport>
 									<xsl:call-template name="convertOneTwotoBoolean">
-										<xsl:with-param name="oneTwoType" select="/ichicsr/safetyreport/irbsummaryreportflag" />
+										<xsl:with-param name="oneTwoType" select="//medicalhistoryepisode/irbsummaryreportflag" />
 									</xsl:call-template>
 							   </ae:irbReport>
 							</xsl:if>						  
-						    <xsl:if test="/ichicsr/safetyreport/documentlist">
-							   <ae:otherInformation><xsl:value-of select="/ichicsr/safetyreport/documentlist" /></ae:otherInformation>
+						    <xsl:if test="//medicalhistoryepisode/doclist">
+							   <ae:otherInformation><xsl:value-of select="//medicalhistoryepisode/doclist" /></ae:otherInformation>
 							</xsl:if>
 						</ae:additionalInformation>
 

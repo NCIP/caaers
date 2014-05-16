@@ -198,7 +198,12 @@
 				<patientepisodename>Cerebrum</patientepisodename>
 				<patientmedicalcomment>Metastatic Site</patientmedicalcomment>
 			</medicalhistoryepisode>
-
+			
+			<medicalhistoryepisode>
+				<autopsyreportflag>1</autopsyreportflag>
+				<consultsflag>1</consultsflag>
+			</medicalhistoryepisode>
+			
 			<!--This is the Study Intervention (e.g. Drug, Device, Radiation, Surgery). There could be multiple interventions -->
 			
 			<drug>
@@ -297,7 +302,5 @@
 		
 			</summary>
 		</patient>
-		<autopsyreportflag>1</autopsyreportflag>
-		<consultsflag>1</consultsflag>
 	</safetyreport>
 </ichicsr>
