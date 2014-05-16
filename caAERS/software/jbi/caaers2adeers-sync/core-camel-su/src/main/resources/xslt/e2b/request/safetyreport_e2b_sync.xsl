@@ -834,7 +834,8 @@
 				</ae:recovery>
 			</xsl:if>
 			<xsl:if
-				test="testname = 'Bacterial infection NOS' or testname = 'Fungal infection NOS' or testname = 'Viral infection NOS'">
+				test="testname = 'Bacterial infection NOS' or testname = 'Fungal infection NOS' or testname = 'Viral infection NOS' 
+				or testname = 'Blood Culture'  or testname = 'Stool Culture'  or testname = 'Urine Culture'">
 				<ae:infectiousAgent>
 					<xsl:value-of select="testresult" />
 				</ae:infectiousAgent>
