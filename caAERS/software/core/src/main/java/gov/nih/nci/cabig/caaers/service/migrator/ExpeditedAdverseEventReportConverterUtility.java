@@ -573,6 +573,17 @@ public class ExpeditedAdverseEventReportConverterUtility {
 				labCategory.setName(labType.getLabTerm().getCategory().getName());
 				labTerm.setCategory(labCategory);
 			}
+			if(labType.getSite() != null){
+				lab.setSite(labType.getSite());
+			}
+			
+			if(labType.getInfectiousAgent() != null){
+				lab.setInfectiousAgent(labType.getInfectiousAgent());
+			}
+			
+			if(labType.getLabDate() != null){
+				lab.setLabDate(labType.getLabDate().toGregorianCalendar().getTime());
+			}
 			lab.setLabTerm(labTerm);
 		}
 		
