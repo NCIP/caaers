@@ -173,7 +173,10 @@ public class ReportRepositoryImpl implements ReportRepository {
     	Report reportToWithdraw = aeReport.findLastSubmittedReport(report.getReportDefinition());
 		if(reportToWithdraw != null && reportToWithdraw.getReportDefinition().getReportType().equals(ReportType.NOTIFICATION)){
 			reportWithdrawalService.withdrawExternalReport(aeReport,reportToWithdraw);
-		}
+		} else {
+            //Internal report, so notify people.
+            reportWithdrawalService.sendWithdrawEmail(report);
+        }
     }
     
     /* (non-Javadoc)
