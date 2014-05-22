@@ -62,12 +62,12 @@ public class UnreportedSAENotificationProcessService {
 		// get planned notifications associated with the report definitions
 		for(ReportDefinition rd1 : rds){
 			for(PlannedNotification plannedNotification : rd1.getUnreportedAePlannedNotification()){
-					Set<String> emailAddresses = new HashSet<String>();
+					Set<String> contactBasedEmailAddresses = new HashSet<String>();
 		            //find emails of direct recipients
 		            if(CollectionUtils.isNotEmpty(plannedNotification.getContactMechanismBasedRecipients())){
 		          	  for(ContactMechanismBasedRecipient recipient : plannedNotification.getContactMechanismBasedRecipients()){
 		          		  String contact = recipient.getContact();
-		          		  if(GenericValidator.isEmail(contact)) emailAddresses.add(contact);  
+		          		  if(GenericValidator.isEmail(contact)) contactBasedEmailAddresses.add(contact);  
 		    	      }
 		            }
 		            
@@ -81,6 +81,8 @@ public class UnreportedSAENotificationProcessService {
 	                
 	                for(AdverseEventRecommendedReport aeRecomReport : aeRecomReports){
 	                	
+	                	Set<String> roleBasedEmailAddresses = new HashSet<String>();
+	                	
 	                	Study study = aeRecomReport.getAdverseEvent().getReportingPeriod().getStudy();
 	                	StudySite studySite = aeRecomReport.getAdverseEvent().getReportingPeriod().getStudySite();
 	                	
@@ -91,7 +93,7 @@ public class UnreportedSAENotificationProcessService {
 			    	      	for(RoleBasedRecipient recipient : roleRecipients){
 			    	      		if("SAE Reporter".equals(recipient.getRoleName()) && aeRecomReport.getAdverseEvent().getReporterEmail() != null){
 			    	      			// add adverse event reporter email for email notification
-			    	      			emailAddresses.add(aeRecomReport.getAdverseEvent().getReporterEmail());
+			    	      			roleBasedEmailAddresses.add(aeRecomReport.getAdverseEvent().getReporterEmail());
 			    	      		}else if(ArrayUtils.contains(RoleUtils.reportSpecificRoles, recipient.getRoleName())){
 			    	      			// since there is no report yet, skip if the role is report specific
 			    	      			continue;
@@ -107,7 +109,7 @@ public class UnreportedSAENotificationProcessService {
 			    	      		//now add the valid email addresses obtained
 			    	      		if(CollectionUtils.isNotEmpty(emails)){
 			    	      			for(String email : emails){
-			    	      				if(GenericValidator.isEmail(email)) emailAddresses.add(email);
+			    	      				if(GenericValidator.isEmail(email)) roleBasedEmailAddresses.add(email);
 			    	      			}
 			    	      		}
 			    	      		
@@ -138,9 +140,14 @@ public class UnreportedSAENotificationProcessService {
 			                mailMsg.setSentDate(new Date());
 			                mailMsg.setSubject(subjectLine);
 			                mailMsg.setText(body);
+			               
+			                // collect emails of both contact based and role based recipients
+			                Set<String> allEmailAddresses = new HashSet<String>();
+			                allEmailAddresses.addAll(roleBasedEmailAddresses);
+			                allEmailAddresses.addAll(contactBasedEmailAddresses);
 			                
-			                //send email to each recipient
-			                for(String email : emailAddresses){
+			                //send email to each contact based recipient
+			                for(String email : allEmailAddresses){
 			                	mailMsg.setTo(email);
 			                	
 			                	try{
@@ -150,6 +157,8 @@ public class UnreportedSAENotificationProcessService {
 			                		logger.warn("Error while emailing to [" + email + "]", e);
 			                	}
 			                }
+			                
+			                
 	                }
 	                
 			}
