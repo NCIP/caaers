@@ -584,6 +584,7 @@ default-lazy-init="true">
 	</bean>
 
     <!-- Synchronizer -->
+    <bean id="additionalInformationSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.report.AdditionalInformationSynchronizer" autowire="byType"/>
     <bean id="expeditedReportingPeriodSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.report.ExpeditedReportingPeriodSynchronizer" />
     <bean id="expeditedAdverseEventSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.report.ExpeditedAdverseEventSynchronizer" />
     <bean id="adverseEventResponseDescriptionSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.report.AdverseEventResponseDescriptionSynchronizer" />
@@ -611,6 +612,7 @@ default-lazy-init="true">
             <list>
             	<ref bean="expeditedReportingPeriodSynchronizer" />
                 <ref bean="adverseEventResponseDescriptionSynchronizer" />
+                <ref bean="additionalInformationSynchronizer"/>
                 <ref bean="labSynchronizer" />
                 <ref bean="treatmentInformationSynchronizer" />
                 <ref bean="behavioralInterventionSynchronizer" />
