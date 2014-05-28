@@ -360,8 +360,7 @@
 
 		<!--ASSERT -->
 		<xsl:choose>
-			<xsl:when test="caaers:lookup(./testunit, $map//uoms)!=''"/>
-			<xsl:otherwise>
+			<xsl:when test="testunit and caaers:lookup(./testunit, $map//uoms) =''">
 				<svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
                                 test="testunit">
 					<xsl:attribute name="location">
@@ -369,7 +368,8 @@
 					</xsl:attribute>
 					<svrl:text>Unavailable matching lab test unit</svrl:text>
 				</svrl:failed-assert>
-			</xsl:otherwise>
+			</xsl:when>
+			<xsl:otherwise/>
 		</xsl:choose>
 		<xsl:apply-templates select="*|comment()|processing-instruction()" mode="M8"/>
 	</xsl:template>
@@ -603,8 +603,7 @@
 
 		<!--ASSERT -->
 		<xsl:choose>
-			<xsl:when test="testunit and (infectiousagent or infectionsite)"/>
-			<xsl:otherwise>
+			<xsl:when test="testunit and (infectiousagent or infectionsite)">
 				<svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
                                 test="test">
 					<xsl:attribute name="location">
@@ -612,7 +611,8 @@
 					</xsl:attribute>
 					<svrl:text>lab should not have both testunit and infectiousagent or site </svrl:text>
 				</svrl:failed-assert>
-			</xsl:otherwise>
+			</xsl:when>
+			<xsl:otherwise/>
 		</xsl:choose>
 		<xsl:apply-templates select="*|comment()|processing-instruction()" mode="M17"/>
 	</xsl:template>
@@ -630,8 +630,7 @@
 
 		<!--ASSERT -->
 		<xsl:choose>
-			<xsl:when test="testtype and (infectiousagent or infectionsite)"/>
-			<xsl:otherwise>
+			<xsl:when test="testtype and (infectiousagent or infectionsite)">
 				<svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
                                 test="test">
 					<xsl:attribute name="location">
@@ -639,7 +638,8 @@
 					</xsl:attribute>
 					<svrl:text>lab should not have both testtype and infectiousagent or site </svrl:text>
 				</svrl:failed-assert>
-			</xsl:otherwise>
+			</xsl:when>
+			<xsl:otherwise/>
 		</xsl:choose>
 		<xsl:apply-templates select="*|comment()|processing-instruction()" mode="M18"/>
 	</xsl:template>
