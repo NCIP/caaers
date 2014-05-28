@@ -571,8 +571,8 @@
 	<svrl:text xmlns:svrl="http://purl.oclc.org/dsdl/svrl">Lab: validate test type value</svrl:text>
 
 	<!--RULE -->
-	<xsl:template match="/ichicsr/safetyreport/test/testtype" priority="1001" mode="M16">
-		<svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/ichicsr/safetyreport/test/testtype"/>
+	<xsl:template match="/ichicsr/safetyreport/patient/test/testtype" priority="1001" mode="M16">
+		<svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/ichicsr/safetyreport/patient/test/testtype"/>
 
 		<!--ASSERT -->
 		<xsl:choose>
@@ -598,8 +598,8 @@
 	<svrl:text xmlns:svrl="http://purl.oclc.org/dsdl/svrl">Lab: validate testunit and infectiousagent or infectionsite </svrl:text>
 
 	<!--RULE -->
-	<xsl:template match="/ichicsr/safetyreport/test" priority="1001" mode="M17">
-		<svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/ichicsr/safetyreport/test"/>
+	<xsl:template match="/ichicsr/safetyreport/patient/test" priority="1001" mode="M17">
+		<svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/ichicsr/safetyreport/patient/test"/>
 
 		<!--ASSERT -->
 		<xsl:choose>
@@ -625,8 +625,8 @@
 	<svrl:text xmlns:svrl="http://purl.oclc.org/dsdl/svrl">Lab: validate testtype and infectiousagent or infectionsite </svrl:text>
 
 	<!--RULE -->
-	<xsl:template match="/ichicsr/safetyreport/test" priority="1001" mode="M18">
-		<svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/ichicsr/safetyreport/test"/>
+	<xsl:template match="/ichicsr/safetyreport/patient/test" priority="1001" mode="M18">
+		<svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/ichicsr/safetyreport/patient/test"/>
 
 		<!--ASSERT -->
 		<xsl:choose>
