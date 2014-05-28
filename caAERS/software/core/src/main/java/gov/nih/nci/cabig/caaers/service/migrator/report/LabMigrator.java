@@ -54,7 +54,12 @@ public class LabMigrator implements Migrator<ExpeditedAdverseEventReport> {
                 return;
             }
     		Lab destLab = new Lab();
-            destLab.setLabTerm(result);
+    		if(result != null){
+    			destLab.setLabTerm(result);
+    		} else {
+    			destLab.setOther(lab.getLabTerm().getTerm());
+    		}
+    		
     		copyProperties(lab, destLab);
     		destLab.setReport(aeReportDest);
     		destLabs.add(destLab);
@@ -85,7 +90,7 @@ public class LabMigrator implements Migrator<ExpeditedAdverseEventReport> {
         
         List<LabTerm> resultLst = labTermDao.searchByExampleIgnoreCase(labTerm, false);
         if(resultLst == null || resultLst.isEmpty()) {
-        	outcome.addError("ER-LM-1", "Matching lab term is not found for " + labTerm.getTerm());
+        	// outcome.addError("ER-LM-1", "Matching lab term is not found for " + labTerm.getTerm());
         	return null;
         }
         if(resultLst.size() > 1 ) {
