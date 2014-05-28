@@ -375,9 +375,9 @@
 										<xsl:value-of select="/ichicsr/safetyreport/safetyreportversion" />
 									</ae:reportVersionId>
 								</xsl:if>
-								 <xsl:if test="/ichicsr/safetyreport/sender/recipientemails">
+								 <xsl:if test="/ichicsr/safetyreport/patient/summary/recipientemails">
 									<ae:ccEmails>
-										<xsl:value-of select="/ichicsr/safetyreport/sender/recipientemails" />
+										<xsl:value-of select="/ichicsr/safetyreport/patient/summary/recipientemails" />
 									</ae:ccEmails>
 								</xsl:if>
 							</ae:aeReportVersion>
@@ -782,12 +782,14 @@
 				</ae:term>
 			</ae:labTerm>
 			<!--Optional: -->
-			<ae:units>
-				<xsl:call-template name="lookup">
-					<xsl:with-param name="_map" select="$map//uoms" />
-					<xsl:with-param name="_code" select='testunit' />
-				</xsl:call-template>
-			</ae:units>
+			<xsl:if test="testunit">
+				<ae:units>
+					<xsl:call-template name="lookup">
+						<xsl:with-param name="_map" select="$map//uoms" />
+						<xsl:with-param name="_code" select='testunit' />
+					</xsl:call-template>
+				</ae:units>
+			</xsl:if>
 			<!--Optional: -->
 			<xsl:if test="testtype = 'Baseline'">
 				<ae:baseline>
@@ -833,11 +835,10 @@
 					</xsl:if>
 				</ae:recovery>
 			</xsl:if>
-			<xsl:if
-				test="testname = 'Bacterial infection NOS' or testname = 'Fungal infection NOS' or testname = 'Viral infection NOS' 
-				or testname = 'Blood Culture'  or testname = 'Stool Culture'  or testname = 'Urine Culture'">
+			
+			<xsl:if test="not(testtype)">
 				<ae:infectiousAgent>
-					<xsl:value-of select="testresult" />
+					<xsl:value-of select="infectiousagent" />
 				</ae:infectiousAgent>
 				<ae:site>
 					<xsl:value-of select="infectionsite" />
