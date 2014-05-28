@@ -176,4 +176,9 @@
     	<baseline-performance-scale><code>LANSKY</code><value>LANSKY</value></baseline-performance-scale>
     	<baseline-performance-scale><code>KARNOFSKY</code><value>KARNOFSKY</value></baseline-performance-scale>
     </baseline-performance-scales>
+     <lab-testtypes>
+    	<lab-testtype><code>Worst</code><value>Worst</value></lab-testtype>
+    	<lab-testtype><code>Recovery</code><value>Recovery</value></lab-testtype>
+    	<lab-testtype><code>Baseline</code><value>Baseline</value></lab-testtype>
+    </lab-testtypes>
 </lookup>
