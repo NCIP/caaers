@@ -2090,4 +2090,14 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
               ae.setSignature(ae.getCurrentSignature());
           }
     }
+    
+    public Report findReportByCaseNumber(String caseNumber){
+    	for(Report report : reports){
+    		if(report.getCaseNumber() != null && report.getCaseNumber().equalsIgnoreCase(caseNumber)){
+    			return report;
+    		}
+    	}
+    	
+    	return null;
+    }
 }

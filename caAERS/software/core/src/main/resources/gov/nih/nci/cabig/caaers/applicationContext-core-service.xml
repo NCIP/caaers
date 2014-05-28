@@ -606,6 +606,7 @@ default-lazy-init="true">
     <bean id="diseaseHistorySynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.report.DiseaseHistorySynchronizer" autowire="byType"/>
     <bean id="radiationInterventionSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.report.RadiationInterventionSynchronizer" autowire="byType"/>
     <bean id="surgeryInterventionSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.report.SurgeryInterventionSynchronizer" autowire="byType"/>
+    <bean id="reportSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.report.ReportSynchronizer" autowire="byType"/>
 
     <bean id="aeReportSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.report.ExpeditedAdverseEventReportSynchronizer">
         <property name="children">
@@ -623,6 +624,7 @@ default-lazy-init="true">
                 <ref bean="otherAEInterventionSynchronizer" />
                 <ref bean="physicianSynchronizer" />
                 <ref bean="reporterSynchronizer" />
+                <ref bean="reportSynchronizer" />
                 <ref bean="diseaseHistorySynchronizer" />
                 <ref bean="participantHistorySynchronizer" />
                 <ref bean="preExistingConditionSynchronizer" />
