@@ -264,6 +264,33 @@
 				<xsl:apply-templates/>
 			</svrl:active-pattern>
 			<xsl:apply-templates select="/" mode="M15"/>
+			<svrl:active-pattern>
+				<xsl:attribute name="document">
+					<xsl:value-of select="document-uri(/)"/>
+				</xsl:attribute>
+				<xsl:attribute name="id">Lab test type value</xsl:attribute>
+				<xsl:attribute name="name">Lab: validate test type value</xsl:attribute>
+				<xsl:apply-templates/>
+			</svrl:active-pattern>
+			<xsl:apply-templates select="/" mode="M16"/>
+			<svrl:active-pattern>
+				<xsl:attribute name="document">
+					<xsl:value-of select="document-uri(/)"/>
+				</xsl:attribute>
+				<xsl:attribute name="id">Lab test unit and infectiousagent and infectionsite</xsl:attribute>
+				<xsl:attribute name="name">Lab: validate test unit and infectiousagent and infectionsite</xsl:attribute>
+				<xsl:apply-templates/>
+			</svrl:active-pattern>
+			<xsl:apply-templates select="/" mode="M17"/>
+			<svrl:active-pattern>
+				<xsl:attribute name="document">
+					<xsl:value-of select="document-uri(/)"/>
+				</xsl:attribute>
+				<xsl:attribute name="id">Lab test type and infectiousagent and infectionsite</xsl:attribute>
+				<xsl:attribute name="name">Lab: validate test type and infectiousagent and infectionsite</xsl:attribute>
+				<xsl:apply-templates/>
+			</svrl:active-pattern>
+			<xsl:apply-templates select="/" mode="M18"/>
 		</svrl:schematron-output>
 	</xsl:template>
 
@@ -513,7 +540,7 @@
 		<xsl:apply-templates select="*|comment()|processing-instruction()" mode="M14"/>
 	</xsl:template>
 	
-	<!--PATTERN flag: validate AE attribution factor-type -->
+	<!--PATTERN flag: validate patient baseline performance scale -->
 	<svrl:text xmlns:svrl="http://purl.oclc.org/dsdl/svrl">Participant History: validate baseline performance scale </svrl:text>
 
 	<!--RULE -->
@@ -538,6 +565,87 @@
 	<xsl:template match="text()" priority="-1" mode="M15"/>
 	<xsl:template match="@*|node()" priority="-2" mode="M15">
 		<xsl:apply-templates select="*|comment()|processing-instruction()" mode="M15"/>
+	</xsl:template>
+	
+	<!--PATTERN flag: validate lab test type -->
+	<svrl:text xmlns:svrl="http://purl.oclc.org/dsdl/svrl">Lab: validate test type value</svrl:text>
+
+	<!--RULE -->
+	<xsl:template match="/ichicsr/safetyreport/test/testtype" priority="1001" mode="M16">
+		<svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/ichicsr/safetyreport/test/testtype"/>
+
+		<!--ASSERT -->
+		<xsl:choose>
+			<xsl:when test="caaers:lookup(., $map//lab-testtypes)!=''"/>
+			<xsl:otherwise>
+				<svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="testtype">
+					<xsl:attribute name="location">
+						<xsl:apply-templates select="." mode="schematron-select-full-path"/>
+					</xsl:attribute>
+					<svrl:text>Unavailable matching lab test type</svrl:text>
+				</svrl:failed-assert>
+			</xsl:otherwise>
+		</xsl:choose>
+		<xsl:apply-templates select="*|comment()|processing-instruction()" mode="M16"/>
+	</xsl:template>
+	<xsl:template match="text()" priority="-1" mode="M16"/>
+	<xsl:template match="@*|node()" priority="-2" mode="M16">
+		<xsl:apply-templates select="*|comment()|processing-instruction()" mode="M16"/>
+	</xsl:template>
+	
+	<!--PATTERN flag: validate lab test should not have both testunit and infectiousagent and site -->
+	<svrl:text xmlns:svrl="http://purl.oclc.org/dsdl/svrl">Lab: validate testunit and infectiousagent or infectionsite </svrl:text>
+
+	<!--RULE -->
+	<xsl:template match="/ichicsr/safetyreport/test" priority="1001" mode="M17">
+		<svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/ichicsr/safetyreport/test"/>
+
+		<!--ASSERT -->
+		<xsl:choose>
+			<xsl:when test="testunit and (infectiousagent or infectionsite)"/>
+			<xsl:otherwise>
+				<svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="test">
+					<xsl:attribute name="location">
+						<xsl:apply-templates select="." mode="schematron-select-full-path"/>
+					</xsl:attribute>
+					<svrl:text>lab should not have both testunit and infectiousagent or site </svrl:text>
+				</svrl:failed-assert>
+			</xsl:otherwise>
+		</xsl:choose>
+		<xsl:apply-templates select="*|comment()|processing-instruction()" mode="M17"/>
+	</xsl:template>
+	<xsl:template match="text()" priority="-1" mode="M17"/>
+	<xsl:template match="@*|node()" priority="-2" mode="M17">
+		<xsl:apply-templates select="*|comment()|processing-instruction()" mode="M17"/>
+	</xsl:template>
+	
+	<!--PATTERN flag: validate lab test should not have both testtype and infectiousagent and site -->
+	<svrl:text xmlns:svrl="http://purl.oclc.org/dsdl/svrl">Lab: validate testtype and infectiousagent or infectionsite </svrl:text>
+
+	<!--RULE -->
+	<xsl:template match="/ichicsr/safetyreport/test" priority="1001" mode="M18">
+		<svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/ichicsr/safetyreport/test"/>
+
+		<!--ASSERT -->
+		<xsl:choose>
+			<xsl:when test="testtype and (infectiousagent or infectionsite)"/>
+			<xsl:otherwise>
+				<svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="test">
+					<xsl:attribute name="location">
+						<xsl:apply-templates select="." mode="schematron-select-full-path"/>
+					</xsl:attribute>
+					<svrl:text>lab should not have both testtype and infectiousagent or site </svrl:text>
+				</svrl:failed-assert>
+			</xsl:otherwise>
+		</xsl:choose>
+		<xsl:apply-templates select="*|comment()|processing-instruction()" mode="M18"/>
+	</xsl:template>
+	<xsl:template match="text()" priority="-1" mode="M18"/>
+	<xsl:template match="@*|node()" priority="-2" mode="M18">
+		<xsl:apply-templates select="*|comment()|processing-instruction()" mode="M18"/>
 	</xsl:template>
 
 </xsl:stylesheet>
