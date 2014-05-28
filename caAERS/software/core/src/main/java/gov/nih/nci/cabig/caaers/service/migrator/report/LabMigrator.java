@@ -76,7 +76,7 @@ public class LabMigrator implements Migrator<ExpeditedAdverseEventReport> {
 		dest.setBaseline(src.getBaseline());
 		dest.setNadir(src.getNadir());
 		dest.setRecovery(src.getRecovery());
-		dest.setOther(src.getOther());
+		// dest.setOther(src.getOther());
 		dest.setInfectiousAgent(src.getInfectiousAgent());
 		dest.setLabDate(src.getLabDate());
 		dest.setSite(src.getSite());
