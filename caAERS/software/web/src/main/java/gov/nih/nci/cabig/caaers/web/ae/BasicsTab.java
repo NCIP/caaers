@@ -155,13 +155,6 @@ public abstract class BasicsTab extends AeTab {
             }
         }
 
-        if(awarenessDate != null && endDate != null){
-            InputField awarenessDateField = groups.get(MAIN_FIELD_GROUP + index).getFields().get(2);
-            if(DateUtils.compareDate(awarenessDate, endDate) > 0) {
-                errors.rejectValue(awarenessDateField.getPropertyName(), "CAE_022",  "The Awareness date must not be later than End date.");
-            }
-        }
-
         if(startDate != null && endDate != null){
             InputField endDateField = groups.get(MAIN_FIELD_GROUP + index).getFields().get(4);
             if(DateUtils.compareDate(startDate, endDate) > 0){

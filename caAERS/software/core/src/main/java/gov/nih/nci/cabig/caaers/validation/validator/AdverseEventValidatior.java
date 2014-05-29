@@ -104,11 +104,6 @@ public class AdverseEventValidatior {
                 break;
             }
 
-            if (ae.getGradedDate() != null && ae.getEndDate() != null &&ae.getGradedDate().after(ae.getEndDate())) {
-                addValidationError(errors,"CAE_022", messageSource.getMessage("CAE_022",
-                        new String[] {}, "The Awareness date must not be later than End date", Locale.getDefault()) ) ;
-                break;
-            }
         }
 
     }

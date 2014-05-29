@@ -349,13 +349,6 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
                 }
             }
 
-            //Check if End Date must be earlier than Graded Date
-            if(caaersFieldConfigurationManager.isFieldApplicable(TAB_NAME, "adverseEvents[].endDate") && caaersFieldConfigurationManager.isFieldApplicable(TAB_NAME, "adverseEvents[].gradedDate")){
-                if(ae.getEndDate() != null && ae.getGradedDate() != null &&  (DateUtils.compareDate(ae.getGradedDate(), ae.getEndDate())  > 0) ){
-                    errors.rejectValue("adverseEvents[" + i + "].gradedDate" , "CAE_022", "The \"Awareness date\" can not be after the \"End date\". It should be either be the same day or earlier.");
-                }
-            }
-
             // Check if end date is greater than the start date
             if(caaersFieldConfigurationManager.isFieldApplicable(TAB_NAME, "adverseEvents[].startDate") && caaersFieldConfigurationManager.isFieldApplicable(TAB_NAME, "adverseEvents[].endDate"))
             	if(ae.getEndDate() != null && ae.getStartDate() != null && DateUtils.compareDate(ae.getStartDate(), ae.getEndDate()) > 0)
