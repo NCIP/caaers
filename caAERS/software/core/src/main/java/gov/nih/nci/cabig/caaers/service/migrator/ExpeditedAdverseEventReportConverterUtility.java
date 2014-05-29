@@ -629,6 +629,9 @@ public class ExpeditedAdverseEventReportConverterUtility {
 		if(xmlMedicalDeviceType.getDeviceOperator() != null){
 			medicalDevice.setDeviceOperator(DeviceOperator.valueOf(xmlMedicalDeviceType.getDeviceOperator().name()));
 		}
+		if(xmlMedicalDeviceType.getOtherDeviceOperator() != null){
+			medicalDevice.setOtherDeviceOperator(xmlMedicalDeviceType.getOtherDeviceOperator());
+		}
 		
 		medicalDevice.setDeviceType(xmlMedicalDeviceType.getDeviceType());
 		medicalDevice.setManufacturerName(xmlMedicalDeviceType.getManufacturerName());
