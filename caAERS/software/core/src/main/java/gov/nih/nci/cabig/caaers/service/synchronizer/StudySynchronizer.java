@@ -73,7 +73,9 @@ public class StudySynchronizer extends CompositeMigrator<Study>{
 		if(dbStudy.getAeTermUnique() == null) {
 			dbStudy.setAeTermUnique(xmlStudy.getAeTermUnique());
 		}
-        dbStudy.setVerbatimFirst(xmlStudy.getVerbatimFirst());
+		if(dbStudy.getVerbatimFirst() == null) {
+			dbStudy.setVerbatimFirst(xmlStudy.getVerbatimFirst());
+		}
         dbStudy.setParticipationType(xmlStudy.getParticipationType());
         dbStudy.setStudyPurpose(xmlStudy.getStudyPurpose());
         dbStudy.setPhaseCode(xmlStudy.getPhaseCode());

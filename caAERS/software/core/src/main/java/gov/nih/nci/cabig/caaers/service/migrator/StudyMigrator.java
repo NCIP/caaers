@@ -25,7 +25,10 @@ public class StudyMigrator extends CompositeMigrator<Study> {
         if(src.getAeTermUnique() != null) {
         	dest.setAeTermUnique(src.getAeTermUnique());
         }
-        dest.setVerbatimFirst(src.getVerbatimFirst() == null ? false : src.getVerbatimFirst());
+        if(src.getVerbatimFirst() != null) {
+        	dest.setVerbatimFirst(src.getVerbatimFirst());
+        }
+        
         dest.setStudyPurpose(src.getStudyPurpose());
         dest.setParticipationType(src.getParticipationType());
         dest.setLastSynchedDate(new Date());

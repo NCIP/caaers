@@ -253,6 +253,7 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
     public void testSearchByExactExample() throws Exception {
         Study example = new LocalStudy();
         example.setAeTermUnique(true);
+        example.setVerbatimFirst(true);
         example.setDescription("Description");
 
         List<Study> actual = getDao().searchByExample(example, false);
@@ -264,6 +265,7 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
     public void testSearchByExactExampleWithIdentifiers() throws Exception {
         Study example = new LocalStudy();
         example.setAeTermUnique(true);
+        example.setVerbatimFirst(true);
         example.setDescription("Description");
 
         OrganizationAssignedIdentifier idOne = new OrganizationAssignedIdentifier();
@@ -282,6 +284,7 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
     public void testSearchByWildcardExample() throws Exception {
         Study example = new LocalStudy();
         example.setAeTermUnique(true);
+        example.setVerbatimFirst(true);
         example.setShortTitle("orte");
 
         List<Study> actual = getDao().searchByExample(example, true);

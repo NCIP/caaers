@@ -218,6 +218,7 @@ public class AdverseEventCaptureTabTest extends WebTestCase {
     public void testValidate_WhenStudyEnforceTermUniquness(){
         command.initializeOutcomes();
         command.getStudy().setAeTermUnique(true);
+        command.getStudy().setVerbatimFirst(true);
         Map<String, InputFieldGroup> fieldMap = tab.createFieldGroups(command);
         tab.validate(command, commandWrapper, fieldMap, errors);
         assertTrue(errors.hasErrors());

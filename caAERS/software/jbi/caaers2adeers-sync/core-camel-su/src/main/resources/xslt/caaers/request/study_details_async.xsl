@@ -30,7 +30,7 @@
                 <phaseCode>
                     <xsl:call-template name="lookup"><xsl:with-param name="_map" select="$map//phases" /><xsl:with-param name="_code" select="$_phase" /></xsl:call-template>
                 </phaseCode>
-                <verbatimFirst>true</verbatimFirst>
+                <verbatimFirst>false</verbatimFirst>
                 <adeersReporting>true</adeersReporting>
                 <studyPurpose><xsl:value-of select="primaryStudyType"/></studyPurpose>
                 <participationType><xsl:value-of select="participationType" /></participationType>
