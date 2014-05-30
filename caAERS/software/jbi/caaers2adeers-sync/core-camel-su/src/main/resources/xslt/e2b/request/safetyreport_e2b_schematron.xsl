@@ -196,15 +196,6 @@
 				<xsl:attribute name="document">
 					<xsl:value-of select="document-uri(/)"/>
 				</xsl:attribute>
-				<xsl:attribute name="id">Lab</xsl:attribute>
-				<xsl:attribute name="name">Lab: validate lab test unit</xsl:attribute>
-				<xsl:apply-templates/>
-			</svrl:active-pattern>
-			<xsl:apply-templates select="/" mode="M8"/> 
-			<svrl:active-pattern>
-				<xsl:attribute name="document">
-					<xsl:value-of select="document-uri(/)"/>
-				</xsl:attribute>
 				<xsl:attribute name="id">Patient Summary</xsl:attribute>
 				<xsl:attribute name="name">Patient Summary: validate retreated flag</xsl:attribute>
 				<xsl:apply-templates/>
@@ -349,33 +340,6 @@
 	<xsl:template match="text()" priority="-1" mode="M7"/>
 	<xsl:template match="@*|node()" priority="-2" mode="M7">
 		<xsl:apply-templates select="*|comment()|processing-instruction()" mode="M7"/>
-	</xsl:template>
-	
-	<!--PATTERN Lab: validate test unit -->
-	<svrl:text xmlns:svrl="http://purl.oclc.org/dsdl/svrl">Lab: validate test unit</svrl:text>
-
-	<!--RULE -->
-	<xsl:template match="//test" priority="1001" mode="M8">
-		<svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="//test"/>
-
-		<!--ASSERT -->
-		<xsl:choose>
-			<xsl:when test="testunit and caaers:lookup(./testunit, $map//uoms) =''">
-				<svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
-                                test="testunit">
-					<xsl:attribute name="location">
-						<xsl:apply-templates select="." mode="schematron-select-full-path"/>
-					</xsl:attribute>
-					<svrl:text>Unavailable matching lab test unit</svrl:text>
-				</svrl:failed-assert>
-			</xsl:when>
-			<xsl:otherwise/>
-		</xsl:choose>
-		<xsl:apply-templates select="*|comment()|processing-instruction()" mode="M8"/>
-	</xsl:template>
-	<xsl:template match="text()" priority="-1" mode="M8"/>
-	<xsl:template match="@*|node()" priority="-2" mode="M8">
-		<xsl:apply-templates select="*|comment()|processing-instruction()" mode="M8"/>
 	</xsl:template>
 	
 	<!--PATTERN Patient Summary: validate retreated flag -->
