@@ -51,7 +51,7 @@
 									<xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">
 										<xsl:with-param name="date" select="/ichicsr/safetyreport/patient/drug[drugcharacterization = '3']/drugenddate" />
 									</xsl:call-template>
-								</ae:startDate>
+								</ae:startDate>								
 							</xsl:if>
 							<ae:studyParticipantAssignmentRef>
 								<ae:studySiteRef>
@@ -80,9 +80,10 @@
 									<xsl:value-of select="/ichicsr/safetyreport/patient/drug[drugcharacterization = '3']/medicinalproduct" />
 								</ae:code>
 							</ae:treatmentAssignment>
-						</ae:adverseEventReportingPeriod>
-
-						<xsl:if test="/ichicsr/safetyreport/physiciangivename">
+						</ae:adverseEventReportingPeriod>	
+						
+						
+    					<xsl:if test="/ichicsr/safetyreport/physiciangivename">
 							<ae:physician>
 								<ae:firstName>
 									<xsl:value-of select="/ichicsr/safetyreport/physiciangivename" />
@@ -122,7 +123,7 @@
 							</ae:physician>
 						</xsl:if>
 
-
+						
 						<xsl:if test="/ichicsr/safetyreport/primarysource/reportergivename">
 							<ae:reporter>
 								<ae:firstName>
@@ -161,8 +162,9 @@
 									</ae:contactMechanism>
 								</xsl:if>
 							</ae:reporter>
-						</xsl:if>
-
+						</xsl:if>	
+						
+						
 						<xsl:if test="/ichicsr/safetyreport/patient/summary/senderfirstname">
 							<xsl:call-template name="submitter" />
 						</xsl:if>
@@ -265,7 +267,7 @@
 							select="//medicalhistoryepisode[patientmedicalcomment = 'Other Cause']">
 							<xsl:call-template name="otherCause" />
 						</xsl:for-each>
-
+						
 						<ae:additionalInformation>
 						   <xsl:if test="//medicalhistoryepisode/autopsyreportflag">
 							   <ae:autopsyReport>
@@ -350,7 +352,7 @@
 										<xsl:with-param name="oneTwoType" select="//medicalhistoryepisode/irbsummaryreportflag" />
 									</xsl:call-template>
 							   </ae:irbReport>
-							</xsl:if>
+							</xsl:if>						  
 						    <xsl:if test="//medicalhistoryepisode/doclist">
 							   <ae:otherInformation><xsl:value-of select="//medicalhistoryepisode/doclist" /></ae:otherInformation>
 							</xsl:if>
@@ -373,9 +375,9 @@
 										<xsl:value-of select="/ichicsr/safetyreport/safetyreportversion" />
 									</ae:reportVersionId>
 								</xsl:if>
-								 <xsl:if test="/ichicsr/safetyreport/sender/recipientemails">
+								 <xsl:if test="/ichicsr/safetyreport/patient/summary/recipientemails">
 									<ae:ccEmails>
-										<xsl:value-of select="/ichicsr/safetyreport/sender/recipientemails" />
+										<xsl:value-of select="/ichicsr/safetyreport/patient/summary/recipientemails" />
 									</ae:ccEmails>
 								</xsl:if>
 							</ae:aeReportVersion>
@@ -394,7 +396,7 @@
 			</ae:primaryDisease>
 		</xsl:if>
 	</xsl:template>
-
+	
 	<xsl:template name="diseaseSiteTemplate">
 		<xsl:if test="./patientmedicalcomment = 'Disease Site' ">
 			<ae:codedPrimaryDiseaseSite>
@@ -402,7 +404,7 @@
 			</ae:codedPrimaryDiseaseSite>
 		</xsl:if>
 	</xsl:template>
-
+	
 	<xsl:template name="otherDiseaseSiteTemplate">
 		<xsl:if test="./patientmedicalcomment = 'Other Disease Site' ">
 			<ae:otherPrimaryDiseaseSite>
@@ -410,7 +412,7 @@
 			</ae:otherPrimaryDiseaseSite>
 		</xsl:if>
 	</xsl:template>
-
+	
 	<xsl:template name="otherStudyDiseaseTemplate">
 		<xsl:if test="./patientmedicalcomment = 'Other Study Disease' ">
 			<ae:otherPrimaryDisease>
@@ -418,9 +420,9 @@
 			</ae:otherPrimaryDisease>
 		</xsl:if>
 	</xsl:template>
-
+	
 	<xsl:template name="metastaticSiteTemplate">
-        <xsl:if test="./patientmedicalcomment = 'Metastatic Site' and ./patientepisodename != 'Other, specify'">
+		<xsl:if test="./patientmedicalcomment = 'Metastatic Site' and ./patientepisodename != 'Other, specify'">
 			<ae:metastaticDiseaseSite>
 				<ae:codedSite>
 					<ae:name>
@@ -430,7 +432,7 @@
 			</ae:metastaticDiseaseSite>
 		</xsl:if>
 	</xsl:template>
-
+	
 	<xsl:template name="otherMetastaticSiteTemplate">
 		<xsl:if test="./patientmedicalcomment = 'Other Metastatic Site' ">
 			<ae:metastaticDiseaseSite>
@@ -446,13 +448,13 @@
 			<ae:priorTherapy>
 				<ae:text>
 					<xsl:value-of select="patientepisodename" />
-				</ae:text>
+				</ae:text>				
 			</ae:priorTherapy>
-
+			
 			<ae:other>
 				<xsl:value-of select="priortherapycomment" />
 			</ae:other>
-
+			
 			<xsl:if test="./patientmedicalstartdate != '' ">
 				<ae:startDate>
 					<xsl:call-template name="splitDateYYYYMMDD">
@@ -467,7 +469,7 @@
 					</xsl:call-template>
 				</ae:endDate>
 			</xsl:if>
-
+			
 			<xsl:for-each select="priortherapyagent">
 				<ae:priorTherapyAgent>
 					<ae:agent>
@@ -696,13 +698,13 @@
 			<xsl:if test="devicereprocessedflag = '2'">
 				<ae:deviceReprocessed>NO</ae:deviceReprocessed>
 			</xsl:if>
-
+	        
 	        <xsl:if test="deviceavailableflag">
 				<ae:evaluationAvailability>
 					<xsl:value-of select="deviceavailableflag" />
 				</ae:evaluationAvailability>
 			</xsl:if>
-
+			
 			<ae:studyDevice>
 				<ae:otherBrandName>
 					<xsl:value-of select="devicenamebrand" />
@@ -780,12 +782,14 @@
 				</ae:term>
 			</ae:labTerm>
 			<!--Optional: -->
-			<ae:units>
-				<xsl:call-template name="lookup">
-					<xsl:with-param name="_map" select="$map//uoms" />
-					<xsl:with-param name="_code" select='testunit' />
-				</xsl:call-template>
-			</ae:units>
+			<xsl:if test="testunit">
+				<ae:units>
+					<xsl:call-template name="lookup">
+						<xsl:with-param name="_map" select="$map//uoms" />
+						<xsl:with-param name="_code" select='testunit' />
+					</xsl:call-template>
+				</ae:units>
+			</xsl:if>
 			<!--Optional: -->
 			<xsl:if test="testtype = 'Baseline'">
 				<ae:baseline>
@@ -831,10 +835,10 @@
 					</xsl:if>
 				</ae:recovery>
 			</xsl:if>
-			<xsl:if
-				test="testname = 'Bacterial infection NOS' or testname = 'Fungal infection NOS' or testname = 'Viral infection NOS'">
+			
+			<xsl:if test="not(testtype)">
 				<ae:infectiousAgent>
-					<xsl:value-of select="testresult" />
+					<xsl:value-of select="infectiousagent" />
 				</ae:infectiousAgent>
 				<ae:site>
 					<xsl:value-of select="infectionsite" />
@@ -909,7 +913,7 @@
 			</ae:text>
 		</ae:otherCause>
 	</xsl:template>
-
+	
 	<xsl:template name="submitter">
 		<ae:submitter>
 			<ae:firstName>
@@ -919,7 +923,7 @@
 				<xsl:value-of select="/ichicsr/safetyreport/patient/summary/senderlastname" />
 			</ae:lastName>
 			<xsl:if test="/ichicsr/safetyreport/patient/summary/sendermidname">
-				<ae:middleName>
+				<ae:middleName> 
 					<xsl:value-of select="/ichicsr/safetyreport/patient/summary/sendermidname" />
 				</ae:middleName>
 			</xsl:if>
@@ -1022,7 +1026,7 @@
 					</xsl:call-template>
 				</ae:isPrimary>
 			</xsl:if>
-
+			
 			<xsl:for-each
 				select="//reaction[aeexternalid = $adverseEventId and attribution and factortype = 'concomitant medication']">
 				<xsl:call-template name="concomitantMedicationAttributionTemplate">
@@ -1050,7 +1054,7 @@
 					<xsl:with-param name="adverseEventId" select="$adverseEventId" />
 					<xsl:with-param name="factor" select="factor" />
 				</xsl:call-template>
-			</xsl:for-each>
+			</xsl:for-each> 
 
 			<xsl:for-each
 				select="//reaction[aeexternalid = $adverseEventId and attribution and translate(factortype, $smallcase, $uppercase) = 'RADIATION']">
@@ -1058,7 +1062,7 @@
 					<xsl:with-param name="adverseEventId" select="$adverseEventId" />
 					<xsl:with-param name="factor" select="factor" />
 				</xsl:call-template>
-			</xsl:for-each>
+			</xsl:for-each> 
 
 			<xsl:for-each
 				select="//reaction[aeexternalid = $adverseEventId and attribution and translate(factortype, $smallcase, $uppercase) = 'DEVICE']">
@@ -1066,7 +1070,7 @@
 					<xsl:with-param name="adverseEventId" select="$adverseEventId" />
 					<xsl:with-param name="factor" select="factor" />
 				</xsl:call-template>
-			</xsl:for-each>
+			</xsl:for-each> 
 
 			<xsl:for-each
 				select="//reaction[aeexternalid = $adverseEventId and attribution and factortype = 'primary disease']">
@@ -1228,8 +1232,8 @@
 				</ae:studyDeviceRef>
 			</ae:cause>
 		</ae:deviceAttribution>
-	</xsl:template>
-
+	</xsl:template> 
+	
 	<xsl:template name="primaryDiseaseAttributionTemplate">
 		<xsl:param name="adverseEventId" />
 		<ae:diseaseAttribution>
@@ -1289,7 +1293,7 @@
 			select="concat($vYear,'-',$vMonth,'-',substring($date,7,2))" />
 		<xsl:value-of select="$outputDate" />
 	</xsl:template>
-
+	
 	<xsl:template name="dateConverterMMslashDDslashYYYYtoYY-MM-DD">
 		<xsl:param name="date" />
 		<xsl:if test="$date != ''">
@@ -1300,6 +1304,6 @@
 				select="concat($vYear,'-',$vMonth,'-',$vDate)" />
 			<xsl:value-of select="$outputDate" />
 		</xsl:if>
-	</xsl:template>
+	</xsl:template> 
 
 </xsl:stylesheet>
