@@ -237,6 +237,9 @@
 				<!-- Retreated to-date -->	
 				<retreatedflag>2</retreatedflag> 
 				<recipientemails>vasudev.chatti@semanticbits.com,vinodh.rc@semanticbits.com, ramakrishna.gundala1@semanticbits.com1</recipientemails>
+				<ptautopsyyesno>2</ptautopsyyesno>
+				<ptdeathdate>19111111</ptdeathdate>
+				<dateremoved>19121212</dateremoved>
 			</summary>
 		</patient>
 		<medicalhistoryepisode>

@@ -874,21 +874,21 @@
 				</ae:retreated>
 			</xsl:if>
 			<xsl:if
-				test='/ichicsr/safetyreport/patient/patientdeath/patientautopsyyesno'>
+				test='/ichicsr/safetyreport/patient/summary/ptautopsyyesno'>
 				<ae:autopsyPerformed>
 					<xsl:call-template name="lookup">
 						<xsl:with-param name="_map" select="$map//e2byesnos" />
 						<xsl:with-param name="_code"
-							select='/ichicsr/safetyreport/patient/patientdeath/patientautopsyyesno' />
+							select='/ichicsr/safetyreport/patient/summary/ptautopsyyesno' />
 					</xsl:call-template>
 				</ae:autopsyPerformed>
 			</xsl:if>
 			<xsl:if
-				test="/ichicsr/safetyreport/patient/patientdeath/patientdeathdate != '' ">
+				test="/ichicsr/safetyreport/patient/summary/ptdeathdate != '' ">
 				<ae:recoveryDate>
 					<xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">
 						<xsl:with-param name="date"
-							select="/ichicsr/safetyreport/patient/patientdeath/patientdeathdate" />
+							select="/ichicsr/safetyreport/patient/summary/ptdeathdate" />
 					</xsl:call-template>
 				</ae:recoveryDate>
 			</xsl:if>
