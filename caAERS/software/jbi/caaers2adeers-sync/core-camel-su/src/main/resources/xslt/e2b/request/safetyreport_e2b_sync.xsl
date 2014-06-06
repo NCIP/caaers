@@ -784,8 +784,11 @@
 			<!--Optional: -->
 			<xsl:if test="testunit">
 				<ae:units>
-					<xsl:value-of select="testunit" />
-				</ae:units>
+			         <xsl:call-template name="lookup">
+			                 <xsl:with-param name="_map" select="$map//uoms" />
+			                 <xsl:with-param name="_code" select='testunit' />
+			         </xsl:call-template>
+ 				</ae:units>
 			</xsl:if>
 			<!--Optional: -->
 			<xsl:if test="testtype = 'Baseline'">

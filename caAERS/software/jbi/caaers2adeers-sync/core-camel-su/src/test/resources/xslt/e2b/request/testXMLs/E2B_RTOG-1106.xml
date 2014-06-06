@@ -158,7 +158,16 @@
 
 			<test>
 				<testname>Blood Culture-updated</testname>
-				<testunit>mcl</testunit>
+				<testunit>iU/L</testunit>
+				<!--<infectionsite>site</infectionsite> -->
+				<testdateformat>102</testdateformat>
+				<testdate>20130201</testdate>
+				<testresult>infectious agent</testresult> 
+				<testtype>Worst</testtype>
+			</test> 
+			<test>
+				<testname>Blood Culture-updated</testname>
+				<testunit>Vol Frac</testunit>
 				<!--<infectionsite>site</infectionsite> -->
 				<testdateformat>102</testdateformat>
 				<testdate>20130201</testdate>

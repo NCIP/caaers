@@ -59,4 +59,16 @@ public class E2BRecipientEmailsTest extends SafetyReportE2BXslTest {
 
 	}
 	
+	
+	public void testLabTestUnit() throws Exception{
+
+		String result = null;
+		result = transform("xslt/e2b/request/testXMLs/E2B_RTOG-1106.xml", "xslt/e2b/request/safetyreport_e2b_sync.xsl");
+		assertNotNull(result);
+		assertNotSame("", result);
+		assertTrue(result.contains("<ae:units>iU/L</ae:units>"));
+		assertTrue(result.contains("<ae:units>Vol Frac</ae:units>"));
+
+	}
+	
 }
