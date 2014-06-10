@@ -606,7 +606,7 @@
         									<xsl:choose>
         						         		<xsl:when test="LowLevelTerm/fullName"></xsl:when>
         						                <xsl:otherwise>
-        						                	<xsl:if test="AdverseEventCtcTerm/ctc-term/otherRequired = 'true'">: <xsl:value-of select="detailsForOther"/></xsl:if>
+        						                	<xsl:if test="AdverseEventCtcTerm/ctc-term/otherRequired = 'true'">: <xsl:value-of select="otherSpecify"/></xsl:if>
         						                </xsl:otherwise>
         								 	</xsl:choose>
 
@@ -1455,7 +1455,7 @@
         <xsl:if test="LowLevelTerm/fullName != ''">: <xsl:value-of select="LowLevelTerm/fullName"/></xsl:if>
         <xsl:choose>
         <xsl:when test="LowLevelTerm/fullName"></xsl:when>
-        <xsl:otherwise><xsl:if test="AdverseEventCtcTerm/ctc-term/otherRequired = 'true'">: <xsl:value-of select="detailsForOther"/></xsl:if></xsl:otherwise>
+        <xsl:otherwise><xsl:if test="AdverseEventCtcTerm/ctc-term/otherRequired = 'true'">: <xsl:value-of select="otherSpecify"/></xsl:if></xsl:otherwise>
         </xsl:choose>
         <xsl:value-of select="AdverseEventMeddraLowLevelTerm/universalTerm"/>,
         <xsl:text disable-output-escaping="yes">&#160;</xsl:text><xsl:text disable-output-escaping="yes">&#160;</xsl:text><xsl:text disable-output-escaping="yes">&#160;</xsl:text> 
@@ -1513,7 +1513,7 @@
                                             <xsl:if test="LowLevelTerm/fullName != ''">: <xsl:value-of select="LowLevelTerm/fullName"/></xsl:if>
                                             <xsl:choose>
                                                 <xsl:when test="LowLevelTerm/fullName"></xsl:when>
-                                                <xsl:otherwise><xsl:if test="AdverseEventCtcTerm/ctc-term/otherRequired = 'true'">: <xsl:value-of select="detailsForOther"/></xsl:if></xsl:otherwise>
+                                                <xsl:otherwise><xsl:if test="AdverseEventCtcTerm/ctc-term/otherRequired = 'true'">: <xsl:value-of select="otherSpecify"/></xsl:if></xsl:otherwise>
                                             </xsl:choose>
                                             <xsl:value-of select="AdverseEventMeddraLowLevelTerm/universalTerm"/>
                                         </fo:block>

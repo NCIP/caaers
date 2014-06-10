@@ -1908,7 +1908,7 @@
 									<xsl:choose>     
 						         		<xsl:when test="LowLevelTerm/fullName"></xsl:when>
 						                <xsl:otherwise>
-						                	<xsl:if test="AdverseEventCtcTerm/ctc-term/otherRequired = 'true'">: <xsl:value-of select="detailsForOther"/></xsl:if>
+						                	<xsl:if test="AdverseEventCtcTerm/ctc-term/otherRequired = 'true'">: <xsl:value-of select="otherSpecify"/></xsl:if>
 						                </xsl:otherwise>
 								 	</xsl:choose>								  			
 
