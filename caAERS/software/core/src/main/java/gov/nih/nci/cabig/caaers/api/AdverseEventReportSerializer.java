@@ -993,6 +993,7 @@ public class AdverseEventReportSerializer {
 		    	adverseEvent.setStartDate(ae.getStartDate());
 		    	adverseEvent.setEndDate(ae.getEndDate());
 		    	adverseEvent.setConcomitantMedicationAttributions(ae.getConcomitantMedicationAttributions());
+		    	adverseEvent.setOtherSpecify(ae.getOtherSpecify());
 	
 		    	List<OtherCauseAttribution> otList = new ArrayList<OtherCauseAttribution>();
 	
