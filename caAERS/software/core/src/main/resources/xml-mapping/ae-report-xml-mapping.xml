@@ -912,6 +912,9 @@
     <field name="detailsForOther" type="string">
       <bind-xml name="detailsForOther" node="element"/>
     </field>
+    <field name="otherSpecify" type="string">
+      <bind-xml name="otherSpecify" node="element"/>
+    </field>
     <field name="expected" type="boolean">
       <bind-xml name="expected" node="element"/>
     </field>
