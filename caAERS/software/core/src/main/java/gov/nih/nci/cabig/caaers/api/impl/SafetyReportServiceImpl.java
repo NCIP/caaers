@@ -608,7 +608,9 @@ public class SafetyReportServiceImpl {
     	 baseReport.setReportID(report.getAeReport().getExternalId());
     	 
     	 baseReport.setAction(actionType.getDisplayName());
-    	 baseReport.setAmendmentNumber(report.getLastVersion().getAmendmentNumber().toString());
+    	 if(report.getLastVersion().getAmendmentNumber() != null) {
+    		 baseReport.setAmendmentNumber(report.getLastVersion().getAmendmentNumber().toString());
+    	 }
     	 baseReport.setReportName(report.getReportDefinition().getName());
     	 baseReport.setCaseNumber(report.getCaseNumber());
          if((report.getStatus() == ReportStatus.AMENDED || report.getStatus() == ReportStatus.PENDING || report.getStatus() == ReportStatus.FAILED || 
