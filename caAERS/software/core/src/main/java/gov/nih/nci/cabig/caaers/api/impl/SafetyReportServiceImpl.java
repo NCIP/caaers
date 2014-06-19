@@ -418,9 +418,6 @@ public class SafetyReportServiceImpl {
     				 
     				 if ( aeDestReport.getReports().size() != 0 ) {
             			 aeDestReport.getReports().get(0).setReportDefinition(srcReport.getReportDefinition());
-            			 if(caaersServiceResponse != null){
-            				 buildReportInformationOutput(aeDestReport.getReports().get(0), caaersServiceResponse, ActionType.EDIT);
-            			 }
     				 }
     				 
     			 }
