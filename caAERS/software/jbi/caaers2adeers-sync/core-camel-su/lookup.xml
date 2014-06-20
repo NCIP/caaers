@@ -86,36 +86,33 @@
 		<delayuom><code>805</code><value>HOURS</value></delayuom>
 		<delayuom><code>806</code><value>MINUTES</value></delayuom>
 	</delayuoms>
-    <uoms>
-    	<uom><code>kg</code><value>kg</value></uom>
-		<uom><code>g</code><value>g</value></uom>
-		<uom><code>mg</code><value>mg</value></uom>
-		<uom><code>mcg</code><value>mcg</value></uom>
-		<uom><code>ng</code><value>ng</value></uom>
-		<uom><code>pg</code><value>pg</value></uom>
-		<uom><code>mg/m 2</code><value>mg/m 2</value></uom>
-		<uom><code>mg/ m 2</code><value>mg/ m 2</value></uom>
-		<uom><code>l</code><value>l</value></uom>
-		<uom><code>ml</code><value>ml</value></uom>
-		<uom><code>mcl</code><value>mcl</value></uom>
-		<uom><code>Bq</code><value>Bq</value></uom>
-		<uom><code>GBq</code><value>GBq</value></uom>
-		<uom><code>MBq</code><value>MBq</value></uom>
-		<uom><code>Kbq</code><value>Kbq</value></uom>
-		<uom><code>Ci</code><value>Ci</value></uom>
-		<uom><code>mCi</code><value>mCi</value></uom>
-		<uom><code>mcCi</code><value>mcCi</value></uom>
-		<uom><code>NCi</code><value>NCi</value></uom>
-		<uom><code>mol</code><value>mol</value></uom>
-		<uom><code>mmol</code><value>mmol</value></uom>
-		<uom><code>mcmol</code><value>mcmol</value></uom>
-		<uom><code>IU</code><value>IU</value></uom>
-		<uom><code>Kiu</code><value>Kiu</value></uom>
-		<uom><code>million iu</code><value>million iu</value></uom>
-		<uom><code>mEq</code><value>mEq</value></uom>
-		<uom><code>Percent</code><value>Percent</value></uom>
-		<uom><code>Gtt</code><value>Gtt</value></uom>
-		<uom><code>DF</code><value>DF</value></uom>    	
+      <uoms>
+    	<uom><code>%</code><value>%</value></uom>
+		<uom><code>1000/mm3</code><value>1000/mm3</value></uom>
+		<uom><code>1000/uL</code><value>1000/uL</value></uom>
+		<uom><code>g/dL</code><value>g/dL</value></uom>
+		<uom><code>g/L</code><value>g/L</value></uom>
+		<uom><code>mEq/L</code><value>mEq/L</value></uom>
+		<uom><code>mg/dL</code><value>mg/dL</value></uom>
+		<uom><code>mL/Min/1.73m2</code><value>mL/Min/1.73m2</value></uom>
+		<uom><code>mmHg</code><value>mmHg</value></uom>
+		<uom><code>n/a</code><value>n/a</value></uom>
+		<uom><code>number</code><value>number</value></uom>
+		<uom><code>seconds</code><value>seconds</value></uom>
+		<uom><code>U/L</code><value>U/L</value></uom>
+		<uom><code>ug/mL</code><value>ug/mL</value></uom>
+		<uom><code>cells/L</code><value>cells/L</value></uom>
+		<uom><code>gm</code><value>gm</value></uom>
+		<uom><code>gm/dl</code><value>gm/dl</value></uom>
+		<uom><code>iU/L</code><value>iU/L</value></uom>
+		<uom><code>kPa</code><value>kPa</value></uom>
+		<uom><code>mg/L</code><value>mg/L</value></uom>
+		<uom><code>min</code><value>min</value></uom>
+		<uom><code>mm3</code><value>mm3</value></uom>
+		<uom><code>mmol/L</code><value>mmol/L</value></uom>
+		<uom><code>ul</code><value>ul</value></uom>
+		<uom><code>umol/L</code><value>umol/L</value></uom>
+		<uom><code>Vol Frac</code><value>Vol Frac</value></uom>
     </uoms>
     <adjustments>
     	<adjustment><code>1</code><value>Discontinue Radiation</value></adjustment>
