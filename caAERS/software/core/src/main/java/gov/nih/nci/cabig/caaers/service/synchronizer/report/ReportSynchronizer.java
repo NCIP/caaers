@@ -16,13 +16,16 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * @author Ramakrishna Gundala
  */
 public class ReportSynchronizer implements Migrator<ExpeditedAdverseEventReport> {
+	private static Log logger = LogFactory.getLog(ReportSynchronizer.class);
     public void migrate(ExpeditedAdverseEventReport xmlAeReport, ExpeditedAdverseEventReport dbAeReport, DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome) {
-
+    	
         List<Report> newlyFoundReports = new ArrayList<Report>();
 
         if (xmlAeReport.getReports() == null || xmlAeReport.getReports().isEmpty()) {
@@ -41,8 +44,11 @@ public class ReportSynchronizer implements Migrator<ExpeditedAdverseEventReport>
 	            if(reportFound != null) {
 	                synchronizeReport(report, reportFound);
 	            }else {
-	                newlyFoundReports.add(reportFound);
+	            	logger.error("The report with given ID " + report.getCaseNumber() + " is not found in the system. So not performing any operation");
+	                outcome.addError("RS-ERR-1", "The report ID: " +  report.getCaseNumber() + " in the input is not found in the system, so not performing any operation ");
 	            }
+        	} else {
+        		newlyFoundReports.add(report);
         	}
         }
 
