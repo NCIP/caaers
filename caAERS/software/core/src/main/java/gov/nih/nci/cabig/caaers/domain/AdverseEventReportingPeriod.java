@@ -340,6 +340,29 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
     }
     
     /**
+     * This method will return a list of adverse events in the reporting period that are not part of any data collection and who have same +
+     * ctc term as the given AE
+     *
+     * @return list of duplicate adverse events
+     */
+    
+    public List<AdverseEvent> findDuplicateAesByAeCtcTerms(AdverseEvent ae){
+    	List<AdverseEvent> dupAes = new ArrayList<AdverseEvent>();
+    	if(ae.getAdverseEventCtcTerm() != null && ae.getAdverseEventCtcTerm().getCtcTerm() != null){
+    		for(AdverseEvent advEvent : getAdverseEvents()){
+    			// find out all adverse events which are not part of any data collection and which have same ctc term as the input adverse event
+        		if(advEvent.getReport() == null && advEvent.getAdverseEventCtcTerm() != null && advEvent.getAdverseEventCtcTerm().getCtcTerm() != null){
+        			if(ae.getAdverseEventCtcTerm().getCtcTerm().equals(advEvent.getAdverseEventCtcTerm().getCtcTerm()) && !ae.getId().equals(advEvent.getId())){
+        				dupAes.add(advEvent);
+        			}
+        		}
+        	}
+    	} 
+    	
+    	return dupAes;
+    }
+    
+    /**
      * This method will return a a sorted list containing the newly added evaluated adverse events + adverse events associated to data collection, that got modified +
      * adverse events associated to data collection that are not reported.
      *
@@ -1031,4 +1054,5 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
         result = 31 * result + (externalId != null ? externalId.hashCode() : 0);
         return result;
     }
+    
 }

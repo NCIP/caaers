@@ -412,6 +412,7 @@ default-lazy-init="true">
 			<property name="expeditedAdverseEventReportDao" ref="expeditedAdverseEventReportDao" />
 			<property name="messageSource" ref="messageSource" />
 			<property name="workflowService" ref="workflowService"/>
+			<property name="adverseEventReportingPeriodDao" ref="adverseEventReportingPeriodDao"/>
 	</bean>
 	<bean id="reportWithdrawalService" class="gov.nih.nci.cabig.caaers.service.ReportWithdrawalService" autowire="byType" lazy-init="true" />
 	<bean id="adverseEventReportSerializer" class="gov.nih.nci.cabig.caaers.api.AdverseEventReportSerializer" />

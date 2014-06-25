@@ -6,7 +6,6 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.rules.business.service;
 
-import edu.emory.mathcs.backport.java.util.Collections;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
@@ -33,7 +32,6 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryField;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.RequirednessIndicator;
-import gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.ReportDefinitions;
 import gov.nih.nci.cabig.caaers.rules.common.AdverseEventEvaluationResult;
 import gov.nih.nci.cabig.caaers.rules.common.CaaersRuleUtil;
 import gov.nih.nci.cabig.caaers.rules.common.RuleType;
@@ -46,6 +44,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -60,7 +59,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
- * This class is a facade to the @{AdverseEventEvaluationService}, provides methods to evauate serious adverse events
+ * This class is a facade to the @{AdverseEventEvaluationService}, provides methods to evaluate serious adverse events
  *
  * @author Srini Akkala
  * @author Biju Joseph
@@ -122,6 +121,7 @@ public class EvaluationServiceImpl implements EvaluationService {
         		
         		List<AdverseEvent> allAdverseEvents = new ArrayList<AdverseEvent>(newlyAddedAdverseEvents);
         		allAdverseEvents.addAll(aeReport.getAdverseEvents());
+        		removeUnModifiedDuplicateAdverseEvents(evaluatableAdverseEvents, aeReport);
         		if(!evaluatableAdverseEvents.isEmpty()) findRequiredReportDefinitions(aeReport, evaluatableAdverseEvents, reportingPeriod.getStudy(), result);
         		result.addAllAdverseEvents(aeReport.getId(), allAdverseEvents);
         		
@@ -150,6 +150,21 @@ public class EvaluationServiceImpl implements EvaluationService {
     	}
     	
     	return result;
+    }
+    
+    
+    private void removeUnModifiedDuplicateAdverseEvents(List<AdverseEvent> evaluatableAdverseEvents, ExpeditedAdverseEventReport aeReport){
+    	Iterator<AdverseEvent> aeIterator = evaluatableAdverseEvents.iterator();
+    	while(aeIterator.hasNext()){
+    		AdverseEvent ae = aeIterator.next();
+    		if(aeReport.doesAnotherAeWithSameTermExist(ae) != null){
+    			// remove the AE from evaluation input if the AE is already part of the report and is not modified according to the signature
+    			if(ae.getAddedToReportAtLeastOnce() != null && ae.getAddedToReportAtLeastOnce() && !ae.isModified()){
+    				aeIterator.remove();
+    			}
+    		}
+    	}
+    	
     }
     
     

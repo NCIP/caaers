@@ -21,6 +21,7 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportType;
+import gov.nih.nci.cabig.caaers.domain.report.ReportedAdverseEvent;
 import gov.nih.nci.cabig.caaers.service.ReportWithdrawalService;
 import gov.nih.nci.cabig.caaers.service.SchedulerService;
 import gov.nih.nci.cabig.caaers.utils.RoleUtils;
@@ -231,6 +232,12 @@ public class ReportRepositoryImpl implements ReportRepository {
         
         //set the manually selected flag.
         report.setManuallySelected(reportDefinition.isManuallySelected());
+        
+        // update AE added to report at least once flag
+        
+        for(ReportedAdverseEvent reportedAe : report.getLastVersion().getReportedAdversEvents()){
+        	reportedAe.getAdverseEvent().setAddedToReportAtLeastOnce(true);
+        }
        
         //save the report
         save(report);

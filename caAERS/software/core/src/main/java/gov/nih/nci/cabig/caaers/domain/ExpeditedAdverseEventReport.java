@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.attribution.*;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportedAdverseEvent;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.utils.ObjectUtils;
 import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
@@ -2095,6 +2096,22 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	for(Report report : reports){
     		if(report.getCaseNumber() != null && report.getCaseNumber().equalsIgnoreCase(caseNumber)){
     			return report;
+    		}
+    	}
+    	
+    	return null;
+    }
+    
+    public AdverseEvent doesAnotherAeWithSameTermExist(AdverseEvent sae){
+    	for(AdverseEvent ae : getAdverseEvents()){
+    		if(sae.getAdverseEventCtcTerm() != null && sae.getAdverseEventCtcTerm().getCtcTerm() != null){
+    			if(ae.getAdverseEventCtcTerm() != null && ae.getAdverseEventCtcTerm().getCtcTerm() != null) {
+    				if(sae.getAdverseEventCtcTerm().getCtcTerm().equals(ae.getAdverseEventCtcTerm().getCtcTerm())){
+    					if(!sae.getId().equals(ae.getId())){
+    						return ae;
+    					}
+    				}
+    			}
     		}
     	}
     	

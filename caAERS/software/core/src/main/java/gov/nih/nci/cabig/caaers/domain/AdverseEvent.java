@@ -162,7 +162,17 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     /** The reported. */
     private Boolean reported;
     
-    /** The participant at risk. */
+    private Boolean addedToReportAtLeastOnce;
+    
+    public Boolean getAddedToReportAtLeastOnce() {
+		return addedToReportAtLeastOnce;
+	}
+
+	public void setAddedToReportAtLeastOnce(Boolean addedToReportAtLeastOnce) {
+		this.addedToReportAtLeastOnce = addedToReportAtLeastOnce;
+	}
+
+	/** The participant at risk. */
     private Boolean participantAtRisk;
     
     private String externalId;

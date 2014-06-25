@@ -8,9 +8,11 @@ package gov.nih.nci.cabig.caaers.service;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.api.AdeersReportGenerator;
+import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
@@ -33,6 +35,7 @@ import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -69,8 +72,14 @@ public class ReportSubmissionService {
     private ReportDao reportDao;
     private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
     private MessageSource messageSource;
+    private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
     
-    /**
+    public void setAdverseEventReportingPeriodDao(
+			AdverseEventReportingPeriodDao adverseEventReportingPeriodDao) {
+		this.adverseEventReportingPeriodDao = adverseEventReportingPeriodDao;
+	}
+
+	/**
      * This method will generate the PDF and xml content. 
      * @param context
      */
@@ -170,6 +179,24 @@ public class ReportSubmissionService {
             for(AdverseEvent ae : report.getAeReport().getActiveAdverseEvents()){
             	reportVersion.addReportedAdverseEvent(ae);
             }
+            
+            // update signature of duplicate AEs that are not part of the data collection but part of the reporting period.
+           ExpeditedAdverseEventReport aereport = report.getAeReport();
+           AdverseEventReportingPeriod reportingPeriod = aereport.getReportingPeriod();
+           List<AdverseEvent> reportAes = aereport.getAdverseEvents();
+           
+           List<AdverseEvent> duplicateUnReportedAes = new ArrayList<AdverseEvent>();
+           for(AdverseEvent reportAe : reportAes){
+        	   duplicateUnReportedAes.addAll(reportingPeriod.findDuplicateAesByAeCtcTerms(reportAe));
+           }
+           // update signature of all the unreported duplicate AEs and save them
+           
+           for(AdverseEvent dupAe : duplicateUnReportedAes){
+        	   dupAe.setSignature(dupAe.getCurrentSignature());
+           }
+           
+           adverseEventReportingPeriodDao.save(reportingPeriod);
+           
 
     	} catch (Exception e ) {
     		throw new RuntimeException(e);

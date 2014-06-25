@@ -302,9 +302,7 @@ public class SafetyReportServiceImpl {
 	        if(outCome.hasErrors()) errors.addValidationErrors(outCome.getValidationErrors().getErrors());
             if(errors.hasErrors()) return aeDestReport;
         }
-        // Update AE Signatures.
-        aeDestReport.updateAESignatures();
-        
+
         transferStudySubjectIfRequired(aeSrcReport, aeDestReport, errors);
         if(errors.hasErrors()) return aeDestReport;
 
@@ -350,9 +348,6 @@ public class SafetyReportServiceImpl {
         if(outCome.hasErrors()) errors.addValidationErrors(outCome.getValidationErrors().getErrors());
         if(errors.hasErrors()) return reportsAffected;
 
-        // Update AE Signatures.
-        aeDestReport.updateAESignatures();
-        
         expeditedAdverseEventReportDao.save(dbReport);
         
         transferStudySubjectIfRequired(aeSrcReport, aeDestReport, errors);
