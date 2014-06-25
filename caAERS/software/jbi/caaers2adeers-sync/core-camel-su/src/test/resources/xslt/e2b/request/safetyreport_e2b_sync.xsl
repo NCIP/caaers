@@ -1002,6 +1002,13 @@
 					<xsl:value-of select="primarysourcereaction" />
 				</verbatim>
 			</xsl:if>
+			<xsl:if test="othreactionmeddrallt">
+				<adverseEventCtepTerm>
+					<otherSpecify>
+						<xsl:value-of select="othreactionmeddrallt" />
+					</otherSpecify>
+				</adverseEventCtepTerm>
+			</xsl:if>
 			<xsl:if test="reactionstartdate">
 				<startDate>
 					<xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">
