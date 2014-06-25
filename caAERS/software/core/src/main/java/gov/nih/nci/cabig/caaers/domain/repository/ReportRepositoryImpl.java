@@ -235,8 +235,8 @@ public class ReportRepositoryImpl implements ReportRepository {
         
         // update AE added to report at least once flag
         
-        for(ReportedAdverseEvent reportedAe : report.getLastVersion().getReportedAdversEvents()){
-        	reportedAe.getAdverseEvent().setAddedToReportAtLeastOnce(true);
+        for(AdverseEvent reportedAe : aeReport.getAdverseEvents()){
+        	reportedAe.setAddedToReportAtLeastOnce(true);
         }
        
         //save the report
