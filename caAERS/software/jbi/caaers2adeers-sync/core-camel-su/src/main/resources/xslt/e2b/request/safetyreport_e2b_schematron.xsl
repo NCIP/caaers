@@ -187,15 +187,6 @@
 				<xsl:attribute name="document">
 					<xsl:value-of select="document-uri(/)"/>
 				</xsl:attribute>
-				<xsl:attribute name="id">Course Agent</xsl:attribute>
-				<xsl:attribute name="name">CourseAgent: validate dose unit</xsl:attribute>
-				<xsl:apply-templates/>
-			</svrl:active-pattern>
-			<xsl:apply-templates select="/" mode="M7"/> 
-			<svrl:active-pattern>
-				<xsl:attribute name="document">
-					<xsl:value-of select="document-uri(/)"/>
-				</xsl:attribute>
 				<xsl:attribute name="id">Lab</xsl:attribute>
 				<xsl:attribute name="name">Lab: validate lab test unit</xsl:attribute>
 				<xsl:apply-templates/>
@@ -322,33 +313,6 @@
 	<xsl:template match="text()" priority="-1" mode="M6"/>
 	<xsl:template match="@*|node()" priority="-2" mode="M6">
 		<xsl:apply-templates select="*|comment()|processing-instruction()" mode="M6"/>
-	</xsl:template>
-	
-	<!--PATTERN CourseAgent: validate dose unit -->
-	<svrl:text xmlns:svrl="http://purl.oclc.org/dsdl/svrl">CourseAgent: validate dose unit</svrl:text>
-
-	<!--RULE -->
-	<xsl:template match="//drug[drugadditional != 'Radiation' and  drugadditional != 'Surgery' and drugadditional != 'Device' and drugcharacterization = '1']" priority="1001" mode="M7">
-		<svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="//drug[drugadditional != 'Radiation' and  drugadditional != 'Surgery' and drugadditional != 'Device' and drugcharacterization = '1']"/>
-
-		<!--ASSERT -->
-		<xsl:choose>
-			<xsl:when test="caaers:lookup(./drugcumulativedosageunitextended, $map//uoms)!=''"/>
-			<xsl:otherwise>
-				<svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
-                                test="drugcumulativedosageunitextended">
-					<xsl:attribute name="location">
-						<xsl:apply-templates select="." mode="schematron-select-full-path"/>
-					</xsl:attribute>
-					<svrl:text>Unavailable matching course agent dose unit</svrl:text>
-				</svrl:failed-assert>
-			</xsl:otherwise>
-		</xsl:choose>
-		<xsl:apply-templates select="*|comment()|processing-instruction()" mode="M7"/>
-	</xsl:template>
-	<xsl:template match="text()" priority="-1" mode="M7"/>
-	<xsl:template match="@*|node()" priority="-2" mode="M7">
-		<xsl:apply-templates select="*|comment()|processing-instruction()" mode="M7"/>
 	</xsl:template>
 	
 	<!--PATTERN Lab: validate test unit -->
