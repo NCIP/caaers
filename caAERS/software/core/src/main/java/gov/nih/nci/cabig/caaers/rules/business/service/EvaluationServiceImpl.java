@@ -108,6 +108,12 @@ public class EvaluationServiceImpl implements EvaluationService {
     	//determine discrete set of AdverseEvents, against which the rules should be fired.
     	List<AdverseEvent> newlyAddedAdverseEvents = reportingPeriod.getNonExpeditedAdverseEvents();
     	
+    	// CAAERS-4881 : have to remove unmodified duplicate adverse events from the newly added adverse events;
+    	
+    	if(!aeReports.isEmpty()){
+    		removeUnModifiedDuplicateAdverseEvents(newlyAddedAdverseEvents, aeReports.get(aeReports.size()-1));
+    	}
+    	
     	//find the evaluation for default (new data collection)
         if(!newlyAddedAdverseEvents.isEmpty()) findRequiredReportDefinitions(null, newlyAddedAdverseEvents, reportingPeriod.getStudy(), result);
     	result.addAllAdverseEvents(new Integer(0), newlyAddedAdverseEvents);
@@ -153,8 +159,8 @@ public class EvaluationServiceImpl implements EvaluationService {
     }
     
     
-    private void removeUnModifiedDuplicateAdverseEvents(List<AdverseEvent> evaluatableAdverseEvents, ExpeditedAdverseEventReport aeReport){
-    	Iterator<AdverseEvent> aeIterator = evaluatableAdverseEvents.iterator();
+    private void removeUnModifiedDuplicateAdverseEvents(List<AdverseEvent> adverseEvents, ExpeditedAdverseEventReport aeReport){
+    	Iterator<AdverseEvent> aeIterator = adverseEvents.iterator();
     	while(aeIterator.hasNext()){
     		AdverseEvent ae = aeIterator.next();
     		if(aeReport.doesAnotherAeWithSameTermExist(ae) != null){
