@@ -67,9 +67,12 @@ public class AdverseEventConverter {
         }  else {
             adverseEvent.setGradedDate(new Date()); // Set the default date as now.
         }
-
+        
+        if(adverseEventDto.getAdverseEventCtepTerm() != null) {
+        	adverseEvent.setOtherSpecify(adverseEventDto.getAdverseEventCtepTerm().getOtherSpecify());
+        }
+        		
         if(adverseEventDto.getAdverseEventCtepTerm() != null && adverseEventDto.getAdverseEventCtepTerm().getCtepCode() != null){
-            adverseEvent.setOtherSpecify(adverseEventDto.getAdverseEventCtepTerm().getOtherSpecify());
             AdverseEventCtcTerm ctcTerm = new AdverseEventCtcTerm();
             adverseEvent.setAdverseEventCtcTerm(ctcTerm);
             ctcTerm.setCtcTerm(new CtcTerm());
