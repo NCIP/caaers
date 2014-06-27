@@ -8,6 +8,7 @@ package gov.nih.nci.cabig.caaers.service;
 
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.api.AdeersReportGenerator;
+import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
@@ -54,6 +55,7 @@ public class ReportSubmissionServiceTest extends AbstractNoSecurityTestCase {
     
     private ReportDao reportDao;
 	private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
+	private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
 	private MessageSource messageSource;
 	
 	Report report;
@@ -77,6 +79,7 @@ public class ReportSubmissionServiceTest extends AbstractNoSecurityTestCase {
 		reportRepository = registerMockFor(ReportRepository.class);
 		reportDao = registerDaoMockFor(ReportDao.class);
 		expeditedAdverseEventReportDao = registerDaoMockFor(ExpeditedAdverseEventReportDao.class);
+		adverseEventReportingPeriodDao = registerDaoMockFor(AdverseEventReportingPeriodDao.class);
 		messageSource = registerMockFor(MessageSource.class);
 		
 		service.setMessageSource(messageSource);
@@ -92,6 +95,7 @@ public class ReportSubmissionServiceTest extends AbstractNoSecurityTestCase {
 		
 		service.setReportDao(reportDao);
 		service.setExpeditedAdverseEventReportDao(expeditedAdverseEventReportDao);
+		service.setAdverseEventReportingPeriodDao(adverseEventReportingPeriodDao);
 		service.setCaaersJavaMailSender(new CaaersJavaMailSender() {
 			@Override
 			public void sendMail(String[] to, String subject, String content,String[] attachmentFilePaths) {
@@ -209,6 +213,7 @@ public class ReportSubmissionServiceTest extends AbstractNoSecurityTestCase {
         EasyMock.expect(adeersReportGenerator.generateCaaersXml(aeReport, report)).andReturn("hello");
         EasyMock.expect(adeersReportGenerator.generateExternalReports(report,"hello",report.getLastVersion().getId())).andReturn(new String[]{"testing"});
 		EasyMock.expect(reportRepository.createChildReports(report)).andReturn(new ArrayList<Report>());
+		adverseEventReportingPeriodDao.save(rp);
 
 		ReportSubmissionContext context = ReportSubmissionContext.getSubmissionContext(report);
 		

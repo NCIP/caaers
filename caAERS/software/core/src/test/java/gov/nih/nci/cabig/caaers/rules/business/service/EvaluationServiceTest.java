@@ -471,9 +471,14 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		
 		ExpeditedAdverseEventReport aeReport1 = registerMockFor(ExpeditedAdverseEventReport.class);
 		expect(aeReport1.getId()).andReturn(new Integer(1)).anyTimes();
+		EasyMock.expect(aeReport1.doesAnotherAeWithSameTermExist(ae2)).andReturn(null);
+		
 		expect(aeReport1.getActiveModifiedAdverseEvents()).andReturn(aeList1);
+		EasyMock.expect(aeReport1.doesAnotherAeWithSameTermExist(ae1)).andReturn(null);
+		EasyMock.expect(aeReport1.doesAnotherAeWithSameTermExist(ae2)).andReturn(null);
 		expect(aeReport1.getModifiedAdverseEvents()).andReturn(aeList1);
 		expect(aeReport1.getAdverseEvents()).andReturn(aeList1).anyTimes();
+		
 		expect(aeReport1.isActive()).andReturn(false);
 		expect(aeReport1.getManuallySelectedReports()).andReturn(new ArrayList<Report>());
 		expect(aeReport1.getActiveReports()).andReturn(new ArrayList<Report>());
@@ -611,7 +616,11 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		
 		ExpeditedAdverseEventReport aeReport1 = registerMockFor(ExpeditedAdverseEventReport.class);
 		expect(aeReport1.getId()).andReturn(new Integer(1)).anyTimes();
+		
+		EasyMock.expect(aeReport1.doesAnotherAeWithSameTermExist(ae2)).andReturn(null);
+		
 		expect(aeReport1.getActiveModifiedAdverseEvents()).andReturn(EMPTY_AE_LIST);
+		EasyMock.expect(aeReport1.doesAnotherAeWithSameTermExist(ae2)).andReturn(null);
 		expect(aeReport1.getModifiedAdverseEvents()).andReturn(EMPTY_AE_LIST);
 		expect(aeReport1.getAdverseEvents()).andReturn(aeList1).anyTimes();
 		expect(aeReport1.isActive()).andReturn(false);
@@ -755,7 +764,10 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		
 		ExpeditedAdverseEventReport aeReport1 = registerMockFor(ExpeditedAdverseEventReport.class);
 		expect(aeReport1.getId()).andReturn(new Integer(1)).anyTimes();
+		EasyMock.expect(aeReport1.doesAnotherAeWithSameTermExist(ae2)).andReturn(null);
 		expect(aeReport1.getActiveAdverseEvents()).andReturn(aeList1);
+		EasyMock.expect(aeReport1.doesAnotherAeWithSameTermExist(ae2)).andReturn(null);
+		EasyMock.expect(aeReport1.doesAnotherAeWithSameTermExist(ae1)).andReturn(null);
 		expect(aeReport1.getModifiedAdverseEvents()).andReturn(EMPTY_AE_LIST);
 		expect(aeReport1.getAdverseEvents()).andReturn(aeList1).anyTimes();
 		expect(aeReport1.isActive()).andReturn(true);
@@ -896,6 +908,7 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		expect(aeReport1.getId()).andReturn(new Integer(1)).anyTimes();
 		expect(aeReport1.getActiveModifiedAdverseEvents()).andReturn(Arrays.asList(ae1)).anyTimes();
 		expect(aeReport1.getModifiedAdverseEvents()).andReturn(Arrays.asList(ae1)).anyTimes();
+		EasyMock.expect(aeReport1.doesAnotherAeWithSameTermExist(ae1)).andReturn(null);
 		expect(aeReport1.listReportsHavingStatus(ReportStatus.COMPLETED)).andReturn(Arrays.asList(r1, rz)).times(2);
 		expect(aeReport1.findCompletedAmendableReports()).andReturn(Arrays.asList(r1, rz));
 		expect(aeReport1.getActiveReports()).andReturn(new ArrayList<Report>());
@@ -995,6 +1008,7 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		expect(aeReport1.getId()).andReturn(new Integer(1)).anyTimes();
 		expect(aeReport1.getActiveModifiedAdverseEvents()).andReturn(EMPTY_AE_LIST).anyTimes();
 		expect(aeReport1.getModifiedAdverseEvents()).andReturn(EMPTY_AE_LIST).anyTimes();
+		EasyMock.expect(aeReport1.doesAnotherAeWithSameTermExist(ae2)).andReturn(null).times(2);
 		expect(aeReport1.getActiveReports()).andReturn(EMPTY_REPORT_LIST);
 		expect(aeReport1.isActive()).andReturn(false);
 		expect(aeReport1.getAdverseEvents()).andReturn(Arrays.asList(ae1)).anyTimes();
@@ -1129,6 +1143,8 @@ public class EvaluationServiceTest extends AbstractTestCase {
     	expect(aeReport1.getId()).andReturn(new Integer(1)).anyTimes();
 		expect(aeReport1.getAdverseEvents()).andReturn(Arrays.asList(ae1, ae2)).anyTimes();
 		expect(aeReport1.getActiveAdverseEvents()).andReturn(Arrays.asList(ae1,ae2));
+		EasyMock.expect(aeReport1.doesAnotherAeWithSameTermExist(ae1)).andReturn(null);
+		EasyMock.expect(aeReport1.doesAnotherAeWithSameTermExist(ae2)).andReturn(null);
 		expect(aeReport1.getModifiedAdverseEvents()).andReturn(Arrays.asList(ae1));
 		expect(aeReport1.isActive()).andReturn(true);
 		expect(aeReport1.getManuallySelectedReports()).andReturn(new ArrayList<Report>());
@@ -1242,7 +1258,10 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		
 		ExpeditedAdverseEventReport aeReport1 = registerMockFor(ExpeditedAdverseEventReport.class);
 		expect(aeReport1.getId()).andReturn(new Integer(1)).anyTimes();
+		EasyMock.expect(aeReport1.doesAnotherAeWithSameTermExist(ae2)).andReturn(null);
 		expect(aeReport1.getActiveAdverseEvents()).andReturn(aeList1);
+		EasyMock.expect(aeReport1.doesAnotherAeWithSameTermExist(ae2)).andReturn(null);
+		EasyMock.expect(aeReport1.doesAnotherAeWithSameTermExist(ae1)).andReturn(null);
 		expect(aeReport1.getModifiedAdverseEvents()).andReturn(EMPTY_AE_LIST);
 		expect(aeReport1.isActive()).andReturn(true);
 		expect(aeReport1.getActiveReports()).andReturn(Arrays.asList(r1));
@@ -1356,9 +1375,12 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		
 		ExpeditedAdverseEventReport aeReport1 = registerMockFor(ExpeditedAdverseEventReport.class);
 		expect(aeReport1.getId()).andReturn(new Integer(1)).anyTimes();
+		EasyMock.expect(aeReport1.doesAnotherAeWithSameTermExist(ae2)).andReturn(null);
 		expect(aeReport1.getActiveAdverseEvents()).andReturn(aeList1);
 		expect(aeReport1.getModifiedAdverseEvents()).andReturn(EMPTY_AE_LIST).anyTimes();
 		expect(aeReport1.isActive()).andReturn(true);
+		EasyMock.expect(aeReport1.doesAnotherAeWithSameTermExist(ae2)).andReturn(null);
+		EasyMock.expect(aeReport1.doesAnotherAeWithSameTermExist(ae1)).andReturn(null);
 		expect(aeReport1.getActiveReports()).andReturn(Arrays.asList(r1));
 		expect(aeReport1.getManuallySelectedReports()).andReturn(EMPTY_REPORT_LIST);
 		expect(aeReport1.getAdverseEvents()).andReturn(aeList1).anyTimes();
@@ -1462,7 +1484,10 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		
 		ExpeditedAdverseEventReport aeReport1 = registerMockFor(ExpeditedAdverseEventReport.class);
 		expect(aeReport1.getId()).andReturn(new Integer(1)).anyTimes();
+		EasyMock.expect(aeReport1.doesAnotherAeWithSameTermExist(ae2)).andReturn(null);
 		expect(aeReport1.getActiveAdverseEvents()).andReturn(aeList1);
+		EasyMock.expect(aeReport1.doesAnotherAeWithSameTermExist(ae2)).andReturn(null);
+		EasyMock.expect(aeReport1.doesAnotherAeWithSameTermExist(ae1)).andReturn(null);
 		expect(aeReport1.getModifiedAdverseEvents()).andReturn(EMPTY_AE_LIST);
 		expect(aeReport1.isActive()).andReturn(true);
 		expect(aeReport1.getActiveReports()).andReturn(Arrays.asList(r1));

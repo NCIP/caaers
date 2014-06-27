@@ -110,7 +110,7 @@ public class EvaluationServiceImpl implements EvaluationService {
     	
     	// CAAERS-4881 : have to remove unmodified duplicate adverse events from the newly added adverse events;
     	
-    	if(!aeReports.isEmpty()){
+    	if(aeReports != null && !aeReports.isEmpty()){
     		removeUnModifiedDuplicateAdverseEvents(newlyAddedAdverseEvents, aeReports.get(aeReports.size()-1));
     	}
     	
