@@ -76,10 +76,13 @@
         <property name="adeersWSUser" value="s[ADEERS_WS_USERNAME]" />
         <property name="adeersWSPassword" value="s[ADEERS_WS_PASSWORD]" />
     </bean>
+    <bean id="trimWhitespaceMessageProcessor" class="gov.nih.nci.cabig.rave2caaers.exchange.TrimWhitespaceMessageProcessor"/>
+    
     <bean id="participantODMMessageProcessor" class="gov.nih.nci.cabig.open2caaers.exchange.ParticipantODMMessageProcessor">
     	<property name="caaersWSUser" value="s[PART_IS_USERNAME]" />
         <property name="caaersWSPassword" value="s[PART_IS_PASSWORD]" />
-    </bean>  
+    </bean> 
+     
     <bean id="participantODMMessageBinding" class="gov.nih.nci.cabig.open2caaers.binding.ParticipantODMMessageBinding"/>
     
     <bean id="removeEDIHeadersAndFootersProcessor" class="gov.nih.nci.cabig.report2caaers.exchange.SafetyReportRemoveEDIHeadersAndFootersProcessor"/>
@@ -153,6 +156,7 @@
     <bean id="toCaaersClientRouteBuilder" class="gov.nih.nci.cabig.caaers2adeers.ToCaaersClientRouteBuilder"/>
     <bean id="toCaaersWebserviceRouteBuilder" class="gov.nih.nci.cabig.caaers2adeers.ToCaaersWebserviceRouteBuilder"/>
     <bean id="toCaaersParticipantWSRouteBuilder" class="gov.nih.nci.cabig.open2caaers.ToCaaersParticipantWSRouteBuilder"/>
+    <bean id="fromRaveToCaaersWSRouteBuilder" class="gov.nih.nci.cabig.rave2caaers.FromRaveToCaaersWSRouteBuilder"/>
     <bean id="toCaaersReportWSRouteBuilder" class="gov.nih.nci.cabig.report2caaers.ToCaaersReportWSRouteBuilder">
     	<property name="inputEDIDir" value="s[safetyReportEDIInputDir]"/>
     	<property name="outputEDIDir" value="s[safetyReportEDIOutputDir]"/>

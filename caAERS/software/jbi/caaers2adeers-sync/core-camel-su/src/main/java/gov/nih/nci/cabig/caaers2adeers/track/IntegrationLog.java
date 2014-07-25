@@ -194,6 +194,8 @@ public class IntegrationLog{
         
         ADEERS_REPORT_SUBMISSION_RESPONSE(45, "AdEERS report submission response") ,
         ADEERS_REPORT_SUBMISSION_RESPONSE_TRASNSFORMATION(46, "AdEERS report submission response transformation") ,
+        
+        PRE_PROCESS_RAV_CAAERS_INTEG_MSG(47, "Remove white space in incoming Rave message"),
 
         ;
         private int code;

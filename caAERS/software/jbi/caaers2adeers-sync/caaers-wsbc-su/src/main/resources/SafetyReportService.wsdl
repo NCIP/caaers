@@ -1,1114 +1,1066 @@
-<?xml version="1.0" ?><wsdl:definitions name="SafetyReportManagementService"
-										targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/aereport" 
-										xmlns:ns1="http://schemas.xmlsoap.org/soap/http" 
-										xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
-										xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/aereport"
-										xmlns:http-conf="http://cxf.apache.org/transports/http/configuration"
-										xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
-										xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <wsdl:types>
-<xs:schema elementFormDefault="unqualified" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-	
-    <xs:element name="treatmentAssignment" type="TreatmentAssignmentType"></xs:element>
-    <xs:complexType name="TreatmentAssignmentType">
-        <xs:complexContent>
-            <xs:extension base="DomainObjectType">
-                <xs:sequence>
-                    <xs:element name="code" type="CustomStringType"></xs:element>
-                    <xs:element minOccurs="0" name="doseLevelOrder" type="CustomStringType"></xs:element>
-                    <xs:element name="description" type="CustomStringType"></xs:element>
-                    <xs:element minOccurs="0" name="comments" type="CustomStringType"></xs:element>
-                </xs:sequence>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
-
-    <xs:element name="agentRef" type="AgentRefType"></xs:element>
-    <xs:complexType name="AgentRefType">
-        <xs:sequence>
-            <xs:element name="nscNumber" type="CustomStringType"></xs:element>
-        </xs:sequence>
-    </xs:complexType>
-
-    <xs:element name="agent" type="AgentType"></xs:element>
-    <xs:complexType name="AgentType">
-        <xs:complexContent>
-            <xs:extension base="DomainObjectType">
-               <xs:sequence>
-                    <xs:element name="name" type="CustomStringType"></xs:element>
-                    <xs:element minOccurs="0" name="descriptionText" type="CustomStringType"></xs:element>
-                    <xs:element name="nscNumber" type="CustomStringType"></xs:element>
-                    <xs:element maxOccurs="1" minOccurs="0" name="status" type="ActiveInactiveStatusType"></xs:element>
-                </xs:sequence>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
-    
-    <xs:element name="Agents">
-    	<xs:complexType>
-    		<xs:sequence>
-    			<xs:element maxOccurs="unbounded" ref="agent"></xs:element>
-    		</xs:sequence>
-    	</xs:complexType>
-    </xs:element>
-    
-    <xs:element name="lab" type="LabTermType"></xs:element>
-    <xs:complexType name="LabTermType">
-        <xs:complexContent>
-            <xs:extension base="DomainObjectType">
-               <xs:sequence>
-                    <xs:element name="term" type="CustomStringType"></xs:element>
-                    <xs:element maxOccurs="1" minOccurs="0" name="status" type="ActiveInactiveStatusType"></xs:element>
-                </xs:sequence>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
-    
-    <xs:element name="labs">
-    	<xs:complexType>
-    		<xs:sequence>
-    			<xs:element maxOccurs="unbounded" minOccurs="0" ref="lab"></xs:element>
-    		</xs:sequence>
-    	</xs:complexType>
-    </xs:element>
-    
-    <xs:element name="labCategory" type="LabCategoryType"></xs:element>
-    <xs:complexType name="LabCategoryType">
-               <xs:sequence>
-               		<xs:element name="category" type="CustomStringType"></xs:element>
-                    <xs:element ref="labs"></xs:element>
-                    <xs:element maxOccurs="1" minOccurs="0" name="status" type="ActiveInactiveStatusType"></xs:element>
-                </xs:sequence>
-    </xs:complexType>
-    
-    <xs:element name="labCategories">
-    	<xs:complexType>
-    		<xs:sequence>
-    			<xs:element maxOccurs="unbounded" ref="labCategory"></xs:element>
-    		</xs:sequence>
-    	</xs:complexType>
-    </xs:element>
-
-    <xs:element name="preExistingCondition" type="PreExistingConditionType"></xs:element>
-    <xs:complexType name="PreExistingConditionType">
-        <xs:complexContent>
-            <xs:extension base="DomainObjectType">
-                <xs:sequence>
-                    <xs:element minOccurs="1" name="text" type="CustomStringType"></xs:element>
-                    <xs:element minOccurs="0" name="meddraLltCode" type="xs:string"></xs:element>
-                    <xs:element minOccurs="0" name="meddraLlt" type="xs:string"></xs:element>
-                    <xs:element minOccurs="0" name="meddraHlgt" type="xs:string"></xs:element>
-                    <xs:element maxOccurs="1" minOccurs="0" name="status" type="ActiveInactiveStatusType"></xs:element>
-                </xs:sequence>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
-    
-    <xs:element name="PreExistingConditions">
-    	<xs:complexType>
-    		<xs:sequence>
-    			<xs:element maxOccurs="unbounded" ref="preExistingCondition"></xs:element>
-    		</xs:sequence>
-    	</xs:complexType>
-    </xs:element>
-    
-    <xs:element name="priorTherapy" type="PriorTherapyType"></xs:element>
-    <xs:complexType name="PriorTherapyType">
-        <xs:complexContent>
-            <xs:extension base="DomainObjectType">
-                <xs:sequence>
-                    <xs:element minOccurs="1" name="text" type="CustomStringType"></xs:element>
-                    <xs:element minOccurs="1" name="meddraCode" type="CustomStringType"></xs:element>
-                    <xs:element name="meddraTerm" type="xs:string"></xs:element>
-                    <xs:element name="therapyType" type="xs:string"></xs:element>
-                    <xs:element maxOccurs="1" minOccurs="0" name="status" type="ActiveInactiveStatusType"></xs:element>
-                </xs:sequence>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
-    
-    <xs:element name="PriorTherapies">
-    	<xs:complexType>
-    		<xs:sequence>
-    			<xs:element maxOccurs="unbounded" ref="priorTherapy"></xs:element>
-    		</xs:sequence>
-    	</xs:complexType>
-    </xs:element>
-
-    <xs:element name="investigationalNewDrug" type="InvestigationalNewDrugType"></xs:element>
-    <xs:complexType name="InvestigationalNewDrugType">
-        <xs:complexContent>
-            <xs:extension base="DomainObjectType">
-                <xs:sequence>
-                    <xs:element name="indHolder" type="IndHolderType"></xs:element>
-                    <xs:element name="indNumber" type="xs:integer"></xs:element>
-                </xs:sequence>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
-
-    <xs:element name="indHolder" type="IndHolderType"></xs:element>
-    <xs:complexType name="IndHolderType">
-        <xs:complexContent>
-            <xs:extension base="DomainObjectType">
-                <xs:choice>
-                    <xs:element ref="investigatorRef"></xs:element>
-                    <xs:element ref="organizationRef"></xs:element>
-                </xs:choice>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
-
-    <xs:element name="diseaseTerm" type="DiseaseTermType"></xs:element>
-    <xs:complexType name="DiseaseTermType">
-        <xs:complexContent>
-            <xs:extension base="DomainObjectType">
-                <xs:choice>
-                    <xs:element name="term" type="CustomStringType"></xs:element>
-                    <xs:element name="meddraCode" type="CustomStringType"></xs:element>
-                </xs:choice>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
-
-    <xs:element name="organization" type="OrganizationType"></xs:element>
-    <xs:complexType name="OrganizationType">
-        <xs:complexContent>
-            <xs:extension base="MutableDomainObjectType">
-                <xs:sequence>
-                    <xs:element maxOccurs="1" minOccurs="0" name="descriptionText" type="xs:string"></xs:element>
-                    <xs:element maxOccurs="1" minOccurs="1" name="name" type="CustomStringType"></xs:element>
-                    <xs:element maxOccurs="1" minOccurs="1" name="nciInstituteCode" type="CustomStringType"></xs:element>
-                    <xs:element maxOccurs="1" minOccurs="0" name="city" type="xs:string"></xs:element>
-                    <xs:element maxOccurs="1" minOccurs="0" name="state" type="xs:string"></xs:element>
-                    <xs:element maxOccurs="1" minOccurs="0" name="country" type="xs:string"></xs:element>
-                    <xs:element maxOccurs="1" minOccurs="0" name="status" type="ActiveInactiveStatusType"></xs:element>
-                    <xs:element maxOccurs="1" minOccurs="0" name="mergedOrganization" type="OrganizationType"></xs:element>
-                    <xs:element maxOccurs="1" minOccurs="0" name="type" type="xs:string"></xs:element>
-                </xs:sequence>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
-    
-    <xs:element name="organizationRef" type="OrganizationRefType"></xs:element>
-    <xs:complexType name="OrganizationRefType">
-        <xs:sequence>
-            <xs:element maxOccurs="1" minOccurs="1" name="nciInstituteCode" type="CustomStringType"></xs:element>
-        </xs:sequence>
-    </xs:complexType>
-
-    <xs:element name="person" type="PersonType"></xs:element>
-    <xs:complexType name="PersonType">
-        <xs:complexContent>
-            <xs:extension base="DomainObjectType">
-                <xs:sequence>
-                    <xs:element maxOccurs="1" minOccurs="1" name="firstName" type="CustomStringType"></xs:element>
-                    <xs:element maxOccurs="1" minOccurs="1" name="lastName" type="CustomStringType"></xs:element>
-                    <xs:element maxOccurs="1" minOccurs="0" name="middleName" type="xs:string"></xs:element>
-                </xs:sequence>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
-
-    <xs:element name="researchStaffRef" type="ResearchStaffRefType"></xs:element>
-    <xs:complexType name="ResearchStaffRefType">
-        <xs:sequence>
-            <xs:element maxOccurs="1" minOccurs="0" name="nciIdentifier" type="xs:string"></xs:element>
-        </xs:sequence>
-    </xs:complexType>
-
-    <xs:element name="researchStaff" type="ResearchStaffType"></xs:element>
-    <xs:complexType name="ResearchStaffType">
-        <xs:complexContent>
-            <xs:extension base="PersonType">
-                <xs:sequence>
-                    <xs:element maxOccurs="1" minOccurs="1" name="emailAddress" type="CustomStringType"></xs:element>
-                    <xs:element maxOccurs="1" minOccurs="0" name="faxNumber" type="xs:string"></xs:element>
-                    <xs:element maxOccurs="1" minOccurs="1" name="nciIdentifier" type="xs:string"></xs:element>
-                    <xs:element name="phoneNumber" type="CustomStringType"></xs:element>
-                    <xs:element name="loginId" type="xs:string"></xs:element>
-					<xs:element maxOccurs="1" minOccurs="0" name="street" type="xs:string"></xs:element>
-                    <xs:element maxOccurs="1" minOccurs="0" name="city" type="xs:string"></xs:element>
-                    <xs:element maxOccurs="1" minOccurs="0" name="state" type="xs:string"></xs:element>
-                    <xs:element maxOccurs="1" minOccurs="0" name="zip" type="xs:string"></xs:element>
-                </xs:sequence>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
-
-    <xs:element name="siteInvestigator" type="SiteInvestigatorType"></xs:element>
-    <xs:complexType name="SiteInvestigatorType">
-        <xs:complexContent>
-            <xs:extension base="DomainObjectType">
-                <xs:sequence>
-                    <xs:element name="emailAddress" type="CustomStringType"></xs:element>
-                    <xs:element name="statusCode" type="ActiveInactiveStatusType"></xs:element>
-                    <xs:element maxOccurs="1" minOccurs="0" name="phoneNumber" type="xs:string"></xs:element>
-                    <xs:element maxOccurs="1" minOccurs="0" name="faxNumber" type="xs:string"></xs:element>
-                    <xs:element maxOccurs="1" minOccurs="0" name="street" type="xs:string"></xs:element>
-                    <xs:element maxOccurs="1" minOccurs="0" name="city" type="xs:string"></xs:element>
-                    <xs:element maxOccurs="1" minOccurs="0" name="state" type="xs:string"></xs:element>
-                    <xs:element maxOccurs="1" minOccurs="0" name="zip" type="xs:string"></xs:element>
-                    <xs:element maxOccurs="1" minOccurs="0" name="country" type="xs:string"></xs:element>
-                </xs:sequence>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
-    
-    <xs:element name="siteResearchStaff" type="SiteResearchStaffType"></xs:element>
-    <xs:complexType name="SiteResearchStaffType">
-        <xs:complexContent>
-            <xs:extension base="DomainObjectType">
-                <xs:sequence>
-                    <xs:element maxOccurs="1" minOccurs="0" name="emailAddress" type="xs:string"></xs:element>
-                    <xs:element maxOccurs="1" minOccurs="0" name="phoneNumber" type="xs:string"></xs:element>
-                    <xs:element maxOccurs="1" minOccurs="0" name="faxNumber" type="xs:string"></xs:element>
-                    <xs:element maxOccurs="1" minOccurs="0" name="street" type="xs:string"></xs:element>
-                    <xs:element maxOccurs="1" minOccurs="0" name="city" type="xs:string"></xs:element>
-                    <xs:element maxOccurs="1" minOccurs="0" name="state" type="xs:string"></xs:element>
-                    <xs:element maxOccurs="1" minOccurs="0" name="zip" type="xs:string"></xs:element>
-                    <xs:element maxOccurs="1" minOccurs="0" name="country" type="xs:string"></xs:element>
-                </xs:sequence>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
-    
-
-    <xs:element name="investigatorRef" type="InvestigatorRefType"></xs:element>
-    <xs:complexType name="InvestigatorRefType">
-        <xs:sequence>
-            <xs:element name="nciIdentifier" type="xs:string"></xs:element>
-        </xs:sequence>
-    </xs:complexType>
-
-    <xs:element name="investigator" type="InvestigatorType"></xs:element>
-    <xs:complexType name="InvestigatorType">
-        <xs:complexContent>
-            <xs:extension base="PersonType">
-                <xs:sequence>
-                    <xs:element name="emailAddress" type="CustomStringType"></xs:element>
-                    <xs:element maxOccurs="1" minOccurs="0" name="faxNumber" type="xs:string"></xs:element>
-                    <xs:element maxOccurs="1" minOccurs="1" name="nciIdentifier" type="xs:string"></xs:element>
-                    <xs:element maxOccurs="1" minOccurs="1" name="phoneNumber" type="CustomStringType"></xs:element>
-                    <xs:element name="allowedToLogin" type="xs:boolean"></xs:element>
-                    <xs:element name="loginId" type="xs:string"></xs:element>
-                </xs:sequence>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
-
-
-    <xs:simpleType name="RoleCodeType">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="SPI">
-                <xs:annotation>
-                    <xs:documentation>Site Principal Investigator</xs:documentation>
-                </xs:annotation>
-            </xs:enumeration>
-            <xs:enumeration value="SI">
-                <xs:annotation>
-                    <xs:documentation>Site Investigator</xs:documentation>
-                </xs:annotation>
-            </xs:enumeration>
-            <xs:enumeration value="PI">
-                <xs:annotation>
-                    <xs:documentation>Principal Investigator</xs:documentation>
-                </xs:annotation>
-            </xs:enumeration>
-        </xs:restriction>
-    </xs:simpleType>
-
-    <xs:simpleType name="PersonnelRoleCodeType">
-        <xs:restriction base="xs:string">
-
-            <xs:enumeration value="system_administrator">
-                <xs:annotation>
-                    <xs:documentation>System Administrator</xs:documentation>
-                </xs:annotation>
-            </xs:enumeration>
-            <xs:enumeration value="business_administrator">
-                <xs:annotation>
-                    <xs:documentation>Business Administrator </xs:documentation>
-                </xs:annotation>
-            </xs:enumeration>
-            <xs:enumeration value="person_and_organization_information_manager">
-                <xs:annotation>
-                    <xs:documentation>Person and Organization Information Manager </xs:documentation>
-                </xs:annotation>
-            </xs:enumeration>
-            <xs:enumeration value="data_importer">
-                <xs:annotation>
-                    <xs:documentation>Data Importer </xs:documentation>
-                </xs:annotation>
-            </xs:enumeration>
-            <xs:enumeration value="user_administrator">
-                <xs:annotation>
-                    <xs:documentation>User Admin</xs:documentation>
-                </xs:annotation>
-            </xs:enumeration>
-            <xs:enumeration value="study_qa_manager">
-                <xs:annotation>
-                    <xs:documentation>Study QA Manager </xs:documentation>
-                </xs:annotation>
-            </xs:enumeration>
-            <xs:enumeration value="study_creator">
-                <xs:annotation>
-                    <xs:documentation>Study Creator </xs:documentation>
-                </xs:annotation>
-            </xs:enumeration>
-            <xs:enumeration value="supplemental_study_information_manager">
-                <xs:annotation>
-                    <xs:documentation>Supplemantal Study Information Manager </xs:documentation>
-                </xs:annotation>
-            </xs:enumeration>
-            <xs:enumeration value="study_team_administrator">
-                <xs:annotation>
-                    <xs:documentation>Study Team Admin  </xs:documentation>
-                </xs:annotation>
-            </xs:enumeration>
-            <xs:enumeration value="study_site_participation_administrator">
-                <xs:annotation>
-                    <xs:documentation>Study Site Participation Admin  </xs:documentation>
-                </xs:annotation>
-            </xs:enumeration>
-            <xs:enumeration value="ae_rule_and_report_manager">
-                <xs:annotation>
-                    <xs:documentation>AE Rule and Report Manager </xs:documentation>
-                </xs:annotation>
-            </xs:enumeration>
-            <xs:enumeration value="study_calendar_template_builder">
-                <xs:annotation>
-                    <xs:documentation>Study Calendar Template Builder </xs:documentation>
-                </xs:annotation>
-            </xs:enumeration>
-            <xs:enumeration value="registration_qa_manager">
-                <xs:annotation>
-                    <xs:documentation>Registration QA Manager </xs:documentation>
-                </xs:annotation>
-            </xs:enumeration>
-            <xs:enumeration value="subject_manager">
-                <xs:annotation>
-                    <xs:documentation>Subject Manager </xs:documentation>
-                </xs:annotation>
-            </xs:enumeration>
-            <xs:enumeration value="study_subject_calendar_manager">
-                <xs:annotation>
-                    <xs:documentation>Study Subject Calendar Manager </xs:documentation>
-                </xs:annotation>
-            </xs:enumeration>
-            <xs:enumeration value="registrar">
-                <xs:annotation>
-                    <xs:documentation>Registrar </xs:documentation>
-                </xs:annotation>
-            </xs:enumeration>
-            <xs:enumeration value="ae_reporter">
-                <xs:annotation>
-                    <xs:documentation>AE Reporter </xs:documentation>
-                </xs:annotation>
-            </xs:enumeration>
-            <xs:enumeration value="ae_expedited_report_reviewer">
-                <xs:annotation>
-                    <xs:documentation>AE Expedited Report Reviewer </xs:documentation>
-                </xs:annotation>
-            </xs:enumeration>
-            <xs:enumeration value="ae_study_data_reviewer">
-                <xs:annotation>
-                    <xs:documentation>AE Study Data Reviewer </xs:documentation>
-                </xs:annotation>
-            </xs:enumeration>
-            <xs:enumeration value="lab_impact_calendar_notifier">
-                <xs:annotation>
-                    <xs:documentation>Lab Impact Calendar Notifier </xs:documentation>
-                </xs:annotation>
-            </xs:enumeration>
-            <xs:enumeration value="lab_data_user">
-                <xs:annotation>
-                    <xs:documentation>Lab Data User </xs:documentation>
-                </xs:annotation>
-            </xs:enumeration>
-            <xs:enumeration value="data_reader">
-                <xs:annotation>
-                    <xs:documentation>Data Reader </xs:documentation>
-                </xs:annotation>
-            </xs:enumeration>
-            <xs:enumeration value="data_analyst">
-                <xs:annotation>
-                    <xs:documentation>Data Analyst </xs:documentation>
-                </xs:annotation>
-            </xs:enumeration>
-            <xs:enumeration value="study_medical_monitor">
-                <xs:annotation>
-                    <xs:documentation>Study Medical Monitor </xs:documentation>
-                </xs:annotation>
-            </xs:enumeration>
-
-        </xs:restriction>
-    </xs:simpleType>
-
-
-    <xs:simpleType name="DesignCodeType">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="BLIND"></xs:enumeration>
-            <xs:enumeration value="OPEN_UNBLIND"></xs:enumeration>
-            <xs:enumeration value="PARTIAL"></xs:enumeration>
-        </xs:restriction>
-    </xs:simpleType>
-
-    <xs:simpleType name="IndType">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="NA"></xs:enumeration>
-            <xs:enumeration value="NA_COMMERCIAL"></xs:enumeration>
-            <xs:enumeration value="IND_EXEMPT"></xs:enumeration>
-            <xs:enumeration value="DCP_IND"></xs:enumeration>
-            <xs:enumeration value="OTHER"></xs:enumeration>
-            <xs:enumeration value="CTEP_IND"></xs:enumeration>
-        </xs:restriction>
-    </xs:simpleType>
-
-    <xs:complexType name="DeviceType">
-        <xs:complexContent>
-            <xs:extension base="MutableDomainObjectType">
-                <xs:sequence>
-                    <xs:element minOccurs="1" name="commonName" type="xs:string"></xs:element>
-                    <xs:element minOccurs="1" name="brandName" type="xs:string"></xs:element>
-                    <xs:element minOccurs="0" name="type" type="xs:string"></xs:element>
-                    <xs:element minOccurs="0" name="ctepDbIdentifier" type="xs:string">
-                       <xs:annotation>
-                           <xs:documentation>An identifier issued by CTEP for the device, which at the moment is the DB ID of AdEERS.</xs:documentation>
-                       </xs:annotation>
-                    </xs:element>
-                    <xs:element maxOccurs="1" minOccurs="0" name="status" type="ActiveInactiveStatusType"></xs:element>
-                </xs:sequence>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
-
-    <xs:simpleType name="TherapyType">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="Drug"></xs:enumeration>
-            <xs:enumeration value="Radiation"></xs:enumeration>
-            <xs:enumeration value="Procedure/Surgery"></xs:enumeration>
-            <xs:enumeration value="Device"></xs:enumeration>
-            <xs:enumeration value="Behavioral"></xs:enumeration>
-            <xs:enumeration value="Biological/Vaccine"></xs:enumeration>
-            <xs:enumeration value="Genetic"></xs:enumeration>
-            <xs:enumeration value="Dietary Supplement"></xs:enumeration>
-            <xs:enumeration value="Other"></xs:enumeration>
-        </xs:restriction>
-    </xs:simpleType>
-    
-    <xs:simpleType name="StudyIdentifierType">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="Site Identifier"></xs:enumeration>
-            <xs:enumeration value="Site IRB Identifier"></xs:enumeration>
-            <xs:enumeration value="ClinicalTrails.gov Identifier"></xs:enumeration>
-            <xs:enumeration value="Grid Identifier"></xs:enumeration>
-            <xs:enumeration value="C3D Identifier"></xs:enumeration>
-            <xs:enumeration value="Protocol Authority Identifier"></xs:enumeration>
-            <xs:enumeration value="Coordinating Center Identifier"></xs:enumeration>
-            <xs:enumeration value="NCI Assigned Identifier"></xs:enumeration>
-            <xs:enumeration value="Other"></xs:enumeration>
-        </xs:restriction>
-    </xs:simpleType>
-
-    <xs:simpleType name="ParticipantIdentifierType">
-        <xs:annotation>
-            <xs:documentation>
-                Medical Record Number - MRN, Cooperative Group Identifier - CC
-            </xs:documentation>
-        </xs:annotation>
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="MRN"></xs:enumeration>
-            <xs:enumeration value="CC"></xs:enumeration>
-            <xs:enumeration value="Other"></xs:enumeration>
-        </xs:restriction>
-    </xs:simpleType>
-    
-    <xs:simpleType name="ActiveInactiveStatusType">
-	    <xs:restriction base="xs:string">
-	      <xs:enumeration value="Active">
-              <xs:annotation>
-                  <xs:documentation>Active </xs:documentation>
-              </xs:annotation>
-	      </xs:enumeration>
-	      <xs:enumeration value="Inactive">
-              <xs:annotation>
-              <xs:documentation>InActive </xs:documentation>
-          </xs:annotation>
-          </xs:enumeration>
-	    </xs:restriction>
-  	</xs:simpleType>
-
-	<!-- Common Data types start here -->
-	
-    <xs:complexType name="DomainObjectType">
-        <xs:attribute name="id" type="xs:integer"></xs:attribute>
-    </xs:complexType>
-
-    <xs:complexType name="MutableDomainObjectType">
-        <xs:complexContent>
-            <xs:extension base="DomainObjectType">
-                <xs:attribute name="version" type="xs:positiveInteger"></xs:attribute>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
-
-    <xs:simpleType name="CustomStringType">
-        <xs:restriction base="xs:normalizedString">
-            <xs:minLength value="1"></xs:minLength>
-            <xs:whiteSpace value="collapse"></xs:whiteSpace>
-        </xs:restriction>
-    </xs:simpleType>
-
-    <xs:simpleType name="CustomDateType">
-        <xs:restriction base="xs:integer">
-            <xs:pattern value="[1-2][0-9][0-9][0-9]"></xs:pattern>
-            <xs:whiteSpace value="collapse"></xs:whiteSpace>
-        </xs:restriction>
-    </xs:simpleType>
-
-    <xs:simpleType name="CustomMonthType">
-        <xs:restriction base="xs:integer">
-            <xs:pattern value="((0[1-9])|(1[0-2]))"></xs:pattern>
-            <xs:whiteSpace value="collapse"></xs:whiteSpace>
-        </xs:restriction>
-    </xs:simpleType>
-   
-    <xs:element name="ConfigProperties">
-       <xs:complexType>
-         <xs:sequence>
-             <xs:element name="name" type="CustomStringType"></xs:element>
-             <xs:element maxOccurs="unbounded" minOccurs="1" name="ConfigProperty" type="ConfigPropertyType"></xs:element>
-         </xs:sequence>
-       </xs:complexType>
-    </xs:element>
-
-    <xs:complexType name="ConfigPropertyType">
-        <xs:sequence>
-            <xs:element minOccurs="1" name="code" type="CustomStringType"></xs:element>
-            <xs:element minOccurs="1" name="name" type="xs:string"></xs:element>
-            <xs:element minOccurs="0" name="description" type="xs:string"></xs:element>
-        </xs:sequence>
-    </xs:complexType>
-	
-	
-	<xs:complexType name="TimeType">
-		<xs:sequence>
-		  <xs:element minOccurs="1" name="hour" type="xs:integer"></xs:element>
-		  <xs:element minOccurs="1" name="minute" type="xs:integer"></xs:element>
-		  <xs:element minOccurs="1" name="ampm" type="AMPM"></xs:element>
-		</xs:sequence>
-    </xs:complexType>
-	
-	<xs:simpleType name="AMPM">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="AM"></xs:enumeration>
-            <xs:enumeration value="PM"></xs:enumeration>
-        </xs:restriction>
-    </xs:simpleType>
-	
-	<!-- WS Types start here -->
-	
-	<xs:complexType name="WsError">
-		<xs:sequence>
-			<xs:element name="exception" type="xs:string"></xs:element>
-			<xs:element name="errorDesc" type="xs:string"></xs:element>
-            <xs:element name="errorCode" type="xs:string"></xs:element>
-		</xs:sequence>
-	</xs:complexType>
-	
-	<xs:simpleType name="Status">
-		<xs:restriction base="xs:string">
-			<xs:enumeration value="Processed"></xs:enumeration>
-			<xs:enumeration value="Partially Processed"></xs:enumeration>
-			<xs:enumeration value="Failed to Process"></xs:enumeration>
-		</xs:restriction>
-	</xs:simpleType>
-	
-	<xs:element name="entityProcessingOutcomes">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element maxOccurs="unbounded" minOccurs="0" ref="entityProcessingOutcome"> </xs:element>
-			</xs:sequence>
-		
-		</xs:complexType>
-	</xs:element>
-	
-	<xs:element name="entityProcessingOutcome" type="EntityProcessingOutcomeType"></xs:element>
-    <xs:complexType name="EntityProcessingOutcomeType">
-        <xs:sequence>
-        	<xs:element maxOccurs="1" minOccurs="0" name="klassName" type="xs:string"></xs:element>
-            <xs:element maxOccurs="1" minOccurs="1" name="businessIdentifier" type="xs:string"></xs:element>
-            <xs:element maxOccurs="unbounded" minOccurs="0" name="message" type="xs:string"></xs:element>
-            <xs:element minOccurs="0" name="dataBaseId" type="xs:string"></xs:element>
-            <xs:element minOccurs="0" name="correlationId" type="xs:string"></xs:element>
-            <xs:element minOccurs="0" name="correlationDescription" type="xs:string"></xs:element>
-            <xs:element default="false" minOccurs="0" name="failed" type="xs:boolean"></xs:element>
-        </xs:sequence>
-    </xs:complexType>
-
-    <xs:simpleType name="ResponseCodeType">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="0"></xs:enumeration>
-            <xs:enumeration value="1"></xs:enumeration>
-        </xs:restriction>
-    </xs:simpleType>
-	<xs:element name="ServiceResponse" type="ServiceResponse"></xs:element>
-    <xs:complexType name="ServiceResponse">
-    	<xs:sequence>
-    		<xs:element minOccurs="0" name="status" type="Status"></xs:element>
-    		<xs:element maxOccurs="unbounded" minOccurs="0" name="wsError" type="WsError"></xs:element>
-    		<xs:element minOccurs="0" ref="entityProcessingOutcomes"></xs:element>
-            <xs:element minOccurs="0" name="message" type="xs:string"></xs:element>
-            <xs:element minOccurs="0" ref="responseData"></xs:element>
-    	</xs:sequence>
-        <!-- migrated from study xsd -->
-        <xs:attribute name="responsecode" type="ResponseCodeType"></xs:attribute>
-    </xs:complexType>
-    
-    <xs:element name="responseData" type="responseDataType"></xs:element>
-    <xs:complexType name="responseDataType">
-    		<xs:sequence>
-   				<xs:any maxOccurs="1" minOccurs="0"></xs:any>
-   			</xs:sequence>
-    </xs:complexType>
-    
-    <xs:element name="CaaersServiceResponse">
-	    <xs:complexType>
-	        <xs:sequence>
-	            <xs:element ref="ServiceResponse"></xs:element>
-	        </xs:sequence>
-	    </xs:complexType>
-    </xs:element>
-    
-    <!-- Common faults. -->
-	<xs:element name="SecurityExceptionFault" type="SecurityExceptionFault"></xs:element>
-	
-	<xs:complexType name="BaseFault">
-		<xs:sequence>
-			<xs:element name="message" type="xs:string"></xs:element>
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="SecurityExceptionFault">
-		<xs:complexContent>
-			<xs:extension base="BaseFault"></xs:extension>
-		</xs:complexContent>
-	</xs:complexType>
-	
-	<xs:complexType name="Fault">
-	        <xs:sequence>
-	        	<xs:element name="code" type="xs:string"></xs:element>
-	        	<xs:element name="message" type="xs:string"></xs:element>
-	        	<xs:element name="exception" type="xs:string"></xs:element>
-	        </xs:sequence>
-	</xs:complexType>
-	
-	<xs:element name="CaaersFaultInfo">
-		<xs:complexType>
-	        <xs:sequence>
-	            <xs:element maxOccurs="unbounded" minOccurs="1" name="fault" type="Fault"></xs:element>
-	        </xs:sequence>
-	    </xs:complexType>
-	</xs:element>
-
-</xs:schema>
-<xs:schema elementFormDefault="unqualified" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent" xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent" xmlns:cct="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-		   
-    <!--<xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" schemaLocation="caAERSCommonDataTypes.xsd"/>-->
-   	<xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common"></xs:import>
-	
-    <xs:complexType name="AdverseEventType">
-        <xs:complexContent>
-            <xs:extension base="cct:MutableDomainObjectType">
-                <xs:sequence>
-                	<xs:element minOccurs="0" name="verbatim" type="xs:string"></xs:element>
-					<xs:choice>
-                  		<xs:element minOccurs="0" name="adverseEventCtepTerm" type="AdverseEventCtepTermType"></xs:element>
-	                 	<xs:element minOccurs="0" name="adverseEventMeddraLowLevelTerm" type="AdverseEventMeddraLowLevelTermType"></xs:element>
-	                </xs:choice>
-                    <xs:element minOccurs="0" name="grade" type="GradeType"></xs:element>
-                    <xs:element minOccurs="0" name="hospitalization" type="HospitalizationType"></xs:element>
-                    <xs:element minOccurs="0" name="expected" type="xs:boolean"></xs:element>
-                    <xs:element minOccurs="0" name="attributionSummary" type="AttributionType"></xs:element>
-                    <xs:element minOccurs="0" name="comments" type="xs:string"></xs:element>
-                    <xs:element minOccurs="0" name="dateFirstLearned" type="xs:date"></xs:element>
-                    <xs:element minOccurs="0" name="startDate" type="xs:date"></xs:element>
-					<xs:element minOccurs="0" name="eventApproximateTime" type="cct:TimeType"></xs:element>
-                    <xs:element minOccurs="0" name="eventLocation" type="xs:string"></xs:element>
-                    <xs:element minOccurs="0" name="endDate" type="xs:date"></xs:element>                  	  
-                   	<xs:element maxOccurs="unbounded" minOccurs="0" name="outcome" type="OutcomeType"></xs:element>     
-					<xs:element minOccurs="0" name="increasedRisk" type="xs:boolean"></xs:element>
-                    <xs:element minOccurs="0" name="externalId" type="xs:string"></xs:element>
-                </xs:sequence>
-            </xs:extension>
-        </xs:complexContent>
-   </xs:complexType>  
-    
-    <xs:complexType name="AdverseEventCtcTermType">
-                <xs:sequence>
-                  <xs:element name="ctep-term" type="cct:CustomStringType"></xs:element>                  
-                </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="EpochType">
-                <xs:sequence>
-                  <xs:element name="name" type="xs:string"></xs:element>
-                  <xs:element name="descriptionText" type="xs:string"></xs:element>
-                </xs:sequence>
-    </xs:complexType> 
-           
-    <xs:complexType name="AdverseEventMeddraLowLevelTermType">
-                <xs:sequence>
-                  <xs:element minOccurs="1" name="meddraCode" type="xs:string"></xs:element>
-                  <xs:element minOccurs="1" name="meddraTerm" type="xs:string"></xs:element>
-                </xs:sequence>
-    </xs:complexType> 
-    
-    
-     <xs:complexType name="AdverseEventCtepTermType">
-                <xs:sequence>
-                 	<xs:element minOccurs="1" name="ctepCode" type="xs:string"></xs:element>
-                   	 <xs:choice>  
-	                    <xs:element minOccurs="0" name="otherMeddra" type="AdverseEventMeddraLowLevelTermType"></xs:element>
-	                    <xs:element minOccurs="0" name="otherSpecify" type="xs:string"></xs:element>
-                   </xs:choice>
-                </xs:sequence>
-    </xs:complexType> 
-        
-
-    <xs:complexType name="OutcomeType">
-                <xs:sequence>
-                  <xs:element minOccurs="1" name="outComeEnumType" type="OutComeEnumType"></xs:element>
-                  <xs:element minOccurs="0" name="other" type="xs:string"></xs:element>
-                </xs:sequence>
-    </xs:complexType> 
-    
-	<!-- FIXED Types  -->     
-    <xs:simpleType name="CtcVersionEnum">
-        <xs:restriction base="xs:int">
-            <xs:enumeration value="2"></xs:enumeration>
-            <xs:enumeration value="3"></xs:enumeration>
-        </xs:restriction>
-    </xs:simpleType> 	
-	      
-     
-    <xs:simpleType name="OutComeEnumType">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="DEATH"></xs:enumeration>
-            <xs:enumeration value="HOSPITALIZATION"></xs:enumeration>
-            <xs:enumeration value="LIFE_THREATENING"></xs:enumeration>
-            <xs:enumeration value="DISABILITY"></xs:enumeration>
-            <xs:enumeration value="CONGENITAL_ANOMALY"></xs:enumeration>
-            <xs:enumeration value="REQUIRED_INTERVENTION"></xs:enumeration>
-            <xs:enumeration value="OTHER_SERIOUS"></xs:enumeration>
-        </xs:restriction>
-    </xs:simpleType>   
-          
-    <xs:simpleType name="GradeType">
-        <xs:restriction base="xs:int">
-            <xs:enumeration value="0"></xs:enumeration>
-            <xs:enumeration value="1"></xs:enumeration>
-            <xs:enumeration value="2"></xs:enumeration>
-            <xs:enumeration value="3"></xs:enumeration>
-            <xs:enumeration value="4"></xs:enumeration>
-            <xs:enumeration value="5"></xs:enumeration>
-        </xs:restriction>
-    </xs:simpleType>     
-    <xs:simpleType name="HospitalizationType">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="NONE"></xs:enumeration>
-            <xs:enumeration value="YES"></xs:enumeration>
-            <xs:enumeration value="NO"></xs:enumeration>
-        </xs:restriction>
-    </xs:simpleType>    
-    <xs:simpleType name="AttributionType">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="UNRELATED"></xs:enumeration>
-            <xs:enumeration value="UNLIKELY"></xs:enumeration>
-            <xs:enumeration value="POSSIBLE"></xs:enumeration>
-            <xs:enumeration value="PROBABLE"></xs:enumeration>
-            <xs:enumeration value="DEFINITE"></xs:enumeration>
-        </xs:restriction>
-    </xs:simpleType>  
-    <xs:simpleType name="EpochNameEnum">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="Baseline"></xs:enumeration>
-            <xs:enumeration value="Pre-Treatment"></xs:enumeration>
-            <xs:enumeration value="Treatment"></xs:enumeration>
-            <xs:enumeration value="Post-treatment"></xs:enumeration>
-        </xs:restriction>
-    </xs:simpleType>
-
-    <xs:complexType name="CourseType">
-        <xs:sequence>
-            <xs:annotation>
-                <xs:documentation>
-                    Course Criteria Conditions enforced in service Implementation.
-                    1. Start date of this course/cycle cannot be earlier than the Start date of first course/cycle.
-                    2. Course End date cannot be earlier than Start date.
-                    3. For Non-Baseline treatment type Start date cannot be equal to End date.
-                    4. Course/cycle cannot overlap with an existing course/cycle.
-                    5. Baseline treatment type cannot start after an existing Non-Baseline treatment type.
-                    6. Non-Baseline treatment type cannot start before an existing Baseline treatment type.
-
-                </xs:documentation>
-            </xs:annotation>
-            <xs:element minOccurs="0" name="startDateOfFirstCourse" type="xs:date"></xs:element>
-            <xs:element minOccurs="0" name="startDateOfThisCourse" type="xs:date"></xs:element>
-            <xs:element minOccurs="0" name="endDateOfThisCourse" type="xs:date"></xs:element>
-            <xs:element minOccurs="0" name="treatmentType" type="xs:string"></xs:element>
-            <xs:element minOccurs="0" name="cycleNumber" type="xs:integer"></xs:element>
-            <xs:choice>
-                <xs:element minOccurs="1" name="treatmentAssignmentCode" type="xs:string"></xs:element>
-                <xs:element minOccurs="1" name="otherTreatmentAssignmentDescription" type="xs:string"></xs:element>
-            </xs:choice>
-            <xs:element minOccurs="0" name="externalId" type="xs:string"></xs:element>
-        </xs:sequence>
-    </xs:complexType>
-
-</xs:schema>
-<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/aereport" xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/aereport" xmlns:ae="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent" xmlns:cct="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-<xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent"></xs:import>
-<xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common"></xs:import>
-<xs:element name="AdverseEventReport">
+<wsdl:definitions xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/aereport" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="SafetyReportManagementService" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/aereport">
+<wsdl:types>
+<xs:schema xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common">
+<xs:element name="treatmentAssignment" type="TreatmentAssignmentType"/>
+<xs:complexType name="TreatmentAssignmentType">
+<xs:complexContent>
+<xs:extension base="DomainObjectType">
+<xs:sequence>
+<xs:element name="code" type="CustomStringType"/>
+<xs:element minOccurs="0" name="doseLevelOrder" type="CustomStringType"/>
+<xs:element name="description" type="CustomStringType"/>
+<xs:element minOccurs="0" name="comments" type="CustomStringType"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="agentRef" type="AgentRefType"/>
+<xs:complexType name="AgentRefType">
+<xs:sequence>
+<xs:element name="nscNumber" type="CustomStringType"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="agent" type="AgentType"/>
+<xs:complexType name="AgentType">
+<xs:complexContent>
+<xs:extension base="DomainObjectType">
+<xs:sequence>
+<xs:element name="name" type="CustomStringType"/>
+<xs:element minOccurs="0" name="descriptionText" type="CustomStringType"/>
+<xs:element name="nscNumber" type="CustomStringType"/>
+<xs:element maxOccurs="1" minOccurs="0" name="status" type="ActiveInactiveStatusType"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="Agents">
 <xs:complexType>
 <xs:sequence>
-<xs:element name="createdAt" type="xs:dateTime"></xs:element>
-<xs:element minOccurs="0" name="adverseEventResponseDescription" type="AdverseEventResponseDescriptionType"></xs:element>
-<xs:element name="adverseEventReportingPeriod" type="AdverseEventReportingPeriodType"></xs:element>
-<xs:element name="physician" type="PhysicianType"></xs:element>
-<xs:element name="reporter" type="ReporterType"></xs:element>
-<xs:element minOccurs="0" name="submitter" type="SubmitterType"></xs:element>
-<xs:element minOccurs="0" name="diseaseHistory" type="DiseaseHistoryType"></xs:element>
-<xs:element minOccurs="0" name="participantHistory" type="ParticipantHistoryType"></xs:element>
-<xs:element minOccurs="0" name="studyParticipantAssignment" type="StudyParticipantAssignmentType"></xs:element>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="radiationIntervention" type="RadiationInterventionType"></xs:element>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="surgeryIntervention" type="SurgeryInterventionType"></xs:element>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="biologicalIntervention" type="BiologicalInterventionType"></xs:element>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="dietarySupplementIntervention" type="DietarySupplementInterventionType"></xs:element>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="medicalDevice" type="MedicalDeviceType"></xs:element>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="concomitantMedication" type="ConcomitantMedicationType"></xs:element>
-<xs:element maxOccurs="unbounded" name="adverseEvent" type="AdverseEventType"></xs:element>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="lab" type="LabType"></xs:element>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="sAEReportPriorTherapy" type="SAEReportPriorTherapyType"></xs:element>
-<xs:element minOccurs="0" name="treatmentInformation" type="TreatmentInformationType"></xs:element>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="sAEReportPreExistingCondition" type="SAEReportPreExistingConditionType"></xs:element>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="otherCause" type="OtherCauseType"></xs:element>
-<xs:element minOccurs="0" name="additionalInformation" type="AdditionalInformationType"></xs:element>
-<xs:element maxOccurs="unbounded" name="report" type="ReportType"></xs:element>
+<xs:element maxOccurs="unbounded" ref="agent"/>
 </xs:sequence>
 </xs:complexType>
 </xs:element>
+<xs:element name="lab" type="LabTermType"/>
+<xs:complexType name="LabTermType">
+<xs:complexContent>
+<xs:extension base="DomainObjectType">
+<xs:sequence>
+<xs:element name="term" type="CustomStringType"/>
+<xs:element maxOccurs="1" minOccurs="0" name="status" type="ActiveInactiveStatusType"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="labs">
+<xs:complexType>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" ref="lab"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="labCategory" type="LabCategoryType"/>
+<xs:complexType name="LabCategoryType">
+<xs:sequence>
+<xs:element name="category" type="CustomStringType"/>
+<xs:element ref="labs"/>
+<xs:element maxOccurs="1" minOccurs="0" name="status" type="ActiveInactiveStatusType"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="labCategories">
+<xs:complexType>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" ref="labCategory"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="preExistingCondition" type="PreExistingConditionType"/>
+<xs:complexType name="PreExistingConditionType">
+<xs:complexContent>
+<xs:extension base="DomainObjectType">
+<xs:sequence>
+<xs:element minOccurs="1" name="text" type="CustomStringType"/>
+<xs:element minOccurs="0" name="meddraLltCode" type="xs:string"/>
+<xs:element minOccurs="0" name="meddraLlt" type="xs:string"/>
+<xs:element minOccurs="0" name="meddraHlgt" type="xs:string"/>
+<xs:element maxOccurs="1" minOccurs="0" name="status" type="ActiveInactiveStatusType"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="PreExistingConditions">
+<xs:complexType>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" ref="preExistingCondition"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="priorTherapy" type="PriorTherapyType"/>
+<xs:complexType name="PriorTherapyType">
+<xs:complexContent>
+<xs:extension base="DomainObjectType">
+<xs:sequence>
+<xs:element minOccurs="1" name="text" type="CustomStringType"/>
+<xs:element minOccurs="1" name="meddraCode" type="CustomStringType"/>
+<xs:element name="meddraTerm" type="xs:string"/>
+<xs:element name="therapyType" type="xs:string"/>
+<xs:element maxOccurs="1" minOccurs="0" name="status" type="ActiveInactiveStatusType"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="PriorTherapies">
+<xs:complexType>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" ref="priorTherapy"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="investigationalNewDrug" type="InvestigationalNewDrugType"/>
+<xs:complexType name="InvestigationalNewDrugType">
+<xs:complexContent>
+<xs:extension base="DomainObjectType">
+<xs:sequence>
+<xs:element name="indHolder" type="IndHolderType"/>
+<xs:element name="indNumber" type="xs:integer"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="indHolder" type="IndHolderType"/>
+<xs:complexType name="IndHolderType">
+<xs:complexContent>
+<xs:extension base="DomainObjectType">
+<xs:choice>
+<xs:element ref="investigatorRef"/>
+<xs:element ref="organizationRef"/>
+</xs:choice>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="diseaseTerm" type="DiseaseTermType"/>
+<xs:complexType name="DiseaseTermType">
+<xs:complexContent>
+<xs:extension base="DomainObjectType">
+<xs:choice>
+<xs:element name="term" type="CustomStringType"/>
+<xs:element name="meddraCode" type="CustomStringType"/>
+</xs:choice>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="organization" type="OrganizationType"/>
+<xs:complexType name="OrganizationType">
+<xs:complexContent>
+<xs:extension base="MutableDomainObjectType">
+<xs:sequence>
+<xs:element maxOccurs="1" minOccurs="0" name="descriptionText" type="xs:string"/>
+<xs:element maxOccurs="1" minOccurs="1" name="name" type="CustomStringType"/>
+<xs:element maxOccurs="1" minOccurs="1" name="nciInstituteCode" type="CustomStringType"/>
+<xs:element maxOccurs="1" minOccurs="0" name="city" type="xs:string"/>
+<xs:element maxOccurs="1" minOccurs="0" name="state" type="xs:string"/>
+<xs:element maxOccurs="1" minOccurs="0" name="country" type="xs:string"/>
+<xs:element maxOccurs="1" minOccurs="0" name="status" type="xs:string"/>
+<xs:element maxOccurs="1" minOccurs="0" name="mergedOrganization" type="OrganizationType"/>
+<xs:element maxOccurs="1" minOccurs="0" name="type" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="organizationRef" type="OrganizationRefType"/>
+<xs:complexType name="OrganizationRefType">
+<xs:sequence>
+<xs:element maxOccurs="1" minOccurs="1" name="nciInstituteCode" type="CustomStringType"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="person" type="PersonType"/>
+<xs:complexType name="PersonType">
+<xs:complexContent>
+<xs:extension base="DomainObjectType">
+<xs:sequence>
+<xs:element maxOccurs="1" minOccurs="1" name="firstName" type="CustomStringType"/>
+<xs:element maxOccurs="1" minOccurs="1" name="lastName" type="CustomStringType"/>
+<xs:element maxOccurs="1" minOccurs="0" name="middleName" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="researchStaffRef" type="ResearchStaffRefType"/>
+<xs:complexType name="ResearchStaffRefType">
+<xs:sequence>
+<xs:element maxOccurs="1" minOccurs="0" name="nciIdentifier" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="researchStaff" type="ResearchStaffType"/>
+<xs:complexType name="ResearchStaffType">
+<xs:complexContent>
+<xs:extension base="PersonType">
+<xs:sequence>
+<xs:element maxOccurs="1" minOccurs="1" name="emailAddress" type="CustomStringType"/>
+<xs:element maxOccurs="1" minOccurs="0" name="faxNumber" type="xs:string"/>
+<xs:element maxOccurs="1" minOccurs="1" name="nciIdentifier" type="xs:string"/>
+<xs:element name="phoneNumber" type="CustomStringType"/>
+<xs:element name="loginId" type="xs:string"/>
+<xs:element maxOccurs="1" minOccurs="0" name="street" type="xs:string"/>
+<xs:element maxOccurs="1" minOccurs="0" name="city" type="xs:string"/>
+<xs:element maxOccurs="1" minOccurs="0" name="state" type="xs:string"/>
+<xs:element maxOccurs="1" minOccurs="0" name="zip" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="siteInvestigator" type="SiteInvestigatorType"/>
+<xs:complexType name="SiteInvestigatorType">
+<xs:complexContent>
+<xs:extension base="DomainObjectType">
+<xs:sequence>
+<xs:element name="emailAddress" type="CustomStringType"/>
+<xs:element name="statusCode" type="ActiveInactiveStatusType"/>
+<xs:element maxOccurs="1" minOccurs="0" name="phoneNumber" type="xs:string"/>
+<xs:element maxOccurs="1" minOccurs="0" name="faxNumber" type="xs:string"/>
+<xs:element maxOccurs="1" minOccurs="0" name="street" type="xs:string"/>
+<xs:element maxOccurs="1" minOccurs="0" name="city" type="xs:string"/>
+<xs:element maxOccurs="1" minOccurs="0" name="state" type="xs:string"/>
+<xs:element maxOccurs="1" minOccurs="0" name="zip" type="xs:string"/>
+<xs:element maxOccurs="1" minOccurs="0" name="country" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="siteResearchStaff" type="SiteResearchStaffType"/>
+<xs:complexType name="SiteResearchStaffType">
+<xs:complexContent>
+<xs:extension base="DomainObjectType">
+<xs:sequence>
+<xs:element maxOccurs="1" minOccurs="0" name="emailAddress" type="xs:string"/>
+<xs:element maxOccurs="1" minOccurs="0" name="phoneNumber" type="xs:string"/>
+<xs:element maxOccurs="1" minOccurs="0" name="faxNumber" type="xs:string"/>
+<xs:element maxOccurs="1" minOccurs="0" name="street" type="xs:string"/>
+<xs:element maxOccurs="1" minOccurs="0" name="city" type="xs:string"/>
+<xs:element maxOccurs="1" minOccurs="0" name="state" type="xs:string"/>
+<xs:element maxOccurs="1" minOccurs="0" name="zip" type="xs:string"/>
+<xs:element maxOccurs="1" minOccurs="0" name="country" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="investigatorRef" type="InvestigatorRefType"/>
+<xs:complexType name="InvestigatorRefType">
+<xs:sequence>
+<xs:element name="nciIdentifier" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="investigator" type="InvestigatorType"/>
+<xs:complexType name="InvestigatorType">
+<xs:complexContent>
+<xs:extension base="PersonType">
+<xs:sequence>
+<xs:element name="emailAddress" type="CustomStringType"/>
+<xs:element maxOccurs="1" minOccurs="0" name="faxNumber" type="xs:string"/>
+<xs:element maxOccurs="1" minOccurs="1" name="nciIdentifier" type="xs:string"/>
+<xs:element maxOccurs="1" minOccurs="1" name="phoneNumber" type="CustomStringType"/>
+<xs:element name="allowedToLogin" type="xs:boolean"/>
+<xs:element name="loginId" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:simpleType name="RoleCodeType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="SPI">
+<xs:annotation>
+<xs:documentation>Site Principal Investigator</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="SI">
+<xs:annotation>
+<xs:documentation>Site Investigator</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="PI">
+<xs:annotation>
+<xs:documentation>Principal Investigator</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="PersonnelRoleCodeType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="system_administrator">
+<xs:annotation>
+<xs:documentation>System Administrator</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="business_administrator">
+<xs:annotation>
+<xs:documentation>Business Administrator</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="person_and_organization_information_manager">
+<xs:annotation>
+<xs:documentation>Person and Organization Information Manager</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="data_importer">
+<xs:annotation>
+<xs:documentation>Data Importer</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="user_administrator">
+<xs:annotation>
+<xs:documentation>User Admin</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="study_qa_manager">
+<xs:annotation>
+<xs:documentation>Study QA Manager</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="study_creator">
+<xs:annotation>
+<xs:documentation>Study Creator</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="supplemental_study_information_manager">
+<xs:annotation>
+<xs:documentation>Supplemantal Study Information Manager</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="study_team_administrator">
+<xs:annotation>
+<xs:documentation>Study Team Admin</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="study_site_participation_administrator">
+<xs:annotation>
+<xs:documentation>Study Site Participation Admin</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="ae_rule_and_report_manager">
+<xs:annotation>
+<xs:documentation>AE Rule and Report Manager</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="study_calendar_template_builder">
+<xs:annotation>
+<xs:documentation>Study Calendar Template Builder</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="registration_qa_manager">
+<xs:annotation>
+<xs:documentation>Registration QA Manager</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="subject_manager">
+<xs:annotation>
+<xs:documentation>Subject Manager</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="study_subject_calendar_manager">
+<xs:annotation>
+<xs:documentation>Study Subject Calendar Manager</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="registrar">
+<xs:annotation>
+<xs:documentation>Registrar</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="ae_reporter">
+<xs:annotation>
+<xs:documentation>AE Reporter</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="ae_expedited_report_reviewer">
+<xs:annotation>
+<xs:documentation>AE Expedited Report Reviewer</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="ae_study_data_reviewer">
+<xs:annotation>
+<xs:documentation>AE Study Data Reviewer</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="lab_impact_calendar_notifier">
+<xs:annotation>
+<xs:documentation>Lab Impact Calendar Notifier</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="lab_data_user">
+<xs:annotation>
+<xs:documentation>Lab Data User</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="data_reader">
+<xs:annotation>
+<xs:documentation>Data Reader</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="data_analyst">
+<xs:annotation>
+<xs:documentation>Data Analyst</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="study_medical_monitor">
+<xs:annotation>
+<xs:documentation>Study Medical Monitor</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="DesignCodeType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="BLIND"/>
+<xs:enumeration value="OPEN_UNBLIND"/>
+<xs:enumeration value="PARTIAL"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="IndType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="NA"/>
+<xs:enumeration value="NA_COMMERCIAL"/>
+<xs:enumeration value="IND_EXEMPT"/>
+<xs:enumeration value="DCP_IND"/>
+<xs:enumeration value="OTHER"/>
+<xs:enumeration value="CTEP_IND"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:complexType name="DeviceType">
+<xs:complexContent>
+<xs:extension base="MutableDomainObjectType">
+<xs:sequence>
+<xs:element minOccurs="1" name="commonName" type="xs:string"/>
+<xs:element minOccurs="1" name="brandName" type="xs:string"/>
+<xs:element minOccurs="0" name="type" type="xs:string"/>
+<xs:element minOccurs="0" name="ctepDbIdentifier" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+An identifier issued by CTEP for the device, which at the moment is the DB ID of AdEERS.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element maxOccurs="1" minOccurs="0" name="status" type="ActiveInactiveStatusType"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:simpleType name="TherapyType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="Drug"/>
+<xs:enumeration value="Radiation"/>
+<xs:enumeration value="Procedure/Surgery"/>
+<xs:enumeration value="Device"/>
+<xs:enumeration value="Behavioral"/>
+<xs:enumeration value="Biological/Vaccine"/>
+<xs:enumeration value="Genetic"/>
+<xs:enumeration value="Dietary Supplement"/>
+<xs:enumeration value="Other"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="StudyIdentifierType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="Site Identifier"/>
+<xs:enumeration value="Site IRB Identifier"/>
+<xs:enumeration value="ClinicalTrails.gov Identifier"/>
+<xs:enumeration value="Grid Identifier"/>
+<xs:enumeration value="C3D Identifier"/>
+<xs:enumeration value="Protocol Authority Identifier"/>
+<xs:enumeration value="Coordinating Center Identifier"/>
+<xs:enumeration value="NCI Assigned Identifier"/>
+<xs:enumeration value="Other"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="ParticipantIdentifierType">
+<xs:annotation>
+<xs:documentation>
+Medical Record Number - MRN, Cooperative Group Identifier - CC
+</xs:documentation>
+</xs:annotation>
+<xs:restriction base="xs:string">
+<xs:enumeration value="MRN"/>
+<xs:enumeration value="CC"/>
+<xs:enumeration value="Other"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="ActiveInactiveStatusType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="Active">
+<xs:annotation>
+<xs:documentation>Active</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="Inactive">
+<xs:annotation>
+<xs:documentation>InActive</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+</xs:restriction>
+</xs:simpleType>
+<!--  Common Data types start here  -->
+<xs:complexType name="DomainObjectType">
+<xs:attribute name="id" type="xs:integer"/>
+</xs:complexType>
+<xs:complexType name="MutableDomainObjectType">
+<xs:complexContent>
+<xs:extension base="DomainObjectType">
+<xs:attribute name="version" type="xs:positiveInteger"/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:simpleType name="CustomStringType">
+<xs:restriction base="xs:normalizedString">
+<xs:minLength value="1"/>
+<xs:whiteSpace value="collapse"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="CustomDateType">
+<xs:restriction base="xs:integer">
+<xs:pattern value="[1-2][0-9][0-9][0-9]"/>
+<xs:whiteSpace value="collapse"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="CustomMonthType">
+<xs:restriction base="xs:integer">
+<xs:pattern value="((0[1-9])|(1[0-2]))"/>
+<xs:whiteSpace value="collapse"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:element name="ConfigProperties">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="name" type="CustomStringType"/>
+<xs:element maxOccurs="unbounded" minOccurs="1" name="ConfigProperty" type="ConfigPropertyType"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:complexType name="ConfigPropertyType">
+<xs:sequence>
+<xs:element minOccurs="1" name="code" type="CustomStringType"/>
+<xs:element minOccurs="1" name="name" type="xs:string"/>
+<xs:element minOccurs="0" name="description" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="TimeType">
+<xs:sequence>
+<xs:element minOccurs="1" name="hour" type="xs:integer"/>
+<xs:element minOccurs="1" name="minute" type="xs:integer"/>
+<xs:element minOccurs="1" name="ampm" type="AMPM"/>
+</xs:sequence>
+</xs:complexType>
+<xs:simpleType name="AMPM">
+<xs:restriction base="xs:string">
+<xs:enumeration value="AM"/>
+<xs:enumeration value="PM"/>
+</xs:restriction>
+</xs:simpleType>
+<!--  WS Types start here  -->
+<xs:complexType name="WsError">
+<xs:sequence>
+<xs:element name="exception" type="xs:string"/>
+<xs:element name="errorDesc" type="xs:string"/>
+<xs:element name="errorCode" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:simpleType name="Status">
+<xs:restriction base="xs:string">
+<xs:enumeration value="Processed"/>
+<xs:enumeration value="Partially Processed"/>
+<xs:enumeration value="Failed to Process"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:element name="entityProcessingOutcomes">
+<xs:complexType>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" ref="entityProcessingOutcome"></xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="entityProcessingOutcome" type="EntityProcessingOutcomeType"/>
+<xs:complexType name="EntityProcessingOutcomeType">
+<xs:sequence>
+<xs:element maxOccurs="1" minOccurs="0" name="klassName" type="xs:string"/>
+<xs:element maxOccurs="1" minOccurs="1" name="businessIdentifier" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="message" type="xs:string"/>
+<xs:element minOccurs="0" name="dataBaseId" type="xs:string"/>
+<xs:element minOccurs="0" name="correlationId" type="xs:string"/>
+<xs:element minOccurs="0" name="correlationDescription" type="xs:string"/>
+<xs:element default="false" minOccurs="0" name="failed" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+<xs:simpleType name="ResponseCodeType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="0"/>
+<xs:enumeration value="1"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:element name="ServiceResponse" type="ServiceResponse"/>
+<xs:complexType name="ServiceResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="status" type="Status"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="wsError" type="WsError"/>
+<xs:element minOccurs="0" ref="entityProcessingOutcomes"/>
+<xs:element minOccurs="0" name="message" type="xs:string"/>
+<xs:element minOccurs="0" ref="responseData"/>
+</xs:sequence>
+<!--  migrated from study xsd  -->
+<xs:attribute name="responsecode" type="ResponseCodeType"/>
+</xs:complexType>
+<xs:element name="responseData" type="responseDataType"/>
+<xs:complexType name="responseDataType">
+<xs:sequence>
+<xs:any maxOccurs="1" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="CaaersServiceResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element ref="ServiceResponse"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<!--  Common faults.  -->
+<xs:element name="SecurityExceptionFault" type="SecurityExceptionFault"/>
+<xs:complexType name="BaseFault">
+<xs:sequence>
+<xs:element name="message" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="SecurityExceptionFault">
+<xs:complexContent>
+<xs:extension base="BaseFault"/>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="Fault">
+<xs:sequence>
+<xs:element name="code" type="xs:string"/>
+<xs:element name="message" type="xs:string"/>
+<xs:element name="exception" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="CaaersFaultInfo">
+<xs:complexType>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="1" name="fault" type="Fault"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:schema>
+<xs:schema xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent" xmlns:cct="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent">
+<!--
+<xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" schemaLocation="caAERSCommonDataTypes.xsd"/>
+-->
+<xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common"/>
+<xs:complexType name="AdverseEventType">
+<xs:complexContent>
+<xs:extension base="cct:MutableDomainObjectType">
+<xs:sequence>
+<xs:element minOccurs="0" name="verbatim" type="xs:string"/>
+<xs:choice>
+<xs:element minOccurs="0" name="adverseEventCtepTerm" type="AdverseEventCtepTermType"/>
+<xs:element minOccurs="0" name="adverseEventMeddraLowLevelTerm" type="AdverseEventMeddraLowLevelTermType"/>
+</xs:choice>
+<xs:element minOccurs="0" name="grade" type="GradeType"/>
+<xs:element minOccurs="0" name="hospitalization" type="HospitalizationType"/>
+<xs:element minOccurs="0" name="expected" type="xs:boolean"/>
+<xs:element minOccurs="0" name="attributionSummary" type="AttributionType"/>
+<xs:element minOccurs="0" name="comments" type="xs:string"/>
+<xs:element minOccurs="0" name="dateFirstLearned" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="startDate" type="xs:date"/>
+<xs:element minOccurs="0" name="eventApproximateTime" type="cct:TimeType"/>
+<xs:element minOccurs="0" name="eventLocation" type="xs:string"/>
+<xs:element minOccurs="0" name="endDate" type="xs:date"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="outcome" type="OutcomeType"/>
+<xs:element minOccurs="0" name="increasedRisk" type="xs:boolean"/>
+<xs:element minOccurs="0" name="externalId" type="xs:string"/>
+<xs:element minOccurs="0" name="reporterEmail" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="AdverseEventCtcTermType">
+<xs:sequence>
+<xs:element name="ctep-term" type="cct:CustomStringType"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="EpochType">
+<xs:sequence>
+<xs:element name="name" type="xs:string"/>
+<xs:element name="descriptionText" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="AdverseEventMeddraLowLevelTermType">
+<xs:sequence>
+<xs:element minOccurs="1" name="meddraCode" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="AdverseEventCtepTermType">
+<xs:sequence>
+<xs:element minOccurs="0" name="ctepCode" type="xs:string"/>
+<xs:choice>
+<xs:element minOccurs="0" name="otherMeddra" type="AdverseEventMeddraLowLevelTermType"/>
+<xs:element minOccurs="0" name="otherSpecify" type="xs:string"/>
+</xs:choice>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="OutcomeType">
+<xs:sequence>
+<xs:element minOccurs="1" name="outComeEnumType" type="OutComeEnumType"/>
+<xs:element minOccurs="0" name="other" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<!--  FIXED Types   -->
+<xs:simpleType name="CtcVersionEnum">
+<xs:restriction base="xs:int">
+<xs:enumeration value="2"/>
+<xs:enumeration value="3"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="OutComeEnumType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="DEATH"/>
+<xs:enumeration value="HOSPITALIZATION"/>
+<xs:enumeration value="LIFE_THREATENING"/>
+<xs:enumeration value="DISABILITY"/>
+<xs:enumeration value="CONGENITAL_ANOMALY"/>
+<xs:enumeration value="REQUIRED_INTERVENTION"/>
+<xs:enumeration value="OTHER_SERIOUS"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="GradeType">
+<xs:restriction base="xs:int">
+<xs:enumeration value="0"/>
+<xs:enumeration value="1"/>
+<xs:enumeration value="2"/>
+<xs:enumeration value="3"/>
+<xs:enumeration value="4"/>
+<xs:enumeration value="5"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="HospitalizationType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="NONE"/>
+<xs:enumeration value="YES"/>
+<xs:enumeration value="NO"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="AttributionType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="UNRELATED"/>
+<xs:enumeration value="UNLIKELY"/>
+<xs:enumeration value="POSSIBLE"/>
+<xs:enumeration value="PROBABLE"/>
+<xs:enumeration value="DEFINITE"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="EpochNameEnum">
+<xs:restriction base="xs:string">
+<xs:enumeration value="Baseline"/>
+<xs:enumeration value="Pre-Treatment"/>
+<xs:enumeration value="Treatment"/>
+<xs:enumeration value="Post-treatment"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:complexType name="CourseType">
+<xs:sequence>
+<xs:annotation>
+<xs:documentation>
+Course Criteria Conditions enforced in service Implementation. 1. Start date of this course/cycle cannot be earlier than the Start date of first course/cycle. 2. Course End date cannot be earlier than Start date. 3. For Non-Baseline treatment type Start date cannot be equal to End date. 4. Course/cycle cannot overlap with an existing course/cycle. 5. Baseline treatment type cannot start after an existing Non-Baseline treatment type. 6. Non-Baseline treatment type cannot start before an existing Baseline treatment type. 7. In Choosing the Treatment Assignment codes the following are scenarios are possible. a) When treatmentAssignmentCode is specified then the otherTreatementAssignmentDescription code should be N/A. b) When otherTreatementAssignmentDescription code is specified then the treatmentAssignmentCode should be Other.
+</xs:documentation>
+</xs:annotation>
+<xs:element minOccurs="0" name="startDateOfFirstCourse" type="xs:date"/>
+<xs:element minOccurs="0" name="startDateOfThisCourse" type="xs:date"/>
+<xs:element minOccurs="0" name="endDateOfThisCourse" type="xs:date"/>
+<xs:element minOccurs="0" name="treatmentType" type="xs:string"/>
+<xs:element minOccurs="0" name="cycleNumber" type="xs:integer"/>
+<xs:element minOccurs="1" name="treatmentAssignmentCode" type="xs:string"/>
+<xs:element minOccurs="1" name="otherTreatmentAssignmentDescription" type="xs:string"/>
+<xs:element minOccurs="0" name="externalId" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>
+<xs:schema xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/aereport" xmlns:ae="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent" xmlns:cct="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/aereport">
+<xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent"/>
+<xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common"/>
+<xs:element name="BaseAdverseEventReport">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="createdAt" type="xs:dateTime"/>
+<xs:element name="adverseEventReportingPeriod" type="AdverseEventReportingPeriodType"/>
+<xs:element name="physician" type="PhysicianType"/>
+<xs:element name="reporter" type="ReporterType"/>
+<xs:element maxOccurs="unbounded" name="reportedAE" type="ReportedAE"/>
+<xs:element maxOccurs="unbounded" name="report" type="ReportType"/>
+<xs:element minOccurs="0" name="externalId" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:complexType name="BaseReportType">
+<xs:sequence>
+<xs:element name="ReportID" type="xs:string"/>
+<xs:element minOccurs="0" name="caseNumber" type="xs:string"/>
+<xs:element minOccurs="0" name="reportName" type="xs:string"/>
+<xs:element minOccurs="0" name="action" type="xs:string"/>
+<xs:element minOccurs="0" name="amendmentNumber" type="xs:string"/>
+<xs:element minOccurs="0" name="dueDate" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="BaseReports">
+<xs:complexType>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="baseReport" type="BaseReportType"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="AdverseEventReport">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="createdAt" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="adverseEventResponseDescription" type="AdverseEventResponseDescriptionType"/>
+<xs:element name="adverseEventReportingPeriod" type="AdverseEventReportingPeriodType"/>
+<xs:element minOccurs="0" name="physician" type="PhysicianType"/>
+<xs:element minOccurs="0" name="reporter" type="ReporterType"/>
+<xs:element minOccurs="0" name="submitter" type="SubmitterType"/>
+<xs:element minOccurs="0" name="diseaseHistory" type="DiseaseHistoryType"/>
+<xs:element minOccurs="0" name="participantHistory" type="ParticipantHistoryType"/>
+<xs:element minOccurs="0" name="studyParticipantAssignmentRef" type="StudyParticipantAssignmentRefType"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="radiationIntervention" type="RadiationInterventionType"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="surgeryIntervention" type="SurgeryInterventionType"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="biologicalIntervention" type="BiologicalInterventionType"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="dietarySupplementIntervention" type="DietarySupplementInterventionType"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="medicalDevice" type="MedicalDeviceType"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="concomitantMedication" type="ConcomitantMedicationType"/>
+<xs:element maxOccurs="unbounded" name="adverseEvent" type="AdverseEventType"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="lab" type="LabType"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="sAEReportPriorTherapy" type="SAEReportPriorTherapyType"/>
+<xs:element minOccurs="0" name="treatmentInformation" type="TreatmentInformationType"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="sAEReportPreExistingCondition" type="SAEReportPreExistingConditionType"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="otherCause" type="OtherCauseType"/>
+<xs:element minOccurs="0" name="additionalInformation" type="AdditionalInformationType"/>
+<xs:element maxOccurs="unbounded" name="report" type="ReportType"/>
+<xs:element minOccurs="0" name="externalId" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:complexType name="ReportedAE">
+<xs:sequence>
+<xs:element minOccurs="0" name="externalId" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
 <xs:complexType name="AdverseEventType">
 <xs:complexContent>
 <xs:extension base="ae:AdverseEventType">
 <xs:sequence>
-<xs:element minOccurs="0" name="isPrimary" type="xs:boolean"></xs:element>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="concomitantMedicationAttribution" type="ConcomitantMedicationAttributionType"></xs:element>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="otherCauseAttribution" type="OtherCauseAttributionType"></xs:element>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="courseAgentAttribution" type="CourseAgentAttributionType"></xs:element>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="surgeryAttribution" type="SurgeryAttributionType"></xs:element>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="radiationAttribution" type="RadiationAttributionType"></xs:element>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="deviceAttribution" type="DeviceAttributionType"></xs:element>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="biologicalInterventionAttribution" type="BiologicalInterventionAttributionType"></xs:element>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="dietarySupplementInterventionAttribution" type="DietarySupplementInterventionAttributionType"></xs:element>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="diseaseAttribution" type="DiseaseAttributionType"></xs:element>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="otherInterventionAttribution" type="OtherInterventionAttributionType"></xs:element>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="behavioralInterventionAttribution" type="BehavioralInterventionAttributionType"></xs:element>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="geneticInterventionAttribution" type="GeneticInterventionAttributionType"></xs:element>
+<xs:element minOccurs="0" name="isPrimary" type="xs:boolean"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="concomitantMedicationAttribution" type="ConcomitantMedicationAttributionType"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="otherCauseAttribution" type="OtherCauseAttributionType"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="courseAgentAttribution" type="CourseAgentAttributionType"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="surgeryAttribution" type="SurgeryAttributionType"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="radiationAttribution" type="RadiationAttributionType"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="deviceAttribution" type="DeviceAttributionType"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="biologicalInterventionAttribution" type="BiologicalInterventionAttributionType"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="dietarySupplementInterventionAttribution" type="DietarySupplementInterventionAttributionType"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="diseaseAttribution" type="DiseaseAttributionType"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="otherInterventionAttribution" type="OtherInterventionAttributionType"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="behavioralInterventionAttribution" type="BehavioralInterventionAttributionType"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="geneticInterventionAttribution" type="GeneticInterventionAttributionType"/>
 </xs:sequence>
 </xs:extension>
 </xs:complexContent>
 </xs:complexType>
 <xs:complexType name="TimeValueType">
 <xs:sequence>
-<xs:element minOccurs="0" name="hour" type="xs:int"></xs:element>
-<xs:element minOccurs="0" name="minute" type="xs:int"></xs:element>
-<xs:element minOccurs="0" name="type" type="xs:int"></xs:element>
+<xs:element minOccurs="0" name="hour" type="xs:int"/>
+<xs:element minOccurs="0" name="minute" type="xs:int"/>
+<xs:element minOccurs="0" name="type" type="xs:int"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="AdverseEventResponseDescriptionType">
 <xs:sequence>
-<xs:element name="eventDescription" type="xs:string"></xs:element>
-<xs:element name="presentStatus" type="PostAdverseEventStatusType"></xs:element>
-<xs:element minOccurs="0" name="retreated" type="xs:boolean"></xs:element>
-<xs:element minOccurs="0" name="autopsyPerformed" type="xs:boolean"></xs:element>
-<xs:element minOccurs="0" name="recoveryDate" type="xs:date"></xs:element>
-<xs:element minOccurs="0" name="dateRemovedFromProtocol" type="xs:date"></xs:element>
-<xs:element minOccurs="0" name="eventAbate" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="eventReappear" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="primaryTreatmentApproximateTime" type="TimeValueType"></xs:element>
+<xs:element minOccurs="0" name="eventDescription" type="xs:string"/>
+<xs:element minOccurs="0" name="presentStatus" type="PostAdverseEventStatusType"/>
+<xs:element minOccurs="0" name="retreated" type="xs:boolean"/>
+<xs:element minOccurs="0" name="autopsyPerformed" type="xs:boolean"/>
+<xs:element minOccurs="0" name="recoveryDate" type="xs:date"/>
+<xs:element minOccurs="0" name="dateRemovedFromProtocol" type="xs:date"/>
+<xs:element minOccurs="0" name="eventAbate" type="xs:string"/>
+<xs:element minOccurs="0" name="eventReappear" type="xs:string"/>
+<xs:element minOccurs="0" name="primaryTreatmentApproximateTime" type="TimeValueType"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="AdverseEventReportingPeriodType">
 <xs:sequence>
-<xs:element minOccurs="0" name="cycleNumber" type="xs:int"></xs:element>
-<xs:element minOccurs="0" name="startDate" type="xs:date"></xs:element>
-<xs:element minOccurs="0" name="studyParticipantAssignment" type="StudyParticipantAssignmentType"></xs:element>
-<xs:element minOccurs="0" name="TreatmentAssignment" type="TreatmentAssignmentType"></xs:element>
-<xs:element minOccurs="0" name="externalId" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="treatmentAssignmentDescription" type="xs:string"/>
+<xs:element minOccurs="0" name="cycleNumber" type="xs:int"/>
+<xs:element minOccurs="0" name="startDate" type="xs:date"/>
+<xs:element minOccurs="0" name="studyParticipantAssignmentRef" type="StudyParticipantAssignmentRefType"/>
+<xs:element name="treatmentAssignment" type="TreatmentAssignmentType"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="ContactMechanismType">
 <xs:sequence>
-<xs:element name="type" type="xs:string"></xs:element>
-<xs:element name="value" type="xs:string"></xs:element>
+<xs:element name="type" type="xs:string"/>
+<xs:element name="value" type="xs:string"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="PhysicianType">
 <xs:sequence>
-<xs:element name="firstName" type="xs:string"></xs:element>
-<xs:element name="lastName" type="xs:string"></xs:element>
-<xs:element name="middleName" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="nciIdentifier" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="street" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="city" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="state" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="zip" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="country" type="xs:string"></xs:element>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="ContactMechanism" type="ContactMechanismType"></xs:element>
+<xs:element name="firstName" type="xs:string"/>
+<xs:element name="lastName" type="xs:string"/>
+<xs:element minOccurs="0" name="middleName" type="xs:string"/>
+<xs:element minOccurs="0" name="nciIdentifier" type="xs:string"/>
+<xs:element minOccurs="0" name="street" type="xs:string"/>
+<xs:element minOccurs="0" name="city" type="xs:string"/>
+<xs:element minOccurs="0" name="state" type="xs:string"/>
+<xs:element minOccurs="0" name="zip" type="xs:string"/>
+<xs:element minOccurs="0" name="country" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="contactMechanism" type="ContactMechanismType"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="ReporterType">
 <xs:sequence>
-<xs:element name="firstName" type="xs:string"></xs:element>
-<xs:element name="lastName" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="middleName" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="nciIdentifier" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="street" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="city" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="state" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="zip" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="country" type="xs:string"></xs:element>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="ContactMechanism" type="ContactMechanismType"></xs:element>
+<xs:element name="firstName" type="xs:string"/>
+<xs:element name="lastName" type="xs:string"/>
+<xs:element minOccurs="0" name="middleName" type="xs:string"/>
+<xs:element minOccurs="0" name="nciIdentifier" type="xs:string"/>
+<xs:element minOccurs="0" name="street" type="xs:string"/>
+<xs:element minOccurs="0" name="city" type="xs:string"/>
+<xs:element minOccurs="0" name="state" type="xs:string"/>
+<xs:element minOccurs="0" name="zip" type="xs:string"/>
+<xs:element minOccurs="0" name="country" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="contactMechanism" type="ContactMechanismType"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="SubmitterType">
 <xs:sequence>
-<xs:element name="firstName" type="xs:string"></xs:element>
-<xs:element name="lastName" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="nciIdentifier" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="street" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="city" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="state" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="zip" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="country" type="xs:string"></xs:element>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="ContactMechanism" type="ContactMechanismType"></xs:element>
+<xs:element name="firstName" type="xs:string"/>
+<xs:element name="lastName" type="xs:string"/>
+<xs:element minOccurs="0" name="middleName" type="xs:string"/>
+<xs:element minOccurs="0" name="nciIdentifier" type="xs:string"/>
+<xs:element minOccurs="0" name="street" type="xs:string"/>
+<xs:element minOccurs="0" name="city" type="xs:string"/>
+<xs:element minOccurs="0" name="state" type="xs:string"/>
+<xs:element minOccurs="0" name="zip" type="xs:string"/>
+<xs:element minOccurs="0" name="country" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="contactMechanism" type="ContactMechanismType"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="ReviewerType">
 <xs:sequence>
-<xs:element name="firstName" type="xs:string"></xs:element>
-<xs:element name="lastName" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="nciIdentifier" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="street" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="city" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="state" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="zip" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="country" type="xs:string"></xs:element>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="ContactMechanism" type="ContactMechanismType"></xs:element>
+<xs:element name="firstName" type="xs:string"/>
+<xs:element name="lastName" type="xs:string"/>
+<xs:element minOccurs="0" name="nciIdentifier" type="xs:string"/>
+<xs:element minOccurs="0" name="street" type="xs:string"/>
+<xs:element minOccurs="0" name="city" type="xs:string"/>
+<xs:element minOccurs="0" name="state" type="xs:string"/>
+<xs:element minOccurs="0" name="zip" type="xs:string"/>
+<xs:element minOccurs="0" name="country" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="contactMechanism" type="ContactMechanismType"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="AnatomicSiteType">
 <xs:sequence>
-<xs:element name="name" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="category" type="xs:string"></xs:element>
+<xs:element name="name" type="xs:string"/>
+<xs:element minOccurs="0" name="category" type="xs:string"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="MetastaticDiseaseSiteType">
 <xs:sequence>
-<xs:element minOccurs="0" name="otherSite" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="codedSite" type="AnatomicSiteType"></xs:element>
+<xs:element minOccurs="0" name="otherSite" type="xs:string"/>
+<xs:element minOccurs="0" name="codedSite" type="AnatomicSiteType"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="DiseaseHistoryType">
 <xs:sequence>
-<xs:element minOccurs="0" name="diagnosisDate" type="DateValueType"></xs:element>
-<xs:element minOccurs="0" name="primaryDisease" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="otherPrimaryDisease" type="xs:string"></xs:element>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="metastaticDiseaseSite" type="MetastaticDiseaseSiteType"></xs:element>
-<xs:element minOccurs="0" name="codedPrimaryDiseaseSite" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="otherPrimaryDiseaseSite" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="diagnosisDate" type="DateValueType"/>
+<xs:element minOccurs="0" name="primaryDisease" type="xs:string"/>
+<xs:element minOccurs="0" name="otherPrimaryDisease" type="xs:string"/>
+<xs:element minOccurs="0" name="codedPrimaryDiseaseSite" type="xs:string"/>
+<xs:element minOccurs="0" name="otherPrimaryDiseaseSite" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="metastaticDiseaseSite" type="MetastaticDiseaseSiteType"/>
 </xs:sequence>
+</xs:complexType>
+<xs:complexType name="DiseaseHistoryRefType">
+<xs:choice>
+<xs:element name="primaryDisease" type="xs:string"/>
+<xs:element name="otherPrimaryDisease" type="xs:string"/>
+</xs:choice>
 </xs:complexType>
 <xs:complexType name="DateValueType">
 <xs:sequence>
-<xs:element minOccurs="0" name="day" type="xs:int"></xs:element>
-<xs:element minOccurs="0" name="month" type="xs:int"></xs:element>
-<xs:element minOccurs="0" name="year" type="xs:int"></xs:element>
-<xs:element minOccurs="0" name="zone" type="xs:int"></xs:element>
+<xs:element minOccurs="0" name="day" type="xs:int"/>
+<xs:element minOccurs="0" name="month" type="xs:int"/>
+<xs:element minOccurs="0" name="year" type="xs:int"/>
+<xs:element minOccurs="0" name="zone" type="xs:int"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="AgentType">
 <xs:sequence>
-<xs:element minOccurs="0" name="name" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="description" type="xs:string"></xs:element>
-<xs:element name="nscNumber" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="name" type="xs:string"/>
+<xs:element minOccurs="0" name="description" type="xs:string"/>
+<xs:element name="nscNumber" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="AgentRefType">
+<xs:sequence>
+<xs:element name="nscNumber" type="xs:string"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="StudyAgentType">
 <xs:choice>
-<xs:element name="Agent" type="AgentType"></xs:element>
-<xs:element name="otherAgent" type="xs:string"></xs:element>
+<xs:element name="Agent" type="AgentType"/>
+<xs:element name="otherAgent" type="xs:string"/>
+</xs:choice>
+</xs:complexType>
+<xs:complexType name="StudyAgentRefType">
+<xs:choice>
+<xs:element name="Agent" type="AgentRefType"/>
 </xs:choice>
 </xs:complexType>
 <xs:complexType name="DiseaseTermType">
-<xs:complexContent>
-<xs:extension base="cct:MutableDomainObjectType">
 <xs:sequence>
-<xs:element minOccurs="0" name="term" type="cct:CustomStringType"></xs:element>
-<xs:element minOccurs="0" name="meddraCode" type="cct:CustomStringType"></xs:element>
+<xs:element minOccurs="0" name="term" type="cct:CustomStringType"/>
+<xs:element minOccurs="0" name="meddraCode" type="cct:CustomStringType"/>
 </xs:sequence>
-</xs:extension>
-</xs:complexContent>
 </xs:complexType>
-<xs:complexType name="StudyType">
-<xs:complexContent>
-<xs:extension base="cct:MutableDomainObjectType">
+<xs:complexType name="StudyRefType">
 <xs:sequence>
 <xs:element name="identifiers">
 <xs:complexType>
 <xs:sequence>
-<xs:element name="identifier" type="ReducedIdentifierType"></xs:element>
+<xs:element name="identifier" type="ReducedIdentifierType"/>
 </xs:sequence>
 </xs:complexType>
 </xs:element>
 </xs:sequence>
-</xs:extension>
-</xs:complexContent>
 </xs:complexType>
 <xs:complexType name="ReducedIdentifierType">
-<xs:complexContent>
-<xs:extension base="cct:MutableDomainObjectType">
 <xs:sequence>
-<xs:element name="type" type="cct:StudyIdentifierType"></xs:element>
-<xs:element name="value" type="xs:string"></xs:element>
+<xs:element name="type" type="cct:StudyIdentifierType"/>
+<xs:element name="value" type="xs:string"/>
 </xs:sequence>
-</xs:extension>
-</xs:complexContent>
 </xs:complexType>
-<xs:element name="organizationAssignedIdentifier" type="OrganizationAssignedIdentifierType"></xs:element>
+<xs:element name="organizationAssignedIdentifier" type="OrganizationAssignedIdentifierType"/>
 <xs:complexType name="OrganizationAssignedIdentifierType">
 <xs:complexContent>
 <xs:extension base="IdentifierType">
 <xs:sequence>
-<xs:element ref="organizationRef"></xs:element>
+<xs:element ref="organizationRef"/>
 </xs:sequence>
 </xs:extension>
 </xs:complexContent>
 </xs:complexType>
-<xs:element name="organizationRef" type="OrganizationRefType"></xs:element>
+<xs:element name="organizationRef" type="OrganizationRefType"/>
 <xs:complexType name="OrganizationRefType">
 <xs:sequence>
-<xs:element name="name" type="cct:CustomStringType"></xs:element>
-<xs:element name="nciInstituteCode" type="cct:CustomStringType"></xs:element>
+<xs:element name="name" type="cct:CustomStringType"/>
+<xs:element name="nciInstituteCode" type="cct:CustomStringType"/>
 </xs:sequence>
 </xs:complexType>
-<xs:element name="systemAssignedIdentifier" type="SystemAssignedIdentifierType"></xs:element>
+<xs:element name="systemAssignedIdentifier" type="SystemAssignedIdentifierType"/>
 <xs:complexType name="SystemAssignedIdentifierType">
 <xs:complexContent>
 <xs:extension base="IdentifierType">
 <xs:sequence>
-<xs:element name="systemName" type="cct:CustomStringType"></xs:element>
+<xs:element name="systemName" type="cct:CustomStringType"/>
 </xs:sequence>
 </xs:extension>
 </xs:complexContent>
@@ -1117,81 +1069,87 @@
 <xs:complexContent>
 <xs:extension base="cct:MutableDomainObjectType">
 <xs:sequence>
-<xs:element name="type" type="cct:ParticipantIdentifierType"></xs:element>
-<xs:element name="value" type="cct:CustomStringType"></xs:element>
-<xs:element name="primaryIndicator" type="xs:boolean"></xs:element>
+<xs:element name="type" type="cct:ParticipantIdentifierType"/>
+<xs:element name="value" type="cct:CustomStringType"/>
+<xs:element name="primaryIndicator" type="xs:boolean"/>
 </xs:sequence>
 </xs:extension>
 </xs:complexContent>
 </xs:complexType>
 <xs:complexType name="StudySiteType">
 <xs:sequence>
-<xs:element minOccurs="0" name="statusCode" type="xs:string"></xs:element>
-<xs:element name="Study" type="StudyType"></xs:element>
-<xs:element name="Organization" type="cct:OrganizationType"></xs:element>
+<xs:element minOccurs="0" name="statusCode" type="xs:string"/>
+<xs:element name="studyRef" type="StudyRefType"/>
+<xs:element name="organization" type="cct:OrganizationType"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="StudySiteRefType">
+<xs:sequence>
+<xs:element name="studyRef" type="StudyRefType"/>
+<xs:element name="nciInstituteCode" type="xs:string"/>
 </xs:sequence>
 </xs:complexType>
 <xs:simpleType name="GenderType">
 <xs:restriction base="xs:string">
-<xs:enumeration value="Male"></xs:enumeration>
-<xs:enumeration value="Female"></xs:enumeration>
-<xs:enumeration value="Not Reported"></xs:enumeration>
-<xs:enumeration value="Unknown"></xs:enumeration>
+<xs:enumeration value="Male"/>
+<xs:enumeration value="Female"/>
+<xs:enumeration value="Not Reported"/>
+<xs:enumeration value="Unknown"/>
 </xs:restriction>
 </xs:simpleType>
 <xs:simpleType name="EthnicityType">
 <xs:restriction base="xs:string">
-<xs:enumeration value="Hispanic or Latino"></xs:enumeration>
-<xs:enumeration value="Not Hispanic or Latino"></xs:enumeration>
-<xs:enumeration value="Not Reported"></xs:enumeration>
-<xs:enumeration value="Unknown"></xs:enumeration>
+<xs:enumeration value="Hispanic or Latino"/>
+<xs:enumeration value="Not Hispanic or Latino"/>
+<xs:enumeration value="Not Reported"/>
+<xs:enumeration value="Unknown"/>
 </xs:restriction>
 </xs:simpleType>
 <xs:simpleType name="FirstAndLastNameType">
 <xs:restriction base="xs:normalizedString">
-<xs:minLength value="1"></xs:minLength>
-<xs:pattern value="[a-zA-Z0-9_ ]*"></xs:pattern>
-<xs:whiteSpace value="collapse"></xs:whiteSpace>
+<xs:minLength value="1"/>
+<xs:pattern value="[a-zA-Z0-9_ ]*"/>
+<xs:whiteSpace value="collapse"/>
 </xs:restriction>
 </xs:simpleType>
 <xs:simpleType name="MiddleAndMaidenNameType">
 <xs:restriction base="xs:normalizedString">
-<xs:pattern value="[a-zA-Z0-9_ ]*"></xs:pattern>
-<xs:whiteSpace value="collapse"></xs:whiteSpace>
+<xs:pattern value="[a-zA-Z0-9_ ]*"/>
+<xs:whiteSpace value="collapse"/>
 </xs:restriction>
 </xs:simpleType>
 <xs:simpleType name="RaceType">
 <xs:restriction base="xs:string">
-<xs:enumeration value="Asian"></xs:enumeration>
-<xs:enumeration value="White"></xs:enumeration>
-<xs:enumeration value="Black or African American"></xs:enumeration>
-<xs:enumeration value="American Indian or Alaska Native"></xs:enumeration>
-<xs:enumeration value="Native Hawaiian or Other PacificIslander"></xs:enumeration>
-<xs:enumeration value="Not Reported"></xs:enumeration>
-<xs:enumeration value="Unknown"></xs:enumeration>
+<xs:enumeration value="Asian"/>
+<xs:enumeration value="White"/>
+<xs:enumeration value="Black or African American"/>
+<xs:enumeration value="American Indian or Alaska Native"/>
+<xs:enumeration value="Native Hawaiian or Other PacificIslander"/>
+<xs:enumeration value="Not Reported"/>
+<xs:enumeration value="Unknown"/>
 </xs:restriction>
 </xs:simpleType>
 <xs:complexType name="ParticipantType">
 <xs:sequence>
-<xs:element name="firstName" type="FirstAndLastNameType"></xs:element>
-<xs:element name="lastName" type="FirstAndLastNameType"></xs:element>
-<xs:element minOccurs="0" name="maidenName" type="MiddleAndMaidenNameType"></xs:element>
-<xs:element minOccurs="0" name="middleName" type="MiddleAndMaidenNameType"></xs:element>
+<xs:element name="firstName" type="FirstAndLastNameType"/>
+<xs:element name="lastName" type="FirstAndLastNameType"/>
+<xs:element minOccurs="0" name="maidenName" type="MiddleAndMaidenNameType"/>
+<xs:element minOccurs="0" name="middleName" type="MiddleAndMaidenNameType"/>
 <xs:choice>
-<xs:element name="birthDate" type="xs:date"></xs:element>
+<xs:element name="birthDate" type="xs:date"/>
 <xs:sequence>
-<xs:element name="birthMonth" type="cct:CustomMonthType"></xs:element>
-<xs:element name="birthYear" type="cct:CustomDateType"></xs:element>
+<xs:element name="birthMonth" type="cct:CustomMonthType"/>
+<xs:element name="birthYear" type="cct:CustomDateType"/>
 </xs:sequence>
 </xs:choice>
-<xs:element name="gender" type="GenderType"></xs:element>
-<xs:element name="race" type="RaceType"></xs:element>
-<xs:element name="ethnicity" type="EthnicityType"></xs:element>
+<xs:element name="gender" type="GenderType"/>
+<xs:element name="race" type="RaceType"/>
+<xs:element name="ethnicity" type="EthnicityType"/>
 <xs:element name="identifiers">
 <xs:complexType>
 <xs:sequence>
-<xs:element maxOccurs="unbounded" ref="organizationAssignedIdentifier"></xs:element>
-<xs:element maxOccurs="unbounded" minOccurs="0" ref="systemAssignedIdentifier"></xs:element>
+<xs:element maxOccurs="unbounded" ref="organizationAssignedIdentifier"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" ref="systemAssignedIdentifier"/>
 </xs:sequence>
 </xs:complexType>
 </xs:element>
@@ -1199,595 +1157,702 @@
 </xs:complexType>
 <xs:complexType name="StudyParticipantAssignmentType">
 <xs:sequence>
-<xs:element minOccurs="0" name="startDateOfFirstCourse" type="xs:date"></xs:element>
-<xs:element name="dateOfEnrollment" type="xs:date"></xs:element>
-<xs:element name="StudySite" type="StudySiteType"></xs:element>
-<xs:element name="Participant" type="ParticipantType"></xs:element>
-<xs:element name="studySubjectIdentifier" type="xs:string"></xs:element>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="concomitantMedications" type="ConcomitantMedicationType"></xs:element>
+<xs:element minOccurs="0" name="startDateOfFirstCourse" type="xs:date"/>
+<xs:element name="dateOfEnrollment" type="xs:date"/>
+<xs:element name="StudySite" type="StudySiteType"/>
+<xs:element name="Participant" type="ParticipantType"/>
+<xs:element name="studySubjectIdentifier" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="concomitantMedications" type="ConcomitantMedicationType"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="StudyParticipantAssignmentRefType">
+<xs:sequence>
+<xs:element name="studySiteRef" type="StudySiteRefType"/>
+<xs:element name="studySubjectIdentifier" type="xs:string"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="RadiationInterventionType">
 <xs:sequence>
-<xs:element name="dosage" type="xs:int"></xs:element>
-<xs:element name="dosageUnit" type="xs:string"></xs:element>
-<xs:element name="lastTreatmentDate" type="xs:date"></xs:element>
-<xs:element name="fractionNumber" type="xs:int"></xs:element>
-<xs:element name="daysElapsed" type="xs:int"></xs:element>
-<xs:element name="adjustment" type="xs:string"></xs:element>
-<xs:element name="administration" type="RadiationAdministrationType"></xs:element>
-<xs:element minOccurs="0" name="OtherIntervention" type="OtherInterventionType"></xs:element>
+<xs:element minOccurs="0" name="dosage" type="xs:int"/>
+<xs:element minOccurs="0" name="dosageUnit" type="xs:string"/>
+<xs:element name="lastTreatmentDate" type="xs:date"/>
+<xs:element minOccurs="0" name="fractionNumber" type="xs:int"/>
+<xs:element minOccurs="0" name="daysElapsed" type="xs:int"/>
+<xs:element minOccurs="0" name="adjustment" type="xs:string"/>
+<xs:element name="administration" type="RadiationAdministrationType"/>
+<xs:element minOccurs="0" name="OtherIntervention" type="OtherInterventionType"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="RadiationInterventionRefType">
+<xs:sequence>
+<xs:element minOccurs="0" name="lastTreatmentDate" type="xs:date"/>
+<xs:element minOccurs="0" name="administration" type="RadiationAdministrationType"/>
 </xs:sequence>
 </xs:complexType>
 <xs:simpleType name="RadiationAdministrationType">
 <xs:restriction base="xs:string">
-<xs:enumeration value="Brachytherapy HDR"></xs:enumeration>
-<xs:enumeration value="Brachytherapy LDR"></xs:enumeration>
-<xs:enumeration value="Brachytherapy NOS"></xs:enumeration>
-<xs:enumeration value="External Beam NOS"></xs:enumeration>
-<xs:enumeration value="External Beam, 2D"></xs:enumeration>
-<xs:enumeration value="External Beam, 3D"></xs:enumeration>
-<xs:enumeration value="SUBMIT_TO_SPONSOR"></xs:enumeration>
-<xs:enumeration value="External Beam, IMRT"></xs:enumeration>
-<xs:enumeration value="External Beam, Proton"></xs:enumeration>
-<xs:enumeration value="Systemic radiotherapy"></xs:enumeration>
+<xs:enumeration value="Brachytherapy HDR"/>
+<xs:enumeration value="Brachytherapy LDR"/>
+<xs:enumeration value="Brachytherapy NOS"/>
+<xs:enumeration value="External Beam NOS"/>
+<xs:enumeration value="External Beam, 2D"/>
+<xs:enumeration value="External Beam, 3D"/>
+<xs:enumeration value="SUBMIT_TO_SPONSOR"/>
+<xs:enumeration value="External Beam, IMRT"/>
+<xs:enumeration value="External Beam, Proton"/>
+<xs:enumeration value="Systemic radiotherapy"/>
 </xs:restriction>
 </xs:simpleType>
 <xs:complexType name="InterventionSiteType">
 <xs:sequence>
-<xs:element name="name" type="xs:string"></xs:element>
+<xs:element name="name" type="xs:string"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="SurgeryInterventionType">
 <xs:sequence>
-<xs:element name="interventionDate" type="xs:date"></xs:element>
-<xs:element name="InterventionSite" type="InterventionSiteType"></xs:element>
-<xs:element minOccurs="0" name="OtherIntervention" type="OtherInterventionType"></xs:element>
+<xs:element minOccurs="0" name="interventionDate" type="xs:date"/>
+<xs:element minOccurs="0" name="InterventionSite" type="InterventionSiteType"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="BiologicalInterventionType">
 <xs:sequence>
-<xs:element name="description" type="xs:string"></xs:element>
-<xs:element name="OtherIntervention" type="OtherInterventionType"></xs:element>
+<xs:element name="description" type="xs:string"/>
+<xs:element name="OtherIntervention" type="OtherInterventionType"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="DietarySupplementInterventionType">
 <xs:sequence>
-<xs:element name="description" type="xs:string"></xs:element>
-<xs:element name="otherIntervention" type="OtherInterventionType"></xs:element>
+<xs:element name="description" type="xs:string"/>
+<xs:element name="otherIntervention" type="OtherInterventionType"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="OtherInterventionType">
 <xs:sequence>
-<xs:element name="name" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="description" type="xs:string"></xs:element>
+<xs:element name="name" type="xs:string"/>
+<xs:element minOccurs="0" name="description" type="xs:string"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="DeviceType">
 <xs:sequence>
-<xs:element name="brandName" type="xs:string"></xs:element>
-<xs:element name="commonName" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="type" type="xs:string"></xs:element>
+<xs:element name="brandName" type="xs:string"/>
+<xs:element name="commonName" type="xs:string"/>
+<xs:element minOccurs="0" name="type" type="xs:string"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="StudyDeviceType">
 <xs:choice>
 <xs:sequence>
-<xs:element minOccurs="0" name="otherBrandName" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="otherCommonName" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="otherDeviceType" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="otherBrandName" type="xs:string"/>
+<xs:element minOccurs="0" name="otherCommonName" type="xs:string"/>
+<xs:element minOccurs="0" name="otherDeviceType" type="xs:string"/>
 </xs:sequence>
 <xs:sequence>
-<xs:element minOccurs="0" name="device" type="DeviceType"></xs:element>
-<xs:element minOccurs="0" name="catalogNumber" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="manufacturerName" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="manufacturerCity" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="manufacturerState" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="modelNumber" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="device" type="DeviceType"/>
+<xs:element minOccurs="0" name="catalogNumber" type="xs:string"/>
+<xs:element minOccurs="0" name="manufacturerName" type="xs:string"/>
+<xs:element minOccurs="0" name="manufacturerCity" type="xs:string"/>
+<xs:element minOccurs="0" name="manufacturerState" type="xs:string"/>
+<xs:element minOccurs="0" name="modelNumber" type="xs:string"/>
+</xs:sequence>
+</xs:choice>
+</xs:complexType>
+<xs:complexType name="StudyDeviceRefType">
+<xs:choice>
+<xs:sequence>
+<xs:element name="device" type="DeviceType"/>
 </xs:sequence>
 </xs:choice>
 </xs:complexType>
 <xs:complexType name="MedicalDeviceType">
 <xs:sequence>
-<xs:element minOccurs="0" name="brandName" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="commonName" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="deviceType" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="manufacturerName" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="manufacturerCity" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="manufacturerState" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="modelNumber" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="catalogNumber" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="serialNumber" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="otherNumber" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="explantedDate" type="xs:date"></xs:element>
-<xs:element minOccurs="0" name="DeviceOperator" type="DeviceOperatorType"></xs:element>
-<xs:element minOccurs="0" name="DeviceReprocessed" type="ReprocessedDeviceType"></xs:element>
-<xs:element minOccurs="0" name="reprocessedName" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="reprocessedAddress" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="EvaluationAvailability" type="EvaluationAvailabilityType"></xs:element>
-<xs:element minOccurs="0" name="StudyDevice" type="StudyDeviceType"></xs:element>
-<xs:element minOccurs="0" name="otherDeviceOperator" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="lotNumber" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="brandName" type="xs:string"/>
+<xs:element minOccurs="0" name="commonName" type="xs:string"/>
+<xs:element minOccurs="0" name="deviceType" type="xs:string"/>
+<xs:element minOccurs="0" name="manufacturerName" type="xs:string"/>
+<xs:element minOccurs="0" name="manufacturerCity" type="xs:string"/>
+<xs:element minOccurs="0" name="manufacturerState" type="xs:string"/>
+<xs:element minOccurs="0" name="modelNumber" type="xs:string"/>
+<xs:element minOccurs="0" name="catalogNumber" type="xs:string"/>
+<xs:element minOccurs="0" name="expirationDate" type="xs:date"/>
+<xs:element minOccurs="0" name="serialNumber" type="xs:string"/>
+<xs:element minOccurs="0" name="otherNumber" type="xs:string"/>
+<xs:element minOccurs="0" name="explantedDate" type="xs:date"/>
+<xs:element minOccurs="0" name="implantedDate" type="xs:date"/>
+<xs:element minOccurs="0" name="deviceOperator" type="DeviceOperatorType"/>
+<xs:element minOccurs="0" name="returnedDate" type="xs:date"/>
+<xs:element minOccurs="0" name="deviceReprocessed" type="ReprocessedDeviceType"/>
+<xs:element minOccurs="0" name="reprocessedName" type="xs:string"/>
+<xs:element minOccurs="0" name="reprocessedAddress" type="xs:string"/>
+<xs:element minOccurs="0" name="evaluationAvailability" type="EvaluationAvailabilityType"/>
+<xs:element minOccurs="0" name="studyDevice" type="StudyDeviceType"/>
+<xs:element minOccurs="0" name="otherDeviceOperator" type="xs:string"/>
+<xs:element minOccurs="0" name="lotNumber" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="MedicalDeviceRefType">
+<xs:sequence>
+<xs:element minOccurs="0" name="studyDeviceRef" type="StudyDeviceRefType"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="ConcomitantMedicationType">
 <xs:sequence>
-<xs:element name="name" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="startDate" type="DateValueType"></xs:element>
-<xs:element minOccurs="0" name="endDate" type="DateValueType"></xs:element>
-<xs:element minOccurs="0" name="stillTakingMedications" type="xs:boolean"></xs:element>
+<xs:element name="name" type="xs:string"/>
+<xs:element minOccurs="0" name="startDate" type="DateValueType"/>
+<xs:element minOccurs="0" name="endDate" type="DateValueType"/>
+<xs:element minOccurs="0" name="stillTakingMedications" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="ConcomitantMedicationRefType">
+<xs:sequence>
+<xs:element name="name" type="xs:string"/>
+<xs:element minOccurs="0" name="startDate" type="DateValueType"/>
+<xs:element minOccurs="0" name="endDate" type="DateValueType"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="OtherCauseType">
 <xs:sequence>
-<xs:element name="text" type="xs:string"></xs:element>
+<xs:element name="text" type="xs:string"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="CourseAgentType">
 <xs:sequence>
-<xs:element minOccurs="0" name="lastAdministeredDate" type="xs:date"></xs:element>
-<xs:element minOccurs="0" name="totalDoseAdministeredThisCourse" type="xs:decimal"></xs:element>
-<xs:element minOccurs="0" name="administrationDelayAmount" type="xs:decimal"></xs:element>
-<xs:element minOccurs="0" name="administrationDelayUnits" type="DelayUnitsType"></xs:element>
-<xs:element minOccurs="0" name="durationAndSchedule" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="dose" type="DoseType"></xs:element>
-<xs:element minOccurs="0" name="modifiedDose" type="DoseType"></xs:element>
-<xs:element minOccurs="0" name="studyAgent" type="StudyAgentType"></xs:element>
-<xs:element minOccurs="0" name="lotNumber" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="comments" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="lastAdministeredDate" type="xs:date"/>
+<xs:element minOccurs="0" name="totalDoseAdministeredThisCourse" type="xs:decimal"/>
+<xs:sequence minOccurs="0">
+<xs:element name="administrationDelayAmount" type="xs:decimal"/>
+<xs:element name="administrationDelayUnits" type="DelayUnitsType"/>
+</xs:sequence>
+<xs:element minOccurs="0" name="durationAndSchedule" type="xs:string"/>
+<xs:element minOccurs="0" name="dose" type="DoseType"/>
+<xs:element minOccurs="0" name="modifiedDose" type="DoseType"/>
+<xs:element minOccurs="0" name="studyAgent" type="StudyAgentType"/>
+<xs:element minOccurs="0" name="lotNumber" type="xs:string"/>
+<xs:element minOccurs="0" name="comments" type="xs:string"/>
+<xs:element minOccurs="0" name="agentAdjustment" type="AgentAdjustmentType"/>
+</xs:sequence>
+</xs:complexType>
+<xs:simpleType name="AgentAdjustmentType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="DOSE_INCREASED"/>
+<xs:enumeration value="DOSE_NOTCHANGED"/>
+<xs:enumeration value="DOSE_REDUCED"/>
+<xs:enumeration value="DRUG_WITHDRAWN"/>
+<xs:enumeration value="NA"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:complexType name="CourseAgentRefType">
+<xs:sequence>
+<xs:element minOccurs="0" name="studyAgentRef" type="StudyAgentRefType"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="DoseType">
 <xs:sequence>
-<xs:element minOccurs="0" name="amount" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="units" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="route" type="xs:string"></xs:element>
-</xs:sequence>
-</xs:complexType>
-<xs:complexType name="TreatmentInformation">
-<xs:sequence>
-<xs:element name="firstCourseDate" type="xs:date"></xs:element>
-<xs:element name="CourseDate" type="CourseDate"></xs:element>
-<xs:element maxOccurs="unbounded" name="CourseAgent" type="CourseAgentType"></xs:element>
+<xs:element minOccurs="0" name="amount" type="xs:string"/>
+<xs:element minOccurs="0" name="units" type="xs:string"/>
+<xs:element minOccurs="0" name="route" type="xs:string"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="CourseDate">
 <xs:sequence>
-<xs:element name="number" type="xs:int"></xs:element>
-<xs:element name="date" type="xs:date"></xs:element>
+<xs:element name="number" type="xs:int"/>
+<xs:element name="date" type="xs:date"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="OtherCause">
 <xs:sequence>
-<xs:element name="text" type="xs:string"></xs:element>
+<xs:element name="text" type="xs:string"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="SurgeryAttributionType">
 <xs:sequence>
-<xs:element minOccurs="0" name="attribution" type="AttributionType"></xs:element>
-<xs:element minOccurs="0" name="cause" type="SurgeryInterventionType"></xs:element>
+<xs:element name="attribution" type="AttributionType"/>
+<xs:element name="cause" type="SurgeryInterventionType"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="RadiationAttributionType">
 <xs:sequence>
-<xs:element minOccurs="0" name="attribution" type="AttributionType"></xs:element>
-<xs:element minOccurs="0" name="cause" type="RadiationInterventionType"></xs:element>
+<xs:element name="attribution" type="AttributionType"/>
+<xs:element name="cause" type="RadiationInterventionRefType"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="DeviceAttributionType">
 <xs:sequence>
-<xs:element minOccurs="0" name="attribution" type="AttributionType"></xs:element>
-<xs:element minOccurs="0" name="cause" type="MedicalDeviceType"></xs:element>
+<xs:element name="attribution" type="AttributionType"/>
+<xs:element name="cause" type="MedicalDeviceRefType"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="BiologicalInterventionAttributionType">
 <xs:sequence>
-<xs:element minOccurs="0" name="attribution" type="AttributionType"></xs:element>
-<xs:element minOccurs="0" name="cause" type="BiologicalInterventionType"></xs:element>
+<xs:element name="attribution" type="AttributionType"/>
+<xs:element name="cause" type="BiologicalInterventionType"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="DietarySupplementInterventionAttributionType">
 <xs:sequence>
-<xs:element minOccurs="0" name="attribution" type="AttributionType"></xs:element>
-<xs:element minOccurs="0" name="cause" type="DietarySupplementInterventionType"></xs:element>
+<xs:element name="attribution" type="AttributionType"/>
+<xs:element name="cause" type="DietarySupplementInterventionType"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="ConcomitantMedicationAttributionType">
 <xs:sequence>
-<xs:element minOccurs="0" name="attribution" type="AttributionType"></xs:element>
-<xs:element minOccurs="0" name="cause" type="ConcomitantMedicationType"></xs:element>
+<xs:element name="attribution" type="AttributionType"/>
+<xs:element name="cause" type="ConcomitantMedicationRefType"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="CourseAgentAttributionType">
 <xs:sequence>
-<xs:element minOccurs="0" name="attribution" type="AttributionType"></xs:element>
-<xs:element minOccurs="0" name="cause" type="CourseAgentType"></xs:element>
+<xs:element name="attribution" type="AttributionType"/>
+<xs:element name="cause" type="CourseAgentRefType"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="OtherCauseAttributionType">
 <xs:sequence>
-<xs:element minOccurs="0" name="attribution" type="AttributionType"></xs:element>
-<xs:element minOccurs="0" name="cause" type="OtherCauseType"></xs:element>
+<xs:element name="attribution" type="AttributionType"/>
+<xs:element name="cause" type="OtherCauseType"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="DiseaseAttributionType">
 <xs:sequence>
-<xs:element minOccurs="0" name="attribution" type="AttributionType"></xs:element>
-<xs:element minOccurs="0" name="cause" type="DiseaseHistoryType"></xs:element>
+<xs:element name="attribution" type="AttributionType"/>
+<xs:element name="cause" type="DiseaseHistoryRefType"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="OtherInterventionAttributionType">
 <xs:sequence>
-<xs:element minOccurs="0" name="attribution" type="AttributionType"></xs:element>
-<xs:element minOccurs="0" name="cause" type="OtherAEInterventionType"></xs:element>
+<xs:element name="attribution" type="AttributionType"/>
+<xs:element name="cause" type="OtherAEInterventionType"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="BehavioralInterventionAttributionType">
 <xs:sequence>
-<xs:element minOccurs="0" name="attribution" type="AttributionType"></xs:element>
-<xs:element minOccurs="0" name="cause" type="BehavioralInterventionType"></xs:element>
+<xs:element name="attribution" type="AttributionType"/>
+<xs:element name="cause" type="BehavioralInterventionType"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="GeneticInterventionAttributionType">
 <xs:sequence>
-<xs:element minOccurs="0" name="attribution" type="AttributionType"></xs:element>
-<xs:element minOccurs="0" name="cause" type="GeneticInterventionType"></xs:element>
+<xs:element name="attribution" type="AttributionType"/>
+<xs:element name="cause" type="GeneticInterventionType"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="OtherAEInterventionType">
 <xs:sequence>
-<xs:element minOccurs="0" name="description" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="studyIntervention" type="OtherInterventionType"></xs:element>
+<xs:element minOccurs="0" name="description" type="xs:string"/>
+<xs:element minOccurs="0" name="studyIntervention" type="OtherInterventionType"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="BehavioralInterventionType">
 <xs:sequence>
-<xs:element minOccurs="0" name="description" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="studyIntervention" type="OtherInterventionType"></xs:element>
+<xs:element minOccurs="0" name="description" type="xs:string"/>
+<xs:element minOccurs="0" name="studyIntervention" type="OtherInterventionType"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="GeneticInterventionType">
 <xs:sequence>
-<xs:element minOccurs="0" name="description" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="studyIntervention" type="OtherInterventionType"></xs:element>
+<xs:element minOccurs="0" name="description" type="xs:string"/>
+<xs:element minOccurs="0" name="studyIntervention" type="OtherInterventionType"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="ParticipantHistoryType">
 <xs:sequence>
-<xs:element minOccurs="0" name="weight" type="MeasureType"></xs:element>
-<xs:element minOccurs="0" name="height" type="MeasureType"></xs:element>
-<xs:element minOccurs="0" name="baselinePerformanceStatus" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="weight" type="MeasureType"/>
+<xs:element minOccurs="0" name="height" type="MeasureType"/>
+<xs:element minOccurs="0" name="baselinePerformanceStatus" type="xs:string"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="MeasureType">
 <xs:sequence>
-<xs:element minOccurs="0" name="code" type="xs:int"></xs:element>
-<xs:element name="quantity" type="xs:double"></xs:element>
-<xs:element name="unit" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="code" type="xs:int"/>
+<xs:element name="quantity" type="xs:double"/>
+<xs:element name="unit" type="xs:string"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="CtcType">
 <xs:sequence>
-<xs:element name="name" type="xs:string"></xs:element>
+<xs:element name="name" type="xs:string"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="LabType">
 <xs:sequence>
-<xs:element minOccurs="0" name="labTerm" type="LabTermType"></xs:element>
-<xs:element minOccurs="0" name="units" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="normalRange" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="baseline" type="LabValueType"></xs:element>
-<xs:element minOccurs="0" name="nadir" type="LabValueType"></xs:element>
-<xs:element minOccurs="0" name="recovery" type="LabValueType"></xs:element>
-<xs:element minOccurs="0" name="infectiousAgent" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="site" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="labTerm" type="LabTermType"/>
+<xs:element minOccurs="0" name="units" type="xs:string"/>
+<xs:element minOccurs="0" name="normalRange" type="xs:string"/>
+<xs:element minOccurs="0" name="baseline" type="LabValueType"/>
+<xs:element minOccurs="0" name="nadir" type="LabValueType"/>
+<xs:element minOccurs="0" name="recovery" type="LabValueType"/>
+<xs:element minOccurs="0" name="infectiousAgent" type="xs:string"/>
+<xs:element minOccurs="0" name="site" type="xs:string"/>
+<xs:element minOccurs="0" name="labDate" type="xs:date"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="LabValueType">
 <xs:sequence>
-<xs:element name="value" type="xs:string"></xs:element>
-<xs:element name="date" type="xs:date"></xs:element>
+<xs:element name="value" type="xs:string"/>
+<xs:element name="date" type="xs:date"/>
 </xs:sequence>
 </xs:complexType>
-<xs:complexType name="categoryType">
+<xs:complexType name="LabCategoryType">
 <xs:sequence>
-<xs:element name="name" type="xs:string"></xs:element>
+<xs:element name="name" type="xs:string"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="LabTermType">
 <xs:sequence>
-<xs:element name="term" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="category" type="categoryType"></xs:element>
+<xs:element name="term" type="xs:string"/>
+<xs:element minOccurs="0" name="category" type="LabCategoryType"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="SAEReportPriorTherapyType">
 <xs:sequence>
-<xs:element name="priorTherapy" type="PriorTherapyType"></xs:element>
-<xs:element minOccurs="0" name="other" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="startDate" type="DateValueType"></xs:element>
-<xs:element minOccurs="0" name="endDate" type="DateValueType"></xs:element>
+<xs:element name="priorTherapy" type="PriorTherapyType"/>
+<xs:element minOccurs="0" name="other" type="xs:string"/>
+<xs:element minOccurs="0" name="startDate" type="DateValueType"/>
+<xs:element minOccurs="0" name="endDate" type="DateValueType"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="priorTherapyAgent" type="PriorTherapyAgentType"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="PriorTherapyAgentType">
+<xs:sequence>
+<xs:element name="agent" type="AgentType"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="PriorTherapyType">
 <xs:sequence>
-<xs:element minOccurs="0" name="text" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="meddraCode" type="xs:string"></xs:element>
+<xs:element minOccurs="0" name="text" type="xs:string"/>
+<xs:element minOccurs="0" name="meddraCode" type="xs:string"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="TreatmentAssignmentType">
 <xs:sequence>
-<xs:element name="code" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="doseLevelOrder" type="xs:int"></xs:element>
-<xs:element name="description" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="comments" type="xs:string"></xs:element>
+<xs:element name="code" type="xs:string"/>
+<xs:element minOccurs="0" name="doseLevelOrder" type="xs:int"/>
+<xs:element minOccurs="0" name="description" type="xs:string"/>
+<xs:element minOccurs="0" name="comments" type="xs:string"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="AdverseEventCourseType">
 <xs:sequence>
-<xs:element minOccurs="0" name="number" type="xs:int"></xs:element>
-<xs:element minOccurs="0" name="date" type="xs:date"></xs:element>
+<xs:element minOccurs="0" name="number" type="xs:int"/>
+<xs:element minOccurs="0" name="date" type="xs:date"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="TreatmentInformationType">
 <xs:sequence>
-<xs:element minOccurs="0" name="firstCourseDate" type="xs:date"></xs:element>
-<xs:element minOccurs="0" name="treatmentAssignment" type="TreatmentAssignmentType"></xs:element>
-<xs:element minOccurs="0" name="totalCourses" type="xs:int"></xs:element>
-<xs:element minOccurs="0" name="adverseEventCourse" type="AdverseEventCourseType"></xs:element>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="courseAgent" type="CourseAgentType"></xs:element>
+<xs:element minOccurs="0" name="firstCourseDate" type="xs:date"/>
+<xs:element minOccurs="0" name="treatmentAssignment" type="TreatmentAssignmentType"/>
+<xs:element minOccurs="0" name="totalCourses" type="xs:int"/>
+<xs:element minOccurs="0" name="adverseEventCourse" type="AdverseEventCourseType"/>
+<xs:element minOccurs="0" name="investigationalAgentAdministered" type="xs:boolean"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="courseAgent" type="CourseAgentType"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="SAEReportPreExistingConditionType">
 <xs:sequence>
-<xs:element minOccurs="0" name="preExistingCondition" type="cct:PreExistingConditionType"></xs:element>
-<xs:element minOccurs="0" name="other" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="linkedToOtherCause" type="xs:boolean"></xs:element>
+<xs:element minOccurs="0" name="preExistingCondition" type="cct:PreExistingConditionType"/>
+<xs:element minOccurs="0" name="other" type="xs:string"/>
+<xs:element minOccurs="0" name="linkedToOtherCause" type="xs:boolean"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="AdditionalInformationType">
 <xs:sequence>
-<xs:element minOccurs="0" name="autopsyReport" type="xs:boolean"></xs:element>
-<xs:element minOccurs="0" name="consults" type="xs:boolean"></xs:element>
-<xs:element minOccurs="0" name="dischargeSummary" type="xs:boolean"></xs:element>
-<xs:element minOccurs="0" name="flowCharts" type="xs:boolean"></xs:element>
-<xs:element minOccurs="0" name="labReports" type="xs:boolean"></xs:element>
-<xs:element minOccurs="0" name="obaForm" type="xs:boolean"></xs:element>
-<xs:element minOccurs="0" name="other" type="xs:boolean"></xs:element>
-<xs:element minOccurs="0" name="pathologyReport" type="xs:boolean"></xs:element>
-<xs:element minOccurs="0" name="progressNotes" type="xs:boolean"></xs:element>
-<xs:element minOccurs="0" name="radiologyReports" type="xs:boolean"></xs:element>
-<xs:element minOccurs="0" name="referralLetters" type="xs:boolean"></xs:element>
-<xs:element minOccurs="0" name="irbReport" type="xs:boolean"></xs:element>
-<xs:element minOccurs="0" name="otherInformation" type="xs:string"></xs:element>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="additionalInformationDocuments" type="AdditionalInformationDocumentType"></xs:element>
+<xs:element minOccurs="0" name="autopsyReport" type="xs:boolean"/>
+<xs:element minOccurs="0" name="consults" type="xs:boolean"/>
+<xs:element minOccurs="0" name="dischargeSummary" type="xs:boolean"/>
+<xs:element minOccurs="0" name="flowCharts" type="xs:boolean"/>
+<xs:element minOccurs="0" name="labReports" type="xs:boolean"/>
+<xs:element minOccurs="0" name="obaForm" type="xs:boolean"/>
+<xs:element minOccurs="0" name="other" type="xs:boolean"/>
+<xs:element minOccurs="0" name="pathologyReport" type="xs:boolean"/>
+<xs:element minOccurs="0" name="progressNotes" type="xs:boolean"/>
+<xs:element minOccurs="0" name="radiologyReports" type="xs:boolean"/>
+<xs:element minOccurs="0" name="referralLetters" type="xs:boolean"/>
+<xs:element minOccurs="0" name="irbReport" type="xs:boolean"/>
+<xs:element minOccurs="0" name="otherInformation" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="additionalInformationDocuments" type="AdditionalInformationDocumentType"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="AdditionalInformationDocumentType">
 <xs:sequence>
-<xs:element minOccurs="0" name="fileId" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="fileName" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="originalFileName" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="filePath" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="fileSize" type="xs:long"></xs:element>
-<xs:element minOccurs="0" name="relativePath" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="additionalInformationDocumentType" type="AdditionalInformationDocumentTypeType"></xs:element>
+<xs:element minOccurs="0" name="fileId" type="xs:string"/>
+<xs:element minOccurs="0" name="fileName" type="xs:string"/>
+<xs:element minOccurs="0" name="originalFileName" type="xs:string"/>
+<xs:element minOccurs="0" name="filePath" type="xs:string"/>
+<xs:element minOccurs="0" name="fileSize" type="xs:long"/>
+<xs:element minOccurs="0" name="relativePath" type="xs:string"/>
+<xs:element minOccurs="0" name="additionalInformationDocumentType" type="AdditionalInformationDocumentTypeType"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="GroupType">
 <xs:sequence>
-<xs:element name="code" type="xs:string"></xs:element>
-<xs:element name="name" type="xs:string"></xs:element>
+<xs:element name="code" type="xs:string"/>
+<xs:element name="name" type="xs:string"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="ReportDeliveryDefinitionType">
 <xs:sequence>
-<xs:element name="entityName" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="entityDescription" type="xs:string"></xs:element>
-<xs:element name="entityType" type="xs:int"></xs:element>
-<xs:element name="endPoint" type="xs:string"></xs:element>
-<xs:element name="endPointType" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="userName" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="password" type="xs:string"></xs:element>
-<xs:element name="format" type="ReportFormatType"></xs:element>
+<xs:element name="entityName" type="xs:string"/>
+<xs:element minOccurs="0" name="entityDescription" type="xs:string"/>
+<xs:element name="entityType" type="xs:int"/>
+<xs:element name="endPoint" type="xs:string"/>
+<xs:element name="endPointType" type="xs:string"/>
+<xs:element minOccurs="0" name="userName" type="xs:string"/>
+<xs:element minOccurs="0" name="password" type="xs:string"/>
+<xs:element name="format" type="ReportFormatType"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="ReportDefinitionType">
 <xs:sequence>
-<xs:element name="name" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="duration" type="xs:int"></xs:element>
-<xs:element minOccurs="0" name="label" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="Group" type="GroupType"></xs:element>
-<xs:element minOccurs="0" name="timeScaleUnitType" type="TimeScaleUnitType"></xs:element>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="reportDeliveryDefinition" type="ReportDeliveryDefinitionType"></xs:element>
+<xs:element name="name" type="xs:string"/>
+<xs:element minOccurs="0" name="duration" type="xs:int"/>
+<xs:element minOccurs="0" name="label" type="xs:string"/>
+<xs:element minOccurs="0" name="Group" type="GroupType"/>
+<xs:element minOccurs="0" name="timeScaleUnitType" type="TimeScaleUnitType"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="reportDeliveryDefinition" type="ReportDeliveryDefinitionType"/>
 </xs:sequence>
 </xs:complexType>
-<xs:simpleType name="ReviewStatusType">
-<xs:restriction base="xs:string">
-<xs:enumeration value="DRAFT_INCOMPLETE"></xs:enumeration>
-<xs:enumeration value="PHYSICIAN_REVIEW"></xs:enumeration>
-<xs:enumeration value="PHYSICIAN_ADDITIONAL_INFO"></xs:enumeration>
-<xs:enumeration value="PHYSICIAN_APPROVED"></xs:enumeration>
-<xs:enumeration value="COORDINATING_CENTER_REVIEW"></xs:enumeration>
-<xs:enumeration value="COORDINATING_CENTER_ADDITIONAL_INFO"></xs:enumeration>
-<xs:enumeration value="SUBMIT_TO_SPONSOR"></xs:enumeration>
-<xs:enumeration value="DATA_COORDINATOR_REVIEW"></xs:enumeration>
-<xs:enumeration value="DATA_COORDINATOR_ADDITIONAL_INFO"></xs:enumeration>
-<xs:enumeration value="APPROVED"></xs:enumeration>
-<xs:enumeration value="SUBMITTED_TO_SPONSOR"></xs:enumeration>
-<xs:enumeration value="SEND_TO_MEDICAL_MONITOR"></xs:enumeration>
-<xs:enumeration value="MEDICAL_MONITOR_REVIEW"></xs:enumeration>
-<xs:enumeration value="MEDICAL_MONITOR_ADDITIONAL_INFO"></xs:enumeration>
-<xs:enumeration value="COMPILE_COMMENTS"></xs:enumeration>
-<xs:enumeration value="FINALIZE_REPORT_AND_SUBMIT"></xs:enumeration>
-</xs:restriction>
-</xs:simpleType>
 <xs:complexType name="ReportVersionType">
 <xs:sequence>
-<xs:element name="reportVersionId" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="createdOn" type="xs:date"></xs:element>
-<xs:element minOccurs="0" name="dueOn" type="xs:date"></xs:element>
-<xs:element minOccurs="0" name="submittedOn" type="xs:date"></xs:element>
-<xs:element minOccurs="0" name="withdrawnOn" type="xs:date"></xs:element>
-<xs:element minOccurs="0" name="amendedOn" type="xs:date"></xs:element>
-<xs:element minOccurs="0" name="physicianSignoff" type="xs:boolean"></xs:element>
-<xs:element minOccurs="0" name="submissionUrl" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="email" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="submissionMessage" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="ReportStatus" type="ReportStatusType"></xs:element>
+<xs:element minOccurs="0" name="reportVersionId" type="xs:string"/>
+<xs:element minOccurs="0" name="createdOn" type="xs:date"/>
+<xs:element minOccurs="0" name="dueOn" type="xs:date"/>
+<xs:element minOccurs="0" name="submittedOn" type="xs:date"/>
+<xs:element minOccurs="0" name="withdrawnOn" type="xs:date"/>
+<xs:element minOccurs="0" name="amendedOn" type="xs:date"/>
+<xs:element minOccurs="0" name="physicianSignoff" type="xs:boolean"/>
+<xs:element minOccurs="0" name="submissionUrl" type="xs:string"/>
+<xs:element minOccurs="0" name="submissionMessage" type="xs:string"/>
+<xs:element minOccurs="0" name="ReportStatus" type="ReportStatusType"/>
+<xs:element minOccurs="0" name="ccEmails" type="xs:string"/>
 </xs:sequence>
 </xs:complexType>
 <xs:complexType name="ReportType">
 <xs:sequence>
-<xs:element name="caseNumber" type="xs:string"></xs:element>
-<xs:element minOccurs="0" name="required" type="xs:boolean"></xs:element>
-<xs:element minOccurs="0" name="manuallySelected" type="xs:boolean"></xs:element>
-<xs:element name="aeReportDefinition" type="ReportDefinitionType"></xs:element>
-<xs:element maxOccurs="unbounded" minOccurs="0" name="aeReportVersion" type="ReportVersionType"></xs:element>
-<xs:element minOccurs="0" name="reviewStatus" type="ReviewStatusType"></xs:element>
+<xs:element name="caseNumber" type="xs:string"/>
+<xs:element minOccurs="0" name="required" type="xs:boolean"/>
+<xs:element minOccurs="0" name="manuallySelected" type="xs:boolean"/>
+<xs:element minOccurs="0" name="withdraw" type="xs:boolean"/>
+<xs:element name="aeReportDefinition" type="ReportDefinitionType"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="aeReportVersion" type="ReportVersionType"/>
+<xs:element minOccurs="0" name="reviewStatus" type="ReviewStatusType"/>
 </xs:sequence>
 </xs:complexType>
+<xs:simpleType name="ReviewStatusType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="DRAFT_INCOMPLETE"/>
+<xs:enumeration value="PHYSICIAN_REVIEW"/>
+<xs:enumeration value="PHYSICIAN_ADDITIONAL_INFO"/>
+<xs:enumeration value="PHYSICIAN_APPROVED"/>
+<xs:enumeration value="COORDINATING_CENTER_REVIEW"/>
+<xs:enumeration value="COORDINATING_CENTER_ADDITIONAL_INFO"/>
+<xs:enumeration value="SUBMIT_TO_SPONSOR"/>
+<xs:enumeration value="DATA_COORDINATOR_REVIEW"/>
+<xs:enumeration value="DATA_COORDINATOR_ADDITIONAL_INFO"/>
+<xs:enumeration value="APPROVED"/>
+<xs:enumeration value="SUBMITTED_TO_SPONSOR"/>
+<xs:enumeration value="SEND_TO_MEDICAL_MONITOR"/>
+<xs:enumeration value="MEDICAL_MONITOR_REVIEW"/>
+<xs:enumeration value="MEDICAL_MONITOR_ADDITIONAL_INFO"/>
+<xs:enumeration value="COMPILE_COMMENTS"/>
+<xs:enumeration value="FINALIZE_REPORT_AND_SUBMIT"/>
+</xs:restriction>
+</xs:simpleType>
 <xs:simpleType name="TimeScaleUnitType">
 <xs:restriction base="xs:string">
-<xs:enumeration value="SECOND"></xs:enumeration>
-<xs:enumeration value="MINUTE"></xs:enumeration>
-<xs:enumeration value="HOUR"></xs:enumeration>
-<xs:enumeration value="DAY"></xs:enumeration>
-<xs:enumeration value="WEEK"></xs:enumeration>
-<xs:enumeration value="MONTH"></xs:enumeration>
+<xs:enumeration value="SECOND"/>
+<xs:enumeration value="MINUTE"/>
+<xs:enumeration value="HOUR"/>
+<xs:enumeration value="DAY"/>
+<xs:enumeration value="WEEK"/>
+<xs:enumeration value="MONTH"/>
 </xs:restriction>
 </xs:simpleType>
 <xs:simpleType name="ReportStatusType">
 <xs:restriction base="xs:string">
-<xs:enumeration value="PENDING"></xs:enumeration>
-<xs:enumeration value="COMPLETED"></xs:enumeration>
-<xs:enumeration value="WITHDRAWN"></xs:enumeration>
-<xs:enumeration value="INPROCESS"></xs:enumeration>
-<xs:enumeration value="FAILED"></xs:enumeration>
-<xs:enumeration value="REPLACED"></xs:enumeration>
-<xs:enumeration value="AMENDED"></xs:enumeration>
-<xs:enumeration value="WITHDRAW_FAILED"></xs:enumeration>
+<xs:enumeration value="PENDING"/>
+<xs:enumeration value="COMPLETED"/>
+<xs:enumeration value="WITHDRAWN"/>
+<xs:enumeration value="INPROCESS"/>
+<xs:enumeration value="FAILED"/>
+<xs:enumeration value="REPLACED"/>
+<xs:enumeration value="AMENDED"/>
+<xs:enumeration value="WITHDRAW_FAILED"/>
 </xs:restriction>
 </xs:simpleType>
 <xs:simpleType name="PostAdverseEventStatusType">
 <xs:restriction base="xs:string">
-<xs:enumeration value="INTERVENTION_CONTINUES"></xs:enumeration>
-<xs:enumeration value="RECOVERING"></xs:enumeration>
-<xs:enumeration value="RECOVERED_WITH_SEQUELAE"></xs:enumeration>
-<xs:enumeration value="RECOVERED_WITHOUT_SEQUELAE"></xs:enumeration>
-<xs:enumeration value="NOT_RECOVERED"></xs:enumeration>
-<xs:enumeration value="DEAD"></xs:enumeration>
+<xs:enumeration value="INTERVENTION_CONTINUES"/>
+<xs:enumeration value="RECOVERING"/>
+<xs:enumeration value="RECOVERED_WITH_SEQUELAE"/>
+<xs:enumeration value="RECOVERED_WITHOUT_SEQUELAE"/>
+<xs:enumeration value="NOT_RECOVERED"/>
+<xs:enumeration value="DEAD"/>
 </xs:restriction>
 </xs:simpleType>
 <xs:simpleType name="DeviceOperatorType">
 <xs:restriction base="xs:string">
-<xs:enumeration value="HEALTH_PROFESSIONAL"></xs:enumeration>
-<xs:enumeration value="PATIENT"></xs:enumeration>
-<xs:enumeration value="OTHER"></xs:enumeration>
+<xs:enumeration value="HEALTH_PROFESSIONAL"/>
+<xs:enumeration value="PATIENT"/>
+<xs:enumeration value="OTHER"/>
 </xs:restriction>
 </xs:simpleType>
 <xs:simpleType name="AttributionType">
-<xs:restriction base="xs:string">
-<xs:enumeration value="UNRELATED"></xs:enumeration>
-<xs:enumeration value="UNLIKELY"></xs:enumeration>
-<xs:enumeration value="POSSIBLE"></xs:enumeration>
-<xs:enumeration value="PROBABLE"></xs:enumeration>
-<xs:enumeration value="DEFINITE"></xs:enumeration>
+<xs:restriction base="xs:int">
+<xs:enumeration value="1"/>
+<xs:enumeration value="2"/>
+<xs:enumeration value="3"/>
+<xs:enumeration value="4"/>
+<xs:enumeration value="5"/>
 </xs:restriction>
 </xs:simpleType>
 <xs:simpleType name="ReprocessedDeviceType">
 <xs:restriction base="xs:string">
-<xs:enumeration value="YES"></xs:enumeration>
-<xs:enumeration value="NO"></xs:enumeration>
-<xs:enumeration value="UNKNOWN"></xs:enumeration>
+<xs:enumeration value="YES"/>
+<xs:enumeration value="NO"/>
+<xs:enumeration value="UNKNOWN"/>
 </xs:restriction>
 </xs:simpleType>
 <xs:simpleType name="EvaluationAvailabilityType">
 <xs:restriction base="xs:string">
-<xs:enumeration value="YES"></xs:enumeration>
-<xs:enumeration value="NO"></xs:enumeration>
-<xs:enumeration value="UNKNOWN"></xs:enumeration>
-<xs:enumeration value="RETURNED"></xs:enumeration>
+<xs:enumeration value="YES"/>
+<xs:enumeration value="NO"/>
+<xs:enumeration value="UNKNOWN"/>
+<xs:enumeration value="RETURNED"/>
 </xs:restriction>
 </xs:simpleType>
 <xs:simpleType name="DelayUnitsType">
 <xs:restriction base="xs:string">
-<xs:enumeration value="MINUTES"></xs:enumeration>
-<xs:enumeration value="HOURS"></xs:enumeration>
-<xs:enumeration value="DAYS"></xs:enumeration>
+<xs:enumeration value="MINUTES"/>
+<xs:enumeration value="HOURS"/>
+<xs:enumeration value="DAYS"/>
 </xs:restriction>
 </xs:simpleType>
 <xs:simpleType name="ReportFormatType">
 <xs:restriction base="xs:string">
-<xs:enumeration value="TEXT"></xs:enumeration>
-<xs:enumeration value="XML"></xs:enumeration>
-<xs:enumeration value="PDF"></xs:enumeration>
+<xs:enumeration value="TEXT"/>
+<xs:enumeration value="XML"/>
+<xs:enumeration value="PDF"/>
 </xs:restriction>
 </xs:simpleType>
 <xs:simpleType name="AdditionalInformationDocumentTypeType">
 <xs:restriction base="xs:string">
-<xs:enumeration value="AUTOPSY_REPORT"></xs:enumeration>
-<xs:enumeration value="CONSULTS"></xs:enumeration>
-<xs:enumeration value="DISCHARGE_SUMMARY"></xs:enumeration>
-<xs:enumeration value="FLOW_CHARTS"></xs:enumeration>
-<xs:enumeration value="LAB_REPORTS"></xs:enumeration>
-<xs:enumeration value="OBA_FORM"></xs:enumeration>
-<xs:enumeration value="OTHER"></xs:enumeration>
-<xs:enumeration value="PATHOLOGY_REPORT"></xs:enumeration>
-<xs:enumeration value="PROGRESS_NOTES"></xs:enumeration>
-<xs:enumeration value="RADIOLOGY_REPORTS"></xs:enumeration>
-<xs:enumeration value="REFERRAL_LETTERS"></xs:enumeration>
-<xs:enumeration value="IRB_REPORT"></xs:enumeration>
-<xs:enumeration value="OTHER_INFORMATION"></xs:enumeration>
+<xs:enumeration value="AUTOPSY_REPORT"/>
+<xs:enumeration value="CONSULTS"/>
+<xs:enumeration value="DISCHARGE_SUMMARY"/>
+<xs:enumeration value="FLOW_CHARTS"/>
+<xs:enumeration value="LAB_REPORTS"/>
+<xs:enumeration value="OBA_FORM"/>
+<xs:enumeration value="OTHER"/>
+<xs:enumeration value="PATHOLOGY_REPORT"/>
+<xs:enumeration value="PROGRESS_NOTES"/>
+<xs:enumeration value="RADIOLOGY_REPORTS"/>
+<xs:enumeration value="REFERRAL_LETTERS"/>
+<xs:enumeration value="IRB_REPORT"/>
+<xs:enumeration value="OTHER_INFORMATION"/>
 </xs:restriction>
 </xs:simpleType>
-<xs:element name="submitSafetyReport" type="submitSafetyReport"></xs:element>
+<xs:element name="submitSafetyReport" type="submitSafetyReport"/>
 <xs:complexType name="submitSafetyReport">
 <xs:sequence>
-<xs:element minOccurs="0" ref="AdverseEventReport"></xs:element>
+<xs:element minOccurs="0" ref="AdverseEventReport"/>
 </xs:sequence>
 </xs:complexType>
-<xs:element name="submitSafetyReportResponse" type="submitSafetyReportResponse"></xs:element>
+<xs:element name="submitSafetyReportResponse" type="submitSafetyReportResponse"/>
 <xs:complexType name="submitSafetyReportResponse">
 <xs:sequence>
-<xs:element minOccurs="0" ref="cct:CaaersServiceResponse"></xs:element>
+<xs:element minOccurs="0" ref="cct:CaaersServiceResponse"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="initiateSafetyReportAction" type="initiateSafetyReportAction"/>
+<xs:complexType name="initiateSafetyReportAction">
+<xs:sequence>
+<xs:element minOccurs="0" ref="BaseAdverseEventReport"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="initiateSafetyReportActionResponse" type="initiateSafetyReportActionResponse"/>
+<xs:complexType name="initiateSafetyReportActionResponse">
+<xs:sequence>
+<xs:element minOccurs="0" ref="cct:CaaersServiceResponse"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="saveSafetyReport" type="saveSafetyReport"/>
+<xs:complexType name="saveSafetyReport">
+<xs:sequence>
+<xs:element minOccurs="0" ref="AdverseEventReport"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="saveSafetyReportResponse" type="saveSafetyReportResponse"/>
+<xs:complexType name="saveSafetyReportResponse">
+<xs:sequence>
+<xs:element minOccurs="0" ref="cct:CaaersServiceResponse"/>
 </xs:sequence>
 </xs:complexType>
 </xs:schema>
-  </wsdl:types>
-  <wsdl:message name="submitSafetyReportResponse">
-    <wsdl:part element="tns:submitSafetyReportResponse" name="parameters">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="submitSafetyReport">
-    <wsdl:part element="tns:submitSafetyReport" name="parameters">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:portType name="SafetyReportManagementServiceInterface">
-    <wsdl:operation name="submitSafetyReport">
-      <wsdl:input message="tns:submitSafetyReport" name="submitSafetyReport">
-    </wsdl:input>
-      <wsdl:output message="tns:submitSafetyReportResponse" name="submitSafetyReportResponse">
-    </wsdl:output>
-    </wsdl:operation>
-  </wsdl:portType>
-  <wsdl:binding name="SafetyReportManagementServiceSoapBinding" type="tns:SafetyReportManagementServiceInterface">
-    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"></soap:binding>
-    <wsdl:operation name="submitSafetyReport">
-      <soap:operation soapAction="" style="document"></soap:operation>
-      <wsdl:input name="submitSafetyReport">
-        <soap:body use="literal"></soap:body>
-      </wsdl:input>
-      <wsdl:output name="submitSafetyReportResponse">
-        <soap:body use="literal"></soap:body>
-      </wsdl:output>
-    </wsdl:operation>
-  </wsdl:binding>
-  <wsdl:service name="SafetyReportManagementService">
-    <wsdl:port binding="tns:SafetyReportManagementServiceSoapBinding" name="SafetyReportManagementServiceImplPort">
-      <soap:address location="https://localhost:9443/caaers/services/SafetyReportService"></soap:address>
-      <http-conf:client ReceiveTimeout="300000"/>
-      <http-conf:client ConnectionTimeout="400000"/>
-      <http-conf:client CacheControl="no-cache" />
-    </wsdl:port>
-  </wsdl:service>
+</wsdl:types>
+<wsdl:message name="saveSafetyReport">
+<wsdl:part element="tns:saveSafetyReport" name="parameters"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="initiateSafetyReportAction">
+<wsdl:part element="tns:initiateSafetyReportAction" name="parameters"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="submitSafetyReportResponse">
+<wsdl:part element="tns:submitSafetyReportResponse" name="parameters"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="saveSafetyReportResponse">
+<wsdl:part element="tns:saveSafetyReportResponse" name="parameters"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="submitSafetyReport">
+<wsdl:part element="tns:submitSafetyReport" name="parameters"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="initiateSafetyReportActionResponse">
+<wsdl:part element="tns:initiateSafetyReportActionResponse" name="parameters"></wsdl:part>
+</wsdl:message>
+<wsdl:portType name="SafetyReportManagementServiceInterface">
+<wsdl:operation name="submitSafetyReport">
+<wsdl:input message="tns:submitSafetyReport" name="submitSafetyReport"></wsdl:input>
+<wsdl:output message="tns:submitSafetyReportResponse" name="submitSafetyReportResponse"></wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="initiateSafetyReportAction">
+<wsdl:input message="tns:initiateSafetyReportAction" name="initiateSafetyReportAction"></wsdl:input>
+<wsdl:output message="tns:initiateSafetyReportActionResponse" name="initiateSafetyReportActionResponse"></wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="saveSafetyReport">
+<wsdl:input message="tns:saveSafetyReport" name="saveSafetyReport"></wsdl:input>
+<wsdl:output message="tns:saveSafetyReportResponse" name="saveSafetyReportResponse"></wsdl:output>
+</wsdl:operation>
+</wsdl:portType>
+<wsdl:binding name="SafetyReportManagementServiceSoapBinding" type="tns:SafetyReportManagementServiceInterface">
+<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+<wsdl:operation name="submitSafetyReport">
+<soap:operation soapAction="" style="document"/>
+<wsdl:input name="submitSafetyReport">
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output name="submitSafetyReportResponse">
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="initiateSafetyReportAction">
+<soap:operation soapAction="" style="document"/>
+<wsdl:input name="initiateSafetyReportAction">
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output name="initiateSafetyReportActionResponse">
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="saveSafetyReport">
+<soap:operation soapAction="" style="document"/>
+<wsdl:input name="saveSafetyReport">
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output name="saveSafetyReportResponse">
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+</wsdl:binding>
+<wsdl:service name="SafetyReportManagementService">
+<wsdl:port binding="tns:SafetyReportManagementServiceSoapBinding" name="SafetyReportManagementServiceImplPort">
+<soap:address location="https://dev.semanticbits.com/caaers/services/SafetyReportService"/>
+</wsdl:port>
+</wsdl:service>
 </wsdl:definitions>

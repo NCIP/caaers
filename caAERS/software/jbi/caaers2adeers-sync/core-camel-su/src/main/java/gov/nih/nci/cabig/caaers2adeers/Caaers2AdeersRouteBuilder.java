@@ -6,23 +6,19 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers2adeers;
 
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.CAAERS_WS_INVOCATION_COMPLETED;
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.CAAERS_WS_INVOCATION_INITIATED;
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.CAAERS_WS_IN_TRANSFORMATION;
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.CAAERS_WS_OUT_TRANSFORMATION;
 import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.NO_DATA_AVAILABLE;
 import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.PRE_PROCESS_OPEN_ODM_MSG;
+import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.PRE_PROCESS_RAV_CAAERS_INTEG_MSG;
 import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.REQUEST_COMPLETION;
 import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.REQUEST_RECEIVED;
 import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.REQUST_PROCESSING_ERROR;
 import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.ROUTED_TO_ADEERS_REQUEST_SINK;
 import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.ROUTED_TO_CAAERS_REQUEST_SINK;
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.ROUTED_TO_CAAERS_RESPONSE_SINK;
 import static gov.nih.nci.cabig.caaers2adeers.track.Tracker.track;
 import gov.nih.nci.cabig.caaers2adeers.track.FileTracker;
 import gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage;
 import gov.nih.nci.cabig.open2caaers.ToCaaersParticipantWSRouteBuilder;
-import gov.nih.nci.cabig.open2caaers.exchange.ParticipantODMMessageProcessor;
+import gov.nih.nci.cabig.rave2caaers.FromRaveToCaaersWSRouteBuilder;
 import gov.nih.nci.cabig.report2caaers.AdeersResponseToE2BAckRouteBuilder;
 import gov.nih.nci.cabig.report2caaers.ToCaaersReportWSRouteBuilder;
 
@@ -60,6 +56,8 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
     private FileTracker fileTracker;
     @Autowired
     private ToCaaersParticipantWSRouteBuilder toCaaersParticipantWSRouteBuilder;
+    @Autowired
+    private FromRaveToCaaersWSRouteBuilder fromRaveToCaaersWSRouteBuilder;
     @Autowired
     private ToCaaersReportWSRouteBuilder toCaaersReportWSRouteBuilder;
     @Autowired
@@ -99,6 +97,20 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
 	}
 	
 	
+	public void configureRave2CaaersWSCallRoute(String fromSink, String serviceURI, String toSink, 
+			Stage xslInStage, Stage serviceInvocationStage, Stage serviceCompletionStage, Stage xslOutStage, Stage toSinkStage){
+		from(fromSink)
+        .to(fileTracker.fileURI(serviceInvocationStage))
+        .to(ExchangePattern.InOut, serviceURI)
+        .processRef("headerGeneratorProcessor")
+        .to(fileTracker.fileURI(serviceCompletionStage))
+        .process(track(serviceCompletionStage, true))
+        .process(track(xslOutStage))
+        .to("log:gov.nih.nci.cabig.caaers2adeers.afterWSCallResponseXSL?showHeaders=true&level=TRACE&showException=true&showStackTrace=true")
+        .process(track(toSinkStage))
+		.to(toSink);
+	}
+	
     /**
      * Will create a sub route for transformation.
      * @param fromSink - From channel
@@ -124,6 +136,28 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
         .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(400))
         .process(track(REQUST_PROCESSING_ERROR, "Error"))
         .to(fileTracker.fileURI(REQUST_PROCESSING_ERROR)) ;
+        
+        
+        // route for caaers integration services - trim white space
+        from("jetty:http://0.0.0.0:7711/caaers/services/RaveIntegrationServices")
+	        .choice() 
+		        .when(header("CamelHttpMethod").isEqualTo("POST"))
+		         	.processRef("trimWhitespaceMessageProcessor")
+			        .processRef("headerGeneratorProcessor")
+			        .to(fileTracker.fileURI(REQUEST_RECEIVED))
+			        .process(track(PRE_PROCESS_RAV_CAAERS_INTEG_MSG))
+			        .to("direct:processedRave2CaaersMessageSink") 
+		         .otherwise().end();
+
+      //configure route towards caAERS Webservices
+  	fromRaveToCaaersWSRouteBuilder.configure(this);
+
+    //check for errors 
+      from("direct:rave2CaaersOutSink")
+	        .to("log:gov.nih.nci.cabig.rave2caaers.from-rave2CaaersOutSink?showAll=true&level=TRACE&showException=true&showStackTrace=true")
+      	.process(track(REQUEST_COMPLETION))
+      	.to(fileTracker.fileURI(REQUEST_COMPLETION));
+      
         // route for Participant Service
         
         from("jetty:http://0.0.0.0:7700/caaers/ParticipantInitialization?httpBindingRef=participantODMMessageBinding")

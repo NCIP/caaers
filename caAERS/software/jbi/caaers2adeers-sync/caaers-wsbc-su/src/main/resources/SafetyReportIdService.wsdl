@@ -1,0 +1,72 @@
+<?xml version="1.0" ?><wsdl:definitions xmlns:ns1="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:ns2="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/aereportid" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="SafetyReportIdService" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/aereportid">
+<wsdl:types>
+<xs:schema xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/aereportid" xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/aereportid">
+<xs:element name="ReportIdCriteria">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="caseNumber" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="SafetyReportIdentifer">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="safetyReportId" type="xs:string"/>
+<xs:element minOccurs="0" name="caseNumber" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="generateSafetyReportId" type="generateSafetyReportId"/>
+<xs:complexType name="generateSafetyReportId">
+<xs:sequence>
+<xs:element minOccurs="0" ref="ReportIdCriteria"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="generateSafetyReportIdResponse" type="generateSafetyReportIdResponse"/>
+<xs:complexType name="generateSafetyReportIdResponse">
+<xs:sequence>
+<xs:element minOccurs="0" ref="SafetyReportIdentifer"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>
+<xsd:schema xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:xsd="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common">
+<xsd:element name="CaaersFault" nillable="true"/>
+</xsd:schema>
+</wsdl:types>
+<wsdl:message name="generateSafetyReportId">
+<wsdl:part element="tns:generateSafetyReportId" name="parameters"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="generateSafetyReportIdResponse">
+<wsdl:part element="tns:generateSafetyReportIdResponse" name="parameters"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="CaaersFault">
+<wsdl:part element="ns1:CaaersFault" name="CaaersFault"></wsdl:part>
+</wsdl:message>
+<wsdl:portType name="SafetyReportIdServiceInterface">
+<wsdl:operation name="generateSafetyReportId">
+<wsdl:input message="tns:generateSafetyReportId" name="generateSafetyReportId"></wsdl:input>
+<wsdl:output message="tns:generateSafetyReportIdResponse" name="generateSafetyReportIdResponse"></wsdl:output>
+<wsdl:fault message="tns:CaaersFault" name="CaaersFault"></wsdl:fault>
+</wsdl:operation>
+</wsdl:portType>
+<wsdl:binding name="SafetyReportIdServiceSoapBinding" type="tns:SafetyReportIdServiceInterface">
+<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+<wsdl:operation name="generateSafetyReportId">
+<soap:operation soapAction="" style="document"/>
+<wsdl:input name="generateSafetyReportId">
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output name="generateSafetyReportIdResponse">
+<soap:body use="literal"/>
+</wsdl:output>
+<wsdl:fault name="CaaersFault">
+<soap:fault name="CaaersFault" use="literal"/>
+</wsdl:fault>
+</wsdl:operation>
+</wsdl:binding>
+<wsdl:service name="SafetyReportIdService">
+<wsdl:port binding="tns:SafetyReportIdServiceSoapBinding" name="SafetyReportIdServiceImplPort">
+<soap:address location="https://dev.semanticbits.com/caaers/services/SafetyReportIdService"/>
+</wsdl:port>
+</wsdl:service>
+</wsdl:definitions>

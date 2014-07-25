@@ -1,0 +1,1048 @@
+<?xml version="1.0" ?><wsdl:definitions xmlns:ns1="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:ns2="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/saerules" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="SAEEvaluationWebServiceImplService" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/saerules">
+<wsdl:types>
+<xs:schema xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common">
+<xs:element name="treatmentAssignment" type="TreatmentAssignmentType"/>
+<xs:complexType name="TreatmentAssignmentType">
+<xs:complexContent>
+<xs:extension base="DomainObjectType">
+<xs:sequence>
+<xs:element name="code" type="CustomStringType"/>
+<xs:element minOccurs="0" name="doseLevelOrder" type="CustomStringType"/>
+<xs:element name="description" type="CustomStringType"/>
+<xs:element minOccurs="0" name="comments" type="CustomStringType"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="agentRef" type="AgentRefType"/>
+<xs:complexType name="AgentRefType">
+<xs:sequence>
+<xs:element name="nscNumber" type="CustomStringType"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="agent" type="AgentType"/>
+<xs:complexType name="AgentType">
+<xs:complexContent>
+<xs:extension base="DomainObjectType">
+<xs:sequence>
+<xs:element name="name" type="CustomStringType"/>
+<xs:element minOccurs="0" name="descriptionText" type="CustomStringType"/>
+<xs:element name="nscNumber" type="CustomStringType"/>
+<xs:element minOccurs="0" name="status" type="ActiveInactiveStatusType"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="Agents">
+<xs:complexType>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" ref="agent"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="lab" type="LabTermType"/>
+<xs:complexType name="LabTermType">
+<xs:complexContent>
+<xs:extension base="DomainObjectType">
+<xs:sequence>
+<xs:element name="term" type="CustomStringType"/>
+<xs:element minOccurs="0" name="status" type="ActiveInactiveStatusType"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="labs">
+<xs:complexType>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" ref="lab"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="labCategory" type="LabCategoryType"/>
+<xs:complexType name="LabCategoryType">
+<xs:sequence>
+<xs:element name="category" type="CustomStringType"/>
+<xs:element ref="labs"/>
+<xs:element minOccurs="0" name="status" type="ActiveInactiveStatusType"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="labCategories">
+<xs:complexType>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" ref="labCategory"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="preExistingCondition" type="PreExistingConditionType"/>
+<xs:complexType name="PreExistingConditionType">
+<xs:complexContent>
+<xs:extension base="DomainObjectType">
+<xs:sequence>
+<xs:element name="text" type="CustomStringType"/>
+<xs:element minOccurs="0" name="meddraLltCode" type="xs:string"/>
+<xs:element minOccurs="0" name="meddraLlt" type="xs:string"/>
+<xs:element minOccurs="0" name="meddraHlgt" type="xs:string"/>
+<xs:element minOccurs="0" name="status" type="ActiveInactiveStatusType"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="PreExistingConditions">
+<xs:complexType>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" ref="preExistingCondition"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="priorTherapy" type="PriorTherapyType"/>
+<xs:complexType name="PriorTherapyType">
+<xs:complexContent>
+<xs:extension base="DomainObjectType">
+<xs:sequence>
+<xs:element name="text" type="CustomStringType"/>
+<xs:element name="meddraCode" type="CustomStringType"/>
+<xs:element name="meddraTerm" type="xs:string"/>
+<xs:element name="therapyType" type="xs:string"/>
+<xs:element minOccurs="0" name="status" type="ActiveInactiveStatusType"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="PriorTherapies">
+<xs:complexType>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" ref="priorTherapy"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="investigationalNewDrug" type="InvestigationalNewDrugType"/>
+<xs:complexType name="InvestigationalNewDrugType">
+<xs:complexContent>
+<xs:extension base="DomainObjectType">
+<xs:sequence>
+<xs:element name="indHolder" type="IndHolderType"/>
+<xs:element name="indNumber" type="xs:integer"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="indHolder" type="IndHolderType"/>
+<xs:complexType name="IndHolderType">
+<xs:complexContent>
+<xs:extension base="DomainObjectType">
+<xs:choice>
+<xs:element ref="investigatorRef"/>
+<xs:element ref="organizationRef"/>
+</xs:choice>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="diseaseTerm" type="DiseaseTermType"/>
+<xs:complexType name="DiseaseTermType">
+<xs:complexContent>
+<xs:extension base="DomainObjectType">
+<xs:choice>
+<xs:element name="term" type="CustomStringType"/>
+<xs:element name="meddraCode" type="CustomStringType"/>
+</xs:choice>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="organization" type="OrganizationType"/>
+<xs:complexType name="OrganizationType">
+<xs:complexContent>
+<xs:extension base="MutableDomainObjectType">
+<xs:sequence>
+<xs:element minOccurs="0" name="descriptionText" type="xs:string"/>
+<xs:element name="name" type="CustomStringType"/>
+<xs:element name="nciInstituteCode" type="CustomStringType"/>
+<xs:element minOccurs="0" name="city" type="xs:string"/>
+<xs:element minOccurs="0" name="state" type="xs:string"/>
+<xs:element minOccurs="0" name="country" type="xs:string"/>
+<xs:element minOccurs="0" name="status" type="xs:string"/>
+<xs:element minOccurs="0" name="mergedOrganization" type="OrganizationType"/>
+<xs:element minOccurs="0" name="type" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="organizationRef" type="OrganizationRefType"/>
+<xs:complexType name="OrganizationRefType">
+<xs:sequence>
+<xs:element name="nciInstituteCode" type="CustomStringType"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="person" type="PersonType"/>
+<xs:complexType name="PersonType">
+<xs:complexContent>
+<xs:extension base="DomainObjectType">
+<xs:sequence>
+<xs:element name="firstName" type="CustomStringType"/>
+<xs:element name="lastName" type="CustomStringType"/>
+<xs:element minOccurs="0" name="middleName" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="researchStaffRef" type="ResearchStaffRefType"/>
+<xs:complexType name="ResearchStaffRefType">
+<xs:sequence>
+<xs:element minOccurs="0" name="nciIdentifier" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="researchStaff" type="ResearchStaffType"/>
+<xs:complexType name="ResearchStaffType">
+<xs:complexContent>
+<xs:extension base="PersonType">
+<xs:sequence>
+<xs:element name="emailAddress" type="CustomStringType"/>
+<xs:element minOccurs="0" name="faxNumber" type="xs:string"/>
+<xs:element name="nciIdentifier" type="xs:string"/>
+<xs:element name="phoneNumber" type="CustomStringType"/>
+<xs:element name="loginId" type="xs:string"/>
+<xs:element minOccurs="0" name="street" type="xs:string"/>
+<xs:element minOccurs="0" name="city" type="xs:string"/>
+<xs:element minOccurs="0" name="state" type="xs:string"/>
+<xs:element minOccurs="0" name="zip" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="siteInvestigator" type="SiteInvestigatorType"/>
+<xs:complexType name="SiteInvestigatorType">
+<xs:complexContent>
+<xs:extension base="DomainObjectType">
+<xs:sequence>
+<xs:element name="emailAddress" type="CustomStringType"/>
+<xs:element name="statusCode" type="ActiveInactiveStatusType"/>
+<xs:element minOccurs="0" name="phoneNumber" type="xs:string"/>
+<xs:element minOccurs="0" name="faxNumber" type="xs:string"/>
+<xs:element minOccurs="0" name="street" type="xs:string"/>
+<xs:element minOccurs="0" name="city" type="xs:string"/>
+<xs:element minOccurs="0" name="state" type="xs:string"/>
+<xs:element minOccurs="0" name="zip" type="xs:string"/>
+<xs:element minOccurs="0" name="country" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="siteResearchStaff" type="SiteResearchStaffType"/>
+<xs:complexType name="SiteResearchStaffType">
+<xs:complexContent>
+<xs:extension base="DomainObjectType">
+<xs:sequence>
+<xs:element minOccurs="0" name="emailAddress" type="xs:string"/>
+<xs:element minOccurs="0" name="phoneNumber" type="xs:string"/>
+<xs:element minOccurs="0" name="faxNumber" type="xs:string"/>
+<xs:element minOccurs="0" name="street" type="xs:string"/>
+<xs:element minOccurs="0" name="city" type="xs:string"/>
+<xs:element minOccurs="0" name="state" type="xs:string"/>
+<xs:element minOccurs="0" name="zip" type="xs:string"/>
+<xs:element minOccurs="0" name="country" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:element name="investigatorRef" type="InvestigatorRefType"/>
+<xs:complexType name="InvestigatorRefType">
+<xs:sequence>
+<xs:element name="nciIdentifier" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="investigator" type="InvestigatorType"/>
+<xs:complexType name="InvestigatorType">
+<xs:complexContent>
+<xs:extension base="PersonType">
+<xs:sequence>
+<xs:element name="emailAddress" type="CustomStringType"/>
+<xs:element minOccurs="0" name="faxNumber" type="xs:string"/>
+<xs:element name="nciIdentifier" type="xs:string"/>
+<xs:element name="phoneNumber" type="CustomStringType"/>
+<xs:element name="allowedToLogin" type="xs:boolean"/>
+<xs:element name="loginId" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:simpleType name="RoleCodeType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="SPI">
+<xs:annotation>
+<xs:documentation>Site Principal Investigator</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="SI">
+<xs:annotation>
+<xs:documentation>Site Investigator</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="PI">
+<xs:annotation>
+<xs:documentation>Principal Investigator</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="PersonnelRoleCodeType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="system_administrator">
+<xs:annotation>
+<xs:documentation>System Administrator</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="business_administrator">
+<xs:annotation>
+<xs:documentation>Business Administrator</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="person_and_organization_information_manager">
+<xs:annotation>
+<xs:documentation>Person and Organization Information Manager</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="data_importer">
+<xs:annotation>
+<xs:documentation>Data Importer</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="user_administrator">
+<xs:annotation>
+<xs:documentation>User Admin</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="study_qa_manager">
+<xs:annotation>
+<xs:documentation>Study QA Manager</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="study_creator">
+<xs:annotation>
+<xs:documentation>Study Creator</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="supplemental_study_information_manager">
+<xs:annotation>
+<xs:documentation>Supplemantal Study Information Manager</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="study_team_administrator">
+<xs:annotation>
+<xs:documentation>Study Team Admin</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="study_site_participation_administrator">
+<xs:annotation>
+<xs:documentation>Study Site Participation Admin</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="ae_rule_and_report_manager">
+<xs:annotation>
+<xs:documentation>AE Rule and Report Manager</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="study_calendar_template_builder">
+<xs:annotation>
+<xs:documentation>Study Calendar Template Builder</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="registration_qa_manager">
+<xs:annotation>
+<xs:documentation>Registration QA Manager</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="subject_manager">
+<xs:annotation>
+<xs:documentation>Subject Manager</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="study_subject_calendar_manager">
+<xs:annotation>
+<xs:documentation>Study Subject Calendar Manager</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="registrar">
+<xs:annotation>
+<xs:documentation>Registrar</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="ae_reporter">
+<xs:annotation>
+<xs:documentation>AE Reporter</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="ae_expedited_report_reviewer">
+<xs:annotation>
+<xs:documentation>AE Expedited Report Reviewer</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="ae_study_data_reviewer">
+<xs:annotation>
+<xs:documentation>AE Study Data Reviewer</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="lab_impact_calendar_notifier">
+<xs:annotation>
+<xs:documentation>Lab Impact Calendar Notifier</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="lab_data_user">
+<xs:annotation>
+<xs:documentation>Lab Data User</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="data_reader">
+<xs:annotation>
+<xs:documentation>Data Reader</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="data_analyst">
+<xs:annotation>
+<xs:documentation>Data Analyst</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="study_medical_monitor">
+<xs:annotation>
+<xs:documentation>Study Medical Monitor</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="DesignCodeType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="BLIND"/>
+<xs:enumeration value="OPEN_UNBLIND"/>
+<xs:enumeration value="PARTIAL"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="IndType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="NA"/>
+<xs:enumeration value="NA_COMMERCIAL"/>
+<xs:enumeration value="IND_EXEMPT"/>
+<xs:enumeration value="DCP_IND"/>
+<xs:enumeration value="OTHER"/>
+<xs:enumeration value="CTEP_IND"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:complexType name="DeviceType">
+<xs:complexContent>
+<xs:extension base="MutableDomainObjectType">
+<xs:sequence>
+<xs:element name="commonName" type="xs:string"/>
+<xs:element name="brandName" type="xs:string"/>
+<xs:element minOccurs="0" name="type" type="xs:string"/>
+<xs:element minOccurs="0" name="ctepDbIdentifier" type="xs:string">
+<xs:annotation>
+<xs:documentation>
+An identifier issued by CTEP for the device, which at the moment is the DB ID of AdEERS.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" name="status" type="ActiveInactiveStatusType"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:simpleType name="TherapyType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="Drug"/>
+<xs:enumeration value="Radiation"/>
+<xs:enumeration value="Procedure/Surgery"/>
+<xs:enumeration value="Device"/>
+<xs:enumeration value="Behavioral"/>
+<xs:enumeration value="Biological/Vaccine"/>
+<xs:enumeration value="Genetic"/>
+<xs:enumeration value="Dietary Supplement"/>
+<xs:enumeration value="Other"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="StudyIdentifierType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="Site Identifier"/>
+<xs:enumeration value="Site IRB Identifier"/>
+<xs:enumeration value="ClinicalTrails.gov Identifier"/>
+<xs:enumeration value="Grid Identifier"/>
+<xs:enumeration value="C3D Identifier"/>
+<xs:enumeration value="Protocol Authority Identifier"/>
+<xs:enumeration value="Coordinating Center Identifier"/>
+<xs:enumeration value="NCI Assigned Identifier"/>
+<xs:enumeration value="Other"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="ParticipantIdentifierType">
+<xs:annotation>
+<xs:documentation>
+Medical Record Number - MRN, Cooperative Group Identifier - CC
+</xs:documentation>
+</xs:annotation>
+<xs:restriction base="xs:string">
+<xs:enumeration value="MRN"/>
+<xs:enumeration value="CC"/>
+<xs:enumeration value="Other"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="ActiveInactiveStatusType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="Active">
+<xs:annotation>
+<xs:documentation>Active</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+<xs:enumeration value="Inactive">
+<xs:annotation>
+<xs:documentation>InActive</xs:documentation>
+</xs:annotation>
+</xs:enumeration>
+</xs:restriction>
+</xs:simpleType>
+<xs:complexType name="DomainObjectType">
+<xs:attribute name="id" type="xs:integer"/>
+</xs:complexType>
+<xs:complexType name="MutableDomainObjectType">
+<xs:complexContent>
+<xs:extension base="DomainObjectType">
+<xs:attribute name="version" type="xs:positiveInteger"/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:simpleType name="CustomStringType">
+<xs:restriction base="xs:normalizedString">
+<xs:minLength value="1"/>
+<xs:whiteSpace value="collapse"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="CustomDateType">
+<xs:restriction base="xs:integer">
+<xs:pattern value="[1-2][0-9][0-9][0-9]"/>
+<xs:whiteSpace value="collapse"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="CustomMonthType">
+<xs:restriction base="xs:integer">
+<xs:pattern value="((0[1-9])|(1[0-2]))"/>
+<xs:whiteSpace value="collapse"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:element name="ConfigProperties">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="name" type="CustomStringType"/>
+<xs:element maxOccurs="unbounded" name="ConfigProperty" type="ConfigPropertyType"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:complexType name="ConfigPropertyType">
+<xs:sequence>
+<xs:element name="code" type="CustomStringType"/>
+<xs:element name="name" type="xs:string"/>
+<xs:element minOccurs="0" name="description" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="TimeType">
+<xs:sequence>
+<xs:element name="hour" type="xs:integer"/>
+<xs:element name="minute" type="xs:integer"/>
+<xs:element name="ampm" type="AMPM"/>
+</xs:sequence>
+</xs:complexType>
+<xs:simpleType name="AMPM">
+<xs:restriction base="xs:string">
+<xs:enumeration value="AM"/>
+<xs:enumeration value="PM"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:complexType name="WsError">
+<xs:sequence>
+<xs:element name="exception" type="xs:string"/>
+<xs:element name="errorDesc" type="xs:string"/>
+<xs:element name="errorCode" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:simpleType name="Status">
+<xs:restriction base="xs:string">
+<xs:enumeration value="Processed"/>
+<xs:enumeration value="Partially Processed"/>
+<xs:enumeration value="Failed to Process"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:element name="entityProcessingOutcomes">
+<xs:complexType>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" ref="entityProcessingOutcome"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="entityProcessingOutcome" type="EntityProcessingOutcomeType"/>
+<xs:complexType name="EntityProcessingOutcomeType">
+<xs:sequence>
+<xs:element minOccurs="0" name="klassName" type="xs:string"/>
+<xs:element name="businessIdentifier" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="message" type="xs:string"/>
+<xs:element minOccurs="0" name="dataBaseId" type="xs:string"/>
+<xs:element minOccurs="0" name="correlationId" type="xs:string"/>
+<xs:element minOccurs="0" name="correlationDescription" type="xs:string"/>
+<xs:element default="false" minOccurs="0" name="failed" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+<xs:simpleType name="ResponseCodeType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="0"/>
+<xs:enumeration value="1"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:element name="ServiceResponse" type="ServiceResponse"/>
+<xs:complexType name="ServiceResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="status" type="Status"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="wsError" type="WsError"/>
+<xs:element minOccurs="0" ref="entityProcessingOutcomes"/>
+<xs:element minOccurs="0" name="message" type="xs:string"/>
+<xs:element minOccurs="0" ref="responseData"/>
+</xs:sequence>
+<xs:attribute name="responsecode" type="ResponseCodeType"/>
+</xs:complexType>
+<xs:element name="responseData" type="responseDataType"/>
+<xs:complexType name="responseDataType">
+<xs:sequence>
+<xs:any minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="CaaersServiceResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element ref="ServiceResponse"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="SecurityExceptionFault" type="SecurityExceptionFault"/>
+<xs:complexType name="BaseFault">
+<xs:sequence>
+<xs:element name="message" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="SecurityExceptionFault">
+<xs:complexContent>
+<xs:extension base="BaseFault"/>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="Fault">
+<xs:sequence>
+<xs:element name="code" type="xs:string"/>
+<xs:element name="message" type="xs:string"/>
+<xs:element name="exception" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="CaaersFaultInfo">
+<xs:complexType>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" name="fault" type="Fault"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="CaaersFault" nillable="true"/>
+</xs:schema>
+<xs:schema xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent" xmlns:cct="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent">
+<!--
+<xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" schemaLocation="caAERSCommonDataTypes.xsd"/>
+-->
+<xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common"/>
+<xs:complexType name="AdverseEventType">
+<xs:complexContent>
+<xs:extension base="cct:MutableDomainObjectType">
+<xs:sequence>
+<xs:element minOccurs="0" name="verbatim" type="xs:string"/>
+<xs:choice>
+<xs:element minOccurs="0" name="adverseEventCtepTerm" type="AdverseEventCtepTermType"/>
+<xs:element minOccurs="0" name="adverseEventMeddraLowLevelTerm" type="AdverseEventMeddraLowLevelTermType"/>
+</xs:choice>
+<xs:element minOccurs="0" name="grade" type="GradeType"/>
+<xs:element minOccurs="0" name="hospitalization" type="HospitalizationType"/>
+<xs:element minOccurs="0" name="expected" type="xs:boolean"/>
+<xs:element minOccurs="0" name="attributionSummary" type="AttributionType"/>
+<xs:element minOccurs="0" name="comments" type="xs:string"/>
+<xs:element minOccurs="0" name="dateFirstLearned" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="startDate" type="xs:date"/>
+<xs:element minOccurs="0" name="eventApproximateTime" type="cct:TimeType"/>
+<xs:element minOccurs="0" name="eventLocation" type="xs:string"/>
+<xs:element minOccurs="0" name="endDate" type="xs:date"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="outcome" type="OutcomeType"/>
+<xs:element minOccurs="0" name="increasedRisk" type="xs:boolean"/>
+<xs:element minOccurs="0" name="externalId" type="xs:string"/>
+<xs:element minOccurs="0" name="reporterEmail" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="AdverseEventCtcTermType">
+<xs:sequence>
+<xs:element name="ctep-term" type="cct:CustomStringType"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="EpochType">
+<xs:sequence>
+<xs:element name="name" type="xs:string"/>
+<xs:element name="descriptionText" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="AdverseEventMeddraLowLevelTermType">
+<xs:sequence>
+<xs:element minOccurs="1" name="meddraCode" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="AdverseEventCtepTermType">
+<xs:sequence>
+<xs:element minOccurs="0" name="ctepCode" type="xs:string"/>
+<xs:choice>
+<xs:element minOccurs="0" name="otherMeddra" type="AdverseEventMeddraLowLevelTermType"/>
+<xs:element minOccurs="0" name="otherSpecify" type="xs:string"/>
+</xs:choice>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="OutcomeType">
+<xs:sequence>
+<xs:element minOccurs="1" name="outComeEnumType" type="OutComeEnumType"/>
+<xs:element minOccurs="0" name="other" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<!--  FIXED Types   -->
+<xs:simpleType name="CtcVersionEnum">
+<xs:restriction base="xs:int">
+<xs:enumeration value="2"/>
+<xs:enumeration value="3"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="OutComeEnumType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="DEATH"/>
+<xs:enumeration value="HOSPITALIZATION"/>
+<xs:enumeration value="LIFE_THREATENING"/>
+<xs:enumeration value="DISABILITY"/>
+<xs:enumeration value="CONGENITAL_ANOMALY"/>
+<xs:enumeration value="REQUIRED_INTERVENTION"/>
+<xs:enumeration value="OTHER_SERIOUS"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="GradeType">
+<xs:restriction base="xs:int">
+<xs:enumeration value="0"/>
+<xs:enumeration value="1"/>
+<xs:enumeration value="2"/>
+<xs:enumeration value="3"/>
+<xs:enumeration value="4"/>
+<xs:enumeration value="5"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="HospitalizationType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="NONE"/>
+<xs:enumeration value="YES"/>
+<xs:enumeration value="NO"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="AttributionType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="UNRELATED"/>
+<xs:enumeration value="UNLIKELY"/>
+<xs:enumeration value="POSSIBLE"/>
+<xs:enumeration value="PROBABLE"/>
+<xs:enumeration value="DEFINITE"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="EpochNameEnum">
+<xs:restriction base="xs:string">
+<xs:enumeration value="Baseline"/>
+<xs:enumeration value="Pre-Treatment"/>
+<xs:enumeration value="Treatment"/>
+<xs:enumeration value="Post-treatment"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:complexType name="CourseType">
+<xs:sequence>
+<xs:annotation>
+<xs:documentation>
+Course Criteria Conditions enforced in service Implementation. 1. Start date of this course/cycle cannot be earlier than the Start date of first course/cycle. 2. Course End date cannot be earlier than Start date. 3. For Non-Baseline treatment type Start date cannot be equal to End date. 4. Course/cycle cannot overlap with an existing course/cycle. 5. Baseline treatment type cannot start after an existing Non-Baseline treatment type. 6. Non-Baseline treatment type cannot start before an existing Baseline treatment type. 7. In Choosing the Treatment Assignment codes the following are scenarios are possible. a) When treatmentAssignmentCode is specified then the otherTreatementAssignmentDescription code should be N/A. b) When otherTreatementAssignmentDescription code is specified then the treatmentAssignmentCode should be Other.
+</xs:documentation>
+</xs:annotation>
+<xs:element minOccurs="0" name="startDateOfFirstCourse" type="xs:date"/>
+<xs:element minOccurs="0" name="startDateOfThisCourse" type="xs:date"/>
+<xs:element minOccurs="0" name="endDateOfThisCourse" type="xs:date"/>
+<xs:element minOccurs="0" name="treatmentType" type="xs:string"/>
+<xs:element minOccurs="0" name="cycleNumber" type="xs:integer"/>
+<xs:element minOccurs="1" name="treatmentAssignmentCode" type="xs:string"/>
+<xs:element minOccurs="1" name="otherTreatmentAssignmentDescription" type="xs:string"/>
+<xs:element minOccurs="0" name="externalId" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>
+<xs:schema xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/saerules" xmlns:ae="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent" xmlns:cct="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/saerules">
+<xs:annotation>
+<xs:documentation>
+This service requires list of Adverse Events along with StudyIdentifer and returns the CaaersServiceResponse with requireReporting , reportName and other related attributes.
+</xs:documentation>
+</xs:annotation>
+<xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent"/>
+<xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common"/>
+<xs:element name="EvaluateAEsInputMessage">
+<xs:annotation>
+<xs:documentation>
+The top level (typically root) element. Allows the definition of default values for all nested bean definitions.
+</xs:documentation>
+</xs:annotation>
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" ref="adverseEvents">
+<xs:annotation>
+<xs:documentation>
+List of Adverse Events to be evaluated for SAE reporting.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element ref="study">
+<xs:annotation>
+<xs:documentation>
+Info related to Study for evaluating based on study related details, like, Study Sponsor, treatment assignment, Site/Institution Conditions enforced in service implementation. 1. Study should be existing in caAERS.	2. Treatment assignment code must be part of the study treatment assignments 3. Site must be existing in caAERS, need not be Study site
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element minOccurs="0" ref="participant">
+<xs:annotation>
+<xs:documentation>
+Info related to participant for evaluating based on participant details, like, dateLastIndAdministered
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:complexType abstract="true" name="AEsOutputMessage">
+<xs:sequence>
+<xs:element minOccurs="0" ref="evaluatedAdverseEventResults">
+<xs:annotation>
+<xs:documentation>
+List of Adverse Events evaluated for SAE reporting and their result
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="EvaluateAEsOutputMessage">
+<xs:annotation>
+<xs:documentation>
+The top level (typically root) element. Allows the definition of default values for all nested bean definitions.
+</xs:documentation>
+</xs:annotation>
+<xs:complexType>
+<xs:complexContent>
+<xs:extension base="AEsOutputMessage"/>
+</xs:complexContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="study" type="Study"/>
+<xs:complexType name="Study">
+<xs:sequence>
+<xs:element name="studyIdentifier" type="cct:CustomStringType"/>
+<xs:element minOccurs="0" name="treatmentAssignmentCode" type="cct:CustomStringType"/>
+<xs:element minOccurs="0" name="participantSiteIdentifier" type="cct:CustomStringType"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="participant" type="Participant"/>
+<xs:complexType name="Participant">
+<xs:sequence>
+<xs:element minOccurs="0" name="dateIndLastAdministered" type="xs:date"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="recommendedReports" type="RecommendedReports"/>
+<xs:complexType name="RecommendedReports">
+<xs:annotation>
+<xs:documentation>List of recommended reports and its due.</xs:documentation>
+</xs:annotation>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="reportType" type="ReportType"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="ReportType">
+<xs:sequence>
+<xs:element name="reportName" type="cct:CustomStringType"/>
+<xs:element name="reportOrganizationId" type="cct:CustomStringType"/>
+<xs:element name="reportOrganizationName" type="cct:CustomStringType"/>
+<xs:element minOccurs="0" name="dueIn" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="adverseEvent" type="ae:AdverseEventType"/>
+<xs:element name="adverseEvents">
+<xs:annotation>
+<xs:documentation>List of adverse events to be evaluated.</xs:documentation>
+</xs:annotation>
+<xs:complexType>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" ref="adverseEvent"/>
+</xs:sequence>
+</xs:complexType>
+<xs:unique name="UniqueAdverseEvents">
+<xs:selector xpath="adverseevent"/>
+<xs:field xpath="@externalId"/>
+</xs:unique>
+</xs:element>
+<xs:element name="evaluatedAdverseEventResults">
+<xs:annotation>
+<xs:documentation>List of adverse events evaluated and its result.</xs:documentation>
+</xs:annotation>
+<xs:complexType>
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" ref="adverseEventResult"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="adverseEventResult">
+<xs:complexType>
+<xs:sequence>
+<xs:element ref="adverseEvent"/>
+<xs:element minOccurs="0" name="requiresReporting" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="criteria" type="Criteria"/>
+<xs:complexType name="Criteria">
+<xs:sequence>
+<xs:element name="studySubjectIdentifier" type="cct:CustomStringType"/>
+<xs:element name="studyIdentifier" type="cct:CustomStringType"/>
+<xs:element name="course" type="ae:CourseType"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="RecommendedActions">
+<xs:sequence>
+<xs:element name="action" type="xs:string"/>
+<xs:element name="report" type="xs:string"/>
+<xs:element name="status" type="xs:string"/>
+<xs:element name="due" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="SaveAndEvaluateAEsInputMessage">
+<xs:annotation>
+<xs:documentation>
+The top level (typically root) element. Allows the definition of default values for all nested bean definitions.
+</xs:documentation>
+</xs:annotation>
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" ref="adverseEvents">
+<xs:annotation>
+<xs:documentation>
+List of Adverse Events to be evaluated for SAE reporting.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+<xs:element ref="criteria">
+<xs:annotation>
+<xs:documentation>
+Adverse Event Creation Criteria . Required Criteria : StudySubject Identifier, Study Identifier, course/cycle information. Conditions enforced in service implementation. 1. Participant and Study should be existing in caAERS. 2. Participant should be registered in that study. 3. Adverse Event Management Service creates course if course is not present in caAERS System.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="SaveAndEvaluateAEsOutputMessage">
+<xs:annotation>
+<xs:documentation>
+The top level (typically root) element. Allows the definition of default values for all nested bean definitions.
+</xs:documentation>
+</xs:annotation>
+<xs:complexType>
+<xs:complexContent>
+<xs:extension base="AEsOutputMessage">
+<xs:sequence>
+<xs:element name="hasSAE" type="xs:boolean"/>
+<xs:element name="linkToReport" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="recommendedActions" type="RecommendedActions"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+</xs:element>
+<xs:element name="saveAndEvaluateAEs" type="saveAndEvaluateAEs"/>
+<xs:complexType name="saveAndEvaluateAEs">
+<xs:sequence>
+<xs:element minOccurs="0" ref="SaveAndEvaluateAEsInputMessage"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="saveAndEvaluateAEsResponse" type="saveAndEvaluateAEsResponse"/>
+<xs:complexType name="saveAndEvaluateAEsResponse">
+<xs:sequence>
+<xs:element minOccurs="0" ref="SaveAndEvaluateAEsOutputMessage"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="evaluateAEs" type="evaluateAEs"/>
+<xs:complexType name="evaluateAEs">
+<xs:sequence>
+<xs:element minOccurs="0" ref="EvaluateAEsInputMessage"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="evaluateAEsResponse" type="evaluateAEsResponse"/>
+<xs:complexType name="evaluateAEsResponse">
+<xs:sequence>
+<xs:element minOccurs="0" ref="EvaluateAEsOutputMessage"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>
+</wsdl:types>
+<wsdl:message name="evaluateAEs">
+<wsdl:part element="tns:evaluateAEs" name="parameters"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="evaluateAEsResponse">
+<wsdl:part element="tns:evaluateAEsResponse" name="parameters"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="CaaersFault">
+<wsdl:part element="ns1:CaaersFault" name="CaaersFault"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="saveAndEvaluateAEs">
+<wsdl:part element="tns:saveAndEvaluateAEs" name="parameters"></wsdl:part>
+</wsdl:message>
+<wsdl:message name="saveAndEvaluateAEsResponse">
+<wsdl:part element="tns:saveAndEvaluateAEsResponse" name="parameters"></wsdl:part>
+</wsdl:message>
+<wsdl:portType name="SAEEvaluationServiceInterface">
+<wsdl:operation name="saveAndEvaluateAEs">
+<wsdl:input message="tns:saveAndEvaluateAEs" name="saveAndEvaluateAEs"></wsdl:input>
+<wsdl:output message="tns:saveAndEvaluateAEsResponse" name="saveAndEvaluateAEsResponse"></wsdl:output>
+<wsdl:fault message="tns:CaaersFault" name="CaaersFault"></wsdl:fault>
+</wsdl:operation>
+<wsdl:operation name="evaluateAEs">
+<wsdl:input message="tns:evaluateAEs" name="evaluateAEs"></wsdl:input>
+<wsdl:output message="tns:evaluateAEsResponse" name="evaluateAEsResponse"></wsdl:output>
+<wsdl:fault message="tns:CaaersFault" name="CaaersFault"></wsdl:fault>
+</wsdl:operation>
+</wsdl:portType>
+<wsdl:binding name="SAEEvaluationWebServiceImplServiceSoapBinding" type="tns:SAEEvaluationServiceInterface">
+<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+<wsdl:operation name="saveAndEvaluateAEs">
+<soap:operation soapAction="" style="document"/>
+<wsdl:input name="saveAndEvaluateAEs">
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output name="saveAndEvaluateAEsResponse">
+<soap:body use="literal"/>
+</wsdl:output>
+<wsdl:fault name="CaaersFault">
+<soap:fault name="CaaersFault" use="literal"/>
+</wsdl:fault>
+</wsdl:operation>
+<wsdl:operation name="evaluateAEs">
+<soap:operation soapAction="" style="document"/>
+<wsdl:input name="evaluateAEs">
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output name="evaluateAEsResponse">
+<soap:body use="literal"/>
+</wsdl:output>
+<wsdl:fault name="CaaersFault">
+<soap:fault name="CaaersFault" use="literal"/>
+</wsdl:fault>
+</wsdl:operation>
+</wsdl:binding>
+<wsdl:service name="SAEEvaluationWebServiceImplService">
+<wsdl:port binding="tns:SAEEvaluationWebServiceImplServiceSoapBinding" name="SAEEvaluationServiceInterfacePort">
+<soap:address location="https://dev.semanticbits.com/caaers/services/SAEEvaluationService"/>
+</wsdl:port>
+</wsdl:service>
+</wsdl:definitions>
