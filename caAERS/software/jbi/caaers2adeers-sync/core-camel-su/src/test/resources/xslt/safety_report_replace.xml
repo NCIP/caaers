@@ -1,0 +1,37 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap:Body>
+        <ns1:initiateSafetyReportActionResponse xmlns:ns1="http://schema.integration.caaers.cabig.nci.nih.gov/aereport">
+            <ns3:CaaersServiceResponse xmlns:ns3="http://schema.integration.caaers.cabig.nci.nih.gov/common"
+                                       xmlns:ns4="http://schema.integration.caaers.cabig.nci.nih.gov/investigator"
+                                       xmlns:ns5="http://schema.integration.caaers.cabig.nci.nih.gov/researchstaff"
+                                       xmlns:ns6="http://schema.integration.caaers.cabig.nci.nih.gov/participant"
+                                       xmlns:ns7="http://schema.integration.caaers.cabig.nci.nih.gov/study" xmlns="">
+                <ns3:ServiceResponse responsecode="0">
+                    <status>Processed</status>
+                    <ns3:entityProcessingOutcomes/>
+                    <message>Initiated safety report action for the safety report,</message>
+                    <ns3:responseData>
+                        <ns1:BaseReports>
+                            <ns1:baseReport>
+                                <ns1:ReportID>8888888</ns1:ReportID>
+                                <ns1:caseNumber>1111111</ns1:caseNumber>
+                                <ns1:reportName>CTEP 10 Calendar Day SAE Report</ns1:reportName>
+                                <ns1:action>Withdraw</ns1:action>
+                                <ns1:amendmentNumber>0</ns1:amendmentNumber>
+
+                            </ns1:baseReport>
+                            <ns1:baseReport>
+                                <ns1:ReportID>9999999</ns1:ReportID>
+                                <ns1:caseNumber>222222</ns1:caseNumber>
+                                <ns1:reportName>CTEP 24 Hr SAE Report</ns1:reportName>
+                                <ns1:action>Create</ns1:action>
+                                <ns1:amendmentNumber>1</ns1:amendmentNumber>
+                                <ns1:dueDate>Fri Aug 09 11:30:25 EDT 2014</ns1:dueDate>
+                            </ns1:baseReport>
+                        </ns1:BaseReports>
+                    </ns3:responseData>
+                </ns3:ServiceResponse>
+            </ns3:CaaersServiceResponse>
+        </ns1:initiateSafetyReportActionResponse>
+    </soap:Body>
+</soap:Envelope>

@@ -1,0 +1,54 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap:Body>
+        <ns1:saveAndEvaluateAEsResponse xmlns:ns1="http://schema.integration.caaers.cabig.nci.nih.gov/saerules">
+            <ns1:SaveAndEvaluateAEsOutputMessage xmlns:ns3="http://schema.integration.caaers.cabig.nci.nih.gov/common"
+                                                 xmlns:ns4="http://schema.integration.caaers.cabig.nci.nih.gov/investigator"
+                                                 xmlns:ns5="http://schema.integration.caaers.cabig.nci.nih.gov/researchstaff"
+                                                 xmlns:ns6="http://schema.integration.caaers.cabig.nci.nih.gov/aereport"
+                                                 xmlns:ns7="http://schema.integration.caaers.cabig.nci.nih.gov/participant"
+                                                 xmlns:ns8="http://schema.integration.caaers.cabig.nci.nih.gov/study"
+                                                 xmlns="">
+                <ns1:evaluatedAdverseEventResults>
+                    <ns1:adverseEventResult>
+                        <ns1:adverseEvent>
+                            <verbatim>Verbatim 1</verbatim>
+                            <adverseEventCtepTerm>
+                                <ctepCode>10047700</ctepCode>
+                            </adverseEventCtepTerm>
+                            <grade>3</grade>
+                            <hospitalization>NO</hospitalization>
+                            <expected>true</expected>
+                            <dateFirstLearned>2014-06-02T17:43:00</dateFirstLearned>
+                            <startDate>2014-01-07</startDate>
+                            <endDate>2014-05-14</endDate>
+                            <outcome>
+                                <outComeEnumType>LIFE_THREATENING</outComeEnumType>
+                            </outcome>
+                            <increasedRisk>true</increasedRisk>
+                            <externalId>reaction-5</externalId>
+                            <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>
+                        </ns1:adverseEvent>
+                        <requiresReporting>true</requiresReporting>
+                    </ns1:adverseEventResult>
+                </ns1:evaluatedAdverseEventResults>
+                <hasSAE>true</hasSAE>
+                <linkToReport>https://sbhost06-vm01.semanticbits.com:8443/caaers/pages/ae/captureRoutine?study=180&amp;participant=312&amp;adverseEventReportingPeriod=1178&amp;_page=0&amp;_target2=2&amp;displayReportingPeriod=true&amp;addReportingPeriodBinder=true</linkToReport>
+                <recommendedActions>
+                    <action>Withdraw</action>
+                    <report>CTEP 10 Calendar Day SAE Report</report>
+                    <status>Being withdrawn</status>
+                    <due></due>
+                    <dueDate></dueDate>
+                </recommendedActions>
+                <recommendedActions>
+                    <action>Create</action>
+                    <report>CTEP 24 Hours SAE Report</report>
+                    <status>Not Started</status>
+                    <due>Due in 24 hrs</due>
+                    <dueDate>Mon Apr 08 14:49:50 EDT 2014</dueDate>
+                </recommendedActions>
+
+            </ns1:SaveAndEvaluateAEsOutputMessage>
+        </ns1:saveAndEvaluateAEsResponse>
+    </soap:Body>
+</soap:Envelope>
