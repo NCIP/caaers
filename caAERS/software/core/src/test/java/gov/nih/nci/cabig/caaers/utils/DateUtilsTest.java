@@ -231,4 +231,23 @@ public class DateUtilsTest extends TestCase {
     		fail("should not throw error");
     	}
     }
+    
+    public void testGetDateWithTimeZone(){
+    	try {
+    		SimpleDateFormat sf = new SimpleDateFormat(DateUtils.DATE_WITH_HYPHENS);
+    		String dateString = "05-31-2012";
+    		Date d = sf.parse(dateString);
+    		System.out.println(d);
+    		// format date with timezone
+    		
+    		d = DateUtils.getDateWithTimeZone(d);
+    		System.out.println(d);
+    		System.out.println("convert to string" +d.toString());
+    	}catch (Exception e){
+    		e.printStackTrace();
+    		fail("should not throw error");
+    	}
+    }
+    
+    
 }

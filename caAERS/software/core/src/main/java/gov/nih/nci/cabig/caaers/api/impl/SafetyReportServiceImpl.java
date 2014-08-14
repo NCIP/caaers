@@ -40,6 +40,7 @@ import gov.nih.nci.cabig.caaers.service.migrator.BaseExpeditedAdverseEventReport
 import gov.nih.nci.cabig.caaers.service.migrator.ExpeditedAdverseEventReportConverter;
 import gov.nih.nci.cabig.caaers.service.migrator.report.ExpeditedReportMigrator;
 import gov.nih.nci.cabig.caaers.service.synchronizer.report.ExpeditedAdverseEventReportSynchronizer;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.validation.ValidationError;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
@@ -609,8 +610,10 @@ public class SafetyReportServiceImpl {
     	 baseReport.setCaseNumber(report.getCaseNumber());
          if((report.getStatus() == ReportStatus.AMENDED || report.getStatus() == ReportStatus.PENDING || report.getStatus() == ReportStatus.FAILED || 
         		 report.getStatus() == ReportStatus.INPROCESS) && report.getDueOn() != null){
-        	baseReport.setDueDate(report.getDueOn().toString());
+        	baseReport.setDueDate(DateUtils.getDateWithTimeZone(report.getDueOn()).toString());
          }
+         // set action text https://tracker.nci.nih.gov/browse/CAAERS-6962
+         baseReport.setActionText(actionType.name().toLowerCase() + " " + report.getReportDefinition().getName());
          
          ((BaseReports)(caaersServiceResponse.getServiceResponse().getResponseData().getAny())).getBaseReport().add(baseReport);
     }

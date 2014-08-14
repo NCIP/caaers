@@ -10,8 +10,12 @@ import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.dao.query.ReportVersionDTOQuery;
 import gov.nih.nci.cabig.caaers.dao.report.ReportVersionDao;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersionDTO;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.List;
 
 /*
@@ -52,5 +56,17 @@ public class ReportVersionDaoTest extends DaoTestCase<ReportVersionDao> {
         assertEquals("2006-09-30 00:00:00.0", l.get(0).getPeriodStartDate().toString());
         assertEquals("NCI CODE 0190", l.get(0).getStudySiteCode());
         assertEquals("New Site", l.get(0).getStudySiteName());
+    }
+    
+    public void testGetById(){
+    	ReportVersion rv = rsDao.getById(-88);
+    	assertNotNull(rv);
+    	assertNotNull(rv.getDueOn());
+    	System.out.println(rv.getDueOn());
+    	System.out.println(DateUtils.getDateWithTimeZone(rv.getDueOn()));
+    	
+    	ReportVersion newRv = new ReportVersion();
+    	newRv.setDueOn(new Date());
+    	System.out.println(newRv.getDueOn());
     }
 }

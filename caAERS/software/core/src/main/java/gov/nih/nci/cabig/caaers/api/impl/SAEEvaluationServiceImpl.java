@@ -14,6 +14,7 @@ import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm;
@@ -51,16 +52,17 @@ import gov.nih.nci.cabig.caaers.service.migrator.adverseevent.SAEAdverseEventRep
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 import gov.nih.nci.cabig.caaers.ws.faults.CaaersFault;
+import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -86,8 +88,10 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
     private ParticipantDao participantDao;
     private StudyParticipantAssignmentDao studyParticipantAssignmentDao;
     private SAEAdverseEventReportingPeriodConverter reportingPeriodConverter;
-
-    private AdverseEventManagementServiceImpl adverseEventManagementService;
+    private ReportDefinitionDao reportDefinitionDao;
+	/** The now factory. */
+	private NowFactory nowFactory;
+	private AdverseEventManagementServiceImpl adverseEventManagementService;
 	private EvaluationService evaluationService;
 	private ApplicationContext applicationContext;
 	private MessageSource messageSource;
@@ -310,6 +314,7 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 			EvaluationResultDTO dto = evaluationService.evaluateSAERules(reportingPeriod);
 
             findRecommendedActions(dto, reportingPeriod, response);
+            populateActionTextAndDueDate(response);
             // create/update/delete AE recommended reports
             manageAdverseEventRecommendedReports(mapAE2DTO, requestType, dto);
 
@@ -345,6 +350,20 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 		}
 
 		return response;
+	}
+	
+	private void populateActionTextAndDueDate(AEsOutputMessage response){
+		if(response instanceof SaveAndEvaluateAEsOutputMessage) {
+			  Date now = nowFactory.getNow();
+	          for(RecommendedActions recActions: ((SaveAndEvaluateAEsOutputMessage) response).getRecommendedActions()){
+	          	//recActions.setDueDate(recActions.getDueDate());
+	          	recActions.setActionText(recActions.getAction().toLowerCase() + " " + recActions.getReport());
+	          	ReportDefinition reportDefinition = reportDefinitionDao.getByName(recActions.getReport());
+	          	Date baseDate = reportDefinition.getBaseDate();
+	          	Date dueDate = reportDefinition.getExpectedDueDate(baseDate == null ? now : baseDate);
+	          	recActions.setDueDate(DateUtils.getDateWithTimeZone(dueDate).toString());
+	          }
+		}
 	}
 
 	private void  refreshReportIndexMap(Map<Integer, ExpeditedAdverseEventReport> aeReportIndexMap) {
@@ -829,5 +848,13 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
     public void setAdverseEventRecommendedReportDao(
 			AdverseEventRecommendedReportDao adverseEventRecommendedReportDao) {
 		this.adverseEventRecommendedReportDao = adverseEventRecommendedReportDao;
+	}
+    
+    public void setNowFactory(NowFactory nowFactory) {
+		this.nowFactory = nowFactory;
+	}
+
+	public void setReportDefinitionDao(ReportDefinitionDao reportDefinitionDao) {
+		this.reportDefinitionDao = reportDefinitionDao;
 	}
 }

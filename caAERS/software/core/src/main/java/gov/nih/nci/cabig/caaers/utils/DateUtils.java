@@ -13,6 +13,7 @@ import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -325,6 +326,17 @@ public class DateUtils {
     public static boolean isValidDate(DateValue d) {
         if (d.isNull() || d.isEmpty()) return true;
         return isValidDate(d.toString());
+    }
+    
+    public static Date getDateWithTimeZone(Date date){
+    	SimpleDateFormat dateFormat = new SimpleDateFormat();
+    	dateFormat.setTimeZone(TimeZone.getDefault());
+    	try {
+    		date = dateFormat.parse(dateFormat.format(date));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+    	return date;
     }
 
 }

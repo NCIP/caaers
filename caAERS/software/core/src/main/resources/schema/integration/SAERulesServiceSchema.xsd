@@ -175,9 +175,11 @@
     <xs:complexType name="RecommendedActions">
         <xs:sequence>
             <xs:element minOccurs="1" name="action" type="xs:string"/>
+            <xs:element minOccurs="0" name="actionText" type="xs:string"/>
             <xs:element minOccurs="1" name="report" type="xs:string"/>
             <xs:element minOccurs="1" name="status" type="xs:string"/>
             <xs:element minOccurs="1" name="due" type="xs:string"/>
+            <xs:element minOccurs="0" name="dueDate" type="xs:string"/>
         </xs:sequence>
     </xs:complexType>
 
