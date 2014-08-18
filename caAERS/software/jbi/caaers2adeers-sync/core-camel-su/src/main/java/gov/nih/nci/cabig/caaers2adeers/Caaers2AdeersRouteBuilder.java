@@ -97,7 +97,7 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
 	}
 	
 	
-	public void configureRave2CaaersWSCallRoute(String fromSink, String serviceURI, String toSink, 
+	public void configureRave2CaaersWSCallRoute(String fromSink, String serviceURI, String responseXSL, String toSink,
 			Stage xslInStage, Stage serviceInvocationStage, Stage serviceCompletionStage, Stage xslOutStage, Stage toSinkStage){
 		from(fromSink)
         .to(fileTracker.fileURI(serviceInvocationStage))
@@ -106,11 +106,29 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
         .to(fileTracker.fileURI(serviceCompletionStage))
         .process(track(serviceCompletionStage, true))
         .process(track(xslOutStage))
+        .to("xslt:" + responseXSL)
         .to("log:gov.nih.nci.cabig.caaers2adeers.afterWSCallResponseXSL?showHeaders=true&level=TRACE&showException=true&showStackTrace=true")
         .process(track(toSinkStage))
 		.to(toSink);
 	}
-	
+
+
+
+    public void configureRave2CaaersWSCallRoute(String fromSink, String serviceURI, String toSink,
+                                                Stage xslInStage, Stage serviceInvocationStage,
+                                                Stage serviceCompletionStage, Stage xslOutStage, Stage toSinkStage){
+        from(fromSink)
+                .to(fileTracker.fileURI(serviceInvocationStage))
+                .to(ExchangePattern.InOut, serviceURI)
+                .processRef("headerGeneratorProcessor")
+                .to(fileTracker.fileURI(serviceCompletionStage))
+                .process(track(serviceCompletionStage, true))
+                .process(track(xslOutStage))
+                .to("log:gov.nih.nci.cabig.caaers2adeers.afterWSCallResponseXSL?showHeaders=true&level=TRACE&showException=true&showStackTrace=true")
+                .process(track(toSinkStage))
+                .to(toSink);
+    }
+
     /**
      * Will create a sub route for transformation.
      * @param fromSink - From channel

@@ -34,7 +34,7 @@
                     <report><xsl:value-of select="$raTwo/report"/></report>
                     <status><xsl:value-of select="$raTwo/status"/></status>
                     <due><xsl:value-of select="$raTwo/due" /></due>
-                    <due><xsl:value-of select="$raTwo/dueDate" /></due>
+                    <dueDate><xsl:value-of select="$raTwo/dueDate" /></dueDate>
             </xsl:if>
         </recommendedActions>
 

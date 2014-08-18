@@ -20,8 +20,6 @@
               <xsl:apply-templates select="ns1:reportName" />
               <xsl:apply-templates select="ns1:action" />
               <ns1:actionText><xsl:value-of select="ns1:action"/> the <xsl:value-of select="ns1:reportName"/></ns1:actionText>
-              <ns1:report>What is this?</ns1:report>
-              <ns1:status>Where is this?</ns1:status>
               <xsl:apply-templates select="ns1:amendmentNumber" />
               <xsl:apply-templates select="ns1:dueDate" />
             </xsl:if>
@@ -29,7 +27,6 @@
                 <xsl:apply-templates select="$brTwo/ns1:ReportID" />
                 <xsl:apply-templates select="$brTwo/ns1:caseNumber" />
                 <xsl:apply-templates select="ns1:reportName" />
-                <xsl:apply-templates select="ns1:action" />
                     <xsl:if test="ns1:action = 'Withdraw'">
                         <ns1:action>Replace</ns1:action>
                         <ns1:actionText>Replace the <xsl:value-of select="ns1:reportName"/> with the <xsl:value-of select="$brTwo/ns1:reportName"/></ns1:actionText>
@@ -38,8 +35,6 @@
                         <xsl:apply-templates select="ns1:action" />
                         <ns1:actionText><xsl:value-of select="ns1:action"/> the <xsl:value-of select="ns1:reportName"/> with a <xsl:value-of select="$brTwo/ns1:reportName"/></ns1:actionText>
                     </xsl:if>
-                    <ns1:report>What is this?</ns1:report>
-                    <ns1:status>Where is this?</ns1:status>
                     <xsl:apply-templates select="$brTwo/ns1:amendmentNumber" />
                     <xsl:apply-templates select="$brTwo/ns1:dueDate" />
             </xsl:if>
