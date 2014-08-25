@@ -34,6 +34,7 @@ public class SafetyReportRemoveEDIHeadersAndFootersProcessor implements Processo
 		int e2bStIndex = body.indexOf(E2B_ST);
 		int e2bEndIndex = body.indexOf(E2B_END);
 		if(e2bStIndex < 0 || e2bEndIndex < 0) {
+            log.warn(String.format("[Start Index : %s, End Index : %s, XML : \n %s]", e2bStIndex, e2bEndIndex, body));
 			throw new Exception("E2B message not found");
 		}
 		body = body.substring(e2bStIndex, e2bEndIndex+E2B_END_OFFSET);
