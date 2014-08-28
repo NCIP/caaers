@@ -375,9 +375,9 @@
 										<xsl:value-of select="/ichicsr/safetyreport/safetyreportversion" />
 									</ae:reportVersionId>
 								</xsl:if>
-								 <xsl:if test="/ichicsr/safetyreport/patient/summary/recipientemails">
+								 <xsl:if test="/ichicsr/safetyreport/recipientemails">
 									<ae:ccEmails>
-										<xsl:value-of select="/ichicsr/safetyreport/patient/summary/recipientemails" />
+										<xsl:value-of select="/ichicsr/safetyreport/recipientemails" />
 									</ae:ccEmails>
 								</xsl:if>
 							</ae:aeReportVersion>

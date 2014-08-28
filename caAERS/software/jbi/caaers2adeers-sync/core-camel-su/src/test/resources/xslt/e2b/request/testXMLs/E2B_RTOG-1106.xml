@@ -13,7 +13,8 @@
 
 	<safetyreport>
 
-		<safetyreportid>MAY27-001</safetyreportid> 	
+		<safetyreportid>MAY27-001</safetyreportid>
+        <recipientemails>vasudev.chatti@semanticbits.com,vinodh.rc@semanticbits.com, ramakrishna.gundala1@semanticbits.com1</recipientemails>
 		<!-- Reporter information -->
 		<primarysource>	
 			<sponsorstudynumb>RTOG-1106</sponsorstudynumb>	
@@ -245,7 +246,6 @@
 				<narrativeincludeclinical>the description or narrative of the event-updated</narrativeincludeclinical> 
 				<!-- Retreated to-date -->	
 				<retreatedflag>2</retreatedflag> 
-				<recipientemails>vasudev.chatti@semanticbits.com,vinodh.rc@semanticbits.com, ramakrishna.gundala1@semanticbits.com1</recipientemails>
 				<ptautopsyyesno>2</ptautopsyyesno>
 				<ptdeathdate>19111111</ptdeathdate>
 				<dateremoved>19121212</dateremoved>
