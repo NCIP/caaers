@@ -613,8 +613,9 @@ public class SafetyReportServiceImpl {
         	baseReport.setDueDate(DateUtils.getDateWithTimeZone(report.getDueOn()).toString());
          }
          // set action text https://tracker.nci.nih.gov/browse/CAAERS-6962
-         baseReport.setActionText(actionType.name().toLowerCase() + " " + report.getReportDefinition().getName());
-         
+         baseReport.setActionText(actionType.name().substring(0, 1).toUpperCase() + 
+        		 actionType.name().substring(1, actionType.name().length()).toLowerCase()  +
+        		 " the " + report.getReportDefinition().getName());
          ((BaseReports)(caaersServiceResponse.getServiceResponse().getResponseData().getAny())).getBaseReport().add(baseReport);
     }
 

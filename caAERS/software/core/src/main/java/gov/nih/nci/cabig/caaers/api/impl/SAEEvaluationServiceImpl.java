@@ -357,7 +357,8 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 			  Date now = nowFactory.getNow();
 	          for(RecommendedActions recActions: ((SaveAndEvaluateAEsOutputMessage) response).getRecommendedActions()){
 	          	//recActions.setDueDate(recActions.getDueDate());
-	          	recActions.setActionText(recActions.getAction().toLowerCase() + " " + recActions.getReport());
+	          	recActions.setActionText(recActions.getAction().substring(0, 1).toUpperCase() + recActions.getAction().
+	          			substring(1, recActions.getAction().length()).toLowerCase() + " the " + recActions.getReport());
 	          	ReportDefinition reportDefinition = reportDefinitionDao.getByName(recActions.getReport());
 	          	Date baseDate = reportDefinition.getBaseDate();
 	          	Date dueDate = reportDefinition.getExpectedDueDate(baseDate == null ? now : baseDate);
