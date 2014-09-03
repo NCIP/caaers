@@ -42,7 +42,7 @@ public class FromRaveToCaaersWSRouteBuilder {
         //caAERS - call generate SAE Evaluation service
         configureWSCallRoute("direct:caaers-saveAndEvaluateAEs-sync", caAERSSAEEvaluationServiceJBIURL + "saveAndEvaluateAEs", "sae-evaluation-merge-actions.xsl" );
         //caAERS - call Submit Safety Report service 
-        configureWSCallRoute("direct:caaers-submitSafetyReport-sync", caAERSSafetyReportServiceJBIURL + "submitSafetyReport", "sae-evaluation-merge-actions.xsl" );
+        configureWSCallRoute("direct:caaers-submitSafetyReport-sync", caAERSSafetyReportServiceJBIURL + "submitSafetyReport", "safetyreport-merge-actions.xsl" );
         //caAERS - call Initiate Safety Report service 
         configureWSCallRoute("direct:caaers-initiateSafetyReportAction-sync", caAERSSafetyReportServiceJBIURL + "initiateSafetyReportAction", null );
 	}
