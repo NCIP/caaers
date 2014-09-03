@@ -5,24 +5,52 @@
  * See http://ncip.github.com/caaers/LICENSE.txt for details.
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers2adeers;
+
+import java.io.IOException;
+
 import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.callback.UnsupportedCallbackException;
-import java.io.IOException;
 
 /**
- * Will provide the password for AdEERSWebservice and caAERS Webservice
- * @author Biju Joseph
+ * Will provide the username/password for caAERs for ISRS Integration Services
+ * @author Ramakrishna Gundala
  */
 public class CaaersWSPasswordCallback implements CallbackHandler{
     private String caaersWSUser;
     private String caaersWSPassword;
     private String adeersWSUser;
     private String adeersWSPassword;
-    public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {
+    private IncomingCredentialExtractingInterceptor incomingCredentialExtractingInterceptor;
+    
+	public void setIncomingCredentialExtractingInterceptor(
+			IncomingCredentialExtractingInterceptor incomingCredentialExtractingInterceptor) {
+		this.incomingCredentialExtractingInterceptor = incomingCredentialExtractingInterceptor;
+	}
+
+
+	@SuppressWarnings("static-access")
+	public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {
         org.apache.ws.security.WSPasswordCallback pc = (org.apache.ws.security.WSPasswordCallback) callbacks[0];
-        if(equals(pc.getIdentifier(), caaersWSUser)) pc.setPassword(caaersWSPassword);
+        setCaaersWSUser(incomingCredentialExtractingInterceptor.getUser());
+        if(!incomingCredentialExtractingInterceptor.getIsrsContext()) {
+        	if(equals(pc.getIdentifier(), caaersWSUser)) {
+        		pc.setPassword( incomingCredentialExtractingInterceptor.getPwd());
+        	}
+        	
+        } else {        
+	        setCaaersWSUser(incomingCredentialExtractingInterceptor.getUser());
+	        pc.setIdentifier(caaersWSUser);
+	        pc.setPassword(incomingCredentialExtractingInterceptor.getPwd());
+	        
+        }
+        
+        // clean up after reading username, password
+        incomingCredentialExtractingInterceptor.removePwd();
+        incomingCredentialExtractingInterceptor.removeUser();
+        incomingCredentialExtractingInterceptor.removeIsrsContext();
     }
+    
     
     private boolean equals(String a, String b){
         if(a == null || b == null) return false;
