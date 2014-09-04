@@ -7,6 +7,8 @@ It is a JSP based web application written in Java using Hibernate and Spring tec
 The goal of caAERS is to support regulatory and protocol compliance for adverse event reporting and allow local collection, management, 
 and querying of adverse event data. It also supports service based integration of data from other clinical trials management systems.
 
+Please note that the master codebase of caAERS is undergoing active development and may not have been cleared for production usage by the project sponsor, NCI-CBIIT.
+
 caAERS is distributed under the BSD 3-Clause License.
 Please see the NOTICE and LICENSE files for details.
 
