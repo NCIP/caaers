@@ -33,7 +33,6 @@ public class FromRaveToCaaersWSRouteBuilder {
 		.choice()
 		.when().xpath("//*[local-name()='generateSafetyReportId']").to("direct:caaers-generateSafetyReportIdService-sync")
 		.when().xpath("//*[local-name()='saveAndEvaluateAEs']").to("direct:caaers-saveAndEvaluateAEs-sync")
-		.when().xpath("//*[local-name()='submitSafetyReport']").to("direct:caaers-submitSafetyReport-sync")
 		.when().xpath("//*[local-name()='initiateSafetyReportAction']").to("direct:caaers-initiateSafetyReportAction-sync")
 		.otherwise().to("direct:morgue");
 		
@@ -41,10 +40,8 @@ public class FromRaveToCaaersWSRouteBuilder {
         configureWSCallRoute("direct:caaers-generateSafetyReportIdService-sync", caAERSGenerateReportIdServiceJBIURL + "generateSafetyReportId", null );
         //caAERS - call generate SAE Evaluation service
         configureWSCallRoute("direct:caaers-saveAndEvaluateAEs-sync", caAERSSAEEvaluationServiceJBIURL + "saveAndEvaluateAEs", "sae-evaluation-merge-actions.xsl" );
-        //caAERS - call Submit Safety Report service 
-        configureWSCallRoute("direct:caaers-submitSafetyReport-sync", caAERSSafetyReportServiceJBIURL + "submitSafetyReport", "safetyreport-merge-actions.xsl" );
         //caAERS - call Initiate Safety Report service 
-        configureWSCallRoute("direct:caaers-initiateSafetyReportAction-sync", caAERSSafetyReportServiceJBIURL + "initiateSafetyReportAction", null );
+        configureWSCallRoute("direct:caaers-initiateSafetyReportAction-sync", caAERSSafetyReportServiceJBIURL + "initiateSafetyReportAction", "safetyreport-merge-actions.xsl" );
 	}
 	
 
