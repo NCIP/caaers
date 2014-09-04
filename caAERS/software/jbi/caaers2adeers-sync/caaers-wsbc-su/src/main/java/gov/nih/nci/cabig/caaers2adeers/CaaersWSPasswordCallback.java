@@ -39,8 +39,7 @@ public class CaaersWSPasswordCallback implements CallbackHandler{
         	}
         	
         } else {        
-	        setCaaersWSUser(incomingCredentialExtractingInterceptor.getUser());
-	        pc.setIdentifier(caaersWSUser);
+	        pc.setIdentifier(incomingCredentialExtractingInterceptor.getUser());
 	        pc.setPassword(incomingCredentialExtractingInterceptor.getPwd());
 	        
         }
