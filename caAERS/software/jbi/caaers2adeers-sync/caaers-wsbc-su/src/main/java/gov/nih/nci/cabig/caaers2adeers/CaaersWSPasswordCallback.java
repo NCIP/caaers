@@ -35,7 +35,7 @@ public class CaaersWSPasswordCallback implements CallbackHandler{
         org.apache.ws.security.WSPasswordCallback pc = (org.apache.ws.security.WSPasswordCallback) callbacks[0];
         if(!incomingCredentialExtractingInterceptor.getIsrsContext()) {
         	if(equals(pc.getIdentifier(), caaersWSUser)) {
-        		pc.setPassword( incomingCredentialExtractingInterceptor.getPwd());
+        		pc.setPassword(caaersWSPassword);
         	}
         	
         } else {        
