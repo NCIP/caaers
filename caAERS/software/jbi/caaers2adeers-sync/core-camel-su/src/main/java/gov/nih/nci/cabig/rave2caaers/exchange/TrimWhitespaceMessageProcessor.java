@@ -17,6 +17,11 @@ public class TrimWhitespaceMessageProcessor implements Processor {
 	
 	public static final String SYNC_HEADER = "sync_mode";
 	public static final String CORRELATION_ID = "c2a_correlation_id";
+	public static final String OPERATION_NAME = "c2a_operation";
+	public static final String ENTITY_NAME = "c2a_entity";
+	private static final String SAFETY_REPORT_ID_OPERATION_NAME = "generateSafetyReportId";
+	private static final String SAE_EVALUATION_OPERATION_NAME = "saveAndEvaluateAEs";
+	private static final String INITIATE_SAFETY_REPORT_OPERATION_NAME = "initiateSafetyReportAction";
 	
 	protected static final Log log = LogFactory
 			.getLog(TrimWhitespaceMessageProcessor.class);
@@ -30,6 +35,20 @@ public class TrimWhitespaceMessageProcessor implements Processor {
 		int xmlStartIndex = body.indexOf("<soapenv:Envelope");
 		int xmlEndIndex = body.indexOf("</soapenv:Envelope>") + 19;
 		String fixedBody = body.substring(xmlStartIndex,xmlEndIndex);
+		
+
+		// set the properties in the exchange
+		if(fixedBody.contains(SAFETY_REPORT_ID_OPERATION_NAME)) {
+			properties.put(OPERATION_NAME, SAFETY_REPORT_ID_OPERATION_NAME);
+			properties.put(ENTITY_NAME, "SafetyReportId");
+		} else if(fixedBody.contains(SAE_EVALUATION_OPERATION_NAME)) {
+			properties.put(OPERATION_NAME, SAE_EVALUATION_OPERATION_NAME);
+			properties.put(ENTITY_NAME, "SAEEvaluationService");
+		} if(fixedBody.contains(INITIATE_SAFETY_REPORT_OPERATION_NAME)) {
+			properties.put(OPERATION_NAME, INITIATE_SAFETY_REPORT_OPERATION_NAME);
+			properties.put(ENTITY_NAME, "InitiateSafetyReport");
+		}
+		
 			
 		properties.put(SYNC_HEADER, "sync");
 

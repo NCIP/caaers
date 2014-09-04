@@ -13,7 +13,8 @@ import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.callback.UnsupportedCallbackException;
 
 /**
- * Will provide the username/password for caAERs for ISRS Integration Services
+ * Will provide the username/password for caAERS/AdEERS, caAERs for ISRS Integration Services
+ * @author Biju Joseph
  * @author Ramakrishna Gundala
  */
 public class CaaersWSPasswordCallback implements CallbackHandler{
@@ -32,7 +33,6 @@ public class CaaersWSPasswordCallback implements CallbackHandler{
 	@SuppressWarnings("static-access")
 	public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {
         org.apache.ws.security.WSPasswordCallback pc = (org.apache.ws.security.WSPasswordCallback) callbacks[0];
-        setCaaersWSUser(incomingCredentialExtractingInterceptor.getUser());
         if(!incomingCredentialExtractingInterceptor.getIsrsContext()) {
         	if(equals(pc.getIdentifier(), caaersWSUser)) {
         		pc.setPassword( incomingCredentialExtractingInterceptor.getPwd());

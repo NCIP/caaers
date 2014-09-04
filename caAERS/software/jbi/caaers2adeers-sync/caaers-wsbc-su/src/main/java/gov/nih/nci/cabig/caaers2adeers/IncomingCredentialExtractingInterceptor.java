@@ -8,9 +8,9 @@ package gov.nih.nci.cabig.caaers2adeers;
 
 import org.apache.cxf.binding.soap.SoapMessage;
 import org.apache.cxf.interceptor.Fault;
-import org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor;
+import org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor;
 
-public class IncomingCredentialExtractingInterceptor extends WSS4JOutInterceptor {
+public class IncomingCredentialExtractingInterceptor extends WSS4JInInterceptor {
 	
    private static final String INITIATE_SAFETY_REPORT_OPERATION_NAME = "initiateSafetyReportAction";
    private static final String SAVE_AND_EVALUATE_OPERATION_NAME = "saveAndEvaluateAEs";
@@ -82,9 +82,10 @@ public class IncomingCredentialExtractingInterceptor extends WSS4JOutInterceptor
 			int userNameEndIndex = body.indexOf("</wsse:Username>");
 			String username = body.substring(userNameStartIndex,userNameEndIndex);
 			setUser(username);
-			int passwordStartIndex = body.indexOf("<wsse:Password>") + 15 ;
+			int passwordStartIndex = body.indexOf("<wsse:Password") + 14;
 			int passwordEndIndex = body.indexOf("</wsse:Password>");
-			String password = body.substring(passwordStartIndex,passwordEndIndex);
+			String stringContainingPassword = body.substring(passwordStartIndex,passwordEndIndex);
+			String password = stringContainingPassword.split(">")[1];
 			setPwd(password);
 			// set isrs context true for isrs messages
 			if(body.contains(INITIATE_SAFETY_REPORT_OPERATION_NAME) || body.contains(GENERATE_SAFETY_REPORT_ID_OPERATION_NAME) ||
