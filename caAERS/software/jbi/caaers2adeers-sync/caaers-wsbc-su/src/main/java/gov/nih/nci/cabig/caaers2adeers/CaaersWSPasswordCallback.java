@@ -22,13 +22,32 @@ public class CaaersWSPasswordCallback implements CallbackHandler{
     private String caaersWSPassword;
     private String adeersWSUser;
     private String adeersWSPassword;
+    private IncomingCredentialExtractingInterceptor incomingCredentialExtractingInterceptor;
     
+	public void setIncomingCredentialExtractingInterceptor(
+			IncomingCredentialExtractingInterceptor incomingCredentialExtractingInterceptor) {
+		this.incomingCredentialExtractingInterceptor = incomingCredentialExtractingInterceptor;
+	}
+
+
+	@SuppressWarnings("static-access")
 	public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {
         org.apache.ws.security.WSPasswordCallback pc = (org.apache.ws.security.WSPasswordCallback) callbacks[0];
+        if(!incomingCredentialExtractingInterceptor.getIsrsContext()) {
         	if(equals(pc.getIdentifier(), caaersWSUser)) {
         		pc.setPassword(caaersWSPassword);
         	}
         	
+        } else { 
+	        pc.setIdentifier(incomingCredentialExtractingInterceptor.getUser());
+	        pc.setPassword(incomingCredentialExtractingInterceptor.getPwd());
+	        
+        }
+        
+        // clean up after reading username, password
+        incomingCredentialExtractingInterceptor.removePwd();
+        incomingCredentialExtractingInterceptor.removeUser();
+        incomingCredentialExtractingInterceptor.removeIsrsContext();
     }
     
     
