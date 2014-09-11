@@ -9,8 +9,9 @@ package gov.nih.nci.cabig.caaers2adeers;
 import org.apache.cxf.binding.soap.SoapMessage;
 import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor;
+import org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor;
 
-public class IncomingCredentialExtractingInterceptor extends WSS4JInInterceptor {
+public class IncomingCredentialExtractingInterceptor extends WSS4JOutInterceptor {
 	
    private static final String INITIATE_SAFETY_REPORT_OPERATION_NAME = "initiateSafetyReportAction";
    private static final String SAVE_AND_EVALUATE_OPERATION_NAME = "saveAndEvaluateAEs";
