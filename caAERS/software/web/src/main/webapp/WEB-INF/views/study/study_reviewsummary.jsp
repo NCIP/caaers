@@ -128,6 +128,10 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
                 	<div class="label">Phase code</div>
                 	<div class="value">${command.study.phaseCode} </div>
             	</div>
+        		<div class="row">
+                	<div class="label">AE reporting level</div>
+                	<div class="value">${command.study.aeReportingLevel} </div>
+            	</div>
             	<div class="row">
                 	<div class="label">Terminology</div>
                 	<div class="value">${command.study.aeTerminology.term} </div>

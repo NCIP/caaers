@@ -390,7 +390,24 @@
 				<grammer prefix=" Treatment Assignment Code " postfix="."/>
 			</field>
 			-->
-		</domain-object>
+
+            <field name="aeReportingLevel" display-uri="AE reporting level">
+                <field-value>
+                    <input-type>select</input-type>
+                </field-value>
+                <valid-value value="Phase 0 Studies" display-uri="Phase 0 Studies" readable-text="Phase 0 Studies"/>
+                <valid-value value="Phase 1 and Early Phase 2 Studies" display-uri="Phase 1 and Early Phase 2 Studies" readable-text="Phase 1 and Early Phase 2 Studies"/>
+                <valid-value value="Late Phase 2 and Phase 3 Studies" display-uri="Late Phase 2 and Phase 3 Studies" readable-text="Late Phase 2 and Phase 3 Studies"/>
+                <valid-value value="Legacy Phase 1" display-uri="Legacy Phase 1" readable-text="Legacy Phase 1"/>
+                <valid-value value="Legacy Phase 2 and Phase 3" display-uri="Legacy Phase 2 and Phase 3" readable-text="Legacy Phase 2 and Phase 3"/>
+                <valid-value value="CIP Studies" display-uri="CIP Studies" readable-text="CIP Studies"/>
+                <valid-value value="Commercial" display-uri="Commercial" readable-text="Commercial"/>
+                <operator name="==" display-uri="Equal To" readable-text="is "/>
+                <operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
+                <expression>factResolver.assertFact(study,null,'aeReportingLevel','runTimeValue','runTimeOperator')</expression>
+                <grammer prefix=" AE reporting level " postfix="."/>
+            </field>
+        </domain-object>
 		<domain-object identifier="reportDefinition" class-name="gov.nih.nci.cabig.caaers.domain.report.ReportDefinition" display-uri="Report Definition">
 			<field name="reportDefinitionName" display-uri="Name">
 				<field-value>

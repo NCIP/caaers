@@ -71,6 +71,7 @@ public class DetailsTab extends StudyTab {
             fields.add(shortTitleField);
 
             fields.add(InputFieldFactory.createSelectField("study.phaseCode", "Phase", true, collectOptionsFromConfig("phaseCodeRefData", "desc", "desc")));
+            fields.add(InputFieldFactory.createSelectField("study.aeReportingLevel", "AE reporting level", false, collectOptionsFromConfig("aeReportingLevelRefData", "desc", "desc")));
 
             Map<Object, Object> options = new LinkedHashMap<Object, Object>();
             options.put("", "Please select");

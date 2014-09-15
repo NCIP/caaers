@@ -128,6 +128,39 @@
                         </bean>	                        
                     </list>
                 </entry>
+
+                <entry key="aeReportingLevelRefData">
+                    <list>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Phase 0 Studies" />
+                            <property name="desc" value="Phase 0 Studies" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Phase 1 and Early Phase 2 Studies" />
+                            <property name="desc" value="Phase 1 and Early Phase 2 Studies" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Late Phase 2 and Phase 3 Studies" />
+                            <property name="desc" value="Late Phase 2 and Phase 3 Studies" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Legacy Phase 1" />
+                            <property name="desc" value="Legacy Phase 1" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Legacy Phase 2 and Phase 3" />
+                            <property name="desc" value="Legacy Phase 2 and Phase 3" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="CIP Studies" />
+                            <property name="desc" value="CIP Studies" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Commercial" />
+                            <property name="desc" value="Commercial" />
+                        </bean>
+                    </list>
+                </entry>
                 <entry key="typeRefData">
                     <list>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">

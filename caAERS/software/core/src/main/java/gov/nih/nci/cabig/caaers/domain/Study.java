@@ -221,6 +221,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     protected Date lastSynchedDate;
 
     protected String participationType;
+    protected String aeReportingLevel;
     
     /**
      * Instantiates a new study.
@@ -2638,5 +2639,13 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
     	}
     	return null;
     }
-    
+
+
+    public String getAeReportingLevel() {
+        return aeReportingLevel;
+    }
+
+    public void setAeReportingLevel(String aeReportingLevel) {
+        this.aeReportingLevel = aeReportingLevel;
+    }
 }

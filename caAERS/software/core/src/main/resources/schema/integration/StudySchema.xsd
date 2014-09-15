@@ -140,6 +140,8 @@
 	                        </xs:complexType>
 	                    </xs:element>
                     </xs:choice>
+
+                    <xs:element name="aeReportingLevelType" type="aeReportingLevelType" minOccurs="0"/>
 					
                 </xs:sequence>
             </xs:extension>
@@ -658,7 +660,19 @@
             <xs:enumeration value="Other"/>
             <xs:enumeration value="Null"/>
         </xs:restriction>
-    </xs:simpleType> 
+    </xs:simpleType>
+
+    <xs:simpleType name="aeReportingLevelType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Phase 0 Studies"/>
+            <xs:enumeration value="Phase 1 and Early Phase 2 Studies"/>
+            <xs:enumeration value="Late Phase 2 and Phase 3 Studies"/>
+            <xs:enumeration value="Legacy Phase 1"/>
+            <xs:enumeration value="Legacy Phase 2 and Phase 3"/>
+            <xs:enumeration value="CIP Studies"/>
+            <xs:enumeration value=" Commercial"/>
+        </xs:restriction>
+    </xs:simpleType>
 
     <xs:simpleType name="StatusType">
         <xs:restriction base="xs:string">
