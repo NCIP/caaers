@@ -62,6 +62,7 @@ public class StudyConverter {
             studyDto.setPhaseCode(StudyPhaseType.fromValue(study.getPhaseCode()));
             studyDto.setStudyPurpose(study.getStudyPurpose());
             studyDto.setAeTermUnique(study.getAeTermUnique());
+            if(StringUtils.isNotEmpty(study.getAeReportingLevel())) studyDto.setAeReportingLevelType(AeReportingLevelType.fromValue(study.getAeReportingLevel()));
             studyDto.setVerbatimFirst(study.getVerbatimFirst());
             studyDto.setParticipationType(study.getParticipationType());
 
@@ -105,6 +106,10 @@ public class StudyConverter {
 		try {
 			//Populate Study Instance attributes
 			study.setShortTitle(studyDto.getShortTitle());
+            if(studyDto.getAeReportingLevelType() != null && StringUtils.isNotEmpty(studyDto.getAeReportingLevelType().value())) {
+                study.setAeReportingLevel(studyDto.getAeReportingLevelType().value());
+            }
+
             study.setVerbatimFirst(studyDto.isVerbatimFirst());
             study.setParticipationType(studyDto.getParticipationType());
             if(studyDto.isAeTermUnique() != null) {
