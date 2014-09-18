@@ -23,7 +23,6 @@
     <xs:complexType name="study">
         <xs:complexContent>
             <xs:extension base="cct:MutableDomainObjectType">
-
                 <xs:sequence>
                     <xs:element name="shortTitle" type="cct:CustomStringType" />
                     <xs:element name="longTitle" type="cct:CustomStringType" minOccurs="0"/>
@@ -32,7 +31,7 @@
                     <xs:element name="phaseCode" type="StudyPhaseType" />
                     <xs:element name="status" type="StatusType" minOccurs="0"/>
                     <xs:element name="multiInstitutionIndicator" type="xs:boolean" minOccurs="0"/>
-                    <xs:element name="aeReportingLevelType" type="aeReportingLevelType" minOccurs="0"/>
+                    <xs:element name="aeReportingLevel" type="aeReportingLevelType" minOccurs="0"/>
                     <xs:element name="verbatimFirst" type="xs:boolean" minOccurs="0"/>
                     <xs:element name="adeersReporting" type="xs:boolean" minOccurs="0"/>
                     <xs:element name="otherMeddra" type="xs:string" minOccurs="0"/>
