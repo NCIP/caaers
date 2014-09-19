@@ -26,7 +26,7 @@
             <xsl:if test="$brCount = 2">
                 <xsl:apply-templates select="$brTwo/ns1:ReportID" />
                 <xsl:apply-templates select="$brTwo/ns1:caseNumber" />
-                <xsl:apply-templates select="ns1:reportName" />
+                <xsl:apply-templates select="$brTwo/ns1:reportName" />
                     <xsl:if test="ns1:action = 'Withdraw'">
                         <ns1:action>Replace</ns1:action>
                         <ns1:actionText>Replace the <xsl:value-of select="ns1:reportName"/> with the <xsl:value-of select="$brTwo/ns1:reportName"/></ns1:actionText>
