@@ -20,8 +20,10 @@ import org.apache.ws.security.handler.RequestData;
 import java.util.Map;
 
 public class IncomingCredentialExtractingInterceptor extends WSS4JOutInterceptor {
-    private String caaersWSUser;
-    private String caaersWSPassword;
+
+    private static final ThreadLocal<String> username = new ThreadLocal<String>();
+    private static final ThreadLocal<String> password = new ThreadLocal<String>();
+
 
     protected static final Log log = LogFactory.getLog(IncomingCredentialExtractingInterceptor.class);
 
@@ -49,7 +51,10 @@ public class IncomingCredentialExtractingInterceptor extends WSS4JOutInterceptor
             log.error(String.format("Unable to obtain username, end index %s\n message body :%s", String.valueOf(end), body));
             return;
         }
-        caaersWSUser = body.substring(start,end);
+        String usr = body.substring(start,end);
+        if(StringUtils.isNotEmpty(usr)) {
+            username.set(usr) ;
+        }
 
 
         start = body.indexOf("Password", end);
@@ -63,29 +68,24 @@ public class IncomingCredentialExtractingInterceptor extends WSS4JOutInterceptor
             log.error(String.format("Unable to obtain password, end index %s\n message body :%s", String.valueOf(end), body));
             return;
         }
-        caaersWSPassword = body.substring(start+1,end);
+        String pwd = body.substring(start+1,end);
+        if(StringUtils.isNotEmpty(pwd)) {
+            password.set(pwd) ;
+        }
+
 
         super.handleMessage(mc);
     }
 
     @Override
-    public WSPasswordCallback getPassword(String username, int doAction, String clsProp, String refProp, RequestData reqData) throws WSSecurityException {
-        return new WSPasswordCallback(caaersWSUser, caaersWSPassword, null ,WSPasswordCallback.USERNAME_TOKEN);
+    public WSPasswordCallback getPassword(String dummyUserName, int doAction, String clsProp, String refProp, RequestData reqData) throws WSSecurityException {
+        String usr = username.get();
+        username.remove();
+
+        String pwd = password.get();
+        password.remove();
+
+        return new WSPasswordCallback(usr, pwd, null ,WSPasswordCallback.USERNAME_TOKEN);
     }
 
-    public String getCaaersWSUser() {
-        return caaersWSUser;
-    }
-
-    public void setCaaersWSUser(String caaersWSUser) {
-        this.caaersWSUser = caaersWSUser;
-    }
-
-    public String getCaaersWSPassword() {
-        return caaersWSPassword;
-    }
-
-    public void setCaaersWSPassword(String caaersWSPassword) {
-        this.caaersWSPassword = caaersWSPassword;
-    }
 }
