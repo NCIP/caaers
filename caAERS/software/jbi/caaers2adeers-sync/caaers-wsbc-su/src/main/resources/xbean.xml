@@ -46,10 +46,10 @@
     </bean>
     
     <bean id="caaersWSPasswordCallback" class="gov.nih.nci.cabig.caaers2adeers.CaaersWSPasswordCallback">
-        <constructor-arg value="s[CAAERS_WS_USERNAME]" />
-        constructor-arg value="s[CAAERS_WS_PASSWORD]" />
-        <constructor-arg value="s[ADEERS_WS_USERNAME]" />
-        <constructor-arg value="s[ADEERS_WS_PASSWORD]" />
+        <constructor-arg value="s[CAAERS_WS_USERNAME]" index="0" type="java.lang.String"/>
+        <constructor-arg value="s[CAAERS_WS_PASSWORD]" index="1" type="java.lang.String"/>
+        <constructor-arg value="s[ADEERS_WS_USERNAME]" index="2" type="java.lang.String"/>
+        <constructor-arg value="s[ADEERS_WS_PASSWORD]" index="3" type="java.lang.String"/>
     </bean>
     
     <bean id="wss4jOutInterceptor" class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
