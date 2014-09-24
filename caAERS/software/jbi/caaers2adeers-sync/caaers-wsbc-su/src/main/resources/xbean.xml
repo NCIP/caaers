@@ -345,7 +345,6 @@
                   <constructor-arg>
                       <map>
                           <entry key="action" value="UsernameToken"/>
-                          <entry key="user" value="s[CAAERS_WS_USERNAME]"/>
                           <entry key="passwordType" value="PasswordText"/>
                           <entry key="mustUnderstand" value="false"/>
                           <entry key="Type" value="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText"/>
@@ -377,7 +376,6 @@
                 <constructor-arg>
                     <map>
                         <entry key="action" value="UsernameToken"/>
-                        <entry key="user" value="s[CAAERS_WS_USERNAME]"/>
                         <entry key="passwordType" value="PasswordText"/>
                         <entry key="mustUnderstand" value="false"/>
                         <entry key="Type" value="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText"/>
@@ -393,7 +391,7 @@
             <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
         </cxfbc:outFaultInterceptors>
     </cxfbc:provider>
-		
+
 	<!-- ================== SafetyReport Webservice Provider ==================================-->
     <cxfbc:provider interfaceName="aereport:SafetyReportManagementServiceInterface"  service="aereport:SafetyReportManagementService"
                     endpoint="SafetyReportManagementServiceImplPort"
@@ -409,7 +407,6 @@
                 <constructor-arg>
                     <map>
                         <entry key="action" value="UsernameToken"/>
-                        <entry key="user" value="s[CAAERS_WS_USERNAME]"/>
                         <entry key="passwordType" value="PasswordText"/>
                         <entry key="mustUnderstand" value="false"/>
                         <entry key="Type" value="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText"/>
