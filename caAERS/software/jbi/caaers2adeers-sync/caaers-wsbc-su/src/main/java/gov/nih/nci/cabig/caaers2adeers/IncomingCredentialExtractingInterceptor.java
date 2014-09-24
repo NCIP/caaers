@@ -26,7 +26,10 @@ public class IncomingCredentialExtractingInterceptor extends WSS4JOutInterceptor
     protected static final Log log = LogFactory.getLog(IncomingCredentialExtractingInterceptor.class);
 
     public IncomingCredentialExtractingInterceptor(Map<String, Object> props) {
-        super(props);
+        super();
+        if(!props.containsKey("user")) props.put("user", "dummyUser");
+
+        setProperties(props);
     }
 
     @Override
@@ -46,7 +49,7 @@ public class IncomingCredentialExtractingInterceptor extends WSS4JOutInterceptor
             log.error(String.format("Unable to obtain username, end index %s\n message body :%s", String.valueOf(end), body));
             return;
         }
-        String caaersWSUser = body.substring(start,end);
+        caaersWSUser = body.substring(start,end);
 
 
         start = body.indexOf("Password", end);
@@ -60,7 +63,7 @@ public class IncomingCredentialExtractingInterceptor extends WSS4JOutInterceptor
             log.error(String.format("Unable to obtain password, end index %s\n message body :%s", String.valueOf(end), body));
             return;
         }
-        String caaersWSPassword = body.substring(start+1,end);
+        caaersWSPassword = body.substring(start+1,end);
 
         super.handleMessage(mc);
     }
