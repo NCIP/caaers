@@ -9,6 +9,7 @@ package gov.nih.nci.cabig.caaers2adeers;
 import gov.nih.nci.cabig.caaers2adeers.cronjob.EntityOperation;
 import gov.nih.nci.cabig.caaers2adeers.cronjob.PayloadGenerator;
 import org.apache.camel.impl.DefaultMessage;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -18,6 +19,7 @@ import java.util.Map;
  */
 public class MessageAdapter extends DefaultMessage{
 
+    String body;
     Map<String, Object> headers = new LinkedHashMap<String, Object>();
 
     @Override
@@ -36,7 +38,13 @@ public class MessageAdapter extends DefaultMessage{
     }
 
     @Override
+    public void setBody(Object body) {
+       this.body = String.valueOf(body);
+    }
+
+    @Override
     public Object getBody() {
+        if(StringUtils.isNotEmpty(body)) return body;
         return new PayloadGenerator().getRequest(EntityOperation.PRIOR_THERAPY);
     }
 }

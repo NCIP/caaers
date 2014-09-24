@@ -23,10 +23,13 @@ public class ParticipantODMMessageProcessor implements Processor {
 	public static final String CORRELATION_ID = "c2a_correlation_id";
 	public static final String OPERATION_NAME = "c2a_operation";
 	public static final String ENTITY_NAME = "c2a_entity";
-	public static final String CAAERS_WS_USERNAME = "c2a_caaers_ws_username";
-	public static final String CAAERS_WS_PASSWORD = "c2a_caaers_ws_password";
+    public static final String CAAERS_WS_USERNAME = "c2a_caaers_ws_username";
+    public static final String CAAERS_WS_PASSWORD = "c2a_caaers_ws_password";
 
+    //user name and password to use while invoking caAERS
 	private String caaersWSUser;
+    private String caaersWSPassword;
+
 	public String getCaaersWSUser() {
 		return caaersWSUser;
 	}
@@ -43,8 +46,6 @@ public class ParticipantODMMessageProcessor implements Processor {
 		this.caaersWSPassword = caaersWSPassword;
 	}
 
-	private String caaersWSPassword;
-
 	protected static final Log log = LogFactory
 			.getLog(ParticipantODMMessageProcessor.class);
 
@@ -59,6 +60,8 @@ public class ParticipantODMMessageProcessor implements Processor {
 		properties.put(OPERATION_NAME, "createParticipant");
 		properties.put(ENTITY_NAME, "participant");
 		properties.put(SYNC_HEADER, "sync");
+        properties.put(CAAERS_WS_USERNAME, caaersWSUser);
+        properties.put(CAAERS_WS_PASSWORD, caaersWSPassword);
 
 		log.debug("adding correlationId.");
 		Object correlationId = System.currentTimeMillis() + "";

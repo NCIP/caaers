@@ -5,6 +5,13 @@
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
     <exclude-output />
     <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/.idea" />
+      <excludeFolder url="file://$MODULE_DIR$/adeers-wsbc-su/.settings" />
+      <excludeFolder url="file://$MODULE_DIR$/adeers-wsbc-su/target" />
+      <excludeFolder url="file://$MODULE_DIR$/caaers-adeers-sync-sa/target" />
+      <excludeFolder url="file://$MODULE_DIR$/caaers-wsbc-su/.settings" />
+      <excludeFolder url="file://$MODULE_DIR$/caaers-wsbc-su/target" />
+      <excludeFolder url="file://$MODULE_DIR$/core-camel-su/target" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />
