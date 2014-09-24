@@ -5,12 +5,10 @@
  * See http://ncip.github.com/caaers/LICENSE.txt for details.
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers2adeers;
-
-import java.io.IOException;
-
 import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.callback.UnsupportedCallbackException;
+import java.io.IOException;
 
 /**
  * Will provide the username/password for caAERS/AdEERS, caAERs for ISRS Integration Services
@@ -22,35 +20,19 @@ public class CaaersWSPasswordCallback implements CallbackHandler{
     private String caaersWSPassword;
     private String adeersWSUser;
     private String adeersWSPassword;
-    private IncomingCredentialExtractingInterceptor incomingCredentialExtractingInterceptor;
-    
-	public void setIncomingCredentialExtractingInterceptor(
-			IncomingCredentialExtractingInterceptor incomingCredentialExtractingInterceptor) {
-		this.incomingCredentialExtractingInterceptor = incomingCredentialExtractingInterceptor;
-	}
 
-
-	@SuppressWarnings("static-access")
-	public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {
-        org.apache.ws.security.WSPasswordCallback pc = (org.apache.ws.security.WSPasswordCallback) callbacks[0];
-        if(!incomingCredentialExtractingInterceptor.getIsrsContext()) {
-        	if(equals(pc.getIdentifier(), caaersWSUser)) {
-        		pc.setPassword(caaersWSPassword);
-        	}
-        	
-        } else { 
-	        pc.setIdentifier(incomingCredentialExtractingInterceptor.getUser());
-	        pc.setPassword(incomingCredentialExtractingInterceptor.getPwd());
-	        
-        }
-        
-        // clean up after reading username, password
-        incomingCredentialExtractingInterceptor.removePwd();
-        incomingCredentialExtractingInterceptor.removeUser();
-        incomingCredentialExtractingInterceptor.removeIsrsContext();
+    public CaaersWSPasswordCallback(String caaersWSUser, String caaersWSPassword, String adeersWSUser, String adeersWSPassword) {
+        this.caaersWSUser = caaersWSUser;
+        this.caaersWSPassword = caaersWSPassword;
+        this.adeersWSUser = adeersWSUser;
+        this.adeersWSPassword = adeersWSPassword;
     }
-    
-    
+
+    public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {
+        org.apache.ws.security.WSPasswordCallback pc = (org.apache.ws.security.WSPasswordCallback) callbacks[0];
+        if(equals(pc.getIdentifier(), caaersWSUser)) pc.setPassword(caaersWSPassword);
+    }
+
     private boolean equals(String a, String b){
         if(a == null || b == null) return false;
         return a.equals(b);

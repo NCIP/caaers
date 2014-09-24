@@ -162,7 +162,6 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
 		        .when(header("CamelHttpMethod").isEqualTo("POST"))
 		         	.processRef("trimWhitespaceMessageProcessor")
 			        .processRef("headerGeneratorProcessor")
-			        .processRef("raveCredentialsProcessor")
 			        .to(fileTracker.fileURI(REQUEST_RECEIVED))
 			        .process(track(PRE_PROCESS_RAV_CAAERS_INTEG_MSG))
 			        .to("direct:processedRave2CaaersMessageSink") 

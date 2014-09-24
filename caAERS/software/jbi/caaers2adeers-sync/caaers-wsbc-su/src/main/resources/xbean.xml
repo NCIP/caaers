@@ -46,11 +46,10 @@
     </bean>
     
     <bean id="caaersWSPasswordCallback" class="gov.nih.nci.cabig.caaers2adeers.CaaersWSPasswordCallback">
-        <property name="caaersWSUser" value="s[CAAERS_WS_USERNAME]" />
-        <property name="caaersWSPassword" value="s[CAAERS_WS_PASSWORD]" />
-        <property name="adeersWSUser" value="s[ADEERS_WS_USERNAME]" />
-        <property name="adeersWSPassword" value="s[ADEERS_WS_PASSWORD]" />
-        <property name="incomingCredentialExtractingInterceptor" ref="incomingCredentialExtractingInterceptor"/>
+        <constructor-arg value="s[CAAERS_WS_USERNAME]" />
+        constructor-arg value="s[CAAERS_WS_PASSWORD]" />
+        <constructor-arg value="s[ADEERS_WS_USERNAME]" />
+        <constructor-arg value="s[ADEERS_WS_PASSWORD]" />
     </bean>
     
     <bean id="wss4jOutInterceptor" class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
@@ -67,8 +66,7 @@
             </map>
         </constructor-arg>
     </bean>
-    
-    <bean id="incomingCredentialExtractingInterceptor" class="gov.nih.nci.cabig.caaers2adeers.IncomingCredentialExtractingInterceptor"/>
+
     <bean id="wss4jInInterceptor" class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
         <constructor-arg>
             <map>
@@ -344,7 +342,16 @@
         </cxfbc:inInterceptors>
           <cxfbc:outInterceptors>
           	<ref local="wss4jOutInterceptor" />
-            <ref local="incomingCredentialExtractingInterceptor" />
+
+              <bean class="gov.nih.nci.cabig.caaers2adeers.IncomingCredentialExtractingInterceptor">
+                  <constructor-arg>
+                      <map>
+                          <entry key="action" value="UsernameToken"/>
+                          <entry key="passwordType" value="PasswordText"/>
+                          <entry key="Type" value="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText"/>
+                      </map>
+                  </constructor-arg>
+              </bean>
             <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
         </cxfbc:outInterceptors> 
         <cxfbc:inFaultInterceptors>
@@ -367,7 +374,16 @@
         </cxfbc:inInterceptors>
         <cxfbc:outInterceptors>
            <ref local="wss4jOutInterceptor" />
-           <ref local="incomingCredentialExtractingInterceptor"/>
+
+            <bean class="gov.nih.nci.cabig.caaers2adeers.IncomingCredentialExtractingInterceptor">
+                <constructor-arg>
+                    <map>
+                        <entry key="action" value="UsernameToken"/>
+                        <entry key="passwordType" value="PasswordText"/>
+                        <entry key="Type" value="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText"/>
+                    </map>
+                </constructor-arg>
+            </bean>
            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor" /> 
         </cxfbc:outInterceptors> 
         <cxfbc:inFaultInterceptors>
@@ -390,7 +406,15 @@
         </cxfbc:inInterceptors>
         <cxfbc:outInterceptors>
         	<ref local="wss4jOutInterceptor" />
-            <ref local="incomingCredentialExtractingInterceptor" />
+            <bean class="gov.nih.nci.cabig.caaers2adeers.IncomingCredentialExtractingInterceptor">
+                <constructor-arg>
+                    <map>
+                        <entry key="action" value="UsernameToken"/>
+                        <entry key="passwordType" value="PasswordText"/>
+                        <entry key="Type" value="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText"/>
+                    </map>
+                </constructor-arg>
+            </bean>
             <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
         </cxfbc:outInterceptors>
         <cxfbc:inFaultInterceptors>
