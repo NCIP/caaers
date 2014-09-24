@@ -341,8 +341,6 @@
             <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
         </cxfbc:inInterceptors>
           <cxfbc:outInterceptors>
-          	<ref local="wss4jOutInterceptor" />
-
               <bean class="gov.nih.nci.cabig.caaers2adeers.IncomingCredentialExtractingInterceptor">
                   <constructor-arg>
                       <map>
@@ -373,8 +371,6 @@
             <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
         </cxfbc:inInterceptors>
         <cxfbc:outInterceptors>
-           <ref local="wss4jOutInterceptor" />
-
             <bean class="gov.nih.nci.cabig.caaers2adeers.IncomingCredentialExtractingInterceptor">
                 <constructor-arg>
                     <map>
@@ -405,7 +401,6 @@
             <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
         </cxfbc:inInterceptors>
         <cxfbc:outInterceptors>
-        	<ref local="wss4jOutInterceptor" />
             <bean class="gov.nih.nci.cabig.caaers2adeers.IncomingCredentialExtractingInterceptor">
                 <constructor-arg>
                     <map>
