@@ -668,7 +668,9 @@
             <xs:enumeration value="Legacy Phase 1"/>
             <xs:enumeration value="Legacy Phase 2 and Phase 3"/>
             <xs:enumeration value="CIP Studies"/>
-            <xs:enumeration value=" Commercial"/>
+            <xs:enumeration value="Commercial"/>
+            <xs:enumeration value="TBD"/>
+            <xs:enumeration value="None"/>
         </xs:restriction>
     </xs:simpleType>
 
