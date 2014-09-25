@@ -867,7 +867,7 @@
                 <xsl:otherwise>
                 	<xsl:if test="AdverseEventCtcTerm/ctc-term/otherRequired = 'true'">
                         <OTHER_ADVERSE_EVENT>
-                        	<xsl:value-of select="detailsForOther"/>
+                        	<xsl:value-of select="otherSpecify"/>
                     	</OTHER_ADVERSE_EVENT>
                     </xsl:if>
                 </xsl:otherwise>
