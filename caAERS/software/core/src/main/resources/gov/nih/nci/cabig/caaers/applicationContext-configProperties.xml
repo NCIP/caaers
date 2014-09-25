@@ -159,6 +159,14 @@
                             <property name="code" value="Commercial" />
                             <property name="desc" value="Commercial" />
                         </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="TBD" />
+                            <property name="desc" value="TBD" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="None" />
+                            <property name="desc" value="None" />
+                        </bean>
                     </list>
                 </entry>
                 <entry key="typeRefData">

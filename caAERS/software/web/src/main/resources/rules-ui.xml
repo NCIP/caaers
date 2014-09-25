@@ -402,6 +402,8 @@
                 <valid-value value="Legacy Phase 2 and Phase 3" display-uri="Legacy Phase 2 and Phase 3" readable-text="Legacy Phase 2 and Phase 3"/>
                 <valid-value value="CIP Studies" display-uri="CIP Studies" readable-text="CIP Studies"/>
                 <valid-value value="Commercial" display-uri="Commercial" readable-text="Commercial"/>
+                <valid-value value="TBD" display-uri="TBD" readable-text="TBD"/>
+                <valid-value value="None" display-uri="None" readable-text="None"/>
                 <operator name="==" display-uri="Equal To" readable-text="is "/>
                 <operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
                 <expression>factResolver.assertFact(study,null,'aeReportingLevel','runTimeValue','runTimeOperator')</expression>
