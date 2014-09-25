@@ -154,8 +154,10 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
         .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(400))
         .process(track(REQUST_PROCESSING_ERROR, "Error"))
         .to(fileTracker.fileURI(REQUST_PROCESSING_ERROR)) ;
-        
-        
+
+        errorHandler(deadLetterChannel("direct:morgue").maximumRedeliveries(1));
+
+
         // route for caaers integration services - trim white space
         from("jetty:http://0.0.0.0:7711/caaers/services/RaveIntegrationServices")
 	        .choice() 
