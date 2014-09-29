@@ -155,8 +155,6 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
         .process(track(REQUST_PROCESSING_ERROR, "Error"))
         .to(fileTracker.fileURI(REQUST_PROCESSING_ERROR)) ;
 
-        errorHandler(deadLetterChannel("direct:morgue").maximumRedeliveries(1));
-
 
         // route for caaers integration services - trim white space
         from("jetty:http://0.0.0.0:7711/caaers/services/RaveIntegrationServices")
@@ -164,10 +162,14 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
 		        .when(header("CamelHttpMethod").isEqualTo("POST"))
 		         	.processRef("trimWhitespaceMessageProcessor")
 			        .processRef("headerGeneratorProcessor")
-			        .to(fileTracker.fileURI(REQUEST_RECEIVED))
-			        .process(track(PRE_PROCESS_RAV_CAAERS_INTEG_MSG))
-			        .to("direct:processedRave2CaaersMessageSink") 
-		         .otherwise().end();
+                    .doTry()
+                        .to("validator:xsd/soap-envelope.xsd")
+                            .to(fileTracker.fileURI(REQUEST_RECEIVED))
+                            .process(track(PRE_PROCESS_RAV_CAAERS_INTEG_MSG))
+                            .to("direct:processedRave2CaaersMessageSink")
+                    .doCatch(org.apache.camel.ValidationException.class)
+                        .handled(true)
+                        .to("direct:morgue");
 
       //configure route towards caAERS Webservices
   	fromRaveToCaaersWSRouteBuilder.configure(this);

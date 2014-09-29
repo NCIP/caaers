@@ -33,7 +33,10 @@ public class TrimWhitespaceMessageProcessor implements Processor {
 		// just get the body as a string
 		String body = exchange.getIn().getBody(String.class);
 		int xmlStartIndex = body.indexOf("<soapenv:Envelope");
+        if(xmlStartIndex < 0) return;
 		int xmlEndIndex = body.indexOf("</soapenv:Envelope>") + 19;
+        if(xmlEndIndex < 19 || xmlEndIndex < xmlStartIndex) return;
+
 		String fixedBody = body.substring(xmlStartIndex,xmlEndIndex);
 		
 

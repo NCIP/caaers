@@ -19,7 +19,7 @@
   <packaging>jbi-service-unit</packaging>
   <name>Apache ServiceMix :: CXF BC Service Unit</name>
     <properties>
-        <componentName>caaers-wsbc-su</componentName>
+        <componentName>servicemix-cxf-bc</componentName>
     </properties>
     <build>
         <defaultGoal>install</defaultGoal>

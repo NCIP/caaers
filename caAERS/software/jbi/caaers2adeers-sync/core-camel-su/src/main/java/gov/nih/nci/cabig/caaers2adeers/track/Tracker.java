@@ -72,31 +72,35 @@ public class Tracker implements Processor{
     }
     
 	public void process(Exchange exchange) throws Exception {
-		//set the properties in the exchange
-        Map<String,Object> properties = exchange.getProperties();
-        String entity = properties.get(ExchangePreProcessor.ENTITY_NAME)+"";
-        String operation = properties.get(ExchangePreProcessor.OPERATION_NAME)+"";
-        String coorelationId = properties.get(ExchangePreProcessor.CORRELATION_ID)+"";
-        if(coorelationId == null || stage == null || entity == null || operation == null){
-        	throw new RuntimeException("Cannot log in database. Required fields are missing");
-        }
-        log.debug("logging with tracker");
-        if(coorelationId == null || stage == null || entity == null || operation == null){
-        	throw new RuntimeException("Cannot log in database. Required fields are missing");
-        }
-		log.debug("creating new instance of IntegrationLog with [" + coorelationId+", " + stage+", " + entity+", " + operation+", " + notes + "]");
+		try {
+            //set the properties in the exchange
+            Map<String,Object> properties = exchange.getProperties();
+            String entity = properties.get(ExchangePreProcessor.ENTITY_NAME)+"";
+            String operation = properties.get(ExchangePreProcessor.OPERATION_NAME)+"";
+            String coorelationId = properties.get(ExchangePreProcessor.CORRELATION_ID)+"";
+            if(coorelationId == null || stage == null || entity == null || operation == null){
+                throw new RuntimeException("Cannot log in database. Required fields are missing");
+            }
+            log.debug("logging with tracker");
+            if(coorelationId == null || stage == null || entity == null || operation == null){
+                throw new RuntimeException("Cannot log in database. Required fields are missing");
+            }
+            log.debug("creating new instance of IntegrationLog with [" + coorelationId+", " + stage+", " + entity+", " + operation+", " + notes + "]");
 
-        IntegrationLog integrationLog = new IntegrationLog(coorelationId, stage, entity, operation, notes);
-        String status = XPathBuilder.xpath("//status").evaluate(exchange, String.class);
-        if (!StringUtils.isBlank(status)){
-            integrationLog.setNotes(status);
-        }
+            IntegrationLog integrationLog = new IntegrationLog(coorelationId, stage, entity, operation, notes);
+            String status = XPathBuilder.xpath("//status").evaluate(exchange, String.class);
+            if (!StringUtils.isBlank(status)){
+                integrationLog.setNotes(status);
+            }
 
-        IntegrationLogDao integrationLogDao = (IntegrationLogDao)exchange.getContext().getRegistry().lookup("integrationLogDao");
-        captureLogDetails(exchange, integrationLog);
-        captureLogMessage(exchange, integrationLog);
-        
-        integrationLogDao.save(integrationLog);
+            IntegrationLogDao integrationLogDao = (IntegrationLogDao)exchange.getContext().getRegistry().lookup("integrationLogDao");
+            captureLogDetails(exchange, integrationLog);
+            captureLogMessage(exchange, integrationLog);
+
+            integrationLogDao.save(integrationLog);
+        } catch(Exception ex) {
+            log.info("Error while tracking exchange", ex);
+        }
         
 	}
 
