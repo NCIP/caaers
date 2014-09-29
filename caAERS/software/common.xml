@@ -115,6 +115,7 @@
 		<or>
 			<equals arg1="${ant.java.version}" arg2="1.5" />
 			<equals arg1="${ant.java.version}" arg2="1.6" />
+			<equals arg1="${ant.java.version}" arg2="1.7" />
 		</or>
 	</condition>
 	<fail message="JDK 1.5 is currently required to build this project!" unless="isJDK1.5" />

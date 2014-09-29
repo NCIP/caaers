@@ -19,6 +19,9 @@
     <version>${c2aVersion}</version>
   <packaging>jbi-service-unit</packaging>
   <name>Apache ServiceMix::CXF BC Service Unit</name>
+    <properties>
+        <componentName>adeers-wsbc-su</componentName>
+    </properties>
   <build>
     <defaultGoal>install</defaultGoal>
     <plugins>
