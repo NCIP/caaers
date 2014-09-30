@@ -156,20 +156,17 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
         .to(fileTracker.fileURI(REQUST_PROCESSING_ERROR)) ;
 
 
+
         // route for caaers integration services - trim white space
         from("jetty:http://0.0.0.0:7711/caaers/services/RaveIntegrationServices")
 	        .choice()
 		        .when(header("CamelHttpMethod").isEqualTo("POST"))
 		         	.processRef("trimWhitespaceMessageProcessor")
 			        .processRef("headerGeneratorProcessor")
-                    .doTry()
-                        .to("validator:xsd/soap-envelope.xsd")
-                            .to(fileTracker.fileURI(REQUEST_RECEIVED))
-                            .process(track(PRE_PROCESS_RAV_CAAERS_INTEG_MSG))
-                            .to("direct:processedRave2CaaersMessageSink")
-                    .doCatch(org.apache.camel.ValidationException.class)
-                        .handled(true)
-                        .to("direct:morgue");
+			        .to(fileTracker.fileURI(REQUEST_RECEIVED))
+			        .process(track(PRE_PROCESS_RAV_CAAERS_INTEG_MSG))
+			        .to("direct:processedRave2CaaersMessageSink")
+		         .otherwise().end();
 
       //configure route towards caAERS Webservices
   	fromRaveToCaaersWSRouteBuilder.configure(this);
@@ -269,6 +266,12 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
         		.process(track(REQUST_PROCESSING_ERROR, "Error"))
                 .to("xslt:xslt/caaers/response/unknown.xsl")
                 .to(fileTracker.fileURI(REQUST_PROCESSING_ERROR)) ;
+
+		//invalid soap requests
+        from("direct:soapfault")
+                .to("log:gov.nih.nci.cabig.caaers2adeers.invalidsoap?showAll=true&level=WARN&showException=true&showStackTrace=true")
+                .transform(constant("<error>Invalid Soap Request</error>"))
+                .to("xslt:xslt/caaers/response/soapfault.xsl") ;
 
     }
 
