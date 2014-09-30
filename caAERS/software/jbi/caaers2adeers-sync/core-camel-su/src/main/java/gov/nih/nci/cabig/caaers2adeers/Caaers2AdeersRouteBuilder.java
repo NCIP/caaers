@@ -158,6 +158,7 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
 
         // route for caaers integration services - trim white space
         from("jetty:http://0.0.0.0:7711/caaers/services/RaveIntegrationServices")
+            .to("log:gov.nih.nci.cabig.rave2caaers.from-RaveIntegrationService?showAll=true&level=TRACE&showException=true&showStackTrace=true")
 	        .choice() 
 		        .when(header("CamelHttpMethod").isEqualTo("POST"))
 		         	.processRef("trimWhitespaceMessageProcessor")
@@ -167,9 +168,10 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
                             .to(fileTracker.fileURI(REQUEST_RECEIVED))
                             .process(track(PRE_PROCESS_RAV_CAAERS_INTEG_MSG))
                             .to("direct:processedRave2CaaersMessageSink")
-                    .doCatch(org.apache.camel.ValidationException.class)
+                    .doCatch(Exception.class)
                         .handled(true)
-                        .to("direct:morgue");
+                    .end()
+                    .to("direct:soapfault");
 
       //configure route towards caAERS Webservices
   	fromRaveToCaaersWSRouteBuilder.configure(this);
@@ -186,10 +188,10 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
 	        .streamCaching()
 	        .choice() 
 		        .when(header("CamelHttpMethod").isEqualTo("POST"))
-		         	.process(track(REQUEST_RECEIVED))
 			        .processRef("participantODMMessageProcessor")
 			        .processRef("headerGeneratorProcessor")
-			        .to(fileTracker.fileURI(REQUEST_RECEIVED))
+                    .process(track(REQUEST_RECEIVED))
+                    .to(fileTracker.fileURI(REQUEST_RECEIVED))
 			        .to("xslt:" + "xslt/caaers/request/strip_namespaces.xsl")
 			        .process(track(PRE_PROCESS_OPEN_ODM_MSG))
 			        .to("direct:processedOpenOdmMessageSink") 
@@ -269,6 +271,12 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
         		.process(track(REQUST_PROCESSING_ERROR, "Error"))
                 .to("xslt:xslt/caaers/response/unknown.xsl")
                 .to(fileTracker.fileURI(REQUST_PROCESSING_ERROR)) ;
+
+		//invalid soap requests
+        from("direct:soapfault")
+                .to("log:gov.nih.nci.cabig.caaers2adeers.invalidsoap?showAll=true&level=WARN&showException=true&showStackTrace=true")
+                .transform(constant("<error>Invalid Soap Request</error>"))
+                .to("xslt:xslt/caaers/response/soapfault.xsl") ;
 
     }
 
