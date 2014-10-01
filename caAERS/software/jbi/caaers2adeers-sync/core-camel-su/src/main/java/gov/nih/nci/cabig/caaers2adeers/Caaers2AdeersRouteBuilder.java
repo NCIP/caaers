@@ -27,6 +27,7 @@ import org.apache.camel.ExchangePattern;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.builder.xml.Namespaces;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.xml.sax.SAXParseException;
 
 /**
  * The basic flow can be classified into 3, a) towards adEERS b) towards caAERS c) towards SynchComponent.
@@ -163,10 +164,17 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
 		        .when(header("CamelHttpMethod").isEqualTo("POST"))
 		         	.processRef("trimWhitespaceMessageProcessor")
 			        .processRef("headerGeneratorProcessor")
-			        .to(fileTracker.fileURI(REQUEST_RECEIVED))
-			        .process(track(PRE_PROCESS_RAV_CAAERS_INTEG_MSG))
-			        .to("direct:processedRave2CaaersMessageSink")
-		         .otherwise().end();
+                    .doTry()
+                        .to("validator:xsd/soap-envelope.xsd")
+                        .to(fileTracker.fileURI(REQUEST_RECEIVED))
+                        .process(track(PRE_PROCESS_RAV_CAAERS_INTEG_MSG))
+                        .to("direct:processedRave2CaaersMessageSink")
+                    .doCatch(SAXParseException.class)
+                        .to("direct:soapfault")
+                        .stop()
+                    .end();
+
+
 
       //configure route towards caAERS Webservices
   	fromRaveToCaaersWSRouteBuilder.configure(this);
