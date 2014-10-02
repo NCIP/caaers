@@ -54,6 +54,7 @@ public class Configuration extends DatabaseBackedConfiguration implements Initia
     public static final ConfigurationProperty<Integer> PO_SEARCH_LIMIT = PROPERTIES.add(new DefaultConfigurationProperty.Int("poLimit"));
     public static final ConfigurationProperty<Boolean> SYNCHRONOUS_EVENTS = PROPERTIES.add(new DefaultConfigurationProperty.Bool("synchronousSpringEvents"));
     public static final ConfigurationProperty<String> AE_ATTACHMENTS_LOCATION = PROPERTIES.add(new DefaultConfigurationProperty.Text("aeAttachmentsLocation"));
+    public static final ConfigurationProperty<String> SYSTEM_NAME = PROPERTIES.add(new DefaultConfigurationProperty.Text("systemName"));
 
 
     public ConfigurationProperties getProperties() {
