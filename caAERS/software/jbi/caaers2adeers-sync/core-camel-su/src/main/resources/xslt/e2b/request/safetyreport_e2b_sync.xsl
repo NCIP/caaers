@@ -5,9 +5,12 @@
 <xsl:stylesheet version="2.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
 	xmlns:cct="http://schema.integration.caaers.cabig.nci.nih.gov/common"
+    xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"
+    xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
 	xmlns:ae="http://schema.integration.caaers.cabig.nci.nih.gov/aereport">
 	<xsl:output method="xml" encoding="UTF-8" indent="yes" />
-
+    <xsl:param name="c2a_caaers_ws_username" />
+    <xsl:param name="c2a_caaers_ws_password" />
 	<xsl:variable name="map" select="document('lookup.xml')" />
 	<xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyz'" />
 	<xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
@@ -25,6 +28,13 @@
 
 	<xsl:template match="safetyreport" name="safetyreport">
 		<soapenv:Envelope>
+            <soapenv:Header>
+                <wsse:Security>
+                    <wsse:UsernameToken wsu:Id="UsernameToken-2"><wsse:Username><xsl:value-of select="$c2a_caaers_ws_username" /></wsse:Username>
+                        <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText"><xsl:value-of select="$c2a_caaers_ws_password" /></wsse:Password>
+                    </wsse:UsernameToken>
+                </wsse:Security>
+            </soapenv:Header>
 			<soapenv:Body>
 				<ae:submitSafetyReport>
 					<ae:AdverseEventReport>
