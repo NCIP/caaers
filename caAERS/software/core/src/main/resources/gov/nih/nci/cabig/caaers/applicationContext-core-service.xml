@@ -442,6 +442,7 @@ default-lazy-init="true">
 		<property name="messageSource" ref="messageSource" />
 		<property name="reportDao" ref="reportDao" />
 		<property name="proxyWebServiceFacade" ref="proxyWebServiceFacade"/>
+		<property name="configuration" ref="configuration"/>
    </bean>
    
    	<bean id="submitAEDataXMLAsAttachmentResponse" class="org.springframework.aop.framework.ProxyFactoryBean"> 

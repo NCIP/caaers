@@ -9,15 +9,17 @@ package gov.nih.nci.cabig.caaers.esb.client.impl;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.esb.client.ResponseMessageProcessor;
-
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import java.util.List;
 import java.util.Locale;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.jdom.Element;
 import org.jdom.Namespace;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 /**
  * Will handle the responses related to report submission.
@@ -36,7 +38,7 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
 	private static final String RESPONSE_MSG_END_TAG = "</submitAEDataXMLAsAttachmentResponse>";
 	private static final String RESPONSE_MSG_ST_TAG = "<submitAEDataXMLAsAttachmentResponse";
 	protected final Log log = LogFactory.getLog(getClass());
-	
+	private Configuration configuration;
 	
 	@Override
 	@Transactional
@@ -78,7 +80,9 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
                  url = jobInfo.getChild("reportURL").getValue();
                  
         		 String submissionMessage = messageSource.getMessage("successful.reportSubmission.message",
-        				 new Object[]{String.valueOf(r.getLastVersion().getId()), ticketNumber,  url}, Locale.getDefault());
+        				 new Object[]{String.valueOf(r.getLastVersion().getId()), ticketNumber,  url, r.getSubmitter().getFullName(), 
+        				 r.getSubmitter().getEmailAddress(), r.getAeReport().getStudy().getPrimaryIdentifier().getValue(), r.getAeReport()
+        				 .getParticipant().getPrimaryIdentifierValue(), r.getCaseNumber(),r.getId(),ticketNumber, configuration.get(Configuration.SYSTEM_NAME)}, Locale.getDefault());
         		 
         		sb.append(submissionMessage);
             }else{
@@ -95,7 +99,10 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
                          }
                      }
             		 
-            		 String submissionMessage = messageSource.getMessage("failed.reportSubmission.message", new Object[]{String.valueOf(r.getLastVersion().getId()), exceptionMsgBuffer.toString()}, Locale.getDefault());
+            		 String submissionMessage = messageSource.getMessage("failed.reportSubmission.message", new Object[]{String.valueOf(r.getLastVersion().getId()),
+            				 exceptionMsgBuffer.toString(), r.getSubmitter().getFullName(), r.getSubmitter().getEmailAddress(), r.getAeReport().getStudy()
+            				 .getPrimaryIdentifier().getValue(), r.getAeReport().getParticipant().getPrimaryIdentifierValue(), r.getCaseNumber(),r.getId(),
+            				 configuration.get(Configuration.SYSTEM_NAME)}, Locale.getDefault());
             		 sb.append(submissionMessage);
             		 
             	 }//if exceptions
@@ -142,7 +149,9 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
         }
 		
 	}
-
-
+	
+	  public void setConfiguration(Configuration configuration) {
+	        this.configuration = configuration;
+	    }
 
 }

@@ -19,8 +19,8 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportTracking;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
-import gov.nih.nci.cabig.caaers.service.SchedulerService;
 import gov.nih.nci.cabig.caaers.service.ReportSubmissionService.ReportSubmissionContext;
+import gov.nih.nci.cabig.caaers.service.SchedulerService;
 import gov.nih.nci.cabig.caaers.service.workflow.WorkflowService;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.tools.mail.CaaersJavaMailSender;
@@ -246,8 +246,21 @@ public class MessageNotificationService {
             }
             String caaersXML = adeersReportGenerator.generateCaaersXml(aeReport,report);
             String[] pdfReportPaths = adeersReportGenerator.generateExternalReports(report, caaersXML,report.getLastVersion().getId()); 
+           
+            // CAAERS-6938 do not include attachment if one of the recipients of the report is a system 
+            boolean includeAttachment = true;
             
-            attachment = pdfReportPaths[0] ; //tempDir + "/expeditedAdverseEventReport-" + reportVersion.getId() + ".pdf";
+            for(ReportDeliveryDefinition rdd : report.getReportDefinition().getDeliveryDefinitions()){
+            	// check whether end point is a system
+            	if(rdd.getEntityType() == 1){
+            		includeAttachment = false;
+            		break;
+            	}
+            }
+            
+            if(includeAttachment) {
+            	attachment = pdfReportPaths[0] ; //tempDir + "/expeditedAdverseEventReport-" + reportVersion.getId() + ".pdf";
+            }
             
            // String tempDir = System.getProperty("java.io.tmpdir");
            // attachment = tempDir + "/expeditedAdverseEventReport-" + reportVersion.getId() + ".pdf";
