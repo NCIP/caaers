@@ -75,8 +75,6 @@ public class ToCaaersReportWSRouteBuilder {
         routeBuilder.from("direct:processE2B")   
         	.to("log:gov.nih.nci.cabig.report2caaers.caaers-ws-request?showHeaders=true&level=TRACE")
         	.processRef("resetOriginalMessageProcessor")
-            .processRef("exchangePreProcessor")
-            .processRef("headerGeneratorProcessor")
             .to("direct:caaers-reportSubmit-sync");
         
         nss = new HashMap<String, String>();

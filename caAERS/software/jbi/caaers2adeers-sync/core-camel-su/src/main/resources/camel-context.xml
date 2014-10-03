@@ -88,7 +88,10 @@
     
     <bean id="removeEDIHeadersAndFootersProcessor" class="gov.nih.nci.cabig.report2caaers.exchange.SafetyReportRemoveEDIHeadersAndFootersProcessor"/>
     
-    <bean id="eDIMessagePreProcessor" class="gov.nih.nci.cabig.report2caaers.exchange.EDIMessagePreProcessor"/>
+    <bean id="eDIMessagePreProcessor" class="gov.nih.nci.cabig.report2caaers.exchange.EDIMessagePreProcessor">
+        <property name="caaersWSUser" value="s[CAAERS_WS_USERNAME]" />
+        <property name="caaersWSPassword" value="s[CAAERS_WS_PASSWORD]" />
+    </bean>
     
     <bean id="addEDIHeadersAndFootersProcessor" class="gov.nih.nci.cabig.report2caaers.exchange.SafetyReportAddEDIHeadersAndFootersProcessor"/>
     

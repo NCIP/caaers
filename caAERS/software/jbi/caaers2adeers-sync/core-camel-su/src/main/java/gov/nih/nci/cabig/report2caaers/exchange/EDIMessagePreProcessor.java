@@ -31,6 +31,8 @@ public class EDIMessagePreProcessor implements Processor {
 	public static final String MSG_RCVR_ID = "c2r_msg_receiver_id";
 	private static final String MSG_COMBO_ID = "msg_combo_id";
 	private static final String ORIGINAL_MSG = "original_message";
+    public static final String CAAERS_WS_USERNAME = "c2a_caaers_ws_username";
+    public static final String CAAERS_WS_PASSWORD = "c2a_caaers_ws_password";
 
 	private static String[] msgComboIdPaths = { "//safetyreportid",
 										"//messagedate"};
@@ -38,7 +40,26 @@ public class EDIMessagePreProcessor implements Processor {
 	protected static final Log log = LogFactory
 			.getLog(EDIMessagePreProcessor.class);
 
-	public void process(Exchange exchange) throws Exception {
+    private String caaersWSUser;
+    private String caaersWSPassword;
+
+    public String getCaaersWSUser() {
+        return caaersWSUser;
+    }
+
+    public void setCaaersWSUser(String caaersWSUser) {
+        this.caaersWSUser = caaersWSUser;
+    }
+
+    public String getCaaersWSPassword() {
+        return caaersWSPassword;
+    }
+
+    public void setCaaersWSPassword(String caaersWSPassword) {
+        this.caaersWSPassword = caaersWSPassword;
+    }
+
+    public void process(Exchange exchange) throws Exception {
 		// just get the body as a string
 		String body = exchange.getIn().getBody(String.class);
 		log.info("inside EDIMessagePreProcessor...");
@@ -71,6 +92,8 @@ public class EDIMessagePreProcessor implements Processor {
 		properties.put(MSG_DT, msgDt);
 		properties.put(MSG_SNDR_ID, msgSndrId);
 		properties.put(MSG_RCVR_ID, msgRcvrId);
+        properties.put(CAAERS_WS_USERNAME, caaersWSUser);
+        properties.put(CAAERS_WS_PASSWORD, caaersWSPassword);
 		
 		log.debug("adding correlationId.");
 		Date cDt = new Date();
