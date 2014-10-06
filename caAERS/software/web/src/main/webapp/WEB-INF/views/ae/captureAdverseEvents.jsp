@@ -342,7 +342,7 @@ function refreshGrades(index) {
                             <ui:row path="verbatim">
                                 <jsp:attribute name="label"><ui:label path="verbatim" text="" labelProperty="captureAdverseEventsVerbatim" required="true"></ui:label></jsp:attribute>
                                 <jsp:attribute name="value">
-                                    <ui:text path="verbatim" mandatory="true"></ui:text>&nbsp;
+                                    <ui:text path="verbatim" mandatory="true" maxlength="65"></ui:text>&nbsp;
                                     <tags:button size="small" type="button" color="blue" icon="add" value="Add" id="addverbatim" onclick="addByVerbatim()"/>
                                     <ul class="errors" id="verbatim-input-msg" style="display:none"><li><b>Missing:</b> "Verbatim"</li></ul>
                                 </jsp:attribute>

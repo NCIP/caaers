@@ -6,13 +6,9 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.web.fields;
 
-import static gov.nih.nci.cabig.caaers.web.fields.InputField.COLS;
-import static gov.nih.nci.cabig.caaers.web.fields.InputField.DETAILS;
-import static gov.nih.nci.cabig.caaers.web.fields.InputField.OPTIONS;
-import static gov.nih.nci.cabig.caaers.web.fields.InputField.ROWS;
-import static gov.nih.nci.cabig.caaers.web.fields.InputField.SIZE;
-
 import java.util.Map;
+
+import static gov.nih.nci.cabig.caaers.web.fields.InputField.*;
 
 /**
  * Helpers for accessing known attributes of InputFields without having to cast. (Also serves as
@@ -81,5 +77,14 @@ public class InputFieldAttributes {
     
     public static void setI18NLabelProperty(InputField field, String labelProperty) {
         field.getAttributes().put(InputField.LABEL_PROPERTY, labelProperty);
+    }
+
+
+    public static Integer getMaxLength(InputField field) {
+        return (Integer) field.getAttributes().get(MAX_LENGTH);
+    }
+
+    public static void setMaxLength(InputField field, Integer size) {
+        field.getAttributes().put(MAX_LENGTH, size);
     }
 }

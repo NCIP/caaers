@@ -36,6 +36,7 @@ public interface InputField {
     String HELP = "help"; // refers to the help text key in messages.properties
 
     String SIZE = "size"; // size of the field (applied only for Text fields/AutoCompleters)
+    String MAX_LENGTH = "maxlength";
 
     // TODO: I don't think we need this; clear should probably be available for every autocompleter
     // - RMS20070725

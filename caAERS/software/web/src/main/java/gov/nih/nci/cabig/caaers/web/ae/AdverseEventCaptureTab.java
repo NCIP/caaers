@@ -104,6 +104,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
                 boolean verbatimApplicable = caaersFieldConfigurationManager.isFieldApplicable(TAB_NAME, "adverseEvents[].detailsForOther");
                 boolean verbatimRequired =  unRetired && verbatimApplicable && (verbatimMandatory || isFieldRequired(ae, "adverseEvents[].detailsForOther"));
             	InputField verbatimField = InputFieldFactory.createTextField("detailsForOther", "Verbatim", "aeReport.adverseEvents.detailsForOther", verbatimRequired);
+                InputFieldAttributes.setMaxLength(verbatimField, VERBATIM_MAX_SIZE);
                 InputFieldAttributes.setSize(verbatimField, 25);
                 mainFieldFactory.addField(verbatimField);
                 
