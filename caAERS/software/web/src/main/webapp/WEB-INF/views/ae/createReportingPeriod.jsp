@@ -116,7 +116,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
                 </c:forEach>
                 <tr bgcolor="white">
                     <td><ui:radio path="reportingPeriod.treatmentAssignment" value="" id="otherTA" />&nbsp;<label for="reportingPeriod.treatmentAssignment">Other</label></td>
-                    <td><ui:textarea rows="2" path="reportingPeriod.treatmentAssignmentDescription" cols="100"></ui:textarea></td>
+                    <td><ui:textarea rows="2" path="reportingPeriod.treatmentAssignmentDescription" cols="100" validationJSClass="validate-TEXT$$MAXLENGTH4000"></ui:textarea></td>
                     
                 </tr>
             </table>
