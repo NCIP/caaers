@@ -858,7 +858,7 @@
 						<xsl:with-param name="date" select="./testdate" />
 					</xsl:call-template>
 				</ae:labDate>
-			</xsl:if>
+                </xsl:if>
 		</ae:lab>
 	</xsl:template>
 	<xsl:template name="responseDescription">
@@ -1303,12 +1303,14 @@
 
 	<xsl:template name="dateConverterYYYYMMDDtoYY-MM-DD">
 		<xsl:param name="date" />
+        <xsl:if test="$date != ''">
 		<xsl:variable name="valueLength" select="string-length($date)-1" />
 		<xsl:variable name="vMonth" select="substring($date,5,2)" />
 		<xsl:variable name="vYear" select="substring($date,1,4)" />
 		<xsl:variable name="outputDate"
 			select="concat($vYear,'-',$vMonth,'-',substring($date,7,2))" />
 		<xsl:value-of select="$outputDate" />
+        </xsl:if>
 	</xsl:template>
 	
 	<xsl:template name="dateConverterMMslashDDslashYYYYtoYY-MM-DD">
