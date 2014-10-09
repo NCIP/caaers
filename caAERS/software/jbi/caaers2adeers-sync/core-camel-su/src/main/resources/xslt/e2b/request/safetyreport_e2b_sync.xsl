@@ -853,12 +853,14 @@
 				<ae:site>
 					<xsl:value-of select="infectionsite" />
 				</ae:site>
+                <xsl:if test="./testdate != '' ">
 				<ae:labDate>
 					<xsl:call-template name="dateConverterYYYYMMDDtoYY-MM-DD">
 						<xsl:with-param name="date" select="./testdate" />
 					</xsl:call-template>
 				</ae:labDate>
                 </xsl:if>
+			</xsl:if>
 		</ae:lab>
 	</xsl:template>
 	<xsl:template name="responseDescription">
