@@ -64,7 +64,7 @@
         </stud:studies>
     </xsl:template>
     <xsl:template match="studyOrganization" mode="cc">
-        <xsl:if test="status/text() = 'Active'">
+        <xsl:if test="status/text() != 'Inactive'">
             <coordinatingCenter>
                 <organizationAssignedIdentifier>
                     <xsl:variable name="ccIdVal" select="localDocumentNumber" />

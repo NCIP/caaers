@@ -9,16 +9,17 @@ package gov.nih.nci.cabig.caaers.api.impl;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.api.AbstractImportService;
 import gov.nih.nci.cabig.caaers.api.ProcessingOutcome;
-import gov.nih.nci.cabig.caaers.dao.CtcDao;
-import gov.nih.nci.cabig.caaers.dao.MeddraVersionDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
+import gov.nih.nci.cabig.caaers.domain.LocalStudy;
+import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationType;
-import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
-import gov.nih.nci.cabig.caaers.integration.schema.study.Studies;
 import gov.nih.nci.cabig.caaers.integration.schema.study.StudySiteType;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Message;
@@ -29,6 +30,11 @@ import gov.nih.nci.cabig.caaers.service.migrator.StudyConverter;
 import gov.nih.nci.cabig.caaers.service.synchronizer.StudySynchronizer;
 import gov.nih.nci.cabig.caaers.validation.validator.DomainObjectValidator;
 import gov.nih.nci.security.util.StringUtilities;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -38,10 +44,6 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
 
 /**
  * The implementation will manage (create/update) {@link Study}
@@ -212,7 +214,7 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
         if(studyImportOutcome == null){
 			studyImportOutcome = studyImportService.importStudy(study);
 			//Check if Study Exists
-			Study dbStudy = checkDuplicateStudy(studyImportOutcome.getImportedDomainObject());
+			Study dbStudy = checkDuplicateStudyBasedOnProcolAuthorityIdentifier(studyImportOutcome.getImportedDomainObject());
 			if(dbStudy != null){
 				studyImportOutcome.addErrorMessage(study.getClass().getSimpleName() + " identifier already exists. ", Severity.ERROR);
                 Helper.populateError(caaersServiceResponse, "WS_STU_001",
@@ -322,7 +324,7 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
                 studyImportOutcome.setImportedDomainObject(dbStudy);
 
                 //check if another study exist?
-                Study anotherStudy = checkDuplicateStudy(studyImportOutcome.getImportedDomainObject());
+                Study anotherStudy = checkDuplicateStudyBasedOnProcolAuthorityIdentifier(studyImportOutcome.getImportedDomainObject());
                 if(anotherStudy != null){
                     String errorDescription = messageSource.getMessage("WS_STU_001", new Object[]{anotherStudy.getPrimaryIdentifierValue(),
                             studyImportOutcome.getImportedDomainObject().getPrimaryIdentifierValue()},
@@ -400,6 +402,33 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 		
 		for(Identifier id : study.getIdentifiers()){
 			
+			StudyQuery query = new StudyQuery();
+			query.joinIdentifier();
+			query.filterByIdentifier(id);
+			if(study.getId() != null) query.ignoreStudyById(study.getId());
+			
+			List<Study> existingStudies = studyDao.find(query);
+			if(CollectionUtils.isNotEmpty(existingStudies)){
+				return existingStudies.get(0);
+			}
+			
+		}
+		
+		return null;
+	}
+	
+	
+	/**
+	 * Will retrieve from DB a study that is having the same protocol identifier as that of the study parameter. 
+	 * @param study
+	 * @return
+	 */
+	public Study checkDuplicateStudyBasedOnProcolAuthorityIdentifier(Study study){
+		for(Identifier id : study.getIdentifiers()){
+			
+			if(!id.getType().equals(OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE)){
+				continue;
+			}
 			StudyQuery query = new StudyQuery();
 			query.joinIdentifier();
 			query.filterByIdentifier(id);
