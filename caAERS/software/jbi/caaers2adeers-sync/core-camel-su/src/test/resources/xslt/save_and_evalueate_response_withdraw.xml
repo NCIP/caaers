@@ -35,14 +35,14 @@
                 <linkToReport>https://sbhost06-vm01.semanticbits.com:8443/caaers/pages/ae/captureRoutine?study=180&amp;participant=312&amp;adverseEventReportingPeriod=1178&amp;_page=0&amp;_target2=2&amp;displayReportingPeriod=true&amp;addReportingPeriodBinder=true</linkToReport>
                 <recommendedActions>
                     <action>Withdraw</action>
-                    <report>CTEP 10 Calendar Day SAE Report</report>
+                    <report>CTEP 11 Calendar Day SAE Report</report>
                     <status>Being withdrawn</status>
                     <due></due>
                     <dueDate></dueDate>
                 </recommendedActions>
                 <recommendedActions>
                     <action>Create</action>
-                    <report>CTEP 24 Hours SAE Report</report>
+                    <report>CTEP 28 Hours SAE Report</report>
                     <status>Not Started</status>
                     <due>Due in 24 hrs</due>
                     <dueDate>Mon Apr 08 14:49:50 EDT 2014</dueDate>

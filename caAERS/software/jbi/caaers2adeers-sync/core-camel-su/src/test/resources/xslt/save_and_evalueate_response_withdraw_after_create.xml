@@ -1,0 +1,70 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap:Body>
+        <ns1:saveAndEvaluateAEsResponse xmlns:ns1="http://schema.integration.caaers.cabig.nci.nih.gov/saerules">
+            <ns1:SaveAndEvaluateAEsOutputMessage xmlns:ns3="http://schema.integration.caaers.cabig.nci.nih.gov/common"
+                                                 xmlns:ns4="http://schema.integration.caaers.cabig.nci.nih.gov/investigator"
+                                                 xmlns:ns5="http://schema.integration.caaers.cabig.nci.nih.gov/researchstaff"
+                                                 xmlns:ns6="http://schema.integration.caaers.cabig.nci.nih.gov/aereport"
+                                                 xmlns:ns7="http://schema.integration.caaers.cabig.nci.nih.gov/participant"
+                                                 xmlns:ns8="http://schema.integration.caaers.cabig.nci.nih.gov/study"
+                                                 xmlns="">
+                <ns1:evaluatedAdverseEventResults>
+                    <ns1:adverseEventResult>
+                        <ns1:adverseEvent id="635484878212522371" version="1">
+                            <verbatim>Throwing up</verbatim>
+                            <adverseEventCtepTerm>
+                                <ctepCode>10047700</ctepCode>
+                                <otherSpecify>N/A</otherSpecify>
+                            </adverseEventCtepTerm>
+                            <grade>3</grade>
+                            <hospitalization>YES</hospitalization>
+                            <dateFirstLearned>2014-10-09T17:39:07.0000000Z</dateFirstLearned>
+                            <outcome>
+                                <outComeEnumType>HOSPITALIZATION</outComeEnumType>
+                            </outcome>
+                            <externalId>AE7265485-003-00001</externalId>
+                            <reporterEmail>VanithaChockalingam@westat.com</reporterEmail>
+                        </ns1:adverseEvent>
+                        <requiresReporting>true</requiresReporting>
+                    </ns1:adverseEventResult>
+                    <ns1:adverseEventResult>
+                        <ns1:adverseEvent id="635484878212991136" version="1">
+                            <verbatim>Dehydration</verbatim>
+                            <adverseEventCtepTerm>
+                                <ctepCode>10012174</ctepCode>
+                                <otherSpecify>N/A</otherSpecify>
+                            </adverseEventCtepTerm>
+                            <grade>4</grade>
+                            <hospitalization>NO</hospitalization>
+                            <dateFirstLearned>2014-10-09T17:43:25.0000000Z</dateFirstLearned>
+                            <outcome>
+                                <outComeEnumType>LIFE_THREATENING</outComeEnumType>
+                            </outcome>
+                            <externalId>AE7265485-003-00007</externalId>
+                            <reporterEmail>VanithaChockalingam@westat.com</reporterEmail>
+                        </ns1:adverseEvent>
+                        <requiresReporting>true</requiresReporting>
+                    </ns1:adverseEventResult>
+                </ns1:evaluatedAdverseEventResults>
+                <hasSAE>true</hasSAE>
+                <linkToReport>https://sbhost06-vm03.semanticbits.com:8443/caaers/pages/ae/captureRoutine?study=9826&amp;participant=2376&amp;adverseEventReportingPeriod=1898&amp;_page=0&amp;_target2=2&amp;displayReportingPeriod=true&amp;addReportingPeriodBinder=true</linkToReport>
+                <recommendedActions>
+                    <action>Create</action>
+                    <actionText>Create the CTEP 24 Hour SAE Notification</actionText>
+                    <report>CTEP 20 Hour SAE Notification</report>
+                    <status>Not started</status>
+                    <due>Due in 24 hours</due>
+                    <dueDate>Fri Oct 10 17:43:00 EDT 2014</dueDate>
+                </recommendedActions>
+                <recommendedActions>
+                    <action>Withdraw</action>
+                    <actionText>Withdraw the CTEP 10 Calendar Day SAE Report</actionText>
+                    <report>CTEP 9 Calendar Day SAE Report</report>
+                    <status>Being withdrawn</status>
+                    <due/>
+                    <dueDate>Sun Oct 19 17:43:00 EDT 2014</dueDate>
+                </recommendedActions>
+            </ns1:SaveAndEvaluateAEsOutputMessage>
+        </ns1:saveAndEvaluateAEsResponse>
+    </soap:Body>
+</soap:Envelope>
