@@ -42,7 +42,7 @@ public class IncomingCredentialExtractingInterceptor extends WSS4JOutInterceptor
 
         int start = body.indexOf("Username>") ;
         if(start < 0) {
-            log.error(String.format("Unable to obtain username, start index %s\n message body :%s", String.valueOf(start), body));
+            log.error(String.format("Unable to parse username, start index %s\n message body :%s", String.valueOf(start), body));
             return;
         }
         start+= 9;
@@ -60,12 +60,12 @@ public class IncomingCredentialExtractingInterceptor extends WSS4JOutInterceptor
         start = body.indexOf("Password", end);
         start = start > end ?  body.indexOf(">", start) : start;
         if(start < 0) {
-            log.error(String.format("Unable to obtain password, start index %s\n message body :%s", String.valueOf(start), body));
+            log.error(String.format("Unable to fetch password, start index %s\n message body :%s", String.valueOf(start), body));
             return;
         }
         end = body.indexOf("</", start);
         if(end < start) {
-            log.error(String.format("Unable to obtain password, end index %s\n message body :%s", String.valueOf(end), body));
+            log.error(String.format("Unable to read password, end index %s\n message body :%s", String.valueOf(end), body));
             return;
         }
         String pwd = body.substring(start+1,end);
