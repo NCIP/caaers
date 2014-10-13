@@ -125,6 +125,9 @@ public abstract class AbstractAdverseEventTerm<T extends DomainObject> extends A
     @Transient
     public abstract String getFullName();
 
+    @Transient
+    public abstract boolean isPositiveAttributionNeeded();
+
     /**
      * Copy.
      *

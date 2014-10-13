@@ -87,6 +87,8 @@ public class ReportValidationServiceImpl implements ReportValidationService{
         if( report.getReportDefinition().getAttributionRequired()){
 
         	for (AdverseEvent ae : aeReport.getAdverseEvents()) {
+                if(!ae.lookForPositiveAttribution())  continue;
+
         		Attribution max = null;
         		for (AdverseEventAttribution<?> attribution : ae.getAdverseEventAttributions()) {
         			if(attribution.getAttribution() == null) {max = null; break;} //special case when people click save again (after an error).

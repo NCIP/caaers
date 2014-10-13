@@ -7,6 +7,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
+import org.apache.commons.lang.ArrayUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
@@ -114,5 +115,12 @@ public class AdverseEventMeddraLowLevelTerm extends AbstractAdverseEventTerm<Low
     @Transient
     public boolean isMedDRA() {
     	return true;
+    }
+
+    @Override
+    @Transient
+    public boolean isPositiveAttributionNeeded() {
+        return !(getLowLevelTerm() != null && ArrayUtils.contains(
+                new String[]{"10042434","10011912","10011914","10042435","10016479"}, getLowLevelTerm().getMeddraCode()));
     }
 }

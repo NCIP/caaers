@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
@@ -121,5 +122,12 @@ public class AdverseEventCtcTerm extends AbstractAdverseEventTerm<CtcTerm> {
     @Transient
     public boolean isMedDRA() {
     	return false;
+    }
+
+    @Override
+    @Transient
+    public boolean isPositiveAttributionNeeded() {
+        return !(getCtcTerm() != null && ArrayUtils.contains(
+                new String[]{"10042434","10011912","10011914","10042435","10016479"}, getCtcTerm().getCtepCode()));
     }
 }

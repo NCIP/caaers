@@ -1839,4 +1839,8 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
         return map;
     }
 
+    public boolean lookForPositiveAttribution() {
+
+        return getAdverseEventTerm() != null && getAdverseEventTerm().isPositiveAttributionNeeded();
+    }
 }
