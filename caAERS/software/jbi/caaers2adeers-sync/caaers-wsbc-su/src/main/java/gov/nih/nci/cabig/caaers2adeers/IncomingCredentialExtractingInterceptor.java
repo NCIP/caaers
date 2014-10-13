@@ -39,6 +39,9 @@ public class IncomingCredentialExtractingInterceptor extends WSS4JOutInterceptor
         //fetch the credentials
         String body = String.valueOf(mc.getExchange());
         if(StringUtils.isEmpty(body)) return ;
+        if(log.isDebugEnabled()) {
+            log.debug("Message Body : " + body);
+        }
 
         int start = body.indexOf("Username>") ;
         if(start < 0) {
@@ -73,7 +76,9 @@ public class IncomingCredentialExtractingInterceptor extends WSS4JOutInterceptor
             password.set(pwd) ;
         }
 
-
+        if(log.isDebugEnabled()) {
+            log.debug("username :" + username +", password:" + password);
+        }
         super.handleMessage(mc);
     }
 
