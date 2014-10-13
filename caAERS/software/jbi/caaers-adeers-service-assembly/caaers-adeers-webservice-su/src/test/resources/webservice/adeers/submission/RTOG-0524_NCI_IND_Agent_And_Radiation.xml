@@ -297,4 +297,4 @@
         <applicableField>diseaseHistory.codedPrimaryDiseaseSite</applicableField>
         <applicableField>adverseEvents.hospitalization</applicableField>
         <submittedToFDA>No</submittedToFDA>
-    </Report></AdverseEventReport>
+    <Submitter><firstName>mayo</firstName><lastName>super user</lastName><address/><ContactMechanism xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:org.exolab.castor.mapping.MapItem"><key xsi:type="java:java.lang.String">phone</key><value xsi:type="java:java.lang.String">703-787-9656</value></ContactMechanism><ContactMechanism xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:org.exolab.castor.mapping.MapItem"><key xsi:type="java:java.lang.String">fax</key><value xsi:type="java:java.lang.String">703-787-9656</value></ContactMechanism><ContactMechanism xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="java:org.exolab.castor.mapping.MapItem"><key xsi:type="java:java.lang.String">e-mail</key><value xsi:type="java:java.lang.String">mayo-super-user@caaers.org</value></ContactMechanism></Submitter></Report></AdverseEventReport>
