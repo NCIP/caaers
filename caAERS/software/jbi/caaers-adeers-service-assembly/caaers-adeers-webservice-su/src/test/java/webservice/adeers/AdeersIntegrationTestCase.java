@@ -131,6 +131,7 @@ public abstract class AdeersIntegrationTestCase extends TestCase{
 		aeReport = aeReport.replaceAll("<REPORT_ID/>", "");
 		aeReport = aeReport.replaceAll("<SUBMITTER_EMAIL/>", "");
         aeReport = aeReport.replaceAll("<ADDITIONAL_INFORMATION/>", "");
+        aeReport = aeReport.replaceAll("<MESSAGE_COMBO_ID/>", "");
         aeReport = aeReport.replaceAll("<WITHDRAW>true</WITHDRAW>", "");
 		return aeReport;
 	}
