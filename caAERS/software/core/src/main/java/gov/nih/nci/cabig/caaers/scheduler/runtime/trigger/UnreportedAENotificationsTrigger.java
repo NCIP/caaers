@@ -8,13 +8,13 @@ package gov.nih.nci.cabig.caaers.scheduler.runtime.trigger;
 
 import org.quartz.SimpleTrigger;
 /**
- * A trigger that runs, every 5 minutes. 
+ * A trigger that runs every 8 hrs. 
  * @author Ramakrishna Gundala
  *
  */
 @SuppressWarnings("serial")
 public class UnreportedAENotificationsTrigger extends SimpleTrigger{
-	private static int DEFAULT_INTERVAL = 1000 * 60 * 15;
+	private static int DEFAULT_INTERVAL = 1000 * 60 * 60 * 8;
 	public UnreportedAENotificationsTrigger() {
 		this( DEFAULT_INTERVAL);
 	}

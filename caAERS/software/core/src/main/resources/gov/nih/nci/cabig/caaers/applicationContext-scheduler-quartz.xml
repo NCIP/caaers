@@ -78,16 +78,6 @@
 		<property name="cronExpression" value="0 0/15 * * * ?"/>
 	</bean>
 	
-	
-<!--  	<bean id="unreportedAENotificationsTrigger" class="gov.nih.nci.cabig.caaers.scheduler.runtime.trigger.UnreportedAENotificationsTrigger">
-  		<property name="name" value="unreportedAENotificationsTrigger"/>
-		<property name="jobName" value="unreportedAENotificationsJob"/>
-		<property name="jobGroup" value="DEFAULT" />
-	    <property name="misfireInstruction" value="0" />
-		<property name="cronExpression" value="0 0/15 * * * ?"/>
-	</bean>  -->
-	
-	
 	<!--  This bean that implements the service  -->
 	<bean id="unreportedAENotificationsJob" class="org.springframework.scheduling.quartz.JobDetailBean">
   		<property name="jobClass" value="gov.nih.nci.cabig.caaers.scheduler.runtime.job.UnreportedAEsNotificationsJob" />
@@ -95,7 +85,7 @@
   		<property name="name" value="unreportedAENotificationsJob"/>
   	</bean>
 	
-	<!-- trigger every 5 minutes -->
+	<!-- trigger every 8 hrs -->
 	<bean id="unreportedAENotificationsTrigger" class="gov.nih.nci.cabig.caaers.scheduler.runtime.trigger.UnreportedAENotificationsTrigger">
 	    <property name="jobName" value="unreportedAENotificationsJob" />
 	    <property name="jobGroup" value="DEFAULT" />
