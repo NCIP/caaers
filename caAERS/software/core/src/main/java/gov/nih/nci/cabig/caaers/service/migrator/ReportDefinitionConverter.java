@@ -333,11 +333,12 @@ public class ReportDefinitionConverter {
 		
 		List<gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.PlannedNotification> plannedNotifications = 
 				new ArrayList<gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.PlannedNotification>();
-		
-		List<gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.Recipient> recipients = 
-			new ArrayList<gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.Recipient>();
-		
+			
 		for(PlannedNotification plannedNotification : reportDefinitionDomain.getPlannedNotifications()){
+			
+			List<gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.Recipient> recipients = 
+					new ArrayList<gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.Recipient>();
+			
 			if(plannedNotification instanceof PlannedEmailNotification){
 				plannedEmailNotification = (PlannedEmailNotification)plannedNotification;
 			
