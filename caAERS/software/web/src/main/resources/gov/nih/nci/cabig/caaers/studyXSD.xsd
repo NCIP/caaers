@@ -487,7 +487,7 @@
             <xs:enumeration value="Phase 0 Trial"/>
             <xs:enumeration value="Pilot"/>
             <xs:enumeration value="N/A"/>
-            <xs:enumeration value="Otber"/>
+            <xs:enumeration value="Other"/>
         </xs:restriction>
     </xs:simpleType> 
 

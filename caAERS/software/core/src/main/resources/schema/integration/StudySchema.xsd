@@ -671,6 +671,7 @@
             <xs:enumeration value="Commercial"/>
             <xs:enumeration value="TBD"/>
             <xs:enumeration value="None"/>
+            <xs:enumeration value="N/A"/>
         </xs:restriction>
     </xs:simpleType>
 
