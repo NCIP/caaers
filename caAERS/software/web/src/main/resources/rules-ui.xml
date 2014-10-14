@@ -404,6 +404,7 @@
                 <valid-value value="Commercial" display-uri="Commercial" readable-text="Commercial"/>
                 <valid-value value="TBD" display-uri="TBD" readable-text="TBD"/>
                 <valid-value value="None" display-uri="None" readable-text="None"/>
+                <valid-value value="N/A" display-uri="N/A" readable-text="N/A"/>
                 <operator name="==" display-uri="Equal To" readable-text="is "/>
                 <operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
                 <expression>factResolver.assertFact(study,null,'aeReportingLevel','runTimeValue','runTimeOperator')</expression>

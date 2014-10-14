@@ -167,6 +167,10 @@
                             <property name="code" value="None" />
                             <property name="desc" value="None" />
                         </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="N/A" />
+                            <property name="desc" value="N/A" />
+                        </bean>
                     </list>
                 </entry>
                 <entry key="typeRefData">
