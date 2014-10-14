@@ -633,7 +633,8 @@
 				<drug>
 		            <drugcharacterization>1</drugcharacterization> 
 						<!-- Agent NSC Number.  This is the identifier of the Agent. -->
-		            <medicinalproduct><xsl:value-of select="StudyAgent/Agent/nscNumber"/></medicinalproduct> 
+		            <medicinalproduct><xsl:value-of select="StudyAgent/Agent/nscNumber"/></medicinalproduct>
+                    <drugbatchnumb><xsl:value-of select="lotNumber" /></drugbatchnumb>
 						<!-- Total Dose Administered this Course -->
 					<drugcumulativedosagenumb><xsl:value-of select="Dose/amount"/></drugcumulativedosagenumb>  
 						<!-- Dosage unit per E2B code -->   
