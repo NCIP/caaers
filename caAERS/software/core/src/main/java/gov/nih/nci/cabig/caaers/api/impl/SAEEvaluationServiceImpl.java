@@ -729,7 +729,6 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 	}
 	
 	private void manageAdverseEventRecommendedReports(Map<AdverseEvent, AdverseEventResult> mapAE2DTO, RequestType requestType,EvaluationResultDTO dto ){
-		Map<Integer, Map<AdverseEvent, Set<ReportDefinition>>> repAEIndexMap = dto.getAdverseEventIndexMap();
 		 Map<AdverseEvent,List<ReportDefinition>> adverseEventReportDefinitionMap = evaluationService.getAdverseEventRecommendedReportsMap();
 		 for (Map.Entry<AdverseEvent, List<ReportDefinition>> entry : adverseEventReportDefinitionMap.entrySet()) {
 					AdverseEvent ae = entry.getKey();
@@ -739,21 +738,27 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 						// update existing AE recommendation report or create new one 
 						Iterator<ReportDefinition> reportDefinitionIterator = rds.iterator();
 						while(reportDefinitionIterator.hasNext()){
-							ReportDefinition reportDefinition = reportDefinitionIterator.next();;
+							ReportDefinition reportDefinition = reportDefinitionIterator.next();
 							AdverseEventRecommendedReport aeRecomReport;
 							List<AdverseEventRecommendedReport> dbAeRecomReports = adverseEventRecommendedReportDao.
 									searchAdverseEventRecommendedReportsByAdverseEvent(ae);
-							if(dbAeRecomReports != null && !dbAeRecomReports.isEmpty()){
+							if (dbAeRecomReports != null && !dbAeRecomReports.isEmpty()) {
 								// AE recommendation report already exists
 								aeRecomReport = dbAeRecomReports.get(0);
+								if (!reportDefinition.getOrganization().equals(aeRecomReport.getReportDefinition().getOrganization())
+										|| !reportDefinition.getGroup().equals(aeRecomReport.getReportDefinition().getGroup())) {
+									// CAAERS-6961: Only if there is a change in the recommended Report Org or Group set the AE
+									// reported flag to false, otherwise the AE is already considered added to the report.
+									aeRecomReport.setAeReported(false);
+								}
 							} else {
 								// create AE recommendation report
 								aeRecomReport = new AdverseEventRecommendedReport();
 								aeRecomReport.setAdverseEvent(ae);
+								aeRecomReport.setAeReported(false);
 							}
 							
 							aeRecomReport.setReportDefinition(reportDefinition);
-							aeRecomReport.setAeReported(false);
 							aeRecomReport.setDueDate(reportDefinition.getExpectedDueDate(ae.getGradedDate()));
 							adverseEventRecommendedReportDao.save(aeRecomReport);
 						}
