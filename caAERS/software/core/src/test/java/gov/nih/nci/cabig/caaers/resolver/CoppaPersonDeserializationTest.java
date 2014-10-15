@@ -123,6 +123,7 @@ public class CoppaPersonDeserializationTest extends AbstractTestCase {
 	        while ((line = ds.readLine()) != null) {
 	            xml.append(line);
 	        }
+	        ds.close();
 	        assertTrue("Content of the xml should not be null", xml.toString().length() > 0);
 	        return xml.toString();
 	}

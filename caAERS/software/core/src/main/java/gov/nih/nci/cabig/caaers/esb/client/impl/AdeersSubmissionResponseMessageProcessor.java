@@ -8,6 +8,7 @@ package gov.nih.nci.cabig.caaers.esb.client.impl;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
 import gov.nih.nci.cabig.caaers.esb.client.ResponseMessageProcessor;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 
@@ -66,7 +67,15 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
         
         //FIXME: When updating Caaers to send to multiple systems the below must also be changed.
         //Can just use the first system as that is the only one that is used.
-        String sysName = r.getExternalSystemDeliveries().get(0).getReportDeliveryDefinition().getEntityName();
+        String sysName = "UNKOWN";
+        if(r != null) {
+	        List<ReportDelivery> list = r.getExternalSystemDeliveries();
+	        if(list != null && list.size() > 0) {
+	        	if(list.get(0) != null && list.get(0).getReportDeliveryDefinition() != null) {
+	        		sysName = list.get(0).getReportDeliveryDefinition().getEntityName();
+	        	}
+	        }
+        }
         // build error messages
         StringBuffer sb = new StringBuffer();
 
