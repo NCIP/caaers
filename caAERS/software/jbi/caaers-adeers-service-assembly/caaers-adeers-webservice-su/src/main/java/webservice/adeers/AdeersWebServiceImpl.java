@@ -35,6 +35,7 @@ public class AdeersWebServiceImpl implements AdeersWebService {
 		ServiceContext serviceContext = ServiceContext.getServiceContext();
 		log.info("caAERS-adEERS-Service-Assembly processing report submitted by caAERS"); 
 		String aeReport = detach(aeReportWithCaaersId,serviceContext);	
+		//FIXME: The below ensures the message is only sent to one system, not all.
 		String adeersEPR = serviceContext.externalEPRs.split(",")[0];
 		String url=adeersEPR.split("::")[0];
 		String uid=adeersEPR.split("::")[1];

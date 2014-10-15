@@ -10,16 +10,15 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.esb.client.ResponseMessageProcessor;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
+
 import java.util.List;
 import java.util.Locale;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.jdom.Element;
 import org.jdom.Namespace;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 /**
  * Will handle the responses related to report submission.
@@ -64,7 +63,11 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
         log.debug("email : " + submitterEmail);
         
         Report r = reportDao.getById(Integer.parseInt(reportId));
-        // buld error messages
+        
+        //FIXME: When updating Caaers to send to multiple systems the below must also be changed.
+        //Can just use the first system as that is the only one that is used.
+        String sysName = r.getExternalSystemDeliveries().get(0).getReportDeliveryDefinition().getEntityName();
+        // build error messages
         StringBuffer sb = new StringBuffer();
 
         boolean success = true;
@@ -87,7 +90,8 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
         		sb.append(submissionMessage);
             }else{
             	 success = false;
-            	 List<Element> exceptions = jobInfo.getChildren("jobExceptions");
+            	 @SuppressWarnings("unchecked")
+				List<Element> exceptions = jobInfo.getChildren("jobExceptions");
             	 //find the exception elements
             	 if(CollectionUtils.isNotEmpty(exceptions)){
             		 StringBuffer exceptionMsgBuffer = new StringBuffer();
@@ -102,7 +106,7 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
             		 String submissionMessage = messageSource.getMessage("failed.reportSubmission.message", new Object[]{String.valueOf(r.getLastVersion().getId()),
             				 exceptionMsgBuffer.toString(), r.getSubmitter().getFullName(), r.getSubmitter().getEmailAddress(), r.getAeReport().getStudy()
             				 .getPrimaryIdentifier().getValue(), r.getAeReport().getParticipant().getPrimaryIdentifierValue(), r.getCaseNumber(),r.getId(),
-            				 configuration.get(Configuration.SYSTEM_NAME)}, Locale.getDefault());
+            				 configuration.get(Configuration.SYSTEM_NAME), sysName}, Locale.getDefault());
             		 sb.append(submissionMessage);
             		 
             	 }//if exceptions

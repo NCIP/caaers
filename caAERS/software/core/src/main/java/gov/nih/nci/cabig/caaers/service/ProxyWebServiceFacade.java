@@ -142,7 +142,7 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
 			    	.append("</wsse:Security> ");
 			    
 			    StringSource headerSource = new StringSource(sbHeader.toString());
-			    SoapHeader soapHeader = ((SoapMessage) message).getSoapHeader();
+			    SoapHeader soapHeader = soapMessage.getSoapHeader();
 			    Transformer transformer = TransformerFactory.newInstance().newTransformer();
                 transformer.transform(headerSource, soapHeader.getResult());
 			}
@@ -155,7 +155,7 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
     public String send(String entity, String operationName, boolean sync, Map<String, String> criteria) {
     	String corelationId = RandomStringUtils.randomAlphanumeric(15);
         String message = buildMessage(corelationId, "adeers", entity, operationName, sync?"sync":"async", criteria);
-        String result = simpleSendAndReceive(message);
+        simpleSendAndReceive(message);
         return corelationId;
     }
 

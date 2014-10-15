@@ -10,6 +10,10 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -67,6 +71,9 @@ public class ReportDeliveryDefinition extends AbstractMutableDomainObject {
 
     /** The password. */
     private String password;
+    
+    /** The Report */
+    private ReportDefinition rctId;
 
     // dummy field to be used in serialized XML to check the status of the delivery using this ReportDeliveryDefinition
     /** The status. */
@@ -249,6 +256,25 @@ public class ReportDeliveryDefinition extends AbstractMutableDomainObject {
     public void setStatus(String status) {
         this.status = status;
     }
+    
+    /**
+     * Gets the Report Definition (Report Calendar Template in DB.)
+     *
+     * @return the report_calendar_template
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "rct_id")
+    public ReportDefinition getReportDefinition() {
+        return rctId;
+    }
+
+    /**
+     * Sets the Report Definition.
+     * @param rdef the definition.
+     */
+    public void setReportDefinition(ReportDefinition rdef) {
+        this.rctId = rdef;
+    }
 
 
     /**
@@ -263,6 +289,7 @@ public class ReportDeliveryDefinition extends AbstractMutableDomainObject {
         rd.entityType = template.entityType;
         rd.endPoint = template.endPoint;
         rd.status = template.status;
+        rd.rctId = template.rctId;
         return rd;
     }
 

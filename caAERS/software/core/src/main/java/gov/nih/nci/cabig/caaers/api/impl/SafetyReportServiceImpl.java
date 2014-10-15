@@ -133,7 +133,8 @@ public class SafetyReportServiceImpl {
      * @param aeSrcReport
      * @return
      */
-    private ValidationErrors validateInput(ExpeditedAdverseEventReport aeSrcReport){
+    @SuppressWarnings("unused")
+	private ValidationErrors validateInput(ExpeditedAdverseEventReport aeSrcReport){
 
         AdverseEventReportingPeriod rpSrc = aeSrcReport.getReportingPeriod();
         ValidationErrors errors = new ValidationErrors();
@@ -312,7 +313,7 @@ public class SafetyReportServiceImpl {
         	// Deep copy the reports as it is throwing ConcurrentModification Exception.
         	aeDestReport.updateAESignatures();
 	        expeditedAdverseEventReportDao.save(aeDestReport);
-            List<Report> reports = new ArrayList(aeDestReport.getReports());
+            List<Report> reports = new ArrayList<Report>(aeDestReport.getReports());
             aeDestReport.getReports().clear();
             // Save the report(s) after Migration.
             for ( Report rpt: reports )    {
@@ -494,7 +495,7 @@ public class SafetyReportServiceImpl {
         studyParticipantAssignmentDao.save(aeDestReport.getAssignment());
 
         // Deep copy the reports as it is throwing ConcurrentModification Exception.
-        List<Report> reports = new ArrayList(aeDestReport.getReports());
+        List<Report> reports = new ArrayList<Report>(aeDestReport.getReports());
         aeDestReport.getReports().clear();
         // Save the report(s) after Migration.
         for ( Report rpt: reports )    {
@@ -533,7 +534,7 @@ public class SafetyReportServiceImpl {
             caaersServiceResponse.getServiceResponse().setResponseData(rdType);
             rdType.setAny(new BaseReports());
 
-            ExpeditedAdverseEventReport aeDestReport = initiateSafetyReportAction(aeSrcReport, caaersServiceResponse, errors);
+            initiateSafetyReportAction(aeSrcReport, caaersServiceResponse, errors);
 
             if(errors.hasErrors())  {
                 expeditedAdverseEventReportDao.clearSession();
@@ -571,7 +572,7 @@ public class SafetyReportServiceImpl {
                 reportSubmissionService.submitReport(report);
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error("Unable to Create/Update a Report from Safety Management Service", e);
             Helper.populateError(response, "WS_GEN_000",e.getMessage() );
             throw e;

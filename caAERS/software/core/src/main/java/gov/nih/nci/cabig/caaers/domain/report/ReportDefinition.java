@@ -113,6 +113,9 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     /** The enabled. */
     private Boolean enabled;
     
+    /** The report deliveries. */
+    private List<ReportDeliveryDefinition> reportDeliverydefinitions;
+    
     //PURE FABRICATED VARIABLES.
     /** The comprator. */
     protected ReportDefinitionComparator comprator;

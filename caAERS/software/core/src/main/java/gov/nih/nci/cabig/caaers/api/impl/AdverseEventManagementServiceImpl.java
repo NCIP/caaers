@@ -57,6 +57,7 @@ import javax.validation.groups.Default;
 
 import gov.nih.nci.cabig.caaers.validation.validator.AdverseEventValidatior;
 import gov.nih.nci.cabig.caaers.ws.faults.CaaersFault;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -267,7 +268,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
         String tac = rpDest.getTreatmentAssignment() != null ? rpDest.getTreatmentAssignment().getCode() : rpDest.getTreatmentAssignmentDescription();
         String epochName = rpDest.getEpoch() != null ? rpDest.getEpoch().getName() : null;
         AdverseEventReportingPeriod rpFound = rpDest.getAssignment().findReportingPeriod(rpDest.getExternalId(), rpDest.getStartDate(),rpDest.getEndDate(), rpDest.getCycleNumber(), epochName, tac);
-        ArrayList reportingPeriodList = new ArrayList<AdverseEventReportingPeriod>(rpDest.getAssignment().getActiveReportingPeriods());
+        ArrayList<AdverseEventReportingPeriod> reportingPeriodList = new ArrayList<AdverseEventReportingPeriod>(rpDest.getAssignment().getActiveReportingPeriods());
         if(rpFound != null) {
             // This is used only incase of SAE Evaluation Service.
             if ( syncFlag ) {
@@ -287,12 +288,10 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
         }
 
         //validate adverse events
-        int i = -1;
         for(AdverseEvent adverseEvent : rpDest.getAdverseEvents()){
-            i++;
             Set<ConstraintViolation<AdverseEvent>> constraintViolations = validator.validate(adverseEvent, AdverseEventGroup.class, Default.class);
             if(!constraintViolations.isEmpty()){
-                //translate errors to repsonse.
+                //translate errors to response.
                 for(ConstraintViolation<AdverseEvent> v : constraintViolations){
                     errors.addValidationError("WS_GEN_006", v.getMessage(), v.getPropertyPath());
                 }
@@ -305,7 +304,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 
         Set<ConstraintViolation<AdverseEventReportingPeriod>> constraintViolations = validator.validate(rpTarget, CourseCycleGroup.class, Default.class);
         if(!constraintViolations.isEmpty()){
-            //translate errors to repsonse.
+            //translate errors to response.
             for(ConstraintViolation<AdverseEventReportingPeriod> v : constraintViolations){
                 errors.addValidationError("WS_GEN_006", v.getMessage(), v.getPropertyPath());
             }
@@ -1460,7 +1459,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 			ExternalAdverseEvent adverseEvent, String index, Set<ConstraintViolation<ExternalAdverseEvent>> constraintViolations, 
 			CaaersServiceResponse caaersServiceResponse) {
 		String valErrmsg = null;
-		for (ConstraintViolation violation : constraintViolations) {
+		for (ConstraintViolation<ExternalAdverseEvent> violation : constraintViolations) {
 			valErrmsg = violation.getMessage() 
 				+ " (" + violation.getPropertyPath() 
 				+ ") in " + adverseEvent.getClass().getSimpleName() 

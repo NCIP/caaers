@@ -6,11 +6,15 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.ws.impl;
 
+import java.util.List;
+
 import gov.nih.nci.cabig.caaers.api.impl.Helper;
 import gov.nih.nci.cabig.caaers.api.impl.SafetyReportServiceImpl;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.AdverseEventReport;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.BaseAdverseEventReport;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.common.WsError;
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.ws.SafetyReportManagementService;
 
 import javax.jws.WebMethod;
@@ -55,15 +59,34 @@ public class SafetyReportManagementServiceImpl implements SafetyReportManagement
 		
     }
 	
+	private String getErrors(List<WsError> list) {
+		if(list == null) {
+			return "Unknown Error";
+		}
+		if(list.size() == 1) {
+			return list.get(0).getErrorDesc();
+		}
+		String val = list.size() + " Errors; ";
+		for(WsError err : list) {
+			val += err.getErrorDesc() +  "; ";
+		}
+		return val;
+	}
+	
 
 	@WebMethod
     public CaaersServiceResponse submitSafetyReport(@WebParam(name = "AdverseEventReport", targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/aereport") AdverseEventReport xmlAdverseEventReport){
 		try {
-			return safetySvcImpl.submitSafetyReport(xmlAdverseEventReport);
+			CaaersServiceResponse val = safetySvcImpl.submitSafetyReport(xmlAdverseEventReport);
+			if ("1".equals(val.getServiceResponse().getResponsecode())) {
+				throw new Exception(getErrors(val.getServiceResponse().getWsError()));
+			}
+				
+			return val;
 		} catch (Exception e) {
             logger.error(e);
             CaaersServiceResponse caaersResponse = Helper.createResponse();
-            Helper.populateError(caaersResponse, "WS_GEN_000", "Unable to process the request :" + e.getMessage());
+            Helper.populateError(caaersResponse, "WS_GEN_000", "Unable to process the request :" + e.getMessage() + ".\n Error occured in " + Configuration.LAST_LOADED_CONFIGURATION.get(Configuration.SYSTEM_NAME));
             return caaersResponse;
 		}
 		
@@ -71,11 +94,16 @@ public class SafetyReportManagementServiceImpl implements SafetyReportManagement
     @WebMethod
     public CaaersServiceResponse saveSafetyReport(@WebParam(name = "AdverseEventReport", targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/aereport") AdverseEventReport xmlAdverseEventReport){
 		try {
-			return safetySvcImpl.saveSafetyReport(xmlAdverseEventReport);
+			CaaersServiceResponse val = safetySvcImpl.saveSafetyReport(xmlAdverseEventReport);
+			if ("1".equals(val.getServiceResponse().getResponsecode())) {
+				throw new Exception(getErrors(val.getServiceResponse().getWsError()));
+			}
+			
+			return val;
 		} catch (Exception e) {
             logger.error(e);
             CaaersServiceResponse caaersResponse = Helper.createResponse();
-            Helper.populateError(caaersResponse, "WS_GEN_000", "Unable to process the request :" + e.getMessage());
+            Helper.populateError(caaersResponse, "WS_GEN_000", "Unable to process the request :" + e.getMessage() + ".\n Error occured in " + Configuration.LAST_LOADED_CONFIGURATION.get(Configuration.SYSTEM_NAME));
             return caaersResponse;
 		}
 

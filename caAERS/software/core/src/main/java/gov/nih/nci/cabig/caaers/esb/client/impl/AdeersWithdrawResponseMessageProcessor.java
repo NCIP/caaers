@@ -66,6 +66,9 @@ public class AdeersWithdrawResponseMessageProcessor extends ResponseMessageProce
         String submitterEmail = cancelInfo.getChild("SUBMITTER_EMAIL",emptyNS).getValue();
         Report r = reportDao.getById(Integer.parseInt(reportId));
         
+        //FIXME: When updating Caaers to send to multiple systems the below must also be changed.
+        //Can just use the first system as that is the only one that is used.
+        String sysName = r.getExternalSystemDeliveries().get(0).getReportDeliveryDefinition().getEntityName();
 //      buld error messages
         StringBuffer sb = new StringBuffer();
 
@@ -96,7 +99,7 @@ public class AdeersWithdrawResponseMessageProcessor extends ResponseMessageProce
                     }
                 }
             	
-            	String withdrawFailureMessage = messageSource.getMessage("failed.reportWithdraw.message", new Object[]{String.valueOf(r.getLastVersion().getId()), exceptionMsgBuffer.toString()}, Locale.getDefault());
+            	String withdrawFailureMessage = messageSource.getMessage("failed.reportWithdraw.message", new Object[]{String.valueOf(r.getLastVersion().getId()), exceptionMsgBuffer.toString(), sysName}, Locale.getDefault());
                 sb.append(withdrawFailureMessage);
             	
             }

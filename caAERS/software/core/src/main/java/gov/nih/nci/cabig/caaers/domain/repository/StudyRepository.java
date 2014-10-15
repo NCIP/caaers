@@ -121,15 +121,13 @@ public class StudyRepository {
         Map<String,StudyIdenitifierQueryDataDTO> fundingSponsorIdValues = studyDao.getAllStudyFundingSponsorIdentifierValueData();
         
         if(CollectionUtils.isEmpty(adEERSStudies)) return new ArrayList<Study>(); //empty list
-
-        HashMap<String, Study> studyIndexMap = new HashMap<String, Study>();
         
         for(Study adEERSStudy : adEERSStudies){
         	adEERSStudy.setStatus("IMPORT");
         	if (adEERSStudy.getCtepEsysIdentifierValue() != null && ctepEsysIdValues.get(adEERSStudy.getCtepEsysIdentifierValue()) != null){
         		adEERSStudy.setId(ctepEsysIdValues.get(adEERSStudy.getCtepEsysIdentifierValue()).getStudyId());  //set the ID to differentiate it.
                 adEERSStudy.setStatus("UPDATE");
-        	} else  if (adEERSStudy.getFundingSponsorIdentifier() != null && fundingSponsorIdValues.get(adEERSStudy.getFundingSponsorIdentifier().getValue()) != null && fundingSponsorIdValues.get(adEERSStudy.getFundingSponsorIdentifier().
+        	} else if (adEERSStudy.getFundingSponsorIdentifier() != null && fundingSponsorIdValues.get(adEERSStudy.getFundingSponsorIdentifier().getValue()) != null && fundingSponsorIdValues.get(adEERSStudy.getFundingSponsorIdentifier().
         			getValue()).getNciInstituteCode().equalsIgnoreCase(adEERSStudy.getFundingSponsorIdentifier().getOrganization().getNciInstituteCode())){
         			adEERSStudy.setId(fundingSponsorIdValues.get(adEERSStudy.getFundingSponsorIdentifier().getValue()).getStudyId());  //set the ID to differentiate it.
         			adEERSStudy.setStatus("UPDATE");
