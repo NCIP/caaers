@@ -122,15 +122,15 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
             	 
             }
             
-               	// append Help Text message
-            	String helpText = messageSource.getMessage("helptext.submission.message", new Object[]{}, Locale.getDefault());
-            	sb.append(helpText);
-            
             if (jobInfo.getChild("comments") != null) {
            	 	String commentsMessage = messageSource.getMessage("comments.reportSubmission.message", new Object[]{jobInfo.getChild("comments").getValue()}, Locale.getDefault());
            	 	sb.append("\n"); // Move comments section to NextLine.
                 sb.append(commentsMessage);
             }
+            
+         	// append Help Text message
+        	String helpText = messageSource.getMessage("helptext.submission.message", new Object[]{}, Locale.getDefault());
+        	sb.append(helpText);
 
             
 
