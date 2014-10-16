@@ -24,6 +24,13 @@ function showDashboardStudiesMenuOptions(_element, _roles, _ssi, _id, _complete)
     if (hasRole('registrar') && hasRole('subject_manager'))
         _optionRegisterSubject = "<li><a class='submitter-blue' href='#' onclick='doRegisterSubject(\"" + _id + "\")'>Register subject</a></li>";
 
+    var _optionSynchronize = "";
+    if(hasRole("study_qa_manager") || hasRole("supplemental_study_information_manager")
+    	    || hasRole("study_team_administrator") || hasRole("study_site_participation_administrator")
+    	    || hasRole("study_creator") || hasRole("data_importer")) {
+    	_optionSynchronize="<li><a class='submitter-blue' href='#' onclick='doUpdate(\"" + _ssi + "\", \"" + _id + "\")'>Synchronize with CTEP</a></li>";
+    }
+    
     var html = "<div><ul style='font-family:tahoma;'>" +
             // "<li><a class='submitter-blue' href='#'>" + rolesSize + "</a></li>" +
             _optionDetails +
@@ -31,7 +38,7 @@ function showDashboardStudiesMenuOptions(_element, _roles, _ssi, _id, _complete)
             _optionInvestigators +
             _optionPersonnel +
             _optionRegisterSubject +
-            "<li><a class='submitter-blue' href='#' onclick='doUpdate(\"" + _ssi + "\", \"" + _id + "\")'>Synchronize with CTEP</a></li>" +
+            _optionSynchronize +
             "</ul></div>";
     jQuery(_element).menu({
             content: html,

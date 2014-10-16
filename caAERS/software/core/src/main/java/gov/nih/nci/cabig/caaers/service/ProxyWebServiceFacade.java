@@ -306,8 +306,7 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
 
     }
 	public String syncStudies() {
-		if(true) throw new CaaersSystemException("gov.nih.nci.cabig.caaers.service.ProxyWebServiceFacade.syncStudies : Not implemented");
-		return null;
+		throw new CaaersSystemException("gov.nih.nci.cabig.caaers.service.ProxyWebServiceFacade.syncStudies : Not implemented");
 	}
 
     private String syncStudy(String operationName, String sponsorIdentifierValue){

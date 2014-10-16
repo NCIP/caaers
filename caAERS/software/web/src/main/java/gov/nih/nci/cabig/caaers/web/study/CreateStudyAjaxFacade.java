@@ -25,6 +25,8 @@ import gov.nih.nci.cabig.caaers.utils.ranking.RankBasedSorterUtils;
 import gov.nih.nci.cabig.caaers.utils.ranking.Serializer;
 import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
 import gov.nih.nci.cabig.caaers.web.dwr.IndexChange;
+import gov.nih.nci.cabig.ctms.domain.DomainObject;
+
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -37,6 +39,7 @@ import org.springframework.web.servlet.mvc.AbstractFormController;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+
 import java.io.IOException;
 import java.util.*;
 
@@ -254,7 +257,7 @@ public class CreateStudyAjaxFacade {
         for (StudyOrganization so : sos) {
             organizations.add(ObjectTools.reduce(so.getOrganization(), "id", "name", "nciInstituteCode", "externalId"));
         }
-        return new ArrayList(organizations);
+        return new ArrayList<Organization>(organizations);
     }
 
     /**
@@ -793,11 +796,11 @@ public class CreateStudyAjaxFacade {
 
         boolean isMeddra = command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA;
 
-        List studyTerms = (isMeddra) ? command.getStudy().getExpectedAEMeddraLowLevelTerms() : command.getStudy().getExpectedAECtcTerms();
+        List<? extends AbstractExpectedAE<? extends DomainObject>> studyTerms = (isMeddra) ? command.getStudy().getExpectedAEMeddraLowLevelTerms() : command.getStudy().getExpectedAECtcTerms();
         int firstIndex = studyTerms.size();
         HashSet<Integer> terms = new HashSet<Integer>();
         for (int i=0; i<studyTerms.size(); i++) {
-            terms.add(((AbstractExpectedAE)studyTerms.get(i)).getTerm().getId());
+            terms.add(studyTerms.get(i).getTerm().getId());
         }
 
         List<Integer> filteredTermIDs = new ArrayList<Integer>();
