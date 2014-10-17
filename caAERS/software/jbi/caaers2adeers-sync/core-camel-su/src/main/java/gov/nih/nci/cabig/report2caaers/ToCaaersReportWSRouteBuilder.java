@@ -52,6 +52,7 @@ public class ToCaaersReportWSRouteBuilder {
         routeBuilder.from("file://"+inputEDIDir+"?preMove=inprogress&move=done&moveFailed=movefailed")
         	.to("log:gov.nih.nci.cabig.report2caaers.caaers-ws-request?showHeaders=true&level=TRACE")
         	.processRef("removeEDIHeadersAndFootersProcessor")
+        	.processRef("crlfFixProcessor")
 			.process(track(REQUEST_RECEIVED, msgComboIdPaths))
 			.to(routeBuilder.getFileTracker().fileURI(REQUEST_RECEIVED))
 			.processRef("eDIMessagePreProcessor")

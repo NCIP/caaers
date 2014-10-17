@@ -19,6 +19,7 @@ import java.util.Map;
  */
 public class ExchangeAdapter implements Exchange {
     Message in = new MessageAdapter();
+    Message out = new MessageAdapter();
     Map<String, Object> properties = new HashMap<String, Object>() ;
     public ExchangePattern getPattern() {
         return null;  
@@ -73,7 +74,7 @@ public class ExchangeAdapter implements Exchange {
     }
 
     public Message getOut() {
-        return null;  
+        return out;
     }
 
     public <T> T getOut(Class<T> tClass) {

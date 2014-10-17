@@ -76,6 +76,7 @@
         <property name="adeersWSUser" value="s[ADEERS_WS_USERNAME]" />
         <property name="adeersWSPassword" value="s[ADEERS_WS_PASSWORD]" />
     </bean>
+    <bean id="crlfFixProcessor" class="gov.nih.nci.cabig.rave2caaers.exchange.CRLFFixProcessor"/>
     <bean id="trimWhitespaceMessageProcessor" class="gov.nih.nci.cabig.rave2caaers.exchange.TrimWhitespaceMessageProcessor"/>
     <bean id="raveCredentialsProcessor" class="gov.nih.nci.cabig.rave2caaers.exchange.CredentialsProcessor" />
     
