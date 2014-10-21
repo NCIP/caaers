@@ -80,7 +80,9 @@
         collection="arraylist">
         <bind-xml name="OtherAEIntervention"/>
       </field>
-
+      <field name="investigationalDeviceAdministered" type="boolean">
+          <bind-xml name="investigationalDeviceAdministered" node="element"/>
+      </field>
     <field name="medicalDevices" type="gov.nih.nci.cabig.caaers.domain.MedicalDevice"
       collection="arraylist">
       <bind-xml name="MedicalDevice"/>
