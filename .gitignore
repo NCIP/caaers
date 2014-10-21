@@ -16,3 +16,10 @@ target
 .classpath
 caAERS/software/web/${env.CATALINA_HOME}/
 caAERS/software/jbi/caaers2adeers-sync/core-camel-su/data/
+deployServicemix.sh
+caaers.classpath
+caaers.project
+StudyTestReport.txt
+local.properties
+profiles.xml
+caAERS/software/null
