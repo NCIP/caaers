@@ -5,9 +5,12 @@ function showDashboardStudiesMenuOptions(_element, _roles, _ssi, _id, _complete)
     var rolesSize = _roles.length;
 
     var _optionDetails = "";
-    if (hasRole('supplemental_study_information_manager') || (_complete == 'true' && hasRole('study_qa_manager')) || (_complete == 'false' && hasRole('study_creator')))
+    if (hasRole('supplemental_study_information_manager') || (_complete == 'true' && hasRole('study_qa_manager')) || (_complete == 'false' && hasRole('study_creator'))) {
         _optionDetails = "<li><a class='submitter-blue' href='#' onclick='doEdit(\"" + _id + "\")'>Edit study details</a></li>";
-
+    } else {
+    	_optionDetails = "<li><a class='submitter-blue' href='#' onclick='doEdit(\"" + _id + "\")'>View study details</a></li>";
+    }
+    
     var _optionSites = "";
     if (hasRole('study_site_participation_administrator'))
         _optionSites = "<li><a class='submitter-blue' href='#' onclick='addStudySite(\"" + _id + "\", " + _complete + ")'>Add study site</a></li>";
