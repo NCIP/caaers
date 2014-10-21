@@ -673,8 +673,10 @@
 							</xsl:call-template>
 					</indadminflag>
 				</xsl:if>
-				<xsl:if test="/AdverseEventReport/TreatmentInformation/investigationalDeviceAdministered">	
-					<ideadminflag><xsl:value-of select="/AdverseEventReport/TreatmentInformation/investigationalDeviceAdministered"/></ideadminflag>
+				<xsl:if test="/AdverseEventReport/investigationalDeviceAdministered">
+					<ideadminflag><xsl:call-template name="convertBooleantoOneTwo">
+                        <xsl:with-param name="boolType" select="/AdverseEventReport/investigationalDeviceAdministered"/>
+                    </xsl:call-template></ideadminflag>
 				</xsl:if>
 				<narrativeincludeclinical><xsl:value-of select="/AdverseEventReport/AdverseEventResponseDescription/eventDescription"/></narrativeincludeclinical>
 				<xsl:call-template name="ConvertRetreatedToCode"> 

@@ -826,6 +826,7 @@ Course Criteria Conditions enforced in service Implementation. 1. Start date of 
 <xs:element maxOccurs="unbounded" minOccurs="0" name="surgeryIntervention" type="SurgeryInterventionType"/>
 <xs:element maxOccurs="unbounded" minOccurs="0" name="biologicalIntervention" type="BiologicalInterventionType"/>
 <xs:element maxOccurs="unbounded" minOccurs="0" name="dietarySupplementIntervention" type="DietarySupplementInterventionType"/>
+<xs:element minOccurs="0" name="investigationalDeviceAdministered" type="xs:boolean"/>
 <xs:element maxOccurs="unbounded" minOccurs="0" name="medicalDevice" type="MedicalDeviceType"/>
 <xs:element maxOccurs="unbounded" minOccurs="0" name="concomitantMedication" type="ConcomitantMedicationType"/>
 <xs:element maxOccurs="unbounded" name="adverseEvent" type="AdverseEventType"/>
