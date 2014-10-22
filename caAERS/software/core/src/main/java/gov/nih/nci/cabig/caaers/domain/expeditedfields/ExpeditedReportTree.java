@@ -425,7 +425,7 @@ public class ExpeditedReportTree extends PropertylessNode {
      * @return the tree node
      */
     private TreeNode createPersonBlock(String person) {
-        return property(person, StringUtils.capitalize(person) + " details", 
+        TreeNode t =  property(person, StringUtils.capitalize(person) + " details", 
         		property("title", getMessage("LBL_aeReport." + person + ".title", "Position title")),
         		property("firstName", getMessage("LBL_aeReport." + person + ".firstName", "First name")),
         		property("middleName", getMessage("LBL_aeReport." + person + ".middleName", "Middle name")),
@@ -438,6 +438,11 @@ public class ExpeditedReportTree extends PropertylessNode {
         				property("city", getMessage("LBL_aeReport." + person + ".address.city", "City")),
         				property("state", getMessage("LBL_aeReport." + person + ".address.state", "State")),
         				property("zip", getMessage("LBL_aeReport." + person + ".address.zip", "Zip"))));
+        if(person.equals("reporter")) {
+        	t.add(contactField(ReportPerson.ALT_EMAIL, getMessage("LBL_aeReport." + person + ".alternateEmail", "Alternate Email")));
+        }
+        
+        return t;
     }
 
 /*

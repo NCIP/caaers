@@ -159,6 +159,9 @@ public class ExpeditedAdverseEventReportConverterUtility {
     /** The Constant PHONE. key for the phone number */
     protected static final String PHONE = "phone";
     
+    /** The Constant Backup Reporter. key for the backup reporter email */
+    protected static final String ALT_EMAIL = "alternateEmails";
+    
     private MessageSource messageSource;
     
     /** The now factory. */
@@ -967,12 +970,14 @@ public class ExpeditedAdverseEventReportConverterUtility {
 			reporter.setPhoneNumber(getPhone(xmlReporterType.getContactMechanism()));
 			reporter.setFax(getFax(xmlReporterType.getContactMechanism()));
             reporter.setFaxNumber(getFax(xmlReporterType.getContactMechanism()));
+            reporter.setBackupEmailAddress(getAlternateEmail(xmlReporterType.getContactMechanism()));
 		}
 		
 		return reporter;
 		
 	}
-	
+
+
 	protected Submitter convertSubmitter(SubmitterType xmlSubmitterType){
 		Submitter submitter = new Submitter();
 		submitter.setFirstName(xmlSubmitterType.getFirstName());
@@ -1227,6 +1232,15 @@ public class ExpeditedAdverseEventReportConverterUtility {
 			}
 		}
 		
+		return null;
+	}
+	
+	private String getAlternateEmail(List<ContactMechanismType> contactMechanism) {
+		for(ContactMechanismType cm : contactMechanism){
+			if(cm.getType().equals(ALT_EMAIL)){
+				return cm.getValue();
+			}
+		}
 		return null;
 	}
 	
