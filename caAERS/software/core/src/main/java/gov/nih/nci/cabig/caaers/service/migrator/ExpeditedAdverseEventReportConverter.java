@@ -252,6 +252,7 @@ public class ExpeditedAdverseEventReportConverter {
         }
 
         //Intervention - Device
+        aeReport.setInvestigationalDeviceAdministered(aeReportDto.isInvestigationalDeviceAdministered());
         for(MedicalDeviceType xmlMedicalDeviceType : aeReportDto.getMedicalDevice()){
             aeReport.addMedicalDevice(utility.convertMedicalDevice(xmlMedicalDeviceType));
         }

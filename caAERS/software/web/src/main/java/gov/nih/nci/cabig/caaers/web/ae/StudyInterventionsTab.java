@@ -191,6 +191,11 @@ public class StudyInterventionsTab extends AeTab {
     }
 
     private void createDeviceFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command){
+
+        InputField ideAdministeredField = InputFieldFactory.createSelectField("investigationalDeviceAdministered", "Was an investigational device administered on this protocol?" , false, createInvestigationalAgentAdministeredOptions());
+        ideAdministeredField.getAttributes().put(InputField.HELP,"ae.medicalDevice.aeReport.investigationalDeviceAdministered");
+        creator.createFieldGroup("ideAdministered", ideAdministeredField);
+
         //fields for study device
         InputField studyDeviceField = InputFieldFactory.createSelectField("studyDevice", "Study device", true, WebUtils.collectOptions(command.getStudy().getActiveStudyDevices(), "id", "displayName", "Please select"));
         //fields for medical device

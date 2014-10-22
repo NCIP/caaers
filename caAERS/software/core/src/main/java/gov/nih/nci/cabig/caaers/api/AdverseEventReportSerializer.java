@@ -161,7 +161,10 @@ public class AdverseEventReportSerializer {
 
 	    	//build treatment info
 	    	aer.setTreatmentInformation(getTreatmentInformation(hibernateAdverseEventReport.getTreatmentInformation(),notApplicableFieldPaths));
-	    
+
+            if(!notApplicableFieldPaths.contains("investigationalDeviceAdministered")) {
+                aer.setInvestigationalDeviceAdministered(hibernateAdverseEventReport.getInvestigationalDeviceAdministered());
+            }
 	    	//build MedicalDevices
 	    	List<MedicalDevice> medicalDeviceList = CaaersSerializerUtil.filter(hibernateAdverseEventReport.getMedicalDevices());
 
