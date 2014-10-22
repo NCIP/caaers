@@ -13,7 +13,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -259,9 +258,11 @@ public class ReportDeliveryDefinition extends AbstractMutableDomainObject {
     
     /**
      * Gets the Report Definition (Report Calendar Template in DB.)
+     * This method is not being used at the moment.
      *
      * @return the report_calendar_template
      */
+    @Deprecated
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rct_id")
     public ReportDefinition getReportDefinition() {
@@ -270,8 +271,11 @@ public class ReportDeliveryDefinition extends AbstractMutableDomainObject {
 
     /**
      * Sets the Report Definition.
+     * This method is not used at the moment.
+     * 
      * @param rdef the definition.
      */
+    @Deprecated
     public void setReportDefinition(ReportDefinition rdef) {
         this.rctId = rdef;
     }

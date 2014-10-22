@@ -47,10 +47,13 @@ public abstract class PersonContact extends Person {
 
     /** The Constant PHONE. {@link #getContactMechanisms} key for the phone number */
     public static final String PHONE = "phone";
+    
+    /** The Constant Backup Email. {@link #getContactMechanisms} key for the backup emails */
+    public static final String ALT_EMAIL = "alternate e-mail";
 
     /** The Constant DEFAULT_CONTACT_MECHANISM_KEYS. */
     public static final List<String> DEFAULT_CONTACT_MECHANISM_KEYS = Arrays.asList(EMAIL, PHONE,
-                    FAX);
+                    FAX, ALT_EMAIL);
 
     // //// LOGIC
 
@@ -184,6 +187,23 @@ public abstract class PersonContact extends Person {
 	@Transient
 	public String getEmailAddress(){
 		return contactMechanisms.get(EMAIL);
+	}
+	
+	/**
+	 * Sets the Backup email addesses
+	 * @param emailAddress the email addresses to set.
+	 */
+	@Transient
+	public void setBackupEmailAddress(String emailAddress){
+		contactMechanisms.put(ALT_EMAIL, emailAddress);
+	}
+	
+	/**
+	 * Gets the backup email addresses
+	 */
+	@Transient
+	public String getBackupEmailAddress(){
+		return contactMechanisms.get(ALT_EMAIL);
 	}
 	
 	/* (non-Javadoc)
