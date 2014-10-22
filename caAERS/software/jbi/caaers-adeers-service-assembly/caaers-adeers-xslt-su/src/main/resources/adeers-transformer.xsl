@@ -183,7 +183,7 @@
             <OTHER_TREATMENT_ASSIGNMENT><xsl:value-of select="TreatmentInformation/treatmentDescription"/></OTHER_TREATMENT_ASSIGNMENT>
            </xsl:if>
         </TREATMENT_ASSIGNMENT_INFORMATION>
-        <xsl:if test="TreatmentInformation/firstCourseDate or TreatmentInformation/AdverseEventCourse/child::* or TreatmentInformation/totalCourses or TreatmentInformation/investigationalAgentAdministered">
+        <xsl:if test="TreatmentInformation/firstCourseDate or TreatmentInformation/AdverseEventCourse/child::* or TreatmentInformation/totalCourses or TreatmentInformation/investigationalAgentAdministered or investigationalDeviceAdministered">
             <COURSE_INFORMATION>
                 <xsl:if test="TreatmentInformation/firstCourseDate != ''">
                     <START_DATE_OF_FIRST_COURSE>
@@ -217,6 +217,14 @@
                     </xsl:when>
                     <xsl:when test="TreatmentInformation/investigationalAgentAdministered = 'false'">
                         <INV_AGENT_ADMIN>No</INV_AGENT_ADMIN>
+                    </xsl:when>
+                </xsl:choose>
+                <xsl:choose>
+                    <xsl:when test="investigationalDeviceAdministered = 'true'">
+                        <INV_DEVICE_ADMIN>Yes</INV_DEVICE_ADMIN>
+                    </xsl:when>
+                    <xsl:when test="investigationalDeviceAdministered = 'false'">
+                        <INV_DEVICE_ADMIN>No</INV_DEVICE_ADMIN>
                     </xsl:when>
                 </xsl:choose>
             </COURSE_INFORMATION>
