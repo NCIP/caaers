@@ -9,6 +9,7 @@ package gov.nih.nci.cabig.caaers.esb.client;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.service.ProxyWebServiceFacade;
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 
 import java.io.Reader;
 import java.io.StringReader;
@@ -30,6 +31,12 @@ public abstract class ResponseMessageProcessor {
 	protected final Log log = LogFactory.getLog(getClass());
 	private MessageNotificationService messageNotificationService;
 	protected ReportDao reportDao;
+	
+	protected Configuration configuration;	
+	
+	public void setConfiguration(Configuration configuration) {
+		this.configuration = configuration;
+	}
 	
 	protected ProxyWebServiceFacade proxyWebServiceFacade;
 	

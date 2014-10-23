@@ -462,6 +462,7 @@ default-lazy-init="true">
 		<property name="messageSource" ref="messageSource" />
 		<property name="reportDao" ref="reportDao" />
 		<property name="proxyWebServiceFacade" ref="proxyWebServiceFacade"/>
+		<property name="configuration" ref="configuration"/>
    </bean>
    
   <bean id="withdrawAEReportResponse" class="org.springframework.aop.framework.ProxyFactoryBean"> 
