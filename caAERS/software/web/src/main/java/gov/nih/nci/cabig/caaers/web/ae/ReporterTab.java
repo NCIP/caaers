@@ -195,6 +195,8 @@ public class ReporterTab extends AeTab {
     private InputField createContactField(String base, String contactType, String displayName, boolean required) {
         if (contactType.equals(ReportPerson.PHONE) || contactType.equals(ReportPerson.FAX)) {
             return InputFieldFactory.createPhoneField(base + "contactMechanisms[" + contactType + ']', displayName, required);
+        } else if (contactType.equals(ReportPerson.ALT_EMAIL)){
+        	return InputFieldFactory.createMultiEmailField(base + "contactMechanisms[" + contactType + ']', displayName, required);
         } else {
             return InputFieldFactory.createEmailField(base + "contactMechanisms[" + contactType + ']', displayName, required);
         }

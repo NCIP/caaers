@@ -171,6 +171,7 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
         List<Report> actual = getDao().getById(-1).getReports();
         assertNotNull(actual);
         assertEquals("Wrong number of reports", 2, actual.size());
+        //TODO: Sometimes it fails with "Wrong report 0 expected:<-40> but was:<-41>". Query is in no order so the return order is random.
         assertEquals("Wrong report 0", -40, (int) actual.get(1).getId());
 
         Report actualReport1 = actual.get(0);
