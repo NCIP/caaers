@@ -10,20 +10,23 @@ import gov.nih.nci.cabig.caaers.CaaersContextLoader;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationFromStudySiteQuery;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.DateValue;
+import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
+import gov.nih.nci.cabig.caaers.domain.LocalStudy;
+import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
+import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
-import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl;
-import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
-import gov.nih.nci.cabig.caaers.security.SecurityUtilsTest;
 import gov.nih.nci.cabig.caaers.web.utils.ConfigPropertyHelper;
-import org.springframework.context.ApplicationContext;
-import org.springframework.validation.FieldError;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.context.ApplicationContext;
 
 /**
  * @author Biju Joseph
@@ -33,9 +36,8 @@ import java.util.Map;
 @SuppressWarnings("unchecked")
 public class CreateParticipantTabTest extends AbstractTabTestCase<CreateParticipantTab, ParticipantInputCommand> {
 
-    private CreateParticipantTab createParticipantTab;
+    private CreateParticipantTab<ParticipantInputCommand> createParticipantTab;
     private ParticipantInputCommand newParticipantCommand;
-    private CaaersSecurityFacade facade;
 
     @Override
     protected void setUp() throws Exception {
@@ -51,8 +53,8 @@ public class CreateParticipantTabTest extends AbstractTabTestCase<CreateParticip
     }
 
     @Override
-    protected CreateParticipantTab createTab() {
-        createParticipantTab = new CreateParticipantTab();
+    protected CreateParticipantTab<ParticipantInputCommand> createTab() {
+        createParticipantTab = new CreateParticipantTab<ParticipantInputCommand>();
         createParticipantTab.setOrganizationRepository(new OrganizationRepository(){
         	public void create(Organization organization) {
         		// TODO Auto-generated method stub
@@ -371,7 +373,7 @@ public class CreateParticipantTabTest extends AbstractTabTestCase<CreateParticip
     }
     
     public void testReferenceData(){
-    	Map<Object,Object> refData = createParticipantTab.referenceData(request, newParticipantCommand);
+    	Map<String,Object> refData = createParticipantTab.referenceData(request, newParticipantCommand);
     	assertEquals("New",(String)refData.get("action"));
     }
     

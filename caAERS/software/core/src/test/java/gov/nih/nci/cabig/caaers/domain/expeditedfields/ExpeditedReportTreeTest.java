@@ -6,10 +6,19 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.domain.expeditedfields;
 
-import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.CaaersError;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.AdditionalInformation;
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
+import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.Grade;
+import gov.nih.nci.cabig.caaers.domain.Lab;
+import gov.nih.nci.cabig.caaers.domain.LabTerm;
+import gov.nih.nci.cabig.caaers.domain.ReportPerson;
+import gov.nih.nci.cabig.caaers.domain.Reporter;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
@@ -19,10 +28,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-
-import junit.framework.TestCase;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.MutablePropertyValues;
@@ -53,7 +59,7 @@ public class ExpeditedReportTreeTest extends CaaersTestCase {
     }
 
     public void testRecurcivelyCollectListNodes() {
-        List<TreeNode> nodes = new ArrayList();
+        List<TreeNode> nodes = new ArrayList<TreeNode>();
         tree.recursivelyCollectListNodes(nodes);
         assertEquals("adverseEvents", nodes.get(0).getPropertyName());
     }
@@ -238,7 +244,7 @@ public class ExpeditedReportTreeTest extends CaaersTestCase {
     	AdditionalInformation ai = new AdditionalInformation();
     	ai.setAutopsyReport(true);
     	report.setAdditionalInformation(ai);
-    	ArrayList list = new ArrayList();
+    	ArrayList<String> list = new ArrayList<String>();
     	for(TreeNode tn : node.getChildren()){
     		System.out.println(tn.getPropertyValuesFrom(report).getPropertyValues()[0].getValue());
     		list.add(tn.getPropertyPath());
@@ -250,29 +256,28 @@ public class ExpeditedReportTreeTest extends CaaersTestCase {
     	List<UnsatisfiedProperty> props = tree.verifyPropertiesPresent(list, report);
     	System.out.println(props);
     }
-    
-    
-    public void populateFieldMap(
-            TreeNode node) {
-		    		// only add leaf nodes in the filed map. (others are just sections)
-		if (node.isLeaf()) {
-		    String key = node.getParent().getQualifiedDisplayName();
-		
-		    String displayName = node.getDisplayName();
-		    String path = node.getPropertyPath();
-		    if (StringUtils.isEmpty(path)) return;
-		    if (StringUtils.isEmpty(displayName)) displayName = node.getParent().getDisplayName();
-		    System.out.println(key + ">>" + displayName);
-		   
-		
-		    		
-		} else {
-		    // add children of this node in the map
-		    for (TreeNode n : node.getChildren())
-		        populateFieldMap( n);
-		}
 
-}
+
+    public void populateFieldMap(TreeNode node) {
+    	// only add leaf nodes in the filed map. (others are just sections)
+    	if (node.isLeaf()) {
+    		String key = node.getParent().getQualifiedDisplayName();
+
+    		String displayName = node.getDisplayName();
+    		String path = node.getPropertyPath();
+    		if (StringUtils.isEmpty(path)) return;
+    		if (StringUtils.isEmpty(displayName)) displayName = node.getParent().getDisplayName();
+    		System.out.println(key + ">>" + displayName);
+
+
+
+    	} else {
+    		// add children of this node in the map
+    		for (TreeNode n : node.getChildren())
+    			populateFieldMap(n);
+    	}
+
+    }
 
 
     public void testGetSectionForNode() throws Exception {
@@ -325,6 +330,16 @@ public class ExpeditedReportTreeTest extends CaaersTestCase {
             names.add(descriptor.getName());
         }
         return names;
+    }
+    
+    public void testReporterHasAltEmail() {
+    	List<TreeNode> people = tree.getNodeForSection(ExpeditedReportSection.REPORTER_INFO_SECTION).getChildren();
+    	assertEquals(2, people.size());
+    	String propName = "contactMechanisms[" + ReportPerson.ALT_EMAIL + ']';
+    	TreeNode rep = people.get(0).find(propName);
+    	TreeNode phy = people.get(1).find(propName);
+    	assertTrue(rep != null);
+    	assertTrue(phy == null);
     }
 
 }

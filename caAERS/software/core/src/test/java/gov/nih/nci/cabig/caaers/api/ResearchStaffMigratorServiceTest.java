@@ -77,6 +77,7 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
 			
 			assertNotNull(updatedResearchStaff);
 			
+			//FIXME: "expected:<[111]-345-0983> but was:<[879]-345-0983>" happens sometimes. Meaning the original before the update is pulled.
 			assertEquals("111-345-0983", updatedResearchStaff.getFaxNumber());
 			assertEquals("111-678-0098", updatedResearchStaff.getPhoneNumber());
 			assertEquals("caaers.app2@gmail.com",updatedResearchStaff.getEmailAddress());

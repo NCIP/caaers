@@ -4,7 +4,6 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 
 import java.util.concurrent.Future;
-import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 

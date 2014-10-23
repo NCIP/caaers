@@ -17,6 +17,7 @@ import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.Search;
 import gov.nih.nci.cabig.caaers.domain.ajax.ParticipantAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudyAjaxableDomainObject;
+import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
@@ -25,6 +26,7 @@ import gov.nih.nci.cabig.caaers.utils.ranking.RankBasedSorterUtils;
 import gov.nih.nci.cabig.caaers.utils.ranking.Serializer;
 import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
 import gov.nih.nci.cabig.caaers.web.search.ui.*;
+
 import org.acegisecurity.context.SecurityContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -35,6 +37,7 @@ import org.springframework.beans.factory.annotation.Required;
 import javax.servlet.ServletException;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
+
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.*;
@@ -45,9 +48,9 @@ public class AdvancedSearchAjaxFacade{
 	
 	private static final Log log = LogFactory.getLog(AdvancedSearchAjaxFacade.class);
 
-    private StudySearchableAjaxableDomainObjectRepository studySearchableAjaxableDomainObjectRepository;
+    private StudySearchableAjaxableDomainObjectRepository<StudySearchableAjaxableDomainObject> studySearchableAjaxableDomainObjectRepository;
 	
-	private ParticipantAjaxableDomainObjectRepository participantAjaxableDomainObjectRepository;
+	private ParticipantAjaxableDomainObjectRepository<ParticipantAjaxableDomainObject> participantAjaxableDomainObjectRepository;
 	
 	private SearchDao searchDao;
 	
@@ -274,7 +277,7 @@ public class AdvancedSearchAjaxFacade{
 	public List<ViewColumn> getViewColumnsForDependentObject(String dependentObjectDisplayName){
 		AdvancedSearchCommand command = (AdvancedSearchCommand) extractCommand();
 		DependentObject dObject = AdvancedSearchUiUtil.getDependentObjectByDisplayName(command.getSearchTargetObject(), dependentObjectDisplayName);
-		List<ViewColumn> viewColumnList = new ArrayList();
+		List<ViewColumn> viewColumnList = new ArrayList<ViewColumn>();
 		if(dObject.getClassName().equals(command.getSearchTargetObject().getClassName())){
 			viewColumnList.addAll(command.getSearchTargetObject().getDependentObject().get(0).getViewColumn());
 			for(DependentObject dependentObject: command.getSearchTargetObject().getDependentObject()){
@@ -296,14 +299,14 @@ public class AdvancedSearchAjaxFacade{
 		return null;
 	}
 	
-	public List<StudyAjaxableDomainObject> matchStudies(String text) {
+	public List<StudySearchableAjaxableDomainObject> matchStudies(String text) {
 
         StudySearchableAjaxableDomainObjectQuery domainObjectQuery = new StudySearchableAjaxableDomainObjectQuery();
         domainObjectQuery.filterStudiesWithMatchingText(text);
         domainObjectQuery.filterByDataEntryStatus(true);
-        List<StudyAjaxableDomainObject> studies = studySearchableAjaxableDomainObjectRepository.findStudies(domainObjectQuery);
-        studies = RankBasedSorterUtils.sort(studies , text, new Serializer<StudyAjaxableDomainObject>(){
-            public String serialize(StudyAjaxableDomainObject object) {
+        List<StudySearchableAjaxableDomainObject> studies = studySearchableAjaxableDomainObjectRepository.findStudies(domainObjectQuery);
+        studies = RankBasedSorterUtils.sort(studies , text, new Serializer<StudySearchableAjaxableDomainObject>(){
+            public String serialize(StudySearchableAjaxableDomainObject object) {
                 return object.getDisplayName();
             }
         });
@@ -437,12 +440,12 @@ public class AdvancedSearchAjaxFacade{
 	}
 	
 	@Required
-    public void setStudySearchableAjaxableDomainObjectRepository(StudySearchableAjaxableDomainObjectRepository studyAjaxableDomainObjectRepository) {
+    public void setStudySearchableAjaxableDomainObjectRepository(StudySearchableAjaxableDomainObjectRepository<StudySearchableAjaxableDomainObject> studyAjaxableDomainObjectRepository) {
         this.studySearchableAjaxableDomainObjectRepository = studyAjaxableDomainObjectRepository;
     }
 
     @Required
-    public void setParticipantAjaxableDomainObjectRepository(ParticipantAjaxableDomainObjectRepository participantAjaxableDomainObjectRepository) {
+    public void setParticipantAjaxableDomainObjectRepository(ParticipantAjaxableDomainObjectRepository<ParticipantAjaxableDomainObject> participantAjaxableDomainObjectRepository) {
         this.participantAjaxableDomainObjectRepository = participantAjaxableDomainObjectRepository;
     }
 

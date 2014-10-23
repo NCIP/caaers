@@ -23,7 +23,7 @@ public class Lov implements Serializable {
 
     private String desc;
 
-    List<Lov> data = new ArrayList();
+    List<Lov> data = new ArrayList<Lov>();
 
     public Lov() {
     }

@@ -294,6 +294,16 @@ public class InputFieldFactory {
         }
         return createInputField(TEXT, propertyName, displayName, validators);
     }
+    
+    public static InputField createMultiEmailField(String propertyName, String displayName, boolean required) {
+        FieldValidator validators[] = null;
+        if (required) {
+            validators = new FieldValidator[]{FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.MULTI_EMAIL_VALIDATOR};
+        } else {
+            validators = new FieldValidator[]{FieldValidator.MULTI_EMAIL_VALIDATOR};
+        }
+        return createInputField(TEXT, propertyName, displayName, validators);
+    }
 
     public static InputField createZipCodeField(String propertyName, String displayName, boolean required) {
         FieldValidator validators[] = null;
