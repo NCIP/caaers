@@ -45,6 +45,7 @@ import gov.nih.nci.cabig.caaers.validation.ValidationError;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -512,14 +513,14 @@ public class SafetyReportServiceImpl {
      * @return
      */
     @Transactional(readOnly=false)
-    public CaaersServiceResponse initiateSafetyReportAction(BaseAdverseEventReport baseAadverseEventReport) throws Exception {
+    public CaaersServiceResponse initiateSafetyReportAction(BaseAdverseEventReport baseAdverseEventReport) throws Exception {
         CaaersServiceResponse caaersServiceResponse = Helper.createResponse();
         
         ValidationErrors errors = new ValidationErrors();
         ExpeditedAdverseEventReport aeSrcReport = null;
         try {
         	// 1. Call the Converter(s) to construct the domain object.
-            aeSrcReport = baseEaeConverter.convert(baseAadverseEventReport);
+            aeSrcReport = baseEaeConverter.convert(baseAdverseEventReport);
 
         }catch (Exception e){
             logger.error("Unable to convert the XML report to domain object", e);
@@ -540,7 +541,11 @@ public class SafetyReportServiceImpl {
                 expeditedAdverseEventReportDao.clearSession();
                 populateErrors(caaersServiceResponse, errors);
             } else {
-            	caaersServiceResponse.getServiceResponse().setMessage("Initiated safety report action for the safety report, " + baseAadverseEventReport.getExternalId());
+            	BaseReports baseReports = (BaseReports)caaersServiceResponse.getServiceResponse().getResponseData().getAny();
+            	int numberofReports = baseReports.getBaseReport().size();
+            	caaersServiceResponse.getServiceResponse().setMessage("Successfully initiated the following safety report action for Report ID " +
+            	baseAdverseEventReport.getExternalId() + ", Amendment " + baseReports.getBaseReport().get(numberofReports-1).getAmendmentNumber() + " : " + 
+            	baseReports.getBaseReport().get(numberofReports-1).getActionText());
             }
             
         }catch (Exception e){
