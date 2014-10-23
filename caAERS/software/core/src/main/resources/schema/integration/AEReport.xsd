@@ -59,7 +59,8 @@
 				<xs:element type="SurgeryInterventionType" name="surgeryIntervention" minOccurs="0" maxOccurs="unbounded" />
 				<xs:element type="BiologicalInterventionType" name="biologicalIntervention" minOccurs="0" maxOccurs="unbounded" />
 				<xs:element type="DietarySupplementInterventionType" name="dietarySupplementIntervention" minOccurs="0" maxOccurs="unbounded" />
-				<xs:element type="MedicalDeviceType" name="medicalDevice" minOccurs="0" maxOccurs="unbounded" />
+                <xs:element type="xs:boolean" name="investigationalDeviceAdministered" minOccurs="0" />
+                <xs:element type="MedicalDeviceType" name="medicalDevice" minOccurs="0" maxOccurs="unbounded" />
 				<xs:element type="ConcomitantMedicationType" name="concomitantMedication" maxOccurs="unbounded" minOccurs="0" />
 				<xs:element type="AdverseEventType" name="adverseEvent" maxOccurs="unbounded" minOccurs="1" />
 				<xs:element type="LabType" name="lab" minOccurs="0" maxOccurs="unbounded" />

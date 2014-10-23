@@ -219,6 +219,15 @@
 						<xsl:for-each select="//drug[drugadditional = 'Surgery']">
 							<xsl:call-template name="surgeryIntervention" />
 						</xsl:for-each>
+
+                        <xsl:if test="/ichicsr/safetyreport/patient/summary/ideadminflag">
+                            <ae:investigationalDeviceAdministered>
+                                <xsl:call-template name="convertOneTwotoBoolean">
+                                    <xsl:with-param name="oneTwoType" select="/ichicsr/safetyreport/patient/summary/ideadminflag" />
+                                </xsl:call-template>
+                            </ae:investigationalDeviceAdministered>
+                        </xsl:if>
+
 						<!--Zero or more repetitions: -->
 						<xsl:for-each select="//drug[drugadditional = 'Device']">
 							<xsl:call-template name="medicalDevice" />
