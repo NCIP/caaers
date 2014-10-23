@@ -37,13 +37,8 @@ public class CaaersFieldsTreeTest extends CaaersTestCase {
     }
     
     //checks whether the call is properly getting delegated to expedited tree. 
-    public void testInitialize() {
-    	ExpeditedReportTree reportTree;
-    	try {
-    		reportTree = registerMockFor(ExpeditedReportTree.class);
-    	} catch (RuntimeException re) {
-    		return;
-    	}
+    public void testInitialize(){
+        ExpeditedReportTree reportTree = registerMockFor(ExpeditedReportTree.class);
         tree.setExpeditedReportTree(reportTree);
 
         reportTree.reinitialize();
