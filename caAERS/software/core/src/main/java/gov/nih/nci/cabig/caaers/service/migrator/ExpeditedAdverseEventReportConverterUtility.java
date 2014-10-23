@@ -970,7 +970,7 @@ public class ExpeditedAdverseEventReportConverterUtility {
 			reporter.setPhoneNumber(getPhone(xmlReporterType.getContactMechanism()));
 			reporter.setFax(getFax(xmlReporterType.getContactMechanism()));
             reporter.setFaxNumber(getFax(xmlReporterType.getContactMechanism()));
-            reporter.setBackupEmailAddress(getAlternateEmail(xmlReporterType.getContactMechanism()));
+            reporter.setAlternateEmailAddress(getAlternateEmail(xmlReporterType.getContactMechanism()));
 		}
 		
 		return reporter;

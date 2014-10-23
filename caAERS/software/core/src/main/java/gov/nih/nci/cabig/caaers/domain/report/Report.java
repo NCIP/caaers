@@ -545,7 +545,7 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
     			String email = getReporter().getEmailAddress();
         		if(StringUtils.isNotEmpty(email)) emails.add(email);
         		
-        		for (String alt : getReporter().getBackupEmailAddress().split(",")) {
+        		for (String alt : getReporter().getAlternateEmailAddress().split(",")) {
         			emails.add(alt);
         		}
     		}

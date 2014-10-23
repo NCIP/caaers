@@ -48,7 +48,7 @@ public abstract class PersonContact extends Person {
     /** The Constant PHONE. {@link #getContactMechanisms} key for the phone number */
     public static final String PHONE = "phone";
     
-    /** The Constant Backup Email. {@link #getContactMechanisms} key for the backup emails */
+    /** The Constant for Alternate Emails. {@link #getContactMechanisms} key for the Alternate emails (Reporter Only) */
     public static final String ALT_EMAIL = "alternate e-mail";
 
     /** The Constant DEFAULT_CONTACT_MECHANISM_KEYS. */
@@ -194,7 +194,7 @@ public abstract class PersonContact extends Person {
 	 * @param emailAddress the email addresses to set.
 	 */
 	@Transient
-	public void setBackupEmailAddress(String emailAddress){
+	public void setAlternateEmailAddress(String emailAddress){
 		contactMechanisms.put(ALT_EMAIL, emailAddress);
 	}
 	
@@ -202,7 +202,7 @@ public abstract class PersonContact extends Person {
 	 * Gets the backup email addresses
 	 */
 	@Transient
-	public String getBackupEmailAddress(){
+	public String getAlternateEmailAddress(){
 		return contactMechanisms.get(ALT_EMAIL);
 	}
 	
