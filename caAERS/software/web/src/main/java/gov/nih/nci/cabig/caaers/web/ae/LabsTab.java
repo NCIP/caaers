@@ -98,6 +98,7 @@ public class LabsTab extends AeTab {
         options.put("", "Other, specify");
         if (list != null) {
             for (LabTerm l : list) {
+                if(l.isRetired()) continue;
                 options.put(l.getId(), l.getTerm());
             }
         }
