@@ -21,8 +21,6 @@ import gov.nih.nci.cabig.ctms.domain.DomainObject;
 import java.util.Collection;
 
 import org.acegisecurity.Authentication;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationListener;
@@ -33,8 +31,6 @@ import org.springframework.context.ApplicationListener;
 public class EventFactory implements ApplicationContextAware{
     
     private ApplicationContext ctx;
-    
-    private static final Log logger = LogFactory.getLog(EventFactory.class);
     
     public  void publishEntityModifiedEvent(final DomainObject entity){
         publishEntityModifiedEvent(entity, true);
@@ -84,11 +80,12 @@ public class EventFactory implements ApplicationContextAware{
         if(event != null) ctx.publishEvent(event);
     }
 
-    private void publishSynch(EntityModificationEvent event){
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	private void publishSynch(EntityModificationEvent event){
        if (event == null || ctx == null) return;
-       Collection listenerBeans = ctx.getBeansOfType(ApplicationListener.class, true, false).values();
-       for(Object listenerObj : listenerBeans){
-           ((ApplicationListener)listenerObj).onApplicationEvent(event);
+       Collection<ApplicationListener> listenerBeans = ctx.getBeansOfType(ApplicationListener.class, true, false).values();
+       for(ApplicationListener listenerObj : listenerBeans){
+           listenerObj.onApplicationEvent(event);
        }
     }
 

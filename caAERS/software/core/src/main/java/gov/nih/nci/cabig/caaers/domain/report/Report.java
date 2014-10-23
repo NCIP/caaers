@@ -11,6 +11,7 @@ import gov.nih.nci.cabig.caaers.domain.workflow.ReportReviewComment;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowAware;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
+
 import org.apache.commons.collections15.CollectionUtils;
 import org.apache.commons.collections15.Predicate;
 import org.apache.commons.lang.ArrayUtils;
@@ -23,8 +24,8 @@ import org.hibernate.annotations.Parameter;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.OrderBy;
-
 import javax.persistence.Table;
+
 import java.io.Serializable;
 import java.util.*;
 
@@ -539,14 +540,17 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
      * @return the list
      */
     public List<String> findEmailAddressByRole(String roleName){
-    	List<String> emails = new ArrayList<String>();
+    	final List<String> emails = new ArrayList<String>();
     	if(StringUtils.equals(roleName, "REP")){
     		if(getReporter() != null){
     			String email = getReporter().getEmailAddress();
         		if(StringUtils.isNotEmpty(email)) emails.add(email);
         		
-        		for (String alt : getReporter().getAlternateEmailAddress().split(",")) {
-        			emails.add(alt);
+        		final String altMail = getReporter().getAlternateEmailAddress();
+        		if(altMail != null) {
+	        		for (String alt : altMail.split(",")) {
+	        			emails.add(alt);
+	        		}
         		}
     		}
     	}else if(StringUtils.equals(roleName, "SUB")){

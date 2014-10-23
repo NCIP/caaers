@@ -9,12 +9,8 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
 import static org.easymock.EasyMock.expect;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.ReportPerson;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
-import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
@@ -25,16 +21,11 @@ import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.easymock.EasyMock;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 
@@ -44,21 +35,18 @@ import org.springframework.beans.BeanWrapperImpl;
  */
 @CaaersUseCases( { CREATE_EXPEDITED_REPORT })
 public class ReporterTabTest extends AeTabTestCase {
-    private EvaluationService evaluationService;
     private ConfigProperty configurationProperty;
-
-    private AdverseEvent ae0;
 
     @Override
     protected void setUp() throws Exception {
-        evaluationService = registerMockFor(EvaluationService.class);
+        registerMockFor(EvaluationService.class);
         configurationProperty = registerMockFor(ConfigProperty.class);
         Map<String, List<Lov>> map = new HashMap<String, List<Lov>>();
         map.put("titleType", new ArrayList<Lov>());
         expect(configurationProperty.getMap()).andReturn(map).anyTimes();
      
         super.setUp();
-        ae0 = command.getAeReport().getAdverseEvents().get(0);
+        command.getAeReport().getAdverseEvents().get(0);
         assertEquals("Test setup failure -- only expected 1 AE initially", 1, command.getAeReport().getAdverseEvents().size());
     }
 
@@ -72,6 +60,7 @@ public class ReporterTabTest extends AeTabTestCase {
     protected void fillInUsedProperties(ExpeditedAdverseEventInputCommand cmd) {
         cmd.getAeReport().getReporter().getContactMechanisms().put("phone", "foo");
         cmd.getAeReport().getReporter().getContactMechanisms().put("fax", "foo");
+        cmd.getAeReport().getReporter().getContactMechanisms().put("alternate e-mail", "foo");
         cmd.getAeReport().getPhysician().getContactMechanisms().put("phone", "foo");
         cmd.getAeReport().getPhysician().getContactMechanisms().put("fax", "foo");
     }
@@ -96,14 +85,16 @@ public class ReporterTabTest extends AeTabTestCase {
     	replayMocks();
         assertFieldProperties("reporter","aeReport.reporter.title",
         				"aeReport.reporter.firstName",
-                        "aeReport.reporter.middleName", "aeReport.reporter.lastName",
+                        "aeReport.reporter.middleName",
+                        "aeReport.reporter.lastName",
                         "aeReport.reporter.contactMechanisms[e-mail]",
                         "aeReport.reporter.contactMechanisms[phone]",
                         "aeReport.reporter.contactMechanisms[fax]",
                         "aeReport.reporter.address.street",
                         "aeReport.reporter.address.city",
                         "aeReport.reporter.address.state",
-                        "aeReport.reporter.address.zip");
+                        "aeReport.reporter.address.zip",
+                        "aeReport.reporter.contactMechanisms[alternate e-mail]");
     }
 
     public void testPhysicianFieldProperties() throws Exception {
@@ -155,11 +146,6 @@ public class ReporterTabTest extends AeTabTestCase {
     	verifyMocks();
     }
     
-    private AdverseEvent addAEToCommand() {
-        AdverseEvent ae = new AdverseEvent();
-        command.getAeReport().addAdverseEvent(ae);
-        return ae;
-    }
     
     public void addReportsToAeReport(){
     	for(int i = 0; i < 2; i++){

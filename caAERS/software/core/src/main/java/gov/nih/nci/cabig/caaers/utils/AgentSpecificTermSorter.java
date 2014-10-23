@@ -9,16 +9,8 @@ package gov.nih.nci.cabig.caaers.utils;
 import gov.nih.nci.cabig.caaers.domain.AgentSpecificCtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AgentSpecificMeddraLowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.AgentSpecificTerm;
-import gov.nih.nci.cabig.ctms.domain.DomainObject;
-import gov.nih.nci.cabig.caaers.domain.CtcTerm;
-import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
-import org.apache.axis.encoding.ser.ArrayDeserializer;
 
-
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
