@@ -92,11 +92,15 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
                  url = jobInfo.getChild("reportURL").getValue();
                  
         		 String submissionMessage = messageSource.getMessage("successful.reportSubmission.message",
-        				 new Object[]{String.valueOf(r.getLastVersion().getId()), ticketNumber,  url, r.getSubmitter().getFullName(), 
-        				 r.getSubmitter().getEmailAddress(), r.getAeReport().getStudy().getPrimaryIdentifier().getValue(), r.getAeReport()
-        				 .getParticipant().getPrimaryIdentifierValue(), r.getCaseNumber(),r.getId(),ticketNumber, configuration.get(Configuration.SYSTEM_NAME)}, Locale.getDefault());
+        				 new Object[]{String.valueOf(r.getLastVersion().getId()), ticketNumber,  url}, Locale.getDefault());
         		 
         		sb.append(submissionMessage);
+        		
+        		// append additional report information
+            	String reportDetails = messageSource.getMessage("additional.successful.reportSubmission.information",  new Object[] {r.getSubmitter().getFullName(), 
+       				 r.getSubmitter().getEmailAddress(), r.getAeReport().getStudy().getPrimaryIdentifier().getValue(), r.getAeReport()
+    				 .getParticipant().getPrimaryIdentifierValue(), r.getCaseNumber(),String.valueOf(r.getId()),ticketNumber, configuration.get(Configuration.SYSTEM_NAME)}, Locale.getDefault());
+            	sb.append(reportDetails);
             }else{
             	 success = false;
             	 @SuppressWarnings("unchecked")
@@ -114,7 +118,7 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
             		 
             		 String submissionMessage = messageSource.getMessage("failed.reportSubmission.message", new Object[]{String.valueOf(r.getLastVersion().getId()),
             				 exceptionMsgBuffer.toString(), r.getSubmitter().getFullName(), r.getSubmitter().getEmailAddress(), r.getAeReport().getStudy()
-            				 .getPrimaryIdentifier().getValue(), r.getAeReport().getParticipant().getPrimaryIdentifierValue(), r.getCaseNumber(),r.getId(),
+            				 .getPrimaryIdentifier().getValue(), r.getAeReport().getParticipant().getPrimaryIdentifierValue(), r.getCaseNumber(),String.valueOf(r.getId()),
             				 configuration.get(Configuration.SYSTEM_NAME), sysName}, Locale.getDefault());
             		 sb.append(submissionMessage);
             		 
