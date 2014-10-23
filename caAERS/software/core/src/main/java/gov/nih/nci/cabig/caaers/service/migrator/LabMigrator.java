@@ -37,16 +37,15 @@ public class LabMigrator implements Migrator<LabCategory>{
 		dest.setRetiredIndicator(src.getRetiredIndicator());
 		// if lab category exists in the db, loop through lab terms and check if each lab term exists. If it exists, update it else create new one
 		if(dest.getId() != null) {
+
 			// case for existing lab category
 			for(LabTerm labTerm:src.getTerms()){
-				LabTerm dbTerm  = null;
-				List<LabTerm> labTerms = labTermDao.getBySubname(new String[]{labTerm.getTerm()}, dest.getId());
-				if(labTerms != null && labTerms.size() > 0){
-					dbTerm = labTerms.get(0);
-				}
-				if (dbTerm == null){
-					dbTerm = new LabTerm();
-				}
+                List<LabTerm> matchedTerms = dest.findAllMatchingTerms(labTerm.getTerm());
+                //retire existing
+                for(LabTerm t : matchedTerms) t.retire();
+                if(matchedTerms.isEmpty()) matchedTerms.add(new LabTerm());
+
+                LabTerm dbTerm  = matchedTerms.get(0);
 				// migrate lab term, set retired indicator etc
 				migrate(labTerm,dbTerm,null);
 				outcome.getMessages().add(new Message("Created/updated lab term :" + labTerm.getTerm(),null));

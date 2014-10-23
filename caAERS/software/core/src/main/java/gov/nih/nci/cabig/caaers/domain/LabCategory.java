@@ -16,6 +16,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
+import com.aparzev.lang.StringUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Fetch;
@@ -108,5 +110,16 @@ public class LabCategory extends AbstractMutableRetireableDomainObject {
     public void addTerm(LabTerm term){
     	term.setCategory(this);
     	getTerms().add(term);
+    }
+
+    public List<LabTerm> findAllMatchingTerms(String term) {
+        List<LabTerm> matchingTerms = new ArrayList<LabTerm>();
+        if(!CollectionUtils.isEmpty(getTerms())) {
+            for(LabTerm t : getTerms()) {
+                if(t.isRetired()) continue;
+                if(StringUtils.equals(term, t.getTerm())) matchingTerms.add(t);
+            }
+        }
+        return matchingTerms;
     }
 }
