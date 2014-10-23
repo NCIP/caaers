@@ -7,7 +7,6 @@
 package gov.nih.nci.cabig.caaers.accesscontrol.dataproviders;
 
 import gov.nih.nci.cabig.caaers.dao.index.AbstractIndexDao;
-import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.index.IndexEntry;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 
@@ -30,7 +29,7 @@ import com.semanticbits.security.contentfilter.IdFetcher;
 public class FilteredDataLoader {
 	
 	private List<IdFetcher> idFetchers = new ArrayList<IdFetcher>();
-	private LinkedHashMap idFetcherIndexDaoMap;
+	private LinkedHashMap<IdFetcher, AbstractIndexDao> idFetcherIndexDaoMap;
 	protected final Log log = LogFactory.getLog(getClass());
 
 
@@ -47,7 +46,7 @@ public class FilteredDataLoader {
 			log.info("TIME TOOK TO FETCH IDS " +idFetcher.getClass().getName() +" ..."+ (t2-t1)/1000 + " seconds");
 			
 			long t3 = System.currentTimeMillis();
-			AbstractIndexDao indexDao = (AbstractIndexDao)idFetcherIndexDaoMap.get(idFetcher);
+			AbstractIndexDao indexDao = idFetcherIndexDaoMap.get(idFetcher);
 			indexDao.updateIndex(userName, indexEntries);
             long t4 = System.currentTimeMillis();
 			log.info("TIME TOOK TO UPDATE INDEX ..."+ (t4-t3)/1000 + " seconds");
@@ -63,7 +62,7 @@ public class FilteredDataLoader {
 	public void setIdFetchers(List<IdFetcher> idFetchers) {
 		this.idFetchers = idFetchers;
 	}
-	public void setIdFetcherIndexDaoMap(LinkedHashMap idFetcherIndexDaoMap) {
+	public void setIdFetcherIndexDaoMap(LinkedHashMap<IdFetcher, AbstractIndexDao> idFetcherIndexDaoMap) {
 		this.idFetcherIndexDaoMap = idFetcherIndexDaoMap;
 	}
 }

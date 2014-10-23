@@ -7,22 +7,26 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
 import static org.easymock.EasyMock.expect;
-
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.dao.InvestigatorConverterDao;
 import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery;
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.ConverterInvestigator;
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.Investigator;
+import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.RemoteInvestigator;
+import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.event.EventFactory;
 import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
-import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl;
-import org.easymock.EasyMock;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import org.easymock.EasyMock;
 
 /**
  * This is the repository class for managing investigators
@@ -60,7 +64,7 @@ public class InvestigatorRepositoryImplTest extends AbstractTestCase {
 
     public void testSave() {
         Investigator inv = Fixtures.createInvestigator("Joel");
-        Organization org = Fixtures.createOrganization("NCI");
+        Fixtures.createOrganization("NCI");
         String changeUrl = "/pages/url";
 
         expect(investigatorDao.merge(inv)).andReturn(inv).anyTimes();
@@ -74,7 +78,7 @@ public class InvestigatorRepositoryImplTest extends AbstractTestCase {
     public void testSave_NotAllowedToLogin() {
         Investigator inv = Fixtures.createInvestigator("Joel");
         inv.setAllowedToLogin(false);
-        Organization org = Fixtures.createOrganization("NCI");
+        Fixtures.createOrganization("NCI");
         String changeUrl = "/pages/url";
 
         expect(investigatorDao.merge(inv)).andReturn(inv).anyTimes();
@@ -86,7 +90,7 @@ public class InvestigatorRepositoryImplTest extends AbstractTestCase {
 
     public void testSearchInvestigator_EmptyCriteria() throws Exception {
         InvestigatorQuery query = new InvestigatorQuery();
-        HashMap searchCriteriaMap = new HashMap();
+        HashMap<String, String> searchCriteriaMap = new HashMap<String, String>();
         List<Investigator> investigators = new ArrayList<Investigator>();
         expect(investigatorDao.getLocalInvestigator(query)).andReturn(investigators);
         replayMocks();
@@ -99,7 +103,7 @@ public class InvestigatorRepositoryImplTest extends AbstractTestCase {
 
     public void testSearchInvestigator_OnFirstName() throws Exception {
         InvestigatorQuery query = new InvestigatorQuery();
-        HashMap criteria = new HashMap();
+        HashMap<String, String> criteria = new HashMap<String, String>();
         criteria.put("firstName", "%");
         List<Investigator> investigators = new ArrayList<Investigator>();
         expect(investigatorDao.getLocalInvestigator(query)).andReturn(investigators);
@@ -114,7 +118,7 @@ public class InvestigatorRepositoryImplTest extends AbstractTestCase {
 
     public void testSearchInvestigator_OnLastName() throws Exception {
         InvestigatorQuery query = new InvestigatorQuery();
-        HashMap criteria = new HashMap();
+        HashMap<String, String> criteria = new HashMap<String, String>();
         criteria.put("lastName", "%");
         List<Investigator> investigators = new ArrayList<Investigator>();
         expect(investigatorDao.getLocalInvestigator(query)).andReturn(investigators);
@@ -128,7 +132,7 @@ public class InvestigatorRepositoryImplTest extends AbstractTestCase {
 
     public void testSearchInvestigator_OnNciIdentifier() throws Exception {
         InvestigatorQuery query = new InvestigatorQuery();
-        HashMap criteria = new HashMap();
+        HashMap<String, String> criteria = new HashMap<String, String>();
         criteria.put("personIdentifier", "%");
         List<Investigator> investigators = new ArrayList<Investigator>();
         expect(investigatorDao.getLocalInvestigator(query)).andReturn(investigators);
@@ -143,7 +147,7 @@ public class InvestigatorRepositoryImplTest extends AbstractTestCase {
     public void testSearchInvestigator_OnLoginId() throws Exception {
         InvestigatorQuery query = new InvestigatorQuery();
         query.filterByLoginId("SYSTEM_ADMIN");
-        HashMap criteria = new HashMap();
+        HashMap<String, String> criteria = new HashMap<String, String>();
 
         List<Investigator> investigators = new ArrayList<Investigator>();
         expect(investigatorDao.getLocalInvestigator(query)).andReturn(investigators);
@@ -157,7 +161,7 @@ public class InvestigatorRepositoryImplTest extends AbstractTestCase {
 
     public void testSearchInvestigator_OnlyRemoteInvestigators() throws Exception {
         InvestigatorQuery query = new InvestigatorQuery();
-        HashMap criteria = new HashMap();
+        HashMap<String, String> criteria = new HashMap<String, String>();
         criteria.put("organization", "1");
         Organization org = Fixtures.createOrganization("test", 1);
 

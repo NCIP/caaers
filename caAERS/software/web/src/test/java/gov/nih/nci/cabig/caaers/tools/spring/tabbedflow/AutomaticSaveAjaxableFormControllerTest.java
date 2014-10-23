@@ -133,7 +133,7 @@ public class AutomaticSaveAjaxableFormControllerTest extends AbstractTestCase {
 	}
 
 	public void testPopulateSaveConfirmationMessage1() {
-		Map refdata = new HashMap();
+		Map<String, String> refdata = new HashMap<String, String>();
 		EasyMock.expect(errors.hasErrors()).andReturn(true);
 		replayMocks();
 		automaticSaveAjaxableFormController.populateSaveConfirmationMessage(refdata, request, new Object(), errors, 1);
@@ -142,7 +142,7 @@ public class AutomaticSaveAjaxableFormControllerTest extends AbstractTestCase {
 	}
 	
 	public void testPopulateSaveConfirmationMessage2() {
-		Map refdata = new HashMap();
+		Map<String, String> refdata = new HashMap<String, String>();
 		refdata.put("flashMessage", "Something");
 		EasyMock.expect(errors.hasErrors()).andReturn(false);
 		replayMocks();
@@ -152,7 +152,7 @@ public class AutomaticSaveAjaxableFormControllerTest extends AbstractTestCase {
 	}
 	
 	public void testPopulateSaveConfirmationMessage3() {
-		Map refdata = new HashMap();
+		Map<String, String> refdata = new HashMap<String, String>();
 		EasyMock.expect(errors.hasErrors()).andReturn(false);
 		replayMocks();
 		automaticSaveAjaxableFormController.populateSaveConfirmationMessage(refdata, request, new Object(), errors, 1);
@@ -162,7 +162,7 @@ public class AutomaticSaveAjaxableFormControllerTest extends AbstractTestCase {
 	
 	public void testPopulateSaveConfirmationMessage4() {
 		request.setParameter("_page", "0");
-		Map refdata = new HashMap();
+		Map<String, String> refdata = new HashMap<String, String>();
 		EasyMock.expect(errors.hasErrors()).andReturn(false);
 		replayMocks();
 		automaticSaveAjaxableFormController.populateSaveConfirmationMessage(refdata, request, new Object(), errors, 0);
@@ -172,7 +172,7 @@ public class AutomaticSaveAjaxableFormControllerTest extends AbstractTestCase {
 	
 	public void testPopulateSaveConfirmationMessage5() {
 		request.setParameter("_page", "1");
-		Map refdata = new HashMap();
+		Map<String, String> refdata = new HashMap<String, String>();
 		EasyMock.expect(errors.hasErrors()).andReturn(false);
 		replayMocks();
 		automaticSaveAjaxableFormController.populateSaveConfirmationMessage(refdata, request, new Object(), errors, 1);
@@ -183,7 +183,7 @@ public class AutomaticSaveAjaxableFormControllerTest extends AbstractTestCase {
 	public void testPopulateSaveConfirmationMessage6() {
 		request.setParameter("_page", "1");
 		request.setAttribute("tabFlashMessage", "Another test");
-		Map refdata = new HashMap();
+		Map<String, String> refdata = new HashMap<String, String>();
 		EasyMock.expect(errors.hasErrors()).andReturn(false);
 		replayMocks();
 		automaticSaveAjaxableFormController.populateSaveConfirmationMessage(refdata, request, new Object(), errors, 1);

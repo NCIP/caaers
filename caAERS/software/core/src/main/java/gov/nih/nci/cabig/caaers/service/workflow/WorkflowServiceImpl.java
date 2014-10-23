@@ -257,8 +257,8 @@ public class WorkflowServiceImpl implements WorkflowService {
 		//figure out the transition to take, based upon our crude logic of applicable/not applicable, 
 		//the leavingTransitionName, may not be a valid leaving transition in the current workflow node.
 		Transition transitionToTake = token.getNode().getDefaultLeavingTransition();
-		for(Iterator it = token.getNode().getLeavingTransitions().iterator(); it.hasNext(); ){
-			Transition transition = (Transition) it.next();
+		for(Iterator<Transition> it = token.getNode().getLeavingTransitions().iterator(); it.hasNext(); ){
+			Transition transition = it.next();
 			if(StringUtils.equals(transition.getName(), leavingTransitionName)){
 				transitionToTake = transition;
 				break;

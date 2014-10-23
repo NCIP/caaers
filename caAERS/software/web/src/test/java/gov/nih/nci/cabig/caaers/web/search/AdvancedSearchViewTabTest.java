@@ -30,14 +30,14 @@ import org.springframework.validation.Errors;
  */
 
 public class AdvancedSearchViewTabTest extends WebTestCase{
-	AdvancedSearchViewTab tab;
+	AdvancedSearchViewTab<AdvancedSearchCommand> tab;
 	AdvancedSearchCommand command;
 	Errors errors;
 	AdvancedSearchUi advancedSearchUi;
 	
 	protected void setUp() throws Exception {
 		super.setUp();
-		tab = new AdvancedSearchViewTab();
+		tab = new AdvancedSearchViewTab<AdvancedSearchCommand>();
 		
 		InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("advancedSearch-ui.xml");
         Unmarshaller unmarshaller;
@@ -96,6 +96,7 @@ public class AdvancedSearchViewTabTest extends WebTestCase{
 		}*/
 	}
 	
+	@SuppressWarnings("deprecation")
 	private List<Object[]> createTestObjectList(){
 		List<Object[]> objectList= new ArrayList<Object[]>();
 		for(int i = 0; i < 5; i++){;

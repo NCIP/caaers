@@ -428,11 +428,12 @@ public class BadInputFilter implements Filter {
                                           ServletResponse response)
         throws IOException, ServletException {
 
-        Map paramMap = request.getParameterMap();
+        @SuppressWarnings("unchecked")
+		Map<String, String[]> paramMap = request.getParameterMap();
         // Loop through the list of parameters.
-        Iterator y = paramMap.keySet().iterator();
+        Iterator<String> y = paramMap.keySet().iterator();
         while (y.hasNext()) {
-            String name = (String) y.next();
+            String name = y.next();
             String[] values = request.getParameterValues(name);
 
             // See if the name contains a forbidden pattern.
@@ -523,12 +524,12 @@ public class BadInputFilter implements Filter {
      * Filters all existing parameters for potentially dangerous content,
      * and escapes any if they are found.
      *
-     * @param request The ServletRequest that contains the parameters.
+     * @param request The ServletRequest that contains the parameters. Must be of type HttpServletRequest.
      */
     @SuppressWarnings("unchecked")
     public void filterParameters(ServletRequest request) {
 
-        Map paramMap = ((HttpServletRequest) request).getParameterMap();
+        Map<String, String[]> paramMap = ((HttpServletRequest) request).getParameterMap();
         // Try to unlock the parameters map so we can modify the parameters.
         try {
             if (setLockedMethod == null) {
@@ -545,7 +546,7 @@ public class BadInputFilter implements Filter {
         
         // Loop through the list of parameters.
         String[] paramNames =
-                (String[]) paramMap.keySet().toArray(STRING_ARRAY);
+                paramMap.keySet().toArray(STRING_ARRAY);
         for (int i = 0; i < paramNames.length; i++) {
         	String name = paramNames[i];
         	HashMap<Pattern, String> parameterEscapes =
@@ -563,10 +564,10 @@ public class BadInputFilter implements Filter {
                 // Escape all angle brackets.
                 parameterEscapes.putAll(javaScriptHashMap);
             }
-            @SuppressWarnings("unchecked")
-            Iterator escapesIterator = parameterEscapes.keySet().iterator();
+
+            Iterator<Pattern> escapesIterator = parameterEscapes.keySet().iterator();
             while (escapesIterator.hasNext()) {
-                Pattern pattern = (Pattern) escapesIterator.next();
+                Pattern pattern = escapesIterator.next();
                 String[] values = ((HttpServletRequest)
                     request).getParameterValues(name);
                 // See if the name contains the pattern.
@@ -578,7 +579,7 @@ public class BadInputFilter implements Filter {
                     // fix it by modifying the name, adding the parameter
                     // back as the new name, and removing the old one.
                     String newName = matcher.replaceAll(
-                        (String) parameterEscapes.get(pattern));
+                        parameterEscapes.get(pattern));
                     paramMap.remove(name);
                     paramMap.put(newName, values);
                     //logger.debug("Parameter name " + name +
@@ -597,8 +598,7 @@ public class BadInputFilter implements Filter {
                             // The value matched, so we modify the value
                             // and then set it back into the array.
                             String newValue;
-                            newValue = matcher.replaceAll((String)
-                                parameterEscapes.get(pattern));
+                            newValue = matcher.replaceAll(parameterEscapes.get(pattern));
                             values[j] = newValue;
                             //logger.debug("Parameter \"" + name +
                             //    "\"'s value \"" + value +
@@ -687,7 +687,7 @@ public class BadInputFilter implements Filter {
         }
 
         Pattern reArray[] = new Pattern[reList.size()];
-        return ((Pattern[]) reList.toArray(reArray));
+        return reList.toArray(reArray);
 
     }
     
