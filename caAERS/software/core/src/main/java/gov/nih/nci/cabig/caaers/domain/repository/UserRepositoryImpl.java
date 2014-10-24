@@ -363,11 +363,12 @@ public class UserRepositoryImpl implements UserRepository {
 
         String EMAIL_SUBJECT = getMessageSource().getMessage("createAccountEmail.subject", null,"Your new caAERS account", Locale.getDefault());
         String EMAIL_TEXT = getMessageSource().getMessage("createAccountEmail.text", new Object[] {user.getCsmUser().getLoginName(), changeURL + "&token=" + user.getToken()},
-                "A new caAERS account has been created for you.\nYour username is: {0}\n You must create your password to login to caAERS. You can do so by clicking on the URL below:\n\n{1}\n\n Sent by the caAERS Notification System",
+                "A new caAERS account has been created for you.\nYour username is: {0}\n You must create your password to login to caAERS. You can do so by clicking on the URL below:\n\n{1}\n\n Sent by the caAERS Notification System.",
                 Locale.getDefault());;
         
         //send out an email
         if ("local".equals(getAuthenticationMode())) {
+        	EMAIL_TEXT = EMAIL_TEXT.replace("\n", "<br>\n");
             sendUserEmail(user.getCsmUser().getEmailId(), EMAIL_SUBJECT, EMAIL_TEXT);
         }
     }
