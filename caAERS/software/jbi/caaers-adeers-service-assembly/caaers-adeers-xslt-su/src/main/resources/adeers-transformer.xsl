@@ -29,9 +29,9 @@
         <EXTERNAL_SYSTEMS>
             <xsl:value-of select="EXTERNAL_SYSTEMS"/>
         </EXTERNAL_SYSTEMS>
-        <REPORT_ID>
-            <xsl:value-of select="REPORT_ID"/>
-        </REPORT_ID>
+        <CAAERSRID>
+            <xsl:value-of select="CAAERSRID"/>
+        </CAAERSRID>
         <SUBMITTER_EMAIL>
             <xsl:value-of select="SUBMITTER_EMAIL"/>
         </SUBMITTER_EMAIL>
@@ -61,9 +61,9 @@
         <EXTERNAL_SYSTEMS>
             <xsl:value-of select="EXTERNAL_SYSTEMS"/>
         </EXTERNAL_SYSTEMS>
-        <REPORT_ID>
-            <xsl:value-of select="REPORT_ID"/>
-        </REPORT_ID>
+        <CAAERSRID>
+            <xsl:value-of select="CAAERSRID"/>
+        </CAAERSRID>
         <SUBMITTER_EMAIL>
             <xsl:value-of select="SUBMITTER_EMAIL"/>
         </SUBMITTER_EMAIL>
@@ -71,7 +71,10 @@
             <xsl:value-of select="MESSAGE_COMBO_ID"/>
         </MESSAGE_COMBO_ID>
 
-		
+
+        <xsl:if test="Report/caseNumber != ''">
+            <REPORT_ID><xsl:value-of select="Report/caseNumber" /></REPORT_ID>
+        </xsl:if>
         <REPORTER_INFORMATION>
             <xsl:attribute name="FIRST_NAME">
                 <xsl:value-of select="Reporter/firstName"/>

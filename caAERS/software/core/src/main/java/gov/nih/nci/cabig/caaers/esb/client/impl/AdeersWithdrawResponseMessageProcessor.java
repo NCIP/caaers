@@ -61,7 +61,7 @@ public class AdeersWithdrawResponseMessageProcessor extends ResponseMessageProce
 		}
         
         String caaersAeReportId = cancelInfo.getChild("CAEERS_AEREPORT_ID",emptyNS).getValue();
-        String reportId = cancelInfo.getChild("REPORT_ID",emptyNS).getValue();
+        String reportId = cancelInfo.getChild("CAAERSRID",emptyNS).getValue();
         String submitterEmail = cancelInfo.getChild("SUBMITTER_EMAIL",emptyNS).getValue();
         Report r = reportDao.getById(Integer.parseInt(reportId));
         

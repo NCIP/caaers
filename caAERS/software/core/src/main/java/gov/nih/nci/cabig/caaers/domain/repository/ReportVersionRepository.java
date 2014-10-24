@@ -77,7 +77,7 @@ public class ReportVersionRepository {
                 "<patientID xsi:type=\"xsd:string\" xmlns=\"\">${subjectId}</patientID><protocolNumber xsi:type=\"xsd:string\" xmlns=\"\">${protocolId}</protocolNumber>" +
                 "<jobExceptions xmlns=\"\"><code>Error</code><description>Report is stuck at submission, so forcefully marking it as failed</description>" +
                 "</jobExceptions><reportStatus xsi:nil=\"true\" xmlns=\"\"/><comments xsi:type=\"xsd:string\" xmlns=\"\">Report is stuck at submission, so forcefully marking it as failed</comments>" +
-                "<CAEERS_AEREPORT_ID>${aeReportId}</CAEERS_AEREPORT_ID><REPORT_ID>${reportId}</REPORT_ID><SUBMITTER_EMAIL>${submitterEmail}</SUBMITTER_EMAIL><MESSAGE_COMBO_ID>${messageComboId}</MESSAGE_COMBO_ID>" +
+                "<CAEERS_AEREPORT_ID>${aeReportId}</CAEERS_AEREPORT_ID><CAAERSRID>${reportId}</CAAERSRID><SUBMITTER_EMAIL>${submitterEmail}</SUBMITTER_EMAIL><MESSAGE_COMBO_ID>${messageComboId}</MESSAGE_COMBO_ID>" +
                 "</ns1:AEReportJobInfo></submitAEDataXMLAsAttachmentResponse>" +
                 "</soapenv:Body></soapenv:Envelope>";
         Report report = reportVersion.getReport();

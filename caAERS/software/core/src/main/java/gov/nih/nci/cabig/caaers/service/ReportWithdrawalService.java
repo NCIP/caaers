@@ -67,7 +67,7 @@ public class ReportWithdrawalService {
             sb.append(delivery.getEndPoint()).append("::").append(delivery.getUserName()).append("::" ).append(delivery.getPassword());
         }
         sb.append("</EXTERNAL_SYSTEMS>");
-        sb.append("<REPORT_ID>" + reportId + "</REPORT_ID>");
+        sb.append("<CAAERSRID>" + reportId + "</CAAERSRID>");
 
         String submitterEmail = report.getLastVersion().getSubmitter().getContactMechanisms().get(PersonContact.EMAIL);
         sb.append("<SUBMITTER_EMAIL>" + submitterEmail + "</SUBMITTER_EMAIL>");

@@ -127,8 +127,8 @@ public class AdeersAEReport extends ComponentSupport implements MessageExchangeL
 		int ei = inXml.indexOf("</CAEERS_AEREPORT_ID>");
 		caaersAeReportId = inXml.substring(si+20, ei);
 		
-		si = inXml.indexOf("<REPORT_ID>");
-		ei = inXml.indexOf("</REPORT_ID>");
+		si = inXml.indexOf("<CAAERSRID>");
+		ei = inXml.indexOf("</CAAERSRID>");
 		reportId = inXml.substring(si+11, ei);
 		
 		si = inXml.indexOf("<SUBMITTER_EMAIL>");
@@ -152,7 +152,7 @@ public class AdeersAEReport extends ComponentSupport implements MessageExchangeL
 		exceptionXmlBuilder.append("</jobExceptions>").append("\n");
 			exceptionXmlBuilder.append("<reportStatus>").append("ERROR").append("</reportStatus>").append("\n");
 			exceptionXmlBuilder.append("<comments>").append(e.toString()).append("</comments>").append("\n");			
-			exceptionXmlBuilder.append("<REPORT_ID>").append(reportId).append("</REPORT_ID>").append("\n");
+			exceptionXmlBuilder.append("<CAAERSRID>").append(reportId).append("</CAAERSRID>").append("\n");
 			exceptionXmlBuilder.append("<CAEERS_AEREPORT_ID>").append(caaersAeReportId).append("</CAEERS_AEREPORT_ID>").append("\n");
 			exceptionXmlBuilder.append("<SUBMITTER_EMAIL>").append(submitterEmail).append("</SUBMITTER_EMAIL>").append("\n");
 			exceptionXmlBuilder.append("<MESSAGE_COMBO_ID>").append(messageComboId).append("</MESSAGE_COMBO_ID>").append("\n");

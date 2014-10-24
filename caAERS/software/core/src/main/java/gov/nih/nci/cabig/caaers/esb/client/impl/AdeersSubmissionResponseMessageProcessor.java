@@ -58,7 +58,7 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
         
         String caaersAeReportId = jobInfo.getChild("CAEERS_AEREPORT_ID",emptyNS).getValue();
         log.debug("ID 1 : " + caaersAeReportId);
-        String reportId = jobInfo.getChild("REPORT_ID",emptyNS).getValue();
+        String reportId = jobInfo.getChild("CAAERSRID",emptyNS).getValue();
         log.debug("ID 2 : " + reportId);
         String submitterEmail = jobInfo.getChild("SUBMITTER_EMAIL",emptyNS).getValue();
         log.debug("email : " + submitterEmail);
