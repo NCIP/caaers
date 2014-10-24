@@ -14,6 +14,10 @@ import gov.nih.nci.cabig.caaers.utils.DateUtils;
 
 import java.util.Date;
 
+import org.springframework.mail.MailException;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
+
 /**
  * UserRepositoryImpl Tester.
  *
@@ -28,6 +32,40 @@ public class UserRepositoryIntegrationTest extends CaaersTestCase {
     public void setUp() throws Exception {
         super.setUp();
         userRepository = (UserRepository)getDeployedApplicationContext().getBean("userRepository");
+    }
+    
+    public void testEmailContent() {
+    	((UserRepositoryImpl) userRepository).setMailSender(new MailSender() {
+			
+			public void send(SimpleMailMessage[] arg0) throws MailException {
+				for(SimpleMailMessage msg : arg0) {
+					send(msg);
+				}
+				
+			}
+			
+			public void send(SimpleMailMessage arg0) throws MailException {
+				if("Your updated caAERS account".equals(arg0.getSubject())) {
+					return;
+				}
+				assertEquals("Your new caAERS account", arg0.getSubject());
+				assertTrue(arg0.getText().startsWith("A new caAERS account has been created for you."));
+				assertTrue(arg0.getText().endsWith("Sent by the caAERS Notification System."));
+				assertFalse(arg0.getText().contains("\\n"));
+			}
+		});;
+		String loginName = "emailTest";
+		User x = new User();
+        x.setFirstName("x");
+        x.setLastName("y");
+        x.setMiddleName("Z");
+        x.setLoginName(loginName);
+        x.setEmailAddress(loginName+"@localhost.com");
+        x.findRoleMembership(UserGroupType.system_administrator);
+
+        userRepository.createOrUpdateUser(x, "www.localhost.com/test");
+        userRepository.provisionUser(x);
+        assertNotNull(x.getCsmUser().getUserId());
     }
 
     public void testGetUserByLoginName() throws Exception {
