@@ -894,25 +894,31 @@ assertTrue(true);
     public void testLoadCtcBasedTerm() throws Exception {
         Study loaded = getDao().getById(-2);
         assertNotNull("Ctc Term List is null", loaded.getExpectedAECtcTerms());
-        assertEquals("This StudyTerm is not Ctc", true, loaded.getExpectedAECtcTerms().get(0) instanceof ExpectedAECtcTerm);
-        assertEquals("This term is not CtcTerm", true, loaded.getExpectedAECtcTerms().get(0).getTerm() instanceof CtcTerm);
-        assertEquals("Wrong Ctc Id", 3010, loaded.getExpectedAECtcTerms().get(0).getTerm().getId().intValue());
-    }
-
-    public void testLoadCtcBasedTermWithOtherMeddra() throws Exception {
-        Study loaded = getDao().getById(-2);
-        assertNotNull("Ctc Term List is null", loaded.getExpectedAECtcTerms());
-        assertEquals("This StudyTerm is not Ctc", true, loaded.getExpectedAECtcTerms().get(0) instanceof ExpectedAECtcTerm);
-        assertEquals("This term is not CtcTerm", true, loaded.getExpectedAECtcTerms().get(0).getTerm() instanceof CtcTerm);
-        assertEquals("Wrong Ctc Id", 3010, loaded.getExpectedAECtcTerms().get(0).getTerm().getId().intValue());
+        List<ExpectedAECtcTerm> aeCtcTerms = loaded.getExpectedAECtcTerms();
+        boolean contains3010 = false;
+        for (ExpectedAECtcTerm aeCtcTerm : aeCtcTerms) {
+	        assertEquals("This StudyTerm is not Ctc", true, aeCtcTerm instanceof ExpectedAECtcTerm);
+	        assertEquals("This term is not CtcTerm", true, aeCtcTerm.getTerm() instanceof CtcTerm);
+	        if(aeCtcTerm.getTerm().getId().intValue() == 3010) {
+	        	contains3010 = true;
+	        }
+        }
+        assertTrue("Wrong Ctc Id", contains3010);
     }
 
     public void testLoadMeddraBasedTerm() throws Exception {
         Study loaded = getDao().getById(-3);
         assertNotNull("Meddra Term List is null", loaded.getExpectedAEMeddraLowLevelTerms());
-        assertEquals("This term is not MedDRA", true, loaded.getExpectedAEMeddraLowLevelTerms().get(0) instanceof ExpectedAEMeddraLowLevelTerm);
-        assertEquals("This term is not LowLevelTerm", true, loaded.getExpectedAEMeddraLowLevelTerms().get(0).getTerm() instanceof LowLevelTerm);
-        assertEquals("Wrong Meddra Id", -11, loaded.getExpectedAEMeddraLowLevelTerms().get(0).getTerm().getId().intValue());
+        List<ExpectedAEMeddraLowLevelTerm> medraTerms = loaded.getExpectedAEMeddraLowLevelTerms();
+        boolean contains11 = false;
+        for(ExpectedAEMeddraLowLevelTerm medraTerm : medraTerms) {
+	        assertEquals("This term is not MedDRA", true, medraTerm instanceof ExpectedAEMeddraLowLevelTerm);
+	        assertEquals("This term is not LowLevelTerm", true, medraTerm.getTerm() instanceof LowLevelTerm);
+	        if (medraTerm.getTerm().getId().intValue() == -11) {
+	        	contains11 = true;
+	        }
+        }
+        assertTrue("Wrong Meddra Id", contains11);
     }
 
     public void testGetStudyDesignByIdentifier() throws Exception {
