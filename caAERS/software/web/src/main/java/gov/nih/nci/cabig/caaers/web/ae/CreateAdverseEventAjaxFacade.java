@@ -1053,13 +1053,17 @@ public class CreateAdverseEventAjaxFacade {
 
         try {
             ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
-            List<Report> reports = command.getAeReport().getReports();
-            if(reportIndex > -1){
-               reports.get(reportIndex).setCaseNumber(caseNumber);
-            }
 
             command.getAeReport().setPhysicianSignOff(physicianSignOff);
             saveIfAlreadyPersistent(command);
+            List<Report> reports = command.getAeReport().getReports();
+            if(reportIndex > -1){
+                Report oldReport = reports.get(reportIndex);
+                oldReport.setCaseNumber(caseNumber);
+                Report report = reportDao.getById(oldReport.getId());
+                report.setCaseNumber(caseNumber);
+                reportDao.save(report);
+            }
             Map<String, String> params = new LinkedHashMap<String, String>(); // preserve order for testing
             String html = renderAjaxView("submitReportValidationSection", 0, params);
             output.setHtmlContent(html);
