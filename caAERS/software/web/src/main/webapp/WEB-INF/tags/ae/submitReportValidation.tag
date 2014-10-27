@@ -9,6 +9,7 @@
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui"%>
 <%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae"%>
+<%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>

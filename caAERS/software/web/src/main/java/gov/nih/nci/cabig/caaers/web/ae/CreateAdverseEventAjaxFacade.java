@@ -1055,7 +1055,9 @@ public class CreateAdverseEventAjaxFacade {
             ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
             List<Report> reports = command.getAeReport().getReports();
             if(reportIndex > -1){
-               reports.get(reportIndex).setCaseNumber(caseNumber);
+                Report report = reports.get(reportIndex);
+                report.setCaseNumber(caseNumber);
+                reportDao.save(report);
             }
 
             command.getAeReport().setPhysicianSignOff(physicianSignOff);
