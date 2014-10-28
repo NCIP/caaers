@@ -327,6 +327,9 @@ public class SafetyReportServiceImpl {
             //update flow
         	dbReport.updateAESignatures();
         	expeditedAdverseEventReportDao.save(dbReport);
+            for(Report r : dbReport.getActiveReports()) {
+                reportRepository.save(r);
+            }
         	inferReportingAction(aeSrcReport, dbReport,	aeDestReport, reportsAffected, caaersServiceResponse);
         }
 
@@ -353,6 +356,9 @@ public class SafetyReportServiceImpl {
         if(errors.hasErrors()) return reportsAffected;
 
         expeditedAdverseEventReportDao.save(dbReport);
+        for(Report r : dbReport.getActiveReports()) {
+            reportRepository.save(r);
+        }
         
         transferStudySubjectIfRequired(aeSrcReport, aeDestReport, errors);
         if(errors.hasErrors()) return reportsAffected;
