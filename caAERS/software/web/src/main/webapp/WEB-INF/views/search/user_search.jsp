@@ -111,10 +111,16 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
             function doActivate(personId, rt, userName, action, locked) {
                 user.activateUser(personId, userName, action, function (_result) {
                     win = new Window({className:"alphacube", width:400, height:80, zIndex:100, resizable:false, recenterAuto:true, draggable:false, closable:false, minimizable:false, maximizable:false});
-                    win.setContent("success");
+                    if(_result) {
+                    	win.setContent("success");
+                    } else {
+                    	win.setContent("failure");
+                    }
                     win.showCenter(true);
                     win.show();
-                    jQuery('#_span' + personId).html(actionsRow.interpolate({id:personId, rt:rt, un:userName, active:(action == 'Active' ? "Inactive" : "Active"), locked:(locked == 'true' ? "true" : "false")}));
+                    if(_result) {
+                    	jQuery('#_span' + personId).html(actionsRow.interpolate({id:personId, rt:rt, un:userName, active:(action == 'Active' ? "Inactive" : "Active"), locked:(locked == 'true' ? "true" : "false")}));
+                    }
                     hideWin.delay(2);
                 })
             }

@@ -121,6 +121,11 @@ function showUserMenuOptions(_element, strId, rt, un, active) {
 
 
     var _activateAction = "<li><a class='submitter-blue' href='#' onclick='javascript:doActivate(#{strId}, \"#{rt}\", \"#{un}\", \"#{active}\")'>" + _action + "</a></li>";
+    if(hasRole('person_and_organization_information_manager') || hasRole('data_importer') || hasRole('user_administrator') || hasRole('system_administrator')) {
+    	//has permision to edit users.
+    } else {
+    	_activateAction = "";
+    }
     
     var html = html_start + _editAction + (un != "" ? _activateAction : "") + html_end;
     var html = html.interpolate({strId:strId, rt:rt, un:un, active:active});

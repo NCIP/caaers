@@ -24,3 +24,5 @@ local.properties
 profiles.xml
 caAERS/software/null
 caAERS/software/repository/gov.nih.nci.cabig.caaers/caaers-core-bootstrap/2.8-M1-local-*
+caAERS/software/repository/gov.nih.nci.cabig.caaers/caaers-core/2.8-M1-local-*
+caAERS/software/repository/gov.nih.nci.cabig.caaers/caaers-web/2.8-M1-local-*
