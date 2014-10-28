@@ -12,6 +12,9 @@ import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudyAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.ajax.UserAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.repository.*;
+import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
+import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl;
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.utils.ranking.RankBasedSorterUtils;
@@ -432,12 +435,19 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
     public boolean activateUser(int personId, String userName, String action) {
         try {
             Person person = personRepository.getById(personId);
+            final CaaersSecurityFacade security = CaaersSecurityFacadeImpl.getInstance();
             if (person != null && person instanceof ResearchStaff) {
+            	if(!security.checkAuthorization(SecurityUtils.getAuthentication(), "gov.nih.nci.cabig.caaers.domain.ResearchStaff:UPDATE")) {
+            		return false;
+            	}
                 ResearchStaff rs = (ResearchStaff)person;
                 rs.setActive(!action.equals("Active"));
                 personRepository.save(person);
             }
             if (person != null && person instanceof Investigator) {
+            	if(!security.checkAuthorization(SecurityUtils.getAuthentication(), "gov.nih.nci.cabig.caaers.domain.Investigator:UPDATE")) {
+            		return false;
+            	}
                 Investigator inv = (Investigator)person;
                 inv.setActive(!action.equals("Active"));
                 personRepository.save(inv);
