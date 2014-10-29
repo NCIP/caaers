@@ -537,11 +537,14 @@ public class CreateAdverseEventAjaxFacade {
             terms = labCategoryDao.getById(labCategoryId).getTerms();
         }
         // cut down objects for serialization
+        List<LabTerm> theTerms = new ArrayList<LabTerm>();
         for (LabTerm term : terms) {
+            if(term.isRetired()) continue;
+            theTerms.add(term);
             term.getCategory().setTerms(null);
             term.getCategory().getLabVersion().setCategories(null);
         }
-        return terms;
+        return theTerms;
     }
 
     public Integer getLabCategory(Integer labTermID) {
@@ -552,11 +555,14 @@ public class CreateAdverseEventAjaxFacade {
 
     public List<LabCategory> getLabCategories() {
         List<LabCategory> categories = labCategoryDao.getAll();
+        List<LabCategory> theCategories = new ArrayList<LabCategory>();
         // cut down objects for serialization
         for (LabCategory category : categories) {
+            if(category.isRetired()) continue;
+            theCategories.add(category);
             category.setTerms(null);
         }
-        return categories;
+        return theCategories;
     }
 
     /**
