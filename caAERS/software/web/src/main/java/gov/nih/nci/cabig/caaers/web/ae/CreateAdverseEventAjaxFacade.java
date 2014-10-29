@@ -540,7 +540,6 @@ public class CreateAdverseEventAjaxFacade {
             term.getCategory().getLabVersion().setCategories(null);
         }
         Collections.sort(theTerms, new Comparator<LabTerm>() {
-            @Override
             public int compare(LabTerm o1, LabTerm o2) {
                 return o1.getTerm().compareTo(o2.getTerm());
             }

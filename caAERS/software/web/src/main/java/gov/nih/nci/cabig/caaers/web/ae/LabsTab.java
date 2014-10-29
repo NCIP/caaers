@@ -95,7 +95,6 @@ public class LabsTab extends AeTab {
         Map<Object, Object> options = new LinkedHashMap<Object, Object>();
         List<LabTerm> list = labTermDao.getAll();
         Collections.sort(list, new Comparator<LabTerm>() {
-            @Override
             public int compare(LabTerm o1, LabTerm o2) {
                 return o1.getTerm().compareTo(o2.getTerm());
             }
