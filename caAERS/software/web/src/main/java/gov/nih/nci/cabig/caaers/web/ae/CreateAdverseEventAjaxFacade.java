@@ -42,12 +42,7 @@ import gov.nih.nci.cabig.caaers.web.dwr.IndexChange;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -544,6 +539,12 @@ public class CreateAdverseEventAjaxFacade {
             term.getCategory().setTerms(null);
             term.getCategory().getLabVersion().setCategories(null);
         }
+        Collections.sort(theTerms, new Comparator<LabTerm>() {
+            @Override
+            public int compare(LabTerm o1, LabTerm o2) {
+                return o1.getTerm().compareTo(o2.getTerm());
+            }
+        });
         return theTerms;
     }
 
