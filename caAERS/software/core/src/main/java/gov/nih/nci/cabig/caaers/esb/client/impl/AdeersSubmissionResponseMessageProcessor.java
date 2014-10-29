@@ -135,8 +135,7 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
             
 
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            log.error("Error building email body", e);
         }
         
         
@@ -150,8 +149,7 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
 		    String routedRes = getProxyWebServiceFacade().routeAdeersReportSubmissionResponse(trimmedMessage, r);
 		    log.debug("Routed response is " + routedRes);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("Error while routing AdEERS response to caAERS Generic Processor", e);
 		}
         
         // Notify submitter
@@ -161,8 +159,7 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
             this.getMessageNotificationService().sendNotificationToReporter(submitterEmail, messages,
                             caaersAeReportId, reportId, success, ticketNumber, url,communicationError);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            log.error("Error while sending the submission confirmation email", e);
         }
 		
 	}
