@@ -28,8 +28,6 @@ import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportVersionRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository;
-import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
-import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.service.AdeersIntegrationFacade;
 import gov.nih.nci.cabig.caaers.service.InteroperationService;
@@ -44,7 +42,12 @@ import gov.nih.nci.cabig.caaers.web.dwr.IndexChange;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -413,7 +416,7 @@ public class CreateAdverseEventAjaxFacade {
     }
 
     public List<CtcTerm> getTermsByCategory(Integer ctcCategoryId) throws Exception {
-        List<CtcTerm> terms = null;
+        List<CtcTerm> terms = null;//ctcCategoryDao.getById(ctcCategoryId).getTerms();
 
         // from rules UI page , if user selects terms without category a fabricated Id 0 is passed.
         // get all terms incase of this special condition -- srini
@@ -422,17 +425,12 @@ public class CreateAdverseEventAjaxFacade {
         } else {
             terms = ctcCategoryDao.getById(ctcCategoryId).getTerms();
         }
-
-        List<CtcTerm> termList = new ArrayList<CtcTerm>();
         // cut down objects for serialization
         for (CtcTerm term : terms) {
-            CtcTerm t = new CtcTerm();
-            t.setSelect(term.getSelect());
-            t.setTerm(term.getTerm());
-            t.setCtepCode(term.getCtepCode());
-            termList.add(t);
+            term.getCategory().setTerms(null);
+            term.getCategory().getCtc().setCategories(null);
         }
-        return termList;
+        return terms;
     }
 
     public List<CtcTerm> getTermByTermId(String ctcTermId) throws Exception {
@@ -546,11 +544,6 @@ public class CreateAdverseEventAjaxFacade {
             term.getCategory().setTerms(null);
             term.getCategory().getLabVersion().setCategories(null);
         }
-        Collections.sort(theTerms, new Comparator<LabTerm>() {
-            public int compare(LabTerm o1, LabTerm o2) {
-                return o1.getTerm().compareTo(o2.getTerm());
-            }
-        });
         return theTerms;
     }
 
@@ -621,21 +614,19 @@ public class CreateAdverseEventAjaxFacade {
     }
 
     public boolean pushRoutineAdverseEventToStudyCalendar(int aeReportId) {
-        throw new UnsupportedOperationException("No more supported");
+        if (true)
+            throw new UnsupportedOperationException("No more supported");
+        return false;
     }
 
     public AjaxOutput withdrawReportVersion(int aeReportId, int reportId) {
         AjaxOutput out = new AjaxOutput();
 
         try {
-        	final CaaersSecurityFacade security = CaaersSecurityFacadeImpl.getInstance();
-        	if(!security.checkAuthorization(SecurityUtils.getAuthentication(), "gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE")) {
-        		throw new Exception("Security Exception; This user is not authorized to withdraw a report.");
-        	}
             ExpeditedAdverseEventReport aeReport = aeReportDao.getById(aeReportId);
             Report report = aeReport.findReportById(reportId);
-            if(report != null && (report.isActive() || report.isHavingStatus(ReportStatus.COMPLETED))){
-                log.debug("Withdrawing report : " + String.valueOf(report));
+            if(report != null && report.isActive()){
+                if(log.isDebugEnabled()) log.debug("Withdrawing report : " + String.valueOf(report));
 
                 //withdraw report.
                 reportRepository.withdrawReport(report);
@@ -708,7 +699,7 @@ public class CreateAdverseEventAjaxFacade {
         try {
 			return ParticipantHistory.bodySuraceArea(ht, htUOM, wt, wtUOM);
 		} catch (Exception e) {
-			log.error("error while calcutaling body surface area.", e);
+			log.error(e);
 		}
 		return 0.0;
     }
@@ -1020,9 +1011,8 @@ public class CreateAdverseEventAjaxFacade {
 //    		if(r.getId().equals(reportId))
 //    			report = r;
 		Report report = null;
-    	if(reportId != null && !reportId.equals("")) {
+    	if(reportId != null || !reportId.equals(""))
     		report = reportDao.getById(reportId);		
-    	}
     	adverseEventRoutingAndReviewRepository.addReportReviewComment(report, comment, userId);
     	
         return fetchPreviousComments(reportId, userId);
@@ -1030,23 +1020,30 @@ public class CreateAdverseEventAjaxFacade {
     
     public AjaxOutput editReviewComment(String comment, Integer commentId, String reportIdString){
     	Integer reportId = Integer.parseInt(reportIdString);
+//    	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
     	String userId = getUserId();
     	Report report = null;
-    	if(reportId != null && !reportId.equals("")) {
+    	if(reportId != null || !reportId.equals(""))
     		report = reportDao.getById(reportId);
-    	}
-
+//    	Report report = null;
+//    	for(Report r: command.getAeReport().getActiveReports())
+//    		if(r.getId().equals(reportId))
+//    			report = r;
     	adverseEventRoutingAndReviewRepository.editReportReviewComment(report, comment, userId, commentId);
     	return fetchPreviousComments(reportId, getUserId());
     }
     
     public AjaxOutput deleteReviewComment(Integer commentId, String reportIdString){
     	Integer reportId = Integer.parseInt(reportIdString);
+//    	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
     	String userId = getUserId();
     	Report report = null;
-    	if(reportId != null && !reportId.equals("")) {
+    	if(reportId != null || !reportId.equals(""))
     		report = reportDao.getById(reportId);
-    	}
+//    	Report report = null;
+//    	for(Report r: command.getAeReport().getActiveReports())
+//    		if(r.getId().equals(reportId))
+//    			report = r;
     	adverseEventRoutingAndReviewRepository.deleteReportReviewComment(report, commentId);
     	return fetchPreviousComments(reportId, userId);
     }
@@ -1062,22 +1059,19 @@ public class CreateAdverseEventAjaxFacade {
 
         try {
             ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
+            List<Report> reports = command.getAeReport().getReports();
+            if(reportIndex > -1){
+               reports.get(reportIndex).setCaseNumber(caseNumber);
+            }
 
             command.getAeReport().setPhysicianSignOff(physicianSignOff);
             saveIfAlreadyPersistent(command);
-            List<Report> reports = command.getAeReport().getReports();
-            if(reportIndex > -1){
-                Report oldReport = reports.get(reportIndex);
-                oldReport.setCaseNumber(caseNumber);
-                Report report = reportDao.getById(oldReport.getId());
-                report.setCaseNumber(caseNumber);
-                reportDao.save(report);
-            }
             Map<String, String> params = new LinkedHashMap<String, String>(); // preserve order for testing
             String html = renderAjaxView("submitReportValidationSection", 0, params);
             output.setHtmlContent(html);
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
+            log.error(e.getMessage());
+            e.printStackTrace();
             output.setError(true);
             output.setErrorMessage(e.getMessage());
         }
@@ -1155,10 +1149,20 @@ public class CreateAdverseEventAjaxFacade {
     }
     
     public AjaxOutput retrieveReviewCommentsAndActions(String reportId){
+    	
+    	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
+    	// Determine the report in context
+    	/*Map<Integer, Boolean> selectedReportDefinitionsMap = new HashMap<Integer, Boolean>();
+    	for(ReportDefinition rd: command.getSelectedReportDefinitions())
+    		selectedReportDefinitionsMap.put(rd.getId(), Boolean.TRUE);
+    	Report selectedReport = null;
+    	for(Report r: command.getAeReport().getActiveReports())
+    		if(selectedReportDefinitionsMap.containsKey(r.getReportDefinition().getId()))
+    			selectedReport = r;
+    	*/
     	Report report = null;
-    	if(reportId != null && !reportId.equals("")) {
+    	if(reportId != null || !reportId.equals(""))
     		report = reportDao.getById(Integer.parseInt(reportId));
-    	}
     	AjaxOutput output = retrieveReviewComments(report);
     	AjaxOutput transitionOutput = retrieveNextTransitions(reportId);
     	output.setObjectContent(transitionOutput.getObjectContent());
@@ -1169,6 +1173,7 @@ public class CreateAdverseEventAjaxFacade {
     public AjaxOutput advanceWorkflow(String reportId, String transitionToTake){
         AjaxOutput out = new AjaxOutput();
         try{
+        	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
 			Report report = null;
 			if(reportId != null)
 				report = reportDao.getById(Integer.parseInt(reportId));
