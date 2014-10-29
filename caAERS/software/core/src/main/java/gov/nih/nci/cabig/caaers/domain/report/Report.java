@@ -712,6 +712,14 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
         map.put("reportURL", "/pages/ae/edit?aeReport=" + getAeReport().getId() + "&report=" + getId());//URL To Report
         map.put("report", this);
         map.put("study", getAeReport().getStudy());
+        map.put("studyId", getAeReport().getStudy().getPrimaryIdentifierValue());
+
+        //below makes no sense, but this will prevent freemarker errors (see
+        map.put("adverseEventID", " ");//external ID
+        map.put("adverseEventTerm", " ");//ae term
+        map.put("aeStartDate", " ");//start date
+
+
         return map;
     }
 
