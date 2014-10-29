@@ -42,12 +42,7 @@ import gov.nih.nci.cabig.caaers.web.dwr.IndexChange;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -544,6 +539,11 @@ public class CreateAdverseEventAjaxFacade {
             term.getCategory().setTerms(null);
             term.getCategory().getLabVersion().setCategories(null);
         }
+        Collections.sort(theTerms, new Comparator<LabTerm>() {
+            public int compare(LabTerm o1, LabTerm o2) {
+                return o1.getTerm().compareTo(o2.getTerm());
+            }
+        });
         return theTerms;
     }
 
@@ -1059,13 +1059,17 @@ public class CreateAdverseEventAjaxFacade {
 
         try {
             ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
-            List<Report> reports = command.getAeReport().getReports();
-            if(reportIndex > -1){
-               reports.get(reportIndex).setCaseNumber(caseNumber);
-            }
 
             command.getAeReport().setPhysicianSignOff(physicianSignOff);
             saveIfAlreadyPersistent(command);
+            List<Report> reports = command.getAeReport().getReports();
+            if(reportIndex > -1){
+                Report oldReport = reports.get(reportIndex);
+                oldReport.setCaseNumber(caseNumber);
+                Report report = reportDao.getById(oldReport.getId());
+                report.setCaseNumber(caseNumber);
+                reportDao.save(report);
+            }
             Map<String, String> params = new LinkedHashMap<String, String>(); // preserve order for testing
             String html = renderAjaxView("submitReportValidationSection", 0, params);
             output.setHtmlContent(html);
