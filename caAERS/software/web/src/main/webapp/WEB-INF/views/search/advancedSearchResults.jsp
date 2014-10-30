@@ -219,7 +219,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 										<td>${col.value }</td>
 									</c:forEach>
 									<c:forEach items="${row.columnList }" var="col" varStatus="colStatus">
-										<c:if test="${col.lengthyValue != null && col.lengthyValue != ''}">
+										<c:if test="${col.lengthyValue != null}">
 											<td>${col.lengthyValue}</td>
 										</c:if>
 									</c:forEach>

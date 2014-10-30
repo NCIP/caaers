@@ -203,6 +203,7 @@
 			<table-alias>TERMINOLOGY_ALIAS</table-alias>
 			<hidden>true</hidden>
 			<join-by-method>joinAeTerminology</join-by-method>
+			<outer-join-required>true</outer-join-required>
 			<ui-attribute>
 				<name>code</name>
 				<label>Ae terminology</label>
@@ -229,6 +230,7 @@
 			<table-alias>TREATMENT_ASSIGNMENT_ALIAS</table-alias>
 			<hidden>true</hidden>
 			<join-by-method>joinTreatmentAssignment</join-by-method>
+			<outer-join-required>true</outer-join-required>
 			<ui-attribute>
 				<name>code</name>
 				<label>Treatment assignment code</label>

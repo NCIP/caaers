@@ -109,9 +109,16 @@ public class StudyQuery extends AbstractQuery {
     public void joinAeTerminology() {
         join("s.aeTerminology as terminology");
     }
-
+    public void outerjoinAeTerminology() {
+        leftOuterJoin("s.aeTerminology as terminology");
+    }
+    
     public void joinTreatmentAssignment() {
         join("s.treatmentAssignmentsInternal as ta");
+    }
+
+    public void outerjoinTreatmentAssignment() {
+        leftOuterJoin("s.treatmentAssignmentsInternal as ta");
     }
     
     public void joinOtherIntervention() {
