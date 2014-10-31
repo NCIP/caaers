@@ -32,28 +32,10 @@ public class UserRepositoryIntegrationTest extends CaaersTestCase {
     public void setUp() throws Exception {
         super.setUp();
         userRepository = (UserRepository)getDeployedApplicationContext().getBean("userRepository");
+        ((UserRepositoryImpl) userRepository).setMailSender(new DummyMailsender());
     }
     
     public void testEmailContent() {
-    	((UserRepositoryImpl) userRepository).setMailSender(new MailSender() {
-			
-			public void send(SimpleMailMessage[] arg0) throws MailException {
-				for(SimpleMailMessage msg : arg0) {
-					send(msg);
-				}
-				
-			}
-			
-			public void send(SimpleMailMessage arg0) throws MailException {
-				if("Your updated caAERS account".equals(arg0.getSubject())) {
-					return;
-				}
-				assertEquals("Your new caAERS account", arg0.getSubject());
-				assertTrue(arg0.getText().startsWith("A new caAERS account has been created for you."));
-				assertTrue(arg0.getText().endsWith("Sent by the caAERS Notification System."));
-				assertFalse(arg0.getText().contains("\\n"));
-			}
-		});;
 		String loginName = "emailTest";
 		User x = new User();
         x.setFirstName("x");
@@ -251,4 +233,22 @@ public class UserRepositoryIntegrationTest extends CaaersTestCase {
         }
     }
 
+    private class DummyMailsender implements MailSender {
+    	public void send(SimpleMailMessage[] arg0) throws MailException {
+			for(SimpleMailMessage msg : arg0) {
+				send(msg);
+			}
+			
+		}
+		
+		public void send(SimpleMailMessage arg0) throws MailException {
+			if("Your updated caAERS account".equals(arg0.getSubject())) {
+				return;
+			}
+			assertEquals("Your new caAERS account", arg0.getSubject());
+			assertTrue(arg0.getText().startsWith("A new caAERS account has been created for you."));
+			assertTrue(arg0.getText().endsWith("Sent by the caAERS Notification System."));
+			assertFalse(arg0.getText().contains("\\n"));
+		}
+    }
 }
