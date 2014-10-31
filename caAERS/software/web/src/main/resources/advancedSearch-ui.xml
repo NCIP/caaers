@@ -261,7 +261,7 @@
 			<view-column>
 				<column-attribute>description</column-attribute>
 				<column-title>Treatment description</column-title>
-				<lengthy>true</lengthy>
+				<!-- <lengthy>true</lengthy> -->
 				<dependent-object-index>3</dependent-object-index>
 				<view-column-index>1</view-column-index>
 			</view-column>
@@ -1469,7 +1469,7 @@
 			<view-column>
 				<column-attribute>description</column-attribute>
 				<column-title>Treatment description</column-title>
-				<lengthy>true</lengthy>
+				<!-- <lengthy>true</lengthy> -->
 				<dependent-object-index>5</dependent-object-index>
 				<view-column-index>1</view-column-index>
 			</view-column>
@@ -1615,7 +1615,7 @@
 			<view-column>
 				<column-attribute>eventDescription</column-attribute>
 				<column-title>Event description</column-title>
-				<lengthy>true</lengthy>
+				<!-- <lengthy>true</lengthy> -->
 				<dependent-object-index>8</dependent-object-index>
 				<view-column-index>0</view-column-index>
 			</view-column>
