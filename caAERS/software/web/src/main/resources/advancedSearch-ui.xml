@@ -203,6 +203,7 @@
 			<table-alias>TERMINOLOGY_ALIAS</table-alias>
 			<hidden>true</hidden>
 			<join-by-method>joinAeTerminology</join-by-method>
+			<outer-join-required>true</outer-join-required>
 			<ui-attribute>
 				<name>code</name>
 				<label>Ae terminology</label>
@@ -229,6 +230,7 @@
 			<table-alias>TREATMENT_ASSIGNMENT_ALIAS</table-alias>
 			<hidden>true</hidden>
 			<join-by-method>joinTreatmentAssignment</join-by-method>
+			<outer-join-required>true</outer-join-required>
 			<ui-attribute>
 				<name>code</name>
 				<label>Treatment assignment code</label>
@@ -259,7 +261,7 @@
 			<view-column>
 				<column-attribute>description</column-attribute>
 				<column-title>Treatment description</column-title>
-				<lengthy>true</lengthy>
+				<!-- <lengthy>true</lengthy> -->
 				<dependent-object-index>3</dependent-object-index>
 				<view-column-index>1</view-column-index>
 			</view-column>
@@ -1467,7 +1469,7 @@
 			<view-column>
 				<column-attribute>description</column-attribute>
 				<column-title>Treatment description</column-title>
-				<lengthy>true</lengthy>
+				<!-- <lengthy>true</lengthy> -->
 				<dependent-object-index>5</dependent-object-index>
 				<view-column-index>1</view-column-index>
 			</view-column>
@@ -1613,7 +1615,7 @@
 			<view-column>
 				<column-attribute>eventDescription</column-attribute>
 				<column-title>Event description</column-title>
-				<lengthy>true</lengthy>
+				<!-- <lengthy>true</lengthy> -->
 				<dependent-object-index>8</dependent-object-index>
 				<view-column-index>0</view-column-index>
 			</view-column>
