@@ -13,13 +13,6 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
     <script type="text/javascript" language="javascript">
         jQuery(function() {
             jQuery( "#ctabs" ).tabs({cookie:{expires:1}});
-            var readonly = true;
-    	    <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.tools.configuration.Configuration:UPDATE">
-    	    	readonly = false;
-    	    </csmauthz:accesscontrol>
-    	    if(readonly) {
-    	    	jQuery( "input" ).attr('disabled', 'disabled');
-    	    }
         });
     </script>
     <script>
