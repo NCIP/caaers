@@ -411,14 +411,20 @@ public abstract class AbstractQuery {
     }
     
     protected String praseOperator(String operator) {
-    	switch(operator) {
-			case "=": return "=";
-			case "!=": return "!=";
-			case ">": return ">";
-			case ">=": return ">=";
-			case "<": return "<";
-			case "<=": return "<=";
-			case "like": return "like";
+    	if(operator.equals("=")) {
+    		return "=";
+    	} else if(operator.equals("!=")) {
+    		return "!=";
+    	} else if(operator.equals(">=")) {
+    		return ">=";
+    	} else if(operator.equals(">")) {
+    		return ">";
+    	} else if(operator.equals("<")) {
+    		return "<";
+    	} else if(operator.equals("<=")) {
+    		return "<=";
+    	} else if(operator.equals("like")) {
+    		return "like";
 		}
 		throw new IllegalArgumentException("Operator: '" + operator + "' is not recognized as a valid operator.");
 	}
