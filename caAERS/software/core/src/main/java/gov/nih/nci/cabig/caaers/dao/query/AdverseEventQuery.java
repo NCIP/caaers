@@ -113,21 +113,9 @@ public class AdverseEventQuery extends AbstractQuery {
         andWhere("report.id=:aeReportId");
         setParameter("aeReportId", id);
     }
-	/**
-	public void joinIdentifiers() {
-		joinStudy();
-		join (STUDY_ALIAS +".identifiers "+STUDY_IDS_ALIAS);		
-	}
-	public void filterBySCCIdentifier() {
-		orWhere(STUDY_IDS_ALIAS+".type = 'Coordinating Center Identifier'" );
-	}
-	
-	public void filterBySFSIdentifier() {
-		orWhere(STUDY_IDS_ALIAS+".type = 'Protocol Authority Identifier'" );
-	}
-	*/
+
 	public void filterByCtcTerm(String term , String operator) {
-		andWhere (AE_TERM_ALIAS+".term.term "+operator+" :term");
+		andWhere (AE_TERM_ALIAS+".term.term " + praseOperator(operator) + " :term");
 		if (operator.equals("like")) {
 			setParameter("term" , getLikeValue(term));
 		} else {
@@ -135,32 +123,32 @@ public class AdverseEventQuery extends AbstractQuery {
 		}		
 	}
 	public void filterBySolicited(boolean flag , String operator) {
-		andWhere (AE_ALIAS+".solicited "+operator+" :flag");
+		andWhere (AE_ALIAS+".solicited " + praseOperator(operator) + " :flag");
 		setParameter("flag" , flag);
 	}
 
 	public void filterByGrade(Integer code , String operator) {
-		andWhere (AE_ALIAS+".grade "+operator+" :grade");
+		andWhere (AE_ALIAS+".grade " + praseOperator(operator) + " :grade");
 		setParameter("grade" , Grade.getByCode(code));
 	}
 
 	public void filterByHospitalization(Integer code , String operator) {
-		andWhere (AE_ALIAS+".hospitalization "+operator+" :hospitalization");
+		andWhere (AE_ALIAS+".hospitalization " + praseOperator(operator) + " :hospitalization");
 		setParameter("hospitalization" , Hospitalization.getByCode(code));
 	}
 	
 	public void filterByExpected(boolean flag , String operator) {
-		andWhere (AE_ALIAS+".expected "+operator+" :flag");
+		andWhere (AE_ALIAS+".expected " + praseOperator(operator) + " :flag");
 		setParameter("flag" , flag);
 	}
 	
 	public void filterByAttribution(Integer code , String operator) {
-		andWhere (AE_ALIAS+".attributionSummary "+operator+" :attributionSummary");
+		andWhere (AE_ALIAS+".attributionSummary " + praseOperator(operator) + " :attributionSummary");
 		setParameter("attributionSummary" , Attribution.getByCode(code));
 	}
 	
 	public void filterByVerbatim(String verbatim , String operator) {
-		andWhere (AE_ALIAS+".detailsForOther "+operator+" :verbatim");
+		andWhere (AE_ALIAS+".detailsForOther " + praseOperator(operator) + " :verbatim");
 		if (operator.equals("like")) {
 			setParameter("verbatim" , getLikeValue(verbatim));
 		} else {
@@ -169,7 +157,7 @@ public class AdverseEventQuery extends AbstractQuery {
 	}
 
     public void filterByTerminology(Integer code, String operator) {
-    	andWhere(TERMINOLOGY_ALIAS+".term "+operator+" :term");
+    	andWhere(TERMINOLOGY_ALIAS+".term " + praseOperator(operator) + " :term");
         setParameter("term", Term.getByCode(code));
     }
     
@@ -190,7 +178,7 @@ public class AdverseEventQuery extends AbstractQuery {
     }
 
     public void filterByCourseNumber(Integer num , String operator) throws Exception {
-    	andWhere(AE_REPORTING_PERIOD_ALIAS+".cycleNumber "+operator+" :num");
+    	andWhere(AE_REPORTING_PERIOD_ALIAS+".cycleNumber " + praseOperator(operator) + " :num");
         setParameter("num", num);
     }
     

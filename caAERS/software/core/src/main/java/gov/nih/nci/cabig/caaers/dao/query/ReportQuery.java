@@ -72,7 +72,7 @@ public class ReportQuery extends AbstractQuery {
 	}
 	
     public void filterByReportDefinitionName(final String name,String operator) {
-        andWhere("lower("+REPORT_DEFINITION_ALIAS+".name) "+operator+" :name");
+        andWhere("lower("+REPORT_DEFINITION_ALIAS+".name) " + praseOperator(operator) + " :name");
         if (operator.equals("like")) {
         	setParameter("name", getLikeValue(name.toLowerCase()) );
         } else {
@@ -81,12 +81,12 @@ public class ReportQuery extends AbstractQuery {
     }
     
     public void filterByReportVersionStatus(final Integer code,String operator) {
-        andWhere(REPORT_VERSION_ALIAS+".reportStatus "+operator+" :code");
+        andWhere(REPORT_VERSION_ALIAS+".reportStatus " + praseOperator(operator) + " :code");
         setParameter("code" , ReportStatus.getByCode(code));
     } 
 
     public void filterByReportVersionId(final String reportVersionId,String operator) {
-        andWhere("lower("+REPORT_VERSION_ALIAS+".reportVersionId) "+operator+" :reportVersionId");
+        andWhere("lower("+REPORT_VERSION_ALIAS+".reportVersionId) " + praseOperator(operator) + " :reportVersionId");
         if (operator.equals("like")) {
         	setParameter("reportVersionId", getLikeValue(reportVersionId.toLowerCase()) );
         } else {
@@ -95,7 +95,7 @@ public class ReportQuery extends AbstractQuery {
     } 
     
     public void filterByAssignedIdentifer(final String assignedIdentifer,String operator) {
-        andWhere("lower("+REPORT_VERSION_ALIAS+".assignedIdentifer) "+operator+" :assignedIdentifer");
+        andWhere("lower("+REPORT_VERSION_ALIAS+".assignedIdentifer) " + praseOperator(operator) + " :assignedIdentifer");
         if (operator.equals("like")) {
         	setParameter("assignedIdentifer", getLikeValue(assignedIdentifer.toLowerCase()) );
         } else {
@@ -104,7 +104,7 @@ public class ReportQuery extends AbstractQuery {
     }
  
     public void filterByTreatmentAssignmentCode(final String treatmentAssignmentCode,String operator) {
-        andWhere("lower("+TREATMENT_ASSIGNMENT_ALIAS+".code) "+operator+" :treatmentAssignmentCode");
+        andWhere("lower("+TREATMENT_ASSIGNMENT_ALIAS+".code) " + praseOperator(operator) + " :treatmentAssignmentCode");
         if (operator.equals("like")) {
         	setParameter("treatmentAssignmentCode", getLikeValue(treatmentAssignmentCode.toLowerCase()) );
         } else {
@@ -113,7 +113,7 @@ public class ReportQuery extends AbstractQuery {
     }
     
     public void filterByTreatmentAssignmentDescription(final String treatmentAssignmentDescription,String operator) {
-        andWhere("lower("+TREATMENT_ASSIGNMENT_ALIAS+".description) "+operator+" :treatmentAssignmentDescription");
+        andWhere("lower("+TREATMENT_ASSIGNMENT_ALIAS+".description) " + praseOperator(operator) + " :treatmentAssignmentDescription");
         if (operator.equals("like")) {
         	setParameter("treatmentAssignmentDescription", getLikeValue(treatmentAssignmentDescription.toLowerCase()) );
         } else {
@@ -122,7 +122,7 @@ public class ReportQuery extends AbstractQuery {
     }
     
     public void filterByInvestigationalAgentAdministered(boolean flag , String operator) {
-		andWhere (TREATMENT_INFORMATION_ALIAS+".investigationalAgentAdministered "+operator+" :flag");
+		andWhere (TREATMENT_INFORMATION_ALIAS+".investigationalAgentAdministered " + praseOperator(operator) + " :flag");
 		setParameter("flag" , flag);
 	}
     
@@ -145,8 +145,8 @@ public class ReportQuery extends AbstractQuery {
     public void filterByExpeditedReportAndReportDefinition (Integer expeditedReportId , Integer reportDefinitionId) {
     	joinExpeditedAEReport();
     	joinReportDefinition();
-    	andWhere (this.EXPEDITED_AE_REPORT_ALIAS +".id = : eId");
-    	andWhere (this.REPORT_DEFINITION_ALIAS  + ".id = : rId");
+    	andWhere (ReportQuery.EXPEDITED_AE_REPORT_ALIAS +".id = : eId");
+    	andWhere (ReportQuery.REPORT_DEFINITION_ALIAS  + ".id = : rId");
     	setParameter("eId" , expeditedReportId);
     	setParameter("rId" , reportDefinitionId);
     	

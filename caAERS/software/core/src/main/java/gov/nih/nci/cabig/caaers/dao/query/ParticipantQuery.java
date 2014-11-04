@@ -43,14 +43,6 @@ public class ParticipantQuery extends AbstractQuery {
     	join("p.assignments assignment");
     }
     
-    // participant shud have assignmengt and study , outerjoin method is only for naming convention in advanced search
-    //public void outerjoinAssignment() {
-    	//joinAssignment();
-    //}
-    //public void outerjoinStudy() {
-    	//joinStudy();
-    //}
-    
     public void joinStudySite() {
     	joinAssignment();
     	join ("assignment.studySite studySite");
@@ -64,7 +56,7 @@ public class ParticipantQuery extends AbstractQuery {
     
     public void filterByStudySubjectIdentifier(String studySubjectIdentifier,String operator) {
     	joinAssignment();
-    	andWhere("lower(assignment.studySubjectIdentifier) "+operator+" :SSI");
+    	andWhere("lower(assignment.studySubjectIdentifier) " + praseOperator(operator) + " :SSI");
     	if (operator.equals("like")) {
     		setParameter("SSI", getLikeValue(studySubjectIdentifier.toLowerCase()));
     	} else {

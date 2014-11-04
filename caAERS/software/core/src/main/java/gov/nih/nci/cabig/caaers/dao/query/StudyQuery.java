@@ -172,21 +172,22 @@ public class StudyQuery extends AbstractQuery {
     }
     
     public void filterByTerminology(Integer code, String operator) {
-    	andWhere("terminology.term "+operator+" :term");
+    	andWhere("terminology.term " + praseOperator(operator) + " :term");
         setParameter("term", Term.getByCode(code));
     }
     
     public void filterByTreatmentCode(String code, String operator) {
-    	andWhere("lower(ta.code) "+operator+" :CODE");
+    	
+    	andWhere("lower(ta.code) " + praseOperator(operator) + " :CODE");
     	if (operator.equals("like")) {
     		setParameter("CODE", getLikeValue(code.toLowerCase()));
     	} else {
     		setParameter("CODE", code.toLowerCase());
     	}
     }
-    
-    public void filterByTreatmentDescription(String description,String operator) {
-    	andWhere("lower(ta.description) "+operator+" :DESC");
+
+	public void filterByTreatmentDescription(String description,String operator) {
+    	andWhere("lower(ta.description) " + praseOperator(operator) + " :DESC");
     	if (operator.equals("like")) {
     		setParameter("DESC", getLikeValue(description.toLowerCase()));
     	} else {
@@ -196,29 +197,29 @@ public class StudyQuery extends AbstractQuery {
     }
  
     public void filterByOtherIntervention(Integer code, String operator) {
-    	orWhere("i.studyTherapyType " + operator + " '" + code + "'" );
-
+    	orWhere("i.studyTherapyType " + praseOperator(operator) + " :OTHERINT" );
+    	setParameter("OTHERINT", code);
     }
     
     public void filterByDeviceIntervention(Integer code, String operator) {
-  
-    	orWhere("d.studyTherapyType " + operator + " '" + code + "'" );
-    	
+    	orWhere("d.studyTherapyType " + praseOperator(operator) + " :DEVICEINT" );
+    	setParameter("DEVICEINT", code);
     }
     
     public void filterByAgentIntervention(Integer code, String operator) {
-
-    	orWhere("sai.studyTherapyType " + operator + " '" + code + "'" );
+    	orWhere("sai.studyTherapyType " + praseOperator(operator) + " :AGENTINT" );
+    	setParameter("AGENTINT", code);
     }
     
     public void filterByStudyIntervention(Integer code, String operator) {
-    	orWhere("i.studyTherapyType " + operator + " '" + code + "'" );
-    	orWhere("d.studyTherapyType " + operator + " '" + code + "'" );
-    	orWhere("sai.studyTherapyType " + operator + " '" + code + "'" );
+    	orWhere("i.studyTherapyType " + praseOperator(operator) + " :STUDYINT" );
+    	orWhere("d.studyTherapyType " + praseOperator(operator) + " :STUDYINT" );
+    	orWhere("sai.studyTherapyType " + praseOperator(operator) + " :STUDYINT" );
+    	setParameter("STUDYINT", code);
     }
     
     public void filterByStudySubjectIdentifier(String studySubjectIdentifier,String operator) {
-    	andWhere("lower(spa.studySubjectIdentifier) "+operator+" :SSI");
+    	andWhere("lower(spa.studySubjectIdentifier) " + praseOperator(operator) + " :SSI");
     	if (operator.equals("like")) {
     		setParameter("SSI", getLikeValue(studySubjectIdentifier.toLowerCase()));
     	} else {
@@ -228,7 +229,7 @@ public class StudyQuery extends AbstractQuery {
     }
 
     public void filterByAgent(Integer id ,String operator) {
-    	andWhere("agt.id "+ operator+" :ID");
+    	andWhere("agt.id " + praseOperator(operator) + " :ID");
         setParameter("ID", id);
     }
     
@@ -241,10 +242,10 @@ public class StudyQuery extends AbstractQuery {
     }
 
     public void filterByIdentifierValueExactMatch(final String identifiervalue) {
-    		joinIdentifier();
-            String searchString = identifiervalue.toLowerCase();
-            andWhere("lower(identifier.value) LIKE :" + STUDY_IDENTIFIER_VALUE);
-            setParameter(STUDY_IDENTIFIER_VALUE, searchString);
+		joinIdentifier();
+        String searchString = identifiervalue.toLowerCase();
+        andWhere("lower(identifier.value) LIKE :" + STUDY_IDENTIFIER_VALUE);
+        setParameter(STUDY_IDENTIFIER_VALUE, searchString);
     }
 
     public void filterByIdentifierType(final String type) {
@@ -349,7 +350,7 @@ public class StudyQuery extends AbstractQuery {
     public void filterStudiesMatchingText(String text) {
     	leftJoinFetch(STUDY_ALIAS+".identifiers as identifier");
         String searchString = text != null ? "%" + text.toLowerCase() + "%" : null;
-        andWhere(String.format("(lower(s.shortTitle) LIKE :%s or lower(s.longTitle) LIKE :%s " + "or lower(identifier.value) LIKE :%s)", STUDY_SHORT_TITLE, STUDY_LONG_TITLE, IDENTIFIER_VALUE));
+        andWhere(String.format("(lower(s.shortTitle) LIKE :%s or lower(s.longTitle) LIKE :%s or lower(identifier.value) LIKE :%s)", STUDY_SHORT_TITLE, STUDY_LONG_TITLE, IDENTIFIER_VALUE));
         setParameter(IDENTIFIER_VALUE, searchString);
         setParameter(STUDY_SHORT_TITLE, searchString);
         setParameter(STUDY_LONG_TITLE, searchString);

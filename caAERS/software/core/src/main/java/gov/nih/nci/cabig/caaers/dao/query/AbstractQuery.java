@@ -64,7 +64,6 @@ public abstract class AbstractQuery {
         String upperCaseQuery = queryBuffer.toString().toUpperCase();
 
         int indexOfWhere = upperCaseQuery.indexOf(WHERE);
-        int indexOfFrom = upperCaseQuery.indexOf("FROM");
 
         //is where condition present?
         boolean hasWhere = indexOfWhere > 0;
@@ -359,6 +358,7 @@ public abstract class AbstractQuery {
 
 	public  String createDateQuery(String fullAttributeName, String dateString, String predicate) throws Exception {
 		Date dateValue = null;
+		predicate = praseOperator(predicate);
 		try {
 			//dateValue = java.text.DateFormat.getDateTimeInstance().parse(dateString);
 			DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
@@ -409,5 +409,18 @@ public abstract class AbstractQuery {
     public String toString() {
     	return ToStringBuilder.reflectionToString(this);
     }
+    
+    protected String praseOperator(String operator) {
+    	switch(operator) {
+			case "=": return "=";
+			case "!=": return "!=";
+			case ">": return ">";
+			case ">=": return ">=";
+			case "<": return "<";
+			case "<=": return "<=";
+			case "like": return "like";
+		}
+		throw new IllegalArgumentException("Operator: '" + operator + "' is not recognized as a valid operator.");
+	}
     
 }
