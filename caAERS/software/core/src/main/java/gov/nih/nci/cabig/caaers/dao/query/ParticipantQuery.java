@@ -56,7 +56,7 @@ public class ParticipantQuery extends AbstractQuery {
     
     public void filterByStudySubjectIdentifier(String studySubjectIdentifier,String operator) {
     	joinAssignment();
-    	andWhere("lower(assignment.studySubjectIdentifier) " + praseOperator(operator) + " :SSI");
+    	andWhere("lower(assignment.studySubjectIdentifier) " + parseOperator(operator) + " :SSI");
     	if (operator.equals("like")) {
     		setParameter("SSI", getLikeValue(studySubjectIdentifier.toLowerCase()));
     	} else {

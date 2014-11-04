@@ -270,7 +270,7 @@ public abstract class AbstractQuery {
     // Advanced Search query methods 
     // id
     public void filterByStudyId(final Integer id,String operator) {
-        andWhere("s.id "+operator+" :ID");
+        andWhere("s.id " + parseOperator(operator) + " :ID");
         setParameter("ID", id);
     }
 
@@ -280,7 +280,7 @@ public abstract class AbstractQuery {
     
     // shortTitle
     public void filterByStudyShortTitle(final String shortTitleText , String operator) {
-    	andWhere("lower(s.shortTitle) "+operator+" :" + "shortTitleText");
+    	andWhere("lower(s.shortTitle) " + parseOperator(operator) + " :" + "shortTitleText");
         
     	if (operator.equals("like")) {
     		setParameter("shortTitleText", getLikeValue(shortTitleText.toLowerCase()));
@@ -291,7 +291,7 @@ public abstract class AbstractQuery {
 
     // longTitle
     public void filterByStudyLongTitle(final String longTitleText ,String operator) {
-    	andWhere("lower(s.longTitle) "+operator+" :" + "longTitleText");
+    	andWhere("lower(s.longTitle) " + parseOperator(operator) + " :" + "longTitleText");
         
     	if (operator.equals("like")) {
     		setParameter("longTitleText", getLikeValue(longTitleText.toLowerCase()));
@@ -303,7 +303,7 @@ public abstract class AbstractQuery {
     
     // participant-id
     public void filterByParticipantId(final Integer id,String operator) {
-        andWhere("p.id "+operator+" :id");
+        andWhere("p.id " + parseOperator(operator) + " :id");
         setParameter("id", id);
     }  
     
@@ -311,7 +311,7 @@ public abstract class AbstractQuery {
     
     // participant-FirstName
     public void filterByParticipantFirstName(final String fName,String operator) {
-        andWhere("lower(p.firstName) "+operator+" :pfName");
+        andWhere("lower(p.firstName) " + parseOperator(operator) + " :pfName");
         if (operator.equals("like")) {
         	setParameter("pfName", getLikeValue(fName.toLowerCase()));
         } else {
@@ -321,7 +321,7 @@ public abstract class AbstractQuery {
 
     // participant - LastName
     public void filterByParticipantLastName(final String lName,String operator) {
-        andWhere("lower(p.lastName) "+operator+" :plName");
+        andWhere("lower(p.lastName) " + parseOperator(operator) + " :plName");
         if (operator.equals("like")) {
         	setParameter("plName", getLikeValue(lName.toLowerCase()) );
         } else {
@@ -331,19 +331,19 @@ public abstract class AbstractQuery {
 
     // participant - Ethnicity
     public void filterByParticipantEthnicity(String ethenicity,String operator) {
-        andWhere("lower(p.ethnicity) "+operator+" :pEthenicity");
+        andWhere("lower(p.ethnicity) " + parseOperator(operator) + " :pEthenicity");
         setParameter("pEthenicity", ethenicity.toLowerCase() );
     }
 
     // participant - Race
     public void filterByParticipantRace(String race,String operator) {
-        andWhere("lower(p.race) "+operator+" :pRace");
+        andWhere("lower(p.race) " + parseOperator(operator) + " :pRace");
         setParameter("pRace", race.toLowerCase() );
     }
     
     // p.gender
     public void filterByParticipantGender(final String gender,String operator) {
-        andWhere("lower(p.gender) "+operator+" :pGender");
+        andWhere("lower(p.gender) " + parseOperator(operator) + " :pGender");
         setParameter("pGender", gender.toLowerCase());
     }
     
@@ -358,7 +358,7 @@ public abstract class AbstractQuery {
 
 	public  String createDateQuery(String fullAttributeName, String dateString, String predicate) throws Exception {
 		Date dateValue = null;
-		predicate = praseOperator(predicate);
+		predicate = parseOperator(predicate);
 		try {
 			//dateValue = java.text.DateFormat.getDateTimeInstance().parse(dateString);
 			DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
@@ -410,7 +410,7 @@ public abstract class AbstractQuery {
     	return ToStringBuilder.reflectionToString(this);
     }
     
-    protected String praseOperator(String operator) {
+    protected String parseOperator(String operator) {
     	if(operator.equals("=")) {
     		return "=";
     	} else if(operator.equals("!=")) {
