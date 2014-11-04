@@ -172,13 +172,13 @@ public class StudyQuery extends AbstractQuery {
     }
     
     public void filterByTerminology(Integer code, String operator) {
-    	andWhere("terminology.term " + praseOperator(operator) + " :term");
+    	andWhere("terminology.term " + parseOperator(operator) + " :term");
         setParameter("term", Term.getByCode(code));
     }
     
     public void filterByTreatmentCode(String code, String operator) {
     	
-    	andWhere("lower(ta.code) " + praseOperator(operator) + " :CODE");
+    	andWhere("lower(ta.code) " + parseOperator(operator) + " :CODE");
     	if (operator.equals("like")) {
     		setParameter("CODE", getLikeValue(code.toLowerCase()));
     	} else {
@@ -187,7 +187,7 @@ public class StudyQuery extends AbstractQuery {
     }
 
 	public void filterByTreatmentDescription(String description,String operator) {
-    	andWhere("lower(ta.description) " + praseOperator(operator) + " :DESC");
+    	andWhere("lower(ta.description) " + parseOperator(operator) + " :DESC");
     	if (operator.equals("like")) {
     		setParameter("DESC", getLikeValue(description.toLowerCase()));
     	} else {
@@ -197,29 +197,29 @@ public class StudyQuery extends AbstractQuery {
     }
  
     public void filterByOtherIntervention(Integer code, String operator) {
-    	orWhere("i.studyTherapyType " + praseOperator(operator) + " :OTHERINT" );
+    	orWhere("i.studyTherapyType " + parseOperator(operator) + " :OTHERINT" );
     	setParameter("OTHERINT", code);
     }
     
     public void filterByDeviceIntervention(Integer code, String operator) {
-    	orWhere("d.studyTherapyType " + praseOperator(operator) + " :DEVICEINT" );
+    	orWhere("d.studyTherapyType " + parseOperator(operator) + " :DEVICEINT" );
     	setParameter("DEVICEINT", code);
     }
     
     public void filterByAgentIntervention(Integer code, String operator) {
-    	orWhere("sai.studyTherapyType " + praseOperator(operator) + " :AGENTINT" );
+    	orWhere("sai.studyTherapyType " + parseOperator(operator) + " :AGENTINT" );
     	setParameter("AGENTINT", code);
     }
     
     public void filterByStudyIntervention(Integer code, String operator) {
-    	orWhere("i.studyTherapyType " + praseOperator(operator) + " :STUDYINT" );
-    	orWhere("d.studyTherapyType " + praseOperator(operator) + " :STUDYINT" );
-    	orWhere("sai.studyTherapyType " + praseOperator(operator) + " :STUDYINT" );
+    	orWhere("i.studyTherapyType " + parseOperator(operator) + " :STUDYINT" );
+    	orWhere("d.studyTherapyType " + parseOperator(operator) + " :STUDYINT" );
+    	orWhere("sai.studyTherapyType " + parseOperator(operator) + " :STUDYINT" );
     	setParameter("STUDYINT", code);
     }
     
     public void filterByStudySubjectIdentifier(String studySubjectIdentifier,String operator) {
-    	andWhere("lower(spa.studySubjectIdentifier) " + praseOperator(operator) + " :SSI");
+    	andWhere("lower(spa.studySubjectIdentifier) " + parseOperator(operator) + " :SSI");
     	if (operator.equals("like")) {
     		setParameter("SSI", getLikeValue(studySubjectIdentifier.toLowerCase()));
     	} else {
@@ -229,7 +229,7 @@ public class StudyQuery extends AbstractQuery {
     }
 
     public void filterByAgent(Integer id ,String operator) {
-    	andWhere("agt.id " + praseOperator(operator) + " :ID");
+    	andWhere("agt.id " + parseOperator(operator) + " :ID");
         setParameter("ID", id);
     }
     
