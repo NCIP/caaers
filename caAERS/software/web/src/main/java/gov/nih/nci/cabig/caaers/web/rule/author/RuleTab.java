@@ -66,6 +66,7 @@ public class RuleTab extends DefaultTab {
                     continue;
                 }
                 LiteralRestriction lr = fc.getLiteralRestriction().get(0);
+                if(StringUtils.equals("category", fc.getFieldName())) continue;
                 if(CollectionUtils.isEmpty(lr.getValue()) || StringUtils.isEmpty(lr.getValue().get(0)))  {
                     errors.rejectValue("ruleSet.rule[" + i + "].condition.column[" + j + "].fieldConstraint[0].literalRestriction[0].value", "RUL_019");
                 }

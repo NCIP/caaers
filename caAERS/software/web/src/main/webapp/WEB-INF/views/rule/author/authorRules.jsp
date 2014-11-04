@@ -86,10 +86,7 @@ div#createNew h3, div.section h3 {
 						sections.push('rule-' + (sections.length + 1));
 						var columnHolder = getElementHolderDiv();
 						columnHolder.innerHTML = html;
-						// CAAERS-1152 child nodes count is 1 in IE , 2 in FF as FF counts white spaces , so 0(1-1) for IE and 1(2-1) for FF
-						var len = columnHolder.childNodes.length;
-						var newRule = columnHolder.childNodes[len-1].cloneNode(true);
-						//var newRule = columnHolder.childNodes[1].cloneNode(true);
+						var newRule = $(columnHolder).getElementsByTagName('div')[0].cloneNode(true);
 						columnHolder.innerHTML = "";
 						$('allRules').appendChild(newRule);
 						Effect.Appear(newRule.id);
@@ -109,11 +106,8 @@ div#createNew h3, div.section h3 {
 							var columns = $('rule-'+(ruleCount + 1)+'-columns');
 							var columnHolder = getElementHolderDiv();
 							columnHolder.innerHTML = columnContent;
-							// CAAERS-1152 child nodes count is 1 in IE , 2 in FF as FF counts white spaces , so 0(1-1) for IE and 1(2-1) for FF
-							var len = columnHolder.childNodes.length;
-							var newColumn = columnHolder.childNodes[len-1].cloneNode(true);
-							//var newColumn = columnHolder.childNodes[1].cloneNode(true);	
-							
+							var newColumn = $(columnHolder).getElementsByTagName('div')[0].cloneNode(true);
+
 							columnHolder.innerHTML = "";
 							columns.appendChild(newColumn);
 						
@@ -221,7 +215,7 @@ div#createNew h3, div.section h3 {
 					});
 				
 				}catch (e) {
-					//alert(e)
+					alert(e)
 				}
 		}
 		
@@ -1297,8 +1291,7 @@ div#createNew h3, div.section h3 {
                   <c:forEach varStatus="columnStatus" begin="0"
 					items="${command.ruleSet.rule[ruleCount].condition.column}">
                     <c:set var="columnCount" value="${columnStatus.index}" />
-                    <div id="rule-${ruleCount}-column-${columnCount}" style="font-weight:bold;"
-						class="lineitem one-condition" <c:if test="${command.ruleSet.rule[ruleCount].condition.column[columnCount].markedDelete}"> visibility:hidden</c:if>">
+                    <div id="rule-${ruleCount}-column-${columnCount}" style="font-weight:bold;" class="lineitem one-condition"  ${command.ruleSet.rule[ruleCount].condition.column[columnCount].markedDelete ? 'visibility:hidden' : ''}>
                       <c:choose>
                         <c:when test="${columnCount == 0}">
                           <label for="IF" style="padding-left:9px; margin-right:8px;">If</label>
@@ -1381,66 +1374,66 @@ div#createNew h3, div.section h3 {
                         <c:when
 							test='${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName eq "category"}'>
                           <script type="text/javascript">
-																	var fieldValue;
-																		var readableValue;
-																		//createAE.getCategories(3, function(categories) {
-																	
-																			var newId = 'ruleSet.rule[' + ${ruleCount} + '].condition.column[' + ${columnCount} + '].fieldConstraint[0].literalRestriction[0].value'; 
-																			var spanId = newId + '.span';
-																	
-																		 fieldValue = '${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].literalRestriction[0].value[0]}';
-																		 readableValue = '${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].literalRestriction[0].readableValue}';
-																			//alert (readableValue);
-																			var selectArea = '<select id="' + newId + '" name="' + newId +  '" value="' + fieldValue + '" onchange="onCategoryChange(this, ${ruleCount})">';
-																			selectArea += '</select>';
-						
+                                                    var fieldValue;
+                                                    var readableValue;
+                                                    //createAE.getCategories(3, function(categories) {
+
+                                                    var newId = 'ruleSet.rule[' + ${ruleCount} + '].condition.column[' + ${columnCount} + '].fieldConstraint[0].literalRestriction[0].value';
+                                                    var spanId = newId + '.span';
+
+                                                    fieldValue = '${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].literalRestriction[0].value[0]}';
+                                                    readableValue = '${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].literalRestriction[0].readableValue}';
+                                                    //alert (readableValue);
+                                                    var selectArea = '<select id="' + newId + '" name="' + newId +  '" value="' + fieldValue + '" onchange="onCategoryChange(this, ${ruleCount})">';
+                                                    selectArea += '</select>';
+
 						
 													var hiddenField = '<input type="hidden" value = "'+ readableValue +'" id="ruleSet.rule['+${ruleCount}+'].condition.column['+${columnCount}+'].fieldConstraint[0].literalRestriction[0].readableValue"' + ' name="ruleSet.rule['+${ruleCount}+'].condition.column['+${columnCount}+'].fieldConstraint[0].literalRestriction[0].readableValue"' +'/>'
 
-													
-																			//Element.remove(validValueField);
-																	
-																								
-																			$(spanId).innerHTML = selectArea + hiddenField;
-																	
-																			var sel = $(newId);	
-																					                
-																			sel.options.length = 0
-																			sel.options.add(new Option("Any", ""))
-																					                    
-																			var index = 0;	
-																			categoryObjects2.each(function(cat) {
-																				var splitted = cat.split("||");
-																				var name = splitted[1];
-																				var id = splitted[0];
-																				var opt = new Option(name, id)
-																					    sel.options.add(opt)
-																					    index++;
-																					    
-																					    if (id == fieldValue)
-																					    {
-																					    	sel.options[index].selected=true;
-																					    }
-																			})
-																			
-																			/**
-																			categoryObjects.each(function(cat) {
-																				 var name = cat.name
-																				 if (name.length > 45) name = name.substring(0, 45) + "..."
-																					    var opt = new Option(name, cat.id)
-																					    sel.options.add(opt)
-																					    index++;
-																					    
-																					    if (cat.id == fieldValue)
-																					    {
-																					    	sel.options[index].selected=true;
-																					    }
-																					    
-																		      })
-																		     */
-																		        
-																	           //})
-																	</script>
+
+                                                    //Element.remove(validValueField);
+
+
+                                                    $(spanId).innerHTML = selectArea + hiddenField;
+
+                                                    var sel = $(newId);
+
+                                                    sel.options.length = 0
+                                                    sel.options.add(new Option("Any", ""))
+
+                                                    var index = 0;
+                                                    categoryObjects2.each(function(cat) {
+                                                        var splitted = cat.split("||");
+                                                        var name = splitted[1];
+                                                        var id = splitted[0];
+                                                        var opt = new Option(name, id)
+                                                                sel.options.add(opt)
+                                                                index++;
+
+                                                                if (id == fieldValue)
+                                                                {
+                                                                    sel.options[index].selected=true;
+                                                                }
+                                                    })
+
+                                                    /**
+                                                    categoryObjects.each(function(cat) {
+                                                         var name = cat.name
+                                                         if (name.length > 45) name = name.substring(0, 45) + "..."
+                                                                var opt = new Option(name, cat.id)
+                                                                sel.options.add(opt)
+                                                                index++;
+
+                                                                if (cat.id == fieldValue)
+                                                                {
+                                                                    sel.options[index].selected=true;
+                                                                }
+
+                                                      })
+                                                     */
+
+                                                       //})
+                            </script>
                         </c:when>
                         <c:when test='${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName eq "term"}'>
                           <script type="text/javascript">
