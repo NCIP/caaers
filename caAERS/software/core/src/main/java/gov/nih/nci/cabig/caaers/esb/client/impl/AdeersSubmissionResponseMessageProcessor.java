@@ -149,8 +149,12 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
 		    int stInd = message.indexOf(RESPONSE_MSG_ST_TAG);
 		    int endInd = message.indexOf(RESPONSE_MSG_END_TAG);
 		    String trimmedMessage = message.substring(stInd, endInd);
-		    int insertPoint = trimmedMessage.lastIndexOf("</description>");
-		    trimmedMessage = trimmedMessage.subSequence(0, insertPoint) + " System Error Occured in: " + sysName + trimmedMessage.substring(insertPoint);
+            if(!success) {
+                int insertPoint = trimmedMessage.lastIndexOf("</description>");
+                if(insertPoint > 0){
+                    trimmedMessage = trimmedMessage.subSequence(0, insertPoint) + " System Error Occured in: " + sysName + trimmedMessage.substring(insertPoint);
+                }
+            }
 		    trimmedMessage += RESPONSE_MSG_END_TAG;
 		    trimmedMessage = trimmedMessage.replaceAll(RESPONSE_MSG_ST_TAG, RESPONSE_MSG_ST_TAG + " xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"");
 		    String routedRes = getProxyWebServiceFacade().routeAdeersReportSubmissionResponse(trimmedMessage, r);
