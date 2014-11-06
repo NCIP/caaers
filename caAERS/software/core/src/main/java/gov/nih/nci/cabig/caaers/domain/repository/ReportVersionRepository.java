@@ -86,7 +86,7 @@ public class ReportVersionRepository {
         replacementMap.put("${aeReportId}",  "" + report.getAeReport().getId());
         replacementMap.put("${protocolId}",  report.getAeReport().getStudy().getPrimaryIdentifierValue());
         replacementMap.put("${subjectId}",   report.getAeReport().getParticipant().getPrimaryIdentifierValue());
-        replacementMap.put("${messageComboId}",    report.getCaseNumber() + "::" + report.getCreatedOn().getTime());
+        replacementMap.put("${messageComboId}",    report.getCaseNumber() + "::" + report.getAeReport().getCreatedAt().getTime());
         replacementMap.put("${submitterEmail}", report.getSubmitter().getEmailAddress());
 
         String xmlMessage =  responseXMLTemplate;
