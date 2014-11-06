@@ -11,6 +11,9 @@ import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.esb.client.impl.AdeersSubmissionResponseMessageProcessor;
 import gov.nih.nci.cabig.caaers.service.ProxyWebServiceFacade;
 
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
+import gov.nih.nci.cabig.ctms.tools.configuration.ConfigurationProperty;
+import org.easymock.EasyMock;
 import org.jdom.Element;
 /**
  * 
@@ -23,6 +26,7 @@ public class ESBMessageConsumerImplTest extends AbstractTestCase {
 	MessageNotificationService messageNotificationService;
 	ReportDao reportDao;
 	ProxyWebServiceFacade proxyWebServiceFacade;
+    Configuration configuration;
 	
 	
 	protected void setUp() throws Exception {
@@ -32,11 +36,15 @@ public class ESBMessageConsumerImplTest extends AbstractTestCase {
 		messageNotificationService = registerMockFor(MessageNotificationService.class);
 		reportDao = registerMockFor(ReportDao.class);
 		proxyWebServiceFacade = registerMockFor(ProxyWebServiceFacade.class);
+        configuration = registerMockFor(Configuration.class);
+
 		
 		consumer.setMessageNotificationService(messageNotificationService);
 		consumer.setReportDao(reportDao);
 		consumer.setProxyWebServiceFacade(proxyWebServiceFacade);		
-		
+        consumer.setConfiguration(configuration);
+
+
 	}
 	
 	//correct xml, no exceptions
