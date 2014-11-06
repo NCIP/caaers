@@ -107,6 +107,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
                     <admin:oneConfigEntry entry="${command.conf['unidentifiedMode'].property}"/>
                     <admin:oneConfigEntry entry="${command.conf['synchronousSpringEvents'].property}"/>
                     <admin:oneConfigEntry entry="${command.conf['showDebugInformation'].property}"/>
+                    <admin:oneConfigEntry entry="${command.conf['purgeAdeersResponse'].property}"/>
                     <admin:oneConfigEntry entry="${command.conf['systemName'].property}"/>
                 </div>
                 <div id="tabs-2">

@@ -44,6 +44,10 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
 	@Transactional
 	public void processMessage(String message) throws CaaersSystemException {
         log.debug("AdeersSubmissionResponseMessageProcessor - message recieved");
+        if(configuration.get(Configuration.PURGE_ADEERS_RESPONSES)) {
+            log.fatal("Ignoring responses from AdEERS (or external reporting systems)\n Are you in testing mode ?");
+            return;
+        }
         
         Element jobInfo = this.getResponseElement(message,"submitAEDataXMLAsAttachmentResponse","AEReportJobInfo");
         Namespace emptyNS=null;
