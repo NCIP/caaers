@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersionDTO;
 import gov.nih.nci.cabig.caaers.esb.client.ResponseMessageProcessor;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.transaction.annotation.Transactional;
@@ -81,12 +82,13 @@ public class ReportVersionRepository {
                 "</ns1:AEReportJobInfo></submitAEDataXMLAsAttachmentResponse>" +
                 "</soapenv:Body></soapenv:Envelope>";
         Report report = reportVersion.getReport();
+        String createdDateAndTime = DateUtils.formatDate(report.getAeReport().getCreatedAt(), "yyyyMMddHHmmss");
         Map<String, String> replacementMap = new HashMap<String, String>();
         replacementMap.put("${reportId}",  "" + report.getId());
         replacementMap.put("${aeReportId}",  "" + report.getAeReport().getId());
         replacementMap.put("${protocolId}",  report.getAeReport().getStudy().getPrimaryIdentifierValue());
         replacementMap.put("${subjectId}",   report.getAeReport().getParticipant().getPrimaryIdentifierValue());
-        replacementMap.put("${messageComboId}",    report.getCaseNumber() + "::" + report.getAeReport().getCreatedAt().getTime());
+        replacementMap.put("${messageComboId}", report.getCaseNumber() + "::" + createdDateAndTime);
         replacementMap.put("${submitterEmail}", report.getSubmitter().getEmailAddress());
 
         String xmlMessage =  responseXMLTemplate;
