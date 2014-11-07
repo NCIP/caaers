@@ -316,7 +316,9 @@ public class ExpeditedAdverseEventReportConverterUtility {
 			}
 			reportVersion.setSubmissionMessage(xmlReportVersionType.getSubmissionMessage());
 			reportVersion.setSubmissionUrl(xmlReportVersionType.getSubmissionUrl());
-			reportVersion.setCcEmails(xmlReportVersionType.getCcEmails());
+			if(!StringUtils.isBlank(xmlReportVersionType.getCcEmails())) {
+				reportVersion.setCcEmails(xmlReportVersionType.getCcEmails());
+			}
 			if(xmlReportVersionType.getReportStatus() != null){
 				reportVersion.setReportStatus(ReportStatus.valueOf(xmlReportVersionType.getReportStatus().name()));
 			}
