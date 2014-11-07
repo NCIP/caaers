@@ -43,7 +43,17 @@
                     <icsrmessagedateformat>204</icsrmessagedateformat>
                     <icsrmessagedate><xsl:value-of select="$c2r_msg_date" /></icsrmessagedate>
                     <transmissionacknowledgmentcode>02</transmissionacknowledgmentcode>
-                    <parsingerrormessage><xsl:value-of select="//payload" /></parsingerrormessage> 
+                    <parsingerrormessage><xsl:choose>
+                    	<xls:when test="fn:starts-with(//payload, 'soap:Client : Unmarshalling Error')">
+                    		The XML file provided could not be parsed.
+                    		Please ensure that it is properly formed and that data is of the correct type.
+                    		Full Error Details;
+                    		<xsl:value-of select="//payload" />
+                    	</xls:when>
+                    	<xls:otherwise>
+                    		<xsl:value-of select="//payload" />
+                    	</xls:otherwise>
+                    </xsl:choose></parsingerrormessage>
                 </messageacknowledgment>
             </acknowledgment>
         </ichicsrack>
