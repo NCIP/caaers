@@ -69,6 +69,7 @@ div#createNew h3, div.section h3 {
 }
 </style>
 <script type="text/javascript">
+       dwr.engine.setAsync(false);
 		//loadCategoryObjects();
 		var sections = new Array();
 		var callback = false;
@@ -77,6 +78,19 @@ div#createNew h3, div.section h3 {
 
 		var categoryObjects2 = new Array()
 
+        var createAECached = {}
+        AE.terms = {}
+        createAECached.getTermsByCategory = function(iCategory, fnCallback) {
+           var cachedTerms =  AE.terms[iCategory];
+           if(cachedTerms == null) {
+             createAE.getTermsByCategory(iCategory, function(myterms) {
+                 AE.terms[iCategory] = myterms;
+                 cachedTerms = myterms;
+             });
+           }
+            fnCallback.apply(this, [cachedTerms]);
+
+        }
  		
 		function addRule() {
 				
@@ -175,10 +189,11 @@ div#createNew h3, div.section h3 {
 								var spanId = newId + '.span';
 								//Element.remove(validValueField);
 								$(spanId).innerHTML="";
-								
-								
-								
-								createAE.getTermsByCategory(0, function(terms) {
+
+
+
+                                createAECached.getTermsByCategory(0, function(terms) {
+
 								
 								var selectId =   newId.substring(0,newId.lastIndexOf(".")); 
 			
@@ -711,8 +726,8 @@ div#createNew h3, div.section h3 {
 					var spanId = newId + '.span';
 					//Element.remove(validValueField);
 					$(spanId).innerHTML="";
-					
-					createAE.getTermsByCategory($(categoryValueID).value, function(terms) {
+
+                    createAECached.getTermsByCategory($(categoryValueID).value, function(terms) {
 						                   
 
 							var newId = validValueField.id; 
@@ -1204,9 +1219,9 @@ div#createNew h3, div.section h3 {
 						catVal = 0;
 					}
 					//alert(catVal);
-					
-					createAE.getTermsByCategory(catVal, function(terms) {
-						        
+
+                    createAECached.getTermsByCategory(catVal, function(terms) {
+
 						     $(termValueID).value='';   
 
 							var sel = $(termValueID);	
@@ -1454,8 +1469,8 @@ div#createNew h3, div.section h3 {
 																		
 																		var categoryValue = getCategoryValue(${ruleCount});
 																	//	alert (categoryValue);
-																	
-																		createAE.getTermsByCategory(categoryValue, function(terms) {
+
+                                                    createAECached.getTermsByCategory(categoryValue, function(terms) {
 						                   
 
 			
