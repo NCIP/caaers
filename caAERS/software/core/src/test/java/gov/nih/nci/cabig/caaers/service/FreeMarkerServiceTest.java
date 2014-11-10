@@ -40,9 +40,9 @@ public class FreeMarkerServiceTest extends TestCase {
 			String text = "Hello ${REP}!!";
 			FreeMarkerService service = new FreeMarkerService();
 			String replacedText = service.applyRuntimeReplacementsForReport(text, varMap);
-			fail("Must throw exception");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
+            assertEquals("Hello _!!", replacedText);
+        } catch (Exception e) {
+            fail("Must throw exception");
 		}
 		
 	}
@@ -56,7 +56,7 @@ public class FreeMarkerServiceTest extends TestCase {
 			String replacedText = service.applyRuntimeReplacementsForReport(null, varMap);
 			assertTrue(replacedText.length() == 0);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			fail();
 		}
 		
 	}
