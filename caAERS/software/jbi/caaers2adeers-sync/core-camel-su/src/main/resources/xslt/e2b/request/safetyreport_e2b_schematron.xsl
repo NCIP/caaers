@@ -282,6 +282,15 @@
 				<xsl:apply-templates/>
 			</svrl:active-pattern>
 			<xsl:apply-templates select="/" mode="M18"/>
+			<svrl:active-pattern>
+				<xsl:attribute name="document">
+					<xsl:value-of select="document-uri(/)"/>
+				</xsl:attribute>
+				<xsl:attribute name="id">Message Header message date</xsl:attribute>
+				<xsl:attribute name="name">Message Header, validate message date.</xsl:attribute>
+				<xsl:apply-templates/>
+			</svrl:active-pattern>
+			<xsl:apply-templates select="/" mode="M19"/>
 		</svrl:schematron-output>
 	</xsl:template>
 
@@ -610,6 +619,34 @@
 	<xsl:template match="text()" priority="-1" mode="M18"/>
 	<xsl:template match="@*|node()" priority="-2" mode="M18">
 		<xsl:apply-templates select="*|comment()|processing-instruction()" mode="M18"/>
+	</xsl:template>
+	
+	<!--PATTERN Message Header: Validate Date -->
+	<svrl:text xmlns:svrl="http://purl.oclc.org/dsdl/svrl">Message Header message date</svrl:text>
+
+	<!--RULE -->
+	<xsl:template match="/ichicsr/ichicsrmessageheader/messagedate" priority="1001" mode="M19">
+		<svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/ichicsr/ichicsrmessageheader/messagedate"/>
+
+		<!--ASSERT -->
+		<xsl:choose>
+			<!-- This will break in y10k -->
+			<xsl:when test="matches(data(.), '^\d{14}$')"/>
+			<xsl:otherwise>
+				<svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="test">
+					<xsl:attribute name="location">
+						<xsl:apply-templates select="." mode="schematron-select-full-path"/>
+					</xsl:attribute>
+					<svrl:text>Message Date is Invalid</svrl:text>
+				</svrl:failed-assert>
+			</xsl:otherwise>
+		</xsl:choose>
+		<xsl:apply-templates select="*|comment()|processing-instruction()" mode="M19"/>
+	</xsl:template>
+	<xsl:template match="text()" priority="-1" mode="M19"/>
+	<xsl:template match="@*|node()" priority="-2" mode="M19">
+		<xsl:apply-templates select="*|comment()|processing-instruction()" mode="M19"/>
 	</xsl:template>
 
 </xsl:stylesheet>
