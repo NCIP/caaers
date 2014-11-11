@@ -238,7 +238,12 @@ public class CreateRuleCommand implements RuleInputCommand {
 
 
     public ExpeditedReportSection[] getReportSectionNames() {
-        return  ExpeditedReportSection.values();
+        List<ExpeditedReportSection> list = new ArrayList<ExpeditedReportSection>();
+        for(ExpeditedReportSection e : ExpeditedReportSection.values()) {
+            if(e == ExpeditedReportSection.ADVERSE_EVENT_SECTION) continue;
+            list.add(e);
+        }
+        return  list.toArray(new ExpeditedReportSection[0]);
     }
 
     /**
