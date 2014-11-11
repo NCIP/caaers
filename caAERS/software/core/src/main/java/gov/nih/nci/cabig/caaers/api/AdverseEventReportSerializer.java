@@ -357,6 +357,7 @@ public class AdverseEventReportSerializer {
 		   reportDefinition.setId(rd.getId());
 		   reportDefinition.setDuration(rd.getDuration());
 		   reportDefinition.setDescription(rd.getDescription());
+           reportDefinition.setName(rd.getName());
 		   reportDefinition.setLabel(rd.getLabel());
 		   reportDefinition.setHeader(rd.getHeader());
 		   reportDefinition.setFooter(rd.getFooter());
