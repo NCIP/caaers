@@ -320,10 +320,14 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 
             //retrieve all the SAEs identified by rules engine.
             Set<AdverseEvent> seriousAdverseEvents = dto.getAllSeriousAdverseEvents();
-
+           
             //has at least one SAE ? - mark hasSAE flag in the response
             if(requestType.equals(RequestType.SaveEvaluate)) {
-                ((SaveAndEvaluateAEsOutputMessage)response).setHasSAE(seriousAdverseEvents.size() > 0);
+            	  //CAAERS-6316 hasSAE is used to suggest that a recommended action is present
+            	 if(!((SaveAndEvaluateAEsOutputMessage)response).getRecommendedActions().isEmpty()){
+            		 ((SaveAndEvaluateAEsOutputMessage)response).setHasSAE(true);
+                 }
+              //  ((SaveAndEvaluateAEsOutputMessage)response).setHasSAE(seriousAdverseEvents.size() > 0);
             }
 
             //Mark the Requires reporting flag on AE
