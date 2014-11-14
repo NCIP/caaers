@@ -409,7 +409,6 @@ default-lazy-init="true">
 			<property name="reportRepository" ref="reportRepository"/>
 	    	<property name="schedulerService" ref="schedulerService" />
 	    	<property name="nowFactory" ref="nowFactory" />
-			<property name="expeditedAdverseEventReportDao" ref="expeditedAdverseEventReportDao" />
 			<property name="messageSource" ref="messageSource" />
 			<property name="workflowService" ref="workflowService"/>
 			<property name="adverseEventReportingPeriodDao" ref="adverseEventReportingPeriodDao"/>

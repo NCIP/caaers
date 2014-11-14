@@ -46,7 +46,7 @@ public class CaaersAdeersMessageBroadcastServiceImpl extends JmsServiceImpl {
         }
     }
 
-    public Vector getBroadcastStatus() {
+    public Vector<String> getBroadcastStatus() {
 
         if (!isConsumer()) {
             log.info("no recieve queue provided ");

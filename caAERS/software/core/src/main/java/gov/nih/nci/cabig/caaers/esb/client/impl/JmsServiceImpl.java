@@ -41,7 +41,7 @@ public class JmsServiceImpl implements MessageListener {
 
     private Session session = null;
 
-    public Vector messages = new Vector();
+    public Vector<String> messages = new Vector<String>();
 
     private MessageConsumer consumer = null;
 
