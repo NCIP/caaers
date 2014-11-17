@@ -6,6 +6,7 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.domain.report;
 
+import gov.nih.nci.cabig.caaers.validation.fields.validators.EmailValidator;
 import junit.framework.TestCase;
 
 /**
@@ -16,6 +17,7 @@ import junit.framework.TestCase;
 public class ReportVersionTest extends TestCase {
 	
 	ReportVersion rv;
+	EmailValidator ev = new EmailValidator();
 	protected void setUp() throws Exception {
 		super.setUp();
 		rv = new ReportVersion();
@@ -56,5 +58,20 @@ public class ReportVersionTest extends TestCase {
 		rv.setAmendmentNumber(5);
 		rv.incrementAmendmentNumber();
 		assertEquals(new Integer(6), rv.getAmendmentNumber());
+	}
+	
+	public void testSplitEmailsOnColonOrSemiColon(){
+		
+		String emails = "abc@def.com;xys@ere.com,are@were.com; jia@were.org   ,  were@gmail.com";
+		rv.setCcEmails(emails);
+		String[] emailsArray = rv.getEmailAsArray(); 
+
+  	  	if (emails != null) {
+            for (String email : emailsArray) {
+          	  assertTrue(ev.isValid(email));
+            }
+            
+            assertEquals("Wrong number of emails",5, emailsArray.length);
+        }
 	}
 }

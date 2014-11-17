@@ -313,7 +313,11 @@ public class ExpeditedAdverseEventReportConverterUtility {
 			}
 			reportVersion.setSubmissionMessage(xmlReportVersionType.getSubmissionMessage());
 			reportVersion.setSubmissionUrl(xmlReportVersionType.getSubmissionUrl());
-			reportVersion.setCcEmails(xmlReportVersionType.getCcEmails());
+			if(!StringUtils.isBlank(xmlReportVersionType.getCcEmails())) {
+				// CAAERS-7031 replace semi-colon(;) with comma(,) and trim white space
+				reportVersion.setCcEmails(xmlReportVersionType.getCcEmails().replace(";", ",").replace(" ", ""));
+				
+			}
 			if(xmlReportVersionType.getReportStatus() != null){
 				reportVersion.setReportStatus(ReportStatus.valueOf(xmlReportVersionType.getReportStatus().name()));
 			}

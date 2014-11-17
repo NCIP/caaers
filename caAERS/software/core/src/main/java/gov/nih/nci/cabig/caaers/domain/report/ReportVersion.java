@@ -409,7 +409,7 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
         if (this.ccEmails == null) {
             return null;
         }
-        String[] emails = this.ccEmails.split(",");
+        String[] emails = this.ccEmails.replace(" ","").split("[,;]");
         return emails;
     }
 
