@@ -22,6 +22,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /*
 * @author Srini
@@ -264,7 +266,7 @@ public class AdverseEventReportSerializer {
 	    	List<AdverseEvent> aeList = CaaersSerializerUtil.filter(hibernateAdverseEventReport.getAdverseEvents());
 
 	    	for (int i=0; i<aeList.size(); i++) {
-	    		AdverseEvent ae = (AdverseEvent)aeList.get(i);
+	    		AdverseEvent ae = aeList.get(i);
 	    		aer.addAdverseEvent(getAdverseEvent(ae,i));
 	    	}
 
@@ -1022,7 +1024,6 @@ public class AdverseEventReportSerializer {
                 AbstractAdverseEventTerm aeTerm = ae.getAdverseEventTerm();
                 
                 if(aeTerm instanceof  AdverseEventMeddraLowLevelTerm){
-
                     adverseEvent.getAdverseEventMeddraLowLevelTerm().setLowLevelTerm(getLowLevelTerm(ae.getAdverseEventMeddraLowLevelTerm().getLowLevelTerm()));
                 } else {
                     adverseEvent.getAdverseEventCtcTerm().setCtcTerm(getCtcTerm(ae.getAdverseEventCtcTerm().getCtcTerm()));
@@ -1231,58 +1232,28 @@ public class AdverseEventReportSerializer {
 	    	return treatmentInformation;
 	    }
 
-
-
 		public String getMappingFile() {
 			return mappingFile;
 		}
 
 
-//		public void setMappingFile(String mappingFile) {
-	//		this.mappingFile = mappingFile;
-		//}
-
-		public static void main (String[] args) {
-			//
-			DateFormat dfm = new SimpleDateFormat("yyyy-MM-dd hh:mm");
-			try {
-				ExpeditedAdverseEventReport e = new ExpeditedAdverseEventReport();
-				StudyParticipantAssignment studyParticipantAssignment = new StudyParticipantAssignment();
-
-
-				AdverseEventReportingPeriod reportingPeriod = new AdverseEventReportingPeriod();
-				e.setReportingPeriod(reportingPeriod);
-				e.setAssignment(studyParticipantAssignment);
-				e.setId(1);
-
-				ParticipantHistory ph = new ParticipantHistory();
-				Measure h = new Measure();
-				h.setQuantity(100.0);
-				h.setUnit("Inch");
-
-				Measure w = new Measure();
-				w.setQuantity(150.0);
-				w.setUnit("Pound");
-
-				ph.setHeight(h);
-				ph.setWeight(w);
-				e.setParticipantHistory(ph);
-				
-
-				AdverseEventReportSerializer ser = new AdverseEventReportSerializer();
-				String xml = ser.serialize(e, null);
-				//String xml = marshaller.toXML(e,"xml-mapping/ae-report-xml-mapping.xml");
-				System.out.println(xml);
-
-					
-
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		public String injectAssingedId(String xml, int id, String assignedIdentifer) {
+			//TODO: This is a mess of regular expressions to match the xpath "//Report[id=" + id + "]/assignedIdentifer" and then create or insert the assignedIdentifer.
+			Pattern p = Pattern.compile("(<[^<>]*Report>\\s*<([^<>]*)id>" + id + "</[^<>]*id>\\s*(?:<[^<>]*assignedIdentifer>)?)[^<]*(</[^<>]*assignedIdentifer>)?");
+			Matcher m = p.matcher(xml);
+			if(m.matches()) {
+				if(m.group(3) == null) {
+					if(m.group(2) == null) {
+						xml = m.replaceAll("$1<assignedIdentifer>" + assignedIdentifer + "</assignedIdentifer>");
+					} else {
+						xml = m.replaceAll("$1<$2assignedIdentifer>" + assignedIdentifer + "</$2assignedIdentifer>");
+					}
+				} else {
+					xml = m.replaceAll("$1" + assignedIdentifer + "$3");
+				}
 			}
-
-
-
+			
+			return xml;
 		}
 
 

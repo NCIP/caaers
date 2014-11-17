@@ -18,6 +18,7 @@ import java.io.FileReader;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import java.util.*;
 
 /**
@@ -226,35 +227,11 @@ public class AdeersReportGenerator extends BasePDFGenerator {
         }
     }
 
-    public static void main(String[] args) {
-        createMedwatchPDFTest();
-    }
-
-    public static void createMedwatchPDFTest() {
-        String str1 = "";
-        try {
-//        	String file = "C:\\vin\\caAERS\\caAERS\\software\\expeditedAdverseEventReport-416.xml";
-//        	String pdf = "C:\\vin\\caAERS\\caAERS\\software\\expeditedAdverseEventReport-416.pdf";
-//        	String file = "C:\\vin\\caAERS\\caAERS\\software\\med1.xml";
-//        	String pdf = "C:\\vin\\caAERS\\caAERS\\software\\med1.pdf";
-        	String file = "C:\\vin\\caAERS\\tmp\\sample-msgs\\expeditedAdverseEventReport-374.xml";
-        	String pdf = "C:\\vin\\caAERS\\tmp\\sample-msgs\\expeditedAdverseEventReport-374.pdf";
-        	
-            AdeersReportGenerator aeg = new AdeersReportGenerator();
-            FileReader input = new FileReader(file);
-            BufferedReader bufRead = new BufferedReader(input);
-            String line = bufRead.readLine();
-
-            while (line != null) {
-                str1 = str1 + line;
-                line = bufRead.readLine();
-            }
-
-            aeg.generateMedwatchPdf(str1, pdf);
-            // aeg.generateMedwatchPdf(str1, "C:\\medwatch-2.pdf");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	public String injectAssingedIdentifierIntoCaaersXML(String xml, int id, String assignedIdentifer) {
+		if(assignedIdentifer == null || assignedIdentifer.isEmpty()) {
+			return xml;
+		}
+		return adverseEventReportSerializer.injectAssingedId(xml, id, assignedIdentifer);
+	}
 
 }
