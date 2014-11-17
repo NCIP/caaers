@@ -69,6 +69,7 @@ div#createNew h3, div.section h3 {
 }
 </style>
 <script type="text/javascript">
+       dwr.engine.setAsync(false);
 		//loadCategoryObjects();
 		var sections = new Array();
 		var callback = false;
@@ -77,6 +78,22 @@ div#createNew h3, div.section h3 {
 
 		var categoryObjects2 = new Array()
 
+        var createAECached = {}
+        AE.terms = {}
+        createAECached.getTermsByCategory = function(iCategory, fnCallback) {
+           var cachedTerms =  AE.terms[iCategory];
+           if(cachedTerms == null) {
+             createAE.getTermsByCategory(iCategory, function(myterms) {
+                 AE.terms[iCategory] = myterms;
+                 cachedTerms = myterms;
+                 fnCallback.apply(this, [cachedTerms]);
+             });
+           } else {
+               fnCallback.apply(this, [cachedTerms]);
+           }
+
+
+        }
  		
 		function addRule() {
 				
@@ -175,10 +192,11 @@ div#createNew h3, div.section h3 {
 								var spanId = newId + '.span';
 								//Element.remove(validValueField);
 								$(spanId).innerHTML="";
-								
-								
-								
-								createAE.getTermsByCategory(0, function(terms) {
+
+
+
+                                createAECached.getTermsByCategory(0, function(terms) {
+
 								
 								var selectId =   newId.substring(0,newId.lastIndexOf(".")); 
 			
@@ -194,14 +212,8 @@ div#createNew h3, div.section h3 {
 										var sel = $(newId);	
 				        		        
 				                	    sel.options.length = 0
-				                    
-				                    
 				                    	terms.each(function(term) {
-											var tempT='';
-											if (term.select != null) {
-												tempT='-' + term.select
-											}
-				                        	var opt = new Option(term.term + tempT, term.id)
+				                        	var opt = new Option(term.fullName, term.ctepCode)
 				                        	sel.options.add(opt)
 				                    	})
 				                })
@@ -711,8 +723,8 @@ div#createNew h3, div.section h3 {
 					var spanId = newId + '.span';
 					//Element.remove(validValueField);
 					$(spanId).innerHTML="";
-					
-					createAE.getTermsByCategory($(categoryValueID).value, function(terms) {
+
+                    createAECached.getTermsByCategory($(categoryValueID).value, function(terms) {
 						                   
 
 							var newId = validValueField.id; 
@@ -736,13 +748,7 @@ div#createNew h3, div.section h3 {
 				                    
 				                    
 				                    terms.each(function(term) {
-										
-										var tempT='';
-											if (term.select != null) {
-												tempT='-' + term.select
-											}
-											
-				                        var opt = new Option(term.term + tempT, term.id)
+				                        var opt = new Option(term.fullName, term.ctepCode)
 				                        sel.options.add(opt)
 				                    })
 				                })
@@ -929,13 +935,8 @@ div#createNew h3, div.section h3 {
 				                    
 				                    
 				                    values.each(function(value) {
-										
-										var tempT='';
-											if (value.select != null) {
-												tempT='-' + value.select
-											}
-											
-				                        var opt = new Option(value.displayName + tempT, value.displayName)
+
+				                        var opt = new Option(value.displayName, value.displayName)
 				                        sel.options.add(opt)
 				                    })
 				                })
@@ -1168,7 +1169,7 @@ div#createNew h3, div.section h3 {
 		
 				// Check whether category exists
 				var columns = $('rule-'+(ruleCount + 1)+'-columns');
-				
+
 				
 				
 				var divNodes = 0;
@@ -1204,9 +1205,9 @@ div#createNew h3, div.section h3 {
 						catVal = 0;
 					}
 					//alert(catVal);
-					
-					createAE.getTermsByCategory(catVal, function(terms) {
-						        
+
+                    createAECached.getTermsByCategory(catVal, function(terms) {
+
 						     $(termValueID).value='';   
 
 							var sel = $(termValueID);	
@@ -1216,12 +1217,8 @@ div#createNew h3, div.section h3 {
 				                    
 				                    
 				                    terms.each(function(term) {
-										var tempT='';
-											if (term.select != null) {
-												tempT='-' + term.select
-											}
-											
-				                        var opt = new Option(term.term + tempT, term.id)
+
+				                        var opt = new Option(term.fullName, term.ctepCode)
 				                        sel.options.add(opt)
 				                    })
 				                })
@@ -1454,8 +1451,8 @@ div#createNew h3, div.section h3 {
 																		
 																		var categoryValue = getCategoryValue(${ruleCount});
 																	//	alert (categoryValue);
-																	
-																		createAE.getTermsByCategory(categoryValue, function(terms) {
+
+                                                    createAECached.getTermsByCategory(categoryValue, function(terms) {
 						                   
 
 			
@@ -1473,18 +1470,12 @@ div#createNew h3, div.section h3 {
 				                    
 				                    											var index = 0;	
 															                    terms.each(function(term) {
-																				var tempT='';
-																					if (term.select != null) {
-																						tempT='-' + term.select
-																					}
-													                        		var opt = new Option(term.term + tempT, term.id)
-				                    									    			sel.options.add(opt)
-				                    									    		   
-				                    									    		    		if (fieldValue.indexOf(term.id) != -1)
-																					    		{
-																					    			sel.options[index].selected=true;
-																					    		}
-																					    	index++;
+													                        	var opt = new Option(term.fullName, term.ctepCode)
+				                    									    		sel.options.add(opt)
+                                                                                    if (fieldValue.indexOf(term.ctepCode) != -1) {
+                                                                                        sel.options[index].selected=true;
+                                                                                    }
+                                                                                    index++;
 																					    
 				                    											})
 				                										})
@@ -1636,20 +1627,12 @@ div#createNew h3, div.section h3 {
 				                    var index = 0;	
 				                    
 				                    values.each(function(value) {
-										
-										var tempT='';
-											if (value.select != null) {
-												tempT='-' + value.select
-											}
-											
-				                        var opt = new Option(value.displayName + tempT, value.displayName)
+				                        var opt = new Option(value.displayName, value.displayName)
 				                        sel.options.add(opt);
-				                        if (fieldValue.indexOf(value.displayName) != -1)
-														{
-													
-													sel.options[index].selected=true;
-													}
-													index++;
+				                        if (fieldValue.indexOf(value.displayName) != -1) {
+											sel.options[index].selected=true;
+										}
+										index++;
 				                    })
 				                })
 											

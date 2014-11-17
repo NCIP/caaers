@@ -234,6 +234,11 @@ public class EvaluationServiceImpl implements EvaluationService {
                     if(adverseEventEvaluationResult.getRuleEvaluationResult() != null){
                         evaluationResult.addProcessingStep(aeReportId, " Bind URL :", adverseEventEvaluationResult.getRuleEvaluationResult().getBindURI() );
                         evaluationResult.addProcessingStep(aeReportId, " Matched rules :", adverseEventEvaluationResult.getRuleEvaluationResult().getMatchedRules().toString() );
+                        for(String note : adverseEventEvaluationResult.getNotes()) {
+                            evaluationResult.addProcessingStep(aeReportId, "  Notes: " , note);
+                        }
+                        evaluationResult.addProcessingStep(aeReportId, " Matched rules :", adverseEventEvaluationResult.getRuleEvaluationResult().getMatchedRules().toString() );
+
                     } else {
                         evaluationResult.addProcessingStep(aeReportId, " Bind URL :", null );
                         evaluationResult.addProcessingStep(aeReportId, " Matched rules :", null );

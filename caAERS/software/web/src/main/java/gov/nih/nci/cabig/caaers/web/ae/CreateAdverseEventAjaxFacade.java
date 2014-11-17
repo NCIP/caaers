@@ -411,7 +411,7 @@ public class CreateAdverseEventAjaxFacade {
     }
 
     public List<CtcTerm> getTermsByCategory(Integer ctcCategoryId) throws Exception {
-        List<CtcTerm> terms = null;//ctcCategoryDao.getById(ctcCategoryId).getTerms();
+        List<CtcTerm> terms = null;
 
         // from rules UI page , if user selects terms without category a fabricated Id 0 is passed.
         // get all terms incase of this special condition -- srini
@@ -420,12 +420,17 @@ public class CreateAdverseEventAjaxFacade {
         } else {
             terms = ctcCategoryDao.getById(ctcCategoryId).getTerms();
         }
+
+        List<CtcTerm> termList = new ArrayList<CtcTerm>();
         // cut down objects for serialization
         for (CtcTerm term : terms) {
-            term.getCategory().setTerms(null);
-            term.getCategory().getCtc().setCategories(null);
+            CtcTerm t = new CtcTerm();
+            t.setSelect(term.getSelect());
+            t.setTerm(term.getTerm());
+            t.setCtepCode(term.getCtepCode());
+            termList.add(t);
         }
-        return terms;
+        return termList;
     }
 
     public List<CtcTerm> getTermByTermId(String ctcTermId) throws Exception {

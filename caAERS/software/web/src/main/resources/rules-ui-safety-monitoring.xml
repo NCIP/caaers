@@ -52,7 +52,7 @@
                 </field-value>
                 <operator name="==" display-uri="Equal To" readable-text="is "/>
                 <operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
-                <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.CtcTerm','id','runTimeValue','runTimeOperator')</expression>
+                <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.CtcTerm','ctepCode','runTimeValue','runTimeOperator')</expression>
                 <grammer prefix=" Term " postfix="."/>
             </field>
             <field name="category" display-uri="Category" filter="CTCAE">
