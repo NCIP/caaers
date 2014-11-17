@@ -318,6 +318,9 @@ public class ExpeditedAdverseEventReportConverterUtility {
 			reportVersion.setSubmissionUrl(xmlReportVersionType.getSubmissionUrl());
 			if(!StringUtils.isBlank(xmlReportVersionType.getCcEmails())) {
 				reportVersion.setCcEmails(xmlReportVersionType.getCcEmails());
+				// CAAERS-7031 replace semi-colon(;) with comma(,) and trim white space
+				reportVersion.getCcEmails().replace(";", ",").replace(" ", "");
+				
 			}
 			if(xmlReportVersionType.getReportStatus() != null){
 				reportVersion.setReportStatus(ReportStatus.valueOf(xmlReportVersionType.getReportStatus().name()));
@@ -973,6 +976,10 @@ public class ExpeditedAdverseEventReportConverterUtility {
 			reporter.setFax(getFax(xmlReporterType.getContactMechanism()));
             reporter.setFaxNumber(getFax(xmlReporterType.getContactMechanism()));
             reporter.setAlternateEmailAddress(getAlternateEmail(xmlReporterType.getContactMechanism()));
+            if(reporter.getAlternateEmailAddress() != null){
+            	// CAAERS-7031 replace semi-colon(;) with comma(,) trim white space
+            	reporter.getAlternateEmailAddress().replace(";", ",").replace(" ", "");
+            }
 		}
 		
 		return reporter;
