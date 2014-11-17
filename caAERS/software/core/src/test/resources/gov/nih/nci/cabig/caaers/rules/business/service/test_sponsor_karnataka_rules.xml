@@ -1,45 +1,2462 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<!--
-  Copyright SemanticBits, Northwestern University and Akaza Research
-  
-  Distributed under the OSI-approved BSD 3-Clause License.
-  See http://ncip.github.com/caaers/LICENSE.txt for details.
--->
 <ruleSet xmlns="http://semanticbits.com/rules/brxml">
-    <id>23e0f6ce-d276-42d4-9f3c-6f0343446da5</id>
-    <name>gov.nih.nci.cabig.caaers.rules.sponsor.ORG_100779.sae_reporting_rules</name>
+    <name>gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_6.STU_229.sae_reporting_rules</name>
     <description>SAE Reporting Rules</description>
-    <subject>SAE Reporting Rules||Sponsor||37007|| ||</subject>
-    <coverage>Enabled</coverage>
+    <subject>SAE Reporting Rules||SponsorDefinedStudy||CTEP||CTEP||E1311</subject>
     <import>gov.nih.nci.cabig.caaers.domain.*</import>
-    <rule id="d2f838ca-03b0-456f-9f25-50c3ead07710">
+    <rule id="r-2f63a0b1-a231-42f2-a867-8642ab4582e3">
         <condition>
-            <column display-uri="Adverse Event" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent"
-                    identifier="adverseEvent">
-                <field-constraint grammer-prefix="Severity" display-uri="undefined" field-name="grade">
-                    <literal-restriction display-uri="is greater than or equal to" evaluator="&gt;=">
-                        <value>0</value>
-                        <readable-value>Grade 0</readable-value>
+            <column identifier="study" object-type="gov.nih.nci.cabig.caaers.domain.Study" display-uri="Study">
+                <field-constraint field-name="aeReportingLevel" display-uri="undefined" grammer-prefix="AE Reporting Level" grammer-postfix=".">
+                    <literal-restriction evaluator="==" display-uri="is">
+                        <value>Phase 0 Studies</value>
+                        <readable-value>Phase 0 Studies</readable-value>
                     </literal-restriction>
                 </field-constraint>
-                <expression>
-                    factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Grade','code','runTimeValue','runTimeOperator')
-                </expression>
+                <expression>factResolver.assertFact(study,null,'aeReportingLevel','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+                <field-constraint field-name="grade" display-uri="undefined" grammer-prefix="Severity" grammer-postfix=".">
+                    <literal-restriction evaluator="&lt;=" display-uri="is less than or equal to">
+                        <value>2</value>
+                        <readable-value>Grade 2</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Grade','code','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="factResolver" object-type="com.semanticbits.rules.objectgraph.FactResolver">
+                <field-constraint>
+                    <literal-restriction/>
+                </field-constraint>
+            </column>
+            <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+                <field-constraint field-name="primarySponsorCode">
+                    <literal-restriction evaluator="==">
+                        <value>Cancer Therapy Evaluation Program</value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(studySDO,"gov.nih.nci.cabig.caaers.domain.Organization","escapedXmlName","Cancer Therapy Evaluation Program","==")</expression>
+            </column>
+            <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+                <field-constraint field-name="shortTitle">
+                    <literal-restriction evaluator="==">
+                        <value>A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence</value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(studySDO,null,"escapeXmlShortTitle","A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence","==")</expression>
             </column>
         </condition>
-        <action>karthik test report 1</action>
-        <readableAction>karthik test report 1</readableAction>
-        <metaData checkinComment="Initial Version"
-                  packageName="gov.nih.nci.cabig.caaers.rules.sponsor.ORG_100779.sae_reporting_rules"
-                  description="Setting Description since its mandatory by JBoss Repository config" name="Rule-1">
+        <action>CTEP 10 Calendar Day SAE Report</action>
+        <readableAction>CTEP 10 Calendar Day SAE Report</readableAction>
+        <metaData name="Rule-1" description="Setting Description since its mandatory by JBoss Repository config" packageName="gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_6.STU_229.sae_reporting_rules">
             <category>
-                <path>CAAERS_BASE/SPONSOR/ORG_100779</path>
+                <path>/CAAERS_BASE/SPONSOR_DEFINED_STUDY/ORG_6/STU_229/sae_reporting_rules</path>
                 <metaData name="sae_reporting_rules"/>
             </category>
         </metaData>
         <readableRule>
             <line>If</line>
-            <line>     &amp;nbsp;&amp;nbsp;&amp;nbsp;Severityis greater than or equal to 'Grade 0' null</line>
+            <line>	Study &amp;nbsp;&amp;nbsp;&amp;nbsp;AE Reporting Level is 'Phase 0 Studies' .</line>
+            <line>And</line>
+            <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Severity is less than or equal to 'Grade 2' .</line>
         </readableRule>
     </rule>
+    <rule id="r-cebbab19-7da7-49f3-9e62-cb3d89638596">
+        <condition>
+            <column identifier="study" object-type="gov.nih.nci.cabig.caaers.domain.Study" display-uri="Study">
+                <field-constraint field-name="aeReportingLevel" display-uri="undefined" grammer-prefix="AE Reporting Level" grammer-postfix=".">
+                    <literal-restriction evaluator="==" display-uri="is">
+                        <value>Phase 0 Studies</value>
+                        <readable-value>Phase 0 Studies</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(study,null,'aeReportingLevel','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+                <field-constraint field-name="grade" display-uri="undefined" grammer-prefix="Severity" grammer-postfix=".">
+                    <literal-restriction evaluator="&gt;=" display-uri="is greater than or equal to">
+                        <value>3</value>
+                        <readable-value>Grade 3</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Grade','code','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="factResolver" object-type="com.semanticbits.rules.objectgraph.FactResolver">
+                <field-constraint>
+                    <literal-restriction/>
+                </field-constraint>
+            </column>
+            <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+                <field-constraint field-name="primarySponsorCode">
+                    <literal-restriction evaluator="==">
+                        <value>Cancer Therapy Evaluation Program</value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(studySDO,"gov.nih.nci.cabig.caaers.domain.Organization","escapedXmlName","Cancer Therapy Evaluation Program","==")</expression>
+            </column>
+            <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+                <field-constraint field-name="shortTitle">
+                    <literal-restriction evaluator="==">
+                        <value>A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence</value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(studySDO,null,"escapeXmlShortTitle","A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence","==")</expression>
+            </column>
+        </condition>
+        <action>CTEP 5 Calendar Day SAE Report</action>
+        <action>CTEP 24 Hour SAE Notification</action>
+        <readableAction>CTEP 5 Calendar Day SAE Report</readableAction>
+        <readableAction>CTEP 24 Hour SAE Notification</readableAction>
+        <metaData name="Rule-2" description="Setting Description since its mandatory by JBoss Repository config" packageName="gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_6.STU_229.sae_reporting_rules">
+            <category>
+                <path>/CAAERS_BASE/SPONSOR_DEFINED_STUDY/ORG_6/STU_229/sae_reporting_rules</path>
+                <metaData name="sae_reporting_rules"/>
+            </category>
+        </metaData>
+        <readableRule>
+            <line>If</line>
+            <line>	Study &amp;nbsp;&amp;nbsp;&amp;nbsp;AE Reporting Level is 'Phase 0 Studies' .</line>
+            <line>And</line>
+            <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Severity is greater than or equal to 'Grade 3' .</line>
+        </readableRule>
+    </rule>
+    <rule id="r-eba87abe-e60a-4746-a769-35849e351526">
+        <condition>
+            <column identifier="study" object-type="gov.nih.nci.cabig.caaers.domain.Study" display-uri="Study">
+                <field-constraint field-name="aeReportingLevel" display-uri="undefined" grammer-prefix="AE Reporting Level" grammer-postfix=".">
+                    <literal-restriction evaluator="==" display-uri="is">
+                        <value>Phase 1 and Early Phase 2 Studies</value>
+                        <readable-value>Phase 1 and Early Phase 2 Studies</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(study,null,'aeReportingLevel','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+                <field-constraint field-name="grade" display-uri="undefined" grammer-prefix="Severity" grammer-postfix=".">
+                    <literal-restriction evaluator="&gt;=" display-uri="is greater than or equal to">
+                        <value>3</value>
+                        <readable-value>Grade 3</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Grade','code','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="factResolver" object-type="com.semanticbits.rules.objectgraph.FactResolver">
+                <field-constraint>
+                    <literal-restriction/>
+                </field-constraint>
+            </column>
+            <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+                <field-constraint field-name="primarySponsorCode">
+                    <literal-restriction evaluator="==">
+                        <value>Cancer Therapy Evaluation Program</value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(studySDO,"gov.nih.nci.cabig.caaers.domain.Organization","escapedXmlName","Cancer Therapy Evaluation Program","==")</expression>
+            </column>
+            <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+                <field-constraint field-name="shortTitle">
+                    <literal-restriction evaluator="==">
+                        <value>A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence</value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(studySDO,null,"escapeXmlShortTitle","A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence","==")</expression>
+            </column>
+        </condition>
+        <action>CTEP 5 Calendar Day SAE Report</action>
+        <action>CTEP 24 Hour SAE Notification</action>
+        <readableAction>CTEP 5 Calendar Day SAE Report</readableAction>
+        <readableAction>CTEP 24 Hour SAE Notification</readableAction>
+        <metaData name="Rule-3" description="Setting Description since its mandatory by JBoss Repository config" packageName="gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_6.STU_229.sae_reporting_rules">
+            <category>
+                <path>/CAAERS_BASE/SPONSOR_DEFINED_STUDY/ORG_6/STU_229/sae_reporting_rules</path>
+                <metaData name="sae_reporting_rules"/>
+            </category>
+        </metaData>
+        <readableRule>
+            <line>If</line>
+            <line>	Study &amp;nbsp;&amp;nbsp;&amp;nbsp;AE Reporting Level is 'Phase 1 and Early Phase 2 Studies' .</line>
+            <line>And</line>
+            <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Severity is greater than or equal to 'Grade 3' .</line>
+        </readableRule>
+    </rule>
+    <rule id="r-683756d5-4c09-4e49-8f83-7023d967afc5">
+        <condition>
+            <column identifier="study" object-type="gov.nih.nci.cabig.caaers.domain.Study" display-uri="Study">
+                <field-constraint field-name="aeReportingLevel" display-uri="undefined" grammer-prefix="AE Reporting Level" grammer-postfix=".">
+                    <literal-restriction evaluator="==" display-uri="is">
+                        <value>Phase 1 and Early Phase 2 Studies</value>
+                        <readable-value>Phase 1 and Early Phase 2 Studies</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(study,null,'aeReportingLevel','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+                <field-constraint field-name="grade" display-uri="undefined" grammer-prefix="Severity" grammer-postfix=".">
+                    <literal-restriction evaluator="&lt;=" display-uri="is less than or equal to">
+                        <value>2</value>
+                        <readable-value>Grade 2</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Grade','code','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+                <field-constraint field-name="hospitalization" display-uri="undefined" grammer-prefix="Hospitalization or Prolonged Hospitalization" grammer-postfix=".">
+                    <literal-restriction evaluator="==" display-uri="is">
+                        <value>1</value>
+                        <readable-value>Yes</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Hospitalization','code','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="factResolver" object-type="com.semanticbits.rules.objectgraph.FactResolver">
+                <field-constraint>
+                    <literal-restriction/>
+                </field-constraint>
+            </column>
+            <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+                <field-constraint field-name="primarySponsorCode">
+                    <literal-restriction evaluator="==">
+                        <value>Cancer Therapy Evaluation Program</value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(studySDO,"gov.nih.nci.cabig.caaers.domain.Organization","escapedXmlName","Cancer Therapy Evaluation Program","==")</expression>
+            </column>
+            <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+                <field-constraint field-name="shortTitle">
+                    <literal-restriction evaluator="==">
+                        <value>A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence</value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(studySDO,null,"escapeXmlShortTitle","A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence","==")</expression>
+            </column>
+        </condition>
+        <action>CTEP 10 Calendar Day SAE Report</action>
+        <readableAction>CTEP 10 Calendar Day SAE Report</readableAction>
+        <metaData name="Rule-4" description="Setting Description since its mandatory by JBoss Repository config" packageName="gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_6.STU_229.sae_reporting_rules">
+            <category>
+                <path>/CAAERS_BASE/SPONSOR_DEFINED_STUDY/ORG_6/STU_229/sae_reporting_rules</path>
+                <metaData name="sae_reporting_rules"/>
+            </category>
+        </metaData>
+        <readableRule>
+            <line>If</line>
+            <line>	Study &amp;nbsp;&amp;nbsp;&amp;nbsp;AE Reporting Level is 'Phase 1 and Early Phase 2 Studies' .</line>
+            <line>And</line>
+            <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Severity is less than or equal to 'Grade 2' .</line>
+            <line>And</line>
+            <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Hospitalization or Prolonged Hospitalization is 'Yes' .</line>
+        </readableRule>
+    </rule>
+    <rule id="r-7fc591c9-f78f-4748-8d96-89c93dd41f12">
+        <condition>
+            <column identifier="study" object-type="gov.nih.nci.cabig.caaers.domain.Study" display-uri="Study">
+                <field-constraint field-name="aeReportingLevel" display-uri="undefined" grammer-prefix="AE Reporting Level" grammer-postfix=".">
+                    <literal-restriction evaluator="==" display-uri="is">
+                        <value>Late Phase 2 and Phase 3 Studies</value>
+                        <readable-value>Late Phase 2 and Phase 3 Studies</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(study,null,'aeReportingLevel','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+                <field-constraint field-name="grade" display-uri="undefined" grammer-prefix="Severity" grammer-postfix=".">
+                    <literal-restriction evaluator="&gt;=" display-uri="is greater than or equal to">
+                        <value>4</value>
+                        <readable-value>Grade 4</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Grade','code','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="factResolver" object-type="com.semanticbits.rules.objectgraph.FactResolver">
+                <field-constraint>
+                    <literal-restriction/>
+                </field-constraint>
+            </column>
+            <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+                <field-constraint field-name="primarySponsorCode">
+                    <literal-restriction evaluator="==">
+                        <value>Cancer Therapy Evaluation Program</value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(studySDO,"gov.nih.nci.cabig.caaers.domain.Organization","escapedXmlName","Cancer Therapy Evaluation Program","==")</expression>
+            </column>
+            <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+                <field-constraint field-name="shortTitle">
+                    <literal-restriction evaluator="==">
+                        <value>A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence</value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(studySDO,null,"escapeXmlShortTitle","A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence","==")</expression>
+            </column>
+        </condition>
+        <action>CTEP 5 Calendar Day SAE Report</action>
+        <action>CTEP 24 Hour SAE Notification</action>
+        <readableAction>CTEP 5 Calendar Day SAE Report</readableAction>
+        <readableAction>CTEP 24 Hour SAE Notification</readableAction>
+        <metaData name="Rule-5" description="Setting Description since its mandatory by JBoss Repository config" packageName="gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_6.STU_229.sae_reporting_rules">
+            <category>
+                <path>/CAAERS_BASE/SPONSOR_DEFINED_STUDY/ORG_6/STU_229/sae_reporting_rules</path>
+                <metaData name="sae_reporting_rules"/>
+            </category>
+        </metaData>
+        <readableRule>
+            <line>If</line>
+            <line>	Study &amp;nbsp;&amp;nbsp;&amp;nbsp;AE Reporting Level is 'Late Phase 2 and Phase 3 Studies' .</line>
+            <line>And</line>
+            <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Severity is greater than or equal to 'Grade 4' .</line>
+        </readableRule>
+    </rule>
+    <rule id="r-e50fc11b-6c08-4227-a7a2-dd5e3a18ad52">
+        <condition>
+            <column identifier="study" object-type="gov.nih.nci.cabig.caaers.domain.Study" display-uri="Study">
+                <field-constraint field-name="aeReportingLevel" display-uri="undefined" grammer-prefix="AE Reporting Level" grammer-postfix=".">
+                    <literal-restriction evaluator="==" display-uri="is">
+                        <value>Late Phase 2 and Phase 3 Studies</value>
+                        <readable-value>Late Phase 2 and Phase 3 Studies</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(study,null,'aeReportingLevel','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+                <field-constraint field-name="grade" display-uri="undefined" grammer-prefix="Severity" grammer-postfix=".">
+                    <literal-restriction evaluator="&lt;=" display-uri="is less than or equal to">
+                        <value>3</value>
+                        <readable-value>Grade 3</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Grade','code','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+                <field-constraint field-name="hospitalization" display-uri="undefined" grammer-prefix="Hospitalization or Prolonged Hospitalization" grammer-postfix=".">
+                    <literal-restriction evaluator="==" display-uri="is">
+                        <value>1</value>
+                        <readable-value>Yes</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Hospitalization','code','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="factResolver" object-type="com.semanticbits.rules.objectgraph.FactResolver">
+                <field-constraint>
+                    <literal-restriction/>
+                </field-constraint>
+            </column>
+            <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+                <field-constraint field-name="primarySponsorCode">
+                    <literal-restriction evaluator="==">
+                        <value>Cancer Therapy Evaluation Program</value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(studySDO,"gov.nih.nci.cabig.caaers.domain.Organization","escapedXmlName","Cancer Therapy Evaluation Program","==")</expression>
+            </column>
+            <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+                <field-constraint field-name="shortTitle">
+                    <literal-restriction evaluator="==">
+                        <value>A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence</value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(studySDO,null,"escapeXmlShortTitle","A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence","==")</expression>
+            </column>
+        </condition>
+        <action>CTEP 10 Calendar Day SAE Report</action>
+        <readableAction>CTEP 10 Calendar Day SAE Report</readableAction>
+        <metaData name="Rule-6" description="Setting Description since its mandatory by JBoss Repository config" packageName="gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_6.STU_229.sae_reporting_rules">
+            <category>
+                <path>/CAAERS_BASE/SPONSOR_DEFINED_STUDY/ORG_6/STU_229/sae_reporting_rules</path>
+                <metaData name="sae_reporting_rules"/>
+            </category>
+        </metaData>
+        <readableRule>
+            <line>If</line>
+            <line>	Study &amp;nbsp;&amp;nbsp;&amp;nbsp;AE Reporting Level is 'Late Phase 2 and Phase 3 Studies' .</line>
+            <line>And</line>
+            <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Severity is less than or equal to 'Grade 3' .</line>
+            <line>And</line>
+            <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Hospitalization or Prolonged Hospitalization is 'Yes' .</line>
+        </readableRule>
+    </rule>
+    <rule id="r-39ee46d4-29ce-4c87-ae11-9567676d517f">
+        <condition>
+            <column identifier="study" object-type="gov.nih.nci.cabig.caaers.domain.Study" display-uri="Study">
+                <field-constraint field-name="aeReportingLevel" display-uri="undefined" grammer-prefix="AE Reporting Level" grammer-postfix=".">
+                    <literal-restriction evaluator="==" display-uri="is">
+                        <value>Late Phase 2 and Phase 3 Studies</value>
+                        <readable-value>Late Phase 2 and Phase 3 Studies</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(study,null,'aeReportingLevel','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+                <field-constraint field-name="grade" display-uri="undefined" grammer-prefix="Severity" grammer-postfix=".">
+                    <literal-restriction evaluator="==" display-uri="is">
+                        <value>3</value>
+                        <readable-value>Grade 3</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Grade','code','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+                <field-constraint field-name="hospitalization" display-uri="undefined" grammer-prefix="Hospitalization or Prolonged Hospitalization" grammer-postfix=".">
+                    <literal-restriction evaluator="==" display-uri="is">
+                        <value>2</value>
+                        <readable-value>No</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Hospitalization','code','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="factResolver" object-type="com.semanticbits.rules.objectgraph.FactResolver">
+                <field-constraint>
+                    <literal-restriction/>
+                </field-constraint>
+            </column>
+            <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+                <field-constraint field-name="primarySponsorCode">
+                    <literal-restriction evaluator="==">
+                        <value>Cancer Therapy Evaluation Program</value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(studySDO,"gov.nih.nci.cabig.caaers.domain.Organization","escapedXmlName","Cancer Therapy Evaluation Program","==")</expression>
+            </column>
+            <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+                <field-constraint field-name="shortTitle">
+                    <literal-restriction evaluator="==">
+                        <value>A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence</value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(studySDO,null,"escapeXmlShortTitle","A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence","==")</expression>
+            </column>
+        </condition>
+        <action>CTEP 10 Calendar Day SAE Report</action>
+        <readableAction>CTEP 10 Calendar Day SAE Report</readableAction>
+        <metaData name="Rule-7" description="Setting Description since its mandatory by JBoss Repository config" packageName="gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_6.STU_229.sae_reporting_rules">
+            <category>
+                <path>/CAAERS_BASE/SPONSOR_DEFINED_STUDY/ORG_6/STU_229/sae_reporting_rules</path>
+                <metaData name="sae_reporting_rules"/>
+            </category>
+        </metaData>
+        <readableRule>
+            <line>If</line>
+            <line>	Study &amp;nbsp;&amp;nbsp;&amp;nbsp;AE Reporting Level is 'Late Phase 2 and Phase 3 Studies' .</line>
+            <line>And</line>
+            <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Severity is 'Grade 3' .</line>
+            <line>And</line>
+            <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Hospitalization or Prolonged Hospitalization is 'No' .</line>
+        </readableRule>
+    </rule>
+    <rule id="r-c698d17d-833e-40ac-be06-112e7ad3011e">
+        <condition>
+            <column identifier="study" object-type="gov.nih.nci.cabig.caaers.domain.Study" display-uri="Study">
+                <field-constraint field-name="aeReportingLevel" display-uri="undefined" grammer-prefix="AE Reporting Level" grammer-postfix=".">
+                    <literal-restriction evaluator="==" display-uri="is">
+                        <value>Legacy Phase 1</value>
+                        <readable-value>Legacy Phase 1</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(study,null,'aeReportingLevel','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+                <field-constraint field-name="grade" display-uri="undefined" grammer-prefix="Severity" grammer-postfix=".">
+                    <literal-restriction evaluator="&gt;=" display-uri="is greater than or equal to">
+                        <value>4</value>
+                        <readable-value>Grade 4</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Grade','code','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="factResolver" object-type="com.semanticbits.rules.objectgraph.FactResolver">
+                <field-constraint>
+                    <literal-restriction/>
+                </field-constraint>
+            </column>
+            <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+                <field-constraint field-name="primarySponsorCode">
+                    <literal-restriction evaluator="==">
+                        <value>Cancer Therapy Evaluation Program</value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(studySDO,"gov.nih.nci.cabig.caaers.domain.Organization","escapedXmlName","Cancer Therapy Evaluation Program","==")</expression>
+            </column>
+            <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+                <field-constraint field-name="shortTitle">
+                    <literal-restriction evaluator="==">
+                        <value>A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence</value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(studySDO,null,"escapeXmlShortTitle","A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence","==")</expression>
+            </column>
+        </condition>
+        <action>CTEP 5 Calendar Day SAE Report</action>
+        <action>CTEP 24 Hour SAE Notification</action>
+        <readableAction>CTEP 5 Calendar Day SAE Report</readableAction>
+        <readableAction>CTEP 24 Hour SAE Notification</readableAction>
+        <metaData name="Rule-8" description="Setting Description since its mandatory by JBoss Repository config" packageName="gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_6.STU_229.sae_reporting_rules">
+            <category>
+                <path>/CAAERS_BASE/SPONSOR_DEFINED_STUDY/ORG_6/STU_229/sae_reporting_rules</path>
+                <metaData name="sae_reporting_rules"/>
+            </category>
+        </metaData>
+        <readableRule>
+            <line>If</line>
+            <line>	Study &amp;nbsp;&amp;nbsp;&amp;nbsp;AE Reporting Level is 'Legacy Phase 1' .</line>
+            <line>And</line>
+            <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Severity is greater than or equal to 'Grade 4' .</line>
+        </readableRule>
+    </rule>
+    <rule id="r-838e6613-4873-4907-b159-0e2c9f368981">
+        <condition>
+            <column identifier="study" object-type="gov.nih.nci.cabig.caaers.domain.Study" display-uri="Study">
+                <field-constraint field-name="aeReportingLevel" display-uri="undefined" grammer-prefix="AE Reporting Level" grammer-postfix=".">
+                    <literal-restriction evaluator="==" display-uri="is">
+                        <value>Legacy Phase 1</value>
+                        <readable-value>Legacy Phase 1</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(study,null,'aeReportingLevel','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+                <field-constraint field-name="grade" display-uri="undefined" grammer-prefix="Severity" grammer-postfix=".">
+                    <literal-restriction evaluator="==" display-uri="is">
+                        <value>2</value>
+                        <readable-value>Grade 2</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Grade','code','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+                <field-constraint field-name="hospitalization" display-uri="undefined" grammer-prefix="Hospitalization or Prolonged Hospitalization" grammer-postfix=".">
+                    <literal-restriction evaluator="==" display-uri="is">
+                        <value>1</value>
+                        <readable-value>Yes</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Hospitalization','code','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="factResolver" object-type="com.semanticbits.rules.objectgraph.FactResolver">
+                <field-constraint>
+                    <literal-restriction/>
+                </field-constraint>
+            </column>
+            <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+                <field-constraint field-name="primarySponsorCode">
+                    <literal-restriction evaluator="==">
+                        <value>Cancer Therapy Evaluation Program</value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(studySDO,"gov.nih.nci.cabig.caaers.domain.Organization","escapedXmlName","Cancer Therapy Evaluation Program","==")</expression>
+            </column>
+            <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+                <field-constraint field-name="shortTitle">
+                    <literal-restriction evaluator="==">
+                        <value>A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence</value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(studySDO,null,"escapeXmlShortTitle","A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence","==")</expression>
+            </column>
+        </condition>
+        <action>CTEP 10 Calendar Day SAE Report</action>
+        <readableAction>CTEP 10 Calendar Day SAE Report</readableAction>
+        <metaData name="Rule-9" description="Setting Description since its mandatory by JBoss Repository config" packageName="gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_6.STU_229.sae_reporting_rules">
+            <category>
+                <path>/CAAERS_BASE/SPONSOR_DEFINED_STUDY/ORG_6/STU_229/sae_reporting_rules</path>
+                <metaData name="sae_reporting_rules"/>
+            </category>
+        </metaData>
+        <readableRule>
+            <line>If</line>
+            <line>	Study &amp;nbsp;&amp;nbsp;&amp;nbsp;AE Reporting Level is 'Legacy Phase 1' .</line>
+            <line>And</line>
+            <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Severity is 'Grade 2' .</line>
+            <line>And</line>
+            <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Hospitalization or Prolonged Hospitalization is 'Yes' .</line>
+        </readableRule>
+    </rule>
+    <rule id="r-13573c5a-e6b5-4683-b5cd-52e1a4f5cd2c">
+        <condition>
+            <column identifier="study" object-type="gov.nih.nci.cabig.caaers.domain.Study" display-uri="Study">
+                <field-constraint field-name="aeReportingLevel" display-uri="undefined" grammer-prefix="AE Reporting Level" grammer-postfix=".">
+                    <literal-restriction evaluator="==" display-uri="is">
+                        <value>Legacy Phase 2 and Phase 3</value>
+                        <readable-value>Legacy Phase 2 and Phase 3</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(study,null,'aeReportingLevel','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+                <field-constraint field-name="grade" display-uri="undefined" grammer-prefix="Severity" grammer-postfix=".">
+                    <literal-restriction evaluator="==" display-uri="is">
+                        <value>5</value>
+                        <readable-value>Grade 5</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Grade','code','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="factResolver" object-type="com.semanticbits.rules.objectgraph.FactResolver">
+                <field-constraint>
+                    <literal-restriction/>
+                </field-constraint>
+            </column>
+            <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+                <field-constraint field-name="primarySponsorCode">
+                    <literal-restriction evaluator="==">
+                        <value>Cancer Therapy Evaluation Program</value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(studySDO,"gov.nih.nci.cabig.caaers.domain.Organization","escapedXmlName","Cancer Therapy Evaluation Program","==")</expression>
+            </column>
+            <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+                <field-constraint field-name="shortTitle">
+                    <literal-restriction evaluator="==">
+                        <value>A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence</value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(studySDO,null,"escapeXmlShortTitle","A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence","==")</expression>
+            </column>
+        </condition>
+        <action>CTEP 5 Calendar Day SAE Report</action>
+        <action>CTEP 24 Hour SAE Notification</action>
+        <readableAction>CTEP 5 Calendar Day SAE Report</readableAction>
+        <readableAction>CTEP 24 Hour SAE Notification</readableAction>
+        <metaData name="Rule-10" description="Setting Description since its mandatory by JBoss Repository config" packageName="gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_6.STU_229.sae_reporting_rules">
+            <category>
+                <path>/CAAERS_BASE/SPONSOR_DEFINED_STUDY/ORG_6/STU_229/sae_reporting_rules</path>
+                <metaData name="sae_reporting_rules"/>
+            </category>
+        </metaData>
+        <readableRule>
+            <line>If</line>
+            <line>	Study &amp;nbsp;&amp;nbsp;&amp;nbsp;AE Reporting Level is 'Legacy Phase 2 and Phase 3' .</line>
+            <line>And</line>
+            <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Severity is 'Grade 5' .</line>
+        </readableRule>
+    </rule>
+    <rule id="r-fb336a22-bedc-4208-8f07-6737e75e70be">
+        <condition>
+            <column identifier="study" object-type="gov.nih.nci.cabig.caaers.domain.Study" display-uri="Study">
+                <field-constraint field-name="aeReportingLevel" display-uri="undefined" grammer-prefix="AE Reporting Level" grammer-postfix=".">
+                    <literal-restriction evaluator="==" display-uri="is">
+                        <value>Legacy Phase 2 and Phase 3</value>
+                        <readable-value>Legacy Phase 2 and Phase 3</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(study,null,'aeReportingLevel','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+                <field-constraint field-name="grade" display-uri="undefined" grammer-prefix="Severity" grammer-postfix=".">
+                    <literal-restriction evaluator="&lt;=" display-uri="is less than or equal to">
+                        <value>3</value>
+                        <readable-value>Grade 3</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Grade','code','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+                <field-constraint field-name="hospitalization" display-uri="undefined" grammer-prefix="Hospitalization or Prolonged Hospitalization" grammer-postfix=".">
+                    <literal-restriction evaluator="==" display-uri="is">
+                        <value>1</value>
+                        <readable-value>Yes</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Hospitalization','code','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="factResolver" object-type="com.semanticbits.rules.objectgraph.FactResolver">
+                <field-constraint>
+                    <literal-restriction/>
+                </field-constraint>
+            </column>
+            <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+                <field-constraint field-name="primarySponsorCode">
+                    <literal-restriction evaluator="==">
+                        <value>Cancer Therapy Evaluation Program</value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(studySDO,"gov.nih.nci.cabig.caaers.domain.Organization","escapedXmlName","Cancer Therapy Evaluation Program","==")</expression>
+            </column>
+            <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+                <field-constraint field-name="shortTitle">
+                    <literal-restriction evaluator="==">
+                        <value>A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence</value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(studySDO,null,"escapeXmlShortTitle","A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence","==")</expression>
+            </column>
+        </condition>
+        <action>CTEP 10 Calendar Day SAE Report</action>
+        <readableAction>CTEP 10 Calendar Day SAE Report</readableAction>
+        <metaData name="Rule-11" description="Setting Description since its mandatory by JBoss Repository config" packageName="gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_6.STU_229.sae_reporting_rules">
+            <category>
+                <path>/CAAERS_BASE/SPONSOR_DEFINED_STUDY/ORG_6/STU_229/sae_reporting_rules</path>
+                <metaData name="sae_reporting_rules"/>
+            </category>
+        </metaData>
+        <readableRule>
+            <line>If</line>
+            <line>	Study &amp;nbsp;&amp;nbsp;&amp;nbsp;AE Reporting Level is 'Legacy Phase 2 and Phase 3' .</line>
+            <line>And</line>
+            <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Severity is less than or equal to 'Grade 3' .</line>
+            <line>And</line>
+            <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Hospitalization or Prolonged Hospitalization is 'Yes' .</line>
+        </readableRule>
+    </rule>
+    <rule id="r-171b590b-9a53-4808-b410-142e46dcfc21">
+        <condition>
+            <column identifier="study" object-type="gov.nih.nci.cabig.caaers.domain.Study" display-uri="Study">
+                <field-constraint field-name="aeReportingLevel" display-uri="undefined" grammer-prefix="AE Reporting Level" grammer-postfix=".">
+                    <literal-restriction evaluator="==" display-uri="is">
+                        <value>Legacy Phase 2 and Phase 3</value>
+                        <readable-value>Legacy Phase 2 and Phase 3</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(study,null,'aeReportingLevel','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+                <field-constraint field-name="grade" display-uri="undefined" grammer-prefix="Severity" grammer-postfix=".">
+                    <literal-restriction evaluator="==" display-uri="is">
+                        <value>3</value>
+                        <readable-value>Grade 3</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Grade','code','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+                <field-constraint field-name="hospitalization" display-uri="undefined" grammer-prefix="Hospitalization or Prolonged Hospitalization" grammer-postfix=".">
+                    <literal-restriction evaluator="==" display-uri="is">
+                        <value>2</value>
+                        <readable-value>No</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Hospitalization','code','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="factResolver" object-type="com.semanticbits.rules.objectgraph.FactResolver">
+                <field-constraint>
+                    <literal-restriction/>
+                </field-constraint>
+            </column>
+            <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+                <field-constraint field-name="primarySponsorCode">
+                    <literal-restriction evaluator="==">
+                        <value>Cancer Therapy Evaluation Program</value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(studySDO,"gov.nih.nci.cabig.caaers.domain.Organization","escapedXmlName","Cancer Therapy Evaluation Program","==")</expression>
+            </column>
+            <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+                <field-constraint field-name="shortTitle">
+                    <literal-restriction evaluator="==">
+                        <value>A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence</value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(studySDO,null,"escapeXmlShortTitle","A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence","==")</expression>
+            </column>
+        </condition>
+        <action>CTEP 10 Calendar Day SAE Report</action>
+        <readableAction>CTEP 10 Calendar Day SAE Report</readableAction>
+        <metaData name="Rule-12" description="Setting Description since its mandatory by JBoss Repository config" packageName="gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_6.STU_229.sae_reporting_rules">
+            <category>
+                <path>/CAAERS_BASE/SPONSOR_DEFINED_STUDY/ORG_6/STU_229/sae_reporting_rules</path>
+                <metaData name="sae_reporting_rules"/>
+            </category>
+        </metaData>
+        <readableRule>
+            <line>If</line>
+            <line>	Study &amp;nbsp;&amp;nbsp;&amp;nbsp;AE Reporting Level is 'Legacy Phase 2 and Phase 3' .</line>
+            <line>And</line>
+            <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Severity is 'Grade 3' .</line>
+            <line>And</line>
+            <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Hospitalization or Prolonged Hospitalization is 'No' .</line>
+        </readableRule>
+    </rule>
+    <rule id="r-6658c509-4393-4dc9-886d-9de4a2a41dcf">
+        <condition>
+            <column identifier="study" object-type="gov.nih.nci.cabig.caaers.domain.Study" display-uri="Study">
+                <field-constraint field-name="aeReportingLevel" display-uri="undefined" grammer-prefix="AE Reporting Level" grammer-postfix=".">
+                    <literal-restriction evaluator="==" display-uri="is">
+                        <value>CIP Studies</value>
+                        <readable-value>CIP Studies</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(study,null,'aeReportingLevel','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+                <field-constraint field-name="grade" display-uri="undefined" grammer-prefix="Severity" grammer-postfix=".">
+                    <literal-restriction evaluator="&gt;=" display-uri="is greater than or equal to">
+                        <value>4</value>
+                        <readable-value>Grade 4</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Grade','code','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="factResolver" object-type="com.semanticbits.rules.objectgraph.FactResolver">
+                <field-constraint>
+                    <literal-restriction/>
+                </field-constraint>
+            </column>
+            <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+                <field-constraint field-name="primarySponsorCode">
+                    <literal-restriction evaluator="==">
+                        <value>Cancer Therapy Evaluation Program</value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(studySDO,"gov.nih.nci.cabig.caaers.domain.Organization","escapedXmlName","Cancer Therapy Evaluation Program","==")</expression>
+            </column>
+            <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+                <field-constraint field-name="shortTitle">
+                    <literal-restriction evaluator="==">
+                        <value>A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence</value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(studySDO,null,"escapeXmlShortTitle","A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence","==")</expression>
+            </column>
+        </condition>
+        <action>CTEP 5 Calendar Day SAE Report</action>
+        <action>CTEP 24 Hour SAE Notification</action>
+        <readableAction>CTEP 5 Calendar Day SAE Report</readableAction>
+        <readableAction>CTEP 24 Hour SAE Notification</readableAction>
+        <metaData name="Rule-13" description="Setting Description since its mandatory by JBoss Repository config" packageName="gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_6.STU_229.sae_reporting_rules">
+            <category>
+                <path>/CAAERS_BASE/SPONSOR_DEFINED_STUDY/ORG_6/STU_229/sae_reporting_rules</path>
+                <metaData name="sae_reporting_rules"/>
+            </category>
+        </metaData>
+        <readableRule>
+            <line>If</line>
+            <line>	Study &amp;nbsp;&amp;nbsp;&amp;nbsp;AE Reporting Level is 'CIP Studies' .</line>
+            <line>And</line>
+            <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Severity is greater than or equal to 'Grade 4' .</line>
+        </readableRule>
+    </rule>
+    <rule id="r-893bdbec-7f8b-4447-af89-b2af2815a616">
+        <condition>
+            <column identifier="study" object-type="gov.nih.nci.cabig.caaers.domain.Study" display-uri="Study">
+                <field-constraint field-name="aeReportingLevel" display-uri="undefined" grammer-prefix="AE Reporting Level" grammer-postfix=".">
+                    <literal-restriction evaluator="==" display-uri="is">
+                        <value>CIP Studies</value>
+                        <readable-value>CIP Studies</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(study,null,'aeReportingLevel','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+                <field-constraint field-name="grade" display-uri="undefined" grammer-prefix="Severity" grammer-postfix=".">
+                    <literal-restriction evaluator="&lt;=" display-uri="is less than or equal to">
+                        <value>3</value>
+                        <readable-value>Grade 3</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Grade','code','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+                <field-constraint field-name="hospitalization" display-uri="undefined" grammer-prefix="Hospitalization or Prolonged Hospitalization" grammer-postfix=".">
+                    <literal-restriction evaluator="==" display-uri="is">
+                        <value>1</value>
+                        <readable-value>Yes</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Hospitalization','code','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="factResolver" object-type="com.semanticbits.rules.objectgraph.FactResolver">
+                <field-constraint>
+                    <literal-restriction/>
+                </field-constraint>
+            </column>
+            <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+                <field-constraint field-name="primarySponsorCode">
+                    <literal-restriction evaluator="==">
+                        <value>Cancer Therapy Evaluation Program</value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(studySDO,"gov.nih.nci.cabig.caaers.domain.Organization","escapedXmlName","Cancer Therapy Evaluation Program","==")</expression>
+            </column>
+            <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+                <field-constraint field-name="shortTitle">
+                    <literal-restriction evaluator="==">
+                        <value>A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence</value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(studySDO,null,"escapeXmlShortTitle","A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence","==")</expression>
+            </column>
+        </condition>
+        <action>CTEP 10 Calendar Day SAE Report</action>
+        <readableAction>CTEP 10 Calendar Day SAE Report</readableAction>
+        <metaData name="Rule-14" description="Setting Description since its mandatory by JBoss Repository config" packageName="gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_6.STU_229.sae_reporting_rules">
+            <category>
+                <path>/CAAERS_BASE/SPONSOR_DEFINED_STUDY/ORG_6/STU_229/sae_reporting_rules</path>
+                <metaData name="sae_reporting_rules"/>
+            </category>
+        </metaData>
+        <readableRule>
+            <line>If</line>
+            <line>	Study &amp;nbsp;&amp;nbsp;&amp;nbsp;AE Reporting Level is 'CIP Studies' .</line>
+            <line>And</line>
+            <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Severity is less than or equal to 'Grade 3' .</line>
+            <line>And</line>
+            <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Hospitalization or Prolonged Hospitalization is 'Yes' .</line>
+        </readableRule>
+    </rule>
+    <rule id="r-a90a4def-373a-4416-9cf2-528e6197fdd9">
+        <condition>
+            <column identifier="study" object-type="gov.nih.nci.cabig.caaers.domain.Study" display-uri="Study">
+                <field-constraint field-name="aeReportingLevel" display-uri="undefined" grammer-prefix="AE Reporting Level" grammer-postfix=".">
+                    <literal-restriction evaluator="==" display-uri="is">
+                        <value>CIP Studies</value>
+                        <readable-value>CIP Studies</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(study,null,'aeReportingLevel','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+                <field-constraint field-name="grade" display-uri="undefined" grammer-prefix="Severity" grammer-postfix=".">
+                    <literal-restriction evaluator="==" display-uri="is">
+                        <value>3</value>
+                        <readable-value>Grade 3</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Grade','code','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+                <field-constraint field-name="hospitalization" display-uri="undefined" grammer-prefix="Hospitalization or Prolonged Hospitalization" grammer-postfix=".">
+                    <literal-restriction evaluator="==" display-uri="is">
+                        <value>2</value>
+                        <readable-value>No</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Hospitalization','code','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="factResolver" object-type="com.semanticbits.rules.objectgraph.FactResolver">
+                <field-constraint>
+                    <literal-restriction/>
+                </field-constraint>
+            </column>
+            <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+                <field-constraint field-name="primarySponsorCode">
+                    <literal-restriction evaluator="==">
+                        <value>Cancer Therapy Evaluation Program</value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(studySDO,"gov.nih.nci.cabig.caaers.domain.Organization","escapedXmlName","Cancer Therapy Evaluation Program","==")</expression>
+            </column>
+            <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+                <field-constraint field-name="shortTitle">
+                    <literal-restriction evaluator="==">
+                        <value>A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence</value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(studySDO,null,"escapeXmlShortTitle","A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence","==")</expression>
+            </column>
+        </condition>
+        <action>CTEP 10 Calendar Day SAE Report</action>
+        <readableAction>CTEP 10 Calendar Day SAE Report</readableAction>
+        <metaData name="Rule-15" description="Setting Description since its mandatory by JBoss Repository config" packageName="gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_6.STU_229.sae_reporting_rules">
+            <category>
+                <path>/CAAERS_BASE/SPONSOR_DEFINED_STUDY/ORG_6/STU_229/sae_reporting_rules</path>
+                <metaData name="sae_reporting_rules"/>
+            </category>
+        </metaData>
+        <readableRule>
+            <line>If</line>
+            <line>	Study &amp;nbsp;&amp;nbsp;&amp;nbsp;AE Reporting Level is 'CIP Studies' .</line>
+            <line>And</line>
+            <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Severity is 'Grade 3' .</line>
+            <line>And</line>
+            <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Hospitalization or Prolonged Hospitalization is 'No' .</line>
+        </readableRule>
+    </rule>
+    <rule id="r-156de0c9-ebd0-44db-af1f-14a2960da26e">
+        <condition>
+            <column identifier="study" object-type="gov.nih.nci.cabig.caaers.domain.Study" display-uri="Study">
+                <field-constraint field-name="aeReportingLevel" display-uri="undefined" grammer-prefix="AE Reporting Level" grammer-postfix=".">
+                    <literal-restriction evaluator="==" display-uri="is">
+                        <value>Commercial</value>
+                        <readable-value>Commercial</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(study,null,'aeReportingLevel','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+                <field-constraint field-name="grade" display-uri="undefined" grammer-prefix="Severity" grammer-postfix=".">
+                    <literal-restriction evaluator="&gt;=" display-uri="is greater than or equal to">
+                        <value>3</value>
+                        <readable-value>Grade 3</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Grade','code','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="factResolver" object-type="com.semanticbits.rules.objectgraph.FactResolver">
+                <field-constraint>
+                    <literal-restriction/>
+                </field-constraint>
+            </column>
+            <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+                <field-constraint field-name="primarySponsorCode">
+                    <literal-restriction evaluator="==">
+                        <value>Cancer Therapy Evaluation Program</value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(studySDO,"gov.nih.nci.cabig.caaers.domain.Organization","escapedXmlName","Cancer Therapy Evaluation Program","==")</expression>
+            </column>
+            <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+                <field-constraint field-name="shortTitle">
+                    <literal-restriction evaluator="==">
+                        <value>A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence</value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(studySDO,null,"escapeXmlShortTitle","A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence","==")</expression>
+            </column>
+        </condition>
+        <action>CTEP 15 Calendar Day SAE Report</action>
+        <readableAction>CTEP 15 Calendar Day SAE Report</readableAction>
+        <metaData name="Rule-16" description="Setting Description since its mandatory by JBoss Repository config" packageName="gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_6.STU_229.sae_reporting_rules">
+            <category>
+                <path>/CAAERS_BASE/SPONSOR_DEFINED_STUDY/ORG_6/STU_229/sae_reporting_rules</path>
+                <metaData name="sae_reporting_rules"/>
+            </category>
+        </metaData>
+        <readableRule>
+            <line>If</line>
+            <line>	Study &amp;nbsp;&amp;nbsp;&amp;nbsp;AE Reporting Level is 'Commercial' .</line>
+            <line>And</line>
+            <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Severity is greater than or equal to 'Grade 3' .</line>
+        </readableRule>
+    </rule>
+    <rule id="r-8a7058ad-4195-4788-ac86-c288e37cbe26">
+        <condition>
+            <column identifier="study" object-type="gov.nih.nci.cabig.caaers.domain.Study" display-uri="Study">
+                <field-constraint field-name="aeReportingLevel" display-uri="undefined" grammer-prefix="AE Reporting Level" grammer-postfix=".">
+                    <literal-restriction evaluator="==" display-uri="is">
+                        <value>Legacy Phase 1</value>
+                        <readable-value>Legacy Phase 1</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(study,null,'aeReportingLevel','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+                <field-constraint field-name="grade" display-uri="undefined" grammer-prefix="Severity" grammer-postfix=".">
+                    <literal-restriction evaluator="==" display-uri="is">
+                        <value>3</value>
+                        <readable-value>Grade 3</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Grade','code','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="factResolver" object-type="com.semanticbits.rules.objectgraph.FactResolver">
+                <field-constraint>
+                    <literal-restriction/>
+                </field-constraint>
+            </column>
+            <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+                <field-constraint field-name="primarySponsorCode">
+                    <literal-restriction evaluator="==">
+                        <value>Cancer Therapy Evaluation Program</value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(studySDO,"gov.nih.nci.cabig.caaers.domain.Organization","escapedXmlName","Cancer Therapy Evaluation Program","==")</expression>
+            </column>
+            <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+                <field-constraint field-name="shortTitle">
+                    <literal-restriction evaluator="==">
+                        <value>A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence</value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(studySDO,null,"escapeXmlShortTitle","A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence","==")</expression>
+            </column>
+        </condition>
+        <action>CTEP 10 Calendar Day SAE Report</action>
+        <readableAction>CTEP 10 Calendar Day SAE Report</readableAction>
+        <metaData name="Rule-17" description="Setting Description since its mandatory by JBoss Repository config" packageName="gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_6.STU_229.sae_reporting_rules">
+            <category>
+                <path>/CAAERS_BASE/SPONSOR_DEFINED_STUDY/ORG_6/STU_229/sae_reporting_rules</path>
+                <metaData name="sae_reporting_rules"/>
+            </category>
+        </metaData>
+        <readableRule>
+            <line>If</line>
+            <line>	Study &amp;nbsp;&amp;nbsp;&amp;nbsp;AE Reporting Level is 'Legacy Phase 1' .</line>
+            <line>And</line>
+            <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Severity is 'Grade 3' .</line>
+        </readableRule>
+    </rule>
+    <rule id="r-e559505c-3312-4445-9859-e2c08e7a52f2">
+        <condition>
+            <column identifier="study" object-type="gov.nih.nci.cabig.caaers.domain.Study" display-uri="Study">
+                <field-constraint field-name="aeReportingLevel" display-uri="undefined" grammer-prefix="AE Reporting Level" grammer-postfix=".">
+                    <literal-restriction evaluator="==" display-uri="is">
+                        <value>Legacy Phase 2 and Phase 3</value>
+                        <readable-value>Legacy Phase 2 and Phase 3</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(study,null,'aeReportingLevel','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+                <field-constraint field-name="grade" display-uri="undefined" grammer-prefix="Severity" grammer-postfix=".">
+                    <literal-restriction evaluator="==" display-uri="is">
+                        <value>4</value>
+                        <readable-value>Grade 4</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Grade','code','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="factResolver" object-type="com.semanticbits.rules.objectgraph.FactResolver">
+                <field-constraint>
+                    <literal-restriction/>
+                </field-constraint>
+            </column>
+            <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+                <field-constraint field-name="primarySponsorCode">
+                    <literal-restriction evaluator="==">
+                        <value>Cancer Therapy Evaluation Program</value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(studySDO,"gov.nih.nci.cabig.caaers.domain.Organization","escapedXmlName","Cancer Therapy Evaluation Program","==")</expression>
+            </column>
+            <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+                <field-constraint field-name="shortTitle">
+                    <literal-restriction evaluator="==">
+                        <value>A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence</value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(studySDO,null,"escapeXmlShortTitle","A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence","==")</expression>
+            </column>
+        </condition>
+        <action>CTEP 10 Calendar Day SAE Report</action>
+        <readableAction>CTEP 10 Calendar Day SAE Report</readableAction>
+        <metaData name="Rule-18" description="Setting Description since its mandatory by JBoss Repository config" packageName="gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_6.STU_229.sae_reporting_rules">
+            <category>
+                <path>/CAAERS_BASE/SPONSOR_DEFINED_STUDY/ORG_6/STU_229/sae_reporting_rules</path>
+                <metaData name="sae_reporting_rules"/>
+            </category>
+        </metaData>
+        <readableRule>
+            <line>If</line>
+            <line>	Study &amp;nbsp;&amp;nbsp;&amp;nbsp;AE Reporting Level is 'Legacy Phase 2 and Phase 3' .</line>
+            <line>And</line>
+            <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Severity is 'Grade 4' .</line>
+        </readableRule>
+    </rule>
+    <rule id="r-a02e48be-af14-4be0-8a42-cca6b3807b3b">
+        <condition>
+            <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+                <field-constraint field-name="category" display-uri="undefined" grammer-prefix="Term" grammer-postfix=".">
+                    <literal-restriction evaluator="==" display-uri="is">
+                        <value>416</value>
+                        <readable-value>Neoplasms benign, malignant and unspecified (incl cysts and polyps)</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.CtcCategory','id','416','==')</expression>
+            </column>
+            <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+                <field-constraint field-name="term" display-uri="Grade" grammer-prefix="Term" grammer-postfix=".">
+                    <literal-restriction evaluator="==" display-uri="is">
+                        <value>10028533</value>
+                        <readable-value>Myelodysplastic syndrome</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.CtcTerm','ctepCode','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="factResolver" object-type="com.semanticbits.rules.objectgraph.FactResolver">
+                <field-constraint>
+                    <literal-restriction/>
+                </field-constraint>
+            </column>
+            <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+                <field-constraint field-name="primarySponsorCode">
+                    <literal-restriction evaluator="==">
+                        <value>Cancer Therapy Evaluation Program</value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(studySDO,"gov.nih.nci.cabig.caaers.domain.Organization","escapedXmlName","Cancer Therapy Evaluation Program","==")</expression>
+            </column>
+            <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+                <field-constraint field-name="shortTitle">
+                    <literal-restriction evaluator="==">
+                        <value>A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence</value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(studySDO,null,"escapeXmlShortTitle","A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence","==")</expression>
+            </column>
+        </condition>
+        <action>IGNORE</action>
+        <readableAction>IGNORE</readableAction>
+        <metaData name="Rule-19" description="Setting Description since its mandatory by JBoss Repository config" packageName="gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_6.STU_229.sae_reporting_rules">
+            <category>
+                <path>/CAAERS_BASE/SPONSOR_DEFINED_STUDY/ORG_6/STU_229/sae_reporting_rules</path>
+                <metaData name="sae_reporting_rules"/>
+            </category>
+        </metaData>
+        <readableRule>
+            <line>If</line>
+            <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Term is 'Neoplasms benign'  or ' malignant and unspecified (...' .</line>
+            <line>And</line>
+            <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Term is 'Myelodysplastic syndrome' .</line>
+        </readableRule>
+    </rule>
+    <rule id="r-e9612f0a-c17a-4898-9748-4d8f532acf01">
+        <condition>
+            <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+                <field-constraint field-name="category" display-uri="undefined" grammer-prefix="Category" grammer-postfix=".">
+                    <literal-restriction evaluator="==" display-uri="is">
+                        <value>402</value>
+                        <readable-value>Cardiac disorders</readable-value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.CtcCategory','id','runTimeValue','runTimeOperator')</expression>
+            </column>
+            <column identifier="factResolver" object-type="com.semanticbits.rules.objectgraph.FactResolver">
+                <field-constraint>
+                    <literal-restriction/>
+                </field-constraint>
+            </column>
+            <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+                <field-constraint field-name="primarySponsorCode">
+                    <literal-restriction evaluator="==">
+                        <value>Cancer Therapy Evaluation Program</value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(studySDO,"gov.nih.nci.cabig.caaers.domain.Organization","escapedXmlName","Cancer Therapy Evaluation Program","==")</expression>
+            </column>
+            <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+                <field-constraint field-name="shortTitle">
+                    <literal-restriction evaluator="==">
+                        <value>A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence</value>
+                    </literal-restriction>
+                </field-constraint>
+                <expression>factResolver.assertFact(studySDO,null,"escapeXmlShortTitle","A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence","==")</expression>
+            </column>
+        </condition>
+        <action>IGNORE</action>
+        <readableAction>IGNORE</readableAction>
+        <metaData name="Rule-20" description="Setting Description since its mandatory by JBoss Repository config" packageName="gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_6.STU_229.sae_reporting_rules"/>
+        <readableRule>
+            <line>If</line>
+            <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Category is 'Cardiac disorders' .</line>
+        </readableRule>
+    </rule>
+</ruleSet>
+        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ruleSet xmlns="http://semanticbits.com/rules/brxml">
+<name>gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_6.STU_229.sae_reporting_rules</name>
+<description>SAE Reporting Rules</description>
+<subject>SAE Reporting Rules||SponsorDefinedStudy||CTEP||CTEP||E1311</subject>
+<import>gov.nih.nci.cabig.caaers.domain.*</import>
+<rule id="r-2f63a0b1-a231-42f2-a867-8642ab4582e3">
+    <condition>
+        <column identifier="study" object-type="gov.nih.nci.cabig.caaers.domain.Study" display-uri="Study">
+            <field-constraint field-name="aeReportingLevel" display-uri="undefined" grammer-prefix="AE Reporting Level" grammer-postfix=".">
+                <literal-restriction evaluator="==" display-uri="is">
+                    <value>Phase 0 Studies</value>
+                    <readable-value>Phase 0 Studies</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(study,null,'aeReportingLevel','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+            <field-constraint field-name="grade" display-uri="undefined" grammer-prefix="Severity" grammer-postfix=".">
+                <literal-restriction evaluator="&lt;=" display-uri="is less than or equal to">
+                    <value>2</value>
+                    <readable-value>Grade 2</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Grade','code','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="factResolver" object-type="com.semanticbits.rules.objectgraph.FactResolver">
+            <field-constraint>
+                <literal-restriction/>
+            </field-constraint>
+        </column>
+        <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+            <field-constraint field-name="primarySponsorCode">
+                <literal-restriction evaluator="==">
+                    <value>Cancer Therapy Evaluation Program</value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(studySDO,"gov.nih.nci.cabig.caaers.domain.Organization","escapedXmlName","Cancer Therapy Evaluation Program","==")</expression>
+        </column>
+        <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+            <field-constraint field-name="shortTitle">
+                <literal-restriction evaluator="==">
+                    <value>A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence</value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(studySDO,null,"escapeXmlShortTitle","A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence","==")</expression>
+        </column>
+    </condition>
+    <action>CTEP 10 Calendar Day SAE Report</action>
+    <readableAction>CTEP 10 Calendar Day SAE Report</readableAction>
+    <metaData name="Rule-1" description="Setting Description since its mandatory by JBoss Repository config" packageName="gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_6.STU_229.sae_reporting_rules">
+        <category>
+            <path>/CAAERS_BASE/SPONSOR_DEFINED_STUDY/ORG_6/STU_229/sae_reporting_rules</path>
+            <metaData name="sae_reporting_rules"/>
+        </category>
+    </metaData>
+    <readableRule>
+        <line>If</line>
+        <line>	Study &amp;nbsp;&amp;nbsp;&amp;nbsp;AE Reporting Level is 'Phase 0 Studies' .</line>
+        <line>And</line>
+        <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Severity is less than or equal to 'Grade 2' .</line>
+    </readableRule>
+</rule>
+<rule id="r-cebbab19-7da7-49f3-9e62-cb3d89638596">
+    <condition>
+        <column identifier="study" object-type="gov.nih.nci.cabig.caaers.domain.Study" display-uri="Study">
+            <field-constraint field-name="aeReportingLevel" display-uri="undefined" grammer-prefix="AE Reporting Level" grammer-postfix=".">
+                <literal-restriction evaluator="==" display-uri="is">
+                    <value>Phase 0 Studies</value>
+                    <readable-value>Phase 0 Studies</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(study,null,'aeReportingLevel','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+            <field-constraint field-name="grade" display-uri="undefined" grammer-prefix="Severity" grammer-postfix=".">
+                <literal-restriction evaluator="&gt;=" display-uri="is greater than or equal to">
+                    <value>3</value>
+                    <readable-value>Grade 3</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Grade','code','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="factResolver" object-type="com.semanticbits.rules.objectgraph.FactResolver">
+            <field-constraint>
+                <literal-restriction/>
+            </field-constraint>
+        </column>
+        <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+            <field-constraint field-name="primarySponsorCode">
+                <literal-restriction evaluator="==">
+                    <value>Cancer Therapy Evaluation Program</value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(studySDO,"gov.nih.nci.cabig.caaers.domain.Organization","escapedXmlName","Cancer Therapy Evaluation Program","==")</expression>
+        </column>
+        <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+            <field-constraint field-name="shortTitle">
+                <literal-restriction evaluator="==">
+                    <value>A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence</value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(studySDO,null,"escapeXmlShortTitle","A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence","==")</expression>
+        </column>
+    </condition>
+    <action>CTEP 5 Calendar Day SAE Report</action>
+    <action>CTEP 24 Hour SAE Notification</action>
+    <readableAction>CTEP 5 Calendar Day SAE Report</readableAction>
+    <readableAction>CTEP 24 Hour SAE Notification</readableAction>
+    <metaData name="Rule-2" description="Setting Description since its mandatory by JBoss Repository config" packageName="gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_6.STU_229.sae_reporting_rules">
+        <category>
+            <path>/CAAERS_BASE/SPONSOR_DEFINED_STUDY/ORG_6/STU_229/sae_reporting_rules</path>
+            <metaData name="sae_reporting_rules"/>
+        </category>
+    </metaData>
+    <readableRule>
+        <line>If</line>
+        <line>	Study &amp;nbsp;&amp;nbsp;&amp;nbsp;AE Reporting Level is 'Phase 0 Studies' .</line>
+        <line>And</line>
+        <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Severity is greater than or equal to 'Grade 3' .</line>
+    </readableRule>
+</rule>
+<rule id="r-eba87abe-e60a-4746-a769-35849e351526">
+    <condition>
+        <column identifier="study" object-type="gov.nih.nci.cabig.caaers.domain.Study" display-uri="Study">
+            <field-constraint field-name="aeReportingLevel" display-uri="undefined" grammer-prefix="AE Reporting Level" grammer-postfix=".">
+                <literal-restriction evaluator="==" display-uri="is">
+                    <value>Phase 1 and Early Phase 2 Studies</value>
+                    <readable-value>Phase 1 and Early Phase 2 Studies</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(study,null,'aeReportingLevel','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+            <field-constraint field-name="grade" display-uri="undefined" grammer-prefix="Severity" grammer-postfix=".">
+                <literal-restriction evaluator="&gt;=" display-uri="is greater than or equal to">
+                    <value>3</value>
+                    <readable-value>Grade 3</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Grade','code','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="factResolver" object-type="com.semanticbits.rules.objectgraph.FactResolver">
+            <field-constraint>
+                <literal-restriction/>
+            </field-constraint>
+        </column>
+        <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+            <field-constraint field-name="primarySponsorCode">
+                <literal-restriction evaluator="==">
+                    <value>Cancer Therapy Evaluation Program</value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(studySDO,"gov.nih.nci.cabig.caaers.domain.Organization","escapedXmlName","Cancer Therapy Evaluation Program","==")</expression>
+        </column>
+        <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+            <field-constraint field-name="shortTitle">
+                <literal-restriction evaluator="==">
+                    <value>A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence</value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(studySDO,null,"escapeXmlShortTitle","A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence","==")</expression>
+        </column>
+    </condition>
+    <action>CTEP 5 Calendar Day SAE Report</action>
+    <action>CTEP 24 Hour SAE Notification</action>
+    <readableAction>CTEP 5 Calendar Day SAE Report</readableAction>
+    <readableAction>CTEP 24 Hour SAE Notification</readableAction>
+    <metaData name="Rule-3" description="Setting Description since its mandatory by JBoss Repository config" packageName="gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_6.STU_229.sae_reporting_rules">
+        <category>
+            <path>/CAAERS_BASE/SPONSOR_DEFINED_STUDY/ORG_6/STU_229/sae_reporting_rules</path>
+            <metaData name="sae_reporting_rules"/>
+        </category>
+    </metaData>
+    <readableRule>
+        <line>If</line>
+        <line>	Study &amp;nbsp;&amp;nbsp;&amp;nbsp;AE Reporting Level is 'Phase 1 and Early Phase 2 Studies' .</line>
+        <line>And</line>
+        <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Severity is greater than or equal to 'Grade 3' .</line>
+    </readableRule>
+</rule>
+<rule id="r-683756d5-4c09-4e49-8f83-7023d967afc5">
+    <condition>
+        <column identifier="study" object-type="gov.nih.nci.cabig.caaers.domain.Study" display-uri="Study">
+            <field-constraint field-name="aeReportingLevel" display-uri="undefined" grammer-prefix="AE Reporting Level" grammer-postfix=".">
+                <literal-restriction evaluator="==" display-uri="is">
+                    <value>Phase 1 and Early Phase 2 Studies</value>
+                    <readable-value>Phase 1 and Early Phase 2 Studies</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(study,null,'aeReportingLevel','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+            <field-constraint field-name="grade" display-uri="undefined" grammer-prefix="Severity" grammer-postfix=".">
+                <literal-restriction evaluator="&lt;=" display-uri="is less than or equal to">
+                    <value>2</value>
+                    <readable-value>Grade 2</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Grade','code','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+            <field-constraint field-name="hospitalization" display-uri="undefined" grammer-prefix="Hospitalization or Prolonged Hospitalization" grammer-postfix=".">
+                <literal-restriction evaluator="==" display-uri="is">
+                    <value>1</value>
+                    <readable-value>Yes</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Hospitalization','code','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="factResolver" object-type="com.semanticbits.rules.objectgraph.FactResolver">
+            <field-constraint>
+                <literal-restriction/>
+            </field-constraint>
+        </column>
+        <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+            <field-constraint field-name="primarySponsorCode">
+                <literal-restriction evaluator="==">
+                    <value>Cancer Therapy Evaluation Program</value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(studySDO,"gov.nih.nci.cabig.caaers.domain.Organization","escapedXmlName","Cancer Therapy Evaluation Program","==")</expression>
+        </column>
+        <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+            <field-constraint field-name="shortTitle">
+                <literal-restriction evaluator="==">
+                    <value>A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence</value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(studySDO,null,"escapeXmlShortTitle","A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence","==")</expression>
+        </column>
+    </condition>
+    <action>CTEP 10 Calendar Day SAE Report</action>
+    <readableAction>CTEP 10 Calendar Day SAE Report</readableAction>
+    <metaData name="Rule-4" description="Setting Description since its mandatory by JBoss Repository config" packageName="gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_6.STU_229.sae_reporting_rules">
+        <category>
+            <path>/CAAERS_BASE/SPONSOR_DEFINED_STUDY/ORG_6/STU_229/sae_reporting_rules</path>
+            <metaData name="sae_reporting_rules"/>
+        </category>
+    </metaData>
+    <readableRule>
+        <line>If</line>
+        <line>	Study &amp;nbsp;&amp;nbsp;&amp;nbsp;AE Reporting Level is 'Phase 1 and Early Phase 2 Studies' .</line>
+        <line>And</line>
+        <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Severity is less than or equal to 'Grade 2' .</line>
+        <line>And</line>
+        <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Hospitalization or Prolonged Hospitalization is 'Yes' .</line>
+    </readableRule>
+</rule>
+<rule id="r-7fc591c9-f78f-4748-8d96-89c93dd41f12">
+    <condition>
+        <column identifier="study" object-type="gov.nih.nci.cabig.caaers.domain.Study" display-uri="Study">
+            <field-constraint field-name="aeReportingLevel" display-uri="undefined" grammer-prefix="AE Reporting Level" grammer-postfix=".">
+                <literal-restriction evaluator="==" display-uri="is">
+                    <value>Late Phase 2 and Phase 3 Studies</value>
+                    <readable-value>Late Phase 2 and Phase 3 Studies</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(study,null,'aeReportingLevel','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+            <field-constraint field-name="grade" display-uri="undefined" grammer-prefix="Severity" grammer-postfix=".">
+                <literal-restriction evaluator="&gt;=" display-uri="is greater than or equal to">
+                    <value>4</value>
+                    <readable-value>Grade 4</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Grade','code','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="factResolver" object-type="com.semanticbits.rules.objectgraph.FactResolver">
+            <field-constraint>
+                <literal-restriction/>
+            </field-constraint>
+        </column>
+        <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+            <field-constraint field-name="primarySponsorCode">
+                <literal-restriction evaluator="==">
+                    <value>Cancer Therapy Evaluation Program</value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(studySDO,"gov.nih.nci.cabig.caaers.domain.Organization","escapedXmlName","Cancer Therapy Evaluation Program","==")</expression>
+        </column>
+        <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+            <field-constraint field-name="shortTitle">
+                <literal-restriction evaluator="==">
+                    <value>A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence</value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(studySDO,null,"escapeXmlShortTitle","A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence","==")</expression>
+        </column>
+    </condition>
+    <action>CTEP 5 Calendar Day SAE Report</action>
+    <action>CTEP 24 Hour SAE Notification</action>
+    <readableAction>CTEP 5 Calendar Day SAE Report</readableAction>
+    <readableAction>CTEP 24 Hour SAE Notification</readableAction>
+    <metaData name="Rule-5" description="Setting Description since its mandatory by JBoss Repository config" packageName="gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_6.STU_229.sae_reporting_rules">
+        <category>
+            <path>/CAAERS_BASE/SPONSOR_DEFINED_STUDY/ORG_6/STU_229/sae_reporting_rules</path>
+            <metaData name="sae_reporting_rules"/>
+        </category>
+    </metaData>
+    <readableRule>
+        <line>If</line>
+        <line>	Study &amp;nbsp;&amp;nbsp;&amp;nbsp;AE Reporting Level is 'Late Phase 2 and Phase 3 Studies' .</line>
+        <line>And</line>
+        <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Severity is greater than or equal to 'Grade 4' .</line>
+    </readableRule>
+</rule>
+<rule id="r-e50fc11b-6c08-4227-a7a2-dd5e3a18ad52">
+    <condition>
+        <column identifier="study" object-type="gov.nih.nci.cabig.caaers.domain.Study" display-uri="Study">
+            <field-constraint field-name="aeReportingLevel" display-uri="undefined" grammer-prefix="AE Reporting Level" grammer-postfix=".">
+                <literal-restriction evaluator="==" display-uri="is">
+                    <value>Late Phase 2 and Phase 3 Studies</value>
+                    <readable-value>Late Phase 2 and Phase 3 Studies</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(study,null,'aeReportingLevel','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+            <field-constraint field-name="grade" display-uri="undefined" grammer-prefix="Severity" grammer-postfix=".">
+                <literal-restriction evaluator="&lt;=" display-uri="is less than or equal to">
+                    <value>3</value>
+                    <readable-value>Grade 3</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Grade','code','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+            <field-constraint field-name="hospitalization" display-uri="undefined" grammer-prefix="Hospitalization or Prolonged Hospitalization" grammer-postfix=".">
+                <literal-restriction evaluator="==" display-uri="is">
+                    <value>1</value>
+                    <readable-value>Yes</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Hospitalization','code','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="factResolver" object-type="com.semanticbits.rules.objectgraph.FactResolver">
+            <field-constraint>
+                <literal-restriction/>
+            </field-constraint>
+        </column>
+        <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+            <field-constraint field-name="primarySponsorCode">
+                <literal-restriction evaluator="==">
+                    <value>Cancer Therapy Evaluation Program</value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(studySDO,"gov.nih.nci.cabig.caaers.domain.Organization","escapedXmlName","Cancer Therapy Evaluation Program","==")</expression>
+        </column>
+        <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+            <field-constraint field-name="shortTitle">
+                <literal-restriction evaluator="==">
+                    <value>A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence</value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(studySDO,null,"escapeXmlShortTitle","A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence","==")</expression>
+        </column>
+    </condition>
+    <action>CTEP 10 Calendar Day SAE Report</action>
+    <readableAction>CTEP 10 Calendar Day SAE Report</readableAction>
+    <metaData name="Rule-6" description="Setting Description since its mandatory by JBoss Repository config" packageName="gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_6.STU_229.sae_reporting_rules">
+        <category>
+            <path>/CAAERS_BASE/SPONSOR_DEFINED_STUDY/ORG_6/STU_229/sae_reporting_rules</path>
+            <metaData name="sae_reporting_rules"/>
+        </category>
+    </metaData>
+    <readableRule>
+        <line>If</line>
+        <line>	Study &amp;nbsp;&amp;nbsp;&amp;nbsp;AE Reporting Level is 'Late Phase 2 and Phase 3 Studies' .</line>
+        <line>And</line>
+        <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Severity is less than or equal to 'Grade 3' .</line>
+        <line>And</line>
+        <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Hospitalization or Prolonged Hospitalization is 'Yes' .</line>
+    </readableRule>
+</rule>
+<rule id="r-39ee46d4-29ce-4c87-ae11-9567676d517f">
+    <condition>
+        <column identifier="study" object-type="gov.nih.nci.cabig.caaers.domain.Study" display-uri="Study">
+            <field-constraint field-name="aeReportingLevel" display-uri="undefined" grammer-prefix="AE Reporting Level" grammer-postfix=".">
+                <literal-restriction evaluator="==" display-uri="is">
+                    <value>Late Phase 2 and Phase 3 Studies</value>
+                    <readable-value>Late Phase 2 and Phase 3 Studies</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(study,null,'aeReportingLevel','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+            <field-constraint field-name="grade" display-uri="undefined" grammer-prefix="Severity" grammer-postfix=".">
+                <literal-restriction evaluator="==" display-uri="is">
+                    <value>3</value>
+                    <readable-value>Grade 3</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Grade','code','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+            <field-constraint field-name="hospitalization" display-uri="undefined" grammer-prefix="Hospitalization or Prolonged Hospitalization" grammer-postfix=".">
+                <literal-restriction evaluator="==" display-uri="is">
+                    <value>2</value>
+                    <readable-value>No</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Hospitalization','code','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="factResolver" object-type="com.semanticbits.rules.objectgraph.FactResolver">
+            <field-constraint>
+                <literal-restriction/>
+            </field-constraint>
+        </column>
+        <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+            <field-constraint field-name="primarySponsorCode">
+                <literal-restriction evaluator="==">
+                    <value>Cancer Therapy Evaluation Program</value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(studySDO,"gov.nih.nci.cabig.caaers.domain.Organization","escapedXmlName","Cancer Therapy Evaluation Program","==")</expression>
+        </column>
+        <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+            <field-constraint field-name="shortTitle">
+                <literal-restriction evaluator="==">
+                    <value>A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence</value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(studySDO,null,"escapeXmlShortTitle","A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence","==")</expression>
+        </column>
+    </condition>
+    <action>CTEP 10 Calendar Day SAE Report</action>
+    <readableAction>CTEP 10 Calendar Day SAE Report</readableAction>
+    <metaData name="Rule-7" description="Setting Description since its mandatory by JBoss Repository config" packageName="gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_6.STU_229.sae_reporting_rules">
+        <category>
+            <path>/CAAERS_BASE/SPONSOR_DEFINED_STUDY/ORG_6/STU_229/sae_reporting_rules</path>
+            <metaData name="sae_reporting_rules"/>
+        </category>
+    </metaData>
+    <readableRule>
+        <line>If</line>
+        <line>	Study &amp;nbsp;&amp;nbsp;&amp;nbsp;AE Reporting Level is 'Late Phase 2 and Phase 3 Studies' .</line>
+        <line>And</line>
+        <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Severity is 'Grade 3' .</line>
+        <line>And</line>
+        <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Hospitalization or Prolonged Hospitalization is 'No' .</line>
+    </readableRule>
+</rule>
+<rule id="r-c698d17d-833e-40ac-be06-112e7ad3011e">
+    <condition>
+        <column identifier="study" object-type="gov.nih.nci.cabig.caaers.domain.Study" display-uri="Study">
+            <field-constraint field-name="aeReportingLevel" display-uri="undefined" grammer-prefix="AE Reporting Level" grammer-postfix=".">
+                <literal-restriction evaluator="==" display-uri="is">
+                    <value>Legacy Phase 1</value>
+                    <readable-value>Legacy Phase 1</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(study,null,'aeReportingLevel','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+            <field-constraint field-name="grade" display-uri="undefined" grammer-prefix="Severity" grammer-postfix=".">
+                <literal-restriction evaluator="&gt;=" display-uri="is greater than or equal to">
+                    <value>4</value>
+                    <readable-value>Grade 4</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Grade','code','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="factResolver" object-type="com.semanticbits.rules.objectgraph.FactResolver">
+            <field-constraint>
+                <literal-restriction/>
+            </field-constraint>
+        </column>
+        <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+            <field-constraint field-name="primarySponsorCode">
+                <literal-restriction evaluator="==">
+                    <value>Cancer Therapy Evaluation Program</value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(studySDO,"gov.nih.nci.cabig.caaers.domain.Organization","escapedXmlName","Cancer Therapy Evaluation Program","==")</expression>
+        </column>
+        <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+            <field-constraint field-name="shortTitle">
+                <literal-restriction evaluator="==">
+                    <value>A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence</value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(studySDO,null,"escapeXmlShortTitle","A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence","==")</expression>
+        </column>
+    </condition>
+    <action>CTEP 5 Calendar Day SAE Report</action>
+    <action>CTEP 24 Hour SAE Notification</action>
+    <readableAction>CTEP 5 Calendar Day SAE Report</readableAction>
+    <readableAction>CTEP 24 Hour SAE Notification</readableAction>
+    <metaData name="Rule-8" description="Setting Description since its mandatory by JBoss Repository config" packageName="gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_6.STU_229.sae_reporting_rules">
+        <category>
+            <path>/CAAERS_BASE/SPONSOR_DEFINED_STUDY/ORG_6/STU_229/sae_reporting_rules</path>
+            <metaData name="sae_reporting_rules"/>
+        </category>
+    </metaData>
+    <readableRule>
+        <line>If</line>
+        <line>	Study &amp;nbsp;&amp;nbsp;&amp;nbsp;AE Reporting Level is 'Legacy Phase 1' .</line>
+        <line>And</line>
+        <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Severity is greater than or equal to 'Grade 4' .</line>
+    </readableRule>
+</rule>
+<rule id="r-838e6613-4873-4907-b159-0e2c9f368981">
+    <condition>
+        <column identifier="study" object-type="gov.nih.nci.cabig.caaers.domain.Study" display-uri="Study">
+            <field-constraint field-name="aeReportingLevel" display-uri="undefined" grammer-prefix="AE Reporting Level" grammer-postfix=".">
+                <literal-restriction evaluator="==" display-uri="is">
+                    <value>Legacy Phase 1</value>
+                    <readable-value>Legacy Phase 1</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(study,null,'aeReportingLevel','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+            <field-constraint field-name="grade" display-uri="undefined" grammer-prefix="Severity" grammer-postfix=".">
+                <literal-restriction evaluator="==" display-uri="is">
+                    <value>2</value>
+                    <readable-value>Grade 2</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Grade','code','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+            <field-constraint field-name="hospitalization" display-uri="undefined" grammer-prefix="Hospitalization or Prolonged Hospitalization" grammer-postfix=".">
+                <literal-restriction evaluator="==" display-uri="is">
+                    <value>1</value>
+                    <readable-value>Yes</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Hospitalization','code','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="factResolver" object-type="com.semanticbits.rules.objectgraph.FactResolver">
+            <field-constraint>
+                <literal-restriction/>
+            </field-constraint>
+        </column>
+        <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+            <field-constraint field-name="primarySponsorCode">
+                <literal-restriction evaluator="==">
+                    <value>Cancer Therapy Evaluation Program</value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(studySDO,"gov.nih.nci.cabig.caaers.domain.Organization","escapedXmlName","Cancer Therapy Evaluation Program","==")</expression>
+        </column>
+        <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+            <field-constraint field-name="shortTitle">
+                <literal-restriction evaluator="==">
+                    <value>A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence</value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(studySDO,null,"escapeXmlShortTitle","A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence","==")</expression>
+        </column>
+    </condition>
+    <action>CTEP 10 Calendar Day SAE Report</action>
+    <readableAction>CTEP 10 Calendar Day SAE Report</readableAction>
+    <metaData name="Rule-9" description="Setting Description since its mandatory by JBoss Repository config" packageName="gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_6.STU_229.sae_reporting_rules">
+        <category>
+            <path>/CAAERS_BASE/SPONSOR_DEFINED_STUDY/ORG_6/STU_229/sae_reporting_rules</path>
+            <metaData name="sae_reporting_rules"/>
+        </category>
+    </metaData>
+    <readableRule>
+        <line>If</line>
+        <line>	Study &amp;nbsp;&amp;nbsp;&amp;nbsp;AE Reporting Level is 'Legacy Phase 1' .</line>
+        <line>And</line>
+        <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Severity is 'Grade 2' .</line>
+        <line>And</line>
+        <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Hospitalization or Prolonged Hospitalization is 'Yes' .</line>
+    </readableRule>
+</rule>
+<rule id="r-13573c5a-e6b5-4683-b5cd-52e1a4f5cd2c">
+    <condition>
+        <column identifier="study" object-type="gov.nih.nci.cabig.caaers.domain.Study" display-uri="Study">
+            <field-constraint field-name="aeReportingLevel" display-uri="undefined" grammer-prefix="AE Reporting Level" grammer-postfix=".">
+                <literal-restriction evaluator="==" display-uri="is">
+                    <value>Legacy Phase 2 and Phase 3</value>
+                    <readable-value>Legacy Phase 2 and Phase 3</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(study,null,'aeReportingLevel','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+            <field-constraint field-name="grade" display-uri="undefined" grammer-prefix="Severity" grammer-postfix=".">
+                <literal-restriction evaluator="==" display-uri="is">
+                    <value>5</value>
+                    <readable-value>Grade 5</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Grade','code','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="factResolver" object-type="com.semanticbits.rules.objectgraph.FactResolver">
+            <field-constraint>
+                <literal-restriction/>
+            </field-constraint>
+        </column>
+        <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+            <field-constraint field-name="primarySponsorCode">
+                <literal-restriction evaluator="==">
+                    <value>Cancer Therapy Evaluation Program</value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(studySDO,"gov.nih.nci.cabig.caaers.domain.Organization","escapedXmlName","Cancer Therapy Evaluation Program","==")</expression>
+        </column>
+        <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+            <field-constraint field-name="shortTitle">
+                <literal-restriction evaluator="==">
+                    <value>A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence</value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(studySDO,null,"escapeXmlShortTitle","A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence","==")</expression>
+        </column>
+    </condition>
+    <action>CTEP 5 Calendar Day SAE Report</action>
+    <action>CTEP 24 Hour SAE Notification</action>
+    <readableAction>CTEP 5 Calendar Day SAE Report</readableAction>
+    <readableAction>CTEP 24 Hour SAE Notification</readableAction>
+    <metaData name="Rule-10" description="Setting Description since its mandatory by JBoss Repository config" packageName="gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_6.STU_229.sae_reporting_rules">
+        <category>
+            <path>/CAAERS_BASE/SPONSOR_DEFINED_STUDY/ORG_6/STU_229/sae_reporting_rules</path>
+            <metaData name="sae_reporting_rules"/>
+        </category>
+    </metaData>
+    <readableRule>
+        <line>If</line>
+        <line>	Study &amp;nbsp;&amp;nbsp;&amp;nbsp;AE Reporting Level is 'Legacy Phase 2 and Phase 3' .</line>
+        <line>And</line>
+        <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Severity is 'Grade 5' .</line>
+    </readableRule>
+</rule>
+<rule id="r-fb336a22-bedc-4208-8f07-6737e75e70be">
+    <condition>
+        <column identifier="study" object-type="gov.nih.nci.cabig.caaers.domain.Study" display-uri="Study">
+            <field-constraint field-name="aeReportingLevel" display-uri="undefined" grammer-prefix="AE Reporting Level" grammer-postfix=".">
+                <literal-restriction evaluator="==" display-uri="is">
+                    <value>Legacy Phase 2 and Phase 3</value>
+                    <readable-value>Legacy Phase 2 and Phase 3</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(study,null,'aeReportingLevel','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+            <field-constraint field-name="grade" display-uri="undefined" grammer-prefix="Severity" grammer-postfix=".">
+                <literal-restriction evaluator="&lt;=" display-uri="is less than or equal to">
+                    <value>3</value>
+                    <readable-value>Grade 3</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Grade','code','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+            <field-constraint field-name="hospitalization" display-uri="undefined" grammer-prefix="Hospitalization or Prolonged Hospitalization" grammer-postfix=".">
+                <literal-restriction evaluator="==" display-uri="is">
+                    <value>1</value>
+                    <readable-value>Yes</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Hospitalization','code','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="factResolver" object-type="com.semanticbits.rules.objectgraph.FactResolver">
+            <field-constraint>
+                <literal-restriction/>
+            </field-constraint>
+        </column>
+        <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+            <field-constraint field-name="primarySponsorCode">
+                <literal-restriction evaluator="==">
+                    <value>Cancer Therapy Evaluation Program</value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(studySDO,"gov.nih.nci.cabig.caaers.domain.Organization","escapedXmlName","Cancer Therapy Evaluation Program","==")</expression>
+        </column>
+        <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+            <field-constraint field-name="shortTitle">
+                <literal-restriction evaluator="==">
+                    <value>A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence</value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(studySDO,null,"escapeXmlShortTitle","A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence","==")</expression>
+        </column>
+    </condition>
+    <action>CTEP 10 Calendar Day SAE Report</action>
+    <readableAction>CTEP 10 Calendar Day SAE Report</readableAction>
+    <metaData name="Rule-11" description="Setting Description since its mandatory by JBoss Repository config" packageName="gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_6.STU_229.sae_reporting_rules">
+        <category>
+            <path>/CAAERS_BASE/SPONSOR_DEFINED_STUDY/ORG_6/STU_229/sae_reporting_rules</path>
+            <metaData name="sae_reporting_rules"/>
+        </category>
+    </metaData>
+    <readableRule>
+        <line>If</line>
+        <line>	Study &amp;nbsp;&amp;nbsp;&amp;nbsp;AE Reporting Level is 'Legacy Phase 2 and Phase 3' .</line>
+        <line>And</line>
+        <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Severity is less than or equal to 'Grade 3' .</line>
+        <line>And</line>
+        <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Hospitalization or Prolonged Hospitalization is 'Yes' .</line>
+    </readableRule>
+</rule>
+<rule id="r-171b590b-9a53-4808-b410-142e46dcfc21">
+    <condition>
+        <column identifier="study" object-type="gov.nih.nci.cabig.caaers.domain.Study" display-uri="Study">
+            <field-constraint field-name="aeReportingLevel" display-uri="undefined" grammer-prefix="AE Reporting Level" grammer-postfix=".">
+                <literal-restriction evaluator="==" display-uri="is">
+                    <value>Legacy Phase 2 and Phase 3</value>
+                    <readable-value>Legacy Phase 2 and Phase 3</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(study,null,'aeReportingLevel','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+            <field-constraint field-name="grade" display-uri="undefined" grammer-prefix="Severity" grammer-postfix=".">
+                <literal-restriction evaluator="==" display-uri="is">
+                    <value>3</value>
+                    <readable-value>Grade 3</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Grade','code','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+            <field-constraint field-name="hospitalization" display-uri="undefined" grammer-prefix="Hospitalization or Prolonged Hospitalization" grammer-postfix=".">
+                <literal-restriction evaluator="==" display-uri="is">
+                    <value>2</value>
+                    <readable-value>No</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Hospitalization','code','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="factResolver" object-type="com.semanticbits.rules.objectgraph.FactResolver">
+            <field-constraint>
+                <literal-restriction/>
+            </field-constraint>
+        </column>
+        <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+            <field-constraint field-name="primarySponsorCode">
+                <literal-restriction evaluator="==">
+                    <value>Cancer Therapy Evaluation Program</value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(studySDO,"gov.nih.nci.cabig.caaers.domain.Organization","escapedXmlName","Cancer Therapy Evaluation Program","==")</expression>
+        </column>
+        <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+            <field-constraint field-name="shortTitle">
+                <literal-restriction evaluator="==">
+                    <value>A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence</value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(studySDO,null,"escapeXmlShortTitle","A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence","==")</expression>
+        </column>
+    </condition>
+    <action>CTEP 10 Calendar Day SAE Report</action>
+    <readableAction>CTEP 10 Calendar Day SAE Report</readableAction>
+    <metaData name="Rule-12" description="Setting Description since its mandatory by JBoss Repository config" packageName="gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_6.STU_229.sae_reporting_rules">
+        <category>
+            <path>/CAAERS_BASE/SPONSOR_DEFINED_STUDY/ORG_6/STU_229/sae_reporting_rules</path>
+            <metaData name="sae_reporting_rules"/>
+        </category>
+    </metaData>
+    <readableRule>
+        <line>If</line>
+        <line>	Study &amp;nbsp;&amp;nbsp;&amp;nbsp;AE Reporting Level is 'Legacy Phase 2 and Phase 3' .</line>
+        <line>And</line>
+        <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Severity is 'Grade 3' .</line>
+        <line>And</line>
+        <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Hospitalization or Prolonged Hospitalization is 'No' .</line>
+    </readableRule>
+</rule>
+<rule id="r-6658c509-4393-4dc9-886d-9de4a2a41dcf">
+    <condition>
+        <column identifier="study" object-type="gov.nih.nci.cabig.caaers.domain.Study" display-uri="Study">
+            <field-constraint field-name="aeReportingLevel" display-uri="undefined" grammer-prefix="AE Reporting Level" grammer-postfix=".">
+                <literal-restriction evaluator="==" display-uri="is">
+                    <value>CIP Studies</value>
+                    <readable-value>CIP Studies</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(study,null,'aeReportingLevel','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+            <field-constraint field-name="grade" display-uri="undefined" grammer-prefix="Severity" grammer-postfix=".">
+                <literal-restriction evaluator="&gt;=" display-uri="is greater than or equal to">
+                    <value>4</value>
+                    <readable-value>Grade 4</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Grade','code','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="factResolver" object-type="com.semanticbits.rules.objectgraph.FactResolver">
+            <field-constraint>
+                <literal-restriction/>
+            </field-constraint>
+        </column>
+        <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+            <field-constraint field-name="primarySponsorCode">
+                <literal-restriction evaluator="==">
+                    <value>Cancer Therapy Evaluation Program</value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(studySDO,"gov.nih.nci.cabig.caaers.domain.Organization","escapedXmlName","Cancer Therapy Evaluation Program","==")</expression>
+        </column>
+        <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+            <field-constraint field-name="shortTitle">
+                <literal-restriction evaluator="==">
+                    <value>A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence</value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(studySDO,null,"escapeXmlShortTitle","A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence","==")</expression>
+        </column>
+    </condition>
+    <action>CTEP 5 Calendar Day SAE Report</action>
+    <action>CTEP 24 Hour SAE Notification</action>
+    <readableAction>CTEP 5 Calendar Day SAE Report</readableAction>
+    <readableAction>CTEP 24 Hour SAE Notification</readableAction>
+    <metaData name="Rule-13" description="Setting Description since its mandatory by JBoss Repository config" packageName="gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_6.STU_229.sae_reporting_rules">
+        <category>
+            <path>/CAAERS_BASE/SPONSOR_DEFINED_STUDY/ORG_6/STU_229/sae_reporting_rules</path>
+            <metaData name="sae_reporting_rules"/>
+        </category>
+    </metaData>
+    <readableRule>
+        <line>If</line>
+        <line>	Study &amp;nbsp;&amp;nbsp;&amp;nbsp;AE Reporting Level is 'CIP Studies' .</line>
+        <line>And</line>
+        <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Severity is greater than or equal to 'Grade 4' .</line>
+    </readableRule>
+</rule>
+<rule id="r-893bdbec-7f8b-4447-af89-b2af2815a616">
+    <condition>
+        <column identifier="study" object-type="gov.nih.nci.cabig.caaers.domain.Study" display-uri="Study">
+            <field-constraint field-name="aeReportingLevel" display-uri="undefined" grammer-prefix="AE Reporting Level" grammer-postfix=".">
+                <literal-restriction evaluator="==" display-uri="is">
+                    <value>CIP Studies</value>
+                    <readable-value>CIP Studies</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(study,null,'aeReportingLevel','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+            <field-constraint field-name="grade" display-uri="undefined" grammer-prefix="Severity" grammer-postfix=".">
+                <literal-restriction evaluator="&lt;=" display-uri="is less than or equal to">
+                    <value>3</value>
+                    <readable-value>Grade 3</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Grade','code','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+            <field-constraint field-name="hospitalization" display-uri="undefined" grammer-prefix="Hospitalization or Prolonged Hospitalization" grammer-postfix=".">
+                <literal-restriction evaluator="==" display-uri="is">
+                    <value>1</value>
+                    <readable-value>Yes</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Hospitalization','code','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="factResolver" object-type="com.semanticbits.rules.objectgraph.FactResolver">
+            <field-constraint>
+                <literal-restriction/>
+            </field-constraint>
+        </column>
+        <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+            <field-constraint field-name="primarySponsorCode">
+                <literal-restriction evaluator="==">
+                    <value>Cancer Therapy Evaluation Program</value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(studySDO,"gov.nih.nci.cabig.caaers.domain.Organization","escapedXmlName","Cancer Therapy Evaluation Program","==")</expression>
+        </column>
+        <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+            <field-constraint field-name="shortTitle">
+                <literal-restriction evaluator="==">
+                    <value>A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence</value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(studySDO,null,"escapeXmlShortTitle","A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence","==")</expression>
+        </column>
+    </condition>
+    <action>CTEP 10 Calendar Day SAE Report</action>
+    <readableAction>CTEP 10 Calendar Day SAE Report</readableAction>
+    <metaData name="Rule-14" description="Setting Description since its mandatory by JBoss Repository config" packageName="gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_6.STU_229.sae_reporting_rules">
+        <category>
+            <path>/CAAERS_BASE/SPONSOR_DEFINED_STUDY/ORG_6/STU_229/sae_reporting_rules</path>
+            <metaData name="sae_reporting_rules"/>
+        </category>
+    </metaData>
+    <readableRule>
+        <line>If</line>
+        <line>	Study &amp;nbsp;&amp;nbsp;&amp;nbsp;AE Reporting Level is 'CIP Studies' .</line>
+        <line>And</line>
+        <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Severity is less than or equal to 'Grade 3' .</line>
+        <line>And</line>
+        <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Hospitalization or Prolonged Hospitalization is 'Yes' .</line>
+    </readableRule>
+</rule>
+<rule id="r-a90a4def-373a-4416-9cf2-528e6197fdd9">
+    <condition>
+        <column identifier="study" object-type="gov.nih.nci.cabig.caaers.domain.Study" display-uri="Study">
+            <field-constraint field-name="aeReportingLevel" display-uri="undefined" grammer-prefix="AE Reporting Level" grammer-postfix=".">
+                <literal-restriction evaluator="==" display-uri="is">
+                    <value>CIP Studies</value>
+                    <readable-value>CIP Studies</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(study,null,'aeReportingLevel','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+            <field-constraint field-name="grade" display-uri="undefined" grammer-prefix="Severity" grammer-postfix=".">
+                <literal-restriction evaluator="==" display-uri="is">
+                    <value>3</value>
+                    <readable-value>Grade 3</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Grade','code','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+            <field-constraint field-name="hospitalization" display-uri="undefined" grammer-prefix="Hospitalization or Prolonged Hospitalization" grammer-postfix=".">
+                <literal-restriction evaluator="==" display-uri="is">
+                    <value>2</value>
+                    <readable-value>No</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Hospitalization','code','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="factResolver" object-type="com.semanticbits.rules.objectgraph.FactResolver">
+            <field-constraint>
+                <literal-restriction/>
+            </field-constraint>
+        </column>
+        <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+            <field-constraint field-name="primarySponsorCode">
+                <literal-restriction evaluator="==">
+                    <value>Cancer Therapy Evaluation Program</value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(studySDO,"gov.nih.nci.cabig.caaers.domain.Organization","escapedXmlName","Cancer Therapy Evaluation Program","==")</expression>
+        </column>
+        <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+            <field-constraint field-name="shortTitle">
+                <literal-restriction evaluator="==">
+                    <value>A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence</value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(studySDO,null,"escapeXmlShortTitle","A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence","==")</expression>
+        </column>
+    </condition>
+    <action>CTEP 10 Calendar Day SAE Report</action>
+    <readableAction>CTEP 10 Calendar Day SAE Report</readableAction>
+    <metaData name="Rule-15" description="Setting Description since its mandatory by JBoss Repository config" packageName="gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_6.STU_229.sae_reporting_rules">
+        <category>
+            <path>/CAAERS_BASE/SPONSOR_DEFINED_STUDY/ORG_6/STU_229/sae_reporting_rules</path>
+            <metaData name="sae_reporting_rules"/>
+        </category>
+    </metaData>
+    <readableRule>
+        <line>If</line>
+        <line>	Study &amp;nbsp;&amp;nbsp;&amp;nbsp;AE Reporting Level is 'CIP Studies' .</line>
+        <line>And</line>
+        <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Severity is 'Grade 3' .</line>
+        <line>And</line>
+        <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Hospitalization or Prolonged Hospitalization is 'No' .</line>
+    </readableRule>
+</rule>
+<rule id="r-156de0c9-ebd0-44db-af1f-14a2960da26e">
+    <condition>
+        <column identifier="study" object-type="gov.nih.nci.cabig.caaers.domain.Study" display-uri="Study">
+            <field-constraint field-name="aeReportingLevel" display-uri="undefined" grammer-prefix="AE Reporting Level" grammer-postfix=".">
+                <literal-restriction evaluator="==" display-uri="is">
+                    <value>Commercial</value>
+                    <readable-value>Commercial</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(study,null,'aeReportingLevel','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+            <field-constraint field-name="grade" display-uri="undefined" grammer-prefix="Severity" grammer-postfix=".">
+                <literal-restriction evaluator="&gt;=" display-uri="is greater than or equal to">
+                    <value>3</value>
+                    <readable-value>Grade 3</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Grade','code','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="factResolver" object-type="com.semanticbits.rules.objectgraph.FactResolver">
+            <field-constraint>
+                <literal-restriction/>
+            </field-constraint>
+        </column>
+        <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+            <field-constraint field-name="primarySponsorCode">
+                <literal-restriction evaluator="==">
+                    <value>Cancer Therapy Evaluation Program</value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(studySDO,"gov.nih.nci.cabig.caaers.domain.Organization","escapedXmlName","Cancer Therapy Evaluation Program","==")</expression>
+        </column>
+        <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+            <field-constraint field-name="shortTitle">
+                <literal-restriction evaluator="==">
+                    <value>A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence</value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(studySDO,null,"escapeXmlShortTitle","A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence","==")</expression>
+        </column>
+    </condition>
+    <action>CTEP 15 Calendar Day SAE Report</action>
+    <readableAction>CTEP 15 Calendar Day SAE Report</readableAction>
+    <metaData name="Rule-16" description="Setting Description since its mandatory by JBoss Repository config" packageName="gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_6.STU_229.sae_reporting_rules">
+        <category>
+            <path>/CAAERS_BASE/SPONSOR_DEFINED_STUDY/ORG_6/STU_229/sae_reporting_rules</path>
+            <metaData name="sae_reporting_rules"/>
+        </category>
+    </metaData>
+    <readableRule>
+        <line>If</line>
+        <line>	Study &amp;nbsp;&amp;nbsp;&amp;nbsp;AE Reporting Level is 'Commercial' .</line>
+        <line>And</line>
+        <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Severity is greater than or equal to 'Grade 3' .</line>
+    </readableRule>
+</rule>
+<rule id="r-8a7058ad-4195-4788-ac86-c288e37cbe26">
+    <condition>
+        <column identifier="study" object-type="gov.nih.nci.cabig.caaers.domain.Study" display-uri="Study">
+            <field-constraint field-name="aeReportingLevel" display-uri="undefined" grammer-prefix="AE Reporting Level" grammer-postfix=".">
+                <literal-restriction evaluator="==" display-uri="is">
+                    <value>Legacy Phase 1</value>
+                    <readable-value>Legacy Phase 1</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(study,null,'aeReportingLevel','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+            <field-constraint field-name="grade" display-uri="undefined" grammer-prefix="Severity" grammer-postfix=".">
+                <literal-restriction evaluator="==" display-uri="is">
+                    <value>3</value>
+                    <readable-value>Grade 3</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Grade','code','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="factResolver" object-type="com.semanticbits.rules.objectgraph.FactResolver">
+            <field-constraint>
+                <literal-restriction/>
+            </field-constraint>
+        </column>
+        <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+            <field-constraint field-name="primarySponsorCode">
+                <literal-restriction evaluator="==">
+                    <value>Cancer Therapy Evaluation Program</value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(studySDO,"gov.nih.nci.cabig.caaers.domain.Organization","escapedXmlName","Cancer Therapy Evaluation Program","==")</expression>
+        </column>
+        <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+            <field-constraint field-name="shortTitle">
+                <literal-restriction evaluator="==">
+                    <value>A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence</value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(studySDO,null,"escapeXmlShortTitle","A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence","==")</expression>
+        </column>
+    </condition>
+    <action>CTEP 10 Calendar Day SAE Report</action>
+    <readableAction>CTEP 10 Calendar Day SAE Report</readableAction>
+    <metaData name="Rule-17" description="Setting Description since its mandatory by JBoss Repository config" packageName="gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_6.STU_229.sae_reporting_rules">
+        <category>
+            <path>/CAAERS_BASE/SPONSOR_DEFINED_STUDY/ORG_6/STU_229/sae_reporting_rules</path>
+            <metaData name="sae_reporting_rules"/>
+        </category>
+    </metaData>
+    <readableRule>
+        <line>If</line>
+        <line>	Study &amp;nbsp;&amp;nbsp;&amp;nbsp;AE Reporting Level is 'Legacy Phase 1' .</line>
+        <line>And</line>
+        <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Severity is 'Grade 3' .</line>
+    </readableRule>
+</rule>
+<rule id="r-e559505c-3312-4445-9859-e2c08e7a52f2">
+    <condition>
+        <column identifier="study" object-type="gov.nih.nci.cabig.caaers.domain.Study" display-uri="Study">
+            <field-constraint field-name="aeReportingLevel" display-uri="undefined" grammer-prefix="AE Reporting Level" grammer-postfix=".">
+                <literal-restriction evaluator="==" display-uri="is">
+                    <value>Legacy Phase 2 and Phase 3</value>
+                    <readable-value>Legacy Phase 2 and Phase 3</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(study,null,'aeReportingLevel','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+            <field-constraint field-name="grade" display-uri="undefined" grammer-prefix="Severity" grammer-postfix=".">
+                <literal-restriction evaluator="==" display-uri="is">
+                    <value>4</value>
+                    <readable-value>Grade 4</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Grade','code','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="factResolver" object-type="com.semanticbits.rules.objectgraph.FactResolver">
+            <field-constraint>
+                <literal-restriction/>
+            </field-constraint>
+        </column>
+        <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+            <field-constraint field-name="primarySponsorCode">
+                <literal-restriction evaluator="==">
+                    <value>Cancer Therapy Evaluation Program</value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(studySDO,"gov.nih.nci.cabig.caaers.domain.Organization","escapedXmlName","Cancer Therapy Evaluation Program","==")</expression>
+        </column>
+        <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+            <field-constraint field-name="shortTitle">
+                <literal-restriction evaluator="==">
+                    <value>A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence</value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(studySDO,null,"escapeXmlShortTitle","A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence","==")</expression>
+        </column>
+    </condition>
+    <action>CTEP 10 Calendar Day SAE Report</action>
+    <readableAction>CTEP 10 Calendar Day SAE Report</readableAction>
+    <metaData name="Rule-18" description="Setting Description since its mandatory by JBoss Repository config" packageName="gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_6.STU_229.sae_reporting_rules">
+        <category>
+            <path>/CAAERS_BASE/SPONSOR_DEFINED_STUDY/ORG_6/STU_229/sae_reporting_rules</path>
+            <metaData name="sae_reporting_rules"/>
+        </category>
+    </metaData>
+    <readableRule>
+        <line>If</line>
+        <line>	Study &amp;nbsp;&amp;nbsp;&amp;nbsp;AE Reporting Level is 'Legacy Phase 2 and Phase 3' .</line>
+        <line>And</line>
+        <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Severity is 'Grade 4' .</line>
+    </readableRule>
+</rule>
+<rule id="r-a02e48be-af14-4be0-8a42-cca6b3807b3b">
+    <condition>
+        <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+            <field-constraint field-name="category" display-uri="undefined" grammer-prefix="Term" grammer-postfix=".">
+                <literal-restriction evaluator="==" display-uri="is">
+                    <value>416</value>
+                    <readable-value>Neoplasms benign, malignant and unspecified (incl cysts and polyps)</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.CtcCategory','id','416','==')</expression>
+        </column>
+        <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+            <field-constraint field-name="term" display-uri="Grade" grammer-prefix="Term" grammer-postfix=".">
+                <literal-restriction evaluator="==" display-uri="is">
+                    <value>10028533</value>
+                    <readable-value>Myelodysplastic syndrome</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.CtcTerm','ctepCode','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="factResolver" object-type="com.semanticbits.rules.objectgraph.FactResolver">
+            <field-constraint>
+                <literal-restriction/>
+            </field-constraint>
+        </column>
+        <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+            <field-constraint field-name="primarySponsorCode">
+                <literal-restriction evaluator="==">
+                    <value>Cancer Therapy Evaluation Program</value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(studySDO,"gov.nih.nci.cabig.caaers.domain.Organization","escapedXmlName","Cancer Therapy Evaluation Program","==")</expression>
+        </column>
+        <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+            <field-constraint field-name="shortTitle">
+                <literal-restriction evaluator="==">
+                    <value>A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence</value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(studySDO,null,"escapeXmlShortTitle","A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence","==")</expression>
+        </column>
+    </condition>
+    <action>IGNORE</action>
+    <readableAction>IGNORE</readableAction>
+    <metaData name="Rule-19" description="Setting Description since its mandatory by JBoss Repository config" packageName="gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_6.STU_229.sae_reporting_rules">
+        <category>
+            <path>/CAAERS_BASE/SPONSOR_DEFINED_STUDY/ORG_6/STU_229/sae_reporting_rules</path>
+            <metaData name="sae_reporting_rules"/>
+        </category>
+    </metaData>
+    <readableRule>
+        <line>If</line>
+        <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Term is 'Neoplasms benign'  or ' malignant and unspecified (...' .</line>
+        <line>And</line>
+        <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Term is 'Myelodysplastic syndrome' .</line>
+    </readableRule>
+</rule>
+<rule id="r-e9612f0a-c17a-4898-9748-4d8f532acf01">
+    <condition>
+        <column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
+            <field-constraint field-name="category" display-uri="undefined" grammer-prefix="Category" grammer-postfix=".">
+                <literal-restriction evaluator="==" display-uri="is">
+                    <value>402</value>
+                    <readable-value>Cardiac disorders</readable-value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.CtcCategory','id','runTimeValue','runTimeOperator')</expression>
+        </column>
+        <column identifier="factResolver" object-type="com.semanticbits.rules.objectgraph.FactResolver">
+            <field-constraint>
+                <literal-restriction/>
+            </field-constraint>
+        </column>
+        <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+            <field-constraint field-name="primarySponsorCode">
+                <literal-restriction evaluator="==">
+                    <value>Cancer Therapy Evaluation Program</value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(studySDO,"gov.nih.nci.cabig.caaers.domain.Organization","escapedXmlName","Cancer Therapy Evaluation Program","==")</expression>
+        </column>
+        <column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study">
+            <field-constraint field-name="shortTitle">
+                <literal-restriction evaluator="==">
+                    <value>A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence</value>
+                </literal-restriction>
+            </field-constraint>
+            <expression>factResolver.assertFact(studySDO,null,"escapeXmlShortTitle","A Randomized, Placebo Controlled Phase II Trial of Afatinib (BIBW2992) as Adjuvant Therapy Following Chemoradiation in Patients with Head and Neck Squamous Cell Carcinoma at High Risk of Recurrence","==")</expression>
+        </column>
+    </condition>
+    <action>IGNORE</action>
+    <readableAction>IGNORE</readableAction>
+    <metaData name="Rule-20" description="Setting Description since its mandatory by JBoss Repository config" packageName="gov.nih.nci.cabig.caaers.rules.sponsor.study.ORG_6.STU_229.sae_reporting_rules"/>
+    <readableRule>
+        <line>If</line>
+        <line>	Adverse Event &amp;nbsp;&amp;nbsp;&amp;nbsp;Category is 'Cardiac disorders' .</line>
+    </readableRule>
+</rule>
 </ruleSet>

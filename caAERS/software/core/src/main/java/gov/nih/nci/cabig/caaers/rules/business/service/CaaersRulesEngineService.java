@@ -15,10 +15,7 @@ import com.semanticbits.rules.utils.BRXMLHelper;
 import com.semanticbits.rules.utils.RuleUtil;
 import com.semanticbits.rules.utils.XMLUtil;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.dao.ConfigPropertyDao;
-import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
-import gov.nih.nci.cabig.caaers.dao.RuleSetDao;
-import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.*;
 import gov.nih.nci.cabig.caaers.dao.query.RuleSetQuery;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.*;
@@ -74,6 +71,7 @@ public class CaaersRulesEngineService {
     private OrganizationDao organizationDao;
     private StudyDao studyDao;
     private ConfigPropertyDao configPropertyDao;
+    private CtcTermDao ctcTermDao;
 
     //BJ: refactored , extracted from CreateRulesCommand.
     private String[] columnsToTrash = {"studySDO", "organizationSDO", "adverseEventEvaluationResult", "factResolver", "ruleEvaluationResult"};
@@ -264,47 +262,23 @@ public class CaaersRulesEngineService {
             //add rule-id if it is empty
             if(rule.getId() == null) rule.setId("r-" + UUID.randomUUID().toString());
 
-            boolean termSelected = false;
-
-            for (Column col : rule.getCondition().getColumn()) {
-                if(col.getFieldConstraint() == null || col.getFieldConstraint().isEmpty()) continue;
-                if(col.getFieldConstraint().get(0).getFieldName() == null) continue;
-                if (col.getFieldConstraint().get(0).getFieldName().equals("term")) {
-                    termSelected = true;
-                }
-            }
-
-            // modify category if term selecetd
-            for (Column col : rule.getCondition().getColumn()) {
-                if(col.getFieldConstraint() == null || col.getFieldConstraint().isEmpty()) continue;
-                if(col.getFieldConstraint().get(0).getFieldName() == null) continue;
-                if (col.getFieldConstraint().get(0).getFieldName().equals("category")) {
-                    if (termSelected) {
-                        if (col.getExpression().equals("factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.CtcCategory','id','0','>')")) {
-                            String expr = col.getExpression();
-                            String eval = col.getFieldConstraint().get(0)
-                                    .getLiteralRestriction().get(0).getEvaluator();
-                            String value = col.getFieldConstraint().get(0)
-                                    .getLiteralRestriction().get(0).getValue().get(0);
-                            expr = expr.replaceAll("'0'", "'" + value + "'");
-                            expr = expr.replaceAll("'>'", "'" + eval + "'");
-                            col.setExpression(expr);
-                        } else {
-                            col.setExpression("factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.CtcCategory','id','0','>')");
-                        }
-                    } else {
-                        if (col.getExpression().equals("factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.CtcCategory','id','0','>')")) {
-                            String expr = col.getExpression();
-                            String eval = col.getFieldConstraint().get(0)
-                                    .getLiteralRestriction().get(0).getEvaluator();
-                            String value = col.getFieldConstraint().get(0)
-                                    .getLiteralRestriction().get(0).getValue().get(0);
-                            expr = expr.replaceAll("'0'", "'" + value + "'");
-                            expr = expr.replaceAll("'>'", "'" + eval + "'");
-                            col.setExpression(expr);
-                        }
+            String termCtepCode = CaaersRuleUtil.fetchFieldValue(rule, "term");
+            if(termCtepCode != null) {
+                String ctcVersion = domainRuleSet.getStudy().getCtcVersion() != null ? domainRuleSet.getStudy().getCtcVersion().getName() : null;
+                String categoryId = "0";
+                if(ctcVersion != null) {
+                    List<CtcTerm> terms = ctcTermDao.getByCtepCodeandVersion(termCtepCode, ctcVersion);
+                    if(terms != null && !terms.isEmpty()) {
+                        categoryId = terms.get(0).getCategory().getId() + "";
                     }
                 }
+
+                CaaersRuleUtil.updateFieldValue(rule, "category", categoryId);
+            }
+
+            String categoryExpression = CaaersRuleUtil.fetchExpression(rule, "category");
+            if(StringUtils.equals("factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.CtcCategory','id','0','>')", categoryExpression)) {
+                CaaersRuleUtil.reconcileRuntimeReplacements(rule, "category");
             }
 
             replaceCommaSeperatedStringToList(rule.getCondition());
@@ -1122,46 +1096,6 @@ public class CaaersRulesEngineService {
     }
     
 //
-//    /**
-//     * Will retrieve all the rule sets.
-//     * Note: The default ruleset created by rules engine is removed from the list, as it is not requrired for the caAERS.
-//     * @return
-//     */
-//    public List<RuleSet> getAllRuleSets(){
-//       List<RuleSet> ruleSets = ruleAuthoringService.getAllRuleSets();
-//       List<RuleSet> allRuleSets = new ArrayList<RuleSet>();
-//
-//       for(RuleSet ruleSet : ruleSets){
-//
-//           if (ruleSet.getDescription().equals("The default rule package")) continue;
-//
-//           allRuleSets.add(ruleSet);
-//
-//           //populate the other attributes like Organization, level, Study etc.
-//           String[] subjectParts = StringUtils.split(ruleSet.getSubject(), "||");
-//           if(subjectParts.length < 4) continue;
-//
-//           String levelCode = subjectParts[1].trim();
-//
-//           if(StringUtils.isBlank(levelCode)) continue;
-//
-//           String orgNCICode = subjectParts[2].trim();
-//           if(StringUtils.isEmpty(orgNCICode)){
-//               orgNCICode = subjectParts[3].trim();
-//           }
-//           String studyPrimaryIDValue = subjectParts[4].trim();
-//           ruleSet.setOrganization(orgNCICode);
-//           ruleSet.setStudy(studyPrimaryIDValue);
-//
-//           for(RuleLevel rl : RuleLevel.values()){
-//              if(StringUtils.equals(rl.getName(), levelCode)){
-//                   ruleSet.setLevel(rl.getDescription());
-//              }
-//           }
-//
-//       }
-//       return allRuleSets;
-//    }
 
 	public RulesEngineService getRuleEngineService() {
 		return ruleEngineService;
@@ -1201,5 +1135,9 @@ public class CaaersRulesEngineService {
 
     public void setRuleSetDao(RuleSetDao ruleSetDao) {
         this.ruleSetDao = ruleSetDao;
+    }
+
+    public void setCtcTermDao(CtcTermDao ctcTermDao) {
+        this.ctcTermDao = ctcTermDao;
     }
 }
