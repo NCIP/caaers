@@ -8,7 +8,7 @@ public class MultiEmailValidator extends FieldValidator<EmailConstraint, Object>
     public boolean isValid(Object fieldValue) {
         if (fieldValue == null) return true; // null email is considered as valid
         String str = fieldValue.toString().trim();
-        if(str.endsWith(",") || str.startsWith(",")) {
+        if(str.endsWith(",") || str.startsWith(",") || str.endsWith(";") || str.startsWith(";")) {
         	return false;
         }
         

@@ -132,7 +132,9 @@ import gov.nih.nci.cabig.caaers.integration.schema.aereport.SurgeryInterventionT
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.TreatmentAssignmentType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.TreatmentInformationType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationType;
+import gov.nih.nci.cabig.caaers.utils.CaaersUtils;
 import gov.nih.nci.cabig.caaers.utils.XMLUtil;
+import gov.nih.nci.cabig.caaers.validation.fields.validators.MultiEmailValidator;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
 import java.util.ArrayList;
@@ -163,6 +165,8 @@ public class ExpeditedAdverseEventReportConverterUtility {
     protected static final String ALT_EMAIL = "alternateEmails";
     
     private MessageSource messageSource;
+    
+    private MultiEmailValidator mv = new MultiEmailValidator();
     
     /** The now factory. */
     private NowFactory nowFactory;
@@ -316,10 +320,10 @@ public class ExpeditedAdverseEventReportConverterUtility {
 			}
 			reportVersion.setSubmissionMessage(xmlReportVersionType.getSubmissionMessage());
 			reportVersion.setSubmissionUrl(xmlReportVersionType.getSubmissionUrl());
-			if(!StringUtils.isBlank(xmlReportVersionType.getCcEmails())) {
-				reportVersion.setCcEmails(xmlReportVersionType.getCcEmails());
+			if(!StringUtils.isBlank(xmlReportVersionType.getCcEmails()) && mv.isValid(xmlReportVersionType.getCcEmails())) {
 				// CAAERS-7031 replace semi-colon(;) with comma(,) and trim white space
-				reportVersion.getCcEmails().replace(";", ",").replace(" ", "");
+				reportVersion.setCcEmails(CaaersUtils.getEmailStringWithoutSemiColonsAndSpaces(
+						xmlReportVersionType.getCcEmails()));
 				
 			}
 			if(xmlReportVersionType.getReportStatus() != null){
@@ -975,10 +979,11 @@ public class ExpeditedAdverseEventReportConverterUtility {
 			reporter.setPhoneNumber(getPhone(xmlReporterType.getContactMechanism()));
 			reporter.setFax(getFax(xmlReporterType.getContactMechanism()));
             reporter.setFaxNumber(getFax(xmlReporterType.getContactMechanism()));
-            reporter.setAlternateEmailAddress(getAlternateEmail(xmlReporterType.getContactMechanism()));
-            if(reporter.getAlternateEmailAddress() != null){
+            if(getAlternateEmail(xmlReporterType.getContactMechanism()) != null && mv.isValid(
+            		getAlternateEmail(xmlReporterType.getContactMechanism()))){
             	// CAAERS-7031 replace semi-colon(;) with comma(,) trim white space
-            	reporter.getAlternateEmailAddress().replace(";", ",").replace(" ", "");
+            	reporter.setAlternateEmailAddress(CaaersUtils.getEmailStringWithoutSemiColonsAndSpaces(
+            			reporter.getAlternateEmailAddress()));
             }
 		}
 		
