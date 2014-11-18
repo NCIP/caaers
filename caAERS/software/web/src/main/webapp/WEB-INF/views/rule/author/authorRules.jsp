@@ -86,9 +86,12 @@ div#createNew h3, div.section h3 {
              createAE.getTermsByCategory(iCategory, function(myterms) {
                  AE.terms[iCategory] = myterms;
                  cachedTerms = myterms;
+                 fnCallback.apply(this, [cachedTerms]);
              });
+           } else {
+               fnCallback.apply(this, [cachedTerms]);
            }
-            fnCallback.apply(this, [cachedTerms]);
+
 
         }
  		
@@ -209,14 +212,8 @@ div#createNew h3, div.section h3 {
 										var sel = $(newId);	
 				        		        
 				                	    sel.options.length = 0
-				                    
-				                    
 				                    	terms.each(function(term) {
-											var tempT='';
-											if (term.select != null) {
-												tempT='-' + term.select
-											}
-				                        	var opt = new Option(term.term + tempT, term.id)
+				                        	var opt = new Option(term.fullName, term.ctepCode)
 				                        	sel.options.add(opt)
 				                    	})
 				                })
@@ -751,13 +748,7 @@ div#createNew h3, div.section h3 {
 				                    
 				                    
 				                    terms.each(function(term) {
-										
-										var tempT='';
-											if (term.select != null) {
-												tempT='-' + term.select
-											}
-											
-				                        var opt = new Option(term.term + tempT, term.id)
+				                        var opt = new Option(term.fullName, term.ctepCode)
 				                        sel.options.add(opt)
 				                    })
 				                })
@@ -944,13 +935,8 @@ div#createNew h3, div.section h3 {
 				                    
 				                    
 				                    values.each(function(value) {
-										
-										var tempT='';
-											if (value.select != null) {
-												tempT='-' + value.select
-											}
-											
-				                        var opt = new Option(value.displayName + tempT, value.displayName)
+
+				                        var opt = new Option(value.displayName, value.displayName)
 				                        sel.options.add(opt)
 				                    })
 				                })
@@ -1183,7 +1169,7 @@ div#createNew h3, div.section h3 {
 		
 				// Check whether category exists
 				var columns = $('rule-'+(ruleCount + 1)+'-columns');
-				
+
 				
 				
 				var divNodes = 0;
@@ -1231,12 +1217,8 @@ div#createNew h3, div.section h3 {
 				                    
 				                    
 				                    terms.each(function(term) {
-										var tempT='';
-											if (term.select != null) {
-												tempT='-' + term.select
-											}
-											
-				                        var opt = new Option(term.term + tempT, term.id)
+
+				                        var opt = new Option(term.fullName, term.ctepCode)
 				                        sel.options.add(opt)
 				                    })
 				                })
@@ -1488,18 +1470,12 @@ div#createNew h3, div.section h3 {
 				                    
 				                    											var index = 0;	
 															                    terms.each(function(term) {
-																				var tempT='';
-																					if (term.select != null) {
-																						tempT='-' + term.select
-																					}
-													                        		var opt = new Option(term.term + tempT, term.id)
-				                    									    			sel.options.add(opt)
-				                    									    		   
-				                    									    		    		if (fieldValue.indexOf(term.id) != -1)
-																					    		{
-																					    			sel.options[index].selected=true;
-																					    		}
-																					    	index++;
+													                        	var opt = new Option(term.fullName, term.ctepCode)
+				                    									    		sel.options.add(opt)
+                                                                                    if (fieldValue.indexOf(term.ctepCode) != -1) {
+                                                                                        sel.options[index].selected=true;
+                                                                                    }
+                                                                                    index++;
 																					    
 				                    											})
 				                										})
@@ -1651,20 +1627,12 @@ div#createNew h3, div.section h3 {
 				                    var index = 0;	
 				                    
 				                    values.each(function(value) {
-										
-										var tempT='';
-											if (value.select != null) {
-												tempT='-' + value.select
-											}
-											
-				                        var opt = new Option(value.displayName + tempT, value.displayName)
+				                        var opt = new Option(value.displayName, value.displayName)
 				                        sel.options.add(opt);
-				                        if (fieldValue.indexOf(value.displayName) != -1)
-														{
-													
-													sel.options[index].selected=true;
-													}
-													index++;
+				                        if (fieldValue.indexOf(value.displayName) != -1) {
+											sel.options[index].selected=true;
+										}
+										index++;
 				                    })
 				                })
 											
