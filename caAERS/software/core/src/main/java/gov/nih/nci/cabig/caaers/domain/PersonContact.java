@@ -247,6 +247,9 @@ public abstract class PersonContact extends Person {
     	this.setFaxNumber(person.getFaxNumber());
     	this.setPhoneNumber(person.getPhoneNumber());
     	this.setEmailAddress(person.getEmailAddress());
+    	if(person instanceof PersonContact) {
+    		this.setAlternateEmailAddress(((PersonContact) person).getAlternateEmailAddress());
+    	}
         if(person.isUser()) setCaaersUser(person.getCaaersUser());
 
     }

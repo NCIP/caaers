@@ -627,6 +627,7 @@ public class AdverseEventReportSerializer {
 	    		reviewer.setPhoneNumber(psn.getPhoneNumber());
 	    		reviewer.setAddress(psn.getAddress());
 	    		reviewer.setEmailAddress(psn.getEmailAddress());
+	    		reviewer.setAlternateEmailAddress(psn.getAlternateEmailAddress());
 	    	} catch (Exception e) {
 	    		throw new Exception ("Error building getReviewer() "+e.getMessage() , e);
 	    	}

@@ -46,6 +46,12 @@ public class MultiEmailValidatorTest extends TestCase {
 		
 		assertFalse(ev.isValid(",cool@abc.com"));
 		assertFalse(mev.isValid(",cool@abc.com"));
+		
+		assertFalse(ev.isValid(" cool@abc.com "));
+		assertTrue(mev.isValid(" cool@abc.com "));
+		
+		assertTrue(mev.isValid(" cool@abc.com, Whaa@test.com,   goblin@dragon.edu"));
+		assertTrue(mev.isValid(" cool@abc.com , Whaa@test.com;goblin@dragon.edu"));
 	}
 
 	public void testGetMessagePrefix() {

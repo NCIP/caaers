@@ -548,8 +548,8 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
         		
         		final String altMail = getReporter().getAlternateEmailAddress();
         		if(altMail != null) {
-	        		for (String alt : altMail.split(",")) {
-	        			emails.add(alt);
+	        		for (String alt : altMail.split("[,;]")) {
+	        			emails.add(alt.trim());
 	        		}
         		}
     		}
@@ -580,7 +580,9 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
     	List<String> emailAddressesTemp = new ArrayList<String>();
     	if(deliveries != null){
     		for(ReportDelivery rd : deliveries){
-    			if(rd.isEmailType()) emailAddressesTemp.add(rd.getEndPoint());
+    			if(rd.isEmailType()) {
+    				emailAddressesTemp.add(rd.getEndPoint().trim());
+    			}
     		}
     	}
     	//now include the CC emails.

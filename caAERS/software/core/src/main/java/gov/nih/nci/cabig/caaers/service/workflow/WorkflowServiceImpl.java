@@ -35,9 +35,11 @@ import gov.nih.nci.cabig.caaers.workflow.callback.CreateTaskJbpmCallback;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ArrayUtils;
@@ -446,13 +448,16 @@ public class WorkflowServiceImpl implements WorkflowService {
 		if(recipients.isEmpty())
 			return;
 		String subject = "Task : " + taskNodeName;
-		String[] to = new String[recipients.size()];
-		int i = 0;
+		Set<String> to = new HashSet<String>();
 		for(Person person : recipients){
-			to[i] = person.getEmailAddress();
-			i++;
+			to.add(person.getEmailAddress().trim());
+			if(person instanceof PersonContact && ((PersonContact) person).getAlternateEmailAddress()!= null) {
+				for(String email : ((PersonContact) person).getAlternateEmailAddress().split("[,;]")) {
+					to.add(email.trim());
+				}
+			}
 		}
-		caaersJavaMailSender.sendMail(to, subject, message, new String[0]);
+		caaersJavaMailSender.sendMail(to.toArray(new String[0]), subject, message, new String[0]);
 	}
 	
 	
