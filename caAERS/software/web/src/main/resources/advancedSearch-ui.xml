@@ -1281,6 +1281,7 @@
 			<table-alias>REPORT_DEFINITION_ALIAS</table-alias>
 			<hidden>true</hidden>
 			<join-by-method>joinReportDefinition</join-by-method>
+			<outer-join-required>true</outer-join-required>
 			<ui-attribute>
 				<name>name</name>
 				<label>Name</label>
@@ -1312,6 +1313,7 @@
 			<table-alias>REPORT_VERSION_ALIAS</table-alias>
 			<hidden>true</hidden>
 			<join-by-method>joinReportVersion</join-by-method>
+			<outer-join-required>true</outer-join-required>
 			<ui-attribute>
 				<name>reportStatus.code</name>
 				<label>Report status</label>
@@ -1359,14 +1361,14 @@
 				<filter-method>filterByReportVersionId</filter-method>
 			</ui-attribute>
 			<ui-attribute>
-				<name>assignedIdentifer</name>
-				<label>External ticket#</label>
+				<name>reportIdentifer</name>
+				<label>Report ID</label>
 				<data-type>String</data-type>
 				<field-type>text-field</field-type>
 				<operator name="=" display-uri="Equal To"/>				
 				<operator name="!=" display-uri="Not Equal To"/>
 				<operator name="like" display-uri="Like"/>
-				<filter-method>filterByAssignedIdentifer</filter-method>
+				<filter-method>filterByReportIdentifer</filter-method>
 			</ui-attribute>
 			<view-column>
 				<column-attribute>createdOn</column-attribute>
@@ -1406,6 +1408,7 @@
 			<table-alias>AE_REPORTING_PERIOD_ALIAS</table-alias>
 			<hidden>true</hidden>
 			<join-by-method>joinReportingPeriod</join-by-method>
+			<outer-join-required>true</outer-join-required>
 			<ui-attribute>
 				<name>courseStartDate</name>
 				<label>Course start date</label>
@@ -1440,6 +1443,7 @@
 			<table-alias>TREATMENT_ASSIGNMENT_ALIAS</table-alias>
 			<hidden>true</hidden>
 			<join-by-method>joinTreatmentAssignment</join-by-method>
+			<outer-join-required>true</outer-join-required>
 			<ui-attribute>
 				<name>code</name>
 				<label>Treatment assignment code</label>
@@ -1481,6 +1485,7 @@
 			<table-alias>TREATMENT_INFORMATION_ALIAS</table-alias>
 			<hidden>true</hidden>
 			<join-by-method>joinTreatmentInformation</join-by-method>
+			<outer-join-required>true</outer-join-required>
 			<ui-attribute>
 				<name>investigationalAgentAdministered</name>
 				<label>Investigational agent administered</label>
@@ -1612,6 +1617,7 @@
 			<table-alias>AE_RESPONSE_DESC_ALIAS</table-alias>
 			<hidden>true</hidden>
 			<join-by-method>joinAdverseEventResponseDescription</join-by-method>
+			<outer-join-required>true</outer-join-required>
 			<view-column>
 				<column-attribute>eventDescription</column-attribute>
 				<column-title>Event description</column-title>

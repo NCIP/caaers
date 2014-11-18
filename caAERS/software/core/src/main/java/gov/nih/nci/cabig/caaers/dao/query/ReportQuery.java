@@ -32,6 +32,7 @@ public class ReportQuery extends AbstractQuery {
 	public void joinExpeditedAEReport() {
 		join (REPORT_ALIAS +".aeReport " + EXPEDITED_AE_REPORT_ALIAS);
 	}
+	
 	public void joinReportingPeriod() {
 		joinExpeditedAEReport();
 		join (EXPEDITED_AE_REPORT_ALIAS +".reportingPeriod "+AE_REPORTING_PERIOD_ALIAS);
@@ -71,6 +72,34 @@ public class ReportQuery extends AbstractQuery {
 		join (EXPEDITED_AE_REPORT_ALIAS +".responseDescription " + AE_RESPONSE_DESC_ALIAS);
 	}
 	
+	public void outerjoinReportDefinition() {
+		leftJoin (REPORT_ALIAS +".reportDefinition " + REPORT_DEFINITION_ALIAS);
+	}
+
+	public void outerjoinReportVersion() {
+		leftJoin (REPORT_ALIAS +".reportVersions " + REPORT_VERSION_ALIAS);
+	}
+
+	public void outerjoinTreatmentAssignment() {
+		joinReportingPeriod();
+		leftJoin (AE_REPORTING_PERIOD_ALIAS +".treatmentAssignment " + TREATMENT_ASSIGNMENT_ALIAS);
+	}
+	
+	public void outerjoinTreatmentInformation() {
+		joinExpeditedAEReport();
+		leftJoin(EXPEDITED_AE_REPORT_ALIAS +".treatmentInformation " + TREATMENT_INFORMATION_ALIAS);
+	}
+
+	public void outerjoinAdverseEventResponseDescription() {
+		joinExpeditedAEReport();
+		leftJoin(EXPEDITED_AE_REPORT_ALIAS +".responseDescription " + AE_RESPONSE_DESC_ALIAS);
+	}
+	
+	public void outerjoinReportingPeriod() {
+		joinExpeditedAEReport();
+		leftJoin (EXPEDITED_AE_REPORT_ALIAS +".reportingPeriod "+AE_REPORTING_PERIOD_ALIAS);
+	}
+	
     public void filterByReportDefinitionName(final String name,String operator) {
         andWhere("lower("+REPORT_DEFINITION_ALIAS+".name) " + parseOperator(operator) + " :name");
         if (operator.equals("like")) {
@@ -100,6 +129,20 @@ public class ReportQuery extends AbstractQuery {
         	setParameter("assignedIdentifer", getLikeValue(assignedIdentifer.toLowerCase()) );
         } else {
         	setParameter("assignedIdentifer", assignedIdentifer.toLowerCase() );
+        }   	
+    }
+    
+    public void filterByReportIdentifer(final String reportIdentifer,String operator) {
+    	joinExpeditedAEReport();
+        andWhere("(lower("+REPORT_VERSION_ALIAS+".assignedIdentifer) " + parseOperator(operator) + " :reportIdIdentifer "
+        		+ "OR lower(" + EXPEDITED_AE_REPORT_ALIAS + ".externalId) " + parseOperator(operator) + " :reportIdIdentifer "
+        		+ "OR lower(" + REPORT_ALIAS + ".caseNumber) " + parseOperator(operator) + " :reportIdIdentifer "
+        		+ "OR str(" + REPORT_ALIAS + ".id) " + parseOperator(operator) + " :reportIdIdentifer "
+        		+ ")");
+        if (operator.equals("like")) {
+        	setParameter("reportIdIdentifer", getLikeValue(reportIdentifer.toLowerCase()) );
+        } else {
+        	setParameter("reportIdIdentifer", reportIdentifer.toLowerCase() );
         }   	
     }
  
