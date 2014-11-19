@@ -60,6 +60,16 @@ public class ConfigProperty extends AbstractMutableDomainObject{
 	}
 	
 	/**
+	 * Returns the name of this property.
+	 * 
+	 * @return the name
+	 */
+	@Override
+	public String toString() {
+		return name;
+	}
+	
+	/**
 	 * Sets the code.
 	 *
 	 * @param code the new code
