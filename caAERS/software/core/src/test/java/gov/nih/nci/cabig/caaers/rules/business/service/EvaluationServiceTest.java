@@ -207,12 +207,15 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		aeList.add(ae2);
 
 		Study study = Fixtures.createStudy("test");
+
 		AdverseEventReportingPeriod reportingPeriod = registerMockFor(AdverseEventReportingPeriod.class);
 		EasyMock.expect(reportingPeriod.getAeReports()).andReturn(null);
 		EasyMock.expect(reportingPeriod.getNonExpeditedAdverseEvents()).andReturn(aeList);
 		EasyMock.expect(reportingPeriod.getStudy()).andReturn(study);
+        TreatmentAssignment ta = Fixtures.createTreatmentAssignment("abc");
+		EasyMock.expect(reportingPeriod.getTreatmentAssignment()).andReturn(ta).anyTimes();
 
-		EasyMock.expect(adverseEventEvaluationService.evaluateSAEReportSchedule(null,aeList, study)).andThrow(new Exception());
+		EasyMock.expect(adverseEventEvaluationService.evaluateSAEReportSchedule((ExpeditedAdverseEventReport)EasyMock.anyObject(), EasyMock.eq(aeList), EasyMock.eq(study))).andThrow(new Exception());
 
 		replayMocks();
 
@@ -275,8 +278,11 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		EasyMock.expect(reportingPeriod.getAeReports()).andReturn(null);
 		EasyMock.expect(reportingPeriod.getNonExpeditedAdverseEvents()).andReturn(aeList);
 		EasyMock.expect(reportingPeriod.getStudy()).andReturn(study);
+        TreatmentAssignment ta = Fixtures.createTreatmentAssignment("abc");
+        EasyMock.expect(reportingPeriod.getTreatmentAssignment()).andReturn(ta).anyTimes();
 
-		EasyMock.expect(adverseEventEvaluationService.evaluateSAEReportSchedule(null,aeList, study)).andReturn(map);
+        EasyMock.expect(adverseEventEvaluationService.evaluateSAEReportSchedule((ExpeditedAdverseEventReport)EasyMock.anyObject(), EasyMock.eq(aeList), EasyMock.eq(study))).andReturn(map);
+
 		EasyMock.expect(reportDefinitionDao.getByName("rd1")).andReturn(rd1).times(3);
 		EasyMock.expect(reportDefinitionDao.getByName("rd2")).andReturn(rd2).times(3);
 		EasyMock.expect(reportDefinitionDao.getByName("rd3")).andReturn(rd3).times(2);
@@ -361,9 +367,15 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		EasyMock.expect(reportingPeriod.getAeReports()).andReturn(null);
 		EasyMock.expect(reportingPeriod.getNonExpeditedAdverseEvents()).andReturn(aeList);
 		EasyMock.expect(reportingPeriod.getStudy()).andReturn(study);
+        TreatmentAssignment ta = Fixtures.createTreatmentAssignment("abc");
+        EasyMock.expect(reportingPeriod.getTreatmentAssignment()).andReturn(ta).anyTimes();
 
-		EasyMock.expect(adverseEventEvaluationService.evaluateSAEReportSchedule(null,aeList, study)).andReturn(map);
-		EasyMock.expect(reportDefinitionDao.getByName("one")).andReturn(rd1).times(3);
+
+
+        EasyMock.expect(adverseEventEvaluationService.evaluateSAEReportSchedule((ExpeditedAdverseEventReport)EasyMock.anyObject(), EasyMock.eq(aeList), EasyMock.eq(study))).andReturn(map);
+
+
+        EasyMock.expect(reportDefinitionDao.getByName("one")).andReturn(rd1).times(3);
 		EasyMock.expect(reportDefinitionDao.getByName("two")).andReturn(rd2).times(3);
 		EasyMock.expect(reportDefinitionDao.getByName("three")).andReturn(rd3).times(2);
 
@@ -490,6 +502,9 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		expect(reportingPeriod.getAeReports()).andReturn(Arrays.asList(aeReport1));
 		expect(reportingPeriod.getNonExpeditedAdverseEvents()).andReturn(aeList2);
 		expect(reportingPeriod.getStudy()).andReturn(study).anyTimes();
+        TreatmentAssignment ta = Fixtures.createTreatmentAssignment("abc");
+        EasyMock.expect(reportingPeriod.getTreatmentAssignment()).andReturn(ta).anyTimes();
+
 
 
         Map<AdverseEvent, List<AdverseEventEvaluationResult>> map0 = new HashMap<AdverseEvent, List<AdverseEventEvaluationResult>>();
@@ -500,11 +515,12 @@ public class EvaluationServiceTest extends AbstractTestCase {
         map1.put(ae1, Arrays.asList(new AdverseEventEvaluationResult[] {  }));  //noting returned by rules
         map1.put(ae2, Arrays.asList(new AdverseEventEvaluationResult[] { Fixtures.createAdverseEventEvaluationResult("RD2" )}));  // R2 for ae2 aswell for this data collection
 
-		
-		expect(adverseEventEvaluationService.evaluateSAEReportSchedule(null, aeList2, study)).andReturn(map0);
-		
-		expect(adverseEventEvaluationService.evaluateSAEReportSchedule(aeReport1, aeList, study)).andReturn(map1);
-		
+
+        EasyMock.expect(adverseEventEvaluationService.evaluateSAEReportSchedule((ExpeditedAdverseEventReport)EasyMock.anyObject(), EasyMock.eq(aeList2), EasyMock.eq(study))).andReturn(map0);
+        EasyMock.expect(adverseEventEvaluationService.evaluateSAEReportSchedule((ExpeditedAdverseEventReport)EasyMock.anyObject(), EasyMock.eq(aeList), EasyMock.eq(study))).andReturn(map1);
+
+
+
 		//expect(reportDefinitionDao.getByName("RD1")).andReturn(rd1);
 		expect(reportDefinitionDao.getByName("RD2")).andReturn(rd2).anyTimes();
 		expect(aeReport1.findReportsToAmmend(rd2)).andReturn(Arrays.asList(r1));
@@ -636,7 +652,11 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		expect(reportingPeriod.getAeReports()).andReturn(Arrays.asList(aeReport1));
 		expect(reportingPeriod.getNonExpeditedAdverseEvents()).andReturn(aeList2);
 		expect(reportingPeriod.getStudy()).andReturn(study).anyTimes();
-		expect(aeReport1.findReportsToAmmend(rd2)).andReturn(Arrays.asList(r1));
+        TreatmentAssignment ta = Fixtures.createTreatmentAssignment("abc");
+        EasyMock.expect(reportingPeriod.getTreatmentAssignment()).andReturn(ta).anyTimes();
+
+
+        expect(aeReport1.findReportsToAmmend(rd2)).andReturn(Arrays.asList(r1));
 		expect(aeReport1.findReportsToEdit(rd2)).andReturn(new ArrayList<Report>()).times(2);
 		expect(aeReport1.findReportsToWithdraw(rd2)).andReturn(new ArrayList<Report>());
 
@@ -646,9 +666,10 @@ public class EvaluationServiceTest extends AbstractTestCase {
         Map<AdverseEvent, List<AdverseEventEvaluationResult>> map1 = new HashMap<AdverseEvent, List<AdverseEventEvaluationResult>>();
         map1.put(ae2, Arrays.asList(new AdverseEventEvaluationResult[] { Fixtures.createAdverseEventEvaluationResult("RD2" )}));    // R2 for ae2 aswell for this data collection
 
-		expect(adverseEventEvaluationService.evaluateSAEReportSchedule(null, aeList2, study)).andReturn(map0);
-		
-		expect(adverseEventEvaluationService.evaluateSAEReportSchedule(aeReport1, aeList2, study)).andReturn(map1);
+
+        EasyMock.expect(adverseEventEvaluationService.evaluateSAEReportSchedule((ExpeditedAdverseEventReport)EasyMock.anyObject(), EasyMock.eq(aeList2), EasyMock.eq(study))).andReturn(map0);
+        EasyMock.expect(adverseEventEvaluationService.evaluateSAEReportSchedule((ExpeditedAdverseEventReport)EasyMock.anyObject(), EasyMock.eq(aeList2), EasyMock.eq(study))).andReturn(map1);
+
 		
 		expect(reportDefinitionDao.getByName("RD2")).andReturn(rd2).anyTimes();
 		
@@ -780,6 +801,10 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		expect(reportingPeriod.getAeReports()).andReturn(Arrays.asList(aeReport1));
 		expect(reportingPeriod.getNonExpeditedAdverseEvents()).andReturn(aeList2);
 		expect(reportingPeriod.getStudy()).andReturn(study).anyTimes();
+        TreatmentAssignment ta = Fixtures.createTreatmentAssignment("abc");
+        EasyMock.expect(reportingPeriod.getTreatmentAssignment()).andReturn(ta).anyTimes();
+
+
 
 
         Map<AdverseEvent, List<AdverseEventEvaluationResult>> map0 = new HashMap<AdverseEvent, List<AdverseEventEvaluationResult>>();
@@ -790,10 +815,9 @@ public class EvaluationServiceTest extends AbstractTestCase {
         map1.put(ae2, Arrays.asList(new AdverseEventEvaluationResult[] { Fixtures.createAdverseEventEvaluationResult("RD1" )}));    // R1 for ae2 aswell for this data collection
 
 
-		expect(adverseEventEvaluationService.evaluateSAEReportSchedule(null, aeList2, study)).andReturn(map0);
-		
-		expect(adverseEventEvaluationService.evaluateSAEReportSchedule(aeReport1, aeList, study)).andReturn(map1);
-		
+        EasyMock.expect(adverseEventEvaluationService.evaluateSAEReportSchedule((ExpeditedAdverseEventReport)EasyMock.anyObject(), EasyMock.eq(aeList2), EasyMock.eq(study))).andReturn(map0);
+        EasyMock.expect(adverseEventEvaluationService.evaluateSAEReportSchedule((ExpeditedAdverseEventReport)EasyMock.anyObject(), EasyMock.eq(aeList), EasyMock.eq(study))).andReturn(map1);
+
 		expect(reportDefinitionDao.getByName("RD1")).andReturn(rd1).times(4);
 		expect(aeReport1.findReportsToAmmend(rd2)).andReturn(new ArrayList<Report>());
 		expect(aeReport1.findReportsToEdit(rd2)).andReturn(Arrays.asList(r2)).times(2);
@@ -922,8 +946,12 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		expect(reportingPeriod.getAeReports()).andReturn(Arrays.asList(aeReport1));
 		expect(reportingPeriod.getNonExpeditedAdverseEvents()).andReturn(new ArrayList<AdverseEvent>());
 		expect(reportingPeriod.getStudy()).andReturn(study).anyTimes();
-		
-		//rules engine result
+        TreatmentAssignment ta = Fixtures.createTreatmentAssignment("abc");
+        EasyMock.expect(reportingPeriod.getTreatmentAssignment()).andReturn(ta).anyTimes();
+
+
+
+        //rules engine result
 
         Map<AdverseEvent, List<AdverseEventEvaluationResult>> map0 = new HashMap<AdverseEvent, List<AdverseEventEvaluationResult>>();
 
@@ -1023,6 +1051,10 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		expect(reportingPeriod.getAeReports()).andReturn(Arrays.asList(aeReport1));
 		expect(reportingPeriod.getNonExpeditedAdverseEvents()).andReturn(aeList2);
 		expect(reportingPeriod.getStudy()).andReturn(study).anyTimes();
+        TreatmentAssignment ta = Fixtures.createTreatmentAssignment("abc");
+        EasyMock.expect(reportingPeriod.getTreatmentAssignment()).andReturn(ta).anyTimes();
+
+
 
 
         Map<AdverseEvent, List<AdverseEventEvaluationResult>> map0 = new HashMap<AdverseEvent, List<AdverseEventEvaluationResult>>();
@@ -1032,14 +1064,13 @@ public class EvaluationServiceTest extends AbstractTestCase {
         map1.put(ae1, Arrays.asList(new AdverseEventEvaluationResult[] {  }));       //nothing by rules
         map1.put(ae2, Arrays.asList(new AdverseEventEvaluationResult[] { Fixtures.createAdverseEventEvaluationResult("RD1" )}));    // R1 for ae2 aswell for this data collection
 
-		
 
-		
-		expect(adverseEventEvaluationService.evaluateSAEReportSchedule(null, aeList2, study)).andReturn(map0);
-		
-		expect(adverseEventEvaluationService.evaluateSAEReportSchedule(aeReport1, aeList2, study)).andReturn(map1);
-		
-		expect(reportDefinitionDao.getByName("RD1")).andReturn(rd1).anyTimes();
+
+
+        EasyMock.expect(adverseEventEvaluationService.evaluateSAEReportSchedule((ExpeditedAdverseEventReport)EasyMock.anyObject(), EasyMock.eq(aeList2), EasyMock.eq(study))).andReturn(map0);
+        EasyMock.expect(adverseEventEvaluationService.evaluateSAEReportSchedule((ExpeditedAdverseEventReport)EasyMock.anyObject(), EasyMock.eq(aeList2), EasyMock.eq(study))).andReturn(map1);
+
+        expect(reportDefinitionDao.getByName("RD1")).andReturn(rd1).anyTimes();
 		
 		expect(aeReport1.findReportsToAmmend(rd1)).andReturn(Arrays.asList(r1));
 		expect(aeReport1.findReportsToEdit(rd1)).andReturn(new ArrayList<Report>()).times(2);
@@ -1156,8 +1187,12 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		expect(reportingPeriod.getAeReports()).andReturn(Arrays.asList(aeReport1)).anyTimes();
 		expect(reportingPeriod.getNonExpeditedAdverseEvents()).andReturn(new ArrayList<AdverseEvent>());
 		expect(reportingPeriod.getStudy()).andReturn(study).anyTimes();
-		
-		//rules engine should not return anything.
+        TreatmentAssignment ta = Fixtures.createTreatmentAssignment("abc");
+        EasyMock.expect(reportingPeriod.getTreatmentAssignment()).andReturn(ta).anyTimes();
+
+
+
+        //rules engine should not return anything.
 
         Map<AdverseEvent, List<AdverseEventEvaluationResult>> map0 = new HashMap<AdverseEvent, List<AdverseEventEvaluationResult>>();
 
@@ -1276,6 +1311,10 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		expect(reportingPeriod.getAeReports()).andReturn(Arrays.asList(aeReport1));
 		expect(reportingPeriod.getNonExpeditedAdverseEvents()).andReturn(aeList2);
 		expect(reportingPeriod.getStudy()).andReturn(study).anyTimes();
+        TreatmentAssignment ta = Fixtures.createTreatmentAssignment("abc");
+        EasyMock.expect(reportingPeriod.getTreatmentAssignment()).andReturn(ta).anyTimes();
+
+
 
 
         Map<AdverseEvent, List<AdverseEventEvaluationResult>> map0 = new HashMap<AdverseEvent, List<AdverseEventEvaluationResult>>();
@@ -1286,12 +1325,11 @@ public class EvaluationServiceTest extends AbstractTestCase {
         map1.put(ae2, Arrays.asList(new AdverseEventEvaluationResult[] { }));    // R1 for ae2 aswell for this data collection
 
 
-		
-		expect(adverseEventEvaluationService.evaluateSAEReportSchedule(null, aeList2, study)).andReturn(map0);
-		
-		expect(adverseEventEvaluationService.evaluateSAEReportSchedule(aeReport1, aeList, study)).andReturn(map1);
-		
-		expect(reportDefinitionDao.getByName("RD1")).andReturn(rd1).anyTimes();
+
+        EasyMock.expect(adverseEventEvaluationService.evaluateSAEReportSchedule((ExpeditedAdverseEventReport)EasyMock.anyObject(), EasyMock.eq(aeList2), EasyMock.eq(study))).andReturn(map0);
+        EasyMock.expect(adverseEventEvaluationService.evaluateSAEReportSchedule((ExpeditedAdverseEventReport)EasyMock.anyObject(), EasyMock.eq(aeList), EasyMock.eq(study))).andReturn(map1);
+
+        expect(reportDefinitionDao.getByName("RD1")).andReturn(rd1).anyTimes();
 		expect(aeReport1.findReportsToAmmend(rd1)).andReturn(new ArrayList<Report>());
 		expect(aeReport1.findReportsToEdit(rd1)).andReturn(Arrays.asList(r1)).times(2);
 		expect(aeReport1.findReportsToWithdraw(rd1)).andReturn(new ArrayList<Report>());
@@ -1394,6 +1432,10 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		expect(reportingPeriod.getAeReports()).andReturn(Arrays.asList(aeReport1));
 		expect(reportingPeriod.getNonExpeditedAdverseEvents()).andReturn(aeList2);
 		expect(reportingPeriod.getStudy()).andReturn(study).anyTimes();
+        TreatmentAssignment ta = Fixtures.createTreatmentAssignment("abc");
+        EasyMock.expect(reportingPeriod.getTreatmentAssignment()).andReturn(ta).anyTimes();
+
+
 
         Map<AdverseEvent, List<AdverseEventEvaluationResult>> map0 = new HashMap<AdverseEvent, List<AdverseEventEvaluationResult>>();
         map0.put(ae2, Arrays.asList(new AdverseEventEvaluationResult[] { }));
@@ -1405,12 +1447,11 @@ public class EvaluationServiceTest extends AbstractTestCase {
 
 
 
-		
-		expect(adverseEventEvaluationService.evaluateSAEReportSchedule(null, aeList2, study)).andReturn(map0);
-		
-		expect(adverseEventEvaluationService.evaluateSAEReportSchedule(aeReport1, aeList, study)).andReturn(map1);
-		
-		replayMocks();
+
+        EasyMock.expect(adverseEventEvaluationService.evaluateSAEReportSchedule((ExpeditedAdverseEventReport)EasyMock.anyObject(), EasyMock.eq(aeList2), EasyMock.eq(study))).andReturn(map0);
+        EasyMock.expect(adverseEventEvaluationService.evaluateSAEReportSchedule((ExpeditedAdverseEventReport)EasyMock.anyObject(), EasyMock.eq(aeList), EasyMock.eq(study))).andReturn(map1);
+
+        replayMocks();
 
 		EvaluationResultDTO result = service.evaluateSAERules(reportingPeriod);
 		//alert
@@ -1503,20 +1544,24 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		expect(reportingPeriod.getAeReports()).andReturn(Arrays.asList(aeReport1));
 		expect(reportingPeriod.getNonExpeditedAdverseEvents()).andReturn(aeList2);
 		expect(reportingPeriod.getStudy()).andReturn(study).anyTimes();
-		
-		//nothing suggest by rules engine.
+        TreatmentAssignment ta = Fixtures.createTreatmentAssignment("abc");
+        EasyMock.expect(reportingPeriod.getTreatmentAssignment()).andReturn(ta).anyTimes();
+
+
+
+        //nothing suggest by rules engine.
         Map<AdverseEvent, List<AdverseEventEvaluationResult>> map0 = new HashMap<AdverseEvent, List<AdverseEventEvaluationResult>>();
         map0.put(ae2, Arrays.asList(new AdverseEventEvaluationResult[] { }));
 
         Map<AdverseEvent, List<AdverseEventEvaluationResult>> map1 = new HashMap<AdverseEvent, List<AdverseEventEvaluationResult>>();
         map1.put(ae1, Arrays.asList(new AdverseEventEvaluationResult[] {  }));
         map1.put(ae2, Arrays.asList(new AdverseEventEvaluationResult[] { }));
-		
-		expect(adverseEventEvaluationService.evaluateSAEReportSchedule(null, aeList2, study)).andReturn(map0);
-		
-		expect(adverseEventEvaluationService.evaluateSAEReportSchedule(aeReport1, aeList, study)).andReturn(map1);
-		
-		expect(aeReport1.findReportsToAmmend(rd1)).andReturn(new ArrayList<Report>());
+
+
+        EasyMock.expect(adverseEventEvaluationService.evaluateSAEReportSchedule((ExpeditedAdverseEventReport)EasyMock.anyObject(), EasyMock.eq(aeList2), EasyMock.eq(study))).andReturn(map0);
+        EasyMock.expect(adverseEventEvaluationService.evaluateSAEReportSchedule((ExpeditedAdverseEventReport)EasyMock.anyObject(), EasyMock.eq(aeList), EasyMock.eq(study))).andReturn(map1);
+
+        expect(aeReport1.findReportsToAmmend(rd1)).andReturn(new ArrayList<Report>());
 		expect(aeReport1.findReportsToEdit(rd1)).andReturn(Arrays.asList(r1)).times(2);
 		expect(aeReport1.findReportsToWithdraw(rd1)).andReturn(new ArrayList<Report>());
 		replayMocks();
