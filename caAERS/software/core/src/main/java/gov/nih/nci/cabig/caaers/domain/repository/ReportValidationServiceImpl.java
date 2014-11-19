@@ -19,6 +19,8 @@ import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import gov.nih.nci.cabig.ctms.domain.CodedEnum;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.MutablePropertyValues;
@@ -36,8 +38,11 @@ import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSec
  * @author Biju Joseph
  */
 public class ReportValidationServiceImpl implements ReportValidationService{
-	
-	/** The expedited report tree. */
+
+    /** The Constant log. */
+    private static final Log log = LogFactory.getLog(ReportValidationServiceImpl.class);
+
+    /** The expedited report tree. */
 	private ExpeditedReportTree expeditedReportTree;
 
     /** The evaluation service. */
@@ -69,83 +74,88 @@ public class ReportValidationServiceImpl implements ReportValidationService{
     public ReportSubmittability validate(Report report, Collection<ExpeditedReportSection> reportSections, Collection<ExpeditedReportSection> mandatorySections) {
 
         ReportSubmittability messages = new ReportSubmittability();
-        ExpeditedAdverseEventReport aeReport = report.getAeReport();
+        try {
+            ExpeditedAdverseEventReport aeReport = report.getAeReport();
 
-        
-        //evaluate mandatoryness
-        evaluationService.evaluateMandatoryness(aeReport, report);
 
-        List<String> nonSelfReferencedMandatoryFields = report.getPathOfNonSelfReferencedMandatoryFields();
-        List<String> selfReferencedMandatoryFields = report.getPathOfSelfReferencedMandatoryFields();
-        for (ExpeditedReportSection section : reportSections) {
-            if (section == null)
-                throw new NullPointerException("The mandatory sections collection must not contain nulls");
-            validate(aeReport, nonSelfReferencedMandatoryFields, selfReferencedMandatoryFields, section, messages);
-        }
+            //evaluate mandatoryness
+            evaluationService.evaluateMandatoryness(aeReport, report);
 
-        //biz rule - Attribution validation should be done if the ReportDefinition says that it is attributable
-        if( report.getReportDefinition().getAttributionRequired()){
+            List<String> nonSelfReferencedMandatoryFields = report.getPathOfNonSelfReferencedMandatoryFields();
+            List<String> selfReferencedMandatoryFields = report.getPathOfSelfReferencedMandatoryFields();
+            for (ExpeditedReportSection section : reportSections) {
+                if (section == null)
+                    throw new NullPointerException("The mandatory sections collection must not contain nulls");
+                validate(aeReport, nonSelfReferencedMandatoryFields, selfReferencedMandatoryFields, section, messages);
+            }
 
-        	for (AdverseEvent ae : aeReport.getAdverseEvents()) {
-                if(!ae.lookForPositiveAttribution())  continue;
+            //biz rule - Attribution validation should be done if the ReportDefinition says that it is attributable
+            if( report.getReportDefinition().getAttributionRequired()){
 
-        		Attribution max = null;
-        		for (AdverseEventAttribution<?> attribution : ae.getAdverseEventAttributions()) {
-        			if(attribution.getAttribution() == null) {max = null; break;} //special case when people click save again (after an error).
-        			if (max == null || attribution.getAttribution().getCode() > max.getCode()) {
-        				max = attribution.getAttribution();
-		    		}
-		    	}
-        		if (max == null || max.getCode() < Attribution.POSSIBLE.getCode()) {
-        			messages.addValidityMessage(ExpeditedReportSection.ATTRIBUTION_SECTION,
-		    		String.format("The adverse event, '%s, ' is not attributed to a cause. An attribution of possible or higher must be selected for at least one of the causes.", ae.getAdverseEventTerm().getUniversalTerm() != null ? ae.getAdverseEventTerm().getUniversalTerm() : ae.getDetailsForOther()));
-        		}
-		    }
-        }
-        
-        //biz rule - Physician Sign-Off should be true if the ReportDefinition says that Physician Sign-Off is needed.
-        if(report.getReportDefinition().getPhysicianSignOff()){
-        	if(report.getPhysicianSignoff() == null || !report.getPhysicianSignoff()){
-        		messages.addValidityMessage(ExpeditedReportSection.SUBMIT_REPORT_SECTION, 
-        				"Physician sign-off is mandatory for this report.");
-        	}
-        }
+                for (AdverseEvent ae : aeReport.getAdverseEvents()) {
+                    if(!ae.lookForPositiveAttribution())  continue;
 
-        //additional business rules - if a section is mandatory at least one active child should be present. 
-        if(CollectionUtils.isNotEmpty(mandatorySections)) {
-           for(ExpeditedReportSection mandatorySecton : mandatorySections){
+                    Attribution max = null;
+                    for (AdverseEventAttribution<?> attribution : ae.getAdverseEventAttributions()) {
+                        if(attribution.getAttribution() == null) {max = null; break;} //special case when people click save again (after an error).
+                        if (max == null || attribution.getAttribution().getCode() > max.getCode()) {
+                            max = attribution.getAttribution();
+                        }
+                    }
+                    if (max == null || max.getCode() < Attribution.POSSIBLE.getCode()) {
+                        messages.addValidityMessage(ExpeditedReportSection.ATTRIBUTION_SECTION,
+                                String.format("The adverse event, '%s, ' is not attributed to a cause. An attribution of possible or higher must be selected for at least one of the causes.", ae.getAdverseEventTerm().getUniversalTerm() != null ? ae.getAdverseEventTerm().getUniversalTerm() : ae.getDetailsForOther()));
+                    }
+                }
+            }
 
-               //special case - Medical information section has a list but should be ignored
-               if(mandatorySecton.equals(ExpeditedReportSection.MEDICAL_INFO_SECTION)) continue;
+            //biz rule - Physician Sign-Off should be true if the ReportDefinition says that Physician Sign-Off is needed.
+            if(report.getReportDefinition().getPhysicianSignOff()){
+                if(report.getPhysicianSignoff() == null || !report.getPhysicianSignoff()){
+                    messages.addValidityMessage(ExpeditedReportSection.SUBMIT_REPORT_SECTION,
+                            "Physician sign-off is mandatory for this report.");
+                }
+            }
 
-               boolean sectionFilled = true;
-               
-               if(mandatorySecton.equals(ExpeditedReportSection.STUDY_INTERVENTIONS)){
+            //additional business rules - if a section is mandatory at least one active child should be present.
+            if(CollectionUtils.isNotEmpty(mandatorySections)) {
+                for(ExpeditedReportSection mandatorySecton : mandatorySections){
 
-                 if(mandatorySections.contains(ExpeditedReportSection.AGENTS_INTERVENTION_SECTION) ||
-                    mandatorySections.contains(ExpeditedReportSection.RADIATION_INTERVENTION_SECTION) ||
-                    mandatorySections.contains(ExpeditedReportSection.SURGERY_INTERVENTION_SECTION) ||
-                    mandatorySections.contains(ExpeditedReportSection.MEDICAL_DEVICE_SECTION)){
-                     continue; 
-                 }
+                    //special case - Medical information section has a list but should be ignored
+                    if(mandatorySecton.equals(ExpeditedReportSection.MEDICAL_INFO_SECTION)) continue;
 
-                 //special case - need to check at least one of its children is present instead.
-                   sectionFilled = isElementPresentInSection(aeReport, ExpeditedReportSection.AGENTS_INTERVENTION_SECTION) ||
+                    boolean sectionFilled = true;
+
+                    if(mandatorySecton.equals(ExpeditedReportSection.STUDY_INTERVENTIONS)){
+
+                        if(mandatorySections.contains(ExpeditedReportSection.AGENTS_INTERVENTION_SECTION) ||
+                                mandatorySections.contains(ExpeditedReportSection.RADIATION_INTERVENTION_SECTION) ||
+                                mandatorySections.contains(ExpeditedReportSection.SURGERY_INTERVENTION_SECTION) ||
+                                mandatorySections.contains(ExpeditedReportSection.MEDICAL_DEVICE_SECTION)){
+                            continue;
+                        }
+
+                        //special case - need to check at least one of its children is present instead.
+                        sectionFilled = isElementPresentInSection(aeReport, ExpeditedReportSection.AGENTS_INTERVENTION_SECTION) ||
                                 isElementPresentInSection(aeReport, ExpeditedReportSection.RADIATION_INTERVENTION_SECTION) ||
                                 isElementPresentInSection(aeReport, ExpeditedReportSection.SURGERY_INTERVENTION_SECTION) ||
                                 isElementPresentInSection(aeReport, ExpeditedReportSection.MEDICAL_DEVICE_SECTION);
 
-               }else{
-                   sectionFilled = isElementPresentInSection(aeReport, mandatorySecton);
-               }
+                    }else{
+                        sectionFilled = isElementPresentInSection(aeReport, mandatorySecton);
+                    }
 
-               if(!sectionFilled){
-                   messages.addValidityMessage(mandatorySecton,
-                           String.format("The section '%s' is mandatory for this report and cannot be empty", mandatorySecton.getDisplayName()));
-               }
-           }
+                    if(!sectionFilled){
+                        messages.addValidityMessage(mandatorySecton,
+                                String.format("The section '%s' is mandatory for this report and cannot be empty", mandatorySecton.getDisplayName()));
+                    }
+                }
+            }
+
+        } catch (RuntimeException re) {
+            log.error("error while evaluating report submit-ability", re);
+            messages.addValidityMessage(ExpeditedReportSection.BASICS_SECTION, re.getMessage());
         }
-
        return messages;
     }
 
