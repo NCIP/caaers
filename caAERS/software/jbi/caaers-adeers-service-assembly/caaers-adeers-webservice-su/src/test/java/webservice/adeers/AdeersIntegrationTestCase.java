@@ -125,14 +125,14 @@ public abstract class AdeersIntegrationTestCase extends TestCase{
 		int ei = aeReportWithCaaersId.indexOf("</CAEERS_AEREPORT_ID>");
 		String caaersAeReportId = aeReportWithCaaersId.substring(si+20, ei);
 
-		String aeReport = aeReportWithCaaersId.replaceAll("<CAEERS_AEREPORT_ID>"+caaersAeReportId+"</CAEERS_AEREPORT_ID>", "");
+		String aeReport = aeReportWithCaaersId.replace("<CAEERS_AEREPORT_ID>"+caaersAeReportId+"</CAEERS_AEREPORT_ID>", "");
 		//System.out.print(aeReport);
-		aeReport = aeReport.replaceAll("<EXTERNAL_SYSTEMS/>", "");
-		aeReport = aeReport.replaceAll("<REPORT_ID/>", "");
-		aeReport = aeReport.replaceAll("<SUBMITTER_EMAIL/>", "");
-        aeReport = aeReport.replaceAll("<ADDITIONAL_INFORMATION/>", "");
-        aeReport = aeReport.replaceAll("<MESSAGE_COMBO_ID/>", "");
-        aeReport = aeReport.replaceAll("<WITHDRAW>true</WITHDRAW>", "");
+		aeReport = aeReport.replace("<EXTERNAL_SYSTEMS/>", "");
+		aeReport = aeReport.replace("<REPORT_ID/>", "");
+		aeReport = aeReport.replace("<SUBMITTER_EMAIL/>", "");
+        aeReport = aeReport.replace("<ADDITIONAL_INFORMATION/>", "");
+        aeReport = aeReport.replace("<MESSAGE_COMBO_ID/>", "");
+        aeReport = aeReport.replace("<WITHDRAW>true</WITHDRAW>", "");
 		return aeReport;
 	}
     private AEReportXMLServiceSoapBindingStub bind() {

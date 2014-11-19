@@ -353,7 +353,7 @@ public class ReportSubmissionService {
         sb.append("<MESSAGE_COMBO_ID>" + msgComboId + "</MESSAGE_COMBO_ID>");
         
         //if there are external systems, send message via service mix
-    	String externalXml = xml.replaceAll("<AdverseEventReport>", "<AdverseEventReport>" + sb.toString());
+    	String externalXml = xml.replace("<AdverseEventReport>", "<AdverseEventReport>" + sb.toString());
     	
     	try {
     		messageBroadcastService.initialize();

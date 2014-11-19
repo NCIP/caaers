@@ -183,11 +183,11 @@ public class CaaersAdeersSubmissionWorkflowTest extends AdeersIntegrationTestCas
         String xml = loadFile(tempPath + fileName);
         if(ticketNumber != null){
             String newAssignedId = "<assignedIdentifer>" + ticketNumber + "</assignedIdentifer>";
-            xml = xml.replaceAll("<assignedIdentifer>1</assignedIdentifer>", newAssignedId);
+            xml = xml.replace("<assignedIdentifer>1</assignedIdentifer>", newAssignedId);
         }
         if(versionNumber != null){
             String newVersionNumber = "<reportVersionId>" + versionNumber + "</reportVersionId>";
-            xml = xml.replaceAll("<reportVersionId>1</reportVersionId>", newVersionNumber);
+            xml = xml.replace("<reportVersionId>1</reportVersionId>", newVersionNumber);
         }
 
 
