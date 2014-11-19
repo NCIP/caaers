@@ -104,17 +104,6 @@ public class CaaersRuleUtil {
     }
 
 
-    public static String fetchExpression(Rule rule, String fieldName) {
-        for (Column col : rule.getCondition().getColumn()) {
-            if(col.getFieldConstraint() == null || col.getFieldConstraint().isEmpty()) continue;
-            if(col.getFieldConstraint().get(0).getFieldName() == null) continue;
-            FieldConstraint fc = col.getFieldConstraint().get(0);
-            if (fc.getFieldName().equals(fieldName)) {
-                return col.getExpression();
-            }
-        }
-        return null;
-    }
 
     public static void updateFieldValue(Rule rule, String fieldName, String newVal) {
         for (Column col : rule.getCondition().getColumn()) {
@@ -131,17 +120,22 @@ public class CaaersRuleUtil {
 
     }
 
-    public static void reconcileRuntimeReplacements(Rule rule, String fieldName) {
+    public static void updateCategoryField(Rule rule, String newVal) {
         for (Column col : rule.getCondition().getColumn()) {
             if(col.getFieldConstraint() == null || col.getFieldConstraint().isEmpty()) continue;
             if(col.getFieldConstraint().get(0).getFieldName() == null) continue;
             FieldConstraint fc = col.getFieldConstraint().get(0);
-            if (fc.getFieldName().equals(fieldName)) {
-                String newVal =  fc.getLiteralRestriction().get(0).getValue().get(0);
+            if (fc.getFieldName().equals("category")) {
+                fc.setGrammerPrefix("Category");
+                fc.getLiteralRestriction().get(0).setValue(Arrays.asList(newVal));
+
                 String newOp =  fc.getLiteralRestriction().get(0).getEvaluator();
-                String[] expressionParts = StringUtils.split(col.getExpression(), ',');
+                String expression = col.getExpression();
+                String[] expressionParts = StringUtils.split(expression, ',');
+                expressionParts[1] = "'gov.nih.nci.cabig.caaers.domain.CtcCategory'";
+                expressionParts[2] = "'id'";
                 expressionParts[3] = String.format("'%s'", newVal );
-                expressionParts[4] = String.format("'%s'", newOp );
+                expressionParts[4] = String.format("'%s')", newOp );
                 col.setExpression(StringUtils.join(expressionParts, ","));
             }
         }

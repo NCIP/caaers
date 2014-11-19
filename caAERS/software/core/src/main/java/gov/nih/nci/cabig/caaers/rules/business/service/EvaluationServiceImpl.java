@@ -9,17 +9,7 @@ package gov.nih.nci.cabig.caaers.rules.business.service;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.NotificationStatus;
-import gov.nih.nci.cabig.caaers.domain.ObservedAdverseEventProfile;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.ReportStatus;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.dto.ApplicableReportDefinitionsDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.EvaluationResultDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper;
@@ -115,7 +105,15 @@ public class EvaluationServiceImpl implements EvaluationService {
     	}
     	
     	//find the evaluation for default (new data collection)
-        if(!newlyAddedAdverseEvents.isEmpty()) findRequiredReportDefinitions(null, newlyAddedAdverseEvents, reportingPeriod.getStudy(), result);
+        if(!newlyAddedAdverseEvents.isEmpty()) {
+            //fake expedited report with TreatmentInformation
+            ExpeditedAdverseEventReport fakeAeReport = new ExpeditedAdverseEventReport();
+            fakeAeReport.setTreatmentInformation(new TreatmentInformation());
+            fakeAeReport.getTreatmentInformation().setTreatmentAssignment(new TreatmentAssignment());
+            String tac = reportingPeriod.getTreatmentAssignment() != null ? reportingPeriod.getTreatmentAssignment().getCode() : "";
+            fakeAeReport.getTreatmentInformation().getTreatmentAssignment().setCode(tac);
+            findRequiredReportDefinitions(fakeAeReport, newlyAddedAdverseEvents, reportingPeriod.getStudy(), result);
+        }
     	result.addAllAdverseEvents(new Integer(0), newlyAddedAdverseEvents);
     	
     	//for each data collection (existing) find the evaluation
@@ -186,10 +184,11 @@ public class EvaluationServiceImpl implements EvaluationService {
      *   4. If there is an AE modified, which is part of submitted report, force amend it. 
      *   5. If any, Withdraw all active reports (non manually selected), that are not suggested.
      *   
-     * @param expeditedData - The {@link ExpeditedAdverseEventReport}
+     * @param aeReport - The {@link ExpeditedAdverseEventReport}
      */
-    public void findRequiredReportDefinitions(ExpeditedAdverseEventReport expeditedData, List<AdverseEvent> aeList, Study study, EvaluationResultDTO evaluationResult) {
+    public void findRequiredReportDefinitions(ExpeditedAdverseEventReport aeReport, List<AdverseEvent> aeList, Study study, EvaluationResultDTO evaluationResult) {
 
+        ExpeditedAdverseEventReport expeditedData = aeReport.getId() == null ? null : aeReport;
         //to hold the report defnitions while cleaning up. 
         Map<String , ReportDefinition> loadedReportDefinitionsMap = new HashMap<String, ReportDefinition>();
 
@@ -200,7 +199,7 @@ public class EvaluationServiceImpl implements EvaluationService {
         Integer aeReportId = expeditedData == null ? new Integer(0) : expeditedData.getId();
         try {
         	//evaluate the SAE reporting rules
-            adverseEventEvaluationResultMap = adverseEventEvaluationService.evaluateSAEReportSchedule(expeditedData, aeList, study);
+            adverseEventEvaluationResultMap = adverseEventEvaluationService.evaluateSAEReportSchedule(aeReport, aeList, study);
             evaluationResult.getRulesEngineRawResultMap().put(aeReportId, adverseEventEvaluationResultMap);
             map = new HashMap<AdverseEvent, List<String>>();
             
