@@ -80,8 +80,8 @@ public class ServiceAssemblyConfigurator {
 		
 		File xbeanConfFile = new File("xbean-conf.xml");
 		String xbeanContents = getContents(xbeanConfFile);
-		xbeanContents = xbeanContents.replaceAll("activemq.host", activemqHost);
-		xbeanContents = xbeanContents.replaceAll("activemq.port", activemqPort);
+		xbeanContents = xbeanContents.replace("activemq.host", activemqHost);
+		xbeanContents = xbeanContents.replace("activemq.port", activemqPort);
 		
 		File xbeanFile = new File("xbean.xml");
 		xbeanFile.createNewFile();
@@ -89,8 +89,8 @@ public class ServiceAssemblyConfigurator {
 		
 		File smConfFile = new File("servicemix-conf.xml");
 		String smContents = getContents(smConfFile);
-		smContents = smContents.replaceAll("activemq.host", activemqHost);
-		smContents = smContents.replaceAll("activemq.port", activemqPort);
+		smContents = smContents.replace("activemq.host", activemqHost);
+		smContents = smContents.replace("activemq.port", activemqPort);
 		
 		File smFile = new File("servicemix.xml");
 		smFile.createNewFile();

@@ -65,10 +65,10 @@ public class EDIMessagePreProcessor implements Processor {
 		log.info("inside EDIMessagePreProcessor...");
 		
 		// replace @@ characters with comma
-		String replacedDoubleAt = body.replaceAll("@@", ",");
+		String replacedDoubleAt = body.replace("@@", ",");
 		
 		// replace ## characters with semicolon
-		String replacedDoubleHash = replacedDoubleAt.replaceAll("##", ";");
+		String replacedDoubleHash = replacedDoubleAt.replace("##", ";");
 		
 		StringBuffer mIdB = new StringBuffer();
 		for (String path : msgComboIdPaths) {

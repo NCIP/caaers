@@ -71,7 +71,7 @@ public class AdeersWebServiceImpl implements AdeersWebService {
 	        reponseStr = binding._getCall().getMessageContext().getResponseMessage().getSOAPPartAsString();
             log.info("Actual Response Received from adEERS: ======================================================\n" + reponseStr + "\n===================================================");
 	        //attach the id to the returned message
-	        reponseStr=reponseStr.replaceAll("</ns1:AEReportCancelInfo>","<CAEERS_AEREPORT_ID>"+serviceContext.caaersAeReportId+"</CAEERS_AEREPORT_ID><CAAERSRID>"+serviceContext.reportId+"</CAAERSRID><SUBMITTER_EMAIL>"+serviceContext.submitterEmail+"</SUBMITTER_EMAIL><MESSAGE_COMBO_ID>"+serviceContext.messageComboId+"</MESSAGE_COMBO_ID></ns1:AEReportCancelInfo>");
+	        reponseStr=reponseStr.replace("</ns1:AEReportCancelInfo>","<CAEERS_AEREPORT_ID>"+serviceContext.caaersAeReportId+"</CAEERS_AEREPORT_ID><CAAERSRID>"+serviceContext.reportId+"</CAAERSRID><SUBMITTER_EMAIL>"+serviceContext.submitterEmail+"</SUBMITTER_EMAIL><MESSAGE_COMBO_ID>"+serviceContext.messageComboId+"</MESSAGE_COMBO_ID></ns1:AEReportCancelInfo>");
 	        log.info("Processed Response Received from adEERS: ======================================================\n" + reponseStr + "\n===================================================");
         } else {
 	        log.info("Submitting to adEERS...");
@@ -83,7 +83,7 @@ public class AdeersWebServiceImpl implements AdeersWebService {
             log.info("Actual Response Received from adEERS: ======================================================\n" + reponseStr + "\n===================================================");
 
             //attach the id to the returned message
-	        reponseStr=reponseStr.replaceAll("</ns1:AEReportJobInfo>","<CAEERS_AEREPORT_ID>"+serviceContext.caaersAeReportId+"</CAEERS_AEREPORT_ID><CAAERSRID>"+serviceContext.reportId+"</CAAERSRID><SUBMITTER_EMAIL>"+serviceContext.submitterEmail+"</SUBMITTER_EMAIL><MESSAGE_COMBO_ID>"+serviceContext.messageComboId+"</MESSAGE_COMBO_ID></ns1:AEReportJobInfo>");
+	        reponseStr=reponseStr.replace("</ns1:AEReportJobInfo>","<CAEERS_AEREPORT_ID>"+serviceContext.caaersAeReportId+"</CAEERS_AEREPORT_ID><CAAERSRID>"+serviceContext.reportId+"</CAAERSRID><SUBMITTER_EMAIL>"+serviceContext.submitterEmail+"</SUBMITTER_EMAIL><MESSAGE_COMBO_ID>"+serviceContext.messageComboId+"</MESSAGE_COMBO_ID></ns1:AEReportJobInfo>");
             log.info("Processed Response Received from adEERS: ======================================================\n" + reponseStr + "\n===================================================");
         }
         return reponseStr;
@@ -118,13 +118,13 @@ public class AdeersWebServiceImpl implements AdeersWebService {
 			serviceContext.withdraw = true;
 		} 
 		
-		String aeReport = aeReportWithCaaersId.replaceAll("<CAEERS_AEREPORT_ID>"+serviceContext.caaersAeReportId+"</CAEERS_AEREPORT_ID>", "");
-		aeReport = aeReport.replaceAll("<EXTERNAL_SYSTEMS>"+serviceContext.externalEPRs+"</EXTERNAL_SYSTEMS>", "");
-		aeReport = aeReport.replaceAll("<CAAERSRID>"+serviceContext.reportId+"</CAAERSRID>", "");
-		aeReport = aeReport.replaceAll("<SUBMITTER_EMAIL>"+serviceContext.submitterEmail+"</SUBMITTER_EMAIL>", "");
-		aeReport = aeReport.replaceAll("<MESSAGE_COMBO_ID>"+serviceContext.messageComboId+"</MESSAGE_COMBO_ID>", "");
-		aeReport = aeReport.replaceAll("<ADDITIONAL_INFORMATION/>", "");
-		aeReport = aeReport.replaceAll("<WITHDRAW>true</WITHDRAW>", "");
+		String aeReport = aeReportWithCaaersId.replace("<CAEERS_AEREPORT_ID>"+serviceContext.caaersAeReportId+"</CAEERS_AEREPORT_ID>", "");
+		aeReport = aeReport.replace("<EXTERNAL_SYSTEMS>"+serviceContext.externalEPRs+"</EXTERNAL_SYSTEMS>", "");
+		aeReport = aeReport.replace("<CAAERSRID>"+serviceContext.reportId+"</CAAERSRID>", "");
+		aeReport = aeReport.replace("<SUBMITTER_EMAIL>"+serviceContext.submitterEmail+"</SUBMITTER_EMAIL>", "");
+		aeReport = aeReport.replace("<MESSAGE_COMBO_ID>"+serviceContext.messageComboId+"</MESSAGE_COMBO_ID>", "");
+		aeReport = aeReport.replace("<ADDITIONAL_INFORMATION/>", "");
+		aeReport = aeReport.replace("<WITHDRAW>true</WITHDRAW>", "");
 		return aeReport;
 	}
 	
