@@ -281,17 +281,12 @@ public class CaaersRulesEngineService {
                 //old pattern
                 String termName = CaaersRuleUtil.fetchFieldReadableValue(rule, "term");
                 String categoryName = CaaersRuleUtil.fetchFieldReadableValue(rule, "category");
-                if(StringUtils.isNotEmpty(termName)) {
-                    Integer ctcVersionId = null;
-                    if(domainRuleSet.getStudy() != null) {
-                        ctcVersionId = domainRuleSet.getStudy().getCtcVersion() != null ? domainRuleSet.getStudy().getCtcVersion().getId() : null;
-                    }
-                    List<CtcTerm> terms = ctcTermDao.getBySubname(new String[]{termName}, ctcVersionId, null );
-                    CtcTerm term = findTerm(terms, categoryName);
-                    if(term != null)  {
-                        categoryId = term.getCategory().getId() + "";
-                        CaaersRuleUtil.updateTermField(rule, term.getCtepCode());
-                    }
+                Integer ctcVersionId = domainRuleSet.getStudy().getCtcVersion() != null ? domainRuleSet.getStudy().getCtcVersion().getId() : null;
+                List<CtcTerm> terms = ctcTermDao.getBySubname(new String[]{termName}, ctcVersionId, null );
+                CtcTerm term = findTerm(terms, categoryName);
+                if(term != null)  {
+                    categoryId = term.getCategory().getId() + "";
+                    CaaersRuleUtil.updateTermField(rule, term.getCtepCode());
                 }
             }
 
@@ -1110,17 +1105,6 @@ public class CaaersRulesEngineService {
     @Transactional(readOnly = true)
     public List<gov.nih.nci.cabig.caaers.domain.RuleSet> getAllRuleSets(){
         return (List<gov.nih.nci.cabig.caaers.domain.RuleSet>) ruleSetDao.search(new RuleSetQuery());
-    }
-
-    private CtcTerm findTerm(List<CtcTerm> terms, String categoryName) {
-       if(terms == null || terms.isEmpty()) return null;
-       if(StringUtils.isEmpty(categoryName)) return terms.get(0);
-       if(terms.size() == 1) return terms.get(0);
-       String c = StringUtils.replaceOnce(categoryName, "...", "");
-       for(CtcTerm term : terms) {
-            if(StringUtils.containsIgnoreCase(term.getCategory().getName(), c)) return term;
-       }
-       return null;
     }
     
 //
