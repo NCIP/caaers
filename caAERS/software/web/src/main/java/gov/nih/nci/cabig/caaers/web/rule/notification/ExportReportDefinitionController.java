@@ -8,7 +8,9 @@ package gov.nih.nci.cabig.caaers.web.rule.notification;
 
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.ReportDefinitionType;
 import gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.ReportDefinitions;
+import gov.nih.nci.cabig.caaers.integration.schema.reportdefinition.ReportDeliveryDefinition;
 import gov.nih.nci.cabig.caaers.service.migrator.ReportDefinitionConverter;
 
 import java.io.BufferedWriter;
@@ -53,6 +55,14 @@ public class ExportReportDefinitionController extends AbstractCommandController{
 		
         //Convert the Domain Object to Data Transfer Object.
         ReportDefinitions reportDefinitions = reportDefinitionConverter.domainToDto(rpDef);
+        for(ReportDefinitionType rep : reportDefinitions.getReportDefinition()) {
+        	for(ReportDeliveryDefinition dev : rep.getDeliveryDefinition()) {
+        		if(dev.getPassword() != null && !dev.getPassword().isEmpty()) {
+        			dev.setUserName("Username");
+        			dev.setPassword("Password");
+        		}
+        	}
+        }
         
         //Marshall the Data Transfer Object according to ReportDefinition.xsd schema,
         //and download it to the client machine.
