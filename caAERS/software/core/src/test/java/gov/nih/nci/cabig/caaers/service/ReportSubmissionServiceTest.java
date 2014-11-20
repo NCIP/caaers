@@ -9,7 +9,6 @@ package gov.nih.nci.cabig.caaers.service;
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.api.AdeersReportGenerator;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
-import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
@@ -54,7 +53,6 @@ public class ReportSubmissionServiceTest extends AbstractNoSecurityTestCase {
     private ReportRepository reportRepository;
     
     private ReportDao reportDao;
-	private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
 	private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
 	private MessageSource messageSource;
 	
@@ -78,7 +76,6 @@ public class ReportSubmissionServiceTest extends AbstractNoSecurityTestCase {
 		schedulerService = registerMockFor(SchedulerService.class);
 		reportRepository = registerMockFor(ReportRepository.class);
 		reportDao = registerDaoMockFor(ReportDao.class);
-		expeditedAdverseEventReportDao = registerDaoMockFor(ExpeditedAdverseEventReportDao.class);
 		adverseEventReportingPeriodDao = registerDaoMockFor(AdverseEventReportingPeriodDao.class);
 		messageSource = registerMockFor(MessageSource.class);
 		
@@ -94,7 +91,6 @@ public class ReportSubmissionServiceTest extends AbstractNoSecurityTestCase {
 		});
 		
 		service.setReportDao(reportDao);
-		service.setExpeditedAdverseEventReportDao(expeditedAdverseEventReportDao);
 		service.setAdverseEventReportingPeriodDao(adverseEventReportingPeriodDao);
 		service.setCaaersJavaMailSender(new CaaersJavaMailSender() {
 			@Override
@@ -106,7 +102,7 @@ public class ReportSubmissionServiceTest extends AbstractNoSecurityTestCase {
 		service.setMessageBroadcastService(new CaaersAdeersMessageBroadcastServiceImpl(){
 			@Override
 			public void broadcast(String message) throws BroadcastException {
-				assertEquals("<AdverseEventReport><EXTERNAL_SYSTEMS>www.biju.com::myusername::password</EXTERNAL_SYSTEMS><REPORT_ID>110</REPORT_ID>" +
+				assertEquals("<AdverseEventReport><EXTERNAL_SYSTEMS>www.biju.com::myusername::password</EXTERNAL_SYSTEMS><CAAERSRID>110</CAAERSRID>" +
 						"<SUBMITTER_EMAIL>just@frank.net</SUBMITTER_EMAIL><MESSAGE_COMBO_ID>abc1234::19691231190000</MESSAGE_COMBO_ID><id>110</id><biju>Joseph</biju></AdverseEventReport>", message);
 			}
 			@Override
@@ -318,7 +314,7 @@ public class ReportSubmissionServiceTest extends AbstractNoSecurityTestCase {
 		service.setMessageBroadcastService(new CaaersAdeersMessageBroadcastServiceImpl(){
 			@Override
 			public void broadcast(String message) throws BroadcastException {
-				assertEquals("<AdverseEventReport><EXTERNAL_SYSTEMS>www.biju.com::myusername::password</EXTERNAL_SYSTEMS><REPORT_ID>5</REPORT_ID>" +
+				assertEquals("<AdverseEventReport><EXTERNAL_SYSTEMS>www.biju.com::myusername::password</EXTERNAL_SYSTEMS><CAAERSRID>5</CAAERSRID>" +
 						"<SUBMITTER_EMAIL>just@frank.net</SUBMITTER_EMAIL><id>110</id><biju>Joseph</biju></AdverseEventReport>", message);
 			}
 			@Override
