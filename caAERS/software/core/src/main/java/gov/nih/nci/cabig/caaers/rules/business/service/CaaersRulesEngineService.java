@@ -263,19 +263,33 @@ public class CaaersRulesEngineService {
             if(rule.getId() == null) rule.setId("r-" + UUID.randomUUID().toString());
 
             String categoryId = "0";
-            String termCtepCode = CaaersRuleUtil.fetchFieldValue(rule, "term");
-            if(termCtepCode != null) {
-                String ctcVersion = domainRuleSet.getStudy().getCtcVersion() != null ? domainRuleSet.getStudy().getCtcVersion().getName() : null;
+            String expression = CaaersRuleUtil.fetchFieldExpression(rule, "term");
+            if(StringUtils.contains(expression, "ctepCode")) {
+                    //new pattern
+                String termCtepCode = CaaersRuleUtil.fetchFieldValue(rule, "term");
+                if(termCtepCode != null) {
+                    String ctcVersion = domainRuleSet.getStudy().getCtcVersion() != null ? domainRuleSet.getStudy().getCtcVersion().getName() : null;
 
-                if(ctcVersion != null) {
-                    List<CtcTerm> terms = ctcTermDao.getByCtepCodeandVersion(termCtepCode, ctcVersion);
-                    if(terms != null && !terms.isEmpty()) {
-                        categoryId = terms.get(0).getCategory().getId() + "";
+                    if(ctcVersion != null) {
+                        List<CtcTerm> terms = ctcTermDao.getByCtepCodeandVersion(termCtepCode, ctcVersion);
+                        if(terms != null && !terms.isEmpty()) {
+                            categoryId = terms.get(0).getCategory().getId() + "";
+                        }
                     }
                 }
-
-
+            }  else {
+                //old pattern
+                String termName = CaaersRuleUtil.fetchFieldReadableValue(rule, "term");
+                String categoryName = CaaersRuleUtil.fetchFieldReadableValue(rule, "category");
+                Integer ctcVersionId = domainRuleSet.getStudy().getCtcVersion() != null ? domainRuleSet.getStudy().getCtcVersion().getId() : null;
+                List<CtcTerm> terms = ctcTermDao.getBySubname(new String[]{termName}, ctcVersionId, null );
+                CtcTerm term = findTerm(terms, categoryName);
+                if(term != null)  {
+                    categoryId = term.getCategory().getId() + "";
+                    CaaersRuleUtil.updateTermField(rule, term.getCtepCode());
+                }
             }
+
 
             CaaersRuleUtil.updateCategoryField(rule, categoryId);
 
@@ -1091,6 +1105,17 @@ public class CaaersRulesEngineService {
     @Transactional(readOnly = true)
     public List<gov.nih.nci.cabig.caaers.domain.RuleSet> getAllRuleSets(){
         return (List<gov.nih.nci.cabig.caaers.domain.RuleSet>) ruleSetDao.search(new RuleSetQuery());
+    }
+
+    private CtcTerm findTerm(List<CtcTerm> terms, String categoryName) {
+       if(terms == null || terms.isEmpty()) return null;
+       if(StringUtils.isEmpty(categoryName)) return terms.get(0);
+       if(terms.size() == 1) return terms.get(0);
+       String c = StringUtils.replaceOnce(categoryName, "...", "");
+       for(CtcTerm term : terms) {
+            if(StringUtils.containsIgnoreCase(term.getCategory().getName(), c)) return term;
+       }
+       return null;
     }
     
 //

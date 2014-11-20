@@ -91,6 +91,17 @@ public class CaaersRuleUtil {
         return map;
     }
 
+    public static String fetchFieldExpression(Rule rule, String fieldName) {
+        for (Column col : rule.getCondition().getColumn()) {
+            if(col.getFieldConstraint() == null || col.getFieldConstraint().isEmpty()) continue;
+            if(col.getFieldConstraint().get(0).getFieldName() == null) continue;
+            FieldConstraint fc = col.getFieldConstraint().get(0);
+            if (fc.getFieldName().equals(fieldName)) {
+                return col.getExpression();
+            }
+        }
+        return null;
+    }
     public static String fetchFieldValue(Rule rule, String fieldName) {
         for (Column col : rule.getCondition().getColumn()) {
             if(col.getFieldConstraint() == null || col.getFieldConstraint().isEmpty()) continue;
@@ -103,6 +114,17 @@ public class CaaersRuleUtil {
         return null;
     }
 
+    public static String fetchFieldReadableValue(Rule rule, String fieldName) {
+        for (Column col : rule.getCondition().getColumn()) {
+            if(col.getFieldConstraint() == null || col.getFieldConstraint().isEmpty()) continue;
+            if(col.getFieldConstraint().get(0).getFieldName() == null) continue;
+            FieldConstraint fc = col.getFieldConstraint().get(0);
+            if (fc.getFieldName().equals(fieldName)) {
+                return fc.getLiteralRestriction().get(0).getReadableValue();
+            }
+        }
+        return null;
+    }
 
 
     public static void updateFieldValue(Rule rule, String fieldName, String newVal) {
@@ -136,6 +158,24 @@ public class CaaersRuleUtil {
                 expressionParts[2] = "'id'";
                 expressionParts[3] = String.format("'%s'", newVal );
                 expressionParts[4] = String.format("'%s')", newOp );
+                col.setExpression(StringUtils.join(expressionParts, ","));
+            }
+        }
+    }
+    public static void updateTermField(Rule rule, String newVal) {
+        for (Column col : rule.getCondition().getColumn()) {
+            if(col.getFieldConstraint() == null || col.getFieldConstraint().isEmpty()) continue;
+            if(col.getFieldConstraint().get(0).getFieldName() == null) continue;
+            FieldConstraint fc = col.getFieldConstraint().get(0);
+            if (fc.getFieldName().equals("term")) {
+
+                fc.getLiteralRestriction().get(0).setValue(Arrays.asList(newVal));
+                String expression = col.getExpression();
+                String[] expressionParts = StringUtils.split(expression, ',');
+                expressionParts[1] = "'gov.nih.nci.cabig.caaers.domain.CtcTerm'";
+                expressionParts[2] = "'ctepCode'";
+                expressionParts[3] = String.format("'%s'", "runTimeValue" );
+                expressionParts[4] = String.format("'%s')", "runTimeOperator" );
                 col.setExpression(StringUtils.join(expressionParts, ","));
             }
         }
