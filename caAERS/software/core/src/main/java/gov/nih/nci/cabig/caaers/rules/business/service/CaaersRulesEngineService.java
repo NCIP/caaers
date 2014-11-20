@@ -268,7 +268,10 @@ public class CaaersRulesEngineService {
                     //new pattern
                 String termCtepCode = CaaersRuleUtil.fetchFieldValue(rule, "term");
                 if(termCtepCode != null) {
-                    String ctcVersion = domainRuleSet.getStudy().getCtcVersion() != null ? domainRuleSet.getStudy().getCtcVersion().getName() : null;
+                    String ctcVersion = "0";
+                    if(domainRuleSet.getStudy() != null) {
+                      ctcVersion =   domainRuleSet.getStudy().getCtcVersion() != null ? domainRuleSet.getStudy().getCtcVersion().getName() : "0";
+                    }
 
                     if(ctcVersion != null) {
                         List<CtcTerm> terms = ctcTermDao.getByCtepCodeandVersion(termCtepCode, ctcVersion);
@@ -281,7 +284,10 @@ public class CaaersRulesEngineService {
                 //old pattern
                 String termName = CaaersRuleUtil.fetchFieldReadableValue(rule, "term");
                 String categoryName = CaaersRuleUtil.fetchFieldReadableValue(rule, "category");
-                Integer ctcVersionId = domainRuleSet.getStudy().getCtcVersion() != null ? domainRuleSet.getStudy().getCtcVersion().getId() : null;
+                Integer ctcVersionId = null;
+                if(domainRuleSet.getStudy() != null) {
+                    ctcVersionId = domainRuleSet.getStudy().getCtcVersion() != null ? domainRuleSet.getStudy().getCtcVersion().getId() : null;
+                }
                 List<CtcTerm> terms = ctcTermDao.getBySubname(new String[]{termName}, ctcVersionId, null );
                 CtcTerm term = findTerm(terms, categoryName);
                 if(term != null)  {
