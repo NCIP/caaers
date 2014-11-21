@@ -227,11 +227,4 @@ public class AdeersReportGenerator extends BasePDFGenerator {
         }
     }
 
-	public String injectAssingedIdentifierIntoCaaersXML(String xml, int id, String assignedIdentifer) {
-		if(assignedIdentifer == null || assignedIdentifer.isEmpty()) {
-			return xml;
-		}
-		return adverseEventReportSerializer.injectAssingedId(xml, id, assignedIdentifer);
-	}
-
 }
