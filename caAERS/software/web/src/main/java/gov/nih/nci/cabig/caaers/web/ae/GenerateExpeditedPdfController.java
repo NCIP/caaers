@@ -129,10 +129,6 @@ public class GenerateExpeditedPdfController extends AbstractCommandController {
 					xml = adeersReportGenerator.generateCaaersXml(aeReport, report);
 				} else {
 					xml = new String(reportContent.getContent());
-					// if the report is submitted and assigned with a ticket number , we need to populate that ticket number in XML, so inject it in the XML
-					if(report.getAssignedIdentifer() != null) {
-						xml = adeersReportGenerator.injectAssingedIdentifierIntoCaaersXML(xml, report.getId(), report.getAssignedIdentifer());
-					}
 				}
 			} else {
 				//obtain newly generated caaers xml

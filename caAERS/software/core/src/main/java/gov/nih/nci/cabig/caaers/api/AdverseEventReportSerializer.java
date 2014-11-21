@@ -1238,24 +1238,5 @@ public class AdverseEventReportSerializer {
 		}
 
 
-		public String injectAssingedId(String xml, int id, String assignedIdentifer) {
-			//TODO: This is a mess of regular expressions to match the xpath "//Report[id=" + id + "]/assignedIdentifer" and then create or insert the assignedIdentifer.
-			Pattern p = Pattern.compile("(<[^<>]*Report>\\s*<([^<>]*)id>" + id + "</[^<>]*id>\\s*(?:<[^<>]*assignedIdentifer>)?)[^<]*(</[^<>]*assignedIdentifer>)?");
-			Matcher m = p.matcher(xml);
-			if(m.matches()) {
-				if(m.group(3) == null) {
-					if(m.group(2) == null) {
-						xml = m.replaceAll("$1<assignedIdentifer>" + assignedIdentifer + "</assignedIdentifer>");
-					} else {
-						xml = m.replaceAll("$1<$2assignedIdentifer>" + assignedIdentifer + "</$2assignedIdentifer>");
-					}
-				} else {
-					xml = m.replaceAll("$1" + assignedIdentifer + "$3");
-				}
-			}
-			
-			return xml;
-		}
-
 
 }
