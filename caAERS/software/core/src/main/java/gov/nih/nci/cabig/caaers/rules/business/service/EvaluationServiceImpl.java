@@ -311,10 +311,11 @@ public class EvaluationServiceImpl implements EvaluationService {
                                    for(ReportDefinition rd : rdNotificationList) {
                                        // we must remove these from suggestions.
                                        nameList.remove(rd.getName());
+                                       boolean removed = defList.remove(rd);
                                        evaluationResult.removeReportDefinitionName(aeReportId, adverseEvent, rd.getName());
                                        evaluationResult.addProcessingStep(aeReportId, "caAERS : Adverse event (" + AdverseEvent.toReadableString(adverseEvent) + ") is already reported in :", "" + report.getId());
-                                       evaluationResult.addProcessingStep(aeReportId, " Notifications are not needed again :", null );
-                                       evaluationResult.addProcessingStep(aeReportId, " Removing suggestion :", rd.getName() );
+                                       evaluationResult.addProcessingStep(aeReportId, " Notifications are not needed again, removing:", rd.getName() );
+                                       evaluationResult.addProcessingStep(aeReportId, " removed ? :", String.valueOf(removed) );
                                    }
 
                                 }
@@ -326,6 +327,8 @@ public class EvaluationServiceImpl implements EvaluationService {
                         for(Report report : completedReports){
                             if(report.isReported(adverseEvent)){
                                 nameList.remove(report.getName());
+                                List<ReportDefinition> rdList = ReportDefinition.findByName(defList,new String[]{report.getName()});
+                                if(!rdList.isEmpty()) defList.remove(rdList.get(0));
                                 evaluationResult.removeReportDefinitionName(aeReportId, adverseEvent, report.getName());
                                 evaluationResult.addProcessingStep(aeReportId, "caAERS : Adverse event (" + AdverseEvent.toReadableString(adverseEvent) + "):", null);
                                 evaluationResult.addProcessingStep(aeReportId, " Unmodified and belongs to completed report :", null );
