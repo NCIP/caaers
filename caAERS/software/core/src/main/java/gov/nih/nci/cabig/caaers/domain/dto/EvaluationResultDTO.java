@@ -557,9 +557,18 @@ public Map<Integer, Set<ReportDefinitionWrapper>> getAmendmentMap() {
 		for(Boolean b : aeReportAlertMap.values()){
 			retVal |= b;
 		}
-		return retVal;
+
+        if(retVal) return true;
+
+        //check of only action recommendation is "withdraw"
+        boolean withdrawEmpty = isWrapperMapEmpty(withdrawalMap);
+        boolean editEmpty = isWrapperMapEmpty(editMap);
+        boolean createEmpty = isWrapperMapEmpty(createMap);
+        boolean amendEmpty = isWrapperMapEmpty(amendmentMap);
+
+		return (!withdrawEmpty) && (editEmpty && createEmpty && amendEmpty);
 	}
-	
+
 	/**
 	 * Gets the serious adverse events.
 	 *
@@ -610,6 +619,14 @@ public Map<Integer, Set<ReportDefinitionWrapper>> getAmendmentMap() {
         if(createWrappers != null) wrappers.addAll(createWrappers);
 
         return wrappers;
+    }
+
+    private boolean isWrapperMapEmpty(Map<Integer, Set<ReportDefinitionWrapper>> map) {
+        boolean empty = true;
+        for(Integer key : map.keySet()) {
+            empty = empty && CollectionUtils.isEmpty(map.get(key));
+        }
+        return empty;
     }
 	
 	/* (non-Javadoc)

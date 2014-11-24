@@ -989,10 +989,7 @@ function validate(aeReportId){
 		updateDisplayTexts(${entry.key});
 	    
 	  </c:forEach>
-		if (${fn:length(command.adverseEventReportingPeriod.aeReports) > 0} && isOnlyActionWithdraw(${command.adverseEventReportingPeriod.aeReports[0].id}) && ! ${command.evaluationResult.alertRecommended}) {
-			// show stop sign when only withdraw action is suggested
-			$('alertBox').style.display = '';
-		}
+
    });
 
    </script>
@@ -1002,12 +999,7 @@ function validate(aeReportId){
 	<input type="hidden" name="activeAeReportId" value="" id="activeAeReportId" />
 	<input type="hidden" name="_finish"/>
 	<!--  ============== -->
-  
-   <div id="alertBox" style="border:1px solid #f00; height:100px; padding:9px; margin-bottom:10px; margin-left:150px; width:600px;display:none">
-		<img src="<chrome:imageUrl name="stop_sign.png" />" alt="Stop!" style="float:left; margin-right:30px; margin-left:40px;" />
-		<div style="font-size:20px; margin-bottom:5px; margin-top:35px;"><tags:message key="instruction_ae_action_recommended" /></div>
-    </div>
-  
+
    <!--  ALERT -->
    <c:if test="${command.evaluationResult.alertRecommended}">
     <div style="border:1px solid #f00; height:100px; padding:9px; margin-bottom:10px; margin-left:150px; width:600px;">
