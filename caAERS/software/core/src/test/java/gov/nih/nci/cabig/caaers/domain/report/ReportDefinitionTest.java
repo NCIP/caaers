@@ -15,6 +15,8 @@ import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 
+import java.util.Arrays;
+
 
 /**
  * @author Rhett Sutphin
@@ -251,5 +253,55 @@ public class ReportDefinitionTest extends AbstractTestCase {
         assertNull(def.findReportMandatoryFieldDefinitionByPath("bogus"));
         assertEquals("test", def.findReportMandatoryFieldDefinitionByPath("test").getFieldPath());
 
+    }
+
+    public void testFind() {
+        ReportDefinition a = Fixtures.createReportDefinition("a");
+        ReportDefinition b = Fixtures.createReportDefinition("b");
+        ReportDefinition c = Fixtures.createReportDefinition("c");
+        assertEquals(ReportDefinition.findByName(Arrays.asList(a, b, c), "a"), Arrays.asList(a));
+        assertTrue(ReportDefinition.findByName(Arrays.asList(a,b), "c").isEmpty());
+    }
+    public void testFindByReportType() {
+        ReportDefinition a = Fixtures.createReportDefinition("a");
+        a.setReportType(ReportType.REPORT);
+        ReportDefinition b = Fixtures.createReportDefinition("b");
+        b.setReportType(ReportType.NOTIFICATION);
+        ReportDefinition c = Fixtures.createReportDefinition("c");
+        c.setReportType(ReportType.REPORT);
+        assertEquals(ReportDefinition.findByReportType(Arrays.asList(a, b, c), ReportType.NOTIFICATION), Arrays.asList(b));
+        assertEquals(ReportDefinition.findByReportType(Arrays.asList(a, b, c), ReportType.REPORT), Arrays.asList(a, c));
+        assertTrue(ReportDefinition.findByReportType(Arrays.asList(a,c), ReportType.NOTIFICATION).isEmpty());
+        assertTrue(!ReportDefinition.findByReportType(Arrays.asList(a,b,c), ReportType.NOTIFICATION).isEmpty());
+    }
+
+    public void testFindBySameOrganizationAndGroup() {
+        ReportDefinition a = Fixtures.createReportDefinition("a");
+        a.setReportType(ReportType.REPORT);
+        a.getOrganization().setId(5);
+        a.setId(1);
+
+        ReportDefinition b = Fixtures.createReportDefinition("b");
+        b.setReportType(ReportType.REPORT);
+        b.getOrganization().setId(5);
+        b.setId(2);
+
+        ReportDefinition c = Fixtures.createReportDefinition("c");
+        c.setReportType(ReportType.REPORT);
+        c.getOrganization().setId(6);
+        c.setId(3);
+
+        ReportDefinition d = Fixtures.createReportDefinition("d");
+        d.setReportType(ReportType.REPORT);
+        d.getOrganization().setId(6);
+        d.setId(4);
+
+        ReportDefinition rd = Fixtures.createReportDefinition("rd");
+        rd.setReportType(ReportType.REPORT);
+        rd.getOrganization().setId(7);
+        rd.setId(5);
+
+        assertEquals(ReportDefinition.findBySameOrganizationAndGroup(Arrays.asList(a, b, c,d), a), Arrays.asList(a,b));
+        assertTrue(ReportDefinition.findBySameOrganizationAndGroup(Arrays.asList(a, b, c, d), rd).isEmpty());
     }
 }

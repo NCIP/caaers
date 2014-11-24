@@ -616,7 +616,51 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     	if(!this.getGroup().getCode().equals(other.getGroup().getCode())) return false;
     	return true;
     }
-    
+
+    /**
+     *  Find the ones having the same name.
+     * @param list  - list of report definitions
+     * @param name  - the name of the report definition to find.
+     * @return
+     */
+    public static List<ReportDefinition> findByName(List<ReportDefinition> list, String... name) {
+        List<ReportDefinition> matches = new ArrayList<ReportDefinition>();
+        for(ReportDefinition rd : list) {
+            for(String n : name) {
+                if(StringUtils.equals(rd.getName(), n)) matches.add(rd);
+            }
+
+        }
+        return matches;
+    }
+
+    /**
+     * Find the ones from same organization and group
+     * @param list - list of report definitions
+     * @param other - report definitions whose akind we need find.
+     * @return
+     */
+    public static List<ReportDefinition> findBySameOrganizationAndGroup(List<ReportDefinition> list, ReportDefinition other) {
+        List<ReportDefinition> matches = new ArrayList<ReportDefinition>();
+        for(ReportDefinition rd : list) {
+             if(rd.isOfSameReportTypeAndOrganization(other)) matches.add(rd);
+        }
+        return  matches;
+    }
+
+    /**
+     * Find the report definitions of similar type
+     * @param list - list of report definitions
+     * @param nf  - the type
+     * @return
+     */
+    public static List<ReportDefinition> findByReportType(List<ReportDefinition> list, ReportType nf) {
+        List<ReportDefinition> matches = new ArrayList<ReportDefinition>();
+        for(ReportDefinition rd : list) {
+            if(rd.getReportType() == nf) matches.add(rd);
+        }
+        return  matches;
+    }
     /* (non-Javadoc)
      * @see java.lang.Object#equals(java.lang.Object)
      */
