@@ -494,7 +494,7 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		expect(aeReport1.isActive()).andReturn(false);
 		expect(aeReport1.getManuallySelectedReports()).andReturn(new ArrayList<Report>());
 		expect(aeReport1.getActiveReports()).andReturn(new ArrayList<Report>());
-		expect(aeReport1.listReportsHavingStatus(ReportStatus.COMPLETED)).andReturn(Arrays.asList(r1)).times(2);
+		expect(aeReport1.listReportsHavingStatus(ReportStatus.COMPLETED)).andReturn(Arrays.asList(r1)).times(1);
 		expect(aeReport1.findCompletedAmendableReports()).andReturn(EMPTY_REPORT_LIST);
 		Study study = Fixtures.createStudy("test");
 		
@@ -933,7 +933,7 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		expect(aeReport1.getActiveModifiedAdverseEvents()).andReturn(Arrays.asList(ae1)).anyTimes();
 		expect(aeReport1.getModifiedAdverseEvents()).andReturn(Arrays.asList(ae1)).anyTimes();
 		EasyMock.expect(aeReport1.doesAnotherAeWithSameTermExist(ae1)).andReturn(null);
-		expect(aeReport1.listReportsHavingStatus(ReportStatus.COMPLETED)).andReturn(Arrays.asList(r1, rz)).times(2);
+		expect(aeReport1.listReportsHavingStatus(ReportStatus.COMPLETED)).andReturn(Arrays.asList(r1, rz)).times(1);
 		expect(aeReport1.findCompletedAmendableReports()).andReturn(Arrays.asList(r1, rz));
 		expect(aeReport1.getActiveReports()).andReturn(new ArrayList<Report>());
 		expect(aeReport1.isActive()).andReturn(false);
@@ -1206,7 +1206,7 @@ public class EvaluationServiceTest extends AbstractTestCase {
 
 		expect(adverseEventEvaluationService.evaluateSAEReportSchedule(aeReport1, Arrays.asList(ae1, ae2), study)).andReturn(map1);
 		
-		expect(aeReport1.listReportsHavingStatus(ReportStatus.COMPLETED)).andReturn(Arrays.asList(r1)).times(2);
+		expect(aeReport1.listReportsHavingStatus(ReportStatus.COMPLETED)).andReturn(Arrays.asList(r1)).times(1);
 		expect(aeReport1.findCompletedAmendableReports()).andReturn(Arrays.asList(r1));
 		expect(aeReport1.findReportsToAmmend(rd1)).andReturn(Arrays.asList(r1));
 		expect(aeReport1.findReportsToEdit(rd1)).andReturn(new ArrayList<Report>()).times(2);
