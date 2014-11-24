@@ -16,12 +16,7 @@ import gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper;
 import gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper.ActionType;
 import gov.nih.nci.cabig.caaers.domain.dto.SafetyRuleEvaluationResultDTO;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
-import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
-import gov.nih.nci.cabig.caaers.domain.report.Report;
-import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryField;
-import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
-import gov.nih.nci.cabig.caaers.domain.report.RequirednessIndicator;
+import gov.nih.nci.cabig.caaers.domain.report.*;
 import gov.nih.nci.cabig.caaers.rules.common.AdverseEventEvaluationResult;
 import gov.nih.nci.cabig.caaers.rules.common.CaaersRuleUtil;
 import gov.nih.nci.cabig.caaers.rules.common.RuleType;
@@ -42,6 +37,7 @@ import java.util.TreeSet;
 
 import org.apache.commons.collections15.Closure;
 import org.apache.commons.collections15.CollectionUtils;
+import org.apache.commons.collections15.ListUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -178,7 +174,7 @@ public class EvaluationServiceImpl implements EvaluationService {
      * 
      * Overview on extra processing
      *   0. Ignore all the 'soft deleted' reports suggested by rules engine. 
-     *   1. If child report or a report of the same group is active , parent report suggested by rules is ignored. 
+     *   1. If child report or a report of the same group is active , parent report suggested by rules is ignored.
      *   2. All manually selected active reports are suggested by caAERS
      *   3. If there is a manual selection, ignore the others suggested by rules
      *   4. If there is an AE modified, which is part of submitted report, force amend it. 
@@ -262,6 +258,7 @@ public class EvaluationServiceImpl implements EvaluationService {
                     if(rd == null) {
                         rd = reportDefinitionDao.getByName(reportDefName);
                         if(rd == null){
+                            evaluationResult.addProcessingStep(aeReportId, "report definition missing in database " , reportDefName);
                             log.warn("Report definition (" + reportDefName + "), is referred in rules but is not found");
                             continue; //we cannot find the report referred by the rule
                         }
@@ -286,54 +283,77 @@ public class EvaluationServiceImpl implements EvaluationService {
 
             //save this for reference.
             evaluationResult.addRulesEngineResult(aeReportId, map);
-            
-            //throw away rules suggestion
-            if(expeditedData != null){
-            	List<Report> completedReports = expeditedData.listReportsHavingStatus(ReportStatus.COMPLETED);
-            	if(completedReports != null && !completedReports.isEmpty()){
-            		for(AdverseEvent adverseEvent : aeList){
-            			if(adverseEvent.isModified() || adverseEvent.getReport() == null) continue;
-            			List<String> nameList = map.get(adverseEvent);
-            			for(Report report : completedReports){
-            				if(report.isReported(adverseEvent)){
-            					nameList.remove(report.getName());
-            					evaluationResult.removeReportDefinitionName(aeReportId, adverseEvent, report.getName());
+
+
+            //now load report definitions
+            List<ReportDefinition> defList = new ArrayList<ReportDefinition>();
+            defList.addAll(loadedReportDefinitionsMap.values());
+
+
+            List<Report> completedReports = expeditedData == null ? new ArrayList<Report>() : expeditedData.listReportsHavingStatus(ReportStatus.COMPLETED);
+
+            if(!completedReports.isEmpty()){
+
+                for(AdverseEvent adverseEvent : aeList){
+
+                    if(adverseEvent.getReport() == null) continue;      //unreported AE -  continue
+
+                    List<String> nameList = map.get(adverseEvent);
+
+                    if(adverseEvent.isModified()) {
+                        //throw away notifications if AE is already reported.
+                        for(Report report : completedReports) {
+                            if(report.isReported(adverseEvent)) {
+                                List<ReportDefinition> rdList = ReportDefinition.findByName(defList, nameList.toArray(new String[0]));
+                                List<ReportDefinition> sameOrgGroupList = ReportDefinition.findBySameOrganizationAndGroup(rdList, report.getReportDefinition());
+                                if(sameOrgGroupList.size() > 1) {
+                                   List<ReportDefinition> rdNotificationList = ReportDefinition.findByReportType(sameOrgGroupList, ReportType.NOTIFICATION);
+                                   for(ReportDefinition rd : rdNotificationList) {
+                                       // we must remove these from suggestions.
+                                       nameList.remove(rd.getName());
+                                       evaluationResult.removeReportDefinitionName(aeReportId, adverseEvent, rd.getName());
+                                       evaluationResult.addProcessingStep(aeReportId, "caAERS : Adverse event (" + AdverseEvent.toReadableString(adverseEvent) + ") is already reported in :", "" + report.getId());
+                                       evaluationResult.addProcessingStep(aeReportId, " Notifications are not needed again :", null );
+                                       evaluationResult.addProcessingStep(aeReportId, " Removing suggestion :", rd.getName() );
+                                   }
+
+                                }
+                            }
+                        }
+                    } else {
+                        //throw away rules suggestion - if AE is not modified and is part of a submitted report OR if AE is new
+
+                        for(Report report : completedReports){
+                            if(report.isReported(adverseEvent)){
+                                nameList.remove(report.getName());
+                                evaluationResult.removeReportDefinitionName(aeReportId, adverseEvent, report.getName());
                                 evaluationResult.addProcessingStep(aeReportId, "caAERS : Adverse event (" + AdverseEvent.toReadableString(adverseEvent) + "):", null);
                                 evaluationResult.addProcessingStep(aeReportId, " Unmodified and belongs to completed report :", null );
                                 evaluationResult.addProcessingStep(aeReportId, " Removing suggestion :", report.getName() );
 
-            				}
-            			}
-            			
-            		}
-            	}
+                            }
+                        }
+
+                    }
+
+
+
+                }
             }
             
-            
-            //find out the unique report definition names, then load them. 
-            Set<String> reportDefinitionNames = new  HashSet<String>();
+
+            //Update AE reporting flag (or sae flag)
             for(AdverseEvent ae : map.keySet()){
             	List<String> nameList = map.get(ae);
             	ae.setRequiresReporting(!nameList.isEmpty());
                 evaluationResult.addProcessingStep(aeReportId, "caAERS: Adverse event (" + AdverseEvent.toReadableString(ae) + ") may need reporting ? : ", String.valueOf(ae.getRequiresReporting()) );
-            	reportDefinitionNames.addAll(nameList);
-            	
             }
             
             //logging
             if(log.isDebugEnabled()){
             	log.debug("Rules Engine Result for : " + aeReportId + ", " + String.valueOf(map));
             }
-            
-            //load all report definitions
-            List<ReportDefinition> defList = new ArrayList<ReportDefinition>();
-            for(String reportDefName : reportDefinitionNames){
-            	ReportDefinition rd = loadedReportDefinitionsMap.get(reportDefName);
-                if(rd == null) rd = reportDefinitionDao.getByName(reportDefName);
-            	if(rd != null){
-            		defList.add(rd);
-            	}
-            }
+
             
             //  - If child report is active, select that instead of parent. 
             // - If there is a manual selection, ignore rules engine suggestions from the same group
@@ -388,8 +408,7 @@ public class EvaluationServiceImpl implements EvaluationService {
             	
             	//any ae modified/got completed reports ? add those report definitions.
             	if(modifiedAdverseEvents != null && !modifiedAdverseEvents.isEmpty()){
-            		List<Report> completedReports = expeditedData.listReportsHavingStatus(ReportStatus.COMPLETED);
-                	//Any completed report, suggest amending it to proceed (but no alert).
+                  	//Any completed report, suggest amending it to proceed (but no alert).
                 	for(Report report : completedReports){
          				
          				ReportDefinition rdCompleted = report.getReportDefinition();
