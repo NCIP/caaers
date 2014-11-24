@@ -21,11 +21,11 @@ public class AdverseEventReportingPeriodSynchronizer implements Migrator<Adverse
 
     public void migrate(AdverseEventReportingPeriod src, AdverseEventReportingPeriod dest, DomainObjectImportOutcome<AdverseEventReportingPeriod> outcome) {
 
-         dest.setStartDate(src.getStartDate());
-         dest.setEndDate(src.getEndDate());
-         dest.setCycleNumber(src.getCycleNumber());
-         dest.setEpoch(src.getEpoch());
-         dest.setExternalId(src.getExternalId());
+         if(src.getStartDate() != null) dest.setStartDate(src.getStartDate());
+         if(src.getEndDate() != null) dest.setEndDate(src.getEndDate());
+         if(src.getCycleNumber() != null) dest.setCycleNumber(src.getCycleNumber());
+         if(src.getEpoch() != null) dest.setEpoch(src.getEpoch());
+         if(src.getExternalId() != null) dest.setExternalId(src.getExternalId());
 
          int i = -1;
          for(AdverseEvent aeSrc : src.getAdverseEvents()){
@@ -38,11 +38,11 @@ public class AdverseEventReportingPeriodSynchronizer implements Migrator<Adverse
                 if(aeFound.getGradedDate() == null) aeFound.setGradedDate(new Date());
                 dest.addAdverseEvent(aeFound);
             } else {
-                aeFound.setExpected(aeSrc.getExpected());
-                aeFound.setHospitalization(aeSrc.getHospitalization());
-                aeFound.setAttributionSummary(aeSrc.getAttributionSummary());
-                aeFound.setStartDate(aeSrc.getStartDate());
-                aeFound.setEndDate(aeSrc.getEndDate());
+                if(aeSrc.getExpected() != null) aeFound.setExpected(aeSrc.getExpected());
+                if(aeSrc.getHospitalization() != null) aeFound.setHospitalization(aeSrc.getHospitalization());
+                if(aeSrc.getAttributionSummary() != null) aeFound.setAttributionSummary(aeSrc.getAttributionSummary());
+                if(aeSrc.getStartDate() != null) aeFound.setStartDate(aeSrc.getStartDate());
+                if(aeSrc.getEndDate() != null)  aeFound.setEndDate(aeSrc.getEndDate());
                 if(StringUtils.isBlank(aeFound.getReporterEmail())){
                 	aeFound.setReporterEmail(aeSrc.getReporterEmail());
                 }
@@ -53,35 +53,35 @@ public class AdverseEventReportingPeriodSynchronizer implements Migrator<Adverse
                 // Ensuring that previous and new are CTC terms.
                 if ( aeFound.getAdverseEventTerm() instanceof AdverseEventCtcTerm && aeSrc.getAdverseEventTerm() instanceof AdverseEventCtcTerm ) {     // Refers to CTC terminology.
                     // Copy the CTC values from the Src.
-                    aeFound.getAdverseEventTerm().setTerm(aeSrc.getAdverseEventTerm().getTerm());
-                    aeFound.setOtherSpecify(aeSrc.getOtherSpecify());
-                    ((AdverseEventCtcTerm) aeFound.getAdverseEventTerm()).setCtcTerm(((AdverseEventCtcTerm) aeSrc.getAdverseEventTerm()).getCtcTerm());
+                    if(aeSrc.getAdverseEventTerm().getTerm() != null) aeFound.getAdverseEventTerm().setTerm(aeSrc.getAdverseEventTerm().getTerm());
+                    if(aeSrc.getOtherSpecify() != null) aeFound.setOtherSpecify(aeSrc.getOtherSpecify());
+                    if(((AdverseEventCtcTerm) aeSrc.getAdverseEventTerm()).getCtcTerm() != null) ((AdverseEventCtcTerm) aeFound.getAdverseEventTerm()).setCtcTerm(((AdverseEventCtcTerm) aeSrc.getAdverseEventTerm()).getCtcTerm());
 
                     if ( aeSrc.getAdverseEventTerm().isOtherRequired()) {
-                        aeFound.getAdverseEventMeddraLowLevelTerm().setTerm(aeSrc.getAdverseEventMeddraLowLevelTerm().getTerm());
-                        aeFound.getAdverseEventMeddraLowLevelTerm().setLowLevelTerm(aeSrc.getAdverseEventMeddraLowLevelTerm().getLowLevelTerm());
+                        if(aeSrc.getAdverseEventMeddraLowLevelTerm().getTerm() != null) aeFound.getAdverseEventMeddraLowLevelTerm().setTerm(aeSrc.getAdverseEventMeddraLowLevelTerm().getTerm());
+                        if(aeSrc.getAdverseEventMeddraLowLevelTerm().getLowLevelTerm() != null) aeFound.getAdverseEventMeddraLowLevelTerm().setLowLevelTerm(aeSrc.getAdverseEventMeddraLowLevelTerm().getLowLevelTerm());
                     }
                 } else { // Refers to MEDRAA terminology.
                     if ( aeFound.getAdverseEventTerm() instanceof AdverseEventMeddraLowLevelTerm && aeSrc.getAdverseEventTerm() instanceof AdverseEventMeddraLowLevelTerm ) {
-                        aeFound.setLowLevelTerm(aeSrc.getLowLevelTerm());
-                        aeFound.getAdverseEventMeddraLowLevelTerm().setTerm(aeSrc.getAdverseEventMeddraLowLevelTerm().getTerm());
-                        aeFound.getAdverseEventMeddraLowLevelTerm().setLowLevelTerm(aeSrc.getAdverseEventMeddraLowLevelTerm().getLowLevelTerm());
+                        if(aeSrc.getLowLevelTerm() != null) aeFound.setLowLevelTerm(aeSrc.getLowLevelTerm());
+                        if(aeSrc.getAdverseEventMeddraLowLevelTerm().getTerm() != null) aeFound.getAdverseEventMeddraLowLevelTerm().setTerm(aeSrc.getAdverseEventMeddraLowLevelTerm().getTerm());
+                        if(aeSrc.getAdverseEventMeddraLowLevelTerm().getLowLevelTerm() != null) aeFound.getAdverseEventMeddraLowLevelTerm().setLowLevelTerm(aeSrc.getAdverseEventMeddraLowLevelTerm().getLowLevelTerm());
                     }
 
                 }
 
-                aeFound.setEventApproximateTime(aeSrc.getEventApproximateTime());
-                aeFound.setEventLocation(aeSrc.getEventLocation());
+                if(aeSrc.getEventApproximateTime() != null) aeFound.setEventApproximateTime(aeSrc.getEventApproximateTime());
+                if(aeSrc.getEventLocation() != null) aeFound.setEventLocation(aeSrc.getEventLocation());
 
-                aeFound.setGrade(aeSrc.getGrade());
+                if(aeSrc.getGrade() != null) aeFound.setGrade(aeSrc.getGrade());
                 // Update only when there is a valid value is present.
                 if ( aeSrc.getGradedDate() != null) aeFound.setGradedDate(aeSrc.getGradedDate());
 
-                aeFound.setDetailsForOther(aeSrc.getDetailsForOther());
-                aeFound.setComments(aeSrc.getComments());
-                aeFound.setParticipantAtRisk(aeSrc.getParticipantAtRisk());
-                aeFound.setRequiresReporting(aeSrc.getRequiresReporting());
-                aeFound.setReported(aeSrc.getReported());
+                if(aeSrc.getDetailsForOther() != null) aeFound.setDetailsForOther(aeSrc.getDetailsForOther());
+                if(aeSrc.getComments() != null) aeFound.setComments(aeSrc.getComments());
+                if(aeSrc.getParticipantAtRisk() != null) aeFound.setParticipantAtRisk(aeSrc.getParticipantAtRisk());
+                if(aeSrc.getRequiresReporting() != null) aeFound.setRequiresReporting(aeSrc.getRequiresReporting());
+                if(aeSrc.getReported() != null) aeFound.setReported(aeSrc.getReported());
 
 
                 aeFound.getOutcomes().clear();

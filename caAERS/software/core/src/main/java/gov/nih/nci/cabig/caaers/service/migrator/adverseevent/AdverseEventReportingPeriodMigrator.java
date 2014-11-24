@@ -47,12 +47,6 @@ public class AdverseEventReportingPeriodMigrator extends CompositeMigrator<Adver
     }
 
     public void preMigrate(AdverseEventReportingPeriod src, AdverseEventReportingPeriod dest, DomainObjectImportOutcome<AdverseEventReportingPeriod> outcome) {
-  /*     if(CollectionUtils.isEmpty(src.getAdverseEvents())) {
-           logger.error("Missing adverse events in the input");
-           outcome.addError("WS_AEMS_025", "Missing adverse events data");
-           return;
-       }
-       */
 
         // Check for Treatment Assignment Codes.
         if ( !((src.getTreatmentAssignment().getCode().equalsIgnoreCase("Other") && StringUtils.isNotBlank(src.getTreatmentAssignmentDescription()) && !src.getTreatmentAssignmentDescription().equalsIgnoreCase("N/A") ) ||
