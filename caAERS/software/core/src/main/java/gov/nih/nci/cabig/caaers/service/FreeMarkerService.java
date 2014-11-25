@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.HashMap;
 import java.util.Map;
 
 import freemarker.core.Environment;
@@ -32,16 +33,28 @@ public class FreeMarkerService {
 	/**
 	 * applyRuntimeReplacementsForReport
 	 * @param rawText
-	 * @param variableMap
+	 * @param replacements
 	 * @return
 	 */
-	public String applyRuntimeReplacementsForReport(final String rawText, final Map<Object, Object> variableMap) {
+	public String applyRuntimeReplacementsForReport(final String rawText, final Map<Object, Object> replacements) {
 	   if(rawText == null) return "";
+
+        //clean null values in Map
+        final Map<Object, Object> variableMap =  new HashMap<Object, Object>();
+        if(replacements != null) {
+            for(Map.Entry<Object, Object> entry : replacements.entrySet()) {
+                if(entry.getValue() != null) {
+                    variableMap.put(entry.getKey(), entry.getValue());
+                }  else {
+                    log.warn("Entry value is null, ignoring key : " + entry.getKey());
+                }
+            }
+        }
 	   
 		Configuration cfg = new Configuration();
         cfg.setTemplateExceptionHandler(new TemplateExceptionHandler() {
             public void handleTemplateException(TemplateException e, Environment environment, Writer writer) throws TemplateException {
-                 log.error("Error while replacing variables", e);
+                 log.warn("Error while replacing variables", e);
                  if(log.isDebugEnabled()) {
                      log.debug("rawText :" + rawText);
                      log.debug("variableMap :" + String.valueOf(variableMap));

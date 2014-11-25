@@ -42,7 +42,7 @@ public class FreeMarkerServiceTest extends TestCase {
 			String replacedText = service.applyRuntimeReplacementsForReport(text, varMap);
             assertEquals("Hello _!!", replacedText);
         } catch (Exception e) {
-            fail("Must throw exception");
+            fail("Must not throw exception");
 		}
 		
 	}
@@ -59,5 +59,18 @@ public class FreeMarkerServiceTest extends TestCase {
 			fail();
 		}
 		
+	}
+	public void testApplyRuntimeReplacementsForReport_NullValue() {
+		try {
+			Map<Object, Object> varMap = new HashMap<Object, Object>();
+			varMap.put("REP", null);
+			String text = "Hello ${REP}!!";
+			FreeMarkerService service = new FreeMarkerService();
+            String replacedText = service.applyRuntimeReplacementsForReport(text, varMap);
+            assertEquals("Hello _!!", replacedText);
+		} catch (Exception e) {
+			fail();
+		}
+
 	}
 }
