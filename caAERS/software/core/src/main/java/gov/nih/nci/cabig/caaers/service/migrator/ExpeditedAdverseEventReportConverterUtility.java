@@ -979,11 +979,10 @@ public class ExpeditedAdverseEventReportConverterUtility {
 			reporter.setPhoneNumber(getPhone(xmlReporterType.getContactMechanism()));
 			reporter.setFax(getFax(xmlReporterType.getContactMechanism()));
             reporter.setFaxNumber(getFax(xmlReporterType.getContactMechanism()));
-            if(getAlternateEmail(xmlReporterType.getContactMechanism()) != null && mv.isValid(
-            		getAlternateEmail(xmlReporterType.getContactMechanism()))){
+            String altEmail = getAlternateEmail(xmlReporterType.getContactMechanism());
+            if(altEmail != null && mv.isValid(altEmail)){
             	// CAAERS-7031 replace semi-colon(;) with comma(,) trim white space
-            	reporter.setAlternateEmailAddress(CaaersUtils.getEmailStringWithoutSemiColonsAndSpaces(
-            			reporter.getAlternateEmailAddress()));
+            	reporter.setAlternateEmailAddress(CaaersUtils.getEmailStringWithoutSemiColonsAndSpaces(altEmail));
             }
 		}
 		
