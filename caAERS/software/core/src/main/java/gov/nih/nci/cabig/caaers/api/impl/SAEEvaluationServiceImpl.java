@@ -418,7 +418,7 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
     /**
      * Find the corresponding applicable report table value of the recommended table value.
      * @param applicableRows
-     * @param recommRow
+     * @param reportName
      * @return
      */
 
@@ -733,7 +733,7 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 	}
 	
 	private void manageAdverseEventRecommendedReports(Map<AdverseEvent, AdverseEventResult> mapAE2DTO, RequestType requestType,EvaluationResultDTO dto ){
-		 Map<AdverseEvent,List<ReportDefinition>> adverseEventReportDefinitionMap = evaluationService.getAdverseEventRecommendedReportsMap();
+		 Map<AdverseEvent,List<ReportDefinition>> adverseEventReportDefinitionMap = dto.getAdverseEventRecommendedReportsMap();
 		 for (Map.Entry<AdverseEvent, List<ReportDefinition>> entry : adverseEventReportDefinitionMap.entrySet()) {
 					AdverseEvent ae = entry.getKey();
 					List<ReportDefinition> rds = entry.getValue();

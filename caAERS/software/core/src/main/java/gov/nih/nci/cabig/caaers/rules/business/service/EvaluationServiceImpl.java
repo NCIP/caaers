@@ -60,12 +60,6 @@ public class EvaluationServiceImpl implements EvaluationService {
     private ReportDefinitionDao reportDefinitionDao;
 
     private OrganizationDao organizationDao;
-    
-    private Map<AdverseEvent,List<ReportDefinition>> adverseEventRecommendedReportsMap = new HashMap<AdverseEvent, List<ReportDefinition>>();
-    
-    public Map<AdverseEvent, List<ReportDefinition>> getAdverseEventRecommendedReportsMap() {
-		return adverseEventRecommendedReportsMap;
-	}
 
 	ReportDefinitionFilter reportDefinitionFilter;
     
@@ -200,7 +194,7 @@ public class EvaluationServiceImpl implements EvaluationService {
             map = new HashMap<AdverseEvent, List<String>>();
             
             // clear the recommended reports map
-            adverseEventRecommendedReportsMap.clear();
+           evaluationResult.getAdverseEventRecommendedReportsMap().clear();
             
             //clean up - by eliminating the deleted report definitions.
             for(Map.Entry<AdverseEvent, List<AdverseEventEvaluationResult>> entry : adverseEventEvaluationResultMap.entrySet()){
@@ -217,7 +211,7 @@ public class EvaluationServiceImpl implements EvaluationService {
                 		}
                 	}
                 }
-                adverseEventRecommendedReportsMap.put(adverseEvent, new ArrayList<ReportDefinition>(recommendedAeReports));
+                evaluationResult.getAdverseEventRecommendedReportsMap().put(adverseEvent, new ArrayList<ReportDefinition>(recommendedAeReports));
                 
 
                 List<String> validReportDefNames   = new ArrayList<String>();
@@ -275,7 +269,7 @@ public class EvaluationServiceImpl implements EvaluationService {
 
             }
             
-            for(Map.Entry<AdverseEvent,List<ReportDefinition>> entry : adverseEventRecommendedReportsMap.entrySet()){
+            for(Map.Entry<AdverseEvent,List<ReportDefinition>> entry : evaluationResult.getAdverseEventRecommendedReportsMap().entrySet()){
             	List<ReportDefinition> filteredRdList = reportDefinitionFilter.filter(entry.getValue());
             	entry.setValue(filteredRdList);
             }
