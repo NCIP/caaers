@@ -76,6 +76,5 @@ public interface EvaluationService {
      * @return
      */
     SafetyRuleEvaluationResultDTO evaluateSafetySignallingRules(ObservedAdverseEventProfile observedAEProfile);
-    
-    Map<AdverseEvent,List<ReportDefinition>> getAdverseEventRecommendedReportsMap();
+
 }

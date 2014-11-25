@@ -80,8 +80,16 @@ public class EvaluationResultDTO {
 	
 	/** The create map. */
 	Map<Integer, Set<ReportDefinitionWrapper>> createMap = new  HashMap<Integer, Set<ReportDefinitionWrapper>>();
-	
-	/**
+
+    //added for unreported sae notification CAAERS-7044
+    private Map<AdverseEvent,List<ReportDefinition>> adverseEventRecommendedReportsMap = new HashMap<AdverseEvent, List<ReportDefinition>>();
+
+    public Map<AdverseEvent, List<ReportDefinition>> getAdverseEventRecommendedReportsMap() {
+        return adverseEventRecommendedReportsMap;
+    }
+
+
+    /**
 	 * Will find the report definition, matching by name, from aeReportIndexMap.
 	 *
 	 * @param aeReportId the ae report id
