@@ -311,12 +311,12 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
                 ((SaveAndEvaluateAEsOutputMessage)response).setLinkToReport(constructLinkToReport(study.getId(),reportingPeriod.getParticipant().getId(), reportingPeriod.getId()));
             }
 			
-			EvaluationResultDTO dto = evaluationService.evaluateSAERules(reportingPeriod);
+			EvaluationResultDTO dto = evaluationService.evaluateSAERules(reportingPeriod, false);
 
             findRecommendedActions(dto, reportingPeriod, response);
             populateActionTextAndDueDate(response);
             // create/update/delete AE recommended reports
-            manageAdverseEventRecommendedReports(mapAE2DTO, requestType, dto);
+            manageAdverseEventRecommendedReports(requestType, dto);
 
             //retrieve all the SAEs identified by rules engine.
             Set<AdverseEvent> seriousAdverseEvents = dto.getAllSeriousAdverseEvents();
@@ -732,7 +732,7 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 		return study;
 	}
 	
-	private void manageAdverseEventRecommendedReports(Map<AdverseEvent, AdverseEventResult> mapAE2DTO, RequestType requestType,EvaluationResultDTO dto ){
+	private void manageAdverseEventRecommendedReports(RequestType requestType, EvaluationResultDTO dto ){
 		 Map<AdverseEvent,List<ReportDefinition>> adverseEventReportDefinitionMap = dto.getAdverseEventRecommendedReportsMap();
 		 for (Map.Entry<AdverseEvent, List<ReportDefinition>> entry : adverseEventReportDefinitionMap.entrySet()) {
 					AdverseEvent ae = entry.getKey();

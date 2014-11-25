@@ -6,8 +6,6 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.utils;
 
-import gov.nih.nci.cabig.caaers.integration.schema.study.Studies;
-
 /**
  * 
  * @author Ramakrishna Gundala
