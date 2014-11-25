@@ -79,7 +79,7 @@ public class EvaluationServiceImpl implements EvaluationService {
      * @param reportingPeriod
      * @return
      */
-    public EvaluationResultDTO evaluateSAERules(AdverseEventReportingPeriod reportingPeriod){
+    public EvaluationResultDTO evaluateSAERules(AdverseEventReportingPeriod reportingPeriod, boolean ignoreOldEvents){
     	assert reportingPeriod != null : "Reporting period should not be null";
     	EvaluationResultDTO  result = new EvaluationResultDTO();
     	
@@ -91,7 +91,7 @@ public class EvaluationServiceImpl implements EvaluationService {
     	// CAAERS-4881 : have to remove unmodified duplicate adverse events from the newly added adverse events;
     	
     	if(aeReports != null && !aeReports.isEmpty()){
-    		removeUnModifiedDuplicateAdverseEvents(newlyAddedAdverseEvents, aeReports.get(aeReports.size()-1));
+    		removeUnModifiedDuplicateAdverseEvents(newlyAddedAdverseEvents, aeReports.get(aeReports.size()-1), ignoreOldEvents);
     	}
     	
     	//find the evaluation for default (new data collection)
@@ -115,7 +115,7 @@ public class EvaluationServiceImpl implements EvaluationService {
         		
         		List<AdverseEvent> allAdverseEvents = new ArrayList<AdverseEvent>(newlyAddedAdverseEvents);
         		allAdverseEvents.addAll(aeReport.getAdverseEvents());
-        		removeUnModifiedDuplicateAdverseEvents(evaluatableAdverseEvents, aeReport);
+        		removeUnModifiedDuplicateAdverseEvents(evaluatableAdverseEvents, aeReport, ignoreOldEvents);
         		if(!evaluatableAdverseEvents.isEmpty()) findRequiredReportDefinitions(aeReport, evaluatableAdverseEvents, reportingPeriod.getStudy(), result);
         		result.addAllAdverseEvents(aeReport.getId(), allAdverseEvents);
         		
@@ -147,13 +147,14 @@ public class EvaluationServiceImpl implements EvaluationService {
     }
     
     
-    private void removeUnModifiedDuplicateAdverseEvents(List<AdverseEvent> adverseEvents, ExpeditedAdverseEventReport aeReport){
+    private void removeUnModifiedDuplicateAdverseEvents(List<AdverseEvent> adverseEvents, ExpeditedAdverseEventReport aeReport, boolean ignoreOldEvents){
     	Iterator<AdverseEvent> aeIterator = adverseEvents.iterator();
     	while(aeIterator.hasNext()){
     		AdverseEvent ae = aeIterator.next();
     		if(aeReport.doesAnotherAeWithSameTermExist(ae) != null){
     			// remove the AE from evaluation input if the AE is already part of the report and is not modified according to the signature
-    			if(ae.getAddedToReportAtLeastOnce() != null && ae.getAddedToReportAtLeastOnce() && !ae.isModified()){
+    			//CAAERS-7042 ; report the event regardless of modification.
+    			if(ae.getAddedToReportAtLeastOnce() != null && ae.getAddedToReportAtLeastOnce() && (!ae.isModified() && ignoreOldEvents)){
     				aeIterator.remove();
     			}
     		}

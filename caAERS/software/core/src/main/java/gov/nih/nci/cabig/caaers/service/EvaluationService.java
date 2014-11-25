@@ -59,9 +59,10 @@ public interface EvaluationService {
     /**
      * This method evaluates the SAE reporting rules on the reporting period.
      * @param reportingPeriod
+     * @param ignoreOldEvents flag if old events should be filtered out (true) or if all events should be evaluated (false)
      * @return
      */
-	EvaluationResultDTO evaluateSAERules(AdverseEventReportingPeriod reportingPeriod);
+	EvaluationResultDTO evaluateSAERules(AdverseEventReportingPeriod reportingPeriod, boolean ignoreOldEvents);
 
    
     /**

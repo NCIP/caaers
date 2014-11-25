@@ -221,7 +221,7 @@ public class EvaluationServiceTest extends AbstractTestCase {
 
 		EvaluationResultDTO result;
 		try {
-			result = service.evaluateSAERules(reportingPeriod);
+			result = service.evaluateSAERules(reportingPeriod, true);
 			fail("must have thrown caaers system exception");
 		} catch (CaaersSystemException e) {
 		}
@@ -289,7 +289,7 @@ public class EvaluationServiceTest extends AbstractTestCase {
 
 		replayMocks();
 
-		EvaluationResultDTO result = service.evaluateSAERules(reportingPeriod);
+		EvaluationResultDTO result = service.evaluateSAERules(reportingPeriod, true);
 	
 		assertEquals(3, result.getAdverseEventIndexMap().get(ZERO).get(ae2).size());
 		assertTrue( result.getAdverseEventIndexMap().get(ZERO).get(ae2).containsAll(Arrays.asList(rd1, rd2, rd3)));
@@ -381,7 +381,7 @@ public class EvaluationServiceTest extends AbstractTestCase {
 
 		replayMocks();
 
-		EvaluationResultDTO result = service.evaluateSAERules(reportingPeriod);
+		EvaluationResultDTO result = service.evaluateSAERules(reportingPeriod, true);
 
 //		assertEquals(1, result.getAeIndexMap().get(ae1).size());
 //		assertEquals(1, result.getAeIndexMap().get(ae2).size());
@@ -529,7 +529,7 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		
 		replayMocks();
 
-		EvaluationResultDTO result = service.evaluateSAERules(reportingPeriod);
+		EvaluationResultDTO result = service.evaluateSAERules(reportingPeriod, true);
 		
 		//alert
 		assertTrue(result.getAeReportAlertMap().get(ZERO));
@@ -676,7 +676,7 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		
 		replayMocks();
 
-		EvaluationResultDTO result = service.evaluateSAERules(reportingPeriod);
+		EvaluationResultDTO result = service.evaluateSAERules(reportingPeriod, true);
 		
 		//alert
 		assertTrue(result.getAeReportAlertMap().get(ZERO));
@@ -827,7 +827,7 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		
 		replayMocks();
 
-		EvaluationResultDTO result = service.evaluateSAERules(reportingPeriod);
+		EvaluationResultDTO result = service.evaluateSAERules(reportingPeriod, true);
 		
 		//alert
 		assertTrue(result.getAeReportAlertMap().get(ZERO));
@@ -974,7 +974,7 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		
 		replayMocks();
 
-		EvaluationResultDTO result = service.evaluateSAERules(reportingPeriod);
+		EvaluationResultDTO result = service.evaluateSAERules(reportingPeriod, true);
 		
 		//alert
 		assertTrue(result.getAeReportAlertMap().get(aeReport1.getId()));
@@ -1077,7 +1077,7 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		expect(aeReport1.findReportsToWithdraw(rd1)).andReturn(new ArrayList<Report>());
 		replayMocks();
 
-		EvaluationResultDTO result = service.evaluateSAERules(reportingPeriod);
+		EvaluationResultDTO result = service.evaluateSAERules(reportingPeriod, true);
 		
 		Set<ReportDefinitionWrapper> wrappers = result.getAmendmentMap().get(new Integer(0));
 		assertTrue(wrappers.isEmpty());
@@ -1217,7 +1217,7 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		expect(aeReport1.findReportsToWithdraw(rdx)).andReturn(new ArrayList<Report>());
     	
     	replayMocks();
-    	EvaluationResultDTO result = service.evaluateSAERules(reportingPeriod);
+    	EvaluationResultDTO result = service.evaluateSAERules(reportingPeriod, true);
     	assertTrue(result.isAlertRecommended());
     	assertTrue(result.getAeReportAlertMap().get(new Integer(1))); //aeReport1
 
@@ -1335,7 +1335,7 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		expect(aeReport1.findReportsToWithdraw(rd1)).andReturn(new ArrayList<Report>());
 		replayMocks();
 
-		EvaluationResultDTO result = service.evaluateSAERules(reportingPeriod);
+		EvaluationResultDTO result = service.evaluateSAERules(reportingPeriod, true);
 		assertFalse(result.getAeReportAlertMap().get(new Integer(0)));
 		assertFalse(result.getAeReportAlertMap().get(new Integer(1)));
 		
@@ -1453,7 +1453,7 @@ public class EvaluationServiceTest extends AbstractTestCase {
 
         replayMocks();
 
-		EvaluationResultDTO result = service.evaluateSAERules(reportingPeriod);
+		EvaluationResultDTO result = service.evaluateSAERules(reportingPeriod, true);
 		//alert
 		assertFalse(result.getAeReportAlertMap().get(new Integer(0)));
 		assertFalse(result.getAeReportAlertMap().get(new Integer(1)));
@@ -1566,7 +1566,7 @@ public class EvaluationServiceTest extends AbstractTestCase {
 		expect(aeReport1.findReportsToWithdraw(rd1)).andReturn(new ArrayList<Report>());
 		replayMocks();
 
-		EvaluationResultDTO result = service.evaluateSAERules(reportingPeriod);
+		EvaluationResultDTO result = service.evaluateSAERules(reportingPeriod, true);
 		assertFalse(result.getAeReportAlertMap().get(new Integer(0)));
 		assertFalse(result.getAeReportAlertMap().get(new Integer(1)));
 		
