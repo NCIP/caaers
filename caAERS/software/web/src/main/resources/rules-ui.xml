@@ -450,6 +450,15 @@
                 <expression>factResolver.assertFact(aeReport,'gov.nih.nci.cabig.caaers.domain.StudyTherapyType','studyTherapyType','runTimeValue','runTimeOperator')</expression>
                 <grammer prefix=" Intervention " postfix="."/>
             </field>
+            <field>
+                <field-value>
+                    <input-type>select</input-type>
+                </field-value>
+                <valid-value value="Microbiology" display-uri="Microbiology" readable-text="Microbiology"/>
+                <operator name="==" display-uri="Equal To" readable-text="is "/>
+                <expression>factResolver.assertFact(aeReport,'gov.nih.nci.cabig.caaers.domain.LabCategory','labCategory','runTimeValue','runTimeOperator')</expression>
+                <grammer prefix=" Lab category " postfix="."/>
+            </field>
 
             <!-- Has NCI IND -->
             <field name="hasNciIndAgent" display-uri="IND held by NCI">
