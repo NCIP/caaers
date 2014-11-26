@@ -48,9 +48,13 @@ public class RuleTab extends DefaultTab {
     	for(Rule rule: command.getRuleSet().getRule()){
             i++;
     		int j = -1;
+
+            if(rule.isMarkedDelete()) continue; //ignore rules that are marked to delete
+
     		for(Column column: rule.getCondition().getColumn()){
 
                 j++;
+                if(column.isMarkedDelete()) continue; //ignore columns that are marked to delete
 
     			if(column.getObjectType() == null || column.getObjectType().equals(""))
     				errors.rejectValue("ruleSet.rule[" + i + "].condition.column[" + j + "].objectType", "RUL_016");

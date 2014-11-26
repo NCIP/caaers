@@ -1283,28 +1283,26 @@ div#createNew h3, div.section h3 {
             <div id="rule-${ruleCount + 1}">
               <chrome:division title="Rule - (${ruleCount + 1})" id="rule-div-${ruleCount + 1 }" collapsable="true" collapsed="${collapsedCheck}" deleteParams="${ruleCount + 1}" enableDelete="true" >
               <div id="rule-condition-action-container-${ruleCount + 1}">
-                <div class="row" value="${command.ruleSet.rule[ruleCount]}"
-					id="rule-${ruleCount + 1}-columns">
-                  <c:forEach varStatus="columnStatus" begin="0"
-					items="${command.ruleSet.rule[ruleCount].condition.column}">
-                    <c:set var="columnCount" value="${columnStatus.index}" />
-                    <div id="rule-${ruleCount}-column-${columnCount}" style="font-weight:bold;" class="lineitem one-condition"  ${command.ruleSet.rule[ruleCount].condition.column[columnCount].markedDelete ? 'visibility:hidden' : ''}>
-                      <c:choose>
-                        <c:when test="${columnCount == 0}">
+                <div class="row" value="${command.ruleSet.rule[ruleCount]}" id="rule-${ruleCount + 1}-columns">
+                  <c:set var="firstColumn" value="${true}" />
+                  <c:forEach varStatus="columnStatus" begin="0" items="${command.ruleSet.rule[ruleCount].condition.column}" var="curColumn">
+                   <c:if test="${not curColumn.markedDelete}">
+                        <c:set var="columnCount" value="${columnStatus.index}" />
+                        <div id="rule-${ruleCount}-column-${columnCount}" style="font-weight:bold;" class="lineitem one-condition"  ${command.ruleSet.rule[ruleCount].condition.column[columnCount].markedDelete ? 'visibility:hidden' : ''}>
+
+                    <c:choose>
+                        <c:when test="${firstColumn}">
                           <label for="IF" style="padding-left:9px; margin-right:8px;">If</label>
-                          </c:when>
+                            <c:set var="firstColumn" value="${false}" />
+                        </c:when>
                         <c:otherwise>
                           <label for="AND">And</label>
                         </c:otherwise>
                       </c:choose>
                      <span>
-                      <form:select 
-						path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].objectType"
-						id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].objectType"
-						onchange="handleDomainObjectonChange(this, ${ruleCount})">
+                      <form:select  path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].objectType" id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].objectType" onchange="handleDomainObjectonChange(this, ${ruleCount})">
                         <form:option value="">Please select domain object</form:option>
-                        <form:options items="${command.ruleUi.condition[0].domainObject}"
-							itemLabel="displayUri" itemValue="className" />
+                        <form:options items="${command.ruleUi.condition[0].domainObject}" itemLabel="displayUri" itemValue="className" />
                       </form:select>
                       <tags:errors path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].objectType"/>
                       <!-- set domain-object display-uri to column -->
@@ -1716,7 +1714,7 @@ div#createNew h3, div.section h3 {
 							src="<c:url value="/images/rule/remove_condition.gif" />" align="absmiddle"
 							style="cursor:hand;  border:0px" /> </a> </c:if>
                     </div>
-                    
+                   </c:if>
                   </c:forEach>
                 </div>
 				<div class="new_condition">

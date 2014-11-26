@@ -260,8 +260,7 @@ public class RuleAjaxFacade {
         Rule rule = ruleSet.getRule().get(ruleCount);
 
         rule.getCondition().getColumn().get(columnCount).setMarkedDelete(true);
-        
-        rule.getCondition().getColumn().remove(columnCount);
+
         return true;
         //return rule.getCondition().getColumn().get(columnCount) != null;
 

@@ -133,7 +133,22 @@ public class CreateRuleCommand implements RuleInputCommand {
         for(Rule rule: rules){
             if(rule.isMarkedDelete()){
                 getRuleSet().getRule().remove(rule);
+                continue;
             }
+
+            if(rule.getCondition() != null) {
+
+                if(rule.getCondition().getColumn() != null) {
+                    List<Column> columns = new ArrayList<Column>(rule.getCondition().getColumn());
+                    for(Column column : columns) {
+                        if(column.isMarkedDelete()) {
+                            rule.getCondition().getColumn().remove(column); //remove the unwanted column
+                        }
+                    }
+                }
+
+            }
+
         }
 
     }
