@@ -312,8 +312,26 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
             }
 			
 			EvaluationResultDTO dto = evaluationService.evaluateSAERules(reportingPeriod, false);
+			
+			List<AdverseEvent> neae = reportingPeriod.getNonExpeditedAdverseEvents();
+			List<Integer> oldAe = new ArrayList<Integer>();
+			List<ExpeditedAdverseEventReport> aeReportList = reportingPeriod.getAeReports();
+			if(aeReportList != null && !aeReportList.isEmpty() && neae != null) {
+				ExpeditedAdverseEventReport aeReport = aeReportList.get(aeReportList.size()-1);
+				Iterator<AdverseEvent> aeIterator = neae.iterator();
+		    	while(aeIterator.hasNext()){
+		    		AdverseEvent ae = aeIterator.next();
+		    		if(aeReport.doesAnotherAeWithSameTermExist(ae) != null){
+		    			// remove the AE from evaluation input if the AE is already part of the report and is not modified according to the signature
+		    			//CAAERS-7042 ; report the event regardless of modification.
+		    			if(ae.getAddedToReportAtLeastOnce() != null && ae.getAddedToReportAtLeastOnce() && !ae.isModified()){
+		    				oldAe.add(ae.getId());
+		    			}
+		    		}
+		    	}
+			}
 
-            findRecommendedActions(dto, reportingPeriod, response);
+            findRecommendedActions(dto, reportingPeriod, response, oldAe);
             populateActionTextAndDueDate(response);
             // create/update/delete AE recommended reports
             manageAdverseEventRecommendedReports(requestType, dto);
@@ -382,7 +400,7 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
      * @param reportingPeriod
      * @param response
      */
-    private void findRecommendedActions(EvaluationResultDTO evaluationResult, AdverseEventReportingPeriod reportingPeriod, AEsOutputMessage response) {
+    private void findRecommendedActions(EvaluationResultDTO evaluationResult, AdverseEventReportingPeriod reportingPeriod, AEsOutputMessage response, List<Integer> oldRows) {
 
         List<RecommendedActions> recommendedActions = new ArrayList<RecommendedActions>();
 
@@ -407,11 +425,13 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 
         for ( Integer aeReportId : recommendedReportTableMap.keySet()){
 
-            List<ReportTableRow> applicableRows = applicableReportTableMap.get(aeReportId);
-
-            if ( applicableRows != null) {
-                findMatchingRecommendations(applicableRows, recommendedReportTableMap.get(aeReportId), recommendedActions, ignoredRows) ;
-            }
+        	if(!oldRows.contains(aeReportId)) {
+	            List<ReportTableRow> applicableRows = applicableReportTableMap.get(aeReportId);
+	
+	            if ( applicableRows != null) {
+	                findMatchingRecommendations(applicableRows, recommendedReportTableMap.get(aeReportId), recommendedActions, ignoredRows) ;
+	            }
+        	}
         }
     }
 
