@@ -19,13 +19,16 @@
         <cxfBCVersion>2010.01</cxfBCVersion>
         <smLibVersion>2010.01</smLibVersion>
         <smVersion>3.3.2</smVersion>
+        <activeMQVersion>5.3.0</activeMQVersion>
         <c2aVersion>2.8-M1</c2aVersion>
     </properties>
   <modules>
     <module>core-camel-su</module>
     <module>adeers-wsbc-su</module>
     <module>caaers-wsbc-su</module>
+    <module>core-jms-su</module>
     <module>caaers-adeers-sync-sa</module>
+
   </modules>
 
 

@@ -350,4 +350,31 @@ public class ReportTest extends AbstractNoSecurityTestCase {
         assertTrue(r.isWorkflowEnabled());
     }
 
+
+    public void testGetMetadataAsMap() {
+        assertNull(r.getMetaData());
+
+        Map<String, String>  m = r.getMetaDataAsMap();
+        assertTrue(m.isEmpty());
+        r.addToMetaData("x", "y");
+        r.addToMetaData("xid", "66");
+
+        Map<String, String> m2 = r.getMetaDataAsMap();
+        assertEquals(m2.get("x"), "y");
+        assertEquals(m2.get("xid"), "66");
+
+        r.removeFromMetaData("x");
+        r.addToMetaData("b", "j");
+
+        m2 = r.getMetaDataAsMap();
+        assertEquals(m2.get("b"), "j");
+        assertEquals(m2.get("xid"), "66");
+        assertNull(m2.get("x"));
+        r.removeFromMetaData("xid");
+        r.removeFromMetaData("b");
+        m2 = r.getMetaDataAsMap();
+        assertTrue(m2.isEmpty());
+
+    }
+
 }

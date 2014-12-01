@@ -101,6 +101,7 @@
     <bean id="resetOriginalMessageProcessor" class="gov.nih.nci.cabig.report2caaers.exchange.ResetOriginalMessageProcessor"/>
     
     <bean id="xslt" class="gov.nih.nci.cabig.caaers2adeers.xslt.CustomXsltComponent" />
+    <bean id="adeersReportSubmissionProcessor" class="gov.nih.nci.cabig.report2adeers.exchange.AdeersReportSubmissionProcessor" />
     
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
     	<property name="dataSource" ref="dataSource" />
@@ -162,6 +163,7 @@
     <bean id="toCaaersWebserviceRouteBuilder" class="gov.nih.nci.cabig.caaers2adeers.ToCaaersWebserviceRouteBuilder"/>
     <bean id="toCaaersParticipantWSRouteBuilder" class="gov.nih.nci.cabig.open2caaers.ToCaaersParticipantWSRouteBuilder"/>
     <bean id="fromRaveToCaaersWSRouteBuilder" class="gov.nih.nci.cabig.rave2caaers.FromRaveToCaaersWSRouteBuilder"/>
+    <bean id="adeersReportServiceRouteBuilder" class="gov.nih.nci.cabig.report2adeers.ToAdeersReportServiceRouteBuilder"  />
     <bean id="toCaaersReportWSRouteBuilder" class="gov.nih.nci.cabig.report2caaers.ToCaaersReportWSRouteBuilder">
     	<property name="inputEDIDir" value="s[safetyReportEDIInputDir]"/>
     	<property name="outputEDIDir" value="s[safetyReportEDIOutputDir]"/>

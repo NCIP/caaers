@@ -188,10 +188,13 @@ public class IntegrationLog{
         REQUEST_COMPLETION(999, "Message processing complete"),
         
         PRE_PROCESS_OPEN_ODM_MSG(12, "Add Exchange headers to OPEN ODM participant message"),
+
         PRE_PROCESS_EDI_MSG(13, "Remove EDI request message header and footers"),
         POST_PROCESS_EDI_MSG(14, "Add EDI response message header and footers"),
         E2B_SCHEMATRON_VALIDATION(15, "Perform E2B schematron validation") ,
         
+        REPORT_REQUEST(42, "caAERS Report submission request") ,
+        ADEERS_REPORT_REQUEST_TRANSFORMATION(43, "caAERS transformed to AdEERS XML") ,
         ADEERS_REPORT_SUBMISSION_RESPONSE(45, "AdEERS report submission response") ,
         ADEERS_REPORT_SUBMISSION_RESPONSE_TRASNSFORMATION(46, "AdEERS report submission response transformation") ,
         

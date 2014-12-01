@@ -19,6 +19,7 @@ import gov.nih.nci.cabig.caaers2adeers.track.FileTracker;
 import gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage;
 import gov.nih.nci.cabig.open2caaers.ToCaaersParticipantWSRouteBuilder;
 import gov.nih.nci.cabig.rave2caaers.FromRaveToCaaersWSRouteBuilder;
+import gov.nih.nci.cabig.report2adeers.ToAdeersReportServiceRouteBuilder;
 import gov.nih.nci.cabig.report2caaers.AdeersResponseToE2BAckRouteBuilder;
 import gov.nih.nci.cabig.report2caaers.ToCaaersReportWSRouteBuilder;
 
@@ -63,6 +64,8 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
     private ToCaaersReportWSRouteBuilder toCaaersReportWSRouteBuilder;
     @Autowired
     private AdeersResponseToE2BAckRouteBuilder adeersResponseToE2BAckRouteBuilder;
+    @Autowired
+    private ToAdeersReportServiceRouteBuilder adeersReportServiceRouteBuilder;
     
 	public FileTracker getFileTracker() {
 		return fileTracker;
@@ -239,6 +242,9 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
     	toCaaersReportWSRouteBuilder.configure(this);
     	//process adeers response and generate E2B ACK
     	adeersResponseToE2BAckRouteBuilder.configure(this);
+//
+        //for report submission to adeers
+        adeersReportServiceRouteBuilder.configure(this);
     	
     	//need to process AdEERS results, may be the SyncComponent...  
     	    	

@@ -76,7 +76,10 @@ public class ReportWithdrawalService {
 
         String msgComboId = report.getAeReport().getExternalId() + "::" + msgDF.format(report.getAeReport().getCreatedAt());
         sb.append("<MESSAGE_COMBO_ID>" + msgComboId + "</MESSAGE_COMBO_ID>");
-
+        String[] coorelationids = report.getCorrelationIds();
+        if(coorelationids != null && coorelationids.length > 0) {
+            sb.append("<CORRELATION_ID>").append(coorelationids[coorelationids.length - 1]).append("</CORRELATION_ID>");
+        }
         sb.append("<WITHDRAW>true</WITHDRAW>");
         //if there are external systems, send message via service mix
     	String externalXml = xml.replaceAll("<AdverseEventReport>", "<AdverseEventReport>" + sb.toString());
