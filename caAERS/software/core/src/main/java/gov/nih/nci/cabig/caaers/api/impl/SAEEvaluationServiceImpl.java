@@ -345,9 +345,6 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
             for(Entry<AdverseEvent, AdverseEventResult> aer : mapAE2DTO.entrySet()) {
             	final AdverseEvent ae = aer.getKey();
             	if(ae != null && ae.getRequiresReporting() != null && ae.getRequiresReporting() && !ae.isModified()) {
-            		if(aer.getValue() == null) {
-            			aer.setValue(new AdverseEventResult());
-            		}
             		aer.getValue().setRequiresReporting(true);
             		
             	}
