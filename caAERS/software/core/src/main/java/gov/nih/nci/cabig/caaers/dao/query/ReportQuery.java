@@ -6,7 +6,10 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.dao.query;
 
+import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.utils.CaaersUtils;
 
 public class ReportQuery extends AbstractQuery {
 	
@@ -29,6 +32,7 @@ public class ReportQuery extends AbstractQuery {
 	public ReportQuery() {
 		super("select distinct "+REPORT_ALIAS+" from Report " + REPORT_ALIAS);
 	}
+	
 	public void joinExpeditedAEReport() {
 		join (REPORT_ALIAS +".aeReport " + EXPEDITED_AE_REPORT_ALIAS);
 	}
@@ -193,5 +197,47 @@ public class ReportQuery extends AbstractQuery {
     	setParameter("eId" , expeditedReportId);
     	setParameter("rId" , reportDefinitionId);
     	
+    }
+    
+    
+    public void filterByStudyAndSubjectAndSubmissionStatusAndSearchIdentifier(Study study, Participant participant, 
+    		ReportStatus reportStatus, String searchIdentifier){
+    	if(study != null){
+    		joinReportingPeriod();
+    		joinStudy();
+    		andWhere(STUDY_ALIAS+".id " +  parseOperator("=") + " :studyId");
+	        setParameter("studyId", study.getId() );
+    	}
+    	if(participant != null){
+    		joinReportingPeriod();
+    		joinParticipant();
+    		andWhere(PARTICIPANT_ALIAS+".id " +  parseOperator("=") + " :participantId");
+	        setParameter("participantId", participant.getId() );
+    	}
+    	if(searchIdentifier != null){
+    		 joinExpeditedAEReport();
+    		 joinReportVersion();
+    		 
+	    	 orWhere("lower("+EXPEDITED_AE_REPORT_ALIAS+".externalId) " + parseOperator("like") + " :externalId");
+	         setParameter("externalId", getLikeValue(searchIdentifier.toLowerCase()) );
+	         orWhere("lower("+REPORT_ALIAS+".caseNumber) " + parseOperator("like") + " :caseNumber");
+	         setParameter("caseNumber", getLikeValue(searchIdentifier.toLowerCase()) );
+	         if(CaaersUtils.isAnInteger(searchIdentifier)){
+	        	 orWhere(REPORT_ALIAS+".id " + parseOperator("=") + " :reportId");
+	 	         setParameter("reportId", Integer.parseInt(searchIdentifier.toLowerCase()) );
+	         }
+	       
+	         orWhere("lower("+REPORT_VERSION_ALIAS+".assignedIdentifer) " + parseOperator("like") + " :assignedIdentifer");
+	         setParameter("assignedIdentifer", getLikeValue(searchIdentifier.toLowerCase()) );
+    	}
+    	
+    	if(reportStatus != null){
+    		if(searchIdentifier == null){
+    			joinReportVersion();
+    		}
+    		
+    		  andWhere(REPORT_VERSION_ALIAS+".reportStatus " + parseOperator("=") + " :reportStatus");
+ 	         setParameter("reportStatus", reportStatus);
+    	}
     }
 }

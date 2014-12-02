@@ -18,7 +18,9 @@ import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportContent;
@@ -41,6 +43,7 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+
 /**
  * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a>
  * @author Rhett Sutphin
@@ -54,7 +57,11 @@ public class ReportDaoTest extends DaoTestCase<ReportDao> {
     private ExpeditedAdverseEventReportDao aeDao;
 
     private ReportDefinitionDao rpDefDao;
-
+    
+    private StudyDao studyDao;
+    
+    private ParticipantDao participantDao;
+    
     @Override
     protected void setUp() throws Exception {
         super.setUp();
@@ -65,6 +72,9 @@ public class ReportDaoTest extends DaoTestCase<ReportDao> {
         aeDao = (ExpeditedAdverseEventReportDao) getApplicationContext().getBean(
                         "expeditedAdverseEventReportDao");
         rpDefDao = (ReportDefinitionDao) getApplicationContext().getBean("reportDefinitionDao");
+        
+        studyDao = (StudyDao) getApplicationContext().getBean("studyDao");
+        participantDao = (ParticipantDao) getApplicationContext().getBean("participantDao");
     }
 
     public void testDomainClass() {
@@ -546,5 +556,33 @@ public class ReportDaoTest extends DaoTestCase<ReportDao> {
             assertEquals(3, rs.getReviewComments().size());
             assertEquals("hello", rs.getReviewComments().get(2).getUserComment()) ;
         }
+    }
+    
+    public void testSearchByStudyParticipantReportStatusSearchIdentifier(){
+    	Study study = studyDao.getById(-2);
+    	Participant participant = participantDao.getById(-100);
+    	List<Report> reports = rsDao.search(study, participant, null, null , 3);
+    	assertNotNull(reports);
+    	assertEquals("wrong number of reports ", 3, reports.size());
+    }
+    
+    
+    public void testSearchByStudyParticipantReportStatusSearchIdentifierFilterByReportId(){
+    	Study study = studyDao.getById(-2);
+    	Participant participant = participantDao.getById(-100);
+    	List<Report> reports = rsDao.search(study, participant, null, "-223" , 3);
+    	assertNotNull(reports);
+    	assertEquals("wrong number of reports ", 1, reports.size());
+    }
+    
+    public void testSearchByStudyParticipantReportStatusSearchIdentifierFilterByMaxResults(){
+    	Study study = studyDao.getById(-2);
+    	Participant participant = participantDao.getById(-100);
+    	List<Report> reports = rsDao.search(study, participant, null, null , 1);
+    	assertNotNull(reports);
+    	assertEquals("wrong number of reports ", 1, reports.size());
+    	for(Report report: reports){
+    		System.out.println("Report Id : " + report.getId());
+    	}
     }
 }
