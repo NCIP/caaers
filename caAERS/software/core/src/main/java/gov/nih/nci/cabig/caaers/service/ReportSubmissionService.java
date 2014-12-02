@@ -178,6 +178,9 @@ public class ReportSubmissionService {
             	reportVersion.addReportedAdverseEvent(ae);
             }
             
+           //update the signatures of adverse events
+           report.getAeReport().updateSignatureOfAdverseEvents();
+            
             // update signature of duplicate AEs that are not part of the data collection but part of the reporting period.
            ExpeditedAdverseEventReport aereport = report.getAeReport();
            AdverseEventReportingPeriod reportingPeriod = aereport.getReportingPeriod();
