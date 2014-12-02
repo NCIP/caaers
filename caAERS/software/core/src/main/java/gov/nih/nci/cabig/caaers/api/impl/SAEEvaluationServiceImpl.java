@@ -150,7 +150,7 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 	            	if(aeResult == null){
 	            		continue;
 	            	} else if(aeResult.isRequiresReporting()){
-	            			ae.setRequiresReporting(true);
+	            		ae.setRequiresReporting(true);
 	            	}
 	            }
 	            
@@ -343,19 +343,15 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
             }
             
             for(Entry<AdverseEvent, AdverseEventResult> aer : mapAE2DTO.entrySet()) {
-            	final AdverseEvent ae = aer.getKey();
+            	final AdverseEvent ae = adverseEventManagementService.getAdverseEventDao().getById(aer.getKey().getId());
             	if(ae != null && ae.getRequiresReporting() != null && ae.getRequiresReporting() && !ae.isModified()) {
-            		if(aer.getValue() == null) {
-            			aer.setValue(new AdverseEventResult());
-            		}
             		aer.getValue().setRequiresReporting(true);
-            		
             	}
             }
 
 
 		} catch (Exception e) {
-			logger.error(" Exception Occured when processing rules; " + e.toString());
+			logger.error(" Exception Occured when processing rules; ", e);
 			throw Helper.createCaaersFault(DEF_ERR_MSG, "WS_SAE_001",
 					messageSource.getMessage("WS_SAE_001", new String[]{},  "", Locale.getDefault())
 					);			
