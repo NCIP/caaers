@@ -310,9 +310,9 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 			
 			EvaluationResultDTO dto = evaluationService.evaluateSAERules(reportingPeriod, false);
 			
-			List<Integer> oldAe = getOldAdverseEvents(reportingPeriod);
 
 			if ( requestType.equals(RequestType.SaveEvaluate)) {
+				List<Integer> oldAe = getOldAdverseEvents(reportingPeriod);
                 ((SaveAndEvaluateAEsOutputMessage)response).setRecommendedActions(findRecommendedActions(dto, reportingPeriod, oldAe));
                 populateActionTextAndDueDate(response);
 			}
@@ -343,9 +343,10 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
             }
             
             for(Entry<AdverseEvent, AdverseEventResult> aer : mapAE2DTO.entrySet()) {
-            	final AdverseEvent ae = adverseEventManagementService.getAdverseEventDao().getById(aer.getKey().getId());
-            	if(ae != null && ae.getRequiresReporting() != null && ae.getRequiresReporting() && !ae.isModified()) {
-            		aer.getValue().setRequiresReporting(true);
+				for(AdverseEvent ae : adverseEventManagementService.getAdverseEventDao().findByExample(aer.getKey())) {
+	            	if(ae != null && ae.getRequiresReporting() != null && ae.getRequiresReporting() && !ae.isModified()) {
+	            		aer.getValue().setRequiresReporting(true);
+	            	}
             	}
             }
 
