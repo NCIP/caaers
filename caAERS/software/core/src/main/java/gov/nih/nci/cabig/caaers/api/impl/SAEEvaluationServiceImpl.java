@@ -63,7 +63,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
+import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -112,8 +112,7 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 
     public SaveAndEvaluateAEsOutputMessage saveAndProcessAdverseEvents(SaveAndEvaluateAEsInputMessage saveAndEvaluateAEsInputMessage) throws CaaersFault {
         Map<AdverseEvent, AdverseEventResult> mapAE2DTO = new HashMap<AdverseEvent, AdverseEventResult>();
-        List<AdverseEvent> aes = new ArrayList<AdverseEvent>();
-
+        
         if ( saveAndEvaluateAEsInputMessage == null ) {
             throw Helper.createCaaersFault(DEF_ERR_MSG, "WS_SAE_007",
                     messageSource.getMessage("WS_SAE_007", new String[]{},  "", Locale.getDefault())
@@ -300,44 +299,25 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 
 	private AEsOutputMessage fireSAERules(AdverseEventReportingPeriod reportingPeriod, Study study,
 			Map<AdverseEvent, AdverseEventResult> mapAE2DTO, RequestType requestType,AEsOutputMessage response)  throws CaaersFault {
-		try {
-			EvaluatedAdverseEventResults results = new EvaluatedAdverseEventResults();
-			response.setEvaluatedAdverseEventResults(results);
-			List<AdverseEventResult> aeResultList = results.getAdverseEventResult();
+		response.setEvaluatedAdverseEventResults(new EvaluatedAdverseEventResults());
 
-			//populate the output list with the AdverseEventResult objects created for each AdverseEventType
-			aeResultList.addAll(mapAE2DTO.values());
-            if ( requestType.equals(RequestType.SaveEvaluate)) {
+		//populate the output list with the AdverseEventResult objects created for each AdverseEventType
+		response.getEvaluatedAdverseEventResults().getAdverseEventResult().addAll(mapAE2DTO.values());
+		try {
+			if ( requestType.equals(RequestType.SaveEvaluate)) {
                 ((SaveAndEvaluateAEsOutputMessage)response).setLinkToReport(constructLinkToReport(study.getId(),reportingPeriod.getParticipant().getId(), reportingPeriod.getId()));
             }
 			
 			EvaluationResultDTO dto = evaluationService.evaluateSAERules(reportingPeriod, false);
 			
-			List<AdverseEvent> neae = reportingPeriod.getNonExpeditedAdverseEvents();
-			List<Integer> oldAe = new ArrayList<Integer>();
-			List<ExpeditedAdverseEventReport> aeReportList = reportingPeriod.getAeReports();
-			if(aeReportList != null && !aeReportList.isEmpty() && neae != null) {
-				ExpeditedAdverseEventReport aeReport = aeReportList.get(aeReportList.size()-1);
-				Iterator<AdverseEvent> aeIterator = neae.iterator();
-		    	while(aeIterator.hasNext()){
-		    		AdverseEvent ae = aeIterator.next();
-		    		if(aeReport.doesAnotherAeWithSameTermExist(ae) != null){
-		    			// remove the AE from evaluation input if the AE is already part of the report and is not modified according to the signature
-		    			//CAAERS-7042 ; report the event regardless of modification.
-		    			if(ae.getAddedToReportAtLeastOnce() != null && ae.getAddedToReportAtLeastOnce() && !ae.isModified()){
-		    				oldAe.add(ae.getId());
-		    			}
-		    		}
-		    	}
+			List<Integer> oldAe = getOldAdverseEvents(reportingPeriod);
+
+			if ( requestType.equals(RequestType.SaveEvaluate)) {
+                ((SaveAndEvaluateAEsOutputMessage)response).setRecommendedActions(findRecommendedActions(dto, reportingPeriod, oldAe));
+                populateActionTextAndDueDate(response);
 			}
-
-            findRecommendedActions(dto, reportingPeriod, response, oldAe);
-            populateActionTextAndDueDate(response);
             // create/update/delete AE recommended reports
-            manageAdverseEventRecommendedReports(requestType, dto);
-
-            //retrieve all the SAEs identified by rules engine.
-            Set<AdverseEvent> seriousAdverseEvents = dto.getAllSeriousAdverseEvents();
+            manageAdverseEventRecommendedReports(dto);
            
             //has at least one SAE ? - mark hasSAE flag in the response
             if(requestType.equals(RequestType.SaveEvaluate)) {
@@ -345,12 +325,11 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
             	 if(!((SaveAndEvaluateAEsOutputMessage)response).getRecommendedActions().isEmpty()){
             		 ((SaveAndEvaluateAEsOutputMessage)response).setHasSAE(true);
                  }
-              //  ((SaveAndEvaluateAEsOutputMessage)response).setHasSAE(seriousAdverseEvents.size() > 0);
             }
-
+            
+            //retrieve all the SAEs identified by rules engine, and
             //Mark the Requires reporting flag on AE
-            for(AdverseEvent ae : seriousAdverseEvents) {
-
+            for(AdverseEvent ae : dto.getAllSeriousAdverseEvents()) {
                 // find DTO object corresponding to Adverse Event.
                 AdverseEventResult aeDTO = null ;
                 if ( requestType.equals(RequestType.SaveEvaluate)) {
@@ -362,10 +341,21 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
                     aeDTO.setRequiresReporting(true);
                 }
             }
+            
+            for(Entry<AdverseEvent, AdverseEventResult> aer : mapAE2DTO.entrySet()) {
+            	final AdverseEvent ae = aer.getKey();
+            	if(ae != null && ae.getRequiresReporting() != null && ae.getRequiresReporting() && !ae.isModified()) {
+            		if(aer.getValue() == null) {
+            			aer.setValue(new AdverseEventResult());
+            		}
+            		aer.getValue().setRequiresReporting(true);
+            		
+            	}
+            }
 
 
 		} catch (Exception e) {
-			logger.error(" Exception Occured when processing rules" + e.toString());
+			logger.error(" Exception Occured when processing rules; " + e.toString());
 			throw Helper.createCaaersFault(DEF_ERR_MSG, "WS_SAE_001",
 					messageSource.getMessage("WS_SAE_001", new String[]{},  "", Locale.getDefault())
 					);			
@@ -374,6 +364,26 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 		return response;
 	}
 	
+	private List<Integer> getOldAdverseEvents(AdverseEventReportingPeriod reportingPeriod) {
+		List<AdverseEvent> neae = reportingPeriod.getNonExpeditedAdverseEvents();
+		List<Integer> oldAe = new ArrayList<Integer>();
+		List<ExpeditedAdverseEventReport> aeReportList = reportingPeriod.getAeReports();
+		if(aeReportList != null && !aeReportList.isEmpty() && neae != null) {
+			ExpeditedAdverseEventReport aeReport = aeReportList.get(aeReportList.size()-1);
+			Iterator<AdverseEvent> aeIterator = neae.iterator();
+	    	while(aeIterator.hasNext()){
+	    		AdverseEvent ae = aeIterator.next();
+	    		if(aeReport.doesAnotherAeWithSameTermExist(ae) != null){
+	    			if(ae.getAddedToReportAtLeastOnce() != null && ae.getAddedToReportAtLeastOnce() && !ae.isModified()){
+	    				oldAe.add(ae.getId());
+	    			}
+	    		}
+	    	}
+		}
+		
+		return oldAe;
+	}
+
 	private void populateActionTextAndDueDate(AEsOutputMessage response){
 		if(response instanceof SaveAndEvaluateAEsOutputMessage) {
 			  Date now = nowFactory.getNow();
@@ -400,22 +410,14 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
      * @param reportingPeriod
      * @param response
      */
-    private void findRecommendedActions(EvaluationResultDTO evaluationResult, AdverseEventReportingPeriod reportingPeriod, AEsOutputMessage response, List<Integer> oldRows) {
-
+    private List<RecommendedActions> findRecommendedActions(EvaluationResultDTO evaluationResult, AdverseEventReportingPeriod reportingPeriod, List<Integer> oldRows) {
         List<RecommendedActions> recommendedActions = new ArrayList<RecommendedActions>();
-
-        ((SaveAndEvaluateAEsOutputMessage)response).setRecommendedActions(recommendedActions);
-
         Map<Integer, ExpeditedAdverseEventReport> aeReportIndexMap =  reportingPeriod.populateAeReportIndexMap();
-
-        refreshReportIndexMap(aeReportIndexMap);
-
         Map<Integer, List<ReportTableRow>> recommendedReportTableMap = new LinkedHashMap<Integer, List<ReportTableRow>>();
-
         Map<Integer, List<ReportTableRow>> applicableReportTableMap = new LinkedHashMap<Integer, List<ReportTableRow>>();
-
+        refreshReportIndexMap(aeReportIndexMap);
+        
         recommendedActionService.generateRecommendedReportTable(evaluationResult, aeReportIndexMap, recommendedReportTableMap);
-
         ApplicableReportDefinitionsDTO applicableReportDefinitions = evaluationService.applicableReportDefinitions(reportingPeriod.getStudy(), reportingPeriod.getAssignment());
 
         recommendedActionService.refreshApplicableReportTable(evaluationResult, aeReportIndexMap, applicableReportTableMap, applicableReportDefinitions);
@@ -433,6 +435,8 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 	            }
         	}
         }
+        
+        return recommendedActions;
     }
 
     /**
@@ -751,51 +755,49 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 		}
 		return study;
 	}
-	
-	private void manageAdverseEventRecommendedReports(RequestType requestType, EvaluationResultDTO dto ){
-		 Map<AdverseEvent,List<ReportDefinition>> adverseEventReportDefinitionMap = dto.getAdverseEventRecommendedReportsMap();
-		 for (Map.Entry<AdverseEvent, List<ReportDefinition>> entry : adverseEventReportDefinitionMap.entrySet()) {
-					AdverseEvent ae = entry.getKey();
-					List<ReportDefinition> rds = entry.getValue();
-					// Find out if the AE is serious
-					if (rds != null && rds.size() > 0) {
-						// update existing AE recommendation report or create new one 
-						Iterator<ReportDefinition> reportDefinitionIterator = rds.iterator();
-						while(reportDefinitionIterator.hasNext()){
-							ReportDefinition reportDefinition = reportDefinitionIterator.next();
-							AdverseEventRecommendedReport aeRecomReport;
-							List<AdverseEventRecommendedReport> dbAeRecomReports = adverseEventRecommendedReportDao.
-									searchAdverseEventRecommendedReportsByAdverseEvent(ae);
-							if (dbAeRecomReports != null && !dbAeRecomReports.isEmpty()) {
-								// AE recommendation report already exists
-								aeRecomReport = dbAeRecomReports.get(0);
-								if (!reportDefinition.getOrganization().equals(aeRecomReport.getReportDefinition().getOrganization())
-										|| !reportDefinition.getGroup().equals(aeRecomReport.getReportDefinition().getGroup())) {
-									// CAAERS-6961: Only if there is a change in the recommended Report Org or Group set the AE
-									// reported flag to false, otherwise the AE is already considered added to the report.
-									aeRecomReport.setAeReported(false);
-								}
-							} else {
-								// create AE recommendation report
-								aeRecomReport = new AdverseEventRecommendedReport();
-								aeRecomReport.setAdverseEvent(ae);
-								aeRecomReport.setAeReported(false);
-							}
-							
-							aeRecomReport.setReportDefinition(reportDefinition);
-							aeRecomReport.setDueDate(reportDefinition.getExpectedDueDate(ae.getGradedDate()));
-							adverseEventRecommendedReportDao.save(aeRecomReport);
+
+	private void manageAdverseEventRecommendedReports(EvaluationResultDTO dto ){
+		Map<AdverseEvent,List<ReportDefinition>> adverseEventReportDefinitionMap = dto.getAdverseEventRecommendedReportsMap();
+		for (Map.Entry<AdverseEvent, List<ReportDefinition>> entry : adverseEventReportDefinitionMap.entrySet()) {
+			AdverseEvent ae = entry.getKey();
+			List<ReportDefinition> rds = entry.getValue();
+			// Find out if the AE is serious
+			if (rds != null && rds.size() > 0) {
+				// update existing AE recommendation report or create new one 
+				Iterator<ReportDefinition> reportDefinitionIterator = rds.iterator();
+				while(reportDefinitionIterator.hasNext()){
+					ReportDefinition reportDefinition = reportDefinitionIterator.next();
+					AdverseEventRecommendedReport aeRecomReport;
+					List<AdverseEventRecommendedReport> dbAeRecomReports = adverseEventRecommendedReportDao.searchAdverseEventRecommendedReportsByAdverseEvent(ae);
+					if (dbAeRecomReports != null && !dbAeRecomReports.isEmpty()) {
+						// AE recommendation report already exists
+						aeRecomReport = dbAeRecomReports.get(0);
+						if (!reportDefinition.getOrganization().equals(aeRecomReport.getReportDefinition().getOrganization())
+								|| !reportDefinition.getGroup().equals(aeRecomReport.getReportDefinition().getGroup())) {
+							// CAAERS-6961: Only if there is a change in the recommended Report Org or Group set the AE
+							// reported flag to false, otherwise the AE is already considered added to the report.
+							aeRecomReport.setAeReported(false);
 						}
 					} else {
-						// delete old serious AE recommendation reports that are no longer serious in current evaluation
-						List<AdverseEventRecommendedReport> dbAeRecomReports = adverseEventRecommendedReportDao.
-								searchAdverseEventRecommendedReportsByAdverseEvent(ae);
-						if(dbAeRecomReports != null && !dbAeRecomReports.isEmpty()){
-							AdverseEventRecommendedReport aeRecomReport = dbAeRecomReports.get(0);
-							adverseEventRecommendedReportDao.delete(aeRecomReport);
-						}
+						// create AE recommendation report
+						aeRecomReport = new AdverseEventRecommendedReport();
+						aeRecomReport.setAdverseEvent(ae);
+						aeRecomReport.setAeReported(false);
 					}
+
+					aeRecomReport.setReportDefinition(reportDefinition);
+					aeRecomReport.setDueDate(reportDefinition.getExpectedDueDate(ae.getGradedDate()));
+					adverseEventRecommendedReportDao.save(aeRecomReport);
 				}
+			} else {
+				// delete old serious AE recommendation reports that are no longer serious in current evaluation
+				List<AdverseEventRecommendedReport> dbAeRecomReports = adverseEventRecommendedReportDao.searchAdverseEventRecommendedReportsByAdverseEvent(ae);
+				if(dbAeRecomReports != null && !dbAeRecomReports.isEmpty()){
+					AdverseEventRecommendedReport aeRecomReport = dbAeRecomReports.get(0);
+					adverseEventRecommendedReportDao.delete(aeRecomReport);
+				}
+			}
+		}
 	}
 
 
