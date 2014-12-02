@@ -150,7 +150,7 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 	            	if(aeResult == null){
 	            		continue;
 	            	} else if(aeResult.isRequiresReporting()){
-	            			ae.setRequiresReporting(true);
+	            		ae.setRequiresReporting(true);
 	            	}
 	            }
 	            
@@ -343,10 +343,9 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
             }
             
             for(Entry<AdverseEvent, AdverseEventResult> aer : mapAE2DTO.entrySet()) {
-            	final AdverseEvent ae = aer.getKey();
+            	final AdverseEvent ae = adverseEventManagementService.getAdverseEventDao().getById(aer.getKey().getId());
             	if(ae != null && ae.getRequiresReporting() != null && ae.getRequiresReporting() && !ae.isModified()) {
             		aer.getValue().setRequiresReporting(true);
-            		
             	}
             }
 
