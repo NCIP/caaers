@@ -89,7 +89,6 @@ public class EvaluationServiceImpl implements EvaluationService {
     	List<AdverseEvent> newlyAddedAdverseEvents = reportingPeriod.getNonExpeditedAdverseEvents();
     	
     	// CAAERS-4881 : have to remove unmodified duplicate adverse events from the newly added adverse events;
-    	
     	if(aeReports != null && !aeReports.isEmpty()){
     		removeUnModifiedDuplicateAdverseEvents(newlyAddedAdverseEvents, aeReports.get(aeReports.size()-1), ignoreOldEvents);
     	}
@@ -178,7 +177,6 @@ public class EvaluationServiceImpl implements EvaluationService {
      * @param aeReport - The {@link ExpeditedAdverseEventReport}
      */
     public void findRequiredReportDefinitions(ExpeditedAdverseEventReport aeReport, List<AdverseEvent> aeList, Study study, EvaluationResultDTO evaluationResult) {
-
         ExpeditedAdverseEventReport expeditedData = aeReport.getId() == null ? null : aeReport;
         //to hold the report defnitions while cleaning up. 
         Map<String , ReportDefinition> loadedReportDefinitionsMap = new HashMap<String, ReportDefinition>();
