@@ -344,7 +344,7 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
             
             for(Entry<AdverseEvent, AdverseEventResult> aer : mapAE2DTO.entrySet()) {
 				for(AdverseEvent ae : adverseEventManagementService.getAdverseEventDao().findByExample(aer.getKey())) {
-	            	if(ae != null && ae.getRequiresReporting() != null && ae.getRequiresReporting() && !ae.isModified()) {
+	            	if(ae != null && ae.getRequiresReporting() != null && ae.getRequiresReporting() && !ae.isRetired() && ae.getSignature().equals(aer.getKey().getSignature())) {
 	            		aer.getValue().setRequiresReporting(true);
 	            	}
             	}
