@@ -286,6 +286,9 @@ public class ExpeditedAdverseEventReportConverterUtility {
 		if(xmlReportType.getCaseNumber() != null){
 			report.setCaseNumber(xmlReportType.getCaseNumber());
 		}
+        if(xmlReportType.getCorrelationId() != null) {
+            report.addToCorrelationId(xmlReportType.getCorrelationId());
+        }
 		if ( xmlReportType.isManuallySelected() != null ) {
 			report.setManuallySelected(xmlReportType.isManuallySelected());
 		}

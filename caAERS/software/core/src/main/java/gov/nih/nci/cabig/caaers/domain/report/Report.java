@@ -685,19 +685,18 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
 
     @Transient
     public String[] getCorrelationIds() {
-       return StringUtils.split(getMetaDataAsMap().get("correlationId"), ",");
+       return StringUtils.splitByWholeSeparator(getMetaDataAsMap().get("correlationId"), ",");
     }
 
     public void addToCorrelationId(String correlationId) {
-        String id = getMetaDataAsMap().get("correlationId");
-
-        if(StringUtils.isNotEmpty(id)) {
-            id = id + "," + correlationId;
-        } else {
-            id = correlationId;
+        String[] existing = getCorrelationIds();
+        if(ArrayUtils.isEmpty(existing)){
+            addToMetaData("correlationId", correlationId);
+            addToMetaData(correlationId, DateUtils.formatDate(new Date()));
+        } else if(!ArrayUtils.contains(existing, correlationId)){
+            addToMetaData("correlationId", StringUtils.join(existing, ',') + "," + correlationId);
+            addToMetaData(correlationId, DateUtils.formatDate(new Date()));
         }
-        addToMetaData("correlationId", id);
-        addToMetaData(correlationId, DateUtils.formatDate(new Date()));
     }
 
     @Transient
@@ -1309,6 +1308,7 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
         if(src.getReviewStatus() != null) setReviewStatus(src.getReviewStatus());
         if(src.getPhysicianSignoff() != null) setPhysicianSignoff(src.getPhysicianSignoff());
         if(src.getCaseNumber() != null) setCaseNumber(src.getCaseNumber());
+        if(src.getMetaData() != null) setMetaData(src.getMetaData());
         if(src.getEmailAddresses() != null && !src.getEmailAddresses().isEmpty())setEmailAddresses(src.getEmailAddresses());
         if(src.getAssignedIdentifer() != null) setAssignedIdentifer(src.getAssignedIdentifer()); //ticket number (if any)
         if(src.getLastVersion().getCcEmails() != null) getLastVersion().setCcEmails(src.getLastVersion().getCcEmails());

@@ -930,6 +930,7 @@
 			<xs:element type="ReportDefinitionType" name="aeReportDefinition" />
 			<xs:element type="ReportVersionType" name="aeReportVersion" maxOccurs="unbounded" minOccurs="0" />
 			<xs:element type="ReviewStatusType" name="reviewStatus" minOccurs="0" />
+            <xs:element minOccurs="0" name="correlationId" type="xs:string" />
 		</xs:sequence>
 	</xs:complexType>
 

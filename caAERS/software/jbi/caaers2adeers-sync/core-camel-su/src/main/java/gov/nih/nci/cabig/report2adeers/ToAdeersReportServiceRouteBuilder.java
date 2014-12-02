@@ -46,8 +46,8 @@ public class ToAdeersReportServiceRouteBuilder {
 
 
         rb.from("direct:submit-report")
-          .process(track(REPORT_REQUEST))
-                .to(rb.getFileTracker().fileURI(REPORT_REQUEST))
+          .process(track(REPORT_SUBMISSION_REQUEST_RECEIVED))
+                .to(rb.getFileTracker().fileURI(REPORT_SUBMISSION_REQUEST_RECEIVED))
           .to("xslt:xslt/adeers/request/report-transformer.xsl")
                 .to("log:gov.nih.nci.cabig.report2adeers.caaers-ws-request?showHeaders=true&multiline=true&level=TRACE")
           .process(track(ADEERS_REPORT_REQUEST_TRANSFORMATION))

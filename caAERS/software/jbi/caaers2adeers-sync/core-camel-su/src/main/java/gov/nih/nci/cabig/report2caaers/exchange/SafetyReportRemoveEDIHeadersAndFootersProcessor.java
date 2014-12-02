@@ -41,12 +41,10 @@ public class SafetyReportRemoveEDIHeadersAndFootersProcessor implements Processo
 		
 		// set the properties in the exchange
 		Map<String, Object> properties = exchange.getProperties();
-		//TODO change operation name according to E2B message
 		properties.put(OPERATION_NAME, "submitSafetyReport");
 		properties.put(ENTITY_NAME, "SafetyReport");
 		properties.put(SYNC_HEADER, "sync");
 
-		log.debug("adding correlationId.");
 		Object correlationId = System.currentTimeMillis() + "";
 		properties.put(CORRELATION_ID, correlationId);
 				

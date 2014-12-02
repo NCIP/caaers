@@ -6,7 +6,9 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.domain.report;
 
+import com.aparzev.lang.ArrayUtils;
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ConfigProperty;
@@ -30,7 +32,7 @@ import java.util.Map;
  * @author Ion C. Olaru
  *
  */
-public class ReportTest extends AbstractNoSecurityTestCase {
+public class ReportTest extends AbstractTestCase {
 	Report r;
 	ExpeditedAdverseEventReport aeReport;
 	@Override
@@ -374,6 +376,31 @@ public class ReportTest extends AbstractNoSecurityTestCase {
         r.removeFromMetaData("b");
         m2 = r.getMetaDataAsMap();
         assertTrue(m2.isEmpty());
+
+    }
+
+    public void testCorrelationId() {
+        String[] s = r.getCorrelationIds();
+        assertTrue(ArrayUtils.isEmpty(s));
+
+        r.addToCorrelationId("9988");
+        s = r.getCorrelationIds();
+        assertFalse(ArrayUtils.isEmpty(s));
+        System.out.println(r.getMetaDataAsMap());
+        assertEquals(2, r.getMetaDataAsMap().keySet().size());
+
+        r.addToCorrelationId("7777");
+        s = r.getCorrelationIds();
+        assertFalse(ArrayUtils.isEmpty(s));
+        System.out.println(r.getMetaDataAsMap());
+        assertEquals(3, r.getMetaDataAsMap().keySet().size());
+
+
+        r.addToCorrelationId("7777");
+        s = r.getCorrelationIds();
+        assertFalse(ArrayUtils.isEmpty(s));
+        System.out.println(r.getMetaDataAsMap());
+        assertEquals(3, r.getMetaDataAsMap().keySet().size());
 
     }
 

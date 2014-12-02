@@ -16,6 +16,7 @@ import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.REQUEST
 import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.ROUTED_TO_CAAERS_RESPONSE_SINK;
 import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.ROUTED_TO_CAAERS_WS_INVOCATION_CHANNEL;
 import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.E2B_SCHEMATRON_VALIDATION;
+import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.E2B_SUBMISSION_REQUEST_RECEIVED;
 import static gov.nih.nci.cabig.caaers2adeers.track.Tracker.track;
 
 import java.util.HashMap;
@@ -56,18 +57,18 @@ public class ToCaaersReportWSRouteBuilder {
         	.to("log:gov.nih.nci.cabig.report2caaers.caaers-ws-request?showHeaders=true&level=TRACE")
         	.processRef("removeEDIHeadersAndFootersProcessor")
         	.processRef("crlfFixProcessor")
-			.process(track(REQUEST_RECEIVED, msgComboIdPaths))
-			.to(routeBuilder.getFileTracker().fileURI(REQUEST_RECEIVED))
+			.process(track(E2B_SUBMISSION_REQUEST_RECEIVED, msgComboIdPaths))
+			    .to(routeBuilder.getFileTracker().fileURI(E2B_SUBMISSION_REQUEST_RECEIVED))
 			.processRef("eDIMessagePreProcessor")
 			.process(track(PRE_PROCESS_EDI_MSG))
-			.to(routeBuilder.getFileTracker().fileURI(PRE_PROCESS_EDI_MSG))
+			    .to(routeBuilder.getFileTracker().fileURI(PRE_PROCESS_EDI_MSG))
 			.to("direct:performSchematronValidation");
         
         //perform schematron validation
         routeBuilder.from("direct:performSchematronValidation")                
-			.process(track(E2B_SCHEMATRON_VALIDATION))
 			.to("xslt:" + requestXSLBase + "safetyreport_e2b_schematron.xsl?transformerFactoryClass=net.sf.saxon.TransformerFactoryImpl") //for XSLT2.0 support
-			.to(routeBuilder.getFileTracker().fileURI(E2B_SCHEMATRON_VALIDATION))
+            .process(track(E2B_SCHEMATRON_VALIDATION))
+			    .to(routeBuilder.getFileTracker().fileURI(E2B_SCHEMATRON_VALIDATION))
 			.choice()
                 .when().xpath("//svrl:failed-assert", nss) 
                 	.to("xslt:" + responseXSLBase + "extract-failures.xsl")
@@ -107,7 +108,7 @@ public class ToCaaersReportWSRouteBuilder {
 			.to(routeBuilder.getFileTracker().fileURI(POST_PROCESS_EDI_MSG))
 			.to("file://"+outputEDIDir);
 		
-        //caAERS - createParticipant
+        //caAERS - submitsafety route
         configureWSCallRoute("direct:caaers-reportSubmit-sync", "safetyreport_e2b_sync.xsl", caAERSSafetyReportJBIURL + "submitSafetyReport" );
 	}
 	

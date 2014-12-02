@@ -22,8 +22,6 @@ public class EDIMessagePreProcessor implements Processor {
 
 	public final static SimpleDateFormat msgDF = new SimpleDateFormat("yyyyMMddhhmmss");
 	public static final String MSG_ID = "c2r_msg_id";
-	public static final String CORRELATION_ID_ATTR_NAME = "correlationId";
-	public static final String CORRELATION_ID = "c2r_correlation_id";
 	public static final String TODAY_DT = "c2r_today_204";
 	public static final String MSG_NUMB = "c2r_msg_number";
 	public static final String MSG_DT = "c2r_msg_date";
@@ -95,12 +93,8 @@ public class EDIMessagePreProcessor implements Processor {
         properties.put(CAAERS_WS_USERNAME, caaersWSUser);
         properties.put(CAAERS_WS_PASSWORD, caaersWSPassword);
 		
-		log.debug("adding correlationId.");
 		Date cDt = new Date();
-		
-        String correlationId = msgNumb+"##"+msgDt;
-        
-		properties.put(CORRELATION_ID, correlationId);
+
 		properties.put(MSG_ID, UUID.randomUUID().toString());
 		properties.put(TODAY_DT, msgDF.format(cDt));
 		properties.put(ORIGINAL_MSG, replacedDoubleHash);
