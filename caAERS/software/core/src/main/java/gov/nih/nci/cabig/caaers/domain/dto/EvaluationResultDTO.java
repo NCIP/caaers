@@ -7,6 +7,7 @@
 package gov.nih.nci.cabig.caaers.domain.dto;
 
 import java.util.Collections;
+
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.comparator.AdverseEventComprator;
@@ -15,11 +16,13 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import gov.nih.nci.cabig.caaers.rules.common.AdverseEventEvaluationResult;
+
 import org.apache.commons.collections.CollectionUtils;
 
  
@@ -80,8 +83,16 @@ public class EvaluationResultDTO {
 	
 	/** The create map. */
 	Map<Integer, Set<ReportDefinitionWrapper>> createMap = new  HashMap<Integer, Set<ReportDefinitionWrapper>>();
-	
-	/**
+
+    //added for unreported sae notification CAAERS-7044
+    private Map<AdverseEvent,List<ReportDefinition>> adverseEventRecommendedReportsMap = new HashMap<AdverseEvent, List<ReportDefinition>>();
+
+    public Map<AdverseEvent, List<ReportDefinition>> getAdverseEventRecommendedReportsMap() {
+        return adverseEventRecommendedReportsMap;
+    }
+
+
+    /**
 	 * Will find the report definition, matching by name, from aeReportIndexMap.
 	 *
 	 * @param aeReportId the ae report id
@@ -476,6 +487,14 @@ public Map<Integer, Set<ReportDefinitionWrapper>> getAmendmentMap() {
 		return allAeMap;
 	}
 	
+	public Set<AdverseEvent> getAllEvaluatedAdverseEvents() {
+		Set<AdverseEvent> set = new HashSet<AdverseEvent>();
+		for(List<AdverseEvent> list : evaluatedAeMap.values()) {
+			set.addAll(list);
+		}
+		return set;
+	}
+	
 	/**
 	 * Sets the all ae map.
 	 *
@@ -557,9 +576,18 @@ public Map<Integer, Set<ReportDefinitionWrapper>> getAmendmentMap() {
 		for(Boolean b : aeReportAlertMap.values()){
 			retVal |= b;
 		}
-		return retVal;
+
+        if(retVal) return true;
+
+        //check of only action recommendation is "withdraw"
+        boolean withdrawEmpty = isWrapperMapEmpty(withdrawalMap);
+        boolean editEmpty = isWrapperMapEmpty(editMap);
+        boolean createEmpty = isWrapperMapEmpty(createMap);
+        boolean amendEmpty = isWrapperMapEmpty(amendmentMap);
+
+		return (!withdrawEmpty) && (editEmpty && createEmpty && amendEmpty);
 	}
-	
+
 	/**
 	 * Gets the serious adverse events.
 	 *
@@ -610,6 +638,14 @@ public Map<Integer, Set<ReportDefinitionWrapper>> getAmendmentMap() {
         if(createWrappers != null) wrappers.addAll(createWrappers);
 
         return wrappers;
+    }
+
+    private boolean isWrapperMapEmpty(Map<Integer, Set<ReportDefinitionWrapper>> map) {
+        boolean empty = true;
+        for(Integer key : map.keySet()) {
+            empty = empty && CollectionUtils.isEmpty(map.get(key));
+        }
+        return empty;
     }
 	
 	/* (non-Javadoc)
