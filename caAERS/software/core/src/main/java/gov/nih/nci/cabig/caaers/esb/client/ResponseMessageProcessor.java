@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.caaers.service.ProxyWebServiceFacade;
 import java.io.Reader;
 import java.io.StringReader;
 
+import gov.nih.nci.cabig.caaers.service.ReportSubmissionService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jdom.Element;
@@ -28,10 +29,10 @@ import org.springframework.context.MessageSource;
  */
 public abstract class ResponseMessageProcessor {
 	protected final Log log = LogFactory.getLog(getClass());
-	private MessageNotificationService messageNotificationService;
 	protected ReportDao reportDao;
-	
-	protected ProxyWebServiceFacade proxyWebServiceFacade;
+    protected ReportSubmissionService reportSubmissionService;
+
+    protected ProxyWebServiceFacade proxyWebServiceFacade;
 	
 	 //will be used to obtain resource bundle messages
     protected MessageSource messageSource;
@@ -63,16 +64,7 @@ public abstract class ResponseMessageProcessor {
         } 
         return jobInfo;
     }
-    
-	public void setMessageNotificationService(
-			MessageNotificationService messageNotificationService) {
-		this.messageNotificationService = messageNotificationService;
-	}
-    
-	public MessageNotificationService getMessageNotificationService() {
-		return messageNotificationService;
-	}
-	
+
 	@Required
 	public void setMessageSource(MessageSource messageSource) {
 		this.messageSource = messageSource;
@@ -81,14 +73,22 @@ public abstract class ResponseMessageProcessor {
 	public void setReportDao(ReportDao reportDao) {
 		this.reportDao = reportDao;
 	}
-	
+    @Required
 	public ProxyWebServiceFacade getProxyWebServiceFacade() {
 		return proxyWebServiceFacade;
 	}
-	@Required
 	public void setProxyWebServiceFacade(ProxyWebServiceFacade proxyWebServiceFacade) {
 		this.proxyWebServiceFacade = proxyWebServiceFacade;
 	}
-	public abstract void processMessage(String message) throws CaaersSystemException;
+
+    @Required
+    public ReportSubmissionService getReportSubmissionService() {
+        return reportSubmissionService;
+    }
+    public void setReportSubmissionService(ReportSubmissionService reportSubmissionService) {
+        this.reportSubmissionService = reportSubmissionService;
+    }
+
+    public abstract void processMessage(String message) throws CaaersSystemException;
 	
 }

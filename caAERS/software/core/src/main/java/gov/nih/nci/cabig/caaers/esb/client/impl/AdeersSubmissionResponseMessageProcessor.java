@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
 import gov.nih.nci.cabig.caaers.esb.client.ResponseMessageProcessor;
+import gov.nih.nci.cabig.caaers.service.ReportSubmissionService;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 
 import java.util.List;
@@ -39,11 +40,12 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
 	private static final String RESPONSE_MSG_ST_TAG = "<submitAEDataXMLAsAttachmentResponse";
 	protected final Log log = LogFactory.getLog(getClass());
 	private Configuration configuration;
-	
+
 	@Override
 	@Transactional
 	public void processMessage(String message) throws CaaersSystemException {
-        log.debug("AdeersSubmissionResponseMessageProcessor - message recieved");
+        log.debug("AdeersSubmissionResponseMessageProcessor - message received");
+
         
         Element jobInfo = this.getResponseElement(message,"submitAEDataXMLAsAttachmentResponse","AEReportJobInfo");
         Namespace emptyNS=null;
@@ -63,13 +65,13 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
         String submitterEmail = jobInfo.getChild("SUBMITTER_EMAIL",emptyNS).getValue();
         log.debug("email : " + submitterEmail);
         
-        Report r = reportDao.getById(Integer.parseInt(reportId));
+        Report report = reportDao.getById(Integer.parseInt(reportId));
         
         //FIXME: When updating Caaers to send to multiple systems the below must also be changed.
         //Can just use the first system as that is the only one that is used.
         String sysName = "UNKOWN";
-        if(r != null) {
-	        List<ReportDelivery> list = r.getExternalSystemDeliveries();
+        if(report != null) {
+	        List<ReportDelivery> list = report.getExternalSystemDeliveries();
 	        if(list != null && list.size() > 0) {
 	        	if(list.get(0) != null && list.get(0).getReportDeliveryDefinition() != null) {
 	        		sysName = list.get(0).getReportDeliveryDefinition().getEntityName();
@@ -92,11 +94,15 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
                  url = jobInfo.getChild("reportURL").getValue();
                  
         		 String submissionMessage = messageSource.getMessage("successful.reportSubmission.message",
-        				 new Object[]{String.valueOf(r.getLastVersion().getId()), ticketNumber,  url, r.getSubmitter().getFullName(), 
-        				 r.getSubmitter().getEmailAddress(), r.getAeReport().getStudy().getPrimaryIdentifier().getValue(), r.getAeReport()
-        				 .getParticipant().getPrimaryIdentifierValue(), r.getCaseNumber(),r.getId(),ticketNumber, configuration.get(Configuration.SYSTEM_NAME)}, Locale.getDefault());
+        				 new Object[]{String.valueOf(report.getLastVersion().getId()), ticketNumber,  url}, Locale.getDefault());
         		 
         		sb.append(submissionMessage);
+        		
+        		// append additional report information
+            	String reportDetails = messageSource.getMessage("additional.successful.reportSubmission.information",  new Object[] {report.getSubmitter().getFullName(),
+       				 report.getSubmitter().getEmailAddress(), report.getAeReport().getStudy().getPrimaryIdentifier().getValue(), report.getAeReport()
+    				 .getParticipant().getPrimaryIdentifierValue(), report.getCaseNumber(),String.valueOf(report.getId()),ticketNumber, configuration.get(Configuration.SYSTEM_NAME)}, Locale.getDefault());
+            	sb.append(reportDetails);
             }else{
             	 success = false;
             	 @SuppressWarnings("unchecked")
@@ -112,9 +118,9 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
                          }
                      }
             		 
-            		 String submissionMessage = messageSource.getMessage("failed.reportSubmission.message", new Object[]{String.valueOf(r.getLastVersion().getId()),
-            				 exceptionMsgBuffer.toString(), r.getSubmitter().getFullName(), r.getSubmitter().getEmailAddress(), r.getAeReport().getStudy()
-            				 .getPrimaryIdentifier().getValue(), r.getAeReport().getParticipant().getPrimaryIdentifierValue(), r.getCaseNumber(),r.getId(),
+            		 String submissionMessage = messageSource.getMessage("failed.reportSubmission.message", new Object[]{String.valueOf(report.getLastVersion().getId()),
+            				 exceptionMsgBuffer.toString(), report.getSubmitter().getFullName(), report.getSubmitter().getEmailAddress(), report.getAeReport().getStudy()
+            				 .getPrimaryIdentifier().getValue(), report.getAeReport().getParticipant().getPrimaryIdentifierValue(), report.getCaseNumber(),String.valueOf(report.getId()),
             				 configuration.get(Configuration.SYSTEM_NAME), sysName}, Locale.getDefault());
             		 sb.append(submissionMessage);
             		 
@@ -135,7 +141,7 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
             
 
         } catch (Exception e) {
-            log.error("Error building email body", e);
+            log.error("Error while generating email body", e);
         }
         
         
@@ -144,22 +150,38 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
 		   //like sending an E2B ack message
 		    int stInd = message.indexOf(RESPONSE_MSG_ST_TAG);
 		    int endInd = message.indexOf(RESPONSE_MSG_END_TAG);
-		    String trimmedMessage = message.substring(stInd, endInd) + RESPONSE_MSG_END_TAG;
+		    String trimmedMessage = message.substring(stInd, endInd);
+            if(!success) {
+                int insertPoint = trimmedMessage.lastIndexOf("</description>");
+                if(insertPoint > 0){
+                    trimmedMessage = trimmedMessage.subSequence(0, insertPoint) + " System Error Occured in: " + sysName + trimmedMessage.substring(insertPoint);
+                }
+            }
+		    trimmedMessage += RESPONSE_MSG_END_TAG;
 		    trimmedMessage = trimmedMessage.replaceAll(RESPONSE_MSG_ST_TAG, RESPONSE_MSG_ST_TAG + " xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"");
-		    String routedRes = getProxyWebServiceFacade().routeAdeersReportSubmissionResponse(trimmedMessage, r);
+		    String routedRes = getProxyWebServiceFacade().routeAdeersReportSubmissionResponse(trimmedMessage, report);
 		    log.debug("Routed response is " + routedRes);
+
 		} catch (Exception e) {
-			log.error("Error while routing AdEERS response to caAERS Generic Processor", e);
+           log.error("Error while routing AdEERS response to caAERS Generic Processor", e);
 		}
-        
-        // Notify submitter
+
+        //handle post submission
         try {
-        	 String messages = sb.toString();
-            log.debug("Calling notfication service ..");
-            this.getMessageNotificationService().sendNotificationToReporter(submitterEmail, messages,
-                            caaersAeReportId, reportId, success, ticketNumber, url,communicationError);
+            String messages = sb.toString();
+            log.debug("Invoking handleResponse flow in ReportSubmission service ..");
+            ReportSubmissionService.ReportSubmissionContext context = ReportSubmissionService.ReportSubmissionContext.getSubmissionContext(report);
+            context.submissionURL = url;
+            context.responseMessage = messages;
+            context.ticketNumber = ticketNumber;
+            context.communicationFailure = communicationError;
+            context.success = success;
+            context.submitterEmail = submitterEmail;
+
+            reportSubmissionService.handleExternalSubmissionResponse(context);
+
         } catch (Exception e) {
-            log.error("Error while sending the submission confirmation email", e);
+            log.error("Error while submission response processing", e);
         }
 		
 	}

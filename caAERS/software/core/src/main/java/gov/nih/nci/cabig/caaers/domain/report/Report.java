@@ -11,6 +11,7 @@ import gov.nih.nci.cabig.caaers.domain.workflow.ReportReviewComment;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowAware;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
+
 import org.apache.commons.collections15.CollectionUtils;
 import org.apache.commons.collections15.Predicate;
 import org.apache.commons.lang.ArrayUtils;
@@ -23,8 +24,8 @@ import org.hibernate.annotations.Parameter;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.OrderBy;
-
 import javax.persistence.Table;
+
 import java.io.Serializable;
 import java.util.*;
 
@@ -539,7 +540,7 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
      * @return the list
      */
     public List<String> findEmailAddressByRole(String roleName){
-    	List<String> emails = new ArrayList<String>();
+    	final List<String> emails = new ArrayList<String>();
     	if(StringUtils.equals(roleName, "REP")){
     		if(getReporter() != null){
     			String email = getReporter().getEmailAddress();
@@ -572,7 +573,10 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
     	List<String> emailAddressesTemp = new ArrayList<String>();
     	if(deliveries != null){
     		for(ReportDelivery rd : deliveries){
-    			if(rd.isEmailType()) emailAddressesTemp.add(rd.getEndPoint());
+    			if(rd.isEmailType()) {
+                    String email = StringUtils.trimToEmpty(rd.getEndPoint());
+                    if(StringUtils.isNotEmpty(email)) emailAddressesTemp.add(email);
+    			}
     		}
     	}
     	//now include the CC emails.
@@ -580,12 +584,10 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
     	if(lastVersion != null){
     		lastVersion.getCcEmails();
     		String[] ccEmails = lastVersion.getEmailAsArray();
-    		if(ccEmails != null){
-    			for(String ccEmail : ccEmails){
-    				String email = ccEmail.trim();
-    				if(StringUtils.isNotEmpty(email))	emailAddressesTemp.add(email);
-    			}
-    		}
+            for(String ccEmail : ccEmails){
+                String email = StringUtils.trimToEmpty(ccEmail);
+                if(StringUtils.isNotEmpty(email))	emailAddressesTemp.add(email);
+            }
     	}
     	
     	return emailAddressesTemp;

@@ -14,6 +14,7 @@ import gov.nih.nci.cabig.caaers.esb.client.ResponseMessageProcessor;
 import java.util.List;
 import java.util.Locale;
 
+import gov.nih.nci.cabig.caaers.service.ReportSubmissionService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -41,7 +42,7 @@ public class AdeersWithdrawResponseMessageProcessor extends ResponseMessageProce
 	
 	protected final Log log = LogFactory.getLog(getClass());
 	
-	
+
 	@Override
 	@Transactional
 	public void processMessage(String message) throws CaaersSystemException {
@@ -61,7 +62,6 @@ public class AdeersWithdrawResponseMessageProcessor extends ResponseMessageProce
  				} 	
 		}
         
-        String caaersAeReportId = cancelInfo.getChild("CAEERS_AEREPORT_ID",emptyNS).getValue();
         String reportId = cancelInfo.getChild("REPORT_ID",emptyNS).getValue();
         String submitterEmail = cancelInfo.getChild("SUBMITTER_EMAIL",emptyNS).getValue();
         Report r = reportDao.getById(Integer.parseInt(reportId));
@@ -119,16 +119,21 @@ public class AdeersWithdrawResponseMessageProcessor extends ResponseMessageProce
         // Notify submitter
 
         try {
-        	
-            log.debug("Calling notfication service ..");
-            getMessageNotificationService().sendWithdrawNotificationToReporter(submitterEmail, messages, caaersAeReportId, reportId, success, ticketNumber, url, communicationError);
-            
+
+            ReportSubmissionService.ReportSubmissionContext context = ReportSubmissionService.ReportSubmissionContext.getSubmissionContext(r);
+            context.success = success;
+            context.submitterEmail = submitterEmail;
+            context.submissionURL = url;
+            context.communicationFailure = communicationError;
+            context.responseMessage = messages;
+            context.ticketNumber = ticketNumber;
+            context.withdrawFlow = true;
+
+            log.debug("Calling withdrawal service ..");
+            getReportSubmissionService().handleExternalSubmissionResponse(context);
+
         } catch (Exception e) {
            log.error(e);
         }       
 	}
-
-
-
-
 }

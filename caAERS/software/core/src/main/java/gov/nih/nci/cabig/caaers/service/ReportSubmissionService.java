@@ -6,6 +6,7 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.service;
 
+import com.aparzev.lang.StringUtils;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.api.AdeersReportGenerator;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
@@ -33,11 +34,7 @@ import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
@@ -177,24 +174,24 @@ public class ReportSubmissionService {
             for(AdverseEvent ae : report.getAeReport().getActiveAdverseEvents()){
             	reportVersion.addReportedAdverseEvent(ae);
             }
-            
+
+            //update the signatures of adverse events
+            report.getAeReport().updateSignatureOfAdverseEvents();
+
             // update signature of duplicate AEs that are not part of the data collection but part of the reporting period.
-           ExpeditedAdverseEventReport aereport = report.getAeReport();
-           AdverseEventReportingPeriod reportingPeriod = aereport.getReportingPeriod();
-           List<AdverseEvent> reportAes = aereport.getAdverseEvents();
-           
+           AdverseEventReportingPeriod reportingPeriod = report.getAeReport().getReportingPeriod();
            List<AdverseEvent> duplicateUnReportedAes = new ArrayList<AdverseEvent>();
-           for(AdverseEvent reportAe : reportAes){
+           for(AdverseEvent reportAe : report.getAeReport().getAdverseEvents()){
         	   duplicateUnReportedAes.addAll(reportingPeriod.findDuplicateAesByAeCtcTerms(reportAe));
            }
            // update signature of all the unreported duplicate AEs and save them
-           
+
            for(AdverseEvent dupAe : duplicateUnReportedAes){
         	   dupAe.setSignature(dupAe.getCurrentSignature());
            }
-           
+
            adverseEventReportingPeriodDao.save(reportingPeriod);
-           
+
 
     	} catch (Exception e ) {
     		throw new RuntimeException(e);
@@ -209,7 +206,7 @@ public class ReportSubmissionService {
     	
     	//update the reported flag on the adverse events.
     	report.getAeReport().updateReportedFlagOnAdverseEvents();
-    	
+
     	//create child reports
     	reportRepository.createChildReports(report);
     }
@@ -271,6 +268,86 @@ public class ReportSubmissionService {
     	//save the report
     	reportDao.save(context.report);
      }
+
+    /**
+     * Will be invoked by AdEERS submission response processor to perform post submission activities
+     */
+    public void handleExternalSubmissionResponse(ReportSubmissionContext context) {
+
+
+        String emailSubject = null;
+        Set<String> toEmails = new HashSet<String>();
+        if(StringUtils.isNotEmpty(context.submitterEmail)) toEmails.add(StringUtils.trim(context.submitterEmail));
+
+
+        Report report = context.report;
+        ReportVersion reportVersion = report.getLastVersion();
+        ReportTracking reportTracking = reportVersion.getLastReportTracking();
+
+        String subjectMessageSourceKey = "";
+
+        if(context.withdrawFlow) {
+            if (context.success) {
+                subjectMessageSourceKey = "withdraw.success.subject";
+                reportRepository.withdrawReport(report);
+            } else {
+                subjectMessageSourceKey = "withdraw.failure.subject";
+                report.setStatus(ReportStatus.WITHDRAW_FAILED);
+                report.setSubmissionMessage(context.responseMessage);
+            }
+
+        } else {
+            ////
+            Tracker.logConnectionToExternalSystem(reportTracking, !context.communicationFailure, context.responseMessage, new Date());
+
+            report.setSubmittedOn(new Date());
+            report.setSubmissionMessage(context.responseMessage);
+            report.setAssignedIdentifer(StringUtils.trimToNull(context.ticketNumber));
+            report.setSubmissionUrl(StringUtils.trimToNull(context.submissionURL));
+            report.setStatus(context.success ? ReportStatus.COMPLETED : ReportStatus.FAILED);
+            // CAAERS-6938 do not include attachment if one of the recipients of the report is a system
+
+
+            if (context.success) {
+
+                doPostSubmitReport(context);
+
+                Tracker.logSubmissionToExternalSystem(reportTracking, true, context.responseMessage, new Date());
+                subjectMessageSourceKey = "submission.success.subject";
+
+            } else {
+                if(!context.communicationFailure)
+                    Tracker.logSubmissionToExternalSystem(reportTracking, false, context.responseMessage, new Date());
+
+                subjectMessageSourceKey = "submission.failure.subject";
+            }
+        }
+
+
+        ////?
+        try {
+            if(context.success){
+                toEmails.addAll(getEmailList(report, context.submitterEmail));
+            }
+
+            emailSubject = messageSource.getMessage(subjectMessageSourceKey, new Object[]{report.getLabel(),String.valueOf(reportVersion.getId())}, Locale.getDefault());
+
+            log.debug("Sending emails to :" + toEmails.toString());
+            caaersJavaMailSender.sendMail(toEmails.toArray(new String[0]), emailSubject, context.responseMessage, new String[0]);
+            if(!context.withdrawFlow) {
+                Tracker.logEmailNotificationToSubmitter(reportTracking, true, "Emailed : " + toEmails.toString() , new Date());
+            }
+
+        } catch (Exception e) {
+            if(!context.withdrawFlow) {
+                Tracker.logEmailNotificationToSubmitter(reportTracking, false, e.getMessage() , new Date());
+            }
+            throw new RuntimeException (" Error in sending email , please check email configuration " , e);
+        } finally {
+            reportDao.save(report);
+        }
+
+    }
     
     public Set<String> getEmailList(Report r , String submitterEmail){
     	Set<String> emails = new LinkedHashSet<String>();
@@ -432,11 +509,19 @@ public class ReportSubmissionService {
 	 *
 	 */
 	public static class ReportSubmissionContext {
-		public final Report report;
+		public Report report;
 		public String[] pdfReportPaths;
 		public String caaersXML; 
 		public boolean asynchronousResponse = false;
-		
+
+        public String submitterEmail;
+        public String responseMessage;
+        public boolean success;
+        public String ticketNumber;
+        public String submissionURL;
+        public boolean communicationFailure;
+        public boolean withdrawFlow = false;
+
 		private ReportSubmissionContext(Report report) {
 			this.report = report;
 			pdfReportPaths = new String[0];

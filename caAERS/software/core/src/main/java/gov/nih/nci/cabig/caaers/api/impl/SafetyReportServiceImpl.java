@@ -311,7 +311,7 @@ public class SafetyReportServiceImpl {
         if(dbReport == null){
             //create flow
         	// Deep copy the reports as it is throwing ConcurrentModification Exception.
-        	aeDestReport.updateAESignatures();
+        	aeDestReport.updateSignatureOfAdverseEvents();
 	        expeditedAdverseEventReportDao.save(aeDestReport);
             List<Report> reports = new ArrayList<Report>(aeDestReport.getReports());
             aeDestReport.getReports().clear();
@@ -325,7 +325,7 @@ public class SafetyReportServiceImpl {
             }
         }else{
             //update flow
-        	dbReport.updateAESignatures();
+        	dbReport.updateSignatureOfAdverseEvents();
         	expeditedAdverseEventReportDao.save(dbReport);
         	inferReportingAction(aeSrcReport, dbReport,	aeDestReport, reportsAffected, caaersServiceResponse);
         }
@@ -482,7 +482,7 @@ public class SafetyReportServiceImpl {
             ae.setReport(aeDestReport);
         }
         // Set the signature for the AE.
-        aeDestReport.updateAESignatures();
+        aeDestReport.updateSignatureOfAdverseEvents();
         
         //Call the ExpediteReportDao and save this report.
         expeditedAdverseEventReportDao.save(aeDestReport);

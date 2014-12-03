@@ -28,7 +28,7 @@ import java.util.Locale;
  */
 @Transactional
 public class ReportWithdrawalService {
-	
+
 	private AdeersReportGenerator adeersReportGenerator;
 	protected CaaersAdeersMessageBroadcastServiceImpl messageBroadcastService;
     protected CaaersJavaMailSender caaersJavaMailSender;

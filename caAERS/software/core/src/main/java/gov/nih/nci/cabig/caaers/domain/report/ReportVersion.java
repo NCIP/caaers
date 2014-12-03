@@ -406,9 +406,7 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
      */
     @Transient
     public String[] getEmailAsArray() {
-        if (this.ccEmails == null) {
-            return null;
-        }
+        if(StringUtils.isEmpty(getCcEmails())) return new String[0];
         String[] emails = this.ccEmails.split(",");
         return emails;
     }

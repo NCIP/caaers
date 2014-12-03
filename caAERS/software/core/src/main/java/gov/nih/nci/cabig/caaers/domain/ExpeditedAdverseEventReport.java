@@ -2083,14 +2083,6 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	return null;
     }
 
-    /**
-     * Update the Signatures of the AE to identify the modification.
-     */
-    public void updateAESignatures() {
-          for (AdverseEvent ae: getAdverseEvents()) {
-              ae.setSignature(ae.getCurrentSignature());
-          }
-    }
     
     public Report findReportByCaseNumber(String caseNumber){
     	for(Report report : reports){
