@@ -489,7 +489,7 @@ public Map<Integer, Set<ReportDefinitionWrapper>> getAmendmentMap() {
 	
 	public Set<AdverseEvent> getAllEvaluatedAdverseEvents() {
 		Set<AdverseEvent> set = new HashSet<AdverseEvent>();
-		for(List<AdverseEvent> list : allAeMap.values()) {
+		for(List<AdverseEvent> list : evaluatedAeMap.values()) {
 			set.addAll(list);
 		}
 		return set;
