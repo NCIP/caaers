@@ -63,7 +63,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -112,8 +112,8 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 
     public SaveAndEvaluateAEsOutputMessage saveAndProcessAdverseEvents(SaveAndEvaluateAEsInputMessage saveAndEvaluateAEsInputMessage) throws CaaersFault {
         Map<AdverseEvent, AdverseEventResult> mapAE2DTO = new HashMap<AdverseEvent, AdverseEventResult>();
-        
-        if ( saveAndEvaluateAEsInputMessage == null ) {
+
+        if (saveAndEvaluateAEsInputMessage == null ) {
             throw Helper.createCaaersFault(DEF_ERR_MSG, "WS_SAE_007",
                     messageSource.getMessage("WS_SAE_007", new String[]{},  "", Locale.getDefault())
             );
@@ -140,25 +140,26 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
                     throw Helper.createCaaersFault(DEF_ERR_MSG, errors.getErrorAt(0).getCode(), errors.getErrorAt(0).getMessage());
             }
 
+            //initialize requires reporting flag
+            for(AdverseEvent ae : reportingPeriod.getAdverseEvents()) {
+                AdverseEventResult aeResult = findAdverseEvent(ae, mapAE2DTO);
+                if(aeResult != null) aeResult.setRequiresReporting(ae.getRequiresReporting());
+            }
+
             // 3. fire Evaluation Service to identify SAE or not ?
             saveAndEvaluateAEsOutputMessage = (SaveAndEvaluateAEsOutputMessage)fireSAERules(reportingPeriod, study, mapAE2DTO,RequestType.SaveEvaluate,saveAndEvaluateAEsOutputMessage);
-             
-            // CAAERS-6613 re-save the AEs with the requiresReporting flag 
-            if(reportingPeriod != null){
-	            for(AdverseEvent ae : reportingPeriod.getAdverseEvents()){
-	            	AdverseEventResult aeResult = findAdverseEvent(ae, mapAE2DTO);
-	            	if(aeResult == null){
-	            		continue;
-	            	} else if(aeResult.isRequiresReporting()){
-	            		ae.setRequiresReporting(true);
-	            	}
-	            }
-	            
-	            // save the updated reporting period
-	            adverseEventManagementService.saveReportingPeriod(reportingPeriod);
-	            
+
+            for(AdverseEvent ae : reportingPeriod.getAdverseEvents()){
+            	AdverseEventResult aeResult = findAdverseEvent(ae, mapAE2DTO);
+            	if(aeResult == null) {
+            		continue;
+            	} else {
+            		ae.setRequiresReporting(aeResult.isRequiresReporting());
+            	}
             }
             
+            // save the updated reporting period
+            adverseEventManagementService.saveReportingPeriod(reportingPeriod);
         }
         catch(CaaersSystemException ex) {
             throw Helper.createCaaersFault(DEF_ERR_MSG, ex.getErrorCode(), ex.getMessage());
@@ -299,25 +300,26 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 
 	private AEsOutputMessage fireSAERules(AdverseEventReportingPeriod reportingPeriod, Study study,
 			Map<AdverseEvent, AdverseEventResult> mapAE2DTO, RequestType requestType,AEsOutputMessage response)  throws CaaersFault {
-		response.setEvaluatedAdverseEventResults(new EvaluatedAdverseEventResults());
-
-		//populate the output list with the AdverseEventResult objects created for each AdverseEventType
-		response.getEvaluatedAdverseEventResults().getAdverseEventResult().addAll(mapAE2DTO.values());
 		try {
-			if ( requestType.equals(RequestType.SaveEvaluate)) {
+			EvaluatedAdverseEventResults results = new EvaluatedAdverseEventResults();
+			response.setEvaluatedAdverseEventResults(results);
+			List<AdverseEventResult> aeResultList = results.getAdverseEventResult();
+
+			//populate the output list with the AdverseEventResult objects created for each AdverseEventType
+			aeResultList.addAll(mapAE2DTO.values());
+            if ( requestType.equals(RequestType.SaveEvaluate)) {
                 ((SaveAndEvaluateAEsOutputMessage)response).setLinkToReport(constructLinkToReport(study.getId(),reportingPeriod.getParticipant().getId(), reportingPeriod.getId()));
             }
 			
-			EvaluationResultDTO dto = evaluationService.evaluateSAERules(reportingPeriod, false);
-			
-			List<Integer> oldAe = getOldAdverseEvents(reportingPeriod);
+			EvaluationResultDTO dto = evaluationService.evaluateSAERules(reportingPeriod);
 
 			if ( requestType.equals(RequestType.SaveEvaluate)) {
-                ((SaveAndEvaluateAEsOutputMessage)response).setRecommendedActions(findRecommendedActions(dto, reportingPeriod, oldAe));
-                populateActionTextAndDueDate(response);
+	            findRecommendedActions(dto, reportingPeriod, (SaveAndEvaluateAEsOutputMessage) response);
+	            populateActionTextAndDueDate(response);
 			}
             // create/update/delete AE recommended reports
-            manageAdverseEventRecommendedReports(dto);
+            manageAdverseEventRecommendedReports(requestType, dto);
+
            
             //has at least one SAE ? - mark hasSAE flag in the response
             if(requestType.equals(RequestType.SaveEvaluate)) {
@@ -325,11 +327,15 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
             	 if(!((SaveAndEvaluateAEsOutputMessage)response).getRecommendedActions().isEmpty()){
             		 ((SaveAndEvaluateAEsOutputMessage)response).setHasSAE(true);
                  }
+              //  ((SaveAndEvaluateAEsOutputMessage)response).setHasSAE(seriousAdverseEvents.size() > 0);
             }
+
+            //retrieve all the SAEs identified by rules engine.
+            Set<AdverseEvent> evaluatedAdverseEvents = dto.getAllEvaluatedAdverseEvents();
             
-            //retrieve all the SAEs identified by rules engine, and
             //Mark the Requires reporting flag on AE
-            for(AdverseEvent ae : dto.getAllSeriousAdverseEvents()) {
+            for(AdverseEvent ae : evaluatedAdverseEvents) {
+
                 // find DTO object corresponding to Adverse Event.
                 AdverseEventResult aeDTO = null ;
                 if ( requestType.equals(RequestType.SaveEvaluate)) {
@@ -338,20 +344,13 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
                     aeDTO = mapAE2DTO.get(ae);
                 }
                 if(aeDTO != null) {
-                    aeDTO.setRequiresReporting(true);
+                    aeDTO.setRequiresReporting(ae.getRequiresReporting());
                 }
-            }
-            
-            for(Entry<AdverseEvent, AdverseEventResult> aer : mapAE2DTO.entrySet()) {
-            	final AdverseEvent ae = adverseEventManagementService.getAdverseEventDao().getById(aer.getKey().getId());
-            	if(ae != null && ae.getRequiresReporting() != null && ae.getRequiresReporting() && !ae.isModified()) {
-            		aer.getValue().setRequiresReporting(true);
-            	}
             }
 
 
 		} catch (Exception e) {
-			logger.error(" Exception Occured when processing rules; ", e);
+			logger.error(" Exception Occured when processing rules" + e.toString());
 			throw Helper.createCaaersFault(DEF_ERR_MSG, "WS_SAE_001",
 					messageSource.getMessage("WS_SAE_001", new String[]{},  "", Locale.getDefault())
 					);			
@@ -360,26 +359,6 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 		return response;
 	}
 	
-	private List<Integer> getOldAdverseEvents(AdverseEventReportingPeriod reportingPeriod) {
-		List<AdverseEvent> neae = reportingPeriod.getNonExpeditedAdverseEvents();
-		List<Integer> oldAe = new ArrayList<Integer>();
-		List<ExpeditedAdverseEventReport> aeReportList = reportingPeriod.getAeReports();
-		if(aeReportList != null && !aeReportList.isEmpty() && neae != null) {
-			ExpeditedAdverseEventReport aeReport = aeReportList.get(aeReportList.size()-1);
-			Iterator<AdverseEvent> aeIterator = neae.iterator();
-	    	while(aeIterator.hasNext()){
-	    		AdverseEvent ae = aeIterator.next();
-	    		if(aeReport.doesAnotherAeWithSameTermExist(ae) != null){
-	    			if(ae.getAddedToReportAtLeastOnce() != null && ae.getAddedToReportAtLeastOnce() && !ae.isModified()){
-	    				oldAe.add(ae.getId());
-	    			}
-	    		}
-	    	}
-		}
-		
-		return oldAe;
-	}
-
 	private void populateActionTextAndDueDate(AEsOutputMessage response){
 		if(response instanceof SaveAndEvaluateAEsOutputMessage) {
 			  Date now = nowFactory.getNow();
@@ -406,14 +385,22 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
      * @param reportingPeriod
      * @param response
      */
-    private List<RecommendedActions> findRecommendedActions(EvaluationResultDTO evaluationResult, AdverseEventReportingPeriod reportingPeriod, List<Integer> oldRows) {
+    private void findRecommendedActions(EvaluationResultDTO evaluationResult, AdverseEventReportingPeriod reportingPeriod, SaveAndEvaluateAEsOutputMessage response) {
+
         List<RecommendedActions> recommendedActions = new ArrayList<RecommendedActions>();
+
+        response.setRecommendedActions(recommendedActions);
+
         Map<Integer, ExpeditedAdverseEventReport> aeReportIndexMap =  reportingPeriod.populateAeReportIndexMap();
-        Map<Integer, List<ReportTableRow>> recommendedReportTableMap = new LinkedHashMap<Integer, List<ReportTableRow>>();
-        Map<Integer, List<ReportTableRow>> applicableReportTableMap = new LinkedHashMap<Integer, List<ReportTableRow>>();
+
         refreshReportIndexMap(aeReportIndexMap);
-        
+
+        Map<Integer, List<ReportTableRow>> recommendedReportTableMap = new LinkedHashMap<Integer, List<ReportTableRow>>();
+
+        Map<Integer, List<ReportTableRow>> applicableReportTableMap = new LinkedHashMap<Integer, List<ReportTableRow>>();
+
         recommendedActionService.generateRecommendedReportTable(evaluationResult, aeReportIndexMap, recommendedReportTableMap);
+
         ApplicableReportDefinitionsDTO applicableReportDefinitions = evaluationService.applicableReportDefinitions(reportingPeriod.getStudy(), reportingPeriod.getAssignment());
 
         recommendedActionService.refreshApplicableReportTable(evaluationResult, aeReportIndexMap, applicableReportTableMap, applicableReportDefinitions);
@@ -423,16 +410,12 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 
         for ( Integer aeReportId : recommendedReportTableMap.keySet()){
 
-        	if(!oldRows.contains(aeReportId)) {
-	            List<ReportTableRow> applicableRows = applicableReportTableMap.get(aeReportId);
-	
-	            if ( applicableRows != null) {
-	                findMatchingRecommendations(applicableRows, recommendedReportTableMap.get(aeReportId), recommendedActions, ignoredRows) ;
-	            }
-        	}
+            List<ReportTableRow> applicableRows = applicableReportTableMap.get(aeReportId);
+
+            if ( applicableRows != null) {
+                findMatchingRecommendations(applicableRows, recommendedReportTableMap.get(aeReportId), recommendedActions, ignoredRows) ;
+            }
         }
-        
-        return recommendedActions;
     }
 
     /**
@@ -598,55 +581,55 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
      */
 
     private void findMatchingRecommendations(List<ReportTableRow> applicableRows, List<ReportTableRow> recommRows, List<RecommendedActions> recommendedActions,  List<ReportTableRow> ignoredRows)  {
-        // Find the report group of the pre-selected row.
-        List<ReportTableRow> preselectedRows = findPreSelectedRows(applicableRows);
+    	// Find the report group of the pre-selected row.
+    	List<ReportTableRow> preselectedRows = findPreSelectedRows(applicableRows);
 
-        for (ReportTableRow recommRow : recommRows) {
-            ReportTableRow applicableRow = findApplicableRow(applicableRows, recommRow.getReportDefinition().getName());
+    	for (ReportTableRow recommRow : recommRows) {
+    		ReportTableRow applicableRow = findApplicableRow(applicableRows, recommRow.getReportDefinition().getName());
 
-            if ( applicableRow == null || isMatchedIgnoredRow(ignoredRows, recommRow)) continue;
+    		if ( applicableRow == null || isMatchedIgnoredRow(ignoredRows, recommRow)) continue;
 
-            RecommendedActions action = returnActionFromRow(applicableRow, preselectedRows);
-            recommendedActions.add(action);
+    		RecommendedActions action = returnActionFromRow(applicableRow, preselectedRows);
+    		recommendedActions.add(action);
 
 
-            boolean withdrawOrAmend = StringUtils.equals(action.getAction(), WITHDRAW.getDisplayName()) ||    StringUtils.equals(action.getAction(), AMEND.getDisplayName()) ;
+    		boolean withdrawOrAmend = StringUtils.equals(action.getAction(), WITHDRAW.getDisplayName()) ||    StringUtils.equals(action.getAction(), AMEND.getDisplayName()) ;
 
-            if (withdrawOrAmend) {
-                for (ReportTableRow preselectedRow: preselectedRows ) {
-                    if ( preselectedRow != null ) {
+    		if (withdrawOrAmend) {
+    			for (ReportTableRow preselectedRow: preselectedRows ) {
+    				if ( preselectedRow != null ) {
 
-                            // Update the Group Due.
-                            action.setDue(applicableRow.getGrpDue());
+    					// Update the Group Due.
+    					action.setDue(applicableRow.getGrpDue());
 
-                            // find if the report already exists.
-                            RecommendedActions preSelectedAction = null;
-                            for (RecommendedActions actionIter: recommendedActions) {
+    					// find if the report already exists.
+    					RecommendedActions preSelectedAction = null;
+    					for (RecommendedActions actionIter: recommendedActions) {
 
-                                if ( actionIter.getReport().equals(preselectedRow.getReportDefinition().getName()) && actionIter.getAction().equals("Create") ) {
-                                    preSelectedAction = actionIter;
-                                    break;
-                                }
-                            }
-                            if ( preSelectedAction == null){      // If the Create Action is not occured before, Create one manually.
-                                preSelectedAction = new RecommendedActions();
-                                preSelectedAction.setAction(ReportDefinitionWrapper.ActionType.CREATE.toString()); // Make it Create.
-                                preSelectedAction.setStatus("Not Started");
-                                preSelectedAction.setReport(preselectedRow.getReportDefinition().getName());
-                                preSelectedAction.setDue(preselectedRow.getDue());
+    						if ( actionIter.getReport().equals(preselectedRow.getReportDefinition().getName()) && actionIter.getAction().equals("Create") ) {
+    							preSelectedAction = actionIter;
+    							break;
+    						}
+    					}
+    					if ( preSelectedAction == null){      // If the Create Action is not occured before, Create one manually.
+    						preSelectedAction = new RecommendedActions();
+    						preSelectedAction.setAction(ReportDefinitionWrapper.ActionType.CREATE.toString()); // Make it Create.
+    						preSelectedAction.setStatus("Not Started");
+    						preSelectedAction.setReport(preselectedRow.getReportDefinition().getName());
+    						preSelectedAction.setDue(preselectedRow.getDue());
 
-                                recommendedActions.add(preSelectedAction);
-                            }   else { // If it is already occured, Update the due time.
+    						recommendedActions.add(preSelectedAction);
+    					}   else { // If it is already occured, Update the due time.
 
-                                ReportTableRow createAction = findApplicableRow(applicableRows, preSelectedAction.getReport()) ;
-                                preSelectedAction.setDue(createAction.getDue());
-                            }
+    						ReportTableRow createAction = findApplicableRow(applicableRows, preSelectedAction.getReport()) ;
+    						preSelectedAction.setDue(createAction.getDue());
+    					}
 
-                  }
+    				}
 
-               }
-            }
-        }
+    			}
+    		}
+    	}
 
     }
 
@@ -751,49 +734,51 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 		}
 		return study;
 	}
-
-	private void manageAdverseEventRecommendedReports(EvaluationResultDTO dto ){
-		Map<AdverseEvent,List<ReportDefinition>> adverseEventReportDefinitionMap = dto.getAdverseEventRecommendedReportsMap();
-		for (Map.Entry<AdverseEvent, List<ReportDefinition>> entry : adverseEventReportDefinitionMap.entrySet()) {
-			AdverseEvent ae = entry.getKey();
-			List<ReportDefinition> rds = entry.getValue();
-			// Find out if the AE is serious
-			if (rds != null && rds.size() > 0) {
-				// update existing AE recommendation report or create new one 
-				Iterator<ReportDefinition> reportDefinitionIterator = rds.iterator();
-				while(reportDefinitionIterator.hasNext()){
-					ReportDefinition reportDefinition = reportDefinitionIterator.next();
-					AdverseEventRecommendedReport aeRecomReport;
-					List<AdverseEventRecommendedReport> dbAeRecomReports = adverseEventRecommendedReportDao.searchAdverseEventRecommendedReportsByAdverseEvent(ae);
-					if (dbAeRecomReports != null && !dbAeRecomReports.isEmpty()) {
-						// AE recommendation report already exists
-						aeRecomReport = dbAeRecomReports.get(0);
-						if (!reportDefinition.getOrganization().equals(aeRecomReport.getReportDefinition().getOrganization())
-								|| !reportDefinition.getGroup().equals(aeRecomReport.getReportDefinition().getGroup())) {
-							// CAAERS-6961: Only if there is a change in the recommended Report Org or Group set the AE
-							// reported flag to false, otherwise the AE is already considered added to the report.
-							aeRecomReport.setAeReported(false);
+	
+	private void manageAdverseEventRecommendedReports(RequestType requestType,EvaluationResultDTO dto ){
+		 Map<AdverseEvent,List<ReportDefinition>> adverseEventReportDefinitionMap = dto.getAdverseEventRecommendedReportsMap();
+		 for (Map.Entry<AdverseEvent, List<ReportDefinition>> entry : adverseEventReportDefinitionMap.entrySet()) {
+					AdverseEvent ae = entry.getKey();
+					List<ReportDefinition> rds = entry.getValue();
+					// Find out if the AE is serious
+					if (rds != null && rds.size() > 0) {
+						// update existing AE recommendation report or create new one 
+						Iterator<ReportDefinition> reportDefinitionIterator = rds.iterator();
+						while(reportDefinitionIterator.hasNext()){
+							ReportDefinition reportDefinition = reportDefinitionIterator.next();
+							AdverseEventRecommendedReport aeRecomReport;
+							List<AdverseEventRecommendedReport> dbAeRecomReports = adverseEventRecommendedReportDao.
+									searchAdverseEventRecommendedReportsByAdverseEvent(ae);
+							if (dbAeRecomReports != null && !dbAeRecomReports.isEmpty()) {
+								// AE recommendation report already exists
+								aeRecomReport = dbAeRecomReports.get(0);
+								if (!reportDefinition.getOrganization().equals(aeRecomReport.getReportDefinition().getOrganization())
+										|| !reportDefinition.getGroup().equals(aeRecomReport.getReportDefinition().getGroup())) {
+									// CAAERS-6961: Only if there is a change in the recommended Report Org or Group set the AE
+									// reported flag to false, otherwise the AE is already considered added to the report.
+									aeRecomReport.setAeReported(false);
+								}
+							} else {
+								// create AE recommendation report
+								aeRecomReport = new AdverseEventRecommendedReport();
+								aeRecomReport.setAdverseEvent(ae);
+								aeRecomReport.setAeReported(false);
+							}
+							
+							aeRecomReport.setReportDefinition(reportDefinition);
+							aeRecomReport.setDueDate(reportDefinition.getExpectedDueDate(ae.getGradedDate()));
+							adverseEventRecommendedReportDao.save(aeRecomReport);
 						}
 					} else {
-						// create AE recommendation report
-						aeRecomReport = new AdverseEventRecommendedReport();
-						aeRecomReport.setAdverseEvent(ae);
-						aeRecomReport.setAeReported(false);
+						// delete old serious AE recommendation reports that are no longer serious in current evaluation
+						List<AdverseEventRecommendedReport> dbAeRecomReports = adverseEventRecommendedReportDao.
+								searchAdverseEventRecommendedReportsByAdverseEvent(ae);
+						if(dbAeRecomReports != null && !dbAeRecomReports.isEmpty()){
+							AdverseEventRecommendedReport aeRecomReport = dbAeRecomReports.get(0);
+							adverseEventRecommendedReportDao.delete(aeRecomReport);
+						}
 					}
-
-					aeRecomReport.setReportDefinition(reportDefinition);
-					aeRecomReport.setDueDate(reportDefinition.getExpectedDueDate(ae.getGradedDate()));
-					adverseEventRecommendedReportDao.save(aeRecomReport);
 				}
-			} else {
-				// delete old serious AE recommendation reports that are no longer serious in current evaluation
-				List<AdverseEventRecommendedReport> dbAeRecomReports = adverseEventRecommendedReportDao.searchAdverseEventRecommendedReportsByAdverseEvent(ae);
-				if(dbAeRecomReports != null && !dbAeRecomReports.isEmpty()){
-					AdverseEventRecommendedReport aeRecomReport = dbAeRecomReports.get(0);
-					adverseEventRecommendedReportDao.delete(aeRecomReport);
-				}
-			}
-		}
 	}
 
 
