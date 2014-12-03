@@ -13,7 +13,9 @@ import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
 import gov.nih.nci.cabig.caaers.esb.client.impl.CaaersAdeersMessageBroadcastServiceImpl;
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.tools.mail.CaaersJavaMailSender;
+
 import org.springframework.context.MessageSource;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +35,12 @@ public class ReportWithdrawalService {
 	protected CaaersAdeersMessageBroadcastServiceImpl messageBroadcastService;
     protected CaaersJavaMailSender caaersJavaMailSender;
     private MessageSource messageSource;
+    private Configuration configuration;
+	public void setConfiguration(Configuration configuration) {
+		this.configuration = configuration;
+	}
+
+
 	/**
 	 * This method will withdraw the report from external agency, by delegating the call to service mix. 
 	 * @param report - Report to withdraw from external agency
@@ -103,8 +111,19 @@ public class ReportWithdrawalService {
         List<String> emailRecipients = new ArrayList<String>();
         emailRecipients.add(report.getReporter().getEmailAddress());
         String subjectLine = messageSource.getMessage("withdraw.internal.success.subject", new Object[]{report.getLabel()}, Locale.getDefault());
-        String content = messageSource.getMessage("successful.internal.reportWithdraw.message", new Object[]{report.getLabel()}, Locale.getDefault());
-        caaersJavaMailSender.sendMail(emailRecipients.toArray(new String[0]), subjectLine, content, new String[0]);
+        StringBuilder content = new StringBuilder(messageSource.getMessage("successful.internal.reportWithdraw.message", new Object[]{report.getLabel()}, Locale.getDefault()));
+        // append additional report information
+    	String reportDetails = messageSource.getMessage("additional.successful.internal.reportWithdrawl.information",  new Object[] {report.getSubmitter().getFullName(), 
+    		report.getSubmitter().getEmailAddress(), report.getAeReport().getStudy().getPrimaryIdentifier().getValue(), report.getAeReport()
+			.getParticipant().getPrimaryIdentifierValue(), report.getCaseNumber(),String.valueOf(report.getId()),report.getAssignedIdentifer(),report.getLastVersion().getAmendmentNumber(),
+			configuration.get(Configuration.SYSTEM_NAME)}, Locale.getDefault());
+    	content.append(reportDetails);
+        
+        // append Help Text message
+    	String helpText = messageSource.getMessage("helptext.submission.message", new Object[]{}, Locale.getDefault());
+    	content.append(helpText);
+        
+        caaersJavaMailSender.sendMail(emailRecipients.toArray(new String[0]), subjectLine, content.toString(), new String[0]);
     }
     
 	public void setAdeersReportGenerator(AdeersReportGenerator adeersReportGenerator) {
