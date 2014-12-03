@@ -113,7 +113,7 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
     public SaveAndEvaluateAEsOutputMessage saveAndProcessAdverseEvents(SaveAndEvaluateAEsInputMessage saveAndEvaluateAEsInputMessage) throws CaaersFault {
         Map<AdverseEvent, AdverseEventResult> mapAE2DTO = new HashMap<AdverseEvent, AdverseEventResult>();
 
-        if ( saveAndEvaluateAEsInputMessage == null ) {
+        if (saveAndEvaluateAEsInputMessage == null ) {
             throw Helper.createCaaersFault(DEF_ERR_MSG, "WS_SAE_007",
                     messageSource.getMessage("WS_SAE_007", new String[]{},  "", Locale.getDefault())
             );
@@ -141,7 +141,7 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
             }
 
             //initialize requires reporting flag
-            for(AdverseEvent ae : reportingPeriod.getAdverseEvents()){
+            for(AdverseEvent ae : reportingPeriod.getAdverseEvents()) {
                 AdverseEventResult aeResult = findAdverseEvent(ae, mapAE2DTO);
                 if(aeResult != null) aeResult.setRequiresReporting(ae.getRequiresReporting());
             }
@@ -153,8 +153,8 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
             	AdverseEventResult aeResult = findAdverseEvent(ae, mapAE2DTO);
             	if(aeResult == null) {
             		continue;
-            	} else if(aeResult.isRequiresReporting()) {
-            		ae.setRequiresReporting(true);
+            	} else {
+            		ae.setRequiresReporting(aeResult.isRequiresReporting());
             	}
             }
             
@@ -320,8 +320,6 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
             // create/update/delete AE recommended reports
             manageAdverseEventRecommendedReports(requestType, dto);
 
-            //retrieve all the SAEs identified by rules engine.
-            Set<AdverseEvent> seriousAdverseEvents = dto.getAllSeriousAdverseEvents();
            
             //has at least one SAE ? - mark hasSAE flag in the response
             if(requestType.equals(RequestType.SaveEvaluate)) {
@@ -332,8 +330,11 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
               //  ((SaveAndEvaluateAEsOutputMessage)response).setHasSAE(seriousAdverseEvents.size() > 0);
             }
 
+            //retrieve all the SAEs identified by rules engine.
+            Set<AdverseEvent> evaluatedAdverseEvents = dto.getAllEvaluatedAdverseEvents();
+            
             //Mark the Requires reporting flag on AE
-            for(AdverseEvent ae : seriousAdverseEvents) {
+            for(AdverseEvent ae : evaluatedAdverseEvents) {
 
                 // find DTO object corresponding to Adverse Event.
                 AdverseEventResult aeDTO = null ;
@@ -343,7 +344,7 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
                     aeDTO = mapAE2DTO.get(ae);
                 }
                 if(aeDTO != null) {
-                    aeDTO.setRequiresReporting(true);
+                    aeDTO.setRequiresReporting(ae.getRequiresReporting());
                 }
             }
 
