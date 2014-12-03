@@ -575,7 +575,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     }
     
     public void evaluateSAERules(){
-    	evaluationResult = evaluationService.evaluateSAERules(getAdverseEventReportingPeriod(), true);
+    	evaluationResult = evaluationService.evaluateSAERules(getAdverseEventReportingPeriod());
     }
     
     public void generateReadableRulesMessage(){
