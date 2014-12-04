@@ -88,9 +88,13 @@ public class Tracker implements Processor{
             log.debug("creating new instance of IntegrationLog with [" + coorelationId+", " + stage+", " + entity+", " + operation+", " + notes + "]");
 
             IntegrationLog integrationLog = new IntegrationLog(coorelationId, stage, entity, operation, notes);
-            String status = XPathBuilder.xpath("//status").evaluate(exchange, String.class);
-            if (!StringUtils.isBlank(status)){
-                integrationLog.setNotes(status);
+            try {
+                String status = XPathBuilder.xpath("//status").evaluate(exchange, String.class);
+                if (!StringUtils.isBlank(status)){
+                    integrationLog.setNotes(status);
+                }
+            }catch (Exception ignore) {
+                log.debug("Ignoring invalid XML message", ignore);
             }
 
             IntegrationLogDao integrationLogDao = (IntegrationLogDao)exchange.getContext().getRegistry().lookup("integrationLogDao");

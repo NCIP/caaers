@@ -6,7 +6,7 @@ import org.apache.camel.Processor;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * Will remove the DOS specific line separators
+ * Will remove the DOS specific line separators & extra whitespaces before the XML input
  */
 public class CRLFFixProcessor  implements Processor {
     public void process(Exchange exchange) throws Exception {

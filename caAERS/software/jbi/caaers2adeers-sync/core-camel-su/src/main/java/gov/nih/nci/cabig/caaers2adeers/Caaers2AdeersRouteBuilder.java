@@ -6,15 +6,6 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers2adeers;
 
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.NO_DATA_AVAILABLE;
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.PRE_PROCESS_OPEN_ODM_MSG;
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.PRE_PROCESS_RAV_CAAERS_INTEG_MSG;
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.REQUEST_COMPLETION;
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.REQUEST_RECEIVED;
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.REQUST_PROCESSING_ERROR;
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.ROUTED_TO_ADEERS_REQUEST_SINK;
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.ROUTED_TO_CAAERS_REQUEST_SINK;
-import static gov.nih.nci.cabig.caaers2adeers.track.Tracker.track;
 import gov.nih.nci.cabig.caaers2adeers.track.FileTracker;
 import gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage;
 import gov.nih.nci.cabig.open2caaers.ToCaaersParticipantWSRouteBuilder;
@@ -22,13 +13,17 @@ import gov.nih.nci.cabig.rave2caaers.FromRaveToCaaersWSRouteBuilder;
 import gov.nih.nci.cabig.report2adeers.ToAdeersReportServiceRouteBuilder;
 import gov.nih.nci.cabig.report2caaers.AdeersResponseToE2BAckRouteBuilder;
 import gov.nih.nci.cabig.report2caaers.ToCaaersReportWSRouteBuilder;
-
 import org.apache.camel.Exchange;
 import org.apache.camel.ExchangePattern;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.builder.xml.Namespaces;
+import org.apache.camel.model.ProcessorDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.xml.sax.SAXParseException;
+
+import static gov.nih.nci.cabig.caaers2adeers.exchnage.ExchangePreProcessor.INVALID_MESSAGE;
+import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.*;
+import static gov.nih.nci.cabig.caaers2adeers.track.Tracker.track;
 
 /**
  * The basic flow can be classified into 3, a) towards adEERS b) towards caAERS c) towards SynchComponent.
@@ -85,53 +80,32 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
 	 */
 	public void configureWSCallRoute(String fromSink, String requestXSL, String serviceURI,  String responseXSL, String toSink, 
 			Stage xslInStage, Stage serviceInvocationStage, Stage serviceCompletionStage, Stage xslOutStage, Stage toSinkStage){
-		from(fromSink)
-        .process(track(xslInStage))
-		.to("xslt:" + requestXSL)
-        .process(track(serviceInvocationStage))
-        .to(fileTracker.fileURI(serviceInvocationStage))
-        .to(ExchangePattern.InOut, serviceURI).processRef("headerGeneratorProcessor")
-        .to(fileTracker.fileURI(serviceCompletionStage))
-        .process(track(serviceCompletionStage, true))
-        .process(track(xslOutStage))
-		.to("xslt:" + responseXSL)
-        .to("log:gov.nih.nci.cabig.caaers2adeers.afterWSCallResponseXSL?showHeaders=true&level=TRACE&showException=true&showStackTrace=true")
-        .process(track(toSinkStage))
-		.to(toSink);
-	}
-	
-	
-	public void configureRave2CaaersWSCallRoute(String fromSink, String serviceURI, String responseXSL, String toSink,
-			Stage xslInStage, Stage serviceInvocationStage, Stage serviceCompletionStage, Stage xslOutStage, Stage toSinkStage){
-		from(fromSink)
-        .to(fileTracker.fileURI(serviceInvocationStage))
-        .to(ExchangePattern.InOut, serviceURI)
-        .processRef("headerGeneratorProcessor")
-        .to(fileTracker.fileURI(serviceCompletionStage))
-        .process(track(serviceCompletionStage, true))
-        .process(track(xslOutStage))
-        .to("xslt:" + responseXSL)
-        .to("log:gov.nih.nci.cabig.caaers2adeers.afterWSCallResponseXSL?showHeaders=true&level=TRACE&showException=true&showStackTrace=true")
-        .process(track(toSinkStage))
-		.to(toSink);
-	}
+		ProcessorDefinition<?> pd = from(fromSink);
 
+        if(requestXSL != null) {
+            pd.process(track(xslInStage))
+                .to("xslt:" + requestXSL);
+        }
 
-
-    public void configureRave2CaaersWSCallRoute(String fromSink, String serviceURI, String toSink,
-                                                Stage xslInStage, Stage serviceInvocationStage,
-                                                Stage serviceCompletionStage, Stage xslOutStage, Stage toSinkStage){
-        from(fromSink)
+        pd.process(track(serviceInvocationStage))
                 .to(fileTracker.fileURI(serviceInvocationStage))
-                .to(ExchangePattern.InOut, serviceURI)
-                .processRef("headerGeneratorProcessor")
+                .to(ExchangePattern.InOut, serviceURI).processRef("headerGeneratorProcessor")
                 .to(fileTracker.fileURI(serviceCompletionStage))
-                .process(track(serviceCompletionStage, true))
-                .process(track(xslOutStage))
-                .to("log:gov.nih.nci.cabig.caaers2adeers.afterWSCallResponseXSL?showHeaders=true&level=TRACE&showException=true&showStackTrace=true")
-                .process(track(toSinkStage))
-                .to(toSink);
+                .process(track(serviceCompletionStage, true));
+
+        if(responseXSL != null) {
+            pd.process(track(xslOutStage))
+                    .to("xslt:" + responseXSL);
+
+        }
+        pd.to("log:gov.nih.nci.cabig.caaers2adeers.afterWSCallResponseXSL?showHeaders=true&level=TRACE&showException=true&showStackTrace=true")
+          .process(track(toSinkStage))
+          .to(toSink);
     }
+
+
+
+
 
     /**
      * Will create a sub route for transformation.
@@ -169,16 +143,23 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
         from("jetty:http://0.0.0.0:7711/caaers/services/RaveIntegrationServices")
 	        .choice()
 		        .when(header("CamelHttpMethod").isEqualTo("POST"))
-		         	.processRef("trimWhitespaceMessageProcessor")
-		         	.processRef("crlfFixProcessor")
-			        .processRef("headerGeneratorProcessor")
-                    .doTry()
-                        .to("validator:xsd/soap-envelope.xsd")
+                    .setExchangePattern(ExchangePattern.InOut)
+                    .processRef("crlfFixProcessor")
+                    .processRef("raveIntegrationHeaderProcessor")
+                    .processRef("headerGeneratorProcessor")
+                    .process(track(REQUEST_RECEIVED))
                         .to(fileTracker.fileURI(REQUEST_RECEIVED))
-                        .process(track(PRE_PROCESS_RAV_CAAERS_INTEG_MSG))
-                        .to("direct:processedRave2CaaersMessageSink")
-                    .doCatch(SAXParseException.class)
-                        .to("direct:soapfault")
+                    .choice()
+                      .when(header(INVALID_MESSAGE).isEqualTo("true"))
+                            .to("direct:soapfault")
+                      .otherwise()
+                        .doTry()
+                            .to("validator:xsd/soap-envelope.xsd")
+                            .process(track(PRE_PROCESS_RAVE_INTEGRATION_MSG))
+                                .to(fileTracker.fileURI(PRE_PROCESS_RAVE_INTEGRATION_MSG))
+                            .to("direct:processedRave2CaaersMessageSink")
+                        .doCatch(SAXParseException.class)
+                            .to("direct:soapfault")
                         .stop()
                     .end();
 
@@ -274,7 +255,7 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
                         .to("direct:outputSink");
 
 
-        //BELOW 2 routes are the final sinks of messages.
+        //BELOW 3 routes are the final sinks of messages.
         from("direct:outputSink")
                 .to("log:gov.nih.nci.cabig.caaers2adeers.from-outputSink?showAll=true&level=TRACE&showException=true&showStackTrace=true")
                 .process(track(REQUEST_COMPLETION))
@@ -291,7 +272,9 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
         from("direct:soapfault")
                 .to("log:gov.nih.nci.cabig.caaers2adeers.invalidsoap?showAll=true&level=WARN&showException=true&showStackTrace=true")
                 .transform(constant("<error>Invalid Soap Request</error>"))
-                .to("xslt:xslt/caaers/response/soapfault.xsl") ;
+                .to("xslt:xslt/caaers/response/soapfault.xsl")
+                .process(track(REQUST_PROCESSING_ERROR, "Invalid SOAP request"))
+                .to(fileTracker.fileURI(REQUST_PROCESSING_ERROR));
 
     }
 

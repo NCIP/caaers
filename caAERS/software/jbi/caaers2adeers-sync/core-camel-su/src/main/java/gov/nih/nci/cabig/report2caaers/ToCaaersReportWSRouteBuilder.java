@@ -6,6 +6,7 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.report2caaers;
 
+import static gov.nih.nci.cabig.caaers2adeers.exchnage.ExchangePreProcessor.*;
 import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.CAAERS_WS_INVOCATION_COMPLETED;
 import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.CAAERS_WS_INVOCATION_INITIATED;
 import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.CAAERS_WS_IN_TRANSFORMATION;
@@ -28,6 +29,7 @@ import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 
 import gov.nih.nci.cabig.caaers2adeers.Caaers2AdeersRouteBuilder;
+import org.apache.camel.builder.xml.XPathBuilder;
 
 public class ToCaaersReportWSRouteBuilder {
 
@@ -51,17 +53,23 @@ public class ToCaaersReportWSRouteBuilder {
         nss.put("svrl", "http://purl.oclc.org/dsdl/svrl");
         
         routeBuilder.from("file://"+inputEDIDir+"?preMove=inprogress&move=done&moveFailed=movefailed")
-        	.convertBodyTo(String.class, "UTF-8")
+            .setProperty(CORRELATION_ID, rb.constant(String.valueOf(System.currentTimeMillis())))
+            .setProperty(SYNC_HEADER, rb.constant("sync"))
+            .setProperty(ENTITY_NAME, rb.constant("SafetyReport"))
+            .setProperty(OPERATION_NAME, rb.constant("submitSafetyReport"))
+            .processRef("headerGeneratorProcessor")
+            .process(track(REQUEST_RECEIVED))
+                .to(rb.getFileTracker().fileURI(REQUEST_RECEIVED))
+            .convertBodyTo(String.class, "UTF-8")
         	.convertBodyTo(byte[].class, "Windows-1252")
         	.convertBodyTo(String.class, "UTF-8")
         	.to("log:gov.nih.nci.cabig.report2caaers.caaers-ws-request?showHeaders=true&level=TRACE")
-        	.processRef("removeEDIHeadersAndFootersProcessor")
-        	.processRef("crlfFixProcessor")
-			.process(track(E2B_SUBMISSION_REQUEST_RECEIVED, msgComboIdPaths))
-			    .to(routeBuilder.getFileTracker().fileURI(E2B_SUBMISSION_REQUEST_RECEIVED))
-			.processRef("eDIMessagePreProcessor")
-			.process(track(PRE_PROCESS_EDI_MSG))
-			    .to(routeBuilder.getFileTracker().fileURI(PRE_PROCESS_EDI_MSG))
+            .processRef("removeEDIHeadersAndFootersProcessor")
+            .process(track(E2B_SUBMISSION_REQUEST_RECEIVED, msgComboIdPaths))
+                .to(routeBuilder.getFileTracker().fileURI(E2B_SUBMISSION_REQUEST_RECEIVED))
+            .processRef("eDIMessagePreProcessor")
+            .process(track(PRE_PROCESS_EDI_MSG))
+                .to(routeBuilder.getFileTracker().fileURI(PRE_PROCESS_EDI_MSG))
 			.to("direct:performSchematronValidation");
         
         //perform schematron validation

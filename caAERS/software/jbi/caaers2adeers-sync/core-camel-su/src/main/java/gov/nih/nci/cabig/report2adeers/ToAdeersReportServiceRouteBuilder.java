@@ -1,13 +1,13 @@
 package gov.nih.nci.cabig.report2adeers;
 
-import static gov.nih.nci.cabig.caaers2adeers.track.Tracker.*;
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.*;
-import static gov.nih.nci.cabig.report2adeers.exchange.AdeersReportSubmissionProcessor.*;
-
 import gov.nih.nci.cabig.caaers2adeers.Caaers2AdeersRouteBuilder;
-import gov.nih.nci.cabig.caaers2adeers.exchnage.ExchangePreProcessor;
 import org.apache.camel.ExchangePattern;
 import org.apache.camel.builder.xml.XPathBuilder;
+
+import static gov.nih.nci.cabig.caaers2adeers.exchnage.ExchangePreProcessor.*;
+import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.*;
+import static gov.nih.nci.cabig.caaers2adeers.track.Tracker.track;
+import static gov.nih.nci.cabig.report2adeers.exchange.AdeersReportSubmissionProcessor.*;
 
 /**
  * will transform the caaers XML to AdEERS XML and publish the request to AdEERS Report Service
@@ -26,15 +26,15 @@ public class ToAdeersReportServiceRouteBuilder {
 
         rb.from("jbi:endpoint:urn:gov:nih:nci:caaers:jmsIn:consumer")
             .to("log:gov.nih.nci.cabig.report2adeers.caaers-ws-request?showHeaders=true&multiline=true&level=TRACE")
-            .setProperty(ExchangePreProcessor.OPERATION_NAME, rb.constant("sendReportToAdeers"))
+            .setProperty(OPERATION_NAME, rb.constant("sendReportToAdeers"))
             .setProperty(REPORT_WITHDRAW, XPathBuilder.xpath("/AdverseEventReport/WITHDRAW", String.class))
             .setProperty(AE_REPORT_ID, XPathBuilder.xpath("/AdverseEventReport/CAEERS_AEREPORT_ID", String.class))
             .setProperty(REPORT_ID, XPathBuilder.xpath("/AdverseEventReport/CAAERSRID", String.class))
             .setProperty(REPORT_EXTERNAL_ENDPOINT, XPathBuilder.xpath("/AdverseEventReport/EXTERNAL_SYSTEMS", String.class))
             .setProperty(REPORT_SUBMITTER_EMAIL, XPathBuilder.xpath("/AdverseEventReport/SUBMITTER_EMAIL", String.class))
             .setProperty(REPORT_MESSAGE_COMBO_ID, XPathBuilder.xpath("/AdverseEventReport/MESSAGE_COMBO_ID", String.class))
-            .setProperty(ExchangePreProcessor.CORRELATION_ID, XPathBuilder.xpath("/AdverseEventReport/CORRELATION_ID", String.class))
-            .setProperty(ExchangePreProcessor.ENTITY_NAME, rb.constant("SafetyReport"))
+            .setProperty(CORRELATION_ID, XPathBuilder.xpath("/AdverseEventReport/CORRELATION_ID", String.class))
+            .setProperty(ENTITY_NAME, rb.constant("SafetyReport"))
             .processRef("headerGeneratorProcessor")
             .choice()
                 .when(rb.header(REPORT_WITHDRAW).isEqualTo("true"))
@@ -55,8 +55,8 @@ public class ToAdeersReportServiceRouteBuilder {
           .setExchangePattern(ExchangePattern.InOut)
           .processRef("adeersReportSubmissionProcessor")
                 .to("log:gov.nih.nci.cabig.report2adeers.caaers-ws-request?showHeaders=true&multiline=true&level=TRACE")
-          .process(track(ADEERS_REPORT_SUBMISSION_RESPONSE))
-                .to(rb.getFileTracker().fileURI(ADEERS_REPORT_SUBMISSION_RESPONSE))
+          .process(track(ADEERS_REPORT_REQUEST_COMPLETED))
+                .to(rb.getFileTracker().fileURI(ADEERS_REPORT_REQUEST_COMPLETED))
           .choice()
              .when(rb.header(REPORT_SUBMISSION_STATUS).isEqualTo("ERROR"))
                      .to("direct:communication-error")
@@ -67,11 +67,17 @@ public class ToAdeersReportServiceRouteBuilder {
 
         rb.from("direct:communication-error")
             .to("xslt:xslt/adeers/response/report-error-transformer.xsl")
-            .to("log:gov.nih.nci.cabig.report2adeers.caaers-ws-request?showHeaders=true&multiline=true&level=TRACE");
+            .process(track(ADEERS_REPORT_SUBMISSION_RESPONSE_TRASNSFORMATION))
+                .to(rb.getFileTracker().fileURI(ADEERS_REPORT_SUBMISSION_RESPONSE_TRASNSFORMATION))
+            .to("log:gov.nih.nci.cabig.report2adeers.caaers-ws-request?showHeaders=true&multiline=true&level=TRACE")
+            .to("jbi:endpoint:urn:gov:nih:nci:caaers:jmsOut:provider");
 
         rb.from("direct:adeers-response")
             .to("xslt:xslt/adeers/response/report-transformer.xsl")
-            .to("log:gov.nih.nci.cabig.report2adeers.caaers-ws-request?showHeaders=true&multiline=true&level=WARN");
+            .process(track(ADEERS_REPORT_SUBMISSION_RESPONSE_TRASNSFORMATION))
+                .to(rb.getFileTracker().fileURI(ADEERS_REPORT_SUBMISSION_RESPONSE_TRASNSFORMATION))
+            .to("log:gov.nih.nci.cabig.report2adeers.caaers-ws-request?showHeaders=true&multiline=true&level=WARN")
+            .to("jbi:endpoint:urn:gov:nih:nci:caaers:jmsOut:provider");
 
 
 

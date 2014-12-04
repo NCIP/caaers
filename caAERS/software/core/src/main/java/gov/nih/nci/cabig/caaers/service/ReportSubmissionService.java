@@ -264,7 +264,7 @@ public class ReportSubmissionService {
 					log.error("Error while sending email ", e);
 					report.setStatus(ReportStatus.FAILED);
 					report.setSubmissionMessage("Error  sending email " + e.getMessage());
-			     } 
+			     }
 			}
 		} catch (Exception e) {
 			log.error("Error while trying to submit report",e);
