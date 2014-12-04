@@ -281,6 +281,7 @@ public class CaaersRulesEngineService {
                 //old pattern
                 String termName = CaaersRuleUtil.fetchFieldReadableValue(rule, "term");
                 String categoryName = CaaersRuleUtil.fetchFieldReadableValue(rule, "category");
+                if(StringUtils.isEmpty(termName) || StringUtils.isEmpty(categoryName)) continue;
                 Integer ctcVersionId = domainRuleSet.getStudy().getCtcVersion() != null ? domainRuleSet.getStudy().getCtcVersion().getId() : null;
                 List<CtcTerm> terms = ctcTermDao.getBySubname(new String[]{termName}, ctcVersionId, null );
                 CtcTerm term = findTerm(terms, categoryName);
