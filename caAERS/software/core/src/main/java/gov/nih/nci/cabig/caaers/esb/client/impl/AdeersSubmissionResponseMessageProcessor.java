@@ -38,9 +38,8 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
 	private static final String RESPONSE_MSG_END_TAG = "</submitAEDataXMLAsAttachmentResponse>";
 	private static final String RESPONSE_MSG_ST_TAG = "<submitAEDataXMLAsAttachmentResponse";
 	protected final Log log = LogFactory.getLog(getClass());
-	private Configuration configuration;
-	
-	@Override
+
+    @Override
 	@Transactional
 	public void processMessage(String message) throws CaaersSystemException {
         log.debug("AdeersSubmissionResponseMessageProcessor - message recieved");
@@ -163,9 +162,5 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
         }
 		
 	}
-	
-	  public void setConfiguration(Configuration configuration) {
-	        this.configuration = configuration;
-	    }
 
 }

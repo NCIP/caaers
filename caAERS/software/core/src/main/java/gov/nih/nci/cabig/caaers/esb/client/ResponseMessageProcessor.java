@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.caaers.service.ProxyWebServiceFacade;
 import java.io.Reader;
 import java.io.StringReader;
 
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jdom.Element;
@@ -28,7 +29,8 @@ import org.springframework.context.MessageSource;
  */
 public abstract class ResponseMessageProcessor {
 	protected final Log log = LogFactory.getLog(getClass());
-	private MessageNotificationService messageNotificationService;
+    protected Configuration configuration;
+    private MessageNotificationService messageNotificationService;
 	protected ReportDao reportDao;
 	
 	protected ProxyWebServiceFacade proxyWebServiceFacade;
@@ -90,5 +92,8 @@ public abstract class ResponseMessageProcessor {
 		this.proxyWebServiceFacade = proxyWebServiceFacade;
 	}
 	public abstract void processMessage(String message) throws CaaersSystemException;
-	
+
+    public void setConfiguration(Configuration configuration) {
+          this.configuration = configuration;
+      }
 }
