@@ -31,5 +31,17 @@ public class CaaersUtils {
 		
 		return inputString.replace(";", ",").replace(" ", "");
 	}
+	
+	// checks whether a string is an integer
+	
+	public static boolean isAnInteger(String str){
+		
+		try{
+			Integer.parseInt(str);
+		} catch (NumberFormatException e){
+			return false;
+		}
+		return true;
+	}
 
 }

@@ -7,6 +7,7 @@
 package gov.nih.nci.cabig.caaers.domain.dto;
 
 import java.util.Collections;
+
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.comparator.AdverseEventComprator;
@@ -15,11 +16,13 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import gov.nih.nci.cabig.caaers.rules.common.AdverseEventEvaluationResult;
+
 import org.apache.commons.collections.CollectionUtils;
 
  
@@ -482,6 +485,14 @@ public Map<Integer, Set<ReportDefinitionWrapper>> getAmendmentMap() {
 	 */
 	public Map<Integer, List<AdverseEvent>> getAllAeMap() {
 		return allAeMap;
+	}
+	
+	public Set<AdverseEvent> getAllEvaluatedAdverseEvents() {
+		Set<AdverseEvent> set = new HashSet<AdverseEvent>();
+		for(List<AdverseEvent> list : evaluatedAeMap.values()) {
+			set.addAll(list);
+		}
+		return set;
 	}
 	
 	/**
