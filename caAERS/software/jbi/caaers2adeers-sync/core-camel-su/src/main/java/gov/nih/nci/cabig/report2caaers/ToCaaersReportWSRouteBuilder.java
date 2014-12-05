@@ -38,8 +38,7 @@ public class ToCaaersReportWSRouteBuilder {
 	private static String requestXSLBase = "xslt/e2b/request/";
 	private static String responseXSLBase = "xslt/e2b/response/";
 	
-	private static String[] msgComboIdPaths = { "//safetyreportid",
-												"//messagedate"};
+	private static String[] msgComboIdPaths = { "//safetyreportid", "//messagedate"};
 	
 	private String inputEDIDir;
 	private String outputEDIDir;	
@@ -84,40 +83,42 @@ public class ToCaaersReportWSRouteBuilder {
                 	.to("direct:sendE2BAckSink")
                 .otherwise()
                 	.to("direct:processE2B");
-        
-        routeBuilder.from("direct:processE2B")   
+
+        routeBuilder.from("direct:processE2B")
         	.to("log:gov.nih.nci.cabig.report2caaers.caaers-ws-request?showHeaders=true&level=TRACE")
         	.processRef("resetOriginalMessageProcessor")
             .to("direct:caaers-reportSubmit-sync");
-        
+
+
+        //caAERS - submitsafety route
+        configureWSCallRoute("direct:caaers-reportSubmit-sync", "safetyreport_e2b_sync.xsl", caAERSSafetyReportJBIURL + "submitSafetyReport" );
+
+
         nss = new HashMap<String, String>();
         nss.put("soap", "http://schemas.xmlsoap.org/soap/envelope/");
         nss.put("ns1", "http://schema.integration.caaers.cabig.nci.nih.gov/aereport");
         nss.put("ns3", "http://schema.integration.caaers.cabig.nci.nih.gov/common");
-               
-		//content based router 
+
+        //content based router
         //if it is saveSafetyReportResponse, then E2B ack will not be sent
         //also, if submit safety report is processed successfully to indicate succesfully submitted to AdEERS, then E2B ack will not be sent
-		routeBuilder.from("direct:processedE2BMessageSink")
+        routeBuilder.from("direct:processedE2BMessageSink")
 			.to("log:gov.nih.nci.cabig.report2caaers.caaers-ws-request?showHeaders=true&level=TRACE")
 			.choice()
-                .when().xpath("/soap:Envelope/soap:Body/ns1:saveSafetyReportResponse", nss) 
+                .when().xpath("/soap:Envelope/soap:Body/ns1:saveSafetyReportResponse", nss)
                 	.to("direct:morgue")
                 .when().xpath("/ichicsrack/acknowledgment/messageacknowledgment/parsingerrormessage", nss)
                 	.to("direct:sendE2BAckSink")
                 .otherwise()
                 	.to("direct:morgue");
 
-        
-        routeBuilder.from("direct:sendE2BAckSink")                
+
+        routeBuilder.from("direct:sendE2BAckSink")
 			.process(track(ROUTED_TO_CAAERS_WS_INVOCATION_CHANNEL))
 			.processRef("addEDIHeadersAndFootersProcessor")
 			.process(track(POST_PROCESS_EDI_MSG))
 			.to(routeBuilder.getFileTracker().fileURI(POST_PROCESS_EDI_MSG))
 			.to("file://"+outputEDIDir);
-		
-        //caAERS - submitsafety route
-        configureWSCallRoute("direct:caaers-reportSubmit-sync", "safetyreport_e2b_sync.xsl", caAERSSafetyReportJBIURL + "submitSafetyReport" );
 	}
 	
 

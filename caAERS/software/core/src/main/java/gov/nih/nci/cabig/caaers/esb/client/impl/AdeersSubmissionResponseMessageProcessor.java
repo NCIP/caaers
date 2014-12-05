@@ -9,6 +9,7 @@ package gov.nih.nci.cabig.caaers.esb.client.impl;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
 import gov.nih.nci.cabig.caaers.esb.client.ResponseMessageProcessor;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 
@@ -34,12 +35,10 @@ import org.springframework.transaction.annotation.Transactional;
  * BJ : TODO copy the testcases checked in at r10219
  */
 public class AdeersSubmissionResponseMessageProcessor extends ResponseMessageProcessor{
-	
-	private static final String RESPONSE_MSG_END_TAG = "</submitAEDataXMLAsAttachmentResponse>";
-	private static final String RESPONSE_MSG_ST_TAG = "<submitAEDataXMLAsAttachmentResponse";
+
 	protected final Log log = LogFactory.getLog(getClass());
 	private Configuration configuration;
-	
+
 	@Override
 	@Transactional
 	public void processMessage(String message) throws CaaersSystemException {
@@ -58,24 +57,21 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
         log.debug("got JobInfo");
         
         String caaersAeReportId = jobInfo.getChild("CAEERS_AEREPORT_ID",emptyNS).getValue();
-        log.debug("ID 1 : " + caaersAeReportId);
+        log.debug("Data Colleciton ID : " + caaersAeReportId);
         String reportId = jobInfo.getChild("CAAERSRID",emptyNS).getValue();
-        log.debug("ID 2 : " + reportId);
+        log.debug("Report ID : " + reportId);
         String submitterEmail = jobInfo.getChild("SUBMITTER_EMAIL",emptyNS).getValue();
-        log.debug("email : " + submitterEmail);
+        log.debug("Submitter email : " + submitterEmail);
         
         Report r = reportDao.getById(Integer.parseInt(reportId));
         
         //FIXME: When updating Caaers to send to multiple systems the below must also be changed.
         //Can just use the first system as that is the only one that is used.
-        String sysName = "UNKOWN";
+        String sysName = "UNKNOWN";
         if(r != null) {
 	        List<ReportDelivery> list = r.getExternalSystemDeliveries();
-	        if(list != null && list.size() > 0) {
-	        	if(list.get(0) != null && list.get(0).getReportDeliveryDefinition() != null) {
-	        		sysName = list.get(0).getReportDeliveryDefinition().getEntityName();
-	        	}
-	        }
+            ReportDeliveryDefinition deliveryDef = list.isEmpty() ? null : list.get(0).getReportDeliveryDefinition();
+            sysName = deliveryDef != null ? deliveryDef.getEntityName() : "UNKNOWN";
         }
         // build error messages
         StringBuffer sb = new StringBuffer();
@@ -142,28 +138,7 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
         } catch (Exception e) {
             log.error("Error while generating email body", e);
         }
-        
-        
-       try {
-		//Send to response back to ESB to further routing if necessary
-		   //like sending an E2B ack message
-		    int stInd = message.indexOf(RESPONSE_MSG_ST_TAG);
-		    int endInd = message.indexOf(RESPONSE_MSG_END_TAG);
-		    String trimmedMessage = message.substring(stInd, endInd);
-            if(!success) {
-                int insertPoint = trimmedMessage.lastIndexOf("</description>");
-                if(insertPoint > 0){
-                    trimmedMessage = trimmedMessage.subSequence(0, insertPoint) + " System Error Occured in: " + sysName + trimmedMessage.substring(insertPoint);
-                }
-            }
-		    trimmedMessage += RESPONSE_MSG_END_TAG;
-		    trimmedMessage = trimmedMessage.replaceAll(RESPONSE_MSG_ST_TAG, RESPONSE_MSG_ST_TAG + " xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"");
-		    String routedRes = getProxyWebServiceFacade().routeAdeersReportSubmissionResponse(trimmedMessage, r);
-		    log.debug("Routed response is " + routedRes);
-		} catch (Exception e) {
-           log.error("Error while routing AdEERS response to caAERS Generic Processor", e);
-		}
-        
+
         // Notify submitter
         try {
         	 String messages = sb.toString();

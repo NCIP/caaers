@@ -1,6 +1,7 @@
 <xsl:stylesheet version="1.0"
                 xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:adeers="http://types.ws.adeers.ctep.nci.nih.gov"
 				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
     <!-- Assuming that the following Parameters are derived runtime from header -->
@@ -11,10 +12,10 @@
     <xsl:param name="c2r_msg_date" />
     <xsl:param name="c2r_msg_sender_id" />
     <xsl:param name="c2r_msg_receiver_id" />
+    <xsl:param name="c2r_msg_safety_report_id" />
 
-    <xsl:template match="/">
-		<xsl:variable name="c2r_correlation_id" select="//payload/@correlationId"/>
-		<xsl:variable name="report_id" select="substring-before($c2r_correlation_id, '##')"/>
+    <xsl:template match="//adeers:submitAEDataXMLAsAttachmentResponse">
+		<xsl:variable name="report_id" select="$c2r_msg_safety_report_id"/>
         <ichicsrack lang="en">
             <ichicsrmessageheader>
                 <messagetype>ichicsrack</messagetype>
@@ -56,7 +57,8 @@
 	                        <transmissionacknowledgmentcode>02</transmissionacknowledgmentcode>
 	                        <!--Optional:-->
 	                        <!--<parsingerrormessage><xsl:value-of select="//ctep:submitAEDataXMLAsAttachmentResponse/ns1:AEReportJobInfo/comments"/></parsingerrormessage> -->
-							<parsingerrormessage><xsl:apply-templates select="//AEReportJobInfo/jobExceptions" mode="ERR"/></parsingerrormessage>
+							<parsingerrormessage><xsl:apply-templates select="//AEReportJobInfo/jobExceptions" mode="ERR"/> System error occurred in <xsl:value-of
+                                    select="//SYSTEM_NAME" /></parsingerrormessage>
 	                    </xsl:otherwise>
                     </xsl:choose>
                 </messageacknowledgment>

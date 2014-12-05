@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.service.synchronizer.report;
 
-import com.aparzev.lang.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.PriorTherapyAgent;
