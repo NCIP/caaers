@@ -25,7 +25,6 @@ public class ESBMessageConsumerImplTest extends AbstractTestCase {
 	ResponseMessageProcessor consumer;
 	MessageNotificationService messageNotificationService;
 	ReportDao reportDao;
-	ProxyWebServiceFacade proxyWebServiceFacade;
     Configuration configuration;
 	
 	
@@ -35,13 +34,11 @@ public class ESBMessageConsumerImplTest extends AbstractTestCase {
 		consumer = new AdeersSubmissionResponseMessageProcessor();
 		messageNotificationService = registerMockFor(MessageNotificationService.class);
 		reportDao = registerMockFor(ReportDao.class);
-		proxyWebServiceFacade = registerMockFor(ProxyWebServiceFacade.class);
         configuration = registerMockFor(Configuration.class);
 
 		
 		consumer.setMessageNotificationService(messageNotificationService);
 		consumer.setReportDao(reportDao);
-		consumer.setProxyWebServiceFacade(proxyWebServiceFacade);		
         consumer.setConfiguration(configuration);
 
 

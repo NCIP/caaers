@@ -6,30 +6,14 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.report2caaers;
 
-import static gov.nih.nci.cabig.caaers2adeers.exchnage.ExchangePreProcessor.*;
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.CAAERS_WS_INVOCATION_COMPLETED;
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.CAAERS_WS_INVOCATION_INITIATED;
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.CAAERS_WS_IN_TRANSFORMATION;
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.CAAERS_WS_OUT_TRANSFORMATION;
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.POST_PROCESS_EDI_MSG;
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.PRE_PROCESS_EDI_MSG;
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.REQUEST_RECEIVED;
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.ROUTED_TO_CAAERS_RESPONSE_SINK;
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.ROUTED_TO_CAAERS_WS_INVOCATION_CHANNEL;
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.E2B_SCHEMATRON_VALIDATION;
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.E2B_SUBMISSION_REQUEST_RECEIVED;
-import static gov.nih.nci.cabig.caaers2adeers.track.Tracker.track;
+import gov.nih.nci.cabig.caaers2adeers.Caaers2AdeersRouteBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
-import org.apache.camel.Exchange;
-import org.apache.camel.Processor;
-
-import gov.nih.nci.cabig.caaers2adeers.Caaers2AdeersRouteBuilder;
-import org.apache.camel.builder.xml.XPathBuilder;
+import static gov.nih.nci.cabig.caaers2adeers.exchnage.ExchangePreProcessor.*;
+import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.*;
+import static gov.nih.nci.cabig.caaers2adeers.track.Tracker.track;
 
 public class ToCaaersReportWSRouteBuilder {
 
@@ -116,8 +100,8 @@ public class ToCaaersReportWSRouteBuilder {
         routeBuilder.from("direct:sendE2BAckSink")
 			.process(track(ROUTED_TO_CAAERS_WS_INVOCATION_CHANNEL))
 			.processRef("addEDIHeadersAndFootersProcessor")
-			.process(track(POST_PROCESS_EDI_MSG))
-			.to(routeBuilder.getFileTracker().fileURI(POST_PROCESS_EDI_MSG))
+			.process(track(REQUST_PROCESSING_ERROR))
+			.to(routeBuilder.getFileTracker().fileURI(REQUST_PROCESSING_ERROR))
 			.to("file://"+outputEDIDir);
 	}
 	
