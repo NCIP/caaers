@@ -55,6 +55,16 @@
 				</tr>
 				<ae:listTrackingSteps reportVersion="${reportVersion}" reportTracking="${reportTracking}"/>
 			 </c:forEach>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td style="text-align: right;">
+                        <%--<c:if test="${not empty reportVersion.report.correlationIds}">--%>
+                            <a href="downloadLogs?report=${reportVersion.report.id}&version=${reportVersion.id}">
+                                <tags:message key="download.message.logs" />
+                            </a>
+                        <%--</c:if>--%>
+                    </td>
+                </tr>
 		</table>
 		</div>			
 	</td>
