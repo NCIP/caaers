@@ -32,7 +32,14 @@
             <xsl:if test="address/country !=''">
                 <country><xsl:value-of select="address/country" /></country>
             </xsl:if>
-            <status><xsl:value-of select="status" /></status>
+            <status>
+            	<xsl:choose>
+	                <xsl:when test="status = 'Legacy'">Active</xsl:when>
+	                <xsl:otherwise>
+	                	<xsl:value-of select="status" />
+	                </xsl:otherwise>
+                </xsl:choose>           	
+            </status>
             <type><xsl:value-of select="organizationType" /></type>
         </com:organization>
   </xsl:template>
