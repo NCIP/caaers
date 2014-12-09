@@ -18,6 +18,7 @@ public class FromRaveToCaaersWSRouteBuilder {
 	private String caAERSSafetyReportServiceJBIURL = "jbi:service:http://schema.integration.caaers.cabig.nci.nih.gov/aereport/SafetyReportManagementService?operation={http://schema.integration.caaers.cabig.nci.nih.gov/aereport}";
 
 
+    private static String requestXSLBase = "xslt/rave/request/";
     private static String responseXSLBase = "xslt/rave/response/";
 
     private Caaers2AdeersRouteBuilder routeBuilder;
@@ -48,7 +49,7 @@ public class FromRaveToCaaersWSRouteBuilder {
 	
     //no transformation is needed for the input
 	private void configureWSCallRoute(String fromSink, String serviceURI, String responseXSL){
-        String inXSL = null;
+        String inXSL = requestXSLBase + "insert_correlation_id.xsl";
         String outXSL = responseXSL == null ? null : responseXSLBase  + responseXSL;
         routeBuilder.configureWSCallRoute(fromSink,inXSL,serviceURI,outXSL,"direct:rave2CaaersOutSink",
                 CAAERS_WS_IN_TRANSFORMATION, CAAERS_WS_INVOCATION_INITIATED, CAAERS_WS_INVOCATION_COMPLETED,

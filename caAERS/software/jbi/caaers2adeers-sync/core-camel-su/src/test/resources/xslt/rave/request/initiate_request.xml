@@ -1,0 +1,106 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                     xmlns:aer="http://schema.integration.caaers.cabig.nci.nih.gov/aereport"
+                     xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+    <soapenv:Header>
+        <wsse:Security soapenv:mustUnderstand="1">
+            <wsse:UsernameToken wsu:Id="UsernameToken-19" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+                <wsse:Username>invalid</wsse:Username>
+                <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">willnotwork</wsse:Password>
+                <wsse:Nonce EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary">/w9qY2QnBmzEx9lXoIxXyA==</wsse:Nonce>
+                <wsu:Created>2014-01-10T21:32:08.6661550+00:00</wsu:Created>
+            </wsse:UsernameToken>
+        </wsse:Security>
+    </soapenv:Header>
+
+    <soapenv:Body>
+        <aer:initiateSafetyReportAction>
+            <aer:BaseAdverseEventReport>
+                <aer:createdAt>2014-02-18T17:29:55</aer:createdAt>
+                <aer:adverseEventReportingPeriod>
+                    <aer:cycleNumber>13</aer:cycleNumber>
+                    <aer:startDate>2014-10-13</aer:startDate>
+                    <aer:studyParticipantAssignmentRef>
+                        <aer:studySiteRef>
+                            <aer:studyRef>
+                                <aer:identifiers>
+                                    <aer:identifier>
+                                        <aer:type>Protocol Authority Identifier</aer:type>
+                                        <aer:value>A071102</aer:value>
+                                    </aer:identifier>
+                                </aer:identifiers>
+                            </aer:studyRef>
+                            <aer:nciInstituteCode>MN008</aer:nciInstituteCode>
+                        </aer:studySiteRef>
+                        <aer:studySubjectIdentifier>S1-A071102</aer:studySubjectIdentifier>
+                    </aer:studyParticipantAssignmentRef>
+                    <aer:treatmentAssignment>
+                        <aer:code>TAC 1</aer:code>
+                    </aer:treatmentAssignment>
+                </aer:adverseEventReportingPeriod>
+                <aer:physician>
+                    <aer:firstName>Physician</aer:firstName>
+                    <aer:lastName>one</aer:lastName>
+                    <aer:middleName>middlename</aer:middleName>
+                    <aer:street>Park center road</aer:street>
+                    <aer:city>Herndon</aer:city>
+                    <aer:state>VA</aer:state>
+                    <aer:zip>20171</aer:zip>
+                    <aer:country>USA</aer:country>
+                    <aer:contactMechanism>
+                        <aer:type>phone</aer:type>
+                        <aer:value>703-717-9656</aer:value>
+                    </aer:contactMechanism>
+                    <aer:contactMechanism>
+                        <aer:type>e-mail</aer:type>
+                        <aer:value>abcd@mm.com</aer:value>
+                    </aer:contactMechanism>
+                    <aer:contactMechanism>
+                        <aer:type>fax</aer:type>
+                        <aer:value>703-787-9656</aer:value>
+                    </aer:contactMechanism>
+                </aer:physician>
+                <aer:reporter>
+                    <aer:firstName>Reporter</aer:firstName>
+                    <aer:lastName>one</aer:lastName>
+                    <aer:middleName>middlename</aer:middleName>
+                    <aer:street>Sunrise valley drive</aer:street>
+                    <aer:city>Chicago</aer:city>
+                    <aer:state>IL</aer:state>
+                    <aer:zip>20170</aer:zip>
+                    <aer:country>USA</aer:country>
+                    <aer:contactMechanism>
+                        <aer:type>phone</aer:type>
+                        <aer:value>703-787-1234</aer:value>
+                    </aer:contactMechanism>
+                    <aer:contactMechanism>
+                        <aer:type>e-mail</aer:type>
+                        <aer:value>efg@mm.com</aer:value>
+                    </aer:contactMechanism>
+                    <aer:contactMechanism>
+                        <aer:type>fax</aer:type>
+                        <aer:value>703-787-1222</aer:value>
+                    </aer:contactMechanism>
+                    <aer:contactMechanism>
+                        <aer:type>alternateEmails</aer:type>
+                        <aer:value>mailtomyaccount@gmail.com</aer:value>
+                    </aer:contactMechanism>
+                </aer:reporter>
+                <aer:reportedAE>
+                    <aer:externalId>reaction-89</aer:externalId>
+                </aer:reportedAE>
+
+
+                <aer:report>
+                    <aer:caseNumber>0965877102</aer:caseNumber>
+                    <!--  <aer:withdraw>true</aer:withdraw>-->
+                    <aer:aeReportDefinition>
+                        <aer:name>CTEP 24 Hour SAE Notification</aer:name>
+                        <!--<aer:name>CTEP 10 Calendar Day SAE Report</aer:name> -->
+
+                    </aer:aeReportDefinition>
+                </aer:report>
+                <aer:externalId>0965877102</aer:externalId>
+            </aer:BaseAdverseEventReport>
+        </aer:initiateSafetyReportAction>
+    </soapenv:Body>
+</soapenv:Envelope>

@@ -77,7 +77,7 @@ public class IncomingCredentialExtractingInterceptor extends WSS4JOutInterceptor
         }
 
         if(log.isDebugEnabled()) {
-            log.debug("username :" + username +", password:" + password);
+            log.debug("username :" + username.get() +", password:" + password.get());
         }
         super.handleMessage(mc);
     }

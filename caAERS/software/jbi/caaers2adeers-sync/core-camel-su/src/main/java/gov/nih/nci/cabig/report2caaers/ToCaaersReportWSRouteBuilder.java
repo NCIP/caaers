@@ -73,6 +73,7 @@ public class ToCaaersReportWSRouteBuilder {
         	.to("log:gov.nih.nci.cabig.report2caaers.post-validation?showHeaders=true&level=ERROR")
         	.processRef("resetOriginalMessageProcessor")
             .processRef("headerGeneratorProcessor")
+            .process(track(ROUTED_TO_CAAERS_WS_INVOCATION_CHANNEL))
             .to("direct:caaers-reportSubmit-sync");
 
 
@@ -87,7 +88,7 @@ public class ToCaaersReportWSRouteBuilder {
 
         //content based router
         //if it is saveSafetyReportResponse, then E2B ack will not be sent
-        //also, if submit safety report is processed successfully to indicate succesfully submitted to AdEERS, then E2B ack will not be sent
+        //also, if submit safety report is processed successfully or successfully submitted to AdEERS, then E2B ack will not be sent
         routeBuilder.from("direct:processedE2BMessageSink")
 			.to("log:gov.nih.nci.cabig.report2caaers.caaers-ws-request?showHeaders=true&level=TRACE")
 			.choice()
@@ -100,7 +101,6 @@ public class ToCaaersReportWSRouteBuilder {
 
 
         routeBuilder.from("direct:sendE2BAckSink")
-			.process(track(ROUTED_TO_CAAERS_WS_INVOCATION_CHANNEL))
 			.processRef("addEDIHeadersAndFootersProcessor")
 			.process(track(REQUST_PROCESSING_ERROR))
 			.to(routeBuilder.getFileTracker().fileURI(REQUST_PROCESSING_ERROR))
