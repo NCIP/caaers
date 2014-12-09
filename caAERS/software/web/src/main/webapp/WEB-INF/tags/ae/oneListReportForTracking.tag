@@ -59,7 +59,7 @@
                     <td>&nbsp;</td>
                     <td style="text-align: right;">
                         <%--<c:if test="${not empty reportVersion.report.correlationIds}">--%>
-                            <a href="downloadLogs?report=${reportVersion.report.id}&version=${reportVersion.id}">
+                            <a href="reportlogs?r=${reportVersion.report.id}&rv=${reportVersion.id}">
                                 <tags:message key="download.message.logs" />
                             </a>
                         <%--</c:if>--%>

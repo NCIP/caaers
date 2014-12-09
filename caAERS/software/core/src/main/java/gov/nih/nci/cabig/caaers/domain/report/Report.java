@@ -692,10 +692,10 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
         String[] existing = getCorrelationIds();
         if(ArrayUtils.isEmpty(existing)){
             addToMetaData("correlationId", correlationId);
-            addToMetaData(correlationId, DateUtils.formatDate(new Date()));
+            addToMetaData(correlationId, DateUtils.formatDate(new Date(), DateUtils.DATE_WITH_HYPHENS));
         } else if(!ArrayUtils.contains(existing, correlationId)){
             addToMetaData("correlationId", StringUtils.join(existing, ',') + "," + correlationId);
-            addToMetaData(correlationId, DateUtils.formatDate(new Date()));
+            addToMetaData(correlationId, DateUtils.formatDate(new Date(), DateUtils.DATE_WITH_HYPHENS));
         }
     }
 
