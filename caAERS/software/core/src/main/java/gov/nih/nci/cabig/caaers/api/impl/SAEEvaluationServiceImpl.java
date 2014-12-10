@@ -320,15 +320,15 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
             // create/update/delete AE recommended reports
             manageAdverseEventRecommendedReports(requestType, dto);
 
-           //CAAERS-6316 If the action is Withdraw, <hasSae> must = false, if there is any action except Withdraw, <hasSae> must = true
+          //CAAERS-6316 If there are no recommended actions or if there is only 1 recommended action and is Withdraw, 
+            // hasSae = false, otherwise true
             if(requestType.equals(RequestType.SaveEvaluate)) {
-            	 if(!((SaveAndEvaluateAEsOutputMessage)response).getRecommendedActions().isEmpty()){
-            		 if(hasWithdrawAction(response)){
-            			 ((SaveAndEvaluateAEsOutputMessage)response).setHasSAE(false);
-            		 } else {
-            			 ((SaveAndEvaluateAEsOutputMessage)response).setHasSAE(true);
-            		 }
+            	 boolean sae = (((SaveAndEvaluateAEsOutputMessage)response).getRecommendedActions() != null && 
+                 		((SaveAndEvaluateAEsOutputMessage)response).getRecommendedActions().size() > 1);
+            	 if(!sae && ((SaveAndEvaluateAEsOutputMessage)response).getRecommendedActions() != null){
+            		 sae = !StringUtils.equals(((SaveAndEvaluateAEsOutputMessage)response).getRecommendedActions().get(0).getAction(), WITHDRAW.getDisplayName());
                  }
+            	 ((SaveAndEvaluateAEsOutputMessage)response).setHasSAE(sae);
             }
 
             //retrieve all the SAEs identified by rules engine.
@@ -358,16 +358,6 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 		}
 
 		return response;
-	}
-	
-	private boolean hasWithdrawAction(AEsOutputMessage response){
-		 for(RecommendedActions recommendAcation : ((SaveAndEvaluateAEsOutputMessage)response).getRecommendedActions()){
-    		 if(StringUtils.equals(recommendAcation.getAction(), WITHDRAW.getDisplayName())){
-    			 return true;
-    		 }
-    	 }
-		
-		return false;
 	}
 	
 	private void populateActionTextAndDueDate(AEsOutputMessage response){
