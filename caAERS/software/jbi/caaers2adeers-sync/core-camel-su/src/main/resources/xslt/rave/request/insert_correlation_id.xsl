@@ -11,7 +11,9 @@
         </xsl:copy>
     </xsl:template>
     <xsl:template match="aer:report">
-        <xsl:copy-of select="./*"/>
-        <aer:correlationId><xsl:value-of select="$c2a_correlation_id" /></aer:correlationId>
+        <aer:report>
+            <xsl:copy-of select="./*"/>
+            <aer:correlationId><xsl:value-of select="$c2a_correlation_id" /></aer:correlationId>
+        </aer:report>
     </xsl:template>
 </xsl:stylesheet>
