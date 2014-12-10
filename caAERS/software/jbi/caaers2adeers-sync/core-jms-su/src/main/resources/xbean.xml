@@ -63,4 +63,15 @@
     <property name="configuration" ref="jmsConfig"/>
     </bean>
 
+    <bean id="propertyConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location">
+            <value>classpath:caxchange.properties</value>
+        </property>
+        <property name="placeholderPrefix"><value>s[</value></property>
+        <property name="placeholderSuffix"><value>]</value></property>
+        <property name="ignoreResourceNotFound"><value>false</value></property>
+        <property name="ignoreUnresolvablePlaceholders"><value>true</value></property>
+    </bean>
+
 </beans>
