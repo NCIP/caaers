@@ -320,14 +320,15 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
             // create/update/delete AE recommended reports
             manageAdverseEventRecommendedReports(requestType, dto);
 
-           
-            //has at least one SAE ? - mark hasSAE flag in the response
+           //CAAERS-6316 If the action is Withdraw, <hasSae> must = false, if there is any action except Withdraw, <hasSae> must = true
             if(requestType.equals(RequestType.SaveEvaluate)) {
-            	  //CAAERS-6316 hasSAE is used to suggest that a recommended action is present
             	 if(!((SaveAndEvaluateAEsOutputMessage)response).getRecommendedActions().isEmpty()){
-            		 ((SaveAndEvaluateAEsOutputMessage)response).setHasSAE(true);
+            		 if(hasWithdrawAction(response)){
+            			 ((SaveAndEvaluateAEsOutputMessage)response).setHasSAE(false);
+            		 } else {
+            			 ((SaveAndEvaluateAEsOutputMessage)response).setHasSAE(true);
+            		 }
                  }
-              //  ((SaveAndEvaluateAEsOutputMessage)response).setHasSAE(seriousAdverseEvents.size() > 0);
             }
 
             //retrieve all the SAEs identified by rules engine.
@@ -357,6 +358,16 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 		}
 
 		return response;
+	}
+	
+	private boolean hasWithdrawAction(AEsOutputMessage response){
+		 for(RecommendedActions recommendAcation : ((SaveAndEvaluateAEsOutputMessage)response).getRecommendedActions()){
+    		 if(StringUtils.equals(recommendAcation.getAction(), WITHDRAW.getDisplayName())){
+    			 return true;
+    		 }
+    	 }
+		
+		return false;
 	}
 	
 	private void populateActionTextAndDueDate(AEsOutputMessage response){
