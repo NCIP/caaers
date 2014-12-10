@@ -36,6 +36,7 @@ public class ToCaaersReportWSRouteBuilder {
         nss.put("svrl", "http://purl.oclc.org/dsdl/svrl");
         
         routeBuilder.from("file://"+inputEDIDir+"?preMove=inprogress&move=done&moveFailed=movefailed")
+            .streamCaching()
             .setProperty(CORRELATION_ID, rb.constant(String.valueOf(System.currentTimeMillis())))
             .setProperty(SYNC_HEADER, rb.constant("sync"))
             .setProperty(ENTITY_NAME, rb.constant("SafetyReport"))
