@@ -326,7 +326,8 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
             if(requestType.equals(RequestType.SaveEvaluate)) {
             	 boolean sae = (((SaveAndEvaluateAEsOutputMessage)response).getRecommendedActions() != null && 
                  		((SaveAndEvaluateAEsOutputMessage)response).getRecommendedActions().size() > 1);
-            	 if(!sae && ((SaveAndEvaluateAEsOutputMessage)response).getRecommendedActions() != null){
+            	 if(!sae && ((SaveAndEvaluateAEsOutputMessage)response).getRecommendedActions() != null && 
+            			 !((SaveAndEvaluateAEsOutputMessage)response).getRecommendedActions().isEmpty()){
             		 sae = !StringUtils.equals(((SaveAndEvaluateAEsOutputMessage)response).getRecommendedActions().get(0).getAction(), WITHDRAW.getDisplayName());
                  }
             	 ((SaveAndEvaluateAEsOutputMessage)response).setHasSAE(sae);
