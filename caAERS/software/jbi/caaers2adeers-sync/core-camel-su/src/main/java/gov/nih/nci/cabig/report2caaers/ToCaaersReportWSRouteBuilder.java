@@ -50,9 +50,9 @@ public class ToCaaersReportWSRouteBuilder {
         nss.put("svrl", "http://purl.oclc.org/dsdl/svrl");
         
         routeBuilder.from("file://"+inputEDIDir+"?preMove=inprogress&move=done&moveFailed=movefailed")
-        	.convertBodyTo(String.class, "UTF-8")
+        	/*.convertBodyTo(String.class, "UTF-8")
         	.convertBodyTo(byte[].class, "Windows-1252")
-        	.convertBodyTo(String.class, "UTF-8")
+        	.convertBodyTo(String.class, "UTF-8")*/
         	.to("log:gov.nih.nci.cabig.report2caaers.caaers-ws-request?showHeaders=true&level=TRACE")
         	.processRef("removeEDIHeadersAndFootersProcessor")
         	.processRef("crlfFixProcessor")
