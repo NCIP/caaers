@@ -115817,7 +115817,7 @@ xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-s
          </par:participants>
       </par:updateParticipant>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/participant/ParticipantServiceInterface/updateParticipant"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="SAEEvaluationWebServiceImplServiceSoapBinding" type="wsdl" bindingName="{http://schema.integration.caaers.cabig.nci.nih.gov/saerules}SAEEvaluationWebServiceImplServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="https://dev.semanticbits.com/caaers/services/SAEEvaluationService?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="https://dev.semanticbits.com/caaers/services/SAEEvaluationService?wsdl"><con:part><con:url>https://dev.semanticbits.com/caaers/services/SAEEvaluationService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="SAEEvaluationWebServiceImplService" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/saerules" xmlns:ns1="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:ns2="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/saerules" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/participant/ParticipantServiceInterface/updateParticipant"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="SAEEvaluationWebServiceImplServiceSoapBinding" type="wsdl" bindingName="{http://schema.integration.caaers.cabig.nci.nih.gov/saerules}SAEEvaluationWebServiceImplServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="https://localhost:8443/caaers/services/SAEEvaluationService?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="https://localhost:8443/caaers/services/SAEEvaluationService?wsdl"><con:part><con:url>https://localhost:8443/caaers/services/SAEEvaluationService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="SAEEvaluationWebServiceImplService" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/saerules" xmlns:ns1="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:ns2="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/saerules" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <wsdl:types>
     <xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:xs="http://www.w3.org/2001/XMLSchema">
       <xs:element name="treatmentAssignment" type="TreatmentAssignmentType"/>
@@ -116857,92 +116857,22 @@ xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-s
   </wsdl:binding>
   <wsdl:service name="SAEEvaluationWebServiceImplService">
     <wsdl:port binding="tns:SAEEvaluationWebServiceImplServiceSoapBinding" name="SAEEvaluationServiceInterfacePort">
-      <soap:address location="https://dev.semanticbits.com/caaers/services/SAEEvaluationService"/>
+      <soap:address location="https://localhost:8443/caaers/services/SAEEvaluationService"/>
     </wsdl:port>
   </wsdl:service>
-</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>https://dev.semanticbits.com/caaers/services/SAEEvaluationService</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="evaluateAEs" bindingOperationName="evaluateAEs" type="Request-Response" outputName="evaluateAEsResponse" inputName="evaluateAEs" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>https://dev.semanticbits.com/caaers/services/SAEEvaluationService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:saer="http://schema.integration.caaers.cabig.nci.nih.gov/saerules">
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>https://localhost:8443/caaers/services/SAEEvaluationService</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="evaluateAEs" bindingOperationName="evaluateAEs" type="Request-Response" outputName="evaluateAEsResponse" inputName="evaluateAEs" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint xsi:nil="true"/><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:saer="http://schema.integration.caaers.cabig.nci.nih.gov/saerules">
    <soapenv:Header/>
    <soapenv:Body>
       <saer:evaluateAEs>
-         <!--Optional:-->
-         <saer:EvaluateAEsInputMessage>
-            <!--Optional:-->
-            <saer:adverseEvents>
-               <!--Zero or more repetitions:-->
-               <saer:adverseEvent id="?" version="?">
-                  <!--Optional:-->
-                  <verbatim>?</verbatim>
-                  <!--You have a CHOICE of the next 2 items at this level-->
-                  <!--Optional:-->
-                  <adverseEventCtepTerm>
-                     <!--Optional:-->
-                     <ctepCode>?</ctepCode>
-                     <!--You have a CHOICE of the next 2 items at this level-->
-                     <!--Optional:-->
-                     <otherMeddra>
-                        <meddraCode>?</meddraCode>
-                     </otherMeddra>
-                     <!--Optional:-->
-                     <otherSpecify>?</otherSpecify>
-                  </adverseEventCtepTerm>
-                  <!--Optional:-->
-                  <adverseEventMeddraLowLevelTerm>
-                     <meddraCode>?</meddraCode>
-                  </adverseEventMeddraLowLevelTerm>
-                  <!--Optional:-->
-                  <grade>?</grade>
-                  <!--Optional:-->
-                  <hospitalization>?</hospitalization>
-                  <!--Optional:-->
-                  <expected>?</expected>
-                  <!--Optional:-->
-                  <attributionSummary>?</attributionSummary>
-                  <!--Optional:-->
-                  <comments>?</comments>
-                  <!--Optional:-->
-                  <dateFirstLearned>?</dateFirstLearned>
-                  <!--Optional:-->
-                  <startDate>?</startDate>
-                  <!--Optional:-->
-                  <eventApproximateTime>
-                     <hour>?</hour>
-                     <minute>?</minute>
-                     <ampm>?</ampm>
-                  </eventApproximateTime>
-                  <!--Optional:-->
-                  <eventLocation>?</eventLocation>
-                  <!--Optional:-->
-                  <endDate>?</endDate>
-                  <!--Zero or more repetitions:-->
-                  <outcome>
-                     <outComeEnumType>?</outComeEnumType>
-                     <!--Optional:-->
-                     <other>?</other>
-                  </outcome>
-                  <!--Optional:-->
-                  <increasedRisk>?</increasedRisk>
-                  <!--Optional:-->
-                  <externalId>?</externalId>
-                  <!--Optional:-->
-                  <reporterEmail>?</reporterEmail>
-               </saer:adverseEvent>
-            </saer:adverseEvents>
-            <saer:study>
-               <studyIdentifier>?</studyIdentifier>
-               <!--Optional:-->
-               <treatmentAssignmentCode>?</treatmentAssignmentCode>
-               <!--Optional:-->
-               <participantSiteIdentifier>?</participantSiteIdentifier>
-            </saer:study>
-            <!--Optional:-->
-            <saer:participant>
-               <!--Optional:-->
-               <dateIndLastAdministered>?</dateIndLastAdministered>
-            </saer:participant>
-         </saer:EvaluateAEsInputMessage>
-      </saer:evaluateAEs>
+         </saer:evaluateAEs>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/saerules/SAEEvaluationServiceInterface/evaluateAEs"/></con:call></con:operation><con:operation isOneWay="false" action="" name="saveAndEvaluateAEs" bindingOperationName="saveAndEvaluateAEs" type="Request-Response" outputName="saveAndEvaluateAEsResponse" inputName="saveAndEvaluateAEs" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>https://dev.semanticbits.com/caaers/services/SAEEvaluationService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:saer="http://schema.integration.caaers.cabig.nci.nih.gov/saerules">
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/saerules/SAEEvaluationServiceInterface/evaluateAEs"/></con:call></con:operation><con:operation isOneWay="false" action="" name="saveAndEvaluateAEs" bindingOperationName="saveAndEvaluateAEs" type="Request-Response" outputName="saveAndEvaluateAEsResponse" inputName="saveAndEvaluateAEs" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint xsi:nil="true"/><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:saer="http://schema.integration.caaers.cabig.nci.nih.gov/saerules">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <saer:saveAndEvaluateAEs>
+         </saer:saveAndEvaluateAEs>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/saerules/SAEEvaluationServiceInterface/saveAndEvaluateAEs"/><con:wsrmConfig version="1.2"/></con:call><con:call name="Request 2"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>https://localhost:8443/caaers/services/SAEEvaluationService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:saer="http://schema.integration.caaers.cabig.nci.nih.gov/saerules">
    <soapenv:Header/>
    <soapenv:Body>
       <saer:saveAndEvaluateAEs>
@@ -117136,7 +117066,7 @@ xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-s
          </aer:ReportIdCriteria>
       </aer:generateSafetyReportId>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/aereportid/SafetyReportIdServiceInterface/generateSafetyReportId"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="SafetyReportManagementServiceSoapBinding" type="wsdl" bindingName="{http://schema.integration.caaers.cabig.nci.nih.gov/aereport}SafetyReportManagementServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="https://dev.semanticbits.com/caaers/services/SafetyReportService?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="https://dev.semanticbits.com/caaers/services/SafetyReportService?wsdl"><con:part><con:url>https://dev.semanticbits.com/caaers/services/SafetyReportService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="SafetyReportManagementService" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/aereport" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/aereport" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/aereportid/SafetyReportIdServiceInterface/generateSafetyReportId"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="SafetyReportManagementServiceSoapBinding" type="wsdl" bindingName="{http://schema.integration.caaers.cabig.nci.nih.gov/aereport}SafetyReportManagementServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="https://localhost:8443/caaers/services/SafetyReportService?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="https://localhost:8443/caaers/services/SafetyReportService?wsdl"><con:part><con:url>https://localhost:8443/caaers/services/SafetyReportService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="SafetyReportManagementService" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/aereport" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/aereport" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <wsdl:types>
     <xs:schema elementFormDefault="unqualified" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:xs="http://www.w3.org/2001/XMLSchema">
       <xs:element name="treatmentAssignment" type="TreatmentAssignmentType"/>
@@ -117966,6 +117896,7 @@ xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-s
             <xs:element maxOccurs="unbounded" minOccurs="0" name="surgeryIntervention" type="SurgeryInterventionType"/>
             <xs:element maxOccurs="unbounded" minOccurs="0" name="biologicalIntervention" type="BiologicalInterventionType"/>
             <xs:element maxOccurs="unbounded" minOccurs="0" name="dietarySupplementIntervention" type="DietarySupplementInterventionType"/>
+            <xs:element minOccurs="0" name="investigationalDeviceAdministered" type="xs:boolean"/>
             <xs:element maxOccurs="unbounded" minOccurs="0" name="medicalDevice" type="MedicalDeviceType"/>
             <xs:element maxOccurs="unbounded" minOccurs="0" name="concomitantMedication" type="ConcomitantMedicationType"/>
             <xs:element maxOccurs="unbounded" name="adverseEvent" type="AdverseEventType"/>
@@ -118774,6 +118705,7 @@ xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-s
           <xs:element name="aeReportDefinition" type="ReportDefinitionType"/>
           <xs:element maxOccurs="unbounded" minOccurs="0" name="aeReportVersion" type="ReportVersionType"/>
           <xs:element minOccurs="0" name="reviewStatus" type="ReviewStatusType"/>
+          <xs:element minOccurs="0" name="correlationId" type="xs:string"/>
         </xs:sequence>
       </xs:complexType>
       <xs:simpleType name="ReviewStatusType">
@@ -118992,10 +118924,22 @@ xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-s
   </wsdl:binding>
   <wsdl:service name="SafetyReportManagementService">
     <wsdl:port binding="tns:SafetyReportManagementServiceSoapBinding" name="SafetyReportManagementServiceImplPort">
-      <soap:address location="https://dev.semanticbits.com/caaers/services/SafetyReportService"/>
+      <soap:address location="https://localhost:8443/caaers/services/SafetyReportService"/>
     </wsdl:port>
   </wsdl:service>
-</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>https://dev.semanticbits.com/caaers/services/SafetyReportService</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="initiateSafetyReportAction" bindingOperationName="initiateSafetyReportAction" type="Request-Response" outputName="initiateSafetyReportActionResponse" inputName="initiateSafetyReportAction" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>https://dev.semanticbits.com/caaers/services/SafetyReportService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:aer="http://schema.integration.caaers.cabig.nci.nih.gov/aereport">
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>https://dev.semanticbits.com/caaers/services/SafetyReportService</con:endpoint><con:endpoint>https://localhost:8443/caaers/services/SafetyReportService</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="initiateSafetyReportAction" bindingOperationName="initiateSafetyReportAction" type="Request-Response" outputName="initiateSafetyReportActionResponse" inputName="initiateSafetyReportAction" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>https://localhost:8443/caaers/services/SafetyReportService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:aer="http://schema.integration.caaers.cabig.nci.nih.gov/aereport">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <aer:initiateSafetyReportAction>
+         </aer:initiateSafetyReportAction>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/aereport/SafetyReportManagementServiceInterface/initiateSafetyReportAction"/><con:wsrmConfig version="1.2"/></con:call><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>https://dev.semanticbits.com/caaers/services/SafetyReportService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:aer="http://schema.integration.caaers.cabig.nci.nih.gov/aereport">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <aer:initiateSafetyReportAction>
+         </aer:initiateSafetyReportAction>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/aereport/SafetyReportManagementServiceInterface/initiateSafetyReportAction"/><con:wsrmConfig version="1.2"/></con:call><con:call name="Request 3"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>https://dev.semanticbits.com/caaers/services/SafetyReportService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:aer="http://schema.integration.caaers.cabig.nci.nih.gov/aereport">
    <soapenv:Header/>
    <soapenv:Body>
       <aer:initiateSafetyReportAction>
@@ -119149,13 +119093,27 @@ xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-s
                </aer:aeReportVersion>
                <!--Optional:-->
                <aer:reviewStatus>?</aer:reviewStatus>
+               <!--Optional:-->
+               <aer:correlationId>?</aer:correlationId>
             </aer:report>
             <!--Optional:-->
             <aer:externalId>?</aer:externalId>
          </aer:BaseAdverseEventReport>
       </aer:initiateSafetyReportAction>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/aereport/SafetyReportManagementServiceInterface/initiateSafetyReportAction"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="" name="saveSafetyReport" bindingOperationName="saveSafetyReport" type="Request-Response" outputName="saveSafetyReportResponse" inputName="saveSafetyReport" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>https://dev.semanticbits.com/caaers/services/SafetyReportService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:aer="http://schema.integration.caaers.cabig.nci.nih.gov/aereport">
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/aereport/SafetyReportManagementServiceInterface/initiateSafetyReportAction"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="" name="saveSafetyReport" bindingOperationName="saveSafetyReport" type="Request-Response" outputName="saveSafetyReportResponse" inputName="saveSafetyReport" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>https://localhost:8443/caaers/services/SafetyReportService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:aer="http://schema.integration.caaers.cabig.nci.nih.gov/aereport">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <aer:saveSafetyReport>
+         </aer:saveSafetyReport>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/aereport/SafetyReportManagementServiceInterface/saveSafetyReport"/></con:call><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>https://dev.semanticbits.com/caaers/services/SafetyReportService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:aer="http://schema.integration.caaers.cabig.nci.nih.gov/aereport">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <aer:saveSafetyReport>
+         </aer:saveSafetyReport>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/aereport/SafetyReportManagementServiceInterface/saveSafetyReport"/></con:call><con:call name="Request 3"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>https://dev.semanticbits.com/caaers/services/SafetyReportService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:aer="http://schema.integration.caaers.cabig.nci.nih.gov/aereport">
    <soapenv:Header/>
    <soapenv:Body>
       <aer:saveSafetyReport>
@@ -119409,6 +119367,8 @@ xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-s
                   <aer:description>?</aer:description>
                </aer:otherIntervention>
             </aer:dietarySupplementIntervention>
+            <!--Optional:-->
+            <aer:investigationalDeviceAdministered>?</aer:investigationalDeviceAdministered>
             <!--Zero or more repetitions:-->
             <aer:medicalDevice>
                <!--Optional:-->
@@ -120014,13 +119974,27 @@ xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-s
                </aer:aeReportVersion>
                <!--Optional:-->
                <aer:reviewStatus>?</aer:reviewStatus>
+               <!--Optional:-->
+               <aer:correlationId>?</aer:correlationId>
             </aer:report>
             <!--Optional:-->
             <aer:externalId>?</aer:externalId>
          </aer:AdverseEventReport>
       </aer:saveSafetyReport>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/aereport/SafetyReportManagementServiceInterface/saveSafetyReport"/></con:call></con:operation><con:operation isOneWay="false" action="" name="submitSafetyReport" bindingOperationName="submitSafetyReport" type="Request-Response" outputName="submitSafetyReportResponse" inputName="submitSafetyReport" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>https://dev.semanticbits.com/caaers/services/SafetyReportService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:aer="http://schema.integration.caaers.cabig.nci.nih.gov/aereport">
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/aereport/SafetyReportManagementServiceInterface/saveSafetyReport"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="" name="submitSafetyReport" bindingOperationName="submitSafetyReport" type="Request-Response" outputName="submitSafetyReportResponse" inputName="submitSafetyReport" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>https://localhost:8443/caaers/services/SafetyReportService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:aer="http://schema.integration.caaers.cabig.nci.nih.gov/aereport">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <aer:submitSafetyReport>
+         </aer:submitSafetyReport>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/aereport/SafetyReportManagementServiceInterface/submitSafetyReport"/></con:call><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>https://dev.semanticbits.com/caaers/services/SafetyReportService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:aer="http://schema.integration.caaers.cabig.nci.nih.gov/aereport">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <aer:submitSafetyReport>
+         </aer:submitSafetyReport>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/aereport/SafetyReportManagementServiceInterface/submitSafetyReport"/></con:call><con:call name="Request 3"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>https://dev.semanticbits.com/caaers/services/SafetyReportService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:aer="http://schema.integration.caaers.cabig.nci.nih.gov/aereport">
    <soapenv:Header/>
    <soapenv:Body>
       <aer:submitSafetyReport>
@@ -120274,6 +120248,8 @@ xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-s
                   <aer:description>?</aer:description>
                </aer:otherIntervention>
             </aer:dietarySupplementIntervention>
+            <!--Optional:-->
+            <aer:investigationalDeviceAdministered>?</aer:investigationalDeviceAdministered>
             <!--Zero or more repetitions:-->
             <aer:medicalDevice>
                <!--Optional:-->
@@ -120879,13 +120855,15 @@ xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-s
                </aer:aeReportVersion>
                <!--Optional:-->
                <aer:reviewStatus>?</aer:reviewStatus>
+               <!--Optional:-->
+               <aer:correlationId>?</aer:correlationId>
             </aer:report>
             <!--Optional:-->
             <aer:externalId>?</aer:externalId>
          </aer:AdverseEventReport>
       </aer:submitSafetyReport>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/aereport/SafetyReportManagementServiceInterface/submitSafetyReport"/></con:call></con:operation></con:interface><con:mockService port="8088" path="/mockASAELServiceSoapBinding" host="Macintosh-8.local" name="ASAELServiceSoapBinding MockService"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.mock.WsdlMockService@require-soap-action">false</con:setting></con:settings><con:mockOperation name="createOrUpdateASAEL" interface="ASAELServiceSoapBinding" operation="createOrUpdateASAEL"><con:settings/><con:dispatchStyle>SEQUENCE</con:dispatchStyle><con:defaultResponse>Response 1</con:defaultResponse><con:response name="Response 1" encoding="UTF-8" httpResponseStatus="200"><con:settings/><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://schema.integration.caaers.cabig.nci.nih.gov/common">
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/aereport/SafetyReportManagementServiceInterface/submitSafetyReport"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:mockService port="8088" path="/mockASAELServiceSoapBinding" host="Macintosh-8.local" name="ASAELServiceSoapBinding MockService"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.mock.WsdlMockService@require-soap-action">false</con:setting></con:settings><con:mockOperation name="createOrUpdateASAEL" interface="ASAELServiceSoapBinding" operation="createOrUpdateASAEL"><con:settings/><con:dispatchStyle>SEQUENCE</con:dispatchStyle><con:defaultResponse>Response 1</con:defaultResponse><con:response name="Response 1" encoding="UTF-8" httpResponseStatus="200"><con:settings/><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:com="http://schema.integration.caaers.cabig.nci.nih.gov/common">
    <soapenv:Header/>
    <soapenv:Body>
       <com:createOrUpdateASAELResponse>

@@ -47,7 +47,7 @@ public class ToCaaersReportWSRouteBuilder {
             .convertBodyTo(String.class, "UTF-8")
         	.convertBodyTo(byte[].class, "Windows-1252")
         	.convertBodyTo(String.class, "UTF-8")
-        	.to("log:gov.nih.nci.cabig.report2caaers.caaers-ws-request?showHeaders=true&level=WARN")
+        	.to("log:gov.nih.nci.cabig.report2caaers.caaers-ws-request?showHeaders=true&level=TRACE")
             .processRef("removeEDIHeadersAndFootersProcessor")
             .process(track(E2B_SUBMISSION_REQUEST_RECEIVED, msgComboIdPaths))
                 .to(routeBuilder.getFileTracker().fileURI(E2B_SUBMISSION_REQUEST_RECEIVED))
@@ -71,7 +71,7 @@ public class ToCaaersReportWSRouteBuilder {
                 	.to("direct:processE2B");
 
         routeBuilder.from("direct:processE2B")
-        	.to("log:gov.nih.nci.cabig.report2caaers.post-validation?showHeaders=true&level=ERROR")
+        	.to("log:gov.nih.nci.cabig.report2caaers.post-validation?showHeaders=true&level=TRACE")
         	.processRef("resetOriginalMessageProcessor")
             .processRef("headerGeneratorProcessor")
             .process(track(ROUTED_TO_CAAERS_WS_INVOCATION_CHANNEL))

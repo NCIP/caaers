@@ -196,11 +196,11 @@ public class IntegrationLog{
         POST_PROCESS_EDI_MSG(75, "Add EDI response message header and footers"),    //??
         E2B_SCHEMATRON_VALIDATION(15, "Perform E2B schematron validation") ,
         
-        REPORT_SUBMISSION_REQUEST_RECEIVED(42, "AdEERS Report submission request") ,
-        ADEERS_REPORT_REQUEST_TRANSFORMATION(43, "caAERS XML transformed to AdEERS XML") ,
-        ADEERS_REPORT_REQUEST_COMPLETED(44, "AdEERS report submission response") ,
-        ADEERS_REPORT_SUBMISSION_RESPONSE_TRASNSFORMATION(46, "AdEERS report submission response transformation") ,
-        REPORT_SUBMISSION_RESPONSE(47, "AdEERS Report submission response"),
+        REPORT_SUBMISSION_REQUEST(42, "Report submission request") ,
+        ADEERS_REPORT_REQUEST(43, "caAERS XML transformed to AdEERS XML") ,
+        ADEERS_REPORT_RESPONSE(44, "AdEERS report submission response") ,
+        ADEERS_SUBMISSION_FAILED(45, "AdEERS report submission failed") ,
+        REPORT_SUBMISSION_RESPONSE(46, "A final response of report submission") ,
 
         
         PRE_PROCESS_RAVE_INTEGRATION_MSG(48, "Remove white space in incoming Rave message"),

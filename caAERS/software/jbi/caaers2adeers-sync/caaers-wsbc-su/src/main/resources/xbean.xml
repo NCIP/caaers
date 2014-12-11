@@ -403,7 +403,6 @@
             <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
         </cxfbc:inInterceptors>
         <cxfbc:outInterceptors>
-            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
             <bean class="gov.nih.nci.cabig.caaers2adeers.IncomingCredentialExtractingInterceptor">
                 <constructor-arg>
                     <map>
@@ -414,7 +413,7 @@
                     </map>
                 </constructor-arg>
             </bean>
-
+            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
         </cxfbc:outInterceptors>
         <cxfbc:inFaultInterceptors>
             <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>

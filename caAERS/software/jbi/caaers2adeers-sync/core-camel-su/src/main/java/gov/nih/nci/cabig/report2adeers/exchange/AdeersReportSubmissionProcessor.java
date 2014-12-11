@@ -55,13 +55,15 @@ public class AdeersReportSubmissionProcessor implements Processor {
             binding.setUsername(uid);
             binding.setPassword(pwd);
 
+            if(log.isInfoEnabled())   {
+               log.debug("MESSAGE TO ADEERS : ======================================================\n" + inputXML + "\n===================================================");
+            }
+
+
             StringReader reader = new StringReader(inputXML);
             Source attachment = new StreamSource(reader,"");
             String withdraw = (String)exchange.getProperty(REPORT_WITHDRAW);
 
-            if(log.isDebugEnabled())   {
-               log.debug("MESSAGE TO ADEERS : ======================================================\n" + inputXML + "\n===================================================");
-            }
 
             if(StringUtils.equals("true", withdraw)) {
              binding.withdrawAEReport(attachment);
@@ -70,7 +72,7 @@ public class AdeersReportSubmissionProcessor implements Processor {
             }
 
             outputXML = binding._getCall().getMessageContext().getResponseMessage().getSOAPPartAsString();
-            if(log.isDebugEnabled()) {
+            if(log.isInfoEnabled()) {
                 log.info("RESPONSE FROM ADEERS : ======================================================\n" + outputXML + "\n===================================================");
             }
             exchange.getIn().setHeader(REPORT_SUBMISSION_STATUS, "SUCCESS");

@@ -50,17 +50,17 @@ public class ToAdeersReportServiceRouteBuilder {
 
 
         rb.from("direct:submit-report")
-          .process(track(REPORT_SUBMISSION_REQUEST_RECEIVED))
-                .to(rb.getFileTracker().fileURI(REPORT_SUBMISSION_REQUEST_RECEIVED))
+          .process(track(REPORT_SUBMISSION_REQUEST))
+                .to(rb.getFileTracker().fileURI(REPORT_SUBMISSION_REQUEST))
           .to("xslt:xslt/adeers/request/report-transformer.xsl")
                 .to("log:gov.nih.nci.cabig.report2adeers.caaers-ws-request?showHeaders=true&multiline=true&level=TRACE")
-          .process(track(ADEERS_REPORT_REQUEST_TRANSFORMATION))
-                .to(rb.getFileTracker().fileURI(ADEERS_REPORT_REQUEST_TRANSFORMATION))
+          .process(track(ADEERS_REPORT_REQUEST))
+                .to(rb.getFileTracker().fileURI(ADEERS_REPORT_REQUEST))
           .setExchangePattern(ExchangePattern.InOut)
           .processRef("adeersReportSubmissionProcessor")
                 .to("log:gov.nih.nci.cabig.report2adeers.caaers-ws-request?showHeaders=true&multiline=true&level=TRACE")
-          .process(track(ADEERS_REPORT_REQUEST_COMPLETED))
-                .to(rb.getFileTracker().fileURI(ADEERS_REPORT_REQUEST_COMPLETED))
+          .process(track(ADEERS_REPORT_RESPONSE))
+                .to(rb.getFileTracker().fileURI(ADEERS_REPORT_RESPONSE))
           .choice()
              .when(rb.header(REPORT_SUBMISSION_STATUS).isEqualTo("ERROR"))
                      .to("direct:communication-error")
@@ -70,16 +70,17 @@ public class ToAdeersReportServiceRouteBuilder {
                      .to("direct:adeers-response");
 
         rb.from("direct:communication-error")
+            .process(track(ADEERS_SUBMISSION_FAILED, "Communication error"))
             .to("xslt:xslt/adeers/response/report-error-transformer.xsl")
-            .process(track(ADEERS_REPORT_SUBMISSION_RESPONSE_TRASNSFORMATION))
-                .to(rb.getFileTracker().fileURI(ADEERS_REPORT_SUBMISSION_RESPONSE_TRASNSFORMATION))
+            .process(track(REPORT_SUBMISSION_RESPONSE))
+                .to(rb.getFileTracker().fileURI(REPORT_SUBMISSION_RESPONSE))
             .to("log:gov.nih.nci.cabig.report2adeers.caaers-ws-request?showHeaders=true&multiline=true&level=TRACE")
             .to("jbi:endpoint:urn:gov:nih:nci:caaers:jmsOut:provider", "direct:routeAdEERSResponseSink");
 
         rb.from("direct:adeers-response")
             .to("xslt:xslt/adeers/response/report-transformer.xsl")
-            .process(track(ADEERS_REPORT_SUBMISSION_RESPONSE_TRASNSFORMATION))
-                .to(rb.getFileTracker().fileURI(ADEERS_REPORT_SUBMISSION_RESPONSE_TRASNSFORMATION))
+            .process(track(REPORT_SUBMISSION_RESPONSE))
+                .to(rb.getFileTracker().fileURI(REPORT_SUBMISSION_RESPONSE))
             .to("log:gov.nih.nci.cabig.report2adeers.caaers-ws-request?showHeaders=true&multiline=true&level=TRACE")
             .multicast()
                 .to("jbi:endpoint:urn:gov:nih:nci:caaers:jmsOut:provider", "direct:routeAdEERSResponseSink");

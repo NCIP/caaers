@@ -139,7 +139,12 @@ public class ReportSubmissionService {
     			report.addReportDelivery(delivery);
     		}
     	}
-    	
+
+        //set correlation-id if that do not exist (to support legacy)
+        if(StringUtils.isEmpty(report.getMetaData())) {
+            report.addToCorrelationId(String.valueOf(System.currentTimeMillis()));
+        }
+
     	// start tracking.
     	ReportTracking reportTracking = new ReportTracking();
     	Tracker.logInitiation(reportTracking, true, "",nowFactory.getNow());

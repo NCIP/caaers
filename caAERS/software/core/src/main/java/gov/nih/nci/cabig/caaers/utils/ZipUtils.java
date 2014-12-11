@@ -34,6 +34,9 @@ public class ZipUtils {
 
 
     public static File createZipFile(String baseFolder, String entity, Map<String, String> correlationIdDateMap){
+        if(log.isDebugEnabled()) {
+            log.debug(String.format("Creating Zip for %s and coorelationIds :%s" , entity, correlationIdDateMap.toString() ));
+        }
 
         File zipFile = null;
         File tempFolder =  null;
@@ -44,8 +47,10 @@ public class ZipUtils {
 
         try{
 
-            tempFolder = File.createTempFile(RandomStringUtils.randomAlphabetic(4), "");
-            tempFolder.mkdir();
+            tempFolder = File.createTempFile(RandomStringUtils.randomAlphabetic(5), "");
+            FileUtils.deleteQuietly(tempFolder);
+            tempFolder.mkdirs();
+
             zipFile = File.createTempFile(RandomStringUtils.randomAlphabetic(5), ".zip");
 
             //copy individual folders
