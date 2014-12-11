@@ -27,9 +27,7 @@ public class AdverseEventReportingPeriodSynchronizer implements Migrator<Adverse
          if(src.getEpoch() != null) dest.setEpoch(src.getEpoch());
          if(src.getExternalId() != null) dest.setExternalId(src.getExternalId());
 
-         int i = -1;
          for(AdverseEvent aeSrc : src.getAdverseEvents()){
-            i++;
             AdverseEvent aeFound = dest.findAdverseEventByIdTermAndDates(aeSrc);
             //set the attributes for AE
             if(aeFound == null){
