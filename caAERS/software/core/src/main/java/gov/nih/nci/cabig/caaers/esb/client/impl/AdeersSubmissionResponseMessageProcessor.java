@@ -93,7 +93,7 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
                  url = jobInfo.getChild("reportURL").getValue();
                  
         		 String submissionMessage = messageSource.getMessage("successful.reportSubmission.message",
-        				 new Object[]{String.valueOf(r.getLastVersion().getId()), ticketNumber,  url}, Locale.getDefault());
+        				 new Object[]{String.valueOf(r.getId()), ticketNumber,  url}, Locale.getDefault());
         		 
         		sb.append(submissionMessage);
         		
@@ -117,7 +117,7 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
                          }
                      }
             		 
-            		 String submissionMessage = messageSource.getMessage("failed.reportSubmission.message", new Object[]{String.valueOf(r.getLastVersion().getId()),
+            		 String submissionMessage = messageSource.getMessage("failed.reportSubmission.message", new Object[]{String.valueOf(r.getId()),
             				 exceptionMsgBuffer.toString(), r.getSubmitter().getFullName(), r.getSubmitter().getEmailAddress(), r.getAeReport().getStudy()
             				 .getPrimaryIdentifier().getValue(), r.getAeReport().getParticipant().getPrimaryIdentifierValue(), r.getCaseNumber(),String.valueOf(r.getId()),
             				 configuration.get(Configuration.SYSTEM_NAME), sysName}, Locale.getDefault());
