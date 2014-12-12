@@ -461,6 +461,7 @@ public class EvaluationServiceImpl implements EvaluationService {
                         for(AdverseEvent ae : deletedAeList) {
                             boolean reported = submittedReport.isReported(ae);
                             if(reported) {
+                                defList.add(rdCompleted);
                                 evaluationResult.addReportDefinitionName(aeReportId, ae, rdCompleted.getName());
                                 evaluationResult.addProcessingStep(aeReportId, "caAERS: Submitted adverse event (" + AdverseEvent.toReadableString(ae) + ") is deleted : ", null);
                                 evaluationResult.addProcessingStep(aeReportId, " Adding to suggestion ", rdCompleted.getName() );
