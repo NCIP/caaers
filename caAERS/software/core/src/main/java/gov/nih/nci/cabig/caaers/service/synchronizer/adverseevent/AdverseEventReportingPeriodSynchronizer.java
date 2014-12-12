@@ -30,12 +30,14 @@ public class AdverseEventReportingPeriodSynchronizer implements Migrator<Adverse
          for(AdverseEvent aeSrc : src.getAdverseEvents()){
             AdverseEvent aeFound = dest.findAdverseEventByIdTermAndDates(aeSrc);
             //set the attributes for AE
-            if(aeFound == null){
+            if(aeFound == null) {
+            	System.err.println("DIRKTEST; No old found.");
                 aeFound = aeSrc;
                 //Always populate the graded date when creating the AE.
                 if(aeFound.getGradedDate() == null) aeFound.setGradedDate(new Date());
                 dest.addAdverseEvent(aeFound);
             } else {
+            	System.err.println("DIRKTEST; updating old.");
                 if(aeSrc.getExpected() != null) aeFound.setExpected(aeSrc.getExpected());
                 if(aeSrc.getHospitalization() != null) aeFound.setHospitalization(aeSrc.getHospitalization());
                 if(aeSrc.getAttributionSummary() != null) aeFound.setAttributionSummary(aeSrc.getAttributionSummary());
@@ -73,7 +75,11 @@ public class AdverseEventReportingPeriodSynchronizer implements Migrator<Adverse
 
                 if(aeSrc.getGrade() != null) aeFound.setGrade(aeSrc.getGrade());
                 // Update only when there is a valid value is present.
-                if ( aeSrc.getGradedDate() != null) aeFound.setGradedDate(aeSrc.getGradedDate());
+                if ( aeSrc.getGradedDate() != null) {
+                	aeFound.setGradedDate(aeSrc.getGradedDate());
+                } else if(aeFound.getGradedDate() == null){
+                	aeFound.setGradedDate(new Date());
+                }
 
                 if(aeSrc.getDetailsForOther() != null) aeFound.setDetailsForOther(aeSrc.getDetailsForOther());
                 if(aeSrc.getComments() != null) aeFound.setComments(aeSrc.getComments());
