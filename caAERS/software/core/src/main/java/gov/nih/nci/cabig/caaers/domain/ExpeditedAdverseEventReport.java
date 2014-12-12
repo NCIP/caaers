@@ -381,6 +381,22 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	}
     	return activeEvents;
     }
+
+    /**
+     * List of deleted adverse events.
+     * @return
+     */
+    @Transient
+    public List<AdverseEvent> getRetiredAdverseEvents() {
+        List<AdverseEvent> aes = new ArrayList<AdverseEvent>();
+        for(AdverseEvent ae: getAdverseEvents()){
+            if(ae == null) continue;
+            if(ae.isRetired()) {
+                aes.add(ae);
+            }
+        }
+        return aes;
+    }
     
     /**
      * List of active adverse events, that are modified.
@@ -1573,17 +1589,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	}
     }
     
-    /**
-     * This method will clear the reportedFlag, set on previously reported adverse events, 
-     * which got modified.
-     */
-    public void clearReportedFlagOnModifiedAdverseEvents(){
-    	List<AdverseEvent> modifiedAdverseEvents = getModifiedAdverseEvents();
-    	for(AdverseEvent modifiedAdverseEvent : modifiedAdverseEvents){
-    		modifiedAdverseEvent.setReported(false);
-    	}
-    }
-    
+
     /**
      * This method will clear the post submission updated date on each of the adverse events. 
      */
