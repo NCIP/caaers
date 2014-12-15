@@ -12,6 +12,7 @@ import gov.nih.nci.ctep.adeers.client.AEReportXMLService_ServiceLocator;
 import gov.nih.nci.ctep.adeers.client.ReportingMode;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.StringReader;
 import java.util.Date;
@@ -27,7 +28,7 @@ import webservice.AdeersWebService;
 public class AdeersWebServiceImpl implements AdeersWebService {
     private static final String xmlProlog = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" ;
 	Logger log = Logger.getLogger(getClass());
-
+    private long index = 0;
 
 	public String callWebService(String aeReport) throws Exception {
 		
@@ -63,16 +64,8 @@ public class AdeersWebServiceImpl implements AdeersWebService {
         binding.setUsername(uid);
         binding.setPassword(pwd);
         aeReport = aeReport.startsWith("<?xml") ? aeReport : (xmlProlog + aeReport);
-        try {
-	        File logFile = new File("~/ADlogs/" + new Date() + ".xml");
-	        logFile.createNewFile();
-	        FileWriter writer = new FileWriter(logFile);
-	        writer.write(aeReport);
-	        writer.close();
-	        log.info("Message to AdEERS sucsessfully loged in;" + logFile.getCanonicalPath()); 
-        } catch(Exception e) {
-        	log.error("Problem loging", e);
-        }
+        index++;
+        logToFile("/tmp/ADLogs/submission" + index, "request.xml" , aeReport);
         StringReader reader = new StringReader(aeReport);
         String reponseStr = "";
         if (serviceContext.withdraw) {
@@ -84,7 +77,7 @@ public class AdeersWebServiceImpl implements AdeersWebService {
 	        reponseStr = binding._getCall().getMessageContext().getResponseMessage().getSOAPPartAsString();
             log.info("Actual Response Received from adEERS: ======================================================\n" + reponseStr + "\n===================================================");
 	        //attach the id to the returned message
-	        reponseStr=reponseStr.replaceAll("</ns1:AEReportCancelInfo>","<CAEERS_AEREPORT_ID>"+serviceContext.caaersAeReportId+"</CAEERS_AEREPORT_ID><REPORT_ID>"+serviceContext.reportId+"</REPORT_ID><SUBMITTER_EMAIL>"+serviceContext.submitterEmail+"</SUBMITTER_EMAIL><MESSAGE_COMBO_ID>"+serviceContext.messageComboId+"</MESSAGE_COMBO_ID></ns1:AEReportCancelInfo>");
+	        reponseStr=reponseStr.replaceAll("</ns1:AEReportCancelInfo>", "<CAEERS_AEREPORT_ID>" + serviceContext.caaersAeReportId + "</CAEERS_AEREPORT_ID><REPORT_ID>" + serviceContext.reportId + "</REPORT_ID><SUBMITTER_EMAIL>" + serviceContext.submitterEmail + "</SUBMITTER_EMAIL><MESSAGE_COMBO_ID>" + serviceContext.messageComboId + "</MESSAGE_COMBO_ID></ns1:AEReportCancelInfo>");
 	        log.info("Processed Response Received from adEERS: ======================================================\n" + reponseStr + "\n===================================================");
         } else {
 	        log.info("Submitting to adEERS...");
@@ -96,9 +89,10 @@ public class AdeersWebServiceImpl implements AdeersWebService {
             log.info("Actual Response Received from adEERS: ======================================================\n" + reponseStr + "\n===================================================");
 
             //attach the id to the returned message
-	        reponseStr=reponseStr.replaceAll("</ns1:AEReportJobInfo>","<CAEERS_AEREPORT_ID>"+serviceContext.caaersAeReportId+"</CAEERS_AEREPORT_ID><REPORT_ID>"+serviceContext.reportId+"</REPORT_ID><SUBMITTER_EMAIL>"+serviceContext.submitterEmail+"</SUBMITTER_EMAIL><MESSAGE_COMBO_ID>"+serviceContext.messageComboId+"</MESSAGE_COMBO_ID></ns1:AEReportJobInfo>");
+	        reponseStr=reponseStr.replaceAll("</ns1:AEReportJobInfo>", "<CAEERS_AEREPORT_ID>" + serviceContext.caaersAeReportId + "</CAEERS_AEREPORT_ID><REPORT_ID>" + serviceContext.reportId + "</REPORT_ID><SUBMITTER_EMAIL>" + serviceContext.submitterEmail + "</SUBMITTER_EMAIL><MESSAGE_COMBO_ID>" + serviceContext.messageComboId + "</MESSAGE_COMBO_ID></ns1:AEReportJobInfo>");
             log.info("Processed Response Received from adEERS: ======================================================\n" + reponseStr + "\n===================================================");
         }
+        logToFile("/tmp/ADLogs/submission_" + index, "response.xml" , reponseStr);
         return reponseStr;
 		
 	}
@@ -131,17 +125,31 @@ public class AdeersWebServiceImpl implements AdeersWebService {
 			serviceContext.withdraw = true;
 		} 
 		
-		String aeReport = aeReportWithCaaersId.replaceAll("<CAEERS_AEREPORT_ID>"+serviceContext.caaersAeReportId+"</CAEERS_AEREPORT_ID>", "");
-		aeReport = aeReport.replaceAll("<EXTERNAL_SYSTEMS>"+serviceContext.externalEPRs+"</EXTERNAL_SYSTEMS>", "");
-		aeReport = aeReport.replaceAll("<REPORT_ID>"+serviceContext.reportId+"</REPORT_ID>", "");
-		aeReport = aeReport.replaceAll("<SUBMITTER_EMAIL>"+serviceContext.submitterEmail+"</SUBMITTER_EMAIL>", "");
-		aeReport = aeReport.replaceAll("<MESSAGE_COMBO_ID>"+serviceContext.messageComboId+"</MESSAGE_COMBO_ID>", "");
+		String aeReport = aeReportWithCaaersId.replaceAll("<CAEERS_AEREPORT_ID>" + serviceContext.caaersAeReportId + "</CAEERS_AEREPORT_ID>", "");
+		aeReport = aeReport.replaceAll("<EXTERNAL_SYSTEMS>" + serviceContext.externalEPRs + "</EXTERNAL_SYSTEMS>", "");
+		aeReport = aeReport.replaceAll("<REPORT_ID>" + serviceContext.reportId + "</REPORT_ID>", "");
+		aeReport = aeReport.replaceAll("<SUBMITTER_EMAIL>" + serviceContext.submitterEmail + "</SUBMITTER_EMAIL>", "");
+		aeReport = aeReport.replaceAll("<MESSAGE_COMBO_ID>" + serviceContext.messageComboId + "</MESSAGE_COMBO_ID>", "");
 		aeReport = aeReport.replaceAll("<ADDITIONAL_INFORMATION/>", "");
 		aeReport = aeReport.replaceAll("<WITHDRAW>true</WITHDRAW>", "");
 		return aeReport;
 	}
 	
 
+    private void logToFile(String folderPath, String fileName, String aeReport) {
+
+        try {
+            File folder = new File(folderPath);
+            folder.mkdirs();
+            File logFile = new File(folder, fileName);
+
+            FileWriter writer = new FileWriter(logFile);
+            writer.write(aeReport);
+            writer.close();
+        } catch(Exception e) {
+            log.error("Problem logging", e);
+        }
+    }
 	public static class ServiceContext {
 		public String caaersAeReportId = "";
 		public String externalEPRs = "";
@@ -156,4 +164,6 @@ public class AdeersWebServiceImpl implements AdeersWebService {
 			return new ServiceContext();
 		}
 	}
+
+
 }
