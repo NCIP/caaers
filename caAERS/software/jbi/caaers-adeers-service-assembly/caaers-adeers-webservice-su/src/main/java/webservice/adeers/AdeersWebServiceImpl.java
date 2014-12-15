@@ -28,7 +28,6 @@ import webservice.AdeersWebService;
 public class AdeersWebServiceImpl implements AdeersWebService {
     private static final String xmlProlog = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" ;
 	Logger log = Logger.getLogger(getClass());
-    private long index = 0;
 
 	public String callWebService(String aeReport) throws Exception {
 		
@@ -64,8 +63,7 @@ public class AdeersWebServiceImpl implements AdeersWebService {
         binding.setUsername(uid);
         binding.setPassword(pwd);
         aeReport = aeReport.startsWith("<?xml") ? aeReport : (xmlProlog + aeReport);
-        index++;
-        logToFile("/tmp/ADLogs/submission" + index, "request.xml" , aeReport);
+
         StringReader reader = new StringReader(aeReport);
         String reponseStr = "";
         if (serviceContext.withdraw) {
@@ -92,7 +90,6 @@ public class AdeersWebServiceImpl implements AdeersWebService {
 	        reponseStr=reponseStr.replaceAll("</ns1:AEReportJobInfo>", "<CAEERS_AEREPORT_ID>" + serviceContext.caaersAeReportId + "</CAEERS_AEREPORT_ID><REPORT_ID>" + serviceContext.reportId + "</REPORT_ID><SUBMITTER_EMAIL>" + serviceContext.submitterEmail + "</SUBMITTER_EMAIL><MESSAGE_COMBO_ID>" + serviceContext.messageComboId + "</MESSAGE_COMBO_ID></ns1:AEReportJobInfo>");
             log.info("Processed Response Received from adEERS: ======================================================\n" + reponseStr + "\n===================================================");
         }
-        logToFile("/tmp/ADLogs/submission_" + index, "response.xml" , reponseStr);
         return reponseStr;
 		
 	}
@@ -136,8 +133,9 @@ public class AdeersWebServiceImpl implements AdeersWebService {
 	}
 	
 
+	@Deprecated
     private void logToFile(String folderPath, String fileName, String aeReport) {
-
+		//used for Debuging only.
         try {
             File folder = new File(folderPath);
             folder.mkdirs();
