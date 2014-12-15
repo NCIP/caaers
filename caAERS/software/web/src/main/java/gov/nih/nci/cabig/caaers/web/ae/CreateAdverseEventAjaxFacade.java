@@ -28,6 +28,8 @@ import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportVersionRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository;
+import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
+import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.service.AdeersIntegrationFacade;
 import gov.nih.nci.cabig.caaers.service.InteroperationService;
@@ -628,6 +630,10 @@ public class CreateAdverseEventAjaxFacade {
         AjaxOutput out = new AjaxOutput();
 
         try {
+        	final CaaersSecurityFacade security = CaaersSecurityFacadeImpl.getInstance();
+        	if(!security.checkAuthorization(SecurityUtils.getAuthentication(), "gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE")) {
+        		throw new Exception("Security Exception; This user is not authorized to withdraw a report.");
+        	}
             ExpeditedAdverseEventReport aeReport = aeReportDao.getById(aeReportId);
             Report report = aeReport.findReportById(reportId);
             if(report != null && report.isActive()){

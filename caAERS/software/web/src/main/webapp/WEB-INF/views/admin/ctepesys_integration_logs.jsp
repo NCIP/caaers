@@ -8,7 +8,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 
 <html>
 <head>
-<title>CTEP-ESYS Data Integration Logs</title>
+<title>Data Integration Logs</title>
 <link rel="stylesheet" type="text/css" href="/caaers/css/slider.css?${requestScope.webCacheId}" />
 <link rel="stylesheet" type="text/css" href="/caaers/css/ae.css?${requestScope.webCacheId}" />
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
@@ -293,7 +293,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 	        <a href="trackReports">Report Submission Logs</a>
 	    </div></li>
 	    <li id="thirdlevelnav" class="tab selected"><div>
-	        <a href="#">CTEP-ESYS Data Integration Logs</a>
+	        <a href="#">Data Integration Logs</a>
 	    </div></li>
 	  </ul>
   </div>

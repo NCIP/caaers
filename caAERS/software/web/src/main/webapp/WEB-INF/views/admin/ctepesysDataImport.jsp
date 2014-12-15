@@ -178,7 +178,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
         <a href="trackReports">Report Submission Logs</a>
     </div></li>
     <li id="thirdlevelnav" class="tab"><div>
-        <a href="ctepesysDataIntegrationLogs">CTEP-ESYS Data Integration Logs</a>
+        <a href="ctepesysDataIntegrationLogs">Data Integration Logs</a>
     </div></li>
   </ul>
 </div>

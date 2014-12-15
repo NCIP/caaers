@@ -62,7 +62,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
     function updateDropDownAfterWithdraw(reportId) {
         jQuery('#SUBMIT_' + reportId).remove();
         jQuery('#WITHDRAW_' + reportId).remove();
-        createDropDowns();
+        createDropDowns(); 
     }
 
     function doIt(type, reportId, aeReportId, submissionURL) {

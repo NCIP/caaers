@@ -321,13 +321,16 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
             manageAdverseEventRecommendedReports(requestType, dto);
 
            
-            //has at least one SAE ? - mark hasSAE flag in the response
+            //CAAERS-6316 If there are no recommended actions or if there is only 1 recommended action and is Withdraw, 
+            // hasSae = false, otherwise true
             if(requestType.equals(RequestType.SaveEvaluate)) {
-            	  //CAAERS-6316 hasSAE is used to suggest that a recommended action is present
-            	 if(!((SaveAndEvaluateAEsOutputMessage)response).getRecommendedActions().isEmpty()){
-            		 ((SaveAndEvaluateAEsOutputMessage)response).setHasSAE(true);
+            	 boolean sae = (((SaveAndEvaluateAEsOutputMessage)response).getRecommendedActions() != null && 
+                 		((SaveAndEvaluateAEsOutputMessage)response).getRecommendedActions().size() > 1);
+            	 if(!sae && ((SaveAndEvaluateAEsOutputMessage)response).getRecommendedActions() != null && 
+            			 !((SaveAndEvaluateAEsOutputMessage)response).getRecommendedActions().isEmpty()){
+            		 sae = !StringUtils.equals(((SaveAndEvaluateAEsOutputMessage)response).getRecommendedActions().get(0).getAction(), WITHDRAW.getDisplayName());
                  }
-              //  ((SaveAndEvaluateAEsOutputMessage)response).setHasSAE(seriousAdverseEvents.size() > 0);
+            	 ((SaveAndEvaluateAEsOutputMessage)response).setHasSAE(sae);
             }
 
             //retrieve all the SAEs identified by rules engine.

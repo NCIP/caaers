@@ -111,7 +111,9 @@ public class EvaluationServiceImpl implements EvaluationService {
     		for(ExpeditedAdverseEventReport aeReport : aeReports){
     			List<AdverseEvent> evaluatableAdverseEvents = new ArrayList<AdverseEvent>(newlyAddedAdverseEvents);
     			List<AdverseEvent> existingAdverseEvents = aeReport.isActive() ? aeReport.getActiveAdverseEvents() : aeReport.getActiveModifiedAdverseEvents() ;
+                List<AdverseEvent> deletedAdverseEvents = aeReport.getRetiredAdverseEvents();
         		evaluatableAdverseEvents.addAll(existingAdverseEvents);
+                evaluatableAdverseEvents.addAll(deletedAdverseEvents);
         		
         		List<AdverseEvent> allAdverseEvents = new ArrayList<AdverseEvent>(newlyAddedAdverseEvents);
         		allAdverseEvents.addAll(aeReport.getAdverseEvents());
@@ -178,6 +180,23 @@ public class EvaluationServiceImpl implements EvaluationService {
      */
     public void findRequiredReportDefinitions(ExpeditedAdverseEventReport aeReport, List<AdverseEvent> aeList, Study study, EvaluationResultDTO evaluationResult) {
 
+        List<AdverseEvent> deletedAeList = new ArrayList<AdverseEvent>();
+        List<AdverseEvent> newAeList = new ArrayList<AdverseEvent>();
+        List<AdverseEvent> modifiedAeList = new ArrayList<AdverseEvent>();
+        List<AdverseEvent> evaluatableAeList = new ArrayList<AdverseEvent>();
+        for(AdverseEvent ae : aeList)  {
+            if(ae.isRetired()) {
+                deletedAeList.add(ae);
+            } else if(ae.getReport() == null) {
+                newAeList.add(ae);
+            } else {
+                modifiedAeList.add(ae);
+            }
+        }
+
+        evaluatableAeList.addAll(modifiedAeList);
+        evaluatableAeList.addAll(newAeList);
+
         ExpeditedAdverseEventReport expeditedData = aeReport.getId() == null ? null : aeReport;
         //to hold the report defnitions while cleaning up. 
         Map<String , ReportDefinition> loadedReportDefinitionsMap = new HashMap<String, ReportDefinition>();
@@ -189,7 +208,7 @@ public class EvaluationServiceImpl implements EvaluationService {
         Integer aeReportId = expeditedData == null ? new Integer(0) : expeditedData.getId();
         try {
         	//evaluate the SAE reporting rules
-            adverseEventEvaluationResultMap = adverseEventEvaluationService.evaluateSAEReportSchedule(aeReport, aeList, study);
+            adverseEventEvaluationResultMap = adverseEventEvaluationService.evaluateSAEReportSchedule(aeReport, evaluatableAeList, study);
             evaluationResult.getRulesEngineRawResultMap().put(aeReportId, adverseEventEvaluationResultMap);
             map = new HashMap<AdverseEvent, List<String>>();
             
@@ -288,7 +307,7 @@ public class EvaluationServiceImpl implements EvaluationService {
 
             if(!completedReports.isEmpty()){
 
-                for(AdverseEvent adverseEvent : aeList){
+                for(AdverseEvent adverseEvent : evaluatableAeList){
 
                     if(adverseEvent.getReport() == null) continue;      //unreported AE -  continue
 
@@ -300,7 +319,7 @@ public class EvaluationServiceImpl implements EvaluationService {
                             if(report.isReported(adverseEvent)) {
                                 List<ReportDefinition> rdList = ReportDefinition.findByName(defList, nameList.toArray(new String[0]));
                                 List<ReportDefinition> sameOrgGroupList = ReportDefinition.findBySameOrganizationAndGroup(rdList, report.getReportDefinition());
-                                if(sameOrgGroupList.size() > 1) {
+                                if(sameOrgGroupList.size() > 0) {
                                    List<ReportDefinition> rdNotificationList = ReportDefinition.findByReportType(sameOrgGroupList, ReportType.NOTIFICATION);
                                    for(ReportDefinition rd : rdNotificationList) {
                                        // we must remove these from suggestions.
@@ -399,41 +418,57 @@ public class EvaluationServiceImpl implements EvaluationService {
                     evaluationResult.addProcessingStep(aeReportId, " Adding to suggestion ", rdManual.getName() );
 
                 }
-            	
-            	List<AdverseEvent> modifiedAdverseEvents = expeditedData.getModifiedAdverseEvents();
-            	
-            	
+
+
             	//any ae modified/got completed reports ? add those report definitions.
-            	if(modifiedAdverseEvents != null && !modifiedAdverseEvents.isEmpty()){
+            	if(!modifiedAeList.isEmpty()){
                   	//Any completed report, suggest amending it to proceed (but no alert).
                 	for(Report report : completedReports){
          				
          				ReportDefinition rdCompleted = report.getReportDefinition();
          				
          				if(!rdCompleted.getAmendable()) continue;
-         				
-         				boolean sameGroupSuggested = false;
-         				//do we have a report def suggested, that belongs to same category? Yes, then ignore
-         				for(ReportDefinition rdSuggested : defList){
-         					if(rdSuggested.isOfSameReportTypeAndOrganization(rdCompleted)){
-         						sameGroupSuggested = true;
-         						break;
-         					}
-         				}
-         				
-         				if(!sameGroupSuggested){
-         					defList.add(rdCompleted);
-         					for(AdverseEvent ae : modifiedAdverseEvents){
-         						evaluationResult.addReportDefinitionName(aeReportId, ae, rdCompleted.getName());
-                                evaluationResult.addProcessingStep(aeReportId, "caAERS: Submitted adverse event (" + AdverseEvent.toReadableString(ae) + ") is modified : ", null);
-                                evaluationResult.addProcessingStep(aeReportId, " Adding to suggestion ", rdCompleted.getName() );
 
-         					}
-         					
-         				}
+                        defList.add(rdCompleted);
+                        for(AdverseEvent ae : modifiedAeList){
+                            evaluationResult.addReportDefinitionName(aeReportId, ae, rdCompleted.getName());
+                            evaluationResult.addProcessingStep(aeReportId, "caAERS: Submitted adverse event (" + AdverseEvent.toReadableString(ae) + ") is modified : ", null);
+                            evaluationResult.addProcessingStep(aeReportId, " Adding to suggestion ", rdCompleted.getName() );
+
+                        }
          				
          			}
             	}
+
+                //CAAERS-7067 - the deletions must suggest an Amend (ONLY if the AE was reported on last submitted report)
+                if(!deletedAeList.isEmpty()) {
+                    // find latest submission from each group and org
+                    List<Report> lastSubmittedReports = new ArrayList<Report>();
+                    Set<Integer> rdIdSet = new HashSet<Integer>(); //using Set for reports may complicate stuff with equals on hibernate proxy
+                    for(Report completedReport : completedReports) {
+                        Report latestReport = aeReport.findLastSubmittedReport(completedReport.getReportDefinition());
+                        if(rdIdSet.add(latestReport.getReportDefinition().getId())) {
+                            lastSubmittedReports.add(latestReport);
+                        }
+                    }
+
+                    //for each such report, if the AE deleted is submitted on that, then suggest ammend.
+                    for(Report submittedReport : lastSubmittedReports) {
+                        ReportDefinition rdCompleted = submittedReport.getReportDefinition();
+                        if(rdCompleted.getReportType() == ReportType.NOTIFICATION) continue; //CAAERS-7041
+                        if(!rdCompleted.getAmendable()) continue;
+
+                        for(AdverseEvent ae : deletedAeList) {
+                            boolean reported = submittedReport.isReported(ae);
+                            if(reported) {
+                                defList.add(rdCompleted);
+                                evaluationResult.addReportDefinitionName(aeReportId, ae, rdCompleted.getName());
+                                evaluationResult.addProcessingStep(aeReportId, "caAERS: Submitted adverse event (" + AdverseEvent.toReadableString(ae) + ") is deleted : ", null);
+                                evaluationResult.addProcessingStep(aeReportId, " Adding to suggestion ", rdCompleted.getName() );
+                            }
+                        }
+                    }
+                }
             	
             }
             
@@ -593,7 +628,7 @@ public class EvaluationServiceImpl implements EvaluationService {
            }
 
            //update the result object
-           evaluationResult.addEvaluatedAdverseEvents(aeReportId, aeList);
+           evaluationResult.addEvaluatedAdverseEvents(aeReportId, evaluatableAeList);
 //           evaluationResult.addResult(aeList, reportDefinitions);
            evaluationResult.addResult(expeditedData, reportDefinitions);
             

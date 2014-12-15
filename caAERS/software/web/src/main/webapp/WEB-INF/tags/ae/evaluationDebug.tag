@@ -9,7 +9,7 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <%@attribute name="result" required="true" type="gov.nih.nci.cabig.caaers.domain.dto.EvaluationResultDTO" description="The evaluation result" %>
-
+ <!-- DEBUG PROCESSING STEPS -->
 <c:forEach var="r" items="${result.processingSteps}">
     <div id="dc-eval-debug-${r.key}" style="display: none;">
       <h4>Shows how caAERS came up with the above suggestions for Data Collection : ${r.key}</h4>

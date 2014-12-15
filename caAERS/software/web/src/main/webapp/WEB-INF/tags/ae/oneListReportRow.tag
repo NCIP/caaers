@@ -1,7 +1,8 @@
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="csmauthz" uri="http://csm.ncicb.nci.nih.gov/authz" %>
 <%@attribute name="rpIndex" required="true" type="java.lang.Integer" description="The index of the Report"%>
 <%@attribute name="report" required="true" type="gov.nih.nci.cabig.caaers.domain.report.Report" description="The report that is printed by this row." %>
 <c:set var="repcurrClass" value="${rpIndex %2 gt 0 ? 'odd' : 'even'}" />
@@ -79,12 +80,14 @@
                 <%--<a id="actions-menu-${report.id}" class="submitter fg-button fg-button-icon-right ui-widget ui-state-default ui-corner-all"><span class="ui-icon ui-icon-triangle-1-s"></span><span style="color:white">Actions</span></a>--%>
             </div>
             <div id="options-actions-menu-${report.id}" style="display: none;">
-                <ul>
+                <ul> 
                 	<c:if test="${report.aeReport.notificationMessagePossible and (not empty configuration.map.pscBaseUrl)}"><li><a href="#" onclick="doIt('notifyPSC', '${report.id}', '${report.aeReport.id}', '${lastVersion.submissionUrl}')"><img src="<chrome:imageUrl name="../blue/notify.png"/>" alt=""/>&nbsp;Notify PSC</a></li></c:if>
-                    <c:if test="${reportStatus eq 'PENDING' or reportStatus eq 'FAILED' or reportStatus eq 'WITHDRAW_FAILED'}"><li id="WITHDRAW_${report.id}"><a href="#" onclick="doIt('withdraw', '${report.id}', '${report.aeReport.id}', '${lastVersion.submissionUrl}')" class="submitter-red"><img src="<chrome:imageUrl name="../blue/Withdraw-icon-small.png" />" alt="" />&nbsp;Withdraw</a></li></c:if>
-                    <c:if test="${command.reportsSubmittable[report.id]}"><li id="SUBMIT_${report.id}"><a class="submitter-green" href="#" onclick="doIt('submit', '${report.id}', '${report.aeReport.id}', '${lastVersion.submissionUrl}')"><img src="<chrome:imageUrl name="../blue/submit-small.png"/>" alt="" />&nbsp;Review &amp; Submit</a></li></c:if>
-                    <c:if test="${report.reportDefinition.amendable and (reportStatus eq 'COMPLETED') and command.amendAnOption}"><li><a href="#" onclick="doIt('amend', '${report.id}', '${report.aeReport.id}', '${lastVersion.submissionUrl}')"><img src="<chrome:imageUrl name="../blue/Amend-icon-small.png"/>" alt="" />&nbsp;Amend</a></li></c:if>
-                    <c:if test="${(reportStatus eq 'COMPLETED' or reportStatus eq 'AMENDED' )and (not empty lastVersion.submissionUrl)}"><li><a class="submitter-green" href="#" onclick="doIt('adeers', '${report.id}', '${report.aeReport.id}', '${lastVersion.submissionUrl}')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt="" />&nbsp;View in AdEERS</a></li></c:if>
+                    <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE">
+	                    <c:if test="${reportStatus eq 'PENDING' or reportStatus eq 'FAILED' or reportStatus eq 'WITHDRAW_FAILED'}"><li id="WITHDRAW_${report.id}"><a href="#" onclick="doIt('withdraw', '${report.id}', '${report.aeReport.id}', '${lastVersion.submissionUrl}')" class="submitter-red"><img src="<chrome:imageUrl name="../blue/Withdraw-icon-small.png" />" alt="" />&nbsp;Withdraw</a></li></c:if>
+	                    <c:if test="${command.reportsSubmittable[report.id]}"><li id="SUBMIT_${report.id}"><a class="submitter-green" href="#" onclick="doIt('submit', '${report.id}', '${report.aeReport.id}', '${lastVersion.submissionUrl}')"><img src="<chrome:imageUrl name="../blue/submit-small.png"/>" alt="" />&nbsp;Review &amp; Submit</a></li></c:if>
+	                    <c:if test="${report.reportDefinition.amendable and (reportStatus eq 'COMPLETED') and command.amendAnOption}"><li><a href="#" onclick="doIt('amend', '${report.id}', '${report.aeReport.id}', '${lastVersion.submissionUrl}')"><img src="<chrome:imageUrl name="../blue/Amend-icon-small.png"/>" alt="" />&nbsp;Amend</a></li></c:if>
+	                </csmauthz:accesscontrol>
+                    <c:if test="${not empty lastVersion.submissionUrl}"><li><a class="submitter-green" href="#" onclick="doIt('adeers', '${report.id}', '${report.aeReport.id}', '${lastVersion.submissionUrl}')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt="" />&nbsp;View in AdEERS</a></li></c:if>
                     <li><a href="#" onclick="doIt('xml', '${report.id}', '${report.aeReport.id}', '${lastVersion.submissionUrl}')"><img src="<chrome:imageUrl name="../blue/xml-icon.png"/>" alt=""/>&nbsp;Export caAERS XML</a></li>
                     <li><a href="#" onclick="doIt('e2b', '${report.id}', '${report.aeReport.id}', '${lastVersion.submissionUrl}')"><img src="<chrome:imageUrl name="../blue/xml-icon.png"/>" alt=""/>&nbsp;Export E2B</a></li>
                     <li><a href="#" onclick="doIt('pdf', '${report.id}', '${report.aeReport.id}', '${lastVersion.submissionUrl}')"><img src="<chrome:imageUrl name="../blue/pdf.png"/>" alt=""/>&nbsp;Export AdEERS PDF</a></li>

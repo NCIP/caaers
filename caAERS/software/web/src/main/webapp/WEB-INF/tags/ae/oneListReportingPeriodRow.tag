@@ -7,13 +7,6 @@
 <%@attribute name="manageReportsRepotingPeriodDTO" type="gov.nih.nci.cabig.caaers.domain.dto.ManageReportsRepotingPeriodDTO" required="true" description="The course that is being rendered" %>
 
 <script>
-	Event.observe(window, "load", function(){
-/*
-		$('actions-${manageReportsRepotingPeriodDTO.adverseEventReportingPeriod.id}').observe('click' , function(clickEvent){
-			Event.stop(clickEvent);//to prevent it from expanding/collapsing the box
-		});
-*/
-	});
 	
 	function executeReportingPeriodActions(id){
 /*
@@ -61,12 +54,6 @@
 	<td align="left" onclick="expandImageClick('collapseElement${manageReportsRepotingPeriodDTO.adverseEventReportingPeriod.id}', 'table${manageReportsRepotingPeriodDTO.adverseEventReportingPeriod.id}');"><span class="${manageReportsRepotingPeriodDTO.adverseEventReportingPeriod.reportStatus eq 'Reports Due' ? 'reportsDue' : manageReportsRepotingPeriodDTO.adverseEventReportingPeriod.reportStatus eq 'Report Submission Failed' ? 'reportsFailed' : manageReportsRepotingPeriodDTO.adverseEventReportingPeriod.reportStatus eq 'Reports Completed' ? 'reportsCompleted' : manageReportsRepotingPeriodDTO.adverseEventReportingPeriod.reportStatus eq 'Reports Overdue' ? 'reportsOverdue' : 'reportsNone' }" >${manageReportsRepotingPeriodDTO.adverseEventReportingPeriod.reportStatus}</span></td>
 	<td width="20%" align="center" onclick="expandImageClick('collapseElement${manageReportsRepotingPeriodDTO.adverseEventReportingPeriod.id}', 'table${manageReportsRepotingPeriodDTO.adverseEventReportingPeriod.id}');">
         <img src='<c:url value="/images/orange-actions.gif" />?${requestScope.webCacheId}' border='0' onmouseover='showAEMenuOptions(this, ${manageReportsRepotingPeriodDTO.adverseEventReportingPeriod.id})' style='cursor:pointer;'>
-<%--
-        <SELECT style="" id="actions-${manageReportsRepotingPeriodDTO.adverseEventReportingPeriod.id}" name="actions" onChange="javascript:executeReportingPeriodActions(${manageReportsRepotingPeriodDTO.adverseEventReportingPeriod.id})" >
-				<OPTION selected value="none">Please select</OPTION>
-		     	<OPTION value="editReportingPeriod">Edit Adverse Events</OPTION>
-		</SELECT>
---%>
 	</td>
 </tr>
 

@@ -75,6 +75,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
     public Map<AdverseEvent, List<AdverseEventEvaluationResult>> evaluateSAEReportSchedule(ExpeditedAdverseEventReport aeReport, List<AdverseEvent> aes, Study study) throws Exception {
 
         Map<AdverseEvent, List<AdverseEventEvaluationResult>> map = new HashMap<AdverseEvent, List<AdverseEventEvaluationResult>>();
+        if(aes.isEmpty()) return map;
 
         List<AdverseEventEvaluationResult> adverseEventEvaluationResults;
 
