@@ -11,7 +11,10 @@ import gov.nih.nci.ctep.adeers.client.AEReportXMLServiceSoapBindingStub;
 import gov.nih.nci.ctep.adeers.client.AEReportXMLService_ServiceLocator;
 import gov.nih.nci.ctep.adeers.client.ReportingMode;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.StringReader;
+import java.util.Date;
 
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
@@ -22,7 +25,7 @@ import webservice.AdeersWebService;
 
 
 public class AdeersWebServiceImpl implements AdeersWebService {
-    private String xmlProlog = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" ;
+    private static final String xmlProlog = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" ;
 	Logger log = Logger.getLogger(getClass());
 
 
@@ -60,6 +63,16 @@ public class AdeersWebServiceImpl implements AdeersWebService {
         binding.setUsername(uid);
         binding.setPassword(pwd);
         aeReport = aeReport.startsWith("<?xml") ? aeReport : (xmlProlog + aeReport);
+        try {
+	        File logFile = new File("~/ADlogs/" + new Date() + ".xml");
+	        logFile.createNewFile();
+	        FileWriter writer = new FileWriter(logFile);
+	        writer.write(aeReport);
+	        writer.close();
+	        log.info("Message to AdEERS sucsessfully loged in;" + logFile.getCanonicalPath()); 
+        } catch(Exception e) {
+        	log.error("Problem loging", e);
+        }
         StringReader reader = new StringReader(aeReport);
         String reponseStr = "";
         if (serviceContext.withdraw) {
