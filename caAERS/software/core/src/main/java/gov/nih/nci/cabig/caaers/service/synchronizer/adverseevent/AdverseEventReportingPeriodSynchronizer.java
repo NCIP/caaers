@@ -30,7 +30,7 @@ public class AdverseEventReportingPeriodSynchronizer implements Migrator<Adverse
          for(AdverseEvent aeSrc : src.getAdverseEvents()){
             AdverseEvent aeFound = dest.findAdverseEventByIdTermAndDates(aeSrc);
             //set the attributes for AE
-            if(aeFound == null) {
+            if(aeFound == null){
                 aeFound = aeSrc;
                 //Always populate the graded date when creating the AE.
                 if(aeFound.getGradedDate() == null) aeFound.setGradedDate(new Date());
@@ -73,11 +73,7 @@ public class AdverseEventReportingPeriodSynchronizer implements Migrator<Adverse
 
                 if(aeSrc.getGrade() != null) aeFound.setGrade(aeSrc.getGrade());
                 // Update only when there is a valid value is present.
-                if ( aeSrc.getGradedDate() != null) {
-                	aeFound.setGradedDate(aeSrc.getGradedDate());
-                } else if(aeFound.getGradedDate() == null){
-                	aeFound.setGradedDate(new Date());
-                }
+                if ( aeSrc.getGradedDate() != null) aeFound.setGradedDate(aeSrc.getGradedDate());
 
                 if(aeSrc.getDetailsForOther() != null) aeFound.setDetailsForOther(aeSrc.getDetailsForOther());
                 if(aeSrc.getComments() != null) aeFound.setComments(aeSrc.getComments());

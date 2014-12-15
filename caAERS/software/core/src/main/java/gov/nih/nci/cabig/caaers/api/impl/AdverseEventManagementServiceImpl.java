@@ -288,8 +288,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
         }
 
         //validate adverse events
-        for(AdverseEvent adverseEvent : rpDest.getAdverseEvents()) {
-        	if(adverseEvent.getGradedDate() == null) adverseEvent.setGradedDate(new Date());
+        for(AdverseEvent adverseEvent : rpDest.getAdverseEvents()){
             Set<ConstraintViolation<AdverseEvent>> constraintViolations = validator.validate(adverseEvent, AdverseEventGroup.class, Default.class);
             if(!constraintViolations.isEmpty()){
                 //translate errors to response.
