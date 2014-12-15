@@ -59,7 +59,7 @@ public class AdeersWebServiceImpl implements AdeersWebService {
         binding.setTimeout(60000);
         binding.setUsername(uid);
         binding.setPassword(pwd);
-        aeReport = xmlProlog + aeReport;
+        aeReport = aeReport.startsWith("<?xml") ? aeReport : (xmlProlog + aeReport);
         StringReader reader = new StringReader(aeReport);
         String reponseStr = "";
         if (serviceContext.withdraw) {
