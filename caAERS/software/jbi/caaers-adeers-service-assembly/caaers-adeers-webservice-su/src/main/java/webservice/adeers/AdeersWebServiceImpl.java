@@ -22,9 +22,9 @@ import webservice.AdeersWebService;
 
 
 public class AdeersWebServiceImpl implements AdeersWebService {
-
+    private String xmlProlog = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" ;
 	Logger log = Logger.getLogger(getClass());
-	
+
 
 	public String callWebService(String aeReport) throws Exception {
 		
@@ -59,7 +59,7 @@ public class AdeersWebServiceImpl implements AdeersWebService {
         binding.setTimeout(60000);
         binding.setUsername(uid);
         binding.setPassword(pwd);
-        	
+        aeReport = xmlProlog + aeReport;
         StringReader reader = new StringReader(aeReport);
         String reponseStr = "";
         if (serviceContext.withdraw) {
