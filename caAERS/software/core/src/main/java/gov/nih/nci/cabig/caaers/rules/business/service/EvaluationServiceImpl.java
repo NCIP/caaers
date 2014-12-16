@@ -427,7 +427,7 @@ public class EvaluationServiceImpl implements EvaluationService {
 
 
             	//any ae modified/got completed reports ? add those report definitions.
-            	if(!modifiedAeList.isEmpty()){
+            	if(defList.isEmpty() && !modifiedAeList.isEmpty()){
                   	//Any completed report, suggest amending it to proceed (but no alert).
                 	for(Report report : completedReports){
          				
