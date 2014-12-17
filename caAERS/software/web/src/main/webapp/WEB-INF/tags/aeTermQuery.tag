@@ -61,8 +61,8 @@
 
 			AE.createStandardAutocompleter('termCode', 
             		function(autocompleter, text){
-            			if(this.options.categorySelector.isMeddra){
-            				createAE.matchLowLevelTermsByCode(this.options.categorySelector.version,text, function(values) {
+            			if(this.options.isMeddra){
+            				createAE.matchLowLevelTermsByCode(this.options.version,text, function(values) {
             					if(catSel.ignoreOtherSpecify){
                     				var vals = [];
                     				values.each(function(aterm){
@@ -76,7 +76,7 @@
                     			}								
 							});
             			}else{
-            				createAE.matchTerms(text, this.options.categorySelector.version, '', 75 , function(values){
+            				createAE.matchTerms(text, this.options.version, '', 75 , function(values){
                 				if(catSel.ignoreOtherSpecify){
                     				var vals = [];
                     				values.each(function(aterm){
@@ -94,7 +94,10 @@
             		function(aterm) {
             			return aterm.fullName;
             		}, 
-            		{categorySelector:this}
+            		{categorySelector:this,
+                        isMeddra: ${isMeddra},
+                        version: ${version},
+                        ignoreOtherSpecify: ${ignoreOtherSpecify}}
             	);
 		},
 
