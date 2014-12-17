@@ -77,6 +77,11 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
 			
 			updatedResearchStaff = fetchResearchStaff("jchapman");
 			
+			if("[879]-345-0983".equals(updatedResearchStaff.getFaxNumber())) {
+				wait(1000);
+				updatedResearchStaff = fetchResearchStaff("jchapman");
+			}
+			
 			assertNotNull("The updated reseach staff should not be null.", updatedResearchStaff);
 			
 			//FIXME: "expected:<[111]-345-0983> but was:<[879]-345-0983>" happens sometimes. Meaning the original before the update is pulled.
