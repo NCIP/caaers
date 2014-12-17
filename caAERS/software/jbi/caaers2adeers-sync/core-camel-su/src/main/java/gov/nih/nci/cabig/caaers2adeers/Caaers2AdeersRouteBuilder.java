@@ -84,21 +84,21 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
 
         if(requestXSL != null) {
             pd.process(track(xslInStage))
-                    .to("log:gov.nih.nci.cabig.caaers2adeers.pre-in-xsl-invoke?showHeaders=true&level=ERROR&multiline=true&showException=true&showStackTrace=true")
+                    .to("log:gov.nih.nci.cabig.caaers2adeers.pre-in-xsl-invoke?showHeaders=true&level=TRACE&multiline=true&showException=true&showStackTrace=true")
                 .to("xslt:" + requestXSL);
         }
 
         pd.process(track(serviceInvocationStage))
                 .to(fileTracker.fileURI(serviceInvocationStage))
-                .to("log:gov.nih.nci.cabig.caaers2adeers.preservice-invoke?showHeaders=true&level=ERROR&multiline=true&showException=true&showStackTrace=true")
+                .to("log:gov.nih.nci.cabig.caaers2adeers.preservice-invoke?showHeaders=true&level=TRACE&multiline=true&showException=true&showStackTrace=true")
                 .to(ExchangePattern.InOut, serviceURI).processRef("headerGeneratorProcessor")
-                .to("log:gov.nih.nci.cabig.caaers2adeers.post-service-invoke?showHeaders=true&level=WARN&multiline=true&showException=true&showStackTrace=true")
+                .to("log:gov.nih.nci.cabig.caaers2adeers.post-service-invoke?showHeaders=true&level=TRACE&multiline=true&showException=true&showStackTrace=true")
                 .to(fileTracker.fileURI(serviceCompletionStage))
                 .process(track(serviceCompletionStage, true));
 
         if(responseXSL != null) {
             pd.process(track(xslOutStage))
-                    .to("log:gov.nih.nci.cabig.caaers2adeers.pre-out-xsl-invoke?showHeaders=true&level=ERROR&multiline=true&showException=true&showStackTrace=true")
+                    .to("log:gov.nih.nci.cabig.caaers2adeers.pre-out-xsl-invoke?showHeaders=true&level=TRACE&multiline=true&showException=true&showStackTrace=true")
                     .to("xslt:" + responseXSL);
 
         }

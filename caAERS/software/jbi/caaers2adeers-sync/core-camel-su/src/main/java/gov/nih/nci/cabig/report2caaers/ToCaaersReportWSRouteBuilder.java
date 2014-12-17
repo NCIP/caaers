@@ -93,13 +93,8 @@ public class ToCaaersReportWSRouteBuilder {
         routeBuilder.from("direct:processedE2BMessageSink")
 			.to("log:gov.nih.nci.cabig.report2caaers.caaers-ws-request?showHeaders=true&level=TRACE")
 			.choice()
-                .when().xpath("/soap:Envelope/soap:Body/ns1:saveSafetyReportResponse", nss)
-                	.to("direct:morgue")
                 .when().xpath("/ichicsrack/acknowledgment/messageacknowledgment/parsingerrormessage", nss)
-                	.to("direct:sendE2BAckSink")
-                .otherwise()
-                	.to("direct:morgue");
-
+                	.to("direct:sendE2BAckSink");
 
         routeBuilder.from("direct:sendE2BAckSink")
 			.processRef("addEDIHeadersAndFootersProcessor")

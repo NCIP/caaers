@@ -29,6 +29,7 @@ public class ToAdeersReportServiceRouteBuilder {
 
 
         rb.from("jbi:endpoint:urn:gov:nih:nci:caaers:jmsIn:consumer")
+            .streamCaching()
             .to("log:gov.nih.nci.cabig.report2adeers.caaers-ws-request?showHeaders=true&multiline=true&level=TRACE")
             .setProperty(OPERATION_NAME, rb.constant("sendReportToAdeers"))
             .setProperty(REPORT_WITHDRAW, XPathBuilder.xpath("/AdverseEventReport/WITHDRAW", String.class))
