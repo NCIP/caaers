@@ -69,7 +69,7 @@ public class OrganizationManagementWebServiceImpl implements OrganizationManagem
                 Helper.populateProcessingOutcome(caaersResponse, outcome);
             }
 		} catch (Throwable e) {
-            logger.error(e);
+            logger.warn(e);
 			Helper.populateError(caaersResponse, "WS_GEN_000", "Unable to process the request :" + e.getMessage());
 		}
 		
@@ -83,15 +83,6 @@ public class OrganizationManagementWebServiceImpl implements OrganizationManagem
 		List<Organization> domainOrganizations = new ArrayList<Organization>();
 		try {
 			for(OrganizationType organizationDto: xmlOrganizations.getOrganization()){
-
-                if ( ! (organizationDto.getStatus().equalsIgnoreCase(ActiveInactiveStatus.AC.getCode())  || organizationDto.getStatus().equalsIgnoreCase(ActiveInactiveStatus.IN.getCode()))) {
-                    // Log the Error.
-                    continue;
-                   // Helper.populateError(caaersResponse, "WS_OS_01", "Organization status must be either Active or InActive. Problem with Organization : " + organizationDto.getNciInstituteCode());
-                   // return caaersResponse;
-                }
-
-
                 Organization organization = new LocalOrganization();
 				organizationConverter.convertOrganizationDtoToDomainOrganization(organizationDto, organization);
 				domainOrganizations.add(organization);
@@ -101,7 +92,7 @@ public class OrganizationManagementWebServiceImpl implements OrganizationManagem
                 Helper.populateProcessingOutcome(caaersResponse, outcome);
             }
 		} catch (Throwable e) {
-            logger.error(e);
+            logger.warn(e);
             Helper.populateError(caaersResponse, "WS_GEN_000", "Unable to process the request :" + e.getMessage());
 		}
 		
