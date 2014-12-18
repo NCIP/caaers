@@ -320,14 +320,14 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 	      </tr>
 	    </thead>
 	    
-	    <c:forEach items="${command.resultMap}" var="entry" varStatus="mrpStatus">
-	    	 <ae:oneListReportingPeriodRow manageReportsRepotingPeriodDTO="${entry.value}" index="${mrpStatus.index}"/>
+	    <c:forEach items="${command.resultList}" var="entry" varStatus="mrpStatus">
+	    	 <ae:oneListReportingPeriodRow manageReportsRepotingPeriodDTO="${entry}" index="${mrpStatus.index}"/>
 		</c:forEach>
 	
 	  </table>
   </c:if>
   <c:set var="reportingPeriodPageURLNoPeriod" value="/pages/ae/captureRoutine?participant=${command.participant.id}&study=${command.study.id}&_page=0&_target0=0&displayReportingPeriod=true"/>
-  <c:if test="${(command.study != null || command.participant != null) and fn:length(command.resultMap) le 0}">
+  <c:if test="${(command.study != null || command.participant != null) and fn:length(command.resultList) le 0}">
    	<tags:instructions code="instruction_ae_no_courses"/> 
   </c:if>
     

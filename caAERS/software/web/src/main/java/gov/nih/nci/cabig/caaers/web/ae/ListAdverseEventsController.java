@@ -182,10 +182,19 @@ public class ListAdverseEventsController extends SimpleFormController {
     protected void onBindAndValidate(HttpServletRequest request, Object command, BindException errors) throws Exception {
         super.onBindAndValidate(request, command, errors);
         ListAdverseEventsCommand listAECmd = (ListAdverseEventsCommand) command;
+        
+        String userId = SecurityUtils.getUserLoginName();
+   	 	Boolean isStaff = true;
+        Person loggedInPerson = personDao.getByLoginId(userId);
+        if(loggedInPerson instanceof Investigator){
+        	isStaff = false;
+        }
+        request.setAttribute("isStaff", isStaff);
+        listAECmd.setUserId(userId);
         boolean noStudy = listAECmd.getStudy() == null;
         boolean noParticipant = listAECmd.getParticipant() == null;
-        if (noStudy) errors.rejectValue("study", "SAE_001", "Missing study");
-        if (noParticipant) errors.rejectValue("participant", "SAE_002", "Missing subject");
+      //  if (noStudy) errors.rejectValue("study", "SAE_001", "Missing study");
+      //  if (noParticipant) errors.rejectValue("participant", "SAE_002", "Missing subject");
       /*  if (!(noStudy || noParticipant) && listAECmd.getAssignment() == null) {
             errors.reject("SAE_006", "The subject is not assigned to the provided study");
         }*/
@@ -198,19 +207,16 @@ public class ListAdverseEventsController extends SimpleFormController {
         	
         	//save the study/subject in session for future pre-selection
         	HttpSession session = request.getSession();
-			session.setAttribute(SELECTED_STUDY_ID, listAECmd.getStudy().getId());
-			session.setAttribute(SELECTED_PARTICIPANT_ID, listAECmd.getParticipant().getId());
+        	if(!noStudy){
+        		session.setAttribute(SELECTED_STUDY_ID, listAECmd.getStudy().getId());
+        	}
+			
+        	if(!noParticipant){
+        		session.setAttribute(SELECTED_PARTICIPANT_ID, listAECmd.getParticipant().getId());
+        	}
 			
         }
         
-    	String userId = SecurityUtils.getUserLoginName();
-   	 	Boolean isStaff = true;
-        Person loggedInPerson = personDao.getByLoginId(userId);
-        if(loggedInPerson instanceof Investigator){
-        	isStaff = false;
-        }
-        request.setAttribute("isStaff", isStaff);
-        listAECmd.setUserId(userId);
     }
 
     @Override

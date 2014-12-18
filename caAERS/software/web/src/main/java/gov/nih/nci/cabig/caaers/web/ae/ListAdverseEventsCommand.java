@@ -30,6 +30,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -74,15 +75,15 @@ public class ListAdverseEventsCommand {
 		this.userId = userId;
 	}
 
-	private LinkedHashMap<String,ManageReportsRepotingPeriodDTO> resultMap = new LinkedHashMap<String, ManageReportsRepotingPeriodDTO>();
+	private LinkedList<ManageReportsRepotingPeriodDTO> resultList = new LinkedList<ManageReportsRepotingPeriodDTO>();
     
-    public LinkedHashMap<String, ManageReportsRepotingPeriodDTO> getResultMap() {
-		return resultMap;
+
+	public LinkedList<ManageReportsRepotingPeriodDTO> getResultList() {
+		return resultList;
 	}
 
-	public void setResultMap(
-			LinkedHashMap<String, ManageReportsRepotingPeriodDTO> resultMap) {
-		this.resultMap = resultMap;
+	public void setResultList(LinkedList<ManageReportsRepotingPeriodDTO> resultList) {
+		this.resultList = resultList;
 	}
 
 	public String getInputDataEntryStatus() {
@@ -152,11 +153,13 @@ public class ListAdverseEventsCommand {
 	 * @param list the list
 	 */
 	public void populateResults(List<AdverseEventReportingPeriod> list){
-		this.resultMap.clear();
+		this.resultList.clear();
 		for(AdverseEventReportingPeriod rp : list){
 			ManageReportsRepotingPeriodDTO manageReportsRepotingPeriodDTO = new ManageReportsRepotingPeriodDTO(rp);
-			if(getNumberOfReports(manageReportsRepotingPeriodDTO) > 0){
-				resultMap.put(getNumberOfReports(manageReportsRepotingPeriodDTO).toString(), manageReportsRepotingPeriodDTO);
+			int numberOfReports = getNumberOfReports(manageReportsRepotingPeriodDTO);
+			if(numberOfReports > 0){
+				manageReportsRepotingPeriodDTO.setNumberOfReports(numberOfReports);
+				resultList.add(manageReportsRepotingPeriodDTO);
 			}
 		}
 	}
