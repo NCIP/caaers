@@ -145,7 +145,8 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
 
         // route for caaers integration services - trim white space
         from("jetty:http://0.0.0.0:7711/caaers/services/RaveIntegrationServices")
-	        .choice()
+	            .streamCaching()
+                .choice()
 		        .when(header("CamelHttpMethod").isEqualTo("POST"))
                     .setExchangePattern(ExchangePattern.InOut)
                     .processRef("crlfFixProcessor")
