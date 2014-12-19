@@ -44,25 +44,22 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
 	public void processMessage(String message) throws CaaersSystemException {
         log.debug("AdeersSubmissionResponseMessageProcessor - message recieved");
 
-        
+
+        Namespace emptyNS = Namespace.NO_NAMESPACE;
+        Namespace adeersNS = Namespace.getNamespace("ns2", "http://types.ws.adeers.ctep.nci.nih.gov");
         Element jobInfo = this.getResponseElement(message,"submitAEDataXMLAsAttachmentResponse","AEReportJobInfo");
-        Namespace emptyNS=null;
-        for (Object obj:jobInfo.getChildren()) {
-				Element e = (Element)obj;
-				if (e.getName().equals("CAEERS_AEREPORT_ID")) {
-					emptyNS = e.getNamespace();
-				}
-		}
-        
+
         log.debug("got JobInfo");
         
-        String caaersAeReportId = jobInfo.getChild("CAEERS_AEREPORT_ID",emptyNS).getValue();
+        String caaersAeReportId = childNodeValue(jobInfo, emptyNS, "CAEERS_AEREPORT_ID");
         log.debug("Data Colleciton ID : " + caaersAeReportId);
-        String reportId = jobInfo.getChild("CAAERSRID",emptyNS).getValue();
+        String reportId = childNodeValue(jobInfo, emptyNS, "CAAERSRID");
         log.debug("Report ID : " + reportId);
-        String submitterEmail = jobInfo.getChild("SUBMITTER_EMAIL",emptyNS).getValue();
+        String submitterEmail = childNodeValue(jobInfo, emptyNS, "SUBMITTER_EMAIL");
         log.debug("Submitter email : " + submitterEmail);
-        
+
+        String jobStatus = childNodeValue(jobInfo, adeersNS, "reportStatus");
+
         Report r = reportDao.getById(Integer.parseInt(reportId));
         
         //FIXME: When updating Caaers to send to multiple systems the below must also be changed.
@@ -83,10 +80,10 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
 
         try {
 
-            if (jobInfo.getChild("reportStatus").getValue().equals("SUCCESS")) {
+            if (jobStatus.equals("SUCCESS")) {
             	
-            	 ticketNumber = jobInfo.getChild("ticketNumber").getValue();
-                 url = jobInfo.getChild("reportURL").getValue();
+            	 ticketNumber = childNodeValue(jobInfo, adeersNS, "ticketNumber");
+                 url = childNodeValue(jobInfo, adeersNS, "reportURL");
                  
         		 String submissionMessage = messageSource.getMessage("successful.reportSubmission.message",
         				 new Object[]{String.valueOf(r.getId()), ticketNumber,  url}, Locale.getDefault());
@@ -101,14 +98,14 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
             }else{
             	 success = false;
             	 @SuppressWarnings("unchecked")
-				List<Element> exceptions = jobInfo.getChildren("jobExceptions");
+				List<Element> exceptions = jobInfo.getChildren("jobExceptions", adeersNS);
             	 //find the exception elements
             	 if(CollectionUtils.isNotEmpty(exceptions)){
             		 StringBuffer exceptionMsgBuffer = new StringBuffer();
             		 for (Element ex : exceptions) {
-            			 exceptionMsgBuffer.append(ex.getChild("code").getValue()).append( "  -  ").append(ex.getChild("description").getValue()).append("\n");
+            			 exceptionMsgBuffer.append(childNodeValue(ex, adeersNS, "code")).append( "  -  ").append(childNodeValue(ex, adeersNS, "description")).append("\n");
 
-            			 if (ex.getChild("code").getValue().equals("caAERS-adEERS : COMM_ERR")) {
+            			 if (childNodeValue(ex, adeersNS, "code").equals("caAERS-adEERS : COMM_ERR")) {
                      		communicationError=true;
                          }
                      }
@@ -123,8 +120,8 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
             	 
             }
             
-            if (jobInfo.getChild("comments") != null) {
-           	 	String commentsMessage = messageSource.getMessage("comments.reportSubmission.message", new Object[]{jobInfo.getChild("comments").getValue()}, Locale.getDefault());
+            if (jobInfo.getChild("comments", adeersNS) != null) {
+           	 	String commentsMessage = messageSource.getMessage("comments.reportSubmission.message", new Object[]{childNodeValue(jobInfo, adeersNS, "comments")}, Locale.getDefault());
            	 	sb.append("\n"); // Move comments section to NextLine.
                 sb.append(commentsMessage);
             }
@@ -150,6 +147,12 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
         }
 		
 	}
+
+    private String childNodeValue(Element el, Namespace ns, String nodeName) {
+        Element n = el.getChild(nodeName, ns);
+        if(n != null) return n.getValue();
+        return "";
+    }
 	
 	  public void setConfiguration(Configuration configuration) {
 	        this.configuration = configuration;
