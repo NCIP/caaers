@@ -32,6 +32,7 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.apache.commons.lang.StringUtils;
+import org.junit.Test;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
@@ -59,6 +60,7 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
 		researchStaffRepository = (ResearchStaffRepository)getDeployedApplicationContext().getBean("researchStaffRepository");
 	}
 
+	@Test
 	public void testResearchStaffByLoginIdSave() throws Exception{
 		try {
 			//Create or update , whatever it is new data will be populated ..
@@ -75,13 +77,18 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
 			
 			updatedResearchStaff = fetchResearchStaff("jchapman");
 			
-			assertNotNull(updatedResearchStaff);
+			if("[879]-345-0983".equals(updatedResearchStaff.getFaxNumber())) {
+				wait(1000);
+				updatedResearchStaff = fetchResearchStaff("jchapman");
+			}
+			
+			assertNotNull("The updated reseach staff should not be null.", updatedResearchStaff);
 			
 			//FIXME: "expected:<[111]-345-0983> but was:<[879]-345-0983>" happens sometimes. Meaning the original before the update is pulled.
 			assertEquals("111-345-0983", updatedResearchStaff.getFaxNumber());
 			assertEquals("111-678-0098", updatedResearchStaff.getPhoneNumber());
 			assertEquals("caaers.app2@gmail.com",updatedResearchStaff.getEmailAddress());
-			assertNotNull(updatedResearchStaff.getAddress());
+			assertNotNull("Research Staff should have an address.", updatedResearchStaff.getAddress());
 			assertEquals("13921 Park Center Road", updatedResearchStaff.getAddress().getStreet());
 			assertEquals("Herndon", updatedResearchStaff.getAddress().getCity());
 			assertNotNull(updatedResearchStaff.getSiteResearchStaffs());
@@ -96,6 +103,7 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
 		}		
 	}
 	
+	@Test
 	public void testResearchStaffByEmailSave() throws Exception{
 		try {
 			//Create or update , whatever it is new data will be populated ..
@@ -112,7 +120,7 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
 			
 			updatedResearchStaff = fetchResearchStaff("caaers.rock@gmail.com");
 			
-			assertNotNull(updatedResearchStaff);
+			assertNotNull("The updated reseach staff should not be null.", updatedResearchStaff);
 			
 			assertEquals("980-090-0983", updatedResearchStaff.getFaxNumber());
 			assertEquals("657-093-0098", updatedResearchStaff.getPhoneNumber());
@@ -126,7 +134,7 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
 		}		
 	}
 	
-	
+	@Test
 	public void testSiteRsAdd() throws Exception{
 		
 		try {
@@ -144,7 +152,7 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
 			
 			updatedResearchStaff = fetchResearchStaff("jchapman");
 			
-			assertNotNull(updatedResearchStaff);
+			assertNotNull("The updated reseach staff should not be null.", updatedResearchStaff);
 			
 			assertNotNull(updatedResearchStaff.getSiteResearchStaffs());
 //			assertEquals(1,updatedResearchStaff.getSiteResearchStaffs().size());    //for some reason this fails in oracle.
@@ -177,13 +185,13 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
 			
 			updatedResearchStaff = fetchResearchStaff("jchapman");
 			
-			assertNotNull(updatedResearchStaff);
+			assertNotNull("The updated staff should not be null.", updatedResearchStaff);
 			
-			assertNotNull(updatedResearchStaff.getSiteResearchStaffs());
-			assertEquals(2,updatedResearchStaff.getSiteResearchStaffs().size());
+			assertNotNull("The site research staff should not be null.", updatedResearchStaff.getSiteResearchStaffs());
+			assertEquals("There should be two site research staff.", 2,updatedResearchStaff.getSiteResearchStaffs().size());
 			for(SiteResearchStaff siteResearchStaff : updatedResearchStaff.getSiteResearchStaffs()){
-				assertNotNull(siteResearchStaff.getSiteResearchStaffRoles());
-				assertEquals(2, siteResearchStaff.getSiteResearchStaffRoles().size());
+				assertNotNull("Site Research Staff should have a role.", siteResearchStaff.getSiteResearchStaffRoles());
+				assertEquals("Site Research staff should have 2 roles.", 2, siteResearchStaff.getSiteResearchStaffRoles().size());
 			}
 			
 		} catch (IOException e) {
@@ -202,7 +210,7 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
      * Fetches the research staff from the DB
      * @return
      */
-    ResearchStaff fetchResearchStaff(String loginId) {//String nciIdentifier) {
+    private ResearchStaff fetchResearchStaff(String loginId) {//String nciIdentifier) {
     	ResearchStaffQuery rsQuery = new ResearchStaffQuery();
         if (StringUtils.isNotEmpty(loginId)) {
         	//rsQuery.filterByNciIdentifier(nciIdentifier);

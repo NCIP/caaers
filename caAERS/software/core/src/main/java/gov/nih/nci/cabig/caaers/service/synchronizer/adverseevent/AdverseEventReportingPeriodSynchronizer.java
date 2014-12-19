@@ -19,6 +19,12 @@ import java.util.Date;
  */
 public class AdverseEventReportingPeriodSynchronizer implements Migrator<AdverseEventReportingPeriod> {
 
+	/**
+	 * Migrates data from one AdverseEventReportingPeriod to the destination AdverseEventReportingPeriod.
+	 * @param src The source Object.
+	 * @param dest The destination object.
+	 * @param outcome not currently used.
+	 */
     public void migrate(AdverseEventReportingPeriod src, AdverseEventReportingPeriod dest, DomainObjectImportOutcome<AdverseEventReportingPeriod> outcome) {
 
          if(src.getStartDate() != null) dest.setStartDate(src.getStartDate());

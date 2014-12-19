@@ -79,12 +79,12 @@ public class RuleAjaxFacadeTest extends DwrFacadeTestCase{
 	    return command;
 	}
 	
-	public void testRemoveCondition(){
+	public void testRemoveCondition() {
 		CreateRuleCommand command = setupCreateRuleCommand();
 		replayMocks();
 		facade.removeCondition(0, 1);
 		verifyMocks();
-		assertEquals("Error in deleting condition", 2, command.getRuleSet().getRule().get(0).getCondition().getColumn().size());
+		assertEquals("Error in deleting condition", 3, command.getRuleSet().getRule().get(0).getCondition().getColumn().size());
 	}
 	
 	public void testRemoveRule() throws Exception{

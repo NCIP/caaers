@@ -319,7 +319,7 @@ public class EvaluationServiceImpl implements EvaluationService {
                             if(report.isReported(adverseEvent)) {
                                 List<ReportDefinition> rdList = ReportDefinition.findByName(defList, nameList.toArray(new String[0]));
                                 List<ReportDefinition> sameOrgGroupList = ReportDefinition.findBySameOrganizationAndGroup(rdList, report.getReportDefinition());
-                                if(sameOrgGroupList.size() > 0) {
+                                if(sameOrgGroupList.size() > 1) {
                                    List<ReportDefinition> rdNotificationList = ReportDefinition.findByReportType(sameOrgGroupList, ReportType.NOTIFICATION);
                                    for(ReportDefinition rd : rdNotificationList) {
                                        // we must remove these from suggestions.
@@ -421,7 +421,7 @@ public class EvaluationServiceImpl implements EvaluationService {
 
 
             	//any ae modified/got completed reports ? add those report definitions.
-            	if(!modifiedAeList.isEmpty()){
+            	if(defList.isEmpty() && !modifiedAeList.isEmpty()){
                   	//Any completed report, suggest amending it to proceed (but no alert).
                 	for(Report report : completedReports){
          				
