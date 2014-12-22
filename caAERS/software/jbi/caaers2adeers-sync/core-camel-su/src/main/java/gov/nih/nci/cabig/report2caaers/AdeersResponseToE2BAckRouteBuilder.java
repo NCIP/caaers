@@ -22,13 +22,16 @@ public class AdeersResponseToE2BAckRouteBuilder {
         routeBuilder.from("direct:routeAdEERSResponseSink")
         	.choice()
         		.when().xpath("not(//MESSAGE_COMBO_ID)")
+                    .to("log:gov.nih.nci.cabig.report2adeers.response-ignored?showHeaders=true&multiline=true&level=WARN")
         			.to("direct:donothing")
                 .otherwise()
                 	.to("direct:processAdEERSResponse");
         
         routeBuilder.from("direct:processAdEERSResponse")
+            .to("log:gov.nih.nci.cabig.report2adeers.pre-e2b?showHeaders=true&multiline=true&level=WARN")
 			.processRef("adeersResponseProcessor")
-			.to("xslt:" + responseXSLBase + "adeersResponse2ACK.xsl")			
+			.to("xslt:" + responseXSLBase + "adeersResponse2ACK.xsl")
+            .to("log:gov.nih.nci.cabig.report2adeers.post-e2back-xslt?showHeaders=true&multiline=true&level=WARN")
 			.process(track(REQUEST_COMPLETION))
 			.to(routeBuilder.getFileTracker().fileURI(REQUEST_COMPLETION))
 			.to("file://"+outputEDIDir);

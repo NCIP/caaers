@@ -28,7 +28,7 @@ public class FromRaveToCaaersWSRouteBuilder {
 
 		//content based router
 		rb.from("direct:processedRave2CaaersMessageSink")
-		    .to("log:gov.nih.nci.cabig.rave2caaers.caaers-ws-request?showHeaders=true&level=TRACE")
+		    .to("log:gov.nih.nci.cabig.rave2caaers.rave2caaers-request?showHeaders=true&level=TRACE")
 		    .choice()
 		        .when(rb.header(OPERATION_NAME).isEqualTo(SAFETY_REPORT_ID_OPERATION_NAME))
                     .to("direct:caaers-generateSafetyReportIdService-sync")

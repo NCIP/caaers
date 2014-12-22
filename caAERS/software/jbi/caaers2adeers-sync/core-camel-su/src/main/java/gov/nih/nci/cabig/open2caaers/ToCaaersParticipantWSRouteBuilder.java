@@ -24,7 +24,7 @@ private String caAERSParticipantServiceJBIURL = "jbi:service:http://schema.integ
 
 		//content based router
 		routeBuilder.from("direct:processedOpenOdmMessageSink")
-		.to("log:gov.nih.nci.cabig.open2caaers.caaers-ws-request?showHeaders=true&level=TRACE")
+		.to("log:gov.nih.nci.cabig.open2caaers.caaers-participant-request?showHeaders=true&level=TRACE")
 		.process(track(ROUTED_TO_CAAERS_WS_INVOCATION_CHANNEL))
 		.to("direct:caaers-participantdetailsCreate-sync");
 		
