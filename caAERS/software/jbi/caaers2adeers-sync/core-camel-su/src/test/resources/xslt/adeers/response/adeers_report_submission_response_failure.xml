@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <soapenv:Body>
+        <submitAEDataXMLAsAttachmentResponse xmlns="http://types.ws.adeers.ctep.nci.nih.gov">
+            <ns1:AEReportJobInfo xmlns:ns1="http://localhost:8080/AdEERSWSMap/services/AEReportXMLService">
+                <jobID xsi:type="xsd:string">9461</jobID>
+                <patientID xsi:type="xsd:string">kichu-1</patientID>
+                <protocolNumber xsi:type="xsd:string">A071102</protocolNumber>
+                <jobExceptions>
+                    <code xmlns="">ADVERSE_EVENT_CTC: DSC_BR10_ERR</code>
+                    <description xmlns="">A Grade 5 has been entered. 'Present status' must be 'Fatal/Died' in the Description of event section.</description>
+                </jobExceptions>
+                <reportStatus>ERROR</reportStatus>
+                <CAEERS_AEREPORT_ID xmlns=""/>
+                <CAAERSRID xmlns="">1473</CAAERSRID>
+                <SUBMITTER_EMAIL xmlns="">biju.joseph@semanticbits.com</SUBMITTER_EMAIL>
+                <MESSAGE_COMBO_ID xmlns="">1957757045::20140417195025</MESSAGE_COMBO_ID>
+                <CORRELATION_ID xmlns="">1419246637402</CORRELATION_ID>
+            </ns1:AEReportJobInfo>
+        </submitAEDataXMLAsAttachmentResponse>
+    </soapenv:Body>
+</soapenv:Envelope>

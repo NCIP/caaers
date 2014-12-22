@@ -1,0 +1,1 @@
+mvn install:install-file -Dfile=caaers-adeers-client-1.9.5.jar -DgroupId=gov.nih.ctep -DartifactId=caaers-adeers-client -Dversion=1.9.5 -Dpackaging=jar

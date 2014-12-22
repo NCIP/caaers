@@ -168,6 +168,7 @@ public class IntegrationLog{
 	
 	public static enum Stage{
         REQUEST_RECEIVED(5, "Message Received"),
+
         ROUTED_TO_ADEERS_REQUEST_SINK(10, "Message Routed to AdEERS Request Sink Channel"),
         ROUTED_TO_ADEERS_RESPONSE_SINK(11, "Message Routed to AdEERS Response Sink Channel"),
         ROUTED_TO_ADEERS_WS_INVOCATION_CHANNEL(20, "Routed to AdEERS Webservice Invocation route"),
@@ -188,14 +189,21 @@ public class IntegrationLog{
         REQUEST_COMPLETION(999, "Message processing complete"),
         
         PRE_PROCESS_OPEN_ODM_MSG(12, "Add Exchange headers to OPEN ODM participant message"),
+
+        //E2B submission specific
+        E2B_SUBMISSION_REQUEST_RECEIVED(6, "E2B Message Received"),
         PRE_PROCESS_EDI_MSG(13, "Remove EDI request message header and footers"),
-        POST_PROCESS_EDI_MSG(14, "Add EDI response message header and footers"),
+        POST_PROCESS_EDI_MSG(75, "Add EDI response message header and footers"),    //??
         E2B_SCHEMATRON_VALIDATION(15, "Perform E2B schematron validation") ,
         
-        ADEERS_REPORT_SUBMISSION_RESPONSE(45, "AdEERS report submission response") ,
-        ADEERS_REPORT_SUBMISSION_RESPONSE_TRASNSFORMATION(46, "AdEERS report submission response transformation") ,
+        REPORT_SUBMISSION_REQUEST(42, "Report submission request") ,
+        ADEERS_REPORT_REQUEST(43, "caAERS XML transformed to AdEERS XML") ,
+        ADEERS_REPORT_RESPONSE(44, "AdEERS report submission response") ,
+        ADEERS_SUBMISSION_FAILED(45, "AdEERS report submission failed") ,
+        REPORT_SUBMISSION_RESPONSE(46, "A final response of report submission") ,
+
         
-        PRE_PROCESS_RAV_CAAERS_INTEG_MSG(47, "Remove white space in incoming Rave message"),
+        PRE_PROCESS_RAVE_INTEGRATION_MSG(48, "Remove white space in incoming Rave message"),
 
         ;
         private int code;

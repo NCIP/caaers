@@ -6,6 +6,7 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.service;
 
+import org.apache.commons.lang.StringUtils;
 import gov.nih.nci.cabig.caaers.api.AdeersReportGenerator;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.PersonContact;
@@ -43,7 +44,8 @@ public class ReportWithdrawalService {
 
 	/**
 	 * This method will withdraw the report from external agency, by delegating the call to service mix. 
-	 * @param report - Report to withdraw from external agency
+	 * @param aeReport - Report to withdraw from external agency
+     * @param  reportToWithdraw - the report to withdraw
 	 */
 	public void withdrawExternalReport(ExpeditedAdverseEventReport aeReport , Report reportToWithdraw){
 		
@@ -70,27 +72,34 @@ public class ReportWithdrawalService {
         List<ReportDelivery> deliveries = report.getExternalSystemDeliveries();
         int reportId = report.getId();
         StringBuilder sb = new StringBuilder();
+        String systemName = "UNKNOWN";
         sb.append("<EXTERNAL_SYSTEMS>");
         for (ReportDelivery delivery : deliveries) {
             sb.append(delivery.getEndPoint()).append("::").append(delivery.getUserName()).append("::" ).append(delivery.getPassword());
+            systemName = delivery.getReportDeliveryDefinition().getEntityName();
         }
         sb.append("</EXTERNAL_SYSTEMS>");
-        sb.append("<CAAERSRID>" + reportId + "</CAAERSRID>");
+        sb.append(String.format("<CAAERSRID>%s</CAAERSRID>", reportId));
 
         String submitterEmail = report.getLastVersion().getSubmitter().getContactMechanisms().get(PersonContact.EMAIL);
-        sb.append("<SUBMITTER_EMAIL>" + submitterEmail + "</SUBMITTER_EMAIL>");
+        sb.append(String.format("<SUBMITTER_EMAIL>%s</SUBMITTER_EMAIL>", submitterEmail));
 
         SimpleDateFormat msgDF = new SimpleDateFormat("yyyyMMddHHmmss");
 
-        String msgComboId = report.getAeReport().getExternalId() + "::" + msgDF.format(report.getAeReport().getCreatedAt());
-        sb.append("<MESSAGE_COMBO_ID>" + msgComboId + "</MESSAGE_COMBO_ID>");
-
+        if(StringUtils.isNotEmpty(report.getAeReport().getExternalId())) {
+            String msgComboId = report.getAeReport().getExternalId() + "::" + msgDF.format(report.getAeReport().getCreatedAt());
+            sb.append(String.format("<MESSAGE_COMBO_ID>%s</MESSAGE_COMBO_ID>", msgComboId));
+        }
+        String[] coorelationids = report.getCorrelationIds();
+        if(coorelationids != null && coorelationids.length > 0) {
+            sb.append(String.format("<CORRELATION_ID>%s</CORRELATION_ID>", coorelationids[coorelationids.length - 1]));
+        }
+        sb.append(String.format("<SYSTEM_NAME>%s</SYSTEM_NAME>", systemName));
         sb.append("<WITHDRAW>true</WITHDRAW>");
         //if there are external systems, send message via service mix
     	String externalXml = xml.replaceAll("<AdverseEventReport>", "<AdverseEventReport>" + sb.toString());
     	
-//    	System.out.println(externalXml);
-    	
+
     	try {
     		messageBroadcastService.initialize();
     	} catch (Exception e) {

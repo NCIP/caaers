@@ -11,9 +11,6 @@ import gov.nih.nci.cabig.caaers.domain.workflow.ReportReviewComment;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowAware;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
-
-import org.apache.commons.collections15.CollectionUtils;
-import org.apache.commons.collections15.Predicate;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
@@ -23,9 +20,7 @@ import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
-
 import java.io.Serializable;
 import java.util.*;
 
@@ -111,6 +106,8 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
     private String submittedToFDA = "No";
     
     private String caseNumber;
+
+    private String metaData;
     
 
 	/**
@@ -677,6 +674,70 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
     public void setManuallySelected(boolean manuallySelected) {
 		this.manuallySelected = manuallySelected;
 	}
+
+    public String getMetaData() {
+        return metaData;
+    }
+
+    public void setMetaData(String metaData) {
+        this.metaData = metaData;
+    }
+
+    @Transient
+    public String[] getCorrelationIds() {
+       return StringUtils.splitByWholeSeparator(getMetaDataAsMap().get("correlationId"), ",");
+    }
+
+    public void addToCorrelationId(String correlationId) {
+        String[] existing = getCorrelationIds();
+        if(ArrayUtils.isEmpty(existing)){
+            addToMetaData("correlationId", correlationId);
+            addToMetaData(correlationId, DateUtils.formatDate(new Date(), DateUtils.DATE_WITH_HYPHENS));
+        } else if(!ArrayUtils.contains(existing, correlationId)){
+            addToMetaData("correlationId", StringUtils.join(existing, ',') + "," + correlationId);
+            addToMetaData(correlationId, DateUtils.formatDate(new Date(), DateUtils.DATE_WITH_HYPHENS));
+        }
+    }
+
+    @Transient
+    public LinkedHashMap<String, String> getMetaDataAsMap() {
+        LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
+        String[] kvs =  StringUtils.splitByWholeSeparator(getMetaData(), "|$")  ;
+        if(kvs != null) {
+            for(String kv : kvs ) {
+                int i = kv.indexOf(":~");
+                map.put(kv.substring(0, i), kv.substring(i+2));
+            }
+        }
+        return map;
+    }
+
+    public void addToMetaData(String k, String v) {
+        if(StringUtils.isEmpty(k) || StringUtils.isEmpty(v)) return;
+        LinkedHashMap<String, String> map = getMetaDataAsMap();
+        StringBuilder sb = new StringBuilder();
+        map.put(k, v);
+        for(Map.Entry<String, String> e : map.entrySet()) {
+            if(sb.length() > 0) sb.append("|$");
+            sb.append(e.getKey()).append(":~").append(e.getValue());
+        }
+
+        setMetaData(sb.toString());
+
+    }
+
+    public void removeFromMetaData(String k) {
+        LinkedHashMap<String, String> map = getMetaDataAsMap();
+        StringBuilder sb = new StringBuilder();
+        map.remove(k);
+        for(Map.Entry<String, String> e : map.entrySet()) {
+            if(sb.length() > 0) sb.append("|~");
+            sb.append(e.getKey()).append(":~").append(e.getValue());
+        }
+
+        setMetaData(sb.toString());
+
+    }
 
     // //// OBJECT METHODS
 
@@ -1247,6 +1308,7 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
         if(src.getReviewStatus() != null) setReviewStatus(src.getReviewStatus());
         if(src.getPhysicianSignoff() != null) setPhysicianSignoff(src.getPhysicianSignoff());
         if(src.getCaseNumber() != null) setCaseNumber(src.getCaseNumber());
+        if(src.getMetaData() != null) setMetaData(src.getMetaData());
         if(src.getEmailAddresses() != null && !src.getEmailAddresses().isEmpty())setEmailAddresses(src.getEmailAddresses());
         if(src.getAssignedIdentifer() != null) setAssignedIdentifer(src.getAssignedIdentifer()); //ticket number (if any)
         if(src.getLastVersion().getCcEmails() != null) getLastVersion().setCcEmails(src.getLastVersion().getCcEmails());

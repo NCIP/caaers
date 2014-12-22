@@ -6,12 +6,10 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.rave2caaers;
 
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.CAAERS_WS_INVOCATION_COMPLETED;
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.CAAERS_WS_INVOCATION_INITIATED;
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.CAAERS_WS_IN_TRANSFORMATION;
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.CAAERS_WS_OUT_TRANSFORMATION;
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.ROUTED_TO_CAAERS_RESPONSE_SINK;
 import gov.nih.nci.cabig.caaers2adeers.Caaers2AdeersRouteBuilder;
+
+import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.*;
+import static gov.nih.nci.cabig.rave2caaers.exchange.RaveIntegrationHeaderProcessor.*;
 
 public class FromRaveToCaaersWSRouteBuilder {
 
@@ -20,6 +18,7 @@ public class FromRaveToCaaersWSRouteBuilder {
 	private String caAERSSafetyReportServiceJBIURL = "jbi:service:http://schema.integration.caaers.cabig.nci.nih.gov/aereport/SafetyReportManagementService?operation={http://schema.integration.caaers.cabig.nci.nih.gov/aereport}";
 
 
+    private static String requestXSLBase = "xslt/rave/request/";
     private static String responseXSLBase = "xslt/rave/response/";
 
     private Caaers2AdeersRouteBuilder routeBuilder;
@@ -28,13 +27,17 @@ public class FromRaveToCaaersWSRouteBuilder {
         this.routeBuilder = rb;
 
 		//content based router
-		routeBuilder.from("direct:processedRave2CaaersMessageSink")
-		.to("log:gov.nih.nci.cabig.rave2caaers.caaers-ws-request?showHeaders=true&level=TRACE")
-		.choice()
-		.when().xpath("//*[local-name()='generateSafetyReportId']").to("direct:caaers-generateSafetyReportIdService-sync")
-		.when().xpath("//*[local-name()='saveAndEvaluateAEs']").to("direct:caaers-saveAndEvaluateAEs-sync")
-		.when().xpath("//*[local-name()='initiateSafetyReportAction']").to("direct:caaers-initiateSafetyReportAction-sync")
-		.otherwise().to("direct:morgue");
+		rb.from("direct:processedRave2CaaersMessageSink")
+		    .to("log:gov.nih.nci.cabig.rave2caaers.rave2caaers-request?showHeaders=true&level=TRACE")
+		    .choice()
+		        .when(rb.header(OPERATION_NAME).isEqualTo(SAFETY_REPORT_ID_OPERATION_NAME))
+                    .to("direct:caaers-generateSafetyReportIdService-sync")
+                .when(rb.header(OPERATION_NAME).isEqualTo(SAE_EVALUATION_OPERATION_NAME))
+                    .to("direct:caaers-saveAndEvaluateAEs-sync")
+                .when(rb.header(OPERATION_NAME).isEqualTo(INITIATE_SAFETY_REPORT_OPERATION_NAME))
+                    .to("direct:caaers-initiateSafetyReportAction-sync")
+		        .otherwise()
+                    .to("direct:morgue");
 		
         //caAERS - call generate safety report ID service
         configureWSCallRoute("direct:caaers-generateSafetyReportIdService-sync", caAERSGenerateReportIdServiceJBIURL + "generateSafetyReportId", null );
@@ -44,24 +47,13 @@ public class FromRaveToCaaersWSRouteBuilder {
         configureWSCallRoute("direct:caaers-initiateSafetyReportAction-sync", caAERSSafetyReportServiceJBIURL + "initiateSafetyReportAction", "safetyreport-merge-actions.xsl" );
 	}
 	
-
+    //no transformation is needed for the input
 	private void configureWSCallRoute(String fromSink, String serviceURI, String responseXSL){
-        if(responseXSL == null) {
-
-            this.routeBuilder.configureRave2CaaersWSCallRoute(fromSink,
-                    serviceURI,
-                    "direct:rave2CaaersOutSink",
-                    CAAERS_WS_IN_TRANSFORMATION, CAAERS_WS_INVOCATION_INITIATED, CAAERS_WS_INVOCATION_COMPLETED, CAAERS_WS_OUT_TRANSFORMATION, ROUTED_TO_CAAERS_RESPONSE_SINK);
-
-        } else {
-
-            this.routeBuilder.configureRave2CaaersWSCallRoute(fromSink,
-                    serviceURI,  responseXSLBase + responseXSL,
-                    "direct:rave2CaaersOutSink",
-                    CAAERS_WS_IN_TRANSFORMATION, CAAERS_WS_INVOCATION_INITIATED, CAAERS_WS_INVOCATION_COMPLETED, CAAERS_WS_OUT_TRANSFORMATION, ROUTED_TO_CAAERS_RESPONSE_SINK);
-
-        }
+        String inXSL = requestXSLBase + "insert_correlation_id.xsl";
+        String outXSL = responseXSL == null ? null : responseXSLBase  + responseXSL;
+        routeBuilder.configureWSCallRoute(fromSink,inXSL,serviceURI,outXSL,"direct:rave2CaaersOutSink",
+                CAAERS_WS_IN_TRANSFORMATION, CAAERS_WS_INVOCATION_INITIATED, CAAERS_WS_INVOCATION_COMPLETED,
+                CAAERS_WS_OUT_TRANSFORMATION, ROUTED_TO_CAAERS_RESPONSE_SINK);
 	}
-	
 	
 }

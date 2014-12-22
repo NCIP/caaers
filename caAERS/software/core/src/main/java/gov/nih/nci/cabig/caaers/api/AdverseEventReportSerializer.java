@@ -336,6 +336,7 @@ public class AdverseEventReportSerializer {
 		   r.setEmailAddresses(report.getEmailRecipients());
            r.setMandatoryFields(report.getMandatoryFields());
            r.setCaseNumber(report.getCaseNumber());
+           r.setMetaData(report.getMetaData());
            if(report.getReportDeliveries() != null)   {
               for(ReportDelivery rd : report.getReportDeliveries()){
                 r.addReportDelivery(ReportDelivery.copy(rd));

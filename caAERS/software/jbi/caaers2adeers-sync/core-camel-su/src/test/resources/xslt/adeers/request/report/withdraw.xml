@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AdverseEventReport>
+    <EXTERNAL_SYSTEMS>https://betapps-ctep.nci.nih.gov/adeerswsbeta/services/AEReportXMLService::iaminternal::FALL#2013</EXTERNAL_SYSTEMS>
+    <CAAERSRID>1726</CAAERSRID>
+    <SUBMITTER_EMAIL>vasudev.chatti@semanticbits.com</SUBMITTER_EMAIL>
+    <MESSAGE_COMBO_ID>1992385162::20140316163537</MESSAGE_COMBO_ID>
+    <CORRELATION_ID>9080649</CORRELATION_ID>
+    <WITHDRAW>true</WITHDRAW>
+    <id>1091</id>
+    <StudyParticipantAssignment>
+        <StudySite>
+            <Study>
+                <Identifier>
+                    <type>Protocol Authority Identifier</type>
+                    <value>RTOG-1106</value>
+                    <primaryIndicator>true</primaryIndicator>
+                </Identifier>
+                <Identifier>
+                    <type>Coordinating Center Identifier</type>
+                    <value>RTOG-1106</value>
+                    <primaryIndicator>false</primaryIndicator>
+                </Identifier>
+                <Identifier>
+                    <type>Other</type>
+                    <value>RTOG-1106</value>
+                    <primaryIndicator>false</primaryIndicator>
+                </Identifier>
+            </Study>
+        </StudySite>
+        <studySubjectIdentifier>SUB85-1106</studySubjectIdentifier>
+    </StudyParticipantAssignment>
+    <Report>
+        <id>1726</id>
+        <assignedIdentifer>1642216</assignedIdentifer>
+        <ReportVersion>
+            <reportVersionId>0</reportVersionId>
+        </ReportVersion>
+    </Report>
+</AdverseEventReport>

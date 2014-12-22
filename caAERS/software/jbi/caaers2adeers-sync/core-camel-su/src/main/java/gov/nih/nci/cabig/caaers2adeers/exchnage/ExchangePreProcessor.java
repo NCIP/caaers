@@ -20,6 +20,7 @@ import java.util.Map;
  */
 public class ExchangePreProcessor implements Processor {
 
+    public static final String INVALID_MESSAGE = "c2a_invalid_message";
     public static final String SYNC_HEADER = "c2a_sync_mode";
     public static final String CORRELATION_ID_ATTR_NAME = "correlationId";
     public static final String CORRELATION_ID = "c2a_correlation_id";
@@ -50,22 +51,28 @@ public class ExchangePreProcessor implements Processor {
         properties.put(CAAERS_WS_PASSWORD, caaersWSPassword);
         properties.put(ADEERS_WS_USERNAME, adeersWSUser);
         properties.put(ADEERS_WS_PASSWORD, adeersWSPassword);
-        boolean isSync = XPathBuilder.xpath("//payload/request/operation/@mode = 'sync'").matches(exchange);
-        log.debug("syncMode = " + isSync);
-        properties.put(SYNC_HEADER, isSync ? "sync" : "async");
-        String operation = XPathBuilder.xpath("//payload/request/operation/@name").evaluate(exchange, String.class);
-        properties.put(OPERATION_NAME, operation);
-        String entity = XPathBuilder.xpath("//payload/request/entity").evaluate(exchange, String.class);
-        properties.put(ENTITY_NAME, entity);
+        properties.put(CORRELATION_ID, String.valueOf(System.currentTimeMillis()));
 
-        //only add corelationId if it is not alreay present.
-        //Object correlationId = exchange.getIn().getHeader(CORRELATION_ID);
-        String correlationId = XPathBuilder.xpath("//payload/@"+CORRELATION_ID_ATTR_NAME).evaluate(exchange, String.class);
-        if(StringUtils.isBlank(correlationId)){
-        	log.debug("No correlationId found in payload. Adding current time as correlationId.");
-        	correlationId = System.currentTimeMillis()+"";
+        try {
+            boolean isSync = XPathBuilder.xpath("//payload/request/operation/@mode = 'sync'").matches(exchange);
+            log.debug("syncMode = " + isSync);
+            properties.put(SYNC_HEADER, isSync ? "sync" : "async");
+
+            String operation = XPathBuilder.xpath("//payload/request/operation/@name").evaluate(exchange, String.class);
+            properties.put(OPERATION_NAME, operation);
+
+            String entity = XPathBuilder.xpath("//payload/request/entity").evaluate(exchange, String.class);
+            properties.put(ENTITY_NAME, entity);
+
+            String correlationId = XPathBuilder.xpath("//payload/@"+CORRELATION_ID_ATTR_NAME).evaluate(exchange, String.class);
+            if(StringUtils.isNotEmpty(correlationId)) {
+                properties.put(CORRELATION_ID, correlationId);
+            }
+
+        } catch (Exception ignore) {
+            log.debug("Ignoring invalid XML body content", ignore);
+            exchange.setProperty(INVALID_MESSAGE, "true");
         }
-        properties.put(CORRELATION_ID, correlationId);
 
         if(log.isDebugEnabled()) log.debug("Exchange properties :" + String.valueOf(properties));
 

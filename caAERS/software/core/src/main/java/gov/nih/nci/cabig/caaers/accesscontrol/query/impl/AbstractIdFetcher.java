@@ -6,7 +6,7 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.accesscontrol.query.impl;
 
-import com.aparzev.lang.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
 import gov.nih.nci.cabig.caaers.dao.query.HQLQuery;
 import gov.nih.nci.cabig.caaers.dao.query.NativeSQLQuery;

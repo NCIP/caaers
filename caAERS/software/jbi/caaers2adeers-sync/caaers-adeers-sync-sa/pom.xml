@@ -63,6 +63,11 @@
   		<artifactId>caaers-wsbc-su</artifactId>
           <version>${c2aVersion}</version>
   	</dependency>
+      <dependency>
+  		<groupId>gov.nih.nci.cabig.caaers2adeers</groupId>
+  		<artifactId>core-jms-su</artifactId>
+          <version>${c2aVersion}</version>
+  	</dependency>
 
   </dependencies>
 </project>

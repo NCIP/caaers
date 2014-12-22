@@ -1,6 +1,8 @@
 <xsl:stylesheet version="1.0"
                 xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:adeers="http://types.ws.adeers.ctep.nci.nih.gov"
+                xmlns:ns1="http://localhost:8080/AdEERSWSMap/services/AEReportXMLService"
 				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
     <!-- Assuming that the following Parameters are derived runtime from header -->
@@ -11,10 +13,10 @@
     <xsl:param name="c2r_msg_date" />
     <xsl:param name="c2r_msg_sender_id" />
     <xsl:param name="c2r_msg_receiver_id" />
+    <xsl:param name="c2r_msg_safety_report_id" />
 
-    <xsl:template match="/">
-		<xsl:variable name="c2r_correlation_id" select="//payload/@correlationId"/>
-		<xsl:variable name="report_id" select="substring-before($c2r_correlation_id, '##')"/>
+    <xsl:template match="//adeers:submitAEDataXMLAsAttachmentResponse">
+		<xsl:variable name="report_id" select="$c2r_msg_safety_report_id"/>
         <ichicsrack lang="en">
             <ichicsrmessageheader>
                 <messagetype>ichicsrack</messagetype>
@@ -31,12 +33,12 @@
                 <messagedate><xsl:value-of select="$c2r_today_204" /></messagedate>
                 <!-- Date on which ack got created : in CCYYMMDDHHMMSS format-->
             </ichicsrmessageheader>
-            <xsl:variable name="reportStatus" select="//AEReportJobInfo/reportStatus"/>
+            <xsl:variable name="reportStatus" select="//adeers:reportStatus"/>
             <acknowledgment>
                 <messageacknowledgment>
                     <icsrmessagenumb><xsl:value-of select="$c2r_msg_number" /></icsrmessagenumb>
                     <!-- obtained as part of the input safety report message -->
-                    <localmessagenumb><xsl:value-of select="//AEReportJobInfo/jobID" /></localmessagenumb>
+                    <localmessagenumb><xsl:value-of select="//ns1:AEReportJobInfo/adeers:jobID" /></localmessagenumb>
                     <!-- optional, might not be present if there was processing error. This number was assigned to the input safety Message by caAERS -->
                     <icsrmessagesenderidentifier><xsl:value-of select="$c2r_msg_sender_id" /></icsrmessagesenderidentifier>
                     <icsrmessagereceiveridentifier><xsl:value-of select="$c2r_msg_receiver_id" /></icsrmessagereceiveridentifier>
@@ -56,7 +58,8 @@
 	                        <transmissionacknowledgmentcode>02</transmissionacknowledgmentcode>
 	                        <!--Optional:-->
 	                        <!--<parsingerrormessage><xsl:value-of select="//ctep:submitAEDataXMLAsAttachmentResponse/ns1:AEReportJobInfo/comments"/></parsingerrormessage> -->
-							<parsingerrormessage><xsl:apply-templates select="//AEReportJobInfo/jobExceptions" mode="ERR"/></parsingerrormessage>
+							<parsingerrormessage><xsl:apply-templates select="//ns1:AEReportJobInfo/adeers:jobExceptions" mode="ERR"/> System error occurred in <xsl:value-of
+                                    select="//SYSTEM_NAME" /></parsingerrormessage>
 	                    </xsl:otherwise>
                     </xsl:choose>
                 </messageacknowledgment>
@@ -70,7 +73,7 @@
                         <safetyreportversion>2.1</safetyreportversion>
                         <!-- ICSR input message version -->
                         <!--Optional:-->
-                        <localreportnumb><xsl:value-of select="//AEReportJobInfo/REPORT_ID" /></localreportnumb>
+                        <localreportnumb><xsl:value-of select="//ns1:AEReportJobInfo/CAAERSRID" /></localreportnumb>
                         <!-- can be Database ID of DC or Report (if multiple reports possible per DC)-->
                         <!-- ****** *******************************************
                         authoritynumb or companynumb     only one of them is allowed in the incoming message and should follow a specific pattern.
@@ -80,7 +83,7 @@
                         <!--<authoritynumb>authority number</authoritynumb>-->
                         <!-- Identifier assigned by other regulatory authority for this Report-->
                         <!--Optional:-->
-                        <companynumb><xsl:value-of select="//AEReportJobInfo/ticketNumber" /></companynumb>
+                        <companynumb><xsl:value-of select="//ns1:AEReportJobInfo/adeers:ticketNumber" /></companynumb>
                         <!--(Refer section B.1.5) Not sure, either this can be Case number or AdEERS ticket number. -->
                         <!--Optional:-->
                         <receiptdateformat>102</receiptdateformat>
@@ -101,7 +104,7 @@
         </ichicsrack>
     </xsl:template>
 	
-	<xsl:template match="//AEReportJobInfo/jobExceptions" mode="ERR">
+	<xsl:template match="//ns1:AEReportJobInfo/adeers:jobExceptions" mode="ERR">
 		<xsl:value-of select="concat(code,' -' ,description, ', ')"/>
 	</xsl:template>
 

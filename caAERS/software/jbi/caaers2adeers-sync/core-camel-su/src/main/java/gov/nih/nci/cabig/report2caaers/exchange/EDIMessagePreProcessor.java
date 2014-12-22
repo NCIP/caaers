@@ -22,14 +22,12 @@ public class EDIMessagePreProcessor implements Processor {
 
 	public final static SimpleDateFormat msgDF = new SimpleDateFormat("yyyyMMddhhmmss");
 	public static final String MSG_ID = "c2r_msg_id";
-	public static final String CORRELATION_ID_ATTR_NAME = "correlationId";
-	public static final String CORRELATION_ID = "c2r_correlation_id";
 	public static final String TODAY_DT = "c2r_today_204";
 	public static final String MSG_NUMB = "c2r_msg_number";
 	public static final String MSG_DT = "c2r_msg_date";
 	public static final String MSG_SNDR_ID = "c2r_msg_sender_id";
 	public static final String MSG_RCVR_ID = "c2r_msg_receiver_id";
-	private static final String MSG_COMBO_ID = "msg_combo_id";
+	public static final String MSG_COMBO_ID = "msg_combo_id";
 	private static final String ORIGINAL_MSG = "original_message";
     public static final String CAAERS_WS_USERNAME = "c2a_caaers_ws_username";
     public static final String CAAERS_WS_PASSWORD = "c2a_caaers_ws_password";
@@ -95,14 +93,10 @@ public class EDIMessagePreProcessor implements Processor {
         properties.put(CAAERS_WS_USERNAME, caaersWSUser);
         properties.put(CAAERS_WS_PASSWORD, caaersWSPassword);
 		
-		log.debug("adding correlationId.");
-		Date cDt = new Date();
-		
-        String correlationId = msgNumb+"##"+msgDt;
-        
-		properties.put(CORRELATION_ID, correlationId);
+		Date now = new Date();
+
 		properties.put(MSG_ID, UUID.randomUUID().toString());
-		properties.put(TODAY_DT, msgDF.format(cDt));
+		properties.put(TODAY_DT, msgDF.format(now));
 		properties.put(ORIGINAL_MSG, replacedDoubleHash);
 				
 		exchange.getOut().setBody(replacedDoubleHash);

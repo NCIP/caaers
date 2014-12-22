@@ -6,7 +6,9 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.domain.report;
 
+import com.aparzev.lang.ArrayUtils;
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ConfigProperty;
@@ -30,7 +32,7 @@ import java.util.Map;
  * @author Ion C. Olaru
  *
  */
-public class ReportTest extends AbstractNoSecurityTestCase {
+public class ReportTest extends AbstractTestCase {
 	Report r;
 	ExpeditedAdverseEventReport aeReport;
 	@Override
@@ -348,6 +350,58 @@ public class ReportTest extends AbstractNoSecurityTestCase {
         assertFalse(r.isWorkflowEnabled());
         r.setWorkflowId(3);
         assertTrue(r.isWorkflowEnabled());
+    }
+
+
+    public void testGetMetadataAsMap() {
+        assertNull(r.getMetaData());
+
+        Map<String, String>  m = r.getMetaDataAsMap();
+        assertTrue(m.isEmpty());
+        r.addToMetaData("x", "y");
+        r.addToMetaData("xid", "66");
+
+        Map<String, String> m2 = r.getMetaDataAsMap();
+        assertEquals(m2.get("x"), "y");
+        assertEquals(m2.get("xid"), "66");
+
+        r.removeFromMetaData("x");
+        r.addToMetaData("b", "j");
+
+        m2 = r.getMetaDataAsMap();
+        assertEquals(m2.get("b"), "j");
+        assertEquals(m2.get("xid"), "66");
+        assertNull(m2.get("x"));
+        r.removeFromMetaData("xid");
+        r.removeFromMetaData("b");
+        m2 = r.getMetaDataAsMap();
+        assertTrue(m2.isEmpty());
+
+    }
+
+    public void testCorrelationId() {
+        String[] s = r.getCorrelationIds();
+        assertTrue(ArrayUtils.isEmpty(s));
+
+        r.addToCorrelationId("9988");
+        s = r.getCorrelationIds();
+        assertFalse(ArrayUtils.isEmpty(s));
+        System.out.println(r.getMetaDataAsMap());
+        assertEquals(2, r.getMetaDataAsMap().keySet().size());
+
+        r.addToCorrelationId("7777");
+        s = r.getCorrelationIds();
+        assertFalse(ArrayUtils.isEmpty(s));
+        System.out.println(r.getMetaDataAsMap());
+        assertEquals(3, r.getMetaDataAsMap().keySet().size());
+
+
+        r.addToCorrelationId("7777");
+        s = r.getCorrelationIds();
+        assertFalse(ArrayUtils.isEmpty(s));
+        System.out.println(r.getMetaDataAsMap());
+        assertEquals(3, r.getMetaDataAsMap().keySet().size());
+
     }
 
 }

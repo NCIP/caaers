@@ -37,9 +37,7 @@ public abstract class ResponseMessageProcessor {
 	public void setConfiguration(Configuration configuration) {
 		this.configuration = configuration;
 	}
-	
-	protected ProxyWebServiceFacade proxyWebServiceFacade;
-	
+
 	 //will be used to obtain resource bundle messages
     protected MessageSource messageSource;
 	
@@ -89,13 +87,7 @@ public abstract class ResponseMessageProcessor {
 		this.reportDao = reportDao;
 	}
 	
-	public ProxyWebServiceFacade getProxyWebServiceFacade() {
-		return proxyWebServiceFacade;
-	}
-	@Required
-	public void setProxyWebServiceFacade(ProxyWebServiceFacade proxyWebServiceFacade) {
-		this.proxyWebServiceFacade = proxyWebServiceFacade;
-	}
+
 	public abstract void processMessage(String message) throws CaaersSystemException;
 	
 }

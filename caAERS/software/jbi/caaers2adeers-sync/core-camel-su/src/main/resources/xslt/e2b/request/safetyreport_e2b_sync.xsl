@@ -11,6 +11,7 @@
 	<xsl:output method="xml" encoding="UTF-8" indent="yes" />
     <xsl:param name="c2a_caaers_ws_username" />
     <xsl:param name="c2a_caaers_ws_password" />
+    <xsl:param name="c2a_correlation_id" />
 	<xsl:variable name="map" select="document('lookup.xml')" />
 	<xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyz'" />
 	<xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
@@ -400,6 +401,7 @@
 									</ae:ccEmails>
 								</xsl:if>
 							</ae:aeReportVersion>
+                            <ae:correlationId><xsl:value-of select="$c2a_correlation_id" /></ae:correlationId>
 						</ae:report>
 					</ae:AdverseEventReport>
 				</ae:submitSafetyReport>

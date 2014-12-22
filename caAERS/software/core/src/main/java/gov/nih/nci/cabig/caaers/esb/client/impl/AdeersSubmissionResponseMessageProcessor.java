@@ -9,6 +9,7 @@ package gov.nih.nci.cabig.caaers.esb.client.impl;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
 import gov.nih.nci.cabig.caaers.esb.client.ResponseMessageProcessor;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 
@@ -34,48 +35,40 @@ import org.springframework.transaction.annotation.Transactional;
  * BJ : TODO copy the testcases checked in at r10219
  */
 public class AdeersSubmissionResponseMessageProcessor extends ResponseMessageProcessor{
-	
-	private static final String RESPONSE_MSG_END_TAG = "</submitAEDataXMLAsAttachmentResponse>";
-	private static final String RESPONSE_MSG_ST_TAG = "<submitAEDataXMLAsAttachmentResponse";
+
 	protected final Log log = LogFactory.getLog(getClass());
 	private Configuration configuration;
-	
+
 	@Override
 	@Transactional
 	public void processMessage(String message) throws CaaersSystemException {
         log.debug("AdeersSubmissionResponseMessageProcessor - message recieved");
 
-        
+
+        Namespace emptyNS = Namespace.NO_NAMESPACE;
+        Namespace adeersNS = Namespace.getNamespace("ns2", "http://types.ws.adeers.ctep.nci.nih.gov");
         Element jobInfo = this.getResponseElement(message,"submitAEDataXMLAsAttachmentResponse","AEReportJobInfo");
-        Namespace emptyNS=null;
-        for (Object obj:jobInfo.getChildren()) {
-				Element e = (Element)obj;
-				if (e.getName().equals("CAEERS_AEREPORT_ID")) {
-					emptyNS = e.getNamespace();
-				}
-		}
-        
+
         log.debug("got JobInfo");
         
-        String caaersAeReportId = jobInfo.getChild("CAEERS_AEREPORT_ID",emptyNS).getValue();
-        log.debug("ID 1 : " + caaersAeReportId);
-        String reportId = jobInfo.getChild("CAAERSRID",emptyNS).getValue();
-        log.debug("ID 2 : " + reportId);
-        String submitterEmail = jobInfo.getChild("SUBMITTER_EMAIL",emptyNS).getValue();
-        log.debug("email : " + submitterEmail);
-        
+        String caaersAeReportId = childNodeValue(jobInfo, emptyNS, "CAEERS_AEREPORT_ID");
+        log.debug("Data Colleciton ID : " + caaersAeReportId);
+        String reportId = childNodeValue(jobInfo, emptyNS, "CAAERSRID");
+        log.debug("Report ID : " + reportId);
+        String submitterEmail = childNodeValue(jobInfo, emptyNS, "SUBMITTER_EMAIL");
+        log.debug("Submitter email : " + submitterEmail);
+
+        String jobStatus = childNodeValue(jobInfo, adeersNS, "reportStatus");
+
         Report r = reportDao.getById(Integer.parseInt(reportId));
         
         //FIXME: When updating Caaers to send to multiple systems the below must also be changed.
         //Can just use the first system as that is the only one that is used.
-        String sysName = "UNKOWN";
+        String sysName = "UNKNOWN";
         if(r != null) {
 	        List<ReportDelivery> list = r.getExternalSystemDeliveries();
-	        if(list != null && list.size() > 0) {
-	        	if(list.get(0) != null && list.get(0).getReportDeliveryDefinition() != null) {
-	        		sysName = list.get(0).getReportDeliveryDefinition().getEntityName();
-	        	}
-	        }
+            ReportDeliveryDefinition deliveryDef = list.isEmpty() ? null : list.get(0).getReportDeliveryDefinition();
+            sysName = deliveryDef != null ? deliveryDef.getEntityName() : "UNKNOWN";
         }
         // build error messages
         StringBuffer sb = new StringBuffer();
@@ -87,10 +80,10 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
 
         try {
 
-            if (jobInfo.getChild("reportStatus").getValue().equals("SUCCESS")) {
+            if (jobStatus.equals("SUCCESS")) {
             	
-            	 ticketNumber = jobInfo.getChild("ticketNumber").getValue();
-                 url = jobInfo.getChild("reportURL").getValue();
+            	 ticketNumber = childNodeValue(jobInfo, adeersNS, "ticketNumber");
+                 url = childNodeValue(jobInfo, adeersNS, "reportURL");
                  
         		 String submissionMessage = messageSource.getMessage("successful.reportSubmission.message",
         				 new Object[]{String.valueOf(r.getId()), ticketNumber,  url}, Locale.getDefault());
@@ -105,14 +98,14 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
             }else{
             	 success = false;
             	 @SuppressWarnings("unchecked")
-				List<Element> exceptions = jobInfo.getChildren("jobExceptions");
+				List<Element> exceptions = jobInfo.getChildren("jobExceptions", adeersNS);
             	 //find the exception elements
             	 if(CollectionUtils.isNotEmpty(exceptions)){
             		 StringBuffer exceptionMsgBuffer = new StringBuffer();
             		 for (Element ex : exceptions) {
-            			 exceptionMsgBuffer.append(ex.getChild("code").getValue()).append( "  -  ").append(ex.getChild("description").getValue()).append("\n");
+            			 exceptionMsgBuffer.append(childNodeValue(ex, adeersNS, "code")).append( "  -  ").append(childNodeValue(ex, adeersNS, "description")).append("\n");
 
-            			 if (ex.getChild("code").getValue().equals("caAERS-adEERS : COMM_ERR")) {
+            			 if (childNodeValue(ex, adeersNS, "code").equals("caAERS-adEERS : COMM_ERR")) {
                      		communicationError=true;
                          }
                      }
@@ -127,8 +120,8 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
             	 
             }
             
-            if (jobInfo.getChild("comments") != null) {
-           	 	String commentsMessage = messageSource.getMessage("comments.reportSubmission.message", new Object[]{jobInfo.getChild("comments").getValue()}, Locale.getDefault());
+            if (jobInfo.getChild("comments", adeersNS) != null) {
+           	 	String commentsMessage = messageSource.getMessage("comments.reportSubmission.message", new Object[]{childNodeValue(jobInfo, adeersNS, "comments")}, Locale.getDefault());
            	 	sb.append("\n"); // Move comments section to NextLine.
                 sb.append(commentsMessage);
             }
@@ -142,28 +135,7 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
         } catch (Exception e) {
             log.error("Error while generating email body", e);
         }
-        
-        
-       try {
-		//Send to response back to ESB to further routing if necessary
-		   //like sending an E2B ack message
-		    int stInd = message.indexOf(RESPONSE_MSG_ST_TAG);
-		    int endInd = message.indexOf(RESPONSE_MSG_END_TAG);
-		    String trimmedMessage = message.substring(stInd, endInd);
-            if(!success) {
-                int insertPoint = trimmedMessage.lastIndexOf("</description>");
-                if(insertPoint > 0){
-                    trimmedMessage = trimmedMessage.subSequence(0, insertPoint) + " System Error Occured in: " + sysName + trimmedMessage.substring(insertPoint);
-                }
-            }
-		    trimmedMessage += RESPONSE_MSG_END_TAG;
-		    trimmedMessage = trimmedMessage.replaceAll(RESPONSE_MSG_ST_TAG, RESPONSE_MSG_ST_TAG + " xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"");
-		    String routedRes = getProxyWebServiceFacade().routeAdeersReportSubmissionResponse(trimmedMessage, r);
-		    log.debug("Routed response is " + routedRes);
-		} catch (Exception e) {
-           log.error("Error while routing AdEERS response to caAERS Generic Processor", e);
-		}
-        
+
         // Notify submitter
         try {
         	 String messages = sb.toString();
@@ -175,6 +147,12 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
         }
 		
 	}
+
+    private String childNodeValue(Element el, Namespace ns, String nodeName) {
+        Element n = el.getChild(nodeName, ns);
+        if(n != null) return n.getValue();
+        return "";
+    }
 	
 	  public void setConfiguration(Configuration configuration) {
 	        this.configuration = configuration;
