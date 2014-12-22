@@ -84,10 +84,16 @@ public class ToAdeersReportServiceRouteBuilder {
                 .to(rb.getFileTracker().fileURI(REPORT_SUBMISSION_RESPONSE))
             .to("log:gov.nih.nci.cabig.report2adeers.response-sent?showHeaders=true&multiline=true&level=WARN")
             .multicast()
-                .to("jbi:endpoint:urn:gov:nih:nci:caaers:jmsOut:provider", "direct:routeAdEERSResponseSink");
+                .to("direct:toE2bAck", "direct:toJms");
 
 
+        rb.from("direct:toJms")
+                .to("log:gov.nih.nci.cabig.report2adeers.to-caaers-jms?showHeaders=true&multiline=true&level=WARN")
+                .to("jbi:endpoint:urn:gov:nih:nci:caaers:jmsOut:provider");
 
+        rb.from("direct:toE2bAck")
+                .to("log:gov.nih.nci.cabig.report2adeers.to-e2b-ack?showHeaders=true&multiline=true&level=WARN")
+                .to("direct:routeAdEERSResponseSink");
     }
 
 }
