@@ -306,7 +306,6 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 </c:if>
 
 <div class="eXtremeTable" >
-  	<c:if test="${command.study != null || command.participant != null}">
   	  <tags:instructions code="instruction_manage_reports"/>
 	  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tableRegion">
 	    <thead>
@@ -325,7 +324,6 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 		</c:forEach>
 	
 	  </table>
-  </c:if>
   <c:set var="reportingPeriodPageURLNoPeriod" value="/pages/ae/captureRoutine?participant=${command.participant.id}&study=${command.study.id}&_page=0&_target0=0&displayReportingPeriod=true"/>
   <c:if test="${(command.study != null || command.participant != null) and fn:length(command.resultList) le 0}">
    	<tags:instructions code="instruction_ae_no_courses"/> 

@@ -130,6 +130,31 @@ public class ListAdverseEventsController extends SimpleFormController {
 			command.setParticipant(participantDao.getById(subjectId));
 		}
 		
+	   String userId = SecurityUtils.getUserLoginName();
+   	 	Boolean isStaff = true;
+        Person loggedInPerson = personDao.getByLoginId(userId);
+        if(loggedInPerson instanceof Investigator){
+        	isStaff = false;
+        }
+        request.setAttribute("isStaff", isStaff);
+        command.setUserId(userId);
+		
+		List<Report> reports = reportDao.search(null, null, null, command.getSearchIdentifier(), 20);
+        command.setReports(reports);
+    	//if there is no validation error, update the report submitability
+        command.updateSubmittability();
+        command.updateSubmittabilityBasedOnReportStatus();
+        command.updateOptions();
+        
+        command.updateSubmittabilityBasedOnWorkflow();
+    	Set<AdverseEventReportingPeriod> reportingPeriods = new HashSet<AdverseEventReportingPeriod>();
+    	for(Report report : command.getReports()){
+    		reportingPeriods.add(report.getAeReport().getReportingPeriod());
+    	}
+		List<AdverseEventReportingPeriod> reportingPeriodsList = new ArrayList<AdverseEventReportingPeriod>();
+		reportingPeriodsList.addAll(reportingPeriods);
+		command.populateResults(reportingPeriodsList);
+		
     	
         return command;
     }
@@ -204,17 +229,6 @@ public class ListAdverseEventsController extends SimpleFormController {
         	listAECmd.updateSubmittability();
         	listAECmd.updateSubmittabilityBasedOnReportStatus();
         	listAECmd.updateOptions();
-        	
-        	//save the study/subject in session for future pre-selection
-        	HttpSession session = request.getSession();
-        	if(!noStudy){
-        		session.setAttribute(SELECTED_STUDY_ID, listAECmd.getStudy().getId());
-        	}
-			
-        	if(!noParticipant){
-        		session.setAttribute(SELECTED_PARTICIPANT_ID, listAECmd.getParticipant().getId());
-        	}
-			
         }
         
     }
