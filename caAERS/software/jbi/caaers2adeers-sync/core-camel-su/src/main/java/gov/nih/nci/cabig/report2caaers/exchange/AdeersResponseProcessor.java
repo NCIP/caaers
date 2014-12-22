@@ -57,7 +57,7 @@ public class AdeersResponseProcessor implements Processor {
 		String msgComboId = XPathBuilder.xpath("//MESSAGE_COMBO_ID").evaluate(exchange, String.class);
 		IntegrationLogMessageDao integrationLogMessageDao = (IntegrationLogMessageDao)exchange.getContext().getRegistry().lookup("integrationLogMessageDao");
 		log.info("MESSAGE_COMBO_ID is " + msgComboId);
-		IntegrationLogMessage integrationLogMessage = integrationLogMessageDao.findByComboId(msgComboId, Stage.REQUEST_RECEIVED);
+		IntegrationLogMessage integrationLogMessage = integrationLogMessageDao.findByComboId(msgComboId, Stage.E2B_SUBMISSION_REQUEST_RECEIVED);
 		
 		if(StringUtils.isNotBlank(integrationLogMessage.getMessage())) {
 			String msgNumb = evaluateXPath("//messagenumb", integrationLogMessage.getMessage());
