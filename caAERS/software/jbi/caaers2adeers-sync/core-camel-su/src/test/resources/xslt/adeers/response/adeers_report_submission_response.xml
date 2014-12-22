@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <soapenv:Body>
+        <submitAEDataXMLAsAttachmentResponse xmlns="http://types.ws.adeers.ctep.nci.nih.gov">
+            <ns1:AEReportJobInfo xmlns:ns1="http://localhost:8080/AdEERSWSMap/services/AEReportXMLService">
+                <jobID xsi:type="xsd:string">9470</jobID>
+                <ticketNumber xsi:type="xsd:string">1337198</ticketNumber>
+                <patientID xsi:type="xsd:string">laiju-1</patientID>
+                <protocolNumber xsi:type="xsd:string">A071102</protocolNumber>
+                <reportStatus>SUCCESS</reportStatus>
+                <reportURL xsi:type="xsd:string">https://betapps-ctep.nci.nih.gov/reports/rwservlet?ab+report=aereport.rep+DESTYPE=CACHE+desformat=pdf+P_AET_ID=1394651329</reportURL>
+                <comments xsi:type="xsd:string">**Pending **</comments>
+                <CAEERS_AEREPORT_ID xmlns=""/>
+                <CAAERSRID xmlns="">1478</CAAERSRID>
+                <SUBMITTER_EMAIL xmlns="">biju.joseph@semanticbits.com</SUBMITTER_EMAIL>
+                <MESSAGE_COMBO_ID xmlns="">0448268551::20140417195028</MESSAGE_COMBO_ID>
+                <CORRELATION_ID xmlns="">1419259767101</CORRELATION_ID>
+            </ns1:AEReportJobInfo>
+        </submitAEDataXMLAsAttachmentResponse>
+    </soapenv:Body>
+</soapenv:Envelope>
