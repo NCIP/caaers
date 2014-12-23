@@ -7,7 +7,6 @@
 package gov.nih.nci.cabig.caaers.service;
 
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
-import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.api.AdeersReportGenerator;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
@@ -44,7 +43,7 @@ import org.springframework.context.MessageSource;
  * @author Biju Joseph
  *
  */
-public class ReportSubmissionServiceTest extends AbstractTestCase {
+public class ReportSubmissionServiceTest extends AbstractNoSecurityTestCase {
 	
 	ReportSubmissionService service;
  	protected CaaersAdeersMessageBroadcastServiceImpl messageBroadcastService;
@@ -103,7 +102,7 @@ public class ReportSubmissionServiceTest extends AbstractTestCase {
 		service.setMessageBroadcastService(new CaaersAdeersMessageBroadcastServiceImpl(){
 			@Override
 			public void broadcast(String message) throws BroadcastException {
-                assertTrue("Does not contain; " + message, message.contains("<AdverseEventReport><EXTERNAL_SYSTEMS>www.biju.com::myusername::password::UNKNOWN</EXTERNAL_SYSTEMS><CAAERSRID>110</CAAERSRID>"));
+                assertTrue(message.contains("<AdverseEventReport><EXTERNAL_SYSTEMS>www.biju.com::myusername::password</EXTERNAL_SYSTEMS><CAAERSRID>110</CAAERSRID>"));
 			}
 			@Override
 			public void initialize() throws BroadcastException, JMSException {
