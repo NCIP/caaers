@@ -409,8 +409,8 @@
 	<svrl:text xmlns:svrl="http://purl.oclc.org/dsdl/svrl">BaselinePerformace: validate baseline performance number</svrl:text>
 
 	<!--RULE -->
-	<xsl:template match="/ichicsr/safetyreport/patient[upper-case(baselineperformancescale)='ECOG' or upper-case(baselineperformancescale)='ZUBROD']" priority="1001" mode="M11">
-		<svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/ichicsr/safetyreport/patient[upper-case(baselineperformancescale)='ECOG' or upper-case(baselineperformancescale)='ZUBROD']"/>
+	<xsl:template match="/ichicsr/safetyreport/patient/medicalhistoryepisode[upper-case(baselineperformancescale)='ECOG' or upper-case(baselineperformancescale)='ZUBROD']" priority="1001" mode="M11">
+		<svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/ichicsr/safetyreport/patient/medicalhistoryepisode[upper-case(baselineperformancescale)='ECOG' or upper-case(baselineperformancescale)='ZUBROD']"/>
 
 		<!--ASSERT -->
 		<xsl:choose>
@@ -436,8 +436,8 @@
 	<svrl:text xmlns:svrl="http://purl.oclc.org/dsdl/svrl">BaselinePerformace: validate baseline performance number</svrl:text>
 
 	<!--RULE -->
-	<xsl:template match="/ichicsr/safetyreport/patient[upper-case(baselineperformancescale)='LANSKY' or upper-case(baselineperformancescale)='KARNOFSKY']" priority="1001" mode="M12">
-		<svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/ichicsr/safetyreport/patient[upper-case(baselineperformancescale)='LANSKY' or upper-case(baselineperformancescale)='KARNOFSKY']"/>
+	<xsl:template match="/ichicsr/safetyreport/patient/medicalhistoryepisode[upper-case(baselineperformancescale)='LANSKY' or upper-case(baselineperformancescale)='KARNOFSKY']" priority="1001" mode="M12">
+		<svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/ichicsr/safetyreport/patient/medicalhistoryepisode[upper-case(baselineperformancescale)='LANSKY' or upper-case(baselineperformancescale)='KARNOFSKY']"/>
 
 		<!--ASSERT -->
 		<xsl:choose>
@@ -517,8 +517,8 @@
 	<svrl:text xmlns:svrl="http://purl.oclc.org/dsdl/svrl">Participant History: validate baseline performance scale </svrl:text>
 
 	<!--RULE -->
-	<xsl:template match="/ichicsr/safetyreport/patient/baselineperformancescale" priority="1001" mode="M15">
-		<svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/ichicsr/safetyreport/patient/baselineperformancescale"/>
+	<xsl:template match="/ichicsr/safetyreport/patient/medicalhistoryepisode/baselineperformancescale" priority="1001" mode="M15">
+		<svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/ichicsr/safetyreport/patient/medicalhistoryepisode/baselineperformancescale"/>
 
 		<!--ASSERT -->
 		<xsl:choose>

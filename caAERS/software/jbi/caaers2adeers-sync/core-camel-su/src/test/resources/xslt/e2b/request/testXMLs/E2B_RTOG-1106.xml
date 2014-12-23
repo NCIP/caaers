@@ -24,9 +24,11 @@
 			<!-- study site NCI id-->
 			<subjectstudysiteid>MN026</subjectstudysiteid> 	  
 			<!-- study subject id-->
-			<patientinvestigationnumb>RTOG-1106-testCcEmails1</patientinvestigationnumb> 
-			<baselineperformancescale>lansky</baselineperformancescale>
-			<baselineperformancenumber>70</baselineperformancenumber>			
+			<patientinvestigationnumb>RTOG-1106-testCcEmails1</patientinvestigationnumb>
+            <medicalhistoryepisode>
+			    <baselineperformancescale>lansky</baselineperformancescale>
+			    <baselineperformancenumber>70</baselineperformancenumber>
+            </medicalhistoryepisode>
 
 
 			<!-- Adverse Event information. If more than one reaction is present, each should have a different aeexternalid and exactly one should be marked primary -->
