@@ -35,7 +35,7 @@ public class ToCaaersReportWSRouteBuilder {
         Map<String, String> nss = new HashMap<String, String>();
         nss.put("svrl", "http://purl.oclc.org/dsdl/svrl");
         
-        routeBuilder.from("file://"+inputEDIDir+"?preMove=inprogress&move=done&moveFailed=movefailed&delay=70000")
+        routeBuilder.from("file://"+inputEDIDir+"?preMove=inprogress&move=done&moveFailed=movefailed")
             .streamCaching()
             .setProperty(CORRELATION_ID, rb.constant(String.valueOf(System.currentTimeMillis())))
             .setProperty(SYNC_HEADER, rb.constant("sync"))
