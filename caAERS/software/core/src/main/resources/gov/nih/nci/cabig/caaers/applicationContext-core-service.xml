@@ -432,6 +432,7 @@ default-lazy-init="true">
         <property name="studyDao" ref="studyDao" />
         <property name="ruleSetDao" ref="ruleSetDao" />
         <property name="ruleEngineService" ref="ruleEngineService" />
+        <property name="ctcTermDao" ref="ctcTermDao" />
 	</bean>
 
    <bean id="configPropertyRepositoryImpl" autowire="byType" class="gov.nih.nci.cabig.caaers.domain.repository.ConfigPropertyRepositoryImpl" />
