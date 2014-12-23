@@ -49,7 +49,7 @@ public class ToCaaersReportWSRouteBuilder {
         Map<String, String> nss = new HashMap<String, String>();
         nss.put("svrl", "http://purl.oclc.org/dsdl/svrl");
         
-        routeBuilder.from("file://"+inputEDIDir+"?preMove=inprogress&move=done&moveFailed=movefailed")
+        routeBuilder.from("file://"+inputEDIDir+"?preMove=inprogress&move=done&moveFailed=movefailed&delay=70000")
         	/*.convertBodyTo(String.class, "UTF-8")
         	.convertBodyTo(byte[].class, "Windows-1252")
         	.convertBodyTo(String.class, "UTF-8")*/
