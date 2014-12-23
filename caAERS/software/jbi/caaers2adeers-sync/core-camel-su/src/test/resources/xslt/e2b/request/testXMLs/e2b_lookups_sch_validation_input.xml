@@ -141,8 +141,10 @@
 		 <patientdeath>
 		 	<patientautopsyyesno>5</patientautopsyyesno>
 		 </patientdeath>
-		 <baselineperformancescale>ecog</baselineperformancescale> <!-- PUTTING IN LOWER CASE TO TEST SUPPORT CASE INSENSITIVITY -->
-		 <baselineperformancenumber>10</baselineperformancenumber> 
+        <medicalhistoryepisode>
+             <baselineperformancescale>ecog</baselineperformancescale> <!-- PUTTING IN LOWER CASE TO TEST SUPPORT CASE INSENSITIVITY -->
+             <baselineperformancenumber>10</baselineperformancenumber>
+        </medicalhistoryepisode>
      </patient>
   </safetyreport>
 </ichicsr>
