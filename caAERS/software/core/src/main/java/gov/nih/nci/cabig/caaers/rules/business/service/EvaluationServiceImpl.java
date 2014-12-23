@@ -7,32 +7,16 @@
 package gov.nih.nci.cabig.caaers.rules.business.service;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.NotificationStatus;
-import gov.nih.nci.cabig.caaers.domain.ObservedAdverseEventProfile;
-import gov.nih.nci.cabig.caaers.domain.ReportStatus;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
-import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.dto.ApplicableReportDefinitionsDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.EvaluationResultDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper;
 import gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper.ActionType;
 import gov.nih.nci.cabig.caaers.domain.dto.SafetyRuleEvaluationResultDTO;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
-import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
-import gov.nih.nci.cabig.caaers.domain.report.Report;
-import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryField;
-import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
-import gov.nih.nci.cabig.caaers.domain.report.ReportType;
-import gov.nih.nci.cabig.caaers.domain.report.RequirednessIndicator;
+import gov.nih.nci.cabig.caaers.domain.report.*;
 import gov.nih.nci.cabig.caaers.rules.common.AdverseEventEvaluationResult;
 import gov.nih.nci.cabig.caaers.rules.common.CaaersRuleUtil;
 import gov.nih.nci.cabig.caaers.rules.common.RuleType;
@@ -43,7 +27,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -54,6 +37,8 @@ import java.util.TreeSet;
 
 import org.apache.commons.collections15.Closure;
 import org.apache.commons.collections15.CollectionUtils;
+import org.apache.commons.collections15.ListUtils;
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -75,7 +60,15 @@ public class EvaluationServiceImpl implements EvaluationService {
 
     private ReportDefinitionDao reportDefinitionDao;
 
-	private ReportDefinitionFilter reportDefinitionFilter;
+    private OrganizationDao organizationDao;
+    
+    private Map<AdverseEvent,List<ReportDefinition>> adverseEventRecommendedReportsMap = new HashMap<AdverseEvent, List<ReportDefinition>>();
+    
+    public Map<AdverseEvent, List<ReportDefinition>> getAdverseEventRecommendedReportsMap() {
+		return adverseEventRecommendedReportsMap;
+	}
+
+	ReportDefinitionFilter reportDefinitionFilter;
     
     public EvaluationServiceImpl() {
     	reportDefinitionFilter = new ReportDefinitionFilter();
@@ -114,7 +107,7 @@ public class EvaluationServiceImpl implements EvaluationService {
             ExpeditedAdverseEventReport fakeAeReport = new ExpeditedAdverseEventReport();
             fakeAeReport.setTreatmentInformation(new TreatmentInformation());
             fakeAeReport.getTreatmentInformation().setTreatmentAssignment(new TreatmentAssignment());
-            String tac = reportingPeriod.getTreatmentAssignment() != null ? reportingPeriod.getTreatmentAssignment().getCode() : null;
+            String tac = reportingPeriod.getTreatmentAssignment() != null ? reportingPeriod.getTreatmentAssignment().getCode() : "";
             fakeAeReport.getTreatmentInformation().getTreatmentAssignment().setCode(tac);
             findRequiredReportDefinitions(fakeAeReport, newlyAddedAdverseEvents, reportingPeriod.getStudy(), result);
         }
@@ -227,7 +220,7 @@ public class EvaluationServiceImpl implements EvaluationService {
             map = new HashMap<AdverseEvent, List<String>>();
             
             // clear the recommended reports map
-           evaluationResult.getAdverseEventRecommendedReportsMap().clear();
+            adverseEventRecommendedReportsMap.clear();
             
             //clean up - by eliminating the deleted report definitions.
             for(Map.Entry<AdverseEvent, List<AdverseEventEvaluationResult>> entry : adverseEventEvaluationResultMap.entrySet()){
@@ -244,7 +237,7 @@ public class EvaluationServiceImpl implements EvaluationService {
                 		}
                 	}
                 }
-                evaluationResult.getAdverseEventRecommendedReportsMap().put(adverseEvent, new ArrayList<ReportDefinition>(recommendedAeReports));
+                adverseEventRecommendedReportsMap.put(adverseEvent, new ArrayList<ReportDefinition>(recommendedAeReports));
                 
 
                 List<String> validReportDefNames   = new ArrayList<String>();
@@ -302,7 +295,7 @@ public class EvaluationServiceImpl implements EvaluationService {
 
             }
             
-            for(Map.Entry<AdverseEvent,List<ReportDefinition>> entry : evaluationResult.getAdverseEventRecommendedReportsMap().entrySet()){
+            for(Map.Entry<AdverseEvent,List<ReportDefinition>> entry : adverseEventRecommendedReportsMap.entrySet()){
             	List<ReportDefinition> filteredRdList = reportDefinitionFilter.filter(entry.getValue());
             	entry.setValue(filteredRdList);
             }
@@ -318,17 +311,6 @@ public class EvaluationServiceImpl implements EvaluationService {
 
 
             List<Report> completedReports = expeditedData == null ? new ArrayList<Report>() : expeditedData.listReportsHavingStatus(ReportStatus.COMPLETED);
-
-
-            //Remove all NOTIFICATIONS from completed reports. As notifications must be completed by a subsequent full report.
-            List<Report> notificationsToRemove = new ArrayList<Report>();
-            for(Report report : completedReports) {
-                List<ReportDefinition> rdList = ReportDefinition.findByName(defList, report.getName());
-                if(!rdList.isEmpty() && rdList.get(0).getReportType() == ReportType.NOTIFICATION) {
-                     notificationsToRemove.add(report);
-                }
-            }
-            completedReports.removeAll(notificationsToRemove);
 
             if(!completedReports.isEmpty()){
 
@@ -395,7 +377,7 @@ public class EvaluationServiceImpl implements EvaluationService {
             	log.debug("Rules Engine Result for : " + aeReportId + ", " + String.valueOf(map));
             }
 
-
+            //  - If inprogress report is always preferred over rules suggestions (CAAERS-7078)
             //  - If child report is active, select that instead of parent. 
             // - If there is a manual selection, ignore rules engine suggestions from the same group
             // - If the manual selection is always a preferred one (ie. by default add active manual selected reports). 
@@ -408,6 +390,24 @@ public class EvaluationServiceImpl implements EvaluationService {
             	//a temporary list
             	List<ReportDefinition> tmplist = new ArrayList<ReportDefinition>(defList);
 
+                //inprogress report is preferred for reported AEs
+                for(AdverseEvent adverseEvent : evaluatableAeList) {
+                    if(adverseEvent.getReport() == null || BooleanUtils.isFalse(adverseEvent.getReported()))  continue; //unreported AE
+                    for(Report report : activeReports) {
+                        ReportDefinition rdActive = report.getReportDefinition();
+                        List<ReportDefinition> conflictingReportDefList = ReportDefinition.findBySameOrganizationAndGroup(tmplist, rdActive);
+                        for(ReportDefinition rdSuggested : conflictingReportDefList) {
+                            if(StringUtils.equals(rdActive.getName(), rdSuggested.getName())) continue;
+                            defList.remove(rdSuggested);
+                            evaluationResult.removeReportDefinitionName(aeReportId, adverseEvent, rdSuggested.getName());
+                            evaluationResult.addProcessingStep(aeReportId, String.format("caAERS: removing suggested %s in favor of in-progress %s",
+                                    rdSuggested.getName(), rdActive.getName()),null);
+                        }
+                    }
+                }
+
+                //recreate temporary list
+                tmplist = new ArrayList<ReportDefinition>(defList);
 
                 //keep active child report instead of parent.
             	for(Report activeReport : activeReports){
@@ -545,7 +545,6 @@ public class EvaluationServiceImpl implements EvaluationService {
         	 if(expeditedData == null){  
         		  //all report definitions, should go in the createMap.
         		  wrapper = new ReportDefinitionWrapper(rd, null, ActionType.CREATE);
-                  wrapper.setCreatedOn(new Date());
         		  wrapper.setStatus("Not started");
         		  rdCreateSet.add(wrapper);
         	 }else{
@@ -556,7 +555,6 @@ public class EvaluationServiceImpl implements EvaluationService {
 	        		  wrapper = new ReportDefinitionWrapper(report.getReportDefinition(), rd, ActionType.AMEND);
 	        		  wrapper.setStatus(report.getLastVersion().getStatusAsString());
 	        		  wrapper.setSubmittedOn(report.getSubmittedOn());
-                      wrapper.setCreatedOn(report.getCreatedOn());
 	        		  rdAmmendSet.add(wrapper);
 	        	  }
 	        	  
@@ -566,7 +564,6 @@ public class EvaluationServiceImpl implements EvaluationService {
 	        		  wrapper = new ReportDefinitionWrapper(report.getReportDefinition(), rd, ActionType.WITHDRAW);
 	        		  wrapper.setStatus("In process");
 	        		  wrapper.setDueOn(report.getDueOn());
-                      wrapper.setCreatedOn(report.getCreatedOn());
 	        		  rdWithdrawSet.add(wrapper);
 	        	  }
 	        	  
@@ -577,7 +574,6 @@ public class EvaluationServiceImpl implements EvaluationService {
 	        		  wrapper = new ReportDefinitionWrapper(report.getReportDefinition(), rd, ActionType.EDIT);
 	        		  wrapper.setStatus("In process");
 	        		  wrapper.setDueOn(report.getDueOn());
-                      wrapper.setCreatedOn(report.getCreatedOn());
 	        		  rdEditSet.add(wrapper);
 	        	  }
 	        	  
@@ -585,7 +581,6 @@ public class EvaluationServiceImpl implements EvaluationService {
 	        	  if(reportsEdited.isEmpty() && reportsAmmended.isEmpty() && reportsWithdrawn.isEmpty()){
 	        		 wrapper = new ReportDefinitionWrapper(rd, null, ActionType.CREATE);
 	         		 wrapper.setStatus("Not started");
-                     wrapper.setCreatedOn(new Date());
 	         		 rdCreateSet.add(wrapper);
 	        	  }
 	        	  
@@ -686,6 +681,17 @@ public class EvaluationServiceImpl implements EvaluationService {
         			reportDefinitions.addAll(reportDefinitionDao.getAll(studyOrganization.getOrganization().getId()));
         }
         
+        /**
+         * Get REport definitions of CTEP for DCP studies , because DCP uses CTEP 
+         * report definitions also . TEMP fix
+         */
+        Organization primarySponsor = study.getPrimaryFundingSponsorOrganization();
+        
+        //CAAERS-4215
+        //if (primarySponsor.getName().equals("Division of Cancer Prevention")) {
+        	//reportDefinitions.addAll(reportDefinitionDao.getAll(this.organizationDao.getByName("Cancer Therapy Evaluation Program").getId()));
+        //}
+        
         ApplicableReportDefinitionsDTO dto = new ApplicableReportDefinitionsDTO();
         for(ReportDefinition rd : reportDefinitions){
     	  dto.addReportDefinition(rd);
@@ -763,7 +769,7 @@ public class EvaluationServiceImpl implements EvaluationService {
 
 
         //non self referenced rules
-        final List<Object> inputObjects = new ArrayList<Object>(baseInputObjects);
+        final List<Object> inputObjects = new ArrayList(baseInputObjects);
         inputObjects.addAll(aeReport.getActiveAdverseEvents());
         
         final HashMap<String, Mandatory> rulesDecisionCache = new HashMap<String, Mandatory>();
@@ -796,11 +802,10 @@ public class EvaluationServiceImpl implements EvaluationService {
         //self referenced rules
         if(log.isDebugEnabled()) log.debug("Self referenced rule evaluation");
         CollectionUtils.forAllDo(rd.getSelfReferencedRuleBasedMandatoryFields(), new Closure<ReportMandatoryFieldDefinition>(){
-            @SuppressWarnings("unchecked")
-			public void execute(ReportMandatoryFieldDefinition mfd) {
+            public void execute(ReportMandatoryFieldDefinition mfd) {
                 Map<String, Object> map = CaaersRuleUtil.multiplexAndEvaluate(aeReport, mfd.getFieldPath());
                 for(String path : map.keySet()){
-                    List<Object> inputObjects = new ArrayList<Object>(baseInputObjects);
+                    List<Object> inputObjects = new ArrayList(baseInputObjects);
                     Object o = map.get(path);
                     if(o == null) continue;
                     if(o instanceof Collection){
@@ -870,5 +875,11 @@ public class EvaluationServiceImpl implements EvaluationService {
 
     public AdverseEventEvaluationService getAdverseEventEvaluationService() {
         return adverseEventEvaluationService;
-    } 
+    }
+
+	public void setOrganizationDao(OrganizationDao organizationDao) {
+		this.organizationDao = organizationDao;
+	}
+
+ 
 }
