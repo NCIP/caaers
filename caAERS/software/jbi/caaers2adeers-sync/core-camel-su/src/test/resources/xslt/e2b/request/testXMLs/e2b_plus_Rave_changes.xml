@@ -40,11 +40,9 @@
 			<!-- study site NCI id-->
 			<subjectstudysiteid>MN026</subjectstudysiteid> 	  
 			<!-- study subject id-->
-			<patientinvestigationnumb>SUB01-RTOG-1106</patientinvestigationnumb>
-            <medicalhistoryepisode>
-                <baselineperformancescale>lansky</baselineperformancescale>
-                <baselineperformancenumber>70</baselineperformancenumber>
-            </medicalhistoryepisode>
+			<patientinvestigationnumb>SUB01-RTOG-1106</patientinvestigationnumb> 
+			<baselineperformancescale>lansky</baselineperformancescale>
+			<baselineperformancenumber>70</baselineperformancenumber>			
 			
 
 			<!-- Adverse Event information. If more than one reaction is present, each should have a different aeexternalid and exactly one should be marked primary -->

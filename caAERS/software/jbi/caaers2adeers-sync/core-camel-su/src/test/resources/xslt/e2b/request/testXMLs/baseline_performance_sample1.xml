@@ -26,10 +26,8 @@
 		<patient>
 			<subjectstudysiteid>MN026</subjectstudysiteid>
 			<patientinvestigationnumb>SUB2-MN026</patientinvestigationnumb>
-            <medicalhistoryepisode>
-			    <baselineperformancescale>kARNOFsKY</baselineperformancescale>
-			    <baselineperformancenumber>100</baselineperformancenumber>
-            </medicalhistoryepisode>
+			<baselineperformancescale>kARNOFsKY</baselineperformancescale>
+			<baselineperformancenumber>100</baselineperformancenumber>
 			<drug>
 				<drugcharacterization>3</drugcharacterization>
 				<medicinalproduct>A</medicinalproduct>
