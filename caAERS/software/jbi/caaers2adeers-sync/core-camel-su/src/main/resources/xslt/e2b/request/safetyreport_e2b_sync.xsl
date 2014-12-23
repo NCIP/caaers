@@ -988,18 +988,18 @@
 			</xsl:if>
 			<!--Optional: -->
 			<ae:baselinePerformanceStatus>
-				<xsl:if test="translate(/ichicsr/safetyreport/patient/baselineperformancescale, $smallcase, $uppercase) = 'ECOG' or translate(/ichicsr/safetyreport/patient/baselineperformancescale, $smallcase, $uppercase) = 'ZUBROD'">
+				<xsl:if test="translate(/ichicsr/safetyreport/patient/medicalhistoryepisode/baselineperformancescale, $smallcase, $uppercase) = 'ECOG' or translate(/ichicsr/safetyreport/patient/medicalhistoryepisode/baselineperformancescale, $smallcase, $uppercase) = 'ZUBROD'">
 					<xsl:call-template name="lookup">
 						<xsl:with-param name="_map" select="$map//ecog-zubrod-baselinestatuses" />
 						<xsl:with-param name="_code"
-								select='/ichicsr/safetyreport/patient/baselineperformancenumber' />
+								select='/ichicsr/safetyreport/patient/medicalhistoryepisode/baselineperformancenumber' />
 					</xsl:call-template>
 				</xsl:if>
-				<xsl:if test="translate(/ichicsr/safetyreport/patient/baselineperformancescale, $smallcase, $uppercase) = 'LANSKY' or translate(/ichicsr/safetyreport/patient/baselineperformancescale,$smallcase, $uppercase) = 'KARNOFSKY'">
+				<xsl:if test="translate(/ichicsr/safetyreport/patient/medicalhistoryepisode/baselineperformancescale, $smallcase, $uppercase) = 'LANSKY' or translate(/ichicsr/safetyreport/patient/medicalhistoryepisode/baselineperformancescale,$smallcase, $uppercase) = 'KARNOFSKY'">
 					<xsl:call-template name="lookup">
 						<xsl:with-param name="_map" select="$map//karnofsky-lansky-baselinestatuses" />
 						<xsl:with-param name="_code"
-								select='/ichicsr/safetyreport/patient/baselineperformancenumber' />
+								select='/ichicsr/safetyreport/patient/medicalhistoryepisode/baselineperformancenumber' />
 					</xsl:call-template>
 				</xsl:if>
 			</ae:baselinePerformanceStatus>
