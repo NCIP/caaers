@@ -1106,6 +1106,17 @@ public class CaaersRulesEngineService {
     public List<gov.nih.nci.cabig.caaers.domain.RuleSet> getAllRuleSets(){
         return (List<gov.nih.nci.cabig.caaers.domain.RuleSet>) ruleSetDao.search(new RuleSetQuery());
     }
+
+    private CtcTerm findTerm(List<CtcTerm> terms, String categoryName) {
+       if(terms == null || terms.isEmpty()) return null;
+       if(StringUtils.isEmpty(categoryName)) return terms.get(0);
+       if(terms.size() == 1) return terms.get(0);
+       String c = StringUtils.replaceOnce(categoryName, "...", "");
+       for(CtcTerm term : terms) {
+            if(StringUtils.containsIgnoreCase(term.getCategory().getName(), c)) return term;
+       }
+       return null;
+    }
     
 //
 
