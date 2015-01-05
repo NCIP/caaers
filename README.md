@@ -53,15 +53,17 @@ Please join us in further developing and improving caAERS.
  * ant publish-all -Dskip.test=true ([build notes] (https://wiki.nci.nih.gov/display/caAERS/2008+IVY+integration+Notes))
 The caaers.war file will be available in $caAERS/software/web/build/dist
 
-###To build caaers-adeers service assembly
- * cd $caAERS/software/jbi/caaers-adeers-service-assembly 
- * Copy local.properties.template to local.properties
- * Edit local.properties and replace placeholders, <your adeers username> and <your adeers password> combo, with your adeers credentials
- * Run, ant all
+###To build caaers-adeers service assembly (deprecated since 2.8)
+ * ~~cd $caAERS/software/jbi/caaers-adeers-service-assembly~~
+ * ~~Copy local.properties.template to local.properties~~
+ * ~~Edit local.properties and replace placeholders, <your adeers username> and <your adeers password> combo, with your adeers credentials~~
+ * ~~Run, ant all~~
  
-  The service assembly will be availabe under $caAERS/software/jbi/caaers-adeers-service-assembly/build/assembly
+  ~~The service assembly will be availabe under $caAERS/software/jbi/caaers-adeers-service-assembly/build/assembly~~
 
-###To build caaers-adeers-sync service assembly
+### To build caaers-adeers-sync service assembly 
+ * cd $caAERS/software/jbi/caaers2adeers-sync/libs
+ * Run the install script (install.sh or install.bat), to add AdEERS webservice client jar to local repo
  * cd $caAERS/software/jbi/caaers2adeers-sync
  * Copy profiles.xml.example to profiles.xml
  * Edit profiles.xml and replace placeholders, your_adeers_username and your_adeers_password combo, with your adeers credentials
