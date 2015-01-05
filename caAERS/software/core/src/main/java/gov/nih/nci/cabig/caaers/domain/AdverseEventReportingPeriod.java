@@ -910,7 +910,8 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
     public static Date findEarliestBaseDate(List<AdverseEvent> adverseEvents){
     	Date d = null;
     	for(AdverseEvent ae : adverseEvents) {
-    		if(ae.getPostSubmissionUpdatedDate() == null) {
+    		if(ae.getPostSubmissionUpdatedDate() == null || ae.getAddedToReportAtLeastOnce() ==null || !ae.getAddedToReportAtLeastOnce() ) {
+    			//AE not updated.
     			if(ae.getGradedDate() != null) {
 	    			if(d == null) {
 	        			d = ae.getGradedDate();
@@ -919,10 +920,10 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
 	        		}
     			}
     		} else {
-	    		
+    			//AE updated/
 	    		if(d == null) {
 	    			d = ae.getPostSubmissionUpdatedDate();
-	    		}else{
+	    		} else {
 	    			d = (DateUtils.compateDateAndTime(ae.getPostSubmissionUpdatedDate(), d) < 0) ? ae.getPostSubmissionUpdatedDate() : d;
 	    		}
     		}
