@@ -33,6 +33,7 @@ public class CaaersFieldsTreeTest extends CaaersTestCase {
     }
 
     public void testSections() {
+    	//FIXME: Sometimes this is 3, not 2.
         assertEquals(2, tree.getChildren().size());
     }
     
