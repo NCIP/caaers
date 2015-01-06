@@ -27,7 +27,6 @@ public class ManageReportsRepotingPeriodDTO {
 			AdverseEventReportingPeriod adverseEventReportingPeriod) {
 		super();
 		this.adverseEventReportingPeriod = adverseEventReportingPeriod;
-		this.reports = new ArrayList<Report>();
 	}
 
 	private List<Report> reports = new ArrayList<Report>();

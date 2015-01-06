@@ -239,5 +239,8 @@ public class ReportQuery extends AbstractQuery {
     		  andWhere(REPORT_VERSION_ALIAS+".reportStatus " + parseOperator("=") + " :reportStatus");
  	         setParameter("reportStatus", reportStatus);
     	}
+    	
+    	orderBy("report.id desc");
+    	
     }
 }

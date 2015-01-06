@@ -33,6 +33,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -74,15 +75,28 @@ public class ListAdverseEventsCommand {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
+	
+	// map for pagination
+	private Map<String, LinkedList<ManageReportsRepotingPeriodDTO>> filteredResultMap = new HashMap<String, LinkedList<ManageReportsRepotingPeriodDTO>>();
 
-	private LinkedList<ManageReportsRepotingPeriodDTO> resultList = new LinkedList<ManageReportsRepotingPeriodDTO>();
+	public Map<String, LinkedList<ManageReportsRepotingPeriodDTO>> getFilteredResultMap() {
+		return filteredResultMap;
+	}
+
+	public void setFilteredResultMap(
+			Map<String, LinkedList<ManageReportsRepotingPeriodDTO>> filteredResultMap) {
+		this.filteredResultMap = filteredResultMap;
+	}
+
+	// map to store study/participant title as key and reporting period info as list
+	private Map<String, LinkedList<ManageReportsRepotingPeriodDTO>> resultList = new HashMap<String, LinkedList<ManageReportsRepotingPeriodDTO>>();
     
-
-	public LinkedList<ManageReportsRepotingPeriodDTO> getResultList() {
+	public Map<String, LinkedList<ManageReportsRepotingPeriodDTO>> getResultList() {
 		return resultList;
 	}
 
-	public void setResultList(LinkedList<ManageReportsRepotingPeriodDTO> resultList) {
+	public void setResultList(
+			Map<String, LinkedList<ManageReportsRepotingPeriodDTO>> resultList) {
 		this.resultList = resultList;
 	}
 
@@ -147,6 +161,27 @@ public class ListAdverseEventsCommand {
 		this.reportStatus = reportStatus;
 	}
 	
+	private Boolean participantCentric = false;
+	
+	public Boolean getParticipantCentric() {
+		return participantCentric;
+	}
+
+	public void setParticipantCentric(Boolean participantCentric) {
+		this.participantCentric = participantCentric;
+	}
+
+	// flag to group results based on study or participant
+	private Boolean studyCentric = false;
+	
+	public Boolean getStudyCentric() {
+		return studyCentric;
+	}
+
+	public void setStudyCentric(Boolean studyCentric) {
+		this.studyCentric = studyCentric;
+	}
+
 	/**
 	 * Populate results.
 	 *
@@ -159,7 +194,32 @@ public class ListAdverseEventsCommand {
 			int numberOfReports = getNumberOfReports(manageReportsRepotingPeriodDTO);
 			if(numberOfReports > 0){
 				manageReportsRepotingPeriodDTO.setNumberOfReports(numberOfReports);
-				resultList.add(manageReportsRepotingPeriodDTO);
+				if(studyCentric){
+					if(resultList.get(manageReportsRepotingPeriodDTO.getAdverseEventReportingPeriod().getParticipantSummaryLine()) != null){
+						resultList.get(manageReportsRepotingPeriodDTO.getAdverseEventReportingPeriod().getParticipantSummaryLine()).add(manageReportsRepotingPeriodDTO);
+					} else {
+						LinkedList<ManageReportsRepotingPeriodDTO> reportsList = new LinkedList<ManageReportsRepotingPeriodDTO>();
+						reportsList.add(manageReportsRepotingPeriodDTO);
+						resultList.put(manageReportsRepotingPeriodDTO.getAdverseEventReportingPeriod().getParticipantSummaryLine(),reportsList);
+					}
+				} else if(participantCentric) {
+					if(resultList.get(manageReportsRepotingPeriodDTO.getAdverseEventReportingPeriod().getStudySummaryLine()) != null){
+						resultList.get(manageReportsRepotingPeriodDTO.getAdverseEventReportingPeriod().getStudySummaryLine()).add(manageReportsRepotingPeriodDTO);
+					} else {
+						LinkedList<ManageReportsRepotingPeriodDTO> reportsList = new LinkedList<ManageReportsRepotingPeriodDTO>();
+						reportsList.add(manageReportsRepotingPeriodDTO);
+						resultList.put(manageReportsRepotingPeriodDTO.getAdverseEventReportingPeriod().getStudySummaryLine(),reportsList);
+					}
+				} else {
+					if(resultList.get(manageReportsRepotingPeriodDTO.getAdverseEventReportingPeriod().getId().toString()) != null){
+						resultList.get(manageReportsRepotingPeriodDTO.getAdverseEventReportingPeriod().getId().toString()).add(manageReportsRepotingPeriodDTO);
+					} else {
+						LinkedList<ManageReportsRepotingPeriodDTO> reportsList = new LinkedList<ManageReportsRepotingPeriodDTO>();
+						reportsList.add(manageReportsRepotingPeriodDTO);
+						resultList.put(manageReportsRepotingPeriodDTO.getAdverseEventReportingPeriod().getId().toString(),reportsList);
+					}
+				}
+				
 			}
 		}
 	}
@@ -170,7 +230,7 @@ public class ListAdverseEventsCommand {
 		for(Report report : this.getReports()){
 			if(report.getAeReport().getReportingPeriod().getId().equals(manageReportsRepotingPeriodDTO.getAdverseEventReportingPeriod().getId())){
 				if(! StringUtils.isBlank(inputDataEntryStatus)){
-					if((dataEntryStatus.get(report.getId()) ? "Complete" : "In-progress").equals(inputDataEntryStatus)){
+					if(dataEntryStatus.get(report.getId())!= null && (dataEntryStatus.get(report.getId()) ? "Complete" : "In-progress").equals(inputDataEntryStatus)){
 						manageReportsRepotingPeriodDTO.getReports().add(report);
 						++numberOfFilteredReportsInReportingPeriod;
 					}
@@ -240,7 +300,7 @@ public class ListAdverseEventsCommand {
 
         //now check if the workflow is enabled on the report ?
         for(Report report : reports){
-            boolean canSubmit = reportsSubmittable.get(report.getId());  //only AEReporter and AEReportReviewer can submit
+            boolean canSubmit = reportsSubmittable.get(report.getId()) == null ? false :reportsSubmittable.get(report.getId());  //only AEReporter and AEReportReviewer can submit
             reportsSubmittable.put(report.getId(), canSubmit && canLoggedInUserSubmit);
             if(report.isWorkflowEnabled()){
                reportsSubmittable.put(report.getId(), canSubmit && isUserAEReviewer()); //only AEReportReviewer can submit
@@ -345,5 +405,14 @@ public class ListAdverseEventsCommand {
 
 	public void setResearchStaffDao(ResearchStaffDao researchStaffDao){
 		this.researchStaffDao = researchStaffDao;
+	}
+	
+	public int getTotalResultsCount(){
+		int count = 0;
+		Set<String> keySet = resultList.keySet();
+		for(String key : keySet){
+			count = count + resultList.get(key).size();
+		}
+		return count;
 	}
 }
