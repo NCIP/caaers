@@ -14,7 +14,8 @@ import gov.nih.nci.ctep.adeers.client.ReportingMode;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
-import java.io.StringReader;
+import java.io.InputStream;
+import java.io.ByteArrayInputStream;
 import java.util.Date;
 
 import javax.xml.transform.Source;
@@ -26,7 +27,7 @@ import webservice.AdeersWebService;
 
 
 public class AdeersWebServiceImpl implements AdeersWebService {
-    private static final String xmlProlog = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" ;
+    private static final String xmlProlog = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>" ;
 	Logger log = Logger.getLogger(getClass());
 
 	public String callWebService(String aeReport) throws Exception {
@@ -62,9 +63,12 @@ public class AdeersWebServiceImpl implements AdeersWebService {
         binding.setTimeout(60000);
         binding.setUsername(uid);
         binding.setPassword(pwd);
-        aeReport = aeReport.startsWith("<?xml") ? aeReport : (xmlProlog + aeReport);
+        
+        aeReport = aeReport.startsWith("<?xml") ? aeReport.replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", xmlProlog) : (xmlProlog + aeReport);
+        
 
-        StringReader reader = new StringReader(aeReport);
+        System.err.println("DIRKTEST; Output: ***}}}***\n" + aeReport + "\n***}}}***");
+        InputStream reader = new ByteArrayInputStream(aeReport.getBytes("ISO-8859-1"));
         String reponseStr = "";
         if (serviceContext.withdraw) {
         	log.info("Withdraw to adEERS...");
