@@ -74,9 +74,11 @@ public class ReportWithdrawalService {
         StringBuilder sb = new StringBuilder();
         String systemName = "UNKNOWN";
         sb.append("<EXTERNAL_SYSTEMS>");
+        //FIXME: Shared code with Report Submision service.
         for (ReportDelivery delivery : deliveries) {
             sb.append(delivery.getEndPoint()).append("::").append(delivery.getUserName()).append("::" ).append(delivery.getPassword());
             systemName = delivery.getReportDeliveryDefinition().getEntityName();
+            sb.append("::" ).append(systemName);
         }
         sb.append("</EXTERNAL_SYSTEMS>");
         sb.append(String.format("<CAAERSRID>%s</CAAERSRID>", reportId));

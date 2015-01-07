@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.report2adeers.exchange;
 import gov.nih.nci.ctep.adeers.client.AEReportXMLServiceSoapBindingStub;
 import gov.nih.nci.ctep.adeers.client.AEReportXMLService_ServiceLocator;
 import gov.nih.nci.ctep.adeers.client.ReportingMode;
+
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.commons.lang.StringUtils;
@@ -11,7 +12,12 @@ import org.apache.commons.logging.LogFactory;
 
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
-import java.io.StringReader;
+
+import java.io.FileWriter;
+import java.io.Reader;
+import java.io.InputStreamReader;
+import java.io.ByteArrayInputStream;
+
 
 /**
  * Will submit the exchange body to AdEERS Report Service
@@ -42,12 +48,16 @@ public class AdeersReportSubmissionProcessor implements Processor {
 
         AEReportXMLServiceSoapBindingStub binding;
         String url = "";
+        String systemName = "UNKNOWN";
         try {
             String[] endpointParts = StringUtils.splitByWholeSeparator(externalEndpoint, "::");
 
             url = endpointParts[0];
             String uid = endpointParts[1];
             String pwd = endpointParts[2];
+            if(endpointParts.length > 3) {
+            	systemName = endpointParts[3];
+            }
             log.debug(String.format("URL:[%s], uid :[%s], pwd:[%s]", url, uid, pwd));
 
             binding = (AEReportXMLServiceSoapBindingStub)   new AEReportXMLService_ServiceLocator(url).getAEReportXMLService();
@@ -56,31 +66,37 @@ public class AdeersReportSubmissionProcessor implements Processor {
             binding.setPassword(pwd);
 
             if(log.isInfoEnabled())   {
-               log.debug("MESSAGE TO ADEERS : ======================================================\n" + inputXML + "\n===================================================");
+            	log.debug("MESSAGE TO ADEERS : ======================================================\n" + inputXML + "\n===================================================");
             }
 
 
-            StringReader reader = new StringReader(inputXML);
+            inputXML = inputXML.trim().replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>");
+            //todo; properly close all this.
+            Reader reader = new InputStreamReader(new ByteArrayInputStream(inputXML.getBytes("ISO-8859-1")));
             Source attachment = new StreamSource(reader,"");
             String withdraw = (String)exchange.getProperty(REPORT_WITHDRAW);
 
+            FileWriter fw = new FileWriter("/Users/admin/caaersjars/jbi_" + Math.round(Math.random() *100.0) + ".log" );
+            fw.write(new String(inputXML.getBytes("ISO-8859-1")));
+            fw.close();
 
             if(StringUtils.equals("true", withdraw)) {
-             binding.withdrawAEReport(attachment);
+            	binding.withdrawAEReport(attachment);
             } else {
-               binding.submitAEDataXMLAsAttachment(ReportingMode.SYNCHRONOUS, attachment);
+            	binding.submitAEDataXMLAsAttachment(ReportingMode.SYNCHRONOUS, attachment);
             }
 
             outputXML = binding._getCall().getMessageContext().getResponseMessage().getSOAPPartAsString();
             if(log.isInfoEnabled()) {
-                log.info("RESPONSE FROM ADEERS : ======================================================\n" + outputXML + "\n===================================================");
+            	log.info("RESPONSE FROM ADEERS : ======================================================\n" + outputXML + "\n===================================================");
             }
             exchange.getIn().setHeader(REPORT_SUBMISSION_STATUS, "SUCCESS");
             exchange.setProperty(REPORT_SUBMISSION_STATUS, "SUCCESS");
+            reader.close();
 
         } catch (Exception jre) {
             log.error("Unable to access the service URL : " + url, jre);
-            populateError(exchange, jre);
+            populateError(exchange, jre, systemName);
 
         }
 
@@ -98,17 +114,17 @@ public class AdeersReportSubmissionProcessor implements Processor {
 
     }
 
-    private void populateError(Exchange exchange, Exception e) {
+    private void populateError(Exchange exchange, Exception e, String system) {
 
         exchange.getIn().setHeader(REPORT_SUBMISSION_STATUS, "ERROR");
         exchange.getIn().setHeader(REPORT_SUBMISSION_ERROR_CODE, "caAERS-adEERS : COMM_ERR");
         exchange.getIn().setHeader(REPORT_SUBMISSION_ERROR_MESSAGE, "adEERS WebService Communication Failure");
-        exchange.getIn().setHeader(REPORT_SUBMISSION_ERROR_DETAILS, e.toString());
+        exchange.getIn().setHeader(REPORT_SUBMISSION_ERROR_DETAILS, "The error occured in: '" + system +"'\n" + e.toString());
 
         exchange.setProperty(REPORT_SUBMISSION_STATUS, "ERROR");
         exchange.setProperty(REPORT_SUBMISSION_ERROR_CODE, "caAERS-adEERS : COMM_ERR");
         exchange.setProperty(REPORT_SUBMISSION_ERROR_MESSAGE, "adEERS WebService Communication Failure");
-        exchange.setProperty(REPORT_SUBMISSION_ERROR_DETAILS, e.toString());
+        exchange.setProperty(REPORT_SUBMISSION_ERROR_DETAILS, "The error occured in: '" + system +"'\n" + e.toString());
 
 
     }

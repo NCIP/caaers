@@ -16,18 +16,6 @@ public class ToAdeersReportServiceRouteBuilder {
 
 
     public void configure(Caaers2AdeersRouteBuilder rb){
-/*
-
-//      For testing only do not enable this
-        String s1 = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><AdverseEventReport><EXTERNAL_SYSTEMS>https://betapps-ctep.nci.nih.gov/adeerswsbeta/services/AEReportXMLService::iaminternal::FALL#2013</EXTERNAL_SYSTEMS><CAAERSRID>1726</CAAERSRID><SUBMITTER_EMAIL>bj@sb.com</SUBMITTER_EMAIL><MESSAGE_COMBO_ID>1992385162::20140316163537</MESSAGE_COMBO_ID><CORRELATION_ID>9080649</CORRELATION_ID><WITHDRAW>true</WITHDRAW><id>1091</id></AdverseEventReport>";
-        String s2 = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><hello>welcome</hello>";
-
-        rb.from("timer://tutorial?fixedRate=true&delay=5000&period=30000")
-                .setBody(rb.constant(s1))
-                .to("jbi:endpoint:urn:gov:nih:nci:caaers:jmsIn:provider");
-*/
-
-
         rb.from("jbi:endpoint:urn:gov:nih:nci:caaers:jmsIn:consumer")
             .streamCaching()
             .to("log:gov.nih.nci.cabig.report2adeers.first-request?showHeaders=true&multiline=true&level=ERROR")
