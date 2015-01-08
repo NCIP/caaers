@@ -6,7 +6,6 @@
  ******************************************************************************/
 package webservice.adeers;
 
-
 import gov.nih.nci.ctep.adeers.client.AEReportXMLServiceSoapBindingStub;
 import gov.nih.nci.ctep.adeers.client.AEReportXMLService_ServiceLocator;
 import gov.nih.nci.ctep.adeers.client.ReportingMode;
@@ -67,6 +66,7 @@ public class AdeersWebServiceImpl implements AdeersWebService {
         aeReport = aeReport.startsWith("<?xml") ? aeReport.replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", xmlProlog) : (xmlProlog + aeReport);
         
 
+        log.error("DIRKTEST; Output: ***}}}***\n" + aeReport + "\n***}}}***");
         System.err.println("DIRKTEST; Output: ***}}}***\n" + aeReport + "\n***}}}***");
         InputStream reader = new ByteArrayInputStream(aeReport.getBytes("ISO-8859-1"));
         String reponseStr = "";
