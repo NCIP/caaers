@@ -29,9 +29,6 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
   			border-left-width: 1px
 		}
 	</style>
-		
-	
-   
 	<script language="javascript" type="text/javascript"><!--
 		Event.observe(window, "load", function() {
 			//to add new notification section

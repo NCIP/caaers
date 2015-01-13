@@ -71,6 +71,7 @@ id="nf-${index}" cssClass="nf-section" >
 	   <option value="reportURL">URL To Report</option>
 	   <option value="study.shortTitle">Study Short Title</option>
 	   <option value="study.primaryIdentifier.value">Study Primary Identifier</option>
+	   <option value="systemName">System Name</option>
    </c:if>
    <c:if test = "${command.emailNotifications[index].reportDefinitionNotificationType.name == 'Unreported SAE'}">
 	   <option value="studyId">Study ID</option>
@@ -79,6 +80,7 @@ id="nf-${index}" cssClass="nf-section" >
 	   <option value="adverseEventID">Adverse event ID</option>
 	   <option value="adverseEventTerm">Adverse event term</option>
 	   <option value="aeStartDate">Adverse event start date</option>
+	   <option value="systemName">System Name</option>
    </c:if>
   </select>
  </div>

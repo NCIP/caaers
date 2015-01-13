@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.attribution.*;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.validation.AdverseEventGroup;
 import gov.nih.nci.cabig.caaers.validation.fields.validators.NotEmptyCollectionConstraint;
@@ -1835,6 +1836,8 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
         
         map.put("reportURL",  "");//report URL
         map.put("study",  getStudy());
+        
+        map.put("systemName", Configuration.LAST_LOADED_CONFIGURATION.get(Configuration.SYSTEM_NAME));
         
         return map;
     }

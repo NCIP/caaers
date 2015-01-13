@@ -6,23 +6,51 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.domain.report;
 
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Physician;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.domain.Reporter;
+import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
+import gov.nih.nci.cabig.caaers.domain.Submitter;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReportReviewComment;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowAware;
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.IndexColumn;
 import org.hibernate.annotations.Parameter;
-
-import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import java.io.Serializable;
-import java.util.*;
+import org.hibernate.annotations.Type;
 
  
 /**
@@ -790,6 +818,7 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
         map.put("adverseEventTerm", " ");//ae term
         map.put("aeStartDate", " ");//start date
 
+        map.put("systemName", Configuration.LAST_LOADED_CONFIGURATION.get(Configuration.SYSTEM_NAME));
 
         return map;
     }
@@ -843,7 +872,7 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
         for(ReportMandatoryField mandatoryField : getFieldsByApplicability(Mandatory.MANDATORY, Mandatory.OPTIONAL)){
             fields.add(mandatoryField.getFieldPath().replaceAll("(\\[\\d+\\])", ""));
         }
-        return new ArrayList(fields);
+        return new ArrayList<String>(fields);
     }
 
     /**
