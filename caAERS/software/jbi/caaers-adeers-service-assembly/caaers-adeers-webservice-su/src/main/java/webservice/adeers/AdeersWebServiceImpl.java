@@ -59,15 +59,27 @@ public class AdeersWebServiceImpl implements AdeersWebService {
         binding.setTimeout(60000);
         binding.setUsername(uid);
         binding.setPassword(pwd);
+        
+        
         aeReport = aeReport.startsWith("<?xml") ? aeReport : (xmlProlog + aeReport);
-        StringReader reader = new StringReader(aeReport);
+        aeReport = aeReport.trim().replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>");
+        //todo; properly close all this.
+        Reader reader = new InputStreamReader(new ByteArrayInputStream(aeReport.getBytes("ISO-8859-1")));
+        Source attachment = new StreamSource(reader,"");
+
+        FileWriter fw = new FileWriter("/Users/admin/caaersjars/web_" + Math.round(Math.random() *100.0) + ".log" );
+        fw.write(new String(aeReport.getBytes("ISO-8859-1")));
+        fw.close();
+        
+        
         String reponseStr = "";
+        
+        
         if (serviceContext.withdraw) {
         	log.info("Withdraw to adEERS...");
-        	Source attachment = new StreamSource(reader,"");
         	log.info("MESSAGE TO ADEERS : ======================================================\n" + aeReport + "\n===================================================");
 	        //call the web service  - withdraw method..              
-	        binding.withdrawAEReport( attachment);
+	        binding.withdrawAEReport(attachment);
 	        reponseStr = binding._getCall().getMessageContext().getResponseMessage().getSOAPPartAsString();
             log.info("Actual Response Received from adEERS: ======================================================\n" + reponseStr + "\n===================================================");
 	        //attach the id to the returned message
@@ -75,7 +87,6 @@ public class AdeersWebServiceImpl implements AdeersWebService {
 	        log.info("Processed Response Received from adEERS: ======================================================\n" + reponseStr + "\n===================================================");
         } else {
 	        log.info("Submitting to adEERS...");
-	        Source attachment = new StreamSource(reader,"");
 	        //call the web service    - submit method ..   
             log.info("MESSAGE TO ADEERS : ======================================================\n" + aeReport + "\n===================================================");
 	        binding.submitAEDataXMLAsAttachment(ReportingMode.SYNCHRONOUS, attachment);
