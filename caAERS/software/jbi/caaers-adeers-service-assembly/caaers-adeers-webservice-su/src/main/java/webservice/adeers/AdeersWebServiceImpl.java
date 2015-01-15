@@ -11,10 +11,6 @@ import gov.nih.nci.ctep.adeers.client.AEReportXMLServiceSoapBindingStub;
 import gov.nih.nci.ctep.adeers.client.AEReportXMLService_ServiceLocator;
 import gov.nih.nci.ctep.adeers.client.ReportingMode;
 
-import java.io.ByteArrayInputStream;
-import java.io.FileWriter;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.io.StringReader;
 
 import javax.xml.transform.Source;
@@ -26,7 +22,7 @@ import webservice.AdeersWebService;
 
 
 public class AdeersWebServiceImpl implements AdeersWebService {
-    private String xmlProlog = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>" ;
+    private String xmlProlog = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" ;
 	Logger log = Logger.getLogger(getClass());
 
 

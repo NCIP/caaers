@@ -33,7 +33,6 @@ public class ToAdeersRouteBuilder {
 		routeBuilder.from("direct:adEERSRequestSink")
     		.to("log:gov.nih.nci.cabig.caaers2adeers.to-adeers?level=TRACE")
     		.process(track(ROUTED_TO_ADEERS_WS_INVOCATION_CHANNEL))
-    		.convertBodyTo(String.class, "ISO-8859-1")
     		.choice()
     			.when().xpath(xpathPredicate("agent", "getAgentsLOV")).to("direct:adeers-agent-lov")
     			.when().xpath(xpathPredicate("asael", "getASAEL")).to("direct:adeers-asael-lov")
