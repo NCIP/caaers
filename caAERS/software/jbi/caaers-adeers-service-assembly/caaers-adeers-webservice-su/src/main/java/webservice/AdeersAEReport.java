@@ -139,7 +139,7 @@ public class AdeersAEReport extends ComponentSupport implements MessageExchangeL
 		ei = inXml.indexOf("</MESSAGE_COMBO_ID>");
 		messageComboId = inXml.substring(si+18, ei);
     	
-		exceptionXmlBuilder = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\"?>").append("\n");
+		exceptionXmlBuilder = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>").append("\n");
 		exceptionXmlBuilder.append("<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\"").append("\n");
 							exceptionXmlBuilder.append("xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"").append("\n");
 							exceptionXmlBuilder.append("xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">").append("\n");

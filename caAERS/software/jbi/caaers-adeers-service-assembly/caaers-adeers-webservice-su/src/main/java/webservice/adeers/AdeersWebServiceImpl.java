@@ -12,6 +12,7 @@ import gov.nih.nci.ctep.adeers.client.AEReportXMLService_ServiceLocator;
 import gov.nih.nci.ctep.adeers.client.ReportingMode;
 
 import java.io.StringReader;
+import java.io.Reader;
 
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
@@ -62,14 +63,9 @@ public class AdeersWebServiceImpl implements AdeersWebService {
         
         
         aeReport = aeReport.startsWith("<?xml") ? aeReport : (xmlProlog + aeReport);
-        aeReport = aeReport.trim().replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>");
         //todo; properly close all this.
-        Reader reader = new InputStreamReader(new ByteArrayInputStream(aeReport.getBytes("ISO-8859-1")));
+        Reader reader = new StringReader(aeReport);
         Source attachment = new StreamSource(reader,"");
-
-        FileWriter fw = new FileWriter("/Users/admin/caaersjars/web_" + Math.round(Math.random() *100.0) + ".log" );
-        fw.write(new String(aeReport.getBytes("ISO-8859-1")));
-        fw.close();
         
         
         String reponseStr = "";
