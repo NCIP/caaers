@@ -37,15 +37,17 @@ public class BaseExpeditedAdverseEventReportConverter {
         }
         
         //Adverse Events
-        for(ReportedAE aeType : aeReportDto.getReportedAE()){
-            if ( aeReport.getReportingPeriod() != null) {
-
-                AdverseEvent ae = new AdverseEvent();
-                ae.setExternalId(aeType.getExternalId());
-                aeReport.getReportingPeriod().addAdverseEvent(ae);
-                aeReport.addAdverseEvent(ae);
-                
-            }
+        if(aeReportDto.getReportedAE() != null) {
+	        for(ReportedAE aeType : aeReportDto.getReportedAE()){
+	            if ( aeReport.getReportingPeriod() != null) {
+	
+	                AdverseEvent ae = new AdverseEvent();
+	                ae.setExternalId(aeType.getExternalId());
+	                aeReport.getReportingPeriod().addAdverseEvent(ae);
+	                aeReport.addAdverseEvent(ae);
+	                
+	            }
+	        }
         }
        
         //reporter

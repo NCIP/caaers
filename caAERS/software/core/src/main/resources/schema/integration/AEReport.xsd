@@ -15,7 +15,7 @@
 				<xs:element type="AdverseEventReportingPeriodType" name="adverseEventReportingPeriod" />
 				<xs:element type="PhysicianType" name="physician" />
 				<xs:element type="ReporterType" name="reporter" />
-				<xs:element type="ReportedAE" name="reportedAE" maxOccurs="unbounded" minOccurs="1" />
+				<xs:element type="ReportedAE" name="reportedAE" maxOccurs="unbounded" minOccurs="0" />
 				<xs:element type="ReportType" name="report" maxOccurs="unbounded" minOccurs="1" />
 				<xs:element minOccurs="0" name="externalId" type="xs:string" />
 			</xs:sequence>

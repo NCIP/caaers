@@ -787,7 +787,7 @@ Course Criteria Conditions enforced in service Implementation. 1. Start date of 
 <xs:element name="adverseEventReportingPeriod" type="AdverseEventReportingPeriodType"/>
 <xs:element name="physician" type="PhysicianType"/>
 <xs:element name="reporter" type="ReporterType"/>
-<xs:element maxOccurs="unbounded" name="reportedAE" type="ReportedAE"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="reportedAE" type="ReportedAE"/>
 <xs:element maxOccurs="unbounded" name="report" type="ReportType"/>
 <xs:element minOccurs="0" name="externalId" type="xs:string"/>
 </xs:sequence>
