@@ -126,7 +126,7 @@
 			<xs:element type="xs:int" name="cycleNumber" minOccurs="0" />
 			<xs:element type="xs:date" name="startDate" minOccurs="0" />
 			<xs:element type="StudyParticipantAssignmentRefType" name="studyParticipantAssignmentRef" minOccurs="0" />
-			<xs:element type="TreatmentAssignmentType" name="treatmentAssignment"/>
+			<xs:element type="TreatmentAssignmentType" name="treatmentAssignment" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 

@@ -431,7 +431,11 @@ public class ExpeditedAdverseEventReportConverterUtility {
     protected TreatmentAssignment convertTreatmentAssignment(TreatmentAssignmentType tacType){
         TreatmentAssignment tac = new TreatmentAssignment();
         if(tacType != null){
-            tac.setCode(tacType.getCode());
+        	if("Other".equalsIgnoreCase(tacType.getCode())) {
+        		tac.setCode(tacType.getDescription());
+        	} else {
+        		tac.setCode(tacType.getCode());
+        	}
             tac.setDescription(tacType.getDescription());
             tac.setDoseLevelOrder(tacType.getDoseLevelOrder());
             tac.setComments(tacType.getComments());
@@ -1059,7 +1063,10 @@ public class ExpeditedAdverseEventReportConverterUtility {
 			reportingPeriod.setAssignment(convertStudyParticipantAssignmentRef(reportingPeriodType.getStudyParticipantAssignmentRef()));
 		}
 		
-		if(reportingPeriodType.getTreatmentAssignment() != null){
+		reportingPeriod.setTreatmentAssignmentDescription(reportingPeriodType.getTreatmentAssignmentDescription());
+
+		if(reportingPeriodType.getTreatmentAssignment() != null) {
+			//TODO: Match gov.nih.nci.cabig.caaers.service.migrator.adverseevent.AdverseEventReportingPeriodMigrator.
 			TreatmentAssignment treatmentAssignment = new TreatmentAssignment();
 			treatmentAssignment.setCode(reportingPeriodType.getTreatmentAssignment().getCode());
 			if(reportingPeriodType.getTreatmentAssignment().getComments() != null){
@@ -1068,13 +1075,17 @@ public class ExpeditedAdverseEventReportConverterUtility {
 			treatmentAssignment.setDescription(reportingPeriodType.getTreatmentAssignment().getDescription());
 			treatmentAssignment.setDoseLevelOrder(reportingPeriodType.getTreatmentAssignment().getDoseLevelOrder());
 			
+			if(treatmentAssignment.getCode().equalsIgnoreCase("Other")) {
+				if(StringUtils.isNotBlank(treatmentAssignment.getDescription())) {
+					treatmentAssignment.setCode(treatmentAssignment.getDescription());
+				} else {
+					treatmentAssignment.setCode(reportingPeriodType.getTreatmentAssignmentDescription());
+				}
+			}
+				
 			reportingPeriod.setTreatmentAssignment(treatmentAssignment);
 		}
-		
-		if(reportingPeriodType.getTreatmentAssignmentDescription() != null){
-			reportingPeriod.setTreatmentAssignmentDescription(reportingPeriodType.getTreatmentAssignmentDescription());
-		}
-		
+				
 		if(reportingPeriodType.getStartDate() != null){
 			reportingPeriod.setStartDate(reportingPeriodType.getStartDate().toGregorianCalendar().getTime());
 		}

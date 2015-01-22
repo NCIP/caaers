@@ -196,7 +196,7 @@ public class SafetyReportServiceImpl {
     }
     
 
-    public void migrate(ExpeditedAdverseEventReport aeSrcReport, ExpeditedAdverseEventReport aeDestReport, ValidationErrors errors){
+    private void migrate(ExpeditedAdverseEventReport aeSrcReport, ExpeditedAdverseEventReport aeDestReport, ValidationErrors errors){
         try{
              adeersIntegrationFacade.updateStudy(aeSrcReport.getStudy().getId(), true);
         }catch (Exception e){

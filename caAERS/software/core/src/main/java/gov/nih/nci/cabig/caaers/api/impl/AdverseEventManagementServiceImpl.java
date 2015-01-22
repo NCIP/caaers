@@ -245,7 +245,7 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
         if(study == null){
             logger.error("Study not present in caAERS with the sponsor identifier : " + rpSrc.getStudy().getFundingSponsorIdentifierValue());
             errors.addValidationError("WS_AEMS_003", "Study with sponsor identifier " + rpSrc.getStudy().getFundingSponsorIdentifierValue() +" does not exist in caAERS",
-                    new String[]{rpSrc.getStudy().getFundingSponsorIdentifierValue()});
+                    rpSrc.getStudy().getFundingSponsorIdentifierValue());
             return null;
         }
         try{
@@ -422,9 +422,9 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 	private AdverseEventReportingPeriod createDomainReportingPeriodIfNotExists(Criteria criteria, StudyParticipantAssignment assignment, String externalId) throws CaaersSystemException {
 		List<AdverseEventReportingPeriod> rPeriodList = adverseEventReportingPeriodDao.getByAssignment(assignment);
 		
-		String treatmentAssignmentCode;
-		String otherTreatmentAssignmentDescription = null; 
-		if((treatmentAssignmentCode = criteria.getCourse().getTreatmentAssignmentCode()) != null){
+		final String treatmentAssignmentCode = criteria.getCourse().getTreatmentAssignmentCode();
+		final String otherTreatmentAssignmentDescription = criteria.getCourse().getOtherTreatmentAssignmentDescription(); 
+		if(treatmentAssignmentCode != null){
 			// compare TAC and treatment type to determine if matchingDomainAdverseEventReportingPeriod exists.
 			for (AdverseEventReportingPeriod matchingDomainAdverseEventReportingPeriod : rPeriodList) {
 				boolean tacMatches = false;
@@ -439,20 +439,20 @@ public class AdverseEventManagementServiceImpl extends AbstractImportService imp
 				} else if(matchingDomainAdverseEventReportingPeriod.getEpoch() != null && criteria.getCourse().getTreatmentType().equals(matchingDomainAdverseEventReportingPeriod.getEpoch().getName())){
 					treatmentTypeMatches = true;
 				}
-					
+
 				if(tacMatches & treatmentTypeMatches) return matchingDomainAdverseEventReportingPeriod;
 			}
-		} else if ((otherTreatmentAssignmentDescription = criteria.getCourse().getOtherTreatmentAssignmentDescription()) != null){
-					for (AdverseEventReportingPeriod matchingDomainAdverseEventReportingPeriod : rPeriodList) {
-						if(matchingDomainAdverseEventReportingPeriod.getTreatmentAssignmentDescription() != null && matchingDomainAdverseEventReportingPeriod.
-								getTreatmentAssignmentDescription().equals(otherTreatmentAssignmentDescription)){
-							return matchingDomainAdverseEventReportingPeriod;
-						}
-					}
+		} else if (otherTreatmentAssignmentDescription != null){
+			for (AdverseEventReportingPeriod matchingDomainAdverseEventReportingPeriod : rPeriodList) {
+				if(matchingDomainAdverseEventReportingPeriod.getTreatmentAssignmentDescription() != null && matchingDomainAdverseEventReportingPeriod.
+						getTreatmentAssignmentDescription().equals(otherTreatmentAssignmentDescription)){
+					return matchingDomainAdverseEventReportingPeriod;
+				}
+			}
 		} else {
 			throw new CaaersSystemException("WS_AEMS_070", "One of treatment assignment code or other treatment assignment description is required");
 		}
-		
+
 		// get study from assignment
 		Study study = assignment.getStudySite().getStudy();
 		Date xmlStartDate = null;

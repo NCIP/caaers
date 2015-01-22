@@ -37,13 +37,13 @@ public class TreatmentAssignmentSynchronizer implements Migrator<gov.nih.nci.cab
         //create an Index of existing ones (available in DB)
         Hashtable<String, TreatmentAssignment> dbTacIndexMap = new Hashtable<String, TreatmentAssignment>();
         for (TreatmentAssignment ta : dbStudy.getActiveTreatmentAssignments()) {
-            dbTacIndexMap.put(ta.getHashKey(), ta);
+            dbTacIndexMap.put(ta.getCode().toUpperCase(), ta);
         }
 
         //Identify New TreatmentAssignments and also update existing ones.
         for (TreatmentAssignment xmlTreatmentAssignment : xmlStudy.getTreatmentAssignments()) {
 
-            TreatmentAssignment ta = dbTacIndexMap.remove(xmlTreatmentAssignment.getHashKey());
+            TreatmentAssignment ta = dbTacIndexMap.remove(xmlTreatmentAssignment.getCode().toUpperCase());
 
             if (ta == null) {
                 //newly added one, so add it to study

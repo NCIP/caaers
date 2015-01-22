@@ -54,13 +54,12 @@ public class AdverseEventReportingPeriodMigrator extends CompositeMigrator<Adver
             ) {
             outcome.addError("WS_AEMS_083", "Treatment Assignment code and other treatment assignment description doesn't contain valid values.");
             return;
-        }  else {
-               if ( ( src.getTreatmentAssignment() != null && src.getTreatmentAssignment().getCode() != null && src.getTreatmentAssignment().getCode().equalsIgnoreCase("Other") )) {
-                    src.setTreatmentAssignment(null);
-               }
-               if ( (src.getTreatmentAssignmentDescription() != null && src.getTreatmentAssignmentDescription().equalsIgnoreCase("N/A") )) {
-                    src.setTreatmentAssignmentDescription(null);
-               }
+        }
+        if ( ( src.getTreatmentAssignment() != null && src.getTreatmentAssignment().getCode() != null && src.getTreatmentAssignment().getCode().equalsIgnoreCase("Other") )) {
+        	src.setTreatmentAssignment(null);
+        }
+        if ( (src.getTreatmentAssignmentDescription() != null && src.getTreatmentAssignmentDescription().equalsIgnoreCase("N/A") )) {
+        	src.setTreatmentAssignmentDescription(null);
         }
 
         // Check for AdverseEvents StartDate and DateFirstLearned Cannot be in future.
