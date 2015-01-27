@@ -80,7 +80,6 @@
 									</tr>
 								</thead>
 								<c:forEach items="${manageReportsRepotingPeriodDTO.reports}" var="report" varStatus="rStatus">
-								<%--	<ae:oneListExpeditedReportRow aeReport="${aeReport}" index="${statusAeReport.index}" /> --%>
 									<ae:oneListReportRow report="${report }" rpIndex="${rStatus.index }"/>
 								</c:forEach>
 							</c:when>					

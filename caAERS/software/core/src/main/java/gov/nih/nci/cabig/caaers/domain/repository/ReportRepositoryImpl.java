@@ -366,7 +366,6 @@ public class ReportRepositoryImpl implements ReportRepository {
      * @param report the report
      */
     public void unAmendReport(Report report){
-    	
     	assert report.getStatus() == ReportStatus.AMENDED;
     	
     	report.setStatus(ReportStatus.COMPLETED);

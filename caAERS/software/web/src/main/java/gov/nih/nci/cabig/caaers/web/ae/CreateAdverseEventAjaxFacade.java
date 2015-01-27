@@ -636,8 +636,8 @@ public class CreateAdverseEventAjaxFacade {
         	}
             ExpeditedAdverseEventReport aeReport = aeReportDao.getById(aeReportId);
             Report report = aeReport.findReportById(reportId);
-            if(report != null && report.isActive()){
-                if(log.isDebugEnabled()) log.debug("Withdrawing report : " + String.valueOf(report));
+            if(report != null && (report.isActive() || report.isHavingStatus(ReportStatus.COMPLETED))){
+                log.debug("Withdrawing report : " + String.valueOf(report));
 
                 //withdraw report.
                 reportRepository.withdrawReport(report);
