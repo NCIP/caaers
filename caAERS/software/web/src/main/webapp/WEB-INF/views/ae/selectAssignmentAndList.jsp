@@ -27,6 +27,10 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
         
         }
         
+        .eXtremeTable .eXtremeTable {
+    		border: 0 solid #6cafe9;
+		}
+        
     </style>
     <tags:dwrJavascriptLink objects="createAE"/>
     <script type="text/javascript">
@@ -224,9 +228,8 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
     <div class="autoclear" id="criteria-div">
     	<chrome:box title="Select study and subject" id="study-entry" autopad="true" cssClass="pairedLong">
 
-            <%--<p><tags:instructions code="instruction_ae_assignment"/></p>--%>
             <div class="row">
-                <div class="label"><tags:requiredIndicator/><caaers:message code="LBL_Study" /></div>
+                <div class="label"><caaers:message code="LBL_Study" /></div>
                 <div class="value">
                     <%--<p><tags:instructions code="instruction_ae_select_study"/></p>--%>
                     <form:hidden path="study"/>
@@ -240,8 +243,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
             </div>
 
             <div class="row">
-                <%--<p><tags:instructions code="instruction_ae_select_subject"/></p>--%>
-                <div class="label"><tags:requiredIndicator/><caaers:message code="LBL_Subject" /></div>
+                <div class="label"><caaers:message code="LBL_Subject" /></div>
                 <div class="value">
                     <form:hidden path="participant"/>
                     <input type="text" id="participant-input" value="${command.participant.fullName}" class="autocomplete"/>
@@ -283,52 +285,80 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
             </div> 
         </chrome:box>
     </div>
+    <input type="hidden" name="paginationAction" value="firstPage"/>
+	<input type="hidden" name="numberOfResultsPerPage" value="15"/>
     <div align="right">
     	<tags:button color="blue" type="submit" value="Find" size="small" icon="search" />
     </div>
 </form:form>
-
-<!-- AE summary  -->
-<c:if test="${not empty command.participant}">
-  <div>
-    
-    <div class="row">
-      <div class="summarylabel">Study</div>
-      <div class="summaryvalue shorty">(${command.study.primaryIdentifier.value}) ${command.study.longTitle}</div>
-    </div>
-    <div class="row">
-      <div class="summarylabel">Subject</div>
-      <div class="summaryvalue shorty">(${command.participant == null ? '' : command.participant.primaryIdentifier })</div>
-    </div>
-  </div>
+  
+<tags:standardForm title="Search Results">
+<jsp:attribute name="singleFields">
+  <c:if test="${fn:length(command.resultList) gt 0}">
+	<c:if test="${not empty command.study}">
+	  <div>
+	    <div class="row">
+	      <div class="summarylabel">Study</div>
+	      <div class="summaryvalue shorty">(${command.study.primaryIdentifier.value}) ${command.study.longTitle}</div>
+	    </div>
+	</c:if>
+	<c:if test="${not empty command.participant}">
+	    <div class="row">
+	      <div class="summarylabel">Subject</div>
+	      <div class="summaryvalue shorty">(${command.participant == null ? '' : command.participant.primaryIdentifier })</div>
+	    </div>
+	</c:if>
+    <tags:instructions code="instruction_manage_reports"/>
+  
+	<div class="eXtremeTable">
+		  	<table><tr>
+					<td style="padding-top:15px;padding-left:15px;">
+	    				<tags:paginationControl isFirstPage="${isFirstPage}" isLastPage="${isLastPage}"/>
+						<div style="color:#808080">
+							${totalResults } results found, displaying ${startIndex } to ${endIndex }
+						</div>
+	  				</td>
+				</tr></table>
+		  <c:forEach items="${command.filteredResultMap}" var="entry">
+		     <br/>
+		 	 <c:choose>
+		    	   <c:when test="${command.studyCentric}">
+		           		<div> <b>Subject</b> ${entry.value[0].adverseEventReportingPeriod.participantSummaryLine}</div>
+		           </c:when>
+		           <c:when test="${command.participantCentric}">
+		           		<div> <b>Study</b> ${entry.value[0].adverseEventReportingPeriod.studySummaryLine}</div>
+		           </c:when>
+		           <c:otherwise>
+		           	  <div> <b>Study</b> ${entry.value[0].adverseEventReportingPeriod.studySummaryLine} </div>
+		              <div> <b>Subject</b> ${entry.value[0].adverseEventReportingPeriod.participantSummaryLine}  </div>
+		           </c:otherwise>
+			    	   
+			 </c:choose>
+		  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tableRegion">
+		    <thead>
+		      <tr align="center" class="label">
+		        <td width="2%" class="tableHeader"></td>
+		        <td width="18%" class="tableHeader">Course</td>
+		        <td width="16%" class="centerTableHeader"># of Reports</td>
+		        <td width="16%" class="centerTableHeader"># of AEs</td>
+		        <td width="16%" class="tableHeader">Report Submission Status</td>
+		        <td width="16%" class="tableHeader">Options</td>
+		      </tr>
+		    </thead>
+					
+		    	<c:forEach items="${entry.value}" var="mrp" varStatus="mrpStatus">
+		    	 	<ae:oneListReportingPeriodRow manageReportsRepotingPeriodDTO="${mrp}" index="${mrpStatus.index}"/>
+		    	</c:forEach>
+		  </table>
+		  </c:forEach>
+	</div>
+	<c:set var="reportingPeriodPageURLNoPeriod" value="/pages/ae/captureRoutine?participant=${command.participant.id}&study=${command.study.id}&_page=0&_target0=0&displayReportingPeriod=true"/>
 </c:if>
-
-<div class="eXtremeTable" >
-  	<c:if test="${command.study != null || command.participant != null}">
-  	  <tags:instructions code="instruction_manage_reports"/>
-	  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tableRegion">
-	    <thead>
-	      <tr align="center" class="label">
-	        <td width="2%" class="tableHeader"></td>
-	        <td width="18%" class="tableHeader">Course</td>
-	        <td width="16%" class="centerTableHeader"># of Reports</td>
-	        <td width="16%" class="centerTableHeader"># of AEs</td>
-	        <td width="16%" class="tableHeader">Report Submission Status</td>
-	        <td width="16%" class="tableHeader">Options</td>
-	      </tr>
-	    </thead>
-	    
-	    <c:forEach items="${command.resultMap}" var="entry" varStatus="mrpStatus">
-	    	 <ae:oneListReportingPeriodRow manageReportsRepotingPeriodDTO="${entry.value}" index="${mrpStatus.index}"/>
-		</c:forEach>
-	
-	  </table>
-  </c:if>
-  <c:set var="reportingPeriodPageURLNoPeriod" value="/pages/ae/captureRoutine?participant=${command.participant.id}&study=${command.study.id}&_page=0&_target0=0&displayReportingPeriod=true"/>
-  <c:if test="${(command.study != null || command.participant != null) and fn:length(command.resultMap) le 0}">
+<c:if test="${fn:length(command.resultList) le 0}">
    	<tags:instructions code="instruction_ae_no_courses"/> 
-  </c:if>
-    
-</div>
+</c:if>
+</jsp:attribute>
+</tags:standardForm>
+
 </body>
 </html>

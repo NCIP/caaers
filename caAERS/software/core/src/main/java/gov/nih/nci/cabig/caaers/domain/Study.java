@@ -46,6 +46,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.Where;
+
 import java.net.URLEncoder;
 
  
@@ -1674,6 +1675,16 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         if (sponsorOrg != null) {
             return sponsorOrg.getNciInstituteCode();
         }
+        return null;
+    }
+    
+    /* (non-Javadoc)
+     * @see gov.nih.nci.cabig.caaers.domain.AbstractIdentifiableDomainObject#getPrimaryIdentifierValue()
+     */
+    @Transient
+    public String getPrimaryIdentifierValue() {
+        Identifier id = getPrimaryIdentifier();
+        if(id != null) return id.getValue();
         return null;
     }
 

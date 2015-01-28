@@ -21,17 +21,26 @@ import java.util.List;
 public class ManageReportsRepotingPeriodDTO {
 	private AdverseEventReportingPeriod adverseEventReportingPeriod;
 	
+	private Integer numberOfReports = 0;
+	
 	public ManageReportsRepotingPeriodDTO(
 			AdverseEventReportingPeriod adverseEventReportingPeriod) {
 		super();
 		this.adverseEventReportingPeriod = adverseEventReportingPeriod;
-		this.reports = new ArrayList<Report>();
 	}
 
 	private List<Report> reports = new ArrayList<Report>();
 
 	public List<Report> getReports() {
 		return reports;
+	}
+
+	public Integer getNumberOfReports() {
+		return numberOfReports;
+	}
+
+	public void setNumberOfReports(Integer numberOfReports) {
+		this.numberOfReports = numberOfReports;
 	}
 
 	public void setReports(List<Report> reports) {
