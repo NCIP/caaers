@@ -306,6 +306,17 @@ public class EvaluationServiceImpl implements EvaluationService {
 
             List<Report> completedReports = expeditedData == null ? new ArrayList<Report>() : expeditedData.listReportsHavingStatus(ReportStatus.COMPLETED);
 
+
+            //Remove all NOTIFICATIONS from completed reports. As notifications must be completed by a subsequent full report.
+            List<Report> notificationsToRemove = new ArrayList<Report>();
+            for(Report report : completedReports) {
+                List<ReportDefinition> rdList = ReportDefinition.findByName(defList, report.getName());
+                if(!rdList.isEmpty() && rdList.get(0).getReportType() == ReportType.NOTIFICATION) {
+                     notificationsToRemove.add(report);
+                }
+            }
+            completedReports.removeAll(notificationsToRemove);
+
             if(!completedReports.isEmpty()){
 
                 for(AdverseEvent adverseEvent : evaluatableAeList){
