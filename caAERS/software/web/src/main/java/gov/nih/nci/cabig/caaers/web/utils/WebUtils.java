@@ -93,12 +93,7 @@ public class WebUtils {
      *                displayed label for each item after the separator. If null, the result of
      *                <code>item.toString()</code> will be used instead.
      * @param separator
-     * 				  The string that separates label1 and label2 property.                                             
-     * @param items
-     * @param itemValueProperty
-     * @param itemLabel1Property
-     * @param itemLabel2Property
-     * @param separator
+     * 				  The string that separates label1 and label2 property.
      * @return
      */
     public static Map<Object, Object> collectCustomOptions(Collection<?> items, String itemValueProperty,

@@ -262,12 +262,10 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
             </div>
             
             <div class="row">
-                <%--<p><tags:instructions code="instruction_ae_select_subject"/></p>--%>
-                <div class="label">
-                Report Submission status</div>
+                <div class="label">Report Submission status</div>
                 <div class="value">
                     <form:select path="reportStatus">
-	            		<form:option value=" " label="Please select" />
+	            		<form:option value="" label="Please select" />
 	            		<form:options items="${command.reportStatusOptionsMap}"/>
         			</form:select>  
                 </div>

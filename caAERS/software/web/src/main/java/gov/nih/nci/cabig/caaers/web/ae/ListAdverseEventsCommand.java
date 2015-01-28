@@ -188,18 +188,18 @@ public class ListAdverseEventsCommand {
         reportsSubmittable = new HashMap<Integer, Boolean>();
         dataEntryStatus = new HashMap<Integer, Boolean>();
         
-        REPORT_STATUS.addAll(Arrays.asList(ReportStatus.values()));
+        REPORT_STATUS.addAll(Arrays.asList(ReportStatus.values()));        
+        REPORT_STATUS.remove(ReportStatus.AMENDED);
+        REPORT_STATUS.remove(ReportStatus.WITHDRAWN);
+        REPORT_STATUS.remove(ReportStatus.REPLACED);
+        REPORT_STATUS.remove(ReportStatus.WITHDRAW_FAILED);
+        
         Collections.sort((List<ReportStatus>)REPORT_STATUS, new Comparator<ReportStatus>() {
 			public int compare(ReportStatus o1, ReportStatus o2) {
 				return o1.getDisplayName().compareTo(o2.getDisplayName());
 			}
 		});
-        
-        REPORT_STATUS.remove(ReportStatus.AMENDED);
-        REPORT_STATUS.remove(ReportStatus.WITHDRAWN);
-        REPORT_STATUS.remove(ReportStatus.REPLACED);
-        REPORT_STATUS.remove(ReportStatus.WITHDRAW_FAILED);
-        reportStatusOptionsMap.putAll(WebUtils.collectCustomOptions(REPORT_STATUS, "name", "code", "displayName", ":  "));
+        //reportStatusOptionsMap.putAll(WebUtils.collectCustomOptions(REPORT_STATUS, "name", "code", "displayName", ":  "));
         reportStatusOptionsMap.putAll(WebUtils.collectOptions(REPORT_STATUS, "name", "displayName"));
     }
 
