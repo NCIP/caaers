@@ -203,13 +203,11 @@ public class ReportQuery extends AbstractQuery {
     public void filterByStudyAndSubjectAndSubmissionStatusAndSearchIdentifier(Study study, Participant participant, 
     		ReportStatus reportStatus, String searchIdentifier){
     	if(study != null){
-    		joinReportingPeriod();
     		joinStudy();
     		andWhere(STUDY_ALIAS+".id " +  parseOperator("=") + " :studyId");
 	        setParameter("studyId", study.getId() );
     	}
     	if(participant != null){
-    		joinReportingPeriod();
     		joinParticipant();
     		andWhere(PARTICIPANT_ALIAS+".id " +  parseOperator("=") + " :participantId");
 	        setParameter("participantId", participant.getId() );
@@ -239,5 +237,8 @@ public class ReportQuery extends AbstractQuery {
     		  andWhere(REPORT_VERSION_ALIAS+".reportStatus " + parseOperator("=") + " :reportStatus");
  	         setParameter("reportStatus", reportStatus);
     	}
+    	
+    	orderBy("report.id desc");
+    	
     }
 }

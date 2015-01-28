@@ -581,8 +581,11 @@ public class ReportDaoTest extends DaoTestCase<ReportDao> {
     	List<Report> reports = rsDao.search(study, participant, null, null , 1);
     	assertNotNull(reports);
     	assertEquals("wrong number of reports ", 1, reports.size());
-    	for(Report report: reports){
-    		System.out.println("Report Id : " + report.getId());
-    	}
+    }
+    
+    public void testSearchByStudyParticipantReportNoCriteria(){
+    	List<Report> reports = rsDao.search(null, null, null, null , 15);
+    	assertNotNull(reports);
+    	assertEquals("wrong number of reports ", 3, reports.size());
     }
 }

@@ -19,6 +19,7 @@ import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Person;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.dto.ManageReportsRepotingPeriodDTO;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportValidationService;
@@ -30,17 +31,21 @@ import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
 /**
@@ -101,6 +106,10 @@ public class ListAdverseEventsController extends SimpleFormController {
 	public void setReportDao(ReportDao reportDao) {
 		this.reportDao = reportDao;
 	}
+	
+	 private static final String PAGINATION_ACTION = "paginationAction";
+	    
+	 private static final String CURRENT_PAGE_NUMBER = "currentPageNumber";
 
 	public ListAdverseEventsController() {
         setCommandClass(ListAdverseEventsCommand.class);
@@ -130,7 +139,34 @@ public class ListAdverseEventsController extends SimpleFormController {
 			command.setParticipant(participantDao.getById(subjectId));
 		}
 		
-    	
+	   String userId = SecurityUtils.getUserLoginName();
+   	 	Boolean isStaff = true;
+        Person loggedInPerson = personDao.getByLoginId(userId);
+        if(loggedInPerson instanceof Investigator){
+        	isStaff = false;
+        }
+        request.setAttribute("isStaff", isStaff);
+        command.setUserId(userId);
+		
+		List<Report> reports = reportDao.search(command.getStudy(), command.getParticipant(), command.getReportStatus(), command.getSearchIdentifier(), 20);
+        command.setReports(reports);
+    	//if there is no validation error, update the report submitability
+        command.updateSubmittability();
+        command.updateSubmittabilityBasedOnReportStatus();
+        command.updateOptions();
+        
+        command.updateSubmittabilityBasedOnWorkflow();
+    	Set<AdverseEventReportingPeriod> reportingPeriods = new HashSet<AdverseEventReportingPeriod>();
+    	for(Report report : command.getReports()){
+    		reportingPeriods.add(report.getAeReport().getReportingPeriod());
+    	}
+		List<AdverseEventReportingPeriod> reportingPeriodsList = new ArrayList<AdverseEventReportingPeriod>();
+		reportingPeriodsList.addAll(reportingPeriods);
+		command.populateResults(reportingPeriodsList);
+		
+		int endIndex = Math.min(14,command.getTotalResultsCount());
+			
+		filterResultMap(command, 0, endIndex);
         return command;
     }
 
@@ -162,8 +198,8 @@ public class ListAdverseEventsController extends SimpleFormController {
      *  
      */
     @Override
-    protected void onBind(HttpServletRequest request, Object cmd, BindException errors) throws Exception {
-        super.onBind(request, cmd, errors);
+    protected void onBindAndValidate(HttpServletRequest request, Object cmd, BindException errors) throws Exception {
+        super.onBindAndValidate(request, cmd, errors);
         
         ListAdverseEventsCommand command = (ListAdverseEventsCommand) cmd;
         Participant participant = command.getParticipant();
@@ -178,39 +214,120 @@ public class ListAdverseEventsController extends SimpleFormController {
         command.setReports(reports);
     }
 
+    
+    
     @Override
-    protected void onBindAndValidate(HttpServletRequest request, Object command, BindException errors) throws Exception {
-        super.onBindAndValidate(request, command, errors);
-        ListAdverseEventsCommand listAECmd = (ListAdverseEventsCommand) command;
-        boolean noStudy = listAECmd.getStudy() == null;
-        boolean noParticipant = listAECmd.getParticipant() == null;
-        if (noStudy) errors.rejectValue("study", "SAE_001", "Missing study");
-        if (noParticipant) errors.rejectValue("participant", "SAE_002", "Missing subject");
-      /*  if (!(noStudy || noParticipant) && listAECmd.getAssignment() == null) {
-            errors.reject("SAE_006", "The subject is not assigned to the provided study");
-        }*/
-        
-        if(!errors.hasErrors()){
-        	//if there is no validation error, update the report submitability
-        	listAECmd.updateSubmittability();
-        	listAECmd.updateSubmittabilityBasedOnReportStatus();
-        	listAECmd.updateOptions();
-        	
-        	//save the study/subject in session for future pre-selection
-        	HttpSession session = request.getSession();
-			session.setAttribute(SELECTED_STUDY_ID, listAECmd.getStudy().getId());
-			session.setAttribute(SELECTED_PARTICIPANT_ID, listAECmd.getParticipant().getId());
-			
+    protected ModelAndView processFormSubmission(HttpServletRequest request,
+    		HttpServletResponse response, Object command, BindException errors)
+    		throws Exception {
+    	ListAdverseEventsCommand listAECommand = (ListAdverseEventsCommand) command;
+    	ModelAndView modelAndView = super.processFormSubmission(request, response, listAECommand, errors);
+    	
+    	 ListAdverseEventsCommand listAECmd = (ListAdverseEventsCommand) command;
+         
+         String userId = SecurityUtils.getUserLoginName();
+    	 	Boolean isStaff = true;
+         Person loggedInPerson = personDao.getByLoginId(userId);
+         if(loggedInPerson instanceof Investigator){
+         	isStaff = false;
+         }
+         request.setAttribute("isStaff", isStaff);
+         listAECmd.setUserId(userId);
+         boolean noStudy = listAECmd.getStudy() == null;
+         boolean noParticipant = listAECmd.getParticipant() == null;
+         
+         if(!noStudy && noParticipant){
+         	listAECmd.setStudyCentric(true);
+         	listAECmd.setParticipantCentric(false);
+         } else if(noStudy && !noParticipant){
+         	listAECmd.setParticipantCentric(true);
+         	listAECmd.setStudyCentric(false);
+         } else {
+         	listAECmd.setStudyCentric(false);
+         	listAECmd.setParticipantCentric(false);
+         }
+         
+         if(!errors.hasErrors()){
+         	//if there is no validation error, update the report submitability
+         	listAECmd.updateSubmittability();
+         	listAECmd.updateSubmittabilityBasedOnReportStatus();
+         	listAECmd.updateOptions();
+         }
+    	
+    	processPaginationSubmission(request, listAECommand, modelAndView);
+    	 String numberOfResultsPerPage = (String) findInRequest(request, "numberOfResultsPerPage");
+ 		if(numberOfResultsPerPage == null)
+ 			modelAndView.getModel().put("numberOfResultsPerPage", 5);
+ 		else
+ 			modelAndView.getModel().put("numberOfResultsPerPage", Integer.parseInt(numberOfResultsPerPage));
+ 		
+ 		Integer currentPageNumber = (Integer) request.getSession().getAttribute(CURRENT_PAGE_NUMBER);
+ 		if(currentPageNumber.equals(1))
+ 			modelAndView.getModel().put("isFirstPage", true);
+ 		else
+ 			modelAndView.getModel().put("isFirstPage", false);
+ 		if(isLastPage(request,listAECommand))
+ 			modelAndView.getModel().put("isLastPage", true);
+ 		else
+ 			modelAndView.getModel().put("isLastPage", false);
+ 		
+    	return modelAndView;
+    }
+    
+    protected boolean isLastPage(HttpServletRequest request, ListAdverseEventsCommand command){
+    	String action = (String) findInRequest(request, PAGINATION_ACTION);
+    	if(action != null && action.equals("lastPage"))
+    		return true;
+    	String numberOfResultsPerPage = (String) findInRequest(request, "numberOfResultsPerPage");
+    	Integer currentPageNumber = (Integer)request.getSession().getAttribute(CURRENT_PAGE_NUMBER);
+    	if(currentPageNumber * Integer.parseInt(numberOfResultsPerPage) > command.getTotalResultsCount())
+    		return true;
+    	
+    	return false;
+    }
+    
+    protected void processPaginationSubmission(HttpServletRequest request, ListAdverseEventsCommand command, ModelAndView modelAndView){
+    	String action = (String) findInRequest(request, PAGINATION_ACTION);
+    	String numberOfResultsPerPage = (String) findInRequest(request, "numberOfResultsPerPage");
+    	Integer currPageNumber = (Integer)request.getSession().getAttribute(CURRENT_PAGE_NUMBER);
+    	if(currPageNumber == null)
+    		currPageNumber = 1;
+    	Integer newPageNumber = 0;
+    	if(action.equals("nextPage")){
+    		newPageNumber = ++currPageNumber;
+    	}else if(action.equals("prevPage")){
+    		newPageNumber = --currPageNumber;
+    	}else if(action.equals("lastPage")){
+    		Float newPageNumberFloat = command.getTotalResultsCount() / Float.parseFloat(numberOfResultsPerPage);
+    		newPageNumber = newPageNumberFloat.intValue();
+    		if(command.getTotalResultsCount() % Integer.parseInt(numberOfResultsPerPage) > 0)
+    			newPageNumber++;
+    	}else if(action.equals("firstPage") || action.equals("numberOfResultsPerPage")){
+    		newPageNumber = 1;
+    	}
+    	
+    	Integer startIndex = (newPageNumber - 1) * Integer.parseInt(numberOfResultsPerPage);
+		Integer endIndex = newPageNumber * Integer.parseInt(numberOfResultsPerPage) - 1;
+		if(endIndex > command.getTotalResultsCount())
+			endIndex = command.getTotalResultsCount() - 1;
+		filterResultMap(command, startIndex, endIndex);
+		request.getSession().setAttribute(CURRENT_PAGE_NUMBER, newPageNumber);
+		modelAndView.getModel().put("totalResults", command.getTotalResultsCount());
+		modelAndView.getModel().put("startIndex", startIndex + 1);
+		modelAndView.getModel().put("endIndex", endIndex + 1);
+    }
+    
+    /**
+     * Returns the value associated with the <code>attributeName</code>, if present in
+     * HttpRequest parameter, if not available, will check in HttpRequest attribute map.
+     */
+    protected Object findInRequest(final ServletRequest request, final String attributName) {
+
+        Object attr = request.getParameter(attributName);
+        if (attr == null) {
+            attr = request.getAttribute(attributName);
         }
-        
-    	String userId = SecurityUtils.getUserLoginName();
-   	 	Boolean isStaff = true;
-        Person loggedInPerson = personDao.getByLoginId(userId);
-        if(loggedInPerson instanceof Investigator){
-        	isStaff = false;
-        }
-        request.setAttribute("isStaff", isStaff);
-        listAECmd.setUserId(userId);
+        return attr;
     }
 
     @Override
@@ -221,6 +338,14 @@ public class ListAdverseEventsController extends SimpleFormController {
         refdata.put("pageTitle", "Manage Reports || Select Subject and Study");
         refdata.put("bodyTitle", "Manage Reports: Select Subject and Study");
         refdata.put("instructions","Select a subject and study to see all the AEs for that combination.");
+        int totalNumberOfResults = listAECmd.getTotalResultsCount();
+        refdata.put("totalResults", totalNumberOfResults);
+        int startIndex = 0;
+        if(totalNumberOfResults > 0){
+        	startIndex = 1;
+        }
+        refdata.put("startIndex", startIndex);
+        refdata.put("endIndex", Math.min(15, totalNumberOfResults));
     	return refdata;
     }
     
@@ -236,7 +361,38 @@ public class ListAdverseEventsController extends SimpleFormController {
 		reportingPeriodsList.addAll(reportingPeriods);
 		listAECmd.populateResults(reportingPeriodsList);
 		
+		// group results
+		
     }
+    
+    /**
+	 * This will go through the original search results,
+	 * Will pick the first entry in the result, then loops through it,
+	 * Will only add the RoutingAndReviewSearchResultDTO, starting from startIndex, till endIndex.
+	 *
+	 * @param startIndex the start index
+	 * @param endIndex the end index
+	 */
+	public void filterResultMap(ListAdverseEventsCommand command, int startIndex, int endIndex){
+		int index = 0;
+		command.getFilteredResultMap().clear();
+		
+		Set<String> keySet = command.getResultList().keySet();
+		for(String key : keySet){
+			for(ManageReportsRepotingPeriodDTO mrp :  command.getResultList().get(key)){
+				if(startIndex <= index && index <= endIndex){
+					if(command.getFilteredResultMap().get(key) != null){
+						command.getFilteredResultMap().get(key).add(mrp);
+					} else {
+						LinkedList<ManageReportsRepotingPeriodDTO> reportsList = new LinkedList<ManageReportsRepotingPeriodDTO>();
+						reportsList.add(mrp);
+						command.getFilteredResultMap().put(key,reportsList);
+					}
+				}
+				index++;
+			}
+		}
+	}
 
     // //// CONFIGURATION
 
