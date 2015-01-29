@@ -388,7 +388,7 @@ public class EvaluationServiceImpl implements EvaluationService {
             	log.debug("Rules Engine Result for : " + aeReportId + ", " + String.valueOf(map));
             }
 
-            //  - If inprogress report is always preferred over rules suggestions (CAAERS-7078)
+
             //  - If child report is active, select that instead of parent. 
             // - If there is a manual selection, ignore rules engine suggestions from the same group
             // - If the manual selection is always a preferred one (ie. by default add active manual selected reports). 
@@ -401,24 +401,6 @@ public class EvaluationServiceImpl implements EvaluationService {
             	//a temporary list
             	List<ReportDefinition> tmplist = new ArrayList<ReportDefinition>(defList);
 
-                //inprogress report is preferred for reported AEs
-                for(AdverseEvent adverseEvent : evaluatableAeList) {
-                    if(adverseEvent.getReport() == null || BooleanUtils.isFalse(adverseEvent.getReported()))  continue; //unreported AE
-                    for(Report report : activeReports) {
-                        ReportDefinition rdActive = report.getReportDefinition();
-                        List<ReportDefinition> conflictingReportDefList = ReportDefinition.findBySameOrganizationAndGroup(tmplist, rdActive);
-                        for(ReportDefinition rdSuggested : conflictingReportDefList) {
-                            if(StringUtils.equals(rdActive.getName(), rdSuggested.getName())) continue;
-                            defList.remove(rdSuggested);
-                            evaluationResult.removeReportDefinitionName(aeReportId, adverseEvent, rdSuggested.getName());
-                            evaluationResult.addProcessingStep(aeReportId, String.format("caAERS: removing suggested %s in favor of in-progress %s",
-                                    rdSuggested.getName(), rdActive.getName()),null);
-                        }
-                    }
-                }
-
-                //recreate temporary list
-                tmplist = new ArrayList<ReportDefinition>(defList);
 
                 //keep active child report instead of parent.
             	for(Report activeReport : activeReports){
