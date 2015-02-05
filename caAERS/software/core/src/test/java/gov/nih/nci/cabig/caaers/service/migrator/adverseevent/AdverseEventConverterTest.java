@@ -7,7 +7,6 @@
 package gov.nih.nci.cabig.caaers.service.migrator.adverseevent;
 
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
-import gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
@@ -101,7 +100,7 @@ public class AdverseEventConverterTest extends AbstractTestCase {
 		terminology.setCtcVersion(ctc);
 		
 		Date startDateOfFirstCourse = DateUtils.parseDate("05/11/2007");
-		converter.convertAdverseEventDtoToAdverseEventDomain(dto, advEvent, terminology, startDateOfFirstCourse, AdverseEventManagementServiceImpl.CREATE);
+		converter.convertAdverseEventDtoToAdverseEventDomain(dto, advEvent, terminology, startDateOfFirstCourse, "create");
 		
 		assertEquals(1,advEvent.getOutcomes().size());
 		assertEquals("Vomiting",advEvent.getOutcomes().get(0).getOther());
@@ -144,7 +143,7 @@ public class AdverseEventConverterTest extends AbstractTestCase {
 		terminology.setCtcVersion(ctc);
 		
 		Date startDateOfFirstCourse = DateUtils.parseDate("05/11/2007");
-		converter.convertAdverseEventDtoToAdverseEventDomain(dto, null, terminology, startDateOfFirstCourse, AdverseEventManagementServiceImpl.CREATE);
+		converter.convertAdverseEventDtoToAdverseEventDomain(dto, null, terminology, startDateOfFirstCourse, "create");
 	}
 	
 }
