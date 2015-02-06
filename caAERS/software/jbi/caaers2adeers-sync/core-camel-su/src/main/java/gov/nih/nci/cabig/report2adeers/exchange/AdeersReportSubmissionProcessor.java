@@ -70,15 +70,11 @@ public class AdeersReportSubmissionProcessor implements Processor {
             }
 
 
-            inputXML = inputXML.trim().replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>");
+           
             //todo; properly close all this.
-            Reader reader = new InputStreamReader(new ByteArrayInputStream(inputXML.getBytes("ISO-8859-1")));
+            Reader reader = new InputStreamReader(new ByteArrayInputStream(inputXML.getBytes()));
             Source attachment = new StreamSource(reader,"");
             String withdraw = (String)exchange.getProperty(REPORT_WITHDRAW);
-
-            FileWriter fw = new FileWriter("/Users/admin/caaersjars/jbi_" + Math.round(Math.random() *100.0) + ".log" );
-            fw.write(new String(inputXML.getBytes("ISO-8859-1")));
-            fw.close();
 
             if(StringUtils.equals("true", withdraw)) {
             	binding.withdrawAEReport(attachment);

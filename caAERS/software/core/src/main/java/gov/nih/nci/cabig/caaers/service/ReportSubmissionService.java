@@ -354,6 +354,9 @@ public class ReportSubmissionService {
         for (ReportDelivery delivery : deliveries) {
             sb.append(delivery.getEndPoint()).append("::").append(delivery.getUserName()).append("::" ).append(delivery.getPassword());
             systemName = delivery.getReportDeliveryDefinition().getEntityName();
+            if(systemName == null) {
+            	systemName = "UNKNOWN";
+            }
             sb.append("::" ).append(systemName.replace("::", ":"));
         }
         sb.append("</EXTERNAL_SYSTEMS>");
