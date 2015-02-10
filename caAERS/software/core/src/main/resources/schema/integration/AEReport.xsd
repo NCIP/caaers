@@ -13,7 +13,7 @@
 			<xs:sequence>
 				<xs:element type="xs:dateTime" name="createdAt" />
 				<xs:element type="AdverseEventReportingPeriodType" name="adverseEventReportingPeriod" />
-				<xs:element type="PhysicianType" name="physician" />
+				<xs:element type="PhysicianType" name="physician" minOccurs="0" />
 				<xs:element type="ReporterType" name="reporter" />
 				<xs:element type="ReportedAE" name="reportedAE" maxOccurs="unbounded" minOccurs="0" />
 				<xs:element type="ReportType" name="report" maxOccurs="unbounded" minOccurs="1" />

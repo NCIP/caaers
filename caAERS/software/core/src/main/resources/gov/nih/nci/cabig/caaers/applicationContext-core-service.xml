@@ -547,42 +547,8 @@ default-lazy-init="true">
     <bean id="surgeryInterventionMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.SurgeryInterventionMigrator" autowire="byType"/>
     <bean id="treatmentInformationMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.TreatmentInformationMigrator" autowire="byType"/>
     <bean id="expeditedAdverseEventMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.ExpeditedAdverseEventMigrator" autowire="byType"/>
+	<bean id="expeditedReportMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.ExpeditedReportMigrator" autowire="byType"/>
 
-
-	<bean id="expeditedReportMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.ExpeditedReportMigrator">
-		<property name="children">
-			<list>
-				<ref bean="additionalInformationMigrator"/>
-				<ref bean="adverseEventResponseDescriptionMigrator"/>
-				<ref bean="behavioralInterventionMigrator"/>
-				<ref bean="biologicalInterventionMigrator"/>	
-				<ref bean="concomitantMedicationMigrator"/>	
-				<ref bean="diseaseHistoryMigrator"/>
-				<ref bean="dietarySupplementInterventionMigrator"/>
-				<ref bean="geneticInterventionMigrator"/>
-				<ref bean="safetyLabMigrator"/>
-				<ref bean="medicalDeviceMigrator"/>
-				<ref bean="otherAEInterventionMigrator"/>
-				<ref bean="otherCauseMigrator"/>
-				<ref bean="participantHistoryMigrator"/>
-				<ref bean="physicianMigrator"/>
-				<ref bean="radiationInterventionMigrator"/>	
-				<ref bean="reporterMigrator"/>	
-				<ref bean="reportMigrator"/>	
-				<ref bean="saeReportPreExistingConditionMigrator"/>	
-				<ref bean="saeReportPriorTherapyMigrator"/>	
-				<ref bean="surgeryInterventionMigrator"/>
-				<ref bean="treatmentInformationMigrator"/>
-				<ref bean="expeditedAdverseEventMigrator"/>	
-			</list>
-		</property>
-        <property name="stopOnError" value="true" />
-        <property name="studyDao" ref="studyDao" />
-        <property name="organizationDao" ref="organizationDao" />
-        <property name="participantDao" ref="participantDao" />
-        <property name="adverseEventReportingPeriodDao" ref="adverseEventReportingPeriodDao" />
-        <property name="studyParticipantAssignmentDao" ref="studyParticipantAssignmentDao" />
-	</bean>
 
     <!-- Synchronizer -->
     <bean id="additionalInformationSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.report.AdditionalInformationSynchronizer" autowire="byType"/>

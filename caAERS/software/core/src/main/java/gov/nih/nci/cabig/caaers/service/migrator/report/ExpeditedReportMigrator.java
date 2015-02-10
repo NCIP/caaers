@@ -6,10 +6,7 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.service.migrator.report;
 
-import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
-import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
-import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
@@ -32,10 +29,8 @@ import org.apache.commons.logging.LogFactory;
  */
 public class ExpeditedReportMigrator extends CompositeMigrator<ExpeditedAdverseEventReport> {
     private static Log logger = LogFactory.getLog(ExpeditedReportMigrator.class);
-    private OrganizationDao organizationDao;
-    private StudyDao studyDao;
+
     private ParticipantDao participantDao;
-    private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
     private StudyParticipantAssignmentDao studyParticipantAssignmentDao;
 
     public void setStudyParticipantAssignmentDao(
@@ -43,23 +38,9 @@ public class ExpeditedReportMigrator extends CompositeMigrator<ExpeditedAdverseE
 		this.studyParticipantAssignmentDao = studyParticipantAssignmentDao;
 	}
 
-	public void setAdverseEventReportingPeriodDao(
-			AdverseEventReportingPeriodDao adverseEventReportingPeriodDao) {
-		this.adverseEventReportingPeriodDao = adverseEventReportingPeriodDao;
-	}
-
-	public void setOrganizationDao(OrganizationDao organizationDao) {
-        this.organizationDao = organizationDao;
-    }
-
     public void setParticipantDao(ParticipantDao participantDao) {
         this.participantDao = participantDao;
     }
-
-    public void setStudyDao(StudyDao studyDao) {
-        this.studyDao = studyDao;
-    }
-
 
     @Override
     public void preMigrate(ExpeditedAdverseEventReport src, ExpeditedAdverseEventReport dest, DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome) {
@@ -72,7 +53,7 @@ public class ExpeditedReportMigrator extends CompositeMigrator<ExpeditedAdverseE
        //set the created date is not present and is available in the source
        if(dest.getCreatedAt() == null && src.getCreatedAt() != null) dest.setCreatedAt(src.getCreatedAt());
 
-       if(src.getReportingPeriod().getTreatmentAssignment() != null && src.getReportingPeriod().getTreatmentAssignment().getCode() != null){
+       if(src.getReportingPeriod().getTreatmentAssignment() != null){
     		StudyParticipantAssignment spa = studyParticipantAssignmentDao.getByStudySubjectIdAndStudyId(src.getReportingPeriod().getAssignment().
     				getStudySubjectIdentifier(),  src.getReportingPeriod().getAssignment().getStudySite().getStudy().getPrimaryIdentifier().getValue());
     		if(spa == null){
@@ -144,8 +125,8 @@ public class ExpeditedReportMigrator extends CompositeMigrator<ExpeditedAdverseE
             return;
         }
         String epochName = rpSrc.getEpoch() != null ? rpSrc.getEpoch().getName() : null;
-        String tac = rpSrc.getTreatmentAssignment() != null ? rpSrc.getTreatmentAssignment().getCode() : rpSrc.getTreatmentAssignmentDescription();
-        AdverseEventReportingPeriod rpFound = assignment.findReportingPeriod(rpSrc.getExternalId(), rpSrc.getStartDate(), rpSrc.getEndDate(), rpSrc.getCycleNumber(), epochName,tac);
+        
+        AdverseEventReportingPeriod rpFound = assignment.findReportingPeriod(rpSrc.getExternalId(), rpSrc.getStartDate(), rpSrc.getEndDate(), rpSrc.getCycleNumber(), epochName, rpSrc.getTreatmentAssignment().getCode());
 
         if(rpFound == null){
             outcome.addError("ER-RP-1", "Reporting period not found", studySrc.getFundingSponsorIdentifierValue(),

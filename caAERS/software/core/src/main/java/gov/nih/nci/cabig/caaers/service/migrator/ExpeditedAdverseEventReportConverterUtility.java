@@ -1076,11 +1076,9 @@ public class ExpeditedAdverseEventReportConverterUtility {
 			treatmentAssignment.setDoseLevelOrder(reportingPeriodType.getTreatmentAssignment().getDoseLevelOrder());
 			
 			if(treatmentAssignment.getCode().equalsIgnoreCase("Other")) {
-				if(StringUtils.isNotBlank(treatmentAssignment.getDescription())) {
-					treatmentAssignment.setCode(treatmentAssignment.getDescription());
-				} else {
-					treatmentAssignment.setCode(reportingPeriodType.getTreatmentAssignmentDescription());
-				}
+				treatmentAssignment.setCode(null);
+			} else {
+				treatmentAssignment.setCode(reportingPeriodType.getTreatmentAssignmentDescription());
 			}
 				
 			reportingPeriod.setTreatmentAssignment(treatmentAssignment);
