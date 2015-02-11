@@ -969,29 +969,31 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
             }
             return null;
         }
+        
+        System.err.println("DIRKDEBUG: rpFound: " + rpFound);
 
         if(rpFound == null){
-            //new reporting period
-            rpFound = rpDest;
-            rpFound.getAssignment().addReportingPeriod(rpFound);
-            // Validate the Reporting Period before saving.
-            adverseEventValidatior.validate(rpFound, rpFound.getStudy(),errors);
-            adverseEventReportingPeriodDao.save(rpFound);
-            if(configuration.get(Configuration.ENABLE_WORKFLOW)){
-                Long wfId = adverseEventRoutingAndReviewRepository.enactReportingPeriodWorkflow(rpFound);
-                logger.debug("Enacted workflow : " + wfId);
-            }
+        	//new reporting period
+        	rpFound = rpDest;
+        	rpFound.getAssignment().addReportingPeriod(rpFound);
+        	// Validate the Reporting Period before saving.
+        	adverseEventValidatior.validate(rpFound, rpFound.getStudy(),errors);
+        	adverseEventReportingPeriodDao.save(rpFound);
+        	if(configuration.get(Configuration.ENABLE_WORKFLOW)){
+        		Long wfId = adverseEventRoutingAndReviewRepository.enactReportingPeriodWorkflow(rpFound);
+        		logger.debug("Enacted workflow : " + wfId);
+        	}
         } else {
-            //existing reporting period.
-            reportingPeriodSynchronizer.migrate(rpDest, rpFound, rpOutcome);
-            // Validate the Reporting Period before saving.
-           adverseEventValidatior.validate(rpFound, rpFound.getStudy(),errors);
-            if ( errors.hasErrors()) {
-                logger.error("Error(s) while validating with Adverse Event " + String.valueOf(errors.getErrorCount()));
-                return null;
-            }
+        	//existing reporting period.
+        	reportingPeriodSynchronizer.migrate(rpDest, rpFound, rpOutcome);
+        	// Validate the Reporting Period before saving.
+        	adverseEventValidatior.validate(rpFound, rpFound.getStudy(),errors);
+        	if ( errors.hasErrors()) {
+        		logger.error("Error(s) while validating with Adverse Event " + String.valueOf(errors.getErrorCount()));
+        		return null;
+        	}
 
-            adverseEventReportingPeriodDao.save(rpFound);
+        	adverseEventReportingPeriodDao.save(rpFound);
 
         }
         return rpFound;
