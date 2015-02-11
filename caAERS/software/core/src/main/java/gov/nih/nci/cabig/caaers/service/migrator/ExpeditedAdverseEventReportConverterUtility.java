@@ -432,7 +432,7 @@ public class ExpeditedAdverseEventReportConverterUtility {
         TreatmentAssignment tac = new TreatmentAssignment();
         if(tacType != null){
         	if("Other".equalsIgnoreCase(tacType.getCode())) {
-        		tac.setCode(tacType.getDescription());
+        		tac.setCode(null);
         	} else {
         		tac.setCode(tacType.getCode());
         	}

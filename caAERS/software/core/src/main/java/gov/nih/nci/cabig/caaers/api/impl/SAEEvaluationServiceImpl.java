@@ -923,8 +923,7 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
             return null;
         }
         //check if we need the create path or update path.
-        //TODO: CAAERS-7089: fix here
-        String tac = rpDest.getTreatmentAssignment() != null ? rpDest.getTreatmentAssignment().getCode() : rpDest.getTreatmentAssignmentDescription();
+        String tac = rpDest.getTreatmentAssignment() != null ? rpDest.getTreatmentAssignment().getCode() : null;
         String epochName = rpDest.getEpoch() != null ? rpDest.getEpoch().getName() : null;
         AdverseEventReportingPeriod rpFound = rpDest.getAssignment().findReportingPeriod(rpDest.getExternalId(), rpDest.getStartDate(),rpDest.getEndDate(), rpDest.getCycleNumber(), epochName, tac);
         ArrayList<AdverseEventReportingPeriod> reportingPeriodList = new ArrayList<AdverseEventReportingPeriod>(rpDest.getAssignment().getActiveReportingPeriods());

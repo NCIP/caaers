@@ -79,10 +79,6 @@
         <property name="asaelServiceImpl" ref="asaelServiceImpl" />
     </bean>
 
-    <bean id="adverseEventManagementWebServiceBean" class="gov.nih.nci.cabig.caaers.ws.impl.AdverseEventManagementWebService">
-        <property name="impl" ref="adverseEventManagementServiceImpl" />
-    </bean>
-
     <bean id="studyManagementWebServiceBean" class="gov.nih.nci.cabig.caaers.ws.impl.StudyManagementWebService">
         <property name="impl" ref="studyProcessorImpl" />
     </bean>
