@@ -547,46 +547,11 @@ default-lazy-init="true">
     <bean id="surgeryInterventionMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.SurgeryInterventionMigrator" autowire="byType"/>
     <bean id="treatmentInformationMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.TreatmentInformationMigrator" autowire="byType"/>
     <bean id="expeditedAdverseEventMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.ExpeditedAdverseEventMigrator" autowire="byType"/>
+	<bean id="expeditedReportMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.ExpeditedReportMigrator" autowire="byType"/>
 
-
-	<bean id="expeditedReportMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.report.ExpeditedReportMigrator">
-		<property name="children">
-			<list>
-				<ref bean="additionalInformationMigrator"/>
-				<ref bean="adverseEventResponseDescriptionMigrator"/>
-				<ref bean="behavioralInterventionMigrator"/>
-				<ref bean="biologicalInterventionMigrator"/>	
-				<ref bean="concomitantMedicationMigrator"/>	
-				<ref bean="diseaseHistoryMigrator"/>
-				<ref bean="dietarySupplementInterventionMigrator"/>
-				<ref bean="geneticInterventionMigrator"/>
-				<ref bean="safetyLabMigrator"/>
-				<ref bean="medicalDeviceMigrator"/>
-				<ref bean="otherAEInterventionMigrator"/>
-				<ref bean="otherCauseMigrator"/>
-				<ref bean="participantHistoryMigrator"/>
-				<ref bean="physicianMigrator"/>
-				<ref bean="radiationInterventionMigrator"/>	
-				<ref bean="reporterMigrator"/>	
-				<ref bean="reportMigrator"/>	
-				<ref bean="saeReportPreExistingConditionMigrator"/>	
-				<ref bean="saeReportPriorTherapyMigrator"/>	
-				<ref bean="surgeryInterventionMigrator"/>
-				<ref bean="treatmentInformationMigrator"/>
-				<ref bean="expeditedAdverseEventMigrator"/>	
-			</list>
-		</property>
-        <property name="stopOnError" value="true" />
-        <property name="studyDao" ref="studyDao" />
-        <property name="organizationDao" ref="organizationDao" />
-        <property name="participantDao" ref="participantDao" />
-        <property name="adverseEventReportingPeriodDao" ref="adverseEventReportingPeriodDao" />
-        <property name="studyParticipantAssignmentDao" ref="studyParticipantAssignmentDao" />
-	</bean>
 
     <!-- Synchronizer -->
     <bean id="additionalInformationSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.report.AdditionalInformationSynchronizer" autowire="byType"/>
-    <bean id="expeditedReportingPeriodSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.report.ExpeditedReportingPeriodSynchronizer" />
     <bean id="expeditedAdverseEventSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.report.ExpeditedAdverseEventSynchronizer" />
     <bean id="adverseEventResponseDescriptionSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.report.AdverseEventResponseDescriptionSynchronizer" />
     <bean id="labSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.report.LabSynchronizer" />
@@ -609,33 +574,5 @@ default-lazy-init="true">
     <bean id="surgeryInterventionSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.report.SurgeryInterventionSynchronizer" autowire="byType"/>
     <bean id="reportSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.report.ReportSynchronizer" autowire="byType"/>
 
-    <bean id="aeReportSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.report.ExpeditedAdverseEventReportSynchronizer">
-        <property name="children">
-            <list>
-            	<ref bean="expeditedReportingPeriodSynchronizer" />
-                <ref bean="adverseEventResponseDescriptionSynchronizer" />
-                <ref bean="additionalInformationSynchronizer"/>
-                <ref bean="labSynchronizer" />
-                <ref bean="treatmentInformationSynchronizer" />
-                <ref bean="behavioralInterventionSynchronizer" />
-                <ref bean="biologicalInterventionSynchronizer" />
-                <ref bean="dietarySupplementInterventionSynchronizer" />
-                <ref bean="geneticInterventionSynchronizer" />
-                <ref bean="medicalDeviceSynchronizer" />
-                <ref bean="otherAEInterventionSynchronizer" />
-                <ref bean="physicianSynchronizer" />
-                <ref bean="reporterSynchronizer" />
-                <ref bean="reportSynchronizer" />
-                <ref bean="diseaseHistorySynchronizer" />
-                <ref bean="participantHistorySynchronizer" />
-                <ref bean="preExistingConditionSynchronizer" />
-                <ref bean="priorTherapySynchronizer" />
-                <ref bean="concomitantMedicationSynchronizer" />
-                <ref bean="otherCauseSynchronizer" />
-                <ref bean="expeditedAdverseEventSynchronizer" />
-                <ref bean="surgeryInterventionSynchronizer" />
-                <ref bean="radiationInterventionSynchronizer" />
-            </list>
-        </property>
-    </bean>
+    <bean id="aeReportSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.report.ExpeditedAdverseEventReportSynchronizer" />
 </beans>

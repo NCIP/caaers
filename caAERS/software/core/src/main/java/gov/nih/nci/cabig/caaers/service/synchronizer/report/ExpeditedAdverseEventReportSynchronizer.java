@@ -9,7 +9,9 @@ import gov.nih.nci.cabig.caaers.service.migrator.CompositeMigrator;
  * @since 1.5
  */
 public class ExpeditedAdverseEventReportSynchronizer extends CompositeMigrator<ExpeditedAdverseEventReport> {
-    public void preMigrate(ExpeditedAdverseEventReport src, ExpeditedAdverseEventReport dest, DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome) {
+    
+	
+	public void preMigrate(ExpeditedAdverseEventReport src, ExpeditedAdverseEventReport dest, DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome) {
 
         if(src.getInvestigationalDeviceAdministered() != null) dest.setInvestigationalDeviceAdministered(src.getInvestigationalDeviceAdministered());
         //set the created date is not present and is available in the source

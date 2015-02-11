@@ -106,8 +106,6 @@
         ||execution(public * gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl+.searchOrganization(..))
         ||execution(public * gov.nih.nci.cabig.caaers.domain.repository.StudyRepository+.find(..))
         ||execution(public * gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository+.getResearchStaff(..))
-        ||execution(public * gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl+.create*(..))
-        ||execution(public * gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl+.delete*(..))  
         ||execution(public * gov.nih.nci.cabig.caaers.api.impl.DefaultResearchStaffMigratorService+.saveResearchStaff(..))   
         ||execution(public * gov.nih.nci.cabig.caaers.api.impl.DefaultInvestigatorMigratorService+.saveInvestigator(..))   
                               "/>
@@ -198,12 +196,6 @@
         <entry key="execution(* gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository+.getResearchStaff(..))"
                value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
 
-        <entry key="execution(* gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl+.create*(..))"
-               value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>
-
-        <entry key="execution(* gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl+.delete*(..))"
-               value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>
-
         <entry key="execution(* gov.nih.nci.cabig.caaers.api.impl.DefaultResearchStaffMigratorService+.saveResearchStaff(..))"
                value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
 
@@ -240,8 +232,6 @@
                 gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl.getApplicableOrganizationsFromStudySites=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepositoryImpl.searchOrganization=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.domain.repository.StudyRepository.*=CSM_AUTHN_CHECK
-                gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl.create*=CSM_AUTHN_CHECK
-                gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl.delete*=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.api.impl.SAEEvaluationServiceImpl.process*=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.api.impl.DefaultResearchStaffMigratorService.saveResearchStaff=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.api.impl.DefaultInvestigatorMigratorService.saveInvestigator=CSM_AUTHN_CHECK

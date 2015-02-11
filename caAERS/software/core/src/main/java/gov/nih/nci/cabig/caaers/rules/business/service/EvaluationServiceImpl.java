@@ -101,7 +101,7 @@ public class EvaluationServiceImpl implements EvaluationService {
             ExpeditedAdverseEventReport fakeAeReport = new ExpeditedAdverseEventReport();
             fakeAeReport.setTreatmentInformation(new TreatmentInformation());
             fakeAeReport.getTreatmentInformation().setTreatmentAssignment(new TreatmentAssignment());
-            String tac = reportingPeriod.getTreatmentAssignment() != null ? reportingPeriod.getTreatmentAssignment().getCode() : "";
+            String tac = reportingPeriod.getTreatmentAssignment() != null ? reportingPeriod.getTreatmentAssignment().getCode() : null;
             fakeAeReport.getTreatmentInformation().getTreatmentAssignment().setCode(tac);
             findRequiredReportDefinitions(fakeAeReport, newlyAddedAdverseEvents, reportingPeriod.getStudy(), result);
         }

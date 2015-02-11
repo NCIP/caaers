@@ -10,6 +10,7 @@ import static gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper.Action
 import static gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper.ActionType.WITHDRAW;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventRecommendedReportDao;
+import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
@@ -21,6 +22,7 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventRecommendedReport;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.AeTerminology;
+import gov.nih.nci.cabig.caaers.domain.Epoch;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
@@ -35,6 +37,7 @@ import gov.nih.nci.cabig.caaers.domain.dto.EvaluationResultDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AdverseEventType;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.AEsOutputMessage;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.AdverseEventResult;
@@ -45,12 +48,20 @@ import gov.nih.nci.cabig.caaers.integration.schema.saerules.EvaluatedAdverseEven
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.RecommendedActions;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.SaveAndEvaluateAEsInputMessage;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.SaveAndEvaluateAEsOutputMessage;
+import gov.nih.nci.cabig.caaers.service.AdeersIntegrationFacade;
+import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.RecommendedActionService;
 import gov.nih.nci.cabig.caaers.service.migrator.adverseevent.AdverseEventConverter;
+import gov.nih.nci.cabig.caaers.service.migrator.adverseevent.AdverseEventReportingPeriodMigrator;
 import gov.nih.nci.cabig.caaers.service.migrator.adverseevent.SAEAdverseEventReportingPeriodConverter;
+import gov.nih.nci.cabig.caaers.service.synchronizer.adverseevent.AdverseEventReportingPeriodSynchronizer;
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
+import gov.nih.nci.cabig.caaers.validation.AdverseEventGroup;
+import gov.nih.nci.cabig.caaers.validation.CourseCycleGroup;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
+import gov.nih.nci.cabig.caaers.validation.validator.AdverseEventValidatior;
 import gov.nih.nci.cabig.caaers.ws.faults.CaaersFault;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
@@ -64,6 +75,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import javax.validation.groups.Default;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -91,12 +106,19 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
     private ReportDefinitionDao reportDefinitionDao;
 	/** The now factory. */
 	private NowFactory nowFactory;
-	private AdverseEventManagementServiceImpl adverseEventManagementService;
 	private EvaluationService evaluationService;
 	private ApplicationContext applicationContext;
+	private Configuration configuration;
 	private MessageSource messageSource;
 	private AdverseEventConverter converter;
     private RecommendedActionService recommendedActionService;
+    private AdeersIntegrationFacade adeersIntegrationFacade;
+	private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
+	private AdverseEventReportingPeriodSynchronizer reportingPeriodSynchronizer;
+    private AdverseEventReportingPeriodMigrator reportingPeriodMigrator;
+	private AdverseEventValidatior adverseEventValidatior;
+	private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
+	private Validator validator;
     private enum RequestType{SaveEvaluate, Evaluate};
 	private static String DEF_ERR_MSG = "Error evaluating adverse events with SAE rules";
 
@@ -130,7 +152,7 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 
              // 2. Persist AdverseEvents.
             ValidationErrors errors = new ValidationErrors();
-            reportingPeriod = adverseEventManagementService.createOrUpdateAdverseEvents(reportingPeriod, errors, true);
+            reportingPeriod = createOrUpdateAdverseEvents(reportingPeriod, errors, true);
 
             if(errors.hasErrors()){
                logger.error("Adverse Event Management Service create or update call failed :" + String.valueOf(errors));
@@ -159,7 +181,7 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
             }
             
             // save the updated reporting period
-            adverseEventManagementService.saveReportingPeriod(reportingPeriod);
+            saveReportingPeriod(reportingPeriod);
         }
         catch(CaaersSystemException ex) {
             throw Helper.createCaaersFault(DEF_ERR_MSG, ex.getErrorCode(), ex.getMessage());
@@ -793,14 +815,6 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
         this.participantDao = participantDao;
     }
 
-    public AdverseEventManagementServiceImpl getAdverseEventManagementService() {
-        return adverseEventManagementService;
-    }
-
-    public void setAdverseEventManagementService(AdverseEventManagementServiceImpl adverseEventManagementService) {
-        this.adverseEventManagementService = adverseEventManagementService;
-    }
-
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;
 	}
@@ -873,4 +887,337 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 	public void setReportDefinitionDao(ReportDefinitionDao reportDefinitionDao) {
 		this.reportDefinitionDao = reportDefinitionDao;
 	}
+	
+	 /**
+     * To Create or Update Advese Events.
+     * Sync Flag is used only incase of SAE Evaluation service, As service can soft-delete the Adverse Events.
+     * @param rpSrc
+     * @param errors
+     * @param syncFlag
+     * @return
+     */
+
+    private AdverseEventReportingPeriod createOrUpdateAdverseEvents(AdverseEventReportingPeriod rpSrc, ValidationErrors errors, boolean syncFlag){
+
+        Study study = fetchStudy(rpSrc.getStudy().getFundingSponsorIdentifierValue());
+        if(study == null){
+            logger.error("Study not present in caAERS with the sponsor identifier : " + rpSrc.getStudy().getFundingSponsorIdentifierValue());
+            errors.addValidationError("WS_AEMS_003", "Study with sponsor identifier " + rpSrc.getStudy().getFundingSponsorIdentifierValue() +" does not exist in caAERS",
+                    rpSrc.getStudy().getFundingSponsorIdentifierValue());
+            return null;
+        }
+        try{
+            adeersIntegrationFacade.updateStudy(study.getId(), true);
+        }catch (Exception e){
+            logger.warn("Study synchronization failed.", e);
+        }
+        //migrate the domain object
+        AdverseEventReportingPeriod rpDest = new AdverseEventReportingPeriod();
+        DomainObjectImportOutcome<AdverseEventReportingPeriod> rpOutcome = new DomainObjectImportOutcome<AdverseEventReportingPeriod>();
+        reportingPeriodMigrator.migrate(rpSrc, rpDest, rpOutcome);
+        logger.info("Reporting period migration result :" + String.valueOf(rpOutcome.getMessages()));
+        if(rpOutcome.hasErrors()){
+            //translate error and create a response.
+            logger.error("Errors while migrating :" + String.valueOf(rpOutcome.getErrorMessages()));
+            errors.addValidationErrors(rpOutcome.getValidationErrors().getErrors());
+            return null;
+        }
+        //check if we need the create path or update path.
+        String tac = rpDest.getTreatmentAssignment() != null ? rpDest.getTreatmentAssignment().getCode() : null;
+        String epochName = rpDest.getEpoch() != null ? rpDest.getEpoch().getName() : null;
+        AdverseEventReportingPeriod rpFound = rpDest.getAssignment().findReportingPeriod(rpDest.getExternalId(), rpDest.getStartDate(),rpDest.getEndDate(), rpDest.getCycleNumber(), epochName, tac);
+        ArrayList<AdverseEventReportingPeriod> reportingPeriodList = new ArrayList<AdverseEventReportingPeriod>(rpDest.getAssignment().getActiveReportingPeriods());
+        if(rpFound != null) {
+            // This is used only incase of SAE Evaluation Service.
+            if ( syncFlag ) {
+                syncAdverseEventWithSrc(rpFound, rpSrc);
+            }
+            int i = findIndexFromReportPeriodList(reportingPeriodList, rpFound);
+            if  ( i >= 0 ) reportingPeriodList.remove(i);
+        }
+
+        ValidationErrors dateValidationErrors = validateRepPeriodDates(rpDest, reportingPeriodList, rpDest.getAssignment().getStartDateOfFirstCourse(), rpDest.getEpoch());
+        logger.info("Reporting period validation result :" + String.valueOf(dateValidationErrors));
+        if(dateValidationErrors.hasErrors()){
+            //translate errors and create a response
+            logger.error("Errors while migrating :" + String.valueOf(dateValidationErrors));
+            errors.addValidationErrors(dateValidationErrors.getErrors());
+            return null;
+        }
+
+        //validate adverse events
+        for(AdverseEvent adverseEvent : rpDest.getAdverseEvents()) {
+        	if(adverseEvent.getGradedDate() == null) adverseEvent.setGradedDate(new Date());
+            Set<ConstraintViolation<AdverseEvent>> constraintViolations = validator.validate(adverseEvent, AdverseEventGroup.class, Default.class);
+            if(!constraintViolations.isEmpty()){
+                //translate errors to response.
+                for(ConstraintViolation<AdverseEvent> v : constraintViolations){
+                    errors.addValidationError("WS_GEN_006", v.getMessage(), v.getPropertyPath());
+                }
+                return null;
+            }
+        }
+        // validate Reporting Period.
+        AdverseEventReportingPeriod rpTarget = rpFound;
+        if (rpTarget == null ) rpTarget=rpDest;
+
+        Set<ConstraintViolation<AdverseEventReportingPeriod>> constraintViolations = validator.validate(rpTarget, CourseCycleGroup.class, Default.class);
+        if(!constraintViolations.isEmpty()){
+            //translate errors to response.
+            for(ConstraintViolation<AdverseEventReportingPeriod> v : constraintViolations){
+                errors.addValidationError("WS_GEN_006", v.getMessage(), v.getPropertyPath());
+            }
+            return null;
+        }
+        
+        System.err.println("DIRKDEBUG: rpFound: " + rpFound);
+
+        if(rpFound == null){
+        	//new reporting period
+        	rpFound = rpDest;
+        	rpFound.getAssignment().addReportingPeriod(rpFound);
+        	// Validate the Reporting Period before saving.
+        	adverseEventValidatior.validate(rpFound, rpFound.getStudy(),errors);
+        	adverseEventReportingPeriodDao.save(rpFound);
+        	if(configuration.get(Configuration.ENABLE_WORKFLOW)){
+        		Long wfId = adverseEventRoutingAndReviewRepository.enactReportingPeriodWorkflow(rpFound);
+        		logger.debug("Enacted workflow : " + wfId);
+        	}
+        } else {
+        	//existing reporting period.
+        	reportingPeriodSynchronizer.migrate(rpDest, rpFound, rpOutcome);
+        	// Validate the Reporting Period before saving.
+        	adverseEventValidatior.validate(rpFound, rpFound.getStudy(),errors);
+        	if ( errors.hasErrors()) {
+        		logger.error("Error(s) while validating with Adverse Event " + String.valueOf(errors.getErrorCount()));
+        		return null;
+        	}
+
+        	adverseEventReportingPeriodDao.save(rpFound);
+
+        }
+        return rpFound;
+    }
+    
+    /**
+     * Method to save the reporting period from outside the API methods. This can be used for re-saving the reporting period
+     * as in the case of Adverse Event / requiresReporting flag.
+     * @param reportingPeriod
+     * @return
+     */
+    
+    private void saveReportingPeriod(AdverseEventReportingPeriod reportingPeriod){
+    	adverseEventReportingPeriodDao.save(reportingPeriod);
+    }
+    
+    /**
+     * Sync the adverse Events with Input source, as SAE service expects the complete list of adverse events.
+     * @param rpFound
+     * @param rpSrc
+     */
+    private void syncAdverseEventWithSrc(AdverseEventReportingPeriod rpFound, AdverseEventReportingPeriod rpSrc) {
+
+        for( AdverseEvent ae: rpFound.getAdverseEvents()) {
+            if ( rpSrc.findAdverseEventByIdTermAndDates(ae)  == null ) { // If the reporting period is not found in  the source
+                   ae.setRetiredIndicator(true);
+            }
+        }
+
+    }
+    
+    private ValidationErrors validateRepPeriodDates(AdverseEventReportingPeriod rPeriod, List<AdverseEventReportingPeriod> rPeriodList, Date firstCourseDate, Epoch epoch) {
+
+		ValidationErrors errors = new ValidationErrors();
+        Date startDate = rPeriod.getStartDate();
+		Date endDate = rPeriod.getEndDate();
+
+		// Check if the start date is equal to or before the end date.
+		if (firstCourseDate != null && startDate != null && (firstCourseDate.getTime() - startDate.getTime() > 0)) {
+			errors.addValidationError("WS_AEMS_014", "Start date of this course/cycle cannot be earlier than the Start date of first course/cycle");
+		}
+
+		if (startDate != null && endDate != null && (endDate.getTime() - startDate.getTime() < 0)) {
+            errors.addValidationError("WS_AEMS_015", "Course End date cannot be earlier than Start date.");
+		}
+
+		// Check if the start date is equal to end date.
+		// This is allowed only for Baseline reportingPeriods and not for other
+		// reporting periods.
+
+		if (epoch != null && !epoch.getName().equals("Baseline")) {
+			if (endDate != null && startDate.equals(endDate)) {
+                errors.addValidationError("WS_AEMS_016", "For Non-Baseline treatment type Start date cannot be equal to End date.");
+			}
+
+		}
+
+		// Check if the start date - end date for the reporting Period overlaps
+		// with the date range of an existing Reporting Period.
+		for (AdverseEventReportingPeriod aerp : rPeriodList) {
+			Date sDate = aerp.getStartDate();
+			Date eDate = aerp.getEndDate();
+
+			if (!aerp.getId().equals(rPeriod.getId())) {
+
+				// we should make sure that no existing Reporting Period, start
+				// date falls, in-between these dates.
+				if (startDate != null && endDate != null) {
+					if (DateUtils.compareDate(sDate, startDate) >= 0 && DateUtils.compareDate(sDate, endDate) < 0) {
+                        errors.addValidationError("WS_AEMS_017", "Course/cycle cannot overlap with an existing course/cycle.");
+						break;
+					}
+				} else if (startDate != null && DateUtils.compareDate(sDate, startDate) == 0) {
+                       errors.addValidationError("WS_AEMS_017", "Course/cycle cannot overlap with an existing course/cycle.");
+					break;
+				}
+
+				// newly created reporting period start date, should not fall
+				// within any other existing reporting periods
+				if (sDate != null && eDate != null) {
+					if (DateUtils.compareDate(sDate, startDate) <= 0 && DateUtils.compareDate(startDate, eDate) < 0) {
+                        errors.addValidationError("WS_AEMS_017", "Course/cycle cannot overlap with an existing course/cycle.");
+						break;
+					}
+				} else if (sDate != null && DateUtils.compareDate(sDate, startDate) == 0) {
+                     errors.addValidationError("WS_AEMS_017", "Course/cycle cannot overlap with an existing course/cycle.");
+					break;
+				}
+			}
+
+			// If the epoch of reportingPeriod is not - Baseline , then it
+			// cannot be earlier than a Baseline
+			if (epoch != null && epoch.getName().equals("Baseline")) {
+				if ( aerp.getEpoch() != null && (!aerp.getEpoch().getName().equals("Baseline"))) {
+					if (DateUtils.compareDate(sDate, startDate) < 0) {
+                        errors.addValidationError("WS_AEMS_018", "Baseline treatment type cannot start after an existing Non-Baseline treatment type.");
+						return errors;
+					}
+				}
+			} else {
+				if (aerp.getEpoch() != null && aerp.getEpoch().getName().equals("Baseline")) {
+					if (DateUtils.compareDate(startDate, sDate) < 0) {
+						errors.addValidationError("WS_AEMS_019", "Non-Baseline treatment type cannot start before an existing Baseline treatment type.");
+						return errors;
+					}
+				}
+			}
+
+           // Duplicate Baseline check
+            if ( epoch != null && epoch.getName().equals("Baseline") ) {
+                // Iterating through the already anything exists with the treatment type Baseline.
+                for ( AdverseEventReportingPeriod rp : rPeriodList ) {
+
+                    if ( rp.getEpoch() != null && rp.getEpoch().getName()  != null && rp.getEpoch().getName().equals("Baseline") )  {
+                        errors.addValidationError("WS_AEMS_085", "A Baseline treatment type already exists");
+                        break;
+                    }
+                }
+
+            }
+
+
+		}
+		return errors;
+
+	}
+    
+    private int findIndexFromReportPeriodList(List<AdverseEventReportingPeriod> reportingPeriodList, AdverseEventReportingPeriod rpFound) {
+        int i = 0 ;
+        for ( AdverseEventReportingPeriod rp: reportingPeriodList) {
+            if ( rp.getId().equals(rpFound.getId())) {
+                 return i;
+            }
+            i++;
+        }
+
+        return -1;
+
+    }
+
+	public EvaluationService getEvaluationService() {
+		return evaluationService;
+	}
+
+	public void setEvaluationService(EvaluationService evaluationService) {
+		this.evaluationService = evaluationService;
+	}
+
+	public Configuration getConfiguration() {
+		return configuration;
+	}
+
+	public void setConfiguration(Configuration configuration) {
+		this.configuration = configuration;
+	}
+
+	public AdeersIntegrationFacade getAdeersIntegrationFacade() {
+		return adeersIntegrationFacade;
+	}
+
+	public void setAdeersIntegrationFacade(
+			AdeersIntegrationFacade adeersIntegrationFacade) {
+		this.adeersIntegrationFacade = adeersIntegrationFacade;
+	}
+
+	public AdverseEventReportingPeriodDao getAdverseEventReportingPeriodDao() {
+		return adverseEventReportingPeriodDao;
+	}
+
+	public void setAdverseEventReportingPeriodDao(
+			AdverseEventReportingPeriodDao adverseEventReportingPeriodDao) {
+		this.adverseEventReportingPeriodDao = adverseEventReportingPeriodDao;
+	}
+
+	public AdverseEventReportingPeriodSynchronizer getReportingPeriodSynchronizer() {
+		return reportingPeriodSynchronizer;
+	}
+
+	public void setReportingPeriodSynchronizer(
+			AdverseEventReportingPeriodSynchronizer reportingPeriodSynchronizer) {
+		this.reportingPeriodSynchronizer = reportingPeriodSynchronizer;
+	}
+
+	public AdverseEventReportingPeriodMigrator getReportingPeriodMigrator() {
+		return reportingPeriodMigrator;
+	}
+
+	public void setReportingPeriodMigrator(
+			AdverseEventReportingPeriodMigrator reportingPeriodMigrator) {
+		this.reportingPeriodMigrator = reportingPeriodMigrator;
+	}
+
+	public AdverseEventValidatior getAdverseEventValidatior() {
+		return adverseEventValidatior;
+	}
+
+	public void setAdverseEventValidatior(
+			AdverseEventValidatior adverseEventValidatior) {
+		this.adverseEventValidatior = adverseEventValidatior;
+	}
+
+	public AdverseEventRoutingAndReviewRepository getAdverseEventRoutingAndReviewRepository() {
+		return adverseEventRoutingAndReviewRepository;
+	}
+
+	public void setAdverseEventRoutingAndReviewRepository(
+			AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository) {
+		this.adverseEventRoutingAndReviewRepository = adverseEventRoutingAndReviewRepository;
+	}
+
+	public Validator getValidator() {
+		return validator;
+	}
+
+	public void setValidator(Validator validator) {
+		this.validator = validator;
+	}
+
+	public AdverseEventRecommendedReportDao getAdverseEventRecommendedReportDao() {
+		return adverseEventRecommendedReportDao;
+	}
+
+	public ReportDefinitionDao getReportDefinitionDao() {
+		return reportDefinitionDao;
+	}
+
 }

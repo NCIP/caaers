@@ -301,6 +301,7 @@ public class SafetyReportServiceImpl {
         if(dbReport != null) {
 	        DomainObjectImportOutcome<ExpeditedAdverseEventReport> outCome = new DomainObjectImportOutcome<ExpeditedAdverseEventReport>();
 	        aeReportSynchronizer.migrate(aeDestReport, dbReport, outCome);
+	        
 	        if(outCome.hasErrors()) errors.addValidationErrors(outCome.getValidationErrors().getErrors());
             if(errors.hasErrors()) return aeDestReport;
         }

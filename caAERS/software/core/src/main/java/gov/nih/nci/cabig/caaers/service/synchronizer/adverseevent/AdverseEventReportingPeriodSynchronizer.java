@@ -32,6 +32,9 @@ public class AdverseEventReportingPeriodSynchronizer implements Migrator<Adverse
          if(src.getCycleNumber() != null) dest.setCycleNumber(src.getCycleNumber());
          if(src.getEpoch() != null) dest.setEpoch(src.getEpoch());
          if(src.getExternalId() != null) dest.setExternalId(src.getExternalId());
+         if(src.getTreatmentAssignmentDescription() != null) dest.setTreatmentAssignmentDescription(src.getTreatmentAssignmentDescription());
+         
+         dest.setTreatmentAssignment(migrateTreatment(src.getTreatmentAssignment(), dest.getTreatmentAssignment()));
 
          for(AdverseEvent aeSrc : src.getAdverseEvents()){
             AdverseEvent aeFound = dest.findAdverseEventByIdTermAndDates(aeSrc);
@@ -97,5 +100,20 @@ public class AdverseEventReportingPeriodSynchronizer implements Migrator<Adverse
             }
 
          }
+    }
+    
+    private TreatmentAssignment migrateTreatment(TreatmentAssignment taSrc, TreatmentAssignment taDest) {
+    	if(taSrc != null) {
+    		if(taDest == null) {
+    			taDest = new TreatmentAssignment();
+    		}
+
+    		if(taSrc.getCode() !=  null) taDest.setCode(taSrc.getCode());
+    		if(taSrc.getComments() !=  null) taDest.setComments(taSrc.getComments());
+    		if(taSrc.getDescription() !=  null) taDest.setDescription(taSrc.getDescription());
+    		if(taSrc.getDoseLevelOrder() !=  null) taDest.setDoseLevelOrder(taSrc.getDoseLevelOrder());
+    	}
+
+    	return taDest;
     }
 }

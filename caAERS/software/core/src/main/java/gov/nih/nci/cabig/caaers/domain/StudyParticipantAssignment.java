@@ -775,8 +775,7 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
             if(endDate != null && (p.getEndDate() == null || DateUtils.compareDate(endDate, p.getEndDate()) != 0) ) continue;
             if(cycleNumber != null && (p.getCycleNumber() == null || p.getCycleNumber() != cycleNumber) ) continue;
             if(epochName != null && (p.getEpoch() == null || !StringUtils.equalsIgnoreCase(p.getEpoch().getName(), epochName)) ) continue;
-            String currentTac = p.getTreatmentAssignment() != null ? p.getTreatmentAssignment().getCode() : p.getTreatmentAssignmentDescription();
-            if(tac != null && (currentTac == null || !StringUtils.equalsIgnoreCase(currentTac, tac)) ) continue;
+            if(tac != null && p.getTreatmentAssignment() != null && (p.getTreatmentAssignment().getCode() == null || !StringUtils.equalsIgnoreCase(p.getTreatmentAssignment().getCode(), tac)) ) continue;
             return p;
         }
         return null;

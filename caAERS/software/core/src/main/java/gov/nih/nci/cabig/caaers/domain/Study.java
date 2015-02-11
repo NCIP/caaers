@@ -888,7 +888,7 @@ public abstract class Study extends AbstractIdentifiableDomainObject implements 
         return null;
     }
 
-    public TreatmentAssignment findActiveTreatmentAssignment(String tac){
+    public TreatmentAssignment findActiveTreatmentAssignment(String tac) {
         for(TreatmentAssignment ta : getActiveTreatmentAssignments()){
             if(StringUtils.equals(ta.getCode(), tac)) return ta;
         }
