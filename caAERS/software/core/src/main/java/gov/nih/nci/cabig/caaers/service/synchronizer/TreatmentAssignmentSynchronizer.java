@@ -6,7 +6,6 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.service.synchronizer;
 
-import edu.nwu.bioinformatics.commons.CollectionUtils;
 import gov.nih.nci.cabig.caaers.domain.AbstractMutableRetireableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
@@ -27,23 +26,26 @@ import org.apache.commons.lang.StringUtils;
 public class TreatmentAssignmentSynchronizer implements Migrator<gov.nih.nci.cabig.caaers.domain.Study>  {
 	
 	public void migrate(Study dbStudy, Study xmlStudy,DomainObjectImportOutcome<Study> outcome) {
-
-        //if there is no TAC available in XMLStudy, ignore
-		//commenting this since this is no longer valid. Adeers syn should remove any local TACs is not present in Adeers
-//        if (CollectionUtils.isEmpty(xmlStudy.getTreatmentAssignments())) {
-//            return;
-//        }
-
         //create an Index of existing ones (available in DB)
         Hashtable<String, TreatmentAssignment> dbTacIndexMap = new Hashtable<String, TreatmentAssignment>();
+        Hashtable<String, TreatmentAssignment> dbCtepIndexMap = new Hashtable<String, TreatmentAssignment>();
         for (TreatmentAssignment ta : dbStudy.getActiveTreatmentAssignments()) {
             dbTacIndexMap.put(ta.getCode().toUpperCase(), ta);
+            if(ta.getCtepDbIdentifier() != null && !ta.getCtepDbIdentifier().isEmpty()) {
+            	dbCtepIndexMap.put(ta.getCtepDbIdentifier().toUpperCase(), ta);
+            }
         }
 
         //Identify New TreatmentAssignments and also update existing ones.
         for (TreatmentAssignment xmlTreatmentAssignment : xmlStudy.getTreatmentAssignments()) {
 
-            TreatmentAssignment ta = dbTacIndexMap.remove(xmlTreatmentAssignment.getCode().toUpperCase());
+            TreatmentAssignment ta = null;
+            if (xmlTreatmentAssignment.getCtepDbIdentifier() != null) {
+            	ta = dbCtepIndexMap.get(xmlTreatmentAssignment.getCtepDbIdentifier().toUpperCase());
+            }
+            if(ta == null) {
+            	ta = dbTacIndexMap.remove(xmlTreatmentAssignment.getCode().toUpperCase());
+            }
 
             if (ta == null) {
                 //newly added one, so add it to study
