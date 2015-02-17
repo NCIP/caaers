@@ -325,7 +325,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
         			<td></td>
             		<td>
             				<tags:button color="blue" type="button" value="Find" size="small" icon="search" onclick="buildTable();"/>
-            				<img class="indicator" src="<c:url value="/images/alphacube/progress.gif" />?${requestScope.webCacheId}" id="indicator"></td>
+            				<img class="indicator" src="<c:url value="/images/alphacube/progress.gif" />?${requestScope.webCacheId}" id="indicator">
             		</td>
             	</tr>
          </table>	

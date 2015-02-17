@@ -254,8 +254,7 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
         return integrationLogDetailsDTO;
     }
     
-    public Map<String,List<IntegrationLog>> groupIntegrationLogsBasedOnCorrelationId(List<IntegrationLog> integreationLogs){
-    	
+    private Map<String,List<IntegrationLog>> groupIntegrationLogsBasedOnCorrelationId(List<IntegrationLog> integreationLogs){	
     	Map<String,List<IntegrationLog>> map = new LinkedHashMap<String,List<IntegrationLog>>();
 		for(IntegrationLog intlog:integreationLogs){
 			if(!map.keySet().contains(intlog.getCorrelationId())){
@@ -319,6 +318,7 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
     	if(serviceName.equalsIgnoreCase("GetMergedOrganization")) return "mergedorganization";
     	if(serviceName.equalsIgnoreCase("GetAgentDoseUOMLOV")) return "agentDoseUOM";
     	if(serviceName.equalsIgnoreCase("OPENParticipantService")) return "participant";
+    	if(serviceName.equalsIgnoreCase("SAEEvaluationService")) return "SAEEvaluationService";
 
         return null;
     }
