@@ -84,12 +84,16 @@ public class ReportVersionRepository {
         Report report = reportVersion.getReport();
         String createdDateAndTime = DateUtils.formatDate(report.getAeReport().getCreatedAt(), "yyyyMMddHHmmss");
         Map<String, String> replacementMap = new HashMap<String, String>();
+        String submiterEmail = "caaers@gmail.com";
+        if(report.getSubmitter() != null) {
+        	submiterEmail = report.getSubmitter().getEmailAddress();
+        }
         replacementMap.put("${reportId}",  "" + report.getId());
         replacementMap.put("${aeReportId}",  "" + report.getAeReport().getId());
         replacementMap.put("${protocolId}",  report.getAeReport().getStudy().getPrimaryIdentifierValue());
         replacementMap.put("${subjectId}",   report.getAeReport().getParticipant().getPrimaryIdentifierValue());
         replacementMap.put("${messageComboId}", report.getCaseNumber() + "::" + createdDateAndTime);
-        replacementMap.put("${submitterEmail}", report.getSubmitter().getEmailAddress());
+        replacementMap.put("${submitterEmail}", submiterEmail);
 
         String xmlMessage =  responseXMLTemplate;
         for(Map.Entry<String, String> entry : replacementMap.entrySet()) {
