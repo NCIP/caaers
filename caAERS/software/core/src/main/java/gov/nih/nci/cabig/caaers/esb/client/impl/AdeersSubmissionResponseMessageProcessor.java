@@ -60,7 +60,13 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
 
         String jobStatus = childNodeValue(jobInfo, adeersNS, "reportStatus");
 
-        Report r = reportDao.getById(Integer.parseInt(reportId));
+        Report r = null;
+        try {
+        	r =reportDao.getById(Integer.parseInt(reportId));
+        } catch (Exception e) {
+        	//number format exception, report not found, etc. Doesn't matter report will just be null.
+        	r = null;
+        }
         
         //FIXME: When updating Caaers to send to multiple systems the below must also be changed.
         //Can just use the first system as that is the only one that is used.
