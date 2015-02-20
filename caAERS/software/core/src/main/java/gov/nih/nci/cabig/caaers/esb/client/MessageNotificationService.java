@@ -130,7 +130,17 @@ public class MessageNotificationService {
                     String aeReportId, String reportId, boolean success, String ticketNumber,
                     String url,boolean communicationError) throws Exception {
 
-        Report report = reportDao.getById(Integer.parseInt(reportId));
+    	int repId = 0;
+    	try {
+    		repId = Integer.parseInt(reportId);
+    	} catch (NumberFormatException nfe) {
+    		log.fatal("Can't find report for notifing reporter.", nfe);
+    		return;
+    	} catch (NullPointerException npe) {
+    		log.fatal("Nullpointer excption while trying to notify reporter.", npe);
+    		return;
+    	}
+        Report report = reportDao.getById(repId);
         reportDao.initialize(report.getScheduledNotifications());
         ReportVersion reportVersion = report.getLastVersion();
 
