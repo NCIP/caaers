@@ -13,9 +13,13 @@ import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersionDTO;
 import gov.nih.nci.cabig.caaers.esb.client.ResponseMessageProcessor;
+import gov.nih.nci.cabig.caaers.scheduler.runtime.job.ReportStatusResetJob;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
+
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
@@ -30,6 +34,8 @@ import java.util.*;
  * The Class ReportVersionRepository.
  */
 public class ReportVersionRepository {
+	
+	private static final Log log = LogFactory.getLog(ReportVersionRepository.class);
 
     /** The report version dao. */
     private ReportVersionDao reportVersionDao;
@@ -88,6 +94,7 @@ public class ReportVersionRepository {
         if(report.getSubmitter() != null) {
         	submiterEmail = report.getSubmitter().getEmailAddress();
         }
+        
         replacementMap.put("${reportId}",  "" + report.getId());
         replacementMap.put("${aeReportId}",  "" + report.getAeReport().getId());
         replacementMap.put("${protocolId}",  report.getAeReport().getStudy().getPrimaryIdentifierValue());
@@ -95,6 +102,14 @@ public class ReportVersionRepository {
         replacementMap.put("${messageComboId}", report.getCaseNumber() + "::" + createdDateAndTime);
         replacementMap.put("${submitterEmail}", submiterEmail);
 
+        if(StringUtils.isBlank(replacementMap.get("${reportId}")) ) {
+        	log.error("The Report ID for the stuck report is null! ReportVersionId: " + reportVersion.getId());
+        }
+        
+        if(StringUtils.isBlank(replacementMap.get("${aeReportId}")) ) {
+        	log.error("The AE Report ID for the stuck report is null! ReportVersionId: " + reportVersion.getId());
+        }
+        
         String xmlMessage =  responseXMLTemplate;
         for(Map.Entry<String, String> entry : replacementMap.entrySet()) {
            xmlMessage =  StringUtils.replace(xmlMessage, entry.getKey(), entry.getValue());
