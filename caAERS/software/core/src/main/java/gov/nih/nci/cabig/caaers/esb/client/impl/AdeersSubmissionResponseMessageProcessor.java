@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
 import gov.nih.nci.cabig.caaers.esb.client.ResponseMessageProcessor;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
+import gov.nih.nci.logging.api.util.StringUtils;
 
 import java.util.List;
 import java.util.Locale;
@@ -59,6 +60,10 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
         log.debug("Submitter email : " + submitterEmail);
 
         String jobStatus = childNodeValue(jobInfo, adeersNS, "reportStatus");
+        log.debug("JobStatus: " + jobStatus);
+        if(StringUtils.isBlank(jobStatus)) {
+        	jobStatus= "ERROR";
+        }
 
         Report r = null;
         try {
@@ -79,7 +84,7 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
         // build error messages
         StringBuffer sb = new StringBuffer();
 
-        boolean success = true;
+        boolean success = false;
         boolean communicationError = false;
         String ticketNumber = "";
         String url = "";
@@ -87,7 +92,7 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
         try {
 
             if (jobStatus.equals("SUCCESS")) {
-            	
+            	 success = true;
             	 ticketNumber = childNodeValue(jobInfo, adeersNS, "ticketNumber");
                  url = childNodeValue(jobInfo, adeersNS, "reportURL");
                  
@@ -102,7 +107,6 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
     				 .getParticipant().getPrimaryIdentifierValue(), r.getCaseNumber(),String.valueOf(r.getId()),ticketNumber, configuration.get(Configuration.SYSTEM_NAME)}, Locale.getDefault());
             	sb.append(reportDetails);
             }else{
-            	 success = false;
             	 @SuppressWarnings("unchecked")
 				List<Element> exceptions = jobInfo.getChildren("jobExceptions", adeersNS);
             	 //find the exception elements

@@ -58,10 +58,10 @@ public class ReportVersionRepository {
             if (submittedOrAmendedDate != null) {
                 long timeDiff = (nowFactory.getNowTimestamp().getTime() - rv.getSubmittedOn().getTime()) / 60000;
                 if (timeDiff > 5) {
+                	sendFailureXMLMessage(rv);
                     rv.setReportStatus(ReportStatus.FAILED);
                     rv.setSubmissionMessage("Submission failed for unknown reason , Please resubmit");
                     reportVersionDao.save(rv);
-                    sendFailureXMLMessage(rv);
                 }
 
             }
@@ -90,7 +90,7 @@ public class ReportVersionRepository {
         Report report = reportVersion.getReport();
         String createdDateAndTime = DateUtils.formatDate(report.getAeReport().getCreatedAt(), "yyyyMMddHHmmss");
         Map<String, String> replacementMap = new HashMap<String, String>();
-        String submiterEmail = "caaers@gmail.com";
+        String submiterEmail = "caaers@semanticbits.com";
         if(report.getSubmitter() != null) {
         	submiterEmail = report.getSubmitter().getEmailAddress();
         }
