@@ -32,34 +32,16 @@
 		</property>
 		<property name="jobDetails">
 			<list>
-			<ref bean="reportStatusResetJob" />
 			<ref bean="safetySignallingReportJob" /> 
 			<ref bean="unreportedAENotificationsJob" /> 
 			</list>
 		</property>
     	 <property name="triggers">
         	<list> 
-        		<ref bean="reportStatusResetTrigger" />
         		<ref bean="safetySignallingReportTrigger" /> 
         		<ref bean="unreportedAENotificationsTrigger" /> 
         	</list>
      	</property>
-	</bean>
-	
-	
-	<!--  This bean that implements the service  -->
-	<bean id="reportStatusResetJob" class="org.springframework.scheduling.quartz.JobDetailBean">
-  		<property name="jobClass" value="gov.nih.nci.cabig.caaers.scheduler.runtime.job.ReportStatusResetJob" />
-  		<property name="group" value="DEFAULT"/>
-  		<property name="name" value="reportStatusResetJob"/>
-  	</bean>
-
-	<!-- trigger every 5 minutes -->
-	<bean id="reportStatusResetTrigger" class="gov.nih.nci.cabig.caaers.scheduler.runtime.trigger.ReportStatusResetTrigger">
-	    <property name="jobName" value="reportStatusResetJob" />
-	    <property name="jobGroup" value="DEFAULT" />
-	    <property name="volatility" value="true" />
-	    <property name="misfireInstruction" value="0" />
 	</bean>
 
 	<!--  This bean that implements the service  -->

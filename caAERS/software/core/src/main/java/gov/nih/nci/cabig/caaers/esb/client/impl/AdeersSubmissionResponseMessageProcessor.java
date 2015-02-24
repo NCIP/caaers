@@ -153,7 +153,7 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
             this.getMessageNotificationService().sendNotificationToReporter(submitterEmail, messages,
                             caaersAeReportId, reportId, success, ticketNumber, url,communicationError);
         } catch (Exception e) {
-            log.error("Error while sending out  email", e);
+            log.error("Error while sending out email", e);
         }
 		
 	}

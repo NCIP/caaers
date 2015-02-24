@@ -13,16 +13,21 @@ import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersionDTO;
 import gov.nih.nci.cabig.caaers.esb.client.ResponseMessageProcessor;
-import gov.nih.nci.cabig.caaers.scheduler.runtime.job.ReportStatusResetJob;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.*;
 
 
  
@@ -32,6 +37,8 @@ import java.util.*;
 * */
 /**
  * The Class ReportVersionRepository.
+ * 
+ * This is not threadsafe, it will modify remports even as other threads might still be working on them.
  */
 public class ReportVersionRepository {
 	

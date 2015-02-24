@@ -362,15 +362,6 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
         	idText = study.getFundingSponsorIdentifierValue();
         }
         return syncStudy(UPDATE_STUDY_OPERATION_NAME, idText);
-    }
-
-	public String routeAdeersReportSubmissionResponse(String response, Report r) {
-		Map<String, String> criteriaMap = new HashMap<String, String>();
-		criteriaMap.put("routeAdeersResponse", response);
-		String message = buildMessage(r.getCaseNumber()+"##"+System.currentTimeMillis(), "caAERS", "SafetyReport", "routeReportSubmissionResponse", "sync", criteriaMap);
-		return simpleSendAndReceive(message);
-	}
-    
-    
+    }    
     
 }
