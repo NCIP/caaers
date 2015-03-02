@@ -131,7 +131,7 @@ public class ReportWithdrawalService {
     	content.append(reportDetails);
         
         // append Help Text message
-    	String helpText = messageSource.getMessage("helptext.submission.message", new Object[]{}, Locale.getDefault());
+    	String helpText = messageSource.getMessage("additional.successful.internal.reportWithdrawl.valdiction", new Object[]{}, Locale.getDefault());
     	content.append(helpText);
         
         caaersJavaMailSender.sendMail(emailRecipients.toArray(new String[0]), subjectLine, content.toString(), new String[0]);

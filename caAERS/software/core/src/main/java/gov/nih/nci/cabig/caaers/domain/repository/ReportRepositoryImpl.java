@@ -191,6 +191,7 @@ public class ReportRepositoryImpl implements ReportRepository {
         report.setDueOn(null);
         schedulerService.unScheduleNotification(report);
         save(report);
+        reportWithdrawalService.sendWithdrawEmail(report);
     }
     
 
