@@ -7,10 +7,12 @@
 package gov.nih.nci.cabig.caaers.service;
 
 import org.apache.commons.lang.StringUtils;
+
 import gov.nih.nci.cabig.caaers.api.AdeersReportGenerator;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.PersonContact;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.domain.Submitter;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
 import gov.nih.nci.cabig.caaers.esb.client.impl.CaaersAdeersMessageBroadcastServiceImpl;
@@ -124,9 +126,16 @@ public class ReportWithdrawalService {
         String subjectLine = messageSource.getMessage("withdraw.internal.success.subject", new Object[]{report.getLabel()}, Locale.getDefault());
         StringBuilder content = new StringBuilder(messageSource.getMessage("successful.internal.reportWithdraw.message", new Object[]{report.getLabel()}, Locale.getDefault()));
         // append additional report information
-    	String reportDetails = messageSource.getMessage("additional.successful.internal.reportWithdrawl.information",  new Object[] {report.getSubmitter().getFullName(), 
-    		report.getSubmitter().getEmailAddress(), report.getAeReport().getStudy().getPrimaryIdentifier().getValue(), report.getAeReport()
-			.getParticipant().getPrimaryIdentifierValue(), report.getCaseNumber(),String.valueOf(report.getId()),report.getAssignedIdentifer(),report.getLastVersion().getAmendmentNumber(),
+        final Submitter submiter = report.getSubmitter();
+        String fullName = "UNKNOWN";
+        String subEmail = "UNKNOWN";
+        if(submiter != null) {
+        	fullName = submiter.getFullName();
+        	subEmail = submiter.getEmailAddress();
+        }
+    	String reportDetails = messageSource.getMessage("additional.successful.internal.reportWithdrawl.information",  new Object[] {fullName, 
+    		subEmail, report.getAeReport().getStudy().getPrimaryIdentifier().getValue(), report.getAeReport().getParticipant().getPrimaryIdentifierValue(),
+			report.getCaseNumber(),String.valueOf(report.getId()),report.getAssignedIdentifer(),report.getLastVersion().getAmendmentNumber(),
 			configuration.get(Configuration.SYSTEM_NAME)}, Locale.getDefault());
     	content.append(reportDetails);
         
