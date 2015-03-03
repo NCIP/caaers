@@ -244,10 +244,6 @@
                 </property>
                 <property name="decisionVoters">
                     <list>
-                        <bean class="gov.nih.nci.cabig.caaers.security.SystemUserVoter">
-                            <property name="username" value="SYSTEM"/>
-                            <property name="password" value="ignoreme"/>
-                        </bean>
                         <bean class="gov.nih.nci.cabig.ctms.acegi.csm.vote.AuthorizationSwitchVoter">
                             <property name="authorizationSwitch" ref="authorizationSwitch"/>
                             <property name="requiresAuthentication" value="false"/>
