@@ -74,17 +74,15 @@ public class Tracker implements Processor{
 	public void process(Exchange exchange) throws Exception {
 		try {
             //set the properties in the exchange
+			log.debug("Logging with tracker, begin.");
             Map<String,Object> properties = exchange.getProperties();
-            String entity = properties.get(ExchangePreProcessor.ENTITY_NAME)+"";
-            String operation = properties.get(ExchangePreProcessor.OPERATION_NAME)+"";
-            String coorelationId = properties.get(ExchangePreProcessor.CORRELATION_ID)+"";
+            String entity = (String) properties.get(ExchangePreProcessor.ENTITY_NAME);
+            String operation = (String) properties.get(ExchangePreProcessor.OPERATION_NAME);
+            String coorelationId = (String) properties.get(ExchangePreProcessor.CORRELATION_ID);
             if(coorelationId == null || stage == null || entity == null || operation == null){
                 throw new RuntimeException("Cannot log in database. Required fields are missing");
             }
-            log.debug("logging with tracker");
-            if(coorelationId == null || stage == null || entity == null || operation == null){
-                throw new RuntimeException("Cannot log in database. Required fields are missing");
-            }
+
             log.debug("creating new instance of IntegrationLog with [" + coorelationId+", " + stage+", " + entity+", " + operation+", " + notes + "]");
 
             IntegrationLog integrationLog = new IntegrationLog(coorelationId, stage, entity, operation, notes);
@@ -94,8 +92,9 @@ public class Tracker implements Processor{
                     integrationLog.setNotes(status);
                 }
             }catch (Exception ignore) {
-                log.debug("Ignoring invalid XML message", ignore);
+                log.error("Ignoring invalid XML message", ignore);
             }
+            log.debug("Upating the instance of IntegrationLog with [" + coorelationId+", " + stage+", " + entity+", " + operation+", " + notes + "]");
 
             IntegrationLogDao integrationLogDao = (IntegrationLogDao)exchange.getContext().getRegistry().lookup("integrationLogDao");
             captureLogDetails(exchange, integrationLog);
@@ -103,7 +102,7 @@ public class Tracker implements Processor{
 
             integrationLogDao.save(integrationLog);
         } catch(Exception ex) {
-            log.info("Error while tracking exchange", ex);
+            log.error("Error while tracking exchange", ex);
         }
         
 	}
