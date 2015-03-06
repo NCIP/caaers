@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers2adeers.Caaers2AdeersRouteBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.commons.lang.math.RandomUtils;
 
 import static gov.nih.nci.cabig.caaers2adeers.exchnage.ExchangePreProcessor.*;
 import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.*;
@@ -37,7 +38,7 @@ public class ToCaaersReportWSRouteBuilder {
         
         routeBuilder.from("file://"+inputEDIDir+"?preMove=inprogress&move=done&moveFailed=movefailed")
             .streamCaching()
-            .setProperty(CORRELATION_ID, rb.constant(String.valueOf(System.currentTimeMillis())))
+            .setProperty(CORRELATION_ID, rb.constant(String.valueOf(System.currentTimeMillis()) + RandomUtils.randomAlphaNumberic(3)))
             .setProperty(SYNC_HEADER, rb.constant("sync"))
             .setProperty(ENTITY_NAME, rb.constant("SafetyReport"))
             .setProperty(OPERATION_NAME, rb.constant("submitSafetyReport"))
