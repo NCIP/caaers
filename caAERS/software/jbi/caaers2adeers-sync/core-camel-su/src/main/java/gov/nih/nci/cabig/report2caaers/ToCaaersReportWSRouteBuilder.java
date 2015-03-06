@@ -38,7 +38,7 @@ public class ToCaaersReportWSRouteBuilder {
         
         routeBuilder.from("file://"+inputEDIDir+"?preMove=inprogress&move=done&moveFailed=movefailed")
             .streamCaching()
-            .setProperty(CORRELATION_ID, rb.constant(String.valueOf(System.currentTimeMillis()) + RandomUtils.randomAlphaNumberic(3)))
+            .setProperty(CORRELATION_ID, rb.constant(String.valueOf(System.currentTimeMillis()) + randomAlphaNumberic(3)))
             .setProperty(SYNC_HEADER, rb.constant("sync"))
             .setProperty(ENTITY_NAME, rb.constant("SafetyReport"))
             .setProperty(OPERATION_NAME, rb.constant("submitSafetyReport"))
@@ -131,6 +131,12 @@ public class ToCaaersReportWSRouteBuilder {
 		this.outputEDIDir = outputEDIDir;
 	}
 	
-	
+	private String randomAlphaNumberic(int length) {
+		String str ="";
+		for (int i =0; i < length; i++) {
+			str += Character.toChars(RandomUtils.nextInt(25) + 65);
+		}
+		return str;
+	}
 	
 }
