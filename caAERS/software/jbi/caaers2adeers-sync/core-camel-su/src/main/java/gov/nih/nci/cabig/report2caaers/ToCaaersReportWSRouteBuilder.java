@@ -44,9 +44,6 @@ public class ToCaaersReportWSRouteBuilder {
             .processRef("headerGeneratorProcessor")
             .process(track(REQUEST_RECEIVED))
                 .to(rb.getFileTracker().fileURI(REQUEST_RECEIVED))
-            .convertBodyTo(String.class, "UTF-8")
-        	.convertBodyTo(byte[].class, "Windows-1252")
-        	.convertBodyTo(String.class, "UTF-8")
         	.to("log:gov.nih.nci.cabig.report2caaers.caaers-ws-request?showHeaders=true&level=TRACE")
             .processRef("removeEDIHeadersAndFootersProcessor")
             .process(track(E2B_SUBMISSION_REQUEST_RECEIVED, msgComboIdPaths))
@@ -92,9 +89,10 @@ public class ToCaaersReportWSRouteBuilder {
         //also, if submit safety report is processed successfully or successfully submitted to AdEERS, then E2B ack will not be sent
         routeBuilder.from("direct:processedE2BMessageSink")
 			.to("log:gov.nih.nci.cabig.report2caaers.caaers-ws-request?showHeaders=true&level=WARN")
-			.choice()
-                .when().xpath("/ichicsrack/acknowledgment/messageacknowledgment/parsingerrormessage", nss)
-                	.to("direct:sendE2BAckSink");
+			.to("direct:sendE2BAckSink");
+			//.choice()
+            //    .when().xpath("/ichicsrack/acknowledgment/messageacknowledgment/parsingerrormessage", nss)
+            //    	.to("direct:sendE2BAckSink");
 
         routeBuilder.from("direct:sendE2BAckSink")
 			.processRef("addEDIHeadersAndFootersProcessor")
