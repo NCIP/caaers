@@ -89,10 +89,9 @@ public class ToCaaersReportWSRouteBuilder {
         //also, if submit safety report is processed successfully or successfully submitted to AdEERS, then E2B ack will not be sent
         routeBuilder.from("direct:processedE2BMessageSink")
 			.to("log:gov.nih.nci.cabig.report2caaers.caaers-ws-request?showHeaders=true&level=WARN")
-			.to("direct:sendE2BAckSink");
-			//.choice()
-            //    .when().xpath("/ichicsrack/acknowledgment/messageacknowledgment/parsingerrormessage", nss)
-            //    	.to("direct:sendE2BAckSink");
+			.choice()
+                .when().xpath("/ichicsrack/acknowledgment/messageacknowledgment/parsingerrormessage", nss)
+                	.to("direct:sendE2BAckSink");
 
         routeBuilder.from("direct:sendE2BAckSink")
 			.processRef("addEDIHeadersAndFootersProcessor")
