@@ -134,7 +134,7 @@ public class ToCaaersReportWSRouteBuilder {
 	private String randomAlphaNumberic(int length) {
 		String str ="";
 		for (int i =0; i < length; i++) {
-			str += Character.toChars(RandomUtils.nextInt(25) + 65);
+			str += String.copyValueOf(Character.toChars(RandomUtils.nextInt(25) + 65));
 		}
 		return str;
 	}
