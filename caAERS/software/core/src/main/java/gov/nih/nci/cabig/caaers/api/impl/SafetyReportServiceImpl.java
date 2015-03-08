@@ -45,6 +45,7 @@ import gov.nih.nci.cabig.caaers.validation.ValidationError;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -228,6 +229,8 @@ public class SafetyReportServiceImpl {
      * @return
      */
     public Report createReport(Report report, ExpeditedAdverseEventReport aeReport){
+        Date gradedDate =  AdverseEventReportingPeriod.findEarliestGradedDate(aeReport.getUnReportedAdverseEvents());
+        report.getReportDefinition().setBaseDate(gradedDate);
         Report newReport = reportRepository.createReport(report.getReportDefinition(), aeReport) ;
         newReport.copy(report);
         reportRepository.save(newReport);
@@ -519,7 +522,8 @@ public class SafetyReportServiceImpl {
      * @return
      */
     @Transactional(readOnly=false)
-    public CaaersServiceResponse initiateSafetyReportAction(BaseAdverseEventReport baseAadverseEventReport) throws Exception {
+    public CaaersServiceResponse
+    initiateSafetyReportAction(BaseAdverseEventReport baseAadverseEventReport) throws Exception {
         CaaersServiceResponse caaersServiceResponse = Helper.createResponse();
         
         ValidationErrors errors = new ValidationErrors();
