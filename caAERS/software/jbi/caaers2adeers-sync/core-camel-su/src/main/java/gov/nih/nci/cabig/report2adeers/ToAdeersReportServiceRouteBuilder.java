@@ -29,6 +29,7 @@ public class ToAdeersReportServiceRouteBuilder {
             .setProperty(CORRELATION_ID, XPathBuilder.xpath("/AdverseEventReport/CORRELATION_ID", String.class))
             .setProperty(ENTITY_NAME, rb.constant("SafetyReport"))
             .processRef("headerGeneratorProcessor")
+            .to("log:gov.nih.nci.cabig.report2adeers.split-path?showHeaders=true&multiline=true&level=DEBUG")
             .choice()
                 .when(rb.header(REPORT_WITHDRAW).isEqualTo("true"))
                     .to("direct:submit-report")
