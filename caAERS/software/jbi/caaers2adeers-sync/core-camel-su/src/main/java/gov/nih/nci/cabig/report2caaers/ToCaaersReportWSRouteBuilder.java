@@ -10,7 +10,7 @@ import gov.nih.nci.cabig.caaers2adeers.Caaers2AdeersRouteBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.commons.lang.math.RandomUtils;
+import gov.nih.nci.cabig.caaers2adeers.exchange.CorrelationIdBean;
 
 import static gov.nih.nci.cabig.caaers2adeers.exchnage.ExchangePreProcessor.*;
 import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.*;
@@ -38,7 +38,7 @@ public class ToCaaersReportWSRouteBuilder {
         
         routeBuilder.from("file://"+inputEDIDir+"?preMove=inprogress&move=done&moveFailed=movefailed")
             .streamCaching()
-            .setProperty(CORRELATION_ID, rb.constant(String.valueOf(System.currentTimeMillis()) + randomAlphaNumberic(3)))
+            .setProperty(CORRELATION_ID, rb.method(CorrelationIdBean.class, "getId")
             .setProperty(SYNC_HEADER, rb.constant("sync"))
             .setProperty(ENTITY_NAME, rb.constant("SafetyReport"))
             .setProperty(OPERATION_NAME, rb.constant("submitSafetyReport"))
@@ -129,14 +129,6 @@ public class ToCaaersReportWSRouteBuilder {
 
 	public void setOutputEDIDir(String outputEDIDir) {
 		this.outputEDIDir = outputEDIDir;
-	}
-	
-	private String randomAlphaNumberic(int length) {
-		String str ="";
-		for (int i =0; i < length; i++) {
-			str += String.copyValueOf(Character.toChars(RandomUtils.nextInt(25) + 65));
-		}
-		return str;
 	}
 	
 }
