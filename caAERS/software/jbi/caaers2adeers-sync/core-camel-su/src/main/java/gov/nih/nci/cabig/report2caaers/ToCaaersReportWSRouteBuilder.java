@@ -69,7 +69,7 @@ public class ToCaaersReportWSRouteBuilder {
                 	.to("direct:processE2B");
 
         routeBuilder.from("direct:processE2B")
-        	.to("log:gov.nih.nci.cabig.report2caaers.post-validation?showHeaders=true&level=TRACE")
+        	.to("log:gov.nih.nci.cabig.report2caaers.post-validation?showHeaders=true&level=DEBUG")
         	.processRef("resetOriginalMessageProcessor")
             .processRef("headerGeneratorProcessor")
             .process(track(ROUTED_TO_CAAERS_WS_INVOCATION_CHANNEL))
@@ -89,7 +89,7 @@ public class ToCaaersReportWSRouteBuilder {
         //if it is saveSafetyReportResponse, then E2B ack will not be sent
         //also, if submit safety report is processed successfully or successfully submitted to AdEERS, then E2B ack will not be sent
         routeBuilder.from("direct:processedE2BMessageSink")
-			.to("log:gov.nih.nci.cabig.report2caaers.caaers-ws-request?showHeaders=true&level=WARN")
+			.to("log:gov.nih.nci.cabig.report2caaers.caaers-ws-request-end?showHeaders=true&level=WARN")
 			.choice()
                 .when().xpath("/ichicsrack/acknowledgment/messageacknowledgment/parsingerrormessage", nss)
                 	.to("direct:sendE2BAckSink");
