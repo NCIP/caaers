@@ -2128,7 +2128,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     public List<AdverseEvent> getUnReportedAdverseEvents() {
         List<AdverseEvent> aes  = new ArrayList<AdverseEvent>();
         for(AdverseEvent ae : getActiveAdverseEvents()) {
-            if(BooleanUtils.isFalse(ae.getReported())) aes.add(ae);
+            if(!BooleanUtils.isTrue(ae.getReported())) aes.add(ae);
         }
         return aes;
     }
