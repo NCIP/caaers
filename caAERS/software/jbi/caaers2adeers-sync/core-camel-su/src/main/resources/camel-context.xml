@@ -70,6 +70,7 @@
     </bean>
     
     <bean id="headerGeneratorProcessor" class="gov.nih.nci.cabig.caaers2adeers.exchnage.HeaderGeneratorProcessor"/>
+    <bean id="adeersHeaderGeneratorProcessor" class="gov.nih.nci.cabig.caaers2adeers.exchnage.AdeersHeaderGeneratorProcessor"/>
     <bean id="exchangePreProcessor" class="gov.nih.nci.cabig.caaers2adeers.exchnage.ExchangePreProcessor">
         <property name="caaersWSUser" value="s[CAAERS_WS_USERNAME]" />
         <property name="caaersWSPassword" value="s[CAAERS_WS_PASSWORD]" />
