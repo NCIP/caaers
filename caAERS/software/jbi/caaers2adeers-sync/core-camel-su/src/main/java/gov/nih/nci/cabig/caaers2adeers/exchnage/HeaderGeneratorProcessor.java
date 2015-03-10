@@ -25,8 +25,8 @@ public class HeaderGeneratorProcessor implements Processor {
 
     public void process(Exchange exchange) throws Exception {
         Map<String,Object> headers = exchange.getIn().getHeaders();
-        if(!headers.containsKey(CORRELATION_ID)) {
-        	headers.put(CORRELATION_ID, makeCorrelationId());
+        if(!exchange.getProperties().containsKey(CORRELATION_ID)) {
+        	exchange.setProperty(CORRELATION_ID, makeCorrelationId());
         }
         for(Map.Entry<String, Object> e : exchange.getProperties().entrySet()){
             if(e.getKey().startsWith("c2a_")) headers.put(e.getKey(), e.getValue());
