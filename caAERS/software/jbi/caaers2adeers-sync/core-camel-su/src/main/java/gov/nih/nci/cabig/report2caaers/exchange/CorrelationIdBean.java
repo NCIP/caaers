@@ -5,7 +5,7 @@ import org.apache.commons.lang.math.RandomUtils;
 public class CorrelationIdBean {
 	
 	public String getId() {
-		return String.valueOf(System.currentTimeMillis()) + randomAlphaNumberic(3));
+		return String.valueOf(System.currentTimeMillis()) + randomAlphaNumberic(3);
 	}
 	
 	private String randomAlphaNumberic(int length) {
