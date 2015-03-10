@@ -38,7 +38,7 @@ public class ToCaaersReportWSRouteBuilder {
         
         routeBuilder.from("file://"+inputEDIDir+"?preMove=inprogress&move=done&moveFailed=movefailed")
             .streamCaching()
-            .setProperty(CORRELATION_ID, rb.method(CorrelationIdBean.class, "getId"))
+            //.setProperty(CORRELATION_ID, rb.method(CorrelationIdBean.class, "getId"))
             .setProperty(SYNC_HEADER, rb.constant("sync"))
             .setProperty(ENTITY_NAME, rb.constant("SafetyReport"))
             .setProperty(OPERATION_NAME, rb.constant("submitSafetyReport"))
