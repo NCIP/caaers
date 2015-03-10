@@ -15,7 +15,7 @@ public class ToAdeersReportServiceRouteBuilder {
 
 
     public void configure(Caaers2AdeersRouteBuilder rb){
-        rb.from("jbi:endpoint:urn:gov:nih:nci:caaers:jmsIn:consumer")
+        rb.from("jbi:endpoint:urn:gov:nih:nci:caaers:jmsIn")
             .streamCaching()
             .to("log:gov.nih.nci.cabig.report2adeers.first-request?showHeaders=true&multiline=true&level=ERROR")
             .setProperty(OPERATION_NAME, rb.constant("sendReportToAdeers"))

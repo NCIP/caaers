@@ -25,19 +25,18 @@
        xmlns:caaers="urn:gov:nih:nci:caaers">
 
     <jms:provider service="caaers:jmsOut"
-                  endpoint="provider"
                   destinationName="adeers-ae-message.outputQueue"
                   connectionFactory="#pooledConnectionFactory" />
 
 
     <jms:provider service="caaers:jmsIn"
-                  endpoint="provider"
                   destinationName="adeers-ae-message.inputQueue"
+                  concurrentConsumers="3"
                   connectionFactory="#pooledConnectionFactory" />
 
-    <jms:consumer service="caaers:jmsIn"
-                  endpoint="consumer"
+    <jms:consumer endpoint="caaers:jmsIn"
                   destinationName="adeers-ae-message.inputQueue"
+                  concurrentConsumers="3"
                   connectionFactory="#pooledConnectionFactory"
                   targetService="caaers:jmsIn"
                   targetEndpoint="consumer" />
@@ -49,13 +48,13 @@
 
     <bean id="pooledConnectionFactory"
     class="org.apache.activemq.pool.PooledConnectionFactory" init-method="start" destroy-method="stop">
-    <property name="maxConnections" value="4" />
+    <property name="maxConnections" value="6" />
     <property name="connectionFactory" ref="jmsConnectionFactory" />
     </bean>
 
     <bean id="jmsConfig" class="org.apache.camel.component.jms.JmsConfiguration">
     <property name="connectionFactory" ref="pooledConnectionFactory"/>
-    <property name="concurrentConsumers" value="4"/>
+    <property name="concurrentConsumers" value="6"/>
     </bean>
 
     <bean id="activemq"
