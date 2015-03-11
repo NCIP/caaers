@@ -17,10 +17,6 @@
     limitations under the License.
 
 -->
-
-
-
-
 <beans xmlns:jms="http://servicemix.apache.org/jms/1.0"
        xmlns:caaers="urn:gov:nih:nci:caaers">
 
