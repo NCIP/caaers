@@ -25,16 +25,19 @@
        xmlns:caaers="urn:gov:nih:nci:caaers">
 
     <jms:provider service="caaers:jmsOut"
+                  endpoint="provider"
                   destinationName="adeers-ae-message.outputQueue"
                   connectionFactory="#pooledConnectionFactory" />
 
 
     <jms:provider service="caaers:jmsIn"
+                  endpoint="consumer"
                   destinationName="adeers-ae-message.inputQueue"
                   concurrentConsumers="3"
                   connectionFactory="#pooledConnectionFactory" />
 
-    <jms:consumer endpoint="caaers:jmsIn"
+    <jms:consumer service="caaers:jmsIn"
+                  endpoint="consumer"
                   destinationName="adeers-ae-message.inputQueue"
                   concurrentConsumers="3"
                   connectionFactory="#pooledConnectionFactory"
