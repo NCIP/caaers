@@ -29,7 +29,6 @@
     <jms:provider service="caaers:jmsIn"
                   endpoint="consumer"
                   destinationName="adeers-ae-message.inputQueue"
-                  concurrentConsumers="3"
                   connectionFactory="#pooledConnectionFactory" />
 
     <jms:consumer service="caaers:jmsIn"
