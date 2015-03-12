@@ -39,9 +39,7 @@
                   endpoint="consumer"
                   destinationName="adeers-ae-message.inputQueue"
                   concurrentConsumers="3"
-                  connectionFactory="#pooledConnectionFactory"
-                  targetService="caaers:jmsIn"
-                  targetEndpoint="consumer" />
+                  connectionFactory="#pooledConnectionFactory" />
 
     <beans:bean id="jmsConnectionFactory"
                 class="org.apache.activemq.ActiveMQConnectionFactory">
