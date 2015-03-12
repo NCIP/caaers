@@ -20,7 +20,10 @@
 <beans:beans xmlns:jms="http://servicemix.apache.org/jms/1.0"
        xmlns:caaers="urn:gov:nih:nci:caaers"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:beans="http://www.springframework.org/schema/beans">
+       xmlns:beans="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       					   http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       					   http://servicemix.apache.org/schema/servicemix-jms-3.3.xsd">
 
     <jms:provider service="caaers:jmsOut"
                   endpoint="provider"
