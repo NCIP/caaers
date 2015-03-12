@@ -17,10 +17,10 @@
     limitations under the License.
 
 -->
-<beans xmlns:jms="http://servicemix.apache.org/jms/1.0"
+<beans:beans xmlns:jms="http://servicemix.apache.org/jms/1.0"
        xmlns:caaers="urn:gov:nih:nci:caaers"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+       xmlns:beans="http://www.springframework.org/schema/beans">
 
     <jms:provider service="caaers:jmsOut"
                   endpoint="provider"
@@ -41,36 +41,37 @@
                   targetService="caaers:jmsIn"
                   targetEndpoint="consumer" />
 
-    <bean id="jmsConnectionFactory"
-    class="org.apache.activemq.ActiveMQConnectionFactory">
-    <property name="brokerURL" value="s[inbound.jms.brokerURL]" />
-    </bean>
+    <beans:bean id="jmsConnectionFactory"
+                class="org.apache.activemq.ActiveMQConnectionFactory">
+    	<beans:property name="brokerURL" value="s[inbound.jms.brokerURL]" />
+    </beans:bean>
 
-    <bean id="pooledConnectionFactory"
-    class="org.apache.activemq.pool.PooledConnectionFactory" init-method="start" destroy-method="stop">
-    <property name="maxConnections" value="6" />
-    <property name="connectionFactory" ref="jmsConnectionFactory" />
-    </bean>
+    <beans:bean id="pooledConnectionFactory"
+                class="org.apache.activemq.pool.PooledConnectionFactory" 
+                init-method="start" destroy-method="stop">
+    	<beans:property name="maxConnections" value="6" />
+    	<beans:property name="connectionFactory" ref="jmsConnectionFactory" />
+    </beans:bean>
 
-    <bean id="jmsConfig" class="org.apache.camel.component.jms.JmsConfiguration">
-    <property name="connectionFactory" ref="pooledConnectionFactory"/>
-    <property name="concurrentConsumers" value="6"/>
-    </bean>
+    <beans:bean id="jmsConfig" class="org.apache.camel.component.jms.JmsConfiguration">
+    	<beans:property name="connectionFactory" ref="pooledConnectionFactory"/>
+    	<beans:property name="concurrentConsumers" value="6"/>
+    </beans:bean>
 
-    <bean id="activemq"
+    <beans:bean id="activemq"
     class="org.apache.activemq.camel.component.ActiveMQComponent">
-    <property name="configuration" ref="jmsConfig"/>
-    </bean>
+    <beans:property name="configuration" ref="jmsConfig"/>
+    </beans:bean>
 
-    <bean id="propertyConfigurer"
+    <beans:bean id="propertyConfigurer"
           class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="location">
-            <value>classpath:caxchange.properties</value>
-        </property>
-        <property name="placeholderPrefix"><value>s[</value></property>
-        <property name="placeholderSuffix"><value>]</value></property>
-        <property name="ignoreResourceNotFound"><value>false</value></property>
-        <property name="ignoreUnresolvablePlaceholders"><value>true</value></property>
-    </bean>
+        <beans:property name="location">
+            <beans:value>classpath:caxchange.properties</beans:value>
+        </beans:property>
+        <beans:property name="placeholderPrefix"><beans:value>s[</beans:value></beans:property>
+        <beans:property name="placeholderSuffix"><beans:value>]</beans:value></beans:property>
+        <beans:property name="ignoreResourceNotFound"><beans:value>false</beans:value></beans:property>
+        <beans:property name="ignoreUnresolvablePlaceholders"><beans:value>true</beans:value></beans:property>
+    </beans:bean>
 
-</beans>
+</beans:beans>
