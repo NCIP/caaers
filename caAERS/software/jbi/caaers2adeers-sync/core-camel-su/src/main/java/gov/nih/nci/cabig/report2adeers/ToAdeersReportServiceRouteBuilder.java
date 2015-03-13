@@ -15,7 +15,7 @@ public class ToAdeersReportServiceRouteBuilder {
 
 
     public void configure(Caaers2AdeersRouteBuilder rb){
-        rb.from("direct:JMSsendToAdeers")
+        rb.from("activemq:queue:gov:nih:nci:caaers:jmsOut:submitReport")
             .streamCaching()
             .to("log:gov.nih.nci.cabig.report2adeers.first-request?showHeaders=true&multiline=true&level=ERROR")
             .setProperty(OPERATION_NAME, rb.constant("sendReportToAdeers"))
@@ -56,7 +56,7 @@ public class ToAdeersReportServiceRouteBuilder {
             .process(track(REPORT_SUBMISSION_RESPONSE))
                 .to(rb.getFileTracker().fileURI(REPORT_SUBMISSION_RESPONSE))
             .to("log:gov.nih.nci.cabig.report2adeers.pre-multicast?showHeaders=true&multiline=true&level=WARN")
-            .to("jbi:endpoint:urn:gov:nih:nci:caaers:jmsOut:provider", "direct:routeAdEERSResponseSink");
+            .to("activemq:queue:gov:nih:nci:caaers:jmsOut:returnReport", "direct:routeAdEERSResponseSink");
 
         rb.from("direct:adeers-response")
             .to("xslt:xslt/adeers/response/report-transformer.xsl")
@@ -69,7 +69,7 @@ public class ToAdeersReportServiceRouteBuilder {
 
         rb.from("direct:toJms")
                 .to("log:gov.nih.nci.cabig.report2adeers.to-caaers-jms?showHeaders=true&multiline=true&level=WARN")
-                .to("jbi:endpoint:urn:gov:nih:nci:caaers:jmsOut:provider");
+                .to("activemq:queue:gov:nih:nci:caaers:jmsOut:returnReport");
 
         rb.from("direct:toE2bAck")
                 .to("log:gov.nih.nci.cabig.report2adeers.to-e2b-ack?showHeaders=true&multiline=true&level=WARN")

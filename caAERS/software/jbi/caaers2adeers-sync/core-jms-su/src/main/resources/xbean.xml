@@ -24,24 +24,6 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
                            http://servicemix.apache.org/jms/1.0 http://servicemix.apache.org/jms/1.0/servicemix-jms.xsd">
 
-    <jms:provider service="caaers:jmsOut"
-                  endpoint="provider"
-                  destinationName="adeers-ae-message.outputQueue"
-                  connectionFactory="#pooledConnectionFactory" />
-
-
-    <jms:provider service="caaers:jmsIn"
-                  endpoint="provider"
-                  destinationName="adeers-ae-message.inputQueue"
-                  connectionFactory="#pooledConnectionFactory" />
-
-    <jms:consumer service="caaers:jmsIn"
-                  endpoint="JMSsendToAdeers"
-                  destinationName="adeers-ae-message.inputQueue"
-                  concurrentConsumers="3"
-                  connectionFactory="#pooledConnectionFactory"
-                  targetService="core-camel-su"/>
-
     <beans:bean id="jmsConnectionFactory"
                 class="org.apache.activemq.ActiveMQConnectionFactory">
     	<beans:property name="brokerURL" value="s[inbound.jms.brokerURL]" />
