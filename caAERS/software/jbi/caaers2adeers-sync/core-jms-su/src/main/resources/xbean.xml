@@ -39,7 +39,8 @@
                   endpoint="JMSsendToAdeers"
                   destinationName="adeers-ae-message.inputQueue"
                   concurrentConsumers="3"
-                  connectionFactory="#pooledConnectionFactory"/>
+                  connectionFactory="#pooledConnectionFactory"
+                  targetService="core-camel-su"/>
 
     <beans:bean id="jmsConnectionFactory"
                 class="org.apache.activemq.ActiveMQConnectionFactory">
