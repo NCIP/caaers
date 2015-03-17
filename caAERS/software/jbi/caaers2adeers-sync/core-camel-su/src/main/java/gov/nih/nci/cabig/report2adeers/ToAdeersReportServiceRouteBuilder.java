@@ -15,7 +15,7 @@ public class ToAdeersReportServiceRouteBuilder {
 
 
     public void configure(Caaers2AdeersRouteBuilder rb){
-        rb.from("activemq:adeers-ae-message.inputQueue")
+        rb.from("activemq:adeers-ae-message.inputQueue?concurrentConsumers=5&asyncConsumer=true")
             .streamCaching()
             .to("log:gov.nih.nci.cabig.report2adeers.first-request?showHeaders=true&multiline=true&level=ERROR")
             .setProperty(OPERATION_NAME, rb.constant("sendReportToAdeers"))
