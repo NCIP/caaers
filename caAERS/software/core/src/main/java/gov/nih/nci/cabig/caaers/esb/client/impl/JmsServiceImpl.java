@@ -55,39 +55,6 @@ public class JmsServiceImpl implements MessageListener {
         this.messageConsumer = messageConsumer;
     }
 
-    /*
-    public void sendJms(String xml) throws BroadcastException {
- 
-        try {
-            initialize();
-            TextMessage message = session.createTextMessage();
-            System.out.println("XML Payload....");
-            message.setText(xml);
-
-             //Send a non-text control message indicating end of messages.
-
-            System.out.println("sending jms....");
-            producer.send(message);
-            System.out.println("jms sent....");
-        } catch (javax.jms.IllegalStateException e) {
-            // System.out.print("IN EXCEPTION ...");
-
-            // throw new BroadcastException(e.getMessage(),e);
-            // If service server is restarted the created session will get corrupted.
-            // Client uses the corrupted session , so create a new session.
-            session = null;
-            try {
-                initialize();
-                sendJms(xml);
-            } catch (JMSException e1) {
-                throw new BroadcastException(e1.getMessage(), e1);
-            }
-        } catch (JMSException e) {
-            // TODO Auto-generated catch block
-            throw new BroadcastException(e.getMessage(), e);
-        }
-    }
-    */
 	public void sendJms(String xml) throws BroadcastException{
          //Create sender and text message.
         try {
