@@ -28,17 +28,33 @@ public class RecommendedActionServiceImpl implements RecommendedActionService {
 
             //for the default data collection (which will be new)
             List<AdverseEvent> seriousAdverseEvents = evaluationResult.getSeriousAdverseEvents(aeReportId);
-            Date baseDate = null;
+            Date updatedDate = null;
+            Date gradedDate = null;
             if(CollectionUtils.isNotEmpty(seriousAdverseEvents)){
-                baseDate = AdverseEventReportingPeriod.findEarliestBaseDate(seriousAdverseEvents);
+                updatedDate = AdverseEventReportingPeriod.findEarliestPostSubmissionUpdatedDate(seriousAdverseEvents);
+                gradedDate = AdverseEventReportingPeriod.findEarliestGradedDate(seriousAdverseEvents);
+
             }
 
-            if(baseDate == null) baseDate = new Date();
+            if(updatedDate == null) updatedDate = new Date();
+            if(gradedDate == null) gradedDate = new Date();
 
             //join the amend, withdraw, edit and create maps.
             List<ReportDefinitionWrapper> wrappers = evaluationResult.getJoinAllMaps(aeReportId);
 
-            for(ReportDefinitionWrapper wrapper: wrappers) {
+            for(ReportDefinitionWrapper wrapper: wrappers){
+
+                //if there is already a report created from the same group. use updated date.
+                Date baseDate =  gradedDate;
+                if(wrapper.getAction() == ReportDefinitionWrapper.ActionType.CREATE){
+                    ExpeditedAdverseEventReport aeReport = aeReportIndexMap.get(aeReportId);
+                    if(aeReport != null){
+                        if(aeReport.hasExistingReportsOfSameOrganizationAndType(wrapper.getDef())){
+                            baseDate = updatedDate;
+                        }
+                    }
+                }
+
                 ReportTableRow row  = ReportTableRow.createReportTableRow(wrapper.getDef(), baseDate, wrapper.getAction());
                 row.setAeReportId(aeReportId);
 
@@ -65,33 +81,39 @@ public class RecommendedActionServiceImpl implements RecommendedActionService {
         //for every report id (including ZERO)
         for(Integer aeReportId : aeReportIndexMap.keySet()){
 
-        	//find the earliest graded date, used while evaluating the aes.
-        	//for the default data collection (which will be new)
-        	List<AdverseEvent> seriousAdverseEvents = evaluationResult.getSeriousAdverseEvents(aeReportId);
-        	Date baseDate = null;
-        	if(CollectionUtils.isNotEmpty(seriousAdverseEvents)){
-        		baseDate = AdverseEventReportingPeriod.findEarliestBaseDate(seriousAdverseEvents);
-        	} else {
-        		List<AdverseEvent> applicableAdverseEvents = evaluationResult.getAllAeMap().get(aeReportId);
-        		baseDate = AdverseEventReportingPeriod.findEarliestBaseDate(applicableAdverseEvents);
-        	}
+            //find the earliest graded date, used while evaluating the aes.
+            //for the default data collection (which will be new)
+            List<AdverseEvent> seriousAdverseEvents = evaluationResult.getSeriousAdverseEvents(aeReportId);
+            Date updatedDate = null;
+            Date gradedDate = null;
+            if(CollectionUtils.isNotEmpty(seriousAdverseEvents)){
+                updatedDate = AdverseEventReportingPeriod.findEarliestPostSubmissionUpdatedDate(seriousAdverseEvents);
+                gradedDate = AdverseEventReportingPeriod.findEarliestGradedDate(seriousAdverseEvents);
+            }else{
+                List<AdverseEvent> applicableAdverseEvents = evaluationResult.getAllAeMap().get(aeReportId);
+                updatedDate = AdverseEventReportingPeriod.findEarliestPostSubmissionUpdatedDate(applicableAdverseEvents);
+                gradedDate = AdverseEventReportingPeriod.findEarliestGradedDate(applicableAdverseEvents);
+            }
 
-        	if(baseDate == null) baseDate = new Date();
+            if(updatedDate == null) updatedDate = new Date();
+            if(gradedDate == null) gradedDate = new Date();
 
 
-        	//all report defs (load them as default)
-        	List<ReportDefinition> allReportDefs = applicableReportDefinitions.getReportDefinitions();
-        	Map<Integer, ReportTableRow> rowMap = new LinkedHashMap<Integer, ReportTableRow>();
+            //all report defs (load them as default)
+            List<ReportDefinition> allReportDefs = applicableReportDefinitions.getReportDefinitions();
+            Map<Integer, ReportTableRow> rowMap = new LinkedHashMap<Integer, ReportTableRow>();
 
 
             ExpeditedAdverseEventReport aeReport = aeReportIndexMap.get(aeReportId);
+            Date baseDate =  gradedDate;
 
             List<Report> reportsToAmendList = new ArrayList<Report>();
             List<ReportDefinitionWrapper> createAndEditWrappers = new ArrayList<ReportDefinitionWrapper>(); //needed to filter less stringent reports.
 
             //create a map, consisting of report definitions
             for(ReportDefinition rd : allReportDefs){
-            	if(aeReport != null && aeReport.hasExistingReportsOfSameOrganizationAndType(rd)) {
+                if(aeReport != null && aeReport.hasExistingReportsOfSameOrganizationAndType(rd)) {
+                    baseDate = updatedDate;
                     reportsToAmendList.addAll(aeReport.findReportsToAmmend(rd));
 
                 }
