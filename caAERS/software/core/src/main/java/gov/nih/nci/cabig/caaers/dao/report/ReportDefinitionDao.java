@@ -97,7 +97,7 @@ public class ReportDefinitionDao extends GridIdentifiableDao<ReportDefinition> i
     @SuppressWarnings("unchecked")
     public ReportDefinition getByName(String name) {
         return CollectionUtils.firstElement((List<ReportDefinition>) getHibernateTemplate().find(
-                        "from ReportDefinition t where t.name=?", new String[] { name }));
+                        "from ReportDefinition t where lower(t.name)=?", new String[] { name.toLowerCase() }));
     }
     
     
