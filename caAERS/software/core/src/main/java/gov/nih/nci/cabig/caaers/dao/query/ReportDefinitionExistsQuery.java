@@ -28,8 +28,8 @@ public class ReportDefinitionExistsQuery extends AbstractQuery {
 	
 	public void filterByName(String name){
 		if(name == null) return;
-		andWhere("rd.name like :rdname");
-		setParameter("rdname", name);
+		andWhere("lower(rd.name) like :rdname");
+		setParameter("rdname", name.toLowerCase());
 	}
 	
 	public void filterByOrganization(Organization organization){
