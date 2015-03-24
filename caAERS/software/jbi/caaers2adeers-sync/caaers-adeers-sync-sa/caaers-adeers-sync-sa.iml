@@ -17,7 +17,6 @@
     <orderEntry type="library" name="Maven: org.apache.axis:axis-jaxrpc:1.4" level="project" />
     <orderEntry type="library" name="Maven: commons-discovery:commons-discovery:0.2" level="project" />
     <orderEntry type="library" name="Maven: gov.nih.ctep:caaers-adeers-client:1.9.5" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.servicemix:servicemix-jms:2010.01" level="project" />
     <orderEntry type="module" module-name="core-camel-su" />
     <orderEntry type="library" name="Maven: org.apache.servicemix:servicemix-camel:2010.01" level="project" />
     <orderEntry type="library" name="Maven: org.apache.camel:camel-core:2.2.0" level="project" />
@@ -135,7 +134,6 @@
     <orderEntry type="module" module-name="caaers-wsbc-su" />
     <orderEntry type="library" name="Maven: commons-logging:commons-logging-api:1.1" level="project" />
     <orderEntry type="module" module-name="core-jms-su" />
-    <orderEntry type="library" name="Maven: org.apache.servicemix:servicemix-jms:2010.01" level="project" />
   </component>
 </module>
 

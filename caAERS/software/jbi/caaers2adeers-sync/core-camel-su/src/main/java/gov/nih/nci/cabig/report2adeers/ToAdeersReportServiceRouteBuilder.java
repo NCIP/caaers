@@ -2,7 +2,6 @@ package gov.nih.nci.cabig.report2adeers;
 
 import gov.nih.nci.cabig.caaers2adeers.Caaers2AdeersRouteBuilder;
 import org.apache.camel.ExchangePattern;
-import org.apache.camel.builder.xml.XPathBuilder;
 
 import static gov.nih.nci.cabig.caaers2adeers.exchnage.ExchangePreProcessor.*;
 import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.*;
@@ -16,19 +15,14 @@ public class ToAdeersReportServiceRouteBuilder {
 
 
     public void configure(Caaers2AdeersRouteBuilder rb){
-        rb.from("jbi:endpoint:urn:gov:nih:nci:caaers:jmsIn:consumer")
+        rb.from("activemq:adeers-ae-message.inputQueue?concurrentConsumers=5")
             .streamCaching()
             .to("log:gov.nih.nci.cabig.report2adeers.first-request?showHeaders=true&multiline=true&level=ERROR")
             .setProperty(OPERATION_NAME, rb.constant("sendReportToAdeers"))
-            .setProperty(REPORT_WITHDRAW, XPathBuilder.xpath("/AdverseEventReport/WITHDRAW", String.class))
-            .setProperty(AE_REPORT_ID, XPathBuilder.xpath("/AdverseEventReport/CAEERS_AEREPORT_ID", String.class))
-            .setProperty(REPORT_ID, XPathBuilder.xpath("/AdverseEventReport/CAAERSRID", String.class))
-            .setProperty(REPORT_EXTERNAL_ENDPOINT, XPathBuilder.xpath("/AdverseEventReport/EXTERNAL_SYSTEMS", String.class))
-            .setProperty(REPORT_SUBMITTER_EMAIL, XPathBuilder.xpath("/AdverseEventReport/SUBMITTER_EMAIL", String.class))
-            .setProperty(REPORT_MESSAGE_COMBO_ID, XPathBuilder.xpath("/AdverseEventReport/MESSAGE_COMBO_ID", String.class))
-            .setProperty(CORRELATION_ID, XPathBuilder.xpath("/AdverseEventReport/CORRELATION_ID", String.class))
             .setProperty(ENTITY_NAME, rb.constant("SafetyReport"))
+            .processRef("adeersHeaderGeneratorProcessor")
             .processRef("headerGeneratorProcessor")
+            .to("log:gov.nih.nci.cabig.report2adeers.split-path?showHeaders=true&multiline=true&level=DEBUG")
             .choice()
                 .when(rb.header(REPORT_WITHDRAW).isEqualTo("true"))
                     .to("direct:submit-report")
@@ -53,9 +47,7 @@ public class ToAdeersReportServiceRouteBuilder {
           .choice()
              .when(rb.header(REPORT_SUBMISSION_STATUS).isEqualTo("ERROR"))
                      .to("direct:communication-error")
-             .when(rb.header(REPORT_WITHDRAW).isEqualTo("true"))
-                     .to("direct:adeers-response")
-             .when(rb.header(REPORT_WITHDRAW).isEqualTo("false"))
+             .otherwise()
                      .to("direct:adeers-response");
 
         rb.from("direct:communication-error")
@@ -64,7 +56,7 @@ public class ToAdeersReportServiceRouteBuilder {
             .process(track(REPORT_SUBMISSION_RESPONSE))
                 .to(rb.getFileTracker().fileURI(REPORT_SUBMISSION_RESPONSE))
             .to("log:gov.nih.nci.cabig.report2adeers.pre-multicast?showHeaders=true&multiline=true&level=WARN")
-            .to("jbi:endpoint:urn:gov:nih:nci:caaers:jmsOut:provider", "direct:routeAdEERSResponseSink");
+            .to("activemq:adeers-ae-message.outputQueue", "direct:routeAdEERSResponseSink");
 
         rb.from("direct:adeers-response")
             .to("xslt:xslt/adeers/response/report-transformer.xsl")
@@ -77,7 +69,7 @@ public class ToAdeersReportServiceRouteBuilder {
 
         rb.from("direct:toJms")
                 .to("log:gov.nih.nci.cabig.report2adeers.to-caaers-jms?showHeaders=true&multiline=true&level=WARN")
-                .to("jbi:endpoint:urn:gov:nih:nci:caaers:jmsOut:provider");
+                .to("activemq:adeers-ae-message.outputQueue");
 
         rb.from("direct:toE2bAck")
                 .to("log:gov.nih.nci.cabig.report2adeers.to-e2b-ack?showHeaders=true&multiline=true&level=WARN")

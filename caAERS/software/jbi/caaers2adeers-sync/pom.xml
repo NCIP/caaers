@@ -26,7 +26,6 @@
     <module>core-camel-su</module>
     <module>adeers-wsbc-su</module>
     <module>caaers-wsbc-su</module>
-    <module>core-jms-su</module>
     <module>caaers-adeers-sync-sa</module>
 
   </modules>

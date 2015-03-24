@@ -8,10 +8,13 @@ package gov.nih.nci.cabig.caaers2adeers.exchnage;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
+import org.apache.commons.lang.math.RandomUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import java.util.Map;
+
+import static gov.nih.nci.cabig.caaers2adeers.exchnage.ExchangePreProcessor.*;
 
 /**
  * This bean will pre-process the messages
@@ -22,9 +25,24 @@ public class HeaderGeneratorProcessor implements Processor {
 
     public void process(Exchange exchange) throws Exception {
         Map<String,Object> headers = exchange.getIn().getHeaders();
+        if(!exchange.getProperties().containsKey(CORRELATION_ID)) {
+        	exchange.setProperty(CORRELATION_ID, makeCorrelationId());
+        }
         for(Map.Entry<String, Object> e : exchange.getProperties().entrySet()){
             if(e.getKey().startsWith("c2a_")) headers.put(e.getKey(), e.getValue());
         }
         if(log.isDebugEnabled()) log.debug("Headers :" + String.valueOf(exchange.getIn().getHeaders()));
     }
+    
+    public String makeCorrelationId() {
+		return String.valueOf(System.currentTimeMillis()) + randomAlphaNumberic(3);
+	}
+	
+	private String randomAlphaNumberic(int length) {
+		String str ="";
+		for (int i =0; i < length; i++) {
+			str += String.copyValueOf(Character.toChars(RandomUtils.nextInt(25) + 65));
+		}
+		return str;
+	}
 }

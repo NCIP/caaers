@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers2adeers.Caaers2AdeersRouteBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
+import gov.nih.nci.cabig.report2caaers.exchange.CorrelationIdBean;
 
 import static gov.nih.nci.cabig.caaers2adeers.exchnage.ExchangePreProcessor.*;
 import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.*;
@@ -37,16 +38,13 @@ public class ToCaaersReportWSRouteBuilder {
         
         routeBuilder.from("file://"+inputEDIDir+"?preMove=inprogress&move=done&moveFailed=movefailed")
             .streamCaching()
-            .setProperty(CORRELATION_ID, rb.constant(String.valueOf(System.currentTimeMillis())))
+            //.setProperty(CORRELATION_ID, rb.method(CorrelationIdBean.class, "getId"))
             .setProperty(SYNC_HEADER, rb.constant("sync"))
             .setProperty(ENTITY_NAME, rb.constant("SafetyReport"))
             .setProperty(OPERATION_NAME, rb.constant("submitSafetyReport"))
             .processRef("headerGeneratorProcessor")
             .process(track(REQUEST_RECEIVED))
                 .to(rb.getFileTracker().fileURI(REQUEST_RECEIVED))
-            .convertBodyTo(String.class, "UTF-8")
-        	.convertBodyTo(byte[].class, "Windows-1252")
-        	.convertBodyTo(String.class, "UTF-8")
         	.to("log:gov.nih.nci.cabig.report2caaers.caaers-ws-request?showHeaders=true&level=TRACE")
             .processRef("removeEDIHeadersAndFootersProcessor")
             .process(track(E2B_SUBMISSION_REQUEST_RECEIVED, msgComboIdPaths))
@@ -71,7 +69,7 @@ public class ToCaaersReportWSRouteBuilder {
                 	.to("direct:processE2B");
 
         routeBuilder.from("direct:processE2B")
-        	.to("log:gov.nih.nci.cabig.report2caaers.post-validation?showHeaders=true&level=TRACE")
+        	.to("log:gov.nih.nci.cabig.report2caaers.post-validation?showHeaders=true&level=DEBUG")
         	.processRef("resetOriginalMessageProcessor")
             .processRef("headerGeneratorProcessor")
             .process(track(ROUTED_TO_CAAERS_WS_INVOCATION_CHANNEL))
@@ -91,7 +89,7 @@ public class ToCaaersReportWSRouteBuilder {
         //if it is saveSafetyReportResponse, then E2B ack will not be sent
         //also, if submit safety report is processed successfully or successfully submitted to AdEERS, then E2B ack will not be sent
         routeBuilder.from("direct:processedE2BMessageSink")
-			.to("log:gov.nih.nci.cabig.report2caaers.caaers-ws-request?showHeaders=true&level=WARN")
+			.to("log:gov.nih.nci.cabig.report2caaers.caaers-ws-request-end?showHeaders=true&level=WARN")
 			.choice()
                 .when().xpath("/ichicsrack/acknowledgment/messageacknowledgment/parsingerrormessage", nss)
                 	.to("direct:sendE2BAckSink");
@@ -132,7 +130,5 @@ public class ToCaaersReportWSRouteBuilder {
 	public void setOutputEDIDir(String outputEDIDir) {
 		this.outputEDIDir = outputEDIDir;
 	}
-	
-	
 	
 }
