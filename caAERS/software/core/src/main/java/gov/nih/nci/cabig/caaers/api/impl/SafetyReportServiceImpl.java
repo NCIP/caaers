@@ -636,7 +636,7 @@ public class SafetyReportServiceImpl {
     	 baseReport.setCaseNumber(report.getCaseNumber());
          if((report.getStatus() == ReportStatus.AMENDED || report.getStatus() == ReportStatus.PENDING || report.getStatus() == ReportStatus.FAILED || 
         		 report.getStatus() == ReportStatus.INPROCESS) && report.getDueOn() != null){
-        	baseReport.setDueDate(DateUtils.getDateWithTimeZone(report.getDueOn()).toString());
+        	baseReport.setDueDate(DateUtils.formatToWSResponseDateWithTimeZone(report.getDueOn()));
          }
          // set action text https://tracker.nci.nih.gov/browse/CAAERS-6962
          baseReport.setActionText(actionType.name().substring(0, 1).toUpperCase() + 

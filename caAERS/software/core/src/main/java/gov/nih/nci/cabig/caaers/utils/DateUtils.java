@@ -24,6 +24,7 @@ public class DateUtils {
 
     public static final String DATE_PATTERN= "MM/dd/yyyy";
     public static final String WS_DATE_PATTERN= "yyyy-MM-dd'T'HH:mm:ss";
+    public static final String WS_DATE_PATTERN_WITH_TZ= "yyyy-MM-dd'T'HH:mm:ssz";
     public static final String DATE_PATTERN_WITH_TZ= "EEE MMM dd yyyy h:mm:ss a z";
     public static final String DATE_WITH_HYPHENS= "MM-dd-yyyy";
     public static final String DATE_WITH_DATETIME= "MM/dd/yyyy HH:mm";
@@ -195,8 +196,14 @@ public class DateUtils {
         return formatDate(d, WS_DATE_PATTERN);
     }
     public static String formatDate(Date d, String pattern){
-        //BJ: date formats are not thread safe. 
-    	return new SimpleDateFormat(pattern).format(d);
+    	return formatDate(d, pattern, TimeZone.getDefault());
+    }
+
+    public static String formatDate(Date d, String pattern , TimeZone tz){
+        //BJ: date formats are not thread safe.
+        SimpleDateFormat df = new SimpleDateFormat(pattern);
+        df.setTimeZone(tz);
+        return df.format(d);
     }
 
     public static Date parseDate(String strDate) throws ParseException{
@@ -328,15 +335,8 @@ public class DateUtils {
         return isValidDate(d.toString());
     }
     
-    public static Date getDateWithTimeZone(Date date){
-    	SimpleDateFormat dateFormat = new SimpleDateFormat();
-    	dateFormat.setTimeZone(TimeZone.getDefault());
-    	try {
-    		date = dateFormat.parse(dateFormat.format(date));
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-    	return date;
+    public static String formatToWSResponseDateWithTimeZone(Date date){
+        return formatDate(date, WS_DATE_PATTERN_WITH_TZ, TimeZone.getTimeZone("UTC"));
     }
 
 }
