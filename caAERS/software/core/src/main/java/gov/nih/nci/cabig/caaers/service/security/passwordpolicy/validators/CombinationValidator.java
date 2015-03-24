@@ -16,8 +16,7 @@ import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
  */
 public class CombinationValidator implements PasswordPolicyValidator {
 	
-    public boolean validate(PasswordPolicy policy, Credential credential, ValidationErrors validationErrors)
-                    throws ValidationException {
+    public boolean validate(PasswordPolicy policy, Credential credential, ValidationErrors validationErrors) {
         CombinationPolicy combinationPolicy = policy.getPasswordCreationPolicy().getCombinationPolicy();
 
         if(validateLowerCaseAlphabet(combinationPolicy, credential, validationErrors)

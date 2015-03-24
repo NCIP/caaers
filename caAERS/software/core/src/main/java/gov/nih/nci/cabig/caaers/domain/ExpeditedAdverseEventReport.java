@@ -37,6 +37,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -2121,5 +2122,14 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	}
     	
     	return null;
+    }
+
+    @Transient
+    public List<AdverseEvent> getUnReportedAdverseEvents() {
+        List<AdverseEvent> aes  = new ArrayList<AdverseEvent>();
+        for(AdverseEvent ae : getActiveAdverseEvents()) {
+            if(!BooleanUtils.isTrue(ae.getReported())) aes.add(ae);
+        }
+        return aes;
     }
 }

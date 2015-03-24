@@ -27,8 +27,7 @@ public class PasswordCreationPolicyValidator implements PasswordPolicyValidator 
     /**
      * This method calls all the password creation policy validating methods
      */
-    public boolean validate(PasswordPolicy policy, Credential credential, ValidationErrors validationErrors)
-            throws ValidationException {
+    public boolean validate(PasswordPolicy policy, Credential credential, ValidationErrors validationErrors) {
         PasswordCreationPolicy passwordCreationPolicy = policy.getPasswordCreationPolicy();
 
         if(validateMinPasswordAge(passwordCreationPolicy, credential, validationErrors) 

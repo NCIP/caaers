@@ -51,7 +51,7 @@ public class CaaersCSMAuthenticationProvider extends CSMAuthenticationProvider {
 	@Override
     @Transactional
 	protected void additionalAuthenticationChecks(UserDetails user, UsernamePasswordAuthenticationToken token) 
-	throws AccountExpiredException{
+	throws AuthenticationException {
 
 		User caaersUser = null;
 		Credential credential =  new Credential(user.getUsername(), user.getPassword());

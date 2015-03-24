@@ -391,10 +391,6 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 	          	//recActions.setDueDate(recActions.getDueDate());
 	          	recActions.setActionText(recActions.getAction().substring(0, 1).toUpperCase() + recActions.getAction().
 	          			substring(1, recActions.getAction().length()).toLowerCase() + " the " + recActions.getReport());
-	          	ReportDefinition reportDefinition = reportDefinitionDao.getByName(recActions.getReport());
-	          	Date baseDate = reportDefinition.getBaseDate();
-	          	Date dueDate = reportDefinition.getExpectedDueDate(baseDate == null ? now : baseDate);
-	          	recActions.setDueDate(DateUtils.getDateWithTimeZone(dueDate).toString());
 	          }
 		}
 	}
@@ -515,18 +511,21 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
             action.setAction(row.getAction().getDisplayName());
             action.setDue(row.getDue());
             action.setStatus(row.getStatus());
+            action.setDueDate(generateDueDate(row.getReportDefinition(), row.getBaseDate()));
 
         } else {
             if ( isAnyInGroupChecked(row, preselectedRows)) {     // If the any one of the Report in the group is selected.
 
                 action.setAction(row.getGrpAction().getDisplayName());
                 action.setDue(row.getGrpDue());
+                action.setDueDate(generateDueDate(row.getReportDefinition(), row.getBaseDate()));
                 action.setStatus(row.getGrpStatus());
 
             } else  { // Other Actions.
 
                 action.setAction(row.getOtherAction().getDisplayName());
                 action.setDue(row.getOtherDue());
+                action.setDueDate(generateDueDate(row.getReportDefinition(), row.getBaseDate()));
                 action.setStatus(row.getOtherStatus());
             }
 
@@ -642,13 +641,16 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
     						preSelectedAction.setStatus("Not Started");
     						preSelectedAction.setReport(preselectedRow.getReportDefinition().getName());
     						preSelectedAction.setDue(preselectedRow.getDue());
+                            action.setDueDate(generateDueDate(preselectedRow.getReportDefinition(), preselectedRow.getBaseDate()));
 
     						recommendedActions.add(preSelectedAction);
     					}   else { // If it is already occured, Update the due time.
 
     						ReportTableRow createAction = findApplicableRow(applicableRows, preSelectedAction.getReport()) ;
     						preSelectedAction.setDue(createAction.getDue());
-    					}
+                            preSelectedAction.setDueDate(generateDueDate(createAction.getReportDefinition(), createAction.getBaseDate()));
+
+                        }
 
     				}
 
@@ -806,6 +808,10 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 				}
 	}
 
+    private String generateDueDate(ReportDefinition rd, Date baseDate) {
+        if(rd != null && baseDate != null) return DateUtils.getDateWithTimeZone(rd.getExpectedDueDate(baseDate)).toString();
+        return "";
+    }
 
     public ParticipantDao getParticipantDao() {
         return participantDao;
