@@ -58,7 +58,7 @@ public class RecommendedActionServiceImpl implements RecommendedActionService {
                 if(wrapper.getAction() == ReportDefinitionWrapper.ActionType.EDIT) {
                     ExpeditedAdverseEventReport aeReport = aeReportIndexMap.get(aeReportId);
                     if(aeReport != null){
-                        baseDate = wrapper.getDueOn();
+                        baseDate = wrapper.getCreatedOn();
                     }
                 }
 

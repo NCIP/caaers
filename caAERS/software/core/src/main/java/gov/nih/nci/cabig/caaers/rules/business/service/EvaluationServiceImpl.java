@@ -23,17 +23,7 @@ import gov.nih.nci.cabig.caaers.rules.common.RuleType;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 import org.apache.commons.collections15.Closure;
 import org.apache.commons.collections15.CollectionUtils;
@@ -532,6 +522,7 @@ public class EvaluationServiceImpl implements EvaluationService {
         	 if(expeditedData == null){  
         		  //all report definitions, should go in the createMap.
         		  wrapper = new ReportDefinitionWrapper(rd, null, ActionType.CREATE);
+                  wrapper.setCreatedOn(new Date());
         		  wrapper.setStatus("Not started");
         		  rdCreateSet.add(wrapper);
         	 }else{
@@ -542,6 +533,7 @@ public class EvaluationServiceImpl implements EvaluationService {
 	        		  wrapper = new ReportDefinitionWrapper(report.getReportDefinition(), rd, ActionType.AMEND);
 	        		  wrapper.setStatus(report.getLastVersion().getStatusAsString());
 	        		  wrapper.setSubmittedOn(report.getSubmittedOn());
+                      wrapper.setCreatedOn(report.getCreatedOn());
 	        		  rdAmmendSet.add(wrapper);
 	        	  }
 	        	  
@@ -551,6 +543,7 @@ public class EvaluationServiceImpl implements EvaluationService {
 	        		  wrapper = new ReportDefinitionWrapper(report.getReportDefinition(), rd, ActionType.WITHDRAW);
 	        		  wrapper.setStatus("In process");
 	        		  wrapper.setDueOn(report.getDueOn());
+                      wrapper.setCreatedOn(report.getCreatedOn());
 	        		  rdWithdrawSet.add(wrapper);
 	        	  }
 	        	  
@@ -561,6 +554,7 @@ public class EvaluationServiceImpl implements EvaluationService {
 	        		  wrapper = new ReportDefinitionWrapper(report.getReportDefinition(), rd, ActionType.EDIT);
 	        		  wrapper.setStatus("In process");
 	        		  wrapper.setDueOn(report.getDueOn());
+                      wrapper.setCreatedOn(report.getCreatedOn());
 	        		  rdEditSet.add(wrapper);
 	        	  }
 	        	  
@@ -568,6 +562,7 @@ public class EvaluationServiceImpl implements EvaluationService {
 	        	  if(reportsEdited.isEmpty() && reportsAmmended.isEmpty() && reportsWithdrawn.isEmpty()){
 	        		 wrapper = new ReportDefinitionWrapper(rd, null, ActionType.CREATE);
 	         		 wrapper.setStatus("Not started");
+                     wrapper.setCreatedOn(new Date());
 	         		 rdCreateSet.add(wrapper);
 	        	  }
 	        	  

@@ -63,6 +63,8 @@ public class ReportDefinitionWrapper {
 	
 	/** The submitted on. */
 	private Date submittedOn;
+
+    private Date createdOn;
 	
 	/**
 	 * Instantiates a new report definition wrapper.
@@ -200,10 +202,18 @@ public class ReportDefinitionWrapper {
 	public Date getSubmittedOn() {
 		return submittedOn;
 	}
-	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
+
+    public Date getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(Date createdOn) {
+        this.createdOn = createdOn;
+    }
+
+    /* (non-Javadoc)
+         * @see java.lang.Object#toString()
+         */
 	public String toString(){
 		StringBuilder sb = new StringBuilder("ReportDefintionWrapper [");
 		sb.append(def.getName());
