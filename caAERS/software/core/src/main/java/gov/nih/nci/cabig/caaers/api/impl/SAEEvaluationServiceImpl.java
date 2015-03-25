@@ -650,6 +650,10 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
     						preSelectedAction.setDue(createAction.getDue());
                             preSelectedAction.setDueDate(generateDueDate(createAction.getReportDefinition(), createAction.getBaseDate()));
 
+                            //ignore the recomended due calculate the due date from today
+                            action.setDue(preselectedRow.getReportDefinition().getExpectedDisplayDueDate(new Date()));
+                            action.setDueDate(generateDueDate(preselectedRow.getReportDefinition(), new Date()));
+
                         }
 
     				}
