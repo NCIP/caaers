@@ -156,9 +156,8 @@ public class AssignParticipantController extends AutomaticSaveAjaxableFormContro
         Object subviewName = findInRequest(request, AbstractAdverseEventInputController.AJAX_SUBVIEW_PARAMETER);
         if (subviewName != null) {
             return "par/ajax/" + subviewName;
-        } else {
-            return super.getViewName(request, command, page);
         }
+		return super.getViewName(request, command, page);
     }
 
     /**

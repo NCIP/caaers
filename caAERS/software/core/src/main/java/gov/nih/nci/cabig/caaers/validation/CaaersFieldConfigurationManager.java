@@ -108,11 +108,8 @@ public class CaaersFieldConfigurationManager{
 	 */
 	public boolean isFieldMandatory(String tabName, String fieldPath){
 		Map<String, Mandatory> fieldConfigMap = getFieldConfigurationMap().get(tabName);
-		if(fieldConfigMap != null && fieldConfigMap.get(fieldPath) != null){
-			if(fieldConfigMap.get(fieldPath).equals(Mandatory.MANDATORY))
-				return true;
-			else
-				return false;
+		if(fieldConfigMap != null && fieldConfigMap.get(fieldPath) != null && fieldConfigMap.get(fieldPath).equals(Mandatory.MANDATORY)) { 
+			return true;
 		}
 		return false;
 	}
@@ -126,9 +123,7 @@ public class CaaersFieldConfigurationManager{
 	public boolean isFieldApplicable(String tabName, String fieldPath){
 		Map<String, Mandatory> fieldConfigMap = getFieldConfigurationMap().get(tabName);
 		if(fieldConfigMap != null && fieldConfigMap.get(fieldPath) != null){
-			if(fieldConfigMap.get(fieldPath).equals(Mandatory.NA))
-				return false;
-			else
+			if(!fieldConfigMap.get(fieldPath).equals(Mandatory.NA))
 				return true;
 		}
 		return false;

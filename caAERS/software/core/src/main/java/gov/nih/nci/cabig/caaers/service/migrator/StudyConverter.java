@@ -964,7 +964,7 @@ public class StudyConverter {
 
             for (StudyAgent sa : agents) {
 
-                if (sa == null && sa.getOtherAgent() == null && sa.getAgent() == null || sa.isRetired()) continue;
+                if (sa == null || (sa.getOtherAgent() == null && sa.getAgent() == null)  || sa.isRetired()) continue;
 
                 StudyAgentType sat = new StudyAgentType();
 

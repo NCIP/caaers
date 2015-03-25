@@ -82,14 +82,13 @@ public class ProxyWebServiceFacadeUnitTest extends AbstractTestCase {
         proxyWebServiceFacade = new ProxyWebServiceFacade(){
             @Override
             public String simpleSendAndReceive(String message) {
-                if(true) throw new RuntimeException("Unable to import study :No method");
-                return mockSearchStudyResponse();
+                throw new RuntimeException("Unable to import study :No method");
             }
         };
         proxyWebServiceFacade.setStudyConverter(new StudyConverter());
 
         try{
-            List<Study> studyList = proxyWebServiceFacade.searchStudies("5876")  ;
+            proxyWebServiceFacade.searchStudies("5876")  ;
             fail("Must throw caaers exception");
         }catch(CaaersSystemException e){
            assertContains( e.getMessage(),"Unable to import study :No method");

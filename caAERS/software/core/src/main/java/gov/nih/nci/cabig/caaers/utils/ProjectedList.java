@@ -43,7 +43,7 @@ import java.util.ListIterator;
  * @since 1.0
  */
 @SuppressWarnings("unchecked")
-public class ProjectedList<E> implements DecoratedList<E> {
+public class ProjectedList<E> implements List<E> {
     /** LisObject that is decorated */
     private List<? super E> list;
 
@@ -219,12 +219,12 @@ public class ProjectedList<E> implements DecoratedList<E> {
         return newList.toArray(a);
     }
     
-    public void setInternalList(List<E> list) {
+    protected void setInternalList(List<? super E> list) {
     	this.list = list;
     }
-
-	public List<E> getInternalList() {
-    	return (List<E>)this.list;
+    
+	protected List<? super E> getInternalList() {
+    	return this.list;
     }
 
 }
