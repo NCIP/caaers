@@ -35,10 +35,6 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
         form { margin-top: 1em; }
 
     </style>
-    
-    <!--[if IE lt 9]>
-        <link rel="stylesheet" type="text/css" media="screen" href="/caaers/css/ie7.css?${requestScope.webCacheId}"></link>
-    <![endif]-->
 </head>
 <body>
 
