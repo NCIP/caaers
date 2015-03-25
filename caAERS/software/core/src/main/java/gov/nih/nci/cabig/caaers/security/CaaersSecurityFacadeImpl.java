@@ -16,8 +16,8 @@ import gov.nih.nci.cabig.caaers.domain.repository.UserRepository;
 import gov.nih.nci.cabig.caaers.utils.ObjectPrivilegeParser;
 import gov.nih.nci.cabig.caaers.utils.el.EL;
 import gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSessionFactory;
-import gov.nih.nci.security.UserProvisioningManager;
 import gov.nih.nci.security.util.StringUtilities;
+
 import org.acegisecurity.Authentication;
 import org.acegisecurity.GrantedAuthority;
 import org.apache.commons.collections.CollectionUtils;
@@ -35,7 +35,6 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 	protected static CaaersSecurityFacade instance;
     protected final Log log = LogFactory.getLog(getClass());
 	private UserRepository userRepository;
-	private UserProvisioningManager userProvisioningManager;
 	private RolePrivilegeDao rolePrivilegeDao;
 	private ProvisioningSessionFactory provisioningSessionFactory;
 
@@ -212,7 +211,7 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 		List<String> privilegedRoles = CSMCacheManager.getRolesFromCache(objectId, privilege);
 		if (privilegedRoles==null || privilegedRoles.isEmpty()) {
 			privilegedRoles = rolePrivilegeDao.getRoles(objectId, privilege);
-			if (privilegedRoles!=null || !privilegedRoles.isEmpty()) {
+			if (privilegedRoles != null && !privilegedRoles.isEmpty()) {
 				CSMCacheManager.addRolePrivilegeMappingToCache(objectId, privilege, privilegedRoles);
 			}
 		}
@@ -291,6 +290,7 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
      * @return
      */
     //BJ - Refactored to use the RoleMembership
+    @SuppressWarnings("unchecked")
     public List<IndexEntry> getAccessibleOrganizationIds(String userName){
         Map<Integer, IndexEntry> indexMap = new HashMap<Integer, IndexEntry>() ;
         IndexEntry allSiteIndexEntry = new IndexEntry(ALL_IDS_FABRICATED_ID,0);
@@ -379,13 +379,15 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
         return entries;
     }
 
+    @SuppressWarnings("unchecked")
     private List<Integer> getStudyIdsByOrganizationNCICodesFromDB(List<String> orgIdentifiers){
         HQLQuery query = new HQLQuery(studyIdByOrgNCICodeHQL);
         query.setParameterList("identifiers", orgIdentifiers);
-        List<Integer>  studyIds= (List<Integer>) search(query);
+		List<Integer>  studyIds= (List<Integer>) search(query);
         return studyIds;
     }
 
+    @SuppressWarnings("unchecked")
     private List<Integer> getStudyIdsByIdentifiersFromDB(List<String> identifiers){
         HQLQuery query = new HQLQuery(studyIdFetchHQL);
         query.setParameterList("identifiers", identifiers);
@@ -394,6 +396,7 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
         
     }
     
+    @SuppressWarnings("unchecked")
     private List<Integer> getOrganizationIdsByIdentifiersFromDB(List identifiers) {
     	List<Integer> resultList = null;
 
@@ -440,10 +443,5 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 
 	public void setUserRepository(UserRepository userRepository) {
 		this.userRepository = userRepository;
-	}
-
-	public void setUserProvisioningManager(
-			UserProvisioningManager userProvisioningManager) {
-		this.userProvisioningManager = userProvisioningManager;
 	}
 }

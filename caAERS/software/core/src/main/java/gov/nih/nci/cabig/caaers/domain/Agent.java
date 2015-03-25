@@ -34,6 +34,7 @@ import org.hibernate.annotations.Parameter;
  * @author Krikor Krumlian
  * 
  */
+@SuppressWarnings({ "rawtypes", "serial" })
 @Entity
 @Table(name = "agents")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_agents_id") })

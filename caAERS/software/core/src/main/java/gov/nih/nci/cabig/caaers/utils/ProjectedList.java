@@ -42,6 +42,7 @@ import java.util.ListIterator;
  * @version %I%, %G%
  * @since 1.0
  */
+@SuppressWarnings("unchecked")
 public class ProjectedList<E> implements DecoratedList<E> {
     /** LisObject that is decorated */
     private List<? super E> list;
@@ -122,8 +123,7 @@ public class ProjectedList<E> implements DecoratedList<E> {
     }
 
     public int indexOf(Object o) {
-        if (true) throw new UnsupportedOperationException("Not supported");
-        return 0;
+        throw new UnsupportedOperationException("Not supported");
     }
 
     public boolean isEmpty() {
@@ -135,11 +135,9 @@ public class ProjectedList<E> implements DecoratedList<E> {
     }
 
     public int lastIndexOf(Object o) {
-        if (true) throw new UnsupportedOperationException("Not supported");
-        return 0;
+        throw new UnsupportedOperationException("Not supported");
     }
 
-    @SuppressWarnings("unchecked")
     public ListIterator<E> listIterator() {
         ArrayList<E> newList = new ArrayList<E>();
         for (Object o : list) {
@@ -148,7 +146,6 @@ public class ProjectedList<E> implements DecoratedList<E> {
         return newList.listIterator();
     }
 
-    @SuppressWarnings("unchecked")
     public ListIterator<E> listIterator(int index) {
         ArrayList<E> newList = new ArrayList<E>();
         for (Object o : list) {
@@ -157,7 +154,6 @@ public class ProjectedList<E> implements DecoratedList<E> {
         return newList.listIterator(index);
     }
 
-    @SuppressWarnings("unchecked")
     public E remove(int index) {
         int i = -1;
         int orgIndex = -1;
@@ -178,11 +174,9 @@ public class ProjectedList<E> implements DecoratedList<E> {
     }
 
     public boolean retainAll(Collection<?> c) {
-        if (true) throw new UnsupportedOperationException("Not supported");
-        return false;
+        throw new UnsupportedOperationException("Not supported");
     }
 
-    @SuppressWarnings("unchecked")
     public E set(int index, E element) {
         int i = -1;
         int orgIndex = -1;
@@ -206,11 +200,10 @@ public class ProjectedList<E> implements DecoratedList<E> {
     }
 
     public List<E> subList(int fromIndex, int toIndex) {
-        if (true) throw new UnsupportedOperationException("Not supported");
-        return null;
+        throw new UnsupportedOperationException("Not supported");
     }
 
-    public Object[] toArray() {
+	public Object[] toArray() {
         ArrayList<E> newList = new ArrayList<E>();
         for (Object o : list) {
             if (o == null || klass.equals(o.getClass())) newList.add((E) o);
@@ -229,7 +222,7 @@ public class ProjectedList<E> implements DecoratedList<E> {
     public void setInternalList(List<E> list) {
     	this.list = list;
     }
-    @SuppressWarnings("unchecked")
+
 	public List<E> getInternalList() {
     	return (List<E>)this.list;
     }

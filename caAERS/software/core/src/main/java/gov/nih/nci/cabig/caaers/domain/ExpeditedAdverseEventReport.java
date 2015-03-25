@@ -39,8 +39,6 @@ import javax.persistence.Transient;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Fetch;
@@ -102,9 +100,6 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     
     //transient field to be used in adding reviewer information in report generation
     private Reporter reviewer;
-    
-    /** The Constant log. */
-    private static final Log log = LogFactory.getLog(ExpeditedAdverseEventReport.class);
 
     private String externalId;
 
@@ -759,7 +754,6 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
      *
      * @param adverseEvents the new adverse events internal
      */
-    @SuppressWarnings("unchecked")
     public void setAdverseEventsInternal(List<AdverseEvent> adverseEvents) {
         lazyListHelper.setInternalList(AdverseEvent.class, adverseEvents);
     }
@@ -1830,7 +1824,8 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
      * @param thatAe
      * @return
      */
-    public AdverseEvent findAdverseEventByIdTermAndDates(AdverseEvent thatAe){
+    @SuppressWarnings("rawtypes")
+	public AdverseEvent findAdverseEventByIdTermAndDates(AdverseEvent thatAe){
         for(AdverseEvent thisAe : getAdverseEvents()){
             //are Ids matching ?
             if(ObjectUtils.equals(thisAe.getId(), thatAe.getId())) return thisAe;
@@ -1951,7 +1946,8 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         return interventionTypes;
     }
 
-    @Transient
+    @SuppressWarnings("rawtypes")
+	@Transient
     public List<AdverseEventAttribution> getAdverseEventAttributions(){
         List<AdverseEventAttribution> attributions = new ArrayList<AdverseEventAttribution>();
         for(AdverseEvent ae: getAdverseEvents())   {

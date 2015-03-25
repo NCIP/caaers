@@ -62,9 +62,7 @@ public class IndexFixedList<E> implements DecoratedList<E>{
 	}
 
 	public boolean addAll(int arg0, Collection<? extends E> arg1) {
-		if(true)
-			throw new UnsupportedOperationException("Can only add an items at the end");
-		return false;
+		throw new UnsupportedOperationException("Can only add an items at the end");
 	}
 
 	public void clear() {
@@ -85,8 +83,7 @@ public class IndexFixedList<E> implements DecoratedList<E>{
 	}
 
 	public int indexOf(Object arg0) {
-		if(true) throw new UnsupportedOperationException("Cannot find this easily in this kind of list");
-		return -1;
+		throw new UnsupportedOperationException("Cannot find this easily in this kind of list");
 	}
 
 	public boolean isEmpty() {
@@ -98,8 +95,7 @@ public class IndexFixedList<E> implements DecoratedList<E>{
 	}
 
 	public int lastIndexOf(Object arg0) {
-		if(true) throw new UnsupportedOperationException("Cannot find this easily in this kind of list");
-		return -1;
+		throw new UnsupportedOperationException("Cannot find this easily in this kind of list");
 	}
 
 	public ListIterator<E> listIterator() {
@@ -111,9 +107,9 @@ public class IndexFixedList<E> implements DecoratedList<E>{
 	}
 
 	public E remove(int i) {
-		Object o = tempList.set(i, null);
+		E o = tempList.set(i, null);
 		internalList.remove(o);
-		return (E)o;
+		return o;
 	}
 
 	public boolean remove(Object o) {
@@ -125,18 +121,15 @@ public class IndexFixedList<E> implements DecoratedList<E>{
 	}
 
 	public boolean removeAll(Collection<?> arg0) {
-		if(true) throw new UnsupportedOperationException("Cannot remove this easily in this kind of list");
-		return false;
+		throw new UnsupportedOperationException("Cannot remove this easily in this kind of list");
 	}
 
 	public boolean retainAll(Collection<?> arg0) {
-		if(true) throw new UnsupportedOperationException("Cannot remove this easily in this kind of list");
-		return false;
+		throw new UnsupportedOperationException("Cannot remove this easily in this kind of list");
 	}
 
 	public E set(int i, E o) {
-		if(true) throw new UnsupportedOperationException("Cannot do this easily in this kind of list");
-		return null;
+		throw new UnsupportedOperationException("Cannot do this easily in this kind of list");
 	}
 
 	public int size() {

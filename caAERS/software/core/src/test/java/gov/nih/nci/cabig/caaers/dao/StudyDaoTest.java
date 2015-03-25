@@ -753,8 +753,10 @@ assertTrue(true);
                     Study s = new LocalStudy();
                     s.setId(rs.getInt(1));
                     s.setShortTitle("Shortest");
+                    rs.close();
                     return s;
                 }
+                rs.close();
                 return null;
             }
         });

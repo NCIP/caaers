@@ -77,7 +77,6 @@ public class AgentSpecificMeddraLowLevelTerm extends AgentSpecificTerm<LowLevelT
 
     @Override
     public boolean isOfSameTerm(String termName, String termCategory, String terminologyVersion, String otherToxicity, String otherMeddra) {
-        if(true) throw new UnsupportedOperationException("Not implemented");
-        return false;
+        throw new UnsupportedOperationException("Not implemented");
     }
 }

@@ -621,9 +621,7 @@ public class CreateAdverseEventAjaxFacade {
     }
 
     public boolean pushRoutineAdverseEventToStudyCalendar(int aeReportId) {
-        if (true)
-            throw new UnsupportedOperationException("No more supported");
-        return false;
+        throw new UnsupportedOperationException("No more supported");
     }
 
     public AjaxOutput withdrawReportVersion(int aeReportId, int reportId) {

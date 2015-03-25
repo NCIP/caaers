@@ -9,7 +9,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 <html>
 <head>
 <title>Manage Reports</title>
-<tags:dwrJavascriptLink objects="createAE,adverseEventHistory"/>
+<tags:dwrJavascriptLink objects="createAE"/>
 <tags:slider renderComments="false" renderAlerts="true" display="${command.assignment.labLoads != null and fn:length(command.assignment.labLoads) > 0 ? '' : 'none'}" workflowType="report">
     <jsp:attribute name="labs">
     	<div id="labs-id" style="display:none;">

@@ -130,9 +130,7 @@ public class CaaersCSMAuthenticationProviderTest extends CaaersDbTestCase {
 						@Override
 						public Subject authenticate(String userName,
 								String password) {
-							if (true)
-								throw new BadCredentialsException("test");
-							return null;
+							throw new BadCredentialsException("test");
 						}
 					});
 		}

@@ -263,10 +263,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
             final_result.addToNotes("sponsor-level-study-rule : rules matched");
         }
 
-        if (final_result == null) {
-            final_result = AdverseEventEvaluationResult.cannotDetermine(null);
-            final_result.addToNotes("no sponsor rules found, so returning cannot-determined");
-        } else if(final_result.isNoRulesFound()) {
+        if(final_result.isNoRulesFound()) {
             String ruleMetadata = final_result.getRuleMetadata();
             final_result = AdverseEventEvaluationResult.cannotDetermine(null);
             final_result.setRuleMetadata(ruleMetadata);
