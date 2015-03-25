@@ -11,7 +11,6 @@ import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.utils.DurationUtils;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 
@@ -59,7 +58,7 @@ public class RecommendedActionServiceImpl implements RecommendedActionService {
                 if(wrapper.getAction() == ReportDefinitionWrapper.ActionType.EDIT) {
                     ExpeditedAdverseEventReport aeReport = aeReportIndexMap.get(aeReportId);
                     if(aeReport != null){
-                        baseDate = wrapper.getDef().getExpectedStartDate(wrapper.getDueOn());
+                        baseDate = wrapper.getDueOn();
                     }
                 }
 
@@ -87,15 +86,18 @@ public class RecommendedActionServiceImpl implements RecommendedActionService {
         applicableReportTableMap.clear();
 
         //for every report id (including ZERO)
-        for(Integer aeReportId : aeReportIndexMap.keySet()) {
+        for(Integer aeReportId : aeReportIndexMap.keySet()){
+
             //find the earliest graded date, used while evaluating the aes.
             //for the default data collection (which will be new)
-			List<AdverseEvent> seriousAdverseEvents = evaluationResult.getSeriousAdverseEvents(aeReportId);
+            List<AdverseEvent> seriousAdverseEvents = evaluationResult.getSeriousAdverseEvents(aeReportId);
             Date updatedDate = null;
             Date gradedDate = null;
-
+            Date earliestGradedDateOnActiveAE = null;
             ExpeditedAdverseEventReport aeReport = aeReportIndexMap.get(aeReportId);
-
+            if(aeReport != null){
+                earliestGradedDateOnActiveAE = AdverseEventReportingPeriod.findEarliestGradedDate(aeReport.getAdverseEvents());
+            }
 
             if(CollectionUtils.isNotEmpty(seriousAdverseEvents)){
                 updatedDate = AdverseEventReportingPeriod.findEarliestPostSubmissionUpdatedDate(seriousAdverseEvents);
@@ -113,6 +115,7 @@ public class RecommendedActionServiceImpl implements RecommendedActionService {
             //all report defs (load them as default)
             List<ReportDefinition> allReportDefs = applicableReportDefinitions.getReportDefinitions();
             Map<Integer, ReportTableRow> rowMap = new LinkedHashMap<Integer, ReportTableRow>();
+
 
             Date baseDate =  gradedDate;
 
@@ -179,7 +182,7 @@ public class RecommendedActionServiceImpl implements RecommendedActionService {
                     row.setGrpStatus("Being withdrawn");
                     row.setOtherStatus("Being withdrawn");
 
-                    row.setBaseDate(wrapper.getDef().getExpectedStartDate(wrapper.getDueOn()));
+                    row.setBaseDate(earliestGradedDateOnActiveAE != null ? earliestGradedDateOnActiveAE : baseDate);
                     row.setDue(DurationUtils.formatDuration(wrapper.getDueOn().getTime() - new Date().getTime(), wrapper.getDef().getTimeScaleUnitType().getFormat()));
                     row.setGrpDue("");
                     row.setOtherDue("");
