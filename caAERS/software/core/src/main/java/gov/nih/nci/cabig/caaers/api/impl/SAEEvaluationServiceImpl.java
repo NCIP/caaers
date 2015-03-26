@@ -659,6 +659,12 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
     				}
 
     			}
+
+
+                if(StringUtils.equals(action.getAction(), WITHDRAW.getDisplayName()))    {
+                    action.setDue("");
+                    action.setDueDate("");
+                }
     		}
     	}
 

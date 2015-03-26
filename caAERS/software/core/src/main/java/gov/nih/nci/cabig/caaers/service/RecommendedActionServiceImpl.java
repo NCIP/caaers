@@ -58,7 +58,7 @@ public class RecommendedActionServiceImpl implements RecommendedActionService {
                 if(wrapper.getAction() == ReportDefinitionWrapper.ActionType.EDIT) {
                     ExpeditedAdverseEventReport aeReport = aeReportIndexMap.get(aeReportId);
                     if(aeReport != null){
-                        baseDate = wrapper.getCreatedOn();
+                        baseDate = wrapper.getDef().getExpectedStartDate(wrapper.getDueOn());
                     }
                 }
 
@@ -182,7 +182,7 @@ public class RecommendedActionServiceImpl implements RecommendedActionService {
                     row.setGrpStatus("Being withdrawn");
                     row.setOtherStatus("Being withdrawn");
 
-                    row.setBaseDate(wrapper.getCreatedOn());
+                    row.setBaseDate(wrapper.getDef().getExpectedStartDate(wrapper.getDueOn()));
                     row.setDue(DurationUtils.formatDuration(wrapper.getDueOn().getTime() - new Date().getTime(), wrapper.getDef().getTimeScaleUnitType().getFormat()));
                     row.setGrpDue("");
                     row.setOtherDue("");

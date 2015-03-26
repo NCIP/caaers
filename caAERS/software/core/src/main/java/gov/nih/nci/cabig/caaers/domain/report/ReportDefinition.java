@@ -735,6 +735,13 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     	c.add(timeScaleUnitType.getCalendarTypeCode(), duration);
     	return c.getTime();
     }
+
+    public Date getExpectedStartDate(Date dueDate) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(dueDate);
+        c.add(timeScaleUnitType.getCalendarTypeCode(), -1 * duration);
+        return c.getTime();
+    }
     
     /**
      * Gets the expected display due date.
