@@ -640,8 +640,8 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
     						preSelectedAction.setAction(ReportDefinitionWrapper.ActionType.CREATE.toString()); // Make it Create.
     						preSelectedAction.setStatus("Not Started");
     						preSelectedAction.setReport(preselectedRow.getReportDefinition().getName());
-    						preSelectedAction.setDue(preselectedRow.getDue());
-                            action.setDueDate(generateDueDate(preselectedRow.getReportDefinition(), preselectedRow.getBaseDate()));
+    						preSelectedAction.setDue(preselectedRow.getReportDefinition().getExpectedDisplayDueDate());
+                            preSelectedAction.setDueDate(generateDueDate(preselectedRow.getReportDefinition(), new Date()));
 
     						recommendedActions.add(preSelectedAction);
     					}   else { // If it is already occured, Update the due time.
