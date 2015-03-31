@@ -11,7 +11,11 @@ import gov.nih.nci.cabig.caaers.dao.query.*;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudyAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.ajax.UserAjaxableDomainObject;
+import gov.nih.nci.cabig.caaers.domain.index.IndexEntry;
 import gov.nih.nci.cabig.caaers.domain.repository.*;
+import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
+import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl;
+import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.utils.ranking.RankBasedSorterUtils;
@@ -27,8 +31,6 @@ import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * 
@@ -44,7 +46,7 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
 	private InvestigatorRepository investigatorRepository;
 	private ResearchStaffRepository researchStaffRepository;
     private PersonRepository personRepository;
-	private static final Log log = LogFactory.getLog(UserAjaxFacade.class);
+	private CaaersSecurityFacade securityFacade;
 	
 	@Override
 	public Class<?>[] controllers() {
@@ -84,6 +86,17 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
     	String personType = (String)searchCriteriaMap.get("personType");
     	String personIdentifier = (String)searchCriteriaMap.get("personIdentifier");
     	String organization = (String)searchCriteriaMap.get("organization");
+    	
+    	List<IndexEntry> permisionedOrgs = securityFacade.getAccessibleOrganizationIds(SecurityUtils.getUserLoginName());
+    	List<Integer> allowedOrgs = null;
+    	if(permisionedOrgs.size() > 0  && !CaaersSecurityFacadeImpl.ALL_IDS_FABRICATED_ID.equals(permisionedOrgs.get(0).getEntityId())) {
+    		//Accsess to sites is limited so limit results too.
+    		allowedOrgs = new ArrayList<Integer>();
+	    	for(IndexEntry idx : permisionedOrgs) {
+	    		allowedOrgs.add(idx.getEntityId());
+	    	}
+	    	searchCriteriaMap.put("organizations", allowedOrgs);
+    	}
     	
     	//Only Organization provided
     	if (StringUtils.isEmpty(name) && StringUtils.isEmpty(personIdentifier) && "Please Select".equals(personType) && StringUtils.isEmpty(userName) && !StringUtils.isEmpty(organization)) {
@@ -200,8 +213,6 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
 		return ajaxableUserList;
 	}
     
-    
-    @SuppressWarnings("unchecked")
 	public List<UserAjaxableDomainObject> getResearchStaffTable(HashMap searchCriteriaMap) {
         
         List<SiteResearchStaff> siteResearchStaffs = null;
@@ -242,7 +253,7 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
         return new ArrayList<UserAjaxableDomainObject>(set);
     }
     
-    @SuppressWarnings({ "unchecked", "finally" })
+    @SuppressWarnings("finally")
     private List<SiteResearchStaff> constructExecuteSiteResearchStaffQuery(HashMap searchCriteriaMap) {
 
         List<SiteResearchStaff> siteResearchStaffs = new ArrayList<SiteResearchStaff>();
@@ -266,6 +277,9 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
         if(StringUtils.isNotEmpty((String)searchCriteriaMap.get("organization"))){
         	query.filterByOrganization((String)searchCriteriaMap.get("organization"));
         }
+        if(searchCriteriaMap.get("organizations") != null) {
+        	query.filterByOrganizations((List)searchCriteriaMap.get("organizations"));
+        }
         if(StringUtils.isNotEmpty((String)searchCriteriaMap.get("personIdentifier"))){
         	query.filterByNciIdentifier((String)searchCriteriaMap.get("personIdentifier"));
         }
@@ -287,8 +301,6 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
         }
     }
     
-    
-    @SuppressWarnings("unchecked")
 	public List<UserAjaxableDomainObject> getInvestigatorTable(HashMap searchCriteriaMap) {
 
         List<Investigator> investigators = null;
@@ -326,7 +338,7 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
         return inv;
     }
     
-    @SuppressWarnings({ "finally", "unchecked" })
+    @SuppressWarnings("finally")
     private List<Investigator> constructExecuteInvestigatorQuery(HashMap searchCriteriaMap) {
 
         List<Investigator> investigators = new ArrayList<Investigator>();
@@ -354,6 +366,10 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
 
         if(StringUtils.isNotEmpty((String) searchCriteriaMap.get("organization"))){
             q.filterByOrganization((String) searchCriteriaMap.get("organization"));
+        }
+        
+        if(searchCriteriaMap.get("organizations") != null){
+            q.filterByOrganizations((List) searchCriteriaMap.get("organizations"));
         }
 
         if (StringUtils.isNotEmpty((String)searchCriteriaMap.get("userName"))) {
@@ -490,4 +506,12 @@ public class UserAjaxFacade extends AbstractAjaxFacade {
     public void setPersonRepository(PersonRepository personRepository) {
         this.personRepository = personRepository;
     }
+
+	public CaaersSecurityFacade getCaaersSecurityFacade() {
+		return securityFacade;
+	}
+
+	public void setCaaersSecurityFacade(CaaersSecurityFacade securityFacade) {
+		this.securityFacade = securityFacade;
+	}
 }

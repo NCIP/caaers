@@ -81,6 +81,7 @@
 		<property name="studyDao" ref="studyDao"/>
 		<property name="investigatorRepository" ref="investigatorRepository"/>
 		<property name="researchStaffRepository" ref="researchStaffRepository"/>
+		<property name="caaersSecurityFacade" ref="caaersSecurityFacade"/>
 	</bean>
 
 </beans>

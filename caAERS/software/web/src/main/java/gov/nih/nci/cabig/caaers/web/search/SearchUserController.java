@@ -6,21 +6,20 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.web.search;
 
-import org.apache.commons.lang.StringUtils;
-import org.springframework.validation.BindException;
-import org.springframework.validation.Errors;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.SimpleFormController;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+import org.springframework.validation.BindException;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.SimpleFormController;
 
 /**
  * 
  * @author Monish
  *
  */
+@SuppressWarnings("deprecation")
 public class SearchUserController extends SimpleFormController {
     
 	public SearchUserController() {
@@ -32,7 +31,7 @@ public class SearchUserController extends SimpleFormController {
     protected ModelAndView showForm(HttpServletRequest request, HttpServletResponse response, BindException errors) throws Exception {
         ModelAndView mv =  super.showForm(request, response, errors);
         SearchUserCommand command = (SearchUserCommand) getCommand(request);
-        if(command.isPopupRequest()){
+        if(command.isPopupRequest()) {
            return  new ModelAndView("search/user_search_popup", mv.getModel());      
         }
         return  new ModelAndView("search/user_search", mv.getModel());

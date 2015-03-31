@@ -6,16 +6,12 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 
 /**
@@ -24,7 +20,6 @@ import org.apache.commons.logging.LogFactory;
  */
 public class SubmitReportAjaxFacade extends CreateAdverseEventAjaxFacade{
 	
-	private static final Log log = LogFactory.getLog(SubmitReportAjaxFacade.class);
     private static Class<?>[] CONTROLLERS = {SubmitReportController.class};
     
     /**

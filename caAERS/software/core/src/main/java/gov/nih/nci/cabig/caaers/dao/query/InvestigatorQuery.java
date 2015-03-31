@@ -9,6 +9,7 @@ package gov.nih.nci.cabig.caaers.dao.query;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class InvestigatorQuery extends AbstractQuery {
 
@@ -20,6 +21,7 @@ public class InvestigatorQuery extends AbstractQuery {
     private static String EMAIL_ADDRESS = "emailAddress";
     private static String LOGIN_ID = "loginId";
     private static String ORGANIZATION = "organization";
+    private static String ORGANIZATIONS = "organizations";
     private static String USER_NAME = "userName";
 
     public InvestigatorQuery() {
@@ -120,4 +122,10 @@ public class InvestigatorQuery extends AbstractQuery {
     public void excludeUsers(){
         andWhere("i.caaersUser is null");
     }
+
+
+	public void filterByOrganizations(List list) {
+        andWhere("si.organization.id in (:" + ORGANIZATIONS + ")");
+        setParameterList(ORGANIZATIONS, list);
+	}
 }
