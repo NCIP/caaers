@@ -374,7 +374,7 @@ public class CaaersSecurityFacadeImpl implements CaaersSecurityFacade  {
 
 
         List<IndexEntry> entries = new ArrayList<IndexEntry>();
-        if(allSiteIndexEntry.hasRoles()) entries.add(allSiteIndexEntry);
+        if(allSiteIndexEntry.hasRoles()) entries.add(allSiteIndexEntry); //all sites must be the first entry if it is added.
         entries.addAll(indexMap.values());
         return entries;
     }

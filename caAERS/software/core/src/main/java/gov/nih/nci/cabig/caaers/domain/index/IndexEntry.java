@@ -50,7 +50,9 @@ public class IndexEntry {
         return privilege;
     }
 
-    public void orPrivilege(int newPrivilege){privilege = privilege | newPrivilege; }
+    public void orPrivilege(int newPrivilege) {
+    	privilege = privilege | newPrivilege;
+    }
 
     public void addRole(UserGroupType... roles){
         for(UserGroupType role : roles)  {
@@ -60,6 +62,10 @@ public class IndexEntry {
 
     public boolean  hasRoles()   {
         return privilege > 0;
+    }
+    
+    public boolean hasRole(UserGroupType type) {
+    	return (privilege & type.getPrivilege()) > 0;
     }
 
 

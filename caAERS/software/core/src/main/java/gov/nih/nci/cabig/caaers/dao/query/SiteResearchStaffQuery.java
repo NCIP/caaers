@@ -6,6 +6,8 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.dao.query;
 
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -18,6 +20,7 @@ public class SiteResearchStaffQuery extends AbstractQuery {
     private static String FIRST_NAME = "firstName";
     private static String LAST_NAME = "lastName";
     private static String ORGANIZATION = "organization";
+    private static String ORGANIZATIONS = "organizations";
     private static String NCI_CODE = "nciIdentifier";
     private static String USER_NAME = "userName";
 
@@ -82,4 +85,9 @@ public class SiteResearchStaffQuery extends AbstractQuery {
     public void excludeUsers(){
         andWhere("rs.caaersUser is null");
     }
+
+	public void filterByOrganizations(List list) {
+		andWhere("srs.organization.id in (:" + ORGANIZATIONS + ")");
+        setParameterList(ORGANIZATIONS, list);
+	}
 }
