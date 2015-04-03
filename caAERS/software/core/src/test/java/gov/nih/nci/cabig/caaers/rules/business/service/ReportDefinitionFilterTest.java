@@ -7,6 +7,7 @@
 package gov.nih.nci.cabig.caaers.rules.business.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import gov.nih.nci.cabig.caaers.domain.ConfigProperty;
@@ -65,13 +66,15 @@ public class ReportDefinitionFilterTest extends TestCase {
 		rd7.setTimeScaleUnitType(TimeScaleUnit.DAY);
 		rd7.setDuration(4);
 		
-		assertTrue(filter.add(rd1));
-		assertTrue(filter.add(rd2));
-		assertFalse(filter.add(rd3));
-		assertTrue(filter.add(rd4));
-		assertFalse(filter.add(rd5));
-		assertTrue(filter.add(rd6));
-		assertFalse(filter.add(rd7));
+		
+		HashMap<String, ReportDefinition> map = new HashMap<String, ReportDefinition>();
+		assertTrue(filter.add(map , rd1));
+		assertTrue(filter.add(map, rd2));
+		assertFalse(filter.add(map, rd3));
+		assertTrue(filter.add(map, rd4));
+		assertFalse(filter.add(map, rd5));
+		assertTrue(filter.add(map, rd6));
+		assertFalse(filter.add(map, rd7));
 	}
 
 	public void testGenerateKey() {

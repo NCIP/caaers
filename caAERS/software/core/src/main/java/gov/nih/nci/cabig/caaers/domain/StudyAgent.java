@@ -6,12 +6,9 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.domain;
 
-import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
-import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Embedded;

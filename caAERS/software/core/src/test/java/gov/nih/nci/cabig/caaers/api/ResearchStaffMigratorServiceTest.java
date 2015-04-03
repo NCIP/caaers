@@ -78,7 +78,7 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
 			updatedResearchStaff = fetchResearchStaff("jchapman");
 			
 			if("[879]-345-0983".equals(updatedResearchStaff.getFaxNumber())) {
-				wait(1000);
+				wait(5000);
 				updatedResearchStaff = fetchResearchStaff("jchapman");
 			}
 			

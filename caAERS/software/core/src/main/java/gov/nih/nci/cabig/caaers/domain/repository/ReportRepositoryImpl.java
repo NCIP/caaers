@@ -7,7 +7,6 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
 import gov.nih.nci.cabig.caaers.dao.AdverseEventRecommendedReportDao;
-import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.ReportDefinitionQuery;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
@@ -21,7 +20,6 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportType;
-import gov.nih.nci.cabig.caaers.domain.report.ReportedAdverseEvent;
 import gov.nih.nci.cabig.caaers.service.ReportWithdrawalService;
 import gov.nih.nci.cabig.caaers.service.SchedulerService;
 import gov.nih.nci.cabig.caaers.utils.RoleUtils;
@@ -34,8 +32,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,17 +44,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = false)
 public class ReportRepositoryImpl implements ReportRepository {
 
-    /** The Constant log. */
-    private static final Log log = LogFactory.getLog(ReportRepositoryImpl.class);
-    
     /** The report dao. */
     private ReportDao reportDao;
     
     /** The report definition dao. */
     private ReportDefinitionDao reportDefinitionDao;
-    
-    /** The study dao. */
-    private StudyDao studyDao;
     
     /** The scheduler service. */
     private SchedulerService schedulerService;
@@ -132,7 +122,7 @@ public class ReportRepositoryImpl implements ReportRepository {
     	//create new reports
     	if(CollectionUtils.isNotEmpty(toCreateList)){
     		for(ReportDefinition reportDefinition : toCreateList){
-    			Report report = createReport(reportDefinition, aeReport);
+    			createReport(reportDefinition, aeReport);
     		}
     	}
     	
@@ -391,17 +381,6 @@ public class ReportRepositoryImpl implements ReportRepository {
     	
     	save(report);
     }
-    
-    
-    /**
-     * Sets the study dao.
-     *
-     * @param studyDao the new study dao
-     */
-    @Required
-    public void setStudyDao(StudyDao studyDao) {
-		this.studyDao = studyDao;
-	}
     
     /**
      * Sets the report dao.

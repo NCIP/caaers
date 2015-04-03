@@ -157,6 +157,7 @@ public class AdeersReportGeneratorTest extends CaaersTestCase {
                 while ((n = reader.read(buffer)) != -1) {
                     writer.write(buffer, 0, n);
                 }
+                reader.close();
             } finally {
                 is.close();
             }

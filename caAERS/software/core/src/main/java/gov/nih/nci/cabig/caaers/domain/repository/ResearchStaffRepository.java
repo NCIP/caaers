@@ -175,7 +175,6 @@ public class ResearchStaffRepository {
      * @return the research staff
      */
     public ResearchStaff initialize(final ResearchStaff researchStaff) {
-        //researchStaff.setUserGroupTypes(((CaaersSecurityFacadeImpl)caaersSecurityFacade).getCsmUserRepository().getUserGroups(researchStaff.getLoginId()));
         return researchStaff;
     }
     

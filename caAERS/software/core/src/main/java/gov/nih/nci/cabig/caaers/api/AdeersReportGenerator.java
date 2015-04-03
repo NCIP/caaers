@@ -8,18 +8,16 @@ package gov.nih.nci.cabig.caaers.api;
 
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
-import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.utils.XsltTransformer;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import java.util.*;
 
 /**
  * @author Ion C. Olaru
@@ -31,7 +29,6 @@ public class AdeersReportGenerator extends BasePDFGenerator {
     protected final Log log = LogFactory.getLog(getClass());
 
     // TO-DO set in spring config
-    private String xmlXsltFile = "xslt/Caaers2Adeers-xml-AEReport.xslt";
     private String xslFOXsltFile = "xslt/Caaers2Adeers-pdf-AEReport.xslt";
     private String xslFOMedWatchXsltFile = "xslt/Caaers2Medwatch-pdf-AEReport.xslt";
     private String xslFODCPXsltFile = "xslt/Caaers2DCP-pdf-SAEForm.xslt";

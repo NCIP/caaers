@@ -349,7 +349,6 @@
     <!-- The security facade bean -->
     <bean id="caaersSecurityFacade" class="gov.nih.nci.cabig.caaers.security.CaaersSecurityFacadeImpl">
         <property name="userRepository" ref="userRepository"/>
-        <property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
         <property name="rolePrivilegeDao" ref="rolePrivilegeDao"/>
         <property name="provisioningSessionFactory" ref="provisioningSessionFactory"/>
     </bean>

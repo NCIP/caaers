@@ -20,10 +20,9 @@ import java.util.List;
  *
  */
 class ReportDefinitionFilter {
-	HashMap<String, ReportDefinition> map = new HashMap<String, ReportDefinition>();
-	ReportDefinitionComparator comparator = new ReportDefinitionComparator();
+	private final ReportDefinitionComparator comparator = new ReportDefinitionComparator();
 
-	protected boolean add(ReportDefinition rd) {
+	protected boolean add(HashMap<String, ReportDefinition> map, ReportDefinition rd) {
 		String key = generateKey(rd);
 		ReportDefinition existing = map.get(key);
 		if (existing == null) {
@@ -42,8 +41,10 @@ class ReportDefinitionFilter {
 	}
 
 	public List<ReportDefinition> filter(List<ReportDefinition> list) {
-		map.clear();//reset the state.
-		for(ReportDefinition rd : list) add(rd);
+		HashMap<String, ReportDefinition> map = new HashMap<String, ReportDefinition>();
+		
+		for(ReportDefinition rd : list) add(map, rd);
+		
 		return new ArrayList<ReportDefinition>(map.values());
 	}
 }

@@ -81,6 +81,7 @@ public class XMLUtil {
             Object deserializedObject = null;
             try {
             	deserializedObject = Utils.deserializeObject(reader,ResponseMessage.class, wsddIs);
+            	wsddIs.close();
             } catch (Exception e) {
             	e.printStackTrace();
             }

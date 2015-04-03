@@ -60,6 +60,7 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
 	private static final long serialVersionUID = 782543033828114683L;
 
 	/** The adverse event term. */
+	@SuppressWarnings("rawtypes")
 	private AbstractAdverseEventTerm adverseEventTerm;
 
     /** The details for other. */

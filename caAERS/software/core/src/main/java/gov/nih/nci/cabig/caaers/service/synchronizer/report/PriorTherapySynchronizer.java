@@ -1,20 +1,17 @@
 package gov.nih.nci.cabig.caaers.service.synchronizer.report;
 
-import org.apache.commons.lang.StringUtils;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.PriorTherapyAgent;
 import gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
-import org.apache.commons.lang.ObjectUtils;
-import org.apache.commons.collections15.CollectionUtils;
-import org.apache.commons.collections15.Predicate;
 
 import java.util.ArrayList;
-import java.util.IdentityHashMap;
 import java.util.List;
-import java.util.Map;
+
+import org.apache.commons.collections15.CollectionUtils;
+import org.apache.commons.collections15.Predicate;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * @author Biju Joseph

@@ -16,7 +16,6 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -36,53 +35,53 @@ public class EvaluationResultDTO {
 	
 	//stores aeReportId and list of report definitions
 	/** The ae report index map. */
-	Map<Integer, Set<ReportDefinition>> aeReportIndexMap = new HashMap<Integer, Set<ReportDefinition>>();
+	private Map<Integer, Set<ReportDefinition>> aeReportIndexMap = new HashMap<Integer, Set<ReportDefinition>>();
 	//stores aeReportId, and list of aes evaluated
 	/** The evaluated ae map. */
-	Map<Integer, List<AdverseEvent>> evaluatedAeMap = new HashMap<Integer, List<AdverseEvent>>();
+	private Map<Integer, List<AdverseEvent>> evaluatedAeMap = new HashMap<Integer, List<AdverseEvent>>();
 	
 	//stores aeReportId and actual set of adverse events (including the new ones). 
 	/** The all ae map. */
-	Map<Integer, List<AdverseEvent>> allAeMap = new HashMap<Integer, List<AdverseEvent>>();
+	private Map<Integer, List<AdverseEvent>> allAeMap = new HashMap<Integer, List<AdverseEvent>>();
 	
 	//stores aeReportId, and alert needed 
 	/** The ae report alert map. */
-	Map<Integer, Boolean> aeReportAlertMap = new HashMap<Integer, Boolean>();
+	private Map<Integer, Boolean> aeReportAlertMap = new HashMap<Integer, Boolean>();
 	
 	//will store the result of rules engine, as it is.[aeReportId - (adverseEvent - {ReportDefinitionNames} ]
 	/** The rules engine result map. */
-	Map<Integer, Map<AdverseEvent, List<String>>> rulesEngineResultMap = new HashMap<Integer, Map<AdverseEvent, List<String>>>();
+	private Map<Integer, Map<AdverseEvent, List<String>>> rulesEngineResultMap = new HashMap<Integer, Map<AdverseEvent, List<String>>>();
     
-    Map<Integer, Map<AdverseEvent, List<AdverseEventEvaluationResult>>> rulesEngineRawResultMap = new HashMap<Integer, Map<AdverseEvent, List<AdverseEventEvaluationResult>>>();
+	private Map<Integer, Map<AdverseEvent, List<AdverseEventEvaluationResult>>> rulesEngineRawResultMap = new HashMap<Integer, Map<AdverseEvent, List<AdverseEventEvaluationResult>>>();
 	
-    Map<Integer, List<String>> processingSteps = new HashMap<Integer, List<String>>();
+	private Map<Integer, List<String>> processingSteps = new HashMap<Integer, List<String>>();
     
 	/** The processed rules engine result map. */
-	Map<Integer, Map<AdverseEvent, Set<String>>> processedRulesEngineResultMap = new HashMap<Integer, Map<AdverseEvent,Set<String>>>();
+	private Map<Integer, Map<AdverseEvent, Set<String>>> processedRulesEngineResultMap = new HashMap<Integer, Map<AdverseEvent,Set<String>>>();
 	
 	//will store [aeReportId - {adverseEventId - [ReportDefinitionId] }]
 	/** The adverse event index map. */
-	Map<Integer, Map<AdverseEvent,Set<ReportDefinition>>> adverseEventIndexMap = new HashMap<Integer, Map<AdverseEvent,Set<ReportDefinition>>>();
+	private Map<Integer, Map<AdverseEvent,Set<ReportDefinition>>> adverseEventIndexMap = new HashMap<Integer, Map<AdverseEvent,Set<ReportDefinition>>>();
 	
 	//stores report definition and aeReports associated
 //	Map<ReportDefinition, Set<ExpeditedAdverseEventReport>> reportDefAeReportIndexMap = new HashMap<ReportDefinition, Set<ExpeditedAdverseEventReport>>();
 
 	//stores adverseEventId - {report definition}, tells which ae got reported in which report.
 	/** The reported ae index map. */
-	Map<Integer, List<ReportDefinition>> reportedAEIndexMap = new HashMap<Integer, List<ReportDefinition>>();
+	private Map<Integer, List<ReportDefinition>> reportedAEIndexMap = new HashMap<Integer, List<ReportDefinition>>();
 	
 	//aeReportId - ReportDefinitions
 	/** The amendment map. */
-	Map<Integer, Set<ReportDefinitionWrapper>> amendmentMap = new HashMap<Integer, Set<ReportDefinitionWrapper>>();
+	private Map<Integer, Set<ReportDefinitionWrapper>> amendmentMap = new HashMap<Integer, Set<ReportDefinitionWrapper>>();
 	
 	/** The withdrawal map. */
-	Map<Integer, Set<ReportDefinitionWrapper>> withdrawalMap = new HashMap<Integer, Set<ReportDefinitionWrapper>>();
+	private Map<Integer, Set<ReportDefinitionWrapper>> withdrawalMap = new HashMap<Integer, Set<ReportDefinitionWrapper>>();
 	
 	/** The edit map. */
-	Map<Integer, Set<ReportDefinitionWrapper>> editMap = new HashMap<Integer, Set<ReportDefinitionWrapper>>();
+	private Map<Integer, Set<ReportDefinitionWrapper>> editMap = new HashMap<Integer, Set<ReportDefinitionWrapper>>();
 	
 	/** The create map. */
-	Map<Integer, Set<ReportDefinitionWrapper>> createMap = new  HashMap<Integer, Set<ReportDefinitionWrapper>>();
+	private Map<Integer, Set<ReportDefinitionWrapper>> createMap = new  HashMap<Integer, Set<ReportDefinitionWrapper>>();
 
     //added for unreported sae notification CAAERS-7044
     private Map<AdverseEvent,List<ReportDefinition>> adverseEventRecommendedReportsMap = new HashMap<AdverseEvent, List<ReportDefinition>>();

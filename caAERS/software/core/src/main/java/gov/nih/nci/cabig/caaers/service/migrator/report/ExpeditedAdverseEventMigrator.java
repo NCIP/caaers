@@ -1,11 +1,11 @@
 package gov.nih.nci.cabig.caaers.service.migrator.report;
 
-import gov.nih.nci.cabig.caaers.dao.InterventionSiteDao;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.attribution.*;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
+
 import org.apache.commons.collections15.CollectionUtils;
 import org.apache.commons.collections15.Predicate;
 import org.apache.commons.lang.ObjectUtils;
@@ -18,6 +18,7 @@ import java.util.List;
  * @author Biju Joseph
  * @since 1.5
  */
+@SuppressWarnings("rawtypes")
 public class ExpeditedAdverseEventMigrator implements Migrator<ExpeditedAdverseEventReport> {
     
     public void migrate(ExpeditedAdverseEventReport src, ExpeditedAdverseEventReport dest, DomainObjectImportOutcome<ExpeditedAdverseEventReport> outcome) {
@@ -448,7 +449,7 @@ public class ExpeditedAdverseEventMigrator implements Migrator<ExpeditedAdverseE
 
         //take a local copy
         List<AbstractAEIntervention> existingInterventions = new ArrayList<AbstractAEIntervention>(destInterventions);
-        List<AdverseEventAttribution> existingAdverseEventAttributions = new ArrayList<AdverseEventAttribution>(destAttributions);
+		List<AdverseEventAttribution> existingAdverseEventAttributions = new ArrayList<AdverseEventAttribution>(destAttributions);
 
 
         for(AdverseEventAttribution srcAdverseEventAttribution : srcAttributions){

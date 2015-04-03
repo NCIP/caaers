@@ -102,6 +102,7 @@ public abstract class SimpleFormAjaxableController<C extends AbstractMutableDoma
         PrintWriter pr = response.getWriter();
         pr.println(modelAndView.getModel().get(getFreeTextModelName()));
         pr.flush();
+        pr.close();
     }
 
     protected String getAjaxRequestParamName() {

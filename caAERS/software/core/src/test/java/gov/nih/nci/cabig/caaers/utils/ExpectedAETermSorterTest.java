@@ -9,11 +9,9 @@ package gov.nih.nci.cabig.caaers.utils;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import junit.framework.TestCase;
-import junit.framework.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -23,6 +21,7 @@ import java.util.List;
  * Time: 4:54 PM
  * To change this template use File | Settings | File Templates.
  */
+@SuppressWarnings("rawtypes")
 public class ExpectedAETermSorterTest extends TestCase {
 
 

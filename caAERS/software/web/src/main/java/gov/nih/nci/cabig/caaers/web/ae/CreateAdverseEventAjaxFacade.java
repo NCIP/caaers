@@ -621,9 +621,7 @@ public class CreateAdverseEventAjaxFacade {
     }
 
     public boolean pushRoutineAdverseEventToStudyCalendar(int aeReportId) {
-        if (true)
-            throw new UnsupportedOperationException("No more supported");
-        return false;
+        throw new UnsupportedOperationException("No more supported");
     }
 
     public AjaxOutput withdrawReportVersion(int aeReportId, int reportId) {
@@ -1022,8 +1020,9 @@ public class CreateAdverseEventAjaxFacade {
 //    		if(r.getId().equals(reportId))
 //    			report = r;
 		Report report = null;
-    	if(reportId != null || !reportId.equals(""))
+    	if(reportId != null && !reportId.equals("")) {
     		report = reportDao.getById(reportId);		
+    	}
     	adverseEventRoutingAndReviewRepository.addReportReviewComment(report, comment, userId);
     	
         return fetchPreviousComments(reportId, userId);
@@ -1031,30 +1030,23 @@ public class CreateAdverseEventAjaxFacade {
     
     public AjaxOutput editReviewComment(String comment, Integer commentId, String reportIdString){
     	Integer reportId = Integer.parseInt(reportIdString);
-//    	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
     	String userId = getUserId();
     	Report report = null;
-    	if(reportId != null || !reportId.equals(""))
+    	if(reportId != null && !reportId.equals("")) {
     		report = reportDao.getById(reportId);
-//    	Report report = null;
-//    	for(Report r: command.getAeReport().getActiveReports())
-//    		if(r.getId().equals(reportId))
-//    			report = r;
+    	}
+
     	adverseEventRoutingAndReviewRepository.editReportReviewComment(report, comment, userId, commentId);
     	return fetchPreviousComments(reportId, getUserId());
     }
     
     public AjaxOutput deleteReviewComment(Integer commentId, String reportIdString){
     	Integer reportId = Integer.parseInt(reportIdString);
-//    	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
     	String userId = getUserId();
     	Report report = null;
-    	if(reportId != null || !reportId.equals(""))
+    	if(reportId != null && !reportId.equals("")) {
     		report = reportDao.getById(reportId);
-//    	Report report = null;
-//    	for(Report r: command.getAeReport().getActiveReports())
-//    		if(r.getId().equals(reportId))
-//    			report = r;
+    	}
     	adverseEventRoutingAndReviewRepository.deleteReportReviewComment(report, commentId);
     	return fetchPreviousComments(reportId, userId);
     }
@@ -1164,20 +1156,10 @@ public class CreateAdverseEventAjaxFacade {
     }
     
     public AjaxOutput retrieveReviewCommentsAndActions(String reportId){
-    	
-    	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
-    	// Determine the report in context
-    	/*Map<Integer, Boolean> selectedReportDefinitionsMap = new HashMap<Integer, Boolean>();
-    	for(ReportDefinition rd: command.getSelectedReportDefinitions())
-    		selectedReportDefinitionsMap.put(rd.getId(), Boolean.TRUE);
-    	Report selectedReport = null;
-    	for(Report r: command.getAeReport().getActiveReports())
-    		if(selectedReportDefinitionsMap.containsKey(r.getReportDefinition().getId()))
-    			selectedReport = r;
-    	*/
     	Report report = null;
-    	if(reportId != null || !reportId.equals(""))
+    	if(reportId != null && !reportId.equals("")) {
     		report = reportDao.getById(Integer.parseInt(reportId));
+    	}
     	AjaxOutput output = retrieveReviewComments(report);
     	AjaxOutput transitionOutput = retrieveNextTransitions(reportId);
     	output.setObjectContent(transitionOutput.getObjectContent());
@@ -1188,7 +1170,6 @@ public class CreateAdverseEventAjaxFacade {
     public AjaxOutput advanceWorkflow(String reportId, String transitionToTake){
         AjaxOutput out = new AjaxOutput();
         try{
-        	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
 			Report report = null;
 			if(reportId != null)
 				report = reportDao.getById(Integer.parseInt(reportId));
