@@ -7,16 +7,32 @@
 package gov.nih.nci.cabig.caaers.rules.business.service;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.NotificationStatus;
+import gov.nih.nci.cabig.caaers.domain.ObservedAdverseEventProfile;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
+import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.dto.ApplicableReportDefinitionsDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.EvaluationResultDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper;
 import gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper.ActionType;
 import gov.nih.nci.cabig.caaers.domain.dto.SafetyRuleEvaluationResultDTO;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
-import gov.nih.nci.cabig.caaers.domain.report.*;
+import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryField;
+import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportType;
+import gov.nih.nci.cabig.caaers.domain.report.RequirednessIndicator;
 import gov.nih.nci.cabig.caaers.rules.common.AdverseEventEvaluationResult;
 import gov.nih.nci.cabig.caaers.rules.common.CaaersRuleUtil;
 import gov.nih.nci.cabig.caaers.rules.common.RuleType;
@@ -37,8 +53,6 @@ import java.util.TreeSet;
 
 import org.apache.commons.collections15.Closure;
 import org.apache.commons.collections15.CollectionUtils;
-import org.apache.commons.collections15.ListUtils;
-import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -60,9 +74,7 @@ public class EvaluationServiceImpl implements EvaluationService {
 
     private ReportDefinitionDao reportDefinitionDao;
 
-    private OrganizationDao organizationDao;
-
-	ReportDefinitionFilter reportDefinitionFilter;
+	private ReportDefinitionFilter reportDefinitionFilter;
     
     public EvaluationServiceImpl() {
     	reportDefinitionFilter = new ReportDefinitionFilter();
@@ -668,17 +680,6 @@ public class EvaluationServiceImpl implements EvaluationService {
         			reportDefinitions.addAll(reportDefinitionDao.getAll(studyOrganization.getOrganization().getId()));
         }
         
-        /**
-         * Get REport definitions of CTEP for DCP studies , because DCP uses CTEP 
-         * report definitions also . TEMP fix
-         */
-        Organization primarySponsor = study.getPrimaryFundingSponsorOrganization();
-        
-        //CAAERS-4215
-        //if (primarySponsor.getName().equals("Division of Cancer Prevention")) {
-        	//reportDefinitions.addAll(reportDefinitionDao.getAll(this.organizationDao.getByName("Cancer Therapy Evaluation Program").getId()));
-        //}
-        
         ApplicableReportDefinitionsDTO dto = new ApplicableReportDefinitionsDTO();
         for(ReportDefinition rd : reportDefinitions){
     	  dto.addReportDefinition(rd);
@@ -756,7 +757,7 @@ public class EvaluationServiceImpl implements EvaluationService {
 
 
         //non self referenced rules
-        final List<Object> inputObjects = new ArrayList(baseInputObjects);
+        final List<Object> inputObjects = new ArrayList<Object>(baseInputObjects);
         inputObjects.addAll(aeReport.getActiveAdverseEvents());
         
         final HashMap<String, Mandatory> rulesDecisionCache = new HashMap<String, Mandatory>();
@@ -789,10 +790,11 @@ public class EvaluationServiceImpl implements EvaluationService {
         //self referenced rules
         if(log.isDebugEnabled()) log.debug("Self referenced rule evaluation");
         CollectionUtils.forAllDo(rd.getSelfReferencedRuleBasedMandatoryFields(), new Closure<ReportMandatoryFieldDefinition>(){
-            public void execute(ReportMandatoryFieldDefinition mfd) {
+            @SuppressWarnings("unchecked")
+			public void execute(ReportMandatoryFieldDefinition mfd) {
                 Map<String, Object> map = CaaersRuleUtil.multiplexAndEvaluate(aeReport, mfd.getFieldPath());
                 for(String path : map.keySet()){
-                    List<Object> inputObjects = new ArrayList(baseInputObjects);
+                    List<Object> inputObjects = new ArrayList<Object>(baseInputObjects);
                     Object o = map.get(path);
                     if(o == null) continue;
                     if(o instanceof Collection){
@@ -862,11 +864,5 @@ public class EvaluationServiceImpl implements EvaluationService {
 
     public AdverseEventEvaluationService getAdverseEventEvaluationService() {
         return adverseEventEvaluationService;
-    }
-
-	public void setOrganizationDao(OrganizationDao organizationDao) {
-		this.organizationDao = organizationDao;
-	}
-
- 
+    } 
 }

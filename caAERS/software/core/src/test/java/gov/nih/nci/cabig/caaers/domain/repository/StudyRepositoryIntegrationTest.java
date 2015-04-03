@@ -8,8 +8,6 @@ package gov.nih.nci.cabig.caaers.domain.repository;
 
 import gov.nih.nci.cabig.caaers.CaaersDbNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao;
-import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
-import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySearchableAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
@@ -33,9 +31,6 @@ import java.util.List;
  */
 public class StudyRepositoryIntegrationTest extends CaaersDbNoSecurityTestCase {
 
-    private OrganizationDao organizationDao;
-
-    private ParticipantDao participantDao;
     
     private InvestigationalNewDrugDao investigationalNewDrugDao;
 
@@ -45,17 +40,13 @@ public class StudyRepositoryIntegrationTest extends CaaersDbNoSecurityTestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		organizationDao = (OrganizationDao) getApplicationContext().getBean("organizationDao");
-		participantDao = (ParticipantDao) getApplicationContext().getBean("participantDao");
 		investigationalNewDrugDao = (InvestigationalNewDrugDao) getApplicationContext().getBean("investigationalNewDrugDao");
 		studyRepository = (StudyRepository) getApplicationContext().getBean("studyRepository");
 	}
+	
     public String getTestDataFileName() {
         String fileName = "testdata/StudyRepositoryTest.xml";
         return fileName;
-    }
-    
-    public void testGet(){
     }
 
     public void testSearchStudyByExample() throws Exception {

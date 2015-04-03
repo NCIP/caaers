@@ -13,9 +13,7 @@ import gov.nih.nci.cabig.caaers.dao.AdverseEventRecommendedReportDao;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
-import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm;
@@ -48,7 +46,6 @@ import gov.nih.nci.cabig.caaers.integration.schema.saerules.EvaluatedAdverseEven
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.RecommendedActions;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.SaveAndEvaluateAEsInputMessage;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.SaveAndEvaluateAEsOutputMessage;
-import gov.nih.nci.cabig.caaers.service.AdeersIntegrationFacade;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.RecommendedActionService;
@@ -63,7 +60,6 @@ import gov.nih.nci.cabig.caaers.validation.CourseCycleGroup;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 import gov.nih.nci.cabig.caaers.validation.validator.AdverseEventValidatior;
 import gov.nih.nci.cabig.caaers.ws.faults.CaaersFault;
-import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -83,9 +79,6 @@ import javax.validation.groups.Default;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.MessageSource;
 
 /**
@@ -95,24 +88,18 @@ import org.springframework.context.MessageSource;
  * 
  */
 
-public class SAEEvaluationServiceImpl implements ApplicationContextAware {
+public class SAEEvaluationServiceImpl {
 
 	private AdverseEventRecommendedReportDao adverseEventRecommendedReportDao;
 	private StudyDao studyDao;
 	private TreatmentAssignmentDao treatmentAssignmentDao;
     private ParticipantDao participantDao;
-    private StudyParticipantAssignmentDao studyParticipantAssignmentDao;
     private SAEAdverseEventReportingPeriodConverter reportingPeriodConverter;
-    private ReportDefinitionDao reportDefinitionDao;
-	/** The now factory. */
-	private NowFactory nowFactory;
 	private EvaluationService evaluationService;
-	private ApplicationContext applicationContext;
 	private Configuration configuration;
 	private MessageSource messageSource;
 	private AdverseEventConverter converter;
     private RecommendedActionService recommendedActionService;
-    private AdeersIntegrationFacade adeersIntegrationFacade;
 	private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
 	private AdverseEventReportingPeriodSynchronizer reportingPeriodSynchronizer;
     private AdverseEventReportingPeriodMigrator reportingPeriodMigrator;
@@ -156,10 +143,8 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 
             if(errors.hasErrors()){
                logger.error("Adverse Event Management Service create or update call failed :" + String.valueOf(errors));
-                if ( errors.getErrorAt(0).getCode().equals("NO-CODE"))
-                    throw Helper.createCaaersFault(DEF_ERR_MSG, errors.getErrorAt(0).getCode(), errors.getErrorAt(0).getMessage() + " "  +errors.getErrorAt(0).getReplacementVariables()[0]);
-                else
-                    throw Helper.createCaaersFault(DEF_ERR_MSG, errors.getErrorAt(0).getCode(), errors.getErrorAt(0).getMessage());
+                if ( errors.getErrorAt(0).getCode().equals("NO-CODE")) throw Helper.createCaaersFault(DEF_ERR_MSG, errors.getErrorAt(0).getCode(), errors.getErrorAt(0).getMessage() + " "  +errors.getErrorAt(0).getReplacementVariables()[0]);
+				throw Helper.createCaaersFault(DEF_ERR_MSG, errors.getErrorAt(0).getCode(), errors.getErrorAt(0).getMessage());
             }
 
             //initialize requires reporting flag
@@ -168,6 +153,7 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
                 if(aeResult != null) aeResult.setRequiresReporting(ae.getRequiresReporting());
             }
 
+            saveAndEvaluateAEsOutputMessage.setLinkToReport(constructLinkToReport(study.getId(),reportingPeriod.getParticipant().getId(), reportingPeriod.getId()));
             // 3. fire Evaluation Service to identify SAE or not ?
             saveAndEvaluateAEsOutputMessage = (SaveAndEvaluateAEsOutputMessage)fireSAERules(reportingPeriod, study, mapAE2DTO,RequestType.SaveEvaluate,saveAndEvaluateAEsOutputMessage);
 
@@ -175,9 +161,8 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
             	AdverseEventResult aeResult = findAdverseEvent(ae, mapAE2DTO);
             	if(aeResult == null) {
             		continue;
-            	} else {
-            		ae.setRequiresReporting(aeResult.isRequiresReporting());
             	}
+				ae.setRequiresReporting(aeResult.isRequiresReporting());
             }
             
             // save the updated reporting period
@@ -329,15 +314,12 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 
 			//populate the output list with the AdverseEventResult objects created for each AdverseEventType
 			aeResultList.addAll(mapAE2DTO.values());
-            if ( requestType.equals(RequestType.SaveEvaluate)) {
-                ((SaveAndEvaluateAEsOutputMessage)response).setLinkToReport(constructLinkToReport(study.getId(),reportingPeriod.getParticipant().getId(), reportingPeriod.getId()));
-            }
 			
 			EvaluationResultDTO dto = evaluationService.evaluateSAERules(reportingPeriod);
 
 			if ( requestType.equals(RequestType.SaveEvaluate)) {
 	            findRecommendedActions(dto, reportingPeriod, (SaveAndEvaluateAEsOutputMessage) response);
-	            populateActionTextAndDueDate(response);
+	            populateActionTextAndDueDate((SaveAndEvaluateAEsOutputMessage) response);
 			}
             // create/update/delete AE recommended reports
             manageAdverseEventRecommendedReports(requestType, dto);
@@ -384,14 +366,10 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 		return response;
 	}
 	
-	private void populateActionTextAndDueDate(AEsOutputMessage response){
-		if(response instanceof SaveAndEvaluateAEsOutputMessage) {
-			  Date now = nowFactory.getNow();
-	          for(RecommendedActions recActions: ((SaveAndEvaluateAEsOutputMessage) response).getRecommendedActions()){
-	          	//recActions.setDueDate(recActions.getDueDate());
-	          	recActions.setActionText(recActions.getAction().substring(0, 1).toUpperCase() + recActions.getAction().
-	          			substring(1, recActions.getAction().length()).toLowerCase() + " the " + recActions.getReport());
-	          }
+	private void populateActionTextAndDueDate(SaveAndEvaluateAEsOutputMessage response){
+		for(RecommendedActions recActions: response.getRecommendedActions()){
+			recActions.setActionText(recActions.getAction().substring(0, 1).toUpperCase() + recActions.getAction().
+					substring(1, recActions.getAction().length()).toLowerCase() + " the " + recActions.getReport());
 		}
 	}
 
@@ -692,7 +670,6 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
                 //MedDRA terminology
                 AdverseEventMeddraLowLevelTerm thisMedDRATerm = thisAe.getAdverseEventMeddraLowLevelTerm();
                 AdverseEventMeddraLowLevelTerm thatMedDRATerm = thatAe.getAdverseEventMeddraLowLevelTerm();
-                if((thisMedDRATerm == null && thatMedDRATerm != null) && (thatMedDRATerm == null && thisMedDRATerm != null)) continue;
                 if((thisMedDRATerm != null && thatMedDRATerm != null) && thisMedDRATerm.getLowLevelTerm().getId() != thatMedDRATerm.getLowLevelTerm().getId()) continue;
             }
             //found a match
@@ -821,10 +798,6 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
         this.participantDao = participantDao;
     }
 
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		this.applicationContext = applicationContext;
-	}
-
 	public StudyDao getStudyDao() {
 		return studyDao;
 	}
@@ -857,14 +830,6 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 		this.messageSource = messageSource;
 	}
 
-    public StudyParticipantAssignmentDao getStudyParticipantAssignmentDao() {
-        return studyParticipantAssignmentDao;
-    }
-
-    public void setStudyParticipantAssignmentDao(StudyParticipantAssignmentDao studyParticipantAssignmentDao) {
-        this.studyParticipantAssignmentDao = studyParticipantAssignmentDao;
-    }
-
     public SAEAdverseEventReportingPeriodConverter getReportingPeriodConverter() {
         return reportingPeriodConverter;
     }
@@ -885,15 +850,7 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 			AdverseEventRecommendedReportDao adverseEventRecommendedReportDao) {
 		this.adverseEventRecommendedReportDao = adverseEventRecommendedReportDao;
 	}
-    
-    public void setNowFactory(NowFactory nowFactory) {
-		this.nowFactory = nowFactory;
-	}
 
-	public void setReportDefinitionDao(ReportDefinitionDao reportDefinitionDao) {
-		this.reportDefinitionDao = reportDefinitionDao;
-	}
-	
 	 /**
      * To Create or Update Advese Events.
      * Sync Flag is used only incase of SAE Evaluation service, As service can soft-delete the Adverse Events.
@@ -912,11 +869,8 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
                     rpSrc.getStudy().getFundingSponsorIdentifierValue());
             return null;
         }
-        try{
-            adeersIntegrationFacade.updateStudy(study.getId(), true);
-        }catch (Exception e){
-            logger.warn("Study synchronization failed.", e);
-        }
+        //async update study removed because the updates would most likely happen after this process is finished.
+        
         //migrate the domain object
         AdverseEventReportingPeriod rpDest = new AdverseEventReportingPeriod();
         DomainObjectImportOutcome<AdverseEventReportingPeriod> rpOutcome = new DomainObjectImportOutcome<AdverseEventReportingPeriod>();
@@ -975,8 +929,6 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
             }
             return null;
         }
-        
-        System.err.println("DIRKDEBUG: rpFound: " + rpFound);
 
         if(rpFound == null){
         	//new reporting period
@@ -1156,15 +1108,6 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 		this.configuration = configuration;
 	}
 
-	public AdeersIntegrationFacade getAdeersIntegrationFacade() {
-		return adeersIntegrationFacade;
-	}
-
-	public void setAdeersIntegrationFacade(
-			AdeersIntegrationFacade adeersIntegrationFacade) {
-		this.adeersIntegrationFacade = adeersIntegrationFacade;
-	}
-
 	public AdverseEventReportingPeriodDao getAdverseEventReportingPeriodDao() {
 		return adverseEventReportingPeriodDao;
 	}
@@ -1220,10 +1163,6 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 
 	public AdverseEventRecommendedReportDao getAdverseEventRecommendedReportDao() {
 		return adverseEventRecommendedReportDao;
-	}
-
-	public ReportDefinitionDao getReportDefinitionDao() {
-		return reportDefinitionDao;
 	}
 
 }

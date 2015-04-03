@@ -155,12 +155,12 @@ public class UserRepositoryIntegrationTest extends CaaersTestCase {
 
         {
             User x = userRepository.getUserByLoginName(loginName);
-            assertNotNull(x);
-            assertEquals("x", x.getFirstName());
-            assertTrue(x.getUserGroupTypes().contains(UserGroupType.system_administrator));
-            assertFalse(x.getUserGroupTypes().contains(UserGroupType.person_and_organization_information_manager));
-            assertEquals(1, x.getUserGroupTypes().size());
-            assertFalse(x.findRoleMembership(UserGroupType.person_and_organization_information_manager).isAllSite());
+            assertNotNull("The user should exist.", x);
+            assertEquals("The users first name should match.", "x", x.getFirstName());
+            assertTrue("The user should be a sys admin.", x.getUserGroupTypes().contains(UserGroupType.system_administrator));
+            assertFalse("The user should not be a person/org manager.", x.getUserGroupTypes().contains(UserGroupType.person_and_organization_information_manager));
+            assertEquals("There should be just one user in the group.", 1, x.getUserGroupTypes().size());
+            assertFalse("The user should not have accsess to all sites.", x.findRoleMembership(UserGroupType.person_and_organization_information_manager).isAllSite());
 
         }
         

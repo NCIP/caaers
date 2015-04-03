@@ -511,7 +511,7 @@ public class ReportDaoTest extends DaoTestCase<ReportDao> {
     	query.filterByGroup(-1);
     	query.filterByReportStatus(ReportStatus.AMENDED);
     	
-    	List<Report> reports = (List<Report>) getDao().search(query);
+    	List<Report> reports = getDao().search(query);
     	
     	assertEquals(-224, reports.get(0).getId().intValue());
     }

@@ -920,8 +920,7 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
     public  Boolean isSponsorReport(String nciInstituteCode){
     	if(reportDefinition.getOrganization().getNciInstituteCode().equals(nciInstituteCode))
     		return true;
-    	else
-    		return false;
+		return false;
     }
     
     
@@ -1071,10 +1070,9 @@ public class Report extends AbstractMutableDomainObject implements WorkflowAware
 		if (reportType.equals(ReportType.NOTIFICATION)) {
 			if (reportListOfSameGroupAndOrg.size() == 0) {
 				return _24HR_NOTIFICATION;
-			} else {
-				setAssignedIdentifer(lastSubmittedReport.getAssignedIdentifer());
-				return _24HR_AMENDMENT;
 			}
+			setAssignedIdentifer(lastSubmittedReport.getAssignedIdentifer());
+			return _24HR_AMENDMENT;
 		}
 		// if type is report 
 		if (reportType.equals(ReportType.REPORT)) {

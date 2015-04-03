@@ -86,6 +86,9 @@ public class RecommendedActionServiceImpl implements RecommendedActionService {
             List<AdverseEvent> seriousAdverseEvents = evaluationResult.getSeriousAdverseEvents(aeReportId);
             Date updatedDate = null;
             Date gradedDate = null;
+
+            ExpeditedAdverseEventReport aeReport = aeReportIndexMap.get(aeReportId);
+
             if(CollectionUtils.isNotEmpty(seriousAdverseEvents)){
                 updatedDate = AdverseEventReportingPeriod.findEarliestPostSubmissionUpdatedDate(seriousAdverseEvents);
                 gradedDate = AdverseEventReportingPeriod.findEarliestGradedDate(seriousAdverseEvents);
@@ -103,8 +106,6 @@ public class RecommendedActionServiceImpl implements RecommendedActionService {
             List<ReportDefinition> allReportDefs = applicableReportDefinitions.getReportDefinitions();
             Map<Integer, ReportTableRow> rowMap = new LinkedHashMap<Integer, ReportTableRow>();
 
-
-            ExpeditedAdverseEventReport aeReport = aeReportIndexMap.get(aeReportId);
             Date baseDate =  gradedDate;
 
             List<Report> reportsToAmendList = new ArrayList<Report>();

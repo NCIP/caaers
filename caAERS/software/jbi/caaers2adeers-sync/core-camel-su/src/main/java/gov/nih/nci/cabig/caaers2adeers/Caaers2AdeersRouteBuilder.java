@@ -132,6 +132,7 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
         
         onException(ClassCastException.class)
                 // create a custom failure response
+        		//todo; this generates the referencenumber on startup and it is not modified afterward.
                 .transform(constant("<Response ReferenceNumber=\"" + System.currentTimeMillis() + "\" IsTransactionSuccessful=\"0\" " +
                         "ReasonCode=\"WS_GEN_007\" ErrorClientResponseMessage=\"Invalid XML\"/>"))
                 // remember not to set as handled(true) to make camel think it's OK response,
