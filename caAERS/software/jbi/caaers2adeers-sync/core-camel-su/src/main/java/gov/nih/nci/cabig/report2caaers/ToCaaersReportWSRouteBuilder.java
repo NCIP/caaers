@@ -10,8 +10,6 @@ import gov.nih.nci.cabig.caaers2adeers.Caaers2AdeersRouteBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
-import gov.nih.nci.cabig.report2caaers.exchange.CorrelationIdBean;
-
 import static gov.nih.nci.cabig.caaers2adeers.exchnage.ExchangePreProcessor.*;
 import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.*;
 import static gov.nih.nci.cabig.caaers2adeers.track.Tracker.track;

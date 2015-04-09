@@ -17,9 +17,8 @@ public class UseFirstAggregationStrategy implements AggregationStrategy {
     		System.out.println("OLD EXCHANGE IS null");
     		System.out.println("RETURNING NEW EXCHANGE SINCE OLD EXCHANGE IS NULL");
     		return newExchange;
-        } else {
-        	System.out.println("RETURNING OLD EXCHANGE SINCE IT WAS FIRST TO ARRIVE");
-           return oldExchange;
         }
+		System.out.println("RETURNING OLD EXCHANGE SINCE IT WAS FIRST TO ARRIVE");
+        return oldExchange;
     }
 }
