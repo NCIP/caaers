@@ -114,10 +114,10 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
             </tr>
             <c:forEach items="${command.participant.identifiers}" var="identifier">
                 <tr class="results">
-                    <c:if test="${(identifier.class.name eq 'gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
+                    <c:if test="${(identifier['class'].name eq 'gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
                         <td>${identifier.organization}</td>
                     </c:if>
-                    <c:if test="${(identifier.class.name eq 'gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
+                    <c:if test="${(identifier['class'].name eq 'gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
                         <td>${identifier.systemName}</td>
                     </c:if>
                     <td>${identifier.type}</td>

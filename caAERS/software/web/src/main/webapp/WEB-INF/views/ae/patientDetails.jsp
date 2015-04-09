@@ -438,9 +438,6 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
           <tags:renderLabel field="${fieldGroups['disease'].fields[0]}" />
         </jsp:attribute>
         <jsp:attribute name="value">
-            <%--${fieldGroups['disease'].fields[0].attributes.options} and--%>
-            <%--${fieldGroups['disease'].fields[0].propertyName} and--%>
-            <%--${command.aeReport.diseaseHistory.abstractStudyDisease.class.name}--%>
           <tags:renderInputs field="${fieldGroups['disease'].fields[0]}" />
         </jsp:attribute>
         <jsp:attribute name="embededJS">
