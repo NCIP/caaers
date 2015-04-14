@@ -27,13 +27,13 @@ Please see the NOTICE and LICENSE files for details.
 Please join us in further developing and improving caAERS.
 
 # Prerequisites
- * [Installation guide](https://wiki.nci.nih.gov/display/caAERS/caAERS+2.7-M7+Quick+Start+Installation+and+Configuration+Guide#caAERS27-M1QuickStartInstallationandConfigurationGuide-InstallationandUpgradeProcedures)
- * JDK 1.6\*
+ * [Installation guide](https://wiki.nci.nih.gov/display/caAERS/caAERS+2.8-M1+Quick+Start+Installation+and+Configuration+Guide#caAERS27-M1QuickStartInstallationandConfigurationGuide-InstallationandUpgradeProcedures)
+ * JDK 1.7\*
  * PostgreSQL 9.2
- * Tomcat 6.0.37  (SSL enabled)
+ * Tomcat 7.0.59  (SSL enabled)
  * ServiceMix 3.3.2\#
- * maven 2.0.8\*
- * apache ant 1.8.3\* 
+ * maven 2.2.1\*
+ * apache ant 1.8.4\* 
 
  
  \* This software is needed for building the project from the source-code.
