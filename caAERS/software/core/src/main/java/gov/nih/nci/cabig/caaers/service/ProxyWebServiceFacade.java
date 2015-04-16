@@ -121,6 +121,8 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
         StreamResult result = new StreamResult(sw);
         String wsURI = configuration.get(Configuration.ESB_WS_URL);
         if(wsURI != null) webServiceTemplate.setDefaultUri(wsURI);
+        
+        log.error("DirkTest; Doing a simple send and recive with the message: '" + message +"'."); 
         webServiceTemplate.sendSourceAndReceiveToResult(source, new WebServiceMessageCallback() {
 			
 			public void doWithMessage(WebServiceMessage message) throws IOException,
