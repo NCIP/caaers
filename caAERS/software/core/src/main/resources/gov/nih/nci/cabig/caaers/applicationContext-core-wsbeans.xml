@@ -78,6 +78,7 @@
     </bean>
     
     <bean id="messageFactory" class="org.springframework.ws.soap.saaj.SaajSoapMessageFactory"/>
+    <bean id="soapFaultResolver" class="gov.nih.nci.cabig.caaers.service.util.SoapFaultResolver"/>
     <bean id="webServiceTemplate" class="org.springframework.ws.client.core.WebServiceTemplate">
 	    <constructor-arg ref="messageFactory"/>
 	    <property name="messageSender">
@@ -86,6 +87,7 @@
 	        </bean>
 	    </property>
 	    <property name="defaultUri" value="https://localhost:8196/GenericProcessorService"/>
+	    <property name="faultMessageResolver" ref="soapFaultResolver"/>
 	</bean>
 	
 	<bean id="proxyWebServiceFacade" class="gov.nih.nci.cabig.caaers.service.ProxyWebServiceFacade">
