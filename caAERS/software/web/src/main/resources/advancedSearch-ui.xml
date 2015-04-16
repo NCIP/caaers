@@ -1024,7 +1024,7 @@
 	    <dependent-object>
 			<class-name>gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm</class-name>
 			<display-name>Other MedDRA</display-name>
-			<table-name>dummy1</table-name>
+			<table-name>meddra_llt</table-name>
 			<table-alias>LL_TERM_ALIAS</table-alias>
 			<hidden>true</hidden>
 			<join-by-method>joinLowLevelTerm</join-by-method>

@@ -114,8 +114,8 @@ public class AdverseEventQuery extends AbstractQuery {
         setParameter("aeReportId", id);
     }
 
-	public void filterByCtcTerm(String term , String operator) {
-		andWhere (AE_TERM_ALIAS+".term.term " + parseOperator(operator) + " :term");
+	public void filterByCtcTerm(String term , String operator) {;
+		andWhere ( AE_TERM_ALIAS + ".id in (select ctcTerm.id from gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm ctcTerm where ctcTerm.term.term " + parseOperator(operator) + " :term )");
 		if (operator.equals("like")) {
 			setParameter("term" , getLikeValue(term));
 		} else {
