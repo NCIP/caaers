@@ -73,7 +73,7 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
 				appendSynchSuccessMessage(sb, "CTCAE");
 			} catch (Exception e) {
 				appendSynchFailureMessage(sb, "CTCAE");
-				logger.error(e);
+				logger.error("Exception while updating CTCAE;", e);
 			}
 		}
 		if(devicesChecked) {
@@ -82,7 +82,7 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
 				appendSynchSuccessMessage(sb, "Devices");
 			} catch (Exception e) {
 				appendSynchFailureMessage(sb, "Devices");
-				logger.error(e);
+				logger.error("Exception while updating Devices;", e);
 			}
 		}
 		if(preExistingConditionsChecked) {
@@ -91,7 +91,7 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
 				appendSynchSuccessMessage(sb, "PreExisting Conditions");
 			} catch (Exception e) {
 				appendSynchFailureMessage(sb, "PreExisting Conditions");
-				logger.error(e);
+				logger.error("Exception while updating PreExisting Conditions;", e);
 			}
 		}
 		if(therapiesChecked){
@@ -100,7 +100,7 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
 				appendSynchSuccessMessage(sb, "Therapies");
 			} catch (Exception e) {
 				appendSynchFailureMessage(sb, "Therapies");
-				logger.error(e);
+				logger.error("Exception while updating Therapy;", e);
 			}
 		}
 		if(agentsChecked) {
@@ -109,7 +109,7 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
 				appendSynchSuccessMessage(sb, "Agents");
 			} catch (Exception e) {
 				appendSynchFailureMessage(sb, "Agents");
-				logger.error(e);
+				logger.error("Exception while updating Agents;", e);
 			}
 		}
 		if(asaelChecked){
@@ -118,7 +118,7 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
 				appendSynchSuccessMessage(sb, "ASAEL");
 			} catch (Exception e) {
 				appendSynchFailureMessage(sb, "ASAEL");
-				logger.error(e);
+				logger.error("Exception while updating ASAEL;", e);
 			}
 		}
 		if(organizationsChecked) {
@@ -128,7 +128,7 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
 				appendSynchSuccessMessage(sb, "Organizations");
 			} catch (Exception e) {
 				appendSynchFailureMessage(sb, "Organizations");
-				logger.error(e);
+				logger.error("Exception while updating Orgs;", e);
 			}
 		}
 		if(agentDoseMeasureChecked) {
@@ -137,7 +137,7 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
 				appendSynchSuccessMessage(sb, "Agent Dose UOM");
 			} catch (Exception e) {
 				appendSynchFailureMessage(sb, "Agent Dose UOM");
-				logger.error(e);
+				logger.error("Exception while updating UOM;", e);
 			}
 		}
 		if(labChecked){
@@ -146,7 +146,7 @@ public class CTEPDataInitializationAjaxFacade extends AbstractAjaxFacade{
 				appendSynchSuccessMessage(sb, "Labs");
 			} catch (Exception e) {
 				appendSynchFailureMessage(sb, "Labs");
-				logger.error(e);
+				logger.error("Exception while updating Labs;", e);
 			}
 		}
 		
