@@ -22,7 +22,7 @@ public class SoapFaultResolver extends SoapFaultMessageResolver {
 		try {
 			super.resolveFault(message);
 		} catch (SoapFaultClientException sfce) {
-			log.error("Got a client Webservice fault, for reason: '" + sfce.getFaultStringOrReason() + "' throwing it up the stack.", sfce);
+			log.error("Got a client Webservice fault, for reason: '" + sfce.getFaultStringOrReason() + "', detail; '" + sfce.getSoapFault().getFaultDetail() + "'; throwing it up the stack.");
 			throw sfce;
 		}
 	}
