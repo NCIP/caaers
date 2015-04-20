@@ -166,7 +166,7 @@
             <!--  Spring and Spring Modules -->
             <dependency org="org.springframework" name="spring-hibernate3" rev="2.0.8" transitive="false"/> <!-- for HibernateDaoSupport -->
             <dependency org="org.springmodules" name="spring-modules-jbpm31" rev="0.8"  transitive="false" />
-            <dependency org="org.springframework.ws" name="spring-ws-core" rev="2.2.1.RELEASE"/>
+            <dependency org="org.springframework.ws" name="spring-ws-core" rev="2.0.5.RELEASE"/>
 
             <!--  JBPM - Workflow -->
             <dependency org="org.jbpm" name="jbpm-jpdl" rev="3.2.3.sb"  />
