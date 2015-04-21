@@ -1175,6 +1175,12 @@
 				<dependent-object-index>9</dependent-object-index>
 				<view-column-index>0</view-column-index>
 			</view-column>
+			<view-column>
+				<column-attribute>other</column-attribute>
+				<column-title>Outcome, other</column-title>
+				<dependent-object-index>9</dependent-object-index>
+				<view-column-index>1</view-column-index>
+			</view-column>
 		</dependent-object>	
 									
 	</search-target-object>
