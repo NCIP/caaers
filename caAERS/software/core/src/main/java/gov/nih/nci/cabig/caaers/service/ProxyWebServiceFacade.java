@@ -47,6 +47,11 @@ import org.springframework.xml.transform.StringSource;
 import org.w3c.dom.Document;
 
 import javax.activation.DataHandler;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocketFactory;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -152,8 +157,21 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
 
        
     	try {
+    		
     		URL url = new URL(wsURI);
+    		
     		HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
+    		if(httpConnection instanceof HttpsURLConnection) {
+    			((HttpsURLConnection) httpConnection).setHostnameVerifier(new HostnameVerifier() {
+					
+					@Override
+					public boolean verify(String hostname, SSLSession session) {
+						// TODO Auto-generated method stub
+						log.warn("Dirkdebug; Going to trust hostname: '" + hostname + "'.");
+						return true;
+					}
+				});
+    		}
     		httpConnection.setRequestMethod("POST");
     		httpConnection.setDoOutput(true);
     		httpConnection.connect();
