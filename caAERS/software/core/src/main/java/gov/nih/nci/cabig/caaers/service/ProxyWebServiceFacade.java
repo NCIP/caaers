@@ -19,29 +19,55 @@ import gov.nih.nci.cabig.caaers.service.migrator.StudyConverter;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.utils.XsltTransformer;
+
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.core.io.InputStreamSource;
 import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.client.core.WebServiceMessageCallback;
 import org.springframework.ws.client.core.WebServiceTemplate;
+import org.springframework.ws.mime.Attachment;
+import org.springframework.ws.mime.AttachmentException;
+import org.springframework.ws.soap.SoapBody;
+import org.springframework.ws.soap.SoapBodyException;
+import org.springframework.ws.soap.SoapEnvelope;
+import org.springframework.ws.soap.SoapEnvelopeException;
 import org.springframework.ws.soap.SoapHeader;
+import org.springframework.ws.soap.SoapHeaderException;
 import org.springframework.ws.soap.SoapMessage;
+import org.springframework.ws.soap.SoapVersion;
 import org.springframework.xml.transform.StringSource;
+import org.w3c.dom.Document;
 
+import javax.activation.DataHandler;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.namespace.QName;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+import javax.xml.ws.Service;
+
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.util.*;
 
@@ -116,40 +142,57 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
 
     // send to the configured default URI
     public String simpleSendAndReceive(String message) {
-        StreamSource source = new StreamSource(new StringReader(message));
-        StringWriter sw = new StringWriter();
-        StreamResult result = new StreamResult(sw);
-        String wsURI = configuration.get(Configuration.ESB_WS_URL);
-        if(wsURI != null) webServiceTemplate.setDefaultUri(wsURI);
-        
-        log.error("DirkTest; Doing a simple send and recive with the message: '" + message +"'."); 
-        webServiceTemplate.sendSourceAndReceiveToResult(source, new WebServiceMessageCallback() {
-			
-			public void doWithMessage(WebServiceMessage message) throws IOException,
-					TransformerException {
-				SoapMessage soapMessage = (SoapMessage) message;
-			    
-			    StringBuffer sbHeader = new StringBuffer();
-			    sbHeader.append("<wsse:Security xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" ")
-			    	.append("xmlns:wsse=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd\">")
-			        .append("<wsse:UsernameToken wsu:Id=\"UsernameToken-2765109\" xmlns:wsu=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd\">")
-			        .append("<wsse:Username>")
-			        .append(configuration.get(Configuration.WS_USERNAME))
-			        .append("</wsse:Username>")
-			        .append("<wsse:Password Type=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText\">")
-			        .append(configuration.get(Configuration.WS_PASSWORD))
-			        .append("</wsse:Password>")
-			        .append("</wsse:UsernameToken>")
-			    	.append("</wsse:Security> ");
-			    
-			    StringSource headerSource = new StringSource(sbHeader.toString());
-			    SoapHeader soapHeader = soapMessage.getSoapHeader();
-			    Transformer transformer = TransformerFactory.newInstance().newTransformer();
-                transformer.transform(headerSource, soapHeader.getResult());
-			}
-		} ,result);
+    	String wsURI = configuration.get(Configuration.ESB_WS_URL);
+    	StringBuilder sb = new StringBuilder(8192);
+    	try {
+    		URL url = new URL(wsURI);
+    		HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
+    		httpConnection.connect();
 
-        return sw.toString();
+    		StringBuffer xmlMessage = new StringBuffer();
+
+    		xmlMessage.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
+    		.append("<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\">")
+    		.append("<soapenv:Header>");
+
+    		//Generate header;
+    		xmlMessage.append("<wsse:Security xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" ")
+    		.append("xmlns:wsse=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd\">")
+    		.append("<wsse:UsernameToken wsu:Id=\"UsernameToken-2765109\" xmlns:wsu=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd\">")
+    		.append("<wsse:Username>")
+    		.append(configuration.get(Configuration.WS_USERNAME))
+    		.append("</wsse:Username>")
+    		.append("<wsse:Password Type=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText\">")
+    		.append(configuration.get(Configuration.WS_PASSWORD))
+    		.append("</wsse:Password>")
+    		.append("</wsse:UsernameToken>")
+    		.append("</wsse:Security> ");
+    		xmlMessage.append("</soapenv:Header>")
+    		.append("<soapenv:Body>").append(message).append("</soapenv:Body>")
+    		.append("</soapenv:Envelope>");
+
+
+    		try (OutputStream out = httpConnection.getOutputStream();
+    				OutputStreamWriter write = new OutputStreamWriter(out, StandardCharsets.UTF_8)) {
+    			write.write(xmlMessage.toString());
+    		}
+    		
+    		
+    		try(InputStream in = httpConnection.getInputStream();
+    		      BufferedReader r = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {     
+    		      String str = null;
+    		      
+    		      while ((str = r.readLine()) != null) {
+    		        sb.append(str);
+    		      }
+    			
+    		}
+
+    	} catch (Exception e) {
+    		log.error("Error while processing the proxywebservoce facade.\nFailed message: '" + message + "'. \nStacktrace;\n", e);
+    	}
+    	
+        return sb.toString();
     }
     
     // send to the configured default URI

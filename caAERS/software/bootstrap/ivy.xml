@@ -94,8 +94,8 @@
             <dependency org="cglib" name="cglib-nodep" rev="2.2"/>
 
             <!--  dependency on aspectJ -->
-			<dependency org="org.aspectj" name="aspectjrt" rev="1.6.12"/>
-			<dependency org="org.aspectj" name="aspectjweaver" rev="1.6.12"/>
+			<dependency org="org.aspectj" name="aspectjrt" rev="1.8.5"/>
+			<dependency org="org.aspectj" name="aspectjweaver" rev="1.8.5"/>
 
         	<!-- compile only dependencies -->
         	<dependency org="org.apache.ant" name="ant" rev="1.8.0" conf="build->master(*)"/>
