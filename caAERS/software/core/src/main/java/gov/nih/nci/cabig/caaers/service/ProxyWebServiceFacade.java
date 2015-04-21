@@ -25,6 +25,10 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.cxf.Bus;
+import org.apache.cxf.BusFactory;
+import org.apache.cxf.resource.ResourceManager;
+import org.apache.cxf.resource.ResourceResolver;
 import org.springframework.core.io.InputStreamSource;
 import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.client.core.WebServiceMessageCallback;
@@ -43,6 +47,7 @@ import org.springframework.xml.transform.StringSource;
 import org.w3c.dom.Document;
 
 import javax.activation.DataHandler;
+import javax.net.ssl.SSLSocketFactory;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -144,9 +149,13 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
     public String simpleSendAndReceive(String message) {
     	String wsURI = configuration.get(Configuration.ESB_WS_URL);
     	StringBuilder sb = new StringBuilder(8192);
+
+       
     	try {
     		URL url = new URL(wsURI);
     		HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
+    		httpConnection.setRequestMethod("POST");
+    		httpConnection.setDoOutput(true);
     		httpConnection.connect();
 
     		StringBuffer xmlMessage = new StringBuffer();
