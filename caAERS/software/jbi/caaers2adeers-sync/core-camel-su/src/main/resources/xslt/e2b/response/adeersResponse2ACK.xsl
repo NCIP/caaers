@@ -38,7 +38,7 @@
                 <xsl:when test="$reportStatus='SUCCESS'">
 					<xsl:variable name="status" select="'01'"/>
 				</xsl:when>
-				<xsl:when test="$reportStatus='SUCCESS' and fn:string-length($report_id) > 0">
+				<xsl:when test="$reportStatus='SUCCESS' and string-length($report_id) > 0">
 					<xsl:variable name="status" select="'02'"/>
 				</xsl:when>
 				<xsl:otherwise>
