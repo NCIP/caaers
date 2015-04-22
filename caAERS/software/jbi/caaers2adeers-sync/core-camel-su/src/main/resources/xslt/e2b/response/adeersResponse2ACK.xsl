@@ -34,17 +34,13 @@
                 <!-- Date on which ack got created : in CCYYMMDDHHMMSS format-->
             </ichicsrmessageheader>
             <xsl:variable name="reportStatus" select="//adeers:reportStatus"/>
-            <xsl:choose>
-                <xsl:when test="$reportStatus='SUCCESS'">
-					<xsl:variable name="status" select="'01'"/>
-				</xsl:when>
-				<xsl:when test="$reportStatus='SUCCESS' and string-length($report_id) > 0">
-					<xsl:variable name="status" select="'02'"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:variable name="status" select="'03'"/>
-				</xsl:otherwise>
-            </xsl:choose>
+            <xsl:variable name="status">
+	            <xsl:choose>
+	                <xsl:when test="$reportStatus='SUCCESS'">01</xsl:when>
+					<xsl:when test="string-length($report_id)>0">02</xsl:when>
+					<xsl:otherwise>03</xsl:otherwise>
+	            </xsl:choose>
+	        </xsl:variable>
             <acknowledgment>
                 <messageacknowledgment>
                     <icsrmessagenumb><xsl:value-of select="$c2r_msg_number" /></icsrmessagenumb>
