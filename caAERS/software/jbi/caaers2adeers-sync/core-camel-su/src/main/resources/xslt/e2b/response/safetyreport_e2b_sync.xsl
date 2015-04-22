@@ -46,12 +46,12 @@
                     03= SGML parsing error, no data extracted
                     -->
                     <xsl:if test="//soapenv:Fault">
-                        <transmissionacknowledgmentcode>02</transmissionacknowledgmentcode>
+                        <transmissionacknowledgmentcode>03</transmissionacknowledgmentcode>
                         <!--Optional:-->
                         <parsingerrormessage><xsl:value-of select="//soapenv:Fault/faultcode"/> : <xsl:value-of select="//soapenv:Fault/faultstring"/></parsingerrormessage>
                     </xsl:if>
                     <xsl:if test="//com:CaaersServiceResponse/com:ServiceResponse/wsError">
-                        <transmissionacknowledgmentcode>02</transmissionacknowledgmentcode>
+                        <transmissionacknowledgmentcode>03</transmissionacknowledgmentcode>
                         <!--Optional:-->
                         <parsingerrormessage><xsl:value-of select="//com:CaaersServiceResponse/com:ServiceResponse/wsError/errorCode"/> : <xsl:value-of select="//com:CaaersServiceResponse/com:ServiceResponse/wsError/errorDesc"/></parsingerrormessage>
                     </xsl:if>
@@ -91,8 +91,6 @@
                         02 = Report Not Loaded
                         -->
                         <reportacknowledgmentcode>01</reportacknowledgmentcode>
-                        <!--Optional:-->
-                        <!--<errormessagecomment>No comments or error</errormessagecomment>-->
                     </reportacknowledgment>
                 </xsl:if>
 
