@@ -13,8 +13,11 @@ import gov.nih.nci.cabig.rave2caaers.FromRaveToCaaersWSRouteBuilder;
 import gov.nih.nci.cabig.report2adeers.ToAdeersReportServiceRouteBuilder;
 import gov.nih.nci.cabig.report2caaers.AdeersResponseToE2BAckRouteBuilder;
 import gov.nih.nci.cabig.report2caaers.ToCaaersReportWSRouteBuilder;
+import gov.nih.nci.cabig.report2caaers.exchange.CreateAckIfNeededProcessor;
+
 import org.apache.camel.Exchange;
 import org.apache.camel.ExchangePattern;
+import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.builder.xml.Namespaces;
 import org.apache.camel.model.ProcessorDefinition;
@@ -125,13 +128,26 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
 	
     public void configure() {
         Namespaces ns = new Namespaces("soap",  "http://schemas.xmlsoap.org/soap/envelope/");
-        onException(Throwable.class)
+        
+		onException(Throwable.class)
+    		.choice()
+            .when(header(ToCaaersReportWSRouteBuilder.NEEDS_ACK).isEqualTo(Boolean.TRUE.toString()))
+            	.to("xslt:" + ToCaaersReportWSRouteBuilder.responseXSLBase + "extract-failures.xsl")
+            	.to("xslt:" + ToCaaersReportWSRouteBuilder.responseXSLBase + "E2BSchematronErrors2ACK.xsl")
+            	.to("direct:sendE2BAckSink")
+            .otherwise()
                 .to("direct:morgue")
-         .stop()
-         .end();
+                .stop()
+                .end();
         
         onException(ClassCastException.class)
                 // create a custom failure response
+        		.choice()
+            .when(header(ToCaaersReportWSRouteBuilder.NEEDS_ACK).isEqualTo(Boolean.TRUE.toString()))
+            	.to("xslt:" + ToCaaersReportWSRouteBuilder.responseXSLBase + "extract-failures.xsl")
+            	.to("xslt:" + ToCaaersReportWSRouteBuilder.responseXSLBase + "E2BSchematronErrors2ACK.xsl")
+            	.to("direct:sendE2BAckSink")
+            .otherwise()
         		//todo; this generates the referencenumber on startup and it is not modified afterward.
                 .transform(constant("<Response ReferenceNumber=\"" + System.currentTimeMillis() + "\" IsTransactionSuccessful=\"0\" " +
                         "ReasonCode=\"WS_GEN_007\" ErrorClientResponseMessage=\"Invalid XML\"/>"))
