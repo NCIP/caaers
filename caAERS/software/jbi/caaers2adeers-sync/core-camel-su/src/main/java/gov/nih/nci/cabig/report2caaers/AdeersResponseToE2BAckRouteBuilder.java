@@ -28,10 +28,10 @@ public class AdeersResponseToE2BAckRouteBuilder {
                 	.to("direct:processAdEERSResponse");
         
         routeBuilder.from("direct:processAdEERSResponse")
-            .to("log:gov.nih.nci.cabig.report2adeers.pre-e2b?showHeaders=true&multiline=true&level=WARN")
+            .to("log:gov.nih.nci.cabig.report2adeers.pre-e2b?showHeaders=true&multiline=true&level=INFO")
 			.processRef("adeersResponseProcessor")
 			.to("xslt:" + responseXSLBase + "adeersResponse2ACK.xsl")
-            .to("log:gov.nih.nci.cabig.report2adeers.post-e2back-xslt?showHeaders=true&multiline=true&level=WARN")
+            .to("log:gov.nih.nci.cabig.report2adeers.post-e2back-xslt?showHeaders=true&multiline=true&level=INFO")
 			.process(track(REQUEST_COMPLETION))
 			.to(routeBuilder.getFileTracker().fileURI(REQUEST_COMPLETION))
 			.to("file://"+outputEDIDir);
