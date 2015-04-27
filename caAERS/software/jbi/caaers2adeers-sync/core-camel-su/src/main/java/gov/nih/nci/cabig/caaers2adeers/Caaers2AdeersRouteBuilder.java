@@ -13,7 +13,6 @@ import gov.nih.nci.cabig.rave2caaers.FromRaveToCaaersWSRouteBuilder;
 import gov.nih.nci.cabig.report2adeers.ToAdeersReportServiceRouteBuilder;
 import gov.nih.nci.cabig.report2caaers.AdeersResponseToE2BAckRouteBuilder;
 import gov.nih.nci.cabig.report2caaers.ToCaaersReportWSRouteBuilder;
-import gov.nih.nci.cabig.report2caaers.exchange.CreateAckIfNeededProcessor;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.ExchangePattern;
@@ -129,7 +128,7 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
     public void configure() {
         Namespaces ns = new Namespaces("soap",  "http://schemas.xmlsoap.org/soap/envelope/");
         
-		onException(Throwable.class)
+		onException(Throwable.class, Exception.class, NullPointerException.class)
 			.to("log:gov.nih.nci.cabig.caaers2adeers.general_error?showHeaders=true&multiline=true&level=ERROR")
     		.choice()
             .when(header(ToCaaersReportWSRouteBuilder.NEEDS_ACK).isEqualTo(Boolean.TRUE.toString()))
