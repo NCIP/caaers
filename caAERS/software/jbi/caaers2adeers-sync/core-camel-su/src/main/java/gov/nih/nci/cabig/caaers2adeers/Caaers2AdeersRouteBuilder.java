@@ -130,6 +130,7 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
         Namespaces ns = new Namespaces("soap",  "http://schemas.xmlsoap.org/soap/envelope/");
         
 		onException(Throwable.class)
+			.to("log:gov.nih.nci.cabig.caaers2adeers.general_error?showHeaders=true&multiline=true&level=ERROR")
     		.choice()
             .when(header(ToCaaersReportWSRouteBuilder.NEEDS_ACK).isEqualTo(Boolean.TRUE.toString()))
             	.to("xslt:" + ToCaaersReportWSRouteBuilder.responseXSLBase + "extract-failures.xsl")
@@ -142,7 +143,8 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
         
         onException(ClassCastException.class)
                 // create a custom failure response
-        		.choice()
+        	.to("log:gov.nih.nci.cabig.caaers2adeers.class_cast_error?showHeaders=true&multiline=true&level=ERROR")
+        	.choice()
             .when(header(ToCaaersReportWSRouteBuilder.NEEDS_ACK).isEqualTo(Boolean.TRUE.toString()))
             	.to("xslt:" + ToCaaersReportWSRouteBuilder.responseXSLBase + "extract-failures.xsl")
             	.to("xslt:" + ToCaaersReportWSRouteBuilder.responseXSLBase + "E2BSchematronErrors2ACK.xsl")
