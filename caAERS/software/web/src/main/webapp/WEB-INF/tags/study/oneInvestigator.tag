@@ -49,8 +49,8 @@
     <td style="border-left:none; text-align:center;" align="center">
         <c:if test="${requestScope._canModifyTheSite || requestScope._canModifyTheCC || requestScope._canModifyTheFS}">
             <c:if test="${!isNew && si.siteInvestigator.investigator != null && si.id != null}">
-                <c:if test="${isActive}"><tags:button type="button" color="red" cssClass="" value="Deactivate"size="small" onclick="deactivate(${index})"/></c:if>
-                <c:if test="${!isActive}"><tags:button type="button" color="green" cssClass="" value="Activate" size="small"onclick="activate(${index})"/></c:if>
+                <c:if test="${isActive}"><tags:button type="button" color="red" cssClass="" value="Deactivate" size="small" onclick="deactivate(${index})"/></c:if>
+                <c:if test="${!isActive}"><tags:button type="button" color="green" cssClass="" value="Activate" size="small" onclick="activate(${index})"/></c:if>
             </c:if>
         </c:if>
         <%--this piece of code containing the DELETE button will be visible only if the user has privileges to click the add new investigator button--%>
