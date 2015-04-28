@@ -1077,8 +1077,7 @@ public class CreateAdverseEventAjaxFacade {
             String html = renderAjaxView("submitReportValidationSection", 0, params);
             output.setHtmlContent(html);
         } catch (Exception e) {
-            log.error(e.getMessage());
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
             output.setError(true);
             output.setErrorMessage(e.getMessage());
         }

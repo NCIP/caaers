@@ -960,7 +960,6 @@ public class SAEEvaluationServiceImpl {
         		logger.error("Error(s) while validating with Adverse Event " + String.valueOf(errors.getErrorCount()));
         		return null;
         	}
-
         	adverseEventReportingPeriodDao.save(rpFound);
 
         }
