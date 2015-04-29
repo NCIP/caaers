@@ -218,5 +218,13 @@ public class ViewReportTab extends AeTab {
     public ResearchStaffDao getResearchStaffDao(){
     	return researchStaffDao;
     }
+
+	public StudyDao getStudyDao() {
+		return studyDao;
+	}
+
+	public void setStudyDao(StudyDao studyDao) {
+		this.studyDao = studyDao;
+	}
     
 }

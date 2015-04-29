@@ -6,7 +6,6 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.web.fields;
 
-import gov.nih.nci.cabig.caaers.security.CaaersSecurityFacade;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.InPlaceEditableTab;
 
 import java.util.Locale;
