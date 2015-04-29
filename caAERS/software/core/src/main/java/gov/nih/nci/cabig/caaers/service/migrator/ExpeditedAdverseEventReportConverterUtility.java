@@ -1073,12 +1073,13 @@ public class ExpeditedAdverseEventReportConverterUtility {
 				treatmentAssignment.setComments(reportingPeriodType.getTreatmentAssignment().getComments());
 			}
 			treatmentAssignment.setDescription(reportingPeriodType.getTreatmentAssignment().getDescription());
+			if(treatmentAssignment.getDescription() == null) {
+				treatmentAssignment.setDescription(reportingPeriodType.getTreatmentAssignmentDescription());
+			}
 			treatmentAssignment.setDoseLevelOrder(reportingPeriodType.getTreatmentAssignment().getDoseLevelOrder());
 			
 			if(treatmentAssignment.getCode().equalsIgnoreCase("Other")) {
 				treatmentAssignment.setCode(null);
-			} else {
-				treatmentAssignment.setCode(reportingPeriodType.getTreatmentAssignmentDescription());
 			}
 				
 			reportingPeriod.setTreatmentAssignment(treatmentAssignment);
