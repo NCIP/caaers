@@ -33,9 +33,12 @@ public class AdverseEventReportingPeriodSynchronizer implements Migrator<Adverse
          if(src.getEpoch() != null) dest.setEpoch(src.getEpoch());
          if(src.getExternalId() != null) dest.setExternalId(src.getExternalId());
          if(src.getTreatmentAssignmentDescription() != null) dest.setTreatmentAssignmentDescription(src.getTreatmentAssignmentDescription());
-         
-         dest.setTreatmentAssignment(migrateTreatment(src.getTreatmentAssignment(), dest.getTreatmentAssignment()));
 
+         dest.setTreatmentAssignment(migrateTreatment(src.getTreatmentAssignment(), dest.getTreatmentAssignment()));
+         if(dest.getTreatmentAssignment() != null && dest.getTreatmentAssignment().getStudy() == null) {
+        	 dest.getTreatmentAssignment().setStudy(dest.getStudy());
+         }
+         
          for(AdverseEvent aeSrc : src.getAdverseEvents()){
             AdverseEvent aeFound = dest.findAdverseEventByIdTermAndDates(aeSrc);
             //set the attributes for AE
@@ -108,6 +111,7 @@ public class AdverseEventReportingPeriodSynchronizer implements Migrator<Adverse
     			taDest = new TreatmentAssignment();
     		}
 
+    		if(taSrc.getStudy() !=  null) taDest.setStudy(taSrc.getStudy());
     		if(taSrc.getCode() !=  null) taDest.setCode(taSrc.getCode());
     		if(taSrc.getComments() !=  null) taDest.setComments(taSrc.getComments());
     		if(taSrc.getDescription() !=  null) taDest.setDescription(taSrc.getDescription());
