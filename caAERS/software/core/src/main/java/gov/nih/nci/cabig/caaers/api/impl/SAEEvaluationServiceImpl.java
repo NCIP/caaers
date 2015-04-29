@@ -960,6 +960,9 @@ public class SAEEvaluationServiceImpl {
         		logger.error("Error(s) while validating with Adverse Event " + String.valueOf(errors.getErrorCount()));
         		return null;
         	}
+        	if(rpFound.getTreatmentAssignment() != null) {
+        		treatmentAssignmentDao.save(rpFound.getTreatmentAssignment());
+        	}
         	adverseEventReportingPeriodDao.save(rpFound);
 
         }
