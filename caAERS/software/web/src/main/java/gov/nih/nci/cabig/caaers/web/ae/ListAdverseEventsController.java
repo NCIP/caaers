@@ -293,16 +293,18 @@ public class ListAdverseEventsController extends SimpleFormController {
     	if(currPageNumber == null)
     		currPageNumber = 1;
     	Integer newPageNumber = 0;
-    	if(action.equals("nextPage")){
+    	if(action == null) {
+    		//do nothing.
+    	} else if(action.equals("nextPage")){
     		newPageNumber = ++currPageNumber;
-    	}else if(action.equals("prevPage")){
+    	} else if(action.equals("prevPage")){
     		newPageNumber = --currPageNumber;
-    	}else if(action.equals("lastPage")){
+    	} else if(action.equals("lastPage")){
     		Float newPageNumberFloat = command.getTotalResultsCount() / Float.parseFloat(numberOfResultsPerPage);
     		newPageNumber = newPageNumberFloat.intValue();
     		if(command.getTotalResultsCount() % Integer.parseInt(numberOfResultsPerPage) > 0)
     			newPageNumber++;
-    	}else if(action.equals("firstPage") || action.equals("numberOfResultsPerPage")){
+    	} else if(action.equals("firstPage") || action.equals("numberOfResultsPerPage")){
     		newPageNumber = 1;
     	}
     	
