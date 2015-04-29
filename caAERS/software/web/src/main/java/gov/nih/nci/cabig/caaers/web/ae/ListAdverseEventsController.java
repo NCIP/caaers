@@ -289,6 +289,10 @@ public class ListAdverseEventsController extends SimpleFormController {
     protected void processPaginationSubmission(HttpServletRequest request, ListAdverseEventsCommand command, ModelAndView modelAndView){
     	String action = (String) findInRequest(request, PAGINATION_ACTION);
     	String numberOfResultsPerPage = (String) findInRequest(request, "numberOfResultsPerPage");
+    	int numPerPage = 10;
+    	if(numberOfResultsPerPage != null) {
+    		numPerPage = Integer.parseInt(numberOfResultsPerPage);
+    	}
     	Integer currPageNumber = (Integer)request.getSession().getAttribute(CURRENT_PAGE_NUMBER);
     	if(currPageNumber == null)
     		currPageNumber = 1;
@@ -308,8 +312,8 @@ public class ListAdverseEventsController extends SimpleFormController {
     		newPageNumber = 1;
     	}
     	
-    	Integer startIndex = (newPageNumber - 1) * Integer.parseInt(numberOfResultsPerPage);
-		Integer endIndex = newPageNumber * Integer.parseInt(numberOfResultsPerPage) - 1;
+    	Integer startIndex = (newPageNumber - 1) * numPerPage;
+		Integer endIndex = newPageNumber * numPerPage - 1;
 		if(endIndex > command.getTotalResultsCount())
 			endIndex = command.getTotalResultsCount() - 1;
 		filterResultMap(command, startIndex, endIndex);
