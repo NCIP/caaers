@@ -21,6 +21,7 @@ public class AbstractQueryTest extends TestCase {
 		query = new AbstractQuery("select * from emp"){
 
 		};
+		
 	}
 	public void testGetQueryString() {
 		query.andWhere("x = 1");
@@ -55,23 +56,48 @@ public class AbstractQueryTest extends TestCase {
 	}
 
 	public void testCreateDateQueryForLessThan() {
-		String resQuery = "";
+		AbstractQuery adverseEventQuery = new AbstractQuery("select distinct ae, aeRp from  AdverseEvent ae join ae.reportingPeriod aeRp") {
+		};
+		
+		String startDateQuery = "";
+		String endDateQuery = "";
+		String courseStartDateQuery = "";
+		String courseEndDateQuery = "";
 		try {
-			resQuery = query.createDateQuery("startDate", "04/01/2015", "<");
+			startDateQuery = adverseEventQuery.createDateQuery("ae.startDate", "04/01/2015", "<");
+			endDateQuery = adverseEventQuery.createDateQuery("ae.endDate", "04/10/2015", "<");
+			courseStartDateQuery = adverseEventQuery.createDateQuery("aeRp.startDate", "04/01/2015", "<");
+			courseEndDateQuery = adverseEventQuery.createDateQuery("aeRp.endDate", "04/10/2015", "<");
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		assertEquals(resQuery, "(year(startDate) < '2015' OR (year(startDate) = '2015' AND month(startDate) < '4') OR (year(startDate) = '2015' AND month(startDate) = '4' AND day(startDate) < '1'))");
+		assertEquals(startDateQuery, "(year(ae.startDate) < '2015' OR (year(ae.startDate) = '2015' AND month(ae.startDate) < '4') OR (year(ae.startDate) = '2015' AND month(ae.startDate) = '4' AND day(ae.startDate) < '1'))");
+		assertEquals(endDateQuery, "(year(ae.endDate) < '2015' OR (year(ae.endDate) = '2015' AND month(ae.endDate) < '4') OR (year(ae.endDate) = '2015' AND month(ae.endDate) = '4' AND day(ae.endDate) < '10'))");
+		assertEquals(courseStartDateQuery, "(year(aeRp.startDate) < '2015' OR (year(aeRp.startDate) = '2015' AND month(aeRp.startDate) < '4') OR (year(aeRp.startDate) = '2015' AND month(aeRp.startDate) = '4' AND day(aeRp.startDate) < '1'))");
+		assertEquals(courseEndDateQuery, "(year(aeRp.endDate) < '2015' OR (year(aeRp.endDate) = '2015' AND month(aeRp.endDate) < '4') OR (year(aeRp.endDate) = '2015' AND month(aeRp.endDate) = '4' AND day(aeRp.endDate) < '10'))");
 	}
 
 	public void testCreateDateQueryForLessThanOrEqualTo() {
-		String resQuery = "";
+		AbstractQuery adverseEventQuery = new AbstractQuery("select distinct ae, aeRp from  AdverseEvent ae join ae.reportingPeriod aeRp") {
+		};
+		
+		String startDateQuery = "";
+		String endDateQuery = "";
+		String courseStartDateQuery = "";
+		String courseEndDateQuery = "";
 		try {
-			resQuery = query.createDateQuery("startDate", "04/01/2015", "<=");
+			startDateQuery = adverseEventQuery.createDateQuery("ae.startDate", "04/01/2015", "<=");
+			endDateQuery = adverseEventQuery.createDateQuery("ae.endDate", "04/10/2015", "<=");
+			courseStartDateQuery = adverseEventQuery.createDateQuery("aeRp.startDate", "04/01/2015", "<=");
+			courseEndDateQuery = adverseEventQuery.createDateQuery("aeRp.endDate", "04/10/2015", "<=");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		assertEquals(resQuery, "(year(startDate) < '2015' OR (year(startDate) = '2015' AND month(startDate) < '4') OR (year(startDate) = '2015' AND month(startDate) = '4' AND day(startDate) <= '1'))");
+		assertEquals(startDateQuery, "(year(ae.startDate) < '2015' OR (year(ae.startDate) = '2015' AND month(ae.startDate) < '4') OR (year(ae.startDate) = '2015' AND month(ae.startDate) = '4' AND day(ae.startDate) <= '1'))");
+		assertEquals(endDateQuery, "(year(ae.endDate) < '2015' OR (year(ae.endDate) = '2015' AND month(ae.endDate) < '4') OR (year(ae.endDate) = '2015' AND month(ae.endDate) = '4' AND day(ae.endDate) <= '10'))");
+		assertEquals(courseStartDateQuery, "(year(aeRp.startDate) < '2015' OR (year(aeRp.startDate) = '2015' AND month(aeRp.startDate) < '4') OR (year(aeRp.startDate) = '2015' AND month(aeRp.startDate) = '4' AND day(aeRp.startDate) <= '1'))");
+		assertEquals(courseEndDateQuery, "(year(aeRp.endDate) < '2015' OR (year(aeRp.endDate) = '2015' AND month(aeRp.endDate) < '4') OR (year(aeRp.endDate) = '2015' AND month(aeRp.endDate) = '4' AND day(aeRp.endDate) <= '10'))");
 	}
 
 }
