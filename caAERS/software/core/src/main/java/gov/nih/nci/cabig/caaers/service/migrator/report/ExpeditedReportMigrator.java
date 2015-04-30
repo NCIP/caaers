@@ -62,6 +62,10 @@ public class ExpeditedReportMigrator extends CompositeMigrator<ExpeditedAdverseE
    	    				getStudySubjectIdentifier());
    	            return;   			
     		}
+    		String code = src.getReportingPeriod().getTreatmentAssignment().getCode();
+    		if(code != null && code.equalsIgnoreCase("Other")) {
+    			src.getReportingPeriod().getTreatmentAssignment().setCode(null);
+    		}
     		AdverseEventReportingPeriod arp = spa.findReportingPeriod(null, src.getReportingPeriod().getStartDate(), null, 
     				src.getReportingPeriod().getCycleNumber(), null, src.getReportingPeriod().getTreatmentAssignment().getCode());
     		if(arp == null){
