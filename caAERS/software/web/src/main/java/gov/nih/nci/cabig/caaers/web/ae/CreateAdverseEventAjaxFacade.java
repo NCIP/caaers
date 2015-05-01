@@ -708,7 +708,7 @@ public class CreateAdverseEventAjaxFacade {
         try {
 			return ParticipantHistory.bodySuraceArea(ht, htUOM, wt, wtUOM);
 		} catch (Exception e) {
-			log.error(e);
+			log.error("error while calcutaling body surface area.", e);
 		}
 		return 0.0;
     }
