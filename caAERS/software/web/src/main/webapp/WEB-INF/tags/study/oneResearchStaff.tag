@@ -63,8 +63,8 @@
         <c:if test="${requestScope._canModifyTheSite || requestScope._canModifyTheCC || requestScope._canModifyTheFS}">
             <c:if test="${activateButtonVisibility}">
                 <c:if test="${!isNew && sp.siteResearchStaff.researchStaff != null && sp.id != null}">
-                    <c:if test="${isActive}"><tags:button type="button" color="red" cssClass="" value="Deactivate"size="small" onclick="deactivate(${index})"/></c:if>
-                    <c:if test="${!isActive}"><tags:button type="button" color="green" cssClass="" value="Activate" size="small"onclick="activate(${index})"/></c:if>
+                    <c:if test="${isActive}"><tags:button type="button" color="red" cssClass="" value="Deactivate" size="small" onclick="deactivate(${index})"/></c:if>
+                    <c:if test="${!isActive}"><tags:button type="button" color="green" cssClass="" value="Activate" size="small" onclick="activate(${index})"/></c:if>
                 </c:if>
             </c:if>
 
