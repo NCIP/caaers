@@ -143,7 +143,7 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
 
     /** The event location. */
     private String eventLocation;
-    
+
     public String getExternalId() {
 		return externalId;
 	}
@@ -1114,8 +1114,7 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
      */
     @Transient
     public String getDisplaySerious() {
-        if (serious != null) return serious.getDisplayName();
-        return "";
+        return this.outcomes.size() > 0 ? "Yes" : "No";
     }
 
     /**
