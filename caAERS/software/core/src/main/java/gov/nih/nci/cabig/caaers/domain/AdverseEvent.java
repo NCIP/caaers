@@ -1108,12 +1108,14 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     }
 
     /**
-     * To identify if AdverseEvent has outcomes or not
-     * @return string Yes/No
+     * Gets the display serious.
+     *
+     * @return the display serious
      */
     @Transient
     public String getDisplaySerious() {
-        return this.outcomes.size() > 0 ? "Yes" : "No";
+        if (serious != null) return serious.getDisplayName();
+        return "";
     }
 
     /**
@@ -1170,6 +1172,20 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
      */
     public Boolean getRequiresReporting() {
         return requiresReporting;
+    }
+
+    /**
+     * To display isSAE value in Advance search page
+     * @return if requiredReporting value is true returns 'Yes' otherwise returns 'No'
+     */
+    @Transient
+    public String getDisplayRequiresReporting() {
+    	//If requiresReporting is null return "No"(False) 
+    	if(this.requiresReporting == null) {
+             return "";
+    	}
+    	//Else return Yes/No based on requiresReporting value(True/False)
+    	return this.requiresReporting ? "Yes" : "No";
     }
 
     /**

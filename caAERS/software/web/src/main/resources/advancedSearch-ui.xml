@@ -782,8 +782,8 @@
 				<view-column-index>9</view-column-index>
 			</view-column>
             <view-column>
-                <column-attribute>displaySerious</column-attribute>
-                <column-title>Is SAE</column-title>
+                <column-attribute>displayRequiresReporting</column-attribute>
+                <column-title>Requires reporting</column-title>
                 <dependent-object-index>0</dependent-object-index>
                 <view-column-index>10</view-column-index>
             </view-column>
