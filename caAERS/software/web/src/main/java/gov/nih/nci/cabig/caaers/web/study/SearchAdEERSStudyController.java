@@ -60,7 +60,7 @@ public class SearchAdEERSStudyController extends SimpleFormController {
     protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object oCommand, BindException errors) throws Exception {
 
         SearchCommand c = (SearchCommand)oCommand;
-        Map map = errors.getModel();
+        Map<String, Object> map = errors.getModel();
 
         if (StringUtils.isEmpty(c.getSearchText())) {
             errors.reject("", Messages.get("ERR_searchStudyCharacters"));
@@ -70,8 +70,7 @@ public class SearchAdEERSStudyController extends SimpleFormController {
                 studies = studyRepository.searchInAdEERS(c.getSearchText());
             } catch (Exception e) {
                 errors.reject("ERR_adeers.search.error", e.getMessage());
-                logger.error(e);
-                e.printStackTrace();
+                logger.error("Error while seaching adeers.", e);
             }
             map.put("studies", studies);
         }

@@ -92,7 +92,7 @@ public final class AdvancedSearchUiUtil{
 			unmarshaller = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.web.search.ui").createUnmarshaller();
 			advancedSearchUi = (AdvancedSearchUi) unmarshaller.unmarshal(inputStream);
 		} catch (Exception e) {
-			log.error(e);
+			log.error("Error while loading advanced search ui.", e);
             throw new CaaersSystemException("Unable to parse advancedSearch-ui.xml",e);
 		}
 
