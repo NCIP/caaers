@@ -274,6 +274,10 @@ public class ReportSubmissionService {
 			}
 		} catch (Exception e) {
 			log.error("Error while trying to submit report",e);
+			if(report != null && ReportStatus.INPROCESS.equals(report.getStatus())) {
+				report.setStatus(ReportStatus.FAILED);
+				report.setSubmissionMessage("Unable to submit report; " + e.getMessage()); 
+			}
 			throw new CaaersSystemException("Unable to submit report", e);
 		}
     	
