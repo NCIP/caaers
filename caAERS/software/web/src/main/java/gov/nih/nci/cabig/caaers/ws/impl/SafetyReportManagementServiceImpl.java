@@ -78,9 +78,7 @@ public class SafetyReportManagementServiceImpl implements SafetyReportManagement
     public CaaersServiceResponse submitSafetyReport(@WebParam(name = "AdverseEventReport", targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/aereport") AdverseEventReport xmlAdverseEventReport){
 		try {
 			CaaersServiceResponse val = safetySvcImpl.submitSafetyReport(xmlAdverseEventReport);
-			if ("1".equals(val.getServiceResponse().getResponsecode())) {
-				throw new Exception(getErrors(val.getServiceResponse().getWsError()));
-			}
+
 				
 			return val;
 		} catch (Exception e) {
@@ -95,9 +93,6 @@ public class SafetyReportManagementServiceImpl implements SafetyReportManagement
     public CaaersServiceResponse saveSafetyReport(@WebParam(name = "AdverseEventReport", targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/aereport") AdverseEventReport xmlAdverseEventReport){
 		try {
 			CaaersServiceResponse val = safetySvcImpl.saveSafetyReport(xmlAdverseEventReport);
-			if ("1".equals(val.getServiceResponse().getResponsecode())) {
-				throw new Exception(getErrors(val.getServiceResponse().getWsError()));
-			}
 			
 			return val;
 		} catch (Exception e) {
