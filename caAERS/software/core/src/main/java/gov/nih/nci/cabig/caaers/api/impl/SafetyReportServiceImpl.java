@@ -664,7 +664,7 @@ public class SafetyReportServiceImpl {
 
         }catch(Exception e) {
             logger.error("Error while converting AdverseEvent XML to domain object", e);
-            errors.addValidationError( "WS_GEN_000","Error while converting XML to domain object:" + e.getMessage() );
+            errors.addValidationError( "WS_GEN_008","Error while converting XML to domain object:" + e.getMessage() );
             return errors;
         }
 
