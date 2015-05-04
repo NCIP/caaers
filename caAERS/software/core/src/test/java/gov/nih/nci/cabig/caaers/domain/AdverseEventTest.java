@@ -548,4 +548,13 @@ public class AdverseEventTest extends AbstractTestCase {
 
     }
 
+    public void testGetDisplaySerious(){
+        Outcome outcome = Fixtures.createOutcome(1001, OutcomeType.CONGENITAL_ANOMALY);
+        AdverseEvent ae = Fixtures.createAdverseEvent(1, Grade.DEATH);
+        ae.getAdverseEventCtcTerm().getTerm().setOtherRequired(true);
+        assertEquals("No", ae.getDisplaySerious());
+        ae.addOutcome(outcome);
+        assertEquals("Yes", ae.getDisplaySerious());
+    }
+
 }

@@ -1108,9 +1108,8 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     }
 
     /**
-     * Gets the display serious.
-     *
-     * @return the display serious
+     * To identify if AdverseEvent has outcomes or not
+     * @return string Yes/No
      */
     @Transient
     public String getDisplaySerious() {
