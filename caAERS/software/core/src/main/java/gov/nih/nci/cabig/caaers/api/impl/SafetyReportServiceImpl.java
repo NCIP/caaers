@@ -594,7 +594,7 @@ public class SafetyReportServiceImpl {
             		str.append("Report: '").append(r.getName()).append("' (").append(r.getId()).append("); Error: ").append(r.getSubmissionMessage()).append("\n\n");
             	}
             	logger.error(str.toString());
-                Helper.populateError(response, "WS_GEN_007", str.toString().trim());
+                response = Helper.populateError(response, "WS_GEN_007", str.toString().trim());
             }
 
         } catch (Exception e) {
