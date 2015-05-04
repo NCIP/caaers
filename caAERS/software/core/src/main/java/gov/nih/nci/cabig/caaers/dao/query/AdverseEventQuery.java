@@ -190,5 +190,9 @@ public class AdverseEventQuery extends AbstractQuery {
     public void filterByMatchingTermsOnExpectedAEProfileAndReportedAE(){
     	andWhere(TAC_EXPECTED_AE_PROFILE+".term="+AE_TERM_ALIAS+".term");
     }
+
+    public void filterByAEAwarenessDate(String dateString , String operator) throws Exception {
+        andWhere(createDateQuery(AE_ALIAS+".gradedDate", dateString, operator));
+    }
     
 }
