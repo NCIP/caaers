@@ -49,7 +49,7 @@ public class LabManagementWebServiceImpl implements LabManagementWebService{
                 Helper.populateProcessingOutcome(caaersResponse, outcome);
             }
 		} catch (Throwable e) {
-            logger.error(e);
+            logger.error("Error while creating or updating labs.", e);
             Helper.populateError(caaersResponse, "WS_GEN_000", "Unable to process the request :" + e.getMessage());
 		}
 		

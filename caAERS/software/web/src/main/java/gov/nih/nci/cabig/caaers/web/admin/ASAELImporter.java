@@ -36,7 +36,7 @@ public class ASAELImporter extends Importer {
             Map<String, Object> map =  importer.importFile();
             request.setAttribute("results", map);
         } catch (Exception e) {
-        	logger.error(e);
+        	logger.error("Error while importing ASAEL.", e);
         }
     }
 

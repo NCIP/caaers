@@ -51,7 +51,7 @@ public class SafetyReportManagementServiceImpl implements SafetyReportManagement
 		try {
 			return safetySvcImpl.initiateSafetyReportAction(xmlAdverseEventReport);
 		} catch (Exception e) {
-            logger.error(e);
+            logger.error("Error in iniate Saftey report.", e);
             CaaersServiceResponse caaersResponse = Helper.createResponse();
             Helper.populateError(caaersResponse, "WS_GEN_000", "Unable to process the request :" + e.getMessage());
             return caaersResponse;
@@ -84,7 +84,7 @@ public class SafetyReportManagementServiceImpl implements SafetyReportManagement
 				
 			return val;
 		} catch (Exception e) {
-            logger.error(e);
+            logger.error("Error is submit saftey report.", e);
             CaaersServiceResponse caaersResponse = Helper.createResponse();
             Helper.populateError(caaersResponse, "WS_GEN_000", "Unable to process the request :" + e.getMessage() + ".\n Error occured in " + Configuration.LAST_LOADED_CONFIGURATION.get(Configuration.SYSTEM_NAME));
             return caaersResponse;
@@ -101,7 +101,7 @@ public class SafetyReportManagementServiceImpl implements SafetyReportManagement
 			
 			return val;
 		} catch (Exception e) {
-            logger.error(e);
+            logger.error("Error is save saftery report.", e);
             CaaersServiceResponse caaersResponse = Helper.createResponse();
             Helper.populateError(caaersResponse, "WS_GEN_000", "Unable to process the request :" + e.getMessage() + ".\n Error occured in " + Configuration.LAST_LOADED_CONFIGURATION.get(Configuration.SYSTEM_NAME));
             return caaersResponse;
