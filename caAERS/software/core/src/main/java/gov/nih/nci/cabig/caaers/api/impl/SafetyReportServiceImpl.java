@@ -579,8 +579,22 @@ public class SafetyReportServiceImpl {
             }
 
             //submit report
+            List<Report> failedReports = new ArrayList<Report>();
             for(Report report : reportsAffected){
                 reportSubmissionService.submitReport(report);
+                if(ReportStatus.FAILED.equals(report.getStatus())) {
+                	failedReports.add(report);
+                }
+            }
+            
+            if (!failedReports.isEmpty()) {
+            	StringBuilder str = new StringBuilder(1024);
+            	str.append("Could not send ").append(failedReports.size()).append(" out of ").append(reportsAffected.size()).append(" reports, for the following reasons;\n");
+            	for(Report r : failedReports) {
+            		str.append("Report: '").append(r.getName()).append("' (").append(r.getId()).append("); Error: ").append(r.getSubmissionMessage()).append("\n\n");
+            	}
+            	logger.error(str.toString());
+                Helper.populateError(response, "WS_GEN_007", str.toString().trim());
             }
 
         } catch (Exception e) {
@@ -650,7 +664,7 @@ public class SafetyReportServiceImpl {
 
         }catch(Exception e) {
             logger.error("Error while converting AdverseEvent XML to domain object", e);
-            errors.addValidationError( "WS_GEN_000","Error while converting XML to domain object:" + e.getMessage() );
+            errors.addValidationError( "WS_GEN_008","Error while converting XML to domain object:" + e.getMessage() );
             return errors;
         }
 
