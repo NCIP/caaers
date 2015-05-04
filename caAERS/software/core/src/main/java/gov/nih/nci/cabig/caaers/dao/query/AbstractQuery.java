@@ -374,7 +374,7 @@ public abstract class AbstractQuery {
 			yearPredicate = ">";
 			monthPredicate = ">";
 		} else if (predicate.equals("<") || predicate.equals("<=")) {
-			yearPredicate = "<=";
+			yearPredicate = "<";
 			monthPredicate = "<";
 		} 
 

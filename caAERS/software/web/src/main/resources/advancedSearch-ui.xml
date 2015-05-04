@@ -647,6 +647,8 @@
 				<operator name="!=" display-uri="Not Equal To"/>
 				<operator name=">" display-uri="Greater Than"/>
 				<operator name=">=" display-uri="Greater Than or Equal To"/>
+				<operator name="&lt;" display-uri="Less Than"/>
+                <operator name="&lt;=" display-uri="Less Than or Equal To"/>
 				<filter-method>filterByGrade</filter-method>
 			</ui-attribute>
 			<ui-attribute>
@@ -703,6 +705,8 @@
 				<operator name="=" display-uri="Equal To"/>				
 				<operator name=">" display-uri="Greater Than"/>
 				<operator name=">=" display-uri="Greater Than or Equal To"/>
+                <operator name="&lt;" display-uri="Less Than"/>
+                <operator name="&lt;=" display-uri="Less Than or Equal To"/>
 				<filter-method>filterByAEStartDate</filter-method>
 			</ui-attribute>
 			<ui-attribute>
@@ -713,6 +717,8 @@
 				<operator name="=" display-uri="Equal To"/>				
 				<operator name=">" display-uri="Greater Than"/>
 				<operator name=">=" display-uri="Greater Than or Equal To"/>
+                <operator name="&lt;" display-uri="Less Than"/>
+                <operator name="&lt;=" display-uri="Less Than or Equal To"/>
 				<filter-method>filterByAEEndDate</filter-method>
 			</ui-attribute>
 			<view-column>
@@ -1344,6 +1350,8 @@
 				<operator name="=" display-uri="Equal To"/>				
 				<operator name=">" display-uri="Greater Than"/>
 				<operator name=">=" display-uri="Greater Than or Equal To"/>
+				<operator name="&lt;" display-uri="Less Than"/>
+                <operator name="&lt;=" display-uri="Less Than or Equal To"/>
 				<filter-method>filterByReportVersionCreatedDate</filter-method>
 			</ui-attribute>
 			<ui-attribute>
@@ -1354,6 +1362,8 @@
 				<operator name="=" display-uri="Equal To"/>				
 				<operator name=">" display-uri="Greater Than"/>
 				<operator name=">=" display-uri="Greater Than or Equal To"/>
+				<operator name="&lt;" display-uri="Less Than"/>
+                <operator name="&lt;=" display-uri="Less Than or Equal To"/>
 				<filter-method>filterByReportVersionSubmittedDate</filter-method>
 			</ui-attribute>
 			<ui-attribute>
@@ -1423,6 +1433,8 @@
 				<operator name="=" display-uri="Equal To"/>				
 				<operator name=">" display-uri="Greater Than"/>
 				<operator name=">=" display-uri="Greater Than or Equal To"/>
+                <operator name="&lt;" display-uri="Less Than"/>
+                <operator name="&lt;=" display-uri="Less Than or Equal To"/>
 				<filter-method>filterByCourseStartDate</filter-method>
 			</ui-attribute>
 			<ui-attribute>
@@ -1433,6 +1445,8 @@
 				<operator name="=" display-uri="Equal To"/>				
 				<operator name=">" display-uri="Greater Than"/>
 				<operator name=">=" display-uri="Greater Than or Equal To"/>
+                <operator name="&lt;" display-uri="Less Than"/>
+                <operator name="&lt;=" display-uri="Less Than or Equal To"/>
 				<filter-method>filterByCourseEndDate</filter-method>
 			</ui-attribute>
 			<view-column>
