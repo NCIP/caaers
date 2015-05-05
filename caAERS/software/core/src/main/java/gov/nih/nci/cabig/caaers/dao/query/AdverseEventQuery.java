@@ -191,8 +191,33 @@ public class AdverseEventQuery extends AbstractQuery {
     	andWhere(TAC_EXPECTED_AE_PROFILE+".term="+AE_TERM_ALIAS+".term");
     }
 
+    /**
+     * To filter adverseEents by gradeDate in advance search page
+     * @param dateString
+     * @param operator
+     * @throws Exception
+     */
     public void filterByAEAwarenessDate(String dateString , String operator) throws Exception {
         andWhere(createDateQuery(AE_ALIAS+".gradedDate", dateString, operator));
+    }
+
+    /**
+     * To filter adverseEvents by requireReporting in advance search page
+     * @param flag
+     * @param operator
+     */
+    public void filterByRequiresReporting(String flag , String operator) {
+        //Requires reporting accepts null values also
+        //So if user select Yes/No then we will execute below query
+        if(flag.equals("true") || flag.equals("false")) {
+            andWhere(AE_ALIAS+".requiresReporting " + parseOperator(operator) + " :flag");
+            setParameter("flag" , Boolean.parseBoolean(flag));
+        }
+        //If user try to find Empty/Non-Empty Requires reporting records then below code will be executed
+        else {
+             operator = operator.equals("=") ? "IS NULL" : "IS NOT NULL";
+             andWhere(AE_ALIAS+".requiresReporting " + operator);
+        }
     }
     
 }
