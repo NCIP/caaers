@@ -5,10 +5,13 @@ AE.tabbedFlowUpdateTarget = function(evt) {
 
     if(!AE.SUBMISSION_INPROGRESS){
     	AE.SUBMISSION_INPROGRESS = true;
-    	var a = Event.element(evt)
-        var tabclass = Element.classNames(a).detect(function(cls) { return cls.slice(0, 3) == "tab" })
-        var targetPage = tabclass.slice(3)
-        $('_target').name = "_target" + targetPage
+    	var a = Event.element(evt);
+    	while ('A' != a.tagName.toUpperCase() && 'BUTTON' != a.tagName.toUpperCase()) {
+    		a = a.parentElement;
+    	}
+        var tabclass = Element.classNames(a).detect(function(cls) { return cls.slice(0, 3) == "tab" });
+        var targetPage = tabclass.slice(3);
+        $('_target').name = "_target" + targetPage;
         if(Prototype.Browser.IE){
         	if ($('command')._finish) $('_finish').disable()
         }else{

@@ -415,13 +415,13 @@ public abstract class AbstractQuery {
     		return "=";
     	} else if(operator.equals("!=")) {
     		return "!=";
-    	} else if(operator.equals(">=")) {
+    	} else if(operator.equals("gt")) {
     		return ">=";
-    	} else if(operator.equals(">")) {
+    	} else if(operator.equals("g")) {
     		return ">";
-    	} else if(operator.equals("<")) {
+    	} else if(operator.equals("l")) {
     		return "<";
-    	} else if(operator.equals("<=")) {
+    	} else if(operator.equals("lt")) {
     		return "<=";
     	} else if(operator.equals("like")) {
     		return "like";
