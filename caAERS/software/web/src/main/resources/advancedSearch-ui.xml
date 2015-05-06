@@ -645,10 +645,10 @@
 				<valid-value value="5" display-uri="5:Death"/>
 				<operator name="=" display-uri="Equal To"/>				
 				<operator name="!=" display-uri="Not Equal To"/>
-				<operator name=">" display-uri="Greater Than"/>
-				<operator name=">=" display-uri="Greater Than or Equal To"/>
-				<operator name="&lt;" display-uri="Less Than"/>
-                <operator name="&lt;=" display-uri="Less Than or Equal To"/>
+				<operator name="g" display-uri="Greater Than"/>
+				<operator name="gt" display-uri="Greater Than or Equal To"/>
+				<operator name="l" display-uri="Less Than"/>
+                <operator name="lt=" display-uri="Less Than or Equal To"/>
 				<filter-method>filterByGrade</filter-method>
 			</ui-attribute>
 			<ui-attribute>
@@ -703,10 +703,10 @@
 				<data-type>String</data-type>
 				<field-type>date-field</field-type>
 				<operator name="=" display-uri="Equal To"/>				
-				<operator name=">" display-uri="Greater Than"/>
-				<operator name=">=" display-uri="Greater Than or Equal To"/>
-                <operator name="&lt;" display-uri="Less Than"/>
-                <operator name="&lt;=" display-uri="Less Than or Equal To"/>
+				<operator name="g" display-uri="Greater Than"/>
+				<operator name="gt" display-uri="Greater Than or Equal To"/>
+                <operator name="l" display-uri="Less Than"/>
+                <operator name="lt" display-uri="Less Than or Equal To"/>
 				<filter-method>filterByAEStartDate</filter-method>
 			</ui-attribute>
 			<ui-attribute>
@@ -715,10 +715,10 @@
 				<data-type>String</data-type>
 				<field-type>date-field</field-type>
 				<operator name="=" display-uri="Equal To"/>				
-				<operator name=">" display-uri="Greater Than"/>
-				<operator name=">=" display-uri="Greater Than or Equal To"/>
-                <operator name="&lt;" display-uri="Less Than"/>
-                <operator name="&lt;=" display-uri="Less Than or Equal To"/>
+				<operator name="g" display-uri="Greater Than"/>
+				<operator name="gt" display-uri="Greater Than or Equal To"/>
+                <operator name="l" display-uri="Less Than"/>
+                <operator name="lt" display-uri="Less Than or Equal To"/>
 				<filter-method>filterByAEEndDate</filter-method>
 			</ui-attribute>
             <ui-attribute>
@@ -1116,10 +1116,10 @@
 				<data-type>String</data-type>
 				<field-type>date-field</field-type>
 				<operator name="=" display-uri="Equal To"/>				
-				<operator name=">" display-uri="Greater Than"/>
-				<operator name=">=" display-uri="Greater Than or Equal To"/>
-				<operator name="&lt;" display-uri="Less Than"/>
-				<operator name="&lt;=" display-uri="Less Than or Equal To"/>
+				<operator name="g" display-uri="Greater Than"/>
+				<operator name="gt" display-uri="Greater Than or Equal To"/>
+                <operator name="l" display-uri="Less Than"/>
+                <operator name="lt" display-uri="Less Than or Equal To"/>
 				<filter-method>filterByCourseStartDate</filter-method>
 			</ui-attribute>
 	
@@ -1129,10 +1129,10 @@
 				<data-type>String</data-type>
 				<field-type>date-field</field-type>
 				<operator name="=" display-uri="Equal To"/>				
-				<operator name=">" display-uri="Greater Than"/>
-				<operator name=">=" filterByCourseEndDate-uri="Greater Than or Equal To"/>
-				<operator name="&lt;" display-uri="Less Than"/>
-				<operator name="&lt;=" display-uri="Less Than or Equal To"/>
+				<operator name="g" display-uri="Greater Than"/>
+				<operator name="gt" display-uri="Greater Than or Equal To"/>
+                <operator name="l" display-uri="Less Than"/>
+                <operator name="lt" display-uri="Less Than or Equal To"/>
 				<filter-method>filterByCourseEndDate</filter-method>
 			</ui-attribute>
 			
@@ -1142,10 +1142,10 @@
 				<data-type>Integer</data-type>
 				<field-type>text-field</field-type>
 				<operator name="=" display-uri="Equal To"/>				
-				<operator name=">" display-uri="Greater Than"/>
-				<operator name=">=" display-uri="Greater Than or Equal To"/>
-				<operator name="&lt;" display-uri="Less Than"/>
-				<operator name="&lt;=" display-uri="Less Than or Equal To"/>
+				<operator name="g" display-uri="Greater Than"/>
+				<operator name="gt" display-uri="Greater Than or Equal To"/>
+                <operator name="l" display-uri="Less Than"/>
+                <operator name="lt" display-uri="Less Than or Equal To"/>
 				<filter-method>filterByCourseNumber</filter-method>
 			</ui-attribute>	
 						
@@ -1384,10 +1384,10 @@
 				<data-type>String</data-type>
 				<field-type>date-field</field-type>
 				<operator name="=" display-uri="Equal To"/>				
-				<operator name=">" display-uri="Greater Than"/>
-				<operator name=">=" display-uri="Greater Than or Equal To"/>
-				<operator name="&lt;" display-uri="Less Than"/>
-                <operator name="&lt;=" display-uri="Less Than or Equal To"/>
+				<operator name="g" display-uri="Greater Than"/>
+				<operator name="gt" display-uri="Greater Than or Equal To"/>
+                <operator name="l" display-uri="Less Than"/>
+                <operator name="lt" display-uri="Less Than or Equal To"/>
 				<filter-method>filterByReportVersionCreatedDate</filter-method>
 			</ui-attribute>
 			<ui-attribute>
@@ -1396,10 +1396,10 @@
 				<data-type>String</data-type>
 				<field-type>date-field</field-type>
 				<operator name="=" display-uri="Equal To"/>				
-				<operator name=">" display-uri="Greater Than"/>
-				<operator name=">=" display-uri="Greater Than or Equal To"/>
-				<operator name="&lt;" display-uri="Less Than"/>
-                <operator name="&lt;=" display-uri="Less Than or Equal To"/>
+				<operator name="g" display-uri="Greater Than"/>
+				<operator name="gt" display-uri="Greater Than or Equal To"/>
+                <operator name="l" display-uri="Less Than"/>
+                <operator name="lt" display-uri="Less Than or Equal To"/>
 				<filter-method>filterByReportVersionSubmittedDate</filter-method>
 			</ui-attribute>
 			<ui-attribute>
@@ -1467,10 +1467,10 @@
 				<data-type>String</data-type>
 				<field-type>date-field</field-type>
 				<operator name="=" display-uri="Equal To"/>				
-				<operator name=">" display-uri="Greater Than"/>
-				<operator name=">=" display-uri="Greater Than or Equal To"/>
-                <operator name="&lt;" display-uri="Less Than"/>
-                <operator name="&lt;=" display-uri="Less Than or Equal To"/>
+				<operator name="g" display-uri="Greater Than"/>
+				<operator name="gt" display-uri="Greater Than or Equal To"/>
+                <operator name="l" display-uri="Less Than"/>
+                <operator name="lt" display-uri="Less Than or Equal To"/>
 				<filter-method>filterByCourseStartDate</filter-method>
 			</ui-attribute>
 			<ui-attribute>
@@ -1479,10 +1479,10 @@
 				<data-type>String</data-type>
 				<field-type>date-field</field-type>
 				<operator name="=" display-uri="Equal To"/>				
-				<operator name=">" display-uri="Greater Than"/>
-				<operator name=">=" display-uri="Greater Than or Equal To"/>
-                <operator name="&lt;" display-uri="Less Than"/>
-                <operator name="&lt;=" display-uri="Less Than or Equal To"/>
+				<operator name="g" display-uri="Greater Than"/>
+				<operator name="gt" display-uri="Greater Than or Equal To"/>
+                <operator name="l" display-uri="Less Than"/>
+                <operator name="lt" display-uri="Less Than or Equal To"/>
 				<filter-method>filterByCourseEndDate</filter-method>
 			</ui-attribute>
 			<view-column>
