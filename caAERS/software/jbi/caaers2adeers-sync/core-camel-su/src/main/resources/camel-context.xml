@@ -45,6 +45,23 @@
         </property>
     </bean>
 
+
+    <!--
+      This is to capture 'participantInitialization.port', specified in caxchange.properties file.
+      We injected this bean in Caaers2AdeersRouteBuilder.java
+    -->
+    <bean id="participantInitializationPort" class="java.lang.String">
+        <constructor-arg index="0" value="s[participantInitialization.port]"/>
+    </bean>
+
+    <!--
+       This is to capture 'raveIntegrationServices.port', specified in caxchange.properties file.
+       We injected this bean in Caaers2AdeersRouteBuilder.java
+    -->
+    <bean id="raveIntegrationServicesPort" class="java.lang.String">
+        <constructor-arg index="0" value="s[raveIntegrationServices.port]"/>
+    </bean>
+
     <bean id="propertyConfigurer"
           class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="location">
