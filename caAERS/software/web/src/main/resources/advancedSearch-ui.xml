@@ -721,6 +721,30 @@
                 <operator name="lt" display-uri="Less Than or Equal To"/>
 				<filter-method>filterByAEEndDate</filter-method>
 			</ui-attribute>
+            <ui-attribute>
+                <name>gradedDate</name>
+                <label>Awareness date</label>
+                <data-type>String</data-type>
+                <field-type>date-field</field-type>
+                <operator name="=" display-uri="Equal To"/>
+                <operator name=">" display-uri="Greater Than"/>
+                <operator name=">=" display-uri="Greater Than or Equal To"/>
+                <operator name="&lt;" display-uri="Less Than"/>
+                <operator name="&lt;=" display-uri="Less Than or Equal To"/>
+                <filter-method>filterByAEAwarenessDate</filter-method>
+            </ui-attribute>
+            <ui-attribute>
+                <name>requiresReporting</name>
+                <label>Requires reporting</label>
+                <data-type>String</data-type>
+                <field-type>drop-down</field-type>
+                <valid-value value="true" display-uri="Yes"/>
+                <valid-value value="false" display-uri="No"/>
+                <valid-value value="null" display-uri="Empty"/>
+                <operator name="=" display-uri="Equal To"/>
+                <operator name="!=" display-uri="Not Equal To"/>
+                <filter-method>filterByRequiresReporting</filter-method>
+            </ui-attribute>
 			<view-column>
 				<column-title>id</column-title>
 				<column-attribute>id</column-attribute>
@@ -783,6 +807,18 @@
 				<dependent-object-index>0</dependent-object-index>
 				<view-column-index>9</view-column-index>
 			</view-column>
+            <view-column>
+                <column-attribute>gradedDate</column-attribute>
+                <column-title>Awareness date</column-title>
+                <dependent-object-index>0</dependent-object-index>
+                <view-column-index>11</view-column-index>
+            </view-column>
+            <view-column>
+                <column-attribute>displayRequiresReporting</column-attribute>
+                <column-title>Requires reporting</column-title>
+                <dependent-object-index>0</dependent-object-index>
+                <view-column-index>10</view-column-index>
+            </view-column>
 		</dependent-object>
 		
 		<dependent-object>
