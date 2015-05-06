@@ -548,4 +548,12 @@ public class AdverseEventTest extends AbstractTestCase {
 
     }
 
+    public void testGetDisplayRequiresReporting(){
+        AdverseEvent ae = Fixtures.createAdverseEvent(1, Grade.DEATH);
+        ae.getAdverseEventCtcTerm().getTerm().setOtherRequired(true);
+        assertEquals("No", ae.getDisplayRequiresReporting());
+        ae.setRequiresReporting(true);
+        assertEquals("Yes", ae.getDisplayRequiresReporting());
+    }
+
 }
