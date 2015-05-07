@@ -21,6 +21,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.HibernateException;
 import org.hibernate.LockMode;
 import org.hibernate.Session;
@@ -38,6 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class ReportDao extends GridIdentifiableDao<Report> implements MutableDomainObjectDao<Report>{
 
+	private static final Log log =  LogFactory.getLog(ReportDao.class);
     /*
      * (non-Javadoc)
      * 
@@ -157,7 +160,7 @@ public class ReportDao extends GridIdentifiableDao<Report> implements MutableDom
     	ReportQuery query = new ReportQuery();
     	query.filterByStudyAndSubjectAndSubmissionStatusAndSearchIdentifier(study, participant, 
     			reportStatus, searchIdentifier);
-    	 log.debug(">>> " + query.toString());
+    	 log.error("DirkDebug >>> " + query.toString());
     	return (List<Report>) super.search(query, null, maxResults);
     }
 }
