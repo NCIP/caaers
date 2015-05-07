@@ -36,12 +36,15 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * @author Rhett Sutphin
  * @author Biju Joseph
  */
 public class ListAdverseEventsCommand {
+	private static final Log log =  LogFactory.getLog(ListAdverseEventsCommand.class); 
     private StudyParticipantAssignment assignment;
 
     private Study study;
@@ -187,8 +190,9 @@ public class ListAdverseEventsCommand {
 	 *
 	 * @param list the list
 	 */
-	public void populateResults(List<AdverseEventReportingPeriod> list){
+	public void populateResults(List<AdverseEventReportingPeriod> list) {
 		this.resultList.clear();
+		log.error("DirkDebug; in Search; list size;" + list.size());
 		for(AdverseEventReportingPeriod rp : list){
 			ManageReportsRepotingPeriodDTO manageReportsRepotingPeriodDTO = new ManageReportsRepotingPeriodDTO(rp);
 			int numberOfReports = getNumberOfReports(manageReportsRepotingPeriodDTO);
