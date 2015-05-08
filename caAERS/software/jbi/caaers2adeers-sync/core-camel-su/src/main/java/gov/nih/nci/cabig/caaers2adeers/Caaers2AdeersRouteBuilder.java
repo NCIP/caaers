@@ -23,6 +23,8 @@ import org.apache.camel.model.ProcessorDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.xml.sax.SAXParseException;
 
+import javax.annotation.Resource;
+
 import static gov.nih.nci.cabig.caaers2adeers.exchnage.ExchangePreProcessor.INVALID_MESSAGE;
 import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.*;
 import static gov.nih.nci.cabig.caaers2adeers.track.Tracker.track;
@@ -63,6 +65,11 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
     private AdeersResponseToE2BAckRouteBuilder adeersResponseToE2BAckRouteBuilder;
     @Autowired
     private ToAdeersReportServiceRouteBuilder adeersReportServiceRouteBuilder;
+
+    @Resource(name = "participantInitializationPort")
+    private String participantInitializationPort;
+    @Resource(name = "raveIntegrationServicesPort")
+    private String raveIntegrationServicesPort;
     
 	public FileTracker getFileTracker() {
 		return fileTracker;
@@ -161,7 +168,7 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
 
 
         // route for caaers integration services - trim white space
-        from("jetty:http://0.0.0.0:7711/caaers/services/RaveIntegrationServices")
+        from("jetty:http://0.0.0.0:"+raveIntegrationServicesPort+"/caaers/services/RaveIntegrationServices")
 	            .streamCaching()
                 .choice()
 		        .when(header("CamelHttpMethod").isEqualTo("POST"))
@@ -198,7 +205,7 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
       
         // route for Participant Service
         
-        from("jetty:http://0.0.0.0:7700/caaers/ParticipantInitialization?httpBindingRef=participantODMMessageBinding")
+        from("jetty:http://0.0.0.0:"+participantInitializationPort+"/caaers/ParticipantInitialization?httpBindingRef=participantODMMessageBinding")
 	        .streamCaching()
 	        .choice() 
 		        .when(header("CamelHttpMethod").isEqualTo("POST"))
