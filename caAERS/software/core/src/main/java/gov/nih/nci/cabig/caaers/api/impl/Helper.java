@@ -17,6 +17,7 @@ import gov.nih.nci.cabig.caaers.integration.schema.common.Status;
 import gov.nih.nci.cabig.caaers.integration.schema.common.WsError;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Message;
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.ws.faults.CaaersFault;
 import gov.nih.nci.cabig.ctms.domain.MutableDomainObject;
 
@@ -61,6 +62,7 @@ public class Helper {
 
     public static CaaersServiceResponse populateError(CaaersServiceResponse response, String errorCode, String desc){
         String description = desc == null ? "Processing failure" : desc;
+        description += " Error occured in system " + Configuration.LAST_LOADED_CONFIGURATION.get(Configuration.SYSTEM_NAME);
         ServiceResponse serviceResponse = response.getServiceResponse();
         serviceResponse.setStatus(Status.FAILED_TO_PROCESS);
         serviceResponse.setResponsecode("1");
@@ -187,7 +189,7 @@ public class Helper {
     
     public static Fault createFault(String errorCode, String desc, String exception){
     	String description = desc == null ? "Processing failure" : desc;
-    	
+        description += " Error occured in system " + Configuration.LAST_LOADED_CONFIGURATION.get(Configuration.SYSTEM_NAME);
     	Fault fault = new Fault();
     	fault.setCode(errorCode);
         fault.setMessage(description);

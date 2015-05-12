@@ -34,6 +34,7 @@ public class AdeersReportSubmissionProcessor implements Processor {
     public static final String REPORT_SUBMISSION_ERROR_CODE = "c2a_submission_error_code";
     public static final String REPORT_SUBMISSION_ERROR_MESSAGE = "c2a_submission_error_msg";
     public static final String REPORT_SUBMISSION_ERROR_DETAILS = "c2a_submission_error_details";
+    public static final String SYSTEM_NAME = "system_name";
 
     protected static final Log log = LogFactory.getLog(AdeersReportSubmissionProcessor.class);
 

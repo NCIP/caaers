@@ -9,6 +9,7 @@
     <xsl:param name="c2a_submitter_email" />
     <xsl:param name="c2a_message_combo_id" />
     <xsl:param name="c2a_correlation_id" />
+    <xsl:param name="system_name" />
     <xsl:template match="/">
         <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <soapenv:Body>
@@ -25,6 +26,7 @@
                         <SUBMITTER_EMAIL><xsl:value-of select="$c2a_submitter_email"  /></SUBMITTER_EMAIL>
                         <MESSAGE_COMBO_ID><xsl:value-of select="$c2a_message_combo_id" /></MESSAGE_COMBO_ID>
                         <CORRELATION_ID><xsl:value-of select="$c2a_correlation_id"/></CORRELATION_ID>
+                        <SYSTEM_NAME><xsl:value-of select="$c2a_correlation_id"/></SYSTEM_NAME>
                     </ns1:AEReportJobInfo>
                 </submitAEDataXMLAsAttachmentResponse>
             </soapenv:Body>
