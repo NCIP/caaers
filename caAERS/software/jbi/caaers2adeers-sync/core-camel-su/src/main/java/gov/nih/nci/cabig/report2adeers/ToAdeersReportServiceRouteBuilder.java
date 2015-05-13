@@ -36,16 +36,17 @@ public class ToAdeersReportServiceRouteBuilder {
           .process(track(REPORT_SUBMISSION_REQUEST))
                 .to(rb.getFileTracker().fileURI(REPORT_SUBMISSION_REQUEST))
           .to("xslt:xslt/adeers/request/report-transformer.xsl")
-                .to("log:gov.nih.nci.cabig.report2adeers.presubmit-request?showHeaders=true&multiline=true&level=ERROR")
+                .to("log:gov.nih.nci.cabig.report2adeers.presubmit-request?showHeaders=true&multiline=true&level=DEBUG")
           .process(track(ADEERS_REPORT_REQUEST))
                 .to(rb.getFileTracker().fileURI(ADEERS_REPORT_REQUEST))
           .setExchangePattern(ExchangePattern.InOut)
           .processRef("adeersReportSubmissionProcessor")
-                .to("log:gov.nih.nci.cabig.report2adeers.adeers-response?showHeaders=true&multiline=true&level=ERROR")
+                .to("log:gov.nih.nci.cabig.report2adeers.adeers-response?showHeaders=true&multiline=true&level=DEBUG")
           .process(track(ADEERS_REPORT_RESPONSE))
                 .to(rb.getFileTracker().fileURI(ADEERS_REPORT_RESPONSE))
           .choice()
              .when(rb.header(REPORT_SUBMISSION_STATUS).isEqualTo("ERROR"))
+             		 .setHeader(SYSTEM_NAME, rb.constant("Servicemix"))
                      .to("direct:communication-error")
              .otherwise()
                      .to("direct:adeers-response");
@@ -55,7 +56,7 @@ public class ToAdeersReportServiceRouteBuilder {
             .to("xslt:xslt/adeers/response/report-error-transformer.xsl")
             .process(track(REPORT_SUBMISSION_RESPONSE))
                 .to(rb.getFileTracker().fileURI(REPORT_SUBMISSION_RESPONSE))
-            .to("log:gov.nih.nci.cabig.report2adeers.pre-multicast?showHeaders=true&multiline=true&level=WARN")
+            .to("log:gov.nih.nci.cabig.report2adeers.pre-multicast?showHeaders=true&multiline=true&level=DEBUG")
             .to("activemq:adeers-ae-message.outputQueue", "direct:routeAdEERSResponseSink");
 
         rb.from("direct:adeers-response")

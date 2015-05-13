@@ -96,10 +96,10 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
     Event.observe(window, "load", function() {
         	
       		<c:forEach varStatus="status" items="${command.study.identifiersLazy}" var="si">
-        		<c:if test="${(si.class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
+        		<c:if test="${(si['class'].name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
 					new jsIdentifier(${status.index}, "${si.organization.fullName}");
 				</c:if>
-				<c:if test="${(si.class.name =='gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
+				<c:if test="${(si['class'].name =='gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
 					new jsIdentifier(${status.index});
 				</c:if>
 				
@@ -179,7 +179,7 @@ margin:5px;
     			</tr>
     			<c:set var="cntOrg">0</c:set>
             	<c:forEach items="${command.study.identifiersLazy}" varStatus="status">
-				  <c:if test="${(command.study.identifiersLazy[status.index].class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
+				  <c:if test="${(command.study.identifiersLazy[status.index]['class'].name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
 					    <study:oneStudyChildIdentifierRow cssClass="organization-section-row" index="${status.index}" idSuffix="${cntOrg}" exclusions="System Name" disableDelete="${status.index < 2}" readOnly="true"/>
 					    <c:set var="cntOrg">${cntOrg + 1}</c:set>
 				  </c:if>
@@ -203,7 +203,7 @@ margin:5px;
 	  			</c:if>    			
     			<c:set var="cntSys">0</c:set>
             	<c:forEach items="${command.study.identifiersLazy}" varStatus="status" >
-            	 <c:if test="${(command.study.identifiersLazy[status.index].class.name =='gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
+            	 <c:if test="${(command.study.identifiersLazy[status.index]['class'].name =='gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
 				  <study:oneStudyChildRow cssClass="system-section-row" index="${status.index}" idSuffix="${cntSys}"
 				  identifiers="true" exclusions="Organization" />
 				  <c:set var="cntSys">${cntSys + 1}</c:set>

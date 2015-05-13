@@ -333,17 +333,16 @@ public class AdverseEventConverter {
 			LowLevelTerm lowLevelTerm = getLowLevelTerm(xmlLowLevelTerm.getMeddraCode());
 			if (lowLevelTerm == null) {
 				throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_021", new String[]{xmlLowLevelTerm.getMeddraCode().toString()},"",Locale.getDefault()));
-			} else {	
-				//for update, lowlevelterm already exists
-				AdverseEventMeddraLowLevelTerm adverseEventMeddraLowLevelTerm = adverseEvent.getAdverseEventMeddraLowLevelTerm();
-				if( adverseEventMeddraLowLevelTerm == null ) {
-					adverseEventMeddraLowLevelTerm = new AdverseEventMeddraLowLevelTerm();	
-				}
-				
-				adverseEventMeddraLowLevelTerm.setLowLevelTerm(lowLevelTerm);
-				adverseEventMeddraLowLevelTerm.setAdverseEvent(adverseEvent);
-				adverseEvent.setAdverseEventMeddraLowLevelTerm(adverseEventMeddraLowLevelTerm);
 			}
+			//for update, lowlevelterm already exists
+			AdverseEventMeddraLowLevelTerm adverseEventMeddraLowLevelTerm = adverseEvent.getAdverseEventMeddraLowLevelTerm();
+			if( adverseEventMeddraLowLevelTerm == null ) {
+				adverseEventMeddraLowLevelTerm = new AdverseEventMeddraLowLevelTerm();	
+			}
+			
+			adverseEventMeddraLowLevelTerm.setLowLevelTerm(lowLevelTerm);
+			adverseEventMeddraLowLevelTerm.setAdverseEvent(adverseEvent);
+			adverseEvent.setAdverseEventMeddraLowLevelTerm(adverseEventMeddraLowLevelTerm);
 		}
 	}
 	private void populateCtcTerm(AdverseEventType adverseEventDto, AdverseEvent adverseEvent,Ctc ctc) throws CaaersSystemException{
@@ -353,44 +352,42 @@ public class AdverseEventConverter {
 
 			if (ctcTerm == null) {
 				throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_020", new String[]{adverseEventDto.getAdverseEventCtepTerm().getCtepCode()},"",Locale.getDefault()));
-			} else {
-				if (ctcTerm.isOtherRequired()) {
-					if (adverseEventDto.getAdverseEventCtepTerm().getOtherMeddra() != null) {
-						LowLevelTerm lowLevelTerm = getLowLevelTerm(adverseEventDto.getAdverseEventCtepTerm().getOtherMeddra().getMeddraCode());
-						if (lowLevelTerm == null) {
-							throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_021", new String[]{adverseEventDto.getAdverseEventCtepTerm().getOtherMeddra().getMeddraCode().toString()},"",Locale.getDefault()));
-							
-						} else {
-							adverseEvent.setLowLevelTerm(lowLevelTerm);
-						}
-					} else {
-						throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_022", new String[]{},"",Locale.getDefault()));
-					}
-				} else {
-					if (adverseEventDto.getAdverseEventCtepTerm().getOtherMeddra() != null) {
-						throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_023", new String[]{adverseEventDto.getAdverseEventCtepTerm().getCtepCode()},"",Locale.getDefault()));
-					}
-				}
-				List<CtcGrade> ctcGrades = ctcTerm.getContextualGrades();
-				boolean gradeAllowed = false;
-				for (CtcGrade ctcGrade:ctcGrades) {
-					if (ctcGrade.getGrade().getCode() == adverseEventDto.getGrade()) {
-						gradeAllowed = true;
-						break;
-					}
-				}
-				if (!gradeAllowed) {
-					throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_030", new String[]{adverseEventDto.getGrade()+"",adverseEventDto.getAdverseEventCtepTerm().getCtepCode()},"",Locale.getDefault()));
-				}
-				//for update AECtcTerm already exists
-				AdverseEventCtcTerm adverseEventCtcTerm = (AdverseEventCtcTerm) adverseEvent.getAdverseEventTerm();
-				if(adverseEventCtcTerm == null) {
-					adverseEventCtcTerm = new AdverseEventCtcTerm();
-				}				
-				adverseEventCtcTerm.setCtcTerm(ctcTerm);
-				adverseEventCtcTerm.setAdverseEvent(adverseEvent);
-				adverseEvent.setAdverseEventTerm(adverseEventCtcTerm);
 			}
+			if (ctcTerm.isOtherRequired()) {
+				if (adverseEventDto.getAdverseEventCtepTerm().getOtherMeddra() != null) {
+					LowLevelTerm lowLevelTerm = getLowLevelTerm(adverseEventDto.getAdverseEventCtepTerm().getOtherMeddra().getMeddraCode());
+					if (lowLevelTerm == null) {
+						throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_021", new String[]{adverseEventDto.getAdverseEventCtepTerm().getOtherMeddra().getMeddraCode().toString()},"",Locale.getDefault()));
+						
+					}
+					adverseEvent.setLowLevelTerm(lowLevelTerm);
+				} else {
+					throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_022", new String[]{},"",Locale.getDefault()));
+				}
+			} else {
+				if (adverseEventDto.getAdverseEventCtepTerm().getOtherMeddra() != null) {
+					throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_023", new String[]{adverseEventDto.getAdverseEventCtepTerm().getCtepCode()},"",Locale.getDefault()));
+				}
+			}
+			List<CtcGrade> ctcGrades = ctcTerm.getContextualGrades();
+			boolean gradeAllowed = false;
+			for (CtcGrade ctcGrade:ctcGrades) {
+				if (ctcGrade.getGrade().getCode() == adverseEventDto.getGrade()) {
+					gradeAllowed = true;
+					break;
+				}
+			}
+			if (!gradeAllowed) {
+				throw new CaaersSystemException (messageSource.getMessage("WS_AEMS_030", new String[]{adverseEventDto.getGrade()+"",adverseEventDto.getAdverseEventCtepTerm().getCtepCode()},"",Locale.getDefault()));
+			}
+			//for update AECtcTerm already exists
+			AdverseEventCtcTerm adverseEventCtcTerm = (AdverseEventCtcTerm) adverseEvent.getAdverseEventTerm();
+			if(adverseEventCtcTerm == null) {
+				adverseEventCtcTerm = new AdverseEventCtcTerm();
+			}				
+			adverseEventCtcTerm.setCtcTerm(ctcTerm);
+			adverseEventCtcTerm.setAdverseEvent(adverseEvent);
+			adverseEvent.setAdverseEventTerm(adverseEventCtcTerm);
 
 		}
 	}
@@ -403,6 +400,9 @@ public class AdverseEventConverter {
             outcome.setOutcomeType(gov.nih.nci.cabig.caaers.domain.OutcomeType.valueOf(xmlOutcomeTypeName));
             if(outcome.getOutcomeType() == gov.nih.nci.cabig.caaers.domain.OutcomeType.OTHER_SERIOUS) {
                 outcome.setOther(xmlOutcome.getOther());
+                if("NONE".equalsIgnoreCase(outcome.getOther())) {
+                	outcome.setOther(null);
+                }
             }
             adverseEvent.addOutComeIfNecessary(outcome);
 		}

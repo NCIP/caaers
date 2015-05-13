@@ -7,6 +7,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
@@ -31,6 +32,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hibernate.LazyInitializationException;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 
@@ -41,6 +45,8 @@ import org.springframework.validation.Errors;
 public class ViewReportTab extends AeTab {
 
 	private ResearchStaffDao researchStaffDao;
+	private StudyDao studyDao;
+	private static final Log log = LogFactory.getLog(ViewReportTab.class);
 	
     public ViewReportTab() {
         super("Submission", ExpeditedReportSection.SUBMIT_REPORT_SECTION.getDisplayName(),"ae/submit");
@@ -112,7 +118,7 @@ public class ViewReportTab extends AeTab {
 
         //now check if the sae coordinator is associated to the coordinaoting center
         if(isReportReviewer && study != null){
-            Organization ccOrg = study.getStudyCoordinatingCenter().getOrganization();
+            Organization ccOrg = getStudyCoordinatingOrg(study);
             ResearchStaff researchStaff = researchStaffDao.getByLoginId(loginId);
             if(researchStaff != null && ccOrg != null){
                 for(SiteResearchStaff siteRs : researchStaff.getSiteResearchStaffsInternal()){
@@ -127,7 +133,19 @@ public class ViewReportTab extends AeTab {
        return userAEReviewer;
     }
     
-    private Map<Integer, Boolean> initializeRenderSubmitLinkMap(ExpeditedAdverseEventInputCommand command){
+    private Organization getStudyCoordinatingOrg(Study study) {
+    	Organization org = null;
+    	try {
+    		org = study.getStudyCoordinatingCenter().getOrganization();
+    	} catch(LazyInitializationException lie) {
+    		log.info("Sending unloaded study Data, reloading study to avoid error.", lie);
+    		study = studyDao.getById(study.getId());
+    		org = study.getStudyCoordinatingCenter().getOrganization();
+    	}
+    	return org;
+	}
+
+	private Map<Integer, Boolean> initializeRenderSubmitLinkMap(ExpeditedAdverseEventInputCommand command){
     	Map<Integer, Boolean> renderSubmitLink = new HashMap<Integer, Boolean>();
 
 
@@ -200,5 +218,13 @@ public class ViewReportTab extends AeTab {
     public ResearchStaffDao getResearchStaffDao(){
     	return researchStaffDao;
     }
+
+	public StudyDao getStudyDao() {
+		return studyDao;
+	}
+
+	public void setStudyDao(StudyDao studyDao) {
+		this.studyDao = studyDao;
+	}
     
 }

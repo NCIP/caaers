@@ -36,7 +36,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
       var tabsHash = new Hash();
 	    <c:forEach items="${flow.tabs}" var="atab" varStatus="status">
 	    <csmauthz:accesscontrol domainObject="${atab}" authorizationCheckName="tabAuthorizationCheck">
-	        tabsHash.set('${atab.class.simpleName}','${atab.number}');
+	        tabsHash.set("${atab['class'].simpleName}",'${atab.number}');
 	    </csmauthz:accesscontrol>
 	    </c:forEach>
     

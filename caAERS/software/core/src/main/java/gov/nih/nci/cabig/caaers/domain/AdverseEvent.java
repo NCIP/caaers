@@ -143,7 +143,7 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
 
     /** The event location. */
     private String eventLocation;
-    
+
     public String getExternalId() {
 		return externalId;
 	}
@@ -1172,6 +1172,20 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
      */
     public Boolean getRequiresReporting() {
         return requiresReporting;
+    }
+
+    /**
+     * To display isSAE value in Advance search page
+     * @return if requiredReporting value is true returns 'Yes' otherwise returns 'No'
+     */
+    @Transient
+    public String getDisplayRequiresReporting() {
+    	//If requiresReporting is null return "No"(False) 
+    	if(this.requiresReporting == null) {
+             return "";
+    	}
+    	//Else return Yes/No based on requiresReporting value(True/False)
+    	return this.requiresReporting ? "Yes" : "No";
     }
 
     /**

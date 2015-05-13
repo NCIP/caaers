@@ -47,7 +47,7 @@ public class AgentManagementWebServiceImpl implements AgentManagementWebService{
                 Helper.populateProcessingOutcome(caaersResponse, outcome);
             }
 		} catch (Throwable e) {
-            logger.error(e);
+            logger.error("Error while creating or updating agents.", e);
             Helper.populateError(caaersResponse, "WS_GEN_000", "Unable to process the request :" + e.getMessage());
 		}
 		

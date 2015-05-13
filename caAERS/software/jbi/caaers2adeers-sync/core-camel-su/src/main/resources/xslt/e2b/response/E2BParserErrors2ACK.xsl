@@ -12,6 +12,7 @@
     <xsl:param name="c2r_msg_sender_id" />
     <xsl:param name="c2r_msg_receiver_id" />
     <xsl:param name="report_id" />
+    <xsl:param name="CamelExceptionCaught" />
     
     <xsl:output method="xml" omit-xml-declaration="yes" indent="yes"/>
 
@@ -43,7 +44,7 @@
                     <icsrmessagedateformat>204</icsrmessagedateformat>
                     <icsrmessagedate><xsl:value-of select="$c2r_msg_date" /></icsrmessagedate>
                     <transmissionacknowledgmentcode>03</transmissionacknowledgmentcode>
-                    <parsingerrormessage><xsl:value-of select="//payload" /></parsingerrormessage> 
+                    <parsingerrormessage><xsl:value-of select="$CamelExceptionCaught" /></parsingerrormessage> 
                 </messageacknowledgment>
             </acknowledgment>
         </ichicsrack>

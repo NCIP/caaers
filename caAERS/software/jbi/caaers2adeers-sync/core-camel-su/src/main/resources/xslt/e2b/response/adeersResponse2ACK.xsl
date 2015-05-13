@@ -34,6 +34,13 @@
                 <!-- Date on which ack got created : in CCYYMMDDHHMMSS format-->
             </ichicsrmessageheader>
             <xsl:variable name="reportStatus" select="//adeers:reportStatus"/>
+            <xsl:variable name="status">
+	            <xsl:choose>
+	                <xsl:when test="$reportStatus='SUCCESS'">01</xsl:when>
+					<xsl:when test="string-length($report_id)>0">02</xsl:when>
+					<xsl:otherwise>03</xsl:otherwise>
+	            </xsl:choose>
+	        </xsl:variable>
             <acknowledgment>
                 <messageacknowledgment>
                     <icsrmessagenumb><xsl:value-of select="$c2r_msg_number" /></icsrmessagenumb>
@@ -50,20 +57,14 @@
                     02 = ICSR Error, not all reports loaded into the database, check section B
                     03= SGML parsing error, no data extracted
                     -->					
-                    <xsl:choose>
-	                    <xsl:when test="$reportStatus='SUCCESS'">
-	                        <transmissionacknowledgmentcode>01</transmissionacknowledgmentcode>	
-	                    </xsl:when>
-	                    <xsl:otherwise>
-	                        <transmissionacknowledgmentcode>02</transmissionacknowledgmentcode>
-	                        <!--Optional:-->
-	                        <!--<parsingerrormessage><xsl:value-of select="//ctep:submitAEDataXMLAsAttachmentResponse/ns1:AEReportJobInfo/comments"/></parsingerrormessage> -->
-							<parsingerrormessage><xsl:apply-templates select="//ns1:AEReportJobInfo/adeers:jobExceptions" mode="ERR"/> System error occurred in <xsl:value-of
-                                    select="//SYSTEM_NAME" /></parsingerrormessage>
-	                    </xsl:otherwise>
-                    </xsl:choose>
+	                <transmissionacknowledgmentcode><xsl:value-of select="$status" /></transmissionacknowledgmentcode>	
+	                  
+                    <xsl:if test="$status='03'">
+                        <parsingerrormessage><xsl:apply-templates select="//ns1:AEReportJobInfo/adeers:jobExceptions" mode="ERR"/> System error occurred in <xsl:value-of
+                                   select="//SYSTEM_NAME" /></parsingerrormessage>
+                    </xsl:if>
                 </messageacknowledgment>
-                <xsl:if test="$reportStatus='SUCCESS'">
+                <xsl:if test="$status!='03'">
 
                     <!--Zero or more repetitions:-->
                     <reportacknowledgment>
@@ -94,9 +95,11 @@
                         01 = Report Loaded Successfully
                         02 = Report Not Loaded
                         -->
-                        <reportacknowledgmentcode>01</reportacknowledgmentcode>
-                        <!--Optional:-->
-                        <!--<errormessagecomment>No comments or error</errormessagecomment>-->
+                        <reportacknowledgmentcode><xsl:value-of select="$status" /></reportacknowledgmentcode>
+                        <xsl:if test="$status='02'">
+                        	<errormessagecomment><xsl:apply-templates select="//ns1:AEReportJobInfo/adeers:jobExceptions" mode="ERR"/> System error occurred in <xsl:value-of
+                                   select="//SYSTEM_NAME" /></errormessagecomment>
+                        </xsl:if>
                     </reportacknowledgment>
                 </xsl:if>
 

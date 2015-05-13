@@ -54,7 +54,7 @@ public class IntegrationLogDao{
         
 	}
 	
-	public List findInactiveOrganizationCTEPIds(){
+	public List<String> findInactiveOrganizationCTEPIds(){
 		return hibernateTemplate.executeFind(new HibernateCallback() {
 			
 			public List doInHibernate(Session session) throws HibernateException,

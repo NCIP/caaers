@@ -279,6 +279,9 @@ public class ListAdverseEventsController extends SimpleFormController {
     	if(action != null && action.equals("lastPage"))
     		return true;
     	String numberOfResultsPerPage = (String) findInRequest(request, "numberOfResultsPerPage");
+    	if(numberOfResultsPerPage == null) {
+    		return false;
+    	}
     	Integer currentPageNumber = (Integer)request.getSession().getAttribute(CURRENT_PAGE_NUMBER);
     	if(currentPageNumber * Integer.parseInt(numberOfResultsPerPage) > command.getTotalResultsCount())
     		return true;
@@ -289,25 +292,31 @@ public class ListAdverseEventsController extends SimpleFormController {
     protected void processPaginationSubmission(HttpServletRequest request, ListAdverseEventsCommand command, ModelAndView modelAndView){
     	String action = (String) findInRequest(request, PAGINATION_ACTION);
     	String numberOfResultsPerPage = (String) findInRequest(request, "numberOfResultsPerPage");
+    	int numPerPage = 10;
+    	if(numberOfResultsPerPage != null) {
+    		numPerPage = Integer.parseInt(numberOfResultsPerPage);
+    	}
     	Integer currPageNumber = (Integer)request.getSession().getAttribute(CURRENT_PAGE_NUMBER);
     	if(currPageNumber == null)
     		currPageNumber = 1;
     	Integer newPageNumber = 0;
-    	if(action.equals("nextPage")){
+    	if(action == null) {
+    		//do nothing.
+    	} else if(action.equals("nextPage")){
     		newPageNumber = ++currPageNumber;
-    	}else if(action.equals("prevPage")){
+    	} else if(action.equals("prevPage")){
     		newPageNumber = --currPageNumber;
-    	}else if(action.equals("lastPage")){
+    	} else if(action.equals("lastPage")){
     		Float newPageNumberFloat = command.getTotalResultsCount() / Float.parseFloat(numberOfResultsPerPage);
     		newPageNumber = newPageNumberFloat.intValue();
     		if(command.getTotalResultsCount() % Integer.parseInt(numberOfResultsPerPage) > 0)
     			newPageNumber++;
-    	}else if(action.equals("firstPage") || action.equals("numberOfResultsPerPage")){
+    	} else if(action.equals("firstPage") || action.equals("numberOfResultsPerPage")){
     		newPageNumber = 1;
     	}
     	
-    	Integer startIndex = (newPageNumber - 1) * Integer.parseInt(numberOfResultsPerPage);
-		Integer endIndex = newPageNumber * Integer.parseInt(numberOfResultsPerPage) - 1;
+    	Integer startIndex = (newPageNumber - 1) * numPerPage;
+		Integer endIndex = newPageNumber * numPerPage - 1;
 		if(endIndex > command.getTotalResultsCount())
 			endIndex = command.getTotalResultsCount() - 1;
 		filterResultMap(command, startIndex, endIndex);

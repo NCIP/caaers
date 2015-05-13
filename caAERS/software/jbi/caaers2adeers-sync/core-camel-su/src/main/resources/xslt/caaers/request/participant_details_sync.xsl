@@ -124,7 +124,7 @@
 	<xsl:template name="lookup">
         <xsl:param name="_map" />
         <xsl:param name="_code" />        
-        <xsl:value-of select="$_map//code[text() = $_code]/parent::node()/value"/>
+        <xsl:value-of select="$_map//code[translate(text(),'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ') = translate($_code,'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')]/parent::node()/value"/>
     </xsl:template>
     
 </xsl:stylesheet>

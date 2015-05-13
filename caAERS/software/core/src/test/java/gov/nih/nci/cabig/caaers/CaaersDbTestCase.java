@@ -261,6 +261,8 @@ public abstract class CaaersDbTestCase extends DbTestCase {
         public String getParameter(final String paramName) {
             return null;
         }
+        
+        
 
         public String[] getParameterValues(final String paramName) {
             return null;
@@ -296,6 +298,10 @@ public abstract class CaaersDbTestCase extends DbTestCase {
         }
 
         public boolean checkNotModified(long l){
+            return true;
+        }
+        
+        public boolean checkNotModified(String str){
             return true;
         }
 

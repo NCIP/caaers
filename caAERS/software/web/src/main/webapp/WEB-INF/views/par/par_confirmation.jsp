@@ -35,7 +35,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
     var tabsHash = new Hash();
     <c:forEach items="${flow.tabs}" var="atab" varStatus="status">
     <csmauthz:accesscontrol domainObject="${atab}" authorizationCheckName="tabAuthorizationCheck">
-        tabsHash.set('${atab.class.simpleName}','${atab.number}');
+        tabsHash.set("${atab['class'].simpleName}",'${atab.number}');
     </csmauthz:accesscontrol>
     </c:forEach>
 
@@ -128,14 +128,14 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
                 </tr>
                 <c:forEach items="${command.participant.identifiers}" var="identifier">
                     <tr class="results">
-                        <c:if test="${(identifier.class.name eq 'gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
+                        <c:if test="${(identifier['class'].name eq 'gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
                             <td>
    							<c:if test ="${identifier.organization.externalId != null}">
 								<img src="<chrome:imageUrl name="nci_icon_22.png"/>" alt="NCI data" width="17" height="16" border="0" align="middle"/>
 							</c:if>                            
                             ${identifier.organization}</td>
                         </c:if>
-                        <c:if test="${(identifier.class.name eq 'gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
+                        <c:if test="${(identifier['class'].name eq 'gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
                             <td>${identifier.systemName}</td>
                         </c:if>
                         <td>${identifier.type}</td>

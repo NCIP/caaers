@@ -27,11 +27,11 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
     identifiersJSONResult = [
         <c:forEach items="${command.study.identifiersLazy}" var="identifier">
                 {
-                        <c:if test="${(identifier.class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
+                        <c:if test="${(identifier['class'].name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
                             <%--<c:if test="${identifier.organization.externalId != null}"></c:if>--%>
                             "aa":"${identifier.organization}",
                         </c:if>
-                        <c:if test="${(identifier.class.name =='gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier')}">
+                        <c:if test="${(identifier['class'].name =='gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier')}">
                             "aa":"<c:out value="${identifier.systemName}" escapeXml="true"/>",
                         </c:if>
 

@@ -10,8 +10,6 @@ import gov.nih.nci.cabig.caaers2adeers.Caaers2AdeersRouteBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
-import gov.nih.nci.cabig.report2caaers.exchange.CorrelationIdBean;
-
 import static gov.nih.nci.cabig.caaers2adeers.exchnage.ExchangePreProcessor.*;
 import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.*;
 import static gov.nih.nci.cabig.caaers2adeers.track.Tracker.track;
@@ -20,13 +18,14 @@ public class ToCaaersReportWSRouteBuilder {
 
 	private static String caAERSSafetyReportJBIURL = "jbi:service:http://schema.integration.caaers.cabig.nci.nih.gov/aereport/SafetyReportManagementService?operation={http://schema.integration.caaers.cabig.nci.nih.gov/aereport}";
 	
-	private static String requestXSLBase = "xslt/e2b/request/";
-	private static String responseXSLBase = "xslt/e2b/response/";
+	public static final String requestXSLBase = "xslt/e2b/request/";
+	public static final String responseXSLBase = "xslt/e2b/response/";
 	
 	private static String[] msgComboIdPaths = { "//safetyreportid", "//messagedate"};
 	
 	private String inputEDIDir;
-	private String outputEDIDir;	
+	private String outputEDIDir;
+	public static final String NEEDS_ACK = "NeedsAck";
 		
 	private Caaers2AdeersRouteBuilder routeBuilder;
 
@@ -38,7 +37,7 @@ public class ToCaaersReportWSRouteBuilder {
         
         routeBuilder.from("file://"+inputEDIDir+"?preMove=inprogress&move=done&moveFailed=movefailed")
             .streamCaching()
-            //.setProperty(CORRELATION_ID, rb.method(CorrelationIdBean.class, "getId"))
+            .setProperty(NEEDS_ACK, rb.constant(Boolean.TRUE.toString()))
             .setProperty(SYNC_HEADER, rb.constant("sync"))
             .setProperty(ENTITY_NAME, rb.constant("SafetyReport"))
             .setProperty(OPERATION_NAME, rb.constant("submitSafetyReport"))
@@ -95,6 +94,7 @@ public class ToCaaersReportWSRouteBuilder {
                 	.to("direct:sendE2BAckSink");
 
         routeBuilder.from("direct:sendE2BAckSink")
+        	.setProperty(NEEDS_ACK, rb.constant(Boolean.FALSE.toString()))
 			.processRef("addEDIHeadersAndFootersProcessor")
 			.process(track(REQUST_PROCESSING_ERROR))
 			.to(routeBuilder.getFileTracker().fileURI(REQUST_PROCESSING_ERROR))
