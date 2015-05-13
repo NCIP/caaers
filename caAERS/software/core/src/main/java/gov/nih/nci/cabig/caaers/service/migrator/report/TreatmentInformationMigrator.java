@@ -42,6 +42,7 @@ public class TreatmentInformationMigrator implements Migrator<ExpeditedAdverseEv
                 return;
             }
             dest.setTreatmentAssignment(treatmentAssignment);
+            dest.setTreatmentDescription(reportingPeriod.getTreatmentAssignmentDescription());
         } else {
             //default it to what it is there in reporting period
             dest.setTreatmentAssignment(reportingPeriod.getTreatmentAssignment());
