@@ -65,6 +65,9 @@ public class ExpeditedReportMigrator extends CompositeMigrator<ExpeditedAdverseE
 			String code = src.getReportingPeriod().getTreatmentAssignment().getCode();
 			if(code != null && code.equalsIgnoreCase("Other")) {
 				src.getReportingPeriod().getTreatmentAssignment().setCode(null);
+				if(src.getTreatmentInformation()!= null) {
+					src.getTreatmentInformation().setTreatmentDescription(src.getReportingPeriod().getTreatmentAssignment().getDescription());
+				}
 			}
 			AdverseEventReportingPeriod arp = spa.findReportingPeriod(null, src.getReportingPeriod().getStartDate(), null, 
 					src.getReportingPeriod().getCycleNumber(), null, src.getReportingPeriod().getTreatmentAssignment().getCode());
@@ -78,7 +81,7 @@ public class ExpeditedReportMigrator extends CompositeMigrator<ExpeditedAdverseE
 
 			//FIXME: Check for other fields taht should be updated.
 			arp.setTreatmentAssignmentDescription(src.getReportingPeriod().getTreatmentAssignment().getDescription());
-			logger.debug("DirkDebug; in migrate; arp return; " + arp.getTreatmentAssignmentDescription());
+			logger.debug(" in migrate; arp return; " + arp.getTreatmentAssignmentDescription());
 			dest.setReportingPeriod(arp);
 			return;
 		} 
@@ -142,7 +145,7 @@ public class ExpeditedReportMigrator extends CompositeMigrator<ExpeditedAdverseE
 			return;
 		}
 		dest.setReportingPeriod(rpFound);
-		logger.debug("DirkDebug; in migrate; rpFound return; " + rpFound.getTreatmentAssignmentDescription());
+		logger.debug(" in migrate; rpFound return; " + rpFound.getTreatmentAssignmentDescription());
 
 	}
 

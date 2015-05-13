@@ -274,7 +274,9 @@ public class TreatmentInformation extends AbstractExpeditedReportSingleChild imp
      */
     @Transient
     public void setTreatmentAssignmentDescription(String desc) {
-        // do nothing.
+    	if (treatmentAssignment != null) {
+    		treatmentAssignment.setDescription(desc);
+    	}
     }
    
 
