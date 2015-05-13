@@ -279,6 +279,9 @@ public class ListAdverseEventsController extends SimpleFormController {
     	if(action != null && action.equals("lastPage"))
     		return true;
     	String numberOfResultsPerPage = (String) findInRequest(request, "numberOfResultsPerPage");
+    	if(numberOfResultsPerPage == null) {
+    		return false;
+    	}
     	Integer currentPageNumber = (Integer)request.getSession().getAttribute(CURRENT_PAGE_NUMBER);
     	if(currentPageNumber * Integer.parseInt(numberOfResultsPerPage) > command.getTotalResultsCount())
     		return true;
