@@ -249,9 +249,7 @@ public class ExpeditedAdverseEventReportConverter {
         //Intervention - Course Agent - Treatment information
         if(aeReportDto.getTreatmentInformation() != null){
         	TreatmentInformation ti = utility.convertTreatmentInformation(aeReportDto.getTreatmentInformation());
-        	if(ti.getTreatmentAssignment() == null) {
-        		ti.setTreatmentDescription(aeReportDto.getAdverseEventReportingPeriod().getTreatmentAssignmentDescription());
-        	}
+        	ti.setTreatmentDescription(aeReportDto.getAdverseEventReportingPeriod().getTreatmentAssignment().getDescription());
             aeReport.setTreatmentInformation(ti);
             aeReport.getAssignment().setStartDateOfFirstCourse(aeReport.getTreatmentInformation().getFirstCourseDate());
         }
