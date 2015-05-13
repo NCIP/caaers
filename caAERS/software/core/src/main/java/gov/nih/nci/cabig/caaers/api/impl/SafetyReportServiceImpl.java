@@ -672,7 +672,7 @@ public class SafetyReportServiceImpl {
 		   
 
            //2. Do some basic validations (if needed)
-
+        	logger.error("DirkDebug; SafteyReport 1; " + aeSrcReport.getTreatmentInformation().getTreatmentAssignmentDescription()); 
            //3. Determine the flow, create vs update
            String externalId = aeSrcReport.getExternalId();
            ExpeditedAdverseEventReport dbAeReport = externalId != null ? expeditedAdverseEventReportDao.getByExternalId(externalId) : null;
@@ -684,6 +684,8 @@ public class SafetyReportServiceImpl {
                //update flow
                reportsAffected.addAll(updateSafetyReport(aeSrcReport, dbAeReport, errors));
            }
+           
+           logger.error("DirkDebug; SafteyReport 2; " + reportsAffected.get(0).getAeReport().getTreatmentInformation().getTreatmentAssignmentDescription()); 
 
            if(errors.hasErrors())  {
                expeditedAdverseEventReportDao.clearSession();
