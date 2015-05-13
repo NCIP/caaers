@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xml-stylesheet type="text/xsl"
+                 href="http://gforge.nci.nih.gov/svnroot/commonlibrary/trunk/ivy-xsl/ivy.xsl"?>
+<ivy-module version="1.3"            
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"       
+            xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">  
+            
+  <info organisation="globus"
+        module="jcogfx"
+        revision="noversion"/>
+        
+  <configurations>
+    
+    <conf name="master"/>    
+    <conf name="compile" extends="master"/>       
+    <conf name="runtime" extends="master"/>
+          
+  </configurations>
+  
+  <publications>
+    <artifact name="cog-axis" type="jar" conf="master"/>
+  </publications>
+  
+  <dependencies>
+    <!-- maybe dependent on jcog ? -->                                                 
+  </dependencies>
+  
+</ivy-module>

@@ -161,6 +161,7 @@
 	<!-- refers to project root dir -->
 	<dirname file="${ant.file.common}" property="proj.root.dir"/>
 	<property name="local.repo.dir" value="${proj.root.dir}/repository" />
+	<property name="git.repo.dir" value="${proj.root.dir}/AntInstaller/ivy-repo" />
 	<condition property="local.repo.available">
 		<available file="${local.repo.dir}" /> 
 	</condition>

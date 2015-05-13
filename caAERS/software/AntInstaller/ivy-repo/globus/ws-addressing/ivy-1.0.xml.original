@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xml-stylesheet type="text/xsl"
+                 href="http://gforge.nci.nih.gov/svnroot/commonlibrary/trunk/ivy-xsl/ivy.xsl"?>
+<ivy-module version="1.3"            
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"       
+            xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">  
+
+  <!--
+    This appears to be a custom version of apache ws-addressing for
+    globus 4.0.  Please see:
+    http://www.globus.org/toolkit/docs/4.0/common/javawscore/dependencies.html
+    -->
+  <info organisation="globus" 
+        module="ws-addressing"
+        revision="1.0"/>
+        
+  <configurations>
+    <conf name="master"/>
+    <conf name="compile"/>
+    <conf name="runtime"/>
+  </configurations>
+  
+  <publications>
+    <artifact name="addressing" type="jar" conf="master, compile, runtime" />
+  </publications>
+  
+  <dependencies>  
+    <dependency org="globus" 
+                name="axis"
+                rev="1.2RC2" 
+                conf="runtime"/>  
+  </dependencies>
+  
+</ivy-module>
