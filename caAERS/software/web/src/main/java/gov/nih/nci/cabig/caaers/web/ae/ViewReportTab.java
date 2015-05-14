@@ -135,13 +135,16 @@ public class ViewReportTab extends AeTab {
     
     private Organization getStudyCoordinatingOrg(Study study) {
     	Organization org = null;
-    	try {
+    	study = studyDao.getById(study.getId());
+		org = study.getStudyCoordinatingCenter().getOrganization();
+    	/* LazyInitializationException cannot be reliably caught.
+    	 * try {
     		org = study.getStudyCoordinatingCenter().getOrganization();
     	} catch(LazyInitializationException lie) {
     		log.info("Sending unloaded study Data, reloading study to avoid error.", lie);
     		study = studyDao.getById(study.getId());
     		org = study.getStudyCoordinatingCenter().getOrganization();
-    	}
+    	}*/
     	return org;
 	}
 
