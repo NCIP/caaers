@@ -17,7 +17,7 @@ public class ToAdeersReportServiceRouteBuilder {
     public void configure(Caaers2AdeersRouteBuilder rb){
         rb.from("activemq:adeers-ae-message.inputQueue?concurrentConsumers=5")
             .streamCaching()
-            .to("log:gov.nih.nci.cabig.report2adeers.first-request?showHeaders=true&multiline=true&level=ERROR")
+            .to("log:gov.nih.nci.cabig.report2adeers.first-request?showHeaders=true&multiline=true&level=INFO")
             .setProperty(OPERATION_NAME, rb.constant("sendReportToAdeers"))
             .setProperty(ENTITY_NAME, rb.constant("SafetyReport"))
             .processRef("adeersHeaderGeneratorProcessor")
@@ -57,7 +57,7 @@ public class ToAdeersReportServiceRouteBuilder {
             .process(track(REPORT_SUBMISSION_RESPONSE))
                 .to(rb.getFileTracker().fileURI(REPORT_SUBMISSION_RESPONSE))
             .to("log:gov.nih.nci.cabig.report2adeers.pre-multicast?showHeaders=true&multiline=true&level=DEBUG")
-            .to("activemq:adeers-ae-message.outputQueue", "direct:routeAdEERSResponseSink");
+            .multicast().to("direct:toE2bAck", "direct:toJms");
 
         rb.from("direct:adeers-response")
             .to("xslt:xslt/adeers/response/report-transformer.xsl")
