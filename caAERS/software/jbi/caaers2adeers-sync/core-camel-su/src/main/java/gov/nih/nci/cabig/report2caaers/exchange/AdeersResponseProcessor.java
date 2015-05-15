@@ -59,7 +59,7 @@ public class AdeersResponseProcessor implements Processor {
 		log.info("MESSAGE_COMBO_ID is " + msgComboId);
 		IntegrationLogMessage integrationLogMessage = integrationLogMessageDao.findByComboId(msgComboId, Stage.E2B_SUBMISSION_REQUEST_RECEIVED);
 		
-		if(StringUtils.isNotBlank(integrationLogMessage.getMessage())) {
+		if(integrationLogMessage != null && StringUtils.isNotBlank(integrationLogMessage.getMessage())) {
 			String msgNumb = evaluateXPath("//messagenumb", integrationLogMessage.getMessage());
 			String msgDt = evaluateXPath("//messagedate", integrationLogMessage.getMessage());
 			String msgSndrId = evaluateXPath("//messagesenderidentifier", integrationLogMessage.getMessage());
