@@ -24,8 +24,8 @@ public class DateUtils {
 
     public static final String DATE_PATTERN= "MM/dd/yyyy";
     public static final String WS_DATE_PATTERN= "yyyy-MM-dd'T'HH:mm:ss";
-    public static final String WS_DATE_PATTERN_WITH_TZ= "yyyy-MM-dd'T'HH:mm:ssz";
-    public static final String DATE_PATTERN_WITH_TZ= "EEE MMM dd yyyy h:mm:ss a z";
+    public static final String WS_DATE_PATTERN_WITH_TZ= "yyyy-MM-dd'T'HH:mm:ssX";
+    public static final String DATE_PATTERN_WITH_TZ= "EEE MMM dd yyyy h:mm:ss a z"; 
     public static final String DATE_WITH_HYPHENS= "MM-dd-yyyy";
     public static final String DATE_WITH_DATETIME= "MM/dd/yyyy HH:mm";
     
