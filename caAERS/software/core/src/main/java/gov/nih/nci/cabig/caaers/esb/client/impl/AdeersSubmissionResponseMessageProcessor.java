@@ -50,7 +50,7 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
         Namespace adeersNS = Namespace.getNamespace("ns2", "http://types.ws.adeers.ctep.nci.nih.gov");
         Element jobInfo = this.getResponseElement(message,"submitAEDataXMLAsAttachmentResponse","AEReportJobInfo");
 
-        log.error("DirkDebug; got JobInfo; " + message);
+        log.debug("Got JobInfo; " + message);
         
         String caaersAeReportId = childNodeValue(jobInfo, emptyNS, "CAEERS_AEREPORT_ID");
         log.debug("Data Colleciton ID : " + caaersAeReportId);
@@ -90,7 +90,6 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
         String url = "";
 
         try {
-        	log.error(jobStatus);
             if (jobStatus.equals("SUCCESS")) {
             	 success = true;
             	 ticketNumber = childNodeValue(jobInfo, adeersNS, "ticketNumber");
@@ -109,14 +108,14 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
             }else{
             	 @SuppressWarnings("unchecked")
 				List<Element> exceptions = jobInfo.getChildren("jobExceptions", adeersNS);
-            	 log.error("Got " + exceptions.size() + " errors to report.");
+            	 log.warn("Got " + exceptions.size() + " errors to report.");
             	 //find the exception elements
             	 if(CollectionUtils.isNotEmpty(exceptions)){
             		 StringBuffer exceptionMsgBuffer = new StringBuffer();
             		 for (Element ex : exceptions) {
             			 final String code = childNodeValue(ex, emptyNS, "code");
-            			 final String desc = childNodeValue(ex, adeersNS, "desc");
-            			 log.error("Encountered Error: " + code + " - " + desc);
+            			 final String desc = childNodeValue(ex, emptyNS, "desc");
+            			 log.warn("Encountered Error: " + code + " - " + desc);
             			 exceptionMsgBuffer.append(code).append( "  -  ").append(desc).append("\n");
 
             			 if (code.equals("caAERS-adEERS : COMM_ERR")) {
