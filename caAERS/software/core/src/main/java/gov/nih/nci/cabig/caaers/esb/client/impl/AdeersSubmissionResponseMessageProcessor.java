@@ -114,7 +114,7 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
             		 StringBuffer exceptionMsgBuffer = new StringBuffer();
             		 for (Element ex : exceptions) {
             			 final String code = childNodeValue(ex, emptyNS, "code");
-            			 final String desc = childNodeValue(ex, emptyNS, "desc");
+            			 final String desc = childNodeValue(ex, emptyNS, "description");
             			 log.warn("Encountered Error: " + code + " - " + desc);
             			 exceptionMsgBuffer.append(code).append( "  -  ").append(desc).append("\n");
 
