@@ -50,7 +50,7 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
         Namespace adeersNS = Namespace.getNamespace("ns2", "http://types.ws.adeers.ctep.nci.nih.gov");
         Element jobInfo = this.getResponseElement(message,"submitAEDataXMLAsAttachmentResponse","AEReportJobInfo");
 
-        log.debug("got JobInfo");
+        log.error("DirkDebug; got JobInfo; " + message);
         
         String caaersAeReportId = childNodeValue(jobInfo, emptyNS, "CAEERS_AEREPORT_ID");
         log.debug("Data Colleciton ID : " + caaersAeReportId);
