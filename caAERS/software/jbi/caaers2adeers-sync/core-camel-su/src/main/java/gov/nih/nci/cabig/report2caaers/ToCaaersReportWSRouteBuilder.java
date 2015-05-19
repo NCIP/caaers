@@ -40,7 +40,7 @@ public class ToCaaersReportWSRouteBuilder {
         
         routeBuilder.from("file://"+inputEDIDir+"?preMove=inprogress&move=done&moveFailed=movefailed")
             .streamCaching()
-            .setExchangePattern(ExchangePattern.InOptionalOut)
+            .setExchangePattern(ExchangePattern.InOnly)
             .setProperty(NEEDS_ACK, rb.constant(Boolean.TRUE.toString()))
             .setProperty(SYNC_HEADER, rb.constant("sync"))
             .setProperty(ENTITY_NAME, rb.constant("SafetyReport"))

@@ -1,7 +1,6 @@
 package gov.nih.nci.cabig.report2adeers;
 
 import gov.nih.nci.cabig.caaers2adeers.Caaers2AdeersRouteBuilder;
-import org.apache.camel.ExchangePattern;
 
 import static gov.nih.nci.cabig.caaers2adeers.exchnage.ExchangePreProcessor.*;
 import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.*;
@@ -39,12 +38,10 @@ public class ToAdeersReportServiceRouteBuilder {
                 .to("log:gov.nih.nci.cabig.report2adeers.presubmit-request?showHeaders=true&multiline=true&level=DEBUG")
           .process(track(ADEERS_REPORT_REQUEST))
                 .to(rb.getFileTracker().fileURI(ADEERS_REPORT_REQUEST))
-          .setExchangePattern(ExchangePattern.InOut)
           .processRef("adeersReportSubmissionProcessor")
                 .to("log:gov.nih.nci.cabig.report2adeers.adeers-response?showHeaders=true&multiline=true&level=DEBUG")
           .process(track(ADEERS_REPORT_RESPONSE))
                 .to(rb.getFileTracker().fileURI(ADEERS_REPORT_RESPONSE))
-          .setExchangePattern(ExchangePattern.InOptionalOut)
           .choice()
              .when(rb.header(REPORT_SUBMISSION_STATUS).isEqualTo("ERROR"))
                      .to("direct:communication-error")
