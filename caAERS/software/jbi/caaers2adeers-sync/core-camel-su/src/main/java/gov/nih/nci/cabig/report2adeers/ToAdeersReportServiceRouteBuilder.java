@@ -70,7 +70,7 @@ public class ToAdeersReportServiceRouteBuilder {
 
         rb.from("direct:toJms")
                 .to("log:gov.nih.nci.cabig.report2adeers.to-caaers-jms?showHeaders=true&multiline=true&level=WARN")
-                .to("activemq:adeers-ae-message.outputQueue");
+                .to("activemq:adeers-ae-message.outputQueue?connectionTimeout=60123");
 
         rb.from("direct:toE2bAck")
                 .to("log:gov.nih.nci.cabig.report2adeers.to-e2b-ack?showHeaders=true&multiline=true&level=WARN")
