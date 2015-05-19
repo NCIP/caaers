@@ -15,7 +15,7 @@ public class ToAdeersReportServiceRouteBuilder {
 
 
     public void configure(Caaers2AdeersRouteBuilder rb){
-        rb.from("activemq:adeers-ae-message.inputQueue?concurrentConsumers=5")
+        rb.from("activemq:adeers-ae-message.inputQueue?concurrentConsumers=5&exchangePattern=InOnly")
             .streamCaching()
             .to("log:gov.nih.nci.cabig.report2adeers.first-request?showHeaders=true&multiline=true&level=INFO")
             .setProperty(OPERATION_NAME, rb.constant("sendReportToAdeers"))
@@ -44,6 +44,7 @@ public class ToAdeersReportServiceRouteBuilder {
                 .to("log:gov.nih.nci.cabig.report2adeers.adeers-response?showHeaders=true&multiline=true&level=DEBUG")
           .process(track(ADEERS_REPORT_RESPONSE))
                 .to(rb.getFileTracker().fileURI(ADEERS_REPORT_RESPONSE))
+          .setExchangePattern(ExchangePattern.InOptionalOut)
           .choice()
              .when(rb.header(REPORT_SUBMISSION_STATUS).isEqualTo("ERROR"))
                      .to("direct:communication-error")
