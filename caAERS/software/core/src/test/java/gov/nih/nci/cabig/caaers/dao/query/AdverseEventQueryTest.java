@@ -34,4 +34,9 @@ public class AdverseEventQueryTest extends TestCase {
     	adverseEventQuery.filterByRequiresReporting("null", "!=");
     	assertEquals("select distinct ae,  from AdverseEvent ae WHERE ae.requiresReporting IS NOT NULL", adverseEventQuery.getQueryString());
     }
+
+    public void testFilterByAECreatedDate() throws Exception {
+        adverseEventQuery.filterByAECreatedDate("04/01/2015", "=");
+        assertEquals("select distinct ae,  from AdverseEvent ae WHERE (year(ae.createdDate) = '2015' AND month(ae.createdDate) = '4' AND day(ae.createdDate) = '1')", adverseEventQuery.getQueryString());
+    }
 }

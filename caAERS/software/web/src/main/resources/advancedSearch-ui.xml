@@ -745,6 +745,18 @@
                 <operator name="!=" display-uri="Not Equal To"/>
                 <filter-method>filterByRequiresReporting</filter-method>
             </ui-attribute>
+            <ui-attribute>
+                <name>createdDate</name>
+                <label>Created Date</label>
+                <data-type>String</data-type>
+                <field-type>date-field</field-type>
+                <operator name="=" display-uri="Equal To"/>
+                <operator name="g" display-uri="Greater Than"/>
+                <operator name="gt" display-uri="Greater Than or Equal To"/>
+                <operator name="l" display-uri="Less Than"/>
+                <operator name="lt" display-uri="Less Than or Equal To"/>
+                <filter-method>filterByAECreatedDate</filter-method>
+            </ui-attribute>
 			<view-column>
 				<column-title>id</column-title>
 				<column-attribute>id</column-attribute>
@@ -808,7 +820,7 @@
 				<view-column-index>9</view-column-index>
 			</view-column>
             <view-column>
-                <column-attribute>gradedDate</column-attribute>
+                <column-attribute>displayAwarenessDate</column-attribute>
                 <column-title>Awareness date</column-title>
                 <dependent-object-index>0</dependent-object-index>
                 <view-column-index>11</view-column-index>
@@ -818,6 +830,12 @@
                 <column-title>Requires reporting</column-title>
                 <dependent-object-index>0</dependent-object-index>
                 <view-column-index>10</view-column-index>
+            </view-column>
+            <view-column>
+                <column-attribute>displayCreatedDate</column-attribute>
+                <column-title>Created date</column-title>
+                <dependent-object-index>0</dependent-object-index>
+                <view-column-index>12</view-column-index>
             </view-column>
 		</dependent-object>
 		

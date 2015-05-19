@@ -18,12 +18,7 @@ import gov.nih.nci.cabig.caaers.validation.fields.validators.NotNullConstraint;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -144,6 +139,13 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     /** The event location. */
     private String eventLocation;
 
+    /* Adverse Event created date in the system(caAERS)*/
+    private Date createdDate;
+    /*To display AE createdDate in UTC string format*/
+    private String displayCreatedDate;
+    /* To display AE awarenessDate(gradedDate) in UTC string format */
+    private String displayAwarenessDate;
+
     public String getExternalId() {
 		return externalId;
 	}
@@ -199,11 +201,31 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
 		this.reporterEmail = reporterEmail;
 	}
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name="created_date", nullable = true)
+    public Date getCreatedDate(){
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+         this.createdDate = createdDate;
+    }
+
+    @Transient
+    public String getDisplayCreatedDate() {
+       return DateUtils.formatToWSResponseDateWithTimeZone(this.createdDate).toString();
+    }
+    @Transient
+    public String getDisplayAwarenessDate() {
+        return DateUtils.formatToWSResponseDateWithTimeZone(this.gradedDate).toString();
+    }
+
 	/**
      * Instantiates a new adverse event.
      */
     public AdverseEvent() {
         solicited = false;
+        createdDate = new Date();
     }
 
     ///LOGIC

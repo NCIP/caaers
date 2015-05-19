@@ -219,5 +219,15 @@ public class AdverseEventQuery extends AbstractQuery {
              andWhere(AE_ALIAS+".requiresReporting " + operator);
         }
     }
+
+    /**
+     * To filter adverseEvents by created date in advance search page
+     * @param dateString
+     * @param operator
+     * @throws Exception
+     */
+    public void filterByAECreatedDate(String dateString , String operator) throws Exception {
+        andWhere(createDateQuery(AE_ALIAS+".createdDate", dateString, operator));
+    }
     
 }
