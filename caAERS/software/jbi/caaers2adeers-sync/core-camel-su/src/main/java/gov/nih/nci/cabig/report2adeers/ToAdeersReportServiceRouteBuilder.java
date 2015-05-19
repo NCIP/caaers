@@ -46,13 +46,13 @@ public class ToAdeersReportServiceRouteBuilder {
                 .to(rb.getFileTracker().fileURI(ADEERS_REPORT_RESPONSE))
           .choice()
              .when(rb.header(REPORT_SUBMISSION_STATUS).isEqualTo("ERROR"))
-             		 .setHeader(SYSTEM_NAME, rb.constant("Servicemix"))
                      .to("direct:communication-error")
              .otherwise()
                      .to("direct:adeers-response");
 
         rb.from("direct:communication-error")
             .process(track(ADEERS_SUBMISSION_FAILED, "Communication error"))
+            .setHeader(SYSTEM_NAME, rb.constant("Adeers"))
             .to("xslt:xslt/adeers/response/report-error-transformer.xsl")
             .process(track(REPORT_SUBMISSION_RESPONSE))
                 .to(rb.getFileTracker().fileURI(REPORT_SUBMISSION_RESPONSE))
