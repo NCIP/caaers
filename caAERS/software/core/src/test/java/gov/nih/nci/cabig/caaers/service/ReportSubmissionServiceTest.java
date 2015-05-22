@@ -102,7 +102,7 @@ public class ReportSubmissionServiceTest extends AbstractNoSecurityTestCase {
 		service.setMessageBroadcastService(new CaaersAdeersMessageBroadcastServiceImpl(){
 			@Override
 			public void broadcast(String message) throws BroadcastException {
-				assertTrue(message.contains("<AdverseEventReport><EXTERNAL_SYSTEMS>www.biju.com::myusername::password::testServer</EXTERNAL_SYSTEMS><CAAERSRID>110</CAAERSRID>"));
+				assertTrue(message.contains("<AdverseEventReport><EXTERNAL_SYSTEMS>www.biju.com::myusername::password::UNKNOWN</EXTERNAL_SYSTEMS><CAAERSRID>110</CAAERSRID>"));
 			}
 			@Override
 			public void initialize() throws BroadcastException, JMSException {
@@ -142,7 +142,7 @@ public class ReportSubmissionServiceTest extends AbstractNoSecurityTestCase {
 		deliveryDef.setUserName("myusername");
 		deliveryDef.setPassword("password");
 		deliveryDef.setEndPoint("www.biju.com");
-		deliveryDef.setEndPointType("testServer");
+		
 		ReportDelivery delivery = deliveryDef.createReportDelivery();
 		delivery.setEndPoint("www.biju.com");
 		systemDeliveries.add(delivery);
