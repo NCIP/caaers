@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.rave2caaers.exchange;
 
 
+import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.camel.Exchange;
@@ -29,6 +30,9 @@ public class CRLFFixProcessor implements Processor {
     	    log.debug("Processing XML message with encoding; " + encoding);
     	    body = IOUtils.toString(bOMInputStream, encoding); 
     	    bOMInputStream.close();
+    	} catch (IOException ioe) {
+    		log.error("IOException while trying to read the xml file.", ioe);
+    		log.error("Problem body;" + exchange.getIn().getBody(String.class));
     	} finally {
     	    inputStream.close();
     	}
