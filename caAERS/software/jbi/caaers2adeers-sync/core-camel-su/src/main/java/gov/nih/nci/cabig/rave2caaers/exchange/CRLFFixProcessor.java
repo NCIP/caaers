@@ -25,7 +25,7 @@ public class CRLFFixProcessor  implements Processor {
     	    BOMInputStream bOMInputStream = new BOMInputStream(inputStream);
     	    ByteOrderMark bom = bOMInputStream.getBOM();
     	    String encoding = bom == null ? defaultEncoding : bom.getCharsetName();
-    	    body = IOUtils.toString(inputStream, encoding); 
+    	    body = IOUtils.toString(bOMInputStream, encoding); 
     	    bOMInputStream.close();
     	} finally {
     	    inputStream.close();
