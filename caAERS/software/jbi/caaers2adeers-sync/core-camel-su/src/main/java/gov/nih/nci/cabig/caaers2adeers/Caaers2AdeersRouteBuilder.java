@@ -302,7 +302,7 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
                 .to("log:gov.nih.nci.cabig.caaers2adeers.invalidsoap?showAll=true&level=WARN&showException=true&showStackTrace=true")
                 .transform(constant("<error>Invalid Soap Request</error>"))
                 .to("xslt:xslt/caaers/response/soapfault.xsl")
-                .process(track(REQUST_PROCESSING_ERROR, "Invalid SOAP request"))
+                //.process(track(REQUST_PROCESSING_ERROR, "Invalid SOAP request"))
                 .to(fileTracker.fileURI(REQUST_PROCESSING_ERROR));
 
     }
