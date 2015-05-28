@@ -14,6 +14,7 @@ import gov.nih.nci.cabig.caaers.utils.DateUtils;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
@@ -53,9 +54,10 @@ public class UserRepositoryIntegrationTest extends CaaersTestCase {
     
     
     public void testSearchCsmUserWithFirstAndLastName() {
+    	int randomNumber = new Random().nextInt(6);
         //Create a user
         User _user = new User();
-        _user.setLoginName("janakiram");
+        _user.setLoginName("janakiram"+randomNumber);
         _user.setFirstName("janaki rama rao");
         _user.setLastName("gollapudi");
      
@@ -67,9 +69,10 @@ public class UserRepositoryIntegrationTest extends CaaersTestCase {
     }
     
     public void testSearchCsmUserWithFirstName() {
+    	int randomNumber = new Random().nextInt(6);
         //Create a user
         User _user = new User();
-        _user.setLoginName("janakiram");
+        _user.setLoginName("janakiram"+randomNumber);
         _user.setFirstName("janaki rama rao");
         _user.setLastName("gollapudi");
      
@@ -81,9 +84,10 @@ public class UserRepositoryIntegrationTest extends CaaersTestCase {
     }
     
     public void testSearchCsmUserWithLastName() {
+    	int randomNumber = new Random().nextInt(6);
         //Create a user
         User _user = new User();
-        _user.setLoginName("janakiram");
+        _user.setLoginName("janakiram"+randomNumber);
         _user.setFirstName("janaki rama rao");
         _user.setLastName("gollapudi");
      
