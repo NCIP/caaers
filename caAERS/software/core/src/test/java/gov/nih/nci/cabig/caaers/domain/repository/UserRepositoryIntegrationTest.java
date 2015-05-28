@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
@@ -48,6 +49,21 @@ public class UserRepositoryIntegrationTest extends CaaersTestCase {
         userRepository.createOrUpdateUser(x, "www.localhost.com/test");
         userRepository.provisionUser(x);
         assertNotNull(x.getCsmUser().getUserId());
+    }
+    
+    
+    public void testSearchCsmUserWithFirstAndLastName() {
+        //Create a user
+        User _user = new User();
+        _user.setLoginName("janakiram");
+        _user.setFirstName("janaki rama rao");
+        _user.setLastName("gollapudi");
+     
+        userRepository.createOrUpdateUser(_user, "www.localhost.com/test");
+        userRepository.provisionUser(_user);
+        assertNotNull(_user.getCsmUser().getUserId());
+        List<User> users = userRepository.searchCsmUser("janaki gollapudi");
+        assertEquals(users.get(0).getFirstName(), "janaki rama rao");
     }
 
     public void testGetUserByLoginName() throws Exception {

@@ -80,14 +80,19 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     public List searchCsmUser(String name) {
+        Set users = new HashSet();
         if (StringUtils.isEmpty(name)) name = "%";
-        gov.nih.nci.security.authorization.domainobjects.User example = new gov.nih.nci.security.authorization.domainobjects.User();
-
-        example.setFirstName("%" + name + "%");
-        example.setLastName("%" + name + "%");
-
-        UserSearchCriteria userSearchCriteria = new UserSearchCriteria(example);
-        return userProvisioningManager.getObjects(userSearchCriteria);
+        gov.nih.nci.security.authorization.domainobjects.User user1 = new gov.nih.nci.security.authorization.domainobjects.User();
+        gov.nih.nci.security.authorization.domainobjects.User user2 = new gov.nih.nci.security.authorization.domainobjects.User();
+        for(String nameStr:name.split(" ")) {
+            user1.setFirstName("%" + nameStr + "%");
+            UserSearchCriteria userSearchCriteria = new UserSearchCriteria(user1);
+            users.addAll(userProvisioningManager.getObjects(userSearchCriteria));
+            user2.setLastName("%" + nameStr + "%");
+            UserSearchCriteria userSearchCriteria2 = new UserSearchCriteria(user2);
+            users.addAll(userProvisioningManager.getObjects(userSearchCriteria2));
+        }
+        return new ArrayList(users);
     }
 
     /* (non-Javadoc)
