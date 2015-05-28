@@ -62,9 +62,38 @@ public class UserRepositoryIntegrationTest extends CaaersTestCase {
         userRepository.createOrUpdateUser(_user, "www.localhost.com/test");
         userRepository.provisionUser(_user);
         assertNotNull(_user.getCsmUser().getUserId());
-        List<User> users = userRepository.searchCsmUser("janaki gollapudi");
-        assertEquals(users.get(0).getFirstName(), "janaki rama rao");
+        List users = userRepository.searchCsmUser("janaki gollapudi");
+        assertEquals(((gov.nih.nci.security.authorization.domainobjects.User) users.get(0)).getFirstName(), "janaki rama rao");
     }
+    
+    public void testSearchCsmUserWithFirstName() {
+        //Create a user
+        User _user = new User();
+        _user.setLoginName("janakiram");
+        _user.setFirstName("janaki rama rao");
+        _user.setLastName("gollapudi");
+     
+        userRepository.createOrUpdateUser(_user, "www.localhost.com/test");
+        userRepository.provisionUser(_user);
+        assertNotNull(_user.getCsmUser().getUserId());
+        List users = userRepository.searchCsmUser("janaki");
+        assertEquals(((gov.nih.nci.security.authorization.domainobjects.User) users.get(0)).getFirstName(), "janaki rama rao");
+    }
+    
+    public void testSearchCsmUserWithLastName() {
+        //Create a user
+        User _user = new User();
+        _user.setLoginName("janakiram");
+        _user.setFirstName("janaki rama rao");
+        _user.setLastName("gollapudi");
+     
+        userRepository.createOrUpdateUser(_user, "www.localhost.com/test");
+        userRepository.provisionUser(_user);
+        assertNotNull(_user.getCsmUser().getUserId());
+        List users = userRepository.searchCsmUser("gollapudi");
+        assertEquals(((gov.nih.nci.security.authorization.domainobjects.User) users.get(0)).getFirstName(), "janaki rama rao");
+    }
+
 
     public void testGetUserByLoginName() throws Exception {
 
