@@ -21,6 +21,7 @@ import static gov.nih.nci.cabig.caaers.CaaersUseCase.AE_DATA_COLLECTION;
 /**
  * @author Biju Joseph
  * @author Ion C. Olaru
+ * @author JanakiRam
  * 
  */
 @CaaersUseCases({AE_DATA_COLLECTION})
@@ -547,7 +548,10 @@ public class AdverseEventTest extends AbstractTestCase {
         assertEquals("Death", o.getDisplayName());
 
     }
-
+    
+    /**
+     * To test display requires reporting value when empty
+     */
     public void testGetDisplayRequiresReportingWithNull(){
         AdverseEvent ae = Fixtures.createAdverseEvent(1, Grade.DEATH);
         ae.getAdverseEventCtcTerm().getTerm().setOtherRequired(true);

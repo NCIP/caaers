@@ -60,7 +60,7 @@ public class RaveIntegrationHeaderProcessor implements Processor {
             }
         } catch (Exception ignore) {
            exchange.setProperty(INVALID_MESSAGE, "true");
-           log.error("Ignoring invalid xml", ignore);
+           log.debug("Ignoring invalid xml", ignore);
         }
 
 		if (log.isDebugEnabled())
