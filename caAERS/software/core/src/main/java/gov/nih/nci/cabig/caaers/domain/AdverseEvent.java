@@ -141,10 +141,7 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
 
     /* Adverse Event created date in the system(caAERS)*/
     private Date createdDate;
-    /*To display AE createdDate in UTC string format*/
-    private String displayCreatedDate;
-    /* To display AE awarenessDate(gradedDate) in UTC string format */
-    private String displayAwarenessDate;
+
 
     public String getExternalId() {
 		return externalId;
