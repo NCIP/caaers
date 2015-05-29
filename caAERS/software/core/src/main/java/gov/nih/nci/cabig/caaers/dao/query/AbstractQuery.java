@@ -9,9 +9,10 @@ package gov.nih.nci.cabig.caaers.dao.query;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
+import gov.nih.nci.cabig.caaers.dao.query.JoinType.JOIN;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -32,7 +33,7 @@ public abstract class AbstractQuery {
 
     private final List<String> orConditions = new LinkedList<String>();
 
-    private final List<String> joins = new ArrayList<String>();
+    private final JoinList joins = new JoinList();
 
     private final Map<String, Object> queryParameterMap;
 
@@ -82,10 +83,8 @@ public abstract class AbstractQuery {
         //is where condition present?
         boolean hasWhere = indexOfWhere > 0;
 
-
-        for (String join : joins) {
-            queryBuffer.append(join);
-        }
+        //add all the joins
+        queryBuffer.append(joins.getClause());
 
         //add the Where conditions
         if( !(andConditions.isEmpty() && orConditions.isEmpty())){
@@ -176,20 +175,7 @@ public abstract class AbstractQuery {
      * @param objectQuery
      */
      public void join(String objectQuery) {
-        join(objectQuery, -1);
-
-    }
-
-
-    /**
-     * Joins an object to the query select * from Study s join s.identifiers as id where
-     * s.shortTitle='study'
-     *
-     * @param objectQuery
-     * @param pos the position in join list to insert the join query. 
-     */
-     public void join(String objectQuery, int pos) {
-        addToJoinsList(" join " + objectQuery, pos);
+    	 addToJoinsList(new JoinType(objectQuery, JOIN.INNER_JOIN));
 
     }
 
@@ -200,31 +186,25 @@ public abstract class AbstractQuery {
      * @param objectQuery
      */
     public void leftJoin(String objectQuery) {
-        addToJoinsList(" left join " + objectQuery);
+        addToJoinsList(new JoinType(objectQuery, JOIN.LEFT_JOIN));
     }
-
-    public void leftOuterJoin(String objectQuery) {
-        addToJoinsList(" left outer join " + objectQuery);
+    
+    @Deprecated
+    public void leftOuterJoin(String str) {
+    	leftJoin(str);
+    }
+    
+    @Deprecated
+    public void leftOuterJoinFetch(String str) {
+    	leftJoinFetch(str);
     }
     
     public void leftJoinFetch(String objectQuery) {
-        addToJoinsList(" left join fetch " + objectQuery);
+    	addToJoinsList(new JoinType(objectQuery, JOIN.LEFT_JOIN, true));
     }
     
-    public void leftOuterJoinFetch(String objectQuery) {
-        addToJoinsList(" left outer join fetch " + objectQuery);
-    }
-    
-    public void addToJoinsList(String object) {
-        addToJoinsList(object, -1);
-    }
-
-
-    public void addToJoinsList(String object, int pos) {
-        if (!joins.contains(object)) {
-            if(pos != -1) joins.add(pos, object);
-            else joins.add(object);
-        }
+    public void addToJoinsList(JoinType join) {
+        joins.addJoin(join);
     }
     
     public void setParameterList(String name , List values){
@@ -277,9 +257,8 @@ public abstract class AbstractQuery {
     public String getLikeValue(String value) {
     	if (value.indexOf("%") != -1) {
 			return value;
-		} else {
-			return "%"+value+"%";
 		}
+		return "%"+value+"%";
     }
     // Advanced Search query methods 
     // id
@@ -376,7 +355,7 @@ public abstract class AbstractQuery {
 		try {
 			//dateValue = java.text.DateFormat.getDateTimeInstance().parse(dateString);
 			DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-	        dateValue = (Date)formatter.parse(dateString);
+	        dateValue = formatter.parse(dateString);
 	    
 		} catch (Exception ex) {
 			throw new Exception("Error parsing date " + dateString + ": " + ex.getMessage(), ex);

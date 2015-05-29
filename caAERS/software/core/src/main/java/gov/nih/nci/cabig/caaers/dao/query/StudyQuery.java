@@ -67,7 +67,7 @@ public class StudyQuery extends AbstractQuery {
     }
 
     public void outerjoinStudyOrganization() {
-    	leftOuterJoin("s.studyOrganizations as ss");
+    	leftJoin("s.studyOrganizations as ss");
     }
     
     public void joinOrganization() {
@@ -77,7 +77,7 @@ public class StudyQuery extends AbstractQuery {
 
     public void outerjoinOrganization() {
     	outerjoinStudyOrganization();
-    	leftOuterJoin("ss.organization as org");
+    	leftJoin("ss.organization as org");
     }
     
     public void joinStudyParticipantAssignment() {
@@ -89,15 +89,16 @@ public class StudyQuery extends AbstractQuery {
         joinStudyParticipantAssignment();
         join("spa.participant as p");
     }
+    
     // dont change naming convention .. (outer key word..)
     public void outerjoinStudyParticipantAssignment() {
         joinStudyOrganization();
-        leftOuterJoin("ss.studyParticipantAssignments as spa");
+        leftJoin("ss.studyParticipantAssignments as spa");
     }
     
     public void outerjoinParticipant() {
     	outerjoinStudyParticipantAssignment();
-    	leftOuterJoin("spa.participant as p");
+    	leftJoin("spa.participant as p");
     }
     
     
@@ -105,7 +106,7 @@ public class StudyQuery extends AbstractQuery {
         join("s.aeTerminology as terminology");
     }
     public void outerjoinAeTerminology() {
-        leftOuterJoin("s.aeTerminology as terminology");
+        leftJoin("s.aeTerminology as terminology");
     }
     
     public void joinTreatmentAssignment() {
