@@ -29,6 +29,8 @@ public class ReportQuery extends AbstractQuery {
 	
 	public static final String AE_RESPONSE_DESC_ALIAS = "aeResDesc";
 	
+	public static final String STUDY_PARTICIPANT_ALIAS = "studyPart";
+	
 	public ReportQuery() {
 		super("select distinct "+REPORT_ALIAS+" from Report " + REPORT_ALIAS);
 	}
@@ -44,13 +46,33 @@ public class ReportQuery extends AbstractQuery {
 	
 	public void joinStudy() {
 		joinReportingPeriod();
-		join (AE_REPORTING_PERIOD_ALIAS +".assignment.studySite.study "+STUDY_ALIAS);
+		join (STUDY_PARTICIPANT_ALIAS +".studySite.study "+STUDY_ALIAS);
 
 	}
 	
 	public void joinParticipant() {
 		joinReportingPeriod();
-		join (AE_REPORTING_PERIOD_ALIAS +".assignment.participant "+PARTICIPANT_ALIAS);
+		join (STUDY_PARTICIPANT_ALIAS +".participant "+PARTICIPANT_ALIAS);
+	}
+	
+	public void joinStudyParticipantAssignment() {
+		joinReportingPeriod();
+		join (AE_REPORTING_PERIOD_ALIAS + ".assignment " + STUDY_PARTICIPANT_ALIAS);
+	}
+	
+	public void filterByStudySubjectIdentifier(String studySubjectIdentifier,String operator) {
+    	andWhere("lower(" + STUDY_PARTICIPANT_ALIAS + ".studySubjectIdentifier) " + parseOperator(operator) + " :SSID");
+    	if (operator.equals("like")) {
+    		setParameter("SSID", getLikeValue(studySubjectIdentifier.toLowerCase()));
+    	} else {
+    		setParameter("SSID", studySubjectIdentifier.toLowerCase());
+    	}
+        
+    }
+	
+	public void outerjoinStudyParticipantAssignment() {
+		outerjoinReportingPeriod();
+		leftJoin(AE_REPORTING_PERIOD_ALIAS + ".assignment " + STUDY_PARTICIPANT_ALIAS);
 	}
 	
 	public void joinReportDefinition() {

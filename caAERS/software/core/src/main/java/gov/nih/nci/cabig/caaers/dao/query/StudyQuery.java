@@ -16,7 +16,6 @@ public class StudyQuery extends AbstractQuery {
 	
 	private static String STUDY_ID = "studyId";
 
-    private static String STUDY_IDENTIFIER_VALUE = "identifier";
 
     private static String STUDY_IDENTIFIER_TYPE = "idType";
     
@@ -27,10 +26,6 @@ public class StudyQuery extends AbstractQuery {
     private static String STUDY_SHORT_TITLE = "shortTitle";
     
     private static String STUDY_LONG_TITLE = "longTitle";
-    
-    private static final String IDENTIFIER_VALUE = "identifierValue";
-
-    private static final String IDENTIFIER_TYPE = "type";
     
     public static final String STUDY_PARTICIPANT_ALIAS = "spa";
     
@@ -219,39 +214,36 @@ public class StudyQuery extends AbstractQuery {
     }
     
     public void filterByStudySubjectIdentifier(String studySubjectIdentifier,String operator) {
-    	andWhere("lower(spa.studySubjectIdentifier) " + parseOperator(operator) + " :SSI");
+    	final String param = generateParam();
+    	andWhere("lower(spa.studySubjectIdentifier) " + parseOperator(operator) + " :" + param);
     	if (operator.equals("like")) {
-    		setParameter("SSI", getLikeValue(studySubjectIdentifier.toLowerCase()));
+    		setParameter(param, getLikeValue(studySubjectIdentifier.toLowerCase()));
     	} else {
-    		setParameter("SSI", studySubjectIdentifier.toLowerCase());
+    		setParameter(param, studySubjectIdentifier.toLowerCase());
     	}
         
     }
 
     public void filterByAgent(Integer id ,String operator) {
-    	andWhere("agt.id " + parseOperator(operator) + " :ID");
-        setParameter("ID", id);
+    	andWhere("agt.id " + parseOperator(operator) + " :" + generateParam(id));
     }
     
     // identifier
     public void filterByIdentifierValue(final String Identifiervalue) {
     	joinIdentifier();
         String searchString = "%" + Identifiervalue.toLowerCase() + "%";
-        andWhere("lower(identifier.value) LIKE :" + STUDY_IDENTIFIER_VALUE);
-        setParameter(STUDY_IDENTIFIER_VALUE, searchString);
+        andWhere("lower(identifier.value) LIKE :" + generateParam(searchString));
     }
 
     public void filterByIdentifierValueExactMatch(final String identifiervalue) {
 		joinIdentifier();
         String searchString = identifiervalue.toLowerCase();
-        andWhere("lower(identifier.value) LIKE :" + STUDY_IDENTIFIER_VALUE);
-        setParameter(STUDY_IDENTIFIER_VALUE, searchString);
+        andWhere("lower(identifier.value) LIKE :" + generateParam(searchString));
     }
 
     public void filterByIdentifierType(final String type) {
     	joinIdentifier();
-        andWhere("identifier.type LIKE :" + STUDY_IDENTIFIER_TYPE);
-        setParameter(STUDY_IDENTIFIER_TYPE, type);
+        andWhere("identifier.type LIKE :" + generateParam(type));
     }
     
     public void filterByIdentifier(Identifier identifier){
@@ -259,15 +251,13 @@ public class StudyQuery extends AbstractQuery {
     	//type
     	String type = identifier.getType();
     	if(type != null){
-    		andWhere("lower(identifier.type) = :"+ STUDY_IDENTIFIER_TYPE);
-    		setParameter(STUDY_IDENTIFIER_TYPE, type.toLowerCase());
+    		andWhere("lower(identifier.type) = :" + generateParam(type.toLowerCase()));
     	}
     	
     	//value
     	String value = identifier.getValue();
     	if(value != null){
-    		andWhere("lower(identifier.value) = :" + STUDY_IDENTIFIER_VALUE);
-            setParameter(STUDY_IDENTIFIER_VALUE, value.toLowerCase());
+    		andWhere("lower(identifier.value) = :" + generateParam(value.toLowerCase()));
     	}
     	
     	if(identifier instanceof OrganizationAssignedIdentifier){
@@ -275,12 +265,9 @@ public class StudyQuery extends AbstractQuery {
             Organization org =  ((OrganizationAssignedIdentifier) identifier).getOrganization();
             if (org != null) {
 				if (org.getNciInstituteCode() != null) {
-					andWhere("identifier.organization.nciInstituteCode = :orgNCICode");
-					setParameter("orgNCICode", org.getNciInstituteCode());
+					andWhere("identifier.organization.nciInstituteCode = :" + generateParam(org.getNciInstituteCode()));
 				} else {
-					andWhere("identifier.organization.id = :"
-							+ STUDY_IDENTIFIER_ORGANIZATION);
-					setParameter(STUDY_IDENTIFIER_ORGANIZATION, org.getId());
+					andWhere("identifier.organization.id = :" + generateParam(org.getId()));
 				}
 			}
 
@@ -298,17 +285,14 @@ public class StudyQuery extends AbstractQuery {
     }
 
     public void filterByShortTitleOrIdentifiers(String text) {
-        orWhere("lower(s.shortTitle) LIKE :" + STUDY_SHORT_TITLE);
-        setParameter(STUDY_SHORT_TITLE, "%" + text.toLowerCase() + "%");
+        orWhere("lower(s.shortTitle) LIKE :" + generateParam("%" + text.toLowerCase() + "%"));
         leftOuterJoin(STUDY_ALIAS + ".identifiers as identifier");
-        orWhere("lower(identifier.value) LIKE :"  + IDENTIFIER_VALUE);
-        setParameter(IDENTIFIER_VALUE, "%" + text.toLowerCase() + "%");
+        orWhere("lower(identifier.value) LIKE :"  + generateParam("%" + text.toLowerCase() + "%"));
     }
 
     // longTitle
     public void filterByLongTitle(final String longTitleText) {
-        andWhere("lower(s.shortTitle) LIKE :" + "LONG_SHORT_TITLE");
-        setParameter("LONG_SHORT_TITLE", "%" + longTitleText.toLowerCase() + "%");
+        andWhere("lower(s.shortTitle) LIKE :" + generateParam("%" + longTitleText.toLowerCase() + "%"));
     }
     
     // id
@@ -335,12 +319,12 @@ public class StudyQuery extends AbstractQuery {
     }
     
     public void filterStudiesWithMatchingText(String text) {
+    	final String param = generateParam();
     	joinIdentifier();
         String searchString = text != null ? "%" + text.toLowerCase() + "%" : null;
-        andWhere(String.format("(lower(s.shortTitle) LIKE :%s or lower(s.longTitle) LIKE :%s " + "or lower(identifier.value) LIKE :%s)", STUDY_SHORT_TITLE, STUDY_LONG_TITLE, IDENTIFIER_VALUE));
-        setParameter(IDENTIFIER_VALUE, searchString);
-        setParameter(STUDY_SHORT_TITLE, searchString);
-        setParameter(STUDY_LONG_TITLE, searchString);
+        andWhere(String.format("(lower(s.shortTitle) LIKE :%s or lower(s.longTitle) LIKE :%s " 
+        + "or lower(identifier.value) LIKE :%s)", param, param, param));
+        setParameter(param, searchString);
     }
     
     /**
@@ -348,19 +332,17 @@ public class StudyQuery extends AbstractQuery {
      * @param text
      */
     public void filterStudiesMatchingText(String text) {
+    	final String param = generateParam();
     	leftJoinFetch(STUDY_ALIAS+".identifiers as identifier");
-        String searchString = text != null ? "%" + text.toLowerCase() + "%" : null;
-        andWhere(String.format("(lower(s.shortTitle) LIKE :%s or lower(s.longTitle) LIKE :%s or lower(identifier.value) LIKE :%s)", STUDY_SHORT_TITLE, STUDY_LONG_TITLE, IDENTIFIER_VALUE));
-        setParameter(IDENTIFIER_VALUE, searchString);
-        setParameter(STUDY_SHORT_TITLE, searchString);
-        setParameter(STUDY_LONG_TITLE, searchString);
+        final String searchString = text != null ? "%" + text.toLowerCase() + "%" : null;
+        andWhere(String.format("(lower(s.shortTitle) LIKE :%s or lower(s.longTitle) LIKE :%s or lower(identifier.value) LIKE :%s)", param, param, param));
+        setParameter(param, searchString);
     }
 
 
     // participantIdentifier
     public void filterByParticipantIdentifierValue(final String participantIdentifierValue) {
-        andWhere("lower(pIdentifier.value) LIKE :pIdVal");
-        setParameter("pIdVal", "%" + participantIdentifierValue.toLowerCase() + "%");
+        andWhere("lower(pIdentifier.value) LIKE :" + generateParam("%" + participantIdentifierValue.toLowerCase() + "%"));
     }
 
     /**
@@ -369,8 +351,7 @@ public class StudyQuery extends AbstractQuery {
      */
     public void filterBySponsorOrganizationId(Integer id){
     	andWhere("ss.class = 'SFS'");
-    	andWhere("ss.organization.id = :sponsorId");
-    	setParameter("sponsorId", id);
+    	andWhere("ss.organization.id = :" + generateParam(id));
     }
     
     public void filterByStudyOrganizationNameExactMatch(String studyOrgName){

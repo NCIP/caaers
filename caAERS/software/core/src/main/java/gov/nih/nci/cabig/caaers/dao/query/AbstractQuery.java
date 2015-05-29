@@ -52,10 +52,24 @@ public abstract class AbstractQuery {
 	
 	public static final String PARTICIPANT_ALIAS = "p";
 	
+	public static final String PARAMETER_BASE = "param";
+	private int paramCounter = 0;
+	
 
     public AbstractQuery(final String queryString) {
         this.queryString = new StringBuffer(queryString);
         queryParameterMap = new HashMap<String, Object>(0);
+    }
+    
+    public String generateParam() {
+    	String param = PARAMETER_BASE + paramCounter++;
+    	return param;
+    }
+    
+    public String generateParam(Object value) {
+    	String param = generateParam();
+    	this.setParameter(param, value);
+    	return param;
     }
 
     public String getQueryString() {

@@ -1707,5 +1707,31 @@
 			</view-column>
 
 		</dependent-object>
+		<dependent-object>
+			<class-name>gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment</class-name>
+			<display-name>StudyParticipantAssignment</display-name>
+			<table-alias>STUDY_PARTICIPANT_ALIAS</table-alias>
+			<hidden>true</hidden>
+			<join-by-method>joinStudyParticipantAssignment</join-by-method>
+			<outer-join-required>true</outer-join-required>
+			<ui-attribute>
+				<name>studySubjectIdentifier</name>
+				<label>Study subject identifier</label>
+				<data-type>String</data-type>
+				<field-type>text-field</field-type>
+				<operator name="=" display-uri="Equal To"/>				
+				<operator name="!=" display-uri="Not Equal To"/>
+				<operator name="like" display-uri="Like"/>
+				<filter-method>filterByStudySubjectIdentifier</filter-method>
+			</ui-attribute>
+			
+			<view-column>
+				<column-attribute>studySubjectIdentifier</column-attribute>
+				<column-title>Study subject identifier</column-title>
+				<dependent-object-index>9</dependent-object-index>
+				<view-column-index>0</view-column-index>
+			</view-column>
+
+		</dependent-object>
 	</search-target-object>
 </advancedSearch-ui>
