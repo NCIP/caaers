@@ -10,6 +10,9 @@ import gov.nih.nci.cabig.caaers2adeers.Caaers2AdeersRouteBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import org.apache.camel.ExchangePattern;
+
 import static gov.nih.nci.cabig.caaers2adeers.exchnage.ExchangePreProcessor.*;
 import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.*;
 import static gov.nih.nci.cabig.caaers2adeers.track.Tracker.track;
@@ -37,6 +40,7 @@ public class ToCaaersReportWSRouteBuilder {
         
         routeBuilder.from("file://"+inputEDIDir+"?preMove=inprogress&move=done&moveFailed=movefailed")
             .streamCaching()
+            .setExchangePattern(ExchangePattern.InOnly)
             .setProperty(NEEDS_ACK, rb.constant(Boolean.TRUE.toString()))
             .setProperty(SYNC_HEADER, rb.constant("sync"))
             .setProperty(ENTITY_NAME, rb.constant("SafetyReport"))

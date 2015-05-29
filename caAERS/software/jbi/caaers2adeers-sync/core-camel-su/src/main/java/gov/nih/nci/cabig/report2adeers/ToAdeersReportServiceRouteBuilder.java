@@ -1,7 +1,6 @@
 package gov.nih.nci.cabig.report2adeers;
 
 import gov.nih.nci.cabig.caaers2adeers.Caaers2AdeersRouteBuilder;
-import org.apache.camel.ExchangePattern;
 
 import static gov.nih.nci.cabig.caaers2adeers.exchnage.ExchangePreProcessor.*;
 import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.*;
@@ -15,7 +14,7 @@ public class ToAdeersReportServiceRouteBuilder {
 
 
     public void configure(Caaers2AdeersRouteBuilder rb){
-        rb.from("activemq:adeers-ae-message.inputQueue?concurrentConsumers=5")
+        rb.from("activemq:adeers-ae-message.inputQueue?concurrentConsumers=5&exchangePattern=InOnly")
             .streamCaching()
             .to("log:gov.nih.nci.cabig.report2adeers.first-request?showHeaders=true&multiline=true&level=INFO")
             .setProperty(OPERATION_NAME, rb.constant("sendReportToAdeers"))
@@ -39,20 +38,19 @@ public class ToAdeersReportServiceRouteBuilder {
                 .to("log:gov.nih.nci.cabig.report2adeers.presubmit-request?showHeaders=true&multiline=true&level=DEBUG")
           .process(track(ADEERS_REPORT_REQUEST))
                 .to(rb.getFileTracker().fileURI(ADEERS_REPORT_REQUEST))
-          .setExchangePattern(ExchangePattern.InOut)
           .processRef("adeersReportSubmissionProcessor")
                 .to("log:gov.nih.nci.cabig.report2adeers.adeers-response?showHeaders=true&multiline=true&level=DEBUG")
           .process(track(ADEERS_REPORT_RESPONSE))
                 .to(rb.getFileTracker().fileURI(ADEERS_REPORT_RESPONSE))
           .choice()
              .when(rb.header(REPORT_SUBMISSION_STATUS).isEqualTo("ERROR"))
-             		 .setHeader(SYSTEM_NAME, rb.constant("Servicemix"))
                      .to("direct:communication-error")
              .otherwise()
                      .to("direct:adeers-response");
 
         rb.from("direct:communication-error")
             .process(track(ADEERS_SUBMISSION_FAILED, "Communication error"))
+            .setHeader(SYSTEM_NAME, rb.constant("Adeers"))
             .to("xslt:xslt/adeers/response/report-error-transformer.xsl")
             .process(track(REPORT_SUBMISSION_RESPONSE))
                 .to(rb.getFileTracker().fileURI(REPORT_SUBMISSION_RESPONSE))
@@ -70,7 +68,7 @@ public class ToAdeersReportServiceRouteBuilder {
 
         rb.from("direct:toJms")
                 .to("log:gov.nih.nci.cabig.report2adeers.to-caaers-jms?showHeaders=true&multiline=true&level=WARN")
-                .to("activemq:adeers-ae-message.outputQueue");
+                .to("activemq:adeers-ae-message.outputQueue?exchangePattern=InOnly");
 
         rb.from("direct:toE2bAck")
                 .to("log:gov.nih.nci.cabig.report2adeers.to-e2b-ack?showHeaders=true&multiline=true&level=WARN")

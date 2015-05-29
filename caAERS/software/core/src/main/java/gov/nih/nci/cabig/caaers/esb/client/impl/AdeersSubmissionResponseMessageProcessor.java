@@ -50,7 +50,7 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
         Namespace adeersNS = Namespace.getNamespace("ns2", "http://types.ws.adeers.ctep.nci.nih.gov");
         Element jobInfo = this.getResponseElement(message,"submitAEDataXMLAsAttachmentResponse","AEReportJobInfo");
 
-        log.debug("got JobInfo");
+        log.debug("Got JobInfo; " + message);
         
         String caaersAeReportId = childNodeValue(jobInfo, emptyNS, "CAEERS_AEREPORT_ID");
         log.debug("Data Colleciton ID : " + caaersAeReportId);
@@ -90,7 +90,6 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
         String url = "";
 
         try {
-
             if (jobStatus.equals("SUCCESS")) {
             	 success = true;
             	 ticketNumber = childNodeValue(jobInfo, adeersNS, "ticketNumber");
@@ -109,13 +108,17 @@ public class AdeersSubmissionResponseMessageProcessor extends ResponseMessagePro
             }else{
             	 @SuppressWarnings("unchecked")
 				List<Element> exceptions = jobInfo.getChildren("jobExceptions", adeersNS);
+            	 log.warn("Got " + exceptions.size() + " errors to report.");
             	 //find the exception elements
             	 if(CollectionUtils.isNotEmpty(exceptions)){
             		 StringBuffer exceptionMsgBuffer = new StringBuffer();
             		 for (Element ex : exceptions) {
-            			 exceptionMsgBuffer.append(childNodeValue(ex, adeersNS, "code")).append( "  -  ").append(childNodeValue(ex, adeersNS, "description")).append("\n");
+            			 final String code = childNodeValue(ex, emptyNS, "code");
+            			 final String desc = childNodeValue(ex, emptyNS, "description");
+            			 log.warn("Encountered Error: " + code + " - " + desc);
+            			 exceptionMsgBuffer.append(code).append( "  -  ").append(desc).append("\n");
 
-            			 if (childNodeValue(ex, adeersNS, "code").equals("caAERS-adEERS : COMM_ERR")) {
+            			 if (code.equals("caAERS-adEERS : COMM_ERR")) {
                      		communicationError=true;
                          }
                      }

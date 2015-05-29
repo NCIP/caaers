@@ -60,8 +60,7 @@
 	                <transmissionacknowledgmentcode><xsl:value-of select="$status" /></transmissionacknowledgmentcode>	
 	                  
                     <xsl:if test="$status='03'">
-                        <parsingerrormessage><xsl:apply-templates select="//ns1:AEReportJobInfo/adeers:jobExceptions" mode="ERR"/> System error occurred in <xsl:value-of
-                                   select="//SYSTEM_NAME" /></parsingerrormessage>
+                        <parsingerrormessage><xsl:apply-templates select="//ns1:AEReportJobInfo/adeers:jobExceptions" mode="ERR"/> System error occurred in Adeers</parsingerrormessage>
                     </xsl:if>
                 </messageacknowledgment>
                 <xsl:if test="$status!='03'">
@@ -97,8 +96,7 @@
                         -->
                         <reportacknowledgmentcode><xsl:value-of select="$status" /></reportacknowledgmentcode>
                         <xsl:if test="$status='02'">
-                        	<errormessagecomment><xsl:apply-templates select="//ns1:AEReportJobInfo/adeers:jobExceptions" mode="ERR"/> System error occurred in <xsl:value-of
-                                   select="//SYSTEM_NAME" /></errormessagecomment>
+                        	<errormessagecomment><xsl:apply-templates select="//ns1:AEReportJobInfo/adeers:jobExceptions" mode="ERR"/> System error occurred in Adeers</errormessagecomment>
                         </xsl:if>
                     </reportacknowledgment>
                 </xsl:if>
