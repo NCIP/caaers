@@ -569,4 +569,28 @@ public class AdverseEventTest extends AbstractTestCase {
         assertEquals("No", ae.getDisplayRequiresReporting());
     }
 
+    public void testAECreatedDate() {
+        //We are assigning current date to createdDate in default constructor
+        assertNotNull(adverseEvent.getCreatedDate());
+        adverseEvent.setCreatedDate(null);
+        assertNull(adverseEvent.getCreatedDate());
+        adverseEvent.setCreatedDate(new Date());
+        assertNotNull(adverseEvent.getCreatedDate());
+    }
+
+    public void testAEDisplayCreatedDate() {
+        Date date = new Date();
+        String formatedDate = gov.nih.nci.cabig.caaers.utils.DateUtils.formatToWSResponseDateWithTimeZone(date);
+        adverseEvent.setCreatedDate(date);
+        assertNotNull(adverseEvent.getCreatedDate());
+        assertEquals(formatedDate,adverseEvent.getDisplayCreatedDate());
+    }
+
+    public void testAEDisplayAwarenessDate() {
+        Date date = new Date();
+        String formatedDate = gov.nih.nci.cabig.caaers.utils.DateUtils.formatToWSResponseDateWithTimeZone(date);
+        adverseEvent.setGradedDate(date);
+        assertEquals(formatedDate,adverseEvent.getDisplayAwarenessDate());
+    }
+
 }

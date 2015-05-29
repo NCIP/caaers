@@ -176,12 +176,12 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
                     .processRef("crlfFixProcessor")
                     .processRef("raveIntegrationHeaderProcessor")
                     .processRef("headerGeneratorProcessor")
-                    .process(track(REQUEST_RECEIVED))
-                        .to(fileTracker.fileURI(REQUEST_RECEIVED))
                     .choice()
                       .when(header(INVALID_MESSAGE).isEqualTo("true"))
                             .to("direct:soapfault")
                       .otherwise()
+                        .process(track(REQUEST_RECEIVED))
+                        .to(fileTracker.fileURI(REQUEST_RECEIVED))
                         .doTry()
                             .to("validator:xsd/soap-envelope.xsd")
                             .process(track(PRE_PROCESS_RAVE_INTEGRATION_MSG))
@@ -302,7 +302,7 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
                 .to("log:gov.nih.nci.cabig.caaers2adeers.invalidsoap?showAll=true&level=WARN&showException=true&showStackTrace=true")
                 .transform(constant("<error>Invalid Soap Request</error>"))
                 .to("xslt:xslt/caaers/response/soapfault.xsl")
-                .process(track(REQUST_PROCESSING_ERROR, "Invalid SOAP request"))
+                //.process(track(REQUST_PROCESSING_ERROR, "Invalid SOAP request"))
                 .to(fileTracker.fileURI(REQUST_PROCESSING_ERROR));
 
     }
