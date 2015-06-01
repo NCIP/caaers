@@ -263,8 +263,7 @@ public abstract class AbstractQuery {
     // Advanced Search query methods 
     // id
     public void filterByStudyId(final Integer id,String operator) {
-        andWhere("s.id " + parseOperator(operator) + " :ID");
-        setParameter("ID", id);
+        andWhere("s.id " + parseOperator(operator) + " :" + generateParam(id));
     }
 
     public void filterByStudyId(Integer id){
@@ -273,71 +272,70 @@ public abstract class AbstractQuery {
     
     // shortTitle
     public void filterByStudyShortTitle(final String shortTitleText , String operator) {
-    	andWhere("lower(s.shortTitle) " + parseOperator(operator) + " :" + "shortTitleText");
+    	final String titleText = generateParam();
+    	andWhere("lower(s.shortTitle) " + parseOperator(operator) + " :" + titleText);
         
     	if (operator.equals("like")) {
-    		setParameter("shortTitleText", getLikeValue(shortTitleText.toLowerCase()));
+    		setParameter(titleText, getLikeValue(shortTitleText.toLowerCase()));
     	} else {
-    		setParameter("shortTitleText", shortTitleText.toLowerCase());
+    		setParameter(titleText, shortTitleText.toLowerCase());
     	}
     }
 
     // longTitle
     public void filterByStudyLongTitle(final String longTitleText ,String operator) {
-    	andWhere("lower(s.longTitle) " + parseOperator(operator) + " :" + "longTitleText");
-        
+    	final String titleText = generateParam();
+    	andWhere("lower(s.longTitle) " + parseOperator(operator) + " :" + titleText);
     	if (operator.equals("like")) {
-    		setParameter("longTitleText", getLikeValue(longTitleText.toLowerCase()));
+    		setParameter(titleText, getLikeValue(longTitleText.toLowerCase()));
     	} else {
-    		setParameter("longTitleText", longTitleText.toLowerCase());
+    		setParameter(titleText, longTitleText.toLowerCase());
     	}
     }
     
     
     // participant-id
     public void filterByParticipantId(final Integer id,String operator) {
-        andWhere("p.id " + parseOperator(operator) + " :id");
-        setParameter("id", id);
+        andWhere("p.id " + parseOperator(operator) + " :" + generateParam(id));
     }  
     
     
     
     // participant-FirstName
     public void filterByParticipantFirstName(final String fName,String operator) {
-        andWhere("lower(p.firstName) " + parseOperator(operator) + " :pfName");
+    	final String pfName = generateParam();
+        andWhere("lower(p.firstName) " + parseOperator(operator) + " :" + pfName);
         if (operator.equals("like")) {
-        	setParameter("pfName", getLikeValue(fName.toLowerCase()));
+        	setParameter(pfName, getLikeValue(fName.toLowerCase()));
         } else {
-        	setParameter("pfName", fName.toLowerCase());
+        	setParameter(pfName, fName.toLowerCase());
         }
     }
 
     // participant - LastName
     public void filterByParticipantLastName(final String lName,String operator) {
-        andWhere("lower(p.lastName) " + parseOperator(operator) + " :plName");
+    	final String plName = generateParam();
+        andWhere("lower(p.lastName) " + parseOperator(operator) + " :" + plName);
         if (operator.equals("like")) {
-        	setParameter("plName", getLikeValue(lName.toLowerCase()) );
+        	setParameter(plName, getLikeValue(lName.toLowerCase()) );
         } else {
-        	setParameter("plName", lName.toLowerCase() );
+        	setParameter(plName, lName.toLowerCase() );
         }
     }
 
     // participant - Ethnicity
     public void filterByParticipantEthnicity(String ethenicity,String operator) {
-        andWhere("lower(p.ethnicity) " + parseOperator(operator) + " :pEthenicity");
-        setParameter("pEthenicity", ethenicity.toLowerCase() );
+        andWhere("lower(p.ethnicity) " + parseOperator(operator) + " :" + generateParam(ethenicity.toLowerCase()));
     }
 
     // participant - Race
     public void filterByParticipantRace(String race,String operator) {
-        andWhere("lower(p.race) " + parseOperator(operator) + " :pRace");
-        setParameter("pRace", race.toLowerCase() );
+        andWhere("lower(p.race) " + parseOperator(operator) + " :" + generateParam(race.toLowerCase()));
     }
     
     // p.gender
     public void filterByParticipantGender(final String gender,String operator) {
-        andWhere("lower(p.gender) " + parseOperator(operator) + " :pGender");
-        setParameter("pGender", gender.toLowerCase());
+        andWhere("lower(p.gender) " + parseOperator(operator) + " :" + generateParam(gender.toLowerCase()));
     }
     
     public void filterByParticipantDOB(String dateString , String operator) throws Exception {
@@ -345,8 +343,7 @@ public abstract class AbstractQuery {
     }
 
     public void filterByRetiredStatus(String alias, Boolean status) {
-        andWhere(alias + ".retiredIndicator = :value");
-        setParameter("value", status.booleanValue());
+        andWhere(alias + ".retiredIndicator = :" + generateParam(status.booleanValue()));
     }
 
 	public  String createDateQuery(String fullAttributeName, String dateString, String predicate) throws Exception {

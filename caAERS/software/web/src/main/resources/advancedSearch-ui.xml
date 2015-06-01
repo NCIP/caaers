@@ -1266,6 +1266,13 @@
 				<view-column-index>0</view-column-index>
 				<selected>true</selected>
 			</view-column>
+			<view-column>
+				<column-title>Case Number</column-title>
+				<column-attribute>caseNumber</column-attribute>
+				<table-title>case_number</table-title>
+				<dependent-object-index>0</dependent-object-index>
+				<view-column-index>1</view-column-index>
+			</view-column>
 		</dependent-object>
 		<dependent-object>
 			<class-name>gov.nih.nci.cabig.caaers.domain.Study</class-name>
@@ -1338,7 +1345,13 @@
 				<dependent-object-index>1</dependent-object-index>
 				<view-column-index>4</view-column-index>
 			</view-column>
-
+			<view-column>
+				<column-title>id</column-title>
+				<column-attribute>id</column-attribute>
+				<table-title>id</table-title>
+				<dependent-object-index>0</dependent-object-index>
+				<view-column-index>5</view-column-index>
+			</view-column>
 		</dependent-object>
 		<dependent-object>
 			<class-name>gov.nih.nci.cabig.caaers.domain.report.ReportDefinition</class-name>
@@ -1713,7 +1726,6 @@
 			<table-alias>STUDY_PARTICIPANT_ALIAS</table-alias>
 			<hidden>true</hidden>
 			<join-by-method>joinStudyParticipantAssignment</join-by-method>
-			<outer-join-required>true</outer-join-required>
 			<ui-attribute>
 				<name>studySubjectIdentifier</name>
 				<label>Study subject identifier</label>
@@ -1729,6 +1741,21 @@
 				<column-attribute>studySubjectIdentifier</column-attribute>
 				<column-title>Study subject identifier</column-title>
 				<dependent-object-index>9</dependent-object-index>
+				<view-column-index>0</view-column-index>
+			</view-column>
+
+		</dependent-object>
+		<dependent-object>
+			<class-name>gov.nih.nci.cabig.caaers.domain.StudySite</class-name>
+			<display-name>Study Site Assignment</display-name>
+			<table-alias>STUDY_SITE_ALIAS</table-alias>
+			<hidden>true</hidden>
+			<join-by-method>joinStudySiteAssignment</join-by-method>
+			
+			<view-column>
+				<column-attribute>organization.name</column-attribute>
+				<column-title>Study Site</column-title>
+				<dependent-object-index>10</dependent-object-index>
 				<view-column-index>0</view-column-index>
 			</view-column>
 

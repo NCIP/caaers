@@ -13,7 +13,7 @@ import gov.nih.nci.cabig.caaers.utils.CaaersUtils;
 
 public class ReportQuery extends AbstractQuery {
 	
-	public static String REPORT_ALIAS = "report";
+	public static final String REPORT_ALIAS = "report";
 	
 	public static final String AE_REPORTING_PERIOD_ALIAS = "aeRp";
 	
@@ -30,6 +30,8 @@ public class ReportQuery extends AbstractQuery {
 	public static final String AE_RESPONSE_DESC_ALIAS = "aeResDesc";
 	
 	public static final String STUDY_PARTICIPANT_ALIAS = "studyPart";
+	
+	public static final String STUDY_SITE_ALIAS = "studySite";
 	
 	public ReportQuery() {
 		super("select distinct "+REPORT_ALIAS+" from Report " + REPORT_ALIAS);
@@ -60,12 +62,19 @@ public class ReportQuery extends AbstractQuery {
 		join (AE_REPORTING_PERIOD_ALIAS + ".assignment " + STUDY_PARTICIPANT_ALIAS);
 	}
 	
+	public void joinStudySiteAssignment() {
+		joinStudyParticipantAssignment();
+		join (STUDY_PARTICIPANT_ALIAS + ".studySite " + STUDY_SITE_ALIAS);
+	}
+	
 	public void filterByStudySubjectIdentifier(String studySubjectIdentifier,String operator) {
-    	andWhere("lower(" + STUDY_PARTICIPANT_ALIAS + ".studySubjectIdentifier) " + parseOperator(operator) + " :SSID");
+		
+		final String ssid= generateParam();
+    	andWhere("lower(" + STUDY_PARTICIPANT_ALIAS + ".studySubjectIdentifier) " + parseOperator(operator) + " :" + ssid);
     	if (operator.equals("like")) {
-    		setParameter("SSID", getLikeValue(studySubjectIdentifier.toLowerCase()));
+    		setParameter(ssid, getLikeValue(studySubjectIdentifier.toLowerCase()));
     	} else {
-    		setParameter("SSID", studySubjectIdentifier.toLowerCase());
+    		setParameter(ssid, studySubjectIdentifier.toLowerCase());
     	}
         
     }
@@ -126,18 +135,19 @@ public class ReportQuery extends AbstractQuery {
 		leftJoin (EXPEDITED_AE_REPORT_ALIAS +".reportingPeriod "+AE_REPORTING_PERIOD_ALIAS);
 	}
 	
-    public void filterByReportDefinitionName(final String name,String operator) {
-        andWhere("lower("+REPORT_DEFINITION_ALIAS+".name) " + parseOperator(operator) + " :name");
+    public void filterByReportDefinitionName(final String name, String operator) {
+    	final String pname = generateParam();
+        andWhere("lower("+REPORT_DEFINITION_ALIAS+".name) " + parseOperator(operator) + " :" + pname);
         if (operator.equals("like")) {
-        	setParameter("name", getLikeValue(name.toLowerCase()) );
+        	setParameter(pname, getLikeValue(name.toLowerCase()) );
         } else {
-        	setParameter("name", name.toLowerCase() );
+        	setParameter(pname, name.toLowerCase() );
         }
     }
     
     public void filterByReportVersionStatus(final Integer code,String operator) {
-        andWhere(REPORT_VERSION_ALIAS+".reportStatus " + parseOperator(operator) + " :code");
-        setParameter("code" , ReportStatus.getByCode(code));
+        andWhere(REPORT_VERSION_ALIAS+".reportStatus " + parseOperator(operator) + " :" 
+        		+ generateParam(ReportStatus.getByCode(code)));
     } 
 
     public void filterByReportVersionId(final String reportVersionId,String operator) {
@@ -226,29 +236,23 @@ public class ReportQuery extends AbstractQuery {
     		ReportStatus reportStatus, String searchIdentifier){
     	if(study != null){
     		joinStudy();
-    		andWhere(STUDY_ALIAS+".id " +  parseOperator("=") + " :studyId");
-	        setParameter("studyId", study.getId() );
+    		andWhere(STUDY_ALIAS+".id = :" + generateParam(study.getId()));
     	}
     	if(participant != null){
     		joinParticipant();
-    		andWhere(PARTICIPANT_ALIAS+".id " +  parseOperator("=") + " :participantId");
-	        setParameter("participantId", participant.getId() );
+    		andWhere(PARTICIPANT_ALIAS+".id = :" + generateParam(participant.getId()));
     	}
     	if(searchIdentifier != null){
     		 joinExpeditedAEReport();
     		 joinReportVersion();
     		 
-	    	 orWhere("lower("+EXPEDITED_AE_REPORT_ALIAS+".externalId) " + parseOperator("like") + " :externalId");
-	         setParameter("externalId", getLikeValue(searchIdentifier.toLowerCase()) );
-	         orWhere("lower("+REPORT_ALIAS+".caseNumber) " + parseOperator("like") + " :caseNumber");
-	         setParameter("caseNumber", getLikeValue(searchIdentifier.toLowerCase()) );
+	    	 orWhere("lower("+EXPEDITED_AE_REPORT_ALIAS+".externalId) like :" +generateParam(getLikeValue(searchIdentifier.toLowerCase())));
+	         orWhere("lower("+REPORT_ALIAS+".caseNumber) like :" + generateParam(getLikeValue(searchIdentifier.toLowerCase())));
 	         if(CaaersUtils.isAnInteger(searchIdentifier)){
-	        	 orWhere(REPORT_ALIAS+".id " + parseOperator("=") + " :reportId");
-	 	         setParameter("reportId", Integer.parseInt(searchIdentifier.toLowerCase()) );
+	        	 orWhere(REPORT_ALIAS+".id = :" + generateParam(Integer.parseInt(searchIdentifier.toLowerCase())));
 	         }
 	       
-	         orWhere("lower("+REPORT_VERSION_ALIAS+".assignedIdentifer) " + parseOperator("like") + " :assignedIdentifer");
-	         setParameter("assignedIdentifer", getLikeValue(searchIdentifier.toLowerCase()) );
+	         orWhere("lower("+REPORT_VERSION_ALIAS+".assignedIdentifer) like :" + generateParam(getLikeValue(searchIdentifier.toLowerCase())));
     	}
     	
     	if(reportStatus != null){
@@ -256,8 +260,7 @@ public class ReportQuery extends AbstractQuery {
     			joinReportVersion();
     		}
     		
-    		  andWhere(REPORT_VERSION_ALIAS+".reportStatus " + parseOperator("=") + " :reportStatus");
- 	         setParameter("reportStatus", reportStatus);
+    		andWhere(REPORT_VERSION_ALIAS+".reportStatus = :" + generateParam(reportStatus));
     	}
     	
     	orderBy("report.id desc");
