@@ -1259,9 +1259,9 @@
 			<table-alias>REPORT_ALIAS</table-alias>
 			<hidden>false</hidden>
 			<view-column>
-				<column-title>id</column-title>
+				<column-title>Caaers Report Id</column-title>
 				<column-attribute>id</column-attribute>
-				<table-title>id</table-title>
+				<table-title>crid</table-title>
 				<dependent-object-index>0</dependent-object-index>
 				<view-column-index>0</view-column-index>
 				<selected>true</selected>
@@ -1346,10 +1346,10 @@
 				<view-column-index>4</view-column-index>
 			</view-column>
 			<view-column>
-				<column-title>id</column-title>
+				<column-title>Study ID</column-title>
 				<column-attribute>id</column-attribute>
-				<table-title>id</table-title>
-				<dependent-object-index>0</dependent-object-index>
+				<table-title>study_id</table-title>
+				<dependent-object-index>1</dependent-object-index>
 				<view-column-index>5</view-column-index>
 			</view-column>
 		</dependent-object>
