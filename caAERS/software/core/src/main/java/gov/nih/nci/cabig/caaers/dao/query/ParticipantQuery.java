@@ -9,15 +9,6 @@ package gov.nih.nci.cabig.caaers.dao.query;
 public class ParticipantQuery extends AbstractQuery {
 
     private static final String queryString = "SELECT distinct p from Participant p ";
-    private static final String FIRST_NAME = "firstName";
-    private static final String LAST_NAME = "lastName";
-    private static final String IDENTIFIER_VALUE = "identifier";
-    private static final String IDENTIFIER_TYPE = "type";
-    private static final String STUDY_SITE_ID = "studySiteId";
-    private static final String STUDY_ID = "studyId";
-    private static final String GENDER = "gender";
-    private static final String RACE = "race";
-    private static final String ETHNITICTY = "ethnicity";
     public static final String ASSIGNMENT_ALIAS = "assignment";
 
     public ParticipantQuery() {
@@ -56,11 +47,12 @@ public class ParticipantQuery extends AbstractQuery {
     
     public void filterByStudySubjectIdentifier(String studySubjectIdentifier,String operator) {
     	joinAssignment();
-    	andWhere("lower(assignment.studySubjectIdentifier) " + parseOperator(operator) + " :SSI");
+    	final String ssi = generateParam();
+    	andWhere("lower(assignment.studySubjectIdentifier) " + parseOperator(operator) + " :" + ssi);
     	if (operator.equals("like")) {
-    		setParameter("SSI", getLikeValue(studySubjectIdentifier.toLowerCase()));
+    		setParameter(ssi, getLikeValue(studySubjectIdentifier.toLowerCase()));
     	} else {
-    		setParameter("SSI", studySubjectIdentifier.toLowerCase());
+    		setParameter(ssi, studySubjectIdentifier.toLowerCase());
     	}
         
     }
@@ -71,51 +63,42 @@ public class ParticipantQuery extends AbstractQuery {
 
     public void filterByIdentifierValue(final String value) {
         String searchString = "%" + value.toLowerCase() + "%";
-        andWhere("lower(identifier.value) LIKE :" + IDENTIFIER_VALUE);
-        setParameter(IDENTIFIER_VALUE, searchString);
+        andWhere("lower(identifier.value) LIKE :" + generateParam(searchString));
     }
 
     public void filterByIdentifierValueExactMatch(final String value) {
-        andWhere("identifier.value = :" + IDENTIFIER_VALUE);
-        setParameter(IDENTIFIER_VALUE, value);
+        andWhere("identifier.value = :" + generateParam(value));
     }
 
     public void filterByIdentifierTypeExactMatch(final String type) {
-        andWhere("identifier.type = :" + IDENTIFIER_TYPE);
-        setParameter(IDENTIFIER_TYPE, type);
+        andWhere("identifier.type = :" + generateParam(type));
     }
         
     public void filterByNotMachingStudySiteId(final Integer studySiteId) {
-        andWhere("p.id not in (select assignments.participant.id from  StudyParticipantAssignment assignments where assignments.studySite.id=:"
-                        + STUDY_SITE_ID + ")");
-        setParameter(STUDY_SITE_ID, studySiteId);
+        andWhere("p.id not in (select assignments.participant.id from  StudyParticipantAssignment assignments where assignments.studySite.id = :"
+                        + generateParam(studySiteId) + ")");
     }
 
     public void excludeHavingGender(final String gender) {
-        andWhere("p.gender != :" + GENDER);
-        setParameter(GENDER, gender);
+        andWhere("p.gender != :" + generateParam(gender));
 
     }
 
     public void excludeHavingRace(final String race) {
-        andWhere("p.race != :" + RACE);
-        setParameter(RACE, race);
+        andWhere("p.race != :" + generateParam(race));
     }
 
     public void excludeHavingEthnicity(final String ethnicity) {
-        andWhere("p.ethnicity != :" + ETHNITICTY);
-        setParameter(ETHNITICTY, ethnicity);
+        andWhere("p.ethnicity != :" + generateParam(ethnicity));
     }
 
     public void filterByOrganizationId(Integer organizationId){
-    	andWhere("p.id in (select assignments.participant.id from StudyParticipantAssignment assignments where assignments.studySite.organization.id=:orgId)");
-    	setParameter("orgId", organizationId);
+    	andWhere("p.id in (select assignments.participant.id from StudyParticipantAssignment assignments where assignments.studySite.organization.id = :" + generateParam(organizationId));
     }
 
     public void filterByStudySiteNciCode(String nciCode){
         joinStudySite();
-        andWhere("studySite.organization.nciInstituteCode=:siteNCICode");
-        setParameter("siteNCICode", nciCode);
+        andWhere("studySite.organization.nciInstituteCode = :" + generateParam(nciCode));
     }
 
 }

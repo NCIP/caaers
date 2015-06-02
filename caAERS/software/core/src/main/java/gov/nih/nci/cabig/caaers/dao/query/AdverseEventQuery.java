@@ -51,7 +51,7 @@ public class AdverseEventQuery extends AbstractQuery {
 	}
 
 	public void outerjoinLowLevelTerm(){
-		leftOuterJoin (AE_ALIAS +".lowLevelTerm "+LL_TERM_ALIAS);
+		leftJoin (AE_ALIAS +".lowLevelTerm "+LL_TERM_ALIAS);
 	}
 	
 	public void joinReportingPeriod() {
@@ -91,7 +91,7 @@ public class AdverseEventQuery extends AbstractQuery {
     }
     
     public void outerjoinOutcomes() {
-    	leftOuterJoin (AE_ALIAS +".outcomes "+OUTCOMES_ALIAS);
+    	leftJoin (AE_ALIAS +".outcomes "+OUTCOMES_ALIAS);
     }   
     
 	public void joinTreatmentAssignment() {
@@ -106,7 +106,7 @@ public class AdverseEventQuery extends AbstractQuery {
 
 	public void outerjoinTreatmentAssignment() {
 		joinReportingPeriod();
-		leftOuterJoin (AE_REPORTING_PERIOD_ALIAS +".treatmentAssignment "+TAC);
+		leftJoin (AE_REPORTING_PERIOD_ALIAS +".treatmentAssignment "+TAC);
 	}
 
     public void filterByAeReportId(Integer id){
@@ -114,51 +114,47 @@ public class AdverseEventQuery extends AbstractQuery {
         setParameter("aeReportId", id);
     }
 
-	public void filterByCtcTerm(String term , String operator) {;
-		andWhere ( AE_TERM_ALIAS + ".id in (select ctcTerm.id from gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm ctcTerm where ctcTerm.term.term " + parseOperator(operator) + " :term )");
+	public void filterByCtcTerm(String term , String operator) {
+		final String pTerm = generateParam();
+		andWhere ( AE_TERM_ALIAS + ".id in (select ctcTerm.id from gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm ctcTerm where ctcTerm.term.term " + parseOperator(operator) + " :" + pTerm + ")");
 		if (operator.equals("like")) {
-			setParameter("term" , getLikeValue(term));
+			setParameter(pTerm , getLikeValue(term));
 		} else {
-			setParameter("term" , term);
+			setParameter(pTerm , term);
 		}		
 	}
 	public void filterBySolicited(boolean flag , String operator) {
-		andWhere (AE_ALIAS+".solicited " + parseOperator(operator) + " :flag");
-		setParameter("flag" , flag);
+		andWhere (AE_ALIAS+".solicited " + parseOperator(operator) + " :" + generateParam(flag));
 	}
 
 	public void filterByGrade(Integer code , String operator) {
-		andWhere (AE_ALIAS+".grade " + parseOperator(operator) + " :grade");
-		setParameter("grade" , Grade.getByCode(code));
+		andWhere (AE_ALIAS+".grade " + parseOperator(operator) + " :" + generateParam(Grade.getByCode(code)));
 	}
 
 	public void filterByHospitalization(Integer code , String operator) {
-		andWhere (AE_ALIAS+".hospitalization " + parseOperator(operator) + " :hospitalization");
-		setParameter("hospitalization" , Hospitalization.getByCode(code));
+		andWhere (AE_ALIAS+".hospitalization " + parseOperator(operator) + " :" + generateParam( Hospitalization.getByCode(code)));
 	}
 	
 	public void filterByExpected(boolean flag , String operator) {
-		andWhere (AE_ALIAS+".expected " + parseOperator(operator) + " :flag");
-		setParameter("flag" , flag);
+		andWhere (AE_ALIAS+".expected " + parseOperator(operator) + " :" + generateParam(flag));
 	}
 	
 	public void filterByAttribution(Integer code , String operator) {
-		andWhere (AE_ALIAS+".attributionSummary " + parseOperator(operator) + " :attributionSummary");
-		setParameter("attributionSummary" , Attribution.getByCode(code));
+		andWhere (AE_ALIAS+".attributionSummary " + parseOperator(operator) + " :" + generateParam(Attribution.getByCode(code)));
 	}
 	
 	public void filterByVerbatim(String verbatim , String operator) {
-		andWhere (AE_ALIAS+".detailsForOther " + parseOperator(operator) + " :verbatim");
+		final String param = generateParam();
+		andWhere (AE_ALIAS+".detailsForOther " + parseOperator(operator) + " :" + param);
 		if (operator.equals("like")) {
-			setParameter("verbatim" , getLikeValue(verbatim));
+			setParameter(param, getLikeValue(verbatim));
 		} else {
-			setParameter("verbatim" , verbatim);
+			setParameter(param, verbatim);
 		}
 	}
 
     public void filterByTerminology(Integer code, String operator) {
-    	andWhere(TERMINOLOGY_ALIAS+".term " + parseOperator(operator) + " :term");
-        setParameter("term", Term.getByCode(code));
+    	andWhere(TERMINOLOGY_ALIAS+".term " + parseOperator(operator) + " :" + generateParam(Term.getByCode(code)));
     }
     
     public void filterByAEStartDate(String dateString , String operator) throws Exception {
@@ -178,17 +174,15 @@ public class AdverseEventQuery extends AbstractQuery {
     }
 
     public void filterByCourseNumber(Integer num , String operator) throws Exception {
-    	andWhere(AE_REPORTING_PERIOD_ALIAS+".cycleNumber " + parseOperator(operator) + " :num");
-        setParameter("num", num);
+    	andWhere(AE_REPORTING_PERIOD_ALIAS+".cycleNumber " + parseOperator(operator) + " :" + generateParam(num));
     }
     
     public void filterByStudy(Study study){
-    	andWhere(STUDY_ALIAS+"=:study");
-    	setParameter("study", study);
+    	andWhere(STUDY_ALIAS+" = :" + generateParam(study));
     }
     
     public void filterByMatchingTermsOnExpectedAEProfileAndReportedAE(){
-    	andWhere(TAC_EXPECTED_AE_PROFILE+".term="+AE_TERM_ALIAS+".term");
+    	andWhere(TAC_EXPECTED_AE_PROFILE+".term = "+AE_TERM_ALIAS+".term");
     }
 
     /**
@@ -210,8 +204,7 @@ public class AdverseEventQuery extends AbstractQuery {
         //Requires reporting accepts null values also
         //So if user select Yes/No then we will execute below query
         if(flag.equals("true") || flag.equals("false")) {
-            andWhere(AE_ALIAS+".requiresReporting " + parseOperator(operator) + " :flag");
-            setParameter("flag" , Boolean.parseBoolean(flag));
+            andWhere(AE_ALIAS+".requiresReporting " + parseOperator(operator) + " :" + generateParam(Boolean.parseBoolean(flag)));
         }
         //If user try to find Empty/Non-Empty Requires reporting records then below code will be executed
         else {
