@@ -43,7 +43,6 @@ public class SubmitReportResultTabTest extends AbstractNoSecurityTestCase{
 	ReportDefinitionDao reportDefinitonDao;
 	StudyParticipantAssignmentDao assignmentDao;
 	AdverseEventReportingPeriodDao reportingPeriodDao;
-	ExpeditedReportTree expeditedReportTree;
 	RenderDecisionManager renderDecisionManager;
 	ReportRepository reportRepository;
 	AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
@@ -61,7 +60,6 @@ public class SubmitReportResultTabTest extends AbstractNoSecurityTestCase{
 		reportDefinitonDao = registerDaoMockFor(ReportDefinitionDao.class);
 		assignmentDao = registerDaoMockFor(StudyParticipantAssignmentDao.class);
 		reportingPeriodDao = registerDaoMockFor(AdverseEventReportingPeriodDao.class);
-		expeditedReportTree = registerMockFor(ExpeditedReportTree.class);
 		renderDecisionManager = registerMockFor(RenderDecisionManager.class);
 		reportRepository = registerMockFor(ReportRepository.class);
 		adverseEventRoutingAndReviewRepository = registerMockFor(AdverseEventRoutingAndReviewRepository.class);

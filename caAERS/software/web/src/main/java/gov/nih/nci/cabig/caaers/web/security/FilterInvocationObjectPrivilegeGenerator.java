@@ -12,7 +12,7 @@ import java.util.Map;
  * @author <a href="mailto:ion.olaru@semanticbits.com">Ion C. Olaru</a>
  *
  */
-public class FilterInvocationObjectPrivilegeGenerator implements ObjectPrivilegeGenerator {
+public class FilterInvocationObjectPrivilegeGenerator implements ObjectPrivilegeGenerator<FilterInvocation> {
 
     protected Map<String, String> objectPrivilegeMap;
 
@@ -24,9 +24,9 @@ public class FilterInvocationObjectPrivilegeGenerator implements ObjectPrivilege
         this.objectPrivilegeMap = map;
     }
 
-    public String resolve(Object o) {
+    public String resolve(FilterInvocation fi) {
         
-        String requestURL = ((FilterInvocation)o).getRequestUrl();
+        String requestURL = fi.getRequestUrl();
         
         //remove ? parameters
         int i = requestURL.indexOf('?');

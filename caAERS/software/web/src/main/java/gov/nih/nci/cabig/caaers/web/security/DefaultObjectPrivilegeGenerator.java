@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * @author: Biju Joseph
  */
-public class DefaultObjectPrivilegeGenerator implements ObjectPrivilegeGenerator {
+public class DefaultObjectPrivilegeGenerator implements ObjectPrivilegeGenerator<Object> {
 
     protected Map<String, String> objectPrivilegeMap;
 
