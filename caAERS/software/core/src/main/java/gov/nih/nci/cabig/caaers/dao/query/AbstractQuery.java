@@ -9,9 +9,10 @@ package gov.nih.nci.cabig.caaers.dao.query;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
+import gov.nih.nci.cabig.caaers.dao.query.JoinType.JOIN;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -32,7 +33,7 @@ public abstract class AbstractQuery {
 
     private final List<String> orConditions = new LinkedList<String>();
 
-    private final List<String> joins = new ArrayList<String>();
+    private final JoinList joins = new JoinList();
 
     private final Map<String, Object> queryParameterMap;
 
@@ -52,10 +53,24 @@ public abstract class AbstractQuery {
 	
 	public static final String PARTICIPANT_ALIAS = "p";
 	
+	public static final String PARAMETER_BASE = "param";
+	private int paramCounter = 0;
+	
 
     public AbstractQuery(final String queryString) {
         this.queryString = new StringBuffer(queryString);
         queryParameterMap = new HashMap<String, Object>(0);
+    }
+    
+    public String generateParam() {
+    	String param = PARAMETER_BASE + paramCounter++;
+    	return param;
+    }
+    
+    public String generateParam(Object value) {
+    	String param = generateParam();
+    	this.setParameter(param, value);
+    	return param;
     }
 
     public String getQueryString() {
@@ -68,10 +83,8 @@ public abstract class AbstractQuery {
         //is where condition present?
         boolean hasWhere = indexOfWhere > 0;
 
-
-        for (String join : joins) {
-            queryBuffer.append(join);
-        }
+        //add all the joins
+        queryBuffer.append(joins.getClause());
 
         //add the Where conditions
         if( !(andConditions.isEmpty() && orConditions.isEmpty())){
@@ -162,20 +175,7 @@ public abstract class AbstractQuery {
      * @param objectQuery
      */
      public void join(String objectQuery) {
-        join(objectQuery, -1);
-
-    }
-
-
-    /**
-     * Joins an object to the query select * from Study s join s.identifiers as id where
-     * s.shortTitle='study'
-     *
-     * @param objectQuery
-     * @param pos the position in join list to insert the join query. 
-     */
-     public void join(String objectQuery, int pos) {
-        addToJoinsList(" join " + objectQuery, pos);
+    	 addToJoinsList(new JoinType(objectQuery, JOIN.INNER_JOIN));
 
     }
 
@@ -186,31 +186,25 @@ public abstract class AbstractQuery {
      * @param objectQuery
      */
     public void leftJoin(String objectQuery) {
-        addToJoinsList(" left join " + objectQuery);
+        addToJoinsList(new JoinType(objectQuery, JOIN.LEFT_JOIN));
     }
-
-    public void leftOuterJoin(String objectQuery) {
-        addToJoinsList(" left outer join " + objectQuery);
+    
+    @Deprecated
+    public void leftOuterJoin(String str) {
+    	leftJoin(str);
+    }
+    
+    @Deprecated
+    public void leftOuterJoinFetch(String str) {
+    	leftJoinFetch(str);
     }
     
     public void leftJoinFetch(String objectQuery) {
-        addToJoinsList(" left join fetch " + objectQuery);
+    	addToJoinsList(new JoinType(objectQuery, JOIN.LEFT_JOIN, true));
     }
     
-    public void leftOuterJoinFetch(String objectQuery) {
-        addToJoinsList(" left outer join fetch " + objectQuery);
-    }
-    
-    public void addToJoinsList(String object) {
-        addToJoinsList(object, -1);
-    }
-
-
-    public void addToJoinsList(String object, int pos) {
-        if (!joins.contains(object)) {
-            if(pos != -1) joins.add(pos, object);
-            else joins.add(object);
-        }
+    public void addToJoinsList(JoinType join) {
+        joins.addJoin(join);
     }
     
     public void setParameterList(String name , List values){
@@ -263,15 +257,13 @@ public abstract class AbstractQuery {
     public String getLikeValue(String value) {
     	if (value.indexOf("%") != -1) {
 			return value;
-		} else {
-			return "%"+value+"%";
 		}
+		return "%"+value+"%";
     }
     // Advanced Search query methods 
     // id
     public void filterByStudyId(final Integer id,String operator) {
-        andWhere("s.id " + parseOperator(operator) + " :ID");
-        setParameter("ID", id);
+        andWhere("s.id " + parseOperator(operator) + " :" + generateParam(id));
     }
 
     public void filterByStudyId(Integer id){
@@ -280,71 +272,70 @@ public abstract class AbstractQuery {
     
     // shortTitle
     public void filterByStudyShortTitle(final String shortTitleText , String operator) {
-    	andWhere("lower(s.shortTitle) " + parseOperator(operator) + " :" + "shortTitleText");
+    	final String titleText = generateParam();
+    	andWhere("lower(s.shortTitle) " + parseOperator(operator) + " :" + titleText);
         
     	if (operator.equals("like")) {
-    		setParameter("shortTitleText", getLikeValue(shortTitleText.toLowerCase()));
+    		setParameter(titleText, getLikeValue(shortTitleText.toLowerCase()));
     	} else {
-    		setParameter("shortTitleText", shortTitleText.toLowerCase());
+    		setParameter(titleText, shortTitleText.toLowerCase());
     	}
     }
 
     // longTitle
     public void filterByStudyLongTitle(final String longTitleText ,String operator) {
-    	andWhere("lower(s.longTitle) " + parseOperator(operator) + " :" + "longTitleText");
-        
+    	final String titleText = generateParam();
+    	andWhere("lower(s.longTitle) " + parseOperator(operator) + " :" + titleText);
     	if (operator.equals("like")) {
-    		setParameter("longTitleText", getLikeValue(longTitleText.toLowerCase()));
+    		setParameter(titleText, getLikeValue(longTitleText.toLowerCase()));
     	} else {
-    		setParameter("longTitleText", longTitleText.toLowerCase());
+    		setParameter(titleText, longTitleText.toLowerCase());
     	}
     }
     
     
     // participant-id
     public void filterByParticipantId(final Integer id,String operator) {
-        andWhere("p.id " + parseOperator(operator) + " :id");
-        setParameter("id", id);
+        andWhere("p.id " + parseOperator(operator) + " :" + generateParam(id));
     }  
     
     
     
     // participant-FirstName
     public void filterByParticipantFirstName(final String fName,String operator) {
-        andWhere("lower(p.firstName) " + parseOperator(operator) + " :pfName");
+    	final String pfName = generateParam();
+        andWhere("lower(p.firstName) " + parseOperator(operator) + " :" + pfName);
         if (operator.equals("like")) {
-        	setParameter("pfName", getLikeValue(fName.toLowerCase()));
+        	setParameter(pfName, getLikeValue(fName.toLowerCase()));
         } else {
-        	setParameter("pfName", fName.toLowerCase());
+        	setParameter(pfName, fName.toLowerCase());
         }
     }
 
     // participant - LastName
     public void filterByParticipantLastName(final String lName,String operator) {
-        andWhere("lower(p.lastName) " + parseOperator(operator) + " :plName");
+    	final String plName = generateParam();
+        andWhere("lower(p.lastName) " + parseOperator(operator) + " :" + plName);
         if (operator.equals("like")) {
-        	setParameter("plName", getLikeValue(lName.toLowerCase()) );
+        	setParameter(plName, getLikeValue(lName.toLowerCase()) );
         } else {
-        	setParameter("plName", lName.toLowerCase() );
+        	setParameter(plName, lName.toLowerCase() );
         }
     }
 
     // participant - Ethnicity
     public void filterByParticipantEthnicity(String ethenicity,String operator) {
-        andWhere("lower(p.ethnicity) " + parseOperator(operator) + " :pEthenicity");
-        setParameter("pEthenicity", ethenicity.toLowerCase() );
+        andWhere("lower(p.ethnicity) " + parseOperator(operator) + " :" + generateParam(ethenicity.toLowerCase()));
     }
 
     // participant - Race
     public void filterByParticipantRace(String race,String operator) {
-        andWhere("lower(p.race) " + parseOperator(operator) + " :pRace");
-        setParameter("pRace", race.toLowerCase() );
+        andWhere("lower(p.race) " + parseOperator(operator) + " :" + generateParam(race.toLowerCase()));
     }
     
     // p.gender
     public void filterByParticipantGender(final String gender,String operator) {
-        andWhere("lower(p.gender) " + parseOperator(operator) + " :pGender");
-        setParameter("pGender", gender.toLowerCase());
+        andWhere("lower(p.gender) " + parseOperator(operator) + " :" + generateParam(gender.toLowerCase()));
     }
     
     public void filterByParticipantDOB(String dateString , String operator) throws Exception {
@@ -352,8 +343,7 @@ public abstract class AbstractQuery {
     }
 
     public void filterByRetiredStatus(String alias, Boolean status) {
-        andWhere(alias + ".retiredIndicator = :value");
-        setParameter("value", status.booleanValue());
+        andWhere(alias + ".retiredIndicator = :" + generateParam(status.booleanValue()));
     }
 
 	public  String createDateQuery(String fullAttributeName, String dateString, String predicate) throws Exception {
@@ -362,7 +352,7 @@ public abstract class AbstractQuery {
 		try {
 			//dateValue = java.text.DateFormat.getDateTimeInstance().parse(dateString);
 			DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-	        dateValue = (Date)formatter.parse(dateString);
+	        dateValue = formatter.parse(dateString);
 	    
 		} catch (Exception ex) {
 			throw new Exception("Error parsing date " + dateString + ": " + ex.getMessage(), ex);
