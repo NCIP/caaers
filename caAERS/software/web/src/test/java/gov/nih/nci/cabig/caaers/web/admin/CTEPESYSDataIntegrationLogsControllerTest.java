@@ -30,7 +30,6 @@ public class CTEPESYSDataIntegrationLogsControllerTest extends WebTestCase{
 		
 		controller = new CTEPESYSDataIntegrationLogsController();
 		command = registerMockFor(CTEPESYSDataIntegrationLogsCommand.class);
-		binder = EasyMock.createNiceMock(ServletRequestDataBinder.class);
 		configuration = registerMockFor(Configuration.class);
 		controller.setConfiguration(configuration);
 		errors = registerMockFor(Errors.class);
@@ -38,15 +37,14 @@ public class CTEPESYSDataIntegrationLogsControllerTest extends WebTestCase{
 	}
 	
 	public void testInitBinder() throws Exception{
+		binder = new ServletRequestDataBinder(EasyMock.anyObject());
 		controller.initBinder(request, binder);
 	}
 	
 	public void testFormBackingObject() throws Exception{
 		String esbLocation = "abc/def";
-		EasyMock.expect(configuration.get((ConfigurationProperty)EasyMock.anyObject())).andReturn(esbLocation);
-		replayMocks();
 		controller.formBackingObject(request);
-		verifyMocks();
+		
 	}
 	
 	public void testReferenceData() throws Exception{
