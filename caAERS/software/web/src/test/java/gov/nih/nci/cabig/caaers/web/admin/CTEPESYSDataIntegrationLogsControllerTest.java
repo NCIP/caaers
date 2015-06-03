@@ -30,7 +30,7 @@ public class CTEPESYSDataIntegrationLogsControllerTest extends WebTestCase{
 		
 		controller = new CTEPESYSDataIntegrationLogsController();
 		command = registerMockFor(CTEPESYSDataIntegrationLogsCommand.class);
-		binder = registerMockFor(ServletRequestDataBinder.class);
+		binder = EasyMock.createNiceMock(ServletRequestDataBinder.class);
 		configuration = registerMockFor(Configuration.class);
 		controller.setConfiguration(configuration);
 		errors = registerMockFor(Errors.class);

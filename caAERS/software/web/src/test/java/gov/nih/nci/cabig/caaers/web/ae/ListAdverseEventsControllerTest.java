@@ -129,7 +129,7 @@ public class ListAdverseEventsControllerTest extends WebTestCase {
         mockCommand.setSearchIdentifier(null);
         mockCommand.setMaxResults(15);
         mockCommand.setReports(reports);
-        mockCommand.setUserId("SYSTEM");
+        mockCommand.setUserId("SYSTEM_ADMIN");
         mockCommand.setStudyCentric(false);
         mockCommand.setParticipantCentric(false);
         mockCommand.populateResults((List<AdverseEventReportingPeriod>) EasyMock.anyObject());
