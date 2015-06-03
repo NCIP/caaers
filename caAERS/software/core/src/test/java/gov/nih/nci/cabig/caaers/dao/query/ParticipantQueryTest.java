@@ -17,7 +17,7 @@ public class ParticipantQueryTest extends TestCase {
         ParticipantQuery participantQuery = new ParticipantQuery();
 
         assertEquals("wrong parsing for constructor",
-                        "SELECT distinct p from Participant p order by p.id", participantQuery
+                        "SELECT distinct p from Participant p  order by p.id", participantQuery
                                         .getQueryString());
 
     }
@@ -26,16 +26,17 @@ public class ParticipantQueryTest extends TestCase {
         ParticipantQuery participantQuery = new ParticipantQuery();
         participantQuery.leftJoinFetch("p.identifiers identifier");
         participantQuery.filterByParticipantFirstName("a","like");
-        assertEquals("SELECT distinct p from Participant p left join fetch p.identifiers identifier WHERE lower(p.firstName) like :pfName  order by p.id", participantQuery.getQueryString());
+        assertEquals("SELECT distinct p from Participant p left join fetch p.identifiers identifier  WHERE lower(p.firstName) like :param0  order by p.id", participantQuery.getQueryString());
         assertEquals("wrong number of parameters", participantQuery.getParameterMap().size(), 1);
-        assertTrue("missing paramenter name", participantQuery.getParameterMap().containsKey("pfName"));
-        assertEquals("wrong parameter value", participantQuery.getParameterMap().get("pfName"), "%a%");
+        assertTrue("missing paramenter name", participantQuery.getParameterMap().containsKey("param0"));
+        assertEquals("wrong parameter value", participantQuery.getParameterMap().get("param0"), "%a%");
 
         participantQuery.filterByParticipantFirstName("b","like");
-        assertEquals("SELECT distinct p from Participant p left join fetch p.identifiers identifier WHERE lower(p.firstName) like :pfName AND lower(p.firstName) like :pfName  order by p.id", participantQuery.getQueryString());
+        assertEquals("SELECT distinct p from Participant p left join fetch p.identifiers identifier  WHERE lower(p.firstName) like :param0 AND lower(p.firstName) like :param1  order by p.id", participantQuery.getQueryString());
 
-        assertEquals("wrong number of parameters", participantQuery.getParameterMap().size(), 1);
-        assertEquals("wrong parameter value", participantQuery.getParameterMap().get("pfName"), "%b%");
+        assertEquals("wrong number of parameters", participantQuery.getParameterMap().size(), 2);
+        assertEquals("wrong parameter value", participantQuery.getParameterMap().get("param0"), "%a%");
+        assertEquals("wrong parameter value", participantQuery.getParameterMap().get("param1"), "%b%");
     }
 
     public void testFilterByIdentifierValue() throws Exception {
@@ -43,12 +44,12 @@ public class ParticipantQueryTest extends TestCase {
         participantQuery.leftJoinFetch("p.identifiers identifier");
         participantQuery.filterByIdentifierValue("a");
         assertEquals(
-                        "SELECT distinct p from Participant p left join fetch p.identifiers identifier WHERE lower(identifier.value) LIKE :identifier  order by p.id",
+                        "SELECT distinct p from Participant p left join fetch p.identifiers identifier  WHERE lower(identifier.value) LIKE :param0  order by p.id",
                         participantQuery.getQueryString());
         assertEquals("wrong number of parameters", participantQuery.getParameterMap().size(), 1);
         assertTrue("missing paramenter name", participantQuery.getParameterMap().containsKey(
-                        "identifier"));
-        assertEquals("wrong parameter value", participantQuery.getParameterMap().get("identifier"),
+                        "param0"));
+        assertEquals("wrong parameter value", participantQuery.getParameterMap().get("param0"),
                         "%a%");
 
     }
@@ -58,12 +59,12 @@ public class ParticipantQueryTest extends TestCase {
         participantQuery.leftJoinFetch("p.identifiers identifier");
         participantQuery.filterByIdentifierValueExactMatch("a");
         assertEquals(
-                        "SELECT distinct p from Participant p left join fetch p.identifiers identifier WHERE identifier.value = :identifier  order by p.id",
+                        "SELECT distinct p from Participant p left join fetch p.identifiers identifier  WHERE identifier.value = :param0  order by p.id",
                         participantQuery.getQueryString());
         assertEquals("wrong number of parameters", participantQuery.getParameterMap().size(), 1);
         assertTrue("missing paramenter name", participantQuery.getParameterMap().containsKey(
-                        "identifier"));
-        assertEquals("wrong parameter value", participantQuery.getParameterMap().get("identifier"),
+                        "param0"));
+        assertEquals("wrong parameter value", participantQuery.getParameterMap().get("param0"),
                         "a");
 
     }
@@ -73,12 +74,12 @@ public class ParticipantQueryTest extends TestCase {
         participantQuery.leftJoinFetch("p.identifiers identifier");
         participantQuery.filterByIdentifierTypeExactMatch("a");
         assertEquals(
-                        "SELECT distinct p from Participant p left join fetch p.identifiers identifier WHERE identifier.type = :type  order by p.id",
+                        "SELECT distinct p from Participant p left join fetch p.identifiers identifier  WHERE identifier.type = :param0  order by p.id",
                         participantQuery.getQueryString());
         assertEquals("wrong number of parameters", participantQuery.getParameterMap().size(), 1);
         assertTrue("missing paramenter name", participantQuery.getParameterMap().containsKey(
-                        "type"));
-        assertEquals("wrong parameter value", participantQuery.getParameterMap().get("type"),
+                        "param0"));
+        assertEquals("wrong parameter value", participantQuery.getParameterMap().get("param0"),
                         "a");
 
     }
@@ -88,18 +89,18 @@ public class ParticipantQueryTest extends TestCase {
         participantQuery.filterByParticipantFirstName("a","like");
         participantQuery.filterByNotMachingStudySiteId(Integer.valueOf(1));
         assertEquals(
-                        "SELECT distinct p from Participant p WHERE lower(p.firstName) like :pfName AND "
-                                        + "p.id not in (select assignments.participant.id from  StudyParticipantAssignment assignments where assignments.studySite.id=:studySiteId)  order by p.id",
+                        "SELECT distinct p from Participant p  WHERE lower(p.firstName) like :param0 AND "
+                                        + "p.id not in (select assignments.participant.id from  StudyParticipantAssignment assignments where assignments.studySite.id = :param1)  order by p.id",
                         participantQuery.getQueryString());
         assertEquals("wrong number of parameters", participantQuery.getParameterMap().size(), 2);
         assertTrue("missing paramenter name", participantQuery.getParameterMap().containsKey(
-                        "pfName"));
-        assertEquals("wrong parameter value", participantQuery.getParameterMap().get("pfName"),
+                        "param0"));
+        assertEquals("wrong parameter value", participantQuery.getParameterMap().get("param0"),
                         "%a%");
         assertTrue("missing paramenter name", participantQuery.getParameterMap().containsKey(
-                        "studySiteId"));
+                        "param1"));
         assertEquals("wrong parameter value",
-                        participantQuery.getParameterMap().get("studySiteId"), Integer.valueOf(1));
+                        participantQuery.getParameterMap().get("param1"), Integer.valueOf(1));
 
     }
     
@@ -109,14 +110,14 @@ public class ParticipantQueryTest extends TestCase {
         participantQuery.filterByParticipantFirstName("a","like");
         participantQuery.excludeHavingGender("Male");
         assertEquals(
-                        "SELECT distinct p from Participant p left join fetch p.identifiers identifier WHERE lower(p.firstName) like :pfName AND p.gender != :gender  order by p.id",
+                        "SELECT distinct p from Participant p left join fetch p.identifiers identifier  WHERE lower(p.firstName) like :param0 AND p.gender != :param1  order by p.id",
                         participantQuery.getQueryString());
         assertEquals("wrong number of parameters", participantQuery.getParameterMap().size(), 2);
         assertTrue("missing paramenter name", participantQuery.getParameterMap().containsKey(
-                        "pfName"));
-        assertEquals("wrong parameter value", participantQuery.getParameterMap().get("pfName"),
+                        "param0"));
+        assertEquals("wrong parameter value", participantQuery.getParameterMap().get("param0"),
                         "%a%");
-        assertEquals("wrong parameter value", participantQuery.getParameterMap().get("gender"),
+        assertEquals("wrong parameter value", participantQuery.getParameterMap().get("param1"),
         "Male");
     }
     
@@ -125,11 +126,11 @@ public class ParticipantQueryTest extends TestCase {
         participantQuery.leftJoinFetch("p.identifiers identifier");
         participantQuery.filterByParticipantFirstName("a","like");
         participantQuery.excludeHavingRace("Asian");
-        assertEquals("SELECT distinct p from Participant p left join fetch p.identifiers identifier WHERE lower(p.firstName) like :pfName AND p.race != :race  order by p.id", participantQuery.getQueryString());
+        assertEquals("SELECT distinct p from Participant p left join fetch p.identifiers identifier  WHERE lower(p.firstName) like :param0 AND p.race != :param1  order by p.id", participantQuery.getQueryString());
         assertEquals("wrong number of parameters", participantQuery.getParameterMap().size(), 2);
-        assertTrue("missing paramenter name", participantQuery.getParameterMap().containsKey("pfName"));
-        assertEquals("wrong parameter value", participantQuery.getParameterMap().get("pfName"), "%a%");
-        assertEquals("wrong parameter value", participantQuery.getParameterMap().get("race"), "Asian");
+        assertTrue("missing paramenter name", participantQuery.getParameterMap().containsKey("param0"));
+        assertEquals("wrong parameter value", participantQuery.getParameterMap().get("param0"), "%a%");
+        assertEquals("wrong parameter value", participantQuery.getParameterMap().get("param1"), "Asian");
     }
     
     
@@ -138,13 +139,13 @@ public class ParticipantQueryTest extends TestCase {
         participantQuery.leftJoinFetch("p.identifiers identifier");
         participantQuery.filterByParticipantFirstName("a","like");
         participantQuery.excludeHavingEthnicity("Ethnicity");
-        assertEquals("SELECT distinct p from Participant p left join fetch p.identifiers identifier WHERE lower(p.firstName) like :pfName AND p.ethnicity != :ethnicity  order by p.id", participantQuery.getQueryString());
+        assertEquals("SELECT distinct p from Participant p left join fetch p.identifiers identifier  WHERE lower(p.firstName) like :param0 AND p.ethnicity != :param1  order by p.id", participantQuery.getQueryString());
         assertEquals("wrong number of parameters", participantQuery.getParameterMap().size(), 2);
         assertTrue("missing paramenter name", participantQuery.getParameterMap().containsKey(
-                        "pfName"));
-        assertEquals("wrong parameter value", participantQuery.getParameterMap().get("pfName"),
+                        "param0"));
+        assertEquals("wrong parameter value", participantQuery.getParameterMap().get("param0"),
                         "%a%");
-        assertEquals("wrong parameter value", participantQuery.getParameterMap().get("ethnicity"),
+        assertEquals("wrong parameter value", participantQuery.getParameterMap().get("param1"),
         "Ethnicity");
     }
     
@@ -153,11 +154,11 @@ public class ParticipantQueryTest extends TestCase {
         participantQuery.leftJoinFetchOnIdentifiers();
         participantQuery.filterByParticipantFirstName("a","like");
         participantQuery.excludeHavingEthnicity("Ethnicity");
-        assertEquals("SELECT distinct p from Participant p left join fetch p.identifiers identifier WHERE lower(p.firstName) like :pfName AND p.ethnicity != :ethnicity  order by p.id", participantQuery.getQueryString());
+        assertEquals("SELECT distinct p from Participant p left join fetch p.identifiers identifier  WHERE lower(p.firstName) like :param0 AND p.ethnicity != :param1  order by p.id", participantQuery.getQueryString());
         assertEquals("wrong number of parameters", participantQuery.getParameterMap().size(), 2);
-        assertTrue("missing paramenter name", participantQuery.getParameterMap().containsKey("pfName"));
-        assertEquals("wrong parameter value", participantQuery.getParameterMap().get("pfName"), "%a%");
-        assertEquals("wrong parameter value", participantQuery.getParameterMap().get("ethnicity"), "Ethnicity");
+        assertTrue("missing paramenter name", participantQuery.getParameterMap().containsKey("param0"));
+        assertEquals("wrong parameter value", participantQuery.getParameterMap().get("param0"), "%a%");
+        assertEquals("wrong parameter value", participantQuery.getParameterMap().get("param1"), "Ethnicity");
     }
     
     public void testJoinOnIdentifiers() throws Exception {
@@ -165,11 +166,11 @@ public class ParticipantQueryTest extends TestCase {
         participantQuery.joinOnIdentifiers();
         participantQuery.filterByParticipantFirstName("a","like");
         participantQuery.excludeHavingEthnicity("Ethnicity");
-        assertEquals("SELECT distinct p from Participant p join p.identifiers identifier WHERE lower(p.firstName) like :pfName AND p.ethnicity != :ethnicity  order by p.id", participantQuery.getQueryString());
+        assertEquals("SELECT distinct p from Participant p join p.identifiers identifier  WHERE lower(p.firstName) like :param0 AND p.ethnicity != :param1  order by p.id", participantQuery.getQueryString());
         assertEquals("wrong number of parameters", participantQuery.getParameterMap().size(), 2);
-        assertTrue("missing paramenter name", participantQuery.getParameterMap().containsKey("pfName"));
-        assertEquals("wrong parameter value", participantQuery.getParameterMap().get("pfName"), "%a%");
-        assertEquals("wrong parameter value", participantQuery.getParameterMap().get("ethnicity"), "Ethnicity");
+        assertTrue("missing paramenter name", participantQuery.getParameterMap().containsKey("param0"));
+        assertEquals("wrong parameter value", participantQuery.getParameterMap().get("param0"), "%a%");
+        assertEquals("wrong parameter value", participantQuery.getParameterMap().get("param1"), "Ethnicity");
     }
 
 }

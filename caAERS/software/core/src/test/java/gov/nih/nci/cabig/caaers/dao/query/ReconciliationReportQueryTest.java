@@ -25,6 +25,6 @@ public class ReconciliationReportQueryTest extends TestCase {
         a.add(2);
         query.filerByReportingPeriodId(a);
         String s = query.getQueryString();
-        assertEquals("select rr from ReconciliationReport rr left join fetch rr.adverseEventReportingPeriod rp WHERE rp.id in(:rpIds)", s);
+        assertEquals("select rr from ReconciliationReport rr left join fetch rr.adverseEventReportingPeriod rp  WHERE rp.id in(:rpIds)", s);
     }
 }

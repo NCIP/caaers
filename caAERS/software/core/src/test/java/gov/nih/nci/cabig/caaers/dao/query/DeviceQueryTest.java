@@ -17,13 +17,13 @@ public class DeviceQueryTest extends TestCase {
     public void testFilterByCtepDbIdentifier() throws Exception {
         DeviceQuery dq = new DeviceQuery();
         dq.filterByCtepDbIdentifier("134");
-        assertEquals("SELECT d FROM Device d WHERE d.ctepDbIdentifier = :dbId", dq.getQueryString());
+        assertEquals("SELECT d FROM Device d  WHERE d.ctepDbIdentifier = :dbId", dq.getQueryString());
     }
 
     public void testFilterByCommonNameAndBrandName() throws Exception {
         DeviceQuery dq = new DeviceQuery();
         dq.filterByCommonName("abc");
         dq.filterByBrandName("xyz");
-        assertEquals("SELECT d FROM Device d WHERE lower(d.commonName) = :common_name AND lower(d.brandName) = :brand_name", dq.getQueryString());
+        assertEquals("SELECT d FROM Device d  WHERE lower(d.commonName) = :common_name AND lower(d.brandName) = :brand_name", dq.getQueryString());
     }
 }

@@ -23,19 +23,19 @@ public class ReportDefinitionQueryTest extends TestCase {
 	public void testFilterByOrganizationId() {
 		assertEquals("select rd from ReportDefinition rd", query.getQueryString());
 		query.filterByOrganizationId(4);
-		assertEquals("select rd from ReportDefinition rd WHERE  rd.organization.id = :orgId", query.getQueryString());
+		assertEquals("select rd from ReportDefinition rd  WHERE  rd.organization.id = :orgId", query.getQueryString());
 	}
 
 	public void testFilterOffReportDefinitionId() {
 		
 		query.filterOffReportDefinitionId(4);
-		assertEquals( "select rd from ReportDefinition rd WHERE  rd.id <> :rdid" , query.getQueryString());
+		assertEquals( "select rd from ReportDefinition rd  WHERE  rd.id <> :rdid" , query.getQueryString());
 	}
 
     public void testRequecedQuery(){
         query = new ReportDefinitionQuery(true);
         query.filterOffReportDefinitionId(4);
-        assertEquals( "select new ReportDefinition(rd.id, rd.name, rd.label) from ReportDefinition rd WHERE  rd.id <> :rdid" , query.getQueryString());
+        assertEquals( "select new ReportDefinition(rd.id, rd.name, rd.label) from ReportDefinition rd  WHERE  rd.id <> :rdid" , query.getQueryString());
     }
 
 }
