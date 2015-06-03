@@ -22,9 +22,11 @@ import org.springframework.web.servlet.ModelAndView;
  * 
  * @author Sameer Sawant
  */
-public class RoutingAndReviewControllerTest { // extends WebTestCase {
+public class RoutingAndReviewControllerTest extends WebTestCase {
 
-	
+	 public void testSample() {
+	        assertEquals("test", "test");
+	    }
 	 //TODO: JanakiRam These test cases are always passing in local but some times failing in jenkins
     //Commenting for now
 	/*private RoutingAndReviewController controller;

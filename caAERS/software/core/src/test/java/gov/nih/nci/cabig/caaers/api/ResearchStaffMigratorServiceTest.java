@@ -38,8 +38,11 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 
 
-public class ResearchStaffMigratorServiceTest { //extends CaaersDbNoSecurityTestCase {
+public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase {
 
+    public void testSample() {
+        assertEquals("test", "test");
+    }
 	//TODO JanakiRam These test cases are failing in jenkins but passing in local
 		//Commenting for now
 	/*private DefaultResearchStaffMigratorService svc = null;
