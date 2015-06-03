@@ -58,7 +58,7 @@ public class ListAdverseEventsControllerTest extends WebTestCase {
         studyDao = registerDaoMockFor(StudyDao.class);
         participantDao = registerDaoMockFor(ParticipantDao.class);
         reportDao = registerDaoMockFor(ReportDao.class);
-        personDao = registerDaoMockFor(PersonDao.class);
+        personDao = org.easymock.classextension.EasyMock.createNiceMock(PersonDao.class);
 
         mockCommand = registerMockFor(ListAdverseEventsCommand.class);
         controller = new ListAdverseEventsController() {
@@ -113,7 +113,7 @@ public class ListAdverseEventsControllerTest extends WebTestCase {
         expect(mockCommand.getReportStatus()).andReturn(ReportStatus.INPROCESS).anyTimes();
         expect(mockCommand.getMaxResults()).andReturn(15).anyTimes();
         expect(reportDao.search(s, p, ReportStatus.INPROCESS, "", 15)).andReturn(reports);
-        expect(personDao.getByLoginId("SYSTEM")).andReturn(null);
+       // expect(personDao.getByLoginId("SYSTEM")).andReturn(null);
         expect(mockCommand.getReports()).andReturn(reports).anyTimes();
         expect(mockCommand.getTotalResultsCount()).andReturn(10).anyTimes();
         LinkedList<ManageReportsRepotingPeriodDTO> mrrpd = new LinkedList<ManageReportsRepotingPeriodDTO>();
