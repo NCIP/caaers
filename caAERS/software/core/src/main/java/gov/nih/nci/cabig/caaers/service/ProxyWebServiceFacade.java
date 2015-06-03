@@ -134,7 +134,7 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
     		HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
     		if(httpConnection instanceof HttpsURLConnection) {
     			BouncyCastleProvider bcp = new BouncyCastleProvider();
-    			SSLContext sc = SSLContext.getInstance("TLSv1", bcp);
+    			SSLContext sc = SSLContext.getInstance("SSL", bcp);
     			
     			((HttpsURLConnection) httpConnection).setSSLSocketFactory(sc.getSocketFactory());
     			((HttpsURLConnection) httpConnection).setHostnameVerifier(new HostnameVerifier() {
