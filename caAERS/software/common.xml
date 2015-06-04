@@ -610,7 +610,8 @@
 			showoutput="false" outputtoformatters="false" fork="true" forkmode="once" timeout="9000000" maxmemory="1024m" >
 			<jvmarg value="-XX:MaxPermSize=256m" />
 			<jvmarg value="-XX:-UseSplitVerifier" />
-			<classpath location="${instrumented.classes.dir}" />
+            <jvmarg value="-Xss64m"/>
+            <classpath location="${instrumented.classes.dir}" />
 			<classpath location="${basedir}/../bootstrap/build/instrumented-classes" />
 			<classpath location="${basedir}/../core/build/instrumented-classes" />
 			<classpath refid="test.run.classpath" />

@@ -57,20 +57,20 @@ public class StudyQueryTest extends TestCase{
 	public void testFilterStudiesWithMatchingText(){
 		StudyQuery studyQuery = new StudyQuery();
 		studyQuery.filterStudiesWithMatchingText("testStudy");
-		assertEquals("wrong number of parameters", studyQuery.getParameterMap().size(), 3);
+		assertEquals("wrong number of parameters", studyQuery.getParameterMap().size(), 1);
 	}
 	
 	public void testFilterByIdentifierValue(){
 		StudyQuery studyQuery = new StudyQuery();
 		studyQuery.filterByIdentifierValue("idvalue");
 		assertEquals("wrong parsing for constructor",
-                "select  distinct s from Study s join s.identifiers as identifier WHERE lower(identifier.value) LIKE :identifier", studyQuery
+                "select  distinct s from Study s join s.identifiers as identifier  WHERE lower(identifier.value) LIKE :param0", studyQuery
                                 .getQueryString());
         
 		assertEquals("wrong number of parameters", studyQuery.getParameterMap().size(), 1);
 		assertTrue("missing paramenter name", studyQuery.getParameterMap().containsKey(
-        "identifier"));
-		assertEquals("wrong parameter value", studyQuery.getParameterMap().get("identifier"),
+        "param0"));
+		assertEquals("wrong parameter value", studyQuery.getParameterMap().get("param0"),
         "%idvalue%");
 	}
 	
@@ -79,13 +79,13 @@ public class StudyQueryTest extends TestCase{
 		StudyQuery studyQuery = new StudyQuery();
 		studyQuery.filterByIdentifierValueExactMatch("idvalue");
 		assertEquals("wrong parsing for constructor",
-                "select  distinct s from Study s join s.identifiers as identifier WHERE lower(identifier.value) LIKE :identifier", studyQuery
+                "select  distinct s from Study s join s.identifiers as identifier  WHERE lower(identifier.value) LIKE :param0", studyQuery
                                 .getQueryString());
         
 		assertEquals("wrong number of parameters", studyQuery.getParameterMap().size(), 1);
 		assertTrue("missing paramenter name", studyQuery.getParameterMap().containsKey(
-        "identifier"));
-		assertEquals("wrong parameter value", studyQuery.getParameterMap().get("identifier"),
+        "param0"));
+		assertEquals("wrong parameter value", studyQuery.getParameterMap().get("param0"),
         "idvalue");
 	}
 	
@@ -95,13 +95,13 @@ public class StudyQueryTest extends TestCase{
 		StudyQuery studyQuery = new StudyQuery();
 		studyQuery.filterByIdentifierType("type");
 		assertEquals("wrong parsing for constructor",
-                "select  distinct s from Study s join s.identifiers as identifier WHERE identifier.type LIKE :idType", studyQuery
+                "select  distinct s from Study s join s.identifiers as identifier  WHERE identifier.type LIKE :param0", studyQuery
                                 .getQueryString());
         
 		assertEquals("wrong number of parameters", studyQuery.getParameterMap().size(), 1);
 		assertTrue("missing paramenter name", studyQuery.getParameterMap().containsKey(
-        "idType"));
-		assertEquals("wrong parameter value", studyQuery.getParameterMap().get("idType"),
+        "param0"));
+		assertEquals("wrong parameter value", studyQuery.getParameterMap().get("param0"),
         "type");
 	}
 	
@@ -109,13 +109,13 @@ public class StudyQueryTest extends TestCase{
 		StudyQuery studyQuery = new StudyQuery();
 		studyQuery.filterByShortTitle("short");
 		assertEquals("wrong parsing for constructor",
-                "select  distinct s from Study s WHERE lower(s.shortTitle) LIKE :shortTitle", studyQuery
+                "select  distinct s from Study s  WHERE lower(s.shortTitle) LIKE :param0", studyQuery
                                 .getQueryString());
         
 		assertEquals("wrong number of parameters", studyQuery.getParameterMap().size(), 1);
 		assertTrue("missing paramenter name", studyQuery.getParameterMap().containsKey(
-        "shortTitle"));
-		assertEquals("wrong parameter value", studyQuery.getParameterMap().get("shortTitle"),
+        "param0"));
+		assertEquals("wrong parameter value", studyQuery.getParameterMap().get("param0"),
         "%short%");
 	}
 	
@@ -124,13 +124,13 @@ public class StudyQueryTest extends TestCase{
 		StudyQuery studyQuery = new StudyQuery();
 		studyQuery.filterByParticipantFirstName("fName","like");
 		assertEquals("wrong parsing for constructor",
-                "select  distinct s from Study s WHERE lower(p.firstName) like :pfName", studyQuery
+                "select  distinct s from Study s  WHERE lower(p.firstName) like :param0", studyQuery
                                 .getQueryString());
         
 		assertEquals("wrong number of parameters", studyQuery.getParameterMap().size(), 1);
 		assertTrue("missing paramenter name", studyQuery.getParameterMap().containsKey(
-        "pfName"));
-		assertEquals("wrong parameter value", studyQuery.getParameterMap().get("pfName"),
+        "param0"));
+		assertEquals("wrong parameter value", studyQuery.getParameterMap().get("param0"),
         "%fname%");
 	}
 	
@@ -138,13 +138,13 @@ public class StudyQueryTest extends TestCase{
 		StudyQuery studyQuery = new StudyQuery();
 		studyQuery.filterByParticipantLastName("lName","like");
 		assertEquals("wrong parsing for constructor",
-                "select  distinct s from Study s WHERE lower(p.lastName) like :plName", studyQuery
+                "select  distinct s from Study s  WHERE lower(p.lastName) like :param0", studyQuery
                                 .getQueryString());
         
 		assertEquals("wrong number of parameters", studyQuery.getParameterMap().size(), 1);
 		assertTrue("missing paramenter name", studyQuery.getParameterMap().containsKey(
-        "plName"));
-		assertEquals("wrong parameter value", studyQuery.getParameterMap().get("plName"),
+        "param0"));
+		assertEquals("wrong parameter value", studyQuery.getParameterMap().get("param0"),
         "%lname%");
 	}
 	
@@ -153,13 +153,13 @@ public class StudyQueryTest extends TestCase{
 		StudyQuery studyQuery = new StudyQuery();
 		studyQuery.filterByParticipantEthnicity("Ethnicity","like");
 		assertEquals("wrong parsing for constructor",
-                "select  distinct s from Study s WHERE lower(p.ethnicity) like :pEthenicity", studyQuery
+                "select  distinct s from Study s  WHERE lower(p.ethnicity) like :param0", studyQuery
                                 .getQueryString());
         
 		assertEquals("wrong number of parameters", studyQuery.getParameterMap().size(), 1);
 		assertTrue("missing paramenter name", studyQuery.getParameterMap().containsKey(
-        "pEthenicity"));
-		assertEquals("wrong parameter value", studyQuery.getParameterMap().get("pEthenicity"),
+        "param0"));
+		assertEquals("wrong parameter value", studyQuery.getParameterMap().get("param0"),
         "ethnicity");
 	}
 	
@@ -167,13 +167,13 @@ public class StudyQueryTest extends TestCase{
 		StudyQuery studyQuery = new StudyQuery();
 		studyQuery.filterByParticipantGender("Gender","like");
 		assertEquals("wrong parsing for constructor",
-                "select  distinct s from Study s WHERE lower(p.gender) like :pGender", studyQuery
+                "select  distinct s from Study s  WHERE lower(p.gender) like :param0", studyQuery
                                 .getQueryString());
         
 		assertEquals("wrong number of parameters", studyQuery.getParameterMap().size(), 1);
 		assertTrue("missing paramenter name", studyQuery.getParameterMap().containsKey(
-        "pGender"));
-		assertEquals("wrong parameter value", studyQuery.getParameterMap().get("pGender"),
+        "param0"));
+		assertEquals("wrong parameter value", studyQuery.getParameterMap().get("param0"),
         "gender");
 	}
 	
@@ -181,7 +181,7 @@ public class StudyQueryTest extends TestCase{
 		StudyQuery studyQuery = new StudyQuery();
 		studyQuery.filterByParticipantDateOfBirth("01/01/1970");
 		assertEquals("wrong parsing for constructor",
-                "select  distinct s from Study s WHERE p.dateOfBirth = :pDOB", studyQuery
+                "select  distinct s from Study s  WHERE p.dateOfBirth = :pDOB", studyQuery
                                 .getQueryString());
         
 		assertEquals("wrong number of parameters", studyQuery.getParameterMap().size(), 1);
@@ -193,13 +193,13 @@ public class StudyQueryTest extends TestCase{
 		StudyQuery studyQuery = new StudyQuery();
 		studyQuery.filterByParticipantIdentifierValue("value");
 		assertEquals("wrong parsing for constructor",
-                "select  distinct s from Study s WHERE lower(pIdentifier.value) LIKE :pIdVal", studyQuery
+                "select  distinct s from Study s  WHERE lower(pIdentifier.value) LIKE :param0", studyQuery
                                 .getQueryString());
         
 		assertEquals("wrong number of parameters", studyQuery.getParameterMap().size(), 1);
 		assertTrue("missing paramenter name", studyQuery.getParameterMap().containsKey(
-        "pIdVal"));
-		assertEquals("wrong parameter value", studyQuery.getParameterMap().get("pIdVal"),
+        "param0"));
+		assertEquals("wrong parameter value", studyQuery.getParameterMap().get("param0"),
         "%value%");
 	}
 	
@@ -208,7 +208,7 @@ public class StudyQueryTest extends TestCase{
 		StudyQuery studyQuery = new StudyQuery();
 		studyQuery.joinStudyOrganization();
 		studyQuery.filterBySponsorOrganizationId(-1001);
-		assertEquals("select  distinct s from Study s join s.studyOrganizations as ss WHERE ss.class = 'SFS' AND ss.organization.id = :sponsorId", studyQuery.getQueryString());
+		assertEquals("select  distinct s from Study s join s.studyOrganizations as ss  WHERE ss.class = 'SFS' AND ss.organization.id = :param0", studyQuery.getQueryString());
 	}
 	
 	public void testFilterStudiesMatchingText(){
@@ -216,14 +216,14 @@ public class StudyQueryTest extends TestCase{
 		studyQuery.filterStudiesMatchingText("5876");
 		String[] organizationCodes = {"MN026"};
 		studyQuery.filterStudiesByOrganizations(organizationCodes);
-		String expectedQuery = "select  distinct s from Study s left join fetch s.identifiers as identifier join s.studyOrganizations as ss WHERE (lower(s.shortTitle) LIKE :shortTitle or lower(s.longTitle) LIKE :longTitle or lower(identifier.value) LIKE :identifierValue) AND ss.organization.nciInstituteCode in (:OrganizationCodes)";
+		String expectedQuery = "select  distinct s from Study s left join fetch s.identifiers as identifier join s.studyOrganizations as ss  WHERE (lower(s.shortTitle) LIKE :param0 or lower(s.longTitle) LIKE :param0 or lower(identifier.value) LIKE :param0) AND ss.organization.nciInstituteCode in (:param1)";
 		assertEquals(expectedQuery, studyQuery.getQueryString());
 	}
 	
     public void testFilterByShortTitleAndIdentifiers() {
         StudyQuery q = new StudyQuery();
         q.filterByShortTitleOrIdentifiers("abc");
-        assertEquals("select  distinct s from Study s left outer join s.identifiers as identifier WHERE lower(s.shortTitle) LIKE :shortTitle OR lower(identifier.value) LIKE :identifierValue", q.getQueryString());
+        assertEquals("select  distinct s from Study s left join s.identifiers as identifier  WHERE lower(s.shortTitle) LIKE :param0 OR lower(identifier.value) LIKE :param1", q.getQueryString());
     }
 
 }

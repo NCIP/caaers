@@ -45,7 +45,7 @@ import java.util.List;
  */
 @CaaersUseCases({CREATE_EXPEDITED_REPORT, CREATE_ROUTINE_REPORT})
 public class AdverseEventDaoTest extends CaaersDbNoSecurityTestCase {
-	
+
 	private StudyDao studyDao;
 	private ParticipantDao participantDao;
 	private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;

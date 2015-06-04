@@ -115,9 +115,8 @@ public class OpenSessionInViewInterceptorFilterTest extends WebTestCase {
     }
 
     private void doFilter() throws IOException, ServletException {
-        replayMocks();
-        filter.doFilter(request, response, filterChain);
-        verifyMocks();
+       replayMocks();
+       filter.doFilter(request, response, filterChain);        
     }
 
     private WebRequest webRequest() {
