@@ -38,7 +38,8 @@ public class UserRepositoryIntegrationTest extends CaaersTestCase {
     }
     
     public void testEmailContent() {
-		String loginName = "emailTest";
+    	int randomNumber = new Random().nextInt(1000);
+		String loginName = "emailTest"+randomNumber;
 		User x = new User();
         x.setFirstName("x");
         x.setLastName("y");
@@ -54,8 +55,8 @@ public class UserRepositoryIntegrationTest extends CaaersTestCase {
     
     
     public void testSearchCsmUserWithFirstAndLastName() {
-    	int randomNumber = new Random().nextInt(6);
-        //Create a user
+    	int randomNumber = new Random().nextInt(1000);
+    	//Create a user
         User _user = new User();
         _user.setLoginName("janakiram"+randomNumber);
         _user.setFirstName("janaki rama rao");
@@ -69,8 +70,8 @@ public class UserRepositoryIntegrationTest extends CaaersTestCase {
     }
     
     public void testSearchCsmUserWithFirstName() {
-    	int randomNumber = new Random().nextInt(6);
-        //Create a user
+    	int randomNumber = new Random().nextInt(1000);
+    	//Create a user
         User _user = new User();
         _user.setLoginName("janakiram"+randomNumber);
         _user.setFirstName("janaki rama rao");
@@ -84,8 +85,8 @@ public class UserRepositoryIntegrationTest extends CaaersTestCase {
     }
     
     public void testSearchCsmUserWithLastName() {
-    	int randomNumber = new Random().nextInt(6);
-        //Create a user
+    	int randomNumber = new Random().nextInt(1000);
+    	//Create a user
         User _user = new User();
         _user.setLoginName("janakiram"+randomNumber);
         _user.setFirstName("janaki rama rao");
