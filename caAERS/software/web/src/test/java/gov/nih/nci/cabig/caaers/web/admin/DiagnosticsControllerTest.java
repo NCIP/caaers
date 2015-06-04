@@ -35,7 +35,8 @@ public class DiagnosticsControllerTest extends AbstractTestCase {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		DiagnosticsController controller = new DiagnosticsController();
 		Configuration configuration = registerMockFor(Configuration.class);
-		EventMonitor eventMonitor = EasyMock.createNiceMock(EventMonitor.class);
+        EventMonitor eventMonitor = registerMockFor(EventMonitor.class);
+        EasyMock.expect(eventMonitor.getAllEvents()).andReturn(new ArrayList<Event>());
 		EasyMock.expect(configuration.getProperties()).andReturn(new ConfigurationProperties() {
 			
 			@Override
@@ -86,6 +87,7 @@ public class DiagnosticsControllerTest extends AbstractTestCase {
 		assertNotNull(command);
 		assertFalse(command.isSmtpTestResult());
 		assertFalse(command.isServiceMixUp());
+        assertNotNull(command.getEvents());
 		verifyMocks();
 	}
 	
