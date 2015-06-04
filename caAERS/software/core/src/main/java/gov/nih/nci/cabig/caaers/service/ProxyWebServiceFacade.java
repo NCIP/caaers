@@ -20,6 +20,7 @@ import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.utils.XsltTransformer;
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -38,6 +39,7 @@ import java.util.Map;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -131,6 +133,10 @@ public class ProxyWebServiceFacade implements AdeersIntegrationFacade{
     		
     		HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
     		if(httpConnection instanceof HttpsURLConnection) {
+    			BouncyCastleProvider bcp = new BouncyCastleProvider();
+    			SSLContext sc = SSLContext.getInstance("SSL", bcp);
+    			
+    			((HttpsURLConnection) httpConnection).setSSLSocketFactory(sc.getSocketFactory());
     			((HttpsURLConnection) httpConnection).setHostnameVerifier(new HostnameVerifier() {
 					
 					@Override

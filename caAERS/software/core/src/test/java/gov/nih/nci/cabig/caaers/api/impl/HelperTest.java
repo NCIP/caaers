@@ -43,7 +43,7 @@ public class HelperTest extends TestCase {
         Helper.populateError(response, "c", "d");
         assertEquals(1, response.getServiceResponse().getWsError().size());
         assertEquals("c" , response.getServiceResponse().getWsError().get(0).getErrorCode());
-        assertEquals("d" , response.getServiceResponse().getWsError().get(0).getErrorDesc());
+        assertEquals("d Error occured in system null" , response.getServiceResponse().getWsError().get(0).getErrorDesc());
     }
 
     public void testPopulateMessage() throws Exception {

@@ -96,7 +96,6 @@ public class AdverseEventQueryServiceTest extends CaaersDbNoSecurityTestCase {
 		ae.setEventApproximateTime(getDefaultTimeValue());
 		List<AdverseEvent> aes = svc.getByParticipant(participant, ae);
 		assertEquals(1, aes.size());
-
 	}
 	
 	/*

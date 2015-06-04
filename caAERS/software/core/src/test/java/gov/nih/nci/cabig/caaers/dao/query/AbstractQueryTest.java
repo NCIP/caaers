@@ -10,6 +10,7 @@ import junit.framework.TestCase;
 /**
  * 
  * @author Biju Joseph
+ * @author JanakiRam
  *
  */
 public class AbstractQueryTest extends TestCase {
@@ -64,10 +65,10 @@ public class AbstractQueryTest extends TestCase {
 		String courseStartDateQuery = "";
 		String courseEndDateQuery = "";
 		try {
-			startDateQuery = adverseEventQuery.createDateQuery("ae.startDate", "04/01/2015", "<");
-			endDateQuery = adverseEventQuery.createDateQuery("ae.endDate", "04/10/2015", "<");
-			courseStartDateQuery = adverseEventQuery.createDateQuery("aeRp.startDate", "04/01/2015", "<");
-			courseEndDateQuery = adverseEventQuery.createDateQuery("aeRp.endDate", "04/10/2015", "<");
+			startDateQuery = adverseEventQuery.createDateQuery("ae.startDate", "04/01/2015", "l");
+			endDateQuery = adverseEventQuery.createDateQuery("ae.endDate", "04/10/2015", "l");
+			courseStartDateQuery = adverseEventQuery.createDateQuery("aeRp.startDate", "04/01/2015", "l");
+			courseEndDateQuery = adverseEventQuery.createDateQuery("aeRp.endDate", "04/10/2015", "l");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -87,10 +88,10 @@ public class AbstractQueryTest extends TestCase {
 		String courseStartDateQuery = "";
 		String courseEndDateQuery = "";
 		try {
-			startDateQuery = adverseEventQuery.createDateQuery("ae.startDate", "04/01/2015", "<=");
-			endDateQuery = adverseEventQuery.createDateQuery("ae.endDate", "04/10/2015", "<=");
-			courseStartDateQuery = adverseEventQuery.createDateQuery("aeRp.startDate", "04/01/2015", "<=");
-			courseEndDateQuery = adverseEventQuery.createDateQuery("aeRp.endDate", "04/10/2015", "<=");
+			startDateQuery = adverseEventQuery.createDateQuery("ae.startDate", "04/01/2015", "lt");
+			endDateQuery = adverseEventQuery.createDateQuery("ae.endDate", "04/10/2015", "lt");
+			courseStartDateQuery = adverseEventQuery.createDateQuery("aeRp.startDate", "04/01/2015", "lt");
+			courseEndDateQuery = adverseEventQuery.createDateQuery("aeRp.endDate", "04/10/2015", "lt");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
