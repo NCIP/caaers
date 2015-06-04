@@ -22,12 +22,7 @@ import static org.easymock.EasyMock.expect;
  */
 public class TaskCloseActionHandlerTest extends AbstractTestCase {
 
-	 public void testSample() {
-	        assertEquals("test", "test");
-	    }
-	//TODO JanakiRam These test cases are failing in jenkins with 'StackOverFlow' issue not because of code changes
-	//Commenting for now
-   	/*private WorkflowServiceImpl wfService;
+	private WorkflowServiceImpl wfService;
 	TaskCloseActionHandler handler;
 	ExecutionContext context;
 	
@@ -50,6 +45,6 @@ public class TaskCloseActionHandlerTest extends AbstractTestCase {
 			fail("closing of task, should not throw exception");
 		}
 		verifyMocks();
-	}*/
+	}
 	
 }

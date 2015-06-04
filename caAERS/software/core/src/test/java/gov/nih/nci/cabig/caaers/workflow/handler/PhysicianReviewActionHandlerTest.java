@@ -32,12 +32,7 @@ import static org.easymock.EasyMock.expect;
  */
 public class PhysicianReviewActionHandlerTest  extends AbstractTestCase{
 
-	 public void testSample() {
-	        assertEquals("test", "test");
-	    }
-	//TODO JanakiRam These test cases are failing in jenkins with 'StackOverFlow' issue not because of code changes
-		//Commenting for now
-	/*PhysicianReviewActionHandler handler;
+	PhysicianReviewActionHandler handler;
 	ExecutionContext context;
 	ProcessInstance pInstance;
 	ReportDao reportDao;
@@ -108,5 +103,5 @@ public class PhysicianReviewActionHandlerTest  extends AbstractTestCase{
 	    contextVariables = new HashMap<Object, Object>();
 		contextVariables.put(VAR_WF_TYPE, Report.class.getName());
 		contextVariables.put(VAR_REPORT_ID, 1);
-	}*/
+	}
 }

@@ -20,12 +20,7 @@ import java.util.List;
 public class CaaersFieldsTreeTest  extends CaaersTestCase {
 
 
-	 public void testSample() {
-	        assertEquals("test", "test");
-	    }
-	//TODO JanakiRam These test cases are failing in jenkins with 'StackOverFlow' issue not because of code changes
-	//Commenting for now
-	/*private CaaersFieldsTree tree;
+	private CaaersFieldsTree tree;
 
     @Override
     protected void setUp() throws Exception {
@@ -86,5 +81,5 @@ public class CaaersFieldsTreeTest  extends CaaersTestCase {
         String m = tree.getMessage("LBL_one", "DEF");
         assertEquals("DEF", m);
     }
-    */
+
 }

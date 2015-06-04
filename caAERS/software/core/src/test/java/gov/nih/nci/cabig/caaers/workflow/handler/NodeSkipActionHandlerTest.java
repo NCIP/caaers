@@ -29,12 +29,7 @@ import java.util.List;
  */
 public class NodeSkipActionHandlerTest extends AbstractTestCase {
 
-	 public void testSample() {
-	        assertEquals("test", "test");
-	    }
-	//TODO JanakiRam These test cases are failing in jenkins with 'StackOverFlow' issue not because of code changes
-			//Commenting for now
-	/*private String taskDefName = "MyTask";
+	private String taskDefName = "MyTask";
 	private String emailAddress = "biju.joseph@semanticbits.com";
 	
 	private NodeSkipActionHandler handler;
@@ -116,6 +111,5 @@ public class NodeSkipActionHandlerTest extends AbstractTestCase {
 		verifyMocks();
 		
 	}
-	*/
-	
+
 }

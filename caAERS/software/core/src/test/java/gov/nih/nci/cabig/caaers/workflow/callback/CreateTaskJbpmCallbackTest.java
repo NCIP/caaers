@@ -27,13 +27,7 @@ import java.util.List;
  */
 public class CreateTaskJbpmCallbackTest extends AbstractTestCase {
 
-	 public void testSample() {
-	        assertEquals("test", "test");
-	    }
-	 
-	//TODO JanakiRam These test cases are failing in jenkins with 'StackOverFlow' issue not because of code changes
-		//Commenting for now
-	/*ExecutionContext context;
+	ExecutionContext context;
 	List<Person> taskAssigneesList;
 	Node node ;
 	TaskMgmtInstance taskMgmtInstance;
@@ -86,6 +80,6 @@ public class CreateTaskJbpmCallbackTest extends AbstractTestCase {
 		assertFalse(returnedTaskInstance.getPooledActors().toString().contains(("joel12@abc.com")));
 
 		
-	}*/
+	}
 
 }
