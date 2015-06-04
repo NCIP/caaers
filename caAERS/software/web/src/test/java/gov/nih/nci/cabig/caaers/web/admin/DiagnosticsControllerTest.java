@@ -22,6 +22,7 @@ import java.util.Collection;
 import javax.mail.Address;
 import javax.mail.Message;
 import javax.mail.Multipart;
+import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
@@ -34,8 +35,8 @@ public class DiagnosticsControllerTest extends AbstractTestCase {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		DiagnosticsController controller = new DiagnosticsController();
 		Configuration configuration = registerMockFor(Configuration.class);
-		EventMonitor eventMonitor = registerMockFor(EventMonitor.class);
-		EasyMock.expect(eventMonitor.getAllEvents()).andReturn(new ArrayList<Event>());
+        EventMonitor eventMonitor = registerMockFor(EventMonitor.class);
+        EasyMock.expect(eventMonitor.getAllEvents()).andReturn(new ArrayList<Event>());
 		EasyMock.expect(configuration.getProperties()).andReturn(new ConfigurationProperties() {
 			
 			@Override
@@ -86,7 +87,7 @@ public class DiagnosticsControllerTest extends AbstractTestCase {
 		assertNotNull(command);
 		assertFalse(command.isSmtpTestResult());
 		assertFalse(command.isServiceMixUp());
-		assertNotNull(command.getEvents());
+        assertNotNull(command.getEvents());
 		verifyMocks();
 	}
 	
@@ -97,12 +98,11 @@ public class DiagnosticsControllerTest extends AbstractTestCase {
 		EventMonitor eventMonitor = registerMockFor(EventMonitor.class);
 		CaaersJavaMailSender caaersJavaMailSender = registerMockFor(CaaersJavaMailSender.class);
 		CaaersAdeersMessageBroadcastServiceImpl messageBroadcastService = registerMockFor(CaaersAdeersMessageBroadcastServiceImpl.class);
-		MimeMessage mimeMessage = registerMockFor(MimeMessage.class);
+		Session session = null;
+		MimeMessage mimeMessage = new MimeMessage(session);//registerMockFor(MimeMessage.class);
 		EasyMock.expect(caaersJavaMailSender.createMimeMessage()).andReturn(mimeMessage);
 		mimeMessage.setSubject("Test mail from caAERS Diagnostics");
 		mimeMessage.setFrom(new InternetAddress("caaers.app@gmail.com"));
-		mimeMessage.setContent(EasyMock.isA(Multipart.class));
-		mimeMessage.setRecipient(EasyMock.isA(Message.RecipientType.class), EasyMock.isA(Address.class));
 		caaersJavaMailSender.send(EasyMock.isA(MimeMessage.class));
 		messageBroadcastService.initialize();
 		EasyMock.expect(eventMonitor.getAllEvents()).andReturn(new ArrayList<Event>());

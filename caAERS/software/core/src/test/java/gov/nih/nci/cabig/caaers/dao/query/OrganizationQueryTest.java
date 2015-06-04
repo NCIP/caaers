@@ -13,7 +13,7 @@ public class OrganizationQueryTest extends TestCase {
     public void testQueryConstructor() throws Exception {
         OrganizationQuery organizationQuery = new OrganizationQuery();
         assertEquals("wrong parsing for constructor",
-                        "SELECT distinct o from Organization o order by o.name", organizationQuery
+                        "SELECT distinct o from Organization o  order by o.name", organizationQuery
                                         .getQueryString());
 
     }
@@ -22,7 +22,7 @@ public class OrganizationQueryTest extends TestCase {
         OrganizationQuery organizationQuery = new OrganizationQuery();
         organizationQuery.filterByOrganizationName("a");
         assertEquals(
-                        "SELECT distinct o from Organization o WHERE lower(o.name) LIKE :name  order by o.name",
+                        "SELECT distinct o from Organization o  WHERE lower(o.name) LIKE :name  order by o.name",
                         organizationQuery.getQueryString());
         assertEquals("wrong number of parameters", organizationQuery.getParameterMap().size(), 1);
         assertTrue("missing paramenter name", organizationQuery.getParameterMap().containsKey(
@@ -43,7 +43,7 @@ public class OrganizationQueryTest extends TestCase {
         OrganizationQuery organizationQuery = new OrganizationQuery();
         organizationQuery.filterByNciInstituteCode("a");
         assertEquals(
-                        "SELECT distinct o from Organization o WHERE lower(o.nciInstituteCode) LIKE :nciInstituteCode  order by o.name",
+                        "SELECT distinct o from Organization o  WHERE lower(o.nciInstituteCode) LIKE :nciInstituteCode  order by o.name",
                         organizationQuery.getQueryString());
         assertEquals("wrong number of parameters", organizationQuery.getParameterMap().size(), 1);
         assertTrue("missing paramenter name", organizationQuery.getParameterMap().containsKey(
@@ -63,7 +63,7 @@ public class OrganizationQueryTest extends TestCase {
     public void testFilterByOrganizationTypesOrNull() {
         OrganizationQuery q = new OrganizationQuery();
         q.filterByOrganizationTypes(new String[]{"CCR", "CLC", "NCP", "ITN"});
-        assertEquals("SELECT distinct o from Organization o WHERE (lower(o.type) = 'ccr' or lower(o.type) = 'clc' or lower(o.type) = 'ncp' or lower(o.type) = 'itn')  order by o.name", q.getQueryString());
+        assertEquals("SELECT distinct o from Organization o  WHERE (lower(o.type) = 'ccr' or lower(o.type) = 'clc' or lower(o.type) = 'ncp' or lower(o.type) = 'itn')  order by o.name", q.getQueryString());
     }
 
 }

@@ -28,8 +28,7 @@ import java.util.List;
  *
  */
 public class NodeSkipActionHandlerTest extends AbstractTestCase {
-	
-	
+
 	private String taskDefName = "MyTask";
 	private String emailAddress = "biju.joseph@semanticbits.com";
 	
@@ -112,6 +111,5 @@ public class NodeSkipActionHandlerTest extends AbstractTestCase {
 		verifyMocks();
 		
 	}
-	
-	
+
 }

@@ -557,7 +557,7 @@ public class ReportDaoTest extends DaoTestCase<ReportDao> {
             assertEquals("hello", rs.getReviewComments().get(2).getUserComment()) ;
         }
     }
-    
+   
     public void testSearchByStudyParticipantReportStatusSearchIdentifier(){
     	Study study = studyDao.getById(-2);
     	Participant participant = participantDao.getById(-100);

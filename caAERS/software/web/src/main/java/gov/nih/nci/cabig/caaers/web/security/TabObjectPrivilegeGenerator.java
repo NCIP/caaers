@@ -16,12 +16,11 @@ import java.util.Map;
  * @author Biju Joseph (refactoring)
  *
  */
-public class TabObjectPrivilegeGenerator implements ObjectPrivilegeGenerator {
+public class TabObjectPrivilegeGenerator implements ObjectPrivilegeGenerator<Tab> {
 
     protected Map<String, String> objectPrivilegeMap;
 
-    public String resolve(Object o) {
-        Tab t = (Tab) o;
+    public String resolve(Tab t) {
         return objectPrivilegeMap.get(t.getClass().getName());
     }
 

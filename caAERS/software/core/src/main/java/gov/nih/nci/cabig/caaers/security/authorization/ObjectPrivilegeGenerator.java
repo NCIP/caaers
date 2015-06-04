@@ -13,14 +13,14 @@ import java.util.Map;
  * @author Biju Joseph (refactoring)
  * 
  */
-public interface ObjectPrivilegeGenerator {
+public interface ObjectPrivilegeGenerator<V> {
 
     /*
     *   Resolves the object to a String containing the ObjectID and Privilege
     *   @param o - the object to be resolved from the MAP
     *   return String    
     * */
-    public String resolve(Object o);
+    public String resolve(V o);
 
     /**
      * The mapping of object-reference to the ObjectPrivilege 

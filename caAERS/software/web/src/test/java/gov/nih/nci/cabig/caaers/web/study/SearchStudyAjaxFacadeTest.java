@@ -9,6 +9,7 @@ package gov.nih.nci.cabig.caaers.web.study;
 import edu.emory.mathcs.backport.java.util.Arrays;
 import gov.nih.nci.cabig.caaers.dao.query.StudyHavingStudySiteQuery;
 import gov.nih.nci.cabig.caaers.dao.query.StudySitesQuery;
+import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.LocalStudy;
 import gov.nih.nci.cabig.caaers.domain.Organization;
@@ -68,6 +69,14 @@ public class SearchStudyAjaxFacadeTest extends DwrFacadeTestCase{
 		study.setStatus("Active");
 		study.setDataEntryStatus(true);
 		study.setId(11);
+		
+		Identifier identifier= new Identifier();
+		identifier.setPrimaryIndicator(true);
+		identifier.setValue("primaryId");
+		identifier.setType("Protocol Authority Identifier");
+		study.addIdentifier(identifier);
+		
+		
 		studies.add(study);
 		
 		EasyMock.expect(studyRepository.getAllStudiesByShortTitleOrIdentifiers("text")).andReturn(studies);
@@ -101,6 +110,13 @@ public class SearchStudyAjaxFacadeTest extends DwrFacadeTestCase{
 		study.setStatus("Active");
 		study.setDataEntryStatus(true);
 		study.setId(11);
+		
+		Identifier identifier= new Identifier();
+		identifier.setPrimaryIndicator(true);
+		identifier.setValue("primaryId");
+		identifier.setType("Protocol Authority Identifier");
+		study.addIdentifier(identifier);
+		
 		studies.add(study);
 		
 		EasyMock.expect(studyRepository.find((StudyHavingStudySiteQuery) EasyMock.anyObject())).andReturn(studies);

@@ -39,7 +39,6 @@ public class SubmitReportAjaxFacadeTest extends DwrFacadeTestCase{
 	private ReportDefinitionDao reportDefinitionDao;
 	private StudyParticipantAssignmentDao assignmentDao;
 	private AdverseEventReportingPeriodDao reportingPeriodDao;
-	private ExpeditedReportTree expeditedReportTree;
 	private RenderDecisionManager renderDecisionManager;
 	private ReportRepository reportRepository;
 	private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
@@ -53,7 +52,6 @@ public class SubmitReportAjaxFacadeTest extends DwrFacadeTestCase{
 		reportDefinitionDao = registerDaoMockFor(ReportDefinitionDao.class);
 		assignmentDao = registerDaoMockFor(StudyParticipantAssignmentDao.class);
 		reportingPeriodDao = registerDaoMockFor(AdverseEventReportingPeriodDao.class);
-		expeditedReportTree = registerMockFor(ExpeditedReportTree.class);
 		renderDecisionManager = registerMockFor(RenderDecisionManager.class);
 		reportRepository = registerMockFor(ReportRepository.class);
         studyDao = registerDaoMockFor(StudyDao.class);

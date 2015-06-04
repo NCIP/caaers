@@ -235,10 +235,12 @@ public class ReportQuery extends AbstractQuery {
     public void filterByStudyAndSubjectAndSubmissionStatusAndSearchIdentifier(Study study, Participant participant, 
     		ReportStatus reportStatus, String searchIdentifier){
     	if(study != null){
+    		joinStudyParticipantAssignment();
     		joinStudy();
     		andWhere(STUDY_ALIAS+".id = :" + generateParam(study.getId()));
     	}
     	if(participant != null){
+    		joinStudyParticipantAssignment();
     		joinParticipant();
     		andWhere(PARTICIPANT_ALIAS+".id = :" + generateParam(participant.getId()));
     	}

@@ -26,6 +26,7 @@ import java.util.List;
  *
  */
 public class CreateTaskJbpmCallbackTest extends AbstractTestCase {
+
 	ExecutionContext context;
 	List<Person> taskAssigneesList;
 	Node node ;

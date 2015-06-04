@@ -21,6 +21,7 @@ import static org.easymock.EasyMock.expect;
  *
  */
 public class TaskCloseActionHandlerTest extends AbstractTestCase {
+
 	private WorkflowServiceImpl wfService;
 	TaskCloseActionHandler handler;
 	ExecutionContext context;

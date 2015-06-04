@@ -21,11 +21,15 @@ import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.dto.ManageReportsRepotingPeriodDTO;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -54,7 +58,7 @@ public class ListAdverseEventsControllerTest extends WebTestCase {
         studyDao = registerDaoMockFor(StudyDao.class);
         participantDao = registerDaoMockFor(ParticipantDao.class);
         reportDao = registerDaoMockFor(ReportDao.class);
-        personDao = registerDaoMockFor(PersonDao.class);
+        personDao = org.easymock.classextension.EasyMock.createNiceMock(PersonDao.class);
 
         mockCommand = registerMockFor(ListAdverseEventsCommand.class);
         controller = new ListAdverseEventsController() {
@@ -109,8 +113,14 @@ public class ListAdverseEventsControllerTest extends WebTestCase {
         expect(mockCommand.getReportStatus()).andReturn(ReportStatus.INPROCESS).anyTimes();
         expect(mockCommand.getMaxResults()).andReturn(15).anyTimes();
         expect(reportDao.search(s, p, ReportStatus.INPROCESS, "", 15)).andReturn(reports);
-        expect(personDao.getByLoginId("SYSTEM")).andReturn(null);
+       // expect(personDao.getByLoginId("SYSTEM")).andReturn(null);
         expect(mockCommand.getReports()).andReturn(reports).anyTimes();
+        expect(mockCommand.getTotalResultsCount()).andReturn(10).anyTimes();
+        LinkedList<ManageReportsRepotingPeriodDTO> mrrpd = new LinkedList<ManageReportsRepotingPeriodDTO>();
+        mrrpd.add(new ManageReportsRepotingPeriodDTO(null));
+        Map<String,  LinkedList<ManageReportsRepotingPeriodDTO>> testMap = new HashMap<>();
+        expect(mockCommand.getFilteredResultMap()).andReturn(testMap);
+        expect(mockCommand.getResultList()).andReturn(testMap).anyTimes();
         
         mockCommand.updateSubmittability();
         mockCommand.updateSubmittabilityBasedOnReportStatus();
@@ -119,7 +129,9 @@ public class ListAdverseEventsControllerTest extends WebTestCase {
         mockCommand.setSearchIdentifier(null);
         mockCommand.setMaxResults(15);
         mockCommand.setReports(reports);
-        mockCommand.setUserId("SYSTEM");
+        mockCommand.setUserId("SYSTEM_ADMIN");
+        mockCommand.setStudyCentric(false);
+        mockCommand.setParticipantCentric(false);
         mockCommand.populateResults((List<AdverseEventReportingPeriod>) EasyMock.anyObject());
         
         replayMocks();
