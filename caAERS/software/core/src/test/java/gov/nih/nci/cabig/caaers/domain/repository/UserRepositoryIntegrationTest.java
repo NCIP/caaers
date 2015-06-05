@@ -13,6 +13,8 @@ import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Random;
 
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
@@ -36,7 +38,8 @@ public class UserRepositoryIntegrationTest extends CaaersTestCase {
     }
     
     public void testEmailContent() {
-		String loginName = "emailTest";
+    	int randomNumber = new Random().nextInt(1000);
+		String loginName = "emailTest"+randomNumber;
 		User x = new User();
         x.setFirstName("x");
         x.setLastName("y");
@@ -49,6 +52,53 @@ public class UserRepositoryIntegrationTest extends CaaersTestCase {
         userRepository.provisionUser(x);
         assertNotNull(x.getCsmUser().getUserId());
     }
+    
+    
+    public void testSearchCsmUserWithFirstAndLastName() {
+    	int randomNumber = new Random().nextInt(1000);
+    	//Create a user
+        User _user = new User();
+        _user.setLoginName("janakiram"+randomNumber);
+        _user.setFirstName("janaki rama rao");
+        _user.setLastName("gollapudi");
+     
+        userRepository.createOrUpdateUser(_user, "www.localhost.com/test");
+        userRepository.provisionUser(_user);
+        assertNotNull(_user.getCsmUser().getUserId());
+        List users = userRepository.searchCsmUser("janaki gollapudi");
+        assertEquals(((gov.nih.nci.security.authorization.domainobjects.User) users.get(0)).getFirstName(), "janaki rama rao");
+    }
+    
+    public void testSearchCsmUserWithFirstName() {
+    	int randomNumber = new Random().nextInt(1000);
+    	//Create a user
+        User _user = new User();
+        _user.setLoginName("janakiram"+randomNumber);
+        _user.setFirstName("janaki rama rao");
+        _user.setLastName("gollapudi");
+     
+        userRepository.createOrUpdateUser(_user, "www.localhost.com/test");
+        userRepository.provisionUser(_user);
+        assertNotNull(_user.getCsmUser().getUserId());
+        List users = userRepository.searchCsmUser("janaki");
+        assertEquals(((gov.nih.nci.security.authorization.domainobjects.User) users.get(0)).getFirstName(), "janaki rama rao");
+    }
+    
+    public void testSearchCsmUserWithLastName() {
+    	int randomNumber = new Random().nextInt(1000);
+    	//Create a user
+        User _user = new User();
+        _user.setLoginName("janakiram"+randomNumber);
+        _user.setFirstName("janaki rama rao");
+        _user.setLastName("gollapudi");
+     
+        userRepository.createOrUpdateUser(_user, "www.localhost.com/test");
+        userRepository.provisionUser(_user);
+        assertNotNull(_user.getCsmUser().getUserId());
+        List users = userRepository.searchCsmUser("gollapudi");
+        assertEquals(((gov.nih.nci.security.authorization.domainobjects.User) users.get(0)).getFirstName(), "janaki rama rao");
+    }
+
 
     public void testGetUserByLoginName() throws Exception {
 
