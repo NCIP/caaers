@@ -210,7 +210,12 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
 
     @Transient
     public String getDisplayCreatedDate() {
-       return DateUtils.formatToWSResponseDateWithTimeZone(this.createdDate).toString();
+        if(this.createdDate != null) {
+            return DateUtils.formatToWSResponseDateWithTimeZone(this.createdDate).toString();
+        }
+        else {
+            return "";
+        }
     }
     @Transient
     public String getDisplayAwarenessDate() {

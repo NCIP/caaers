@@ -586,6 +586,11 @@ public class AdverseEventTest extends AbstractTestCase {
         assertEquals(formatedDate,adverseEvent.getDisplayCreatedDate());
     }
 
+    public void testAEDisplayCreatedDateOnNull() {
+        adverseEvent.setCreatedDate(null);
+        assertEquals("",adverseEvent.getDisplayCreatedDate());
+    }
+
     public void testAEDisplayAwarenessDate() {
         Date date = new Date();
         String formatedDate = gov.nih.nci.cabig.caaers.utils.DateUtils.formatToWSResponseDateWithTimeZone(date);
