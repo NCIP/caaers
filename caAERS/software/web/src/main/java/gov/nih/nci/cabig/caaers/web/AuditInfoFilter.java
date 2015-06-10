@@ -26,11 +26,10 @@ public class AuditInfoFilter extends
                     final FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpReq = (HttpServletRequest) request;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null)
-
-        {
+        if (authentication != null) {
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
             // String username = ApplicationSecurityManager.getUser(httpReq);
+            log.warn("Setting local audit info with username; " + username);
             if (username != null) {
                 gov.nih.nci.cabig.ctms.audit.DataAuditInfo
                                 .setLocal(new gov.nih.nci.cabig.ctms.audit.domain.DataAuditInfo(
@@ -39,6 +38,5 @@ public class AuditInfoFilter extends
             }
         }
         chain.doFilter(request, response);
-        edu.nwu.bioinformatics.commons.DataAuditInfo.setLocal(null);
     }
 }
