@@ -34,6 +34,10 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 			div.row div.value { margin-left:14em; }
 			.rightpanel { width:48%}
 			.leftpanel {width: 50%}
+            div#passwordExpiry-row {
+                margin-left: 50%;
+                margin-top: -3%;
+            }
         </style>
 
         <tags:dwrJavascriptLink objects="user,createStudy"/>
@@ -460,7 +464,17 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
                                 </c:if>
 
                             </jsp:attribute>
-    					</ui:row>
+                        </ui:row>
+                        <ui:row path="passwordExpiry">
+                            <jsp:attribute name="label">
+                                 <ui:label path="passwordExpired" text="Password status"/>
+                            </jsp:attribute>
+                            <jsp:attribute name="value">
+                                <div class="${command.passwordExpired ? "expired" : "active"}">
+                                    <ui:text path="displayPasswordExpiryDate" readonly="true" />
+                                </div>
+                            </jsp:attribute>
+                        </ui:row>
     						<div id="roles-div" style="padding-left:90px;">
 							<c:forEach var="roleMembership" items="${command.roleMembershipHelper}" varStatus="index">
 								<chrome:division id="section-${index.index}" collapsed="true" collapsable="true">

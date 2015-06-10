@@ -13,6 +13,8 @@ import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.LoginPolicy;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordCreationPolicy;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy;
 
+import java.util.List;
+
 public class PasswordPolicyDaoTest extends DaoNoSecurityTestCase<PasswordPolicyDao>{
 	
 	public void testGetById() {
@@ -51,6 +53,15 @@ public class PasswordPolicyDaoTest extends DaoNoSecurityTestCase<PasswordPolicyD
 		}
 		
 	}
+
+    public void testGetPasswordPolicy() {
+        PasswordPolicy passwordPolicy = createPasswordPolicy();
+        getDao().save(passwordPolicy);
+        List<PasswordPolicy> passwordPolicies = getDao().getPasswordPolicy();
+        assertEquals(passwordPolicies.get(0).getLoginPolicy().getMaxPasswordAge(), passwordPolicy.getLoginPolicy().getMaxPasswordAge());
+        assertEquals(passwordPolicies.get(0).getPasswordCreationPolicy().getMinPasswordAge(), passwordPolicy.getPasswordCreationPolicy().getMinPasswordAge());
+
+    }
 
 	   public static PasswordPolicy createPasswordPolicy() {
 	        LoginPolicy loginPolicy = new LoginPolicy();

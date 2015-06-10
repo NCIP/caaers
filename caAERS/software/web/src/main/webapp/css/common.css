@@ -1486,3 +1486,15 @@ div.shorty {
 div.summaryrow {
     width: 910px;
 }
+/**
+These below .expired and .active classes are used to display password expiry date in
+user details page(user.jsp) as of now.
+**/
+.expired {
+     color: red;
+ }
+
+.active {
+    color: limegreen;
+}
+

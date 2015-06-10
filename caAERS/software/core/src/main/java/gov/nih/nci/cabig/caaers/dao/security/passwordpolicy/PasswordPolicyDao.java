@@ -7,11 +7,14 @@
 package gov.nih.nci.cabig.caaers.dao.security.passwordpolicy;
 
 import gov.nih.nci.cabig.caaers.dao.GridIdentifiableDao;
+import gov.nih.nci.cabig.caaers.dao.query.PasswordPolicyQuery;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * @author Jared Flatow
@@ -34,11 +37,17 @@ public class PasswordPolicyDao extends GridIdentifiableDao<PasswordPolicy> imple
     /**
      * Save or update the password policy in the db.
      * 
-     * @param The
-     *                password policy.
+     * @param passwordPolicy .
      */
     @Transactional(readOnly = false)
     public void save(final PasswordPolicy passwordPolicy) {
         getHibernateTemplate().saveOrUpdate(passwordPolicy);
     }
+
+    @Transactional(readOnly = true)
+    public List<PasswordPolicy> getPasswordPolicy(){
+        PasswordPolicyQuery passwordPolicyQuery = new PasswordPolicyQuery();
+        return (List<PasswordPolicy>)search(passwordPolicyQuery);
+    }
+
 }
