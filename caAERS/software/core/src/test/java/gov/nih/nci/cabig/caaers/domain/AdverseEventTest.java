@@ -598,4 +598,9 @@ public class AdverseEventTest extends AbstractTestCase {
         assertEquals(formatedDate,adverseEvent.getDisplayAwarenessDate());
     }
 
+    public void testAEDisplayAwarenessDateOnNull() {
+        adverseEvent.setGradedDate(null);
+        assertEquals("",adverseEvent.getDisplayAwarenessDate());
+    }
+
 }
