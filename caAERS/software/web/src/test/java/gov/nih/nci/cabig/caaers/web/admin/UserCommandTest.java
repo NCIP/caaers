@@ -8,6 +8,9 @@ package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.CaaersContextLoader;
+import gov.nih.nci.cabig.caaers.dao.security.passwordpolicy.PasswordPolicyDao;
+import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.LoginPolicy;
+import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy;
 import gov.nih.nci.cabig.caaers.tools.Messages;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
 import gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSessionFactory;
@@ -16,8 +19,12 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceResolvable;
 import org.springframework.context.NoSuchMessageException;
 
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 
@@ -89,5 +96,24 @@ public class UserCommandTest extends WebTestCase {
 		assertNotNull(command.getRoleMemberships());
 		assertEquals(3, command.getRoleMemberships().size());
 	}
+
+    public void testPasswordExpiryDate() {
+        Timestamp today = new Timestamp(new Date().getTime());
+        PasswordPolicy passwordPolicy = new PasswordPolicy();
+        LoginPolicy loginPolicy = new LoginPolicy();
+        loginPolicy.setMaxPasswordAge(7776000);
+        passwordPolicy.setLoginPolicy(loginPolicy);
+        command.setPasswordLastSet(today);
+        command.setPasswordExpiryDate(passwordPolicy);
+        Timestamp expiryDate = command.getPasswordExpiryDate();
+        //Actual expirty date
+        int days = (int) TimeUnit.SECONDS.toDays(passwordPolicy.getLoginPolicy().getMaxPasswordAge());
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(today);
+        cal.add(Calendar.DAY_OF_WEEK, days);
+        Timestamp actualExpiryDate = new Timestamp(cal.getTime().getTime());
+        assertEquals(expiryDate.toString(), actualExpiryDate.toString());
+
+    }
 
 }

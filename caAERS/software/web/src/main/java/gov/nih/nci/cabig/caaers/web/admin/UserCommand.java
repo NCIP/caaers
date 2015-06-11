@@ -7,9 +7,11 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.RoleMembership;
+import gov.nih.nci.cabig.caaers.dao.security.passwordpolicy.PasswordPolicyDao;
 import gov.nih.nci.cabig.caaers.domain.Person;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
+import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
 import gov.nih.nci.cabig.caaers.tools.Messages;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
@@ -17,7 +19,9 @@ import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRole;
 import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRoleMembership;
 import org.springframework.context.MessageSource;
 
+import java.sql.Timestamp;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * User interface related class. Created to capture / render User details.
@@ -25,7 +29,7 @@ import java.util.*;
  *
  */
 public class UserCommand {
-	
+
 	//Attributes used for UI rendering purpose.
     boolean isPO = SecurityUtils.hasAuthorityOf(UserGroupType.person_and_organization_information_manager);
     boolean isUA = SecurityUtils.hasAuthorityOf(UserGroupType.user_administrator);
@@ -46,6 +50,9 @@ public class UserCommand {
 	private boolean createMode;
 	private boolean editMode;
 	private User loggedInUser;
+    private Timestamp passwordLastSet;
+    private Timestamp passwordExpiryDate;
+    private boolean isPasswordExpired;
 	
 	//Attributes which will be processed to save data to db.
 	private User user;
@@ -200,6 +207,13 @@ public class UserCommand {
 	}
 	
 	//Setters & Getters for the private attributes if this class.
+    public Timestamp  getPasswordLastSet() {
+        return passwordLastSet;
+    }
+
+    public void setPasswordLastSet(Timestamp passwordLastSet){
+       this.passwordLastSet = passwordLastSet;
+    }
 
 	public User getUser() {
 		return user;
@@ -397,4 +411,45 @@ public class UserCommand {
 	public void setLoggedInUser(User loggedInUser) {
 		this.loggedInUser = loggedInUser;
 	}
+    
+    public Timestamp getPasswordExpiryDate(){
+       return  passwordExpiryDate;
+    }
+
+    public void setPasswordExpiryDate(PasswordPolicy passwordPolicy){
+        int days = (int)TimeUnit.SECONDS.toDays(passwordPolicy.getLoginPolicy().getMaxPasswordAge());
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(this.passwordLastSet);
+        cal.add(Calendar.DAY_OF_WEEK, days);
+        this.passwordExpiryDate = new Timestamp(cal.getTime().getTime());
+    }
+
+    public String getDisplayPasswordExpiryDate() {
+        String displayString = "";
+        String expiryDateString = DateUtils.formatToWSResponseDateWithTimeZone(this.passwordExpiryDate).toString();
+        if(this.isPasswordExpired){
+            displayString = "EXPIRED (as of "+expiryDateString+")";
+        }
+        else {
+            displayString = "ACTIVE (until "+expiryDateString+")";
+        }
+        return displayString;
+    }
+
+    public boolean isPasswordExpired(){
+        java.util.Date today = new java.util.Date();
+        Timestamp todayTimStamp = new java.sql.Timestamp(today.getTime());
+        if(this.passwordExpiryDate.before(todayTimStamp) && !this.passwordExpiryDate.equals(todayTimStamp)){
+             this.isPasswordExpired = true;
+        }
+        else {
+            this.isPasswordExpired = false;
+        }
+        return isPasswordExpired;
+    }
+
+    public void setActive(boolean isPasswordExpired){
+        this.isPasswordExpired = isPasswordExpired;
+    }
+
 }
