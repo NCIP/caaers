@@ -14,6 +14,7 @@ import gov.nih.nci.cabig.caaers.dao.query.UserQuery;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.security.CSMCacheManager;
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSession;
 import gov.nih.nci.cabig.ctms.suite.authorization.ProvisioningSessionFactory;
 import gov.nih.nci.cabig.ctms.suite.authorization.SuiteRole;
@@ -365,15 +366,16 @@ public class UserRepositoryImpl implements UserRepository {
      * @param changeURL the change url
      */
     protected void sendCreateAccountEmail(User user, String changeURL){
-
+        String caAERSBaseUrl = Configuration.LAST_LOADED_CONFIGURATION.get(Configuration.CAAERS_BASE_URL);
         String EMAIL_SUBJECT = getMessageSource().getMessage("createAccountEmail.subject", null,"Your new caAERS account", Locale.getDefault());
-        String EMAIL_TEXT = getMessageSource().getMessage("createAccountEmail.text", new Object[] {user.getCsmUser().getLoginName(), changeURL + "&token=" + user.getToken()},
-                "A new caAERS account has been created for you.\nYour username is: {0}\n You must create your password to login to caAERS. You can do so by clicking on the URL below:\n\n{1}\n\n Sent by the caAERS Notification System.",
+        String EMAIL_TEXT = getMessageSource().getMessage("createAccountEmail.text", new Object[] {user.getCsmUser().getLoginName(), changeURL + "&token=" + user.getToken(), caAERSBaseUrl},
+                "An account has been created for you in the caAERS Adverse Event Reporting System.\n \nYour username is: {0}.\n \nYou must create your password to login to caAERS. \n" +
+                        "  You can do so by clicking on the URL below:\n{1}\n \nThe above link will expire after a preset period of time and can only be used once. Should you have difficulty with logging in, \n" +
+                        "  please go to {2} and click \"Forgot password?\" to generate a new set password link.\n \nThis message was sent by caAERS. Please do not reply to this message.",
                 Locale.getDefault());;
         
         //send out an email
         if ("local".equals(getAuthenticationMode())) {
-        	EMAIL_TEXT = EMAIL_TEXT.replace("\n", "<br>\n");
             sendUserEmail(user.getCsmUser().getEmailId(), EMAIL_SUBJECT, EMAIL_TEXT);
         }
     }
