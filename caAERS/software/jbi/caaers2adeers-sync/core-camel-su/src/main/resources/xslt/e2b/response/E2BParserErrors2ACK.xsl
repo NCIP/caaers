@@ -6,12 +6,10 @@
     <!-- Assuming that the following Parameters are derived runtime from header -->
     <xsl:param name="c2r_msg_id" /> <!-- a UUID -->
     <xsl:param name="c2r_today_204" />
-    <xsl:param name="c2r_report_received_on_102" />
     <xsl:param name="c2r_msg_number" />
     <xsl:param name="c2r_msg_date" />
     <xsl:param name="c2r_msg_sender_id" />
     <xsl:param name="c2r_msg_receiver_id" />
-    <xsl:param name="report_id" />
     <xsl:param name="CamelExceptionCaught" />
     
     <xsl:output method="xml" omit-xml-declaration="yes" indent="yes"/>
