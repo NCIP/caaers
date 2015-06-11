@@ -296,9 +296,8 @@ public class UserRepositoryIntegrationTest extends CaaersTestCase {
 				return;
 			}
 			assertEquals("Your new caAERS account", arg0.getSubject());
-			assertTrue(arg0.getText().startsWith("A new caAERS account has been created for you."));
-			assertTrue(arg0.getText().endsWith("Sent by the caAERS Notification System."));
-			assertFalse(arg0.getText().contains("\\n"));
+			assertTrue(arg0.getText().startsWith("An account has been created for you in the caAERS Adverse Event Reporting System."));
+			assertTrue(arg0.getText().endsWith("This message was sent by caAERS. Please do not reply to this message."));			
 		}
     }
 }
