@@ -147,7 +147,7 @@ public class EditUserController extends UserController<UserCommand> {
 				command.setUserName(user.getCsmUser().getLoginName());
                 command.setPasswordLastSet(user.getPasswordLastSet());
                 //Based on password policy we are calculating password expiry date and assign it to UserCommand to display it in user details page(user.jsp)
-                command.setPasswordExpiryDate(passwordPolicyDao.getPasswordPolicy().get(0));
+                command.setPasswordExpiryDate(passwordPolicyDao.getPasswordPolicy());
                 populateRoleMemberships(user,command);
 		        populateSiteMap(command);
 		        populateStudyMap(command);

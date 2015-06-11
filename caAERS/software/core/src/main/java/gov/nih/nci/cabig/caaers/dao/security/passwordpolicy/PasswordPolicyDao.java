@@ -45,9 +45,13 @@ public class PasswordPolicyDao extends GridIdentifiableDao<PasswordPolicy> imple
     }
 
     @Transactional(readOnly = true)
-    public List<PasswordPolicy> getPasswordPolicy(){
+    public PasswordPolicy getPasswordPolicy() throws RuntimeException {
         PasswordPolicyQuery passwordPolicyQuery = new PasswordPolicyQuery();
-        return (List<PasswordPolicy>)search(passwordPolicyQuery);
+        List<PasswordPolicy> passwordPolicies = (List<PasswordPolicy>)search(passwordPolicyQuery);
+        if(passwordPolicies.size() == 1) {
+            return passwordPolicies.get(0);
+        }
+        throw new RuntimeException("Application should contain only one password policy");
     }
 
 }

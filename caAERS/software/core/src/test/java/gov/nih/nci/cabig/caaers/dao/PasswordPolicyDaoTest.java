@@ -54,13 +54,21 @@ public class PasswordPolicyDaoTest extends DaoNoSecurityTestCase<PasswordPolicyD
 		
 	}
 
-    public void testGetPasswordPolicy() {
-        PasswordPolicy passwordPolicy = createPasswordPolicy();
-        getDao().save(passwordPolicy);
-        List<PasswordPolicy> passwordPolicies = getDao().getPasswordPolicy();
-        assertEquals(passwordPolicies.get(0).getLoginPolicy().getMaxPasswordAge(), passwordPolicy.getLoginPolicy().getMaxPasswordAge());
-        assertEquals(passwordPolicies.get(0).getPasswordCreationPolicy().getMinPasswordAge(), passwordPolicy.getPasswordCreationPolicy().getMinPasswordAge());
-
+	public void testGetPasswordPolicy() throws RuntimeException {
+        RuntimeException exception = null;
+		try {
+        	PasswordPolicy passwordPolicy = createPasswordPolicy();
+        	getDao().save(passwordPolicy);
+        	assertEquals(passwordPolicy.getLoginPolicy().getMaxPasswordAge(), passwordPolicy.getLoginPolicy().getMaxPasswordAge());
+            assertEquals(passwordPolicy.getPasswordCreationPolicy().getMinPasswordAge(), passwordPolicy.getPasswordCreationPolicy().getMinPasswordAge());
+        	PasswordPolicy passwordPolicy2 = createPasswordPolicy();
+        	getDao().save(passwordPolicy2);
+        	getDao().getPasswordPolicy(); 
+        }
+        catch(RuntimeException e) {
+        	exception = e;
+        }
+		assertNotNull(exception);
     }
 
 	   public static PasswordPolicy createPasswordPolicy() {
