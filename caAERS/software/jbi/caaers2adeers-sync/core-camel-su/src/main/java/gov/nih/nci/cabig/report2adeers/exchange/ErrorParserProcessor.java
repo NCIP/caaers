@@ -47,7 +47,7 @@ public class ErrorParserProcessor implements Processor {
     		camelExceptionCaught = e.getMessage();
     	}
 		
-		camelExceptionCaught += "Error Processing File, not a valid e2B file; " + camelExceptionCaught;
+		camelExceptionCaught = "Error Processing File, not a valid e2B file; " + camelExceptionCaught;
 		
 		//This will be a very slow processor, it is highly inefficient but robust in the face of junk data.
     	String fixedBody= "<ichicsrack lang=\"en\">\n" +
@@ -80,7 +80,7 @@ public class ErrorParserProcessor implements Processor {
 
 	private static String populate(Map<String, Object> props, String key,
 			String cur) {
-		String str = (String) props.get(key);
+		String str = props.get(key).toString();
 		if(!StringUtils.isEmpty(str)) {
 			cur = str;
 		}
