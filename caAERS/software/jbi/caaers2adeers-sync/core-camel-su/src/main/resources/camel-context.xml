@@ -80,6 +80,7 @@
     <bean id="crlfFixProcessor" class="gov.nih.nci.cabig.rave2caaers.exchange.CRLFFixProcessor"/>
     <bean id="raveIntegrationHeaderProcessor" class="gov.nih.nci.cabig.rave2caaers.exchange.RaveIntegrationHeaderProcessor"/>
     <bean id="raveCredentialsProcessor" class="gov.nih.nci.cabig.rave2caaers.exchange.CredentialsProcessor" />
+    <bean id="errorParserProcessor" class="gov.nih.nci.cabig.report2adeers.exchange.ErrorParserProcessor"/>
     
     <bean id="participantODMMessageProcessor" class="gov.nih.nci.cabig.open2caaers.exchange.ParticipantODMMessageProcessor">
     	<property name="caaersWSUser" value="s[PART_IS_USERNAME]" />

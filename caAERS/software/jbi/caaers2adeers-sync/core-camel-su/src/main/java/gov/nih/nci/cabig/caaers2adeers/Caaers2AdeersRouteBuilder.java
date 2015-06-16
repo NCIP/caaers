@@ -132,7 +132,7 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
 			.to("log:gov.nih.nci.cabig.caaers2adeers.general_error?showHeaders=true&multiline=true&level=ERROR")
     		.choice()
             .when(header(ToCaaersReportWSRouteBuilder.NEEDS_ACK).isEqualTo(Boolean.TRUE.toString()))
-            	.to("xslt:" + ToCaaersReportWSRouteBuilder.responseXSLBase + "E2BParserErrors2ACK.xsl")
+            	.processRef("errorParserProcessor")
             	.to("direct:sendE2BAckSink")
             .otherwise()
                 .to("direct:morgue")
