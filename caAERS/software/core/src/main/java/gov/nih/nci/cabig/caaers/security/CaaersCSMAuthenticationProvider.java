@@ -13,15 +13,18 @@ import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicySe
 import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.validators.LoginPolicyValidator;
 import gov.nih.nci.cabig.caaers.service.security.user.Credential;
 import gov.nih.nci.cabig.ctms.acegi.csm.authentication.CSMAuthenticationProvider;
+import gov.nih.nci.cabig.ctms.audit.DataAuditInfo;
 
 import java.util.Date;
 
 import org.acegisecurity.AccountExpiredException;
+import org.acegisecurity.Authentication;
 import org.acegisecurity.AuthenticationException;
 import org.acegisecurity.BadCredentialsException;
 import org.acegisecurity.CredentialsExpiredException;
 import org.acegisecurity.DisabledException;
 import org.acegisecurity.LockedException;
+import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.acegisecurity.userdetails.UserDetails;
 import org.apache.commons.logging.Log;
@@ -116,6 +119,17 @@ public class CaaersCSMAuthenticationProvider extends CSMAuthenticationProvider {
 			throw new BadCredentialsException("Invalid login credentials");
 		} finally {
 			// save the caAERS user properties.
+			
+			//check for oops
+			if(DataAuditInfo.getLocal() == null) {
+				logger.error("DataAuditInfor is not set! This is not supposed to happen, emergency setting it to prevent oops.");
+				Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+				if(auth != null) {
+					DataAuditInfo.setLocal(new gov.nih.nci.cabig.ctms.audit.domain.DataAuditInfo(
+							auth.getName(), "UNKNOWN", new Date()));
+				}
+			}
+			
 			if(caaersUser!=null) {
 				userRepository.save(caaersUser);
 			}
