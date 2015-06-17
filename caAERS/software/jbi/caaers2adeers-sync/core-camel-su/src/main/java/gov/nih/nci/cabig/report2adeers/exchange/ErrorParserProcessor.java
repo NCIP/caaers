@@ -47,7 +47,7 @@ public class ErrorParserProcessor implements Processor {
     		camelExceptionCaught = e.getMessage();
     	}
 		
-		camelExceptionCaught = "Error Processing File, not a valid e2B file; " + camelExceptionCaught;
+		camelExceptionCaught = "Error Processing File, not a valid E2B file; " + camelExceptionCaught;
 		
 		//This will be a very slow processor, it is highly inefficient but robust in the face of junk data.
     	String fixedBody= "<ichicsrack lang=\"en\">\n" +
@@ -63,7 +63,7 @@ public class ErrorParserProcessor implements Processor {
             "</ichicsrmessageheader>\n" +
             "<acknowledgment>\n" +
                 "<messageacknowledgment>\n" +
-                    "<icsrmessagenumb><xsl:value-of select=" + msg_number + " /></icsrmessagenumb>\n" +
+                    "<icsrmessagenumb>" + msg_number + "</icsrmessagenumb>\n" +
                     "<localmessagenumb></localmessagenumb>\n" +
                     "<icsrmessagesenderidentifier>" + msg_sender_id + "</icsrmessagesenderidentifier>\n" +
                     "<icsrmessagereceiveridentifier>" + msg_receiver_id + "</icsrmessagereceiveridentifier>\n" +
