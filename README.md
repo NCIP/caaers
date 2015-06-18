@@ -27,7 +27,7 @@ Please see the NOTICE and LICENSE files for details.
 Please join us in further developing and improving caAERS.
 
 # Prerequisites
- * [Installation guide](https://wiki.nci.nih.gov/display/caAERS/caAERS+2.8-M1+Quick+Start+Installation+and+Configuration+Guide#caAERS27-M1QuickStartInstallationandConfigurationGuide-InstallationandUpgradeProcedures)
+ * [Installation guide](https://wiki.nci.nih.gov/display/caAERS/caAERS+2.8-M3+Quick+Start+Installation+and+Configuration+Guide)
  * JDK 1.7\*
  * PostgreSQL 9.2
  * Tomcat 7.0.59  (SSL enabled)
