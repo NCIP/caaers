@@ -34,11 +34,9 @@ public class CaaersFieldsTreeTest  extends CaaersTestCase {
         assertEquals("adverseEvents", nodes.get(0).getPropertyName());
     }
 
-    //TODO: JanakiRam. This test cases is failing sometime. Either Dirk/Biju needs to fix this.
-   /* public void testSections() {
-    	//FIXME: Sometimes this is 3, not 2.
+    public void testSections() {
         assertEquals(2, tree.getChildren().size());
-    }*/
+    }
     
     //checks whether the call is properly getting delegated to expedited tree. 
     public void testInitialize() {
@@ -76,6 +74,9 @@ public class CaaersFieldsTreeTest  extends CaaersTestCase {
         tree.add(tabSectionNode);
         TreeNode node = tree.getNodeForSection(TabSection.COURSE_CYCLE_SECTION);
         assertEquals(2, node.getChildren().size());
+        
+        // remove the node that is added
+        tree.getChildren().remove(tabSectionNode);
     }
 
     public void testGetMessage() {

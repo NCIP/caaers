@@ -60,8 +60,7 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
 		researchStaffRepository = (ResearchStaffRepository)getDeployedApplicationContext().getBean("researchStaffRepository");
 	}
 
-    //TODO: JanakiRam. This test cases is failing sometime. Either Dirk/Biju needs to fix this.
-	/*@Test
+    @Test
 	public void testResearchStaffByLoginIdSave() throws Exception{
 		try {
 			//Create or update , whatever it is new data will be populated ..
@@ -76,16 +75,12 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
 			modifyDates(staff);
 			svc.saveResearchStaff(staff);
 			
-			updatedResearchStaff = fetchResearchStaff("jchapman");
+			interruptSession();
 			
-			if("[879]-345-0983".equals(updatedResearchStaff.getFaxNumber())) {
-				wait(5000);
-				updatedResearchStaff = fetchResearchStaff("jchapman");
-			}
+			updatedResearchStaff = fetchResearchStaff("jchapman");
 			
 			assertNotNull("The updated reseach staff should not be null.", updatedResearchStaff);
 			
-			//FIXME: "expected:<[111]-345-0983> but was:<[879]-345-0983>" happens sometimes. Meaning the original before the update is pulled.
 			assertEquals("111-345-0983", updatedResearchStaff.getFaxNumber());
 			assertEquals("111-678-0098", updatedResearchStaff.getPhoneNumber());
 			assertEquals("caaers.app2@gmail.com",updatedResearchStaff.getEmailAddress());
@@ -102,7 +97,7 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
 			e.printStackTrace();
 			fail("Error running test: " + e.getMessage());
 		}		
-	}*/
+	}
 	
 	@Test
 	public void testResearchStaffByEmailSave() throws Exception{
@@ -118,6 +113,8 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
 			staff = (gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff)unmarshaller.unmarshal(xmlFile);
 			modifyDates(staff);
 			svc.saveResearchStaff(staff);
+			
+			interruptSession();
 			
 			updatedResearchStaff = fetchResearchStaff("caaers.rock@gmail.com");
 			
@@ -150,6 +147,8 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
 			staff = (gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff)unmarshaller.unmarshal(xmlFile);
 			modifyDates(staff);
 			svc.saveResearchStaff(staff);
+			
+			interruptSession();
 			
 			updatedResearchStaff = fetchResearchStaff("jchapman");
 			
