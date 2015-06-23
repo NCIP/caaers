@@ -4,9 +4,10 @@
            elementFormDefault="unqualified"
            targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/saerules"
            xmlns:cct="http://schema.integration.caaers.cabig.nci.nih.gov/common"
-		   xmlns:ae="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent" xmlns:Q1="http://schema.integration.caaers.cabig.nci.nih.gov/aereport">
+		   xmlns:ae="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent"
+		   xmlns:Q1="http://schema.integration.caaers.cabig.nci.nih.gov/aereport">
 	
-    <xs:import schemaLocation="AEReport.xsd" namespace="http://schema.integration.caaers.cabig.nci.nih.gov/aereport"></xs:import>
+    <xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/aereport" schemaLocation="AEReport.xsd" />
     <xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/adverseevent" schemaLocation="caAERSAeTypes.xsd"/>
 	<!--<xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" schemaLocation="caAERSCommonDataTypes.xsd"/>-->
 	<xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" schemaLocation="caAERSCommonTypes.xsd"/>
@@ -183,7 +184,6 @@
             <xs:element minOccurs="1" name="action" type="xs:string"/>
             <xs:element minOccurs="0" name="actionText" type="xs:string"/>
             <xs:element minOccurs="1" name="report" type="xs:string"/>
-            <xs:element name="reportId" type="xs:string" maxOccurs="1" minOccurs="0"></xs:element>
             <xs:element minOccurs="1" name="status" type="xs:string"/>
             <xs:element minOccurs="1" name="due" type="xs:string"/>
             <xs:element minOccurs="0" name="dueDate" type="xs:string"/>
@@ -284,16 +284,10 @@
             			</xs:documentation>
             		</xs:annotation>
             	</xs:element>
-            	<xs:element name="reportId" type="xs:string"
-            		maxOccurs="1" minOccurs="0">
-            	</xs:element>
-            	<xs:element name="withdrawReport" type="xs:boolean"
-            		maxOccurs="1" minOccurs="0">
-            	</xs:element>
-            	<xs:element name="reporter" type="Q1:ReporterType"
-            		maxOccurs="1" minOccurs="0">
-            	</xs:element>
-            	<xs:element name="physician" type="Q1:PhysicianType" maxOccurs="1" minOccurs="0"></xs:element>
+            	<xs:element name="reportId" type="xs:string" maxOccurs="1" minOccurs="0"/>
+            	<xs:element name="withdrawReport" type="xs:boolean" maxOccurs="1" minOccurs="0"/>
+            	<xs:element name="reporter" type="Q1:ReporterType" maxOccurs="1" minOccurs="0"/>
+            	<xs:element name="physician" type="Q1:PhysicianType" maxOccurs="1" minOccurs="0" />
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -305,10 +299,16 @@
             </xs:documentation>
         </xs:annotation>
         <xs:complexType>
-        <xs:complexContent>
-            <xs:extension base="SaveAndEvaluateAEsOutputMessageType">
-            </xs:extension>
-        </xs:complexContent>
+        	<xs:complexContent>
+        		<xs:extension
+        			base="SaveAndEvaluateAEsOutputMessageType">
+        			<xs:sequence>
+        				<xs:element name="reportId"
+        					type="xs:string">
+        				</xs:element>
+        			</xs:sequence>
+        		</xs:extension>
+        	</xs:complexContent>
         </xs:complexType>
     </xs:element>
 

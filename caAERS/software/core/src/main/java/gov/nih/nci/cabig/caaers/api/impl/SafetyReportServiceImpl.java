@@ -550,6 +550,8 @@ public class SafetyReportServiceImpl {
 		ValidationErrors errors = new ValidationErrors();
 		
 		initiateSafetyReportAction(aeSrcReport, caaersServiceResponse, errors);
+		
+		retVal.setReportId(aeSrcReport.getExternalId());
 	}
     
     /**
