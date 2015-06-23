@@ -37,21 +37,26 @@ import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AdverseEventType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.BaseAdverseEventReport;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.AEsOutputMessage;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.AdverseEventResult;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.AdverseEvents;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.EvaluateAEsInputMessage;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.EvaluateAEsOutputMessage;
+import gov.nih.nci.cabig.caaers.integration.schema.saerules.EvaluateAndInitiateInputMessage;
+import gov.nih.nci.cabig.caaers.integration.schema.saerules.EvaluateAndInitiateOutputMessage;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.EvaluatedAdverseEventResults;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.RecommendedActions;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.SaveAndEvaluateAEsInputMessage;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.SaveAndEvaluateAEsOutputMessage;
+import gov.nih.nci.cabig.caaers.integration.schema.saerules.SaveAndEvaluateAEsOutputMessageType;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.RecommendedActionService;
 import gov.nih.nci.cabig.caaers.service.migrator.adverseevent.AdverseEventConverter;
 import gov.nih.nci.cabig.caaers.service.migrator.adverseevent.AdverseEventReportingPeriodMigrator;
 import gov.nih.nci.cabig.caaers.service.migrator.adverseevent.SAEAdverseEventReportingPeriodConverter;
+import gov.nih.nci.cabig.caaers.service.migrator.adverseevent.SAEServiceMessageConverter;
 import gov.nih.nci.cabig.caaers.service.synchronizer.adverseevent.AdverseEventReportingPeriodSynchronizer;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
@@ -106,10 +111,83 @@ public class SAEEvaluationServiceImpl {
 	private AdverseEventValidatior adverseEventValidatior;
 	private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
 	private Validator validator;
-    private enum RequestType{SaveEvaluate, Evaluate};
+	private SAEServiceMessageConverter xmlConverter;
+    private enum RequestType{SaveEvaluate, Evaluate, EvaluateInitiate};
 	private static String DEF_ERR_MSG = "Error evaluating adverse events with SAE rules";
 
 	private static Log logger = LogFactory.getLog(SAEEvaluationServiceImpl.class);
+	
+	private SafetyReportServiceImpl safetySvcImpl;
+	
+	public SafetyReportServiceImpl getSafetySvcImpl() {
+		return safetySvcImpl;
+	}
+
+	public void setSafetySvcImpl(SafetyReportServiceImpl safetySvcImpl) {
+		this.safetySvcImpl = safetySvcImpl;
+	}
+	
+	public SAEServiceMessageConverter getSAEServiceMessageConverter() {
+		return xmlConverter;
+	}
+
+	public void setSAEServiceMessageConverter(SAEServiceMessageConverter xmlConverter) {
+		this.xmlConverter = xmlConverter;
+	}
+
+	private AEsOutputMessage saveAndProcessAdverseEvents(Study study, AdverseEventReportingPeriod reportingPeriod, Map<AdverseEvent, AdverseEventResult> mapAE2DTO, RequestType type) throws CaaersFault {
+		SaveAndEvaluateAEsOutputMessageType output;
+		switch (type) {
+		case Evaluate:
+			throw new IllegalArgumentException("Can't tanke evaluate as an input.");
+		case EvaluateInitiate:
+			output = new EvaluateAndInitiateOutputMessage();
+			break;
+		case SaveEvaluate:
+			output = new SaveAndEvaluateAEsOutputMessage();
+			break;
+		default:
+			output = null;
+		
+		}
+		try {
+             // 2. Persist AdverseEvents.
+            ValidationErrors errors = new ValidationErrors();
+            reportingPeriod = createOrUpdateAdverseEvents(reportingPeriod, errors, true);
+
+            if(errors.hasErrors()){
+               logger.error("Adverse Event Management Service create or update call failed :" + String.valueOf(errors));
+                if ( errors.getErrorAt(0).getCode().equals("NO-CODE")) throw Helper.createCaaersFault(DEF_ERR_MSG, errors.getErrorAt(0).getCode(), errors.getErrorAt(0).getMessage() + " "  +errors.getErrorAt(0).getReplacementVariables()[0]);
+				throw Helper.createCaaersFault(DEF_ERR_MSG, errors.getErrorAt(0).getCode(), errors.getErrorAt(0).getMessage());
+            }
+
+            //initialize requires reporting flag
+            for(AdverseEvent ae : reportingPeriod.getAdverseEvents()) {
+                AdverseEventResult aeResult = findAdverseEvent(ae, mapAE2DTO);
+                if(aeResult != null) aeResult.setRequiresReporting(ae.getRequiresReporting());
+            }
+
+            output.setLinkToReport(constructLinkToReport(study.getId(),reportingPeriod.getParticipant().getId(), reportingPeriod.getId()));
+            // 3. fire Evaluation Service to identify SAE or not ?
+            output = (SaveAndEvaluateAEsOutputMessageType) fireSAERules(reportingPeriod, study, mapAE2DTO, type, output);
+
+            for(AdverseEvent ae : reportingPeriod.getAdverseEvents()){
+            	AdverseEventResult aeResult = findAdverseEvent(ae, mapAE2DTO);
+            	if(aeResult == null) {
+            		continue;
+            	}
+				ae.setRequiresReporting(aeResult.isRequiresReporting());
+            }
+            
+            // save the updated reporting period
+            saveReportingPeriod(reportingPeriod);
+        }
+        catch(CaaersSystemException ex) {
+            throw Helper.createCaaersFault(DEF_ERR_MSG, ex.getErrorCode(), ex.getMessage());
+        }
+		
+		return output;
+	}
 
     /**
      * Process and Save the Adverse Events.
@@ -118,8 +196,7 @@ public class SAEEvaluationServiceImpl {
      * @return
      * @throws CaaersFault
      */
-
-    public SaveAndEvaluateAEsOutputMessage saveAndProcessAdverseEvents(SaveAndEvaluateAEsInputMessage saveAndEvaluateAEsInputMessage) throws CaaersFault {
+    public SaveAndProcessOutput saveAndProcessAdverseEvents(SaveAndEvaluateAEsInputMessage saveAndEvaluateAEsInputMessage) throws CaaersFault {
         Map<AdverseEvent, AdverseEventResult> mapAE2DTO = new HashMap<AdverseEvent, AdverseEventResult>();
 
         if (saveAndEvaluateAEsInputMessage == null ) {
@@ -129,13 +206,14 @@ public class SAEEvaluationServiceImpl {
         }
         SaveAndEvaluateAEsOutputMessage saveAndEvaluateAEsOutputMessage = (SaveAndEvaluateAEsOutputMessage)createResponseObject(RequestType.SaveEvaluate);
 
+        AdverseEventReportingPeriod reportingPeriod = null;
         try {
             // 0. Load the study required.
             String studyIdentifier = saveAndEvaluateAEsInputMessage.getCriteria().getStudyIdentifier();
             Study study = fetchStudy(studyIdentifier);
 
             // 1. Call the converter and make the required object.
-            AdverseEventReportingPeriod reportingPeriod = reportingPeriodConverter.convert(saveAndEvaluateAEsInputMessage,mapAE2DTO);
+            reportingPeriod = reportingPeriodConverter.convert(saveAndEvaluateAEsInputMessage,mapAE2DTO);
 
              // 2. Persist AdverseEvents.
             ValidationErrors errors = new ValidationErrors();
@@ -172,10 +250,35 @@ public class SAEEvaluationServiceImpl {
             throw Helper.createCaaersFault(DEF_ERR_MSG, ex.getErrorCode(), ex.getMessage());
         }
 
-        return saveAndEvaluateAEsOutputMessage;
+        return new SaveAndProcessOutput(saveAndEvaluateAEsOutputMessage, reportingPeriod);
+    }
+    
+    public EvaluateAndInitiateOutputMessage processAndInitiate(EvaluateAndInitiateInputMessage evaluateInputMessage) throws CaaersFault {
+    	
+    	SaveAndEvaluateAEsInputMessage sae = xmlConverter.SAEInputMessage(evaluateInputMessage);
+    	
+    	SaveAndProcessOutput data = saveAndProcessAdverseEvents(sae);
+    	
+    	SaveAndEvaluateAEsOutputMessage response = data.getMsg();
+    	
+    	EvaluateAndInitiateOutputMessage retVal = xmlConverter.EvaluateAndInitiateOutput(response);
+    			
+    	if(hasCreateAction(response.getRecommendedActions()) && data.getPeriod() != null) {
+    		safetySvcImpl.initiateSafetyReportAction(evaluateInputMessage, response, retVal, data.getPeriod());
+    	}
+		return retVal;
     }
 
-    /**
+    private boolean hasCreateAction(List<RecommendedActions> recommendedActions) {
+		for(RecommendedActions rec : recommendedActions) {
+			if(rec.getAction().equalsIgnoreCase("CREATE")) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
      * Process the adverse Events.
      * @param evaluateAEsInputMessage
      * @return
