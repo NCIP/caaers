@@ -68,6 +68,7 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
 			staff = (gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff)unmarshaller.unmarshal(xmlFile);
 			modifyDates(staff);
 			svc.saveResearchStaff(staff);	
+			interruptSession();
 			
 			//update with modified data ..
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/api/testdata/UpdateResearchStaffTest.xml")[0].getFile();
