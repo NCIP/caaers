@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="88f72bf3-2cf9-4ec3-af91-165bc90ebfe5" activeEnvironment="Default" name="REST Project 1" resourceRoot="" soapui-version="5.1.3" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.actions.iface.tools.soapui.TestRunnerAction@values-local"><![CDATA[<xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  <con:entry key="Environment" value="Default"/>
+  <con:entry key="Global Properties" value=""/>
+  <con:entry key="TestSuite" value="&lt;all>"/>
+  <con:entry key="Password" value=""/>
+  <con:entry key="TestRunner Path" value=""/>
+  <con:entry key="Tool Args" value=""/>
+  <con:entry key="Ignore Errors" value="false"/>
+  <con:entry key="Host:Port" value=""/>
+  <con:entry key="user-settings.xml Password" value=""/>
+  <con:entry key="WSS Password Type" value=""/>
+  <con:entry key="Save Project" value="false"/>
+  <con:entry key="Enable UI" value="false"/>
+  <con:entry key="System Properties" value=""/>
+  <con:entry key="Domain" value=""/>
+  <con:entry key="Coverage Report" value="false"/>
+  <con:entry key="Export JUnit Results" value="false"/>
+  <con:entry key="Open Report" value="false"/>
+  <con:entry key="Project Properties" value=""/>
+  <con:entry key="Export All" value="false"/>
+  <con:entry key="Project Password" value=""/>
+  <con:entry key="Report Format(s)" value=""/>
+  <con:entry key="TestCase" value="&lt;all>"/>
+  <con:entry key="Print Report" value="false"/>
+  <con:entry key="Username" value=""/>
+  <con:entry key="Root Folder" value=""/>
+  <con:entry key="Save After" value="false"/>
+  <con:entry key="Add Settings" value="false"/>
+  <con:entry key="Endpoint" value=""/>
+  <con:entry key="Select Report Type" value=""/>
+</xml-fragment>]]></con:setting></con:settings><con:interface xsi:type="con:RestService" id="fd715b45-5899-41ab-827f-a3dfc1276ffb" wadlVersion="http://wadl.dev.java.net/2009/02" name="http://localhost:7700" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart=""/><con:endpoints><con:endpoint>http://localhost:7700</con:endpoint></con:endpoints><con:resource name="ParticipantInitialization" path="/caaers/ParticipantInitialization" id="7d5e8899-6ba6-40ce-a29b-0e48d4795bed"><con:settings/><con:parameters/><con:method name="ParticipantInitialization" id="da92bca9-02e1-43a4-9ea0-298d4afbc18c" method="POST"><con:settings/><con:parameters/><con:representation type="FAULT"><con:mediaType xsi:nil="true"/><con:status>401</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="REQUEST"><con:mediaType>application/xml</con:mediaType><con:params/></con:representation><con:representation type="FAULT"><con:mediaType xsi:nil="true"/><con:status>401</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="FAULT"><con:mediaType xsi:nil="true"/><con:status>401</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="FAULT"><con:mediaType xsi:nil="true"/><con:status>401</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="FAULT"><con:mediaType xsi:nil="true"/><con:status>401</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="FAULT"><con:mediaType xsi:nil="true"/><con:status>409</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="FAULT"><con:mediaType xsi:nil="true"/><con:status>404</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="FAULT"><con:mediaType xsi:nil="true"/><con:status>409</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="FAULT"><con:mediaType xsi:nil="true"/><con:status>409</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="FAULT"><con:mediaType xsi:nil="true"/><con:status>409</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="FAULT"><con:mediaType xsi:nil="true"/><con:status>409</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="FAULT"><con:mediaType xsi:nil="true"/><con:status>409</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="FAULT"><con:mediaType xsi:nil="true"/><con:status>409</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="FAULT"><con:mediaType xsi:nil="true"/><con:status>409</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="FAULT"><con:mediaType xsi:nil="true"/><con:status>409</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="FAULT"><con:mediaType xsi:nil="true"/><con:status>409</con:status><con:params/><con:element>Response</con:element></con:representation><con:representation type="FAULT"><con:mediaType xsi:nil="true"/><con:status>409</con:status><con:params/><con:element>Response</con:element></con:representation><con:request name="Request 1" id="b596cc00-6ab2-4d38-a3d2-8a2d1cf2a2d7" mediaType="application/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:7700</con:endpoint><con:request><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<ODM CreationDateTime="2013-03-19T09:19:44" FileOID="RavePatientPush.xml" FileType="Transactional" ODMVersion="1.3">
+	<ClinicalData MetaDataVersionOID="3629869" StudyOID="8875">
+		<SubjectData SubjectKey="78226" TransactionType="Insert">
+			<SiteRef LocationOID="CTSUTST01"/>
+			<StudyEventData StudyEventOID="SUBJECT" TransactionType="Update">
+				<FormData FormOID="SUBJECT_ENROLLMENT" TransactionType="Update">
+					<ItemGroupData ItemGroupOID="SUBJECT_ENROLLMENT" TransactionType="Update">
+						<ItemData ItemOID="PARTIC_ENROL_DT" Value="19 Mar 2013"/>
+						<ItemData ItemOID="CURRENT_SITE_ID" Value="MN008"/>
+						<ItemData ItemOID="PT_ID" Value="78128"/>
+						<ItemData ItemOID="ENROLLING_SITE_ID" Value="MN008"/>
+						<ItemData ItemOID="LEAD_INST_NAME" Value="ECOG"/>
+						<ItemData ItemOID="ENROLL_TIME" Value="09:19:28:AM">
+							<MeasurementUnitRef MeasurementUnitOID="EDT"/>
+						</ItemData>
+						<ItemData ItemOID="GROUP_DATA" Value="N/A"/>
+						<ItemData ItemOID="SRC_APP" Value="OPEN"/>
+					</ItemGroupData>
+				</FormData>
+			</StudyEventData>
+			<StudyEventData StudyEventOID="ENROLLMENT_FORMS" TransactionType="Update">
+				<FormData FormOID="DEMOGRAPHY" TransactionType="Update">
+					<ItemGroupData ItemGroupOID="DEMOGRAPHY" TransactionType="Update">
+						<ItemData ItemOID="PT_INITIALS_NAME" Value="FLM"/>
+						<ItemData ItemOID="PER_BIR_DT" Value="14 Jan 1931"/>
+						<ItemData ItemOID="ETHN_GRP_CAT_TXT" Value="Not Hispanic or Latino"/>
+						<ItemData ItemOID="PERSON_GENDER" Value="Female Gender"/>
+						<ItemData ItemOID="COUNTRY_CD" Value="US"/>
+						<ItemData ItemOID="ADDR_POSTAL_CD" Value="32464"/>
+						<ItemData ItemOID="PAYMENT_METHOD" Value="PRIVATE INSURANCE"/>
+					</ItemGroupData>
+					<ItemGroupData ItemGroupOID="DEMOGRAPHY" ItemGroupRepeatKey="1" TransactionType="Update">
+						<ItemData ItemOID="RACE_CAT_TXT" Value="Black or African American"/>
+					</ItemGroupData>
+				</FormData>
+			</StudyEventData>
+			<StudyEventData StudyEventOID="ENROLLMENT_FORMS" TransactionType="Update">
+				<FormData FormOID="STEP_INFORMATION" TransactionType="Update">
+					<ItemGroupData ItemGroupOID="STEP_INFORMATION" ItemGroupRepeatKey="1" TransactionType="Update">
+						<ItemData ItemOID="EVENT_DATE" Value="19 Mar 2013"/>
+					</ItemGroupData>
+					<ItemGroupData ItemGroupOID="STEP_INFORMATION" ItemGroupRepeatKey="1" TransactionType="Update">
+						<ItemData ItemOID="REG_STEP_NUM" Value="1"/>
+					</ItemGroupData>
+					<ItemGroupData ItemGroupOID="STEP_INFORMATION" ItemGroupRepeatKey="1" TransactionType="Update">
+						<ItemData ItemOID="EVENT_DESC" Value="Randomization"/>
+					</ItemGroupData>
+					<ItemGroupData ItemGroupOID="STEP_INFORMATION" ItemGroupRepeatKey="1" TransactionType="Update">
+						<ItemData ItemOID="EVENT_TIME" Value="09:19:28:AM">
+							<MeasurementUnitRef MeasurementUnitOID="EDT"/>
+						</ItemData>
+					</ItemGroupData>
+					<ItemGroupData ItemGroupOID="STEP_INFORMATION" ItemGroupRepeatKey="1" TransactionType="Update">
+						<ItemData ItemOID="TRACKING_NUM" Value="109975"/>
+					</ItemGroupData>
+					<ItemGroupData ItemGroupOID="STEP_INFORMATION" ItemGroupRepeatKey="1" TransactionType="Update">
+						<ItemData ItemOID="TX_MD_PART_INV_NM" Value="Stuart Bloom"/>
+					</ItemGroupData>
+					<ItemGroupData ItemGroupOID="STEP_INFORMATION" ItemGroupRepeatKey="1" TransactionType="Update">
+						<ItemData ItemOID="PROT_REG_NAME" Value="Stuart Bloom"/>
+					</ItemGroupData>
+					<ItemGroupData ItemGroupOID="STEP_INFORMATION" ItemGroupRepeatKey="1" TransactionType="Update">
+						<ItemData ItemOID="INVESTIGATOR_NAME" Value="Stuart Bloom"/>
+					</ItemGroupData>
+					<ItemGroupData ItemGroupOID="STEP_INFORMATION" ItemGroupRepeatKey="1" TransactionType="Update">
+						<ItemData ItemOID="ORG_NAME" Value="ECOG"/>
+					</ItemGroupData>
+					<ItemGroupData ItemGroupOID="STEP_INFORMATION" ItemGroupRepeatKey="1" TransactionType="Update">
+						<ItemData ItemOID="PROT_TX_ARM_ASS_TXT" Value="B"/>
+					</ItemGroupData>
+				</FormData>
+			</StudyEventData>
+		</SubjectData>
+	</ClinicalData>
+</ODM>]]></con:request><con:originalUri>http://localhost/caaers/ParticipantInitialization</con:originalUri><con:credentials><con:username>SYSTEM</con:username><con:password>system_admin</con:password><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>NTLM</con:addedBasicAuthenticationTypes><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:preemptive>true</con:preemptive><con:authType>Preemptive</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method></con:resource></con:interface><con:testSuite id="77a63205-0f23-45ae-9916-b67c5a286bff" name="ParticipantHttpService"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:properties/></con:testSuite><con:testSuite id="69dad402-8847-49e0-bfad-43b9d877a01b" name="TestSuite 2"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:properties/></con:testSuite><con:testSuite id="a8fe19fd-3fd9-40ef-86c4-b28d980e2661" name="http://localhost:7700 TestSuite"><con:description>TestSuite generated for REST Service [http://localhost:7700]</con:description><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="bf991abe-cb06-4c95-8abf-b42cbad92142" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="ParticipantInitialization TestCase" searchProperties="true"><con:description>TestCase generated for REST Resource [ParticipantInitialization] located at [/caaers/ParticipantInitialization]</con:description><con:settings/><con:testStep type="properties" name="ScriptProperties" id="bf34ecc2-22f9-4005-acfc-f853a7918d57"><con:settings/><con:config xsi:type="con:PropertiesStep" saveFirst="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>index</con:name><con:value>0</con:value></con:property></con:properties></con:config></con:testStep><con:testStep type="groovy" name="Groovy Script" id="4cc369ce-0d32-4edd-8cf6-ab4fc53de6e1"><con:settings/><con:config><script>testRunner.testCase.testSteps["ScriptProperties"].setPropertyValue("index", String.valueOf(context.ThreadIndex))</script></con:config></con:testStep><con:testStep type="restrequest" name="RequestTestCase" id="0e7091f3-5d59-4542-9124-5a51acf7baa3"><con:settings/><con:config service="http://localhost:7700" resourcePath="/caaers/ParticipantInitialization" methodName="ParticipantInitialization" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="RequestTestCase" id="b596cc00-6ab2-4d38-a3d2-8a2d1cf2a2d7" mediaType="application/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:7700</con:endpoint><con:request><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<ODM CreationDateTime="2013-03-19T09:19:44" FileOID="RavePatientPush.xml" FileType="Transactional" ODMVersion="1.3">
+	<ClinicalData MetaDataVersionOID="3629869" StudyOID="S1117">
+		<SubjectData SubjectKey="455550${index}" TransactionType="Insert">
+			<SiteRef LocationOID="CTSUTST01"/>
+			<StudyEventData StudyEventOID="SUBJECT" TransactionType="Update">
+				<FormData FormOID="SUBJECT_ENROLLMENT" TransactionType="Update">
+					<ItemGroupData ItemGroupOID="SUBJECT_ENROLLMENT" TransactionType="Update">
+						<ItemData ItemOID="PARTIC_ENROL_DT" Value="19 Mar 2013"/>
+						<ItemData ItemOID="CURRENT_SITE_ID" Value="MN008"/>
+						<ItemData ItemOID="PT_ID" Value="455550${index}"/>
+						<ItemData ItemOID="ENROLLING_SITE_ID" Value="MN008"/>
+						<ItemData ItemOID="LEAD_INST_NAME" Value="ECOG"/>
+						<ItemData ItemOID="ENROLL_TIME" Value="09:19:28:AM">
+							<MeasurementUnitRef MeasurementUnitOID="EDT"/>
+						</ItemData>
+						<ItemData ItemOID="GROUP_DATA" Value="N/A"/>
+						<ItemData ItemOID="SRC_APP" Value="OPEN"/>
+					</ItemGroupData>
+				</FormData>
+			</StudyEventData>
+			<StudyEventData StudyEventOID="ENROLLMENT_FORMS" TransactionType="Update">
+				<FormData FormOID="DEMOGRAPHY" TransactionType="Update">
+					<ItemGroupData ItemGroupOID="DEMOGRAPHY" TransactionType="Update">
+						<ItemData ItemOID="PT_INITIALS_NAME" Value="BLastMid"/>
+						<ItemData ItemOID="PER_BIR_DT" Value="28 Mar 1985"/>
+						<ItemData ItemOID="ETHN_GRP_CAT_TXT" Value="Not Hispanic or Latino"/>
+						<ItemData ItemOID="PERSON_GENDER" Value="Female Gender"/>
+						<ItemData ItemOID="COUNTRY_CD" Value="US"/>
+						<ItemData ItemOID="ADDR_POSTAL_CD" Value="32464"/>
+						<ItemData ItemOID="PAYMENT_METHOD" Value="PRIVATE INSURANCE"/>
+					</ItemGroupData>
+					<ItemGroupData ItemGroupOID="DEMOGRAPHY" ItemGroupRepeatKey="1" TransactionType="Update">
+						<ItemData ItemOID="RACE_CAT_TXT" Value="Black or African American"/>
+					</ItemGroupData>
+				</FormData>
+			</StudyEventData>
+			<StudyEventData StudyEventOID="ENROLLMENT_FORMS" TransactionType="Update">
+				<FormData FormOID="STEP_INFORMATION" TransactionType="Update">
+					<ItemGroupData ItemGroupOID="STEP_INFORMATION" ItemGroupRepeatKey="1" TransactionType="Update">
+						<ItemData ItemOID="EVENT_DATE" Value="19 Mar 2013"/>
+					</ItemGroupData>
+					<ItemGroupData ItemGroupOID="STEP_INFORMATION" ItemGroupRepeatKey="1" TransactionType="Update">
+						<ItemData ItemOID="REG_STEP_NUM" Value="1"/>
+					</ItemGroupData>
+					<ItemGroupData ItemGroupOID="STEP_INFORMATION" ItemGroupRepeatKey="1" TransactionType="Update">
+						<ItemData ItemOID="EVENT_DESC" Value="Randomization"/>
+					</ItemGroupData>
+					<ItemGroupData ItemGroupOID="STEP_INFORMATION" ItemGroupRepeatKey="1" TransactionType="Update">
+						<ItemData ItemOID="EVENT_TIME" Value="09:19:28:AM">
+							<MeasurementUnitRef MeasurementUnitOID="EDT"/>
+						</ItemData>
+					</ItemGroupData>
+					<ItemGroupData ItemGroupOID="STEP_INFORMATION" ItemGroupRepeatKey="1" TransactionType="Update">
+						<ItemData ItemOID="TRACKING_NUM" Value="109975"/>
+					</ItemGroupData>
+					<ItemGroupData ItemGroupOID="STEP_INFORMATION" ItemGroupRepeatKey="1" TransactionType="Update">
+						<ItemData ItemOID="TX_MD_PART_INV_NM" Value="Stuart Bloom"/>
+					</ItemGroupData>
+					<ItemGroupData ItemGroupOID="STEP_INFORMATION" ItemGroupRepeatKey="1" TransactionType="Update">
+						<ItemData ItemOID="PROT_REG_NAME" Value="Stuart Bloom"/>
+					</ItemGroupData>
+					<ItemGroupData ItemGroupOID="STEP_INFORMATION" ItemGroupRepeatKey="1" TransactionType="Update">
+						<ItemData ItemOID="INVESTIGATOR_NAME" Value="Stuart Bloom"/>
+					</ItemGroupData>
+					<ItemGroupData ItemGroupOID="STEP_INFORMATION" ItemGroupRepeatKey="1" TransactionType="Update">
+						<ItemData ItemOID="ORG_NAME" Value="ECOG"/>
+					</ItemGroupData>
+					<ItemGroupData ItemGroupOID="STEP_INFORMATION" ItemGroupRepeatKey="1" TransactionType="Update">
+						<ItemData ItemOID="PROT_TX_ARM_ASS_TXT" Value="B"/>
+					</ItemGroupData>
+				</FormData>
+			</StudyEventData>
+		</SubjectData>
+	</ClinicalData>
+</ODM>]]></con:request><con:originalUri>http://localhost/caaers/ParticipantInitialization</con:originalUri><con:assertion type="Simple NotContains" id="bd03f4ad-40d4-4a5d-8021-c8a67e7bb819" name="NotAlready"><con:configuration><token>already</token><ignoreCase>true</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:assertion type="Simple NotContains" id="99501d85-ce06-4568-a9be-607b7b27b2b1" name="Not Contains"><con:configuration><token>Error</token><ignoreCase>true</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:assertion type="Simple Contains" id="9e4912f2-3458-4517-8599-be22095a3d81" name="Contains"><con:configuration><token>created</token><ignoreCase>true</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:assertion type="Simple NotContains" id="bd03f4ad-40d4-4a5d-8021-c8a67e7bb819" name="NotAlready"><con:configuration><token>already</token><ignoreCase>true</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:username>SYSTEM</con:username><con:password>system_admin</con:password><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>NTLM</con:addedBasicAuthenticationTypes><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:preemptive>true</con:preemptive><con:authType>Preemptive</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep><con:loadTest id="4f23c34d-578f-4764-9bf7-d03a3764b5eb" name="LoadTest 1"><con:settings><con:setting id="HttpSettings@close-connections">false</con:setting></con:settings><con:threadCount>50</con:threadCount><con:startDelay>0</con:startDelay><con:sampleInterval>250</con:sampleInterval><con:calculateTPSOnTimePassed>true</con:calculateTPSOnTimePassed><con:resetStatisticsOnThreadCountChange>true</con:resetStatisticsOnThreadCountChange><con:historyLimit>-1</con:historyLimit><con:testLimit>1</con:testLimit><con:limitType>COUNT_PER_THREAD</con:limitType><con:loadStrategy><con:type>Simple</con:type><con:config><testDelay>1000</testDelay><randomFactor>0.5</randomFactor></con:config></con:loadStrategy><con:assertion type="Step Status" name="Step Status"/><con:maxAssertionErrors>100</con:maxAssertionErrors><con:statisticsLogFolder>C:\Program Files\SmartBear\SoapUI-5.1.3\logs</con:statisticsLogFolder><con:statisticsLogInterval>0</con:statisticsLogInterval><con:logStatisticsOnThreadChange>false</con:logStatisticsOnThreadChange><con:cancelOnReachedLimit>false</con:cancelOnReachedLimit><con:cancelExcessiveThreads>true</con:cancelExcessiveThreads><con:strategyInterval>500</con:strategyInterval><con:setupScript/><con:updateStatisticsPerTestStep>true</con:updateStatisticsPerTestStep></con:loadTest><con:properties/></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer><con:outgoing><con:name>Authentication</con:name><con:entry type="Username" username="SYSTEM" password="sytem_admin"><con:configuration><addCreated>true</addCreated><addNonce>true</addNonce><passwordType>PasswordText</passwordType></con:configuration></con:entry></con:outgoing></con:wssContainer><con:oAuth2ProfileContainer/><con:sensitiveInformation/></con:soapui-project>
