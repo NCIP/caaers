@@ -33,6 +33,7 @@ import gov.nih.nci.cabig.caaers.integration.schema.aereportid.ReportIdCriteria;
 import gov.nih.nci.cabig.caaers.integration.schema.aereportid.SafetyReportIdentifer;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ResponseDataType;
+import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.EvaluateAndInitiateInputMessage;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.EvaluateAndInitiateOutputMessage;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.SaveAndEvaluateAEsOutputMessage;
@@ -45,6 +46,7 @@ import gov.nih.nci.cabig.caaers.service.migrator.ExpeditedAdverseEventReportConv
 import gov.nih.nci.cabig.caaers.service.migrator.report.ExpeditedReportMigrator;
 import gov.nih.nci.cabig.caaers.service.synchronizer.report.ExpeditedAdverseEventReportSynchronizer;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
+import gov.nih.nci.cabig.caaers.validation.CaaersValidationException;
 import gov.nih.nci.cabig.caaers.validation.ValidationError;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
@@ -546,12 +548,16 @@ public class SafetyReportServiceImpl {
 			AdverseEventReportingPeriod repPeriod) {
 		
 		CaaersServiceResponse caaersServiceResponse = Helper.createResponse();
-		ExpeditedAdverseEventReport aeSrcReport = evaluateAndInitiateReportConverter.convert(evaluateInputMessage, repPeriod);
+		ExpeditedAdverseEventReport aeSrcReport = evaluateAndInitiateReportConverter.convert(evaluateInputMessage, repPeriod, response);
 		ValidationErrors errors = new ValidationErrors();
 		
 		initiateSafetyReportAction(aeSrcReport, caaersServiceResponse, errors);
 		
 		retVal.setReportId(aeSrcReport.getExternalId());
+		
+		if(errors.getErrorCount() > 0) {
+			throw new CaaersValidationException(errors.toString());
+		}
 	}
     
     /**
@@ -679,7 +685,25 @@ public class SafetyReportServiceImpl {
          baseReport.setActionText(actionType.name().substring(0, 1).toUpperCase() + 
         		 actionType.name().substring(1, actionType.name().length()).toLowerCase()  +
         		 " the " + report.getReportDefinition().getName());
-         ((BaseReports)(caaersServiceResponse.getServiceResponse().getResponseData().getAny())).getBaseReport().add(baseReport);
+         ServiceResponse serviceResponse = caaersServiceResponse.getServiceResponse();
+         if(serviceResponse == null) {
+        	 serviceResponse = new ServiceResponse();
+        	 caaersServiceResponse.setServiceResponse(serviceResponse);
+         }
+         ResponseDataType respData = serviceResponse.getResponseData();
+         if(respData == null) {
+        	 respData = new ResponseDataType();
+        	 serviceResponse.setResponseData(respData);
+         }
+         Object obj = respData.getAny();
+         BaseReports reportList;
+         if(obj == null || !(obj instanceof BaseReports)) {
+        	 reportList = new BaseReports();
+        	 respData.setAny(reportList);
+         } else  {
+        	 reportList = (BaseReports) obj;
+         }
+         reportList.getBaseReport().add(baseReport);
     }
 
     /**

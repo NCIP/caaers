@@ -111,7 +111,7 @@ public class SAEEvaluationServiceImpl {
 	private AdverseEventValidatior adverseEventValidatior;
 	private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
 	private Validator validator;
-	private SAEServiceMessageConverter xmlConverter;
+	private SAEServiceMessageConverter xmlConverter = new SAEServiceMessageConverter();
     private enum RequestType{SaveEvaluate, Evaluate, EvaluateInitiate};
 	private static String DEF_ERR_MSG = "Error evaluating adverse events with SAE rules";
 

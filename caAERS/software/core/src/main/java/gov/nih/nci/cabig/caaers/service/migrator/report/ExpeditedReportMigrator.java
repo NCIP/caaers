@@ -136,7 +136,7 @@ public class ExpeditedReportMigrator extends CompositeMigrator<ExpeditedAdverseE
 		}
 		String epochName = rpSrc.getEpoch() != null ? rpSrc.getEpoch().getName() : null;
 
-		AdverseEventReportingPeriod rpFound = assignment.findReportingPeriod(rpSrc.getExternalId(), rpSrc.getStartDate(), rpSrc.getEndDate(), rpSrc.getCycleNumber(), epochName, rpSrc.getTreatmentAssignment().getCode());
+		AdverseEventReportingPeriod rpFound = assignment.findReportingPeriod(rpSrc.getExternalId(), rpSrc.getStartDate(), rpSrc.getEndDate(), rpSrc.getCycleNumber(), epochName, rpSrc.getTreatmentAssignment() != null ? rpSrc.getTreatmentAssignment().getCode() : null);
 
 		if(rpFound == null){
 			outcome.addError("ER-RP-1", "Reporting period not found", studySrc.getFundingSponsorIdentifierValue(),

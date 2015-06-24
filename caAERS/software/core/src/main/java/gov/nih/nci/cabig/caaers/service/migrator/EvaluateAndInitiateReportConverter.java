@@ -6,10 +6,17 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.service.migrator;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.EvaluateAndInitiateInputMessage;
+import gov.nih.nci.cabig.caaers.integration.schema.saerules.SaveAndEvaluateAEsOutputMessage;
 import gov.nih.nci.cabig.caaers.service.migrator.adverseevent.AdverseEventConverter;
 
 /**
@@ -25,14 +32,20 @@ public class EvaluateAndInitiateReportConverter {
 		utility.setStudyDao(studyDao);
 	}
 
-	public ExpeditedAdverseEventReport convert(EvaluateAndInitiateInputMessage evaluateInputMessage, AdverseEventReportingPeriod repPeriod) {
+	public ExpeditedAdverseEventReport convert(EvaluateAndInitiateInputMessage evaluateInputMessage, AdverseEventReportingPeriod repPeriod, SaveAndEvaluateAEsOutputMessage response) {
 		ExpeditedAdverseEventReport aeSrcReport = new ExpeditedAdverseEventReport();
 		aeSrcReport.setExternalId(evaluateInputMessage.getReportId());
 		aeSrcReport.setReporter(utility.convertReporter(evaluateInputMessage.getReporter()));
 		aeSrcReport.setPhysician(utility.convertPhysician(evaluateInputMessage.getPhysician()));
 		aeSrcReport.setExternalId(evaluateInputMessage.getReportId());
-		aeSrcReport.setAssignment(repPeriod.getAssignment());
+		aeSrcReport.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		aeSrcReport.setReportingPeriod(repPeriod);
+		List<Report> reports = new ArrayList<Report>();
+		Report report = new Report();
+		report.setReportDefinition(new ReportDefinition());
+		report.getReportDefinition().setName(response.getRecommendedActions().get(0).getReport());
+		reports.add(report);
+		aeSrcReport.setReports(reports );
 		return aeSrcReport;
 	}
 	
