@@ -969,6 +969,9 @@ public class ExpeditedAdverseEventReportConverterUtility {
 	
 	protected Reporter convertReporter(ReporterType xmlReporterType){
 		Reporter reporter = new Reporter();
+		if(xmlReporterType == null) {
+			return reporter;
+		}
 		reporter.setFirstName(xmlReporterType.getFirstName());
 		reporter.setLastName(xmlReporterType.getLastName());
 		reporter.setMiddleName(xmlReporterType.getMiddleName());
@@ -1033,6 +1036,9 @@ public class ExpeditedAdverseEventReportConverterUtility {
 
 	protected Physician convertPhysician(PhysicianType xmlPhysicianType){
 		Physician physician = new Physician();
+		if(xmlPhysicianType == null) {
+			return physician;
+		}
 		physician.setFirstName(xmlPhysicianType.getFirstName());
 		physician.setLastName(xmlPhysicianType.getLastName());
 		physician.setMiddleName(xmlPhysicianType.getMiddleName());

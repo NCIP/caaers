@@ -43,7 +43,8 @@ public class PhysicianMigrator implements Migrator<ExpeditedAdverseEventReport> 
         ReportPerson destReportPerson = aeReportDest.getPhysician();
        
         // the physician can be null
-        if(srcReportPerson == null) return;
+        if(srcReportPerson == null || (StringUtils.isEmpty(srcReportPerson.getFirstName()) &&
+                StringUtils.isEmpty(srcReportPerson.getLastName()))) return;
         
         if (!isValid(srcReportPerson)) {
             outcome.addError("ER-PM-1", "Physician is missing in the source");

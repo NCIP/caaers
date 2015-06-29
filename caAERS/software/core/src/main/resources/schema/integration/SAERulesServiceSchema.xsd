@@ -305,7 +305,7 @@
         			base="SaveAndEvaluateAEsOutputMessageType">
         			<xs:sequence>
         				<xs:element name="reportId"
-        					type="xs:string">
+        					type="xs:string" maxOccurs="1" minOccurs="0">
         				</xs:element>
         			</xs:sequence>
         		</xs:extension>
