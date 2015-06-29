@@ -61,7 +61,7 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
 	}
 
     @Test
-	public void testResearchStaffByLoginIdSave() throws Exception{
+	public void testFetchReseachStaffByLoginId() throws Exception{
 		try {
 			//Create or update , whatever it is new data will be populated ..
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/api/testdata/CreateResearchStaffTest.xml")[0].getFile();
@@ -143,6 +143,8 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
 			modifyDates(staff);
 			svc.saveResearchStaff(staff);	
 			
+			interruptSession();
+			
 			//update with modified data ..
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/api/testdata/UpdateResearchStaffSiteRsAdd.xml")[0].getFile();
 			staff = (gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff)unmarshaller.unmarshal(xmlFile);
@@ -161,7 +163,7 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
 		} catch (IOException e) {
 			e.printStackTrace();
 			fail("Error running test: " + e.getMessage());
-		} catch (JAXBException e) {
+		} catch (JAXBException e) {       
 			e.printStackTrace();
 			fail("Error running test: " + e.getMessage());
 		}
