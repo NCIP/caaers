@@ -139,7 +139,7 @@ public class SAEEvaluationServiceImpl {
 		SaveAndEvaluateAEsOutputMessageType output;
 		switch (type) {
 		case Evaluate:
-			throw new IllegalArgumentException("Can't tanke evaluate as an input.");
+			throw new IllegalArgumentException("Can't take evaluate as an input.");
 		case EvaluateInitiate:
 			output = new EvaluateAndInitiateOutputMessage();
 			break;
