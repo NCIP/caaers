@@ -31,6 +31,7 @@ import gov.nih.nci.cabig.caaers.domain.DietarySupplementIntervention;
 import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
 import gov.nih.nci.cabig.caaers.domain.DiseaseTerm;
 import gov.nih.nci.cabig.caaers.domain.Dose;
+import gov.nih.nci.cabig.caaers.domain.Epoch;
 import gov.nih.nci.cabig.caaers.domain.EventStatus;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.GeneticIntervention;
@@ -44,6 +45,7 @@ import gov.nih.nci.cabig.caaers.domain.LabValue;
 import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
 import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.LocalStudy;
 import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
 import gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite;
 import gov.nih.nci.cabig.caaers.domain.Organization;
@@ -84,6 +86,7 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportFormat;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
+import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.CourseType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.AdditionalInformationDocumentType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.AdditionalInformationType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.AdverseEventReportingPeriodType;
@@ -132,6 +135,7 @@ import gov.nih.nci.cabig.caaers.integration.schema.aereport.SurgeryInterventionT
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.TreatmentAssignmentType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.TreatmentInformationType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationType;
+import gov.nih.nci.cabig.caaers.integration.schema.saerules.Criteria;
 import gov.nih.nci.cabig.caaers.utils.CaaersUtils;
 import gov.nih.nci.cabig.caaers.utils.XMLUtil;
 import gov.nih.nci.cabig.caaers.validation.fields.validators.MultiEmailValidator;
@@ -965,6 +969,9 @@ public class ExpeditedAdverseEventReportConverterUtility {
 	
 	protected Reporter convertReporter(ReporterType xmlReporterType){
 		Reporter reporter = new Reporter();
+		if(xmlReporterType == null) {
+			return reporter;
+		}
 		reporter.setFirstName(xmlReporterType.getFirstName());
 		reporter.setLastName(xmlReporterType.getLastName());
 		reporter.setMiddleName(xmlReporterType.getMiddleName());
@@ -1029,6 +1036,9 @@ public class ExpeditedAdverseEventReportConverterUtility {
 
 	protected Physician convertPhysician(PhysicianType xmlPhysicianType){
 		Physician physician = new Physician();
+		if(xmlPhysicianType == null) {
+			return physician;
+		}
 		physician.setFirstName(xmlPhysicianType.getFirstName());
 		physician.setLastName(xmlPhysicianType.getLastName());
 		physician.setMiddleName(xmlPhysicianType.getMiddleName());

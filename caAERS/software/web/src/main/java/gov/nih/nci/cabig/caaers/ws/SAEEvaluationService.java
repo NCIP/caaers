@@ -8,6 +8,8 @@ package gov.nih.nci.cabig.caaers.ws;
 
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.EvaluateAEsInputMessage;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.EvaluateAEsOutputMessage;
+import gov.nih.nci.cabig.caaers.integration.schema.saerules.EvaluateAndInitiateInputMessage;
+import gov.nih.nci.cabig.caaers.integration.schema.saerules.EvaluateAndInitiateOutputMessage;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.SaveAndEvaluateAEsInputMessage;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.SaveAndEvaluateAEsOutputMessage;
 import gov.nih.nci.cabig.caaers.ws.faults.CaaersFault;
@@ -54,5 +56,11 @@ public interface SAEEvaluationService {
     @WebMethod
     public SaveAndEvaluateAEsOutputMessage saveAndEvaluateAEs(@WebParam(name="SaveAndEvaluateAEsInputMessage", targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/saerules") SaveAndEvaluateAEsInputMessage saveAndEvaluateAEsInputMessage) throws CaaersFault ;
 	
+    
+    @WebMethod
+    public EvaluateAndInitiateOutputMessage EvaluateAndInitiate
+    (@WebParam(name="EvaluateAndInitiateInputMessage",
+            targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/saerules")
+    EvaluateAndInitiateInputMessage evaluateAndInitiateInputMessage) throws CaaersFault;
 	
 }

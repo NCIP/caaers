@@ -333,6 +333,7 @@
             <jaxws:schemaLocation>/schema/integration/caAERSCommonTypes.xsd</jaxws:schemaLocation>
             <jaxws:schemaLocation>/schema/integration/caAERSAeTypes.xsd</jaxws:schemaLocation>
             <jaxws:schemaLocation>/schema/integration/SAERulesServiceSchema.xsd</jaxws:schemaLocation>
+            <jaxws:schemaLocation>/schema/integration/AEReport.xsd</jaxws:schemaLocation>
         </jaxws:schemaLocations>
     </jaxws:endpoint>
     

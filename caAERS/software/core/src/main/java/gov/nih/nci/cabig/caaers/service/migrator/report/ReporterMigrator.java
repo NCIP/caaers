@@ -44,7 +44,8 @@ public class ReporterMigrator implements Migrator<ExpeditedAdverseEventReport> {
         ReportPerson destReportPerson = aeReportDest.getReporter();
         
         // the reporter can be null
-        if(srcReportPerson == null) return;
+        if(srcReportPerson == null || (StringUtils.isEmpty(srcReportPerson.getFirstName()) &&
+                StringUtils.isEmpty(srcReportPerson.getLastName()))) return;
 
         if (!isValid(srcReportPerson)) {
             outcome.addError("ER-RM-1", "Reporter is missing in the source");
