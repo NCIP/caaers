@@ -263,20 +263,12 @@ public class SAEEvaluationServiceImpl {
     	
     	EvaluateAndInitiateOutputMessage retVal = xmlConverter.EvaluateAndInitiateOutput(response);
     			
-    	if(response.isHasSAE() && data.getPeriod() != null) {
+    	if(response.getRecommendedActions() != null && data.getPeriod() != null) {
     		safetySvcImpl.initiateSafetyReportAction(evaluateInputMessage, response, retVal, data.getPeriod());
     	}
 		return retVal;
     }
 
-    private boolean hasCreateAction(List<RecommendedActions> recommendedActions) {
-		for(RecommendedActions rec : recommendedActions) {
-			if(rec.getAction().equalsIgnoreCase("CREATE")) {
-				return true;
-			}
-		}
-		return false;
-	}
 
 	/**
      * Process the adverse Events.

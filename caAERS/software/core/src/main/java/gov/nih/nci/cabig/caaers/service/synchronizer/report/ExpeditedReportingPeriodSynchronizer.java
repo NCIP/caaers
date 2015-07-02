@@ -18,7 +18,7 @@ public class ExpeditedReportingPeriodSynchronizer implements Migrator<ExpeditedA
         String srctac = src.getTreatmentAssignment() != null ? src.getTreatmentAssignment().getCode() : src.getTreatmentAssignmentDescription();
         String desttac = dest.getTreatmentAssignment() != null ? dest.getTreatmentAssignment().getCode() : dest.getTreatmentAssignmentDescription();
         
-        if(!desttac.equals(srctac) || !dest.getStartDate().equals(src.getStartDate()) || !dest.getCycleNumber().equals(src.getCycleNumber()) ) {
+        if((desttac != null && dest!= null && dest.getStartDate() != null && dest.getCycleNumber() != null) && (!desttac.equals(srctac) || !dest.getStartDate().equals(src.getStartDate()) || !dest.getCycleNumber().equals(src.getCycleNumber())) ) {
         	outcome.addError("ER-RP-2", "Reporting period with TAC: " + srctac + 
 					 		(src.getStartDate() != null? " Start date of course: " +  src.getStartDate() :"") +
 							 (src.getCycleNumber() != null? " Course number: " +  src.getCycleNumber() :"") +

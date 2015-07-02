@@ -33,18 +33,22 @@ public class EvaluateAndInitiateReportConverter {
 	}
 
 	public ExpeditedAdverseEventReport convert(EvaluateAndInitiateInputMessage evaluateInputMessage, AdverseEventReportingPeriod repPeriod, SaveAndEvaluateAEsOutputMessage response) {
+		Timestamp now = new Timestamp(System.currentTimeMillis());
 		ExpeditedAdverseEventReport aeSrcReport = new ExpeditedAdverseEventReport();
 		aeSrcReport.setExternalId(evaluateInputMessage.getReportId());
 		aeSrcReport.setReporter(utility.convertReporter(evaluateInputMessage.getReporter()));
 		aeSrcReport.setPhysician(utility.convertPhysician(evaluateInputMessage.getPhysician()));
 		aeSrcReport.setExternalId(evaluateInputMessage.getReportId());
-		aeSrcReport.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+		aeSrcReport.setCreatedAt(now);
 		aeSrcReport.setReportingPeriod(repPeriod);
 		List<Report> reports = new ArrayList<Report>();
 		Report report = new Report();
 		report.setReportDefinition(new ReportDefinition());
 		report.getReportDefinition().setName(response.getRecommendedActions().get(0).getReport());
 		reports.add(report);
+		if(evaluateInputMessage.isWithdrawReport() != null && evaluateInputMessage.isWithdrawReport().booleanValue()) {
+			report.setWithdrawnOn(now);
+		}
 		aeSrcReport.setReports(reports );
 		return aeSrcReport;
 	}
