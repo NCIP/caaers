@@ -16,8 +16,6 @@ public class FromRaveToCaaersWSRouteBuilder {
 	private String caAERSGenerateReportIdServiceJBIURL = "jbi:service:http://schema.integration.caaers.cabig.nci.nih.gov/aereportid/SafetyReportIdService?operation={http://schema.integration.caaers.cabig.nci.nih.gov/aereportid}";
 	private String caAERSSAEEvaluationServiceJBIURL = "jbi:service:http://schema.integration.caaers.cabig.nci.nih.gov/saerules/SAEEvaluationWebServiceImplService?operation={http://schema.integration.caaers.cabig.nci.nih.gov/saerules}";	
 	private String caAERSSafetyReportServiceJBIURL = "jbi:service:http://schema.integration.caaers.cabig.nci.nih.gov/aereport/SafetyReportManagementService?operation={http://schema.integration.caaers.cabig.nci.nih.gov/aereport}";
-	private String caAERSSAEInitiateServiceJBIURL = "jbi:service:http://schema.integration.caaers.cabig.nci.nih.gov/saerules/SAEEvaluationWebServiceImplService?operation={http://schema.integration.caaers.cabig.nci.nih.gov/saerules}";
-
 
     private static String requestXSLBase = "xslt/rave/request/";
     private static String responseXSLBase = "xslt/rave/response/";
@@ -29,6 +27,7 @@ public class FromRaveToCaaersWSRouteBuilder {
 
 		//content based router
 		rb.from("direct:processedRave2CaaersMessageSink")
+			.streamCaching()
 		    .to("log:gov.nih.nci.cabig.rave2caaers.rave2caaers-request?showHeaders=true&level=TRACE")
 		    .choice()
 		    	.when(rb.header(OPERATION_NAME).isEqualTo(SAE_INITIATION_OPERATION_NAME))
@@ -46,7 +45,7 @@ public class FromRaveToCaaersWSRouteBuilder {
         configureWSCallRoute("direct:caaers-generateSafetyReportIdService-sync", caAERSGenerateReportIdServiceJBIURL + "generateSafetyReportId", null );
         //caAERS - call generate SAE Evaluation service
         configureWSCallRoute("direct:caaers-saveAndEvaluateAEs-sync", caAERSSAEEvaluationServiceJBIURL + "saveAndEvaluateAEs", "sae-evaluation-merge-actions.xsl" );
-        configureWSCallRoute("direct:caaers-evaluteAndInitiate-sync", caAERSSAEInitiateServiceJBIURL + "EvaluateAndInitiate", "sae-evaluation-merge-actions.xsl" );
+        configureWSCallRoute("direct:caaers-evaluteAndInitiate-sync", caAERSSAEEvaluationServiceJBIURL + "EvaluateAndInitiate", "sae-evaluation-merge-actions.xsl" );
         //caAERS - call Initiate Safety Report service 
         configureWSCallRoute("direct:caaers-initiateSafetyReportAction-sync", caAERSSafetyReportServiceJBIURL + "initiateSafetyReportAction", "safetyreport-merge-actions.xsl" );
 	}
