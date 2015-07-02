@@ -56,6 +56,9 @@ public class RaveIntegrationHeaderProcessor implements Processor {
             } else if (xpath("//ns:initiateSafetyReportAction").namespace("ns", rpNS).matches(exchange))   {
                 exchange.setProperty(OPERATION_NAME, INITIATE_SAFETY_REPORT_OPERATION_NAME);
                 exchange.setProperty(ENTITY_NAME, "SafetyReport");
+            } else if (xpath("//ns:EvaluateAndInitiate").namespace("ns", saeNS).matches(exchange)) {
+            	exchange.setProperty(OPERATION_NAME, SAE_INITIATION_OPERATION_NAME);
+                exchange.setProperty(ENTITY_NAME, "SAEEvaluationService");
             }  else {
                 exchange.setProperty(INVALID_MESSAGE, "true");
             }
