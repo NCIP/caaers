@@ -42,14 +42,17 @@ public class EvaluateAndInitiateReportConverter {
 		aeSrcReport.setCreatedAt(now);
 		aeSrcReport.setReportingPeriod(repPeriod);
 		List<Report> reports = new ArrayList<Report>();
-		Report report = new Report();
-		report.setReportDefinition(new ReportDefinition());
-		report.getReportDefinition().setName(response.getRecommendedActions().get(0).getReport());
-		reports.add(report);
-		if(evaluateInputMessage.isWithdrawReport() != null && evaluateInputMessage.isWithdrawReport().booleanValue()) {
-			report.setWithdrawnOn(now);
+		
+		if(response.getRecommendedActions() != null && response.getRecommendedActions().size() > 0) {
+			Report report = new Report();
+			report.setReportDefinition(new ReportDefinition());
+			report.getReportDefinition().setName(response.getRecommendedActions().get(0).getReport());
+			if(evaluateInputMessage.isWithdrawReport() != null && evaluateInputMessage.isWithdrawReport().booleanValue()) {
+				report.setWithdrawnOn(now);
+			}
+			reports.add(report);
 		}
-		aeSrcReport.setReports(reports );
+		aeSrcReport.setReports(reports);
 		return aeSrcReport;
 	}
 	
