@@ -452,7 +452,7 @@ public class SAEEvaluationServiceImpl {
 
 
 		} catch (Exception e) {
-			logger.error(" Exception Occured when processing rules" + e.toString());
+			logger.error("Exception Occured when processing rules; " + e.toString(), e);
 			throw Helper.createCaaersFault(DEF_ERR_MSG, "WS_SAE_001",
 					messageSource.getMessage("WS_SAE_001", new String[]{},  "", Locale.getDefault())
 					);			
