@@ -37,7 +37,7 @@ public class EvaluateAndInitiateReportConverter {
 		Timestamp now = new Timestamp(System.currentTimeMillis());
 		ExpeditedAdverseEventReport aeSrcReport = new ExpeditedAdverseEventReport();
 		for(AdverseEvent adverseEvent: repPeriod.getAdverseEvents()) {
-			aeSrcReport.addAdverseEvent(adverseEvent);
+			aeSrcReport.addAdverseEventUnidirectional(adverseEvent);
 		}
 		aeSrcReport.setExternalId(evaluateInputMessage.getReportId());
 		aeSrcReport.setReporter(utility.convertReporter(evaluateInputMessage.getReporter()));
