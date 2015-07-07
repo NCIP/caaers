@@ -85,6 +85,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.MessageSource;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * EvaluationService evaluate rules on the given AE's submitted by Web service.
@@ -249,10 +250,13 @@ public class SAEEvaluationServiceImpl {
         catch(CaaersSystemException ex) {
             throw Helper.createCaaersFault(DEF_ERR_MSG, ex.getErrorCode(), ex.getMessage());
         }
+        
+        studyDao.flush();
 
         return new SaveAndProcessOutput(saveAndEvaluateAEsOutputMessage, reportingPeriod);
     }
     
+    @Transactional(readOnly=false)
     public EvaluateAndInitiateOutputMessage processAndInitiate(EvaluateAndInitiateInputMessage evaluateInputMessage) throws CaaersFault {
     	
     	SaveAndEvaluateAEsInputMessage sae = xmlConverter.SAEInputMessage(evaluateInputMessage);
