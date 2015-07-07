@@ -11,7 +11,7 @@ class CreateTableAdverseEventRecommendedReports extends edu.northwestern.bioinfo
         }
         //fk
          execute("alter table ae_recom_reports add constraint fk_ae_recom_rpts_ae_id FOREIGN KEY(adverse_event_id) references adverse_events(id)");
-         execute("alter table ae_recom_reports add constraint fk_ae_recom_rpts_rpt_cal_tmplt_id FOREIGN KEY(report_definition_id) references REPORT_CALENDAR_TEMPLATES(id)");
+         execute("alter table ae_recom_reports add constraint fk_ae_recom_rpts_rpt_tmplt_id FOREIGN KEY(report_definition_id) references REPORT_CALENDAR_TEMPLATES(id)");
     }
 
     void down() {
