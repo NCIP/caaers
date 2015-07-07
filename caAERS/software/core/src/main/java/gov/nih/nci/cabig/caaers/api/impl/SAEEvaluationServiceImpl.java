@@ -263,7 +263,7 @@ public class SAEEvaluationServiceImpl {
     	
     	EvaluateAndInitiateOutputMessage retVal = xmlConverter.EvaluateAndInitiateOutput(response);
     			
-    	if(response.getRecommendedActions() != null && data.getPeriod() != null) {
+    	if(response.getRecommendedActions() != null && response.getRecommendedActions().size() > 0 &&  data.getPeriod() != null) {
     		safetySvcImpl.initiateSafetyReportAction(evaluateInputMessage, response, retVal, data.getPeriod());
     	}
 		return retVal;
