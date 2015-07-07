@@ -128,7 +128,7 @@
 			
         	<dependency org="org.openqa.selenium.client-drivers" name="selenium-java-client-driver" conf="test->default" rev="0.9.2" />
 			
-			<dependency org="org.easymock" name="easymockclassextension" rev="2.2.1" conf="test->default(*)" >
+			<dependency org="org.easymock" name="easymockclassextension" rev="3.2" conf="test->default(*)" >
                 <exclude org="cglib"/>
             </dependency>
         	<dependency org="junit" name="junit" rev="4.4" conf="test->default(*)"/>

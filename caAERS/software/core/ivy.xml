@@ -304,7 +304,11 @@
 			<!--<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-testing-all" rev="0.8" conf="test->default"/>-->
             <dependency org="net.sourceforge.cobertura" name="cobertura" rev="1.9.2" conf="test->default(*)"/>
 			
-			<dependency org="org.easymock" name="easymockclassextension" rev="2.2.1" conf="test->default(*)" >
+            <dependency org="org.easymock" name="easymock" rev="3.2" conf="test->default(*)" >
+                <exclude org="cglib"/>
+            </dependency>
+            
+			<dependency org="org.easymock" name="easymockclassextension" rev="3.2" conf="test->default(*)" >
                 <exclude org="cglib"/>
             </dependency>
         	<dependency org="junit" name="junit" rev="4.4" conf="default,test->default(*)"/>

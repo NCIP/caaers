@@ -30,6 +30,7 @@ public class RaveIntegrationHeaderProcessor implements Processor {
 
 	public static final String SAFETY_REPORT_ID_OPERATION_NAME = "generateSafetyReportId";
 	public static final String SAE_EVALUATION_OPERATION_NAME = "saveAndEvaluateAEs";
+	public static final String SAE_INITIATION_OPERATION_NAME = "evaluateAndInitiateAEs";
 	public static final String INITIATE_SAFETY_REPORT_OPERATION_NAME = "initiateSafetyReportAction";
 	
 	protected static final Log log = LogFactory.getLog(RaveIntegrationHeaderProcessor.class);
@@ -55,6 +56,9 @@ public class RaveIntegrationHeaderProcessor implements Processor {
             } else if (xpath("//ns:initiateSafetyReportAction").namespace("ns", rpNS).matches(exchange))   {
                 exchange.setProperty(OPERATION_NAME, INITIATE_SAFETY_REPORT_OPERATION_NAME);
                 exchange.setProperty(ENTITY_NAME, "SafetyReport");
+            } else if (xpath("//ns:EvaluateAndInitiate").namespace("ns", saeNS).matches(exchange)) {
+            	exchange.setProperty(OPERATION_NAME, SAE_INITIATION_OPERATION_NAME);
+                exchange.setProperty(ENTITY_NAME, "SAEEvaluationService");
             }  else {
                 exchange.setProperty(INVALID_MESSAGE, "true");
             }

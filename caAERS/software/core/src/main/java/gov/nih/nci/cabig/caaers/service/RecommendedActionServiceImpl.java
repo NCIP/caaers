@@ -183,7 +183,9 @@ public class RecommendedActionServiceImpl implements RecommendedActionService {
                     row.setOtherStatus("Being withdrawn");
 
                     row.setBaseDate(earliestGradedDateOnActiveAE != null ? earliestGradedDateOnActiveAE : baseDate);
-                    row.setDue(DurationUtils.formatDuration(wrapper.getDueOn().getTime() - new Date().getTime(), wrapper.getDef().getTimeScaleUnitType().getFormat()));
+                    if(wrapper.getDueOn() != null && wrapper.getDef() != null && wrapper.getDef().getTimeScaleUnitType() != null) {
+                    	row.setDue(DurationUtils.formatDuration(wrapper.getDueOn().getTime() - new Date().getTime(), wrapper.getDef().getTimeScaleUnitType().getFormat()));
+                    }
                     row.setGrpDue("");
                     row.setOtherDue("");
                     createAndEditWrappers.add(wrapper);

@@ -51,8 +51,8 @@
         <property name="organizationRepository" ref="organizationRepository" />
         -->
     </bean>
-    
-    <bean id="SAEEvaluationServiceImpl" autowire="byType" class="gov.nih.nci.cabig.caaers.api.impl.SAEEvaluationServiceImpl"/>
+        
+    <bean id="evaluateAndInitiateReportConverter" class="gov.nih.nci.cabig.caaers.service.migrator.EvaluateAndInitiateReportConverter" />
     
     <bean id="safetyServiceImpl" class="gov.nih.nci.cabig.caaers.api.impl.SafetyReportServiceImpl">
     	<property name="baseEaeConverter" ref="baseEaeConverter"/>
@@ -71,7 +71,10 @@
         <property name="reportSubmissionService"  ref="reportSubmissionService" />
         <property name="idServiceImpl"  ref="idServiceImpl" />
         <property name="adeersIntegrationFacade"  ref="proxyWebServiceFacade" />
+        <property name="evaluateAndInitiateReportConverter"  ref="evaluateAndInitiateReportConverter" />
     </bean>
+    
+    <bean id="SAEEvaluationServiceImpl" autowire="byType" class="gov.nih.nci.cabig.caaers.api.impl.SAEEvaluationServiceImpl"/>
     
     <bean id="idServiceImpl" autowire="byType" class="gov.nih.nci.cabig.caaers.api.impl.IDServiceImpl">
     	<property name="safetyReportIDDao" ref="safetyReportIDDao" />

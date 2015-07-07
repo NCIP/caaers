@@ -152,6 +152,9 @@ public class CaaersJavaMailSender extends JavaMailSenderImpl implements Initiali
      * This method is used to send an email
      */
 	public void sendMail(String[] to, String[] cc, String subject, String content, String[] attachmentFilePaths){
+		if(to == null || to.length == 0) {
+			return;
+		}
 		try {		
 		    MimeMessage message = createMimeMessage();
 		    message.setSubject(subject);
