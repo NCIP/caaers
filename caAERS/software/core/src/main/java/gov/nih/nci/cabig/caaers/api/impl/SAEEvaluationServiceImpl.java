@@ -115,7 +115,7 @@ public class SAEEvaluationServiceImpl {
     private enum RequestType{SaveEvaluate, Evaluate, EvaluateInitiate};
 	private static String DEF_ERR_MSG = "Error evaluating adverse events with SAE rules";
 
-	private static Log logger = LogFactory.getLog(SAEEvaluationServiceImpl.class);
+	private static final Log logger = LogFactory.getLog(SAEEvaluationServiceImpl.class);
 	
 	private SafetyReportServiceImpl safetySvcImpl;
 	

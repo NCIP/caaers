@@ -20,6 +20,9 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * API to evaluate adverse events for SAE reporting using caAERS System. 
  * Other external systems like any CDMS can evaluate their AEs for SAE reporting using this webservice
@@ -33,6 +36,8 @@ import javax.jws.WebService;
 @WebService(name="SAEEvaluationServiceInterface",targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/saerules")
 public class SAEEvaluationWebServiceImpl implements SAEEvaluationService {
 	private SAEEvaluationServiceImpl svcImpl;
+
+	private static final Log log = LogFactory.getLog(SAEEvaluationWebServiceImpl.class);
 	
 	// Getters/Setters.
 	public SAEEvaluationServiceImpl getSvcImpl() {
@@ -72,7 +77,12 @@ public class SAEEvaluationWebServiceImpl implements SAEEvaluationService {
     (@WebParam(name="SaveAndEvaluateAEsInputMessage",
             targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/saerules")
      SaveAndEvaluateAEsInputMessage saveAndEvaluateAEsInputMessage) throws CaaersFault {
-        return svcImpl.saveAndProcessAdverseEvents(saveAndEvaluateAEsInputMessage).getMsg();
+    	try {
+    		return svcImpl.saveAndProcessAdverseEvents(saveAndEvaluateAEsInputMessage).getMsg();
+    	} catch(Exception e) {
+    		log.error("An error occured during Save and Evaluate; ", e);
+    		throw e;
+    	}
     }
     
     
@@ -90,7 +100,12 @@ public class SAEEvaluationWebServiceImpl implements SAEEvaluationService {
     (@WebParam(name="EvaluateAndInitiateInputMessage",
             targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/saerules")
     EvaluateAndInitiateInputMessage evaluateAndInitiateInputMessage) throws CaaersFault {
-        return svcImpl.processAndInitiate(evaluateAndInitiateInputMessage);
+    	try {
+    		return svcImpl.processAndInitiate(evaluateAndInitiateInputMessage);
+    	} catch(Exception e) {
+    		log.error("An error occured during Evaluate and Initiate; ", e);
+    		throw e;
+    	}
     }
 
 
