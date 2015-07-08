@@ -81,10 +81,10 @@ public class EDIMessagePreProcessor implements Processor {
 		Map<String, Object> properties = exchange.getProperties();
 		properties.put(MSG_COMBO_ID, msgComboId);
 		
-		String msgNumb = XPathBuilder.xpath("//messagenumb").evaluate(exchange, String.class);
-		String msgDt = XPathBuilder.xpath("//messagedate").evaluate(exchange, String.class);
-		String msgSndrId = XPathBuilder.xpath("//messagesenderidentifier").evaluate(exchange, String.class);
-		String msgRcvrId = XPathBuilder.xpath("//messagereceiveridentifier").evaluate(exchange, String.class);
+		String msgNumb = XPathBuilder.xpath("//messagenumb/text()").evaluate(exchange, String.class);
+		String msgDt = XPathBuilder.xpath("//messagedate/text()").evaluate(exchange, String.class);
+		String msgSndrId = XPathBuilder.xpath("//messagesenderidentifier/text()").evaluate(exchange, String.class);
+		String msgRcvrId = XPathBuilder.xpath("//messagereceiveridentifier/text()").evaluate(exchange, String.class);
 		
 		properties.put(MSG_NUMB, msgNumb);
 		properties.put(MSG_DT, msgDt);

@@ -61,7 +61,7 @@ public class ExchangePreProcessor implements Processor {
             String operation = XPathBuilder.xpath("//payload/request/operation/@name").evaluate(exchange, String.class);
             properties.put(OPERATION_NAME, operation);
 
-            String entity = XPathBuilder.xpath("//payload/request/entity").evaluate(exchange, String.class);
+            String entity = XPathBuilder.xpath("//payload/request/entity/text()").evaluate(exchange, String.class);
             properties.put(ENTITY_NAME, entity);
 
             String correlationId = XPathBuilder.xpath("//payload/@"+CORRELATION_ID_ATTR_NAME).evaluate(exchange, String.class);

@@ -90,19 +90,21 @@
 			locationURI="s[AGENT_WS_BINDING_URL]" useJBIWrapper="false"
             useSOAPEnvelope="true" schemaValidationEnabled="false"
                     busCfg="s[http.conduit.config]">
+        <cxfbc:inFaultInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+        </cxfbc:inFaultInterceptors>
 		<!--<cxfbc:inInterceptors>-->
 		  <!--<bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>-->
 		<!--</cxfbc:inInterceptors>-->
+        <cxfbc:outFaultInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+        </cxfbc:outFaultInterceptors>
         <cxfbc:outInterceptors>
             <ref local="wss4jOutInterceptor" />
             <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
         </cxfbc:outInterceptors>
-		<cxfbc:inFaultInterceptors>
-		  <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
-		</cxfbc:inFaultInterceptors>
-		<cxfbc:outFaultInterceptors>
-		  <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
-		</cxfbc:outFaultInterceptors>
+
+
 	</cxfbc:provider>
 	
 	   <!-- ================== Agents Dose UOM Webservice Provider ==================================-->
@@ -112,19 +114,19 @@
                     locationURI="s[AGENT_DOSE_UOM_WS_BINDING_URL]" useJBIWrapper="false"
                     useSOAPEnvelope="true" schemaValidationEnabled="false"
                     busCfg="s[http.conduit.config]">
+        <cxfbc:inFaultInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+        </cxfbc:inFaultInterceptors>
         <!--<cxfbc:inInterceptors>-->
             <!--<bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>-->
         <!--</cxfbc:inInterceptors>-->
+        <cxfbc:outFaultInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+        </cxfbc:outFaultInterceptors>
         <cxfbc:outInterceptors>
             <ref local="wss4jOutInterceptor" />
             <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
         </cxfbc:outInterceptors>
-        <cxfbc:inFaultInterceptors>
-            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
-        </cxfbc:inFaultInterceptors>
-        <cxfbc:outFaultInterceptors>
-            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
-        </cxfbc:outFaultInterceptors>
     </cxfbc:provider>
 
     <!-- ================== ASAEL Webservice Provider ==================================-->
@@ -134,19 +136,19 @@
                     locationURI="s[ASAEL_WS_BINDING_URL]" useJBIWrapper="false"
                     useSOAPEnvelope="true" schemaValidationEnabled="false"
                     busCfg="s[http.conduit.config]">
+        <cxfbc:inFaultInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+        </cxfbc:inFaultInterceptors>
         <!--<cxfbc:inInterceptors>-->
             <!--<bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>-->
         <!--</cxfbc:inInterceptors>-->
+        <cxfbc:outFaultInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+        </cxfbc:outFaultInterceptors>
         <cxfbc:outInterceptors>
             <ref local="wss4jOutInterceptor" />
             <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
         </cxfbc:outInterceptors>
-        <cxfbc:inFaultInterceptors>
-            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
-        </cxfbc:inFaultInterceptors>
-        <cxfbc:outFaultInterceptors>
-            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
-        </cxfbc:outFaultInterceptors>
     </cxfbc:provider>
 
 
@@ -157,19 +159,19 @@
                     locationURI="s[DEVICE_WS_BINDING_URL]" useJBIWrapper="false"
                     useSOAPEnvelope="true" schemaValidationEnabled="false"
                     busCfg="s[http.conduit.config]">
+        <cxfbc:inFaultInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+        </cxfbc:inFaultInterceptors>
         <!--<cxfbc:inInterceptors>-->
             <!--<bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>-->
         <!--</cxfbc:inInterceptors>-->
+        <cxfbc:outFaultInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+        </cxfbc:outFaultInterceptors>
         <cxfbc:outInterceptors>
             <ref local="wss4jOutInterceptor" />
             <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
         </cxfbc:outInterceptors>
-        <cxfbc:inFaultInterceptors>
-            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
-        </cxfbc:inFaultInterceptors>
-        <cxfbc:outFaultInterceptors>
-            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
-        </cxfbc:outFaultInterceptors>
     </cxfbc:provider>
     
     <!-- ================== Ctc Webservice Provider ==================================-->
@@ -179,19 +181,19 @@
                     locationURI="s[CTC_WS_BINDING_URL]" useJBIWrapper="false"
                     useSOAPEnvelope="true" schemaValidationEnabled="false"
                     busCfg="s[http.conduit.config]">
+        <cxfbc:inFaultInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+        </cxfbc:inFaultInterceptors>
         <!--<cxfbc:inInterceptors>-->
             <!--<bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>-->
         <!--</cxfbc:inInterceptors>-->
+        <cxfbc:outFaultInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+        </cxfbc:outFaultInterceptors>
         <cxfbc:outInterceptors>
             <ref local="wss4jOutInterceptor" />
             <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
         </cxfbc:outInterceptors>
-        <cxfbc:inFaultInterceptors>
-            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
-        </cxfbc:inFaultInterceptors>
-        <cxfbc:outFaultInterceptors>
-            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
-        </cxfbc:outFaultInterceptors>
     </cxfbc:provider>
 
 
@@ -203,19 +205,19 @@
                     locationURI="s[ORGANIZATION_WS_BINDING_URL]" useJBIWrapper="false"
                     useSOAPEnvelope="true" schemaValidationEnabled="false"
                     busCfg="s[http.conduit.config]">
+        <cxfbc:inFaultInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+        </cxfbc:inFaultInterceptors>
         <!--<cxfbc:inInterceptors>-->
             <!--<bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>-->
         <!--</cxfbc:inInterceptors>-->
+        <cxfbc:outFaultInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+        </cxfbc:outFaultInterceptors>
         <cxfbc:outInterceptors>
             <ref local="wss4jOutInterceptor" />
             <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
         </cxfbc:outInterceptors>
-        <cxfbc:inFaultInterceptors>
-            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
-        </cxfbc:inFaultInterceptors>
-        <cxfbc:outFaultInterceptors>
-            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
-        </cxfbc:outFaultInterceptors>
     </cxfbc:provider>
 
     <!-- ================== PreExisting Condition Webservice Provider ==================================-->
@@ -226,19 +228,19 @@
                     locationURI="s[PRE_CONDITION_WS_BINDING_URL]" useJBIWrapper="false"
                     useSOAPEnvelope="true" schemaValidationEnabled="false"
                     busCfg="s[http.conduit.config]">
+        <cxfbc:inFaultInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+        </cxfbc:inFaultInterceptors>
         <!--<cxfbc:inInterceptors>-->
             <!--<bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>-->
         <!--</cxfbc:inInterceptors>-->
+        <cxfbc:outFaultInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+        </cxfbc:outFaultInterceptors>
         <cxfbc:outInterceptors>
             <ref local="wss4jOutInterceptor" />
             <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
         </cxfbc:outInterceptors>
-        <cxfbc:inFaultInterceptors>
-            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
-        </cxfbc:inFaultInterceptors>
-        <cxfbc:outFaultInterceptors>
-            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
-        </cxfbc:outFaultInterceptors>
     </cxfbc:provider>
     
      <!-- ================== Labs Webservice Provider ==================================-->
@@ -249,19 +251,21 @@
                     locationURI="s[LAB_WS_BINDING_URL]" useJBIWrapper="false"
                     useSOAPEnvelope="true" schemaValidationEnabled="false"
                     busCfg="s[http.conduit.config]">
+
+        <cxfbc:inFaultInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+        </cxfbc:inFaultInterceptors>
         <!--<cxfbc:inInterceptors>-->
-            <!--<bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>-->
+        <!--<bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>-->
         <!--</cxfbc:inInterceptors>-->
+        <cxfbc:outFaultInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+        </cxfbc:outFaultInterceptors>
         <cxfbc:outInterceptors>
             <ref local="wss4jOutInterceptor" />
             <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
         </cxfbc:outInterceptors>
-        <cxfbc:inFaultInterceptors>
-            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
-        </cxfbc:inFaultInterceptors>
-        <cxfbc:outFaultInterceptors>
-            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
-        </cxfbc:outFaultInterceptors>
+
     </cxfbc:provider>
 
     <!-- ================== PriorTherapy Webservice Provider ==================================-->
@@ -271,19 +275,20 @@
                     locationURI="s[PRIOR_THERAPY_WS_BINDING_URL]" useJBIWrapper="false"
                     useSOAPEnvelope="true" schemaValidationEnabled="false"
                     busCfg="s[http.conduit.config]">
+        <cxfbc:inFaultInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+        </cxfbc:inFaultInterceptors>
         <!--<cxfbc:inInterceptors>-->
-            <!--<bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>-->
+        <!--<bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>-->
         <!--</cxfbc:inInterceptors>-->
+        <cxfbc:outFaultInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+        </cxfbc:outFaultInterceptors>
         <cxfbc:outInterceptors>
             <ref local="wss4jOutInterceptor" />
             <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
         </cxfbc:outInterceptors>
-        <cxfbc:inFaultInterceptors>
-            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
-        </cxfbc:inFaultInterceptors>
-        <cxfbc:outFaultInterceptors>
-            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
-        </cxfbc:outFaultInterceptors>
+
     </cxfbc:provider>
 
     <!-- ================== Study Webservice Provider ==================================-->
@@ -293,19 +298,19 @@
                     locationURI="s[STUDY_WS_BINDING_URL]" useJBIWrapper="false"
                     useSOAPEnvelope="true" schemaValidationEnabled="false"
                     busCfg="s[http.conduit.config]">
+        <cxfbc:inFaultInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+        </cxfbc:inFaultInterceptors>
         <!--<cxfbc:inInterceptors>-->
             <!--<bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>-->
         <!--</cxfbc:inInterceptors>-->
+        <cxfbc:outFaultInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+        </cxfbc:outFaultInterceptors>
         <cxfbc:outInterceptors>
             <ref local="wss4jOutInterceptor" />
             <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
         </cxfbc:outInterceptors>
-        <cxfbc:inFaultInterceptors>
-            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
-        </cxfbc:inFaultInterceptors>
-        <cxfbc:outFaultInterceptors>
-            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
-        </cxfbc:outFaultInterceptors>
     </cxfbc:provider>
     
     <!-- ================== Participant Webservice Provider ==================================-->
@@ -315,19 +320,19 @@
                     locationURI="s[PARTICIPANT_WS_BINDING_URL]" useJBIWrapper="false"
                     useSOAPEnvelope="true" schemaValidationEnabled="false"
                     busCfg="s[http.conduit.config]">
+        <cxfbc:inFaultInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+        </cxfbc:inFaultInterceptors>
         <!--<cxfbc:inInterceptors>-->
             <!--<bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>-->
         <!--</cxfbc:inInterceptors>-->
+        <cxfbc:outFaultInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+        </cxfbc:outFaultInterceptors>
         <cxfbc:outInterceptors>
             <ref local="wss4jOutInterceptor" />
             <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
         </cxfbc:outInterceptors>
-        <cxfbc:inFaultInterceptors>
-            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
-        </cxfbc:inFaultInterceptors>
-        <cxfbc:outFaultInterceptors>
-            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
-        </cxfbc:outFaultInterceptors>
     </cxfbc:provider>
     
      <!-- ================== Report Id Service Webservice Provider ==================================-->
@@ -337,9 +342,15 @@
                     locationURI="s[SAFETYREPORT_ID_WS_BINDING_URL]" useJBIWrapper="false"
                     useSOAPEnvelope="true" schemaValidationEnabled="false"
                     busCfg="s[http.conduit.config]">
+        <cxfbc:inFaultInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+        </cxfbc:inFaultInterceptors>
         <!--<cxfbc:inInterceptors>-->
             <!--<bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>-->
         <!--</cxfbc:inInterceptors>-->
+        <cxfbc:outFaultInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+        </cxfbc:outFaultInterceptors>
           <cxfbc:outInterceptors>
               <bean class="gov.nih.nci.cabig.caaers2adeers.IncomingCredentialExtractingInterceptor">
                   <constructor-arg>
@@ -353,12 +364,8 @@
               </bean>
             <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
         </cxfbc:outInterceptors> 
-        <cxfbc:inFaultInterceptors>
-            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
-        </cxfbc:inFaultInterceptors>
-        <cxfbc:outFaultInterceptors>
-            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
-        </cxfbc:outFaultInterceptors>
+
+
     </cxfbc:provider>
     
      <!-- ================== SAE Evaluation Service Webservice Provider ==================================-->
@@ -368,9 +375,15 @@
                     locationURI="s[SAE_EVALUATION_WS_BINDING_URL]" useJBIWrapper="false"
                     useSOAPEnvelope="true" schemaValidationEnabled="false"
                     busCfg="s[http.conduit.config]">
+        <cxfbc:inFaultInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+        </cxfbc:inFaultInterceptors>
         <!--<cxfbc:inInterceptors>-->
             <!--<bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>-->
         <!--</cxfbc:inInterceptors>-->
+        <cxfbc:outFaultInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+        </cxfbc:outFaultInterceptors>
         <cxfbc:outInterceptors>
             <bean class="gov.nih.nci.cabig.caaers2adeers.IncomingCredentialExtractingInterceptor">
                 <constructor-arg>
@@ -384,12 +397,6 @@
             </bean>
            <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor" /> -->
         </cxfbc:outInterceptors> 
-        <cxfbc:inFaultInterceptors>
-            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
-        </cxfbc:inFaultInterceptors>
-        <cxfbc:outFaultInterceptors>
-            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
-        </cxfbc:outFaultInterceptors>
     </cxfbc:provider>
 
 	<!-- ================== SafetyReport Webservice Provider ==================================-->
@@ -398,10 +405,16 @@
                     wsdl="classpath:SafetyReportService.wsdl"
                     locationURI="s[SAFETYREPORT_WS_BINDING_URL]" useJBIWrapper="false"
                     useSOAPEnvelope="true" schemaValidationEnabled="false"
-                    busCfg="s[http.conduit.config]">		
+                    busCfg="s[http.conduit.config]">
+        <cxfbc:inFaultInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+        </cxfbc:inFaultInterceptors>
         <!--<cxfbc:inInterceptors>-->
             <!--<bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>-->
         <!--</cxfbc:inInterceptors>-->
+        <cxfbc:outFaultInterceptors>
+            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+        </cxfbc:outFaultInterceptors>
         <cxfbc:outInterceptors>
             <bean class="gov.nih.nci.cabig.caaers2adeers.IncomingCredentialExtractingInterceptor">
                 <constructor-arg>
@@ -415,12 +428,8 @@
             </bean>
             <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
         </cxfbc:outInterceptors>
-        <cxfbc:inFaultInterceptors>
-            <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
-        </cxfbc:inFaultInterceptors>
-        <cxfbc:outFaultInterceptors>
-            <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
-        </cxfbc:outFaultInterceptors>
+
+
     </cxfbc:provider>
 
     <!-- ================== GenericProcessor Webservice Consumer ==================================-->
@@ -434,19 +443,18 @@
         	<bean class="gov.nih.nci.cabig.caaers2adeers.RemoveJbiJAASInterceptor"/>
             <ref local="wss4jInInterceptor" />
         </cxfbc:inInterceptors>
+        <!--<cxfbc:inFaultInterceptors>-->
+        <!--<bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>-->
+        <!--</cxfbc:inFaultInterceptors>-->
 		<!--<cxfbc:inInterceptors>-->
 		  <!--<bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>-->
 		<!--</cxfbc:inInterceptors>-->
-		<!--<cxfbc:outInterceptors>-->
+        <!--<cxfbc:outFaultInterceptors>-->
+        <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
+        <!--</cxfbc:outFaultInterceptors>-->
+        <!--<cxfbc:outInterceptors>-->
 		  <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
 		<!--</cxfbc:outInterceptors>-->
-		<!--<cxfbc:inFaultInterceptors>-->
-		  <!--<bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>-->
-		<!--</cxfbc:inFaultInterceptors>-->
-		<!--<cxfbc:outFaultInterceptors>-->
-		  <!--<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>-->
-		<!--</cxfbc:outFaultInterceptors>-->
-
 	</cxfbc:consumer>
 	<!-- END SNIPPET: cxfbc-consumer -->
 </beans>

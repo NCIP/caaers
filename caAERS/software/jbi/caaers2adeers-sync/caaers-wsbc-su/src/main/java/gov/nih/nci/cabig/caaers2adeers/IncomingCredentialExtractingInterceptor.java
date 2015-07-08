@@ -16,6 +16,7 @@ import org.apache.ws.security.WSPasswordCallback;
 import org.apache.ws.security.WSSecurityException;
 import org.apache.ws.security.handler.RequestData;
 
+import javax.security.auth.callback.CallbackHandler;
 import java.util.Map;
 
 public class IncomingCredentialExtractingInterceptor extends WSS4JOutInterceptor {
@@ -82,14 +83,26 @@ public class IncomingCredentialExtractingInterceptor extends WSS4JOutInterceptor
     }
 
     @Override
-    public WSPasswordCallback getPassword(String dummyUserName, int doAction, String clsProp, String refProp, RequestData reqData) throws WSSecurityException {
+    public WSPasswordCallback getPasswordCB(String dummyUsername, int doAction, CallbackHandler callbackHandler, RequestData requestData) throws WSSecurityException {
         String usr = username.get();
         username.remove();
 
         String pwd = password.get();
         password.remove();
 
-        return new WSPasswordCallback(usr, pwd, null ,WSPasswordCallback.USERNAME_TOKEN);
+        WSPasswordCallback callback =  super.getPasswordCB(usr, doAction, callbackHandler, requestData);
+        callback.setPassword(pwd);
+        return callback;
     }
+
+//    public WSPasswordCallback getPassword(String dummyUserName, int doAction, String clsProp, String refProp, RequestData reqData) throws WSSecurityException {
+//        String usr = username.get();
+//        username.remove();
+//
+//        String pwd = password.get();
+//        password.remove();
+//
+//        return new WSPasswordCallback(usr, pwd, null ,WSPasswordCallback.USERNAME_TOKEN);
+//    }
 
 }
