@@ -146,14 +146,12 @@
 		<property name="filterInvocationDefinitionSource">
 			<value>
 				CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
-				\A.*\Z=REQUIRES_SECURE_CHANNEL
 			</value>
 		</property>
 	</bean>
 	<bean id="channelDecisionManager" class="org.acegisecurity.securechannel.ChannelDecisionManagerImpl">
 		<property name="channelProcessors">
 			<list>
-				<ref local="secureChannelProcessor"/>
 				<ref local="insecureChannelProcessor"/>
 			</list>
 		</property>
