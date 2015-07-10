@@ -89,7 +89,7 @@ public class Tracker implements Processor{
             try {
                 String status = XPathBuilder.xpath("//status").evaluate(exchange, String.class);
                 if (!StringUtils.isBlank(status)){
-                    integrationLog.setNotes(status);
+                    integrationLog.setNotes("NOTES");
                 }
             }catch (Exception ignore) {
                 log.error("Ignoring invalid XML message", ignore);

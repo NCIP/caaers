@@ -32,7 +32,7 @@ public class AdverseEventRecommendedReportDaoTest extends DaoNoSecurityTestCase<
 		ReportDefinition rd = reportDefinitionDao.getById(-30);
 		aeRecomReport.setReportDefinition(rd);
 		
-		aeRecomReport.setAeReported(false);
+		aeRecomReport.setAeReported(0);
 		aeRecomReport.setDueDate(new Date());
 		
 		dao.save(aeRecomReport);
@@ -45,7 +45,7 @@ public class AdverseEventRecommendedReportDaoTest extends DaoNoSecurityTestCase<
 		assertEquals("Wrong size", 1, recomReports.size());
 		assertNotNull(recomReports.get(0).getAdverseEvent());
 		assertNotNull(recomReports.get(0).getReportDefinition());
-		assertFalse(recomReports.get(0).getAeReported());
+		assertFalse(recomReports.get(0).getAeReported()==0);
 		
 		recomReports = dao.getAllUnreportedRecords();
 		
@@ -62,7 +62,7 @@ public class AdverseEventRecommendedReportDaoTest extends DaoNoSecurityTestCase<
 		ReportDefinition rd = reportDefinitionDao.getById(-30);
 		aeRecomReport.setReportDefinition(rd);
 		
-		aeRecomReport.setAeReported(true);
+		aeRecomReport.setAeReported(1);
 		aeRecomReport.setDueDate(new Date());
 		
 		dao.save(aeRecomReport);
@@ -84,7 +84,7 @@ public class AdverseEventRecommendedReportDaoTest extends DaoNoSecurityTestCase<
 		ReportDefinition rd = reportDefinitionDao.getById(-30);
 		aeRecomReport.setReportDefinition(rd);
 		
-		aeRecomReport.setAeReported(false);
+		aeRecomReport.setAeReported(0);
 		aeRecomReport.setDueDate(new Date());
 		
 		dao.save(aeRecomReport);
@@ -100,7 +100,7 @@ public class AdverseEventRecommendedReportDaoTest extends DaoNoSecurityTestCase<
 		assertEquals("Wrong size", 1, recomReports.size());
 		assertNotNull(recomReports.get(0).getAdverseEvent());
 		assertNotNull(recomReports.get(0).getReportDefinition());
-		assertFalse(recomReports.get(0).getAeReported());
+		assertFalse(recomReports.get(0).getAeReported()==0);
 		
 		recomReports = dao.getAllUnreportedRecords();
 		
@@ -116,7 +116,7 @@ public class AdverseEventRecommendedReportDaoTest extends DaoNoSecurityTestCase<
 		ReportDefinition rd = reportDefinitionDao.getById(-30);
 		aeRecomReport.setReportDefinition(rd);
 		
-		aeRecomReport.setAeReported(false);
+		aeRecomReport.setAeReported(0);
 		aeRecomReport.setDueDate(new Date());
 		
 		dao.save(aeRecomReport);
@@ -136,7 +136,7 @@ public class AdverseEventRecommendedReportDaoTest extends DaoNoSecurityTestCase<
 		ReportDefinition rd = reportDefinitionDao.getById(-30);
 		aeRecomReport.setReportDefinition(rd);
 		
-		aeRecomReport.setAeReported(false);
+		aeRecomReport.setAeReported(0);
 		aeRecomReport.setDueDate(new Date());
 		
 		dao.save(aeRecomReport);
@@ -158,7 +158,7 @@ public class AdverseEventRecommendedReportDaoTest extends DaoNoSecurityTestCase<
 		ReportDefinition rd = reportDefinitionDao.getById(-30);
 		aeRecomReport.setReportDefinition(rd);
 		
-		aeRecomReport.setAeReported(false);
+		aeRecomReport.setAeReported(0);
 		aeRecomReport.setDueDate(new Date());
 		
 		dao.save(aeRecomReport);
@@ -184,7 +184,7 @@ public class AdverseEventRecommendedReportDaoTest extends DaoNoSecurityTestCase<
 		ReportDefinition rd = reportDefinitionDao.getById(-30);
 		aeRecomReport.setReportDefinition(rd);
 		
-		aeRecomReport.setAeReported(false);
+		aeRecomReport.setAeReported(0);
 		aeRecomReport.setDueDate(new Date());
 		
 		dao.save(aeRecomReport);
