@@ -1,0 +1,26 @@
+<profilesXml>
+
+    <profiles>
+        <profile>
+            <id>local</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+
+            <properties>
+
+                <!-- ############################################################################ -->
+                <!--CUSTOMIZE these for your local environment-->
+                <!-- ############################################################################ -->
+				
+				<!-- adeers settings -->
+				<adeers.lov.service.url>https://betapps-ctep.nci.nih.gov/CES-AE/CESAELOVService</adeers.lov.service.url>
+				<adeers.study.service.url>https://betapps-ctep.nci.nih.gov/CES-AE/CESAEStudyService</adeers.study.service.url>
+				<adeers.username>your_adeers_username</adeers.username>
+				<adeers.password>your_adeers_psswd</adeers.password>
+
+            </properties>
+        </profile>
+
+    </profiles>
+</profilesXml>
