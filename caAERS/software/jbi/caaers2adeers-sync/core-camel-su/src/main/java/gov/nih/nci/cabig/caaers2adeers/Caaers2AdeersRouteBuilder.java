@@ -168,7 +168,7 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
 
 
         // route for caaers integration services - trim white space
-        from("jetty:http://0.0.0.0:"+raveIntegrationServicesPort+"/caaers/services/RaveIntegrationServices")
+        from("jetty:http://0.0.0.0:"+raveIntegrationServicesPort+"/caaers/services/RaveIntegrationServices?minThreads=30&maxThreads=150")
 	            .streamCaching()
                 .choice()
 		        .when(header("CamelHttpMethod").isEqualTo("POST"))
@@ -205,7 +205,7 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
       
         // route for Participant Service
         
-        from("jetty:http://0.0.0.0:"+participantInitializationPort+"/caaers/ParticipantInitialization?httpBindingRef=participantODMMessageBinding")
+        from("jetty:http://0.0.0.0:"+participantInitializationPort+"/caaers/ParticipantInitialization?httpBindingRef=participantODMMessageBinding&minThreads=30&maxThreads=150")
 	        .streamCaching()
 	        .choice() 
 		        .when(header("CamelHttpMethod").isEqualTo("POST"))

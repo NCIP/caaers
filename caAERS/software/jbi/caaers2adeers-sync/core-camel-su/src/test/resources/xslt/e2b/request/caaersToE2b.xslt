@@ -10,7 +10,7 @@
 		<xsl:call-template name="e2b" />
 	</xsl:template>
 	
-	<xsl:variable name="map" select="document('lookup.xml')" />
+	<xsl:variable name="map" select="document('file:lookup.xml')" />
 
 	<xsl:template name="lookup">
 		<xsl:param name="_map" />

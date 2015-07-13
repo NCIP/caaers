@@ -9,10 +9,12 @@ import static org.apache.camel.builder.xml.XPathBuilder.xpath;
 import java.util.Map;
 
 import gov.nih.nci.cabig.caaers2adeers.exchnage.ExchangePreProcessor;
+import gov.nih.nci.cabig.caaers2adeers.exchnage.HeaderGeneratorProcessor;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.xml.Namespaces;
 import org.apache.camel.builder.xml.XPathBuilder;
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -43,7 +45,7 @@ public class RaveIntegrationHeaderProcessor implements Processor {
         log.debug("Starting Rave Integration Message Header processing");
 
         exchange.setProperty(SYNC_HEADER , "sync");
-        exchange.setProperty(CORRELATION_ID, String.valueOf(System.currentTimeMillis()));
+        exchange.setProperty(CORRELATION_ID, HeaderGeneratorProcessor.makeCorrelationId());
 
         try {
 
@@ -68,6 +70,7 @@ public class RaveIntegrationHeaderProcessor implements Processor {
 			log.debug("Completing Rave Integration Message Header processing\n Exchange properties :" + String.valueOf(exchange.getProperties()));
 
 	}
+
 
 
 }

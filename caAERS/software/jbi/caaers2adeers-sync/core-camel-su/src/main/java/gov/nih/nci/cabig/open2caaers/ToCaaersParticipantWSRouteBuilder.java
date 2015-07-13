@@ -35,9 +35,9 @@ private String caAERSParticipantServiceJBIURL = "jbi:service:http://schema.integ
 
 	private void configureWSCallRoute(String fromSink, String xslFileName, String serviceURI){
 		this.routeBuilder.configureWSCallRoute(fromSink, 
-				requestXSLBase + xslFileName, 
+				requestXSLBase + xslFileName,
 				serviceURI, 
-				responseXSLBase + xslFileName, 
+				responseXSLBase + xslFileName,
 				"direct:odmOutSink", 
 				CAAERS_WS_IN_TRANSFORMATION, CAAERS_WS_INVOCATION_INITIATED, CAAERS_WS_INVOCATION_COMPLETED, CAAERS_WS_OUT_TRANSFORMATION, ROUTED_TO_CAAERS_RESPONSE_SINK);
 	}

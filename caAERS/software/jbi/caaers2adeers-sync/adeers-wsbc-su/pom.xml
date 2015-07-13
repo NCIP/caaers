@@ -46,6 +46,9 @@
         <artifactId>jbi-maven-plugin</artifactId>
         <version>4.5</version>
         <extensions>true</extensions>
+          <configuration>
+              <classLoaderDelegation>self-first</classLoaderDelegation>
+          </configuration>
       </plugin>
     </plugins>
   </build>
