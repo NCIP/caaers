@@ -26,7 +26,7 @@
 
 
 	<!--KEYS AND FUNCTIONS-->
-	<xsl:variable name="map" select="document('lookup.xml')" />
+	<xsl:variable name="map" select="document('file:lookup.xml')" />
 
 	<xsl:function name="caaers:lookup">
 		<xsl:param name="_code" />

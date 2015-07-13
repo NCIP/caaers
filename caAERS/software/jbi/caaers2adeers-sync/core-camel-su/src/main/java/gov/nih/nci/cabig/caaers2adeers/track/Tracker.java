@@ -87,7 +87,7 @@ public class Tracker implements Processor{
 
             IntegrationLog integrationLog = new IntegrationLog(coorelationId, stage, entity, operation, notes);
             try {
-                String status = XPathBuilder.xpath("//status").evaluate(exchange, String.class);
+                String status = XPathBuilder.xpath("//status/text()").evaluate(exchange, String.class);
                 if (!StringUtils.isBlank(status)){
                     integrationLog.setNotes(status);
                 }
@@ -112,14 +112,14 @@ public class Tracker implements Processor{
 			IntegrationLog integrationLog) {
 		if(caputureLogDetails){
         	//Check for soap fault
-        	String faultString = XPathBuilder.xpath("//faultstring").evaluate(exchange, String.class);
+        	String faultString = XPathBuilder.xpath("//faultstring/text()").evaluate(exchange, String.class);
         	if(!StringUtils.isBlank(faultString)){
         		integrationLog.setNotes(SOAP_FAULT_STATUS);
         		integrationLog.addIntegrationLogDetail(new IntegrationLogDetail(null, faultString, true));
         	}
         	
         	//check for caaers error message in response
-        	String errorString = XPathBuilder.xpath("//error").evaluate(exchange, String.class);
+        	String errorString = XPathBuilder.xpath("//error/text()").evaluate(exchange, String.class);
         	if(!StringUtils.isBlank(errorString)){
         		integrationLog.setNotes(CAAERS_RESPONSE_ERROR);
         		integrationLog.addIntegrationLogDetail(new IntegrationLogDetail(null, errorString, true));

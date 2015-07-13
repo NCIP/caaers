@@ -167,7 +167,9 @@ public class IntegrationLog{
 	}
 	
 	public static enum Stage{
+        RAW_REQUEST_RECEIVED(2, "Raw Message Received"),
         REQUEST_RECEIVED(5, "Message Received"),
+        CLEANSED_REQUEST_RECEIVED(6, "Cleansed Message Received"),
 
         ROUTED_TO_ADEERS_REQUEST_SINK(10, "Message Routed to AdEERS Request Sink Channel"),
         ROUTED_TO_ADEERS_RESPONSE_SINK(11, "Message Routed to AdEERS Response Sink Channel"),

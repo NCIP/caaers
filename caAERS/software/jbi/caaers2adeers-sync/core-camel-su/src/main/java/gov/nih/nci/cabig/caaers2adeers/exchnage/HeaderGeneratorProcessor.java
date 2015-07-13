@@ -8,6 +8,7 @@ package gov.nih.nci.cabig.caaers2adeers.exchnage;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -34,15 +35,8 @@ public class HeaderGeneratorProcessor implements Processor {
         if(log.isDebugEnabled()) log.debug("Headers :" + String.valueOf(exchange.getIn().getHeaders()));
     }
     
-    public String makeCorrelationId() {
-		return String.valueOf(System.currentTimeMillis()) + randomAlphaNumberic(3);
+    public static String makeCorrelationId() {
+		return String.valueOf(System.currentTimeMillis()) + RandomStringUtils.randomAlphanumeric(5);
 	}
-	
-	private String randomAlphaNumberic(int length) {
-		String str ="";
-		for (int i =0; i < length; i++) {
-			str += String.copyValueOf(Character.toChars(RandomUtils.nextInt(25) + 65));
-		}
-		return str;
-	}
+
 }

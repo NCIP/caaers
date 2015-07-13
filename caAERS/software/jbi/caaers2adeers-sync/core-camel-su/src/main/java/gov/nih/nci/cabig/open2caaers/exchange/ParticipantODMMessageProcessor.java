@@ -9,6 +9,7 @@ package gov.nih.nci.cabig.open2caaers.exchange;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
+import gov.nih.nci.cabig.caaers2adeers.exchnage.HeaderGeneratorProcessor;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.RuntimeExpressionException;
@@ -64,7 +65,7 @@ public class ParticipantODMMessageProcessor implements Processor {
         properties.put(CAAERS_WS_PASSWORD, caaersWSPassword);
 
 		log.debug("adding correlationId.");
-		Object correlationId = System.currentTimeMillis() + "";
+		Object correlationId = HeaderGeneratorProcessor.makeCorrelationId();
 		properties.put(CORRELATION_ID, correlationId);
 
 		if (log.isDebugEnabled())

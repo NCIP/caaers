@@ -43,6 +43,7 @@
         <extensions>true</extensions>
         <configuration>
           <type>service-assembly</type>
+          <classLoaderDelegation>self-first</classLoaderDelegation>
         </configuration>
       </plugin>
     </plugins>

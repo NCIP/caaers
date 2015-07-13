@@ -51,7 +51,7 @@ public class ExchangePreProcessor implements Processor {
         properties.put(CAAERS_WS_PASSWORD, caaersWSPassword);
         properties.put(ADEERS_WS_USERNAME, adeersWSUser);
         properties.put(ADEERS_WS_PASSWORD, adeersWSPassword);
-        properties.put(CORRELATION_ID, String.valueOf(System.currentTimeMillis()));
+        properties.put(CORRELATION_ID, HeaderGeneratorProcessor.makeCorrelationId());
 
         try {
             boolean isSync = XPathBuilder.xpath("//payload/request/operation/@mode = 'sync'").matches(exchange);
@@ -61,7 +61,7 @@ public class ExchangePreProcessor implements Processor {
             String operation = XPathBuilder.xpath("//payload/request/operation/@name").evaluate(exchange, String.class);
             properties.put(OPERATION_NAME, operation);
 
-            String entity = XPathBuilder.xpath("//payload/request/entity").evaluate(exchange, String.class);
+            String entity = XPathBuilder.xpath("//payload/request/entity/text()").evaluate(exchange, String.class);
             properties.put(ENTITY_NAME, entity);
 
             String correlationId = XPathBuilder.xpath("//payload/@"+CORRELATION_ID_ATTR_NAME).evaluate(exchange, String.class);
