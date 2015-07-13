@@ -45,7 +45,7 @@ public class AdverseEventRecommendedReportDaoTest extends DaoNoSecurityTestCase<
 		assertEquals("Wrong size", 1, recomReports.size());
 		assertNotNull(recomReports.get(0).getAdverseEvent());
 		assertNotNull(recomReports.get(0).getReportDefinition());
-		assertFalse(recomReports.get(0).getAeReported()==0);
+		assertFalse(recomReports.get(0).getAeReported()==1);
 		
 		recomReports = dao.getAllUnreportedRecords();
 		
@@ -100,7 +100,7 @@ public class AdverseEventRecommendedReportDaoTest extends DaoNoSecurityTestCase<
 		assertEquals("Wrong size", 1, recomReports.size());
 		assertNotNull(recomReports.get(0).getAdverseEvent());
 		assertNotNull(recomReports.get(0).getReportDefinition());
-		assertFalse(recomReports.get(0).getAeReported()==0);
+		assertFalse(recomReports.get(0).getAeReported()==1);
 		
 		recomReports = dao.getAllUnreportedRecords();
 		
