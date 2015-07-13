@@ -111,8 +111,18 @@
       </dependency>
       <dependency>
           <groupId>com.oracle</groupId>
-          <artifactId>ojdbc14</artifactId>
-          <version>10.2.0.2.0</version>
+          <artifactId>ojdbc7</artifactId>
+          <version>12.1.0.2.0</version>
+      </dependency>
+      <dependency>
+          <groupId>com.oracle</groupId>
+          <artifactId>ojpse</artifactId>
+          <version>12.1.0.2.0</version>
+      </dependency>
+      <dependency>
+          <groupId>com.oracle</groupId>
+          <artifactId>oraclepki</artifactId>
+          <version>12.1.0.2.0</version>
       </dependency>
       <dependency>
           <groupId>junit</groupId>
