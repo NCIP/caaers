@@ -62,11 +62,6 @@ public class EvaluationServiceImpl implements EvaluationService {
 
     private OrganizationDao organizationDao;
     
-    private Map<AdverseEvent,List<ReportDefinition>> adverseEventRecommendedReportsMap = new HashMap<AdverseEvent, List<ReportDefinition>>();
-    
-    public Map<AdverseEvent, List<ReportDefinition>> getAdverseEventRecommendedReportsMap() {
-		return adverseEventRecommendedReportsMap;
-	}
 
 	ReportDefinitionFilter reportDefinitionFilter;
     
@@ -186,6 +181,7 @@ public class EvaluationServiceImpl implements EvaluationService {
      * @param aeReport - The {@link ExpeditedAdverseEventReport}
      */
     public void findRequiredReportDefinitions(ExpeditedAdverseEventReport aeReport, List<AdverseEvent> aeList, Study study, EvaluationResultDTO evaluationResult) {
+        Map<AdverseEvent,List<ReportDefinition>> adverseEventRecommendedReportsMap = new HashMap<AdverseEvent, List<ReportDefinition>>();
 
         List<AdverseEvent> deletedAeList = new ArrayList<AdverseEvent>();
         List<AdverseEvent> newAeList = new ArrayList<AdverseEvent>();
@@ -870,9 +866,6 @@ public class EvaluationServiceImpl implements EvaluationService {
         return adverseEventEvaluationService;
     }
 
-	public void setOrganizationDao(OrganizationDao organizationDao) {
-		this.organizationDao = organizationDao;
-	}
 
  
 }
