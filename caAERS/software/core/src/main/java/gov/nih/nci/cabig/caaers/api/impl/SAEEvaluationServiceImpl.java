@@ -869,13 +869,13 @@ public class SAEEvaluationServiceImpl {
 										|| !reportDefinition.getGroup().equals(aeRecomReport.getReportDefinition().getGroup())) {
 									// CAAERS-6961: Only if there is a change in the recommended Report Org or Group set the AE
 									// reported flag to false, otherwise the AE is already considered added to the report.
-									aeRecomReport.setAeReported(0);
+									aeRecomReport.setAeReported(false);
 								}
 							} else {
 								// create AE recommendation report
 								aeRecomReport = new AdverseEventRecommendedReport();
 								aeRecomReport.setAdverseEvent(ae);
-								aeRecomReport.setAeReported(0);
+								aeRecomReport.setAeReported(false);
 							}
 							
 							aeRecomReport.setReportDefinition(reportDefinition);

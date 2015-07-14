@@ -240,7 +240,7 @@ public class ReportRepositoryImpl implements ReportRepository {
         for(AdverseEvent aeInReport : aeReport.getActiveAdverseEvents()){
         	for(AdverseEventRecommendedReport aeRecomReport : aeRecomReports){
         		if(aeRecomReport.getAdverseEvent().getId().equals(aeInReport.getId())){
-        			aeRecomReport.setAeReported(1);
+        			aeRecomReport.setAeReported(true);
         			adverseEventRecommendedReportDao.save(aeRecomReport);
         			continue;
         		}
