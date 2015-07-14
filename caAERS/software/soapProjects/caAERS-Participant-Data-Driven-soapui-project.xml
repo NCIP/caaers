@@ -84,7 +84,7 @@
             <FormData FormOID="SUBJECT_ENROLLMENT" TransactionType="Update">
                <ItemGroupData ItemGroupOID="SUBJECT_ENROLLMENT" TransactionType="Update">
                   <ItemData ItemOID="PARTIC_ENROL_DT" Value="${#TestCase#EnrollmentDate}"></ItemData>
-                  <ItemData ItemOID="CURRENT_SITE_ID" Value="${#TestCase#CurentSite}"></ItemData>
+                  <ItemData ItemOID="CURRENT_SITE_ID" Value="${#TestCase#CurrentSite}"></ItemData>
                   <ItemData ItemOID="PT_ID" Value="${#TestCase#ParticipantId}"></ItemData>
                   <ItemData ItemOID="ENROLLING_SITE_ID" Value="${#TestCase#EnrollingSite}"></ItemData>
                   <ItemData ItemOID="LEAD_INST_NAME" Value="${#TestCase#LeadSite}"></ItemData>
@@ -150,7 +150,7 @@
          </StudyEventData>
       </SubjectData>
    </ClinicalData>
-</ODM>]]></con:request><con:credentials><con:username>registrar</con:username><con:password>rartsigermai-11</con:password><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:preemptive>true</con:preemptive><con:authType>Preemptive</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep><con:testStep type="groovy" name="Next Line" id="124f800e-f2d0-416a-accf-bdc55c59a897"><con:settings/><con:config><script>// ${#TestCase#ColHeader}
+</ODM>]]></con:request><con:originalUri>https://dev.semanticbits.com/caaers/ParticipantInitialization</con:originalUri><con:assertion type="Simple Contains" id="6c69d5af-d633-444f-ad24-1eb23d8cd872" name="Contains"><con:configuration><token>IsTransactionSuccessful="${#TestCase#Success}"</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:username>registrar</con:username><con:password>rartsigermai-11</con:password><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:preemptive>true</con:preemptive><con:authType>Preemptive</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep><con:testStep type="groovy" name="Next Line" id="124f800e-f2d0-416a-accf-bdc55c59a897"><con:settings/><con:config><script>// ${#TestCase#ColHeader}
 testCase = testRunner.testCase;
 
 line = context.fileReader.readLine()
@@ -160,9 +160,8 @@ if (line != null) {
 	String[] props = line.split(",")
 	
 	for (int i = 0; i &lt; props.length &amp;&amp; i &lt; context.headers.length; i++) {
-		//prop = props[i].trim()
-		log.info "Found property: " + context.headers[i] + "=" + prop
-		testCase.setPropertyValue(context.headers[i],prop)
+		log.info "Found property: " + context.headers[i] + "=" + props[i]
+		testCase.setPropertyValue(context.headers[i],props[i])
 	}
 
 	// loop
@@ -197,8 +196,7 @@ if (line != null) {
 	log.info "Found properties: " + props.length
 	log.info "Using headers: " + context.headers.length
 	for (int i = 0; i &lt; props.length &amp;&amp; i &lt; context.headers.length; i++) {
-		//prop = props[i].trim()
-		log.info "Found property: " + context.headers[i] + "=" + prop
-		testCase.setPropertyValue(context.headers[i],prop)
+		log.info "Found property: " + context.headers[i] + "=" + props[i]
+		testCase.setPropertyValue(context.headers[i],props[i])
 	}
-}</con:setupScript><con:tearDownScript>context.fileReader.close()</con:tearDownScript><con:properties><con:property><con:name>file</con:name><con:value>/Users/mccon012/Downloads/forecast.csv</con:value></con:property></con:properties></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer><con:outgoing><con:name>caaers</con:name><con:entry type="Username" username="mayo-super-user" password="Hello-12"><con:configuration><addCreated>true</addCreated><addNonce>true</addNonce><passwordType>PasswordText</passwordType></con:configuration></con:entry></con:outgoing><con:outgoing><con:name>caaers-integ</con:name><con:entry type="Username" username="sb-admin" password="Hello-12"><con:configuration><addCreated>true</addCreated><addNonce>true</addNonce><passwordType>PasswordText</passwordType></con:configuration></con:entry></con:outgoing></con:wssContainer><con:oAuth2ProfileContainer/><con:sensitiveInformation/></con:soapui-project>
+}</con:setupScript><con:tearDownScript>context.fileReader.close()</con:tearDownScript><con:properties><con:property><con:name>file</con:name><con:value>/Users/mccon012/Downloads/caAERS Participant Data Driven - Participant Data.csv</con:value></con:property><con:property><con:name>Ethnicity</con:name><con:value>Hispanic or Latino</con:value></con:property><con:property><con:name>Gender</con:name><con:value>Female Gender</con:value></con:property><con:property><con:name>Race</con:name><con:value>American Indian or Alaska Native</con:value></con:property><con:property><con:name>Success</con:name><con:value>0</con:value></con:property><con:property><con:name>SubjectKey</con:name><con:value>S16791197-A071102</con:value></con:property><con:property><con:name>Site</con:name><con:value>CTSUTST01</con:value></con:property><con:property><con:name>Study</con:name><con:value>A071102</con:value></con:property><con:property><con:name>EnrollmentDate</con:name><con:value>14 Jun 2011</con:value></con:property><con:property><con:name>CurrentSite</con:name><con:value>MN008</con:value></con:property><con:property><con:name>ParticipantId</con:name><con:value>S16791197-A071102</con:value></con:property><con:property><con:name>EnrollingSite</con:name><con:value>MN008</con:value></con:property><con:property><con:name>LeadSite</con:name><con:value>SWOG</con:value></con:property><con:property><con:name>EnrollmentTime</con:name><con:value>08:09:27:PM</con:value></con:property><con:property><con:name>Initials</con:name><con:value>"</con:value></con:property><con:property><con:name>Birth</con:name><con:value/></con:property><con:property><con:name>Country</con:name><con:value/></con:property><con:property><con:name>Zipcode</con:name><con:value>"</con:value></con:property><con:property><con:name>Payment</con:name><con:value>14 Jun 2011</con:value></con:property><con:property><con:name>TrackingNumber</con:name><con:value>US</con:value></con:property><con:property><con:name>Physician</con:name><con:value>22222</con:value></con:property><con:property><con:name>Registrar</con:name><con:value>PRIVATE INSURANCE</con:value></con:property><con:property><con:name>Investigator</con:name><con:value>110347</con:value></con:property><con:property><con:name>Assessment</con:name><con:value>Elizabeth Poplin</con:value></con:property><con:property><con:name>Note</con:name><con:value>David Gorski</con:value></con:property></con:properties></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer><con:outgoing><con:name>caaers</con:name><con:entry type="Username" username="mayo-super-user" password="Hello-12"><con:configuration><addCreated>true</addCreated><addNonce>true</addNonce><passwordType>PasswordText</passwordType></con:configuration></con:entry></con:outgoing><con:outgoing><con:name>caaers-integ</con:name><con:entry type="Username" username="sb-admin" password="Hello-12"><con:configuration><addCreated>true</addCreated><addNonce>true</addNonce><passwordType>PasswordText</passwordType></con:configuration></con:entry></con:outgoing></con:wssContainer><con:oAuth2ProfileContainer/><con:sensitiveInformation/></con:soapui-project>
