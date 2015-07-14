@@ -4,7 +4,7 @@
 <form:errors path="${path}" id="${path}">
     <c:if test="${not empty messages}">
         <ul class="errors">
-            <c:forEach items="${messages}" var="message"><li>${message}</li></c:forEach>
+            <c:forEach items="${messages}" var="message"><li><c:out value=${message} escapeXml='true'/></li></c:forEach>
         </ul>
     </c:if>
 </form:errors> 
