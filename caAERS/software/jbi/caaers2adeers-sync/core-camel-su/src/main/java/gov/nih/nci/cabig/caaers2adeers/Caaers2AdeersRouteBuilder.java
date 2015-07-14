@@ -148,7 +148,7 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
         
         onException(ClassCastException.class)
                 // create a custom failure response
-        	.to("log:gov.nih.nci.cabig.caaers2adeers.class_cast_error?showHeaders=true&multiline=true&level=ERROR")
+        	.to("log:gov.nih.nci.cabig.caaers2adeers.class_cast_error?multiline=true&level=ERROR")
         	.choice()
             .when(header(ToCaaersReportWSRouteBuilder.NEEDS_ACK).isEqualTo(Boolean.TRUE.toString()))
             	.to("xslt:" + ToCaaersReportWSRouteBuilder.responseXSLBase + "E2BParserErrors2ACK.xsl")
@@ -168,7 +168,7 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
 
 
         // route for caaers integration services - trim white space
-        from("jetty:http://0.0.0.0:"+raveIntegrationServicesPort+"/caaers/services/RaveIntegrationServices")
+        from("jetty:http://0.0.0.0:"+raveIntegrationServicesPort+"/caaers/services/RaveIntegrationServices?minThreads=30&maxThreads=150")
 	            .streamCaching()
                 .choice()
 		        .when(header("CamelHttpMethod").isEqualTo("POST"))
@@ -205,18 +205,20 @@ public class Caaers2AdeersRouteBuilder extends RouteBuilder {
       
         // route for Participant Service
         
-        from("jetty:http://0.0.0.0:"+participantInitializationPort+"/caaers/ParticipantInitialization?httpBindingRef=participantODMMessageBinding")
+        from("jetty:http://0.0.0.0:"+participantInitializationPort+"/caaers/ParticipantInitialization?httpBindingRef=participantODMMessageBinding&minThreads=30&maxThreads=150")
 	        .streamCaching()
 	        .choice() 
 		        .when(header("CamelHttpMethod").isEqualTo("POST"))
+                    .processRef("participantODMMessageProcessor")
+                    .processRef("headerGeneratorProcessor")
+                    .to(fileTracker.fileURI(RAW_REQUEST_RECEIVED))
 		         	.process(track(REQUEST_RECEIVED))
-			        .processRef("participantODMMessageProcessor")
 			        .processRef("crlfFixProcessor")
-			        .processRef("headerGeneratorProcessor")
 			        .to(fileTracker.fileURI(REQUEST_RECEIVED))
 			        .to("xslt:" + "xslt/caaers/request/strip_namespaces.xsl")
 			        .process(track(PRE_PROCESS_OPEN_ODM_MSG))
-			        .to("direct:processedOpenOdmMessageSink") 
+                    .to(fileTracker.fileURI(CLEANSED_REQUEST_RECEIVED))
+			        .to("direct:processedOpenOdmMessageSink")
 		         .otherwise().end();
 
         //configure route towards caAERS Webservices

@@ -1,0 +1,181 @@
+<!--
+  Copyright SemanticBits, Northwestern University and Akaza Research
+  
+  Distributed under the OSI-approved BSD 3-Clause License.
+  See http://ncip.github.com/caaers/LICENSE.txt for details.
+-->
+<lookup>
+    <phases>
+        <phase><code>0</code><value>Phase 0 Trial</value></phase>
+        <phase><code>I</code><value>Phase I Trial</value></phase>
+        <phase><code>I/II</code><value>Phase I/II Trial</value></phase>
+        <phase><code>II</code><value>Phase II Trial</value></phase>
+        <phase><code>II/III</code><value>Phase II/III Trial</value></phase>
+        <phase><code>III</code><value>Phase III Trial</value></phase>
+        <phase><code>IV</code><value>Phase IV Trial</value></phase>
+        <phase><code>Pilot</code><value>Pilot</value></phase>
+        <phase><code>Null</code><value>Null</value></phase>
+        <phase><code>Other</code><value>Other</value></phase>
+    </phases>
+    <statuses>
+        <status><code>Active</code><value>Active - Trial is open to accrual</value></status>
+        <status><code>Complete</code><value>Administratively Complete</value></status>
+    </statuses>
+    <studypurposes>
+        <purpose><code>Treatment</code><value>Treatment</value></purpose>
+        <purpose><code>Prevention</code><value>Prevention</value></purpose>
+    </studypurposes>
+    <indtypes>
+        <indtype><code>Investigational</code><value>OTHER</value></indtype>
+        <indtype><code>Commercial</code><value>NA_COMMERCIAL</value></indtype>
+    </indtypes>
+    <yesnos>
+        <yesno><code>Yes</code><value>true</value></yesno>
+        <yesno><code>No</code><value>false</value></yesno>
+    </yesnos>
+    <interventions>
+        <intervention><code>Radiation Therapy</code><value>RADIATION</value></intervention>
+        <intervention><code>Surgery</code><value>SURGERY</value></intervention>
+        <intervention><code>Gene Transfer</code><value>OTHER</value></intervention>
+        <intervention><code>Image Directed Local Therapy</code><value>OTHER</value></intervention>
+        <intervention><code>Hematopoietic Stem Cell Transplantation</code><value>OTHER</value></intervention>
+    </interventions>
+    <genders>
+        <gender><code>Male Gender</code><value>Male</value></gender>
+        <gender><code>Female Gender</code><value>Female</value></gender>
+        <gender><code>Unknown</code><value>Unknown</value></gender>
+        <gender><code>Unspecified</code><value>Unknown</value></gender>
+    </genders>
+    <races>
+        <race><code>Asian</code><value>Asian</value></race>
+        <race><code>White</code><value>White</value></race>
+        <race><code>Black or African American</code><value>Black or African American</value></race>
+        <race><code>American Indian or Alaska Native</code><value>American Indian or Alaska Native</value></race>
+        <race><code>Native Hawaiian or other Pacific Islander</code><value>Native Hawaiian or Other PacificIslander</value></race>
+        <race><code>Not Reported</code><value>Not Reported</value></race>
+        <race><code>Unknown</code><value>Unknown</value></race>
+    </races>
+    <ethnicities>
+        <ethnicity><code>Hispanic or Latino</code><value>Hispanic or Latino</value></ethnicity>
+        <ethnicity><code>Not Hispanic or Latino</code><value>Not Hispanic or Latino</value></ethnicity>
+        <ethnicity><code>Not reported</code><value>Not Reported</value></ethnicity>
+        <ethnicity><code>Unknown</code><value>Unknown</value></ethnicity>
+    </ethnicities>
+    <months>
+        <month><code>Jan</code><value>01</value></month>
+        <month><code>Feb</code><value>02</value></month>
+        <month><code>Mar</code><value>03</value></month>
+        <month><code>Apr</code><value>04</value></month>
+        <month><code>May</code><value>05</value></month>
+        <month><code>Jun</code><value>06</value></month>
+        <month><code>Jul</code><value>07</value></month>
+        <month><code>Aug</code><value>08</value></month>
+        <month><code>Sep</code><value>09</value></month>
+        <month><code>Oct</code><value>10</value></month>
+        <month><code>Nov</code><value>11</value></month>
+        <month><code>Dec</code><value>12</value></month>
+    </months>
+    <!-- E2B related lookup -->
+    <e2byesnos>
+        <yesno><code>1</code><value>true</value></yesno>
+        <yesno><code>2</code><value>false</value></yesno>
+        <yesno><code>3</code><value>false</value></yesno><!-- 3 is UNKNOWN will be mapped as false -->
+    </e2byesnos>
+    <delayuoms>
+        <delayuom><code>804</code><value>DAYS</value></delayuom>
+        <delayuom><code>805</code><value>HOURS</value></delayuom>
+        <delayuom><code>806</code><value>MINUTES</value></delayuom>
+    </delayuoms>
+    <uoms>
+        <uom><code>%</code><value>%</value></uom>
+        <uom><code>1000/mm3</code><value>1000/mm3</value></uom>
+        <uom><code>1000/uL</code><value>1000/uL</value></uom>
+        <uom><code>g/dL</code><value>g/dL</value></uom>
+        <uom><code>g/L</code><value>g/L</value></uom>
+        <uom><code>mEq/L</code><value>mEq/L</value></uom>
+        <uom><code>mg/dL</code><value>mg/dL</value></uom>
+        <uom><code>mL/Min/1.73m2</code><value>mL/Min/1.73m2</value></uom>
+        <uom><code>mmHg</code><value>mmHg</value></uom>
+        <uom><code>n/a</code><value>n/a</value></uom>
+        <uom><code>number</code><value>number</value></uom>
+        <uom><code>seconds</code><value>seconds</value></uom>
+        <uom><code>U/L</code><value>U/L</value></uom>
+        <uom><code>ug/mL</code><value>ug/mL</value></uom>
+        <uom><code>cells/L</code><value>cells/L</value></uom>
+        <uom><code>gm</code><value>gm</value></uom>
+        <uom><code>gm/dl</code><value>gm/dl</value></uom>
+        <uom><code>iU/L</code><value>iU/L</value></uom>
+        <uom><code>kPa</code><value>kPa</value></uom>
+        <uom><code>mg/L</code><value>mg/L</value></uom>
+        <uom><code>min</code><value>min</value></uom>
+        <uom><code>mm3</code><value>mm3</value></uom>
+        <uom><code>mmol/L</code><value>mmol/L</value></uom>
+        <uom><code>ul</code><value>ul</value></uom>
+        <uom><code>umol/L</code><value>umol/L</value></uom>
+        <uom><code>Vol Frac</code><value>Vol Frac</value></uom>
+    </uoms>
+    <adjustments>
+        <adjustment><code>1</code><value>Discontinue Radiation</value></adjustment>
+        <adjustment><code>2</code><value>Decrease Total Dose</value></adjustment>
+        <adjustment><code>4</code><value>Continue Radiation as planned</value></adjustment>
+    </adjustments>
+    <aepresentstatuses>
+        <presentstatus><code>1</code><value>RECOVERED_WITHOUT_SEQUELAE</value></presentstatus>
+        <presentstatus><code>2</code><value>RECOVERING</value></presentstatus>
+        <presentstatus><code>3</code><value>NOT_RECOVERED</value></presentstatus>
+        <presentstatus><code>4</code><value>RECOVERED_WITH_SEQUELAE</value></presentstatus>
+        <presentstatus><code>5</code><value>DEAD</value></presentstatus>
+        <presentstatus><code>6</code><value>INTERVENTION_CONTINUES</value></presentstatus>
+    </aepresentstatuses>
+    <ecog-zubrod-baselinestatuses>
+        <baselinestatus><code>0</code><value>0 = Normal Activity, asymptomatic</value></baselinestatus>
+        <baselinestatus><code>1</code><value>1 = Symptomatic, fully ambulatory</value></baselinestatus>
+        <baselinestatus><code>2</code><value>2 = Symptomatic, in bed less than 50% of time</value></baselinestatus>
+        <baselinestatus><code>3</code><value>3 = Symptomatic, in bed more than 50% of time</value></baselinestatus>
+        <baselinestatus><code>4</code><value>4 = 100% bedridden</value></baselinestatus>
+    </ecog-zubrod-baselinestatuses>
+    <karnofsky-lansky-baselinestatuses>
+        <baselinestatus><code>100</code><value>0 = Normal Activity, asymptomatic</value></baselinestatus>
+        <baselinestatus><code>90</code><value>0 = Normal Activity, asymptomatic</value></baselinestatus>
+        <baselinestatus><code>80</code><value>1 = Symptomatic, fully ambulatory</value></baselinestatus>
+        <baselinestatus><code>70</code><value>1 = Symptomatic, fully ambulatory</value></baselinestatus>
+        <baselinestatus><code>60</code><value>2 = Symptomatic, in bed less than 50% of time</value></baselinestatus>
+        <baselinestatus><code>50</code><value>2 = Symptomatic, in bed less than 50% of time</value></baselinestatus>
+        <baselinestatus><code>40</code><value>3 = Symptomatic, in bed more than 50% of time</value></baselinestatus>
+        <baselinestatus><code>30</code><value>3 = Symptomatic, in bed more than 50% of time</value></baselinestatus>
+        <baselinestatus><code>20</code><value>4 = 100% bedridden</value></baselinestatus>
+        <baselinestatus><code>10</code><value>4 = 100% bedridden</value></baselinestatus>
+    </karnofsky-lansky-baselinestatuses>
+    <agent-dose-modifications>
+        <agent-dose-modification><code>1</code><value>DRUG_WITHDRAWN</value></agent-dose-modification>
+        <agent-dose-modification><code>2</code><value>DOSE_REDUCED</value></agent-dose-modification>
+        <agent-dose-modification><code>3</code><value>DOSE_INCREASED</value></agent-dose-modification>
+        <agent-dose-modification><code>4</code><value>DOSE_NOTCHANGED</value></agent-dose-modification>
+        <agent-dose-modification><code>6</code><value>NA</value></agent-dose-modification>
+    </agent-dose-modifications>
+    <yes-no-lov>
+        <yes-no-value><code>1</code><value>YES</value></yes-no-value>
+        <yes-no-value><code>2</code><value>NO</value></yes-no-value>
+    </yes-no-lov>
+    <factor-types>
+        <factor-type><code>concomitant medication</code><value>concomitant medication</value></factor-type>
+        <factor-type><code>other cause</code><value>other cause</value></factor-type>
+        <factor-type><code>course agent</code><value>course agent</value></factor-type>
+        <factor-type><code>SURGERY</code><value>SURGERY</value></factor-type>
+        <factor-type><code>RADIATION</code><value>RADIATION</value></factor-type>
+        <factor-type><code>DEVICE</code><value>DEVICE</value></factor-type>
+        <factor-type><code>primary disease</code><value>primary disease</value></factor-type>
+        <factor-type><code>other disease</code><value>other disease</value></factor-type>
+    </factor-types>
+    <baseline-performance-scales>
+        <baseline-performance-scale><code>ECOG</code><value>ECOG</value></baseline-performance-scale>
+        <baseline-performance-scale><code>ZUBROD</code><value>ZUBROD</value></baseline-performance-scale>
+        <baseline-performance-scale><code>LANSKY</code><value>LANSKY</value></baseline-performance-scale>
+        <baseline-performance-scale><code>KARNOFSKY</code><value>KARNOFSKY</value></baseline-performance-scale>
+    </baseline-performance-scales>
+    <lab-testtypes>
+        <lab-testtype><code>Worst</code><value>Worst</value></lab-testtype>
+        <lab-testtype><code>Recovery</code><value>Recovery</value></lab-testtype>
+        <lab-testtype><code>Baseline</code><value>Baseline</value></lab-testtype>
+    </lab-testtypes>
+</lookup>

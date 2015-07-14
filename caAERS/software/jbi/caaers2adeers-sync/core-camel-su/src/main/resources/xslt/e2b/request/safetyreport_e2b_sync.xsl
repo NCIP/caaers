@@ -12,7 +12,7 @@
     <xsl:param name="c2a_caaers_ws_username" />
     <xsl:param name="c2a_caaers_ws_password" />
     <xsl:param name="c2a_correlation_id" />
-	<xsl:variable name="map" select="document('lookup.xml')" />
+	<xsl:variable name="map" select="document('file:lookup.xml')" />
 	<xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyz'" />
 	<xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
 

@@ -17,6 +17,8 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import gov.nih.nci.cabig.caaers2adeers.exchnage.ExchangePreProcessor;
+import gov.nih.nci.cabig.caaers2adeers.exchnage.HeaderGeneratorProcessor;
 import org.apache.camel.Exchange;
 import org.apache.camel.component.http.DefaultHttpBinding;
 import org.apache.camel.component.http.HttpEndpoint;
@@ -83,7 +85,7 @@ public class ParticipantODMMessageBinding extends DefaultHttpBinding{
 		if(reasonCode.equals("soap:Client")){
 			// signifies XML validation failed
 			reasonCode="WS_GEN_007";
-			long referenceNumber = System.currentTimeMillis();
+			String referenceNumber = String.valueOf(exchange.getProperty(ExchangePreProcessor.CORRELATION_ID));
 			response.setStatus(codeMap.get(reasonCode));
 			response.getWriter().write("<Response ReferenceNumber=\"" + referenceNumber + "\" IsTransactionSuccessful=\"0\" ReasonCode=\"" + reasonCode + "\" ErrorClientResponseMessage=\"" + "Schema validation failed as required by caAERS Participant Service: " + errorMessage + "\"/>");
 			
@@ -97,7 +99,7 @@ public class ParticipantODMMessageBinding extends DefaultHttpBinding{
     @Override
     public void doWriteExceptionResponse(Throwable exception, HttpServletResponse response) throws IOException {
     	
-    	long referenceNumber = System.currentTimeMillis();
+    	String referenceNumber = HeaderGeneratorProcessor.makeCorrelationId();
     	 // and return this fixed text
         if(exception.getMessage().contains("No Authentication found")){
         	response.setStatus(401);

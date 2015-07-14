@@ -86,7 +86,7 @@
 		<delayuom><code>805</code><value>HOURS</value></delayuom>
 		<delayuom><code>806</code><value>MINUTES</value></delayuom>
 	</delayuoms>
-      <uoms>
+    <uoms>
     	<uom><code>%</code><value>%</value></uom>
 		<uom><code>1000/mm3</code><value>1000/mm3</value></uom>
 		<uom><code>1000/uL</code><value>1000/uL</value></uom>

@@ -5,7 +5,7 @@
         xmlns:asa="http://schema.integration.caaers.cabig.nci.nih.gov/asael"
         version='1.0'>
     <xsl:include href="caaers_request_common.xsl" />
-    <xsl:variable name="map" select="document('lookup.xml')"/>
+    <xsl:variable name="map" select="document('file:lookup.xml')"/>
     <xsl:template match="data">
         <com:createOrUpdateASAEL>
             <xsl:apply-templates select="ASAEL" />
