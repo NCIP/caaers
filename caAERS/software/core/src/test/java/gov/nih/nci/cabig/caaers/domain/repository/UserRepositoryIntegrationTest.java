@@ -13,6 +13,12 @@ import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Random;
+
+import org.springframework.mail.MailException;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
 
 /**
  * UserRepositoryImpl Tester.
@@ -28,7 +34,71 @@ public class UserRepositoryIntegrationTest extends CaaersTestCase {
     public void setUp() throws Exception {
         super.setUp();
         userRepository = (UserRepository)getDeployedApplicationContext().getBean("userRepository");
+        ((UserRepositoryImpl) userRepository).setMailSender(new DummyMailsender());
     }
+    
+    public void testEmailContent() {
+    	int randomNumber = new Random().nextInt(1000);
+		String loginName = "emailTest"+randomNumber;
+		User x = new User();
+        x.setFirstName("x");
+        x.setLastName("y");
+        x.setMiddleName("Z");
+        x.setLoginName(loginName);
+        x.setEmailAddress(loginName+"@localhost.com");
+        x.findRoleMembership(UserGroupType.system_administrator);
+
+        userRepository.createOrUpdateUser(x, "www.localhost.com/test");
+        userRepository.provisionUser(x);
+        assertNotNull(x.getCsmUser().getUserId());
+    }
+    
+    
+    public void testSearchCsmUserWithFirstAndLastName() {
+    	int randomNumber = new Random().nextInt(1000);
+    	//Create a user
+        User _user = new User();
+        _user.setLoginName("janakiram"+randomNumber);
+        _user.setFirstName("janaki rama rao");
+        _user.setLastName("gollapudi");
+     
+        userRepository.createOrUpdateUser(_user, "www.localhost.com/test");
+        userRepository.provisionUser(_user);
+        assertNotNull(_user.getCsmUser().getUserId());
+        List users = userRepository.searchCsmUser("janaki gollapudi");
+        assertEquals(((gov.nih.nci.security.authorization.domainobjects.User) users.get(0)).getFirstName(), "janaki rama rao");
+    }
+    
+    public void testSearchCsmUserWithFirstName() {
+    	int randomNumber = new Random().nextInt(1000);
+    	//Create a user
+        User _user = new User();
+        _user.setLoginName("janakiram"+randomNumber);
+        _user.setFirstName("janaki rama rao");
+        _user.setLastName("gollapudi");
+     
+        userRepository.createOrUpdateUser(_user, "www.localhost.com/test");
+        userRepository.provisionUser(_user);
+        assertNotNull(_user.getCsmUser().getUserId());
+        List users = userRepository.searchCsmUser("janaki");
+        assertEquals(((gov.nih.nci.security.authorization.domainobjects.User) users.get(0)).getFirstName(), "janaki rama rao");
+    }
+    
+    public void testSearchCsmUserWithLastName() {
+    	int randomNumber = new Random().nextInt(1000);
+    	//Create a user
+        User _user = new User();
+        _user.setLoginName("janakiram"+randomNumber);
+        _user.setFirstName("janaki rama rao");
+        _user.setLastName("gollapudi");
+     
+        userRepository.createOrUpdateUser(_user, "www.localhost.com/test");
+        userRepository.provisionUser(_user);
+        assertNotNull(_user.getCsmUser().getUserId());
+        List users = userRepository.searchCsmUser("gollapudi");
+        assertEquals(((gov.nih.nci.security.authorization.domainobjects.User) users.get(0)).getFirstName(), "janaki rama rao");
+    }
+
 
     public void testGetUserByLoginName() throws Exception {
 
@@ -135,12 +205,12 @@ public class UserRepositoryIntegrationTest extends CaaersTestCase {
 
         {
             User x = userRepository.getUserByLoginName(loginName);
-            assertNotNull(x);
-            assertEquals("x", x.getFirstName());
-            assertTrue(x.getUserGroupTypes().contains(UserGroupType.system_administrator));
-            assertFalse(x.getUserGroupTypes().contains(UserGroupType.person_and_organization_information_manager));
-            assertEquals(1, x.getUserGroupTypes().size());
-            assertFalse(x.findRoleMembership(UserGroupType.person_and_organization_information_manager).isAllSite());
+            assertNotNull("The user should exist.", x);
+            assertEquals("The users first name should match.", "x", x.getFirstName());
+            assertTrue("The user should be a sys admin.", x.getUserGroupTypes().contains(UserGroupType.system_administrator));
+            assertFalse("The user should not be a person/org manager.", x.getUserGroupTypes().contains(UserGroupType.person_and_organization_information_manager));
+            assertEquals("There should be just one user in the group.", 1, x.getUserGroupTypes().size());
+            assertFalse("The user should not have accsess to all sites.", x.findRoleMembership(UserGroupType.person_and_organization_information_manager).isAllSite());
 
         }
         
@@ -213,4 +283,21 @@ public class UserRepositoryIntegrationTest extends CaaersTestCase {
         }
     }
 
+    private class DummyMailsender implements MailSender {
+    	public void send(SimpleMailMessage[] arg0) throws MailException {
+			for(SimpleMailMessage msg : arg0) {
+				send(msg);
+			}
+			
+		}
+		
+		public void send(SimpleMailMessage arg0) throws MailException {
+			if("Your updated caAERS account".equals(arg0.getSubject())) {
+				return;
+			}
+			assertEquals("Your new caAERS account", arg0.getSubject());
+			assertTrue(arg0.getText().startsWith("An account has been created for you in the caAERS Adverse Event Reporting System."));
+			assertTrue(arg0.getText().endsWith("This message was sent by caAERS. Please do not reply to this message."));			
+		}
+    }
 }

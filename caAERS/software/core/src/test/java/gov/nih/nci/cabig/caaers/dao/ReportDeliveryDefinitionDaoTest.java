@@ -64,17 +64,13 @@ public class ReportDeliveryDefinitionDaoTest extends DaoTestCase<ReportDeliveryD
         rdd.setEntityName("Joel");
         rdd.setFormat(ReportFormat.PDF);
         rdd.setEntityType(rdd.ENTITY_TYPE_PERSON);
-        getDao().save(rdd);
+        getDao().save(rdd); //fails on audit saying no id.
         int id = rdd.getId();
         interruptSession();
         ReportDeliveryDefinition rdd2 = getDao().getById(id);
         assertEquals("Name shouldbe equal", rdd.getEntityName(), rdd2.getEntityName());
         assertEquals("Entity type should be equal", rdd.getEntityType(), rdd2.getEntityType());
         assertEquals("ReportFormat should be equal", rdd.getFormat(), rdd2.getFormat());
-    }
-
-    public void xtestExample() {
-        assertTrue(true);
     }
 
 }

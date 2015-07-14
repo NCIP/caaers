@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Lab;
+import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.attribution.BehavioralInterventionAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.BiologicalInterventionAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
@@ -247,11 +248,14 @@ public class ExpeditedAdverseEventReportConverter {
 
         //Intervention - Course Agent - Treatment information
         if(aeReportDto.getTreatmentInformation() != null){
-            aeReport.setTreatmentInformation(utility.convertTreatmentInformation(aeReportDto.getTreatmentInformation()));
+        	TreatmentInformation ti = utility.convertTreatmentInformation(aeReportDto.getTreatmentInformation());
+        	ti.setTreatmentDescription(aeReportDto.getAdverseEventReportingPeriod().getTreatmentAssignmentDescription());
+            aeReport.setTreatmentInformation(ti);
             aeReport.getAssignment().setStartDateOfFirstCourse(aeReport.getTreatmentInformation().getFirstCourseDate());
         }
 
         //Intervention - Device
+        aeReport.setInvestigationalDeviceAdministered(aeReportDto.isInvestigationalDeviceAdministered());
         for(MedicalDeviceType xmlMedicalDeviceType : aeReportDto.getMedicalDevice()){
             aeReport.addMedicalDevice(utility.convertMedicalDevice(xmlMedicalDeviceType));
         }

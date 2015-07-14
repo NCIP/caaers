@@ -7,15 +7,15 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.domain.attribution.*;
+import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.domain.report.ReportedAdverseEvent;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.utils.ObjectUtils;
 import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
+import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -36,11 +36,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import gov.nih.nci.cabig.ctms.domain.DomainObject;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Fetch;
@@ -102,9 +100,6 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     
     //transient field to be used in adding reviewer information in report generation
     private Reporter reviewer;
-    
-    /** The Constant log. */
-    private static final Log log = LogFactory.getLog(ExpeditedAdverseEventReport.class);
 
     private String externalId;
 
@@ -380,6 +375,22 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     		activeEvents.add(ae);
     	}
     	return activeEvents;
+    }
+
+    /**
+     * List of deleted adverse events.
+     * @return
+     */
+    @Transient
+    public List<AdverseEvent> getRetiredAdverseEvents() {
+        List<AdverseEvent> aes = new ArrayList<AdverseEvent>();
+        for(AdverseEvent ae: getAdverseEvents()){
+            if(ae == null) continue;
+            if(ae.isRetired()) {
+                aes.add(ae);
+            }
+        }
+        return aes;
     }
     
     /**
@@ -743,7 +754,6 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
      *
      * @param adverseEvents the new adverse events internal
      */
-    @SuppressWarnings("unchecked")
     public void setAdverseEventsInternal(List<AdverseEvent> adverseEvents) {
         lazyListHelper.setInternalList(AdverseEvent.class, adverseEvents);
     }
@@ -1573,17 +1583,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	}
     }
     
-    /**
-     * This method will clear the reportedFlag, set on previously reported adverse events, 
-     * which got modified.
-     */
-    public void clearReportedFlagOnModifiedAdverseEvents(){
-    	List<AdverseEvent> modifiedAdverseEvents = getModifiedAdverseEvents();
-    	for(AdverseEvent modifiedAdverseEvent : modifiedAdverseEvents){
-    		modifiedAdverseEvent.setReported(false);
-    	}
-    }
-    
+
     /**
      * This method will clear the post submission updated date on each of the adverse events. 
      */
@@ -1824,7 +1824,8 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
      * @param thatAe
      * @return
      */
-    public AdverseEvent findAdverseEventByIdTermAndDates(AdverseEvent thatAe){
+    @SuppressWarnings("rawtypes")
+	public AdverseEvent findAdverseEventByIdTermAndDates(AdverseEvent thatAe){
         for(AdverseEvent thisAe : getAdverseEvents()){
             //are Ids matching ?
             if(ObjectUtils.equals(thisAe.getId(), thatAe.getId())) return thisAe;
@@ -1945,7 +1946,8 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         return interventionTypes;
     }
 
-    @Transient
+    @SuppressWarnings("rawtypes")
+	@Transient
     public List<AdverseEventAttribution> getAdverseEventAttributions(){
         List<AdverseEventAttribution> attributions = new ArrayList<AdverseEventAttribution>();
         for(AdverseEvent ae: getAdverseEvents())   {
@@ -2116,5 +2118,14 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     	}
     	
     	return null;
+    }
+
+    @Transient
+    public List<AdverseEvent> getUnReportedAdverseEvents() {
+        List<AdverseEvent> aes  = new ArrayList<AdverseEvent>();
+        for(AdverseEvent ae : getActiveAdverseEvents()) {
+            if(!BooleanUtils.isTrue(ae.getReported())) aes.add(ae);
+        }
+        return aes;
     }
 }

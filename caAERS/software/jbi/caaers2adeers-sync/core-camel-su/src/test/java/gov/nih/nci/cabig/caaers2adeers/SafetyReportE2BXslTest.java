@@ -17,6 +17,8 @@ public abstract class SafetyReportE2BXslTest extends TestCase{
 	
 	private XsltTransformer xsltTrans;
 	
+	public static String newline = System.getProperty("line.separator");
+	
 	
 	@Override
 	protected void setUp() throws Exception {

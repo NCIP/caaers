@@ -22,6 +22,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /*
 * @author Srini
@@ -161,7 +163,10 @@ public class AdverseEventReportSerializer {
 
 	    	//build treatment info
 	    	aer.setTreatmentInformation(getTreatmentInformation(hibernateAdverseEventReport.getTreatmentInformation(),notApplicableFieldPaths));
-	    
+
+            if(!notApplicableFieldPaths.contains("investigationalDeviceAdministered")) {
+                aer.setInvestigationalDeviceAdministered(hibernateAdverseEventReport.getInvestigationalDeviceAdministered());
+            }
 	    	//build MedicalDevices
 	    	List<MedicalDevice> medicalDeviceList = CaaersSerializerUtil.filter(hibernateAdverseEventReport.getMedicalDevices());
 
@@ -261,7 +266,7 @@ public class AdverseEventReportSerializer {
 	    	List<AdverseEvent> aeList = CaaersSerializerUtil.filter(hibernateAdverseEventReport.getAdverseEvents());
 
 	    	for (int i=0; i<aeList.size(); i++) {
-	    		AdverseEvent ae = (AdverseEvent)aeList.get(i);
+	    		AdverseEvent ae = aeList.get(i);
 	    		aer.addAdverseEvent(getAdverseEvent(ae,i));
 	    	}
 
@@ -331,6 +336,7 @@ public class AdverseEventReportSerializer {
 		   r.setEmailAddresses(report.getEmailRecipients());
            r.setMandatoryFields(report.getMandatoryFields());
            r.setCaseNumber(report.getCaseNumber());
+           r.setMetaData(report.getMetaData());
            if(report.getReportDeliveries() != null)   {
               for(ReportDelivery rd : report.getReportDeliveries()){
                 r.addReportDelivery(ReportDelivery.copy(rd));
@@ -354,6 +360,7 @@ public class AdverseEventReportSerializer {
 		   reportDefinition.setId(rd.getId());
 		   reportDefinition.setDuration(rd.getDuration());
 		   reportDefinition.setDescription(rd.getDescription());
+           reportDefinition.setName(rd.getName());
 		   reportDefinition.setLabel(rd.getLabel());
 		   reportDefinition.setHeader(rd.getHeader());
 		   reportDefinition.setFooter(rd.getFooter());
@@ -621,6 +628,7 @@ public class AdverseEventReportSerializer {
 	    		reviewer.setPhoneNumber(psn.getPhoneNumber());
 	    		reviewer.setAddress(psn.getAddress());
 	    		reviewer.setEmailAddress(psn.getEmailAddress());
+	    		reviewer.setAlternateEmailAddress(psn.getAlternateEmailAddress());
 	    	} catch (Exception e) {
 	    		throw new Exception ("Error building getReviewer() "+e.getMessage() , e);
 	    	}
@@ -1018,7 +1026,6 @@ public class AdverseEventReportSerializer {
                 AbstractAdverseEventTerm aeTerm = ae.getAdverseEventTerm();
                 
                 if(aeTerm instanceof  AdverseEventMeddraLowLevelTerm){
-
                     adverseEvent.getAdverseEventMeddraLowLevelTerm().setLowLevelTerm(getLowLevelTerm(ae.getAdverseEventMeddraLowLevelTerm().getLowLevelTerm()));
                 } else {
                     adverseEvent.getAdverseEventCtcTerm().setCtcTerm(getCtcTerm(ae.getAdverseEventCtcTerm().getCtcTerm()));
@@ -1227,59 +1234,10 @@ public class AdverseEventReportSerializer {
 	    	return treatmentInformation;
 	    }
 
-
-
 		public String getMappingFile() {
 			return mappingFile;
 		}
 
-
-//		public void setMappingFile(String mappingFile) {
-	//		this.mappingFile = mappingFile;
-		//}
-
-		public static void main (String[] args) {
-			//
-			DateFormat dfm = new SimpleDateFormat("yyyy-MM-dd hh:mm");
-			try {
-				ExpeditedAdverseEventReport e = new ExpeditedAdverseEventReport();
-				StudyParticipantAssignment studyParticipantAssignment = new StudyParticipantAssignment();
-
-
-				AdverseEventReportingPeriod reportingPeriod = new AdverseEventReportingPeriod();
-				e.setReportingPeriod(reportingPeriod);
-				e.setAssignment(studyParticipantAssignment);
-				e.setId(1);
-
-				ParticipantHistory ph = new ParticipantHistory();
-				Measure h = new Measure();
-				h.setQuantity(100.0);
-				h.setUnit("Inch");
-
-				Measure w = new Measure();
-				w.setQuantity(150.0);
-				w.setUnit("Pound");
-
-				ph.setHeight(h);
-				ph.setWeight(w);
-				e.setParticipantHistory(ph);
-				
-
-				AdverseEventReportSerializer ser = new AdverseEventReportSerializer();
-				String xml = ser.serialize(e, null);
-				//String xml = marshaller.toXML(e,"xml-mapping/ae-report-xml-mapping.xml");
-				System.out.println(xml);
-
-					
-
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-
-
-		}
 
 
 }

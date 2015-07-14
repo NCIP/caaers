@@ -5,9 +5,12 @@ function showDashboardStudiesMenuOptions(_element, _roles, _ssi, _id, _complete)
     var rolesSize = _roles.length;
 
     var _optionDetails = "";
-    if (hasRole('supplemental_study_information_manager') || (_complete == 'true' && hasRole('study_qa_manager')) || (_complete == 'false' && hasRole('study_creator')))
+    if (hasRole('supplemental_study_information_manager') || (_complete == 'true' && hasRole('study_qa_manager')) || (_complete == 'false' && hasRole('study_creator'))) {
         _optionDetails = "<li><a class='submitter-blue' href='#' onclick='doEdit(\"" + _id + "\")'>Edit study details</a></li>";
-
+    } else {
+    	_optionDetails = "<li><a class='submitter-blue' href='#' onclick='doEdit(\"" + _id + "\")'>View study details</a></li>";
+    }
+    
     var _optionSites = "";
     if (hasRole('study_site_participation_administrator'))
         _optionSites = "<li><a class='submitter-blue' href='#' onclick='addStudySite(\"" + _id + "\", " + _complete + ")'>Add study site</a></li>";
@@ -110,14 +113,20 @@ function showUserMenuOptions(_element, strId, rt, un, active) {
     var _el = jQuery(_element);
     var html_start = "<div><ul style='font-family:tahoma;'>";
     var html_end = "</ul></div>";
-    var _editAction = "<li><a class='submitter-blue' href='#' onclick='javascript:doEdit(#{strId}, \"#{rt}\", \"#{un}\")'>Edit</a></li>";
     var _action = "Activate";
     if (active == "Active") {
         _action = "Deactivate"
     }
 
 
+    var _editAction = "<li><a class='submitter-blue' href='#' onclick='javascript:doEdit(#{strId}, \"#{rt}\", \"#{un}\")'>Edit</a></li>";
     var _activateAction = "<li><a class='submitter-blue' href='#' onclick='javascript:doActivate(#{strId}, \"#{rt}\", \"#{un}\", \"#{active}\")'>" + _action + "</a></li>";
+    if(hasRole('person_and_organization_information_manager') || hasRole('data_importer') || hasRole('user_administrator') || hasRole('system_administrator')) {
+    	//has permision to edit users.
+    } else {
+        _editAction = "<li><a class='submitter-blue' href='#' onclick='javascript:doEdit(#{strId}, \"#{rt}\", \"#{un}\")'>View</a></li>";
+    	_activateAction = "";
+    }
     
     var html = html_start + _editAction + (un != "" ? _activateAction : "") + html_end;
     var html = html.interpolate({strId:strId, rt:rt, un:un, active:active});

@@ -16,26 +16,26 @@ public class AdeersResponseToE2BAckRouteBuilder {
 
 	private String outputEDIDir;	
 		
-	private Caaers2AdeersRouteBuilder routeBuilder;
 
-	public void configure(Caaers2AdeersRouteBuilder rb){
-        this.routeBuilder = rb;
-        
+	public void configure(Caaers2AdeersRouteBuilder routeBuilder){
+
         routeBuilder.from("direct:routeAdEERSResponseSink")
         	.choice()
-        		.when().xpath("starts-with(//MESSAGE_COMBO_ID, 'null::')")
+        		.when().xpath("not(//MESSAGE_COMBO_ID)")
+                    .to("log:gov.nih.nci.cabig.report2adeers.response-ignored?showHeaders=true&multiline=true&level=WARN")
         			.to("direct:donothing")
                 .otherwise()
                 	.to("direct:processAdEERSResponse");
         
         routeBuilder.from("direct:processAdEERSResponse")
-	        .process(track(ADEERS_REPORT_SUBMISSION_RESPONSE))	        
-			.to(routeBuilder.getFileTracker().fileURI(ADEERS_REPORT_SUBMISSION_RESPONSE))
+            .to("log:gov.nih.nci.cabig.report2adeers.pre-e2b?showHeaders=true&multiline=true&level=INFO")
 			.processRef("adeersResponseProcessor")
-			.to("xslt:" + responseXSLBase + "adeersResponse2ACK.xsl")			
-			.process(track(ADEERS_REPORT_SUBMISSION_RESPONSE_TRASNSFORMATION))
-			.to(routeBuilder.getFileTracker().fileURI(ADEERS_REPORT_SUBMISSION_RESPONSE_TRASNSFORMATION))			
+			.to("xslt:" + responseXSLBase + "adeersResponse2ACK.xsl")
+            .to("log:gov.nih.nci.cabig.report2adeers.post-e2back-xslt?showHeaders=true&multiline=true&level=INFO")
+			.process(track(REQUEST_COMPLETION))
+			.to(routeBuilder.getFileTracker().fileURI(REQUEST_COMPLETION))
 			.to("file://"+outputEDIDir);
+
 	}	
 
 	public String getOutputEDIDir() {

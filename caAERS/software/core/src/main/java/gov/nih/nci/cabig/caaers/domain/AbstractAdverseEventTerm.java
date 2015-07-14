@@ -133,8 +133,9 @@ public abstract class AbstractAdverseEventTerm<T extends DomainObject> extends A
      *
      * @return the abstract adverse event term
      */
-    public AbstractAdverseEventTerm copy() {
-        AbstractAdverseEventTerm abstractAdverseEventTerm = (AbstractAdverseEventTerm) BeanUtils.instantiateClass(getClass());
+    @SuppressWarnings("rawtypes")
+	public AbstractAdverseEventTerm copy() {
+        AbstractAdverseEventTerm abstractAdverseEventTerm = BeanUtils.instantiateClass(getClass());
         BeanUtils.copyProperties(this, abstractAdverseEventTerm, new String[]{"id", "gridId", "version", "adverseEvent"});
         return abstractAdverseEventTerm;
     }

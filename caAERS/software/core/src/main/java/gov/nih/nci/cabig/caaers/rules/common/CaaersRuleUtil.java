@@ -6,6 +6,9 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.rules.common;
 
+import com.semanticbits.rules.brxml.Column;
+import com.semanticbits.rules.brxml.FieldConstraint;
+import com.semanticbits.rules.brxml.Rule;
 import com.semanticbits.rules.utils.RuleUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanWrapper;
@@ -17,8 +20,6 @@ public class CaaersRuleUtil {
 //
     public static final String CAN_NOT_DETERMINED = "CAN_NOT_DETERMINED";
     public static final String SERIOUS_ADVERSE_EVENT = "SERIOUS_ADVERSE_EVENT";
-//
-//	private static final Log log = LogFactory.getLog(CaaersRuleUtil.class);
 
 
     public static String getStringWithoutSpaces(String str) {
@@ -34,58 +35,6 @@ public class CaaersRuleUtil {
     }
 
 
-//
-//    /**
-//     * Will return the category identified the path if exists, otherwise creates. 
-//     * @param authService
-//     * @param path
-//     * @return
-//     * @throws Exception
-//     */
-//    public static Category  createCategory(RuleAuthoringService authService, String path) throws Exception{
-//        if(StringUtils.isEmpty(path)) return null;
-//
-//        if(RuleUtil.categoryExist(authService, path)){
-//            return authService.getCategory(path);
-//        }
-//
-//        int i = path.lastIndexOf('/');
-//        
-//        String childPath = null;
-//        String parentPath = null;
-//
-//        if(path.length() > i){
-//            childPath = path.substring(i+1);
-//        }
-//
-//        if(i >= 0){
-//            parentPath = path.substring(0,i);
-//
-//        }
-//
-//        if(!StringUtils.equals(parentPath, "/")) createCategory(authService, parentPath);
-//
-//        CategoryConfiguration c = CategoryConfiguration.findByName(childPath);
-//        if(c != null){
-//            if(!RuleUtil.categoryExist(authService, c.getPath())){
-//                RuleUtil.createCategory(authService, parentPath,c.getName(),c.getDescription());
-//                log.debug(" -->" + parentPath + "/" + c.getName());
-//            }
-//
-//        }else{
-//            if(!RuleUtil.categoryExist(authService, childPath)){
-//                RuleUtil.createCategory(authService, parentPath,childPath,childPath);
-//                log.debug(" -->" + parentPath + "/" + childPath);
-//            }
-//        }
-//
-//        return authService.getCategory(path);
-//
-//    }
-//
-//
-//
-//    
     /**
      * This method will parse the rules result and return the list of
      * report definition names.
@@ -140,5 +89,95 @@ public class CaaersRuleUtil {
 
 
         return map;
+    }
+
+    public static String fetchFieldExpression(Rule rule, String fieldName) {
+        for (Column col : rule.getCondition().getColumn()) {
+            if(col.getFieldConstraint() == null || col.getFieldConstraint().isEmpty()) continue;
+            if(col.getFieldConstraint().get(0).getFieldName() == null) continue;
+            FieldConstraint fc = col.getFieldConstraint().get(0);
+            if (fc.getFieldName().equals(fieldName)) {
+                return col.getExpression();
+            }
+        }
+        return null;
+    }
+    public static String fetchFieldValue(Rule rule, String fieldName) {
+        for (Column col : rule.getCondition().getColumn()) {
+            if(col.getFieldConstraint() == null || col.getFieldConstraint().isEmpty()) continue;
+            if(col.getFieldConstraint().get(0).getFieldName() == null) continue;
+            FieldConstraint fc = col.getFieldConstraint().get(0);
+            if (fc.getFieldName().equals(fieldName)) {
+                return fc.getLiteralRestriction().get(0).getValue().get(0);
+            }
+        }
+        return null;
+    }
+
+    public static String fetchFieldReadableValue(Rule rule, String fieldName) {
+        for (Column col : rule.getCondition().getColumn()) {
+            if(col.getFieldConstraint() == null || col.getFieldConstraint().isEmpty()) continue;
+            if(col.getFieldConstraint().get(0).getFieldName() == null) continue;
+            FieldConstraint fc = col.getFieldConstraint().get(0);
+            if (fc.getFieldName().equals(fieldName)) {
+                return fc.getLiteralRestriction().get(0).getReadableValue();
+            }
+        }
+        return null;
+    }
+
+
+    public static void updateFieldValue(Rule rule, String fieldName, String newVal) {
+        for (Column col : rule.getCondition().getColumn()) {
+            if(col.getFieldConstraint() == null || col.getFieldConstraint().isEmpty()) continue;
+            if(col.getFieldConstraint().get(0).getFieldName() == null) continue;
+            FieldConstraint fc = col.getFieldConstraint().get(0);
+            if (fc.getFieldName().equals(fieldName)) {
+                fc.getLiteralRestriction().get(0).setValue(Arrays.asList(newVal));
+                String[] expressionParts = StringUtils.split(col.getExpression(), ',');
+                expressionParts[3] = String.format("'%s'", newVal );
+                col.setExpression(StringUtils.join(expressionParts, ","));
+            }
+        }
+
+    }
+
+    public static void updateCategoryField(Rule rule, String newVal) {
+        for (Column col : rule.getCondition().getColumn()) {
+            if(col.getFieldConstraint() == null || col.getFieldConstraint().isEmpty()) continue;
+            if(col.getFieldConstraint().get(0).getFieldName() == null) continue;
+            FieldConstraint fc = col.getFieldConstraint().get(0);
+            if (fc.getFieldName().equals("category")) {
+                fc.setGrammerPrefix("Category");
+                fc.getLiteralRestriction().get(0).setValue(Arrays.asList(newVal));
+
+                String newOp =  fc.getLiteralRestriction().get(0).getEvaluator();
+                String expression = col.getExpression();
+                String[] expressionParts = StringUtils.split(expression, ',');
+                expressionParts[1] = "'gov.nih.nci.cabig.caaers.domain.CtcCategory'";
+                expressionParts[2] = "'id'";
+                expressionParts[3] = String.format("'%s'", newVal );
+                expressionParts[4] = String.format("'%s')", newOp );
+                col.setExpression(StringUtils.join(expressionParts, ","));
+            }
+        }
+    }
+    public static void updateTermField(Rule rule, String newVal) {
+        for (Column col : rule.getCondition().getColumn()) {
+            if(col.getFieldConstraint() == null || col.getFieldConstraint().isEmpty()) continue;
+            if(col.getFieldConstraint().get(0).getFieldName() == null) continue;
+            FieldConstraint fc = col.getFieldConstraint().get(0);
+            if (fc.getFieldName().equals("term")) {
+
+                fc.getLiteralRestriction().get(0).setValue(Arrays.asList(newVal));
+                String expression = col.getExpression();
+                String[] expressionParts = StringUtils.split(expression, ',');
+                expressionParts[1] = "'gov.nih.nci.cabig.caaers.domain.CtcTerm'";
+                expressionParts[2] = "'ctepCode'";
+                expressionParts[3] = String.format("'%s'", "runTimeValue" );
+                expressionParts[4] = String.format("'%s')", "runTimeOperator" );
+                col.setExpression(StringUtils.join(expressionParts, ","));
+            }
+        }
     }
 }

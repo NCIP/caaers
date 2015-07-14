@@ -314,8 +314,8 @@
       <servlet-name>dwr-invoker</servlet-name>
       <servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
       <init-param>
-         <param-name>debug</param-name>
-         <param-value>true</param-value>
+         <param-name>crossDomainSessionSecurity</param-name>
+         <param-value>false</param-value>
       </init-param>
     </servlet>
     <servlet-mapping>
@@ -392,16 +392,6 @@
     <error-page><error-code>403</error-code><location>/accessDenied.jsp</location></error-page>
     <error-page> <error-code>500</error-code> <location>/decorated-error.jsp</location></error-page>
     <error-page><exception-type>java.lang.Throwable</exception-type><location>/decorated-error.jsp</location></error-page>
-
-    <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>Secure URLs</web-resource-name>
-            <url-pattern>/*</url-pattern>
-        </web-resource-collection>
-        <user-data-constraint>
-            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
-        </user-data-constraint>
-    </security-constraint>
 
     <!--  Session Timeout is set to 45 mins. -->
     <session-config>

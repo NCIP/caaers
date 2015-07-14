@@ -26,7 +26,7 @@
 
 
 	<!--KEYS AND FUNCTIONS-->
-	<xsl:variable name="map" select="document('lookup.xml')" />
+	<xsl:variable name="map" select="document('file:lookup.xml')" />
 
 	<xsl:function name="caaers:lookup">
 		<xsl:param name="_code" />
@@ -282,6 +282,15 @@
 				<xsl:apply-templates/>
 			</svrl:active-pattern>
 			<xsl:apply-templates select="/" mode="M18"/>
+			<svrl:active-pattern>
+				<xsl:attribute name="document">
+					<xsl:value-of select="document-uri(/)"/>
+				</xsl:attribute>
+				<xsl:attribute name="id">Message Header message date</xsl:attribute>
+				<xsl:attribute name="name">Message Header, validate message date.</xsl:attribute>
+				<xsl:apply-templates/>
+			</svrl:active-pattern>
+			<xsl:apply-templates select="/" mode="M19"/>
 		</svrl:schematron-output>
 	</xsl:template>
 
@@ -400,8 +409,8 @@
 	<svrl:text xmlns:svrl="http://purl.oclc.org/dsdl/svrl">BaselinePerformace: validate baseline performance number</svrl:text>
 
 	<!--RULE -->
-	<xsl:template match="/ichicsr/safetyreport/patient[upper-case(baselineperformancescale)='ECOG' or upper-case(baselineperformancescale)='ZUBROD']" priority="1001" mode="M11">
-		<svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/ichicsr/safetyreport/patient[upper-case(baselineperformancescale)='ECOG' or upper-case(baselineperformancescale)='ZUBROD']"/>
+	<xsl:template match="/ichicsr/safetyreport/patient/medicalhistoryepisode[upper-case(baselineperformancescale)='ECOG' or upper-case(baselineperformancescale)='ZUBROD']" priority="1001" mode="M11">
+		<svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/ichicsr/safetyreport/patient/medicalhistoryepisode[upper-case(baselineperformancescale)='ECOG' or upper-case(baselineperformancescale)='ZUBROD']"/>
 
 		<!--ASSERT -->
 		<xsl:choose>
@@ -427,8 +436,8 @@
 	<svrl:text xmlns:svrl="http://purl.oclc.org/dsdl/svrl">BaselinePerformace: validate baseline performance number</svrl:text>
 
 	<!--RULE -->
-	<xsl:template match="/ichicsr/safetyreport/patient[upper-case(baselineperformancescale)='LANSKY' or upper-case(baselineperformancescale)='KARNOFSKY']" priority="1001" mode="M12">
-		<svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/ichicsr/safetyreport/patient[upper-case(baselineperformancescale)='LANSKY' or upper-case(baselineperformancescale)='KARNOFSKY']"/>
+	<xsl:template match="/ichicsr/safetyreport/patient/medicalhistoryepisode[upper-case(baselineperformancescale)='LANSKY' or upper-case(baselineperformancescale)='KARNOFSKY']" priority="1001" mode="M12">
+		<svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/ichicsr/safetyreport/patient/medicalhistoryepisode[upper-case(baselineperformancescale)='LANSKY' or upper-case(baselineperformancescale)='KARNOFSKY']"/>
 
 		<!--ASSERT -->
 		<xsl:choose>
@@ -508,8 +517,8 @@
 	<svrl:text xmlns:svrl="http://purl.oclc.org/dsdl/svrl">Participant History: validate baseline performance scale </svrl:text>
 
 	<!--RULE -->
-	<xsl:template match="/ichicsr/safetyreport/patient/baselineperformancescale" priority="1001" mode="M15">
-		<svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/ichicsr/safetyreport/patient/baselineperformancescale"/>
+	<xsl:template match="/ichicsr/safetyreport/patient/medicalhistoryepisode/baselineperformancescale" priority="1001" mode="M15">
+		<svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/ichicsr/safetyreport/patient/medicalhistoryepisode/baselineperformancescale"/>
 
 		<!--ASSERT -->
 		<xsl:choose>
@@ -610,6 +619,34 @@
 	<xsl:template match="text()" priority="-1" mode="M18"/>
 	<xsl:template match="@*|node()" priority="-2" mode="M18">
 		<xsl:apply-templates select="*|comment()|processing-instruction()" mode="M18"/>
+	</xsl:template>
+	
+	<!--PATTERN Message Header: Validate Date -->
+	<svrl:text xmlns:svrl="http://purl.oclc.org/dsdl/svrl">Message Header message date</svrl:text>
+
+	<!--RULE -->
+	<xsl:template match="/ichicsr/ichicsrmessageheader/messagedate" priority="1001" mode="M19">
+		<svrl:fired-rule xmlns:svrl="http://purl.oclc.org/dsdl/svrl" context="/ichicsr/ichicsrmessageheader/messagedate"/>
+
+		<!--ASSERT -->
+		<xsl:choose>
+			<!-- This will break in y10k -->
+			<xsl:when test="matches(data(.), '^\d{14}$')"/>
+			<xsl:otherwise>
+				<svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                test="test">
+					<xsl:attribute name="location">
+						<xsl:apply-templates select="." mode="schematron-select-full-path"/>
+					</xsl:attribute>
+					<svrl:text>Message Date is Invalid</svrl:text>
+				</svrl:failed-assert>
+			</xsl:otherwise>
+		</xsl:choose>
+		<xsl:apply-templates select="*|comment()|processing-instruction()" mode="M19"/>
+	</xsl:template>
+	<xsl:template match="text()" priority="-1" mode="M19"/>
+	<xsl:template match="@*|node()" priority="-2" mode="M19">
+		<xsl:apply-templates select="*|comment()|processing-instruction()" mode="M19"/>
 	</xsl:template>
 
 </xsl:stylesheet>

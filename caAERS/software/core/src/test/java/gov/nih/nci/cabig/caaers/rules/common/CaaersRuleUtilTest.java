@@ -6,15 +6,16 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.rules.common;
 
-import com.semanticbits.rules.brxml.Category;
-import com.semanticbits.rules.utils.RuleUtil;
+import com.semanticbits.rules.brxml.Condition;
+import com.semanticbits.rules.brxml.Rule;
+import com.semanticbits.rules.brxml.RuleSet;
+import edu.nwu.bioinformatics.commons.ResourceRetriever;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
-import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.rules.business.service.CaaersRulesEngineService;
-import junit.framework.Test;
-import junit.framework.TestSuite;
-import junit.framework.TestCase;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -26,19 +27,23 @@ import java.util.Map;
  * @since <pre>03/09/2010</pre>
  * 
  */
-public class CaaersRuleUtilTest extends CaaersTestCase {
-    CaaersRulesEngineService caaersRulesEngineService;
+public class CaaersRuleUtilTest extends AbstractTestCase {
 
     public void setUp() throws Exception {
         super.setUp();
-        caaersRulesEngineService = (CaaersRulesEngineService)getDeployedApplicationContext().getBean("caaersRulesEngineService");
     }
 
     public void tearDown() throws Exception {
         super.tearDown();
     }
 
+    public void testFetchFieldValue() {
+        Rule rule = new Rule();
+        rule.setCondition(new Condition());
+        String value = CaaersRuleUtil.fetchFieldValue(rule, "junk");
+        assertNull(value);
 
+    }
 
     public void testMultiplexAndEvaluate(){
         B b = new B();
@@ -79,6 +84,29 @@ public class CaaersRuleUtilTest extends CaaersTestCase {
         assertSame(cList.get(2), map.get("bList[0].cList[2].name"));
         assertSame(cList.get(2), map.get("bList[1].cList[2].name"));
         assertSame(cList.get(2), map.get("bList[2].cList[2].name"));
+    }
+
+
+    private RuleSet loadRuleSetFromFile(String fileName) throws RuntimeException{
+        RuleSet ruleSet = null;
+
+        try{
+
+            JAXBContext jaxbContext = null;
+            Unmarshaller unmarshaller = null;
+            jaxbContext = JAXBContext.newInstance("com.semanticbits.rules.brxml");
+            unmarshaller = jaxbContext.createUnmarshaller();
+            InputStream xmlInputDataStream = ResourceRetriever.getResource(CaaersRulesEngineService.class.getPackage(), fileName);
+            if(xmlInputDataStream != null){
+                ruleSet = (RuleSet) unmarshaller.unmarshal(xmlInputDataStream);
+                ruleSet.getRule().get(0).setId(null);
+            }
+
+        }catch(Exception e){
+            throw new RuntimeException(e);
+        }
+
+        return ruleSet;
     }
 
     class Z {

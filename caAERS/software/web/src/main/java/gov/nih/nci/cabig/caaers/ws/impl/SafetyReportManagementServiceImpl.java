@@ -51,7 +51,7 @@ public class SafetyReportManagementServiceImpl implements SafetyReportManagement
 		try {
 			return safetySvcImpl.initiateSafetyReportAction(xmlAdverseEventReport);
 		} catch (Exception e) {
-            logger.error(e);
+            logger.error("Error in iniate Saftey report.", e);
             CaaersServiceResponse caaersResponse = Helper.createResponse();
             Helper.populateError(caaersResponse, "WS_GEN_000", "Unable to process the request :" + e.getMessage());
             return caaersResponse;
@@ -78,13 +78,11 @@ public class SafetyReportManagementServiceImpl implements SafetyReportManagement
     public CaaersServiceResponse submitSafetyReport(@WebParam(name = "AdverseEventReport", targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/aereport") AdverseEventReport xmlAdverseEventReport){
 		try {
 			CaaersServiceResponse val = safetySvcImpl.submitSafetyReport(xmlAdverseEventReport);
-			if ("1".equals(val.getServiceResponse().getResponsecode())) {
-				throw new Exception(getErrors(val.getServiceResponse().getWsError()));
-			}
+
 				
 			return val;
 		} catch (Exception e) {
-            logger.error(e);
+            logger.error("Error is submit saftey report.", e);
             CaaersServiceResponse caaersResponse = Helper.createResponse();
             Helper.populateError(caaersResponse, "WS_GEN_000", "Unable to process the request :" + e.getMessage() + ".\n Error occured in " + Configuration.LAST_LOADED_CONFIGURATION.get(Configuration.SYSTEM_NAME));
             return caaersResponse;
@@ -95,13 +93,10 @@ public class SafetyReportManagementServiceImpl implements SafetyReportManagement
     public CaaersServiceResponse saveSafetyReport(@WebParam(name = "AdverseEventReport", targetNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/aereport") AdverseEventReport xmlAdverseEventReport){
 		try {
 			CaaersServiceResponse val = safetySvcImpl.saveSafetyReport(xmlAdverseEventReport);
-			if ("1".equals(val.getServiceResponse().getResponsecode())) {
-				throw new Exception(getErrors(val.getServiceResponse().getWsError()));
-			}
 			
 			return val;
 		} catch (Exception e) {
-            logger.error(e);
+            logger.error("Error is save saftery report.", e);
             CaaersServiceResponse caaersResponse = Helper.createResponse();
             Helper.populateError(caaersResponse, "WS_GEN_000", "Unable to process the request :" + e.getMessage() + ".\n Error occured in " + Configuration.LAST_LOADED_CONFIGURATION.get(Configuration.SYSTEM_NAME));
             return caaersResponse;

@@ -48,9 +48,13 @@ public class RuleTab extends DefaultTab {
     	for(Rule rule: command.getRuleSet().getRule()){
             i++;
     		int j = -1;
+
+            if(rule.isMarkedDelete()) continue; //ignore rules that are marked to delete
+
     		for(Column column: rule.getCondition().getColumn()){
 
                 j++;
+                if(column.isMarkedDelete()) continue; //ignore columns that are marked to delete
 
     			if(column.getObjectType() == null || column.getObjectType().equals(""))
     				errors.rejectValue("ruleSet.rule[" + i + "].condition.column[" + j + "].objectType", "RUL_016");
@@ -66,6 +70,7 @@ public class RuleTab extends DefaultTab {
                     continue;
                 }
                 LiteralRestriction lr = fc.getLiteralRestriction().get(0);
+                if(StringUtils.equals("category", fc.getFieldName())) continue;
                 if(CollectionUtils.isEmpty(lr.getValue()) || StringUtils.isEmpty(lr.getValue().get(0)))  {
                     errors.rejectValue("ruleSet.rule[" + i + "].condition.column[" + j + "].fieldConstraint[0].literalRestriction[0].value", "RUL_019");
                 }

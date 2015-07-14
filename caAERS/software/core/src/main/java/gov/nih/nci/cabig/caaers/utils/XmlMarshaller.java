@@ -52,7 +52,6 @@ public class XmlMarshaller {
         } catch (Exception ex) {
             throw new Exception(ex);
         }
-
     }
 
     private Mapping getMapping(String mappingFile) throws Exception {

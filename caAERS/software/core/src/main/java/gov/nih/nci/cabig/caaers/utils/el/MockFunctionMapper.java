@@ -26,13 +26,13 @@ import javax.servlet.jsp.el.FunctionMapper;
 
 public class MockFunctionMapper implements FunctionMapper {
 
-    private Map functionMap;
+    private Map<String, Method> functionMap;
 
     public MockFunctionMapper() {
-        this.functionMap = new HashMap();
+        this.functionMap = new HashMap<String, Method>();
     }
 
-    public MockFunctionMapper(Map map) {
+    public MockFunctionMapper(Map<String, Method> map) {
         this.functionMap = map;
     }
 
@@ -49,7 +49,7 @@ public class MockFunctionMapper implements FunctionMapper {
     }
 
     public Method resolveFunction(String prefix, String localName) {
-        return (Method) this.functionMap.get(localName);
+        return this.functionMap.get(localName);
     }
 
 }

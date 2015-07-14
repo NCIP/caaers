@@ -10,17 +10,17 @@ import static gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper.Action
 import static gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper.ActionType.WITHDRAW;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventRecommendedReportDao;
+import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
-import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventRecommendedReport;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.AeTerminology;
+import gov.nih.nci.cabig.caaers.domain.Epoch;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
@@ -35,24 +35,36 @@ import gov.nih.nci.cabig.caaers.domain.dto.EvaluationResultDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.ReportDefinitionWrapper;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.AdverseEventType;
+import gov.nih.nci.cabig.caaers.integration.schema.aereport.BaseAdverseEventReport;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.AEsOutputMessage;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.AdverseEventResult;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.AdverseEvents;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.EvaluateAEsInputMessage;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.EvaluateAEsOutputMessage;
+import gov.nih.nci.cabig.caaers.integration.schema.saerules.EvaluateAndInitiateInputMessage;
+import gov.nih.nci.cabig.caaers.integration.schema.saerules.EvaluateAndInitiateOutputMessage;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.EvaluatedAdverseEventResults;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.RecommendedActions;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.SaveAndEvaluateAEsInputMessage;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.SaveAndEvaluateAEsOutputMessage;
+import gov.nih.nci.cabig.caaers.integration.schema.saerules.SaveAndEvaluateAEsOutputMessageType;
+import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.RecommendedActionService;
 import gov.nih.nci.cabig.caaers.service.migrator.adverseevent.AdverseEventConverter;
+import gov.nih.nci.cabig.caaers.service.migrator.adverseevent.AdverseEventReportingPeriodMigrator;
 import gov.nih.nci.cabig.caaers.service.migrator.adverseevent.SAEAdverseEventReportingPeriodConverter;
+import gov.nih.nci.cabig.caaers.service.migrator.adverseevent.SAEServiceMessageConverter;
+import gov.nih.nci.cabig.caaers.service.synchronizer.adverseevent.AdverseEventReportingPeriodSynchronizer;
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
+import gov.nih.nci.cabig.caaers.validation.AdverseEventGroup;
+import gov.nih.nci.cabig.caaers.validation.CourseCycleGroup;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
+import gov.nih.nci.cabig.caaers.validation.validator.AdverseEventValidatior;
 import gov.nih.nci.cabig.caaers.ws.faults.CaaersFault;
-import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -65,13 +77,15 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import javax.validation.groups.Default;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.MessageSource;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * EvaluationService evaluate rules on the given AE's submitted by Web service.
@@ -80,27 +94,101 @@ import org.springframework.context.MessageSource;
  * 
  */
 
-public class SAEEvaluationServiceImpl implements ApplicationContextAware {
+public class SAEEvaluationServiceImpl {
 
 	private AdverseEventRecommendedReportDao adverseEventRecommendedReportDao;
 	private StudyDao studyDao;
 	private TreatmentAssignmentDao treatmentAssignmentDao;
     private ParticipantDao participantDao;
-    private StudyParticipantAssignmentDao studyParticipantAssignmentDao;
     private SAEAdverseEventReportingPeriodConverter reportingPeriodConverter;
-    private ReportDefinitionDao reportDefinitionDao;
-	/** The now factory. */
-	private NowFactory nowFactory;
-	private AdverseEventManagementServiceImpl adverseEventManagementService;
 	private EvaluationService evaluationService;
-	private ApplicationContext applicationContext;
+	private Configuration configuration;
 	private MessageSource messageSource;
 	private AdverseEventConverter converter;
     private RecommendedActionService recommendedActionService;
-    private enum RequestType{SaveEvaluate, Evaluate};
+	private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
+	private AdverseEventReportingPeriodSynchronizer reportingPeriodSynchronizer;
+    private AdverseEventReportingPeriodMigrator reportingPeriodMigrator;
+	private AdverseEventValidatior adverseEventValidatior;
+	private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
+	private Validator validator;
+	private SAEServiceMessageConverter xmlConverter = new SAEServiceMessageConverter();
+    private enum RequestType{SaveEvaluate, Evaluate, EvaluateInitiate};
 	private static String DEF_ERR_MSG = "Error evaluating adverse events with SAE rules";
 
-	private static Log logger = LogFactory.getLog(SAEEvaluationServiceImpl.class);
+	private static final Log logger = LogFactory.getLog(SAEEvaluationServiceImpl.class);
+	
+	private SafetyReportServiceImpl safetySvcImpl;
+	
+	public SafetyReportServiceImpl getSafetySvcImpl() {
+		return safetySvcImpl;
+	}
+
+	public void setSafetySvcImpl(SafetyReportServiceImpl safetySvcImpl) {
+		this.safetySvcImpl = safetySvcImpl;
+	}
+	
+	public SAEServiceMessageConverter getSAEServiceMessageConverter() {
+		return xmlConverter;
+	}
+
+	public void setSAEServiceMessageConverter(SAEServiceMessageConverter xmlConverter) {
+		this.xmlConverter = xmlConverter;
+	}
+
+	private AEsOutputMessage saveAndProcessAdverseEvents(Study study, AdverseEventReportingPeriod reportingPeriod, Map<AdverseEvent, AdverseEventResult> mapAE2DTO, RequestType type) throws CaaersFault {
+		SaveAndEvaluateAEsOutputMessageType output;
+		switch (type) {
+		case Evaluate:
+			throw new IllegalArgumentException("Can't take evaluate as an input.");
+		case EvaluateInitiate:
+			output = new EvaluateAndInitiateOutputMessage();
+			break;
+		case SaveEvaluate:
+			output = new SaveAndEvaluateAEsOutputMessage();
+			break;
+		default:
+			output = null;
+		
+		}
+		try {
+             // 2. Persist AdverseEvents.
+            ValidationErrors errors = new ValidationErrors();
+            reportingPeriod = createOrUpdateAdverseEvents(reportingPeriod, errors, true);
+
+            if(errors.hasErrors()){
+               logger.error("Adverse Event Management Service create or update call failed :" + String.valueOf(errors));
+                if ( errors.getErrorAt(0).getCode().equals("NO-CODE")) throw Helper.createCaaersFault(DEF_ERR_MSG, errors.getErrorAt(0).getCode(), errors.getErrorAt(0).getMessage() + " "  +errors.getErrorAt(0).getReplacementVariables()[0]);
+				throw Helper.createCaaersFault(DEF_ERR_MSG, errors.getErrorAt(0).getCode(), errors.getErrorAt(0).getMessage());
+            }
+
+            //initialize requires reporting flag
+            for(AdverseEvent ae : reportingPeriod.getAdverseEvents()) {
+                AdverseEventResult aeResult = findAdverseEvent(ae, mapAE2DTO);
+                if(aeResult != null) aeResult.setRequiresReporting(ae.getRequiresReporting());
+            }
+
+            output.setLinkToReport(constructLinkToReport(study.getId(),reportingPeriod.getParticipant().getId(), reportingPeriod.getId()));
+            // 3. fire Evaluation Service to identify SAE or not ?
+            output = (SaveAndEvaluateAEsOutputMessageType) fireSAERules(reportingPeriod, study, mapAE2DTO, type, output);
+
+            for(AdverseEvent ae : reportingPeriod.getAdverseEvents()){
+            	AdverseEventResult aeResult = findAdverseEvent(ae, mapAE2DTO);
+            	if(aeResult == null) {
+            		continue;
+            	}
+				ae.setRequiresReporting(aeResult.isRequiresReporting());
+            }
+            
+            // save the updated reporting period
+            saveReportingPeriod(reportingPeriod);
+        }
+        catch(CaaersSystemException ex) {
+            throw Helper.createCaaersFault(DEF_ERR_MSG, ex.getErrorCode(), ex.getMessage());
+        }
+		
+		return output;
+	}
 
     /**
      * Process and Save the Adverse Events.
@@ -109,66 +197,84 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
      * @return
      * @throws CaaersFault
      */
-
-    public SaveAndEvaluateAEsOutputMessage saveAndProcessAdverseEvents(SaveAndEvaluateAEsInputMessage saveAndEvaluateAEsInputMessage) throws CaaersFault {
+    public SaveAndProcessOutput saveAndProcessAdverseEvents(SaveAndEvaluateAEsInputMessage saveAndEvaluateAEsInputMessage) throws CaaersFault {
         Map<AdverseEvent, AdverseEventResult> mapAE2DTO = new HashMap<AdverseEvent, AdverseEventResult>();
-        List<AdverseEvent> aes = new ArrayList<AdverseEvent>();
 
-        if ( saveAndEvaluateAEsInputMessage == null ) {
+        if (saveAndEvaluateAEsInputMessage == null ) {
             throw Helper.createCaaersFault(DEF_ERR_MSG, "WS_SAE_007",
                     messageSource.getMessage("WS_SAE_007", new String[]{},  "", Locale.getDefault())
             );
         }
         SaveAndEvaluateAEsOutputMessage saveAndEvaluateAEsOutputMessage = (SaveAndEvaluateAEsOutputMessage)createResponseObject(RequestType.SaveEvaluate);
 
+        AdverseEventReportingPeriod reportingPeriod = null;
         try {
             // 0. Load the study required.
             String studyIdentifier = saveAndEvaluateAEsInputMessage.getCriteria().getStudyIdentifier();
             Study study = fetchStudy(studyIdentifier);
 
             // 1. Call the converter and make the required object.
-            AdverseEventReportingPeriod reportingPeriod = reportingPeriodConverter.convert(saveAndEvaluateAEsInputMessage,mapAE2DTO);
+            reportingPeriod = reportingPeriodConverter.convert(saveAndEvaluateAEsInputMessage,mapAE2DTO);
 
              // 2. Persist AdverseEvents.
             ValidationErrors errors = new ValidationErrors();
-            reportingPeriod = adverseEventManagementService.createOrUpdateAdverseEvents(reportingPeriod, errors, true);
+            reportingPeriod = createOrUpdateAdverseEvents(reportingPeriod, errors, true);
 
             if(errors.hasErrors()){
                logger.error("Adverse Event Management Service create or update call failed :" + String.valueOf(errors));
-                if ( errors.getErrorAt(0).getCode().equals("NO-CODE"))
-                    throw Helper.createCaaersFault(DEF_ERR_MSG, errors.getErrorAt(0).getCode(), errors.getErrorAt(0).getMessage() + " "  +errors.getErrorAt(0).getReplacementVariables()[0]);
-                else
-                    throw Helper.createCaaersFault(DEF_ERR_MSG, errors.getErrorAt(0).getCode(), errors.getErrorAt(0).getMessage());
+                if ( errors.getErrorAt(0).getCode().equals("NO-CODE")) throw Helper.createCaaersFault(DEF_ERR_MSG, errors.getErrorAt(0).getCode(), errors.getErrorAt(0).getMessage() + " "  +errors.getErrorAt(0).getReplacementVariables()[0]);
+				throw Helper.createCaaersFault(DEF_ERR_MSG, errors.getErrorAt(0).getCode(), errors.getErrorAt(0).getMessage());
             }
 
+            //initialize requires reporting flag
+            for(AdverseEvent ae : reportingPeriod.getAdverseEvents()) {
+                AdverseEventResult aeResult = findAdverseEvent(ae, mapAE2DTO);
+                if(aeResult != null) aeResult.setRequiresReporting(ae.getRequiresReporting());
+            }
+
+            saveAndEvaluateAEsOutputMessage.setLinkToReport(constructLinkToReport(study.getId(),reportingPeriod.getParticipant().getId(), reportingPeriod.getId()));
             // 3. fire Evaluation Service to identify SAE or not ?
             saveAndEvaluateAEsOutputMessage = (SaveAndEvaluateAEsOutputMessage)fireSAERules(reportingPeriod, study, mapAE2DTO,RequestType.SaveEvaluate,saveAndEvaluateAEsOutputMessage);
-             
-            // CAAERS-6613 re-save the AEs with the requiresReporting flag 
-            if(reportingPeriod != null){
-	            for(AdverseEvent ae : reportingPeriod.getAdverseEvents()){
-	            	AdverseEventResult aeResult = findAdverseEvent(ae, mapAE2DTO);
-	            	if(aeResult == null){
-	            		continue;
-	            	} else if(aeResult.isRequiresReporting()){
-	            			ae.setRequiresReporting(true);
-	            	}
-	            }
-	            
-	            // save the updated reporting period
-	            adverseEventManagementService.saveReportingPeriod(reportingPeriod);
-	            
+
+            for(AdverseEvent ae : reportingPeriod.getAdverseEvents()){
+            	AdverseEventResult aeResult = findAdverseEvent(ae, mapAE2DTO);
+            	if(aeResult == null) {
+            		continue;
+            	}
+				ae.setRequiresReporting(aeResult.isRequiresReporting());
             }
             
+            // save the updated reporting period
+            saveReportingPeriod(reportingPeriod);
         }
         catch(CaaersSystemException ex) {
             throw Helper.createCaaersFault(DEF_ERR_MSG, ex.getErrorCode(), ex.getMessage());
         }
+        
+        studyDao.flush();
 
-        return saveAndEvaluateAEsOutputMessage;
+        return new SaveAndProcessOutput(saveAndEvaluateAEsOutputMessage, reportingPeriod);
+    }
+    
+    @Transactional(readOnly=false)
+    public EvaluateAndInitiateOutputMessage processAndInitiate(EvaluateAndInitiateInputMessage evaluateInputMessage) throws CaaersFault {
+    	
+    	SaveAndEvaluateAEsInputMessage sae = xmlConverter.SAEInputMessage(evaluateInputMessage);
+    	
+    	SaveAndProcessOutput data = saveAndProcessAdverseEvents(sae);
+    	
+    	SaveAndEvaluateAEsOutputMessage response = data.getMsg();
+    	
+    	EvaluateAndInitiateOutputMessage retVal = xmlConverter.EvaluateAndInitiateOutput(response);
+    			
+    	if(response.getRecommendedActions() != null && response.getRecommendedActions().size() > 0 &&  data.getPeriod() != null) {
+    		safetySvcImpl.initiateSafetyReportAction(evaluateInputMessage, response, retVal, data.getPeriod());
+    	}
+		return retVal;
     }
 
-    /**
+
+	/**
      * Process the adverse Events.
      * @param evaluateAEsInputMessage
      * @return
@@ -307,27 +413,34 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 
 			//populate the output list with the AdverseEventResult objects created for each AdverseEventType
 			aeResultList.addAll(mapAE2DTO.values());
-            if ( requestType.equals(RequestType.SaveEvaluate)) {
-                ((SaveAndEvaluateAEsOutputMessage)response).setLinkToReport(constructLinkToReport(study.getId(),reportingPeriod.getParticipant().getId(), reportingPeriod.getId()));
-            }
 			
 			EvaluationResultDTO dto = evaluationService.evaluateSAERules(reportingPeriod);
 
-            findRecommendedActions(dto, reportingPeriod, response);
-            populateActionTextAndDueDate(response);
+			if ( requestType.equals(RequestType.SaveEvaluate)) {
+	            findRecommendedActions(dto, reportingPeriod, (SaveAndEvaluateAEsOutputMessage) response);
+	            populateActionTextAndDueDate((SaveAndEvaluateAEsOutputMessage) response);
+			}
             // create/update/delete AE recommended reports
-            manageAdverseEventRecommendedReports(mapAE2DTO, requestType, dto);
+            manageAdverseEventRecommendedReports(requestType, dto);
 
-            //retrieve all the SAEs identified by rules engine.
-            Set<AdverseEvent> seriousAdverseEvents = dto.getAllSeriousAdverseEvents();
-
-            //has at least one SAE ? - mark hasSAE flag in the response
+           
+            //CAAERS-6316 If there are no recommended actions or if there is only 1 recommended action and is Withdraw, 
+            // hasSae = false, otherwise true
             if(requestType.equals(RequestType.SaveEvaluate)) {
-                ((SaveAndEvaluateAEsOutputMessage)response).setHasSAE(seriousAdverseEvents.size() > 0);
+            	 boolean sae = (((SaveAndEvaluateAEsOutputMessage)response).getRecommendedActions() != null && 
+                 		((SaveAndEvaluateAEsOutputMessage)response).getRecommendedActions().size() > 1);
+            	 if(!sae && ((SaveAndEvaluateAEsOutputMessage)response).getRecommendedActions() != null && 
+            			 !((SaveAndEvaluateAEsOutputMessage)response).getRecommendedActions().isEmpty()){
+            		 sae = !StringUtils.equals(((SaveAndEvaluateAEsOutputMessage)response).getRecommendedActions().get(0).getAction(), WITHDRAW.getDisplayName());
+                 }
+            	 ((SaveAndEvaluateAEsOutputMessage)response).setHasSAE(sae);
             }
 
+            //retrieve all the SAEs identified by rules engine.
+            Set<AdverseEvent> evaluatedAdverseEvents = dto.getAllEvaluatedAdverseEvents();
+            
             //Mark the Requires reporting flag on AE
-            for(AdverseEvent ae : seriousAdverseEvents) {
+            for(AdverseEvent ae : evaluatedAdverseEvents) {
 
                 // find DTO object corresponding to Adverse Event.
                 AdverseEventResult aeDTO = null ;
@@ -337,13 +450,13 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
                     aeDTO = mapAE2DTO.get(ae);
                 }
                 if(aeDTO != null) {
-                    aeDTO.setRequiresReporting(true);
+                    aeDTO.setRequiresReporting(ae.getRequiresReporting());
                 }
             }
 
 
 		} catch (Exception e) {
-			logger.error(" Exception Occured when processing rules" + e.toString());
+			logger.error("Exception Occured when processing rules; " + e.toString(), e);
 			throw Helper.createCaaersFault(DEF_ERR_MSG, "WS_SAE_001",
 					messageSource.getMessage("WS_SAE_001", new String[]{},  "", Locale.getDefault())
 					);			
@@ -352,18 +465,10 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 		return response;
 	}
 	
-	private void populateActionTextAndDueDate(AEsOutputMessage response){
-		if(response instanceof SaveAndEvaluateAEsOutputMessage) {
-			  Date now = nowFactory.getNow();
-	          for(RecommendedActions recActions: ((SaveAndEvaluateAEsOutputMessage) response).getRecommendedActions()){
-	          	//recActions.setDueDate(recActions.getDueDate());
-	          	recActions.setActionText(recActions.getAction().substring(0, 1).toUpperCase() + recActions.getAction().
-	          			substring(1, recActions.getAction().length()).toLowerCase() + " the " + recActions.getReport());
-	          	ReportDefinition reportDefinition = reportDefinitionDao.getByName(recActions.getReport());
-	          	Date baseDate = reportDefinition.getBaseDate();
-	          	Date dueDate = reportDefinition.getExpectedDueDate(baseDate == null ? now : baseDate);
-	          	recActions.setDueDate(DateUtils.getDateWithTimeZone(dueDate).toString());
-	          }
+	private void populateActionTextAndDueDate(SaveAndEvaluateAEsOutputMessage response){
+		for(RecommendedActions recActions: response.getRecommendedActions()){
+			recActions.setActionText(recActions.getAction().substring(0, 1).toUpperCase() + recActions.getAction().
+					substring(1, recActions.getAction().length()).toLowerCase() + " the " + recActions.getReport());
 		}
 	}
 
@@ -378,11 +483,11 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
      * @param reportingPeriod
      * @param response
      */
-    private void findRecommendedActions(EvaluationResultDTO evaluationResult, AdverseEventReportingPeriod reportingPeriod, AEsOutputMessage response) {
+    private void findRecommendedActions(EvaluationResultDTO evaluationResult, AdverseEventReportingPeriod reportingPeriod, SaveAndEvaluateAEsOutputMessage response) {
 
         List<RecommendedActions> recommendedActions = new ArrayList<RecommendedActions>();
 
-        ((SaveAndEvaluateAEsOutputMessage)response).setRecommendedActions(recommendedActions);
+        response.setRecommendedActions(recommendedActions);
 
         Map<Integer, ExpeditedAdverseEventReport> aeReportIndexMap =  reportingPeriod.populateAeReportIndexMap();
 
@@ -414,7 +519,7 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
     /**
      * Find the corresponding applicable report table value of the recommended table value.
      * @param applicableRows
-     * @param recommRow
+     * @param reportName
      * @return
      */
 
@@ -483,18 +588,21 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
             action.setAction(row.getAction().getDisplayName());
             action.setDue(row.getDue());
             action.setStatus(row.getStatus());
+            action.setDueDate(generateDueDate(row.getReportDefinition(), row.getBaseDate()));
 
         } else {
             if ( isAnyInGroupChecked(row, preselectedRows)) {     // If the any one of the Report in the group is selected.
 
                 action.setAction(row.getGrpAction().getDisplayName());
                 action.setDue(row.getGrpDue());
+                action.setDueDate(generateDueDate(row.getReportDefinition(), row.getBaseDate()));
                 action.setStatus(row.getGrpStatus());
 
             } else  { // Other Actions.
 
                 action.setAction(row.getOtherAction().getDisplayName());
                 action.setDue(row.getOtherDue());
+                action.setDueDate(generateDueDate(row.getReportDefinition(), row.getBaseDate()));
                 action.setStatus(row.getOtherStatus());
             }
 
@@ -574,55 +682,68 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
      */
 
     private void findMatchingRecommendations(List<ReportTableRow> applicableRows, List<ReportTableRow> recommRows, List<RecommendedActions> recommendedActions,  List<ReportTableRow> ignoredRows)  {
-        // Find the report group of the pre-selected row.
-        List<ReportTableRow> preselectedRows = findPreSelectedRows(applicableRows);
+    	// Find the report group of the pre-selected row.
+    	List<ReportTableRow> preselectedRows = findPreSelectedRows(applicableRows);
 
-        for (ReportTableRow recommRow : recommRows) {
-            ReportTableRow applicableRow = findApplicableRow(applicableRows, recommRow.getReportDefinition().getName());
+    	for (ReportTableRow recommRow : recommRows) {
+    		ReportTableRow applicableRow = findApplicableRow(applicableRows, recommRow.getReportDefinition().getName());
 
-            if ( applicableRow == null || isMatchedIgnoredRow(ignoredRows, recommRow)) continue;
+    		if ( applicableRow == null || isMatchedIgnoredRow(ignoredRows, recommRow)) continue;
 
-            RecommendedActions action = returnActionFromRow(applicableRow, preselectedRows);
-            recommendedActions.add(action);
+    		RecommendedActions action = returnActionFromRow(applicableRow, preselectedRows);
+    		recommendedActions.add(action);
 
 
-            boolean withdrawOrAmend = StringUtils.equals(action.getAction(), WITHDRAW.getDisplayName()) ||    StringUtils.equals(action.getAction(), AMEND.getDisplayName()) ;
+    		boolean withdrawOrAmend = StringUtils.equals(action.getAction(), WITHDRAW.getDisplayName()) ||    StringUtils.equals(action.getAction(), AMEND.getDisplayName()) ;
 
-            if (withdrawOrAmend) {
-                for (ReportTableRow preselectedRow: preselectedRows ) {
-                    if ( preselectedRow != null ) {
+    		if (withdrawOrAmend) {
+    			for (ReportTableRow preselectedRow: preselectedRows ) {
+    				if ( preselectedRow != null ) {
 
-                            // Update the Group Due.
-                            action.setDue(applicableRow.getGrpDue());
+    					// Update the Group Due.
+    					action.setDue(applicableRow.getGrpDue());
 
-                            // find if the report already exists.
-                            RecommendedActions preSelectedAction = null;
-                            for (RecommendedActions actionIter: recommendedActions) {
+    					// find if the report already exists.
+    					RecommendedActions preSelectedAction = null;
+    					for (RecommendedActions actionIter: recommendedActions) {
 
-                                if ( actionIter.getReport().equals(preselectedRow.getReportDefinition().getName()) && actionIter.getAction().equals("Create") ) {
-                                    preSelectedAction = actionIter;
-                                    break;
-                                }
-                            }
-                            if ( preSelectedAction == null){      // If the Create Action is not occured before, Create one manually.
-                                preSelectedAction = new RecommendedActions();
-                                preSelectedAction.setAction(ReportDefinitionWrapper.ActionType.CREATE.toString()); // Make it Create.
-                                preSelectedAction.setStatus("Not Started");
-                                preSelectedAction.setReport(preselectedRow.getReportDefinition().getName());
-                                preSelectedAction.setDue(preselectedRow.getDue());
+    						if ( actionIter.getReport().equals(preselectedRow.getReportDefinition().getName()) && actionIter.getAction().equals("Create") ) {
+    							preSelectedAction = actionIter;
+    							break;
+    						}
+    					}
+    					if ( preSelectedAction == null){      // If the Create Action is not occured before, Create one manually.
+    						preSelectedAction = new RecommendedActions();
+    						preSelectedAction.setAction(ReportDefinitionWrapper.ActionType.CREATE.toString()); // Make it Create.
+    						preSelectedAction.setStatus("Not Started");
+    						preSelectedAction.setReport(preselectedRow.getReportDefinition().getName());
+    						preSelectedAction.setDue(preselectedRow.getReportDefinition().getExpectedDisplayDueDate());
+                            preSelectedAction.setDueDate(generateDueDate(preselectedRow.getReportDefinition(), new Date()));
 
-                                recommendedActions.add(preSelectedAction);
-                            }   else { // If it is already occured, Update the due time.
+    						recommendedActions.add(preSelectedAction);
+    					}   else { // If it is already occured, Update the due time.
 
-                                ReportTableRow createAction = findApplicableRow(applicableRows, preSelectedAction.getReport()) ;
-                                preSelectedAction.setDue(createAction.getDue());
-                            }
+    						ReportTableRow createAction = findApplicableRow(applicableRows, preSelectedAction.getReport()) ;
+    						preSelectedAction.setDue(createAction.getDue());
+                            preSelectedAction.setDueDate(generateDueDate(createAction.getReportDefinition(), createAction.getBaseDate()));
 
-                  }
+                            //ignore the recomended due calculate the due date from today
+                            action.setDue(preselectedRow.getReportDefinition().getExpectedDisplayDueDate(new Date()));
+                            action.setDueDate(generateDueDate(preselectedRow.getReportDefinition(), new Date()));
 
-               }
-            }
-        }
+                        }
+
+    				}
+
+    			}
+
+
+                if(StringUtils.equals(action.getAction(), WITHDRAW.getDisplayName()))    {
+                    action.setDue("");
+                    action.setDueDate("");
+                }
+    		}
+    	}
 
     }
 
@@ -658,7 +779,6 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
                 //MedDRA terminology
                 AdverseEventMeddraLowLevelTerm thisMedDRATerm = thisAe.getAdverseEventMeddraLowLevelTerm();
                 AdverseEventMeddraLowLevelTerm thatMedDRATerm = thatAe.getAdverseEventMeddraLowLevelTerm();
-                if((thisMedDRATerm == null && thatMedDRATerm != null) && (thatMedDRATerm == null && thisMedDRATerm != null)) continue;
                 if((thisMedDRATerm != null && thatMedDRATerm != null) && thisMedDRATerm.getLowLevelTerm().getId() != thatMedDRATerm.getLowLevelTerm().getId()) continue;
             }
             //found a match
@@ -728,8 +848,8 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 		return study;
 	}
 	
-	private void manageAdverseEventRecommendedReports(Map<AdverseEvent, AdverseEventResult> mapAE2DTO, RequestType requestType,EvaluationResultDTO dto ){
-		 Map<AdverseEvent,List<ReportDefinition>> adverseEventReportDefinitionMap = evaluationService.getAdverseEventRecommendedReportsMap();
+	private void manageAdverseEventRecommendedReports(RequestType requestType,EvaluationResultDTO dto ){
+		 Map<AdverseEvent,List<ReportDefinition>> adverseEventReportDefinitionMap = dto.getAdverseEventRecommendedReportsMap();
 		 for (Map.Entry<AdverseEvent, List<ReportDefinition>> entry : adverseEventReportDefinitionMap.entrySet()) {
 					AdverseEvent ae = entry.getKey();
 					List<ReportDefinition> rds = entry.getValue();
@@ -774,6 +894,10 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 				}
 	}
 
+    private String generateDueDate(ReportDefinition rd, Date baseDate) {
+        if(rd != null && baseDate != null) return DateUtils.formatToWSResponseDateWithTimeZone(rd.getExpectedDueDate(baseDate));
+        return "";
+    }
 
     public ParticipantDao getParticipantDao() {
         return participantDao;
@@ -782,18 +906,6 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
     public void setParticipantDao(ParticipantDao participantDao) {
         this.participantDao = participantDao;
     }
-
-    public AdverseEventManagementServiceImpl getAdverseEventManagementService() {
-        return adverseEventManagementService;
-    }
-
-    public void setAdverseEventManagementService(AdverseEventManagementServiceImpl adverseEventManagementService) {
-        this.adverseEventManagementService = adverseEventManagementService;
-    }
-
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		this.applicationContext = applicationContext;
-	}
 
 	public StudyDao getStudyDao() {
 		return studyDao;
@@ -827,14 +939,6 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 		this.messageSource = messageSource;
 	}
 
-    public StudyParticipantAssignmentDao getStudyParticipantAssignmentDao() {
-        return studyParticipantAssignmentDao;
-    }
-
-    public void setStudyParticipantAssignmentDao(StudyParticipantAssignmentDao studyParticipantAssignmentDao) {
-        this.studyParticipantAssignmentDao = studyParticipantAssignmentDao;
-    }
-
     public SAEAdverseEventReportingPeriodConverter getReportingPeriodConverter() {
         return reportingPeriodConverter;
     }
@@ -855,12 +959,318 @@ public class SAEEvaluationServiceImpl implements ApplicationContextAware {
 			AdverseEventRecommendedReportDao adverseEventRecommendedReportDao) {
 		this.adverseEventRecommendedReportDao = adverseEventRecommendedReportDao;
 	}
+
+	 /**
+     * To Create or Update Advese Events.
+     * Sync Flag is used only incase of SAE Evaluation service, As service can soft-delete the Adverse Events.
+     * @param rpSrc
+     * @param errors
+     * @param syncFlag
+     * @return
+     */
+
+    private AdverseEventReportingPeriod createOrUpdateAdverseEvents(AdverseEventReportingPeriod rpSrc, ValidationErrors errors, boolean syncFlag){
+
+        Study study = fetchStudy(rpSrc.getStudy().getFundingSponsorIdentifierValue());
+        if(study == null){
+            logger.error("Study not present in caAERS with the sponsor identifier : " + rpSrc.getStudy().getFundingSponsorIdentifierValue());
+            errors.addValidationError("WS_AEMS_003", "Study with sponsor identifier " + rpSrc.getStudy().getFundingSponsorIdentifierValue() +" does not exist in caAERS",
+                    rpSrc.getStudy().getFundingSponsorIdentifierValue());
+            return null;
+        }
+        //async update study removed because the updates would most likely happen after this process is finished.
+        
+        //migrate the domain object
+        AdverseEventReportingPeriod rpDest = new AdverseEventReportingPeriod();
+        DomainObjectImportOutcome<AdverseEventReportingPeriod> rpOutcome = new DomainObjectImportOutcome<AdverseEventReportingPeriod>();
+        reportingPeriodMigrator.migrate(rpSrc, rpDest, rpOutcome);
+        logger.info("Reporting period migration result :" + String.valueOf(rpOutcome.getMessages()));
+        if(rpOutcome.hasErrors()){
+            //translate error and create a response.
+            logger.error("Errors while migrating :" + String.valueOf(rpOutcome.getErrorMessages()));
+            errors.addValidationErrors(rpOutcome.getValidationErrors().getErrors());
+            return null;
+        }
+        //check if we need the create path or update path.
+        String tac = rpDest.getTreatmentAssignment() != null ? rpDest.getTreatmentAssignment().getCode() : null;
+        String epochName = rpDest.getEpoch() != null ? rpDest.getEpoch().getName() : null;
+        AdverseEventReportingPeriod rpFound = rpDest.getAssignment().findReportingPeriod(rpDest.getExternalId(), rpDest.getStartDate(),rpDest.getEndDate(), rpDest.getCycleNumber(), epochName, tac);
+        ArrayList<AdverseEventReportingPeriod> reportingPeriodList = new ArrayList<AdverseEventReportingPeriod>(rpDest.getAssignment().getActiveReportingPeriods());
+        if(rpFound != null) {
+            // This is used only incase of SAE Evaluation Service.
+            if ( syncFlag ) {
+                syncAdverseEventWithSrc(rpFound, rpSrc);
+            }
+            int i = findIndexFromReportPeriodList(reportingPeriodList, rpFound);
+            if  ( i >= 0 ) reportingPeriodList.remove(i);
+        }
+
+        ValidationErrors dateValidationErrors = validateRepPeriodDates(rpDest, reportingPeriodList, rpDest.getAssignment().getStartDateOfFirstCourse(), rpDest.getEpoch());
+        logger.info("Reporting period validation result :" + String.valueOf(dateValidationErrors));
+        if(dateValidationErrors.hasErrors()){
+            //translate errors and create a response
+            logger.error("Errors while migrating :" + String.valueOf(dateValidationErrors));
+            errors.addValidationErrors(dateValidationErrors.getErrors());
+            return null;
+        }
+
+        //validate adverse events
+        for(AdverseEvent adverseEvent : rpDest.getAdverseEvents()) {
+        	if(adverseEvent.getGradedDate() == null) adverseEvent.setGradedDate(new Date());
+            Set<ConstraintViolation<AdverseEvent>> constraintViolations = validator.validate(adverseEvent, AdverseEventGroup.class, Default.class);
+            if(!constraintViolations.isEmpty()){
+                //translate errors to response.
+                for(ConstraintViolation<AdverseEvent> v : constraintViolations){
+                    errors.addValidationError("WS_GEN_006", v.getMessage(), v.getPropertyPath());
+                }
+                return null;
+            }
+        }
+        // validate Reporting Period.
+        AdverseEventReportingPeriod rpTarget = rpFound;
+        if (rpTarget == null ) rpTarget=rpDest;
+
+        Set<ConstraintViolation<AdverseEventReportingPeriod>> constraintViolations = validator.validate(rpTarget, CourseCycleGroup.class, Default.class);
+        if(!constraintViolations.isEmpty()){
+            //translate errors to response.
+            for(ConstraintViolation<AdverseEventReportingPeriod> v : constraintViolations){
+                errors.addValidationError("WS_GEN_006", v.getMessage(), v.getPropertyPath());
+            }
+            return null;
+        }
+
+        if(rpFound == null){
+        	//new reporting period
+        	rpFound = rpDest;
+        	rpFound.getAssignment().addReportingPeriod(rpFound);
+        	// Validate the Reporting Period before saving.
+        	adverseEventValidatior.validate(rpFound, rpFound.getStudy(),errors);
+        	adverseEventReportingPeriodDao.save(rpFound);
+        	if(configuration.get(Configuration.ENABLE_WORKFLOW)){
+        		Long wfId = adverseEventRoutingAndReviewRepository.enactReportingPeriodWorkflow(rpFound);
+        		logger.debug("Enacted workflow : " + wfId);
+        	}
+        } else {
+        	//existing reporting period.
+        	reportingPeriodSynchronizer.migrate(rpDest, rpFound, rpOutcome);
+        	// Validate the Reporting Period before saving.
+        	adverseEventValidatior.validate(rpFound, rpFound.getStudy(),errors);
+        	if ( errors.hasErrors()) {
+        		logger.error("Error(s) while validating with Adverse Event " + String.valueOf(errors.getErrorCount()));
+        		return null;
+        	}
+        	adverseEventReportingPeriodDao.save(rpFound);
+
+        }
+        return rpFound;
+    }
     
-    public void setNowFactory(NowFactory nowFactory) {
-		this.nowFactory = nowFactory;
+    /**
+     * Method to save the reporting period from outside the API methods. This can be used for re-saving the reporting period
+     * as in the case of Adverse Event / requiresReporting flag.
+     * @param reportingPeriod
+     * @return
+     */
+    
+    private void saveReportingPeriod(AdverseEventReportingPeriod reportingPeriod){
+    	adverseEventReportingPeriodDao.save(reportingPeriod);
+    }
+    
+    /**
+     * Sync the adverse Events with Input source, as SAE service expects the complete list of adverse events.
+     * @param rpFound
+     * @param rpSrc
+     */
+    private void syncAdverseEventWithSrc(AdverseEventReportingPeriod rpFound, AdverseEventReportingPeriod rpSrc) {
+
+        for( AdverseEvent ae: rpFound.getAdverseEvents()) {
+            if ( rpSrc.findAdverseEventByIdTermAndDates(ae)  == null ) { // If the reporting period is not found in  the source
+                   ae.setRetiredIndicator(true);
+            }
+        }
+
+    }
+    
+    private ValidationErrors validateRepPeriodDates(AdverseEventReportingPeriod rPeriod, List<AdverseEventReportingPeriod> rPeriodList, Date firstCourseDate, Epoch epoch) {
+
+		ValidationErrors errors = new ValidationErrors();
+        Date startDate = rPeriod.getStartDate();
+		Date endDate = rPeriod.getEndDate();
+
+		// Check if the start date is equal to or before the end date.
+		if (firstCourseDate != null && startDate != null && (firstCourseDate.getTime() - startDate.getTime() > 0)) {
+			errors.addValidationError("WS_AEMS_014", "Start date of this course/cycle cannot be earlier than the Start date of first course/cycle");
+		}
+
+		if (startDate != null && endDate != null && (endDate.getTime() - startDate.getTime() < 0)) {
+            errors.addValidationError("WS_AEMS_015", "Course End date cannot be earlier than Start date.");
+		}
+
+		// Check if the start date is equal to end date.
+		// This is allowed only for Baseline reportingPeriods and not for other
+		// reporting periods.
+
+		if (epoch != null && !epoch.getName().equals("Baseline")) {
+			if (endDate != null && startDate.equals(endDate)) {
+                errors.addValidationError("WS_AEMS_016", "For Non-Baseline treatment type Start date cannot be equal to End date.");
+			}
+
+		}
+
+		// Check if the start date - end date for the reporting Period overlaps
+		// with the date range of an existing Reporting Period.
+		for (AdverseEventReportingPeriod aerp : rPeriodList) {
+			Date sDate = aerp.getStartDate();
+			Date eDate = aerp.getEndDate();
+
+			if (!aerp.getId().equals(rPeriod.getId())) {
+
+				// we should make sure that no existing Reporting Period, start
+				// date falls, in-between these dates.
+				if (startDate != null && endDate != null) {
+					if (DateUtils.compareDate(sDate, startDate) >= 0 && DateUtils.compareDate(sDate, endDate) < 0) {
+                        errors.addValidationError("WS_AEMS_017", "Course/cycle cannot overlap with an existing course/cycle.");
+						break;
+					}
+				} else if (startDate != null && DateUtils.compareDate(sDate, startDate) == 0) {
+                       errors.addValidationError("WS_AEMS_017", "Course/cycle cannot overlap with an existing course/cycle.");
+					break;
+				}
+
+				// newly created reporting period start date, should not fall
+				// within any other existing reporting periods
+				if (sDate != null && eDate != null) {
+					if (DateUtils.compareDate(sDate, startDate) <= 0 && DateUtils.compareDate(startDate, eDate) < 0) {
+                        errors.addValidationError("WS_AEMS_017", "Course/cycle cannot overlap with an existing course/cycle.");
+						break;
+					}
+				} else if (sDate != null && DateUtils.compareDate(sDate, startDate) == 0) {
+                     errors.addValidationError("WS_AEMS_017", "Course/cycle cannot overlap with an existing course/cycle.");
+					break;
+				}
+			}
+
+			// If the epoch of reportingPeriod is not - Baseline , then it
+			// cannot be earlier than a Baseline
+			if (epoch != null && epoch.getName().equals("Baseline")) {
+				if ( aerp.getEpoch() != null && (!aerp.getEpoch().getName().equals("Baseline"))) {
+					if (DateUtils.compareDate(sDate, startDate) < 0) {
+                        errors.addValidationError("WS_AEMS_018", "Baseline treatment type cannot start after an existing Non-Baseline treatment type.");
+						return errors;
+					}
+				}
+			} else {
+				if (aerp.getEpoch() != null && aerp.getEpoch().getName().equals("Baseline")) {
+					if (DateUtils.compareDate(startDate, sDate) < 0) {
+						errors.addValidationError("WS_AEMS_019", "Non-Baseline treatment type cannot start before an existing Baseline treatment type.");
+						return errors;
+					}
+				}
+			}
+
+           // Duplicate Baseline check
+            if ( epoch != null && epoch.getName().equals("Baseline") ) {
+                // Iterating through the already anything exists with the treatment type Baseline.
+                for ( AdverseEventReportingPeriod rp : rPeriodList ) {
+
+                    if ( rp.getEpoch() != null && rp.getEpoch().getName()  != null && rp.getEpoch().getName().equals("Baseline") )  {
+                        errors.addValidationError("WS_AEMS_085", "A Baseline treatment type already exists");
+                        break;
+                    }
+                }
+
+            }
+
+
+		}
+		return errors;
+
+	}
+    
+    private int findIndexFromReportPeriodList(List<AdverseEventReportingPeriod> reportingPeriodList, AdverseEventReportingPeriod rpFound) {
+        int i = 0 ;
+        for ( AdverseEventReportingPeriod rp: reportingPeriodList) {
+            if ( rp.getId().equals(rpFound.getId())) {
+                 return i;
+            }
+            i++;
+        }
+
+        return -1;
+
+    }
+
+	public EvaluationService getEvaluationService() {
+		return evaluationService;
 	}
 
-	public void setReportDefinitionDao(ReportDefinitionDao reportDefinitionDao) {
-		this.reportDefinitionDao = reportDefinitionDao;
+	public void setEvaluationService(EvaluationService evaluationService) {
+		this.evaluationService = evaluationService;
 	}
+
+	public Configuration getConfiguration() {
+		return configuration;
+	}
+
+	public void setConfiguration(Configuration configuration) {
+		this.configuration = configuration;
+	}
+
+	public AdverseEventReportingPeriodDao getAdverseEventReportingPeriodDao() {
+		return adverseEventReportingPeriodDao;
+	}
+
+	public void setAdverseEventReportingPeriodDao(
+			AdverseEventReportingPeriodDao adverseEventReportingPeriodDao) {
+		this.adverseEventReportingPeriodDao = adverseEventReportingPeriodDao;
+	}
+
+	public AdverseEventReportingPeriodSynchronizer getReportingPeriodSynchronizer() {
+		return reportingPeriodSynchronizer;
+	}
+
+	public void setReportingPeriodSynchronizer(
+			AdverseEventReportingPeriodSynchronizer reportingPeriodSynchronizer) {
+		this.reportingPeriodSynchronizer = reportingPeriodSynchronizer;
+	}
+
+	public AdverseEventReportingPeriodMigrator getReportingPeriodMigrator() {
+		return reportingPeriodMigrator;
+	}
+
+	public void setReportingPeriodMigrator(
+			AdverseEventReportingPeriodMigrator reportingPeriodMigrator) {
+		this.reportingPeriodMigrator = reportingPeriodMigrator;
+	}
+
+	public AdverseEventValidatior getAdverseEventValidatior() {
+		return adverseEventValidatior;
+	}
+
+	public void setAdverseEventValidatior(
+			AdverseEventValidatior adverseEventValidatior) {
+		this.adverseEventValidatior = adverseEventValidatior;
+	}
+
+	public AdverseEventRoutingAndReviewRepository getAdverseEventRoutingAndReviewRepository() {
+		return adverseEventRoutingAndReviewRepository;
+	}
+
+	public void setAdverseEventRoutingAndReviewRepository(
+			AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository) {
+		this.adverseEventRoutingAndReviewRepository = adverseEventRoutingAndReviewRepository;
+	}
+
+	public Validator getValidator() {
+		return validator;
+	}
+
+	public void setValidator(Validator validator) {
+		this.validator = validator;
+	}
+
+	public AdverseEventRecommendedReportDao getAdverseEventRecommendedReportDao() {
+		return adverseEventRecommendedReportDao;
+	}
+
 }

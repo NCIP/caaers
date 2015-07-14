@@ -6,14 +6,19 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.service;
 
+import org.apache.commons.lang.StringUtils;
+
 import gov.nih.nci.cabig.caaers.api.AdeersReportGenerator;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.PersonContact;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.domain.Submitter;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
 import gov.nih.nci.cabig.caaers.esb.client.impl.CaaersAdeersMessageBroadcastServiceImpl;
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.tools.mail.CaaersJavaMailSender;
+
 import org.springframework.context.MessageSource;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,9 +38,16 @@ public class ReportWithdrawalService {
 	protected CaaersAdeersMessageBroadcastServiceImpl messageBroadcastService;
     protected CaaersJavaMailSender caaersJavaMailSender;
     private MessageSource messageSource;
+    private Configuration configuration;
+	public void setConfiguration(Configuration configuration) {
+		this.configuration = configuration;
+	}
+
+
 	/**
 	 * This method will withdraw the report from external agency, by delegating the call to service mix. 
-	 * @param report - Report to withdraw from external agency
+	 * @param aeReport - Report to withdraw from external agency
+     * @param  reportToWithdraw - the report to withdraw
 	 */
 	public void withdrawExternalReport(ExpeditedAdverseEventReport aeReport , Report reportToWithdraw){
 		
@@ -62,27 +74,36 @@ public class ReportWithdrawalService {
         List<ReportDelivery> deliveries = report.getExternalSystemDeliveries();
         int reportId = report.getId();
         StringBuilder sb = new StringBuilder();
+        String systemName = "UNKNOWN";
         sb.append("<EXTERNAL_SYSTEMS>");
+        //FIXME: Shared code with Report Submision service.
         for (ReportDelivery delivery : deliveries) {
             sb.append(delivery.getEndPoint()).append("::").append(delivery.getUserName()).append("::" ).append(delivery.getPassword());
+            systemName = delivery.getReportDeliveryDefinition().getEntityName();
+            sb.append("::" ).append(systemName);
         }
         sb.append("</EXTERNAL_SYSTEMS>");
-        sb.append("<REPORT_ID>" + reportId + "</REPORT_ID>");
+        sb.append(String.format("<CAAERSRID>%s</CAAERSRID>", reportId));
 
         String submitterEmail = report.getLastVersion().getSubmitter().getContactMechanisms().get(PersonContact.EMAIL);
-        sb.append("<SUBMITTER_EMAIL>" + submitterEmail + "</SUBMITTER_EMAIL>");
+        sb.append(String.format("<SUBMITTER_EMAIL>%s</SUBMITTER_EMAIL>", submitterEmail));
 
         SimpleDateFormat msgDF = new SimpleDateFormat("yyyyMMddHHmmss");
 
-        String msgComboId = report.getAeReport().getExternalId() + "::" + msgDF.format(report.getAeReport().getCreatedAt());
-        sb.append("<MESSAGE_COMBO_ID>" + msgComboId + "</MESSAGE_COMBO_ID>");
-
+        if(StringUtils.isNotEmpty(report.getAeReport().getExternalId())) {
+            String msgComboId = report.getAeReport().getExternalId() + "::" + msgDF.format(report.getAeReport().getCreatedAt());
+            sb.append(String.format("<MESSAGE_COMBO_ID>%s</MESSAGE_COMBO_ID>", msgComboId));
+        }
+        String[] coorelationids = report.getCorrelationIds();
+        if(coorelationids != null && coorelationids.length > 0) {
+            sb.append(String.format("<CORRELATION_ID>%s</CORRELATION_ID>", coorelationids[coorelationids.length - 1]));
+        }
+        sb.append(String.format("<SYSTEM_NAME>%s</SYSTEM_NAME>", systemName));
         sb.append("<WITHDRAW>true</WITHDRAW>");
         //if there are external systems, send message via service mix
     	String externalXml = xml.replaceAll("<AdverseEventReport>", "<AdverseEventReport>" + sb.toString());
     	
-//    	System.out.println(externalXml);
-    	
+
     	try {
     		messageBroadcastService.initialize();
     	} catch (Exception e) {
@@ -103,8 +124,26 @@ public class ReportWithdrawalService {
         List<String> emailRecipients = new ArrayList<String>();
         emailRecipients.add(report.getReporter().getEmailAddress());
         String subjectLine = messageSource.getMessage("withdraw.internal.success.subject", new Object[]{report.getLabel()}, Locale.getDefault());
-        String content = messageSource.getMessage("successful.internal.reportWithdraw.message", new Object[]{report.getLabel()}, Locale.getDefault());
-        caaersJavaMailSender.sendMail(emailRecipients.toArray(new String[0]), subjectLine, content, new String[0]);
+        StringBuilder content = new StringBuilder(messageSource.getMessage("successful.internal.reportWithdraw.message", new Object[]{report.getLabel()}, Locale.getDefault()));
+        // append additional report information
+        final Submitter submiter = report.getSubmitter();
+        String fullName = "UNKNOWN";
+        String subEmail = "UNKNOWN";
+        if(submiter != null) {
+        	fullName = submiter.getFullName();
+        	subEmail = submiter.getEmailAddress();
+        }
+    	String reportDetails = messageSource.getMessage("additional.successful.internal.reportWithdrawl.information",  new Object[] {fullName, 
+    		subEmail, report.getAeReport().getStudy().getPrimaryIdentifier().getValue(), report.getAeReport().getParticipant().getPrimaryIdentifierValue(),
+			report.getCaseNumber(),String.valueOf(report.getId()),report.getAssignedIdentifer(),report.getLastVersion().getAmendmentNumber(),
+			configuration.get(Configuration.SYSTEM_NAME)}, Locale.getDefault());
+    	content.append(reportDetails);
+        
+        // append Help Text message
+    	String helpText = messageSource.getMessage("additional.successful.internal.reportWithdrawl.valdiction", new Object[]{}, Locale.getDefault());
+    	content.append(helpText);
+        
+        caaersJavaMailSender.sendMail(emailRecipients.toArray(new String[0]), subjectLine, content.toString(), new String[0]);
     }
     
 	public void setAdeersReportGenerator(AdeersReportGenerator adeersReportGenerator) {

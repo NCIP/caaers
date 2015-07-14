@@ -93,12 +93,7 @@ public class WebUtils {
      *                displayed label for each item after the separator. If null, the result of
      *                <code>item.toString()</code> will be used instead.
      * @param separator
-     * 				  The string that separates label1 and label2 property.                                             
-     * @param items
-     * @param itemValueProperty
-     * @param itemLabel1Property
-     * @param itemLabel2Property
-     * @param separator
+     * 				  The string that separates label1 and label2 property.
      * @return
      */
     public static Map<Object, Object> collectCustomOptions(Collection<?> items, String itemValueProperty,
@@ -158,20 +153,20 @@ public class WebUtils {
     * Sort a map
     * 
     * */
-    public static Map sortMapByKey(Map map, final boolean ignoreCase) {
-        List list = new LinkedList(map.entrySet());
-        Collections.sort(list, new Comparator() {
-            public int compare(Object o1, Object o2) {
+    public static <A, B> Map<A, B> sortMapByKey(Map<A, B> map, final boolean ignoreCase) {
+        List<Map.Entry<A, B>> list = new LinkedList<Map.Entry<A, B>>(map.entrySet());
+        Collections.sort(list, new Comparator<Map.Entry<A, B>>() {
+            public int compare(Map.Entry<A, B> o1, Map.Entry<A, B> o2) {
                 if (ignoreCase)
-                    return ((Comparable) ((Map.Entry) (o1)).getKey().toString().toLowerCase()).compareTo(((Map.Entry) (o2)).getKey().toString().toLowerCase());
+                    return ((Comparable) o1.getKey().toString().toLowerCase()).compareTo(o2.getKey().toString().toLowerCase());
                 else
-                    return ((Comparable) ((Map.Entry) (o1)).getKey()).compareTo(((Map.Entry) (o2)).getKey());
+                    return ((Comparable) o1.getKey()).compareTo(o2.getKey());
             }
         });
 
-        Map result = new LinkedHashMap();
-        for (Iterator it = list.iterator(); it.hasNext();) {
-            Map.Entry entry = (Map.Entry) it.next();
+        Map<A, B> result = new LinkedHashMap<A, B>();
+        for (Iterator<Map.Entry<A, B>> it = list.iterator(); it.hasNext();) {
+            Map.Entry<A, B> entry = it.next();
             result.put(entry.getKey(), entry.getValue());
         }
         return result;
@@ -184,9 +179,9 @@ public class WebUtils {
         logger.debug("F: populateErrorFieldNames(Map map, Errors errors)");
         if (map == null || errors == null || errors.getFieldErrors() == null|| errors.getFieldErrors().size() == 0) return;
 
-        Iterator it = errors.getFieldErrors().iterator();
+        Iterator<FieldError> it = errors.getFieldErrors().iterator();
         while (it.hasNext()) {
-            FieldError fe = (FieldError)it.next();
+            FieldError fe = it.next();
             String subName = fe.getField().substring(0, fe.getField().indexOf("].") + 1).toString();
             map.put(subName, Boolean.TRUE);
             logger.debug("FE: " + fe.getField());
@@ -216,9 +211,9 @@ public class WebUtils {
         logger.debug("F: synchronzeErrorFields");
         logger.debug("F: " + m1);
         logger.debug("F: " + m2);
-        Iterator it = m2.keySet().iterator();
+        Iterator<String> it = m2.keySet().iterator();
         while (it.hasNext()) {
-            String key = it.next().toString();
+            String key = it.next();
             m1.put(key, Boolean.TRUE);
             logger.debug("F: This field copied from XML Rules Files to the Mandatory Fields Hashmap: " + key);
         }

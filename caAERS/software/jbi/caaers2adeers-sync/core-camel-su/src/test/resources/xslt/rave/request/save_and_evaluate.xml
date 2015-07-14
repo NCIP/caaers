@@ -1,0 +1,60 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:saer="http://schema.integration.caaers.cabig.nci.nih.gov/saerules" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+    <soapenv:Header>
+        <wsse:Security soapenv:mustUnderstand="1">
+            <wsse:UsernameToken wsu:Id="UsernameToken-19" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+                <wsse:Username>sb-admin</wsse:Username>
+                <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">Hello-13</wsse:Password>
+                <wsse:Nonce EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary">/w9qY2QnBmzEx9lXoIxXyA==</wsse:Nonce>
+                <wsu:Created>2014-01-10T21:31:08.6661550+00:00</wsu:Created>
+            </wsse:UsernameToken>
+        </wsse:Security>
+    </soapenv:Header>
+    <soapenv:Body>
+        <saer:saveAndEvaluateAEs>
+            <saer:SaveAndEvaluateAEsInputMessage>
+                <saer:adverseEvents>
+                    <!--    <saer:adverseEvent>
+                           <verbatim>Verbatim1</verbatim>
+                           <adverseEventCtepTerm>
+                              <ctepCode>10010774</ctepCode>
+                           </adverseEventCtepTerm>
+                           <grade>2</grade>
+                           <hospitalization>YES</hospitalization>
+                           <dateFirstLearned>2014-11-28T17:05:01.0000000Z</dateFirstLearned>
+                           <outcome>
+                              <outComeEnumType>HOSPITALIZATION</outComeEnumType>
+                           </outcome>
+                           <externalId>reaction-88</externalId>
+                           <reporterEmail>efg@mm.com</reporterEmail>
+                        </saer:adverseEvent> -->
+                    <saer:adverseEvent>
+                        <verbatim>Verbatim2</verbatim>
+                        <adverseEventCtepTerm>
+                            <ctepCode>10047700</ctepCode>
+                        </adverseEventCtepTerm>
+                        <grade>2</grade>
+                        <hospitalization>YES</hospitalization>
+                        <dateFirstLearned>2014-11-28T17:06:01.0000000Z</dateFirstLearned>
+
+                        <outcome>
+                            <outComeEnumType>HOSPITALIZATION</outComeEnumType>
+                        </outcome>
+                        <externalId>reaction-89</externalId>
+                        <reporterEmail>efg@mm.com</reporterEmail>
+                    </saer:adverseEvent>
+                </saer:adverseEvents>
+                <saer:criteria>
+                    <studySubjectIdentifier>S1-A071102</studySubjectIdentifier>
+                    <studyIdentifier>A071102</studyIdentifier>
+                    <course>
+                        <startDateOfFirstCourse>2014-01-06</startDateOfFirstCourse>
+                        <startDateOfThisCourse>2014-10-13</startDateOfThisCourse>
+                        <cycleNumber>13</cycleNumber>
+                        <treatmentAssignmentCode>TAC 1</treatmentAssignmentCode>
+                        <otherTreatmentAssignmentDescription>N/A</otherTreatmentAssignmentDescription>
+                    </course>
+                </saer:criteria>
+            </saer:SaveAndEvaluateAEsInputMessage>
+        </saer:saveAndEvaluateAEs>
+    </soapenv:Body>
+</soapenv:Envelope>

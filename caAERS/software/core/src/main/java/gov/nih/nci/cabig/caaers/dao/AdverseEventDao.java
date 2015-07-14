@@ -180,6 +180,7 @@ public class AdverseEventDao extends CaaersDao<AdverseEvent> {
 		}
 		ex.excludeProperty("retiredIndicator");
 		ex.excludeProperty("solicited");
+		ex.excludeProperty("createdDate");
 		//ex.excludeProperty("adverseEventTerm.term");
 		return addOptions(ex);
 	}

@@ -225,7 +225,7 @@ public class ParticipantServiceImpl extends AbstractImportService implements App
 	private boolean checkStudyId(Study study, Identifier id){
 		List<Identifier> identifiers = study.getIdentifiers();
 		for (Iterator<Identifier> iterator = identifiers.iterator(); iterator.hasNext();) {
-			Identifier identifier = (Identifier) iterator.next();
+			Identifier identifier = iterator.next();
 			if(id.getType().equals(identifier.getType()) && id.getValue().equals(identifier.getValue())){
 				return true;
 			}
@@ -307,13 +307,13 @@ public class ParticipantServiceImpl extends AbstractImportService implements App
 			logger.error(message);
 			populateError(caaersServiceResponse, "WS_PMS_004", message);
 			return caaersServiceResponse;
-		} else {
-			//remove the error message for participant not found, as this is create flow
-			List<WsError> wsErrors = caaersServiceResponse.getServiceResponse().getWsError();
-			if(wsErrors != null && wsErrors.size() == 1 && "WS_PMS_003".equals(wsErrors.get(0).getErrorCode()) ) {
-				wsErrors.remove(0);		
-				Helper.populateMessage(caaersServiceResponse, "");
-			}
+		}
+		
+		//remove the error message for participant not found, as this is create flow
+		List<WsError> wsErrors = caaersServiceResponse.getServiceResponse().getWsError();
+		if(wsErrors != null && wsErrors.size() == 1 && "WS_PMS_003".equals(wsErrors.get(0).getErrorCode()) ) {
+			wsErrors.remove(0);		
+			Helper.populateMessage(caaersServiceResponse, "");
 		}
 		
 		validateAssignmentSite(caaersServiceResponse, xmlParticipant, null);

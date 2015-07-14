@@ -31,6 +31,7 @@ import gov.nih.nci.cabig.caaers.domain.DietarySupplementIntervention;
 import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
 import gov.nih.nci.cabig.caaers.domain.DiseaseTerm;
 import gov.nih.nci.cabig.caaers.domain.Dose;
+import gov.nih.nci.cabig.caaers.domain.Epoch;
 import gov.nih.nci.cabig.caaers.domain.EventStatus;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.GeneticIntervention;
@@ -44,6 +45,7 @@ import gov.nih.nci.cabig.caaers.domain.LabValue;
 import gov.nih.nci.cabig.caaers.domain.LocalInvestigator;
 import gov.nih.nci.cabig.caaers.domain.LocalOrganization;
 import gov.nih.nci.cabig.caaers.domain.LocalResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.LocalStudy;
 import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
 import gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite;
 import gov.nih.nci.cabig.caaers.domain.Organization;
@@ -84,6 +86,7 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportFormat;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
+import gov.nih.nci.cabig.caaers.integration.schema.adverseevent.CourseType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.AdditionalInformationDocumentType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.AdditionalInformationType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.AdverseEventReportingPeriodType;
@@ -132,7 +135,10 @@ import gov.nih.nci.cabig.caaers.integration.schema.aereport.SurgeryInterventionT
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.TreatmentAssignmentType;
 import gov.nih.nci.cabig.caaers.integration.schema.aereport.TreatmentInformationType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationType;
+import gov.nih.nci.cabig.caaers.integration.schema.saerules.Criteria;
+import gov.nih.nci.cabig.caaers.utils.CaaersUtils;
 import gov.nih.nci.cabig.caaers.utils.XMLUtil;
+import gov.nih.nci.cabig.caaers.validation.fields.validators.MultiEmailValidator;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
 import java.util.ArrayList;
@@ -159,7 +165,12 @@ public class ExpeditedAdverseEventReportConverterUtility {
     /** The Constant PHONE. key for the phone number */
     protected static final String PHONE = "phone";
     
+    /** The Constant Backup Reporter. key for the backup reporter email */
+    protected static final String ALT_EMAIL = "alternateEmails";
+    
     private MessageSource messageSource;
+    
+    private MultiEmailValidator mv = new MultiEmailValidator();
     
     /** The now factory. */
     private NowFactory nowFactory;
@@ -279,6 +290,9 @@ public class ExpeditedAdverseEventReportConverterUtility {
 		if(xmlReportType.getCaseNumber() != null){
 			report.setCaseNumber(xmlReportType.getCaseNumber());
 		}
+        if(xmlReportType.getCorrelationId() != null) {
+            report.addToCorrelationId(xmlReportType.getCorrelationId());
+        }
 		if ( xmlReportType.isManuallySelected() != null ) {
 			report.setManuallySelected(xmlReportType.isManuallySelected());
 		}
@@ -313,7 +327,12 @@ public class ExpeditedAdverseEventReportConverterUtility {
 			}
 			reportVersion.setSubmissionMessage(xmlReportVersionType.getSubmissionMessage());
 			reportVersion.setSubmissionUrl(xmlReportVersionType.getSubmissionUrl());
-			reportVersion.setCcEmails(xmlReportVersionType.getCcEmails());
+			if(!StringUtils.isBlank(xmlReportVersionType.getCcEmails()) && mv.isValid(xmlReportVersionType.getCcEmails())) {
+				// CAAERS-7031 replace semi-colon(;) with comma(,) and trim white space
+				reportVersion.setCcEmails(CaaersUtils.getEmailStringWithoutSemiColonsAndSpaces(
+						xmlReportVersionType.getCcEmails()));
+				
+			}
 			if(xmlReportVersionType.getReportStatus() != null){
 				reportVersion.setReportStatus(ReportStatus.valueOf(xmlReportVersionType.getReportStatus().name()));
 			}
@@ -416,7 +435,11 @@ public class ExpeditedAdverseEventReportConverterUtility {
     protected TreatmentAssignment convertTreatmentAssignment(TreatmentAssignmentType tacType){
         TreatmentAssignment tac = new TreatmentAssignment();
         if(tacType != null){
-            tac.setCode(tacType.getCode());
+        	if("Other".equalsIgnoreCase(tacType.getCode())) {
+        		tac.setCode(null);
+        	} else {
+        		tac.setCode(tacType.getCode());
+        	}
             tac.setDescription(tacType.getDescription());
             tac.setDoseLevelOrder(tacType.getDoseLevelOrder());
             tac.setComments(tacType.getComments());
@@ -946,6 +969,9 @@ public class ExpeditedAdverseEventReportConverterUtility {
 	
 	protected Reporter convertReporter(ReporterType xmlReporterType){
 		Reporter reporter = new Reporter();
+		if(xmlReporterType == null) {
+			return reporter;
+		}
 		reporter.setFirstName(xmlReporterType.getFirstName());
 		reporter.setLastName(xmlReporterType.getLastName());
 		reporter.setMiddleName(xmlReporterType.getMiddleName());
@@ -967,12 +993,18 @@ public class ExpeditedAdverseEventReportConverterUtility {
 			reporter.setPhoneNumber(getPhone(xmlReporterType.getContactMechanism()));
 			reporter.setFax(getFax(xmlReporterType.getContactMechanism()));
             reporter.setFaxNumber(getFax(xmlReporterType.getContactMechanism()));
+            String altEmail = getAlternateEmail(xmlReporterType.getContactMechanism());
+            if(altEmail != null && mv.isValid(altEmail)){
+            	// CAAERS-7031 replace semi-colon(;) with comma(,) trim white space
+            	reporter.setAlternateEmailAddress(CaaersUtils.getEmailStringWithoutSemiColonsAndSpaces(altEmail));
+            }
 		}
 		
 		return reporter;
 		
 	}
-	
+
+
 	protected Submitter convertSubmitter(SubmitterType xmlSubmitterType){
 		Submitter submitter = new Submitter();
 		submitter.setFirstName(xmlSubmitterType.getFirstName());
@@ -1004,6 +1036,9 @@ public class ExpeditedAdverseEventReportConverterUtility {
 
 	protected Physician convertPhysician(PhysicianType xmlPhysicianType){
 		Physician physician = new Physician();
+		if(xmlPhysicianType == null) {
+			return physician;
+		}
 		physician.setFirstName(xmlPhysicianType.getFirstName());
 		physician.setLastName(xmlPhysicianType.getLastName());
 		physician.setMiddleName(xmlPhysicianType.getMiddleName());
@@ -1038,22 +1073,28 @@ public class ExpeditedAdverseEventReportConverterUtility {
 			reportingPeriod.setAssignment(convertStudyParticipantAssignmentRef(reportingPeriodType.getStudyParticipantAssignmentRef()));
 		}
 		
-		if(reportingPeriodType.getTreatmentAssignment() != null){
+		reportingPeriod.setTreatmentAssignmentDescription(reportingPeriodType.getTreatmentAssignmentDescription());
+
+		if(reportingPeriodType.getTreatmentAssignment() != null) {
+			//TODO: Match gov.nih.nci.cabig.caaers.service.migrator.adverseevent.AdverseEventReportingPeriodMigrator.
 			TreatmentAssignment treatmentAssignment = new TreatmentAssignment();
 			treatmentAssignment.setCode(reportingPeriodType.getTreatmentAssignment().getCode());
 			if(reportingPeriodType.getTreatmentAssignment().getComments() != null){
 				treatmentAssignment.setComments(reportingPeriodType.getTreatmentAssignment().getComments());
 			}
 			treatmentAssignment.setDescription(reportingPeriodType.getTreatmentAssignment().getDescription());
+			if(treatmentAssignment.getDescription() == null) {
+				treatmentAssignment.setDescription(reportingPeriodType.getTreatmentAssignmentDescription());
+			}
 			treatmentAssignment.setDoseLevelOrder(reportingPeriodType.getTreatmentAssignment().getDoseLevelOrder());
 			
+			if(treatmentAssignment.getCode().equalsIgnoreCase("Other")) {
+				treatmentAssignment.setCode(null);
+			}
+				
 			reportingPeriod.setTreatmentAssignment(treatmentAssignment);
 		}
-		
-		if(reportingPeriodType.getTreatmentAssignmentDescription() != null){
-			reportingPeriod.setTreatmentAssignmentDescription(reportingPeriodType.getTreatmentAssignmentDescription());
-		}
-		
+				
 		if(reportingPeriodType.getStartDate() != null){
 			reportingPeriod.setStartDate(reportingPeriodType.getStartDate().toGregorianCalendar().getTime());
 		}
@@ -1227,6 +1268,15 @@ public class ExpeditedAdverseEventReportConverterUtility {
 			}
 		}
 		
+		return null;
+	}
+	
+	private String getAlternateEmail(List<ContactMechanismType> contactMechanism) {
+		for(ContactMechanismType cm : contactMechanism){
+			if(cm.getType().equals(ALT_EMAIL)){
+				return cm.getValue();
+			}
+		}
 		return null;
 	}
 	

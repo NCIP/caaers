@@ -6,7 +6,7 @@
     <xsl:include href="caaers_request_common.xsl" />
     <xsl:param name="c2a_operation"  />
     <xsl:output method="xml" indent="yes" />
-    <xsl:variable name="map" select="document('lookup.xml')"/>
+    <xsl:variable name="map" select="document('file:lookup.xml')"/>
 
     <xsl:template match="data">
         <xsl:if test="$c2a_operation = 'createStudy'">

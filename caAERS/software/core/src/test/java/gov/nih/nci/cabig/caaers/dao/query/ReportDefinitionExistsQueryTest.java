@@ -25,19 +25,19 @@ public class ReportDefinitionExistsQueryTest extends TestCase {
 	public void testFilterByDifferentId() {
 		assertEquals("select count(rd) from ReportDefinition rd", query.getQueryString());
 		query.filterByDifferentId(55);
-		assertEquals("select count(rd) from ReportDefinition rd WHERE  rd.id != :rdid", query.getQueryString());
+		assertEquals("select count(rd) from ReportDefinition rd  WHERE  rd.id != :rdid", query.getQueryString());
 	}
 
 	public void testFilterByName() {
 		query.filterByName("abcd");
-		assertEquals("select count(rd) from ReportDefinition rd WHERE rd.name like :rdname", query.getQueryString());
+		assertEquals("select count(rd) from ReportDefinition rd  WHERE lower(rd.name) like :rdname", query.getQueryString());
 	}
 	
 	public void testFilterByOrganization() {
 		Organization org = new LocalOrganization();
 		org.setNciInstituteCode("nciCode1");
 		query.filterByOrganization(org);
-		assertEquals("select count(rd) from ReportDefinition rd WHERE rd.organization.nciInstituteCode like :nciInstituteCode", query.getQueryString());
+		assertEquals("select count(rd) from ReportDefinition rd  WHERE rd.organization.nciInstituteCode like :nciInstituteCode", query.getQueryString());
 	}
 
 }

@@ -8,15 +8,21 @@ package gov.nih.nci.cabig.caaers.dao.report;
 
 import gov.nih.nci.cabig.caaers.dao.GridIdentifiableDao;
 import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
+import gov.nih.nci.cabig.caaers.dao.query.ReportQuery;
+import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportContent;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
+import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
 import java.sql.SQLException;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
-import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.HibernateException;
 import org.hibernate.LockMode;
 import org.hibernate.Session;
@@ -34,6 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class ReportDao extends GridIdentifiableDao<Report> implements MutableDomainObjectDao<Report>{
 
+	private static final Log log =  LogFactory.getLog(ReportDao.class);
     /*
      * (non-Javadoc)
      * 
@@ -146,5 +153,14 @@ public class ReportDao extends GridIdentifiableDao<Report> implements MutableDom
 
         });
 
+    }
+    
+    public List<Report> search(Study study, Participant participant, ReportStatus reportStatus, 
+    		String searchIdentifier, Integer maxResults){
+    	ReportQuery query = new ReportQuery();
+    	query.filterByStudyAndSubjectAndSubmissionStatusAndSearchIdentifier(study, participant, 
+    			reportStatus, searchIdentifier);
+    	 log.error("DirkDebug >>> " + query.toString());
+    	return (List<Report>) super.search(query, null, maxResults);
     }
 }

@@ -19,6 +19,7 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportTracking;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
+import gov.nih.nci.cabig.caaers.service.ReportSubmissionService;
 import gov.nih.nci.cabig.caaers.service.ReportSubmissionService.ReportSubmissionContext;
 import gov.nih.nci.cabig.caaers.service.SchedulerService;
 import gov.nih.nci.cabig.caaers.service.workflow.WorkflowService;
@@ -79,43 +80,9 @@ public class MessageNotificationService {
     
     private WorkflowService workflowService;
     
+    private ReportSubmissionService reportSubmisionService;
     
-    private void doPostSubmitReport(ReportSubmissionContext context){
-    	Report report = context.report;
-    	
-    	//un-schedule all the notifications
-    	schedulerService.unScheduleNotification(report);
-    	
-    	//now update the post submission updated date on submitted adverse events. 
-    	report.getAeReport().clearPostSubmissionUpdatedDate();
-    	
-    	//update the reported flag on the adverse events.
-    	report.getAeReport().updateReportedFlagOnAdverseEvents();
-    	
-    	//create child reports
-    	reportRepository.createChildReports(report);
-    }
     
-    private Set<String> getEmailList(Report r , String submitterEmail){
-    	Set<String> emails = new HashSet<String>();
-    	ReportVersion rv = r.getLastVersion();
-        for (ReportDelivery delivery : r.getReportDeliveries()) {
-            ReportDeliveryDefinition rdd = delivery.getReportDeliveryDefinition();
-            if (rdd.getEndPointType().equals(ReportDeliveryDefinition.ENDPOINT_TYPE_EMAIL)) {
-                String ep = delivery.getEndPoint();
-                emails.add(ep);
-            }
-        }
-        
-        String[] emailAddresses = rv.getEmailAsArray();
-        if (emailAddresses != null) {
-            for (String email : emailAddresses) {
-                emails.add(email.trim());
-            }
-        }
-        emails.add(submitterEmail);    
-        return emails;
-    }
     
     @Transactional
     public void sendWithdrawNotificationToReporter(String submitterEmail, String messages,
@@ -124,7 +91,7 @@ public class MessageNotificationService {
     	
         
         Report r = reportDao.getById(Integer.parseInt(reportId));
-        Set<String> emails = getEmailList(r,submitterEmail);
+        Set<String> emails = reportSubmisionService.getEmailList(r,submitterEmail);
         
         
         if (success) {
@@ -152,9 +119,7 @@ public class MessageNotificationService {
         log.debug("send email ");
         try {
         	sendMail(emails.toArray(new String[0]), subject, messages, attachment);
-
         } catch (Exception  e ) {
-
         	throw new Exception(" Error in sending email , please check the confiuration " , e);
         }
         
@@ -165,50 +130,55 @@ public class MessageNotificationService {
                     String aeReportId, String reportId, boolean success, String ticketNumber,
                     String url,boolean communicationError) throws Exception {
 
-        Report report = reportDao.getById(Integer.parseInt(reportId));
+    	int repId = 0;
+    	try {
+    		repId = Integer.parseInt(reportId);
+    	} catch (NumberFormatException nfe) {
+    		log.fatal("Can't find report for notifing reporter.", nfe);
+    		return;
+    	} catch (NullPointerException npe) {
+    		log.fatal("Nullpointer excption while trying to notify reporter.", npe);
+    		return;
+    	}
+        Report report = reportDao.getById(repId);
         reportDao.initialize(report.getScheduledNotifications());
         ReportVersion reportVersion = report.getLastVersion();
-        
-        Set<String> emails = getEmailList(report,submitterEmail);
-        
-        
+
+        Set<String> emails = reportSubmisionService.getEmailList(report,submitterEmail);
+
+
         ReportTracking rtToUpdate = reportVersion.getLastReportTracking();
-        
+
         boolean ableToSubmitToWS = true;
         String submissionMessage = "";
         if (communicationError) {
         	ableToSubmitToWS = false;
         	submissionMessage = messages;
         }
-        
 
+        Tracker.logConnectionToExternalSystem(rtToUpdate, ableToSubmitToWS, submissionMessage, new Date());
 
-        	Tracker.logConnectionToExternalSystem(rtToUpdate, ableToSubmitToWS, submissionMessage, new Date());
-
-        	reportDao.save(report);
-
-
-        
+        reportDao.save(report);
 
         log.debug("Saving data into report versions table");
         if (success) {
-            report.setAssignedIdentifer(ticketNumber);
-            report.setSubmissionUrl(url);
-            report.setSubmittedOn(new Date());
-            report.setStatus(ReportStatus.COMPLETED);
+        	report.setAssignedIdentifer(ticketNumber);
+        	report.setSubmissionUrl(url);
+        	report.setSubmittedOn(new Date());
+        	report.setStatus(ReportStatus.COMPLETED);
 
-            reportVersion.setAssignedIdentifer(ticketNumber);
-            reportVersion.setSubmissionUrl(url);
-            reportVersion.setSubmittedOn(new Date());
-            reportVersion.setReportStatus(ReportStatus.COMPLETED);
-            ReportSubmissionContext context = ReportSubmissionContext.getSubmissionContext(report);
-            doPostSubmitReport(context);
+        	reportVersion.setAssignedIdentifer(ticketNumber);
+        	reportVersion.setSubmissionUrl(url);
+        	reportVersion.setSubmittedOn(new Date());
+        	reportVersion.setReportStatus(ReportStatus.COMPLETED);
+        	ReportSubmissionContext context = ReportSubmissionContext.getSubmissionContext(report);
+        	reportSubmisionService.doPostSubmitReport(context);
 
-            Tracker.logSubmissionToExternalSystem(rtToUpdate, true, messages, new Date());
+        	Tracker.logSubmissionToExternalSystem(rtToUpdate, true, messages, new Date());
 
         } else {
-            report.setSubmittedOn(new Date());
-            report.setStatus(ReportStatus.FAILED);
+        	report.setSubmittedOn(new Date());
+        	report.setStatus(ReportStatus.FAILED);
 
             reportVersion.setSubmittedOn(new Date());
             reportVersion.setReportStatus(ReportStatus.FAILED);
@@ -360,4 +330,12 @@ public class MessageNotificationService {
 	}
 	
 
+	public ReportSubmissionService getReportSubmisionService() {
+		return reportSubmisionService;
+	}
+
+	@Required
+	public void setReportSubmisionService(ReportSubmissionService reportSubmisionService) {
+		this.reportSubmisionService = reportSubmisionService;
+	}
 }

@@ -51,7 +51,7 @@ public class ReportStatusResetJob  implements Job, Serializable {
 			
 		} catch (Exception e) {
 			//no need to send exception back, the job is run periodically.
-			logger.error(e);
+			logger.error("Error Processing Stuck Reports.", e);
 		}
 		
 	}

@@ -29,31 +29,11 @@
   	</http:conduit>
   
 	<http:destination
-		name="{https://127.0.0.1:8196/}GenericProcessorService.http-destination">
+		name="{http://127.0.0.1:8196/}GenericProcessorService.http-destination">
 	</http:destination>
 
 	<httpj:engine-factory>
 		<httpj:engine port="8196">
-			<httpj:tlsServerParameters>
-				<sec:keyManagers keyPassword="smxServerPassword">
-					<sec:keyStore type="JKS" password="keyStorePassword"
-						resource="caXchangeConf/security/server_privatestore.jks" />
-				</sec:keyManagers>
-				<sec:trustManagers>
-					<sec:keyStore type="JKS" password="keyStorePassword"
-						resource="caXchangeConf/security/server_privatestore.jks" />
-				</sec:trustManagers>
-				<sec:cipherSuitesFilter>
-					<sec:include>.*_EXPORT_.*</sec:include>
-					<sec:include>.*_EXPORT1024_.*</sec:include>
-					<sec:include>.*_WITH_DES_.*</sec:include>
-					<sec:include>.*_WITH_NULL_.*</sec:include>
-					<sec:include>.*_128_.*</sec:include>
-					<sec:exclude>.*_DH_anon_.*</sec:exclude>
-				</sec:cipherSuitesFilter>
-				<sec:clientAuthentication want="false"
-					required="false" />
-			</httpj:tlsServerParameters>
 		</httpj:engine>
 	</httpj:engine-factory>
 </beans>

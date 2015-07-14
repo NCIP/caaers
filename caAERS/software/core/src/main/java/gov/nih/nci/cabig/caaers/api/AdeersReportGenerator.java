@@ -8,17 +8,16 @@ package gov.nih.nci.cabig.caaers.api;
 
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
-import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.utils.XsltTransformer;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import java.util.*;
 
 /**
  * @author Ion C. Olaru
@@ -30,7 +29,6 @@ public class AdeersReportGenerator extends BasePDFGenerator {
     protected final Log log = LogFactory.getLog(getClass());
 
     // TO-DO set in spring config
-    private String xmlXsltFile = "xslt/Caaers2Adeers-xml-AEReport.xslt";
     private String xslFOXsltFile = "xslt/Caaers2Adeers-pdf-AEReport.xslt";
     private String xslFOMedWatchXsltFile = "xslt/Caaers2Medwatch-pdf-AEReport.xslt";
     private String xslFODCPXsltFile = "xslt/Caaers2DCP-pdf-SAEForm.xslt";
@@ -221,37 +219,6 @@ public class AdeersReportGenerator extends BasePDFGenerator {
 
             String xml = s.toString();
             g.generateCustomPDF(xml, PDFFile);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void main(String[] args) {
-        createMedwatchPDFTest();
-    }
-
-    public static void createMedwatchPDFTest() {
-        String str1 = "";
-        try {
-//        	String file = "C:\\vin\\caAERS\\caAERS\\software\\expeditedAdverseEventReport-416.xml";
-//        	String pdf = "C:\\vin\\caAERS\\caAERS\\software\\expeditedAdverseEventReport-416.pdf";
-//        	String file = "C:\\vin\\caAERS\\caAERS\\software\\med1.xml";
-//        	String pdf = "C:\\vin\\caAERS\\caAERS\\software\\med1.pdf";
-        	String file = "C:\\vin\\caAERS\\tmp\\sample-msgs\\expeditedAdverseEventReport-374.xml";
-        	String pdf = "C:\\vin\\caAERS\\tmp\\sample-msgs\\expeditedAdverseEventReport-374.pdf";
-        	
-            AdeersReportGenerator aeg = new AdeersReportGenerator();
-            FileReader input = new FileReader(file);
-            BufferedReader bufRead = new BufferedReader(input);
-            String line = bufRead.readLine();
-
-            while (line != null) {
-                str1 = str1 + line;
-                line = bufRead.readLine();
-            }
-
-            aeg.generateMedwatchPdf(str1, pdf);
-            // aeg.generateMedwatchPdf(str1, "C:\\medwatch-2.pdf");
         } catch (Exception e) {
             e.printStackTrace();
         }

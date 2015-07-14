@@ -8,12 +8,10 @@ package gov.nih.nci.cabig.caaers.domain.repository;
 
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventRecommendedReportDao;
-import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventRecommendedReport;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.ConfigProperty;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
@@ -30,14 +28,12 @@ import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
 import gov.nih.nci.cabig.caaers.domain.factory.ReportFactory;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportType;
+import gov.nih.nci.cabig.caaers.service.ReportWithdrawalService;
 import gov.nih.nci.cabig.caaers.service.SchedulerService;
-import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
-import gov.nih.nci.cabig.ctms.domain.DomainObject;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
 import java.util.ArrayList;
@@ -63,9 +59,8 @@ public class ReportRepositoryTest extends AbstractNoSecurityTestCase {
     private SchedulerService schedulerService;
     private NowFactory nowFactory;
     private ReportDefinitionDao reportDefinitionDao;
-    private StudyDao studyDao;
-    private Configuration configuration;
     private AdverseEventRecommendedReportDao adverseEventRecommendedReportDao;
+	private ReportWithdrawalService reportWithdrawalService;
 
     
     @Override
@@ -77,9 +72,20 @@ public class ReportRepositoryTest extends AbstractNoSecurityTestCase {
         adverseEventRecommendedReportDao = registerDaoMockFor(AdverseEventRecommendedReportDao.class);
         reportFactory = registerMockFor(ReportFactory.class);
         schedulerService = registerMockFor(SchedulerService.class);
-        studyDao = registerDaoMockFor(StudyDao.class);
-        configuration = registerMockFor(Configuration.class);
         nowFactory = new NowFactory();
+        reportWithdrawalService = new ReportWithdrawalService() {
+        	@Override
+        	public void sendWithdrawEmail(Report report) {
+        		// do not send an email for tests.
+        	}
+        	
+        	@Override
+        	public void withdrawExternalReport(
+        			ExpeditedAdverseEventReport aeReport,
+        			Report reportToWithdraw) {
+        		// do not attempt to withdraw the external reports during the test.
+        	}
+        };
         
         
         reportRepository.setReportDao(reportDao);
@@ -87,7 +93,7 @@ public class ReportRepositoryTest extends AbstractNoSecurityTestCase {
         reportRepository.setSchedulerService(schedulerService);
         reportRepository.setNowFactory(nowFactory);
         reportRepository.setReportDefinitionDao(reportDefinitionDao);
-        reportRepository.setStudyDao(studyDao);
+        reportRepository.setReportWithdrawalService(reportWithdrawalService);
         reportRepository.setAdverseEventRecommendedReportDao(adverseEventRecommendedReportDao);
 
         
@@ -121,12 +127,7 @@ public class ReportRepositoryTest extends AbstractNoSecurityTestCase {
         AdverseEventReportingPeriod reportingPeriod = new AdverseEventReportingPeriod();
         reportingPeriod.setAssignment(assignment);
         expeditedData.setReportingPeriod(reportingPeriod);
-        
-        ReportRepository impl = (ReportRepository) reportRepository;
-//        List<String> addresses = expeditedData.findEmailAddress("SPI", impl);
-//        assertEquals(1, addresses.size());
-//        List<String> addresses2 = expeditedData.findEmailAddress("PC", impl);
-//        assertEquals(1, addresses2.size());
+
     }
     
     
@@ -309,24 +310,6 @@ public class ReportRepositoryTest extends AbstractNoSecurityTestCase {
     	
     	replaced = reportRepository.isGettingReplaced(r2, null);
     	assertFalse(replaced);
-    }
-
-    private Report createAttributionMandatoryReport() {
-        Report report = new Report();
-        report.setReportDefinition(new ReportDefinition());
-        report.setAeReport(expeditedData);
-        report.getReportDefinition().setAttributionRequired(true);
-        // TODO:
-        // report.setAttributionMandatory(true);
-        return report;
-    }
-
-    private <C extends DomainObject, A extends AdverseEventAttribution<C>> A createAttribution(C cause, Attribution level, Class<A> klass) throws IllegalAccessException,
-            InstantiationException {
-        A attr = klass.newInstance();
-        attr.setAttribution(level);
-        attr.setCause(cause);
-        return attr;
     }
 
 }

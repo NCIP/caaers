@@ -409,7 +409,6 @@ default-lazy-init="true">
 			<property name="reportRepository" ref="reportRepository"/>
 	    	<property name="schedulerService" ref="schedulerService" />
 	    	<property name="nowFactory" ref="nowFactory" />
-			<property name="expeditedAdverseEventReportDao" ref="expeditedAdverseEventReportDao" />
 			<property name="messageSource" ref="messageSource" />
 			<property name="workflowService" ref="workflowService"/>
 			<property name="adverseEventReportingPeriodDao" ref="adverseEventReportingPeriodDao"/>
@@ -433,6 +432,7 @@ default-lazy-init="true">
         <property name="studyDao" ref="studyDao" />
         <property name="ruleSetDao" ref="ruleSetDao" />
         <property name="ruleEngineService" ref="ruleEngineService" />
+        <property name="ctcTermDao" ref="ctcTermDao" />
 	</bean>
 
    <bean id="configPropertyRepositoryImpl" autowire="byType" class="gov.nih.nci.cabig.caaers.domain.repository.ConfigPropertyRepositoryImpl" />
@@ -441,7 +441,6 @@ default-lazy-init="true">
    		<property name="messageNotificationService" ref="messageNotificationService" />
 		<property name="messageSource" ref="messageSource" />
 		<property name="reportDao" ref="reportDao" />
-		<property name="proxyWebServiceFacade" ref="proxyWebServiceFacade"/>
 		<property name="configuration" ref="configuration"/>
    </bean>
    
@@ -461,7 +460,7 @@ default-lazy-init="true">
 	   	<property name="messageNotificationService" ref="messageNotificationService" />
 		<property name="messageSource" ref="messageSource" />
 		<property name="reportDao" ref="reportDao" />
-		<property name="proxyWebServiceFacade" ref="proxyWebServiceFacade"/>
+		<property name="configuration" ref="configuration"/>
    </bean>
    
   <bean id="withdrawAEReportResponse" class="org.springframework.aop.framework.ProxyFactoryBean"> 
@@ -578,10 +577,7 @@ default-lazy-init="true">
 			</list>
 		</property>
         <property name="stopOnError" value="true" />
-        <property name="studyDao" ref="studyDao" />
-        <property name="organizationDao" ref="organizationDao" />
         <property name="participantDao" ref="participantDao" />
-        <property name="adverseEventReportingPeriodDao" ref="adverseEventReportingPeriodDao" />
         <property name="studyParticipantAssignmentDao" ref="studyParticipantAssignmentDao" />
 	</bean>
 

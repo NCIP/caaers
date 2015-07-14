@@ -13,11 +13,21 @@ import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersionDTO;
 import gov.nih.nci.cabig.caaers.esb.client.ResponseMessageProcessor;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 
  
@@ -27,8 +37,12 @@ import java.util.*;
 * */
 /**
  * The Class ReportVersionRepository.
+ * 
+ * This is not threadsafe, it will modify remports even as other threads might still be working on them.
  */
 public class ReportVersionRepository {
+	
+	private static final Log log = LogFactory.getLog(ReportVersionRepository.class);
 
     /** The report version dao. */
     private ReportVersionDao reportVersionDao;
@@ -51,10 +65,10 @@ public class ReportVersionRepository {
             if (submittedOrAmendedDate != null) {
                 long timeDiff = (nowFactory.getNowTimestamp().getTime() - rv.getSubmittedOn().getTime()) / 60000;
                 if (timeDiff > 5) {
+                	sendFailureXMLMessage(rv);
                     rv.setReportStatus(ReportStatus.FAILED);
                     rv.setSubmissionMessage("Submission failed for unknown reason , Please resubmit");
                     reportVersionDao.save(rv);
-                    sendFailureXMLMessage(rv);
                 }
 
             }
@@ -77,18 +91,32 @@ public class ReportVersionRepository {
                 "<patientID xsi:type=\"xsd:string\" xmlns=\"\">${subjectId}</patientID><protocolNumber xsi:type=\"xsd:string\" xmlns=\"\">${protocolId}</protocolNumber>" +
                 "<jobExceptions xmlns=\"\"><code>Error</code><description>Report is stuck at submission, so forcefully marking it as failed</description>" +
                 "</jobExceptions><reportStatus xsi:nil=\"true\" xmlns=\"\"/><comments xsi:type=\"xsd:string\" xmlns=\"\">Report is stuck at submission, so forcefully marking it as failed</comments>" +
-                "<CAEERS_AEREPORT_ID>${aeReportId}</CAEERS_AEREPORT_ID><REPORT_ID>${reportId}</REPORT_ID><SUBMITTER_EMAIL>${submitterEmail}</SUBMITTER_EMAIL><MESSAGE_COMBO_ID>${messageComboId}</MESSAGE_COMBO_ID>" +
+                "<CAEERS_AEREPORT_ID>${aeReportId}</CAEERS_AEREPORT_ID><CAAERSRID>${reportId}</CAAERSRID><SUBMITTER_EMAIL>${submitterEmail}</SUBMITTER_EMAIL><MESSAGE_COMBO_ID>${messageComboId}</MESSAGE_COMBO_ID>" +
                 "</ns1:AEReportJobInfo></submitAEDataXMLAsAttachmentResponse>" +
                 "</soapenv:Body></soapenv:Envelope>";
         Report report = reportVersion.getReport();
+        String createdDateAndTime = DateUtils.formatDate(report.getAeReport().getCreatedAt(), "yyyyMMddHHmmss");
         Map<String, String> replacementMap = new HashMap<String, String>();
+        String submiterEmail = "caaers@semanticbits.com";
+        if(report.getSubmitter() != null) {
+        	submiterEmail = report.getSubmitter().getEmailAddress();
+        }
+        
         replacementMap.put("${reportId}",  "" + report.getId());
         replacementMap.put("${aeReportId}",  "" + report.getAeReport().getId());
         replacementMap.put("${protocolId}",  report.getAeReport().getStudy().getPrimaryIdentifierValue());
         replacementMap.put("${subjectId}",   report.getAeReport().getParticipant().getPrimaryIdentifierValue());
-        replacementMap.put("${messageComboId}",    report.getCaseNumber() + "::" + report.getCreatedOn().getTime());
-        replacementMap.put("${submitterEmail}", report.getSubmitter().getEmailAddress());
+        replacementMap.put("${messageComboId}", report.getCaseNumber() + "::" + createdDateAndTime);
+        replacementMap.put("${submitterEmail}", submiterEmail);
 
+        if(StringUtils.isBlank(replacementMap.get("${reportId}")) ) {
+        	log.error("The Report ID for the stuck report is null! ReportVersionId: " + reportVersion.getId());
+        }
+        
+        if(StringUtils.isBlank(replacementMap.get("${aeReportId}")) ) {
+        	log.error("The AE Report ID for the stuck report is null! ReportVersionId: " + reportVersion.getId());
+        }
+        
         String xmlMessage =  responseXMLTemplate;
         for(Map.Entry<String, String> entry : replacementMap.entrySet()) {
            xmlMessage =  StringUtils.replace(xmlMessage, entry.getKey(), entry.getValue());

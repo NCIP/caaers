@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xml-stylesheet type="text/xsl"
+                 href="http://gforge.nci.nih.gov/svnroot/commonlibrary/trunk/ivy-xsl/ivy.xsl"?>
+<ivy-module version="1.3"            
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"       
+            xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">  
+            
+  <info organisation="globus"
+        module="ws-core-client"
+        revision="4.0.3"/>
+        
+  <configurations>
+    
+    <conf name="master"  
+          description="contains only the artifact published by this module itself, with no transitive dependencies"/>
+    
+    <conf name="compile"  
+          description="Compile dependencies are available in all classpaths."
+          extends="master"/>
+       
+    <conf name="runtime"  
+          description="this scope indicates that the dependency is not required for compilation, but is for execution. It is in the runtime and test classpaths, but not the compile classpath." 
+          extends="master"/>
+          
+  </configurations>
+  
+  <publications>
+    <artifact name="wsrf_core_stubs" type="jar" conf="master" />
+    <artifact name="wsrf_core" type="jar" conf="master" />
+  </publications>
+  
+  <dependencies>
+    <dependency org="globus" 
+                name="jcogfx" 
+                rev="noversion" 
+                conf="runtime"/>
+    <dependency org="globus" 
+                name="wss4j" 
+                rev="noversion" 
+                conf="runtime"/>                
+                
+    <dependency org="globus" 
+                name="jcog" 
+                rev="1.2" 
+                conf="runtime"/>      
+ 
+                
+    <dependency org="globus" 
+                name="axis" 
+                rev="1.2RC2" 
+                conf="runtime"/>                 
+                
+    <dependency org="globus" 
+                name="ws-addressing" 
+                rev="1.0" 
+                conf="runtime"/> 
+                
+    <!-- docs says 1.6.1, but 1.6 distributed with ws-core-4.0.3 -->                
+    <dependency org="commons-beanutils" 
+                name="commons-beanutils" 
+                rev="1.6" 
+                conf="runtime->master"/>                 
+    <dependency org="commons-collections" 
+                name="commons-collections" 
+                rev="3.2" 
+                conf="runtime->master"/>  
+    <dependency org="commons-digester" 
+                name="commons-digester" 
+                rev="1.5" 
+                conf="runtime->master"/>  
+                
+                
+    <!-- hmmm 2.4.0 was what ncia used to actually have in classpath 
+         when all was said and done... probably fine one way or the other
+         _famous last words!_ -->
+    <dependency org="xerces" 
+                name="xercesImpl" 
+                rev="2.6.2" 
+                conf="runtime->master"/>   
+    <dependency org="xalan" 
+                name="xalan" 
+                rev="2.6.0" 
+                conf="runtime->master"/>                 
+                
+    <!--
+      stuff missing from ncia that is spec'ed at:
+      http://www.globus.org/toolkit/docs/4.0/common/javawscore/dependencies.html#legend.2
+      
+      Apache XML Security 1.2.1 - xmlsec.jar
+      Apache WS-Security - wss4j.jar 
+      Apache Directory - naming-core-0.8.jar, naming-factory-0.8.jar , naming-java-0.8.jar, naming-resources-0.8.jar
+      Timer and Work Manager API - commonj.jar 
+      OpenSAML - opensaml.jar  
+      util.concurrent library - concurrent.jar / JDK 1.5 probably removes need for this?
+      Apache Commons - commons-cli-2.0.jar  
+      -->
+  
+                                                 
+  </dependencies>
+  
+</ivy-module>

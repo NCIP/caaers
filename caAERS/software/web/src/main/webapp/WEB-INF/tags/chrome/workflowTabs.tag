@@ -46,7 +46,7 @@
 			</a>
     </div></li>
 	<c:if test="${selected}">
-		<tags:pageHelp propertyKey="${tab.class.name}" />
+		<tags:pageHelp propertyKey="${tab['class'].name}" />
 	</c:if>
  </csmauthz:accesscontrol>
 </c:forEach>

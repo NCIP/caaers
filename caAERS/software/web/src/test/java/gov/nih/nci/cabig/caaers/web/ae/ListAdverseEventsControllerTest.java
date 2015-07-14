@@ -10,16 +10,30 @@ import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
 import static org.easymock.EasyMock.expect;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
+import gov.nih.nci.cabig.caaers.dao.PersonDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.LocalStudy;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.dto.ManageReportsRepotingPeriodDTO;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
+
+import org.easymock.EasyMock;
 
 /**
  * @author Rhett Sutphin
@@ -33,6 +47,8 @@ public class ListAdverseEventsControllerTest extends WebTestCase {
     private StudyParticipantAssignmentDao assignmentDao;
     private ParticipantDao participantDao;
     private StudyDao studyDao;
+	private ReportDao reportDao;
+	private PersonDao personDao;
     
 
     @Override
@@ -41,6 +57,8 @@ public class ListAdverseEventsControllerTest extends WebTestCase {
         assignmentDao = registerDaoMockFor(StudyParticipantAssignmentDao.class);
         studyDao = registerDaoMockFor(StudyDao.class);
         participantDao = registerDaoMockFor(ParticipantDao.class);
+        reportDao = registerDaoMockFor(ReportDao.class);
+        personDao = org.easymock.classextension.EasyMock.createNiceMock(PersonDao.class);
 
         mockCommand = registerMockFor(ListAdverseEventsCommand.class);
         controller = new ListAdverseEventsController() {
@@ -52,6 +70,8 @@ public class ListAdverseEventsControllerTest extends WebTestCase {
         controller.setAssignmentDao(assignmentDao);
         controller.setStudyDao(studyDao);
         controller.setParticipantDao(participantDao);
+        controller.setReportDao(reportDao);
+        controller.setPersonDao(personDao);
     }
 
     public void testIsFormSubmissionWithAssignment() throws Exception {
@@ -80,24 +100,39 @@ public class ListAdverseEventsControllerTest extends WebTestCase {
         expectedAssignment.setStudySite(Fixtures.createStudySite(Fixtures.createOrganization("test"), 1));
         expectedAssignment.getStudySite().setStudy(s);
         String expectedGridId = "a-grid-id";
+        
+        ArrayList<Report> reports = new ArrayList<Report>();
 
         request.setParameter("studySubjectGridId", expectedGridId);
 //        expect(assignmentDao.getByGridId(expectedGridId)).andReturn(expectedAssignment);
-        
-        mockCommand.setAssignment(expectedAssignment);
-        mockCommand.setParticipant(p);
-        mockCommand.setStudy(s);
-//        mockCommand.setParticipant(p);
-//        mockCommand.setStudy(s);
-        mockCommand.updateSubmittability();
-        mockCommand.updateSubmittabilityBasedOnReportStatus();
-        mockCommand.updateSubmittabilityBasedOnWorkflow();
-        mockCommand.updateOptions();
-
         expect(mockCommand.getStudy()).andReturn(s).anyTimes();
         expect(mockCommand.getParticipant()).andReturn(p).anyTimes();
         expect(mockCommand.getAssignment()).andStubReturn(expectedAssignment);
         expect(assignmentDao.getAssignment(p, s)).andReturn(expectedAssignment).anyTimes();
+        expect(mockCommand.getSearchIdentifier()).andReturn("").anyTimes();
+        expect(mockCommand.getReportStatus()).andReturn(ReportStatus.INPROCESS).anyTimes();
+        expect(mockCommand.getMaxResults()).andReturn(15).anyTimes();
+        expect(reportDao.search(s, p, ReportStatus.INPROCESS, "", 15)).andReturn(reports);
+       // expect(personDao.getByLoginId("SYSTEM")).andReturn(null);
+        expect(mockCommand.getReports()).andReturn(reports).anyTimes();
+        expect(mockCommand.getTotalResultsCount()).andReturn(10).anyTimes();
+        LinkedList<ManageReportsRepotingPeriodDTO> mrrpd = new LinkedList<ManageReportsRepotingPeriodDTO>();
+        mrrpd.add(new ManageReportsRepotingPeriodDTO(null));
+        Map<String,  LinkedList<ManageReportsRepotingPeriodDTO>> testMap = new HashMap<>();
+        expect(mockCommand.getFilteredResultMap()).andReturn(testMap);
+        expect(mockCommand.getResultList()).andReturn(testMap).anyTimes();
+        
+        mockCommand.updateSubmittability();
+        mockCommand.updateSubmittabilityBasedOnReportStatus();
+        mockCommand.updateSubmittabilityBasedOnWorkflow();
+        mockCommand.updateOptions();
+        mockCommand.setSearchIdentifier(null);
+        mockCommand.setMaxResults(15);
+        mockCommand.setReports(reports);
+        mockCommand.setUserId("SYSTEM_ADMIN");
+        mockCommand.setStudyCentric(false);
+        mockCommand.setParticipantCentric(false);
+        mockCommand.populateResults((List<AdverseEventReportingPeriod>) EasyMock.anyObject());
         
         replayMocks();
         controller.handleRequest(request, response);
@@ -106,7 +141,10 @@ public class ListAdverseEventsControllerTest extends WebTestCase {
     
     //will test whether the security role is applied correctly.
     public void testDoSubmitAction() throws Exception{
+        
+        expect(mockCommand.getReports()).andStubReturn(new ArrayList<Report>());
         mockCommand.updateSubmittabilityBasedOnWorkflow();
+        mockCommand.populateResults((List<AdverseEventReportingPeriod>) EasyMock.anyObject());
     	replayMocks();
     	controller.doSubmitAction(mockCommand);
     	verifyMocks();

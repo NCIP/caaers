@@ -287,13 +287,14 @@ public class Lab extends AbstractExpeditedReportCollectionElementChild {
         if (!(obj instanceof Lab)) return false;
 
         Lab l = (Lab) obj;
-        if (!StringUtils.equals(other, l.other)) return false;
 
-        if (l.units != null && !units.equals(l.units)) return false;
-        if (l.baseline != null && !baseline.equals(l.baseline)) return false;
+        if(!StringUtils.equals(l.getOther(), getOther())) return false;
+        if(!StringUtils.equals(l.getUnits(), getUnits())) return false;
 
-        if (l.recovery != null && !recovery.equals(l.recovery)) return false;
-        if (l.nadir != null && !nadir.equals(l.nadir)) return false;
+        if (l.baseline != null && baseline != null && !baseline.equals(l.baseline)) return false;
+
+        if (l.recovery != null && recovery != null && !recovery.equals(l.recovery)) return false;
+        if (l.nadir != null && nadir != null && !nadir.equals(l.nadir)) return false;
 
         return true;
     }

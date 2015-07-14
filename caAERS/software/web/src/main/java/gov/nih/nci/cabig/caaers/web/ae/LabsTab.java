@@ -94,10 +94,16 @@ public class LabsTab extends AeTab {
     private Map<Object, Object> createOptions() {
         Map<Object, Object> options = new LinkedHashMap<Object, Object>();
         List<LabTerm> list = labTermDao.getAll();
+        Collections.sort(list, new Comparator<LabTerm>() {
+            public int compare(LabTerm o1, LabTerm o2) {
+                return o1.getTerm().compareTo(o2.getTerm());
+            }
+        });
         options.put(" ", "Please select");
         options.put("", "Other, specify");
         if (list != null) {
             for (LabTerm l : list) {
+                if(l.isRetired()) continue;
                 options.put(l.getId(), l.getTerm());
             }
         }

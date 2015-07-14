@@ -380,8 +380,8 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
 
                 // TA can be null because of the "Other TA" field in the "Create RP" Popup
                 if (rp.getTreatmentAssignment() != null) {
+                	rpAjaxable.setTacCode(rp.getTreatmentAssignment().getCode());
                     rpAjaxable.setTacDescription(rp.getTreatmentAssignment().getDescription());
-                    rpAjaxable.setTacCode(rp.getTreatmentAssignment().getCode());
                 } else if (!StringUtils.isEmpty(rp.getTreatmentAssignmentDescription())) {
                     rpAjaxable.setTacDescription(rp.getTreatmentAssignmentDescription());
                 }

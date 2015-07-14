@@ -141,10 +141,20 @@ public class CaaersJavaMailSender extends JavaMailSenderImpl implements Initiali
 		}
     }
     
+    
     /**
      * This method is used to send an email
      */
 	public void sendMail(String[] to, String subject, String content, String[] attachmentFilePaths){
+		sendMail(to, null, subject, content, attachmentFilePaths);
+	}
+    /**
+     * This method is used to send an email
+     */
+	public void sendMail(String[] to, String[] cc, String subject, String content, String[] attachmentFilePaths){
+		if(to == null || to.length == 0) {
+			return;
+		}
 		try {		
 		    MimeMessage message = createMimeMessage();
 		    message.setSubject(subject);
@@ -152,6 +162,9 @@ public class CaaersJavaMailSender extends JavaMailSenderImpl implements Initiali
 		    // use the true flag to indicate you need a multipart message
 		    MimeMessageHelper helper = new MimeMessageHelper(message, true);
 		    helper.setTo(to);
+		    if( cc != null && cc.length > 0){
+		    	helper.setCc(cc);
+		    }
 		    helper.setText(content);
 		    
 		    for(String attachmentPath : attachmentFilePaths){

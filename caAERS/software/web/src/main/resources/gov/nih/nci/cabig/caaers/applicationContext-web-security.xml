@@ -42,7 +42,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="/pages/admin/ctepesysDataImport" value="system_administrator,business_administrator"/>      
 		<entry key="/pages/admin/logdownload" value="system_administrator,business_administrator"/>
 		<entry key="/pages/admin/trackReports" value="system_administrator,business_administrator,data_reader"/>
-		<entry key="/pages/admin/ctepesysDataIntegrationLogs" value="system_administrator,business_administrator"/>		
+		<entry key="/pages/admin/reportlogs" value="system_administrator,business_administrator,data_reader"/>
+		<entry key="/pages/admin/ctepesysDataIntegrationLogs" value="system_administrator,business_administrator"/>
 		<entry key="/pages/admin/asaelSearch" value="business_administrator,data_reader"/>
 		<entry key="/pages/admin/asaelCreate" value="business_administrator,data_reader"/>
         <entry key="/admin/asaelEdit" value="business_administrator,data_reader" />
@@ -181,6 +182,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <entry key="/pages/admin/ctepesysDataImport" value="gov.nih.nci.cabig.caaers.domain.ReportStatus:READ"/>  
         <entry key="/pages/admin/logdownload" value="gov.nih.nci.cabig.caaers.domain.ReportStatus:READ"/>
 		<entry key="/pages/admin/trackReports" value="gov.nih.nci.cabig.caaers.domain.ReportStatus:READ"/>
+		<entry key="/pages/admin/reportlogs" value="gov.nih.nci.cabig.caaers.domain.ReportStatus:READ"/>
 		<entry key="/pages/admin/ctepesysDataIntegrationLogs" value="gov.nih.nci.cabig.caaers.domain.ReportStatus:READ"/>
 		<entry key="/pages/admin/happy" value="gov.nih.nci.cabig.caaers.domain.Notification:READ"/>
 		<entry key="/pages/admin/asaelSearch" value="gov.nih.nci.cabig.caaers.domain.Agent:READ"/>
@@ -193,6 +195,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="/pages/admin/createUser" value="gov.nih.nci.cabig.caaers.domain.CSMUser:CREATE || gov.nih.nci.cabig.caaers.domain.ResearchStaff:CREATE || gov.nih.nci.cabig.caaers.domain.Investigator:CREATE" />
 		<entry key="/pages/admin/editUser" value="gov.nih.nci.cabig.caaers.domain.CSMUser:UPDATE || gov.nih.nci.cabig.caaers.domain.CSMUser:READ || gov.nih.nci.cabig.caaers.ResearchStaff:UPDATE || gov.nih.nci.cabig.caaers.domain.ResearchStaff:READ || gov.nih.nci.cabig.caaers.domain.Investigator:UPDATE || gov.nih.nci.cabig.caaers.domain.Investigator:READ" />
 		<entry key="/pages/admin/searchUser" value="gov.nih.nci.cabig.caaers.domain.CSMUser:READ || gov.nih.nci.cabig.caaers.domain.ResearchStaff:READ || gov.nih.nci.cabig.caaers.domain.Investigator:READ" />
+		<entry key="/dwr/call/plaincall/user.activateUser.dwr" value="gov.nih.nci.cabig.caaers.domain.CSMUser:UPDATE || gov.nih.nci.cabig.caaers.ResearchStaff:UPDATE ||n gov.nih.nci.cabig.caaers.domain.Investigator:UPDATE" />
          
 		<entry key="/pages/admin/import" value="gov.nih.nci.cabig.caaers.domain.Import:ACCESS"/>
         <entry key="/pages/admin/createIND" value="gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug:CREATE"/>

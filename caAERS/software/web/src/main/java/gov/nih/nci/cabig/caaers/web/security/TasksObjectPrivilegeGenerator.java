@@ -16,12 +16,12 @@ import java.util.Map;
  * @author Biju Joseph (refactoring)
  *
  */
-public class TasksObjectPrivilegeGenerator implements ObjectPrivilegeGenerator {
+public class TasksObjectPrivilegeGenerator implements ObjectPrivilegeGenerator<Task> {
 
     protected Map<String, String> objectPrivilegeMap;
 
-    public String resolve(Object o) {
-        return objectPrivilegeMap.get(((Task)o).getUrl());
+    public String resolve(Task t) {
+        return objectPrivilegeMap.get(t.getUrl());
     }
 
     public void setObjectPrivilegeMap(Map<String, String> objectPrivilegeMap) {

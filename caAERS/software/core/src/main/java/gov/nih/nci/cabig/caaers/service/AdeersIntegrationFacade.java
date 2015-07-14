@@ -100,13 +100,5 @@ public interface AdeersIntegrationFacade {
      * @return the correlation Id
      */
     String mergeOrganizations();
-    
-    /**
-     * Will route back the Adeers Report submission response back to ESB for further routing
-     * @param response - Adeers submission response as String
-     * @param r - Report instance
-     * @return the correlation Id
-     */
-    String routeAdeersReportSubmissionResponse(String response, Report r);
    
 }

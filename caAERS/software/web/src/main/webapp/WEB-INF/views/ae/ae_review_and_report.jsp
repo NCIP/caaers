@@ -989,6 +989,7 @@ function validate(aeReportId){
 		updateDisplayTexts(${entry.key});
 	    
 	  </c:forEach>
+
    });
 
    </script>
@@ -998,7 +999,7 @@ function validate(aeReportId){
 	<input type="hidden" name="activeAeReportId" value="" id="activeAeReportId" />
 	<input type="hidden" name="_finish"/>
 	<!--  ============== -->
-  
+
    <!--  ALERT -->
    <c:if test="${command.evaluationResult.alertRecommended}">
     <div style="border:1px solid #f00; height:100px; padding:9px; margin-bottom:10px; margin-left:150px; width:600px;">

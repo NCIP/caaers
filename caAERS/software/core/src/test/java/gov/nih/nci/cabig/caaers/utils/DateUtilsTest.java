@@ -240,8 +240,8 @@ public class DateUtilsTest extends TestCase {
     		System.out.println(d);
     		// format date with timezone
     		
-    		d = DateUtils.getDateWithTimeZone(d);
-    		System.out.println(d);
+
+    		System.out.println(DateUtils.formatToWSResponseDateWithTimeZone(d));
     		System.out.println("convert to string" +d.toString());
     	}catch (Exception e){
     		e.printStackTrace();

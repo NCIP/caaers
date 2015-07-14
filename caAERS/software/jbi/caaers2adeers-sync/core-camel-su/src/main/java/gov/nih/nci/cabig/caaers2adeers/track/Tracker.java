@@ -74,24 +74,27 @@ public class Tracker implements Processor{
 	public void process(Exchange exchange) throws Exception {
 		try {
             //set the properties in the exchange
+			log.debug("Logging with tracker, begin.");
             Map<String,Object> properties = exchange.getProperties();
-            String entity = properties.get(ExchangePreProcessor.ENTITY_NAME)+"";
-            String operation = properties.get(ExchangePreProcessor.OPERATION_NAME)+"";
-            String coorelationId = properties.get(ExchangePreProcessor.CORRELATION_ID)+"";
+            String entity = (String) properties.get(ExchangePreProcessor.ENTITY_NAME);
+            String operation = (String) properties.get(ExchangePreProcessor.OPERATION_NAME);
+            String coorelationId = (String) properties.get(ExchangePreProcessor.CORRELATION_ID);
             if(coorelationId == null || stage == null || entity == null || operation == null){
                 throw new RuntimeException("Cannot log in database. Required fields are missing");
             }
-            log.debug("logging with tracker");
-            if(coorelationId == null || stage == null || entity == null || operation == null){
-                throw new RuntimeException("Cannot log in database. Required fields are missing");
-            }
+
             log.debug("creating new instance of IntegrationLog with [" + coorelationId+", " + stage+", " + entity+", " + operation+", " + notes + "]");
 
             IntegrationLog integrationLog = new IntegrationLog(coorelationId, stage, entity, operation, notes);
-            String status = XPathBuilder.xpath("//status").evaluate(exchange, String.class);
-            if (!StringUtils.isBlank(status)){
-                integrationLog.setNotes(status);
+            try {
+                String status = XPathBuilder.xpath("//status/text()").evaluate(exchange, String.class);
+                if (!StringUtils.isBlank(status)){
+                    integrationLog.setNotes(status);
+                }
+            }catch (Exception ignore) {
+                log.error("Ignoring invalid XML message", ignore);
             }
+            log.debug("Upating the instance of IntegrationLog with [" + coorelationId+", " + stage+", " + entity+", " + operation+", " + notes + "]");
 
             IntegrationLogDao integrationLogDao = (IntegrationLogDao)exchange.getContext().getRegistry().lookup("integrationLogDao");
             captureLogDetails(exchange, integrationLog);
@@ -99,7 +102,7 @@ public class Tracker implements Processor{
 
             integrationLogDao.save(integrationLog);
         } catch(Exception ex) {
-            log.info("Error while tracking exchange", ex);
+            log.error("Error while tracking exchange", ex);
         }
         
 	}
@@ -109,14 +112,14 @@ public class Tracker implements Processor{
 			IntegrationLog integrationLog) {
 		if(caputureLogDetails){
         	//Check for soap fault
-        	String faultString = XPathBuilder.xpath("//faultstring").evaluate(exchange, String.class);
+        	String faultString = XPathBuilder.xpath("//faultstring/text()").evaluate(exchange, String.class);
         	if(!StringUtils.isBlank(faultString)){
         		integrationLog.setNotes(SOAP_FAULT_STATUS);
         		integrationLog.addIntegrationLogDetail(new IntegrationLogDetail(null, faultString, true));
         	}
         	
         	//check for caaers error message in response
-        	String errorString = XPathBuilder.xpath("//error").evaluate(exchange, String.class);
+        	String errorString = XPathBuilder.xpath("//error/text()").evaluate(exchange, String.class);
         	if(!StringUtils.isBlank(errorString)){
         		integrationLog.setNotes(CAAERS_RESPONSE_ERROR);
         		integrationLog.addIntegrationLogDetail(new IntegrationLogDetail(null, errorString, true));

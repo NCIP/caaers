@@ -178,7 +178,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
         <a href="trackReports">Report Submission Logs</a>
     </div></li>
     <li id="thirdlevelnav" class="tab"><div>
-        <a href="ctepesysDataIntegrationLogs">CTEP-ESYS Data Integration Logs</a>
+        <a href="ctepesysDataIntegrationLogs">Data Integration Logs</a>
     </div></li>
   </ul>
 </div>
@@ -187,13 +187,13 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 
  <div id="autoRemoveElement" style="display: none;">
         <div id="flash-message" class="info">
-            <img src= "<chrome:imageUrl name="../check.png"/>" />&nbsp;<span id="autoRemoveElementMesage" />
+            <img src="<chrome:imageUrl name="../check.png"/>" />&nbsp;<span id="autoRemoveElementMesage" />
         </div>
  </div>
 
     <p><tags:instructions code="LBL_ctep.data.import.instructions"/></p>
 
-	<form:form name="ctepDataForm"id="assembler">
+	<form:form name="ctepDataForm" id="assembler">
 		<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
 	     <chrome:division id="single-fields">
 	        <div id="tableDiv">

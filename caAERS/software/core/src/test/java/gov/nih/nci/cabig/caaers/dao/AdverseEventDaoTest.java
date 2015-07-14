@@ -45,7 +45,7 @@ import java.util.List;
  */
 @CaaersUseCases({CREATE_EXPEDITED_REPORT, CREATE_ROUTINE_REPORT})
 public class AdverseEventDaoTest extends CaaersDbNoSecurityTestCase {
-	
+
 	private StudyDao studyDao;
 	private ParticipantDao participantDao;
 	private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
@@ -203,6 +203,7 @@ public class AdverseEventDaoTest extends CaaersDbNoSecurityTestCase {
     	AdverseEventReportingPeriod reportingPeriod  = adverseEventReportingPeriodDao.getById(1001);
     	AdverseEvent ae = new AdverseEvent();
     	ae.setSolicited(null);
+        ae.setCreatedDate(null);
     	ae.setGrade(Grade.DEATH);
     	List<AdverseEvent> aeList = getDao().getByAdverseEventReportingPeriod(reportingPeriod, reportingPeriod.getStudy(), reportingPeriod.getParticipant(), ae);
     	assertEquals("Incorrect number of adverseEvents fetched by getByAdverseEventReportingPeriod", 1, aeList.size());
@@ -312,6 +313,7 @@ public class AdverseEventDaoTest extends CaaersDbNoSecurityTestCase {
 
     public void testGetByStudyParticipantAndAE() throws Exception {
     	AdverseEvent adverseEvent = new AdverseEvent();
+        adverseEvent.setCreatedDate(null);
     	adverseEvent.setHospitalization(Hospitalization.NONE);
     	adverseEvent.setSolicited(true);
 		TimeValue tv = new TimeValue();
@@ -320,6 +322,7 @@ public class AdverseEventDaoTest extends CaaersDbNoSecurityTestCase {
     	List<AdverseEvent> loaded = getDao().getByStudyParticipant(this.studyDao.getById(-2), this.participantDao.getById(-4),adverseEvent);
     	assertEquals(4, loaded.size());
     	adverseEvent = new AdverseEvent();
+        adverseEvent.setCreatedDate(null);
     	adverseEvent.setHospitalization(Hospitalization.NO);
     	adverseEvent.setSolicited(true);
     	adverseEvent.setEventApproximateTime(tv);

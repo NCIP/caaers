@@ -28,6 +28,7 @@ import gov.nih.nci.cabig.caaers.integration.schema.study.StudyDeviceINDAssociati
 import gov.nih.nci.cabig.caaers.integration.schema.study.StudyIdentifierType;
 import gov.nih.nci.cabig.caaers.integration.schema.study.TreatmentAssignmentType;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -35,6 +36,7 @@ import org.apache.commons.logging.LogFactory;
 
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -220,7 +222,7 @@ public class StudyConverter {
 	}
 
 	private void populateStudyInvestigatorsDomain2DtoForCoordinatingSite(List<StudyInvestigator> studyInvestigators, StudyCoordinatingCenterType sc) throws Exception{
-
+		assert sc != null;
 		if(studyInvestigators != null && !studyInvestigators.isEmpty()) {
 
             sc.setStudyInvestigators(new StudyCoordinatingCenterType.StudyInvestigators());
@@ -243,12 +245,19 @@ public class StudyConverter {
                     siType.setEndDate(convertCalendar2XmlGregorianCalendar(c));
                 }
 
-                siType.setSiteInvestigator(new SiteInvestigatorType());
-                siType.getSiteInvestigator().setInvestigator(new InvestigatorType());
-                siType.getSiteInvestigator().getInvestigator().setFirstName(si.getSiteInvestigator().getInvestigator().getFirstName());
-                siType.getSiteInvestigator().getInvestigator().setLastName(si.getSiteInvestigator().getInvestigator().getLastName());
-                siType.getSiteInvestigator().getInvestigator().setNciIdentifier(si.getSiteInvestigator().getInvestigator().getNciIdentifier());
+                if(si.getSiteInvestigator() != null && si.getSiteInvestigator().getInvestigator() != null) {
+                	SiteInvestigatorType sit = new SiteInvestigatorType();
+                	InvestigatorType it = new InvestigatorType();
+                	Investigator sourceInvestigator = si.getSiteInvestigator().getInvestigator();
 
+	                it.setFirstName(sourceInvestigator.getFirstName());
+	                it.setLastName(sourceInvestigator.getLastName());
+	                it.setNciIdentifier(sourceInvestigator.getNciIdentifier());
+	                
+	                sit.setInvestigator(it);
+	                siType.setSiteInvestigator(sit);
+                }
+                
                 sc.getStudyInvestigators().getStudyInvestigator().add(siType);
             }
 
@@ -955,7 +964,7 @@ public class StudyConverter {
 
             for (StudyAgent sa : agents) {
 
-                if (sa == null && sa.getOtherAgent() == null && sa.getAgent() == null || sa.isRetired()) continue;
+                if (sa == null || (sa.getOtherAgent() == null && sa.getAgent() == null)  || sa.isRetired()) continue;
 
                 StudyAgentType sat = new StudyAgentType();
 

@@ -492,32 +492,7 @@ public class StudyRepository {
      * @param study the study
      */
     public  void provisionStudyTeam(Study study){
-//Commented code below as we are not provision studies to CSM when a Person gets on the Study Team.
-//Retaining this code if at later point in time we have to add this feature back in caAERS.    	
-//    	try{
-//    		List<StudyOrganization> studyOrgs = study.getActiveStudyOrganizations();
-//    		List<StudyInvestigator> studyInvs = null;
-//    		List<StudyPersonnel> studyPersonnel = null;
-//    		for(StudyOrganization studyOrg : studyOrgs){
-//    			//Remove, add or update what instances an Investigator is entitled to.
-//    			studyInvs = studyOrg.getStudyInvestigators();
-//    			if(studyInvs != null){
-//        			for(StudyInvestigator studyInv : studyInvs){
-//    					caaersSecurityFacade.provisionStudies(studyInv);
-//        			}
-//    			}
-//    			//Remove, add or update what instances an ResearchStaff is entitled to.
-//    			studyPersonnel = studyOrg.getStudyPersonnels();
-//    			if(studyPersonnel != null){
-//    				for(StudyPersonnel studyPer : studyPersonnel){
-//						caaersSecurityFacade.provisionStudies(studyPer);
-//    				}
-//    			}
-//    		}
-//    	}catch(CaaersUserProvisioningException ex){
-//    		log.error("Exception while provisioning StudyTeam", ex);
-//    		throw ex;
-//    	}
+//Removed code below as we are not provision studies to CSM when a Person gets on the Study Team.  	
     }
 
     /**

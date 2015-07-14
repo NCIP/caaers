@@ -11,6 +11,9 @@ import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.esb.client.impl.AdeersSubmissionResponseMessageProcessor;
 import gov.nih.nci.cabig.caaers.service.ProxyWebServiceFacade;
 
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
+import gov.nih.nci.cabig.ctms.tools.configuration.ConfigurationProperty;
+import org.easymock.EasyMock;
 import org.jdom.Element;
 /**
  * 
@@ -22,7 +25,7 @@ public class ESBMessageConsumerImplTest extends AbstractTestCase {
 	ResponseMessageProcessor consumer;
 	MessageNotificationService messageNotificationService;
 	ReportDao reportDao;
-	ProxyWebServiceFacade proxyWebServiceFacade;
+    Configuration configuration;
 	
 	
 	protected void setUp() throws Exception {
@@ -31,12 +34,14 @@ public class ESBMessageConsumerImplTest extends AbstractTestCase {
 		consumer = new AdeersSubmissionResponseMessageProcessor();
 		messageNotificationService = registerMockFor(MessageNotificationService.class);
 		reportDao = registerMockFor(ReportDao.class);
-		proxyWebServiceFacade = registerMockFor(ProxyWebServiceFacade.class);
+        configuration = registerMockFor(Configuration.class);
+
 		
 		consumer.setMessageNotificationService(messageNotificationService);
 		consumer.setReportDao(reportDao);
-		consumer.setProxyWebServiceFacade(proxyWebServiceFacade);		
-		
+        consumer.setConfiguration(configuration);
+
+
 	}
 	
 	//correct xml, no exceptions
@@ -116,7 +121,7 @@ public class ESBMessageConsumerImplTest extends AbstractTestCase {
 		.append("<ns1:AEReportJobInfo xmlns:ns1=\"http://localhost:8080/AdEERSWSMap/services/AEReportXMLService\">")
 		.append("<jobID xsi:type=\"xsd:string\">4632</jobID>")
 		.append("<CAEERS_AEREPORT_ID xsi:type=\"xsd:string\">4632</CAEERS_AEREPORT_ID>")
-		.append("<REPORT_ID xsi:type=\"xsd:string\">4632</REPORT_ID>")
+		.append("<CAAERSRID xsi:type=\"xsd:string\">4632</CAAERSRID>")
 		.append("<SUBMITTER_EMAIL xsi:type=\"xsd:string\">submitter@usa.com</SUBMITTER_EMAIL>")
 		.append("<patientID xsi:type=\"xsd:string\">SH-888</patientID>")
 		.append("<protocolNumber xsi:type=\"xsd:string\">5876</protocolNumber>")
@@ -155,7 +160,7 @@ public class ESBMessageConsumerImplTest extends AbstractTestCase {
 		.append("<ns1:AEReportJobInfo xmlns:ns1=\"http://localhost:8080/AdEERSWSMap/services/AEReportXMLService\">")
 		.append("<jobID xsi:type=\"xsd:string\">4632</jobID>")
 		.append("<CAEERS_AEREPORT_ID xsi:type=\"xsd:string\">4632</CAEERS_AEREPORT_ID>")
-		.append("<REPORT_ID xsi:type=\"xsd:string\">4632</REPORT_ID>")
+		.append("<CAAERSRID xsi:type=\"xsd:string\">4632</CAAERSRID>")
 		.append("<SUBMITTER_EMAIL xsi:type=\"xsd:string\">submitter@usa.com</SUBMITTER_EMAIL>")
 		.append("<patientID xsi:type=\"xsd:string\">SH-888</patientID>")
 		.append("<protocolNumber xsi:type=\"xsd:string\">5876</protocolNumber>")
@@ -195,7 +200,7 @@ public class ESBMessageConsumerImplTest extends AbstractTestCase {
 		.append("<ns1:AEReportJobInfo xmlns:ns1=\"http://localhost:8080/AdEERSWSMap/services/AEReportXMLService\">")
 		.append("<jobID xsi:type=\"xsd:string\">4632</jobID>")
 		.append("<CAEERS_AEREPORT_ID xsi:type=\"xsd:string\">4632</CAEERS_AEREPORT_ID>")
-		.append("<REPORT_ID xsi:type=\"xsd:string\">4632</REPORT_ID>")
+		.append("<CAAERSRID xsi:type=\"xsd:string\">4632</CAAERSRID>")
 		.append("<SUBMITTER_EMAIL xsi:type=\"xsd:string\">submitter@usa.com</SUBMITTER_EMAIL>")
 		.append("<ticketNumber xsi:type=\"xsd:string\">1234</ticketNumber>")
 		.append("<reportURL xsi:type=\"xsd:string\">http://www.abc.com</reportURL>")

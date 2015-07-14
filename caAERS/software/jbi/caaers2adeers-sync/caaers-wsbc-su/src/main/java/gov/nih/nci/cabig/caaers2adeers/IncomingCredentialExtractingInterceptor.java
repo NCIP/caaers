@@ -11,12 +11,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.cxf.binding.soap.SoapMessage;
 import org.apache.cxf.interceptor.Fault;
-import org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor;
 import org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor;
 import org.apache.ws.security.WSPasswordCallback;
 import org.apache.ws.security.WSSecurityException;
 import org.apache.ws.security.handler.RequestData;
 
+import javax.security.auth.callback.CallbackHandler;
 import java.util.Map;
 
 public class IncomingCredentialExtractingInterceptor extends WSS4JOutInterceptor {
@@ -39,8 +39,8 @@ public class IncomingCredentialExtractingInterceptor extends WSS4JOutInterceptor
         //fetch the credentials
         String body = String.valueOf(mc.getExchange());
         if(StringUtils.isEmpty(body)) return ;
-        if(log.isDebugEnabled()) {
-            log.debug("Message Body : " + body);
+        if(log.isInfoEnabled()) {
+            log.info("Message Body : " + body);
         }
 
         int start = body.indexOf("Username>") ;
@@ -77,20 +77,31 @@ public class IncomingCredentialExtractingInterceptor extends WSS4JOutInterceptor
         }
 
         if(log.isDebugEnabled()) {
-            log.debug("username :" + username +", password:" + password);
+            log.debug("username :" + username.get() +", password:" + password.get());
         }
         super.handleMessage(mc);
     }
 
     @Override
-    public WSPasswordCallback getPassword(String dummyUserName, int doAction, String clsProp, String refProp, RequestData reqData) throws WSSecurityException {
+    public WSPasswordCallback getPasswordCB(String dummyUsername, int doAction, CallbackHandler callbackHandler, RequestData requestData) throws WSSecurityException {
         String usr = username.get();
         username.remove();
 
         String pwd = password.get();
         password.remove();
 
-        return new WSPasswordCallback(usr, pwd, null ,WSPasswordCallback.USERNAME_TOKEN);
+        setPassword(requestData.getMsgContext(), pwd);
+        return super.getPasswordCB(usr, doAction, callbackHandler, requestData);
     }
+
+//    public WSPasswordCallback getPassword(String dummyUserName, int doAction, String clsProp, String refProp, RequestData reqData) throws WSSecurityException {
+//        String usr = username.get();
+//        username.remove();
+//
+//        String pwd = password.get();
+//        password.remove();
+//
+//        return new WSPasswordCallback(usr, pwd, null ,WSPasswordCallback.USERNAME_TOKEN);
+//    }
 
 }

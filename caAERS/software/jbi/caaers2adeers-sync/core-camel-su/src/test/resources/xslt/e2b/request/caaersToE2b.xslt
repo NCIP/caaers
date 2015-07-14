@@ -10,7 +10,7 @@
 		<xsl:call-template name="e2b" />
 	</xsl:template>
 	
-	<xsl:variable name="map" select="document('lookup.xml')" />
+	<xsl:variable name="map" select="document('file:lookup.xml')" />
 
 	<xsl:template name="lookup">
 		<xsl:param name="_map" />
@@ -337,13 +337,15 @@
 				<patientheight><xsl:value-of select="/AdverseEventReport/ParticipantHistory/height/quantity"/></patientheight>
 			</xsl:if>
 			<xsl:if test="/AdverseEventReport/ParticipantHistory/baselinePerformanceStatus">
+                <medicalhistoryepisode>
 				<baselineperformancescale>ECOG</baselineperformancescale>
 				<baselineperformancenumber>
 					<xsl:call-template name="lookup">
 							<xsl:with-param name="_map" select="$map//baselinestatustoe2b" />
 							<xsl:with-param name="_code" select="/AdverseEventReport/ParticipantHistory/baselinePerformanceStatus" />
 					</xsl:call-template>
-				</baselineperformancenumber>	
+				</baselineperformancenumber>
+                </medicalhistoryepisode>
 			</xsl:if>
 			
 			

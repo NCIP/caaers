@@ -6,15 +6,14 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.service;
 
+import org.apache.commons.lang.StringUtils;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.api.AdeersReportGenerator;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
-import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.PersonContact;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
@@ -36,8 +35,10 @@ import gov.nih.nci.cabig.ctms.lang.NowFactory;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.logging.Log;
@@ -70,7 +71,6 @@ public class ReportSubmissionService {
     private WorkflowService workflowService;
     
     private ReportDao reportDao;
-    private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
     private MessageSource messageSource;
     private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
     
@@ -132,7 +132,6 @@ public class ReportSubmissionService {
     public void doPreSubmitReport(ReportSubmissionContext context){
     	
     	Report report = context.report;
-    	ReportVersion reportVersion = report.getLastVersion();
     	
     	if(CollectionUtils.isEmpty(report.getReportDeliveries())){
     		List<ReportDelivery> deliveries = reportRepository.findReportDeliveries(report);
@@ -140,7 +139,12 @@ public class ReportSubmissionService {
     			report.addReportDelivery(delivery);
     		}
     	}
-    	
+
+        //set correlation-id if that do not exist (to support legacy)
+        if(StringUtils.isEmpty(report.getMetaData())) {
+            report.addToCorrelationId(String.valueOf(System.currentTimeMillis()));
+        }
+
     	// start tracking.
     	ReportTracking reportTracking = new ReportTracking();
     	Tracker.logInitiation(reportTracking, true, "",nowFactory.getNow());
@@ -179,6 +183,9 @@ public class ReportSubmissionService {
             for(AdverseEvent ae : report.getAeReport().getActiveAdverseEvents()){
             	reportVersion.addReportedAdverseEvent(ae);
             }
+            
+           //update the signatures of adverse events
+           report.getAeReport().updateSignatureOfAdverseEvents();
             
             // update signature of duplicate AEs that are not part of the data collection but part of the reporting period.
            ExpeditedAdverseEventReport aereport = report.getAeReport();
@@ -263,10 +270,14 @@ public class ReportSubmissionService {
 					log.error("Error while sending email ", e);
 					report.setStatus(ReportStatus.FAILED);
 					report.setSubmissionMessage("Error  sending email " + e.getMessage());
-			     } 
+			     }
 			}
 		} catch (Exception e) {
 			log.error("Error while trying to submit report",e);
+			if(report != null && ReportStatus.INPROCESS.equals(report.getStatus())) {
+				report.setStatus(ReportStatus.FAILED);
+				report.setSubmissionMessage("Unable to submit report; " + e.getMessage()); 
+			}
 			throw new CaaersSystemException("Unable to submit report", e);
 		}
     	
@@ -274,42 +285,45 @@ public class ReportSubmissionService {
     	reportDao.save(context.report);
      }
     
+    public Set<String> getEmailList(Report r , String submitterEmail){
+    	Set<String> emails = new LinkedHashSet<String>();
+    	
+    	for(String email : r.getEmailRecipients()) {
+    		if(email != null && !email.isEmpty()) {
+    			emails.add(email.trim());
+    		}
+    	}
+    	
+        if(submitterEmail != null && !submitterEmail.isEmpty()) {
+        	emails.add(submitterEmail.trim());
+        }
+        
+        emails.remove(""); //remove the empty email if it was added.
+        return emails;
+    }
+    
     /**
      * This method will generate the message content and forwards it to the caaers mail sender.
      * @param context - The submission context
      * @throws Exception
      */
-    
     public void notifyEmailRecipients(ReportSubmissionContext context) throws Exception {
     	Report report = context.report;
-    	String xml = context.caaersXML;
     	String[] pdfFilePaths = context.pdfReportPaths;
     	ReportTracking reportTracking = report.getLastVersion().getLastReportTracking();
     	
-    	List<String> emailRecipients = report.getEmailRecipients();
+    	Set<String> emailRecipients = getEmailList(report, null);
     	if(!emailRecipients.isEmpty()){
     		 //if email recipents are there, notify them.
         	ExpeditedAdverseEventReport expeditedAdverseEventReport = report.getAeReport();
             Participant participant = expeditedAdverseEventReport.getAssignment().getParticipant();
             String firstName = participant.getFirstName();
             String lastName = participant.getLastName();
-            List<Identifier> pIds = participant.getIdentifiers();
-            String pid = "";
-            for (Identifier identifier:pIds) {
-            	if (identifier.getPrimaryIndicator()) {
-            		pid = identifier.getValue();
-            	}
-            }
+            String pid = participant.getPrimaryIdentifierValue();
             
             Study study = expeditedAdverseEventReport.getStudy();
             String shortTitle = study.getShortTitle();
-            List<Identifier> sIds = study.getIdentifiers();
-            String sid = "";
-            for (Identifier identifier:sIds) {
-            	if (identifier.getPrimaryIndicator()) {
-            		sid = identifier.getValue();
-            	}
-            }
+            String sid = study.getPrimaryIdentifierValue();
             
             String content = messageSource.getMessage("email.submission.content", new Object[]{report.getLabel(), firstName, lastName, pid, shortTitle, sid}, Locale.getDefault());
             String subjectLine = messageSource.getMessage("submission.success.subject", new Object[]{report.getLabel(), pid}, Locale.getDefault());
@@ -338,21 +352,39 @@ public class ReportSubmissionService {
         List<ReportDelivery> deliveries = report.getExternalSystemDeliveries();
         int reportId = report.getId();
         StringBuilder sb = new StringBuilder();
+        String systemName = "UNKNOWN";
         sb.append("<EXTERNAL_SYSTEMS>");
+      //FIXME: Shared code with Report Withdrawal service.
         for (ReportDelivery delivery : deliveries) {
             sb.append(delivery.getEndPoint()).append("::").append(delivery.getUserName()).append("::" ).append(delivery.getPassword());
+            systemName = delivery.getReportDeliveryDefinition().getEntityName();
+            if(systemName == null) {
+            	systemName = "UNKNOWN";
+            }
+            sb.append("::" ).append(systemName.replace("::", ":"));
         }
         sb.append("</EXTERNAL_SYSTEMS>");
-        sb.append("<REPORT_ID>" + reportId + "</REPORT_ID>");
+        sb.append(String.format("<CAAERSRID>%s</CAAERSRID>", reportId));
 
         String submitterEmail = report.getLastVersion().getSubmitter().getContactMechanisms().get(PersonContact.EMAIL);
-        sb.append("<SUBMITTER_EMAIL>" + submitterEmail + "</SUBMITTER_EMAIL>");
+        sb.append(String.format("<SUBMITTER_EMAIL>%s</SUBMITTER_EMAIL>", submitterEmail));
         
-        String msgComboId = report.getAeReport().getExternalId() + "::" + msgDF.format(report.getAeReport().getCreatedAt());
-        sb.append("<MESSAGE_COMBO_ID>" + msgComboId + "</MESSAGE_COMBO_ID>");
+        if(StringUtils.isNotEmpty(report.getAeReport().getExternalId())) {
+            String msgComboId = report.getAeReport().getExternalId() + "::" + msgDF.format(report.getAeReport().getCreatedAt());
+            sb.append(String.format("<MESSAGE_COMBO_ID>%s</MESSAGE_COMBO_ID>", msgComboId));
+        }
+
+        String[] coorelationids = report.getCorrelationIds();
+        if(coorelationids != null && coorelationids.length > 0) {
+            sb.append(String.format("<CORRELATION_ID>%s</CORRELATION_ID>", coorelationids[coorelationids.length - 1]));
+        }
+        sb.append(String.format("<SYSTEM_NAME>%s</SYSTEM_NAME>", systemName));
+        sb.append("<WITHDRAW>false</WITHDRAW>");
+
+
         
         //if there are external systems, send message via service mix
-    	String externalXml = xml.replaceAll("<AdverseEventReport>", "<AdverseEventReport>" + sb.toString());
+    	String externalXml = xml.replace("<AdverseEventReport>", "<AdverseEventReport>" + sb.toString());
     	
     	try {
     		messageBroadcastService.initialize();
@@ -404,11 +436,6 @@ public class ReportSubmissionService {
     }
     
     @Required
-    public void setExpeditedAdverseEventReportDao(ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao) {
-		this.expeditedAdverseEventReportDao = expeditedAdverseEventReportDao;
-	}
-    
-    @Required
     public void setReportRepository(ReportRepository reportRepository) {
 		this.reportRepository = reportRepository;
 	}
@@ -443,6 +470,7 @@ public class ReportSubmissionService {
 		
 		private ReportSubmissionContext(Report report) {
 			this.report = report;
+			pdfReportPaths = new String[0];
 		}
 		
 		public static ReportSubmissionContext getSubmissionContext(Report report){

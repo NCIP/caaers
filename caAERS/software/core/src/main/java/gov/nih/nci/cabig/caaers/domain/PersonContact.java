@@ -47,10 +47,13 @@ public abstract class PersonContact extends Person {
 
     /** The Constant PHONE. {@link #getContactMechanisms} key for the phone number */
     public static final String PHONE = "phone";
+    
+    /** The Constant for Alternate Emails. {@link #getContactMechanisms} key for the Alternate emails (Reporter Only) */
+    public static final String ALT_EMAIL = "alternate e-mail";
 
     /** The Constant DEFAULT_CONTACT_MECHANISM_KEYS. */
     public static final List<String> DEFAULT_CONTACT_MECHANISM_KEYS = Arrays.asList(EMAIL, PHONE,
-                    FAX);
+                    FAX, ALT_EMAIL);
 
     // //// LOGIC
 
@@ -186,6 +189,23 @@ public abstract class PersonContact extends Person {
 		return contactMechanisms.get(EMAIL);
 	}
 	
+	/**
+	 * Sets the Backup email addesses
+	 * @param emailAddress the email addresses to set.
+	 */
+	@Transient
+	public void setAlternateEmailAddress(String emailAddress){
+		contactMechanisms.put(ALT_EMAIL, emailAddress);
+	}
+	
+	/**
+	 * Gets the backup email addresses
+	 */
+	@Transient
+	public String getAlternateEmailAddress(){
+		return contactMechanisms.get(ALT_EMAIL);
+	}
+	
 	/* (non-Javadoc)
 	 * @see gov.nih.nci.cabig.caaers.domain.Person#getFirstName()
 	 */
@@ -227,6 +247,9 @@ public abstract class PersonContact extends Person {
     	this.setFaxNumber(person.getFaxNumber());
     	this.setPhoneNumber(person.getPhoneNumber());
     	this.setEmailAddress(person.getEmailAddress());
+    	if(person instanceof PersonContact) {
+    		this.setAlternateEmailAddress(((PersonContact) person).getAlternateEmailAddress());
+    	}
         if(person.isUser()) setCaaersUser(person.getCaaersUser());
 
     }

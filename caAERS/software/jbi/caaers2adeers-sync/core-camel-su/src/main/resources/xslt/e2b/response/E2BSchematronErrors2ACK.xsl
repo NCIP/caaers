@@ -42,8 +42,8 @@
                     <icsrmessagereceiveridentifier><xsl:value-of select="$c2r_msg_receiver_id" /></icsrmessagereceiveridentifier>
                     <icsrmessagedateformat>204</icsrmessagedateformat>
                     <icsrmessagedate><xsl:value-of select="$c2r_msg_date" /></icsrmessagedate>
-                    <transmissionacknowledgmentcode>02</transmissionacknowledgmentcode>
-                    <parsingerrormessage><xsl:value-of select="//payload" /></parsingerrormessage> 
+                    <transmissionacknowledgmentcode>03</transmissionacknowledgmentcode>
+                    <parsingerrormessage><xsl:value-of select="//payload" /> Error occured in Servicemix Validation.</parsingerrormessage> 
                 </messageacknowledgment>
             </acknowledgment>
         </ichicsrack>

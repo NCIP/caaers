@@ -42,13 +42,11 @@ public class SiteAuthorizationCheck implements CSMAuthorizationCheck {
     }
 
     public boolean checkAuthorizationForObjectId(Authentication authentication, String privilege, String objectId) {
-        if(true) throw new UnsupportedOperationException("Use gov.nih.nci.cabig.caaers.security.authorization.SiteAuthorizationCheck#checkAuthorization(Authentication, String, Object) instead");
-        return false;
+        throw new UnsupportedOperationException("Use gov.nih.nci.cabig.caaers.security.authorization.SiteAuthorizationCheck#checkAuthorization(Authentication, String, Object) instead");
     }
 
     public boolean checkAuthorizationForObjectIds(Authentication authentication, String privilege, String[] objectIds) {
-        if(true) throw new UnsupportedOperationException("Use gov.nih.nci.cabig.caaers.security.authorization.SiteAuthorizationCheck#checkAuthorization(Authentication, String, Object) instead");
-        return false;
+        throw new UnsupportedOperationException("Use gov.nih.nci.cabig.caaers.security.authorization.SiteAuthorizationCheck#checkAuthorization(Authentication, String, Object) instead");
     }
 
     public CaaersSecurityFacade getCaaersSecurityFacade() {

@@ -39,7 +39,8 @@ public class AdeersResponseProcessor implements Processor {
 	public static final String MSG_DT = "c2r_msg_date";
 	public static final String MSG_SNDR_ID = "c2r_msg_sender_id";
 	public static final String MSG_RCVR_ID = "c2r_msg_receiver_id";
-	
+	public static final String MSG_SAFETY_REPORT_ID = "c2r_msg_safety_report_id";
+
 	XPathFactory factory = XPathFactory.newInstance();
 	
 	protected static final Log log = LogFactory
@@ -53,21 +54,23 @@ public class AdeersResponseProcessor implements Processor {
 		// set the properties in the exchange
 		Map<String, Object> properties = exchange.getProperties();
 		
-		String msgComboId = XPathBuilder.xpath("//MESSAGE_COMBO_ID").evaluate(exchange, String.class);
+		String msgComboId = XPathBuilder.xpath("//MESSAGE_COMBO_ID/text()").evaluate(exchange, String.class);
 		IntegrationLogMessageDao integrationLogMessageDao = (IntegrationLogMessageDao)exchange.getContext().getRegistry().lookup("integrationLogMessageDao");
 		log.info("MESSAGE_COMBO_ID is " + msgComboId);
-		IntegrationLogMessage integrationLogMessage = integrationLogMessageDao.findByComboId(msgComboId, Stage.REQUEST_RECEIVED);
+		IntegrationLogMessage integrationLogMessage = integrationLogMessageDao.findByComboId(msgComboId, Stage.E2B_SUBMISSION_REQUEST_RECEIVED);
 		
-		if(StringUtils.isNotBlank(integrationLogMessage.getMessage())) {
-			String msgNumb = evaluateXPath("//messagenumb", integrationLogMessage.getMessage());
-			String msgDt = evaluateXPath("//messagedate", integrationLogMessage.getMessage());
-			String msgSndrId = evaluateXPath("//messagesenderidentifier", integrationLogMessage.getMessage());
-			String msgRcvrId = evaluateXPath("//messagereceiveridentifier", integrationLogMessage.getMessage());
+		if(integrationLogMessage != null && StringUtils.isNotBlank(integrationLogMessage.getMessage())) {
+			String msgNumb = evaluateXPath("//messagenumb/text()", integrationLogMessage.getMessage());
+			String msgDt = evaluateXPath("//messagedate/text()", integrationLogMessage.getMessage());
+			String msgSndrId = evaluateXPath("//messagesenderidentifier/text()", integrationLogMessage.getMessage());
+			String msgRcvrId = evaluateXPath("//messagereceiveridentifier/text()", integrationLogMessage.getMessage());
+            String safetyReportId = evaluateXPath("//safetyreportid/text()", integrationLogMessage.getMessage());
 			
 			properties.put(MSG_NUMB, msgNumb);
 			properties.put(MSG_DT, msgDt);
 			properties.put(MSG_SNDR_ID, msgSndrId);
-			properties.put(MSG_RCVR_ID, msgRcvrId);			
+			properties.put(MSG_RCVR_ID, msgRcvrId);
+            properties.put(MSG_SAFETY_REPORT_ID, safetyReportId);
 		}
 		
 		log.debug("adding correlationId.");

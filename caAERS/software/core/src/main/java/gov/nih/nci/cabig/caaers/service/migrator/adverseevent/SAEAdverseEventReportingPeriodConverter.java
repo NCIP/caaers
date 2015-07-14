@@ -73,6 +73,10 @@ public class SAEAdverseEventReportingPeriodConverter {
             rp.setTreatmentAssignment(new TreatmentAssignment());
             rp.getTreatmentAssignment().setStudy(study);
             rp.getTreatmentAssignment().setCode(course.getTreatmentAssignmentCode());
+            
+            if(course.getOtherTreatmentAssignmentDescription() !=null ) {
+            	rp.getTreatmentAssignment().setDescription(course.getOtherTreatmentAssignmentDescription());
+            }
         }
         if(course.getOtherTreatmentAssignmentDescription() !=null ) {
             rp.setTreatmentAssignmentDescription(course.getOtherTreatmentAssignmentDescription());

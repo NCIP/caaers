@@ -6,40 +6,29 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.report2caaers;
 
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.CAAERS_WS_INVOCATION_COMPLETED;
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.CAAERS_WS_INVOCATION_INITIATED;
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.CAAERS_WS_IN_TRANSFORMATION;
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.CAAERS_WS_OUT_TRANSFORMATION;
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.POST_PROCESS_EDI_MSG;
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.PRE_PROCESS_EDI_MSG;
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.REQUEST_RECEIVED;
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.ROUTED_TO_CAAERS_RESPONSE_SINK;
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.ROUTED_TO_CAAERS_WS_INVOCATION_CHANNEL;
-import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.E2B_SCHEMATRON_VALIDATION;
-import static gov.nih.nci.cabig.caaers2adeers.track.Tracker.track;
+import gov.nih.nci.cabig.caaers2adeers.Caaers2AdeersRouteBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
-import org.apache.camel.Exchange;
-import org.apache.camel.Processor;
+import org.apache.camel.ExchangePattern;
 
-import gov.nih.nci.cabig.caaers2adeers.Caaers2AdeersRouteBuilder;
+import static gov.nih.nci.cabig.caaers2adeers.exchnage.ExchangePreProcessor.*;
+import static gov.nih.nci.cabig.caaers2adeers.track.IntegrationLog.Stage.*;
+import static gov.nih.nci.cabig.caaers2adeers.track.Tracker.track;
 
 public class ToCaaersReportWSRouteBuilder {
 
 	private static String caAERSSafetyReportJBIURL = "jbi:service:http://schema.integration.caaers.cabig.nci.nih.gov/aereport/SafetyReportManagementService?operation={http://schema.integration.caaers.cabig.nci.nih.gov/aereport}";
 	
-	private static String requestXSLBase = "xslt/e2b/request/";
-	private static String responseXSLBase = "xslt/e2b/response/";
+	public static final String requestXSLBase = "xslt/e2b/request/";
+	public static final String responseXSLBase = "xslt/e2b/response/";
 	
-	private static String[] msgComboIdPaths = { "//safetyreportid",
-												"//messagedate"};
+	private static String[] msgComboIdPaths = { "//safetyreportid", "//messagedate"};
 	
 	private String inputEDIDir;
-	private String outputEDIDir;	
+	private String outputEDIDir;
+	public static final String NEEDS_ACK = "NeedsAck";
 		
 	private Caaers2AdeersRouteBuilder routeBuilder;
 
@@ -50,21 +39,30 @@ public class ToCaaersReportWSRouteBuilder {
         nss.put("svrl", "http://purl.oclc.org/dsdl/svrl");
         
         routeBuilder.from("file://"+inputEDIDir+"?preMove=inprogress&move=done&moveFailed=movefailed")
+            .streamCaching()
+            .setExchangePattern(ExchangePattern.InOnly)
+            .setProperty(NEEDS_ACK, rb.constant(Boolean.TRUE.toString()))
+            .setProperty(SYNC_HEADER, rb.constant("sync"))
+            .setProperty(ENTITY_NAME, rb.constant("SafetyReport"))
+            .setProperty(OPERATION_NAME, rb.constant("submitSafetyReport"))
+            .processRef("headerGeneratorProcessor")
+            .process(track(REQUEST_RECEIVED))
+                .to(rb.getFileTracker().fileURI(REQUEST_RECEIVED))
         	.to("log:gov.nih.nci.cabig.report2caaers.caaers-ws-request?showHeaders=true&level=TRACE")
-        	.processRef("removeEDIHeadersAndFootersProcessor")
-        	.processRef("crlfFixProcessor")
-			.process(track(REQUEST_RECEIVED, msgComboIdPaths))
-			.to(routeBuilder.getFileTracker().fileURI(REQUEST_RECEIVED))
-			.processRef("eDIMessagePreProcessor")
-			.process(track(PRE_PROCESS_EDI_MSG))
-			.to(routeBuilder.getFileTracker().fileURI(PRE_PROCESS_EDI_MSG))
+            .processRef("removeEDIHeadersAndFootersProcessor")
+            .process(track(E2B_SUBMISSION_REQUEST_RECEIVED, msgComboIdPaths))
+                .to(routeBuilder.getFileTracker().fileURI(E2B_SUBMISSION_REQUEST_RECEIVED))
+            .processRef("eDIMessagePreProcessor")
+            .process(track(PRE_PROCESS_EDI_MSG))
+                .to(routeBuilder.getFileTracker().fileURI(PRE_PROCESS_EDI_MSG))
 			.to("direct:performSchematronValidation");
         
         //perform schematron validation
         routeBuilder.from("direct:performSchematronValidation")                
-			.process(track(E2B_SCHEMATRON_VALIDATION))
 			.to("xslt:" + requestXSLBase + "safetyreport_e2b_schematron.xsl?transformerFactoryClass=net.sf.saxon.TransformerFactoryImpl") //for XSLT2.0 support
-			.to(routeBuilder.getFileTracker().fileURI(E2B_SCHEMATRON_VALIDATION))
+            .processRef("headerGeneratorProcessor")
+            .process(track(E2B_SCHEMATRON_VALIDATION))
+			    .to(routeBuilder.getFileTracker().fileURI(E2B_SCHEMATRON_VALIDATION))
 			.choice()
                 .when().xpath("//svrl:failed-assert", nss) 
                 	.to("xslt:" + responseXSLBase + "extract-failures.xsl")
@@ -72,40 +70,39 @@ public class ToCaaersReportWSRouteBuilder {
                 	.to("direct:sendE2BAckSink")
                 .otherwise()
                 	.to("direct:processE2B");
-        
-        routeBuilder.from("direct:processE2B")   
-        	.to("log:gov.nih.nci.cabig.report2caaers.caaers-ws-request?showHeaders=true&level=TRACE")
+
+        routeBuilder.from("direct:processE2B")
+        	.to("log:gov.nih.nci.cabig.report2caaers.post-validation?showHeaders=true&level=DEBUG")
         	.processRef("resetOriginalMessageProcessor")
+            .processRef("headerGeneratorProcessor")
+            .process(track(ROUTED_TO_CAAERS_WS_INVOCATION_CHANNEL))
             .to("direct:caaers-reportSubmit-sync");
-        
+
+
+        //caAERS - submitsafety route
+        configureWSCallRoute("direct:caaers-reportSubmit-sync", "safetyreport_e2b_sync.xsl", caAERSSafetyReportJBIURL + "submitSafetyReport" );
+
+
         nss = new HashMap<String, String>();
         nss.put("soap", "http://schemas.xmlsoap.org/soap/envelope/");
         nss.put("ns1", "http://schema.integration.caaers.cabig.nci.nih.gov/aereport");
         nss.put("ns3", "http://schema.integration.caaers.cabig.nci.nih.gov/common");
-               
-		//content based router 
-        //if it is saveSafetyReportResponse, then E2B ack will not be sent
-        //also, if submit safety report is processed successfully to indicate succesfully submitted to AdEERS, then E2B ack will not be sent
-		routeBuilder.from("direct:processedE2BMessageSink")
-			.to("log:gov.nih.nci.cabig.report2caaers.caaers-ws-request?showHeaders=true&level=TRACE")
-			.choice()
-                .when().xpath("/soap:Envelope/soap:Body/ns1:saveSafetyReportResponse", nss) 
-                	.to("direct:morgue")
-                .when().xpath("/ichicsrack/acknowledgment/messageacknowledgment/parsingerrormessage", nss)
-                	.to("direct:sendE2BAckSink")
-                .otherwise()
-                	.to("direct:morgue");
 
-        
-        routeBuilder.from("direct:sendE2BAckSink")                
-			.process(track(ROUTED_TO_CAAERS_WS_INVOCATION_CHANNEL))
+        //content based router
+        //if it is saveSafetyReportResponse, then E2B ack will not be sent
+        //also, if submit safety report is processed successfully or successfully submitted to AdEERS, then E2B ack will not be sent
+        routeBuilder.from("direct:processedE2BMessageSink")
+			.to("log:gov.nih.nci.cabig.report2caaers.caaers-ws-request-end?showHeaders=true&level=WARN")
+			.choice()
+                .when().xpath("/ichicsrack/acknowledgment/messageacknowledgment/parsingerrormessage", nss)
+                	.to("direct:sendE2BAckSink");
+
+        routeBuilder.from("direct:sendE2BAckSink")
+        	.setProperty(NEEDS_ACK, rb.constant(Boolean.FALSE.toString()))
 			.processRef("addEDIHeadersAndFootersProcessor")
-			.process(track(POST_PROCESS_EDI_MSG))
-			.to(routeBuilder.getFileTracker().fileURI(POST_PROCESS_EDI_MSG))
+			.process(track(REQUST_PROCESSING_ERROR))
+			.to(routeBuilder.getFileTracker().fileURI(REQUST_PROCESSING_ERROR))
 			.to("file://"+outputEDIDir);
-		
-        //caAERS - createParticipant
-        configureWSCallRoute("direct:caaers-reportSubmit-sync", "safetyreport_e2b_sync.xsl", caAERSSafetyReportJBIURL + "submitSafetyReport" );
 	}
 	
 
@@ -137,7 +134,5 @@ public class ToCaaersReportWSRouteBuilder {
 	public void setOutputEDIDir(String outputEDIDir) {
 		this.outputEDIDir = outputEDIDir;
 	}
-	
-	
 	
 }

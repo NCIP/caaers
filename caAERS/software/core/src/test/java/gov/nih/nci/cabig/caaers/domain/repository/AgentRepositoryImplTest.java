@@ -6,17 +6,10 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.domain.repository;
 
-import static org.easymock.EasyMock.expect;
-import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
-import gov.nih.nci.cabig.caaers.dao.AgentDao;
-import gov.nih.nci.cabig.caaers.dao.query.AgentQuery;
 import gov.nih.nci.cabig.caaers.domain.Agent;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import org.easymock.classextension.EasyMock;
 
 /**
  * This is the repository test class for managing agents

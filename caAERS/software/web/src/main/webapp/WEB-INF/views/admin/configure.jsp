@@ -35,10 +35,6 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
         form { margin-top: 1em; }
 
     </style>
-    
-    <!--[if IE lt 9]>
-        <link rel="stylesheet" type="text/css" media="screen" href="/caaers/css/ie7.css?${requestScope.webCacheId}"></link>
-    <![endif]-->
 </head>
 <body>
 
@@ -68,8 +64,6 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
         	</ul>
     	</div>
 
-
-        
     <form:form action="${action}" cssClass="standard">
     	<input type="hidden" name="CSRF_TOKEN" value="${CSRF_TOKEN }"/>
         <chrome:box title="Configure caAERS" autopad="true">
@@ -109,13 +103,16 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
                     <admin:oneConfigEntry entry="${command.conf['unidentifiedMode'].property}"/>
                     <admin:oneConfigEntry entry="${command.conf['synchronousSpringEvents'].property}"/>
                     <admin:oneConfigEntry entry="${command.conf['showDebugInformation'].property}"/>
+                    <admin:oneConfigEntry entry="${command.conf['purgeAdeersResponse'].property}"/>
                     <admin:oneConfigEntry entry="${command.conf['systemName'].property}"/>
                 </div>
                 <div id="tabs-2">
                     <admin:oneConfigEntry entry="${command.conf['esbUrl'].property}"/>
                     <admin:oneConfigEntry entry="${command.conf['esbWSUrl'].property}"/>
                     <admin:oneConfigEntry entry="${command.conf['wsUsername'].property}"/>
-                    <admin:oneConfigEntry entry="${command.conf['wsPassword'].property}"/>
+                    <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.tools.configuration.Configuration:UPDATE">
+                    	<admin:oneConfigEntry entry="${command.conf['wsPassword'].property}"/>
+                    </csmauthz:accesscontrol>
                     <admin:oneConfigEntry entry="${command.conf['esbLogLocation'].property}"/>
                     <admin:oneConfigEntry entry="${command.conf['studySyncDelay'].property}" cssClass="validate-WHOLENUMBER"/>
                 </div>
@@ -128,7 +125,9 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
                         <admin:oneConfigEntry entry="${command.conf['caExchangeNonGridUrl'].property}"/>
                         <admin:oneConfigEntry entry="${command.conf['caExchangeUrl'].property}"/>
                         <admin:oneConfigEntry entry="${command.conf['caExchangeNonGridUserName'].property}"/>
-                        <admin:oneConfigEntry entry="${command.conf['caExchangeNonGridPassword'].property}"/>
+                        <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.tools.configuration.Configuration:UPDATE">
+                        	<admin:oneConfigEntry entry="${command.conf['caExchangeNonGridPassword'].property}"/>
+                        </csmauthz:accesscontrol>
                     </div>
                 </c:if>
                 <div id="tabs-4">
@@ -138,7 +137,9 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
                     <admin:oneConfigEntry entry="${command.conf['smtpProtocol'].property}" options="${command.emailProtocols}"/>
                     <admin:oneConfigEntry entry="${command.conf['smtpSSLEnabled'].property}"/>
                     <admin:oneConfigEntry entry="${command.conf['smtpUser'].property}"/>
-                    <admin:oneConfigEntry entry="${command.conf['smtpPassword'].property}"/>
+                    <csmauthz:accesscontrol objectPrivilege="gov.nih.nci.cabig.caaers.tools.configuration.Configuration:UPDATE">
+                    	<admin:oneConfigEntry entry="${command.conf['smtpPassword'].property}"/>
+                    </csmauthz:accesscontrol>
                     <admin:oneConfigEntry entry="${command.conf['systemFromEmail'].property}"/>
                 </div>
             </div>

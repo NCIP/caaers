@@ -42,10 +42,10 @@ public class QuerySecurityFiltererTest extends AbstractTestCase {
         filterer.setEntityName("SiteResearchStaff");
         filterer.setIndexAlias("rsIdx");
         filterer.setEntityAssociation("researchStaff");
-        assertEquals("SELECT distinct srs from SiteResearchStaff srs left join fetch srs.researchStaff rs left join fetch srs.organization org order by srs.id",
+        assertEquals("SELECT distinct srs from SiteResearchStaff srs left join fetch srs.researchStaff rs left join fetch srs.organization org  order by srs.id",
                 q.getQueryString());
         filterer.applyFilter(q);
-        assertEquals("SELECT distinct srs from  rsIdx join rsIdx.researchStaff srs left join fetch srs.researchStaff rs left join fetch srs.organization org WHERE rsIdx.loginId = :loginId AND bitand(rsIdx.role, 0) > 0  order by srs.id", q.getQueryString());
+        assertEquals("SELECT distinct srs from  rsIdx left join fetch srs.researchStaff rs left join fetch srs.organization org join rsIdx.researchStaff srs  WHERE rsIdx.loginId = :loginId AND bitand(rsIdx.role, 0) > 0  order by srs.id", q.getQueryString());
     }
     
 
@@ -57,10 +57,10 @@ public class QuerySecurityFiltererTest extends AbstractTestCase {
         filterer.setIndexAlias("stuIdx");
         filterer.setEntityAssociation("study.studySite");
         filterer.setIndexName("StudyIndex");
-        assertEquals("SELECT distinct ss FROM StudySite ss join ss.study AS study left join study.identifiers as identifier join ss.organization AS o WHERE ss.retiredIndicator = :retiredIndicator AND o.id = :orgId", q.getQueryString());
+        assertEquals("SELECT distinct ss FROM StudySite ss join ss.study AS study left join study.identifiers as identifier join ss.organization AS o  WHERE ss.retiredIndicator = :retiredIndicator AND o.id = :orgId", q.getQueryString());
         
         filterer.applyFilter(q);
-        assertEquals("SELECT distinct ss FROM StudyIndex stuIdx join stuIdx.study.studySite ss join ss.study AS study left join study.identifiers as identifier join ss.organization AS o WHERE ss.retiredIndicator = :retiredIndicator AND o.id = :orgId AND stuIdx.loginId = :loginId AND bitand(stuIdx.role, 0) > 0", q.getQueryString());
+        assertEquals("SELECT distinct ss FROM StudyIndex stuIdx join ss.study AS study left join study.identifiers as identifier join ss.organization AS o join stuIdx.study.studySite ss  WHERE ss.retiredIndicator = :retiredIndicator AND o.id = :orgId AND stuIdx.loginId = :loginId AND bitand(stuIdx.role, 0) > 0", q.getQueryString());
     }
 
     public void tearDown() throws Exception {

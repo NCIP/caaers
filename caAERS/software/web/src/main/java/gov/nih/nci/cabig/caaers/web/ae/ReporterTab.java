@@ -165,8 +165,16 @@ public class ReporterTab extends AeTab {
 
         InputField zipField = InputFieldFactory.createZipCodeField(base + "address.zip", "Zip", false);
         InputFieldAttributes.setColumns(zipField, 5);
+        
+        if("reporter".equals(person)) {
+        	InputField altEmailField = createContactField(base, ReportPerson.ALT_EMAIL, "Alternate e-mail", false);
+            InputFieldAttributes.setSize(altEmailField, 50);
+            
+        	creator.createFieldGroup(person, StringUtils.capitalize(person) + " details", title, firstNameField, middleNameField, lastNameField, emailField, phoneField, faxField, streetField, cityField, stateField, zipField, altEmailField);
+        } else {
+        	creator.createFieldGroup(person, StringUtils.capitalize(person) + " details", title, firstNameField, middleNameField, lastNameField, emailField, phoneField, faxField, streetField, cityField, stateField, zipField);
+        }
 
-        creator.createFieldGroup(person, StringUtils.capitalize(person) + " details", title, firstNameField, middleNameField, lastNameField, emailField, phoneField, faxField, streetField, cityField, stateField, zipField);
     }
 
     private InputField createContactField(String base, String contactType, boolean required) {
@@ -187,6 +195,8 @@ public class ReporterTab extends AeTab {
     private InputField createContactField(String base, String contactType, String displayName, boolean required) {
         if (contactType.equals(ReportPerson.PHONE) || contactType.equals(ReportPerson.FAX)) {
             return InputFieldFactory.createPhoneField(base + "contactMechanisms[" + contactType + ']', displayName, required);
+        } else if (contactType.equals(ReportPerson.ALT_EMAIL)){
+        	return InputFieldFactory.createMultiEmailField(base + "contactMechanisms[" + contactType + ']', displayName, required);
         } else {
             return InputFieldFactory.createEmailField(base + "contactMechanisms[" + contactType + ']', displayName, required);
         }

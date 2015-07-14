@@ -12,6 +12,7 @@ import org.apache.camel.spi.Synchronization;
 import org.apache.camel.spi.UnitOfWork;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -152,5 +153,25 @@ public class ExchangeAdapter implements Exchange {
 
     public void addOnCompletion(Synchronization synchronization) {
         
+    }
+
+    public void setException(Throwable throwable) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public String getFromRouteId() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void setFromRouteId(String s) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void handoverCompletions(Exchange exchange) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public List<Synchronization> handoverCompletions() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }

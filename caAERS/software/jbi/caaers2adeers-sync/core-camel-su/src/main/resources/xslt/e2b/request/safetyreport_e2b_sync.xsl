@@ -11,7 +11,8 @@
 	<xsl:output method="xml" encoding="UTF-8" indent="yes" />
     <xsl:param name="c2a_caaers_ws_username" />
     <xsl:param name="c2a_caaers_ws_password" />
-	<xsl:variable name="map" select="document('lookup.xml')" />
+    <xsl:param name="c2a_correlation_id" />
+	<xsl:variable name="map" select="document('file:lookup.xml')" />
 	<xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyz'" />
 	<xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
 
@@ -219,6 +220,15 @@
 						<xsl:for-each select="//drug[drugadditional = 'Surgery']">
 							<xsl:call-template name="surgeryIntervention" />
 						</xsl:for-each>
+
+                        <xsl:if test="/ichicsr/safetyreport/patient/summary/ideadminflag">
+                            <ae:investigationalDeviceAdministered>
+                                <xsl:call-template name="convertOneTwotoBoolean">
+                                    <xsl:with-param name="oneTwoType" select="/ichicsr/safetyreport/patient/summary/ideadminflag" />
+                                </xsl:call-template>
+                            </ae:investigationalDeviceAdministered>
+                        </xsl:if>
+
 						<!--Zero or more repetitions: -->
 						<xsl:for-each select="//drug[drugadditional = 'Device']">
 							<xsl:call-template name="medicalDevice" />
@@ -391,6 +401,7 @@
 									</ae:ccEmails>
 								</xsl:if>
 							</ae:aeReportVersion>
+                            <ae:correlationId><xsl:value-of select="$c2a_correlation_id" /></ae:correlationId>
 						</ae:report>
 					</ae:AdverseEventReport>
 				</ae:submitSafetyReport>
@@ -988,18 +999,18 @@
 			</xsl:if>
 			<!--Optional: -->
 			<ae:baselinePerformanceStatus>
-				<xsl:if test="translate(/ichicsr/safetyreport/patient/baselineperformancescale, $smallcase, $uppercase) = 'ECOG' or translate(/ichicsr/safetyreport/patient/baselineperformancescale, $smallcase, $uppercase) = 'ZUBROD'">
+				<xsl:if test="translate(/ichicsr/safetyreport/patient/medicalhistoryepisode/baselineperformancescale, $smallcase, $uppercase) = 'ECOG' or translate(/ichicsr/safetyreport/patient/medicalhistoryepisode/baselineperformancescale, $smallcase, $uppercase) = 'ZUBROD'">
 					<xsl:call-template name="lookup">
 						<xsl:with-param name="_map" select="$map//ecog-zubrod-baselinestatuses" />
 						<xsl:with-param name="_code"
-								select='/ichicsr/safetyreport/patient/baselineperformancenumber' />
+								select='/ichicsr/safetyreport/patient/medicalhistoryepisode/baselineperformancenumber' />
 					</xsl:call-template>
 				</xsl:if>
-				<xsl:if test="translate(/ichicsr/safetyreport/patient/baselineperformancescale, $smallcase, $uppercase) = 'LANSKY' or translate(/ichicsr/safetyreport/patient/baselineperformancescale,$smallcase, $uppercase) = 'KARNOFSKY'">
+				<xsl:if test="translate(/ichicsr/safetyreport/patient/medicalhistoryepisode/baselineperformancescale, $smallcase, $uppercase) = 'LANSKY' or translate(/ichicsr/safetyreport/patient/medicalhistoryepisode/baselineperformancescale,$smallcase, $uppercase) = 'KARNOFSKY'">
 					<xsl:call-template name="lookup">
 						<xsl:with-param name="_map" select="$map//karnofsky-lansky-baselinestatuses" />
 						<xsl:with-param name="_code"
-								select='/ichicsr/safetyreport/patient/baselineperformancenumber' />
+								select='/ichicsr/safetyreport/patient/medicalhistoryepisode/baselineperformancenumber' />
 					</xsl:call-template>
 				</xsl:if>
 			</ae:baselinePerformanceStatus>

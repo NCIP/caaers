@@ -14,6 +14,7 @@ import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -64,7 +65,23 @@ public class ReportSynchronizer implements Migrator<ExpeditedAdverseEventReport>
      * @param dbReport
      */
     public void synchronizeReport(Report xmlReport, Report dbReport){
-    	
+        Map<String, String> xmlReportMetaData =  xmlReport.getMetaDataAsMap();
+
+        //copy correlationId
+        String[] correlationIds = xmlReport.getCorrelationIds();
+        if(correlationIds != null) {
+            for(String id : correlationIds) {
+                dbReport.addToCorrelationId(id);
+            }
+        }
+        //copy everything else
+        for(Map.Entry<String, String> e : xmlReportMetaData.entrySet()) {
+           if(e.getKey().equals("correlationId")) continue;
+           dbReport.addToMetaData(e.getKey(), e.getValue());
+        }
+
+
+
     	if(xmlReport.getLastVersion().getCcEmails() != null) {
     		dbReport.getLastVersion().setCcEmails(xmlReport.getLastVersion().getCcEmails());
     	}

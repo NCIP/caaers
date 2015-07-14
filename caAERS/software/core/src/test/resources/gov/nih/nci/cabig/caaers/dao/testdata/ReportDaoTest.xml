@@ -14,6 +14,40 @@
         name="New Site"
         grid_id="gridSite"
     />
+    
+     <STUDIES
+            id="-2"
+            multi_institution_indicator="0"
+            short_title="Short Title"
+            long_title="Long Title"
+            description="Description"
+            grid_id=""
+            load_status="1"
+            />
+            
+    <PARTICIPANTS
+            id="-100"
+            instituitional_patient_number="P001"
+            institution="Hospital"
+            first_name="Dilbert"
+            last_name="Scott"
+            birth_day="02"
+            birth_month="01"
+            birth_year="2006"
+            gender="Female"
+            ethnicity="ethnicity"
+            race="race"
+            middle_name="m"
+            maiden_name="m"
+            load_status="1"/>
+            
+     <STUDY_ORGANIZATIONS
+            id="-10"
+            version="1"
+            start_date="2006-10-10"
+            study_id="-2"
+            site_id="-1001"
+            type="SST"/>
 	
 	<config_properties id="-1"
 	 code="cp1"
@@ -132,7 +166,7 @@
     <PARTICIPANT_ASSIGNMENTS
         id="-14"
         study_site_id="-10"
-        participant_id="-5"
+        participant_id="-100"
         date_of_enrollment="2006-09-30"
         load_status="1"
         />
@@ -313,6 +347,7 @@
         required="1"
         version="0"
 		report_id="-1"
+		case_number="case_number1"
         />
         
     <report_versions id="-90" 

@@ -465,7 +465,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
      */
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "treatment_assignment_id")
-    @Cascade(value = { CascadeType.LOCK })
+    @Cascade(value = { CascadeType.LOCK, CascadeType.SAVE_UPDATE })
     public TreatmentAssignment getTreatmentAssignment() {
         return treatmentAssignment;
     }
@@ -896,6 +896,36 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
     			d = ae.getGradedDate();
     		}else{
     			d = (DateUtils.compateDateAndTime(ae.getGradedDate(), d) < 0) ? ae.getGradedDate() : d;
+    		}
+    	}
+    	return d;
+    }
+    
+    /**
+     * Find earliest post submission updated date or graded date for unsubmited events.
+     *
+     * @param adverseEvents the adverse events
+     * @return the date
+     */
+    public static Date findEarliestBaseDate(List<AdverseEvent> adverseEvents){
+    	Date d = null;
+    	for(AdverseEvent ae : adverseEvents) {
+    		if(ae.getPostSubmissionUpdatedDate() == null || ae.getAddedToReportAtLeastOnce() ==null || !ae.getAddedToReportAtLeastOnce() ) {
+    			//AE not updated.
+    			if(ae.getGradedDate() != null) {
+	    			if(d == null) {
+	        			d = ae.getGradedDate();
+	        		} else {
+	        			d = (DateUtils.compateDateAndTime(ae.getGradedDate(), d) < 0) ? ae.getGradedDate() : d;
+	        		}
+    			}
+    		} else {
+    			//AE updated/
+	    		if(d == null) {
+	    			d = ae.getPostSubmissionUpdatedDate();
+	    		} else {
+	    			d = (DateUtils.compateDateAndTime(ae.getPostSubmissionUpdatedDate(), d) < 0) ? ae.getPostSubmissionUpdatedDate() : d;
+	    		}
     		}
     	}
     	return d;

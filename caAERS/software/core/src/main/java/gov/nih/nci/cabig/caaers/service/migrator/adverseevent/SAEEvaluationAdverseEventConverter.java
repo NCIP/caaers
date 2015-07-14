@@ -130,6 +130,9 @@ public class SAEEvaluationAdverseEventConverter {
 			outCome.setOutcomeType(oct);
 			if (oct.equals(gov.nih.nci.cabig.caaers.domain.OutcomeType.OTHER_SERIOUS) && xmlOutcome.getOther() !=null) {
 				outCome.setOther(xmlOutcome.getOther());
+				if("NONE".equalsIgnoreCase(outCome.getOther())) {
+                	outCome.setOther(null);
+                }
 			}
 			adverseEvent.addOutcome(outCome);
 		}

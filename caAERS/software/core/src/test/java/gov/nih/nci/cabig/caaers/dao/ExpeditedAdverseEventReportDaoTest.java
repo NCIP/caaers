@@ -171,6 +171,12 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
         List<Report> actual = getDao().getById(-1).getReports();
         assertNotNull(actual);
         assertEquals("Wrong number of reports", 2, actual.size());
+        if(actual.get(1).getId() == -41) {
+        	List<Report> newlist = new ArrayList<Report>();
+        	newlist.add(actual.get(1));
+        	newlist.add(actual.get(0));
+        	actual = newlist;
+        }
         assertEquals("Wrong report 0", -40, (int) actual.get(1).getId());
 
         Report actualReport1 = actual.get(0);

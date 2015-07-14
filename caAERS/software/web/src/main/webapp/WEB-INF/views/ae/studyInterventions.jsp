@@ -335,6 +335,7 @@ function updateMedicalDevice(i, studyDeviceId){
         <chrome:box title="Devices" collapsable="true">
             <jsp:attribute name="additionalTitle" />
             <jsp:body>
+                <tags:renderRow field="${fieldGroups.ideAdministered.fields[0]}"/>
                 <div style="padding-left:20px;">
                    <tags:button cssClass="foo" id="btn-add-device" color="blue" value="Add" icon="Add" type="button" onclick="addDevice();" size="small"/>
                     <tags:indicator id="device_AjaxIndicator" />

@@ -6,10 +6,12 @@
  ******************************************************************************/
 package gov.nih.nci.cabig.caaers.tools.configuration;
 
-import gov.nih.nci.cabig.ctms.tools.configuration.*;
+import gov.nih.nci.cabig.ctms.tools.configuration.ConfigurationProperties;
 import gov.nih.nci.cabig.ctms.tools.configuration.ConfigurationProperty;
+import gov.nih.nci.cabig.ctms.tools.configuration.DatabaseBackedConfiguration;
+import gov.nih.nci.cabig.ctms.tools.configuration.DefaultConfigurationProperties;
+import gov.nih.nci.cabig.ctms.tools.configuration.DefaultConfigurationProperty;
 
-import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.io.ClassPathResource;
@@ -17,7 +19,7 @@ import org.springframework.core.io.ClassPathResource;
 /** 
  * @author Rhett Sutphin
  */
-public class Configuration extends DatabaseBackedConfiguration implements InitializingBean{
+public class Configuration extends DatabaseBackedConfiguration implements InitializingBean {
 	private String authenticationMode;
 	public static Configuration LAST_LOADED_CONFIGURATION;
     private static final DefaultConfigurationProperties PROPERTIES = new DefaultConfigurationProperties(new ClassPathResource("details.properties", Configuration.class));
@@ -55,6 +57,7 @@ public class Configuration extends DatabaseBackedConfiguration implements Initia
     public static final ConfigurationProperty<Boolean> SYNCHRONOUS_EVENTS = PROPERTIES.add(new DefaultConfigurationProperty.Bool("synchronousSpringEvents"));
     public static final ConfigurationProperty<String> AE_ATTACHMENTS_LOCATION = PROPERTIES.add(new DefaultConfigurationProperty.Text("aeAttachmentsLocation"));
     public static final ConfigurationProperty<String> SYSTEM_NAME = PROPERTIES.add(new DefaultConfigurationProperty.Text("systemName"));
+    public static final ConfigurationProperty<Boolean> PURGE_ADEERS_RESPONSES = PROPERTIES.add(new DefaultConfigurationProperty.Bool("purgeAdeersResponse"));
 
 
     public ConfigurationProperties getProperties() {

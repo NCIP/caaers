@@ -8,6 +8,7 @@ package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
+import gov.nih.nci.cabig.caaers.dao.security.passwordpolicy.PasswordPolicyDao;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.security.SecurityUtils;
@@ -33,6 +34,8 @@ import org.springframework.web.servlet.ModelAndView;
  *
  */
 public class EditUserController extends UserController<UserCommand> {
+
+    private PasswordPolicyDao passwordPolicyDao;
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -142,6 +145,9 @@ public class EditUserController extends UserController<UserCommand> {
 				command.setLastName(user.getCsmUser().getLastName());
 				command.setEmailAddress(user.getCsmUser().getEmailId());
 				command.setUserName(user.getCsmUser().getLoginName());
+                command.setPasswordLastSet(user.getPasswordLastSet());
+                //Based on password policy we are calculating password expiry date and assign it to UserCommand to display it in user details page(user.jsp)
+                command.setPasswordExpiryDate(passwordPolicyDao.getPasswordPolicy());
                 populateRoleMemberships(user,command);
 		        populateSiteMap(command);
 		        populateStudyMap(command);
@@ -292,5 +298,8 @@ public class EditUserController extends UserController<UserCommand> {
 			}
 		}
 	}
-	
+
+    public void setPasswordPolicyDao(PasswordPolicyDao passwordPolicyDao) {
+        this.passwordPolicyDao = passwordPolicyDao;
+    }
 }

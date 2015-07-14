@@ -161,6 +161,7 @@
 	<!-- refers to project root dir -->
 	<dirname file="${ant.file.common}" property="proj.root.dir"/>
 	<property name="local.repo.dir" value="${proj.root.dir}/repository" />
+	<property name="git.repo.dir" value="${proj.root.dir}/AntInstaller/ivy-repo" />
 	<condition property="local.repo.available">
 		<available file="${local.repo.dir}" /> 
 	</condition>
@@ -302,8 +303,8 @@
     <target name="compile" depends="resolve" description="--> compile the project">
     	<echo message="Executing in ${ant.project.name} :: ${resolve.confs}" />
     	<copy-resources src="${main.src.resources}" dest="${classes.dir}" filter="true"/>
-    	<javac srcdir="${generated.src.dir}" destdir="${classes.dir}" classpathref="main.classpath" debug="true" source="1.5" target="1.5" includeantruntime="false"/>
-        <javac srcdir="${main.src}" destdir="${classes.dir}" classpathref="main.classpath" debug="true" source="1.5" target="1.5" includeantruntime="false"/>
+    	<javac srcdir="${generated.src.dir}" destdir="${classes.dir}" classpathref="main.classpath" debug="true" source="1.7" target="1.7" includeantruntime="false"/>
+        <javac srcdir="${main.src}" destdir="${classes.dir}" classpathref="main.classpath" debug="true" source="1.7" target="1.7" includeantruntime="false"/>
     </target>
     
 	<!-- ========================================================== 
@@ -318,7 +319,7 @@
     	</copy>
     	<copy-resources src="${test.src.resources}" dest="${test.classes.dir}" filter="true"/>
         <javac srcdir="${test.src}" destdir="${test.classes.dir}" classpathref="test.classpath"    includeantruntime="false"
-        	   debug="true" source="1.5"  target="1.5" />
+        	   debug="true" source="1.7"  target="1.7" />
     	<property name="no.compile-test" value="true" />
     </target>
     
@@ -608,7 +609,9 @@
 		<junit printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" 
 			showoutput="false" outputtoformatters="false" fork="true" forkmode="once" timeout="9000000" maxmemory="1024m" >
 			<jvmarg value="-XX:MaxPermSize=256m" />
-			<classpath location="${instrumented.classes.dir}" />
+			<jvmarg value="-XX:-UseSplitVerifier" />
+            <jvmarg value="-Xss64m"/>
+            <classpath location="${instrumented.classes.dir}" />
 			<classpath location="${basedir}/../bootstrap/build/instrumented-classes" />
 			<classpath location="${basedir}/../core/build/instrumented-classes" />
 			<classpath refid="test.run.classpath" />
@@ -708,10 +711,10 @@
         <ivy:retrieve organisation="org.aspectj" module="aspectjtools" inline="true"
                       pattern="${ivy.jar.dir}/aspectjtools-1.5.4.jar" haltonfailure="false" settingsRef="caaers.ivy.instance" /> 
         -->
-    	<get dest="${ivy.jar.dir}/aspectjtools-1.6.12.jar" src="${aspectj.jar.location}" usetimestamp="true"/>
+    	<get dest="${ivy.jar.dir}/aspectjtools-1.8.5.jar" src="${aspectj.jar.location}" usetimestamp="true"/>
         <taskdef resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties">
             <classpath>
-                <pathelement location="${ivy.jar.dir}/aspectjtools-1.6.12.jar"/>
+                <pathelement location="${ivy.jar.dir}/aspectjtools-1.8.5.jar"/>
             </classpath>
         </taskdef>
         <property name="loaded.ajc" value="true"/>
@@ -725,7 +728,7 @@
 	            description="Passes the source files in core through the ajc">
          <echo message="main.classpath" />
          <echo message="${main.classpath}" />
-	        <iajc srcdir="${main.src};${generated.src.dir}" destdir="${classes.dir}" includes="**/*.java" source="1.5"  >
+	        <iajc srcdir="${main.src};${generated.src.dir}" destdir="${classes.dir}" includes="**/*.java" source="1.7"  >
 	            <aspectpath refid="aspect.path" />
 	        	<classpath>
 	                <path refid="main.classpath"/>
@@ -742,7 +745,7 @@
      ================================================================================== -->
     <target name="aspectj-compile-test" depends="load-ivy,load-ajc, resolve-test"
             description="Passes the test files in core through the ajc">
-        <iajc srcdir="${test.src}" destdir="${test.classes.dir}" includes="**/*.java" source="1.5">
+        <iajc srcdir="${test.src}" destdir="${test.classes.dir}" includes="**/*.java" source="1.7">
         	<aspectpath refid="aspect.path" />
             <classpath>
                 <path refid="test.classpath"/>

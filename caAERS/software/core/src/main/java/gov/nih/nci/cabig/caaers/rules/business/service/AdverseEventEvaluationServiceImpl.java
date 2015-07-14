@@ -75,6 +75,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
     public Map<AdverseEvent, List<AdverseEventEvaluationResult>> evaluateSAEReportSchedule(ExpeditedAdverseEventReport aeReport, List<AdverseEvent> aes, Study study) throws Exception {
 
         Map<AdverseEvent, List<AdverseEventEvaluationResult>> map = new HashMap<AdverseEvent, List<AdverseEventEvaluationResult>>();
+        if(aes.isEmpty()) return map;
 
         List<AdverseEventEvaluationResult> adverseEventEvaluationResults;
 
@@ -112,6 +113,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
         	//evaluate sponsor rules
             AdverseEventEvaluationResult message = evaluateSponsorTarget(ae, study, null, aeReport, sponsorLevelRuleSet, sponsorStudyLevelRuleSet);
             adverseEventEvaluationResults.add(message);
+
 
             if(coordinatingOrgLevelRuleSet != null || coordinatingOrgStudyLevelRuleSet != null){
                 message = evaluateInstitutionTarget(ae, study, coordinatingOrg, null,  aeReport, coordinatingOrgLevelRuleSet,coordinatingOrgStudyLevelRuleSet );
@@ -245,23 +247,27 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
 
         // if study level rule exist and null message...
         if (sponsor_define_study_level_evaluation == null) {
-            return AdverseEventEvaluationResult.cannotDetermine(null);
+            final_result =   AdverseEventEvaluationResult.cannotDetermine(null);
+            final_result.addToNotes("sponsor-level-study-rule is null (probably ruleset not found)");
+            return final_result;
 
             // if study level rules not found , then get to sponsor rules..
         } else if (sponsor_define_study_level_evaluation.isNoRulesFound()) {
             sponsor_level_evaluation = sponsorLevelRules(ae, study, reportDefinition, aer, sponsorLevelRuleSet);
             final_result = sponsor_level_evaluation;
+            final_result.addToNotes("sponsor-level-study-rule : no matching rules found");
+            final_result.addToNotes("evaluating sponsor-level rules");
             // if study level rules exist and returned a message..
         } else {
             final_result = sponsor_define_study_level_evaluation;
+            final_result.addToNotes("sponsor-level-study-rule : rules matched");
         }
 
-        if (final_result == null) {
-            final_result = AdverseEventEvaluationResult.cannotDetermine(null);
-        } else if(final_result.isNoRulesFound()) {
+        if(final_result.isNoRulesFound()) {
             String ruleMetadata = final_result.getRuleMetadata();
             final_result = AdverseEventEvaluationResult.cannotDetermine(null);
             final_result.setRuleMetadata(ruleMetadata);
+            final_result.addToNotes("sponsor-level rules : no matching rules found");
         }
 
         return final_result;

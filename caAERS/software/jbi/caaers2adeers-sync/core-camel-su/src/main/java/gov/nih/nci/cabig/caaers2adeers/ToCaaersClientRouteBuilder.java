@@ -35,7 +35,7 @@ public class ToCaaersClientRouteBuilder {
 
         //content based router
         routeBuilder.from("direct:caaersClientRequestSink")
-                .to("log:gov.nih.nci.cabig.caaers2adeers.caaers-sync-request?showHeaders=true?level=TRACE")
+                .to("log:gov.nih.nci.cabig.caaers2adeers.caaers-sync-request?showHeaders=true&level=TRACE")
                 .process(track(CAAERS_WS_OUT_TRANSFORMATION))
                 .choice()
                 .when().xpath(xpathPredicate("study", "searchStudy")).to("direct:caaers-study-search-sync")

@@ -32,7 +32,12 @@ public class CaaersAdeersMessageBroadcastServiceImpl extends JmsServiceImpl {
 	
 	@Transactional
     public void broadcast(String message) throws BroadcastException {
-        // TODO Auto-generated method stub
+
+        if(configuration.get(Configuration.PURGE_ADEERS_RESPONSES) != null && configuration.get(Configuration.PURGE_ADEERS_RESPONSES)) {
+            log.fatal("Will not broadcast messages to AdEERS (or external reporting systems)\n Are you in testing mode ?");
+            return;
+        }
+
         if (!isProvider()) {
             log.warn("no send queue provided ");
         } else {
@@ -41,8 +46,8 @@ public class CaaersAdeersMessageBroadcastServiceImpl extends JmsServiceImpl {
         }
     }
 
-    public Vector getBroadcastStatus() {
-        // TODO Auto-generated method stub
+    public Vector<String> getBroadcastStatus() {
+
         if (!isConsumer()) {
             log.info("no recieve queue provided ");
         }

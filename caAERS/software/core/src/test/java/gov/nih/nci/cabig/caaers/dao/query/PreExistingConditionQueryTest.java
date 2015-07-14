@@ -17,13 +17,13 @@ public class PreExistingConditionQueryTest extends TestCase {
     public void testFilterByMeddraCode() throws Exception {
         PreExistingConditionQuery q = new PreExistingConditionQuery();
         q.filterByMeddraCode("99");
-        assertEquals("select p from PreExistingCondition p WHERE p.meddraLltCode = :mc", q.getQueryString());
+        assertEquals("select p from PreExistingCondition p  WHERE p.meddraLltCode = :mc", q.getQueryString());
     }
 
     public void testFilterByRetiredIndicator() throws Exception {
         PreExistingConditionQuery q = new PreExistingConditionQuery();
         q.filterByMeddraCode("99");
         q.filterByRetiredStatus(true);
-        assertEquals("select p from PreExistingCondition p WHERE p.meddraLltCode = :mc AND p.retiredIndicator = :value", q.getQueryString());
+        assertEquals("select p from PreExistingCondition p  WHERE p.meddraLltCode = :mc AND p.retiredIndicator = :param0", q.getQueryString());
     }
 }

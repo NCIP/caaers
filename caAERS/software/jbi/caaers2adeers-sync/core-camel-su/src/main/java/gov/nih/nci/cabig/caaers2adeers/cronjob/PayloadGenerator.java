@@ -8,8 +8,6 @@ package gov.nih.nci.cabig.caaers2adeers.cronjob;
 
 import gov.nih.nci.cabig.caaers2adeers.track.IntegrationLogDao;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.camel.Exchange;

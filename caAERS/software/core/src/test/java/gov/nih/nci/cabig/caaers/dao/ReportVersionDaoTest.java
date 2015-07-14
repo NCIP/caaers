@@ -14,7 +14,6 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersionDTO;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 
-import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -63,7 +62,7 @@ public class ReportVersionDaoTest extends DaoTestCase<ReportVersionDao> {
     	assertNotNull(rv);
     	assertNotNull(rv.getDueOn());
     	System.out.println(rv.getDueOn());
-    	System.out.println(DateUtils.getDateWithTimeZone(rv.getDueOn()));
+    	System.out.println(DateUtils.formatToWSResponseDateWithTimeZone(rv.getDueOn()));
     	
     	ReportVersion newRv = new ReportVersion();
     	newRv.setDueOn(new Date());

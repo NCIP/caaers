@@ -36,13 +36,13 @@
 		
 		
 			<c:if
-				test="${(fn:endsWith(field.propertyName, 'systemName')) &&  (identifier.class.name =='gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
+				test="${(fn:endsWith(field.propertyName, 'systemName')) &&  (identifier['class'].name =='gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
 				<td>
 				<tags:renderInputs field="${field}"/>
 				</td>
 			</c:if>
 			<c:if
-				test="${(fn:endsWith(field.propertyName, 'organization')) &&  (identifier.class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
+				test="${(fn:endsWith(field.propertyName, 'organization')) &&  (identifier['class'].name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
 				<td>
 				<tags:renderInputs field="${field}" />
 				</td>

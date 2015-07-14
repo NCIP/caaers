@@ -552,7 +552,7 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
 	@SuppressWarnings("unchecked")
 	public List<Object[]> search(final AbstractAjaxableDomainObjectQuery query) {
 		String queryString = query.getQueryString();
-        log.debug("::: " + queryString.toString());
+		if(log.isDebugEnabled()) log.debug("::: " + queryString.toString());
        return (List<Object[]>) getHibernateTemplate().execute(new HibernateCallback() {
 
             public Object doInHibernate(final Session session) throws HibernateException, SQLException {

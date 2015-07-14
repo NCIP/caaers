@@ -23,6 +23,7 @@ public abstract class FieldValidator<A extends Annotation, T> extends AbstractCo
 	 */
     public static final FieldValidator NOT_NULL_VALIDATOR;
     public static final FieldValidator EMAIL_VALIDATOR;
+    public static final FieldValidator MULTI_EMAIL_VALIDATOR;
     public static final FieldValidator PHONE_VALIDATOR;
     public static final FieldValidator PAST_DATE_VALIDATOR;
     public static final FieldValidator FUTURE_DATE_VALIDATOR;
@@ -44,6 +45,7 @@ public abstract class FieldValidator<A extends Annotation, T> extends AbstractCo
     static {
         NOT_NULL_VALIDATOR = new NotNullValidator();
         EMAIL_VALIDATOR = new EmailValidator();
+        MULTI_EMAIL_VALIDATOR = new MultiEmailValidator();
         PHONE_VALIDATOR = new PhoneNumberValidator();
         PAST_DATE_VALIDATOR = new PastDateValidator();
         DATE_VALUE_VALIDATOR = new DateValueValidator();

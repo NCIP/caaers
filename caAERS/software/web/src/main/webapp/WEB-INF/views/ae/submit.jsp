@@ -89,14 +89,13 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
     function updatePhysicianSignOff(rIndex){
         try {
         	showDWRLoadingIndicator();
-            var reportIndex = -1;
             var caseNumber = '';
             if(rIndex > -1){
 
                 var caseNumberField = $('aeReport.reports[' + rIndex + '].caseNumber')
-                if(caseNumberField) caseNumber = caseNumberField.value();
+                if(caseNumberField) caseNumber = caseNumberField.value;
             }
-            createAE.updateReviewPageInfo($('aeReport.physicianSignOff').checked,reportIndex,caseNumber,function(output) {
+            createAE.updateReviewPageInfo($('aeReport.physicianSignOff').checked,rIndex,caseNumber,function(output) {
                 ajaxResult = output;
                 if (ajaxResult.error) {
                     caaersLog(ajaxResult.errorMessage);

@@ -30,11 +30,20 @@ public enum SynchStatus implements CodedEnum<Integer> {
      CAAERS_WS_INVOCATION_COMPLETED(66, "caAERS Webservice invocation completed"),
      CAAERS_WS_OUT_TRANSFORMATION(70, "caAERS Webservice response transformation") ,
 
+    PRE_PROCESS_EDI_MSG(80, "e2b message preprocessing"),
+    PRE_PROCESS_RAV_CAAERS_INTEG_MSG(81, "e2b message EOL preprocessing"),
+    E2B_SCHEMATRON_VALIDATION(82, "E2B request schematron validation"),
+    POST_PROCESS_EDI_MSG(83, "AdEERS report submission response"),
+    ADEERS_REPORT_SUBMISSION_RESPONSE(84, "AdEERS report submission response"),
+    ADEERS_REPORT_SUBMISSION_RESPONSE_TRASNSFORMATION(85, "AdEERS report submission response transformation"),
+
+
      REQUST_PROCESSING_ERROR(900, "Error while processing request"),
      NO_DATA_AVAILABLE(998, "No data available"),
      REQUEST_COMPLETION(999, "Message processing complete"),
      
      PRE_PROCESS_OPEN_ODM_MSG(12, "Add Exchange headers to OPEN ODM participant message");
+
 
 // need more fine grained stages in caAERS?. Rename Stage.
     private Integer code;

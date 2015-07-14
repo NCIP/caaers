@@ -18,6 +18,7 @@ import gov.nih.nci.cabig.caaers.integration.schema.asael.ExpectedAECtcTermType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ActiveInactiveStatusType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.service.AgentSpecificAdverseEventListService;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -72,7 +73,7 @@ public class ASAELServiceImpl {
         
         List<AgentSpecificTerm> processedTermsList =  new ArrayList<AgentSpecificTerm>();
         for(ExpectedAECtcTermType termType : asaelAgentType.getExpectedAECtcTerm()) {
-            AgentSpecificTerm agentSpecificTerm = addOrRemoveExpectedTerm(csr, agent, termType);  
+            AgentSpecificTerm<CtcTerm> agentSpecificTerm = addOrRemoveExpectedTerm(csr, agent, termType);  
             if(agentSpecificTerm != null){
                 processedTermsList.add(agentSpecificTerm);
             }
@@ -93,8 +94,8 @@ public class ASAELServiceImpl {
      * @param agent
      * @param termType
      */
-    private AgentSpecificTerm addOrRemoveExpectedTerm(CaaersServiceResponse csr, Agent agent,  ExpectedAECtcTermType termType) throws Exception{
-       AgentSpecificTerm existingAgentTerm = agent.findTerm(termType.getCtepTerm(), termType.getCategory(), termType.getCtcVersion(), termType.getOtherToxicity(), null);
+    private AgentSpecificTerm<CtcTerm> addOrRemoveExpectedTerm(CaaersServiceResponse csr, Agent agent,  ExpectedAECtcTermType termType) throws Exception{
+       AgentSpecificTerm<CtcTerm> existingAgentTerm = agent.findTerm(termType.getCtepTerm(), termType.getCategory(), termType.getCtcVersion(), termType.getOtherToxicity(), null);
        boolean isInactive = termType.getStatus() == ActiveInactiveStatusType.INACTIVE;
         if(existingAgentTerm == null){
            if(isInactive) return null;

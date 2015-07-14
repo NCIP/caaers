@@ -20,17 +20,17 @@ public class AdverseEventExistQueryTest extends TestCase {
 
 	public void testFilterByDifferentAdverseEventId() {
 		assertEquals("select ae from AdverseEventReportingPeriod rp left join rp.adverseEvents as " +
-				"ae left outer join ae.lowLevelTerm as llt left outer join ae.adverseEventTerm as " +
+				"ae left join ae.lowLevelTerm as llt left join ae.adverseEventTerm as " +
 				"term", query.getQueryString());
 		query.filterByDifferentAdverseEventId(55);
 		assertEquals("select ae from AdverseEventReportingPeriod rp left join rp.adverseEvents as ae " +
-				"left outer join ae.lowLevelTerm as llt " +
-				"left outer join ae.adverseEventTerm as term WHERE  ae.id != :aeid", query.getQueryString()) ;
+				"left join ae.lowLevelTerm as llt " +
+				"left join ae.adverseEventTerm as term  WHERE  ae.id != :aeid", query.getQueryString()) ;
 	}
 
 	public void testFilterByAdverseEventTerm() {
 		assertEquals("select ae from AdverseEventReportingPeriod rp left join rp.adverseEvents as " +
-				"ae left outer join ae.lowLevelTerm as llt left outer join ae.adverseEventTerm as " +
+				"ae left join ae.lowLevelTerm as llt left join ae.adverseEventTerm as " +
 				"term", query.getQueryString());
 		AdverseEventCtcTerm term = new AdverseEventCtcTerm();
 		CtcTerm ctcTerm = new CtcTerm();
@@ -38,24 +38,24 @@ public class AdverseEventExistQueryTest extends TestCase {
 		term.setTerm(ctcTerm);
 		query.filterByAdverseEventTerm(term);
 		assertEquals("select ae from AdverseEventReportingPeriod rp left join rp.adverseEvents as ae " +
-				"left outer join ae.lowLevelTerm as llt left outer join ae.adverseEventTerm as term " +
+				"left join ae.lowLevelTerm as llt left join ae.adverseEventTerm as term  " +
 				"WHERE term.term.id = :termId", query.getQueryString());
 	}
 
 	public void testFilterByLowLevelTerm() {
 		assertEquals("select ae from AdverseEventReportingPeriod rp left join rp.adverseEvents as " +
-				"ae left outer join ae.lowLevelTerm as llt left outer join ae.adverseEventTerm as " +
+				"ae left join ae.lowLevelTerm as llt left join ae.adverseEventTerm as " +
 				"term", query.getQueryString());
 		
 		LowLevelTerm llt = new LowLevelTerm();
 		llt.setId(55);
 		query.filterByLowLevelTerm(llt);
-		assertEquals("select ae from AdverseEventReportingPeriod rp left join rp.adverseEvents as ae left outer join ae.lowLevelTerm as llt left outer join ae.adverseEventTerm as term WHERE llt.id = :lltId", query.getQueryString());
+		assertEquals("select ae from AdverseEventReportingPeriod rp left join rp.adverseEvents as ae left join ae.lowLevelTerm as llt left join ae.adverseEventTerm as term  WHERE llt.id = :lltId", query.getQueryString());
 	}
 	
 	public void testFilterByReportingPeriodId(){
 		query.filterByReportingPeriodId(55);
-		assertEquals("select ae from AdverseEventReportingPeriod rp left join rp.adverseEvents as ae left outer join ae.lowLevelTerm as llt left outer join ae.adverseEventTerm as term WHERE  rp.id = :rpid", query.getQueryString());
+		assertEquals("select ae from AdverseEventReportingPeriod rp left join rp.adverseEvents as ae left join ae.lowLevelTerm as llt left join ae.adverseEventTerm as term  WHERE  rp.id = :rpid", query.getQueryString());
 	}
 
 }

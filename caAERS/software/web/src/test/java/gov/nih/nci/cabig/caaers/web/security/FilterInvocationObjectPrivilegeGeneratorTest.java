@@ -10,6 +10,9 @@ import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import junit.framework.TestCase;
 import org.acegisecurity.intercept.web.FilterInvocation;
 import org.easymock.classextension.EasyMock;
+import org.springframework.mock.web.MockFilterChain;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
 
 import java.util.HashMap;
 
@@ -33,21 +36,48 @@ public class FilterInvocationObjectPrivilegeGeneratorTest extends AbstractTestCa
         map.put("/x","y");
         gen = new FilterInvocationObjectPrivilegeGenerator();
         gen.setObjectPrivilegeMap(map);
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        MockHttpServletResponse response = new MockHttpServletResponse();
+        MockFilterChain chain = new MockFilterChain();		
+		FilterInvocation fi = new FilterInvocation(request, response, chain) {
 
-        FilterInvocation fi = registerMockFor(FilterInvocation.class);
-        EasyMock.expect(fi.getRequestUrl()).andReturn("/x?y=10");
+			@Override
+			public String getRequestUrl() {
+				// TODO Auto-generated method stub
+				return "/x?y=10";
+			}
+			
+		}; 
+        	
+		FilterInvocation fi2 = new FilterInvocation(request, response, chain) {
 
+			@Override
+			public String getRequestUrl() {
+				// TODO Auto-generated method stub
+				return "/x";
+			}
+			
+		}; 
+		
+		FilterInvocation fi3 = new FilterInvocation(request, response, chain) {
 
+			@Override
+			public String getRequestUrl() {
+				// TODO Auto-generated method stub
+				return "/xy";
+			}
+			
+		}; 
+		
+		FilterInvocation fi4 = new FilterInvocation(request, response, chain) {
 
-        FilterInvocation fi2 = registerMockFor(FilterInvocation.class);
-        EasyMock.expect(fi2.getRequestUrl()).andReturn("/x");
-
-
-        FilterInvocation fi3 = registerMockFor(FilterInvocation.class);
-        EasyMock.expect(fi3.getRequestUrl()).andReturn("/xy");
-
-        FilterInvocation fi4 = registerMockFor(FilterInvocation.class);
-        EasyMock.expect(fi4.getRequestUrl()).andReturn("/x?j=0;jsessionId=9e9e9e9;");
+			@Override
+			public String getRequestUrl() {
+				// TODO Auto-generated method stub
+				return "/x?j=0;jsessionId=9e9e9e9;";
+			}
+			
+		}; 
 
         replayMocks();
         assertEquals("y", gen.resolve(fi));

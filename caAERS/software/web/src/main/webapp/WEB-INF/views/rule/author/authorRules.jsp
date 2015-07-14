@@ -69,6 +69,7 @@ div#createNew h3, div.section h3 {
 }
 </style>
 <script type="text/javascript">
+       dwr.engine.setAsync(false);
 		//loadCategoryObjects();
 		var sections = new Array();
 		var callback = false;
@@ -77,6 +78,22 @@ div#createNew h3, div.section h3 {
 
 		var categoryObjects2 = new Array()
 
+        var createAECached = {}
+        AE.terms = {}
+        createAECached.getTermsByCategory = function(iCategory, fnCallback) {
+           var cachedTerms =  AE.terms[iCategory];
+           if(cachedTerms == null) {
+             createAE.getTermsByCategory(iCategory, function(myterms) {
+                 AE.terms[iCategory] = myterms;
+                 cachedTerms = myterms;
+                 fnCallback.apply(this, [cachedTerms]);
+             });
+           } else {
+               fnCallback.apply(this, [cachedTerms]);
+           }
+
+
+        }
  		
 		function addRule() {
 				
@@ -86,10 +103,7 @@ div#createNew h3, div.section h3 {
 						sections.push('rule-' + (sections.length + 1));
 						var columnHolder = getElementHolderDiv();
 						columnHolder.innerHTML = html;
-						// CAAERS-1152 child nodes count is 1 in IE , 2 in FF as FF counts white spaces , so 0(1-1) for IE and 1(2-1) for FF
-						var len = columnHolder.childNodes.length;
-						var newRule = columnHolder.childNodes[len-1].cloneNode(true);
-						//var newRule = columnHolder.childNodes[1].cloneNode(true);
+						var newRule = $(columnHolder).getElementsByTagName('div')[0].cloneNode(true);
 						columnHolder.innerHTML = "";
 						$('allRules').appendChild(newRule);
 						Effect.Appear(newRule.id);
@@ -109,11 +123,8 @@ div#createNew h3, div.section h3 {
 							var columns = $('rule-'+(ruleCount + 1)+'-columns');
 							var columnHolder = getElementHolderDiv();
 							columnHolder.innerHTML = columnContent;
-							// CAAERS-1152 child nodes count is 1 in IE , 2 in FF as FF counts white spaces , so 0(1-1) for IE and 1(2-1) for FF
-							var len = columnHolder.childNodes.length;
-							var newColumn = columnHolder.childNodes[len-1].cloneNode(true);
-							//var newColumn = columnHolder.childNodes[1].cloneNode(true);	
-							
+							var newColumn = $(columnHolder).getElementsByTagName('div')[0].cloneNode(true);
+
 							columnHolder.innerHTML = "";
 							columns.appendChild(newColumn);
 						
@@ -181,10 +192,11 @@ div#createNew h3, div.section h3 {
 								var spanId = newId + '.span';
 								//Element.remove(validValueField);
 								$(spanId).innerHTML="";
-								
-								
-								
-								createAE.getTermsByCategory(0, function(terms) {
+
+
+
+                                createAECached.getTermsByCategory(0, function(terms) {
+
 								
 								var selectId =   newId.substring(0,newId.lastIndexOf(".")); 
 			
@@ -200,14 +212,8 @@ div#createNew h3, div.section h3 {
 										var sel = $(newId);	
 				        		        
 				                	    sel.options.length = 0
-				                    
-				                    
 				                    	terms.each(function(term) {
-											var tempT='';
-											if (term.select != null) {
-												tempT='-' + term.select
-											}
-				                        	var opt = new Option(term.term + tempT, term.id)
+				                        	var opt = new Option(term.fullName, term.ctepCode)
 				                        	sel.options.add(opt)
 				                    	})
 				                })
@@ -221,7 +227,7 @@ div#createNew h3, div.section h3 {
 					});
 				
 				}catch (e) {
-					//alert(e)
+					alert(e)
 				}
 		}
 		
@@ -717,8 +723,8 @@ div#createNew h3, div.section h3 {
 					var spanId = newId + '.span';
 					//Element.remove(validValueField);
 					$(spanId).innerHTML="";
-					
-					createAE.getTermsByCategory($(categoryValueID).value, function(terms) {
+
+                    createAECached.getTermsByCategory($(categoryValueID).value, function(terms) {
 						                   
 
 							var newId = validValueField.id; 
@@ -742,13 +748,7 @@ div#createNew h3, div.section h3 {
 				                    
 				                    
 				                    terms.each(function(term) {
-										
-										var tempT='';
-											if (term.select != null) {
-												tempT='-' + term.select
-											}
-											
-				                        var opt = new Option(term.term + tempT, term.id)
+				                        var opt = new Option(term.fullName, term.ctepCode)
 				                        sel.options.add(opt)
 				                    })
 				                })
@@ -935,13 +935,8 @@ div#createNew h3, div.section h3 {
 				                    
 				                    
 				                    values.each(function(value) {
-										
-										var tempT='';
-											if (value.select != null) {
-												tempT='-' + value.select
-											}
-											
-				                        var opt = new Option(value.displayName + tempT, value.displayName)
+
+				                        var opt = new Option(value.displayName, value.displayName)
 				                        sel.options.add(opt)
 				                    })
 				                })
@@ -1174,7 +1169,7 @@ div#createNew h3, div.section h3 {
 		
 				// Check whether category exists
 				var columns = $('rule-'+(ruleCount + 1)+'-columns');
-				
+
 				
 				
 				var divNodes = 0;
@@ -1210,9 +1205,9 @@ div#createNew h3, div.section h3 {
 						catVal = 0;
 					}
 					//alert(catVal);
-					
-					createAE.getTermsByCategory(catVal, function(terms) {
-						        
+
+                    createAECached.getTermsByCategory(catVal, function(terms) {
+
 						     $(termValueID).value='';   
 
 							var sel = $(termValueID);	
@@ -1222,12 +1217,8 @@ div#createNew h3, div.section h3 {
 				                    
 				                    
 				                    terms.each(function(term) {
-										var tempT='';
-											if (term.select != null) {
-												tempT='-' + term.select
-											}
-											
-				                        var opt = new Option(term.term + tempT, term.id)
+
+				                        var opt = new Option(term.fullName, term.ctepCode)
 				                        sel.options.add(opt)
 				                    })
 				                })
@@ -1292,29 +1283,26 @@ div#createNew h3, div.section h3 {
             <div id="rule-${ruleCount + 1}">
               <chrome:division title="Rule - (${ruleCount + 1})" id="rule-div-${ruleCount + 1 }" collapsable="true" collapsed="${collapsedCheck}" deleteParams="${ruleCount + 1}" enableDelete="true" >
               <div id="rule-condition-action-container-${ruleCount + 1}">
-                <div class="row" value="${command.ruleSet.rule[ruleCount]}"
-					id="rule-${ruleCount + 1}-columns">
-                  <c:forEach varStatus="columnStatus" begin="0"
-					items="${command.ruleSet.rule[ruleCount].condition.column}">
-                    <c:set var="columnCount" value="${columnStatus.index}" />
-                    <div id="rule-${ruleCount}-column-${columnCount}" style="font-weight:bold;"
-						class="lineitem one-condition" <c:if test="${command.ruleSet.rule[ruleCount].condition.column[columnCount].markedDelete}"> visibility:hidden</c:if>">
-                      <c:choose>
-                        <c:when test="${columnCount == 0}">
+                <div class="row" value="${command.ruleSet.rule[ruleCount]}" id="rule-${ruleCount + 1}-columns">
+                  <c:set var="firstColumn" value="${true}" />
+                  <c:forEach varStatus="columnStatus" begin="0" items="${command.ruleSet.rule[ruleCount].condition.column}" var="curColumn">
+                   <c:if test="${not curColumn.markedDelete}">
+                        <c:set var="columnCount" value="${columnStatus.index}" />
+                        <div id="rule-${ruleCount}-column-${columnCount}" style="font-weight:bold;" class="lineitem one-condition"  ${command.ruleSet.rule[ruleCount].condition.column[columnCount].markedDelete ? 'visibility:hidden' : ''}>
+
+                    <c:choose>
+                        <c:when test="${firstColumn}">
                           <label for="IF" style="padding-left:9px; margin-right:8px;">If</label>
-                          </c:when>
+                            <c:set var="firstColumn" value="${false}" />
+                        </c:when>
                         <c:otherwise>
                           <label for="AND">And</label>
                         </c:otherwise>
                       </c:choose>
                      <span>
-                      <form:select 
-						path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].objectType"
-						id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].objectType"
-						onchange="handleDomainObjectonChange(this, ${ruleCount})">
+                      <form:select  path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].objectType" id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].objectType" onchange="handleDomainObjectonChange(this, ${ruleCount})">
                         <form:option value="">Please select domain object</form:option>
-                        <form:options items="${command.ruleUi.condition[0].domainObject}"
-							itemLabel="displayUri" itemValue="className" />
+                        <form:options items="${command.ruleUi.condition[0].domainObject}" itemLabel="displayUri" itemValue="className" />
                       </form:select>
                       <tags:errors path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].objectType"/>
                       <!-- set domain-object display-uri to column -->
@@ -1381,66 +1369,66 @@ div#createNew h3, div.section h3 {
                         <c:when
 							test='${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName eq "category"}'>
                           <script type="text/javascript">
-																	var fieldValue;
-																		var readableValue;
-																		//createAE.getCategories(3, function(categories) {
-																	
-																			var newId = 'ruleSet.rule[' + ${ruleCount} + '].condition.column[' + ${columnCount} + '].fieldConstraint[0].literalRestriction[0].value'; 
-																			var spanId = newId + '.span';
-																	
-																		 fieldValue = '${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].literalRestriction[0].value[0]}';
-																		 readableValue = '${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].literalRestriction[0].readableValue}';
-																			//alert (readableValue);
-																			var selectArea = '<select id="' + newId + '" name="' + newId +  '" value="' + fieldValue + '" onchange="onCategoryChange(this, ${ruleCount})">';
-																			selectArea += '</select>';
-						
+                                                    var fieldValue;
+                                                    var readableValue;
+                                                    //createAE.getCategories(3, function(categories) {
+
+                                                    var newId = 'ruleSet.rule[' + ${ruleCount} + '].condition.column[' + ${columnCount} + '].fieldConstraint[0].literalRestriction[0].value';
+                                                    var spanId = newId + '.span';
+
+                                                    fieldValue = '${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].literalRestriction[0].value[0]}';
+                                                    readableValue = '${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].literalRestriction[0].readableValue}';
+                                                    //alert (readableValue);
+                                                    var selectArea = '<select id="' + newId + '" name="' + newId +  '" value="' + fieldValue + '" onchange="onCategoryChange(this, ${ruleCount})">';
+                                                    selectArea += '</select>';
+
 						
 													var hiddenField = '<input type="hidden" value = "'+ readableValue +'" id="ruleSet.rule['+${ruleCount}+'].condition.column['+${columnCount}+'].fieldConstraint[0].literalRestriction[0].readableValue"' + ' name="ruleSet.rule['+${ruleCount}+'].condition.column['+${columnCount}+'].fieldConstraint[0].literalRestriction[0].readableValue"' +'/>'
 
-													
-																			//Element.remove(validValueField);
-																	
-																								
-																			$(spanId).innerHTML = selectArea + hiddenField;
-																	
-																			var sel = $(newId);	
-																					                
-																			sel.options.length = 0
-																			sel.options.add(new Option("Any", ""))
-																					                    
-																			var index = 0;	
-																			categoryObjects2.each(function(cat) {
-																				var splitted = cat.split("||");
-																				var name = splitted[1];
-																				var id = splitted[0];
-																				var opt = new Option(name, id)
-																					    sel.options.add(opt)
-																					    index++;
-																					    
-																					    if (id == fieldValue)
-																					    {
-																					    	sel.options[index].selected=true;
-																					    }
-																			})
-																			
-																			/**
-																			categoryObjects.each(function(cat) {
-																				 var name = cat.name
-																				 if (name.length > 45) name = name.substring(0, 45) + "..."
-																					    var opt = new Option(name, cat.id)
-																					    sel.options.add(opt)
-																					    index++;
-																					    
-																					    if (cat.id == fieldValue)
-																					    {
-																					    	sel.options[index].selected=true;
-																					    }
-																					    
-																		      })
-																		     */
-																		        
-																	           //})
-																	</script>
+
+                                                    //Element.remove(validValueField);
+
+
+                                                    $(spanId).innerHTML = selectArea + hiddenField;
+
+                                                    var sel = $(newId);
+
+                                                    sel.options.length = 0
+                                                    sel.options.add(new Option("Any", ""))
+
+                                                    var index = 0;
+                                                    categoryObjects2.each(function(cat) {
+                                                        var splitted = cat.split("||");
+                                                        var name = splitted[1];
+                                                        var id = splitted[0];
+                                                        var opt = new Option(name, id)
+                                                                sel.options.add(opt)
+                                                                index++;
+
+                                                                if (id == fieldValue)
+                                                                {
+                                                                    sel.options[index].selected=true;
+                                                                }
+                                                    })
+
+                                                    /**
+                                                    categoryObjects.each(function(cat) {
+                                                         var name = cat.name
+                                                         if (name.length > 45) name = name.substring(0, 45) + "..."
+                                                                var opt = new Option(name, cat.id)
+                                                                sel.options.add(opt)
+                                                                index++;
+
+                                                                if (cat.id == fieldValue)
+                                                                {
+                                                                    sel.options[index].selected=true;
+                                                                }
+
+                                                      })
+                                                     */
+
+                                                       //})
+                            </script>
                         </c:when>
                         <c:when test='${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName eq "term"}'>
                           <script type="text/javascript">
@@ -1461,8 +1449,8 @@ div#createNew h3, div.section h3 {
 																		
 																		var categoryValue = getCategoryValue(${ruleCount});
 																	//	alert (categoryValue);
-																	
-																		createAE.getTermsByCategory(categoryValue, function(terms) {
+
+                                                    createAECached.getTermsByCategory(categoryValue, function(terms) {
 						                   
 
 			
@@ -1480,18 +1468,12 @@ div#createNew h3, div.section h3 {
 				                    
 				                    											var index = 0;	
 															                    terms.each(function(term) {
-																				var tempT='';
-																					if (term.select != null) {
-																						tempT='-' + term.select
-																					}
-													                        		var opt = new Option(term.term + tempT, term.id)
-				                    									    			sel.options.add(opt)
-				                    									    		   
-				                    									    		    		if (fieldValue.indexOf(term.id) != -1)
-																					    		{
-																					    			sel.options[index].selected=true;
-																					    		}
-																					    	index++;
+													                        	var opt = new Option(term.fullName, term.ctepCode)
+				                    									    		sel.options.add(opt)
+                                                                                    if (fieldValue.indexOf(term.ctepCode) != -1) {
+                                                                                        sel.options[index].selected=true;
+                                                                                    }
+                                                                                    index++;
 																					    
 				                    											})
 				                										})
@@ -1643,20 +1625,12 @@ div#createNew h3, div.section h3 {
 				                    var index = 0;	
 				                    
 				                    values.each(function(value) {
-										
-										var tempT='';
-											if (value.select != null) {
-												tempT='-' + value.select
-											}
-											
-				                        var opt = new Option(value.displayName + tempT, value.displayName)
+				                        var opt = new Option(value.displayName, value.displayName)
 				                        sel.options.add(opt);
-				                        if (fieldValue.indexOf(value.displayName) != -1)
-														{
-													
-													sel.options[index].selected=true;
-													}
-													index++;
+				                        if (fieldValue.indexOf(value.displayName) != -1) {
+											sel.options[index].selected=true;
+										}
+										index++;
 				                    })
 				                })
 											
@@ -1740,7 +1714,7 @@ div#createNew h3, div.section h3 {
 							src="<c:url value="/images/rule/remove_condition.gif" />" align="absmiddle"
 							style="cursor:hand;  border:0px" /> </a> </c:if>
                     </div>
-                    
+                   </c:if>
                   </c:forEach>
                 </div>
 				<div class="new_condition">

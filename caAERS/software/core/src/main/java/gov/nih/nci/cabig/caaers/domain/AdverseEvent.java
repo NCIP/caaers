@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.attribution.*;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.validation.AdverseEventGroup;
 import gov.nih.nci.cabig.caaers.validation.fields.validators.NotEmptyCollectionConstraint;
@@ -17,12 +18,7 @@ import gov.nih.nci.cabig.caaers.validation.fields.validators.NotNullConstraint;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -59,6 +55,7 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
 	private static final long serialVersionUID = 782543033828114683L;
 
 	/** The adverse event term. */
+	@SuppressWarnings("rawtypes")
 	private AbstractAdverseEventTerm adverseEventTerm;
 
     /** The details for other. */
@@ -141,7 +138,11 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
 
     /** The event location. */
     private String eventLocation;
-    
+
+    /* Adverse Event created date in the system(caAERS)*/
+    private Date createdDate;
+
+
     public String getExternalId() {
 		return externalId;
 	}
@@ -197,11 +198,41 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
 		this.reporterEmail = reporterEmail;
 	}
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name="created_date", nullable = true)
+    public Date getCreatedDate(){
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+         this.createdDate = createdDate;
+    }
+
+    @Transient
+    public String getDisplayCreatedDate() {
+        if(this.createdDate != null) {
+            return DateUtils.formatToWSResponseDateWithTimeZone(this.createdDate).toString();
+        }
+        else {
+            return "";
+        }
+    }
+    @Transient
+    public String getDisplayAwarenessDate() {
+        if(this.gradedDate != null) {
+            return DateUtils.formatToWSResponseDateWithTimeZone(this.gradedDate).toString();
+        }
+        else {
+            return "";
+        }
+    }
+
 	/**
      * Instantiates a new adverse event.
      */
     public AdverseEvent() {
         solicited = false;
+        createdDate = new Date();
     }
 
     ///LOGIC
@@ -1173,6 +1204,20 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
     }
 
     /**
+     * To display isSAE value in Advance search page
+     * @return if requiredReporting value is true returns 'Yes' otherwise returns 'No'
+     */
+    @Transient
+    public String getDisplayRequiresReporting() {
+    	//If requiresReporting is null return "No"(False) 
+    	if(this.requiresReporting == null) {
+             return "";
+    	}
+    	//Else return Yes/No based on requiresReporting value(True/False)
+    	return this.requiresReporting ? "Yes" : "No";
+    }
+
+    /**
      * Sets the requires reporting.
      *
      * @param requiresReporting the new requires reporting
@@ -1835,6 +1880,8 @@ public class AdverseEvent extends AbstractMutableRetireableDomainObject implemen
         
         map.put("reportURL",  "");//report URL
         map.put("study",  getStudy());
+        
+        map.put("systemName", Configuration.LAST_LOADED_CONFIGURATION.get(Configuration.SYSTEM_NAME));
         
         return map;
     }

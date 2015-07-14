@@ -61,7 +61,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
     <ul id="" class="tabs autoclear">
         <li id="thirdlevelnav" class="tab"><div><a href="ctepesysDataImport">CTEP-ESYS Data Import</a></div></li>
         <li id="thirdlevelnav" class="tab selected"><div><a href="#">Report Submission Logs</a></div></li>
-        <li id="thirdlevelnav" class="tab"><div><a href="ctepesysDataIntegrationLogs">CTEP-ESYS Data Integration Logs</a></div></li>
+        <li id="thirdlevelnav" class="tab"><div><a href="ctepesysDataIntegrationLogs">Data Integration Logs</a></div></li>
     </ul>
 </div>
 

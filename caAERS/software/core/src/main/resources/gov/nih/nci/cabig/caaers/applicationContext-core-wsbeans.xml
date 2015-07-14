@@ -51,10 +51,8 @@
         <property name="organizationRepository" ref="organizationRepository" />
         -->
     </bean>
-
-    <bean id="adverseEventManagementServiceImpl" autowire="byType" class="gov.nih.nci.cabig.caaers.api.impl.AdverseEventManagementServiceImpl"/>
-    
-    <bean id="SAEEvaluationServiceImpl" autowire="byType" class="gov.nih.nci.cabig.caaers.api.impl.SAEEvaluationServiceImpl"/>
+        
+    <bean id="evaluateAndInitiateReportConverter" class="gov.nih.nci.cabig.caaers.service.migrator.EvaluateAndInitiateReportConverter" />
     
     <bean id="safetyServiceImpl" class="gov.nih.nci.cabig.caaers.api.impl.SafetyReportServiceImpl">
     	<property name="baseEaeConverter" ref="baseEaeConverter"/>
@@ -73,13 +71,17 @@
         <property name="reportSubmissionService"  ref="reportSubmissionService" />
         <property name="idServiceImpl"  ref="idServiceImpl" />
         <property name="adeersIntegrationFacade"  ref="proxyWebServiceFacade" />
+        <property name="evaluateAndInitiateReportConverter"  ref="evaluateAndInitiateReportConverter" />
     </bean>
+    
+    <bean id="SAEEvaluationServiceImpl" autowire="byType" class="gov.nih.nci.cabig.caaers.api.impl.SAEEvaluationServiceImpl"/>
     
     <bean id="idServiceImpl" autowire="byType" class="gov.nih.nci.cabig.caaers.api.impl.IDServiceImpl">
     	<property name="safetyReportIDDao" ref="safetyReportIDDao" />
     </bean>
     
     <bean id="messageFactory" class="org.springframework.ws.soap.saaj.SaajSoapMessageFactory"/>
+    <bean id="soapFaultResolver" class="gov.nih.nci.cabig.caaers.service.util.SoapFaultResolver"/>
     <bean id="webServiceTemplate" class="org.springframework.ws.client.core.WebServiceTemplate">
 	    <constructor-arg ref="messageFactory"/>
 	    <property name="messageSender">
@@ -88,6 +90,7 @@
 	        </bean>
 	    </property>
 	    <property name="defaultUri" value="https://localhost:8196/GenericProcessorService"/>
+	    <property name="faultMessageResolver" ref="soapFaultResolver"/>
 	</bean>
 	
 	<bean id="proxyWebServiceFacade" class="gov.nih.nci.cabig.caaers.service.ProxyWebServiceFacade">

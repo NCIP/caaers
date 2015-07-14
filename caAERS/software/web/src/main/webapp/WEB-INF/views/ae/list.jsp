@@ -9,7 +9,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 <html>
 <head>
 <title>Manage Reports</title>
-<tags:dwrJavascriptLink objects="createAE,adverseEventHistory"/>
+<tags:dwrJavascriptLink objects="createAE"/>
 <tags:slider renderComments="false" renderAlerts="true" display="${command.assignment.labLoads != null and fn:length(command.assignment.labLoads) > 0 ? '' : 'none'}" workflowType="report">
     <jsp:attribute name="labs">
     	<div id="labs-id" style="display:none;">
@@ -62,7 +62,7 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
     function updateDropDownAfterWithdraw(reportId) {
         jQuery('#SUBMIT_' + reportId).remove();
         jQuery('#WITHDRAW_' + reportId).remove();
-        createDropDowns();
+        createDropDowns(); 
     }
 
     function doIt(type, reportId, aeReportId, submissionURL) {

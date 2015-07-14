@@ -16,3 +16,16 @@ target
 .classpath
 caAERS/software/web/${env.CATALINA_HOME}/
 caAERS/software/jbi/caaers2adeers-sync/core-camel-su/data/
+deployServicemix.sh
+caaers.classpath
+caaers.project
+StudyTestReport.txt
+local.properties
+profiles.xml
+caAERS/software/null
+caAERS/software/repository/gov.nih.nci.cabig.caaers/caaers-core-bootstrap/2.8-M1-local-*
+caAERS/software/repository/gov.nih.nci.cabig.caaers/caaers-core/2.8-M1-local-*
+caAERS/software/repository/gov.nih.nci.cabig.caaers/caaers-web/2.8-M1-local-*
+*2.8-SNAPSHOT-local-2015*
+caAERS/software/.idea/
+*-SNAPSHOT-local-*

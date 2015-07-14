@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
+
 import org.apache.commons.lang.ArrayUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
@@ -162,11 +163,26 @@ public class ReviewTab extends TabWithFields<ReportDefinitionCommand> {
             // - subject
             pairs.add(new Pair("Subject", penf.getSubjectLine()));
             // - body
-            pairs.add(new Pair("Message", penf.getNotificationBodyContent().getBody()));
+            NotificationBodyContent body = penf.getNotificationBodyContent();
+            if(body != null) {
+            	pairs.add(new Pair("Message", body.getBody()));
+            } else {
+            	pairs.add(new Pair("Message", null));
+            }
 
-            pnfMap.put("Notification " + i + " of "
-                            + command.getReportDefinition().getTimeScaleUnitType().getDisplayName()
-                            + " " + penf.getIndexOnTimeScale(), pairs);
+            ReportDefinition rep = command.getReportDefinition();
+            TimeScaleUnit unit = null;
+            if(rep != null) {
+            	unit = rep.getTimeScaleUnitType();
+            }
+            if(unit != null) {
+            	pnfMap.put("Notification " + i + " of "
+                        + unit.getDisplayName()
+                        + " " + penf.getIndexOnTimeScale(), pairs);
+            } else {
+            	pnfMap.put("Notification " + i + " of UNKNOWN " + penf.getIndexOnTimeScale(), pairs);
+            }
+            
         }
 
         map.put("PENF", pnfMap);

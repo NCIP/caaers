@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 import org.apache.commons.lang.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdverseEventEvaluationResult {
@@ -20,6 +21,7 @@ public class AdverseEventEvaluationResult {
     RuleEvaluationResult ruleEvaluationResult;
     ValidationErrors validationErrors;
     String ruleMetadata;
+    List<String> notes = new ArrayList<String>();
 
     public static AdverseEventEvaluationResult noRulesFound(String bindURI){
         RuleEvaluationResult ruleEvaluationResult = new RuleEvaluationResult(bindURI);
@@ -64,6 +66,13 @@ public class AdverseEventEvaluationResult {
         }
     }
 
+    public List<String> getNotes() {
+        return notes;
+    }
+
+    public void setNotes(List<String> notes) {
+        this.notes = notes;
+    }
 
     public ValidationErrors getValidationErrors() {
         return validationErrors;
@@ -104,6 +113,10 @@ public class AdverseEventEvaluationResult {
             ruleMetadata = ruleMetadata + ", study : " + fullName;
         }
         return this;
+    }
+
+    public void addToNotes(String s) {
+        notes.add(s);
     }
 
     @Override

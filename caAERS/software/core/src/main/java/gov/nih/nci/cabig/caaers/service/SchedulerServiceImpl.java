@@ -64,7 +64,7 @@ public class SchedulerServiceImpl implements SchedulerService {
             List<ScheduledNotification> notifications = report.getScheduledNotifications();
             int curIndex = 0;
             assert notifications.size() > 0 : "report must have atleast one valid schedulded notification";
-            // for each notification creat job detail, and associate with the scheduler
+            // for each notification create job detail, and associate with the scheduler
             for (ScheduledNotification nf : notifications) {
 
             	if(nf.isActive()){

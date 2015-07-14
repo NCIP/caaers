@@ -85,7 +85,6 @@ public class LoginPolicyValidator implements PasswordPolicyValidator {
     	
         if (credential.getUser().getPasswordAge() > policy
                 .getMaxPasswordAge()) {
-            //throw new PasswordTooOldException("Password is too old.");
         	throw new CredentialsExpiredException("Password is too old.");
         }
         return true;

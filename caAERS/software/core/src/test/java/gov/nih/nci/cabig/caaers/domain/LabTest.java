@@ -91,4 +91,18 @@ public class LabTest extends AbstractTestCase {
 
     }
 
+    public void testEquals() {
+        Lab l1 = new Lab();
+        Lab l2 = new Lab();
+        Lab l3 = new Lab();
+        l3.setOther("abc");
+        Lab l4 = new Lab();
+        l4.setOther("abc");
+
+        assertTrue(l1.equals(l2));
+        assertTrue(l1.equals(l1));
+        assertTrue(l3.equals(l4));
+        assertFalse(l3.equals(l2));
+    }
+
 }

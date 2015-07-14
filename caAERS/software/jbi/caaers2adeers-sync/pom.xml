@@ -14,11 +14,14 @@
   <name>caAERS to AdEERS Integration</name>
   <url>http://servicemix.apache.org</url>
     <properties>
-        <camelQuartzVersion>2.2.0</camelQuartzVersion>
-        <camelVersion>2010.01</camelVersion>
-        <cxfBCVersion>2010.01</cxfBCVersion>
-        <smLibVersion>2010.01</smLibVersion>
-        <smVersion>3.3.2</smVersion>
+        <camelCoreVersion>2.8.5</camelCoreVersion>
+        <springVersion>3.0.6.RELEASE</springVersion>
+        <smLibVersion>2011.02.1</smLibVersion>
+        <smVersion>3.4.1</smVersion>
+        <activeMQVersion>5.5.1</activeMQVersion>
+        <xalanVersion>2.7.0</xalanVersion>
+        <xercesVersion>2.8.1</xercesVersion>
+        <jettyVersion>7.4.5.v20110725</jettyVersion>
         <c2aVersion>2.8-M1</c2aVersion>
     </properties>
   <modules>
@@ -26,7 +29,178 @@
     <module>adeers-wsbc-su</module>
     <module>caaers-wsbc-su</module>
     <module>caaers-adeers-sync-sa</module>
+
   </modules>
+  <dependencies>
+
+      <!-- SPRING -->
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-core</artifactId>
+          <version>${springVersion}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-jdbc</artifactId>
+          <version>${springVersion}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-orm</artifactId>
+          <version>${springVersion}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-aop</artifactId>
+          <version>${springVersion}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-beans</artifactId>
+          <version>${springVersion}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-context</artifactId>
+          <version>${springVersion}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-jms</artifactId>
+          <version>${springVersion}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-context-support</artifactId>
+          <version>${springVersion}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-tx</artifactId>
+          <version>${springVersion}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-web</artifactId>
+          <version>${springVersion}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-test</artifactId>
+          <version>${springVersion}</version>
+          <scope>test</scope>
+      </dependency>
 
 
+      <!-- COMMONS -->
+      <dependency>
+          <groupId>commons-lang</groupId>
+          <artifactId>commons-lang</artifactId>
+          <version>2.4</version>
+      </dependency>
+      <dependency>
+          <groupId>commons-io</groupId>
+          <artifactId>commons-io</artifactId>
+          <version>2.1</version>
+      </dependency>
+      <dependency>
+          <groupId>commons-collections</groupId>
+          <artifactId>commons-collections</artifactId>
+          <version>3.2.1</version>
+      </dependency>
+      <dependency>
+          <groupId>commons-codec</groupId>
+          <artifactId>commons-codec</artifactId>
+          <version>1.3</version>
+      </dependency>
+      <dependency>
+          <groupId>commons-discovery</groupId>
+          <artifactId>commons-discovery</artifactId>
+          <version>0.2</version>
+          <exclusions>
+              <exclusion>
+                  <groupId>xalan</groupId>
+                  <artifactId>*</artifactId>
+              </exclusion>
+          </exclusions>
+      </dependency>
+
+      <!-- JETTY -->
+      <dependency>
+          <groupId>org.eclipse.jetty</groupId>
+          <artifactId>jetty-server</artifactId>
+          <version>${jettyVersion}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.eclipse.jetty</groupId>
+          <artifactId>jetty-webapp</artifactId>
+          <version>${jettyVersion}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.eclipse.jetty</groupId>
+          <artifactId>jetty-http</artifactId>
+          <version>${jettyVersion}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.eclipse.jetty</groupId>
+          <artifactId>jetty-util</artifactId>
+          <version>${jettyVersion}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.eclipse.jetty</groupId>
+          <artifactId>jetty-servlet</artifactId>
+          <version>${jettyVersion}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.eclipse.jetty</groupId>
+          <artifactId>jetty-servlets</artifactId>
+          <version>${jettyVersion}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.eclipse.jetty</groupId>
+          <artifactId>jetty-server</artifactId>
+          <version>${jettyVersion}</version>
+      </dependency>
+
+      <!-- General XML and XSL apis -->
+        <dependency>
+            <groupId>xalan</groupId>
+            <artifactId>xalan</artifactId>
+            <version>${xalanVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>xerces</groupId>
+            <artifactId>xercesImpl</artifactId>
+            <version>${xercesVersion}</version>
+        </dependency>
+
+      <!-- SLF4J skip it by setting provided scope -->
+      <dependency>
+          <groupId>org.slf4j</groupId>
+          <artifactId>jcl-over-slf4j</artifactId>
+          <version>1.7.0</version>
+          <scope>provided</scope>
+      </dependency>
+      <dependency>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-api</artifactId>
+          <version>1.7.0</version>
+          <scope>provided</scope>
+      </dependency>
+      <dependency>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-log4j12</artifactId>
+          <version>1.7.0</version>
+          <scope>provided</scope>
+      </dependency>
+
+      <!-- junit -->
+      <dependency>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+          <version>3.8.1</version>
+          <scope>test</scope>
+      </dependency>
+
+  </dependencies>
 </project>

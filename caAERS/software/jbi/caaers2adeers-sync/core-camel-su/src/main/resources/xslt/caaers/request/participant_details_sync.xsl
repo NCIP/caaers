@@ -4,7 +4,7 @@
 	version='2.0'>
 	
 	<xsl:output method="xml" indent="yes"/>
-	<xsl:variable name="map" select="document('lookup.xml')"/>
+	<xsl:variable name="map" select="document('file:lookup.xml')"/>
 	
 	<xsl:template match="/">
 		<soapenv:Envelope>
@@ -36,16 +36,13 @@
 								 <xsl:variable name="birthDate" select='ODM/ClinicalData/SubjectData/StudyEventData[@StudyEventOID="ENROLLMENT_FORMS"]/FormData[@FormOID="DEMOGRAPHY"]/ItemGroupData[@ItemGroupOID="DEMOGRAPHY"]/ItemData [@ItemOID="PER_BIR_DT"]/@Value'/>
 								 <xsl:variable name="vDay" select="substring-before($birthDate, ' ')"/>
 
-							     <xsl:variable name="vMonthName" select=
-							     "substring-before(substring-after($birthDate, ' '), ' ')"/>
+							     <xsl:variable name="vMonthName" select="substring-before(substring-after($birthDate, ' '), ' ')"/>
 							
-							     <xsl:variable name="vYear" select=
-							     "substring-after(substring-after($birthDate, ' '), ' ')"/>
+							     <xsl:variable name="vYear" select="substring-after(substring-after($birthDate, ' '), ' ')"/>
 							     
 							     <xsl:variable name="vMonth"><xsl:call-template name="lookup"><xsl:with-param name="_map" select="$map//months" /><xsl:with-param name="_code" select="$vMonthName" /></xsl:call-template></xsl:variable>
 							
-							     <xsl:value-of select=
-							      "concat($vYear,'-',$vMonth,'-',$vDay)"/>
+							     <xsl:value-of select="concat($vYear,'-',$vMonth,'-',$vDay)"/>
 								
 							</birthDate>
 							<gender>
@@ -124,7 +121,7 @@
 	<xsl:template name="lookup">
         <xsl:param name="_map" />
         <xsl:param name="_code" />        
-        <xsl:value-of select="$_map//code[text() = $_code]/parent::node()/value"/>
+        <xsl:value-of select="$_map//code[translate(text(),'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ') = translate($_code,'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')]/parent::node()/value"/>
     </xsl:template>
     
 </xsl:stylesheet>

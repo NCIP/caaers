@@ -42,12 +42,7 @@ import gov.nih.nci.cabig.caaers.web.dwr.IndexChange;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -537,11 +532,19 @@ public class CreateAdverseEventAjaxFacade {
             terms = labCategoryDao.getById(labCategoryId).getTerms();
         }
         // cut down objects for serialization
+        List<LabTerm> theTerms = new ArrayList<LabTerm>();
         for (LabTerm term : terms) {
+            if(term.isRetired()) continue;
+            theTerms.add(term);
             term.getCategory().setTerms(null);
             term.getCategory().getLabVersion().setCategories(null);
         }
-        return terms;
+        Collections.sort(theTerms, new Comparator<LabTerm>() {
+            public int compare(LabTerm o1, LabTerm o2) {
+                return o1.getTerm().compareTo(o2.getTerm());
+            }
+        });
+        return theTerms;
     }
 
     public Integer getLabCategory(Integer labTermID) {
@@ -552,11 +555,14 @@ public class CreateAdverseEventAjaxFacade {
 
     public List<LabCategory> getLabCategories() {
         List<LabCategory> categories = labCategoryDao.getAll();
+        List<LabCategory> theCategories = new ArrayList<LabCategory>();
         // cut down objects for serialization
         for (LabCategory category : categories) {
+            if(category.isRetired()) continue;
+            theCategories.add(category);
             category.setTerms(null);
         }
-        return categories;
+        return theCategories;
     }
 
     /**
@@ -619,8 +625,8 @@ public class CreateAdverseEventAjaxFacade {
         try {
             ExpeditedAdverseEventReport aeReport = aeReportDao.getById(aeReportId);
             Report report = aeReport.findReportById(reportId);
-            if(report != null && report.isActive()){
-                if(log.isDebugEnabled()) log.debug("Withdrawing report : " + String.valueOf(report));
+            if(report != null && report.isActive() || report.isHavingStatus(ReportStatus.COMPLETED)){
+            	log.debug("Withdrawing report : " + String.valueOf(report));
 
                 //withdraw report.
                 reportRepository.withdrawReport(report);
@@ -1053,13 +1059,17 @@ public class CreateAdverseEventAjaxFacade {
 
         try {
             ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
-            List<Report> reports = command.getAeReport().getReports();
-            if(reportIndex > -1){
-               reports.get(reportIndex).setCaseNumber(caseNumber);
-            }
 
             command.getAeReport().setPhysicianSignOff(physicianSignOff);
             saveIfAlreadyPersistent(command);
+            List<Report> reports = command.getAeReport().getReports();
+            if(reportIndex > -1){
+                Report oldReport = reports.get(reportIndex);
+                oldReport.setCaseNumber(caseNumber);
+                Report report = reportDao.getById(oldReport.getId());
+                report.setCaseNumber(caseNumber);
+                reportDao.save(report);
+            }
             Map<String, String> params = new LinkedHashMap<String, String>(); // preserve order for testing
             String html = renderAjaxView("submitReportValidationSection", 0, params);
             output.setHtmlContent(html);

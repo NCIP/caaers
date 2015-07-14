@@ -13,9 +13,9 @@
 			<xs:sequence>
 				<xs:element type="xs:dateTime" name="createdAt" />
 				<xs:element type="AdverseEventReportingPeriodType" name="adverseEventReportingPeriod" />
-				<xs:element type="PhysicianType" name="physician" />
+				<xs:element type="PhysicianType" name="physician" minOccurs="0" />
 				<xs:element type="ReporterType" name="reporter" />
-				<xs:element type="ReportedAE" name="reportedAE" maxOccurs="unbounded" minOccurs="1" />
+				<xs:element type="ReportedAE" name="reportedAE" maxOccurs="unbounded" minOccurs="0" />
 				<xs:element type="ReportType" name="report" maxOccurs="unbounded" minOccurs="1" />
 				<xs:element minOccurs="0" name="externalId" type="xs:string" />
 			</xs:sequence>
@@ -59,7 +59,8 @@
 				<xs:element type="SurgeryInterventionType" name="surgeryIntervention" minOccurs="0" maxOccurs="unbounded" />
 				<xs:element type="BiologicalInterventionType" name="biologicalIntervention" minOccurs="0" maxOccurs="unbounded" />
 				<xs:element type="DietarySupplementInterventionType" name="dietarySupplementIntervention" minOccurs="0" maxOccurs="unbounded" />
-				<xs:element type="MedicalDeviceType" name="medicalDevice" minOccurs="0" maxOccurs="unbounded" />
+                <xs:element type="xs:boolean" name="investigationalDeviceAdministered" minOccurs="0" />
+                <xs:element type="MedicalDeviceType" name="medicalDevice" minOccurs="0" maxOccurs="unbounded" />
 				<xs:element type="ConcomitantMedicationType" name="concomitantMedication" maxOccurs="unbounded" minOccurs="0" />
 				<xs:element type="AdverseEventType" name="adverseEvent" maxOccurs="unbounded" minOccurs="1" />
 				<xs:element type="LabType" name="lab" minOccurs="0" maxOccurs="unbounded" />
@@ -125,7 +126,7 @@
 			<xs:element type="xs:int" name="cycleNumber" minOccurs="0" />
 			<xs:element type="xs:date" name="startDate" minOccurs="0" />
 			<xs:element type="StudyParticipantAssignmentRefType" name="studyParticipantAssignmentRef" minOccurs="0" />
-			<xs:element type="TreatmentAssignmentType" name="treatmentAssignment"/>
+			<xs:element type="TreatmentAssignmentType" name="treatmentAssignment" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 
@@ -929,6 +930,7 @@
 			<xs:element type="ReportDefinitionType" name="aeReportDefinition" />
 			<xs:element type="ReportVersionType" name="aeReportVersion" maxOccurs="unbounded" minOccurs="0" />
 			<xs:element type="ReviewStatusType" name="reviewStatus" minOccurs="0" />
+            <xs:element minOccurs="0" name="correlationId" type="xs:string" />
 		</xs:sequence>
 	</xs:complexType>
 

@@ -36,7 +36,7 @@ public class PreExistingConditionManagementWebServiceImpl implements PreExisting
 		try {
 			return preExistingConditionLOVService.importPreExistingConditions(xmlPreExistingConditions);
 		} catch (Exception e) {
-            logger.error(e);
+            logger.error("Error while creating or updating a pre-existing condition.", e);
             CaaersServiceResponse caaersResponse = Helper.createResponse();
             Helper.populateError(caaersResponse, "WS_GEN_000", "Unable to process the request :" + e.getMessage());
             return caaersResponse;

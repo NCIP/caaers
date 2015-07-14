@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.log4j.Logger;
  
 
 /**
@@ -31,9 +30,6 @@ import org.apache.log4j.Logger;
  * @author Biju Joseph
  */
 public class AERoutingAndReviewDTOFactory {
-	
-	/** The log. */
-	private static Logger log = Logger.getLogger(AERoutingAndReviewDTOFactory.class);
 	
 	/** The adverse event routing and review repository. */
 	private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
@@ -68,12 +64,11 @@ public class AERoutingAndReviewDTOFactory {
 			dto.setPossibleActions(null);
 			dto.setReviewComments(null);
 			return dto;
-		}else{
-			dto.setWorkflowId(rp.getWorkflowId());
-			dto.setReviewStatus(rp.getReviewStatus());
-			dto.setPossibleActions(adverseEventRoutingAndReviewRepository.nextTransitionNames(rp.getWorkflowId(), userId));
-			dto.setReviewComments(createReviewComments(rp.getReviewComments()));
 		}
+		dto.setWorkflowId(rp.getWorkflowId());
+		dto.setReviewStatus(rp.getReviewStatus());
+		dto.setPossibleActions(adverseEventRoutingAndReviewRepository.nextTransitionNames(rp.getWorkflowId(), userId));
+		dto.setReviewComments(createReviewComments(rp.getReviewComments()));
 		
 		return dto;
 	}

@@ -23,6 +23,7 @@ import java.util.zip.ZipOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import gov.nih.nci.cabig.caaers.utils.ZipUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
@@ -69,7 +70,7 @@ public class CTEPDataIntegrationLogDownloadController extends AbstractController
         }
 
         
-        File tempFile = createZipFile(baseFolder, entity, dateStr, correlationId);
+        File tempFile = ZipUtils.createZipFile(baseFolder, entity, dateStr, correlationId);
         if(tempFile != null){
 
 
@@ -99,69 +100,6 @@ public class CTEPDataIntegrationLogDownloadController extends AbstractController
 
 
         return null;
-    }
-
-    private File createZipFile(String baseFolder, String entity, String dateStr, String correlationId){
-        Date d = null;
-        try{
-        	SimpleDateFormat sf = new SimpleDateFormat(DateUtils.DATE_WITH_HYPHENS);
-        	d = sf.parse(dateStr);
-        }catch (ParseException pe){
-            log.error("Unable to parse dstr request parameter", pe);
-            return null;
-        }
-
-        String subFolder = DateUtils.formatDate(d, "yyyy") +
-                File.separator +
-                DateUtils.formatDate(d,"MM") +
-                File.separator +
-                DateUtils.formatDate(d, "dd");
-
-
-
-        File tempFile = null;
-        try{
-            tempFile = File.createTempFile("x" + System.currentTimeMillis(), ".zip");
-        }catch (Exception e){
-            log.error("Unable to create temp file", e);
-            return null;
-        }
-
-        ZipOutputStream zos = null;
-        FileOutputStream fos = null;
-        String strFolderToZip = baseFolder + subFolder + File.separator + entity + File.separator + correlationId;
-        try{
-            fos = new FileOutputStream(tempFile);
-            zos = new ZipOutputStream(fos);
-            File zipFolder = new File(strFolderToZip);
-            int len = zipFolder.getAbsolutePath().lastIndexOf(File.separator);
-            String baseName = zipFolder.getAbsolutePath().substring(0, len + 1);
-            addFolderToZip(zipFolder, zos, baseName);
-
-            zos.flush();
-            
-        }catch (Exception e){
-            log.error("Unable to zip folder (folderName :" + strFolderToZip + ")", e);
-        } finally {
-            if(zos != null)IOUtils.closeQuietly(zos);
-            if(fos != null)IOUtils.closeQuietly(fos);  
-        }
-        return tempFile;
-        
-    }
-    private static void addFolderToZip(File folder, ZipOutputStream zip, String baseName) throws IOException {
-        File[] files = folder.listFiles();
-        for (File file : files) {
-            if (file.isDirectory()) {
-                addFolderToZip(file, zip, baseName);
-            } else {
-                String name = file.getAbsolutePath().substring(baseName.length());
-                ZipEntry zipEntry = new ZipEntry(name);
-                zip.putNextEntry(zipEntry);
-                IOUtils.copy(new FileInputStream(file), zip);
-                zip.closeEntry();
-            }
-        }
     }
 
     public Configuration getConfiguration() {
