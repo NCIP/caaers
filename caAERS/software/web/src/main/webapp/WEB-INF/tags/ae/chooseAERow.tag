@@ -27,22 +27,22 @@
     </script>
 </c:if>
 
-<tr id="${external ? 'eae' : 'iae'}-${widgetId}-tr" class="${rejected ? 'ae-rejected' : ''} ${cssClass}">
-    <td width="${requestScope.widthTerm}"  class="${rejected ? 'ae-rejected' : ''} ${cssClass}"> ${t1}</td>
-    <td width="${requestScope.widthGrade}"  class="${rejected ? 'ae-rejected' : ''} ${cssClass}">${g1}</td>
-    <td width="${requestScope.widthStartDate}"  class="${rejected ? 'ae-rejected' : ''} ${cssClass}">${sd1}</td>
-    <td width="${requestScope.widthEndDate}"  class="${rejected ? 'ae-rejected' : ''} ${cssClass}">${ed1}</td>
-    <td width="${requestScope.widthVerbatim}"  class="${rejected ? 'ae-rejected' : ''} ${cssClass}">${v1}</td>
-    <td width="${requestScope.widthWhySerious}"  class="${rejected ? 'ae-rejected' : ''} ${cssClass}">${s1}</td>
-    <td width="${requestScope.widthAttribution}"  class="${rejected ? 'ae-rejected' : ''} ${cssClass}">${a1}</td>
-    <td width="${requestScope.widthActions}" class=" actionBtns ${rejected ? 'ae-rejected' : ''} ${cssClass}">
-        <div id="${external ? 'eae' : 'iae'}-${widgetId}-div-reject" style="${rejected ? 'display:none;' : ''}" class="wgtBtnDiv">
-            <tags:button  id="${external ? 'eae' : 'iae'}-${widgetId}-btn-reject" value="Reject" color="red" size="small" cssClass="wgtBtn wgtBtnReject" type="button"
-                          onclick="rejectAE(${widgetId} , ${external})" />
+<tr id="${external ? 'eae' : 'iae'}-<c:out value="${widgetId}" escapeXml="true"/>-tr" class="${rejected ? 'ae-rejected' : ''} <c:out value="${cssClass}" escapeXml="true"/>">
+    <td width="${requestScope.widthTerm}"  class="${rejected ? 'ae-rejected' : ''} <c:out value="${cssClass}" escapeXml="true"/>"> <c:out value="${t1}" escapeXml="true"/></td>
+    <td width="${requestScope.widthGrade}"  class="${rejected ? 'ae-rejected' : ''} <c:out value="${cssClass}" escapeXml="true"/>"><c:out value="${g1}" escapeXml="true"/></td>
+    <td width="${requestScope.widthStartDate}"  class="${rejected ? 'ae-rejected' : ''} <c:out value="${cssClass}" escapeXml="true"/>"><c:out value="${sd1}" escapeXml="true"/></td>
+    <td width="${requestScope.widthEndDate}"  class="${rejected ? 'ae-rejected' : ''} <c:out value="${cssClass}" escapeXml="true"/>"><c:out value="${ed1}" escapeXml="true"/></td>
+    <td width="${requestScope.widthVerbatim}"  class="${rejected ? 'ae-rejected' : ''} <c:out value="${cssClass}" escapeXml="true"/>"><c:out value="${v1}" escapeXml="true"/></td>
+    <td width="${requestScope.widthWhySerious}"  class="${rejected ? 'ae-rejected' : ''} <c:out value="${cssClass}" escapeXml="true"/>"><c:out value="${s1}" escapeXml="true"/></td>
+    <td width="${requestScope.widthAttribution}"  class="${rejected ? 'ae-rejected' : ''} <c:out value="${cssClass}" escapeXml="true"/>"><c:out value="${a1}" escapeXml="true"/></td>
+    <td width="${requestScope.widthActions}" class=" actionBtns ${rejected ? 'ae-rejected' : ''} <c:out value="${cssClass}" escapeXml="true"/>">
+        <div id="${external ? 'eae' : 'iae'}-<c:out value="${widgetId}" escapeXml="true"/>-div-reject" style="${rejected ? 'display:none;' : ''}" class="wgtBtnDiv">
+            <tags:button  id="${external ? 'eae' : 'iae'}-<c:out value="${widgetId}" escapeXml="true"/>-btn-reject" value="Reject" color="red" size="small" cssClass="wgtBtn wgtBtnReject" type="button"
+                          onclick="rejectAE(<c:out value="${widgetId}" escapeXml="true"/> , <c:out value="${external}" escapeXml="true"/>)" />
         </div>
-        <div id="${external ? 'eae' : 'iae'}-${widgetId}-div-unreject" style="${rejected ?  '' : 'display:none;'}" class="wgtBtnDiv">
-            <tags:button  id="${external ? 'eae' : 'iae'}-${widgetId}-btn-unreject" value="Unreject" color="green" size="small" cssClass="wgtBtn wgtBtnUnreject" type="button"
-                          onclick="unrejectAE(${widgetId} , ${external})" />
+        <div id="${external ? 'eae' : 'iae'}-<c:out value="${widgetId}" escapeXml="true"/>-div-unreject" style="${rejected ?  '' : 'display:none;'}" class="wgtBtnDiv">
+            <tags:button  id="${external ? 'eae' : 'iae'}-<c:out value="${widgetId}" escapeXml="true"/>-btn-unreject" value="Unreject" color="green" size="small" cssClass="wgtBtn wgtBtnUnreject" type="button"
+                          onclick="unrejectAE(<c:out value="${widgetId}" escapeXml="true"/> , <c:out value="${external}" escapeXml="true"/>)" />
         </div>
 
     </td>

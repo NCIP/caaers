@@ -5,11 +5,11 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@attribute name="field" type="gov.nih.nci.cabig.caaers.web.rule.InputField"%>
 <%@attribute name="cssStyle"%>
-<div class="row" id="${field.propertyName}-row" <c:if test="${not empty cssStyle}">style="${cssStyle}"</c:if>>
+<div class="row" id="${field.propertyName}-row" <c:if test="${not empty cssStyle}">style="<c:out value="${cssStyle}" escapeXml="true"/>"</c:if>>
     <div class="label">
-        <ruleTags:label field="${field}"/>
+        <ruleTags:label field="<c:out value="${field}" escapeXml="true"/>"/>
     </div>
-    <div class="value"><ruleTags:inputs field="${field}"/></div>
+    <div class="value"><ruleTags:inputs field="<c:out value="${field}" escapeXml="true"/>"/></div>
     <c:if test="${not empty field.extraInformation}">
         <div class="extra">${field.extraInformation}</div>
     </c:if>

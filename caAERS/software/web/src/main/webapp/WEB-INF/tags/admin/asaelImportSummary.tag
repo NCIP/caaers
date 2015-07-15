@@ -29,7 +29,7 @@
     <chrome:division collapsable="true" collapsed="false" title="Missing Terms" id="_mT">
         <ol>
         <c:forEach items="${results['missingTerms']}" var="i">
-            <li>${i}
+            <li><c:out value="${i}" escapeXml="true"/>
         </c:forEach>
         </ol>
     </chrome:division>

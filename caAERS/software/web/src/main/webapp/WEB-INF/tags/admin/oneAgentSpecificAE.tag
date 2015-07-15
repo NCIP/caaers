@@ -67,7 +67,7 @@
                 <ui:autocompleter path="${pathToAECollection}[${index}].otherMeddraTerm" initialDisplayValue="${initValue}">
                     <jsp:attribute name="populatorJS">
                             function(autocompleter, text) {
-                                    var terminologyVersionId = ${meddraVersionID}; 
+                                    var terminologyVersionId = <c:out value="${meddraVersionID}" escapeXml="true"/>; 
                                     createAE.matchLowLevelTermsByCode(terminologyVersionId, text, function(values) {
                                         autocompleter.setChoices(values)
                                     })

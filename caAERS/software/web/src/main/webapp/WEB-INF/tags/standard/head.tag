@@ -60,7 +60,7 @@ try { document.execCommand('BackgroundImageCache', false, true); } catch(e) {}
 <script>
     var roles_map = new Array();
     <c:forEach items="${originalRoles}" var="r">
-    roles_map.push("${r.key}");
+    roles_map.push(""<c:out value="${r.key}" escapeXml="true"/>");
     </c:forEach>
 
     function hasRole(_roleName) {

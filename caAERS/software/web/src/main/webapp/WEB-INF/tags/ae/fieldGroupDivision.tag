@@ -12,9 +12,9 @@
 
 <%@variable name-given="fieldGroup" %>
 
-<c:set var="fieldGroupName">${fieldGroupFactoryName}${index}</c:set>
+<c:set var="fieldGroupName"><c:out value="${fieldGroupFactoryName}" escapeXml="true"/><c:out value="${index}" escapeXml="true"/></c:set>
 <c:set var="fieldGroup" value="${fieldGroups[fieldGroupName]}"/>
 
-<chrome:division title="${empty title ? fieldGroup.displayName : title}" cssClass="${fieldGroupFactoryName}" id="${fieldGroupFactoryName}-${index}" style="${style}" collapsable="true" enableDelete="${enableDelete}" deleteParams="${deleteParams}" collapsed="${collapsed}">
+<chrome:division title="${empty title ? fieldGroup.displayName : title}" cssClass="<c:out value="${fieldGroupFactoryName}" escapeXml="true"/>" id="<c:out value="${fieldGroupFactoryName}" escapeXml="true"/>-<c:out value="${index}" escapeXml="true"/>" style="<c:out value="${style}" escapeXml="true"/>" collapsable="true" enableDelete="<c:out value="${enableDelete}" escapeXml="true"/>" deleteParams="<c:out value="${deleteParams}" escapeXml="true"/>" collapsed="<c:out value="${collapsed}" escapeXml="true"/>">
     <jsp:doBody/>
 </chrome:division>
