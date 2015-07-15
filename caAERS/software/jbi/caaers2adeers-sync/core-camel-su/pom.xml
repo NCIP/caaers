@@ -249,11 +249,12 @@
 
 
       <!-- XML / XSLT/ Schematron -->
-	 <dependency>
-		<groupId>net.sf.saxon</groupId>
-		<artifactId>Saxon-HE</artifactId>
-		<version>9.4</version>
-	</dependency>
+      <dependency>
+          <groupId>net.sf.saxon</groupId>
+          <artifactId>Saxon-HE</artifactId>
+          <version>9.5.1-8</version>
+      </dependency>
+
 
       <!-- Axis - for AdEERS submission -->
       <dependency>
