@@ -295,4 +295,33 @@ public class ParticipantDaoTest extends DaoNoSecurityTestCase<ParticipantDao> {
     	Study study = studyDao.getById(-2000);
     	assertEquals(new Long(0), studyDao.getNumberOfStudySubjectsInStudyWithGivenAssignmentIdentifier(study, "123",null));
     }
+    
+    public void testSaveNewParticipantWithNullNames() throws Exception {
+        Integer savedId;
+        {
+            Participant participant = new Participant();
+            participant.setFirstName(null);
+            participant.setLastName(null);
+            participant.setMiddleName(null);
+            participant.setGender("Female");
+            participant.setDateOfBirth(new DateValue());
+            participant.setEthnicity("ethnicity");
+            participant.setRace("race");
+
+            getDao().save(participant);
+            savedId = participant.getId();
+            assertNotNull("The saved participant id", savedId);
+        }
+
+        interruptSession();
+
+        {
+            Participant loaded = getDao().getById(savedId);
+            assertNotNull("Could not reload participant id " + savedId, loaded);
+            assertNull("Unexpected first name", loaded.getFirstName());
+            assertNull("Unexpected last name", loaded.getLastName());
+            assertNull("Unexpected middle name", loaded.getMiddleName());
+            assertEquals("Wrong gender", "Female", loaded.getGender());
+        }
+    }
 }
