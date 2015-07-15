@@ -74,7 +74,7 @@ The caaers.war file will be available in $caAERS/software/web/build/dist
 ###Hot Deploy
  * ant sync-classpath (will setup the eclipse project)
  * If using intellij, Import eclipse project into idea.
- * Go to web folder and run "go.bat"  (this will set up your tomcat hot-deployment)
+ * Go to web folder and run "go.bat"  (this will set up your tomcat hot-deployment).
  * Go to $USER_HOME/.caaers and place the datasouce.properties and test.properties there ([datasource templates]
  (https://github.com/NCIP/caaers/tree/master/caAERS/software/templates/))
 
