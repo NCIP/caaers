@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<con:soapui-project id="7977df70-f86f-45bb-bb62-3950868a9661" activeEnvironment="Default" name="SAEEvaluationServiceLocal" resourceRoot="" soapui-version="5.1.3" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" id="e362609a-9717-408e-a6f7-17e79f0cb147" wsaVersion="NONE" name="SAEEvaluationWebServiceImplServiceSoapBinding" type="wsdl" bindingName="{http://schema.integration.caaers.cabig.nci.nih.gov/saerules}SAEEvaluationWebServiceImplServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="https://localhost:8443/caaers/services/SAEEvaluationService?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="https://localhost:8443/caaers/services/SAEEvaluationService?wsdl"><con:part><con:url>https://localhost:8443/caaers/services/SAEEvaluationService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="SAEEvaluationWebServiceImplService" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/saerules" xmlns:ns1="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:ns2="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/saerules" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<con:soapui-project id="7977df70-f86f-45bb-bb62-3950868a9661" activeEnvironment="Default" name="SAEEvaluationServiceLocal" resourceRoot="" soapui-version="5.1.2" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" id="e362609a-9717-408e-a6f7-17e79f0cb147" wsaVersion="NONE" name="SAEEvaluationWebServiceImplServiceSoapBinding" type="wsdl" bindingName="{http://schema.integration.caaers.cabig.nci.nih.gov/saerules}SAEEvaluationWebServiceImplServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="https://localhost:8443/caaers/services/SAEEvaluationService?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="https://localhost:8443/caaers/services/SAEEvaluationService?wsdl"><con:part><con:url>https://localhost:8443/caaers/services/SAEEvaluationService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="SAEEvaluationWebServiceImplService" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/saerules" xmlns:ns1="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:ns2="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/saerules" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <wsdl:types>
     <xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:xs="http://www.w3.org/2001/XMLSchema">
       <xs:element name="treatmentAssignment" type="TreatmentAssignmentType"/>
@@ -1042,89 +1042,7 @@
       <soap:address location="https://localhost:8443/caaers/services/SAEEvaluationService"/>
     </wsdl:port>
   </wsdl:service>
-</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>https://localhost:8443/caaers/services/SAEEvaluationService</con:endpoint></con:endpoints><con:operation id="9bc426d7-f062-4771-85d9-294c951c652a" isOneWay="false" action="" name="evaluateAEs" bindingOperationName="evaluateAEs" type="Request-Response" outputName="evaluateAEsResponse" inputName="evaluateAEs" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="2c670b3e-9d81-4aaa-9cda-4b87cbcee52c" name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>https://localhost:8443/caaers/services/SAEEvaluationService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:saer="http://schema.integration.caaers.cabig.nci.nih.gov/saerules">\r
-   <soapenv:Header/>\r
-   <soapenv:Body>\r
-      <saer:evaluateAEs>\r
-         <!--Optional:-->\r
-         <saer:EvaluateAEsInputMessage>\r
-            <!--Optional:-->\r
-            <saer:adverseEvents>\r
-               <!--Zero or more repetitions:-->\r
-               <saer:adverseEvent id="?" version="?">\r
-                  <!--Optional:-->\r
-                  <verbatim>?</verbatim>\r
-                  <!--You have a CHOICE of the next 2 items at this level-->\r
-                  <!--Optional:-->\r
-                  <adverseEventCtepTerm>\r
-                     <!--Optional:-->\r
-                     <ctepCode>?</ctepCode>\r
-                     <!--You have a CHOICE of the next 2 items at this level-->\r
-                     <!--Optional:-->\r
-                     <otherMeddra>\r
-                        <meddraCode>?</meddraCode>\r
-                     </otherMeddra>\r
-                     <!--Optional:-->\r
-                     <otherSpecify>?</otherSpecify>\r
-                  </adverseEventCtepTerm>\r
-                  <!--Optional:-->\r
-                  <adverseEventMeddraLowLevelTerm>\r
-                     <meddraCode>?</meddraCode>\r
-                  </adverseEventMeddraLowLevelTerm>\r
-                  <!--Optional:-->\r
-                  <grade>?</grade>\r
-                  <!--Optional:-->\r
-                  <hospitalization>?</hospitalization>\r
-                  <!--Optional:-->\r
-                  <expected>?</expected>\r
-                  <!--Optional:-->\r
-                  <attributionSummary>?</attributionSummary>\r
-                  <!--Optional:-->\r
-                  <comments>?</comments>\r
-                  <!--Optional:-->\r
-                  <dateFirstLearned>?</dateFirstLearned>\r
-                  <!--Optional:-->\r
-                  <startDate>?</startDate>\r
-                  <!--Optional:-->\r
-                  <eventApproximateTime>\r
-                     <hour>?</hour>\r
-                     <minute>?</minute>\r
-                     <ampm>?</ampm>\r
-                  </eventApproximateTime>\r
-                  <!--Optional:-->\r
-                  <eventLocation>?</eventLocation>\r
-                  <!--Optional:-->\r
-                  <endDate>?</endDate>\r
-                  <!--Zero or more repetitions:-->\r
-                  <outcome>\r
-                     <outComeEnumType>?</outComeEnumType>\r
-                     <!--Optional:-->\r
-                     <other>?</other>\r
-                  </outcome>\r
-                  <!--Optional:-->\r
-                  <increasedRisk>?</increasedRisk>\r
-                  <!--Optional:-->\r
-                  <externalId>?</externalId>\r
-                  <!--Optional:-->\r
-                  <reporterEmail>?</reporterEmail>\r
-               </saer:adverseEvent>\r
-            </saer:adverseEvents>\r
-            <saer:study>\r
-               <studyIdentifier>?</studyIdentifier>\r
-               <!--Optional:-->\r
-               <treatmentAssignmentCode>?</treatmentAssignmentCode>\r
-               <!--Optional:-->\r
-               <participantSiteIdentifier>?</participantSiteIdentifier>\r
-            </saer:study>\r
-            <!--Optional:-->\r
-            <saer:participant>\r
-               <!--Optional:-->\r
-               <dateIndLastAdministered>?</dateIndLastAdministered>\r
-            </saer:participant>\r
-         </saer:EvaluateAEsInputMessage>\r
-      </saer:evaluateAEs>\r
-   </soapenv:Body>\r
-</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/saerules/SAEEvaluationServiceInterface/evaluateAEs"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation id="e541f909-b8f5-4b52-8149-239c085fa79d" isOneWay="false" action="" name="saveAndEvaluateAEs" bindingOperationName="saveAndEvaluateAEs" type="Request-Response" outputName="saveAndEvaluateAEsResponse" inputName="saveAndEvaluateAEs" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="1bf0e1cd-5928-42ea-b4b6-80ea890531a3" name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://localhost:8443/caaers/services/SAEEvaluationService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:saer="http://schema.integration.caaers.cabig.nci.nih.gov/saerules">\r
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>https://localhost:8443/caaers/services/SAEEvaluationService</con:endpoint></con:endpoints><con:operation id="9bc426d7-f062-4771-85d9-294c951c652a" isOneWay="false" action="" name="evaluateAEs" bindingOperationName="evaluateAEs" type="Request-Response" outputName="evaluateAEsResponse" inputName="evaluateAEs" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/></con:operation><con:operation id="e541f909-b8f5-4b52-8149-239c085fa79d" isOneWay="false" action="" name="saveAndEvaluateAEs" bindingOperationName="saveAndEvaluateAEs" type="Request-Response" outputName="saveAndEvaluateAEsResponse" inputName="saveAndEvaluateAEs" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="1bf0e1cd-5928-42ea-b4b6-80ea890531a3" name="sample-evaluation-request"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://localhost:8443/caaers/services/SAEEvaluationService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:saer="http://schema.integration.caaers.cabig.nci.nih.gov/saerules">\r
    <soapenv:Header/>\r
    <soapenv:Body>\r
       <saer:saveAndEvaluateAEs>\r
@@ -1214,89 +1132,31 @@
          </saer:SaveAndEvaluateAEsInputMessage>\r
       </saer:saveAndEvaluateAEs>\r
    </soapenv:Body>\r
-</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/saerules/SAEEvaluationServiceInterface/saveAndEvaluateAEs"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:testSuite id="cbf45240-e4d3-42f7-8857-5359b07d926d" name="SAEEvaluationWebServiceImplServiceSoapBinding TestSuite"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="e6701450-36c9-43da-8849-50d7e52aac2f" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="evaluateAEs TestCase" searchProperties="true"><con:settings/><con:testStep type="request" id="1839fb39-dc8c-45b0-91c8-0916c70163bc" name="evaluateAEs"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SAEEvaluationWebServiceImplServiceSoapBinding</con:interface><con:operation>evaluateAEs</con:operation><con:request name="evaluateAEs" id="fa99f6cf-bda7-4e8d-8f45-db8d1908b474"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>https://localhost:8443/caaers/services/SAEEvaluationService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:saer="http://schema.integration.caaers.cabig.nci.nih.gov/saerules">\r
-   <soapenv:Header/>\r
-   <soapenv:Body>\r
-      <saer:evaluateAEs>\r
-         <!--Optional:-->\r
-         <saer:EvaluateAEsInputMessage>\r
-            <!--Optional:-->\r
-            <saer:adverseEvents>\r
-               <!--Zero or more repetitions:-->\r
-               <saer:adverseEvent id="?" version="?">\r
-                  <!--Optional:-->\r
-                  <verbatim>?</verbatim>\r
-                  <!--You have a CHOICE of the next 2 items at this level-->\r
-                  <!--Optional:-->\r
-                  <adverseEventCtepTerm>\r
-                     <!--Optional:-->\r
-                     <ctepCode>?</ctepCode>\r
-                     <!--You have a CHOICE of the next 2 items at this level-->\r
-                     <!--Optional:-->\r
-                     <otherMeddra>\r
-                        <meddraCode>?</meddraCode>\r
-                     </otherMeddra>\r
-                     <!--Optional:-->\r
-                     <otherSpecify>?</otherSpecify>\r
-                  </adverseEventCtepTerm>\r
-                  <!--Optional:-->\r
-                  <adverseEventMeddraLowLevelTerm>\r
-                     <meddraCode>?</meddraCode>\r
-                  </adverseEventMeddraLowLevelTerm>\r
-                  <!--Optional:-->\r
-                  <grade>?</grade>\r
-                  <!--Optional:-->\r
-                  <hospitalization>?</hospitalization>\r
-                  <!--Optional:-->\r
-                  <expected>?</expected>\r
-                  <!--Optional:-->\r
-                  <attributionSummary>?</attributionSummary>\r
-                  <!--Optional:-->\r
-                  <comments>?</comments>\r
-                  <!--Optional:-->\r
-                  <dateFirstLearned>?</dateFirstLearned>\r
-                  <!--Optional:-->\r
-                  <startDate>?</startDate>\r
-                  <!--Optional:-->\r
-                  <eventApproximateTime>\r
-                     <hour>?</hour>\r
-                     <minute>?</minute>\r
-                     <ampm>?</ampm>\r
-                  </eventApproximateTime>\r
-                  <!--Optional:-->\r
-                  <eventLocation>?</eventLocation>\r
-                  <!--Optional:-->\r
-                  <endDate>?</endDate>\r
-                  <!--Zero or more repetitions:-->\r
-                  <outcome>\r
-                     <outComeEnumType>?</outComeEnumType>\r
-                     <!--Optional:-->\r
-                     <other>?</other>\r
-                  </outcome>\r
-                  <!--Optional:-->\r
-                  <increasedRisk>?</increasedRisk>\r
-                  <!--Optional:-->\r
-                  <externalId>?</externalId>\r
-                  <!--Optional:-->\r
-                  <reporterEmail>?</reporterEmail>\r
-               </saer:adverseEvent>\r
-            </saer:adverseEvents>\r
-            <saer:study>\r
-               <studyIdentifier>?</studyIdentifier>\r
-               <!--Optional:-->\r
-               <treatmentAssignmentCode>?</treatmentAssignmentCode>\r
-               <!--Optional:-->\r
-               <participantSiteIdentifier>?</participantSiteIdentifier>\r
-            </saer:study>\r
-            <!--Optional:-->\r
-            <saer:participant>\r
-               <!--Optional:-->\r
-               <dateIndLastAdministered>?</dateIndLastAdministered>\r
-            </saer:participant>\r
-         </saer:EvaluateAEsInputMessage>\r
-      </saer:evaluateAEs>\r
-   </soapenv:Body>\r
-</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:wsaConfig action="http://schema.integration.caaers.cabig.nci.nih.gov/saerules/SAEEvaluationServiceInterface/evaluateAEs"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:testCase id="13457e33-44ea-4994-8f7a-6e0aa95ce0c1" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="saveAndEvaluateAEs TestCase" searchProperties="true"><con:settings/><con:testStep type="properties" name="ScriptProperties" id="35378939-bcb7-4fbb-9b23-012d5e2a6fd9"><con:settings/><con:config xsi:type="con:PropertiesStep" saveFirst="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>index</con:name><con:value>0</con:value></con:property></con:properties></con:config></con:testStep><con:testStep type="groovy" name="Groovy Script" id="9d309406-3c23-4751-951d-624cdcf87ea9"><con:settings/><con:config><script>testRunner.testCase.testSteps["ScriptProperties"].setPropertyValue("index", String.valueOf(context.ThreadIndex))</script></con:config></con:testStep><con:testStep type="request" id="00785735-290b-4ac4-ace8-536df76add29" name="saveAndEvaluateAEs"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SAEEvaluationWebServiceImplServiceSoapBinding</con:interface><con:operation>saveAndEvaluateAEs</con:operation><con:request name="saveAndEvaluateAEs" id="be3d50f4-7eb2-4cd5-8fb8-7ede15f2faeb"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://localhost:8443/caaers/services/SAEEvaluationService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:saer="http://schema.integration.caaers.cabig.nci.nih.gov/saerules" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/saerules/SAEEvaluationServiceInterface/saveAndEvaluateAEs"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:testSuite id="cbf45240-e4d3-42f7-8857-5359b07d926d" name="SAEEvaluationWebServiceImplServiceSoapBinding TestSuite"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="13457e33-44ea-4994-8f7a-6e0aa95ce0c1" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="saveAndEvaluateAEs TestCase" searchProperties="true"><con:settings/><con:testStep type="properties" name="ScriptProperties" id="35378939-bcb7-4fbb-9b23-012d5e2a6fd9"><con:settings/><con:config xsi:type="con:PropertiesStep" saveFirst="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>index</con:name><con:value>uuz</con:value></con:property><con:property><con:name>firstCourseStartDate</con:name><con:value>2014-01-01</con:value></con:property><con:property><con:name>startCycleNumber</con:name><con:value>1</con:value></con:property><con:property><con:name>courseDurationInDays</con:name><con:value>14</con:value></con:property></con:properties></con:config></con:testStep><con:testStep type="groovy" name="Groovy Script" id="9d309406-3c23-4751-951d-624cdcf87ea9"><con:settings/><con:config><script>String curIndex = testRunner.testCase.testSteps["ScriptProperties"].getPropertyValue("index")
+String firstCourseStartDate = testRunner.testCase.testSteps["ScriptProperties"].getPropertyValue("firstCourseStartDate")
+Integer startCycleNumber = Integer.parseInt(testRunner.testCase.testSteps["ScriptProperties"].getPropertyValue("startCycleNumber"))
+Integer courseDurationInDays = Integer.parseInt(testRunner.testCase.testSteps["ScriptProperties"].getPropertyValue("courseDurationInDays"))
+Integer threadIndex = context.ThreadIndex
+Integer runIndex = 0//context.RunCount
+String subjectKey = "${curIndex}_${threadIndex}_${runIndex}"
+
+int factor = (courseDurationInDays * runIndex) + 1
+def d = new Date().parse("yyyy-MM-dd", firstCourseStartDate)
+String courseStartDate = d.plus(factor).format("yyyy-MM-dd")
+String courseEndDate = d.plus(factor +  courseDurationInDays).format("yyyy-MM-dd")
+def cycleNumber = String.valueOf( startCycleNumber + runIndex)
+String aeStartDate = d.plus(factor + 2).format("yyyy-MM-dd'T16:42:45.0Z'")
+
+testRunner.testCase.testSteps["ScriptProperties"].setPropertyValue("cycleNumber", cycleNumber)
+testRunner.testCase.testSteps["ScriptProperties"].setPropertyValue("aeStartDate", aeStartDate)
+testRunner.testCase.testSteps["ScriptProperties"].setPropertyValue("courseStartDate", courseStartDate)
+testRunner.testCase.testSteps["ScriptProperties"].setPropertyValue("courseEndDate", courseEndDate)
+testRunner.testCase.testSteps["ScriptProperties"].setPropertyValue("runIndex", String.valueOf(runIndex))
+testRunner.testCase.testSteps["ScriptProperties"].setPropertyValue("threadIndex", String.valueOf(threadIndex))
+testRunner.testCase.testSteps["ScriptProperties"].setPropertyValue("subjectKey", subjectKey)
+
+log.info("   User : ${threadIndex} , Run : ${runIndex} - subjectKey : ${subjectKey}, courseStartDate:${courseStartDate}, courseEndDate:${courseEndDate}, cycleNumber: ${cycleNumber}, aeStartDate : ${aeStartDate}")
+</script></con:config></con:testStep><con:testStep type="request" id="00785735-290b-4ac4-ace8-536df76add29" name="base-evaluation-request"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SAEEvaluationWebServiceImplServiceSoapBinding</con:interface><con:operation>saveAndEvaluateAEs</con:operation><con:request name="base-evaluation-request" id="be3d50f4-7eb2-4cd5-8fb8-7ede15f2faeb"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://localhost:8443/caaers/services/SAEEvaluationService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:saer="http://schema.integration.caaers.cabig.nci.nih.gov/saerules" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
    <soapenv:Header>
       <wsse:Security soapenv:mustUnderstand="1">
          <wsse:UsernameToken wsu:Id="UsernameToken-19" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
@@ -1318,157 +1178,157 @@
                   </adverseEventCtepTerm>
                   <grade>3</grade>
                   <hospitalization>YES</hospitalization>
-                  <dateFirstLearned>2015-04-10T17:05:01.0000000Z</dateFirstLearned>
+                  <dateFirstLearned>${aeStartDate}</dateFirstLearned>
                   <outcome>
                      <outComeEnumType>HOSPITALIZATION</outComeEnumType>
                   </outcome>
-                  <externalId>reaction-1</externalId>
+                  <externalId>reaction-1-${threadIndex}-${runIndex}</externalId>
                   <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>
                </saer:adverseEvent>
                <saer:adverseEvent>
                   <verbatim>Verbatim2</verbatim>
                   <adverseEventCtepTerm>
-                     <ctepCode>10047700</ctepCode>
+                     <ctepCode>10019491</ctepCode>
                   </adverseEventCtepTerm>
                   <grade>3</grade>
                   <hospitalization>YES</hospitalization>
-                  <dateFirstLearned>2014-11-28T17:06:01.0000000Z</dateFirstLearned>
+                  <dateFirstLearned>${aeStartDate}</dateFirstLearned>
                   
                   <outcome>
                      <outComeEnumType>HOSPITALIZATION</outComeEnumType>
                   </outcome>
-                  <externalId>reaction-2</externalId>
+                  <externalId>reaction-2-${threadIndex}-${runIndex}</externalId>
                   <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>
-               </saer:adverseEvent>
-               
+               </saer:adverseEvent>               
                <saer:adverseEvent>
                   <verbatim>Verbatim3</verbatim>
                   <adverseEventCtepTerm>
-                     <ctepCode>10010774</ctepCode>
+                     <ctepCode>10050457</ctepCode>
                   </adverseEventCtepTerm>
                   <grade>3</grade>
                   <hospitalization>YES</hospitalization>
-                  <dateFirstLearned>2015-04-10T17:05:01.0000000Z</dateFirstLearned>
+                  <dateFirstLearned>${aeStartDate}</dateFirstLearned>
                   <outcome>
                      <outComeEnumType>HOSPITALIZATION</outComeEnumType>
                   </outcome>
-                  <externalId>reaction-3</externalId>
+                  <externalId>reaction-3-${threadIndex}-${runIndex}</externalId>
                   <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>
                </saer:adverseEvent>
                <saer:adverseEvent>
                   <verbatim>Verbatim4</verbatim>
                   <adverseEventCtepTerm>
-                     <ctepCode>10047700</ctepCode>
+                     <ctepCode>10034474</ctepCode>
                   </adverseEventCtepTerm>
                   <grade>3</grade>
                   <hospitalization>YES</hospitalization>
-                  <dateFirstLearned>2014-11-28T17:06:01.0000000Z</dateFirstLearned>
+                  <dateFirstLearned>${aeStartDate}</dateFirstLearned>
                   
                   <outcome>
                      <outComeEnumType>HOSPITALIZATION</outComeEnumType>
                   </outcome>
-                  <externalId>reaction-4</externalId>
+                  <externalId>reaction-4-${threadIndex}-${runIndex}</externalId>
                   <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>
                </saer:adverseEvent>
                
                <saer:adverseEvent>
                   <verbatim>Verbatim5</verbatim>
                   <adverseEventCtepTerm>
-                     <ctepCode>10010774</ctepCode>
+                     <ctepCode>10009998</ctepCode>
                   </adverseEventCtepTerm>
                   <grade>3</grade>
                   <hospitalization>YES</hospitalization>
-                  <dateFirstLearned>2015-04-10T17:05:01.0000000Z</dateFirstLearned>
+                  <dateFirstLearned>${aeStartDate}</dateFirstLearned>
                   <outcome>
                      <outComeEnumType>HOSPITALIZATION</outComeEnumType>
                   </outcome>
-                  <externalId>reaction-5</externalId>
+                  <externalId>reaction-5-${threadIndex}-${runIndex}</externalId>
                   <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>
                </saer:adverseEvent>
                <saer:adverseEvent>
                   <verbatim>Verbatim6</verbatim>
                   <adverseEventCtepTerm>
-                     <ctepCode>10047700</ctepCode>
+                     <ctepCode>10065727</ctepCode>
                   </adverseEventCtepTerm>
                   <grade>3</grade>
                   <hospitalization>YES</hospitalization>
-                  <dateFirstLearned>2014-11-28T17:06:01.0000000Z</dateFirstLearned>
+                  <dateFirstLearned>${aeStartDate}</dateFirstLearned>
                   
                   <outcome>
                      <outComeEnumType>HOSPITALIZATION</outComeEnumType>
                   </outcome>
-                  <externalId>reaction-6</externalId>
+                  <externalId>reaction-6-${threadIndex}-${runIndex}</externalId>
                   <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>
                </saer:adverseEvent>
                
                <saer:adverseEvent>
                   <verbatim>Verbatim7</verbatim>
                   <adverseEventCtepTerm>
-                     <ctepCode>10010774</ctepCode>
+                     <ctepCode>10065709</ctepCode>
                   </adverseEventCtepTerm>
                   <grade>3</grade>
                   <hospitalization>YES</hospitalization>
-                  <dateFirstLearned>2015-04-10T17:05:01.0000000Z</dateFirstLearned>
+                 <dateFirstLearned>${aeStartDate}</dateFirstLearned>
                   <outcome>
                      <outComeEnumType>HOSPITALIZATION</outComeEnumType>
                   </outcome>
-                  <externalId>reaction-7</externalId>
+                  <externalId>reaction-7-${threadIndex}-${runIndex}</externalId>
                   <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>
                </saer:adverseEvent>
                <saer:adverseEvent>
                   <verbatim>Verbatim8</verbatim>
                   <adverseEventCtepTerm>
-                     <ctepCode>10047700</ctepCode>
+                     <ctepCode>10051341</ctepCode>
                   </adverseEventCtepTerm>
                   <grade>3</grade>
                   <hospitalization>YES</hospitalization>
-                  <dateFirstLearned>2014-11-28T17:06:01.0000000Z</dateFirstLearned>
+                <dateFirstLearned>${aeStartDate}</dateFirstLearned>
                   
                   <outcome>
                      <outComeEnumType>HOSPITALIZATION</outComeEnumType>
                   </outcome>
-                  <externalId>reaction-8</externalId>
+                  <externalId>reaction-8-${threadIndex}-${runIndex}</externalId>
                   <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>
                </saer:adverseEvent>
                
                <saer:adverseEvent>
                   <verbatim>Verbatim9</verbatim>
                   <adverseEventCtepTerm>
-                     <ctepCode>10010774</ctepCode>
+                     <ctepCode>10041569</ctepCode>
                   </adverseEventCtepTerm>
                   <grade>3</grade>
                   <hospitalization>YES</hospitalization>
-                  <dateFirstLearned>2015-04-10T17:05:01.0000000Z</dateFirstLearned>
+                 <dateFirstLearned>${aeStartDate}</dateFirstLearned>
                   <outcome>
                      <outComeEnumType>HOSPITALIZATION</outComeEnumType>
                   </outcome>
-                  <externalId>reaction-9</externalId>
+                  <externalId>reaction-9-${threadIndex}-${runIndex}</externalId>
                   <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>
                </saer:adverseEvent>
                <saer:adverseEvent>
                   <verbatim>Verbatim10</verbatim>
                   <adverseEventCtepTerm>
-                     <ctepCode>10047700</ctepCode>
+                     <ctepCode>10055298</ctepCode>
                   </adverseEventCtepTerm>
                   <grade>4</grade>
                   <hospitalization>YES</hospitalization>
-                  <dateFirstLearned>2014-11-28T17:06:01.0000000Z</dateFirstLearned>
+                 <dateFirstLearned>${aeStartDate}</dateFirstLearned>
                   
                   <outcome>
                      <outComeEnumType>HOSPITALIZATION</outComeEnumType>
                   </outcome>
-                  <externalId>reaction-10</externalId>
+                  <externalId>reaction-10-${threadIndex}-${runIndex}</externalId>
                   <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>
                </saer:adverseEvent>
                
             </saer:adverseEvents>
             <saer:criteria>
-               <studySubjectIdentifier>455550${index}</studySubjectIdentifier>
+               <studySubjectIdentifier>${subjectKey}</studySubjectIdentifier>
                <studyIdentifier>S1117</studyIdentifier>
                <course>
-                 <startDateOfFirstCourse>2014-01-06</startDateOfFirstCourse>
-                  <startDateOfThisCourse>2015-06-01</startDateOfThisCourse> 
-                  <cycleNumber>40</cycleNumber> 
+                 <startDateOfFirstCourse>${firstCourseStartDate}</startDateOfFirstCourse>
+                  <startDateOfThisCourse>${courseStartDate}</startDateOfThisCourse> 
+                  <endDateOfThisCourse>${courseEndDate}</endDateOfThisCourse>
+                  <cycleNumber>${cycleNumber}</cycleNumber> 
                  <treatmentAssignmentCode>ARM 3</treatmentAssignmentCode>
                   <otherTreatmentAssignmentDescription>N/A</otherTreatmentAssignmentDescription>
                </course>
@@ -1476,4 +1336,4 @@
          </saer:SaveAndEvaluateAEsInputMessage>
       </saer:saveAndEvaluateAEs>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:assertion type="Simple NotContains" id="a619ba76-c08c-49c1-bf55-32324fc6e134" name="Not Contains"><con:configuration><token>Error</token><ignoreCase>true</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig action="http://schema.integration.caaers.cabig.nci.nih.gov/saerules/SAEEvaluationServiceInterface/saveAndEvaluateAEs" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:loadTest id="6c078b8d-f4a9-4ed9-9747-3d1d3a2582ce" name="LoadTest 1"><con:settings><con:setting id="HttpSettings@close-connections">false</con:setting></con:settings><con:threadCount>40</con:threadCount><con:startDelay>0</con:startDelay><con:sampleInterval>250</con:sampleInterval><con:calculateTPSOnTimePassed>true</con:calculateTPSOnTimePassed><con:resetStatisticsOnThreadCountChange>true</con:resetStatisticsOnThreadCountChange><con:historyLimit>-1</con:historyLimit><con:testLimit>1</con:testLimit><con:limitType>COUNT_PER_THREAD</con:limitType><con:loadStrategy><con:type>Simple</con:type><con:config><testDelay>2000</testDelay><randomFactor>1.0</randomFactor></con:config></con:loadStrategy><con:assertion type="Step Status" name="Step Status"/><con:maxAssertionErrors>100</con:maxAssertionErrors><con:cancelExcessiveThreads>true</con:cancelExcessiveThreads><con:strategyInterval>500</con:strategyInterval><con:setupScript/></con:loadTest><con:properties/></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/></con:soapui-project>
+</soapenv:Envelope>]]></con:request><con:assertion type="Simple NotContains" id="a619ba76-c08c-49c1-bf55-32324fc6e134" name="Not Contains"><con:configuration><token>Error</token><ignoreCase>true</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig action="http://schema.integration.caaers.cabig.nci.nih.gov/saerules/SAEEvaluationServiceInterface/saveAndEvaluateAEs" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:loadTest id="6c078b8d-f4a9-4ed9-9747-3d1d3a2582ce" name="save-and-evaluate-load-test"><con:settings><con:setting id="HttpSettings@close-connections">false</con:setting></con:settings><con:threadCount>40</con:threadCount><con:startDelay>0</con:startDelay><con:sampleInterval>250</con:sampleInterval><con:calculateTPSOnTimePassed>true</con:calculateTPSOnTimePassed><con:resetStatisticsOnThreadCountChange>true</con:resetStatisticsOnThreadCountChange><con:historyLimit>-1</con:historyLimit><con:testLimit>1</con:testLimit><con:limitType>COUNT_PER_THREAD</con:limitType><con:loadStrategy><con:type>Simple</con:type><con:config><testDelay>2000</testDelay><randomFactor>1.0</randomFactor></con:config></con:loadStrategy><con:assertion type="Step Status" name="Step Status"/><con:maxAssertionErrors>100</con:maxAssertionErrors><con:cancelExcessiveThreads>true</con:cancelExcessiveThreads><con:strategyInterval>500</con:strategyInterval><con:setupScript/></con:loadTest><con:properties/></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/></con:soapui-project>
