@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.dao.query;
 
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class JoinList {
 
@@ -22,8 +23,9 @@ public class JoinList {
 	public String getClause() {
 		StringBuilder str = new StringBuilder(24*joins.size());
 		str.append(" ");
-		for(JoinType join : joins.values()) {
-			str.append(join.getClause()).append(" ");
+		//go through entryset for ordered list.
+		for(Map.Entry<String, JoinType> join : joins.entrySet()) {
+			str.append(join.getValue().getClause()).append(" ");
 		}
 		
 		return str.toString();

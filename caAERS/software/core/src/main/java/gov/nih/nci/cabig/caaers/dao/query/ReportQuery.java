@@ -35,6 +35,7 @@ public class ReportQuery extends AbstractQuery {
 	
 	public ReportQuery() {
 		super("select distinct "+REPORT_ALIAS+" from Report " + REPORT_ALIAS);
+		joinStudy();
 	}
 	
 	public void joinExpeditedAEReport() {
@@ -47,7 +48,7 @@ public class ReportQuery extends AbstractQuery {
 	}
 	
 	public void joinStudy() {
-		joinReportingPeriod();
+		joinStudyParticipantAssignment();
 		join (STUDY_PARTICIPANT_ALIAS +".studySite.study "+STUDY_ALIAS);
 
 	}
@@ -168,7 +169,7 @@ public class ReportQuery extends AbstractQuery {
         }   	
     }
     
-    public void filterByReportIdentifer(final String reportIdentifer,String operator) {
+    public void filterByReportIdentifer(final String reportIdentifer, String operator) {
     	joinExpeditedAEReport();
         andWhere("(lower("+REPORT_VERSION_ALIAS+".assignedIdentifer) " + parseOperator(operator) + " :reportIdIdentifer "
         		+ "OR lower(" + EXPEDITED_AE_REPORT_ALIAS + ".externalId) " + parseOperator(operator) + " :reportIdIdentifer "
