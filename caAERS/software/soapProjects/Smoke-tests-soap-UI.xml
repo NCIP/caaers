@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<con:soapui-project activeEnvironment="Default" name="rave-integration-msgs-git" resourceRoot="" soapui-version="5.1.3" abortOnError="false" runType="SEQUENTIAL" id="d37cb3a4-60ad-40b6-a351-d3e428a41b88" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="SafetyReportManagementServiceSoapBinding" type="wsdl" bindingName="{http://schema.integration.caaers.cabig.nci.nih.gov/aereport}SafetyReportManagementServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="https://dev.semanticbits.com/caaers/services/SafetyReportService?wsdl" id="cbd8a527-2cbe-4039-a739-50d1c6987505" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="https://dev.semanticbits.com/caaers/services/SafetyReportService?wsdl"><con:part><con:url>https://dev.semanticbits.com/caaers/services/SafetyReportService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="SafetyReportManagementService" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/aereport" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/aereport" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<con:soapui-project activeEnvironment="Default" name="rave-integration-msgs-git" resourceRoot="${projectDir}" soapui-version="5.1.3" abortOnError="false" runType="SEQUENTIAL" id="d37cb3a4-60ad-40b6-a351-d3e428a41b88" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="SafetyReportManagementServiceSoapBinding" type="wsdl" bindingName="{http://schema.integration.caaers.cabig.nci.nih.gov/aereport}SafetyReportManagementServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="https://dev.semanticbits.com/caaers/services/SafetyReportService?wsdl" id="cbd8a527-2cbe-4039-a739-50d1c6987505" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="https://dev.semanticbits.com/caaers/services/SafetyReportService?wsdl"><con:part><con:url>https://dev.semanticbits.com/caaers/services/SafetyReportService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="SafetyReportManagementService" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/aereport" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://schema.integration.caaers.cabig.nci.nih.gov/aereport" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <wsdl:types>
     <xs:schema elementFormDefault="unqualified" targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/common" xmlns:xs="http://www.w3.org/2001/XMLSchema">
       <xs:element name="treatmentAssignment" type="TreatmentAssignmentType"/>
@@ -4820,307 +4820,102 @@
          </saer:EvaluateAndInitiateInputMessage>
       </saer:EvaluateAndInitiate>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/saerules/SAEEvaluationServiceInterface/EvaluateAndInitiate"/></con:call></con:operation></con:interface><con:testSuite name="TestSuite 1" id="ff7aab02-d58b-4ccf-a91a-3a04629553c8"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="TestCase 1" searchProperties="true" id="9824c379-6c54-435e-85d8-51c7868e2415"><con:settings/><con:testStep type="httprequest" name="HTTP -ParticipantODMRequest" id="4a5c6e65-a635-4263-b59a-0b29c7dc4b14"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" name="HTTP -ParticipantODMRequest" postQueryString="false" mediaType="application/xml" id="28bdcb76-f356-45ee-893e-e665208b93e8" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="Basic cmVnaXN0cmFyOnJhcnRzaWdlcm1haS0xMQ==" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:endpoint>http://10.10.10.61:7700/caaers/participantinitialization</con:endpoint><con:request><![CDATA[<ODM CreationDateTime="2013-04-17T13:06:03" FileOID="RavePatientPush.xml" FileType="Transactional" ODMVersion="1.3" xmlns="http://www.cdisc.org/ns/odm/v1.3" xmlns:mdsol="http://www.mdsol.com/ns/odm/metadata">
-   <ClinicalData MetaDataVersionOID="3629771" StudyOID="5876">
-      <SubjectData SubjectKey="ssi-sub10-5876" TransactionType="Insert">
-         <SiteRef LocationOID="CTSUTST01"/>
-         <StudyEventData StudyEventOID="SUBJECT" TransactionType="Update">
-            <FormData FormOID="SUBJECT_ENROLLMENT" TransactionType="Update">
-               <ItemGroupData ItemGroupOID="SUBJECT_ENROLLMENT" TransactionType="Update">
-                  <ItemData ItemOID="PARTIC_ENROL_DT" Value="17 Apr 2013"></ItemData>
-                  <ItemData ItemOID="CURRENT_SITE_ID" Value="MN026"></ItemData>
-                  <ItemData ItemOID="PT_ID" Value="SUB10-5876"></ItemData>
-                  <ItemData ItemOID="ENROLLING_SITE_ID" Value="MN026"></ItemData>
-                  <ItemData ItemOID="LEAD_INST_NAME" Value="SWOG"></ItemData>
-                  <ItemData ItemOID="ENROLL_TIME" Value="01:04:20:PM">
-                     <MeasurementUnitRef MeasurementUnitOID="EDT"/>
-                  </ItemData>
-                  <ItemData ItemOID="GROUP_DATA" Value="N/A"></ItemData>
-                  <ItemData ItemOID="SRC_APP" Value="OPEN"></ItemData>
-               </ItemGroupData>
-            </FormData>
-         </StudyEventData>
-         <StudyEventData StudyEventOID="ENROLLMENT_FORMS" TransactionType="Update">
-            <FormData FormOID="DEMOGRAPHY" TransactionType="Update">
-               <ItemGroupData ItemGroupOID="DEMOGRAPHY" TransactionType="Update">
-                  <ItemData ItemOID="PT_INITIALS_NAME" Value="LFM"></ItemData>
-                  <ItemData ItemOID="PER_BIR_DT" Value="13 Jan 1961"></ItemData>
-                  <ItemData ItemOID="ETHN_GRP_CAT_TXT" Value="Not reported"></ItemData>
-                  <ItemData ItemOID="PERSON_GENDER" Value="Unspecified"></ItemData>
-                  <ItemData ItemOID="COUNTRY_CD" Value="US"></ItemData>
-                  <ItemData ItemOID="ADDR_POSTAL_CD" Value="56711"></ItemData>
-                  <ItemData ItemOID="PAYMENT_METHOD" Value="PRIVATE INSURANCE"></ItemData>
-               </ItemGroupData>
-               <ItemGroupData ItemGroupOID="DEMOGRAPHY" ItemGroupRepeatKey="1" TransactionType="Update">
-                  <ItemData ItemOID="RACE_CAT_TXT" Value="Black or African American"></ItemData>
-               </ItemGroupData>
-               <ItemGroupData ItemGroupOID="DEMOGRAPHY" ItemGroupRepeatKey="2" TransactionType="Insert">
-                  <ItemData ItemOID="RACE_CAT_TXT" Value="American Indian or Alaska Native"></ItemData>
-               </ItemGroupData>
-            </FormData>
-         </StudyEventData>
-         <StudyEventData StudyEventOID="ENROLLMENT_FORMS" TransactionType="Update">
-            <FormData FormOID="STEP_INFORMATION" TransactionType="Update">
-               <ItemGroupData ItemGroupOID="STEP_INFORMATION" ItemGroupRepeatKey="1" TransactionType="Update">
-                  <ItemData ItemOID="EVENT_DATE" Value="17 Apr 2013"></ItemData>
-               </ItemGroupData>
-               <ItemGroupData ItemGroupOID="STEP_INFORMATION" ItemGroupRepeatKey="1" TransactionType="Update">
-                  <ItemData ItemOID="REG_STEP_NUM" Value="1"></ItemData>
-               </ItemGroupData>
-               <ItemGroupData ItemGroupOID="STEP_INFORMATION" ItemGroupRepeatKey="1" TransactionType="Update">
-                  <ItemData ItemOID="EVENT_DESC" Value="Randomization"></ItemData>
-               </ItemGroupData>
-               <ItemGroupData ItemGroupOID="STEP_INFORMATION" ItemGroupRepeatKey="1" TransactionType="Update">
-                  <ItemData ItemOID="EVENT_TIME" Value="01:04:20:PM">
-                     <MeasurementUnitRef MeasurementUnitOID="EDT"/>
-                  </ItemData>
-               </ItemGroupData>
-               <ItemGroupData ItemGroupOID="STEP_INFORMATION" ItemGroupRepeatKey="1" TransactionType="Update">
-                  <ItemData ItemOID="TRACKING_NUM" Value="110347"></ItemData>
-               </ItemGroupData>
-               <ItemGroupData ItemGroupOID="STEP_INFORMATION" ItemGroupRepeatKey="1" TransactionType="Update">
-                  <ItemData ItemOID="TX_MD_PART_INV_NM" Value="Elizabeth Poplin"></ItemData>
-               </ItemGroupData>
-               <ItemGroupData ItemGroupOID="STEP_INFORMATION" ItemGroupRepeatKey="1" TransactionType="Update">
-                  <ItemData ItemOID="PROT_REG_NAME" Value="David Gorski"></ItemData>
-               </ItemGroupData>
-               <ItemGroupData ItemGroupOID="STEP_INFORMATION" ItemGroupRepeatKey="1" TransactionType="Update">
-                  <ItemData ItemOID="INVESTIGATOR_NAME" Value="Paul Rosenthal"></ItemData>
-               </ItemGroupData>
-               <ItemGroupData ItemGroupOID="STEP_INFORMATION" ItemGroupRepeatKey="1" TransactionType="Update">
-                  <ItemData ItemOID="ORG_NAME" Value="SWOG"></ItemData>
-               </ItemGroupData>
-               <ItemGroupData ItemGroupOID="STEP_INFORMATION" ItemGroupRepeatKey="1" TransactionType="Update">
-                  <ItemData ItemOID="PROT_TX_ARM_ASS_TXT" Value="Blinded"></ItemData>
-               </ItemGroupData>
-            </FormData>
-         </StudyEventData>
-      </SubjectData>
-   </ClinicalData>
-</ODM>]]></con:request><con:credentials><con:username>registrar</con:username><con:password>rartsigermai-11</con:password><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:config></con:testStep><con:testStep type="request" name="InitiateSafetyReportAction - A071102" id="6506d8db-14e8-4d0a-aa08-0e3ec008bc7c"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SafetyReportManagementServiceSoapBinding</con:interface><con:operation>initiateSafetyReportAction</con:operation><con:request name="InitiateSafetyReportAction - A071102" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="a8817054-0859-4aeb-bf5a-0990fb5305e9"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://dev.semanticbits.com/caaers/services/SafetyReportService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" 
-xmlns:aer="http://schema.integration.caaers.cabig.nci.nih.gov/aereport" 
-xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
-   <soapenv:Header>
-      <wsse:Security soapenv:mustUnderstand="1">
-         <wsse:UsernameToken wsu:Id="UsernameToken-19" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
-            <wsse:Username>SYSTEM</wsse:Username>
-            <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">system_admin</wsse:Password>
-            <wsse:Nonce EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary">/w9qY2QnBmzEx9lXoIxXyA==</wsse:Nonce>
-            <wsu:Created>2014-01-10T21:32:08.6661550+00:00</wsu:Created>
-         </wsse:UsernameToken>
-      </wsse:Security>
-   </soapenv:Header>
-   <soapenv:Body>
-      <aer:initiateSafetyReportAction>
-         <aer:BaseAdverseEventReport>
-            <aer:createdAt>2014-02-18T17:30:55</aer:createdAt>
-            <aer:adverseEventReportingPeriod>
-               <!--<aer:treatmentAssignmentDescription>OTHEr</aer:treatmentAssignmentDescription>-->
-               <aer:cycleNumber>100</aer:cycleNumber>
-               <aer:startDate>2014-03-02</aer:startDate>
-               <aer:studyParticipantAssignmentRef>
-                  <aer:studySiteRef>
-                     <aer:studyRef>
-                        <aer:identifiers>
-                           <aer:identifier>
-                              <aer:type>Protocol Authority Identifier</aer:type>
-                              <aer:value>A071102</aer:value>
-                           </aer:identifier>
-                        </aer:identifiers>
-                     </aer:studyRef>
-                     <aer:nciInstituteCode>MN008</aer:nciInstituteCode>
-                  </aer:studySiteRef>
-                  <aer:studySubjectIdentifier>S1-A071102</aer:studySubjectIdentifier>
-               </aer:studyParticipantAssignmentRef>
-               <aer:treatmentAssignment>
-                  <aer:code>other</aer:code>
-                  <aer:description>test</aer:description>
-               </aer:treatmentAssignment>
-            </aer:adverseEventReportingPeriod>
-            <aer:physician>
-               <aer:firstName>Physician</aer:firstName>
-               <aer:lastName>one</aer:lastName>
-               <aer:middleName>middlename</aer:middleName>
-               <aer:street>Park center road</aer:street>
-               <aer:city>Herndon</aer:city>
-               <aer:state>VA</aer:state>
-               <aer:zip>20171</aer:zip>
-               <aer:country>USA</aer:country>
-               <aer:contactMechanism>
-                  <aer:type>phone</aer:type>
-                  <aer:value>703-717-9656</aer:value>
-               </aer:contactMechanism>
-               <aer:contactMechanism>
-                  <aer:type>e-mail</aer:type>
-                  <aer:value>vikasgourishetty11@westat.com</aer:value>
-               </aer:contactMechanism>
-               <aer:contactMechanism>
-                  <aer:type>fax</aer:type>
-                  <aer:value>703-787-9656</aer:value>
-               </aer:contactMechanism>
-            </aer:physician>
-            <aer:reporter>
-               <aer:firstName>Reporter</aer:firstName>
-               <aer:lastName>one</aer:lastName>
-               <aer:middleName>middlename</aer:middleName>
-               <aer:street>Sunrise valley drive</aer:street>
-               <aer:city>Chicago</aer:city>
-               <aer:state>IL</aer:state>
-               <aer:zip>20170</aer:zip>
-               <aer:country>USA</aer:country>
-               <aer:contactMechanism>
-                  <aer:type>phone</aer:type>
-                  <aer:value>703-787-1234</aer:value>
-               </aer:contactMechanism>
-               <aer:contactMechanism>
-                  <aer:type>e-mail</aer:type>
-                  <aer:value>vasudev.chatti@semanticbits.com</aer:value>
-               </aer:contactMechanism>
-               <aer:contactMechanism>
-                  <aer:type>fax</aer:type>
-                  <aer:value>703-787-1222</aer:value>
-               </aer:contactMechanism>
-               <aer:contactMechanism>
-                  <aer:type>alternateEmails</aer:type>
-                  <aer:value>vasudevkarthik@gmail.com</aer:value>
-               </aer:contactMechanism>
-            </aer:reporter>
-            <aer:reportedAE>
-               <aer:externalId>reaction-88</aer:externalId>
-            </aer:reportedAE>
-            <!--<aer:reportedAE>
-               <aer:externalId>reaction-89</aer:externalId>
-            </aer:reportedAE>-->
-            <aer:report>
-               <aer:caseNumber/>
-               <!--<aer:withdraw>true</aer:withdraw>-->
-               <aer:aeReportDefinition>
-                  <aer:name>CTEP 10 Calendar Day SAE Report</aer:name>
-                  <!--<aer:name>CTEP 10 Calendar Day SAE Report</aer:name>-->
-               </aer:aeReportDefinition>
-            </aer:report>
-            <aer:externalId/>
-         </aer:BaseAdverseEventReport>
-      </aer:initiateSafetyReportAction>
-   </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" name="SOAP Response" id="a72faae4-ea11-4410-aa4b-a471aa0e6c67"/><con:credentials><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/aereport/SafetyReportManagementServiceInterface/initiateSafetyReportAction"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="saveAndEvaluateAEs - A071102 - TAC" id="39c9e941-cc5c-4807-b452-205f8b73faa2"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SAEEvaluationWebServiceImplServiceSoapBinding</con:interface><con:operation>saveAndEvaluateAEs</con:operation><con:request name="saveAndEvaluateAEs - A071102 - TAC" outgoingWss="caaers-local" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="51530b83-ba47-4758-8eb6-6a365f4b47b0"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://10.10.10.61:6611/caaers/services/RaveIntegrationServices</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:saer="http://schema.integration.caaers.cabig.nci.nih.gov/saerules" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
-   <soapenv:Header>
-      <wsse:Security soapenv:mustUnderstand="1">
-         <wsse:UsernameToken wsu:Id="UsernameToken-19" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
-            <wsse:Username>SYSTEM</wsse:Username>
-            <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">system_admin</wsse:Password>
-            <wsse:Nonce EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary">/w9qY2QnBmzEx9lXoIxXyA==</wsse:Nonce>
-            <wsu:Created>2014-01-10T21:31:08.6661550+00:00</wsu:Created>
-         </wsse:UsernameToken>
-      </wsse:Security>
-   </soapenv:Header>
-   <soapenv:Body>
-      <saer:saveAndEvaluateAEs>
-         <saer:SaveAndEvaluateAEsInputMessage>
-            <saer:adverseEvents>
-               <saer:adverseEvent>
-                  <verbatim>Verbatim1</verbatim>
-                  <adverseEventCtepTerm>
-                     <ctepCode>10010774</ctepCode>
-                  </adverseEventCtepTerm>
-                  <grade>3</grade>
-                  <hospitalization>YES</hospitalization>
-                  <dateFirstLearned>2015-04-10T17:05:01.0Z</dateFirstLearned>
-                  <outcome>
-                     <outComeEnumType>HOSPITALIZATION</outComeEnumType>
-                  </outcome>
-                  <externalId>reaction-88</externalId>
-                  <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>
-               </saer:adverseEvent>
-               <!--<saer:adverseEvent>
-                  <verbatim>Verbatim2</verbatim>
-                  <adverseEventCtepTerm>
-                     <ctepCode>10047700</ctepCode>
-                  </adverseEventCtepTerm>
-                  <grade>3</grade>
-                  <hospitalization>YES</hospitalization>
-                  <dateFirstLearned>2014-11-28T17:06:01.0000000Z</dateFirstLearned>
-                   <outcome>
-                     <outComeEnumType>HOSPITALIZATION</outComeEnumType>
-                  </outcome>
-                  <externalId>reaction-89</externalId>
-                  <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>
-               </saer:adverseEvent>-->
-            </saer:adverseEvents>
-            <saer:criteria>
-               <studySubjectIdentifier>S39-A071102</studySubjectIdentifier>
-               <studyIdentifier>A071102</studyIdentifier>
-               <course>
-                  <startDateOfFirstCourse>2014-01-06</startDateOfFirstCourse>
-                  <startDateOfThisCourse>2015-05-12</startDateOfThisCourse>
-                  <cycleNumber>12</cycleNumber>
-                  <treatmentAssignmentCode>TAC 1</treatmentAssignmentCode>
-                  <otherTreatmentAssignmentDescription>N/A</otherTreatmentAssignmentDescription>
-               </course>
-            </saer:criteria>
-         </saer:SaveAndEvaluateAEsInputMessage>
-      </saer:saveAndEvaluateAEs>
-   </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:credentials><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/saerules/SAEEvaluationServiceInterface/saveAndEvaluateAEs"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="saveAndEvaluateAEs - A071102 - TAC - VAR" id="490acf1b-b6df-405b-b552-437906deb275"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SAEEvaluationWebServiceImplServiceSoapBinding</con:interface><con:operation>saveAndEvaluateAEs</con:operation><con:request name="saveAndEvaluateAEs - A071102 - TAC - VAR" outgoingWss="caaers-local" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="51530b83-ba47-4758-8eb6-6a365f4b47b0"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://10.10.10.61:6611/caaers/services/RaveIntegrationServices</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:saer="http://schema.integration.caaers.cabig.nci.nih.gov/saerules" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
-   <soapenv:Header>
-      <wsse:Security soapenv:mustUnderstand="1">
-         <wsse:UsernameToken wsu:Id="UsernameToken-19" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
-            <wsse:Username>SYSTEM</wsse:Username>
-            <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">system_admin</wsse:Password>
-            <wsse:Nonce EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary">/w9qY2QnBmzEx9lXoIxXyA==</wsse:Nonce>
-            <wsu:Created>2014-01-10T21:31:08.6661550+00:00</wsu:Created>
-         </wsse:UsernameToken>
-      </wsse:Security>
-   </soapenv:Header>
-   <soapenv:Body>
-      <saer:saveAndEvaluateAEs>
-         <saer:SaveAndEvaluateAEsInputMessage>
-            <saer:adverseEvents>
-               <saer:adverseEvent>
-                  <verbatim>${#TestCase#Verbatim}</verbatim>
-                  <adverseEventCtepTerm>
-                     <ctepCode>${#TestCase#Ctepcode}</ctepCode>
-                  </adverseEventCtepTerm>
-                  <grade>${#TestCase#Grade}</grade>
-                  <!--<hospitalization>YES</hospitalization>-->
-                  <dateFirstLearned>${#TestCase#DateFirstLearned}</dateFirstLearned>
-                  <outcome>
-                     <outComeEnumType>${#TestCase#Outcome}</outComeEnumType>
-                  </outcome>
-                  <externalId>${#TestCase#AEExternalID}</externalId>
-                  <reporterEmail>${#TestCase#Reporteremail}</reporterEmail>
-               </saer:adverseEvent>
-               <!--<saer:adverseEvent>
-                  <verbatim>Verbatim2</verbatim>
-                  <adverseEventCtepTerm>
-                     <ctepCode>10047700</ctepCode>
-                  </adverseEventCtepTerm>
-                  <grade>3</grade>
-                  <hospitalization>YES</hospitalization>
-                  <dateFirstLearned>2014-11-28T17:06:01.0000000Z</dateFirstLearned>
-                  
-                  <outcome>
-                     <outComeEnumType>HOSPITALIZATION</outComeEnumType>
-                  </outcome>
-                  <externalId>reaction-89</externalId>
-                  <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>
-               </saer:adverseEvent>-->
-            </saer:adverseEvents>
-            <saer:criteria>
-               <studySubjectIdentifier>${#TestCase#StudySubjectID}</studySubjectIdentifier>
-               <studyIdentifier>${#TestCase#Study}</studyIdentifier>
-               <course>
-                  <startDateOfFirstCourse>${#TestCase#StartDateoffirstcourse}</startDateOfFirstCourse>
-                  <startDateOfThisCourse>${#TestCase#StartDateofthiscourse}</startDateOfThisCourse>
-                  <cycleNumber>${#TestCase#Coursenumber}</cycleNumber>
-                  <treatmentAssignmentCode>${#TestCase#TAC}</treatmentAssignmentCode>
-                  <otherTreatmentAssignmentDescription>${#TestCase#TAD}</otherTreatmentAssignmentDescription>
-               </course>
-            </saer:criteria>
-         </saer:SaveAndEvaluateAEsInputMessage>
-      </saer:saveAndEvaluateAEs>
-   </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:credentials><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/saerules/SAEEvaluationServiceInterface/saveAndEvaluateAEs"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="saveAndEvaluateAEs - A071102 - OTHER - VAR" id="76005b52-2585-4ea9-90c7-a9b46c258ba9"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SAEEvaluationWebServiceImplServiceSoapBinding</con:interface><con:operation>saveAndEvaluateAEs</con:operation><con:request name="saveAndEvaluateAEs - A071102 - OTHER - VAR" outgoingWss="caaers-local" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="51530b83-ba47-4758-8eb6-6a365f4b47b0"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://10.10.10.61:6611/caaers/services/RaveIntegrationServices</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:saer="http://schema.integration.caaers.cabig.nci.nih.gov/saerules" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/saerules/SAEEvaluationServiceInterface/EvaluateAndInitiate"/></con:call></con:operation></con:interface><con:testSuite id="2df69ef2-fbe0-4327-a862-083d2e1dfe58" name="BOM"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="2c8b3b32-c2f6-4023-bd5d-ad7a3d6e1da1" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="BOM" searchProperties="true"><con:settings/><con:testStep type="request" name="saveAndEvaluateAEs - A071102 - TAC" id="4aa1728f-537e-4209-88ad-7128efc6d8f7"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SAEEvaluationWebServiceImplServiceSoapBinding</con:interface><con:operation>saveAndEvaluateAEs</con:operation><con:request name="saveAndEvaluateAEs - A071102 - TAC" outgoingWss="caaers-local" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="51530b83-ba47-4758-8eb6-6a365f4b47b0"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://10.10.10.61:6611/caaers/services/RaveIntegrationServices</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:saer="http://schema.integration.caaers.cabig.nci.nih.gov/saerules" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">    <soapenv:Header>       <wsse:Security soapenv:mustUnderstand="1">          <wsse:UsernameToken wsu:Id="UsernameToken-19" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">             <wsse:Username>SYSTEM</wsse:Username>             <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">system_admin</wsse:Password>             <wsse:Nonce EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary">/w9qY2QnBmzEx9lXoIxXyA==</wsse:Nonce>             <wsu:Created>2014-01-10T21:31:08.6661550+00:00</wsu:Created>          </wsse:UsernameToken>       </wsse:Security>    </soapenv:Header>    <soapenv:Body>       <saer:saveAndEvaluateAEs>          <saer:SaveAndEvaluateAEsInputMessage>             <saer:adverseEvents>                <saer:adverseEvent>                   <verbatim>Verbatim4</verbatim>                   <adverseEventCtepTerm>                      <ctepCode>10010774</ctepCode>                   </adverseEventCtepTerm>                   <grade>4</grade>                  <hospitalization>YES</hospitalization>                   <dateFirstLearned>2015-04-10T17:05:01.0000000Z</dateFirstLearned>                   <outcome>                      <outComeEnumType>HOSPITALIZATION</outComeEnumType>                   </outcome>                   <externalId>reaction-88</externalId>                   <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>                </saer:adverseEvent>  <!--<saer:adverseEvent>                   <verbatim>Verbatim2</verbatim>                   <adverseEventCtepTerm>                      <ctepCode>10047700</ctepCode>                   </adverseEventCtepTerm>                   <grade>2</grade>                   <hospitalization>YES</hospitalization>                   <dateFirstLearned>2014-11-28T17:06:01.0000000Z</dateFirstLearned>                                      <outcome>                      <outComeEnumType>HOSPITALIZATION</outComeEnumType>                   </outcome>                   <externalId>reaction-89</externalId>                   <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>                </saer:adverseEvent> -->                              </saer:adverseEvents>             <saer:criteria>                <studySubjectIdentifier>S29-A071102</studySubjectIdentifier>                <studyIdentifier>A071102</studyIdentifier>                <course>                   <startDateOfFirstCourse>2014-01-06</startDateOfFirstCourse>                   <startDateOfThisCourse>2015-05-03</startDateOfThisCourse>                   <cycleNumber>3</cycleNumber>                   <treatmentAssignmentCode>TAC 1</treatmentAssignmentCode>                   <otherTreatmentAssignmentDescription>N/A</otherTreatmentAssignmentDescription>                </course>             </saer:criteria>          </saer:SaveAndEvaluateAEsInputMessage>       </saer:saveAndEvaluateAEs>    </soapenv:Body> </soapenv:Envelope>]]></con:request><con:credentials><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/saerules/SAEEvaluationServiceInterface/saveAndEvaluateAEs"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="groovy" name="BOM" id="c3882435-c7f8-412f-980d-1df14e9947fe"><con:settings/><con:config><script>// fail: https://dev.semanticbits.com/caaers/services/SAEEvaluationService
+// pass: http://10.10.10.61:6611/caaers/services/RaveIntegrationServices
+
+testCase = testRunner.testCase;
+testStep = testCase.getTestStepAt(0)
+
+// get properties
+sendBOM = "true".equals(testCase.getPropertyValue("sendBOM"))
+socketTimeout = testCase.getPropertyValue("socketTimeout").toInteger() // 10000
+endpoint = testStep.getPropertyValue("endpoint");
+post = new String(testStep.testRequest.messageExchange.rawRequestData)
+xml = testStep.testRequest.messageExchange.requestContent
+
+url = new URL(endpoint)
+host = url.getHost()
+port = url.getPort()
+isSSL = url.getProtocol() == "https"
+charset = java.nio.charset.StandardCharsets.UTF_8
+
+if (port &lt;= 0) {
+	if (isSSL) port = 443
+	else port = 80
+}
+
+// build soap payload
+xmlBytes = xml.getBytes(charset)
+bomBytes = new String("\uFEFF").getBytes()
+if (! sendBOM) bomBytes = new byte[0]
+message = new byte[xmlBytes.length + bomBytes.length]
+System.arraycopy(bomBytes, 0, message, 0, bomBytes.length);
+System.arraycopy(xmlBytes, 0, message, bomBytes.length, xmlBytes.length);
+
+// modify the content-length to include bom
+if (sendBOM) {
+	post = post.replaceFirst(/Content-Length\: (\d+)/) { all, length -> 
+		"Content-Length: " + message.length
+	}
+}
+
+// pront out some debug info
+log.info "BOM Host: " + host
+log.info "BOM Port: " + port
+log.info "BOM Post: " + post
+log.info "BOM XML: " + xml
+log.info "BOM Message length: " + message.length
+
+sock = new Socket(url.getHost(), port)
+
+// wrap with an ssl socket if we are using ssl
+if (isSSL) {
+	sock = javax.net.ssl.SSLSocketFactory.getDefault().createSocket(sock, host, port, true)
+}
+
+// set a socket timeout for poorly bahaving servers
+if (socketTimeout) {
+	sock.setSoTimeout(socketTimeout)
+	log.info "BOM Timeout: " + socketTimeout
+}
+
+// if you need to debug the payload, uncomment the two lines below and change the file path
+//new File("/Users/mccon012",'message.xml').withOutputStream { out ->
+//	out.write(message)
+//}
+
+// send the http details then the soap payload
+// read the response
+resp = ""
+try {
+	os = sock.getOutputStream()
+	is = sock.getInputStream()
+
+	os.write(post.getBytes(charset))
+	os.write(message)
+	os.flush()
+	
+	byte[] buf = new byte[1024]
+	int count = 0
+	while ((count = is.read(buf, 0, buf.length)) != -1) {
+		resp += new String(buf, 0, count)
+	}	
+
+	os.close()
+	is.close()
+} catch (SocketTimeoutException e) {
+	log.warn "BOM socket timed out but will check response anyway"
+} finally {
+	sock.close()
+}
+
+// print debug message
+log.info "BOM Response: " + resp
+
+// assert that we get 200 response code
+assert resp.startsWith("HTTP/1.1 200 OK") == true : "BOM failed - didn't return  200"
+// assert that the payload contains some real stuff
+assert resp.contains("saveAndEvaluateAEsResponse") == true : "BOM failed - couldn't find saveAndEvaluateAEs in response"</script></con:config></con:testStep><con:properties><con:property><con:name>sendBOM</con:name><con:value>true</con:value></con:property><con:property><con:name>socketTimeout</con:name><con:value>10000</con:value></con:property></con:properties></con:testCase><con:properties/></con:testSuite><con:testSuite name="Smoke test-success" id="87cfa69a-4331-4644-8c5f-a9d7437c36f9"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="Create-Success" searchProperties="true" id="9a50cdfb-0ad7-4c6a-a56d-f1b32a56016e"><con:settings/><con:testStep type="request" name="saveAndEvaluateAEs - A071102 - OTHER" id="2393a36d-bfec-48da-904f-bea5ede89ca4"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SAEEvaluationWebServiceImplServiceSoapBinding</con:interface><con:operation>saveAndEvaluateAEs</con:operation><con:request name="saveAndEvaluateAEs - A071102 - OTHER" outgoingWss="caaers-local" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="51530b83-ba47-4758-8eb6-6a365f4b47b0"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://10.10.10.61:6611/caaers/services/RaveIntegrationServices</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:saer="http://schema.integration.caaers.cabig.nci.nih.gov/saerules" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
    <soapenv:Header>
       <wsse:Security soapenv:mustUnderstand="1">
          <wsse:UsernameToken wsu:Id="UsernameToken-19" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
@@ -5170,16 +4965,103 @@ xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-s
                <studyIdentifier>A071102</studyIdentifier>
                <course>
                   <startDateOfFirstCourse>2014-01-06</startDateOfFirstCourse>
-                  <startDateOfThisCourse>2015-05-12</startDateOfThisCourse>
-                  <cycleNumber>12</cycleNumber>
-                  <treatmentAssignmentCode>TAC 1</treatmentAssignmentCode>
-                  <otherTreatmentAssignmentDescription>N/A</otherTreatmentAssignmentDescription>
+                  <startDateOfThisCourse>2015-06-21</startDateOfThisCourse>
+                  <cycleNumber>31</cycleNumber>
+                  <treatmentAssignmentCode>other</treatmentAssignmentCode>
+                  <otherTreatmentAssignmentDescription>testing</otherTreatmentAssignmentDescription>
                </course>
             </saer:criteria>
          </saer:SaveAndEvaluateAEsInputMessage>
       </saer:saveAndEvaluateAEs>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:credentials><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/saerules/SAEEvaluationServiceInterface/saveAndEvaluateAEs"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="InitiateSafetyReportAction - A071102 - TAC" id="2150216b-b8ba-4981-bf31-e9cad6600df9"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SafetyReportManagementServiceSoapBinding</con:interface><con:operation>initiateSafetyReportAction</con:operation><con:request name="InitiateSafetyReportAction - A071102 - TAC" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="27f96308-b58a-4b91-8837-2108331e883f"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://dev.semanticbits.com/caaers/services/SafetyReportService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:aer="http://schema.integration.caaers.cabig.nci.nih.gov/aereport" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+</soapenv:Envelope>]]></con:request><con:assertion type="Simple Contains" id="8aa9530d-899f-41e6-9db1-a4df96e691b7" name="Contains"><con:configuration><token>&lt;recommendedActions></token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/saerules/SAEEvaluationServiceInterface/saveAndEvaluateAEs"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="Evaluate_and_Initiate-A071102" id="4faae35c-f3f6-4db9-a82e-1603fad90404"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SAEEvaluationWebServiceImplServiceSoapBinding</con:interface><con:operation>saveAndEvaluateAEs</con:operation><con:request name="Evaluate_and_Initiate-A071102" outgoingWss="caaers-local" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="51530b83-ba47-4758-8eb6-6a365f4b47b0"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://10.10.10.61:6611/caaers/services/RaveIntegrationServices</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:saer="http://schema.integration.caaers.cabig.nci.nih.gov/saerules" xmlns:aer="http://schema.integration.caaers.cabig.nci.nih.gov/aereport" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="1">
+         <wsse:UsernameToken wsu:Id="UsernameToken-19" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+            <wsse:Username>SYSTEM</wsse:Username>
+            <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">system_admin</wsse:Password>
+            <wsse:Nonce EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary">/w9qY2QnBmzEx9lXoIxXyA==</wsse:Nonce>
+            <wsu:Created>2014-01-10T21:31:08.6661550+00:00</wsu:Created>
+         </wsse:UsernameToken>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <saer:EvaluateAndInitiate>
+         <saer:EvaluateAndInitiateInputMessage>
+            <saer:adverseEvents>
+               <saer:adverseEvent>
+                  <verbatim>Verbatim8</verbatim>
+                  <adverseEventCtepTerm>
+                     <ctepCode>10010774</ctepCode>
+                  </adverseEventCtepTerm>
+                  <grade>3</grade>
+                  <hospitalization>YES</hospitalization>
+                  <dateFirstLearned>2015-07-10T17:05:01.0Z</dateFirstLearned>
+                  <outcome>
+                     <outComeEnumType>HOSPITALIZATION</outComeEnumType>
+                  </outcome>
+                  <externalId>reaction-88</externalId>
+                  <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>
+               </saer:adverseEvent>
+              <saer:adverseEvent>
+                  <verbatim>Verbatim2</verbatim>
+                  <adverseEventCtepTerm>
+                     <ctepCode>10047700</ctepCode>
+                  </adverseEventCtepTerm>
+                  <grade>1</grade>
+                  <hospitalization>YES</hospitalization>
+                  <dateFirstLearned>2014-11-28T17:06:01.0000000Z</dateFirstLearned>
+                  
+                  <outcome>
+                     <outComeEnumType>HOSPITALIZATION</outComeEnumType>
+                  </outcome>
+                  <externalId>reaction-89</externalId>
+                  <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>
+               </saer:adverseEvent> 
+            </saer:adverseEvents>
+            <saer:criteria>
+               <studySubjectIdentifier>S40-A071102</studySubjectIdentifier>
+               <studyIdentifier>A071102</studyIdentifier>
+               <course>
+                  <startDateOfFirstCourse>2014-01-06</startDateOfFirstCourse>
+                  <startDateOfThisCourse>2015-06-04</startDateOfThisCourse>
+                  <cycleNumber>4</cycleNumber>
+                  <treatmentAssignmentCode>TAC 1</treatmentAssignmentCode>
+                  <otherTreatmentAssignmentDescription>N/A</otherTreatmentAssignmentDescription>
+               </course>
+            </saer:criteria>
+          <reportId>1173906368</reportId>
+            <!--<withdrawReport>true</withdrawReport>-->
+            <reporter>
+               <aer:firstName>Reporter</aer:firstName>
+               <aer:lastName>one</aer:lastName>
+               <aer:middleName>middlename</aer:middleName>
+               <aer:street>Sunrise valley drive</aer:street>
+               <aer:city>Chicago</aer:city>
+               <aer:state>IL</aer:state>
+               <aer:zip>20170</aer:zip>
+               <aer:country>USA</aer:country>
+               <aer:contactMechanism>
+                  <aer:type>phone</aer:type>
+                  <aer:value>703-787-1234</aer:value>
+               </aer:contactMechanism>
+               <aer:contactMechanism>
+                  <aer:type>e-mail</aer:type>
+                  <aer:value>vasudev.chatti@semanticbits.com</aer:value>
+               </aer:contactMechanism>
+               <aer:contactMechanism>
+                  <aer:type>fax</aer:type>
+                  <aer:value>703-787-1222</aer:value>
+               </aer:contactMechanism>
+               <aer:contactMechanism>
+                  <aer:type>alternateEmails</aer:type>
+                  <aer:value>vasudevkarthik@gmail.com</aer:value>
+               </aer:contactMechanism>
+            </reporter>
+         </saer:EvaluateAndInitiateInputMessage>
+      </saer:EvaluateAndInitiate>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="Simple Contains" id="60c64c94-8162-421d-993a-1ace68403dc9" name="Contains"><con:configuration><token>&lt;reportId></token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/saerules/SAEEvaluationServiceInterface/saveAndEvaluateAEs"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="InitiateSafetyReportAction - A071102 - TAC" id="7cb32b1a-9dc1-46c0-9aa0-47a258040586"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SafetyReportManagementServiceSoapBinding</con:interface><con:operation>initiateSafetyReportAction</con:operation><con:request name="InitiateSafetyReportAction - A071102 - TAC" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="27f96308-b58a-4b91-8837-2108331e883f"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://dev.semanticbits.com/caaers/services/SafetyReportService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:aer="http://schema.integration.caaers.cabig.nci.nih.gov/aereport" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
    <soapenv:Header>
       <wsse:Security soapenv:mustUnderstand="1">
          <wsse:UsernameToken wsu:Id="UsernameToken-19" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
@@ -5284,7 +5166,7 @@ xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-s
          </aer:BaseAdverseEventReport>
       </aer:initiateSafetyReportAction>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" name="SOAP Response" id="acbab290-7537-4d82-9875-c38294062536"/><con:credentials><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/aereport/SafetyReportManagementServiceInterface/initiateSafetyReportAction"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="saveAndEvaluateAEs - S1117" id="fe6f4cd0-fae8-46d9-83e9-09b54845aba8"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SAEEvaluationWebServiceImplServiceSoapBinding</con:interface><con:operation>saveAndEvaluateAEs</con:operation><con:request name="saveAndEvaluateAEs - S1117" outgoingWss="caaers-local" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="51530b83-ba47-4758-8eb6-6a365f4b47b0"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://10.10.10.61:6611/caaers/services/RaveIntegrationServices</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:saer="http://schema.integration.caaers.cabig.nci.nih.gov/saerules" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" name="SOAP Response" id="acbab290-7537-4d82-9875-c38294062536"/><con:assertion type="Simple Contains" id="33856a1d-2494-4dfb-938b-6ce96cda8e62" name="Contains"><con:configuration><token>&lt;ns1:ReportID></token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/aereport/SafetyReportManagementServiceInterface/initiateSafetyReportAction"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="saveAndEvaluateAEs - S1117" id="f9d45bfc-e8cc-44cd-90eb-04d65f400ec1"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SAEEvaluationWebServiceImplServiceSoapBinding</con:interface><con:operation>saveAndEvaluateAEs</con:operation><con:request name="saveAndEvaluateAEs - S1117" outgoingWss="caaers-local" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="51530b83-ba47-4758-8eb6-6a365f4b47b0"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://10.10.10.61:6611/caaers/services/RaveIntegrationServices</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:saer="http://schema.integration.caaers.cabig.nci.nih.gov/saerules" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
    <soapenv:Header>
       <wsse:Security soapenv:mustUnderstand="1">
          <wsse:UsernameToken wsu:Id="UsernameToken-19" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
@@ -5343,7 +5225,113 @@ xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-s
          </saer:SaveAndEvaluateAEsInputMessage>
       </saer:saveAndEvaluateAEs>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:credentials><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/saerules/SAEEvaluationServiceInterface/saveAndEvaluateAEs"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="InitiateSafetyReportAction -S1117" id="414820d2-554d-4775-bbe6-276752a51d5d"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SafetyReportManagementServiceSoapBinding</con:interface><con:operation>initiateSafetyReportAction</con:operation><con:request name="InitiateSafetyReportAction -S1117" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="27f96308-b58a-4b91-8837-2108331e883f"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://10.10.10.61:6611/caaers/services/RaveIntegrationServices</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:aer="http://schema.integration.caaers.cabig.nci.nih.gov/aereport" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+</soapenv:Envelope>]]></con:request><con:credentials><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/saerules/SAEEvaluationServiceInterface/saveAndEvaluateAEs"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="InitiateSafetyReportAction - A071102" id="f2b6bea0-e6ec-4ff8-be3b-477dd3ecf60f"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SafetyReportManagementServiceSoapBinding</con:interface><con:operation>initiateSafetyReportAction</con:operation><con:request name="InitiateSafetyReportAction - A071102" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="a8817054-0859-4aeb-bf5a-0990fb5305e9"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://dev.semanticbits.com/caaers/services/SafetyReportService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" 
+xmlns:aer="http://schema.integration.caaers.cabig.nci.nih.gov/aereport" 
+xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="1">
+         <wsse:UsernameToken wsu:Id="UsernameToken-19" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+            <wsse:Username>SYSTEM</wsse:Username>
+            <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">system_admin</wsse:Password>
+            <wsse:Nonce EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary">/w9qY2QnBmzEx9lXoIxXyA==</wsse:Nonce>
+            <wsu:Created>2014-01-10T21:32:08.6661550+00:00</wsu:Created>
+         </wsse:UsernameToken>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <aer:initiateSafetyReportAction>
+         <aer:BaseAdverseEventReport>
+            <aer:createdAt>2014-02-18T17:30:55</aer:createdAt>
+            <aer:adverseEventReportingPeriod>
+               <!--<aer:treatmentAssignmentDescription>OTHEr</aer:treatmentAssignmentDescription>-->
+               <aer:cycleNumber>30</aer:cycleNumber>
+               <aer:startDate>2014-06-20</aer:startDate>
+               <aer:studyParticipantAssignmentRef>
+                  <aer:studySiteRef>
+                     <aer:studyRef>
+                        <aer:identifiers>
+                           <aer:identifier>
+                              <aer:type>Protocol Authority Identifier</aer:type>
+                              <aer:value>A071102</aer:value>
+                           </aer:identifier>
+                        </aer:identifiers>
+                     </aer:studyRef>
+                     <aer:nciInstituteCode>MN008</aer:nciInstituteCode>
+                  </aer:studySiteRef>
+                  <aer:studySubjectIdentifier>S39-A071102</aer:studySubjectIdentifier>
+               </aer:studyParticipantAssignmentRef>
+               <aer:treatmentAssignment>
+                  <aer:code>TAC 1</aer:code>
+                <!--  <aer:description>test</aer:description>-->
+               </aer:treatmentAssignment>
+            </aer:adverseEventReportingPeriod>
+           <!-- <aer:physician>
+               <aer:firstName>Physician</aer:firstName>
+               <aer:lastName>one</aer:lastName>
+               <aer:middleName>middlename</aer:middleName>
+               <aer:street>Park center road</aer:street>
+               <aer:city>Herndon</aer:city>
+               <aer:state>VA</aer:state>
+               <aer:zip>20171</aer:zip>
+               <aer:country>USA</aer:country>
+               <aer:contactMechanism>
+                  <aer:type>phone</aer:type>
+                  <aer:value>703-717-9656</aer:value>
+               </aer:contactMechanism>
+               <aer:contactMechanism>
+                  <aer:type>e-mail</aer:type>
+                  <aer:value>vikasgourishetty11@westat.com</aer:value>
+               </aer:contactMechanism>
+               <aer:contactMechanism>
+                  <aer:type>fax</aer:type>
+                  <aer:value>703-787-9656</aer:value>
+               </aer:contactMechanism>
+            </aer:physician>-->
+            <aer:reporter>
+               <aer:firstName>Reporter</aer:firstName>
+               <aer:lastName>one</aer:lastName>
+               <aer:middleName>middlename</aer:middleName>
+               <aer:street>Sunrise valley drive</aer:street>
+               <aer:city>Chicago</aer:city>
+               <aer:state>IL</aer:state>
+               <aer:zip>20170</aer:zip>
+               <aer:country>USA</aer:country>
+               <aer:contactMechanism>
+                  <aer:type>phone</aer:type>
+                  <aer:value>703-787-1234</aer:value>
+               </aer:contactMechanism>
+               <aer:contactMechanism>
+                  <aer:type>e-mail</aer:type>
+                  <aer:value>vasudev.chatti@semanticbits.com</aer:value>
+               </aer:contactMechanism>
+               <aer:contactMechanism>
+                  <aer:type>fax</aer:type>
+                  <aer:value>703-787-1222</aer:value>
+               </aer:contactMechanism>
+               <aer:contactMechanism>
+                  <aer:type>alternateEmails</aer:type>
+                  <aer:value>vasudevkarthik@gmail.com</aer:value>
+               </aer:contactMechanism>
+            </aer:reporter>
+            <aer:reportedAE>
+               <aer:externalId>reaction-88</aer:externalId>
+            </aer:reportedAE>
+            <!--<aer:reportedAE>
+               <aer:externalId>reaction-89</aer:externalId>
+            </aer:reportedAE>-->
+            <aer:report>
+               <aer:caseNumber/>
+               <!--<aer:withdraw>true</aer:withdraw>-->
+               <aer:aeReportDefinition>
+                  <aer:name>CTEP 10 Calendar Day SAE Report</aer:name>
+                  <!--<aer:name>CTEP 10 Calendar Day SAE Report</aer:name>-->
+               </aer:aeReportDefinition>
+            </aer:report>
+            <aer:externalId/>
+         </aer:BaseAdverseEventReport>
+      </aer:initiateSafetyReportAction>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" name="SOAP Response" id="a72faae4-ea11-4410-aa4b-a471aa0e6c67"/><con:credentials><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/aereport/SafetyReportManagementServiceInterface/initiateSafetyReportAction"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="InitiateSafetyReportAction -S1117" id="846161d0-6f60-49fe-8d4a-8452a8fd274b"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SafetyReportManagementServiceSoapBinding</con:interface><con:operation>initiateSafetyReportAction</con:operation><con:request name="InitiateSafetyReportAction -S1117" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="27f96308-b58a-4b91-8837-2108331e883f"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://10.10.10.61:6611/caaers/services/RaveIntegrationServices</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:aer="http://schema.integration.caaers.cabig.nci.nih.gov/aereport" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
    <soapenv:Header>
       <wsse:Security soapenv:mustUnderstand="1">
          <wsse:UsernameToken wsu:Id="UsernameToken-19" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
@@ -5447,7 +5435,183 @@ xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-s
          </aer:BaseAdverseEventReport>
       </aer:initiateSafetyReportAction>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" name="SOAP Response" id="acbab290-7537-4d82-9875-c38294062536"/><con:credentials><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/aereport/SafetyReportManagementServiceInterface/initiateSafetyReportAction"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="Evaluate_and_Initiate-A071102" id="60eac7de-1160-42a4-9d4c-2f86a2f32b80"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SAEEvaluationWebServiceImplServiceSoapBinding</con:interface><con:operation>saveAndEvaluateAEs</con:operation><con:request name="Evaluate_and_Initiate-A071102" outgoingWss="caaers-local" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="51530b83-ba47-4758-8eb6-6a365f4b47b0"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://10.10.10.61:6611/caaers/services/RaveIntegrationServices</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:saer="http://schema.integration.caaers.cabig.nci.nih.gov/saerules" xmlns:aer="http://schema.integration.caaers.cabig.nci.nih.gov/aereport" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+</soapenv:Envelope>]]></con:request><con:assertion type="Simple Contains" id="30c7a354-2ff6-43b9-96ca-41929f1b6d7b" name="Contains"><con:configuration><token>&lt;ns1:ReportID></token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/aereport/SafetyReportManagementServiceInterface/initiateSafetyReportAction"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="saveAndEvaluateAEs - A071102 - TAC - VAR" id="f7fb64a7-eb63-4de2-a13d-db178d806c0b"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SAEEvaluationWebServiceImplServiceSoapBinding</con:interface><con:operation>saveAndEvaluateAEs</con:operation><con:request name="saveAndEvaluateAEs - A071102 - TAC - VAR" outgoingWss="caaers-local" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="51530b83-ba47-4758-8eb6-6a365f4b47b0"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://10.10.10.61:6611/caaers/services/RaveIntegrationServices</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:saer="http://schema.integration.caaers.cabig.nci.nih.gov/saerules" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="1">
+         <wsse:UsernameToken wsu:Id="UsernameToken-19" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+            <wsse:Username>SYSTEM</wsse:Username>
+            <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">system_admin</wsse:Password>
+            <wsse:Nonce EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary">/w9qY2QnBmzEx9lXoIxXyA==</wsse:Nonce>
+            <wsu:Created>2014-01-10T21:31:08.6661550+00:00</wsu:Created>
+         </wsse:UsernameToken>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <saer:saveAndEvaluateAEs>
+         <saer:SaveAndEvaluateAEsInputMessage>
+            <saer:adverseEvents>
+               <saer:adverseEvent>
+                  <verbatim>Verbatim1</verbatim>
+                  <adverseEventCtepTerm>
+                     <ctepCode>10010774</ctepCode>
+                  </adverseEventCtepTerm>
+                  <grade>3</grade>
+                  <hospitalization>YES</hospitalization>
+                  <dateFirstLearned>2015-04-10T17:05:01.0Z</dateFirstLearned>
+                  <outcome>
+                     <outComeEnumType>HOSPITALIZATION</outComeEnumType>
+                  </outcome>
+                  <externalId>reaction-88</externalId>
+                  <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>
+               </saer:adverseEvent>
+               <!--<saer:adverseEvent>
+                  <verbatim>Verbatim2</verbatim>
+                  <adverseEventCtepTerm>
+                     <ctepCode>10047700</ctepCode>
+                  </adverseEventCtepTerm>
+                  <grade>3</grade>
+                  <hospitalization>YES</hospitalization>
+                  <dateFirstLearned>2014-11-28T17:06:01.0000000Z</dateFirstLearned>
+                   <outcome>
+                     <outComeEnumType>HOSPITALIZATION</outComeEnumType>
+                  </outcome>
+                  <externalId>reaction-89</externalId>
+                  <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>
+               </saer:adverseEvent>-->
+            </saer:adverseEvents>
+            <saer:criteria>
+               <studySubjectIdentifier>S39-A071102</studySubjectIdentifier>
+               <studyIdentifier>A071102</studyIdentifier>
+               <course>
+                  <startDateOfFirstCourse>2014-01-06</startDateOfFirstCourse>
+                  <startDateOfThisCourse>2015-06-20</startDateOfThisCourse>
+                  <cycleNumber>30</cycleNumber>
+                  <treatmentAssignmentCode>TAC 1</treatmentAssignmentCode>
+                  <otherTreatmentAssignmentDescription>N/A</otherTreatmentAssignmentDescription>
+               </course>
+            </saer:criteria>
+         </saer:SaveAndEvaluateAEsInputMessage>
+      </saer:saveAndEvaluateAEs>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/saerules/SAEEvaluationServiceInterface/saveAndEvaluateAEs"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="Parameterized-smoke-tests" searchProperties="true" id="c1bf5c2c-d8c1-4ab7-b131-3675086530bd"><con:settings/><con:testStep type="request" name="saveAndEvaluateAEs - A071102 - TAC" id="32ba38a4-804e-4330-9052-b38b20190fdc"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SAEEvaluationWebServiceImplServiceSoapBinding</con:interface><con:operation>saveAndEvaluateAEs</con:operation><con:request name="saveAndEvaluateAEs - A071102 - TAC" outgoingWss="caaers-local" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="51530b83-ba47-4758-8eb6-6a365f4b47b0"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://10.10.10.61:6611/caaers/services/RaveIntegrationServices</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:saer="http://schema.integration.caaers.cabig.nci.nih.gov/saerules" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="1">
+         <wsse:UsernameToken wsu:Id="UsernameToken-19" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+            <wsse:Username>SYSTEM</wsse:Username>
+            <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">system_admin</wsse:Password>
+            <wsse:Nonce EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary">/w9qY2QnBmzEx9lXoIxXyA==</wsse:Nonce>
+            <wsu:Created>2014-01-10T21:31:08.6661550+00:00</wsu:Created>
+         </wsse:UsernameToken>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <saer:saveAndEvaluateAEs>
+         <saer:SaveAndEvaluateAEsInputMessage>
+            <saer:adverseEvents>
+               <saer:adverseEvent>
+                  <verbatim>${#TestCase#Verbatim}</verbatim>
+                  <adverseEventCtepTerm>
+                     <ctepCode>${#TestCase#Ctepcode}</ctepCode>
+                  </adverseEventCtepTerm>
+                  <grade>${#TestCase#Grade}</grade>
+                  <!--<hospitalization>YES</hospitalization>-->
+                  <dateFirstLearned>${#TestCase#DateFirstLearned}</dateFirstLearned>
+                  <outcome>
+                     <outComeEnumType>${#TestCase#Outcome}</outComeEnumType>
+                  </outcome>
+                  <externalId>${#TestCase#AEExternalID}</externalId>
+                  <reporterEmail>${#TestCase#Reporteremail}</reporterEmail>
+               </saer:adverseEvent>
+               <!--<saer:adverseEvent>
+                  <verbatim>Verbatim2</verbatim>
+                  <adverseEventCtepTerm>
+                     <ctepCode>10047700</ctepCode>
+                  </adverseEventCtepTerm>
+                  <grade>3</grade>
+                  <hospitalization>YES</hospitalization>
+                  <dateFirstLearned>2014-11-28T17:06:01.0000000Z</dateFirstLearned>
+                  
+                  <outcome>
+                     <outComeEnumType>HOSPITALIZATION</outComeEnumType>
+                  </outcome>
+                  <externalId>reaction-89</externalId>
+                  <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>
+               </saer:adverseEvent>-->
+            </saer:adverseEvents>
+            <saer:criteria>
+               <studySubjectIdentifier>${#TestCase#StudySubjectID}</studySubjectIdentifier>
+               <studyIdentifier>${#TestCase#Study}</studyIdentifier>
+               <course>
+                  <startDateOfFirstCourse>${#TestCase#StartDateoffirstcourse}</startDateOfFirstCourse>
+                  <startDateOfThisCourse>${#TestCase#StartDateofthiscourse}</startDateOfThisCourse>
+                  <cycleNumber>${#TestCase#Coursenumber}</cycleNumber>
+                  <treatmentAssignmentCode>${#TestCase#TAC}</treatmentAssignmentCode>
+                  <otherTreatmentAssignmentDescription>${#TestCase#TAD}</otherTreatmentAssignmentDescription>
+               </course>
+            </saer:criteria>
+         </saer:SaveAndEvaluateAEsInputMessage>
+      </saer:saveAndEvaluateAEs>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="Simple Contains" id="a33084d3-e9cd-4413-8ffb-4492a0c05fd9" name="Contains"><con:configuration><token>&lt;recommendedActions></token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/saerules/SAEEvaluationServiceInterface/saveAndEvaluateAEs"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="saveAndEvaluateAEs - A071102 - OTHER" id="85863e14-7ef8-40f0-9804-566119d35400"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SAEEvaluationWebServiceImplServiceSoapBinding</con:interface><con:operation>saveAndEvaluateAEs</con:operation><con:request name="saveAndEvaluateAEs - A071102 - OTHER" outgoingWss="caaers-local" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="51530b83-ba47-4758-8eb6-6a365f4b47b0"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://10.10.10.61:6611/caaers/services/RaveIntegrationServices</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:saer="http://schema.integration.caaers.cabig.nci.nih.gov/saerules" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="1">
+         <wsse:UsernameToken wsu:Id="UsernameToken-19" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+            <wsse:Username>SYSTEM</wsse:Username>
+            <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">system_admin</wsse:Password>
+            <wsse:Nonce EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary">/w9qY2QnBmzEx9lXoIxXyA==</wsse:Nonce>
+            <wsu:Created>2014-01-10T21:31:08.6661550+00:00</wsu:Created>
+         </wsse:UsernameToken>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <saer:saveAndEvaluateAEs>
+         <saer:SaveAndEvaluateAEsInputMessage>
+            <saer:adverseEvents>
+               <saer:adverseEvent>
+                  <verbatim>Verbatim4</verbatim>
+                  <adverseEventCtepTerm>
+                     <ctepCode>10010774</ctepCode>
+                  </adverseEventCtepTerm>
+                  <grade>1</grade>
+                 <hospitalization>YES</hospitalization>
+                  <dateFirstLearned>2015-04-10T17:05:01.0Z</dateFirstLearned>
+               <outcome>
+                     <outComeEnumType>HOSPITALIZATION</outComeEnumType>
+                  </outcome>
+                  <externalId>reaction-88</externalId>
+                  <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>
+               </saer:adverseEvent>
+         <!--   <saer:adverseEvent>
+                  <verbatim>Verbatim2</verbatim>
+                  <adverseEventCtepTerm>
+                     <ctepCode>10047700</ctepCode>
+                  </adverseEventCtepTerm>
+                  <grade>3</grade>
+                  <hospitalization>YES</hospitalization>
+                  <dateFirstLearned>2014-11-28T17:06:01.0000000Z</dateFirstLearned>
+                  
+                  <outcome>
+                     <outComeEnumType>HOSPITALIZATION</outComeEnumType>
+                  </outcome>
+                  <externalId>reaction-89</externalId>
+                  <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>
+               </saer:adverseEvent> -->
+            </saer:adverseEvents>
+            <saer:criteria>
+               <studySubjectIdentifier>S36-A071102</studySubjectIdentifier>
+               <studyIdentifier>A071102</studyIdentifier>
+               <course>
+                  <startDateOfFirstCourse>2014-01-06</startDateOfFirstCourse>
+                  <startDateOfThisCourse>2015-06-21</startDateOfThisCourse>
+                  <cycleNumber>31</cycleNumber>
+                  <treatmentAssignmentCode>other</treatmentAssignmentCode>
+                  <otherTreatmentAssignmentDescription>testing</otherTreatmentAssignmentDescription>
+               </course>
+            </saer:criteria>
+         </saer:SaveAndEvaluateAEsInputMessage>
+      </saer:saveAndEvaluateAEs>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="Simple Contains" id="8aa9530d-899f-41e6-9db1-a4df96e691b7" name="Contains"><con:configuration><token>&lt;recommendedActions></token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/saerules/SAEEvaluationServiceInterface/saveAndEvaluateAEs"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="Evaluate_and_Initiate-A071102" id="33929f44-a7ae-45e3-b1c6-251831381ca3"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SAEEvaluationWebServiceImplServiceSoapBinding</con:interface><con:operation>saveAndEvaluateAEs</con:operation><con:request name="Evaluate_and_Initiate-A071102" outgoingWss="caaers-local" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="51530b83-ba47-4758-8eb6-6a365f4b47b0"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://integ.semanticbits.com/caaers/services/isrs/SAEEvaluationService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:saer="http://schema.integration.caaers.cabig.nci.nih.gov/saerules" xmlns:aer="http://schema.integration.caaers.cabig.nci.nih.gov/aereport" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
    <soapenv:Header>
       <wsse:Security soapenv:mustUnderstand="1">
          <wsse:UsernameToken wsu:Id="UsernameToken-19" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
@@ -5463,20 +5627,20 @@ xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-s
          <saer:EvaluateAndInitiateInputMessage>
             <saer:adverseEvents>
                <saer:adverseEvent>
-                  <verbatim>Verbatim9</verbatim>
+                  <verbatim>Verbatim8</verbatim>
                   <adverseEventCtepTerm>
                      <ctepCode>10010774</ctepCode>
                   </adverseEventCtepTerm>
                   <grade>3</grade>
                   <hospitalization>YES</hospitalization>
-                  <dateFirstLearned>2015-06-10T17:05:01.0000000Z</dateFirstLearned>
+                  <dateFirstLearned>2015-07-10T17:05:01.0Z</dateFirstLearned>
                   <outcome>
                      <outComeEnumType>HOSPITALIZATION</outComeEnumType>
                   </outcome>
                   <externalId>reaction-88</externalId>
                   <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>
                </saer:adverseEvent>
-<!--<saer:adverseEvent>
+               <!--<saer:adverseEvent>
                   <verbatim>Verbatim2</verbatim>
                   <adverseEventCtepTerm>
                      <ctepCode>10047700</ctepCode>
@@ -5491,28 +5655,21 @@ xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-s
                   <externalId>reaction-89</externalId>
                   <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>
                </saer:adverseEvent>-->
-
-
-
-
-
-               
             </saer:adverseEvents>
             <saer:criteria>
-               <studySubjectIdentifier>S36-A071102</studySubjectIdentifier>
+               <studySubjectIdentifier>S39-A071102</studySubjectIdentifier>
                <studyIdentifier>A071102</studyIdentifier>
                <course>
                   <startDateOfFirstCourse>2014-01-06</startDateOfFirstCourse>
-                  <startDateOfThisCourse>2015-06-18</startDateOfThisCourse>
-                  <cycleNumber>23</cycleNumber>
-                  <treatmentAssignmentCode>other</treatmentAssignmentCode>
-                  <otherTreatmentAssignmentDescription>testing</otherTreatmentAssignmentDescription>
-               
+                  <startDateOfThisCourse>2015-06-22</startDateOfThisCourse>
+                  <cycleNumber>32</cycleNumber>
+                  <treatmentAssignmentCode>TAC 1</treatmentAssignmentCode>
+                  <otherTreatmentAssignmentDescription>N/A</otherTreatmentAssignmentDescription>
                </course>
             </saer:criteria>
-  <!--<reportId>1746756705</reportId>-->
-        <!--  <withdrawReport>true</withdrawReport>-->
-          <reporter>
+          <!--  <reportId>1606112998</reportId>-->
+            <!--<withdrawReport>true</withdrawReport>-->
+            <reporter>
                <aer:firstName>Reporter</aer:firstName>
                <aer:lastName>one</aer:lastName>
                <aer:middleName>middlename</aer:middleName>
@@ -5541,99 +5698,523 @@ xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-s
          </saer:EvaluateAndInitiateInputMessage>
       </saer:EvaluateAndInitiate>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:credentials><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/saerules/SAEEvaluationServiceInterface/saveAndEvaluateAEs"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:properties/></con:testSuite><con:testSuite id="2df69ef2-fbe0-4327-a862-083d2e1dfe58" name="BOM"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="2c8b3b32-c2f6-4023-bd5d-ad7a3d6e1da1" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="BOM" searchProperties="true"><con:settings/><con:testStep type="request" name="saveAndEvaluateAEs - A071102 - TAC" id="4aa1728f-537e-4209-88ad-7128efc6d8f7"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SAEEvaluationWebServiceImplServiceSoapBinding</con:interface><con:operation>saveAndEvaluateAEs</con:operation><con:request name="saveAndEvaluateAEs - A071102 - TAC" outgoingWss="caaers-local" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="51530b83-ba47-4758-8eb6-6a365f4b47b0"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://10.10.10.61:6611/caaers/services/RaveIntegrationServices</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:saer="http://schema.integration.caaers.cabig.nci.nih.gov/saerules" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">    <soapenv:Header>       <wsse:Security soapenv:mustUnderstand="1">          <wsse:UsernameToken wsu:Id="UsernameToken-19" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">             <wsse:Username>SYSTEM</wsse:Username>             <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">system_admin</wsse:Password>             <wsse:Nonce EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary">/w9qY2QnBmzEx9lXoIxXyA==</wsse:Nonce>             <wsu:Created>2014-01-10T21:31:08.6661550+00:00</wsu:Created>          </wsse:UsernameToken>       </wsse:Security>    </soapenv:Header>    <soapenv:Body>       <saer:saveAndEvaluateAEs>          <saer:SaveAndEvaluateAEsInputMessage>             <saer:adverseEvents>                <saer:adverseEvent>                   <verbatim>Verbatim4</verbatim>                   <adverseEventCtepTerm>                      <ctepCode>10010774</ctepCode>                   </adverseEventCtepTerm>                   <grade>4</grade>                  <hospitalization>YES</hospitalization>                   <dateFirstLearned>2015-04-10T17:05:01.0000000Z</dateFirstLearned>                   <outcome>                      <outComeEnumType>HOSPITALIZATION</outComeEnumType>                   </outcome>                   <externalId>reaction-88</externalId>                   <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>                </saer:adverseEvent>  <!--<saer:adverseEvent>                   <verbatim>Verbatim2</verbatim>                   <adverseEventCtepTerm>                      <ctepCode>10047700</ctepCode>                   </adverseEventCtepTerm>                   <grade>2</grade>                   <hospitalization>YES</hospitalization>                   <dateFirstLearned>2014-11-28T17:06:01.0000000Z</dateFirstLearned>                                      <outcome>                      <outComeEnumType>HOSPITALIZATION</outComeEnumType>                   </outcome>                   <externalId>reaction-89</externalId>                   <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>                </saer:adverseEvent> -->                              </saer:adverseEvents>             <saer:criteria>                <studySubjectIdentifier>S29-A071102</studySubjectIdentifier>                <studyIdentifier>A071102</studyIdentifier>                <course>                   <startDateOfFirstCourse>2014-01-06</startDateOfFirstCourse>                   <startDateOfThisCourse>2015-05-03</startDateOfThisCourse>                   <cycleNumber>3</cycleNumber>                   <treatmentAssignmentCode>TAC 1</treatmentAssignmentCode>                   <otherTreatmentAssignmentDescription>N/A</otherTreatmentAssignmentDescription>                </course>             </saer:criteria>          </saer:SaveAndEvaluateAEsInputMessage>       </saer:saveAndEvaluateAEs>    </soapenv:Body> </soapenv:Envelope>]]></con:request><con:credentials><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/saerules/SAEEvaluationServiceInterface/saveAndEvaluateAEs"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="groovy" name="BOM" id="c3882435-c7f8-412f-980d-1df14e9947fe"><con:settings/><con:config><script>// fail: https://dev.semanticbits.com/caaers/services/SAEEvaluationService
-// pass: http://10.10.10.61:6611/caaers/services/RaveIntegrationServices
-
-testCase = testRunner.testCase;
-testStep = testCase.getTestStepAt(0)
-
-// get properties
-sendBOM = "true".equals(testCase.getPropertyValue("sendBOM"))
-socketTimeout = testCase.getPropertyValue("socketTimeout").toInteger() // 10000
-endpoint = testStep.getPropertyValue("endpoint");
-post = new String(testStep.testRequest.messageExchange.rawRequestData)
-xml = testStep.testRequest.messageExchange.requestContent
-
-url = new URL(endpoint)
-host = url.getHost()
-port = url.getPort()
-isSSL = url.getProtocol() == "https"
-charset = java.nio.charset.StandardCharsets.UTF_8
-
-if (port &lt;= 0) {
-	if (isSSL) port = 443
-	else port = 80
-}
-
-// build soap payload
-xmlBytes = xml.getBytes(charset)
-bomBytes = new String("\uFEFF").getBytes()
-if (! sendBOM) bomBytes = new byte[0]
-message = new byte[xmlBytes.length + bomBytes.length]
-System.arraycopy(bomBytes, 0, message, 0, bomBytes.length);
-System.arraycopy(xmlBytes, 0, message, bomBytes.length, xmlBytes.length);
-
-// modify the content-length to include bom
-if (sendBOM) {
-	post = post.replaceFirst(/Content-Length\: (\d+)/) { all, length -> 
-		"Content-Length: " + message.length
-	}
-}
-
-// pront out some debug info
-log.info "BOM Host: " + host
-log.info "BOM Port: " + port
-log.info "BOM Post: " + post
-log.info "BOM XML: " + xml
-log.info "BOM Message length: " + message.length
-
-sock = new Socket(url.getHost(), port)
-
-// wrap with an ssl socket if we are using ssl
-if (isSSL) {
-	sock = javax.net.ssl.SSLSocketFactory.getDefault().createSocket(sock, host, port, true)
-}
-
-// set a socket timeout for poorly bahaving servers
-if (socketTimeout) {
-	sock.setSoTimeout(socketTimeout)
-	log.info "BOM Timeout: " + socketTimeout
-}
-
-// if you need to debug the payload, uncomment the two lines below and change the file path
-//new File("/Users/mccon012",'message.xml').withOutputStream { out ->
-//	out.write(message)
-//}
-
-// send the http details then the soap payload
-// read the response
-resp = ""
-try {
-	os = sock.getOutputStream()
-	is = sock.getInputStream()
-
-	os.write(post.getBytes(charset))
-	os.write(message)
-	os.flush()
-	
-	byte[] buf = new byte[1024]
-	int count = 0
-	while ((count = is.read(buf, 0, buf.length)) != -1) {
-		resp += new String(buf, 0, count)
-	}	
-
-	os.close()
-	is.close()
-} catch (SocketTimeoutException e) {
-	log.warn "BOM socket timed out but will check response anyway"
-} finally {
-	sock.close()
-}
-
-// print debug message
-log.info "BOM Response: " + resp
-
-// assert that we get 200 response code
-assert resp.startsWith("HTTP/1.1 200 OK") == true : "BOM failed - didn't return  200"
-// assert that the payload contains some real stuff
-assert resp.contains("saveAndEvaluateAEsResponse") == true : "BOM failed - couldn't find saveAndEvaluateAEs in response"</script></con:config></con:testStep><con:properties><con:property><con:name>sendBOM</con:name><con:value>true</con:value></con:property><con:property><con:name>socketTimeout</con:name><con:value>10000</con:value></con:property></con:properties></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer><con:outgoing><con:name>caaers</con:name><con:entry type="Username" username="mayo-super-user" password="Hello-12"><con:configuration><addCreated>true</addCreated><addNonce>true</addNonce><passwordType>PasswordText</passwordType></con:configuration></con:entry></con:outgoing><con:outgoing><con:name>caaers-integ</con:name><con:entry type="Username" username="sb-admin" password="Hello-12"><con:configuration><addCreated>true</addCreated><addNonce>true</addNonce><passwordType>PasswordText</passwordType></con:configuration></con:entry></con:outgoing></con:wssContainer><con:oAuth2ProfileContainer/><con:sensitiveInformation/></con:soapui-project>
+</soapenv:Envelope>]]></con:request><con:assertion type="Simple Contains" id="45880001-d731-48c6-af28-0d154d291fce" name="Contains"><con:configuration><token>&lt;recommendedActions></token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/saerules/SAEEvaluationServiceInterface/saveAndEvaluateAEs"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="Evaluate_and_Initiate-A071102-VAR" id="4ee9782c-c994-4d95-aec5-0b5a9f172ad3"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SAEEvaluationWebServiceImplServiceSoapBinding</con:interface><con:operation>saveAndEvaluateAEs</con:operation><con:request name="Evaluate_and_Initiate-A071102-VAR" outgoingWss="caaers-local" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="51530b83-ba47-4758-8eb6-6a365f4b47b0"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://10.10.10.61:6611/caaers/services/RaveIntegrationServices</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:saer="http://schema.integration.caaers.cabig.nci.nih.gov/saerules" xmlns:aer="http://schema.integration.caaers.cabig.nci.nih.gov/aereport" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="1">
+         <wsse:UsernameToken wsu:Id="UsernameToken-19" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+            <wsse:Username>SYSTEM</wsse:Username>
+            <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">system_admin</wsse:Password>
+            <wsse:Nonce EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary">/w9qY2QnBmzEx9lXoIxXyA==</wsse:Nonce>
+            <wsu:Created>2014-01-10T21:31:08.6661550+00:00</wsu:Created>
+         </wsse:UsernameToken>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <saer:EvaluateAndInitiate>
+         <saer:EvaluateAndInitiateInputMessage>
+             <saer:adverseEvents>
+               <saer:adverseEvent>
+                  <verbatim>${#TestCase#Verbatim}</verbatim>
+                  <adverseEventCtepTerm>
+                     <ctepCode>${#TestCase#Ctepcode}</ctepCode>
+                  </adverseEventCtepTerm>
+                  <grade>${#TestCase#Grade}</grade>
+                  <!--<hospitalization>YES</hospitalization>-->
+                  <dateFirstLearned>${#TestCase#DateFirstLearned}</dateFirstLearned>
+                  <outcome>
+                     <outComeEnumType>${#TestCase#Outcome}</outComeEnumType>
+                  </outcome>
+                  <externalId>${#TestCase#AEExternalID}</externalId>
+                  <reporterEmail>${#TestCase#Reporteremail}</reporterEmail>
+               </saer:adverseEvent>
+               <!--<saer:adverseEvent>
+                  <verbatim>Verbatim2</verbatim>
+                  <adverseEventCtepTerm>
+                     <ctepCode>10047700</ctepCode>
+                  </adverseEventCtepTerm>
+                  <grade>3</grade>
+                  <hospitalization>YES</hospitalization>
+                  <dateFirstLearned>2014-11-28T17:06:01.0000000Z</dateFirstLearned>
+                  
+                  <outcome>
+                     <outComeEnumType>HOSPITALIZATION</outComeEnumType>
+                  </outcome>
+                  <externalId>reaction-89</externalId>
+                  <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>
+               </saer:adverseEvent>-->
+            </saer:adverseEvents>
+            <saer:criteria>
+               <studySubjectIdentifier>${#TestCase#StudySubjectID}</studySubjectIdentifier>
+               <studyIdentifier>${#TestCase#Study}</studyIdentifier>
+               <course>
+                  <startDateOfFirstCourse>${#TestCase#StartDateoffirstcourse}</startDateOfFirstCourse>
+                  <startDateOfThisCourse>${#TestCase#StartDateofthiscourse}</startDateOfThisCourse>
+                  <cycleNumber>${#TestCase#Coursenumber}</cycleNumber>
+                  <treatmentAssignmentCode>${#TestCase#TAC}</treatmentAssignmentCode>
+                  <otherTreatmentAssignmentDescription>${#TestCase#TAD}</otherTreatmentAssignmentDescription>
+               </course>
+            </saer:criteria>
+          <!--  <reportId>1606112998</reportId>-->
+            <!--<withdrawReport>true</withdrawReport>-->
+            <reporter>
+               <aer:firstName>Reporter</aer:firstName>
+               <aer:lastName>one</aer:lastName>
+               <aer:middleName>middlename</aer:middleName>
+               <aer:street>Sunrise valley drive</aer:street>
+               <aer:city>Chicago</aer:city>
+               <aer:state>IL</aer:state>
+               <aer:zip>20170</aer:zip>
+               <aer:country>USA</aer:country>
+               <aer:contactMechanism>
+                  <aer:type>phone</aer:type>
+                  <aer:value>703-787-1234</aer:value>
+               </aer:contactMechanism>
+               <aer:contactMechanism>
+                  <aer:type>e-mail</aer:type>
+                  <aer:value>vasudev.chatti@semanticbits.com</aer:value>
+               </aer:contactMechanism>
+               <aer:contactMechanism>
+                  <aer:type>fax</aer:type>
+                  <aer:value>703-787-1222</aer:value>
+               </aer:contactMechanism>
+               <aer:contactMechanism>
+                  <aer:type>alternateEmails</aer:type>
+                  <aer:value>vasudevkarthik@gmail.com</aer:value>
+               </aer:contactMechanism>
+            </reporter>
+         </saer:EvaluateAndInitiateInputMessage>
+      </saer:EvaluateAndInitiate>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="Simple Contains" id="00637227-0fc3-4904-a273-8a9ab2187117" name="Contains"><con:configuration><token>&lt;recommendedActions></token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/saerules/SAEEvaluationServiceInterface/saveAndEvaluateAEs"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="InitiateSafetyReportAction - A071102 - TAC" id="773f40cb-23ae-4a73-8f00-aa6d38f41706"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SafetyReportManagementServiceSoapBinding</con:interface><con:operation>initiateSafetyReportAction</con:operation><con:request name="InitiateSafetyReportAction - A071102 - TAC" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="27f96308-b58a-4b91-8837-2108331e883f"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://dev.semanticbits.com/caaers/services/SafetyReportService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:aer="http://schema.integration.caaers.cabig.nci.nih.gov/aereport" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="1">
+         <wsse:UsernameToken wsu:Id="UsernameToken-19" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+            <wsse:Username>SYSTEM</wsse:Username>
+            <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">system_admin</wsse:Password>
+            <wsse:Nonce EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary">/w9qY2QnBmzEx9lXoIxXyA==</wsse:Nonce>
+            <wsu:Created>2014-01-10T21:32:08.6661550+00:00</wsu:Created>
+         </wsse:UsernameToken>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <aer:initiateSafetyReportAction>
+         <aer:BaseAdverseEventReport>
+            <aer:createdAt>2014-02-18T17:32:55</aer:createdAt>
+            <aer:adverseEventReportingPeriod>
+               <aer:cycleNumber>12</aer:cycleNumber>
+               <aer:startDate>2015-05-12</aer:startDate>
+               <aer:studyParticipantAssignmentRef>
+                  <aer:studySiteRef>
+                     <aer:studyRef>
+                        <aer:identifiers>
+                           <aer:identifier>
+                              <aer:type>Protocol Authority Identifier</aer:type>
+                              <aer:value>A071102</aer:value>
+                           </aer:identifier>
+                        </aer:identifiers>
+                     </aer:studyRef>
+                     <aer:nciInstituteCode>MN008</aer:nciInstituteCode>
+                  </aer:studySiteRef>
+                  <aer:studySubjectIdentifier>S36-A071102</aer:studySubjectIdentifier>
+               </aer:studyParticipantAssignmentRef>
+               <aer:treatmentAssignment>
+                  <aer:code>TAC 1</aer:code>
+                  <!--<aer:description>someother</aer:description>-->
+                  <!--<aer:description>N/A</aer:description>-->
+               </aer:treatmentAssignment>
+            </aer:adverseEventReportingPeriod>
+            <!--<aer:physician>
+               <aer:firstName>Physician</aer:firstName>
+               <aer:lastName>one</aer:lastName>
+              <aer:middleName>middlename</aer:middleName>
+               <aer:street>Park center road</aer:street>
+               <aer:city>Herndon</aer:city>
+               <aer:state>VA</aer:state>
+               <aer:zip>20171</aer:zip>
+               <aer:country>USA</aer:country>
+               <aer:contactMechanism>
+                  <aer:type>phone</aer:type>
+                  <aer:value>703-717-9656</aer:value>
+               </aer:contactMechanism>
+               <aer:contactMechanism>
+                  <aer:type>e-mail</aer:type>
+                  <aer:value>se.pulse.sridhar@gmail.com</aer:value>
+               </aer:contactMechanism>
+               <aer:contactMechanism>
+                  <aer:type>fax</aer:type>
+                  <aer:value>703-787-9656</aer:value>
+               </aer:contactMechanism> 
+            </aer:physician>-->
+            <aer:reporter>
+               <aer:firstName>Reporter</aer:firstName>
+               <aer:lastName>one</aer:lastName>
+               <aer:middleName>middlename</aer:middleName>
+               <aer:street>Sunrise valley drive</aer:street>
+               <aer:city>Chicago</aer:city>
+               <aer:state>IL</aer:state>
+               <aer:zip>20170</aer:zip>
+               <aer:country>USA</aer:country>
+               <aer:contactMechanism>
+                  <aer:type>phone</aer:type>
+                  <aer:value>703-787-1234</aer:value>
+               </aer:contactMechanism>
+               <aer:contactMechanism>
+                  <aer:type>e-mail</aer:type>
+                  <aer:value>vasudev.chatti@semanticbits.com</aer:value>
+               </aer:contactMechanism>
+               <aer:contactMechanism>
+                  <aer:type>fax</aer:type>
+                  <aer:value>703-787-1222</aer:value>
+               </aer:contactMechanism>
+               <aer:contactMechanism>
+                  <aer:type>alternateEmails</aer:type>
+                  <aer:value>vasudev.chatti@semanticbits.com</aer:value>
+               </aer:contactMechanism>
+               
+            </aer:reporter>
+            <aer:reportedAE>
+               <aer:externalId>reaction-88</aer:externalId>
+            </aer:reportedAE>
+            <!--<aer:reportedAE>
+               <aer:externalId>reaction-89</aer:externalId>
+            </aer:reportedAE>-->
+            <aer:report>
+               <aer:caseNumber></aer:caseNumber>
+               <!--<aer:withdraw>true</aer:withdraw>-->
+               <aer:aeReportDefinition>
+                  <aer:name>CTEP 10 Calendar Day SAE Report</aer:name>
+                  <!--<aer:name>CTEP 24 Hour SAE Notification</aer:name>-->
+               </aer:aeReportDefinition>
+            </aer:report>
+            <aer:externalId></aer:externalId>
+         </aer:BaseAdverseEventReport>
+      </aer:initiateSafetyReportAction>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="Simple Contains" id="a8b5429e-d802-40fd-8bf3-f22932bd1e64" name="Contains"><con:configuration><token>&lt;ns1:ReportID></token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/aereport/SafetyReportManagementServiceInterface/initiateSafetyReportAction"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="InitiateSafetyReportAction - A071102" id="54e92781-017f-408d-a5e7-32fe96002029"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SafetyReportManagementServiceSoapBinding</con:interface><con:operation>initiateSafetyReportAction</con:operation><con:request name="InitiateSafetyReportAction - A071102" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="a8817054-0859-4aeb-bf5a-0990fb5305e9"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://dev.semanticbits.com/caaers/services/SafetyReportService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" 
+xmlns:aer="http://schema.integration.caaers.cabig.nci.nih.gov/aereport" 
+xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="1">
+         <wsse:UsernameToken wsu:Id="UsernameToken-19" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+            <wsse:Username>SYSTEM</wsse:Username>
+            <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">system_admin</wsse:Password>
+            <wsse:Nonce EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary">/w9qY2QnBmzEx9lXoIxXyA==</wsse:Nonce>
+            <wsu:Created>2014-01-10T21:32:08.6661550+00:00</wsu:Created>
+         </wsse:UsernameToken>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <aer:initiateSafetyReportAction>
+         <aer:BaseAdverseEventReport>
+            <aer:createdAt>2014-02-18T17:30:55</aer:createdAt>
+            <aer:adverseEventReportingPeriod>
+               <!--<aer:treatmentAssignmentDescription>OTHEr</aer:treatmentAssignmentDescription>-->
+               <aer:cycleNumber>30</aer:cycleNumber>
+               <aer:startDate>2014-06-20</aer:startDate>
+               <aer:studyParticipantAssignmentRef>
+                  <aer:studySiteRef>
+                     <aer:studyRef>
+                        <aer:identifiers>
+                           <aer:identifier>
+                              <aer:type>Protocol Authority Identifier</aer:type>
+                              <aer:value>A071102</aer:value>
+                           </aer:identifier>
+                        </aer:identifiers>
+                     </aer:studyRef>
+                     <aer:nciInstituteCode>MN008</aer:nciInstituteCode>
+                  </aer:studySiteRef>
+                  <aer:studySubjectIdentifier>S39-A071102</aer:studySubjectIdentifier>
+               </aer:studyParticipantAssignmentRef>
+               <aer:treatmentAssignment>
+                  <aer:code>TAC 1</aer:code>
+                <!--  <aer:description>test</aer:description>-->
+               </aer:treatmentAssignment>
+            </aer:adverseEventReportingPeriod>
+           <!-- <aer:physician>
+               <aer:firstName>Physician</aer:firstName>
+               <aer:lastName>one</aer:lastName>
+               <aer:middleName>middlename</aer:middleName>
+               <aer:street>Park center road</aer:street>
+               <aer:city>Herndon</aer:city>
+               <aer:state>VA</aer:state>
+               <aer:zip>20171</aer:zip>
+               <aer:country>USA</aer:country>
+               <aer:contactMechanism>
+                  <aer:type>phone</aer:type>
+                  <aer:value>703-717-9656</aer:value>
+               </aer:contactMechanism>
+               <aer:contactMechanism>
+                  <aer:type>e-mail</aer:type>
+                  <aer:value>vikasgourishetty11@westat.com</aer:value>
+               </aer:contactMechanism>
+               <aer:contactMechanism>
+                  <aer:type>fax</aer:type>
+                  <aer:value>703-787-9656</aer:value>
+               </aer:contactMechanism>
+            </aer:physician>-->
+            <aer:reporter>
+               <aer:firstName>Reporter</aer:firstName>
+               <aer:lastName>one</aer:lastName>
+               <aer:middleName>middlename</aer:middleName>
+               <aer:street>Sunrise valley drive</aer:street>
+               <aer:city>Chicago</aer:city>
+               <aer:state>IL</aer:state>
+               <aer:zip>20170</aer:zip>
+               <aer:country>USA</aer:country>
+               <aer:contactMechanism>
+                  <aer:type>phone</aer:type>
+                  <aer:value>703-787-1234</aer:value>
+               </aer:contactMechanism>
+               <aer:contactMechanism>
+                  <aer:type>e-mail</aer:type>
+                  <aer:value>vasudev.chatti@semanticbits.com</aer:value>
+               </aer:contactMechanism>
+               <aer:contactMechanism>
+                  <aer:type>fax</aer:type>
+                  <aer:value>703-787-1222</aer:value>
+               </aer:contactMechanism>
+               <aer:contactMechanism>
+                  <aer:type>alternateEmails</aer:type>
+                  <aer:value>vasudevkarthik@gmail.com</aer:value>
+               </aer:contactMechanism>
+            </aer:reporter>
+            <aer:reportedAE>
+               <aer:externalId>reaction-88</aer:externalId>
+            </aer:reportedAE>
+            <!--<aer:reportedAE>
+               <aer:externalId>reaction-89</aer:externalId>
+            </aer:reportedAE>-->
+            <aer:report>
+               <aer:caseNumber/>
+               <!--<aer:withdraw>true</aer:withdraw>-->
+               <aer:aeReportDefinition>
+                  <aer:name>CTEP 10 Calendar Day SAE Report</aer:name>
+                  <!--<aer:name>CTEP 10 Calendar Day SAE Report</aer:name>-->
+               </aer:aeReportDefinition>
+            </aer:report>
+            <aer:externalId/>
+         </aer:BaseAdverseEventReport>
+      </aer:initiateSafetyReportAction>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="Simple Contains" id="fdf31103-a17b-46ce-bfbf-7692fee31c7a" name="Contains"><con:configuration><token>&lt;ns1:ReportID></token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/aereport/SafetyReportManagementServiceInterface/initiateSafetyReportAction"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="saveAndEvaluateAEs - S1117" id="1b6855e3-5789-4a94-977a-94edc56c6abf"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SAEEvaluationWebServiceImplServiceSoapBinding</con:interface><con:operation>saveAndEvaluateAEs</con:operation><con:request name="saveAndEvaluateAEs - S1117" outgoingWss="caaers-local" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="51530b83-ba47-4758-8eb6-6a365f4b47b0"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://10.10.10.61:6611/caaers/services/RaveIntegrationServices</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:saer="http://schema.integration.caaers.cabig.nci.nih.gov/saerules" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="1">
+         <wsse:UsernameToken wsu:Id="UsernameToken-19" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+            <wsse:Username>adminuser</wsse:Username>
+            <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">Hello-12</wsse:Password>
+            <wsse:Nonce EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary">/w9qY2QnBmzEx9lXoIxXyA==</wsse:Nonce>
+            <wsu:Created>2014-01-10T21:31:08.6661550+00:00</wsu:Created>
+         </wsse:UsernameToken>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <saer:saveAndEvaluateAEs>
+         <saer:SaveAndEvaluateAEsInputMessage>
+            <saer:adverseEvents>
+               <saer:adverseEvent>
+                  <verbatim>Verbatim4</verbatim>
+                  <adverseEventCtepTerm>
+                     <ctepCode>10010774</ctepCode>
+                  </adverseEventCtepTerm>
+                  <grade>3</grade>
+                  <hospitalization>YES</hospitalization>
+                  <dateFirstLearned>2015-04-10T17:05:01.0000000Z</dateFirstLearned>
+            <!--      <outcome>
+                     <outComeEnumType>HOSPITALIZATION</outComeEnumType>
+                  </outcome> -->
+                  <externalId>reaction-88</externalId>
+                  <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>
+               </saer:adverseEvent>
+               <!--<saer:adverseEvent>
+                  <verbatim>Verbatim2</verbatim>
+                  <adverseEventCtepTerm>
+                     <ctepCode>10047700</ctepCode>
+                  </adverseEventCtepTerm>
+                  <grade>2</grade>
+                  <hospitalization>YES</hospitalization>
+                  <dateFirstLearned>2014-11-28T17:06:01.0000000Z</dateFirstLearned>
+                  
+                  <outcome>
+                     <outComeEnumType>HOSPITALIZATION</outComeEnumType>
+                  </outcome>
+                  <externalId>reaction-89</externalId>
+                  <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>
+               </saer:adverseEvent>-->
+            </saer:adverseEvents>
+            <saer:criteria>
+               <studySubjectIdentifier>S33-S1117</studySubjectIdentifier>
+               <studyIdentifier>S1117</studyIdentifier>
+               <course>
+                 <startDateOfFirstCourse>2014-01-06</startDateOfFirstCourse>
+                  <startDateOfThisCourse>2015-06-01</startDateOfThisCourse> 
+                  <cycleNumber>40</cycleNumber> 
+                 <treatmentAssignmentCode>other</treatmentAssignmentCode>
+                  <otherTreatmentAssignmentDescription>testing</otherTreatmentAssignmentDescription>
+               </course>
+            </saer:criteria>
+         </saer:SaveAndEvaluateAEsInputMessage>
+      </saer:saveAndEvaluateAEs>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="Simple Contains" id="799f1a7f-f524-460c-9af7-2b5d7de7ce33" name="Contains"><con:configuration><token>&lt;recommendedActions></token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/saerules/SAEEvaluationServiceInterface/saveAndEvaluateAEs"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="InitiateSafetyReportAction -S1117" id="02a5f9e8-59be-4a41-ac78-f0e462c34d18"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SafetyReportManagementServiceSoapBinding</con:interface><con:operation>initiateSafetyReportAction</con:operation><con:request name="InitiateSafetyReportAction -S1117" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="27f96308-b58a-4b91-8837-2108331e883f"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://10.10.10.61:6611/caaers/services/RaveIntegrationServices</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:aer="http://schema.integration.caaers.cabig.nci.nih.gov/aereport" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="1">
+         <wsse:UsernameToken wsu:Id="UsernameToken-19" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+            <wsse:Username>adminuser</wsse:Username>
+            <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">Hello-12</wsse:Password>
+            <wsse:Nonce EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary">/w9qY2QnBmzEx9lXoIxXyA==</wsse:Nonce>
+            <wsu:Created>2014-01-10T21:32:08.6661550+00:00</wsu:Created>
+         </wsse:UsernameToken>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <aer:initiateSafetyReportAction>
+         <aer:BaseAdverseEventReport>
+            <aer:createdAt>2014-02-18T17:32:55</aer:createdAt>
+            <aer:adverseEventReportingPeriod>
+               <aer:cycleNumber>3</aer:cycleNumber>
+               <aer:startDate>2015-05-03</aer:startDate>
+               <aer:studyParticipantAssignmentRef>
+                  <aer:studySiteRef>
+                     <aer:studyRef>
+                        <aer:identifiers>
+                           <aer:identifier>
+                              <aer:type>Protocol Authority Identifier</aer:type>
+                              <aer:value>A071102</aer:value>
+                           </aer:identifier>
+                        </aer:identifiers>
+                     </aer:studyRef>
+                     <aer:nciInstituteCode>MN008</aer:nciInstituteCode>
+                  </aer:studySiteRef>
+                  <aer:studySubjectIdentifier>S34-A071102</aer:studySubjectIdentifier>
+               </aer:studyParticipantAssignmentRef>
+               <aer:treatmentAssignment>
+                  <aer:code>other</aer:code>
+                  <aer:description>someother</aer:description>
+                  <!--<aer:description>N/A</aer:description>-->
+               </aer:treatmentAssignment>
+            </aer:adverseEventReportingPeriod>
+            <aer:physician>
+               <aer:firstName>Physician</aer:firstName>
+               <aer:lastName>one</aer:lastName>
+               <aer:middleName>middlename</aer:middleName>
+               <aer:street>Park center road</aer:street>
+               <aer:city>Herndon</aer:city>
+               <aer:state>VA</aer:state>
+               <aer:zip>20171</aer:zip>
+               <aer:country>USA</aer:country>
+              <!-- <aer:contactMechanism>
+                  <aer:type>phone</aer:type>
+                  <aer:value>703-717-9656</aer:value>
+               </aer:contactMechanism>-->
+               <!--<aer:contactMechanism>
+                <aer:type>e-mail</aer:type>
+                  <aer:value>se.pulse.sridhar@gmail.com</aer:value>
+               </aer:contactMechanism>
+               <aer:contactMechanism>
+                  <aer:type>fax</aer:type>
+                  <aer:value>703-787-9656</aer:value>
+               </aer:contactMechanism>-->
+            </aer:physician>
+            <aer:reporter>
+               <aer:firstName>Reporter</aer:firstName>
+               <aer:lastName>one</aer:lastName>
+               <aer:middleName>middlename</aer:middleName>
+               <aer:street>Sunrise valley drive</aer:street>
+               <aer:city>Chicago</aer:city>
+               <aer:state>IL</aer:state>
+               <aer:zip>20170</aer:zip>
+               <aer:country>USA</aer:country>
+               <aer:contactMechanism>
+                  <aer:type>phone</aer:type>
+                  <aer:value>703-787-1234</aer:value>
+               </aer:contactMechanism>
+               <aer:contactMechanism>
+                  <aer:type>e-mail</aer:type>
+                  <aer:value>vasudev.chatti@semanticbits.com</aer:value>
+               </aer:contactMechanism>
+               <aer:contactMechanism>
+                  <aer:type>fax</aer:type>
+                  <aer:value>703-787-1222</aer:value>
+               </aer:contactMechanism>
+               <aer:contactMechanism>
+                  <aer:type>alternateEmails</aer:type>
+                  <aer:value>vasudev.chatti@semanticbits.com</aer:value>
+               </aer:contactMechanism>
+            </aer:reporter>
+            <aer:reportedAE>
+               <aer:externalId>reaction-88</aer:externalId>
+            </aer:reportedAE>
+            <!--<aer:reportedAE>
+               <aer:externalId>reaction-89</aer:externalId>
+            </aer:reportedAE>-->
+            <aer:report>
+               <aer:caseNumber/>
+               <!--<aer:withdraw>true</aer:withdraw>-->
+               <aer:aeReportDefinition>
+                  <aer:name>CTEP 10 Calendar Day SAE Report</aer:name>
+                  <!--<aer:name>CTEP 24 Hour SAE Notification</aer:name>-->
+               </aer:aeReportDefinition>
+            </aer:report>
+            <aer:externalId/>
+         </aer:BaseAdverseEventReport>
+      </aer:initiateSafetyReportAction>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="Simple Contains" id="526c7170-9702-423c-9c1b-0781a144e861" name="Contains"><con:configuration><token>&lt;ns1:ReportID></token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/aereport/SafetyReportManagementServiceInterface/initiateSafetyReportAction"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:testStep type="request" name="saveAndEvaluateAEs - A071102 - TAC - VAR" id="439a603e-8a4a-4a32-a0c2-71af75d4e5de"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SAEEvaluationWebServiceImplServiceSoapBinding</con:interface><con:operation>saveAndEvaluateAEs</con:operation><con:request name="saveAndEvaluateAEs - A071102 - TAC - VAR" outgoingWss="caaers-local" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="51530b83-ba47-4758-8eb6-6a365f4b47b0"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://10.10.10.61:6611/caaers/services/RaveIntegrationServices</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:saer="http://schema.integration.caaers.cabig.nci.nih.gov/saerules" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+   <soapenv:Header>
+      <wsse:Security soapenv:mustUnderstand="1">
+         <wsse:UsernameToken wsu:Id="UsernameToken-19" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+            <wsse:Username>SYSTEM</wsse:Username>
+            <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">system_admin</wsse:Password>
+            <wsse:Nonce EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary">/w9qY2QnBmzEx9lXoIxXyA==</wsse:Nonce>
+            <wsu:Created>2014-01-10T21:31:08.6661550+00:00</wsu:Created>
+         </wsse:UsernameToken>
+      </wsse:Security>
+   </soapenv:Header>
+   <soapenv:Body>
+      <saer:saveAndEvaluateAEs>
+         <saer:SaveAndEvaluateAEsInputMessage>
+            <saer:adverseEvents>
+               <saer:adverseEvent>
+                  <verbatim>Verbatim1</verbatim>
+                  <adverseEventCtepTerm>
+                     <ctepCode>10010774</ctepCode>
+                  </adverseEventCtepTerm>
+                  <grade>3</grade>
+                  <hospitalization>YES</hospitalization>
+                  <dateFirstLearned>2015-04-10T17:05:01.0Z</dateFirstLearned>
+                  <outcome>
+                     <outComeEnumType>HOSPITALIZATION</outComeEnumType>
+                  </outcome>
+                  <externalId>reaction-88</externalId>
+                  <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>
+               </saer:adverseEvent>
+               <!--<saer:adverseEvent>
+                  <verbatim>Verbatim2</verbatim>
+                  <adverseEventCtepTerm>
+                     <ctepCode>10047700</ctepCode>
+                  </adverseEventCtepTerm>
+                  <grade>3</grade>
+                  <hospitalization>YES</hospitalization>
+                  <dateFirstLearned>2014-11-28T17:06:01.0000000Z</dateFirstLearned>
+                   <outcome>
+                     <outComeEnumType>HOSPITALIZATION</outComeEnumType>
+                  </outcome>
+                  <externalId>reaction-89</externalId>
+                  <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>
+               </saer:adverseEvent>-->
+            </saer:adverseEvents>
+            <saer:criteria>
+               <studySubjectIdentifier>S39-A071102</studySubjectIdentifier>
+               <studyIdentifier>A071102</studyIdentifier>
+               <course>
+                  <startDateOfFirstCourse>2014-01-06</startDateOfFirstCourse>
+                  <startDateOfThisCourse>2015-06-20</startDateOfThisCourse>
+                  <cycleNumber>30</cycleNumber>
+                  <treatmentAssignmentCode>TAC 1</treatmentAssignmentCode>
+                  <otherTreatmentAssignmentDescription>N/A</otherTreatmentAssignmentDescription>
+               </course>
+            </saer:criteria>
+         </saer:SaveAndEvaluateAEsInputMessage>
+      </saer:saveAndEvaluateAEs>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="Simple Contains" id="8ab60d40-a7d9-43e2-82d5-12f8f5bd5128" name="Contains"><con:configuration><token>&lt;recommendedActions></token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schema.integration.caaers.cabig.nci.nih.gov/saerules/SAEEvaluationServiceInterface/saveAndEvaluateAEs"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer><con:outgoing><con:name>caaers</con:name><con:entry type="Username" username="mayo-super-user" password="Hello-12"><con:configuration><addCreated>true</addCreated><addNonce>true</addNonce><passwordType>PasswordText</passwordType></con:configuration></con:entry></con:outgoing><con:outgoing><con:name>caaers-integ</con:name><con:entry type="Username" username="sb-admin" password="Hello-12"><con:configuration><addCreated>true</addCreated><addNonce>true</addNonce><passwordType>PasswordText</passwordType></con:configuration></con:entry></con:outgoing></con:wssContainer><con:oAuth2ProfileContainer/><con:sensitiveInformation/></con:soapui-project>
