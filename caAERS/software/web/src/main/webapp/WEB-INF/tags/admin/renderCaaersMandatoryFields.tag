@@ -24,7 +24,7 @@
 <c:if test="${singleRow}">
  <table>
 	<tr>
-	<td><div class="row"><div class="label"><c:out value="${heading}" escapeXml="true"/></div></div></td>
+	<td><div class="row"><div class="label">${heading}</div></div></td>
 	<c:forEach var="field" items="${fieldGroups[key].fields}">
 	<td><tags:renderLabel field="${field}" /></td>
 	<td><tags:renderInputs field="${field}" /></td>
@@ -34,7 +34,7 @@
 </c:if>
 <c:if test="${not singleRow}">
 <ui:row path="${fieldGroups[key].fields[0].propertyName}">
-	<jsp:attribute name="label"><c:out value="${heading}" escapeXml="true"/></jsp:attribute>
+	<jsp:attribute name="label">${heading}</jsp:attribute>
 	<jsp:attribute name="value">
 		<table>
 	  	<c:forEach var="field" items="${fieldGroups[key].fields}">
