@@ -192,7 +192,6 @@ public class ListAdverseEventsCommand {
 	 */
 	public void populateResults(List<AdverseEventReportingPeriod> list) {
 		this.resultList.clear();
-		log.error("DirkDebug; in Search; list size;" + list.size());
 		for(AdverseEventReportingPeriod rp : list){
 			ManageReportsRepotingPeriodDTO manageReportsRepotingPeriodDTO = new ManageReportsRepotingPeriodDTO(rp);
 			int numberOfReports = getNumberOfReports(manageReportsRepotingPeriodDTO);
