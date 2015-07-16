@@ -5,4 +5,4 @@
 <c:if test="${configuration.map.showDebugInformation}">
     <tags:debugInfo/>
 </c:if>
-<div id="build-name">${buildInfo.buildName}</div>
+<div id="build-name"><c:out value="${buildInfo.buildName}" escapeXml="true"/></div>

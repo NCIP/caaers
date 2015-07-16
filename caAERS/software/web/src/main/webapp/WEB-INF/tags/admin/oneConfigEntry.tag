@@ -30,7 +30,7 @@
                 <div><form:input path="${beanPath}" id="${beanPath}" cssClass="${cssClass}" readonly="${readOnly}"/></div>
             </c:when>
             <c:otherwise>
-                <div>Unimplemented control type ${entry.controlType} for ${beanPath}</div>
+                <div>Unimplemented control type ${entry.controlType} for <c:out value="${beanPath}" escapeXml="true"/></div>
             </c:otherwise>
         </c:choose>
         <p class="description">${entry.description}</p>

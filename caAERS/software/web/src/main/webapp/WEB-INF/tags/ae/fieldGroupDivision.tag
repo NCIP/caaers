@@ -12,7 +12,7 @@
 
 <%@variable name-given="fieldGroup" %>
 
-<c:set var="fieldGroupName">${fieldGroupFactoryName}${index}</c:set>
+<c:set var="fieldGroupName"><c:out value="${fieldGroupFactoryName}" escapeXml="true"/><c:out value="${index}" escapeXml="true"/></c:set>
 <c:set var="fieldGroup" value="${fieldGroups[fieldGroupName]}"/>
 
 <chrome:division title="${empty title ? fieldGroup.displayName : title}" cssClass="${fieldGroupFactoryName}" id="${fieldGroupFactoryName}-${index}" style="${style}" collapsable="true" enableDelete="${enableDelete}" deleteParams="${deleteParams}" collapsed="${collapsed}">

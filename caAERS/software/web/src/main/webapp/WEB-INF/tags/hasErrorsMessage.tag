@@ -24,7 +24,7 @@
         <c:if test="${not hideErrorDetails}">
             <ul class="errors">
                 <c:forEach items="${serverSideErrorHash}" var="msg">
-                    <li>${msg}</li>
+                    <li><c:out value="${msg}" escapeXml="true"/></li>
                 </c:forEach>
             </ul>
         </c:if>

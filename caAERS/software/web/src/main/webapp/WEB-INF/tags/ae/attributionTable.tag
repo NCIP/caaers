@@ -19,7 +19,7 @@
 <c:set var="hasAgent" value="${command.study.drugAdministrationPresent}" />
 <c:set var="hasBehavioral" value="${command.study.behavioralInterventionPresent}" />
 
-<table class="attribution" id="attribution-${offset}" border="0">
+<table class="attribution" id="attribution-<c:out value="${offset}" escapeXml="true"/>" border="0">
     <col class="cause"/>
     <colgroup>
         <c:forEach begin="1" end="${aeCols}">
@@ -47,7 +47,7 @@
         <c:if test="${not empty block.rows}">
 
                     <tr class="subhead">
-                        <th colspan="${cols}">${block.displayName}</th>
+                        <th colspan="<c:out value="${cols}" escapeXml="true"/>">${block.displayName}</th>
                     </tr>
 
                     <c:forEach items="${block.rows}" var="row">
