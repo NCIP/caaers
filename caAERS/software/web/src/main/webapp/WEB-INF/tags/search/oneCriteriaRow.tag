@@ -114,7 +114,7 @@
 		<td align="center" id="value-td-${index }">
 			<c:forEach items="${dependentObject.uiAttribute}" var="uiAttribute" varStatus="uiAttributeStatus">
 				<c:if test="${uiAttribute.name == criteriaParameter.attributeName }">
-					<search:renderValueColumn index="<c:out value="${index}" escapeXml="true"/>" criteriaParameter="<c:out value="${criteriaParameter}" escapeXml="true"/>" uiAttribute="${uiAttribute }"/>
+					<search:renderValueColumn index="${index}" criteriaParameter="${criteriaParameter}" uiAttribute="${uiAttribute}"/>
 				</c:if>
 			</c:forEach>
 			<c:if test="${dependentObject.className == searchTargetObject.className}">
@@ -122,7 +122,7 @@
 					<c:if test="${dObject.hidden == true}">
 						<c:forEach items="${dObject.uiAttribute}" var="uiAttr" varStatus="uiAttrStatus">
 							<c:if test="${uiAttr.name == criteriaParameter.attributeName}">
-								<search:renderValueColumn index="<c:out value="${index}" escapeXml="true"/>" criteriaParameter="${criteriaParameter }" uiAttribute="${uiAttr }" />
+								<search:renderValueColumn index="${index}" criteriaParameter="${criteriaParameter}" uiAttribute="${uiAttr}" />
 							</c:if>
 						</c:forEach>
 					</c:if>

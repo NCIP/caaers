@@ -7,7 +7,7 @@
 <%@attribute name="ae2" required="false" type="gov.nih.nci.cabig.caaers.domain.dto.AdverseEventDTO" %>
 <%@attribute name="fillerRow" required="false" type="java.lang.Boolean" %>
 
-<c:if test="<c:out value="${fillerRow}" escapeXml="true"/>">
+<c:if test="${fillerRow}">
     <tr>
         <td colspan="9" class="fillerRow">
             <hr class="hrfiller"  />
@@ -19,7 +19,7 @@
 
 <c:if test="${not fillerRow}">
     <c:if test="${not empty ae1}">
-        <tr id="aewd-<c:out value="${widgetId}" escapeXml="true"/>-tr-iae" class="tr-ae1">
+        <tr id="aewd-${widgetId}-tr-iae" class="tr-ae1">
             <td width="${requestScope.widthSource}" class="tr-ae1-c1">${ae1.source}</td>
             <td width="${requestScope.widthTerm}" class="tr-ae1-c2"> ${caaers:escapeJS(ae1.term.displayName)}</td>
             <td width="${requestScope.widthGrade}" class="tr-ae1-c3">${caaers:escapeJS(ae1.grade)}</td>
@@ -29,32 +29,32 @@
             <td width="${requestScope.widthWhySerious}" class="tr-ae1-c7">${caaers:escapeJS(ae1.whySerious)}</td>
             <td width="${requestScope.widthAttribution}" class="tr-ae1-c8">${caaers:escapeJS(ae1.attribution)}</td>
             <td width="${requestScope.widthActions}" class="actionBtns tr-ae1-c9">
-                <div id="aewd-<c:out value="${widgetId}" escapeXml="true"/>-div-edit" style="${empty ae2 ? 'display:none;' : ''}" class="wgtBtnDiv">
-                    <tags:button  id="aewd-<c:out value="${widgetId}" escapeXml="true"/>-btn-edit" value="Edit" color="blue" size="small" cssClass="wgtBtn wgtBtnEdit" type="button" icon="edit"
-                                  onclick="wt<c:out value="${widgetId}" escapeXml="true"/>.onEditBtnClick(this);" />
+                <div id="aewd-${widgetId}-div-edit" style="${empty ae2 ? 'display:none;' : ''}" class="wgtBtnDiv">
+                    <tags:button  id="aewd-${widgetId}-btn-edit" value="Edit" color="blue" size="small" cssClass="wgtBtn wgtBtnEdit" type="button" icon="edit"
+                                  onclick="wt${widgetId}.onEditBtnClick(this);" />
                 </div>
-                <div id="aewd-<c:out value="${widgetId}" escapeXml="true"/>-div-cancel" style="display:none;" class="wgtBtnDiv">
-                    <tags:button  id="aewd-<c:out value="${widgetId}" escapeXml="true"/>-btn-cancel" value="Save" color="blue" size="small" cssClass="wgtBtn wgtBtnCancel" type="button" icon="save"
-                                  onclick="wt<c:out value="${widgetId}" escapeXml="true"/>.onCancelBtnClick(this);" />
+                <div id="aewd-${widgetId}-div-cancel" style="display:none;" class="wgtBtnDiv">
+                    <tags:button  id="aewd-${widgetId}-btn-cancel" value="Save" color="blue" size="small" cssClass="wgtBtn wgtBtnCancel" type="button" icon="save"
+                                  onclick="wt${widgetId}.onCancelBtnClick(this);" />
                 </div>
-                <div id="aewd-<c:out value="${widgetId}" escapeXml="true"/>-div-find" style="${empty ae2 ? '' :'display:none;'}"  class="wgtBtnDiv" >
-                    <tags:button  id="aewd-<c:out value="${widgetId}" escapeXml="true"/>-btn-find" value="Find" color="orange" cssClass="wgtBtn wgtBtnFind" type="button"  size="small" icon="search"
-                                  onclick="wt<c:out value="${widgetId}" escapeXml="true"/>.onFindBtnClick(this);" />
+                <div id="aewd-${widgetId}-div-find" style="${empty ae2 ? '' :'display:none;'}"  class="wgtBtnDiv" >
+                    <tags:button  id="aewd-${widgetId}-btn-find" value="Find" color="orange" cssClass="wgtBtn wgtBtnFind" type="button"  size="small" icon="search"
+                                  onclick="wt${widgetId}.onFindBtnClick(this);" />
                 </div>
-                <div id="aewd-<c:out value="${widgetId}" escapeXml="true"/>-div-link" style="display:none;"  class="wgtBtnDiv" >
-                    <tags:button  id="aewd-<c:out value="${widgetId}" escapeXml="true"/>-btn-link" value="Link" color="green" cssClass="wgtBtn wgtBtnLink" type="button"  size="small" icon="add"
-                                  onclick="wt<c:out value="${widgetId}" escapeXml="true"/>.onLinkBtnClick(this)" />
+                <div id="aewd-${widgetId}-div-link" style="display:none;"  class="wgtBtnDiv" >
+                    <tags:button  id="aewd-${widgetId}-btn-link" value="Link" color="green" cssClass="wgtBtn wgtBtnLink" type="button"  size="small" icon="add"
+                                  onclick="wt${widgetId}.onLinkBtnClick(this)" />
                 </div>
-                <div id="aewd-<c:out value="${widgetId}" escapeXml="true"/>-div-unlink" style="display:none;"  class="wgtBtnDiv" >
-                    <tags:button  id="aewd-<c:out value="${widgetId}" escapeXml="true"/>-btn-unlink" value="Unlink" color="red" cssClass="wgtBtn wgtBtnUnlink" type="button"  size="small" icon="delete"
-                                  onclick="wt<c:out value="${widgetId}" escapeXml="true"/>.onUnlinkBtnClick(this)" />
+                <div id="aewd-${widgetId}-div-unlink" style="display:none;"  class="wgtBtnDiv" >
+                    <tags:button  id="aewd-${widgetId}-btn-unlink" value="Unlink" color="red" cssClass="wgtBtn wgtBtnUnlink" type="button"  size="small" icon="delete"
+                                  onclick="wt${widgetId}.onUnlinkBtnClick(this)" />
                 </div>
 
-                <a name="a<c:out value="${widgetId}" escapeXml="true"/>" />
+                <a name="a${widgetId}" />
             </td>
         </tr>
     </c:if>
-        <tr id="aewd-<c:out value="${widgetId}" escapeXml="true"/>-tr-eae" style="${empty ae2 ? 'display:none;' : ''}" class="tr-ae2">
+        <tr id="aewd-${widgetId}-tr-eae" style="${empty ae2 ? 'display:none;' : ''}" class="tr-ae2">
             <td width="${requestScope.widthSource}" class="eae tr-ae2-c1">${ae2.source}</td>
             <td width="${requestScope.widthTerm}"  class="eae tr-ae2-c2">${caaers:escapeJS(ae2.term.displayName)}</td>
             <td width="${requestScope.widthGrade}"  class="eae tr-ae2-c3">${caaers:escapeJS(ae2.grade)}</td>
@@ -67,17 +67,17 @@
               &nbsp;
             </td>
         </tr>
-    <tr id="aewd-<c:out value="${widgetId}" escapeXml="true"/>-tr-nomatch" style="${empty ae2 ? '' : 'display:none;'}" class="tr-nomatch">
+    <tr id="aewd-${widgetId}-tr-nomatch" style="${empty ae2 ? '' : 'display:none;'}" class="tr-nomatch">
         <td width="100%" class="tdNoMatch" colspan="9">No matching AE found</td>
     </tr>
 
-    <tr id="aewd-<c:out value="${widgetId}" escapeXml="true"/>-tr-pick" class="tr-picker">
-        <td id="aewd-<c:out value="${widgetId}" escapeXml="true"/>-tbl-t2td"  width="94%" colspan="9" class="tr-picker-c1">
-            <div id="aewd-<c:out value="${widgetId}" escapeXml="true"/>-t2div" style="display:none;" class="yui-skin-sam picker-div">
+    <tr id="aewd-${widgetId}-tr-pick" class="tr-picker">
+        <td id="aewd-${widgetId}-tbl-t2td"  width="94%" colspan="9" class="tr-picker-c1">
+            <div id="aewd-${widgetId}-t2div" style="display:none;" class="yui-skin-sam picker-div">
             </div>
         </td>
     </tr>
     <script type="text/javascript">
-       var wt<c:out value="${widgetId}" escapeXml="true"/> = new AE.aeWidget(<c:out value="${widgetId}" escapeXml="true"/>, ${ae1.id}, ${empty ae2 ? -1 : ae2.id});
+       var wt${widgetId} = new AE.aeWidget(${widgetId}, ${ae1.id}, ${empty ae2 ? -1 : ae2.id});
     </script>
 </c:if>

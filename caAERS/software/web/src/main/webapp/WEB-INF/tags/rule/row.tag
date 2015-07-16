@@ -7,7 +7,7 @@
 <%@attribute name="cssStyle"%>
 <div class="row" id="${field.propertyName}-row" <c:if test="${not empty cssStyle}">style="<c:out value="${cssStyle}" escapeXml="true"/>"</c:if>>
     <div class="label">
-        <ruleTags:label field="<c:out value="${field}" escapeXml="true"/>"/>
+        <ruleTags:label field="${field}"/>
     </div>
     <div class="value"><ruleTags:inputs field="<c:out value="${field}" escapeXml="true"/>"/></div>
     <c:if test="${not empty field.extraInformation}">
