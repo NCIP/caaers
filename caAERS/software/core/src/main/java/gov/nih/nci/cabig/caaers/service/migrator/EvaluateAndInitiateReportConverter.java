@@ -44,7 +44,6 @@ public class EvaluateAndInitiateReportConverter {
 		aeSrcReport.setExternalId(evaluateInputMessage.getReportId());
 		aeSrcReport.setReporter(utility.convertReporter(evaluateInputMessage.getReporter()));
 		aeSrcReport.setPhysician(utility.convertPhysician(evaluateInputMessage.getPhysician()));
-		aeSrcReport.setExternalId(evaluateInputMessage.getReportId());
 		aeSrcReport.setCreatedAt(now);
 		aeSrcReport.setReportingPeriod(repPeriod);
 		List<Report> reports = new ArrayList<Report>();
@@ -56,6 +55,7 @@ public class EvaluateAndInitiateReportConverter {
 			if(isTrue(evaluateInputMessage.isWithdrawReport())) {
 				report.setWithdrawnOn(now);
 			}
+			report.setCaseNumber(evaluateInputMessage.getReportId());
 			reports.add(report);
 		}
 		aeSrcReport.setReports(reports);

@@ -336,10 +336,9 @@ public class SafetyReportServiceImpl {
         transferStudySubjectIfRequired(aeSrcReport, aeDestReport, errors);
         if(errors.hasErrors()) return aeDestReport;
 
-        System.err.println("DIRKDEBUG; dbReport = " + dbReport);
         if(dbReport == null){
             //create flow
-        	// Deep copy the reports as it is throwing ConcurrentModification Exception
+        	// Deep copy the reports as it is throwing ConcurrentModification Exception.
         	aeDestReport.updateAESignatures();
 	        expeditedAdverseEventReportDao.save(aeDestReport);
             List<Report> reports = new ArrayList<Report>(aeDestReport.getReports());
