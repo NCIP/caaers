@@ -104,17 +104,26 @@
 			</StudyEventData>
 		</SubjectData>
 	</ClinicalData>
-</ODM>]]></con:request><con:originalUri>http://localhost/caaers/ParticipantInitialization</con:originalUri><con:credentials><con:username>SYSTEM</con:username><con:password>system_admin</con:password><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>NTLM</con:addedBasicAuthenticationTypes><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:preemptive>true</con:preemptive><con:authType>Preemptive</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method></con:resource></con:interface><con:testSuite id="77a63205-0f23-45ae-9916-b67c5a286bff" name="ParticipantHttpService"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:properties/></con:testSuite><con:testSuite id="69dad402-8847-49e0-bfad-43b9d877a01b" name="TestSuite 2"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:properties/></con:testSuite><con:testSuite id="a8fe19fd-3fd9-40ef-86c4-b28d980e2661" name="http://localhost:7700 TestSuite"><con:description>TestSuite generated for REST Service [http://localhost:7700]</con:description><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="bf991abe-cb06-4c95-8abf-b42cbad92142" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="ParticipantInitialization TestCase" searchProperties="true"><con:description>TestCase generated for REST Resource [ParticipantInitialization] located at [/caaers/ParticipantInitialization]</con:description><con:settings/><con:testStep type="properties" name="ScriptProperties" id="bf34ecc2-22f9-4005-acfc-f853a7918d57"><con:settings/><con:config xsi:type="con:PropertiesStep" saveFirst="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>index</con:name><con:value>0</con:value></con:property></con:properties></con:config></con:testStep><con:testStep type="groovy" name="Groovy Script" id="4cc369ce-0d32-4edd-8cf6-ab4fc53de6e1"><con:settings/><con:config><script>testRunner.testCase.testSteps["ScriptProperties"].setPropertyValue("index", String.valueOf(context.ThreadIndex))</script></con:config></con:testStep><con:testStep type="restrequest" name="RequestTestCase" id="0e7091f3-5d59-4542-9124-5a51acf7baa3"><con:settings/><con:config service="http://localhost:7700" resourcePath="/caaers/ParticipantInitialization" methodName="ParticipantInitialization" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="RequestTestCase" id="b596cc00-6ab2-4d38-a3d2-8a2d1cf2a2d7" mediaType="application/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:7700</con:endpoint><con:request><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
-<ODM CreationDateTime="2013-03-19T09:19:44" FileOID="RavePatientPush.xml" FileType="Transactional" ODMVersion="1.3">
+</ODM>]]></con:request><con:originalUri>http://localhost/caaers/ParticipantInitialization</con:originalUri><con:credentials><con:username>SYSTEM</con:username><con:password>system_admin</con:password><con:selectedAuthProfile>Basic</con:selectedAuthProfile><con:addedBasicAuthenticationTypes>NTLM</con:addedBasicAuthenticationTypes><con:addedBasicAuthenticationTypes>Basic</con:addedBasicAuthenticationTypes><con:preemptive>true</con:preemptive><con:authType>Preemptive</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method></con:resource></con:interface><con:testSuite id="77a63205-0f23-45ae-9916-b67c5a286bff" name="ParticipantHttpService"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:properties/></con:testSuite><con:testSuite id="69dad402-8847-49e0-bfad-43b9d877a01b" name="TestSuite 2"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:properties/></con:testSuite><con:testSuite id="a8fe19fd-3fd9-40ef-86c4-b28d980e2661" name="http://localhost:7700 TestSuite"><con:description>TestSuite generated for REST Service [http://localhost:7700]</con:description><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="bf991abe-cb06-4c95-8abf-b42cbad92142" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="ParticipantInitialization TestCase" searchProperties="true"><con:description>TestCase generated for REST Resource [ParticipantInitialization] located at [/caaers/ParticipantInitialization]</con:description><con:settings/><con:testStep type="properties" name="ScriptProperties" id="bf34ecc2-22f9-4005-acfc-f853a7918d57"><con:settings/><con:config xsi:type="con:PropertiesStep" saveFirst="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>index</con:name><con:value>0</con:value></con:property><con:property><con:name>subjectKey</con:name><con:value>0_0_0</con:value></con:property><con:property><con:name>dob</con:name><con:value>14 Mar 2004</con:value></con:property></con:properties></con:config></con:testStep><con:testStep type="groovy" name="Groovy Script" id="4cc369ce-0d32-4edd-8cf6-ab4fc53de6e1"><con:settings/><con:config><script>String curIndex = testRunner.testCase.testSteps["ScriptProperties"].getPropertyValue("index")
+String subjectKey = "${curIndex}_${context.ThreadIndex}_${context.RunCount}"
+int y = 2000 + Math.random() * 10 
+int d = Math.random() * 28 + 1
+int m = Math.random() * 6
+String dd = d &lt; 10 ? "0" + d  : d
+String dob = "${dd} ${['Jan','Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'][m]} ${y}"
+testRunner.testCase.testSteps["ScriptProperties"].setPropertyValue("subjectKey", subjectKey)
+testRunner.testCase.testSteps["ScriptProperties"].setPropertyValue("dob", dob)
+log.info("   User : ${context.ThreadIndex} , Run : ${context.RunCount} - subjectKey : ${subjectKey}, dob:${dob}")</script></con:config></con:testStep><con:testStep type="restrequest" name="RequestTestCase" id="0e7091f3-5d59-4542-9124-5a51acf7baa3"><con:settings/><con:config service="http://localhost:7700" resourcePath="/caaers/ParticipantInitialization" methodName="ParticipantInitialization" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="RequestTestCase" id="b596cc00-6ab2-4d38-a3d2-8a2d1cf2a2d7" mediaType="application/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:7700</con:endpoint><con:request><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<ODM CreationDateTime="${new Date().format('yyyy-MM-ddTHH:mm:ss')}" FileOID="RavePatientPush.xml" FileType="Transactional" ODMVersion="1.3">
 	<ClinicalData MetaDataVersionOID="3629869" StudyOID="S1117">
-		<SubjectData SubjectKey="455550${index}" TransactionType="Insert">
+		<SubjectData SubjectKey="${subjectKey}" TransactionType="Insert">
 			<SiteRef LocationOID="CTSUTST01"/>
 			<StudyEventData StudyEventOID="SUBJECT" TransactionType="Update">
 				<FormData FormOID="SUBJECT_ENROLLMENT" TransactionType="Update">
 					<ItemGroupData ItemGroupOID="SUBJECT_ENROLLMENT" TransactionType="Update">
-						<ItemData ItemOID="PARTIC_ENROL_DT" Value="19 Mar 2013"/>
+						<ItemData ItemOID="PARTIC_ENROL_DT" Value="${dob}"/>
 						<ItemData ItemOID="CURRENT_SITE_ID" Value="MN008"/>
-						<ItemData ItemOID="PT_ID" Value="455550${index}"/>
+						<ItemData ItemOID="PT_ID" Value="MRN_${subjectKey}"/>
 						<ItemData ItemOID="ENROLLING_SITE_ID" Value="MN008"/>
 						<ItemData ItemOID="LEAD_INST_NAME" Value="ECOG"/>
 						<ItemData ItemOID="ENROLL_TIME" Value="09:19:28:AM">
@@ -128,8 +137,8 @@
 			<StudyEventData StudyEventOID="ENROLLMENT_FORMS" TransactionType="Update">
 				<FormData FormOID="DEMOGRAPHY" TransactionType="Update">
 					<ItemGroupData ItemGroupOID="DEMOGRAPHY" TransactionType="Update">
-						<ItemData ItemOID="PT_INITIALS_NAME" Value="BLastMid"/>
-						<ItemData ItemOID="PER_BIR_DT" Value="28 Mar 1985"/>
+						<ItemData ItemOID="PT_INITIALS_NAME" Value="LFM"/>
+						<ItemData ItemOID="PER_BIR_DT" Value="${dob}"/>
 						<ItemData ItemOID="ETHN_GRP_CAT_TXT" Value="Not Hispanic or Latino"/>
 						<ItemData ItemOID="PERSON_GENDER" Value="Female Gender"/>
 						<ItemData ItemOID="COUNTRY_CD" Value="US"/>
