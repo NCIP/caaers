@@ -37,12 +37,13 @@ public class EvaluateAndInitiateReportConverter {
 		Timestamp now = new Timestamp(System.currentTimeMillis());
 		ExpeditedAdverseEventReport aeSrcReport = new ExpeditedAdverseEventReport();
 		for(AdverseEvent adverseEvent: repPeriod.getAdverseEvents()) {
-			aeSrcReport.addAdverseEventUnidirectional(adverseEvent);
+			if(isTrue(adverseEvent.getRequiresReporting())  || (!isTrue(adverseEvent.isRetired()) && isTrue(adverseEvent.getReported()))) {
+				aeSrcReport.addAdverseEventUnidirectional(adverseEvent);
+			}
 		}
 		aeSrcReport.setExternalId(evaluateInputMessage.getReportId());
 		aeSrcReport.setReporter(utility.convertReporter(evaluateInputMessage.getReporter()));
 		aeSrcReport.setPhysician(utility.convertPhysician(evaluateInputMessage.getPhysician()));
-		aeSrcReport.setExternalId(evaluateInputMessage.getReportId());
 		aeSrcReport.setCreatedAt(now);
 		aeSrcReport.setReportingPeriod(repPeriod);
 		List<Report> reports = new ArrayList<Report>();
@@ -51,13 +52,21 @@ public class EvaluateAndInitiateReportConverter {
 			Report report = new Report();
 			report.setReportDefinition(new ReportDefinition());
 			report.getReportDefinition().setName(response.getRecommendedActions().get(0).getReport());
-			if(evaluateInputMessage.isWithdrawReport() != null && evaluateInputMessage.isWithdrawReport().booleanValue()) {
+			if(isTrue(evaluateInputMessage.isWithdrawReport())) {
 				report.setWithdrawnOn(now);
 			}
+			report.setCaseNumber(evaluateInputMessage.getReportId());
 			reports.add(report);
 		}
 		aeSrcReport.setReports(reports);
 		return aeSrcReport;
+	}
+	
+	private boolean isTrue(Boolean bool) {
+		if(bool != null) {
+			return bool.booleanValue();
+		}
+		return false;
 	}
 	
 }

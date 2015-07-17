@@ -308,8 +308,7 @@
 		<xsl:choose>
 			<xsl:when test="caaers:lookup(./reactionoutcome, $map//aepresentstatuses)!=''"/>
 			<xsl:otherwise>
-				<svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
-                                test="reactionoutcome">
+				<svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl" test="reactionoutcome">
 					<xsl:attribute name="location">
 						<xsl:apply-templates select="." mode="schematron-select-full-path"/>
 					</xsl:attribute>
@@ -414,14 +413,16 @@
 
 		<!--ASSERT -->
 		<xsl:choose>
-			<xsl:when test="caaers:lookup(./baselineperformancenumber, $map//ecog-zubrod-baselinestatuses)!=''"/>
+			<xsl:when test="caaers:lookup(./baselineperformancenumber, $map//ecog-zubrod-baselinestatuses)!=''">
+				Matched baselineperformancenumber : <xsl:value-of select="./baselineperformancenumber/text()" />, ecog-zubrod-baselinestatuses: <xsl:value-of select="$map//ecog-zubrod-baselinestatuses" />
+			</xsl:when>
 			<xsl:otherwise>
-				<svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
-                                test="./baselineperformancenumber">
+				<svrl:failed-assert xmlns:svrl="http://purl.oclc.org/dsdl/svrl" test="./baselineperformancenumber">
 					<xsl:attribute name="location">
 						<xsl:apply-templates select="." mode="schematron-select-full-path"/>
 					</xsl:attribute>
 					<svrl:text>Unavailable matching baseline performance number from ECOG or ZUBROD scale</svrl:text>
+					baselineperformancenumber : <xsl:value-of select="./baselineperformancenumber/text()" />, ecog-zubrod-baselinestatuses: <xsl:value-of select="$map//ecog-zubrod-baselinestatuses" />
 				</svrl:failed-assert>
 			</xsl:otherwise>
 		</xsl:choose>

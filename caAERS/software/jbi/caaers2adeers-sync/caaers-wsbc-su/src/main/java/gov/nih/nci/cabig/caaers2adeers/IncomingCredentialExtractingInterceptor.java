@@ -90,9 +90,8 @@ public class IncomingCredentialExtractingInterceptor extends WSS4JOutInterceptor
         String pwd = password.get();
         password.remove();
 
-        WSPasswordCallback callback =  super.getPasswordCB(usr, doAction, callbackHandler, requestData);
-        callback.setPassword(pwd);
-        return callback;
+        setPassword(requestData.getMsgContext(), pwd);
+        return super.getPasswordCB(usr, doAction, callbackHandler, requestData);
     }
 
 //    public WSPasswordCallback getPassword(String dummyUserName, int doAction, String clsProp, String refProp, RequestData reqData) throws WSSecurityException {

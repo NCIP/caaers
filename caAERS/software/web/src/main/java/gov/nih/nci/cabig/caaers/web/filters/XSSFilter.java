@@ -28,6 +28,9 @@ import edu.emory.mathcs.backport.java.util.Arrays;
 public class XSSFilter implements Filter {
 	
 	protected static final Log logger = LogFactory.getLog(XSSFilter.class);
+	private static final String XFrameHeader = "X-Frame-Options";
+	private static final String XFrameSetting = "SAMEORIGIN";
+	
 	
 	/**
      * The attribute that determines whether or not to skip a url for filtering.
@@ -54,6 +57,8 @@ public class XSSFilter implements Filter {
             filterChain.doFilter(request, response);
             return;
         }
+        //Prevention of doing XSS attacks using frames, see rfc7034
+        ((HttpServletResponse) response).addHeader(XFrameHeader, XFrameSetting);
         
         if (isAllowedURI(((HttpServletRequest)request).getRequestURI())) {
         	logger.debug("Skip filtering: '"+((HttpServletRequest)request).getRequestURI()+"'");

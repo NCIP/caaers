@@ -48,7 +48,7 @@
 </script>
 
 <c:if test="${reportStatus ne 'REPLACED' }">
-	<tr align="center" id="row${rpIndex}" class="${repcurrClass}">
+	<tr align="center" id="row<c:out value="${rpIndex}" escapeXml="true"/>" class="<c:out value="${repcurrClass}" escapeXml="true"/>">
 		<td width="5%"><chrome:collapsableElement targetID="reptable${report.id}" collapsed="true" id="ID_02"/></td>
 		<td align="left" width="15%">
 			<c:if test="${report.active}">

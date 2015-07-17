@@ -227,7 +227,6 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
 
     <div class="autoclear" id="criteria-div">
     	<chrome:box title="Select study and subject" id="study-entry" autopad="true" cssClass="pairedLong">
-
             <div class="row">
                 <div class="label"><caaers:message code="LBL_Study" /></div>
                 <div class="value">
@@ -241,7 +240,6 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
                 </div>
                 <p id="study-selected" style="display: none">You have selected the study <span id="study-selected-name"></span>.</p>
             </div>
-
             <div class="row">
                 <div class="label"><caaers:message code="LBL_Subject" /></div>
                 <div class="value">
@@ -254,15 +252,13 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
                 </div>
                 <p id="participant-selected" style="display: none">You have selected the subject <span id="participant-selected-name"></span>.</p>
             </div>
-            
          	<div class="row">
 	            <div class="label">
 	            Search identifier</div>
 	            <div class="value">
 	                <form:input type="text" path="searchIdentifier"/>
 	            </div>
-            </div>
-            
+            </div> 
             <div class="row">
                 <div class="label">Report Submission status</div>
                 <div class="value">
@@ -272,7 +268,6 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
         			</form:select>  
                 </div>
             </div>
-            
            <div class="row">
                 <div class="label">Data Entry status</div>
                 <div class="value">

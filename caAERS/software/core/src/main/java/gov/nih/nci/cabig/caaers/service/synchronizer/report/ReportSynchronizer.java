@@ -12,7 +12,6 @@ import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,10 +32,6 @@ public class ReportSynchronizer implements Migrator<ExpeditedAdverseEventReport>
             outcome.addWarning("RS-WR-1", "The input for Reports is null, so not performing any operation.");
             return;
         }
-
-        //create an index of Reports
-        HashMap<Integer, Report> reportsIndex = new HashMap<Integer, Report>();
-        for(Report report : dbAeReport.getReports()){ reportsIndex.put(report.getId(), report);}
 
         //try to find the Report in source , if found synchronize it.
         for(Report report : xmlAeReport.getReports()){
@@ -82,7 +77,7 @@ public class ReportSynchronizer implements Migrator<ExpeditedAdverseEventReport>
 
 
 
-    	if(xmlReport.getLastVersion().getCcEmails() != null) {
+    	if(xmlReport.getLastVersion() != null && xmlReport.getLastVersion().getCcEmails() != null) {
     		dbReport.getLastVersion().setCcEmails(xmlReport.getLastVersion().getCcEmails());
     	}
     }

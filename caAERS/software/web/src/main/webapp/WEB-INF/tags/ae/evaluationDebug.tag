@@ -22,7 +22,7 @@ ae_review_report.jsp uses this to display a list of serious adverse events.
                   ${fn:indexOf(m,'caAERS: Submitted adverse event' )gt -1 ? 'submittedae' : '' }
                   ${fn:indexOf(m,'caAERS: Manually selected report' )gt -1 ? 'submittedae' : '' }
               </c:set>
-              <div class="${cssClass} ">
+              <div class="<c:out value="${cssClass}" escapeXml="true"/> ">
               ${fn:startsWith(m,"caAERS:")  or fn:startsWith(m,"RulesEngine:" ) ? '' : "&nbsp;&nbsp;"}
               <c:out value="${m}" escapeXml="true" />
               </div>

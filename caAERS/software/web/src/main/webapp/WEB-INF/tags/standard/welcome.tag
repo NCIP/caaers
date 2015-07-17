@@ -47,7 +47,7 @@ try{
 <c:set var="user" value="<%= caaersUser %>" />
 <span id="welcome-user">
 	<c:if test="${user != null }">
-		<a onmouseover="showUserRolesToolTip($('USER_ROLES').innerHTML, '')" onmouseout="tt_Hide();">Welcome <b> ${user.firstName} ${user.lastName}</b></a>
+		<a onmouseover="showUserRolesToolTip($('USER_ROLES').innerHTML, '')" onmouseout="tt_Hide();">Welcome <b><c:out value="${user.firstName}" escapeXml="true"/> <c:out value="${user.lastName}" escapeXml="true"/></b></a>
 	</c:if>
 </span>
 
