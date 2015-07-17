@@ -44,6 +44,7 @@ public class ParticipantImportServiceIntegrationTest extends AbstractNoSecurityT
 
     private ParticipantRepository participantRepository;
     private Participant xstreamParticipant;
+    private Participant xstreamParticipantWithNullName;
 
     private SystemAssignedIdentifier systemAssignedIdentifier;
     private OrganizationAssignedIdentifier organizationAssignedIdentifier;
@@ -85,6 +86,7 @@ public class ParticipantImportServiceIntegrationTest extends AbstractNoSecurityT
 
         xstreamParticipant = Fixtures.createParticipant("first", "last");
         xstreamParticipant.getIdentifiersLazy().remove(0);
+        xstreamParticipantWithNullName = Fixtures.createParticipant(null, null);
         systemAssignedIdentifier = Fixtures.createSystemAssignedIdentifier("value");
         organization = Fixtures.createOrganization("org name",null);
         organizationAssignedIdentifier = Fixtures.createOrganizationAssignedIdentifier("org value", organization);
@@ -256,6 +258,21 @@ public class ParticipantImportServiceIntegrationTest extends AbstractNoSecurityT
             assertTrue(participant.getIdentifiers().contains(identifier));
         }
 
+
+    }
+    
+    
+    public void testImportParticipantWithNullNames() {
+
+        DomainObjectImportOutcome<Participant> participantDomainObjectImportOutcome = participantImportService.importParticipant(xstreamParticipantWithNullName);
+
+        validate(xstreamParticipantWithNullName, participantDomainObjectImportOutcome);
+        validateImportedObject(participantDomainObjectImportOutcome);
+
+        List<DomainObjectImportOutcome.Message> messages = participantDomainObjectImportOutcome.getMessages();
+        assertEquals(1, messages.size());
+
+        assertEquals("Assignments are either Empty or Not Valid", messages.get(0).getMessage());
 
     }
 }

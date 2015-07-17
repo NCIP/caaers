@@ -99,7 +99,6 @@ public class Participant extends Person {
      * @see gov.nih.nci.cabig.caaers.domain.Person#getFirstName()
      */
     @Override
-    @NotNullConstraint
     public String getFirstName() {
         return firstName;
     }
@@ -108,7 +107,6 @@ public class Participant extends Person {
      * @see gov.nih.nci.cabig.caaers.domain.Person#getLastName()
      */
     @Override
-    @NotNullConstraint
     public String getLastName() {
         return lastName;
     }
