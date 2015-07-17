@@ -413,7 +413,7 @@ public class SafetyReportServiceImpl {
 	    for(Report report : aeDestReport.getReports()){
 	    	if(report.getWithdrawnOn() != null){
 	    		 // add the withdrawn report to withdraw list
-				 reportsToBeWithdrawn.add(report);
+				reportsToBeWithdrawn.add(report);
 	    		for(Report withdrawableReport : withdrawableReports){
 	    			if(withdrawableReport.isSameReportByCaseNumberOrReportDefinition(report)){
 	    				 withdrawReport(withdrawableReport, dbReport);

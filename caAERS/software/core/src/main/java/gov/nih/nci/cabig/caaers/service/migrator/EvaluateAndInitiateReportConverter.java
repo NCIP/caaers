@@ -52,7 +52,7 @@ public class EvaluateAndInitiateReportConverter {
 			Report report = new Report();
 			report.setReportDefinition(new ReportDefinition());
 			report.getReportDefinition().setName(response.getRecommendedActions().get(0).getReport());
-			if(isTrue(evaluateInputMessage.isWithdrawReport())) {
+			if(isTrue(evaluateInputMessage.isWithdrawReport()) || response.getRecommendedActions().get(0).getAction().equalsIgnoreCase("Withdraw")) {
 				report.setWithdrawnOn(now);
 			}
 			report.setCaseNumber(evaluateInputMessage.getReportId());

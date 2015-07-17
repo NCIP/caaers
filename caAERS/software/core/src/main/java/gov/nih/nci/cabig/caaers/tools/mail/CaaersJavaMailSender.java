@@ -152,7 +152,7 @@ public class CaaersJavaMailSender extends JavaMailSenderImpl implements Initiali
      * This method is used to send an email
      */
 	public void sendMail(String[] to, String[] cc, String subject, String content, String[] attachmentFilePaths){
-		if(to == null || to.length == 0) {
+		if(to == null || to.length == 0 || to[0] == null) {
 			return;
 		}
 		try {		
@@ -178,7 +178,7 @@ public class CaaersJavaMailSender extends JavaMailSenderImpl implements Initiali
 		    
 		} catch (Exception e) {
 			 if(SUPRESS_MAIL_SEND_EXCEPTION) return; //supress the excetion related to email sending
-			 throw new CaaersSystemException("Error while sending email", e);
+			 throw new CaaersSystemException("Error while sending email to " + to[0], e);
 		}
 	}
     
