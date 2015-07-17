@@ -60,8 +60,6 @@ public class EvaluationServiceImpl implements EvaluationService {
 
     private ReportDefinitionDao reportDefinitionDao;
 
-    private OrganizationDao organizationDao;
-    
 
 	ReportDefinitionFilter reportDefinitionFilter;
     
