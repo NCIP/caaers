@@ -36,7 +36,7 @@ public class AdverseEventRecommendedReportQuery extends AbstractQuery {
 	 
 	 public void filterByAEsNotAddedToReport(){
 		 andWhere("aeReported =:" + AE_REPORTED);
-		 setParameter(AE_REPORTED, 0);
+		 setParameter(AE_REPORTED, false);
 	 }
 	 
 }
