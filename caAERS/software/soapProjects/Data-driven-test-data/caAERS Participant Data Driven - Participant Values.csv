@@ -1,0 +1,200 @@
+Ethnicity,Gender,Race,Success,Note,,Character Code,Initials,Success
+Hispanic or Latino,Female Gender,American Indian or Alaska Native,1,Expected,,32,   ,1
+Not Hispanic or Latino,Male Gender,Asian,1,,,33,!!!,1
+Not reported,Unknown,Black or African American,1,,,34,"""""""",1
+Unknown,Unspecified,Native Hawaiian or other Pacific Islander,1,,,35,###,1
+,,White,1,,,36,$$$,1
+,,Not Reported,1,,,37,%%%,1
+,,Unknown,1,,,38,&&&,1
+HISPANIC OR LATINO,UNSPECIFIED,BLACK OR AFRICAN AMERICAN,1,Case,,39,''',1
+not hispanic or latino,unknown,not reported,1,,,40,(((,1
+Not repOrted,MaLe GenDer,Native HawaiiAn or Other Pacific Islander,1,,,41,))),1
+ Unknown, Female Gender, Asian,1,Spaces,,42,***,1
+Not reported ,Male Gender ,White ,1,,,43,+++,1
+Notreported,Junk,Black,0,Invalid,,44,",,,",1
+Hispanic or Latino,Female Gender,American Indian or Alaska Native,1,,,45,---,0
+Not Hispanic or Latino,Male Gender,Asian,1,,,46,...,1
+,,,,,,47,///,1
+Positive Combinations,,,,,,48,000,1
+Hispanic or Latino,Female Gender,American Indian or Alaska Native,1,Expected,,49,111,1
+Hispanic or Latino,Female Gender,Asian,1,,,50,222,1
+Hispanic or Latino,Female Gender,Black or African American,1,,,51,333,1
+Hispanic or Latino,Female Gender,Native Hawaiian or other Pacific Islander,1,,,52,444,1
+Hispanic or Latino,Female Gender,White,1,,,53,555,1
+Hispanic or Latino,Female Gender,Not Reported,1,,,54,666,1
+Hispanic or Latino,Female Gender,Unknown,1,,,55,777,1
+Hispanic or Latino,Male Gender,American Indian or Alaska Native,1,,,56,888,1
+Hispanic or Latino,Male Gender,Asian,1,,,57,999,1
+Hispanic or Latino,Male Gender,Black or African American,1,,,58,:::,1
+Hispanic or Latino,Male Gender,Native Hawaiian or other Pacific Islander,1,,,59,;;;,1
+Hispanic or Latino,Male Gender,White,1,,,60,<<<,1
+Hispanic or Latino,Male Gender,Not Reported,1,,,61,===,1
+Hispanic or Latino,Male Gender,Unknown,1,,,62,>>>,1
+Hispanic or Latino,Unknown,American Indian or Alaska Native,1,,,63,???,1
+Hispanic or Latino,Unknown,Asian,1,,,64,@@@,1
+Hispanic or Latino,Unknown,Black or African American,1,,,65,AAA,1
+Hispanic or Latino,Unknown,Native Hawaiian or other Pacific Islander,1,,,66,BBB,1
+Hispanic or Latino,Unknown,White,1,,,67,CCC,1
+Hispanic or Latino,Unknown,Not Reported,1,,,68,DDD,1
+Hispanic or Latino,Unknown,Unknown,1,,,69,EEE,1
+Hispanic or Latino,Unspecified,American Indian or Alaska Native,1,,,70,FFF,1
+Hispanic or Latino,Unspecified,Asian,1,,,71,GGG,1
+Hispanic or Latino,Unspecified,Black or African American,1,,,72,HHH,1
+Hispanic or Latino,Unspecified,Native Hawaiian or other Pacific Islander,1,,,73,III,1
+Hispanic or Latino,Unspecified,White,1,,,74,JJJ,1
+Hispanic or Latino,Unspecified,Not Reported,1,,,75,KKK,1
+Hispanic or Latino,Unspecified,Unknown,1,,,76,LLL,1
+Not Hispanic or Latino,Female Gender,American Indian or Alaska Native,1,,,77,MMM,1
+Not Hispanic or Latino,Female Gender,Asian,1,,,78,NNN,1
+Not Hispanic or Latino,Female Gender,Black or African American,1,,,79,OOO,1
+Not Hispanic or Latino,Female Gender,Native Hawaiian or other Pacific Islander,1,,,80,PPP,1
+Not Hispanic or Latino,Female Gender,White,1,,,81,QQQ,1
+Not Hispanic or Latino,Female Gender,Not Reported,1,,,82,RRR,1
+Not Hispanic or Latino,Female Gender,Unknown,1,,,83,SSS,1
+Not Hispanic or Latino,Male Gender,American Indian or Alaska Native,1,,,84,TTT,1
+Not Hispanic or Latino,Male Gender,Asian,1,,,85,UUU,1
+Not Hispanic or Latino,Male Gender,Black or African American,1,,,86,VVV,1
+Not Hispanic or Latino,Male Gender,Native Hawaiian or other Pacific Islander,1,,,87,WWW,1
+Not Hispanic or Latino,Male Gender,White,1,,,88,XXX,1
+Not Hispanic or Latino,Male Gender,Not Reported,1,,,89,YYY,1
+Not Hispanic or Latino,Male Gender,Unknown,1,,,90,ZZZ,1
+Not Hispanic or Latino,Unknown,American Indian or Alaska Native,1,,,91,[[[,1
+Not Hispanic or Latino,Unknown,Asian,1,,,92,\\\,1
+Not Hispanic or Latino,Unknown,Black or African American,1,,,93,]]],1
+Not Hispanic or Latino,Unknown,Native Hawaiian or other Pacific Islander,1,,,94,^^^,1
+Not Hispanic or Latino,Unknown,White,1,,,95,___,1
+Not Hispanic or Latino,Unknown,Not Reported,1,,,96,```,1
+Not Hispanic or Latino,Unknown,Unknown,1,,,97,aaa,1
+Not Hispanic or Latino,Unspecified,American Indian or Alaska Native,1,,,98,bbb,1
+Not Hispanic or Latino,Unspecified,Asian,1,,,99,ccc,1
+Not Hispanic or Latino,Unspecified,Black or African American,1,,,100,ddd,1
+Not Hispanic or Latino,Unspecified,Native Hawaiian or other Pacific Islander,1,,,101,eee,1
+Not Hispanic or Latino,Unspecified,White,1,,,102,fff,1
+Not Hispanic or Latino,Unspecified,Not Reported,1,,,103,ggg,1
+Not Hispanic or Latino,Unspecified,Unknown,1,,,104,hhh,1
+Not reported,Female Gender,American Indian or Alaska Native,1,,,105,iii,1
+Not reported,Female Gender,Asian,1,,,106,jjj,1
+Not reported,Female Gender,Black or African American,1,,,107,kkk,1
+Not reported,Female Gender,Native Hawaiian or other Pacific Islander,1,,,108,lll,1
+Not reported,Female Gender,White,1,,,109,mmm,1
+Not reported,Female Gender,Not Reported,1,,,110,nnn,1
+Not reported,Female Gender,Unknown,1,,,111,ooo,1
+Not reported,Male Gender,American Indian or Alaska Native,1,,,112,ppp,1
+Not reported,Male Gender,Asian,1,,,113,qqq,1
+Not reported,Male Gender,Black or African American,1,,,114,rrr,1
+Not reported,Male Gender,Native Hawaiian or other Pacific Islander,1,,,115,sss,1
+Not reported,Male Gender,White,1,,,116,ttt,1
+Not reported,Male Gender,Not Reported,1,,,117,uuu,1
+Not reported,Male Gender,Unknown,1,,,118,vvv,1
+Not reported,Unknown,American Indian or Alaska Native,1,,,119,www,1
+Not reported,Unknown,Asian,1,,,120,xxx,1
+Not reported,Unknown,Black or African American,1,,,121,yyy,1
+Not reported,Unknown,Native Hawaiian or other Pacific Islander,1,,,122,zzz,1
+Not reported,Unknown,White,1,,,123,{{{,1
+Not reported,Unknown,Not Reported,1,,,124,|||,1
+Not reported,Unknown,Unknown,1,,,125,}}},1
+Not reported,Unspecified,American Indian or Alaska Native,1,,,126,~~~,1
+Not reported,Unspecified,Asian,1,,,,,
+Not reported,Unspecified,Black or African American,1,,,,,
+Not reported,Unspecified,Native Hawaiian or other Pacific Islander,1,,,,,
+Not reported,Unspecified,White,1,,,,,
+Not reported,Unspecified,Not Reported,1,,,,,
+Not reported,Unspecified,Unknown,1,,,,,
+Unknown,Female Gender,American Indian or Alaska Native,1,,,,,
+Unknown,Female Gender,Asian,1,,,,,
+Unknown,Female Gender,Black or African American,1,,,,,
+Unknown,Female Gender,Native Hawaiian or other Pacific Islander,1,,,,,
+Unknown,Female Gender,White,1,,,,,
+Unknown,Female Gender,Not Reported,1,,,,,
+Unknown,Female Gender,Unknown,1,,,,,
+Unknown,Male Gender,American Indian or Alaska Native,1,,,,,
+Unknown,Male Gender,Asian,1,,,,,
+Unknown,Male Gender,Black or African American,1,,,,,
+Unknown,Male Gender,Native Hawaiian or other Pacific Islander,1,,,,,
+Unknown,Male Gender,White,1,,,,,
+Unknown,Male Gender,Not Reported,1,,,,,
+Unknown,Male Gender,Unknown,1,,,,,
+Unknown,Unknown,American Indian or Alaska Native,1,,,,,
+Unknown,Unknown,Asian,1,,,,,
+Unknown,Unknown,Black or African American,1,,,,,
+Unknown,Unknown,Native Hawaiian or other Pacific Islander,1,,,,,
+Unknown,Unknown,White,1,,,,,
+Unknown,Unknown,Not Reported,1,,,,,
+Unknown,Unknown,Unknown,1,,,,,
+Unknown,Unspecified,American Indian or Alaska Native,1,,,,,
+Unknown,Unspecified,Asian,1,,,,,
+Unknown,Unspecified,Black or African American,1,,,,,
+Unknown,Unspecified,Native Hawaiian or other Pacific Islander,1,,,,,
+Unknown,Unspecified,White,1,,,,,
+Unknown,Unspecified,Not Reported,1,,,,,
+Unknown,Unspecified,Unknown,1,,,,,
+HISPANIC OR LATINO,UNSPECIFIED,BLACK OR AFRICAN AMERICAN,1,Case,,,,
+HISPANIC OR LATINO,UNSPECIFIED,not reported,1,,,,,
+HISPANIC OR LATINO,UNSPECIFIED,Native HawaiiAn or Other Pacific Islander,1,,,,,
+HISPANIC OR LATINO,unknown,BLACK OR AFRICAN AMERICAN,1,,,,,
+HISPANIC OR LATINO,unknown,not reported,1,,,,,
+HISPANIC OR LATINO,unknown,Native HawaiiAn or Other Pacific Islander,1,,,,,
+HISPANIC OR LATINO,MaLe GenDer,BLACK OR AFRICAN AMERICAN,1,,,,,
+HISPANIC OR LATINO,MaLe GenDer,not reported,1,,,,,
+HISPANIC OR LATINO,MaLe GenDer,Native HawaiiAn or Other Pacific Islander,1,,,,,
+not hispanic or latino,UNSPECIFIED,BLACK OR AFRICAN AMERICAN,1,,,,,
+not hispanic or latino,UNSPECIFIED,not reported,1,,,,,
+not hispanic or latino,UNSPECIFIED,Native HawaiiAn or Other Pacific Islander,1,,,,,
+not hispanic or latino,unknown,BLACK OR AFRICAN AMERICAN,1,,,,,
+not hispanic or latino,unknown,not reported,1,,,,,
+not hispanic or latino,unknown,Native HawaiiAn or Other Pacific Islander,1,,,,,
+not hispanic or latino,MaLe GenDer,BLACK OR AFRICAN AMERICAN,1,,,,,
+not hispanic or latino,MaLe GenDer,not reported,1,,,,,
+not hispanic or latino,MaLe GenDer,Native HawaiiAn or Other Pacific Islander,1,,,,,
+Not repOrted,UNSPECIFIED,BLACK OR AFRICAN AMERICAN,1,,,,,
+Not repOrted,UNSPECIFIED,not reported,1,,,,,
+Not repOrted,UNSPECIFIED,Native HawaiiAn or Other Pacific Islander,1,,,,,
+Not repOrted,unknown,BLACK OR AFRICAN AMERICAN,1,,,,,
+Not repOrted,unknown,not reported,1,,,,,
+Not repOrted,unknown,Native HawaiiAn or Other Pacific Islander,1,,,,,
+Not repOrted,MaLe GenDer,BLACK OR AFRICAN AMERICAN,1,,,,,
+Not repOrted,MaLe GenDer,not reported,1,,,,,
+Not repOrted,MaLe GenDer,Native HawaiiAn or Other Pacific Islander,1,,,,,
+ Unknown, Female Gender, Asian,1,,,,,
+ Unknown, Female Gender,White ,1,,,,,
+ Unknown,Male Gender , Asian,1,,,,,
+ Unknown,Male Gender ,White ,1,,,,,
+Not reported , Female Gender, Asian,1,,,,,
+Not reported , Female Gender,White ,1,,,,,
+Not reported ,Male Gender , Asian,1,,,,,
+Not reported ,Male Gender ,White ,1,,,,,
+ Unknown, Female Gender, Asian,1,Spaces,,,,
+ Unknown, Female Gender,White ,1,,,,,
+ Unknown,Male Gender , Asian,1,,,,,
+ Unknown,Male Gender ,White ,1,,,,,
+Not reported , Female Gender, Asian,1,,,,,
+Not reported , Female Gender,White ,1,,,,,
+Not reported ,Male Gender , Asian,1,,,,,
+Not reported ,Male Gender ,White ,1,,,,,
+Notreported,Junk,Black,0,Invalid,,,,
+Notreported,Junk,American Indian or Alaska Native,0,,,,,
+Notreported,Junk,Asian,0,,,,,
+Notreported,Female Gender,Black,0,,,,,
+Notreported,Female Gender,American Indian or Alaska Native,0,,,,,
+Notreported,Female Gender,Asian,0,,,,,
+Notreported,Male Gender,Black,0,,,,,
+Notreported,Male Gender,American Indian or Alaska Native,0,,,,,
+Notreported,Male Gender,Asian,0,,,,,
+Hispanic or Latino,Junk,Black,0,,,,,
+Hispanic or Latino,Junk,American Indian or Alaska Native,0,,,,,
+Hispanic or Latino,Junk,Asian,0,,,,,
+Hispanic or Latino,Female Gender,Black,0,,,,,
+Hispanic or Latino,Female Gender,American Indian or Alaska Native,1,,,,,
+Hispanic or Latino,Female Gender,Asian,1,,,,,
+Hispanic or Latino,Male Gender,Black,0,,,,,
+Hispanic or Latino,Male Gender,American Indian or Alaska Native,1,,,,,
+Hispanic or Latino,Male Gender,Asian,1,,,,,
+Not Hispanic or Latino,Junk,Black,0,,,,,
+Not Hispanic or Latino,Junk,American Indian or Alaska Native,0,,,,,
+Not Hispanic or Latino,Junk,Asian,0,,,,,
+Not Hispanic or Latino,Female Gender,Black,0,,,,,
+Not Hispanic or Latino,Female Gender,American Indian or Alaska Native,1,,,,,
+Not Hispanic or Latino,Female Gender,Asian,1,,,,,
+Not Hispanic or Latino,Male Gender,Black,0,,,,,
+Not Hispanic or Latino,Male Gender,American Indian or Alaska Native,1,,,,,
+Not Hispanic or Latino,Male Gender,Asian,1,,,,,

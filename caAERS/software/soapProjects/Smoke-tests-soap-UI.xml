@@ -5003,12 +5003,12 @@ assert resp.contains("saveAndEvaluateAEsResponse") == true : "BOM failed - could
                   <externalId>reaction-88</externalId>
                   <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>
                </saer:adverseEvent>
-              <saer:adverseEvent>
+          <!--   <saer:adverseEvent>
                   <verbatim>Verbatim2</verbatim>
                   <adverseEventCtepTerm>
                      <ctepCode>10047700</ctepCode>
                   </adverseEventCtepTerm>
-                  <grade>1</grade>
+                  <grade>3</grade>
                   <hospitalization>YES</hospitalization>
                   <dateFirstLearned>2014-11-28T17:06:01.0000000Z</dateFirstLearned>
                   
@@ -5017,22 +5017,22 @@ assert resp.contains("saveAndEvaluateAEsResponse") == true : "BOM failed - could
                   </outcome>
                   <externalId>reaction-89</externalId>
                   <reporterEmail>vasudev.chatti@semanticbits.com</reporterEmail>
-               </saer:adverseEvent> 
-            </saer:adverseEvents>
+               </saer:adverseEvent> -->
+               </saer:adverseEvents>
             <saer:criteria>
                <studySubjectIdentifier>S40-A071102</studySubjectIdentifier>
                <studyIdentifier>A071102</studyIdentifier>
                <course>
                   <startDateOfFirstCourse>2014-01-06</startDateOfFirstCourse>
-                  <startDateOfThisCourse>2015-06-04</startDateOfThisCourse>
-                  <cycleNumber>4</cycleNumber>
+                  <startDateOfThisCourse>2015-06-15</startDateOfThisCourse>
+                  <cycleNumber>15</cycleNumber>
                   <treatmentAssignmentCode>TAC 1</treatmentAssignmentCode>
                   <otherTreatmentAssignmentDescription>N/A</otherTreatmentAssignmentDescription>
                </course>
             </saer:criteria>
-          <reportId>1173906368</reportId>
+          <!--  <reportId>0432747528</reportId>-->
             <!--<withdrawReport>true</withdrawReport>-->
-            <reporter>
+            <!--<reporter>
                <aer:firstName>Reporter</aer:firstName>
                <aer:lastName>one</aer:lastName>
                <aer:middleName>middlename</aer:middleName>
@@ -5045,19 +5045,19 @@ assert resp.contains("saveAndEvaluateAEsResponse") == true : "BOM failed - could
                   <aer:type>phone</aer:type>
                   <aer:value>703-787-1234</aer:value>
                </aer:contactMechanism>
-               <aer:contactMechanism>
+              <aer:contactMechanism>
                   <aer:type>e-mail</aer:type>
                   <aer:value>vasudev.chatti@semanticbits.com</aer:value>
-               </aer:contactMechanism>
+               </aer:contactMechanism> 
                <aer:contactMechanism>
                   <aer:type>fax</aer:type>
                   <aer:value>703-787-1222</aer:value>
                </aer:contactMechanism>
-               <aer:contactMechanism>
+            <aer:contactMechanism>
                   <aer:type>alternateEmails</aer:type>
                   <aer:value>vasudevkarthik@gmail.com</aer:value>
                </aer:contactMechanism>
-            </reporter>
+            </reporter>-->
          </saer:EvaluateAndInitiateInputMessage>
       </saer:EvaluateAndInitiate>
    </soapenv:Body>

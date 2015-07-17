@@ -1,0 +1,22 @@
+StudySubjectID,Study,TAC ,TAD,StartDateoffirstcourse,StartDateofthiscourse,Coursenumber,AEExternalID,Verbatim,Ctepcode,Grade,DateFirstLearned,Outcome,Reporteremail,Site,Success,Notes
+S38-A071102,A071102,TAC 1,N/A,2015-01-06,2015-01-06,1,reaction-88,Verbatim1,10010774,3,2015-01-06T17:05:01.0Z,HOSPITALIZATION,vasudev.chatti@semanticbits.com,MN008,1,Validation on all fields with correct values
+S38-A071102,A071102,taC 1,N/A,2015-01-06,2015-01-07,2,reaction-88,Verbatim2,10010774,3,2015-01-07T16:05:01.0Z,LIFE_THREATENING,vasudev.chatti@semanticbits.com,MN008,0,Case insensitivity of TAC
+S38-A071102,A071102,other,other,2015-01-06,2015-01-08,3,reaction-88,Verbatim3,10010774,3,2015-01-08T18:05:59.0Z,DISABILITY,vasudev.chatti@semanticbits.com,mn008,1,Case insensitivity when TAC is other and case insensitivity of site
+S38-A071102,A071102,Other,testing,2015-01-06,2015-01-09,4,reaction-88,Verbatim4,10010774,3,2015-01-09T17:05:01.0Z,CONGENITAL_ANOMALY,vasudev.chatti@semanticbits.com,mn008,1,Case insensitivity when TAC is other and case insensitivity of site
+S38-A071102,A071102,oTHer,Testing,2015-01-06,2015-01-10,5,reaction-88,Verbatim5,10010774,3,2015-01-10T17:11:01.0Z,REQUIRED_INTERVENTION,vasudev.chatti@semanticbits.com,MN008,1,Case insensitivity when TAC is other
+S38-A071102,A071102,TaC 1,N/A,2015-01-06,2015-01-11,6,reaction-88,Verbatim6,10010774,3,2015-01-11T20:15:01.0Z,OTHER_SERIOUS,vasudev.chatti@semanticbits.com,MN008,0,Case insensitivity of TAC
+S38-A071102,A071102,TAC 1,N/A,2015-01-06,2015-01-12,7,reaction-88,Verbatim1,10010774,3,2015-01-06T17:05:01.0Z,HOSPITALIZATION,vasudev.chatti@semanticbits.com,MN008,1,
+S38-A071102,A071102,taC 1,,2015-01-06,2015-01-13,8,reaction-88,Verbatim2,10010774,3,2015-01-07T16:05:01.0Z,LIFE_THREATENING,vasudev.chatti@semanticbits.com,MN008,0,Case insensitivity of TAC and empty TAD - Failure expected
+S38-A071102,A071102,other,,2015-01-06,2015-01-14,9,reaction-88,Verbatim3,10010774,3,2015-01-08T18:05:59.0Z,DISABILITY,vasudev.chatti@semanticbits.com,MN008,0,Case insensitivity of TAC and empty TAD - Failure expected
+S38-A071102,A071102,,testing,2015-01-06,2015-01-15,10,reaction-88,Verbatim4,10010774,3,2015-01-09T17:05:01.0Z,CONGENITAL_ANOMALY,vasudev.chatti@semanticbits.com,MN008,0,empty TAC
+S38-A071102,A071102,oTHer,Testing,2015-01-06,2015-01-16,11,reaction-88,Verbatim5,10010774,3,2015-01-10T17:11:01.0Z,REQUIRED_INTERVENTION,vasudev.chatti@semanticbits.com,MN008,1,Case insensitivity of TAC when TAC is other
+S38-A071102,A071102,TaC 1,N/A,2015-01-06,2015-01-17,12,reaction-88,Verbatim6,10010774,3,2015-01-11T20:15:01.0Z,OTHER_SERIOUS,vasudev.chatti@semanticbits.com,MN008,0,Case insensitivity of TAC
+S38-A071102,A071102,caAERS,N/A,2015-01-06,2015-01-18,13,reaction-88,Verbatim1,10010774,3,2015-01-06T17:05:01.0Z,HOSPITALIZATION,vasudev.chatti@semanticbits.com,MN008,0,Invalid TAC
+S38-A071102,A071102,TAC1,N/A,2015-01-06,2015-01-19,14,reaction-88,Verbatim2,10010774,3,2015-01-07T16:05:01.0Z,LIFE_THREATENING,vasudev.chatti@semanticbits.com,MN008,0,Invalid TAC with a space in TAC value
+S38-A071102,A071102,Other,TAC 1,2015-01-06,2015-01-20,15,reaction-88,Verbatim3,10010774,3,2015-01-08T18:05:59.0Z,DISABILITY,vasudev.chatti@semanticbits.com,MN008,1,TAD that has a TAC value as description and case insensitivity of Outcome
+S38-A071102,A071102,Tac 1,n/a,2015-01-06,2015-01-21,16,reaction-88,Verbatim4,10010774,3,2015-01-09T17:05:01.0Z,CONGENITAL_ANOMALY,vasudev.chatti@semanticbits.com,MN008,0,"Case insensititvity of TAC, TAD and outcome"
+S38-A071102,A071102,TAC 1,n/a,2015-01-06,2015-01-22,17,reaction-88,Verbatim5,10010774,3,2015-01-10T17:11:01.0Z,REQUIRED_INTERVENTION,vasudev.chatti@semanticbits.com,MN008,1,Case insensitivity of TAD and outcome
+S38-A071102,A071102,other,Testing,2015-01-06,2015-01-23,18,reaction-88,Verbatim6,10010774,3,2015-01-11T20:15:01.0Z,OTHER_SERIOUS,vasudev.chatti@semanticbits.com,MN008,1,Case insensitivity of TAC when TAC is other
+S38-A071102,a071102,TAC 1,N/A,2015-01-06,2015-01-24,19,reaction-88,Verbatim6,10010774,3,2015-01-11T20:15:01.0Z,hospitalization,Vasudev.CHATTI@semanticBITS.com,MN008,1,Case insensitivity of Study ID and outcome
+S38-A071102,a071102,TAC 1,N/A,2015-01-06,2015-01-25,20,reaction-88,Verbatim6,10010774,3,2015-01-11T20:15:01.0Z,other_Serious,vasudev.chatti@semanticbits.com,MN008,1,Case insensitivity of Study ID and outcome
+S38-A071102,a071102,TAC 1,N/A,2015-01-06,2015-01-26,21,reaction-88,Verbatim7,10010774,3,2015-01-11T20:15:01.0Z,life_threatening,vasudev.chatti@semanticbits.com,MN008,1,Case insensitivity of Study ID and outcome
