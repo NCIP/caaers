@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\arms.csv'
+	INFILE 'arms.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE arms
 	fields terminated by ','

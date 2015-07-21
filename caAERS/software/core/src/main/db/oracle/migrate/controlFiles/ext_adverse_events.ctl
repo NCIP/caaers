@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\ext_adverse_events.csv'
+	INFILE 'ext_adverse_events.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE ext_adverse_events
 	fields terminated by ','

@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\report_schedules.csv'
+	INFILE 'report_schedules.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE report_schedules
 	fields terminated by ','

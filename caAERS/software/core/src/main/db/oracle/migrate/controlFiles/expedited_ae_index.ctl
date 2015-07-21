@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\expedited_ae_index.csv'
+	INFILE 'expedited_ae_index.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE expedited_ae_index
 	fields terminated by ','

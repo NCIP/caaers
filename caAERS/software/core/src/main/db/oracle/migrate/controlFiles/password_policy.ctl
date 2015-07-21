@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\password_policy.csv'
+	INFILE 'password_policy.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE password_policy
 	fields terminated by ','

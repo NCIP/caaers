@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\wf_review_comments.csv'
+	INFILE 'wf_review_comments.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE wf_review_comments
 	fields terminated by ','

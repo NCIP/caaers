@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\ae_pre_existing_conds.csv'
+	INFILE 'ae_pre_existing_conds.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE ae_pre_existing_conds
 	fields terminated by ','

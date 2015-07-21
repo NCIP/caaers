@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\study_interventions_exp_aes.csv'
+	INFILE 'study_interventions_exp_aes.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE study_interventions_exp_aes
 	fields terminated by ','

@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\caaers_bootstrap_log.csv'
+	INFILE 'caaers_bootstrap_log.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE caaers_bootstrap_log
 	fields terminated by ','

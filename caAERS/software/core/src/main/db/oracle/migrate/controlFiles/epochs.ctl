@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\epochs.csv'
+	INFILE 'epochs.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE epochs
 	fields terminated by ','

@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\csm_user_group.csv'
+	INFILE 'csm_user_group.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE csm_user_group
 	fields terminated by ','

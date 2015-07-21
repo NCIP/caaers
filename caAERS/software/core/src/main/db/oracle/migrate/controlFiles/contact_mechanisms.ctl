@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\contact_mechanisms.csv'
+	INFILE 'contact_mechanisms.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE contact_mechanisms
 	fields terminated by ','

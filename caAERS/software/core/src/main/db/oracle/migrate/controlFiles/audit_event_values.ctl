@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\audit_event_values.csv'
+	INFILE 'audit_event_values.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE audit_event_values
 	fields terminated by ','

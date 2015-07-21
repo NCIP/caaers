@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\spa_metastatic_disease_sites.csv'
+	INFILE 'spa_metastatic_disease_sites.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE spa_metastatic_disease_sites
 	fields terminated by ','

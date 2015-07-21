@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\solicited_events.csv'
+	INFILE 'solicited_events.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE solicited_events
 	fields terminated by ','

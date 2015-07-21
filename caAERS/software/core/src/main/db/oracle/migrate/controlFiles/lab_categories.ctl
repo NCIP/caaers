@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\lab_categories.csv'
+	INFILE 'lab_categories.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE lab_categories
 	fields terminated by ','

@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\meddra_versions.csv'
+	INFILE 'meddra_versions.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE meddra_versions
 	fields terminated by ','

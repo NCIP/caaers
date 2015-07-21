@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\csm_mapping.csv'
+	INFILE 'csm_mapping.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE csm_mapping
 	fields terminated by ','

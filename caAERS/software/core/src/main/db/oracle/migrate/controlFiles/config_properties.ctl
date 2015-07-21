@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\config_properties.csv'
+	INFILE 'config_properties.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE config_properties
 	fields terminated by ','

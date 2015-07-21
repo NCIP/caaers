@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\agent_terms.csv'
+	INFILE 'agent_terms.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE agent_terms
 	fields terminated by ','

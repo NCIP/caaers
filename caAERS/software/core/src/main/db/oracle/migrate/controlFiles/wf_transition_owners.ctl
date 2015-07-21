@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\wf_transition_owners.csv'
+	INFILE 'wf_transition_owners.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE wf_transition_owners
 	fields terminated by ','

@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\ae_genetic_interventions.csv'
+	INFILE 'ae_genetic_interventions.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE ae_genetic_interventions
 	fields terminated by ','

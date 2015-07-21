@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\task_configuration.csv'
+	INFILE 'task_configuration.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE task_configuration
 	fields terminated by ','

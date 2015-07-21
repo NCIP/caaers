@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\rule_sets.csv'
+	INFILE 'rule_sets.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE rule_sets
 	fields terminated by ','

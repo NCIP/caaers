@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\mandatory_field_defs.csv'
+	INFILE 'mandatory_field_defs.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE mandatory_field_defs
 	fields terminated by ','

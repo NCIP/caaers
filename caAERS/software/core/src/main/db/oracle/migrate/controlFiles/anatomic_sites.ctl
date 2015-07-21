@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\anatomic_sites.csv'
+	INFILE 'anatomic_sites.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE anatomic_sites
 	fields terminated by ','

@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1) 
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\ae_reports.csv'
+	INFILE 'ae_reports.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE ae_reports
 	fields terminated by ','

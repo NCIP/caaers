@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\searches.csv'
+	INFILE 'searches.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE searches
 	fields terminated by ','

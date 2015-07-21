@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\spa_disease_histories.csv'
+	INFILE 'spa_disease_histories.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE spa_disease_histories
 	fields terminated by ','

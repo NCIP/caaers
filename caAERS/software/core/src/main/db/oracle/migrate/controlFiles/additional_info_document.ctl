@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1) 
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\additional_info_document.csv'
+	INFILE 'additional_info_document.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE additional_info_document
 	fields terminated by ','

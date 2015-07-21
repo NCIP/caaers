@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\ext_ae_reporting_prds.csv'
+	INFILE 'ext_ae_reporting_prds.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE ext_ae_reporting_prds
 	fields terminated by ','

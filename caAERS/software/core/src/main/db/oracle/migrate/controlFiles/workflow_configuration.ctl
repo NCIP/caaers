@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\workflow_configuration.csv'
+	INFILE 'workflow_configuration.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE workflow_configuration
 	fields terminated by ','

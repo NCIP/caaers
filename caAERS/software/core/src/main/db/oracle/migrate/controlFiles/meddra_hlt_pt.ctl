@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\meddra_hlt_pt.csv'
+	INFILE 'meddra_hlt_pt.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE meddra_hlt_pt
 	fields terminated by ','

@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\prior_therapy_agents.csv'
+	INFILE 'prior_therapy_agents.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE prior_therapy_agents
 	fields terminated by ','

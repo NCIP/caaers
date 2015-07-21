@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1) 
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\ae_reporting_periods.csv'
+	INFILE 'ae_reporting_periods.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE ae_reporting_periods
 	fields terminated by ','

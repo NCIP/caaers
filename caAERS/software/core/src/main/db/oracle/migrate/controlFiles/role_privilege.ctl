@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\role_privilege.csv'
+	INFILE 'role_privilege.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE role_privilege
 	fields terminated by ','

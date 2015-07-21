@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\disease_terminologies.csv'
+	INFILE 'disease_terminologies.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE disease_terminologies
 	fields terminated by ','

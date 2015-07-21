@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\qrtz_calendars.csv'
+	INFILE 'qrtz_calendars.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE qrtz_calendars
 	fields terminated by ','

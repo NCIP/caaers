@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\csm_role.csv'
+	INFILE 'csm_role.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE csm_role
 	fields terminated by ','

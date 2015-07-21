@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\attachments.csv'
+	INFILE 'attachments.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE attachments
 	fields terminated by ','

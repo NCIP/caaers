@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\nas.csv'
+	INFILE 'nas.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE nas
 	fields terminated by ','

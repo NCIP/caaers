@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\participant_index.csv'
+	INFILE 'participant_index.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE participant_index
 	fields terminated by ','

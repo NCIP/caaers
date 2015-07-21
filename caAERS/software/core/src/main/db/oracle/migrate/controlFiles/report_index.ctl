@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\report_index.csv'
+	INFILE 'report_index.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE report_index
 	fields terminated by ','

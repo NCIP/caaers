@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\organizations.csv'
+	INFILE 'organizations.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE organizations
 	fields terminated by ','

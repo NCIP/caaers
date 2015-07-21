@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\csm_user_group_role_pg.csv'
+	INFILE 'csm_user_group_role_pg.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE csm_user_group_role_pg
 	fields terminated by ','

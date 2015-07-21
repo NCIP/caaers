@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\wf_transition_configs.csv'
+	INFILE 'wf_transition_configs.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE wf_transition_configs
 	fields terminated by ','

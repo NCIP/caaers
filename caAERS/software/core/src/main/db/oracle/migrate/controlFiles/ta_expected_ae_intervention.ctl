@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\ta_expected_ae_intervention.csv'
+	INFILE 'ta_expected_ae_intervention.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE ta_expected_ae_intervention
 	fields terminated by ','

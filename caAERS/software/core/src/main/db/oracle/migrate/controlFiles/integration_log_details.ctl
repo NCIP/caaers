@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\integration_log_details.csv'
+	INFILE 'integration_log_details.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE integration_log_details
 	fields terminated by ','

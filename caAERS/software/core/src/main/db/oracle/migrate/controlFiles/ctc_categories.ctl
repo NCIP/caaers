@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\ctc_categories.csv'
+	INFILE 'ctc_categories.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE ctc_categories
 	fields terminated by ','

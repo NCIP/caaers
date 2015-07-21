@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\study_site_wf_cfgs.csv'
+	INFILE 'study_site_wf_cfgs.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE study_site_wf_cfgs
 	fields terminated by ','

@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\notifications.csv'
+	INFILE 'notifications.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE notifications
 	fields terminated by ','

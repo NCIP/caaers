@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\password_history.csv'
+	INFILE 'password_history.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE password_history
 	fields terminated by ','

@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\report_calendar_templates.csv'
+	INFILE 'report_calendar_templates.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE report_calendar_templates
 	fields terminated by ','

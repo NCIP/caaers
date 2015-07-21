@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\wf_assignees.csv'
+	INFILE 'wf_assignees.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE wf_assignees
 	fields terminated by ','

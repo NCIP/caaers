@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\qrtz_job_details.csv'
+	INFILE 'qrtz_job_details.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE qrtz_job_details
 	fields terminated by ','

@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\csm_filter_clause.csv'
+	INFILE 'csm_filter_clause.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE csm_filter_clause
 	fields terminated by ','

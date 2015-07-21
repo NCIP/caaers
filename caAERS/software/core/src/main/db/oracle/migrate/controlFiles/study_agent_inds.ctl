@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\study_agent_inds.csv'
+	INFILE 'study_agent_inds.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE study_agent_inds
 	fields terminated by ','

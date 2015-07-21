@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\ae_medical_devices.csv'
+	INFILE 'ae_medical_devices.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE ae_medical_devices
 	fields terminated by ','

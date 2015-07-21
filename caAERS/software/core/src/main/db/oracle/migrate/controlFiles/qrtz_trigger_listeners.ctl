@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\qrtz_trigger_listeners.csv'
+	INFILE 'qrtz_trigger_listeners.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE qrtz_trigger_listeners
 	fields terminated by ','
