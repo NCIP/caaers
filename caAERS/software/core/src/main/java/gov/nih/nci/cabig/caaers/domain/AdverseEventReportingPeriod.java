@@ -890,7 +890,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableRetireableDomain
     public static Date findEarliestGradedDate(List<AdverseEvent> adverseEvents){
     	Date d = null;
     	for(AdverseEvent ae : adverseEvents){
-    		if(ae.getGradedDate() == null) continue;
+    		if(ae == null || ae.getGradedDate() == null) continue;
     		
     		if(d == null){
     			d = ae.getGradedDate();
