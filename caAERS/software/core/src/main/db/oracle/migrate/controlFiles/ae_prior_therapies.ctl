@@ -1,0 +1,26 @@
+OPTIONS (SKIP=1) 
+LOAD DATA
+	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\ae_prior_therapies.csv'
+	DISCARDMAX 9999
+	APPEND INTO TABLE ae_prior_therapies
+	fields terminated by ','
+	optionally enclosed by '"' AND '"'
+	trailing NULLCOLS
+	(
+		ID					    INTEGER EXTERNAL(10),
+		VERSION				    INTEGER EXTERNAL(10),
+		GRID_ID					    CHAR,
+		REPORT_ID				    INTEGER EXTERNAL(10),
+		PRIOR_THERAPY_ID				    INTEGER EXTERNAL(10),
+		OTHER						    CHAR,
+		LIST_INDEX				    INTEGER EXTERNAL(10),
+		START_DATE_DAY 				    INTEGER EXTERNAL(10),
+		START_DATE_MONTH				    INTEGER EXTERNAL(10),
+		START_DATE_YEAR				    INTEGER EXTERNAL(10),
+		START_DATE_ZONE			    INTEGER EXTERNAL(10),
+		END_DATE_DAY					    INTEGER EXTERNAL(10),
+		END_DATE_MONTH 				    INTEGER EXTERNAL(10),
+		END_DATE_YEAR					    INTEGER EXTERNAL(10),
+		END_DATE_ZONE				    INTEGER EXTERNAL(10)
+	)
+

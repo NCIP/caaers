@@ -1,0 +1,23 @@
+OPTIONS (SKIP=1)
+LOAD DATA
+	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\csm_application.csv'
+	DISCARDMAX 9999
+	APPEND INTO TABLE csm_application
+	fields terminated by ','
+	optionally enclosed by '"' AND '"'
+	trailing NULLCOLS
+	(
+		APPLICATION_ID 			    INTEGER EXTERNAL(38),
+		APPLICATION_NAME			    CHAR,
+		APPLICATION_DESCRIPTION		    CHAR,
+		DECLARATIVE_FLAG			    INTEGER EXTERNAL(1),
+		ACTIVE_FLAG				    INTEGER EXTERNAL(1),
+		UPDATE_DATE					   DATE "YYYY-MM-DD" NULLIF UPDATE_DATE="",
+		DATABASE_URL					    CHAR,
+		DATABASE_USER_NAME				    CHAR,
+		DATABASE_PASSWORD				    CHAR,
+		DATABASE_DIALECT				    CHAR,
+		DATABASE_DRIVER				    CHAR,
+		CSM_VERSION					    CHAR
+	)
+

@@ -1,0 +1,29 @@
+OPTIONS (SKIP=1)
+LOAD DATA
+	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\ext_adverse_events.csv'
+	DISCARDMAX 9999
+	APPEND INTO TABLE ext_adverse_events
+	fields terminated by ','
+	optionally enclosed by '"' AND '"'
+	trailing NULLCOLS
+	(
+		ID					    INTEGER EXTERNAL(10),
+		VERSION				    INTEGER EXTERNAL(10),
+		ADVERSE_EVENT_TERM				    CHAR,
+		ATTRIBUTION					    CHAR,
+		START_DATE					   DATE "YYYY-MM-DD" NULLIF START_DATE="",
+		END_DATE					   DATE "YYYY-MM-DD" NULLIF END_DATE="",
+		VERBATIM					    CHAR,
+		GRADE						    INTEGER EXTERNAL(10),
+		EXTERNAL_ID					    CHAR,
+		GRID_ID					    CHAR,
+		ADVERSE_EVENT_TERM_CODE			    CHAR,
+		ADVERSE_EVENT_TERM_OTHER_VALUE 		    CHAR,
+		HOW_SERIOUS					    CHAR,
+		CREATION_DATE				   DATE "YYYY-MM-DD" NULLIF CREATION_DATE="",
+		REVIEWED_DATE					   DATE "YYYY-MM-DD" NULLIF REVIEWED_DATE="",
+		STATUS 				    CHAR,
+		EXT_REP_PRD_ID 				    INTEGER EXTERNAL(10),
+		OTHER_SPECIFY					    CHAR
+	)
+

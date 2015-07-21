@@ -1,0 +1,21 @@
+OPTIONS (SKIP=1)
+LOAD DATA
+	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\caaers_users.csv'
+	DISCARDMAX 9999
+	APPEND INTO TABLE caaers_users
+	fields terminated by ','
+	optionally enclosed by '"' AND '"'
+	trailing NULLCOLS
+	(
+		ID					    INTEGER EXTERNAL(10),
+		VERSION				    INTEGER EXTERNAL(10),
+		LOGIN_NAME				    CHAR,
+		SALT						    CHAR,
+		TOKEN						    CHAR,
+		TOKEN_TIME					    TIMESTAMP(6) "YYYY-MM-DD HH24:MI:SS.FF6" NULLIF TOKEN_TIME="",
+		PASSWORD_LAST_SET				    TIMESTAMP(6) "YYYY-MM-DD HH24:MI:SS.FF6" NULLIF PASSWORD_LAST_SET="",
+		LAST_LOGIN					    TIMESTAMP(6) "YYYY-MM-DD HH24:MI:SS.FF6" NULLIF LAST_LOGIN="",
+		NUM_FAILED_LOGINS			    INTEGER EXTERNAL(10),
+		GRID_ID					    CHAR
+	)
+

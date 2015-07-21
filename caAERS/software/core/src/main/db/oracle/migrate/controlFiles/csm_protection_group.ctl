@@ -1,0 +1,18 @@
+OPTIONS (SKIP=1)
+LOAD DATA
+	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\csm_protection_group.csv'
+	DISCARDMAX 9999
+	APPEND INTO TABLE csm_protection_group
+	fields terminated by ','
+	optionally enclosed by '"' AND '"'
+	trailing NULLCOLS
+	(
+		PROTECTION_GROUP_ID			    INTEGER EXTERNAL(38),
+		PROTECTION_GROUP_NAME			    CHAR,
+		PROTECTION_GROUP_DESCRIPTION			    CHAR,
+		APPLICATION_ID 			    INTEGER EXTERNAL(38),
+		LARGE_ELEMENT_COUNT_FLAG		    INTEGER EXTERNAL(1),
+		UPDATE_DATE				   DATE "YYYY-MM-DD" NULLIF UPDATE_DATE="",
+		PARENT_PROTECTION_GROUP_ID			    INTEGER EXTERNAL(38)
+	)
+
