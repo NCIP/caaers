@@ -136,7 +136,8 @@ See http://ncip.github.com/caaers/LICENSE.txt for details.
         <ul style="width: 400px;">
             <c:if test="${command.passwordPolicy.passwordCreationPolicy.combinationPolicy.upperCaseAlphabetRequired}"><li>contain at least one upper case letter;</c:if>
             <c:if test="${command.passwordPolicy.passwordCreationPolicy.combinationPolicy.lowerCaseAlphabetRequired}"><li>contain at least one lower case letter;</c:if>
-            <c:if test="${command.passwordPolicy.passwordCreationPolicy.combinationPolicy.nonAlphaNumericRequired}"><li>contain at least one non alphanumeric character;</c:if>
+            <c:if test="${command.passwordPolicy.passwordCreationPolicy.combinationPolicy.nonAlphaNumericRequired}"><li>contain at least one non-alphanumeric character;</c:if>
+            <c:if test="${command.passwordPolicy.passwordCreationPolicy.combinationPolicy.baseTenDigitRequired}"><li>contain at least one numeric digit;</c:if>
             <li>have a length of minimum ${command.passwordPolicy.passwordCreationPolicy.minPasswordLength} characters;
             <li>not contain a substring of your username  longer than ${command.passwordPolicy.passwordCreationPolicy.combinationPolicy.maxSubstringLength} characters;
         </ul>
