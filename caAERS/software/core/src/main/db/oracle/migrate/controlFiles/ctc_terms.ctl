@@ -17,7 +17,7 @@ LOAD DATA
 															when 't'then to_number(1)
 															when 'f'then to_number(0)
 															END",
-		TERM_DEFINITION				    CHAR,
+		TERM_DEFINITION				    CHAR(4000),
 		GRID_ID					    CHAR,
 		VERSION				    INTEGER EXTERNAL(10)
 	)

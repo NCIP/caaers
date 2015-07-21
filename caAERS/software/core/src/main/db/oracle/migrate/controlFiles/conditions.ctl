@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\conditions.csv'
+	INFILE 'conditions.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE conditions
 	fields terminated by ','

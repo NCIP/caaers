@@ -1,6 +1,6 @@
 OPTIONS (SKIP=1)
 LOAD DATA
-	INFILE 'C:\Users\Janakiram_G\Downloads\ShellScripts\concomitant_medications.csv'
+	INFILE 'concomitant_medications.csv'
 	DISCARDMAX 9999
 	APPEND INTO TABLE concomitant_medications
 	fields terminated by ','

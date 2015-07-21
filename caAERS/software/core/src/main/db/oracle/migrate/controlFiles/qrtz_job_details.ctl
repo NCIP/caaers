@@ -27,7 +27,6 @@ LOAD DATA
 												when 't'then to_char('1')
 												when 'f'then to_char('0')
 												END",
-		blob_filename     FILLER CHAR(100),
-		JOB_DATA					     LOBFILE(blob_filename) TERMINATED BY EOF
+		JOB_DATA					     CHAR(8000)
 	)
 

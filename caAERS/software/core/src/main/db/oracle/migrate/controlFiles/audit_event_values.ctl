@@ -7,8 +7,8 @@ LOAD DATA
 	optionally enclosed by '"' AND '"'
 	trailing NULLCOLS
 	(
-		ID					    INTEGER EXTERNAL(10),
-		AUDIT_EVENT_ID 			    INTEGER EXTERNAL(10),
+		ID					    INTEGER EXTERNAL,
+		AUDIT_EVENT_ID 			    INTEGER EXTERNAL,
 		ATTRIBUTE_NAME 			    CHAR,
 		PREVIOUS_VALUE 				    CHAR,
 		NEW_VALUE					    CHAR,

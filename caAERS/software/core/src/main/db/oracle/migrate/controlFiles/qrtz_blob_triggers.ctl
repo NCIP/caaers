@@ -9,7 +9,6 @@ LOAD DATA
 	(
 		TRIGGER_NAME				    CHAR,
 		TRIGGER_GROUP				    CHAR,
-		 blob_filename     FILLER CHAR(100),
-		BLOB_DATA					    LOBFILE(blob_filename) TERMINATED BY EOF
+		BLOB_DATA					    CHAR(8000)
 	)
 
