@@ -77,10 +77,10 @@ public class ParticipantODMMessageProcessor implements Processor {
 	private void checkAuthentication(Exchange exchange) {
 
 		// get the authorization header
-		String authorizationString = (String) exchange.getIn().getHeader(
-				"Authorization");
+		String authorizationString = (String) exchange.getIn().getHeader("Authorization");
 		if (StringUtils.isBlank(authorizationString)) {
-			log.debug("Could not find username/password in the request header");
+			log.error(String.format("------------------------\n%s\n, Body : %s\n------------------",
+                    "Missing Authorization header", String.valueOf(exchange.getIn().getBody())) );
 			throw new RuntimeExpressionException("No Authentication found");
 		}
 
@@ -92,13 +92,23 @@ public class ParticipantODMMessageProcessor implements Processor {
 			byte[] decodedAuth = decoder.decode(authInfoSplit[1].getBytes());
 
 			String usernamePassword = new String(decodedAuth, "UTF-8");
-			if ((!usernamePassword.split(":")[0].equals(this.caaersWSUser))
-					|| !usernamePassword.split(":")[1]
-							.equals(this.caaersWSPassword)) {
-				throw new RuntimeExpressionException("Invalid Authentication");
-			}
+            String[] credentials = StringUtils.split(usernamePassword, ':');
+            String username = credentials != null && credentials.length > 0 ? credentials[0] : null;
+            String password =  credentials != null && credentials.length > 1 ? credentials[1] : null;
+            if(!StringUtils.equals(username, this.caaersWSUser)) {
+                log.error(String.format("------------------------\n%s\nUsername : %s,\n Body : %s\n------------------",
+                        "Invalid username ",String.valueOf(username),  String.valueOf(exchange.getIn().getBody())) );
+                throw new RuntimeExpressionException("Invalid Authentication");
+            }
+
+            if(!StringUtils.equals(password, this.caaersWSPassword)) {
+                log.error(String.format("------------------------\n%s\nPassword : %s,\n Body : %s\n------------------",
+                        "Invalid password ",String.valueOf(password),  String.valueOf(exchange.getIn().getBody())) );
+                throw new RuntimeExpressionException("Invalid Authentication");
+            }
 		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+            log.error(String.format("------------------------\n%s\n, Body : %s\n------------------",
+                    "Unable to validate Authorization information", String.valueOf(exchange.getIn().getBody())), e );
 			throw new RuntimeExpressionException("Invalid Authentication");
 		}
 
