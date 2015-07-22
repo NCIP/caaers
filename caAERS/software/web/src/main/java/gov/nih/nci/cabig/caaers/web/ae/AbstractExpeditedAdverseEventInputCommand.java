@@ -372,11 +372,13 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     		}
         
     		//in this pass we will update the outcome details based on the OUTCOME db values
-    		for(Outcome outcome : ae.getOutcomes()){
-    			oneOutcomeMap.put(outcome.getOutcomeType().getCode(), Boolean.TRUE);
-    			if(outcome.getOutcomeType().equals(OutcomeType.OTHER_SERIOUS)){
-    				outcomeOtherDetails.set(i, outcome.getOther());
-    			}
+    		if(ae != null && ae.getOutcomes() != null) {
+	    		for(Outcome outcome : ae.getOutcomes()){
+	    			oneOutcomeMap.put(outcome.getOutcomeType().getCode(), Boolean.TRUE);
+	    			if(outcome.getOutcomeType().equals(OutcomeType.OTHER_SERIOUS)){
+	    				outcomeOtherDetails.set(i, outcome.getOther());
+	    			}
+	    		}
     		}
         
     		i++;

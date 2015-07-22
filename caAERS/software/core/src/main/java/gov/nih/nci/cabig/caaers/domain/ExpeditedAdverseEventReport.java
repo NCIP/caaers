@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.tools.mail.CaaersJavaMailSender;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.utils.ObjectUtils;
 import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
@@ -39,12 +40,15 @@ import javax.persistence.Transient;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.IndexColumn;
 import org.hibernate.annotations.Parameter;
+
 
  
 /**
@@ -62,6 +66,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
    
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -3747213703166595074L;
+	private static final Log log = LogFactory.getLog(ExpeditedAdverseEventReport.class);
     
     private Boolean investigationalDeviceAdministered;
 	
@@ -312,8 +317,12 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
      * @param adverseEvent the adverse event
      */
     public void addAdverseEvent(AdverseEvent adverseEvent) {
-        getAdverseEventsInternal().add(adverseEvent);
-        if (adverseEvent != null) adverseEvent.setReport(this);
+    	if (adverseEvent != null) {
+	        getAdverseEventsInternal().add(adverseEvent);
+	        adverseEvent.setReport(this);
+    	} else {
+    		log.warn("Trying to add a null adverse event to a report. Stacktrace; ", new NullPointerException("DirkTest5"));
+    	}
     }
 
     /**
@@ -321,7 +330,11 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
      * @param adverseEvent
      */
     public void addAdverseEventUnidirectional(AdverseEvent adverseEvent) {
-        getAdverseEventsInternal().add(adverseEvent);
+    	if (adverseEvent != null) {
+    		getAdverseEventsInternal().add(adverseEvent);
+    	} else {
+    		log.warn("Trying to add a null adverse event to a report. Stacktrace; ", new NullPointerException("DirkTest5"));
+    	}
     }
 
 	/**
@@ -2128,4 +2141,36 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         }
         return aes;
     }
+
+	@Override
+	public String toString() {
+		return "ExpeditedAdverseEventReport [investigationalDeviceAdministered="
+				+ investigationalDeviceAdministered
+				+ ", createdAt="
+				+ createdAt
+				+ ", lazyListHelper="
+				+ lazyListHelper
+				+ ", responseDescription="
+				+ responseDescription
+				+ ", treatmentInformation="
+				+ treatmentInformation
+				+ ", additionalInformation="
+				+ additionalInformation
+				+ ", reporter="
+				+ reporter
+				+ ", physician="
+				+ physician
+				+ ", participantHistory="
+				+ participantHistory
+				+ ", diseaseHistory="
+				+ diseaseHistory
+				+ ", reportingPeriod="
+				+ reportingPeriod
+				+ ", reports="
+				+ reports
+				+ ", reviewer="
+				+ reviewer + ", externalId=" + externalId + "]";
+	}
+    
+    
 }
