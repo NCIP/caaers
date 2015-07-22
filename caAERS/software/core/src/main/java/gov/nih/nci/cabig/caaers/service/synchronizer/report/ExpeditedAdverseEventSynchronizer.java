@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.domain.attribution.*;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
 import gov.nih.nci.cabig.caaers.utils.DateUtils;
+
 import org.apache.commons.collections15.CollectionUtils;
 import org.apache.commons.collections15.Predicate;
 import org.apache.commons.lang.ObjectUtils;
@@ -12,6 +13,7 @@ import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -25,7 +27,15 @@ public class ExpeditedAdverseEventSynchronizer implements Migrator<ExpeditedAdve
 
         //create an index of AEs
         HashMap<Integer, AdverseEvent> aeIndex = new HashMap<Integer, AdverseEvent>();
-        for(AdverseEvent ae : dbAeReport.getAdverseEvents()){ aeIndex.put(ae.getId(), ae);}
+        Iterator<AdverseEvent> it = dbAeReport.getAdverseEvents().iterator();
+        while(it.hasNext()) {
+        	AdverseEvent ae = it.next();
+        	if(ae == null) {
+        		it.remove();
+        	} else {
+        		aeIndex.put(ae.getId(), ae);
+        	}
+        }
 
         //try to find the AE in source , if found synchronize it.
         for(AdverseEvent ae : xmlAeReport.getAdverseEventsInternal()){
