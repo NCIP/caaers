@@ -36,6 +36,7 @@ import gov.nih.nci.cabig.caaers.integration.schema.common.ResponseDataType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.EvaluateAndInitiateInputMessage;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.EvaluateAndInitiateOutputMessage;
+import gov.nih.nci.cabig.caaers.integration.schema.saerules.RecommendedActions;
 import gov.nih.nci.cabig.caaers.integration.schema.saerules.SaveAndEvaluateAEsOutputMessage;
 import gov.nih.nci.cabig.caaers.service.AdeersIntegrationFacade;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
@@ -546,6 +547,34 @@ public class SafetyReportServiceImpl {
 			SaveAndEvaluateAEsOutputMessage response,
 			EvaluateAndInitiateOutputMessage retVal,
 			AdverseEventReportingPeriod repPeriod) {
+    	
+    	boolean replace = false;
+    	RecommendedActions withdrawAction = null;
+		RecommendedActions createAction = null;
+		List<RecommendedActions> recActions = response.getRecommendedActions();
+    	if(response.getRecommendedActions().size() > 1) {
+    		boolean withdraw = false;
+    		boolean create = false;
+			for(RecommendedActions action : response.getRecommendedActions()) {
+				if(!withdraw && "Withdraw".equalsIgnoreCase(action.getAction())) {
+					withdraw = true;
+					withdrawAction = action;
+				}
+				if(!create && "Create".equalsIgnoreCase(action.getAction())) {
+					create = true;
+					createAction = action;
+				}
+			}
+			
+			replace = create && withdraw;
+			
+			response.setRecommendedActions(new ArrayList<RecommendedActions>());
+			if(withdraw) {
+				response.getRecommendedActions().add(withdrawAction);
+			} else if (create) {
+				response.getRecommendedActions().add(createAction);
+			}
+		}
 		
 		CaaersServiceResponse caaersServiceResponse = Helper.createResponse();
 		ExpeditedAdverseEventReport aeSrcReport = evaluateAndInitiateReportConverter.convert(evaluateInputMessage, repPeriod, response);
@@ -553,11 +582,25 @@ public class SafetyReportServiceImpl {
 		
 		initiateSafetyReportAction(aeSrcReport, caaersServiceResponse, errors);
 		
+		if(errors.getErrorCount() > 0) {
+			throw new CaaersValidationException(errors.toString());
+		}
+		
+		if(replace) {
+			response.getRecommendedActions().clear();
+			response.getRecommendedActions().add(createAction);
+			evaluateInputMessage.setReportId(null);
+			aeSrcReport = evaluateAndInitiateReportConverter.convert(evaluateInputMessage, repPeriod, response);
+			initiateSafetyReportAction(aeSrcReport, caaersServiceResponse, errors);
+		}
+		
 		retVal.setReportId(aeSrcReport.getExternalId());
 		
 		if(errors.getErrorCount() > 0) {
 			throw new CaaersValidationException(errors.toString());
 		}
+		
+		response.setRecommendedActions(recActions);
 	}
     
     /**

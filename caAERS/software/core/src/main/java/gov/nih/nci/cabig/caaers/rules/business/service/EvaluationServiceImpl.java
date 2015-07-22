@@ -123,14 +123,16 @@ public class EvaluationServiceImpl implements EvaluationService {
         		
         		//populate the reported adverse event - report definition map.
         		List<Report> completedAmendableReports = aeReport.findCompletedAmendableReports();
-        		for(AdverseEvent ae : aeReport.getAdverseEvents()){
-        			List<ReportDefinition> rdList = new ArrayList<ReportDefinition>();
-        			for(Report completedReport : completedAmendableReports){
-            			if(completedReport.isReported(ae)){
-            				rdList.add(completedReport.getReportDefinition());
-            			}
-            		}
-        			result.getReportedAEIndexMap().put(ae.getId(), rdList);
+        		for(AdverseEvent ae : aeReport.getAdverseEvents()) {
+        			if(ae != null) {
+	        			List<ReportDefinition> rdList = new ArrayList<ReportDefinition>();
+	        			for(Report completedReport : completedAmendableReports){
+	            			if(completedReport.isReported(ae)){
+	            				rdList.add(completedReport.getReportDefinition());
+	            			}
+	            		}
+	        			result.getReportedAEIndexMap().put(ae.getId(), rdList);
+        			}
     			}
         		
         		
