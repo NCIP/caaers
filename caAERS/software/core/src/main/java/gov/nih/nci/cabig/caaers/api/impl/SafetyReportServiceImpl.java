@@ -327,6 +327,7 @@ public class SafetyReportServiceImpl {
         if(errors.hasErrors()) return aeDestReport;
         
         if(dbReport != null) {
+        	System.err.println("DIRKDEBUG;" + aeDestReport.toString());
 	        DomainObjectImportOutcome<ExpeditedAdverseEventReport> outCome = new DomainObjectImportOutcome<ExpeditedAdverseEventReport>();
 	        aeReportSynchronizer.migrate(aeDestReport, dbReport, outCome);
 	        
@@ -458,10 +459,13 @@ public class SafetyReportServiceImpl {
     		 }
     	 }
     	        
-            //create, amend or withdraw reports
-        for(Report srcReport : aeDestReport.getReports()){
+        //create, amend or withdraw reports
+        for(Report srcReport : aeDestReport.getReports()) {
+        	System.err.println("DIRKDEBUG;; Infering action for report : " + srcReport.toString());
                 List<Report> reportsToAmend = dbReport.findReportsToAmmend(srcReport.getReportDefinition());
+                System.err.println("DIRKDEBUG;; Infered number of amendements: " + reportsToAmend.size());
                 for(Report  report: reportsToAmend){
+                	System.err.println("DIRKDEBUG;; amending report : " + report.toString());
                 	amendReport(report, dbReport);
                     //reportsAffected.add(createReport(srcReport, dbReport));
                 	if(caaersServiceResponse != null){
@@ -555,6 +559,8 @@ public class SafetyReportServiceImpl {
     	if(response.getRecommendedActions().size() > 1) {
     		boolean withdraw = false;
     		boolean create = false;
+    		boolean amend = false;
+    		RecommendedActions amendAction = null;
 			for(RecommendedActions action : response.getRecommendedActions()) {
 				if(!withdraw && "Withdraw".equalsIgnoreCase(action.getAction())) {
 					withdraw = true;
@@ -564,6 +570,10 @@ public class SafetyReportServiceImpl {
 					create = true;
 					createAction = action;
 				}
+				if(!amend && "Amend".equalsIgnoreCase(action.getAction())) {
+					amend = true;
+					amendAction = action;
+				}
 			}
 			
 			replace = create && withdraw;
@@ -571,8 +581,12 @@ public class SafetyReportServiceImpl {
 			response.setRecommendedActions(new ArrayList<RecommendedActions>());
 			if(withdraw) {
 				response.getRecommendedActions().add(withdrawAction);
+			} else if (amend) {
+				response.getRecommendedActions().add(amendAction);
 			} else if (create) {
 				response.getRecommendedActions().add(createAction);
+			} else {
+				response.setRecommendedActions(recActions);
 			}
 		}
 		
